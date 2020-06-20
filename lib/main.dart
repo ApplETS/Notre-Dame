@@ -1,6 +1,12 @@
+// FLUTTER / DART / THIRD-PARTIES
 import 'package:flutter/material.dart';
 
+// OTHER
+import 'package:notredame/locator.dart';
+
 void main() {
+  setupLocator();
+
   runApp(MyApp());
 }
 
