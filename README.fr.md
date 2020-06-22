@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="https://lh3.googleusercontent.com/9rjfsSfCoglGlZI5xGo684RSQjgC_hOGse1VZXN6l_7ztH0zq-H20Je12Lf_8PLUzUR4=s180-rw" />
+  <img src="https://raw.githubusercontent.com/ApplETS/Notre-Dame/master/assets/icons/launcher_icon.png" />
   <p>
     <br /><strong>Projet Notre-Dame</strong>
     <br />
@@ -25,6 +25,13 @@ _Note: Ce guide est aussi disponible en: [English](https://github.com/ApplETS/No
 ## Requis
 
 - Flutter SDK v1.17.4 ou supérieure
+
+## Git hooks 
+
+Vous pouvez trouver dans le dossier `.githooks` l'ensemble des hooks pour git. Pour configurer git afin d'utiliser ce dossier, saisir la commande suivante:
+```bash
+git config core.hooksPath .githooks
+```
 
 ## ⚖️ License
 Ce projet est licencié selon la licence Apache V2.0. Voir le fichier [LICENSE](https://github.com/ApplETS/Notre-Dame/blob/master/LICENSE) pour plus d'informations.
