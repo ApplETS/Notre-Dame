@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="https://raw.githubusercontent.com/ApplETS/Notre-Dame/master/assets/icons/launcher_icon.png" />
+  <img src="https://raw.githubusercontent.com/ApplETS/Notre-Dame/master/docs/images/ETS_logo.png" />
   <p>
     <br /><strong>Projet Notre-Dame</strong>
     <br />
