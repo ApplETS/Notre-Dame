@@ -15,8 +15,6 @@ class Router {
               body: Center(child: Text("Login view")),
             )
         );
-      case RouterPaths.dashboard:
-        break;
       default:
         return MaterialPageRoute(
           builder: (_) => Scaffold(
