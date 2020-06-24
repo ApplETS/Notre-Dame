@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 class NavigationService {
   final GlobalKey<NavigatorState> _navigatorKey = GlobalKey<NavigatorState>();
 
+  GlobalKey<NavigatorState> get navigatorKey => _navigatorKey;
+
   /// Pop the last route of the navigator if possible
   bool pop() {
     if(_navigatorKey.currentState.canPop()) {
