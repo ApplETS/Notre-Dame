@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 
 // ROUTES
 import 'package:notredame/core/constants/router_paths.dart';
+
+// VIEWS
 import 'package:notredame/ui/views/login_view.dart';
 
 import '../locator.dart';

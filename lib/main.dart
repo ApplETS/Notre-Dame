@@ -4,11 +4,13 @@ import 'package:flutter/material.dart';
 // ROUTER
 import 'package:notredame/core/constants/router_paths.dart';
 import 'package:notredame/ui/router.dart';
+
+// SERVICES
 import 'package:notredame/core/services/navigation_service.dart';
+import 'package:notredame/core/services/analytics_service.dart';
 
 // OTHER
 import 'package:notredame/locator.dart';
-import 'core/services/analytics_service.dart';
 
 void main() {
   setupLocator();
