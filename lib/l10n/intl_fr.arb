@@ -1,0 +1,160 @@
+{
+  "error": "Une erreur est survenue",
+  "error_no_internet_connection": "Aucune connexion Internet",
+  "yes": "Oui",
+  "no": "Non",
+  "retry": "Réessayer",
+  "abbreviation_not_available": "ND",
+  "session_fall": "Automne",
+  "session_winter": "Hiver",
+  "session_summer": "Été",
+  "session_without": "Sans trimestre",
+  "oss_license_title": "Licences des logiciels libres",
+  "facebook": "Facebook",
+  "github": "GitHub",
+  "email": "Courriel",
+  
+  "title_schedule": "Horaire",
+  "title_student": "Étudiant",
+  "title_dashboard": "Accueil",
+  "title_ets": "ÉTS",
+  "title_more": "Plus",
+  
+  "login_title": "Connexion",
+  "login_prompt_universal_code": "Code universel",
+  "login_prompt_password": "Mot de passe",
+  "login_action_sign_in": "Se connecter",
+  "login_error_invalid_universal_code": "Le code universel est invalide",
+  "login_error_invalid_password": "Ce mot de passe est erroné",
+  "login_error_incorrect_password": "Le mot de passe est erroné",
+  "login_error_field_required": "Ce champ est requis",
+  "login_info_universal_code": "Votre code d'accès universel est sous la forme AB12345. Celui-ci vous a été transmis par le Bureau du registraire lors de votre admission.",
+  "login_msg_logout_success": "Vous vous êtes déconnecté",
+  "login_applets_logo": "Conçue par",
+  "password_forgotten": "Mot de passe oublié?",
+  
+  "dashboard_msg_card_removed": "Carte supprimée",
+  "dashboard_restore_all_cards_title": "Restaurer toutes les cartes",
+
+  "card_schedule_no_seances_today": "Aucune séance de cours à l'horaire aujourd'hui",
+
+  "card_applets_title": "ApplETS",
+  "card_applets_text": "ÉTSMobile a été conçue par le club ApplETS. Supportez-nous en aimant notre page Facebook, en contribuant sur GitHub ou en nous faisant part de vos commentaires par courriel.",
+  "error_no_email_app": "Aucune application de courriel disponible",
+  
+  "schedule_settings_title": "Paramètres de l'horaire",
+  "schedule_settings_show_today_btn_pref": "Afficher le bouton Aujourd'hui",
+  "schedule_settings_no_visible_days_pref": "Nombre de journées visibles",
+  "schedule_settings_x_scrolling_speed_pref": "Vitesse de défilement horizontale",
+  "schedule_settings_scroll_duration_pref": "Durée de défilement en millisecondes",
+  "schedule_settings_error_no_event_found": "Aucun événement trouvé",
+  
+  "grades_title": "Notes",
+  "grades_msg_no_grades": "Aucune note disponible",
+  "grades_current_rating": "Votre note",
+  "grades_average": "Moyenne",
+  "grades_grade_in_percentage": "{grade}%",
+  "@grades_grade_in_percentage": {
+    "placeholders": {
+      "grade": {}
+    }
+  },
+  "grades_grade_with_percentage": "{grade}/{maxGrade} ({inPercentage}%)",
+  "@grades_grade_with_percentage": {
+    "placeholders": {
+      "grade": {},
+      "maxGrade": {},
+      "inPercentage": {}
+    }
+  },
+  "grades_weight": "Pondération : {weight}%",
+  "@grades_weight": {
+    "placeholders": {
+      "weight": {}
+    }
+  },
+  "grades_group": "Groupe",
+  "grades_grade": "Note",
+  "grades_median": "Médiane",
+  "grades_standard_deviation": "Écart-type",
+  "grades_percentile_rank": "Rang centile",
+  "grades_target_date": "Date cible",
+  "title_ignored_evaluation": "Évaluation ignorée",
+  "grades_ignored_evaluation": "Cette évaluation est ignorée dans le calcul de la note finale. Cette situation se produit quand l'enseignant a décidé de conserver, par exemple, les trois meilleures notes des six devoirs qu'il a demandés. Les trois notes les plus faibles seront alors ignorées.",
+  "error_failed_to_retrieve_data_course": "Échec de la récupération des données de ce cours",
+  "title_section_summary": "Sommaire",
+  "title_section_evaluations": "Évaluations",
+  "grades_group_number": "Groupe {number}",
+  "@grades_group_number": {
+    "placeholders": {
+      "number": {}
+    }
+  },
+  "error_course_evaluations_not_completed": "Vous n'aurez pas accès à vos notes au cours de la période d'évaluation tant que vous n'aurez pas effectué vos évaluations.",
+  
+  "profile_title": "Profil",
+  "profile_student_status_title": "État du dossier étudiant",
+  "profile_personal_information_title": "Informations personnelles",
+  "profile_first_name": "Prénom",
+  "profile_last_name": "Nom de famille",
+  "profile_permanent_code": "Code permanent",
+  "profile_balance": "Solde",
+  "profile_code_program": "Code",
+  "profile_average_program": "Moyenne",
+  "profile_number_accumulated_credits_program": "Crédits complétés",
+  "profile_number_registered_credits_program": "Crédits inscrits",
+  "profile_number_completed_courses_program": "Cours réussis",
+  "profile_number_failed_courses_program": "Cours échoués",
+  "profile_number_equivalent_courses_program": "Cours d'équivalence",
+  "profile_status_program": "Statut",
+  
+  "ets_security_title": "Securité",
+  "ets_monets_title": "MonÉTS",
+  "ets_bibliotech_title": "Bibliotech",
+  "ets_news_title": "Nouvelles",
+  "ets_moodle_title": "Moodle",
+  "ets_directory_title": "Bottin",
+  "ets_heuristique_title": "L'heuristique",
+  
+  "more_about_applets_title": "À propos d'ApplETS",
+  "more_report_bug": "Rapporter un bogue",
+  "more_prompt_report_bug_method": "Comment souhaitez-vous rapporter le bogue?",
+  "more_report_bug_method_screenshot": "Capture d'écran",
+  "more_report_bug_method_video": "Capture vidéo",
+  "more_contributors": "Contributeurs",
+  "more_open_source_licenses": "@string/oss_license_title",
+  "more_beta_faq": "FAQ Bêta",
+  "more_settings": "Paramètres",
+  "more_log_out": "Se déconnecter",
+  "more_prompt_log_out_confirmation": "Êtes-vous certain de vouloir vous déconnecter?",
+  "more_log_out_progress": "Déconnexion en cours",
+  
+  "more_applets_about_details": "ÉTSMobile a été réalisée par le club scientifique ApplETS de l'École de technologie supérieure.\n\nApplETS se veut, avant tout, un regroupement d’étudiants qui partagent un intérêt commun pour le domaine des télécommunications et des applications mobiles. La mission d'ApplETS est de former les étudiants au développement mobile et de promouvoir la production d'applications mobiles au sein de la communauté étudiante.\n\nSuivez-nous sur : ",
+  
+  "security_bomb_threat_title": "Appel à la bombe:",
+  "security_suspicious_packages_title": "Colis suspect:",
+  "security_evacuation_title": "Évacuation:",
+  "security_gas_leak": "Fuite de gaz:",
+  "security_fire": "Incendie:",
+  "security_broken_elevator": "Panne d'ascenseur:",
+  "security_electrical_outage": "Panne électrique:",
+  "security_armed_person": "Personne armée:",
+  "security_earthquake": "Tremblement de terre:",
+  "security_medical_emergency": "Urgence médicale:",
+  
+  "security_emergency_call": "Appel d'urgence",
+  "security_reach_security": "Joindre la sécurité",
+  "security_emergency_number": "514 396–8900",
+  "security_emergency_intern_call": "À l'interne",
+  "security_emergency_intern_number": "Poste 55",
+  "security_emergency_procedures": "Procédures d'urgence",
+  "security_station": "Poste de sécurité",
+
+  "settings_title": "Paramètres",
+  "settings_display_pref_category": "Affichage",
+  "settings_dark_theme_pref": "Thème sombre",
+  "settings_miscellaneous_category": "Divers",
+  "settings_language_pref": "Langue",
+  "settings_french": "Français:",
+  "settings_english": "English:"
+}

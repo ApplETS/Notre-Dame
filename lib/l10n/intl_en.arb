@@ -1,0 +1,160 @@
+{
+  "error": "An error has occurred",
+  "error_no_internet_connection": "No internet connection",
+  "yes": "Yes",
+  "no": "No",
+  "retry": "Retry",
+  "abbreviation_not_available": "N/A",
+  "session_fall": "Fall",
+  "session_winter": "Winter",
+  "session_summer": "Summer",
+  "session_without": "Without Session",
+  "oss_license_title": "Open source licenses",
+  "facebook": "Facebook",
+  "github": "GitHub",
+  "email": "Email",
+
+  "title_schedule": "Schedule",
+  "title_student": "Student",
+  "title_dashboard": "Dashboard",
+  "title_ets": "ÉTS",
+  "title_more": "More",
+
+  "login_title": "Login",
+  "login_prompt_universal_code": "Universal Code",
+  "login_prompt_password": "Password",
+  "login_action_sign_in": "Sign in",
+  "login_error_invalid_universal_code": "This universal code is invalid",
+  "login_error_invalid_password": "This password is incorrect",
+  "login_error_incorrect_password": "This password is incorrect",
+  "login_error_field_required": "This field is required",
+  "login_info_universal_code": "The format of your universal code is AB12345. It was sent to you by the Bureau du registraire upon your admission.",
+  "login_msg_logout_success": "You have logged out",
+  "login_applets_logo": "Made by",
+  "login_password_forgotten": "Forgot your password?",
+
+  "dashboard_msg_card_removed": "Card removed",
+  "dashboard_restore_all_cards_title": "Restore all cards",
+
+  "card_schedule_no_seances_today": "No class scheduled today",
+
+  "card_applets_title": "ApplETS",
+  "card_applets_text": "ÉTSMobile was made by the club ApplETS. Support us by liking our Facebook page, contributing to GitHub or sending us your comments via email.",
+  "error_no_email_app": "No email application available",
+
+  "schedule_settings_title": "Schedule Settings",
+  "schedule_settings_show_today_btn_pref": "Show Today button",
+  "schedule_settings_no_visible_days_pref": "Number of visible days",
+  "schedule_settings_scrolling_speed_pref": "Horizontal scrolling speed",
+  "schedule_settings_scroll_duration_pref": "Scroll duration in milliseconds",
+  "schedule_error_no_event_found": "No event found",
+
+  "grades_title": "Grades",
+  "grades_msg_no_grades": "No grade available",
+  "grades_current_rating": "Your grade",
+  "grades_average": "Average",
+  "grades_grade_in_percentage": "{grade}%",
+  "@grades_grade_in_percentage": {
+    "placeholders": {
+      "grade": {}
+    }
+  },
+  "grades_grade_with_percentage": "{grade}/{maxGrade} ({inPercentage}%)",
+  "@grades_grade_with_percentage": {
+    "placeholders": {
+      "grade": {},
+      "maxGrade": {},
+      "inPercentage": {}
+    }
+  },
+  "grades_weight": "Weight: {weight}%",
+  "@grades_weight": {
+    "placeholders": {
+      "weight": {}
+    }
+  },
+  "grades_group": "Group",
+  "grades_grade": "Grade",
+  "grades_median": "Median",
+  "grades_standard_deviation": "Standard Deviation",
+  "grades_percentile_rank": "Percentile Rank",
+  "grades_target_date": "Target Date",
+  "grades_ignored_evaluation_title": "Ignored evaluation",
+  "grades_ignored_evaluation_details": "This evaluation is ignored in the calculation of the final grade. This situation occurs when the teacher has decided to keep, for example, the top three marks of the six assignments he has asked for. The three lowest grades would then be ignored.",
+  "grades_error_failed_to_retrieve_data_course": "Failed to retrieve data for this course",
+  "grades_summary_section_title": "Summary",
+  "grades_evaluations_section_title": "Evaluations",
+  "grades_group_number": "Group {number}",
+  "@grades_group_number": {
+    "placeholders": {
+      "number": {}
+    }
+  },
+  "grades_error_course_evaluations_not_completed": "During the evaluation period, you will not be able access your grades if you haven't completed your evaluations.",
+
+  "profile_title": "Profile",
+  "profile_student_status_title": "Student Status",
+  "profile_personal_information_title": "Personal Information",
+  "profile_first_name": "First Name",
+  "profile_last_name": "Last Name",
+  "profile_permanent_code": "Permanent Code",
+  "profile_balance": "Balance",
+  "profile_code_program": "Code",
+  "profile_average_program": "Average",
+  "profile_number_accumulated_credits_program": "Accumulated Credits",
+  "profile_number_registered_credits_program": "Registered Credits",
+  "profile_number_completed_courses_program": "Completed Courses",
+  "profile_number_failed_courses_program": "Failed Courses",
+  "profile_number_equivalent_courses_program": "Equivalent Courses",
+  "profile_status_program": "Status",
+
+  "ets_security_title": "Security",
+  "ets_monets_title": "MonÉTS",
+  "ets_bibliotech_title": "Bibliotech",
+  "ets_news_title": "News",
+  "ets_moodle_title": "Moodle",
+  "ets_directory_title": "Directory",
+  "ets_heuristique_title": "L'heuristique",
+
+  "more_about_applets_title": "About ApplETS",
+  "more_report_bug": "Report a bug",
+  "more_prompt_report_bug_method": "How would you like to report the bug?",
+  "more_report_bug_method_screenshot": "Screenshot",
+  "more_report_bug_method_video": "Video recording",
+  "more_contributors": "Contributors",
+  "more_open_source_licenses": "@string/oss_license_title",
+  "more_beta_faq": "Beta FAQ",
+  "more_settings": "Settings",
+  "more_log_out": "Log out",
+  "more_prompt_log_out_confirmation": "Are you sure you want to log out?",
+  "more_log_out_progress": "Disconnection in progress",
+
+  "more_applets_about_details": "ÉTSMobile was conceived by the ApplETS scientific club from the École de technologie supérieure.\n\nApplets is, most importantly, a gathering of students who share a typical enthusiasm for the field of telecommunications and mobile applications. The mission of ApplETS is to train students in mobile development and promote the production of mobile applications within the student community.\n\nFollow us on: ",
+
+  "security_bomb_threat_title": "Bomb threat",
+  "security_suspicious_packages_title": "Suspicious packages",
+  "security_evacuation_title": "Evacuation",
+  "security_gas_leak": "Gas leak",
+  "security_fire": "Fire",
+  "security_broken_elevator": "Broken elevator",
+  "security_electrical_outage": "Electrical outage",
+  "security_armed_person": "Armed person",
+  "security_earthquake": "Earthquake",
+  "security_medical_emergency": "Medical emergency",
+
+  "security_emergency_call": "Emergency call",
+  "security_reach_security": "Reach security",
+  "security_emergency_number": "514 396–8900",
+  "security_emergency_intern_call": "From inside campus",
+  "security_emergency_intern_number": "Ex. 55",
+  "security_emergency_procedures": "Emergency procedures",
+  "security_station": "Security station",
+
+  "settings_title": "Settings",
+  "settings_display_category": "Display",
+  "settings_dark_theme": "Dark Theme",
+  "settings_miscellaneous_category": "Miscellaneous",
+  "settings_language": "Language",
+  "settings_french": "Français:",
+  "settings_english": "English:"
+}
