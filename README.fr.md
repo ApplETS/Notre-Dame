@@ -26,6 +26,14 @@ _Note: Ce guide est aussi disponible en: [English](https://github.com/ApplETS/No
 
 - Flutter SDK v1.17.4 ou supérieure
 
+## Démarrer le code
+
+- Pour générer les classes pour l'internationalisation, exécuter les commandes suivantes:
+```
+flutter pub get
+flutter pub run intl_utils:generate
+```
+
 ## Git hooks 
 
 Vous pouvez trouver dans le dossier `.githooks` l'ensemble des hooks pour git. Pour configurer git afin d'utiliser ce dossier, saisir la commande suivante:
