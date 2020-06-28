@@ -26,6 +26,14 @@ _Note: This guide is also available in: [Français](https://github.com/ApplETS/N
 
 - Flutter SDK v1.17.4 or higher
 
+## Run the code
+
+- After cloning the repo, you will have to get the packages and generate the l10n classes. To do that run the following command:
+```
+flutter pub get
+flutter pub run intl_utils:generate
+```
+
 ## Git hooks 
 
 You can find under the folder `.githooks` all the hooks needed for this project. To configure git to use this folder enter the following command:
