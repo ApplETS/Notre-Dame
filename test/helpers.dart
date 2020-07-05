@@ -13,11 +13,18 @@ import 'package:notredame/core/services/navigation_service.dart';
 import 'mock/services/navigation_service_mock.dart';
 
 NavigationService setupNavigationServiceMock() {
+  unregister<NavigationService>();
   final service = NavigationServiceMock();
   
   locator.registerSingleton<NavigationService>(service);
 
   return service;
+}
+
+void unregister<T>() {
+  if (locator.isRegistered<T>()) {
+    locator.unregister<T>();
+  }
 }
 
 Widget localizedWidget({Widget child, String locale = 'en'}) => MaterialApp(
