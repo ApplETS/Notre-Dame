@@ -13,5 +13,6 @@ jobs:
         with:
           channel: 'stable'
       - run: flutter pub get
+      - run: flutter pub run intl_utils:generate
       - run: flutter analyze
       - run: flutter test
