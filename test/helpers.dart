@@ -12,6 +12,7 @@ import 'package:notredame/core/services/navigation_service.dart';
 // MOCKS
 import 'mock/services/navigation_service_mock.dart';
 
+/// Load a mock of the [NavigationService]
 NavigationService setupNavigationServiceMock() {
   unregister<NavigationService>();
   final service = NavigationServiceMock();
@@ -21,13 +22,15 @@ NavigationService setupNavigationServiceMock() {
   return service;
 }
 
+/// Unregister the service [T] from GetIt
 void unregister<T>() {
   if (locator.isRegistered<T>()) {
     locator.unregister<T>();
   }
 }
 
-Widget localizedWidget({Widget child, String locale = 'en'}) => MaterialApp(
+/// Load the l10n classes. Take the [child] widget to test
+Widget localizedWidget({@required Widget child, String locale = 'en'}) => MaterialApp(
   localizationsDelegates: [
     AppIntl.delegate,
     GlobalMaterialLocalizations.delegate,

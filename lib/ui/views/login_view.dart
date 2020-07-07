@@ -1,17 +1,6 @@
 // FLUTTER / DART / THIRD-PARTIES
 import 'package:flutter/material.dart';
 import 'package:notredame/generated/l10n.dart';
-import 'package:flutter_test/flutter_test.dart';
-
-void main() {
-  // Define a test. The TestWidgets function also provides a WidgetTester
-  // to work with. The WidgetTester allows building and interacting
-  // with widgets in the test environment.
-  testWidgets('MyWidget has a title and message', (WidgetTester tester) async {
-    // Create the widget by telling the tester to build it.
-    await tester.pumpWidget(LoginView());
-  });
-}
 
 class LoginView extends StatelessWidget {
   @override
