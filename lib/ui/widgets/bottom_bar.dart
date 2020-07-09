@@ -23,18 +23,15 @@ class BottomBar extends StatelessWidget {
 
   BottomBar(int index) : _currentView = index;
 
-
   @override
-  Widget build(BuildContext context) {
-    return BottomNavigationBar(
-      onTap: _onTap,
-      items: _buildItems(context),
-      currentIndex: _currentView,
-    );
-  }
+  Widget build(BuildContext context) => BottomNavigationBar(
+        onTap: _onTap,
+        items: _buildItems(context),
+        currentIndex: _currentView,
+      );
 
   void _onTap(int index) {
-    switch(index) {
+    switch (index) {
       case dashboardView:
         _navigationService.pushNamed(RouterPaths.dashboard);
         break;
@@ -55,11 +52,21 @@ class BottomBar extends StatelessWidget {
 
   List<BottomNavigationBarItem> _buildItems(BuildContext context) {
     return [
-      BottomNavigationBarItem(icon: Icon(Icons.dashboard), title: Text(AppIntl.of(context).title_dashboard)),
-      BottomNavigationBarItem(icon: Icon(Icons.schedule), title: Text(AppIntl.of(context).title_schedule)),
-      BottomNavigationBarItem(icon: Icon(Icons.school), title: Text(AppIntl.of(context).title_student)),
-      BottomNavigationBarItem(icon: Icon(Icons.account_balance), title: Text(AppIntl.of(context).title_ets)),
-      BottomNavigationBarItem(icon: Icon(Icons.dehaze), title: Text(AppIntl.of(context).title_more)),
+      BottomNavigationBarItem(
+          icon: Icon(Icons.dashboard),
+          title: Text(AppIntl.of(context).title_dashboard)),
+      BottomNavigationBarItem(
+          icon: Icon(Icons.schedule),
+          title: Text(AppIntl.of(context).title_schedule)),
+      BottomNavigationBarItem(
+          icon: Icon(Icons.school),
+          title: Text(AppIntl.of(context).title_student)),
+      BottomNavigationBarItem(
+          icon: Icon(Icons.account_balance),
+          title: Text(AppIntl.of(context).title_ets)),
+      BottomNavigationBarItem(
+          icon: Icon(Icons.dehaze),
+          title: Text(AppIntl.of(context).title_more)),
     ];
   }
 }

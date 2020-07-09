@@ -25,6 +25,8 @@ dependencies:
     sdk: flutter
   flutter_localizations:
     sdk: flutter
+
+  # Architecture
   provider: ^4.1.3
   get_it: ^4.0.2
   stacked: ^1.6.0
@@ -32,6 +34,9 @@ dependencies:
   # Firebase
   firebase_core: ^0.4.5
   firebase_analytics: ^5.0.15
+
+  # Other
+  http: ^0.12.1
 
   cupertino_icons: ^0.1.3
 
