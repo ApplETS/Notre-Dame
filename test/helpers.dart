@@ -8,19 +8,11 @@ import 'package:notredame/generated/l10n.dart';
 
 // SERVICES
 import 'package:notredame/core/services/navigation_service.dart';
+import 'package:notredame/core/services/analytics_service.dart';
 
 // MOCKS
+import 'mock/services/analytics_service_mock.dart';
 import 'mock/services/navigation_service_mock.dart';
-
-/// Load a mock of the [NavigationService]
-NavigationService setupNavigationServiceMock() {
-  unregister<NavigationService>();
-  final service = NavigationServiceMock();
-  
-  locator.registerSingleton<NavigationService>(service);
-
-  return service;
-}
 
 /// Unregister the service [T] from GetIt
 void unregister<T>() {
@@ -40,3 +32,23 @@ Widget localizedWidget({@required Widget child, String locale = 'en'}) => Materi
   locale: Locale(locale),
   home: child,
 );
+
+/// Load a mock of the [AnalyticsService]
+AnalyticsService setupAnalyticsServiceMock() {
+  unregister<AnalyticsService>();
+  final service = AnalyticsServiceMock();
+
+  locator.registerSingleton<AnalyticsService>(service);
+
+  return service;
+}
+
+/// Load a mock of the [NavigationService]
+NavigationService setupNavigationServiceMock() {
+  unregister<NavigationService>();
+  final service = NavigationServiceMock();
+
+  locator.registerSingleton<NavigationService>(service);
+
+  return service;
+}
