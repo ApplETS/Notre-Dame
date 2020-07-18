@@ -9,9 +9,11 @@ import 'package:notredame/generated/l10n.dart';
 // SERVICES
 import 'package:notredame/core/services/navigation_service.dart';
 import 'package:notredame/core/services/analytics_service.dart';
+import 'package:notredame/core/services/mon_ets_api.dart';
 
 // MOCKS
 import 'mock/services/analytics_service_mock.dart';
+import 'mock/services/mon_ets_api_mock.dart';
 import 'mock/services/navigation_service_mock.dart';
 
 /// Unregister the service [T] from GetIt
@@ -52,3 +54,15 @@ NavigationService setupNavigationServiceMock() {
 
   return service;
 }
+
+/// Load a mock of the [MonETSApi]
+MonETSApi setupMonETSApiMock() {
+  unregister<MonETSApi>();
+  final service = MonETSApiMock();
+
+  locator.registerSingleton<MonETSApi>(service);
+
+  return service;
+}
+
+/// Load a mock for [HttpClient]

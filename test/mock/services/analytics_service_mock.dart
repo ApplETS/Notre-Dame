@@ -4,5 +4,5 @@ import 'package:mockito/mockito.dart';
 // SERVICE
 import 'package:notredame/core/services/analytics_service.dart';
 
-// Mock for the Navigation service
+// Mock for the Analytics service
 class AnalyticsServiceMock extends Mock implements AnalyticsService {}
