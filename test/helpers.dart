@@ -1,6 +1,7 @@
 // FLUTTER / DART / THIRD-PARTIES
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 // OTHER
 import 'package:notredame/locator.dart';
@@ -13,6 +14,7 @@ import 'package:notredame/core/services/mon_ets_api.dart';
 
 // MOCKS
 import 'mock/services/analytics_service_mock.dart';
+import 'mock/services/flutter_secure_storage_mock.dart';
 import 'mock/services/mon_ets_api_mock.dart';
 import 'mock/services/navigation_service_mock.dart';
 
@@ -65,4 +67,12 @@ MonETSApi setupMonETSApiMock() {
   return service;
 }
 
-/// Load a mock for [HttpClient]
+/// Load a mock of the [FlutterSecureStorage]
+FlutterSecureStorage setupFlutterSecureStorageMock() {
+  unregister<FlutterSecureStorage>();
+  final service = FlutterSecureStorageMock();
+
+  locator.registerSingleton<FlutterSecureStorage>(service);
+
+  return service;
+}
