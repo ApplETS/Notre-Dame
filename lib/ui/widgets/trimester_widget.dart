@@ -26,7 +26,7 @@ class TrimesterWidget extends StatelessWidget {
               color: AppTheme.etsLightRed,
             )),
         Wrap(
-          spacing: 8.0, // gap between adjacent chips
+          spacing: 8.0,
           runSpacing: 16.0,
           children: _settingGradesButtons(),
         ),

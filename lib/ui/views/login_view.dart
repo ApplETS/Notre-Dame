@@ -2,7 +2,6 @@
 import 'package:flutter/material.dart';
 import 'package:notredame/core/model/cours.dart';
 import 'package:notredame/core/model/trimester.dart';
-import 'package:notredame/ui/widgets/grade_button.dart';
 import 'package:notredame/ui/widgets/trimester_widget.dart';
 
 class LoginView extends StatelessWidget {
@@ -31,9 +30,16 @@ class LoginView extends StatelessWidget {
     uneSession.addingCours(cours6);
     uneSession.addingCours(cours7);
     return Scaffold(
-        body: SafeArea(
-      child: Center(
-        child: TrimesterWidget(uneSession),
+        body: SingleChildScrollView(
+      child: Wrap(
+        children: <Widget>[
+          Center(child: TrimesterWidget(uneSession)),
+          Center(child: TrimesterWidget(uneSession)),
+          Center(child: TrimesterWidget(uneSession)),
+          Center(child: TrimesterWidget(uneSession)),
+          Center(child: TrimesterWidget(uneSession)),
+          Center(child: TrimesterWidget(uneSession)),
+        ],
       ),
     ) //Center(child: Text("Welcome to the new ÉTS Mobile!")),
         );
