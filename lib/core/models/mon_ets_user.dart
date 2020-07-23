@@ -19,4 +19,17 @@ class MonETSUser {
       : domaine = json['Domaine'] as String,
         typeUsagerId = json['TypeUsagerId'] as int,
         username = json['Username'] as String;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is MonETSUser &&
+          runtimeType == other.runtimeType &&
+          domaine == other.domaine &&
+          typeUsagerId == other.typeUsagerId &&
+          username == other.username;
+
+  @override
+  int get hashCode =>
+      domaine.hashCode ^ typeUsagerId.hashCode ^ username.hashCode;
 }

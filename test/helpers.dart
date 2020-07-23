@@ -11,8 +11,10 @@ import 'package:notredame/generated/l10n.dart';
 import 'package:notredame/core/services/navigation_service.dart';
 import 'package:notredame/core/services/analytics_service.dart';
 import 'package:notredame/core/services/mon_ets_api.dart';
+import 'package:notredame/core/managers/user_repository.dart';
 
 // MOCKS
+import 'mock/managers/user_repository_mock.dart';
 import 'mock/services/analytics_service_mock.dart';
 import 'mock/services/flutter_secure_storage_mock.dart';
 import 'mock/services/mon_ets_api_mock.dart';
@@ -73,6 +75,16 @@ FlutterSecureStorage setupFlutterSecureStorageMock() {
   final service = FlutterSecureStorageMock();
 
   locator.registerSingleton<FlutterSecureStorage>(service);
+
+  return service;
+}
+
+/// Load a mock of the [UserRepository]
+UserRepository setupUserRepositoryMock() {
+  unregister<UserRepository>();
+  final service = UserRepositoryMock();
+
+  locator.registerSingleton<UserRepository>(service);
 
   return service;
 }

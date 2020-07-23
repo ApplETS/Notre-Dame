@@ -70,6 +70,7 @@ void main() {
 
         expect(service.authenticate(
             username: "", password: ""), throwsException);
+
         // Need further investigation
         //verify(analyticsService.logError("MonETSApi - Error", "$statusCode - $message"));
       });

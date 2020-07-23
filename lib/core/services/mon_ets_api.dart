@@ -15,8 +15,8 @@ import 'package:notredame/core/services/analytics_service.dart';
 import 'package:notredame/locator.dart';
 
 class MonETSApi {
-  static const String _tag = "MonETSApi";
-  static const String _tagError = "$_tag - Error";
+  static const String tag = "MonETSApi";
+  static const String tagError = "$tag - Error";
 
   final Client _client;
 
@@ -31,8 +31,8 @@ class MonETSApi {
 
     // Log the http error and throw a exception
     if(response.statusCode != 200) {
-      await _analytics.logError(_tagError, "${response.statusCode} - ${response.body}");
-      throw HttpException(message: response.body, prefix: _tagError, code: response.statusCode);
+      await _analytics.logError(tagError, "${response.statusCode} - ${response.body}");
+      throw HttpException(message: response.body, prefix: tagError, code: response.statusCode);
     }
     return MonETSUser.fromJson(jsonDecode(response.body) as Map<String, dynamic>);
   }
