@@ -48,7 +48,7 @@ void main() {
         MonETSApiMock.stubAuthenticate(monETSApi as MonETSApiMock, user);
 
         // Result is true
-        expect(await manager.authenticate(user.username, ""), true,
+        expect(await manager.authenticate(username: user.username, password: ""), isTrue,
             reason: "Check the authentication is successful");
 
         // Verify the secureStorage is used
@@ -70,7 +70,7 @@ void main() {
         MonETSApiMock.stubAuthenticateException(
             monETSApi as MonETSApiMock, username);
 
-        expect(await manager.authenticate(username, ""), false,
+        expect(await manager.authenticate(username: username, password: ""), isFalse,
             reason: "The authentication failed so the result should be false");
 
         // Verify the secureStorage isn't used

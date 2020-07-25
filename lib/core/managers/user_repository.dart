@@ -1,4 +1,5 @@
 // FLUTTER / DART / THIRD-PARTIES
+import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 // SERVICES
@@ -29,7 +30,7 @@ class UserRepository {
   /// If the authentication is successful the credentials ([username] and [password])
   /// will be saved in the secure storage of the device to authorize a silent
   /// authentication next time.
-  Future<bool> authenticate(String username, String password) async {
+  Future<bool> authenticate({@required String username, @required String password}) async {
     try {
       _monETSUser =
           await _monETSApi.authenticate(username: username, password: password);

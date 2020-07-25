@@ -88,3 +88,8 @@ UserRepository setupUserRepositoryMock() {
 
   return service;
 }
+
+/// Load the Internationalization class
+Future<AppIntl> setupAppIntl() async {
+  return AppIntl.load(const Locale('en'));
+}
