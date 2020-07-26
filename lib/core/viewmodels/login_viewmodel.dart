@@ -41,11 +41,12 @@ class LoginViewModel extends BaseViewModel {
   /// Validate the format of the universal code
   String validateUniversalCode(String value) {
     if (value.isEmpty) {
+      _universalCode = "";
       return _appIntl.login_error_field_required;
     } else if (!_universalCodeMatcher.hasMatch(value)) {
+      _universalCode = "";
       return _appIntl.login_error_invalid_universal_code;
     }
-
     _universalCode = value;
     return null;
   }
@@ -53,6 +54,7 @@ class LoginViewModel extends BaseViewModel {
   /// Validate there is a password typed
   String validatePassword(String value) {
     if(value.isEmpty) {
+      _password = "";
       return _appIntl.login_error_field_required;
     }
     _password = value;
@@ -72,7 +74,10 @@ class LoginViewModel extends BaseViewModel {
     if (response) {
       _navigationService.pushNamed(RouterPaths.dashboard);
     }
+    _password = "";
+    formKey.currentState.reset();
     setBusy(false);
+    notifyListeners();
 
     return _appIntl.error;
   }

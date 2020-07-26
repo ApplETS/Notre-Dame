@@ -117,6 +117,7 @@ void main() {
         viewModel.validatePassword(passwordCodeValid);
 
         expect(await viewModel.authenticate(), appIntl.error);
+        expect(viewModel.password, "");
       });
     });
   });
