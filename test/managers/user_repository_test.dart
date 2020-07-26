@@ -2,9 +2,9 @@
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
-import 'package:notredame/core/managers/user_repository.dart';
 
-// SERVICE
+// SERVICES / MANAGER
+import 'package:notredame/core/managers/user_repository.dart';
 import 'package:notredame/core/services/mon_ets_api.dart';
 import 'package:notredame/core/services/analytics_service.dart';
 
@@ -72,6 +72,31 @@ void main() {
 
         expect(await manager.authenticate(username: username, password: ""), isFalse,
             reason: "The authentication failed so the result should be false");
+
+        // Verify the secureStorage isn't used
+        verifyNever(secureStorage.write(
+            key: UserRepository.usernameSecureKey, value: username));
+        verifyNever(secureStorage.write(
+            key: UserRepository.passwordSecureKey, value: ""));
+
+        // Verify the user id is set in the analytics
+        verifyNever(analyticsService.setUserProperties(
+            userId: username, domain: anyNamed("domain")));
+
+        expect(manager.monETSUser, null,
+            reason: "Verify the user stored should be null");
+      });
+
+      test('An exception is throw during the MonETSApi call', () async {
+        const String username = "exceptionUser";
+        MonETSApiMock.stubException(
+            monETSApi as MonETSApiMock, username);
+
+        expect(await manager.authenticate(username: username, password: ""), isFalse,
+            reason: "The authentication failed so the result should be false");
+
+        // Verify the user id is set in the analytics
+        verify(analyticsService.logError(UserRepository.tag, any)).called(1);
 
         // Verify the secureStorage isn't used
         verifyNever(secureStorage.write(

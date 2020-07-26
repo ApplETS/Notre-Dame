@@ -28,16 +28,17 @@ void unregister<T>() {
 }
 
 /// Load the l10n classes. Take the [child] widget to test
-Widget localizedWidget({@required Widget child, String locale = 'en'}) => MaterialApp(
-  localizationsDelegates: [
-    AppIntl.delegate,
-    GlobalMaterialLocalizations.delegate,
-    GlobalWidgetsLocalizations.delegate,
-    GlobalCupertinoLocalizations.delegate,
-  ],
-  locale: Locale(locale),
-  home: child,
-);
+Widget localizedWidget({@required Widget child, String locale = 'en'}) =>
+    MaterialApp(
+      localizationsDelegates: [
+        AppIntl.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      locale: Locale(locale),
+      home: Scaffold(body: child),
+    );
 
 /// Load a mock of the [AnalyticsService]
 AnalyticsService setupAnalyticsServiceMock() {

@@ -72,7 +72,7 @@ void main() {
             username: "", password: ""), throwsException);
 
         // Need further investigation
-        //verify(analyticsService.logError("MonETSApi - Error", "$statusCode - $message"));
+        //verify(analyticsService.logError(MonETSApi.tagError, any));
       });
     });
   });
