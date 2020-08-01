@@ -26,7 +26,6 @@ void main() {
 
   group('MonETSApi - ', () {
     setUp(() {
-      analyticsService = setupAnalyticsServiceMock();
       clientMock = HttpClientMock();
       service = MonETSApi(clientMock);
     });
@@ -36,8 +35,6 @@ void main() {
       clientMock.close();
       clearInteractions(clientMock);
       reset(clientMock);
-
-      unregister<AnalyticsService>();
     });
 
     group('authentication - ', () {
@@ -70,9 +67,6 @@ void main() {
 
         expect(service.authenticate(
             username: "", password: ""), throwsException);
-
-        // Need further investigation
-        //verify(analyticsService.logError(MonETSApi.tagError, any));
       });
     });
   });

@@ -22,16 +22,14 @@ class MonETSApi {
 
   MonETSApi(this._client);
 
-  // Analytics used to log potentials error
-  final _analytics = locator<AnalyticsService>();
-
   /// Get the basic MonETS user
+  ///
+  /// Throws an [HttpException] if the MonETSApi return anything else than a 200 code
   Future<MonETSUser> authenticate({@required String username, @required String password}) async {
     final response = await _client.post(Urls.authenticationMonETS, body: {"Username": username, "Password": password});
 
     // Log the http error and throw a exception
     if(response.statusCode != 200) {
-      await _analytics.logError(tagError, "${response.statusCode} - ${response.body}");
       throw HttpException(message: response.body, prefix: tagError, code: response.statusCode);
     }
     return MonETSUser.fromJson(jsonDecode(response.body) as Map<String, dynamic>);

@@ -1,4 +1,7 @@
 // FLUTTER / DART / THIRD-PARTIES
+import 'dart:ffi';
+import 'dart:math';
+
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
@@ -15,6 +18,7 @@ import 'package:notredame/core/models/mon_ets_user.dart';
 import '../helpers.dart';
 
 // MOCKS
+import '../mock/services/flutter_secure_storage_mock.dart';
 import '../mock/services/mon_ets_api_mock.dart';
 
 void main() {
@@ -43,12 +47,14 @@ void main() {
     group('authentication - ', () {
       test('right credentials', () async {
         final MonETSUser user = MonETSUser(
-            domaine: "ENS", typeUsagerId: 1, username: "right credentials");
+            domain: "ENS", typeUsagerId: 1, username: "right credentials");
 
         MonETSApiMock.stubAuthenticate(monETSApi as MonETSApiMock, user);
 
         // Result is true
-        expect(await manager.authenticate(username: user.username, password: ""), isTrue,
+        expect(
+            await manager.authenticate(username: user.username, password: ""),
+            isTrue,
             reason: "Check the authentication is successful");
 
         // Verify the secureStorage is used
@@ -59,43 +65,21 @@ void main() {
 
         // Verify the user id is set in the analytics
         verify(analyticsService.setUserProperties(
-            userId: user.username, domain: user.domaine));
+            userId: user.username, domain: user.domain));
 
         expect(manager.monETSUser, user,
             reason: "Verify the right user is saved");
       });
 
-      test('MonETSApi throw a HttpException', () async {
-        const String username = "exceptionUser";
-        MonETSApiMock.stubAuthenticateException(
-            monETSApi as MonETSApiMock, username);
-
-        expect(await manager.authenticate(username: username, password: ""), isFalse,
-            reason: "The authentication failed so the result should be false");
-
-        // Verify the secureStorage isn't used
-        verifyNever(secureStorage.write(
-            key: UserRepository.usernameSecureKey, value: username));
-        verifyNever(secureStorage.write(
-            key: UserRepository.passwordSecureKey, value: ""));
-
-        // Verify the user id is set in the analytics
-        verifyNever(analyticsService.setUserProperties(
-            userId: username, domain: anyNamed("domain")));
-
-        expect(manager.monETSUser, null,
-            reason: "Verify the user stored should be null");
-      });
-
       test('An exception is throw during the MonETSApi call', () async {
         const String username = "exceptionUser";
-        MonETSApiMock.stubException(
-            monETSApi as MonETSApiMock, username);
+        MonETSApiMock.stubException(monETSApi as MonETSApiMock, username);
 
-        expect(await manager.authenticate(username: username, password: ""), isFalse,
+        expect(await manager.authenticate(username: username, password: ""),
+            isFalse,
             reason: "The authentication failed so the result should be false");
 
-        // Verify the user id is set in the analytics
+        // Verify the user id isn't set in the analytics
         verify(analyticsService.logError(UserRepository.tag, any)).called(1);
 
         // Verify the secureStorage isn't used
@@ -110,6 +94,109 @@ void main() {
 
         expect(manager.monETSUser, null,
             reason: "Verify the user stored should be null");
+      });
+    });
+
+    group('silentAuthenticate - ', () {
+      test('credentials are saved so the authentication should be done',
+          () async {
+        const String username = "username";
+        const String password = "password";
+
+        final MonETSUser user = MonETSUser(
+            domain: "ENS", typeUsagerId: 1, username: username);
+
+        FlutterSecureStorageMock.stubRead(
+            secureStorage as FlutterSecureStorageMock,
+            key: UserRepository.usernameSecureKey,
+            valueToReturn: username);
+        FlutterSecureStorageMock.stubRead(
+            secureStorage as FlutterSecureStorageMock,
+            key: UserRepository.passwordSecureKey,
+            valueToReturn: password);
+
+        MonETSApiMock.stubAuthenticate(monETSApi as MonETSApiMock, user);
+
+        expect(await manager.silentAuthenticate(), isTrue,
+            reason: "Result should be true");
+
+        verifyInOrder([
+          secureStorage.read(key: UserRepository.usernameSecureKey),
+          secureStorage.read(key: UserRepository.passwordSecureKey),
+          monETSApi.authenticate(username: username, password: password),
+          analyticsService.setUserProperties(userId: username, domain: user.domain)
+        ]);
+
+        expect(manager.monETSUser, user, reason: "The authentication succeed so the user should be set");
+      });
+
+      test('credentials are saved but the authentication fail',
+              () async {
+            const String username = "username";
+            const String password = "password";
+
+            FlutterSecureStorageMock.stubRead(
+                secureStorage as FlutterSecureStorageMock,
+                key: UserRepository.usernameSecureKey,
+                valueToReturn: username);
+            FlutterSecureStorageMock.stubRead(
+                secureStorage as FlutterSecureStorageMock,
+                key: UserRepository.passwordSecureKey,
+                valueToReturn: password);
+
+            MonETSApiMock.stubAuthenticateException(monETSApi as MonETSApiMock, username);
+
+            expect(await manager.silentAuthenticate(), isFalse,
+                reason: "Result should be false");
+
+            verifyInOrder([
+              secureStorage.read(key: UserRepository.usernameSecureKey),
+              secureStorage.read(key: UserRepository.passwordSecureKey),
+              monETSApi.authenticate(username: username, password: password),
+              analyticsService.logError(UserRepository.tag, any)
+            ]);
+
+            expect(manager.monETSUser, null, reason: "The authentication failed so the user should be null");
+          });
+
+      test('credentials are not saved so the authentication should not be done',
+              () async {
+
+            FlutterSecureStorageMock.stubRead(
+                secureStorage as FlutterSecureStorageMock,
+                key: UserRepository.usernameSecureKey,
+                valueToReturn: null);
+            FlutterSecureStorageMock.stubRead(
+                secureStorage as FlutterSecureStorageMock,
+                key: UserRepository.passwordSecureKey,
+                valueToReturn: null);
+
+            expect(await manager.silentAuthenticate(), isFalse,
+                reason: "Result should be false");
+
+            verifyInOrder([
+              secureStorage.read(key: UserRepository.usernameSecureKey)
+            ]);
+
+            verifyNoMoreInteractions(secureStorage);
+            verifyZeroInteractions(monETSApi);
+            verifyZeroInteractions(analyticsService);
+
+            expect(manager.monETSUser, null, reason: "The authentication didn't happened so the user should be null");
+          });
+    });
+
+    group('logOut - ', () {
+      test('the user credentials are deleted', () async {
+        expect(await manager.logOut(), isTrue);
+
+        expect(manager.monETSUser, null,
+            reason: "The user shouldn't be available after a logout");
+
+        verify(secureStorage.delete(key: UserRepository.usernameSecureKey));
+        verify(secureStorage.delete(key: UserRepository.passwordSecureKey));
+
+        verifyNever(analyticsService.logError(UserRepository.tag, any));
       });
     });
   });
