@@ -7,7 +7,6 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:notredame/core/models/mon_ets_user.dart';
 import 'package:notredame/core/services/analytics_service.dart';
 import 'package:notredame/core/services/mon_ets_api.dart';
-import 'package:notredame/core/utils/http_exceptions.dart';
 
 // OTHER
 import 'package:notredame/locator.dart';

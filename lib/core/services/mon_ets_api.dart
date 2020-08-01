@@ -10,9 +10,6 @@ import 'package:notredame/core/utils/http_exceptions.dart';
 // MODEL
 import 'package:notredame/core/models/mon_ets_user.dart';
 
-// ANALYTICS
-import 'package:notredame/core/services/analytics_service.dart';
-import 'package:notredame/locator.dart';
 
 class MonETSApi {
   static const String tag = "MonETSApi";

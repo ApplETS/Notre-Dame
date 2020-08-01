@@ -4,7 +4,6 @@ import 'package:mockito/mockito.dart';
 
 // SERVICE
 import 'package:notredame/core/services/mon_ets_api.dart';
-import 'package:notredame/core/services/analytics_service.dart';
 
 // MODELS
 import 'package:notredame/core/models/mon_ets_user.dart';
@@ -12,14 +11,10 @@ import 'package:notredame/core/models/mon_ets_user.dart';
 // CONSTANTS
 import 'package:notredame/core/constants/urls.dart';
 
-// HELPERS
-import '../helpers.dart';
-
 // MOCKS
 import '../mock/services/http_client_mock.dart';
 
 void main() {
-  AnalyticsService analyticsService;
   HttpClientMock clientMock;
   MonETSApi service;
 

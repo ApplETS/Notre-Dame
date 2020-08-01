@@ -1,8 +1,6 @@
 // FLUTTER / DART / THIRD-PARTIES
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:notredame/core/managers/user_repository.dart';
-import 'package:notredame/core/services/navigation_service.dart';
 
 // GENERATED
 import 'package:notredame/generated/l10n.dart';
@@ -16,14 +14,12 @@ import '../../helpers.dart';
 
 void main() {
   AppIntl intl;
-  UserRepository userRepository;
-  NavigationService navigationService;
 
   group('LoginView - ', () {
     setUp(() async {
       intl = await setupAppIntl();
-      userRepository = setupUserRepositoryMock();
-      navigationService = setupNavigationServiceMock();
+      setupUserRepositoryMock();
+      setupNavigationServiceMock();
     });
 
     tearDown(() {});
