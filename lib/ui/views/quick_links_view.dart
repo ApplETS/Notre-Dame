@@ -12,11 +12,14 @@ class _QuickLinksViewState extends State<QuickLinksView> {
   Widget build(BuildContext context) {
     return Container(
       color: Colors.white,
-      child: GridView.count(
-        padding: const EdgeInsets.fromLTRB(16.0, 32.0, 16.0, 32.0),
-        crossAxisCount: 3,
-        children: List.generate(
-            quickLinks.length, (index) => QuickLinksWidget(quickLinks[index])),
+      child: SingleChildScrollView(
+        padding: const EdgeInsets.fromLTRB(0, 32, 0, 0),
+        child: Wrap(
+          spacing: 2,
+          alignment: WrapAlignment.spaceEvenly,
+          children: List.generate(quickLinks.length,
+              (index) => QuickLinksWidget(quickLinks[index])),
+        ),
       ),
     );
   }

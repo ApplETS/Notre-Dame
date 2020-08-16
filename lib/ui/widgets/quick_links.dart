@@ -8,7 +8,9 @@ class QuickLinksWidget extends StatelessWidget {
   const QuickLinksWidget(this._links);
   @override
   Widget build(BuildContext context) {
-    return GridTile(
+    return SizedBox(
+      width: 125,
+      height: 125,
       child: Card(
         elevation: 4.0,
         color: Colors.white,
