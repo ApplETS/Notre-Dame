@@ -10,14 +10,18 @@ class QuickLinksView extends StatefulWidget {
 class _QuickLinksViewState extends State<QuickLinksView> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: Colors.white,
-      child: SingleChildScrollView(
-        padding: const EdgeInsets.fromLTRB(0, 32, 0, 0),
-        child: Wrap(
-          alignment: WrapAlignment.spaceEvenly,
-          children: List.generate(quickLinks.length,
-              (index) => QuickLinksWidget(quickLinks[index])),
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('ETS'),
+      ),
+      body: Align(
+        alignment: const Alignment(0.0, -0.9),
+        child: SingleChildScrollView(
+          child: Wrap(
+            alignment: WrapAlignment.center,
+            children: List.generate(quickLinks.length,
+                (index) => QuickLinksWidget(quickLinks[index])),
+          ),
         ),
       ),
     );
