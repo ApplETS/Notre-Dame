@@ -15,7 +15,6 @@ class _QuickLinksViewState extends State<QuickLinksView> {
       child: SingleChildScrollView(
         padding: const EdgeInsets.fromLTRB(0, 32, 0, 0),
         child: Wrap(
-          spacing: 2,
           alignment: WrapAlignment.spaceEvenly,
           children: List.generate(quickLinks.length,
               (index) => QuickLinksWidget(quickLinks[index])),
