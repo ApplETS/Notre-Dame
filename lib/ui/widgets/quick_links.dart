@@ -19,7 +19,13 @@ class QuickLinksWidget extends StatelessWidget {
           onTap: onLinkClicked,
           child: Column(
             children: [
-              Expanded(flex: 40, child: Image.asset(_links.image)),
+              Expanded(
+                flex: 40,
+                child: FittedBox(
+                  fit: BoxFit.fitWidth,
+                  child: Image.asset(_links.image),
+                ),
+              ),
               Text(
                 _links.name,
                 style: const TextStyle(color: Colors.red, fontSize: 20.0),
