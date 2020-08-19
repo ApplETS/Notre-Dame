@@ -160,6 +160,20 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  flutter_custom_tabs:
+    dependency: "direct main"
+    description:
+      name: flutter_custom_tabs
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.6.0"
+  flutter_inappwebview:
+    dependency: "direct main"
+    description:
+      name: flutter_inappwebview
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "4.0.0+4"
   flutter_launcher_icons:
     dependency: "direct dev"
     description:
@@ -273,6 +287,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.1.8"
+  mime:
+    dependency: transitive
+    description:
+      name: mime
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.9.7"
   mockito:
     dependency: "direct dev"
     description:
@@ -467,6 +488,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.1.2+1"
+  uuid:
+    dependency: transitive
+    description:
+      name: uuid
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.2.0"
   vector_math:
     dependency: transitive
     description:
@@ -481,6 +509,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.9.7+15"
+  webview_flutter:
+    dependency: "direct main"
+    description:
+      name: webview_flutter
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.3.22+1"
   xml:
     dependency: transitive
     description:
