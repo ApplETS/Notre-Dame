@@ -12,9 +12,6 @@ import 'package:notredame/core/constants/router_paths.dart';
 import 'package:notredame/generated/l10n.dart';
 
 class LoginViewModel extends BaseViewModel {
-  /// Unique key of the login form form
-  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
-
   /// Used to authenticate the user
   final UserRepository _userRepository = locator<UserRepository>();
 
@@ -36,7 +33,8 @@ class LoginViewModel extends BaseViewModel {
   /// Used to enable/disable the "log in" button
   bool get canSubmit => _universalCode.isNotEmpty && _password.isNotEmpty;
 
-  LoginViewModel({@required AppIntl intl}) : _appIntl = intl;
+  LoginViewModel({@required AppIntl intl})
+      : _appIntl = intl;
 
   /// Validate the format of the universal code
   String validateUniversalCode(String value) {
@@ -53,7 +51,7 @@ class LoginViewModel extends BaseViewModel {
 
   /// Validate there is a password typed
   String validatePassword(String value) {
-    if(value.isEmpty) {
+    if (value.isEmpty) {
       _password = "";
       return _appIntl.login_error_field_required;
     }
@@ -63,19 +61,18 @@ class LoginViewModel extends BaseViewModel {
 
   /// Try to authenticate the user. Redirect to the [DashboardView] if everything is correct
   Future<String> authenticate() async {
-    if(!canSubmit) {
+    if (!canSubmit) {
       return _appIntl.error;
     }
 
     setBusy(true);
-    final response =
-        await _userRepository.authenticate(username: _universalCode, password: _password);
+    final response = await _userRepository.authenticate(
+        username: _universalCode, password: _password);
 
     if (response) {
       _navigationService.pushNamed(RouterPaths.dashboard);
     }
     _password = "";
-    formKey.currentState.reset();
     setBusy(false);
     notifyListeners();
 
