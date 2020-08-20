@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:notredame/core/constants/emergency_procedures.dart';
+import 'package:notredame/core/constants/markers.dart';
 import 'package:notredame/core/viewmodels/quick_links_viewmodel.dart';
+import 'package:notredame/core/viewmodels/security_viewmodel.dart';
 import 'package:notredame/generated/l10n.dart';
 import 'package:notredame/ui/utils/app_theme.dart';
 
@@ -13,6 +16,9 @@ class SecurityView extends StatefulWidget {
 }
 
 class _SecurityViewState extends State<SecurityView> {
+  static const CameraPosition _etsLocation = CameraPosition(
+      target: LatLng(45.49449875, -73.56246144109338), zoom: 17.0);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -23,6 +29,14 @@ class _SecurityViewState extends State<SecurityView> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            Container(
+              height: 250,
+              child: GoogleMap(
+                initialCameraPosition: _etsLocation,
+                zoomControlsEnabled: false,
+                markers: getMarkers(markers),
+              ),
+            ),
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Text(
@@ -75,8 +89,7 @@ class _SecurityViewState extends State<SecurityView> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Padding(
-                          padding:
-                              const EdgeInsets.fromLTRB(0.0, 16.0, 0.0, 16.0),
+                          padding: const EdgeInsets.symmetric(vertical: 16.0),
                           child: Text(
                             emergencyProcedures[index].title,
                             style: const TextStyle(fontSize: 18),
