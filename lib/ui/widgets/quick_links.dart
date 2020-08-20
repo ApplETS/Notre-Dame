@@ -47,19 +47,11 @@ class QuickLinksWidget extends StatelessWidget {
     } else {
       _launchInBrowser(_links.link);
     }
-    /*Navigator.push(    //this option shows a webview with a back arrow
-        context,
-        MaterialPageRoute(
-            builder: (context) => WebViewContainer(
-                  selectedUrl: _links.link,
-                  title: _links.name,
-                )));*/
   }
 }
 
 Future<void> _launchInBrowser(String url) async {
-  final ChromeSafariBrowser browser =
-      ChromeSafariBrowser(); // this options opens urls with Chrome Custom Tabs on Android / SFSafariViewController on iOS. but needs minSdkVersion 17 and Xcode >= 11
+  final ChromeSafariBrowser browser = ChromeSafariBrowser();
   await browser.open(
       url: url,
       options: ChromeSafariBrowserClassOptions(
@@ -67,13 +59,4 @@ Future<void> _launchInBrowser(String url) async {
               addDefaultShareMenuItem: false, toolbarBackgroundColor: "Red"),
           ios: IOSSafariOptions(
               barCollapsingEnabled: true, preferredBarTintColor: "Red")));
-
-  /*if (await canLaunch(url)) {  //this option shows a webview or opens in browser
-    await launch(
-      url,
-      enableJavaScript: true,
-    );
-  } else {
-    throw 'Could not launch $url';
-  }*/
 }

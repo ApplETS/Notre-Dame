@@ -160,13 +160,6 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
-  flutter_custom_tabs:
-    dependency: "direct main"
-    description:
-      name: flutter_custom_tabs
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.6.0"
   flutter_inappwebview:
     dependency: "direct main"
     description:
