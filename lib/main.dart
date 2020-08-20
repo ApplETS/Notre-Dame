@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
 // ROUTER
-import 'package:notredame/core/constants/router_paths.dart';
 import 'package:notredame/ui/router.dart';
 
 // SERVICES
@@ -14,6 +13,9 @@ import 'package:notredame/core/services/analytics_service.dart';
 import 'package:notredame/locator.dart';
 import 'package:notredame/generated/l10n.dart';
 import 'package:notredame/ui/utils/app_theme.dart';
+
+// VIEW
+import 'package:notredame/ui/views/startup_view.dart';
 
 void main() {
   setupLocator();
@@ -39,7 +41,7 @@ class ETSMobile extends StatelessWidget {
       navigatorObservers: [
         locator<AnalyticsService>().getAnalyticsOberser(),
       ],
-      initialRoute: RouterPaths.login,
+      home: StartUpView(),
       onGenerateRoute: Router.generateRoute,
     );
   }
