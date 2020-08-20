@@ -19,11 +19,14 @@ class StartUpView extends StatelessWidget {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-                    Image.asset(
-                      'assets/images/ets_white_logo.png',
-                      excludeFromSemantics: true,
-                      width: 216,
-                      height: 216,
+                    Hero(
+                      tag: 'ets_logo',
+                      child: Image.asset(
+                        'assets/images/ets_white_logo.png',
+                        excludeFromSemantics: true,
+                        width: 216,
+                        height: 216,
+                      ),
                     ),
                     const CircularProgressIndicator(
                         valueColor: AlwaysStoppedAnimation<Color>(Colors.white))

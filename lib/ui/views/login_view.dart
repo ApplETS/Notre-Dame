@@ -48,18 +48,20 @@ class _LoginViewState extends State<LoginView> {
                       child: FocusScope(
                         node: _focusNode,
                         child: Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
                           children: [
-                            Image.asset(
-                              'assets/images/ets_white_logo.png',
-                              excludeFromSemantics: true,
-                              width: 216,
-                              height: 216,
+                            Hero(
+                              tag: 'ets_logo',
+                              child: Image.asset(
+                                'assets/images/ets_white_logo.png',
+                                excludeFromSemantics: true,
+                                width: 216,
+                                height: 216,
+                              ),
                             ),
                             TextFormField(
                               cursorColor: Colors.white,
                               decoration: InputDecoration(
-                                enabledBorder: OutlineInputBorder(
+                                enabledBorder: const OutlineInputBorder(
                                     borderSide:
                                         BorderSide(color: Colors.white70)),
                                 focusedBorder: OutlineInputBorder(
@@ -76,12 +78,12 @@ class _LoginViewState extends State<LoginView> {
                                         width: borderRadiusOnFocus)),
                                 labelText: AppIntl.of(context)
                                     .login_prompt_universal_code,
-                                labelStyle: TextStyle(color: Colors.white54),
+                                labelStyle: const TextStyle(color: Colors.white54),
                                 errorStyle:
-                                    TextStyle(color: Colors.amberAccent),
+                                    const TextStyle(color: Colors.amberAccent),
                               ),
                               autofocus: true,
-                              style: TextStyle(color: Colors.white),
+                              style: const TextStyle(color: Colors.white),
                               onEditingComplete: _focusNode.nextFocus,
                               validator: model.validateUniversalCode,
                               initialValue: model.universalCode,
@@ -135,7 +137,7 @@ class _LoginViewState extends State<LoginView> {
                       children: <Widget>[
                         Text(
                           AppIntl.of(context).login_applets_logo,
-                          style: TextStyle(color: Colors.white),
+                          style: const TextStyle(color: Colors.white),
                         ),
                         Image.asset(
                           'assets/images/applets_white_logo.png',
