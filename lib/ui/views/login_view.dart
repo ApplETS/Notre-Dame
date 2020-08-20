@@ -1,5 +1,6 @@
 // FLUTTER / DART / THIRD-PARTIES
 import 'package:flutter/material.dart';
+import 'package:notredame/ui/utils/app_theme.dart';
 import 'package:stacked/stacked.dart';
 
 // VIEW MODEL
@@ -29,12 +30,11 @@ class _LoginViewState extends State<LoginView> {
       ViewModelBuilder<LoginViewModel>.reactive(
         viewModelBuilder: () => LoginViewModel(intl: AppIntl.of(context)),
         builder: (context, model, child) => Scaffold(
+            backgroundColor: AppTheme.etsLightRed,
             resizeToAvoidBottomInset: false,
             body: Builder(
-              builder: (BuildContext context) => Container(
-                padding: const EdgeInsets.only(
-                    left: 20.0, right: 20.0, top: 20.0, bottom: 20.0),
-                color: const Color.fromRGBO(239, 62, 69, 1),
+              builder: (BuildContext context) => SafeArea(
+                minimum: const EdgeInsets.all(20.0),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
