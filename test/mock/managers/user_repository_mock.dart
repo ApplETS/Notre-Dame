@@ -12,4 +12,11 @@ class UserRepositoryMock extends Mock implements UserRepository {
     when(mock.authenticate(username: username, password: anyNamed('password')))
         .thenAnswer((_) async => toReturn);
   }
+
+  /// Stub the silent authentication, return [toReturn]
+  /// By default validate the silent authentication
+  static void stubSilentAuthenticate(UserRepositoryMock mock, {bool toReturn = true}) {
+    when(mock.silentAuthenticate())
+        .thenAnswer((_) async => toReturn);
+  }
 }
