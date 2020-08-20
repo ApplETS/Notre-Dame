@@ -30,7 +30,7 @@ class ETSMobile extends StatelessWidget {
       title: 'ÉTS Mobile',
       theme: AppTheme.lightTheme,
       darkTheme: AppTheme.darkTheme,
-      localizationsDelegates: [
+      localizationsDelegates: const [
         AppIntl.delegate,
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,

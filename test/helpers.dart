@@ -30,7 +30,7 @@ void unregister<T>() {
 /// Load the l10n classes. Take the [child] widget to test
 Widget localizedWidget({@required Widget child, String locale = 'en'}) =>
     MaterialApp(
-      localizationsDelegates: [
+      localizationsDelegates: const [
         AppIntl.delegate,
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,

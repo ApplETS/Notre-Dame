@@ -53,19 +53,19 @@ class BottomBar extends StatelessWidget {
   List<BottomNavigationBarItem> _buildItems(BuildContext context) {
     return [
       BottomNavigationBarItem(
-          icon: Icon(Icons.dashboard),
+          icon: const Icon(Icons.dashboard),
           title: Text(AppIntl.of(context).title_dashboard)),
       BottomNavigationBarItem(
-          icon: Icon(Icons.schedule),
+          icon: const Icon(Icons.schedule),
           title: Text(AppIntl.of(context).title_schedule)),
       BottomNavigationBarItem(
-          icon: Icon(Icons.school),
+          icon: const Icon(Icons.school),
           title: Text(AppIntl.of(context).title_student)),
       BottomNavigationBarItem(
-          icon: Icon(Icons.account_balance),
+          icon: const Icon(Icons.account_balance),
           title: Text(AppIntl.of(context).title_ets)),
       BottomNavigationBarItem(
-          icon: Icon(Icons.dehaze),
+          icon: const Icon(Icons.dehaze),
           title: Text(AppIntl.of(context).title_more)),
     ];
   }

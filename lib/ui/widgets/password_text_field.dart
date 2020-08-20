@@ -29,7 +29,7 @@ class _PasswordFormFieldState extends State<PasswordFormField> {
         cursorColor: Colors.white,
         obscureText: _obscureText,
         decoration: InputDecoration(
-            enabledBorder: OutlineInputBorder(
+            enabledBorder: const OutlineInputBorder(
                 borderSide: BorderSide(color: Colors.white70)),
             focusedBorder: OutlineInputBorder(
                 borderSide: BorderSide(
@@ -41,14 +41,14 @@ class _PasswordFormFieldState extends State<PasswordFormField> {
                 borderSide: BorderSide(
                     color: Colors.amberAccent, width: borderRadiusOnFocus)),
             labelText: AppIntl.of(context).login_prompt_password,
-            labelStyle: TextStyle(color: Colors.white54),
-            errorStyle: TextStyle(color: Colors.amberAccent),
+            labelStyle: const TextStyle(color: Colors.white54),
+            errorStyle: const TextStyle(color: Colors.amberAccent),
             suffixIcon: IconButton(
                 icon: Icon(
                     _obscureText ? Icons.visibility : Icons.visibility_off,
                     color: Colors.white),
                 onPressed: _toggle)),
-        style: TextStyle(color: Colors.white),
+        style: const TextStyle(color: Colors.white),
         validator: widget.validator,
         onEditingComplete: widget.onEditionComplete,
       );
