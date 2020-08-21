@@ -1,3 +1,5 @@
+import 'package:flutter/foundation.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -32,10 +34,14 @@ class _SecurityViewState extends State<SecurityView> {
             Container(
               height: 250,
               child: GoogleMap(
-                initialCameraPosition: _etsLocation,
-                zoomControlsEnabled: false,
-                markers: getMarkers(markers),
-              ),
+                  initialCameraPosition: _etsLocation,
+                  zoomControlsEnabled: false,
+                  markers: getMarkers(markers),
+                  gestureRecognizers: <Factory<OneSequenceGestureRecognizer>>{
+                    Factory<OneSequenceGestureRecognizer>(
+                      () => EagerGestureRecognizer(),
+                    ),
+                  }),
             ),
             Padding(
               padding: const EdgeInsets.all(8.0),
