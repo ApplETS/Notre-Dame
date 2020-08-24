@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:notredame/core/viewmodels/quick_links_viewmodel.dart';
-import 'package:notredame/ui/widgets/quick_links.dart';
+import 'package:notredame/core/models/quick_link_model.dart';
+import 'package:notredame/ui/widgets/web_link_card.dart';
 
 import '../../helpers.dart';
 
-QuickLinks _quickLinks;
+QuickLink _quickLinks;
 
 void main() {
   group('QuickLinks - ', () {
@@ -14,18 +14,17 @@ void main() {
     });
 
     tearDown(() {
-      unregister<QuickLinks>();
+      unregister<QuickLink>();
     });
 
     testWidgets('has an icon and a title', (WidgetTester tester) async {
-      await tester
-          .pumpWidget(localizedWidget(child: QuickLinksWidget(_quickLinks)));
+      await tester.pumpWidget(localizedWidget(child: WebLinkCard(_quickLinks)));
       await tester.pumpAndSettle();
 
       final text = find.byType(Text);
       final image = find.byType(Image);
 
-      expect(text, findsNWidgets(1));
+      expect(text, findsNWidgets(2));
       expect(_quickLinks.name, 'test');
       expect(image, findsNWidgets(1));
     });
