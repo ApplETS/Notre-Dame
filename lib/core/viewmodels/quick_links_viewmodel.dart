@@ -1,17 +1,32 @@
 import 'package:flutter/material.dart';
-import 'package:url_launcher/url_launcher.dart';
+import 'package:flutter_inappwebview/flutter_inappwebview.dart';
+import 'package:notredame/core/constants/quick_links.dart';
+import 'package:notredame/core/models/quick_link_model.dart';
+import 'package:notredame/ui/views/security_view.dart';
+import 'package:stacked/stacked.dart';
 
-class QuickLinks {
-  String image;
-  String name;
-  String link;
-  QuickLinks({@required this.image, @required this.name, this.link});
-}
+class QuickLinksViewModel extends BaseViewModel {
+  final int numberOfLinks = quickLinks.length;
 
-Future<void> makePhoneCall(String url) async {
-  if (await canLaunch(url)) {
-    await launch(url);
-  } else {
-    throw 'Could not launch $url';
+  List<QuickLink> quickLinkList = quickLinks;
+
+  void onLinkClicked(BuildContext context, QuickLink links) {
+    if (links.link == 'security') {
+      Navigator.push(
+          context, MaterialPageRoute(builder: (context) => SecurityView()));
+    } else {
+      _launchInBrowser(links.link);
+    }
+  }
+
+  Future<void> _launchInBrowser(String url) async {
+    final ChromeSafariBrowser browser = ChromeSafariBrowser();
+    await browser.open(
+        url: url,
+        options: ChromeSafariBrowserClassOptions(
+            android: AndroidChromeCustomTabsOptions(
+                addDefaultShareMenuItem: false, toolbarBackgroundColor: "Red"),
+            ios: IOSSafariOptions(
+                barCollapsingEnabled: true, preferredBarTintColor: "Red")));
   }
 }
