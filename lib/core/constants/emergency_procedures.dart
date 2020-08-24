@@ -1,42 +1,38 @@
-import 'package:flutter/material.dart';
+import 'package:notredame/core/models/emergency_procedure_model.dart';
 import 'package:notredame/generated/l10n.dart';
 
-class EmergencyProcedures {
-  String title;
-  String detail;
-
-  EmergencyProcedures({@required this.title, @required this.detail});
-}
-
-final List<EmergencyProcedures> emergencyProcedures = [
-  EmergencyProcedures(
+final List<EmergencyProcedure> emergencyProcedures = [
+  EmergencyProcedure(
       title: AppIntl.current.security_bomb_threat_title,
-      detail: 'assets/${AppIntl.current.security_bomb_threat_detail}'),
-  EmergencyProcedures(
+      detail: 'assets/html/${AppIntl.current.security_bomb_threat_detail}'),
+  EmergencyProcedure(
       title: AppIntl.current.security_suspicious_packages_title,
-      detail: 'assets/${AppIntl.current.security_suspicious_packages_detail}'),
-  EmergencyProcedures(
+      detail:
+          'assets/html/${AppIntl.current.security_suspicious_packages_detail}'),
+  EmergencyProcedure(
       title: AppIntl.current.security_evacuation_title,
-      detail: 'assets/${AppIntl.current.security_evacuation_detail}'),
-  EmergencyProcedures(
+      detail: 'assets/html/${AppIntl.current.security_evacuation_detail}'),
+  EmergencyProcedure(
       title: AppIntl.current.security_gas_leak_title,
-      detail: 'assets/${AppIntl.current.security_gas_leak_detail}'),
-  EmergencyProcedures(
+      detail: 'assets/html/${AppIntl.current.security_gas_leak_detail}'),
+  EmergencyProcedure(
       title: AppIntl.current.security_fire_title,
-      detail: 'assets/${AppIntl.current.security_fire_detail}'),
-  EmergencyProcedures(
+      detail: 'assets/html/${AppIntl.current.security_fire_detail}'),
+  EmergencyProcedure(
       title: AppIntl.current.security_broken_elevator_title,
-      detail: 'assets/${AppIntl.current.security_broken_elevator_detail}'),
-  EmergencyProcedures(
+      detail: 'assets/html/${AppIntl.current.security_broken_elevator_detail}'),
+  EmergencyProcedure(
       title: AppIntl.current.security_electrical_outage_title,
-      detail: 'assets/${AppIntl.current.security_electrical_outage_detail}'),
-  EmergencyProcedures(
+      detail:
+          'assets/html/${AppIntl.current.security_electrical_outage_detail}'),
+  EmergencyProcedure(
       title: AppIntl.current.security_armed_person_title,
-      detail: 'assets/${AppIntl.current.security_armed_person_detail}'),
-  EmergencyProcedures(
+      detail: 'assets/html/${AppIntl.current.security_armed_person_detail}'),
+  EmergencyProcedure(
       title: AppIntl.current.security_earthquake_title,
-      detail: 'assets/${AppIntl.current.security_earthquake_detail}'),
-  EmergencyProcedures(
+      detail: 'assets/html/${AppIntl.current.security_earthquake_detail}'),
+  EmergencyProcedure(
       title: AppIntl.current.security_medical_emergency_title,
-      detail: 'assets/${AppIntl.current.security_medical_emergency_detail}'),
+      detail:
+          'assets/html/${AppIntl.current.security_medical_emergency_detail}'),
 ];
