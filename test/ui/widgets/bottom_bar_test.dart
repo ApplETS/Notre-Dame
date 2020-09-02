@@ -2,7 +2,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
-import 'package:notredame/core/constants/router_paths.dart';
 
 // SERVICE
 import 'package:notredame/core/services/navigation_service.dart';
@@ -10,6 +9,10 @@ import 'package:notredame/core/services/navigation_service.dart';
 // WIDGET
 import 'package:notredame/ui/widgets/bottom_bar.dart';
 
+// OTHERS
+import 'package:notredame/core/constants/router_paths.dart';
+
+// HELPERS
 import '../../helpers.dart';
 
 
