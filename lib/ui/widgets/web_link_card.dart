@@ -20,10 +20,7 @@ class WebLinkCard extends StatelessWidget {
             children: [
               Expanded(
                 flex: 40,
-                child: FittedBox(
-                  fit: BoxFit.fitWidth,
-                  child: Image.asset(_links.image),
-                ),
+                child: Image.asset(_links.image),
               ),
               Text(
                 _links.name,
