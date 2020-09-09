@@ -68,17 +68,15 @@ MonETSApi setupMonETSApiMock() {
 
   return service;
 }
-QuickLinks setupQuickLinksMock() {
-  unregister<QuickLinks>();
-  final quickLink = QuickLinks(image: 'assets/github.png', name: 'test');
+
+QuickLink setupQuickLinksMock() {
+  unregister<QuickLink>();
+  final quickLink = QuickLink(
+      image: 'assets/images/ic_security_red.png',
+      name: 'test',
+      link: 'testlink');
 
   return quickLink;
-}
-
-void unregister<T>() {
-  if (locator.isRegistered<T>()) {
-    locator.unregister<T>();
-  }
 }
 
 /// Load a mock of the [FlutterSecureStorage]

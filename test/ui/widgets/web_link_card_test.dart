@@ -24,7 +24,7 @@ void main() {
       final text = find.byType(Text);
       final image = find.byType(Image);
 
-      expect(text, findsNWidgets(2));
+      expect(text, findsNWidgets(1));
       expect(_quickLinks.name, 'test');
       expect(image, findsNWidgets(1));
     });
