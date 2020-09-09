@@ -1,6 +1,8 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:notredame/core/viewmodels/quick_links_viewmodel.dart';
 import 'package:notredame/generated/l10n.dart';
+import 'package:notredame/ui/widgets/bottom_bar.dart';
 import 'package:notredame/ui/widgets/web_link_card.dart';
 import 'package:stacked/stacked.dart';
 
@@ -17,19 +19,24 @@ class _QuickLinksViewState extends State<QuickLinksView> {
         builder: (context, model, child) => Scaffold(
           appBar: AppBar(
             title: Text(AppIntl.of(context).title_ets),
+            automaticallyImplyLeading: false,
           ),
-          body: Align(
-            alignment: const Alignment(0.0, -0.9),
-            child: SingleChildScrollView(
-              child: Wrap(
-                alignment: WrapAlignment.center,
-                children: List.generate(
-                  model.numberOfLinks,
-                  (index) => InkWell(
-                      splashColor: Colors.red.withAlpha(50),
-                      onTap: () => model.onLinkClicked(
-                          context, model.quickLinkList[index]),
-                      child: WebLinkCard(model.quickLinkList[index])),
+          bottomNavigationBar: BottomBar(BottomBar.etsView),
+          body: SafeArea(
+            child: Align(
+              alignment: Alignment.topCenter,
+              child: SingleChildScrollView(
+                padding: const EdgeInsets.only(top: 8.0),
+                child: Wrap(
+                  alignment: WrapAlignment.center,
+                  children: List.generate(
+                    model.numberOfLinks,
+                    (index) => InkWell(
+                        splashColor: Colors.red.withAlpha(50),
+                        onTap: () => model.onLinkClicked(
+                            context, model.quickLinkList[index]),
+                        child: WebLinkCard(model.quickLinkList[index])),
+                  ),
                 ),
               ),
             ),
