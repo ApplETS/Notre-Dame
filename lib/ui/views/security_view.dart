@@ -36,6 +36,10 @@ class _SecurityViewState extends State<SecurityView> {
                       initialCameraPosition: _etsLocation,
                       zoomControlsEnabled: false,
                       markers: model.getMarkers(model.markersList),
+                      onMapCreated: (GoogleMapController controller) {
+                        model.controller = controller;
+                        model.changeMapMode(context);
+                      },
                       gestureRecognizers: <
                           Factory<OneSequenceGestureRecognizer>>{
                         Factory<OneSequenceGestureRecognizer>(

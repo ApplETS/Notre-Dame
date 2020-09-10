@@ -2,17 +2,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-
-// OTHER
-import 'package:notredame/locator.dart';
-
-// SERVICES
-import 'package:notredame/core/services/navigation_service.dart';
+import 'package:notredame/core/managers/user_repository.dart';
+import 'package:notredame/core/models/quick_link_model.dart';
 import 'package:notredame/core/services/analytics_service.dart';
 import 'package:notredame/core/services/mon_ets_api.dart';
-import 'package:notredame/core/managers/user_repository.dart';
+import 'package:notredame/core/services/navigation_service.dart';
+import 'package:notredame/generated/l10n.dart';
+import 'package:notredame/locator.dart';
 
-// MOCKS
 import 'mock/managers/user_repository_mock.dart';
 import 'mock/services/analytics_service_mock.dart';
 import 'mock/services/flutter_secure_storage_mock.dart';

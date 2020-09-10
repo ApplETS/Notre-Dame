@@ -1,3 +1,5 @@
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/services.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:notredame/core/constants/emergency_procedures.dart';
 import 'package:notredame/core/constants/markers.dart';
@@ -7,7 +9,7 @@ import 'package:url_launcher/url_launcher.dart';
 
 class SecurityViewModel extends BaseViewModel {
   List<Marker> markersList = markers;
-
+  GoogleMapController controller;
   List<EmergencyProcedure> emergencyProcedureList = emergencyProcedures;
 
   Set<Marker> getMarkers(List<Marker> markersList) {
@@ -25,5 +27,21 @@ class SecurityViewModel extends BaseViewModel {
     } else {
       throw 'Could not launch $url';
     }
+  }
+
+  Future<String> getJsonFile(String path) async {
+    return rootBundle.loadString(path);
+  }
+
+  void changeMapMode(BuildContext context) {
+    if (MediaQuery.of(context).platformBrightness == Brightness.dark) {
+      getJsonFile("assets/dark_map_style.json").then(setMapStyle);
+    } else {
+      getJsonFile("assets/normal_map_style.json").then(setMapStyle);
+    }
+  }
+
+  void setMapStyle(String mapStyle) {
+    controller.setMapStyle(mapStyle);
   }
 }
