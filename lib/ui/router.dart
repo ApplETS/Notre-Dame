@@ -9,7 +9,6 @@ import 'package:notredame/ui/views/login_view.dart';
 import 'package:notredame/ui/views/quick_links_view.dart';
 
 class Router {
-  // ignore: missing_return
   static Route<dynamic> generateRoute(RouteSettings routeSettings) {
     switch (routeSettings.name) {
       case RouterPaths.login:
