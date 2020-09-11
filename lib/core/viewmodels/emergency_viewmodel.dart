@@ -20,7 +20,7 @@ class EmergencyViewModel extends SecurityViewModel {
     String colorFileText = fileText;
     if (MediaQuery.platformBrightnessOf(context) == Brightness.dark) {
       colorFileText = colorFileText.replaceAll('<html>',
-          '<html> <style> body { background-color: black; color: white;} <\/style>');
+          "<html> <style> body { background-color: black; color: white;} </style>");
     }
     return colorFileText;
   }
