@@ -15,7 +15,6 @@ class EmergencyView extends StatefulWidget {
 }
 
 class _EmergencyViewState extends State<EmergencyView> {
-  WebViewController _controller;
   @override
   Widget build(BuildContext context) =>
       ViewModelBuilder<EmergencyViewModel>.reactive(
@@ -38,9 +37,10 @@ class _EmergencyViewState extends State<EmergencyView> {
           ),
           body: WebView(
             initialUrl: '',
+            javascriptMode: JavascriptMode.unrestricted,
             onWebViewCreated: (WebViewController webViewController) async {
-              _controller = webViewController;
-              await model.loadHtmlFromAssets(widget.description, _controller);
+              model.webViewController = webViewController;
+              await model.loadHtmlFromAssets(widget.description, context);
             },
           ),
         ),
