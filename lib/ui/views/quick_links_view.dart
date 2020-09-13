@@ -1,9 +1,16 @@
+// FLUTTER / DART / THIRD-PARTIES
 import 'package:flutter/material.dart';
+import 'package:stacked/stacked.dart';
+
+// VIEW-MODEL
 import 'package:notredame/core/viewmodels/quick_links_viewmodel.dart';
-import 'package:notredame/generated/l10n.dart';
+
+// WIDGETS
 import 'package:notredame/ui/widgets/bottom_bar.dart';
 import 'package:notredame/ui/widgets/web_link_card.dart';
-import 'package:stacked/stacked.dart';
+
+// OTHER
+import 'package:notredame/generated/l10n.dart';
 
 class QuickLinksView extends StatefulWidget {
   @override
