@@ -71,15 +71,6 @@ MonETSApi setupMonETSApiMock() {
   return service;
 }
 
-QuickLink setupQuickLinksMock() {
-  final quickLink = QuickLink(
-      image: 'assets/images/ic_security_red.png',
-      name: 'test',
-      link: 'testlink');
-
-  return quickLink;
-}
-
 /// Load a mock of the [FlutterSecureStorage]
 FlutterSecureStorage setupFlutterSecureStorageMock() {
   unregister<FlutterSecureStorage>();

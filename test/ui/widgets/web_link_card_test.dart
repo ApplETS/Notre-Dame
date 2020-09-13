@@ -5,27 +5,24 @@ import 'package:notredame/ui/widgets/web_link_card.dart';
 
 import '../../helpers.dart';
 
-QuickLink _quickLinks;
+final _quickLink = QuickLink(
+    image: 'assets/images/ic_security_red.png', name: 'test', link: 'testlink');
 
 void main() {
   group('QuickLinks - ', () {
-    setUp(() {
-      _quickLinks = setupQuickLinksMock();
-    });
+    setUp(() {});
 
-    tearDown(() {
-      unregister<QuickLink>();
-    });
+    tearDown(() {});
 
     testWidgets('has an icon and a title', (WidgetTester tester) async {
-      await tester.pumpWidget(localizedWidget(child: WebLinkCard(_quickLinks)));
+      await tester.pumpWidget(localizedWidget(child: WebLinkCard(_quickLink)));
       await tester.pumpAndSettle();
 
       final text = find.byType(Text);
       final image = find.byType(Image);
 
       expect(text, findsNWidgets(1));
-      expect(_quickLinks.name, 'test');
+      expect(_quickLink.name, 'test');
       expect(image, findsNWidgets(1));
     });
   });
