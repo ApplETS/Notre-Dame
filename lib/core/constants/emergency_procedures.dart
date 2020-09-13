@@ -1,4 +1,4 @@
-import 'package:notredame/core/models/emergency_procedure_model.dart';
+import 'package:notredame/core/models/emergency_procedure.dart';
 import 'package:notredame/generated/l10n.dart';
 
 final List<EmergencyProcedure> emergencyProcedures = [
