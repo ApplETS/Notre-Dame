@@ -1,11 +1,16 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
+// FLUTTER / DART / THIRD-PARTIES
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:notredame/core/constants/emergency_procedures.dart';
-import 'package:notredame/core/constants/markers.dart';
-import 'package:notredame/core/models/emergency_procedure_model.dart';
 import 'package:stacked/stacked.dart';
 import 'package:url_launcher/url_launcher.dart';
+
+// CONSTANTS
+import 'package:notredame/core/constants/emergency_procedures.dart';
+import 'package:notredame/core/constants/markers.dart';
+
+// MODEL
+import 'package:notredame/core/models/emergency_procedure_model.dart';
 
 class SecurityViewModel extends BaseViewModel {
   List<Marker> markersList = markers;
