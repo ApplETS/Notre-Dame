@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:notredame/core/viewmodels/quick_links_viewmodel.dart';
 import 'package:notredame/generated/l10n.dart';
