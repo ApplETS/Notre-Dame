@@ -12,7 +12,6 @@ import 'package:notredame/core/services/navigation_service.dart';
 import 'package:notredame/core/services/analytics_service.dart';
 import 'package:notredame/core/services/mon_ets_api.dart';
 import 'package:notredame/core/managers/user_repository.dart';
-import 'package:notredame/core/models/quick_link_model.dart';
 
 // MOCKS
 import 'mock/managers/user_repository_mock.dart';
