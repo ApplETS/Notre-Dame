@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
 // MODELS
-import 'package:notredame/core/models/quick_link_model.dart';
+import 'package:notredame/core/models/quick_link.dart';
 
 class WebLinkCard extends StatelessWidget {
   final QuickLink _links;
