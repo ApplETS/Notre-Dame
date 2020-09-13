@@ -1,11 +1,16 @@
+// Flutter / DART / THIRD-PARTIES
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:stacked/stacked.dart';
+
+// VIEW MODEL
 import 'package:notredame/core/viewmodels/security_viewmodel.dart';
+
+// OTHER
 import 'package:notredame/generated/l10n.dart';
 import 'package:notredame/ui/utils/app_theme.dart';
-import 'package:stacked/stacked.dart';
 
 import 'emergency_view.dart';
 
