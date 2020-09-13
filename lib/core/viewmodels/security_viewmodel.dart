@@ -10,7 +10,7 @@ import 'package:notredame/core/constants/emergency_procedures.dart';
 import 'package:notredame/core/constants/markers.dart';
 
 // MODEL
-import 'package:notredame/core/models/emergency_procedure_model.dart';
+import 'package:notredame/core/models/emergency_procedure.dart';
 
 class SecurityViewModel extends BaseViewModel {
   List<Marker> markersList = markers;
