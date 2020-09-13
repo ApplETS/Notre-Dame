@@ -7,7 +7,7 @@ import 'package:stacked/stacked.dart';
 import 'package:notredame/ui/views/security_view.dart';
 
 // MODEL
-import 'package:notredame/core/models/quick_link_model.dart';
+import 'package:notredame/core/models/quick_link.dart';
 
 // CONSTANT
 import 'package:notredame/core/constants/quick_links.dart';
