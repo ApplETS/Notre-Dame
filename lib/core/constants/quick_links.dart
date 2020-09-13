@@ -1,4 +1,4 @@
-import 'package:notredame/core/models/quick_link_model.dart';
+import 'package:notredame/core/models/quick_link.dart';
 import 'package:notredame/generated/l10n.dart';
 
 final List<QuickLink> quickLinks = [
