@@ -1,5 +1,8 @@
+// FLUTTER / DART / THIRD-PARTIES
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+
+// MODELS
 import 'package:notredame/core/models/quick_link_model.dart';
 
 class WebLinkCard extends StatelessWidget {
