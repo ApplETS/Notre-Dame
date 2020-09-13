@@ -13,8 +13,6 @@ import 'package:notredame/core/models/quick_link.dart';
 import 'package:notredame/core/constants/quick_links.dart';
 
 class QuickLinksViewModel extends BaseViewModel {
-  final int numberOfLinks = quickLinks.length;
-
   List<QuickLink> quickLinkList = quickLinks;
 
   void onLinkClicked(BuildContext context, QuickLink links) {

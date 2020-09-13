@@ -36,7 +36,7 @@ class _QuickLinksViewState extends State<QuickLinksView> {
                 child: Wrap(
                   alignment: WrapAlignment.center,
                   children: List.generate(
-                    model.numberOfLinks,
+                    model.quickLinkList.length,
                     (index) => InkWell(
                         splashColor: Colors.red.withAlpha(50),
                         onTap: () => model.onLinkClicked(
