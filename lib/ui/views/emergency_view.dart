@@ -1,9 +1,14 @@
+// FLUTTER / DART / THIRD-PARTIES
 import 'package:flutter/material.dart';
-import 'package:notredame/core/viewmodels/emergency_viewmodel.dart';
-import 'package:notredame/generated/l10n.dart';
-import 'package:notredame/ui/utils/app_theme.dart';
 import 'package:stacked/stacked.dart';
 import 'package:webview_flutter/webview_flutter.dart';
+
+// VIEW-MODEL
+import 'package:notredame/core/viewmodels/emergency_viewmodel.dart';
+
+// OTHERS
+import 'package:notredame/generated/l10n.dart';
+import 'package:notredame/ui/utils/app_theme.dart';
 
 class EmergencyView extends StatefulWidget {
   final String title;
