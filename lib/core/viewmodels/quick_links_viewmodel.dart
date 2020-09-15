@@ -1,16 +1,19 @@
 // FLUTTER / DART / THIRD-PARTIES
-import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:stacked/stacked.dart';
 
-// VIEW
-import 'package:notredame/ui/views/security_view.dart';
+//SERVICE
+import 'package:notredame/core/services/navigation_service.dart';
 
 // MODEL
 import 'package:notredame/core/models/quick_link.dart';
 
 // CONSTANT
 import 'package:notredame/core/constants/quick_links.dart';
+import 'package:notredame/core/constants/router_paths.dart';
+
+//OTHER
+import 'package:notredame/locator.dart';
 
 class QuickLinksViewModel extends BaseViewModel {
   /// used to get all links for ETS page
