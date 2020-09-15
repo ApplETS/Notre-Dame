@@ -7,6 +7,7 @@ import 'package:notredame/core/constants/router_paths.dart';
 // VIEWS
 import 'package:notredame/ui/views/login_view.dart';
 import 'package:notredame/ui/views/quick_links_view.dart';
+import 'package:notredame/ui/views/security_view.dart';
 
 class Router {
   static Route<dynamic> generateRoute(RouteSettings routeSettings) {
@@ -19,6 +20,10 @@ class Router {
         return MaterialPageRoute(
             settings: RouteSettings(name: routeSettings.name),
             builder: (_) => QuickLinksView());
+      case RouterPaths.security:
+        return MaterialPageRoute(
+            settings: RouteSettings(name: routeSettings.name),
+            builder: (_) => SecurityView());
       default:
         return MaterialPageRoute(
             settings: RouteSettings(name: routeSettings.name),

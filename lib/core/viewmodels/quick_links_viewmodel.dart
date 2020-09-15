@@ -13,18 +13,23 @@ import 'package:notredame/core/models/quick_link.dart';
 import 'package:notredame/core/constants/quick_links.dart';
 
 class QuickLinksViewModel extends BaseViewModel {
+  /// used to get all links for ETS page
   List<QuickLink> quickLinkList = quickLinks;
 
-  void onLinkClicked(BuildContext context, QuickLink links) {
+  /// used to redirect on the security.
+  final NavigationService _navigationService = locator<NavigationService>();
+
+  /// used to open a website or the security view
+  void onLinkClicked(QuickLink links) {
     if (links.link == 'security') {
-      Navigator.push(
-          context, MaterialPageRoute(builder: (context) => SecurityView()));
+      _navigationService.pushNamed(RouterPaths.security);
     } else {
       _launchInBrowser(links.link);
     }
   }
 
-  Future<void> _launchInBrowser(String url) async {
+  /// used to open a website inside AndroidChromeCustomTabs or SFSafariViewController
+  Future _launchInBrowser(String url) async {
     final ChromeSafariBrowser browser = ChromeSafariBrowser();
     await browser.open(
         url: url,
