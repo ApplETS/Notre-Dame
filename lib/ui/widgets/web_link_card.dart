@@ -1,14 +1,26 @@
 // FLUTTER / DART / THIRD-PARTIES
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 
-// MODELS
+// CONSTANT
+import 'package:notredame/core/constants/router_paths.dart';
+
+// MODEL
 import 'package:notredame/core/models/quick_link.dart';
+
+// SERVICE
+import 'package:notredame/core/services/navigation_service.dart';
+
+// OTHER
+import 'package:notredame/locator.dart';
 
 class WebLinkCard extends StatelessWidget {
   final QuickLink _links;
 
-  const WebLinkCard(this._links);
+  /// used to redirect on the security.
+  final NavigationService _navigationService = locator<NavigationService>();
+
+  WebLinkCard(this._links);
 
   @override
   Widget build(BuildContext context) {
@@ -17,22 +29,47 @@ class WebLinkCard extends StatelessWidget {
       height: 130,
       child: Card(
         elevation: 4.0,
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Column(
-            children: [
-              Expanded(
-                flex: 40,
-                child: Image.asset(_links.image),
-              ),
-              Text(
-                _links.name,
-                style: const TextStyle(color: Colors.red, fontSize: 18.0),
-              ),
-            ],
+        child: InkWell(
+          onTap: () => _onLinkClicked(_links.link),
+          splashColor: Colors.red.withAlpha(50),
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              children: [
+                Expanded(
+                  flex: 40,
+                  child: Image.asset(_links.image),
+                ),
+                Text(
+                  _links.name,
+                  style: const TextStyle(color: Colors.red, fontSize: 18.0),
+                ),
+              ],
+            ),
           ),
         ),
       ),
     );
+  }
+
+  /// used to open a website or the security view
+  void _onLinkClicked(String link) {
+    if (link == 'security') {
+      _navigationService.pushNamed(RouterPaths.security);
+    } else {
+      _launchInBrowser(link);
+    }
+  }
+
+  /// used to open a website inside AndroidChromeCustomTabs or SFSafariViewController
+  Future<void> _launchInBrowser(String url) async {
+    final ChromeSafariBrowser browser = ChromeSafariBrowser();
+    await browser.open(
+        url: url,
+        options: ChromeSafariBrowserClassOptions(
+            android: AndroidChromeCustomTabsOptions(
+                addDefaultShareMenuItem: false, toolbarBackgroundColor: "Red"),
+            ios: IOSSafariOptions(
+                barCollapsingEnabled: true, preferredBarTintColor: "Red")));
   }
 }
