@@ -6,6 +6,7 @@ import 'package:notredame/core/constants/router_paths.dart';
 
 // VIEWS
 import 'package:notredame/ui/views/login_view.dart';
+import 'package:notredame/ui/views/dashboard_view.dart';
 
 class Router {
   // ignore: missing_return
@@ -15,6 +16,10 @@ class Router {
         return MaterialPageRoute(
             settings: RouteSettings(name: routeSettings.name),
             builder: (_) => LoginView());
+      case RouterPaths.dashboard:
+        return MaterialPageRoute(
+            settings: RouteSettings(name: routeSettings.name),
+            builder: (_) => DashboardView());
       default:
         return MaterialPageRoute(
             settings: RouteSettings(name: routeSettings.name),

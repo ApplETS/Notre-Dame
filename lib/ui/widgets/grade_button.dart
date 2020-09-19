@@ -1,20 +1,30 @@
 // FLUTTER / DART / THIRD-PARTIES
 import 'package:flutter/material.dart';
+// CONSTANT
+import 'package:notredame/core/services/navigation_service.dart';
+import 'package:notredame/locator.dart';
 import 'package:notredame/ui/utils/app_theme.dart';
 
 class GradeButton extends StatelessWidget {
-  String _codeTxt = 'LOG121';
-  String _gradeTxt = 'A+';
-  final double _buttonWidth = 70;
-  final double _codeHeight = 24;
-  double _gradeHeight = 0;
+  final String _codeTxt;
+  final String _gradeTxt;
+  final NavigationService _navigationService = locator<NavigationService>();
+
+  GradeButton({@required String codeTxt, String gradeTxt = "N/A"})
+      : assert(codeTxt != null),
+        _codeTxt = codeTxt.toUpperCase(),
+        _gradeTxt = gradeTxt.toUpperCase();
+  static const double _buttonWidth = 70;
+  static const double _codeHeight = 24;
+  static const double _gradeHeight = _buttonWidth - _codeHeight;
+
   @override
   Widget build(BuildContext context) {
     return SizedBox(
       width: 70,
       child: RaisedButton(
         padding: const EdgeInsets.all(0.0),
-        onPressed: () {},
+        onPressed: onPressed,
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
@@ -55,7 +65,7 @@ class GradeButton extends StatelessWidget {
     );
   }
 
-  GradeButton(this._codeTxt, this._gradeTxt) {
-    _gradeHeight = _buttonWidth - _codeHeight;
+  void onPressed() {
+    _navigationService.pushNamed('/', arguments: _codeTxt);
   }
 }
