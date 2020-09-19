@@ -20,18 +20,25 @@ class EmergencyView extends StatefulWidget {
 }
 
 class _EmergencyViewState extends State<EmergencyView> {
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
   @override
   Widget build(BuildContext context) =>
       ViewModelBuilder<EmergencyViewModel>.reactive(
         viewModelBuilder: () => EmergencyViewModel(),
         builder: (context, model, child) => Scaffold(
+          key: _scaffoldKey,
           appBar: AppBar(title: Text(widget.title)),
           floatingActionButtonLocation:
               FloatingActionButtonLocation.centerFloat,
           floatingActionButton: FloatingActionButton.extended(
             onPressed: () {
-              model.makePhoneCall(
-                  'tel:${AppIntl.of(context).security_emergency_number}');
+              model
+                  .openPhoneApp(
+                      'tel:${AppIntl.of(context).security_emergency_number}')
+                  .catchError((error) {
+                _scaffoldKey.currentState
+                    .showSnackBar(SnackBar(content: Text(error.toString())));
+              });
             },
             label: Text(
               AppIntl.of(context).security_reach_security,

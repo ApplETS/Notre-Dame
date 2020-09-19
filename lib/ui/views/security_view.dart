@@ -22,12 +22,13 @@ class SecurityView extends StatefulWidget {
 class _SecurityViewState extends State<SecurityView> {
   static const CameraPosition _etsLocation = CameraPosition(
       target: LatLng(45.49449875, -73.56246144109338), zoom: 17.0);
-
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
   @override
   Widget build(BuildContext context) =>
       ViewModelBuilder<SecurityViewModel>.reactive(
         viewModelBuilder: () => SecurityViewModel(),
         builder: (context, model, child) => Scaffold(
+          key: _scaffoldKey,
           appBar: AppBar(
             title: Text(AppIntl.of(context).ets_security_title),
           ),
@@ -40,7 +41,8 @@ class _SecurityViewState extends State<SecurityView> {
                   child: GoogleMap(
                       initialCameraPosition: _etsLocation,
                       zoomControlsEnabled: false,
-                      markers: model.getMarkers(model.markersList),
+                      markers:
+                          model.getSecurityMarkersForMaps(model.markersList),
                       onMapCreated: (GoogleMapController controller) {
                         model.controller = controller;
                         model.changeMapMode(context);
@@ -62,8 +64,13 @@ class _SecurityViewState extends State<SecurityView> {
                 Card(
                   child: InkWell(
                     splashColor: Colors.red.withAlpha(50),
-                    onTap: () => model.makePhoneCall(
-                        'tel:${AppIntl.of(context).security_emergency_number}'),
+                    onTap: () => model
+                        .openPhoneApp(
+                            'tel:${AppIntl.of(context).security_emergency_number}')
+                        .catchError((error) {
+                      _scaffoldKey.currentState.showSnackBar(
+                          SnackBar(content: Text(error.toString())));
+                    }),
                     child: ListTile(
                       leading: const Icon(Icons.phone, size: 30),
                       title: Text(AppIntl.of(context).security_emergency_call),
