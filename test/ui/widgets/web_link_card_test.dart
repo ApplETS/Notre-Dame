@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:notredame/core/models/quick_link.dart';
+import 'package:notredame/core/services/navigation_service.dart';
 import 'package:notredame/ui/widgets/web_link_card.dart';
 
 import '../../helpers.dart';
@@ -9,10 +10,15 @@ final _quickLink = QuickLink(
     image: 'assets/images/ic_security_red.png', name: 'test', link: 'testlink');
 
 void main() {
+  NavigationService navigationService;
   group('WebLinkCard - ', () {
-    setUp(() {});
+    setUp(() {
+      navigationService = setupNavigationServiceMock();
+    });
 
-    tearDown(() {});
+    tearDown(() {
+      unregister<NavigationService>();
+    });
 
     testWidgets('has an icon and a title', (WidgetTester tester) async {
       await tester.pumpWidget(localizedWidget(child: WebLinkCard(_quickLink)));
