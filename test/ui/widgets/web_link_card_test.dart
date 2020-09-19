@@ -10,10 +10,9 @@ final _quickLink = QuickLink(
     image: 'assets/images/ic_security_red.png', name: 'test', link: 'testlink');
 
 void main() {
-  NavigationService navigationService;
   group('WebLinkCard - ', () {
     setUp(() {
-      navigationService = setupNavigationServiceMock();
+      setupNavigationServiceMock();
     });
 
     tearDown(() {
