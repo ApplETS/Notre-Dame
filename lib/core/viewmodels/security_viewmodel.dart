@@ -17,7 +17,8 @@ class SecurityViewModel extends BaseViewModel {
   GoogleMapController controller;
   List<EmergencyProcedure> emergencyProcedureList = emergencyProcedures;
 
-  Set<Marker> getMarkers(List<Marker> markersList) {
+  /// Used to get all security buildings to show in Google Maps
+  Set<Marker> getSecurityMarkersForMaps(List<Marker> markersList) {
     final Map<MarkerId, Marker> markers = <MarkerId, Marker>{};
 
     for (int i = 0; i < markersList.length; i++) {
@@ -26,7 +27,8 @@ class SecurityViewModel extends BaseViewModel {
     return Set<Marker>.of(markers.values);
   }
 
-  Future<void> makePhoneCall(String url) async {
+  /// Used to open the phone application with the phone number
+  Future<void> openPhoneApp(String url) async {
     if (await canLaunch(url)) {
       await launch(url);
     } else {
@@ -34,10 +36,12 @@ class SecurityViewModel extends BaseViewModel {
     }
   }
 
+  /// Used to load a Json file
   Future<String> getJsonFile(String path) async {
     return rootBundle.loadString(path);
   }
 
+  /// Used to change the color of the map based on the brightness
   void changeMapMode(BuildContext context) {
     if (MediaQuery.of(context).platformBrightness == Brightness.dark) {
       getJsonFile("assets/dark_map_style.json").then(setMapStyle);
@@ -46,6 +50,7 @@ class SecurityViewModel extends BaseViewModel {
     }
   }
 
+  /// Used to set the color of the map
   void setMapStyle(String mapStyle) {
     controller.setMapStyle(mapStyle);
   }
