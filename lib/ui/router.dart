@@ -7,7 +7,7 @@ import 'package:notredame/core/constants/router_paths.dart';
 // VIEWS
 import 'package:notredame/ui/views/login_view.dart';
 
-class Router {
+class AppRouter {
   // ignore: missing_return
   static Route<dynamic> generateRoute(RouteSettings routeSettings) {
     switch (routeSettings.name) {
