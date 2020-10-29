@@ -25,28 +25,31 @@ class BottomBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => BottomNavigationBar(
+        type: BottomNavigationBarType.fixed,
         onTap: _onTap,
         items: _buildItems(context),
         currentIndex: _currentView,
       );
 
   void _onTap(int index) {
-    switch (index) {
-      case dashboardView:
-        _navigationService.pushNamed(RouterPaths.dashboard);
-        break;
-      case scheduleView:
-        _navigationService.pushNamed(RouterPaths.schedule);
-        break;
-      case studentView:
-        _navigationService.pushNamed(RouterPaths.student);
-        break;
-      case etsView:
-        _navigationService.pushNamed(RouterPaths.ets);
-        break;
-      case moreView:
-        _navigationService.pushNamed(RouterPaths.more);
-        break;
+    if (_currentView != index) {
+      switch (index) {
+        case dashboardView:
+          _navigationService.pushNamed(RouterPaths.dashboard);
+          break;
+        case scheduleView:
+          _navigationService.pushNamed(RouterPaths.schedule);
+          break;
+        case studentView:
+          _navigationService.pushNamed(RouterPaths.student);
+          break;
+        case etsView:
+          _navigationService.pushNamed(RouterPaths.ets);
+          break;
+        case moreView:
+          _navigationService.pushNamed(RouterPaths.more);
+          break;
+      }
     }
   }
 

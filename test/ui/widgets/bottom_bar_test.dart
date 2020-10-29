@@ -41,7 +41,8 @@ void main() {
 
     group('navigate when tapped to - ', () {
       testWidgets('dashbord', (WidgetTester tester) async {
-        await tester.pumpWidget(localizedWidget(child: BottomBar(BottomBar.dashboardView)));
+        await tester.pumpWidget(
+            localizedWidget(child: BottomBar(BottomBar.scheduleView)));
         await tester.pumpAndSettle();
 
         await tester.tap(find.byIcon(Icons.dashboard));

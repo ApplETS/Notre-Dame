@@ -5,5 +5,6 @@ class RouterPaths {
   static const String schedule = "/schedule";
   static const String student = "/student";
   static const String ets = "/ets";
+  static const String security = "/ets/security";
   static const String more = "/more";
 }
