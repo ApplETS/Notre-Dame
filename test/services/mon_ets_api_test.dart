@@ -11,6 +11,9 @@ import 'package:notredame/core/models/mon_ets_user.dart';
 // CONSTANTS
 import 'package:notredame/core/constants/urls.dart';
 
+// UTILS
+import 'package:notredame/core/utils/http_exceptions.dart';
+
 // MOCKS
 import '../mock/services/http_client_mock.dart';
 
@@ -61,7 +64,7 @@ void main() {
             statusCode);
 
         expect(service.authenticate(
-            username: "", password: ""), throwsException);
+            username: "", password: ""), throwsA(isInstanceOf<HttpException>()));
       });
     });
   });
