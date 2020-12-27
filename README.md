@@ -25,6 +25,15 @@ _Note: This guide is also available in: [Français](https://github.com/ApplETS/N
 ## Requirements
 
 - Flutter SDK v1.17.4 or higher
+- Openssl v1.1.1g or higher
+
+## Before running the code
+
+- To access some features you will need the SignetsAPI certificate, these files are encrypted. To decrypt them you will need to execute the `env_variables.sh` script (only available on the Google Drive of the club), then run:
+```
+chmod +x ./scripts/decrypt.sh
+./scripts/decrypt.sh
+```
 
 ## Run the code
 
