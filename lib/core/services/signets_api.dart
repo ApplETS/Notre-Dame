@@ -21,13 +21,16 @@ class SignetsApi {
   final String _signetsErrorTag = "erreur";
 
   /// Expression to validate the format of a session short name (ex: A2020)
-  final RegExp sessionShortNameRegExp = RegExp("^([A-E-H][0-9]{4})");
+  final RegExp _sessionShortNameRegExp = RegExp("^([A-E-H][0-9]{4})");
 
   /// Expression to validate the format of a course (ex: MAT256-01)
-  final RegExp courseGroupRegExp = RegExp("^([A-Z]{3}[0-9]{3}-[0-9]{2})");
+  final RegExp _courseGroupRegExp = RegExp("^([A-Z]{3}[0-9]{3}-[0-9]{2})");
 
   SignetsApi({http.Client client}) : _client = client ?? _signetsClient();
 
+  /// Call the SignetsAPI to get the classes sessions for the [session] for the student ([username]).
+  /// By specifying [courseGroup] we can filter the results to get only the sessions for this course.
+  /// If the [startDate] and/or [endDate] are specified the results will contains all the sessions between these dates.
   Future<List<ClassSession>> getClassSessions(
       {@required String username,
       @required String password,
@@ -36,10 +39,10 @@ class SignetsApi {
       DateTime startDate,
       DateTime endDate}) async {
     // Validate the format of parameters
-    if (!sessionShortNameRegExp.hasMatch(session)) {
+    if (!_sessionShortNameRegExp.hasMatch(session)) {
       throw FormatException("Session $session isn't a correctly formatted");
     }
-    if (courseGroup.isNotEmpty && !courseGroupRegExp.hasMatch(courseGroup)) {
+    if (courseGroup.isNotEmpty && !_courseGroupRegExp.hasMatch(courseGroup)) {
       throw FormatException(
           "CourseGroup $courseGroup isn't a correctly formatted");
     }
@@ -103,7 +106,8 @@ class SignetsApi {
     /// Build and return the list of ClassSession
     return XmlDocument.parse(response.body)
         .findAllElements("Seances")
-        .map((node) => ClassSession.fromXmlNode(node)).toList();
+        .map((node) => ClassSession.fromXmlNode(node))
+        .toList();
   }
 
   /// Build the basic headers for a SOAP request on.
