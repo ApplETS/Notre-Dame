@@ -1,5 +1,6 @@
 // FLUTTER / DART / THIRD-PARTIES
 import 'package:flutter/material.dart';
+import 'package:xml/xml.dart';
 
 /// Data-class that represent a activity of a course
 class ClassSession {
@@ -41,6 +42,15 @@ class ClassSession {
         activityLocation = map['local'] as String,
         startDateTime = DateTime.parse(map['dateDebut'] as String),
         endDateTime = DateTime.parse(map['dateFin'] as String);
+
+  ClassSession.fromXmlNode(XmlElement node)
+      : courseGroup = node.getElement('coursGroupe').innerText,
+        courseName = node.getElement('libelleCours').innerText,
+        activityName = node.getElement('nomActivite').innerText,
+        activityDescription = node.getElement('descriptionActivite').innerText,
+        activityLocation = node.getElement('local').innerText,
+        startDateTime = DateTime.parse(node.getElement('dateDebut').innerText),
+        endDateTime = DateTime.parse(node.getElement('dateFin').innerText);
 
   @override
   bool operator ==(Object other) =>

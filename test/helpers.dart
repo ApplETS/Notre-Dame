@@ -11,6 +11,7 @@ import 'package:notredame/generated/l10n.dart';
 import 'package:notredame/core/services/navigation_service.dart';
 import 'package:notredame/core/services/analytics_service.dart';
 import 'package:notredame/core/services/mon_ets_api.dart';
+import 'package:notredame/core/services/signets_api.dart';
 import 'package:notredame/core/managers/user_repository.dart';
 
 // MOCKS
@@ -19,6 +20,7 @@ import 'mock/services/analytics_service_mock.dart';
 import 'mock/services/flutter_secure_storage_mock.dart';
 import 'mock/services/mon_ets_api_mock.dart';
 import 'mock/services/navigation_service_mock.dart';
+import 'mock/services/signets_api_mock.dart';
 
 /// Unregister the service [T] from GetIt
 void unregister<T>() {
@@ -93,4 +95,14 @@ UserRepository setupUserRepositoryMock() {
 /// Load the Internationalization class
 Future<AppIntl> setupAppIntl() async {
   return AppIntl.load(const Locale('en'));
+}
+
+/// Load a mock of the [SignetsApi]
+SignetsApi setupSignetsApiMock() {
+  unregister<SignetsApi>();
+  final service = SignetsApiMock();
+
+  locator.registerSingleton<SignetsApi>(service);
+
+  return service;
 }
