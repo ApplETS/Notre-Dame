@@ -19,7 +19,7 @@ jobs:
           chmod +x ./scripts/decrypt.sh
           ./scripts/decrypt.sh
         env:
-          - $ENCRYPTED_SIGNETS_API_CERT_PASSWORD: ${{ secrets.ENCRYPTED_SIGNETS_API_CERT_PASSWORD }}
+          - ENCRYPTED_SIGNETS_API_CERT_PASSWORD: ${{ secrets.ENCRYPTED_SIGNETS_API_CERT_PASSWORD }}
       - run: flutter pub get
       - run: flutter pub run intl_utils:generate
       - run: flutter analyze
