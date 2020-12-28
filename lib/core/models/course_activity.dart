@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:xml/xml.dart';
 
 /// Data-class that represent an activity of a course
-class ClassSession {
+class CourseActivity {
   /// Course acronym and group
   /// Presented like: acronym-group (ex: LOG430-02)
   final String courseGroup;
@@ -27,7 +27,7 @@ class ClassSession {
   /// Date when the activity end
   final DateTime endDateTime;
 
-  ClassSession(
+  CourseActivity(
       {@required this.courseGroup,
       @required this.courseName,
       @required this.activityName,
@@ -36,8 +36,8 @@ class ClassSession {
       @required this.startDateTime,
       @required this.endDateTime});
 
-  /// Used to create a new [ClassSession] instance from a [XMLElement].
-  factory ClassSession.fromXmlNode(XmlElement node) => ClassSession(
+  /// Used to create a new [CourseActivity] instance from a [XMLElement].
+  factory CourseActivity.fromXmlNode(XmlElement node) => CourseActivity(
       courseGroup: node.getElement('coursGroupe').innerText,
       courseName: node.getElement('libelleCours').innerText,
       activityName: node.getElement('nomActivite').innerText,
@@ -46,8 +46,8 @@ class ClassSession {
       startDateTime: DateTime.parse(node.getElement('dateDebut').innerText),
       endDateTime: DateTime.parse(node.getElement('dateFin').innerText));
 
-  /// Used to create [ClassSession] instance from a JSON file
-  factory ClassSession.fromJson(Map<String, dynamic> map) => ClassSession(
+  /// Used to create [CourseActivity] instance from a JSON file
+  factory CourseActivity.fromJson(Map<String, dynamic> map) => CourseActivity(
       courseGroup: map['courseGroup'] as String,
       courseName: map['courseName'] as String,
       activityName: map['activityName'] as String,
@@ -69,7 +69,7 @@ class ClassSession {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is ClassSession &&
+      other is CourseActivity &&
           runtimeType == other.runtimeType &&
           courseGroup == other.courseGroup &&
           courseName == other.courseName &&
