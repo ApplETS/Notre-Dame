@@ -7,6 +7,7 @@ import 'package:notredame/core/services/signets_api.dart';
 
 // MODELS
 import 'package:notredame/core/models/class_session.dart';
+import 'package:notredame/core/models/session.dart';
 
 // CONSTANTS
 import 'package:notredame/core/constants/urls.dart';
@@ -135,7 +136,7 @@ void main() {
                   courseGroup: courseGroup2),
               throwsA(isInstanceOf<FormatException>()),
               reason:
-              "A courseGroup should validate the regex: /^([A-Z]{3}[0-9]{3}-[0-9]{2})/");
+                  "A courseGroup should validate the regex: /^([A-Z]{3}[0-9]{3}-[0-9]{2})/");
           expect(
               service.getClassSessions(
                   username: username,
@@ -144,7 +145,7 @@ void main() {
                   courseGroup: courseGroup3),
               throwsA(isInstanceOf<FormatException>()),
               reason:
-              "A courseGroup should validate the regex: /^([A-Z]{3}[0-9]{3}-[0-9]{2})/");
+                  "A courseGroup should validate the regex: /^([A-Z]{3}[0-9]{3}-[0-9]{2})/");
           expect(
               service.getClassSessions(
                   username: username,
@@ -153,7 +154,7 @@ void main() {
                   courseGroup: courseGroup4),
               throwsA(isInstanceOf<FormatException>()),
               reason:
-              "A courseGroup should validate the regex: /^([A-Z]{3}[0-9]{3}-[0-9]{2})/");
+                  "A courseGroup should validate the regex: /^([A-Z]{3}[0-9]{3}-[0-9]{2})/");
         });
 
         test("startDate is after endDate", () async {
@@ -194,6 +195,78 @@ void main() {
         expect(
             service.getClassSessions(
                 username: username, password: password, session: session),
+            throwsA(isInstanceOf<ApiException>()),
+            reason:
+                "If the SignetsAPI return an error the service should return the error.");
+      });
+    });
+
+    group("getSessions - ", () {
+      const String sessionXML = '<Trimestre>'
+          '<abrege>H2018</abrege>'
+          '<auLong>Hiver 2018</auLong> '
+          '<dateDebut>2018-01-04</dateDebut>'
+          '<dateFin>2018-04-23</dateFin>'
+          '<dateFinCours>2018-04-11</dateFinCours>'
+          '<dateDebutChemiNot>2017-10-30</dateDebutChemiNot>'
+          '<dateFinChemiNot>2017-11-14</dateFinChemiNot>'
+          '<dateDebutAnnulationAvecRemboursement>2018-01-04</dateDebutAnnulationAvecRemboursement>'
+          '<dateFinAnnulationAvecRemboursement>2018-01-17</dateFinAnnulationAvecRemboursement>'
+          '<dateFinAnnulationAvecRemboursementNouveauxEtudiants>2018-01-31</dateFinAnnulationAvecRemboursementNouveauxEtudiants>'
+          '<dateDebutAnnulationSansRemboursementNouveauxEtudiants>2018-02-01</dateDebutAnnulationSansRemboursementNouveauxEtudiants>'
+          '<dateFinAnnulationSansRemboursementNouveauxEtudiants>2018-03-14</dateFinAnnulationSansRemboursementNouveauxEtudiants>'
+          '<dateLimitePourAnnulerASEQ>2018-01-31</dateLimitePourAnnulerASEQ>'
+          '</Trimestre>';
+
+      final Session session = Session(
+          shortName: 'H2018',
+          name: 'Hiver 2018',
+          startDate: DateTime(2018, 1, 4),
+          endDate: DateTime(2018, 4, 23),
+          endDateCourses: DateTime(2018, 4, 11),
+          startDateRegistration: DateTime(2017, 10, 30),
+          deadlineRegistration: DateTime(2017, 11, 14),
+          startDateCancellationWithRefund: DateTime(2018, 1, 4),
+          deadlineCancellationWithRefund: DateTime(2018, 1, 17),
+          deadlineCancellationWithRefundNewStudent: DateTime(2018, 1, 31),
+          startDateCancellationWithoutRefundNewStudent: DateTime(2018, 2),
+          deadlineCancellationWithoutRefundNewStudent: DateTime(2018, 3, 14),
+          deadlineCancellationASEQ: DateTime(2018, 1, 31));
+
+      test("right credentials", () async {
+        const String username = "username";
+        const String password = "password";
+
+        final String stubResponse = buildResponse(
+            Urls.listSessionsOperation, sessionXML + sessionXML, 'liste');
+
+        HttpClientMock.stubPost(clientMock, Urls.signetsAPI, stubResponse);
+
+        final result = await service.getSessions(
+            username: username, password: password);
+
+        expect(result, isA<List<Session>>());
+        expect(result.first == session, isTrue);
+        expect(result.length, 2);
+      });
+
+      // Currently SignetsAPI doesn't have a clear way to indicate which error
+      // occurred (no error code, no change of http code, just a text)
+      // so for now whatever the error we will throw a generic error
+      test("wrong credentials / an error occurred", () async {
+        const String username = "username";
+        const String password = "password";
+
+        final String stubResponse = buildErrorResponse(
+            Urls.listSessionsOperation,
+            'An error occurred',
+            'liste');
+
+        HttpClientMock.stubPost(clientMock, Urls.signetsAPI, stubResponse);
+
+        expect(
+            service.getSessions(
+                username: username, password: password),
             throwsA(isInstanceOf<ApiException>()),
             reason:
                 "If the SignetsAPI return an error the service should return the error.");
