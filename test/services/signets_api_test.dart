@@ -6,7 +6,7 @@ import 'package:mockito/mockito.dart';
 import 'package:notredame/core/services/signets_api.dart';
 
 // MODELS
-import 'package:notredame/core/models/class_session.dart';
+import 'package:notredame/core/models/course_activity.dart';
 import 'package:notredame/core/models/session.dart';
 
 // CONSTANTS
@@ -56,8 +56,8 @@ void main() {
       expect(result.buildDocument().toString(), expectedResult);
     });
 
-    group("getClassSessions - ", () {
-      const String classSessionXML = '<Seances>'
+    group("getCoursesActivities - ", () {
+      const String courseActivityXML = '<Seances>'
           '<dateDebut>2020-09-03T18:00:00</dateDebut> '
           '<dateFin>2020-09-03T20:00:00</dateFin> '
           '<coursGroupe>GEN101-01</coursGroupe> '
@@ -67,7 +67,7 @@ void main() {
           '<libelleCours>Libelle du cours</libelleCours> '
           '</Seances>';
 
-      final ClassSession classSession = ClassSession(
+      final CourseActivity courseActivity = CourseActivity(
           courseGroup: 'GEN101-01',
           courseName: 'Libelle du cours',
           activityName: 'TP',
@@ -83,16 +83,16 @@ void main() {
 
         final String stubResponse = buildResponse(
             Urls.listClassScheduleOperation,
-            classSessionXML + classSessionXML,
+            courseActivityXML + courseActivityXML,
             'ListeDesSeances');
 
         HttpClientMock.stubPost(clientMock, Urls.signetsAPI, stubResponse);
 
-        final result = await service.getClassSessions(
+        final result = await service.getCoursesActivities(
             username: username, password: password, session: session);
 
-        expect(result, isA<List<ClassSession>>());
-        expect(result.first == classSession, isTrue);
+        expect(result, isA<List<CourseActivity>>());
+        expect(result.first == courseActivity, isTrue);
         expect(result.length, 2);
       });
 
@@ -103,7 +103,7 @@ void main() {
           const String session = "A202";
 
           expect(
-              service.getClassSessions(
+              service.getCoursesActivities(
                   username: username, password: password, session: session),
               throwsA(isInstanceOf<FormatException>()),
               reason:
@@ -120,7 +120,7 @@ void main() {
           const String courseGroup4 = "MAT123-1";
 
           expect(
-              service.getClassSessions(
+              service.getCoursesActivities(
                   username: username,
                   password: password,
                   session: session,
@@ -129,7 +129,7 @@ void main() {
               reason:
                   "A courseGroup should validate the regex: /^([A-Z]{3}[0-9]{3}-[0-9]{2})/");
           expect(
-              service.getClassSessions(
+              service.getCoursesActivities(
                   username: username,
                   password: password,
                   session: session,
@@ -138,7 +138,7 @@ void main() {
               reason:
                   "A courseGroup should validate the regex: /^([A-Z]{3}[0-9]{3}-[0-9]{2})/");
           expect(
-              service.getClassSessions(
+              service.getCoursesActivities(
                   username: username,
                   password: password,
                   session: session,
@@ -147,7 +147,7 @@ void main() {
               reason:
                   "A courseGroup should validate the regex: /^([A-Z]{3}[0-9]{3}-[0-9]{2})/");
           expect(
-              service.getClassSessions(
+              service.getCoursesActivities(
                   username: username,
                   password: password,
                   session: session,
@@ -166,7 +166,7 @@ void main() {
           final DateTime endDate = DateTime(2020);
 
           expect(
-              service.getClassSessions(
+              service.getCoursesActivities(
                   username: username,
                   password: password,
                   session: session,
@@ -193,7 +193,7 @@ void main() {
         HttpClientMock.stubPost(clientMock, Urls.signetsAPI, stubResponse);
 
         expect(
-            service.getClassSessions(
+            service.getCoursesActivities(
                 username: username, password: password, session: session),
             throwsA(isInstanceOf<ApiException>()),
             reason:
