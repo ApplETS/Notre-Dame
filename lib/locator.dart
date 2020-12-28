@@ -7,6 +7,7 @@ import 'package:http/http.dart' as http;
 import 'package:notredame/core/services/navigation_service.dart';
 import 'package:notredame/core/services/analytics_service.dart';
 import 'package:notredame/core/services/mon_ets_api.dart';
+import 'package:notredame/core/services/signets_api.dart';
 
 // MANAGERS
 import 'package:notredame/core/managers/user_repository.dart';
@@ -18,6 +19,7 @@ void setupLocator() {
   locator.registerLazySingleton(() => NavigationService());
   locator.registerLazySingleton(() => AnalyticsService());
   locator.registerLazySingleton(() => MonETSApi(http.Client()));
+  locator.registerLazySingleton(() => SignetsApi());
   locator.registerLazySingleton(() => const FlutterSecureStorage());
 
   // Managers
