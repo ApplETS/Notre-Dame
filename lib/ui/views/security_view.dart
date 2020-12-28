@@ -36,7 +36,7 @@ class _SecurityViewState extends State<SecurityView> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Container(
+                SizedBox(
                   height: 250,
                   child: GoogleMap(
                       initialCameraPosition: _etsLocation,
