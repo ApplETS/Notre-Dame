@@ -7,6 +7,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:notredame/core/models/mon_ets_user.dart';
 import 'package:notredame/core/services/analytics_service.dart';
 import 'package:notredame/core/services/mon_ets_api.dart';
+import 'package:notredame/core/utils/api_exception.dart';
 
 // OTHER
 import 'package:notredame/locator.dart';
@@ -83,5 +84,21 @@ class UserRepository {
       return false;
     }
     return true;
+  }
+
+  /// Retrieve and get the password for the current authenticated user.
+  /// WARNING This isn't a good practice but currently the password has to be sent in clear.
+  Future<String> getPassword() async {
+    if(_monETSUser == null) {
+      _analyticsService.logEvent(tag, "Trying to acquire password but not authenticated");
+      var result = await silentAuthenticate();
+      if(!result) {
+        throw ApiException(prefix: tag, message: "Not authenticated");
+      }
+    }
+
+    final String password = await _secureStorage.read(key: passwordSecureKey);
+
+    return password;
   }
 }
