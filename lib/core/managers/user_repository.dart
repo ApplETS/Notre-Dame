@@ -91,7 +91,8 @@ class UserRepository {
   Future<String> getPassword() async {
     if(_monETSUser == null) {
       _analyticsService.logEvent(tag, "Trying to acquire password but not authenticated");
-      var result = await silentAuthenticate();
+      final result = await silentAuthenticate();
+
       if(!result) {
         throw ApiException(prefix: tag, message: "Not authenticated");
       }
