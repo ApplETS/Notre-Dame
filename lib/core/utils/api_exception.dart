@@ -7,7 +7,7 @@ class ApiException implements Exception {
   final String _prefix;
   final String _errorCode;
 
-  ApiException(
+  const ApiException(
       {@required String prefix, @required String message, String errorCode = ""})
       : _message = message,
         _prefix = prefix,

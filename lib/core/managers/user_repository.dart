@@ -94,7 +94,7 @@ class UserRepository {
       final result = await silentAuthenticate();
 
       if(!result) {
-        throw ApiException(prefix: tag, message: "Not authenticated");
+        throw const ApiException(prefix: tag, message: "Not authenticated");
       }
     }
 

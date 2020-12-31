@@ -291,6 +291,10 @@ void main() {
         expect(manager.getPassword(), throwsA(isInstanceOf<ApiException>()),
             reason:
                 'The authentication failed so an ApiException should be raised.');
+
+        await untilCalled(analyticsService.logError(UserRepository.tag, any));
+
+        verify(analyticsService.logError(UserRepository.tag, any)).called(1);
       });
     });
   });
