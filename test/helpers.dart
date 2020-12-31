@@ -13,8 +13,10 @@ import 'package:notredame/core/services/analytics_service.dart';
 import 'package:notredame/core/services/mon_ets_api.dart';
 import 'package:notredame/core/services/signets_api.dart';
 import 'package:notredame/core/managers/user_repository.dart';
+import 'package:notredame/core/managers/cache_manager.dart';
 
 // MOCKS
+import 'mock/managers/cache_manager_mock.dart';
 import 'mock/managers/user_repository_mock.dart';
 import 'mock/services/analytics_service_mock.dart';
 import 'mock/services/flutter_secure_storage_mock.dart';
@@ -103,6 +105,16 @@ SignetsApi setupSignetsApiMock() {
   final service = SignetsApiMock();
 
   locator.registerSingleton<SignetsApi>(service);
+
+  return service;
+}
+
+/// Load a mock of the [CacheManager]
+CacheManager setupCacheManagerMock() {
+  unregister<CacheManager>();
+  final service = CacheManagerMock();
+
+  locator.registerSingleton<CacheManager>(service);
 
   return service;
 }
