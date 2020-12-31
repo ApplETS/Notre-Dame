@@ -62,8 +62,8 @@ class CourseActivity {
         'activityName': activityName,
         'activityDescription': activityDescription,
         'activityLocation': activityLocation,
-        'startDateTime': startDateTime,
-        'endDateTime': endDateTime
+        'startDateTime': startDateTime.toString(),
+        'endDateTime': endDateTime.toString()
       };
 
   @override
