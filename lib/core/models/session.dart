@@ -112,20 +112,20 @@ class Session {
   Map<String, dynamic> toJson() => {
         'shortName': shortName,
         'name': name,
-        'startDate': startDate,
-        'endDate': endDate,
-        'endDateCourses': endDateCourses,
-        'startDateRegistration': startDateRegistration,
-        'deadlineRegistration': deadlineRegistration,
-        'startDateCancellationWithRefund': startDateCancellationWithRefund,
-        'deadlineCancellationWithRefund': deadlineCancellationWithRefund,
+        'startDate': startDate.toString(),
+        'endDate': endDate.toString(),
+        'endDateCourses': endDateCourses.toString(),
+        'startDateRegistration': startDateRegistration.toString(),
+        'deadlineRegistration': deadlineRegistration.toString(),
+        'startDateCancellationWithRefund': startDateCancellationWithRefund.toString(),
+        'deadlineCancellationWithRefund': deadlineCancellationWithRefund.toString(),
         'deadlineCancellationWithRefundNewStudent':
-            deadlineCancellationWithRefundNewStudent,
+            deadlineCancellationWithRefundNewStudent.toString(),
         'startDateCancellationWithoutRefundNewStudent':
-            startDateCancellationWithoutRefundNewStudent,
+            startDateCancellationWithoutRefundNewStudent.toString(),
         'deadlineCancellationWithoutRefundNewStudent':
-            deadlineCancellationWithoutRefundNewStudent,
-        'deadlineCancellationASEQ': deadlineCancellationASEQ
+            deadlineCancellationWithoutRefundNewStudent.toString(),
+        'deadlineCancellationASEQ': deadlineCancellationASEQ.toString()
       };
 
   @override
