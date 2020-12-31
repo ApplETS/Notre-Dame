@@ -11,6 +11,8 @@ import 'package:notredame/core/services/signets_api.dart';
 
 // MANAGERS
 import 'package:notredame/core/managers/user_repository.dart';
+import 'package:notredame/core/managers/course_repository.dart';
+import 'package:notredame/core/managers/cache_manager.dart';
 
 GetIt locator = GetIt.instance;
 
@@ -24,4 +26,6 @@ void setupLocator() {
 
   // Managers
   locator.registerLazySingleton(() => UserRepository());
+  locator.registerLazySingleton(() => CourseRepository());
+  locator.registerLazySingleton(() => CacheManager());
 }
