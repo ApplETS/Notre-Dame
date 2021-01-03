@@ -10,6 +10,9 @@ class MonETSUser {
   /// Username of the user
   final String username;
 
+  /// Get the universal code extracted from the username
+  String get universalCode => username.replaceFirst("$domain\\", "");
+
   MonETSUser(
       {@required this.domain,
       @required this.typeUsagerId,
