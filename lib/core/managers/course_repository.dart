@@ -86,7 +86,7 @@ class CourseRepository {
       final String password = await _userRepository.getPassword();
       for (final Session session in activeSessions) {
         fetchedCoursesActivities.addAll(await _signetsApi.getCoursesActivities(
-            username: _userRepository.monETSUser.username,
+            username: _userRepository.monETSUser.universalCode,
             password: password,
             session: session.shortName));
       }
@@ -134,8 +134,7 @@ class CourseRepository {
       final String password = await _userRepository.getPassword();
 
       final List<Session> fetchedSession = await _signetsApi.getSessions(
-          username: _userRepository.monETSUser.username, password: password);
-
+          username: _userRepository.monETSUser.universalCode, password: password);
       for (final Session session in fetchedSession) {
         if (!_sessions.contains(session)) {
           _sessions.add(session);
