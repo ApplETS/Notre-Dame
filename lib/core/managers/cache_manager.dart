@@ -1,4 +1,6 @@
 // FLUTTER / DART / THIRD-PARTIES
+import 'dart:convert';
+
 import 'package:flutter_cache_manager/flutter_cache_manager.dart' as lib;
 
 // SERVICES
@@ -41,7 +43,7 @@ class CacheManager {
   /// Update/create in the cache the value associated with [key].
   Future update(String key, String value) async {
     try {
-      await _cacheManager.putFile(key, UriData.fromString(value).contentAsBytes());
+      await _cacheManager.putFile(key, UriData.fromString(value, encoding: utf8).contentAsBytes());
     } on Exception catch (e) {
       _analyticsService.logError(tag, "Exception raised during cache update of $key: ${e.toString()}");
       rethrow;
