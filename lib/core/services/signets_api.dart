@@ -111,8 +111,6 @@ class SignetsApi {
           message: responseBody.findElements(_signetsErrorTag).first.innerText);
     }
 
-    print("here");
-
     /// Build and return the list of CourseActivity
     return XmlDocument.parse(response.body)
         .findAllElements("Seances")
@@ -150,7 +148,7 @@ class SignetsApi {
     }
 
     /// Build and return the list of Session
-    return XmlDocument.parse(response.body)
+    return responseBody
         .findAllElements("Trimestre")
         .map((node) => Session.fromXmlNode(node))
         .toList();
@@ -160,7 +158,7 @@ class SignetsApi {
   Map<String, String> _buildHeaders(String soapAction) =>
       {"Content-Type": "text/xml", "SOAPAction": soapAction};
 
-  String _operationResponseTag(String operation) => "${operation}Response";
+  String _operationResponseTag(String operation) => "${operation}Result";
 
   /// Build the default body for communicate with the SignetsAPI.
   /// [firstElementName] should be the SOAP operation of the request.
