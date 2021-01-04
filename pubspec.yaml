@@ -48,7 +48,7 @@ dependencies:
   webview_flutter: ^1.0.7
   flutter_inappwebview: ^4.0.0+4
   google_maps_flutter: ^1.0.6
-
+  table_calendar: ^2.3.3
 
 dev_dependencies:
   flutter_test:
