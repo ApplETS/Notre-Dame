@@ -14,4 +14,5 @@ class Urls {
   static const String infoStudent = "infoEtudiant";
   static const String listPrograms = "listeProgrammes";
   static const String listClassScheduleOperation = "lireHoraireDesSeances";
+  static const String listSessionsOperation = "listeSessions";
 }

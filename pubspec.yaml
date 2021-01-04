@@ -38,6 +38,7 @@ dependencies:
   # Other
   http: ^0.12.1
   xml: 4.5.1
+  flutter_cache_manager: ^2.1.0
   flutter_secure_storage: ^3.3.3
   webview_flutter: ^1.0.7
   flutter_inappwebview: ^4.0.0+4

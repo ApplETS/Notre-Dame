@@ -9,8 +9,9 @@ import 'package:xml/xml.dart';
 import 'package:notredame/core/constants/urls.dart';
 import 'package:notredame/core/utils/api_exception.dart';
 
-// MODEL
-import 'package:notredame/core/models/class_session.dart';
+// MODELS
+import 'package:notredame/core/models/course_activity.dart';
+import 'package:notredame/core/models/session.dart';
 
 class SignetsApi {
   static const String tag = "SignetsApi";
@@ -28,10 +29,10 @@ class SignetsApi {
 
   SignetsApi({http.Client client}) : _client = client ?? _signetsClient();
 
-  /// Call the SignetsAPI to get the classes sessions for the [session] for the student ([username]).
-  /// By specifying [courseGroup] we can filter the results to get only the sessions for this course.
-  /// If the [startDate] and/or [endDate] are specified the results will contains all the sessions between these dates.
-  Future<List<ClassSession>> getClassSessions(
+  /// Call the SignetsAPI to get the courses activities for the [session] for the student ([username]).
+  /// By specifying [courseGroup] we can filter the results to get only the activities for this course.
+  /// If the [startDate] and/or [endDate] are specified the results will contains all the activities between these dates.
+  Future<List<CourseActivity>> getCoursesActivities(
       {@required String username,
       @required String password,
       @required String session,
@@ -103,10 +104,46 @@ class SignetsApi {
           message: responseBody.findElements(_signetsErrorTag).first.innerText);
     }
 
-    /// Build and return the list of ClassSession
+    /// Build and return the list of CourseActivity
     return XmlDocument.parse(response.body)
         .findAllElements("Seances")
-        .map((node) => ClassSession.fromXmlNode(node))
+        .map((node) => CourseActivity.fromXmlNode(node))
+        .toList();
+  }
+
+  /// Call the SignetsAPI to get the list of all the [Session] for the student ([username]).
+  Future<List<Session>> getSessions(
+      {@required String username, @required String password}) async {
+    // Generate initial soap envelope
+    final body =
+        buildBasicSOAPBody(Urls.listSessionsOperation, username, password)
+            .buildDocument();
+
+    // Send the envelope
+    final response = await _client.post(Urls.signetsAPI,
+        headers: _buildHeaders(
+            Urls.signetsOperationBase + Urls.listSessionsOperation),
+        body: body.toXmlString());
+
+    final responseBody = XmlDocument.parse(response.body)
+        .findAllElements(_operationResponseTag(Urls.listSessionsOperation))
+        .first;
+
+    // Throw exception if the error tag is not empty
+    if (responseBody
+        .findElements(_signetsErrorTag)
+        .first
+        .innerText
+        .isNotEmpty) {
+      throw ApiException(
+          prefix: tagError,
+          message: responseBody.findElements(_signetsErrorTag).first.innerText);
+    }
+
+    /// Build and return the list of Session
+    return XmlDocument.parse(response.body)
+        .findAllElements("Trimestre")
+        .map((node) => Session.fromXmlNode(node))
         .toList();
   }
 
