@@ -1,6 +1,7 @@
 // FLUTTER / DART / THIRD-PARTIES
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/io_client.dart';
 import 'package:xml/xml.dart';
@@ -17,7 +18,7 @@ class SignetsApi {
   static const String tag = "SignetsApi";
   static const String tagError = "$tag - Error";
 
-  final http.Client _client;
+  http.Client _client;
 
   final String _signetsErrorTag = "erreur";
 
@@ -27,7 +28,13 @@ class SignetsApi {
   /// Expression to validate the format of a course (ex: MAT256-01)
   final RegExp _courseGroupRegExp = RegExp("^([A-Z]{3}[0-9]{3}-[0-9]{2})");
 
-  SignetsApi({http.Client client}) : _client = client ?? _signetsClient();
+  SignetsApi({http.Client client}) {
+    if(client == null) {
+      _signetsClient();
+    } else {
+      _client = client;
+    }
+  }
 
   /// Call the SignetsAPI to get the courses activities for the [session] for the student ([username]).
   /// By specifying [courseGroup] we can filter the results to get only the activities for this course.
@@ -141,7 +148,7 @@ class SignetsApi {
     }
 
     /// Build and return the list of Session
-    return XmlDocument.parse(response.body)
+    return responseBody
         .findAllElements("Trimestre")
         .map((node) => Session.fromXmlNode(node))
         .toList();
@@ -151,7 +158,7 @@ class SignetsApi {
   Map<String, String> _buildHeaders(String soapAction) =>
       {"Content-Type": "text/xml", "SOAPAction": soapAction};
 
-  String _operationResponseTag(String operation) => "${operation}Response";
+  String _operationResponseTag(String operation) => "${operation}Result";
 
   /// Build the default body for communicate with the SignetsAPI.
   /// [firstElementName] should be the SOAP operation of the request.
@@ -180,12 +187,13 @@ class SignetsApi {
   }
 
   /// Create a [http.Client] with the certificate to access the SignetsAPI
-  static http.Client _signetsClient() {
+  Future _signetsClient() async {
+    final ByteData data = await rootBundle.load("assets/certificates/signets_cert.crt");
     final securityContext = SecurityContext()
-      ..setTrustedCertificates("assets/certificates/signets_cert.crt");
+      ..setTrustedCertificatesBytes(data.buffer.asUint8List());
 
     final ioClient = HttpClient(context: securityContext);
 
-    return IOClient(ioClient);
+    _client = IOClient(ioClient);
   }
 }
