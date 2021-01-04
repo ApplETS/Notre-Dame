@@ -2,6 +2,7 @@
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get_it/get_it.dart';
 import 'package:http/http.dart' as http;
+import 'package:logger/logger.dart';
 
 // SERVICES
 import 'package:notredame/core/services/navigation_service.dart';
@@ -28,4 +29,7 @@ void setupLocator() {
   locator.registerLazySingleton(() => UserRepository());
   locator.registerLazySingleton(() => CourseRepository());
   locator.registerLazySingleton(() => CacheManager());
+
+  // Other
+  locator.registerLazySingleton(() => Logger());
 }

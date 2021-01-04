@@ -2,6 +2,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:logger/logger.dart';
 import 'package:notredame/core/managers/cache_manager.dart';
 import 'package:notredame/core/managers/user_repository.dart';
 import 'package:notredame/core/models/session.dart';
@@ -29,9 +30,18 @@ class CourseRepository {
   @visibleForTesting
   static const String sessionsCacheKey = "sessionsCache";
 
-  final SignetsApi _signetsApi = locator<SignetsApi>();
+  final Logger _logger = locator<Logger>();
+
+  /// Will be used to report event and error.
   final AnalyticsService _analyticsService = locator<AnalyticsService>();
+
+  /// Principal access to the SignetsAPI
+  final SignetsApi _signetsApi = locator<SignetsApi>();
+
+  /// To access the user currently logged
   final UserRepository _userRepository = locator<UserRepository>();
+
+  /// Cache manager to access and update the cache.
   final CacheManager _cacheManager = locator<CacheManager>();
 
   /// List of the courses session for the student
@@ -45,8 +55,7 @@ class CourseRepository {
 
   List<Session> get sessions => _sessions;
 
-  /// Return the current session and next session.
-  /// If there is
+  /// Return the active sessions which mean the sessions that the endDate isn't already passed.
   @visibleForTesting
   List<Session> get activeSessions {
     final DateTime now = DateTime.now();
@@ -72,7 +81,10 @@ class CourseRepository {
         _coursesActivities = responseCache
             .map((e) => CourseActivity.fromJson(e as Map<String, dynamic>))
             .toList();
-      } on CacheException catch (_) { }
+        _logger.d("$tag - getCoursesActivities: ${_coursesActivities.length} activities loaded from cache");
+      } on CacheException catch (_) {
+        _logger.e("$tag - getCoursesActivities: exception raised will trying to load activities from cache.");
+      }
     }
 
     final List<CourseActivity> fetchedCoursesActivities = [];
@@ -89,9 +101,12 @@ class CourseRepository {
             username: _userRepository.monETSUser.universalCode,
             password: password,
             session: session.shortName));
+        _logger.d("$tag - getCoursesActivities: fetched ${fetchedCoursesActivities.length} activities.");
       }
     } on Exception catch (e) {
-      _analyticsService.logError(tag, "Exception raised during getCoursesActivities: $e");
+      _analyticsService.logError(
+          tag, "Exception raised during getCoursesActivities: $e");
+      _logger.d("$tag - getCoursesActivities: Exception raised $e");
       rethrow;
     }
 
@@ -106,7 +121,10 @@ class CourseRepository {
       // Update cache
       _cacheManager.update(
           coursesActivitiesCacheKey, jsonEncode(_coursesActivities));
-    } on CacheException catch (_) {} // Do nothing, the caching will retry later and the error has been logged by the [CacheManager]
+    } on CacheException catch (_) {
+      // Do nothing, the caching will retry later and the error has been logged by the [CacheManager]
+      _logger.e("$tag - getCoursesActivities: exception raised will trying to update the cache.");
+    }
 
     return _coursesActivities;
   }
@@ -126,7 +144,10 @@ class CourseRepository {
         _sessions = sessionsCached
             .map((e) => Session.fromJson(e as Map<String, dynamic>))
             .toList();
-      } on CacheException catch (_) {}
+        _logger.d("$tag - getSessions: ${_sessions.length} sessions loaded from cache.");
+      } on CacheException catch (_) {
+        _logger.e("$tag - getSessions: exception raised will trying to load the sessions from cache.");
+      }
     }
 
     try {
@@ -134,7 +155,9 @@ class CourseRepository {
       final String password = await _userRepository.getPassword();
 
       final List<Session> fetchedSession = await _signetsApi.getSessions(
-          username: _userRepository.monETSUser.universalCode, password: password);
+          username: _userRepository.monETSUser.universalCode,
+          password: password);
+      _logger.d("$tag - getSessions: ${fetchedSession.length} sessions fetched.");
       for (final Session session in fetchedSession) {
         if (!_sessions.contains(session)) {
           _sessions.add(session);
@@ -144,6 +167,7 @@ class CourseRepository {
       // Update cache
       _cacheManager.update(sessionsCacheKey, jsonEncode(_sessions));
     } on CacheException catch (_) {
+      _logger.e("$tag - getSessions: exception raised will trying to update the cache.");
       return _sessions;
     } on Exception catch (e) {
       _analyticsService.logError(

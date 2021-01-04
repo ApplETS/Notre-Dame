@@ -18,13 +18,13 @@ class AppRouter {
             settings: RouteSettings(name: routeSettings.name),
             builder: (_) => LoginView());
       case RouterPaths.ets:
-        return MaterialPageRoute(
+        return PageRouteBuilder(
             settings: RouteSettings(name: routeSettings.name),
-            builder: (_) => QuickLinksView());
+            pageBuilder: (_, __, ___) => QuickLinksView());
       case RouterPaths.security:
-        return MaterialPageRoute(
+        return PageRouteBuilder(
             settings: RouteSettings(name: routeSettings.name),
-            builder: (_) => SecurityView());
+            pageBuilder: (_, __, ___) => SecurityView());
       default:
         return MaterialPageRoute(
             settings: RouteSettings(name: routeSettings.name),
