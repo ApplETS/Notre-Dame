@@ -1,6 +1,8 @@
 // FLUTTER / DART / THIRD-PARTIES
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:notredame/core/models/course_activity.dart';
+import 'package:notredame/ui/widgets/base_scaffold.dart';
 import 'package:notredame/ui/widgets/course_activity_tile.dart';
 import 'package:stacked/stacked.dart';
 import 'package:table_calendar/table_calendar.dart';
@@ -22,14 +24,15 @@ class ScheduleView extends StatefulWidget {
 
 class _ScheduleViewState extends State<ScheduleView>
     with TickerProviderStateMixin {
+  static const Color _selectedColor = AppTheme.etsLightRed;
 
-  final Color _selectedColor = AppTheme.etsLightRed;
+  static const Color _defaultColor = Color(0xff76859B);
+
+  final DateFormat _dateFormat = DateFormat.MMMMEEEEd();
 
   CalendarController _calendarController;
 
   AnimationController _animationController;
-
-  List<dynamic> _selectedDayEvents = [];
 
   @override
   void initState() {
@@ -54,47 +57,70 @@ class _ScheduleViewState extends State<ScheduleView>
   Widget build(BuildContext context) =>
       ViewModelBuilder<ScheduleViewModel>.reactive(
           viewModelBuilder: () => ScheduleViewModel(),
-          builder: (context, model, child) =>
-              Scaffold(
+          builder: (context, model, child) => BaseScaffold(
+                isLoading: model.isBusy,
                 appBar: AppBar(
-                    title: Text(AppIntl
-                        .of(context)
-                        .title_schedule),
-                    centerTitle: false,
-                    automaticallyImplyLeading: false),
-                bottomNavigationBar: BottomBar(BottomBar.scheduleView),
-                body: Column(
-                  children: [
-                    TableCalendar(
-                      startingDayOfWeek: StartingDayOfWeek.monday,
-                      weekendDays: const [],
-                      events: model.coursesActivities,
-                      onDaySelected: (date, events, holidays) =>
-                          setState(() {
-                            _selectedDayEvents = events;
-                          }),
-                      builders: CalendarBuilders(
-                          todayDayBuilder: (context, date, _) =>
-                              _buildSelectedDate(
-                                  date, AppTheme.appletsPurple.withOpacity(0.7),
-                                  textColor: Colors.black),
-                          selectedDayBuilder: (context, date, _) =>
-                              FadeTransition(
-                                opacity: Tween(begin: 0.0, end: 1.0)
-                                    .animate(_animationController),
-                                child:
-                                _buildSelectedDate(date, _selectedColor,
-                                    textColor: Colors.black),
-                              ),
-                          markersBuilder: (context, date, events, holidays) =>
-                          [_buildEventsMarker(date, events)]),
-                      calendarController: _calendarController,
-                    ),
-                    const SizedBox(height: 8.0),
-                    const Divider(indent: 8.0, endIndent: 8.0, thickness: 1),
-                    Expanded(child: _buildEventList())
+                  title: Text(AppIntl.of(context).title_schedule),
+                  centerTitle: false,
+                  automaticallyImplyLeading: false,
+                  actions: [
+                    IconButton(
+                        icon: const Icon(Icons.today),
+                        onPressed: () => setState(() {
+                              _calendarController
+                                  .setSelectedDay(DateTime.now());
+                              model.onDateSelected(DateTime.now());
+                            })),
+                    IconButton(
+                        icon: const Icon(Icons.settings), onPressed: () {})
                   ],
                 ),
+                body: Stack(children: [
+                  Column(
+                    children: [
+                      TableCalendar(
+                        startingDayOfWeek: StartingDayOfWeek.monday,
+                        initialSelectedDay: DateTime.now(),
+                        weekendDays: const [],
+                        headerStyle: const HeaderStyle(
+                            centerHeaderTitle: true,
+                            formatButtonVisible: false),
+                        events: model.coursesActivities,
+                        onDaySelected: (date, events, holidays) => setState(() {
+                          model.onDateSelected(date);
+                        }),
+                        builders: CalendarBuilders(
+                            todayDayBuilder: (context, date, _) =>
+                                _buildSelectedDate(date, _defaultColor,
+                                    textColor: Colors.black),
+                            selectedDayBuilder: (context, date, _) =>
+                                FadeTransition(
+                                  opacity: Tween(begin: 0.0, end: 1.0)
+                                      .animate(_animationController),
+                                  child: _buildSelectedDate(
+                                      date, _selectedColor,
+                                      textColor: Colors.black),
+                                ),
+                            markersBuilder: (context, date, events, holidays) =>
+                                [_buildEventsMarker(date, events)]),
+                        calendarController: _calendarController,
+                      ),
+                      const SizedBox(height: 8.0),
+                      const Divider(indent: 8.0, endIndent: 8.0, thickness: 1),
+                      const SizedBox(height: 6.0),
+                      Center(
+                          child: Text(_dateFormat.format(model.selectedDate),
+                              style: Theme.of(context).textTheme.headline5)),
+                      const SizedBox(height: 2.0),
+                      Expanded(
+                          child: model.selectedDateEvents.isEmpty
+                              ? Center(
+                                  child: Text(
+                                      AppIntl.of(context).schedule_no_seances))
+                              : _buildEventList(model.selectedDateEvents))
+                    ],
+                  ),
+                ]),
               ));
 
   /// Build the square with the number of [events] for the [date]
@@ -107,7 +133,7 @@ class _ScheduleViewState extends State<ScheduleView>
         decoration: BoxDecoration(
           color: _calendarController.isSelected(date)
               ? _selectedColor
-              : AppTheme.appletsPurple.withOpacity(0.6),
+              : _defaultColor,
         ),
         width: 16.0,
         height: 16.0,
@@ -126,13 +152,11 @@ class _ScheduleViewState extends State<ScheduleView>
 
   /// Build the visual for the selected [date]. The [color] parameter set the color for the tile.
   Widget _buildSelectedDate(DateTime date, Color color,
-      {Color textColor = Colors.white}) =>
+          {Color textColor = Colors.white}) =>
       Container(
         margin: const EdgeInsets.all(4.0),
         padding: const EdgeInsets.only(top: 5.0, left: 6.0),
-        decoration: BoxDecoration(
-            border: Border.all(color: color)
-        ),
+        decoration: BoxDecoration(border: Border.all(color: color)),
         width: 100,
         height: 100,
         child: Text(
@@ -142,27 +166,13 @@ class _ScheduleViewState extends State<ScheduleView>
       );
 
   /// Build the list of the events for the selected day.
-  Widget _buildEventList() {
-    final List<Widget> events = [];
-
-    // Add the courses activities to the list
-    // events.addAll(_selectedDayEvents.map((event) {
-    //   if (event is CourseActivity) {
-    //     return CourseActivityTile(event);
-    //   }
-    //   return Container();
-    // }));
-
-    return ListView.separated(itemBuilder: (_, index) =>
-        CourseActivityTile(_selectedDayEvents[index] as CourseActivity),
-        separatorBuilder: (_, index) =>
-        (index < _selectedDayEvents.length)
+  Widget _buildEventList(List<dynamic> events) {
+    return ListView.separated(
+        itemBuilder: (_, index) =>
+            CourseActivityTile(events[index] as CourseActivity),
+        separatorBuilder: (_, index) => (index < events.length)
             ? const Divider(thickness: 1, indent: 30, endIndent: 30)
             : const SizedBox(),
-        itemCount: _selectedDayEvents.length);
-
-    return ListView(
-      children: events,
-    );
+        itemCount: events.length);
   }
 }
