@@ -59,4 +59,31 @@ class Program {
         'nbEquivalences': equivalentCourses,
         'statut': status,
       };
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is Program &&
+          runtimeType == other.runtimeType &&
+          name == other.name &&
+          code == other.code &&
+          average == other.average &&
+          accumulatedCredits == other.accumulatedCredits &&
+          registeredCredits == other.registeredCredits &&
+          completedCourses == other.completedCourses &&
+          failedCourses == other.failedCourses &&
+          equivalentCourses == other.equivalentCourses &&
+          status == other.status;
+
+  @override
+  int get hashCode =>
+      name.hashCode ^
+      code.hashCode ^
+      average.hashCode ^
+      accumulatedCredits.hashCode ^
+      registeredCredits.hashCode ^
+      completedCourses.hashCode ^
+      failedCourses.hashCode ^
+      equivalentCourses.hashCode ^
+      status.hashCode;
 }

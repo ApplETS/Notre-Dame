@@ -16,23 +16,39 @@ class ProfileStudent {
 
   /// Used to create a new [ProfileStudent] instance from a [XMLElement].
   factory ProfileStudent.fromXmlNode(XmlElement node) => ProfileStudent(
-      balance: node.getElement('soldeTotal').innerText,
-      firstName: node.getElement('prenom').innerText,
       lastName: node.getElement('nom').innerText,
-      permanentCode: node.getElement('codePerm').innerText);
+      firstName: node.getElement('prenom').innerText,
+      permanentCode: node.getElement('codePerm').innerText,
+      balance: node.getElement('soldeTotal').innerText);
 
   /// Used to create [ProfileStudent] instance from a JSON file
   factory ProfileStudent.fromJson(Map<String, dynamic> map) => ProfileStudent(
-        balance: map['soldeTotal'] as String,
-        firstName: map['prenom'] as String,
-        lastName: map['nom'] as String,
-        permanentCode: map['codePerm'] as String,
-      );
+      lastName: map['nom'] as String,
+      firstName: map['prenom'] as String,
+      permanentCode: map['codePerm'] as String,
+      balance: map['soldeTotal'] as String);
 
   Map<String, dynamic> toJson() => {
-        'soldeTotal': balance,
-        'prenom': firstName,
         'nom': lastName,
-        'codePerm': permanentCode
+        'prenom': firstName,
+        'codePerm': permanentCode,
+        'soldeTotal': balance
       };
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is ProfileStudent &&
+          runtimeType == other.runtimeType &&
+          lastName == other.lastName &&
+          firstName == other.firstName &&
+          permanentCode == other.permanentCode &&
+          balance == other.balance;
+
+  @override
+  int get hashCode =>
+      lastName.hashCode ^
+      firstName.hashCode ^
+      permanentCode.hashCode ^
+      balance.hashCode;
 }
