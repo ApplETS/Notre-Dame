@@ -47,7 +47,7 @@ void main() {
       testWidgets("the loading isn't displayed if isLoading is false",
           (WidgetTester tester) async {
         await tester.pumpWidget(localizedWidget(
-            child: const BaseScaffold(body: SizedBox(), isLoading: false),
+            child: const BaseScaffold(body: SizedBox()),
             useScaffold: false));
         await tester.pumpAndSettle();
 

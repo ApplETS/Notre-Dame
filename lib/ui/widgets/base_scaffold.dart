@@ -26,11 +26,13 @@ class BaseScaffold extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Scaffold(
         appBar: appBar,
-        body: Stack(
-          children: [
-            body,
-            if (_isLoading) _buildLoading() else const SizedBox()
-          ],
+        body: SafeArea(
+          child: Stack(
+            children: [
+              body,
+              if (_isLoading) _buildLoading() else const SizedBox()
+            ],
+          ),
         ),
         bottomNavigationBar: _showBottomBar ? BottomBar() : null,
       );
