@@ -1,32 +1,38 @@
 // FLUTTER / DART / THIRD-PARTIES
+import 'package:notredame/core/managers/profile_repository.dart';
 import 'package:notredame/core/models/profile_student.dart';
 import 'package:notredame/core/models/program.dart';
 import 'package:stacked/stacked.dart';
 
-class ProfileViewModel extends BaseViewModel {
-  List<Program> programsList = [
-    Program(
-        name: 'Bac',
-        average: '3.01/4.30',
-        status: 'Actif',
-        code: '7425',
-        completedCourses: '34',
-        registeredCredits: '31',
-        accumulatedCredits: '75',
-        equivalentCourses: '0',
-        failedCourses: '0'),
-    Program(
-        name: 'Stage',
-        average: '3.01/4.30',
-        status: 'Actif',
-        code: '7425',
-        completedCourses: '34',
-        registeredCredits: '31',
-        accumulatedCredits: '75',
-        equivalentCourses: '0',
-        failedCourses: '0')
-  ];
+import '../../locator.dart';
 
-  final profileStudent = ProfileStudent(
-      balance: '12', firstName: 'John', lastName: 'Doe', permanentCode: 'DOEJ');
+class ProfileViewModel extends FutureViewModel<List<Program>> {
+  final ProfileRepository _profileRepository = locator<ProfileRepository>();
+
+  List<Program> _programList = List.empty();
+  final ProfileStudent _student = ProfileStudent(
+      balance: "", firstName: "", lastName: "", permanentCode: "", men: "");
+
+  ProfileStudent get profileStudent {
+    return _profileRepository.info ?? _student;
+  }
+
+  List<Program> get programsList {
+    if (_programList == null || _programList.isEmpty) {
+      _programList = [];
+    }
+    if (_profileRepository.programs != null) {
+      for (final Program program in _profileRepository.programs) {
+        _programList.add(program);
+      }
+    }
+    return _programList;
+  }
+
+  @override
+  Future<List<Program>> futureToRun() {
+    return _profileRepository
+        .getInfos()
+        .then((value) => _profileRepository.getPrograms());
+  }
 }
