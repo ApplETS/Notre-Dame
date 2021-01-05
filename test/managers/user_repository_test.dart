@@ -32,6 +32,7 @@ void main() {
       analyticsService = setupAnalyticsServiceMock();
       monETSApi = setupMonETSApiMock();
       secureStorage = setupFlutterSecureStorageMock();
+      setupLogger();
 
       manager = UserRepository();
     });

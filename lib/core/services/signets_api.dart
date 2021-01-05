@@ -102,7 +102,7 @@ class SignetsApi {
 
     // Throw exception if the error tag is not empty
     if (responseBody
-        .findElements(_signetsErrorTag)
+        .findAllElements(_signetsErrorTag)
         .first
         .innerText
         .isNotEmpty) {

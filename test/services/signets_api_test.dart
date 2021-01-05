@@ -1,5 +1,6 @@
 // FLUTTER / DART / THIRD-PARTIES
 import 'package:flutter_test/flutter_test.dart';
+import 'package:logger/logger.dart';
 import 'package:mockito/mockito.dart';
 
 // SERVICE
@@ -14,6 +15,7 @@ import 'package:notredame/core/constants/urls.dart';
 import 'package:notredame/core/utils/api_exception.dart';
 
 // MOCKS
+import '../helpers.dart';
 import '../mock/services/http_client_mock.dart';
 
 void main() {
@@ -24,6 +26,7 @@ void main() {
     setUp(() {
       clientMock = HttpClientMock();
       service = SignetsApi(client: clientMock);
+      setupLogger();
     });
 
     tearDown(() {
@@ -31,6 +34,7 @@ void main() {
       clientMock.close();
       clearInteractions(clientMock);
       reset(clientMock);
+      unregister<Logger>();
     });
 
     test('buildBasicSoapBody - contains all basic element', () {
@@ -242,8 +246,8 @@ void main() {
 
         HttpClientMock.stubPost(clientMock, Urls.signetsAPI, stubResponse);
 
-        final result = await service.getSessions(
-            username: username, password: password);
+        final result =
+            await service.getSessions(username: username, password: password);
 
         expect(result, isA<List<Session>>());
         expect(result.first == session, isTrue);
@@ -258,15 +262,11 @@ void main() {
         const String password = "password";
 
         final String stubResponse = buildErrorResponse(
-            Urls.listSessionsOperation,
-            'An error occurred',
-            'liste');
+            Urls.listSessionsOperation, 'An error occurred', 'liste');
 
         HttpClientMock.stubPost(clientMock, Urls.signetsAPI, stubResponse);
 
-        expect(
-            service.getSessions(
-                username: username, password: password),
+        expect(service.getSessions(username: username, password: password),
             throwsA(isInstanceOf<ApiException>()),
             reason:
                 "If the SignetsAPI return an error the service should return the error.");
@@ -279,11 +279,13 @@ String buildResponse(String operation, String body, String firstElement) =>
     '<?xml version="1.0" encoding="utf-8"?> '
     '<soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"> '
     '<soap:Body> '
-    '<${operation}Result xmlns="http://etsmtl.ca/"> '
+    '<${operation}Response xmlns="http://etsmtl.ca/"> '
+    '<${operation}Result>'
     '<erreur /> '
     '<$firstElement>'
     '$body'
     '</$firstElement>'
+    '</${operation}Result>'
     '</${operation}Response>'
     '</soap:Body>'
     '</soap:Envelope>';
@@ -293,11 +295,13 @@ String buildErrorResponse(
     '<?xml version="1.0" encoding="utf-8"?> '
     '<soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"> '
     '<soap:Body>'
-    '<${operation}Result xmlns="http://etsmtl.ca/"> '
+    '<${operation}Response xmlns="http://etsmtl.ca/"> '
+    '<${operation}Result>'
     '<erreur>'
     '$error'
     '</erreur>'
     '<$firstElement /> '
+    '</${operation}Result>'
     '</${operation}Response>'
     '</soap:Body>'
     '</soap:Envelope>';

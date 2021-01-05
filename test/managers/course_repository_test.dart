@@ -41,6 +41,7 @@ void main() {
       signetsApi = setupSignetsApiMock();
       userRepository = setupUserRepositoryMock();
       cacheManager = setupCacheManagerMock();
+      setupLogger();
 
       manager = CourseRepository();
     });
