@@ -1,5 +1,6 @@
 // FLUTTER / DART / THIRD-PARTIES
 import 'package:flutter/material.dart';
+import 'package:notredame/core/models/program.dart';
 import 'package:stacked/stacked.dart';
 
 // VIEW-MODEL
@@ -56,9 +57,24 @@ class _ProfileViewState extends State<ProfileView> {
             ListTile(
                 title: Text(AppIntl.of(context).profile_permanent_code),
                 trailing: Text(model.profileStudent.permanentCode)),
-            StudentProgram(model.programsList.elementAt(2)),
-            StudentProgram(model.programsList.elementAt(1)),
-            StudentProgram(model.programsList.elementAt(0)),
+            FutureBuilder(
+              future: model.getProgramsList(),
+              builder: (BuildContext context, AsyncSnapshot snapshot) {
+                if (!snapshot.hasData) {
+                  return Container();
+                } else {
+                  return ListView.builder(
+                    shrinkWrap: true,
+                    reverse: true,
+                    physics: const ScrollPhysics(),
+                    itemCount: snapshot.data.length as int,
+                    itemBuilder: (BuildContext context, int index) {
+                      return StudentProgram(snapshot.data[index] as Program);
+                    },
+                  );
+                }
+              },
+            ),
           ]),
         ),
       );

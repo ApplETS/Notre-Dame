@@ -13,6 +13,26 @@ class StudentProgram extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final List<String> dataTitles = [
+      AppIntl.of(context).profile_code_program,
+      AppIntl.of(context).profile_average_program,
+      AppIntl.of(context).profile_number_accumulated_credits_program,
+      AppIntl.of(context).profile_number_registered_credits_program,
+      AppIntl.of(context).profile_number_completed_courses_program,
+      AppIntl.of(context).profile_number_failed_courses_program,
+      AppIntl.of(context).profile_number_equivalent_courses_program,
+      AppIntl.of(context).profile_status_program
+    ];
+    final List<String> dataFetched = [
+      _program.code,
+      _program.average,
+      _program.accumulatedCredits,
+      _program.registeredCredits,
+      _program.completedCourses,
+      _program.failedCourses,
+      _program.equivalentCourses,
+      _program.status
+    ];
     return Column(
       children: [
         const Divider(
@@ -26,43 +46,16 @@ class StudentProgram extends StatelessWidget {
             style: const TextStyle(color: AppTheme.etsLightRed),
           ),
         ),
-        ListTile(
-          title: Text(AppIntl.of(context).profile_code_program),
-          trailing: Text(_program.code),
-        ),
-        ListTile(
-          title: Text(AppIntl.of(context).profile_average_program),
-          trailing: Text(_program.average),
-        ),
-        ListTile(
-          title: Text(
-              AppIntl.of(context).profile_number_accumulated_credits_program),
-          trailing: Text(_program.accumulatedCredits),
-        ),
-        ListTile(
-          title: Text(
-              AppIntl.of(context).profile_number_registered_credits_program),
-          trailing: Text(_program.registeredCredits),
-        ),
-        ListTile(
-          title: Text(
-              AppIntl.of(context).profile_number_completed_courses_program),
-          trailing: Text(_program.completedCourses),
-        ),
-        ListTile(
-          title:
-              Text(AppIntl.of(context).profile_number_failed_courses_program),
-          trailing: Text(_program.failedCourses),
-        ),
-        ListTile(
-          title: Text(
-              AppIntl.of(context).profile_number_equivalent_courses_program),
-          trailing: Text(_program.equivalentCourses),
-        ),
-        ListTile(
-          title: Text(AppIntl.of(context).profile_status_program),
-          trailing: Text(_program.status),
-        ),
+        ListView.builder(
+            physics: const NeverScrollableScrollPhysics(),
+            shrinkWrap: true,
+            itemBuilder: (context, index) {
+              return ListTile(
+                title: Text(dataTitles[index]),
+                trailing: Text(dataFetched[index]),
+              );
+            },
+            itemCount: dataTitles.length)
       ],
     );
   }
