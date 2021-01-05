@@ -1,0 +1,5 @@
+
+enum PreferencesFlag {
+  scheduleSettingsCalendarFormat,
+  scheduleSettingsStartWeekday
+}
