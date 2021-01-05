@@ -47,17 +47,18 @@ class _ProfileViewState extends State<ProfileView> {
             ),
             ListTile(
               title: Text(AppIntl.of(context).profile_first_name),
-              trailing: Text(model.profileStudent.firstName),
+              trailing: Text(model.profileStudent.firstName.trimRight()),
             ),
             ListTile(
               title: Text(AppIntl.of(context).profile_last_name),
-              trailing: Text(model.profileStudent.lastName),
+              trailing: Text(model.profileStudent.lastName.trimRight()),
             ),
             ListTile(
                 title: Text(AppIntl.of(context).profile_permanent_code),
                 trailing: Text(model.profileStudent.permanentCode)),
-            for (int index = 0; index < model.programsList.length; index++)
-              StudentProgram(model.programsList[index]),
+            StudentProgram(model.programsList.elementAt(2)),
+            StudentProgram(model.programsList.elementAt(1)),
+            StudentProgram(model.programsList.elementAt(0)),
           ]),
         ),
       );
