@@ -1,5 +1,5 @@
 // FLUTTER / DART / THIRD-PARTIES
-import 'package:notredame/core/managers/profile_repository.dart';
+import 'package:notredame/core/managers/user_repository.dart';
 import 'package:notredame/core/models/profile_student.dart';
 import 'package:notredame/core/models/program.dart';
 import 'package:stacked/stacked.dart';
@@ -7,22 +7,22 @@ import 'package:stacked/stacked.dart';
 import '../../locator.dart';
 
 class ProfileViewModel extends FutureViewModel<List<Program>> {
-  final ProfileRepository _profileRepository = locator<ProfileRepository>();
+  final UserRepository _userRepository = locator<UserRepository>();
 
   List<Program> _programList = List.empty();
   final ProfileStudent _student = ProfileStudent(
-      balance: "", firstName: "", lastName: "", permanentCode: "", men: "");
+      balance: "", firstName: "", lastName: "", permanentCode: "");
 
   ProfileStudent get profileStudent {
-    return _profileRepository.info ?? _student;
+    return _userRepository.info ?? _student;
   }
 
-  List<Program> get programsList {
+  Future<List<Program>> getProgramsList() async {
     if (_programList == null || _programList.isEmpty) {
       _programList = [];
     }
-    if (_profileRepository.programs != null) {
-      for (final Program program in _profileRepository.programs) {
+    if (_userRepository.programs != null) {
+      for (final Program program in _userRepository.programs) {
         _programList.add(program);
       }
     }
@@ -31,8 +31,8 @@ class ProfileViewModel extends FutureViewModel<List<Program>> {
 
   @override
   Future<List<Program>> futureToRun() {
-    return _profileRepository
-        .getInfos()
-        .then((value) => _profileRepository.getPrograms());
+    return _userRepository
+        .getInfo()
+        .then((value) => _userRepository.getPrograms());
   }
 }
