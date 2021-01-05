@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:logger/logger.dart';
 
 // OTHER
 import 'package:notredame/locator.dart';
@@ -115,6 +116,16 @@ CacheManager setupCacheManagerMock() {
   final service = CacheManagerMock();
 
   locator.registerSingleton<CacheManager>(service);
+
+  return service;
+}
+
+/// Load the [Logger]
+Logger setupLogger() {
+  unregister<Logger>();
+  final service = Logger();
+
+  locator.registerSingleton<Logger>(service);
 
   return service;
 }
