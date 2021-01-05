@@ -15,6 +15,7 @@ import 'package:notredame/core/services/mon_ets_api.dart';
 import 'package:notredame/core/services/signets_api.dart';
 import 'package:notredame/core/managers/user_repository.dart';
 import 'package:notredame/core/managers/cache_manager.dart';
+import 'package:notredame/core/services/preferences_service.dart';
 
 // MOCKS
 import 'mock/managers/cache_manager_mock.dart';
@@ -23,6 +24,7 @@ import 'mock/services/analytics_service_mock.dart';
 import 'mock/services/flutter_secure_storage_mock.dart';
 import 'mock/services/mon_ets_api_mock.dart';
 import 'mock/services/navigation_service_mock.dart';
+import 'mock/services/preferences_service_mock.dart';
 import 'mock/services/signets_api_mock.dart';
 
 /// Unregister the service [T] from GetIt
@@ -129,6 +131,16 @@ Logger setupLogger() {
   final service = Logger();
 
   locator.registerSingleton<Logger>(service);
+
+  return service;
+}
+
+/// Load a mock of the [PreferencesService]
+PreferencesService setupPreferencesServiceMock() {
+  unregister<PreferencesService>();
+  final service = PreferencesServiceMock();
+
+  locator.registerSingleton<PreferencesService>(service);
 
   return service;
 }
