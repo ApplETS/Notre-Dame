@@ -33,7 +33,10 @@ void unregister<T>() {
 }
 
 /// Load the l10n classes. Take the [child] widget to test
-Widget localizedWidget({@required Widget child, String locale = 'en'}) =>
+Widget localizedWidget(
+        {@required Widget child,
+        bool useScaffold = true,
+        String locale = 'en'}) =>
     MaterialApp(
       localizationsDelegates: const [
         AppIntl.delegate,
@@ -42,7 +45,7 @@ Widget localizedWidget({@required Widget child, String locale = 'en'}) =>
         GlobalCupertinoLocalizations.delegate,
       ],
       locale: Locale(locale),
-      home: Scaffold(body: child),
+      home: useScaffold ? Scaffold(body: child) : child,
     );
 
 /// Load a mock of the [AnalyticsService]
