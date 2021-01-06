@@ -68,7 +68,7 @@ class CourseRepository {
   /// Get and update the list of courses activities for the active sessions.
   /// After fetching the new activities from the [SignetsApi] the [CacheManager]
   /// is updated wish the latest version of the activities.
-  Future<List<CourseActivity>> getCoursesActivities() async {
+  Future<List<CourseActivity>> getCoursesActivities({bool fromCacheOnly = false}) async {
     // Load the activities from the cache if the list doesn't exist
     if (_coursesActivities == null) {
       _coursesActivities = [];
@@ -82,6 +82,9 @@ class CourseRepository {
             .map((e) => CourseActivity.fromJson(e as Map<String, dynamic>))
             .toList();
         _logger.d("$tag - getCoursesActivities: ${_coursesActivities.length} activities loaded from cache");
+        if(fromCacheOnly) {
+          return _coursesActivities;
+        }
       } on CacheException catch (_) {
         _logger.e("$tag - getCoursesActivities: exception raised will trying to load activities from cache.");
       }
