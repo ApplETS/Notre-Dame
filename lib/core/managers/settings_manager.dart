@@ -21,6 +21,8 @@ class SettingsManager {
   /// Use to get the value associated to each settings key
   final PreferencesService _preferencesService = locator<PreferencesService>();
 
+  final AnalyticsService _analyticsService = locator<AnalyticsService>();
+
   /// Get the settings of the schedule, these are loaded from the user preferences.
   Future<Map<PreferencesFlag, dynamic>> getScheduleSettings() async {
     final Map<PreferencesFlag, dynamic> settings = {};
@@ -50,5 +52,13 @@ class SettingsManager {
     _logger.i("$tag - getScheduleSettings - Settings loaded: $settings");
 
     return settings;
+  }
+
+  /// Add/update the value of [flag]
+  Future<bool> setString(PreferencesFlag flag, String value) async {
+    // Log the event
+    _analyticsService.logEvent(
+        "$tag-${EnumToString.convertToString(flag)}", value);
+    return _preferencesService.setString(flag, value);
   }
 }
