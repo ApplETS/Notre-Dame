@@ -22,6 +22,19 @@ class _ScheduleSettingsState extends State<ScheduleSettings> {
           height: 600,
           child: Column(
             children: [
+              Center(
+                child: Padding(
+                  padding: const EdgeInsets.only(top: 8.0),
+                  child: Container(
+                    height: 5,
+                    width: 50,
+                    decoration: const BoxDecoration(
+                      color: Colors.grey,
+                        borderRadius: BorderRadius.all(Radius.circular(8.0))
+                    ),
+                  ),
+                ),
+              ),
               Padding(
                   padding: const EdgeInsets.fromLTRB(15, 20, 20, 20),
                   child: Text(AppIntl.of(context).schedule_settings_title,
@@ -30,13 +43,8 @@ class _ScheduleSettingsState extends State<ScheduleSettings> {
                 child: ListTileTheme(
                   selectedColor: Theme.of(context).textTheme.bodyText1.color,
                   child: ListView(
-                    children: _buildSettings(context, model as ScheduleSettingsViewModel)//[
-                    //   _buildCalendarFormatSection(
-                    //       context, model as ScheduleSettingsViewModel),
-                    //   const Divider(thickness: 1.5),
-                    //   //_buildStartingDaySection(model as ScheduleSettingsViewModel)
-                    // ],
-                  ),
+                      children: _buildSettings(
+                          context, model as ScheduleSettingsViewModel)),
                 ),
               ),
             ],
@@ -44,13 +52,32 @@ class _ScheduleSettingsState extends State<ScheduleSettings> {
         ),
       );
 
-  List<Widget> _buildSettings(BuildContext context, ScheduleSettingsViewModel model) {
-      final list = _buildCalendarFormatSection(
-          context, model);
-      list.addAll(_buildStartingDaySection(context, model));
+  List<Widget> _buildSettings(
+      BuildContext context, ScheduleSettingsViewModel model) {
+    final list = _buildCalendarFormatSection(context, model);
 
-      return list;
+    // TODO Uncomment when https://github.com/aleksanderwozniak/table_calendar/issues/164 is close
+    //list.addAll(_buildStartingDaySection(context, model));
+
+    list.addAll(_buildShowTodayButtonSection(context, model));
+
+    return list;
   }
+
+  List<Widget> _buildShowTodayButtonSection(
+          BuildContext context, ScheduleSettingsViewModel model) =>
+      [
+        ListTile(
+          trailing: Switch(
+            value: model.showTodayBtn,
+            onChanged: (value) => model.showTodayBtn = value,
+            activeColor: AppTheme.etsLightRed,
+          ),
+          title:
+              Text(AppIntl.of(context).schedule_settings_show_today_btn_pref),
+        ),
+        const Divider(thickness: 1)
+      ];
 
   List<Widget> _buildCalendarFormatSection(
       BuildContext context, ScheduleSettingsViewModel model) {
@@ -82,14 +109,16 @@ class _ScheduleSettingsState extends State<ScheduleSettings> {
     return tiles;
   }
 
-  List<Widget> _buildStartingDaySection(BuildContext context, ScheduleSettingsViewModel model) {
+  // TODO remove ignore when https://github.com/aleksanderwozniak/table_calendar/issues/164 is close
+  // ignore_for_file: unused_element
+  List<Widget> _buildStartingDaySection(
+      BuildContext context, ScheduleSettingsViewModel model) {
     final list = [
       Padding(
         padding: const EdgeInsets.only(
             left: 15.0, right: 15.0, top: 15.0, bottom: 2.0),
         child: Text(
-          AppIntl.of(context)
-              .schedule_settings_starting_weekday_pref,
+          AppIntl.of(context).schedule_settings_starting_weekday_pref,
           style: TextStyle(
             color: Theme.of(context).accentColor,
             fontWeight: FontWeight.bold,
@@ -101,13 +130,10 @@ class _ScheduleSettingsState extends State<ScheduleSettings> {
 
     for (final StartingDayOfWeek day in model.startingDayPossible) {
       list.add(ListTile(
-        selected:
-        model.startingDayOfWeek == day,
+        selected: model.startingDayOfWeek == day,
         selectedTileColor: selectedColor,
-        onTap: () => setState(() =>
-        model.startingDayOfWeek = day),
-        title: Text(
-            getTextForDay(context, day)),
+        onTap: () => setState(() => model.startingDayOfWeek = day),
+        title: Text(getTextForDay(context, day)),
       ));
     }
 
@@ -115,7 +141,6 @@ class _ScheduleSettingsState extends State<ScheduleSettings> {
 
     return list;
   }
-
 
   String getTextForFormat(BuildContext context, CalendarFormat format) {
     switch (format) {

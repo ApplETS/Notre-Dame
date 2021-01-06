@@ -61,4 +61,13 @@ class SettingsManager {
         "$tag-${EnumToString.convertToString(flag)}", value);
     return _preferencesService.setString(flag, value);
   }
+
+  /// Add/update the value of [flag]
+  // ignore: avoid_positional_boolean_parameters
+  Future<bool> setBool(PreferencesFlag flag, bool value) async {
+    // Log the event
+    _analyticsService.logEvent(
+        "$tag-${EnumToString.convertToString(flag)}", value.toString());
+    return _preferencesService.setBool(flag, value: value);
+  }
 }

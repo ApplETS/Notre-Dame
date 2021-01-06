@@ -58,7 +58,6 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
     setBusy(true);
     settings.clear();
     settings.addAll(await _settingsManager.getScheduleSettings());
-
     calendarController.setCalendarFormat(
         settings[PreferencesFlag.scheduleSettingsCalendarFormat]
             as CalendarFormat);
