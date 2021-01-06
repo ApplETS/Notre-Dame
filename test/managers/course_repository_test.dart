@@ -18,13 +18,12 @@ import 'package:notredame/core/models/mon_ets_user.dart';
 
 // UTILS
 import 'package:notredame/core/utils/api_exception.dart';
-
 import '../helpers.dart';
+
+// MOCKS
 import '../mock/managers/cache_manager_mock.dart';
 import '../mock/managers/user_repository_mock.dart';
 import '../mock/services/signets_api_mock.dart';
-
-// MOCKS
 
 void main() {
   AnalyticsService analyticsService;
