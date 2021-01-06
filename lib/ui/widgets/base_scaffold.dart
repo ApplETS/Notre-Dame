@@ -15,13 +15,18 @@ class BaseScaffold extends StatelessWidget {
 
   final bool _isLoading;
 
+  /// If true, interactions with the UI is limited while loading.
+  final bool _isInteractionLimitedWhileLoading;
+
   const BaseScaffold(
       {this.appBar,
       this.body,
       bool isLoading = false,
+      bool isInteractionLimitedWhileLoading = true,
       bool showBottomBar = true})
       : _showBottomBar = showBottomBar,
-        _isLoading = isLoading;
+        _isLoading = isLoading,
+        _isInteractionLimitedWhileLoading = isInteractionLimitedWhileLoading;
 
   @override
   Widget build(BuildContext context) => Scaffold(
@@ -38,12 +43,13 @@ class BaseScaffold extends StatelessWidget {
       );
 
   Widget _buildLoading() => Stack(
-        children: const [
-          Opacity(
-            opacity: 0.5,
-            child: ModalBarrier(dismissible: false, color: Colors.grey),
-          ),
-          Center(child: CircularProgressIndicator())
+        children: [
+          if (_isInteractionLimitedWhileLoading)
+            const Opacity(
+              opacity: 0.5,
+              child: ModalBarrier(dismissible: false, color: Colors.grey),
+            ),
+          const Center(child: CircularProgressIndicator())
         ],
       );
 }
