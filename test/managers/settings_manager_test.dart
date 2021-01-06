@@ -127,5 +127,27 @@ void main() {
           .called(1);
       verify(preferencesService.setString(flag, any));
     });
+
+    test("setBool", () async {
+      const flag = PreferencesFlag.scheduleSettingsCalendarFormat;
+      PreferencesServiceMock.stubSetBool(
+          preferencesService as PreferencesServiceMock,
+          flag);
+
+      expect(
+          await manager.setBool(
+              flag, true),
+          true, reason: "setString should return true if the PreferenceService return true");
+
+      untilCalled(analyticsService.logEvent(
+          "${SettingsManager.tag}-${EnumToString.convertToString(flag)}",
+          any));
+
+      verify(analyticsService.logEvent(
+          "${SettingsManager.tag}-${EnumToString.convertToString(flag)}",
+          any))
+          .called(1);
+      verify(preferencesService.setString(flag, any));
+    });
   });
 }

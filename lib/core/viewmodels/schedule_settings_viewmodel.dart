@@ -12,11 +12,15 @@ class ScheduleSettingsViewModel
 
   /// Current calendar format
   CalendarFormat _calendarFormat;
+
   CalendarFormat get calendarFormat => _calendarFormat;
+
   set calendarFormat(CalendarFormat format) {
+    setBusy(true);
     _settingsManager.setString(PreferencesFlag.scheduleSettingsCalendarFormat,
         EnumToString.convertToString(format));
     _calendarFormat = format;
+    setBusy(false);
   }
 
   /// List of possible calendar format.
@@ -28,11 +32,15 @@ class ScheduleSettingsViewModel
 
   /// Current starting day of week
   StartingDayOfWeek _startingDayOfWeek;
+
   StartingDayOfWeek get startingDayOfWeek => _startingDayOfWeek;
+
   set startingDayOfWeek(StartingDayOfWeek day) {
+    setBusy(true);
     _settingsManager.setString(PreferencesFlag.scheduleSettingsStartWeekday,
         EnumToString.convertToString(day));
     _startingDayOfWeek = day;
+    setBusy(false);
   }
 
   /// List of possible days to set as start of the week
@@ -42,7 +50,17 @@ class ScheduleSettingsViewModel
     StartingDayOfWeek.monday,
   ];
 
-  bool showTodayBtn;
+  bool _showTodayBtn = true;
+
+  bool get showTodayBtn => _showTodayBtn;
+
+  set showTodayBtn(bool newValue) {
+    setBusy(true);
+    _settingsManager.setBool(
+        PreferencesFlag.scheduleSettingsShowTodayBtn, newValue);
+    _showTodayBtn = newValue;
+    setBusy(false);
+  }
 
   @override
   Future<Map<PreferencesFlag, dynamic>> futureToRun() async {
@@ -52,7 +70,7 @@ class ScheduleSettingsViewModel
         as CalendarFormat;
     startingDayOfWeek = settings[PreferencesFlag.scheduleSettingsStartWeekday]
         as StartingDayOfWeek;
-    showTodayBtn =
+    _showTodayBtn =
         settings[PreferencesFlag.scheduleSettingsShowTodayBtn] as bool;
 
     return settings;
