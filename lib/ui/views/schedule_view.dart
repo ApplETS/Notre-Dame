@@ -1,17 +1,22 @@
 // FLUTTER / DART / THIRD-PARTIES
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:notredame/core/models/course_activity.dart';
-import 'package:notredame/ui/widgets/base_scaffold.dart';
-import 'package:notredame/ui/widgets/course_activity_tile.dart';
 import 'package:stacked/stacked.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 // VIEWMODEL
 import 'package:notredame/core/viewmodels/schedule_viewmodel.dart';
 
+// MODELS
+import 'package:notredame/core/models/course_activity.dart';
+
 // WIDGET
-import 'package:notredame/ui/widgets/bottom_bar.dart';
+import 'package:notredame/ui/widgets/base_scaffold.dart';
+import 'package:notredame/ui/widgets/course_activity_tile.dart';
+import 'package:notredame/ui/widgets/schedule_settings.dart';
+
+// CONSTANTS
+import 'package:notredame/core/constants/preferences_flags.dart';
 
 // OTHER
 import 'package:notredame/generated/l10n.dart';
@@ -57,29 +62,22 @@ class _ScheduleViewState extends State<ScheduleView>
   Widget build(BuildContext context) =>
       ViewModelBuilder<ScheduleViewModel>.reactive(
           viewModelBuilder: () => ScheduleViewModel(),
+          onModelReady: (model) => model.loadSettings(_calendarController),
           builder: (context, model, child) => BaseScaffold(
-                isLoading: model.isBusy,
+                isLoading: model.busy(model.isLoadingEvents),
+                isInteractionLimitedWhileLoading: false,
                 appBar: AppBar(
                   title: Text(AppIntl.of(context).title_schedule),
                   centerTitle: false,
                   automaticallyImplyLeading: false,
-                  actions: [
-                    IconButton(
-                        icon: const Icon(Icons.today),
-                        onPressed: () => setState(() {
-                              _calendarController
-                                  .setSelectedDay(DateTime.now());
-                              model.onDateSelected(DateTime.now());
-                            })),
-                    IconButton(
-                        icon: const Icon(Icons.settings), onPressed: () {})
-                  ],
+                  actions: _buildActionButtons(model),
                 ),
                 body: Stack(children: [
                   Column(
                     children: [
                       TableCalendar(
-                        startingDayOfWeek: StartingDayOfWeek.monday,
+                        startingDayOfWeek: model.settings[PreferencesFlag
+                            .scheduleSettingsStartWeekday] as StartingDayOfWeek,
                         initialSelectedDay: DateTime.now(),
                         weekendDays: const [],
                         headerStyle: const HeaderStyle(
@@ -87,7 +85,7 @@ class _ScheduleViewState extends State<ScheduleView>
                             formatButtonVisible: false),
                         events: model.coursesActivities,
                         onDaySelected: (date, events, holidays) => setState(() {
-                          model.onDateSelected(date);
+                          model.selectedDate = date;
                         }),
                         builders: CalendarBuilders(
                             todayDayBuilder: (context, date, _) =>
@@ -116,7 +114,7 @@ class _ScheduleViewState extends State<ScheduleView>
                           child: model.selectedDateEvents.isEmpty
                               ? Center(
                                   child: Text(
-                                      AppIntl.of(context).schedule_no_seances))
+                                      AppIntl.of(context).schedule_no_event))
                               : _buildEventList(model.selectedDateEvents))
                     ],
                   ),
@@ -175,4 +173,30 @@ class _ScheduleViewState extends State<ScheduleView>
             : const SizedBox(),
         itemCount: events.length);
   }
+
+  List<Widget> _buildActionButtons(ScheduleViewModel model) => [
+        if ((model.settings[PreferencesFlag.scheduleSettingsShowTodayBtn]
+                as bool) ==
+            true)
+          IconButton(
+              icon: const Icon(Icons.today),
+              onPressed: () => setState(() {
+                    _calendarController.setSelectedDay(DateTime.now());
+                    model.selectedDate = DateTime.now();
+                  })),
+        IconButton(
+            icon: const Icon(Icons.settings),
+            onPressed: () async {
+              await showModalBottomSheet(
+                  isDismissible: true,
+                  isScrollControlled: true,
+                  context: context,
+                  shape: const RoundedRectangleBorder(
+                      borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(10),
+                          topRight: Radius.circular(10))),
+                  builder: (context) => ScheduleSettings());
+             model.loadSettings(_calendarController);
+            })
+      ];
 }
