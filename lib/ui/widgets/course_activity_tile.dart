@@ -19,7 +19,6 @@ class CourseActivityTile extends StatelessWidget {
           leading: _buildLeading(),
           dense: false,
           title: Text(activity.courseGroup),
-          isThreeLine: true,
           subtitle: Text("${activity.courseName}\n${activity.activityDescription}"),
           trailing: Text(activity.activityLocation),
         ),
