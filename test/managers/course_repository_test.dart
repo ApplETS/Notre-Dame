@@ -129,6 +129,29 @@ void main() {
         ]);
       });
 
+      test("Activities are only loaded from cache.", () async {
+        // Stub the cache to return 1 activity
+        CacheManagerMock.stubGet(cacheManager as CacheManagerMock,
+            CourseRepository.coursesActivitiesCacheKey, jsonEncode(activities));
+
+
+        expect(manager.coursesActivities, isNull);
+        final List<CourseActivity> results =
+        await manager.getCoursesActivities(fromCacheOnly: true);
+
+        expect(results, isInstanceOf<List<CourseActivity>>());
+        expect(results, activities);
+        expect(manager.coursesActivities, activities,
+            reason: "The list of activities should not be empty");
+
+        verifyInOrder([
+          cacheManager.get(CourseRepository.coursesActivitiesCacheKey),
+        ]);
+
+        verifyNoMoreInteractions(signetsApi);
+        verifyNoMoreInteractions(userRepository);
+      });
+
       test(
           "Trying to recover activities from cache but an exception is raised.",
           () async {
