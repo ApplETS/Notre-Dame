@@ -6,6 +6,7 @@ import 'package:table_calendar/table_calendar.dart';
 
 // MANAGER
 import 'package:notredame/core/managers/settings_manager.dart';
+import 'package:notredame/core/services/analytics_service.dart';
 
 // SERVICE
 import 'package:notredame/core/services/preferences_service.dart';
@@ -19,6 +20,7 @@ import '../helpers.dart';
 import '../mock/services/preferences_service_mock.dart';
 
 void main() {
+  AnalyticsService analyticsService;
   PreferencesService preferencesService;
   SettingsManager manager;
 
@@ -26,6 +28,7 @@ void main() {
     setUp(() {
       // Setting up mocks
       setupLogger();
+      analyticsService = setupAnalyticsServiceMock();
       preferencesService = setupPreferencesServiceMock();
 
       manager = SettingsManager();
@@ -59,6 +62,7 @@ void main() {
             .called(1);
 
         verifyNoMoreInteractions(preferencesService);
+        verifyNoMoreInteractions(analyticsService);
       });
 
       test("validate the loading of the settings", () async {
@@ -98,7 +102,30 @@ void main() {
             .called(1);
 
         verifyNoMoreInteractions(preferencesService);
+        verifyNoMoreInteractions(analyticsService);
       });
+    });
+
+    test("setString", () async {
+      const flag = PreferencesFlag.scheduleSettingsCalendarFormat;
+      PreferencesServiceMock.stubSetString(
+          preferencesService as PreferencesServiceMock,
+          flag);
+
+      expect(
+          await manager.setString(
+              flag, "test"),
+          true, reason: "setString should return true if the PreferenceService return true");
+
+      untilCalled(analyticsService.logEvent(
+          "${SettingsManager.tag}-${EnumToString.convertToString(flag)}",
+          any));
+
+      verify(analyticsService.logEvent(
+              "${SettingsManager.tag}-${EnumToString.convertToString(flag)}",
+              any))
+          .called(1);
+      verify(preferencesService.setString(flag, any));
     });
   });
 }
