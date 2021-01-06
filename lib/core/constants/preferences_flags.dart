@@ -1,5 +1,7 @@
 
 enum PreferencesFlag {
+  // Schedule flags
   scheduleSettingsCalendarFormat,
-  scheduleSettingsStartWeekday
+  scheduleSettingsStartWeekday,
+  scheduleSettingsShowTodayBtn
 }
