@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:logger/logger.dart';
+import 'package:notredame/core/managers/settings_manager.dart';
 
 // OTHER
 import 'package:notredame/locator.dart';
@@ -19,6 +20,7 @@ import 'package:notredame/core/services/preferences_service.dart';
 
 // MOCKS
 import 'mock/managers/cache_manager_mock.dart';
+import 'mock/managers/settings_manager_mock.dart';
 import 'mock/managers/user_repository_mock.dart';
 import 'mock/services/analytics_service_mock.dart';
 import 'mock/services/flutter_secure_storage_mock.dart';
@@ -129,6 +131,7 @@ CacheManager setupCacheManagerMock() {
 Logger setupLogger() {
   unregister<Logger>();
   final service = Logger();
+  Logger.level = Level.error;
 
   locator.registerSingleton<Logger>(service);
 
@@ -141,6 +144,16 @@ PreferencesService setupPreferencesServiceMock() {
   final service = PreferencesServiceMock();
 
   locator.registerSingleton<PreferencesService>(service);
+
+  return service;
+}
+
+/// Load a mock of the [SettingsManager]
+SettingsManager setupSettingsManagerMock() {
+  unregister<SettingsManager>();
+  final service = SettingsManagerMock();
+
+  locator.registerSingleton<SettingsManager>(service);
 
   return service;
 }
