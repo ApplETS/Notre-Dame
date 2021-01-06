@@ -137,6 +137,14 @@ class _ScheduleSettingsState extends State<ScheduleSettings> {
         return AppIntl.of(context).schedule_settings_starting_weekday_saturday;
       case StartingDayOfWeek.monday:
         return AppIntl.of(context).schedule_settings_starting_weekday_monday;
+      case StartingDayOfWeek.tuesday:
+        return AppIntl.of(context).schedule_settings_starting_weekday_tuesday;
+      case StartingDayOfWeek.wednesday:
+        return AppIntl.of(context).schedule_settings_starting_weekday_wednesday;
+      case StartingDayOfWeek.thursday:
+        return AppIntl.of(context).schedule_settings_starting_weekday_thursday;
+      case StartingDayOfWeek.friday:
+        return AppIntl.of(context).schedule_settings_starting_weekday_friday;
     }
     return AppIntl.of(context).schedule_settings_starting_weekday_monday;
   }
