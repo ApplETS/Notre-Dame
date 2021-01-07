@@ -292,8 +292,8 @@ void main() {
         const String username = "username";
         const String password = "password";
 
-        final String stubResponse = buildResponse(
-            Urls.infoStudent, studentInfoXML + studentInfoXML, 'liste');
+        final String stubResponse =
+            buildResponse(Urls.infoStudent, studentInfoXML);
 
         HttpClientMock.stubPost(clientMock, Urls.signetsAPI, stubResponse);
 
@@ -312,7 +312,7 @@ void main() {
         const String password = "password";
 
         final String stubResponse =
-            buildErrorResponse(Urls.infoStudent, 'An error occurred', 'liste');
+            buildErrorResponse(Urls.infoStudent, 'An error occurred');
 
         HttpClientMock.stubPost(clientMock, Urls.signetsAPI, stubResponse);
 
@@ -381,7 +381,7 @@ void main() {
 
         HttpClientMock.stubPost(clientMock, Urls.signetsAPI, stubResponse);
 
-        expect(service.getSessions(username: username, password: password),
+        expect(service.getPrograms(username: username, password: password),
             throwsA(isInstanceOf<ApiException>()),
             reason:
                 "If the SignetsAPI return an error the service should return the error.");
@@ -390,23 +390,23 @@ void main() {
   });
 }
 
-String buildResponse(String operation, String body, String firstElement) =>
+String buildResponse(String operation, String body, [String firstElement]) =>
     '<?xml version="1.0" encoding="utf-8"?> '
     '<soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"> '
     '<soap:Body> '
     '<${operation}Response xmlns="http://etsmtl.ca/"> '
     '<${operation}Result>'
     '<erreur /> '
-    '<$firstElement>'
+    '[<$firstElement>]?'
     '$body'
-    '</$firstElement>'
+    '[</$firstElement>]?'
     '</${operation}Result>'
     '</${operation}Response>'
     '</soap:Body>'
     '</soap:Envelope>';
 
-String buildErrorResponse(
-        String operation, String error, String firstElement) =>
+String buildErrorResponse(String operation, String error,
+        [String firstElement]) =>
     '<?xml version="1.0" encoding="utf-8"?> '
     '<soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"> '
     '<soap:Body>'
@@ -415,7 +415,7 @@ String buildErrorResponse(
     '<erreur>'
     '$error'
     '</erreur>'
-    '<$firstElement /> '
+    '[<$firstElement />]?'
     '</${operation}Result>'
     '</${operation}Response>'
     '</soap:Body>'
