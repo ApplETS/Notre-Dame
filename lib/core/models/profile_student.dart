@@ -16,8 +16,8 @@ class ProfileStudent {
 
   /// Used to create a new [ProfileStudent] instance from a [XMLElement].
   factory ProfileStudent.fromXmlNode(XmlElement node) => ProfileStudent(
-      lastName: node.getElement('nom').innerText,
-      firstName: node.getElement('prenom').innerText,
+      lastName: node.getElement('nom').innerText.trimRight(),
+      firstName: node.getElement('prenom').innerText.trimRight(),
       permanentCode: node.getElement('codePerm').innerText,
       balance: node.getElement('soldeTotal').innerText);
 
@@ -29,8 +29,8 @@ class ProfileStudent {
       balance: map['soldeTotal'] as String);
 
   Map<String, dynamic> toJson() => {
-        'nom': lastName,
-        'prenom': firstName,
+        'nom': lastName.trimRight(),
+        'prenom': firstName.trimRight(),
         'codePerm': permanentCode,
         'soldeTotal': balance
       };

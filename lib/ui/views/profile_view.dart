@@ -48,11 +48,11 @@ class _ProfileViewState extends State<ProfileView> {
             ),
             ListTile(
               title: Text(AppIntl.of(context).profile_first_name),
-              trailing: Text(model.profileStudent.firstName.trimRight()),
+              trailing: Text(model.profileStudent.firstName),
             ),
             ListTile(
               title: Text(AppIntl.of(context).profile_last_name),
-              trailing: Text(model.profileStudent.lastName.trimRight()),
+              trailing: Text(model.profileStudent.lastName),
             ),
             ListTile(
                 title: Text(AppIntl.of(context).profile_permanent_code),
