@@ -147,7 +147,7 @@ void main() {
           "${SettingsManager.tag}-${EnumToString.convertToString(flag)}",
           any))
           .called(1);
-      verify(preferencesService.setString(flag, any));
+      verify(preferencesService.setBool(flag, value: anyNamed("value")));
     });
   });
 }
