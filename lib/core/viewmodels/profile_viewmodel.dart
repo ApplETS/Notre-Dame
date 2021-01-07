@@ -1,5 +1,6 @@
 // FLUTTER / DART / THIRD-PARTIES
 import 'package:notredame/core/managers/user_repository.dart';
+import 'package:notredame/core/models/mon_ets_user.dart';
 import 'package:notredame/core/models/profile_student.dart';
 import 'package:notredame/core/models/program.dart';
 import 'package:stacked/stacked.dart';
@@ -16,6 +17,8 @@ class ProfileViewModel extends FutureViewModel<List<Program>> {
   ProfileStudent get profileStudent {
     return _userRepository.info ?? _student;
   }
+
+  String get universalAccessCode => _userRepository.monETSUser.universalCode;
 
   Future<List<Program>> getProgramsList() async {
     if (_programList == null || _programList.isEmpty) {

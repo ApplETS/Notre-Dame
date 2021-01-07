@@ -57,6 +57,9 @@ class _ProfileViewState extends State<ProfileView> {
             ListTile(
                 title: Text(AppIntl.of(context).profile_permanent_code),
                 trailing: Text(model.profileStudent.permanentCode)),
+            ListTile(
+                title: Text(AppIntl.of(context).login_prompt_universal_code),
+                trailing: Text(model.universalAccessCode)),
             FutureBuilder(
               future: model.getProgramsList(),
               builder: (BuildContext context, AsyncSnapshot snapshot) {
