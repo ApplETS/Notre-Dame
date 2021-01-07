@@ -1,6 +1,8 @@
 // FLUTTER / DART / THIRD-PARTIES
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
+import 'package:notredame/core/models/profile_student.dart';
+import 'package:notredame/core/models/program.dart';
 
 // SERVICE
 import 'package:notredame/core/services/signets_api.dart';
@@ -242,8 +244,8 @@ void main() {
 
         HttpClientMock.stubPost(clientMock, Urls.signetsAPI, stubResponse);
 
-        final result = await service.getSessions(
-            username: username, password: password);
+        final result =
+            await service.getSessions(username: username, password: password);
 
         expect(result, isA<List<Session>>());
         expect(result.first == session, isTrue);
@@ -258,15 +260,124 @@ void main() {
         const String password = "password";
 
         final String stubResponse = buildErrorResponse(
-            Urls.listSessionsOperation,
-            'An error occurred',
-            'liste');
+            Urls.listSessionsOperation, 'An error occurred', 'liste');
 
         HttpClientMock.stubPost(clientMock, Urls.signetsAPI, stubResponse);
 
-        expect(
-            service.getSessions(
-                username: username, password: password),
+        expect(service.getSessions(username: username, password: password),
+            throwsA(isInstanceOf<ApiException>()),
+            reason:
+                "If the SignetsAPI return an error the service should return the error.");
+      });
+    });
+
+    group("getStudentInfo - ", () {
+      const String studentInfoXML = '<nom>Doe</nom>'
+          '<prenom>John</prenom>'
+          '<codePerm>DOEJ00000000</codePerm>'
+          '<soldeTotal>99.99</soldeTotal>'
+          '<masculin>1</masculin>';
+
+      final ProfileStudent studentInfo = ProfileStudent(
+          lastName: 'Doe',
+          firstName: 'John',
+          permanentCode: 'DOEJ00000000',
+          balance: '99.99');
+
+      test("right credentials", () async {
+        const String username = "username";
+        const String password = "password";
+
+        final String stubResponse = buildResponse(
+            Urls.infoStudent, studentInfoXML + studentInfoXML, 'liste');
+
+        HttpClientMock.stubPost(clientMock, Urls.signetsAPI, stubResponse);
+
+        final result = await service.getStudentInfo(
+            username: username, password: password);
+
+        expect(result, isA<ProfileStudent>());
+        expect(result == studentInfo, isTrue);
+      });
+
+      // Currently SignetsAPI doesn't have a clear way to indicate which error
+      // occurred (no error code, no change of http code, just a text)
+      // so for now whatever the error we will throw a generic error
+      test("wrong credentials / an error occurred", () async {
+        const String username = "username";
+        const String password = "password";
+
+        final String stubResponse =
+            buildErrorResponse(Urls.infoStudent, 'An error occurred', 'liste');
+
+        HttpClientMock.stubPost(clientMock, Urls.signetsAPI, stubResponse);
+
+        expect(service.getStudentInfo(username: username, password: password),
+            throwsA(isInstanceOf<ApiException>()),
+            reason:
+                "If the SignetsAPI return an error the service should return the error.");
+      });
+    });
+
+    group("getPrograms - ", () {
+      const String programXML = '<Programme>'
+          '<code>9999</code>'
+          '<libelle>Genie</libelle>'
+          '<profil>Etudiant</profil>'
+          '<statut>Actif</statut>'
+          '<sessionDebut>2020-01-04</sessionDebut>'
+          '<sessionFin>2020-04-04</sessionFin>'
+          '<moyenne>3</moyenne>'
+          '<nbEquivalences>7</nbEquivalences>'
+          '<nbCrsReussis>6</nbCrsReussis>'
+          '<nbCrsEchoues>5</nbCrsEchoues>'
+          '<nbCreditsInscrits>4</nbCreditsInscrits>'
+          '<nbCreditsCompletes>3</nbCreditsCompletes>'
+          '<nbCreditsPotentiels>2</nbCreditsPotentiels>'
+          '<nbCreditsRecherche>1</nbCreditsRecherche>'
+          '</Programme>';
+
+      final Program program = Program(
+          name: 'Genie',
+          code: '9999',
+          average: '3',
+          accumulatedCredits: '3',
+          registeredCredits: '4',
+          completedCourses: '6',
+          failedCourses: '5',
+          equivalentCourses: '7',
+          status: 'Actif');
+
+      test("right credentials", () async {
+        const String username = "username";
+        const String password = "password";
+
+        final String stubResponse =
+            buildResponse(Urls.listPrograms, programXML + programXML, 'liste');
+
+        HttpClientMock.stubPost(clientMock, Urls.signetsAPI, stubResponse);
+
+        final result =
+            await service.getPrograms(username: username, password: password);
+
+        expect(result, isA<List<Program>>());
+        expect(result.first == program, isTrue);
+        expect(result.length, 2);
+      });
+
+      // Currently SignetsAPI doesn't have a clear way to indicate which error
+      // occurred (no error code, no change of http code, just a text)
+      // so for now whatever the error we will throw a generic error
+      test("wrong credentials / an error occurred", () async {
+        const String username = "username";
+        const String password = "password";
+
+        final String stubResponse =
+            buildErrorResponse(Urls.listPrograms, 'An error occurred', 'liste');
+
+        HttpClientMock.stubPost(clientMock, Urls.signetsAPI, stubResponse);
+
+        expect(service.getSessions(username: username, password: password),
             throwsA(isInstanceOf<ApiException>()),
             reason:
                 "If the SignetsAPI return an error the service should return the error.");
