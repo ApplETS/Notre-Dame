@@ -29,7 +29,7 @@ void main() {
     });
 
     testWidgets('has five sections with icons and titles (dashboard, schedule, student, ets and more)', (WidgetTester tester) async {
-      await tester.pumpWidget(localizedWidget(child: BottomBar(BottomBar.dashboardView)));
+      await tester.pumpWidget(localizedWidget(child: BottomBar()));
       await tester.pumpAndSettle();
 
       final texts = find.byType(Text);
@@ -42,7 +42,7 @@ void main() {
     group('navigate when tapped to - ', () {
       testWidgets('dashbord', (WidgetTester tester) async {
         await tester.pumpWidget(
-            localizedWidget(child: BottomBar(BottomBar.scheduleView)));
+            localizedWidget(child: BottomBar()));
         await tester.pumpAndSettle();
 
         await tester.tap(find.byIcon(Icons.dashboard));
@@ -51,7 +51,7 @@ void main() {
       });
 
       testWidgets('schedule', (WidgetTester tester) async {
-        await tester.pumpWidget(localizedWidget(child: BottomBar(BottomBar.dashboardView)));
+        await tester.pumpWidget(localizedWidget(child: BottomBar()));
         await tester.pumpAndSettle();
 
         await tester.tap(find.byIcon(Icons.schedule));
@@ -60,7 +60,7 @@ void main() {
       });
 
       testWidgets('student', (WidgetTester tester) async {
-        await tester.pumpWidget(localizedWidget(child: BottomBar(BottomBar.dashboardView)));
+        await tester.pumpWidget(localizedWidget(child: BottomBar()));
         await tester.pumpAndSettle();
 
         await tester.tap(find.byIcon(Icons.school));
@@ -69,7 +69,7 @@ void main() {
       });
 
       testWidgets('ets', (WidgetTester tester) async {
-        await tester.pumpWidget(localizedWidget(child: BottomBar(BottomBar.dashboardView)));
+        await tester.pumpWidget(localizedWidget(child: BottomBar()));
         await tester.pumpAndSettle();
 
         await tester.tap(find.byIcon(Icons.account_balance));
@@ -78,7 +78,7 @@ void main() {
       });
 
       testWidgets('more', (WidgetTester tester) async {
-        await tester.pumpWidget(localizedWidget(child: BottomBar(BottomBar.dashboardView)));
+        await tester.pumpWidget(localizedWidget(child: BottomBar()));
         await tester.pumpAndSettle();
 
         await tester.tap(find.byIcon(Icons.dehaze));

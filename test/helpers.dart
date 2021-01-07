@@ -2,6 +2,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:logger/logger.dart';
+import 'package:notredame/core/managers/settings_manager.dart';
 
 // OTHER
 import 'package:notredame/locator.dart';
@@ -14,14 +16,17 @@ import 'package:notredame/core/services/mon_ets_api.dart';
 import 'package:notredame/core/services/signets_api.dart';
 import 'package:notredame/core/managers/user_repository.dart';
 import 'package:notredame/core/managers/cache_manager.dart';
+import 'package:notredame/core/services/preferences_service.dart';
 
 // MOCKS
 import 'mock/managers/cache_manager_mock.dart';
+import 'mock/managers/settings_manager_mock.dart';
 import 'mock/managers/user_repository_mock.dart';
 import 'mock/services/analytics_service_mock.dart';
 import 'mock/services/flutter_secure_storage_mock.dart';
 import 'mock/services/mon_ets_api_mock.dart';
 import 'mock/services/navigation_service_mock.dart';
+import 'mock/services/preferences_service_mock.dart';
 import 'mock/services/signets_api_mock.dart';
 
 /// Unregister the service [T] from GetIt
@@ -32,7 +37,10 @@ void unregister<T>() {
 }
 
 /// Load the l10n classes. Take the [child] widget to test
-Widget localizedWidget({@required Widget child, String locale = 'en'}) =>
+Widget localizedWidget(
+        {@required Widget child,
+        bool useScaffold = true,
+        String locale = 'en'}) =>
     MaterialApp(
       localizationsDelegates: const [
         AppIntl.delegate,
@@ -41,7 +49,7 @@ Widget localizedWidget({@required Widget child, String locale = 'en'}) =>
         GlobalCupertinoLocalizations.delegate,
       ],
       locale: Locale(locale),
-      home: Scaffold(body: child),
+      home: useScaffold ? Scaffold(body: child) : child,
     );
 
 /// Load a mock of the [AnalyticsService]
@@ -115,6 +123,37 @@ CacheManager setupCacheManagerMock() {
   final service = CacheManagerMock();
 
   locator.registerSingleton<CacheManager>(service);
+
+  return service;
+}
+
+/// Load the [Logger]
+Logger setupLogger() {
+  unregister<Logger>();
+  final service = Logger();
+  Logger.level = Level.error;
+
+  locator.registerSingleton<Logger>(service);
+
+  return service;
+}
+
+/// Load a mock of the [PreferencesService]
+PreferencesService setupPreferencesServiceMock() {
+  unregister<PreferencesService>();
+  final service = PreferencesServiceMock();
+
+  locator.registerSingleton<PreferencesService>(service);
+
+  return service;
+}
+
+/// Load a mock of the [SettingsManager]
+SettingsManager setupSettingsManagerMock() {
+  unregister<SettingsManager>();
+  final service = SettingsManagerMock();
+
+  locator.registerSingleton<SettingsManager>(service);
 
   return service;
 }

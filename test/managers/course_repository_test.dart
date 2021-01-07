@@ -18,13 +18,12 @@ import 'package:notredame/core/models/mon_ets_user.dart';
 
 // UTILS
 import 'package:notredame/core/utils/api_exception.dart';
-
 import '../helpers.dart';
+
+// MOCKS
 import '../mock/managers/cache_manager_mock.dart';
 import '../mock/managers/user_repository_mock.dart';
 import '../mock/services/signets_api_mock.dart';
-
-// MOCKS
 
 void main() {
   AnalyticsService analyticsService;
@@ -41,6 +40,7 @@ void main() {
       signetsApi = setupSignetsApiMock();
       userRepository = setupUserRepositoryMock();
       cacheManager = setupCacheManagerMock();
+      setupLogger();
 
       manager = CourseRepository();
     });
@@ -127,6 +127,29 @@ void main() {
               session: session.shortName),
           cacheManager.update(CourseRepository.coursesActivitiesCacheKey, any)
         ]);
+      });
+
+      test("Activities are only loaded from cache.", () async {
+        // Stub the cache to return 1 activity
+        CacheManagerMock.stubGet(cacheManager as CacheManagerMock,
+            CourseRepository.coursesActivitiesCacheKey, jsonEncode(activities));
+
+
+        expect(manager.coursesActivities, isNull);
+        final List<CourseActivity> results =
+        await manager.getCoursesActivities(fromCacheOnly: true);
+
+        expect(results, isInstanceOf<List<CourseActivity>>());
+        expect(results, activities);
+        expect(manager.coursesActivities, activities,
+            reason: "The list of activities should not be empty");
+
+        verifyInOrder([
+          cacheManager.get(CourseRepository.coursesActivitiesCacheKey),
+        ]);
+
+        verifyNoMoreInteractions(signetsApi);
+        verifyNoMoreInteractions(userRepository);
       });
 
       test(

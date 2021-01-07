@@ -24,6 +24,7 @@ void main() {
     setUp(() async {
       navigationService = setupNavigationServiceMock();
       userRepositoryMock = setupUserRepositoryMock() as UserRepositoryMock;
+      setupLogger();
 
       viewModel = StartUpViewModel();
     });

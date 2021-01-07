@@ -6,10 +6,13 @@ import 'package:intl/intl.dart';
 import 'package:notredame/core/models/course_activity.dart';
 
 class CourseActivityTile extends StatelessWidget {
+  /// Course to display
   final CourseActivity activity;
 
   DateFormat get timeFormat => DateFormat.Hm();
 
+  /// Display an [activity] with the start and end time of the activity,
+  /// it name, shortname, type of activity and local.
   const CourseActivityTile(this.activity);
 
   @override
@@ -19,8 +22,8 @@ class CourseActivityTile extends StatelessWidget {
           leading: _buildLeading(),
           dense: false,
           title: Text(activity.courseGroup),
-          isThreeLine: true,
-          subtitle: Text("${activity.courseName}\n${activity.activityDescription}"),
+          subtitle:
+              Text("${activity.courseName}\n${activity.activityDescription}"),
           trailing: Text(activity.activityLocation),
         ),
       );
@@ -46,6 +49,7 @@ class CourseActivityTile extends StatelessWidget {
         ),
       );
 
+  /// Generate a color based on [text].
   Color colorFor(String text) {
     var hash = 0;
     for (var i = 0; i < text.length; i++) {

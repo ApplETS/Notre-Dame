@@ -6,7 +6,7 @@ import 'package:stacked/stacked.dart';
 import 'package:notredame/core/viewmodels/quick_links_viewmodel.dart';
 
 // WIDGETS
-import 'package:notredame/ui/widgets/bottom_bar.dart';
+import 'package:notredame/ui/widgets/base_scaffold.dart';
 import 'package:notredame/ui/widgets/web_link_card.dart';
 
 // OTHER
@@ -22,12 +22,12 @@ class _QuickLinksViewState extends State<QuickLinksView> {
   Widget build(BuildContext context) =>
       ViewModelBuilder<QuickLinksViewModel>.reactive(
         viewModelBuilder: () => QuickLinksViewModel(),
-        builder: (context, model, child) => Scaffold(
+        builder: (context, model, child) => BaseScaffold(
+          isLoading: model.isBusy,
           appBar: AppBar(
             title: Text(AppIntl.of(context).title_ets),
             automaticallyImplyLeading: false,
           ),
-          bottomNavigationBar: BottomBar(BottomBar.etsView),
           body: SafeArea(
             child: Align(
               alignment: Alignment.topCenter,

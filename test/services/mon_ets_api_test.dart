@@ -15,6 +15,7 @@ import 'package:notredame/core/constants/urls.dart';
 import 'package:notredame/core/utils/http_exceptions.dart';
 
 // MOCKS
+import '../helpers.dart';
 import '../mock/services/http_client_mock.dart';
 
 void main() {
@@ -25,6 +26,8 @@ void main() {
   group('MonETSApi - ', () {
     setUp(() {
       clientMock = HttpClientMock();
+      setupLogger();
+
       service = MonETSApi(clientMock);
     });
 
