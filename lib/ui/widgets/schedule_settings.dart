@@ -19,7 +19,7 @@ class _ScheduleSettingsState extends State<ScheduleSettings> {
   Widget build(BuildContext context) => ViewModelBuilder.reactive(
         viewModelBuilder: () => ScheduleSettingsViewModel(),
         builder: (context, model, child) => SizedBox(
-          height: 600,
+          height: MediaQuery.of(context).size.height * 0.50,
           child: Column(
             children: [
               Center(
