@@ -77,7 +77,7 @@ class SignetsApiMock extends Mock implements SignetsApi {
   /// Throw [exceptionToThrow] when [getInfo] with the [username] is used.
   static void stubGetInfoException(SignetsApiMock mock, String username,
       {ApiException exceptionToThrow =
-          const ApiException(prefix: SignetsApi.tag, message: "errorrr")}) {
+          const ApiException(prefix: SignetsApi.tag, message: "")}) {
     when(mock.getStudentInfo(
             username: username, password: anyNamed("password")))
         .thenThrow(exceptionToThrow);
