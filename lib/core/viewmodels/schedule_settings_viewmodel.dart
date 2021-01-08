@@ -68,7 +68,7 @@ class ScheduleSettingsViewModel
 
     _calendarFormat = settings[PreferencesFlag.scheduleSettingsCalendarFormat]
         as CalendarFormat;
-    startingDayOfWeek = settings[PreferencesFlag.scheduleSettingsStartWeekday]
+    _startingDayOfWeek = settings[PreferencesFlag.scheduleSettingsStartWeekday]
         as StartingDayOfWeek;
     _showTodayBtn =
         settings[PreferencesFlag.scheduleSettingsShowTodayBtn] as bool;
