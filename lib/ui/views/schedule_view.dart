@@ -193,6 +193,7 @@ class _ScheduleViewState extends State<ScheduleView>
             onPressed: () async {
               await showModalBottomSheet(
                   isDismissible: true,
+                  enableDrag: true,
                   isScrollControlled: true,
                   context: context,
                   shape: const RoundedRectangleBorder(
