@@ -49,10 +49,9 @@ class UserRepository {
 
   MonETSUser get monETSUser => _monETSUser;
 
-  List<ProfileStudent> _info;
+  ProfileStudent _info;
 
-  ProfileStudent get info =>
-      _info == null || _info.isEmpty ? null : _info.first;
+  ProfileStudent get info => _info;
 
   List<Program> _programs;
 
@@ -153,7 +152,7 @@ class UserRepository {
         final String res = await _cacheManager.get(programsCacheKey);
         final List programsCached = jsonDecode(res) as List<dynamic>;
 
-        // Build list of activities loaded from the cache.
+        // Build list of programs loaded from the cache.
         _programs = programsCached
             .map((e) => Program.fromJson(e as Map<String, dynamic>))
             .toList();
@@ -194,22 +193,20 @@ class UserRepository {
     return _programs;
   }
 
-  /// Get the list of session on which the student was active.
-  /// The list from the [CacheManager] is loaded than updated with the results
+  /// Get the profile informations on which the student was active.
+  /// The information from the [CacheManager] is loaded than updated with the results
   /// from the [SignetsApi].
   Future<ProfileStudent> getInfo() async {
-    // Load the sessions from the cache if the list doesn't exist
+    // Load the student profile from the cache if the information doesn't exist
     if (_info == null) {
       try {
-        _info = [];
+        _info = null;
         final String res = await _cacheManager.get(infoCacheKey);
-        final List infoCached = jsonDecode(res) as List<dynamic>;
+        final infoCached = jsonDecode(res) as dynamic;
 
-        // Build list of activities loaded from the cache.
-        _info = infoCached
-            .map((e) => ProfileStudent.fromJson(e as Map<String, dynamic>))
-            .toList();
-        _logger.d("$tag - getInfo: ${_info.length} info loaded from cache.");
+        // Build info loaded from the cache.
+        _info = ProfileStudent.fromJson(infoCached as Map<String, dynamic>);
+        _logger.d("$tag - getInfo: $_info info loaded from cache.");
       } on CacheException catch (_) {
         _logger.e(
             "$tag - getInfo: exception raised will trying to load the info from cache.");
@@ -220,12 +217,12 @@ class UserRepository {
       // getPassword will try to authenticate the user if not authenticated.
       final String password = await getPassword();
 
-      final ProfileStudent fetchedInfo = await _signetsApi.getStudentInfo(
+      final fetchedInfo = await _signetsApi.getStudentInfo(
           username: monETSUser.universalCode, password: password);
       _logger.d("$tag - getInfo: $fetchedInfo info fetched.");
 
-      if (!_info.contains(fetchedInfo)) {
-        _info.add(fetchedInfo);
+      if (_info != fetchedInfo) {
+        _info ??= fetchedInfo;
       }
 
       // Update cache
@@ -233,11 +230,12 @@ class UserRepository {
     } on CacheException catch (_) {
       _logger.e(
           "$tag - getInfo: exception raised will trying to update the cache.");
-      return _info.first;
+      return _info;
     } on Exception catch (e) {
       _analyticsService.logError(tag, "Exception raised during getInfo: $e");
       rethrow;
     }
-    return _info.first;
+
+    return _info;
   }
 }
