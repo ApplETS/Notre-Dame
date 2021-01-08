@@ -156,7 +156,7 @@ class SignetsApi {
         .toList();
   }
 
-  /// Call the SignetsAPI to get the list of all the [ProfileStudent] for the student ([username]).
+  /// Call the SignetsAPI to get the [ProfileStudent] for the student ([username]).
   Future<ProfileStudent> getStudentInfo(
       {@required String username, @required String password}) async {
     // Generate initial soap envelope
