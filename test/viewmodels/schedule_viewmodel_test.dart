@@ -81,31 +81,30 @@ void main() {
         verifyNoMoreInteractions(courseRepository);
         verifyNoMoreInteractions(settingsManager);
       });
-      //
-      // test("Signets throw an error while trying to get new events", () async {
-      //   CourseRepositoryMock.stubGetCoursesActivities(
-      //       courseRepository as CourseRepositoryMock,
-      //       fromCacheOnly: true);
-      //   CourseRepositoryMock.stubGetCoursesActivitiesException(
-      //       courseRepository as CourseRepositoryMock,
-      //       fromCacheOnly: false);
-      //
-      //   final result = viewModel.futureToRun();
-      //
-      //   // Await until the call to get the activities from signets is sent
-      //   await untilCalled(courseRepository.getCoursesActivities());
-      //
-      //   // expect(result, [],
-      //   //     reason: "Even if SignetsAPI fails we should receives a list.");
-      //
-      //   verifyInOrder([
-      //     courseRepository.getCoursesActivities(fromCacheOnly: true),
-      //     courseRepository.getCoursesActivities()
-      //   ]);
-      //
-      //   verifyNoMoreInteractions(courseRepository);
-      //   verifyNoMoreInteractions(settingsManager);
-      // });
+
+      test("Signets throw an error while trying to get new events", () async {
+        setupAppIntl();
+        CourseRepositoryMock.stubGetCoursesActivities(
+            courseRepository as CourseRepositoryMock,
+            fromCacheOnly: true);
+        CourseRepositoryMock.stubGetCoursesActivitiesException(
+            courseRepository as CourseRepositoryMock,
+            fromCacheOnly: false);
+
+        expect(await viewModel.futureToRun(), [],
+            reason: "Even if SignetsAPI fails we should receives a list.");
+
+        // Await until the call to get the activities from signets is sent
+        await untilCalled(courseRepository.getCoursesActivities());
+
+        verifyInOrder([
+          courseRepository.getCoursesActivities(fromCacheOnly: true),
+          courseRepository.getCoursesActivities()
+        ]);
+
+        verifyNoMoreInteractions(courseRepository);
+        verifyNoMoreInteractions(settingsManager);
+      });
     });
 
     group("coursesActivities - ", () {
