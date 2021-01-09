@@ -31,6 +31,9 @@ import 'mock/services/navigation_service_mock.dart';
 import 'mock/services/preferences_service_mock.dart';
 import 'mock/services/signets_api_mock.dart';
 
+/// Return the path of the [goldenName] file.
+String goldenFilePath(String goldenName) => "./goldenFiles/$goldenName.png";
+
 /// Unregister the service [T] from GetIt
 void unregister<T>() {
   if (locator.isRegistered<T>()) {
