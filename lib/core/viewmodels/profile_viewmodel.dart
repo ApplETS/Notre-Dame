@@ -32,9 +32,7 @@ class ProfileViewModel extends FutureViewModel<List<Program>> {
       _programList = [];
     }
     if (_userRepository.programs != null) {
-      for (final Program program in _userRepository.programs) {
-        _programList.add(program);
-      }
+      _programList = _userRepository.programs;
     }
     return _programList;
   }
