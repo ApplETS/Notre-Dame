@@ -41,6 +41,7 @@ dependencies:
   url_launcher: ^5.5.0
   intl: ^0.16.1
   enum_to_string: ^1.0.14
+  oktoast: ^2.3.2
 
   # Other
   http: ^0.12.1

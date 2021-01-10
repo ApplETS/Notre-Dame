@@ -127,30 +127,30 @@ class _ScheduleViewState extends State<ScheduleView>
 
   /// Build the calendar
   Widget _buildTableCalendar(ScheduleViewModel model) => TableCalendar(
-    //TODO uncomment when https://github.com/aleksanderwozniak/table_calendar/issues/164 is close
-    // startingDayOfWeek: model.settings[PreferencesFlag.scheduleSettingsStartWeekday] as StartingDayOfWeek,
-          startingDayOfWeek: StartingDayOfWeek.monday,
-          initialSelectedDay: DateTime.now(),
-          weekendDays: const [],
-          headerStyle: const HeaderStyle(
-              centerHeaderTitle: true, formatButtonVisible: false),
-          events: model.coursesActivities,
-          onDaySelected: (date, events, holidays) => setState(() {
-            model.selectedDate = date;
-          }),
-          builders: CalendarBuilders(
-              todayDayBuilder: (context, date, _) => _buildSelectedDate(
-                  date, _defaultColor, textColor: Colors.black),
-              selectedDayBuilder: (context, date, _) => FadeTransition(
-                    opacity: Tween(begin: 0.0, end: 1.0)
-                        .animate(_animationController),
-                    child: _buildSelectedDate(date, _selectedColor,
-                        textColor: Colors.black),
-                  ),
-              markersBuilder: (context, date, events, holidays) =>
-                  [_buildEventsMarker(date, events)]),
-          calendarController: _calendarController,
-        );
+        //TODO uncomment when https://github.com/aleksanderwozniak/table_calendar/issues/164 is close
+        // startingDayOfWeek: model.settings[PreferencesFlag.scheduleSettingsStartWeekday] as StartingDayOfWeek,
+        startingDayOfWeek: StartingDayOfWeek.monday,
+        initialSelectedDay: DateTime.now(),
+        weekendDays: const [],
+        headerStyle: const HeaderStyle(
+            centerHeaderTitle: true, formatButtonVisible: false),
+        events: model.coursesActivities,
+        onDaySelected: (date, events, holidays) => setState(() {
+          model.selectedDate = date;
+        }),
+        builders: CalendarBuilders(
+            todayDayBuilder: (context, date, _) => _buildSelectedDate(
+                date, _defaultColor, textColor: Colors.black),
+            selectedDayBuilder: (context, date, _) => FadeTransition(
+                  opacity:
+                      Tween(begin: 0.0, end: 1.0).animate(_animationController),
+                  child: _buildSelectedDate(date, _selectedColor,
+                      textColor: Colors.black),
+                ),
+            markersBuilder: (context, date, events, holidays) =>
+                [_buildEventsMarker(date, events)]),
+        calendarController: _calendarController,
+      );
 
   /// Build the visual for the selected [date]. The [color] parameter set the color for the tile.
   Widget _buildSelectedDate(DateTime date, Color color,
@@ -193,6 +193,7 @@ class _ScheduleViewState extends State<ScheduleView>
             onPressed: () async {
               await showModalBottomSheet(
                   isDismissible: true,
+                  enableDrag: true,
                   isScrollControlled: true,
                   context: context,
                   shape: const RoundedRectangleBorder(

@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:logger/logger.dart';
-import 'package:notredame/core/managers/settings_manager.dart';
 
 // OTHER
 import 'package:notredame/locator.dart';
@@ -17,9 +16,12 @@ import 'package:notredame/core/services/signets_api.dart';
 import 'package:notredame/core/managers/user_repository.dart';
 import 'package:notredame/core/managers/cache_manager.dart';
 import 'package:notredame/core/services/preferences_service.dart';
+import 'package:notredame/core/managers/course_repository.dart';
+import 'package:notredame/core/managers/settings_manager.dart';
 
 // MOCKS
 import 'mock/managers/cache_manager_mock.dart';
+import 'mock/managers/course_repository_mock.dart';
 import 'mock/managers/settings_manager_mock.dart';
 import 'mock/managers/user_repository_mock.dart';
 import 'mock/services/analytics_service_mock.dart';
@@ -28,6 +30,9 @@ import 'mock/services/mon_ets_api_mock.dart';
 import 'mock/services/navigation_service_mock.dart';
 import 'mock/services/preferences_service_mock.dart';
 import 'mock/services/signets_api_mock.dart';
+
+/// Return the path of the [goldenName] file.
+String goldenFilePath(String goldenName) => "./goldenFiles/$goldenName.png";
 
 /// Unregister the service [T] from GetIt
 void unregister<T>() {
@@ -154,6 +159,16 @@ SettingsManager setupSettingsManagerMock() {
   final service = SettingsManagerMock();
 
   locator.registerSingleton<SettingsManager>(service);
+
+  return service;
+}
+
+/// Load a mock of the [CourseRepository]
+CourseRepository setupCourseRepositoryMock() {
+  unregister<CourseRepository>();
+  final service = CourseRepositoryMock();
+
+  locator.registerSingleton<CourseRepository>(service);
 
   return service;
 }

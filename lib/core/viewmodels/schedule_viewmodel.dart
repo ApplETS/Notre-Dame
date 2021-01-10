@@ -1,5 +1,6 @@
 // FLUTTER / DART / THIRD-PARTIES
 import 'package:notredame/core/constants/preferences_flags.dart';
+import 'package:oktoast/oktoast.dart';
 import 'package:stacked/stacked.dart';
 import 'package:table_calendar/table_calendar.dart';
 
@@ -11,6 +12,7 @@ import 'package:notredame/core/managers/settings_manager.dart';
 import 'package:notredame/core/models/course_activity.dart';
 
 // OTHER
+import 'package:notredame/generated/l10n.dart';
 import 'package:notredame/locator.dart';
 
 class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
@@ -31,10 +33,9 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
 
   /// Activities for the day currently selected
   List<dynamic> get selectedDateEvents =>
-      _coursesActivities[DateTime(
-          selectedDate.year, selectedDate.month, selectedDate.day)] ??
+      _coursesActivities[
+          DateTime(selectedDate.year, selectedDate.month, selectedDate.day)] ??
       [];
-
 
   bool isLoadingEvents = false;
 
@@ -44,14 +45,15 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
         setBusyForObject(isLoadingEvents, true);
         _courseRepository
             .getCoursesActivities()
-            .then((value) => setBusyForObject(isLoadingEvents, false));
+            .catchError(onError)
+            .whenComplete(() => setBusyForObject(isLoadingEvents, false));
         return value;
       });
 
   @override
   // ignore: type_annotate_public_apis
   void onError(error) {
-    // TODO toast when fails
+    showToast(AppIntl.current.error);
   }
 
   Future loadSettings(CalendarController calendarController) async {
@@ -83,6 +85,11 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
   }
 
   /// Get the activities for a specific [date], return empty if there is no activity for this [date]
-  List<CourseActivity> coursesActivitiesFor(DateTime date) =>
-      _coursesActivities.containsKey(date) ? _coursesActivities[date] : [];
+  List<CourseActivity> coursesActivitiesFor(DateTime date) {
+    // Populate the _coursesActivities
+    if(_coursesActivities.isEmpty) {
+      coursesActivities;
+    }
+    return _coursesActivities.containsKey(date) ? _coursesActivities[date] : [];
+  }
 }
