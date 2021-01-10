@@ -144,13 +144,15 @@ class UserRepository {
   /// Get the list of programs on which the student was active.
   /// The list from the [CacheManager] is loaded than updated with the results
   /// from the [SignetsApi].
-  Future<List<Program>> getPrograms() async {
+  Future<List<Program>> getPrograms({bool fromCacheOnly = false}) async {
     // Load the programs from the cache if the list doesn't exist
     if (_programs == null) {
       try {
         _programs = [];
-        final String res = await _cacheManager.get(programsCacheKey);
-        final List programsCached = jsonDecode(res) as List<dynamic>;
+
+        final List programsCached =
+            jsonDecode(await _cacheManager.get(programsCacheKey))
+                as List<dynamic>;
 
         // Build list of programs loaded from the cache.
         _programs = programsCached
@@ -158,6 +160,9 @@ class UserRepository {
             .toList();
         _logger.d(
             "$tag - getPrograms: ${_programs.length} programs loaded from cache.");
+        if (fromCacheOnly) {
+          return _programs;
+        }
       } on CacheException catch (_) {
         _logger.e(
             "$tag - getPrograms: exception raised will trying to load the programs from cache.");
@@ -196,17 +201,21 @@ class UserRepository {
   /// Get the profile informations on which the student was active.
   /// The information from the [CacheManager] is loaded than updated with the results
   /// from the [SignetsApi].
-  Future<ProfileStudent> getInfo() async {
+  Future<ProfileStudent> getInfo({bool fromCacheOnly = false}) async {
     // Load the student profile from the cache if the information doesn't exist
     if (_info == null) {
       try {
         _info = null;
-        final String res = await _cacheManager.get(infoCacheKey);
-        final infoCached = jsonDecode(res) as dynamic;
+
+        final infoCached =
+            jsonDecode(await _cacheManager.get(infoCacheKey)) as dynamic;
 
         // Build info loaded from the cache.
         _info = ProfileStudent.fromJson(infoCached as Map<String, dynamic>);
         _logger.d("$tag - getInfo: $_info info loaded from cache.");
+        if (fromCacheOnly) {
+          return _info;
+        }
       } on CacheException catch (_) {
         _logger.e(
             "$tag - getInfo: exception raised will trying to load the info from cache.");
