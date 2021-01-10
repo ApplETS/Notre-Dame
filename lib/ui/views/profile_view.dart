@@ -1,6 +1,7 @@
 // FLUTTER / DART / THIRD-PARTIES
 import 'package:flutter/material.dart';
 import 'package:notredame/core/models/program.dart';
+import 'package:notredame/ui/widgets/base_scaffold.dart';
 import 'package:stacked/stacked.dart';
 
 // VIEW-MODEL
@@ -23,7 +24,9 @@ class _ProfileViewState extends State<ProfileView> {
   Widget build(BuildContext context) =>
       ViewModelBuilder<ProfileViewModel>.reactive(
         viewModelBuilder: () => ProfileViewModel(),
-        builder: (context, model, child) => Scaffold(
+        builder: (context, model, child) => BaseScaffold(
+          isLoading: model.busy(model.isLoadingEvents),
+          isInteractionLimitedWhileLoading: false,
           body: ListView(children: [
             ListTile(
               title: Text(
