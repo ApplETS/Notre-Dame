@@ -19,7 +19,8 @@ class ProfileViewModel extends FutureViewModel<List<Program>> {
     return _userRepository.info ?? _student;
   }
 
-  String get universalAccessCode => _userRepository.monETSUser.universalCode;
+  String get universalAccessCode =>
+      _userRepository?.monETSUser?.universalCode ?? '';
 
   @override
   // ignore: type_annotate_public_apis
@@ -27,7 +28,7 @@ class ProfileViewModel extends FutureViewModel<List<Program>> {
     showToast(AppIntl.current.error);
   }
 
-  Future<List<Program>> getProgramsList() async {
+  Future<List<Program>> programList() async {
     if (_programList == null || _programList.isEmpty) {
       _programList = [];
     }
@@ -45,9 +46,11 @@ class ProfileViewModel extends FutureViewModel<List<Program>> {
           .then((value) => _userRepository.getPrograms(fromCacheOnly: true))
           .then((value) {
         setBusyForObject(isLoadingEvents, true);
-        _userRepository.getInfo().catchError(onError).then((value) {
-          _userRepository.getPrograms().catchError(onError);
-        }).whenComplete(() => setBusyForObject(isLoadingEvents, false));
+        _userRepository
+            .getInfo()
+            .catchError(onError)
+            .then((value) => _userRepository.getPrograms().catchError(onError))
+            .whenComplete(() => setBusyForObject(isLoadingEvents, false));
         return value;
       });
 }

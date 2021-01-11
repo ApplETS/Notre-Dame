@@ -64,7 +64,7 @@ class _ProfileViewState extends State<ProfileView> {
                 title: Text(AppIntl.of(context).login_prompt_universal_code),
                 trailing: Text(model.universalAccessCode)),
             FutureBuilder(
-              future: model.getProgramsList(),
+              future: model.programList(),
               builder: (BuildContext context, AsyncSnapshot snapshot) {
                 if (!snapshot.hasData) {
                   return Container();
