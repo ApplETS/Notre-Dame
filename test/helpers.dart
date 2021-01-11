@@ -54,7 +54,7 @@ Widget localizedWidget(
         GlobalCupertinoLocalizations.delegate,
       ],
       locale: Locale(locale),
-      home: useScaffold ? Scaffold(body: child) : child,
+      home: useScaffold ? MediaQuery(data: const MediaQueryData(textScaleFactor: 0.9), child: Scaffold(body: child)) : child,
     );
 
 /// Load a mock of the [AnalyticsService]

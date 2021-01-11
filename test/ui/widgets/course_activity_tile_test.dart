@@ -1,5 +1,4 @@
 // FLUTTER / DART / THIRD-PARTIES
-import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 // MODEL
@@ -26,9 +25,7 @@ void main() {
         "display the short title, entire title, type of activity, hours and local of the course",
         (WidgetTester tester) async {
       await tester.pumpWidget(localizedWidget(
-          child: MediaQuery(
-              data: const MediaQueryData(textScaleFactor: 0.9),
-              child: CourseActivityTile(course))));
+          child: CourseActivityTile(course)));
       await tester.pumpAndSettle();
 
       expect(find.text(course.courseGroup), findsOneWidget);
