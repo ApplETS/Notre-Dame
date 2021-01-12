@@ -1,6 +1,5 @@
 // FLUTTER / DART / THIRD-PARTIES
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/src/widgets/basic.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 // MODEL
