@@ -205,7 +205,7 @@ class _ScheduleViewState extends State<ScheduleView>
                       borderRadius: BorderRadius.only(
                           topLeft: Radius.circular(10),
                           topRight: Radius.circular(10))),
-                  builder: (context) => ScheduleSettings());
+                  builder: (context) => const ScheduleSettings());
               model.loadSettings(_calendarController);
             })
       ];

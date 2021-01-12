@@ -3,7 +3,6 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:intl/intl.dart';
-import 'package:notredame/ui/widgets/schedule_settings.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 // MANAGERS
@@ -14,8 +13,9 @@ import 'package:notredame/core/managers/settings_manager.dart';
 import 'package:notredame/core/constants/preferences_flags.dart';
 import 'package:notredame/core/models/course_activity.dart';
 
-// VIEW
+// VIEW / WIDGETS
 import 'package:notredame/ui/views/schedule_view.dart';
+import 'package:notredame/ui/widgets/schedule_settings.dart';
 
 import '../../helpers.dart';
 
@@ -106,7 +106,8 @@ void main() {
             settingsManager as SettingsManagerMock,
             toReturn: settings);
 
-        await tester.pumpWidget(localizedWidget(child: ScheduleView(initialDay: DateTime(2020))));
+        await tester.pumpWidget(
+            localizedWidget(child: ScheduleView(initialDay: DateTime(2020))));
         await tester.pumpAndSettle();
 
         await expectLater(find.byType(ScheduleView),
@@ -131,7 +132,8 @@ void main() {
             settingsManager as SettingsManagerMock,
             toReturn: settings);
 
-        await tester.pumpWidget(localizedWidget(child: ScheduleView(initialDay: DateTime(2020))));
+        await tester.pumpWidget(
+            localizedWidget(child: ScheduleView(initialDay: DateTime(2020))));
         await tester.pumpAndSettle();
 
         await expectLater(find.byType(ScheduleView),
@@ -154,7 +156,9 @@ void main() {
             settingsManager as SettingsManagerMock,
             toReturn: settings);
 
-        await tester.pumpWidget(localizedWidget(child: ScheduleView(initialDay: DateTime(2020))));
+        await tester.pumpWidget(localizedWidget(
+            child: ScheduleView(initialDay: DateTime(2020)),
+            textScaleFactor: 0.5));
         await tester.pumpAndSettle();
 
         await expectLater(find.byType(ScheduleView),
@@ -178,7 +182,8 @@ void main() {
             settingsManager as SettingsManagerMock,
             toReturn: settings);
 
-        await tester.pumpWidget(localizedWidget(child: ScheduleView(initialDay: DateTime(2020))));
+        await tester.pumpWidget(
+            localizedWidget(child: ScheduleView(initialDay: DateTime(2020))));
         await tester.pumpAndSettle();
 
         await expectLater(find.byType(ScheduleView),
@@ -202,7 +207,10 @@ void main() {
             settingsManager as SettingsManagerMock,
             toReturn: settings);
 
-        await tester.pumpWidget(localizedWidget(child: ScheduleView(initialDay: DateTime(2020))));
+        await tester.pumpWidget(localizedWidget(
+            child: MediaQuery(
+                data: const MediaQueryData(textScaleFactor: 0.5),
+                child: ScheduleView(initialDay: DateTime(2020)))));
         await tester.pumpAndSettle();
 
         // Tap on the day before selected day
@@ -242,7 +250,9 @@ void main() {
 
         // DateFormat has to be after the pumpWidget to correctly load the locale
         final dateFormat = DateFormat.MMMMEEEEd();
-        final otherDay = DateTime.now().subtract(const Duration(days: 1));
+        final otherDay = DateTime.now().weekday == 7
+            ? DateTime.now().subtract(const Duration(days: 1))
+            : DateTime.now().add(const Duration(days: 1));
 
         expect(find.text(dateFormat.format(DateTime.now())), findsOneWidget);
 
@@ -268,34 +278,35 @@ void main() {
 
       testWidgets("tap on settings button to open the schedule settings",
           (WidgetTester tester) async {
-            tester.binding.window.physicalSizeTestValue = const Size(800, 1410);
+        tester.binding.window.physicalSizeTestValue = const Size(800, 1410);
 
-            CourseRepositoryMock.stubCoursesActivities(
-                courseRepository as CourseRepositoryMock,
-                toReturn: [activityToday]);
-            CourseRepositoryMock.stubGetCoursesActivities(
-                courseRepository as CourseRepositoryMock,
-                fromCacheOnly: true);
-            CourseRepositoryMock.stubGetCoursesActivities(
-                courseRepository as CourseRepositoryMock,
-                fromCacheOnly: false);
-            SettingsManagerMock.stubGetScheduleSettings(
-                settingsManager as SettingsManagerMock,
-                toReturn: settings);
+        CourseRepositoryMock.stubCoursesActivities(
+            courseRepository as CourseRepositoryMock,
+            toReturn: [activityToday]);
+        CourseRepositoryMock.stubGetCoursesActivities(
+            courseRepository as CourseRepositoryMock,
+            fromCacheOnly: true);
+        CourseRepositoryMock.stubGetCoursesActivities(
+            courseRepository as CourseRepositoryMock,
+            fromCacheOnly: false);
+        SettingsManagerMock.stubGetScheduleSettings(
+            settingsManager as SettingsManagerMock,
+            toReturn: settings);
 
-            await tester.pumpWidget(localizedWidget(child: const ScheduleView()));
-            await tester.pumpAndSettle();
+        await tester.pumpWidget(localizedWidget(child: const ScheduleView()));
+        await tester.pumpAndSettle();
 
-            expect(find.byType(ScheduleSettings), findsNothing, reason: "The settings page should not be open");
+        expect(find.byType(ScheduleSettings), findsNothing,
+            reason: "The settings page should not be open");
 
-            // Tap on the settings button
-            await tester.tap(find.byIcon(Icons.settings));
-            // Reload view
-            await tester.pumpAndSettle();
+        // Tap on the settings button
+        await tester.tap(find.byIcon(Icons.settings));
+        // Reload view
+        await tester.pumpAndSettle();
 
-            expect(find.byType(ScheduleSettings), findsOneWidget,
-                reason: "The settings view should be open");
-          });
+        expect(find.byType(ScheduleSettings), findsOneWidget,
+            reason: "The settings view should be open");
+      });
     });
   });
 }

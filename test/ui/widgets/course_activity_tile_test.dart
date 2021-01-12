@@ -1,4 +1,6 @@
 // FLUTTER / DART / THIRD-PARTIES
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/src/widgets/basic.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 // MODEL
@@ -24,8 +26,11 @@ void main() {
     testWidgets(
         "display the short title, entire title, type of activity, hours and local of the course",
         (WidgetTester tester) async {
+      // Set the textScaleFactor to 0.5 otherwise the row overflow, only happen in test.
       await tester.pumpWidget(localizedWidget(
-          child: CourseActivityTile(course)));
+          child: MediaQuery(
+              data: const MediaQueryData(textScaleFactor: 0.5),
+              child: CourseActivityTile(course))));
       await tester.pumpAndSettle();
 
       expect(find.text(course.courseGroup), findsOneWidget);

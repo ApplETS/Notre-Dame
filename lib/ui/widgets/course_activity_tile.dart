@@ -28,21 +28,18 @@ class CourseActivityTile extends StatelessWidget {
         ),
       );
 
-  Widget _buildLeading() => Container(
+  Widget _buildLeading() => SizedBox(
         width: 56,
-        constraints: const BoxConstraints(minHeight: 60),
         child: Row(
+          mainAxisAlignment: MainAxisAlignment.end,
           children: [
-            SizedBox(
-              width: 40,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(timeFormat.format(activity.startDateTime)),
-                  Text(timeFormat.format(activity.endDateTime)),
-                ],
-              ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(timeFormat.format(activity.startDateTime)),
+                Text(timeFormat.format(activity.endDateTime)),
+              ],
             ),
             VerticalDivider(color: colorFor(activity.courseName), thickness: 2)
           ],
