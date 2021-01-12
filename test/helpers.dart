@@ -46,17 +46,19 @@ Widget localizedWidget(
         {@required Widget child,
         bool useScaffold = true,
         String locale = 'en', double textScaleFactor = 0.9}) =>
-    MediaQuery(
-      data: MediaQueryData(textScaleFactor: textScaleFactor),
-      child: MaterialApp(
-        localizationsDelegates: const [
-          AppIntl.delegate,
-          GlobalMaterialLocalizations.delegate,
-          GlobalWidgetsLocalizations.delegate,
-          GlobalCupertinoLocalizations.delegate,
-        ],
-        locale: Locale(locale),
-        home: useScaffold ? Scaffold(body: child) : child,
+    RepaintBoundary(
+      child: MediaQuery(
+        data: MediaQueryData(textScaleFactor: textScaleFactor),
+        child: MaterialApp(
+          localizationsDelegates: const [
+            AppIntl.delegate,
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+            GlobalCupertinoLocalizations.delegate,
+          ],
+          locale: Locale(locale),
+          home: useScaffold ? Scaffold(body: child) : child,
+        ),
       ),
     );
 
