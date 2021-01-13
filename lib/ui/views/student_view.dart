@@ -19,45 +19,37 @@ class _StudentViewState extends State<StudentView> {
     AppIntl.current.profile_title
   ];
 
-  List<Widget> tabsView = [
-    BaseScaffold(
-      body: ListView(children: [
-        ListTile(
-          title: Text(
-            'test',
-            style: const TextStyle(color: Colors.red),
-          ),
-        ),
-      ]),
-    ),
-    ProfileView()
-  ];
+  List<Widget> tabsView = [Scaffold(), ProfileView()];
 
   @override
   Widget build(BuildContext context) => DefaultTabController(
         length: tabs.length,
-        child: CustomScrollView(
-          slivers: <Widget>[
-            SliverAppBar(
-              elevation: 4.0,
-              automaticallyImplyLeading: false,
-              pinned: true,
-              floating: true,
-              title: Text(AppIntl.of(context).title_student),
-              bottom: TabBar(
-                indicatorColor: Colors.white,
-                tabs: List.generate(
-                  tabs.length,
-                  (index) => Tab(
-                    text: tabs[index],
+        child: NestedScrollView(
+          floatHeaderSlivers: true,
+          headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
+            return <Widget>[
+              SliverAppBar(
+                elevation: 4.0,
+                automaticallyImplyLeading: false,
+                pinned: true,
+                floating: true,
+                title: Text(AppIntl.of(context).title_student),
+                forceElevated: innerBoxIsScrolled,
+                bottom: TabBar(
+                  indicatorColor: Colors.white,
+                  tabs: List.generate(
+                    tabs.length,
+                    (index) => Tab(
+                      text: tabs[index],
+                    ),
                   ),
                 ),
               ),
-            ),
-            SliverFillRemaining(
-              child: TabBarView(children: tabsView),
-            ),
-          ],
+            ];
+          },
+          body: TabBarView(
+            children: tabsView,
+          ),
         ),
       );
 }
