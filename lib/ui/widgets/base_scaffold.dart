@@ -32,6 +32,7 @@ class BaseScaffold extends StatelessWidget {
   Widget build(BuildContext context) => Scaffold(
         appBar: appBar,
         body: SafeArea(
+          top: false,
           child: Stack(
             children: [
               body,
