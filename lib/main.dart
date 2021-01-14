@@ -44,7 +44,7 @@ class ETSMobile extends StatelessWidget {
         supportedLocales: AppIntl.delegate.supportedLocales,
         navigatorKey: locator<NavigationService>().navigatorKey,
         navigatorObservers: [
-          locator<AnalyticsService>().getAnalyticsOberser(),
+          locator<AnalyticsService>().getAnalyticsObserver(),
         ],
         home: StartUpView(),
         onGenerateRoute: AppRouter.generateRoute,

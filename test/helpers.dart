@@ -45,16 +45,21 @@ void unregister<T>() {
 Widget localizedWidget(
         {@required Widget child,
         bool useScaffold = true,
-        String locale = 'en'}) =>
-    MaterialApp(
-      localizationsDelegates: const [
-        AppIntl.delegate,
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate,
-      ],
-      locale: Locale(locale),
-      home: useScaffold ? Scaffold(body: child) : child,
+        String locale = 'en', double textScaleFactor = 0.9}) =>
+    RepaintBoundary(
+      child: MediaQuery(
+        data: MediaQueryData(textScaleFactor: textScaleFactor),
+        child: MaterialApp(
+          localizationsDelegates: const [
+            AppIntl.delegate,
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+            GlobalCupertinoLocalizations.delegate,
+          ],
+          locale: Locale(locale),
+          home: useScaffold ? Scaffold(body: child) : child,
+        ),
+      ),
     );
 
 /// Load a mock of the [AnalyticsService]

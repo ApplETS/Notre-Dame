@@ -23,6 +23,11 @@ import 'package:notredame/generated/l10n.dart';
 import 'package:notredame/ui/utils/app_theme.dart';
 
 class ScheduleView extends StatefulWidget {
+  @visibleForTesting
+  final DateTime initialDay;
+
+  const ScheduleView({Key key, this.initialDay}) : super(key: key);
+
   @override
   _ScheduleViewState createState() => _ScheduleViewState();
 }
@@ -130,7 +135,7 @@ class _ScheduleViewState extends State<ScheduleView>
         //TODO uncomment when https://github.com/aleksanderwozniak/table_calendar/issues/164 is close
         // startingDayOfWeek: model.settings[PreferencesFlag.scheduleSettingsStartWeekday] as StartingDayOfWeek,
         startingDayOfWeek: StartingDayOfWeek.monday,
-        initialSelectedDay: DateTime.now(),
+        initialSelectedDay: widget.initialDay ?? DateTime.now(),
         weekendDays: const [],
         headerStyle: const HeaderStyle(
             centerHeaderTitle: true, formatButtonVisible: false),
@@ -200,7 +205,7 @@ class _ScheduleViewState extends State<ScheduleView>
                       borderRadius: BorderRadius.only(
                           topLeft: Radius.circular(10),
                           topRight: Radius.circular(10))),
-                  builder: (context) => ScheduleSettings());
+                  builder: (context) => const ScheduleSettings());
               model.loadSettings(_calendarController);
             })
       ];

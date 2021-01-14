@@ -31,7 +31,7 @@ class SignetsApi {
   final RegExp _courseGroupRegExp = RegExp("^([A-Z]{3}[0-9]{3}-[0-9]{2})");
 
   SignetsApi({http.Client client}) {
-    if (client == null) {
+    if(client == null) {
       _signetsClient();
     } else {
       _client = client;
@@ -257,8 +257,7 @@ class SignetsApi {
 
   /// Create a [http.Client] with the certificate to access the SignetsAPI
   Future _signetsClient() async {
-    final ByteData data =
-        await rootBundle.load("assets/certificates/signets_cert.crt");
+    final ByteData data = await rootBundle.load("assets/certificates/signets_cert.crt");
     final securityContext = SecurityContext()
       ..setTrustedCertificatesBytes(data.buffer.asUint8List());
 

@@ -8,6 +8,10 @@ import 'package:notredame/generated/l10n.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 class ScheduleSettings extends StatefulWidget {
+  final bool showHandle;
+
+  const ScheduleSettings({Key key, this.showHandle = true}) : super(key: key);
+
   @override
   _ScheduleSettingsState createState() => _ScheduleSettingsState();
 }
@@ -22,19 +26,19 @@ class _ScheduleSettingsState extends State<ScheduleSettings> {
           height: MediaQuery.of(context).size.height * 0.50,
           child: Column(
             children: [
-              Center(
-                child: Padding(
-                  padding: const EdgeInsets.only(top: 8.0),
-                  child: Container(
-                    height: 5,
-                    width: 50,
-                    decoration: const BoxDecoration(
-                      color: Colors.grey,
-                        borderRadius: BorderRadius.all(Radius.circular(8.0))
+              if (widget.showHandle)
+                Center(
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: 8.0),
+                    child: Container(
+                      height: 5,
+                      width: 50,
+                      decoration: const BoxDecoration(
+                          color: Colors.grey,
+                          borderRadius: BorderRadius.all(Radius.circular(8.0))),
                     ),
                   ),
                 ),
-              ),
               Padding(
                   padding: const EdgeInsets.fromLTRB(15, 20, 20, 20),
                   child: Text(AppIntl.of(context).schedule_settings_title,
@@ -155,21 +159,13 @@ class _ScheduleSettingsState extends State<ScheduleSettings> {
   }
 
   String getTextForDay(BuildContext context, StartingDayOfWeek day) {
-    switch (day) {
+    switch (day) { // ignore: missing_enum_constant_in_switch
       case StartingDayOfWeek.sunday:
         return AppIntl.of(context).schedule_settings_starting_weekday_sunday;
       case StartingDayOfWeek.saturday:
         return AppIntl.of(context).schedule_settings_starting_weekday_saturday;
       case StartingDayOfWeek.monday:
         return AppIntl.of(context).schedule_settings_starting_weekday_monday;
-      case StartingDayOfWeek.tuesday:
-        return AppIntl.of(context).schedule_settings_starting_weekday_tuesday;
-      case StartingDayOfWeek.wednesday:
-        return AppIntl.of(context).schedule_settings_starting_weekday_wednesday;
-      case StartingDayOfWeek.thursday:
-        return AppIntl.of(context).schedule_settings_starting_weekday_thursday;
-      case StartingDayOfWeek.friday:
-        return AppIntl.of(context).schedule_settings_starting_weekday_friday;
     }
     return AppIntl.of(context).schedule_settings_starting_weekday_monday;
   }
