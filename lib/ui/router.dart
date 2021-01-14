@@ -22,7 +22,7 @@ class AppRouter {
       case RouterPaths.schedule:
         return PageRouteBuilder(
             settings: RouteSettings(name: routeSettings.name),
-            pageBuilder: (_, __, ___) => ScheduleView());
+            pageBuilder: (_, __, ___) => const ScheduleView());
       case RouterPaths.student:
         return PageRouteBuilder(
             settings: RouteSettings(name: routeSettings.name),
