@@ -53,6 +53,9 @@ void main() {
 
       expect(find.widgetWithText(ListTile, intl.profile_permanent_code),
           findsOneWidget);
+
+      expect(find.widgetWithText(ListTile, intl.login_prompt_universal_code),
+          findsOneWidget);
     });
 
     group("golden - ", () {
