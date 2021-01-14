@@ -17,17 +17,13 @@ void main() {
       intl = await setupAppIntl();
       setupNavigationServiceMock();
       userRepository = setupUserRepositoryMock();
+
+      UserRepositoryMock.stubGetInfo(userRepository as UserRepositoryMock);
+
+      UserRepositoryMock.stubGetPrograms(userRepository as UserRepositoryMock);
     });
 
     tearDown(() {});
-
-    testWidgets('contains one listView', (WidgetTester tester) async {
-      await tester.pumpWidget(localizedWidget(child: ProfileView()));
-      await tester.pumpAndSettle();
-
-      final listView = find.byType(ListView);
-      expect(listView, findsNWidgets(1));
-    });
 
     testWidgets('contains student status', (WidgetTester tester) async {
       await tester.pumpWidget(localizedWidget(child: ProfileView()));
@@ -62,11 +58,6 @@ void main() {
     group("golden - ", () {
       testWidgets("default view (no events)", (WidgetTester tester) async {
         tester.binding.window.physicalSizeTestValue = const Size(800, 1410);
-
-        UserRepositoryMock.stubGetInfo(userRepository as UserRepositoryMock);
-
-        UserRepositoryMock.stubGetPrograms(
-            userRepository as UserRepositoryMock);
 
         await tester.pumpWidget(localizedWidget(child: ProfileView()));
         await tester.pumpAndSettle();

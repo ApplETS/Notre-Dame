@@ -6,7 +6,9 @@ import '../../helpers.dart';
 
 void main() {
   group('StudentView - ', () {
-    setUp(() async {});
+    setUp(() async {
+      setupNavigationServiceMock();
+    });
 
     tearDown(() {});
 
