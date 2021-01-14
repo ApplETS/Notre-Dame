@@ -1,5 +1,6 @@
 // FLUTTER / DART / THIRD-PARTIES
 import 'package:flutter/material.dart';
+import 'package:notredame/ui/utils/loading.dart';
 
 // WIDGETS
 import 'package:notredame/ui/widgets/bottom_bar.dart';
@@ -36,21 +37,15 @@ class BaseScaffold extends StatelessWidget {
           child: Stack(
             children: [
               body,
-              if (_isLoading) _buildLoading() else const SizedBox()
+              if (_isLoading)
+                buildLoading(
+                    isInteractionLimitedWhileLoading:
+                        _isInteractionLimitedWhileLoading)
+              else
+                const SizedBox()
             ],
           ),
         ),
         bottomNavigationBar: _showBottomBar ? BottomBar() : null,
-      );
-
-  Widget _buildLoading() => Stack(
-        children: [
-          if (_isInteractionLimitedWhileLoading)
-            const Opacity(
-              opacity: 0.5,
-              child: ModalBarrier(dismissible: false, color: Colors.grey),
-            ),
-          const Center(child: CircularProgressIndicator())
-        ],
       );
 }
