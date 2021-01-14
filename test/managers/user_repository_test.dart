@@ -6,16 +6,16 @@ import 'package:mockito/mockito.dart';
 
 // SERVICES / MANAGER
 import 'package:notredame/core/managers/user_repository.dart';
-import 'package:notredame/core/models/profile_student.dart';
+import 'package:notredame/core/managers/cache_manager.dart';
 import 'package:notredame/core/services/mon_ets_api.dart';
 import 'package:notredame/core/services/analytics_service.dart';
-import 'package:notredame/core/managers/cache_manager.dart';
+import 'package:notredame/core/services/signets_api.dart';
 
 // MODELS
 import 'package:notredame/core/models/mon_ets_user.dart';
-import 'package:notredame/core/services/signets_api.dart';
-import 'package:notredame/core/utils/api_exception.dart';
+import 'package:notredame/core/models/profile_student.dart';
 import 'package:notredame/core/models/program.dart';
+import 'package:notredame/core/utils/api_exception.dart';
 
 // HELPERS
 import '../helpers.dart';
@@ -203,24 +203,17 @@ void main() {
       });
     });
 
-        MonETSApiMock.stubAuthenticateException(
-            monETSApi as MonETSApiMock, username);
-        FlutterSecureStorageMock.stubRead(
-            secureStorage as FlutterSecureStorageMock,
-            key: UserRepository.usernameSecureKey,
-            valueToReturn: username);
-        FlutterSecureStorageMock.stubRead(
-            secureStorage as FlutterSecureStorageMock,
-            key: UserRepository.passwordSecureKey,
-            valueToReturn: password);
+    group('logOut - ', () {
+      test('the user credentials are deleted', () async {
+        expect(await manager.logOut(), isTrue);
 
-        expect(manager.getPassword(), throwsA(isInstanceOf<ApiException>()),
-            reason:
-                'The authentication failed so an ApiException should be raised.');
+        expect(manager.monETSUser, null,
+            reason: "The user shouldn't be available after a logout");
 
-        await untilCalled(analyticsService.logError(UserRepository.tag, any));
+        verify(secureStorage.delete(key: UserRepository.usernameSecureKey));
+        verify(secureStorage.delete(key: UserRepository.passwordSecureKey));
 
-        verify(analyticsService.logError(UserRepository.tag, any)).called(1);
+        verifyNever(analyticsService.logError(UserRepository.tag, any));
       });
     });
 
