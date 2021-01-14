@@ -1,6 +1,11 @@
+// FLUTTER / DART / THIRD-PARTIES
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+
+// MODEL
 import 'package:notredame/core/models/program.dart';
+
+// VIEW
 import 'package:notredame/ui/widgets/student_program.dart';
 
 // GENERATED

@@ -1,17 +1,15 @@
 // FLUTTER / DART / THIRD-PARTIES
 import 'dart:convert';
-
-import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
-import 'package:notredame/core/managers/cache_manager.dart';
 
 // SERVICES / MANAGER
 import 'package:notredame/core/managers/user_repository.dart';
 import 'package:notredame/core/models/profile_student.dart';
 import 'package:notredame/core/services/mon_ets_api.dart';
 import 'package:notredame/core/services/analytics_service.dart';
+import 'package:notredame/core/managers/cache_manager.dart';
 
 // MODELS
 import 'package:notredame/core/models/mon_ets_user.dart';
@@ -24,7 +22,6 @@ import '../helpers.dart';
 
 // MOCKS
 import '../mock/managers/cache_manager_mock.dart';
-import '../mock/managers/user_repository_mock.dart';
 import '../mock/services/flutter_secure_storage_mock.dart';
 import '../mock/services/mon_ets_api_mock.dart';
 import '../mock/services/signets_api_mock.dart';
@@ -331,7 +328,6 @@ void main() {
       ];
 
       const String username = "username";
-      const String password = "password";
 
       final MonETSUser user =
           MonETSUser(domain: "ENS", typeUsagerId: 1, username: username);
@@ -491,7 +487,6 @@ void main() {
           permanentCode: 'DOEJ00000000');
 
       const String username = "username";
-      const String password = "password";
 
       final MonETSUser user =
           MonETSUser(domain: "ENS", typeUsagerId: 1, username: username);

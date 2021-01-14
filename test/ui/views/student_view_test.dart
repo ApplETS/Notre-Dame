@@ -1,5 +1,8 @@
+// FLUTTER / DART / THIRD-PARTIES
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+
+// VIEW
 import 'package:notredame/ui/views/student_view.dart';
 
 import '../../helpers.dart';

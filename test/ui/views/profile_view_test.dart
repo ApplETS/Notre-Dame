@@ -1,5 +1,8 @@
+// FLUTTER / DART / THIRD-PARTIES
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+
+// MANAGERS
 import 'package:notredame/core/managers/user_repository.dart';
 import 'package:notredame/ui/views/profile_view.dart';
 
@@ -7,6 +10,8 @@ import 'package:notredame/ui/views/profile_view.dart';
 import 'package:notredame/generated/l10n.dart';
 
 import '../../helpers.dart';
+
+// MOCKS
 import '../../mock/managers/user_repository_mock.dart';
 
 void main() {

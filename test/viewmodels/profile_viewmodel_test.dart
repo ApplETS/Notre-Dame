@@ -3,26 +3,19 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 
 // MANAGERS
-import 'package:notredame/core/managers/course_repository.dart';
 import 'package:notredame/core/managers/settings_manager.dart';
 import 'package:notredame/core/managers/user_repository.dart';
-import 'package:notredame/core/models/profile_student.dart';
-import 'package:notredame/core/models/program.dart';
-import 'package:notredame/core/models/program.dart';
-import 'package:notredame/core/models/program.dart';
-import 'package:notredame/core/models/program.dart';
-import 'package:notredame/core/viewmodels/profile_viewmodel.dart';
 
 // VIEW-MODEL
-import 'package:notredame/core/viewmodels/schedule_viewmodel.dart';
+import 'package:notredame/core/viewmodels/profile_viewmodel.dart';
 
 // MODEL
-import 'package:notredame/core/models/course_activity.dart';
+import 'package:notredame/core/models/profile_student.dart';
+import 'package:notredame/core/models/program.dart';
 
 import '../helpers.dart';
 
 // MOCKS
-import '../mock/managers/course_repository_mock.dart';
 import '../mock/managers/user_repository_mock.dart';
 
 UserRepository userRepository;
