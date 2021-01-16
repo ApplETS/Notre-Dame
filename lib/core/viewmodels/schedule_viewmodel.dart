@@ -46,7 +46,11 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
         _courseRepository
             .getCoursesActivities()
             .catchError(onError)
-            .whenComplete(() => setBusyForObject(isLoadingEvents, false));
+            .whenComplete(() {
+          // Reload the list of activities
+          coursesActivities;
+          setBusyForObject(isLoadingEvents, false);
+        });
         return value;
       });
 
@@ -80,6 +84,12 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
           return value;
         }, ifAbsent: () => [course]);
       }
+
+      _coursesActivities.updateAll((key, value) {
+        value.sort((a, b) => a.startDateTime.compareTo(b.startDateTime));
+
+        return value;
+      });
     }
     return _coursesActivities;
   }
@@ -87,7 +97,7 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
   /// Get the activities for a specific [date], return empty if there is no activity for this [date]
   List<CourseActivity> coursesActivitiesFor(DateTime date) {
     // Populate the _coursesActivities
-    if(_coursesActivities.isEmpty) {
+    if (_coursesActivities.isEmpty) {
       coursesActivities;
     }
     return _coursesActivities.containsKey(date) ? _coursesActivities[date] : [];
