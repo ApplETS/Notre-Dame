@@ -66,7 +66,7 @@ class _ScheduleViewState extends State<ScheduleView>
   @override
   Widget build(BuildContext context) =>
       ViewModelBuilder<ScheduleViewModel>.reactive(
-          viewModelBuilder: () => ScheduleViewModel(),
+          viewModelBuilder: () => ScheduleViewModel(initialSelectedDate: widget.initialDay),
           onModelReady: (model) {
             if (model.settings.isEmpty) {
               model.loadSettings(_calendarController);

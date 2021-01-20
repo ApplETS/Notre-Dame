@@ -1,5 +1,5 @@
 // FLUTTER / DART / THIRD-PARTIES
-import 'package:notredame/core/constants/preferences_flags.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:oktoast/oktoast.dart';
 import 'package:stacked/stacked.dart';
 import 'package:table_calendar/table_calendar.dart';
@@ -14,6 +14,7 @@ import 'package:notredame/core/models/course_activity.dart';
 // OTHER
 import 'package:notredame/generated/l10n.dart';
 import 'package:notredame/locator.dart';
+import 'package:notredame/core/constants/preferences_flags.dart';
 
 class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
   /// Load the events
@@ -30,6 +31,8 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
 
   /// Day currently selected
   DateTime selectedDate = DateTime.now();
+
+  ScheduleViewModel({DateTime initialSelectedDate}) : selectedDate = initialSelectedDate ?? DateTime.now();
 
   /// Activities for the day currently selected
   List<dynamic> get selectedDateEvents =>
