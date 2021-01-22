@@ -157,8 +157,9 @@ void main() {
             toReturn: settings);
 
         await tester.pumpWidget(localizedWidget(
-            child: ScheduleView(initialDay: DateTime(2020)),
-            textScaleFactor: 0.5));
+            child: MediaQuery(
+                data: const MediaQueryData(textScaleFactor: 0.5),
+                child: ScheduleView(initialDay: DateTime(2020)))));
         await tester.pumpAndSettle();
 
         await expectLater(find.byType(ScheduleView),

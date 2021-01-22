@@ -70,6 +70,8 @@ void main() {
           () async {
         CourseRepositoryMock.stubGetCoursesActivities(
             courseRepository as CourseRepositoryMock);
+        CourseRepositoryMock.stubCoursesActivities(
+            courseRepository as CourseRepositoryMock);
 
         expect(await viewModel.futureToRun(), []);
 

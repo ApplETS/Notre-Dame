@@ -1,5 +1,4 @@
 // FLUTTER / DART / THIRD-PARTIES
-import 'package:notredame/core/constants/preferences_flags.dart';
 import 'package:oktoast/oktoast.dart';
 import 'package:stacked/stacked.dart';
 import 'package:table_calendar/table_calendar.dart';
@@ -14,6 +13,7 @@ import 'package:notredame/core/models/course_activity.dart';
 // OTHER
 import 'package:notredame/generated/l10n.dart';
 import 'package:notredame/locator.dart';
+import 'package:notredame/core/constants/preferences_flags.dart';
 
 class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
   /// Load the events
@@ -31,6 +31,8 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
   /// Day currently selected
   DateTime selectedDate = DateTime.now();
 
+  ScheduleViewModel({DateTime initialSelectedDate}) : selectedDate = initialSelectedDate ?? DateTime.now();
+
   /// Activities for the day currently selected
   List<dynamic> get selectedDateEvents =>
       _coursesActivities[
@@ -46,7 +48,11 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
         _courseRepository
             .getCoursesActivities()
             .catchError(onError)
-            .whenComplete(() => setBusyForObject(isLoadingEvents, false));
+            .whenComplete(() {
+          // Reload the list of activities
+          coursesActivities;
+          setBusyForObject(isLoadingEvents, false);
+        });
         return value;
       });
 
@@ -80,6 +86,12 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
           return value;
         }, ifAbsent: () => [course]);
       }
+
+      _coursesActivities.updateAll((key, value) {
+        value.sort((a, b) => a.startDateTime.compareTo(b.startDateTime));
+
+        return value;
+      });
     }
     return _coursesActivities;
   }
@@ -87,7 +99,7 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
   /// Get the activities for a specific [date], return empty if there is no activity for this [date]
   List<CourseActivity> coursesActivitiesFor(DateTime date) {
     // Populate the _coursesActivities
-    if(_coursesActivities.isEmpty) {
+    if (_coursesActivities.isEmpty) {
       coursesActivities;
     }
     return _coursesActivities.containsKey(date) ? _coursesActivities[date] : [];

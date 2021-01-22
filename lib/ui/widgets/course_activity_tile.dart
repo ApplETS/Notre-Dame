@@ -28,9 +28,13 @@ class CourseActivityTile extends StatelessWidget {
         ),
       );
 
-  Widget _buildLeading() => SizedBox(
-        width: 56,
+  Widget _buildLeading() => ConstrainedBox(
+        constraints: const BoxConstraints(
+          minWidth: 30,
+          maxWidth: 86,
+        ),
         child: Row(
+          mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
             Column(
