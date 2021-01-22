@@ -203,24 +203,17 @@ void main() {
       });
     });
 
-        MonETSApiMock.stubAuthenticateException(
-            monETSApi as MonETSApiMock, username);
-        FlutterSecureStorageMock.stubRead(
-            secureStorage as FlutterSecureStorageMock,
-            key: UserRepository.usernameSecureKey,
-            valueToReturn: username);
-        FlutterSecureStorageMock.stubRead(
-            secureStorage as FlutterSecureStorageMock,
-            key: UserRepository.passwordSecureKey,
-            valueToReturn: password);
+    group('logOut - ', () {
+      test('the user credentials are deleted', () async {
+        expect(await manager.logOut(), isTrue);
 
-        expect(manager.getPassword(), throwsA(isInstanceOf<ApiException>()),
-            reason:
-                'The authentication failed so an ApiException should be raised.');
+        expect(manager.monETSUser, null,
+            reason: "The user shouldn't be available after a logout");
 
-        await untilCalled(analyticsService.logError(UserRepository.tag, any));
+        verify(secureStorage.delete(key: UserRepository.usernameSecureKey));
+        verify(secureStorage.delete(key: UserRepository.passwordSecureKey));
 
-        verify(analyticsService.logError(UserRepository.tag, any)).called(1);
+        verifyNever(analyticsService.logError(UserRepository.tag, any));
       });
     });
 
