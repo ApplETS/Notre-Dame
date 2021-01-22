@@ -16,6 +16,7 @@ import 'package:notredame/ui/utils/app_theme.dart';
 
 // VIEW
 import 'package:notredame/ui/views/startup_view.dart';
+import 'package:oktoast/oktoast.dart';
 
 void main() {
   setupLocator();
@@ -26,23 +27,28 @@ void main() {
 class ETSMobile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'ÉTS Mobile',
-      theme: AppTheme.lightTheme,
-      darkTheme: AppTheme.darkTheme,
-      localizationsDelegates: const [
-        AppIntl.delegate,
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate,
-      ],
-      supportedLocales: AppIntl.delegate.supportedLocales,
-      navigatorKey: locator<NavigationService>().navigatorKey,
-      navigatorObservers: [
-        locator<AnalyticsService>().getAnalyticsOberser(),
-      ],
-      home: StartUpView(),
-      onGenerateRoute: AppRouter.generateRoute,
+    return OKToast(
+      backgroundColor: Colors.grey,
+      duration: const Duration(seconds: 3),
+      position: ToastPosition.bottom,
+      child: MaterialApp(
+        title: 'ÉTS Mobile',
+        theme: AppTheme.lightTheme,
+        darkTheme: AppTheme.darkTheme,
+        localizationsDelegates: const [
+          AppIntl.delegate,
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+        ],
+        supportedLocales: AppIntl.delegate.supportedLocales,
+        navigatorKey: locator<NavigationService>().navigatorKey,
+        navigatorObservers: [
+          locator<AnalyticsService>().getAnalyticsObserver(),
+        ],
+        home: StartUpView(),
+        onGenerateRoute: AppRouter.generateRoute,
+      ),
     );
   }
 }

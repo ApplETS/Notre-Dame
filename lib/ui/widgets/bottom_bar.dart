@@ -19,37 +19,57 @@ class BottomBar extends StatelessWidget {
 
   final NavigationService _navigationService = locator<NavigationService>();
 
-  final int _currentView;
-
-  BottomBar(int index) : _currentView = index;
-
   @override
-  Widget build(BuildContext context) => BottomNavigationBar(
-        type: BottomNavigationBarType.fixed,
-        onTap: _onTap,
-        items: _buildItems(context),
-        currentIndex: _currentView,
-      );
+  Widget build(BuildContext context) {
+    return BottomNavigationBar(
+      type: BottomNavigationBarType.fixed,
+      onTap: (value) => _onTap(value),
+      items: _buildItems(context),
+      currentIndex: _defineIndex(ModalRoute.of(context).settings.name),
+    );
+  }
+
+  int _defineIndex(String routeName) {
+    int currentView = dashboardView;
+
+    switch (routeName) {
+      case RouterPaths.dashboard:
+        currentView = dashboardView;
+        break;
+      case RouterPaths.schedule:
+        currentView = scheduleView;
+        break;
+      case RouterPaths.student:
+        currentView = studentView;
+        break;
+      case RouterPaths.ets:
+        currentView = etsView;
+        break;
+      case RouterPaths.more:
+        currentView = moreView;
+        break;
+    }
+
+    return currentView;
+  }
 
   void _onTap(int index) {
-    if (_currentView != index) {
-      switch (index) {
-        case dashboardView:
-          _navigationService.pushNamed(RouterPaths.dashboard);
-          break;
-        case scheduleView:
-          _navigationService.pushNamed(RouterPaths.schedule);
-          break;
-        case studentView:
-          _navigationService.pushNamed(RouterPaths.student);
-          break;
-        case etsView:
-          _navigationService.pushNamed(RouterPaths.ets);
-          break;
-        case moreView:
-          _navigationService.pushNamed(RouterPaths.more);
-          break;
-      }
+    switch (index) {
+      case dashboardView:
+        _navigationService.pushNamed(RouterPaths.dashboard);
+        break;
+      case scheduleView:
+        _navigationService.pushNamed(RouterPaths.schedule);
+        break;
+      case studentView:
+        _navigationService.pushNamed(RouterPaths.student);
+        break;
+      case etsView:
+        _navigationService.pushNamed(RouterPaths.ets);
+        break;
+      case moreView:
+        _navigationService.pushNamed(RouterPaths.more);
+        break;
     }
   }
 
