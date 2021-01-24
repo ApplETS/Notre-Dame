@@ -548,9 +548,14 @@ void main() {
             UserRepository.infoCacheKey, jsonEncode(info));
 
         // Stub SignetsApi answer to test only the cache retrieving
+        final ProfileStudent anotherInfo = ProfileStudent(
+            balance: '0.0',
+            firstName: 'Johnny',
+            lastName: 'Doe',
+            permanentCode: 'DOEJ00000000');
         reset(signetsApi as SignetsApiMock);
         SignetsApiMock.stubGetInfo(
-            signetsApi as SignetsApiMock, username, info);
+            signetsApi as SignetsApiMock, username, anotherInfo);
 
         expect(manager.info, isNull);
         final results = await manager.getInfo();
@@ -581,7 +586,7 @@ void main() {
 
         verify(cacheManager.get(UserRepository.infoCacheKey));
         verify(manager.getPassword());
-        verify(
+        verifyNever(
             cacheManager.update(UserRepository.infoCacheKey, jsonEncode(info)));
       });
 
