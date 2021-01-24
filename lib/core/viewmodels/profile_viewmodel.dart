@@ -33,7 +33,7 @@ class ProfileViewModel extends FutureViewModel<List<Program>> {
     showToast(AppIntl.current.error);
   }
 
-  Future<List<Program>> programList() async {
+  List<Program> get programList {
     if (_programList == null || _programList.isEmpty) {
       _programList = [];
     }
