@@ -1,4 +1,5 @@
 {
+  "@@locale": "fr",
   "error": "Une erreur est survenue",
   "error_no_internet_connection": "Aucune connexion Internet",
   "yes": "Oui",

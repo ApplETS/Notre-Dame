@@ -13,6 +13,8 @@ import 'package:notredame/core/utils/api_exception.dart';
 // MODELS
 import 'package:notredame/core/models/course_activity.dart';
 import 'package:notredame/core/models/session.dart';
+import 'package:notredame/core/models/profile_student.dart';
+import 'package:notredame/core/models/program.dart';
 
 class SignetsApi {
   static const String tag = "SignetsApi";
@@ -29,7 +31,7 @@ class SignetsApi {
   final RegExp _courseGroupRegExp = RegExp("^([A-Z]{3}[0-9]{3}-[0-9]{2})");
 
   SignetsApi({http.Client client}) {
-    if(client == null) {
+    if (client == null) {
       _signetsClient();
     } else {
       _client = client;
@@ -154,6 +156,73 @@ class SignetsApi {
         .toList();
   }
 
+  /// Call the SignetsAPI to get the [ProfileStudent] for the student ([username]).
+  Future<ProfileStudent> getStudentInfo(
+      {@required String username, @required String password}) async {
+    // Generate initial soap envelope
+    final body = buildBasicSOAPBody(Urls.infoStudent, username, password)
+        .buildDocument();
+
+    // Send the envelope
+    final response = await _client.post(Urls.signetsAPI,
+        headers: _buildHeaders(Urls.signetsOperationBase + Urls.infoStudent),
+        body: body.toXmlString());
+
+    final responseBody = XmlDocument.parse(response.body)
+        .findAllElements(_operationResponseTag(Urls.infoStudent));
+
+    // Throw exception if the error tag is not empty
+    if (responseBody.first
+        .findElements(_signetsErrorTag)
+        .first
+        .innerText
+        .isNotEmpty) {
+      throw ApiException(
+          prefix: tagError,
+          message: responseBody.first
+              .findElements(_signetsErrorTag)
+              .first
+              .innerText);
+    }
+
+    /// Build and return the info
+    return responseBody.map((node) => ProfileStudent.fromXmlNode(node)).first;
+  }
+
+  /// Call the SignetsAPI to get the list of all the [Program] for the student ([username]).
+  Future<List<Program>> getPrograms(
+      {@required String username, @required String password}) async {
+    // Generate initial soap envelope
+    final body = buildBasicSOAPBody(Urls.listPrograms, username, password)
+        .buildDocument();
+
+    // Send the envelope
+    final response = await _client.post(Urls.signetsAPI,
+        headers: _buildHeaders(Urls.signetsOperationBase + Urls.listPrograms),
+        body: body.toXmlString());
+
+    final responseBody = XmlDocument.parse(response.body)
+        .findAllElements(_operationResponseTag(Urls.listPrograms))
+        .first;
+
+    // Throw exception if the error tag is not empty
+    if (responseBody
+        .findElements(_signetsErrorTag)
+        .first
+        .innerText
+        .isNotEmpty) {
+      throw ApiException(
+          prefix: tagError,
+          message: responseBody.findElements(_signetsErrorTag).first.innerText);
+    }
+
+    /// Build and return the list of Program
+    return responseBody
+        .findAllElements("Programme")
+        .map((node) => Program.fromXmlNode(node))
+        .toList();
+  }
+
   /// Build the basic headers for a SOAP request on.
   Map<String, String> _buildHeaders(String soapAction) =>
       {"Content-Type": "text/xml", "SOAPAction": soapAction};
@@ -188,7 +257,8 @@ class SignetsApi {
 
   /// Create a [http.Client] with the certificate to access the SignetsAPI
   Future _signetsClient() async {
-    final ByteData data = await rootBundle.load("assets/certificates/signets_cert.crt");
+    final ByteData data =
+        await rootBundle.load("assets/certificates/signets_cert.crt");
     final securityContext = SecurityContext()
       ..setTrustedCertificatesBytes(data.buffer.asUint8List());
 

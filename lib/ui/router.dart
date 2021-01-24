@@ -9,6 +9,7 @@ import 'package:notredame/ui/views/login_view.dart';
 import 'package:notredame/ui/views/quick_links_view.dart';
 import 'package:notredame/ui/views/schedule_view.dart';
 import 'package:notredame/ui/views/security_view.dart';
+import 'package:notredame/ui/views/student_view.dart';
 
 class AppRouter {
   // ignore: missing_return
@@ -22,6 +23,10 @@ class AppRouter {
         return PageRouteBuilder(
             settings: RouteSettings(name: routeSettings.name),
             pageBuilder: (_, __, ___) => const ScheduleView());
+      case RouterPaths.student:
+        return PageRouteBuilder(
+            settings: RouteSettings(name: routeSettings.name),
+            pageBuilder: (_, __, ___) => StudentView());
       case RouterPaths.ets:
         return PageRouteBuilder(
             settings: RouteSettings(name: routeSettings.name),

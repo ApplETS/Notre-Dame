@@ -4,6 +4,8 @@ import 'package:notredame/core/managers/course_repository.dart';
 
 // MODELS
 import 'package:notredame/core/models/course_activity.dart';
+import 'package:notredame/core/models/profile_student.dart';
+import 'package:notredame/core/models/program.dart';
 import 'package:notredame/core/models/session.dart';
 
 // SERVICE
@@ -46,6 +48,38 @@ class SignetsApiMock extends Mock implements SignetsApi {
       {ApiException exceptionToThrow =
           const ApiException(prefix: SignetsApi.tag, message: "")}) {
     when(mock.getSessions(username: username, password: anyNamed("password")))
+        .thenThrow(exceptionToThrow);
+  }
+
+  /// Stub the answer of the [getPrograms] when the [username] is used.
+  static void stubGetPrograms(
+      SignetsApiMock mock, String username, List<Program> programsToReturn) {
+    when(mock.getPrograms(username: username, password: anyNamed("password")))
+        .thenAnswer((_) async => programsToReturn);
+  }
+
+  /// Throw [exceptionToThrow] when [getPrograms] with the [username] is used.
+  static void stubGetProgramsException(SignetsApiMock mock, String username,
+      {ApiException exceptionToThrow =
+          const ApiException(prefix: SignetsApi.tag, message: "")}) {
+    when(mock.getPrograms(username: username, password: anyNamed("password")))
+        .thenThrow(exceptionToThrow);
+  }
+
+  /// Stub the answer of the [getInfo] when the [username] is used.
+  static void stubGetInfo(
+      SignetsApiMock mock, String username, ProfileStudent infoToReturn) {
+    when(mock.getStudentInfo(
+            username: username, password: anyNamed("password")))
+        .thenAnswer((_) async => infoToReturn);
+  }
+
+  /// Throw [exceptionToThrow] when [getInfo] with the [username] is used.
+  static void stubGetInfoException(SignetsApiMock mock, String username,
+      {ApiException exceptionToThrow =
+          const ApiException(prefix: SignetsApi.tag, message: "")}) {
+    when(mock.getStudentInfo(
+            username: username, password: anyNamed("password")))
         .thenThrow(exceptionToThrow);
   }
 }

@@ -2,10 +2,10 @@ name: Analyze, Test and Format
 on: pull_request
 jobs:
   build:
-    name: Ana and testing
+    name: Analyze and testing
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v2
       - uses: actions/setup-java@v1
         with:
           java-version: '12.x'
@@ -20,6 +20,7 @@ jobs:
           ./scripts/decrypt.sh
         env:
           ENCRYPTED_SIGNETS_API_CERT_PASSWORD: ${{ secrets.ENCRYPTED_SIGNETS_API_CERT_PASSWORD }}
+          MAPS_API_KEY: ${{ secrets.MAPS_API_KEY }}
       - run: flutter pub get
       - run: flutter pub run intl_utils:generate
       - run: flutter analyze
