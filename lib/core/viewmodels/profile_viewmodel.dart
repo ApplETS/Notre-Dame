@@ -14,16 +14,22 @@ import 'package:notredame/generated/l10n.dart';
 import '../../locator.dart';
 
 class ProfileViewModel extends FutureViewModel<List<Program>> {
+  /// Load the user
   final UserRepository _userRepository = locator<UserRepository>();
 
+  /// List of the programs
   List<Program> _programList = List.empty();
+
+  /// Student's profile
   final ProfileStudent _student = ProfileStudent(
       balance: "", firstName: "", lastName: "", permanentCode: "");
 
+  /// Return the profileStudent
   ProfileStudent get profileStudent {
     return _userRepository.info ?? _student;
   }
 
+  /// Return the universal access code of the student
   String get universalAccessCode =>
       _userRepository?.monETSUser?.universalCode ?? '';
 
@@ -33,6 +39,7 @@ class ProfileViewModel extends FutureViewModel<List<Program>> {
     showToast(AppIntl.current.error);
   }
 
+  /// Return the list of programs for the student
   List<Program> get programList {
     if (_programList == null || _programList.isEmpty) {
       _programList = [];
