@@ -35,8 +35,14 @@ class UserRepository {
   static const String programsCacheKey = "programsCache";
 
   final Logger _logger = locator<Logger>();
+
+  /// Principal access to the MonETSAPI
   final MonETSApi _monETSApi = locator<MonETSApi>();
+
+  /// Will be used to report event and error.
   final AnalyticsService _analyticsService = locator<AnalyticsService>();
+
+  /// Secure storage manager to access and update the cache.
   final FlutterSecureStorage _secureStorage = locator<FlutterSecureStorage>();
 
   /// Cache manager to access and update the cache.
@@ -45,14 +51,17 @@ class UserRepository {
   /// Principal access to the SignetsAPI
   final SignetsApi _signetsApi = locator<SignetsApi>();
 
+  /// Mon ETS user for the student
   MonETSUser _monETSUser;
 
   MonETSUser get monETSUser => _monETSUser;
 
+  /// Information for the student profile
   ProfileStudent _info;
 
   ProfileStudent get info => _info;
 
+  /// List of the programs for the student
   List<Program> _programs;
 
   List<Program> get programs => _programs;
