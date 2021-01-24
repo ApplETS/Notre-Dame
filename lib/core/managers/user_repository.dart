@@ -239,10 +239,10 @@ class UserRepository {
 
       if (_info != fetchedInfo) {
         _info ??= fetchedInfo;
+        
+        // Update cache
+        _cacheManager.update(infoCacheKey, jsonEncode(_info));
       }
-
-      // Update cache
-      _cacheManager.update(infoCacheKey, jsonEncode(_info));
     } on CacheException catch (_) {
       _logger.e(
           "$tag - getInfo: exception raised will trying to update the cache.");
