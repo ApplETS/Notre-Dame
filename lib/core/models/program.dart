@@ -3,14 +3,31 @@ import 'package:flutter/material.dart';
 import 'package:xml/xml.dart';
 
 class Program {
+  // Name of the program
   final String name;
+
+  // Code of the program
   final String code;
+
+  // Average grade of the program
   final String average;
+
+  // Number of accumulated credits for the program
   final String accumulatedCredits;
+
+  // Number of registered credits for the program
   final String registeredCredits;
+
+  // Number of completed courses for the program
   final String completedCourses;
+
+  // Number of failed courses for the program
   final String failedCourses;
+
+  // Number of equivalent courses for the program
   final String equivalentCourses;
+
+  // Status of the program
   final String status;
 
   Program(
