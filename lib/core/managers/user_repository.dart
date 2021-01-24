@@ -214,8 +214,6 @@ class UserRepository {
     // Load the student profile from the cache if the information doesn't exist
     if (_info == null) {
       try {
-        _info = null;
-
         final infoCached =
             jsonDecode(await _cacheManager.get(infoCacheKey)) as dynamic;
 
