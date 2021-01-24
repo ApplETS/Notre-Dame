@@ -4,8 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/io_client.dart';
-import 'package:notredame/core/models/profile_student.dart';
-import 'package:notredame/core/models/program.dart';
 import 'package:xml/xml.dart';
 
 // CONSTANTS & EXCEPTIONS
@@ -15,6 +13,8 @@ import 'package:notredame/core/utils/api_exception.dart';
 // MODELS
 import 'package:notredame/core/models/course_activity.dart';
 import 'package:notredame/core/models/session.dart';
+import 'package:notredame/core/models/profile_student.dart';
+import 'package:notredame/core/models/program.dart';
 
 class SignetsApi {
   static const String tag = "SignetsApi";
@@ -31,7 +31,7 @@ class SignetsApi {
   final RegExp _courseGroupRegExp = RegExp("^([A-Z]{3}[0-9]{3}-[0-9]{2})");
 
   SignetsApi({http.Client client}) {
-    if(client == null) {
+    if (client == null) {
       _signetsClient();
     } else {
       _client = client;
@@ -257,7 +257,8 @@ class SignetsApi {
 
   /// Create a [http.Client] with the certificate to access the SignetsAPI
   Future _signetsClient() async {
-    final ByteData data = await rootBundle.load("assets/certificates/signets_cert.crt");
+    final ByteData data =
+        await rootBundle.load("assets/certificates/signets_cert.crt");
     final securityContext = SecurityContext()
       ..setTrustedCertificatesBytes(data.buffer.asUint8List());
 
