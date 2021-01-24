@@ -1,11 +1,16 @@
 // FLUTTER / DART / THIRD-PARTIES
-import 'package:notredame/core/managers/user_repository.dart';
-import 'package:notredame/core/models/profile_student.dart';
-import 'package:notredame/core/models/program.dart';
 import 'package:oktoast/oktoast.dart';
 import 'package:stacked/stacked.dart';
-import 'package:notredame/generated/l10n.dart';
 
+// MANAGERS
+import 'package:notredame/core/managers/user_repository.dart';
+
+// MODELS
+import 'package:notredame/core/models/profile_student.dart';
+import 'package:notredame/core/models/program.dart';
+
+// OTHERS
+import 'package:notredame/generated/l10n.dart';
 import '../../locator.dart';
 
 class ProfileViewModel extends FutureViewModel<List<Program>> {
