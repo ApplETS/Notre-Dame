@@ -10,6 +10,7 @@ import 'package:logger/logger.dart';
 import 'package:notredame/core/services/analytics_service.dart';
 import 'package:notredame/core/services/mon_ets_api.dart';
 import 'package:notredame/core/services/signets_api.dart';
+import 'package:notredame/core/managers/cache_manager.dart';
 
 // MODELS
 import 'package:notredame/core/models/mon_ets_user.dart';
@@ -22,7 +23,6 @@ import 'package:notredame/core/utils/cache_exception.dart';
 
 // OTHER
 import 'package:notredame/locator.dart';
-import 'cache_manager.dart';
 
 class UserRepository {
   static const String tag = "UserRepository";
@@ -214,11 +214,11 @@ class UserRepository {
     // Load the student profile from the cache if the information doesn't exist
     if (_info == null) {
       try {
-        final infoCached =
-            jsonDecode(await _cacheManager.get(infoCacheKey)) as dynamic;
+        final infoCached = jsonDecode(await _cacheManager.get(infoCacheKey))
+            as Map<String, dynamic>;
 
         // Build info loaded from the cache.
-        _info = ProfileStudent.fromJson(infoCached as Map<String, dynamic>);
+        _info = ProfileStudent.fromJson(infoCached);
         _logger.d("$tag - getInfo: $_info info loaded from cache.");
         if (fromCacheOnly) {
           return _info;
