@@ -137,7 +137,7 @@ void main() {
         UserRepositoryMock.stubPrograms(userRepository as UserRepositoryMock,
             toReturn: programs);
 
-        expect(await viewModel.programList(), programs);
+        expect(viewModel.programList, programs);
 
         verify(userRepository.programs).called(2);
 
