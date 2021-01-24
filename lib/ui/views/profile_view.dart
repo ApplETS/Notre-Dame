@@ -2,9 +2,6 @@
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 
-// MODELS
-import 'package:notredame/core/models/program.dart';
-
 // VIEW-MODEL
 import 'package:notredame/core/viewmodels/profile_viewmodel.dart';
 
@@ -17,7 +14,6 @@ import 'package:notredame/generated/l10n.dart';
 import 'package:notredame/ui/utils/app_theme.dart';
 
 class ProfileView extends StatelessWidget {
-
   @override
   Widget build(BuildContext context) =>
       ViewModelBuilder<ProfileViewModel>.reactive(
@@ -62,28 +58,20 @@ class ProfileView extends StatelessWidget {
                       title:
                           Text(AppIntl.of(context).login_prompt_universal_code),
                       trailing: Text(model.universalAccessCode)),
-                  FutureBuilder(
-                    future: model.programList(),
-                    builder: (BuildContext context, AsyncSnapshot snapshot) {
-                      if (!snapshot.hasData) {
-                        return Container();
-                      } else {
-                        return ListView.builder(
-                          shrinkWrap: true,
-                          reverse: true,
-                          physics: const ScrollPhysics(),
-                          itemCount: snapshot.data.length as int,
-                          itemBuilder: (BuildContext context, int index) {
-                            return StudentProgram(
-                                snapshot.data[index] as Program);
-                          },
-                        );
-                      }
+                  ListView.builder(
+                    shrinkWrap: true,
+                    reverse: true,
+                    physics: const ScrollPhysics(),
+                    itemCount: model.programList.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      return StudentProgram(model.programList[index]);
                     },
                   ),
                 ]),
-
-                if(model.isBusy) buildLoading(isInteractionLimitedWhileLoading: false) else const SizedBox()
+                if (model.isBusy)
+                  buildLoading(isInteractionLimitedWhileLoading: false)
+                else
+                  const SizedBox()
               ],
             );
           });
