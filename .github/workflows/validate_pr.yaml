@@ -2,7 +2,7 @@ name: Analyze, Test and Format
 on: pull_request
 jobs:
   build:
-    name: Analyse and testing
+    name: Analyze and testing
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
