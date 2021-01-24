@@ -3,16 +3,16 @@ import 'package:flutter/material.dart';
 import 'package:xml/xml.dart';
 
 class ProfileStudent {
-  // Balance of the student
+  /// Balance of the student
   final String balance;
 
-  // First name of the student
+  /// First name of the student
   final String firstName;
 
-  // Last name of the student
+  /// Last name of the student
   final String lastName;
 
-  // Permanent code of the student
+  /// Permanent code of the student (XXXX00000000)
   final String permanentCode;
 
   ProfileStudent(
