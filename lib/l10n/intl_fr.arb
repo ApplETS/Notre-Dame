@@ -10,7 +10,6 @@
   "session_winter": "Hiver",
   "session_summer": "Été",
   "session_without": "Sans trimestre",
-  "oss_license_title": "Licences des logiciels libres",
   "facebook": "Facebook",
   "github": "GitHub",
   "email": "Courriel",
@@ -133,7 +132,7 @@
   "more_report_bug_method_screenshot": "Capture d'écran",
   "more_report_bug_method_video": "Capture vidéo",
   "more_contributors": "Contributeurs",
-  "more_open_source_licenses": "@string/oss_license_title",
+  "more_open_source_licenses": "Licences des logiciels libres",
   "more_beta_faq": "FAQ Bêta",
   "more_settings": "Paramètres",
   "more_log_out": "Se déconnecter",
@@ -176,6 +175,6 @@
   "settings_dark_theme_pref": "Thème sombre",
   "settings_miscellaneous_category": "Divers",
   "settings_language_pref": "Langue",
-  "settings_french": "Français:",
-  "settings_english": "English:"
+  "settings_french": "Français",
+  "settings_english": "English"
 }

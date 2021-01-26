@@ -133,7 +133,7 @@
   "more_report_bug_method_screenshot": "Screenshot",
   "more_report_bug_method_video": "Video recording",
   "more_contributors": "Contributors",
-  "more_open_source_licenses": "@string/oss_license_title",
+  "more_open_source_licenses": "Open source licenses",
   "more_beta_faq": "Beta FAQ",
   "more_settings": "Settings",
   "more_log_out": "Log out",
@@ -172,10 +172,10 @@
   "security_station": "Security station",
 
   "settings_title": "Settings",
-  "settings_display_category": "Display",
-  "settings_dark_theme": "Dark Theme",
+  "settings_display_pref_category": "Display",
+  "settings_dark_theme_pref": "Dark Theme",
   "settings_miscellaneous_category": "Miscellaneous",
-  "settings_language": "Language",
-  "settings_french": "Français:",
-  "settings_english": "English:"
+  "settings_language_pref": "Language",
+  "settings_french": "Français",
+  "settings_english": "English"
 }
