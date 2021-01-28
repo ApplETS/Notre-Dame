@@ -25,8 +25,13 @@ class SettingsManager with ChangeNotifier {
 
   final AnalyticsService _analyticsService = locator<AnalyticsService>();
 
+  /// current ThemeMode
   ThemeMode _themeMode;
 
+  /// current Locale
+  Locale _locale;
+
+  /// Get ThemeMode
   ThemeMode get themeMode {
     _preferencesService.getString(PreferencesFlag.theme).then((value) {
       final theme = value ?? 'system';
@@ -41,8 +46,7 @@ class SettingsManager with ChangeNotifier {
     return _themeMode;
   }
 
-  Locale _locale;
-
+  /// Get Locale
   Locale get locale {
     _preferencesService.getString(PreferencesFlag.locale).then((value) {
       if (value == AppIntl.current.settings_french) {
@@ -56,24 +60,28 @@ class SettingsManager with ChangeNotifier {
     return _locale;
   }
 
+  /// Set ThemeMode to ThemeMode.dark
   void setDarkMode() {
     _themeMode = ThemeMode.dark;
     _preferencesService.setString(PreferencesFlag.theme, 'dark');
     notifyListeners();
   }
 
+  /// Set ThemeMode to ThemeMode.light
   void setLightMode() {
     _themeMode = ThemeMode.light;
     _preferencesService.setString(PreferencesFlag.theme, 'light');
     notifyListeners();
   }
 
+  /// Set ThemeMode to ThemeMode.system
   void setSystemMode() {
     _themeMode = ThemeMode.system;
     _preferencesService.setString(PreferencesFlag.theme, 'system');
     notifyListeners();
   }
 
+  /// Set Locale to french
   void setFrench() {
     _preferencesService.setString(
         PreferencesFlag.locale, AppIntl.current.settings_french);
@@ -81,6 +89,7 @@ class SettingsManager with ChangeNotifier {
     notifyListeners();
   }
 
+  /// Set Locale to english
   void setEnglish() {
     _preferencesService.setString(
         PreferencesFlag.locale, AppIntl.current.settings_english);
@@ -125,6 +134,11 @@ class SettingsManager with ChangeNotifier {
     _analyticsService.logEvent(
         "$tag-${EnumToString.convertToString(flag)}", value);
     return _preferencesService.setString(flag, value);
+  }
+
+  /// Get the value of [flag]
+  Future<String> getString(PreferencesFlag flag) async {
+    return _preferencesService.getString(flag);
   }
 
   /// Add/update the value of [flag]
