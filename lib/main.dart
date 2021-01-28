@@ -1,6 +1,7 @@
 // FLUTTER / DART / THIRD-PARTIES
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:oktoast/oktoast.dart';
 
 // ROUTER
 import 'package:notredame/ui/router.dart';
@@ -14,11 +15,11 @@ import 'package:notredame/locator.dart';
 import 'package:notredame/generated/l10n.dart';
 import 'package:notredame/ui/utils/app_theme.dart';
 
+// MANAGER
+import 'package:notredame/core/managers/settings_manager.dart';
+
 // VIEW
 import 'package:notredame/ui/views/startup_view.dart';
-import 'package:oktoast/oktoast.dart';
-
-import 'core/managers/settings_manager.dart';
 
 void main() {
   setupLocator();
