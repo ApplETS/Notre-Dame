@@ -1,6 +1,4 @@
 // FLUTTER / DART / THIRD-PARTIES
-import 'package:adaptive_theme/adaptive_theme.dart';
-import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 
 // CONSTANTS
@@ -23,28 +21,27 @@ class SettingsViewModel extends FutureViewModel {
   /// Current theme
   String _selectedTheme;
 
-  String get selectedTheme => _selectedTheme ?? '';
+  String get selectedTheme => _selectedTheme ?? 'System';
 
   /// Set theme
-  void setTheme(BuildContext context, String value) {
-    if (value == 'Light') {
-      AdaptiveTheme.of(context).setLight();
-    } else if (value == 'Dark') {
-      AdaptiveTheme.of(context).setDark();
+  set selectedTheme(String value) {
+    if (value == 'light') {
+      _settingsManager.setLightMode();
+    } else if (value == 'dark') {
+      _settingsManager.setDarkMode();
     } else {
-      AdaptiveTheme.of(context).setSystem();
+      _settingsManager.setSystemMode();
     }
     _selectedTheme = value;
   }
 
-  String get currentLocale => _currentLocale ?? '';
+  String get currentLocale => _currentLocale ?? 'System';
 
   set currentLocale(String value) {
-    _settingsManager.setString(PreferencesFlag.locale, value);
-    if (value == 'English') {
-      AppIntl.load(const Locale('en'));
+    if (value == AppIntl.current.settings_english) {
+      _settingsManager.setEnglish();
     } else {
-      AppIntl.load(const Locale('fr'));
+      _settingsManager.setFrench();
     }
     _currentLocale = value;
   }
@@ -52,8 +49,9 @@ class SettingsViewModel extends FutureViewModel {
   @override
   Future futureToRun() async {
     setBusy(true);
-    await AdaptiveTheme.getThemeMode()
-        .then((value) => _selectedTheme = value.name);
+    await _settingsManager
+        .getString(PreferencesFlag.theme)
+        .then((value) => _selectedTheme = value);
     await _settingsManager
         .getString(PreferencesFlag.locale)
         .then((value) => _currentLocale = value);

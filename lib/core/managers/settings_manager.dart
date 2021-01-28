@@ -1,5 +1,6 @@
 // FLUTTER / DART / THIRD-PARTIES
 import 'package:enum_to_string/enum_to_string.dart';
+import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
 import 'package:table_calendar/table_calendar.dart';
 
@@ -12,8 +13,9 @@ import 'package:notredame/core/constants/preferences_flags.dart';
 
 // OTHER
 import 'package:notredame/locator.dart';
+import 'package:notredame/generated/l10n.dart';
 
-class SettingsManager {
+class SettingsManager with ChangeNotifier {
   static const String tag = "SettingsManager";
 
   final Logger _logger = locator<Logger>();
@@ -22,6 +24,69 @@ class SettingsManager {
   final PreferencesService _preferencesService = locator<PreferencesService>();
 
   final AnalyticsService _analyticsService = locator<AnalyticsService>();
+
+  ThemeMode _themeMode;
+
+  ThemeMode get themeMode {
+    _preferencesService.getString(PreferencesFlag.theme).then((value) {
+      final theme = value ?? 'system';
+      if (theme == 'light') {
+        _themeMode = ThemeMode.light;
+      } else if (theme == 'dark') {
+        _themeMode = ThemeMode.dark;
+      } else {
+        _themeMode = ThemeMode.system;
+      }
+    });
+    return _themeMode;
+  }
+
+  Locale _locale;
+
+  Locale get locale {
+    _preferencesService.getString(PreferencesFlag.locale).then((value) {
+      if (value == AppIntl.current.settings_french) {
+        _locale = const Locale('fr');
+      } else if (value == AppIntl.current.settings_english) {
+        _locale = const Locale('en');
+      } else {
+        _locale = null;
+      }
+    });
+    return _locale;
+  }
+
+  void setDarkMode() {
+    _themeMode = ThemeMode.dark;
+    _preferencesService.setString(PreferencesFlag.theme, 'dark');
+    notifyListeners();
+  }
+
+  void setLightMode() {
+    _themeMode = ThemeMode.light;
+    _preferencesService.setString(PreferencesFlag.theme, 'light');
+    notifyListeners();
+  }
+
+  void setSystemMode() {
+    _themeMode = ThemeMode.system;
+    _preferencesService.setString(PreferencesFlag.theme, 'system');
+    notifyListeners();
+  }
+
+  void setFrench() {
+    _preferencesService.setString(
+        PreferencesFlag.locale, AppIntl.current.settings_french);
+    _locale = const Locale('fr');
+    notifyListeners();
+  }
+
+  void setEnglish() {
+    _preferencesService.setString(
+        PreferencesFlag.locale, AppIntl.current.settings_english);
+    _locale = const Locale('en');
+    notifyListeners();
+  }
 
   /// Get the settings of the schedule, these are loaded from the user preferences.
   Future<Map<PreferencesFlag, dynamic>> getScheduleSettings() async {

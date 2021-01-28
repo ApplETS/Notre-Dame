@@ -1,5 +1,4 @@
 // FLUTTER / DART / THIRD-PARTIES
-import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 
@@ -41,30 +40,29 @@ class _SettingsViewState extends State<SettingsView> {
                     borderRadius: BorderRadius.circular(10)),
                 onSelected: (String value) {
                   setState(() {
-                    model.setTheme(context, value);
+                    model.selectedTheme = value;
                   });
                 },
                 itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
                   const PopupMenuItem<String>(
-                    value: 'Light',
+                    value: 'light',
                     child: Text('Light'),
                   ),
                   const PopupMenuItem<String>(
-                    value: 'Dark',
+                    value: 'dark',
                     child: Text('Dark'),
                   ),
                   const PopupMenuItem<String>(
-                    value: 'System',
+                    value: 'system',
                     child: Text('System'),
                   ),
                 ],
                 child: ListTile(
-                  leading:
-                      Icon(model.selectedTheme == AdaptiveThemeMode.light.name
-                          ? Icons.wb_sunny
-                          : model.selectedTheme == AdaptiveThemeMode.dark.name
-                              ? Icons.nightlight_round
-                              : Icons.brightness_auto),
+                  leading: Icon(model.selectedTheme == 'light'
+                      ? Icons.wb_sunny
+                      : model.selectedTheme == 'dark'
+                          ? Icons.nightlight_round
+                          : Icons.brightness_auto),
                   title: Text(AppIntl.of(context).settings_dark_theme_pref),
                   subtitle: Text(model.selectedTheme),
                 ),

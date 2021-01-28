@@ -1,4 +1,5 @@
-import 'package:flutter/cupertino.dart';
+// FLUTTER / DART / THIRD-PARTIES
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 // FLUTTER / DART / THIRD-PARTIES
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -43,7 +44,7 @@ class SecurityViewModel extends BaseViewModel {
 
   /// Used to change the color of the map based on the brightness
   void changeMapMode(BuildContext context) {
-    if (MediaQuery.of(context).platformBrightness == Brightness.dark) {
+    if (Theme.of(context).brightness == Brightness.dark) {
       getJsonFile("assets/dark_map_style.json").then(setMapStyle);
     } else {
       getJsonFile("assets/normal_map_style.json").then(setMapStyle);
