@@ -43,9 +43,12 @@ class BottomBar extends StatelessWidget {
         currentView = studentView;
         break;
       case RouterPaths.ets:
+      case RouterPaths.security:
         currentView = etsView;
         break;
       case RouterPaths.more:
+      case RouterPaths.settings:
+      case RouterPaths.about:
         currentView = moreView;
         break;
     }
