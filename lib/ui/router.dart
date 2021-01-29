@@ -53,16 +53,7 @@ class AppRouter {
             pageBuilder: (_, __, ___) => ContributorsView());
       case RouterPaths.about:
         return PageRouteBuilder(
-            transitionsBuilder: (BuildContext context,
-                Animation<double> animation,
-                Animation<double> secondaryAnimation,
-                Widget child) {
-              return ScaleTransition(
-                alignment: const Alignment(0, -0.75),
-                scale: animation,
-                child: child,
-              );
-            },
+            transitionDuration: const Duration(seconds: 2),
             settings: RouteSettings(name: routeSettings.name),
             pageBuilder: (_, __, ___) => AboutView());
       default:
