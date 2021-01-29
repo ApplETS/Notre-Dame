@@ -8,11 +8,12 @@ import 'package:stacked/stacked.dart';
 // VIEW MODEL
 import 'package:notredame/core/viewmodels/security_viewmodel.dart';
 
+// VIEWS
+import 'package:notredame/ui/views/emergency_view.dart';
+
 // OTHER
 import 'package:notredame/generated/l10n.dart';
 import 'package:notredame/ui/utils/app_theme.dart';
-
-import 'emergency_view.dart';
 
 class SecurityView extends StatefulWidget {
   @override
