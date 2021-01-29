@@ -173,9 +173,12 @@
 
   "settings_title": "Settings",
   "settings_display_pref_category": "Display",
-  "settings_dark_theme_pref": "Dark Theme",
+  "settings_dark_theme_pref": "Theme",
   "settings_miscellaneous_category": "Miscellaneous",
   "settings_language_pref": "Language",
   "settings_french": "Français",
-  "settings_english": "English"
+  "settings_english": "English",
+  "dark_theme": "Dark",
+  "light_theme": "Light",
+  "system_theme": "System"
 }
