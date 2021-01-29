@@ -21,13 +21,24 @@ class SettingsViewModel extends FutureViewModel {
   /// Current theme
   String _selectedTheme;
 
-  String get selectedTheme => _selectedTheme ?? 'System';
+  /// Possible theme choices
+  final light = 'light';
+  final dark = 'dark';
+  final system = 'system';
+
+  String get selectedTheme {
+    return _selectedTheme == light
+        ? AppIntl.current.light_theme
+        : _selectedTheme == dark
+            ? AppIntl.current.dark_theme
+            : AppIntl.current.system_theme;
+  }
 
   /// Set theme
   set selectedTheme(String value) {
-    if (value == 'light') {
+    if (value == light) {
       _settingsManager.setLightMode();
-    } else if (value == 'dark') {
+    } else if (value == dark) {
       _settingsManager.setDarkMode();
     } else {
       _settingsManager.setSystemMode();
@@ -35,8 +46,9 @@ class SettingsViewModel extends FutureViewModel {
     _selectedTheme = value;
   }
 
-  String get currentLocale => _currentLocale ?? 'System';
+  String get currentLocale => _currentLocale ?? AppIntl.current.system_theme;
 
+  /// Set Locale
   set currentLocale(String value) {
     if (value == AppIntl.current.settings_english) {
       _settingsManager.setEnglish();

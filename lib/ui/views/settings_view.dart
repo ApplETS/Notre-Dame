@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 
 // VIEWMODEL
-import 'package:notredame/core/viewmodels/setting_viewmodel.dart';
+import 'package:notredame/core/viewmodels/settings_viewmodel.dart';
 
 // WIDGETS
 import 'package:notredame/ui/widgets/base_scaffold.dart';
@@ -44,23 +44,24 @@ class _SettingsViewState extends State<SettingsView> {
                   });
                 },
                 itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
-                  const PopupMenuItem<String>(
-                    value: 'light',
-                    child: Text('Light'),
+                  PopupMenuItem<String>(
+                    value: model.light,
+                    child: Text(AppIntl.of(context).light_theme),
                   ),
-                  const PopupMenuItem<String>(
-                    value: 'dark',
-                    child: Text('Dark'),
+                  PopupMenuItem<String>(
+                    value: model.dark,
+                    child: Text(AppIntl.of(context).dark_theme),
                   ),
-                  const PopupMenuItem<String>(
-                    value: 'system',
-                    child: Text('System'),
+                  PopupMenuItem<String>(
+                    value: model.system,
+                    child: Text(AppIntl.of(context).system_theme),
                   ),
                 ],
                 child: ListTile(
-                  leading: Icon(model.selectedTheme == 'light'
+                  leading: Icon(model.selectedTheme ==
+                          AppIntl.of(context).light_theme
                       ? Icons.wb_sunny
-                      : model.selectedTheme == 'dark'
+                      : model.selectedTheme == AppIntl.of(context).dark_theme
                           ? Icons.nightlight_round
                           : Icons.brightness_auto),
                   title: Text(AppIntl.of(context).settings_dark_theme_pref),
