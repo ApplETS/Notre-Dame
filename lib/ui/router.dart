@@ -6,9 +6,12 @@ import 'package:notredame/core/constants/router_paths.dart';
 
 // VIEWS
 import 'package:notredame/ui/views/login_view.dart';
-import 'package:notredame/ui/views/dashboard_view.dart';
+import 'package:notredame/ui/views/quick_links_view.dart';
+import 'package:notredame/ui/views/schedule_view.dart';
+import 'package:notredame/ui/views/security_view.dart';
+import 'package:notredame/ui/views/student_view.dart';
 
-class Router {
+class AppRouter {
   // ignore: missing_return
   static Route<dynamic> generateRoute(RouteSettings routeSettings) {
     switch (routeSettings.name) {
@@ -16,10 +19,22 @@ class Router {
         return MaterialPageRoute(
             settings: RouteSettings(name: routeSettings.name),
             builder: (_) => LoginView());
-      case RouterPaths.dashboard:
-        return MaterialPageRoute(
+      case RouterPaths.schedule:
+        return PageRouteBuilder(
             settings: RouteSettings(name: routeSettings.name),
-            builder: (_) => DashboardView());
+            pageBuilder: (_, __, ___) => const ScheduleView());
+      case RouterPaths.student:
+        return PageRouteBuilder(
+            settings: RouteSettings(name: routeSettings.name),
+            pageBuilder: (_, __, ___) => StudentView());
+      case RouterPaths.ets:
+        return PageRouteBuilder(
+            settings: RouteSettings(name: routeSettings.name),
+            pageBuilder: (_, __, ___) => QuickLinksView());
+      case RouterPaths.security:
+        return PageRouteBuilder(
+            settings: RouteSettings(name: routeSettings.name),
+            pageBuilder: (_, __, ___) => SecurityView());
       default:
         return MaterialPageRoute(
             settings: RouteSettings(name: routeSettings.name),

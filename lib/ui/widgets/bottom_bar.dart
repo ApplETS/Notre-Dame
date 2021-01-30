@@ -19,16 +19,39 @@ class BottomBar extends StatelessWidget {
 
   final NavigationService _navigationService = locator<NavigationService>();
 
-  final int _currentView;
-
-  BottomBar(int index) : _currentView = index;
-
   @override
-  Widget build(BuildContext context) => BottomNavigationBar(
-        onTap: _onTap,
-        items: _buildItems(context),
-        currentIndex: _currentView,
-      );
+  Widget build(BuildContext context) {
+    return BottomNavigationBar(
+      type: BottomNavigationBarType.fixed,
+      onTap: (value) => _onTap(value),
+      items: _buildItems(context),
+      currentIndex: _defineIndex(ModalRoute.of(context).settings.name),
+    );
+  }
+
+  int _defineIndex(String routeName) {
+    int currentView = dashboardView;
+
+    switch (routeName) {
+      case RouterPaths.dashboard:
+        currentView = dashboardView;
+        break;
+      case RouterPaths.schedule:
+        currentView = scheduleView;
+        break;
+      case RouterPaths.student:
+        currentView = studentView;
+        break;
+      case RouterPaths.ets:
+        currentView = etsView;
+        break;
+      case RouterPaths.more:
+        currentView = moreView;
+        break;
+    }
+
+    return currentView;
+  }
 
   void _onTap(int index) {
     switch (index) {
@@ -54,19 +77,19 @@ class BottomBar extends StatelessWidget {
     return [
       BottomNavigationBarItem(
           icon: const Icon(Icons.dashboard),
-          title: Text(AppIntl.of(context).title_dashboard)),
+          label: AppIntl.of(context).title_dashboard),
       BottomNavigationBarItem(
           icon: const Icon(Icons.schedule),
-          title: Text(AppIntl.of(context).title_schedule)),
+          label: AppIntl.of(context).title_schedule),
       BottomNavigationBarItem(
           icon: const Icon(Icons.school),
-          title: Text(AppIntl.of(context).title_student)),
+          label: AppIntl.of(context).title_student),
       BottomNavigationBarItem(
           icon: const Icon(Icons.account_balance),
-          title: Text(AppIntl.of(context).title_ets)),
+          label: AppIntl.of(context).title_ets),
       BottomNavigationBarItem(
           icon: const Icon(Icons.dehaze),
-          title: Text(AppIntl.of(context).title_more)),
+          label: AppIntl.of(context).title_more),
     ];
   }
 }

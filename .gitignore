@@ -13,6 +13,10 @@
 build/
 lib/generated/
 
+# Certificates and secrets
+assets/certificates/
+**/env_variables.sh
+
 # Android related
 **/android/**/gradle-wrapper.jar
 **/android/.gradle

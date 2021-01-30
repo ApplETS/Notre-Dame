@@ -11,7 +11,11 @@ import 'package:notredame/core/models/mon_ets_user.dart';
 // CONSTANTS
 import 'package:notredame/core/constants/urls.dart';
 
+// UTILS
+import 'package:notredame/core/utils/http_exceptions.dart';
+
 // MOCKS
+import '../helpers.dart';
 import '../mock/services/http_client_mock.dart';
 
 void main() {
@@ -22,6 +26,8 @@ void main() {
   group('MonETSApi - ', () {
     setUp(() {
       clientMock = HttpClientMock();
+      setupLogger();
+
       service = MonETSApi(clientMock);
     });
 
@@ -37,7 +43,7 @@ void main() {
         const String username = "username";
         const String password = "password";
 
-        HttpClientMock.stubPost(
+        HttpClientMock.stubJsonPost(
             clientMock,
             Urls.authenticationMonETS,
             {"Domaine": "domaine", "TypeUsagerId": 1, "Username": username},
@@ -54,14 +60,14 @@ void main() {
         const int statusCode = 500;
         const String message = "An error has occurred.";
 
-        HttpClientMock.stubPost(
+        HttpClientMock.stubJsonPost(
             clientMock,
             Urls.authenticationMonETS,
             {"Message": message},
             statusCode);
 
         expect(service.authenticate(
-            username: "", password: ""), throwsException);
+            username: "", password: ""), throwsA(isInstanceOf<HttpException>()));
       });
     });
   });
