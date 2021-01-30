@@ -1,20 +1,20 @@
 // FLUTTER / DART / THIRD-PARTIES
 import 'package:flutter/material.dart';
 //models
-import 'package:notredame/core/models/cours.dart';
-import 'package:notredame/core/models/trimester.dart';
+import 'package:notredame/core/models/course.dart';
+import 'package:notredame/core/models/session.dart';
 // CONSTANT
 import 'package:notredame/ui/utils/app_theme.dart';
 // widgets
 import 'Grade_Button.dart';
 
-class TrimesterWidget extends StatelessWidget {
-  final List<Cours> _coursParSession;
+class SessionWidget extends StatelessWidget {
+  final List<Course> _coursParSession;
   final String _title;
 
-  TrimesterWidget(Trimester trimester)
-      : _coursParSession = trimester.coursParSession,
-        _title = trimester.trimesterTitle;
+  SessionWidget(Session session, List<Course> courses)
+      : _coursParSession = courses,
+        _title = session.name;
 
   @override
   Widget build(BuildContext context) {
@@ -40,9 +40,9 @@ class TrimesterWidget extends StatelessWidget {
 
   List<GradeButton> _settingGradesButtons() {
     final List<GradeButton> gradeButtons = <GradeButton>[];
-    for (final Cours cours in _coursParSession) {
+    for (final Course cours in _coursParSession) {
       gradeButtons
-          .add(GradeButton(codeTxt: cours.code, gradeTxt: cours.finalGrade));
+          .add(GradeButton(codeTxt: cours.acronym, gradeTxt: cours.grade));
     }
     return gradeButtons;
   }

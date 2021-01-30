@@ -1,0 +1,69 @@
+// FLUTTER / DART / THIRD-PARTIES
+import 'package:flutter/material.dart';
+import 'package:xml/xml.dart';
+
+/// Data-class that represent a course
+class Course {
+  /// Course acronym (ex: LOG430)
+  final String acronym;
+
+  /// Title of the course (ex: Chimie et matériaux)
+  final String title;
+
+  /// Course group, on which group the student is registered
+  final String group;
+
+  /// Session short name during which the course is given (ex: H2020)
+  final String session;
+
+  /// Code number of the program of which the course is a part of
+  final String programCode;
+
+  /// Final grade of the course (ex: A+, C, ...) null if the course doesn't
+  /// have a the grade yet.
+  final String grade;
+
+  /// Number of credits of the course
+  final int numberOfCredits;
+
+  Course(
+      {@required this.acronym,
+      @required this.title,
+      @required this.group,
+      @required this.session,
+      @required this.programCode,
+      @required this.numberOfCredits,
+      this.grade});
+
+  /// Used to create a new [Course] instance from a [XMLElement].
+  factory Course.fromXmlNode(XmlElement node) => Course(
+      acronym: node.getElement('sigle').innerText,
+      title: node.getElement('titreCours').innerText,
+      group: node.getElement('groupe').innerText,
+      session: node.getElement('session').innerText,
+      programCode: node.getElement('programmeEtudes').innerText,
+      numberOfCredits: int.parse(node.getElement('nbCredits').innerText),
+      grade: node.getElement('cote').innerText.isEmpty
+          ? 'N/A'
+          : node.getElement('cote').innerText);
+
+  /// Used to create [Course] instance from a JSON file
+  factory Course.fromJson(Map<String, dynamic> map) => Course(
+      acronym: map['acronym'] as String,
+      title: map['title'] as String,
+      group: map['group'] as String,
+      session: map['session'] as String,
+      programCode: map['programCode'] as String,
+      numberOfCredits: map['numberOfCredits'] as int,
+      grade: map['grade'] as String);
+
+  Map<String, dynamic> toJson() => {
+        'acronym': acronym,
+        'title': title,
+        'group': group,
+        'session': session,
+        'programCode': programCode,
+        'numberOfCredits': numberOfCredits,
+        'grade': grade
+      };
+}
