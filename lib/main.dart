@@ -1,7 +1,13 @@
 // FLUTTER / DART / THIRD-PARTIES
+import 'dart:io';
+import 'dart:typed_data';
+import 'package:feedback/feedback.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:github/github.dart';
 import 'package:oktoast/oktoast.dart';
+import 'package:package_info/package_info.dart';
+import 'package:path_provider/path_provider.dart';
 
 // ROUTER
 import 'package:notredame/ui/router.dart';
@@ -24,7 +30,48 @@ import 'package:notredame/ui/views/startup_view.dart';
 void main() {
   setupLocator();
 
-  runApp(ETSMobile());
+  runApp(
+    BetterFeedback(
+      translation: Translation(),
+      onFeedback: (
+        BuildContext context,
+        String feedbackText,
+        Uint8List feedbackScreenshot,
+      ) async {
+        final PackageInfo packageInfo = await PackageInfo.fromPlatform();
+        final File file = await _localFile;
+        await file.writeAsBytes(feedbackScreenshot);
+
+        /// Create a GitHub Client, then send issue
+        GitHub(
+                auth: Authentication.withToken(
+                    Platform.environment['GITHUB_TOKEN']))
+            .issues
+            .create(
+                RepositorySlug.full("ApplETS/Notre-Dame"),
+                IssueRequest(
+                    title: 'Issue from ${packageInfo.appName} ',
+                    body: " **Describe the issue** \n"
+                        "$feedbackText\n"
+                        "**ScreenShot** \n"
+                        "![screenshot]($file)\n\n"
+                        "**Device Infos** \n"
+                        "App name: ${packageInfo.appName} \n"
+                        "Package name: ${packageInfo.packageName}  \n"
+                        "Version: ${packageInfo.version} \n"
+                        "Build number: ${packageInfo.buildNumber} \n"
+                        "Platform operating system: ${Platform.operatingSystem} \n"
+                        "Platform operating system version: ${Platform.operatingSystemVersion} \n",
+                    labels: ['bug', 'platform: ${Platform.operatingSystem}']));
+        showToast(
+          AppIntl.of(context).thankYouForTheFeedback,
+          position: ToastPosition.center,
+        );
+        BetterFeedback.of(context).hide();
+      },
+      child: ETSMobile(),
+    ),
+  );
 }
 
 class ETSMobile extends StatefulWidget {
@@ -72,4 +119,32 @@ class _ETSMobileState extends State<ETSMobile> {
       ),
     );
   }
+}
+
+/// Feedback translation
+class Translation implements FeedbackTranslation {
+  @override
+  String get submitButtonText => AppIntl.current?.submit ?? '';
+
+  @override
+  String get feedbackDescriptionText => AppIntl.current?.whatsWrong ?? '';
+
+  @override
+  String get draw => AppIntl.current?.draw ?? '';
+
+  @override
+  String get navigate => AppIntl.current?.navigate ?? '';
+}
+
+/// Get local storage path
+Future<String> get _localPath async {
+  final directory = await getExternalStorageDirectory();
+
+  return directory.path.replaceFirst('/', '');
+}
+
+/// Create empty picture
+Future<File> get _localFile async {
+  final path = await _localPath;
+  return File('$path/bugPicture.png');
 }

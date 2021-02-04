@@ -53,6 +53,9 @@ dependencies:
   google_maps_flutter: ^1.0.6
   table_calendar: ^2.3.3
   github: ^7.0.4
+  feedback: ^0.3.0
+  package_info: ^0.4.3+4
+  path_provider: ^1.6.27
 
 dev_dependencies:
   flutter_test:

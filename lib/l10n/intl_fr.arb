@@ -179,5 +179,11 @@
   "settings_english": "English",
   "dark_theme": "Foncé",
   "light_theme": "Pâle",
-  "system_theme": "Système"
+  "system_theme": "Système",
+
+  "submit": "Soumettre",
+  "whatsWrong": "Qu'est-ce qui ne va pas?",
+  "draw": "Dessiner",
+  "navigate": "Naviguer",
+  "thankYouForTheFeedback": "Merci pour le signalement"
 }

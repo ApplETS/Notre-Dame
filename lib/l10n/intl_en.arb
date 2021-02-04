@@ -180,5 +180,11 @@
   "settings_english": "English",
   "dark_theme": "Dark",
   "light_theme": "Light",
-  "system_theme": "System"
+  "system_theme": "System",
+
+  "submit": "Submit",
+  "whatsWrong": "What's wrong?",
+  "draw": "Draw",
+  "navigate": "Navigate",
+  "thankYouForTheFeedback": "Thank you for the feedback"
 }
