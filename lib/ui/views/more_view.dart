@@ -1,4 +1,5 @@
 // FLUTTER / DART / THIRD-PARTIES
+import 'package:feedback/feedback.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 
@@ -68,6 +69,7 @@ class MoreView extends StatelessWidget {
                 ListTile(
                   title: Text(AppIntl.of(context).more_report_bug),
                   leading: const Icon(Icons.bug_report),
+                  onTap: () => BetterFeedback.of(context).show(),
                 ),
                 ListTile(
                   title: Text(AppIntl.of(context).more_contributors),
@@ -113,7 +115,9 @@ class MoreView extends StatelessWidget {
                             },
                             child: Text(AppIntl.of(context).yes)),
                         FlatButton(
-                            onPressed: () => Navigator.pop(context),
+                            onPressed: () =>
+                                Navigator.of(context, rootNavigator: true)
+                                    .pop(),
                             child: Text(AppIntl.of(context).no))
                       ],
                     ),
