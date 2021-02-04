@@ -21,7 +21,7 @@ class MoreViewModel extends BaseViewModel {
   Future<void> logout(BuildContext context) async {
     await _cacheManager.empty();
     UserRepository().logOut();
-    Navigator.pushAndRemoveUntil(context,
+    Navigator.of(context, rootNavigator: true).pushAndRemoveUntil(
         MaterialPageRoute(builder: (BuildContext context) {
       return StartUpView();
     }), (Route<dynamic> route) => false);
