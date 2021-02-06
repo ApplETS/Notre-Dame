@@ -19,8 +19,8 @@ class Course {
   /// Code number of the program of which the course is a part of
   final String programCode;
 
-  /// Final grade of the course (ex: A+, C, ...) null if the course doesn't
-  /// have a the grade yet.
+  /// Final grade of the course (ex: A+, C, ...) if the course doesn't
+  /// have a the grade yet the variable will be null.
   final String grade;
 
   /// Number of credits of the course
@@ -44,7 +44,7 @@ class Course {
       programCode: node.getElement('programmeEtudes').innerText,
       numberOfCredits: int.parse(node.getElement('nbCredits').innerText),
       grade: node.getElement('cote').innerText.isEmpty
-          ? 'N/A'
+          ? null
           : node.getElement('cote').innerText);
 
   /// Used to create [Course] instance from a JSON file
@@ -55,7 +55,7 @@ class Course {
       session: map['session'] as String,
       programCode: map['programCode'] as String,
       numberOfCredits: map['numberOfCredits'] as int,
-      grade: map['grade'] as String);
+      grade: map.containsKey('grade') ? map['grade'] as String : null);
 
   Map<String, dynamic> toJson() => {
         'acronym': acronym,
@@ -64,6 +64,29 @@ class Course {
         'session': session,
         'programCode': programCode,
         'numberOfCredits': numberOfCredits,
-        'grade': grade
+        if (grade != null) 'grade': grade
       };
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is Course &&
+          runtimeType == other.runtimeType &&
+          acronym == other.acronym &&
+          title == other.title &&
+          group == other.group &&
+          session == other.session &&
+          programCode == other.programCode &&
+          grade == other.grade &&
+          numberOfCredits == other.numberOfCredits;
+
+  @override
+  int get hashCode =>
+      acronym.hashCode ^
+      title.hashCode ^
+      group.hashCode ^
+      session.hashCode ^
+      programCode.hashCode ^
+      grade.hashCode ^
+      numberOfCredits.hashCode;
 }

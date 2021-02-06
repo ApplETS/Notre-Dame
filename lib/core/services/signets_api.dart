@@ -98,6 +98,21 @@ class SignetsApi {
         .toList();
   }
 
+  /// Call the SignetsAPI to get the courses of the student ([username]).
+  Future<List<Course>> getCoursesList(
+      {@required String username, @required String password}) async {
+    // Generate initial soap envelope
+    final body =
+        buildBasicSOAPBody(Urls.listCourse, username, password).buildDocument();
+
+    final responseBody = await _sendSOAPRequest(body, Urls.listCourse);
+
+    return responseBody
+        .findAllElements("Cours")
+        .map((node) => Course.fromXmlNode(node))
+        .toList();
+  }
+
   /// Call the SignetsAPI to get the list of all the [Session] for the student ([username]).
   Future<List<Session>> getSessions(
       {@required String username, @required String password}) async {
@@ -180,7 +195,8 @@ class SignetsApi {
   /// Send a SOAP request to SignetsAPI using [body] as envelope then return
   /// the response.
   /// Will throw a [ApiException] if an error is returned by the api.
-  Future<XmlElement> _sendSOAPRequest(XmlDocument body, String operation) async {
+  Future<XmlElement> _sendSOAPRequest(
+      XmlDocument body, String operation) async {
     // Send the envelope
     final response = await _client.post(Urls.signetsAPI,
         headers: _buildHeaders(Urls.signetsOperationBase + operation),

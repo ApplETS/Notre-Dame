@@ -2,6 +2,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:logger/logger.dart';
 import 'package:mockito/mockito.dart';
+import 'package:notredame/core/models/course.dart';
 import 'package:notredame/core/models/profile_student.dart';
 import 'package:notredame/core/models/program.dart';
 
@@ -382,6 +383,80 @@ void main() {
         HttpClientMock.stubPost(clientMock, Urls.signetsAPI, stubResponse);
 
         expect(service.getPrograms(username: username, password: password),
+            throwsA(isInstanceOf<ApiException>()),
+            reason:
+                "If the SignetsAPI return an error the service should return the error.");
+      });
+    });
+
+    group("getCoursesList - ", () {
+      const String courseWithGradeXML = '<Cours>'
+          '<sigle>GEN101</sigle>'
+          '<groupe>02</groupe>'
+          '<session>H2020</session>'
+          '<programmeEtudes>999</programmeEtudes>'
+          '<cote>C+</cote>'
+          '<nbCredits>3</nbCredits>'
+          '<titreCours>Cours générique</titreCours> '
+          '</Cours>';
+
+      final Course courseWithGrade = Course(
+          acronym: 'GEN101',
+          group: '02',
+          session: 'H2020',
+          programCode: '999',
+          grade: 'C+',
+          numberOfCredits: 3,
+          title: 'Cours générique');
+
+      const String courseWithoutGradeXML = '<Cours>'
+          '<sigle>GEN101</sigle>'
+          '<groupe>02</groupe>'
+          '<session>H2020</session>'
+          '<programmeEtudes>999</programmeEtudes>'
+          '<cote /> '
+          '<nbCredits>3</nbCredits>'
+          '<titreCours>Cours générique</titreCours> '
+          '</Cours>';
+
+      final Course courseWithoutGrade = Course(
+          acronym: 'GEN101',
+          group: '02',
+          session: 'H2020',
+          programCode: '999',
+          numberOfCredits: 3,
+          title: 'Cours générique');
+
+      test("right credentials", () async {
+        const String username = "username";
+        const String password = "password";
+
+        final String stubResponse = buildResponse(Urls.listCourse,
+            courseWithGradeXML + courseWithoutGradeXML, 'liste');
+
+        HttpClientMock.stubPost(clientMock, Urls.signetsAPI, stubResponse);
+
+        final result = await service.getCoursesList(
+            username: username, password: password);
+
+        expect(result, isA<List<Course>>());
+        expect(result[0], courseWithGrade);
+        expect(result[1], courseWithoutGrade);
+      });
+
+      // Currently SignetsAPI doesn't have a clear way to indicate which error
+      // occurred (no error code, no change of http code, just a text)
+      // so for now whatever the error we will throw a generic error
+      test("wrong credentials / an error occurred", () async {
+        const String username = "username";
+        const String password = "password";
+
+        final String stubResponse =
+            buildErrorResponse(Urls.listCourse, 'An error occurred', 'liste');
+
+        HttpClientMock.stubPost(clientMock, Urls.signetsAPI, stubResponse);
+
+        expect(service.getCoursesList(username: username, password: password),
             throwsA(isInstanceOf<ApiException>()),
             reason:
                 "If the SignetsAPI return an error the service should return the error.");
