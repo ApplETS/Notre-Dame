@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/io_client.dart';
+import 'package:notredame/core/models/course.dart';
 import 'package:xml/xml.dart';
 
 // CONSTANTS & EXCEPTIONS
@@ -38,9 +39,11 @@ class SignetsApi {
     }
   }
 
-  /// Call the SignetsAPI to get the courses activities for the [session] for the student ([username]).
-  /// By specifying [courseGroup] we can filter the results to get only the activities for this course.
-  /// If the [startDate] and/or [endDate] are specified the results will contains all the activities between these dates.
+  /// Call the SignetsAPI to get the courses activities for the [session] for
+  /// the student ([username]). By specifying [courseGroup] we can filter the
+  /// results to get only the activities for this course.
+  /// If the [startDate] and/or [endDate] are specified the results will contains
+  /// all the activities between these dates.
   Future<List<CourseActivity>> getCoursesActivities(
       {@required String username,
       @required String password,
@@ -85,36 +88,11 @@ class SignetsApi {
           : "${endDate.year}-${endDate.month}-${endDate.day}");
     });
 
-    body
-        .findAllElements(Urls.listClassScheduleOperation,
-            namespace: Urls.signetsOperationBase)
-        .first
-        .children
-        .add(operationContent.buildFragment());
-
-    // Send the envelope
-    final response = await _client.post(Urls.signetsAPI,
-        headers: _buildHeaders(
-            Urls.signetsOperationBase + Urls.listClassScheduleOperation),
-        body: body.toXmlString());
-
-    final responseBody = XmlDocument.parse(response.body)
-        .findAllElements(_operationResponseTag(Urls.listClassScheduleOperation))
-        .first;
-
-    // Throw exception if the error tag is not empty
-    if (responseBody
-        .findAllElements(_signetsErrorTag)
-        .first
-        .innerText
-        .isNotEmpty) {
-      throw ApiException(
-          prefix: tagError,
-          message: responseBody.findElements(_signetsErrorTag).first.innerText);
-    }
+    final responseBody =
+        await _sendSOAPRequest(body, Urls.listClassScheduleOperation);
 
     /// Build and return the list of CourseActivity
-    return XmlDocument.parse(response.body)
+    return responseBody
         .findAllElements("Seances")
         .map((node) => CourseActivity.fromXmlNode(node))
         .toList();
@@ -128,26 +106,8 @@ class SignetsApi {
         buildBasicSOAPBody(Urls.listSessionsOperation, username, password)
             .buildDocument();
 
-    // Send the envelope
-    final response = await _client.post(Urls.signetsAPI,
-        headers: _buildHeaders(
-            Urls.signetsOperationBase + Urls.listSessionsOperation),
-        body: body.toXmlString());
-
-    final responseBody = XmlDocument.parse(response.body)
-        .findAllElements(_operationResponseTag(Urls.listSessionsOperation))
-        .first;
-
-    // Throw exception if the error tag is not empty
-    if (responseBody
-        .findElements(_signetsErrorTag)
-        .first
-        .innerText
-        .isNotEmpty) {
-      throw ApiException(
-          prefix: tagError,
-          message: responseBody.findElements(_signetsErrorTag).first.innerText);
-    }
+    final responseBody =
+        await _sendSOAPRequest(body, Urls.listSessionsOperation);
 
     /// Build and return the list of Session
     return responseBody
@@ -163,30 +123,10 @@ class SignetsApi {
     final body = buildBasicSOAPBody(Urls.infoStudent, username, password)
         .buildDocument();
 
-    // Send the envelope
-    final response = await _client.post(Urls.signetsAPI,
-        headers: _buildHeaders(Urls.signetsOperationBase + Urls.infoStudent),
-        body: body.toXmlString());
+    final responseBody = await _sendSOAPRequest(body, Urls.infoStudent);
 
-    final responseBody = XmlDocument.parse(response.body)
-        .findAllElements(_operationResponseTag(Urls.infoStudent));
-
-    // Throw exception if the error tag is not empty
-    if (responseBody.first
-        .findElements(_signetsErrorTag)
-        .first
-        .innerText
-        .isNotEmpty) {
-      throw ApiException(
-          prefix: tagError,
-          message: responseBody.first
-              .findElements(_signetsErrorTag)
-              .first
-              .innerText);
-    }
-
-    /// Build and return the info
-    return responseBody.map((node) => ProfileStudent.fromXmlNode(node)).first;
+    // Build and return the info
+    return ProfileStudent.fromXmlNode(responseBody);
   }
 
   /// Call the SignetsAPI to get the list of all the [Program] for the student ([username]).
@@ -196,25 +136,7 @@ class SignetsApi {
     final body = buildBasicSOAPBody(Urls.listPrograms, username, password)
         .buildDocument();
 
-    // Send the envelope
-    final response = await _client.post(Urls.signetsAPI,
-        headers: _buildHeaders(Urls.signetsOperationBase + Urls.listPrograms),
-        body: body.toXmlString());
-
-    final responseBody = XmlDocument.parse(response.body)
-        .findAllElements(_operationResponseTag(Urls.listPrograms))
-        .first;
-
-    // Throw exception if the error tag is not empty
-    if (responseBody
-        .findElements(_signetsErrorTag)
-        .first
-        .innerText
-        .isNotEmpty) {
-      throw ApiException(
-          prefix: tagError,
-          message: responseBody.findElements(_signetsErrorTag).first.innerText);
-    }
+    final responseBody = await _sendSOAPRequest(body, Urls.listPrograms);
 
     /// Build and return the list of Program
     return responseBody
@@ -253,6 +175,33 @@ class SignetsApi {
     });
 
     return builder;
+  }
+
+  /// Send a SOAP request to SignetsAPI using [body] as envelope then return
+  /// the response.
+  /// Will throw a [ApiException] if an error is returned by the api.
+  Future<XmlElement> _sendSOAPRequest(XmlDocument body, String operation) async {
+    // Send the envelope
+    final response = await _client.post(Urls.signetsAPI,
+        headers: _buildHeaders(Urls.signetsOperationBase + operation),
+        body: body.toXmlString());
+
+    final responseBody = XmlDocument.parse(response.body)
+        .findAllElements(_operationResponseTag(operation))
+        .first;
+
+    // Throw exception if the error tag is not empty
+    if (responseBody
+        .findElements(_signetsErrorTag)
+        .first
+        .innerText
+        .isNotEmpty) {
+      throw ApiException(
+          prefix: tagError,
+          message: responseBody.findElements(_signetsErrorTag).first.innerText);
+    }
+
+    return responseBody;
   }
 
   /// Create a [http.Client] with the certificate to access the SignetsAPI
