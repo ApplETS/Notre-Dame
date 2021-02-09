@@ -138,6 +138,9 @@ class SettingsManager with ChangeNotifier {
 
   /// Get the value of [flag]
   Future<String> getString(PreferencesFlag flag) async {
+    // Log the event
+    _analyticsService.logEvent(
+        "$tag-${EnumToString.convertToString(flag)}", 'getString');
     return _preferencesService.getString(flag);
   }
 

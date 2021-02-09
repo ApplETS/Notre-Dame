@@ -128,6 +128,28 @@ void main() {
       verify(preferencesService.setString(flag, any));
     });
 
+    test("getString", () async {
+      const flag = PreferencesFlag.scheduleSettingsCalendarFormat;
+      PreferencesServiceMock.stubGetString(
+          preferencesService as PreferencesServiceMock,
+          flag);
+
+      expect(
+          await manager.getString(
+              flag),
+          'test', reason: "setString should return true if the PreferenceService return true");
+
+      untilCalled(analyticsService.logEvent(
+          "${SettingsManager.tag}-${EnumToString.convertToString(flag)}",
+          any));
+
+      verify(analyticsService.logEvent(
+          "${SettingsManager.tag}-${EnumToString.convertToString(flag)}",
+          any))
+          .called(1);
+      verify(preferencesService.getString(flag));
+    });
+
     test("setBool", () async {
       const flag = PreferencesFlag.scheduleSettingsCalendarFormat;
       PreferencesServiceMock.stubSetBool(
