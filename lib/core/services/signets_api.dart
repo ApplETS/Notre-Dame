@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/io_client.dart';
-import 'package:notredame/core/models/course.dart';
 import 'package:xml/xml.dart';
 
 // CONSTANTS & EXCEPTIONS
@@ -16,6 +15,8 @@ import 'package:notredame/core/models/course_activity.dart';
 import 'package:notredame/core/models/session.dart';
 import 'package:notredame/core/models/profile_student.dart';
 import 'package:notredame/core/models/program.dart';
+import 'package:notredame/core/models/course.dart';
+import 'package:notredame/core/models/course_summary.dart';
 
 class SignetsApi {
   static const String tag = "SignetsApi";
@@ -88,6 +89,14 @@ class SignetsApi {
           : "${endDate.year}-${endDate.month}-${endDate.day}");
     });
 
+    // Add the parameters needed inside the request.
+    body
+        .findAllElements(Urls.listClassScheduleOperation,
+            namespace: Urls.signetsOperationBase)
+        .first
+        .children
+        .add(operationContent.buildFragment());
+
     final responseBody =
         await _sendSOAPRequest(body, Urls.listClassScheduleOperation);
 
@@ -103,14 +112,48 @@ class SignetsApi {
       {@required String username, @required String password}) async {
     // Generate initial soap envelope
     final body =
-        buildBasicSOAPBody(Urls.listCourse, username, password).buildDocument();
+        buildBasicSOAPBody(Urls.listCourseOperation, username, password).buildDocument();
 
-    final responseBody = await _sendSOAPRequest(body, Urls.listCourse);
+    final responseBody = await _sendSOAPRequest(body, Urls.listCourseOperation);
 
     return responseBody
         .findAllElements("Cours")
         .map((node) => Course.fromXmlNode(node))
         .toList();
+  }
+
+  /// Call the SignetsAPI to get all the evaluations (exams) and the summary
+  /// of [course] for the student ([username]).
+  Future<CourseSummary> getCourseSummary(
+      {@required String username,
+      @required String password,
+      @required Course course}) async {
+    // Generate initial soap envelope
+    final body = buildBasicSOAPBody(Urls.listEvaluationsOperation, username, password)
+        .buildDocument();
+    final operationContent = XmlBuilder();
+
+    // Add the content needed by the operation
+    operationContent.element("pSigle", nest: () {
+      operationContent.text(course.acronym);
+    });
+    operationContent.element("pGroupe", nest: () {
+      operationContent.text(course.group);
+    });
+    operationContent.element("pSession", nest: () {
+      operationContent.text(course.session);
+    });
+
+    body
+        .findAllElements(Urls.listEvaluationsOperation,
+            namespace: Urls.signetsOperationBase)
+        .first
+        .children
+        .add(operationContent.buildFragment());
+
+    final responseBody = await _sendSOAPRequest(body, Urls.listEvaluationsOperation);
+
+    return CourseSummary.fromXmlNode(responseBody);
   }
 
   /// Call the SignetsAPI to get the list of all the [Session] for the student ([username]).
@@ -135,10 +178,10 @@ class SignetsApi {
   Future<ProfileStudent> getStudentInfo(
       {@required String username, @required String password}) async {
     // Generate initial soap envelope
-    final body = buildBasicSOAPBody(Urls.infoStudent, username, password)
+    final body = buildBasicSOAPBody(Urls.infoStudentOperation, username, password)
         .buildDocument();
 
-    final responseBody = await _sendSOAPRequest(body, Urls.infoStudent);
+    final responseBody = await _sendSOAPRequest(body, Urls.infoStudentOperation);
 
     // Build and return the info
     return ProfileStudent.fromXmlNode(responseBody);
@@ -148,10 +191,10 @@ class SignetsApi {
   Future<List<Program>> getPrograms(
       {@required String username, @required String password}) async {
     // Generate initial soap envelope
-    final body = buildBasicSOAPBody(Urls.listPrograms, username, password)
+    final body = buildBasicSOAPBody(Urls.listProgramsOperation, username, password)
         .buildDocument();
 
-    final responseBody = await _sendSOAPRequest(body, Urls.listPrograms);
+    final responseBody = await _sendSOAPRequest(body, Urls.listProgramsOperation);
 
     /// Build and return the list of Program
     return responseBody

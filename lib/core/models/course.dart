@@ -2,6 +2,9 @@
 import 'package:flutter/material.dart';
 import 'package:xml/xml.dart';
 
+// MODELS
+import 'package:notredame/core/models/course_summary.dart';
+
 /// Data-class that represent a course
 class Course {
   /// Course acronym (ex: LOG430)
@@ -26,6 +29,10 @@ class Course {
   /// Number of credits of the course
   final int numberOfCredits;
 
+  /// Current mark, score... of the student for this course.
+  /// Can be null!!
+  CourseSummary courseSummary;
+
   Course(
       {@required this.acronym,
       @required this.title,
@@ -33,7 +40,8 @@ class Course {
       @required this.session,
       @required this.programCode,
       @required this.numberOfCredits,
-      this.grade});
+      this.grade,
+      this.courseSummary});
 
   /// Used to create a new [Course] instance from a [XMLElement].
   factory Course.fromXmlNode(XmlElement node) => Course(
@@ -55,7 +63,10 @@ class Course {
       session: map['session'] as String,
       programCode: map['programCode'] as String,
       numberOfCredits: map['numberOfCredits'] as int,
-      grade: map.containsKey('grade') ? map['grade'] as String : null);
+      grade: map['grade'] != null ? map['grade'] as String : null,
+      courseSummary: map["courseSummary"] != null
+          ? CourseSummary.fromJson(map["courseSummary"] as Map<String, dynamic>)
+          : null);
 
   Map<String, dynamic> toJson() => {
         'acronym': acronym,
@@ -64,7 +75,8 @@ class Course {
         'session': session,
         'programCode': programCode,
         'numberOfCredits': numberOfCredits,
-        if (grade != null) 'grade': grade
+        'grade': grade,
+        'courseSummary': courseSummary
       };
 
   @override
@@ -78,7 +90,8 @@ class Course {
           session == other.session &&
           programCode == other.programCode &&
           grade == other.grade &&
-          numberOfCredits == other.numberOfCredits;
+          numberOfCredits == other.numberOfCredits &&
+          courseSummary == other.courseSummary;
 
   @override
   int get hashCode =>
@@ -88,5 +101,19 @@ class Course {
       session.hashCode ^
       programCode.hashCode ^
       grade.hashCode ^
-      numberOfCredits.hashCode;
+      numberOfCredits.hashCode ^
+      courseSummary.hashCode;
+
+  @override
+  String toString() {
+    return 'Course{'
+        'acronym: $acronym, '
+        'title: $title, '
+        'group: $group, '
+        'session: $session, '
+        'programCode: $programCode, '
+        'grade: $grade, '
+        'numberOfCredits: $numberOfCredits, '
+        'courseSummary: $courseSummary}';
+  }
 }
