@@ -14,6 +14,9 @@ import 'package:notredame/core/services/preferences_service.dart';
 // CONSTANTS
 import 'package:notredame/core/constants/preferences_flags.dart';
 
+// GENERATED
+import 'package:notredame/generated/l10n.dart';
+
 import '../helpers.dart';
 
 // MOCK
@@ -23,13 +26,16 @@ void main() {
   AnalyticsService analyticsService;
   PreferencesService preferencesService;
   SettingsManager manager;
+  AppIntl appIntl;
 
   group("SettingsManager - ", () {
-    setUp(() {
+    setUp(() async {
       // Setting up mocks
       setupLogger();
       analyticsService = setupAnalyticsServiceMock();
       preferencesService = setupPreferencesServiceMock();
+
+      appIntl = await setupAppIntl();
 
       manager = SettingsManager();
     });
@@ -99,6 +105,86 @@ void main() {
             .called(1);
         verify(preferencesService
                 .getBool(PreferencesFlag.scheduleSettingsShowTodayBtn))
+            .called(1);
+
+        verifyNoMoreInteractions(preferencesService);
+        verifyNoMoreInteractions(analyticsService);
+      });
+    });
+
+    group("ThemeMode - ", () {
+      test("validate default behaviour", () async {
+
+        PreferencesServiceMock.stubGetString(
+            preferencesService as PreferencesServiceMock,
+            PreferencesFlag.theme,
+            toReturn: 'test theme');
+
+        final result = manager.themeMode;
+
+        verify(preferencesService
+            .getString(PreferencesFlag.theme))
+            .called(1);
+
+        verifyNoMoreInteractions(preferencesService);
+        verifyNoMoreInteractions(analyticsService);
+      });
+
+      test("set light/dark/system mode", () async {
+
+        var result = manager.setLightMode();
+
+        verify(preferencesService
+            .setString(PreferencesFlag.theme, 'light'))
+            .called(1);
+
+        result = manager.setDarkMode();
+
+        verify(preferencesService
+            .setString(PreferencesFlag.theme, 'dark'))
+            .called(1);
+
+        result = manager.setSystemMode();
+
+        verify(preferencesService
+            .setString(PreferencesFlag.theme, 'system'))
+            .called(1);
+
+        verifyNoMoreInteractions(preferencesService);
+        verifyNoMoreInteractions(analyticsService);
+      });
+    });
+
+    group("Locale - ", () {
+      test("validate default behaviour", () async {
+
+        PreferencesServiceMock.stubGetString(
+            preferencesService as PreferencesServiceMock,
+            PreferencesFlag.locale,
+            toReturn: 'test locale');
+
+        final result = manager.locale;
+
+        verify(preferencesService
+            .getString(PreferencesFlag.locale))
+            .called(1);
+
+        verifyNoMoreInteractions(preferencesService);
+        verifyNoMoreInteractions(analyticsService);
+      });
+
+      test("set french/english", () async {
+
+        var result = manager.setFrench();
+
+        verify(preferencesService
+            .setString(PreferencesFlag.locale, 'Français'))
+            .called(1);
+
+        result = manager.setEnglish();
+
+        verify(preferencesService
+            .setString(PreferencesFlag.locale, 'English'))
             .called(1);
 
         verifyNoMoreInteractions(preferencesService);
