@@ -43,6 +43,13 @@ flutter pub get
 flutter pub run intl_utils:generate
 ```
 
+## Add environment variable for API_KEY
+
+- After cloning the repo, you will have to get the packages and generate the l10n classes. To do that run the following command:
+```
+flutter pub run --dart-define=SOME_VAR=SOME_VALUE
+```
+
 ## Git hooks 
 
 You can find under the folder `.githooks` all the hooks needed for this project. To configure git to use this folder enter the following command:
