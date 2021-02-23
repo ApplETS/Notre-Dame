@@ -1,4 +1,5 @@
 // FLUTTER / DART / THIRD-PARTIES
+import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
 import 'package:feedback/feedback.dart';
@@ -43,28 +44,38 @@ void main() {
         await file.writeAsBytes(feedbackScreenshot);
 
         /// Create a GitHub Client, then send issue
-        GitHub(
-                auth: Authentication.withToken(
-                    Platform.environment['GITHUB_TOKEN']))
-            .issues
-            .create(
-                RepositorySlug.full("ApplETS/Notre-Dame"),
-                IssueRequest(
-                    title: 'Issue from ${packageInfo.appName} ',
-                    body: " **Describe the issue** \n"
-                        "$feedbackText\n"
-                        "**ScreenShot** \n"
-                        "![screenshot]($file)\n\n"
-                        "**Device Infos** \n"
-                        "App name: ${packageInfo.appName} \n"
-                        "Package name: ${packageInfo.packageName}  \n"
-                        "Version: ${packageInfo.version} \n"
-                        "Build number: ${packageInfo.buildNumber} \n"
-                        "Platform operating system: ${Platform.operatingSystem} \n"
-                        "Platform operating system version: ${Platform.operatingSystemVersion} \n",
-                    labels: ['bug', 'platform: ${Platform.operatingSystem}']));
+        const String githubApiToken = String.fromEnvironment('GITHUB_API_TOKEN');
+         final github = GitHub(auth: Authentication.withToken(githubApiToken));
+
+
+         Repository repo = await github.repositories.getRepository(RepositorySlug.full('ApplETS/Notre-Dame-Bug-report'));
+         /// Upload picture to repo
+          //github.repositories
+             // .createFile(,
+             // CreateFile(path: file.path.replaceFirst('storage/emulated/0/Android/data/ca.etsmtl.applets.notredame/files/', ''),content: base64Encode(file.readAsBytesSync()).toString(),message: 'new commit',committer: CommitUser('clubapplets-server', 'clubapplets@gmail.com'), branch: 'main'));
+
+        /// Create issue
+        // github
+        //     .issues
+        //     .create(
+        //         RepositorySlug.full("ApplETS/Notre-Dame"),
+        //         IssueRequest(
+        //             title: 'Issue from ${packageInfo.appName} ',
+        //             body: " **Describe the issue** \n"
+        //                 "$feedbackText\n"
+        //                 "**ScreenShot** \n"
+        //                 "![screenshot]($file)\n\n"
+        //                 "**Device Infos** \n"
+        //                 "App name: ${packageInfo.appName} \n"
+        //                 "Package name: ${packageInfo.packageName}  \n"
+        //                 "Version: ${packageInfo.version} \n"
+        //                 "Build number: ${packageInfo.buildNumber} \n"
+        //                 "Platform operating system: ${Platform.operatingSystem} \n"
+        //                 "Platform operating system version: ${Platform.operatingSystemVersion} \n",
+        //             labels: ['bug', 'platform: ${Platform.operatingSystem}']));
+        file.deleteSync();
         showToast(
-          AppIntl.of(context).thankYouForTheFeedback,
+          AppIntl.current?.thankYouForTheFeedback,
           position: ToastPosition.center,
         );
         BetterFeedback.of(context).hide();
@@ -146,5 +157,6 @@ Future<String> get _localPath async {
 /// Create empty picture
 Future<File> get _localFile async {
   final path = await _localPath;
-  return File('$path/bugPicture.png');
+  final now = DateTime.now();
+  return File('$path/bugPicture-${now.hashCode}.png');
 }
