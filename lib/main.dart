@@ -33,8 +33,6 @@ import 'package:notredame/ui/views/startup_view.dart';
 void main() {
   setupLocator();
   WidgetsFlutterBinding.ensureInitialized();
-  // Pass all uncaught errors from the framework to Crashlytics.
-  FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
 
   runZonedGuarded(() {
   runApp(
