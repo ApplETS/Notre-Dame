@@ -1,4 +1,5 @@
 // FLUTTER / DART / THIRD-PARTIES
+import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:oktoast/oktoast.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -45,12 +46,16 @@ class _AboutViewState extends State<AboutView> with TickerProviderStateMixin {
         backgroundColor: Colors.transparent,
       ),
       body: Stack(children: [
-        Padding(
-          padding: EdgeInsets.only(
-              bottom: (MediaQuery.of(context).size.height / 2) + 48.0),
+        Positioned(
+          top: -(MediaQuery.of(context).size.height/2)-100,
+          bottom: 0,
+          right: 0,
+          left: 0,
           child: OverflowBox(
             maxHeight: MediaQuery.of(context).size.longestSide * 2,
             maxWidth: MediaQuery.of(context).size.longestSide * 2,
+            minHeight: 0,
+            minWidth: 0,
             child: AnimatedContainer(
               duration: const Duration(seconds: 3),
               width:
@@ -63,8 +68,10 @@ class _AboutViewState extends State<AboutView> with TickerProviderStateMixin {
             ),
           ),
         ),
-        Padding(
-          padding: const EdgeInsets.only(top: 100.0),
+        Positioned(
+          top: 100,
+          right: 0,
+          left: 0,
           child: Column(
             children: [
               Hero(
