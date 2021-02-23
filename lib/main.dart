@@ -1,4 +1,5 @@
 // FLUTTER / DART / THIRD-PARTIES
+import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
@@ -9,6 +10,7 @@ import 'package:github/github.dart';
 import 'package:oktoast/oktoast.dart';
 import 'package:package_info/package_info.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 
 // ROUTER
 import 'package:notredame/ui/router.dart';
@@ -30,7 +32,11 @@ import 'package:notredame/ui/views/startup_view.dart';
 
 void main() {
   setupLocator();
+  WidgetsFlutterBinding.ensureInitialized();
+  // Pass all uncaught errors from the framework to Crashlytics.
+  FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
 
+  runZonedGuarded(() {
   runApp(
     BetterFeedback(
       translation: Translation(),
@@ -82,7 +88,9 @@ void main() {
       },
       child: ETSMobile(),
     ),
-  );
+  );}, (error, stackTrace) {
+    FirebaseCrashlytics.instance.recordError(error, stackTrace);
+  });
 }
 
 class ETSMobile extends StatefulWidget {

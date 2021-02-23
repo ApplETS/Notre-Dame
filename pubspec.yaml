@@ -32,8 +32,9 @@ dependencies:
   stacked: ^1.6.0
 
   # Firebase
-  firebase_core: ^0.4.5
+  firebase_core: ^0.7.0
   firebase_analytics: ^5.0.15
+  firebase_crashlytics: ^0.4.0+1
 
   # Utils
   logger: ^0.9.4
