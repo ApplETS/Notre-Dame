@@ -4,9 +4,11 @@ import 'package:notredame/core/managers/course_repository.dart';
 
 // MODELS
 import 'package:notredame/core/models/course_activity.dart';
+import 'package:notredame/core/models/course_summary.dart';
 import 'package:notredame/core/models/profile_student.dart';
 import 'package:notredame/core/models/program.dart';
 import 'package:notredame/core/models/session.dart';
+import 'package:notredame/core/models/course.dart';
 
 // SERVICE
 import 'package:notredame/core/services/signets_api.dart';
@@ -80,6 +82,40 @@ class SignetsApiMock extends Mock implements SignetsApi {
           const ApiException(prefix: SignetsApi.tag, message: "")}) {
     when(mock.getStudentInfo(
             username: username, password: anyNamed("password")))
+        .thenThrow(exceptionToThrow);
+  }
+
+  /// Stub the answer of the [getCourses] when the [username] is used.
+  static void stubGetCourses(SignetsApiMock mock, String username,
+      {List<Course> coursesToReturn = const []}) {
+    when(mock.getCourses(username: username, password: anyNamed("password")))
+        .thenAnswer((_) async => coursesToReturn);
+  }
+
+  /// Throw [exceptionToThrow] when [getCourses] with the [username] is used.
+  static void stubGetCoursesException(SignetsApiMock mock, String username,
+      {ApiException exceptionToThrow =
+          const ApiException(prefix: SignetsApi.tag, message: "")}) {
+    when(mock.getCourses(username: username, password: anyNamed("password")))
+        .thenThrow(exceptionToThrow);
+  }
+
+  /// Stub the answer of the [getCourseSummary] when the [username] and [course] is used.
+  static void stubGetCourseSummary(
+      SignetsApiMock mock, String username, Course course,
+      {CourseSummary summaryToReturn}) {
+    when(mock.getCourseSummary(
+            username: username, course: course, password: anyNamed("password")))
+        .thenAnswer((_) async => summaryToReturn);
+  }
+
+  /// Throw [exceptionToThrow] when [getCourseSummary] with the [username] and [course] is used.
+  static void stubGetCourseSummaryException(
+      SignetsApiMock mock, String username, Course course,
+      {ApiException exceptionToThrow =
+          const ApiException(prefix: SignetsApi.tag, message: "")}) {
+    when(mock.getCourseSummary(
+            username: username, course: course, password: anyNamed("password")))
         .thenThrow(exceptionToThrow);
   }
 }

@@ -31,7 +31,7 @@ class Course {
 
   /// Current mark, score... of the student for this course.
   /// Can be null!!
-  CourseSummary courseSummary;
+  CourseSummary summary;
 
   Course(
       {@required this.acronym,
@@ -41,7 +41,7 @@ class Course {
       @required this.programCode,
       @required this.numberOfCredits,
       this.grade,
-      this.courseSummary});
+      this.summary});
 
   /// Used to create a new [Course] instance from a [XMLElement].
   factory Course.fromXmlNode(XmlElement node) => Course(
@@ -64,7 +64,7 @@ class Course {
       programCode: map['programCode'] as String,
       numberOfCredits: map['numberOfCredits'] as int,
       grade: map['grade'] != null ? map['grade'] as String : null,
-      courseSummary: map["courseSummary"] != null
+      summary: map["courseSummary"] != null
           ? CourseSummary.fromJson(map["courseSummary"] as Map<String, dynamic>)
           : null);
 
@@ -76,7 +76,7 @@ class Course {
         'programCode': programCode,
         'numberOfCredits': numberOfCredits,
         'grade': grade,
-        'courseSummary': courseSummary
+        'summary': summary
       };
 
   @override
@@ -91,7 +91,7 @@ class Course {
           programCode == other.programCode &&
           grade == other.grade &&
           numberOfCredits == other.numberOfCredits &&
-          courseSummary == other.courseSummary;
+          summary == other.summary;
 
   @override
   int get hashCode =>
@@ -102,7 +102,7 @@ class Course {
       programCode.hashCode ^
       grade.hashCode ^
       numberOfCredits.hashCode ^
-      courseSummary.hashCode;
+      summary.hashCode;
 
   @override
   String toString() {
@@ -114,6 +114,6 @@ class Course {
         'programCode: $programCode, '
         'grade: $grade, '
         'numberOfCredits: $numberOfCredits, '
-        'courseSummary: $courseSummary}';
+        'courseSummary: $summary}';
   }
 }

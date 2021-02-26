@@ -391,7 +391,7 @@ void main() {
       });
     });
 
-    group("getCoursesList - ", () {
+    group("getCourses - ", () {
       const String courseWithGradeXML = '<Cours>'
           '<sigle>GEN101</sigle>'
           '<groupe>02</groupe>'
@@ -438,7 +438,7 @@ void main() {
 
         HttpClientMock.stubPost(clientMock, Urls.signetsAPI, stubResponse);
 
-        final result = await service.getCoursesList(
+        final result = await service.getCourses(
             username: username, password: password);
 
         expect(result, isA<List<Course>>());
@@ -458,7 +458,7 @@ void main() {
 
         HttpClientMock.stubPost(clientMock, Urls.signetsAPI, stubResponse);
 
-        expect(service.getCoursesList(username: username, password: password),
+        expect(service.getCourses(username: username, password: password),
             throwsA(isInstanceOf<ApiException>()),
             reason:
                 "If the SignetsAPI return an error the service should return the error.");
