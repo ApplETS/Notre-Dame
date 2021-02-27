@@ -243,7 +243,7 @@ class CourseRepository {
           try {
             await getCourseSummary(fetchedCourses[i]);
             fetchedCourses.remove(fetchedCourses[i]);
-          } on ApiException catch (e) {
+          } on ApiException catch (_) {
             _logger.e(
                 "$tag - getCourses: Exception raised while trying to get summary "
                     "of ${fetchedCourses[i].acronym}.");
@@ -299,12 +299,12 @@ class CourseRepository {
       rethrow;
     }
 
+    // Initialize the array
+    _courses ??= [];
+
     // Update courses list
-    if (courses.contains(course)) {
-      courses.remove(course);
-    }
     course.summary = summary;
-    courses.add(course);
+    _courses.add(course);
 
     try {
       // Update cache

@@ -108,11 +108,12 @@ class SignetsApi {
   }
 
   /// Call the SignetsAPI to get the courses of the student ([username]).
-  Future<List<Course>> getCoursesList(
+  Future<List<Course>> getCourses(
       {@required String username, @required String password}) async {
     // Generate initial soap envelope
     final body =
-        buildBasicSOAPBody(Urls.listCourseOperation, username, password).buildDocument();
+        buildBasicSOAPBody(Urls.listCourseOperation, username, password)
+            .buildDocument();
 
     final responseBody = await _sendSOAPRequest(body, Urls.listCourseOperation);
 
@@ -129,8 +130,9 @@ class SignetsApi {
       @required String password,
       @required Course course}) async {
     // Generate initial soap envelope
-    final body = buildBasicSOAPBody(Urls.listEvaluationsOperation, username, password)
-        .buildDocument();
+    final body =
+        buildBasicSOAPBody(Urls.listEvaluationsOperation, username, password)
+            .buildDocument();
     final operationContent = XmlBuilder();
 
     // Add the content needed by the operation
@@ -151,7 +153,8 @@ class SignetsApi {
         .children
         .add(operationContent.buildFragment());
 
-    final responseBody = await _sendSOAPRequest(body, Urls.listEvaluationsOperation);
+    final responseBody =
+        await _sendSOAPRequest(body, Urls.listEvaluationsOperation);
 
     return CourseSummary.fromXmlNode(responseBody);
   }
@@ -178,10 +181,12 @@ class SignetsApi {
   Future<ProfileStudent> getStudentInfo(
       {@required String username, @required String password}) async {
     // Generate initial soap envelope
-    final body = buildBasicSOAPBody(Urls.infoStudentOperation, username, password)
-        .buildDocument();
+    final body =
+        buildBasicSOAPBody(Urls.infoStudentOperation, username, password)
+            .buildDocument();
 
-    final responseBody = await _sendSOAPRequest(body, Urls.infoStudentOperation);
+    final responseBody =
+        await _sendSOAPRequest(body, Urls.infoStudentOperation);
 
     // Build and return the info
     return ProfileStudent.fromXmlNode(responseBody);
@@ -191,10 +196,12 @@ class SignetsApi {
   Future<List<Program>> getPrograms(
       {@required String username, @required String password}) async {
     // Generate initial soap envelope
-    final body = buildBasicSOAPBody(Urls.listProgramsOperation, username, password)
-        .buildDocument();
+    final body =
+        buildBasicSOAPBody(Urls.listProgramsOperation, username, password)
+            .buildDocument();
 
-    final responseBody = await _sendSOAPRequest(body, Urls.listProgramsOperation);
+    final responseBody =
+        await _sendSOAPRequest(body, Urls.listProgramsOperation);
 
     /// Build and return the list of Program
     return responseBody
