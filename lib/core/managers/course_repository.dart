@@ -303,6 +303,7 @@ class CourseRepository {
     _courses ??= [];
 
     // Update courses list
+    courses.remove(course);
     course.summary = summary;
     _courses.add(course);
 
