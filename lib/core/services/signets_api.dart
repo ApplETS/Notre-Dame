@@ -9,6 +9,7 @@ import 'package:xml/xml.dart';
 // CONSTANTS & EXCEPTIONS
 import 'package:notredame/core/constants/urls.dart';
 import 'package:notredame/core/utils/api_exception.dart';
+import 'package:notredame/core/constants/signets_errors.dart';
 
 // MODELS
 import 'package:notredame/core/models/course_activity.dart';
@@ -256,15 +257,23 @@ class SignetsApi {
         .findAllElements(_operationResponseTag(operation))
         .first;
 
-    // Throw exception if the error tag is not empty
+    // Throw exception if the error tag contains a blocking error
     if (responseBody
         .findElements(_signetsErrorTag)
         .first
         .innerText
         .isNotEmpty) {
-      throw ApiException(
-          prefix: tagError,
-          message: responseBody.findElements(_signetsErrorTag).first.innerText);
+      switch (responseBody.findElements(_signetsErrorTag).first.innerText) {
+        case SignetsError.scheduleNotAvailable:
+          // Don't do anything.
+          break;
+        case SignetsError.credentialsInvalid:
+        default:
+          throw ApiException(
+              prefix: tagError,
+              message:
+                  responseBody.findElements(_signetsErrorTag).first.innerText);
+      }
     }
 
     return responseBody;
