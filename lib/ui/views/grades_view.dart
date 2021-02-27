@@ -7,7 +7,6 @@ import 'package:notredame/core/models/session.dart';
 
 // WIDGETS
 import 'package:notredame/ui/widgets/session_widget.dart';
-import 'package:notredame/ui/widgets/applets_widget.dart';
 
 
 class GradesView extends StatefulWidget {
@@ -83,7 +82,6 @@ class _GradesViewState extends State<GradesView> {
         deadlineCancellationASEQ: DateTime(2018, 1, 31));
 
     return Wrap(children: <Widget>[
-      Center(child: ApplETSWidget()),
       Center(
           child: SessionWidget(uneSession,
               [cours1, cours3, cours3, cours4, cours5, cours6, cours7])),
