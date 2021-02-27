@@ -5,7 +5,7 @@ import 'package:notredame/core/services/navigation_service.dart';
 import 'package:notredame/locator.dart';
 import 'package:notredame/ui/utils/app_theme.dart';
 
-/// WARNING !!! THIS IS A CLASS IN DEVELOPMENT !!!
+/// WARNING !!! THIS IS A CLASS IN DEVELOPMENT !!!  DO NOT USE!!
 class GradeButton extends StatelessWidget {
   final String _codeTxt;
   final String _gradeTxt;

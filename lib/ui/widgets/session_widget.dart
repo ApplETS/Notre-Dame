@@ -6,8 +6,9 @@ import 'package:notredame/core/models/session.dart';
 // CONSTANT
 import 'package:notredame/ui/utils/app_theme.dart';
 // widgets
-import 'Grade_Button.dart';
+import 'package:notredame/ui/widgets/grade_button.dart';
 
+/// WARNING !!! THIS IS A CLASS IN DEVELOPMENT !!! DO NOT USE!!
 class SessionWidget extends StatelessWidget {
   final List<Course> _coursParSession;
   final String _title;
@@ -38,8 +39,8 @@ class SessionWidget extends StatelessWidget {
     );
   }
 
-  List<GradeButton> _settingGradesButtons() {
-    final List<GradeButton> gradeButtons = <GradeButton>[];
+  List<Widget> _settingGradesButtons() {
+    final List<Widget> gradeButtons = [];
     for (final Course cours in _coursParSession) {
       gradeButtons
           .add(GradeButton(codeTxt: cours.acronym, gradeTxt: cours.grade));
