@@ -51,32 +51,30 @@ void main() {
         const String githubApiToken = String.fromEnvironment('GITHUB_API_TOKEN');
          final github = GitHub(auth: Authentication.withToken(githubApiToken));
 
-
-         Repository repo = await github.repositories.getRepository(RepositorySlug.full('ApplETS/Notre-Dame-Bug-report'));
          /// Upload picture to repo
-          //github.repositories
-             // .createFile(,
-             // CreateFile(path: file.path.replaceFirst('storage/emulated/0/Android/data/ca.etsmtl.applets.notredame/files/', ''),content: base64Encode(file.readAsBytesSync()).toString(),message: 'new commit',committer: CommitUser('clubapplets-server', 'clubapplets@gmail.com'), branch: 'main'));
+          github.repositories
+             .createFile(RepositorySlug.full('ApplETS/Notre-Dame-Bug-report'),
+             CreateFile(path: file.path.replaceFirst('storage/emulated/0/Android/data/ca.etsmtl.applets.notredame/files/', ''),content: base64Encode(file.readAsBytesSync()).toString(),message: DateTime.now().toString(),committer: CommitUser('clubapplets-server', 'clubapplets@gmail.com'), branch: 'main'));
 
         /// Create issue
-        // github
-        //     .issues
-        //     .create(
-        //         RepositorySlug.full("ApplETS/Notre-Dame"),
-        //         IssueRequest(
-        //             title: 'Issue from ${packageInfo.appName} ',
-        //             body: " **Describe the issue** \n"
-        //                 "$feedbackText\n"
-        //                 "**ScreenShot** \n"
-        //                 "![screenshot]($file)\n\n"
-        //                 "**Device Infos** \n"
-        //                 "App name: ${packageInfo.appName} \n"
-        //                 "Package name: ${packageInfo.packageName}  \n"
-        //                 "Version: ${packageInfo.version} \n"
-        //                 "Build number: ${packageInfo.buildNumber} \n"
-        //                 "Platform operating system: ${Platform.operatingSystem} \n"
-        //                 "Platform operating system version: ${Platform.operatingSystemVersion} \n",
-        //             labels: ['bug', 'platform: ${Platform.operatingSystem}']));
+        github
+            .issues
+            .create(
+                RepositorySlug.full("ApplETS/Notre-Dame"),
+                IssueRequest(
+                    title: 'Issue from ${packageInfo.appName} ',
+                    body: " **Describe the issue** \n"
+                        "```$feedbackText```\n\n"
+                        "**Screenshot** \n"
+                        "![screenshot](https://github.com/ApplETS/Notre-Dame-Bug-report/blob/main/${file.path.replaceFirst('storage/emulated/0/Android/data/ca.etsmtl.applets.notredame/files/', '')}?raw=true)\n\n"
+                        "**Device Infos** \n"
+                        "- **App name:** ${packageInfo.appName} \n"
+                        "- **Package name:** ${packageInfo.packageName}  \n"
+                        "- **Version:** ${packageInfo.version} \n"
+                        "- **Build number:** ${packageInfo.buildNumber} \n"
+                        "- **Platform operating system:** ${Platform.operatingSystem} \n"
+                        "- **Platform operating system version:** ${Platform.operatingSystemVersion} \n",
+                    labels: ['bug', 'platform: ${Platform.operatingSystem}']));
         file.deleteSync();
         showToast(
           AppIntl.current?.thankYouForTheFeedback,
