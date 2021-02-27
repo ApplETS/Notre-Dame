@@ -21,6 +21,7 @@ import 'package:notredame/core/constants/preferences_flags.dart';
 // OTHER
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:notredame/ui/utils/app_theme.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class DashboardView extends StatefulWidget {
   @visibleForTesting
@@ -82,93 +83,23 @@ class _DashboardViewState extends State<DashboardView>
               actions: _buildActionButtons(model),
             ),
             body: Column(
-              children: [
-                const SizedBox(height: 6.0),
-                Flexible(
-                  flex: 10,
-                  fit: FlexFit.tight,
-                  child: Dismissible(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Dismissible(
                     key: UniqueKey(),
-                    child: Card(
-                      elevation: 1,
-                      child:
-                      Column(
-
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Align(
-                                alignment: Alignment.centerLeft,
-                                child: Container(padding: const EdgeInsets.fromLTRB(10, 10, 0, 0),
-                                  child: Text(AppIntl.of(context).title_schedule,  style: Theme.of(context).textTheme.headline6),)),
-                            Flexible(
-                                fit: FlexFit.tight,
-                                child: model.selectedDateEvents.isEmpty
-                                    ? Center(
-                                    child: Text(
-                                        AppIntl.of(context).schedule_no_event))
-                                    : _buildEventList(model.selectedDateEvents))
-                          ]),
-
-                    ),
-
+                    child: _buildAboutUsCard(model),
                   ),
-                ),
-                Flexible(
-                  flex: 10,
-                  fit: FlexFit.tight,
-                  child: Dismissible(
-                    key: UniqueKey(),
-                    child: Card(
-                      elevation: 1,
-                      child:
-                      Column(
+                  const SizedBox(height: 6.0),
+                  Expanded(
 
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Align(
-                                alignment: Alignment.centerLeft,
-                                child: Container(padding: const EdgeInsets.fromLTRB(10, 10, 0, 0),
-                                  child: Text(AppIntl.of(context).title_schedule,  style: Theme.of(context).textTheme.headline6),)),
-                            Flexible(
-                                fit: FlexFit.tight,
-                                child: model.selectedDateEvents.isEmpty
-                                    ? Center(
-                                    child: Text(
-                                        AppIntl.of(context).schedule_no_event))
-                                    : _buildEventList(model.selectedDateEvents))
-                          ]),
-
-                    ),
-
-                  ),
-                ),
-
-                Flexible(
-                  flex: 10,
-                  fit: FlexFit.tight,
-                  child: Dismissible(
-                    key: UniqueKey(),
-                    child: Card(
-                      elevation: 1,
-                      child:
-                      Column(
-
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Align(
-                                alignment: Alignment.centerLeft,
-                                child: Container(padding: const EdgeInsets.fromLTRB(10, 10, 0, 0),
-                                  child: Text(AppIntl.of(context).title_schedule,  style: Theme.of(context).textTheme.headline6),)),
-                            Flexible(
-                                fit: FlexFit.tight,
-                                child: model.selectedDateEvents.isEmpty
-                                    ? Center(
-                                    child: Text(
-                                        AppIntl.of(context).schedule_no_event))
-                                    : _buildEventList(model.selectedDateEvents))
-                          ]),
-
-                    ),
+                    child:
+                    scheduleVisible ? IntrinsicHeight(
+                      child: Dismissible(
+                        key: UniqueKey(),
+                        child: _buildTodayScheduleCard(model),
+                      ),
+                    )
+                        : const SizedBox(),
 
                   ),
                 ),
@@ -206,6 +137,8 @@ class _DashboardViewState extends State<DashboardView>
           )
       );
 
+                ]),
+          ));
 
   /// Build the list of the events for the selected day.
   Widget _buildEventList(List<dynamic> events) {
@@ -218,7 +151,71 @@ class _DashboardViewState extends State<DashboardView>
         itemCount: events.length);
   }
 
-  List<Widget> _buildActionButtons(ScheduleViewModel model) => [
+  Widget _buildTodayScheduleCard(DashboardViewModel model)  {
+    return Card(
+      elevation: 1,
+      child:
+      Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Align(
+                alignment: Alignment.centerLeft,
+                child: Container(padding: const EdgeInsets.fromLTRB(10, 10, 0, 0),
+                  child: Text(AppIntl.of(context).title_schedule,  style: Theme.of(context).textTheme.headline6),)),
+            Flexible(
+                fit: FlexFit.tight,
+                child: model.todayDateEvents.isEmpty
+                    ? Center(
+                    child: Text(
+                        AppIntl.of(context).schedule_no_event))
+                    : _buildEventList(model.todayDateEvents))
+          ]),
+    );
+  }
+
+  Widget _buildAboutUsCard(DashboardViewModel model)  {
+    return Card(
+      elevation: 1,
+      child:
+      Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Align(
+                alignment: Alignment.centerLeft,
+                child: Container(padding: const EdgeInsets.fromLTRB(10, 10, 0, 0),
+                  child: Text("App|ETS",  style: Theme.of(context).textTheme.headline6),
+                )),
+            Column(
+              children: [
+                Container(padding: const EdgeInsets.fromLTRB(10, 10, 0, 0),
+                  child: Text("ETSMobile was made by club App|ETS. Support us by liking our Facebook page..",  style: Theme.of(context).textTheme.bodyText2),
+                ),
+                Row(
+                    children: [
+                      SizedBox(width: 10),
+                      RaisedButton(
+                        onPressed: () {launch('https://www.facebook.com/ClubApplETS');},
+                        child: const Text('Facebook', style: TextStyle(fontSize: 20)),
+                      ),
+                      SizedBox(width: 10),
+                      RaisedButton(
+                        onPressed: () {launch('https://github.com/ApplETS/Notre-Dame');},
+                        child: const Text('Github', style: TextStyle(fontSize: 20)),
+                      ),
+                      SizedBox(width: 10),
+                      RaisedButton(
+                        onPressed: () {launch('mailto:info@clubapplets.ca');},
+                        child: const Text('Email', style: TextStyle(fontSize: 20)),
+                      ),
+                    ]
+                ),
+              ],
+            ),
+          ]),
+    );
+  }
+
+  List<Widget> _buildActionButtons(DashboardViewModel model) => [
     if ((model.settings[PreferencesFlag.scheduleSettingsShowTodayBtn]
     as bool) ==
         true)
