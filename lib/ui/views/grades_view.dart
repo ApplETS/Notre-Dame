@@ -9,9 +9,6 @@ import 'package:notredame/core/models/session.dart';
 import 'package:notredame/ui/widgets/session_widget.dart';
 import 'package:notredame/ui/widgets/applets_widget.dart';
 
-// OTHER
-import 'package:notredame/ui/utils/app_theme.dart';
-import 'package:notredame/generated/l10n.dart';
 
 class GradesView extends StatefulWidget {
   @override
@@ -21,7 +18,7 @@ class GradesView extends StatefulWidget {
 class _GradesViewState extends State<GradesView> {
   @override
   Widget build(BuildContext context) {
-    Course cours1 = Course(
+    final Course cours1 = Course(
         acronym: 'LOG410',
         session: 'H2021',
         group: '02',
@@ -29,15 +26,7 @@ class _GradesViewState extends State<GradesView> {
         programCode: '7365',
         grade: 'A+',
         title: 'Analyse de besoins et spécifications');
-    Course cours2 = Course(
-        acronym: 'LOG410',
-        session: 'H2021',
-        group: '02',
-        numberOfCredits: 3,
-        programCode: '7365',
-        grade: 'A',
-        title: 'Analyse de besoins et spécifications');
-    Course cours3 = Course(
+    final Course cours3 = Course(
         acronym: 'LOG410',
         session: 'H2021',
         group: '02',
@@ -45,7 +34,7 @@ class _GradesViewState extends State<GradesView> {
         programCode: '7365',
         grade: 'B',
         title: 'Analyse de besoins et spécifications');
-    Course cours4 = Course(
+    final Course cours4 = Course(
         acronym: 'LOG410',
         session: 'H2021',
         group: '02',
@@ -53,7 +42,7 @@ class _GradesViewState extends State<GradesView> {
         programCode: '7365',
         grade: 'H/B-',
         title: 'Analyse de besoins et spécifications');
-    Course cours5 = Course(
+    final Course cours5 = Course(
         acronym: 'LOG410',
         session: 'H2021',
         group: '02',
@@ -61,7 +50,7 @@ class _GradesViewState extends State<GradesView> {
         programCode: '7365',
         grade: 'N/A',
         title: 'Analyse de besoins et spécifications');
-    Course cours6 = Course(
+    final Course cours6 = Course(
         acronym: 'LOG410',
         session: 'H2021',
         group: '02',
@@ -69,7 +58,7 @@ class _GradesViewState extends State<GradesView> {
         programCode: '7365',
         grade: 'ND',
         title: 'Analyse de besoins et spécifications');
-    Course cours7 = Course(
+    final Course cours7 = Course(
         acronym: 'LOG410',
         session: 'H2021',
         group: '02',
@@ -78,7 +67,7 @@ class _GradesViewState extends State<GradesView> {
         grade: 'A+',
         title: 'Analyse de besoins et spécifications');
 
-    Session uneSession = Session(
+    final Session uneSession = Session(
         shortName: 'H2018',
         name: 'Hiver 2018',
         startDate: DateTime(2018, 1, 4),

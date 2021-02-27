@@ -5,6 +5,7 @@ import 'package:notredame/core/services/navigation_service.dart';
 import 'package:notredame/locator.dart';
 import 'package:notredame/ui/utils/app_theme.dart';
 
+/// WARNING !!! THIS IS A CLASS IN DEVELOPMENT !!!
 class GradeButton extends StatelessWidget {
   final String _codeTxt;
   final String _gradeTxt;
@@ -52,6 +53,7 @@ class GradeButton extends StatelessWidget {
   }
 
   Container _setGradeSection() {
+    // ignore: sized_box_for_whitespace
     return Container(
       width: _buttonWidth,
       height: _gradeHeight,
