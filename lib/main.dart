@@ -11,6 +11,8 @@ import 'package:oktoast/oktoast.dart';
 import 'package:package_info/package_info.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+import 'package:image/image.dart';
+
 
 // ROUTER
 import 'package:notredame/ui/router.dart';
@@ -45,7 +47,7 @@ void main() {
       ) async {
         final PackageInfo packageInfo = await PackageInfo.fromPlatform();
         final File file = await _localFile;
-        await file.writeAsBytes(feedbackScreenshot);
+        await file.writeAsBytes(encodePng(copyResize(decodeImage(feedbackScreenshot), width: 307)));
 
         /// Create a GitHub Client, then send issue
         const String githubApiToken = String.fromEnvironment('GITHUB_API_TOKEN');
