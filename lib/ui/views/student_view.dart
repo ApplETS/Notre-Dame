@@ -8,8 +8,6 @@ import 'package:notredame/ui/widgets/base_scaffold.dart';
 // OTHER
 import 'package:notredame/generated/l10n.dart';
 
-import 'grades_view.dart';
-
 class StudentView extends StatefulWidget {
   @override
   _StudentViewState createState() => _StudentViewState();
@@ -21,7 +19,7 @@ class _StudentViewState extends State<StudentView> {
     AppIntl.current.profile_title
   ];
 
-  List<Widget> tabsView = [GradesView(), ProfileView()];
+  List<Widget> tabsView = [Container(), ProfileView()];
 
   @override
   Widget build(BuildContext context) => BaseScaffold(
