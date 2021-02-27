@@ -27,4 +27,10 @@ class NavigationService {
   Future<dynamic> pushReplacementNamed(String routeName) {
     return _navigatorKey.currentState.pushReplacementNamed(routeName);
   }
+
+  /// Replace the current route of the navigator by pushing the route named
+  /// [routeName] and then delete the stack of previous routes
+  Future<dynamic> pushNamedAndRemoveUntil(String routeName) {
+    return _navigatorKey.currentState.pushNamedAndRemoveUntil(routeName,(Route<dynamic> route) => false);
+  }
 }
