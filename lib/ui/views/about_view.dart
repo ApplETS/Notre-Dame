@@ -4,6 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:oktoast/oktoast.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+// CONSTANTS
+import 'package:notredame/core/constants/urls.dart';
+
 // OTHERS
 import 'package:notredame/generated/l10n.dart';
 
@@ -94,23 +97,19 @@ class _AboutViewState extends State<AboutView> with TickerProviderStateMixin {
                 children: [
                   IconButton(
                       icon: Image.asset("assets/images/website_white.png"),
-                      onPressed: () => _launchURL("https://clubapplets.ca/")),
+                      onPressed: () => _launchURL(Urls.clubWebsite)),
                   IconButton(
                       icon: Image.asset("assets/images/github_white.png"),
-                      onPressed: () =>
-                          _launchURL("https://github.com/ApplETS")),
+                      onPressed: () => _launchURL(Urls.clubGithub)),
                   IconButton(
                       icon: Image.asset("assets/images/facebook_white.png"),
-                      onPressed: () =>
-                          _launchURL("https://facebook.com/ClubApplETS")),
+                      onPressed: () => _launchURL(Urls.clubFacebook)),
                   IconButton(
                       icon: Image.asset("assets/images/twitter_white.png"),
-                      onPressed: () =>
-                          _launchURL("https://twitter.com/ClubApplETS")),
+                      onPressed: () => _launchURL(Urls.clubTwitter)),
                   IconButton(
                       icon: Image.asset("assets/images/youtube_white.png"),
-                      onPressed: () => _launchURL(
-                          "https://youtube.com/channel/UCiSzzfW1bVbE_0KcEZO52ew")),
+                      onPressed: () => _launchURL(Urls.clubYoutube)),
                 ],
               ),
             ],
