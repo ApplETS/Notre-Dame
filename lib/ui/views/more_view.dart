@@ -16,7 +16,7 @@ import 'package:notredame/core/viewmodels/more_viewmodel.dart';
 import 'package:notredame/generated/l10n.dart';
 import 'package:notredame/ui/widgets/base_scaffold.dart';
 
-import '../../locator.dart';
+import 'pacakge:notredame/locator.dart';
 
 class MoreView extends StatelessWidget {
   /// used to redirect on the settings.
