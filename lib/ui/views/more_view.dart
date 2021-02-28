@@ -16,7 +16,7 @@ import 'package:notredame/core/viewmodels/more_viewmodel.dart';
 import 'package:notredame/generated/l10n.dart';
 import 'package:notredame/ui/widgets/base_scaffold.dart';
 
-import '../../locator.dart';
+import 'package:notredame/locator.dart';
 
 class MoreView extends StatelessWidget {
   /// used to redirect on the settings.
@@ -87,7 +87,7 @@ class MoreView extends StatelessWidget {
                         applicationName:
                             AppIntl.of(context).more_open_source_licenses,
                         applicationVersion: '4.x.x',
-                        applicationLegalese: '\u{a9} 2021 The Flutter Authors',
+                        applicationLegalese: '\u{a9} 2021 App|ETS',
                         children: aboutBoxChildren,
                       ),
                       opaque: false,

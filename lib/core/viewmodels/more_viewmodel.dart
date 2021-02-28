@@ -13,7 +13,7 @@ import 'package:notredame/core/services/navigation_service.dart';
 // OTHERS
 import 'package:notredame/core/constants/router_paths.dart';
 import 'package:notredame/generated/l10n.dart';
-import '../../locator.dart';
+import 'package:notredame/locator.dart';
 
 class MoreViewModel extends BaseViewModel {
   /// Cache manager
