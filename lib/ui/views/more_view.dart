@@ -80,14 +80,18 @@ class MoreView extends StatelessWidget {
                 ListTile(
                   title: Text(AppIntl.of(context).more_open_source_licenses),
                   leading: const Icon(Icons.code),
-                  onTap: () => showAboutDialog(
-                    context: context,
-                    applicationIcon: const FlutterLogo(),
-                    applicationName:
-                        AppIntl.of(context).more_open_source_licenses,
-                    applicationVersion: '4.x.x',
-                    applicationLegalese: '\u{a9} 2021 The Flutter Authors',
-                    children: aboutBoxChildren,
+                  onTap: () => Navigator.of(context).push(
+                    PageRouteBuilder(
+                      pageBuilder: (context, _, __) => AboutDialog(
+                        applicationIcon: const FlutterLogo(),
+                        applicationName:
+                            AppIntl.of(context).more_open_source_licenses,
+                        applicationVersion: '4.x.x',
+                        applicationLegalese: '\u{a9} 2021 The Flutter Authors',
+                        children: aboutBoxChildren,
+                      ),
+                      opaque: false,
+                    ),
                   ),
                 ),
                 ListTile(
@@ -99,27 +103,27 @@ class MoreView extends StatelessWidget {
                 ListTile(
                   title: Text(AppIntl.of(context).more_log_out),
                   leading: const Icon(Icons.logout),
-                  onTap: () => showDialog(
-                    context: context,
-                    child: AlertDialog(
-                      title: Text(
-                        AppIntl.of(context).more_log_out,
-                        style: const TextStyle(color: Colors.red),
+                  onTap: () => Navigator.of(context).push(
+                    PageRouteBuilder(
+                      pageBuilder: (context, _, __) => AlertDialog(
+                        title: Text(
+                          AppIntl.current.more_log_out,
+                          style: const TextStyle(color: Colors.red),
+                        ),
+                        content: Text(
+                            AppIntl.current.more_prompt_log_out_confirmation),
+                        actions: [
+                          FlatButton(
+                              onPressed: () async {
+                                model.logout(context);
+                              },
+                              child: Text(AppIntl.current.yes)),
+                          FlatButton(
+                              onPressed: () => Navigator.of(context).pop(),
+                              child: Text(AppIntl.current.no))
+                        ],
                       ),
-                      content: Text(
-                          AppIntl.of(context).more_prompt_log_out_confirmation),
-                      actions: [
-                        FlatButton(
-                            onPressed: () async {
-                              model.logout(context);
-                            },
-                            child: Text(AppIntl.of(context).yes)),
-                        FlatButton(
-                            onPressed: () =>
-                                Navigator.of(context, rootNavigator: true)
-                                    .pop(),
-                            child: Text(AppIntl.of(context).no))
-                      ],
+                      opaque: false,
                     ),
                   ),
                 ),

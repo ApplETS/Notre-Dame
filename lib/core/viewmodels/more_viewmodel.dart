@@ -27,11 +27,8 @@ class MoreViewModel extends BaseViewModel {
     await _cacheManager.empty();
     UserRepository().logOut();
     // Dismiss alertDialog
-    Navigator.of(context, rootNavigator: true)
-        .pop();
-    _navigationService.pushNamedAndRemoveUntil(
-        RouterPaths.login
-    );
+    Navigator.of(context).pop();
+    _navigationService.pushNamedAndRemoveUntil(RouterPaths.login);
     showToast(AppIntl.of(context).login_msg_logout_success);
   }
 }
