@@ -9,7 +9,7 @@ import 'package:notredame/core/managers/settings_manager.dart';
 
 // OTHERS
 import 'package:notredame/generated/l10n.dart';
-import '../../locator.dart';
+import 'package:notredame/locator.dart';
 
 class SettingsViewModel extends FutureViewModel {
   /// Manage the settings
