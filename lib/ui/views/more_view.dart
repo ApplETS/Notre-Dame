@@ -87,7 +87,7 @@ class MoreView extends StatelessWidget {
                         applicationName:
                             AppIntl.of(context).more_open_source_licenses,
                         applicationVersion: '4.x.x',
-                        applicationLegalese: '\u{a9} 2021 The Flutter Authors',
+                        applicationLegalese: '\u{a9} 2021 App|ETS',
                         children: aboutBoxChildren,
                       ),
                       opaque: false,
