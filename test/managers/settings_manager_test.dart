@@ -14,9 +14,6 @@ import 'package:notredame/core/services/preferences_service.dart';
 // CONSTANTS
 import 'package:notredame/core/constants/preferences_flags.dart';
 
-// GENERATED
-import 'package:notredame/generated/l10n.dart';
-
 import '../helpers.dart';
 
 // MOCK
@@ -26,7 +23,6 @@ void main() {
   AnalyticsService analyticsService;
   PreferencesService preferencesService;
   SettingsManager manager;
-  AppIntl appIntl;
 
   group("SettingsManager - ", () {
     setUp(() async {
@@ -35,7 +31,7 @@ void main() {
       analyticsService = setupAnalyticsServiceMock();
       preferencesService = setupPreferencesServiceMock();
 
-      appIntl = await setupAppIntl();
+      await setupAppIntl();
 
       manager = SettingsManager();
     });
@@ -120,7 +116,7 @@ void main() {
             PreferencesFlag.theme,
             toReturn: 'test theme');
 
-        final result = manager.themeMode;
+        manager.themeMode;
 
         verify(preferencesService
             .getString(PreferencesFlag.theme))
@@ -132,19 +128,19 @@ void main() {
 
       test("set light/dark/system mode", () async {
 
-        var result = manager.setLightMode();
+        manager.setLightMode();
 
         verify(preferencesService
             .setString(PreferencesFlag.theme, 'light'))
             .called(1);
 
-        result = manager.setDarkMode();
+        manager.setDarkMode();
 
         verify(preferencesService
             .setString(PreferencesFlag.theme, 'dark'))
             .called(1);
 
-        result = manager.setSystemMode();
+        manager.setSystemMode();
 
         verify(preferencesService
             .setString(PreferencesFlag.theme, 'system'))
@@ -163,7 +159,7 @@ void main() {
             PreferencesFlag.locale,
             toReturn: 'test locale');
 
-        final result = manager.locale;
+        manager.locale;
 
         verify(preferencesService
             .getString(PreferencesFlag.locale))
@@ -175,13 +171,13 @@ void main() {
 
       test("set french/english", () async {
 
-        var result = manager.setFrench();
+        manager.setFrench();
 
         verify(preferencesService
             .setString(PreferencesFlag.locale, 'Français'))
             .called(1);
 
-        result = manager.setEnglish();
+        manager.setEnglish();
 
         verify(preferencesService
             .setString(PreferencesFlag.locale, 'English'))

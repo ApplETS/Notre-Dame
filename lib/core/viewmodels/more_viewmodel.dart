@@ -1,6 +1,5 @@
 // FLUTTER / DART / THIRD-PARTIES
 import 'package:flutter/material.dart';
-import 'package:notredame/ui/views/startup_view.dart';
 import 'package:stacked/stacked.dart';
 import 'package:oktoast/oktoast.dart';
 
@@ -10,9 +9,6 @@ import 'package:notredame/core/managers/user_repository.dart';
 
 //SERVICE
 import 'package:notredame/core/services/navigation_service.dart';
-
-// VIEWS
-import 'package:notredame/ui/views/login_view.dart';
 
 // OTHERS
 import 'package:notredame/core/constants/router_paths.dart';

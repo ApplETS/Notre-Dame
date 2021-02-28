@@ -11,9 +11,6 @@ import 'package:notredame/core/viewmodels/settings_viewmodel.dart';
 // CONSTANTS
 import 'package:notredame/core/constants/preferences_flags.dart';
 
-// GENERATED
-import 'package:notredame/generated/l10n.dart';
-
 // OTHERS
 import '../helpers.dart';
 import '../mock/managers/settings_manager_mock.dart';
@@ -22,14 +19,13 @@ SettingsViewModel viewModel;
 
 void main() {
   SettingsManager settingsManager;
-  AppIntl appIntl;
 
   group("SettingsViewModel - ", ()
   {
     setUp(() async {
       // Setting up mocks
       settingsManager = setupSettingsManagerMock();
-      appIntl = await setupAppIntl();
+      await setupAppIntl();
 
       viewModel = SettingsViewModel();
     });
