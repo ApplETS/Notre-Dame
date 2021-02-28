@@ -53,7 +53,7 @@ class AppRouter {
             pageBuilder: (_, __, ___) => ContributorsView());
       case RouterPaths.about:
         return PageRouteBuilder(
-            transitionDuration: const Duration(seconds: 2),
+            transitionDuration: const Duration(seconds: 1),
             settings: RouteSettings(name: routeSettings.name),
             pageBuilder: (_, __, ___) => AboutView());
       default:

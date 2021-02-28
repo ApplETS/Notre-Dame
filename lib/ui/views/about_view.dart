@@ -20,12 +20,13 @@ class _AboutViewState extends State<AboutView> with TickerProviderStateMixin {
   void initState() {
     super.initState();
     _controller =
-        AnimationController(vsync: this, duration: const Duration(seconds: 2));
+        AnimationController(vsync: this, duration: const Duration(seconds: 1));
     _controller.forward();
     _controller.addStatusListener((status) {
       if (status == AnimationStatus.completed) {
-        _completed = true;
-        setState(() {});
+        setState(() {
+          _completed = true;
+        });
       }
     });
   }
@@ -57,7 +58,7 @@ class _AboutViewState extends State<AboutView> with TickerProviderStateMixin {
             minHeight: 0,
             minWidth: 0,
             child: AnimatedContainer(
-              duration: const Duration(seconds: 3),
+              duration: const Duration(seconds: 2),
               width:
                   _completed ? MediaQuery.of(context).size.longestSide * 2 : 0,
               height:
