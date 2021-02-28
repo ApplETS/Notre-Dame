@@ -33,7 +33,7 @@ dependencies:
 
   # Firebase
   firebase_core: ^0.7.0
-  firebase_analytics: ^5.0.15
+  firebase_analytics: ^7.0.1
   firebase_crashlytics: ^0.4.0+1
 
   # Utils
@@ -51,7 +51,7 @@ dependencies:
   shared_preferences: '>=0.5.12+4 <2.0.0'
   webview_flutter: ^1.0.7
   flutter_inappwebview: ^4.0.0+4
-  google_maps_flutter: ^1.0.6
+  google_maps_flutter: ^1.2.0
   table_calendar: ^2.3.3
   github: ^7.0.4
   feedback: ^0.3.0
