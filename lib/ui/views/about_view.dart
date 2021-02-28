@@ -32,8 +32,8 @@ class _AboutViewState extends State<AboutView> with TickerProviderStateMixin {
 
   @override
   void dispose() {
-    super.dispose();
     _controller.dispose();
+    super.dispose();
   }
 
   @override
@@ -47,7 +47,7 @@ class _AboutViewState extends State<AboutView> with TickerProviderStateMixin {
       ),
       body: Stack(children: [
         Positioned(
-          top: -(MediaQuery.of(context).size.height/2)-100,
+          top: -(MediaQuery.of(context).size.height / 2) - 100,
           bottom: 0,
           right: 0,
           left: 0,
