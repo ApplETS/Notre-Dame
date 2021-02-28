@@ -1,5 +1,6 @@
 // FLUTTER / DART / THIRD-PARTIES
 import 'package:flutter/material.dart';
+import 'package:package_info/package_info.dart';
 import 'package:stacked/stacked.dart';
 import 'package:oktoast/oktoast.dart';
 
@@ -15,12 +16,26 @@ import 'package:notredame/core/constants/router_paths.dart';
 import 'package:notredame/generated/l10n.dart';
 import 'package:notredame/locator.dart';
 
-class MoreViewModel extends BaseViewModel {
+class MoreViewModel extends FutureViewModel {
   /// Cache manager
   final CacheManager _cacheManager = locator<CacheManager>();
 
   /// Used to redirect on the dashboard.
   final NavigationService _navigationService = locator<NavigationService>();
+
+  String _appVersion;
+
+  /// Get the application version
+  String get appVersion => _appVersion;
+
+  @override
+  Future futureToRun() async {
+    setBusy(true);
+    await PackageInfo.fromPlatform()
+        .then((value) => _appVersion = value.version);
+    setBusy(false);
+    return true;
+  }
 
   /// Used to logout user, delete cache, and return to login
   Future<void> logout(BuildContext context) async {

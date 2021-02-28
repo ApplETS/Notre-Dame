@@ -86,7 +86,7 @@ class MoreView extends StatelessWidget {
                         applicationIcon: const FlutterLogo(),
                         applicationName:
                             AppIntl.of(context).more_open_source_licenses,
-                        applicationVersion: '4.x.x',
+                        applicationVersion: model.appVersion,
                         applicationLegalese: '\u{a9} 2021 App|ETS',
                         children: aboutBoxChildren,
                       ),
