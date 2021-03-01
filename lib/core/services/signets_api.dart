@@ -28,7 +28,7 @@ class SignetsApi {
   final String _signetsErrorTag = "erreur";
 
   /// Expression to validate the format of a session short name (ex: A2020)
-  final RegExp _sessionShortNameRegExp = RegExp("^([A-E-H][0-9]{4})");
+  final RegExp _sessionShortNameRegExp = RegExp("^([A-É-H][0-9]{4})");
 
   /// Expression to validate the format of a course (ex: MAT256-01)
   final RegExp _courseGroupRegExp = RegExp("^([A-Z]{3}[0-9]{3}-[0-9]{2})");
