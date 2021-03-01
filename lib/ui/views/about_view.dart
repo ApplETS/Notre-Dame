@@ -61,7 +61,7 @@ class _AboutViewState extends State<AboutView> with TickerProviderStateMixin {
             minHeight: 0,
             minWidth: 0,
             child: AnimatedContainer(
-              duration: const Duration(seconds: 2),
+              duration: const Duration(seconds: 1),
               width:
                   _completed ? MediaQuery.of(context).size.longestSide * 2 : 0,
               height:
