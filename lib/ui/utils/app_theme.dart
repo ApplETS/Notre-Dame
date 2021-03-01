@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 
 /// Contains all the colors and theme of the ETS, App|ETS and specific to the app
@@ -26,20 +25,20 @@ class AppTheme {
   static const Color primary = etsLightRed;
 
   // Primary dark
-  static const Color primaryDark = Colors.black;
+  static const Color primaryDark = Color(0xff121212);
 
   // Accent
   static const Color accent = etsLightRed;
 
   /// Light theme
-  static final ThemeData lightTheme = ThemeData.light().copyWith(
-      primaryColor: primary,
-      accentColor: accent
-  );
+  static final ThemeData lightTheme = ThemeData.light()
+      .copyWith(primaryColor: etsLightRed, accentColor: etsLightRed);
 
   /// Dark theme
   static final ThemeData darkTheme = ThemeData.dark().copyWith(
-      primaryColor: primaryDark,
-      accentColor: accent
-  );
+      // primaryColor: primaryDark,
+      // appBarTheme: const AppBarTheme(color: Color(0xff121212)),
+      scaffoldBackgroundColor: const Color(0xff121212),
+      cardColor: const Color(0xff1e1e1e),
+      accentColor: etsLightRed);
 }

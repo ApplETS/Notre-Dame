@@ -1,5 +1,6 @@
 // FLUTTER / DART / THIRD-PARTIES
 import 'package:flutter/material.dart';
+
 import 'package:notredame/ui/utils/app_theme.dart';
 import 'package:stacked/stacked.dart';
 
@@ -78,7 +79,8 @@ class _LoginViewState extends State<LoginView> {
                                         width: borderRadiusOnFocus)),
                                 labelText: AppIntl.of(context)
                                     .login_prompt_universal_code,
-                                labelStyle: const TextStyle(color: Colors.white54),
+                                labelStyle:
+                                    const TextStyle(color: Colors.white54),
                                 errorStyle:
                                     const TextStyle(color: Colors.amberAccent),
                               ),

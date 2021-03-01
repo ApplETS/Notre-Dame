@@ -15,6 +15,8 @@ import 'package:notredame/core/managers/course_repository.dart';
 import 'package:notredame/core/models/session.dart';
 import 'package:notredame/core/models/course_activity.dart';
 import 'package:notredame/core/models/mon_ets_user.dart';
+import 'package:notredame/core/models/course.dart';
+import 'package:notredame/core/models/course_summary.dart';
 
 // UTILS
 import 'package:notredame/core/utils/api_exception.dart';
@@ -134,10 +136,9 @@ void main() {
         CacheManagerMock.stubGet(cacheManager as CacheManagerMock,
             CourseRepository.coursesActivitiesCacheKey, jsonEncode(activities));
 
-
         expect(manager.coursesActivities, isNull);
         final List<CourseActivity> results =
-        await manager.getCoursesActivities(fromCacheOnly: true);
+            await manager.getCoursesActivities(fromCacheOnly: true);
 
         expect(results, isInstanceOf<List<CourseActivity>>());
         expect(results, activities);
@@ -703,6 +704,477 @@ void main() {
         await manager.getSessions();
 
         expect(manager.activeSessions, [active]);
+      });
+    });
+
+    group("getCourses - ", () {
+      final Course courseWithGrade = Course(
+          acronym: 'GEN101',
+          group: '02',
+          session: 'H2020',
+          programCode: '999',
+          grade: 'C+',
+          numberOfCredits: 3,
+          title: 'Cours générique');
+
+      const String username = "username";
+      const String password = "password";
+
+      setUp(() {
+        // Stub a user
+        UserRepositoryMock.stubMonETSUser(userRepository as UserRepositoryMock,
+            MonETSUser(domain: null, typeUsagerId: null, username: username));
+        UserRepositoryMock.stubGetPassword(
+            userRepository as UserRepositoryMock, "password");
+      });
+
+      test("Courses are loaded from cache and cache is updated", () async {
+        SignetsApiMock.stubGetCourses(signetsApi as SignetsApiMock, username);
+        CacheManagerMock.stubGet(cacheManager as CacheManagerMock,
+            CourseRepository.coursesCacheKey, jsonEncode([courseWithGrade]));
+
+        expect(manager.courses, isNull);
+        final results = await manager.getCourses();
+
+        expect(results, isInstanceOf<List<Course>>());
+        expect(results, [courseWithGrade]);
+        expect(manager.courses, [courseWithGrade],
+            reason: 'The courses list should now be loaded.');
+
+        verifyInOrder([
+          cacheManager.get(CourseRepository.coursesCacheKey),
+          userRepository.getPassword(),
+          userRepository.monETSUser,
+          signetsApi.getCourses(username: username, password: password),
+          cacheManager.update(
+              CourseRepository.coursesCacheKey, jsonEncode([courseWithGrade]))
+        ]);
+      });
+
+      test("Courses are only loaded from cache", () async {
+        expect(manager.courses, isNull);
+        CacheManagerMock.stubGet(cacheManager as CacheManagerMock,
+            CourseRepository.coursesCacheKey, jsonEncode([courseWithGrade]));
+        final results = await manager.getCourses(fromCacheOnly: true);
+
+        expect(results, isInstanceOf<List<Course>>());
+        expect(results, [courseWithGrade]);
+        expect(manager.courses, [courseWithGrade],
+            reason: 'The courses list should now be loaded.');
+
+        verifyInOrder([cacheManager.get(CourseRepository.coursesCacheKey)]);
+
+        verifyNoMoreInteractions(signetsApi);
+        verifyNoMoreInteractions(cacheManager);
+        verifyNoMoreInteractions(userRepository);
+      });
+
+      test("Signets return a updated version of a course", () async {
+        final Course courseFetched = Course(
+            acronym: 'GEN101',
+            group: '02',
+            session: 'H2020',
+            programCode: '999',
+            grade: 'A+',
+            numberOfCredits: 3,
+            title: 'Cours générique');
+
+        CacheManagerMock.stubGet(cacheManager as CacheManagerMock,
+            CourseRepository.coursesCacheKey, jsonEncode([courseWithGrade]));
+        SignetsApiMock.stubGetCourses(signetsApi as SignetsApiMock, username,
+            coursesToReturn: [courseFetched]);
+
+        expect(manager.courses, isNull);
+        final results = await manager.getCourses();
+
+        expect(results, isInstanceOf<List<Course>>());
+        expect(results, [courseFetched]);
+        expect(manager.courses, [courseFetched],
+            reason: 'The courses list should now be loaded.');
+
+        verifyInOrder([
+          cacheManager.get(CourseRepository.coursesCacheKey),
+          userRepository.getPassword(),
+          userRepository.monETSUser,
+          signetsApi.getCourses(username: username, password: password),
+          cacheManager.update(
+              CourseRepository.coursesCacheKey, jsonEncode([courseFetched]))
+        ]);
+      });
+
+      test("Trying to recover courses from cache failed (exception raised)",
+          () async {
+        expect(manager.courses, isNull);
+        SignetsApiMock.stubGetCourses(signetsApi as SignetsApiMock, username);
+        CacheManagerMock.stubGetException(
+            cacheManager as CacheManagerMock, CourseRepository.coursesCacheKey);
+
+        final results = await manager.getCourses(fromCacheOnly: true);
+
+        expect(results, isInstanceOf<List<Course>>());
+        expect(results, []);
+        expect(manager.courses, [],
+            reason: 'The courses list should be empty.');
+
+        verifyInOrder([
+          cacheManager.get(CourseRepository.coursesCacheKey),
+          userRepository.getPassword(),
+          userRepository.monETSUser,
+          signetsApi.getCourses(username: username, password: password),
+          cacheManager.update(CourseRepository.coursesCacheKey, jsonEncode([]))
+        ]);
+
+        verifyNoMoreInteractions(signetsApi);
+        verifyNoMoreInteractions(cacheManager);
+      });
+
+      test("Signets raised an exception while trying to recover courses",
+          () async {
+        CacheManagerMock.stubGet(cacheManager as CacheManagerMock,
+            CourseRepository.coursesCacheKey, jsonEncode([]));
+        SignetsApiMock.stubGetCoursesException(
+            signetsApi as SignetsApiMock, username);
+
+        expect(manager.courses, isNull);
+
+        expect(manager.getCourses(), throwsA(isInstanceOf<ApiException>()));
+        expect(manager.courses, []);
+
+        await untilCalled(analyticsService.logError(CourseRepository.tag, any));
+
+        verifyInOrder([
+          cacheManager.get(CourseRepository.coursesCacheKey),
+          userRepository.getPassword(),
+          userRepository.monETSUser,
+          signetsApi.getCourses(username: username, password: password),
+          analyticsService.logError(CourseRepository.tag, any)
+        ]);
+
+        verifyNoMoreInteractions(signetsApi);
+        verifyNoMoreInteractions(cacheManager);
+        verifyNoMoreInteractions(userRepository);
+      });
+
+      test("Courses don't have grade so getCourseSummary is called", () async {
+        final Course courseFetched = Course(
+            acronym: 'GEN101',
+            group: '02',
+            session: 'H2020',
+            programCode: '999',
+            numberOfCredits: 3,
+            title: 'Cours générique');
+        final CourseSummary summary = CourseSummary(
+            currentMark: 5,
+            currentMarkInPercent: 50,
+            markOutOf: 10,
+            passMark: 6,
+            standardDeviation: 2.3,
+            median: 4.5,
+            percentileRank: 99,
+            evaluations: []);
+        final Course courseUpdated = Course(
+            acronym: 'GEN101',
+            group: '02',
+            session: 'H2020',
+            programCode: '999',
+            numberOfCredits: 3,
+            title: 'Cours générique',
+            summary: summary);
+
+        SignetsApiMock.stubGetCourses(signetsApi as SignetsApiMock, username,
+            coursesToReturn: [courseFetched]);
+        SignetsApiMock.stubGetCourseSummary(
+            signetsApi as SignetsApiMock, username, courseFetched,
+            summaryToReturn: summary);
+        CacheManagerMock.stubGet(cacheManager as CacheManagerMock,
+            CourseRepository.coursesCacheKey, jsonEncode([]));
+
+        expect(manager.courses, isNull);
+        final results = await manager.getCourses();
+
+        expect(results, isInstanceOf<List<Course>>());
+        expect(results, [courseUpdated]);
+        expect(manager.courses, [courseUpdated],
+            reason: 'The courses list should now be loaded.');
+
+        verifyInOrder([
+          cacheManager.get(CourseRepository.coursesCacheKey),
+          userRepository.getPassword(),
+          userRepository.monETSUser,
+          signetsApi.getCourses(username: username, password: password),
+          signetsApi.getCourseSummary(
+              username: username, password: password, course: courseFetched),
+          cacheManager.update(
+              CourseRepository.coursesCacheKey, jsonEncode([courseUpdated]))
+        ]);
+      });
+
+      test("getCourseSummary fails", () async {
+        final Course courseFetched = Course(
+            acronym: 'GEN101',
+            group: '02',
+            session: 'H2020',
+            programCode: '999',
+            numberOfCredits: 3,
+            title: 'Cours générique');
+
+        SignetsApiMock.stubGetCourses(signetsApi as SignetsApiMock, username,
+            coursesToReturn: [courseFetched]);
+        SignetsApiMock.stubGetCourseSummaryException(
+            signetsApi as SignetsApiMock, username, courseFetched);
+        CacheManagerMock.stubGet(cacheManager as CacheManagerMock,
+            CourseRepository.coursesCacheKey, jsonEncode([]));
+
+        expect(manager.courses, isNull);
+        final results = await manager.getCourses();
+
+        expect(results, isInstanceOf<List<Course>>());
+        expect(results, [courseFetched]);
+        expect(manager.courses, [courseFetched],
+            reason: 'The courses list should now be loaded.');
+
+        verifyInOrder([
+          cacheManager.get(CourseRepository.coursesCacheKey),
+          userRepository.getPassword(),
+          userRepository.monETSUser,
+          signetsApi.getCourses(username: username, password: password),
+          signetsApi.getCourseSummary(
+              username: username, password: password, course: courseFetched),
+          cacheManager.update(
+              CourseRepository.coursesCacheKey, jsonEncode([courseFetched]))
+        ]);
+      });
+
+      test("Cache update fails, should still return the list of courses",
+          () async {
+        SignetsApiMock.stubGetCourses(signetsApi as SignetsApiMock, username);
+        CacheManagerMock.stubGet(cacheManager as CacheManagerMock,
+            CourseRepository.coursesCacheKey, jsonEncode([courseWithGrade]));
+        CacheManagerMock.stubUpdateException(
+            cacheManager as CacheManagerMock, CourseRepository.coursesCacheKey);
+
+        expect(manager.courses, isNull);
+        final results = await manager.getCourses();
+
+        expect(results, isInstanceOf<List<Course>>());
+        expect(results, [courseWithGrade]);
+        expect(manager.courses, [courseWithGrade],
+            reason:
+                'The courses list should now be loaded even if the caching fails.');
+
+        verifyInOrder([
+          cacheManager.get(CourseRepository.coursesCacheKey),
+          userRepository.getPassword(),
+          userRepository.monETSUser,
+          signetsApi.getCourses(username: username, password: password),
+          cacheManager.update(
+              CourseRepository.coursesCacheKey, jsonEncode([courseWithGrade]))
+        ]);
+      });
+
+      test("UserRepository return an exception", () async {
+        // Stub to simulate presence of session cache
+        reset(cacheManager as CacheManagerMock);
+        CacheManagerMock.stubGet(cacheManager as CacheManagerMock,
+            CourseRepository.coursesCacheKey, jsonEncode([]));
+
+        // Stub UserRepository to throw a exception
+        UserRepositoryMock.stubGetPasswordException(
+            userRepository as UserRepositoryMock);
+
+        expect(manager.sessions, isNull);
+        expect(manager.getCourses(), throwsA(isInstanceOf<ApiException>()));
+        expect(manager.courses, [], reason: 'The courses list should be empty');
+
+        await untilCalled(analyticsService.logError(CourseRepository.tag, any));
+
+        verifyInOrder([
+          cacheManager.get(CourseRepository.coursesCacheKey),
+          userRepository.getPassword(),
+          analyticsService.logError(CourseRepository.tag, any)
+        ]);
+
+        verifyNever(signetsApi.getCourses(
+            username: anyNamed("username"), password: anyNamed("password")));
+        verifyNever(cacheManager.update(CourseRepository.coursesCacheKey, any));
+      });
+    });
+
+    group("getCourseSummary - ", () {
+      Course course;
+
+      Course courseUpdated;
+
+      const String username = "username";
+      const String password = "password";
+
+      setUp(() {
+        // Stub a user
+        UserRepositoryMock.stubMonETSUser(userRepository as UserRepositoryMock,
+            MonETSUser(domain: null, typeUsagerId: null, username: username));
+        UserRepositoryMock.stubGetPassword(
+            userRepository as UserRepositoryMock, "password");
+
+        // Reset models
+        course = Course(
+            acronym: 'GEN101',
+            group: '02',
+            session: 'H2020',
+            programCode: '999',
+            numberOfCredits: 3,
+            title: 'Cours générique');
+        courseUpdated = Course(
+            acronym: 'GEN101',
+            group: '02',
+            session: 'H2020',
+            programCode: '999',
+            numberOfCredits: 3,
+            title: 'Cours générique',
+            summary: CourseSummary(
+                currentMark: 5,
+                currentMarkInPercent: 50,
+                markOutOf: 10,
+                passMark: 6,
+                standardDeviation: 2.3,
+                median: 4.5,
+                percentileRank: 99,
+                evaluations: []));
+      });
+
+      test("CourseSummary is fetched and cache is updated", () async {
+        SignetsApiMock.stubGetCourseSummary(
+            signetsApi as SignetsApiMock, username, course,
+            summaryToReturn: courseUpdated.summary);
+
+        expect(manager.courses, isNull);
+        final results = await manager.getCourseSummary(course);
+
+        expect(results, isInstanceOf<Course>());
+        expect(results, courseUpdated);
+        expect(manager.courses, [courseUpdated],
+            reason: 'The courses list should now be loaded.');
+
+        verifyInOrder([
+          userRepository.getPassword(),
+          userRepository.monETSUser,
+          signetsApi.getCourseSummary(
+              username: username, password: password, course: course),
+          cacheManager.update(
+              CourseRepository.coursesCacheKey, jsonEncode([courseUpdated]))
+        ]);
+      });
+
+      test("Course is updated on the repository", () async {
+        CacheManagerMock.stubGet(cacheManager as CacheManagerMock,
+            CourseRepository.coursesCacheKey, jsonEncode([course]));
+        SignetsApiMock.stubGetCourseSummary(
+            signetsApi as SignetsApiMock, username, course,
+            summaryToReturn: courseUpdated.summary);
+
+        // Load a course
+        await manager.getCourses(fromCacheOnly: true);
+
+        clearInteractions(cacheManager);
+        clearInteractions(signetsApi);
+        clearInteractions(userRepository);
+
+        expect(manager.courses, [course]);
+
+        final results = await manager.getCourseSummary(course);
+
+        expect(results, isInstanceOf<Course>());
+        expect(results, courseUpdated);
+        expect(manager.courses, [courseUpdated],
+            reason: 'The courses list should now be updated.');
+
+        verifyInOrder([
+          userRepository.getPassword(),
+          userRepository.monETSUser,
+          signetsApi.getCourseSummary(
+              username: username, password: password, course: course),
+          cacheManager.update(
+              CourseRepository.coursesCacheKey, jsonEncode([courseUpdated]))
+        ]);
+      });
+
+      test("Signets raised an exception while trying to recover summary",
+          () async {
+        SignetsApiMock.stubGetCourseSummaryException(
+            signetsApi as SignetsApiMock, username, course);
+
+        expect(manager.courses, isNull);
+
+        expect(manager.getCourseSummary(course),
+            throwsA(isInstanceOf<ApiException>()));
+        expect(manager.courses, isNull);
+
+        await untilCalled(analyticsService.logError(CourseRepository.tag, any));
+
+        verifyInOrder([
+          userRepository.getPassword(),
+          userRepository.monETSUser,
+          signetsApi.getCourseSummary(
+              username: username, password: password, course: course),
+          analyticsService.logError(CourseRepository.tag, any)
+        ]);
+
+        verifyNoMoreInteractions(signetsApi);
+        verifyNoMoreInteractions(cacheManager);
+        verifyNoMoreInteractions(userRepository);
+      });
+
+      test(
+          "Cache update fails, should still return the course with its summary",
+          () async {
+        SignetsApiMock.stubGetCourseSummary(
+            signetsApi as SignetsApiMock, username, course,
+            summaryToReturn: courseUpdated.summary);
+        CacheManagerMock.stubUpdateException(
+            cacheManager as CacheManagerMock, CourseRepository.coursesCacheKey);
+
+        expect(manager.courses, isNull);
+        final results = await manager.getCourseSummary(course);
+
+        expect(results, isInstanceOf<Course>());
+        expect(results, courseUpdated);
+        expect(manager.courses, [courseUpdated],
+            reason:
+                'The courses list should now be loaded even if the caching fails.');
+
+        verifyInOrder([
+          userRepository.getPassword(),
+          userRepository.monETSUser,
+          signetsApi.getCourseSummary(
+              username: username, password: password, course: course),
+          cacheManager.update(
+              CourseRepository.coursesCacheKey, jsonEncode([courseUpdated]))
+        ]);
+      });
+
+      test("UserRepository return an exception", () async {
+        // Stub to simulate presence of session cache
+        reset(cacheManager as CacheManagerMock);
+        CacheManagerMock.stubGet(cacheManager as CacheManagerMock,
+            CourseRepository.coursesCacheKey, jsonEncode([]));
+
+        // Stub UserRepository to throw a exception
+        UserRepositoryMock.stubGetPasswordException(
+            userRepository as UserRepositoryMock);
+
+        expect(manager.sessions, isNull);
+        expect(manager.getCourseSummary(course),
+            throwsA(isInstanceOf<ApiException>()));
+        expect(manager.courses, isNull);
+
+        await untilCalled(analyticsService.logError(CourseRepository.tag, any));
+
+        verifyInOrder([
+          userRepository.getPassword(),
+          analyticsService.logError(CourseRepository.tag, any)
+        ]);
+
+        verifyNoMoreInteractions(signetsApi);
+        verifyNoMoreInteractions(cacheManager);
       });
     });
   });
