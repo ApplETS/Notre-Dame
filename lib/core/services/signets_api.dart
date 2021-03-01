@@ -15,6 +15,8 @@ import 'package:notredame/core/models/course_activity.dart';
 import 'package:notredame/core/models/session.dart';
 import 'package:notredame/core/models/profile_student.dart';
 import 'package:notredame/core/models/program.dart';
+import 'package:notredame/core/models/course.dart';
+import 'package:notredame/core/models/course_summary.dart';
 
 class SignetsApi {
   static const String tag = "SignetsApi";
@@ -38,9 +40,11 @@ class SignetsApi {
     }
   }
 
-  /// Call the SignetsAPI to get the courses activities for the [session] for the student ([username]).
-  /// By specifying [courseGroup] we can filter the results to get only the activities for this course.
-  /// If the [startDate] and/or [endDate] are specified the results will contains all the activities between these dates.
+  /// Call the SignetsAPI to get the courses activities for the [session] for
+  /// the student ([username]). By specifying [courseGroup] we can filter the
+  /// results to get only the activities for this course.
+  /// If the [startDate] and/or [endDate] are specified the results will contains
+  /// all the activities between these dates.
   Future<List<CourseActivity>> getCoursesActivities(
       {@required String username,
       @required String password,
@@ -85,6 +89,7 @@ class SignetsApi {
           : "${endDate.year}-${endDate.month}-${endDate.day}");
     });
 
+    // Add the parameters needed inside the request.
     body
         .findAllElements(Urls.listClassScheduleOperation,
             namespace: Urls.signetsOperationBase)
@@ -92,32 +97,66 @@ class SignetsApi {
         .children
         .add(operationContent.buildFragment());
 
-    // Send the envelope
-    final response = await _client.post(Urls.signetsAPI,
-        headers: _buildHeaders(
-            Urls.signetsOperationBase + Urls.listClassScheduleOperation),
-        body: body.toXmlString());
-
-    final responseBody = XmlDocument.parse(response.body)
-        .findAllElements(_operationResponseTag(Urls.listClassScheduleOperation))
-        .first;
-
-    // Throw exception if the error tag is not empty
-    if (responseBody
-        .findAllElements(_signetsErrorTag)
-        .first
-        .innerText
-        .isNotEmpty) {
-      throw ApiException(
-          prefix: tagError,
-          message: responseBody.findElements(_signetsErrorTag).first.innerText);
-    }
+    final responseBody =
+        await _sendSOAPRequest(body, Urls.listClassScheduleOperation);
 
     /// Build and return the list of CourseActivity
-    return XmlDocument.parse(response.body)
+    return responseBody
         .findAllElements("Seances")
         .map((node) => CourseActivity.fromXmlNode(node))
         .toList();
+  }
+
+  /// Call the SignetsAPI to get the courses of the student ([username]).
+  Future<List<Course>> getCourses(
+      {@required String username, @required String password}) async {
+    // Generate initial soap envelope
+    final body =
+        buildBasicSOAPBody(Urls.listCourseOperation, username, password)
+            .buildDocument();
+
+    final responseBody = await _sendSOAPRequest(body, Urls.listCourseOperation);
+
+    return responseBody
+        .findAllElements("Cours")
+        .map((node) => Course.fromXmlNode(node))
+        .toList();
+  }
+
+  /// Call the SignetsAPI to get all the evaluations (exams) and the summary
+  /// of [course] for the student ([username]).
+  Future<CourseSummary> getCourseSummary(
+      {@required String username,
+      @required String password,
+      @required Course course}) async {
+    // Generate initial soap envelope
+    final body =
+        buildBasicSOAPBody(Urls.listEvaluationsOperation, username, password)
+            .buildDocument();
+    final operationContent = XmlBuilder();
+
+    // Add the content needed by the operation
+    operationContent.element("pSigle", nest: () {
+      operationContent.text(course.acronym);
+    });
+    operationContent.element("pGroupe", nest: () {
+      operationContent.text(course.group);
+    });
+    operationContent.element("pSession", nest: () {
+      operationContent.text(course.session);
+    });
+
+    body
+        .findAllElements(Urls.listEvaluationsOperation,
+            namespace: Urls.signetsOperationBase)
+        .first
+        .children
+        .add(operationContent.buildFragment());
+
+    final responseBody =
+        await _sendSOAPRequest(body, Urls.listEvaluationsOperation);
+
+    return CourseSummary.fromXmlNode(responseBody);
   }
 
   /// Call the SignetsAPI to get the list of all the [Session] for the student ([username]).
@@ -128,26 +167,8 @@ class SignetsApi {
         buildBasicSOAPBody(Urls.listSessionsOperation, username, password)
             .buildDocument();
 
-    // Send the envelope
-    final response = await _client.post(Urls.signetsAPI,
-        headers: _buildHeaders(
-            Urls.signetsOperationBase + Urls.listSessionsOperation),
-        body: body.toXmlString());
-
-    final responseBody = XmlDocument.parse(response.body)
-        .findAllElements(_operationResponseTag(Urls.listSessionsOperation))
-        .first;
-
-    // Throw exception if the error tag is not empty
-    if (responseBody
-        .findElements(_signetsErrorTag)
-        .first
-        .innerText
-        .isNotEmpty) {
-      throw ApiException(
-          prefix: tagError,
-          message: responseBody.findElements(_signetsErrorTag).first.innerText);
-    }
+    final responseBody =
+        await _sendSOAPRequest(body, Urls.listSessionsOperation);
 
     /// Build and return the list of Session
     return responseBody
@@ -160,61 +181,27 @@ class SignetsApi {
   Future<ProfileStudent> getStudentInfo(
       {@required String username, @required String password}) async {
     // Generate initial soap envelope
-    final body = buildBasicSOAPBody(Urls.infoStudent, username, password)
-        .buildDocument();
+    final body =
+        buildBasicSOAPBody(Urls.infoStudentOperation, username, password)
+            .buildDocument();
 
-    // Send the envelope
-    final response = await _client.post(Urls.signetsAPI,
-        headers: _buildHeaders(Urls.signetsOperationBase + Urls.infoStudent),
-        body: body.toXmlString());
+    final responseBody =
+        await _sendSOAPRequest(body, Urls.infoStudentOperation);
 
-    final responseBody = XmlDocument.parse(response.body)
-        .findAllElements(_operationResponseTag(Urls.infoStudent));
-
-    // Throw exception if the error tag is not empty
-    if (responseBody.first
-        .findElements(_signetsErrorTag)
-        .first
-        .innerText
-        .isNotEmpty) {
-      throw ApiException(
-          prefix: tagError,
-          message: responseBody.first
-              .findElements(_signetsErrorTag)
-              .first
-              .innerText);
-    }
-
-    /// Build and return the info
-    return responseBody.map((node) => ProfileStudent.fromXmlNode(node)).first;
+    // Build and return the info
+    return ProfileStudent.fromXmlNode(responseBody);
   }
 
   /// Call the SignetsAPI to get the list of all the [Program] for the student ([username]).
   Future<List<Program>> getPrograms(
       {@required String username, @required String password}) async {
     // Generate initial soap envelope
-    final body = buildBasicSOAPBody(Urls.listPrograms, username, password)
-        .buildDocument();
+    final body =
+        buildBasicSOAPBody(Urls.listProgramsOperation, username, password)
+            .buildDocument();
 
-    // Send the envelope
-    final response = await _client.post(Urls.signetsAPI,
-        headers: _buildHeaders(Urls.signetsOperationBase + Urls.listPrograms),
-        body: body.toXmlString());
-
-    final responseBody = XmlDocument.parse(response.body)
-        .findAllElements(_operationResponseTag(Urls.listPrograms))
-        .first;
-
-    // Throw exception if the error tag is not empty
-    if (responseBody
-        .findElements(_signetsErrorTag)
-        .first
-        .innerText
-        .isNotEmpty) {
-      throw ApiException(
-          prefix: tagError,
-          message: responseBody.findElements(_signetsErrorTag).first.innerText);
-    }
+    final responseBody =
+        await _sendSOAPRequest(body, Urls.listProgramsOperation);
 
     /// Build and return the list of Program
     return responseBody
@@ -253,6 +240,34 @@ class SignetsApi {
     });
 
     return builder;
+  }
+
+  /// Send a SOAP request to SignetsAPI using [body] as envelope then return
+  /// the response.
+  /// Will throw a [ApiException] if an error is returned by the api.
+  Future<XmlElement> _sendSOAPRequest(
+      XmlDocument body, String operation) async {
+    // Send the envelope
+    final response = await _client.post(Urls.signetsAPI,
+        headers: _buildHeaders(Urls.signetsOperationBase + operation),
+        body: body.toXmlString());
+
+    final responseBody = XmlDocument.parse(response.body)
+        .findAllElements(_operationResponseTag(operation))
+        .first;
+
+    // Throw exception if the error tag is not empty
+    if (responseBody
+        .findElements(_signetsErrorTag)
+        .first
+        .innerText
+        .isNotEmpty) {
+      throw ApiException(
+          prefix: tagError,
+          message: responseBody.findElements(_signetsErrorTag).first.innerText);
+    }
+
+    return responseBody;
   }
 
   /// Create a [http.Client] with the certificate to access the SignetsAPI

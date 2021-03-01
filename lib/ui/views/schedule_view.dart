@@ -145,12 +145,11 @@ class _ScheduleViewState extends State<ScheduleView>
         }),
         builders: CalendarBuilders(
             todayDayBuilder: (context, date, _) => _buildSelectedDate(
-                date, _defaultColor, textColor: Colors.black),
+                date, _defaultColor),
             selectedDayBuilder: (context, date, _) => FadeTransition(
                   opacity:
                       Tween(begin: 0.0, end: 1.0).animate(_animationController),
-                  child: _buildSelectedDate(date, _selectedColor,
-                      textColor: Colors.black),
+                  child: _buildSelectedDate(date, _selectedColor),
                 ),
             markersBuilder: (context, date, events, holidays) =>
                 [_buildEventsMarker(date, events)]),
@@ -158,8 +157,7 @@ class _ScheduleViewState extends State<ScheduleView>
       );
 
   /// Build the visual for the selected [date]. The [color] parameter set the color for the tile.
-  Widget _buildSelectedDate(DateTime date, Color color,
-          {Color textColor = Colors.white}) =>
+  Widget _buildSelectedDate(DateTime date, Color color) =>
       Container(
         margin: const EdgeInsets.all(4.0),
         padding: const EdgeInsets.only(top: 5.0, left: 6.0),
@@ -168,7 +166,7 @@ class _ScheduleViewState extends State<ScheduleView>
         height: 100,
         child: Text(
           '${date.day}',
-          style: const TextStyle().copyWith(fontSize: 16.0, color: textColor),
+          style: const TextStyle().copyWith(fontSize: 16.0),
         ),
       );
 
