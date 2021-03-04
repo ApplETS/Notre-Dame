@@ -27,8 +27,8 @@ dependencies:
     sdk: flutter
 
   # Architecture
+  get_it: ^6.0.0
   provider: ^4.1.3
-  get_it: ^5.0.3
   stacked: ^1.6.0
 
   # Firebase
@@ -39,23 +39,22 @@ dependencies:
   # Utils
   logger: ^0.9.4
   xml: ^4.5.1
-  url_launcher: ^5.5.0
-  intl: ^0.16.1
+  url_launcher: ^6.0.2
   enum_to_string: ^1.0.14
-  oktoast: ^2.3.2
+  oktoast: ^3.0.0
 
   # Other
   http: ^0.12.1
   flutter_cache_manager: ^2.1.0
-  flutter_secure_storage: ^3.3.3
+  flutter_secure_storage: ^4.0.0
   shared_preferences: '>=0.5.12+4 <2.0.0'
-  webview_flutter: ^1.0.7
-  flutter_inappwebview: ^4.0.0+4
-  google_maps_flutter: ^1.2.0
+  webview_flutter: ^2.0.1
+  flutter_inappwebview: ^5.0.5+3
+  google_maps_flutter: ^2.0.1
   table_calendar: ^2.3.3
   github: ^7.0.4
-  feedback: ^0.3.0
-  package_info: ^0.4.3+4
+  feedback: ^1.0.0
+  package_info: ^2.0.0
   path_provider: ^1.6.27
 
 dev_dependencies:
@@ -64,7 +63,6 @@ dev_dependencies:
   mockito: ^4.1.1
   lint: ^1.2.0
   flutter_launcher_icons: ^0.8.1
-  intl_utils: ^1.6.2
 
 flutter_icons:
   android: "launcher_icon"

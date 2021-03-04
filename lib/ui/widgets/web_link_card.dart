@@ -65,11 +65,13 @@ class WebLinkCard extends StatelessWidget {
   Future<void> _launchInBrowser(String url) async {
     final ChromeSafariBrowser browser = ChromeSafariBrowser();
     await browser.open(
-        url: url,
+        url: Uri.parse(url),
         options: ChromeSafariBrowserClassOptions(
             android: AndroidChromeCustomTabsOptions(
-                addDefaultShareMenuItem: false, toolbarBackgroundColor: "Red"),
+                addDefaultShareMenuItem: false,
+                toolbarBackgroundColor: Colors.red),
             ios: IOSSafariOptions(
-                barCollapsingEnabled: true, preferredBarTintColor: "Red")));
+                barCollapsingEnabled: true,
+                preferredBarTintColor: Colors.red)));
   }
 }

@@ -100,7 +100,7 @@ class _SecurityViewState extends State<SecurityView> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: List.generate(
                       model.emergencyProcedureList.length,
-                      (index) => FlatButton(
+                      (index) => TextButton(
                         onPressed: () => Navigator.push(
                             context,
                             MaterialPageRoute(
