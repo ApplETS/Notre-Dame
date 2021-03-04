@@ -69,6 +69,7 @@ class WebLinkCard extends StatelessWidget {
         options: ChromeSafariBrowserClassOptions(
             android: AndroidChromeCustomTabsOptions(
                 addDefaultShareMenuItem: false,
+                enableUrlBarHiding: true,
                 toolbarBackgroundColor: Colors.red),
             ios: IOSSafariOptions(
                 barCollapsingEnabled: true,
