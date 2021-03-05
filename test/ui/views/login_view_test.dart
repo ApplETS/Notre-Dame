@@ -48,7 +48,7 @@ void main() {
         expect(signInButton, findsOneWidget);
         expect(
             tester.widget(signInButton),
-            isA<TextButton>()
+            isA<ElevatedButton>()
                 .having((source) => source.onPressed, 'onPressed', isNull));
       });
     });
