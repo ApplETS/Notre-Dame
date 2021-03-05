@@ -42,6 +42,11 @@ dependencies:
   url_launcher: ^6.0.2
   enum_to_string: ^1.0.14
   oktoast: ^3.0.0
+  flutter_launcher_icons: ^0.8.1
+
+  # Widgets
+  table_calendar: ^2.3.3
+  feedback: ^1.0.0
 
   # Other
   http: ^0.12.1
@@ -51,12 +56,9 @@ dependencies:
   webview_flutter: ^2.0.1
   flutter_inappwebview: ^5.0.5+3
   google_maps_flutter: ^2.0.1
-  table_calendar: ^2.3.3
   github: ^7.0.4
-  feedback: ^1.0.0
   package_info: ^2.0.0
   path_provider: ^1.6.27
-  flutter_launcher_icons: ^0.8.1
 
 dev_dependencies:
   flutter_test:
