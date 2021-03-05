@@ -27,15 +27,6 @@ class SecurityViewModel extends BaseViewModel {
     return Set<Marker>.of(markers.values);
   }
 
-  /// Used to open the phone application with the phone number
-  Future<void> openPhoneApp(String url) async {
-    if (await canLaunch(url)) {
-      await launch(url);
-    } else {
-      throw 'Could not launch $url';
-    }
-  }
-
   /// Used to load a Json file
   Future<String> getJsonFile(String path) async {
     return rootBundle.loadString(path);

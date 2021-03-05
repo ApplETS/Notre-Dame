@@ -1,11 +1,6 @@
 // FLUTTER / DART / THIRD-PARTIES
 import 'package:github/github.dart';
-import 'package:oktoast/oktoast.dart';
 import 'package:stacked/stacked.dart';
-import 'package:url_launcher/url_launcher.dart';
-
-// OTHER
-import 'package:notredame/generated/l10n.dart';
 
 class ContributorsViewModel extends FutureViewModel {
   /// Create a GitHub Client, with anonymous authentication by default
@@ -15,16 +10,6 @@ class ContributorsViewModel extends FutureViewModel {
 
   /// List of contributors
   Future<List<Contributor>> _contributors;
-
-  /// Used to open a url
-  Future<void> launchURL(String url) async {
-    if (await canLaunch(url)) {
-      await launch(url);
-    } else {
-      showToast(AppIntl.current.error);
-      throw 'Could not launch $url';
-    }
-  }
 
   @override
   Future futureToRun() {

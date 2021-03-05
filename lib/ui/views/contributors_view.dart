@@ -10,6 +10,7 @@ import 'package:notredame/core/viewmodels/contributors_viewmodel.dart';
 import 'package:notredame/ui/utils/loading.dart';
 import 'package:notredame/ui/widgets/base_scaffold.dart';
 import 'package:notredame/generated/l10n.dart';
+import 'package:notredame/core/utils/util.dart';
 
 class ContributorsView extends StatelessWidget {
   @override
@@ -35,7 +36,7 @@ class ContributorsView extends StatelessWidget {
                     leading: CircleAvatar(
                         backgroundImage:
                             NetworkImage(snapshot.data[index].avatarUrl)),
-                    onTap: () => model.launchURL(snapshot.data[index].htmlUrl),
+                    onTap: () => Util().launchURL(snapshot.data[index].htmlUrl),
                   ),
                 );
               },
