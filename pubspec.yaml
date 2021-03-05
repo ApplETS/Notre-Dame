@@ -56,13 +56,14 @@ dependencies:
   feedback: ^1.0.0
   package_info: ^2.0.0
   path_provider: ^1.6.27
+  flutter_launcher_icons: ^0.8.1
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  mockito: ^4.1.1
   lint: ^1.2.0
-  flutter_launcher_icons: ^0.8.1
+  mockito: ^4.1.1
+
 
 flutter_icons:
   android: "launcher_icon"

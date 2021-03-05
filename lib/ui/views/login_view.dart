@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:notredame/ui/utils/app_theme.dart';
+import 'package:oktoast/oktoast.dart';
 import 'package:stacked/stacked.dart';
 
 // VIEW MODEL
@@ -101,7 +102,7 @@ class _LoginViewState extends State<LoginView> {
                             ),
                             SizedBox(
                               width: double.infinity,
-                              child: FlatButton(
+                              child: ElevatedButton(
                                 onPressed: !model.canSubmit
                                     ? null
                                     : () async {
@@ -109,17 +110,25 @@ class _LoginViewState extends State<LoginView> {
                                             await model.authenticate();
 
                                         setState(() {
-                                          Scaffold.of(context).showSnackBar(
-                                              SnackBar(content: Text(error)));
+                                          showToast(error);
                                           formKey.currentState.reset();
                                         });
                                       },
-                                disabledColor: Colors.white38,
-                                color: Colors.white,
-                                padding: const EdgeInsets.only(
-                                    bottom: 16.0, top: 16.0),
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(10.0)),
+                                style: ButtonStyle(
+                                  backgroundColor:
+                                      MaterialStateProperty.resolveWith<Color>(
+                                    (Set<MaterialState> states) {
+                                      if (states
+                                          .contains(MaterialState.disabled)) {
+                                        return Colors.white38;
+                                      }
+                                      return Colors
+                                          .white; // Use the component's default.
+                                    },
+                                  ),
+                                  padding: MaterialStateProperty.all(
+                                      const EdgeInsets.symmetric(vertical: 16)),
+                                ),
                                 child: Text(
                                   AppIntl.of(context).login_action_sign_in,
                                   style: const TextStyle(

@@ -23,8 +23,7 @@ class GradeButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return SizedBox(
       width: 70,
-      child: RaisedButton(
-        padding: const EdgeInsets.all(0.0),
+      child: ElevatedButton(
         onPressed: onPressed,
         child: Column(
           mainAxisSize: MainAxisSize.min,

@@ -1,5 +1,6 @@
 // FLUTTER / DART / THIRD-PARTIES
 import 'package:flutter/material.dart';
+import 'package:github/github.dart';
 import 'package:stacked/stacked.dart';
 
 // VIEWMODEL
@@ -21,21 +22,20 @@ class ContributorsView extends StatelessWidget {
               title: Text(AppIntl.of(context).more_contributors),
             ),
             showBottomBar: false,
-            body: FutureBuilder(
+            body: FutureBuilder<List<Contributor>>(
               future: model.contributors,
               builder: (context, snapshot) {
                 if (!snapshot.hasData) {
                   return buildLoading();
                 }
                 return ListView.builder(
-                  itemCount: snapshot.data.length as int,
+                  itemCount: snapshot.data.length,
                   itemBuilder: (context, index) => ListTile(
-                    title: Text(snapshot.data[index].login as String),
+                    title: Text(snapshot.data[index].login),
                     leading: CircleAvatar(
-                        backgroundImage: NetworkImage(
-                            snapshot.data[index].avatarUrl as String)),
-                    onTap: () =>
-                        model.launchURL(snapshot.data[index].htmlUrl as String),
+                        backgroundImage:
+                            NetworkImage(snapshot.data[index].avatarUrl)),
+                    onTap: () => model.launchURL(snapshot.data[index].htmlUrl),
                   ),
                 );
               },
