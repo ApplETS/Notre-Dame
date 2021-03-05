@@ -44,11 +44,11 @@ void main() {
             findsOneWidget);
 
         final Finder signInButton =
-            find.widgetWithText(TextButton, intl.login_action_sign_in);
+            find.widgetWithText(ElevatedButton, intl.login_action_sign_in);
         expect(signInButton, findsOneWidget);
         expect(
             tester.widget(signInButton),
-            isA<TextButton>()
+            isA<ElevatedButton>()
                 .having((source) => source.onPressed, 'onPressed', isNull));
       });
     });
