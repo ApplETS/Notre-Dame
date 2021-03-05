@@ -63,6 +63,8 @@ dev_dependencies:
     sdk: flutter
   lint: ^1.2.0
   mockito: ^4.1.1
+  # Commented until https://github.com/localizely/intl_utils/issues/26 is resolved. For now, please use the intl plugin for IDEA or VS Code
+  #intl_utils: 1.9.0
 
 
 flutter_icons:
