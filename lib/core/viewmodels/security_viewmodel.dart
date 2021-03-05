@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:stacked/stacked.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 // CONSTANTS
 import 'package:notredame/core/constants/emergency_procedures.dart';
