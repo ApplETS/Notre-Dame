@@ -47,97 +47,101 @@ class _LoginViewState extends State<LoginView> {
                           formKey.currentState.validate();
                         });
                       },
-                      child: FocusScope(
-                        node: _focusNode,
-                        child: Column(
-                          children: [
-                            Hero(
-                              tag: 'ets_logo',
-                              child: Image.asset(
-                                'assets/images/ets_white_logo.png',
-                                excludeFromSemantics: true,
-                                width: 216,
-                                height: 216,
+                      child: AutofillGroup(
+                        child: FocusScope(
+                          node: _focusNode,
+                          child: Column(
+                            children: [
+                              Hero(
+                                tag: 'ets_logo',
+                                child: Image.asset(
+                                  'assets/images/ets_white_logo.png',
+                                  excludeFromSemantics: true,
+                                  width: 216,
+                                  height: 216,
+                                ),
                               ),
-                            ),
-                            TextFormField(
-                              cursorColor: Colors.white,
-                              decoration: InputDecoration(
-                                enabledBorder: const OutlineInputBorder(
-                                    borderSide:
-                                        BorderSide(color: Colors.white70)),
-                                focusedBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                        color: Colors.white,
-                                        width: borderRadiusOnFocus)),
-                                focusedErrorBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                        color: Colors.amberAccent,
-                                        width: borderRadiusOnFocus)),
-                                errorBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                        color: Colors.amberAccent,
-                                        width: borderRadiusOnFocus)),
-                                labelText: AppIntl.of(context)
-                                    .login_prompt_universal_code,
-                                labelStyle:
-                                    const TextStyle(color: Colors.white54),
-                                errorStyle:
-                                    const TextStyle(color: Colors.amberAccent),
+                              TextFormField(
+                                autofillHints: const [AutofillHints.username],
+                                cursorColor: Colors.white,
+                                decoration: InputDecoration(
+                                  enabledBorder: const OutlineInputBorder(
+                                      borderSide:
+                                          BorderSide(color: Colors.white70)),
+                                  focusedBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                          color: Colors.white,
+                                          width: borderRadiusOnFocus)),
+                                  focusedErrorBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                          color: Colors.amberAccent,
+                                          width: borderRadiusOnFocus)),
+                                  errorBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                          color: Colors.amberAccent,
+                                          width: borderRadiusOnFocus)),
+                                  labelText: AppIntl.of(context)
+                                      .login_prompt_universal_code,
+                                  labelStyle:
+                                      const TextStyle(color: Colors.white54),
+                                  errorStyle: const TextStyle(
+                                      color: Colors.amberAccent),
+                                ),
+                                autofocus: true,
+                                style: const TextStyle(color: Colors.white),
+                                onEditingComplete: _focusNode.nextFocus,
+                                validator: model.validateUniversalCode,
+                                initialValue: model.universalCode,
                               ),
-                              autofocus: true,
-                              style: const TextStyle(color: Colors.white),
-                              onEditingComplete: _focusNode.nextFocus,
-                              validator: model.validateUniversalCode,
-                              initialValue: model.universalCode,
-                            ),
-                            const SizedBox(
-                              height: 20,
-                            ),
-                            PasswordFormField(
-                                validator: model.validatePassword,
-                                onEditionComplete: _focusNode.nextFocus),
-                            const SizedBox(
-                              height: 30.0,
-                            ),
-                            SizedBox(
-                              width: double.infinity,
-                              child: ElevatedButton(
-                                onPressed: !model.canSubmit
-                                    ? null
-                                    : () async {
-                                        final String error =
-                                            await model.authenticate();
+                              const SizedBox(
+                                height: 20,
+                              ),
+                              PasswordFormField(
+                                  validator: model.validatePassword,
+                                  onEditionComplete: _focusNode.nextFocus),
+                              const SizedBox(
+                                height: 30.0,
+                              ),
+                              SizedBox(
+                                width: double.infinity,
+                                child: ElevatedButton(
+                                  onPressed: !model.canSubmit
+                                      ? null
+                                      : () async {
+                                          final String error =
+                                              await model.authenticate();
 
-                                        setState(() {
-                                          showToast(error);
-                                          formKey.currentState.reset();
-                                        });
+                                          setState(() {
+                                            showToast(error);
+                                            formKey.currentState.reset();
+                                          });
+                                        },
+                                  style: ButtonStyle(
+                                    backgroundColor: MaterialStateProperty
+                                        .resolveWith<Color>(
+                                      (Set<MaterialState> states) {
+                                        if (states
+                                            .contains(MaterialState.disabled)) {
+                                          return Colors.white38;
+                                        }
+                                        return Colors
+                                            .white; // Use the component's default.
                                       },
-                                style: ButtonStyle(
-                                  backgroundColor:
-                                      MaterialStateProperty.resolveWith<Color>(
-                                    (Set<MaterialState> states) {
-                                      if (states
-                                          .contains(MaterialState.disabled)) {
-                                        return Colors.white38;
-                                      }
-                                      return Colors
-                                          .white; // Use the component's default.
-                                    },
+                                    ),
+                                    padding: MaterialStateProperty.all(
+                                        const EdgeInsets.symmetric(
+                                            vertical: 16)),
                                   ),
-                                  padding: MaterialStateProperty.all(
-                                      const EdgeInsets.symmetric(vertical: 16)),
+                                  child: Text(
+                                    AppIntl.of(context).login_action_sign_in,
+                                    style: const TextStyle(
+                                        color: Color.fromRGBO(239, 62, 69, 1),
+                                        fontSize: 18),
+                                  ),
                                 ),
-                                child: Text(
-                                  AppIntl.of(context).login_action_sign_in,
-                                  style: const TextStyle(
-                                      color: Color.fromRGBO(239, 62, 69, 1),
-                                      fontSize: 18),
-                                ),
-                              ),
-                            )
-                          ],
+                              )
+                            ],
+                          ),
                         ),
                       ),
                     ),
