@@ -64,7 +64,8 @@ void main() {
         await untilCalled(
             settingsManager.setThemeMode(ThemeMode.system.toString()));
 
-        expect(viewModel.selectedTheme, ThemeMode.system.toString());
+        expect(viewModel.selectedTheme.toLowerCase(),
+            ThemeMode.system.toString().replaceFirst('ThemeMode.', ''));
         expect(viewModel.isBusy, false);
 
         verify(settingsManager.setThemeMode(ThemeMode.system.toString()))
@@ -82,7 +83,8 @@ void main() {
         await untilCalled(
             settingsManager.setThemeMode(ThemeMode.dark.toString()));
 
-        expect(viewModel.selectedTheme, ThemeMode.dark.toString());
+        expect(viewModel.selectedTheme.toLowerCase(),
+            ThemeMode.dark.toString().replaceFirst('ThemeMode.', ''));
         expect(viewModel.isBusy, false);
 
         verify(settingsManager.setThemeMode(ThemeMode.dark.toString()))
@@ -100,7 +102,8 @@ void main() {
         await untilCalled(
             settingsManager.setThemeMode(ThemeMode.light.toString()));
 
-        expect(viewModel.selectedTheme, ThemeMode.light.toString());
+        expect(viewModel.selectedTheme.toLowerCase(),
+            ThemeMode.light.toString().replaceFirst('ThemeMode.', ''));
         expect(viewModel.isBusy, false);
 
         verify(settingsManager.setThemeMode(ThemeMode.light.toString()))

@@ -110,19 +110,6 @@ void main() {
     });
 
     group("ThemeMode - ", () {
-      test("validate default behaviour", () async {
-        PreferencesServiceMock.stubGetString(
-            preferencesService as PreferencesServiceMock, PreferencesFlag.theme,
-            toReturn: 'test theme');
-
-        manager.themeMode;
-
-        verify(preferencesService.getString(PreferencesFlag.theme)).called(1);
-
-        verifyNoMoreInteractions(preferencesService);
-        verifyNoMoreInteractions(analyticsService);
-      });
-
       test("set light/dark/system mode", () async {
         manager.setThemeMode(ThemeMode.light.toString());
 
