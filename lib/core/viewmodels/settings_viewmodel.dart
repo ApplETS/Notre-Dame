@@ -1,4 +1,5 @@
 // FLUTTER / DART / THIRD-PARTIES
+import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 
 // CONSTANTS
@@ -21,32 +22,23 @@ class SettingsViewModel extends FutureViewModel {
   /// Current theme
   String _selectedTheme;
 
-  /// Possible theme choices
-  final light = 'light';
-  final dark = 'dark';
-  final system = 'system';
-
   String get selectedTheme {
-    return _selectedTheme == light
-        ? AppIntl.current.light_theme
-        : _selectedTheme == dark
-            ? AppIntl.current.dark_theme
-            : AppIntl.current.system_theme;
+    if (_selectedTheme == ThemeMode.light.toString()) {
+      return AppIntl.current.light_theme;
+    } else if (_selectedTheme == ThemeMode.dark.toString()) {
+      return AppIntl.current.dark_theme;
+    } else {
+      return AppIntl.current.system_theme;
+    }
   }
 
   /// Set theme
   set selectedTheme(String value) {
-    if (value == light) {
-      _settingsManager.setLightMode();
-    } else if (value == dark) {
-      _settingsManager.setDarkMode();
-    } else {
-      _settingsManager.setSystemMode();
-    }
+    _settingsManager.setThemeMode(value);
     _selectedTheme = value;
   }
 
-  String get currentLocale => _currentLocale ?? AppIntl.current.system_theme;
+  String get currentLocale => _currentLocale ?? '';
 
   /// Set Locale
   set currentLocale(String value) {

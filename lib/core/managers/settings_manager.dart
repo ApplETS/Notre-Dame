@@ -34,14 +34,7 @@ class SettingsManager with ChangeNotifier {
   /// Get ThemeMode
   ThemeMode get themeMode {
     _preferencesService.getString(PreferencesFlag.theme).then((value) {
-      final theme = value ?? 'system';
-      if (theme == 'light') {
-        _themeMode = ThemeMode.light;
-      } else if (theme == 'dark') {
-        _themeMode = ThemeMode.dark;
-      } else {
-        _themeMode = ThemeMode.system;
-      }
+      _themeMode = ThemeMode.values.firstWhere((e) => e.toString() == value);
     });
     return _themeMode;
   }
@@ -60,24 +53,10 @@ class SettingsManager with ChangeNotifier {
     return _locale;
   }
 
-  /// Set ThemeMode to ThemeMode.dark
-  void setDarkMode() {
-    _themeMode = ThemeMode.dark;
-    _preferencesService.setString(PreferencesFlag.theme, 'dark');
-    notifyListeners();
-  }
-
-  /// Set ThemeMode to ThemeMode.light
-  void setLightMode() {
-    _themeMode = ThemeMode.light;
-    _preferencesService.setString(PreferencesFlag.theme, 'light');
-    notifyListeners();
-  }
-
-  /// Set ThemeMode to ThemeMode.system
-  void setSystemMode() {
-    _themeMode = ThemeMode.system;
-    _preferencesService.setString(PreferencesFlag.theme, 'system');
+  /// Set ThemeMode
+  void setThemeMode(String value) {
+    _themeMode = ThemeMode.values.firstWhere((e) => e.toString() == value);
+    _preferencesService.setString(PreferencesFlag.theme, _themeMode.toString());
     notifyListeners();
   }
 

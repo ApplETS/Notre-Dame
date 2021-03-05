@@ -45,15 +45,15 @@ class _SettingsViewState extends State<SettingsView> {
                 },
                 itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
                   PopupMenuItem<String>(
-                    value: model.light,
+                    value: ThemeMode.light.toString(),
                     child: Text(AppIntl.of(context).light_theme),
                   ),
                   PopupMenuItem<String>(
-                    value: model.dark,
+                    value: ThemeMode.dark.toString(),
                     child: Text(AppIntl.of(context).dark_theme),
                   ),
                   PopupMenuItem<String>(
-                    value: model.system,
+                    value: ThemeMode.system.toString(),
                     child: Text(AppIntl.of(context).system_theme),
                   ),
                 ],

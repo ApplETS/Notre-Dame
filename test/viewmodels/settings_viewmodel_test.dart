@@ -1,4 +1,5 @@
 // FLUTTER / DART / THIRD-PARTIES
+import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 
@@ -20,8 +21,7 @@ SettingsViewModel viewModel;
 void main() {
   SettingsManager settingsManager;
 
-  group("SettingsViewModel - ", ()
-  {
+  group("SettingsViewModel - ", () {
     setUp(() async {
       // Setting up mocks
       settingsManager = setupSettingsManagerMock();
@@ -37,13 +37,11 @@ void main() {
     group("futureToRun - ", () {
       test("The settings are correctly loaded and sets", () async {
         SettingsManagerMock.stubGetString(
-            settingsManager as SettingsManagerMock,
-            PreferencesFlag.locale,
+            settingsManager as SettingsManagerMock, PreferencesFlag.locale,
             toReturn: 'test locale');
 
         SettingsManagerMock.stubGetString(
-            settingsManager as SettingsManagerMock,
-            PreferencesFlag.theme,
+            settingsManager as SettingsManagerMock, PreferencesFlag.theme,
             toReturn: 'test theme');
 
         expect(await viewModel.futureToRun(), true);
@@ -58,54 +56,54 @@ void main() {
     group("setter theme - ", () {
       test("can set system theme option", () async {
         SettingsManagerMock.stubSetString(
-            settingsManager as SettingsManagerMock,
-            PreferencesFlag.theme);
+            settingsManager as SettingsManagerMock, PreferencesFlag.theme);
 
         // Call the setter.
-        viewModel.selectedTheme = 'system';
+        viewModel.selectedTheme = ThemeMode.system.toString();
 
-        await untilCalled(settingsManager.setSystemMode());
+        await untilCalled(
+            settingsManager.setThemeMode(ThemeMode.system.toString()));
 
-        expect(viewModel.selectedTheme, 'System');
+        expect(viewModel.selectedTheme, ThemeMode.system.toString());
         expect(viewModel.isBusy, false);
 
-        verify(settingsManager.setSystemMode())
+        verify(settingsManager.setThemeMode(ThemeMode.system.toString()))
             .called(1);
         verifyNoMoreInteractions(settingsManager);
       });
 
       test("can set dark theme option", () async {
         SettingsManagerMock.stubSetString(
-            settingsManager as SettingsManagerMock,
-            PreferencesFlag.theme);
+            settingsManager as SettingsManagerMock, PreferencesFlag.theme);
 
         // Call the setter.
-        viewModel.selectedTheme = 'dark';
+        viewModel.selectedTheme = ThemeMode.dark.toString();
 
-        await untilCalled(settingsManager.setDarkMode());
+        await untilCalled(
+            settingsManager.setThemeMode(ThemeMode.dark.toString()));
 
-        expect(viewModel.selectedTheme, 'Dark');
+        expect(viewModel.selectedTheme, ThemeMode.dark.toString());
         expect(viewModel.isBusy, false);
 
-        verify(settingsManager.setDarkMode())
+        verify(settingsManager.setThemeMode(ThemeMode.dark.toString()))
             .called(1);
         verifyNoMoreInteractions(settingsManager);
       });
 
       test("can set light theme option", () async {
         SettingsManagerMock.stubSetString(
-            settingsManager as SettingsManagerMock,
-            PreferencesFlag.theme);
+            settingsManager as SettingsManagerMock, PreferencesFlag.theme);
 
         // Call the setter.
-        viewModel.selectedTheme = 'light';
+        viewModel.selectedTheme = ThemeMode.light.toString();
 
-        await untilCalled(settingsManager.setLightMode());
+        await untilCalled(
+            settingsManager.setThemeMode(ThemeMode.light.toString()));
 
-        expect(viewModel.selectedTheme, 'Light');
+        expect(viewModel.selectedTheme, ThemeMode.light.toString());
         expect(viewModel.isBusy, false);
 
-        verify(settingsManager.setLightMode())
+        verify(settingsManager.setThemeMode(ThemeMode.light.toString()))
             .called(1);
         verifyNoMoreInteractions(settingsManager);
       });
