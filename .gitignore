@@ -11,7 +11,7 @@
 .pub-cache/
 .pub/
 build/
-# Commented until https://github.com/localizely/intl_utils/issues/26 is resolved. For now, please use the intl plugin for IDEA or VS Code
+# TODO: Commented until https://github.com/localizely/intl_utils/issues/26 is resolved. For now, please use the intl plugin for IDEA or VS Code
 #lib/generated/
 
 # Certificates and secrets
