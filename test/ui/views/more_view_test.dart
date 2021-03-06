@@ -71,6 +71,22 @@ void main() {
           verify(navigation.pushNamed(RouterPaths.contributors)).called(1);
         });
 
+        testWidgets('licenses', (WidgetTester tester) async {
+          await tester.pumpWidget(localizedWidget(child: MoreView()));
+          await tester.pumpAndSettle();
+
+          // Tap the button.
+          await tester.tap(
+              find.widgetWithText(ListTile, intl.more_open_source_licenses));
+
+          // Rebuild the widget after the state has changed.
+          await tester.pumpAndSettle();
+
+          expect(find.text('CLOSE'), findsOneWidget);
+          expect(find.text('VIEW LICENSES'), findsOneWidget);
+          expect(find.byType(AboutDialog), findsOneWidget);
+        });
+
         testWidgets('parameters', (WidgetTester tester) async {
           await tester.pumpWidget(localizedWidget(child: MoreView()));
           await tester.pumpAndSettle();
@@ -82,6 +98,21 @@ void main() {
           await tester.pump();
 
           verify(navigation.pushNamed(RouterPaths.settings)).called(1);
+        });
+
+        testWidgets('logout', (WidgetTester tester) async {
+          await tester.pumpWidget(localizedWidget(child: MoreView()));
+          await tester.pumpAndSettle();
+
+          // Tap the button.
+          await tester.tap(find.widgetWithText(ListTile, intl.more_log_out));
+
+          // Rebuild the widget after the state has changed.
+          await tester.pumpAndSettle();
+
+          expect(find.text('Yes'), findsOneWidget);
+          expect(find.text('No'), findsOneWidget);
+          expect(find.byType(AlertDialog), findsOneWidget);
         });
       });
 
