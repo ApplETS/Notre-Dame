@@ -17,26 +17,6 @@ import 'package:notredame/ui/widgets/base_scaffold.dart';
 class MoreView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final TextStyle textStyle = Theme.of(context).textTheme.bodyText2;
-    final List<Widget> aboutBoxChildren = <Widget>[
-      const SizedBox(height: 24),
-      RichText(
-        text: TextSpan(
-          children: <TextSpan>[
-            TextSpan(
-                style: textStyle,
-                text: "Flutter is Google's UI toolkit for building beautiful, "
-                    'natively compiled applications for mobile, web, and desktop '
-                    'from a single codebase. Learn more about Flutter at '),
-            TextSpan(
-                style: textStyle.copyWith(color: Theme.of(context).accentColor),
-                text: 'https://flutter.dev'),
-            TextSpan(style: textStyle, text: '.'),
-          ],
-        ),
-      ),
-    ];
-
     return ViewModelBuilder<MoreViewModel>.reactive(
         viewModelBuilder: () => MoreViewModel(),
         builder: (context, model, child) {
@@ -87,8 +67,10 @@ class MoreView extends StatelessWidget {
                         applicationName:
                             AppIntl.of(context).more_open_source_licenses,
                         applicationVersion: model.appVersion,
-                        applicationLegalese: '\u{a9} 2021 App|ETS',
-                        children: aboutBoxChildren,
+                        applicationLegalese:
+                            '\u{a9} ${DateTime.now().year} App|ETS',
+                        children: model.aboutBoxChildren(
+                            Theme.of(context).textTheme.bodyText2),
                       ),
                       opaque: false,
                     ),

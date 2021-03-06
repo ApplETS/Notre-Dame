@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
 import 'package:feedback/feedback.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:package_info/package_info.dart';
 import 'package:stacked/stacked.dart';
@@ -20,6 +21,7 @@ import 'package:notredame/core/services/navigation_service.dart';
 
 // OTHERS
 import 'package:notredame/core/constants/router_paths.dart';
+import 'package:notredame/core/utils/util.dart';
 import 'package:notredame/generated/l10n.dart';
 import 'package:notredame/locator.dart';
 
@@ -74,10 +76,31 @@ class MoreViewModel extends FutureViewModel {
 
     file.deleteSync();
     showToast(
-      AppIntl.current?.thankYouForTheFeedback,
+      AppIntl.current?.thank_you_for_the_feedback,
       position: ToastPosition.center,
     );
     BetterFeedback.of(context).hide();
+  }
+
+  /// License text box
+  List<Widget> aboutBoxChildren(TextStyle textStyle) {
+    return <Widget>[
+      const SizedBox(height: 24),
+      RichText(
+        text: TextSpan(
+          children: <TextSpan>[
+            TextSpan(style: textStyle, text: AppIntl.current.flutter_license),
+            TextSpan(
+                style: textStyle.copyWith(color: Colors.blue),
+                text: AppIntl.current.flutter_website,
+                recognizer: TapGestureRecognizer()
+                  ..onTap =
+                      () => Util().launchURL(AppIntl.current.flutter_website)),
+            TextSpan(style: textStyle, text: '.'),
+          ],
+        ),
+      ),
+    ];
   }
 
   /// Create Github issue

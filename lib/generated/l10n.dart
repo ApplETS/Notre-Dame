@@ -1486,10 +1486,30 @@ class AppIntl {
   }
 
   /// `Thank you for the feedback`
-  String get thankYouForTheFeedback {
+  String get thank_you_for_the_feedback {
     return Intl.message(
       'Thank you for the feedback',
-      name: 'thankYouForTheFeedback',
+      name: 'thank_you_for_the_feedback',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Flutter is Google's UI toolkit for building beautiful, natively compiled applications for mobile, web, and desktop from a single codebase. Learn more about Flutter at `
+  String get flutter_license {
+    return Intl.message(
+      'Flutter is Google\'s UI toolkit for building beautiful, natively compiled applications for mobile, web, and desktop from a single codebase. Learn more about Flutter at ',
+      name: 'flutter_license',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `https://flutter.dev`
+  String get flutter_website {
+    return Intl.message(
+      'https://flutter.dev',
+      name: 'flutter_website',
       desc: '',
       args: [],
     );

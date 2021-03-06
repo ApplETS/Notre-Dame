@@ -182,5 +182,8 @@
   "light_theme": "Light",
   "system_theme": "System",
 
-  "thankYouForTheFeedback": "Thank you for the feedback"
+  "thank_you_for_the_feedback": "Thank you for the feedback",
+
+  "flutter_license": "Flutter is Google's UI toolkit for building beautiful, natively compiled applications for mobile, web, and desktop from a single codebase. Learn more about Flutter at ",
+  "flutter_website": "https://flutter.dev"
 }
