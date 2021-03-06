@@ -45,7 +45,7 @@ void main() {
             toReturn: 'test theme');
 
         expect(await viewModel.futureToRun(), true);
-        expect(viewModel.currentLocale, 'test locale');
+        expect(viewModel.currentLocale, 'Français');
         expect(viewModel.selectedTheme, 'System');
 
         verify(settingsManager.getString(any)).called(2);
