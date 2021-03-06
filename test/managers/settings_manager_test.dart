@@ -111,10 +111,16 @@ void main() {
 
     group("ThemeMode - ", () {
       test("set light/dark/system mode", () async {
+        const flag = PreferencesFlag.theme;
         manager.setThemeMode(ThemeMode.light.toString());
 
         verify(preferencesService.setString(
                 PreferencesFlag.theme, ThemeMode.light.toString()))
+            .called(1);
+
+        verify(analyticsService.logEvent(
+                "${SettingsManager.tag}_${EnumToString.convertToString(flag)}",
+                any))
             .called(1);
 
         manager.setThemeMode(ThemeMode.dark.toString());
@@ -123,10 +129,20 @@ void main() {
                 PreferencesFlag.theme, ThemeMode.dark.toString()))
             .called(1);
 
+        verify(analyticsService.logEvent(
+                "${SettingsManager.tag}_${EnumToString.convertToString(flag)}",
+                any))
+            .called(1);
+
         manager.setThemeMode(ThemeMode.system.toString());
 
         verify(preferencesService.setString(
                 PreferencesFlag.theme, ThemeMode.system.toString()))
+            .called(1);
+
+        verify(analyticsService.logEvent(
+                "${SettingsManager.tag}_${EnumToString.convertToString(flag)}",
+                any))
             .called(1);
 
         verifyNoMoreInteractions(preferencesService);
@@ -136,28 +152,56 @@ void main() {
 
     group("Locale - ", () {
       test("validate default behaviour", () async {
+        const flag = PreferencesFlag.locale;
         PreferencesServiceMock.stubGetString(
             preferencesService as PreferencesServiceMock,
             PreferencesFlag.locale,
-            toReturn: 'test locale');
+            toReturn: const Locale('fr').toString());
 
+        manager.setLocale('fr');
         manager.locale;
 
+        verify(preferencesService.setString(PreferencesFlag.locale, 'fr'))
+            .called(1);
         verify(preferencesService.getString(PreferencesFlag.locale)).called(1);
+
+        verify(analyticsService.logEvent(
+                "${SettingsManager.tag}_${EnumToString.convertToString(flag)}",
+                any))
+            .called(1);
 
         verifyNoMoreInteractions(preferencesService);
         verifyNoMoreInteractions(analyticsService);
       });
 
       test("set french/english", () async {
-        manager.setFrench();
+        const flag = PreferencesFlag.locale;
+        manager.setLocale('fr');
 
-        verify(preferencesService.setString(PreferencesFlag.locale, 'Français'))
+        verify(preferencesService.setString(PreferencesFlag.locale, 'fr'))
             .called(1);
 
-        manager.setEnglish();
+        untilCalled(analyticsService.logEvent(
+            "${SettingsManager.tag}_${EnumToString.convertToString(flag)}",
+            any));
 
-        verify(preferencesService.setString(PreferencesFlag.locale, 'English'))
+        verify(analyticsService.logEvent(
+                "${SettingsManager.tag}_${EnumToString.convertToString(flag)}",
+                any))
+            .called(1);
+
+        manager.setLocale('en');
+
+        verify(preferencesService.setString(PreferencesFlag.locale, 'en'))
+            .called(1);
+
+        untilCalled(analyticsService.logEvent(
+            "${SettingsManager.tag}_${EnumToString.convertToString(flag)}",
+            any));
+
+        verify(analyticsService.logEvent(
+                "${SettingsManager.tag}_${EnumToString.convertToString(flag)}",
+                any))
             .called(1);
 
         verifyNoMoreInteractions(preferencesService);
@@ -175,10 +219,10 @@ void main() {
               "setString should return true if the PreferenceService return true");
 
       untilCalled(analyticsService.logEvent(
-          "${SettingsManager.tag}-${EnumToString.convertToString(flag)}", any));
+          "${SettingsManager.tag}_${EnumToString.convertToString(flag)}", any));
 
       verify(analyticsService.logEvent(
-              "${SettingsManager.tag}-${EnumToString.convertToString(flag)}",
+              "${SettingsManager.tag}_${EnumToString.convertToString(flag)}",
               any))
           .called(1);
       verify(preferencesService.setString(flag, any));
@@ -194,10 +238,10 @@ void main() {
               "setString should return true if the PreferenceService return true");
 
       untilCalled(analyticsService.logEvent(
-          "${SettingsManager.tag}-${EnumToString.convertToString(flag)}", any));
+          "${SettingsManager.tag}_${EnumToString.convertToString(flag)}", any));
 
       verify(analyticsService.logEvent(
-              "${SettingsManager.tag}-${EnumToString.convertToString(flag)}",
+              "${SettingsManager.tag}_${EnumToString.convertToString(flag)}",
               any))
           .called(1);
       verify(preferencesService.getString(flag));
@@ -213,10 +257,10 @@ void main() {
               "setString should return true if the PreferenceService return true");
 
       untilCalled(analyticsService.logEvent(
-          "${SettingsManager.tag}-${EnumToString.convertToString(flag)}", any));
+          "${SettingsManager.tag}_${EnumToString.convertToString(flag)}", any));
 
       verify(analyticsService.logEvent(
-              "${SettingsManager.tag}-${EnumToString.convertToString(flag)}",
+              "${SettingsManager.tag}_${EnumToString.convertToString(flag)}",
               any))
           .called(1);
       verify(preferencesService.setBool(flag, value: anyNamed("value")));

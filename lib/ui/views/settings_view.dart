@@ -95,16 +95,16 @@ class _SettingsViewState extends State<SettingsView> {
                     borderRadius: BorderRadius.circular(10)),
                 onSelected: (String value) {
                   setState(() {
-                    model.setCurrentLocale(context, value);
+                    model.currentLocale = value;
                   });
                 },
                 itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
                   PopupMenuItem<String>(
-                    value: AppIntl.of(context).settings_english,
+                    value: AppIntl.delegate.supportedLocales.first.languageCode,
                     child: Text(AppIntl.of(context).settings_english),
                   ),
                   PopupMenuItem<String>(
-                    value: AppIntl.of(context).settings_french,
+                    value: AppIntl.delegate.supportedLocales.last.languageCode,
                     child: Text(AppIntl.of(context).settings_french),
                   ),
                 ],

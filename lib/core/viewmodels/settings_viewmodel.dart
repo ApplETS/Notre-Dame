@@ -38,15 +38,18 @@ class SettingsViewModel extends FutureViewModel {
     _selectedTheme = value;
   }
 
-  String get currentLocale => _currentLocale ?? '';
+  String get currentLocale {
+    if (_currentLocale ==
+        AppIntl.delegate.supportedLocales.first.languageCode) {
+      return AppIntl.current.settings_english;
+    } else {
+      return AppIntl.current.settings_french;
+    }
+  }
 
   /// Set Locale
   set currentLocale(String value) {
-    if (value == AppIntl.current.settings_english) {
-      _settingsManager.setEnglish();
-    } else {
-      _settingsManager.setFrench();
-    }
+    _settingsManager.setLocale(value);
     _currentLocale = value;
   }
 

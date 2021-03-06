@@ -42,37 +42,34 @@ class SettingsManager with ChangeNotifier {
   /// Get Locale
   Locale get locale {
     _preferencesService.getString(PreferencesFlag.locale).then((value) {
-      if (value == AppIntl.current.settings_french) {
-        _locale = const Locale('fr');
-      } else if (value == AppIntl.current.settings_english) {
-        _locale = const Locale('en');
-      } else {
-        _locale = null;
-      }
+      _locale = AppIntl.delegate.supportedLocales
+          .firstWhere((e) => e.toString() == value);
     });
-    return _locale;
+    return Locale(_locale.languageCode);
   }
 
   /// Set ThemeMode
   void setThemeMode(String value) {
     _themeMode = ThemeMode.values.firstWhere((e) => e.toString() == value);
     _preferencesService.setString(PreferencesFlag.theme, _themeMode.toString());
+    // Log the event
+    _analyticsService.logEvent(
+        "${tag}_${EnumToString.convertToString(PreferencesFlag.theme)}",
+        EnumToString.convertToString(_themeMode));
     notifyListeners();
   }
 
-  /// Set Locale to french
-  void setFrench() {
+  /// Set Locale
+  void setLocale(String value) {
+    _locale = AppIntl.delegate.supportedLocales
+        .firstWhere((e) => e.toString() == value);
     _preferencesService.setString(
-        PreferencesFlag.locale, AppIntl.current.settings_french);
-    _locale = const Locale('fr');
-    notifyListeners();
-  }
-
-  /// Set Locale to english
-  void setEnglish() {
-    _preferencesService.setString(
-        PreferencesFlag.locale, AppIntl.current.settings_english);
-    _locale = const Locale('en');
+        PreferencesFlag.locale, _locale.languageCode.toString());
+    // Log the event
+    _analyticsService.logEvent(
+        "${tag}_${EnumToString.convertToString(PreferencesFlag.locale)}",
+        _locale.languageCode);
+    _locale = Locale(_locale.languageCode);
     notifyListeners();
   }
 
@@ -111,7 +108,7 @@ class SettingsManager with ChangeNotifier {
   Future<bool> setString(PreferencesFlag flag, String value) async {
     // Log the event
     _analyticsService.logEvent(
-        "$tag-${EnumToString.convertToString(flag)}", value);
+        "${tag}_${EnumToString.convertToString(flag)}", value);
     return _preferencesService.setString(flag, value);
   }
 
@@ -119,7 +116,7 @@ class SettingsManager with ChangeNotifier {
   Future<String> getString(PreferencesFlag flag) async {
     // Log the event
     _analyticsService.logEvent(
-        "$tag-${EnumToString.convertToString(flag)}", 'getString');
+        "${tag}_${EnumToString.convertToString(flag)}", 'getString');
     return _preferencesService.getString(flag);
   }
 
@@ -128,7 +125,7 @@ class SettingsManager with ChangeNotifier {
   Future<bool> setBool(PreferencesFlag flag, bool value) async {
     // Log the event
     _analyticsService.logEvent(
-        "$tag-${EnumToString.convertToString(flag)}", value.toString());
+        "${tag}_${EnumToString.convertToString(flag)}", value.toString());
     return _preferencesService.setBool(flag, value: value);
   }
 }
