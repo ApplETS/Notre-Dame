@@ -66,6 +66,7 @@ class _SettingsViewState extends State<SettingsView> {
                           : Icons.brightness_auto),
                   title: Text(AppIntl.of(context).settings_dark_theme_pref),
                   subtitle: Text(model.selectedTheme),
+                  trailing: const Icon(Icons.arrow_drop_down),
                 ),
               ),
               const Divider(
@@ -102,6 +103,7 @@ class _SettingsViewState extends State<SettingsView> {
                   leading: const Icon(Icons.language),
                   title: Text(AppIntl.of(context).settings_language_pref),
                   subtitle: Text(model.currentLocale),
+                  trailing: const Icon(Icons.arrow_drop_down),
                 ),
               ),
             ],
