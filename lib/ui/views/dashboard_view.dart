@@ -1,8 +1,10 @@
 // FLUTTER / DART / THIRD-PARTIES
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:notredame/core/viewmodels/dashboard_viewmodel.dart';
 import 'package:stacked/stacked.dart';
 import 'package:table_calendar/table_calendar.dart';
+import 'package:flutter/src/widgets/dismissible.dart';
 
 // VIEWMODEL
 import 'package:notredame/core/viewmodels/schedule_viewmodel.dart';
@@ -66,23 +68,22 @@ class _DashboardViewState extends State<DashboardView>
 
   @override
   Widget build(BuildContext context) =>
-      ViewModelBuilder<ScheduleViewModel>.reactive(
-        viewModelBuilder: () =>
-            ScheduleViewModel(initialSelectedDate: widget.initialDay),
-        onModelReady: (model) {
-          if (model.settings.isEmpty) {
-            model.loadSettings(_calendarController);
-          }
-        },
-        builder: (context, model, child) => BaseScaffold(
-          isLoading: model.busy(model.isLoadingEvents),
-          isInteractionLimitedWhileLoading: false,
-          appBar: AppBar(
-            title: Text(AppIntl.of(context).title_dashboard),
-            centerTitle: false,
-            automaticallyImplyLeading: false,
-            actions: _buildActionButtons(),
-          ),
+      ViewModelBuilder<DashboardViewModel>.reactive(
+          viewModelBuilder: () => DashboardViewModel(initialSelectedDate: widget.initialDay),
+          onModelReady: (model) {
+            if (model.settings.isEmpty) {
+              model.loadSettings(_calendarController);
+            }
+          },
+          builder: (context, model, child) => BaseScaffold(
+            isLoading: model.busy(model.isLoadingEvents),
+            isInteractionLimitedWhileLoading: false,
+            appBar: AppBar(
+              title: Text(AppIntl.of(context).title_dashboard),
+              centerTitle: false,
+              automaticallyImplyLeading: false,
+              actions: _buildActionButtons(model),
+            ),
           body: Column(mainAxisSize: MainAxisSize.min, children: [
             Dismissible(
               key: UniqueKey(),
@@ -93,62 +94,46 @@ class _DashboardViewState extends State<DashboardView>
         ),
       );
 
-  /// Build the list of the events for the selected day.
-  Widget _buildEventList(List<dynamic> events) {
-    return ListView.separated(
-        itemBuilder: (_, index) =>
-            CourseActivityTile(events[index] as CourseActivity),
-        separatorBuilder: (_, index) => (index < events.length)
-            ? const Divider(thickness: 2, indent: 30, endIndent: 30)
-            : const SizedBox(),
-        itemCount: events.length);
-  }
 
   Widget _buildAboutUsCard() {
     return Card(
       elevation: 1,
-      child: Column(mainAxisSize: MainAxisSize.min, children: [
-        Align(
-            alignment: Alignment.centerLeft,
-            child: Container(
-              padding: const EdgeInsets.fromLTRB(10, 10, 0, 0),
-              child:
-                  Text("App|ETS", style: Theme.of(context).textTheme.headline6),
-            )),
-        Column(
+      color: AppTheme.appletsPurple,
+      child: Column(
+          mainAxisSize: MainAxisSize.min,
           children: [
-            Container(
-              padding: const EdgeInsets.fromLTRB(10, 10, 0, 0),
-              child: Text(
-                  "ETSMobile was made by club App|ETS. Support us by liking our Facebook page..",
-                  style: Theme.of(context).textTheme.bodyText2),
+            Align(
+                alignment: Alignment.centerLeft,
+                child: Container(padding: const EdgeInsets.fromLTRB(17, 10, 0, 0),
+                  child: Text(AppIntl.current.card_applets_title,  style: Theme.of(context).textTheme.headline6),
+                )),
+            Column(
+              children: [
+                Container(padding: const EdgeInsets.fromLTRB(17, 10, 15, 10),
+                  child: Text(AppIntl.current.card_applets_text,  style: Theme.of(context).textTheme.bodyText2),
+                ),
+                Row(
+                    children: [
+                      SizedBox(width: 2),
+                      FlatButton(
+                        child: Text('Facebook', style: TextStyle(fontSize: 20)),
+                        onPressed: () {launch('https://www.facebook.com/ClubApplETS');},
+                      ),
+                      SizedBox(width: 10),
+                      FlatButton(
+                        onPressed: () {launch('https://github.com/ApplETS/Notre-Dame');},
+                        child: Text('Github', style: TextStyle(fontSize: 20)),
+                      ),
+                      SizedBox(width: 10),
+                      FlatButton(
+                        onPressed: () {launch('mailto:info@clubapplets.ca');},
+                        child: const Text('Email', style: TextStyle(fontSize: 20)),
+                      ),
+                    ]
+                ),
+              ],
             ),
-            Row(children: [
-              SizedBox(width: 10),
-              RaisedButton(
-                onPressed: () {
-                  launch('https://www.facebook.com/ClubApplETS');
-                },
-                child: const Text('Facebook', style: TextStyle(fontSize: 20)),
-              ),
-              SizedBox(width: 10),
-              RaisedButton(
-                onPressed: () {
-                  launch('https://github.com/ApplETS/Notre-Dame');
-                },
-                child: const Text('Github', style: TextStyle(fontSize: 20)),
-              ),
-              SizedBox(width: 10),
-              RaisedButton(
-                onPressed: () {
-                  launch('mailto:info@clubapplets.ca');
-                },
-                child: const Text('Email', style: TextStyle(fontSize: 20)),
-              ),
-            ]),
-          ],
-        ),
-      ]),
+          ]),
     );
   }
 
