@@ -46,15 +46,24 @@ class _SettingsViewState extends State<SettingsView> {
                 itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
                   PopupMenuItem<String>(
                     value: ThemeMode.light.toString(),
-                    child: Text(AppIntl.of(context).light_theme),
+                    child: ListTile(
+                      title: Text(AppIntl.of(context).light_theme),
+                      leading: const Icon(Icons.wb_sunny),
+                    ),
                   ),
                   PopupMenuItem<String>(
                     value: ThemeMode.dark.toString(),
-                    child: Text(AppIntl.of(context).dark_theme),
+                    child: ListTile(
+                      title: Text(AppIntl.of(context).dark_theme),
+                      leading: const Icon(Icons.nightlight_round),
+                    ),
                   ),
                   PopupMenuItem<String>(
                     value: ThemeMode.system.toString(),
-                    child: Text(AppIntl.of(context).system_theme),
+                    child: ListTile(
+                      title: Text(AppIntl.of(context).system_theme),
+                      leading: const Icon(Icons.brightness_auto),
+                    ),
                   ),
                 ],
                 child: ListTile(
@@ -86,7 +95,7 @@ class _SettingsViewState extends State<SettingsView> {
                     borderRadius: BorderRadius.circular(10)),
                 onSelected: (String value) {
                   setState(() {
-                    model.currentLocale = value;
+                    model.setCurrentLocale(context, value);
                   });
                 },
                 itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
