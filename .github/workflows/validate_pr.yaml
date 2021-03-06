@@ -22,5 +22,7 @@ jobs:
           ENCRYPTED_SIGNETS_API_CERT_PASSWORD: ${{ secrets.ENCRYPTED_SIGNETS_API_CERT_PASSWORD }}
           MAPS_API_KEY: ${{ secrets.MAPS_API_KEY }}
       - run: flutter pub get
+      # TODO: Commented until https://github.com/localizely/intl_utils/issues/26 is resolved. For now, please use the intl plugin for IDEA or VS Code
+      #- run: flutter pub run intl_utils:generate
       - run: flutter analyze
       - run: flutter test
