@@ -45,10 +45,14 @@ flutter pub run intl_utils:generate
 
 ## Add environment variable for API_KEY
 
-- After cloning the repo, you will have to get the packages and generate the l10n classes. To do that run the following command:
+- In order to be able to run the app with the GitHub API token, you need to add an attribute when running the app. To do that run the following command:
 ```
 flutter pub run --dart-define=SOME_VAR=SOME_VALUE
+    # where SOME_VAR will be replaced with GITHUB_API_TOKEN
+    # and SOME_VALUE will be the private token
 ```
+You can add that command directly to your run configuration:
+* Intellij: ![img.png](docs/images/img.png)
 
 ## Git hooks 
 
