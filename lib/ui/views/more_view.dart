@@ -102,7 +102,7 @@ class MoreView extends StatelessWidget {
                               child: Text(AppIntl.of(context).yes)),
                           TextButton(
                               onPressed: () => Navigator.of(context).pop(),
-                              child: Text(AppIntl.current.no))
+                              child: Text(AppIntl.of(context).no))
                         ],
                       ),
                       opaque: false,
