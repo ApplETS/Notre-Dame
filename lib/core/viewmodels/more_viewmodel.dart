@@ -47,6 +47,11 @@ class MoreViewModel extends FutureViewModel {
     return true;
   }
 
+  @override
+  // ignore: type_annotate_public_apis
+  void onError(error) {
+    showToast(AppIntl.current.error);
+  }
   /// Used to logout user, delete cache, and return to login
   Future<void> logout(BuildContext context) async {
     setBusy(true);
