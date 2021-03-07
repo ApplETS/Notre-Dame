@@ -32,8 +32,6 @@ class MoreViewModel extends FutureViewModel {
   /// Used to redirect on the dashboard.
   final NavigationService _navigationService = locator<NavigationService>();
 
-  /// Get navigation service
-  NavigationService get navigationService => _navigationService;
 
   String _appVersion;
 
@@ -49,17 +47,28 @@ class MoreViewModel extends FutureViewModel {
     return true;
   }
 
+  @override
+  // ignore: type_annotate_public_apis
+  void onError(error) {
+    showToast(AppIntl.current.error);
+  }
   /// Used to logout user, delete cache, and return to login
   Future<void> logout(BuildContext context) async {
-    await _cacheManager.empty();
+    setBusy(true);
+    try {
+        await _cacheManager.empty();
+    } on Exception catch (e) {
+        onError(e);
+    }
     UserRepository().logOut();
     // Dismiss alertDialog
+    setBusy(false);
     Navigator.of(context).pop();
     _navigationService.pushNamedAndRemoveUntil(RouterPaths.login);
     showToast(AppIntl.of(context).login_msg_logout_success);
   }
 
-  /// Used to send feedback
+  /// Create a Github issue with [feedbackText] and the screenshot associated.
   Future<void> sendFeedback(BuildContext context, String feedbackText,
       Uint8List feedbackScreenshot) async {
     final File file = await _localFile;
@@ -103,7 +112,9 @@ class MoreViewModel extends FutureViewModel {
     ];
   }
 
-  /// Create Github issue
+  /// Create Github issue into the Notre-Dame repository with the labels bugs and the platform used.
+  /// The bug report will contain a [file], a description [feedbackText] and also some information about the 
+  /// application/device.
   Future<void> _createGithubIssue(
       GitHub github, File file, String feedbackText) async {
     final PackageInfo packageInfo = await PackageInfo.fromPlatform();
@@ -125,7 +136,7 @@ class MoreViewModel extends FutureViewModel {
             labels: ['bug', 'platform: ${Platform.operatingSystem}']));
   }
 
-  /// Upload picture to Github
+  /// Upload a file to the ApplETS/Notre-Dame-Bug-report repository
   void _uploadFileToGithub(GitHub github, File file) {
     github.repositories.createFile(
         RepositorySlug.full('ApplETS/Notre-Dame-Bug-report'),

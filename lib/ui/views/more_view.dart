@@ -89,20 +89,20 @@ class MoreView extends StatelessWidget {
                     PageRouteBuilder(
                       pageBuilder: (context, _, __) => AlertDialog(
                         title: Text(
-                          AppIntl.current.more_log_out,
+                          AppIntl.of(context).more_log_out,
                           style: const TextStyle(color: Colors.red),
                         ),
                         content: Text(
-                            AppIntl.current.more_prompt_log_out_confirmation),
+                            AppIntl.of(context).more_prompt_log_out_confirmation),
                         actions: [
                           TextButton(
                               onPressed: () async {
                                 model.logout(context);
                               },
-                              child: Text(AppIntl.current.yes)),
+                              child: Text(AppIntl.of(context).yes)),
                           TextButton(
                               onPressed: () => Navigator.of(context).pop(),
-                              child: Text(AppIntl.current.no))
+                              child: Text(AppIntl.of(context).no))
                         ],
                       ),
                       opaque: false,

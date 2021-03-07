@@ -87,7 +87,7 @@ void main() {
           expect(find.byType(AboutDialog), findsOneWidget);
         });
 
-        testWidgets('parameters', (WidgetTester tester) async {
+        testWidgets('settings', (WidgetTester tester) async {
           await tester.pumpWidget(localizedWidget(child: MoreView()));
           await tester.pumpAndSettle();
 
@@ -117,7 +117,7 @@ void main() {
       });
 
       group("golden - ", () {
-        testWidgets("default view (no events)", (WidgetTester tester) async {
+        testWidgets("default view", (WidgetTester tester) async {
           tester.binding.window.physicalSizeTestValue = const Size(800, 1410);
 
           await tester.pumpWidget(localizedWidget(child: MoreView()));

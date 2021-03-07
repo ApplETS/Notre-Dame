@@ -5,7 +5,7 @@ import 'package:url_launcher/url_launcher.dart';
 // OTHER
 import 'package:notredame/generated/l10n.dart';
 
-class Util {
+class Utils {
   /// Used to open a url
   Future<void> launchURL(String url) async {
     if (await canLaunch(url)) {
