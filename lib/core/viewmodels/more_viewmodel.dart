@@ -136,7 +136,7 @@ class MoreViewModel extends FutureViewModel {
             labels: ['bug', 'platform: ${Platform.operatingSystem}']));
   }
 
-  /// Upload picture to Github
+  /// Upload a file to the ApplETS/Notre-Dame-Bug-report repository
   void _uploadFileToGithub(GitHub github, File file) {
     github.repositories.createFile(
         RepositorySlug.full('ApplETS/Notre-Dame-Bug-report'),
