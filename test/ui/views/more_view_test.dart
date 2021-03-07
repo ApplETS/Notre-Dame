@@ -117,7 +117,7 @@ void main() {
       });
 
       group("golden - ", () {
-        testWidgets("default view (no events)", (WidgetTester tester) async {
+        testWidgets("default view", (WidgetTester tester) async {
           tester.binding.window.physicalSizeTestValue = const Size(800, 1410);
 
           await tester.pumpWidget(localizedWidget(child: MoreView()));
