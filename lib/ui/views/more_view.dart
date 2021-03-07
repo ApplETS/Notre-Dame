@@ -89,7 +89,7 @@ class MoreView extends StatelessWidget {
                     PageRouteBuilder(
                       pageBuilder: (context, _, __) => AlertDialog(
                         title: Text(
-                          AppIntl.current.more_log_out,
+                          AppIntl.of(context).more_log_out,
                           style: const TextStyle(color: Colors.red),
                         ),
                         content: Text(
