@@ -93,7 +93,7 @@ class MoreView extends StatelessWidget {
                           style: const TextStyle(color: Colors.red),
                         ),
                         content: Text(
-                            AppIntl.current.more_prompt_log_out_confirmation),
+                            AppIntl.of(context).more_prompt_log_out_confirmation),
                         actions: [
                           TextButton(
                               onPressed: () async {
