@@ -112,7 +112,9 @@ class MoreViewModel extends FutureViewModel {
     ];
   }
 
-  /// Create Github issue
+  /// Create Github issue into the Notre-Dame repository with the labels bugs and the platform used.
+  /// The bug report will contain a [file], a description [feedbackText] and also some information about the 
+  /// application/device.
   Future<void> _createGithubIssue(
       GitHub github, File file, String feedbackText) async {
     final PackageInfo packageInfo = await PackageInfo.fromPlatform();
