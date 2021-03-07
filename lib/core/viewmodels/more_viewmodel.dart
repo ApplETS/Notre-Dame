@@ -32,8 +32,6 @@ class MoreViewModel extends FutureViewModel {
   /// Used to redirect on the dashboard.
   final NavigationService _navigationService = locator<NavigationService>();
 
-  /// Get navigation service
-  NavigationService get navigationService => _navigationService;
 
   String _appVersion;
 
