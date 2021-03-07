@@ -87,7 +87,7 @@ void main() {
           expect(find.byType(AboutDialog), findsOneWidget);
         });
 
-        testWidgets('parameters', (WidgetTester tester) async {
+        testWidgets('settings', (WidgetTester tester) async {
           await tester.pumpWidget(localizedWidget(child: MoreView()));
           await tester.pumpAndSettle();
 
