@@ -68,7 +68,7 @@ class MoreViewModel extends FutureViewModel {
     showToast(AppIntl.of(context).login_msg_logout_success);
   }
 
-  /// Used to send feedback
+  /// Create a Github issue with [feedbackText] and the screenshot associated.
   Future<void> sendFeedback(BuildContext context, String feedbackText,
       Uint8List feedbackScreenshot) async {
     final File file = await _localFile;
