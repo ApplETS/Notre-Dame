@@ -50,7 +50,11 @@ class MoreViewModel extends FutureViewModel {
   /// Used to logout user, delete cache, and return to login
   Future<void> logout(BuildContext context) async {
     setBusy(true);
-    await _cacheManager.empty();
+    try {
+        await _cacheManager.empty();
+    } on Exception catch (e) {
+        onError(e);
+    }
     UserRepository().logOut();
     // Dismiss alertDialog
     setBusy(false);
