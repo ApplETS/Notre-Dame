@@ -99,7 +99,7 @@ class MoreView extends StatelessWidget {
                               onPressed: () async {
                                 model.logout(context);
                               },
-                              child: Text(AppIntl.current.yes)),
+                              child: Text(AppIntl.of(context).yes)),
                           TextButton(
                               onPressed: () => Navigator.of(context).pop(),
                               child: Text(AppIntl.current.no))
