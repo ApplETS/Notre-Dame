@@ -24,7 +24,7 @@ _Note: This guide is also available in: [Français](https://github.com/ApplETS/N
 
 ## Requirements
 
-- Flutter SDK v1.17.4 or higher
+- Flutter SDK v2.0.0 or higher
 - Openssl v1.1.1g or higher
 
 ## Before running the code
