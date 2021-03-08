@@ -9,7 +9,7 @@ import 'package:notredame/core/viewmodels/emergency_viewmodel.dart';
 // OTHERS
 import 'package:notredame/generated/l10n.dart';
 import 'package:notredame/ui/utils/app_theme.dart';
-import 'package:notredame/core/utils/util.dart';
+import 'package:notredame/core/utils/utils.dart';
 
 class EmergencyView extends StatefulWidget {
   final String title;
@@ -31,8 +31,7 @@ class _EmergencyViewState extends State<EmergencyView> {
               FloatingActionButtonLocation.centerFloat,
           floatingActionButton: FloatingActionButton.extended(
             onPressed: () {
-              Util()
-                  .launchURL(
+              Utils.launchURL(
                       'tel:${AppIntl.of(context).security_emergency_number}')
                   .catchError((error) {
                 ScaffoldMessenger.of(context)

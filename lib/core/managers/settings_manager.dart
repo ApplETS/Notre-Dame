@@ -45,6 +45,9 @@ class SettingsManager with ChangeNotifier {
       _locale = AppIntl.delegate.supportedLocales
           .firstWhere((e) => e.toString() == value);
     });
+    if (_locale == null) {
+      return null;
+    }
     return Locale(_locale.languageCode);
   }
 

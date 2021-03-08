@@ -7,7 +7,7 @@ import 'package:notredame/generated/l10n.dart';
 
 class Utils {
   /// Used to open a url
-  Future<void> launchURL(String url) async {
+  static Future<void> launchURL(String url) async {
     if (await canLaunch(url)) {
       await launch(url);
     } else {

@@ -14,7 +14,7 @@ import 'package:notredame/ui/views/emergency_view.dart';
 // OTHER
 import 'package:notredame/generated/l10n.dart';
 import 'package:notredame/ui/utils/app_theme.dart';
-import 'package:notredame/core/utils/util.dart';
+import 'package:notredame/core/utils/utils.dart';
 
 class SecurityView extends StatefulWidget {
   @override
@@ -64,8 +64,7 @@ class _SecurityViewState extends State<SecurityView> {
                 Card(
                   child: InkWell(
                     splashColor: Colors.red.withAlpha(50),
-                    onTap: () => Util()
-                        .launchURL(
+                    onTap: () => Utils.launchURL(
                             'tel:${AppIntl.of(context).security_emergency_number}')
                         .catchError((error) {
                       ScaffoldMessenger.of(context).showSnackBar(

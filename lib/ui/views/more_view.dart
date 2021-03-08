@@ -3,6 +3,7 @@ import 'dart:typed_data';
 import 'package:feedback/feedback.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
+import 'package:flutter/gestures.dart';
 
 // CONSTANTS
 import 'package:notredame/core/constants/router_paths.dart';
@@ -13,8 +14,30 @@ import 'package:notredame/core/viewmodels/more_viewmodel.dart';
 // OTHERS
 import 'package:notredame/generated/l10n.dart';
 import 'package:notredame/ui/widgets/base_scaffold.dart';
+import 'package:notredame/core/utils/utils.dart';
 
 class MoreView extends StatelessWidget {
+  /// License text box
+  List<Widget> aboutBoxChildren(TextStyle textStyle) {
+    return <Widget>[
+      const SizedBox(height: 24),
+      RichText(
+        text: TextSpan(
+          children: <TextSpan>[
+            TextSpan(style: textStyle, text: AppIntl.current.flutter_license),
+            TextSpan(
+                style: textStyle.copyWith(color: Colors.blue),
+                text: AppIntl.current.flutter_website,
+                recognizer: TapGestureRecognizer()
+                  ..onTap =
+                      () => Utils.launchURL(AppIntl.current.flutter_website)),
+            TextSpan(style: textStyle, text: '.'),
+          ],
+        ),
+      ),
+    ];
+  }
+
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<MoreViewModel>.reactive(
@@ -63,13 +86,16 @@ class MoreView extends StatelessWidget {
                   onTap: () => Navigator.of(context).push(
                     PageRouteBuilder(
                       pageBuilder: (context, _, __) => AboutDialog(
-                        applicationIcon: const FlutterLogo(),
+                        applicationIcon: SizedBox(
+                            width: 75,
+                            child: Image.asset(
+                                'assets/images/favicon_applets.png')),
                         applicationName:
                             AppIntl.of(context).more_open_source_licenses,
                         applicationVersion: model.appVersion,
                         applicationLegalese:
                             '\u{a9} ${DateTime.now().year} App|ETS',
-                        children: model.aboutBoxChildren(
+                        children: aboutBoxChildren(
                             Theme.of(context).textTheme.bodyText2),
                       ),
                       opaque: false,
@@ -92,8 +118,8 @@ class MoreView extends StatelessWidget {
                           AppIntl.of(context).more_log_out,
                           style: const TextStyle(color: Colors.red),
                         ),
-                        content: Text(
-                            AppIntl.of(context).more_prompt_log_out_confirmation),
+                        content: Text(AppIntl.of(context)
+                            .more_prompt_log_out_confirmation),
                         actions: [
                           TextButton(
                               onPressed: () async {

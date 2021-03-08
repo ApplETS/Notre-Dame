@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
 import 'package:feedback/feedback.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:package_info/package_info.dart';
 import 'package:stacked/stacked.dart';
@@ -21,7 +20,6 @@ import 'package:notredame/core/services/navigation_service.dart';
 
 // OTHERS
 import 'package:notredame/core/constants/router_paths.dart';
-import 'package:notredame/core/utils/util.dart';
 import 'package:notredame/generated/l10n.dart';
 import 'package:notredame/locator.dart';
 
@@ -30,8 +28,7 @@ class MoreViewModel extends FutureViewModel {
   final CacheManager _cacheManager = locator<CacheManager>();
 
   /// Used to redirect on the dashboard.
-  final NavigationService _navigationService = locator<NavigationService>();
-
+  final NavigationService navigationService = locator<NavigationService>();
 
   String _appVersion;
 
@@ -52,19 +49,20 @@ class MoreViewModel extends FutureViewModel {
   void onError(error) {
     showToast(AppIntl.current.error);
   }
+
   /// Used to logout user, delete cache, and return to login
   Future<void> logout(BuildContext context) async {
     setBusy(true);
     try {
-        await _cacheManager.empty();
+      await _cacheManager.empty();
     } on Exception catch (e) {
-        onError(e);
+      onError(e);
     }
     UserRepository().logOut();
     // Dismiss alertDialog
     setBusy(false);
     Navigator.of(context).pop();
-    _navigationService.pushNamedAndRemoveUntil(RouterPaths.login);
+    navigationService.pushNamedAndRemoveUntil(RouterPaths.login);
     showToast(AppIntl.of(context).login_msg_logout_success);
   }
 
@@ -91,29 +89,8 @@ class MoreViewModel extends FutureViewModel {
     BetterFeedback.of(context).hide();
   }
 
-  /// License text box
-  List<Widget> aboutBoxChildren(TextStyle textStyle) {
-    return <Widget>[
-      const SizedBox(height: 24),
-      RichText(
-        text: TextSpan(
-          children: <TextSpan>[
-            TextSpan(style: textStyle, text: AppIntl.current.flutter_license),
-            TextSpan(
-                style: textStyle.copyWith(color: Colors.blue),
-                text: AppIntl.current.flutter_website,
-                recognizer: TapGestureRecognizer()
-                  ..onTap =
-                      () => Util().launchURL(AppIntl.current.flutter_website)),
-            TextSpan(style: textStyle, text: '.'),
-          ],
-        ),
-      ),
-    ];
-  }
-
   /// Create Github issue into the Notre-Dame repository with the labels bugs and the platform used.
-  /// The bug report will contain a [file], a description [feedbackText] and also some information about the 
+  /// The bug report will contain a [file], a description [feedbackText] and also some information about the
   /// application/device.
   Future<void> _createGithubIssue(
       GitHub github, File file, String feedbackText) async {
@@ -127,8 +104,6 @@ class MoreViewModel extends FutureViewModel {
                 "**Screenshot** \n"
                 "![screenshot](https://github.com/ApplETS/Notre-Dame-Bug-report/blob/main/${file.path.replaceFirst('storage/emulated/0/Android/data/ca.etsmtl.applets.notredame/files/', '')}?raw=true)\n\n"
                 "**Device Infos** \n"
-                "- **App name:** ${packageInfo.appName} \n"
-                "- **Package name:** ${packageInfo.packageName}  \n"
                 "- **Version:** ${packageInfo.version} \n"
                 "- **Build number:** ${packageInfo.buildNumber} \n"
                 "- **Platform operating system:** ${Platform.operatingSystem} \n"
