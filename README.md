@@ -40,7 +40,6 @@ chmod +x ./scripts/decrypt.sh
 - After cloning the repo, you will have to get the packages and generate the l10n classes. To do that run the following command:
 ```
 flutter pub get
-flutter pub run intl_utils:generate
 ```
 
 ## Add environment variable for API_KEY

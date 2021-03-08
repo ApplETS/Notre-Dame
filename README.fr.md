@@ -41,7 +41,6 @@ chmod +x ./scripts/decrypt.sh
 - Pour générer les classes pour l'internationalisation, exécuter les commandes suivantes:
 ```
 flutter pub get
-flutter pub run intl_utils:generate
 ```
 
 ## Git hooks
