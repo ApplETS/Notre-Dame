@@ -7,10 +7,14 @@ import 'package:notredame/core/constants/router_paths.dart';
 // VIEWS
 import 'package:notredame/ui/views/login_view.dart';
 import 'package:notredame/ui/views/not_found_view.dart';
+import 'package:notredame/ui/views/more_view.dart';
 import 'package:notredame/ui/views/quick_links_view.dart';
 import 'package:notredame/ui/views/schedule_view.dart';
 import 'package:notredame/ui/views/security_view.dart';
+import 'package:notredame/ui/views/settings_view.dart';
 import 'package:notredame/ui/views/student_view.dart';
+import 'package:notredame/ui/views/about_view.dart';
+import 'package:notredame/ui/views/contributors_view.dart';
 
 class AppRouter {
   // ignore: missing_return
@@ -36,6 +40,23 @@ class AppRouter {
         return PageRouteBuilder(
             settings: RouteSettings(name: routeSettings.name),
             pageBuilder: (_, __, ___) => SecurityView());
+      case RouterPaths.more:
+        return PageRouteBuilder(
+            settings: RouteSettings(name: routeSettings.name),
+            pageBuilder: (_, __, ___) => MoreView());
+      case RouterPaths.settings:
+        return PageRouteBuilder(
+            settings: RouteSettings(name: routeSettings.name),
+            pageBuilder: (_, __, ___) => SettingsView());
+      case RouterPaths.contributors:
+        return PageRouteBuilder(
+            settings: RouteSettings(name: routeSettings.name),
+            pageBuilder: (_, __, ___) => ContributorsView());
+      case RouterPaths.about:
+        return PageRouteBuilder(
+            transitionDuration: const Duration(seconds: 1),
+            settings: RouteSettings(name: routeSettings.name),
+            pageBuilder: (_, __, ___) => AboutView());
       default:
         return PageRouteBuilder(
             settings: RouteSettings(name: routeSettings.name),

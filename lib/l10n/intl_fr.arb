@@ -10,7 +10,6 @@
   "session_winter": "Hiver",
   "session_summer": "Été",
   "session_without": "Sans trimestre",
-  "oss_license_title": "Licences des logiciels libres",
   "facebook": "Facebook",
   "github": "GitHub",
   "email": "Courriel",
@@ -32,7 +31,7 @@
   "login_info_universal_code": "Votre code d'accès universel est sous la forme AB12345. Celui-ci vous a été transmis par le Bureau du registraire lors de votre admission.",
   "login_msg_logout_success": "Vous vous êtes déconnecté",
   "login_applets_logo": "Conçue par",
-  "password_forgotten": "Mot de passe oublié?",
+  "login_password_forgotten": "Mot de passe oublié?",
   
   "dashboard_msg_card_removed": "Carte supprimée",
   "dashboard_restore_all_cards_title": "Restaurer toutes les cartes",
@@ -58,7 +57,6 @@
   "schedule_settings_starting_weekday_saturday": "Samedi",
   "schedule_settings_starting_weekday_sunday": "Dimanche",
   "schedule_no_event": "Aucun évènements à l'horaire.",
-  "schedule_settings_error_no_event_found": "Aucun événement trouvé",
 
   "grades_title": "Notes",
   "grades_msg_no_grades": "Aucune note disponible",
@@ -90,18 +88,18 @@
   "grades_standard_deviation": "Écart-type",
   "grades_percentile_rank": "Rang centile",
   "grades_target_date": "Date cible",
-  "title_ignored_evaluation": "Évaluation ignorée",
-  "grades_ignored_evaluation": "Cette évaluation est ignorée dans le calcul de la note finale. Cette situation se produit quand l'enseignant a décidé de conserver, par exemple, les trois meilleures notes des six devoirs qu'il a demandés. Les trois notes les plus faibles seront alors ignorées.",
-  "error_failed_to_retrieve_data_course": "Échec de la récupération des données de ce cours",
-  "title_section_summary": "Sommaire",
-  "title_section_evaluations": "Évaluations",
+  "grades_ignored_evaluation_title": "Évaluation ignorée",
+  "grades_ignored_evaluation_details": "Cette évaluation est ignorée dans le calcul de la note finale. Cette situation se produit quand l'enseignant a décidé de conserver, par exemple, les trois meilleures notes des six devoirs qu'il a demandés. Les trois notes les plus faibles seront alors ignorées.",
+  "grades_error_failed_to_retrieve_data_course": "Échec de la récupération des données de ce cours",
+  "grades_summary_section_title": "Sommaire",
+  "grades_evaluations_section_title": "Évaluations",
   "grades_group_number": "Groupe {number}",
   "@grades_group_number": {
     "placeholders": {
       "number": {}
     }
   },
-  "error_course_evaluations_not_completed": "Vous n'aurez pas accès à vos notes au cours de la période d'évaluation tant que vous n'aurez pas effectué vos évaluations.",
+  "grades_error_course_evaluations_not_completed": "Vous n'aurez pas accès à vos notes au cours de la période d'évaluation tant que vous n'aurez pas effectué vos évaluations.",
   
   "profile_title": "Profil",
   "profile_student_status_title": "État du dossier étudiant",
@@ -119,7 +117,7 @@
   "profile_number_equivalent_courses_program": "Cours d'équivalence",
   "profile_status_program": "Statut",
   
-  "ets_security_title": "Securité",
+  "ets_security_title": "Sécurité",
   "ets_monets_title": "MonÉTS",
   "ets_bibliotech_title": "Bibliotech",
   "ets_news_title": "Nouvelles",
@@ -133,7 +131,7 @@
   "more_report_bug_method_screenshot": "Capture d'écran",
   "more_report_bug_method_video": "Capture vidéo",
   "more_contributors": "Contributeurs",
-  "more_open_source_licenses": "@string/oss_license_title",
+  "more_open_source_licenses": "Licences des logiciels libres",
   "more_beta_faq": "FAQ Bêta",
   "more_settings": "Paramètres",
   "more_log_out": "Se déconnecter",
@@ -142,25 +140,25 @@
   
   "more_applets_about_details": "ÉTSMobile a été réalisée par le club scientifique ApplETS de l'École de technologie supérieure.\n\nApplETS se veut, avant tout, un regroupement d’étudiants qui partagent un intérêt commun pour le domaine des télécommunications et des applications mobiles. La mission d'ApplETS est de former les étudiants au développement mobile et de promouvoir la production d'applications mobiles au sein de la communauté étudiante.\n\nSuivez-nous sur : ",
   
-  "security_bomb_threat_title": "Alerte à la bombe:",
+  "security_bomb_threat_title": "Alerte à la bombe",
   "security_bomb_threat_detail": "bomb_threat_detail_fr.html",
-  "security_suspicious_packages_title": "Colis suspect:",
+  "security_suspicious_packages_title": "Colis suspect",
   "security_suspicious_packages_detail": "suspicious_packages_detail_fr.html",
-  "security_evacuation_title": "Évacuation:",
+  "security_evacuation_title": "Évacuation",
   "security_evacuation_detail": "evacuation_detail_fr.html",
-  "security_gas_leak_title": "Fuite de gaz:",
+  "security_gas_leak_title": "Fuite de gaz",
   "security_gas_leak_detail": "gas_leak_detail_fr.html",
-  "security_fire_title": "Incendie:",
+  "security_fire_title": "Incendie",
   "security_fire_detail": "fire_detail_fr.html",
-  "security_broken_elevator_title": "Panne d'ascenseur:",
+  "security_broken_elevator_title": "Panne d'ascenseur",
   "security_broken_elevator_detail": "broken_elevator_detail_fr.html",
-  "security_electrical_outage_title": "Panne électrique:",
+  "security_electrical_outage_title": "Panne électrique",
   "security_electrical_outage_detail": "electrical_outage_detail_fr.html",
-  "security_armed_person_title": "Personne armée:",
+  "security_armed_person_title": "Personne armée",
   "security_armed_person_detail": "armed_person_detail_fr.html",
-  "security_earthquake_title": "Tremblement de terre:",
+  "security_earthquake_title": "Tremblement de terre",
   "security_earthquake_detail": "earthquake_detail_fr.html",
-  "security_medical_emergency_title": "Urgence médicale:",
+  "security_medical_emergency_title": "Urgence médicale",
   "security_medical_emergency_detail": "medical_emergency_detail_fr.html",
   
   "security_emergency_call": "Appel d'urgence",
@@ -173,11 +171,19 @@
 
   "settings_title": "Paramètres",
   "settings_display_pref_category": "Affichage",
-  "settings_dark_theme_pref": "Thème sombre",
+  "settings_dark_theme_pref": "Thème",
   "settings_miscellaneous_category": "Divers",
   "settings_language_pref": "Langue",
-  "settings_french": "Français:",
-  "settings_english": "English:",
+  "settings_french": "Français",
+  "settings_english": "English",
+  "dark_theme": "Foncé",
+  "light_theme": "Pâle",
+  "system_theme": "Système",
+
+  "thank_you_for_the_feedback": "Merci pour le signalement",
+
+  "flutter_license": "Flutter est la boîte à outils d'interface utilisateur de Google pour créer de superbes applications compilées en natif pour mobile, Web et bureau à partir d'une seule base de code. En savoir plus sur Flutter à ",
+  "flutter_website": "https://flutter.dev"
 
   "not_found_title": "Page introuvable",
   "not_found_message": "Oh oh... il semblerait que la page n'est pas accessible."
