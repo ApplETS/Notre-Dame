@@ -114,26 +114,29 @@ class _DashboardViewState extends State<DashboardView>
                   style: Theme.of(context).textTheme.bodyText2),
             ),
             Row(children: [
-              SizedBox(width: 2),
+              const SizedBox(width: 2),
               FlatButton(
-                child: Text('Facebook', style: TextStyle(fontSize: 20)),
                 onPressed: () {
                   launch('https://www.facebook.com/ClubApplETS');
                 },
+                child: Text(AppIntl.of(context).facebook.toUpperCase(),
+                    style: Theme.of(context).textTheme.bodyText2),
               ),
-              SizedBox(width: 10),
+              const SizedBox(width: 10),
               FlatButton(
                 onPressed: () {
                   launch('https://github.com/ApplETS/Notre-Dame');
                 },
-                child: Text('Github', style: TextStyle(fontSize: 20)),
+                child: Text(AppIntl.of(context).github.toUpperCase(),
+                    style: Theme.of(context).textTheme.button),
               ),
-              SizedBox(width: 10),
+              const SizedBox(width: 10),
               FlatButton(
                 onPressed: () {
                   launch('mailto:info@clubapplets.ca');
                 },
-                child: const Text('Email', style: TextStyle(fontSize: 20)),
+                child: Text(AppIntl.of(context).email.toUpperCase(),
+                    style: Theme.of(context).textTheme.button),
               ),
             ]),
           ],
