@@ -2,13 +2,13 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:oktoast/oktoast.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 // CONSTANTS
 import 'package:notredame/core/constants/urls.dart';
 
 // OTHERS
 import 'package:notredame/generated/l10n.dart';
+import 'package:notredame/core/utils/utils.dart';
 
 class AboutView extends StatefulWidget {
   @override
@@ -97,19 +97,19 @@ class _AboutViewState extends State<AboutView> with TickerProviderStateMixin {
                 children: [
                   IconButton(
                       icon: Image.asset("assets/images/website_white.png"),
-                      onPressed: () => _launchURL(Urls.clubWebsite)),
+                      onPressed: () => Utils.launchURL(Urls.clubWebsite)),
                   IconButton(
                       icon: Image.asset("assets/images/github_white.png"),
-                      onPressed: () => _launchURL(Urls.clubGithub)),
+                      onPressed: () => Utils.launchURL(Urls.clubGithub)),
                   IconButton(
                       icon: Image.asset("assets/images/facebook_white.png"),
-                      onPressed: () => _launchURL(Urls.clubFacebook)),
+                      onPressed: () => Utils.launchURL(Urls.clubFacebook)),
                   IconButton(
                       icon: Image.asset("assets/images/twitter_white.png"),
-                      onPressed: () => _launchURL(Urls.clubTwitter)),
+                      onPressed: () => Utils.launchURL(Urls.clubTwitter)),
                   IconButton(
                       icon: Image.asset("assets/images/youtube_white.png"),
-                      onPressed: () => _launchURL(Urls.clubYoutube)),
+                      onPressed: () => Utils.launchURL(Urls.clubYoutube)),
                 ],
               ),
             ],
@@ -117,15 +117,5 @@ class _AboutViewState extends State<AboutView> with TickerProviderStateMixin {
         ),
       ]),
     );
-  }
-}
-
-/// Used to open a url
-Future<void> _launchURL(String url) async {
-  if (await canLaunch(url)) {
-    await launch(url);
-  } else {
-    showToast(AppIntl.current.error);
-    throw 'Could not launch $url';
   }
 }
