@@ -161,8 +161,8 @@ class _ScheduleSettingsState extends State<ScheduleSettings> {
   }
 
   String getTextForDay(BuildContext context, StartingDayOfWeek day) {
+    // ignore: missing_enum_constant_in_switch
     switch (day) {
-      // ignore: missing_enum_constant_in_switch
       case StartingDayOfWeek.sunday:
         return AppIntl.of(context).schedule_settings_starting_weekday_sunday;
       case StartingDayOfWeek.saturday:
