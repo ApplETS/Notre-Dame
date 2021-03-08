@@ -31,7 +31,7 @@
   "login_info_universal_code": "Votre code d'accès universel est sous la forme AB12345. Celui-ci vous a été transmis par le Bureau du registraire lors de votre admission.",
   "login_msg_logout_success": "Vous vous êtes déconnecté",
   "login_applets_logo": "Conçue par",
-  "password_forgotten": "Mot de passe oublié?",
+  "login_password_forgotten": "Mot de passe oublié?",
   
   "dashboard_msg_card_removed": "Carte supprimée",
   "dashboard_restore_all_cards_title": "Restaurer toutes les cartes",
@@ -57,7 +57,6 @@
   "schedule_settings_starting_weekday_saturday": "Samedi",
   "schedule_settings_starting_weekday_sunday": "Dimanche",
   "schedule_no_event": "Aucun évènements à l'horaire.",
-  "schedule_settings_error_no_event_found": "Aucun événement trouvé",
 
   "grades_title": "Notes",
   "grades_msg_no_grades": "Aucune note disponible",
@@ -89,18 +88,18 @@
   "grades_standard_deviation": "Écart-type",
   "grades_percentile_rank": "Rang centile",
   "grades_target_date": "Date cible",
-  "title_ignored_evaluation": "Évaluation ignorée",
-  "grades_ignored_evaluation": "Cette évaluation est ignorée dans le calcul de la note finale. Cette situation se produit quand l'enseignant a décidé de conserver, par exemple, les trois meilleures notes des six devoirs qu'il a demandés. Les trois notes les plus faibles seront alors ignorées.",
-  "error_failed_to_retrieve_data_course": "Échec de la récupération des données de ce cours",
-  "title_section_summary": "Sommaire",
-  "title_section_evaluations": "Évaluations",
+  "grades_ignored_evaluation_title": "Évaluation ignorée",
+  "grades_ignored_evaluation_details": "Cette évaluation est ignorée dans le calcul de la note finale. Cette situation se produit quand l'enseignant a décidé de conserver, par exemple, les trois meilleures notes des six devoirs qu'il a demandés. Les trois notes les plus faibles seront alors ignorées.",
+  "grades_error_failed_to_retrieve_data_course": "Échec de la récupération des données de ce cours",
+  "grades_summary_section_title": "Sommaire",
+  "grades_evaluations_section_title": "Évaluations",
   "grades_group_number": "Groupe {number}",
   "@grades_group_number": {
     "placeholders": {
       "number": {}
     }
   },
-  "error_course_evaluations_not_completed": "Vous n'aurez pas accès à vos notes au cours de la période d'évaluation tant que vous n'aurez pas effectué vos évaluations.",
+  "grades_error_course_evaluations_not_completed": "Vous n'aurez pas accès à vos notes au cours de la période d'évaluation tant que vous n'aurez pas effectué vos évaluations.",
   
   "profile_title": "Profil",
   "profile_student_status_title": "État du dossier étudiant",

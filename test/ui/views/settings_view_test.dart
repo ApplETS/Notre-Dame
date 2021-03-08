@@ -1,9 +1,7 @@
 // FLUTTER / DART / THIRD-PARTIES
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-
-// GENERATED
-import 'package:notredame/generated/l10n.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 // VIEW
 import 'package:notredame/ui/views/settings_view.dart';

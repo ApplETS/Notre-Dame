@@ -1,6 +1,7 @@
 // FLUTTER / DART / THIRD-PARTIES
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 // VIEW-MODEL
 import 'package:notredame/core/viewmodels/profile_viewmodel.dart';
@@ -10,14 +11,13 @@ import 'package:notredame/ui/widgets/student_program.dart';
 import 'package:notredame/ui/utils/loading.dart';
 
 // OTHER
-import 'package:notredame/generated/l10n.dart';
 import 'package:notredame/ui/utils/app_theme.dart';
 
 class ProfileView extends StatelessWidget {
   @override
   Widget build(BuildContext context) =>
       ViewModelBuilder<ProfileViewModel>.reactive(
-          viewModelBuilder: () => ProfileViewModel(),
+          viewModelBuilder: () => ProfileViewModel(intl: AppIntl.of(context)),
           builder: (context, model, child) {
             return Stack(
               children: [

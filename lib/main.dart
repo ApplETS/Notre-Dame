@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:feedback/feedback.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:oktoast/oktoast.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 
@@ -15,7 +16,6 @@ import 'package:notredame/core/services/analytics_service.dart';
 
 // UTILS
 import 'package:notredame/locator.dart';
-import 'package:notredame/generated/l10n.dart';
 import 'package:notredame/ui/utils/app_theme.dart';
 
 // MANAGER
@@ -57,7 +57,7 @@ class _ETSMobileState extends State<ETSMobile> {
   @override
   Widget build(BuildContext context) {
     return BetterFeedback(
-      localeOverride: _settingsManager?.locale,
+      localeOverride: _settingsManager.locale,
       child: OKToast(
         backgroundColor: Colors.grey,
         duration: const Duration(seconds: 3),
@@ -74,7 +74,7 @@ class _ETSMobileState extends State<ETSMobile> {
             GlobalCupertinoLocalizations.delegate,
           ],
           locale: _settingsManager?.locale,
-          supportedLocales: AppIntl.delegate.supportedLocales,
+          supportedLocales: AppIntl.supportedLocales,
           navigatorKey: locator<NavigationService>().navigatorKey,
           navigatorObservers: [
             locator<AnalyticsService>().getAnalyticsObserver(),

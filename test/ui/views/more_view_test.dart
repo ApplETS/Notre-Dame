@@ -2,12 +2,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 // CONSTANTS
 import 'package:notredame/core/constants/router_paths.dart';
-
-// GENERATED
-import 'package:notredame/generated/l10n.dart';
 
 // SERVICES
 import 'package:notredame/core/services/navigation_service.dart';

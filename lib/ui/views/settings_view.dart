@@ -1,6 +1,7 @@
 // FLUTTER / DART / THIRD-PARTIES
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 // VIEWMODEL
 import 'package:notredame/core/viewmodels/settings_viewmodel.dart';
@@ -10,7 +11,6 @@ import 'package:notredame/ui/widgets/base_scaffold.dart';
 
 // OTHERS
 import 'package:notredame/ui/utils/app_theme.dart';
-import 'package:notredame/generated/l10n.dart';
 
 class SettingsView extends StatefulWidget {
   @override
@@ -21,7 +21,7 @@ class _SettingsViewState extends State<SettingsView> {
   @override
   Widget build(BuildContext context) =>
       ViewModelBuilder<SettingsViewModel>.reactive(
-        viewModelBuilder: () => SettingsViewModel(),
+        viewModelBuilder: () => SettingsViewModel(intl: AppIntl.of(context)),
         builder: (context, model, child) => BaseScaffold(
           appBar: AppBar(
             title: Text(AppIntl.of(context).settings_title),
@@ -100,11 +100,11 @@ class _SettingsViewState extends State<SettingsView> {
                 },
                 itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
                   PopupMenuItem<String>(
-                    value: AppIntl.delegate.supportedLocales.first.languageCode,
+                    value: AppIntl.supportedLocales.first.languageCode,
                     child: Text(AppIntl.of(context).settings_english),
                   ),
                   PopupMenuItem<String>(
-                    value: AppIntl.delegate.supportedLocales.last.languageCode,
+                    value: AppIntl.supportedLocales.last.languageCode,
                     child: Text(AppIntl.of(context).settings_french),
                   ),
                 ],

@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 // MANAGER
 import 'package:notredame/core/managers/settings_manager.dart';
@@ -25,9 +26,9 @@ void main() {
     setUp(() async {
       // Setting up mocks
       settingsManager = setupSettingsManagerMock();
-      await setupAppIntl();
+      final AppIntl intl = await setupAppIntl();
 
-      viewModel = SettingsViewModel();
+      viewModel = SettingsViewModel(intl: intl);
     });
 
     tearDown(() {

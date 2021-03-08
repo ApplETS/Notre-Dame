@@ -4,6 +4,7 @@ import 'package:feedback/feedback.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 import 'package:flutter/gestures.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 // CONSTANTS
 import 'package:notredame/core/constants/router_paths.dart';
@@ -12,7 +13,6 @@ import 'package:notredame/core/constants/router_paths.dart';
 import 'package:notredame/core/viewmodels/more_viewmodel.dart';
 
 // OTHERS
-import 'package:notredame/generated/l10n.dart';
 import 'package:notredame/ui/widgets/base_scaffold.dart';
 import 'package:notredame/core/utils/utils.dart';
 
@@ -32,7 +32,7 @@ class MoreView extends StatelessWidget {
                 text: AppIntl.of(context).flutter_website,
                 recognizer: TapGestureRecognizer()
                   ..onTap = () =>
-                      Utils.launchURL(AppIntl.of(context).flutter_website)),
+                      Utils.launchURL(AppIntl.of(context).flutter_website, AppIntl.of(context))),
             TextSpan(style: textStyle, text: '.'),
           ],
         ),
@@ -43,7 +43,7 @@ class MoreView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<MoreViewModel>.reactive(
-        viewModelBuilder: () => MoreViewModel(),
+        viewModelBuilder: () => MoreViewModel(intl: AppIntl.of(context)),
         builder: (context, model, child) {
           return BaseScaffold(
             appBar: AppBar(
@@ -124,7 +124,7 @@ class MoreView extends StatelessWidget {
                         actions: [
                           TextButton(
                               onPressed: () async {
-                                model.logout(context);
+                                model.logout();
                               },
                               child: Text(AppIntl.of(context).yes)),
                           TextButton(

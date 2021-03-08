@@ -1,6 +1,8 @@
 // FLUTTER / DART / THIRD-PARTIES
 import 'package:oktoast/oktoast.dart';
 import 'package:stacked/stacked.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 // MANAGERS
 import 'package:notredame/core/managers/user_repository.dart';
@@ -10,12 +12,14 @@ import 'package:notredame/core/models/profile_student.dart';
 import 'package:notredame/core/models/program.dart';
 
 // OTHERS
-import 'package:notredame/generated/l10n.dart';
 import '../../locator.dart';
 
 class ProfileViewModel extends FutureViewModel<List<Program>> {
   /// Load the user
   final UserRepository _userRepository = locator<UserRepository>();
+
+  /// Localization class of the application.
+  final AppIntl _appIntl;
 
   /// List of the programs
   List<Program> _programList = List.empty();
@@ -33,10 +37,12 @@ class ProfileViewModel extends FutureViewModel<List<Program>> {
   String get universalAccessCode =>
       _userRepository?.monETSUser?.universalCode ?? '';
 
+  ProfileViewModel({@required AppIntl intl}): _appIntl = intl;
+
   @override
   // ignore: type_annotate_public_apis
   void onError(error) {
-    showToast(AppIntl.current.error);
+    showToast(_appIntl.error);
   }
 
   /// Return the list of programs for the student

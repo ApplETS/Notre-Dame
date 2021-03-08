@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:stacked/stacked.dart';
 import 'package:table_calendar/table_calendar.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 // VIEWMODEL
 import 'package:notredame/core/viewmodels/schedule_viewmodel.dart';
@@ -19,7 +20,6 @@ import 'package:notredame/ui/widgets/schedule_settings.dart';
 import 'package:notredame/core/constants/preferences_flags.dart';
 
 // OTHER
-import 'package:notredame/generated/l10n.dart';
 import 'package:notredame/ui/utils/app_theme.dart';
 
 class ScheduleView extends StatefulWidget {
@@ -66,7 +66,9 @@ class _ScheduleViewState extends State<ScheduleView>
   @override
   Widget build(BuildContext context) =>
       ViewModelBuilder<ScheduleViewModel>.reactive(
-          viewModelBuilder: () => ScheduleViewModel(initialSelectedDate: widget.initialDay),
+          viewModelBuilder: () => ScheduleViewModel(
+              intl: AppIntl.of(context),
+              initialSelectedDate: widget.initialDay),
           onModelReady: (model) {
             if (model.settings.isEmpty) {
               model.loadSettings(_calendarController);
@@ -144,8 +146,8 @@ class _ScheduleViewState extends State<ScheduleView>
           model.selectedDate = date;
         }),
         builders: CalendarBuilders(
-            todayDayBuilder: (context, date, _) => _buildSelectedDate(
-                date, _defaultColor),
+            todayDayBuilder: (context, date, _) =>
+                _buildSelectedDate(date, _defaultColor),
             selectedDayBuilder: (context, date, _) => FadeTransition(
                   opacity:
                       Tween(begin: 0.0, end: 1.0).animate(_animationController),
@@ -157,8 +159,7 @@ class _ScheduleViewState extends State<ScheduleView>
       );
 
   /// Build the visual for the selected [date]. The [color] parameter set the color for the tile.
-  Widget _buildSelectedDate(DateTime date, Color color) =>
-      Container(
+  Widget _buildSelectedDate(DateTime date, Color color) => Container(
         margin: const EdgeInsets.all(4.0),
         padding: const EdgeInsets.only(top: 5.0, left: 6.0),
         decoration: BoxDecoration(border: Border.all(color: color)),

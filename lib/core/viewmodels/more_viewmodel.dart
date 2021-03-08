@@ -10,6 +10,7 @@ import 'package:oktoast/oktoast.dart';
 import 'package:github/github.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:image/image.dart' as image;
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 // MANAGER
 import 'package:notredame/core/managers/cache_manager.dart';
@@ -20,7 +21,6 @@ import 'package:notredame/core/services/navigation_service.dart';
 
 // OTHERS
 import 'package:notredame/core/constants/router_paths.dart';
-import 'package:notredame/generated/l10n.dart';
 import 'package:notredame/locator.dart';
 
 class MoreViewModel extends FutureViewModel {
@@ -30,10 +30,15 @@ class MoreViewModel extends FutureViewModel {
   /// Used to redirect on the dashboard.
   final NavigationService navigationService = locator<NavigationService>();
 
+  /// Localization class of the application.
+  final AppIntl _appIntl;
+
   String _appVersion;
 
   /// Get the application version
   String get appVersion => _appVersion;
+
+  MoreViewModel({@required AppIntl intl}): _appIntl = intl;
 
   @override
   Future futureToRun() async {
@@ -50,11 +55,11 @@ class MoreViewModel extends FutureViewModel {
   @override
   // ignore: type_annotate_public_apis
   void onError(error) {
-    showToast(AppIntl.current.error);
+    showToast(_appIntl.error);
   }
 
   /// Used to logout user, delete cache, and return to login
-  Future<void> logout(BuildContext context) async {
+  Future<void> logout() async {
     setBusy(true);
     try {
       await _cacheManager.empty();
@@ -62,11 +67,11 @@ class MoreViewModel extends FutureViewModel {
       onError(e);
     }
     UserRepository().logOut();
-    // Dismiss alertDialog
     setBusy(false);
-    Navigator.of(context).pop();
+    // Dismiss alertDialog
+    navigationService.pop();
     navigationService.pushNamedAndRemoveUntil(RouterPaths.login);
-    showToast(AppIntl.of(context).login_msg_logout_success);
+    showToast(_appIntl.login_msg_logout_success);
   }
 
   /// Create a Github issue with [feedbackText] and the screenshot associated.
@@ -86,7 +91,7 @@ class MoreViewModel extends FutureViewModel {
 
     file.deleteSync();
     showToast(
-      AppIntl.current?.thank_you_for_the_feedback,
+      _appIntl.thank_you_for_the_feedback,
       position: ToastPosition.center,
     );
     BetterFeedback.of(context).hide();
