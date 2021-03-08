@@ -1,9 +1,11 @@
 // FLUTTER / DART / THIRD-PARTIES
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
+// MODEL
 import 'package:notredame/core/models/program.dart';
 
 // OTHER
-import 'package:notredame/generated/l10n.dart';
 import 'package:notredame/ui/utils/app_theme.dart';
 
 class StudentProgram extends StatelessWidget {
