@@ -32,6 +32,6 @@ final List<QuickLink> quickLinks = [
       link: 'http://lheuristique.ca'),
   QuickLink(
       name: AppIntl.current.ets_schedule_generator,
-      image: 'assets/images/ic_moodle_red.png',
+      image: 'assets/images/ic_schedule_generator_red.png',
       link: 'http://rubik.clubnaova.ca/'),
 ];
