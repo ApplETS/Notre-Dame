@@ -18,19 +18,21 @@ import 'package:notredame/core/utils/utils.dart';
 
 class MoreView extends StatelessWidget {
   /// License text box
-  List<Widget> aboutBoxChildren(TextStyle textStyle) {
+  List<Widget> aboutBoxChildren(BuildContext context) {
+    final textStyle = Theme.of(context).textTheme.bodyText2;
     return <Widget>[
       const SizedBox(height: 24),
       RichText(
         text: TextSpan(
           children: <TextSpan>[
-            TextSpan(style: textStyle, text: AppIntl.current.flutter_license),
+            TextSpan(
+                style: textStyle, text: AppIntl.of(context).flutter_license),
             TextSpan(
                 style: textStyle.copyWith(color: Colors.blue),
-                text: AppIntl.current.flutter_website,
+                text: AppIntl.of(context).flutter_website,
                 recognizer: TapGestureRecognizer()
-                  ..onTap =
-                      () => Utils.launchURL(AppIntl.current.flutter_website)),
+                  ..onTap = () =>
+                      Utils.launchURL(AppIntl.of(context).flutter_website)),
             TextSpan(style: textStyle, text: '.'),
           ],
         ),
@@ -95,8 +97,7 @@ class MoreView extends StatelessWidget {
                         applicationVersion: model.appVersion,
                         applicationLegalese:
                             '\u{a9} ${DateTime.now().year} App|ETS',
-                        children: aboutBoxChildren(
-                            Theme.of(context).textTheme.bodyText2),
+                        children: aboutBoxChildren(context),
                       ),
                       opaque: false,
                     ),
