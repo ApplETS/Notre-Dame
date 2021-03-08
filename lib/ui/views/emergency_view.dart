@@ -25,7 +25,7 @@ class _EmergencyViewState extends State<EmergencyView> {
   @override
   Widget build(BuildContext context) =>
       ViewModelBuilder<EmergencyViewModel>.reactive(
-        viewModelBuilder: () => EmergencyViewModel(),
+        viewModelBuilder: () => EmergencyViewModel(intl: AppIntl.of(context)),
         builder: (context, model, child) => Scaffold(
           appBar: AppBar(title: Text(widget.title)),
           floatingActionButtonLocation:
