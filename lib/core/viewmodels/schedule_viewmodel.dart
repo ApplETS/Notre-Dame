@@ -2,6 +2,8 @@
 import 'package:oktoast/oktoast.dart';
 import 'package:stacked/stacked.dart';
 import 'package:table_calendar/table_calendar.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 // MANAGER
 import 'package:notredame/core/managers/course_repository.dart';
@@ -11,7 +13,6 @@ import 'package:notredame/core/managers/settings_manager.dart';
 import 'package:notredame/core/models/course_activity.dart';
 
 // OTHER
-import 'package:notredame/generated/l10n.dart';
 import 'package:notredame/locator.dart';
 import 'package:notredame/core/constants/preferences_flags.dart';
 
@@ -22,6 +23,9 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
   /// Manage de settings
   final SettingsManager _settingsManager = locator<SettingsManager>();
 
+  /// Localization class of the application.
+  final AppIntl _appIntl;
+
   /// Settings of the user for the schedule
   final Map<PreferencesFlag, dynamic> settings = {};
 
@@ -31,8 +35,8 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
   /// Day currently selected
   DateTime selectedDate = DateTime.now();
 
-  ScheduleViewModel({DateTime initialSelectedDate})
-      : selectedDate = initialSelectedDate ?? DateTime.now();
+  ScheduleViewModel({@required AppIntl intl, DateTime initialSelectedDate})
+      : _appIntl = intl, selectedDate = initialSelectedDate ?? DateTime.now();
 
   /// Activities for the day currently selected
   List<dynamic> get selectedDateEvents =>
@@ -61,7 +65,7 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
   @override
   // ignore: type_annotate_public_apis
   void onError(error) {
-    showToast(AppIntl.current.error);
+    showToast(_appIntl.error);
   }
 
   Future loadSettings(CalendarController calendarController) async {

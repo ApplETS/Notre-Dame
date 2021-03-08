@@ -2,18 +2,19 @@
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 import 'package:webview_flutter/webview_flutter.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 // VIEW-MODEL
 import 'package:notredame/core/viewmodels/emergency_viewmodel.dart';
 
 // OTHERS
-import 'package:notredame/generated/l10n.dart';
 import 'package:notredame/ui/utils/app_theme.dart';
 import 'package:notredame/core/utils/utils.dart';
 
 class EmergencyView extends StatefulWidget {
   final String title;
   final String description;
+
   const EmergencyView(this.title, this.description);
 
   @override
@@ -32,7 +33,8 @@ class _EmergencyViewState extends State<EmergencyView> {
           floatingActionButton: FloatingActionButton.extended(
             onPressed: () {
               Utils.launchURL(
-                      'tel:${AppIntl.of(context).security_emergency_number}')
+                      'tel:${AppIntl.of(context).security_emergency_number}',
+                      AppIntl.of(context))
                   .catchError((error) {
                 ScaffoldMessenger.of(context)
                     .showSnackBar(SnackBar(content: Text(error.toString())));

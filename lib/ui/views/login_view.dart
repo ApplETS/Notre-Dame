@@ -1,7 +1,6 @@
 // FLUTTER / DART / THIRD-PARTIES
 import 'package:flutter/material.dart';
-
-import 'package:notredame/ui/utils/app_theme.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:oktoast/oktoast.dart';
 import 'package:stacked/stacked.dart';
 
@@ -11,8 +10,8 @@ import 'package:notredame/core/viewmodels/login_viewmodel.dart';
 // WIDGETS
 import 'package:notredame/ui/widgets/password_text_field.dart';
 
-// GENERATED
-import 'package:notredame/generated/l10n.dart';
+// OTHER
+import 'package:notredame/ui/utils/app_theme.dart';
 
 class LoginView extends StatefulWidget {
   @override

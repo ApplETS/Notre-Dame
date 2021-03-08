@@ -1,8 +1,6 @@
 // FLUTTER / DART / THIRD-PARTIES
 import 'package:flutter/material.dart';
-
-// OTHER
-import 'package:notredame/generated/l10n.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class PasswordFormField extends StatefulWidget {
   final FormFieldValidator<String> validator;

@@ -3,6 +3,7 @@ import 'package:enum_to_string/enum_to_string.dart';
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
 import 'package:table_calendar/table_calendar.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 // SERVICES
 import 'package:notredame/core/services/analytics_service.dart';
@@ -13,7 +14,6 @@ import 'package:notredame/core/constants/preferences_flags.dart';
 
 // OTHER
 import 'package:notredame/locator.dart';
-import 'package:notredame/generated/l10n.dart';
 
 class SettingsManager with ChangeNotifier {
   static const String tag = "SettingsManager";
@@ -42,7 +42,7 @@ class SettingsManager with ChangeNotifier {
   /// Get Locale
   Locale get locale {
     _preferencesService.getString(PreferencesFlag.locale).then((value) {
-      _locale = AppIntl.delegate.supportedLocales
+      _locale = AppIntl.supportedLocales
           .firstWhere((e) => e.toString() == value);
     });
     if (_locale == null) {
@@ -64,7 +64,7 @@ class SettingsManager with ChangeNotifier {
 
   /// Set Locale
   void setLocale(String value) {
-    _locale = AppIntl.delegate.supportedLocales
+    _locale = AppIntl.supportedLocales
         .firstWhere((e) => e.toString() == value);
     _preferencesService.setString(
         PreferencesFlag.locale, _locale.languageCode.toString());

@@ -25,6 +25,7 @@ dependencies:
     sdk: flutter
   flutter_localizations:
     sdk: flutter
+  intl: 0.17.0
 
   # Architecture
   get_it: ^6.0.0
@@ -65,9 +66,6 @@ dev_dependencies:
     sdk: flutter
   lint: ^1.2.0
   mockito: ^4.1.1
-  # TODO: Commented until https://github.com/localizely/intl_utils/issues/26 is resolved. For now, please use the intl plugin for IDEA or VS Code
-  #intl_utils: 1.9.0
-
 
 flutter_icons:
   android: "launcher_icon"
@@ -83,6 +81,7 @@ flutter_icons:
 # The following section is specific to Flutter.
 flutter:
   uses-material-design: true
+  generate: true
 
   assets:
     - assets/images/
@@ -90,31 +89,5 @@ flutter:
     - assets/certificates/
     - assets/
 
-  # An image asset can refer to one or more resolution-specific "variants", see
-  # https://flutter.dev/assets-and-images/#resolution-aware.
-
-  # For details regarding adding assets from package dependencies, see
-  # https://flutter.dev/assets-and-images/#from-packages
-
-  # To add custom fonts to your application, add a fonts section here,
-  # in this "flutter" section. Each entry in this list should have a
-  # "family" key with the font family name, and a "fonts" key with a
-  # list giving the asset and other descriptors for the font. For
-  # example:
-  # fonts:
-  #   - family: Schyler
-  #     fonts:
-  #       - asset: fonts/Schyler-Regular.ttf
-  #       - asset: fonts/Schyler-Italic.ttf
-  #         style: italic
-  #   - family: Trajan Pro
-  #     fonts:
-  #       - asset: fonts/TrajanPro.ttf
-  #       - asset: fonts/TrajanPro_Bold.ttf
-  #         weight: 700
-  #
-  # For details regarding fonts from package dependencies,
-  # see https://flutter.dev/custom-fonts/#from-packages
 flutter_intl:
   enabled: true
-  class_name: AppIntl

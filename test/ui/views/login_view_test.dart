@@ -1,11 +1,11 @@
 // FLUTTER / DART / THIRD-PARTIES
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
+// MANAGERS / SERVICES
 import 'package:notredame/core/managers/user_repository.dart';
 import 'package:notredame/core/services/navigation_service.dart';
-
-// GENERATED
-import 'package:notredame/generated/l10n.dart';
 
 // VIEWS
 import 'package:notredame/ui/views/login_view.dart';

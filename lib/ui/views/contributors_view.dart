@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:github/github.dart';
 import 'package:stacked/stacked.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 // VIEWMODEL
 import 'package:notredame/core/viewmodels/contributors_viewmodel.dart';
@@ -9,7 +10,6 @@ import 'package:notredame/core/viewmodels/contributors_viewmodel.dart';
 // OTHERS
 import 'package:notredame/ui/utils/loading.dart';
 import 'package:notredame/ui/widgets/base_scaffold.dart';
-import 'package:notredame/generated/l10n.dart';
 import 'package:notredame/core/utils/utils.dart';
 
 class ContributorsView extends StatelessWidget {
@@ -36,7 +36,7 @@ class ContributorsView extends StatelessWidget {
                     leading: CircleAvatar(
                         backgroundImage:
                             NetworkImage(snapshot.data[index].avatarUrl)),
-                    onTap: () => Utils.launchURL(snapshot.data[index].htmlUrl),
+                    onTap: () => Utils.launchURL(snapshot.data[index].htmlUrl, AppIntl.of(context)),
                   ),
                 );
               },

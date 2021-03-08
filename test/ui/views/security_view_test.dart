@@ -2,14 +2,23 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
+// CONSTANTS
 import 'package:notredame/core/constants/emergency_procedures.dart';
+
+// VIEW
 import 'package:notredame/ui/views/security_view.dart';
 
 import '../../helpers.dart';
 
 void main() {
+  AppIntl intl;
+
   group('SecurityView - ', () {
-    setUp(() async {});
+    setUp(() async {
+      intl = await setupAppIntl();
+    });
 
     tearDown(() {});
 
@@ -29,7 +38,7 @@ void main() {
         expect(phoneButton, findsOneWidget);
 
         final Finder emergencyList = find.byType(TextButton);
-        expect(emergencyList, findsNWidgets(emergencyProcedures.length));
+        expect(emergencyList, findsNWidgets(emergencyProcedures(intl).length));
       });
     });
   });

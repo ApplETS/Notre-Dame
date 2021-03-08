@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:stacked/stacked.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 // CONSTANTS
 import 'package:notredame/core/constants/emergency_procedures.dart';
@@ -12,9 +13,14 @@ import 'package:notredame/core/constants/markers.dart';
 import 'package:notredame/core/models/emergency_procedure.dart';
 
 class SecurityViewModel extends BaseViewModel {
-  List<Marker> markersList = markers;
   GoogleMapController controller;
-  List<EmergencyProcedure> emergencyProcedureList = emergencyProcedures;
+
+  final List<EmergencyProcedure> emergencyProcedureList;
+
+  final List<Marker> markersList;
+
+  SecurityViewModel({AppIntl intl})
+      : emergencyProcedureList = emergencyProcedures(intl), markersList = markers(intl);
 
   /// Used to get all security buildings to show in Google Maps
   Set<Marker> getSecurityMarkersForMaps(List<Marker> markersList) {

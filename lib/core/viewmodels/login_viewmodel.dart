@@ -1,6 +1,7 @@
 // FLUTTER / DART / THIRD-PARTIES
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 // SERVICE
 import 'package:notredame/core/managers/user_repository.dart';
@@ -9,7 +10,6 @@ import 'package:notredame/core/services/navigation_service.dart';
 // OTHER
 import 'package:notredame/locator.dart';
 import 'package:notredame/core/constants/router_paths.dart';
-import 'package:notredame/generated/l10n.dart';
 
 class LoginViewModel extends BaseViewModel {
   /// Used to authenticate the user

@@ -1,6 +1,7 @@
 // FLUTTER / DART / THIRD-PARTIES
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 // CONSTANTS
 import 'package:notredame/core/constants/preferences_flags.dart';
@@ -9,12 +10,14 @@ import 'package:notredame/core/constants/preferences_flags.dart';
 import 'package:notredame/core/managers/settings_manager.dart';
 
 // OTHERS
-import 'package:notredame/generated/l10n.dart';
 import 'package:notredame/locator.dart';
 
 class SettingsViewModel extends FutureViewModel {
   /// Manage the settings
   final SettingsManager _settingsManager = locator<SettingsManager>();
+
+  /// Localization class of the application.
+  final AppIntl _appIntl;
 
   /// Current locale
   String _currentLocale;
@@ -24,11 +27,11 @@ class SettingsViewModel extends FutureViewModel {
 
   String get selectedTheme {
     if (_selectedTheme == ThemeMode.light.toString()) {
-      return AppIntl.current.light_theme;
+      return _appIntl.light_theme;
     } else if (_selectedTheme == ThemeMode.dark.toString()) {
-      return AppIntl.current.dark_theme;
+      return _appIntl.dark_theme;
     } else {
-      return AppIntl.current.system_theme;
+      return _appIntl.system_theme;
     }
   }
 
@@ -40,10 +43,10 @@ class SettingsViewModel extends FutureViewModel {
 
   String get currentLocale {
     if (_currentLocale ==
-        AppIntl.delegate.supportedLocales.first.languageCode) {
-      return AppIntl.current.settings_english;
+        AppIntl.supportedLocales.first.languageCode) {
+      return _appIntl.settings_english;
     } else {
-      return AppIntl.current.settings_french;
+      return _appIntl.settings_french;
     }
   }
 
@@ -52,6 +55,8 @@ class SettingsViewModel extends FutureViewModel {
     _settingsManager.setLocale(value);
     _currentLocale = value;
   }
+
+  SettingsViewModel({@required AppIntl intl}): _appIntl = intl;
 
   @override
   Future futureToRun() async {
