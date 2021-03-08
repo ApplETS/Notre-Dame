@@ -9,6 +9,7 @@ import 'package:notredame/core/viewmodels/emergency_viewmodel.dart';
 // OTHERS
 import 'package:notredame/generated/l10n.dart';
 import 'package:notredame/ui/utils/app_theme.dart';
+import 'package:notredame/core/utils/utils.dart';
 
 class EmergencyView extends StatefulWidget {
   final String title;
@@ -20,23 +21,20 @@ class EmergencyView extends StatefulWidget {
 }
 
 class _EmergencyViewState extends State<EmergencyView> {
-  final _scaffoldKey = GlobalKey<ScaffoldState>();
   @override
   Widget build(BuildContext context) =>
       ViewModelBuilder<EmergencyViewModel>.reactive(
         viewModelBuilder: () => EmergencyViewModel(),
         builder: (context, model, child) => Scaffold(
-          key: _scaffoldKey,
           appBar: AppBar(title: Text(widget.title)),
           floatingActionButtonLocation:
               FloatingActionButtonLocation.centerFloat,
           floatingActionButton: FloatingActionButton.extended(
             onPressed: () {
-              model
-                  .openPhoneApp(
+              Utils.launchURL(
                       'tel:${AppIntl.of(context).security_emergency_number}')
                   .catchError((error) {
-                _scaffoldKey.currentState
+                ScaffoldMessenger.of(context)
                     .showSnackBar(SnackBar(content: Text(error.toString())));
               });
             },

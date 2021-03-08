@@ -1,5 +1,6 @@
 // FLUTTER / DART / THIRD-PARTIES
 import 'package:enum_to_string/enum_to_string.dart';
+import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
 import 'package:table_calendar/table_calendar.dart';
 
@@ -12,8 +13,9 @@ import 'package:notredame/core/constants/preferences_flags.dart';
 
 // OTHER
 import 'package:notredame/locator.dart';
+import 'package:notredame/generated/l10n.dart';
 
-class SettingsManager {
+class SettingsManager with ChangeNotifier {
   static const String tag = "SettingsManager";
 
   final Logger _logger = locator<Logger>();
@@ -22,6 +24,57 @@ class SettingsManager {
   final PreferencesService _preferencesService = locator<PreferencesService>();
 
   final AnalyticsService _analyticsService = locator<AnalyticsService>();
+
+  /// current ThemeMode
+  ThemeMode _themeMode;
+
+  /// current Locale
+  Locale _locale;
+
+  /// Get ThemeMode
+  ThemeMode get themeMode {
+    _preferencesService.getString(PreferencesFlag.theme).then((value) {
+      _themeMode = ThemeMode.values.firstWhere((e) => e.toString() == value);
+    });
+    return _themeMode;
+  }
+
+  /// Get Locale
+  Locale get locale {
+    _preferencesService.getString(PreferencesFlag.locale).then((value) {
+      _locale = AppIntl.delegate.supportedLocales
+          .firstWhere((e) => e.toString() == value);
+    });
+    if (_locale == null) {
+      return null;
+    }
+    return Locale(_locale.languageCode);
+  }
+
+  /// Set ThemeMode
+  void setThemeMode(String value) {
+    _themeMode = ThemeMode.values.firstWhere((e) => e.toString() == value);
+    _preferencesService.setString(PreferencesFlag.theme, _themeMode.toString());
+    // Log the event
+    _analyticsService.logEvent(
+        "${tag}_${EnumToString.convertToString(PreferencesFlag.theme)}",
+        EnumToString.convertToString(_themeMode));
+    notifyListeners();
+  }
+
+  /// Set Locale
+  void setLocale(String value) {
+    _locale = AppIntl.delegate.supportedLocales
+        .firstWhere((e) => e.toString() == value);
+    _preferencesService.setString(
+        PreferencesFlag.locale, _locale.languageCode.toString());
+    // Log the event
+    _analyticsService.logEvent(
+        "${tag}_${EnumToString.convertToString(PreferencesFlag.locale)}",
+        _locale.languageCode);
+    _locale = Locale(_locale.languageCode);
+    notifyListeners();
+  }
 
   /// Get the settings of the schedule, these are loaded from the user preferences.
   Future<Map<PreferencesFlag, dynamic>> getScheduleSettings() async {
@@ -58,8 +111,16 @@ class SettingsManager {
   Future<bool> setString(PreferencesFlag flag, String value) async {
     // Log the event
     _analyticsService.logEvent(
-        "$tag-${EnumToString.convertToString(flag)}", value);
+        "${tag}_${EnumToString.convertToString(flag)}", value);
     return _preferencesService.setString(flag, value);
+  }
+
+  /// Get the value of [flag]
+  Future<String> getString(PreferencesFlag flag) async {
+    // Log the event
+    _analyticsService.logEvent(
+        "${tag}_${EnumToString.convertToString(flag)}", 'getString');
+    return _preferencesService.getString(flag);
   }
 
   /// Add/update the value of [flag]
@@ -67,7 +128,7 @@ class SettingsManager {
   Future<bool> setBool(PreferencesFlag flag, bool value) async {
     // Log the event
     _analyticsService.logEvent(
-        "$tag-${EnumToString.convertToString(flag)}", value.toString());
+        "${tag}_${EnumToString.convertToString(flag)}", value.toString());
     return _preferencesService.setBool(flag, value: value);
   }
 }

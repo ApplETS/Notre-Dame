@@ -174,7 +174,7 @@ class UserRepository {
         }
       } on CacheException catch (_) {
         _logger.e(
-            "$tag - getPrograms: exception raised will trying to load the programs from cache.");
+            "$tag - getPrograms: exception raised while trying to load the programs from cache.");
       }
     }
 
@@ -196,7 +196,7 @@ class UserRepository {
       _cacheManager.update(programsCacheKey, jsonEncode(_programs));
     } on CacheException catch (_) {
       _logger.e(
-          "$tag - getPrograms: exception raised will trying to update the cache.");
+          "$tag - getPrograms: exception raised while trying to update the cache.");
       return _programs;
     } on Exception catch (e) {
       _analyticsService.logError(
@@ -225,7 +225,7 @@ class UserRepository {
         }
       } on CacheException catch (_) {
         _logger.e(
-            "$tag - getInfo: exception raised will trying to load the info from cache.");
+            "$tag - getInfo: exception raised while trying to load the info from cache.");
       }
     }
 
@@ -239,13 +239,13 @@ class UserRepository {
 
       if (_info != fetchedInfo) {
         _info ??= fetchedInfo;
-        
+
         // Update cache
         _cacheManager.update(infoCacheKey, jsonEncode(_info));
       }
     } on CacheException catch (_) {
       _logger.e(
-          "$tag - getInfo: exception raised will trying to update the cache.");
+          "$tag - getInfo: exception raised while trying to update the cache.");
       return _info;
     } on Exception catch (e) {
       _analyticsService.logError(tag, "Exception raised during getInfo: $e");

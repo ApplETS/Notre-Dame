@@ -60,7 +60,9 @@ class ProfileViewModel extends FutureViewModel<List<Program>> {
         setBusyForObject(isLoadingEvents, true);
         _userRepository
             .getInfo()
+            // ignore: return_type_invalid_for_catch_error
             .catchError(onError)
+            // ignore: return_type_invalid_for_catch_error
             .then((value) => _userRepository.getPrograms().catchError(onError))
             .whenComplete(() => setBusyForObject(isLoadingEvents, false));
         return value;

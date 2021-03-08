@@ -8,11 +8,13 @@ import 'package:stacked/stacked.dart';
 // VIEW MODEL
 import 'package:notredame/core/viewmodels/security_viewmodel.dart';
 
+// VIEWS
+import 'package:notredame/ui/views/emergency_view.dart';
+
 // OTHER
 import 'package:notredame/generated/l10n.dart';
 import 'package:notredame/ui/utils/app_theme.dart';
-
-import 'emergency_view.dart';
+import 'package:notredame/core/utils/utils.dart';
 
 class SecurityView extends StatefulWidget {
   @override
@@ -22,13 +24,11 @@ class SecurityView extends StatefulWidget {
 class _SecurityViewState extends State<SecurityView> {
   static const CameraPosition _etsLocation = CameraPosition(
       target: LatLng(45.49449875, -73.56246144109338), zoom: 17.0);
-  final _scaffoldKey = GlobalKey<ScaffoldState>();
   @override
   Widget build(BuildContext context) =>
       ViewModelBuilder<SecurityViewModel>.reactive(
         viewModelBuilder: () => SecurityViewModel(),
         builder: (context, model, child) => Scaffold(
-          key: _scaffoldKey,
           appBar: AppBar(
             title: Text(AppIntl.of(context).ets_security_title),
           ),
@@ -64,11 +64,10 @@ class _SecurityViewState extends State<SecurityView> {
                 Card(
                   child: InkWell(
                     splashColor: Colors.red.withAlpha(50),
-                    onTap: () => model
-                        .openPhoneApp(
+                    onTap: () => Utils.launchURL(
                             'tel:${AppIntl.of(context).security_emergency_number}')
                         .catchError((error) {
-                      _scaffoldKey.currentState.showSnackBar(
+                      ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(content: Text(error.toString())));
                     }),
                     child: ListTile(
@@ -99,7 +98,7 @@ class _SecurityViewState extends State<SecurityView> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: List.generate(
                       model.emergencyProcedureList.length,
-                      (index) => FlatButton(
+                      (index) => TextButton(
                         onPressed: () => Navigator.push(
                             context,
                             MaterialPageRoute(
