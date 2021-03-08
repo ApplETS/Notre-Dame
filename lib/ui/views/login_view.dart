@@ -112,7 +112,9 @@ class _LoginViewState extends State<LoginView> {
                                               await model.authenticate();
 
                                           setState(() {
-                                            showToast(error);
+                                            if (error.isNotEmpty) {
+                                              showToast(error);
+                                            }
                                             formKey.currentState.reset();
                                           });
                                         },

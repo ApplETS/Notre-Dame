@@ -59,7 +59,6 @@ class LoginViewModel extends BaseViewModel {
   }
 
   /// Try to authenticate the user. Redirect to the [DashboardView] if everything is correct
-  // ignore: missing_return
   Future<String> authenticate() async {
     if (!canSubmit) {
       return _appIntl.error;
@@ -71,9 +70,12 @@ class LoginViewModel extends BaseViewModel {
 
     if (response) {
       _navigationService.pushNamed(RouterPaths.dashboard);
+      return '';
     }
     _password = "";
     setBusy(false);
     notifyListeners();
+
+    return _appIntl.error;
   }
 }

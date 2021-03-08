@@ -38,8 +38,11 @@ class MoreViewModel extends FutureViewModel {
   @override
   Future futureToRun() async {
     setBusy(true);
+
     await PackageInfo.fromPlatform()
-        .then((value) => _appVersion = value.version);
+        .then((value) => _appVersion = value.version)
+        .onError((error, stackTrace) => null);
+
     setBusy(false);
     return true;
   }
