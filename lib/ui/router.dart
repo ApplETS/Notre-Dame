@@ -6,6 +6,7 @@ import 'package:notredame/core/constants/router_paths.dart';
 
 // VIEWS
 import 'package:notredame/ui/views/login_view.dart';
+import 'package:notredame/ui/views/not_found_view.dart';
 import 'package:notredame/ui/views/quick_links_view.dart';
 import 'package:notredame/ui/views/schedule_view.dart';
 import 'package:notredame/ui/views/security_view.dart';
@@ -36,13 +37,9 @@ class AppRouter {
             settings: RouteSettings(name: routeSettings.name),
             pageBuilder: (_, __, ___) => SecurityView());
       default:
-        return MaterialPageRoute(
+        return PageRouteBuilder(
             settings: RouteSettings(name: routeSettings.name),
-            builder: (_) => Scaffold(
-                  body: Center(
-                      child:
-                          Text("Oups! Page ${routeSettings.name} not found!")),
-                ));
+            pageBuilder: (_, __, ___) => NotFoundView());
     }
   }
 }

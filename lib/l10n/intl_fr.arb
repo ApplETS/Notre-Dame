@@ -177,5 +177,8 @@
   "settings_miscellaneous_category": "Divers",
   "settings_language_pref": "Langue",
   "settings_french": "Français:",
-  "settings_english": "English:"
+  "settings_english": "English:",
+
+  "not_found_title": "Page introuvable",
+  "not_found_message": "Oh oh... il semblerait que la page n'est pas accessible."
 }
