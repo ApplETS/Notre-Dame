@@ -33,8 +33,7 @@ class LoginViewModel extends BaseViewModel {
   /// Used to enable/disable the "log in" button
   bool get canSubmit => _universalCode.isNotEmpty && _password.isNotEmpty;
 
-  LoginViewModel({@required AppIntl intl})
-      : _appIntl = intl;
+  LoginViewModel({@required AppIntl intl}) : _appIntl = intl;
 
   /// Validate the format of the universal code
   String validateUniversalCode(String value) {
@@ -60,6 +59,7 @@ class LoginViewModel extends BaseViewModel {
   }
 
   /// Try to authenticate the user. Redirect to the [DashboardView] if everything is correct
+  // ignore: missing_return
   Future<String> authenticate() async {
     if (!canSubmit) {
       return _appIntl.error;
@@ -75,7 +75,5 @@ class LoginViewModel extends BaseViewModel {
     _password = "";
     setBusy(false);
     notifyListeners();
-
-    return _appIntl.error;
   }
 }
