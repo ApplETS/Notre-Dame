@@ -104,14 +104,14 @@ class _DashboardViewState extends State<DashboardView>
             child: Container(
               padding: const EdgeInsets.fromLTRB(17, 10, 0, 0),
               child: Text(AppIntl.of(context).card_applets_title,
-                  style: Theme.of(context).textTheme.headline6),
+                  style: Theme.of(context).primaryTextTheme.headline6),
             )),
         Column(
           children: [
             Container(
               padding: const EdgeInsets.fromLTRB(17, 10, 15, 10),
               child: Text(AppIntl.of(context).card_applets_text,
-                  style: Theme.of(context).textTheme.bodyText2),
+                  style: Theme.of(context).primaryTextTheme.bodyText2),
             ),
             Row(children: [
               const SizedBox(width: 2),
@@ -120,7 +120,7 @@ class _DashboardViewState extends State<DashboardView>
                   launch('https://www.facebook.com/ClubApplETS');
                 },
                 child: Text(AppIntl.of(context).facebook.toUpperCase(),
-                    style: Theme.of(context).textTheme.bodyText2),
+                    style: Theme.of(context).primaryTextTheme.bodyText2),
               ),
               const SizedBox(width: 10),
               FlatButton(
@@ -128,7 +128,7 @@ class _DashboardViewState extends State<DashboardView>
                   launch('https://github.com/ApplETS/Notre-Dame');
                 },
                 child: Text(AppIntl.of(context).github.toUpperCase(),
-                    style: Theme.of(context).textTheme.button),
+                    style: Theme.of(context).primaryTextTheme.button),
               ),
               const SizedBox(width: 10),
               FlatButton(
@@ -136,7 +136,7 @@ class _DashboardViewState extends State<DashboardView>
                   launch('mailto:info@clubapplets.ca');
                 },
                 child: Text(AppIntl.of(context).email.toUpperCase(),
-                    style: Theme.of(context).textTheme.button),
+                    style: Theme.of(context).primaryTextTheme.button),
               ),
             ]),
           ],
