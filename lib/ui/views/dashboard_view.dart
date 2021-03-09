@@ -69,12 +69,9 @@ class _DashboardViewState extends State<DashboardView>
   @override
   Widget build(BuildContext context) =>
       ViewModelBuilder<DashboardViewModel>.reactive(
-        viewModelBuilder: () => DashboardViewModel(),
-        onModelReady: (model) {
-          if (model.settings.isEmpty) {
-            model.loadSettings(_calendarController);
-          }
-        },
+        viewModelBuilder: () => DashboardViewModel(
+          intl: AppIntl.of(context),
+        ),
         builder: (context, model, child) => BaseScaffold(
           isLoading: model.busy(model.isLoadingEvents),
           isInteractionLimitedWhileLoading: false,
