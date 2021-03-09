@@ -69,21 +69,21 @@ class _DashboardViewState extends State<DashboardView>
   @override
   Widget build(BuildContext context) =>
       ViewModelBuilder<DashboardViewModel>.reactive(
-          viewModelBuilder: () => DashboardViewModel(initialSelectedDate: widget.initialDay),
-          onModelReady: (model) {
-            if (model.settings.isEmpty) {
-              model.loadSettings(_calendarController);
-            }
-          },
-          builder: (context, model, child) => BaseScaffold(
-            isLoading: model.busy(model.isLoadingEvents),
-            isInteractionLimitedWhileLoading: false,
-            appBar: AppBar(
-              title: Text(AppIntl.of(context).title_dashboard),
-              centerTitle: false,
-              automaticallyImplyLeading: false,
-              actions: _buildActionButtons(model),
-            ),
+        viewModelBuilder: () => DashboardViewModel(),
+        onModelReady: (model) {
+          if (model.settings.isEmpty) {
+            model.loadSettings(_calendarController);
+          }
+        },
+        builder: (context, model, child) => BaseScaffold(
+          isLoading: model.busy(model.isLoadingEvents),
+          isInteractionLimitedWhileLoading: false,
+          appBar: AppBar(
+            title: Text(AppIntl.of(context).title_dashboard),
+            centerTitle: false,
+            automaticallyImplyLeading: false,
+            actions: _buildActionButtons(),
+          ),
           body: Column(mainAxisSize: MainAxisSize.min, children: [
             Dismissible(
               key: UniqueKey(),
@@ -94,46 +94,51 @@ class _DashboardViewState extends State<DashboardView>
         ),
       );
 
-
   Widget _buildAboutUsCard() {
     return Card(
       elevation: 1,
       color: AppTheme.appletsPurple,
-      child: Column(
-          mainAxisSize: MainAxisSize.min,
+      child: Column(mainAxisSize: MainAxisSize.min, children: [
+        Align(
+            alignment: Alignment.centerLeft,
+            child: Container(
+              padding: const EdgeInsets.fromLTRB(17, 10, 0, 0),
+              child: Text(AppIntl.of(context).card_applets_title,
+                  style: Theme.of(context).textTheme.headline6),
+            )),
+        Column(
           children: [
-            Align(
-                alignment: Alignment.centerLeft,
-                child: Container(padding: const EdgeInsets.fromLTRB(17, 10, 0, 0),
-                  child: Text(AppIntl.current.card_applets_title,  style: Theme.of(context).textTheme.headline6),
-                )),
-            Column(
-              children: [
-                Container(padding: const EdgeInsets.fromLTRB(17, 10, 15, 10),
-                  child: Text(AppIntl.current.card_applets_text,  style: Theme.of(context).textTheme.bodyText2),
-                ),
-                Row(
-                    children: [
-                      SizedBox(width: 2),
-                      FlatButton(
-                        child: Text('Facebook', style: TextStyle(fontSize: 20)),
-                        onPressed: () {launch('https://www.facebook.com/ClubApplETS');},
-                      ),
-                      SizedBox(width: 10),
-                      FlatButton(
-                        onPressed: () {launch('https://github.com/ApplETS/Notre-Dame');},
-                        child: Text('Github', style: TextStyle(fontSize: 20)),
-                      ),
-                      SizedBox(width: 10),
-                      FlatButton(
-                        onPressed: () {launch('mailto:info@clubapplets.ca');},
-                        child: const Text('Email', style: TextStyle(fontSize: 20)),
-                      ),
-                    ]
-                ),
-              ],
+            Container(
+              padding: const EdgeInsets.fromLTRB(17, 10, 15, 10),
+              child: Text(AppIntl.of(context).card_applets_text,
+                  style: Theme.of(context).textTheme.bodyText2),
             ),
-          ]),
+            Row(children: [
+              SizedBox(width: 2),
+              FlatButton(
+                child: Text('Facebook', style: TextStyle(fontSize: 20)),
+                onPressed: () {
+                  launch('https://www.facebook.com/ClubApplETS');
+                },
+              ),
+              SizedBox(width: 10),
+              FlatButton(
+                onPressed: () {
+                  launch('https://github.com/ApplETS/Notre-Dame');
+                },
+                child: Text('Github', style: TextStyle(fontSize: 20)),
+              ),
+              SizedBox(width: 10),
+              FlatButton(
+                onPressed: () {
+                  launch('mailto:info@clubapplets.ca');
+                },
+                child: const Text('Email', style: TextStyle(fontSize: 20)),
+              ),
+            ]),
+          ],
+        ),
+      ]),
     );
   }
 
