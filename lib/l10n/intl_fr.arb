@@ -186,5 +186,10 @@
   "flutter_website": "https://flutter.dev",
 
   "not_found_title": "Page introuvable",
-  "not_found_message": "Oh oh... il semblerait que la page n'est pas accessible."
+  "not_found_message": "Oh oh... il semblerait que la page {pageName} n'est pas accessible.",
+  "@not_found_message": {
+    "placeholders": {
+      "pageName": {}
+    }
+  }
 }

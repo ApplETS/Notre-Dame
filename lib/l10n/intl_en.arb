@@ -188,5 +188,10 @@
   "flutter_website": "https://flutter.dev",
 
   "not_found_title": "Inaccessible Page",
-  "not_found_message": "Oh oh... it seems that the page you requested is not accessible."
+  "not_found_message": "Oh oh... it seems that the page {pageName} you requested is not accessible.",
+  "@not_found_message": {
+    "placeholders": {
+      "pageName": {}
+    }
+  }
 }
