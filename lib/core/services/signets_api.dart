@@ -9,6 +9,7 @@ import 'package:xml/xml.dart';
 // CONSTANTS & EXCEPTIONS
 import 'package:notredame/core/constants/urls.dart';
 import 'package:notredame/core/utils/api_exception.dart';
+import 'package:notredame/core/constants/signets_errors.dart';
 
 // MODELS
 import 'package:notredame/core/models/course_activity.dart';
@@ -27,7 +28,7 @@ class SignetsApi {
   final String _signetsErrorTag = "erreur";
 
   /// Expression to validate the format of a session short name (ex: A2020)
-  final RegExp _sessionShortNameRegExp = RegExp("^([A-E-H][0-9]{4})");
+  final RegExp _sessionShortNameRegExp = RegExp("^([A-É-H][0-9]{4})");
 
   /// Expression to validate the format of a course (ex: MAT256-01)
   final RegExp _courseGroupRegExp = RegExp("^([A-Z]{3}[0-9]{3}-[0-9]{2})");
@@ -256,15 +257,24 @@ class SignetsApi {
         .findAllElements(_operationResponseTag(operation))
         .first;
 
-    // Throw exception if the error tag is not empty
+    // Throw exception if the error tag contains a blocking error
     if (responseBody
         .findElements(_signetsErrorTag)
         .first
         .innerText
         .isNotEmpty) {
-      throw ApiException(
-          prefix: tagError,
-          message: responseBody.findElements(_signetsErrorTag).first.innerText);
+      switch (responseBody.findElements(_signetsErrorTag).first.innerText) {
+        case SignetsError.scheduleNotAvailable:
+        case SignetsError.scheduleNotAvailableF:
+          // Don't do anything.
+          break;
+        case SignetsError.credentialsInvalid:
+        default:
+          throw ApiException(
+              prefix: tagError,
+              message:
+                  responseBody.findElements(_signetsErrorTag).first.innerText);
+      }
     }
 
     return responseBody;
