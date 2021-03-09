@@ -42,7 +42,7 @@ class NotFoundView extends StatelessWidget {
                         ),
                         Padding(
                           padding: const EdgeInsets.only(
-                            top: 80,
+                            top: 60,
                             bottom: 40,
                           ),
                           child: Text(
@@ -54,14 +54,16 @@ class NotFoundView extends StatelessWidget {
                             ),
                           ),
                         ),
-                        OutlinedButton(
-                          style: OutlinedButton.styleFrom(
-                            primary: AppTheme.primary,
+                        Flexible(
+                          child: OutlinedButton(
+                            style: OutlinedButton.styleFrom(
+                              primary: AppTheme.primary,
+                            ),
+                            onPressed: () {
+                              model.navigateToDashboard();
+                            },
+                            child: Text(AppIntl.of(context).go_to_dashboard),
                           ),
-                          onPressed: () {
-                            model.navigateToDashboard();
-                          },
-                          child: Text(AppIntl.of(context).go_to_dashboard),
                         ),
                       ],
                     ),

@@ -21,12 +21,12 @@ void main() {
       testWidgets(
           'has a go back to dashboard button and at least one text element',
           (WidgetTester tester) async {
-        await tester.pumpWidget(localizedWidget(child: NotFoundView("/test")));
+        await tester.pumpWidget(localizedWidget(child: const NotFoundView(pageName: "/test")));
         await tester.pumpAndSettle();
 
-        expect(find.byType(ElevatedButton), findsOneWidget);
+        expect(find.byType(OutlinedButton), findsOneWidget);
 
-        expect(find.byType(Text), findsOneWidget);
+        expect(find.byType(Text), findsWidgets);
       });
 
       group("golden - ", () {
@@ -34,7 +34,7 @@ void main() {
           tester.binding.window.physicalSizeTestValue = const Size(800, 1410);
 
           await tester
-              .pumpWidget(localizedWidget(child: NotFoundView("/test")));
+              .pumpWidget(localizedWidget(child: const NotFoundView(pageName: "/test")));
           await tester.pumpAndSettle();
 
           await expectLater(find.byType(NotFoundView),
