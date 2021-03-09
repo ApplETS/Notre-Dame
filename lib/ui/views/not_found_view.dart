@@ -9,22 +9,15 @@ import 'package:notredame/core/viewmodels/not_found_viewmodel.dart';
 // OTHER
 import 'package:notredame/ui/utils/app_theme.dart';
 
-class NotFoundView extends StatefulWidget {
-  NotFoundViewModel _viewModel;
+class NotFoundView extends StatelessWidget {
+  final String pageName;
 
-  NotFoundView(String pageName) {
-    _viewModel = NotFoundViewModel(pageName);
-  }
+  const NotFoundView({this.pageName});
 
-  @override
-  _NotFoundViewState createState() => _NotFoundViewState();
-}
-
-class _NotFoundViewState extends State<NotFoundView> {
   @override
   Widget build(BuildContext context) =>
       ViewModelBuilder<NotFoundViewModel>.nonReactive(
-          viewModelBuilder: () => widget._viewModel,
+          viewModelBuilder: () => NotFoundViewModel(pageName),
           builder: (context, model, child) => Scaffold(
                 body: SafeArea(
                   minimum: const EdgeInsets.all(20),
@@ -59,7 +52,7 @@ class _NotFoundViewState extends State<NotFoundView> {
                           onPressed: () {
                             model.navigateToDashboard();
                           },
-                          child: Text(AppIntl.of(context).title_dashboard),
+                          child: Text(AppIntl.of(context).go_to_dashboard),
                         ),
                       ],
                     ),

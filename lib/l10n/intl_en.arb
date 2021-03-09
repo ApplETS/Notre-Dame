@@ -193,5 +193,6 @@
     "placeholders": {
       "pageName": {}
     }
-  }
+  },
+  "go_to_dashboard": "Go to Dashboard"
 }
