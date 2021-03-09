@@ -9,11 +9,22 @@ import 'package:notredame/core/viewmodels/not_found_viewmodel.dart';
 // OTHER
 import 'package:notredame/ui/utils/app_theme.dart';
 
-class NotFoundView extends StatelessWidget {
+class NotFoundView extends StatefulWidget {
+  NotFoundViewModel _viewModel;
+
+  NotFoundView(String pageName) {
+    _viewModel = NotFoundViewModel(pageName);
+  }
+
+  @override
+  _NotFoundViewState createState() => _NotFoundViewState();
+}
+
+class _NotFoundViewState extends State<NotFoundView> {
   @override
   Widget build(BuildContext context) =>
       ViewModelBuilder<NotFoundViewModel>.nonReactive(
-          viewModelBuilder: () => NotFoundViewModel(),
+          viewModelBuilder: () => widget._viewModel,
           builder: (context, model, child) => Scaffold(
                 body: SafeArea(
                   minimum: const EdgeInsets.all(20),
@@ -32,7 +43,8 @@ class NotFoundView extends StatelessWidget {
                             bottom: 80,
                           ),
                           child: Text(
-                            AppIntl.of(context).not_found_message,
+                            AppIntl.of(context)
+                                .not_found_message(model.getNotFoundPageName()),
                             textAlign: TextAlign.center,
                             style: const TextStyle(
                               fontSize: 15,

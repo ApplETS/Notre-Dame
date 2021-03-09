@@ -60,7 +60,7 @@ class AppRouter {
       default:
         return PageRouteBuilder(
             settings: RouteSettings(name: routeSettings.name),
-            pageBuilder: (_, __, ___) => NotFoundView());
+            pageBuilder: (_, __, ___) => NotFoundView(routeSettings.name));
     }
   }
 }

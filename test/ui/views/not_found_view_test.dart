@@ -12,24 +12,29 @@ void main() {
   group('NotFoundView - ', () {
     setUp(() async {
       setupNavigationServiceMock();
+      setupAnalyticsServiceMock();
     });
 
     tearDown(() {});
 
     group('UI - ', () {
-      testWidgets('has a go back to dashboard button',
+      testWidgets(
+          'has a go back to dashboard button and at least one text element',
           (WidgetTester tester) async {
-        await tester.pumpWidget(localizedWidget(child: NotFoundView()));
+        await tester.pumpWidget(localizedWidget(child: NotFoundView("/test")));
         await tester.pumpAndSettle();
 
         expect(find.byType(ElevatedButton), findsOneWidget);
+
+        expect(find.byType(Text), findsOneWidget);
       });
 
       group("golden - ", () {
         testWidgets("default view (no events)", (WidgetTester tester) async {
           tester.binding.window.physicalSizeTestValue = const Size(800, 1410);
 
-          await tester.pumpWidget(localizedWidget(child: NotFoundView()));
+          await tester
+              .pumpWidget(localizedWidget(child: NotFoundView("/test")));
           await tester.pumpAndSettle();
 
           await expectLater(find.byType(NotFoundView),
