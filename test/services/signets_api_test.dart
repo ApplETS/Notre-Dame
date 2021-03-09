@@ -133,13 +133,13 @@ void main() {
             SignetsError.scheduleNotAvailable,
             'ListeDesSeances');
 
-        HttpClientMock.stubPost(clientMock, Urls.signetsAPI, stubResponse);
+        HttpClientMock.stubPost(clientMock, Urls.signetsAPI, stubResponseF);
 
         final resultF = await service.getCoursesActivities(
             username: username, password: password, session: session);
 
-        expect(result, isA<List<CourseActivity>>());
-        expect(result.length, 0);
+        expect(resultF, isA<List<CourseActivity>>());
+        expect(resultF.length, 0);
       });
 
       group("invalid parameters - ", () {
