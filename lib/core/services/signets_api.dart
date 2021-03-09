@@ -265,6 +265,7 @@ class SignetsApi {
         .isNotEmpty) {
       switch (responseBody.findElements(_signetsErrorTag).first.innerText) {
         case SignetsError.scheduleNotAvailable:
+        case SignetsError.scheduleNotAvailableF:
           // Don't do anything.
           break;
         case SignetsError.credentialsInvalid:

@@ -125,6 +125,21 @@ void main() {
 
         expect(result, isA<List<CourseActivity>>());
         expect(result.length, 0);
+
+        // Restart the test with the female version of the error
+        reset(clientMock);
+        final String stubResponseF = buildErrorResponse(
+            Urls.listClassScheduleOperation,
+            SignetsError.scheduleNotAvailable,
+            'ListeDesSeances');
+
+        HttpClientMock.stubPost(clientMock, Urls.signetsAPI, stubResponse);
+
+        final resultF = await service.getCoursesActivities(
+            username: username, password: password, session: session);
+
+        expect(result, isA<List<CourseActivity>>());
+        expect(result.length, 0);
       });
 
       group("invalid parameters - ", () {
