@@ -1,10 +1,13 @@
 // FLUTTER / DART / THIRD-PARTIES
 import 'package:flutter/material.dart';
-import 'package:notredame/ui/utils/app_theme.dart';
+import 'package:stacked/stacked.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
+// VIEWMODELS
 import 'package:notredame/core/viewmodels/not_found_viewmodel.dart';
 
-import 'package:stacked/stacked.dart';
-import 'package:notredame/generated/l10n.dart';
+// OTHER
+import 'package:notredame/ui/utils/app_theme.dart';
 
 class NotFoundView extends StatelessWidget {
   @override
@@ -12,7 +15,6 @@ class NotFoundView extends StatelessWidget {
       ViewModelBuilder<NotFoundViewModel>.nonReactive(
           viewModelBuilder: () => NotFoundViewModel(),
           builder: (context, model, child) => Scaffold(
-                backgroundColor: AppTheme.lightTheme.canvasColor,
                 body: SafeArea(
                   minimum: const EdgeInsets.all(20),
                   child: Center(
@@ -37,16 +39,15 @@ class NotFoundView extends StatelessWidget {
                             ),
                           ),
                         ),
-                        FlatButton(
-                          color: AppTheme.primary,
+                        ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            primary: AppTheme.primary,
+                            onPrimary: Colors.white,
+                          ),
                           onPressed: () {
                             model.navigateToDashboard();
                           },
-                          child: Text(
-                            AppIntl.of(context).title_dashboard,
-                            style: const TextStyle(
-                                color: Color.fromARGB(255, 255, 255, 255)),
-                          ),
+                          child: Text(AppIntl.of(context).title_dashboard),
                         ),
                       ],
                     ),
