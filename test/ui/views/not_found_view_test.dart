@@ -4,8 +4,8 @@ import 'package:flutter_test/flutter_test.dart';
 
 // VIEW
 import 'package:notredame/ui/views/not_found_view.dart';
-import 'package:notredame/ui/widgets/base_scaffold.dart';
 
+// OTHER
 import '../../helpers.dart';
 
 void main() {
