@@ -22,7 +22,7 @@ void main() {
         await tester.pumpWidget(localizedWidget(child: NotFoundView()));
         await tester.pumpAndSettle();
 
-        expect(find.byType(FlatButton), findsOneWidget);
+        expect(find.byType(ElevatedButton), findsOneWidget);
       });
 
       group("golden - ", () {

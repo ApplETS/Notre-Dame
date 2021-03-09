@@ -29,7 +29,7 @@ void main() {
       unregister<NavigationService>();
     });
 
-    group('handleStartUp - ', () {
+    group('navigateToDashboard - ', () {
       test('navigating back worked', () async {
         viewModel.navigateToDashboard();
 
