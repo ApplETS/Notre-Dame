@@ -19,7 +19,7 @@ import 'package:notredame/ui/widgets/schedule_settings.dart';
 import 'package:notredame/core/constants/preferences_flags.dart';
 
 // OTHER
-import 'package:notredame/generated/l10n.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:notredame/ui/utils/app_theme.dart';
 
 class DashboardView extends StatefulWidget {
@@ -66,42 +66,43 @@ class _DashboardViewState extends State<DashboardView>
   @override
   Widget build(BuildContext context) =>
       ViewModelBuilder<ScheduleViewModel>.reactive(
-          viewModelBuilder: () => ScheduleViewModel(initialSelectedDate: widget.initialDay),
+          viewModelBuilder: () =>
+              ScheduleViewModel(initialSelectedDate: widget.initialDay),
           onModelReady: (model) {
             if (model.settings.isEmpty) {
               model.loadSettings(_calendarController);
             }
           },
           builder: (context, model, child) => BaseScaffold(
-            isLoading: model.busy(model.isLoadingEvents),
-            isInteractionLimitedWhileLoading: false,
-            appBar: AppBar(
-              title: Text(AppIntl.of(context).title_schedule),
-              centerTitle: false,
-              automaticallyImplyLeading: false,
-              actions: _buildActionButtons(model),
-            ),
-            body: Stack(children: [
-              Column(
-                children: [
-                  _buildTableCalendar(model),
-                  const SizedBox(height: 8.0),
-                  const Divider(indent: 8.0, endIndent: 8.0, thickness: 1),
-                  const SizedBox(height: 6.0),
-                  Center(
-                      child: Text(_dateFormat.format(model.selectedDate),
-                          style: Theme.of(context).textTheme.headline5)),
-                  const SizedBox(height: 2.0),
-                  Expanded(
-                      child: model.selectedDateEvents.isEmpty
-                          ? Center(
-                          child: Text(
-                              AppIntl.of(context).schedule_no_event))
-                          : _buildEventList(model.selectedDateEvents))
-                ],
-              ),
-            ]),
-          ));
+                isLoading: model.busy(model.isLoadingEvents),
+                isInteractionLimitedWhileLoading: false,
+                appBar: AppBar(
+                  title: Text(AppIntl.of(context).title_schedule),
+                  centerTitle: false,
+                  automaticallyImplyLeading: false,
+                  actions: _buildActionButtons(model),
+                ),
+                body: Stack(children: [
+                  Column(
+                    children: [
+                      _buildTableCalendar(model),
+                      const SizedBox(height: 8.0),
+                      const Divider(indent: 8.0, endIndent: 8.0, thickness: 1),
+                      const SizedBox(height: 6.0),
+                      Center(
+                          child: Text(_dateFormat.format(model.selectedDate),
+                              style: Theme.of(context).textTheme.headline5)),
+                      const SizedBox(height: 2.0),
+                      Expanded(
+                          child: model.selectedDateEvents.isEmpty
+                              ? Center(
+                                  child: Text(
+                                      AppIntl.of(context).schedule_no_event))
+                              : _buildEventList(model.selectedDateEvents))
+                    ],
+                  ),
+                ]),
+              ));
 
   /// Build the square with the number of [events] for the [date]
   Widget _buildEventsMarker(DateTime date, List events) {
@@ -132,34 +133,34 @@ class _DashboardViewState extends State<DashboardView>
 
   /// Build the calendar
   Widget _buildTableCalendar(ScheduleViewModel model) => TableCalendar(
-    //TODO uncomment when https://github.com/aleksanderwozniak/table_calendar/issues/164 is close
-    // startingDayOfWeek: model.settings[PreferencesFlag.scheduleSettingsStartWeekday] as StartingDayOfWeek,
-    startingDayOfWeek: StartingDayOfWeek.monday,
-    initialSelectedDay: widget.initialDay ?? DateTime.now(),
-    weekendDays: const [],
-    headerStyle: const HeaderStyle(
-        centerHeaderTitle: true, formatButtonVisible: false),
-    events: model.coursesActivities,
-    onDaySelected: (date, events, holidays) => setState(() {
-      model.selectedDate = date;
-    }),
-    builders: CalendarBuilders(
-        todayDayBuilder: (context, date, _) => _buildSelectedDate(
-            date, _defaultColor, textColor: Colors.black),
-        selectedDayBuilder: (context, date, _) => FadeTransition(
-          opacity:
-          Tween(begin: 0.0, end: 1.0).animate(_animationController),
-          child: _buildSelectedDate(date, _selectedColor,
-              textColor: Colors.black),
-        ),
-        markersBuilder: (context, date, events, holidays) =>
-        [_buildEventsMarker(date, events)]),
-    calendarController: _calendarController,
-  );
+        //TODO uncomment when https://github.com/aleksanderwozniak/table_calendar/issues/164 is close
+        // startingDayOfWeek: model.settings[PreferencesFlag.scheduleSettingsStartWeekday] as StartingDayOfWeek,
+        startingDayOfWeek: StartingDayOfWeek.monday,
+        initialSelectedDay: widget.initialDay ?? DateTime.now(),
+        weekendDays: const [],
+        headerStyle: const HeaderStyle(
+            centerHeaderTitle: true, formatButtonVisible: false),
+        events: model.coursesActivities,
+        onDaySelected: (date, events, holidays) => setState(() {
+          model.selectedDate = date;
+        }),
+        builders: CalendarBuilders(
+            todayDayBuilder: (context, date, _) => _buildSelectedDate(
+                date, _defaultColor, textColor: Colors.black),
+            selectedDayBuilder: (context, date, _) => FadeTransition(
+                  opacity:
+                      Tween(begin: 0.0, end: 1.0).animate(_animationController),
+                  child: _buildSelectedDate(date, _selectedColor,
+                      textColor: Colors.black),
+                ),
+            markersBuilder: (context, date, events, holidays) =>
+                [_buildEventsMarker(date, events)]),
+        calendarController: _calendarController,
+      );
 
   /// Build the visual for the selected [date]. The [color] parameter set the color for the tile.
   Widget _buildSelectedDate(DateTime date, Color color,
-      {Color textColor = Colors.white}) =>
+          {Color textColor = Colors.white}) =>
       Container(
         margin: const EdgeInsets.all(4.0),
         padding: const EdgeInsets.only(top: 5.0, left: 6.0),
@@ -184,29 +185,29 @@ class _DashboardViewState extends State<DashboardView>
   }
 
   List<Widget> _buildActionButtons(ScheduleViewModel model) => [
-    if ((model.settings[PreferencesFlag.scheduleSettingsShowTodayBtn]
-    as bool) ==
-        true)
-      IconButton(
-          icon: const Icon(Icons.today),
-          onPressed: () => setState(() {
-            _calendarController.setSelectedDay(DateTime.now());
-            model.selectedDate = DateTime.now();
-          })),
-    IconButton(
-        icon: const Icon(Icons.settings),
-        onPressed: () async {
-          await showModalBottomSheet(
-              isDismissible: true,
-              enableDrag: true,
-              isScrollControlled: true,
-              context: context,
-              shape: const RoundedRectangleBorder(
-                  borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(10),
-                      topRight: Radius.circular(10))),
-              builder: (context) => const ScheduleSettings());
-          model.loadSettings(_calendarController);
-        })
-  ];
+        if ((model.settings[PreferencesFlag.scheduleSettingsShowTodayBtn]
+                as bool) ==
+            true)
+          IconButton(
+              icon: const Icon(Icons.today),
+              onPressed: () => setState(() {
+                    _calendarController.setSelectedDay(DateTime.now());
+                    model.selectedDate = DateTime.now();
+                  })),
+        IconButton(
+            icon: const Icon(Icons.settings),
+            onPressed: () async {
+              await showModalBottomSheet(
+                  isDismissible: true,
+                  enableDrag: true,
+                  isScrollControlled: true,
+                  context: context,
+                  shape: const RoundedRectangleBorder(
+                      borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(10),
+                          topRight: Radius.circular(10))),
+                  builder: (context) => const ScheduleSettings());
+              model.loadSettings(_calendarController);
+            })
+      ];
 }
