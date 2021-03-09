@@ -67,78 +67,31 @@ class _DashboardViewState extends State<DashboardView>
   @override
   Widget build(BuildContext context) =>
       ViewModelBuilder<ScheduleViewModel>.reactive(
-          viewModelBuilder: () => ScheduleViewModel(initialSelectedDate: widget.initialDay),
-          onModelReady: (model) {
-            if (model.settings.isEmpty) {
-              model.loadSettings(_calendarController);
-            }
-          },
-          builder: (context, model, child) => BaseScaffold(
-            isLoading: model.busy(model.isLoadingEvents),
-            isInteractionLimitedWhileLoading: false,
-            appBar: AppBar(
-              title: Text(AppIntl.of(context).title_dashboard),
-              centerTitle: false,
-              automaticallyImplyLeading: false,
-              actions: _buildActionButtons(model),
+        viewModelBuilder: () =>
+            ScheduleViewModel(initialSelectedDate: widget.initialDay),
+        onModelReady: (model) {
+          if (model.settings.isEmpty) {
+            model.loadSettings(_calendarController);
+          }
+        },
+        builder: (context, model, child) => BaseScaffold(
+          isLoading: model.busy(model.isLoadingEvents),
+          isInteractionLimitedWhileLoading: false,
+          appBar: AppBar(
+            title: Text(AppIntl.of(context).title_dashboard),
+            centerTitle: false,
+            automaticallyImplyLeading: false,
+            actions: _buildActionButtons(),
+          ),
+          body: Column(mainAxisSize: MainAxisSize.min, children: [
+            Dismissible(
+              key: UniqueKey(),
+              child: _buildAboutUsCard(),
             ),
-            body: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Dismissible(
-                    key: UniqueKey(),
-                    child: _buildAboutUsCard(model),
-                  ),
-                  const SizedBox(height: 6.0),
-                  Expanded(
-
-                    child:
-                    scheduleVisible ? IntrinsicHeight(
-                      child: Dismissible(
-                        key: UniqueKey(),
-                        child: _buildTodayScheduleCard(model),
-                      ),
-                    )
-                        : const SizedBox(),
-
-                  ),
-                ),
-                Flexible(
-                  flex: 10,
-                  fit: FlexFit.tight,
-                  child: Dismissible(
-                    key: UniqueKey(),
-                    child: Card(
-                      elevation: 1,
-                      child:
-                      Column(
-
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Align(
-                                alignment: Alignment.centerLeft,
-                                child: Container(padding: const EdgeInsets.fromLTRB(10, 10, 0, 0),
-                                  child: Text(AppIntl.of(context).title_schedule,  style: Theme.of(context).textTheme.headline6),)),
-                            Flexible(
-                                fit: FlexFit.tight,
-                                child: model.selectedDateEvents.isEmpty
-                                    ? Center(
-                                    child: Text(
-                                        AppIntl.of(context).schedule_no_event))
-                                    : _buildEventList(model.selectedDateEvents))
-                          ]),
-
-                    ),
-
-                  ),
-                ),
-              ],
-            ),
-          )
+            const SizedBox(height: 6.0),
+          ]),
+        ),
       );
-
-                ]),
-          ));
 
   /// Build the list of the events for the selected day.
   Widget _buildEventList(List<dynamic> events) {
@@ -151,94 +104,53 @@ class _DashboardViewState extends State<DashboardView>
         itemCount: events.length);
   }
 
-  Widget _buildTodayScheduleCard(DashboardViewModel model)  {
+  Widget _buildAboutUsCard() {
     return Card(
       elevation: 1,
-      child:
-      Column(
-          mainAxisSize: MainAxisSize.min,
+      child: Column(mainAxisSize: MainAxisSize.min, children: [
+        Align(
+            alignment: Alignment.centerLeft,
+            child: Container(
+              padding: const EdgeInsets.fromLTRB(10, 10, 0, 0),
+              child:
+                  Text("App|ETS", style: Theme.of(context).textTheme.headline6),
+            )),
+        Column(
           children: [
-            Align(
-                alignment: Alignment.centerLeft,
-                child: Container(padding: const EdgeInsets.fromLTRB(10, 10, 0, 0),
-                  child: Text(AppIntl.of(context).title_schedule,  style: Theme.of(context).textTheme.headline6),)),
-            Flexible(
-                fit: FlexFit.tight,
-                child: model.todayDateEvents.isEmpty
-                    ? Center(
-                    child: Text(
-                        AppIntl.of(context).schedule_no_event))
-                    : _buildEventList(model.todayDateEvents))
-          ]),
-    );
-  }
-
-  Widget _buildAboutUsCard(DashboardViewModel model)  {
-    return Card(
-      elevation: 1,
-      child:
-      Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Align(
-                alignment: Alignment.centerLeft,
-                child: Container(padding: const EdgeInsets.fromLTRB(10, 10, 0, 0),
-                  child: Text("App|ETS",  style: Theme.of(context).textTheme.headline6),
-                )),
-            Column(
-              children: [
-                Container(padding: const EdgeInsets.fromLTRB(10, 10, 0, 0),
-                  child: Text("ETSMobile was made by club App|ETS. Support us by liking our Facebook page..",  style: Theme.of(context).textTheme.bodyText2),
-                ),
-                Row(
-                    children: [
-                      SizedBox(width: 10),
-                      RaisedButton(
-                        onPressed: () {launch('https://www.facebook.com/ClubApplETS');},
-                        child: const Text('Facebook', style: TextStyle(fontSize: 20)),
-                      ),
-                      SizedBox(width: 10),
-                      RaisedButton(
-                        onPressed: () {launch('https://github.com/ApplETS/Notre-Dame');},
-                        child: const Text('Github', style: TextStyle(fontSize: 20)),
-                      ),
-                      SizedBox(width: 10),
-                      RaisedButton(
-                        onPressed: () {launch('mailto:info@clubapplets.ca');},
-                        child: const Text('Email', style: TextStyle(fontSize: 20)),
-                      ),
-                    ]
-                ),
-              ],
+            Container(
+              padding: const EdgeInsets.fromLTRB(10, 10, 0, 0),
+              child: Text(
+                  "ETSMobile was made by club App|ETS. Support us by liking our Facebook page..",
+                  style: Theme.of(context).textTheme.bodyText2),
             ),
-          ]),
+            Row(children: [
+              SizedBox(width: 10),
+              RaisedButton(
+                onPressed: () {
+                  launch('https://www.facebook.com/ClubApplETS');
+                },
+                child: const Text('Facebook', style: TextStyle(fontSize: 20)),
+              ),
+              SizedBox(width: 10),
+              RaisedButton(
+                onPressed: () {
+                  launch('https://github.com/ApplETS/Notre-Dame');
+                },
+                child: const Text('Github', style: TextStyle(fontSize: 20)),
+              ),
+              SizedBox(width: 10),
+              RaisedButton(
+                onPressed: () {
+                  launch('mailto:info@clubapplets.ca');
+                },
+                child: const Text('Email', style: TextStyle(fontSize: 20)),
+              ),
+            ]),
+          ],
+        ),
+      ]),
     );
   }
 
-  List<Widget> _buildActionButtons(DashboardViewModel model) => [
-    if ((model.settings[PreferencesFlag.scheduleSettingsShowTodayBtn]
-    as bool) ==
-        true)
-      IconButton(
-          icon: const Icon(Icons.today),
-          onPressed: () => setState(() {
-            _calendarController.setSelectedDay(DateTime.now());
-            model.selectedDate = DateTime.now();
-          })),
-    IconButton(
-        icon: const Icon(Icons.settings),
-        onPressed: () async {
-          await showModalBottomSheet(
-              isDismissible: true,
-              enableDrag: true,
-              isScrollControlled: true,
-              context: context,
-              shape: const RoundedRectangleBorder(
-                  borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(110),
-                      topRight: Radius.circular(10))),
-              builder: (context) => const ScheduleSettings());
-          model.loadSettings(_calendarController);
-        })
-  ];
+  List<Widget> _buildActionButtons() => [];
 }
