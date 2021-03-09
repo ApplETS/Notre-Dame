@@ -2,11 +2,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:logger/logger.dart';
 
 // OTHER
 import 'package:notredame/locator.dart';
-import 'package:notredame/generated/l10n.dart';
 
 // SERVICES
 import 'package:notredame/core/services/navigation_service.dart';
@@ -111,7 +111,7 @@ UserRepository setupUserRepositoryMock() {
 
 /// Load the Internationalization class
 Future<AppIntl> setupAppIntl() async {
-  return AppIntl.load(const Locale('en'));
+  return AppIntl.delegate.load(const Locale('en'));
 }
 
 /// Load a mock of the [SignetsApi]

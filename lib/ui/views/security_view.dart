@@ -4,15 +4,17 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:stacked/stacked.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 // VIEW MODEL
 import 'package:notredame/core/viewmodels/security_viewmodel.dart';
 
-// OTHER
-import 'package:notredame/generated/l10n.dart';
-import 'package:notredame/ui/utils/app_theme.dart';
+// VIEWS
+import 'package:notredame/ui/views/emergency_view.dart';
 
-import 'emergency_view.dart';
+// OTHER
+import 'package:notredame/ui/utils/app_theme.dart';
+import 'package:notredame/core/utils/utils.dart';
 
 class SecurityView extends StatefulWidget {
   @override
@@ -22,13 +24,12 @@ class SecurityView extends StatefulWidget {
 class _SecurityViewState extends State<SecurityView> {
   static const CameraPosition _etsLocation = CameraPosition(
       target: LatLng(45.49449875, -73.56246144109338), zoom: 17.0);
-  final _scaffoldKey = GlobalKey<ScaffoldState>();
+
   @override
   Widget build(BuildContext context) =>
       ViewModelBuilder<SecurityViewModel>.reactive(
-        viewModelBuilder: () => SecurityViewModel(),
+        viewModelBuilder: () => SecurityViewModel(intl: AppIntl.of(context)),
         builder: (context, model, child) => Scaffold(
-          key: _scaffoldKey,
           appBar: AppBar(
             title: Text(AppIntl.of(context).ets_security_title),
           ),
@@ -64,11 +65,10 @@ class _SecurityViewState extends State<SecurityView> {
                 Card(
                   child: InkWell(
                     splashColor: Colors.red.withAlpha(50),
-                    onTap: () => model
-                        .openPhoneApp(
-                            'tel:${AppIntl.of(context).security_emergency_number}')
+                    onTap: () => Utils.launchURL(
+                            'tel:${AppIntl.of(context).security_emergency_number}', AppIntl.of(context))
                         .catchError((error) {
-                      _scaffoldKey.currentState.showSnackBar(
+                      ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(content: Text(error.toString())));
                     }),
                     child: ListTile(
@@ -99,7 +99,7 @@ class _SecurityViewState extends State<SecurityView> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: List.generate(
                       model.emergencyProcedureList.length,
-                      (index) => FlatButton(
+                      (index) => TextButton(
                         onPressed: () => Navigator.push(
                             context,
                             MaterialPageRoute(

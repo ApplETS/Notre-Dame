@@ -1,6 +1,7 @@
 // FLUTTER / DART / THIRD-PARTIES
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 // SERVICE
 import 'package:notredame/core/managers/user_repository.dart';
@@ -9,7 +10,6 @@ import 'package:notredame/core/services/navigation_service.dart';
 // OTHER
 import 'package:notredame/locator.dart';
 import 'package:notredame/core/constants/router_paths.dart';
-import 'package:notredame/generated/l10n.dart';
 
 class LoginViewModel extends BaseViewModel {
   /// Used to authenticate the user
@@ -33,8 +33,7 @@ class LoginViewModel extends BaseViewModel {
   /// Used to enable/disable the "log in" button
   bool get canSubmit => _universalCode.isNotEmpty && _password.isNotEmpty;
 
-  LoginViewModel({@required AppIntl intl})
-      : _appIntl = intl;
+  LoginViewModel({@required AppIntl intl}) : _appIntl = intl;
 
   /// Validate the format of the universal code
   String validateUniversalCode(String value) {
@@ -71,6 +70,7 @@ class LoginViewModel extends BaseViewModel {
 
     if (response) {
       _navigationService.pushNamed(RouterPaths.dashboard);
+      return '';
     }
     _password = "";
     setBusy(false);

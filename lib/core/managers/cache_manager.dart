@@ -56,6 +56,15 @@ class CacheManager {
       await _cacheManager.removeFile(key);
     } on Exception catch (e) {
       _analyticsService.logError(tag, "Exception raised during cache delete of $key: ${e.toString()}");
+    }
+  }
+  /// Empty the cache
+  Future empty() async {
+    try {
+      await _cacheManager.emptyCache();
+    } on Exception catch (e) {
+      _analyticsService.logError(
+          tag, "Exception raised during emptying cache: $e");
       rethrow;
     }
   }

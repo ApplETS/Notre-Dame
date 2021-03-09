@@ -18,6 +18,11 @@ class SettingsManagerMock extends Mock implements SettingsManager {
     when(mock.setString(flag, any)).thenAnswer((_) async => toReturn);
   }
 
+  /// Stub the [getString] function of [mock], when called with [flag] return [toReturn].
+  static void stubGetString(SettingsManagerMock mock, PreferencesFlag flag, {String toReturn = 'test'}) {
+    when(mock.getString(flag)).thenAnswer((_) async => toReturn);
+  }
+
   /// Stub the [setBool] function of [mock], when called with [flag] return [toReturn].
   static void stubSetBool(SettingsManagerMock mock, PreferencesFlag flag, {bool toReturn = true}) {
     when(mock.setBool(flag, any)).thenAnswer((_) async => toReturn);

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 import 'package:table_calendar/table_calendar.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 // MANAGERS
 import 'package:notredame/core/managers/settings_manager.dart';
@@ -12,9 +13,6 @@ import 'package:notredame/core/constants/preferences_flags.dart';
 
 // WIDGET
 import 'package:notredame/ui/widgets/schedule_settings.dart';
-
-// GENERATED
-import 'package:notredame/generated/l10n.dart';
 
 import '../../helpers.dart';
 

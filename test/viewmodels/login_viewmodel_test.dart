@@ -1,10 +1,7 @@
 // FLUTTER / DART / THIRD-PARTIES
 import 'package:flutter_test/flutter_test.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:mockito/mockito.dart';
-import 'package:notredame/core/constants/router_paths.dart';
-
-// GENERATED
-import 'package:notredame/generated/l10n.dart';
 
 // SERVICES / MANAGERS
 import 'package:notredame/core/managers/user_repository.dart';
@@ -12,6 +9,9 @@ import 'package:notredame/core/services/navigation_service.dart';
 
 // VIEW MODEL
 import 'package:notredame/core/viewmodels/login_viewmodel.dart';
+
+// CONSTANTS
+import 'package:notredame/core/constants/router_paths.dart';
 
 // OTHER
 import '../helpers.dart';

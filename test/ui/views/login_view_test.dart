@@ -1,11 +1,11 @@
 // FLUTTER / DART / THIRD-PARTIES
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
+// MANAGERS / SERVICES
 import 'package:notredame/core/managers/user_repository.dart';
 import 'package:notredame/core/services/navigation_service.dart';
-
-// GENERATED
-import 'package:notredame/generated/l10n.dart';
 
 // VIEWS
 import 'package:notredame/ui/views/login_view.dart';
@@ -44,11 +44,11 @@ void main() {
             findsOneWidget);
 
         final Finder signInButton =
-            find.widgetWithText(FlatButton, intl.login_action_sign_in);
+            find.widgetWithText(ElevatedButton, intl.login_action_sign_in);
         expect(signInButton, findsOneWidget);
         expect(
             tester.widget(signInButton),
-            isA<FlatButton>()
+            isA<ElevatedButton>()
                 .having((source) => source.onPressed, 'onPressed', isNull));
       });
     });

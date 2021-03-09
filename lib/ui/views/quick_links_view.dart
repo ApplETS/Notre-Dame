@@ -1,6 +1,7 @@
 // FLUTTER / DART / THIRD-PARTIES
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 // VIEW-MODEL
 import 'package:notredame/core/viewmodels/quick_links_viewmodel.dart';
@@ -10,7 +11,6 @@ import 'package:notredame/ui/widgets/base_scaffold.dart';
 import 'package:notredame/ui/widgets/web_link_card.dart';
 
 // OTHER
-import 'package:notredame/generated/l10n.dart';
 
 class QuickLinksView extends StatefulWidget {
   @override
@@ -21,7 +21,7 @@ class _QuickLinksViewState extends State<QuickLinksView> {
   @override
   Widget build(BuildContext context) =>
       ViewModelBuilder<QuickLinksViewModel>.reactive(
-        viewModelBuilder: () => QuickLinksViewModel(),
+        viewModelBuilder: () => QuickLinksViewModel(AppIntl.of(context)),
         builder: (context, model, child) => BaseScaffold(
           isLoading: model.isBusy,
           appBar: AppBar(
