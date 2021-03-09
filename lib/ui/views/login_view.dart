@@ -1,7 +1,7 @@
 // FLUTTER / DART / THIRD-PARTIES
 import 'package:flutter/material.dart';
-
-import 'package:notredame/ui/utils/app_theme.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:oktoast/oktoast.dart';
 import 'package:stacked/stacked.dart';
 
 // VIEW MODEL
@@ -10,8 +10,8 @@ import 'package:notredame/core/viewmodels/login_viewmodel.dart';
 // WIDGETS
 import 'package:notredame/ui/widgets/password_text_field.dart';
 
-// GENERATED
-import 'package:notredame/generated/l10n.dart';
+// OTHER
+import 'package:notredame/ui/utils/app_theme.dart';
 
 class LoginView extends StatefulWidget {
   @override
@@ -46,20 +46,22 @@ class _LoginViewState extends State<LoginView> {
                           formKey.currentState.validate();
                         });
                       },
-                      child: FocusScope(
-                        node: _focusNode,
-                        child: Column(
-                          children: [
-                            Hero(
-                              tag: 'ets_logo',
-                              child: Image.asset(
-                                'assets/images/ets_white_logo.png',
-                                excludeFromSemantics: true,
-                                width: 216,
-                                height: 216,
+                      child: AutofillGroup(
+                        child: FocusScope(
+                          node: _focusNode,
+                          child: Column(
+                            children: [
+                              Hero(
+                                tag: 'ets_logo',
+                                child: Image.asset(
+                                  'assets/images/ets_white_logo.png',
+                                  excludeFromSemantics: true,
+                                  width: 216,
+                                  height: 216,
+                                ),
                               ),
-                            ),
-                            TextFormField(
+                              TextFormField(
+                                autofillHints: const [AutofillHints.username],
                               cursorColor: Colors.white,
                               decoration: InputDecoration(
                                 enabledBorder: const OutlineInputBorder(
@@ -101,34 +103,46 @@ class _LoginViewState extends State<LoginView> {
                             ),
                             SizedBox(
                               width: double.infinity,
-                              child: FlatButton(
-                                onPressed: !model.canSubmit
-                                    ? null
-                                    : () async {
-                                        final String error =
-                                            await model.authenticate();
+                              child: ElevatedButton(
+                                  onPressed: !model.canSubmit
+                                      ? null
+                                      : () async {
+                                          final String error =
+                                              await model.authenticate();
 
-                                        setState(() {
-                                          Scaffold.of(context).showSnackBar(
-                                              SnackBar(content: Text(error)));
-                                          formKey.currentState.reset();
-                                        });
+                                          setState(() {
+                                            if (error.isNotEmpty) {
+                                              showToast(error);
+                                            }
+                                            formKey.currentState.reset();
+                                          });
+                                        },
+                                  style: ButtonStyle(
+                                    backgroundColor: MaterialStateProperty
+                                        .resolveWith<Color>(
+                                      (Set<MaterialState> states) {
+                                        if (states
+                                            .contains(MaterialState.disabled)) {
+                                          return Colors.white38;
+                                        }
+                                        return Colors
+                                            .white; // Use the component's default.
                                       },
-                                disabledColor: Colors.white38,
-                                color: Colors.white,
-                                padding: const EdgeInsets.only(
-                                    bottom: 16.0, top: 16.0),
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(10.0)),
-                                child: Text(
-                                  AppIntl.of(context).login_action_sign_in,
-                                  style: const TextStyle(
-                                      color: Color.fromRGBO(239, 62, 69, 1),
-                                      fontSize: 18),
+                                    ),
+                                    padding: MaterialStateProperty.all(
+                                        const EdgeInsets.symmetric(
+                                            vertical: 16)),
+                                  ),
+                                  child: Text(
+                                    AppIntl.of(context).login_action_sign_in,
+                                    style: const TextStyle(
+                                        color: Color.fromRGBO(239, 62, 69, 1),
+                                        fontSize: 18),
+                                  ),
                                 ),
-                              ),
-                            )
-                          ],
+                              )
+                            ],
+                          ),
                         ),
                       ),
                     ),

@@ -51,12 +51,12 @@ void main() {
   final List<CourseActivity> activities = [gen101, gen102, gen103];
 
   group("ScheduleViewModel - ", () {
-    setUp(() {
+    setUp(() async {
       // Setting up mocks
       courseRepository = setupCourseRepositoryMock();
       settingsManager = setupSettingsManagerMock();
 
-      viewModel = ScheduleViewModel();
+      viewModel = ScheduleViewModel(intl: await setupAppIntl());
     });
 
     tearDown(() {

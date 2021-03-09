@@ -1,6 +1,6 @@
 // FLUTTER / DART / THIRD-PARTIES
 import 'package:flutter/material.dart';
-import 'package:notredame/generated/l10n.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 // SERVICE
 import 'package:notredame/core/services/navigation_service.dart';
@@ -43,9 +43,12 @@ class BottomBar extends StatelessWidget {
         currentView = studentView;
         break;
       case RouterPaths.ets:
+      case RouterPaths.security:
         currentView = etsView;
         break;
       case RouterPaths.more:
+      case RouterPaths.settings:
+      case RouterPaths.about:
         currentView = moreView;
         break;
     }

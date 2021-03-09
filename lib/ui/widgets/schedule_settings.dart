@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:notredame/core/viewmodels/schedule_settings_viewmodel.dart';
-import 'package:notredame/ui/utils/app_theme.dart';
 import 'package:stacked/stacked.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:table_calendar/table_calendar.dart';
+
+// VIEWMODELS
+import 'package:notredame/core/viewmodels/schedule_settings_viewmodel.dart';
 
 // OTHER
-import 'package:notredame/generated/l10n.dart';
-import 'package:table_calendar/table_calendar.dart';
+import 'package:notredame/ui/utils/app_theme.dart';
 
 class ScheduleSettings extends StatefulWidget {
   final bool showHandle;
@@ -159,7 +161,8 @@ class _ScheduleSettingsState extends State<ScheduleSettings> {
   }
 
   String getTextForDay(BuildContext context, StartingDayOfWeek day) {
-    switch (day) { // ignore: missing_enum_constant_in_switch
+    // ignore: missing_enum_constant_in_switch
+    switch (day) {
       case StartingDayOfWeek.sunday:
         return AppIntl.of(context).schedule_settings_starting_weekday_sunday;
       case StartingDayOfWeek.saturday:

@@ -1,17 +1,12 @@
 // FLUTTER / DART / THIRD-PARTIES
 import 'package:flutter/material.dart';
-
-// OTHER
-import 'package:notredame/generated/l10n.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class PasswordFormField extends StatefulWidget {
   final FormFieldValidator<String> validator;
   final VoidCallback onEditionComplete;
 
-  const PasswordFormField(
-      {Key key,
-      this.validator,
-      this.onEditionComplete})
+  const PasswordFormField({Key key, this.validator, this.onEditionComplete})
       : super(key: key);
 
   @override
@@ -26,6 +21,7 @@ class _PasswordFormFieldState extends State<PasswordFormField> {
 
   @override
   Widget build(BuildContext context) => TextFormField(
+        autofillHints: [AutofillHints.password],
         cursorColor: Colors.white,
         obscureText: _obscureText,
         decoration: InputDecoration(

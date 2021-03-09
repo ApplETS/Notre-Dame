@@ -1,15 +1,13 @@
 // FLUTTER / DART / THIRD-PARTIES
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 // MODEL
 import 'package:notredame/core/models/program.dart';
 
 // VIEW
 import 'package:notredame/ui/widgets/student_program.dart';
-
-// GENERATED
-import 'package:notredame/generated/l10n.dart';
 
 import '../../helpers.dart';
 
