@@ -25,6 +25,16 @@ class NotFoundView extends StatelessWidget {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
+                        const Padding(
+                          padding: EdgeInsets.only(
+                            bottom: 40,
+                          ),
+                          child: Icon(
+                            Icons.more_horiz,
+                            color: AppTheme.primary,
+                            size: 128.0,
+                          ),
+                        ),
                         Text(
                           AppIntl.of(context).not_found_title,
                           style: const TextStyle(
@@ -32,8 +42,8 @@ class NotFoundView extends StatelessWidget {
                         ),
                         Padding(
                           padding: const EdgeInsets.only(
-                            top: 40,
-                            bottom: 80,
+                            top: 80,
+                            bottom: 40,
                           ),
                           child: Text(
                             AppIntl.of(context)
@@ -44,10 +54,9 @@ class NotFoundView extends StatelessWidget {
                             ),
                           ),
                         ),
-                        ElevatedButton(
-                          style: ElevatedButton.styleFrom(
+                        OutlinedButton(
+                          style: OutlinedButton.styleFrom(
                             primary: AppTheme.primary,
-                            onPrimary: Colors.white,
                           ),
                           onPressed: () {
                             model.navigateToDashboard();
