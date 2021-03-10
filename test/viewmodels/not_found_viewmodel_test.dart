@@ -18,12 +18,13 @@ void main() {
   NotFoundViewModel viewModel;
 
   group('NotFoundViewModel - ', () {
+    const String _pageNotFoundPassed = "/test";
     setUp(() async {
       navigationService = setupNavigationServiceMock();
       setupAnalyticsServiceMock();
       setupLogger();
 
-      viewModel = NotFoundViewModel("/test");
+      viewModel = NotFoundViewModel(_pageNotFoundPassed);
     });
 
     tearDown(() {
@@ -35,6 +36,14 @@ void main() {
         viewModel.navigateToDashboard();
 
         verify(navigationService.pushNamed(RouterPaths.dashboard));
+      });
+    });
+
+    group('notFoundPageName prop - ', () {
+      test('get the page pass in parameter', () async {
+        final notFoundName = viewModel.notFoundPageName;
+
+        expect(_pageNotFoundPassed, notFoundName);
       });
     });
   });

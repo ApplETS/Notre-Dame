@@ -24,7 +24,7 @@ class NotFoundViewModel extends BaseViewModel {
         tag, "An unknown page ($pageName) has been access from the app.");
   }
 
-  String getNotFoundPageName() {
+  String get notFoundPageName {
     return _pageName;
   }
 

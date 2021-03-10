@@ -24,7 +24,7 @@ void main() {
         await tester.pumpWidget(localizedWidget(child: const NotFoundView(pageName: "/test")));
         await tester.pumpAndSettle();
 
-        expect(find.byType(OutlinedButton), findsOneWidget);
+        expect(find.byType(ElevatedButton), findsOneWidget);
 
         expect(find.byType(Text), findsWidgets);
       });

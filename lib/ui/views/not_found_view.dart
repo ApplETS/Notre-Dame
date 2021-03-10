@@ -47,7 +47,7 @@ class NotFoundView extends StatelessWidget {
                           ),
                           child: Text(
                             AppIntl.of(context)
-                                .not_found_message(model.getNotFoundPageName()),
+                                .not_found_message(model.notFoundPageName),
                             textAlign: TextAlign.center,
                             style: const TextStyle(
                               fontSize: 15,
@@ -55,8 +55,8 @@ class NotFoundView extends StatelessWidget {
                           ),
                         ),
                         Flexible(
-                          child: OutlinedButton(
-                            style: OutlinedButton.styleFrom(
+                          child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
                               primary: AppTheme.primary,
                             ),
                             onPressed: () {
