@@ -39,11 +39,20 @@ class SettingsManager with ChangeNotifier {
     return _themeMode;
   }
 
+  /// Get Locale and Theme to init app with
+  Future<void> fetchLanguageAndThemeMode() async {
+    final theme = await _preferencesService.getString(PreferencesFlag.theme);
+    _themeMode = ThemeMode.values.firstWhere((e) => e.toString() == theme);
+    final lang = await _preferencesService.getString(PreferencesFlag.locale);
+    _locale = AppIntl.supportedLocales.firstWhere((e) => e.toString() == lang);
+    return;
+  }
+
   /// Get Locale
   Locale get locale {
     _preferencesService.getString(PreferencesFlag.locale).then((value) {
-      _locale = AppIntl.supportedLocales
-          .firstWhere((e) => e.toString() == value);
+      _locale =
+          AppIntl.supportedLocales.firstWhere((e) => e.toString() == value);
     });
     if (_locale == null) {
       return null;
@@ -64,8 +73,7 @@ class SettingsManager with ChangeNotifier {
 
   /// Set Locale
   void setLocale(String value) {
-    _locale = AppIntl.supportedLocales
-        .firstWhere((e) => e.toString() == value);
+    _locale = AppIntl.supportedLocales.firstWhere((e) => e.toString() == value);
     _preferencesService.setString(
         PreferencesFlag.locale, _locale.languageCode.toString());
     // Log the event
