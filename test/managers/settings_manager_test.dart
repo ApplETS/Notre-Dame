@@ -209,6 +209,23 @@ void main() {
       });
     });
 
+    test("fetch theme and locale", () async {
+      PreferencesServiceMock.stubGetString(
+          preferencesService as PreferencesServiceMock, PreferencesFlag.locale,
+          toReturn: const Locale('fr').toString());
+      PreferencesServiceMock.stubGetString(
+          preferencesService as PreferencesServiceMock, PreferencesFlag.theme,
+          toReturn: 'ThemeMode.system');
+
+      await manager.fetchLanguageAndThemeMode();
+
+      verify(preferencesService.getString(PreferencesFlag.theme)).called(1);
+      verify(preferencesService.getString(PreferencesFlag.locale)).called(1);
+
+      verifyNoMoreInteractions(preferencesService);
+      verifyNoMoreInteractions(analyticsService);
+    });
+
     test("setString", () async {
       const flag = PreferencesFlag.scheduleSettingsCalendarFormat;
       PreferencesServiceMock.stubSetString(
