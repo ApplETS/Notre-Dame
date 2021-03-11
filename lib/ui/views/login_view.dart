@@ -142,29 +142,17 @@ class _LoginViewState extends State<LoginView> {
                                       (Set<MaterialState> states) {
                                         if (states
                                             .contains(MaterialState.disabled)) {
-                                          return model.getAppTheme() ==
-                                                  ThemeMode.light.toString()
-                                              ? Colors.white38
-                                              : model.getAppTheme() ==
-                                                      ThemeMode.dark.toString()
-                                                  ? Colors.grey[800]
-                                                  : Theme.of(context)
-                                                              .brightness ==
-                                                          Brightness.light
-                                                      ? Colors.white38
-                                                      : Colors.grey[800];
+                                          return getButtonColor(
+                                              model.getAppTheme(),
+                                              context,
+                                              Colors.white38,
+                                              Colors.grey[800]);
                                         }
-                                        return model.getAppTheme() ==
-                                                ThemeMode.light.toString()
-                                            ? Colors.white
-                                            : model.getAppTheme() ==
-                                                    ThemeMode.dark.toString()
-                                                ? Colors.grey[900]
-                                                : Theme.of(context)
-                                                            .brightness ==
-                                                        Brightness.light
-                                                    ? Colors.white
-                                                    : Colors.grey[900];
+                                        return getButtonColor(
+                                            model.getAppTheme(),
+                                            context,
+                                            Colors.white,
+                                            Colors.grey[900]);
                                       },
                                     ),
                                     padding: MaterialStateProperty.all(
@@ -221,5 +209,16 @@ class _LoginViewState extends State<LoginView> {
             : Theme.of(context).brightness == Brightness.light
                 ? Colors.amberAccent
                 : Colors.redAccent;
+  }
+
+  Color getButtonColor(String appTheme, BuildContext context, Color lightColor,
+      Color darkcolor) {
+    return appTheme == ThemeMode.light.toString()
+        ? lightColor
+        : appTheme == ThemeMode.dark.toString()
+            ? darkcolor
+            : Theme.of(context).brightness == Brightness.light
+                ? lightColor
+                : darkcolor;
   }
 }
