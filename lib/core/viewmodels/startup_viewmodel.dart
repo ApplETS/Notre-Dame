@@ -4,12 +4,16 @@ import 'package:stacked/stacked.dart';
 // SERVICE
 import 'package:notredame/core/managers/user_repository.dart';
 import 'package:notredame/core/services/navigation_service.dart';
+import 'package:notredame/core/managers/settings_manager.dart';
 
 // OTHER
 import 'package:notredame/locator.dart';
 import 'package:notredame/core/constants/router_paths.dart';
 
 class StartUpViewModel extends BaseViewModel {
+  /// Manage the settings
+  final SettingsManager _settingsManager = locator<SettingsManager>();
+
   /// Used to authenticate the user
   final UserRepository _userRepository = locator<UserRepository>();
 
@@ -25,5 +29,9 @@ class StartUpViewModel extends BaseViewModel {
     } else {
       _navigationService.pushNamed(RouterPaths.login);
     }
+  }
+
+  String getAppTheme() {
+    return _settingsManager.themeMode.toString();
   }
 }

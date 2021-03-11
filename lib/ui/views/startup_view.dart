@@ -12,7 +12,13 @@ class StartUpView extends StatelessWidget {
       viewModelBuilder: () => StartUpViewModel(),
       onModelReady: (StartUpViewModel model) => model.handleStartUp(),
       builder: (context, model, child) => Scaffold(
-            backgroundColor: AppTheme.etsLightRed,
+            backgroundColor: model.getAppTheme() == ThemeMode.light.toString()
+                ? AppTheme.etsLightRed
+                : model.getAppTheme() == ThemeMode.dark.toString()
+                    ? AppTheme.primaryDark
+                    : Theme.of(context).brightness == Brightness.light
+                        ? AppTheme.etsLightRed
+                        : AppTheme.primaryDark,
             body: SafeArea(
               minimum: const EdgeInsets.all(20),
               child: Center(
@@ -22,7 +28,14 @@ class StartUpView extends StatelessWidget {
                     Hero(
                       tag: 'ets_logo',
                       child: Image.asset(
-                        'assets/images/ets_white_logo.png',
+                        model.getAppTheme() == ThemeMode.light.toString()
+                            ? "assets/images/ets_white_logo.png"
+                            : model.getAppTheme() == ThemeMode.dark.toString()
+                                ? "assets/images/ets_red_logo.png"
+                                : Theme.of(context).brightness ==
+                                        Brightness.light
+                                    ? "assets/images/ets_white_logo.png"
+                                    : "assets/images/ets_red_logo.png",
                         excludeFromSemantics: true,
                         width: 216,
                         height: 216,
