@@ -6,6 +6,7 @@ import 'package:notredame/core/constants/router_paths.dart';
 // SERVICES / MANAGERS
 import 'package:notredame/core/managers/user_repository.dart';
 import 'package:notredame/core/services/navigation_service.dart';
+import 'package:notredame/core/managers/settings_manager.dart';
 
 // VIEW MODEL
 import 'package:notredame/core/viewmodels/startup_viewmodel.dart';
@@ -17,13 +18,16 @@ import '../mock/managers/user_repository_mock.dart';
 void main() {
   NavigationService navigationService;
   UserRepositoryMock userRepositoryMock;
+  SettingsManager settingsManager;
 
   StartUpViewModel viewModel;
 
   group('StartupViewModel - ', () {
     setUp(() async {
       navigationService = setupNavigationServiceMock();
+      settingsManager = setupSettingsManagerMock();
       userRepositoryMock = setupUserRepositoryMock() as UserRepositoryMock;
+
       setupLogger();
 
       viewModel = StartUpViewModel();
@@ -32,6 +36,7 @@ void main() {
     tearDown(() {
       unregister<NavigationService>();
       unregister<UserRepository>();
+      unregister<SettingsManager>();
     });
 
     group('handleStartUp - ', () {
@@ -50,6 +55,12 @@ void main() {
         await viewModel.handleStartUp();
 
         verify(navigationService.pushNamed(RouterPaths.login));
+      });
+
+      test('get app theme', () async {
+        viewModel.getAppTheme();
+
+        verify(settingsManager.themeMode);
       });
     });
   });
