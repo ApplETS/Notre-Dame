@@ -31,7 +31,13 @@ class _LoginViewState extends State<LoginView> {
       ViewModelBuilder<LoginViewModel>.reactive(
         viewModelBuilder: () => LoginViewModel(intl: AppIntl.of(context)),
         builder: (context, model, child) => Scaffold(
-            backgroundColor: AppTheme.etsLightRed,
+            backgroundColor: model.getAppTheme() == ThemeMode.light.toString()
+                ? AppTheme.etsLightRed
+                : model.getAppTheme() == ThemeMode.dark.toString()
+                    ? AppTheme.primaryDark
+                    : Theme.of(context).brightness == Brightness.light
+                        ? AppTheme.etsLightRed
+                        : AppTheme.primaryDark,
             resizeToAvoidBottomInset: false,
             body: Builder(
               builder: (BuildContext context) => SafeArea(
@@ -54,7 +60,16 @@ class _LoginViewState extends State<LoginView> {
                               Hero(
                                 tag: 'ets_logo',
                                 child: Image.asset(
-                                  'assets/images/ets_white_logo.png',
+                                  model.getAppTheme() ==
+                                          ThemeMode.light.toString()
+                                      ? "assets/images/ets_white_logo.png"
+                                      : model.getAppTheme() ==
+                                              ThemeMode.dark.toString()
+                                          ? "assets/images/ets_red_logo.png"
+                                          : Theme.of(context).brightness ==
+                                                  Brightness.light
+                                              ? "assets/images/ets_white_logo.png"
+                                              : "assets/images/ets_red_logo.png",
                                   excludeFromSemantics: true,
                                   width: 216,
                                   height: 216,
@@ -73,18 +88,21 @@ class _LoginViewState extends State<LoginView> {
                                           width: borderRadiusOnFocus)),
                                   focusedErrorBorder: OutlineInputBorder(
                                       borderSide: BorderSide(
-                                          color: Colors.amberAccent,
+                                          color: getErrorTextColor(
+                                              model.getAppTheme()),
                                           width: borderRadiusOnFocus)),
                                   errorBorder: OutlineInputBorder(
                                       borderSide: BorderSide(
-                                          color: Colors.amberAccent,
+                                          color: getErrorTextColor(
+                                              model.getAppTheme()),
                                           width: borderRadiusOnFocus)),
                                   labelText: AppIntl.of(context)
                                       .login_prompt_universal_code,
                                   labelStyle:
                                       const TextStyle(color: Colors.white54),
-                                  errorStyle: const TextStyle(
-                                      color: Colors.amberAccent),
+                                  errorStyle: TextStyle(
+                                      color: getErrorTextColor(
+                                          model.getAppTheme())),
                                 ),
                                 autofocus: true,
                                 style: const TextStyle(color: Colors.white),
@@ -97,7 +115,8 @@ class _LoginViewState extends State<LoginView> {
                               ),
                               PasswordFormField(
                                   validator: model.validatePassword,
-                                  onEditionComplete: _focusNode.nextFocus),
+                                  onEditionComplete: _focusNode.nextFocus,
+                                  appTheme: model.getAppTheme()),
                               const SizedBox(
                                 height: 30.0,
                               ),
@@ -123,10 +142,29 @@ class _LoginViewState extends State<LoginView> {
                                       (Set<MaterialState> states) {
                                         if (states
                                             .contains(MaterialState.disabled)) {
-                                          return Colors.white38;
+                                          return model.getAppTheme() ==
+                                                  ThemeMode.light.toString()
+                                              ? Colors.white38
+                                              : model.getAppTheme() ==
+                                                      ThemeMode.dark.toString()
+                                                  ? Colors.grey[800]
+                                                  : Theme.of(context)
+                                                              .brightness ==
+                                                          Brightness.light
+                                                      ? Colors.white38
+                                                      : Colors.grey[800];
                                         }
-                                        return Colors
-                                            .white; // Use the component's default.
+                                        return model.getAppTheme() ==
+                                                ThemeMode.light.toString()
+                                            ? Colors.white
+                                            : model.getAppTheme() ==
+                                                    ThemeMode.dark.toString()
+                                                ? Colors.grey[900]
+                                                : Theme.of(context)
+                                                            .brightness ==
+                                                        Brightness.light
+                                                    ? Colors.white
+                                                    : Colors.grey[900];
                                       },
                                     ),
                                     padding: MaterialStateProperty.all(
@@ -173,5 +211,15 @@ class _LoginViewState extends State<LoginView> {
   void dispose() {
     _focusNode.dispose();
     super.dispose();
+  }
+
+  Color getErrorTextColor(String appTheme) {
+    return appTheme == ThemeMode.light.toString()
+        ? Colors.amberAccent
+        : appTheme == ThemeMode.dark.toString()
+            ? Colors.redAccent
+            : Theme.of(context).brightness == Brightness.light
+                ? Colors.amberAccent
+                : Colors.redAccent;
   }
 }

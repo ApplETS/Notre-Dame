@@ -5,8 +5,10 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 class PasswordFormField extends StatefulWidget {
   final FormFieldValidator<String> validator;
   final VoidCallback onEditionComplete;
+  final String appTheme;
 
-  const PasswordFormField({Key key, this.validator, this.onEditionComplete})
+  const PasswordFormField(
+      {Key key, this.validator, this.onEditionComplete, this.appTheme})
       : super(key: key);
 
   @override
@@ -32,13 +34,13 @@ class _PasswordFormFieldState extends State<PasswordFormField> {
                     color: Colors.white, width: borderRadiusOnFocus)),
             focusedErrorBorder: OutlineInputBorder(
                 borderSide: BorderSide(
-                    color: Colors.amberAccent, width: borderRadiusOnFocus)),
+                    color: getErrorTextColor(), width: borderRadiusOnFocus)),
             errorBorder: OutlineInputBorder(
                 borderSide: BorderSide(
-                    color: Colors.amberAccent, width: borderRadiusOnFocus)),
+                    color: getErrorTextColor(), width: borderRadiusOnFocus)),
             labelText: AppIntl.of(context).login_prompt_password,
             labelStyle: const TextStyle(color: Colors.white54),
-            errorStyle: const TextStyle(color: Colors.amberAccent),
+            errorStyle: TextStyle(color: getErrorTextColor()),
             suffixIcon: IconButton(
                 icon: Icon(
                     _obscureText ? Icons.visibility : Icons.visibility_off,
@@ -54,5 +56,15 @@ class _PasswordFormFieldState extends State<PasswordFormField> {
     setState(() {
       _obscureText = !_obscureText;
     });
+  }
+
+  Color getErrorTextColor() {
+    return widget.appTheme == ThemeMode.light.toString()
+        ? Colors.amberAccent
+        : widget.appTheme == ThemeMode.dark.toString()
+            ? Colors.redAccent
+            : Theme.of(context).brightness == Brightness.light
+                ? Colors.amberAccent
+                : Colors.redAccent;
   }
 }

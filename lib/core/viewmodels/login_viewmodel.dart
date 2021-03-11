@@ -6,12 +6,16 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 // SERVICE
 import 'package:notredame/core/managers/user_repository.dart';
 import 'package:notredame/core/services/navigation_service.dart';
+import 'package:notredame/core/managers/settings_manager.dart';
 
 // OTHER
 import 'package:notredame/locator.dart';
 import 'package:notredame/core/constants/router_paths.dart';
 
 class LoginViewModel extends BaseViewModel {
+  /// Manage the settings
+  final SettingsManager _settingsManager = locator<SettingsManager>();
+
   /// Used to authenticate the user
   final UserRepository _userRepository = locator<UserRepository>();
 
@@ -77,5 +81,9 @@ class LoginViewModel extends BaseViewModel {
     notifyListeners();
 
     return _appIntl.error;
+  }
+
+  String getAppTheme() {
+    return _settingsManager.themeMode.toString();
   }
 }
