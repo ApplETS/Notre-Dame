@@ -2,7 +2,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:notredame/core/managers/settings_manager.dart';
 
 // MANAGERS / SERVICES
 import 'package:notredame/core/managers/user_repository.dart';
@@ -23,13 +22,11 @@ void main() {
       intl = await setupAppIntl();
       setupUserRepositoryMock();
       setupNavigationServiceMock();
-      setupSettingsManagerMock();
     });
 
     tearDown(() {
       unregister<UserRepository>();
       unregister<NavigationService>();
-      unregister<SettingsManager>();
     });
 
     group('UI - ', () {
