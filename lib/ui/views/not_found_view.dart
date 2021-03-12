@@ -1,6 +1,7 @@
 // FLUTTER / DART / THIRD-PARTIES
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
+import 'package:rive/rive.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 // VIEWMODELS
@@ -9,15 +10,43 @@ import 'package:notredame/core/viewmodels/not_found_viewmodel.dart';
 // OTHER
 import 'package:notredame/ui/utils/app_theme.dart';
 
-class NotFoundView extends StatelessWidget {
+class NotFoundView extends StatefulWidget {
   final String pageName;
 
   const NotFoundView({this.pageName});
 
   @override
+  _NotFoundState createState() => _NotFoundState();
+}
+
+class _NotFoundState extends State<NotFoundView> {
+  NotFoundViewModel viewModel;
+
+  _NotFoundState();
+
+  @override
+  void initState() {
+    viewModel = NotFoundViewModel(widget.pageName);
+    viewModel
+        .loadRiveAnimation()
+        .then((_) => setState(() => viewModel.startRiveAnimation()));
+
+    super.initState();
+  }
+
+  Widget _buildAnimatedWidget() {
+    return viewModel.artboard != null
+        ? Rive(
+            artboard: viewModel.artboard,
+            fit: BoxFit.scaleDown,
+          )
+        : Container();
+  }
+
+  @override
   Widget build(BuildContext context) =>
       ViewModelBuilder<NotFoundViewModel>.nonReactive(
-          viewModelBuilder: () => NotFoundViewModel(pageName),
+          viewModelBuilder: () => NotFoundViewModel(widget.pageName),
           builder: (context, model, child) => Scaffold(
                 body: SafeArea(
                   minimum: const EdgeInsets.all(20),
@@ -25,15 +54,12 @@ class NotFoundView extends StatelessWidget {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
-                        const Padding(
-                          padding: EdgeInsets.only(
-                            bottom: 40,
-                          ),
-                          child: Icon(
-                            Icons.more_horiz,
-                            color: AppTheme.primary,
-                            size: 128.0,
-                          ),
+                        Expanded(
+                          child: Padding(
+                              padding: const EdgeInsets.only(
+                                bottom: 40,
+                              ),
+                              child: _buildAnimatedWidget()),
                         ),
                         Text(
                           AppIntl.of(context).not_found_title,
@@ -42,8 +68,8 @@ class NotFoundView extends StatelessWidget {
                         ),
                         Padding(
                           padding: const EdgeInsets.only(
-                            top: 60,
-                            bottom: 40,
+                            top: 80,
+                            bottom: 60,
                           ),
                           child: Text(
                             AppIntl.of(context)

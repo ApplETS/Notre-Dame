@@ -11,6 +11,7 @@ import 'package:notredame/locator.dart';
 // SERVICES
 import 'package:notredame/core/services/navigation_service.dart';
 import 'package:notredame/core/services/analytics_service.dart';
+import 'package:notredame/core/services/rive_animation_service.dart';
 import 'package:notredame/core/services/mon_ets_api.dart';
 import 'package:notredame/core/services/signets_api.dart';
 import 'package:notredame/core/managers/user_repository.dart';
@@ -29,6 +30,7 @@ import 'mock/services/flutter_secure_storage_mock.dart';
 import 'mock/services/mon_ets_api_mock.dart';
 import 'mock/services/navigation_service_mock.dart';
 import 'mock/services/preferences_service_mock.dart';
+import 'mock/services/rive_animation_service_mock.dart';
 import 'mock/services/signets_api_mock.dart';
 
 /// Return the path of the [goldenName] file.
@@ -45,7 +47,8 @@ void unregister<T>() {
 Widget localizedWidget(
         {@required Widget child,
         bool useScaffold = true,
-        String locale = 'en', double textScaleFactor = 0.9}) =>
+        String locale = 'en',
+        double textScaleFactor = 0.9}) =>
     RepaintBoundary(
       child: MaterialApp(
         localizationsDelegates: const [
@@ -65,6 +68,16 @@ AnalyticsService setupAnalyticsServiceMock() {
   final service = AnalyticsServiceMock();
 
   locator.registerSingleton<AnalyticsService>(service);
+
+  return service;
+}
+
+/// Load a mock of the [AnalyticsService]
+RiveAnimationService setupRiveAnimationServiceMock() {
+  unregister<RiveAnimationService>();
+  final service = RiveAnimationServiceMock();
+
+  locator.registerSingleton<RiveAnimationService>(service);
 
   return service;
 }

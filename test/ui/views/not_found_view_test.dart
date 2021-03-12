@@ -13,6 +13,7 @@ void main() {
     setUp(() async {
       setupNavigationServiceMock();
       setupAnalyticsServiceMock();
+      setupRiveAnimationServiceMock();
     });
 
     tearDown(() {});
@@ -21,7 +22,8 @@ void main() {
       testWidgets(
           'has a go back to dashboard button and at least one text element',
           (WidgetTester tester) async {
-        await tester.pumpWidget(localizedWidget(child: const NotFoundView(pageName: "/test")));
+        await tester.pumpWidget(
+            localizedWidget(child: const NotFoundView(pageName: "/test")));
         await tester.pumpAndSettle();
 
         expect(find.byType(ElevatedButton), findsOneWidget);
@@ -33,8 +35,8 @@ void main() {
         testWidgets("default view (no events)", (WidgetTester tester) async {
           tester.binding.window.physicalSizeTestValue = const Size(800, 1410);
 
-          await tester
-              .pumpWidget(localizedWidget(child: const NotFoundView(pageName: "/test")));
+          await tester.pumpWidget(
+              localizedWidget(child: const NotFoundView(pageName: "/test")));
           await tester.pumpAndSettle();
 
           await expectLater(find.byType(NotFoundView),

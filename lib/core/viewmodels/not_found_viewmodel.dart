@@ -1,9 +1,11 @@
 // FLUTTER / DART / THIRD-PARTIES
+import 'package:rive/rive.dart';
 import 'package:stacked/stacked.dart';
 
 // SERVICE
 import 'package:notredame/core/services/analytics_service.dart';
 import 'package:notredame/core/services/navigation_service.dart';
+import 'package:notredame/core/services/rive_animation_service.dart';
 
 // OTHER
 import 'package:notredame/locator.dart';
@@ -16,19 +18,49 @@ class NotFoundViewModel extends BaseViewModel {
   final NavigationService _navigationService = locator<NavigationService>();
   //Used to log the event that pushedit from
   final AnalyticsService _analyticsService = locator<AnalyticsService>();
+  //Used to log the event that pushedit from
+  final RiveAnimationService _riveAnimationService =
+      locator<RiveAnimationService>();
+
+  final String _riveAnimationFileName = 'dot_jumping';
+
   String _pageName;
-
-  NotFoundViewModel(String pageName) {
-    _pageName = pageName;
-    _analyticsService.logEvent(
-        tag, "An unknown page ($pageName) has been access from the app.");
-  }
-
   String get notFoundPageName {
     return _pageName;
   }
 
+  Artboard _artboard;
+  Artboard get artboard {
+    return _artboard;
+  }
+
+  NotFoundViewModel(String pageName) {
+    _pageName = pageName;
+
+    _analyticsService.logEvent(
+        tag, "An unknown page ($pageName) has been access from the app.");
+  }
+
   void navigateToDashboard() {
     _navigationService.pushNamed(RouterPaths.dashboard);
+  }
+
+  Future<void> loadRiveAnimation() async {
+    try {
+      _artboard = await _riveAnimationService.loadRiveFile(
+          riveFileName: _riveAnimationFileName);
+    } catch (e) {
+      _analyticsService.logError(tag,
+          "An Error has occured during rive animation $_riveAnimationFileName loading.");
+    }
+  }
+
+  void startRiveAnimation() {
+    try {
+      _riveAnimationService.addControllerToAnimation(artboard: _artboard);
+    } catch (e) {
+      _analyticsService.logError(
+          tag, "An Error has occured during rive animation start.");
+    }
   }
 }
