@@ -24,7 +24,7 @@ _Note: This guide is also available in: [Français](https://github.com/ApplETS/N
 
 ## Requirements
 
-- Flutter SDK v1.17.4 or higher
+- Flutter SDK v2.0.0 or higher
 - Openssl v1.1.1g or higher
 
 ## Before running the code
@@ -40,10 +40,20 @@ chmod +x ./scripts/decrypt.sh
 - After cloning the repo, you will have to get the packages and generate the l10n classes. To do that run the following command:
 ```
 flutter pub get
-flutter pub run intl_utils:generate
 ```
 
-## Git hooks 
+## Add environment variable for API_KEY
+
+- In order to be able to run the app with the GitHub API token, you need to add an attribute when running the app. To do that run the following command:
+```
+flutter pub run --dart-define=SOME_VAR=SOME_VALUE
+    # where SOME_VAR will be replaced with GITHUB_API_TOKEN
+    # and SOME_VALUE will be the private token
+```
+You can add that command directly to your run configuration:
+* Intellij: ![img.png](docs/images/img.png)
+
+## Git hooks
 
 You can find under the folder `.githooks` all the hooks needed for this project. To configure git to use this folder enter the following command:
 ```bash

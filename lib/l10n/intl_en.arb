@@ -134,7 +134,7 @@
   "more_report_bug_method_screenshot": "Screenshot",
   "more_report_bug_method_video": "Video recording",
   "more_contributors": "Contributors",
-  "more_open_source_licenses": "@string/oss_license_title",
+  "more_open_source_licenses": "Open source licenses",
   "more_beta_faq": "Beta FAQ",
   "more_settings": "Settings",
   "more_log_out": "Log out",
@@ -173,10 +173,18 @@
   "security_station": "Security station",
 
   "settings_title": "Settings",
-  "settings_display_category": "Display",
-  "settings_dark_theme": "Dark Theme",
+  "settings_display_pref_category": "Display",
+  "settings_dark_theme_pref": "Theme",
   "settings_miscellaneous_category": "Miscellaneous",
-  "settings_language": "Language",
-  "settings_french": "Français:",
-  "settings_english": "English:"
+  "settings_language_pref": "Language",
+  "settings_french": "Français",
+  "settings_english": "English",
+  "dark_theme": "Dark",
+  "light_theme": "Light",
+  "system_theme": "System",
+
+  "thank_you_for_the_feedback": "Thank you for the feedback",
+
+  "flutter_license": "Flutter is Google's UI toolkit for building beautiful, natively compiled applications for mobile, web, and desktop from a single codebase. Learn more about Flutter at ",
+  "flutter_website": "https://flutter.dev"
 }

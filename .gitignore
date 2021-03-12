@@ -11,7 +11,8 @@
 .pub-cache/
 .pub/
 build/
-lib/generated/
+# TODO: Commented until https://github.com/localizely/intl_utils/issues/26 is resolved. For now, please use the intl plugin for IDEA or VS Code
+#lib/generated/
 
 # Certificates and secrets
 assets/certificates/
@@ -151,3 +152,4 @@ modules.xml
 .idea/sonarlint
 
 # End of https://www.toptal.com/developers/gitignore/api/flutter,intellij+all
+.run/

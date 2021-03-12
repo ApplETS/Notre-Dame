@@ -1,5 +1,6 @@
 // FLUTTER / DART / THIRD-PARTIES
 import 'package:enum_to_string/enum_to_string.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 import 'package:table_calendar/table_calendar.dart';
@@ -25,11 +26,13 @@ void main() {
   SettingsManager manager;
 
   group("SettingsManager - ", () {
-    setUp(() {
+    setUp(() async {
       // Setting up mocks
       setupLogger();
       analyticsService = setupAnalyticsServiceMock();
       preferencesService = setupPreferencesServiceMock();
+
+      await setupAppIntl();
 
       manager = SettingsManager();
     });
@@ -106,46 +109,159 @@ void main() {
       });
     });
 
+    group("ThemeMode - ", () {
+      test("set light/dark/system mode", () async {
+        const flag = PreferencesFlag.theme;
+        manager.setThemeMode(ThemeMode.light.toString());
+
+        verify(preferencesService.setString(
+                PreferencesFlag.theme, ThemeMode.light.toString()))
+            .called(1);
+
+        verify(analyticsService.logEvent(
+                "${SettingsManager.tag}_${EnumToString.convertToString(flag)}",
+                any))
+            .called(1);
+
+        manager.setThemeMode(ThemeMode.dark.toString());
+
+        verify(preferencesService.setString(
+                PreferencesFlag.theme, ThemeMode.dark.toString()))
+            .called(1);
+
+        verify(analyticsService.logEvent(
+                "${SettingsManager.tag}_${EnumToString.convertToString(flag)}",
+                any))
+            .called(1);
+
+        manager.setThemeMode(ThemeMode.system.toString());
+
+        verify(preferencesService.setString(
+                PreferencesFlag.theme, ThemeMode.system.toString()))
+            .called(1);
+
+        verify(analyticsService.logEvent(
+                "${SettingsManager.tag}_${EnumToString.convertToString(flag)}",
+                any))
+            .called(1);
+
+        verifyNoMoreInteractions(preferencesService);
+        verifyNoMoreInteractions(analyticsService);
+      });
+    });
+
+    group("Locale - ", () {
+      test("validate default behaviour", () async {
+        const flag = PreferencesFlag.locale;
+        PreferencesServiceMock.stubGetString(
+            preferencesService as PreferencesServiceMock,
+            PreferencesFlag.locale,
+            toReturn: const Locale('fr').toString());
+
+        manager.setLocale('fr');
+        manager.locale;
+
+        verify(preferencesService.setString(PreferencesFlag.locale, 'fr'))
+            .called(1);
+        verify(preferencesService.getString(PreferencesFlag.locale)).called(1);
+
+        verify(analyticsService.logEvent(
+                "${SettingsManager.tag}_${EnumToString.convertToString(flag)}",
+                any))
+            .called(1);
+
+        verifyNoMoreInteractions(preferencesService);
+        verifyNoMoreInteractions(analyticsService);
+      });
+
+      test("set french/english", () async {
+        const flag = PreferencesFlag.locale;
+        manager.setLocale('fr');
+
+        verify(preferencesService.setString(PreferencesFlag.locale, 'fr'))
+            .called(1);
+
+        untilCalled(analyticsService.logEvent(
+            "${SettingsManager.tag}_${EnumToString.convertToString(flag)}",
+            any));
+
+        verify(analyticsService.logEvent(
+                "${SettingsManager.tag}_${EnumToString.convertToString(flag)}",
+                any))
+            .called(1);
+
+        manager.setLocale('en');
+
+        verify(preferencesService.setString(PreferencesFlag.locale, 'en'))
+            .called(1);
+
+        untilCalled(analyticsService.logEvent(
+            "${SettingsManager.tag}_${EnumToString.convertToString(flag)}",
+            any));
+
+        verify(analyticsService.logEvent(
+                "${SettingsManager.tag}_${EnumToString.convertToString(flag)}",
+                any))
+            .called(1);
+
+        verifyNoMoreInteractions(preferencesService);
+        verifyNoMoreInteractions(analyticsService);
+      });
+    });
+
     test("setString", () async {
       const flag = PreferencesFlag.scheduleSettingsCalendarFormat;
       PreferencesServiceMock.stubSetString(
-          preferencesService as PreferencesServiceMock,
-          flag);
+          preferencesService as PreferencesServiceMock, flag);
 
-      expect(
-          await manager.setString(
-              flag, "test"),
-          true, reason: "setString should return true if the PreferenceService return true");
+      expect(await manager.setString(flag, "test"), true,
+          reason:
+              "setString should return true if the PreferenceService return true");
 
       untilCalled(analyticsService.logEvent(
-          "${SettingsManager.tag}-${EnumToString.convertToString(flag)}",
-          any));
+          "${SettingsManager.tag}_${EnumToString.convertToString(flag)}", any));
 
       verify(analyticsService.logEvent(
-              "${SettingsManager.tag}-${EnumToString.convertToString(flag)}",
+              "${SettingsManager.tag}_${EnumToString.convertToString(flag)}",
               any))
           .called(1);
       verify(preferencesService.setString(flag, any));
     });
 
+    test("getString", () async {
+      const flag = PreferencesFlag.scheduleSettingsCalendarFormat;
+      PreferencesServiceMock.stubGetString(
+          preferencesService as PreferencesServiceMock, flag);
+
+      expect(await manager.getString(flag), 'test',
+          reason:
+              "setString should return true if the PreferenceService return true");
+
+      untilCalled(analyticsService.logEvent(
+          "${SettingsManager.tag}_${EnumToString.convertToString(flag)}", any));
+
+      verify(analyticsService.logEvent(
+              "${SettingsManager.tag}_${EnumToString.convertToString(flag)}",
+              any))
+          .called(1);
+      verify(preferencesService.getString(flag));
+    });
+
     test("setBool", () async {
       const flag = PreferencesFlag.scheduleSettingsCalendarFormat;
       PreferencesServiceMock.stubSetBool(
-          preferencesService as PreferencesServiceMock,
-          flag);
+          preferencesService as PreferencesServiceMock, flag);
 
-      expect(
-          await manager.setBool(
-              flag, true),
-          true, reason: "setString should return true if the PreferenceService return true");
+      expect(await manager.setBool(flag, true), true,
+          reason:
+              "setString should return true if the PreferenceService return true");
 
       untilCalled(analyticsService.logEvent(
-          "${SettingsManager.tag}-${EnumToString.convertToString(flag)}",
-          any));
+          "${SettingsManager.tag}_${EnumToString.convertToString(flag)}", any));
 
       verify(analyticsService.logEvent(
-          "${SettingsManager.tag}-${EnumToString.convertToString(flag)}",
-          any))
+              "${SettingsManager.tag}_${EnumToString.convertToString(flag)}",
+              any))
           .called(1);
       verify(preferencesService.setBool(flag, value: anyNamed("value")));
     });

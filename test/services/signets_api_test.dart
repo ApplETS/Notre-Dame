@@ -2,6 +2,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:logger/logger.dart';
 import 'package:mockito/mockito.dart';
+import 'package:notredame/core/constants/signets_errors.dart';
 import 'package:notredame/core/models/course_summary.dart';
 
 // SERVICE
@@ -105,6 +106,42 @@ void main() {
         expect(result.length, 2);
       });
 
+      /// This occur when register for a internship without any other courses
+      /// or when the schedule for the desired session isn't available yet.
+      test("no courses activities available for the session", () async {
+        const String username = "username";
+        const String password = "password";
+        const String session = "A2020";
+
+        final String stubResponse = buildErrorResponse(
+            Urls.listClassScheduleOperation,
+            SignetsError.scheduleNotAvailable,
+            'ListeDesSeances');
+
+        HttpClientMock.stubPost(clientMock, Urls.signetsAPI, stubResponse);
+
+        final result = await service.getCoursesActivities(
+            username: username, password: password, session: session);
+
+        expect(result, isA<List<CourseActivity>>());
+        expect(result.length, 0);
+
+        // Restart the test with the female version of the error
+        reset(clientMock);
+        final String stubResponseF = buildErrorResponse(
+            Urls.listClassScheduleOperation,
+            SignetsError.scheduleNotAvailable,
+            'ListeDesSeances');
+
+        HttpClientMock.stubPost(clientMock, Urls.signetsAPI, stubResponseF);
+
+        final resultF = await service.getCoursesActivities(
+            username: username, password: password, session: session);
+
+        expect(resultF, isA<List<CourseActivity>>());
+        expect(resultF.length, 0);
+      });
+
       group("invalid parameters - ", () {
         test("session", () async {
           const String username = "username";
@@ -186,10 +223,7 @@ void main() {
         });
       });
 
-      // Currently SignetsAPI doesn't have a clear way to indicate which error
-      // occurred (no error code, no change of http code, just a text)
-      // so for now whatever the error we will throw a generic error
-      test("wrong credentials / an error occurred", () async {
+      test("An error occurred", () async {
         const String username = "username";
         const String password = "password";
         const String session = "A2020";
@@ -207,6 +241,26 @@ void main() {
             throwsA(isInstanceOf<ApiException>()),
             reason:
                 "If the SignetsAPI return an error the service should return the error.");
+      });
+
+      test("Wrong credentials", () async {
+        const String username = "username";
+        const String password = "password";
+        const String session = "A2020";
+
+        final String stubResponse = buildErrorResponse(
+            Urls.listClassScheduleOperation,
+            SignetsError.credentialsInvalid,
+            'ListeDesSeances');
+
+        HttpClientMock.stubPost(clientMock, Urls.signetsAPI, stubResponse);
+
+        expect(
+            service.getCoursesActivities(
+                username: username, password: password, session: session),
+            throwsA(isInstanceOf<ApiException>()),
+            reason:
+            "If the SignetsAPI return an error the service should return the error.");
       });
     });
 

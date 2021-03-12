@@ -63,11 +63,11 @@ void main() {
       permanentCode: 'DOEJ00000000');
 
   group("ProfileViewModel - ", () {
-    setUp(() {
+    setUp(() async {
       // Setting up mocks
       userRepository = setupUserRepositoryMock();
 
-      viewModel = ProfileViewModel();
+      viewModel = ProfileViewModel(intl: await setupAppIntl());
     });
 
     tearDown(() {
