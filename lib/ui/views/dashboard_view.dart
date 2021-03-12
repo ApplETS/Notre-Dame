@@ -47,6 +47,8 @@ class _DashboardViewState extends State<DashboardView>
 
   AnimationController _animationController;
 
+  bool isAboutUsVisible = true;
+
   @override
   void initState() {
     super.initState();
@@ -82,10 +84,14 @@ class _DashboardViewState extends State<DashboardView>
             actions: _buildActionButtons(),
           ),
           body: Column(mainAxisSize: MainAxisSize.min, children: [
-            Dismissible(
-              key: UniqueKey(),
-              child: _buildAboutUsCard(),
-            ),
+            if (isAboutUsVisible)
+              Dismissible(
+                key: UniqueKey(),
+                onDismissed: (dismissDirection) => setState(() {
+                  isAboutUsVisible = false;
+                }),
+                child: _buildAboutUsCard(),
+              ),
             const SizedBox(height: 6.0),
           ]),
         ),
@@ -142,5 +148,18 @@ class _DashboardViewState extends State<DashboardView>
     );
   }
 
-  List<Widget> _buildActionButtons() => [];
+  void setAllVisible() => {
+        setState(() {
+          isAboutUsVisible = true;
+        })
+      };
+
+  List<Widget> _buildActionButtons() => [
+        IconButton(
+          icon: const Icon(Icons.restore),
+          onPressed: () {
+            setAllVisible();
+          },
+        ),
+      ];
 }
