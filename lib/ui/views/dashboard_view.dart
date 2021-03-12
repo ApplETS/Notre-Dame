@@ -111,8 +111,8 @@ class _DashboardViewState extends State<DashboardView>
                   style: Theme.of(context).primaryTextTheme.bodyText2),
             ),
             Row(children: [
-              const SizedBox(width: 2),
-              FlatButton(
+              const SizedBox(width: 10),
+              TextButton(
                 onPressed: () {
                   launch('https://www.facebook.com/ClubApplETS');
                 },
@@ -120,7 +120,7 @@ class _DashboardViewState extends State<DashboardView>
                     style: Theme.of(context).primaryTextTheme.bodyText2),
               ),
               const SizedBox(width: 10),
-              FlatButton(
+              TextButton(
                 onPressed: () {
                   launch('https://github.com/ApplETS/Notre-Dame');
                 },
@@ -128,7 +128,7 @@ class _DashboardViewState extends State<DashboardView>
                     style: Theme.of(context).primaryTextTheme.button),
               ),
               const SizedBox(width: 10),
-              FlatButton(
+              TextButton(
                 onPressed: () {
                   launch('mailto:info@clubapplets.ca');
                 },
