@@ -42,9 +42,14 @@ class SettingsManager with ChangeNotifier {
   /// Get Locale and Theme to init app with
   Future<void> fetchLanguageAndThemeMode() async {
     final theme = await _preferencesService.getString(PreferencesFlag.theme);
-    _themeMode = ThemeMode.values.firstWhere((e) => e.toString() == theme);
+    if (theme != null) {
+      _themeMode = ThemeMode.values.firstWhere((e) => e.toString() == theme);
+    }
     final lang = await _preferencesService.getString(PreferencesFlag.locale);
-    _locale = AppIntl.supportedLocales.firstWhere((e) => e.toString() == lang);
+    if (lang != null) {
+      _locale =
+          AppIntl.supportedLocales.firstWhere((e) => e.toString() == lang);
+    }
     return;
   }
 
