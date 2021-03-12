@@ -6,7 +6,6 @@ import 'package:mockito/mockito.dart';
 // SERVICES / MANAGERS
 import 'package:notredame/core/managers/user_repository.dart';
 import 'package:notredame/core/services/navigation_service.dart';
-import 'package:notredame/core/managers/settings_manager.dart';
 
 // VIEW MODEL
 import 'package:notredame/core/viewmodels/login_viewmodel.dart';
@@ -44,7 +43,6 @@ void main() {
     tearDown(() {
       unregister<NavigationService>();
       unregister<UserRepository>();
-      unregister<SettingsManager>();
     });
 
     group('validateUniversalCode - ', () {
