@@ -6,6 +6,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:oktoast/oktoast.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:provider/provider.dart';
 
 // ROUTER
@@ -28,6 +29,9 @@ import 'package:notredame/ui/views/startup_view.dart';
 Future<void> main() async {
   setupLocator();
   WidgetsFlutterBinding.ensureInitialized();
+
+  // Initialize firebase
+  await Firebase.initializeApp();
 
   /// Manage the settings
   final SettingsManager settingsManager = locator<SettingsManager>();
