@@ -13,8 +13,8 @@ import 'package:notredame/core/viewmodels/not_found_viewmodel.dart';
 
 // OTHER
 import 'package:notredame/core/constants/router_paths.dart';
-import '../mock/services/rive_animation_service_mock.dart';
 import '../helpers.dart';
+import '../mock/services/rive_animation_service_mock.dart';
 
 void main() {
   NavigationService navigationService;
@@ -44,7 +44,7 @@ void main() {
 
     group('constructor - ', () {
       test('test that an analytics event is lauch', () async {
-        String pageTestCtor = "\testctor";
+        const String pageTestCtor = "\testctor";
         NotFoundViewModel(pageName: pageTestCtor);
 
         verify(analyticsService.logEvent(NotFoundViewModel.tag,
