@@ -31,13 +31,9 @@ class _LoginViewState extends State<LoginView> {
       ViewModelBuilder<LoginViewModel>.reactive(
         viewModelBuilder: () => LoginViewModel(intl: AppIntl.of(context)),
         builder: (context, model, child) => Scaffold(
-            backgroundColor: model.getAppTheme() == ThemeMode.light.toString()
+            backgroundColor: Theme.of(context).brightness == Brightness.light
                 ? AppTheme.etsLightRed
-                : model.getAppTheme() == ThemeMode.dark.toString()
-                    ? AppTheme.primaryDark
-                    : Theme.of(context).brightness == Brightness.light
-                        ? AppTheme.etsLightRed
-                        : AppTheme.primaryDark,
+                : AppTheme.primaryDark,
             resizeToAvoidBottomInset: false,
             body: Builder(
               builder: (BuildContext context) => SafeArea(
@@ -60,16 +56,10 @@ class _LoginViewState extends State<LoginView> {
                               Hero(
                                 tag: 'ets_logo',
                                 child: Image.asset(
-                                  model.getAppTheme() ==
-                                          ThemeMode.light.toString()
+                                  Theme.of(context).brightness ==
+                                          Brightness.light
                                       ? "assets/images/ets_white_logo.png"
-                                      : model.getAppTheme() ==
-                                              ThemeMode.dark.toString()
-                                          ? "assets/images/ets_red_logo.png"
-                                          : Theme.of(context).brightness ==
-                                                  Brightness.light
-                                              ? "assets/images/ets_white_logo.png"
-                                              : "assets/images/ets_red_logo.png",
+                                      : "assets/images/ets_red_logo.png",
                                   excludeFromSemantics: true,
                                   width: 216,
                                   height: 216,
@@ -88,21 +78,18 @@ class _LoginViewState extends State<LoginView> {
                                           width: borderRadiusOnFocus)),
                                   focusedErrorBorder: OutlineInputBorder(
                                       borderSide: BorderSide(
-                                          color: getErrorTextColor(
-                                              model.getAppTheme()),
+                                          color: errorTextColor,
                                           width: borderRadiusOnFocus)),
                                   errorBorder: OutlineInputBorder(
                                       borderSide: BorderSide(
-                                          color: getErrorTextColor(
-                                              model.getAppTheme()),
+                                          color: errorTextColor,
                                           width: borderRadiusOnFocus)),
                                   labelText: AppIntl.of(context)
                                       .login_prompt_universal_code,
                                   labelStyle:
                                       const TextStyle(color: Colors.white54),
-                                  errorStyle: TextStyle(
-                                      color: getErrorTextColor(
-                                          model.getAppTheme())),
+                                  errorStyle:
+                                      TextStyle(color: errorTextColor),
                                 ),
                                 autofocus: true,
                                 style: const TextStyle(color: Colors.white),
@@ -137,32 +124,21 @@ class _LoginViewState extends State<LoginView> {
                                           });
                                         },
                                   style: ButtonStyle(
-                                    backgroundColor: MaterialStateProperty
-                                        .resolveWith<Color>(
-                                      (Set<MaterialState> states) {
-                                        if (states
-                                            .contains(MaterialState.disabled)) {
-                                          return getButtonColor(
-                                              model.getAppTheme(),
-                                              context,
-                                              Colors.white38,
-                                              Colors.grey[800]);
-                                        }
-                                        return getButtonColor(
-                                            model.getAppTheme(),
-                                            context,
-                                            Colors.white,
-                                            Colors.grey[900]);
-                                      },
-                                    ),
+                                    backgroundColor: MaterialStateProperty.all(
+                                        model.canSubmit
+                                            ? colorButton
+                                            : Colors.white38),
                                     padding: MaterialStateProperty.all(
                                         const EdgeInsets.symmetric(
                                             vertical: 16)),
                                   ),
                                   child: Text(
                                     AppIntl.of(context).login_action_sign_in,
-                                    style: const TextStyle(
-                                        color: Color.fromRGBO(239, 62, 69, 1),
+                                    style: TextStyle(
+                                        color: model.canSubmit
+                                            ? submitTextColor
+                                            : Colors.white60,
+                                        //Color.fromRGBO(239, 62, 69, 1),
                                         fontSize: 18),
                                   ),
                                 ),
@@ -201,24 +177,16 @@ class _LoginViewState extends State<LoginView> {
     super.dispose();
   }
 
-  Color getErrorTextColor(String appTheme) {
-    return appTheme == ThemeMode.light.toString()
-        ? Colors.amberAccent
-        : appTheme == ThemeMode.dark.toString()
-            ? Colors.redAccent
-            : Theme.of(context).brightness == Brightness.light
-                ? Colors.amberAccent
-                : Colors.redAccent;
-  }
+  Color get errorTextColor =>
+      Theme.of(context).brightness == Brightness.light
+          ? Colors.amberAccent
+          : Colors.redAccent;
 
-  Color getButtonColor(String appTheme, BuildContext context, Color lightColor,
-      Color darkcolor) {
-    return appTheme == ThemeMode.light.toString()
-        ? lightColor
-        : appTheme == ThemeMode.dark.toString()
-            ? darkcolor
-            : Theme.of(context).brightness == Brightness.light
-                ? lightColor
-                : darkcolor;
-  }
+  Color get colorButton => Theme.of(context).brightness == Brightness.light
+      ? Colors.white
+      : AppTheme.etsLightRed;
+
+  Color get submitTextColor => Theme.of(context).brightness == Brightness.light
+      ? AppTheme.etsLightRed
+      : Colors.white;
 }
