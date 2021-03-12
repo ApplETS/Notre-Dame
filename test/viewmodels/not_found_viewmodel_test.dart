@@ -33,13 +33,23 @@ void main() {
       analyticsService = setupAnalyticsServiceMock();
       setupLogger();
 
-      viewModel = NotFoundViewModel(_pageNotFoundPassed);
+      viewModel = NotFoundViewModel(pageName: _pageNotFoundPassed);
     });
 
     tearDown(() {
       unregister<NavigationService>();
       unregister<AnalyticsService>();
       unregister<RiveAnimationService>();
+    });
+
+    group('constructor - ', () {
+      test('test that an analytics event is lauch', () async {
+        String pageTestCtor = "\testctor";
+        NotFoundViewModel(pageName: pageTestCtor);
+
+        verify(analyticsService.logEvent(NotFoundViewModel.tag,
+            "An unknown page ($pageTestCtor) has been access from the app."));
+      });
     });
 
     group('navigateToDashboard - ', () {

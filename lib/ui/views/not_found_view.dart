@@ -26,7 +26,7 @@ class _NotFoundState extends State<NotFoundView> {
 
   @override
   void initState() {
-    viewModel = NotFoundViewModel(widget.pageName);
+    viewModel = NotFoundViewModel(pageName: widget.pageName);
     viewModel
         .loadRiveAnimation()
         .then((_) => setState(() => viewModel.startRiveAnimation()));
@@ -46,7 +46,7 @@ class _NotFoundState extends State<NotFoundView> {
   @override
   Widget build(BuildContext context) =>
       ViewModelBuilder<NotFoundViewModel>.nonReactive(
-          viewModelBuilder: () => NotFoundViewModel(widget.pageName),
+          viewModelBuilder: () => viewModel,
           builder: (context, model, child) => Scaffold(
                 body: SafeArea(
                   minimum: const EdgeInsets.all(20),

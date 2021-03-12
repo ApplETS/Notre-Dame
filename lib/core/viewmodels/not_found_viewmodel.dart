@@ -1,4 +1,5 @@
 // FLUTTER / DART / THIRD-PARTIES
+import 'package:flutter/material.dart';
 import 'package:rive/rive.dart';
 import 'package:stacked/stacked.dart';
 
@@ -24,19 +25,13 @@ class NotFoundViewModel extends BaseViewModel {
 
   final String _riveAnimationFileName = 'dot_jumping';
 
-  String _pageName;
-  String get notFoundPageName {
-    return _pageName;
-  }
+  final String _pageName;
+  String get notFoundPageName => _pageName;
 
   Artboard _artboard;
-  Artboard get artboard {
-    return _artboard;
-  }
+  Artboard get artboard => _artboard;
 
-  NotFoundViewModel(String pageName) {
-    _pageName = pageName;
-
+  NotFoundViewModel({@required String pageName}) : _pageName = pageName {
     _analyticsService.logEvent(
         tag, "An unknown page ($pageName) has been access from the app.");
   }
