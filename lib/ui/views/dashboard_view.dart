@@ -120,7 +120,7 @@ class _DashboardViewState extends State<DashboardView>
                   launch('https://www.facebook.com/ClubApplETS');
                 },
                 child: Text(AppIntl.of(context).facebook.toUpperCase(),
-                    style: Theme.of(context).primaryTextTheme.bodyText2),
+                    style: Theme.of(context).primaryTextTheme.button),
               ),
               const SizedBox(width: 10),
               TextButton(
