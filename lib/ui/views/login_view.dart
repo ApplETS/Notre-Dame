@@ -102,8 +102,7 @@ class _LoginViewState extends State<LoginView> {
                               ),
                               PasswordFormField(
                                   validator: model.validatePassword,
-                                  onEditionComplete: _focusNode.nextFocus,
-                                  appTheme: model.getAppTheme()),
+                                  onEditionComplete: _focusNode.nextFocus),
                               const SizedBox(
                                 height: 30.0,
                               ),

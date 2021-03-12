@@ -26,7 +26,6 @@ void main() {
 
   NavigationService navigationService;
   UserRepositoryMock userRepositoryMock;
-  SettingsManager settingsManager;
 
   AppIntl appIntl;
 
@@ -35,7 +34,6 @@ void main() {
   group('LoginViewModel - ', () {
     setUp(() async {
       navigationService = setupNavigationServiceMock();
-      settingsManager = setupSettingsManagerMock();
       userRepositoryMock = setupUserRepositoryMock() as UserRepositoryMock;
       setupLogger();
       appIntl = await setupAppIntl();
@@ -124,12 +122,6 @@ void main() {
 
         expect(await viewModel.authenticate(), appIntl.error);
         expect(viewModel.password, "");
-      });
-
-      test('get app theme', () async {
-        viewModel.getAppTheme();
-
-        verify(settingsManager.themeMode);
       });
     });
   });

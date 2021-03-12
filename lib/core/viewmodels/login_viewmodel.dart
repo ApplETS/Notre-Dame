@@ -13,8 +13,6 @@ import 'package:notredame/locator.dart';
 import 'package:notredame/core/constants/router_paths.dart';
 
 class LoginViewModel extends BaseViewModel {
-  /// Manage the settings
-  final SettingsManager _settingsManager = locator<SettingsManager>();
 
   /// Used to authenticate the user
   final UserRepository _userRepository = locator<UserRepository>();
@@ -73,7 +71,7 @@ class LoginViewModel extends BaseViewModel {
         username: _universalCode, password: _password);
 
     if (response) {
-      _navigationService.pushNamed(RouterPaths.dashboard);
+      _navigationService.pushNamed(RouterPaths.schedule);
       return '';
     }
     _password = "";
@@ -81,9 +79,5 @@ class LoginViewModel extends BaseViewModel {
     notifyListeners();
 
     return _appIntl.error;
-  }
-
-  String getAppTheme() {
-    return _settingsManager.themeMode.toString();
   }
 }

@@ -5,10 +5,8 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 class PasswordFormField extends StatefulWidget {
   final FormFieldValidator<String> validator;
   final VoidCallback onEditionComplete;
-  final String appTheme;
 
-  const PasswordFormField(
-      {Key key, this.validator, this.onEditionComplete, this.appTheme})
+  const PasswordFormField({Key key, this.validator, this.onEditionComplete})
       : super(key: key);
 
   @override
@@ -34,13 +32,13 @@ class _PasswordFormFieldState extends State<PasswordFormField> {
                     color: Colors.white, width: borderRadiusOnFocus)),
             focusedErrorBorder: OutlineInputBorder(
                 borderSide: BorderSide(
-                    color: getErrorTextColor(), width: borderRadiusOnFocus)),
+                    color: errorTextColor, width: borderRadiusOnFocus)),
             errorBorder: OutlineInputBorder(
                 borderSide: BorderSide(
-                    color: getErrorTextColor(), width: borderRadiusOnFocus)),
+                    color: errorTextColor, width: borderRadiusOnFocus)),
             labelText: AppIntl.of(context).login_prompt_password,
             labelStyle: const TextStyle(color: Colors.white54),
-            errorStyle: TextStyle(color: getErrorTextColor()),
+            errorStyle: TextStyle(color: errorTextColor),
             suffixIcon: IconButton(
                 icon: Icon(
                     _obscureText ? Icons.visibility : Icons.visibility_off,
@@ -58,13 +56,7 @@ class _PasswordFormFieldState extends State<PasswordFormField> {
     });
   }
 
-  Color getErrorTextColor() {
-    return widget.appTheme == ThemeMode.light.toString()
+  Color get errorTextColor => Theme.of(context).brightness == Brightness.light
         ? Colors.amberAccent
-        : widget.appTheme == ThemeMode.dark.toString()
-            ? Colors.redAccent
-            : Theme.of(context).brightness == Brightness.light
-                ? Colors.amberAccent
-                : Colors.redAccent;
-  }
+        : Colors.redAccent;
 }
