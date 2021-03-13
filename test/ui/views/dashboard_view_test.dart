@@ -80,5 +80,17 @@ void main() {
         expect(find.text("ApplETS"), findsOneWidget);
       });
     });
+
+    group("golden - ", () {
+      testWidgets("default view", (WidgetTester tester) async {
+        tester.binding.window.physicalSizeTestValue = const Size(800, 1410);
+
+        await tester.pumpWidget(localizedWidget(child: const DashboardView()));
+        await tester.pumpAndSettle();
+
+        await expectLater(find.byType(DashboardView),
+            matchesGoldenFile(goldenFilePath("dashboardView_1")));
+      });
+    });
   });
 }
