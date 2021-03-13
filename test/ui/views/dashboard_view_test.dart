@@ -2,7 +2,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:notredame/ui/views/dashboard_view.dart';
-import 'package:url_launcher/url_launcher.dart';
 import '../../helpers.dart';
 
 void main() {

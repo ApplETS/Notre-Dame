@@ -1,24 +1,16 @@
 // FLUTTER / DART / THIRD-PARTIES
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:notredame/core/viewmodels/dashboard_viewmodel.dart';
+
 import 'package:stacked/stacked.dart';
 import 'package:table_calendar/table_calendar.dart';
-import 'package:flutter/src/widgets/dismissible.dart';
 
 // VIEWMODEL
-import 'package:notredame/core/viewmodels/schedule_viewmodel.dart';
-
-// MODELS
-import 'package:notredame/core/models/course_activity.dart';
+import 'package:notredame/core/viewmodels/dashboard_viewmodel.dart';
 
 // WIDGET
 import 'package:notredame/ui/widgets/base_scaffold.dart';
-import 'package:notredame/ui/widgets/course_activity_tile.dart';
-import 'package:notredame/ui/widgets/schedule_settings.dart';
-
-// CONSTANTS
-import 'package:notredame/core/constants/preferences_flags.dart';
+import 'package:flutter/src/widgets/dismissible.dart';
 
 // OTHER
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
