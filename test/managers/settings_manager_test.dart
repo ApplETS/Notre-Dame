@@ -112,7 +112,7 @@ void main() {
     group("ThemeMode - ", () {
       test("set light/dark/system mode", () async {
         const flag = PreferencesFlag.theme;
-        manager.setThemeMode(ThemeMode.light.toString());
+        manager.setThemeMode(ThemeMode.light);
 
         verify(preferencesService.setString(
                 PreferencesFlag.theme, ThemeMode.light.toString()))
@@ -123,7 +123,7 @@ void main() {
                 any))
             .called(1);
 
-        manager.setThemeMode(ThemeMode.dark.toString());
+        manager.setThemeMode(ThemeMode.dark);
 
         verify(preferencesService.setString(
                 PreferencesFlag.theme, ThemeMode.dark.toString()))
@@ -134,7 +134,7 @@ void main() {
                 any))
             .called(1);
 
-        manager.setThemeMode(ThemeMode.system.toString());
+        manager.setThemeMode(ThemeMode.system);
 
         verify(preferencesService.setString(
                 PreferencesFlag.theme, ThemeMode.system.toString()))
