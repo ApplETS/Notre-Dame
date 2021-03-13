@@ -18,6 +18,7 @@ import 'package:notredame/core/managers/user_repository.dart';
 
 //SERVICE
 import 'package:notredame/core/services/navigation_service.dart';
+import 'package:notredame/core/services/preferences_service.dart';
 
 // OTHERS
 import 'package:notredame/core/constants/router_paths.dart';
@@ -38,7 +39,7 @@ class MoreViewModel extends FutureViewModel {
   /// Get the application version
   String get appVersion => _appVersion;
 
-  MoreViewModel({@required AppIntl intl}): _appIntl = intl;
+  MoreViewModel({@required AppIntl intl}) : _appIntl = intl;
 
   @override
   Future futureToRun() async {
@@ -66,7 +67,8 @@ class MoreViewModel extends FutureViewModel {
     } on Exception catch (e) {
       onError(e);
     }
-    UserRepository().logOut();
+    await PreferencesService().clear();
+    await UserRepository().logOut();
     setBusy(false);
     // Dismiss alertDialog
     navigationService.pop();
