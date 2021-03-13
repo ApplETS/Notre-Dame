@@ -1,4 +1,3 @@
-
 enum PreferencesFlag {
   // Schedule flags
   scheduleSettingsCalendarFormat,
@@ -10,4 +9,7 @@ enum PreferencesFlag {
 
   // Theme flag
   theme,
+
+  // Welcome flag
+  welcome,
 }

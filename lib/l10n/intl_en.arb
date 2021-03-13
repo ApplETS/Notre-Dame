@@ -186,5 +186,16 @@
   "thank_you_for_the_feedback": "Thank you for the feedback",
 
   "flutter_license": "Flutter is Google's UI toolkit for building beautiful, natively compiled applications for mobile, web, and desktop from a single codebase. Learn more about Flutter at ",
-  "flutter_website": "https://flutter.dev"
+  "flutter_website": "https://flutter.dev",
+
+  "discovery_navbar_dashboard_page_title": "Dashboard",
+  "discovery_navbar_dashboard_page_details": "bla bla bla",
+  "discovery_navbar_schedule_page_title": "Schedule",
+  "discovery_navbar_schedule_page_details": "bla bla bla",
+  "discovery_navbar_student_page_title": "Student",
+  "discovery_navbar_student_page_details": "bla bla bla",
+  "discovery_navbar_ets_page_title": "ÉTS",
+  "discovery_navbar_ets_page_details": "bla bla bla",
+  "discovery_navbar_more_page_title": "More",
+  "discovery_navbar_more_page_details": "bla bla bla"
 }
