@@ -27,9 +27,7 @@ import 'package:url_launcher/url_launcher.dart';
 
 class DashboardView extends StatefulWidget {
   @visibleForTesting
-  final DateTime initialDay;
-
-  const DashboardView({Key key, this.initialDay}) : super(key: key);
+  const DashboardView({Key key}) : super(key: key);
 
   @override
   _DashboardViewState createState() => _DashboardViewState();
@@ -75,7 +73,6 @@ class _DashboardViewState extends State<DashboardView>
           intl: AppIntl.of(context),
         ),
         builder: (context, model, child) => BaseScaffold(
-          isLoading: model.busy(model.isLoadingEvents),
           isInteractionLimitedWhileLoading: false,
           appBar: AppBar(
             title: Text(AppIntl.of(context).title_dashboard),
