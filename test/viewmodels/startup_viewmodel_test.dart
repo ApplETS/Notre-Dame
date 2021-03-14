@@ -18,7 +18,6 @@ import '../mock/managers/user_repository_mock.dart';
 void main() {
   NavigationService navigationService;
   UserRepositoryMock userRepositoryMock;
-  SettingsManager settingsManager;
 
   StartUpViewModel viewModel;
 
@@ -26,7 +25,6 @@ void main() {
     setUp(() async {
       navigationService = setupNavigationServiceMock();
       userRepositoryMock = setupUserRepositoryMock() as UserRepositoryMock;
-      settingsManager = setupSettingsManagerMock();
 
       setupLogger();
 
@@ -36,7 +34,6 @@ void main() {
     tearDown(() {
       unregister<NavigationService>();
       unregister<UserRepository>();
-      unregister<SettingsManager>();
     });
 
     group('handleStartUp - ', () {

@@ -16,8 +16,8 @@ class ChooseLanguageView extends StatefulWidget {
 }
 
 class _ChooseLanguageViewState extends State<ChooseLanguageView> {
-  Container languagesListView(ChooseLanguageViewModel model) {
-    return Container(
+  SizedBox languagesListView(ChooseLanguageViewModel model) {
+    return SizedBox(
       height: 125.0,
       width: 200.0,
       child: ListView.separated(
