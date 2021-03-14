@@ -73,28 +73,28 @@ class _NotFoundState extends State<NotFoundView> {
                                 fontSize: 25, fontWeight: FontWeight.bold),
                           ),
                         ),
-                        Text(
-                          AppIntl.of(context)
-                              .not_found_message(model.notFoundPageName),
-                          textAlign: TextAlign.center,
-                          style: const TextStyle(
-                            fontSize: 15,
-                          ),
-                        ),
                         Padding(
                           padding: const EdgeInsets.only(
-                            top: 70,
+                            bottom: 70,
                           ),
-                          child: Flexible(
-                            child: ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                primary: AppTheme.primary,
-                              ),
-                              onPressed: () {
-                                model.navigateToDashboard();
-                              },
-                              child: Text(AppIntl.of(context).go_to_dashboard),
+                          child: Text(
+                            AppIntl.of(context)
+                              .not_found_message(model.notFoundPageName),
+                            textAlign: TextAlign.center,
+                            style: const TextStyle(
+                              fontSize: 15,
                             ),
+                          ),
+                        ),
+                        Flexible(
+                          child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              primary: AppTheme.primary,
+                            ),
+                            onPressed: () {
+                              model.navigateToDashboard();
+                            },
+                            child: Text(AppIntl.of(context).go_to_dashboard),
                           ),
                         ),
                       ],
