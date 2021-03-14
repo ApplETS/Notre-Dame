@@ -189,9 +189,9 @@
   "flutter_website": "https://flutter.dev",
 
   "discovery_navbar_dashboard_page_title": "Dashboard",
-  "discovery_navbar_dashboard_page_details": "bla bla bla",
+  "discovery_navbar_dashboard_page_details": "The dashboard page is grouping the most used information into an easy on the eye view.",
   "discovery_navbar_schedule_page_title": "Schedule",
-  "discovery_navbar_schedule_page_details": "bla bla bla",
+  "discovery_navbar_schedule_page_details": "The schedule page allows you to see all the event for the current week.",
   "discovery_navbar_student_page_title": "Student",
   "discovery_navbar_student_page_details": "bla bla bla",
   "discovery_navbar_ets_page_title": "ÉTS",
