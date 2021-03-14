@@ -2,10 +2,12 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:mockito/mockito.dart';
+import 'package:notredame/core/constants/preferences_flags.dart';
 
 // SERVICES / MANAGERS
 import 'package:notredame/core/managers/user_repository.dart';
 import 'package:notredame/core/services/navigation_service.dart';
+import 'package:notredame/core/managers/settings_manager.dart';
 
 // VIEW MODEL
 import 'package:notredame/core/viewmodels/login_viewmodel.dart';
@@ -15,6 +17,7 @@ import 'package:notredame/core/constants/router_paths.dart';
 
 // OTHER
 import '../helpers.dart';
+import '../mock/managers/settings_manager_mock.dart';
 import '../mock/managers/user_repository_mock.dart';
 
 void main() {
@@ -25,6 +28,7 @@ void main() {
 
   NavigationService navigationService;
   UserRepositoryMock userRepositoryMock;
+  SettingsManager settingsManager;
 
   AppIntl appIntl;
 
@@ -34,6 +38,8 @@ void main() {
     setUp(() async {
       navigationService = setupNavigationServiceMock();
       userRepositoryMock = setupUserRepositoryMock() as UserRepositoryMock;
+      settingsManager = setupSettingsManagerMock();
+      
       setupLogger();
       appIntl = await setupAppIntl();
 
@@ -43,6 +49,7 @@ void main() {
     tearDown(() {
       unregister<NavigationService>();
       unregister<UserRepository>();
+      unregister<SettingsManager>();
     });
 
     group('validateUniversalCode - ', () {
@@ -96,8 +103,22 @@ void main() {
     });
 
     group('signIn - ', () {
-      test('with right credentials should redirect to the Dashboard route', () async {
+      test('with right credentials should redirect to the choose language dialog route if it the first time the app is launched', () async {
         UserRepositoryMock.stubAuthenticate(userRepositoryMock, universalCodeValid);
+
+        viewModel.validateUniversalCode(universalCodeValid);
+        viewModel.validatePassword(passwordCodeValid);
+
+        await viewModel.authenticate();
+        verify(navigationService.pushNamed(RouterPaths.chooseLanguage));
+        verify(settingsManager.setString(PreferencesFlag.welcome, 'true'));
+      });
+      
+      test('with right credentials should redirect to the Dashboard route if it is not the first time the app is launched', () async {
+        UserRepositoryMock.stubAuthenticate(userRepositoryMock, universalCodeValid);
+
+        SettingsManagerMock.stubGetString(
+            settingsManager as SettingsManagerMock, PreferencesFlag.welcome, toReturn: 'true');
 
         viewModel.validateUniversalCode(universalCodeValid);
         viewModel.validatePassword(passwordCodeValid);

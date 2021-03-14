@@ -48,6 +48,8 @@ class ChooseLanguageViewModel extends BaseViewModel {
         break;
 
       default:
+        throw Exception('No valid language for the index $index passed in paramaters');
+        break;
     }
 
     _navigationService.pop();
