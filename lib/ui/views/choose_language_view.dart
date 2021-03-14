@@ -5,7 +5,7 @@ import 'package:stacked/stacked.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 // VIEWMODELS
-import 'package:notredame/core/viewmodels/settings_viewmodel.dart';
+import 'package:notredame/core/viewmodels/choose_language_viewmodel.dart';
 
 // OTHERS
 import 'package:notredame/ui/widgets/base_scaffold.dart';
@@ -16,29 +16,23 @@ class ChooseLanguageView extends StatefulWidget {
 }
 
 class _ChooseLanguageViewState extends State<ChooseLanguageView> {
-  Container languagesListView() {
-    final List<String> languages = <String>[
-      AppIntl.of(context).settings_english,
-      AppIntl.of(context).settings_french
-    ];
-
+  Container languagesListView(ChooseLanguageViewModel model) {
     return Container(
       height: 125.0,
       width: 200.0,
       child: ListView.separated(
         physics: const NeverScrollableScrollPhysics(),
         padding: const EdgeInsets.all(8),
-        itemCount: languages.length,
+        itemCount: model.languages.length,
         itemBuilder: (BuildContext context, int index) {
-          return Padding(
-            padding: const EdgeInsets.only(left: 12.0),
-            child: Container(
-              height: 50,
-              child: Align(
-                alignment: Alignment.centerLeft,
-                child: Text(languages[index]),
-              ),
+          return ListTile(
+            leading: Image.asset(
+              model.languagesIcons[index],
+              height: 25,
+              width: 25,
             ),
+            title: Text(model.languages[index]),
+            onTap: () {},
           );
         },
         separatorBuilder: (BuildContext context, int index) =>
@@ -49,22 +43,19 @@ class _ChooseLanguageViewState extends State<ChooseLanguageView> {
 
   @override
   Widget build(BuildContext context) {
-    return ViewModelBuilder<SettingsViewModel>.reactive(
-        viewModelBuilder: () => SettingsViewModel(intl: AppIntl.of(context)),
+    return ViewModelBuilder<ChooseLanguageViewModel>.reactive(
+        viewModelBuilder: () =>
+            ChooseLanguageViewModel(intl: AppIntl.of(context)),
         builder: (context, model, child) {
           return BaseScaffold(
             body: SimpleDialog(
               insetPadding: const EdgeInsets.all(10),
               children: <Widget>[
-                Padding(
-                  padding: const EdgeInsets.all(10.0),
-                  child: Align(
-                    alignment: Alignment.centerLeft,
-                    child: Icon(
-                      Icons.language,
-                      size: 75,
-                      color: AppTheme.etsLightRed,
-                    ),
+                const Center(
+                  child: Icon(
+                    Icons.language,
+                    size: 75,
+                    color: AppTheme.etsLightRed,
                   ),
                 ),
                 Padding(
@@ -90,7 +81,7 @@ class _ChooseLanguageViewState extends State<ChooseLanguageView> {
                 ),
                 Padding(
                   padding: const EdgeInsets.only(top: 20),
-                  child: languagesListView(),
+                  child: languagesListView(model),
                 ),
               ],
             ),
