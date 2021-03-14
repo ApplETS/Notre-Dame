@@ -40,5 +40,17 @@ void main() {
         expect(listview, findsOneWidget);
       });
     });
+
+    group("golden - ", () {
+        testWidgets("default view", (WidgetTester tester) async {
+          tester.binding.window.physicalSizeTestValue = const Size(800, 1410);
+
+          await tester.pumpWidget(localizedWidget(child: ChooseLanguageView()));
+          await tester.pumpAndSettle();
+
+          await expectLater(find.byType(ChooseLanguageView),
+              matchesGoldenFile(goldenFilePath("chooseLanguageView_1")));
+        });
+      });
   });
 }

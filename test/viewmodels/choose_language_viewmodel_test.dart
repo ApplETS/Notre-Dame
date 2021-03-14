@@ -75,7 +75,7 @@ void main() {
 
     group("prop language - ", () {
       test('returns the languages successfully', () async {
-        final languages = viewModel.languagesIcons;
+        final languages = viewModel.languages;
 
         expect(['English', 'Français'], languages);
       });
