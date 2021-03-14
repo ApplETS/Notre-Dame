@@ -36,10 +36,13 @@ class _NotFoundState extends State<NotFoundView> {
 
   Widget _buildAnimatedWidget() {
     return viewModel.artboard != null
-        ? Rive(
-            artboard: viewModel.artboard,
-            fit: BoxFit.scaleDown,
-          )
+        ? SizedBox(
+            width: 100,
+            height: 80,
+            child: Rive(
+              artboard: viewModel.artboard,
+              fit: BoxFit.fitWidth,
+            ))
         : Container();
   }
 
@@ -54,41 +57,44 @@ class _NotFoundState extends State<NotFoundView> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
-                        Expanded(
-                          child: Padding(
-                              padding: const EdgeInsets.only(
-                                bottom: 40,
-                              ),
-                              child: _buildAnimatedWidget()),
-                        ),
-                        Text(
-                          AppIntl.of(context).not_found_title,
-                          style: const TextStyle(
-                              fontSize: 25, fontWeight: FontWeight.bold),
+                        Padding(
+                          padding: const EdgeInsets.only(
+                            bottom: 60,
+                          ),
+                          child: _buildAnimatedWidget(),
                         ),
                         Padding(
                           padding: const EdgeInsets.only(
-                            top: 80,
-                            bottom: 60,
+                            bottom: 80,
                           ),
                           child: Text(
-                            AppIntl.of(context)
-                                .not_found_message(model.notFoundPageName),
-                            textAlign: TextAlign.center,
+                            AppIntl.of(context).not_found_title,
                             style: const TextStyle(
-                              fontSize: 15,
-                            ),
+                                fontSize: 25, fontWeight: FontWeight.bold),
                           ),
                         ),
-                        Flexible(
-                          child: ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                              primary: AppTheme.primary,
+                        Text(
+                          AppIntl.of(context)
+                              .not_found_message(model.notFoundPageName),
+                          textAlign: TextAlign.center,
+                          style: const TextStyle(
+                            fontSize: 15,
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(
+                            top: 70,
+                          ),
+                          child: Flexible(
+                            child: ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                primary: AppTheme.primary,
+                              ),
+                              onPressed: () {
+                                model.navigateToDashboard();
+                              },
+                              child: Text(AppIntl.of(context).go_to_dashboard),
                             ),
-                            onPressed: () {
-                              model.navigateToDashboard();
-                            },
-                            child: Text(AppIntl.of(context).go_to_dashboard),
                           ),
                         ),
                       ],
