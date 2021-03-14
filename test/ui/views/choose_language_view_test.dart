@@ -26,9 +26,9 @@ void main() {
         await tester.pumpWidget(localizedWidget(child: ChooseLanguageView()));
         await tester.pumpAndSettle();
 
+        expect(find.byIcon(Icons.language), findsOneWidget);
         expect(find.text(intl.choose_language_title), findsOneWidget);
         expect(find.text(intl.choose_language_subtitle), findsOneWidget);
-        expect(find.byIcon(Icons.language), findsOneWidget);
       });
 
       testWidgets('has a listView',

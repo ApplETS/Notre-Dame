@@ -23,14 +23,13 @@ ChooseLanguageViewModel viewModel;
 void main() {
   NavigationService navigationService;
   SettingsManager settingsManager;
-  AppIntl intl;
 
   group("ChooseLanguageViewModel - ", () {
     setUp(() async {
       // Setting up mocks
       navigationService = setupNavigationServiceMock();
       settingsManager = setupSettingsManagerMock();
-      intl = await setupAppIntl();
+      final AppIntl intl = await setupAppIntl();
 
       viewModel = ChooseLanguageViewModel(intl: intl);
     });

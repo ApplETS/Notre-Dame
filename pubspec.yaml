@@ -88,8 +88,8 @@ flutter:
     - assets/images/
     - assets/html/
     - assets/certificates/
-    - assets/
     - assets/icons/
+    - assets/
 
 flutter_intl:
   enabled: true

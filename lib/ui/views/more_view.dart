@@ -31,9 +31,7 @@ class MoreView extends StatelessWidget {
                 style: textStyle.copyWith(color: Colors.blue),
                 text: AppIntl.of(context).flutter_website,
                 recognizer: TapGestureRecognizer()
-                  ..onTap = () => Utils.launchURL(
-                      AppIntl.of(context).flutter_website,
-                      AppIntl.of(context))),
+                  ..onTap = () => Utils.launchURL(AppIntl.of(context).flutter_website, AppIntl.of(context))),
             TextSpan(style: textStyle, text: '.'),
           ],
         ),
