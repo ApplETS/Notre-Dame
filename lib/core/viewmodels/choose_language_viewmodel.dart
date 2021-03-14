@@ -1,7 +1,9 @@
 // FLUTTER / DART / THIRD-PARTIES
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:notredame/core/constants/router_paths.dart';
 import 'package:notredame/core/managers/settings_manager.dart';
+import 'package:notredame/core/services/navigation_service.dart';
 import 'package:stacked/stacked.dart';
 
 import '../../locator.dart';
@@ -13,6 +15,9 @@ class ChooseLanguageViewModel extends BaseViewModel {
 
   /// Manage the settings
   final SettingsManager _settingsManager = locator<SettingsManager>();
+
+  /// Used to redirect on the dashboard.
+  final NavigationService _navigationService = locator<NavigationService>();
 
   /// Localization class of the application.
   final AppIntl _appIntl;
@@ -44,5 +49,8 @@ class ChooseLanguageViewModel extends BaseViewModel {
 
       default:
     }
+
+    _navigationService.pop();
+    _navigationService.pushNamed(RouterPaths.schedule);
   }
 }

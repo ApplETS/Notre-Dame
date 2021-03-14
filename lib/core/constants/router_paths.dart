@@ -10,4 +10,5 @@ class RouterPaths {
   static const String settings = "/more/settings";
   static const String contributors = "/more/contributors";
   static const String about = "/more/about";
+  static const String chooseLanguage = "/choose-language";
 }

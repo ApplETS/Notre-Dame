@@ -36,7 +36,6 @@ class _ChooseLanguageViewState extends State<ChooseLanguageView> {
             title: Text(model.languages[index]),
             onTap: () {
               model.changeLanguage(index);
-              Navigator.of(context, rootNavigator: true).pop('dialog');
             },
           );
         },
