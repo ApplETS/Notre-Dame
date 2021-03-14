@@ -31,9 +31,12 @@ class _ChooseLanguageViewState extends State<ChooseLanguageView> {
               height: 25,
               width: 25,
             ),
+            trailing:
+                Icon(model.languageSelectedIndex == index ? Icons.check : null),
             title: Text(model.languages[index]),
             onTap: () {
               model.changeLanguage(index);
+              Navigator.of(context, rootNavigator: true).pop('dialog');
             },
           );
         },

@@ -9,6 +9,7 @@ import '../../locator.dart';
 class ChooseLanguageViewModel extends BaseViewModel {
   static const int english = 0;
   static const int french = 1;
+  int languageSelectedIndex = -1;
 
   /// Manage the settings
   final SettingsManager _settingsManager = locator<SettingsManager>();
@@ -33,10 +34,12 @@ class ChooseLanguageViewModel extends BaseViewModel {
     switch (index) {
       case english:
         _settingsManager.setLocale(AppIntl.supportedLocales.first.languageCode);
+        languageSelectedIndex = english;
         break;
 
       case french:
         _settingsManager.setLocale(AppIntl.supportedLocales.last.languageCode);
+        languageSelectedIndex = french;
         break;
 
       default:
