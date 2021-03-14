@@ -32,7 +32,9 @@ class _ChooseLanguageViewState extends State<ChooseLanguageView> {
               width: 25,
             ),
             title: Text(model.languages[index]),
-            onTap: () {},
+            onTap: () {
+              model.changeLanguage(index);
+            },
           );
         },
         separatorBuilder: (BuildContext context, int index) =>
@@ -79,10 +81,7 @@ class _ChooseLanguageViewState extends State<ChooseLanguageView> {
                     ),
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 20),
-                  child: languagesListView(model),
-                ),
+                languagesListView(model)
               ],
             ),
           );

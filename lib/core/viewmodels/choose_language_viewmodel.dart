@@ -7,6 +7,9 @@ import 'package:stacked/stacked.dart';
 import '../../locator.dart';
 
 class ChooseLanguageViewModel extends BaseViewModel {
+  static const int english = 0;
+  static const int french = 1;
+
   /// Manage the settings
   final SettingsManager _settingsManager = locator<SettingsManager>();
 
@@ -24,5 +27,19 @@ class ChooseLanguageViewModel extends BaseViewModel {
       'assets/icons/english_icon.png',
       'assets/icons/french_icon.png',
     ];
+  }
+
+  void changeLanguage(int index) {
+    switch (index) {
+      case english:
+        _settingsManager.setLocale(AppIntl.supportedLocales.first.languageCode);
+        break;
+
+      case french:
+        _settingsManager.setLocale(AppIntl.supportedLocales.last.languageCode);
+        break;
+
+      default:
+    }
   }
 }
