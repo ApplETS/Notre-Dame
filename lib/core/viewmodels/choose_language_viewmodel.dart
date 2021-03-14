@@ -1,12 +1,15 @@
 // FLUTTER / DART / THIRD-PARTIES
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:notredame/core/constants/router_paths.dart';
-import 'package:notredame/core/managers/settings_manager.dart';
-import 'package:notredame/core/services/navigation_service.dart';
 import 'package:stacked/stacked.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-import '../../locator.dart';
+// SERVICE
+import 'package:notredame/core/services/navigation_service.dart';
+import 'package:notredame/core/managers/settings_manager.dart';
+
+// OTHER
+import 'package:notredame/locator.dart';
+import 'package:notredame/core/constants/router_paths.dart';
 
 class ChooseLanguageViewModel extends BaseViewModel {
   static const int english = 0;
@@ -48,11 +51,12 @@ class ChooseLanguageViewModel extends BaseViewModel {
         break;
 
       default:
-        throw Exception('No valid language for the index $index passed in paramaters');
+        throw Exception(
+            'No valid language for the index $index passed in paramaters');
         break;
     }
 
     _navigationService.pop();
-    _navigationService.pushNamed(RouterPaths.dashboard);
+    _navigationService.pushNamed(RouterPaths.schedule);
   }
 }
