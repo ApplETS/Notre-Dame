@@ -197,5 +197,8 @@
   "discovery_navbar_ets_page_title": "ÉTS",
   "discovery_navbar_ets_page_details": "bla bla bla",
   "discovery_navbar_more_page_title": "More",
-  "discovery_navbar_more_page_details": "bla bla bla"
+  "discovery_navbar_more_page_details": "bla bla bla",
+
+  "choose_language_title": "Choose your preferred language",
+  "choose_language_subtitle": "Please select your language"
 }
