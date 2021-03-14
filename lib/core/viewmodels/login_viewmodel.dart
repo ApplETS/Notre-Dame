@@ -12,7 +12,6 @@ import 'package:notredame/locator.dart';
 import 'package:notredame/core/constants/router_paths.dart';
 
 class LoginViewModel extends BaseViewModel {
-
   /// Used to authenticate the user
   final UserRepository _userRepository = locator<UserRepository>();
 
@@ -70,7 +69,7 @@ class LoginViewModel extends BaseViewModel {
         username: _universalCode, password: _password);
 
     if (response) {
-      _navigationService.pushNamed(RouterPaths.schedule);
+      _navigationService.pushNamed(RouterPaths.dashboard);
       return '';
     }
     _password = "";

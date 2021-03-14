@@ -21,7 +21,7 @@ class StartUpViewModel extends BaseViewModel {
     final bool isLogin = await _userRepository.silentAuthenticate();
 
     if (isLogin) {
-      _navigationService.pushNamed(RouterPaths.more);
+      _navigationService.pushNamed(RouterPaths.dashboard);
     } else {
       _navigationService.pushNamed(RouterPaths.login);
     }
