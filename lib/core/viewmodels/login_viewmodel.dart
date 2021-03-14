@@ -76,13 +76,11 @@ class LoginViewModel extends BaseViewModel {
         username: _universalCode, password: _password);
 
     if (response) {
-      var hehe = await _settingsManager.getString(PreferencesFlag.welcome);
-
       if (await _settingsManager.getString(PreferencesFlag.welcome) == null) {
         _navigationService.pushNamed(RouterPaths.chooseLanguage);
         _settingsManager.setString(PreferencesFlag.welcome, 'true');
       } else {
-        _navigationService.pushNamed(RouterPaths.schedule);
+        _navigationService.pushNamed(RouterPaths.dashboard);
       }
 
       return '';

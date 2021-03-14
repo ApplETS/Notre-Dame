@@ -1,13 +1,12 @@
-// FLUTTER / DART / THIRD-PARTIES
 import 'package:flutter/material.dart';
-import 'package:notredame/ui/utils/app_theme.dart';
 import 'package:stacked/stacked.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 // VIEWMODELS
 import 'package:notredame/core/viewmodels/choose_language_viewmodel.dart';
 
-// OTHERS
+// OTHER
+import 'package:notredame/ui/utils/app_theme.dart';
 import 'package:notredame/ui/widgets/base_scaffold.dart';
 
 class ChooseLanguageView extends StatefulWidget {
