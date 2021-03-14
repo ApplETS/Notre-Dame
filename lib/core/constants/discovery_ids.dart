@@ -6,7 +6,7 @@ List<Discovery> discoveryIds(AppIntl intl) => [
           id: 'navbar_dashboard_page_id',
           title: intl.discovery_navbar_dashboard_page_title,
           detail: intl.discovery_navbar_dashboard_page_details),
-      /*Discovery(
+      Discovery(
           id: 'navbar_schedule_page_id',
           title: intl.discovery_navbar_schedule_page_title,
           detail: intl.discovery_navbar_schedule_page_details),
@@ -21,5 +21,5 @@ List<Discovery> discoveryIds(AppIntl intl) => [
       Discovery(
           id: 'navbar_more_page_id',
           title: intl.discovery_navbar_more_page_title,
-          detail: intl.discovery_navbar_more_page_details),*/
+          detail: intl.discovery_navbar_more_page_details),
     ];
