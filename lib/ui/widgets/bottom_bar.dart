@@ -1,6 +1,8 @@
 // FLUTTER / DART / THIRD-PARTIES
+import 'package:feature_discovery/feature_discovery.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:notredame/core/constants/discovery_ids.dart';
 
 // SERVICE
 import 'package:notredame/core/services/navigation_service.dart';
@@ -8,6 +10,7 @@ import 'package:notredame/core/services/navigation_service.dart';
 // CONSTANT
 import 'package:notredame/core/constants/router_paths.dart';
 import 'package:notredame/locator.dart';
+import 'package:notredame/ui/utils/app_theme.dart';
 
 /// Bottom navigation bar for the application.
 class BottomBar extends StatelessWidget {
@@ -79,20 +82,42 @@ class BottomBar extends StatelessWidget {
   List<BottomNavigationBarItem> _buildItems(BuildContext context) {
     return [
       BottomNavigationBarItem(
-          icon: const Icon(Icons.dashboard),
+          icon: _buildDiscoveryFeatureDescriptionWidget(
+              context, RouterPaths.dashboard, Icons.dashboard),
           label: AppIntl.of(context).title_dashboard),
       BottomNavigationBarItem(
-          icon: const Icon(Icons.schedule),
+          icon: _buildDiscoveryFeatureDescriptionWidget(
+              context, RouterPaths.schedule, Icons.schedule),
           label: AppIntl.of(context).title_schedule),
       BottomNavigationBarItem(
-          icon: const Icon(Icons.school),
+          icon: _buildDiscoveryFeatureDescriptionWidget(
+              context, RouterPaths.student, Icons.school),
           label: AppIntl.of(context).title_student),
       BottomNavigationBarItem(
-          icon: const Icon(Icons.account_balance),
+          icon: _buildDiscoveryFeatureDescriptionWidget(
+              context, RouterPaths.ets, Icons.account_balance),
           label: AppIntl.of(context).title_ets),
       BottomNavigationBarItem(
-          icon: const Icon(Icons.dehaze),
+          icon: _buildDiscoveryFeatureDescriptionWidget(
+              context, RouterPaths.more, Icons.dehaze),
           label: AppIntl.of(context).title_more),
     ];
+  }
+
+  DescribedFeatureOverlay _buildDiscoveryFeatureDescriptionWidget(
+      BuildContext context, String routerPath, IconData icon) {
+    final discovery = getDiscoveryByPath(AppIntl.of(context), routerPath);
+    return DescribedFeatureOverlay(
+      featureId: discovery.featureId,
+      title: Text(discovery.title),
+      description: Text(discovery.detail),
+      tapTarget: Icon(
+        icon,
+        color: Theme.of(context).brightness == Brightness.light
+            ? AppTheme.etsBlack
+            : AppTheme.etsLightRed,
+      ),
+      child: Icon(icon),
+    );
   }
 }

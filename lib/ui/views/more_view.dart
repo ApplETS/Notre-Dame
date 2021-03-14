@@ -2,6 +2,7 @@
 import 'dart:typed_data';
 import 'package:feedback/feedback.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:stacked/stacked.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -16,7 +17,24 @@ import 'package:notredame/core/viewmodels/more_viewmodel.dart';
 import 'package:notredame/ui/widgets/base_scaffold.dart';
 import 'package:notredame/core/utils/utils.dart';
 
-class MoreView extends StatelessWidget {
+class MoreView extends StatefulWidget {
+  @override
+  _MoreViewState createState() => _MoreViewState();
+}
+
+class _MoreViewState extends State<MoreView> {
+  MoreViewModel viewModel;
+
+  @override
+  void initState() {
+    super.initState();
+
+    SchedulerBinding.instance.addPostFrameCallback((Duration duration) {
+      viewModel = MoreViewModel(intl: AppIntl.of(context));
+      viewModel.startDiscovery(context);
+    });
+  }
+
   /// License text box
   List<Widget> aboutBoxChildren(BuildContext context) {
     final textStyle = Theme.of(context).textTheme.bodyText2;
@@ -31,8 +49,9 @@ class MoreView extends StatelessWidget {
                 style: textStyle.copyWith(color: Colors.blue),
                 text: AppIntl.of(context).flutter_website,
                 recognizer: TapGestureRecognizer()
-                  ..onTap = () =>
-                      Utils.launchURL(AppIntl.of(context).flutter_website, AppIntl.of(context))),
+                  ..onTap = () => Utils.launchURL(
+                      AppIntl.of(context).flutter_website,
+                      AppIntl.of(context))),
             TextSpan(style: textStyle, text: '.'),
           ],
         ),
@@ -43,7 +62,7 @@ class MoreView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<MoreViewModel>.reactive(
-        viewModelBuilder: () => MoreViewModel(intl: AppIntl.of(context)),
+        viewModelBuilder: () => viewModel,
         builder: (context, model, child) {
           return BaseScaffold(
             appBar: AppBar(
