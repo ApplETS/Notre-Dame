@@ -1,5 +1,4 @@
 // FLUTTER / DART / THIRD-PARTIES
-import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -8,10 +7,9 @@ import 'package:notredame/core/constants/router_paths.dart';
 // MANAGER
 import 'package:notredame/core/managers/settings_manager.dart';
 import 'package:notredame/core/services/navigation_service.dart';
-import 'package:notredame/core/viewmodels/choose_language_viewmodel.dart';
 
 // VIEWMODEL
-import 'package:notredame/core/viewmodels/settings_viewmodel.dart';
+import 'package:notredame/core/viewmodels/choose_language_viewmodel.dart';
 
 // CONSTANTS
 import 'package:notredame/core/constants/preferences_flags.dart';
@@ -65,7 +63,7 @@ void main() {
         verify(navigationService.pushNamed(RouterPaths.dashboard));
       });
 
-      test('throws set a language français', () async {
+      test('throws an error when index does not exist', () async {
         SettingsManagerMock.stubSetString(
             settingsManager as SettingsManagerMock, PreferencesFlag.theme);
 
@@ -77,13 +75,13 @@ void main() {
     }); 
 
     group("prop language - ", () {
-      test('returns the languages of the list successfully', () async {
+      test('returns the languages successfully', () async {
         final languages = viewModel.languagesIcons;
 
-        expect([intl.settings_english, intl.settings_french], languages);
+        expect(['English', 'Français'], languages);
       });
 
-      test('returns the languages of the list with an exception', () async {
+      test('returns the languages with an exception', () async {
         const AppIntl intlNull = null;
         final ChooseLanguageViewModel viewModelWithInvalidIntl = ChooseLanguageViewModel(intl: intlNull);
 
@@ -93,7 +91,7 @@ void main() {
           reason: "The getter 'settings_english' was called on null");
       });
 
-      test('returns the languages icons of the list successfully', () async {
+      test('returns the languages icons successfully', () async {
         final languagesIcons = viewModel.languagesIcons;
 
         expect(['assets/icons/english_icon.png', 'assets/icons/french_icon.png'], languagesIcons);
