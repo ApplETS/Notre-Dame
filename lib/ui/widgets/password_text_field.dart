@@ -32,13 +32,13 @@ class _PasswordFormFieldState extends State<PasswordFormField> {
                     color: Colors.white, width: borderRadiusOnFocus)),
             focusedErrorBorder: OutlineInputBorder(
                 borderSide: BorderSide(
-                    color: Colors.amberAccent, width: borderRadiusOnFocus)),
+                    color: errorTextColor, width: borderRadiusOnFocus)),
             errorBorder: OutlineInputBorder(
                 borderSide: BorderSide(
-                    color: Colors.amberAccent, width: borderRadiusOnFocus)),
+                    color: errorTextColor, width: borderRadiusOnFocus)),
             labelText: AppIntl.of(context).login_prompt_password,
             labelStyle: const TextStyle(color: Colors.white54),
-            errorStyle: const TextStyle(color: Colors.amberAccent),
+            errorStyle: TextStyle(color: errorTextColor),
             suffixIcon: IconButton(
                 icon: Icon(
                     _obscureText ? Icons.visibility : Icons.visibility_off,
@@ -55,4 +55,8 @@ class _PasswordFormFieldState extends State<PasswordFormField> {
       _obscureText = !_obscureText;
     });
   }
+
+  Color get errorTextColor => Theme.of(context).brightness == Brightness.light
+        ? Colors.amberAccent
+        : Colors.redAccent;
 }

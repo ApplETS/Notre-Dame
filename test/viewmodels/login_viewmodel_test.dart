@@ -25,6 +25,7 @@ void main() {
 
   NavigationService navigationService;
   UserRepositoryMock userRepositoryMock;
+
   AppIntl appIntl;
 
   LoginViewModel viewModel;
