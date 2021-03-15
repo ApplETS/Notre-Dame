@@ -179,6 +179,7 @@
   "settings_language_pref": "Language",
   "settings_french": "Français",
   "settings_english": "English",
+  "settings_discovery": "Play the tutorial",
   "dark_theme": "Dark",
   "light_theme": "Light",
   "system_theme": "System",

@@ -70,4 +70,8 @@ class SettingsViewModel extends FutureViewModel {
     setBusy(false);
     return true;
   }
+
+  void startDiscovery() {
+    
+  }
 }
