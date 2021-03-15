@@ -25,13 +25,12 @@ class NotFoundViewModel extends BaseViewModel {
 
   final String _riveAnimationFileName = 'dot_jumping';
 
-  final String _pageName;
-  String get notFoundPageName => _pageName;
+  final String notFoundPageName;
 
   Artboard _artboard;
   Artboard get artboard => _artboard;
 
-  NotFoundViewModel({@required String pageName}) : _pageName = pageName {
+  NotFoundViewModel({@required String pageName}) : notFoundPageName = pageName {
     _analyticsService.logEvent(
         tag, "An unknown page ($pageName) has been access from the app.");
   }
