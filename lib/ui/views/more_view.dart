@@ -23,15 +23,12 @@ class MoreView extends StatefulWidget {
 }
 
 class _MoreViewState extends State<MoreView> {
-  MoreViewModel viewModel;
-
   @override
   void initState() {
     super.initState();
 
-    SchedulerBinding.instance.addPostFrameCallback((Duration duration) {
-      viewModel = MoreViewModel(intl: AppIntl.of(context));
-      viewModel.startDiscovery(context);
+    SchedulerBinding.instance.addPostFrameCallback((Duration duration) {  
+      MoreViewModel(intl: AppIntl.of(context)).startDiscovery(context);
     });
   }
 
@@ -62,7 +59,7 @@ class _MoreViewState extends State<MoreView> {
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<MoreViewModel>.reactive(
-        viewModelBuilder: () => viewModel,
+        viewModelBuilder: () => MoreViewModel(intl: AppIntl.of(context)),
         builder: (context, model, child) {
           return BaseScaffold(
             appBar: AppBar(
