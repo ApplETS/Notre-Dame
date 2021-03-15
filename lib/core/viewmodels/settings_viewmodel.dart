@@ -5,12 +5,14 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 // CONSTANTS
 import 'package:notredame/core/constants/preferences_flags.dart';
+import 'package:notredame/core/constants/discovery_ids.dart';
 
 // MANAGER
 import 'package:notredame/core/managers/settings_manager.dart';
 
 // OTHERS
 import 'package:notredame/locator.dart';
+import 'package:feature_discovery/feature_discovery.dart';
 
 class SettingsViewModel extends FutureViewModel {
   /// Manage the settings
@@ -71,7 +73,10 @@ class SettingsViewModel extends FutureViewModel {
     return true;
   }
 
-  void startDiscovery() {
-    
+  void startDiscovery(BuildContext context) {
+    final List<String> ids = discoveryIds(AppIntl.of(context)).map((e) => e.featureId).toList();
+
+    FeatureDiscovery.clearPreferences(context, ids);
+    FeatureDiscovery.discoverFeatures(context, ids);
   }
 }

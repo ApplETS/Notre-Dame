@@ -118,7 +118,7 @@ class _SettingsViewState extends State<SettingsView> {
               ListTile(
                 leading: const Icon(Icons.speaker_notes_outlined),
                 title: Text(AppIntl.of(context).settings_discovery),
-                onTap: () => model.startDiscovery(),
+                onTap: () => model.startDiscovery(context),
               )
             ],
           ),
