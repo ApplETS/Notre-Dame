@@ -151,13 +151,9 @@ class MoreViewModel extends FutureViewModel {
   }
 
   void startDiscovery(BuildContext context) {
-    List<String> ids =
-        discoveryIds(AppIntl.of(context)).map((e) => e.featureId).toList();
+    final List<String> ids = discoveryIds(AppIntl.of(context)).map((e) => e.featureId).toList();
 
     FeatureDiscovery.clearPreferences(context, ids);
-    FeatureDiscovery.discoverFeatures(
-      context,
-      ids,
-    );
+    FeatureDiscovery.discoverFeatures(context, ids);
   }
 }

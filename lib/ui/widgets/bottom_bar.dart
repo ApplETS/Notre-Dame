@@ -107,16 +107,13 @@ class BottomBar extends StatelessWidget {
   DescribedFeatureOverlay _buildDiscoveryFeatureDescriptionWidget(
       BuildContext context, String routerPath, IconData icon) {
     final discovery = getDiscoveryByPath(AppIntl.of(context), routerPath);
+
     return DescribedFeatureOverlay(
       featureId: discovery.featureId,
-      title: Text(discovery.title),
-      description: Text(discovery.detail),
-      tapTarget: Icon(
-        icon,
-        color: Theme.of(context).brightness == Brightness.light
-            ? AppTheme.etsBlack
-            : AppTheme.etsLightRed,
-      ),
+      title: Text(discovery.title, textAlign: TextAlign.justify),
+      description: Text(discovery.detail, textAlign: TextAlign.justify),
+      backgroundColor: AppTheme.appletsPurple,
+      tapTarget: Icon(icon, color: AppTheme.etsBlack),
       child: Icon(icon),
     );
   }
