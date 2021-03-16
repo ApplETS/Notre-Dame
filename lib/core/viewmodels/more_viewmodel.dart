@@ -15,6 +15,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 // MANAGER
 import 'package:notredame/core/managers/cache_manager.dart';
 import 'package:notredame/core/managers/user_repository.dart';
+import 'package:notredame/core/managers/settings_manager.dart';
 
 //SERVICE
 import 'package:notredame/core/services/navigation_service.dart';
@@ -27,6 +28,9 @@ import 'package:notredame/locator.dart';
 class MoreViewModel extends FutureViewModel {
   /// Cache manager
   final CacheManager _cacheManager = locator<CacheManager>();
+
+  /// Settings manager
+  final SettingsManager settingsManager = locator<SettingsManager>();
 
   /// Used to redirect on the dashboard.
   final NavigationService navigationService = locator<NavigationService>();
@@ -69,10 +73,13 @@ class MoreViewModel extends FutureViewModel {
     }
     await PreferencesService().clear();
     await UserRepository().logOut();
+
+    settingsManager.resetLanguageAndThemeMode();
     setBusy(false);
     // Dismiss alertDialog
     navigationService.pop();
     navigationService.pushNamedAndRemoveUntil(RouterPaths.login);
+    settingsManager.notifyListeners();
     showToast(_appIntl.login_msg_logout_success);
   }
 

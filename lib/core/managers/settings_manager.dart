@@ -41,6 +41,12 @@ class SettingsManager with ChangeNotifier {
     return _themeMode;
   }
 
+  /// reset Locale and Theme when logout
+  void resetLanguageAndThemeMode() {
+    _locale = null;
+    _themeMode = null;
+  }
+
   /// Get Locale and Theme to init app with
   Future<void> fetchLanguageAndThemeMode() async {
     final theme = await _preferencesService.getString(PreferencesFlag.theme);
