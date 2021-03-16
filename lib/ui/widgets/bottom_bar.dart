@@ -1,6 +1,8 @@
 // FLUTTER / DART / THIRD-PARTIES
+import 'package:feature_discovery/feature_discovery.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:notredame/core/constants/discovery_ids.dart';
 
 // SERVICE
 import 'package:notredame/core/services/navigation_service.dart';
@@ -8,6 +10,7 @@ import 'package:notredame/core/services/navigation_service.dart';
 // CONSTANT
 import 'package:notredame/core/constants/router_paths.dart';
 import 'package:notredame/locator.dart';
+import 'package:notredame/ui/utils/app_theme.dart';
 
 /// Bottom navigation bar for the application.
 class BottomBar extends StatelessWidget {
@@ -79,20 +82,97 @@ class BottomBar extends StatelessWidget {
   List<BottomNavigationBarItem> _buildItems(BuildContext context) {
     return [
       BottomNavigationBarItem(
-          icon: const Icon(Icons.dashboard),
+          icon: _buildDashboardDiscoveryFeatureDescriptionWidget(
+              context, RouterPaths.dashboard, Icons.dashboard),
           label: AppIntl.of(context).title_dashboard),
       BottomNavigationBarItem(
-          icon: const Icon(Icons.schedule),
+          icon: _buildScheduleDiscoveryFeatureDescriptionWidget(
+              context, RouterPaths.schedule, Icons.schedule),
           label: AppIntl.of(context).title_schedule),
       BottomNavigationBarItem(
-          icon: const Icon(Icons.school),
+          icon: _buildBasicDiscoveryFeatureDescriptionWidget(
+              context, RouterPaths.student, Icons.school),
           label: AppIntl.of(context).title_student),
       BottomNavigationBarItem(
-          icon: const Icon(Icons.account_balance),
+          icon: _buildBasicDiscoveryFeatureDescriptionWidget(
+              context, RouterPaths.ets, Icons.account_balance),
           label: AppIntl.of(context).title_ets),
       BottomNavigationBarItem(
-          icon: const Icon(Icons.dehaze),
+          icon: _buildBasicDiscoveryFeatureDescriptionWidget(
+              context, RouterPaths.more, Icons.dehaze),
           label: AppIntl.of(context).title_more),
     ];
+  }
+
+  DescribedFeatureOverlay _buildDashboardDiscoveryFeatureDescriptionWidget(
+      BuildContext context, String routerPath, IconData icon) {
+    final discovery = getDiscoveryByPath(AppIntl.of(context), routerPath);
+
+    return DescribedFeatureOverlay(
+      featureId: discovery.featureId,
+      title: Text(discovery.title, textAlign: TextAlign.justify),
+      description: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Text(discovery.details[0], textAlign: TextAlign.justify),
+                RichText(
+                  textAlign: TextAlign.justify,
+                  text: TextSpan(
+                    children: [
+                      const TextSpan(text: '\n'),
+                      const WidgetSpan(child: Icon(Icons.restore, size: 16, color: Colors.white)),
+                      TextSpan(text: ' ${discovery.details[1]}'),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+      backgroundColor: AppTheme.appletsPurple,
+      tapTarget: Icon(icon, color: AppTheme.etsBlack),
+      child: Icon(icon),
+    );
+  }
+
+  DescribedFeatureOverlay _buildScheduleDiscoveryFeatureDescriptionWidget(
+      BuildContext context, String routerPath, IconData icon) {
+    final discovery = getDiscoveryByPath(AppIntl.of(context), routerPath);
+
+    return DescribedFeatureOverlay(
+      featureId: discovery.featureId,
+      title: Text(discovery.title, textAlign: TextAlign.justify),
+      description: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Text(discovery.details[0], textAlign: TextAlign.justify),
+                RichText(
+                  textAlign: TextAlign.justify,
+                  text: TextSpan(
+                    children: [
+                      const TextSpan(text: '\n'),
+                      const WidgetSpan(child: Icon(Icons.settings, size: 16, color: Colors.white)),
+                      TextSpan(text: ' ${discovery.details[1]}'),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+      backgroundColor: AppTheme.appletsPurple,
+      tapTarget: Icon(icon, color: AppTheme.etsBlack),
+      child: Icon(icon),
+    );
+  }
+
+  DescribedFeatureOverlay _buildBasicDiscoveryFeatureDescriptionWidget(
+      BuildContext context, String routerPath, IconData icon) {
+    final discovery = getDiscoveryByPath(AppIntl.of(context), routerPath);
+
+    return DescribedFeatureOverlay(
+      featureId: discovery.featureId,
+      title: Text(discovery.title, textAlign: TextAlign.justify),
+      description: Text(discovery.details[0], textAlign: TextAlign.justify),
+      backgroundColor: AppTheme.appletsPurple,
+      tapTarget: Icon(icon, color: AppTheme.etsBlack),
+      child: Icon(icon),
+    );
   }
 }

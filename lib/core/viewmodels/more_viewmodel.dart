@@ -2,6 +2,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
+import 'package:feature_discovery/feature_discovery.dart';
 import 'package:feedback/feedback.dart';
 import 'package:flutter/material.dart';
 import 'package:package_info/package_info.dart';
@@ -20,6 +21,7 @@ import 'package:notredame/core/managers/user_repository.dart';
 import 'package:notredame/core/services/navigation_service.dart';
 
 // OTHERS
+import 'package:notredame/core/constants/discovery_ids.dart';
 import 'package:notredame/core/constants/router_paths.dart';
 import 'package:notredame/locator.dart';
 
@@ -38,7 +40,7 @@ class MoreViewModel extends FutureViewModel {
   /// Get the application version
   String get appVersion => _appVersion;
 
-  MoreViewModel({@required AppIntl intl}): _appIntl = intl;
+  MoreViewModel({@required AppIntl intl}) : _appIntl = intl;
 
   @override
   Future futureToRun() async {
@@ -146,5 +148,12 @@ class MoreViewModel extends FutureViewModel {
     final path = await _localPath;
     final now = DateTime.now();
     return File('$path/bugPicture-${now.hashCode}.png');
+  }
+
+  void startDiscovery(BuildContext context) {
+    final List<String> ids = discoveryIds(AppIntl.of(context)).map((e) => e.featureId).toList();
+
+    FeatureDiscovery.clearPreferences(context, ids);
+    FeatureDiscovery.discoverFeatures(context, ids);
   }
 }
