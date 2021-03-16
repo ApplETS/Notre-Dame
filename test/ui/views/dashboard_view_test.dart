@@ -1,12 +1,20 @@
 // FLUTTER / DART / THIRD-PARTIES
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
+// VIEW
 import 'package:notredame/ui/views/dashboard_view.dart';
+
 import '../../helpers.dart';
 
 void main() {
+  AppIntl intl;
+
   group('DashboardView - ', () {
     setUp(() async {
+      intl = await setupAppIntl();
       setupNavigationServiceMock();
     });
 
@@ -39,21 +47,20 @@ void main() {
         expect(aboutUsCard, findsOneWidget);
 
         // Find aboutUs card Title
-        final aboutUsTitle = find.text("ApplETS");
+        final aboutUsTitle = find.text(intl.card_applets_title);
         expect(aboutUsTitle, findsOneWidget);
 
         // Find aboutUs card Text Paragraph
-        final aboutUsParagraph =
-            find.textContaining("ÉTSMobile was made by the club");
+        final aboutUsParagraph = find.textContaining(intl.card_applets_text);
         expect(aboutUsParagraph, findsOneWidget);
 
         // Find aboutUs card Link Buttons
         final aboutUsLinkButtons = find.byType(TextButton);
         expect(aboutUsLinkButtons, findsNWidgets(3));
 
-        expect(find.text("FACEBOOK"), findsOneWidget);
-        expect(find.text("GITHUB"), findsOneWidget);
-        expect(find.text("EMAIL"), findsOneWidget);
+        expect(find.text(intl.facebook.toUpperCase()), findsOneWidget);
+        expect(find.text(intl.github.toUpperCase()), findsOneWidget);
+        expect(find.text(intl.email.toUpperCase()), findsOneWidget);
       });
 
       testWidgets('AboutUsCard is dismissible and can be restored',
@@ -69,14 +76,14 @@ void main() {
 
         // Check that the card is now absent from the view
         await tester.pumpAndSettle();
-        expect(find.text("ApplETS"), findsNothing);
+        expect(find.text(intl.card_applets_title), findsNothing);
 
         // Tap the restoreCards button
         await tester.tap(find.byIcon(Icons.restore));
         await tester.pumpAndSettle();
 
         // Check that the card is now present in the view
-        expect(find.text("ApplETS"), findsOneWidget);
+        expect(find.text(intl.card_applets_title), findsOneWidget);
       });
     });
 

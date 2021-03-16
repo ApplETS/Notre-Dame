@@ -1,24 +1,21 @@
 // FLUTTER / DART / THIRD-PARTIES
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
-
+import 'package:notredame/core/utils/utils.dart';
+import 'package:notredame/core/constants/urls.dart';
 import 'package:stacked/stacked.dart';
 import 'package:table_calendar/table_calendar.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 // VIEWMODEL
 import 'package:notredame/core/viewmodels/dashboard_viewmodel.dart';
 
 // WIDGET
 import 'package:notredame/ui/widgets/base_scaffold.dart';
-import 'package:flutter/src/widgets/dismissible.dart';
 
 // OTHER
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:notredame/ui/utils/app_theme.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 class DashboardView extends StatefulWidget {
-  @visibleForTesting
   const DashboardView({Key key}) : super(key: key);
 
   @override
@@ -27,12 +24,6 @@ class DashboardView extends StatefulWidget {
 
 class _DashboardViewState extends State<DashboardView>
     with TickerProviderStateMixin {
-  static const Color _selectedColor = AppTheme.etsLightRed;
-
-  static const Color _defaultColor = Color(0xff76859B);
-
-  final DateFormat _dateFormat = DateFormat.MMMMEEEEd();
-
   CalendarController _calendarController;
 
   AnimationController _animationController;
@@ -61,9 +52,7 @@ class _DashboardViewState extends State<DashboardView>
   @override
   Widget build(BuildContext context) =>
       ViewModelBuilder<DashboardViewModel>.reactive(
-        viewModelBuilder: () => DashboardViewModel(
-          intl: AppIntl.of(context),
-        ),
+        viewModelBuilder: () => DashboardViewModel(),
         builder: (context, model, child) => BaseScaffold(
           isInteractionLimitedWhileLoading: false,
           appBar: AppBar(
@@ -72,7 +61,7 @@ class _DashboardViewState extends State<DashboardView>
             automaticallyImplyLeading: false,
             actions: _buildActionButtons(),
           ),
-          body: Column(mainAxisSize: MainAxisSize.min, children: [
+          body: ListView(children: [
             if (isAboutUsVisible)
               Dismissible(
                 key: UniqueKey(),
@@ -109,7 +98,7 @@ class _DashboardViewState extends State<DashboardView>
               const SizedBox(width: 10),
               TextButton(
                 onPressed: () {
-                  launch('https://www.facebook.com/ClubApplETS');
+                  Utils.launchURL(Urls.clubFacebook, AppIntl.of(context));
                 },
                 child: Text(AppIntl.of(context).facebook.toUpperCase(),
                     style: Theme.of(context).primaryTextTheme.button),
@@ -117,7 +106,7 @@ class _DashboardViewState extends State<DashboardView>
               const SizedBox(width: 10),
               TextButton(
                 onPressed: () {
-                  launch('https://github.com/ApplETS/Notre-Dame');
+                  Utils.launchURL(Urls.clubGithub, AppIntl.of(context));
                 },
                 child: Text(AppIntl.of(context).github.toUpperCase(),
                     style: Theme.of(context).primaryTextTheme.button),
@@ -125,7 +114,7 @@ class _DashboardViewState extends State<DashboardView>
               const SizedBox(width: 10),
               TextButton(
                 onPressed: () {
-                  launch('mailto:info@clubapplets.ca');
+                  Utils.launchURL(Urls.clubEmail, AppIntl.of(context));
                 },
                 child: Text(AppIntl.of(context).email.toUpperCase(),
                     style: Theme.of(context).primaryTextTheme.button),
