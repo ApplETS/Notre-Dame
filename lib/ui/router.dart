@@ -59,7 +59,6 @@ class AppRouter {
             pageBuilder: (_, __, ___) => AboutView());
       case RouterPaths.chooseLanguage:
         return PageRouteBuilder(
-            transitionDuration: const Duration(seconds: 1),
             settings: RouteSettings(name: routeSettings.name),
             pageBuilder: (_, __, ___) => ChooseLanguageView());
       default:

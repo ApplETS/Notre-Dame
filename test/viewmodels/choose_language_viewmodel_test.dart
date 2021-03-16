@@ -71,7 +71,7 @@ void main() {
         expect(() =>
           viewModel.changeLanguage(-1),
           throwsException,
-          reason: "No valid language for the index -1 passed in paramaters");
+          reason: "No valid language for the index -1 passed in parameters");
       }); 
     }); 
 

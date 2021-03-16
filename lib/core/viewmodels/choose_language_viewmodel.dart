@@ -52,7 +52,7 @@ class ChooseLanguageViewModel extends BaseViewModel {
 
       default:
         throw Exception(
-            'No valid language for the index $index passed in paramaters');
+            'No valid language for the index $index passed in parameters');
         break;
     }
 

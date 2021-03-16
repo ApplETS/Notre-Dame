@@ -3,6 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+// MANAGERS / SERVICES
+import 'package:notredame/core/services/navigation_service.dart';
+import 'package:notredame/core/managers/settings_manager.dart';
+
 // VIEW
 import 'package:notredame/ui/views/choose_language_view.dart';
 
@@ -14,11 +18,13 @@ void main() {
     setUp(() async {
       intl = await setupAppIntl();
       setupNavigationServiceMock();
-      setupCacheManagerMock();
       setupSettingsManagerMock();
     });
 
-    tearDown(() {});
+    tearDown(() {
+      unregister<NavigationService>();
+      unregister<SettingsManager>();
+    });
 
     group('UI - ', () {
       testWidgets('has an icon, title and subtitle',
