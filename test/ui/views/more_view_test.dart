@@ -23,6 +23,7 @@ void main() {
       intl = await setupAppIntl();
       navigation = setupNavigationServiceMock();
       setupCacheManagerMock();
+      setupSettingsManagerMock();
     });
 
     tearDown(() {});
