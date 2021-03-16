@@ -15,7 +15,7 @@ class ChooseLanguageView extends StatefulWidget {
 }
 
 class _ChooseLanguageViewState extends State<ChooseLanguageView> {
-  Container languagesListView(ChooseLanguageViewModel model) {
+  Container languagesListView(ChooseLanguageViewModel model, BuildContext context) {
     return Container(
       height: 125.0,
       width: 200.0,
@@ -34,7 +34,7 @@ class _ChooseLanguageViewState extends State<ChooseLanguageView> {
                 Icon(model.languageSelectedIndex == index ? Icons.check : null),
             title: Text(model.languages[index]),
             onTap: () {
-              model.changeLanguage(index);
+              model.changeLanguage(index,context);
             },
           );
         },
@@ -82,7 +82,7 @@ class _ChooseLanguageViewState extends State<ChooseLanguageView> {
                     ),
                   ),
                 ),
-                languagesListView(model)
+                languagesListView(model, context)
               ],
             ),
           );

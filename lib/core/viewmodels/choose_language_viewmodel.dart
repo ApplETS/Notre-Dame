@@ -1,6 +1,8 @@
 // FLUTTER / DART / THIRD-PARTIES
+import 'package:feature_discovery/feature_discovery.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:notredame/core/constants/discovery_ids.dart';
 import 'package:notredame/core/constants/router_paths.dart';
 import 'package:notredame/core/managers/settings_manager.dart';
 import 'package:notredame/core/services/navigation_service.dart';
@@ -35,7 +37,7 @@ class ChooseLanguageViewModel extends BaseViewModel {
     ];
   }
 
-  void changeLanguage(int index) {
+  void changeLanguage(int index, BuildContext context) {
     switch (index) {
       case english:
         _settingsManager.setLocale(AppIntl.supportedLocales.first.languageCode);
@@ -53,6 +55,15 @@ class ChooseLanguageViewModel extends BaseViewModel {
     }
 
     _navigationService.pop();
-    _navigationService.pushNamed(RouterPaths.dashboard);
+    _navigationService.pushNamed(RouterPaths.schedule);
+
+    startDiscovery(context);
+  }
+
+  void startDiscovery(BuildContext context) {
+    final List<String> ids = discoveryIds(AppIntl.of(context)).map((e) => e.featureId).toList();
+
+    FeatureDiscovery.clearPreferences(context, ids);
+    FeatureDiscovery.discoverFeatures(context, ids);
   }
 }
