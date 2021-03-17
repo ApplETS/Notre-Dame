@@ -31,7 +31,9 @@ class _LoginViewState extends State<LoginView> {
       ViewModelBuilder<LoginViewModel>.reactive(
         viewModelBuilder: () => LoginViewModel(intl: AppIntl.of(context)),
         builder: (context, model, child) => Scaffold(
-            backgroundColor: AppTheme.etsLightRed,
+            backgroundColor: Theme.of(context).brightness == Brightness.light
+                ? AppTheme.etsLightRed
+                : AppTheme.primaryDark,
             resizeToAvoidBottomInset: false,
             body: Builder(
               builder: (BuildContext context) => SafeArea(
@@ -54,7 +56,10 @@ class _LoginViewState extends State<LoginView> {
                               Hero(
                                 tag: 'ets_logo',
                                 child: Image.asset(
-                                  'assets/images/ets_white_logo.png',
+                                  Theme.of(context).brightness ==
+                                          Brightness.light
+                                      ? "assets/images/ets_white_logo.png"
+                                      : "assets/images/ets_red_logo.png",
                                   excludeFromSemantics: true,
                                   width: 216,
                                   height: 216,
@@ -62,48 +67,48 @@ class _LoginViewState extends State<LoginView> {
                               ),
                               TextFormField(
                                 autofillHints: const [AutofillHints.username],
-                              cursorColor: Colors.white,
-                              decoration: InputDecoration(
-                                enabledBorder: const OutlineInputBorder(
-                                    borderSide:
-                                        BorderSide(color: Colors.white70)),
-                                focusedBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                        color: Colors.white,
-                                        width: borderRadiusOnFocus)),
-                                focusedErrorBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                        color: Colors.amberAccent,
-                                        width: borderRadiusOnFocus)),
-                                errorBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                        color: Colors.amberAccent,
-                                        width: borderRadiusOnFocus)),
-                                labelText: AppIntl.of(context)
-                                    .login_prompt_universal_code,
-                                labelStyle:
-                                    const TextStyle(color: Colors.white54),
-                                errorStyle:
-                                    const TextStyle(color: Colors.amberAccent),
+                                cursorColor: Colors.white,
+                                decoration: InputDecoration(
+                                  enabledBorder: const OutlineInputBorder(
+                                      borderSide:
+                                          BorderSide(color: Colors.white70)),
+                                  focusedBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                          color: Colors.white,
+                                          width: borderRadiusOnFocus)),
+                                  focusedErrorBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                          color: errorTextColor,
+                                          width: borderRadiusOnFocus)),
+                                  errorBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                          color: errorTextColor,
+                                          width: borderRadiusOnFocus)),
+                                  labelText: AppIntl.of(context)
+                                      .login_prompt_universal_code,
+                                  labelStyle:
+                                      const TextStyle(color: Colors.white54),
+                                  errorStyle:
+                                      TextStyle(color: errorTextColor),
+                                ),
+                                autofocus: true,
+                                style: const TextStyle(color: Colors.white),
+                                onEditingComplete: _focusNode.nextFocus,
+                                validator: model.validateUniversalCode,
+                                initialValue: model.universalCode,
                               ),
-                              autofocus: true,
-                              style: const TextStyle(color: Colors.white),
-                              onEditingComplete: _focusNode.nextFocus,
-                              validator: model.validateUniversalCode,
-                              initialValue: model.universalCode,
-                            ),
-                            const SizedBox(
-                              height: 20,
-                            ),
-                            PasswordFormField(
-                                validator: model.validatePassword,
-                                onEditionComplete: _focusNode.nextFocus),
-                            const SizedBox(
-                              height: 30.0,
-                            ),
-                            SizedBox(
-                              width: double.infinity,
-                              child: ElevatedButton(
+                              const SizedBox(
+                                height: 20,
+                              ),
+                              PasswordFormField(
+                                  validator: model.validatePassword,
+                                  onEditionComplete: _focusNode.nextFocus),
+                              const SizedBox(
+                                height: 30.0,
+                              ),
+                              SizedBox(
+                                width: double.infinity,
+                                child: ElevatedButton(
                                   onPressed: !model.canSubmit
                                       ? null
                                       : () async {
@@ -118,25 +123,21 @@ class _LoginViewState extends State<LoginView> {
                                           });
                                         },
                                   style: ButtonStyle(
-                                    backgroundColor: MaterialStateProperty
-                                        .resolveWith<Color>(
-                                      (Set<MaterialState> states) {
-                                        if (states
-                                            .contains(MaterialState.disabled)) {
-                                          return Colors.white38;
-                                        }
-                                        return Colors
-                                            .white; // Use the component's default.
-                                      },
-                                    ),
+                                    backgroundColor: MaterialStateProperty.all(
+                                        model.canSubmit
+                                            ? colorButton
+                                            : Colors.white38),
                                     padding: MaterialStateProperty.all(
                                         const EdgeInsets.symmetric(
                                             vertical: 16)),
                                   ),
                                   child: Text(
                                     AppIntl.of(context).login_action_sign_in,
-                                    style: const TextStyle(
-                                        color: Color.fromRGBO(239, 62, 69, 1),
+                                    style: TextStyle(
+                                        color: model.canSubmit
+                                            ? submitTextColor
+                                            : Colors.white60,
+                                        //Color.fromRGBO(239, 62, 69, 1),
                                         fontSize: 18),
                                   ),
                                 ),
@@ -174,4 +175,17 @@ class _LoginViewState extends State<LoginView> {
     _focusNode.dispose();
     super.dispose();
   }
+
+  Color get errorTextColor =>
+      Theme.of(context).brightness == Brightness.light
+          ? Colors.amberAccent
+          : Colors.redAccent;
+
+  Color get colorButton => Theme.of(context).brightness == Brightness.light
+      ? Colors.white
+      : AppTheme.etsLightRed;
+
+  Color get submitTextColor => Theme.of(context).brightness == Brightness.light
+      ? AppTheme.etsLightRed
+      : Colors.white;
 }
