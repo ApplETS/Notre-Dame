@@ -109,24 +109,21 @@ class BottomBar extends StatelessWidget {
     final discovery = getDiscoveryByPath(AppIntl.of(context), routerPath);
 
     return DescribedFeatureOverlay(
+      overflowMode: OverflowMode.ignore,
       featureId: discovery.featureId,
       title: Text(discovery.title, textAlign: TextAlign.justify),
-      description: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Text(discovery.details[0], textAlign: TextAlign.justify),
-                RichText(
-                  textAlign: TextAlign.justify,
-                  text: TextSpan(
-                    children: [
-                      const TextSpan(text: '\n'),
-                      const WidgetSpan(child: Icon(Icons.restore, size: 16, color: Colors.white)),
-                      TextSpan(text: ' ${discovery.details[1]}'),
-                    ],
-                  ),
-                ),
-              ],
-            ),
+      description: ListView(
+        shrinkWrap: true,
+        children: <Widget>[
+          Text(discovery.details[0], textAlign: TextAlign.justify),
+          const Text('\n'),
+          Image.asset('assets/animations/dashboard_swipe_left.gif'),
+          const Text('\n'),
+          Text(discovery.details[1], textAlign: TextAlign.justify),
+          const Text('\n'),
+          Image.asset('assets/animations/dashboard_restore.gif'),
+        ],
+      ),
       backgroundColor: AppTheme.appletsPurple,
       tapTarget: Icon(icon, color: AppTheme.etsBlack),
       child: Icon(icon),
