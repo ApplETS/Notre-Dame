@@ -17,9 +17,11 @@ class NotFoundViewModel extends BaseViewModel {
 
   /// Used to redirect on the dashboard.
   final NavigationService _navigationService = locator<NavigationService>();
-  //Used to log the event that pushedit from
+
+  /// Used to log the event that pushed it from
   final AnalyticsService _analyticsService = locator<AnalyticsService>();
-  //Used to log the event that pushedit from
+
+  /// Used to access the rive animations
   final RiveAnimationService _riveAnimationService =
       locator<RiveAnimationService>();
 
