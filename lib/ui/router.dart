@@ -7,6 +7,7 @@ import 'package:notredame/ui/views/choose_language_view.dart';
 
 // VIEWS
 import 'package:notredame/ui/views/login_view.dart';
+import 'package:notredame/ui/views/not_found_view.dart';
 import 'package:notredame/ui/views/more_view.dart';
 import 'package:notredame/ui/views/quick_links_view.dart';
 import 'package:notredame/ui/views/schedule_view.dart';
@@ -63,13 +64,10 @@ class AppRouter {
             settings: RouteSettings(name: routeSettings.name),
             pageBuilder: (_, __, ___) => ChooseLanguageView());
       default:
-        return MaterialPageRoute(
+        return PageRouteBuilder(
             settings: RouteSettings(name: routeSettings.name),
-            builder: (_) => Scaffold(
-                  body: Center(
-                      child:
-                          Text("Oups! Page ${routeSettings.name} not found!")),
-                ));
+            pageBuilder: (_, __, ___) =>
+                NotFoundView(pageName: routeSettings.name));
     }
   }
 }

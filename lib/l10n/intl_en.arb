@@ -203,5 +203,13 @@
   "discovery_navbar_more_page_details": "This page gives you access to additional options for the application.",
 
   "choose_language_title": "Choose your preferred language",
-  "choose_language_subtitle": "Please select your language"
+  "choose_language_subtitle": "Please select your language",
+  "not_found_title": "Inaccessible Page",
+  "not_found_message": "Oh oh... it seems that the page {pageName} you requested is not accessible.",
+  "@not_found_message": {
+    "placeholders": {
+      "pageName": {}
+    }
+  },
+  "go_to_dashboard": "Go to Dashboard"
 }
