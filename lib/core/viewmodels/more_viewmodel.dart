@@ -16,6 +16,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:notredame/core/managers/cache_manager.dart';
 import 'package:notredame/core/managers/user_repository.dart';
 import 'package:notredame/core/managers/settings_manager.dart';
+import 'package:notredame/core/managers/course_repository.dart';
 
 //SERVICE
 import 'package:notredame/core/services/navigation_service.dart';
@@ -31,6 +32,15 @@ class MoreViewModel extends FutureViewModel {
 
   /// Settings manager
   final SettingsManager settingsManager = locator<SettingsManager>();
+
+  /// Course repository
+  final CourseRepository _courseRepository = locator<CourseRepository>();
+
+  /// Preferences service
+  final PreferencesService _preferencesService = locator<PreferencesService>();
+
+  /// Preferences service
+  final UserRepository _userRepository = locator<UserRepository>();
 
   /// Used to redirect on the dashboard.
   final NavigationService navigationService = locator<NavigationService>();
@@ -71,10 +81,12 @@ class MoreViewModel extends FutureViewModel {
     } on Exception catch (e) {
       onError(e);
     }
-    await PreferencesService().clear();
-    await UserRepository().logOut();
+    await _preferencesService.clear();
+    await _userRepository.logOut();
 
     settingsManager.resetLanguageAndThemeMode();
+    _courseRepository.sessions.clear();
+    _courseRepository.coursesActivities.clear();
     setBusy(false);
     // Dismiss alertDialog
     navigationService.pop();
