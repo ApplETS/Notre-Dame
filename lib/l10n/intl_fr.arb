@@ -184,5 +184,14 @@
   "thank_you_for_the_feedback": "Merci pour le signalement",
 
   "flutter_license": "Flutter est la boîte à outils d'interface utilisateur de Google pour créer de superbes applications compilées en natif pour mobile, Web et bureau à partir d'une seule base de code. En savoir plus sur Flutter à ",
-  "flutter_website": "https://flutter.dev"
+  "flutter_website": "https://flutter.dev",
+
+  "not_found_title": "Page introuvable",
+  "not_found_message": "Oh oh... il semblerait que la page {pageName} n'est pas accessible.",
+  "@not_found_message": {
+    "placeholders": {
+      "pageName": {}
+    }
+  },
+  "go_to_dashboard": "Retour à l'accueil"
 }

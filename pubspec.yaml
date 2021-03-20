@@ -60,7 +60,8 @@ dependencies:
   github: ^7.0.4
   package_info: ^2.0.0
   path_provider: ^1.6.27
-
+  rive: ^0.6.8
+  
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -87,6 +88,7 @@ flutter:
     - assets/images/
     - assets/html/
     - assets/certificates/
+    - assets/animations/
     - assets/
 
 flutter_intl:

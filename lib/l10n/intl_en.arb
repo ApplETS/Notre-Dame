@@ -186,5 +186,14 @@
   "thank_you_for_the_feedback": "Thank you for the feedback",
 
   "flutter_license": "Flutter is Google's UI toolkit for building beautiful, natively compiled applications for mobile, web, and desktop from a single codebase. Learn more about Flutter at ",
-  "flutter_website": "https://flutter.dev"
+  "flutter_website": "https://flutter.dev",
+
+  "not_found_title": "Inaccessible Page",
+  "not_found_message": "Oh oh... it seems that the page {pageName} you requested is not accessible.",
+  "@not_found_message": {
+    "placeholders": {
+      "pageName": {}
+    }
+  },
+  "go_to_dashboard": "Go to Dashboard"
 }
