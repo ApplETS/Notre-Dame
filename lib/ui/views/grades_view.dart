@@ -6,8 +6,10 @@ import 'package:notredame/core/models/course.dart';
 import 'package:notredame/core/models/session.dart';
 
 // WIDGETS
-import 'package:notredame/ui/widgets/session_widget.dart';
+import 'package:notredame/ui/widgets/grade_button.dart';
 
+// OTHER
+import 'package:notredame/ui/utils/app_theme.dart';
 
 class GradesView extends StatefulWidget {
   @override
@@ -63,7 +65,7 @@ class _GradesViewState extends State<GradesView> {
         group: '02',
         numberOfCredits: 3,
         programCode: '7365',
-        grade: 'A+',
+        grade: '50.0%',
         title: 'Analyse de besoins et spécifications');
 
     final Session uneSession = Session(
@@ -80,11 +82,30 @@ class _GradesViewState extends State<GradesView> {
         startDateCancellationWithoutRefundNewStudent: DateTime(2018, 2),
         deadlineCancellationWithoutRefundNewStudent: DateTime(2018, 3, 14),
         deadlineCancellationASEQ: DateTime(2018, 1, 31));
-
-    return Wrap(children: <Widget>[
-      Center(
-          child: SessionWidget(uneSession,
-              [cours1, cours3, cours3, cours4, cours5, cours6, cours7])),
-    ]);
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        _buildSessionCourses(uneSession,
+            [cours1, cours3, cours3, cours4, cours5, cours6, cours7])
+      ],
+    );
   }
+
+  Widget _buildSessionCourses(Session session, List<Course> courses) =>
+      Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Text(session.name,
+                style: const TextStyle(
+                  fontSize: 25,
+                  color: AppTheme.etsDarkRed,
+                )),
+            Wrap(
+              children: courses.map((course) => GradeButton(course)).toList(),
+            ),
+          ],
+        ),
+      );
 }

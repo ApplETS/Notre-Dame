@@ -5,7 +5,6 @@
   "yes": "Oui",
   "no": "Non",
   "retry": "Réessayer",
-  "abbreviation_not_available": "ND",
   "session_fall": "Automne",
   "session_winter": "Hiver",
   "session_summer": "Été",
@@ -100,6 +99,7 @@
     }
   },
   "grades_error_course_evaluations_not_completed": "Vous n'aurez pas accès à vos notes au cours de la période d'évaluation tant que vous n'aurez pas effectué vos évaluations.",
+  "grades_not_available": "ND",
   
   "profile_title": "Profil",
   "profile_student_status_title": "État du dossier étudiant",

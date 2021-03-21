@@ -1,72 +1,80 @@
 // FLUTTER / DART / THIRD-PARTIES
 import 'package:flutter/material.dart';
+import 'package:oktoast/oktoast.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
+// MODEL
+import 'package:notredame/core/models/course.dart';
+
 // CONSTANT
-import 'package:notredame/core/services/navigation_service.dart';
-import 'package:notredame/locator.dart';
 import 'package:notredame/ui/utils/app_theme.dart';
 
-/// WARNING !!! THIS IS A CLASS IN DEVELOPMENT !!!  DO NOT USE!!
 class GradeButton extends StatelessWidget {
-  final String _codeTxt;
-  final String _gradeTxt;
-  final NavigationService _navigationService = locator<NavigationService>();
+  final Course course;
 
-  GradeButton({@required String codeTxt, String gradeTxt = "N/A"})
-      : assert(codeTxt != null),
-        _codeTxt = codeTxt.toUpperCase(),
-        _gradeTxt = gradeTxt.toUpperCase();
-  static const double _buttonWidth = 70;
-  static const double _codeHeight = 24;
-  static const double _gradeHeight = _buttonWidth - _codeHeight;
+  const GradeButton(this.course);
 
   @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      width: 70,
-      child: ElevatedButton(
-        onPressed: onPressed,
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            _setCodeSection(),
-            _setGradeSection(),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Container _setCodeSection() {
-    return Container(
-      width: _buttonWidth,
-      height: _codeHeight,
-      color: AppTheme.etsDarkRed,
-      child: Center(
-        child: Text(_codeTxt,
-            style: const TextStyle(
-              fontSize: 15,
-              color: Colors.white,
+  Widget build(BuildContext context) => Card(
+        child: InkWell(
+            onTap: onPressed,
+            child: SizedBox(
+              height: 68,
+              width: 68,
+              child: Column(
+                children: [
+                  Row(
+                    children: [
+                      Expanded(
+                        child: DecoratedBox(
+                            decoration: const BoxDecoration(
+                                color: AppTheme.etsLightRed,
+                                borderRadius: BorderRadius.only(
+                                    topLeft: Radius.circular(2.5),
+                                    topRight: Radius.circular(2.5))),
+                            child: Center(
+                              child: Padding(
+                                padding: const EdgeInsets.all(4.0),
+                                child: Text(course.acronym,
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .bodyText1
+                                        .copyWith(color: Colors.white)),
+                              ),
+                            )),
+                      ),
+                    ],
+                  ),
+                  Expanded(
+                    child: Center(
+                        child: Text(gradeString(AppIntl.of(context)),
+                            style: TextStyle(
+                              fontSize: 22,
+                              color: Theme.of(context).brightness ==
+                                      Brightness.light
+                                  ? AppTheme.etsDarkGrey
+                                  : AppTheme.etsLightGrey,
+                            ))),
+                  )
+                ],
+              ),
             )),
-      ),
-    );
-  }
+      );
 
-  Container _setGradeSection() {
-    // ignore: sized_box_for_whitespace
-    return Container(
-      width: _buttonWidth,
-      height: _gradeHeight,
-      child: Center(
-        child: Text(_gradeTxt,
-            style: const TextStyle(
-              fontSize: 24,
-              color: AppTheme.etsDarkGrey,
-            )),
-      ),
-    );
+  /// Build the grade string based on the available information. By default
+  /// will return [grades_not_available].
+  String gradeString(AppIntl intl) {
+    if (course.grade == null && course.summary != null) {
+      return intl
+          .grades_grade_in_percentage(course.summary.currentMarkInPercent);
+    } else if (course.grade != null) {
+      return course.grade;
+    }
+
+    return intl.grades_not_available;
   }
 
   void onPressed() {
-    _navigationService.pushNamed('/', arguments: _codeTxt);
+    showToast('Not available yet');
   }
 }
