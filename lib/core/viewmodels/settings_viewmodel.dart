@@ -72,4 +72,11 @@ class SettingsViewModel extends FutureViewModel {
     setBusy(false);
     return true;
   }
+  
+  void startDiscovery(BuildContext context) {
+    final List<String> ids = discoveryIds(AppIntl.of(context)).map((e) => e.featureId).toList();
+
+    FeatureDiscovery.clearPreferences(context, ids);
+    FeatureDiscovery.discoverFeatures(context, ids);
+  }
 }
