@@ -109,23 +109,27 @@ class BottomBar extends StatelessWidget {
     final discovery = getDiscoveryByPath(AppIntl.of(context), routerPath);
 
     return DescribedFeatureOverlay(
-      overflowMode: OverflowMode.ignore,
+      overflowMode: OverflowMode.wrapBackground,
       featureId: discovery.featureId,
       title: Text(discovery.title, textAlign: TextAlign.justify),
-      description: ListView(
-        shrinkWrap: true,
-        children: <Widget>[
-          Text(discovery.details[0], textAlign: TextAlign.justify),
-          const Text('\n'),
-          Image.asset('assets/animations/dashboard_swipe_left.gif'),
-          const Text('\n'),
-          Text(discovery.details[1], textAlign: TextAlign.justify),
-          const Text('\n'),
-          Image.asset('assets/animations/dashboard_restore.gif'),
-        ],
-      ),
       backgroundColor: AppTheme.appletsPurple,
       tapTarget: Icon(icon, color: AppTheme.etsBlack),
+      description: ConstrainedBox(
+        constraints: BoxConstraints(
+          maxHeight: MediaQuery.of(context).size.height * 0.6,
+        ),
+        child: ListView(
+          children: <Widget>[
+            Text(discovery.details[0], textAlign: TextAlign.justify),
+            const Text('\n'),
+            Image.asset('assets/animations/dashboard_swipe_left.gif'),
+            const Text('\n'),
+            Text(discovery.details[1], textAlign: TextAlign.justify),
+            const Text('\n'),
+            Image.asset('assets/animations/dashboard_restore.gif'),
+          ],
+        ),
+      ),
       child: Icon(icon),
     );
   }
@@ -138,21 +142,22 @@ class BottomBar extends StatelessWidget {
       featureId: discovery.featureId,
       title: Text(discovery.title, textAlign: TextAlign.justify),
       description: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Text(discovery.details[0], textAlign: TextAlign.justify),
-                RichText(
-                  textAlign: TextAlign.justify,
-                  text: TextSpan(
-                    children: [
-                      const TextSpan(text: '\n'),
-                      const WidgetSpan(child: Icon(Icons.settings, size: 16, color: Colors.white)),
-                      TextSpan(text: ' ${discovery.details[1]}'),
-                    ],
-                  ),
-                ),
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Text(discovery.details[0], textAlign: TextAlign.justify),
+          RichText(
+            textAlign: TextAlign.justify,
+            text: TextSpan(
+              children: [
+                const TextSpan(text: '\n'),
+                const WidgetSpan(
+                    child: Icon(Icons.settings, size: 16, color: Colors.white)),
+                TextSpan(text: ' ${discovery.details[1]}'),
               ],
             ),
+          ),
+        ],
+      ),
       backgroundColor: AppTheme.appletsPurple,
       tapTarget: Icon(icon, color: AppTheme.etsBlack),
       child: Icon(icon),
