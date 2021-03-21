@@ -39,7 +39,7 @@ class MoreViewModel extends FutureViewModel {
   /// Preferences service
   final PreferencesService _preferencesService = locator<PreferencesService>();
 
-  /// Preferences service
+  /// User repository needed to log out
   final UserRepository _userRepository = locator<UserRepository>();
 
   /// Used to redirect on the dashboard.
