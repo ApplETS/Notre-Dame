@@ -114,8 +114,8 @@ class _SecurityViewState extends State<SecurityView> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(vertical: 16.0),
+                                padding: const EdgeInsets.only(
+                                    top: 16.0, bottom: 16.0, left: 16.0),
                                 child: Text(
                                   model.emergencyProcedureList[index].title,
                                   style: const TextStyle(fontSize: 18),
