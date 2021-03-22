@@ -10,6 +10,7 @@ import 'package:notredame/core/services/analytics_service.dart';
 import 'package:notredame/core/services/mon_ets_api.dart';
 import 'package:notredame/core/services/preferences_service.dart';
 import 'package:notredame/core/services/signets_api.dart';
+import 'package:notredame/core/services/rive_animation_service.dart';
 
 // MANAGERS
 import 'package:notredame/core/managers/user_repository.dart';
@@ -23,6 +24,7 @@ void setupLocator() {
   // Services
   locator.registerLazySingleton(() => NavigationService());
   locator.registerLazySingleton(() => AnalyticsService());
+  locator.registerLazySingleton(() => RiveAnimationService());
   locator.registerLazySingleton(() => MonETSApi(http.Client()));
   locator.registerLazySingleton(() => SignetsApi());
   locator.registerLazySingleton(() => const FlutterSecureStorage());
