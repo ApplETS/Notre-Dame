@@ -202,7 +202,7 @@
   "discovery_navbar_schedule_page_title": "Schedule",
   "discovery_navbar_schedule_page_details": "The schedule allows you to view the events of your school calendar. In the settings, you can select the calendar format.",
   "discovery_navbar_student_page_title": "Student",
-  "discovery_navbar_student_page_details": "This page allows you to have access to your student information. It is separated into two distinct sections, note, and profile. \nThe grades section allows you to access the grades for each of the courses you are registered for, as well as those for the last four sessions. \nThe Profile section gives you access to your balance and general information.",
+  "discovery_navbar_student_page_details": "This page allows you to have access to your student information. It is separated into two distinct sections, grades, and profile. \nThe grades section allows you to access the grades for each of the courses you are registered for, as well as those for the last four sessions. \nThe Profile section gives you access to your balance and general information.",
   "discovery_navbar_ets_page_title": "ÉTS",
   "discovery_navbar_ets_page_details": "This page allows you to quickly consult all of the important ÉTS links, such as Moodle and MonÉTS.",  
   "discovery_navbar_more_page_title": "More",

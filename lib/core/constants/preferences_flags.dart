@@ -9,7 +9,4 @@ enum PreferencesFlag {
 
   // Theme flag
   theme,
-
-  // Welcome flag
-  welcome,
 }
