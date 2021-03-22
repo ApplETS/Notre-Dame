@@ -80,12 +80,17 @@ class _SecurityViewState extends State<SecurityView> {
                     ),
                   ),
                 ),
-                ListTile(
-                  leading: const Icon(Icons.phone, size: 30),
-                  title:
-                      Text(AppIntl.of(context).security_emergency_intern_call),
-                  subtitle: Text(
-                      AppIntl.of(context).security_emergency_intern_number),
+                Card(
+                  child: InkWell(
+                    splashColor: Colors.red.withAlpha(50),
+                    child: ListTile(
+                      leading: const Icon(Icons.phone, size: 30),
+                      title: Text(
+                          AppIntl.of(context).security_emergency_intern_call),
+                      subtitle: Text(
+                          AppIntl.of(context).security_emergency_intern_number),
+                    ),
+                  ),
                 ),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
