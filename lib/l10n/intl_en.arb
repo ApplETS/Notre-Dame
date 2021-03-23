@@ -195,7 +195,7 @@
       "pageName": {}
     }
   },
-  "go_to_dashboard": "Go to Dashboard"
+  "go_to_dashboard": "Go to Dashboard",
 
   "discovery_navbar_dashboard_page_title": "Dashboard",
   "discovery_navbar_dashboard_page_details": "The dashboard page brings together the most frequently consulted information, in the form of cards. If you keep your finger on the card, you can move them up and down, and swipe left to delete it.",

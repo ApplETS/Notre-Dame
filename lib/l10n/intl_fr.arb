@@ -193,7 +193,7 @@
       "pageName": {}
     }
   },
-  "go_to_dashboard": "Retour à l'accueil"
+  "go_to_dashboard": "Retour à l'accueil",
 
   "discovery_navbar_dashboard_page_title": "Accueil",
   "discovery_navbar_dashboard_page_details": "L’accueil regroupe les informations les plus fréquemment consultées, sous forme de cartes. En gardant votre doigt sur la carte, vous pouvez les déplacer vers le haut et vers le bas, et glisser votre doigt vers la gauche pour la supprimer.",
