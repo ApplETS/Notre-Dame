@@ -46,7 +46,7 @@ class CourseSummary {
   /// Used to create a new [CourseSummary] instance from a [XMLElement].
   factory CourseSummary.fromXmlNode(XmlElement node) => CourseSummary(
       currentMark: double.parse(
-          node.getElement("scoreFinaleSur100").innerText.replaceAll(",", ".")),
+          node.getElement("scoreFinalSur100").innerText.replaceAll(",", ".")),
       currentMarkInPercent: double.parse(
           node.getElement("noteACeJour").innerText.replaceAll(",", ".")),
       markOutOf: double.parse(
@@ -57,7 +57,7 @@ class CourseSummary {
           node.getElement("ecartTypeClasse").innerText.replaceAll(",", ".")),
       median: double.parse(
           node.getElement("medianeClasse").innerText.replaceAll(",", ".")),
-      percentileRank: int.parse(node.getElement("rangCentileClasse").innerText),
+      percentileRank: int.parse(node.getElement("rangCentileClasse").innerText.replaceAll(",0", "")),
       evaluations: node
           .findAllElements("ElementEvaluation")
           .map((node) => Evaluation.fromXml(node))

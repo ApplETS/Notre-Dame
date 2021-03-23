@@ -157,6 +157,13 @@ class SignetsApi {
     final responseBody =
         await _sendSOAPRequest(body, Urls.listEvaluationsOperation);
 
+    if (responseBody.getElement("scoreFinalSur100").innerText.isEmpty) {
+      throw const ApiException(
+          prefix: tag,
+          message: "No grades available",
+          errorCode: SignetsError.gradesEmpty);
+    }
+
     return CourseSummary.fromXmlNode(responseBody);
   }
 

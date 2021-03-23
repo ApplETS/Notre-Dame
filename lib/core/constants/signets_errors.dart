@@ -22,4 +22,7 @@ class SignetsError {
       "n'êtes pas inscrite, ou que vous n'êtes inscrite qu'à des activité sans "
       "horaire, comme un stage ou que que vous êtes en rédaction de mémoire "
       "ou de thèse.";
+
+  static const String gradesEmpty = "GRADES_NOT_AVAILABLE";
+  static const String gradesNotAvailable = "Cours ou bordereau de notes inexistant pour";
 }
