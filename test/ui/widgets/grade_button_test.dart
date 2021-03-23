@@ -5,6 +5,8 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 // MODELS
 import 'package:notredame/core/models/course.dart';
 import 'package:notredame/core/models/course_summary.dart';
+
+// SERVICE
 import 'package:notredame/core/services/navigation_service.dart';
 
 // WIDGET
@@ -79,7 +81,7 @@ void main() {
         expect(find.text(courseWithGrade.acronym), findsOneWidget);
         expect(
             find.text(intl.grades_grade_in_percentage(
-                courseWithSummary.summary.currentMarkInPercent)),
+                courseWithSummary.summary.currentMarkInPercent.round())),
             findsOneWidget,
             reason:
                 'There is no grade available and the course summary exists so the '

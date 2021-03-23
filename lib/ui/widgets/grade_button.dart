@@ -66,7 +66,7 @@ class GradeButton extends StatelessWidget {
   String gradeString(AppIntl intl) {
     if (course.grade == null && course.summary != null) {
       return intl
-          .grades_grade_in_percentage(course.summary.currentMarkInPercent);
+          .grades_grade_in_percentage(course.summary.currentMarkInPercent.round());
     } else if (course.grade != null) {
       return course.grade;
     }
