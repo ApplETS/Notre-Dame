@@ -37,7 +37,8 @@ void main() {
         final Finder phoneButton = find.widgetWithText(Card, 'Emergency call');
         expect(phoneButton, findsOneWidget);
 
-        final Finder emergencyList = find.byType(TextButton);
+        final Finder emergencyList =
+            find.widgetWithIcon(Card, Icons.arrow_forward_ios);
         expect(emergencyList, findsNWidgets(emergencyProcedures(intl).length));
       });
     });
