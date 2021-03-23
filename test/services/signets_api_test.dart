@@ -2,8 +2,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:logger/logger.dart';
 import 'package:mockito/mockito.dart';
-import 'package:notredame/core/constants/signets_errors.dart';
-import 'package:notredame/core/models/course_summary.dart';
 
 // SERVICE
 import 'package:notredame/core/services/signets_api.dart';
@@ -15,10 +13,12 @@ import 'package:notredame/core/models/course.dart';
 import 'package:notredame/core/models/evaluation.dart' as model;
 import 'package:notredame/core/models/profile_student.dart';
 import 'package:notredame/core/models/program.dart';
+import 'package:notredame/core/models/course_summary.dart';
 
 // CONSTANTS
 import 'package:notredame/core/constants/urls.dart';
 import 'package:notredame/core/utils/api_exception.dart';
+import 'package:notredame/core/constants/signets_errors.dart';
 
 // MOCKS
 import '../helpers.dart';
