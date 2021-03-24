@@ -27,6 +27,7 @@ void main() {
       setupUserRepositoryMock();
       setupCacheManagerMock();
       setupSettingsManagerMock();
+      setupGithubApiMock();
     });
 
     tearDown(() {});

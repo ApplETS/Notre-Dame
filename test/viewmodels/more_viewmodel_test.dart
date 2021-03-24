@@ -12,6 +12,7 @@ import 'package:notredame/core/managers/course_repository.dart';
 import 'package:notredame/core/managers/user_repository.dart';
 import 'package:notredame/core/models/course_activity.dart';
 import 'package:notredame/core/models/session.dart';
+import 'package:notredame/core/services/github_api.dart';
 import 'package:notredame/core/services/navigation_service.dart';
 import 'package:notredame/core/managers/cache_manager.dart';
 import 'package:notredame/core/managers/settings_manager.dart';
@@ -100,6 +101,7 @@ void main() {
       unregister<PreferencesService>();
       unregister<UserRepository>();
       unregister<NavigationService>();
+      unregister<GithubApi>();
     });
 
     group('logout - ', () {
@@ -150,7 +152,7 @@ void main() {
       });
 
       test('If the file uploaded matches', () async {
-        final File file = File('');
+        final File file = File('bugReportTest.png');
         GithubApiMock.stubLocalFile(githubApiMock, file);
 
         await file.writeAsBytes(image.encodePng(
@@ -167,7 +169,7 @@ void main() {
       });
 
       test('If the github issue has been created', () async {
-        final File file = File('');
+        final File file = File('bugReportTest.png');
         GithubApiMock.stubLocalFile(githubApiMock, file);
 
         await viewModel.sendFeedback('Notre-Dame bug report', screenshotData);
