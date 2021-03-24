@@ -1,4 +1,6 @@
 // FLUTTER / DART / THIRD-PARTIES
+import 'package:notredame/core/constants/preferences_flags.dart';
+import 'package:notredame/core/managers/settings_manager.dart';
 import 'package:stacked/stacked.dart';
 
 // SERVICE
@@ -10,6 +12,9 @@ import 'package:notredame/locator.dart';
 import 'package:notredame/core/constants/router_paths.dart';
 
 class StartUpViewModel extends BaseViewModel {
+  /// Manage the settings
+  final SettingsManager _settingsManager = locator<SettingsManager>();
+  
   /// Used to authenticate the user
   final UserRepository _userRepository = locator<UserRepository>();
 
@@ -21,9 +26,15 @@ class StartUpViewModel extends BaseViewModel {
     final bool isLogin = await _userRepository.silentAuthenticate();
 
     if (isLogin) {
-      _navigationService.pushNamed(RouterPaths.dashboard);
+      _navigationService.pushNamed(RouterPaths.schedule);
     } else {
-      _navigationService.pushNamed(RouterPaths.login);
+      if (await _settingsManager.getString(PreferencesFlag.welcome) == null) {
+        _navigationService.pushNamed(RouterPaths.chooseLanguage);
+        _settingsManager.setString(PreferencesFlag.welcome, 'true');
+      }
+      else {
+        _navigationService.pushNamed(RouterPaths.login);
+      }      
     }
   }
 }

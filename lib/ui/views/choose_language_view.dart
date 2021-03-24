@@ -26,11 +26,6 @@ class _ChooseLanguageViewState extends State<ChooseLanguageView> {
         itemCount: model.languages.length,
         itemBuilder: (BuildContext context, int index) {
           return ListTile(
-            leading: Image.asset(
-              model.languagesIcons[index],
-              height: 25,
-              width: 25,
-            ),
             trailing:
                 Icon(model.languageSelectedIndex == index ? Icons.check : null),
             title: Text(model.languages[index]),
@@ -48,45 +43,50 @@ class _ChooseLanguageViewState extends State<ChooseLanguageView> {
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<ChooseLanguageViewModel>.reactive(
-        viewModelBuilder: () =>
-            ChooseLanguageViewModel(intl: AppIntl.of(context)),
-        builder: (context, model, child) {
-          return BaseScaffold(
-            body: SimpleDialog(
-              insetPadding: const EdgeInsets.all(10),
-              children: <Widget>[
-                const Center(
-                  child: Icon(
-                    Icons.language,
-                    size: 75,
-                    color: AppTheme.etsLightRed,
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(left: 20, top: 20),
-                  child: Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text(
-                      AppIntl.of(context).choose_language_title,
-                      style: const TextStyle(
-                          fontSize: 20, fontWeight: FontWeight.bold),
+        viewModelBuilder: () => ChooseLanguageViewModel(intl: AppIntl.of(context)),
+        builder: (context, model, child) => Scaffold(
+            backgroundColor: Theme.of(context).brightness == Brightness.light
+              ? AppTheme.etsLightRed
+              : AppTheme.primaryDark,
+            body: Center(
+              child: ListView(
+                shrinkWrap: true,
+                children: <Widget>[
+                  Center(
+                    child: Icon(
+                      Icons.language,
+                      size: 75,
+                      color: Theme.of(context).brightness == Brightness.light
+                        ?  Colors.black
+                        : AppTheme.etsLightRed,
                     ),
                   ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(left: 20, top: 10),
-                  child: Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text(
-                      AppIntl.of(context).choose_language_subtitle,
-                      style: const TextStyle(fontSize: 16),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 20, top: 20),
+                    child: Align(
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        AppIntl.of(context).choose_language_title,
+                        style: const TextStyle(
+                            fontSize: 20, fontWeight: FontWeight.bold),
+                      ),
                     ),
                   ),
-                ),
-                languagesListView(model)
-              ],
+                  Padding(
+                    padding: const EdgeInsets.only(left: 20, top: 10),
+                    child: Align(
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        AppIntl.of(context).choose_language_subtitle,
+                        style: const TextStyle(fontSize: 16),
+                      ),
+                    ),
+                  ),
+                  languagesListView(model)
+                ],
+              ),
             ),
-          );
-        });
+          )
+        );
   }
 }

@@ -31,13 +31,6 @@ class ChooseLanguageViewModel extends BaseViewModel {
     return [_appIntl.settings_english, _appIntl.settings_french];
   }
 
-  List<String> get languagesIcons {
-    return [
-      'assets/icons/english_icon.png',
-      'assets/icons/french_icon.png',
-    ];
-  }
-
   void changeLanguage(int index) {
     switch (index) {
       case english:
@@ -57,6 +50,6 @@ class ChooseLanguageViewModel extends BaseViewModel {
     }
 
     _navigationService.pop();
-    _navigationService.pushNamed(RouterPaths.dashboard);
+    _navigationService.pushNamed(RouterPaths.login);
   }
 }

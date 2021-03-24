@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 // ROUTES
 import 'package:notredame/core/constants/router_paths.dart';
+import 'package:notredame/core/viewmodels/choose_language_viewmodel.dart';
 
 // VIEWS
 import 'package:notredame/ui/views/login_view.dart';
@@ -59,9 +60,9 @@ class AppRouter {
             settings: RouteSettings(name: routeSettings.name),
             pageBuilder: (_, __, ___) => AboutView());
       case RouterPaths.chooseLanguage:
-        return PageRouteBuilder(
+        return MaterialPageRoute(
             settings: RouteSettings(name: routeSettings.name),
-            pageBuilder: (_, __, ___) => ChooseLanguageView());
+            builder: (_) => ChooseLanguageView());
       default:
         return PageRouteBuilder(
             settings: RouteSettings(name: routeSettings.name),
