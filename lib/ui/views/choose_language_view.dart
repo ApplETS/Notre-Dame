@@ -8,7 +8,6 @@ import 'package:notredame/core/viewmodels/choose_language_viewmodel.dart';
 
 // OTHER
 import 'package:notredame/ui/utils/app_theme.dart';
-import 'package:notredame/ui/widgets/base_scaffold.dart';
 
 class ChooseLanguageView extends StatefulWidget {
   @override
@@ -16,27 +15,30 @@ class ChooseLanguageView extends StatefulWidget {
 }
 
 class _ChooseLanguageViewState extends State<ChooseLanguageView> {
-  SizedBox languagesListView(ChooseLanguageViewModel model) {
-    return SizedBox(
-      height: 125.0,
-      width: 200.0,
-      child: ListView.separated(
+  ListView languagesListView(ChooseLanguageViewModel model) {
+    return ListView.builder(
+        shrinkWrap: true,
         physics: const NeverScrollableScrollPhysics(),
         padding: const EdgeInsets.all(8),
         itemCount: model.languages.length,
         itemBuilder: (BuildContext context, int index) {
-          return ListTile(
-            trailing:
-                Icon(model.languageSelectedIndex == index ? Icons.check : null),
-            title: Text(model.languages[index]),
-            onTap: () {
-              model.changeLanguage(index);
-            },
-          );
+          return Card(
+            color: Theme.of(context).brightness == Brightness.light
+              ? Colors.white70
+              : Colors.grey[900],
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                ListTile(
+                  title: Text(model.languages[index]),
+                  trailing: Icon(model.languageSelectedIndex == index ? Icons.check : null),
+                  onTap: () {
+                    model.changeLanguage(index);
+                  },
+                ),
+            ]
+          ));
         },
-        separatorBuilder: (BuildContext context, int index) =>
-            Divider(color: Colors.grey[700]),
-      ),
     );
   }
 
@@ -52,37 +54,41 @@ class _ChooseLanguageViewState extends State<ChooseLanguageView> {
               child: ListView(
                 shrinkWrap: true,
                 children: <Widget>[
-                  Center(
-                    child: Icon(
-                      Icons.language,
-                      size: 75,
-                      color: Theme.of(context).brightness == Brightness.light
-                        ?  Colors.black
-                        : AppTheme.etsLightRed,
-                    ),
+                  Icon(
+                    Icons.language,
+                    size: 80,
+                    color: Theme.of(context).brightness == Brightness.light
+                      ?  Colors.white
+                      : AppTheme.etsLightRed,
                   ),
                   Padding(
-                    padding: const EdgeInsets.only(left: 20, top: 20),
+                    padding: const EdgeInsets.only(left: 20, top: 60),
                     child: Align(
                       alignment: Alignment.centerLeft,
                       child: Text(
                         AppIntl.of(context).choose_language_title,
                         style: const TextStyle(
-                            fontSize: 20, fontWeight: FontWeight.bold),
+                            fontSize: 20, 
+                            fontWeight: FontWeight.bold, 
+                            color: Colors.white),
                       ),
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.only(left: 20, top: 10),
+                    padding: const EdgeInsets.only(left: 20, top: 10, bottom: 30),
                     child: Align(
                       alignment: Alignment.centerLeft,
                       child: Text(
                         AppIntl.of(context).choose_language_subtitle,
-                        style: const TextStyle(fontSize: 16),
+                        style: const TextStyle(fontSize: 16, 
+                          color: Colors.white),
                       ),
                     ),
                   ),
-                  languagesListView(model)
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 80),
+                    child: languagesListView(model),
+                  )
                 ],
               ),
             ),
