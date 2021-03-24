@@ -1,4 +1,8 @@
 // FLUTTER / DART / THIRD-PARTIES
+import 'dart:io';
+import 'dart:typed_data';
+import 'package:flutter/services.dart';
+import 'package:image/image.dart' as image;
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:mockito/mockito.dart';
@@ -18,7 +22,6 @@ import 'package:notredame/core/viewmodels/more_viewmodel.dart';
 
 // CONSTANTS
 import 'package:notredame/core/constants/router_paths.dart';
-import 'package:oktoast/oktoast.dart';
 
 // OTHER
 import '../helpers.dart';
@@ -26,14 +29,18 @@ import '../mock/managers/cache_manager_mock.dart';
 import '../mock/managers/course_repository_mock.dart';
 import '../mock/managers/settings_manager_mock.dart';
 import '../mock/managers/user_repository_mock.dart';
+import '../mock/services/github_api_mock.dart';
 
 void main() {
+  TestWidgetsFlutterBinding.ensureInitialized();
+
   CacheManagerMock cacheManagerMock;
   SettingsManagerMock settingsManagerMock;
   CourseRepositoryMock courseRepositoryMock;
   PreferencesService preferenceService;
   UserRepositoryMock userRepositoryMock;
   NavigationService navigationService;
+  GithubApiMock githubApiMock;
   AppIntl appIntl;
 
   MoreViewModel viewModel;
@@ -74,6 +81,7 @@ void main() {
       preferenceService = setupPreferencesServiceMock();
       userRepositoryMock = setupUserRepositoryMock() as UserRepositoryMock;
       navigationService = setupNavigationServiceMock();
+      githubApiMock = setupGithubApiMock() as GithubApiMock;
       setupLogger();
       appIntl = await setupAppIntl();
 
@@ -123,11 +131,44 @@ void main() {
         verify(navigationService.pushNamedAndRemoveUntil(RouterPaths.login));
       });
     });
+
     group('sendFeedback - ', () {
-      test('If the navigationService is rerouted to login', () async {
-        await viewModel.sendFeedback();
-        verify(navigationService.pop());
-        verify(navigationService.pushNamedAndRemoveUntil(RouterPaths.login));
+      Uint8List screenshotData;
+
+      setUp(() async {
+        final ByteData bytes = await rootBundle
+            .load('packages/notredame/assets/images/github_white.png');
+        screenshotData = bytes.buffer.asUint8List();
+      });
+
+      test('If the file uploaded matches', () async {
+        final File file = File('');
+        GithubApiMock.stubLocalFile(githubApiMock, file);
+
+        await file.writeAsBytes(image.encodePng(
+            image.copyResize(image.decodeImage(screenshotData), width: 307)));
+
+        await viewModel.sendFeedback('Notre-Dame bug report', screenshotData);
+
+        verify(githubApiMock.uploadFileToGithub(
+          filePath: file.path.replaceFirst(
+              'storage/emulated/0/Android/data/ca.etsmtl.applets.notredame/files/',
+              ''),
+          file: file,
+        ));
+      });
+
+      test('If the github issue has been created', () async {
+        final File file = File('');
+        GithubApiMock.stubLocalFile(githubApiMock, file);
+
+        await viewModel.sendFeedback('Notre-Dame bug report', screenshotData);
+
+        verify(githubApiMock.createGithubIssue(
+            feedbackText: 'Notre-Dame bug report',
+            fileName: file.path.replaceFirst(
+                'storage/emulated/0/Android/data/ca.etsmtl.applets.notredame/files/',
+                '')));
       });
     });
   });
