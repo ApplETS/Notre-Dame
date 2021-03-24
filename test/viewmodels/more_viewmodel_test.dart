@@ -118,6 +118,14 @@ void main() {
         verify(userRepositoryMock.logOut());
       });
 
+      test(
+          'If settings manager has reset language and theme mode and has notified listener',
+          () async {
+        await viewModel.logout();
+        verify(settingsManagerMock.resetLanguageAndThemeMode());
+        verify(settingsManagerMock.notifyListeners());
+      });
+
       test('If the cache for courses activities and sessions is cleared',
           () async {
         await viewModel.logout();
