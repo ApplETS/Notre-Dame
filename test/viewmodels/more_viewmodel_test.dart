@@ -78,6 +78,11 @@ void main() {
       appIntl = await setupAppIntl();
 
       viewModel = MoreViewModel(intl: appIntl);
+
+      CourseRepositoryMock.stubSessions(courseRepositoryMock,
+          toReturn: sessions);
+      CourseRepositoryMock.stubCoursesActivities(courseRepositoryMock,
+          toReturn: coursesActivities);
     });
 
     tearDown(() {
@@ -95,15 +100,6 @@ void main() {
         verify(cacheManagerMock.empty());
       });
 
-      test('If cache manager throw an exception, verify that it show a toast',
-          () async {
-        final Exception exc = Exception("CacheManagerException");
-        CacheManagerMock.stubEmptyException(cacheManagerMock,
-            exceptionToThrow: exc);
-
-        expect(() => viewModel.logout(), throwsA(StateError));
-      });
-
       test('If preference manager is clear', () async {
         await viewModel.logout();
         verify(preferenceService.clear());
@@ -114,14 +110,11 @@ void main() {
         verify(userRepositoryMock.logOut());
       });
 
-      test('If the cache for courses is cleared', () async {
-        CourseRepositoryMock.stubSessions(courseRepositoryMock,
-            toReturn: sessions);
-        CourseRepositoryMock.stubCoursesActivities(courseRepositoryMock,
-            toReturn: coursesActivities);
+      test('If the cache for courses activities and sessions is cleared',
+          () async {
         await viewModel.logout();
-        verify(courseRepositoryMock.sessions.clear());
-        verify(courseRepositoryMock.coursesActivities.clear());
+        expect(courseRepositoryMock.sessions.length, 0);
+        expect(courseRepositoryMock.coursesActivities.length, 0);
       });
 
       test('If the navigationService is rerouted to login', () async {
@@ -132,7 +125,7 @@ void main() {
     });
     group('sendFeedback - ', () {
       test('If the navigationService is rerouted to login', () async {
-        await viewModel.logout();
+        await viewModel.sendFeedback();
         verify(navigationService.pop());
         verify(navigationService.pushNamedAndRemoveUntil(RouterPaths.login));
       });

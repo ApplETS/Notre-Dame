@@ -2,7 +2,6 @@
 import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
-import 'package:feedback/feedback.dart';
 import 'package:flutter/material.dart';
 import 'package:package_info/package_info.dart';
 import 'package:stacked/stacked.dart';
@@ -92,12 +91,11 @@ class MoreViewModel extends FutureViewModel {
     navigationService.pop();
     navigationService.pushNamedAndRemoveUntil(RouterPaths.login);
     settingsManager.notifyListeners();
-    showToast(_appIntl.login_msg_logout_success);
   }
 
   /// Create a Github issue with [feedbackText] and the screenshot associated.
-  Future<void> sendFeedback(BuildContext context, String feedbackText,
-      Uint8List feedbackScreenshot) async {
+  Future<void> sendFeedback(
+      String feedbackText, Uint8List feedbackScreenshot) async {
     final File file = await _localFile;
     await file.writeAsBytes(image.encodePng(
         image.copyResize(image.decodeImage(feedbackScreenshot), width: 307)));
@@ -111,11 +109,6 @@ class MoreViewModel extends FutureViewModel {
     await _createGithubIssue(github, file, feedbackText);
 
     file.deleteSync();
-    showToast(
-      _appIntl.thank_you_for_the_feedback,
-      position: ToastPosition.center,
-    );
-    BetterFeedback.of(context).hide();
   }
 
   /// Create Github issue into the Notre-Dame repository with the labels bugs and the platform used.

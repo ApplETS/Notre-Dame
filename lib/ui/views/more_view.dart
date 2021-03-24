@@ -2,6 +2,7 @@
 import 'dart:typed_data';
 import 'package:feedback/feedback.dart';
 import 'package:flutter/material.dart';
+import 'package:oktoast/oktoast.dart';
 import 'package:stacked/stacked.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -73,8 +74,15 @@ class MoreView extends StatelessWidget {
                     String feedbackText,
                     Uint8List feedbackScreenshot,
                   ) {
-                    model.sendFeedback(
-                        context, feedbackText, feedbackScreenshot);
+                    model
+                        .sendFeedback(feedbackText, feedbackScreenshot)
+                        .then((value) {
+                      showToast(
+                        AppIntl.of(context).thank_you_for_the_feedback,
+                        position: ToastPosition.center,
+                      );
+                      BetterFeedback.of(context).hide();
+                    });
                   }),
                 ),
                 ListTile(
@@ -125,7 +133,13 @@ class MoreView extends StatelessWidget {
                         actions: [
                           TextButton(
                               onPressed: () async {
-                                model.logout();
+                                model
+                                    .logout()
+                                    .then((value) => showToast(
+                                        AppIntl.of(context)
+                                            .login_msg_logout_success))
+                                    .onError((error, stackTrace) =>
+                                        showToast(AppIntl.of(context).error));
                               },
                               child: Text(AppIntl.of(context).yes)),
                           TextButton(
