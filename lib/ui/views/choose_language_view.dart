@@ -24,7 +24,7 @@ class _ChooseLanguageViewState extends State<ChooseLanguageView> {
         itemBuilder: (BuildContext context, int index) {
           return Card(
             color: Theme.of(context).brightness == Brightness.light
-              ? Colors.white70
+              ? Colors.white
               : Colors.grey[900],
             child: Column(
               mainAxisSize: MainAxisSize.min,
