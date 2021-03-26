@@ -1,6 +1,7 @@
 // FLUTTER / DART / THIRD-PARTIES
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:mockito/mockito.dart';
 
 // SERVICES / MANAGERS
 import 'package:notredame/core/managers/user_repository.dart';
@@ -8,6 +9,9 @@ import 'package:notredame/core/services/navigation_service.dart';
 
 // VIEW MODEL
 import 'package:notredame/core/viewmodels/login_viewmodel.dart';
+
+// CONSTANTS
+import 'package:notredame/core/constants/router_paths.dart';
 
 // OTHER
 import '../helpers.dart';
@@ -30,7 +34,6 @@ void main() {
     setUp(() async {
       navigationService = setupNavigationServiceMock();
       userRepositoryMock = setupUserRepositoryMock() as UserRepositoryMock;
-      
       setupLogger();
       appIntl = await setupAppIntl();
 
@@ -93,6 +96,16 @@ void main() {
     });
 
     group('signIn - ', () {
+      test('with right credentials should redirect to the Dashboard route', () async {
+        UserRepositoryMock.stubAuthenticate(userRepositoryMock, universalCodeValid);
+
+        viewModel.validateUniversalCode(universalCodeValid);
+        viewModel.validatePassword(passwordCodeValid);
+
+        await viewModel.authenticate();
+        verify(navigationService.pushNamed(RouterPaths.dashboard));
+      });
+
       test('universal code and/or password are not set, should return a error message', () async {
         viewModel.validateUniversalCode(universalCodeValid);
 
