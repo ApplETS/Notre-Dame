@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 
 // ROUTES
 import 'package:notredame/core/constants/router_paths.dart';
-import 'package:notredame/core/viewmodels/choose_language_viewmodel.dart';
 
 // VIEWS
 import 'package:notredame/ui/views/login_view.dart';

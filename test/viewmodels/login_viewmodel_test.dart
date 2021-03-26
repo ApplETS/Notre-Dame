@@ -1,8 +1,6 @@
 // FLUTTER / DART / THIRD-PARTIES
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:mockito/mockito.dart';
-import 'package:notredame/core/constants/preferences_flags.dart';
 
 // SERVICES / MANAGERS
 import 'package:notredame/core/managers/user_repository.dart';
@@ -12,12 +10,8 @@ import 'package:notredame/core/managers/settings_manager.dart';
 // VIEW MODEL
 import 'package:notredame/core/viewmodels/login_viewmodel.dart';
 
-// CONSTANTS
-import 'package:notredame/core/constants/router_paths.dart';
-
 // OTHER
 import '../helpers.dart';
-import '../mock/managers/settings_manager_mock.dart';
 import '../mock/managers/user_repository_mock.dart';
 
 void main() {

@@ -3,13 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-// CONSTANT
-import 'package:notredame/core/constants/preferences_flags.dart';
-
 // SERVICE
 import 'package:notredame/core/managers/user_repository.dart';
 import 'package:notredame/core/services/navigation_service.dart';
-import 'package:notredame/core/managers/settings_manager.dart';
 
 // OTHER
 import 'package:notredame/locator.dart';
