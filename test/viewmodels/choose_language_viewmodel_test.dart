@@ -50,7 +50,7 @@ void main() {
 
         verify(settingsManager.setLocale(AppIntl.supportedLocales.first.languageCode));
         verify(navigationService.pop());
-        verify(navigationService.pushNamed(RouterPaths.dashboard));
+        verify(navigationService.pushNamed(RouterPaths.login));
       });
 
       test('can set language français', () async {
@@ -61,7 +61,7 @@ void main() {
 
         verify(settingsManager.setLocale(AppIntl.supportedLocales.last.languageCode));
         verify(navigationService.pop());
-        verify(navigationService.pushNamed(RouterPaths.dashboard));
+        verify(navigationService.pushNamed(RouterPaths.login));
       });
 
       test('throws an error when index does not exist', () async {
@@ -90,12 +90,6 @@ void main() {
           viewModelWithInvalidIntl.languages,
           throwsNoSuchMethodError,
           reason: "The getter 'settings_english' was called on null");
-      });
-
-      test('returns the languages icons successfully', () async {
-        final languagesIcons = viewModel.languagesIcons;
-
-        expect(['assets/icons/english_icon.png', 'assets/icons/french_icon.png'], languagesIcons);
       });
     });
   });
