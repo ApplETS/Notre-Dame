@@ -103,30 +103,6 @@ void main() {
     });
 
     group('signIn - ', () {
-      test('with right credentials should redirect to the choose language dialog route if it the first time the app is launched', () async {
-        UserRepositoryMock.stubAuthenticate(userRepositoryMock, universalCodeValid);
-
-        viewModel.validateUniversalCode(universalCodeValid);
-        viewModel.validatePassword(passwordCodeValid);
-
-        await viewModel.authenticate();
-        verify(navigationService.pushNamed(RouterPaths.chooseLanguage));
-        verify(settingsManager.setString(PreferencesFlag.welcome, 'true'));
-      });
-      
-      test('with right credentials should redirect to the Dashboard route if it is not the first time the app is launched', () async {
-        UserRepositoryMock.stubAuthenticate(userRepositoryMock, universalCodeValid);
-
-        SettingsManagerMock.stubGetString(
-            settingsManager as SettingsManagerMock, PreferencesFlag.welcome, toReturn: 'true');
-
-        viewModel.validateUniversalCode(universalCodeValid);
-        viewModel.validatePassword(passwordCodeValid);
-
-        await viewModel.authenticate();
-        verify(navigationService.pushNamed(RouterPaths.dashboard));
-      });
-
       test('universal code and/or password are not set, should return a error message', () async {
         viewModel.validateUniversalCode(universalCodeValid);
 

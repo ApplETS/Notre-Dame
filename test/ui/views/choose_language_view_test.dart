@@ -43,7 +43,7 @@ void main() {
         await tester.pumpAndSettle();
 
         final listview = find.byType(ListView);
-        expect(listview, findsOneWidget);
+        expect(listview, findsWidgets);
       });
     });
 
