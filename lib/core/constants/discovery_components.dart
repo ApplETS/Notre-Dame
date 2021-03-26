@@ -1,8 +1,11 @@
+// FLUTTER / DART / THIRD-PARTIES
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:notredame/core/constants/router_paths.dart';
+
+// MODELS
 import 'package:notredame/core/models/discovery.dart';
 
-List<Discovery> discoveryIds(AppIntl intl) => [
+List<Discovery> discoveryComponents(AppIntl intl) => [
       Discovery(
           path: RouterPaths.dashboard,
           featureId: 'navbar_dashboard_page_id',
@@ -43,5 +46,5 @@ List<Discovery> discoveryIds(AppIntl intl) => [
     ];
 
 Discovery getDiscoveryByPath(AppIntl intl, String path) {
-  return discoveryIds(intl).firstWhere((element) => element.path == path);
+  return discoveryComponents(intl).firstWhere((element) => element.path == path);
 }

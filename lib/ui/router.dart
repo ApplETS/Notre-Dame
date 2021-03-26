@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 
 // ROUTES
 import 'package:notredame/core/constants/router_paths.dart';
-import 'package:notredame/ui/views/choose_language_view.dart';
 
 // VIEWS
 import 'package:notredame/ui/views/login_view.dart';
@@ -16,6 +15,7 @@ import 'package:notredame/ui/views/settings_view.dart';
 import 'package:notredame/ui/views/student_view.dart';
 import 'package:notredame/ui/views/about_view.dart';
 import 'package:notredame/ui/views/contributors_view.dart';
+import 'package:notredame/ui/views/choose_language_view.dart';
 
 class AppRouter {
   // ignore: missing_return
@@ -59,10 +59,9 @@ class AppRouter {
             settings: RouteSettings(name: routeSettings.name),
             pageBuilder: (_, __, ___) => AboutView());
       case RouterPaths.chooseLanguage:
-        return PageRouteBuilder(
-            transitionDuration: const Duration(seconds: 1),
+        return MaterialPageRoute(
             settings: RouteSettings(name: routeSettings.name),
-            pageBuilder: (_, __, ___) => ChooseLanguageView());
+            builder: (_) => ChooseLanguageView());
       default:
         return PageRouteBuilder(
             settings: RouteSettings(name: routeSettings.name),

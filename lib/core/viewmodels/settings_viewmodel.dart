@@ -1,11 +1,11 @@
 // FLUTTER / DART / THIRD-PARTIES
 import 'package:flutter/material.dart';
+import 'package:notredame/core/constants/discovery_components.dart';
 import 'package:stacked/stacked.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 // CONSTANTS
 import 'package:notredame/core/constants/preferences_flags.dart';
-import 'package:notredame/core/constants/discovery_ids.dart';
 
 // MANAGER
 import 'package:notredame/core/managers/settings_manager.dart';
@@ -74,7 +74,7 @@ class SettingsViewModel extends FutureViewModel {
   }
   
   void startDiscovery(BuildContext context) {
-    final List<String> ids = discoveryIds(AppIntl.of(context)).map((e) => e.featureId).toList();
+    final List<String> ids = discoveryComponents(AppIntl.of(context)).map((e) => e.featureId).toList();
 
     FeatureDiscovery.clearPreferences(context, ids);
     FeatureDiscovery.discoverFeatures(context, ids);

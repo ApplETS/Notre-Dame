@@ -5,6 +5,7 @@ import 'dart:typed_data';
 import 'package:feature_discovery/feature_discovery.dart';
 import 'package:feedback/feedback.dart';
 import 'package:flutter/material.dart';
+import 'package:notredame/core/constants/discovery_components.dart';
 import 'package:package_info/package_info.dart';
 import 'package:stacked/stacked.dart';
 import 'package:oktoast/oktoast.dart';
@@ -21,7 +22,6 @@ import 'package:notredame/core/managers/user_repository.dart';
 import 'package:notredame/core/services/navigation_service.dart';
 
 // OTHERS
-import 'package:notredame/core/constants/discovery_ids.dart';
 import 'package:notredame/core/constants/router_paths.dart';
 import 'package:notredame/locator.dart';
 
@@ -151,7 +151,7 @@ class MoreViewModel extends FutureViewModel {
   }
 
   void startDiscovery(BuildContext context) {
-    final List<String> ids = discoveryIds(AppIntl.of(context)).map((e) => e.featureId).toList();
+    final List<String> ids = discoveryComponents(AppIntl.of(context)).map((e) => e.featureId).toList();
 
     FeatureDiscovery.clearPreferences(context, ids);
     FeatureDiscovery.discoverFeatures(context, ids);

@@ -1,14 +1,17 @@
 // FLUTTER / DART / THIRD-PARTIES
-import 'package:feature_discovery/feature_discovery.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:notredame/core/constants/discovery_ids.dart';
-import 'package:notredame/core/constants/router_paths.dart';
-import 'package:notredame/core/managers/settings_manager.dart';
-import 'package:notredame/core/services/navigation_service.dart';
 import 'package:stacked/stacked.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-import '../../locator.dart';
+// SERVICE
+import 'package:notredame/core/services/navigation_service.dart';
+
+// MANAGERS
+import 'package:notredame/core/managers/settings_manager.dart';
+
+// OTHER
+import 'package:notredame/locator.dart';
+import 'package:notredame/core/constants/router_paths.dart';
 
 class ChooseLanguageViewModel extends BaseViewModel {
   static const int english = 0;
@@ -30,14 +33,7 @@ class ChooseLanguageViewModel extends BaseViewModel {
     return [_appIntl.settings_english, _appIntl.settings_french];
   }
 
-  List<String> get languagesIcons {
-    return [
-      'assets/icons/english_icon.png',
-      'assets/icons/french_icon.png',
-    ];
-  }
-
-  void changeLanguage(int index, BuildContext context) {
+  void changeLanguage(int index) {
     switch (index) {
       case english:
         _settingsManager.setLocale(AppIntl.supportedLocales.first.languageCode);
@@ -50,20 +46,12 @@ class ChooseLanguageViewModel extends BaseViewModel {
         break;
 
       default:
-        throw Exception('No valid language for the index $index passed in paramaters');
+        throw Exception(
+            'No valid language for the index $index passed in parameters');
         break;
     }
 
     _navigationService.pop();
     _navigationService.pushNamed(RouterPaths.schedule);
-
-    startDiscovery(context);
-  }
-
-  void startDiscovery(BuildContext context) {
-    final List<String> ids = discoveryIds(AppIntl.of(context)).map((e) => e.featureId).toList();
-
-    FeatureDiscovery.clearPreferences(context, ids);
-    FeatureDiscovery.discoverFeatures(context, ids);
   }
 }

@@ -2,6 +2,8 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
+// ROUTES
 import 'package:notredame/core/constants/router_paths.dart';
 
 // MANAGER
@@ -48,7 +50,7 @@ void main() {
 
         verify(settingsManager.setLocale(AppIntl.supportedLocales.first.languageCode));
         verify(navigationService.pop());
-        verify(navigationService.pushNamed(RouterPaths.dashboard));
+        verify(navigationService.pushNamed(RouterPaths.login));
       });
 
       test('can set language français', () async {
@@ -59,7 +61,7 @@ void main() {
 
         verify(settingsManager.setLocale(AppIntl.supportedLocales.last.languageCode));
         verify(navigationService.pop());
-        verify(navigationService.pushNamed(RouterPaths.dashboard));
+        verify(navigationService.pushNamed(RouterPaths.login));
       });
 
       test('throws an error when index does not exist', () async {
@@ -69,7 +71,7 @@ void main() {
         expect(() =>
           viewModel.changeLanguage(-1),
           throwsException,
-          reason: "No valid language for the index -1 passed in paramaters");
+          reason: "No valid language for the index -1 passed in parameters");
       }); 
     }); 
 
@@ -88,12 +90,6 @@ void main() {
           viewModelWithInvalidIntl.languages,
           throwsNoSuchMethodError,
           reason: "The getter 'settings_english' was called on null");
-      });
-
-      test('returns the languages icons successfully', () async {
-        final languagesIcons = viewModel.languagesIcons;
-
-        expect(['assets/icons/english_icon.png', 'assets/icons/french_icon.png'], languagesIcons);
       });
     });
   });

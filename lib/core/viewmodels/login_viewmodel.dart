@@ -3,22 +3,15 @@ import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-// CONSTANT
-import 'package:notredame/core/constants/preferences_flags.dart';
-
 // SERVICE
 import 'package:notredame/core/managers/user_repository.dart';
 import 'package:notredame/core/services/navigation_service.dart';
-import 'package:notredame/core/managers/settings_manager.dart';
 
 // OTHER
 import 'package:notredame/locator.dart';
 import 'package:notredame/core/constants/router_paths.dart';
 
 class LoginViewModel extends BaseViewModel {
-  /// Manage the settings
-  final SettingsManager _settingsManager = locator<SettingsManager>();
-
   /// Used to authenticate the user
   final UserRepository _userRepository = locator<UserRepository>();
 
@@ -76,16 +69,10 @@ class LoginViewModel extends BaseViewModel {
         username: _universalCode, password: _password);
 
     if (response) {
-      if (await _settingsManager.getString(PreferencesFlag.welcome) == null) {
-        _navigationService.pushNamed(RouterPaths.chooseLanguage);
-        _settingsManager.setString(PreferencesFlag.welcome, 'true');
-      } else {
-        _navigationService.pushNamed(RouterPaths.dashboard);
-      }
-
-      _navigationService.pushNamed(RouterPaths.schedule);
+      _navigationService.pushNamed(RouterPaths.dashboard);
       return '';
     }
+    
     _password = "";
     setBusy(false);
     notifyListeners();
