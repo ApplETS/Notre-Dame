@@ -2,10 +2,8 @@
 import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
-import 'package:feature_discovery/feature_discovery.dart';
 import 'package:feedback/feedback.dart';
 import 'package:flutter/material.dart';
-import 'package:notredame/core/constants/discovery_components.dart';
 import 'package:package_info/package_info.dart';
 import 'package:stacked/stacked.dart';
 import 'package:oktoast/oktoast.dart';
@@ -148,10 +146,5 @@ class MoreViewModel extends FutureViewModel {
     final path = await _localPath;
     final now = DateTime.now();
     return File('$path/bugPicture-${now.hashCode}.png');
-  }
-
-  void startDiscovery(BuildContext context) {
-    final List<String> ids = discoveryComponents(context).map((e) => e.featureId).toList();
-    FeatureDiscovery.discoverFeatures(context, ids);
   }
 }
