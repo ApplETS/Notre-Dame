@@ -85,7 +85,6 @@ void main() {
       });
 
       test("Signets throw an error while trying to get new events", () async {
-        setupAppIntl();
         CourseRepositoryMock.stubGetCoursesActivities(
             courseRepository as CourseRepositoryMock,
             fromCacheOnly: true);
