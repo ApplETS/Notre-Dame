@@ -1,16 +1,15 @@
 import UIKit
 import Flutter
 import GoogleMaps
-#import "FlutterConfigPlugin.h"
+import flutter_config
 
 @UIApplicationMain
 @objc class AppDelegate: FlutterAppDelegate {
-  NSString *apiMaps = [FlutterConfigPlugin envFor:@"MAPS_API_KEY"];
   override func application(
     _ application: UIApplication,
     didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
   ) -> Bool {
-    GMSServices.provideAPIKey(Bundle.main.object(forInfoDictionaryKey: "MAPS_API_KEY") as? String ?? "@apiMaps")
+    GMSServices.provideAPIKey(Bundle.main.object(forInfoDictionaryKey: "MAPS_API_KEY") as? String ?? FlutterConfigPlugin.env(for: "MAPS_API_KEY"))
     GeneratedPluginRegistrant.register(with: self)
     return super.application(application, didFinishLaunchingWithOptions: launchOptions)
   }
