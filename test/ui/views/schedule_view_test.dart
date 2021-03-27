@@ -1,5 +1,6 @@
 // FLUTTER / DART / THIRD-PARTIES
 import 'dart:ui';
+import 'package:feature_discovery/feature_discovery.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:intl/intl.dart';
@@ -246,7 +247,8 @@ void main() {
             settingsManager as SettingsManagerMock,
             toReturn: settings);
 
-        await tester.pumpWidget(localizedWidget(child: const ScheduleView()));
+        await tester.pumpWidget(localizedWidget(
+            child: FeatureDiscovery(child: const ScheduleView())));
         await tester.pumpAndSettle();
 
         // DateFormat has to be after the pumpWidget to correctly load the locale

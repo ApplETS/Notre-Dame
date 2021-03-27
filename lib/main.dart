@@ -6,6 +6,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:oktoast/oktoast.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+import 'package:feature_discovery/feature_discovery.dart';
 
 // ROUTER
 import 'package:notredame/ui/router.dart';
@@ -23,9 +24,6 @@ import 'package:notredame/core/managers/settings_manager.dart';
 
 // VIEW
 import 'package:notredame/ui/views/startup_view.dart';
-
-// OTHER
-import 'package:feature_discovery/feature_discovery.dart';
 
 void main() {
   setupLocator();

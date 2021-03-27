@@ -1,4 +1,5 @@
 // FLUTTER / DART / THIRD-PARTIES
+import 'package:feature_discovery/feature_discovery.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -19,7 +20,8 @@ void main() {
     group('UI - ', () {
       testWidgets('has Tab bar and sliverAppBar and BaseScaffold',
           (WidgetTester tester) async {
-        await tester.pumpWidget(localizedWidget(child: StudentView()));
+        await tester.pumpWidget(
+            localizedWidget(child: FeatureDiscovery(child: StudentView())));
         await tester.pumpAndSettle();
 
         expect(find.byType(TabBar), findsOneWidget);

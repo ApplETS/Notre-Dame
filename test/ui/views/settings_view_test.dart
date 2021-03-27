@@ -1,4 +1,5 @@
 // FLUTTER / DART / THIRD-PARTIES
+import 'package:feature_discovery/feature_discovery.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -23,7 +24,8 @@ void main() {
     group('UI - ', () {
       testWidgets('has 1 listView and 4 listTiles and 1 divider',
           (WidgetTester tester) async {
-        await tester.pumpWidget(localizedWidget(child: SettingsView()));
+        await tester.pumpWidget(
+            localizedWidget(child: FeatureDiscovery(child: SettingsView())));
         await tester.pumpAndSettle();
 
         final listview = find.byType(ListView);
@@ -38,7 +40,8 @@ void main() {
 
       group('Theme button - ', () {
         testWidgets('light theme', (WidgetTester tester) async {
-          await tester.pumpWidget(localizedWidget(child: SettingsView()));
+          await tester.pumpWidget(
+              localizedWidget(child: FeatureDiscovery(child: SettingsView())));
           await tester.pumpAndSettle();
 
           // Tap the button.
@@ -61,7 +64,8 @@ void main() {
         });
 
         testWidgets('dark theme', (WidgetTester tester) async {
-          await tester.pumpWidget(localizedWidget(child: SettingsView()));
+          await tester.pumpWidget(
+              localizedWidget(child: FeatureDiscovery(child: SettingsView())));
           await tester.pumpAndSettle();
 
           // Tap the button.
@@ -84,7 +88,8 @@ void main() {
         });
 
         testWidgets('system theme', (WidgetTester tester) async {
-          await tester.pumpWidget(localizedWidget(child: SettingsView()));
+          await tester.pumpWidget(
+              localizedWidget(child: FeatureDiscovery(child: SettingsView())));
           await tester.pumpAndSettle();
 
           // Tap the button.
@@ -109,7 +114,8 @@ void main() {
 
       group('Language button - ', () {
         testWidgets('french', (WidgetTester tester) async {
-          await tester.pumpWidget(localizedWidget(child: SettingsView()));
+          await tester.pumpWidget(
+              localizedWidget(child: FeatureDiscovery(child: SettingsView())));
           await tester.pumpAndSettle();
 
           // Tap the button.
@@ -131,7 +137,8 @@ void main() {
         });
 
         testWidgets('english', (WidgetTester tester) async {
-          await tester.pumpWidget(localizedWidget(child: SettingsView()));
+          await tester.pumpWidget(
+              localizedWidget(child: FeatureDiscovery(child: SettingsView())));
           await tester.pumpAndSettle();
 
           // Tap the button.
@@ -157,7 +164,8 @@ void main() {
         testWidgets("default view", (WidgetTester tester) async {
           tester.binding.window.physicalSizeTestValue = const Size(800, 1410);
 
-          await tester.pumpWidget(localizedWidget(child: SettingsView()));
+          await tester.pumpWidget(
+              localizedWidget(child: FeatureDiscovery(child: SettingsView())));
           await tester.pumpAndSettle();
 
           await expectLater(find.byType(SettingsView),
