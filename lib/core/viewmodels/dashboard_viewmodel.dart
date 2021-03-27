@@ -3,6 +3,8 @@ import 'package:feature_discovery/feature_discovery.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
+// CONSTANTS
 import 'package:notredame/core/constants/discovery_components.dart';
 
 // SERVICE
