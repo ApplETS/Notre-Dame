@@ -76,7 +76,7 @@ class LoginViewModel extends BaseViewModel {
         username: _universalCode, password: _password);
 
     if (response) {
-      _navigationService.pushNamed(RouterPaths.schedule);
+      _navigationService.pushNamed(RouterPaths.dashboard);
       return '';
     }
 

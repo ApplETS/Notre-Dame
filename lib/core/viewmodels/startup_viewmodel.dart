@@ -30,7 +30,7 @@ class StartUpViewModel extends BaseViewModel {
     final bool isLogin = await _userRepository.silentAuthenticate();
 
     if (isLogin) {
-      _navigationService.pushNamed(RouterPaths.more);
+      _navigationService.pushNamed(RouterPaths.dashboard);
     } else {
       if (await _settingsManager.getString(PreferencesFlag.chooseLanguage) ==
           null) {
