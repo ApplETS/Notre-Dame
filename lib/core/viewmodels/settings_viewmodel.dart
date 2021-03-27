@@ -1,6 +1,5 @@
 // FLUTTER / DART / THIRD-PARTIES
 import 'package:flutter/material.dart';
-import 'package:notredame/core/constants/discovery_components.dart';
 import 'package:stacked/stacked.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -12,7 +11,6 @@ import 'package:notredame/core/managers/settings_manager.dart';
 
 // OTHERS
 import 'package:notredame/locator.dart';
-import 'package:feature_discovery/feature_discovery.dart';
 
 class SettingsViewModel extends FutureViewModel {
   /// Manage the settings

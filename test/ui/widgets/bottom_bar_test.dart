@@ -2,7 +2,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
-import 'package:feature_discovery/feature_discovery.dart';
 
 // SERVICE
 import 'package:notredame/core/services/navigation_service.dart';
@@ -15,6 +14,9 @@ import 'package:notredame/core/constants/router_paths.dart';
 
 // HELPERS
 import '../../helpers.dart';
+
+// OTHER
+import 'package:feature_discovery/feature_discovery.dart';
 
 NavigationService _navigationService;
 

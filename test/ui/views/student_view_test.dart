@@ -7,6 +7,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:notredame/ui/views/student_view.dart';
 import 'package:notredame/ui/widgets/base_scaffold.dart';
 
+// HELPERS
 import '../../helpers.dart';
 
 void main() {

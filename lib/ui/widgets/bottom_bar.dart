@@ -1,5 +1,4 @@
 // FLUTTER / DART / THIRD-PARTIES
-import 'package:feature_discovery/feature_discovery.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:notredame/core/constants/discovery_components.dart';
@@ -11,6 +10,9 @@ import 'package:notredame/core/services/navigation_service.dart';
 import 'package:notredame/core/constants/router_paths.dart';
 import 'package:notredame/locator.dart';
 import 'package:notredame/ui/utils/app_theme.dart';
+
+// OTHER
+import 'package:feature_discovery/feature_discovery.dart';
 
 /// Bottom navigation bar for the application.
 class BottomBar extends StatelessWidget {

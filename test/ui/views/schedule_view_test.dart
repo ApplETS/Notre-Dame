@@ -1,6 +1,5 @@
 // FLUTTER / DART / THIRD-PARTIES
 import 'dart:ui';
-import 'package:feature_discovery/feature_discovery.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:intl/intl.dart';
@@ -18,11 +17,15 @@ import 'package:notredame/core/models/course_activity.dart';
 import 'package:notredame/ui/views/schedule_view.dart';
 import 'package:notredame/ui/widgets/schedule_settings.dart';
 
+// HELPERS
 import '../../helpers.dart';
 
 // MOCKS
 import '../../mock/managers/course_repository_mock.dart';
 import '../../mock/managers/settings_manager_mock.dart';
+
+// OTHER
+import 'package:feature_discovery/feature_discovery.dart';
 
 void main() {
   SettingsManager settingsManager;
