@@ -59,7 +59,7 @@ class LoginViewModel extends BaseViewModel {
   }
 
   /// Try to authenticate the user. Redirect to the [DashboardView] if everything is correct
-  Future<String> authenticate(BuildContext context) async {
+  Future<String> authenticate() async {
     if (!canSubmit) {
       return _appIntl.error;
     }

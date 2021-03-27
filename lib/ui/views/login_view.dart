@@ -112,7 +112,7 @@ class _LoginViewState extends State<LoginView> {
                                       ? null
                                       : () async {
                                           final String error =
-                                              await model.authenticate(context);
+                                              await model.authenticate();
 
                                           setState(() {
                                             if (error.isNotEmpty) {
