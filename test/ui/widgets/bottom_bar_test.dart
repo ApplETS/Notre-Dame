@@ -40,7 +40,7 @@ void main() {
     });
 
     group('navigate when tapped to - ', () {
-      testWidgets('dashbord', (WidgetTester tester) async {
+      testWidgets('dashboard', (WidgetTester tester) async {
         await tester.pumpWidget(
             localizedWidget(child: BottomBar()));
         await tester.pumpAndSettle();

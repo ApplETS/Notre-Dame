@@ -83,39 +83,32 @@ class BottomBar extends StatelessWidget {
     return [
       BottomNavigationBarItem(
           icon: _buildDiscoveryFeatureDescriptionWidget(
-              context, RouterPaths.dashboard, Icons.dashboard,
-              overflowMode: OverflowMode.wrapBackground),
+              context, RouterPaths.dashboard, Icons.dashboard),
           label: AppIntl.of(context).title_dashboard),
       BottomNavigationBarItem(
           icon: _buildDiscoveryFeatureDescriptionWidget(
-              context, RouterPaths.schedule, Icons.schedule,
-              overflowMode: OverflowMode.wrapBackground),
+              context, RouterPaths.schedule, Icons.schedule),
           label: AppIntl.of(context).title_schedule),
       BottomNavigationBarItem(
           icon: _buildDiscoveryFeatureDescriptionWidget(
-              context, RouterPaths.student, Icons.school,
-              overflowMode: OverflowMode.wrapBackground),
+              context, RouterPaths.student, Icons.school),
           label: AppIntl.of(context).title_student),
       BottomNavigationBarItem(
           icon: _buildDiscoveryFeatureDescriptionWidget(
-              context, RouterPaths.ets, Icons.account_balance,
-              overflowMode: OverflowMode.wrapBackground),
+              context, RouterPaths.ets, Icons.account_balance),
           label: AppIntl.of(context).title_ets),
       BottomNavigationBarItem(
           icon: _buildDiscoveryFeatureDescriptionWidget(
-              context, RouterPaths.more, Icons.dehaze,
-              overflowMode: OverflowMode.wrapBackground),
+              context, RouterPaths.more, Icons.dehaze),
           label: AppIntl.of(context).title_more),
     ];
   }
 
-  DescribedFeatureOverlay _buildDiscoveryFeatureDescriptionWidget(
-      BuildContext context, String routerPath, IconData icon,
-      {OverflowMode overflowMode = OverflowMode.ignore}) {
+  DescribedFeatureOverlay _buildDiscoveryFeatureDescriptionWidget(BuildContext context, String routerPath, IconData icon) {
     final discovery = getDiscoveryByPath(context, routerPath);
 
     return DescribedFeatureOverlay(
-      overflowMode: overflowMode,
+      overflowMode: OverflowMode.wrapBackground,
       featureId: discovery.featureId,
       title: Text(discovery.title, textAlign: TextAlign.justify),
       description: discovery.details,
