@@ -108,7 +108,7 @@ void main() {
             toReturn: settings);
 
         await tester.pumpWidget(
-            localizedWidget(child: ScheduleView(initialDay: DateTime(2020))));
+            localizedWidget(child: FeatureDiscovery(child: ScheduleView(initialDay: DateTime(2020)))));
         await tester.pumpAndSettle();
 
         await expectLater(find.byType(ScheduleView),
@@ -134,7 +134,7 @@ void main() {
             toReturn: settings);
 
         await tester.pumpWidget(
-            localizedWidget(child: ScheduleView(initialDay: DateTime(2020))));
+            localizedWidget(child: FeatureDiscovery(child: ScheduleView(initialDay: DateTime(2020)))));
         await tester.pumpAndSettle();
 
         await expectLater(find.byType(ScheduleView),
@@ -157,10 +157,10 @@ void main() {
             settingsManager as SettingsManagerMock,
             toReturn: settings);
 
-        await tester.pumpWidget(localizedWidget(
+        await tester.pumpWidget(localizedWidget(child: FeatureDiscovery(
             child: MediaQuery(
                 data: const MediaQueryData(textScaleFactor: 0.5),
-                child: ScheduleView(initialDay: DateTime(2020)))));
+                child: ScheduleView(initialDay: DateTime(2020))))));
         await tester.pumpAndSettle();
 
         await expectLater(find.byType(ScheduleView),
@@ -185,7 +185,7 @@ void main() {
             toReturn: settings);
 
         await tester.pumpWidget(
-            localizedWidget(child: ScheduleView(initialDay: DateTime(2020))));
+            localizedWidget(child: FeatureDiscovery(child: ScheduleView(initialDay: DateTime(2020)))));
         await tester.pumpAndSettle();
 
         await expectLater(find.byType(ScheduleView),
@@ -210,9 +210,10 @@ void main() {
             toReturn: settings);
 
         await tester.pumpWidget(localizedWidget(
-            child: MediaQuery(
+            child: FeatureDiscovery(
+              child: MediaQuery(
                 data: const MediaQueryData(textScaleFactor: 0.5),
-                child: ScheduleView(initialDay: DateTime(2020)))));
+                child: ScheduleView(initialDay: DateTime(2020))))));
         await tester.pumpAndSettle();
 
         // Tap on the day before selected day
@@ -296,7 +297,7 @@ void main() {
             settingsManager as SettingsManagerMock,
             toReturn: settings);
 
-        await tester.pumpWidget(localizedWidget(child: const ScheduleView()));
+        await tester.pumpWidget(localizedWidget(child: FeatureDiscovery(child: const ScheduleView())));
         await tester.pumpAndSettle();
 
         expect(find.byType(ScheduleSettings), findsNothing,
