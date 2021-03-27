@@ -1,4 +1,5 @@
 // FLUTTER / DART / THIRD-PARTIES
+import 'package:feature_discovery/feature_discovery.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
@@ -30,7 +31,7 @@ void main() {
     group('UI - ', () {
       testWidgets('has 1 listView and 6 listTiles',
           (WidgetTester tester) async {
-        await tester.pumpWidget(localizedWidget(child: MoreView()));
+        await tester.pumpWidget(localizedWidget(child: FeatureDiscovery(child: MoreView()));
         await tester.pumpAndSettle();
 
         final listview = find.byType(ListView);
@@ -42,7 +43,7 @@ void main() {
 
       group('navigation - ', () {
         testWidgets('about', (WidgetTester tester) async {
-          await tester.pumpWidget(localizedWidget(child: MoreView()));
+          await tester.pumpWidget(localizedWidget(child: FeatureDiscovery(child: MoreView())));
           await tester.pumpAndSettle();
 
           // Tap the button.
@@ -56,7 +57,7 @@ void main() {
         });
 
         testWidgets('contributors', (WidgetTester tester) async {
-          await tester.pumpWidget(localizedWidget(child: MoreView()));
+          await tester.pumpWidget(localizedWidget(child: FeatureDiscovery(child: MoreView())));
           await tester.pumpAndSettle();
 
           // Tap the button.
@@ -70,7 +71,7 @@ void main() {
         });
 
         testWidgets('licenses', (WidgetTester tester) async {
-          await tester.pumpWidget(localizedWidget(child: MoreView()));
+          await tester.pumpWidget(localizedWidget(child: FeatureDiscovery(child: MoreView())));
           await tester.pumpAndSettle();
 
           // Tap the button.
@@ -86,7 +87,7 @@ void main() {
         });
 
         testWidgets('settings', (WidgetTester tester) async {
-          await tester.pumpWidget(localizedWidget(child: MoreView()));
+          await tester.pumpWidget(localizedWidget(child: FeatureDiscovery(child: MoreView())));
           await tester.pumpAndSettle();
 
           // Tap the button.
@@ -99,7 +100,7 @@ void main() {
         });
 
         testWidgets('logout', (WidgetTester tester) async {
-          await tester.pumpWidget(localizedWidget(child: MoreView()));
+          await tester.pumpWidget(localizedWidget(child: FeatureDiscovery(child: MoreView())));
           await tester.pumpAndSettle();
 
           // Tap the button.
@@ -118,7 +119,7 @@ void main() {
         testWidgets("default view", (WidgetTester tester) async {
           tester.binding.window.physicalSizeTestValue = const Size(800, 1410);
 
-          await tester.pumpWidget(localizedWidget(child: MoreView()));
+          await tester.pumpWidget(localizedWidget(child: FeatureDiscovery(child: MoreView())));
           await tester.pumpAndSettle();
 
           await expectLater(find.byType(MoreView),
