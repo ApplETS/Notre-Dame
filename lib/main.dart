@@ -1,6 +1,5 @@
 // FLUTTER / DART / THIRD-PARTIES
 import 'dart:async';
-import 'package:feature_discovery/feature_discovery.dart';
 import 'package:feedback/feedback.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -24,6 +23,9 @@ import 'package:notredame/core/managers/settings_manager.dart';
 
 // VIEW
 import 'package:notredame/ui/views/startup_view.dart';
+
+// OTHER
+import 'package:feature_discovery/feature_discovery.dart';
 
 void main() {
   setupLocator();
