@@ -60,7 +60,7 @@
   "schedule_error_no_event_found": "No event found",
 
   "grades_title": "Grades",
-  "grades_msg_no_grades": "No grade available",
+  "grades_msg_no_grades": "No grade available\nPull to refresh.",
   "grades_current_rating": "Your grade",
   "grades_average": "Average",
   "po": "{grade}%",
