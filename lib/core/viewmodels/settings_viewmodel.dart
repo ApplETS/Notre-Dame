@@ -71,9 +71,4 @@ class SettingsViewModel extends FutureViewModel {
     setBusy(false);
     return true;
   }
-
-  void startDiscovery(BuildContext context) {
-    final List<String> ids = discoveryComponents(context).map((e) => e.featureId).toList();
-    FeatureDiscovery.discoverFeatures(context, ids);
-  }
 }
