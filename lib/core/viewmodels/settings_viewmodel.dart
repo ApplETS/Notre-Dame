@@ -55,7 +55,7 @@ class SettingsViewModel extends FutureViewModel {
     _currentLocale = value;
   }
 
-  SettingsViewModel({@required AppIntl intl}) : _appIntl = intl;
+  SettingsViewModel({@required AppIntl intl}): _appIntl = intl;
 
   @override
   Future futureToRun() async {

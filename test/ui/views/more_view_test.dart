@@ -34,7 +34,7 @@ void main() {
     group('UI - ', () {
       testWidgets('has 1 listView and 6 listTiles',
           (WidgetTester tester) async {
-        await tester.pumpWidget(localizedWidget(child: FeatureDiscovery(child: MoreView()));
+        await tester.pumpWidget(localizedWidget(child: FeatureDiscovery(child: MoreView())));
         await tester.pumpAndSettle();
 
         final listview = find.byType(ListView);

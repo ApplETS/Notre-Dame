@@ -25,7 +25,7 @@ List<Discovery> discoveryComponents(BuildContext context) => [
                 const Text('\n'),
                 Image.asset('assets/animations/dashboard_swipe_left.gif'),
                 const Text('\n'),
-                Text(AppIntl.of(context).discovery_navbar_dashboard_page_details2, textAlign: TextAlign.justify),
+                Text(AppIntl.of(context).discovery_navbar_dashboard_page_details_restore, textAlign: TextAlign.justify),
                 const Text('\n'),
                 Image.asset('assets/animations/dashboard_restore.gif'),
               ],
@@ -51,7 +51,7 @@ List<Discovery> discoveryComponents(BuildContext context) => [
                   children: [
                     const TextSpan(text: '\n'),
                     const WidgetSpan(child: Icon(Icons.settings, size: 16, color: Colors.white)),
-                    TextSpan(text:' ${AppIntl.of(context).discovery_navbar_schedule_page_details2}'),
+                    TextSpan(text:' ${AppIntl.of(context).discovery_navbar_schedule_page_details_format}'),
                   ],
                 ),
               ),            

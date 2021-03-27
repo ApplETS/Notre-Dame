@@ -191,10 +191,10 @@
 
   "discovery_navbar_dashboard_page_title": "Dashboard",
   "discovery_navbar_dashboard_page_details": "The dashboard page brings together the most frequently consulted information, in the form of cards. \n\nIf you keep your finger on the card, you can move them up and down, and swipe left to delete it.",
-  "discovery_navbar_dashboard_page_details2": "To restore the changes, click on the icon at the top right.",
+  "discovery_navbar_dashboard_page_details_restore": "To restore the changes, click on the icon at the top right.",
   "discovery_navbar_schedule_page_title": "Schedule",
   "discovery_navbar_schedule_page_details": "The schedule allows you to view the events of your school calendar.",  
-  "discovery_navbar_schedule_page_details2": "In the settings, you can select the calendar format.",
+  "discovery_navbar_schedule_page_details_format": "In the settings, you can select the calendar format.",
   "discovery_navbar_student_page_title": "Student",
   "discovery_navbar_student_page_details": "This page allows you to have access to your student information. It is separated into two distinct sections, grades, and profile. \n\nThe grades section allows you to access the grades for each of the courses you are registered for, as well as those for the last four sessions. \n\nThe Profile section gives you access to your balance and general information.",
   "discovery_navbar_ets_page_title": "ÉTS",
