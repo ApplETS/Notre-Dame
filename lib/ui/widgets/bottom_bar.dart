@@ -88,19 +88,23 @@ class BottomBar extends StatelessWidget {
           label: AppIntl.of(context).title_dashboard),
       BottomNavigationBarItem(
           icon: _buildDiscoveryFeatureDescriptionWidget(
-              context, RouterPaths.schedule, Icons.schedule),
+              context, RouterPaths.schedule, Icons.schedule,
+              overflowMode: OverflowMode.wrapBackground),
           label: AppIntl.of(context).title_schedule),
       BottomNavigationBarItem(
           icon: _buildDiscoveryFeatureDescriptionWidget(
-              context, RouterPaths.student, Icons.school),
+              context, RouterPaths.student, Icons.school,
+              overflowMode: OverflowMode.wrapBackground),
           label: AppIntl.of(context).title_student),
       BottomNavigationBarItem(
           icon: _buildDiscoveryFeatureDescriptionWidget(
-              context, RouterPaths.ets, Icons.account_balance),
+              context, RouterPaths.ets, Icons.account_balance,
+              overflowMode: OverflowMode.wrapBackground),
           label: AppIntl.of(context).title_ets),
       BottomNavigationBarItem(
           icon: _buildDiscoveryFeatureDescriptionWidget(
-              context, RouterPaths.more, Icons.dehaze),
+              context, RouterPaths.more, Icons.dehaze,
+              overflowMode: OverflowMode.wrapBackground),
           label: AppIntl.of(context).title_more),
     ];
   }
