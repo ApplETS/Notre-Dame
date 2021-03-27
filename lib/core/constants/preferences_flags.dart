@@ -12,4 +12,7 @@ enum PreferencesFlag {
 
   // Choose language flag
   chooseLanguage,
+
+  // Discovery language flag
+  discovery
 }

@@ -1,5 +1,6 @@
 // FLUTTER / DART / THIRD-PARTIES
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:notredame/core/utils/utils.dart';
 import 'package:notredame/core/constants/urls.dart';
 import 'package:stacked/stacked.dart';
@@ -40,6 +41,10 @@ class _DashboardViewState extends State<DashboardView>
     );
 
     _animationController.forward();
+
+    SchedulerBinding.instance.addPostFrameCallback((Duration duration) {  
+      DashboardViewModel(intl: AppIntl.of(context)).startDiscovery(context);
+    });
   }
 
   @override
@@ -52,7 +57,7 @@ class _DashboardViewState extends State<DashboardView>
   @override
   Widget build(BuildContext context) =>
       ViewModelBuilder<DashboardViewModel>.reactive(
-        viewModelBuilder: () => DashboardViewModel(),
+        viewModelBuilder: () => DashboardViewModel(intl: null),
         builder: (context, model, child) => BaseScaffold(
           isInteractionLimitedWhileLoading: false,
           appBar: AppBar(

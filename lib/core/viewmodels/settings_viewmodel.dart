@@ -73,10 +73,7 @@ class SettingsViewModel extends FutureViewModel {
   }
 
   void startDiscovery(BuildContext context) {
-    final List<String> ids =
-        discoveryComponents(context).map((e) => e.featureId).toList();
-
-    FeatureDiscovery.clearPreferences(context, ids);
+    final List<String> ids = discoveryComponents(context).map((e) => e.featureId).toList();
     FeatureDiscovery.discoverFeatures(context, ids);
   }
 }

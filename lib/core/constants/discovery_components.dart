@@ -45,11 +45,8 @@ List<Discovery> discoveryComponents(BuildContext context) => [
                 children: [
                   const TextSpan(text: '\n'),
                   const WidgetSpan(
-                      child:
-                          Icon(Icons.settings, size: 16, color: Colors.white)),
-                  TextSpan(
-                      text:
-                          ' ${AppIntl.of(context).discovery_navbar_schedule_page_details2}'),
+                      child: Icon(Icons.settings, size: 16, color: Colors.white)),
+                  TextSpan(text:' ${AppIntl.of(context).discovery_navbar_schedule_page_details2}'),
                 ],
               ),
             ),
@@ -78,6 +75,5 @@ List<Discovery> discoveryComponents(BuildContext context) => [
     ];
 
 Discovery getDiscoveryByPath(BuildContext context, String path) {
-  return discoveryComponents(context)
-      .firstWhere((element) => element.path == path);
+  return discoveryComponents(context).firstWhere((element) => element.path == path);
 }
