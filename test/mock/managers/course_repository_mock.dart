@@ -3,6 +3,7 @@ import 'package:mockito/mockito.dart';
 
 // MANAGER
 import 'package:notredame/core/managers/course_repository.dart';
+import 'package:notredame/core/models/course.dart';
 
 // MODELS
 import 'package:notredame/core/models/course_activity.dart';
@@ -10,6 +11,12 @@ import 'package:notredame/core/models/session.dart';
 import 'package:notredame/core/utils/api_exception.dart';
 
 class CourseRepositoryMock extends Mock implements CourseRepository {
+  /// Stub the getter [courses] of [mock] when called will return [toReturn].
+  static void stubCourses(CourseRepositoryMock mock,
+      {List<Course> toReturn = const []}) {
+    when(mock.courses).thenReturn(toReturn);
+  }
+
   /// Stub the getter [coursesActivities] of [mock] when called will return [toReturn].
   static void stubCoursesActivities(CourseRepositoryMock mock,
       {List<CourseActivity> toReturn = const []}) {
@@ -43,9 +50,8 @@ class CourseRepositoryMock extends Mock implements CourseRepository {
       bool fromCacheOnly}) {
     when(mock.getCoursesActivities(
             fromCacheOnly: fromCacheOnly ?? anyNamed("fromCacheOnly")))
-        .thenAnswer((_) =>
-            Future.delayed(const Duration(milliseconds: 50))
-                .then((value) => throw toThrow));
+        .thenAnswer((_) => Future.delayed(const Duration(milliseconds: 50))
+            .then((value) => throw toThrow));
   }
 
   /// Stub the function [getSessions] of [mock] when called will return [toReturn].

@@ -2,7 +2,7 @@
 import 'dart:io';
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
-import 'package:notredame/core/services/github_api.dart';
+import 'package:notredame/core/utils/cache_exception.dart';
 import 'package:package_info/package_info.dart';
 import 'package:stacked/stacked.dart';
 import 'package:oktoast/oktoast.dart';
@@ -18,6 +18,7 @@ import 'package:notredame/core/managers/course_repository.dart';
 //SERVICE
 import 'package:notredame/core/services/navigation_service.dart';
 import 'package:notredame/core/services/preferences_service.dart';
+import 'package:notredame/core/services/github_api.dart';
 
 // OTHERS
 import 'package:notredame/core/constants/router_paths.dart';
@@ -67,25 +68,18 @@ class MoreViewModel extends FutureViewModel {
     return true;
   }
 
-  @override
-  // ignore: type_annotate_public_apis
-  void onError(error) {
-    showToast(_appIntl.error);
-  }
-
   /// Used to logout user, delete cache, and return to login
   Future<void> logout() async {
     setBusy(true);
-    try {
-      await _cacheManager.empty();
-    } on Exception catch (e) {
-      onError(e);
-    }
+
+    await _cacheManager.empty();
+
     await _preferencesService.clear();
     await _userRepository.logOut();
 
     settingsManager.resetLanguageAndThemeMode();
     _courseRepository.sessions.clear();
+    _courseRepository.courses.clear();
     _courseRepository.coursesActivities.clear();
     setBusy(false);
     // Dismiss alertDialog

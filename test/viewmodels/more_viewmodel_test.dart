@@ -6,10 +6,10 @@ import 'package:image/image.dart' as image;
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:mockito/mockito.dart';
-import 'package:notredame/core/managers/course_repository.dart';
 
 // SERVICES / MANAGERS
 import 'package:notredame/core/managers/user_repository.dart';
+import 'package:notredame/core/models/course.dart';
 import 'package:notredame/core/models/course_activity.dart';
 import 'package:notredame/core/models/session.dart';
 import 'package:notredame/core/services/github_api.dart';
@@ -17,6 +17,8 @@ import 'package:notredame/core/services/navigation_service.dart';
 import 'package:notredame/core/managers/cache_manager.dart';
 import 'package:notredame/core/managers/settings_manager.dart';
 import 'package:notredame/core/services/preferences_service.dart';
+import 'package:notredame/core/managers/course_repository.dart';
+import 'package:notredame/core/utils/cache_exception.dart';
 
 // VIEW MODEL
 import 'package:notredame/core/viewmodels/more_viewmodel.dart';
@@ -73,6 +75,16 @@ void main() {
         startDateTime: null,
         endDateTime: null),
   ];
+
+  final List<Course> courses = [
+    Course(
+        acronym: "ABC123",
+        title: "testCourse",
+        group: "09",
+        session: "H2021",
+        programCode: "XYZ",
+        numberOfCredits: 3),
+  ];
   group('MoreViewModel - ', () {
     setUp(() async {
       cacheManagerMock = setupCacheManagerMock() as CacheManagerMock;
@@ -88,6 +100,7 @@ void main() {
 
       viewModel = MoreViewModel(intl: appIntl);
 
+      CourseRepositoryMock.stubCourses(courseRepositoryMock, toReturn: courses);
       CourseRepositoryMock.stubSessions(courseRepositoryMock,
           toReturn: sessions);
       CourseRepositoryMock.stubCoursesActivities(courseRepositoryMock,
@@ -105,40 +118,40 @@ void main() {
     });
 
     group('logout - ', () {
-      test('If cache manager is emptied', () async {
-        await viewModel.logout();
-        verify(cacheManagerMock.empty());
-      });
-
-      test('If preference manager is clear', () async {
-        await viewModel.logout();
-        verify(preferenceService.clear());
-      });
-
-      test('If user repository is logOut is called', () async {
-        await viewModel.logout();
-        verify(userRepositoryMock.logOut());
-      });
-
-      test(
-          'If settings manager has reset language and theme mode and has notified listener',
+      test('If the correct function have been called when logout occur',
           () async {
         await viewModel.logout();
+
+        // Check if the cacheManager has been emptied out
+        verify(cacheManagerMock.empty());
+
+        // Check if preference manager is clear
+        verify(preferenceService.clear());
+
+        // Check if user repository logOut is called
+        verify(userRepositoryMock.logOut());
+
+        // Check if the settings manager has reset lang and theme and notified his listener
         verify(settingsManagerMock.resetLanguageAndThemeMode());
         verify(settingsManagerMock.notifyListeners());
-      });
 
-      test('If the cache for courses activities and sessions is cleared',
-          () async {
-        await viewModel.logout();
-        expect(courseRepositoryMock.sessions.length, 0);
-        expect(courseRepositoryMock.coursesActivities.length, 0);
-      });
+        expect(courseRepositoryMock.sessions.length, 0,
+            reason: 'has emptied out the sessions list');
+        expect(courseRepositoryMock.coursesActivities.length, 0,
+            reason: 'has emptied out the courseActivities list');
+        expect(courseRepositoryMock.courses.length, 0,
+            reason: 'has emptied out the courses list');
 
-      test('If the navigationService is rerouted to login', () async {
-        await viewModel.logout();
+        // Check if navigation has been rerouted to login page
         verify(navigationService.pop());
         verify(navigationService.pushNamedAndRemoveUntil(RouterPaths.login));
+      });
+
+      test('If an error occur from the cache manager', () async {
+        CacheManagerMock.stubEmptyException(cacheManagerMock);
+
+        expect(() async => viewModel.logout(),
+            throwsA(isInstanceOf<CacheException>()));
       });
     });
 
