@@ -1,5 +1,6 @@
 // FLUTTER / DART / THIRD-PARTIES
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 // MANAGER
@@ -8,8 +9,9 @@ import 'package:notredame/core/managers/course_repository.dart';
 // MODELS
 import 'package:notredame/core/models/course.dart';
 
-// VIEW
+// VIEW / WIDGETS
 import 'package:notredame/ui/views/grades_view.dart';
+import 'package:notredame/ui/widgets/grade_button.dart';
 
 // OTHERS
 import '../../helpers.dart';
@@ -17,6 +19,7 @@ import '../../mock/managers/course_repository_mock.dart';
 
 void main() {
   CourseRepository courseRepository;
+  AppIntl intl;
 
   final Course courseSummer = Course(
       acronym: 'GEN101',
@@ -58,6 +61,7 @@ void main() {
 
   group("GradesView -", () {
     setUp(() async {
+      intl = await setupAppIntl();
       setupNavigationServiceMock();
       courseRepository = setupCourseRepositoryMock();
     });
@@ -107,8 +111,82 @@ void main() {
       });
     });
 
-    group("UI -", () {});
+    group("UI -", () {
+      testWidgets(
+          "Right message is displayed when there is no grades available",
+          (WidgetTester tester) async {
+        // Mock the repository to have 0 courses available
+        CourseRepositoryMock.stubCourses(
+            courseRepository as CourseRepositoryMock);
+        CourseRepositoryMock.stubGetCourses(
+            courseRepository as CourseRepositoryMock,
+            fromCacheOnly: false);
+        CourseRepositoryMock.stubGetCourses(
+            courseRepository as CourseRepositoryMock,
+            fromCacheOnly: true);
 
-    group("Interaction -", () {});
+        tester.binding.window.physicalSizeTestValue = const Size(800, 1410);
+
+        await tester.pumpWidget(localizedWidget(child: GradesView()));
+        await tester.pumpAndSettle();
+
+        expect(find.text(intl.grades_msg_no_grades), findsOneWidget);
+      });
+
+      testWidgets(
+          "Correct number of grade button and right session name are displayed",
+          (WidgetTester tester) async {
+        // Mock the repository to have 4 courses available
+        CourseRepositoryMock.stubCourses(
+            courseRepository as CourseRepositoryMock,
+            toReturn: courses);
+        CourseRepositoryMock.stubGetCourses(
+            courseRepository as CourseRepositoryMock,
+            fromCacheOnly: false);
+        CourseRepositoryMock.stubGetCourses(
+            courseRepository as CourseRepositoryMock,
+            toReturn: courses,
+            fromCacheOnly: true);
+
+        tester.binding.window.physicalSizeTestValue = const Size(800, 1410);
+
+        await tester.pumpWidget(localizedWidget(child: GradesView()));
+        await tester.pumpAndSettle();
+
+        // Check the summer session list of grades.
+        final summerSessionText = find.text("${intl.session_summer} 2020");
+        expect(summerSessionText, findsOneWidget);
+        final summerList = find
+            .ancestor(of: summerSessionText, matching: find.byType(Column))
+            .first;
+        expect(
+            find.descendant(of: summerList, matching: find.byType(GradeButton)),
+            findsNWidgets(2),
+            reason: "The summer session should have two grade buttons.");
+
+        // Check the fall session list of grades.
+        final fallSessionText = find.text("${intl.session_fall} 2020");
+        expect(fallSessionText, findsOneWidget);
+        final fallList = find
+            .ancestor(of: fallSessionText, matching: find.byType(Column))
+            .first;
+        expect(
+            find.descendant(of: fallList, matching: find.byType(GradeButton)),
+            findsOneWidget,
+            reason:
+                "The summer session should have 1 grade button because the session have one course.");
+
+        // Check the winter session list of grades.
+        final winterSessionText = find.text("${intl.session_winter} 2020");
+        expect(winterSessionText, findsOneWidget);
+        final winterList = find
+            .ancestor(of: winterSessionText, matching: find.byType(Column))
+            .first;
+        expect(
+            find.descendant(of: winterList, matching: find.byType(GradeButton)),
+            findsOneWidget,
+            reason: "The summer session should have two grade buttons.");
+      });
+    });
   });
 }
