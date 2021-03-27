@@ -7,8 +7,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 // OTHERS
 
-class GradesDetailsViewModel extends BaseViewModel {
-  
+class GradesDetailsViewModel extends BaseViewModel {  
   /// Localization class of the application.
   final AppIntl _appIntl;
 

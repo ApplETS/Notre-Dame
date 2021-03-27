@@ -7,13 +7,19 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 // MANAGER
 import 'package:notredame/core/managers/course_repository.dart';
 
+// SERVICES
+import 'package:notredame/core/services/navigation_service.dart';
+
 // MODEL
 import 'package:notredame/core/models/course.dart';
 
 // OTHER
 import 'package:notredame/locator.dart';
 
-class GradesViewModel extends FutureViewModel<Map<String, List<Course>>> {
+class GradesViewModel extends FutureViewModel<Map<String, List<Course>>> {  
+  /// Used to redirect on the dashboard.
+  final NavigationService navigationService = locator<NavigationService>();
+
   /// Used to get the courses of the student
   final CourseRepository _courseRepository = locator<CourseRepository>();
 
