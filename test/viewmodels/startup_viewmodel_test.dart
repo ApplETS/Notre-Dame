@@ -55,7 +55,7 @@ void main() {
             toReturn: false);
 
         SettingsManagerMock.stubGetString(
-            settingsManager as SettingsManagerMock, PreferencesFlag.welcome, toReturn: 'true');
+            settingsManager as SettingsManagerMock, PreferencesFlag.chooseLanguage, toReturn: 'true');
             
         await viewModel.handleStartUp();
 
@@ -69,7 +69,7 @@ void main() {
         await viewModel.handleStartUp();
         
         verify(navigationService.pushNamed(RouterPaths.chooseLanguage));
-        verify(settingsManager.setString(PreferencesFlag.welcome, 'true'));
+        verify(settingsManager.setString(PreferencesFlag.chooseLanguage, 'true'));
       });
     });
   });
