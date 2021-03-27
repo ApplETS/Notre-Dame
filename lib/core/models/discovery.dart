@@ -5,7 +5,7 @@ class Discovery {
   final String path;
   final String featureId;
   final String title;
-  final List<String> details;
+  final Widget details;
 
   Discovery(
       {@required this.path,

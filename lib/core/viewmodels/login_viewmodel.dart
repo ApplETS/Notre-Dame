@@ -1,4 +1,5 @@
 // FLUTTER / DART / THIRD-PARTIES
+import 'package:feature_discovery/feature_discovery.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -6,12 +7,18 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 // SERVICE
 import 'package:notredame/core/managers/user_repository.dart';
 import 'package:notredame/core/services/navigation_service.dart';
+import 'package:notredame/core/managers/settings_manager.dart';
 
 // OTHER
 import 'package:notredame/locator.dart';
 import 'package:notredame/core/constants/router_paths.dart';
+import 'package:notredame/core/constants/preferences_flags.dart';
+import 'package:notredame/core/constants/discovery_components.dart';
 
 class LoginViewModel extends BaseViewModel {
+  /// Manage the settings
+  final SettingsManager _settingsManager = locator<SettingsManager>();
+
   /// Used to authenticate the user
   final UserRepository _userRepository = locator<UserRepository>();
 
@@ -59,7 +66,7 @@ class LoginViewModel extends BaseViewModel {
   }
 
   /// Try to authenticate the user. Redirect to the [DashboardView] if everything is correct
-  Future<String> authenticate() async {
+  Future<String> authenticate(BuildContext context) async {
     if (!canSubmit) {
       return _appIntl.error;
     }
@@ -72,7 +79,7 @@ class LoginViewModel extends BaseViewModel {
       _navigationService.pushNamed(RouterPaths.schedule);
       return '';
     }
-    
+
     _password = "";
     setBusy(false);
     notifyListeners();

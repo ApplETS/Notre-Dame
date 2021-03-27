@@ -88,8 +88,7 @@ class _LoginViewState extends State<LoginView> {
                                       .login_prompt_universal_code,
                                   labelStyle:
                                       const TextStyle(color: Colors.white54),
-                                  errorStyle:
-                                      TextStyle(color: errorTextColor),
+                                  errorStyle: TextStyle(color: errorTextColor),
                                 ),
                                 autofocus: true,
                                 style: const TextStyle(color: Colors.white),
@@ -113,7 +112,7 @@ class _LoginViewState extends State<LoginView> {
                                       ? null
                                       : () async {
                                           final String error =
-                                              await model.authenticate();
+                                              await model.authenticate(context);
 
                                           setState(() {
                                             if (error.isNotEmpty) {
@@ -176,10 +175,9 @@ class _LoginViewState extends State<LoginView> {
     super.dispose();
   }
 
-  Color get errorTextColor =>
-      Theme.of(context).brightness == Brightness.light
-          ? Colors.amberAccent
-          : Colors.redAccent;
+  Color get errorTextColor => Theme.of(context).brightness == Brightness.light
+      ? Colors.amberAccent
+      : Colors.redAccent;
 
   Color get colorButton => Theme.of(context).brightness == Brightness.light
       ? Colors.white

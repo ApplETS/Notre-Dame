@@ -15,7 +15,7 @@ import 'package:notredame/core/constants/preferences_flags.dart';
 import 'package:notredame/locator.dart';
 import 'package:notredame/core/constants/router_paths.dart';
 
-class StartUpViewModel extends BaseViewModel {  
+class StartUpViewModel extends BaseViewModel {
   /// Manage the settings
   final SettingsManager _settingsManager = locator<SettingsManager>();
 
@@ -32,13 +32,13 @@ class StartUpViewModel extends BaseViewModel {
     if (isLogin) {
       _navigationService.pushNamed(RouterPaths.more);
     } else {
-      if (await _settingsManager.getString(PreferencesFlag.welcome) == null) {
+      if (await _settingsManager.getString(PreferencesFlag.chooseLanguage) ==
+          null) {
         _navigationService.pushNamed(RouterPaths.chooseLanguage);
-        _settingsManager.setString(PreferencesFlag.welcome, 'true');
-      }
-      else {
+        _settingsManager.setString(PreferencesFlag.chooseLanguage, 'true');
+      } else {
         _navigationService.pushNamed(RouterPaths.login);
-      }      
+      }
     }
   }
 }

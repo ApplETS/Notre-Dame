@@ -82,96 +82,39 @@ class BottomBar extends StatelessWidget {
   List<BottomNavigationBarItem> _buildItems(BuildContext context) {
     return [
       BottomNavigationBarItem(
-          icon: _buildDashboardDiscoveryFeatureDescriptionWidget(
-              context, RouterPaths.dashboard, Icons.dashboard),
+          icon: _buildDiscoveryFeatureDescriptionWidget(
+              context, RouterPaths.dashboard, Icons.dashboard,
+              overflowMode: OverflowMode.wrapBackground),
           label: AppIntl.of(context).title_dashboard),
       BottomNavigationBarItem(
-          icon: _buildScheduleDiscoveryFeatureDescriptionWidget(
+          icon: _buildDiscoveryFeatureDescriptionWidget(
               context, RouterPaths.schedule, Icons.schedule),
           label: AppIntl.of(context).title_schedule),
       BottomNavigationBarItem(
-          icon: _buildBasicDiscoveryFeatureDescriptionWidget(
+          icon: _buildDiscoveryFeatureDescriptionWidget(
               context, RouterPaths.student, Icons.school),
           label: AppIntl.of(context).title_student),
       BottomNavigationBarItem(
-          icon: _buildBasicDiscoveryFeatureDescriptionWidget(
+          icon: _buildDiscoveryFeatureDescriptionWidget(
               context, RouterPaths.ets, Icons.account_balance),
           label: AppIntl.of(context).title_ets),
       BottomNavigationBarItem(
-          icon: _buildBasicDiscoveryFeatureDescriptionWidget(
+          icon: _buildDiscoveryFeatureDescriptionWidget(
               context, RouterPaths.more, Icons.dehaze),
           label: AppIntl.of(context).title_more),
     ];
   }
 
-  DescribedFeatureOverlay _buildDashboardDiscoveryFeatureDescriptionWidget(
-      BuildContext context, String routerPath, IconData icon) {
-    final discovery = getDiscoveryByPath(AppIntl.of(context), routerPath);
+  DescribedFeatureOverlay _buildDiscoveryFeatureDescriptionWidget(
+      BuildContext context, String routerPath, IconData icon,
+      {OverflowMode overflowMode = OverflowMode.ignore}) {
+    final discovery = getDiscoveryByPath(context, routerPath);
 
     return DescribedFeatureOverlay(
-      overflowMode: OverflowMode.wrapBackground,
+      overflowMode: overflowMode,
       featureId: discovery.featureId,
       title: Text(discovery.title, textAlign: TextAlign.justify),
-      backgroundColor: AppTheme.appletsPurple,
-      tapTarget: Icon(icon, color: AppTheme.etsBlack),
-      description: ConstrainedBox(
-        constraints: BoxConstraints(
-          maxHeight: MediaQuery.of(context).size.height * 0.6,
-        ),
-        child: ListView(
-          children: <Widget>[
-            Text(discovery.details[0], textAlign: TextAlign.justify),
-            const Text('\n'),
-            Image.asset('assets/animations/dashboard_swipe_left.gif'),
-            const Text('\n'),
-            Text(discovery.details[1], textAlign: TextAlign.justify),
-            const Text('\n'),
-            Image.asset('assets/animations/dashboard_restore.gif'),
-          ],
-        ),
-      ),
-      child: Icon(icon),
-    );
-  }
-
-  DescribedFeatureOverlay _buildScheduleDiscoveryFeatureDescriptionWidget(
-      BuildContext context, String routerPath, IconData icon) {
-    final discovery = getDiscoveryByPath(AppIntl.of(context), routerPath);
-
-    return DescribedFeatureOverlay(
-      featureId: discovery.featureId,
-      title: Text(discovery.title, textAlign: TextAlign.justify),
-      description: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Text(discovery.details[0], textAlign: TextAlign.justify),
-          RichText(
-            textAlign: TextAlign.justify,
-            text: TextSpan(
-              children: [
-                const TextSpan(text: '\n'),
-                const WidgetSpan(
-                    child: Icon(Icons.settings, size: 16, color: Colors.white)),
-                TextSpan(text: ' ${discovery.details[1]}'),
-              ],
-            ),
-          ),
-        ],
-      ),
-      backgroundColor: AppTheme.appletsPurple,
-      tapTarget: Icon(icon, color: AppTheme.etsBlack),
-      child: Icon(icon),
-    );
-  }
-
-  DescribedFeatureOverlay _buildBasicDiscoveryFeatureDescriptionWidget(
-      BuildContext context, String routerPath, IconData icon) {
-    final discovery = getDiscoveryByPath(AppIntl.of(context), routerPath);
-
-    return DescribedFeatureOverlay(
-      featureId: discovery.featureId,
-      title: Text(discovery.title, textAlign: TextAlign.justify),
-      description: Text(discovery.details[0], textAlign: TextAlign.justify),
+      description: discovery.details,
       backgroundColor: AppTheme.appletsPurple,
       tapTarget: Icon(icon, color: AppTheme.etsBlack),
       child: Icon(icon),

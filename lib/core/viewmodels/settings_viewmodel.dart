@@ -44,8 +44,7 @@ class SettingsViewModel extends FutureViewModel {
   }
 
   String get currentLocale {
-    if (_currentLocale ==
-        AppIntl.supportedLocales.first.languageCode) {
+    if (_currentLocale == AppIntl.supportedLocales.first.languageCode) {
       return _appIntl.settings_english;
     } else {
       return _appIntl.settings_french;
@@ -58,7 +57,7 @@ class SettingsViewModel extends FutureViewModel {
     _currentLocale = value;
   }
 
-  SettingsViewModel({@required AppIntl intl}): _appIntl = intl;
+  SettingsViewModel({@required AppIntl intl}) : _appIntl = intl;
 
   @override
   Future futureToRun() async {
@@ -72,9 +71,10 @@ class SettingsViewModel extends FutureViewModel {
     setBusy(false);
     return true;
   }
-  
+
   void startDiscovery(BuildContext context) {
-    final List<String> ids = discoveryComponents(AppIntl.of(context)).map((e) => e.featureId).toList();
+    final List<String> ids =
+        discoveryComponents(context).map((e) => e.featureId).toList();
 
     FeatureDiscovery.clearPreferences(context, ids);
     FeatureDiscovery.discoverFeatures(context, ids);
