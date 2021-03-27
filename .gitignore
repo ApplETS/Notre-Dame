@@ -166,3 +166,4 @@ modules.xml
 .run/
 
 .env
+.env.template
