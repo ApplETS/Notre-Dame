@@ -53,13 +53,13 @@ dependencies:
   http: ^0.12.1
   flutter_cache_manager: ^2.1.0
   flutter_secure_storage: ^4.0.0
-  shared_preferences: '>=0.5.12+4 <2.0.0'
+  shared_preferences: ^2.0.5
   webview_flutter: ^2.0.1
   flutter_inappwebview: ^5.0.5+3
   google_maps_flutter: ^2.0.1
   github: ^7.0.4
   package_info: ^2.0.0
-  path_provider: ^1.6.27
+  path_provider: ^2.0.1
   rive: ^0.6.8
   
 dev_dependencies:

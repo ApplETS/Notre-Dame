@@ -38,7 +38,7 @@ class MoreViewModel extends FutureViewModel {
   /// Get the application version
   String get appVersion => _appVersion;
 
-  MoreViewModel({@required AppIntl intl}): _appIntl = intl;
+  MoreViewModel({@required AppIntl intl}) : _appIntl = intl;
 
   @override
   Future futureToRun() async {
@@ -110,7 +110,7 @@ class MoreViewModel extends FutureViewModel {
             body: " **Describe the issue** \n"
                 "```$feedbackText```\n\n"
                 "**Screenshot** \n"
-                "![screenshot](https://github.com/ApplETS/Notre-Dame-Bug-report/blob/main/${file.path.replaceFirst('storage/emulated/0/Android/data/ca.etsmtl.applets.notredame/files/', '')}?raw=true)\n\n"
+                "![screenshot](https://github.com/ApplETS/Notre-Dame-Bug-report/blob/main/${file.path.split('/').last}?raw=true)\n\n"
                 "**Device Infos** \n"
                 "- **Version:** ${packageInfo.version} \n"
                 "- **Build number:** ${packageInfo.buildNumber} \n"
@@ -124,9 +124,7 @@ class MoreViewModel extends FutureViewModel {
     github.repositories.createFile(
         RepositorySlug.full('ApplETS/Notre-Dame-Bug-report'),
         CreateFile(
-            path: file.path.replaceFirst(
-                'storage/emulated/0/Android/data/ca.etsmtl.applets.notredame/files/',
-                ''),
+            path: file.path.split('/').last,
             content: base64Encode(file.readAsBytesSync()).toString(),
             message: DateTime.now().toString(),
             committer:
@@ -136,7 +134,7 @@ class MoreViewModel extends FutureViewModel {
 
   /// Get local storage path
   Future<String> get _localPath async {
-    final directory = await getExternalStorageDirectory();
+    final directory = await getTemporaryDirectory();
 
     return directory.path.replaceFirst('/', '');
   }
