@@ -43,6 +43,8 @@ flutter pub get
 ```
 
 ## Add environment variable for API_KEY
+- To add the Google Maps API TOKEN, you need to rename the file **.env.template** into **.env**. In the **.env** file, you need to paste the Google Maps API TOKEN.
+  
 
 - In order to be able to run the app with the GitHub API token, you need to add an attribute when running the app. To do that run the following command:
 ```
