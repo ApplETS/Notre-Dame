@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 // ROUTES
 import 'package:notredame/core/constants/router_paths.dart';
+import 'package:notredame/ui/views/grade_details_view.dart';
 
 // VIEWS
 import 'package:notredame/ui/views/login_view.dart';
@@ -31,6 +32,10 @@ class AppRouter {
         return PageRouteBuilder(
             settings: RouteSettings(name: routeSettings.name),
             pageBuilder: (_, __, ___) => StudentView());
+      case RouterPaths.grade_details:
+        return PageRouteBuilder(
+            settings: RouteSettings(name: routeSettings.name),
+            pageBuilder: (_, __, ___) => GradesDetailsView());
       case RouterPaths.ets:
         return PageRouteBuilder(
             settings: RouteSettings(name: routeSettings.name),
