@@ -1,6 +1,7 @@
 // FLUTTER / DART / THIRD-PARTIES
 import 'package:flutter/material.dart';
 import 'package:notredame/ui/utils/app_theme.dart';
+import 'package:notredame/ui/widgets/base_scaffold.dart';
 import 'package:notredame/ui/widgets/grade_evaluation_tile.dart';
 import 'package:stacked/stacked.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -24,7 +25,7 @@ class _GradesDetailsViewState extends State<GradesDetailsView> {
   Widget build(BuildContext context) => ViewModelBuilder<
           GradesDetailsViewModel>.reactive(
       viewModelBuilder: () => GradesDetailsViewModel(intl: AppIntl.of(context)),
-      builder: (context, model, child) => Scaffold(
+      builder: (context, model, child) => BaseScaffold(
             body: CustomScrollView(
               slivers: <Widget>[
                 SliverAppBar(
@@ -41,14 +42,16 @@ class _GradesDetailsViewState extends State<GradesDetailsView> {
                       top = constraints.biggest.height;
                       return FlexibleSpaceBar(
                         centerTitle: true,
+                        titlePadding: EdgeInsetsDirectional.only(
+                          end: top < 120 ? 15 : 15,
+                          top: top < 120 ? 5 : 15,
+                          bottom: top < 120 ? 15 : 1,
+                        ),
                         title: Align(
                           alignment: AlignmentDirectional.bottomEnd,
-                          child: Padding(
-                            padding: EdgeInsets.only(right: 10),
-                            child: Text(
-                              "COM110",
-                              style: TextStyle(fontSize: top < 120 ? 18 : 15),
-                            ),
+                          child: Text(
+                            "COM110",
+                            style: TextStyle(fontSize: top < 120 ? 20 : 15),
                           ),
                         ),
                       );
@@ -61,8 +64,10 @@ class _GradesDetailsViewState extends State<GradesDetailsView> {
                       constraints: BoxConstraints(
                           minWidth: MediaQuery.of(context).size.width,
                           maxHeight: 40),
-                      decoration: const BoxDecoration(
-                        color: AppTheme.primary,
+                      decoration: BoxDecoration(
+                        color: Theme.of(context).brightness == Brightness.light
+                            ? AppTheme.etsLightRed
+                            : const Color(0xff222222),
                       ),
                       child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -112,11 +117,14 @@ class _GradesDetailsViewState extends State<GradesDetailsView> {
                       ],
                     ),
                     Column(
-                      children: const <Widget>[
-                        GradeEvaluationTile('Devoir 1', "10 %"),
-                        GradeEvaluationTile('Final', "40 %"),
-                        GradeEvaluationTile('Intra', "40 %"),
-                        GradeEvaluationTile('Devoir 2', "10 %"),
+                      children: <Widget>[
+                        GradeEvaluationTile('Devoir 1', "10 %", 0.95, 0.75),
+                        GradeEvaluationTile('Final', "40 %", 0.72, 0.89),
+                        GradeEvaluationTile('Intra', "40 %", 0.36, 0.55),
+                        GradeEvaluationTile('Devoir 2', "10 %", 0.15, 0.68),
+                        GradeEvaluationTile('Devoir 3', "10 %", 0.96, 0.48),
+                        GradeEvaluationTile('Quiz 1', "10 %", 0.89, 0.98),
+                        GradeEvaluationTile('Quiz 2', "10 %", 0.67, 0.36),
                       ],
                     ),
                   ]),

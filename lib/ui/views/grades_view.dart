@@ -5,6 +5,9 @@ import 'package:oktoast/oktoast.dart';
 import 'package:stacked/stacked.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+// CONSTANTS
+import 'package:notredame/core/constants/router_paths.dart';
+
 // MODELS
 import 'package:notredame/core/models/course.dart';
 
@@ -27,45 +30,40 @@ class _GradesViewState extends State<GradesView> {
   Widget build(BuildContext context) {
     return ViewModelBuilder<GradesViewModel>.reactive(
       viewModelBuilder: () => GradesViewModel(intl: AppIntl.of(context)),
-      builder: (context, model, child) =>
-          RefreshIndicator(
-            onRefresh: () async {
-              if(await model.refresh()) {
-                showToast(AppIntl.of(context).error);
-              }
-            },
-            child: Stack(
-              children: [
-                // This widget is here to make this widget a Scrollable. Needed
-                // by the RefreshIndicator
-                ListView(),
-                if (model.coursesBySession.isEmpty)
-                  Center(
-                      child: Text(AppIntl
-                          .of(context)
-                          .grades_msg_no_grades,
-                          textAlign: TextAlign.center,
-                          style: Theme
-                              .of(context)
-                              .textTheme
-                              .headline6))
-                else
-                  ListView.builder(
-                      itemCount: model.coursesBySession.length,
-                      itemBuilder: (BuildContext context, int index) =>
-                          _buildSessionCourses(
-                              _sessionName(
-                                  model.sessionOrder[index],
-                                  AppIntl.of(context)),
-                              model.coursesBySession[model
-                                  .sessionOrder[index]])),
-                if (model.isBusy)
-                  buildLoading(isInteractionLimitedWhileLoading: false)
-                else
-                  const SizedBox()
-              ],
-            ),
-          ),
+      builder: (context, model, child) => RefreshIndicator(
+        onRefresh: () async {
+          if (await model.refresh()) {
+            showToast(AppIntl.of(context).error);
+          }
+        },
+        child: Stack(
+          children: [
+            // This widget is here to make this widget a Scrollable. Needed
+            // by the RefreshIndicator
+            ListView(),
+            if (model.coursesBySession.isEmpty)
+              Center(
+                  child: TextButton(
+                      child: const Text('Afficher note...'),
+                      onPressed: () {
+                        model.navigationService
+                            .pushNamed(RouterPaths.grade_details);
+                      }))
+            else
+              ListView.builder(
+                  itemCount: model.coursesBySession.length,
+                  itemBuilder: (BuildContext context, int index) =>
+                      _buildSessionCourses(
+                          _sessionName(
+                              model.sessionOrder[index], AppIntl.of(context)),
+                          model.coursesBySession[model.sessionOrder[index]])),
+            if (model.isBusy)
+              buildLoading(isInteractionLimitedWhileLoading: false)
+            else
+              const SizedBox()
+          ],
+        ),
+      ),
     );
   }
 
