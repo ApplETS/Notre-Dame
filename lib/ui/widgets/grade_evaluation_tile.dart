@@ -2,6 +2,9 @@
 import 'package:flutter/material.dart';
 import 'package:notredame/ui/utils/app_theme.dart';
 
+// WIDGETS
+import 'package:notredame/ui/widgets/grade_circular_progress.dart';
+
 class GradeEvaluationTile extends StatelessWidget {
   final String title;
   final String weight;
@@ -11,23 +14,23 @@ class GradeEvaluationTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Theme(
     data: ThemeData().copyWith(dividerColor: Colors.transparent),
-    child: Padding(
-      padding: const EdgeInsets.only(top: 8.0),
-      child: ExpansionTile(
-        leading: Container(width: 100, height: 150, decoration: const BoxDecoration(color: Colors.green)),
-        title: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Text(title, style: const TextStyle(fontSize: 15)),
-            Text('Pondération: $weight', style: const TextStyle(fontSize: 15)),
-          ],
+    child: ExpansionTile(
+        leading: const GradeCircularProgress(0.85, 0.72, 0.80),
+        title: Padding(
+          padding: const EdgeInsets.all(40.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Text(title, style: const TextStyle(fontSize: 15)),
+              Text('Pondération: $weight', style: const TextStyle(fontSize: 15)),
+            ],
+          ),
         ),
         trailing: Transform.rotate(angle: 180 * 3.14 / 360, child: const IconButton(icon: Icon(Icons.arrow_forward_ios, color: AppTheme.etsLightRed, size: 20,), onPressed: null,),),
         children: <Widget>[
           evaluationsSummary(context)
         ],
       )
-    )
   );
 
     Widget evaluationsSummary(BuildContext context) {
