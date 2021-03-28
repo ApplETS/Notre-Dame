@@ -1,7 +1,9 @@
 // FLUTTER / DART / THIRD-PARTIES
 import 'package:flutter/material.dart';
+import 'package:notredame/core/managers/dashboard_manager.dart';
 import 'package:notredame/core/utils/utils.dart';
 import 'package:notredame/core/constants/urls.dart';
+import 'package:provider/provider.dart';
 import 'package:stacked/stacked.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -28,8 +30,6 @@ class _DashboardViewState extends State<DashboardView>
 
   AnimationController _animationController;
 
-  bool isAboutUsVisible = true;
-
   @override
   void initState() {
     super.initState();
@@ -50,30 +50,31 @@ class _DashboardViewState extends State<DashboardView>
   }
 
   @override
-  Widget build(BuildContext context) =>
-      ViewModelBuilder<DashboardViewModel>.reactive(
-        viewModelBuilder: () => DashboardViewModel(),
-        builder: (context, model, child) => BaseScaffold(
-          isInteractionLimitedWhileLoading: false,
-          appBar: AppBar(
-            title: Text(AppIntl.of(context).title_dashboard),
-            centerTitle: false,
-            automaticallyImplyLeading: false,
-            actions: _buildActionButtons(),
-          ),
-          body: ListView(children: [
-            if (isAboutUsVisible)
-              Dismissible(
-                key: UniqueKey(),
-                onDismissed: (dismissDirection) => setState(() {
-                  isAboutUsVisible = false;
-                }),
-                child: _buildAboutUsCard(),
-              ),
-            const SizedBox(height: 6.0),
-          ]),
+  Widget build(BuildContext context) {
+    return ViewModelBuilder<DashboardViewModel>.reactive(
+      viewModelBuilder: () => DashboardViewModel(),
+      builder: (context, model, child) => BaseScaffold(
+        isInteractionLimitedWhileLoading: false,
+        appBar: AppBar(
+          title: Text(AppIntl.of(context).title_dashboard),
+          centerTitle: false,
+          automaticallyImplyLeading: false,
+          actions: _buildActionButtons(model),
         ),
-      );
+        body: ListView(children: [
+          if (model.showAboutUsCard == true)
+            Dismissible(
+              key: UniqueKey(),
+              onDismissed: (dismissDirection) => setState(() {
+                model.showAboutUsCard = false;
+              }),
+              child: _buildAboutUsCard(),
+            ),
+          const SizedBox(height: 6.0),
+        ]),
+      ),
+    );
+  }
 
   Widget _buildAboutUsCard() {
     return Card(
@@ -126,17 +127,17 @@ class _DashboardViewState extends State<DashboardView>
     );
   }
 
-  void setAllVisible() => {
+  void setAllVisible(DashboardViewModel model) => {
         setState(() {
-          isAboutUsVisible = true;
+          model.showAboutUsCard = true;
         })
       };
 
-  List<Widget> _buildActionButtons() => [
+  List<Widget> _buildActionButtons(DashboardViewModel model) => [
         IconButton(
           icon: const Icon(Icons.restore),
           onPressed: () {
-            setAllVisible();
+            setAllVisible(model);
           },
         ),
       ];
