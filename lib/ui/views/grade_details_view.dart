@@ -9,7 +9,6 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:notredame/core/viewmodels/grades_details_viewmodel.dart';
 
 // WIDGETS
-import 'package:notredame/ui/widgets/base_scaffold.dart';
 import 'package:notredame/ui/widgets/grade_circular_progress.dart';
 
 // OTHERS
@@ -19,125 +18,169 @@ class GradesDetailsView extends StatefulWidget {
 }
 
 class _GradesDetailsViewState extends State<GradesDetailsView> {
+  double top = 0.0;
+
   @override
-  Widget build(BuildContext context) =>
-    ViewModelBuilder<GradesDetailsViewModel>.reactive(
+  Widget build(BuildContext context) => ViewModelBuilder<
+          GradesDetailsViewModel>.reactive(
       viewModelBuilder: () => GradesDetailsViewModel(intl: AppIntl.of(context)),
-      builder: (context, model, child) => BaseScaffold(
-        appBar: AppBar(
-          elevation: 0,
-        ),
-        body: 
-          ListView(
-            shrinkWrap: true,
-            children: <Widget>[
-              Container(
-                constraints: BoxConstraints(minWidth: MediaQuery.of(context).size.width, maxHeight: 75),
-                decoration: const BoxDecoration(color: AppTheme.primary,),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: const <Widget>[
-                    Padding(
-                      padding: EdgeInsets.only(left: 15.0),
-                      child: Text("COM110", style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white, fontSize: 20)),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.only(left: 15.0, top: 3),
-                      child: Text("Méthodes de communication", style: TextStyle(color: Colors.white)),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.only(left: 15.0, top: 3),
-                      child: Text("Groupe 02", style: TextStyle(color: Colors.white)),
-                    ),
-                  ]
+      builder: (context, model, child) => Scaffold(
+            body: CustomScrollView(
+              slivers: <Widget>[
+                SliverAppBar(
+                  pinned: true,
+                  stretch: true,
+                  elevation: 0,
+                  onStretchTrigger: () {
+                    return Future<void>.value();
+                  },
+                  expandedHeight: 80.0,
+                  flexibleSpace: LayoutBuilder(
+                    builder:
+                        (BuildContext context, BoxConstraints constraints) {
+                      top = constraints.biggest.height;
+                      return FlexibleSpaceBar(
+                        centerTitle: true,
+                        title: Align(
+                          alignment: AlignmentDirectional.bottomEnd,
+                          child: Padding(
+                            padding: EdgeInsets.only(right: 10),
+                            child: Text(
+                              "COM110",
+                              style: TextStyle(fontSize: top < 120 ? 18 : 15),
+                            ),
+                          ),
+                        ),
+                      );
+                    },
+                  ),
                 ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(10.0),
-                child: Column(
-                  children: <Widget> [
-                    Row(
-                      children: [
-                        const GradeCircularProgress(0.85, 0.72, 1),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 25.0),
-                          child: Column(
+                SliverToBoxAdapter(
+                  child: Center(
+                    child: Container(
+                      constraints: BoxConstraints(
+                          minWidth: MediaQuery.of(context).size.width,
+                          maxHeight: 40),
+                      decoration: const BoxDecoration(
+                        color: AppTheme.primary,
+                      ),
+                      child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            getClassInformation("Méthodes de communication"),
+                            getClassInformation("Groupe 02"),
+                          ]),
+                    ),
+                  ),
+                ),
+                SliverList(
+                  delegate: SliverChildListDelegate([
+                    Padding(
+                      padding: const EdgeInsets.all(5.0),
+                      child: Card(
+                        child: Padding(
+                          padding: const EdgeInsets.all(15.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: const <Widget> [
-                                  Text("85,3/100 (85 %)", style: TextStyle(color: Colors.green)),                                
-                                  Text("Votre note", style: TextStyle(color: Colors.green)),
-                                ],
-                              ),
+                              const GradeCircularProgress(0.85, 0.72, 1),
                               Padding(
-                                padding: const EdgeInsets.only(top: 15.0),
+                                padding: const EdgeInsets.only(left: 55.0),
                                 child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: const <Widget> [
-                                    Text("85,3/100 (72 %)", style: TextStyle(color: Colors.red)),                                  
-                                    Text("Moyenne", style: TextStyle(color: Colors.red)),
+                                  children: [
+                                    getGrade("85,3/100 (85 %)", "Votre note",
+                                        Colors.green),
+                                    Padding(
+                                      padding: const EdgeInsets.only(top: 15.0),
+                                      child: getGrade("75,2/100 (75 %)",
+                                          "Moyenne", AppTheme.etsLightRed),
+                                    ),
                                   ],
                                 ),
                               ),
                             ],
                           ),
-                        )
-                      ],
-                    ),                  
-                  ],
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(left: 15.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: <Widget> [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                        ),
+                      ),
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: <Widget>[
-                        getHeadersSummary("Médiane"),
-                        getNumberSummary("96"),
-                        getHeadersSummary("Écart-type"),
-                        getNumberSummary("4,3"),
+                        getHeadersSummary("Médiane", "83,2"),
+                        getHeadersSummary("Écart-type", "4,62"),
+                        getHeadersSummary("Rang centile", "85"),
                       ],
                     ),
                     Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        getHeadersSummary("Rang-centile"),
-                        getNumberSummary("55"),
-                        getHeadersSummary("Crédits"),
-                        getNumberSummary("4"),
+                      children: const <Widget>[
+                        GradeEvaluationTile('Devoir 1', "10 %"),
+                        GradeEvaluationTile('Final', "40 %"),
+                        GradeEvaluationTile('Intra', "40 %"),
+                        GradeEvaluationTile('Devoir 2', "10 %"),
                       ],
                     ),
-                  ],
+                  ]),
                 ),
-              ),
-              Column(
-                children: const <Widget>[
-                  GradeEvaluationTile('Devoir 1', "10 %"),
-                  GradeEvaluationTile('Final', "40 %"),
-                  GradeEvaluationTile('Intra', "40 %"),
-                  GradeEvaluationTile('Devoir 2', "10 %"),
-                ],
-              )
-            ],
-          ),
+              ],
+            ),
+          ));
+
+  Align getClassInformation(String info) {
+    return Align(
+      alignment: Alignment.centerRight,
+      child: Padding(
+        padding: const EdgeInsets.only(right: 15.0),
+        child: Text(info, style: const TextStyle(color: Colors.white)),
       ),
     );
+  }
 
-    Padding getHeadersSummary(String title) {
-      return Padding(
-        padding: const EdgeInsets.fromLTRB(2, 2, 2, 2),
-        child: Text(title, style: const TextStyle(color: Colors.grey)),
-      );
-    }
+  Column getGrade(String grade, String recipient, Color color) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Text(
+          grade,
+          style: TextStyle(color: color, fontWeight: FontWeight.bold),
+        ),
+        Text(recipient, style: TextStyle(color: color)),
+      ],
+    );
+  }
 
-    Padding getNumberSummary(String number) {
-      return Padding(
-        padding: const EdgeInsets.fromLTRB(2, 2, 2, 5),
-        child: Text(number, style: const TextStyle(color: Colors.black, fontSize: 18)),
-      );
-    }
+  Column getHeadersSummary(String title, String number) {
+    return Column(
+      children: [
+        Container(
+          height: 90,
+          width: MediaQuery.of(context).size.width / 3.2,
+          child: Card(
+            child: Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(top: 10.0, bottom: 15.0),
+                  child: Text(
+                    title,
+                  ),
+                ),
+                Text(
+                  number,
+                  style: const TextStyle(
+                      fontSize: 18, fontWeight: FontWeight.bold),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Padding getNumberSummary(String number) {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(2, 2, 2, 5),
+      child: Text(number,
+          style: const TextStyle(color: Colors.black, fontSize: 18)),
+    );
+  }
 }

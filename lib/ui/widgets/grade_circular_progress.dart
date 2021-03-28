@@ -11,22 +11,20 @@ class GradeCircularProgress extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => CircularPercentIndicator(
-    animation: true,
-    animationDuration: 700,
-    radius: 100 * ratio,
-    lineWidth: 8.0 * ratio,
-    percent: grade,
-    center: CircularPercentIndicator(
-      animation: true,
-      animationDuration: 700,
-      radius: 80 * ratio,
-      lineWidth: 8.0 * ratio,
-      percent: average,
-      center: Text('${grade * 100}  %'),
-      progressColor: Colors.red,
-    ),
-    progressColor: Colors.green,
-  );
+        animation: true,
+        animationDuration: 700,
+        radius: 100 * ratio,
+        lineWidth: 8.0 * ratio,
+        percent: grade,
+        center: CircularPercentIndicator(
+          animation: true,
+          animationDuration: 700,
+          radius: 80 * ratio,
+          lineWidth: 8.0 * ratio,
+          percent: average,
+          center: Text('${grade * 100}  %'),
+          progressColor: Colors.red,
+        ),
+        progressColor: Colors.green,
+      );
 }
-
-
