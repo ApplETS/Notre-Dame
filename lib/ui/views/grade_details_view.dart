@@ -43,12 +43,12 @@ class _GradesDetailsViewState extends State<GradesDetailsView> {
                       return FlexibleSpaceBar(
                         centerTitle: true,
                         titlePadding: EdgeInsetsDirectional.only(
-                          end: top < 120 ? 15 : 15,
+                          start: top < 120 ? 60 : 15,
                           top: top < 120 ? 5 : 15,
                           bottom: top < 120 ? 15 : 1,
                         ),
                         title: Align(
-                          alignment: AlignmentDirectional.bottomEnd,
+                          alignment: AlignmentDirectional.bottomStart,
                           child: Text(
                             "COM110",
                             style: TextStyle(fontSize: top < 120 ? 20 : 15),
@@ -135,9 +135,9 @@ class _GradesDetailsViewState extends State<GradesDetailsView> {
 
   Align getClassInformation(String info) {
     return Align(
-      alignment: Alignment.centerRight,
+      alignment: Alignment.centerLeft,
       child: Padding(
-        padding: const EdgeInsets.only(right: 15.0),
+        padding: const EdgeInsets.only(left: 15.0),
         child: Text(info, style: const TextStyle(color: Colors.white)),
       ),
     );
