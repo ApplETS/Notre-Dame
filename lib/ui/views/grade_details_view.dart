@@ -1,8 +1,7 @@
 // FLUTTER / DART / THIRD-PARTIES
 import 'package:flutter/material.dart';
 import 'package:notredame/ui/utils/app_theme.dart';
-import 'package:notredame/ui/widgets/base_scaffold.dart';
-import 'package:notredame/ui/widgets/grade_evaluation_tile.dart';
+import 'package:oktoast/oktoast.dart';
 import 'package:stacked/stacked.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -11,8 +10,9 @@ import 'package:notredame/core/viewmodels/grades_details_viewmodel.dart';
 
 // WIDGETS
 import 'package:notredame/ui/widgets/grade_circular_progress.dart';
+import 'package:notredame/ui/widgets/base_scaffold.dart';
+import 'package:notredame/ui/widgets/grade_evaluation_tile.dart';
 
-// OTHERS
 class GradesDetailsView extends StatefulWidget {
   @override
   _GradesDetailsViewState createState() => _GradesDetailsViewState();
@@ -25,7 +25,13 @@ class _GradesDetailsViewState extends State<GradesDetailsView> {
   Widget build(BuildContext context) => ViewModelBuilder<
           GradesDetailsViewModel>.reactive(
       viewModelBuilder: () => GradesDetailsViewModel(intl: AppIntl.of(context)),
-      builder: (context, model, child) => BaseScaffold(
+      builder: (context, model, child) => RefreshIndicator(
+        onRefresh: () async {
+          if (await model.refresh()) {
+            showToast(AppIntl.of(context).error);
+          }
+        },
+        child: BaseScaffold(
             body: CustomScrollView(
               slivers: <Widget>[
                 SliverAppBar(
@@ -93,12 +99,17 @@ class _GradesDetailsViewState extends State<GradesDetailsView> {
                                 padding: const EdgeInsets.only(left: 55.0),
                                 child: Column(
                                   children: [
-                                    getGrade("85,3/100 (85 %)", "Votre note",
+                                    getGrade(
+                                        "85,3/100 (85 %)",
+                                        AppIntl.of(context)
+                                            .grades_current_rating,
                                         Colors.green),
                                     Padding(
                                       padding: const EdgeInsets.only(top: 15.0),
-                                      child: getGrade("75,2/100 (75 %)",
-                                          "Moyenne", AppTheme.etsLightRed),
+                                      child: getGrade(
+                                          "75,2/100 (75 %)",
+                                          AppIntl.of(context).grades_average,
+                                          AppTheme.etsLightRed),
                                     ),
                                   ],
                                 ),
@@ -111,9 +122,13 @@ class _GradesDetailsViewState extends State<GradesDetailsView> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: <Widget>[
-                        getHeadersSummary("Médiane", "83,2"),
-                        getHeadersSummary("Écart-type", "4,62"),
-                        getHeadersSummary("Rang centile", "85"),
+                        getHeadersSummary(
+                            AppIntl.of(context).grades_median, "83,2"),
+                        getHeadersSummary(
+                            AppIntl.of(context).grades_standard_deviation,
+                            "4,62"),
+                        getHeadersSummary(
+                            AppIntl.of(context).grades_percentile_rank, "85"),
                       ],
                     ),
                     Column(
@@ -156,31 +171,29 @@ class _GradesDetailsViewState extends State<GradesDetailsView> {
     );
   }
 
-  Column getHeadersSummary(String title, String number) {
-    return Column(
-      children: [
-        Container(
-          height: 90,
-          width: MediaQuery.of(context).size.width / 3.2,
-          child: Card(
-            child: Column(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(top: 10.0, bottom: 15.0),
-                  child: Text(
-                    title,
-                  ),
-                ),
-                Text(
-                  number,
-                  style: const TextStyle(
-                      fontSize: 18, fontWeight: FontWeight.bold),
-                ),
-              ],
+  Container getHeadersSummary(String title, String number) {
+    return Container(
+      height: 110,
+      width: MediaQuery.of(context).size.width / 3.2,
+      child: Card(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(top: 10.0),
+              child: Text(title, textAlign: TextAlign.center),
             ),
-          ),
+            Padding(
+              padding: const EdgeInsets.only(bottom: 25.0),
+              child: Text(
+                number,
+                style:
+                    const TextStyle(fontSize: 19, fontWeight: FontWeight.bold),
+              ),
+            ),
+          ],
         ),
-      ],
+      ),
     );
   }
 

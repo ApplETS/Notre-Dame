@@ -1,9 +1,13 @@
 // FLUTTER / DART / THIRD-PARTIES
 import 'package:flutter/material.dart';
 import 'package:notredame/ui/utils/app_theme.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 // WIDGETS
 import 'package:notredame/ui/widgets/grade_circular_progress.dart';
+
+// CONSTANT
+import 'package:notredame/ui/utils/app_theme.dart';
 
 class GradeEvaluationTile extends StatelessWidget {
   final String title;
@@ -83,12 +87,13 @@ class GradeEvaluationTile extends StatelessWidget {
           width: MediaQuery.of(context).size.width * 0.91,
           child: Column(
             children: [
-              getSummary("Note", "82,9"),
-              getSummary("Moyenne", "4,7"),
-              getSummary("Médianne", "4,2"),
-              getSummary("Écart-type", "0,6"),
-              getSummary("Rang centile", "79"),
-              getSummary("Échéance", "18 septembre 2020"),
+              getSummary(AppIntl.of(context).grades_grade, "4,7/5,0 (82,9 %)"),
+              getSummary(AppIntl.of(context).grades_average, "2,7/5,0 (54 %)"),
+              getSummary(AppIntl.of(context).grades_median, "4,2"),
+              getSummary(AppIntl.of(context).grades_standard_deviation, "0,6"),
+              getSummary(AppIntl.of(context).grades_percentile_rank, "79"),
+              getSummary(
+                  AppIntl.of(context).grades_target_date, "18 septembre 2020"),
             ],
           )),
     );
