@@ -1,6 +1,7 @@
 // FLUTTER / DART / THIRD-PARTIES
 import 'package:flutter/material.dart';
 import 'package:notredame/ui/utils/app_theme.dart';
+import 'package:notredame/ui/widgets/grade_evaluation_tile.dart';
 import 'package:stacked/stacked.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -96,10 +97,10 @@ class _GradesDetailsViewState extends State<GradesDetailsView> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget> [
-                      const Text("Sommaire", style: TextStyle(color: AppTheme.etsLightRed)),
                       getSummary("Médiane", "82,9"),
                       getSummary("Écart-type", "4,7"),
                       getSummary("Rang centile", "96"),
+                      getSummary("Crédits", "4"),
                     ],
                   ),
                 ),
@@ -112,23 +113,11 @@ class _GradesDetailsViewState extends State<GradesDetailsView> {
                   child: Text("Évaluations", style: TextStyle(color: AppTheme.etsLightRed))
                 ),
                 Column(
-                  children: [
-                    Theme(
-                      data: ThemeData().copyWith(dividerColor: Colors.transparent),
-                      child: getEvaluationTile("Devoir 1", "5 %"),
-                    ),
-                    Theme(
-                      data: ThemeData().copyWith(dividerColor: Colors.transparent),
-                      child: getEvaluationTile("Final", "25 %"),
-                    ),
-                    Theme(
-                      data: ThemeData().copyWith(dividerColor: Colors.transparent),
-                      child: getEvaluationTile("Intra", "50 %"),
-                    ),
-                    Theme(
-                      data: ThemeData().copyWith(dividerColor: Colors.transparent),
-                      child: getEvaluationTile("Devoir 3", "10 %"),
-                    )
+                  children: const <Widget>[
+                    GradeEvaluationTile('Devoir 1', "10 %"),
+                    GradeEvaluationTile('Final', "40 %"),
+                    GradeEvaluationTile('Intra', "40 %"),
+                    GradeEvaluationTile('Devoir 2', "10 %"),
                   ],
                 )
               ],
