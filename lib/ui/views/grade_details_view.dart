@@ -33,16 +33,16 @@ class _GradesDetailsViewState extends State<GradesDetailsView> {
               decoration: const BoxDecoration(color: AppTheme.primary,),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  const Padding(
+                children: const <Widget>[
+                  Padding(
                     padding: EdgeInsets.only(left: 15.0),
                     child: Text("COM110", style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white, fontSize: 20)),
                   ),
-                  const Padding(
+                  Padding(
                     padding: EdgeInsets.only(left: 15.0, top: 3),
                     child: Text("Méthodes de communication", style: TextStyle(color: Colors.white)),
                   ),
-                  const Padding(
+                  Padding(
                     padding: EdgeInsets.only(left: 15.0, top: 3),
                     child: Text("Groupe 02", style: TextStyle(color: Colors.white)),
                   ),
@@ -62,18 +62,18 @@ class _GradesDetailsViewState extends State<GradesDetailsView> {
                           children: [
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                const Text("85,3/100 (85 %)", style: TextStyle(color: Colors.green)),                                
-                                const Text("Votre note", style: TextStyle(color: Colors.green)),
+                              children: const <Widget> [
+                                Text("85,3/100 (85 %)", style: TextStyle(color: Colors.green)),                                
+                                Text("Votre note", style: TextStyle(color: Colors.green)),
                               ],
                             ),
                             Padding(
                               padding: const EdgeInsets.only(top: 15.0),
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  const Text("85,3/100 (85 %)", style: TextStyle(color: Colors.red)),                                  
-                                  const Text("Moyenne", style: TextStyle(color: Colors.red)),
+                                children: const <Widget> [
+                                  Text("85,3/100 (85 %)", style: TextStyle(color: Colors.red)),                                  
+                                  Text("Moyenne", style: TextStyle(color: Colors.red)),
                                 ],
                               ),
                             ),
@@ -81,13 +81,41 @@ class _GradesDetailsViewState extends State<GradesDetailsView> {
                         ),
                       )
                     ],
-                  ),
-                  const Divider(color: Colors.black)
+                  ),                  
                 ],
               ),
-            )
+            ),
+            const Padding(
+              padding: EdgeInsets.all(10.0),
+              child: Divider(color: Colors.black),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(left: 15.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget> [
+                  const Text("Sommaire", style: TextStyle(color: AppTheme.etsLightRed)),
+                  getSummary("Médiane", "82,9"),
+                  getSummary("Écart-type", "4,7"),
+                  getSummary("Rang centile", "96"),
+                ],
+              ),
+            ),
           ],
         )
       ),
     );
+
+    Padding getSummary(String title, String grade) {
+      return Padding(
+        padding: const EdgeInsets.only(top: 8.0, right: 15.0),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            Text(title, style: const TextStyle(color: Colors.grey)),
+            Text(grade, style: const TextStyle(color: Colors.grey)),
+          ],
+        ),
+      );
+    }
 }
