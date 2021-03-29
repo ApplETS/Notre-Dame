@@ -50,9 +50,7 @@ class GradesViewModel extends FutureViewModel<Map<String, List<Course>>> {
   @override
   // ignore: type_annotate_public_apis
   void onError(error) {
-    print("hello...");
     Fluttertoast.showToast(msg: _appIntl.error);
-    print("there");
   }
 
   /// Reload the courses from Signets and rebuild the view.

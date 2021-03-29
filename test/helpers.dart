@@ -74,8 +74,6 @@ void setupFlutterToastMock() {
   const MethodChannel channel = MethodChannel('PonnamKarthik/fluttertoast');
 
   channel.setMockMethodCallHandler((MethodCall methodCall) async {
-    print("${methodCall.method} called");
-
     if(methodCall.method == 'showToast') {
       return true;
     }
