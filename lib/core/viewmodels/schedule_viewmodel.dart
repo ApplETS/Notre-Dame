@@ -36,7 +36,8 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
   DateTime selectedDate = DateTime.now();
 
   ScheduleViewModel({@required AppIntl intl, DateTime initialSelectedDate})
-      : _appIntl = intl, selectedDate = initialSelectedDate ?? DateTime.now();
+      : _appIntl = intl,
+        selectedDate = initialSelectedDate ?? DateTime.now();
 
   /// Activities for the day currently selected
   List<dynamic> get selectedDateEvents =>
@@ -54,9 +55,12 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
             .getCoursesActivities()
             // ignore: return_type_invalid_for_catch_error
             .catchError(onError)
-            .whenComplete(() {
-          // Reload the list of activities
-          coursesActivities;
+            .then((value) {
+          if (value != null) {
+            // Reload the list of activities
+            coursesActivities;
+          }
+        }).whenComplete(() {
           setBusyForObject(isLoadingEvents, false);
         });
         return value;

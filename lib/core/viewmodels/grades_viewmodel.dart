@@ -38,7 +38,7 @@ class GradesViewModel extends FutureViewModel<Map<String, List<Course>>> {
         _courseRepository.getCourses().catchError(onError).then((value) {
           if(value != null) {
             // Update the courses list
-            _buildCoursesBySession(value);
+            _buildCoursesBySession(_courseRepository.courses);
           }
         }).whenComplete(() {
           setBusy(false);
@@ -50,7 +50,9 @@ class GradesViewModel extends FutureViewModel<Map<String, List<Course>>> {
   @override
   // ignore: type_annotate_public_apis
   void onError(error) {
+    print("hello...");
     Fluttertoast.showToast(msg: _appIntl.error);
+    print("there");
   }
 
   /// Reload the courses from Signets and rebuild the view.

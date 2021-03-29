@@ -22,6 +22,8 @@ SettingsManager settingsManager;
 ScheduleViewModel viewModel;
 
 void main() {
+  // Needed to support FlutterToast.
+  TestWidgetsFlutterBinding.ensureInitialized();
   // Some activities
   final gen101 = CourseActivity(
       courseGroup: "GEN101",
@@ -55,6 +57,7 @@ void main() {
       // Setting up mocks
       courseRepository = setupCourseRepositoryMock();
       settingsManager = setupSettingsManagerMock();
+      setupFlutterToastMock();
 
       viewModel = ScheduleViewModel(intl: await setupAppIntl());
     });
@@ -62,6 +65,7 @@ void main() {
     tearDown(() {
       unregister<CourseRepository>();
       unregister<SettingsManager>();
+      tearDownFlutterToastMock();
     });
 
     group("futureToRun - ", () {
@@ -91,6 +95,8 @@ void main() {
         CourseRepositoryMock.stubGetCoursesActivitiesException(
             courseRepository as CourseRepositoryMock,
             fromCacheOnly: false);
+        CourseRepositoryMock.stubCoursesActivities(
+            courseRepository as CourseRepositoryMock);
 
         expect(await viewModel.futureToRun(), [],
             reason: "Even if SignetsAPI fails we should receives a list.");
