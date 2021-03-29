@@ -79,7 +79,7 @@ class CourseRepositoryMock extends Mock implements CourseRepository {
     when(mock.courses).thenAnswer((realInvocation) => toReturn);
   }
 
-  /// Stub the function [getSessions] of [mock] when called will throw [toThrow].
+  /// Stub the function [getCourses] of [mock] when called will throw [toThrow].
   static void stubGetCoursesException(CourseRepositoryMock mock,
       {Exception toThrow =
           const ApiException(prefix: 'ApiException', message: ''),

@@ -1,5 +1,5 @@
 // FLUTTER / DART / THIRD-PARTIES
-import 'package:oktoast/oktoast.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:stacked/stacked.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:flutter/material.dart';
@@ -65,7 +65,7 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
   @override
   // ignore: type_annotate_public_apis
   void onError(error) {
-    showToast(_appIntl.error);
+    Fluttertoast.showToast(msg: _appIntl.error);
   }
 
   Future loadSettings(CalendarController calendarController) async {

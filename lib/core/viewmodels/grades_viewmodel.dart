@@ -1,6 +1,6 @@
 // FLUTTER / DART / THIRD-PARTIES
 import 'package:flutter/material.dart';
-import 'package:oktoast/oktoast.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:stacked/stacked.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -35,9 +35,12 @@ class GradesViewModel extends FutureViewModel<Map<String, List<Course>>> {
         setBusy(true);
         _buildCoursesBySession(coursesCached);
         // ignore: return_type_invalid_for_catch_error
-        _courseRepository.getCourses().catchError(onError).whenComplete(() {
-          // Update the courses list
-          _buildCoursesBySession(_courseRepository.courses);
+        _courseRepository.getCourses().catchError(onError).then((value) {
+          if(value != null) {
+            // Update the courses list
+            _buildCoursesBySession(value);
+          }
+        }).whenComplete(() {
           setBusy(false);
         });
 
@@ -47,19 +50,18 @@ class GradesViewModel extends FutureViewModel<Map<String, List<Course>>> {
   @override
   // ignore: type_annotate_public_apis
   void onError(error) {
-    showToast(_appIntl.error);
+    Fluttertoast.showToast(msg: _appIntl.error);
   }
 
   /// Reload the courses from Signets and rebuild the view.
-  Future<bool> refresh() async {
+  Future refresh() async {
     // ignore: return_type_invalid_for_catch_error
     try {
       await _courseRepository.getCourses();
       _buildCoursesBySession(_courseRepository.courses);
       notifyListeners();
-      return true;
-    } on Exception catch (_) {
-      return false;
+    } on Exception catch (error) {
+      onError(error);
     }
   }
 

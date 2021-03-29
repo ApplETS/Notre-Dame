@@ -4,7 +4,6 @@ import 'package:feedback/feedback.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:oktoast/oktoast.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 
 // ROUTER
@@ -58,30 +57,25 @@ class _ETSMobileState extends State<ETSMobile> {
   Widget build(BuildContext context) {
     return BetterFeedback(
       localeOverride: _settingsManager.locale,
-      child: OKToast(
-        backgroundColor: Colors.grey,
-        duration: const Duration(seconds: 3),
-        position: ToastPosition.bottom,
-        child: MaterialApp(
-          title: 'ÉTS Mobile',
-          theme: AppTheme.lightTheme,
-          darkTheme: AppTheme.darkTheme,
-          themeMode: _settingsManager.themeMode,
-          localizationsDelegates: const [
-            AppIntl.delegate,
-            GlobalMaterialLocalizations.delegate,
-            GlobalWidgetsLocalizations.delegate,
-            GlobalCupertinoLocalizations.delegate,
-          ],
-          locale: _settingsManager?.locale,
-          supportedLocales: AppIntl.supportedLocales,
-          navigatorKey: locator<NavigationService>().navigatorKey,
-          navigatorObservers: [
-            locator<AnalyticsService>().getAnalyticsObserver(),
-          ],
-          home: StartUpView(),
-          onGenerateRoute: AppRouter.generateRoute,
-        ),
+      child: MaterialApp(
+        title: 'ÉTS Mobile',
+        theme: AppTheme.lightTheme,
+        darkTheme: AppTheme.darkTheme,
+        themeMode: _settingsManager.themeMode,
+        localizationsDelegates: const [
+          AppIntl.delegate,
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+        ],
+        locale: _settingsManager?.locale,
+        supportedLocales: AppIntl.supportedLocales,
+        navigatorKey: locator<NavigationService>().navigatorKey,
+        navigatorObservers: [
+          locator<AnalyticsService>().getAnalyticsObserver(),
+        ],
+        home: StartUpView(),
+        onGenerateRoute: AppRouter.generateRoute,
       ),
     );
   }

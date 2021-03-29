@@ -1,6 +1,6 @@
 // FLUTTER / DART / THIRD-PARTIES
 import 'package:flutter/material.dart';
-import 'package:oktoast/oktoast.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 // MODEL
@@ -75,6 +75,6 @@ class GradeButton extends StatelessWidget {
   }
 
   void onPressed() {
-    showToast('Not available yet');
+    Fluttertoast.showToast(msg: 'Not available yet');
   }
 }

@@ -236,27 +236,27 @@ class CourseRepository {
           username: _userRepository.monETSUser.universalCode,
           password: password));
       _logger.d("$tag - getCourses: fetched ${fetchedCourses.length} courses.");
-
-      for (int i = 0; i < fetchedCourses.length; i++) {
-        // If there isn't the grade yet, will fetch the summary.
-        // We don't do this for every course to avoid losing time.
-        if (fetchedCourses[i].grade == null) {
-          try {
-            if (await getCourseSummary(fetchedCourses[i]) != null) {
-              fetchedCourses.remove(fetchedCourses[i]);
-              i--;
-            }
-          } on ApiException catch (_) {
-            _logger.e(
-                "$tag - getCourses: Exception raised while trying to get summary "
-                "of ${fetchedCourses[i].acronym}.");
-          }
-        }
-      }
     } on Exception catch (e) {
       _analyticsService.logError(tag, "Exception raised during getCourses: $e");
       _logger.e("$tag - getCourses: Exception raised $e");
       rethrow;
+    }
+
+    for (int i = 0; i < fetchedCourses.length; i++) {
+      // If there isn't the grade yet, will fetch the summary.
+      // We don't do this for every course to avoid losing time.
+      if (fetchedCourses[i].grade == null) {
+        try {
+          if (await getCourseSummary(fetchedCourses[i]) != null) {
+            fetchedCourses.remove(fetchedCourses[i]);
+            i--;
+          }
+        } on ApiException catch (_) {
+          _logger.e(
+              "$tag - getCourses: Exception raised while trying to get summary "
+                  "of ${fetchedCourses[i].acronym}.");
+        }
+      }
     }
 
     // Update the list of courses

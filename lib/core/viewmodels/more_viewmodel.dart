@@ -4,9 +4,9 @@ import 'dart:io';
 import 'dart:typed_data';
 import 'package:feedback/feedback.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:package_info/package_info.dart';
 import 'package:stacked/stacked.dart';
-import 'package:oktoast/oktoast.dart';
 import 'package:github/github.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:image/image.dart' as image;
@@ -55,7 +55,7 @@ class MoreViewModel extends FutureViewModel {
   @override
   // ignore: type_annotate_public_apis
   void onError(error) {
-    showToast(_appIntl.error);
+    Fluttertoast.showToast(msg: _appIntl.error);
   }
 
   /// Used to logout user, delete cache, and return to login
@@ -71,7 +71,7 @@ class MoreViewModel extends FutureViewModel {
     // Dismiss alertDialog
     navigationService.pop();
     navigationService.pushNamedAndRemoveUntil(RouterPaths.login);
-    showToast(_appIntl.login_msg_logout_success);
+    Fluttertoast.showToast(msg: _appIntl.login_msg_logout_success);
   }
 
   /// Create a Github issue with [feedbackText] and the screenshot associated.
@@ -90,9 +90,9 @@ class MoreViewModel extends FutureViewModel {
     await _createGithubIssue(github, file, feedbackText);
 
     file.deleteSync();
-    showToast(
-      _appIntl.thank_you_for_the_feedback,
-      position: ToastPosition.center,
+    Fluttertoast.showToast(
+      msg: _appIntl.thank_you_for_the_feedback,
+      gravity: ToastGravity.CENTER,
     );
     BetterFeedback.of(context).hide();
   }
