@@ -45,6 +45,7 @@ class SettingsManager with ChangeNotifier {
   void resetLanguageAndThemeMode() {
     _locale = null;
     _themeMode = null;
+    notifyListeners();
   }
 
   /// Get Locale and Theme to init app with

@@ -85,7 +85,6 @@ class MoreViewModel extends FutureViewModel {
     // Dismiss alertDialog
     navigationService.pop();
     navigationService.pushNamedAndRemoveUntil(RouterPaths.login);
-    settingsManager.notifyListeners();
   }
 
   /// Create a Github issue with [feedbackText] and the screenshot associated.

@@ -133,7 +133,6 @@ void main() {
 
         // Check if the settings manager has reset lang and theme and notified his listener
         verify(settingsManagerMock.resetLanguageAndThemeMode());
-        verify(settingsManagerMock.notifyListeners());
 
         expect(courseRepositoryMock.sessions.length, 0,
             reason: 'has emptied out the sessions list');
