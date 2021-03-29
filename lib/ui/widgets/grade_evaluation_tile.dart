@@ -1,6 +1,5 @@
 // FLUTTER / DART / THIRD-PARTIES
 import 'package:flutter/material.dart';
-import 'package:notredame/ui/utils/app_theme.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 // WIDGETS
@@ -12,12 +11,10 @@ import 'package:notredame/ui/utils/app_theme.dart';
 class GradeEvaluationTile extends StatelessWidget {
   final String title;
   final String weight;
-  bool rotate = false;
   final double tempGrade1;
   final double tempAverage2;
 
-  GradeEvaluationTile(
-      this.title, this.weight, this.tempGrade1, this.tempAverage2);
+  const GradeEvaluationTile(this.title, this.weight, this.tempGrade1, this.tempAverage2);
 
   @override
   Widget build(BuildContext context) => Theme(
@@ -28,10 +25,8 @@ class GradeEvaluationTile extends StatelessWidget {
             leading: FractionallySizedBox(
               alignment: Alignment.topCenter,
               heightFactor: 1.2,
-              child: Container(
-                  child: LayoutBuilder(builder: (context, constraints) {
-                return GradeCircularProgress(
-                    tempGrade1, tempAverage2, constraints.maxHeight / 100);
+              child: Container(child: LayoutBuilder(builder: (context, constraints) {
+                return GradeCircularProgress(tempGrade1, tempAverage2, constraints.maxHeight / 100);
               })),
             ),
             title: Column(
@@ -41,41 +36,29 @@ class GradeEvaluationTile extends StatelessWidget {
                     style: TextStyle(
                         height: 3,
                         fontSize: 15,
-                        color: Theme.of(context).brightness == Brightness.light
-                            ? Colors.black
-                            : Colors.white)),
+                        fontWeight: FontWeight.bold,
+                        color: Theme.of(context).brightness == Brightness.light ? Colors.black : Colors.white)),
                 Padding(
                   padding: const EdgeInsets.only(top: 8.0, bottom: 9.0),
-                  child: Text('Pondération: $weight',
+                  child: Text(AppIntl.of(context).grades_weight(weight),
                       style: TextStyle(
                           fontSize: 12,
-                          color:
-                              Theme.of(context).brightness == Brightness.light
-                                  ? Colors.black
-                                  : Colors.white)),
+                          color: Theme.of(context).brightness == Brightness.light ? Colors.black : Colors.white)),
                 ),
               ],
             ),
-            trailing: Transform.rotate(
-              angle: rotate == true ? 180 * 3.14 / 360 : 0,
-              child: IconButton(
-                icon: const Padding(
-                  padding: EdgeInsets.only(left: 20.0),
-                  child: Icon(
-                    Icons.keyboard_arrow_down,
-                    color: AppTheme.etsLightRed,
-                    size: 30,
-                  ),
+            trailing: IconButton(
+              icon: const Padding(
+                padding: EdgeInsets.only(left: 20.0),
+                child: Icon(
+                  Icons.keyboard_arrow_down,
+                  color: AppTheme.etsLightRed,
+                  size: 30,
                 ),
-                onPressed: () => {
-                  rotate = true,
-                },
               ),
+              onPressed: () => {},
             ),
             children: <Widget>[evaluationsSummary(context)],
-            onExpansionChanged: (isOpen) {
-              rotate = !rotate;
-            },
           ),
         ),
       );
@@ -92,8 +75,7 @@ class GradeEvaluationTile extends StatelessWidget {
               getSummary(AppIntl.of(context).grades_median, "4,2"),
               getSummary(AppIntl.of(context).grades_standard_deviation, "0,6"),
               getSummary(AppIntl.of(context).grades_percentile_rank, "79"),
-              getSummary(
-                  AppIntl.of(context).grades_target_date, "18 septembre 2020"),
+              getSummary(AppIntl.of(context).grades_target_date, "18 septembre 2020"),
             ],
           )),
     );

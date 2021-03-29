@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:notredame/ui/utils/loading.dart';
 import 'package:oktoast/oktoast.dart';
 import 'package:stacked/stacked.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 // CONSTANTS
 import 'package:notredame/core/constants/router_paths.dart';
@@ -19,6 +18,7 @@ import 'package:notredame/ui/widgets/grade_button.dart';
 
 // OTHER
 import 'package:notredame/ui/utils/app_theme.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class GradesView extends StatefulWidget {
   @override
@@ -46,21 +46,15 @@ class _GradesViewState extends State<GradesView> {
                   child: TextButton(
                       child: const Text('Afficher note...'),
                       onPressed: () {
-                        model.navigationService
-                            .pushNamed(RouterPaths.grade_details);
+                        model.navigationService.pushNamed(RouterPaths.grade_details);
                       }))
             else
               ListView.builder(
                   itemCount: model.coursesBySession.length,
-                  itemBuilder: (BuildContext context, int index) =>
-                      _buildSessionCourses(
-                          _sessionName(
-                              model.sessionOrder[index], AppIntl.of(context)),
-                          model.coursesBySession[model.sessionOrder[index]])),
-            if (model.isBusy)
-              buildLoading(isInteractionLimitedWhileLoading: false)
-            else
-              const SizedBox()
+                  itemBuilder: (BuildContext context, int index) => _buildSessionCourses(
+                      _sessionName(model.sessionOrder[index], AppIntl.of(context)),
+                      model.coursesBySession[model.sessionOrder[index]])),
+            if (model.isBusy) buildLoading(isInteractionLimitedWhileLoading: false) else const SizedBox()
           ],
         ),
       ),
@@ -69,8 +63,7 @@ class _GradesViewState extends State<GradesView> {
 
   /// Build a session which is the name of the session and one [GradeButton] for
   /// each [Course] in [courses]
-  Widget _buildSessionCourses(String sessionName, List<Course> courses) =>
-      Padding(
+  Widget _buildSessionCourses(String sessionName, List<Course> courses) => Padding(
         padding: const EdgeInsets.fromLTRB(8.0, 8.0, 8.0, 8.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,

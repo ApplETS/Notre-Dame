@@ -2,6 +2,10 @@
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 
+// OTHERS
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:notredame/ui/utils/app_theme.dart';
+
 class GradeCircularProgress extends StatelessWidget {
   final double grade;
   final double average;
@@ -23,8 +27,10 @@ class GradeCircularProgress extends StatelessWidget {
         radius: 80 * ratio,
         lineWidth: 8.0 * ratio,
         percent: average,
-        center: Text('${grade * 100}  %',
-            style: TextStyle(color: Colors.white, fontSize: 16 * ratio)),
+        center: Text(AppIntl.of(context).grades_grade_in_percentage(83.2),
+            style: TextStyle(
+                color: Theme.of(context).brightness == Brightness.light ? Colors.black : Colors.white,
+                fontSize: 16 * ratio)),
         progressColor: Colors.red,
       ),
       progressColor: Colors.green,
