@@ -157,7 +157,10 @@ class SignetsApi {
     final responseBody =
         await _sendSOAPRequest(body, Urls.listEvaluationsOperation);
 
-    if (responseBody.getElement("scoreFinalSur100").innerText.isEmpty) {
+    if (responseBody
+        .getElement(_signetsErrorTag)
+        .innerText
+        .contains(SignetsError.gradesNotAvailable)) {
       throw const ApiException(
           prefix: tag,
           message: "No grades available",
