@@ -45,7 +45,7 @@ class MoreView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<MoreViewModel>.reactive(
-        viewModelBuilder: () => MoreViewModel(intl: AppIntl.of(context)),
+        viewModelBuilder: () => MoreViewModel(),
         builder: (context, model, child) {
           return BaseScaffold(
             appBar: AppBar(

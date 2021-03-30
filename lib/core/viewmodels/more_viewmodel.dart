@@ -2,10 +2,8 @@
 import 'dart:io';
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
-import 'package:notredame/core/utils/cache_exception.dart';
 import 'package:package_info/package_info.dart';
 import 'package:stacked/stacked.dart';
-import 'package:oktoast/oktoast.dart';
 import 'package:image/image.dart' as image;
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -46,15 +44,12 @@ class MoreViewModel extends FutureViewModel {
   /// Used to access Github functionalities
   final GithubApi _githubApi = locator<GithubApi>();
 
-  /// Localization class of the application.
-  final AppIntl _appIntl;
-
   String _appVersion;
 
   /// Get the application version
   String get appVersion => _appVersion;
 
-  MoreViewModel({@required AppIntl intl}) : _appIntl = intl;
+  MoreViewModel();
 
   @override
   Future futureToRun() async {
