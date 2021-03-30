@@ -44,7 +44,6 @@ void main() {
   UserRepositoryMock userRepositoryMock;
   NavigationService navigationService;
   GithubApiMock githubApiMock;
-  AppIntl appIntl;
 
   MoreViewModel viewModel;
 
@@ -96,7 +95,6 @@ void main() {
       navigationService = setupNavigationServiceMock();
       githubApiMock = setupGithubApiMock() as GithubApiMock;
       setupLogger();
-      appIntl = await setupAppIntl();
 
       viewModel = MoreViewModel();
 
