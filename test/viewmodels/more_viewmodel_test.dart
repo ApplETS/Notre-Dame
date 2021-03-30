@@ -4,7 +4,6 @@ import 'dart:typed_data';
 import 'package:flutter/services.dart';
 import 'package:image/image.dart' as image;
 import 'package:flutter_test/flutter_test.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:mockito/mockito.dart';
 
 // SERVICES / MANAGERS
