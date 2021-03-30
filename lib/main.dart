@@ -1,5 +1,6 @@
 // FLUTTER / DART / THIRD-PARTIES
 import 'dart:async';
+import 'package:feature_discovery/feature_discovery.dart';
 import 'package:feedback/feedback.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -58,33 +59,34 @@ class ETSMobile extends StatelessWidget {
       create: (_) => settingsManager,
       child: Consumer<SettingsManager>(builder: (context, model, child) {
         return BetterFeedback(
-          localeOverride: model.locale,
-          child: OKToast(
-            backgroundColor: Colors.grey,
-            duration: const Duration(seconds: 3),
-            position: ToastPosition.bottom,
-            child: MaterialApp(
-              title: 'ÉTS Mobile',
-              theme: AppTheme.lightTheme,
-              darkTheme: AppTheme.darkTheme,
-              themeMode: model.themeMode,
-              localizationsDelegates: const [
-                AppIntl.delegate,
-                GlobalMaterialLocalizations.delegate,
-                GlobalWidgetsLocalizations.delegate,
-                GlobalCupertinoLocalizations.delegate,
-              ],
-              locale: model.locale,
-              supportedLocales: AppIntl.supportedLocales,
-              navigatorKey: locator<NavigationService>().navigatorKey,
-              navigatorObservers: [
-                locator<AnalyticsService>().getAnalyticsObserver(),
-              ],
-              home: StartUpView(),
-              onGenerateRoute: AppRouter.generateRoute,
-            ),
-          ),
-        );
+            localeOverride: model.locale,
+            child: OKToast(
+              backgroundColor: Colors.grey,
+              duration: const Duration(seconds: 3),
+              position: ToastPosition.bottom,
+              child: FeatureDiscovery(
+                child: MaterialApp(
+                  title: 'ÉTS Mobile',
+                  theme: AppTheme.lightTheme,
+                  darkTheme: AppTheme.darkTheme,
+                  themeMode: model.themeMode,
+                  localizationsDelegates: const [
+                    AppIntl.delegate,
+                    GlobalMaterialLocalizations.delegate,
+                    GlobalWidgetsLocalizations.delegate,
+                    GlobalCupertinoLocalizations.delegate,
+                  ],
+                  locale: model.locale,
+                  supportedLocales: AppIntl.supportedLocales,
+                  navigatorKey: locator<NavigationService>().navigatorKey,
+                  navigatorObservers: [
+                    locator<AnalyticsService>().getAnalyticsObserver(),
+                  ],
+                  home: StartUpView(),
+                  onGenerateRoute: AppRouter.generateRoute,
+                ),
+              ),
+            ));
       }),
     );
   }

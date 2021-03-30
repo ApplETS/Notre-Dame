@@ -66,7 +66,8 @@ class _SecurityViewState extends State<SecurityView> {
                   child: InkWell(
                     splashColor: Colors.red.withAlpha(50),
                     onTap: () => Utils.launchURL(
-                            'tel:${AppIntl.of(context).security_emergency_number}', AppIntl.of(context))
+                            'tel:${AppIntl.of(context).security_emergency_number}',
+                            AppIntl.of(context))
                         .catchError((error) {
                       ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(content: Text(error.toString())));
@@ -79,12 +80,16 @@ class _SecurityViewState extends State<SecurityView> {
                     ),
                   ),
                 ),
-                ListTile(
-                  leading: const Icon(Icons.phone, size: 30),
-                  title:
-                      Text(AppIntl.of(context).security_emergency_intern_call),
-                  subtitle: Text(
-                      AppIntl.of(context).security_emergency_intern_number),
+                Card(
+                  elevation: 0,
+                  color: Colors.transparent,
+                  child: ListTile(
+                    leading: const Icon(Icons.phone, size: 30),
+                    title: Text(
+                        AppIntl.of(context).security_emergency_intern_call),
+                    subtitle: Text(
+                        AppIntl.of(context).security_emergency_intern_number),
+                  ),
                 ),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
@@ -99,27 +104,30 @@ class _SecurityViewState extends State<SecurityView> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: List.generate(
                       model.emergencyProcedureList.length,
-                      (index) => TextButton(
-                        onPressed: () => Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => EmergencyView(
-                                    model.emergencyProcedureList[index].title,
-                                    model.emergencyProcedureList[index]
-                                        .detail))),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(vertical: 16.0),
-                              child: Text(
-                                model.emergencyProcedureList[index].title,
-                                style: const TextStyle(fontSize: 18),
+                      (index) => Card(
+                        child: InkWell(
+                          splashColor: Colors.red.withAlpha(50),
+                          onTap: () => Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => EmergencyView(
+                                      model.emergencyProcedureList[index].title,
+                                      model.emergencyProcedureList[index]
+                                          .detail))),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.only(
+                                    top: 16.0, bottom: 16.0, left: 16.0),
+                                child: Text(
+                                  model.emergencyProcedureList[index].title,
+                                  style: const TextStyle(fontSize: 18),
+                                ),
                               ),
-                            ),
-                            const Icon(Icons.arrow_forward_ios),
-                          ],
+                              const Icon(Icons.arrow_forward_ios),
+                            ],
+                          ),
                         ),
                       ),
                     ),
