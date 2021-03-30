@@ -59,6 +59,7 @@ dependencies:
   google_maps_flutter: ^2.0.1
   github: ^7.0.4
   package_info: ^2.0.0
+  feature_discovery: ^0.13.0+2
   path_provider: ^2.0.1
   rive: ^0.6.8
   
