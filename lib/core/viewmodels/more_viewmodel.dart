@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
 import 'package:feedback/feedback.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:package_info/package_info.dart';
 import 'package:stacked/stacked.dart';
@@ -11,6 +12,7 @@ import 'package:github/github.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:image/image.dart' as image;
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_config/flutter_config.dart';
 
 // MANAGER
 import 'package:notredame/core/managers/cache_manager.dart';
@@ -82,8 +84,13 @@ class MoreViewModel extends FutureViewModel {
         image.copyResize(image.decodeImage(feedbackScreenshot), width: 307)));
 
     /// Create a GitHub Client
-    const String githubApiToken = String.fromEnvironment('GITHUB_API_TOKEN');
-    final github = GitHub(auth: Authentication.withToken(githubApiToken));
+    String _githubApiToken;
+    if (kDebugMode) {
+      _githubApiToken = FlutterConfig.get('GITHUB_API_TOKEN').toString();
+    } else {
+      _githubApiToken = const String.fromEnvironment('GITHUB_API_TOKEN');
+    }
+    final github = GitHub(auth: Authentication.withToken(_githubApiToken));
 
     _uploadFileToGithub(github, file);
 
