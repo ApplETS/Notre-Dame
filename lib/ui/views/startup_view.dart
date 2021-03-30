@@ -1,10 +1,12 @@
 // FLUTTER / DART / THIRD-PARTIES
 import 'package:flutter/material.dart';
-import 'package:notredame/ui/utils/app_theme.dart';
 import 'package:stacked/stacked.dart';
 
 // VIEW MODEL
 import 'package:notredame/core/viewmodels/startup_viewmodel.dart';
+
+// OTHER
+import 'package:notredame/ui/utils/app_theme.dart';
 
 class StartUpView extends StatelessWidget {
   @override

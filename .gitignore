@@ -11,6 +11,14 @@
 .pub-cache/
 .pub/
 build/
+
+# Flutter localization generated files
+lib/generated/
+app_untranslated_messages.yaml
+
+# Flutter test
+test/**/failures/
+
 # TODO: Commented until https://github.com/localizely/intl_utils/issues/26 is resolved. For now, please use the intl plugin for IDEA or VS Code
 #lib/generated/
 
@@ -26,6 +34,9 @@ assets/certificates/
 **/android/gradlew.bat
 **/android/local.properties
 **/android/**/GeneratedPluginRegistrant.java
+
+# VS Code related
+.vscode/
 
 # iOS/XCode related
 **/ios/**/*.mode1v3
