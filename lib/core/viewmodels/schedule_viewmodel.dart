@@ -1,5 +1,5 @@
 // FLUTTER / DART / THIRD-PARTIES
-import 'package:oktoast/oktoast.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:stacked/stacked.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:flutter/material.dart';
@@ -36,7 +36,8 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
   DateTime selectedDate = DateTime.now();
 
   ScheduleViewModel({@required AppIntl intl, DateTime initialSelectedDate})
-      : _appIntl = intl, selectedDate = initialSelectedDate ?? DateTime.now();
+      : _appIntl = intl,
+        selectedDate = initialSelectedDate ?? DateTime.now();
 
   /// Activities for the day currently selected
   List<dynamic> get selectedDateEvents =>
@@ -54,9 +55,12 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
             .getCoursesActivities()
             // ignore: return_type_invalid_for_catch_error
             .catchError(onError)
-            .whenComplete(() {
-          // Reload the list of activities
-          coursesActivities;
+            .then((value) {
+          if (value != null) {
+            // Reload the list of activities
+            coursesActivities;
+          }
+        }).whenComplete(() {
           setBusyForObject(isLoadingEvents, false);
         });
         return value;
@@ -65,7 +69,7 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
   @override
   // ignore: type_annotate_public_apis
   void onError(error) {
-    showToast(_appIntl.error);
+    Fluttertoast.showToast(msg: _appIntl.error);
   }
 
   Future loadSettings(CalendarController calendarController) async {

@@ -24,8 +24,10 @@ class _GradesDetailsViewState extends State<GradesDetailsView> {
   double topHeight = 0.0;
 
   @override
-  Widget build(BuildContext context) => ViewModelBuilder<GradesDetailsViewModel>.reactive(
-        viewModelBuilder: () => GradesDetailsViewModel(intl: AppIntl.of(context)),
+  Widget build(BuildContext context) =>
+      ViewModelBuilder<GradesDetailsViewModel>.reactive(
+        viewModelBuilder: () =>
+            GradesDetailsViewModel(intl: AppIntl.of(context)),
         builder: (context, model, child) => RefreshIndicator(
           onRefresh: () async {
             if (await model.refresh()) {
@@ -44,7 +46,8 @@ class _GradesDetailsViewState extends State<GradesDetailsView> {
                   },
                   expandedHeight: 80.0,
                   flexibleSpace: LayoutBuilder(
-                    builder: (BuildContext context, BoxConstraints constraints) {
+                    builder:
+                        (BuildContext context, BoxConstraints constraints) {
                       topHeight = constraints.biggest.height;
                       return FlexibleSpaceBar(
                         centerTitle: true,
@@ -57,7 +60,8 @@ class _GradesDetailsViewState extends State<GradesDetailsView> {
                           alignment: AlignmentDirectional.bottomStart,
                           child: Text(
                             "COM110",
-                            style: TextStyle(fontSize: topHeight < 120 ? 20 : 15),
+                            style:
+                                TextStyle(fontSize: topHeight < 120 ? 20 : 15),
                           ),
                         ),
                       );
@@ -67,16 +71,21 @@ class _GradesDetailsViewState extends State<GradesDetailsView> {
                 SliverToBoxAdapter(
                   child: Center(
                     child: Container(
-                      constraints: BoxConstraints(minWidth: MediaQuery.of(context).size.width, maxHeight: 40),
+                      constraints: BoxConstraints(
+                          minWidth: MediaQuery.of(context).size.width,
+                          maxHeight: 40),
                       decoration: BoxDecoration(
                         color: Theme.of(context).brightness == Brightness.light
                             ? AppTheme.etsLightRed
                             : const Color(0xff222222),
                       ),
-                      child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
-                        getClassInformation("Méthodes de communication"),
-                        getClassInformation(AppIntl.of(context).grades_group_number("03")),
-                      ]),
+                      child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            getClassInformation("Méthodes de communication"),
+                            getClassInformation(
+                                AppIntl.of(context).grades_group_number("03")),
+                          ]),
                     ),
                   ),
                 ),
@@ -96,11 +105,16 @@ class _GradesDetailsViewState extends State<GradesDetailsView> {
                                 child: Column(
                                   children: [
                                     getTotalGrade(
-                                        "85,3/100 (85 %)", AppIntl.of(context).grades_current_rating, Colors.green),
+                                        "85,3/100 (85 %)",
+                                        AppIntl.of(context)
+                                            .grades_current_rating,
+                                        Colors.green),
                                     Padding(
                                       padding: const EdgeInsets.only(top: 15.0),
                                       child: getTotalGrade(
-                                          "75,2/100 (75 %)", AppIntl.of(context).grades_average, AppTheme.etsLightRed),
+                                          "75,2/100 (75 %)",
+                                          AppIntl.of(context).grades_average,
+                                          AppTheme.etsLightRed),
                                     ),
                                   ],
                                 ),
@@ -114,9 +128,14 @@ class _GradesDetailsViewState extends State<GradesDetailsView> {
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: <Widget>[
                         getHeadersSummary(
-                            AppIntl.of(context).grades_median, AppIntl.of(context).grades_grade_in_percentage("83,2")),
-                        getHeadersSummary(AppIntl.of(context).grades_standard_deviation, "4,62"),
-                        getHeadersSummary(AppIntl.of(context).grades_percentile_rank, "85"),
+                            AppIntl.of(context).grades_median,
+                            AppIntl.of(context)
+                                .grades_grade_in_percentage("83,2")),
+                        getHeadersSummary(
+                            AppIntl.of(context).grades_standard_deviation,
+                            "4,62"),
+                        getHeadersSummary(
+                            AppIntl.of(context).grades_percentile_rank, "85"),
                       ],
                     ),
                     Column(
@@ -177,7 +196,8 @@ class _GradesDetailsViewState extends State<GradesDetailsView> {
               padding: const EdgeInsets.only(bottom: 25.0),
               child: Text(
                 number,
-                style: const TextStyle(fontSize: 19, fontWeight: FontWeight.bold),
+                style:
+                    const TextStyle(fontSize: 19, fontWeight: FontWeight.bold),
               ),
             ),
           ],

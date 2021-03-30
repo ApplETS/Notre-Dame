@@ -42,7 +42,7 @@ dependencies:
   xml: ^4.5.1
   url_launcher: ^6.0.2
   enum_to_string: ^1.0.14
-  oktoast: ^3.0.0
+  fluttertoast: ^8.0.3
   flutter_launcher_icons: ^0.8.1
 
   # Widgets

@@ -1,5 +1,6 @@
 // FLUTTER / DART / THIRD-PARTIES
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -80,6 +81,22 @@ RiveAnimationService setupRiveAnimationServiceMock() {
   locator.registerSingleton<RiveAnimationService>(service);
 
   return service;
+}
+
+void setupFlutterToastMock() {
+  const MethodChannel channel = MethodChannel('PonnamKarthik/fluttertoast');
+
+  channel.setMockMethodCallHandler((MethodCall methodCall) async {
+    if(methodCall.method == 'showToast') {
+      return true;
+    }
+  });
+}
+
+void tearDownFlutterToastMock() {
+  const MethodChannel channel = MethodChannel('PonnamKarthik/fluttertoast');
+
+  channel.setMockMethodCallHandler(null);
 }
 
 /// Load a mock of the [NavigationService]

@@ -14,6 +14,7 @@ import '../helpers.dart';
 import '../mock/managers/course_repository_mock.dart';
 
 void main() {
+  TestWidgetsFlutterBinding.ensureInitialized();
   CourseRepository courseRepository;
   AppIntl intl;
   GradesViewModel viewModel;
@@ -68,12 +69,14 @@ void main() {
     setUp(() async {
       courseRepository = setupCourseRepositoryMock();
       intl = await setupAppIntl();
+      setupFlutterToastMock();
 
       viewModel = GradesViewModel(intl: intl);
     });
 
     tearDown(() {
       unregister<CourseRepository>();
+      tearDownFlutterToastMock();
     });
 
     group('futureToRun -', () {
@@ -91,6 +94,7 @@ void main() {
             toReturn: courses);
 
         expect(await viewModel.futureToRun(), coursesBySession);
+
         await untilCalled(courseRepository.courses);
 
         expect(viewModel.coursesBySession, coursesBySession);
