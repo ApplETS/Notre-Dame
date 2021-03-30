@@ -1,5 +1,6 @@
 // FLUTTER / DART / THIRD-PARTIES
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 // MODEL
@@ -17,7 +18,9 @@ class GradeButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Card(
         child: InkWell(
-            onTap: onPressed,
+            onTap: () {
+              onPressed(context);
+            },
             child: SizedBox(
               height: 68,
               width: 68,
@@ -74,7 +77,10 @@ class GradeButton extends StatelessWidget {
     return intl.grades_not_available;
   }
 
-  void onPressed() {
-    GradesDetailsView(course: course);
+  void onPressed(BuildContext context) {
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => GradesDetailsView(course: course)));
   }
 }
