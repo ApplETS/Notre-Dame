@@ -54,7 +54,7 @@ class CourseSummary {
               .getElement("scoreFinalSur100")
               .innerText
               .replaceAll(",", "."))
-          : 0.0,
+          : null,
       currentMarkInPercent: node.getElement("noteACeJour").innerText.isNotEmpty
           ? double.parse(
               node.getElement("noteACeJour").innerText.replaceAll(",", "."))
