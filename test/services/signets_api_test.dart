@@ -540,7 +540,7 @@ void main() {
             model.Evaluation(
                 courseGroup: 'GEN101-01',
                 title: 'Test',
-                correctedEvaluationOutOf: 20,
+                correctedEvaluationOutOf: "20",
                 weight: 10,
                 published: false,
                 teacherMessage: '',
@@ -549,7 +549,7 @@ void main() {
                 courseGroup: 'GEN101-02',
                 title: 'Test',
                 mark: 18,
-                correctedEvaluationOutOf: 20,
+                correctedEvaluationOutOf: "20+10",
                 weight: 10,
                 passMark: 16,
                 standardDeviation: 6.4,
@@ -591,7 +591,7 @@ void main() {
           '<equipe>Test</equipe>'
           '<dateCible>2020-01-01</dateCible> '
           '<note>18</note>'
-          '<corrigeSur>20</corrigeSur>'
+          '<corrigeSur>20+10</corrigeSur>'
           '<ponderation>10</ponderation>'
           '<moyenne>16</moyenne> '
           '<ecartType>6,4</ecartType>'

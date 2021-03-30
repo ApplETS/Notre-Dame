@@ -745,7 +745,7 @@ void main() {
                 model.Evaluation(
                     courseGroup: 'GEN101-02',
                     title: 'Test',
-                    correctedEvaluationOutOf: 20,
+                    correctedEvaluationOutOf: "20",
                     weight: 10,
                     published: false,
                     teacherMessage: '',
@@ -1097,7 +1097,7 @@ void main() {
                   model.Evaluation(
                       courseGroup: 'GEN101-02',
                       title: 'Test',
-                      correctedEvaluationOutOf: 20,
+                      correctedEvaluationOutOf: "20",
                       weight: 10,
                       published: false,
                       teacherMessage: '',
