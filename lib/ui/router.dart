@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 // ROUTES
 import 'package:notredame/core/constants/router_paths.dart';
+import 'package:notredame/core/models/course.dart';
 import 'package:notredame/ui/views/grade_details_view.dart';
 
 // VIEWS
@@ -36,7 +37,7 @@ class AppRouter {
       case RouterPaths.grade_details:
         return PageRouteBuilder(
             settings: RouteSettings(name: routeSettings.name),
-            pageBuilder: (_, __, ___) => GradesDetailsView());
+            pageBuilder: (_, __, ___) => const GradesDetailsView());
       case RouterPaths.ets:
         return PageRouteBuilder(
             settings: RouteSettings(name: routeSettings.name),

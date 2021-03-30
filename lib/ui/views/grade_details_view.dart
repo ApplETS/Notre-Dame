@@ -1,10 +1,11 @@
 // FLUTTER / DART / THIRD-PARTIES
 import 'package:flutter/material.dart';
-import 'package:oktoast/oktoast.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:stacked/stacked.dart';
 
-// VIEW MODEL
+// MODELS
 import 'package:notredame/core/viewmodels/grades_details_viewmodel.dart';
+import 'package:notredame/core/models/course.dart';
 
 // WIDGETS
 import 'package:notredame/ui/widgets/grade_circular_progress.dart';
@@ -16,6 +17,10 @@ import 'package:notredame/ui/utils/app_theme.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class GradesDetailsView extends StatefulWidget {
+  final Course course;
+
+  const GradesDetailsView({this.course});
+
   @override
   _GradesDetailsViewState createState() => _GradesDetailsViewState();
 }
@@ -31,7 +36,7 @@ class _GradesDetailsViewState extends State<GradesDetailsView> {
         builder: (context, model, child) => RefreshIndicator(
           onRefresh: () async {
             if (await model.refresh()) {
-              showToast(AppIntl.of(context).error);
+              Fluttertoast.showToast(msg: AppIntl.of(context).error);
             }
           },
           child: BaseScaffold(
@@ -59,7 +64,7 @@ class _GradesDetailsViewState extends State<GradesDetailsView> {
                         title: Align(
                           alignment: AlignmentDirectional.bottomStart,
                           child: Text(
-                            "COM110",
+                            widget.course.title,
                             style:
                                 TextStyle(fontSize: topHeight < 120 ? 20 : 15),
                           ),
@@ -83,8 +88,8 @@ class _GradesDetailsViewState extends State<GradesDetailsView> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
                             getClassInformation("Méthodes de communication"),
-                            getClassInformation(
-                                AppIntl.of(context).grades_group_number("03")),
+                            getClassInformation(AppIntl.of(context)
+                                .grades_group_number(widget.course.group)),
                           ]),
                     ),
                   ),

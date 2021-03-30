@@ -1,6 +1,5 @@
 // FLUTTER / DART / THIRD-PARTIES
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 // MODEL
@@ -8,6 +7,7 @@ import 'package:notredame/core/models/course.dart';
 
 // CONSTANT
 import 'package:notredame/ui/utils/app_theme.dart';
+import 'package:notredame/ui/views/grade_details_view.dart';
 
 class GradeButton extends StatelessWidget {
   final Course course;
@@ -65,8 +65,8 @@ class GradeButton extends StatelessWidget {
   /// will return [grades_not_available].
   String gradeString(AppIntl intl) {
     if (course.grade == null && course.summary != null) {
-      return intl
-          .grades_grade_in_percentage(course.summary.currentMarkInPercent.round());
+      return intl.grades_grade_in_percentage(
+          course.summary.currentMarkInPercent.round());
     } else if (course.grade != null) {
       return course.grade;
     }
@@ -75,6 +75,6 @@ class GradeButton extends StatelessWidget {
   }
 
   void onPressed() {
-    Fluttertoast.showToast(msg: 'Not available yet');
+    GradesDetailsView(course: course);
   }
 }
