@@ -1,11 +1,9 @@
 // FLUTTER / DART / THIRD-PARTIES
 import 'dart:io';
 import 'dart:typed_data';
-import 'package:flutter/material.dart';
 import 'package:package_info/package_info.dart';
 import 'package:stacked/stacked.dart';
 import 'package:image/image.dart' as image;
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 // MANAGER
 import 'package:notredame/core/managers/cache_manager.dart';

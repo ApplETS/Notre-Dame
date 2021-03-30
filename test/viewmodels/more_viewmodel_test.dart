@@ -98,7 +98,7 @@ void main() {
       setupLogger();
       appIntl = await setupAppIntl();
 
-      viewModel = MoreViewModel(intl: appIntl);
+      viewModel = MoreViewModel();
 
       CourseRepositoryMock.stubCourses(courseRepositoryMock, toReturn: courses);
       CourseRepositoryMock.stubSessions(courseRepositoryMock,
