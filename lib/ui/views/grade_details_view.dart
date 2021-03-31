@@ -31,8 +31,8 @@ class _GradesDetailsViewState extends State<GradesDetailsView> {
   @override
   Widget build(BuildContext context) =>
       ViewModelBuilder<GradesDetailsViewModel>.reactive(
-        viewModelBuilder: () =>
-            GradesDetailsViewModel(intl: AppIntl.of(context)),
+        viewModelBuilder: () => GradesDetailsViewModel(
+            intl: AppIntl.of(context), course: widget.course),
         builder: (context, model, child) => RefreshIndicator(
           onRefresh: () async {
             if (await model.refresh()) {
@@ -64,7 +64,7 @@ class _GradesDetailsViewState extends State<GradesDetailsView> {
                         title: Align(
                           alignment: AlignmentDirectional.bottomStart,
                           child: Text(
-                            widget.course.acronym,
+                            model.course.acronym,
                             style:
                                 TextStyle(fontSize: topHeight < 120 ? 20 : 15),
                           ),
@@ -87,9 +87,9 @@ class _GradesDetailsViewState extends State<GradesDetailsView> {
                       child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
-                            getClassInformation(widget.course.title),
+                            getClassInformation(model.course.title),
                             getClassInformation(AppIntl.of(context)
-                                .grades_group_number(widget.course.group)),
+                                .grades_group_number(model.course.group)),
                           ]),
                     ),
                   ),
@@ -104,20 +104,34 @@ class _GradesDetailsViewState extends State<GradesDetailsView> {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              const GradeCircularProgress(0.85, 0.72, 1.0),
+                              GradeCircularProgress(
+                                  model.course.summary.currentMark / 100,
+                                  model.course.summary.passMark / 100,
+                                  1.0),
                               Padding(
                                 padding: const EdgeInsets.only(left: 55.0),
                                 child: Column(
                                   children: [
                                     getTotalGrade(
-                                        "85,3/100 (85 %)",
+                                        AppIntl.of(context)
+                                            .grades_grade_with_percentage(
+                                                model
+                                                    .course.summary.currentMark,
+                                                100,
+                                                model.course.summary
+                                                    .currentMarkInPercent),
                                         AppIntl.of(context)
                                             .grades_current_rating,
                                         Colors.green),
                                     Padding(
                                       padding: const EdgeInsets.only(top: 15.0),
                                       child: getTotalGrade(
-                                          "75,2/100 (75 %)",
+                                          AppIntl.of(context)
+                                              .grades_grade_with_percentage(
+                                                  model.course.summary.passMark,
+                                                  100,
+                                                  model
+                                                      .course.summary.passMark),
                                           AppIntl.of(context).grades_average,
                                           AppTheme.etsLightRed),
                                     ),
@@ -135,16 +149,20 @@ class _GradesDetailsViewState extends State<GradesDetailsView> {
                         getHeadersSummary(
                             AppIntl.of(context).grades_median,
                             AppIntl.of(context).grades_grade_in_percentage(
-                                gradeString(
-                                    AppIntl.of(context), widget.course))),
+                                model.course.summary.median)),
                         getHeadersSummary(
-                            AppIntl.of(context).grades_standard_deviation, ' '),
+                            AppIntl.of(context).grades_standard_deviation,
+                            model.course.summary.standardDeviation.toString()),
                         getHeadersSummary(
-                            AppIntl.of(context).grades_percentile_rank, ' '),
+                            AppIntl.of(context).grades_percentile_rank,
+                            model.course.summary.percentileRank.toString()),
                       ],
                     ),
                     Column(
-                      children: <Widget>[getEvaluations()],
+                      children: <Widget>[
+                        for (var evaluation in model.course.summary.evaluations)
+                          GradeEvaluationTile(evaluation),
+                      ],
                     ),
                   ]),
                 ),
@@ -166,14 +184,6 @@ class _GradesDetailsViewState extends State<GradesDetailsView> {
         ),
       ),
     );
-  }
-
-  GradeEvaluationTile getEvaluations() {
-    /*widget.course.summary.evaluations.forEach((element) {
-      GradeEvaluationTile('Devoir 1', "10", 0.95, 0.75);
-    });*/
-
-    return const GradeEvaluationTile('Devoir 1', "10", 0.95, 0.75);
   }
 
   Column getTotalGrade(String grade, String recipient, Color color) {
@@ -217,12 +227,12 @@ class _GradesDetailsViewState extends State<GradesDetailsView> {
 
   /// Build the grade string based on the available information. By default
   /// will return [grades_not_available].
-  String gradeString(AppIntl intl, Course grade) {
-    if (grade == null && widget.course.summary != null) {
+  String gradeString(AppIntl intl, Course course) {
+    if (course.grade == null && course.summary != null) {
       return intl.grades_grade_in_percentage(
-          widget.course.summary.currentMarkInPercent.round());
-    } else if (widget.course.grade != null) {
-      return widget.course.grade.toString();
+          course.summary.currentMarkInPercent.round());
+    } else if (course.grade != null) {
+      return course.grade.toString();
     }
 
     return intl.grades_not_available;

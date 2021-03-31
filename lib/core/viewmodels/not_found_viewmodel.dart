@@ -38,7 +38,7 @@ class NotFoundViewModel extends BaseViewModel {
   }
 
   void navigateToDashboard() {
-    _navigationService.pushNamed(RouterPaths.dashboard);
+    _navigationService.pushNamed(RouterPaths.schedule);
   }
 
   Future<void> loadRiveAnimation() async {
