@@ -64,7 +64,7 @@ class _GradesDetailsViewState extends State<GradesDetailsView> {
                         title: Align(
                           alignment: AlignmentDirectional.bottomStart,
                           child: Text(
-                            widget.course.title,
+                            widget.course.acronym,
                             style:
                                 TextStyle(fontSize: topHeight < 120 ? 20 : 15),
                           ),
@@ -87,7 +87,7 @@ class _GradesDetailsViewState extends State<GradesDetailsView> {
                       child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
-                            getClassInformation("Méthodes de communication"),
+                            getClassInformation(widget.course.title),
                             getClassInformation(AppIntl.of(context)
                                 .grades_group_number(widget.course.group)),
                           ]),
@@ -134,25 +134,17 @@ class _GradesDetailsViewState extends State<GradesDetailsView> {
                       children: <Widget>[
                         getHeadersSummary(
                             AppIntl.of(context).grades_median,
-                            AppIntl.of(context)
-                                .grades_grade_in_percentage("83,2")),
+                            AppIntl.of(context).grades_grade_in_percentage(
+                                gradeString(
+                                    AppIntl.of(context), widget.course))),
                         getHeadersSummary(
-                            AppIntl.of(context).grades_standard_deviation,
-                            "4,62"),
+                            AppIntl.of(context).grades_standard_deviation, ' '),
                         getHeadersSummary(
-                            AppIntl.of(context).grades_percentile_rank, "85"),
+                            AppIntl.of(context).grades_percentile_rank, ' '),
                       ],
                     ),
                     Column(
-                      children: const <Widget>[
-                        GradeEvaluationTile('Devoir 1', "10", 0.95, 0.75),
-                        GradeEvaluationTile('Final', "40", 0.72, 0.89),
-                        GradeEvaluationTile('Intra', "40", 0.36, 0.55),
-                        GradeEvaluationTile('Devoir 2', "10", 0.15, 0.68),
-                        GradeEvaluationTile('Devoir 3', "10", 0.96, 0.48),
-                        GradeEvaluationTile('Quiz 1', "10", 0.89, 0.98),
-                        GradeEvaluationTile('Quiz 2', "10", 0.67, 0.36),
-                      ],
+                      children: <Widget>[getEvaluations()],
                     ),
                   ]),
                 ),
@@ -167,9 +159,21 @@ class _GradesDetailsViewState extends State<GradesDetailsView> {
       alignment: Alignment.centerLeft,
       child: Padding(
         padding: const EdgeInsets.only(left: 15.0),
-        child: Text(info, style: const TextStyle(color: Colors.white)),
+        child: Text(
+          info,
+          style: const TextStyle(color: Colors.white),
+          overflow: TextOverflow.ellipsis,
+        ),
       ),
     );
+  }
+
+  GradeEvaluationTile getEvaluations() {
+    /*widget.course.summary.evaluations.forEach((element) {
+      GradeEvaluationTile('Devoir 1', "10", 0.95, 0.75);
+    });*/
+
+    return const GradeEvaluationTile('Devoir 1', "10", 0.95, 0.75);
   }
 
   Column getTotalGrade(String grade, String recipient, Color color) {
@@ -209,5 +213,18 @@ class _GradesDetailsViewState extends State<GradesDetailsView> {
         ),
       ),
     );
+  }
+
+  /// Build the grade string based on the available information. By default
+  /// will return [grades_not_available].
+  String gradeString(AppIntl intl, Course grade) {
+    if (grade == null && widget.course.summary != null) {
+      return intl.grades_grade_in_percentage(
+          widget.course.summary.currentMarkInPercent.round());
+    } else if (widget.course.grade != null) {
+      return widget.course.grade.toString();
+    }
+
+    return intl.grades_not_available;
   }
 }

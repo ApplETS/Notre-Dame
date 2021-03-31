@@ -14,19 +14,26 @@ class GradeEvaluationTile extends StatelessWidget {
   final double tempGrade1;
   final double tempAverage2;
 
-  const GradeEvaluationTile(this.title, this.weight, this.tempGrade1, this.tempAverage2);
+  const GradeEvaluationTile(
+      this.title, this.weight, this.tempGrade1, this.tempAverage2);
 
   @override
   Widget build(BuildContext context) => Theme(
-        data: ThemeData().copyWith(dividerColor: Colors.transparent),
+        data: ThemeData().copyWith(
+          dividerColor: Colors.transparent,
+          accentColor: Colors.red,
+          unselectedWidgetColor: Colors.red,
+        ),
         child: Padding(
           padding: const EdgeInsets.all(15.0),
           child: ExpansionTile(
             leading: FractionallySizedBox(
               alignment: Alignment.topCenter,
               heightFactor: 1.2,
-              child: Container(child: LayoutBuilder(builder: (context, constraints) {
-                return GradeCircularProgress(tempGrade1, tempAverage2, constraints.maxHeight / 100);
+              child: Container(
+                  child: LayoutBuilder(builder: (context, constraints) {
+                return GradeCircularProgress(
+                    tempGrade1, tempAverage2, constraints.maxHeight / 100);
               })),
             ),
             title: Column(
@@ -37,26 +44,20 @@ class GradeEvaluationTile extends StatelessWidget {
                         height: 3,
                         fontSize: 15,
                         fontWeight: FontWeight.bold,
-                        color: Theme.of(context).brightness == Brightness.light ? Colors.black : Colors.white)),
+                        color: Theme.of(context).brightness == Brightness.light
+                            ? Colors.black
+                            : Colors.white)),
                 Padding(
                   padding: const EdgeInsets.only(top: 8.0, bottom: 9.0),
                   child: Text(AppIntl.of(context).grades_weight(weight),
                       style: TextStyle(
                           fontSize: 12,
-                          color: Theme.of(context).brightness == Brightness.light ? Colors.black : Colors.white)),
+                          color:
+                              Theme.of(context).brightness == Brightness.light
+                                  ? Colors.black
+                                  : Colors.white)),
                 ),
               ],
-            ),
-            trailing: IconButton(
-              icon: const Padding(
-                padding: EdgeInsets.only(left: 20.0),
-                child: Icon(
-                  Icons.keyboard_arrow_down,
-                  color: AppTheme.etsLightRed,
-                  size: 30,
-                ),
-              ),
-              onPressed: () => {},
             ),
             children: <Widget>[evaluationsSummary(context)],
           ),
@@ -75,7 +76,8 @@ class GradeEvaluationTile extends StatelessWidget {
               getSummary(AppIntl.of(context).grades_median, "4,2"),
               getSummary(AppIntl.of(context).grades_standard_deviation, "0,6"),
               getSummary(AppIntl.of(context).grades_percentile_rank, "79"),
-              getSummary(AppIntl.of(context).grades_target_date, "18 septembre 2020"),
+              getSummary(
+                  AppIntl.of(context).grades_target_date, "18 septembre 2020"),
             ],
           )),
     );
@@ -83,7 +85,7 @@ class GradeEvaluationTile extends StatelessWidget {
 
   Padding getSummary(String title, String grade) {
     return Padding(
-      padding: const EdgeInsets.only(top: 8.0, right: 15.0),
+      padding: const EdgeInsets.only(top: 8.0, right: 15.0, bottom: 4.0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
