@@ -1,5 +1,6 @@
 // FLUTTER / DART / THIRD-PARTIES
 import 'dart:async';
+import 'package:feature_discovery/feature_discovery.dart';
 import 'package:feedback/feedback.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -57,7 +58,8 @@ class _ETSMobileState extends State<ETSMobile> {
   Widget build(BuildContext context) {
     return BetterFeedback(
       localeOverride: _settingsManager.locale,
-      child: MaterialApp(
+      child: FeatureDiscovery(
+        child: MaterialApp(
         title: 'ÉTS Mobile',
         theme: AppTheme.lightTheme,
         darkTheme: AppTheme.darkTheme,
@@ -76,7 +78,7 @@ class _ETSMobileState extends State<ETSMobile> {
         ],
         home: StartUpView(),
         onGenerateRoute: AppRouter.generateRoute,
-      ),
+      ),),
     );
   }
 }
