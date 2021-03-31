@@ -1,6 +1,8 @@
 // FLUTTER / DART / THIRD-PARTIES
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
+
+// CONSTANTS
 import 'package:notredame/core/constants/preferences_flags.dart';
 import 'package:notredame/core/constants/router_paths.dart';
 
@@ -49,25 +51,23 @@ void main() {
 
         verify(navigationService.pushNamed(RouterPaths.dashboard));
       });
-      
-      test('sign in failed redirect to login if Discovery already been completed', () async {
-        UserRepositoryMock.stubSilentAuthenticate(userRepositoryMock,
-            toReturn: false);
 
-        SettingsManagerMock.stubGetString(
-            settingsManager as SettingsManagerMock, PreferencesFlag.welcome, toReturn: 'true');
-            
+      test('sign in failed redirect to login if Discovery already been completed', () async {
+        UserRepositoryMock.stubSilentAuthenticate(userRepositoryMock, toReturn: false);
+
+        SettingsManagerMock.stubGetString(settingsManager as SettingsManagerMock, PreferencesFlag.welcome,
+            toReturn: 'true');
+
         await viewModel.handleStartUp();
 
         verify(navigationService.pushNamed(RouterPaths.login));
       });
 
       test('sign in failed redirect to Choose Language page if Discovery has not been completed', () async {
-        UserRepositoryMock.stubSilentAuthenticate(userRepositoryMock,
-            toReturn: false);
+        UserRepositoryMock.stubSilentAuthenticate(userRepositoryMock, toReturn: false);
 
         await viewModel.handleStartUp();
-        
+
         verify(navigationService.pushNamed(RouterPaths.chooseLanguage));
         verify(settingsManager.setString(PreferencesFlag.welcome, 'true'));
       });
