@@ -83,6 +83,13 @@ class GradesViewModel extends FutureViewModel<Map<String, List<Course>>> {
     sessionOrder.sort((a, b) {
       if (a == b) return 0;
 
+      // When the session is 's.o.' we put the course at the end of the list
+      if(a == "s.o.") {
+        return 1;
+      } else if(b == "s.o.") {
+        return -1;
+      }
+
       final yearA = int.parse(a.substring(1));
       final yearB = int.parse(b.substring(1));
 

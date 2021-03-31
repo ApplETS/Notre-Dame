@@ -88,8 +88,9 @@ class _GradesViewState extends State<GradesView> {
       case 'A':
         return "${intl.session_fall} ${shortName.substring(1)}";
       case 'É':
-      default:
         return "${intl.session_summer} ${shortName.substring(1)}";
+      default:
+        return intl.session_without;
     }
   }
 }
