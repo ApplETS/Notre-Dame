@@ -60,25 +60,26 @@ class _ETSMobileState extends State<ETSMobile> {
       localeOverride: _settingsManager.locale,
       child: FeatureDiscovery(
         child: MaterialApp(
-        title: 'ÉTS Mobile',
-        theme: AppTheme.lightTheme,
-        darkTheme: AppTheme.darkTheme,
-        themeMode: _settingsManager.themeMode,
-        localizationsDelegates: const [
-          AppIntl.delegate,
-          GlobalMaterialLocalizations.delegate,
-          GlobalWidgetsLocalizations.delegate,
-          GlobalCupertinoLocalizations.delegate,
-        ],
-        locale: _settingsManager?.locale,
-        supportedLocales: AppIntl.supportedLocales,
-        navigatorKey: locator<NavigationService>().navigatorKey,
-        navigatorObservers: [
-          locator<AnalyticsService>().getAnalyticsObserver(),
-        ],
-        home: StartUpView(),
-        onGenerateRoute: AppRouter.generateRoute,
-      ),),
+          title: 'ÉTS Mobile',
+          theme: AppTheme.lightTheme,
+          darkTheme: AppTheme.darkTheme,
+          themeMode: _settingsManager.themeMode,
+          localizationsDelegates: const [
+            AppIntl.delegate,
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+            GlobalCupertinoLocalizations.delegate,
+          ],
+          locale: _settingsManager?.locale,
+          supportedLocales: AppIntl.supportedLocales,
+          navigatorKey: locator<NavigationService>().navigatorKey,
+          navigatorObservers: [
+            locator<AnalyticsService>().getAnalyticsObserver(),
+          ],
+          home: StartUpView(),
+          onGenerateRoute: AppRouter.generateRoute,
+        ),
+      ),
     );
   }
 }
