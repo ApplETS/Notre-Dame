@@ -61,6 +61,7 @@ dependencies:
   github: ^7.0.4
   package_info: ^2.0.0
   path_provider: ^1.6.27
+  feature_discovery: ^0.13.0+2
   rive: ^0.6.8
   
 dev_dependencies:

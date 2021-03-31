@@ -55,15 +55,25 @@ void main() {
       numberOfCredits: 3,
       title: 'Cours générique');
 
-  final sessionOrder = ['A2020', 'É2020', 'H2020', 'É2019'];
+  final Course courseWithoutSession = Course(
+      acronym: 'GEN103',
+      group: '01',
+      session: 's.o.',
+      programCode: '999',
+      grade: 'K',
+      numberOfCredits: 3,
+      title: 'Cours générique');
+
+  final sessionOrder = ['A2020', 'É2020', 'H2020', 'É2019', 's.o.'];
   final coursesBySession = {
     'A2020': [courseFall],
     'É2020': [courseSummer],
     'H2020': [courseWinter],
-    'É2019': [courseSummer2]
+    'É2019': [courseSummer2],
+    's.o.': [courseWithoutSession]
   };
 
-  final courses = [courseSummer, courseSummer2, courseWinter, courseFall];
+  final courses = [courseSummer, courseSummer2, courseWinter, courseFall, courseWithoutSession];
 
   group('GradesViewModel -', () {
     setUp(() async {

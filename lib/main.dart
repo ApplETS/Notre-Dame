@@ -1,5 +1,6 @@
 // FLUTTER / DART / THIRD-PARTIES
 import 'dart:async';
+import 'package:feature_discovery/feature_discovery.dart';
 import 'package:feedback/feedback.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -57,25 +58,27 @@ class _ETSMobileState extends State<ETSMobile> {
   Widget build(BuildContext context) {
     return BetterFeedback(
       localeOverride: _settingsManager.locale,
-      child: MaterialApp(
-        title: 'ÉTS Mobile',
-        theme: AppTheme.lightTheme,
-        darkTheme: AppTheme.darkTheme,
-        themeMode: _settingsManager.themeMode,
-        localizationsDelegates: const [
-          AppIntl.delegate,
-          GlobalMaterialLocalizations.delegate,
-          GlobalWidgetsLocalizations.delegate,
-          GlobalCupertinoLocalizations.delegate,
-        ],
-        locale: _settingsManager?.locale,
-        supportedLocales: AppIntl.supportedLocales,
-        navigatorKey: locator<NavigationService>().navigatorKey,
-        navigatorObservers: [
-          locator<AnalyticsService>().getAnalyticsObserver(),
-        ],
-        home: StartUpView(),
-        onGenerateRoute: AppRouter.generateRoute,
+      child: FeatureDiscovery(
+        child: MaterialApp(
+          title: 'ÉTS Mobile',
+          theme: AppTheme.lightTheme,
+          darkTheme: AppTheme.darkTheme,
+          themeMode: _settingsManager.themeMode,
+          localizationsDelegates: const [
+            AppIntl.delegate,
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+            GlobalCupertinoLocalizations.delegate,
+          ],
+          locale: _settingsManager?.locale,
+          supportedLocales: AppIntl.supportedLocales,
+          navigatorKey: locator<NavigationService>().navigatorKey,
+          navigatorObservers: [
+            locator<AnalyticsService>().getAnalyticsObserver(),
+          ],
+          home: StartUpView(),
+          onGenerateRoute: AppRouter.generateRoute,
+        ),
       ),
     );
   }
