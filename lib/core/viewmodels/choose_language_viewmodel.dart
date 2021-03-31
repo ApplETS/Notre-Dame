@@ -34,15 +34,13 @@ class ChooseLanguageViewModel extends BaseViewModel {
   void changeLanguage(int index) {
     switch (index) {
       case english:
-        _settingsManager.setLocale(AppIntl.supportedLocales.first.languageCode);
+        _settingsManager.setLocale('en');
         languageSelectedIndex = english;
         break;
-
       case french:
-        _settingsManager.setLocale(AppIntl.supportedLocales.last.languageCode);
+        _settingsManager.setLocale('fr');
         languageSelectedIndex = french;
         break;
-
       default:
         throw Exception(
             'No valid language for the index $index passed in parameters');
