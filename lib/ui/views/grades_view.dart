@@ -33,7 +33,7 @@ class _GradesViewState extends State<GradesView> {
               children: [
                 // This widget is here to make this widget a Scrollable. Needed
                 // by the RefreshIndicator
-                SizedBox(height: 0, width: 0,child: ListView()),
+                ListView(),
                 if (model.coursesBySession.isEmpty)
                   Center(
                       child: Text(AppIntl.of(context).grades_msg_no_grades,
