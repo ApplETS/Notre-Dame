@@ -43,7 +43,7 @@ class _GradesViewState extends State<GradesView> {
                           textAlign: TextAlign.center,
                           style: Theme.of(context).textTheme.headline6))
                 else
-                  ListView.builder(
+                  ListView.builder(padding: const EdgeInsets.all(0.0),
                       itemCount: model.coursesBySession.length,
                       itemBuilder: (BuildContext context, int index) =>
                           _buildSessionCourses(

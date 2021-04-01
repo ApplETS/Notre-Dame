@@ -240,8 +240,7 @@ class _GradesDetailsViewState extends State<GradesDetailsView> {
               padding: const EdgeInsets.only(bottom: 25.0),
               child: Text(
                 number,
-                style:
-                    const TextStyle(fontSize: 19, fontWeight: FontWeight.bold),
+                style: const TextStyle(fontSize: 19),
               ),
             ),
           ],

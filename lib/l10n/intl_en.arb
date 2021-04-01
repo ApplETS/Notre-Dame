@@ -63,7 +63,7 @@
   "grades_msg_no_grades": "No grade available\nPull to refresh.",
   "grades_current_rating": "Your grade",
   "grades_average": "Average",
-  "po": "{grade}%",
+  "grades_grade_in_percentage": "{grade}%",
   "@grades_grade_in_percentage": {
     "placeholders": {
       "grade": {}
