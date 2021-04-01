@@ -72,7 +72,7 @@ class _GradesViewState extends State<GradesView> {
             Text(sessionName,
                 style: const TextStyle(
                   fontSize: 25,
-                  color: AppTheme.etsDarkRed,
+                  color: AppTheme.etsLightRed,
                 )),
             const SizedBox(height: 16.0),
             Wrap(
