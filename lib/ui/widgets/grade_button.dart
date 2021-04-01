@@ -64,9 +64,11 @@ class GradeButton extends StatelessWidget {
   /// Build the grade string based on the available information. By default
   /// will return [grades_not_available].
   String gradeString(AppIntl intl) {
-    if (course.grade == null && course.summary != null) {
-      return intl
-          .grades_grade_in_percentage(course.summary.currentMarkInPercent.round());
+    if (course.grade == null &&
+        course.summary != null &&
+        course.summary.markOutOf > 0) {
+      return intl.grades_grade_in_percentage(
+          course.summary.currentMarkInPercent.round());
     } else if (course.grade != null) {
       return course.grade;
     }
