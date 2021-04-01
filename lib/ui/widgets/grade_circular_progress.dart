@@ -33,7 +33,7 @@ class GradeCircularProgress extends StatelessWidget {
                 color: Theme.of(context).brightness == Brightness.light
                     ? Colors.black
                     : Colors.white,
-                fontSize: 16 * ratio)),
+                fontSize: 22 * ratio)),
         progressColor: Colors.red,
       ),
       progressColor: Colors.green,
@@ -47,6 +47,6 @@ class GradeCircularProgress extends StatelessWidget {
       return finalGrade;
     }
 
-    return AppIntl.of(context).grades_grade_in_percentage(studentGrade);
+    return AppIntl.of(context).grades_grade_in_percentage(studentGrade.round());
   }
 }

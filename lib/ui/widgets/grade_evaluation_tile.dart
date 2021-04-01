@@ -43,7 +43,6 @@ class GradeEvaluationTile extends StatelessWidget {
                     style: TextStyle(
                         height: 3,
                         fontSize: 15,
-                        fontWeight: FontWeight.bold,
                         color: Theme.of(context).brightness == Brightness.light
                             ? Colors.black
                             : Colors.white)),
