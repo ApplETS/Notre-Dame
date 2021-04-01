@@ -5,7 +5,6 @@
   "yes": "Oui",
   "no": "Non",
   "retry": "Réessayer",
-  "abbreviation_not_available": "ND",
   "session_fall": "Automne",
   "session_winter": "Hiver",
   "session_summer": "Été",
@@ -59,7 +58,7 @@
   "schedule_no_event": "Aucun évènements à l'horaire.",
 
   "grades_title": "Notes",
-  "grades_msg_no_grades": "Aucune note disponible",
+  "grades_msg_no_grades": "Aucune note disponible\nTirer pour recharger",
   "grades_current_rating": "Votre note",
   "grades_average": "Moyenne",
   "grades_grade_in_percentage": "{grade}%",
@@ -100,6 +99,7 @@
     }
   },
   "grades_error_course_evaluations_not_completed": "Vous n'aurez pas accès à vos notes au cours de la période d'évaluation tant que vous n'aurez pas effectué vos évaluations.",
+  "grades_not_available": "ND",
   
   "profile_title": "Profil",
   "profile_student_status_title": "État du dossier étudiant",

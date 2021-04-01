@@ -18,7 +18,10 @@ class Evaluation {
   final double mark;
 
   /// On how much the evaluation is corrected (ex: 30)
-  final double correctedEvaluationOutOf;
+  final double correctedEvaluationOutOfFormatted;
+
+  /// On how much the evaluation is corrected included bonus (ex: 30,0+20)
+  final String correctedEvaluationOutOf;
 
   /// Weight of the evaluation on the course (ex: 12.5)
   final double weight;
@@ -44,7 +47,7 @@ class Evaluation {
   /// Is this evaluation ignored in the final grade
   final bool ignore;
 
-  double get markInPercent => mark / correctedEvaluationOutOf;
+  double get markInPercent => mark / correctedEvaluationOutOfFormatted;
 
   Evaluation(
       {@required this.courseGroup,
@@ -59,7 +62,11 @@ class Evaluation {
       this.standardDeviation,
       this.median,
       this.percentileRank,
-      this.targetDate});
+      this.targetDate})
+      : correctedEvaluationOutOfFormatted = correctedEvaluationOutOf.isNotEmpty
+            ? double.parse(
+                correctedEvaluationOutOf.split("+").first.replaceAll(",", "."))
+            : 0.0;
 
   /// Used to create a new [Evaluation] instance from a [XMLElement].
   factory Evaluation.fromXml(XmlElement node) => Evaluation(
@@ -68,8 +75,8 @@ class Evaluation {
       mark: node.getElement('note').innerText.isNotEmpty
           ? double.parse(node.getElement('note').innerText.replaceAll(",", "."))
           : null,
-      correctedEvaluationOutOf: double.parse(
-          node.getElement('corrigeSur').innerText.replaceAll(",", ".")),
+      correctedEvaluationOutOf:
+          node.getElement('corrigeSur').innerText.replaceAll(",", "."),
       weight: double.parse(
           node.getElement('ponderation').innerText.replaceAll(",", ".")),
       passMark: node.getElement('moyenne').innerText.isNotEmpty
@@ -99,7 +106,7 @@ class Evaluation {
       courseGroup: map["courseGroup"] as String,
       title: map["title"] as String,
       mark: map["mark"] as double,
-      correctedEvaluationOutOf: map["correctedEvaluationOutOf"] as double,
+      correctedEvaluationOutOf: map["correctedEvaluationOutOf"] as String,
       weight: map["weight"] as double,
       passMark: map["passMark"] as double,
       standardDeviation: map["standardDeviation"] as double,
@@ -138,6 +145,8 @@ class Evaluation {
           targetDate == other.targetDate &&
           mark == other.mark &&
           correctedEvaluationOutOf == other.correctedEvaluationOutOf &&
+          correctedEvaluationOutOfFormatted ==
+              other.correctedEvaluationOutOfFormatted &&
           weight == other.weight &&
           passMark == other.passMark &&
           standardDeviation == other.standardDeviation &&
@@ -154,6 +163,7 @@ class Evaluation {
       targetDate.hashCode ^
       mark.hashCode ^
       correctedEvaluationOutOf.hashCode ^
+      correctedEvaluationOutOfFormatted.hashCode ^
       weight.hashCode ^
       passMark.hashCode ^
       standardDeviation.hashCode ^
@@ -171,6 +181,7 @@ class Evaluation {
         'targetDate: $targetDate, '
         'mark: $mark, '
         'correctedEvaluationOutOf: $correctedEvaluationOutOf, '
+        'correctedEvaluationOutOfFormatted: $correctedEvaluationOutOfFormatted, '
         'weight: $weight, '
         'passMark: $passMark, '
         'standardDeviation: $standardDeviation, '

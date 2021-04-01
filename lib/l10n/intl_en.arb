@@ -5,7 +5,6 @@
   "yes": "Yes",
   "no": "No",
   "retry": "Retry",
-  "abbreviation_not_available": "N/A",
   "session_fall": "Fall",
   "session_winter": "Winter",
   "session_summer": "Summer",
@@ -61,7 +60,7 @@
   "schedule_error_no_event_found": "No event found",
 
   "grades_title": "Grades",
-  "grades_msg_no_grades": "No grade available",
+  "grades_msg_no_grades": "No grade available\nPull to refresh.",
   "grades_current_rating": "Your grade",
   "grades_average": "Average",
   "grades_grade_in_percentage": "{grade}%",
@@ -102,6 +101,7 @@
     }
   },
   "grades_error_course_evaluations_not_completed": "During the evaluation period, you will not be able access your grades if you haven't completed your evaluations.",
+  "grades_not_available": "N/A",
 
   "profile_title": "Profile",
   "profile_student_status_title": "Student Status",
