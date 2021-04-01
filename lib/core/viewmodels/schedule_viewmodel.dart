@@ -35,6 +35,9 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
   /// Day currently selected
   DateTime selectedDate = DateTime.now();
 
+  /// Get current locale
+  Locale get locale => _settingsManager.locale;
+
   ScheduleViewModel({@required AppIntl intl, DateTime initialSelectedDate})
       : _appIntl = intl,
         selectedDate = initialSelectedDate ?? DateTime.now();
