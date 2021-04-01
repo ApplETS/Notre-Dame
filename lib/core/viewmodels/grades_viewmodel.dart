@@ -73,6 +73,7 @@ class GradesViewModel extends FutureViewModel<Map<String, List<Course>>> {
         value.removeWhere((element) => element.acronym == course.acronym);
         // Add the updated version of the course
         value.add(course);
+        value.sort((a, b) => a.acronym.compareTo(b.acronym));
         return value;
       }, ifAbsent: () {
         sessionOrder.add(course.session);
