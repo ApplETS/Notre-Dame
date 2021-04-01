@@ -2,10 +2,12 @@
 import 'dart:async';
 import 'package:feature_discovery/feature_discovery.dart';
 import 'package:feedback/feedback.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+import 'package:flutter_config/flutter_config.dart';
 
 // ROUTER
 import 'package:notredame/ui/router.dart';
@@ -27,7 +29,9 @@ import 'package:notredame/ui/views/startup_view.dart';
 void main() {
   setupLocator();
   WidgetsFlutterBinding.ensureInitialized();
-
+  if (kDebugMode) {
+    FlutterConfig.loadEnvVariables();
+  }
   runZonedGuarded(() {
     runApp(
       ETSMobile(),
