@@ -28,10 +28,10 @@ class GradeEvaluationTile extends StatelessWidget {
               child: Container(
                   child: LayoutBuilder(builder: (context, constraints) {
                 return GradeCircularProgress(
-                    evaluation.mark /
-                        evaluation.correctedEvaluationOutOfFormatted,
-                    evaluation.passMark /
-                        evaluation.correctedEvaluationOutOfFormatted,
+                    getGradeInDecimal(evaluation.mark,
+                        evaluation.correctedEvaluationOutOfFormatted),
+                    getGradeInDecimal(evaluation.passMark,
+                        evaluation.correctedEvaluationOutOfFormatted),
                     constraints.maxHeight / 100);
               })),
             ),
@@ -77,9 +77,8 @@ class GradeEvaluationTile extends StatelessWidget {
                 AppIntl.of(context).grades_grade_with_percentage(
                     evaluation.mark,
                     evaluation.correctedEvaluationOutOf,
-                    ((evaluation.mark /
-                                evaluation.correctedEvaluationOutOfFormatted) *
-                            100)
+                    getGradeInPercentage(evaluation.mark /
+                            evaluation.correctedEvaluationOutOfFormatted)
                         .roundToDouble()),
               ),
               getSummary(
@@ -87,9 +86,8 @@ class GradeEvaluationTile extends StatelessWidget {
                 AppIntl.of(context).grades_grade_with_percentage(
                     evaluation.passMark,
                     evaluation.correctedEvaluationOutOf,
-                    ((evaluation.passMark /
-                                evaluation.correctedEvaluationOutOfFormatted) *
-                            100)
+                    getGradeInPercentage(evaluation.passMark /
+                            evaluation.correctedEvaluationOutOfFormatted)
                         .roundToDouble()),
               ),
               getSummary(AppIntl.of(context).grades_median,
@@ -107,7 +105,7 @@ class GradeEvaluationTile extends StatelessWidget {
 
   String getDate(DateTime targetDate, BuildContext context) {
     if (targetDate != null) {
-      return DateFormat('yyyy-MM-dd').format(targetDate);
+      return DateFormat('dd MMMM yyyy').format(targetDate);
     }
 
     return AppIntl.of(context).grades_not_available;
@@ -125,4 +123,8 @@ class GradeEvaluationTile extends StatelessWidget {
       ),
     );
   }
+
+  double getGradeInDecimal(double grade, double maxGrade) => grade / maxGrade;
+
+  double getGradeInPercentage(double grade) => grade * 100;
 }

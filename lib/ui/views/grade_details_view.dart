@@ -105,9 +105,11 @@ class _GradesDetailsViewState extends State<GradesDetailsView> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               GradeCircularProgress(
-                                  model.course.summary.currentMark / 100,
-                                  model.course.summary.passMark / 100,
-                                  1.0),
+                                  getGradeInDecimal(
+                                      model.course.summary.currentMark),
+                                  getGradeInDecimal(
+                                      model.course.summary.passMark),
+                                  1),
                               Padding(
                                 padding: const EdgeInsets.only(left: 55.0),
                                 child: Column(
@@ -185,6 +187,8 @@ class _GradesDetailsViewState extends State<GradesDetailsView> {
       ),
     );
   }
+
+  double getGradeInDecimal(double grade) => grade / 100;
 
   Column getTotalGrade(String grade, String recipient, Color color) {
     return Column(
