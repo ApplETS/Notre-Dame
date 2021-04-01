@@ -33,14 +33,14 @@ class _GradesViewState extends State<GradesView> {
               children: [
                 // This widget is here to make this widget a Scrollable. Needed
                 // by the RefreshIndicator
-                ListView(),
+                SizedBox(height: 0, width: 0,child: ListView()),
                 if (model.coursesBySession.isEmpty)
                   Center(
                       child: Text(AppIntl.of(context).grades_msg_no_grades,
                           textAlign: TextAlign.center,
                           style: Theme.of(context).textTheme.headline6))
                 else
-                  ListView.builder(
+                  ListView.builder(padding: const EdgeInsets.all(0.0),
                       itemCount: model.coursesBySession.length,
                       itemBuilder: (BuildContext context, int index) =>
                           _buildSessionCourses(
