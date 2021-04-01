@@ -44,30 +44,11 @@ flutter pub get
 ```
 ## Ajouter la variable d'environnement pour GITHUB_API_KEY
 
-- Pour être en mesure de lancer l'application avec votre clé d'API Github, il faut ajouter un attribut au moment de rouler l'application. Pour ce faire, il faut lancer la commande suivante:
-```bash
-flutter pub run --dart-define=SOME_VAR=SOME_VALUE
-    # où SOME_VAR sera remplacé par GITHUB_API_TOKEN
-    # et SOME_VALUE sera remplacé par votre clé d'API
-```
-Vous pouvez ajouter la commande directement à votre configuration:
-* Intellij: 
-![img.png](docs/images/intellij_config.png)
-* VS Code: 
-```json
-{
-  "version": "0.2.0",
-  "configurations": [
-    {
-      "name": "Notre-Dame",
-      "request": "launch",
-      "type": "dart",
-      /* Ajouter la ligne suivante: */
-      "args": ["--dart-define=GITHUB_API_TOKEN=***********************"]
-    }
-  ]
-}
-```
+## Ajouter une variable d'environnement pour une API_KEY
+- Pour ajouter le Google Maps API TOKEN et le GitHub API TOKEN, vous devez renommer le fichier `.env.template` en `.env`.
+Dans le fichier `.env` , vous devez ajouter le Google Maps API TOKEN et le GitHub API TOKEN.
+
+
 ## Git hooks
 
 Vous pouvez trouver dans le dossier `.githooks` l'ensemble des hooks pour git. Pour configurer git afin d'utiliser ce dossier, saisir la commande suivante:

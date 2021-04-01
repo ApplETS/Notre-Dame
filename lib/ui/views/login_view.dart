@@ -1,7 +1,7 @@
 // FLUTTER / DART / THIRD-PARTIES
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:oktoast/oktoast.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:stacked/stacked.dart';
 
 // VIEW MODEL
@@ -117,7 +117,7 @@ class _LoginViewState extends State<LoginView> {
 
                                           setState(() {
                                             if (error.isNotEmpty) {
-                                              showToast(error);
+                                              Fluttertoast.showToast(msg: error);
                                             }
                                             formKey.currentState.reset();
                                           });

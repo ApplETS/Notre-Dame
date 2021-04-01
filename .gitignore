@@ -164,3 +164,6 @@ modules.xml
 
 # End of https://www.toptal.com/developers/gitignore/api/flutter,intellij+all
 .run/
+
+.env
+.env.template

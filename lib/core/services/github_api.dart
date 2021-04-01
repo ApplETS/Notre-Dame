@@ -2,9 +2,11 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
 import 'package:github/github.dart';
 import 'package:package_info/package_info.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:flutter_config/flutter_config.dart';
 
 class GithubApi {
   static const String tag = "GithubApi";
@@ -17,8 +19,12 @@ class GithubApi {
   GitHub _github;
 
   GithubApi() {
-    const String githubApiToken =
-        String.fromEnvironment(_envVariableGithubAPIKey);
+    String githubApiToken;
+    if (kDebugMode) {
+      githubApiToken = FlutterConfig.get(_envVariableGithubAPIKey).toString();
+    } else {
+      githubApiToken = const String.fromEnvironment(_envVariableGithubAPIKey);
+    }
     _github = GitHub(auth: Authentication.withToken(githubApiToken));
   }
 
@@ -27,9 +33,7 @@ class GithubApi {
     _github.repositories.createFile(
         RepositorySlug.full(_repositoryReportSlug),
         CreateFile(
-            path: file.path.replaceFirst(
-                'storage/emulated/0/Android/data/ca.etsmtl.applets.notredame/files/',
-                ''),
+            path: filePath,
             content: base64Encode(file.readAsBytesSync()).toString(),
             message: DateTime.now().toString(),
             committer:
@@ -68,7 +72,7 @@ class GithubApi {
 
   /// Get local storage path
   Future<String> get _localPath async {
-    final directory = await getExternalStorageDirectory();
+    final directory = await getTemporaryDirectory();
 
     return directory.path.replaceFirst('/', '');
   }

@@ -19,15 +19,19 @@ class CourseSummary {
   final double markOutOf;
 
   /// Average mark of the class (ex: 30)
+  /// /!\ CAN BE NULL /!\
   final double passMark;
 
   /// Standard deviation of the class
+  /// /!\ CAN BE NULL /!\
   final double standardDeviation;
 
   /// Median of the class
+  /// /!\ CAN BE NULL /!\
   final double median;
 
   /// Percentile rank of the student on this course
+  /// /!\ CAN BE NULL /!\
   final int percentileRank;
 
   /// All the evaluations for this courses.
@@ -45,23 +49,38 @@ class CourseSummary {
 
   /// Used to create a new [CourseSummary] instance from a [XMLElement].
   factory CourseSummary.fromXmlNode(XmlElement node) => CourseSummary(
-      currentMark: double.parse(
-          node.getElement("scoreFinaleSur100").innerText.replaceAll(",", ".")),
-      currentMarkInPercent: double.parse(
-          node.getElement("noteACeJour").innerText.replaceAll(",", ".")),
-      markOutOf: double.parse(
-          node.getElement("tauxPublication").innerText.replaceAll(",", ".")),
-      passMark: double.parse(
-          node.getElement("moyenneClasse").innerText.replaceAll(",", ".")),
-      standardDeviation: double.parse(
-          node.getElement("ecartTypeClasse").innerText.replaceAll(",", ".")),
-      median: double.parse(
-          node.getElement("medianeClasse").innerText.replaceAll(",", ".")),
-      percentileRank: int.parse(node.getElement("rangCentileClasse").innerText),
-      evaluations: node
-          .findAllElements("ElementEvaluation")
-          .map((node) => Evaluation.fromXml(node))
-          .toList());
+      currentMark: node.getElement("scoreFinalSur100").innerText.isNotEmpty
+          ? double.parse(node
+              .getElement("scoreFinalSur100")
+              .innerText
+              .replaceAll(",", "."))
+          : null,
+      currentMarkInPercent: node.getElement("noteACeJour").innerText.isNotEmpty
+          ? double.parse(
+              node.getElement("noteACeJour").innerText.replaceAll(",", "."))
+          : 0.0,
+      markOutOf: node.getElement("tauxPublication").innerText.isNotEmpty
+          ? double.parse(
+              node.getElement("tauxPublication").innerText.replaceAll(",", "."))
+          : 0.0,
+      passMark: node.getElement("moyenneClasse").innerText.isNotEmpty
+          ? double.parse(
+              node.getElement("moyenneClasse").innerText.replaceAll(",", "."))
+          : null,
+      standardDeviation: node.getElement("ecartTypeClasse").innerText.isNotEmpty
+          ? double.parse(
+              node.getElement("ecartTypeClasse").innerText.replaceAll(",", "."))
+          : null,
+      median: node.getElement("medianeClasse").innerText.isNotEmpty
+          ? double.parse(
+              node.getElement("medianeClasse").innerText.replaceAll(",", "."))
+          : null,
+      percentileRank: node.getElement("rangCentileClasse").innerText.isNotEmpty
+          ? int.parse(
+              node.getElement("rangCentileClasse").innerText.replaceAll(",0", ""))
+          : null,
+      evaluations: node.findAllElements("ElementEvaluation")
+          .map((node) => Evaluation.fromXml(node)).toList());
 
   /// Used to create [CourseSummary] instance from a JSON file
   factory CourseSummary.fromJson(Map<String, dynamic> json) => CourseSummary(

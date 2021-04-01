@@ -1,6 +1,7 @@
 // FLUTTER / DART / THIRD-PARTIES
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:notredame/ui/views/grades_view.dart';
 
 // WIDGET
 import 'package:notredame/ui/views/profile_view.dart';
@@ -15,7 +16,7 @@ class StudentView extends StatefulWidget {
 
 class _StudentViewState extends State<StudentView> {
 
-  List<Widget> tabsView = [Container(), ProfileView()];
+  List<Widget> tabsView = [GradesView(), ProfileView()];
 
   @override
   Widget build(BuildContext context) {

@@ -1,9 +1,13 @@
 // FLUTTER / DART / THIRD-PARTIES
 import 'dart:io';
 import 'dart:typed_data';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:package_info/package_info.dart';
 import 'package:stacked/stacked.dart';
 import 'package:image/image.dart' as image;
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 // MANAGER
 import 'package:notredame/core/managers/cache_manager.dart';
@@ -44,10 +48,12 @@ class MoreViewModel extends FutureViewModel {
 
   String _appVersion;
 
+  final AppIntl _appIntl;
+
   /// Get the application version
   String get appVersion => _appVersion;
 
-  MoreViewModel();
+  MoreViewModel({@required AppIntl intl}) : _appIntl = intl;
 
   @override
   Future futureToRun() async {
@@ -59,6 +65,12 @@ class MoreViewModel extends FutureViewModel {
 
     setBusy(false);
     return true;
+  }
+
+  @override
+  // ignore: type_annotate_public_apis
+  void onError(error) {
+    Fluttertoast.showToast(msg: _appIntl.error);
   }
 
   /// Used to logout user, delete cache, and return to login
@@ -78,6 +90,7 @@ class MoreViewModel extends FutureViewModel {
     // Dismiss alertDialog
     navigationService.pop();
     navigationService.pushNamedAndRemoveUntil(RouterPaths.login);
+    Fluttertoast.showToast(msg: _appIntl.login_msg_logout_success);
   }
 
   /// Create a Github issue with [feedbackText] and the screenshot associated.
@@ -88,9 +101,7 @@ class MoreViewModel extends FutureViewModel {
     await file.writeAsBytes(image.encodePng(
         image.copyResize(image.decodeImage(feedbackScreenshot), width: 307)));
 
-    final String fileName = file.path.replaceFirst(
-        'storage/emulated/0/Android/data/ca.etsmtl.applets.notredame/files/',
-        '');
+    final String fileName = file.path.split('/').last;
 
     // Upload the file and create the issue
     _githubApi.uploadFileToGithub(filePath: fileName, file: file);
@@ -99,5 +110,9 @@ class MoreViewModel extends FutureViewModel {
         feedbackText: feedbackText, fileName: fileName);
 
     file.deleteSync();
+    Fluttertoast.showToast(
+      msg: _appIntl.thank_you_for_the_feedback,
+      gravity: ToastGravity.CENTER,
+    );
   }
 }

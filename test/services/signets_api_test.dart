@@ -2,8 +2,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:logger/logger.dart';
 import 'package:mockito/mockito.dart';
-import 'package:notredame/core/constants/signets_errors.dart';
-import 'package:notredame/core/models/course_summary.dart';
 
 // SERVICE
 import 'package:notredame/core/services/signets_api.dart';
@@ -15,10 +13,12 @@ import 'package:notredame/core/models/course.dart';
 import 'package:notredame/core/models/evaluation.dart' as model;
 import 'package:notredame/core/models/profile_student.dart';
 import 'package:notredame/core/models/program.dart';
+import 'package:notredame/core/models/course_summary.dart';
 
 // CONSTANTS
 import 'package:notredame/core/constants/urls.dart';
 import 'package:notredame/core/utils/api_exception.dart';
+import 'package:notredame/core/constants/signets_errors.dart';
 
 // MOCKS
 import '../helpers.dart';
@@ -260,7 +260,7 @@ void main() {
                 username: username, password: password, session: session),
             throwsA(isInstanceOf<ApiException>()),
             reason:
-            "If the SignetsAPI return an error the service should return the error.");
+                "If the SignetsAPI return an error the service should return the error.");
       });
     });
 
@@ -492,8 +492,8 @@ void main() {
 
         HttpClientMock.stubPost(clientMock, Urls.signetsAPI, stubResponse);
 
-        final result = await service.getCourses(
-            username: username, password: password);
+        final result =
+            await service.getCourses(username: username, password: password);
 
         expect(result, isA<List<Course>>());
         expect(result[0], courseWithGrade);
@@ -540,7 +540,7 @@ void main() {
             model.Evaluation(
                 courseGroup: 'GEN101-01',
                 title: 'Test',
-                correctedEvaluationOutOf: 20,
+                correctedEvaluationOutOf: "20",
                 weight: 10,
                 published: false,
                 teacherMessage: '',
@@ -549,7 +549,7 @@ void main() {
                 courseGroup: 'GEN101-02',
                 title: 'Test',
                 mark: 18,
-                correctedEvaluationOutOf: 20,
+                correctedEvaluationOutOf: "20+10",
                 weight: 10,
                 passMark: 16,
                 standardDeviation: 6.4,
@@ -557,15 +557,16 @@ void main() {
                 percentileRank: 99,
                 published: true,
                 teacherMessage: 'Je suis content',
-                ignore: false, targetDate: DateTime(2020))
+                ignore: false,
+                targetDate: DateTime(2020))
           ]);
 
       const String courseSummaryXml = '<noteACeJour>50</noteACeJour>'
-          '<scoreFinaleSur100>5</scoreFinaleSur100>'
+          '<scoreFinalSur100>5</scoreFinalSur100>'
           '<moyenneClasse>6</moyenneClasse>'
           '<ecartTypeClasse>2,3</ecartTypeClasse>'
           '<medianeClasse>4,5</medianeClasse>'
-          '<rangCentileClasse>99</rangCentileClasse>'
+          '<rangCentileClasse>99,0</rangCentileClasse>'
           '<tauxPublication>10</tauxPublication>'
           '<liste>'
           '<ElementEvaluation>'
@@ -590,7 +591,7 @@ void main() {
           '<equipe>Test</equipe>'
           '<dateCible>2020-01-01</dateCible> '
           '<note>18</note>'
-          '<corrigeSur>20</corrigeSur>'
+          '<corrigeSur>20+10</corrigeSur>'
           '<ponderation>10</ponderation>'
           '<moyenne>16</moyenne> '
           '<ecartType>6,4</ecartType>'
@@ -602,12 +603,24 @@ void main() {
           '</ElementEvaluation>'
           '</liste>';
 
+      const String courseSummaryEmptyXml = '<erreur /> '
+          '<noteACeJour /> '
+          '<scoreFinalSur100 /> '
+          '<moyenneClasse /> '
+          '<ecartTypeClasse /> '
+          '<medianeClasse /> '
+          '<rangCentileClasse /> '
+          '<noteACeJourElementsIndividuels /> '
+          '<noteSur100PourElementsIndividuels /> '
+          '<tauxPublication>0,0</tauxPublication> '
+          '<liste />';
+
       test("right credentials", () async {
         const String username = "username";
         const String password = "password";
 
         final String stubResponse =
-            buildResponse(Urls.listCourseOperation, courseSummaryXml);
+            buildResponse(Urls.listEvaluationsOperation, courseSummaryXml);
 
         HttpClientMock.stubPost(clientMock, Urls.signetsAPI, stubResponse);
 
@@ -618,6 +631,23 @@ void main() {
         expect(result, courseSummary);
       });
 
+      test("Summary is empty", () async {
+        const String username = "username";
+        const String password = "password";
+
+        final String stubResponse =
+            buildResponse(Urls.listEvaluationsOperation, courseSummaryEmptyXml);
+
+        HttpClientMock.stubPost(clientMock, Urls.signetsAPI, stubResponse);
+
+        expect(
+            service.getCourseSummary(
+                username: username, password: password, course: course),
+            throwsA(isInstanceOf<ApiException>()),
+            reason:
+                "If the summary is empty, the service should return an error.");
+      });
+
       // Currently SignetsAPI doesn't have a clear way to indicate which error
       // occurred (no error code, no change of http code, just a text)
       // so for now whatever the error we will throw a generic error
@@ -625,8 +655,8 @@ void main() {
         const String username = "username";
         const String password = "password";
 
-        final String stubResponse =
-            buildErrorResponse(Urls.listCourseOperation, 'An error occurred');
+        final String stubResponse = buildErrorResponse(
+            Urls.listEvaluationsOperation, 'An error occurred');
 
         HttpClientMock.stubPost(clientMock, Urls.signetsAPI, stubResponse);
 

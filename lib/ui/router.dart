@@ -15,6 +15,7 @@ import 'package:notredame/ui/views/settings_view.dart';
 import 'package:notredame/ui/views/student_view.dart';
 import 'package:notredame/ui/views/about_view.dart';
 import 'package:notredame/ui/views/contributors_view.dart';
+import 'package:notredame/ui/views/choose_language_view.dart';
 
 class AppRouter {
   // ignore: missing_return
@@ -57,6 +58,10 @@ class AppRouter {
             transitionDuration: const Duration(seconds: 1),
             settings: RouteSettings(name: routeSettings.name),
             pageBuilder: (_, __, ___) => AboutView());
+      case RouterPaths.chooseLanguage:
+        return MaterialPageRoute(
+            settings: RouteSettings(name: routeSettings.name),
+            builder: (_) => ChooseLanguageView());
       default:
         return PageRouteBuilder(
             settings: RouteSettings(name: routeSettings.name),
