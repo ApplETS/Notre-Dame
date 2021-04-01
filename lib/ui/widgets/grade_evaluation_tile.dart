@@ -28,11 +28,11 @@ class GradeEvaluationTile extends StatelessWidget {
               child: Container(
                   child: LayoutBuilder(builder: (context, constraints) {
                 return GradeCircularProgress(
-                    getGradeInDecimal(evaluation.mark,
-                        evaluation.correctedEvaluationOutOfFormatted),
-                    getGradeInDecimal(evaluation.passMark,
-                        evaluation.correctedEvaluationOutOfFormatted),
-                    constraints.maxHeight / 100);
+                  null,
+                  evaluation.mark ?? 0.0,
+                  evaluation.passMark ?? 0.0,
+                  constraints.maxHeight / 100,
+                );
               })),
             ),
             title: Column(
@@ -77,8 +77,8 @@ class GradeEvaluationTile extends StatelessWidget {
                 AppIntl.of(context).grades_grade_with_percentage(
                     evaluation.mark,
                     evaluation.correctedEvaluationOutOf,
-                    getGradeInPercentage(evaluation.mark /
-                            evaluation.correctedEvaluationOutOfFormatted)
+                    getGradeInPercentage(evaluation.mark ??
+                            0.0 / evaluation.correctedEvaluationOutOfFormatted)
                         .roundToDouble()),
               ),
               getSummary(
@@ -86,8 +86,8 @@ class GradeEvaluationTile extends StatelessWidget {
                 AppIntl.of(context).grades_grade_with_percentage(
                     evaluation.passMark,
                     evaluation.correctedEvaluationOutOf,
-                    getGradeInPercentage(evaluation.passMark /
-                            evaluation.correctedEvaluationOutOfFormatted)
+                    getGradeInPercentage(evaluation.passMark ??
+                            0.0 / evaluation.correctedEvaluationOutOfFormatted)
                         .roundToDouble()),
               ),
               getSummary(AppIntl.of(context).grades_median,

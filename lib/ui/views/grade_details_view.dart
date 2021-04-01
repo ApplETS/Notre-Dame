@@ -95,78 +95,91 @@ class _GradesDetailsViewState extends State<GradesDetailsView> {
                   ),
                 ),
                 SliverList(
-                  delegate: SliverChildListDelegate([
-                    Padding(
-                      padding: const EdgeInsets.all(5.0),
-                      child: Card(
-                        child: Padding(
-                          padding: const EdgeInsets.all(15.0),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              GradeCircularProgress(
-                                  getGradeInDecimal(
-                                      model.course.summary.currentMark),
-                                  getGradeInDecimal(
-                                      model.course.summary.passMark),
-                                  1),
-                              Padding(
-                                padding: const EdgeInsets.only(left: 55.0),
-                                child: Column(
-                                  children: [
-                                    getTotalGrade(
-                                        AppIntl.of(context)
-                                            .grades_grade_with_percentage(
-                                                model
-                                                    .course.summary.currentMark,
-                                                100,
-                                                model.course.summary
-                                                    .currentMarkInPercent),
+                  delegate: SliverChildListDelegate(
+                    [
+                      Padding(
+                        padding: const EdgeInsets.all(5.0),
+                        child: Card(
+                          child: Padding(
+                            padding: const EdgeInsets.all(15.0),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                GradeCircularProgress(
+                                    model.course.grade,
+                                    model.course.summary.currentMark,
+                                    model.course.summary.passMark,
+                                    1.0),
+                                Padding(
+                                  padding: const EdgeInsets.only(left: 55.0),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      getTotalGrade(
+                                        model.course.summary.currentMark,
                                         AppIntl.of(context)
                                             .grades_current_rating,
-                                        Colors.green),
-                                    Padding(
-                                      padding: const EdgeInsets.only(top: 15.0),
-                                      child: getTotalGrade(
-                                          AppIntl.of(context)
-                                              .grades_grade_with_percentage(
-                                                  model.course.summary.passMark,
-                                                  100,
-                                                  model
-                                                      .course.summary.passMark),
+                                        Colors.green,
+                                        context,
+                                      ),
+                                      Padding(
+                                        padding:
+                                            const EdgeInsets.only(top: 15.0),
+                                        child: getTotalGrade(
+                                          model.course.summary.passMark,
                                           AppIntl.of(context).grades_average,
-                                          AppTheme.etsLightRed),
-                                    ),
-                                  ],
+                                          Colors.red,
+                                          context,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: <Widget>[
-                        getHeadersSummary(
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: <Widget>[
+                          getHeadersSummary(
                             AppIntl.of(context).grades_median,
-                            AppIntl.of(context).grades_grade_in_percentage(
-                                model.course.summary.median)),
-                        getHeadersSummary(
+                            validateGrade(
+                              context,
+                              model.course.summary.median.toString(),
+                              AppIntl.of(context).grades_grade_in_percentage(
+                                  model.course.summary.median),
+                            ),
+                          ),
+                          getHeadersSummary(
                             AppIntl.of(context).grades_standard_deviation,
-                            model.course.summary.standardDeviation.toString()),
-                        getHeadersSummary(
+                            validateGrade(
+                              context,
+                              model.course.summary.standardDeviation.toString(),
+                              model.course.summary.standardDeviation.toString(),
+                            ),
+                          ),
+                          getHeadersSummary(
                             AppIntl.of(context).grades_percentile_rank,
-                            model.course.summary.percentileRank.toString()),
-                      ],
-                    ),
-                    Column(
-                      children: <Widget>[
-                        for (var evaluation in model.course.summary.evaluations)
-                          GradeEvaluationTile(evaluation),
-                      ],
-                    ),
-                  ]),
+                            validateGrade(
+                              context,
+                              model.course.summary.percentileRank.toString(),
+                              model.course.summary.percentileRank.toString(),
+                            ),
+                          ),
+                        ],
+                      ),
+                      Column(
+                        children: <Widget>[
+                          for (var evaluation
+                              in model.course.summary.evaluations)
+                            GradeEvaluationTile(evaluation),
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
               ],
             ),
@@ -188,19 +201,27 @@ class _GradesDetailsViewState extends State<GradesDetailsView> {
     );
   }
 
-  double getGradeInDecimal(double grade) => grade / 100;
-
-  Column getTotalGrade(String grade, String recipient, Color color) {
+  Column getTotalGrade(
+      double grade, String recipient, Color color, BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Text(
-          grade,
+          AppIntl.of(context).grades_grade_with_percentage(
+              grade ?? 0.0, 100, grade ?? 0.0 * 100),
           style: TextStyle(color: color, fontWeight: FontWeight.bold),
         ),
         Text(recipient, style: TextStyle(color: color)),
       ],
     );
+  }
+
+  String validateGrade(BuildContext context, String grade, String text) {
+    if (grade == "null") {
+      return AppIntl.of(context).grades_not_available;
+    }
+
+    return text;
   }
 
   Container getHeadersSummary(String title, String number) {
@@ -227,18 +248,5 @@ class _GradesDetailsViewState extends State<GradesDetailsView> {
         ),
       ),
     );
-  }
-
-  /// Build the grade string based on the available information. By default
-  /// will return [grades_not_available].
-  String gradeString(AppIntl intl, Course course) {
-    if (course.grade == null && course.summary != null) {
-      return intl.grades_grade_in_percentage(
-          course.summary.currentMarkInPercent.round());
-    } else if (course.grade != null) {
-      return course.grade.toString();
-    }
-
-    return intl.grades_not_available;
   }
 }

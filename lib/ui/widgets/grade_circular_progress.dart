@@ -6,11 +6,13 @@ import 'package:percent_indicator/percent_indicator.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class GradeCircularProgress extends StatelessWidget {
-  final double grade;
-  final double average;
+  final String finalGrade;
+  final double studentGrade;
+  final double averageGrade;
   final double ratio;
 
-  const GradeCircularProgress(this.grade, this.average, this.ratio);
+  const GradeCircularProgress(
+      this.finalGrade, this.studentGrade, this.averageGrade, this.ratio);
 
   @override
   Widget build(BuildContext context) {
@@ -19,16 +21,14 @@ class GradeCircularProgress extends StatelessWidget {
       animationDuration: 700,
       radius: 100 * ratio,
       lineWidth: 8.0 * ratio,
-      percent: grade,
+      percent: getGradeInDecimals(studentGrade ?? 0.0),
       center: CircularPercentIndicator(
         animation: true,
         animationDuration: 700,
         radius: 80 * ratio,
         lineWidth: 8.0 * ratio,
-        percent: average,
-        center: Text(
-            AppIntl.of(context)
-                .grades_grade_in_percentage((grade * 100).roundToDouble()),
+        percent: getGradeInDecimals(averageGrade ?? 0.0),
+        center: Text(getGrade(context),
             style: TextStyle(
                 color: Theme.of(context).brightness == Brightness.light
                     ? Colors.black
@@ -38,5 +38,15 @@ class GradeCircularProgress extends StatelessWidget {
       ),
       progressColor: Colors.green,
     );
+  }
+
+  double getGradeInDecimals(double grade) => grade / 100;
+
+  String getGrade(BuildContext context) {
+    if (finalGrade != null) {
+      return finalGrade;
+    }
+
+    return AppIntl.of(context).grades_grade_in_percentage(studentGrade);
   }
 }
