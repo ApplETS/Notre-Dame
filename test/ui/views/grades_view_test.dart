@@ -65,7 +65,9 @@ void main() {
       setupNavigationServiceMock();
       courseRepository = setupCourseRepositoryMock();
     });
-
+    tearDown(() {
+      unregister<CourseRepository>();
+    });
     group("golden -", () {
       testWidgets("No grades available", (WidgetTester tester) async {
         // Mock the repository to have 0 courses available
