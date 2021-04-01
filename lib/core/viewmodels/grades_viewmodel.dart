@@ -7,19 +7,13 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 // MANAGER
 import 'package:notredame/core/managers/course_repository.dart';
 
-// SERVICES
-import 'package:notredame/core/services/navigation_service.dart';
-
 // MODEL
 import 'package:notredame/core/models/course.dart';
 
 // OTHER
 import 'package:notredame/locator.dart';
 
-class GradesViewModel extends FutureViewModel<Map<String, List<Course>>> {  
-  /// Used to redirect on the dashboard.
-  final NavigationService navigationService = locator<NavigationService>();
-
+class GradesViewModel extends FutureViewModel<Map<String, List<Course>>> {
   /// Used to get the courses of the student
   final CourseRepository _courseRepository = locator<CourseRepository>();
 
@@ -42,7 +36,7 @@ class GradesViewModel extends FutureViewModel<Map<String, List<Course>>> {
         _buildCoursesBySession(coursesCached);
         // ignore: return_type_invalid_for_catch_error
         _courseRepository.getCourses().catchError(onError).then((value) {
-          if(value != null) {
+          if (value != null) {
             // Update the courses list
             _buildCoursesBySession(_courseRepository.courses);
           }
@@ -91,9 +85,9 @@ class GradesViewModel extends FutureViewModel<Map<String, List<Course>>> {
       if (a == b) return 0;
 
       // When the session is 's.o.' we put the course at the end of the list
-      if(a == "s.o.") {
+      if (a == "s.o.") {
         return 1;
-      } else if(b == "s.o.") {
+      } else if (b == "s.o.") {
         return -1;
       }
 

@@ -72,6 +72,7 @@ class LoginViewModel extends BaseViewModel {
       _navigationService.pushNamed(RouterPaths.schedule);
       return '';
     }
+    
     _password = "";
     setBusy(false);
     notifyListeners();

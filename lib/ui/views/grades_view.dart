@@ -2,9 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:notredame/ui/utils/loading.dart';
 import 'package:stacked/stacked.dart';
-
-// CONSTANTS
-import 'package:notredame/core/constants/router_paths.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 // MODELS
 import 'package:notredame/core/models/course.dart';
@@ -17,7 +15,6 @@ import 'package:notredame/ui/widgets/grade_button.dart';
 
 // OTHER
 import 'package:notredame/ui/utils/app_theme.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class GradesView extends StatefulWidget {
   @override
@@ -43,7 +40,8 @@ class _GradesViewState extends State<GradesView> {
                           textAlign: TextAlign.center,
                           style: Theme.of(context).textTheme.headline6))
                 else
-                  ListView.builder(padding: const EdgeInsets.all(0.0),
+                  ListView.builder(
+                      padding: const EdgeInsets.all(0.0),
                       itemCount: model.coursesBySession.length,
                       itemBuilder: (BuildContext context, int index) =>
                           _buildSessionCourses(

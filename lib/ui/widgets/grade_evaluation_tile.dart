@@ -74,27 +74,31 @@ class GradeEvaluationTile extends StatelessWidget {
               getSummary(
                 AppIntl.of(context).grades_grade,
                 AppIntl.of(context).grades_grade_with_percentage(
-                    evaluation.mark,
-                    evaluation.correctedEvaluationOutOf,
-                    getGradeInPercentage(evaluation.mark ??
-                            0.0 / evaluation.correctedEvaluationOutOfFormatted)
-                        .roundToDouble()),
+                    evaluation.mark ?? 0.0,
+                    evaluation.correctedEvaluationOutOf ?? 0.0,
+                    getGradeInPercentage(evaluation.mark,
+                            evaluation.correctedEvaluationOutOfFormatted)
+                        .round()),
               ),
               getSummary(
-                AppIntl.of(context).grades_grade,
+                AppIntl.of(context).grades_average,
                 AppIntl.of(context).grades_grade_with_percentage(
-                    evaluation.passMark,
-                    evaluation.correctedEvaluationOutOf,
-                    getGradeInPercentage(evaluation.passMark ??
-                            0.0 / evaluation.correctedEvaluationOutOfFormatted)
-                        .roundToDouble()),
+                    evaluation.passMark ?? 0.0,
+                    evaluation.correctedEvaluationOutOf ?? 0.0,
+                    getGradeInPercentage(evaluation.passMark,
+                            evaluation.correctedEvaluationOutOfFormatted)
+                        .round()),
               ),
               getSummary(AppIntl.of(context).grades_median,
-                  evaluation.median.toString()),
-              getSummary(AppIntl.of(context).grades_standard_deviation,
-                  evaluation.standardDeviation.toString()),
-              getSummary(AppIntl.of(context).grades_percentile_rank,
-                  evaluation.percentileRank.toString()),
+                  validateResult(context, evaluation.median.toString())),
+              getSummary(
+                  AppIntl.of(context).grades_standard_deviation,
+                  validateResult(
+                      context, evaluation.standardDeviation.toString())),
+              getSummary(
+                  AppIntl.of(context).grades_percentile_rank,
+                  validateResult(
+                      context, evaluation.percentileRank.toString())),
               getSummary(AppIntl.of(context).grades_target_date,
                   getDate(evaluation.targetDate, context)),
             ],
@@ -125,5 +129,19 @@ class GradeEvaluationTile extends StatelessWidget {
 
   double getGradeInDecimal(double grade, double maxGrade) => grade / maxGrade;
 
-  double getGradeInPercentage(double grade) => grade * 100;
+  double getGradeInPercentage(double grade, double maxGrade) {
+    if (grade == null || maxGrade == null) {
+      return 0.0;
+    }
+
+    return (grade / maxGrade) * 100;
+  }
+
+  String validateResult(BuildContext context, String result) {
+    if (result != "null") {
+      return result;
+    }
+
+    return AppIntl.of(context).grades_not_available;
+  }
 }
