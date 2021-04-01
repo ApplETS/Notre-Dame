@@ -43,6 +43,11 @@ chmod +x ./scripts/decrypt.sh
 flutter pub get
 ```
 
+## Ajouter une variable d'environnement pour une API_KEY
+- Pour ajouter le Google Maps API TOKEN et le GitHub API TOKEN, vous devez renommer le fichier `.env.template` en `.env`.
+Dans le fichier `.env` , vous devez ajouter le Google Maps API TOKEN et le GitHub API TOKEN.
+
+
 ## Git hooks
 
 Vous pouvez trouver dans le dossier `.githooks` l'ensemble des hooks pour git. Pour configurer git afin d'utiliser ce dossier, saisir la commande suivante:
