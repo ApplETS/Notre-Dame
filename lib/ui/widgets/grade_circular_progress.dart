@@ -22,12 +22,14 @@ class GradeCircularProgress extends StatelessWidget {
       radius: 100 * ratio,
       lineWidth: 8.0 * ratio,
       percent: getGradeInDecimals(studentGrade ?? 0.0),
+      circularStrokeCap: CircularStrokeCap.round,
       center: CircularPercentIndicator(
         animation: true,
         animationDuration: 700,
         radius: 80 * ratio,
         lineWidth: 8.0 * ratio,
         percent: getGradeInDecimals(averageGrade ?? 0.0),
+        circularStrokeCap: CircularStrokeCap.round,
         center: Text(getGrade(context),
             style: TextStyle(
                 color: Theme.of(context).brightness == Brightness.light
@@ -47,6 +49,11 @@ class GradeCircularProgress extends StatelessWidget {
       return finalGrade;
     }
 
-    return AppIntl.of(context).grades_grade_in_percentage(studentGrade.round());
+    if (studentGrade > 0.0) {
+      return AppIntl.of(context)
+          .grades_grade_in_percentage(studentGrade.round());
+    }
+
+    return AppIntl.of(context).grades_not_available;
   }
 }
