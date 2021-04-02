@@ -17,6 +17,7 @@ import 'package:notredame/core/models/course_activity.dart';
 import 'package:notredame/core/models/mon_ets_user.dart';
 import 'package:notredame/core/models/course.dart';
 import 'package:notredame/core/models/course_summary.dart';
+import 'package:notredame/core/models/evaluation.dart' as model;
 
 // UTILS
 import 'package:notredame/core/utils/api_exception.dart';
@@ -716,6 +717,47 @@ void main() {
           grade: 'C+',
           numberOfCredits: 3,
           title: 'Cours générique');
+      final Course courseWithGradeDuplicate = Course(
+          acronym: 'GEN101',
+          group: '02',
+          session: 'É2020',
+          programCode: '999',
+          grade: 'C+',
+          numberOfCredits: 3,
+          title: 'Cours générique');
+
+      final Course courseWithoutGrade = Course(
+          acronym: 'GEN101',
+          group: '02',
+          session: 'H2020',
+          programCode: '999',
+          numberOfCredits: 3,
+          title: 'Cours générique',
+          summary: CourseSummary(
+              currentMark: 5,
+              currentMarkInPercent: 50,
+              markOutOf: 10,
+              passMark: 6,
+              standardDeviation: 2.3,
+              median: 4.5,
+              percentileRank: 99,
+              evaluations: [
+                model.Evaluation(
+                    courseGroup: 'GEN101-02',
+                    title: 'Test',
+                    correctedEvaluationOutOf: "20",
+                    weight: 10,
+                    published: false,
+                    teacherMessage: '',
+                    ignore: false)
+              ]));
+      final Course courseWithoutGradeAndSummary = Course(
+          acronym: 'GEN101',
+          group: '02',
+          session: 'H2020',
+          programCode: '999',
+          numberOfCredits: 3,
+          title: 'Cours générique');
 
       const String username = "username";
       const String password = "password";
@@ -753,13 +795,24 @@ void main() {
 
       test("Courses are only loaded from cache", () async {
         expect(manager.courses, isNull);
-        CacheManagerMock.stubGet(cacheManager as CacheManagerMock,
-            CourseRepository.coursesCacheKey, jsonEncode([courseWithGrade]));
+        CacheManagerMock.stubGet(
+            cacheManager as CacheManagerMock,
+            CourseRepository.coursesCacheKey,
+            jsonEncode([
+              courseWithGrade,
+              courseWithoutGrade,
+              courseWithoutGradeAndSummary
+            ]));
         final results = await manager.getCourses(fromCacheOnly: true);
 
         expect(results, isInstanceOf<List<Course>>());
-        expect(results, [courseWithGrade]);
-        expect(manager.courses, [courseWithGrade],
+        expect(results, [
+          courseWithGrade,
+          courseWithoutGrade,
+          courseWithoutGradeAndSummary
+        ]);
+        expect(manager.courses,
+            [courseWithGrade, courseWithoutGrade, courseWithoutGradeAndSummary],
             reason: 'The courses list should now be loaded.');
 
         verifyInOrder([cacheManager.get(CourseRepository.coursesCacheKey)]);
@@ -779,8 +832,10 @@ void main() {
             numberOfCredits: 3,
             title: 'Cours générique');
 
-        CacheManagerMock.stubGet(cacheManager as CacheManagerMock,
-            CourseRepository.coursesCacheKey, jsonEncode([courseWithGrade]));
+        CacheManagerMock.stubGet(
+            cacheManager as CacheManagerMock,
+            CourseRepository.coursesCacheKey,
+            jsonEncode([courseWithGrade, courseWithGradeDuplicate]));
         SignetsApiMock.stubGetCourses(signetsApi as SignetsApiMock, username,
             coursesToReturn: [courseFetched]);
 
@@ -788,8 +843,8 @@ void main() {
         final results = await manager.getCourses();
 
         expect(results, isInstanceOf<List<Course>>());
-        expect(results, [courseFetched]);
-        expect(manager.courses, [courseFetched],
+        expect(results, [courseFetched, courseWithGradeDuplicate]);
+        expect(manager.courses, [courseFetched, courseWithGradeDuplicate],
             reason: 'The courses list should now be loaded.');
 
         verifyInOrder([
@@ -797,8 +852,8 @@ void main() {
           userRepository.getPassword(),
           userRepository.monETSUser,
           signetsApi.getCourses(username: username, password: password),
-          cacheManager.update(
-              CourseRepository.coursesCacheKey, jsonEncode([courseFetched]))
+          cacheManager.update(CourseRepository.coursesCacheKey,
+              jsonEncode([courseFetched, courseWithGradeDuplicate]))
         ]);
       });
 
@@ -1038,7 +1093,16 @@ void main() {
                 standardDeviation: 2.3,
                 median: 4.5,
                 percentileRank: 99,
-                evaluations: []));
+                evaluations: [
+                  model.Evaluation(
+                      courseGroup: 'GEN101-02',
+                      title: 'Test',
+                      correctedEvaluationOutOf: "20",
+                      weight: 10,
+                      published: false,
+                      teacherMessage: '',
+                      ignore: false)
+                ]));
       });
 
       test("CourseSummary is fetched and cache is updated", () async {

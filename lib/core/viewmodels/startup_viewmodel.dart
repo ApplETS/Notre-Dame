@@ -1,21 +1,23 @@
 // FLUTTER / DART / THIRD-PARTIES
 import 'package:stacked/stacked.dart';
 
-// SERVICE
+// SERVICES / MANAGER
 import 'package:notredame/core/managers/user_repository.dart';
-import 'package:notredame/core/services/navigation_service.dart';
+import 'package:notredame/core/services/navigation_service.dart'; // MANAGER
+import 'package:notredame/core/managers/settings_manager.dart';
 
 // MANAGER
 import 'package:notredame/core/managers/settings_manager.dart';
 
 // CONSTANTS
 import 'package:notredame/core/constants/preferences_flags.dart';
+import 'package:notredame/core/constants/preferences_flags.dart';
 
 // OTHER
 import 'package:notredame/locator.dart';
 import 'package:notredame/core/constants/router_paths.dart';
 
-class StartUpViewModel extends BaseViewModel {  
+class StartUpViewModel extends BaseViewModel {
   /// Manage the settings
   final SettingsManager _settingsManager = locator<SettingsManager>();
 

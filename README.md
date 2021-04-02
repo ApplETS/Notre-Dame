@@ -43,15 +43,8 @@ flutter pub get
 ```
 
 ## Add environment variable for API_KEY
-
-- In order to be able to run the app with the GitHub API token, you need to add an attribute when running the app. To do that run the following command:
-```
-flutter pub run --dart-define=SOME_VAR=SOME_VALUE
-    # where SOME_VAR will be replaced with GITHUB_API_TOKEN
-    # and SOME_VALUE will be the private token
-```
-You can add that command directly to your run configuration:
-* Intellij: ![img.png](docs/images/img.png)
+- To add the Google Maps API TOKEN and the GitHub API TOKEN, you need to rename the file `.env.template` into `.env`.
+In the `.env` file, you need to paste the Google Maps API TOKEN and the GitHub API TOKEN.
 
 ## Git hooks
 

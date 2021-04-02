@@ -3,20 +3,36 @@ import 'package:feature_discovery/feature_discovery.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
+// MANAGER
+import 'package:notredame/core/managers/course_repository.dart';
+
 // VIEW
 import 'package:notredame/ui/views/student_view.dart';
 import 'package:notredame/ui/widgets/base_scaffold.dart';
 
 // HELPERS
 import '../../helpers.dart';
+import '../../mock/managers/course_repository_mock.dart';
 
 void main() {
+  CourseRepository courseRepository;
+
   group('StudentView - ', () {
     setUp(() async {
       setupNavigationServiceMock();
+      courseRepository = setupCourseRepositoryMock();
+
+      CourseRepositoryMock.stubCourses(
+          courseRepository as CourseRepositoryMock);
+      CourseRepositoryMock.stubGetCourses(
+          courseRepository as CourseRepositoryMock, fromCacheOnly: false);
+      CourseRepositoryMock.stubGetCourses(
+          courseRepository as CourseRepositoryMock, fromCacheOnly: true);
     });
 
-    tearDown(() {});
+    tearDown(() {
+      unregister<CourseRepository>();
+    });
 
     group('UI - ', () {
       testWidgets('has Tab bar and sliverAppBar and BaseScaffold',

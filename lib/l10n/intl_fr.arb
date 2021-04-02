@@ -5,7 +5,6 @@
   "yes": "Oui",
   "no": "Non",
   "retry": "Réessayer",
-  "abbreviation_not_available": "ND",
   "session_fall": "Automne",
   "session_winter": "Hiver",
   "session_summer": "Été",
@@ -56,10 +55,10 @@
   "schedule_settings_starting_weekday_friday": "Vendredi",
   "schedule_settings_starting_weekday_saturday": "Samedi",
   "schedule_settings_starting_weekday_sunday": "Dimanche",
-  "schedule_no_event": "Aucun évènements à l'horaire.",
+  "schedule_no_event": "Aucun évènement à l'horaire.",
 
   "grades_title": "Notes",
-  "grades_msg_no_grades": "Aucune note disponible",
+  "grades_msg_no_grades": "Aucune note disponible\nTirer pour recharger",
   "grades_current_rating": "Votre note",
   "grades_average": "Moyenne",
   "grades_grade_in_percentage": "{grade}%",
@@ -100,6 +99,7 @@
     }
   },
   "grades_error_course_evaluations_not_completed": "Vous n'aurez pas accès à vos notes au cours de la période d'évaluation tant que vous n'aurez pas effectué vos évaluations.",
+  "grades_not_available": "ND",
   
   "profile_title": "Profil",
   "profile_student_status_title": "État du dossier étudiant",
@@ -210,5 +210,16 @@
       "pageName": {}
     }
   },
-  "go_to_dashboard": "Retour à l'accueil"
+  "go_to_dashboard": "Retour à l'accueil",
+
+  "discovery_navbar_dashboard_page_title": "Accueil",
+  "discovery_navbar_dashboard_page_details": "L’accueil regroupe les informations les plus fréquemment consultées, sous forme de cartes. En gardant votre doigt sur la carte, vous pouvez les déplacer vers le haut et vers le bas, et glisser votre doigt vers la gauche pour la supprimer.",
+  "discovery_navbar_schedule_page_title": "Horaire",
+  "discovery_navbar_schedule_page_details": "L'horaire vous permet de visualiser les évènements de votre calendrier scolaire. Dans les paramètres, vous pouvez sélectionner le format du calendrier.",
+  "discovery_navbar_student_page_title": "Étudiant",
+  "discovery_navbar_student_page_details": "Cette page vous permet d'avoir accès à vos informations étudiantes. Elle est séparée en deux sections distinctes soit note et profile. \nLa section note vous permet d'avoir accès aux notes de chacun des cours auxquels vous êtes inscrit, ainsi que celles des quatre dernières sessions. \nLa section Profil vous donne accès à votre solde et vos informations générales.",
+  "discovery_navbar_ets_page_title": "ÉTS",
+  "discovery_navbar_ets_page_details": "Cette page vous permet de consulter rapidement tous les liens importants de l’ÉTS, tels que Moodle et MonÉTS.",
+  "discovery_navbar_more_page_title": "Plus",
+  "discovery_navbar_more_page_details": "Cette page vous permet d'avoir accès aux options supplémentaires de l'application."
 }

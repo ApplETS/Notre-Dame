@@ -17,7 +17,7 @@ class Urls {
   static const String listClassScheduleOperation = "lireHoraireDesSeances";
   static const String listSessionsOperation = "listeSessions";
   static const String listCourseOperation = "listeCours";
-  static const String listEvaluationsOperation = "listeCours";
+  static const String listEvaluationsOperation = "listeElementsEvaluation";
 
   // Urls related to club websites
   static const String clubWebsite = "https://clubapplets.ca/";

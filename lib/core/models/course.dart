@@ -64,8 +64,8 @@ class Course {
       programCode: map['programCode'] as String,
       numberOfCredits: map['numberOfCredits'] as int,
       grade: map['grade'] != null ? map['grade'] as String : null,
-      summary: map["courseSummary"] != null
-          ? CourseSummary.fromJson(map["courseSummary"] as Map<String, dynamic>)
+      summary: map["summary"] != null
+          ? CourseSummary.fromJson(map["summary"] as Map<String, dynamic>)
           : null);
 
   Map<String, dynamic> toJson() => {
@@ -114,6 +114,6 @@ class Course {
         'programCode: $programCode, '
         'grade: $grade, '
         'numberOfCredits: $numberOfCredits, '
-        'courseSummary: $summary}';
+        'summary: $summary}';
   }
 }
