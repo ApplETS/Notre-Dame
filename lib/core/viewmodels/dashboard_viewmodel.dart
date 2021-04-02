@@ -1,8 +1,11 @@
 // FLUTTER / DART / THIRD-PARTIES
 import 'dart:collection';
 
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:fluttertoast/fluttertoast_web.dart';
 import 'package:notredame/core/constants/preferences_flags.dart';
 import 'package:notredame/core/managers/settings_manager.dart';
+import 'package:notredame/core/services/preferences_service.dart';
 import 'package:stacked/stacked.dart';
 
 import '../../locator.dart';
@@ -11,9 +14,9 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
   /// Manage the cards
   final SettingsManager _settingsManager = locator<SettingsManager>();
 
-  SplayTreeMap _dashboard;
+  List<PreferencesFlag> _cards;
 
-  SplayTreeMap get cards => _dashboard;
+  List<PreferencesFlag> get cards => _cards;
 
   /// Current aboutUsCard
   int _aboutUsCard;
@@ -55,23 +58,27 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
   }
 
   /// Set progressBarCard
-  set setOrder(PreferencesFlag flag, int index) {
-    _settingsManager.setInt(flag, index);
-    _dashboard
-  }
+  void setOrder(PreferencesFlag flag, int index) {
+    _settingsManager.setInt(flag, index).then((value) {
+      if (!value) {
+        Fluttertoast.showToast(msg: "Failed");
+      }
+    });
 
-  List<PreferencesFlag> convertDashboard(Map<PreferencesFlag, int> dashboard) {
-    return SplayTreeMap.from(
-        dashboard, (key1, key2) => dashboard[key1].compareTo(dashboard[key2])).entries.toList();
+    _cards.remove(flag);
+    _cards.insert(index, flag);
+
+    notifyListeners();
   }
 
   @override
   Future<Map<PreferencesFlag, int>> futureToRun() async {
     final dashboard = await _settingsManager.getDashboard();
 
-    _dashboard = convertDashboard(dashboard);
-
-    print(_dashboard);
+    _cards = SplayTreeMap<PreferencesFlag, int>.from(dashboard,
+            (key1, key2) => dashboard[key1].compareTo(dashboard[key2]))
+        .keys
+        .toList();
 
     _aboutUsCard = dashboard[PreferencesFlag.aboutUsCard];
     _scheduleCard = dashboard[PreferencesFlag.scheduleCard];
