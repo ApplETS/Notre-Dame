@@ -23,6 +23,8 @@ SettingsManager settingsManager;
 ProfileViewModel viewModel;
 
 void main() {
+  // Needed to support FlutterToast.
+  TestWidgetsFlutterBinding.ensureInitialized();
   final Program program1 = Program(
       name: 'program1',
       code: '0000',
@@ -66,12 +68,14 @@ void main() {
     setUp(() async {
       // Setting up mocks
       userRepository = setupUserRepositoryMock();
+      setupFlutterToastMock();
 
       viewModel = ProfileViewModel(intl: await setupAppIntl());
     });
 
     tearDown(() {
       unregister<UserRepository>();
+      tearDownFlutterToastMock();
     });
 
     group("futureToRun - ", () {

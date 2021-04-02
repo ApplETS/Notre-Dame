@@ -24,6 +24,7 @@ if (flutterVersionName == null) {
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
+apply from: project(':flutter_config').projectDir.getPath() + "/dotenv.gradle"
 apply plugin: 'com.google.firebase.crashlytics'
 
 android {
@@ -44,7 +45,7 @@ android {
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
         multiDexEnabled true
-        manifestPlaceholders = [mapsApiKey: "$System.env.MAPS_API_KEY"]
+        manifestPlaceholders = [mapsApiKey: project.env.get("MAPS_API_KEY") ?:"$System.env.MAPS_API_KEY"]
     }
 
     buildTypes {

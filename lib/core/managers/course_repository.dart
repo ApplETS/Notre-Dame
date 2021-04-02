@@ -19,6 +19,7 @@ import 'package:notredame/core/models/session.dart';
 // UTILS
 import 'package:notredame/core/utils/cache_exception.dart';
 import 'package:notredame/core/utils/api_exception.dart';
+import 'package:notredame/core/constants/signets_errors.dart';
 
 // OTHER
 import 'package:notredame/locator.dart';
@@ -205,7 +206,7 @@ class CourseRepository {
   /// the [CacheManager] is updated with the latest version of the courses.
   Future<List<Course>> getCourses({bool fromCacheOnly = false}) async {
     // Load the activities from the cache if the list doesn't exist
-    if (_courses == null) {
+    if (_courses == null || fromCacheOnly) {
       _courses = [];
       try {
         final List responseCache =
@@ -235,34 +236,39 @@ class CourseRepository {
           username: _userRepository.monETSUser.universalCode,
           password: password));
       _logger.d("$tag - getCourses: fetched ${fetchedCourses.length} courses.");
-
-      for (int i = 0; i < fetchedCourses.length; i++) {
-        // If there isn't the grade yet, will fetch the summary.
-        // We don't do this for every course to avoid losing time.
-        if (fetchedCourses[i].grade == null) {
-          try {
-            await getCourseSummary(fetchedCourses[i]);
-            fetchedCourses.remove(fetchedCourses[i]);
-          } on ApiException catch (_) {
-            _logger.e(
-                "$tag - getCourses: Exception raised while trying to get summary "
-                    "of ${fetchedCourses[i].acronym}.");
-          }
-        }
-      }
     } on Exception catch (e) {
       _analyticsService.logError(tag, "Exception raised during getCourses: $e");
       _logger.e("$tag - getCourses: Exception raised $e");
       rethrow;
     }
 
+    for (int i = 0; i < fetchedCourses.length; i++) {
+      // If there isn't the grade yet, will fetch the summary.
+      // We don't do this for every course to avoid losing time.
+      if (fetchedCourses[i].grade == null) {
+        try {
+          if (await getCourseSummary(fetchedCourses[i]) != null) {
+            fetchedCourses.remove(fetchedCourses[i]);
+            i--;
+          }
+        } on ApiException catch (_) {
+          _logger.e(
+              "$tag - getCourses: Exception raised while trying to get summary "
+                  "of ${fetchedCourses[i].acronym}.");
+        }
+      }
+    }
+
     // Update the list of courses
     for (final Course course in fetchedCourses) {
-      final index =
-          _courses.indexWhere((element) => element.acronym == course.acronym);
-      if (index != -1 && _courses[index] != course) {
-        _courses.removeAt(index);
-        _courses.insert(index, course);
+      final index = _courses.indexWhere((element) =>
+          element.acronym == course.acronym &&
+          course.session == element.session);
+      if (index != -1) {
+        if (_courses[index] != course) {
+          _courses.removeAt(index);
+          _courses.insert(index, course);
+        }
       } else {
         _courses.add(course);
       }
@@ -293,17 +299,25 @@ class CourseRepository {
           course: course);
       _logger.d("$tag - getCourseSummary: fetched ${course.acronym} summary.");
     } on Exception catch (e) {
+      if(e is ApiException) {
+        if (e.errorCode == SignetsError.gradesEmpty) {
+          _logger.e(
+              "$tag - getCourseSummary: Summary is empty for ${course.acronym}.");
+          return null;
+        }
+      }
       _analyticsService.logError(
-          tag, "Exception raised during getCourseSummary: $e");
+          tag, e.toString());
       _logger.e("$tag - getCourseSummary: Exception raised $e");
       rethrow;
     }
 
-    // Initialize the array
+    // Initialize the array if needed
     _courses ??= [];
 
     // Update courses list
-    courses.remove(course);
+    _courses.removeWhere((element) =>
+        course.acronym == element.acronym && course.session == element.session);
     course.summary = summary;
     _courses.add(course);
 

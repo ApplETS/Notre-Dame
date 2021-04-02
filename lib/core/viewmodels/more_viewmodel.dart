@@ -3,14 +3,16 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
 import 'package:feedback/feedback.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:package_info/package_info.dart';
 import 'package:stacked/stacked.dart';
-import 'package:oktoast/oktoast.dart';
 import 'package:github/github.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:image/image.dart' as image;
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_config/flutter_config.dart';
 
 // MANAGER
 import 'package:notredame/core/managers/cache_manager.dart';
@@ -38,7 +40,7 @@ class MoreViewModel extends FutureViewModel {
   /// Get the application version
   String get appVersion => _appVersion;
 
-  MoreViewModel({@required AppIntl intl}): _appIntl = intl;
+  MoreViewModel({@required AppIntl intl}) : _appIntl = intl;
 
   @override
   Future futureToRun() async {
@@ -55,7 +57,7 @@ class MoreViewModel extends FutureViewModel {
   @override
   // ignore: type_annotate_public_apis
   void onError(error) {
-    showToast(_appIntl.error);
+    Fluttertoast.showToast(msg: _appIntl.error);
   }
 
   /// Used to logout user, delete cache, and return to login
@@ -71,7 +73,7 @@ class MoreViewModel extends FutureViewModel {
     // Dismiss alertDialog
     navigationService.pop();
     navigationService.pushNamedAndRemoveUntil(RouterPaths.login);
-    showToast(_appIntl.login_msg_logout_success);
+    Fluttertoast.showToast(msg: _appIntl.login_msg_logout_success);
   }
 
   /// Create a Github issue with [feedbackText] and the screenshot associated.
@@ -82,17 +84,22 @@ class MoreViewModel extends FutureViewModel {
         image.copyResize(image.decodeImage(feedbackScreenshot), width: 307)));
 
     /// Create a GitHub Client
-    const String githubApiToken = String.fromEnvironment('GITHUB_API_TOKEN');
-    final github = GitHub(auth: Authentication.withToken(githubApiToken));
+    String _githubApiToken;
+    if (kDebugMode) {
+      _githubApiToken = FlutterConfig.get('GITHUB_API_TOKEN').toString();
+    } else {
+      _githubApiToken = const String.fromEnvironment('GITHUB_API_TOKEN');
+    }
+    final github = GitHub(auth: Authentication.withToken(_githubApiToken));
 
     _uploadFileToGithub(github, file);
 
     await _createGithubIssue(github, file, feedbackText);
 
     file.deleteSync();
-    showToast(
-      _appIntl.thank_you_for_the_feedback,
-      position: ToastPosition.center,
+    Fluttertoast.showToast(
+      msg: _appIntl.thank_you_for_the_feedback,
+      gravity: ToastGravity.CENTER,
     );
     BetterFeedback.of(context).hide();
   }
@@ -110,7 +117,7 @@ class MoreViewModel extends FutureViewModel {
             body: " **Describe the issue** \n"
                 "```$feedbackText```\n\n"
                 "**Screenshot** \n"
-                "![screenshot](https://github.com/ApplETS/Notre-Dame-Bug-report/blob/main/${file.path.replaceFirst('storage/emulated/0/Android/data/ca.etsmtl.applets.notredame/files/', '')}?raw=true)\n\n"
+                "![screenshot](https://github.com/ApplETS/Notre-Dame-Bug-report/blob/main/${file.path.split('/').last}?raw=true)\n\n"
                 "**Device Infos** \n"
                 "- **Version:** ${packageInfo.version} \n"
                 "- **Build number:** ${packageInfo.buildNumber} \n"
@@ -124,9 +131,7 @@ class MoreViewModel extends FutureViewModel {
     github.repositories.createFile(
         RepositorySlug.full('ApplETS/Notre-Dame-Bug-report'),
         CreateFile(
-            path: file.path.replaceFirst(
-                'storage/emulated/0/Android/data/ca.etsmtl.applets.notredame/files/',
-                ''),
+            path: file.path.split('/').last,
             content: base64Encode(file.readAsBytesSync()).toString(),
             message: DateTime.now().toString(),
             committer:
@@ -136,7 +141,7 @@ class MoreViewModel extends FutureViewModel {
 
   /// Get local storage path
   Future<String> get _localPath async {
-    final directory = await getExternalStorageDirectory();
+    final directory = await getTemporaryDirectory();
 
     return directory.path.replaceFirst('/', '');
   }
