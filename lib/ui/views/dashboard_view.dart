@@ -62,8 +62,9 @@ class _DashboardViewState extends State<DashboardView>
                 actions: _buildActionButtons(model),
               ),
               body: ReorderableListView(
-                onReorder: onReorder,
-                children: model.cards.entries
+                onReorder: (oldIndex, newIndex) =>
+                    onReorder(model, oldIndex, newIndex),
+                children: model.cards
                     .map((key) => _buildAboutUsCard(colorFor(key.toString())))
                     .toList(),
               ));
@@ -152,11 +153,7 @@ class _DashboardViewState extends State<DashboardView>
       newIndex -= 1;
     }
 
-    setState(() {
-      final Widget _card = _buildCards.removeAt(oldIndex);
-
-      _buildCards.insert(newIndex, _card);
-    });
+    model.setOrder(model.cards[oldIndex], newIndex);
   }
 
   List<Widget> _buildActionButtons(DashboardViewModel model) => [
