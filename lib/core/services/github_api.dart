@@ -63,7 +63,7 @@ class GithubApi {
             labels: ['bug', 'platform: ${Platform.operatingSystem}']));
   }
 
-  /// Create empty picture
+  /// Create an empty bug picture in the local storage
   Future<File> get localFile async {
     final path = await _localPath;
     final now = DateTime.now();

@@ -76,16 +76,22 @@ class MoreViewModel extends FutureViewModel {
   /// Used to logout user, delete cache, and return to login
   Future<void> logout() async {
     setBusy(true);
-
-    await _cacheManager.empty();
+    try {
+      await _cacheManager.empty();
+    } on Exception catch (e) {
+      onError(e);
+    }
 
     await _preferencesService.clear();
-    await _userRepository.logOut();
 
+    await _userRepository.logOut();
     settingsManager.resetLanguageAndThemeMode();
-    _courseRepository.sessions.clear();
-    _courseRepository.courses.clear();
-    _courseRepository.coursesActivities.clear();
+
+    // clear all previous cached value in courseRepository
+    _courseRepository.sessions?.clear();
+    _courseRepository.courses?.clear();
+    _courseRepository.coursesActivities?.clear();
+
     setBusy(false);
     // Dismiss alertDialog
     navigationService.pop();
