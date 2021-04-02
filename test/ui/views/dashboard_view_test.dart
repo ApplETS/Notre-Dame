@@ -3,18 +3,30 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:notredame/core/constants/preferences_flags.dart';
+import 'package:notredame/core/managers/settings_manager.dart';
 
 // VIEW
 import 'package:notredame/ui/views/dashboard_view.dart';
 
 import '../../helpers.dart';
+import '../../mock/managers/settings_manager_mock.dart';
 
 void main() {
+  SettingsManager settingsManager;
   AppIntl intl;
+
+  // Some settings
+  final Map<PreferencesFlag, int> dashboard = {
+    PreferencesFlag.aboutUsCard: 2,
+    PreferencesFlag.scheduleCard: 1,
+    PreferencesFlag.progressBarCard: 3
+  };
 
   group('DashboardView - ', () {
     setUp(() async {
       intl = await setupAppIntl();
+      settingsManager = setupSettingsManagerMock();
       setupNavigationServiceMock();
     });
 
@@ -23,6 +35,10 @@ void main() {
     group('UI - ', () {
       testWidgets('Has view title and restore button, displayed',
           (WidgetTester tester) async {
+        SettingsManagerMock.stubGetDashboard(
+            settingsManager as SettingsManagerMock,
+            toReturn: dashboard);
+
         await tester.pumpWidget(localizedWidget(child: const DashboardView()));
         await tester.pumpAndSettle();
 
@@ -39,6 +55,10 @@ void main() {
       });
 
       testWidgets('Has card aboutUs displayed', (WidgetTester tester) async {
+        SettingsManagerMock.stubGetDashboard(
+            settingsManager as SettingsManagerMock,
+            toReturn: dashboard);
+
         await tester.pumpWidget(localizedWidget(child: const DashboardView()));
         await tester.pumpAndSettle();
 
@@ -65,6 +85,10 @@ void main() {
 
       testWidgets('AboutUsCard is dismissible and can be restored',
           (WidgetTester tester) async {
+        SettingsManagerMock.stubGetDashboard(
+            settingsManager as SettingsManagerMock,
+            toReturn: dashboard);
+
         await tester.pumpWidget(localizedWidget(child: const DashboardView()));
         await tester.pumpAndSettle();
 

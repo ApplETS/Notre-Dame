@@ -4,7 +4,6 @@ import 'package:get_it/get_it.dart';
 import 'package:http/http.dart' as http;
 import 'package:logger/logger.dart';
 import 'package:notredame/core/services/github_api.dart';
-import 'package:notredame/core/managers/dashboard_manager.dart';
 
 // SERVICES
 import 'package:notredame/core/services/navigation_service.dart';
@@ -38,7 +37,6 @@ void setupLocator() {
   locator.registerLazySingleton(() => CourseRepository());
   locator.registerLazySingleton(() => CacheManager());
   locator.registerLazySingleton(() => SettingsManager());
-  locator.registerLazySingleton(() => DashboardManager());
 
   // Other
   locator.registerLazySingleton(() => Logger());

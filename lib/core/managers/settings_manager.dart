@@ -82,6 +82,27 @@ class SettingsManager with ChangeNotifier {
     return _locale;
   }
 
+  /// Get Dashboard
+  Future<Map<PreferencesFlag, int>> getDashboard() async {
+    final Map<PreferencesFlag, int> dashboard = {};
+
+    _preferencesService.getInt(PreferencesFlag.aboutUsCard).then((value) {
+      dashboard.putIfAbsent(PreferencesFlag.aboutUsCard, () => value);
+    });
+
+    _preferencesService.getInt(PreferencesFlag.scheduleCard).then((value) {
+      dashboard.putIfAbsent(PreferencesFlag.scheduleCard, () => value);
+    });
+
+    _preferencesService.getInt(PreferencesFlag.progressBarCard).then((value) {
+      dashboard.putIfAbsent(PreferencesFlag.progressBarCard, () => value);
+    });
+
+    _logger.i("$tag - getDashboard - Dashboard loaded: $dashboard");
+
+    return dashboard;
+  }
+
   /// Set ThemeMode
   void setThemeMode(ThemeMode value) {
     _preferencesService.setString(PreferencesFlag.theme, value.toString());
@@ -143,6 +164,14 @@ class SettingsManager with ChangeNotifier {
     _analyticsService.logEvent(
         "${tag}_${EnumToString.convertToString(flag)}", value);
     return _preferencesService.setString(flag, value);
+  }
+
+  /// Add/update the value of [flag]
+  Future<bool> setInt(PreferencesFlag flag, int value) async {
+    // Log the event
+    _analyticsService.logEvent(
+        "${tag}_${EnumToString.convertToString(flag)}", value.toString());
+    return _preferencesService.setInt(flag, value);
   }
 
   /// Get the value of [flag]

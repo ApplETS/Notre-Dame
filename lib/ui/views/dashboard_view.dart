@@ -60,11 +60,11 @@ class _DashboardViewState extends State<DashboardView>
           actions: _buildActionButtons(model),
         ),
         body: ListView(children: [
-          if (model.showAboutUsCard == true)
+          if (model.aboutUsCard != 0)
             Dismissible(
               key: UniqueKey(),
               onDismissed: (dismissDirection) => setState(() {
-                model.showAboutUsCard = false;
+                model.aboutUsCard = 0;
               }),
               child: _buildAboutUsCard(),
             ),
@@ -127,7 +127,7 @@ class _DashboardViewState extends State<DashboardView>
 
   void setAllVisible(DashboardViewModel model) => {
         setState(() {
-          model.showAboutUsCard = true;
+          model.aboutUsCard = 1;
         })
       };
 
