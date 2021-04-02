@@ -42,8 +42,8 @@ class SettingsManager with ChangeNotifier {
   /// Get Locale
   Locale get locale {
     _preferencesService.getString(PreferencesFlag.locale).then((value) {
-      _locale = AppIntl.supportedLocales
-          .firstWhere((e) => e.toString() == value);
+      _locale =
+          AppIntl.supportedLocales.firstWhere((e) => e.toString() == value);
     });
     if (_locale == null) {
       return null;
@@ -55,17 +55,22 @@ class SettingsManager with ChangeNotifier {
   Future<Map<PreferencesFlag, int>> getDashboard() async {
     final Map<PreferencesFlag, int> dashboard = {};
 
-    _preferencesService.getInt(PreferencesFlag.aboutUsCard).then((value) {
-      dashboard.putIfAbsent(PreferencesFlag.aboutUsCard, () => value);
-    });
+    final aboutUsIndex =
+        await _preferencesService.getInt(PreferencesFlag.aboutUsCard) ?? 1;
 
-    _preferencesService.getInt(PreferencesFlag.scheduleCard).then((value) {
-      dashboard.putIfAbsent(PreferencesFlag.scheduleCard, () => value);
-    });
+    dashboard.putIfAbsent(PreferencesFlag.aboutUsCard, () => aboutUsIndex);
 
-    _preferencesService.getInt(PreferencesFlag.progressBarCard).then((value) {
-      dashboard.putIfAbsent(PreferencesFlag.progressBarCard, () => value);
-    });
+    final scheduleCardIndex =
+        await _preferencesService.getInt(PreferencesFlag.scheduleCard) ?? 2;
+
+    dashboard.putIfAbsent(
+        PreferencesFlag.scheduleCard, () => scheduleCardIndex);
+
+    final progressBarCardIndex =
+        await _preferencesService.getInt(PreferencesFlag.progressBarCard) ?? 3;
+
+    dashboard.putIfAbsent(
+        PreferencesFlag.progressBarCard, () => progressBarCardIndex);
 
     _logger.i("$tag - getDashboard - Dashboard loaded: $dashboard");
 
@@ -85,8 +90,7 @@ class SettingsManager with ChangeNotifier {
 
   /// Set Locale
   void setLocale(String value) {
-    _locale = AppIntl.supportedLocales
-        .firstWhere((e) => e.toString() == value);
+    _locale = AppIntl.supportedLocales.firstWhere((e) => e.toString() == value);
     _preferencesService.setString(
         PreferencesFlag.locale, _locale.languageCode.toString());
     // Log the event

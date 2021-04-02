@@ -24,6 +24,7 @@ class DashboardView extends StatefulWidget {
 
 class _DashboardViewState extends State<DashboardView>
     with TickerProviderStateMixin {
+  List<Widget> _buildCards;
   CalendarController _calendarController;
 
   AnimationController _animationController;
@@ -50,86 +51,113 @@ class _DashboardViewState extends State<DashboardView>
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<DashboardViewModel>.reactive(
-      viewModelBuilder: () => DashboardViewModel(),
-      builder: (context, model, child) => BaseScaffold(
-        isInteractionLimitedWhileLoading: false,
-        appBar: AppBar(
-          title: Text(AppIntl.of(context).title_dashboard),
-          centerTitle: false,
-          automaticallyImplyLeading: false,
-          actions: _buildActionButtons(model),
-        ),
-        body: ListView(children: [
-          if (model.aboutUsCard != 0)
-            Dismissible(
-              key: UniqueKey(),
-              onDismissed: (dismissDirection) => setState(() {
-                model.aboutUsCard = 0;
-              }),
-              child: _buildAboutUsCard(),
-            ),
-          const SizedBox(height: 6.0),
-        ]),
-      ),
-    );
+        viewModelBuilder: () => DashboardViewModel(),
+        builder: (context, model, child) {
+          return BaseScaffold(
+              isInteractionLimitedWhileLoading: false,
+              appBar: AppBar(
+                title: Text(AppIntl.of(context).title_dashboard),
+                centerTitle: false,
+                automaticallyImplyLeading: false,
+                actions: _buildActionButtons(model),
+              ),
+              body: ReorderableListView(
+                onReorder: onReorder,
+                children: model.cards.entries
+                    .map((key) => _buildAboutUsCard(colorFor(key.toString())))
+                    .toList(),
+              ));
+        });
   }
 
-  Widget _buildAboutUsCard() {
-    return Card(
-      elevation: 1,
-      color: AppTheme.appletsPurple,
-      child: Column(mainAxisSize: MainAxisSize.min, children: [
-        Align(
-            alignment: Alignment.centerLeft,
-            child: Container(
-              padding: const EdgeInsets.fromLTRB(17, 10, 0, 0),
-              child: Text(AppIntl.of(context).card_applets_title,
-                  style: Theme.of(context).primaryTextTheme.headline6),
-            )),
-        Column(
-          children: [
-            Container(
-              padding: const EdgeInsets.fromLTRB(17, 10, 15, 10),
-              child: Text(AppIntl.of(context).card_applets_text,
-                  style: Theme.of(context).primaryTextTheme.bodyText2),
-            ),
-            Row(children: [
-              const SizedBox(width: 10),
-              TextButton(
-                onPressed: () {
-                  Utils.launchURL(Urls.clubFacebook, AppIntl.of(context));
-                },
-                child: Text(AppIntl.of(context).facebook.toUpperCase(),
-                    style: Theme.of(context).primaryTextTheme.button),
+  /// Generate a color based on [text].
+  Color colorFor(String text) {
+    var hash = 0;
+    for (var i = 0; i < text.length; i++) {
+      hash = text.codeUnitAt(i) + ((hash << 5) - hash);
+    }
+    final finalHash = hash.abs() % (256 * 256 * 256);
+    final red = (finalHash & 0xFF0000) >> 16;
+    final blue = (finalHash & 0xFF00) >> 8;
+    final green = finalHash & 0xFF;
+    final color = Color.fromRGBO(red, green, blue, 1);
+    return color;
+  }
+
+  Widget _buildAboutUsCard(Color color) {
+    return Dismissible(
+      key: Key(color.toString()),
+      child: Card(
+        key: Key(color.toString()),
+        elevation: 1,
+        color: color,
+        child: Column(mainAxisSize: MainAxisSize.min, children: [
+          Align(
+              alignment: Alignment.centerLeft,
+              child: Container(
+                padding: const EdgeInsets.fromLTRB(17, 10, 0, 0),
+                child: Text(AppIntl.of(context).card_applets_title,
+                    style: Theme.of(context).primaryTextTheme.headline6),
+              )),
+          Column(
+            children: [
+              Container(
+                padding: const EdgeInsets.fromLTRB(17, 10, 15, 10),
+                child: Text(AppIntl.of(context).card_applets_text,
+                    style: Theme.of(context).primaryTextTheme.bodyText2),
               ),
-              const SizedBox(width: 10),
-              TextButton(
-                onPressed: () {
-                  Utils.launchURL(Urls.clubGithub, AppIntl.of(context));
-                },
-                child: Text(AppIntl.of(context).github.toUpperCase(),
-                    style: Theme.of(context).primaryTextTheme.button),
-              ),
-              const SizedBox(width: 10),
-              TextButton(
-                onPressed: () {
-                  Utils.launchURL(Urls.clubEmail, AppIntl.of(context));
-                },
-                child: Text(AppIntl.of(context).email.toUpperCase(),
-                    style: Theme.of(context).primaryTextTheme.button),
-              ),
-            ]),
-          ],
-        ),
-      ]),
+              Row(children: [
+                const SizedBox(width: 10),
+                TextButton(
+                  onPressed: () {
+                    Utils.launchURL(Urls.clubFacebook, AppIntl.of(context));
+                  },
+                  child: Text(AppIntl.of(context).facebook.toUpperCase(),
+                      style: Theme.of(context).primaryTextTheme.button),
+                ),
+                const SizedBox(width: 10),
+                TextButton(
+                  onPressed: () {
+                    Utils.launchURL(Urls.clubGithub, AppIntl.of(context));
+                  },
+                  child: Text(AppIntl.of(context).github.toUpperCase(),
+                      style: Theme.of(context).primaryTextTheme.button),
+                ),
+                const SizedBox(width: 10),
+                TextButton(
+                  onPressed: () {
+                    Utils.launchURL(Urls.clubEmail, AppIntl.of(context));
+                  },
+                  child: Text(AppIntl.of(context).email.toUpperCase(),
+                      style: Theme.of(context).primaryTextTheme.button),
+                ),
+              ]),
+            ],
+          ),
+        ]),
+      ),
     );
   }
 
   void setAllVisible(DashboardViewModel model) => {
         setState(() {
           model.aboutUsCard = 1;
+          model.scheduleCard = 2;
+          model.progressBarCard = 3;
         })
       };
+
+  void onReorder(DashboardViewModel model, int oldIndex, int newIndex) {
+    if (newIndex > oldIndex) {
+      newIndex -= 1;
+    }
+
+    setState(() {
+      final Widget _card = _buildCards.removeAt(oldIndex);
+
+      _buildCards.insert(newIndex, _card);
+    });
+  }
 
   List<Widget> _buildActionButtons(DashboardViewModel model) => [
         IconButton(

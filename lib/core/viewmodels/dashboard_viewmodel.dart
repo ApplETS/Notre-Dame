@@ -1,4 +1,6 @@
 // FLUTTER / DART / THIRD-PARTIES
+import 'dart:collection';
+
 import 'package:notredame/core/constants/preferences_flags.dart';
 import 'package:notredame/core/managers/settings_manager.dart';
 import 'package:stacked/stacked.dart';
@@ -8,6 +10,10 @@ import '../../locator.dart';
 class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
   /// Manage the cards
   final SettingsManager _settingsManager = locator<SettingsManager>();
+
+  SplayTreeMap _dashboard;
+
+  SplayTreeMap get cards => _dashboard;
 
   /// Current aboutUsCard
   int _aboutUsCard;
@@ -48,9 +54,24 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
     setBusy(false);
   }
 
+  /// Set progressBarCard
+  set setOrder(PreferencesFlag flag, int index) {
+    _settingsManager.setInt(flag, index);
+    _dashboard
+  }
+
+  List<PreferencesFlag> convertDashboard(Map<PreferencesFlag, int> dashboard) {
+    return SplayTreeMap.from(
+        dashboard, (key1, key2) => dashboard[key1].compareTo(dashboard[key2])).entries.toList();
+  }
+
   @override
   Future<Map<PreferencesFlag, int>> futureToRun() async {
     final dashboard = await _settingsManager.getDashboard();
+
+    _dashboard = convertDashboard(dashboard);
+
+    print(_dashboard);
 
     _aboutUsCard = dashboard[PreferencesFlag.aboutUsCard];
     _scheduleCard = dashboard[PreferencesFlag.scheduleCard];
