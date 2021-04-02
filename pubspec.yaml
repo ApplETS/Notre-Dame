@@ -60,7 +60,8 @@ dependencies:
   github: ^7.0.4
   package_info: ^2.0.0
   path_provider: ^1.6.27
-
+  rive: ^0.6.8
+  
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -69,7 +70,7 @@ dev_dependencies:
 
 flutter_icons:
   android: "launcher_icon"
-  ios: "launcher_icon"
+  ios: "LaunchImage"
   image_path: "assets/icons/launcher_icon.png"
   adaptive_icon_background: "#EF3F45"
   adaptive_icon_foreground: "assets/icons/launcher_icon.png"
@@ -87,6 +88,7 @@ flutter:
     - assets/images/
     - assets/html/
     - assets/certificates/
+    - assets/animations/
     - assets/
 
 flutter_intl:
