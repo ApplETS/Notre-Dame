@@ -89,9 +89,9 @@ class _GradesDetailsViewState extends State<GradesDetailsView> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
-                          getClassInformation(model.course?.title ?? ""),
+                          getClassInformation(model.course.title ?? ""),
                           getClassInformation(AppIntl.of(context)
-                              .grades_group_number(model.course?.group ?? "")),
+                              .grades_group_number(model.course.group ?? "")),
                         ],
                       ),
                     ),
@@ -116,10 +116,18 @@ class _GradesDetailsViewState extends State<GradesDetailsView> {
                                                   GradeCircularProgress(
                                                     finalGrade:
                                                         model.course.grade,
-                                                    studentGrade: model.course
-                                                        .summary.currentMark,
-                                                    averageGrade: model.course
-                                                        .summary.passMark,
+                                                    studentGrade:
+                                                        getGradeInPercentage(
+                                                            model.course.summary
+                                                                .currentMark,
+                                                            model.course.summary
+                                                                .markOutOf),
+                                                    averageGrade:
+                                                        getGradeInPercentage(
+                                                            model.course.summary
+                                                                .passMark,
+                                                            model.course.summary
+                                                                .markOutOf),
                                                     ratio: 1.0,
                                                   ),
                                                   Padding(
@@ -132,8 +140,15 @@ class _GradesDetailsViewState extends State<GradesDetailsView> {
                                                               .start,
                                                       children: <Widget>[
                                                         getTotalGrade(
-                                                          model.course.summary
-                                                              ?.currentMark,
+                                                          getGradeInPercentage(
+                                                              model
+                                                                  .course
+                                                                  .summary
+                                                                  .currentMark,
+                                                              model
+                                                                  .course
+                                                                  .summary
+                                                                  .markOutOf),
                                                           AppIntl.of(context)
                                                               .grades_current_rating,
                                                           Colors.green,
@@ -145,7 +160,15 @@ class _GradesDetailsViewState extends State<GradesDetailsView> {
                                                                       .only(
                                                                   top: 15.0),
                                                           child: getTotalGrade(
-                                                            0.0,
+                                                            getGradeInPercentage(
+                                                                model
+                                                                    .course
+                                                                    .summary
+                                                                    .passMark,
+                                                                model
+                                                                    .course
+                                                                    .summary
+                                                                    .markOutOf),
                                                             AppIntl.of(context)
                                                                 .grades_average,
                                                             Colors.red,
@@ -159,29 +182,18 @@ class _GradesDetailsViewState extends State<GradesDetailsView> {
                                           ),
                                         ),
                                       ]
-                                    : (model.course.grade != null)
-                                        ? <Widget>[
-                                            Card(
-                                              child: Padding(
-                                                padding:
-                                                    const EdgeInsets.all(15.0),
-                                                child: Row(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .center,
-                                                    children: <Widget>[
-                                                      GradeCircularProgress(
-                                                        finalGrade:
-                                                            model.course.grade,
-                                                        ratio: 1.0,
-                                                      ),
-                                                    ]),
-                                              ),
-                                            ),
-                                          ]
-                                        : <Widget>[
-                                            getNoGradesAvailableWidget()
-                                          ],
+                                    : <Widget>[
+                                        Padding(
+                                          padding: const EdgeInsets.all(15.0),
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: <Widget>[
+                                              getNoGradesAvailableWidget()
+                                            ],
+                                          ),
+                                        ),
+                                      ],
                               ),
                             ),
                             Row(
@@ -228,7 +240,7 @@ class _GradesDetailsViewState extends State<GradesDetailsView> {
                               children: (model.course.summary != null)
                                   ? <Widget>[
                                       for (var evaluation
-                                          in model.course.summary?.evaluations)
+                                          in model.course.summary.evaluations)
                                         GradeEvaluationTile(evaluation),
                                     ]
                                   : <Widget>[],
@@ -257,14 +269,18 @@ class _GradesDetailsViewState extends State<GradesDetailsView> {
     );
   }
 
+  double getGradeInPercentage(double grade, double maxGrade) {
+    return ((grade / maxGrade) * 100).roundToDouble();
+  }
+
   Column getTotalGrade(
       double grade, String recipient, Color color, BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Text(
-          AppIntl.of(context).grades_grade_with_percentage(
-              grade ?? 0.0, 100, grade ?? 0.0 * 100),
+          AppIntl.of(context)
+              .grades_grade_with_percentage(grade ?? 0.0, 100, grade ?? 0.0),
           style: TextStyle(color: color, fontWeight: FontWeight.bold),
         ),
         Text(recipient, style: TextStyle(color: color)),

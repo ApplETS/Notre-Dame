@@ -32,8 +32,10 @@ class GradeEvaluationTile extends StatelessWidget {
               child: LayoutBuilder(
                 builder: (context, constraints) {
                   return GradeCircularProgress(
-                    studentGrade: evaluation.mark ?? 0.0,
-                    averageGrade: evaluation.passMark ?? 0.0,
+                    studentGrade: getGradeInPercentage(evaluation.mark,
+                        evaluation.correctedEvaluationOutOfFormatted),
+                    averageGrade: getGradeInPercentage(evaluation.passMark,
+                        evaluation.correctedEvaluationOutOfFormatted),
                     ratio: constraints.maxHeight / 100,
                   );
                 },
@@ -78,20 +80,20 @@ class GradeEvaluationTile extends StatelessWidget {
             getSummary(
               AppIntl.of(context).grades_grade,
               AppIntl.of(context).grades_grade_with_percentage(
-                  evaluation.mark ?? 0.0,
-                  evaluation.correctedEvaluationOutOf ?? 0.0,
-                  getGradeInPercentage(evaluation.mark,
-                          evaluation.correctedEvaluationOutOfFormatted)
-                      .round()),
+                evaluation.mark ?? 0.0,
+                evaluation.correctedEvaluationOutOf ?? 0.0,
+                getGradeInPercentage(evaluation.mark,
+                    evaluation.correctedEvaluationOutOfFormatted),
+              ),
             ),
             getSummary(
               AppIntl.of(context).grades_average,
               AppIntl.of(context).grades_grade_with_percentage(
-                  evaluation.passMark ?? 0.0,
-                  evaluation.correctedEvaluationOutOf ?? 0.0,
-                  getGradeInPercentage(evaluation.passMark,
-                          evaluation.correctedEvaluationOutOfFormatted)
-                      .round()),
+                evaluation.passMark ?? 0.0,
+                evaluation.correctedEvaluationOutOf ?? 0.0,
+                getGradeInPercentage(evaluation.passMark,
+                    evaluation.correctedEvaluationOutOfFormatted),
+              ),
             ),
             getSummary(AppIntl.of(context).grades_median,
                 validateResult(context, evaluation.median.toString())),
@@ -137,7 +139,7 @@ class GradeEvaluationTile extends StatelessWidget {
       return 0.0;
     }
 
-    return (grade / maxGrade) * 100;
+    return ((grade / maxGrade) * 100).roundToDouble();
   }
 
   String validateResult(BuildContext context, String result) {
