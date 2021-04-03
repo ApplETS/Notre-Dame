@@ -6,11 +6,7 @@ import 'package:notredame/core/managers/user_repository.dart';
 import 'package:notredame/core/services/navigation_service.dart'; // MANAGER
 import 'package:notredame/core/managers/settings_manager.dart';
 
-// MANAGER
-import 'package:notredame/core/managers/settings_manager.dart';
-
 // CONSTANTS
-import 'package:notredame/core/constants/preferences_flags.dart';
 import 'package:notredame/core/constants/preferences_flags.dart';
 
 // OTHER
@@ -34,12 +30,13 @@ class StartUpViewModel extends BaseViewModel {
     if (isLogin) {
       _navigationService.pushNamed(RouterPaths.dashboard);
     } else {
-      if (await _settingsManager.getString(PreferencesFlag.chooseLanguage) == null) {
+      if (await _settingsManager.getString(PreferencesFlag.chooseLanguage) ==
+          null) {
         _navigationService.pushNamed(RouterPaths.chooseLanguage);
         _settingsManager.setString(PreferencesFlag.chooseLanguage, 'true');
       } else {
         _navigationService.pushNamed(RouterPaths.login);
-      }      
+      }
     }
   }
 }

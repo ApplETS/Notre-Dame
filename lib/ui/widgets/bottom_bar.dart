@@ -1,7 +1,6 @@
 // FLUTTER / DART / THIRD-PARTIES
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:notredame/core/constants/discovery_components.dart';
 
 // SERVICE
 import 'package:notredame/core/services/navigation_service.dart';
@@ -13,6 +12,7 @@ import 'package:notredame/ui/utils/app_theme.dart';
 
 // OTHER
 import 'package:feature_discovery/feature_discovery.dart';
+import 'package:notredame/ui/utils/discovery_components.dart';
 
 /// Bottom navigation bar for the application.
 class BottomBar extends StatelessWidget {
@@ -106,7 +106,8 @@ class BottomBar extends StatelessWidget {
     ];
   }
 
-  DescribedFeatureOverlay _buildDiscoveryFeatureDescriptionWidget(BuildContext context, String routerPath, IconData icon) {
+  DescribedFeatureOverlay _buildDiscoveryFeatureDescriptionWidget(
+      BuildContext context, String routerPath, IconData icon) {
     final discovery = getDiscoveryByPath(context, routerPath);
 
     return DescribedFeatureOverlay(
