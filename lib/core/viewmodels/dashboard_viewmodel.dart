@@ -41,9 +41,9 @@ class DashboardViewModel extends FutureViewModel<List<CourseActivity>>{
   /// Get current locale
   Locale get locale => _settingsManager.locale;
 
-  DashboardViewModel({@required AppIntl intl, DateTime initialSelectedDate})
+  DashboardViewModel({@required AppIntl intl})
       : _appIntl = intl,
-        selectedDate = initialSelectedDate ?? DateTime.now();
+        selectedDate = DateTime.now();
 
   /// Activities for the day currently selected
   List<dynamic> get selectedDateEvents =>
@@ -148,7 +148,7 @@ class DashboardViewModel extends FutureViewModel<List<CourseActivity>>{
               .inDays;
     }
     else{
-       progress = 0;
+       progress = 10;
     }
     return progress;
   }

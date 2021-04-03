@@ -30,7 +30,7 @@ class GradesViewModel extends FutureViewModel<Map<String, List<Course>>> {
   GradesViewModel({@required AppIntl intl}) : _appIntl = intl;
 
   @override
-  Future<Map<String, List<Course>>> futureToRun() async =>
+  Future<Map<String, List<Course>>> futureToRun()  =>
       _courseRepository.getCourses(fromCacheOnly: true).then((coursesCached) {
         setBusy(true);
         _buildCoursesBySession(coursesCached);
