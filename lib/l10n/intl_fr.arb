@@ -55,7 +55,7 @@
   "schedule_settings_starting_weekday_friday": "Vendredi",
   "schedule_settings_starting_weekday_saturday": "Samedi",
   "schedule_settings_starting_weekday_sunday": "Dimanche",
-  "schedule_no_event": "Aucun évènements à l'horaire.",
+  "schedule_no_event": "Aucun évènement à l'horaire.",
 
   "grades_title": "Notes",
   "grades_msg_no_grades": "Aucune note disponible\nTirer pour recharger",

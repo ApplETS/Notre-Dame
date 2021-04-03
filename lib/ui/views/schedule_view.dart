@@ -38,8 +38,6 @@ class _ScheduleViewState extends State<ScheduleView>
 
   static const Color _defaultColor = Color(0xff76859B);
 
-  final DateFormat _dateFormat = DateFormat.MMMMEEEEd();
-
   CalendarController _calendarController;
 
   AnimationController _animationController;
@@ -91,7 +89,9 @@ class _ScheduleViewState extends State<ScheduleView>
                       const Divider(indent: 8.0, endIndent: 8.0, thickness: 1),
                       const SizedBox(height: 6.0),
                       Center(
-                          child: Text(_dateFormat.format(model.selectedDate),
+                          child: Text(
+                              DateFormat.MMMMEEEEd(model.locale.toString())
+                                  .format(model.selectedDate),
                               style: Theme.of(context).textTheme.headline5)),
                       const SizedBox(height: 2.0),
                       Expanded(
@@ -137,6 +137,7 @@ class _ScheduleViewState extends State<ScheduleView>
         //TODO uncomment when https://github.com/aleksanderwozniak/table_calendar/issues/164 is close
         // startingDayOfWeek: model.settings[PreferencesFlag.scheduleSettingsStartWeekday] as StartingDayOfWeek,
         startingDayOfWeek: StartingDayOfWeek.monday,
+        locale: model.locale.toLanguageTag(),
         initialSelectedDay: widget.initialDay ?? DateTime.now(),
         weekendDays: const [],
         headerStyle: const HeaderStyle(

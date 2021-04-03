@@ -82,6 +82,8 @@ void main() {
       settingsManager = setupSettingsManagerMock();
       courseRepository = setupCourseRepositoryMock();
 
+      SettingsManagerMock.stubLocale(settingsManager as SettingsManagerMock);
+
       settings = {
         PreferencesFlag.scheduleSettingsCalendarFormat: CalendarFormat.week,
         PreferencesFlag.scheduleSettingsStartWeekday: StartingDayOfWeek.monday,
