@@ -32,10 +32,9 @@ class GradeEvaluationTile extends StatelessWidget {
               child: LayoutBuilder(
                 builder: (context, constraints) {
                   return GradeCircularProgress(
-                    null,
-                    evaluation.mark ?? 0.0,
-                    evaluation.passMark ?? 0.0,
-                    constraints.maxHeight / 100,
+                    studentGrade: evaluation.mark ?? 0.0,
+                    averageGrade: evaluation.passMark ?? 0.0,
+                    ratio: constraints.maxHeight / 100,
                   );
                 },
               ),
@@ -48,13 +47,19 @@ class GradeEvaluationTile extends StatelessWidget {
                     style: TextStyle(
                         height: 3,
                         fontSize: 15,
-                        color: Theme.of(context).brightness == Brightness.light ? Colors.black : Colors.white)),
+                        color: Theme.of(context).brightness == Brightness.light
+                            ? Colors.black
+                            : Colors.white)),
                 Padding(
                   padding: const EdgeInsets.only(top: 8.0, bottom: 9.0),
-                  child: Text(AppIntl.of(context).grades_weight(evaluation.weight),
+                  child: Text(
+                      AppIntl.of(context).grades_weight(evaluation.weight),
                       style: TextStyle(
                           fontSize: 12,
-                          color: Theme.of(context).brightness == Brightness.light ? Colors.black : Colors.white)),
+                          color:
+                              Theme.of(context).brightness == Brightness.light
+                                  ? Colors.black
+                                  : Colors.white)),
                 ),
               ],
             ),
@@ -75,21 +80,29 @@ class GradeEvaluationTile extends StatelessWidget {
               AppIntl.of(context).grades_grade_with_percentage(
                   evaluation.mark ?? 0.0,
                   evaluation.correctedEvaluationOutOf ?? 0.0,
-                  getGradeInPercentage(evaluation.mark, evaluation.correctedEvaluationOutOfFormatted).round()),
+                  getGradeInPercentage(evaluation.mark,
+                          evaluation.correctedEvaluationOutOfFormatted)
+                      .round()),
             ),
             getSummary(
               AppIntl.of(context).grades_average,
               AppIntl.of(context).grades_grade_with_percentage(
                   evaluation.passMark ?? 0.0,
                   evaluation.correctedEvaluationOutOf ?? 0.0,
-                  getGradeInPercentage(evaluation.passMark, evaluation.correctedEvaluationOutOfFormatted).round()),
+                  getGradeInPercentage(evaluation.passMark,
+                          evaluation.correctedEvaluationOutOfFormatted)
+                      .round()),
             ),
-            getSummary(AppIntl.of(context).grades_median, validateResult(context, evaluation.median.toString())),
-            getSummary(AppIntl.of(context).grades_standard_deviation,
-                validateResult(context, evaluation.standardDeviation.toString())),
+            getSummary(AppIntl.of(context).grades_median,
+                validateResult(context, evaluation.median.toString())),
+            getSummary(
+                AppIntl.of(context).grades_standard_deviation,
+                validateResult(
+                    context, evaluation.standardDeviation.toString())),
             getSummary(AppIntl.of(context).grades_percentile_rank,
                 validateResult(context, evaluation.percentileRank.toString())),
-            getSummary(AppIntl.of(context).grades_target_date, getDate(evaluation.targetDate, context)),
+            getSummary(AppIntl.of(context).grades_target_date,
+                getDate(evaluation.targetDate, context)),
           ],
         ),
       ),

@@ -20,6 +20,7 @@ class GradesDetailsViewModel extends FutureViewModel<Course> {
   /// Used to get the courses of the student
   final CourseRepository _courseRepository = locator<CourseRepository>();
 
+  /// Used to get the current course selected of the student
   Course _course;
 
   Course get course => _course;
@@ -28,17 +29,29 @@ class GradesDetailsViewModel extends FutureViewModel<Course> {
       : _appIntl = intl,
         _course = course;
 
+  bool isLoadingEvents = false;
+
   @override
-  Future<Course> futureToRun() async => _courseRepository.getCourseSummary(course).catchError(onError).then((value) {
-        _course = value;
-      });
+  Future<Course> futureToRun() async => _courseRepository
+      .getCourseSummary(course)
+      .then((value) {
+        setBusyForObject(isLoadingEvents, true);
+      })
+      // ignore: return_type_invalid_for_catch_error
+      .catchError(onError)
+      .whenComplete(() => setBusyForObject(isLoadingEvents, false));
 
   /// Reload the course from Signets and rebuild the view.
   Future<bool> refresh() async {
     try {
-      _courseRepository.getCourseSummary(course).catchError(onError).then((value) {
-        _course = value;
-      });
+      _courseRepository
+          .getCourseSummary(course)
+          .then((value) {
+            setBusyForObject(isLoadingEvents, true);
+          })
+          // ignore: return_type_invalid_for_catch_error
+          .catchError(onError)
+          .whenComplete(() => setBusyForObject(isLoadingEvents, false));
       notifyListeners();
       return true;
     } on Exception catch (_) {
