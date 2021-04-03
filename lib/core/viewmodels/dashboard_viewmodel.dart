@@ -4,7 +4,7 @@ import 'package:stacked/stacked.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 // CONSTANTS
-import 'package:notredame/core/constants/discovery_components.dart';
+import 'package:notredame/ui/utils/discovery_components.dart';
 
 // SERVICE
 import 'package:notredame/core/managers/settings_manager.dart';
@@ -28,6 +28,6 @@ class DashboardViewModel extends BaseViewModel {
       final List<String> ids = discoveryComponents(context).map((e) => e.featureId).toList();
       FeatureDiscovery.discoverFeatures(context, ids);
       _settingsManager.setString(PreferencesFlag.discovery, 'true');
-    }  
+    }
   }
 }
