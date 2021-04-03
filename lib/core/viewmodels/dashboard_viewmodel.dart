@@ -18,7 +18,8 @@ import 'package:notredame/core/constants/preferences_flags.dart';
 
 import '../models/course.dart';
 
-class DashboardViewModel extends FutureViewModel<List<CourseActivity>>{
+// TODO Replace FutureViewModel<List<CourseActivity>> by FutureViewModel
+class DashboardViewModel extends FutureViewModel<List<CourseActivity>> {
   /// Load the events
   final CourseRepository _courseRepository = locator<CourseRepository>();
 
@@ -37,6 +38,12 @@ class DashboardViewModel extends FutureViewModel<List<CourseActivity>>{
   /// Day currently selected
   DateTime selectedDate = DateTime.now();
 
+  /// Marks the viewmodel as busy and calls notify listeners
+  void setBusy(bool value) {
+    setBusyForObject(this, value);
+  }
+
+
 
   /// Get current locale
   Locale get locale => _settingsManager.locale;
@@ -48,20 +55,17 @@ class DashboardViewModel extends FutureViewModel<List<CourseActivity>>{
   /// Activities for the day currently selected
   List<dynamic> get selectedDateEvents =>
       _coursesActivities[
-      DateTime(selectedDate.year, selectedDate.month, selectedDate.day)] ??
-          [];
+          DateTime(selectedDate.year, selectedDate.month, selectedDate.day)] ??
+      [];
 
   /// Contains all the courses of the student sorted by session
   final Map<String, List<Course>> coursesBySession = {};
-
-
 
   /// Activities for today
   List<dynamic> get todayDateEvents =>
       _coursesActivities[
       DateTime(selectedDate.year, 3, 31)] ??
           [];
-
 
   /// Chronological order of the sessions. The first index is the most recent
   /// session.
@@ -71,18 +75,42 @@ class DashboardViewModel extends FutureViewModel<List<CourseActivity>>{
 
 
   @override
-  Future<List<CourseActivity>> futureToRun() =>
-      _courseRepository.getCoursesActivities(fromCacheOnly: true).then((value) {
-        setBusyForObject(isLoadingEvents, true);
-        _courseRepository
-            .getCoursesActivities()
-            .catchError(onError)
-            .whenComplete(() {
-          // Reload the list of activities
-          coursesActivities;
-          setBusyForObject(isLoadingEvents, false);
+  // TODO Remove Map<String, List<Course>>
+  Future<Map<String, List<Course>>> futureToRun() async =>
+      /* TODO Load settings to get all the cards to displayed
+          Then call the future needed for each visible cards using
+          setBusyForObject(objectUsedByTheCards, true) (dont forget to turn it
+          off after the future is loaded).
+          So you will need a function (future) for each card and an object for
+          each card.
+          For example:
+            - Schedule card:
+                - object: List<CourseActivities> coursesActivities.
+                - function: Future<List<CourseActivities>> loadCoursesActivities()
+                   this function will call:
+                      setBusyForObject(coursesActivities, true)
+                      CourseRepository.getCoursesActivities(fromCacheOnly: true)
+                      Do some logic to get the activities of today
+                      setBusyForObject(coursesActivities, false) //reload the UI
+                      setBusyForObject(coursesActivities, true)
+                      CourseRepository.getCoursesActivities()
+                      Do some logic to get the activities of today
+                      setBusyForObject(coursesActivities, false) //reload the UI
+       */
+      _courseRepository.getCourses(fromCacheOnly: true).then((coursesCached) {
+        setBusy(true);
+        _buildCoursesBySession(coursesCached);
+        // ignore: return_type_invalid_for_catch_error
+        _courseRepository.getCourses().catchError(onError).then((value) {
+          if (value != null) {
+            // Update the courses list
+            _buildCoursesBySession(_courseRepository.courses);
+          }
+        }).whenComplete(() {
+          setBusy(false);
         });
-        return value;
+
+        return coursesBySession;
       });
 
   @override
@@ -97,7 +125,7 @@ class DashboardViewModel extends FutureViewModel<List<CourseActivity>>{
     settings.addAll(await _settingsManager.getScheduleSettings());
     calendarController.setCalendarFormat(
         settings[PreferencesFlag.scheduleSettingsCalendarFormat]
-        as CalendarFormat);
+            as CalendarFormat);
     setBusy(false);
   }
 
@@ -134,7 +162,6 @@ class DashboardViewModel extends FutureViewModel<List<CourseActivity>>{
     }
     return _coursesActivities.containsKey(date) ? _coursesActivities[date] : [];
   }
-
 
   /// Return session progress based on today's [date]
   double get getSessionProgress {
