@@ -103,6 +103,11 @@ class _DashboardViewState extends State<DashboardView>
                 )
               else
                 const SizedBox(),
+              const SizedBox(height: 6.0),
+              Dismissible(
+                key: UniqueKey(),
+                //child: _buildGradesCard(model),
+              ),
             ]),
           ));
 
@@ -121,6 +126,7 @@ class _DashboardViewState extends State<DashboardView>
   Widget _buildTodayScheduleCard(DashboardViewModel model) {
     return Card(
       elevation: 1,
+
       child: Column(mainAxisSize: MainAxisSize.min, children: [
         Align(
             alignment: Alignment.centerLeft,
@@ -134,10 +140,37 @@ class _DashboardViewState extends State<DashboardView>
               height: 100,
               child: Center(child: Text(AppIntl.of(context).schedule_no_event)))
         else
-          _buildEventList(model.todayDateEvents)
+          Container(
+              height: 200.0,
+              child: _buildEventList(model.todayDateEvents))
       ]),
     );
   }
+
+  Widget _buildGradesCard(DashboardViewModel model) {
+    return Card(
+      elevation: 1,
+
+      child: Column(mainAxisSize: MainAxisSize.min, children: [
+        Align(
+            alignment: Alignment.centerLeft,
+            child: Container(
+              padding: const EdgeInsets.fromLTRB(10, 10, 0, 0),
+              child: Text(AppIntl.of(context).title_schedule,
+                  style: Theme.of(context).textTheme.headline6),
+            )),
+        if (model.todayDateEvents.isEmpty)
+          SizedBox(
+              height: 100,
+              child: Center(child: Text(AppIntl.of(context).schedule_no_event)))
+        else
+          Container(
+              height: 200.0,
+              child: _buildEventList(model.todayDateEvents))
+      ]),
+    );
+  }
+
 
 
 
