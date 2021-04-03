@@ -1,11 +1,16 @@
 // FLUTTER / DART / THIRD-PARTIES
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:notredame/core/managers/course_repository.dart';
-import 'package:notredame/core/models/course.dart';
-import 'package:notredame/core/models/course_summary.dart';
-import 'package:notredame/locator.dart';
 import 'package:stacked/stacked.dart';
+
+// MANAGERS
+import 'package:notredame/core/managers/course_repository.dart';
+
+// MODELS
+import 'package:notredame/core/models/course.dart';
+
+// OTHER
+import 'package:notredame/locator.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class GradesDetailsViewModel extends FutureViewModel<Course> {
@@ -15,22 +20,24 @@ class GradesDetailsViewModel extends FutureViewModel<Course> {
   /// Used to get the courses of the student
   final CourseRepository _courseRepository = locator<CourseRepository>();
 
-  Course course;
+  Course _course;
 
-  CourseSummary courseSummary;
+  Course get course => _course;
 
   GradesDetailsViewModel({@required AppIntl intl, @required Course course})
       : _appIntl = intl,
-        course = course;
+        _course = course;
 
-  /// Reload the grades from Signets and rebuild the view.
+  @override
+  Future<Course> futureToRun() async => _courseRepository.getCourseSummary(course).catchError(onError).then((value) {
+        _course = value;
+      });
+
+  /// Reload the course from Signets and rebuild the view.
   Future<bool> refresh() async {
     try {
-      _courseRepository
-          .getCourseSummary(course)
-          .catchError(onError)
-          .then((value) {
-        course = value;
+      _courseRepository.getCourseSummary(course).catchError(onError).then((value) {
+        _course = value;
       });
       notifyListeners();
       return true;
@@ -38,14 +45,6 @@ class GradesDetailsViewModel extends FutureViewModel<Course> {
       return false;
     }
   }
-
-  @override
-  Future<Course> futureToRun() async => _courseRepository
-          .getCourseSummary(course)
-          .catchError(onError)
-          .then((value) {
-        course = value;
-      });
 
   @override
   // ignore: type_annotate_public_apis

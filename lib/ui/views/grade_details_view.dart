@@ -29,10 +29,8 @@ class _GradesDetailsViewState extends State<GradesDetailsView> {
   double topHeight = 0.0;
 
   @override
-  Widget build(BuildContext context) =>
-      ViewModelBuilder<GradesDetailsViewModel>.reactive(
-        viewModelBuilder: () => GradesDetailsViewModel(
-            intl: AppIntl.of(context), course: widget.course),
+  Widget build(BuildContext context) => ViewModelBuilder<GradesDetailsViewModel>.reactive(
+        viewModelBuilder: () => GradesDetailsViewModel(intl: AppIntl.of(context), course: widget.course),
         builder: (context, model, child) => RefreshIndicator(
           onRefresh: () async {
             if (await model.refresh()) {
@@ -51,8 +49,7 @@ class _GradesDetailsViewState extends State<GradesDetailsView> {
                   },
                   expandedHeight: 80.0,
                   flexibleSpace: LayoutBuilder(
-                    builder:
-                        (BuildContext context, BoxConstraints constraints) {
+                    builder: (BuildContext context, BoxConstraints constraints) {
                       topHeight = constraints.biggest.height;
                       return FlexibleSpaceBar(
                         centerTitle: true,
@@ -65,8 +62,7 @@ class _GradesDetailsViewState extends State<GradesDetailsView> {
                           alignment: AlignmentDirectional.bottomStart,
                           child: Text(
                             model.course.acronym,
-                            style:
-                                TextStyle(fontSize: topHeight < 120 ? 20 : 15),
+                            style: TextStyle(fontSize: topHeight < 120 ? 20 : 15),
                           ),
                         ),
                       );
@@ -76,21 +72,16 @@ class _GradesDetailsViewState extends State<GradesDetailsView> {
                 SliverToBoxAdapter(
                   child: Center(
                     child: Container(
-                      constraints: BoxConstraints(
-                          minWidth: MediaQuery.of(context).size.width,
-                          maxHeight: 40),
+                      constraints: BoxConstraints(minWidth: MediaQuery.of(context).size.width, maxHeight: 40),
                       decoration: BoxDecoration(
                         color: Theme.of(context).brightness == Brightness.light
                             ? AppTheme.etsLightRed
                             : const Color(0xff222222),
                       ),
-                      child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            getClassInformation(model.course.title),
-                            getClassInformation(AppIntl.of(context)
-                                .grades_group_number(model.course.group)),
-                          ]),
+                      child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
+                        getClassInformation(model.course.title),
+                        getClassInformation(AppIntl.of(context).grades_group_number(model.course.group)),
+                      ]),
                     ),
                   ),
                 ),
@@ -105,27 +96,21 @@ class _GradesDetailsViewState extends State<GradesDetailsView> {
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                GradeCircularProgress(
-                                    model.course.grade,
-                                    model.course.summary.currentMark,
-                                    model.course.summary.passMark,
-                                    1.0),
+                                GradeCircularProgress(model.course.grade, model.course.summary.currentMark,
+                                    model.course.summary.passMark, 1.0),
                                 Padding(
                                   padding: const EdgeInsets.only(left: 55.0),
                                   child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
+                                    crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
                                       getTotalGrade(
                                         model.course.summary.currentMark,
-                                        AppIntl.of(context)
-                                            .grades_current_rating,
+                                        AppIntl.of(context).grades_current_rating,
                                         Colors.green,
                                         context,
                                       ),
                                       Padding(
-                                        padding:
-                                            const EdgeInsets.only(top: 15.0),
+                                        padding: const EdgeInsets.only(top: 15.0),
                                         child: getTotalGrade(
                                           model.course.summary.passMark,
                                           AppIntl.of(context).grades_average,
@@ -149,8 +134,7 @@ class _GradesDetailsViewState extends State<GradesDetailsView> {
                             validateGrade(
                               context,
                               model.course.summary.median.toString(),
-                              AppIntl.of(context).grades_grade_in_percentage(
-                                  model.course.summary.median),
+                              AppIntl.of(context).grades_grade_in_percentage(model.course.summary.median),
                             ),
                           ),
                           getHeadersSummary(
@@ -173,9 +157,7 @@ class _GradesDetailsViewState extends State<GradesDetailsView> {
                       ),
                       Column(
                         children: <Widget>[
-                          for (var evaluation
-                              in model.course.summary.evaluations)
-                            GradeEvaluationTile(evaluation),
+                          for (var evaluation in model.course.summary.evaluations) GradeEvaluationTile(evaluation),
                         ],
                       ),
                     ],
@@ -201,14 +183,12 @@ class _GradesDetailsViewState extends State<GradesDetailsView> {
     );
   }
 
-  Column getTotalGrade(
-      double grade, String recipient, Color color, BuildContext context) {
+  Column getTotalGrade(double grade, String recipient, Color color, BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Text(
-          AppIntl.of(context).grades_grade_with_percentage(
-              grade ?? 0.0, 100, grade ?? 0.0 * 100),
+          AppIntl.of(context).grades_grade_with_percentage(grade ?? 0.0, 100, grade ?? 0.0 * 100),
           style: TextStyle(color: color, fontWeight: FontWeight.bold),
         ),
         Text(recipient, style: TextStyle(color: color)),
