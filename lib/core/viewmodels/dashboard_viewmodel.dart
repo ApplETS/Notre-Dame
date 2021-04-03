@@ -18,7 +18,7 @@ import 'package:notredame/core/constants/preferences_flags.dart';
 
 import '../models/course.dart';
 
-class DashboardViewModel extends FutureViewModel<Map<String, List<Course>>> {
+class DashboardViewModel extends FutureViewModel<List<CourseActivity>>{
   /// Load the events
   final CourseRepository _courseRepository = locator<CourseRepository>();
 
@@ -36,12 +36,6 @@ class DashboardViewModel extends FutureViewModel<Map<String, List<Course>>> {
 
   /// Day currently selected
   DateTime selectedDate = DateTime.now();
-
-  /// Marks the viewmodel as busy and calls notify listeners
-  void setBusy(bool value) {
-    setBusyForObject(this, value);
-  }
-
 
 
   /// Get current locale
@@ -65,7 +59,7 @@ class DashboardViewModel extends FutureViewModel<Map<String, List<Course>>> {
   /// Activities for today
   List<dynamic> get todayDateEvents =>
       _coursesActivities[
-      DateTime(selectedDate.year, selectedDate.month, selectedDate.day)] ??
+      DateTime(selectedDate.year, 3, 31)] ??
           [];
 
 
@@ -75,22 +69,20 @@ class DashboardViewModel extends FutureViewModel<Map<String, List<Course>>> {
 
   bool isLoadingEvents = false;
 
-  @override
-  Future<Map<String, List<Course>>> futureToRun() async =>
-      _courseRepository.getCourses(fromCacheOnly: true).then((coursesCached) {
-        setBusy(true);
-        _buildCoursesBySession(coursesCached);
-        // ignore: return_type_invalid_for_catch_error
-        _courseRepository.getCourses().catchError(onError).then((value) {
-          if(value != null) {
-            // Update the courses list
-            _buildCoursesBySession(_courseRepository.courses);
-          }
-        }).whenComplete(() {
-          setBusy(false);
-        });
 
-        return coursesBySession;
+  @override
+  Future<List<CourseActivity>> futureToRun() =>
+      _courseRepository.getCoursesActivities(fromCacheOnly: true).then((value) {
+        setBusyForObject(isLoadingEvents, true);
+        _courseRepository
+            .getCoursesActivities()
+            .catchError(onError)
+            .whenComplete(() {
+          // Reload the list of activities
+          coursesActivities;
+          setBusyForObject(isLoadingEvents, false);
+        });
+        return value;
       });
 
   @override
@@ -109,17 +101,6 @@ class DashboardViewModel extends FutureViewModel<Map<String, List<Course>>> {
     setBusy(false);
   }
 
-  /// Reload the courses from Signets and rebuild the view.
-  Future refresh() async {
-    // ignore: return_type_invalid_for_catch_error
-    try {
-      await _courseRepository.getCourses();
-      _buildCoursesBySession(_courseRepository.courses);
-      notifyListeners();
-    } on Exception catch (error) {
-      onError(error);
-    }
-  }
 
   /// Return the list of all the courses activities arranged by date.
   Map<DateTime, List<CourseActivity>> get coursesActivities {
@@ -157,13 +138,18 @@ class DashboardViewModel extends FutureViewModel<Map<String, List<Course>>> {
 
   /// Return session progress based on today's [date]
   double get getSessionProgress {
-    final progress = selectedDate
-        .difference(_courseRepository.activeSessions.first.startDate)
-        .inDays /
-        _courseRepository.activeSessions.first.endDate
-            .difference(_courseRepository.activeSessions.first.startDate)
-            .inDays;
-
+    double progress = 0;
+    if(_courseRepository.activeSessions.first.startDate.isBefore(DateTime.now())) {
+       progress = selectedDate
+          .difference(_courseRepository.activeSessions.first.startDate)
+          .inDays /
+          _courseRepository.activeSessions.first.endDate
+              .difference(_courseRepository.activeSessions.first.startDate)
+              .inDays;
+    }
+    else{
+       progress = 0;
+    }
     return progress;
   }
 
@@ -183,46 +169,5 @@ class DashboardViewModel extends FutureViewModel<Map<String, List<Course>>> {
   }
 
 
-
-
-  /// Sort [courses] by session.
-  void _buildCoursesBySession(List<Course> courses) {
-    for (final Course course in courses) {
-      coursesBySession.update(course.session, (value) {
-        // Remove the current version of the course
-        value.removeWhere((element) => element.acronym == course.acronym);
-        // Add the updated version of the course
-        value.add(course);
-        value.sort((a, b) => a.acronym.compareTo(b.acronym));
-        return value;
-      }, ifAbsent: () {
-        sessionOrder.add(course.session);
-        return [course];
-      });
-    }
-
-    sessionOrder.sort((a, b) {
-      if (a == b) return 0;
-
-      // When the session is 's.o.' we put the course at the end of the list
-      if(a == "s.o.") {
-        return 1;
-      } else if(b == "s.o.") {
-        return -1;
-      }
-
-      final yearA = int.parse(a.substring(1));
-      final yearB = int.parse(b.substring(1));
-
-      if (yearA < yearB) {
-        return 1;
-      } else if (yearA == yearB) {
-        if (a[0] == 'H' || a[0] == 'É' && b[0] == 'A') {
-          return 1;
-        }
-      }
-      return -1;
-    });
-  }
 
 }
