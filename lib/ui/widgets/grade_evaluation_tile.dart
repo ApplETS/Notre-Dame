@@ -113,7 +113,7 @@ class GradeEvaluationTile extends StatelessWidget {
 
   String getDate(DateTime targetDate, BuildContext context) {
     if (targetDate != null) {
-      return DateFormat('dd MMMM yyyy').format(targetDate);
+      return DateFormat('dd/MM/yyyy').format(targetDate);
     }
 
     return AppIntl.of(context).grades_not_available;

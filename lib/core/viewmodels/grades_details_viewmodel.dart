@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:stacked/stacked.dart';
 
-// MANAGERS
+// MANAGERS / SERVICES
 import 'package:notredame/core/managers/course_repository.dart';
 
 // MODELS
@@ -21,7 +21,7 @@ class GradesDetailsViewModel extends FutureViewModel<Course> {
   final CourseRepository _courseRepository = locator<CourseRepository>();
 
   /// Used to get the current course selected of the student
-  Course _course;
+  final Course _course;
 
   Course get course => _course;
 
