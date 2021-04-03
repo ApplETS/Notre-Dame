@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:notredame/core/utils/utils.dart';
 import 'package:notredame/core/constants/urls.dart';
+import 'package:notredame/ui/utils/loading.dart';
 import 'package:stacked/stacked.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -61,11 +62,11 @@ class _DashboardViewState extends State<DashboardView>
                 automaticallyImplyLeading: false,
                 actions: _buildActionButtons(model),
               ),
-              body: ReorderableListView(
+              body: model.cards == null ? buildLoading():ReorderableListView(
                 onReorder: (oldIndex, newIndex) =>
                     onReorder(model, oldIndex, newIndex),
                 children: model.cards
-                    .map((key) => _buildAboutUsCard(colorFor(key.toString())))
+                    . map((key) => _buildAboutUsCard(colorFor(key.toString())))
                     .toList(),
               ));
         });

@@ -2,10 +2,8 @@
 import 'dart:collection';
 
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:fluttertoast/fluttertoast_web.dart';
 import 'package:notredame/core/constants/preferences_flags.dart';
 import 'package:notredame/core/managers/settings_manager.dart';
-import 'package:notredame/core/services/preferences_service.dart';
 import 'package:stacked/stacked.dart';
 
 import '../../locator.dart';
