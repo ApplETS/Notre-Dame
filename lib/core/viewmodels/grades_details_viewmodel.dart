@@ -29,29 +29,21 @@ class GradesDetailsViewModel extends FutureViewModel<Course> {
       : _appIntl = intl,
         _course = course;
 
-  bool isLoadingEvents = false;
-
   @override
   Future<Course> futureToRun() async => _courseRepository
       .getCourseSummary(course)
-      .then((value) {
-        setBusyForObject(isLoadingEvents, true);
-      })
+      .then((value) {})
       // ignore: return_type_invalid_for_catch_error
-      .catchError(onError)
-      .whenComplete(() => setBusyForObject(isLoadingEvents, false));
+      .catchError(onError);
 
   /// Reload the course from Signets and rebuild the view.
   Future<bool> refresh() async {
     try {
       _courseRepository
           .getCourseSummary(course)
-          .then((value) {
-            setBusyForObject(isLoadingEvents, true);
-          })
+          .then((value) {})
           // ignore: return_type_invalid_for_catch_error
-          .catchError(onError)
-          .whenComplete(() => setBusyForObject(isLoadingEvents, false));
+          .catchError(onError);
       notifyListeners();
       return true;
     } on Exception catch (_) {

@@ -40,7 +40,6 @@ class _GradesDetailsViewState extends State<GradesDetailsView> {
             }
           },
           child: BaseScaffold(
-            isLoading: model.busy(model.isLoadingEvents),
             body: CustomScrollView(
               slivers: <Widget>[
                 SliverAppBar(
@@ -110,75 +109,72 @@ class _GradesDetailsViewState extends State<GradesDetailsView> {
                                           child: Padding(
                                             padding: const EdgeInsets.all(20.0),
                                             child: Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.center,
-                                                children: <Widget>[
-                                                  GradeCircularProgress(
-                                                    finalGrade:
-                                                        model.course.grade,
-                                                    studentGrade:
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              children: <Widget>[
+                                                GradeCircularProgress(
+                                                  finalGrade:
+                                                      model.course.grade,
+                                                  studentGrade:
+                                                      getGradeInPercentage(
+                                                          model.course.summary
+                                                              .currentMark,
+                                                          model.course.summary
+                                                              .markOutOf),
+                                                  averageGrade:
+                                                      getGradeInPercentage(
+                                                          model.course.summary
+                                                              .passMark,
+                                                          model.course.summary
+                                                              .markOutOf),
+                                                  ratio: 1.0,
+                                                ),
+                                                Padding(
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          left: 55.0),
+                                                  child: Column(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
+                                                    children: <Widget>[
+                                                      getGradeSummary(
                                                         getGradeInPercentage(
                                                             model.course.summary
                                                                 .currentMark,
                                                             model.course.summary
                                                                 .markOutOf),
-                                                    averageGrade:
-                                                        getGradeInPercentage(
-                                                            model.course.summary
-                                                                .passMark,
-                                                            model.course.summary
-                                                                .markOutOf),
-                                                    ratio: 1.0,
-                                                  ),
-                                                  Padding(
-                                                    padding:
-                                                        const EdgeInsets.only(
-                                                            left: 55.0),
-                                                    child: Column(
-                                                      crossAxisAlignment:
-                                                          CrossAxisAlignment
-                                                              .start,
-                                                      children: <Widget>[
-                                                        getTotalGrade(
+                                                        AppIntl.of(context)
+                                                            .grades_current_rating,
+                                                        Colors.green,
+                                                        context,
+                                                      ),
+                                                      Padding(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                    .only(
+                                                                top: 15.0),
+                                                        child: getGradeSummary(
                                                           getGradeInPercentage(
                                                               model
                                                                   .course
                                                                   .summary
-                                                                  .currentMark,
+                                                                  .passMark,
                                                               model
                                                                   .course
                                                                   .summary
                                                                   .markOutOf),
                                                           AppIntl.of(context)
-                                                              .grades_current_rating,
-                                                          Colors.green,
+                                                              .grades_average,
+                                                          Colors.red,
                                                           context,
                                                         ),
-                                                        Padding(
-                                                          padding:
-                                                              const EdgeInsets
-                                                                      .only(
-                                                                  top: 15.0),
-                                                          child: getTotalGrade(
-                                                            getGradeInPercentage(
-                                                                model
-                                                                    .course
-                                                                    .summary
-                                                                    .passMark,
-                                                                model
-                                                                    .course
-                                                                    .summary
-                                                                    .markOutOf),
-                                                            AppIntl.of(context)
-                                                                .grades_average,
-                                                            Colors.red,
-                                                            context,
-                                                          ),
-                                                        ),
-                                                      ],
-                                                    ),
+                                                      ),
+                                                    ],
                                                   ),
-                                                ]),
+                                                ),
+                                              ],
+                                            ),
                                           ),
                                         ),
                                       ]
@@ -248,7 +244,7 @@ class _GradesDetailsViewState extends State<GradesDetailsView> {
                           ]
                         : <Widget>[getNoGradesAvailableWidget()],
                   ),
-                )
+                ),
               ],
             ),
           ),
@@ -270,17 +266,20 @@ class _GradesDetailsViewState extends State<GradesDetailsView> {
   }
 
   double getGradeInPercentage(double grade, double maxGrade) {
+    if (grade == null || grade == 0.0) {
+      return 0.0;
+    }
+
     return ((grade / maxGrade) * 100).roundToDouble();
   }
 
-  Column getTotalGrade(
+  Column getGradeSummary(
       double grade, String recipient, Color color, BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Text(
-          AppIntl.of(context)
-              .grades_grade_with_percentage(grade ?? 0.0, 100, grade ?? 0.0),
+          AppIntl.of(context).grades_grade_with_percentage(grade, 100, grade),
           style: TextStyle(color: color, fontWeight: FontWeight.bold),
         ),
         Text(recipient, style: TextStyle(color: color)),
