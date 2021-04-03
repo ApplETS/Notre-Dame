@@ -17,6 +17,8 @@ import 'package:notredame/ui/views/about_view.dart';
 import 'package:notredame/ui/views/contributors_view.dart';
 import 'package:notredame/ui/views/choose_language_view.dart';
 
+import 'views/dashboard_view.dart';
+
 class AppRouter {
   // ignore: missing_return
   static Route<dynamic> generateRoute(RouteSettings routeSettings) {
@@ -25,6 +27,12 @@ class AppRouter {
         return MaterialPageRoute(
             settings: RouteSettings(name: routeSettings.name),
             builder: (_) => LoginView());
+
+      case RouterPaths.dashboard:
+        return PageRouteBuilder(
+            settings: RouteSettings(name: routeSettings.name),
+            pageBuilder: (_, __, ___) => const DashboardView());
+
       case RouterPaths.schedule:
         return PageRouteBuilder(
             settings: RouteSettings(name: routeSettings.name),
