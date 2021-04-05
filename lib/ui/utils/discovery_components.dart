@@ -14,20 +14,25 @@ List<Discovery> discoveryComponents(BuildContext context) => [
         featureId: 'navbar_dashboard_page_id',
         title: AppIntl.of(context).discovery_navbar_dashboard_page_title,
         details: ConstrainedBox(
-          constraints: BoxConstraints(maxHeight: MediaQuery.of(context).size.height * 0.6),
+          constraints: BoxConstraints(
+              maxHeight: MediaQuery.of(context).size.height * 0.6),
           child: Padding(
             padding: const EdgeInsets.only(top: 10.0),
             child: ListView(
               padding: EdgeInsets.zero,
               children: <Widget>[
-                Text(AppIntl.of(context).discovery_navbar_dashboard_page_details,
+                Text(
+                    AppIntl.of(context).discovery_navbar_dashboard_page_details,
                     textAlign: TextAlign.justify),
                 const Text('\n'),
-                Image.asset('assets/animations/dashboard_swipe_left.gif'),
+                Image.asset('assets/animations/dashboard_swipe_fr.gif'),
                 const Text('\n'),
-                Text(AppIntl.of(context).discovery_navbar_dashboard_page_details_restore, textAlign: TextAlign.justify),
+                Text(
+                    AppIntl.of(context)
+                        .discovery_navbar_dashboard_page_details_restore,
+                    textAlign: TextAlign.justify),
                 const Text('\n'),
-                Image.asset('assets/animations/dashboard_restore.gif'),
+                Image.asset('assets/animations/dashboard_restore_fr.gif'),
               ],
             ),
           ),
@@ -38,26 +43,23 @@ List<Discovery> discoveryComponents(BuildContext context) => [
         featureId: 'navbar_schedule_page_id',
         title: AppIntl.of(context).discovery_navbar_schedule_page_title,
         details: ConstrainedBox(
-          constraints: BoxConstraints(maxHeight: MediaQuery.of(context).size.height * 0.6),
+          constraints: BoxConstraints(
+              maxHeight: MediaQuery.of(context).size.height * 0.6),
           child: Padding(
             padding: const EdgeInsets.only(top: 10.0),
             child: ListView(
-            padding: EdgeInsets.zero,
-            children: <Widget>[
-              Text(AppIntl.of(context).discovery_navbar_schedule_page_details, textAlign: TextAlign.justify),
-              RichText(
-                textAlign: TextAlign.justify,
-                text: TextSpan(
-                  children: [
-                    const TextSpan(text: '\n'),
-                    const WidgetSpan(child: Icon(Icons.settings, size: 16, color: Colors.white)),
-                    TextSpan(text:' ${AppIntl.of(context).discovery_navbar_schedule_page_details_format}'),
-                  ],
-                ),
-              ),            
-              const Text('\n'),
-              Image.asset('assets/animations/schedule_settings.gif'),
-            ],          
+              padding: EdgeInsets.zero,
+              children: <Widget>[
+                Text(AppIntl.of(context).discovery_navbar_schedule_page_details,
+                    textAlign: TextAlign.justify),
+                const Text('\n'),
+                Text(
+                    AppIntl.of(context)
+                        .discovery_navbar_schedule_page_details_format,
+                    textAlign: TextAlign.justify),
+                const Text('\n'),
+                Image.asset('assets/animations/schedule_settings_fr.gif'),
+              ],
             ),
           ),
         ),
@@ -67,14 +69,26 @@ List<Discovery> discoveryComponents(BuildContext context) => [
         featureId: 'navbar_students_page_id',
         title: AppIntl.of(context).discovery_navbar_student_page_title,
         details: ConstrainedBox(
-          constraints: BoxConstraints(maxHeight: MediaQuery.of(context).size.height * 0.6),
+          constraints: BoxConstraints(
+              maxHeight: MediaQuery.of(context).size.height * 0.6),
           child: Padding(
             padding: const EdgeInsets.only(top: 10.0),
             child: ListView(
-            padding: EdgeInsets.zero,
-            children: <Widget>[ 
-              Text(AppIntl.of(context).discovery_navbar_student_page_details, textAlign: TextAlign.justify),
-            ],          
+              padding: EdgeInsets.zero,
+              children: <Widget>[
+                Text(AppIntl.of(context).discovery_navbar_student_page_details,
+                    textAlign: TextAlign.justify),
+                const Text('\n'),
+                Text(
+                    AppIntl.of(context)
+                        .discovery_navbar_student_grade_page_details,
+                    textAlign: TextAlign.justify),
+                const Text('\n'),
+                Text(
+                    AppIntl.of(context)
+                        .discovery_navbar_student_profile_page_details,
+                    textAlign: TextAlign.justify),
+              ],
             ),
           ),
         ),
@@ -84,16 +98,18 @@ List<Discovery> discoveryComponents(BuildContext context) => [
         featureId: 'navbar_ets_page_id',
         title: AppIntl.of(context).discovery_navbar_ets_page_title,
         details: ConstrainedBox(
-          constraints: BoxConstraints(maxHeight: MediaQuery.of(context).size.height * 0.6),
+          constraints: BoxConstraints(
+              maxHeight: MediaQuery.of(context).size.height * 0.6),
           child: Padding(
             padding: const EdgeInsets.only(top: 10.0),
             child: ListView(
-            padding: EdgeInsets.zero,
-            children: <Widget>[ 
-              Text(AppIntl.of(context).discovery_navbar_ets_page_details, textAlign: TextAlign.justify),
-              const Text('\n'),
-              Image.asset('assets/animations/ets.png'),
-            ],          
+              padding: EdgeInsets.zero,
+              children: <Widget>[
+                Text(AppIntl.of(context).discovery_navbar_ets_page_details,
+                    textAlign: TextAlign.justify),
+                const Text('\n'),
+                Image.asset('assets/animations/ets_link_fr.gif'),
+              ],
             ),
           ),
         ),
@@ -103,16 +119,18 @@ List<Discovery> discoveryComponents(BuildContext context) => [
         featureId: 'navbar_more_page_id',
         title: AppIntl.of(context).discovery_navbar_more_page_title,
         details: ConstrainedBox(
-          constraints: BoxConstraints(maxHeight: MediaQuery.of(context).size.height * 0.6),
+          constraints: BoxConstraints(
+              maxHeight: MediaQuery.of(context).size.height * 0.6),
           child: Padding(
             padding: const EdgeInsets.only(top: 10.0),
             child: ListView(
-            padding: EdgeInsets.zero,
-            children: <Widget>[ 
-              Text(AppIntl.of(context).discovery_navbar_more_page_details, textAlign: TextAlign.justify),
-              const Text('\n'),
-              Image.asset('assets/animations/more.png'),
-            ],          
+              padding: EdgeInsets.zero,
+              children: <Widget>[
+                Text(AppIntl.of(context).discovery_navbar_more_page_details,
+                    textAlign: TextAlign.justify),
+                const Text('\n'),
+                Image.asset('assets/animations/more_fr.jpg'),
+              ],
             ),
           ),
         ),
@@ -120,5 +138,6 @@ List<Discovery> discoveryComponents(BuildContext context) => [
     ];
 
 Discovery getDiscoveryByPath(BuildContext context, String path) {
-  return discoveryComponents(context).firstWhere((element) => element.path == path);
+  return discoveryComponents(context)
+      .firstWhere((element) => element.path == path);
 }
