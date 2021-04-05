@@ -25,14 +25,24 @@ List<Discovery> discoveryComponents(BuildContext context) => [
                     AppIntl.of(context).discovery_navbar_dashboard_page_details,
                     textAlign: TextAlign.justify),
                 const Text('\n'),
-                Image.asset('assets/animations/dashboard_swipe_fr.gif'),
+                if (AppIntl.of(context).localeName == "fr")
+                  Image.asset(
+                      'assets/animations/discovery/fr/dashboard_swipe.gif')
+                else
+                  Image.asset(
+                      'assets/animations/discovery/en/dashboard_swipe.gif'),
                 const Text('\n'),
                 Text(
                     AppIntl.of(context)
                         .discovery_navbar_dashboard_page_details_restore,
                     textAlign: TextAlign.justify),
                 const Text('\n'),
-                Image.asset('assets/animations/dashboard_restore_fr.gif'),
+                if (AppIntl.of(context).localeName == "fr")
+                  Image.asset(
+                      'assets/animations/discovery/fr/dashboard_restore.gif')
+                else
+                  Image.asset(
+                      'assets/animations/discovery/en/dashboard_restore.gif'),
               ],
             ),
           ),
@@ -58,7 +68,12 @@ List<Discovery> discoveryComponents(BuildContext context) => [
                         .discovery_navbar_schedule_page_details_format,
                     textAlign: TextAlign.justify),
                 const Text('\n'),
-                Image.asset('assets/animations/schedule_settings_fr.gif'),
+                if (AppIntl.of(context).localeName == "fr")
+                  Image.asset(
+                      'assets/animations/discovery/fr/schedule_settings.gif')
+                else
+                  Image.asset(
+                      'assets/animations/discovery/en/schedule_settings.gif'),
               ],
             ),
           ),
@@ -108,7 +123,10 @@ List<Discovery> discoveryComponents(BuildContext context) => [
                 Text(AppIntl.of(context).discovery_navbar_ets_page_details,
                     textAlign: TextAlign.justify),
                 const Text('\n'),
-                Image.asset('assets/animations/ets_link_fr.gif'),
+                if (AppIntl.of(context).localeName == "fr")
+                  Image.asset('assets/animations/discovery/fr/ets_link.gif')
+                else
+                  Image.asset('assets/animations/discovery/en/ets_link.gif'),
               ],
             ),
           ),
@@ -129,7 +147,10 @@ List<Discovery> discoveryComponents(BuildContext context) => [
                 Text(AppIntl.of(context).discovery_navbar_more_page_details,
                     textAlign: TextAlign.justify),
                 const Text('\n'),
-                Image.asset('assets/animations/more_fr.jpg'),
+                if (AppIntl.of(context).localeName == "fr")
+                  Image.asset('assets/animations/discovery/fr/more.jpg')
+                else
+                  Image.asset('assets/animations/discovery/en/more.jpg'),
               ],
             ),
           ),
