@@ -3,8 +3,6 @@ import 'package:flutter/material.dart';
 
 // ROUTES
 import 'package:notredame/core/constants/router_paths.dart';
-import 'package:notredame/core/models/course.dart';
-import 'package:notredame/ui/views/grade_details_view.dart';
 
 // VIEWS
 import 'package:notredame/ui/views/login_view.dart';
@@ -18,6 +16,7 @@ import 'package:notredame/ui/views/student_view.dart';
 import 'package:notredame/ui/views/about_view.dart';
 import 'package:notredame/ui/views/contributors_view.dart';
 import 'package:notredame/ui/views/choose_language_view.dart';
+import 'package:notredame/ui/views/grade_details_view.dart';
 
 class AppRouter {
   // ignore: missing_return

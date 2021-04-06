@@ -36,7 +36,7 @@ class GradesViewModel extends FutureViewModel<Map<String, List<Course>>> {
         _buildCoursesBySession(coursesCached);
         // ignore: return_type_invalid_for_catch_error
         _courseRepository.getCourses().catchError(onError).then((value) {
-          if (value != null) {
+          if(value != null) {
             // Update the courses list
             _buildCoursesBySession(_courseRepository.courses);
           }
@@ -85,9 +85,9 @@ class GradesViewModel extends FutureViewModel<Map<String, List<Course>>> {
       if (a == b) return 0;
 
       // When the session is 's.o.' we put the course at the end of the list
-      if (a == "s.o.") {
+      if(a == "s.o.") {
         return 1;
-      } else if (b == "s.o.") {
+      } else if(b == "s.o.") {
         return -1;
       }
 

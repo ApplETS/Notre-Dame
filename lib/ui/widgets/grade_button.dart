@@ -5,9 +5,11 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 // MODEL
 import 'package:notredame/core/models/course.dart';
 
+// VIEW
+import 'package:notredame/ui/views/grade_details_view.dart';
+
 // CONSTANT
 import 'package:notredame/ui/utils/app_theme.dart';
-import 'package:notredame/ui/views/grade_details_view.dart';
 
 class GradeButton extends StatelessWidget {
   final Course course;
@@ -70,7 +72,6 @@ class GradeButton extends StatelessWidget {
     return intl.grades_not_available;
   }
 
-  void onPressed(BuildContext context) {
+  void onPressed(BuildContext context) =>
     Navigator.push(context, MaterialPageRoute(builder: (context) => GradesDetailsView(course: course)));
-  }
 }
