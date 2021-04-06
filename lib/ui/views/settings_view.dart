@@ -114,7 +114,7 @@ class _SettingsViewState extends State<SettingsView> {
                   subtitle: Text(model.currentLocale),
                   trailing: const Icon(Icons.arrow_drop_down),
                 ),
-              )
+              ),
             ],
           ),
         ),

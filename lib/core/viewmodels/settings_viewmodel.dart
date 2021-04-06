@@ -55,17 +55,13 @@ class SettingsViewModel extends FutureViewModel {
     _currentLocale = value;
   }
 
-  SettingsViewModel({@required AppIntl intl}): _appIntl = intl;
+  SettingsViewModel({@required AppIntl intl}) : _appIntl = intl;
 
   @override
   Future futureToRun() async {
     setBusy(true);
-    await _settingsManager
-        .getString(PreferencesFlag.theme)
-        .then((value) => _selectedTheme = value);
-    await _settingsManager
-        .getString(PreferencesFlag.locale)
-        .then((value) => _currentLocale = value);
+    await _settingsManager.getString(PreferencesFlag.theme).then((value) => _selectedTheme = value);
+    await _settingsManager.getString(PreferencesFlag.locale).then((value) => _currentLocale = value);
     setBusy(false);
     return true;
   }

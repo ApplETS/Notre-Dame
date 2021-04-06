@@ -5,7 +5,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 // MODELS
 import 'package:notredame/core/models/discovery.dart';
 
-// OTHER
+// CONSTANTS
 import 'package:notredame/core/constants/router_paths.dart';
 
 List<Discovery> discoveryComponents(BuildContext context) => [
