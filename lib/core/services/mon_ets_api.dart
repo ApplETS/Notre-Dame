@@ -23,7 +23,7 @@ class MonETSApi {
   ///
   /// Throws an [HttpException] if the MonETSApi return anything else than a 200 code
   Future<MonETSUser> authenticate({@required String username, @required String password}) async {
-    final response = await _client.post(Urls.authenticationMonETS, body: {"Username": username, "Password": password});
+    final response = await _client.post(Uri.parse(Urls.authenticationMonETS), body: {"Username": username, "Password": password});
 
     // Log the http error and throw a exception
     if(response.statusCode != 200) {

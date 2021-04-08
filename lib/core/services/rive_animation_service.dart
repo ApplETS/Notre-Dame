@@ -2,6 +2,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:rive/rive.dart';
+// ignore: implementation_imports
+import 'package:rive/src/rive_core/runtime/exceptions/rive_format_error_exception.dart';
 
 // OTHER
 import 'package:notredame/core/utils/animation_exception.dart';
@@ -10,17 +12,18 @@ import 'package:notredame/core/utils/animation_exception.dart';
 class RiveAnimationService {
   Future<Artboard> loadRiveFile({@required String riveFileName}) async {
     final bytes = await rootBundle.load("assets/animations/$riveFileName.riv");
-    final file = RiveFile();
 
-    if (file.import(bytes)) {
+    try {
+      final file = RiveFile.import(bytes);
+
       // get the main artboard
       return file.mainArtboard;
+    } on Exception {
+      throw const AnimationException(
+          prefix: "loadRiveFile",
+          message:
+              "Impossible to load the rive file. The file is most likely not found or corrupted. Check if the file is located in /assets/animations/*.riv");
     }
-
-    throw const AnimationException(
-        prefix: "loadRiveFile",
-        message:
-            "Impossible to load the rive file. The file is most likely not found or corrupted. Check if the file is located in /assets/animations/*.riv");
   }
 
   void addControllerToAnimation(
