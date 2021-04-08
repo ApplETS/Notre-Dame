@@ -2,8 +2,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:rive/rive.dart';
-// ignore: implementation_imports
-import 'package:rive/src/rive_core/runtime/exceptions/rive_format_error_exception.dart';
 
 // OTHER
 import 'package:notredame/core/utils/animation_exception.dart';
