@@ -9,15 +9,17 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 // SERVICES / MANAGERS
 import 'package:notredame/core/managers/user_repository.dart';
-import 'package:notredame/core/models/course.dart';
-import 'package:notredame/core/models/course_activity.dart';
-import 'package:notredame/core/models/session.dart';
 import 'package:notredame/core/services/github_api.dart';
 import 'package:notredame/core/services/navigation_service.dart';
 import 'package:notredame/core/managers/cache_manager.dart';
 import 'package:notredame/core/managers/settings_manager.dart';
 import 'package:notredame/core/services/preferences_service.dart';
 import 'package:notredame/core/managers/course_repository.dart';
+
+// MODELS
+import 'package:notredame/core/models/course.dart';
+import 'package:notredame/core/models/course_activity.dart';
+import 'package:notredame/core/models/session.dart';
 
 // VIEW MODEL
 import 'package:notredame/core/viewmodels/more_viewmodel.dart';
@@ -88,18 +90,22 @@ void main() {
 
   /// Verify all the required functions that are called from the logout function
   void verifyEveryFunctionsInLogout() {
-    // Check if the cacheManager has been emptied out
-    verify(cacheManagerMock.empty());
+    verifyInOrder([
+      // Check if the cacheManager has been emptied out
+      cacheManagerMock.empty(),
+      // Check if preference manager is clear
+      preferenceService.clear(),
+      // Check if user repository logOut is called
+      userRepositoryMock.logOut(),
+      // Check if the settings manager has reset lang and theme and notified his listener
+      settingsManagerMock.resetLanguageAndThemeMode(),
+    ]);
+    verifyNoMoreInteractions(cacheManagerMock);
+    verifyNoMoreInteractions(preferenceService);
+    verifyNoMoreInteractions(userRepositoryMock);
+    verifyNoMoreInteractions(settingsManagerMock);
 
-    // Check if preference manager is clear
-    verify(preferenceService.clear());
-
-    // Check if user repository logOut is called
-    verify(userRepositoryMock.logOut());
-
-    // Check if the settings manager has reset lang and theme and notified his listener
-    verify(settingsManagerMock.resetLanguageAndThemeMode());
-
+    // Make sure that the registered cache
     expect(courseRepositoryMock.sessions.length, 0,
         reason: 'has emptied out the sessions list');
     expect(courseRepositoryMock.coursesActivities.length, 0,
@@ -108,8 +114,12 @@ void main() {
         reason: 'has emptied out the courses list');
 
     // Check if navigation has been rerouted to login page
-    verify(navigationService.pop());
-    verify(navigationService.pushNamedAndRemoveUntil(RouterPaths.login));
+    verifyInOrder([
+      navigationService.pop(),
+      navigationService.pushNamedAndRemoveUntil(RouterPaths.login)
+    ]);
+
+    verifyNoMoreInteractions(navigationService);
   }
 
   group('MoreViewModel - ', () {

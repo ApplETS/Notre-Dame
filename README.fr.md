@@ -31,7 +31,7 @@ _Note: Ce guide est aussi disponible en: [English](https://github.com/ApplETS/No
 
 - Pour avoir accès a certaines fonctionnalités vous allez avoir besoin du certificat de SignetsAPI, ces fichiers sont encrypté.
   Pour les décrypter vous allez devoir exécuter le script `env_variables.sh` (disponible uniquement sur le Google Drive du club), puis exécuter les commandes suivantes:
-```
+```bash
 chmod +x ./scripts/decrypt.sh
 ./scripts/decrypt.sh
 ```
@@ -39,10 +39,9 @@ chmod +x ./scripts/decrypt.sh
 ## Démarrer le code
 
 - Pour générer les classes pour l'internationalisation, exécuter les commandes suivantes:
-```
+```bash
 flutter pub get
 ```
-## Ajouter la variable d'environnement pour GITHUB_API_KEY
 
 ## Ajouter une variable d'environnement pour une API_KEY
 - Pour ajouter le Google Maps API TOKEN et le GitHub API TOKEN, vous devez renommer le fichier `.env.template` en `.env`.

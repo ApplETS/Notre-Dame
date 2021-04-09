@@ -3,11 +3,12 @@ import 'package:mockito/mockito.dart';
 
 // MANAGER
 import 'package:notredame/core/managers/course_repository.dart';
-import 'package:notredame/core/models/course.dart';
 
 // MODELS
 import 'package:notredame/core/models/course_activity.dart';
 import 'package:notredame/core/models/session.dart';
+import 'package:notredame/core/models/course.dart';
+
 // EXCEPTIONS
 import 'package:notredame/core/utils/api_exception.dart';
 
