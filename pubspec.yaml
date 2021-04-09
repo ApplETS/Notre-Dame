@@ -74,7 +74,7 @@ flutter_icons:
   ios: "LaunchImage"
   image_path: "assets/icons/launcher_icon.png"
   adaptive_icon_background: "#EF3F45"
-  adaptive_icon_foreground: "assets/icons/launcher_icon.png"
+  adaptive_icon_foreground: "assets/icons/ic_launcher_foreground.png"
 
 
 # For information on the generic Dart part of this file, see the
