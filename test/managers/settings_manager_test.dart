@@ -126,7 +126,7 @@ void main() {
     group("ThemeMode - ", () {
       test("set light/dark/system mode", () async {
         const flag = PreferencesFlag.theme;
-        manager.setThemeMode(ThemeMode.light.toString());
+        manager.setThemeMode(ThemeMode.light);
 
         verify(preferencesService.setString(
                 PreferencesFlag.theme, ThemeMode.light.toString()))
@@ -137,7 +137,7 @@ void main() {
                 any))
             .called(1);
 
-        manager.setThemeMode(ThemeMode.dark.toString());
+        manager.setThemeMode(ThemeMode.dark);
 
         verify(preferencesService.setString(
                 PreferencesFlag.theme, ThemeMode.dark.toString()))
@@ -148,7 +148,7 @@ void main() {
                 any))
             .called(1);
 
-        manager.setThemeMode(ThemeMode.system.toString());
+        manager.setThemeMode(ThemeMode.system);
 
         verify(preferencesService.setString(
                 PreferencesFlag.theme, ThemeMode.system.toString()))
@@ -221,6 +221,23 @@ void main() {
         verifyNoMoreInteractions(preferencesService);
         verifyNoMoreInteractions(analyticsService);
       });
+    });
+
+    test("fetch theme and locale", () async {
+      PreferencesServiceMock.stubGetString(
+          preferencesService as PreferencesServiceMock, PreferencesFlag.locale,
+          toReturn: const Locale('fr').toString());
+      PreferencesServiceMock.stubGetString(
+          preferencesService as PreferencesServiceMock, PreferencesFlag.theme,
+          toReturn: 'ThemeMode.system');
+
+      await manager.fetchLanguageAndThemeMode();
+
+      verify(preferencesService.getString(PreferencesFlag.theme)).called(1);
+      verify(preferencesService.getString(PreferencesFlag.locale)).called(1);
+
+      verifyNoMoreInteractions(preferencesService);
+      verifyNoMoreInteractions(analyticsService);
     });
 
     test("setString", () async {

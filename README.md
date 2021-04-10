@@ -45,7 +45,6 @@ flutter pub get
 ## Add environment variable for API_KEY
 - To add the Google Maps API TOKEN and the GitHub API TOKEN, you need to rename the file `.env.template` into `.env`.
 In the `.env` file, you need to paste the Google Maps API TOKEN and the GitHub API TOKEN.
-
 ## Git hooks
 
 You can find under the folder `.githooks` all the hooks needed for this project. To configure git to use this folder enter the following command:

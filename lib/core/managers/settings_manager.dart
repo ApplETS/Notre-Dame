@@ -34,16 +34,38 @@ class SettingsManager with ChangeNotifier {
   /// Get ThemeMode
   ThemeMode get themeMode {
     _preferencesService.getString(PreferencesFlag.theme).then((value) {
-      _themeMode = ThemeMode.values.firstWhere((e) => e.toString() == value);
+      if (value != null) {
+        _themeMode = ThemeMode.values.firstWhere((e) => e.toString() == value);
+      }
     });
     return _themeMode;
+  }
+
+  /// reset Locale and Theme when logout
+  void resetLanguageAndThemeMode() {
+    _locale = null;
+    _themeMode = null;
+    notifyListeners();
+  }
+
+  /// Get Locale and Theme to init app with
+  Future<void> fetchLanguageAndThemeMode() async {
+    final theme = await _preferencesService.getString(PreferencesFlag.theme);
+    if (theme != null) {
+      _themeMode = ThemeMode.values.firstWhere((e) => e.toString() == theme);
+    }
+    final lang = await _preferencesService.getString(PreferencesFlag.locale);
+    if (lang != null) {
+      _locale =
+          AppIntl.supportedLocales.firstWhere((e) => e.toString() == lang);
+    }
   }
 
   /// Get Locale
   Locale get locale {
     _preferencesService.getString(PreferencesFlag.locale).then((value) {
-      _locale =
-          AppIntl.supportedLocales.firstWhere((e) => e.toString() == value);
+      if (value != null) {_locale =
+          AppIntl.supportedLocales.firstWhere((e) => e.toString() == value);}
     });
     if (_locale == null) {
       return null;
@@ -52,13 +74,13 @@ class SettingsManager with ChangeNotifier {
   }
 
   /// Set ThemeMode
-  void setThemeMode(String value) {
-    _themeMode = ThemeMode.values.firstWhere((e) => e.toString() == value);
-    _preferencesService.setString(PreferencesFlag.theme, _themeMode.toString());
+  void setThemeMode(ThemeMode value) {
+    _preferencesService.setString(PreferencesFlag.theme, value.toString());
     // Log the event
     _analyticsService.logEvent(
         "${tag}_${EnumToString.convertToString(PreferencesFlag.theme)}",
-        EnumToString.convertToString(_themeMode));
+        EnumToString.convertToString(value));
+    _themeMode = value;
     notifyListeners();
   }
 
