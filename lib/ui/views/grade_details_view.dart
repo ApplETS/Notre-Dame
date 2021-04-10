@@ -11,6 +11,7 @@ import 'package:notredame/core/models/course.dart';
 import 'package:notredame/ui/widgets/grade_circular_progress.dart';
 import 'package:notredame/ui/widgets/base_scaffold.dart';
 import 'package:notredame/ui/widgets/grade_evaluation_tile.dart';
+import 'package:notredame/ui/widgets/grade_not_available.dart';
 
 // OTHERS
 import 'package:notredame/ui/utils/app_theme.dart';
@@ -184,8 +185,8 @@ class _GradesDetailsViewState extends State<GradesDetailsView> {
                                           child: Row(
                                             mainAxisAlignment:
                                                 MainAxisAlignment.center,
-                                            children: <Widget>[
-                                              getNoGradesAvailableWidget()
+                                            children: const <Widget>[
+                                              GradeNotAvailable()
                                             ],
                                           ),
                                         ),
@@ -242,7 +243,9 @@ class _GradesDetailsViewState extends State<GradesDetailsView> {
                                   : <Widget>[],
                             ),
                           ]
-                        : <Widget>[getNoGradesAvailableWidget()],
+                        : const  <Widget>[
+                          GradeNotAvailable()
+                        ],
                   ),
                 ),
               ],
@@ -288,31 +291,11 @@ class _GradesDetailsViewState extends State<GradesDetailsView> {
   }
 
   String validateGrade(BuildContext context, String grade, String text) {
-    if (grade == "null") {
+    if (grade == "null" || grade == null) {
       return AppIntl.of(context).grades_not_available;
     }
 
     return text;
-  }
-
-  Padding getNoGradesAvailableWidget() {
-    return Padding(
-      padding: const EdgeInsets.only(top: 100.0),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          const Icon(
-            Icons.school,
-            size: 100,
-            color: AppTheme.etsLightRed,
-          ),
-          Text(
-            AppIntl.of(context).grades_msg_no_grades,
-            textAlign: TextAlign.center,
-          ),
-        ],
-      ),
-    );
   }
 
   SizedBox getHeadersSummary(String title, String number) {

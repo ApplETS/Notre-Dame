@@ -33,46 +33,55 @@ void main() {
       percentileRank: 99,
       evaluations: [
         model.Evaluation(
+          courseGroup: "02",
           title: "Laboratoire 1",
           weight: 10,
           teacherMessage: null,
           ignore: false,
           mark: 24,
+          correctedEvaluationOutOf: "35",
           passMark: 25,
           standardDeviation: 2,
           median: 80,
           percentileRank: 5,
-          targetDate: DateTime(2021, 02, 02),
+          published: true,
+          targetDate: DateTime(2021, 01, 05),
         ),
         model.Evaluation(
+          courseGroup: "02",
           title: "Laboratoire 2",
           weight: 10,
           teacherMessage: null,
           ignore: false,
           mark: 24,
+          correctedEvaluationOutOf: "30",
           passMark: 25,
           standardDeviation: 2,
           median: 80,
           percentileRank: 5,
+          published: true,
           targetDate: DateTime(2021, 02, 02),
         ),
         model.Evaluation(
+          courseGroup: "01",
           title: "Laboratoire Intra",
           weight: 10,
           teacherMessage: null,
           ignore: false,
           mark: 24,
+          correctedEvaluationOutOf: "30",
           passMark: 25,
           standardDeviation: 2,
           median: 80,
           percentileRank: 5,
+          published: true,
           targetDate: DateTime(2021, 02, 02),
         ),
       ],
     ),
   );
 
-  group("GradeButton -", () {
+  group("GradeNotAvailable -", () {
     setUp(() async {
       intl = await setupAppIntl();
     });
@@ -82,7 +91,7 @@ void main() {
     });
 
     group("UI -", () {
-      testWidgets("Display the grade of the evaluation", (WidgetTester tester) async {});
+      testWidgets("display an icon and text", (WidgetTester tester) async {});
     });
   });
 }

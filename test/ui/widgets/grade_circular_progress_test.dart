@@ -81,7 +81,7 @@ void main() {
     ),
   );
 
-  group("GradeEvaluationTile -", () {
+  group("GradeCircularProgressTest -", () {
     setUp(() async {
       intl = await setupAppIntl();
     });
@@ -91,9 +91,12 @@ void main() {
     });
 
     group("UI -", () {
-      testWidgets("display a circular progress bar, 2 texts and an icon", (WidgetTester tester) async {});
+      testWidgets("display the grade of the evaluation in the center", (WidgetTester tester) async {});
 
-      testWidgets("dropdown display 6 lines of text", (WidgetTester tester) async {});
+      testWidgets("display N/A when no grade is available", (WidgetTester tester) async {});
+
+      testWidgets("the circular lines shows the right grade of the student and average", (WidgetTester tester) async {});
+    
     });
   });
 }

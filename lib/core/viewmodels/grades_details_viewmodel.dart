@@ -30,23 +30,19 @@ class GradesDetailsViewModel extends FutureViewModel<Course> {
         _course = course;
 
   @override
-  Future<Course> futureToRun() async => _courseRepository
-      .getCourseSummary(course)
-      .then((value) {})
-      // ignore: return_type_invalid_for_catch_error
-      .catchError(onError);
+  Future<Course> futureToRun() async => 
+    // ignore: return_type_invalid_for_catch_error
+    _courseRepository.getCourseSummary(course).catchError(onError);
 
   /// Reload the course from Signets and rebuild the view.
   Future<bool> refresh() async {
     try {
-      _courseRepository
-          .getCourseSummary(course)
-          .then((value) {})
-          // ignore: return_type_invalid_for_catch_error
-          .catchError(onError);
+      // ignore: return_type_invalid_for_catch_error
+      _courseRepository.getCourseSummary(course).catchError(onError);
       notifyListeners();
       return true;
-    } on Exception catch (_) {
+    } on Exception catch (error) {
+      onError(error);
       return false;
     }
   }
