@@ -1,9 +1,11 @@
 // FLUTTER / DART / THIRD-PARTIES
+import 'package:expandable/expandable.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 // MODELS
 import 'package:notredame/core/models/evaluation.dart';
+import 'package:notredame/ui/utils/app_theme.dart';
 
 // WIDGETS
 import 'package:notredame/ui/widgets/grade_circular_progress.dart';
@@ -11,69 +13,120 @@ import 'package:notredame/ui/widgets/grade_circular_progress.dart';
 // OTHER
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-class GradeEvaluationTile extends StatelessWidget {
+class GradeEvaluationTile extends StatefulWidget {
   final Evaluation evaluation;
 
   const GradeEvaluationTile(this.evaluation);
 
   @override
-  Widget build(BuildContext context) => Theme(
-        data: ThemeData().copyWith(
-          dividerColor: Colors.transparent,
-          accentColor: Colors.red,
-          unselectedWidgetColor: Colors.red,
-        ),
-        child: Padding(
-          padding: const EdgeInsets.all(15.0),
-          child: ExpansionTile(
-            leading: FractionallySizedBox(
-              alignment: Alignment.topCenter,
-              heightFactor: 1.2,
-              child: LayoutBuilder(
-                builder: (context, constraints) {
-                  return GradeCircularProgress(
-                    studentGrade: getGradeInPercentage(evaluation.mark,
-                        evaluation.correctedEvaluationOutOfFormatted),
-                    averageGrade: getGradeInPercentage(evaluation.passMark,
-                        evaluation.correctedEvaluationOutOfFormatted),
-                    ratio: constraints.maxHeight / 100,
-                  );
-                },
-              ),
-            ),
-            title: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Text(evaluation.title,
-                    overflow: TextOverflow.ellipsis,
-                    style: TextStyle(
-                        height: 3,
-                        fontSize: 15,
-                        color: Theme.of(context).brightness == Brightness.light
-                            ? Colors.black
-                            : Colors.white)),
-                Padding(
-                  padding: const EdgeInsets.only(top: 8.0, bottom: 9.0),
-                  child: Text(
-                      AppIntl.of(context).grades_weight(evaluation.weight),
-                      style: TextStyle(
-                          fontSize: 12,
+  _GradeEvaluationTileState createState() => _GradeEvaluationTileState();
+}
+
+class _GradeEvaluationTileState extends State<GradeEvaluationTile> {
+  bool showEvaluationDetails = false;
+
+  @override
+  Widget build(BuildContext context) => Column(
+        children: [
+          GestureDetector(
+            onTap: () {
+              setState(() {
+                showEvaluationDetails = !showEvaluationDetails;
+              });
+            },
+            child: Padding(
+              padding: const EdgeInsets.only(top: 8.0),
+              child: SizedBox(
+                height: 90.0,
+                child: ListTile(
+                  leading: Padding(
+                    padding: const EdgeInsets.only(left: 10.0),
+                    child: FractionallySizedBox(
+                      alignment: Alignment.topCenter,
+                      heightFactor: 1.2,
+                      child: LayoutBuilder(
+                        builder: (context, constraints) {
+                          return GradeCircularProgress(
+                            studentGrade: getGradeInPercentage(
+                              widget.evaluation.mark,
+                              widget
+                                  .evaluation.correctedEvaluationOutOfFormatted,
+                            ),
+                            averageGrade: getGradeInPercentage(
+                              widget.evaluation.passMark,
+                              widget
+                                  .evaluation.correctedEvaluationOutOfFormatted,
+                            ),
+                            ratio: constraints.maxHeight / 100,
+                          );
+                        },
+                      ),
+                    ),
+                  ),
+                  title: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Text(
+                        widget.evaluation.title,
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(
+                          height: 3,
+                          fontSize: 15,
                           color:
                               Theme.of(context).brightness == Brightness.light
                                   ? Colors.black
-                                  : Colors.white)),
+                                  : Colors.white,
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 8.0, bottom: 9.0),
+                        child: Text(
+                            AppIntl.of(context)
+                                .grades_weight(widget.evaluation.weight),
+                            style: TextStyle(
+                                fontSize: 12,
+                                color: Theme.of(context).brightness ==
+                                        Brightness.light
+                                    ? Colors.black
+                                    : Colors.white)),
+                      ),
+                    ],
+                  ),
+                  trailing: Padding(
+                    padding: const EdgeInsets.only(top: 8.0),
+                    child: IconButton(
+                      icon: Icon(
+                        showEvaluationDetails
+                            ? Icons.keyboard_arrow_up_sharp
+                            : Icons.keyboard_arrow_down_sharp,
+                        color: AppTheme.etsLightRed,
+                      ),
+                      onPressed: () {
+                        setState(() {
+                          showEvaluationDetails = !showEvaluationDetails;
+                        });
+                      },
+                    ),
+                  ),
                 ),
-              ],
+              ),
             ),
-            children: <Widget>[evaluationsSummary(context, evaluation)],
           ),
-        ),
+          if (showEvaluationDetails)
+            Column(
+              children: <Widget>[
+                evaluationsSummary(context, widget.evaluation)
+              ],
+            )
+          else
+            Container()
+        ],
       );
 
   Widget evaluationsSummary(BuildContext context, Evaluation evaluation) {
     return Padding(
-      padding: const EdgeInsets.only(top: 5.0, bottom: 8),
-      child: Container(
+      padding: const EdgeInsets.only(left: 25.0, right: 15.0),
+      child: SizedBox(
         width: MediaQuery.of(context).size.width * 0.91,
         child: Column(
           children: [
