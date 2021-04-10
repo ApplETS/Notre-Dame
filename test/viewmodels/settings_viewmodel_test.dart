@@ -39,15 +39,15 @@ void main() {
       test("The settings are correctly loaded and sets", () async {
         SettingsManagerMock.stubGetString(
             settingsManager as SettingsManagerMock, PreferencesFlag.locale,
-            toReturn: 'test locale');
+            toReturn: 'en');
 
         SettingsManagerMock.stubGetString(
             settingsManager as SettingsManagerMock, PreferencesFlag.theme,
-            toReturn: 'test theme');
+            toReturn: ThemeMode.system.toString());
 
-        expect(await viewModel.futureToRun(), true);
-        expect(viewModel.currentLocale, 'Français');
-        expect(viewModel.selectedTheme, 'System');
+        await viewModel.futureToRun();
+        expect(viewModel.currentLocale, 'English');
+        expect(viewModel.selectedTheme, ThemeMode.system);
 
         verify(settingsManager.getString(any)).called(2);
         verifyNoMoreInteractions(settingsManager);
@@ -60,17 +60,14 @@ void main() {
             settingsManager as SettingsManagerMock, PreferencesFlag.theme);
 
         // Call the setter.
-        viewModel.selectedTheme = ThemeMode.system.toString();
+        viewModel.selectedTheme = ThemeMode.system;
 
-        await untilCalled(
-            settingsManager.setThemeMode(ThemeMode.system.toString()));
+        await untilCalled(settingsManager.setThemeMode(ThemeMode.system));
 
-        expect(viewModel.selectedTheme.toLowerCase(),
-            ThemeMode.system.toString().replaceFirst('ThemeMode.', ''));
+        expect(viewModel.selectedTheme, ThemeMode.system);
         expect(viewModel.isBusy, false);
 
-        verify(settingsManager.setThemeMode(ThemeMode.system.toString()))
-            .called(1);
+        verify(settingsManager.setThemeMode(ThemeMode.system)).called(1);
         verifyNoMoreInteractions(settingsManager);
       });
 
@@ -79,17 +76,14 @@ void main() {
             settingsManager as SettingsManagerMock, PreferencesFlag.theme);
 
         // Call the setter.
-        viewModel.selectedTheme = ThemeMode.dark.toString();
+        viewModel.selectedTheme = ThemeMode.dark;
 
-        await untilCalled(
-            settingsManager.setThemeMode(ThemeMode.dark.toString()));
+        await untilCalled(settingsManager.setThemeMode(ThemeMode.dark));
 
-        expect(viewModel.selectedTheme.toLowerCase(),
-            ThemeMode.dark.toString().replaceFirst('ThemeMode.', ''));
+        expect(viewModel.selectedTheme, ThemeMode.dark);
         expect(viewModel.isBusy, false);
 
-        verify(settingsManager.setThemeMode(ThemeMode.dark.toString()))
-            .called(1);
+        verify(settingsManager.setThemeMode(ThemeMode.dark)).called(1);
         verifyNoMoreInteractions(settingsManager);
       });
 
@@ -98,17 +92,14 @@ void main() {
             settingsManager as SettingsManagerMock, PreferencesFlag.theme);
 
         // Call the setter.
-        viewModel.selectedTheme = ThemeMode.light.toString();
+        viewModel.selectedTheme = ThemeMode.light;
 
-        await untilCalled(
-            settingsManager.setThemeMode(ThemeMode.light.toString()));
+        await untilCalled(settingsManager.setThemeMode(ThemeMode.light));
 
-        expect(viewModel.selectedTheme.toLowerCase(),
-            ThemeMode.light.toString().replaceFirst('ThemeMode.', ''));
+        expect(viewModel.selectedTheme, ThemeMode.light);
         expect(viewModel.isBusy, false);
 
-        verify(settingsManager.setThemeMode(ThemeMode.light.toString()))
-            .called(1);
+        verify(settingsManager.setThemeMode(ThemeMode.light)).called(1);
         verifyNoMoreInteractions(settingsManager);
       });
     });
