@@ -23,30 +23,23 @@ class SettingsViewModel extends FutureViewModel {
   String _currentLocale;
 
   /// Current theme
-  String _selectedTheme;
+  ThemeMode _selectedTheme;
 
-  String get selectedTheme {
-    if (_selectedTheme == ThemeMode.light.toString()) {
-      return _appIntl.light_theme;
-    } else if (_selectedTheme == ThemeMode.dark.toString()) {
-      return _appIntl.dark_theme;
-    } else {
-      return _appIntl.system_theme;
-    }
-  }
+  ThemeMode get selectedTheme => _selectedTheme;
 
   /// Set theme
-  set selectedTheme(String value) {
+  set selectedTheme(ThemeMode value) {
     _settingsManager.setThemeMode(value);
     _selectedTheme = value;
   }
 
   String get currentLocale {
-    if (_currentLocale ==
-        AppIntl.supportedLocales.first.languageCode) {
+    if (_currentLocale == AppIntl.supportedLocales.first.languageCode) {
       return _appIntl.settings_english;
-    } else {
+    } else if (_currentLocale == AppIntl.supportedLocales.last.languageCode) {
       return _appIntl.settings_french;
+    } else {
+      return _appIntl.system_theme;
     }
   }
 
@@ -56,14 +49,14 @@ class SettingsViewModel extends FutureViewModel {
     _currentLocale = value;
   }
 
-  SettingsViewModel({@required AppIntl intl}): _appIntl = intl;
+  SettingsViewModel({@required AppIntl intl}) : _appIntl = intl;
 
   @override
   Future futureToRun() async {
     setBusy(true);
-    await _settingsManager
-        .getString(PreferencesFlag.theme)
-        .then((value) => _selectedTheme = value);
+    await _settingsManager.getString(PreferencesFlag.theme).then((value) =>
+        _selectedTheme =
+            ThemeMode.values.firstWhere((e) => e.toString() == value));
     await _settingsManager
         .getString(PreferencesFlag.locale)
         .then((value) => _currentLocale = value);

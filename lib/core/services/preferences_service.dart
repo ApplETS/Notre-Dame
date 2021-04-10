@@ -6,7 +6,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:notredame/core/constants/preferences_flags.dart';
 
 class PreferencesService {
-
   Future<bool> setBool(PreferencesFlag flag, {@required bool value}) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
 
@@ -17,6 +16,12 @@ class PreferencesService {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
 
     return prefs.setString(flag.toString(), value);
+  }
+
+  Future<void> clear() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    await prefs.clear();
   }
 
   Future<bool> setInt(PreferencesFlag flag, int value) async {

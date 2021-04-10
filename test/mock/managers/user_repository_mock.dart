@@ -92,4 +92,9 @@ class UserRepositoryMock extends Mock implements UserRepository {
         .thenAnswer((_) => Future.delayed(const Duration(milliseconds: 50))
             .then((value) => throw toThrow));
   }
+
+  /// Stub the function [logOut] of [mock] when called will return [toReturn].
+  static void stubLogOut(UserRepositoryMock mock, {bool toReturn = true}) {
+    when(mock.logOut()).thenAnswer((_) async => toReturn);
+  }
 }
