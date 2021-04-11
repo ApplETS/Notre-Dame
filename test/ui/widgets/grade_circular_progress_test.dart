@@ -1,14 +1,11 @@
 // FLUTTER / DART / THIRD-PARTIES
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-
-// MODELS
-import 'package:notredame/core/models/course.dart';
-import 'package:notredame/core/models/course_summary.dart';
-import 'package:notredame/core/models/evaluation.dart' as model;
+import 'package:percent_indicator/percent_indicator.dart';
 
 // SERVICE
 import 'package:notredame/core/services/navigation_service.dart';
+import 'package:notredame/ui/widgets/grade_circular_progress.dart';
 
 // HELPERS
 import '../../helpers.dart';
@@ -16,72 +13,7 @@ import '../../helpers.dart';
 void main() {
   AppIntl intl;
 
-  final Course courseWithSummaryAndEvaluations = Course(
-    acronym: 'GEN101',
-    group: '02',
-    session: 'H2020',
-    programCode: '999',
-    numberOfCredits: 3,
-    title: 'Cours générique',
-    summary: CourseSummary(
-      currentMark: 5,
-      currentMarkInPercent: 50,
-      markOutOf: 10,
-      passMark: 6,
-      standardDeviation: 2.3,
-      median: 4.5,
-      percentileRank: 99,
-      evaluations: [
-        model.Evaluation(
-          courseGroup: "02",
-          title: "Laboratoire 1",
-          weight: 10,
-          teacherMessage: null,
-          ignore: false,
-          mark: 24,
-          correctedEvaluationOutOf: "35",
-          passMark: 25,
-          standardDeviation: 2,
-          median: 80,
-          percentileRank: 5,
-          published: true,
-          targetDate: DateTime(2021, 01, 05),
-        ),
-        model.Evaluation(
-          courseGroup: "02",
-          title: "Laboratoire 2",
-          weight: 10,
-          teacherMessage: null,
-          ignore: false,
-          mark: 24,
-          correctedEvaluationOutOf: "30",
-          passMark: 25,
-          standardDeviation: 2,
-          median: 80,
-          percentileRank: 5,
-          published: true,
-          targetDate: DateTime(2021, 02, 02),
-        ),
-        model.Evaluation(
-          courseGroup: "01",
-          title: "Laboratoire Intra",
-          weight: 10,
-          teacherMessage: null,
-          ignore: false,
-          mark: 24,
-          correctedEvaluationOutOf: "30",
-          passMark: 25,
-          standardDeviation: 2,
-          median: 80,
-          percentileRank: 5,
-          published: true,
-          targetDate: DateTime(2021, 02, 02),
-        ),
-      ],
-    ),
-  );
-
-  group("GradeCircularProgressTest -", () {
+  group("GradeCircularProgress -", () {
     setUp(() async {
       intl = await setupAppIntl();
     });
@@ -91,12 +23,75 @@ void main() {
     });
 
     group("UI -", () {
-      testWidgets("display the grade of the evaluation in the center", (WidgetTester tester) async {});
+      testWidgets('has two CircularPercentIndicator', (WidgetTester tester) async {
+        await tester.pumpWidget(localizedWidget(
+            child: const GradeCircularProgress(
+          1.0,
+          finalGrade: "B",
+          studentGrade: 90.0,
+          averageGrade: 85.0,
+        )));
+        await tester.pumpAndSettle();
 
-      testWidgets("display N/A when no grade is available", (WidgetTester tester) async {});
+        final circularPercentIndicator = find.byType(CircularPercentIndicator);
+        expect(circularPercentIndicator, findsNWidgets(2));
+      });
 
-      testWidgets("the circular lines shows the right grade of the student and average", (WidgetTester tester) async {});
-    
+      testWidgets("display the final grade if it is not null", (WidgetTester tester) async {
+        await tester.pumpWidget(localizedWidget(
+            child: const GradeCircularProgress(
+          1.0,
+          finalGrade: "B",
+        )));
+        await tester.pumpAndSettle();
+
+        final label = find.text("B");
+        expect(label, findsOneWidget);
+      });
+
+      testWidgets("display the student grade if there is no final grade", (WidgetTester tester) async {
+        await tester.pumpWidget(localizedWidget(
+            child: const GradeCircularProgress(
+          1.0,
+          studentGrade: 90.0,
+        )));
+        await tester.pumpAndSettle();
+
+        final label = find.text("90 %");
+        expect(label, findsOneWidget);
+      });
+
+      testWidgets("display the student grade if there is no final grade", (WidgetTester tester) async {
+        await tester.pumpWidget(localizedWidget(
+            child: const GradeCircularProgress(
+          1.0,
+          studentGrade: 90.5,
+        )));
+        await tester.pumpAndSettle();
+
+        final label = find.text("91 %");
+        expect(label, findsOneWidget);
+      });
+
+      testWidgets("display the student grade if there is no final grade", (WidgetTester tester) async {
+        await tester.pumpWidget(localizedWidget(
+            child: const GradeCircularProgress(
+          1.0,
+          studentGrade: 0.0,
+        )));
+        await tester.pumpAndSettle();
+
+        final label = find.text("0 %");
+        expect(label, findsOneWidget);
+      });
+
+      testWidgets("display N/A when no grade is available", (WidgetTester tester) async {
+        await tester.pumpWidget(localizedWidget(child: const GradeCircularProgress(1.0)));
+        await tester.pumpAndSettle();
+
+        final label = find.text(intl.grades_not_available);
+        expect(label, findsOneWidget);
+      });
     });
   });
 }

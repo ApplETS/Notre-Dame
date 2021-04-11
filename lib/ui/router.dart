@@ -23,41 +23,31 @@ class AppRouter {
   static Route<dynamic> generateRoute(RouteSettings routeSettings) {
     switch (routeSettings.name) {
       case RouterPaths.login:
-        return MaterialPageRoute(
-            settings: RouteSettings(name: routeSettings.name),
-            builder: (_) => LoginView());
+        return MaterialPageRoute(settings: RouteSettings(name: routeSettings.name), builder: (_) => LoginView());
       case RouterPaths.schedule:
         return PageRouteBuilder(
-            settings: RouteSettings(name: routeSettings.name),
-            pageBuilder: (_, __, ___) => const ScheduleView());
+            settings: RouteSettings(name: routeSettings.name), pageBuilder: (_, __, ___) => const ScheduleView());
       case RouterPaths.student:
         return PageRouteBuilder(
-            settings: RouteSettings(name: routeSettings.name),
-            pageBuilder: (_, __, ___) => StudentView());
-      case RouterPaths.grade_details:
+            settings: RouteSettings(name: routeSettings.name), pageBuilder: (_, __, ___) => StudentView());
+      case RouterPaths.gradeDetails:
         return PageRouteBuilder(
-            settings: RouteSettings(name: routeSettings.name),
-            pageBuilder: (_, __, ___) => const GradesDetailsView());
+            settings: RouteSettings(name: routeSettings.name), pageBuilder: (_, __, ___) => const GradesDetailsView());
       case RouterPaths.ets:
         return PageRouteBuilder(
-            settings: RouteSettings(name: routeSettings.name),
-            pageBuilder: (_, __, ___) => QuickLinksView());
+            settings: RouteSettings(name: routeSettings.name), pageBuilder: (_, __, ___) => QuickLinksView());
       case RouterPaths.security:
         return PageRouteBuilder(
-            settings: RouteSettings(name: routeSettings.name),
-            pageBuilder: (_, __, ___) => SecurityView());
+            settings: RouteSettings(name: routeSettings.name), pageBuilder: (_, __, ___) => SecurityView());
       case RouterPaths.more:
         return PageRouteBuilder(
-            settings: RouteSettings(name: routeSettings.name),
-            pageBuilder: (_, __, ___) => MoreView());
+            settings: RouteSettings(name: routeSettings.name), pageBuilder: (_, __, ___) => MoreView());
       case RouterPaths.settings:
         return PageRouteBuilder(
-            settings: RouteSettings(name: routeSettings.name),
-            pageBuilder: (_, __, ___) => SettingsView());
+            settings: RouteSettings(name: routeSettings.name), pageBuilder: (_, __, ___) => SettingsView());
       case RouterPaths.contributors:
         return PageRouteBuilder(
-            settings: RouteSettings(name: routeSettings.name),
-            pageBuilder: (_, __, ___) => ContributorsView());
+            settings: RouteSettings(name: routeSettings.name), pageBuilder: (_, __, ___) => ContributorsView());
       case RouterPaths.about:
         return PageRouteBuilder(
             transitionDuration: const Duration(seconds: 1),
@@ -65,13 +55,11 @@ class AppRouter {
             pageBuilder: (_, __, ___) => AboutView());
       case RouterPaths.chooseLanguage:
         return MaterialPageRoute(
-            settings: RouteSettings(name: routeSettings.name),
-            builder: (_) => ChooseLanguageView());
+            settings: RouteSettings(name: routeSettings.name), builder: (_) => ChooseLanguageView());
       default:
         return PageRouteBuilder(
             settings: RouteSettings(name: routeSettings.name),
-            pageBuilder: (_, __, ___) =>
-                NotFoundView(pageName: routeSettings.name));
+            pageBuilder: (_, __, ___) => NotFoundView(pageName: routeSettings.name));
     }
   }
 }
