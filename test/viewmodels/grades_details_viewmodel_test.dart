@@ -1,6 +1,7 @@
 // FLUTTER / DART / THIRD-PARTIES
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter/material.dart';
 
 // MODELS
 import 'package:notredame/core/models/course_summary.dart';
@@ -20,6 +21,7 @@ import '../helpers.dart';
 void main() {
   GradesDetailsViewModel viewModel;
   CourseRepository courseRepository;
+  WidgetsFlutterBinding.ensureInitialized();
 
   final CourseSummary courseSummary = CourseSummary(
     currentMark: 5,
@@ -95,18 +97,22 @@ void main() {
     });
 
     group('FutureToRun - -', () {
-      test('first load from cache than call SignetsAPI to get the summary', () async {
+      test('SignetsAPI gets the summary', () async {
         CourseRepositoryMock.stubGetCourseSummary(courseRepository as CourseRepositoryMock, courseWithoutSummary,
             toReturn: courseWithSummary);
 
-        expect(await viewModel.futureToRun(), courseWithSummary);
+        await viewModel.futureToRun();
+
+        expect(viewModel.course, courseWithSummary);
       });
 
-      test('Signets throw an error while trying to get an empty summary', () async {
-        CourseRepositoryMock.stubGetCourseSummary(courseRepository as CourseRepositoryMock, courseWithoutSummary,
-            toReturn: courseWithoutSummary);
+      test('Signets raised an exception while trying to recover summary', () async {
+        CourseRepositoryMock.stubGetCourseSummaryException(
+            courseRepository as CourseRepositoryMock, courseWithoutSummary);
 
-        expect(await viewModel.futureToRun(), courseWithoutSummary);
+        await viewModel.futureToRun();
+
+        expect(viewModel.course, courseWithoutSummary);
       });
     });
 
