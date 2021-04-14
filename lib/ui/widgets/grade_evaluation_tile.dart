@@ -14,23 +14,22 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class GradeEvaluationTile extends StatefulWidget {
   final Evaluation evaluation;
+  bool showEvaluationDetails;
 
-  const GradeEvaluationTile(this.evaluation);
+  GradeEvaluationTile(this.evaluation, this.showEvaluationDetails);
 
   @override
   _GradeEvaluationTileState createState() => _GradeEvaluationTileState();
 }
 
 class _GradeEvaluationTileState extends State<GradeEvaluationTile> {
-  bool showEvaluationDetails = false;
-
   @override
   Widget build(BuildContext context) => Column(
         children: [
           GestureDetector(
             onTap: () {
               setState(() {
-                showEvaluationDetails = !showEvaluationDetails;
+                widget.showEvaluationDetails = !widget.showEvaluationDetails;
               });
             },
             child: Padding(
@@ -83,12 +82,12 @@ class _GradeEvaluationTileState extends State<GradeEvaluationTile> {
                     padding: const EdgeInsets.only(top: 8.0),
                     child: IconButton(
                       icon: Icon(
-                        showEvaluationDetails ? Icons.keyboard_arrow_up_sharp : Icons.keyboard_arrow_down_sharp,
+                        widget.showEvaluationDetails ? Icons.keyboard_arrow_up_sharp : Icons.keyboard_arrow_down_sharp,
                         color: AppTheme.etsLightRed,
                       ),
                       onPressed: () {
                         setState(() {
-                          showEvaluationDetails = !showEvaluationDetails;
+                          widget.showEvaluationDetails = !widget.showEvaluationDetails;
                         });
                       },
                     ),
@@ -97,7 +96,7 @@ class _GradeEvaluationTileState extends State<GradeEvaluationTile> {
               ),
             ),
           ),
-          if (showEvaluationDetails)
+          if (widget.showEvaluationDetails)
             Column(
               children: <Widget>[evaluationsSummary(context, widget.evaluation)],
             )
