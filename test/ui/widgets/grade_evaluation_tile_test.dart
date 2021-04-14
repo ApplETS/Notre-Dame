@@ -63,7 +63,7 @@ void main() {
       testWidgets("display a circular progress bar, the title, the weight and an icon", (WidgetTester tester) async {
         final evaluation = courseSummary.evaluations.first;
 
-        await tester.pumpWidget(localizedWidget(child: GradeEvaluationTile(evaluation, false)));
+        await tester.pumpWidget(localizedWidget(child: GradeEvaluationTile(evaluation)));
         await tester.pumpAndSettle();
 
         final circularPercentIndicator = find.byType(GradeCircularProgress);
@@ -82,11 +82,16 @@ void main() {
       testWidgets("display N/A when the information is null", (WidgetTester tester) async {
         final evaluation = courseSummary.evaluations.last;
 
-        await tester.pumpWidget(localizedWidget(child: GradeEvaluationTile(evaluation, true)));
+        await tester.pumpWidget(localizedWidget(child: GradeEvaluationTile(evaluation)));
         await tester.pumpAndSettle();
 
         final circularPercentIndicator = find.byType(GradeCircularProgress);
         expect(circularPercentIndicator, findsOneWidget);
+
+        // Tap the button.
+        await tester.tap(find.widgetWithIcon(ListTile, Icons.keyboard_arrow_down_sharp));
+
+        await tester.pump();
 
         final label = find.text("Laboratoire 2");
         expect(label, findsOneWidget);

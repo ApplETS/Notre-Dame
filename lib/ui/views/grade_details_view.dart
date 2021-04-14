@@ -189,7 +189,7 @@ class _GradesDetailsViewState extends State<GradesDetailsView> {
                               children: (model.course.summary != null)
                                   ? <Widget>[
                                       for (var evaluation in model.course.summary.evaluations)
-                                        GradeEvaluationTile(evaluation, model.showEvaluationDetails),
+                                        GradeEvaluationTile(evaluation),
                                     ]
                                   : <Widget>[],
                             ),
