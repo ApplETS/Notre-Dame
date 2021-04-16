@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:notredame/core/managers/course_repository.dart';
 
 // MODELS
 import 'package:notredame/core/models/course.dart';
@@ -18,7 +19,7 @@ import 'package:notredame/ui/widgets/grade_not_available.dart';
 import '../../helpers.dart';
 
 void main() {
-  WidgetsFlutterBinding.ensureInitialized();
+  CourseRepository courseRepository;
   AppIntl intl;
 
   final CourseSummary courseSummary = CourseSummary(
@@ -45,21 +46,6 @@ void main() {
         published: true,
         targetDate: DateTime(2021, 01, 05),
       ),
-      model.Evaluation(
-        courseGroup: "02",
-        title: "Laboratoire 2",
-        weight: 10,
-        teacherMessage: null,
-        ignore: false,
-        mark: 24,
-        correctedEvaluationOutOf: "30",
-        passMark: 25,
-        standardDeviation: 2,
-        median: 80,
-        percentileRank: 5,
-        published: true,
-        targetDate: DateTime(2021, 02, 02),
-      ),
     ],
   );
 
@@ -82,20 +68,23 @@ void main() {
     title: 'Cours générique',
   );
 
-  group("GradesDetailsView -", () {
+  group('GradesDetailsView - ', () {
     setUp(() async {
       intl = await setupAppIntl();
+      courseRepository = setupCourseRepositoryMock();
     });
 
-    group("UI -", () {
-      testWidgets(
-          'has 1 RefreshIndicator, 1 SliverAppBar, 1 SliverToBoxAdapter and 1 SliverList when a course is valid',
+    tearDown(() {
+      unregister<CourseRepository>();
+    });
+
+    group('UI - ', () {
+      testWidgets('has a SliverAppBar, SliverToBoxAdapter and SliverList when a course is valid',
           (WidgetTester tester) async {
         await tester.pumpWidget(localizedWidget(child: GradesDetailsView(course: course)));
         await tester.pumpAndSettle();
 
         expect(find.byType(RefreshIndicator), findsOneWidget);
-        expect(find.byType(SliverAppBar), findsOneWidget);
         expect(find.byType(SliverToBoxAdapter), findsOneWidget);
         expect(find.byType(SliverList), findsOneWidget);
       });
@@ -104,16 +93,27 @@ void main() {
         await tester.pumpWidget(localizedWidget(child: GradesDetailsView(course: course)));
         await tester.pumpAndSettle();
 
-        expect(find.text(course.title), findsOneWidget);
-        expect(find.text(course.group), findsOneWidget);
-        expect(find.text(course.acronym), findsOneWidget);
+        expect(find.text('Cours générique'), findsOneWidget);
+        expect(find.text("Group 02"), findsOneWidget);
+        expect(find.text("GEN101"), findsOneWidget);
       });
 
-      testWidgets("GradesDetailsView widget is displayed when a course summary is null", (WidgetTester tester) async {
+      testWidgets("display GradeNotAvailable when a course summary is null", (WidgetTester tester) async {
         await tester.pumpWidget(localizedWidget(child: GradesDetailsView(course: courseWithoutSummary)));
 
         expect(find.byType(RefreshIndicator), findsOneWidget);
         expect(find.byWidget(const GradeNotAvailable()), findsOneWidget);
+      });
+    });
+
+    group("golden - ", () {
+      testWidgets("default view", (WidgetTester tester) async {
+        tester.binding.window.physicalSizeTestValue = const Size(800, 1410);
+
+        await tester.pumpWidget(localizedWidget(child: GradesDetailsView(course: course)));
+        await tester.pumpAndSettle();
+
+        await expectLater(find.byType(GradesDetailsView), matchesGoldenFile(goldenFilePath("gradesDetailsView_1")));
       });
     });
   });

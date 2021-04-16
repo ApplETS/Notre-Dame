@@ -183,7 +183,7 @@ class _GradesDetailsViewState extends State<GradesDetailsView> {
                                         ),
                                       ),
                                     ]
-                                  : <Widget>[],
+                                  : <Widget>[const GradeNotAvailable()],
                             ),
                             Column(
                               children: (model.course.summary != null)
@@ -191,7 +191,7 @@ class _GradesDetailsViewState extends State<GradesDetailsView> {
                                       for (var evaluation in model.course.summary.evaluations)
                                         GradeEvaluationTile(evaluation),
                                     ]
-                                  : <Widget>[],
+                                  : <Widget>[const GradeNotAvailable()],
                             ),
                           ]
                         : const <Widget>[GradeNotAvailable()],
