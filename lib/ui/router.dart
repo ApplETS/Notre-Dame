@@ -24,39 +24,39 @@ class AppRouter {
     switch (routeSettings.name) {
       case RouterPaths.login:
         return MaterialPageRoute(
-            settings: RouteSettings(name: routeSettings.name), 
+            settings: RouteSettings(name: routeSettings.name),
             builder: (_) => LoginView());
       case RouterPaths.schedule:
         return PageRouteBuilder(
-            settings: RouteSettings(name: routeSettings.name), 
+            settings: RouteSettings(name: routeSettings.name),
             pageBuilder: (_, __, ___) => const ScheduleView());
       case RouterPaths.student:
         return PageRouteBuilder(
-            settings: RouteSettings(name: routeSettings.name), 
+            settings: RouteSettings(name: routeSettings.name),
             pageBuilder: (_, __, ___) => StudentView());
       case RouterPaths.gradeDetails:
         return PageRouteBuilder(
-            settings: RouteSettings(name: routeSettings.name), 
+            settings: RouteSettings(name: routeSettings.name),
             pageBuilder: (_, __, ___) => const GradesDetailsView());
       case RouterPaths.ets:
         return PageRouteBuilder(
-            settings: RouteSettings(name: routeSettings.name), 
+            settings: RouteSettings(name: routeSettings.name),
             pageBuilder: (_, __, ___) => QuickLinksView());
       case RouterPaths.security:
         return PageRouteBuilder(
-            settings: RouteSettings(name: routeSettings.name), 
+            settings: RouteSettings(name: routeSettings.name),
             pageBuilder: (_, __, ___) => SecurityView());
       case RouterPaths.more:
         return PageRouteBuilder(
-            settings: RouteSettings(name: routeSettings.name), 
+            settings: RouteSettings(name: routeSettings.name),
             pageBuilder: (_, __, ___) => MoreView());
       case RouterPaths.settings:
         return PageRouteBuilder(
-            settings: RouteSettings(name: routeSettings.name), 
+            settings: RouteSettings(name: routeSettings.name),
             pageBuilder: (_, __, ___) => SettingsView());
       case RouterPaths.contributors:
         return PageRouteBuilder(
-            settings: RouteSettings(name: routeSettings.name), 
+            settings: RouteSettings(name: routeSettings.name),
             pageBuilder: (_, __, ___) => ContributorsView());
       case RouterPaths.about:
         return PageRouteBuilder(
@@ -65,7 +65,7 @@ class AppRouter {
             pageBuilder: (_, __, ___) => AboutView());
       case RouterPaths.chooseLanguage:
         return MaterialPageRoute(
-            settings: RouteSettings(name: routeSettings.name), 
+            settings: RouteSettings(name: routeSettings.name),
             builder: (_) => ChooseLanguageView());
       default:
         return PageRouteBuilder(

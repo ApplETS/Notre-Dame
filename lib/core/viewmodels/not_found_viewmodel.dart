@@ -22,7 +22,7 @@ class NotFoundViewModel extends BaseViewModel {
   final AnalyticsService _analyticsService = locator<AnalyticsService>();
 
   /// Used to access the rive animations
-  final RiveAnimationService _riveAnimationService = 
+  final RiveAnimationService _riveAnimationService =
       locator<RiveAnimationService>();
 
   final String _riveAnimationFileName = 'dot_jumping';
@@ -46,7 +46,7 @@ class NotFoundViewModel extends BaseViewModel {
       _artboard = await _riveAnimationService.loadRiveFile(
           riveFileName: _riveAnimationFileName);
     } catch (e) {
-      _analyticsService.logError(tag, 
+      _analyticsService.logError(tag,
           "An Error has occured during rive animation $_riveAnimationFileName loading.");
     }
   }
