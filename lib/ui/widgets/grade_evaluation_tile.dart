@@ -4,7 +4,6 @@ import 'package:intl/intl.dart';
 
 // MODELS
 import 'package:notredame/core/models/evaluation.dart';
-import 'package:notredame/ui/utils/app_theme.dart';
 
 // WIDGETS
 import 'package:notredame/ui/widgets/grade_circular_progress.dart';
@@ -21,97 +20,78 @@ class GradeEvaluationTile extends StatefulWidget {
   _GradeEvaluationTileState createState() => _GradeEvaluationTileState();
 }
 
-class _GradeEvaluationTileState extends State<GradeEvaluationTile>
-    with TickerProviderStateMixin {
+class _GradeEvaluationTileState extends State<GradeEvaluationTile> {
   bool showEvaluationDetails = false;
 
   @override
   Widget build(BuildContext context) => Column(
         children: [
-          GestureDetector(
-            onTap: () {
-              setState(() {
-                showEvaluationDetails = !showEvaluationDetails;
-              });
-            },
-            child: Padding(
-              padding: const EdgeInsets.only(top: 8.0),
-              child: SizedBox(
-                height: 90.0,
-                child: ListTile(
-                  leading: Padding(
-                    padding: const EdgeInsets.only(left: 10.0),
-                    child: FractionallySizedBox(
-                      alignment: Alignment.topCenter,
-                      heightFactor: 1.2,
-                      child: LayoutBuilder(
-                        builder: (context, constraints) {
-                          return GradeCircularProgress(
-                              constraints.maxHeight / 100,
-                              studentGrade: getGradeInPercentage(
-                                widget.evaluation.mark,
-                                widget.evaluation
-                                    .correctedEvaluationOutOfFormatted,
-                              ),
-                              averageGrade: getGradeInPercentage(
-                                widget.evaluation.passMark,
-                                widget.evaluation
-                                    .correctedEvaluationOutOfFormatted,
-                              ));
-                        },
-                      ),
-                    ),
+          Padding(
+            padding: const EdgeInsets.only(top: 8.0, bottom: 8.0),
+            child: Theme(
+              data: Theme.of(context).copyWith(
+                dividerColor: Colors.transparent,
+                accentColor: Colors.red,
+                unselectedWidgetColor: Colors.red,
+              ),
+              child: ExpansionTile(
+                onExpansionChanged: (value) {
+                  showEvaluationDetails = !showEvaluationDetails;
+                },
+                leading: FractionallySizedBox(
+                  heightFactor: 1.1,
+                  alignment: Alignment.topCenter,
+                  child: LayoutBuilder(
+                    builder: (context, constraints) {
+                      return GradeCircularProgress(constraints.maxHeight / 100,
+                          studentGrade: getGradeInPercentage(
+                            widget.evaluation.mark,
+                            widget.evaluation.correctedEvaluationOutOfFormatted,
+                          ),
+                          averageGrade: getGradeInPercentage(
+                            widget.evaluation.passMark,
+                            widget.evaluation.correctedEvaluationOutOfFormatted,
+                          ));
+                    },
                   ),
-                  title: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Text(
+                ),
+                title: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Padding(
+                      padding: const EdgeInsets.only(top: 10.0),
+                      child: Text(
                         widget.evaluation.title,
                         overflow: TextOverflow.ellipsis,
                         style: TextStyle(
-                          height: 3,
-                          fontSize: 15,
-                          color:
-                              Theme.of(context).brightness == Brightness.light
-                                  ? Colors.black
-                                  : Colors.white,
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(top: 8.0, bottom: 9.0),
-                        child: Text(
-                            AppIntl.of(context)
-                                .grades_weight(widget.evaluation.weight),
-                            style: TextStyle(
-                                fontSize: 12,
-                                color: Theme.of(context).brightness ==
-                                        Brightness.light
+                            fontSize: 15,
+                            color:
+                                Theme.of(context).brightness == Brightness.light
                                     ? Colors.black
-                                    : Colors.white)),
+                                    : Colors.white),
                       ),
-                    ],
-                  ),
-                  trailing: Padding(
-                    padding: const EdgeInsets.only(top: 8.0, right: 15.0),
-                    child: Icon(
-                      showEvaluationDetails
-                          ? Icons.keyboard_arrow_up_sharp
-                          : Icons.keyboard_arrow_down_sharp,
-                      color: AppTheme.etsLightRed,
                     ),
-                  ),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 10.0, bottom: 10.0),
+                      child: Text(
+                        AppIntl.of(context)
+                            .grades_weight(widget.evaluation.weight),
+                        style: TextStyle(
+                            fontSize: 12,
+                            color:
+                                Theme.of(context).brightness == Brightness.light
+                                    ? Colors.black
+                                    : Colors.white),
+                      ),
+                    ),
+                  ],
                 ),
+                children: <Widget>[
+                  evaluationsSummary(context, widget.evaluation),
+                ],
               ),
             ),
           ),
-          if (showEvaluationDetails)
-            Column(
-              children: <Widget>[
-                evaluationsSummary(context, widget.evaluation),
-              ],
-            )
-          else
-            Container()
         ],
       );
 
@@ -127,10 +107,8 @@ class _GradeEvaluationTileState extends State<GradeEvaluationTile>
               AppIntl.of(context).grades_grade_with_percentage(
                 evaluation.mark ?? 0.0,
                 evaluation.correctedEvaluationOutOf ?? 0.0,
-                getGradeInPercentage(
-                  evaluation.mark,
-                  evaluation.correctedEvaluationOutOfFormatted,
-                ),
+                getGradeInPercentage(evaluation.mark,
+                    evaluation.correctedEvaluationOutOfFormatted),
               ),
             ),
             getSummary(
@@ -138,28 +116,20 @@ class _GradeEvaluationTileState extends State<GradeEvaluationTile>
               AppIntl.of(context).grades_grade_with_percentage(
                 evaluation.passMark ?? 0.0,
                 evaluation.correctedEvaluationOutOf ?? 0.0,
-                getGradeInPercentage(
-                  evaluation.passMark,
-                  evaluation.correctedEvaluationOutOfFormatted,
-                ),
+                getGradeInPercentage(evaluation.passMark,
+                    evaluation.correctedEvaluationOutOfFormatted),
               ),
             ),
+            getSummary(AppIntl.of(context).grades_median,
+                validateResult(context, evaluation.median.toString())),
             getSummary(
-              AppIntl.of(context).grades_median,
-              validateResult(context, evaluation.median.toString()),
-            ),
-            getSummary(
-              AppIntl.of(context).grades_standard_deviation,
-              validateResult(context, evaluation.standardDeviation.toString()),
-            ),
-            getSummary(
-              AppIntl.of(context).grades_percentile_rank,
-              validateResult(context, evaluation.percentileRank.toString()),
-            ),
-            getSummary(
-              AppIntl.of(context).grades_target_date,
-              getDate(evaluation.targetDate, context),
-            ),
+                AppIntl.of(context).grades_standard_deviation,
+                validateResult(
+                    context, evaluation.standardDeviation.toString())),
+            getSummary(AppIntl.of(context).grades_percentile_rank,
+                validateResult(context, evaluation.percentileRank.toString())),
+            getSummary(AppIntl.of(context).grades_target_date,
+                getDate(evaluation.targetDate, context)),
           ],
         ),
       ),
@@ -177,7 +147,7 @@ class _GradeEvaluationTileState extends State<GradeEvaluationTile>
 
   Padding getSummary(String title, String grade) {
     return Padding(
-      padding: const EdgeInsets.only(top: 8.0, right: 15.0, bottom: 4.0),
+      padding: const EdgeInsets.only(top: 10.0, right: 15.0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
