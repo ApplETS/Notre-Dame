@@ -1,6 +1,8 @@
 // FLUTTER / DART / THIRD-PARTIES
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:notredame/core/constants/router_paths.dart';
+import 'package:notredame/core/services/navigation_service.dart';
 import 'package:stacked/stacked.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -16,6 +18,9 @@ import 'package:notredame/locator.dart';
 class GradesViewModel extends FutureViewModel<Map<String, List<Course>>> {
   /// Used to get the courses of the student
   final CourseRepository _courseRepository = locator<CourseRepository>();
+
+  /// Used to redirect on the dashboard.
+  final NavigationService _navigationService = locator<NavigationService>();
 
   /// Localization class of the application.
   final AppIntl _appIntl;
@@ -103,5 +108,9 @@ class GradesViewModel extends FutureViewModel<Map<String, List<Course>>> {
       }
       return -1;
     });
+  }
+
+  void navigateToGradeDetails(Course course) {
+    _navigationService.pushNamed(RouterPaths.gradeDetails, arguments: course);
   }
 }

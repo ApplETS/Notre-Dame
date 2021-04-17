@@ -30,106 +30,102 @@ class _GradesDetailsViewState extends State<GradesDetailsView> {
   Widget getPageContent(GradesDetailsViewModel model) {
     if (model.course != null && model.course.summary != null) {
       return SliverList(
-        delegate: SliverChildListDelegate(
-          <Widget>[
-            Padding(
-              padding: const EdgeInsets.all(5.0),
-              child: Column(
-                children: <Widget>[
-                  Card(
-                    child: Padding(
-                      padding: const EdgeInsets.all(20.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          GradeCircularProgress(1.0,
-                              finalGrade: model.course.grade,
-                              studentGrade: getGradeInPercentage(
+        delegate: SliverChildListDelegate(<Widget>[
+          Padding(
+            padding: const EdgeInsets.all(5.0),
+            child: Column(children: <Widget>[
+              Card(
+                child: Padding(
+                  padding: const EdgeInsets.all(20.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      GradeCircularProgress(1.0,
+                          finalGrade: model.course.grade,
+                          studentGrade: getGradeInPercentage(
+                              model.course.summary.currentMark,
+                              model.course.summary.markOutOf),
+                          averageGrade: getGradeInPercentage(
+                              model.course.summary.passMark,
+                              model.course.summary.markOutOf)),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 55.0),
+                        child: Column(
+                          crossAxisAlignment:
+                              CrossAxisAlignment.start,
+                          children: <Widget>[
+                            getGradeSummary(
+                              getGradeInPercentage(
                                   model.course.summary.currentMark,
                                   model.course.summary.markOutOf),
-                              averageGrade: getGradeInPercentage(
-                                  model.course.summary.passMark,
-                                  model.course.summary.markOutOf)),
-                          Padding(
-                            padding: const EdgeInsets.only(left: 55.0),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                getGradeSummary(
-                                  getGradeInPercentage(
-                                      model.course.summary.currentMark,
-                                      model.course.summary.markOutOf),
-                                  AppIntl.of(context).grades_current_rating,
-                                  Colors.green,
-                                  context,
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.only(top: 15.0),
-                                  child: getGradeSummary(
-                                    getGradeInPercentage(
-                                        model.course.summary.passMark,
-                                        model.course.summary.markOutOf),
-                                    AppIntl.of(context).grades_average,
-                                    Colors.red,
-                                    context,
-                                  ),
-                                ),
-                              ],
+                              AppIntl.of(context)
+                                  .grades_current_rating,
+                              Colors.green,
+                              context,
+                            ),
+                            Padding(
+                              padding:
+                                  const EdgeInsets.only(top: 15.0),
+                              child: getGradeSummary(
+                                getGradeInPercentage(
+                                    model.course.summary.passMark,
+                                    model.course.summary.markOutOf),
+                                AppIntl.of(context).grades_average,
+                                Colors.red,
+                                context,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: (model.course.summary != null)
+                      ? <Widget>[
+                          getHeadersSummary(
+                            AppIntl.of(context).grades_median,
+                            validateGrade(
+                              context,
+                              model.course.summary.median.toString(),
+                              AppIntl.of(context).grades_grade_in_percentage(model.course.summary.median),
                             ),
                           ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: (model.course.summary != null)
-                        ? <Widget>[
-                            getHeadersSummary(
-                              AppIntl.of(context).grades_median,
-                              validateGrade(
-                                context,
-                                model.course.summary.median.toString(),
-                                AppIntl.of(context).grades_grade_in_percentage(
-                                    model.course.summary.median),
-                              ),
+                          getHeadersSummary(
+                            AppIntl.of(context).grades_standard_deviation,
+                            validateGrade(
+                              context,
+                              model.course.summary.standardDeviation.toString(),
+                              model.course.summary.standardDeviation.toString(),
                             ),
-                            getHeadersSummary(
-                              AppIntl.of(context).grades_standard_deviation,
-                              validateGrade(
-                                context,
-                                model.course.summary.standardDeviation
-                                    .toString(),
-                                model.course.summary.standardDeviation
-                                    .toString(),
-                              ),
+                          ),
+                          getHeadersSummary(
+                            AppIntl.of(context).grades_percentile_rank,
+                            validateGrade(
+                              context,
+                              model.course.summary.percentileRank.toString(),
+                              model.course.summary.percentileRank.toString(),
                             ),
-                            getHeadersSummary(
-                              AppIntl.of(context).grades_percentile_rank,
-                              validateGrade(
-                                context,
-                                model.course.summary.percentileRank.toString(),
-                                model.course.summary.percentileRank.toString(),
-                              ),
-                            ),
-                          ]
-                        : <Widget>[const GradeNotAvailable()],
-                  ),
-                  Column(
-                    children: (model.course.summary != null)
-                        ? <Widget>[
-                            for (var evaluation
-                                in model.course.summary.evaluations)
-                              GradeEvaluationTile(evaluation),
-                          ]
-                        : <Widget>[const GradeNotAvailable()],
-                  ),
-                ],
-              ),
+                          ),
+                        ]
+                      : <Widget>[const GradeNotAvailable()],
+                ),
+                Column(
+                  children: (model.course.summary != null)
+                      ? <Widget>[
+                          for (var evaluation in model.course.summary.evaluations)
+                            GradeEvaluationTile(evaluation),
+                        ]
+                      : <Widget>[const GradeNotAvailable()],
+                ),
+              ],
             ),
-          ],
-        ),
-      );
+          ),
+        ],
+      ),
+    );
     } else {
       return const GradeNotAvailable();
     }
