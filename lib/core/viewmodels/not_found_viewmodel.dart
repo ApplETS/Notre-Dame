@@ -22,7 +22,8 @@ class NotFoundViewModel extends BaseViewModel {
   final AnalyticsService _analyticsService = locator<AnalyticsService>();
 
   /// Used to access the rive animations
-  final RiveAnimationService _riveAnimationService = locator<RiveAnimationService>();
+  final RiveAnimationService _riveAnimationService = 
+      locator<RiveAnimationService>();
 
   final String _riveAnimationFileName = 'dot_jumping';
 
@@ -32,18 +33,21 @@ class NotFoundViewModel extends BaseViewModel {
   Artboard get artboard => _artboard;
 
   NotFoundViewModel({@required String pageName}) : notFoundPageName = pageName {
-    _analyticsService.logEvent(tag, "An unknown page ($pageName) has been access from the app.");
+    _analyticsService.logEvent(
+        tag, "An unknown page ($pageName) has been access from the app.");
   }
 
   void navigateToDashboard() {
-    _navigationService.pushNamed(RouterPaths.schedule);
+    _navigationService.pushNamed(RouterPaths.dashboard);
   }
 
   Future<void> loadRiveAnimation() async {
     try {
-      _artboard = await _riveAnimationService.loadRiveFile(riveFileName: _riveAnimationFileName);
+      _artboard = await _riveAnimationService.loadRiveFile(
+          riveFileName: _riveAnimationFileName);
     } catch (e) {
-      _analyticsService.logError(tag, "An Error has occured during rive animation $_riveAnimationFileName loading.");
+      _analyticsService.logError(tag, 
+          "An Error has occured during rive animation $_riveAnimationFileName loading.");
     }
   }
 
@@ -51,7 +55,8 @@ class NotFoundViewModel extends BaseViewModel {
     try {
       _riveAnimationService.addControllerToAnimation(artboard: _artboard);
     } catch (e) {
-      _analyticsService.logError(tag, "An Error has occured during rive animation start.");
+      _analyticsService.logError(
+          tag, "An Error has occured during rive animation start.");
     }
   }
 }
