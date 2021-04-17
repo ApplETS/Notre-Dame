@@ -3,7 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 
-// SERVICE
+// WIDGETS
 import 'package:notredame/ui/widgets/grade_circular_progress.dart';
 
 // HELPERS

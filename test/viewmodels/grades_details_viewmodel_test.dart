@@ -19,9 +19,9 @@ import '../mock/managers/course_repository_mock.dart';
 import '../helpers.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
   GradesDetailsViewModel viewModel;
   CourseRepository courseRepository;
-  WidgetsFlutterBinding.ensureInitialized();
 
   final CourseSummary courseSummary = CourseSummary(
     currentMark: 5,
