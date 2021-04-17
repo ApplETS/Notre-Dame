@@ -143,11 +143,7 @@ class _GradesDetailsViewState extends State<GradesDetailsView> {
         viewModelBuilder: () => GradesDetailsViewModel(
             intl: AppIntl.of(context), course: widget.course),
         builder: (context, model, child) => RefreshIndicator(
-          onRefresh: () async {
-            if (await model.refresh()) {
-              Fluttertoast.showToast(msg: AppIntl.of(context).error);
-            }
-          },
+          onRefresh: () => model.refresh(),
           child: BaseScaffold(
             body: CustomScrollView(
               slivers: <Widget>[
