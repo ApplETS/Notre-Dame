@@ -74,9 +74,6 @@ void main() {
 
         final label2 = find.text("Weight: 10.0 %");
         expect(label2, findsOneWidget);
-
-        final icon = find.byIcon(Icons.keyboard_arrow_down_sharp);
-        expect(icon, findsOneWidget);
       });
 
       testWidgets("display N/A when the information is null", (WidgetTester tester) async {
@@ -89,7 +86,7 @@ void main() {
         expect(circularPercentIndicator, findsOneWidget);
 
         // Tap the button.
-        await tester.tap(find.widgetWithIcon(ListTile, Icons.keyboard_arrow_down_sharp));
+        await tester.tap(find.byType(ExpansionTile));
 
         await tester.pump();
 

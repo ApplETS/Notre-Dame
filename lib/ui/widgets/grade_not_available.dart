@@ -10,24 +10,18 @@ class GradeNotAvailable extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SliverList(
-      delegate: SliverChildListDelegate(
-        <Widget>[
-          Padding(
-            padding: const EdgeInsets.only(top: 60.0),
-            child: Column(
-              children: [
-                const Icon(
-                  Icons.school,
-                  size: 100,
-                  color: AppTheme.etsLightRed,
-                ),
-                Text(
-                  AppIntl.of(context).grades_msg_no_grades,
-                  textAlign: TextAlign.center,
-                ),
-              ],
-            ),
+    return Padding(
+      padding: const EdgeInsets.only(top: 60.0),
+      child: Column(
+        children: [
+          const Icon(
+            Icons.school,
+            size: 100,
+            color: AppTheme.etsLightRed,
+          ),
+          Text(
+            AppIntl.of(context).grades_msg_no_grades,
+            textAlign: TextAlign.center,
           ),
         ],
       ),

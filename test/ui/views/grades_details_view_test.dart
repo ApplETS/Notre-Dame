@@ -14,6 +14,7 @@ import 'package:notredame/ui/views/grade_details_view.dart';
 
 // WIDGETS
 import 'package:notredame/ui/widgets/grade_not_available.dart';
+import '../../../lib/ui/widgets/grade_circular_progress.dart';
 
 // OTHERS
 import '../../helpers.dart';
@@ -79,14 +80,14 @@ void main() {
     });
 
     group('UI - ', () {
-      testWidgets('has a SliverAppBar, SliverToBoxAdapter and SliverList when a course is valid',
+      testWidgets('has a RefreshIndicator, GradeCircularProgress and three cards when a course is valid',
           (WidgetTester tester) async {
         await tester.pumpWidget(localizedWidget(child: GradesDetailsView(course: course)));
         await tester.pumpAndSettle();
 
         expect(find.byType(RefreshIndicator), findsOneWidget);
-        expect(find.byType(SliverToBoxAdapter), findsOneWidget);
-        expect(find.byType(SliverList), findsOneWidget);
+        expect(find.byType(GradeCircularProgress), findsOneWidget);
+        expect(find.byType(Card), findsNWidgets(3));
       });
 
       testWidgets('display the course title, group and acronym when a course is valid', (WidgetTester tester) async {

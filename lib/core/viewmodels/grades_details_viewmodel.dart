@@ -21,19 +21,16 @@ class GradesDetailsViewModel extends FutureViewModel<Course> {
   final CourseRepository _courseRepository = locator<CourseRepository>();
 
   /// Used to get the current course selected of the student
-  Course _course;
+  Course course;
 
-  Course get course => _course;
-
-  GradesDetailsViewModel({@required AppIntl intl, @required Course course})
-      : _appIntl = intl,
-        _course = course;
+  GradesDetailsViewModel({@required AppIntl intl, this.course})
+      : _appIntl = intl;
 
   @override
   Future<Course> futureToRun() async {
     try {
       // ignore: return_type_invalid_for_catch_error
-      await _courseRepository.getCourseSummary(course);
+      await _courseRepository.getCourseSummary(course).then((value) => course = value);
       notifyListeners();
     } on Exception catch (error) {
       onError(error);
@@ -44,7 +41,7 @@ class GradesDetailsViewModel extends FutureViewModel<Course> {
   Future<bool> refresh() async {
     try {
       // ignore: return_type_invalid_for_catch_error
-      await _courseRepository.getCourseSummary(course);
+      await _courseRepository.getCourseSummary(course).then((value) => course = value);
       notifyListeners();
       return true;
     } on Exception catch (error) {
