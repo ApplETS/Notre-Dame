@@ -2,7 +2,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:notredame/core/managers/course_repository.dart';
 
 // MODELS
 import 'package:notredame/core/models/course.dart';
@@ -15,12 +14,12 @@ import 'package:notredame/ui/views/grade_details_view.dart';
 // WIDGETS
 import 'package:notredame/ui/widgets/grade_not_available.dart';
 import '../../../lib/ui/widgets/grade_circular_progress.dart';
+import '../../../lib/ui/widgets/grade_evaluation_tile.dart';
 
 // OTHERS
 import '../../helpers.dart';
 
 void main() {
-  CourseRepository courseRepository;
   AppIntl intl;
 
   final CourseSummary courseSummary = CourseSummary(
@@ -72,15 +71,15 @@ void main() {
   group('GradesDetailsView - ', () {
     setUp(() async {
       intl = await setupAppIntl();
-      courseRepository = setupCourseRepositoryMock();
-    });
-
-    tearDown(() {
-      unregister<CourseRepository>();
     });
 
     group('UI - ', () {
-      testWidgets('has a RefreshIndicator, GradeCircularProgress and three cards when a course is valid',
+      ScrollController primaryScrollController(WidgetTester tester) {
+        return PrimaryScrollController.of(tester.element(find.byType(CustomScrollView)));
+      }
+
+      testWidgets(
+          'has a RefreshIndicator, GradeCircularProgress, three cards and evaluation tiles when a course is valid',
           (WidgetTester tester) async {
         await tester.pumpWidget(localizedWidget(child: GradesDetailsView(course: course)));
         await tester.pumpAndSettle();
@@ -88,21 +87,45 @@ void main() {
         expect(find.byType(RefreshIndicator), findsOneWidget);
         expect(find.byType(GradeCircularProgress), findsOneWidget);
         expect(find.byType(Card), findsNWidgets(3));
+        expect(find.byType(GradeEvaluationTile), findsNWidgets(2));
       });
 
-      testWidgets('display the course title, group and acronym when a course is valid', (WidgetTester tester) async {
+      testWidgets('when the page is at the top, it displays the course title, acronym and group',
+          (WidgetTester tester) async {
         await tester.pumpWidget(localizedWidget(child: GradesDetailsView(course: course)));
         await tester.pumpAndSettle();
 
+        final ScrollController controller = primaryScrollController(tester);
+
+        expect(controller.offset, 0.0);
+        expect(find.byType(SliverAppBar), findsOneWidget);
+
         expect(find.text('Cours générique'), findsOneWidget);
-        expect(find.text("Group 02"), findsOneWidget);
-        expect(find.text("GEN101"), findsOneWidget);
+        expect(find.text('GEN101'), findsOneWidget);
+        expect(find.text('Group 02'), findsOneWidget);
+      });
+
+      testWidgets('when the page is scrolled at the bottom, it displays only the course title on top of the page',
+          (WidgetTester tester) async {
+        await tester.pumpWidget(localizedWidget(child: GradesDetailsView(course: course)));
+        await tester.pumpAndSettle();
+
+        final ScrollController controller = primaryScrollController(tester);
+
+        controller.jumpTo(130.0);
+        await tester.pump();
+
+        expect(find.byType(SliverToBoxAdapter), findsNothing);
+
+        expect(find.text('Cours générique'), findsOneWidget);
+        expect(find.text('GEN101'), findsNothing);
+        expect(find.text('Group 02'), findsNothing);
       });
 
       testWidgets("display GradeNotAvailable when a course summary is null", (WidgetTester tester) async {
         await tester.pumpWidget(localizedWidget(child: GradesDetailsView(course: courseWithoutSummary)));
+        await tester.pumpAndSettle();
 
-        expect(find.byType(RefreshIndicator), findsOneWidget);
         expect(find.byWidget(const GradeNotAvailable()), findsOneWidget);
       });
     });

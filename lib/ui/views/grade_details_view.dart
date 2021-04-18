@@ -26,8 +26,8 @@ class GradesDetailsView extends StatefulWidget {
 }
 
 class _GradesDetailsViewState extends State<GradesDetailsView> {
-  Widget getPageContent(GradesDetailsViewModel model) {
-    if (model.course != null && model.course.summary != null) {
+  Widget getGradeEvaluations(GradesDetailsViewModel model) {
+    if (model.course.summary != null) {
       return SliverList(
         delegate: SliverChildListDelegate(
           <Widget>[
@@ -41,12 +41,18 @@ class _GradesDetailsViewState extends State<GradesDetailsView> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
-                          GradeCircularProgress(1.0,
-                              finalGrade: model.course.grade,
-                              studentGrade: getGradeInPercentage(
-                                  model.course.summary.currentMark, model.course.summary.markOutOf),
-                              averageGrade:
-                                  getGradeInPercentage(model.course.summary.passMark, model.course.summary.markOutOf)),
+                          GradeCircularProgress(
+                            1.0,
+                            finalGrade: model.course.grade,
+                            studentGrade: getGradeInPercentage(
+                              model.course.summary.currentMark,
+                              model.course.summary.markOutOf,
+                            ),
+                            averageGrade: getGradeInPercentage(
+                              model.course.summary.passMark,
+                              model.course.summary.markOutOf,
+                            ),
+                          ),
                           Padding(
                             padding: const EdgeInsets.only(left: 55.0),
                             child: Column(
@@ -54,7 +60,9 @@ class _GradesDetailsViewState extends State<GradesDetailsView> {
                               children: <Widget>[
                                 getGradeSummary(
                                   getGradeInPercentage(
-                                      model.course.summary.currentMark, model.course.summary.markOutOf),
+                                    model.course.summary.currentMark,
+                                    model.course.summary.markOutOf,
+                                  ),
                                   AppIntl.of(context).grades_current_rating,
                                   Colors.green,
                                   context,
@@ -169,21 +177,21 @@ class _GradesDetailsViewState extends State<GradesDetailsView> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
-                          getClassInformation(model.course.title ?? ""),
-                          getClassInformation(AppIntl.of(context).grades_group_number(model.course.group ?? "")),
+                          getClassInfo(model.course.title ?? ""),
+                          getClassInfo(AppIntl.of(context).grades_group_number(model.course.group ?? "")),
                         ],
                       ),
                     ),
                   ),
                 ),
-                getPageContent(model)
+                getGradeEvaluations(model)
               ],
             ),
           ),
         ),
       );
 
-  Align getClassInformation(String info) {
+  Align getClassInfo(String info) {
     return Align(
       alignment: Alignment.centerLeft,
       child: Padding(
@@ -213,7 +221,10 @@ class _GradesDetailsViewState extends State<GradesDetailsView> {
           AppIntl.of(context).grades_grade_with_percentage(grade, 100, grade),
           style: TextStyle(color: color, fontWeight: FontWeight.bold),
         ),
-        Text(recipient, style: TextStyle(color: color)),
+        Text(
+          recipient,
+          style: TextStyle(color: color),
+        ),
       ],
     );
   }
