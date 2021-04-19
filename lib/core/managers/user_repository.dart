@@ -254,4 +254,14 @@ class UserRepository {
 
     return _info;
   }
+
+  Future<bool> wasPreviouslyLoggedIn() async {
+    final String username = await _secureStorage.read(key: usernameSecureKey);
+
+    if (username != null) {
+      final String password = await _secureStorage.read(key: passwordSecureKey);
+      return password.isNotEmpty;
+    }
+    return false;
+  }
 }
