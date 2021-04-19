@@ -9,6 +9,7 @@ import 'package:notredame/core/services/github_api.dart';
 import 'package:notredame/core/services/navigation_service.dart';
 import 'package:notredame/core/services/analytics_service.dart';
 import 'package:notredame/core/services/mon_ets_api.dart';
+import 'package:notredame/core/services/networking_service.dart';
 import 'package:notredame/core/services/preferences_service.dart';
 import 'package:notredame/core/services/signets_api.dart';
 import 'package:notredame/core/services/rive_animation_service.dart';
@@ -31,6 +32,7 @@ void setupLocator() {
   locator.registerLazySingleton(() => SignetsApi());
   locator.registerLazySingleton(() => const FlutterSecureStorage());
   locator.registerLazySingleton(() => PreferencesService());
+  locator.registerLazySingleton(() => NetworkingService());
 
   // Managers
   locator.registerLazySingleton(() => UserRepository());
