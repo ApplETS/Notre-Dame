@@ -1,6 +1,5 @@
 // FLUTTER / DART / THIRD-PARTIES
 import 'package:flutter/material.dart';
-import 'package:notredame/ui/utils/loading.dart';
 import 'package:stacked/stacked.dart';
 
 // MODELS

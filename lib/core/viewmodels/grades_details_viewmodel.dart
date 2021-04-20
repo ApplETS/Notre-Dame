@@ -1,6 +1,5 @@
 // FLUTTER / DART / THIRD-PARTIES
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:stacked/stacked.dart';
 
 // MANAGERS / SERVICES
@@ -47,7 +46,6 @@ class GradesDetailsViewModel extends FutureViewModel<Course> {
     _isLoadingCourseSummary = false;
   }
 
-  /// Reload the course from Signets and rebuild the view.
   Future<bool> refresh() async {
     try {
       _isLoadingCourseSummary = true;
@@ -64,11 +62,5 @@ class GradesDetailsViewModel extends FutureViewModel<Course> {
       _isLoadingCourseSummary = false;
       return false;
     }
-  }
-
-  @override
-  // ignore: type_annotate_public_apis
-  void onError(error) {
-    Fluttertoast.showToast(msg: _appIntl.error);
   }
 }
