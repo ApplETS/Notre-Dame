@@ -39,21 +39,23 @@ class _GradeEvaluationTileState extends State<GradeEvaluationTile> {
                   showEvaluationDetails = !showEvaluationDetails;
                 },
                 leading: FractionallySizedBox(
-                  heightFactor: 1.1,
+                  heightFactor: 1,
                   alignment: Alignment.topCenter,
                   child: LayoutBuilder(
                     builder: (context, constraints) {
-                      return GradeCircularProgress(constraints.maxHeight / 100,
-                          key: Key(
-                              "GradeCircularProgress_${widget.evaluation.title}"),
-                          studentGrade: getGradeInPercentage(
-                            widget.evaluation.mark,
-                            widget.evaluation.correctedEvaluationOutOfFormatted,
-                          ),
-                          averageGrade: getGradeInPercentage(
-                            widget.evaluation.passMark,
-                            widget.evaluation.correctedEvaluationOutOfFormatted,
-                          ));
+                      return GradeCircularProgress(
+                        constraints.maxHeight / 100,
+                        key: Key(
+                            "GradeCircularProgress_${widget.evaluation.title}"),
+                        studentGrade: getGradeInPercentage(
+                          widget.evaluation.mark,
+                          widget.evaluation.correctedEvaluationOutOfFormatted,
+                        ),
+                        averageGrade: getGradeInPercentage(
+                          widget.evaluation.passMark,
+                          widget.evaluation.correctedEvaluationOutOfFormatted,
+                        ),
+                      );
                     },
                   ),
                 ),
@@ -61,12 +63,12 @@ class _GradeEvaluationTileState extends State<GradeEvaluationTile> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Padding(
-                      padding: const EdgeInsets.only(top: 10.0),
+                      padding: const EdgeInsets.only(top: 15.0),
                       child: Text(
                         widget.evaluation.title,
                         overflow: TextOverflow.ellipsis,
                         style: TextStyle(
-                            fontSize: 15,
+                            fontSize: 16,
                             color:
                                 Theme.of(context).brightness == Brightness.light
                                     ? Colors.black
@@ -79,7 +81,7 @@ class _GradeEvaluationTileState extends State<GradeEvaluationTile> {
                         AppIntl.of(context)
                             .grades_weight(widget.evaluation.weight),
                         style: TextStyle(
-                            fontSize: 12,
+                            fontSize: 14,
                             color:
                                 Theme.of(context).brightness == Brightness.light
                                     ? Colors.black
@@ -153,8 +155,8 @@ class _GradeEvaluationTileState extends State<GradeEvaluationTile> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
-          Text(title),
-          Text(grade ?? ''),
+          Text(title, style: const TextStyle(fontSize: 14)),
+          Text(grade ?? '', style: const TextStyle(fontSize: 14)),
         ],
       ),
     );

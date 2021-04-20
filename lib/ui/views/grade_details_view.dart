@@ -42,7 +42,7 @@ class _GradesDetailsViewState extends State<GradesDetailsView> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
                           Expanded(
-                            flex: 6,
+                            flex: 50,
                             child: GradeCircularProgress(
                               1.0,
                               key: const Key("GradeCircularProgress_summary"),
@@ -58,7 +58,7 @@ class _GradesDetailsViewState extends State<GradesDetailsView> {
                             ),
                           ),
                           Expanded(
-                            flex: 4,
+                            flex: 40,
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: <Widget>[
@@ -139,18 +139,23 @@ class _GradesDetailsViewState extends State<GradesDetailsView> {
         ),
       );
     } else if (model.isLoadingCourseSummary) {
-      return SliverList(
-          delegate: SliverChildListDelegate(<Widget>[
-        const Padding(
-          padding: EdgeInsets.only(top: 130.0),
-          child: Center(child: CircularProgressIndicator()),
-        )
-      ]));
+      return SliverFillRemaining(
+        hasScrollBody: false,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: const <Widget>[CircularProgressIndicator()],
+        ),
+      );
     } else {
-      return SliverList(
-          delegate: SliverChildListDelegate(<Widget>[
-        const GradeNotAvailable(key: Key("GradeNotAvailable"))
-      ]));
+      return SliverFillRemaining(
+        hasScrollBody: false,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: const <Widget>[
+            GradeNotAvailable(key: Key("GradeNotAvailable"))
+          ],
+        ),
+      );
     }
   }
 
@@ -160,68 +165,64 @@ class _GradesDetailsViewState extends State<GradesDetailsView> {
   Widget build(BuildContext context) =>
       ViewModelBuilder<GradesDetailsViewModel>.reactive(
         viewModelBuilder: () => GradesDetailsViewModel(course: widget.course),
-        builder: (context, model, child) => RefreshIndicator(
-          onRefresh: () => model.refresh(),
-          child: BaseScaffold(
-            body: CustomScrollView(
-              slivers: <Widget>[
-                SliverAppBar(
-                  pinned: true,
-                  stretch: true,
-                  elevation: 0,
-                  onStretchTrigger: () {
-                    return Future<void>.value();
+        builder: (context, model, child) => BaseScaffold(
+          showBottomBar: false,
+          body: CustomScrollView(
+            slivers: <Widget>[
+              SliverAppBar(
+                pinned: true,
+                stretch: true,
+                elevation: 0,
+                onStretchTrigger: () {
+                  return Future<void>.value();
+                },
+                expandedHeight: 80.0,
+                flexibleSpace: LayoutBuilder(
+                  builder: (BuildContext context, BoxConstraints constraints) {
+                    topHeight = constraints.biggest.height;
+                    return FlexibleSpaceBar(
+                      centerTitle: true,
+                      titlePadding: EdgeInsetsDirectional.only(
+                        start: topHeight < 120.0 ? 60.0 : 15.0,
+                        top: topHeight < 120.0 ? 5.0 : 15.0,
+                        bottom: topHeight < 120.0 ? 15.0 : 1.0,
+                      ),
+                      title: Align(
+                        alignment: AlignmentDirectional.bottomStart,
+                        child: Text(
+                          model.course.acronym ?? "",
+                          style: TextStyle(fontSize: topHeight < 120 ? 20 : 15),
+                        ),
+                      ),
+                    );
                   },
-                  expandedHeight: 80.0,
-                  flexibleSpace: LayoutBuilder(
-                    builder:
-                        (BuildContext context, BoxConstraints constraints) {
-                      topHeight = constraints.biggest.height;
-                      return FlexibleSpaceBar(
-                        centerTitle: true,
-                        titlePadding: EdgeInsetsDirectional.only(
-                          start: topHeight < 120.0 ? 60.0 : 15.0,
-                          top: topHeight < 120.0 ? 5.0 : 15.0,
-                          bottom: topHeight < 120.0 ? 15.0 : 1.0,
-                        ),
-                        title: Align(
-                          alignment: AlignmentDirectional.bottomStart,
-                          child: Text(
-                            model.course.acronym ?? "",
-                            style:
-                                TextStyle(fontSize: topHeight < 120 ? 20 : 15),
-                          ),
-                        ),
-                      );
-                    },
-                  ),
                 ),
-                SliverToBoxAdapter(
-                  child: Center(
-                    child: Container(
-                      constraints: BoxConstraints(
-                        minWidth: MediaQuery.of(context).size.width,
-                        maxHeight: 40,
-                      ),
-                      decoration: BoxDecoration(
-                        color: Theme.of(context).brightness == Brightness.light
-                            ? AppTheme.etsLightRed
-                            : const Color(0xff222222),
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          getClassInfo(model.course.title ?? ""),
-                          getClassInfo(AppIntl.of(context)
-                              .grades_group_number(model.course.group ?? "")),
-                        ],
-                      ),
+              ),
+              SliverToBoxAdapter(
+                child: Center(
+                  child: Container(
+                    constraints: BoxConstraints(
+                      minWidth: MediaQuery.of(context).size.width,
+                      maxHeight: 45,
+                    ),
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).brightness == Brightness.light
+                          ? AppTheme.etsLightRed
+                          : const Color(0xff222222),
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        getClassInfo(model.course.title ?? ""),
+                        getClassInfo(AppIntl.of(context)
+                            .grades_group_number(model.course.group ?? "")),
+                      ],
                     ),
                   ),
                 ),
-                getGradeEvaluations(model)
-              ],
-            ),
+              ),
+              getGradeEvaluations(model)
+            ],
           ),
         ),
       );
@@ -233,7 +234,7 @@ class _GradesDetailsViewState extends State<GradesDetailsView> {
         padding: const EdgeInsets.only(left: 15.0),
         child: Text(
           info,
-          style: const TextStyle(color: Colors.white),
+          style: const TextStyle(color: Colors.white, fontSize: 16),
           overflow: TextOverflow.ellipsis,
         ),
       ),
@@ -259,7 +260,10 @@ class _GradesDetailsViewState extends State<GradesDetailsView> {
         ),
         Text(
           recipient,
-          style: TextStyle(color: color),
+          style: TextStyle(
+            color: color,
+            fontSize: 16,
+          ),
         ),
       ],
     );
@@ -285,7 +289,13 @@ class _GradesDetailsViewState extends State<GradesDetailsView> {
               flex: 5,
               child: Padding(
                 padding: const EdgeInsets.only(top: 14.0),
-                child: Text(title ?? "", textAlign: TextAlign.center),
+                child: Text(
+                  title ?? "",
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(
+                    fontSize: 16,
+                  ),
+                ),
               ),
             ),
             Expanded(
