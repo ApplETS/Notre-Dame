@@ -176,6 +176,21 @@ void main() {
         await expectLater(find.byType(GradesDetailsView),
             matchesGoldenFile(goldenFilePath("gradesDetailsView_1")));
       });
+
+      testWidgets("if there is no grades available", (WidgetTester tester) async {
+        CourseRepositoryMock.stubGetCourseSummary(
+            courseRepository as CourseRepositoryMock, courseWithoutSummary,
+            toReturn: courseWithoutSummary);
+
+        tester.binding.window.physicalSizeTestValue = const Size(800, 1410);
+
+        await tester.pumpWidget(
+            localizedWidget(child: GradesDetailsView(course: course)));
+        await tester.pumpAndSettle();
+
+        await expectLater(find.byType(GradesDetailsView),
+            matchesGoldenFile(goldenFilePath("gradesDetailsView_2")));
+      });
     });
   });
 }
