@@ -8,7 +8,6 @@ import 'package:notredame/core/models/course_summary.dart';
 
 // SERVICE
 import 'package:notredame/core/services/navigation_service.dart';
-import 'package:notredame/core/viewmodels/grades_viewmodel.dart';
 
 // WIDGET
 import 'package:notredame/ui/widgets/grade_button.dart';

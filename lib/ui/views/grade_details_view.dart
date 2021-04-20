@@ -130,7 +130,7 @@ class _GradesDetailsViewState extends State<GradesDetailsView> {
       return SliverList(
           delegate: SliverChildListDelegate(<Widget>[
         const Padding(
-          padding: EdgeInsets.only(top: 60.0),
+          padding: EdgeInsets.only(top: 130.0),
           child: Center(child: CircularProgressIndicator()),
         )
       ]));
@@ -147,8 +147,7 @@ class _GradesDetailsViewState extends State<GradesDetailsView> {
   @override
   Widget build(BuildContext context) =>
       ViewModelBuilder<GradesDetailsViewModel>.reactive(
-        viewModelBuilder: () => GradesDetailsViewModel(
-            intl: AppIntl.of(context), course: widget.course),
+        viewModelBuilder: () => GradesDetailsViewModel(course: widget.course),
         builder: (context, model, child) => RefreshIndicator(
           onRefresh: () => model.refresh(),
           child: BaseScaffold(

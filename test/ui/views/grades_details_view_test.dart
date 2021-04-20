@@ -1,6 +1,5 @@
 // FLUTTER / DART / THIRD-PARTIES
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 // MANAGERS
@@ -19,7 +18,6 @@ import '../../helpers.dart';
 import '../../mock/managers/course_repository_mock.dart';
 
 void main() {
-  AppIntl intl;
   CourseRepository courseRepository;
 
   final CourseSummary courseSummary = CourseSummary(
@@ -72,7 +70,6 @@ void main() {
     setUp(() async {
       setupNavigationServiceMock();
       courseRepository = setupCourseRepositoryMock();
-      intl = await setupAppIntl();
     });
 
     tearDown(() {
@@ -81,36 +78,44 @@ void main() {
 
     group('UI - ', () {
       ScrollController primaryScrollController(WidgetTester tester) {
-        return PrimaryScrollController.of(tester.element(find.byType(CustomScrollView)));
+        return PrimaryScrollController.of(
+            tester.element(find.byType(CustomScrollView)));
       }
 
       testWidgets(
           'has a RefreshIndicator, GradeCircularProgress, three cards and evaluation tiles when a course is valid',
           (WidgetTester tester) async {
-        await tester.pumpWidget(localizedWidget(child: GradesDetailsView(course: course)));
+        await tester.pumpWidget(
+            localizedWidget(child: GradesDetailsView(course: course)));
         await tester.pumpAndSettle();
 
         expect(find.byType(RefreshIndicator), findsOneWidget);
 
         // Find all the grade circular progress
-        expect(find.byKey(const Key("GradeCircularProgress_summary")), findsOneWidget);
+        expect(find.byKey(const Key("GradeCircularProgress_summary")),
+            findsOneWidget);
         for (final eval in courseSummary.evaluations) {
-          expect(find.byKey(Key("GradeCircularProgress_${eval.title}")), findsOneWidget);
+          expect(find.byKey(Key("GradeCircularProgress_${eval.title}")),
+              findsOneWidget);
         }
 
         expect(find.byType(Card), findsNWidgets(4));
 
         for (final eval in courseSummary.evaluations) {
-          expect(find.byKey(Key("GradeEvaluationTile_${eval.title}")), findsOneWidget);
+          expect(find.byKey(Key("GradeEvaluationTile_${eval.title}")),
+              findsOneWidget);
         }
       });
 
-      testWidgets('when the page is at the top, it displays the course title, acronym and group',
+      testWidgets(
+          'when the page is at the top, it displays the course title, acronym and group',
           (WidgetTester tester) async {
-        CourseRepositoryMock.stubGetCourseSummary(courseRepository as CourseRepositoryMock, courseWithoutSummary,
+        CourseRepositoryMock.stubGetCourseSummary(
+            courseRepository as CourseRepositoryMock, courseWithoutSummary,
             toReturn: course);
 
-        await tester.pumpWidget(localizedWidget(child: GradesDetailsView(course: course)));
+        await tester.pumpWidget(
+            localizedWidget(child: GradesDetailsView(course: course)));
         await tester.pumpAndSettle();
 
         final ScrollController controller = primaryScrollController(tester);
@@ -123,12 +128,15 @@ void main() {
         expect(find.text('Group 02'), findsOneWidget);
       });
 
-      testWidgets('when the page is scrolled at the bottom, it does not display the SliverToBoxAdapter',
+      testWidgets(
+          'when the page is scrolled at the bottom, it does not display the SliverToBoxAdapter',
           (WidgetTester tester) async {
-        CourseRepositoryMock.stubGetCourseSummary(courseRepository as CourseRepositoryMock, courseWithoutSummary,
+        CourseRepositoryMock.stubGetCourseSummary(
+            courseRepository as CourseRepositoryMock, courseWithoutSummary,
             toReturn: course);
 
-        await tester.pumpWidget(localizedWidget(child: GradesDetailsView(course: course)));
+        await tester.pumpWidget(
+            localizedWidget(child: GradesDetailsView(course: course)));
         await tester.pumpAndSettle();
 
         final ScrollController controller = primaryScrollController(tester);
@@ -139,11 +147,14 @@ void main() {
         expect(find.byType(SliverToBoxAdapter), findsNothing);
       });
 
-      testWidgets("display GradeNotAvailable when a course summary is null", (WidgetTester tester) async {
-        CourseRepositoryMock.stubGetCourseSummary(courseRepository as CourseRepositoryMock, courseWithoutSummary,
+      testWidgets("display GradeNotAvailable when a course summary is null",
+          (WidgetTester tester) async {
+        CourseRepositoryMock.stubGetCourseSummary(
+            courseRepository as CourseRepositoryMock, courseWithoutSummary,
             toReturn: courseWithoutSummary);
 
-        await tester.pumpWidget(localizedWidget(child: GradesDetailsView(course: courseWithoutSummary)));
+        await tester.pumpWidget(localizedWidget(
+            child: GradesDetailsView(course: courseWithoutSummary)));
         await tester.pumpAndSettle();
 
         expect(find.byKey(const Key("GradeNotAvailable")), findsOneWidget);
@@ -152,15 +163,18 @@ void main() {
 
     group("golden - ", () {
       testWidgets("default view", (WidgetTester tester) async {
-        CourseRepositoryMock.stubGetCourseSummary(courseRepository as CourseRepositoryMock, courseWithoutSummary,
+        CourseRepositoryMock.stubGetCourseSummary(
+            courseRepository as CourseRepositoryMock, courseWithoutSummary,
             toReturn: course);
 
         tester.binding.window.physicalSizeTestValue = const Size(800, 1410);
 
-        await tester.pumpWidget(localizedWidget(child: GradesDetailsView(course: course)));
+        await tester.pumpWidget(
+            localizedWidget(child: GradesDetailsView(course: course)));
         await tester.pumpAndSettle();
 
-        await expectLater(find.byType(GradesDetailsView), matchesGoldenFile(goldenFilePath("gradesDetailsView_1")));
+        await expectLater(find.byType(GradesDetailsView),
+            matchesGoldenFile(goldenFilePath("gradesDetailsView_1")));
       });
     });
   });

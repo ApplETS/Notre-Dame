@@ -1,5 +1,4 @@
 // FLUTTER / DART / THIRD-PARTIES
-import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 
 // MANAGERS / SERVICES
@@ -10,12 +9,8 @@ import 'package:notredame/core/models/course.dart';
 
 // OTHER
 import 'package:notredame/locator.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class GradesDetailsViewModel extends FutureViewModel<Course> {
-  /// Localization class of the application.
-  final AppIntl _appIntl;
-
   /// Used to get the courses of the student
   final CourseRepository _courseRepository = locator<CourseRepository>();
 
@@ -26,8 +21,7 @@ class GradesDetailsViewModel extends FutureViewModel<Course> {
 
   bool get isLoadingCourseSummary => _isLoadingCourseSummary;
 
-  GradesDetailsViewModel({@required AppIntl intl, this.course})
-      : _appIntl = intl;
+  GradesDetailsViewModel({this.course});
 
   @override
   Future<Course> futureToRun() async {
@@ -44,6 +38,7 @@ class GradesDetailsViewModel extends FutureViewModel<Course> {
     }
 
     _isLoadingCourseSummary = false;
+    return course;
   }
 
   Future<bool> refresh() async {

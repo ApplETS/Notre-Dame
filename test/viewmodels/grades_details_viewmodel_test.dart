@@ -1,6 +1,5 @@
 // FLUTTER / DART / THIRD-PARTIES
 import 'package:flutter_test/flutter_test.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 
 // MODELS
@@ -16,6 +15,7 @@ import 'package:notredame/core/managers/course_repository.dart';
 import '../mock/managers/course_repository_mock.dart';
 
 // HELPERS
+// ignore: directives_ordering
 import '../helpers.dart';
 
 void main() {
@@ -87,9 +87,8 @@ void main() {
     setUp(() async {
       // Setting up mocks
       courseRepository = setupCourseRepositoryMock();
-      final AppIntl intl = await setupAppIntl();
 
-      viewModel = GradesDetailsViewModel(intl: intl, course: courseWithoutSummary);
+      viewModel = GradesDetailsViewModel(course: courseWithoutSummary);
     });
 
     tearDown(() {
@@ -98,7 +97,8 @@ void main() {
 
     group('FutureToRun - -', () {
       test('SignetsAPI gets the summary', () async {
-        CourseRepositoryMock.stubGetCourseSummary(courseRepository as CourseRepositoryMock, courseWithoutSummary,
+        CourseRepositoryMock.stubGetCourseSummary(
+            courseRepository as CourseRepositoryMock, courseWithoutSummary,
             toReturn: courseWithSummary);
 
         await viewModel.futureToRun();
@@ -106,7 +106,8 @@ void main() {
         expect(viewModel.course, courseWithSummary);
       });
 
-      test('Signets raised an exception while trying to recover summary', () async {
+      test('Signets raised an exception while trying to recover summary',
+          () async {
         CourseRepositoryMock.stubGetCourseSummaryException(
             courseRepository as CourseRepositoryMock, courseWithoutSummary);
 
@@ -117,8 +118,10 @@ void main() {
     });
 
     group('refresh -', () {
-      test('Call SignetsAPI to get the summary of the course selected', () async {
-        CourseRepositoryMock.stubGetCourseSummary(courseRepository as CourseRepositoryMock, courseWithoutSummary,
+      test('Call SignetsAPI to get the summary of the course selected',
+          () async {
+        CourseRepositoryMock.stubGetCourseSummary(
+            courseRepository as CourseRepositoryMock, courseWithoutSummary,
             toReturn: courseWithSummary);
 
         await viewModel.refresh();
