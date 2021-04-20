@@ -23,12 +23,17 @@ class GradesDetailsViewModel extends FutureViewModel<Course> {
   /// Used to get the current course selected of the student
   Course course;
 
-  GradesDetailsViewModel({@required AppIntl intl, this.course}) : _appIntl = intl;
+  bool _isLoadingCourseSummary = false;
+
+  bool get isLoadingCourseSummary => _isLoadingCourseSummary;
+
+  GradesDetailsViewModel({@required AppIntl intl, this.course})
+      : _appIntl = intl;
 
   @override
   Future<Course> futureToRun() async {
     try {
-      // ignore: return_type_invalid_for_catch_error
+      _isLoadingCourseSummary = true;
       await _courseRepository.getCourseSummary(course)?.then((value) {
         if (value != null) {
           course = value;
@@ -38,21 +43,25 @@ class GradesDetailsViewModel extends FutureViewModel<Course> {
     } on Exception catch (error) {
       onError(error);
     }
+
+    _isLoadingCourseSummary = false;
   }
 
   /// Reload the course from Signets and rebuild the view.
   Future<bool> refresh() async {
     try {
-      // ignore: return_type_invalid_for_catch_error
+      _isLoadingCourseSummary = true;
       await _courseRepository.getCourseSummary(course)?.then((value) {
         if (value != null) {
           course = value;
         }
       });
       notifyListeners();
+      _isLoadingCourseSummary = false;
       return true;
     } on Exception catch (error) {
       onError(error);
+      _isLoadingCourseSummary = false;
       return false;
     }
   }

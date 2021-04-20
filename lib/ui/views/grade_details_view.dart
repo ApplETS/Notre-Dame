@@ -1,5 +1,6 @@
 // FLUTTER / DART / THIRD-PARTIES
 import 'package:flutter/material.dart';
+import 'package:notredame/ui/utils/loading.dart';
 import 'package:stacked/stacked.dart';
 
 // MODELS
@@ -27,7 +28,7 @@ class GradesDetailsView extends StatefulWidget {
 
 class _GradesDetailsViewState extends State<GradesDetailsView> {
   Widget getGradeEvaluations(GradesDetailsViewModel model) {
-    if (model.course.summary != null) {
+    if (model.course.summary != null && !model.isLoadingCourseSummary) {
       return SliverList(
         delegate: SliverChildListDelegate(
           <Widget>[
@@ -126,6 +127,14 @@ class _GradesDetailsViewState extends State<GradesDetailsView> {
           ],
         ),
       );
+    } else if (model.isLoadingCourseSummary) {
+      return SliverList(
+          delegate: SliverChildListDelegate(<Widget>[
+        const Padding(
+          padding: EdgeInsets.only(top: 60.0),
+          child: Center(child: CircularProgressIndicator()),
+        )
+      ]));
     } else {
       return SliverList(
           delegate: SliverChildListDelegate(<Widget>[
