@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:notredame/core/managers/course_repository.dart';
 
 // MODELS
 import 'package:notredame/core/models/course.dart';
@@ -18,9 +19,11 @@ import '../../../lib/ui/widgets/grade_evaluation_tile.dart';
 
 // OTHERS
 import '../../helpers.dart';
+import '../../mock/managers/course_repository_mock.dart';
 
 void main() {
   AppIntl intl;
+  CourseRepository courseRepository;
 
   final CourseSummary courseSummary = CourseSummary(
     currentMark: 5,
@@ -70,7 +73,12 @@ void main() {
 
   group('GradesDetailsView - ', () {
     setUp(() async {
+      courseRepository = setupCourseRepositoryMock();
       intl = await setupAppIntl();
+    });
+
+    tearDown(() {
+      unregister<CourseRepository>();
     });
 
     group('UI - ', () {
@@ -81,6 +89,9 @@ void main() {
       testWidgets(
           'has a RefreshIndicator, GradeCircularProgress, three cards and evaluation tiles when a course is valid',
           (WidgetTester tester) async {
+        //CourseRepositoryMock.stubGetCourseSummary(courseRepository as CourseRepositoryMock, courseWithoutSummary,
+        //toReturn: course);
+
         await tester.pumpWidget(localizedWidget(child: GradesDetailsView(course: course)));
         await tester.pumpAndSettle();
 
@@ -92,6 +103,9 @@ void main() {
 
       testWidgets('when the page is at the top, it displays the course title, acronym and group',
           (WidgetTester tester) async {
+        CourseRepositoryMock.stubGetCourseSummary(courseRepository as CourseRepositoryMock, courseWithoutSummary,
+            toReturn: course);
+
         await tester.pumpWidget(localizedWidget(child: GradesDetailsView(course: course)));
         await tester.pumpAndSettle();
 
@@ -107,6 +121,9 @@ void main() {
 
       testWidgets('when the page is scrolled at the bottom, it displays only the course title on top of the page',
           (WidgetTester tester) async {
+        CourseRepositoryMock.stubGetCourseSummary(courseRepository as CourseRepositoryMock, courseWithoutSummary,
+            toReturn: course);
+
         await tester.pumpWidget(localizedWidget(child: GradesDetailsView(course: course)));
         await tester.pumpAndSettle();
 
@@ -123,6 +140,9 @@ void main() {
       });
 
       testWidgets("display GradeNotAvailable when a course summary is null", (WidgetTester tester) async {
+        CourseRepositoryMock.stubGetCourseSummary(courseRepository as CourseRepositoryMock, courseWithoutSummary,
+            toReturn: courseWithoutSummary);
+
         await tester.pumpWidget(localizedWidget(child: GradesDetailsView(course: courseWithoutSummary)));
         await tester.pumpAndSettle();
 
@@ -132,6 +152,9 @@ void main() {
 
     group("golden - ", () {
       testWidgets("default view", (WidgetTester tester) async {
+        CourseRepositoryMock.stubGetCourseSummary(courseRepository as CourseRepositoryMock, courseWithoutSummary,
+            toReturn: course);
+
         tester.binding.window.physicalSizeTestValue = const Size(800, 1410);
 
         await tester.pumpWidget(localizedWidget(child: GradesDetailsView(course: course)));

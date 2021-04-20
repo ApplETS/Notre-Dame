@@ -29,7 +29,7 @@ class GradesDetailsViewModel extends FutureViewModel<Course> {
   Future<Course> futureToRun() async {
     try {
       // ignore: return_type_invalid_for_catch_error
-      await _courseRepository.getCourseSummary(course).then((value) {
+      await _courseRepository.getCourseSummary(course)?.then((value) {
         if (value != null) {
           course = value;
         }
@@ -44,7 +44,7 @@ class GradesDetailsViewModel extends FutureViewModel<Course> {
   Future<bool> refresh() async {
     try {
       // ignore: return_type_invalid_for_catch_error
-      await _courseRepository.getCourseSummary(course).then((value) {
+      await _courseRepository.getCourseSummary(course)?.then((value) {
         if (value != null) {
           course = value;
         }
