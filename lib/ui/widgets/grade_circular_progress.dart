@@ -11,7 +11,9 @@ class GradeCircularProgress extends StatelessWidget {
   final double averageGrade;
   final double ratio;
 
-  const GradeCircularProgress(this.ratio, {this.finalGrade, this.studentGrade, this.averageGrade});
+  const GradeCircularProgress(this.ratio,
+      {Key key, this.finalGrade, this.studentGrade, this.averageGrade})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +34,9 @@ class GradeCircularProgress extends StatelessWidget {
         center: Text(
           getGrade(context),
           style: TextStyle(
-              color: Theme.of(context).brightness == Brightness.light ? Colors.black : Colors.white,
+              color: Theme.of(context).brightness == Brightness.light
+                  ? Colors.black
+                  : Colors.white,
               fontSize: 22 * ratio),
         ),
         progressColor: Colors.red,
@@ -49,7 +53,8 @@ class GradeCircularProgress extends StatelessWidget {
     }
 
     if (studentGrade != null) {
-      return AppIntl.of(context).grades_grade_in_percentage(studentGrade.round());
+      return AppIntl.of(context)
+          .grades_grade_in_percentage(studentGrade.round());
     }
 
     return AppIntl.of(context).grades_not_available;

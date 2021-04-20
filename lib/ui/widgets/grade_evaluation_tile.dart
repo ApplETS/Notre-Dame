@@ -14,7 +14,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 class GradeEvaluationTile extends StatefulWidget {
   final Evaluation evaluation;
 
-  const GradeEvaluationTile(this.evaluation);
+  const GradeEvaluationTile(this.evaluation, {Key key}) : super(key: key);
 
   @override
   _GradeEvaluationTileState createState() => _GradeEvaluationTileState();
@@ -44,6 +44,8 @@ class _GradeEvaluationTileState extends State<GradeEvaluationTile> {
                   child: LayoutBuilder(
                     builder: (context, constraints) {
                       return GradeCircularProgress(constraints.maxHeight / 100,
+                          key: Key(
+                              "GradeCircularProgress_${widget.evaluation.title}"),
                           studentGrade: getGradeInPercentage(
                             widget.evaluation.mark,
                             widget.evaluation.correctedEvaluationOutOfFormatted,

@@ -6,7 +6,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:notredame/ui/utils/app_theme.dart';
 
 class GradeNotAvailable extends StatelessWidget {
-  const GradeNotAvailable();
+  const GradeNotAvailable({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
