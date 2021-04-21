@@ -165,64 +165,70 @@ class _GradesDetailsViewState extends State<GradesDetailsView> {
   Widget build(BuildContext context) =>
       ViewModelBuilder<GradesDetailsViewModel>.reactive(
         viewModelBuilder: () => GradesDetailsViewModel(course: widget.course),
-        builder: (context, model, child) => BaseScaffold(
-          showBottomBar: false,
-          body: CustomScrollView(
-            slivers: <Widget>[
-              SliverAppBar(
-                pinned: true,
-                stretch: true,
-                elevation: 0,
-                onStretchTrigger: () {
-                  return Future<void>.value();
-                },
-                expandedHeight: 80.0,
-                flexibleSpace: LayoutBuilder(
-                  builder: (BuildContext context, BoxConstraints constraints) {
-                    topHeight = constraints.biggest.height;
-                    return FlexibleSpaceBar(
-                      centerTitle: true,
-                      titlePadding: EdgeInsetsDirectional.only(
-                        start: topHeight < 120.0 ? 60.0 : 15.0,
-                        top: topHeight < 120.0 ? 5.0 : 15.0,
-                        bottom: topHeight < 120.0 ? 15.0 : 1.0,
-                      ),
-                      title: Align(
-                        alignment: AlignmentDirectional.bottomStart,
-                        child: Text(
-                          model.course.acronym ?? "",
-                          style: TextStyle(fontSize: topHeight < 120 ? 20 : 15),
-                        ),
-                      ),
-                    );
+        builder: (context, model, child) => RefreshIndicator(
+          displacement: 120,
+          onRefresh: () => model.refresh(),
+          child: BaseScaffold(
+            showBottomBar: false,
+            body: CustomScrollView(
+              slivers: <Widget>[
+                SliverAppBar(
+                  pinned: true,
+                  stretch: true,
+                  elevation: 0,
+                  onStretchTrigger: () {
+                    return Future<void>.value();
                   },
+                  expandedHeight: 80.0,
+                  flexibleSpace: LayoutBuilder(
+                    builder:
+                        (BuildContext context, BoxConstraints constraints) {
+                      topHeight = constraints.biggest.height;
+                      return FlexibleSpaceBar(
+                        centerTitle: true,
+                        titlePadding: EdgeInsetsDirectional.only(
+                          start: topHeight < 120.0 ? 60.0 : 15.0,
+                          top: topHeight < 120.0 ? 5.0 : 15.0,
+                          bottom: topHeight < 120.0 ? 15.0 : 1.0,
+                        ),
+                        title: Align(
+                          alignment: AlignmentDirectional.bottomStart,
+                          child: Text(
+                            model.course.acronym ?? "",
+                            style:
+                                TextStyle(fontSize: topHeight < 120 ? 20 : 15),
+                          ),
+                        ),
+                      );
+                    },
+                  ),
                 ),
-              ),
-              SliverToBoxAdapter(
-                child: Center(
-                  child: Container(
-                    constraints: BoxConstraints(
-                      minWidth: MediaQuery.of(context).size.width,
-                      maxHeight: 45,
-                    ),
-                    decoration: BoxDecoration(
-                      color: Theme.of(context).brightness == Brightness.light
-                          ? AppTheme.etsLightRed
-                          : const Color(0xff222222),
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        getClassInfo(model.course.title ?? ""),
-                        getClassInfo(AppIntl.of(context)
-                            .grades_group_number(model.course.group ?? "")),
-                      ],
+                SliverToBoxAdapter(
+                  child: Center(
+                    child: Container(
+                      constraints: BoxConstraints(
+                        minWidth: MediaQuery.of(context).size.width,
+                        maxHeight: 45,
+                      ),
+                      decoration: BoxDecoration(
+                        color: Theme.of(context).brightness == Brightness.light
+                            ? AppTheme.etsLightRed
+                            : const Color(0xff222222),
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          getClassInfo(model.course.title ?? ""),
+                          getClassInfo(AppIntl.of(context)
+                              .grades_group_number(model.course.group ?? "")),
+                        ],
+                      ),
                     ),
                   ),
                 ),
-              ),
-              getGradeEvaluations(model)
-            ],
+                getGradeEvaluations(model)
+              ],
+            ),
           ),
         ),
       );
