@@ -9,6 +9,7 @@ import 'package:logger/logger.dart';
 // SERVICES
 import 'package:notredame/core/services/analytics_service.dart';
 import 'package:notredame/core/services/mon_ets_api.dart';
+import 'package:notredame/core/services/networking_service.dart';
 import 'package:notredame/core/services/signets_api.dart';
 import 'package:notredame/core/managers/cache_manager.dart';
 
@@ -41,6 +42,9 @@ class UserRepository {
 
   /// Will be used to report event and error.
   final AnalyticsService _analyticsService = locator<AnalyticsService>();
+
+  /// Used to verify if the user has connectivity
+  final NetworkingService _networkingService = locator<NetworkingService>();
 
   /// Secure storage manager to access and update the cache.
   final FlutterSecureStorage _secureStorage = locator<FlutterSecureStorage>();
@@ -154,8 +158,13 @@ class UserRepository {
   /// The list from the [CacheManager] is loaded than updated with the results
   /// from the [SignetsApi].
   Future<List<Program>> getPrograms({bool fromCacheOnly = false}) async {
+    // Force fromCacheOnly mode when user has no connectivity
+    if (!(await _networkingService.hasConnectivity())) {
+      // ignore: parameter_assignments
+      fromCacheOnly = true;
+    }
     // Load the programs from the cache if the list doesn't exist
-    if (_programs == null) {
+    if (_programs == null || fromCacheOnly) {
       try {
         _programs = [];
 
@@ -211,8 +220,14 @@ class UserRepository {
   /// The information from the [CacheManager] is loaded than updated with the results
   /// from the [SignetsApi].
   Future<ProfileStudent> getInfo({bool fromCacheOnly = false}) async {
+    // Force fromCacheOnly mode when user has no connectivity
+    if (!(await _networkingService.hasConnectivity())) {
+      // ignore: parameter_assignments
+      fromCacheOnly = true;
+    }
+
     // Load the student profile from the cache if the information doesn't exist
-    if (_info == null) {
+    if (_info == null || fromCacheOnly) {
       try {
         final infoCached = jsonDecode(await _cacheManager.get(infoCacheKey))
             as Map<String, dynamic>;

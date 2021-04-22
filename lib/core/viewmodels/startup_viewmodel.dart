@@ -29,10 +29,7 @@ class StartUpViewModel extends BaseViewModel {
 
   /// Try to silent authenticate the user then redirect to [LoginView] or [DashboardView]
   Future handleStartUp() async {
-    if (await handleConnectivityIssues()) {
-      return;
-    }
-
+    if (await handleConnectivityIssues()) return;
     final bool isLogin = await _userRepository.silentAuthenticate();
 
     if (isLogin) {
@@ -47,6 +44,10 @@ class StartUpViewModel extends BaseViewModel {
     }
   }
 
+  /// Verify if user has an active internet connection. If the user does have
+  /// an active internet connection, proceed with the normal app workflow.
+  /// Otherwise if the user was previously logged in, let him access the app
+  /// with the cached data
   Future<bool> handleConnectivityIssues() async {
     final hasConnectivityIssues = !await _networkingService.hasConnectivity();
     final wasLoggedIn = await _userRepository.wasPreviouslyLoggedIn();
