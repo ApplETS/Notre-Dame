@@ -32,7 +32,7 @@ class WebLinkCard extends StatelessWidget {
         elevation: 4.0,
         child: InkWell(
           onTap: () => _onLinkClicked(_links.link),
-          splashColor: Colors.red.withAlpha(50),
+          splashColor: AppTheme.etsLightRed.withAlpha(50),
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: Column(
@@ -43,7 +43,7 @@ class WebLinkCard extends StatelessWidget {
                 ),
                 Text(
                   _links.name,
-                  style: const TextStyle(color: Colors.red, fontSize: 18.0),
+                  style: const TextStyle(color: AppTheme.etsLightRed, fontSize: 18.0),
                 ),
               ],
             ),
