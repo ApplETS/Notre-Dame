@@ -60,8 +60,8 @@ class ProfileViewModel extends FutureViewModel<List<Program>> {
 
   @override
   Future<List<Program>> futureToRun() => _userRepository
-          .getInfo(fromCacheOnly: true)
-          .then((value) => _userRepository.getPrograms(fromCacheOnly: true))
+          .getInfo()
+          .then((value) => _userRepository.getPrograms())
           .then((value) {
         setBusyForObject(isLoadingEvents, true);
         _userRepository
