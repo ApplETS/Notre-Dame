@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 
 // MODELS
 import 'package:notredame/core/models/evaluation.dart';
+import 'package:notredame/core/utils/utils.dart';
 
 // WIDGETS
 import 'package:notredame/ui/widgets/grade_circular_progress.dart';
@@ -79,11 +80,11 @@ class _GradeEvaluationTileState extends State<GradeEvaluationTile>
                       constraints.maxHeight / 100,
                       key: Key(
                           "GradeCircularProgress_${widget.evaluation.title}"),
-                      studentGrade: getGradeInPercentage(
+                      studentGrade: Utils.getGradeInPercentage(
                         widget.evaluation.mark,
                         widget.evaluation.correctedEvaluationOutOfFormatted,
                       ),
-                      averageGrade: getGradeInPercentage(
+                      averageGrade: Utils.getGradeInPercentage(
                         widget.evaluation.passMark,
                         widget.evaluation.correctedEvaluationOutOfFormatted,
                       ),
@@ -161,7 +162,7 @@ class _GradeEvaluationTileState extends State<GradeEvaluationTile>
               AppIntl.of(context).grades_grade_with_percentage(
                 evaluation.mark ?? 0.0,
                 evaluation.correctedEvaluationOutOf ?? 0.0,
-                getGradeInPercentage(evaluation.mark,
+                Utils.getGradeInPercentage(evaluation.mark,
                     evaluation.correctedEvaluationOutOfFormatted),
               ),
             ),
@@ -170,7 +171,7 @@ class _GradeEvaluationTileState extends State<GradeEvaluationTile>
               AppIntl.of(context).grades_grade_with_percentage(
                 evaluation.passMark ?? 0.0,
                 evaluation.correctedEvaluationOutOf ?? 0.0,
-                getGradeInPercentage(evaluation.passMark,
+                Utils.getGradeInPercentage(evaluation.passMark,
                     evaluation.correctedEvaluationOutOfFormatted),
               ),
             ),
@@ -213,14 +214,6 @@ class _GradeEvaluationTileState extends State<GradeEvaluationTile>
   }
 
   double getGradeInDecimal(double grade, double maxGrade) => grade / maxGrade;
-
-  double getGradeInPercentage(double grade, double maxGrade) {
-    if (grade == null || maxGrade == null) {
-      return 0.0;
-    }
-
-    return ((grade / maxGrade) * 100).roundToDouble();
-  }
 
   String validateResult(BuildContext context, String result) {
     if (result != "null") {

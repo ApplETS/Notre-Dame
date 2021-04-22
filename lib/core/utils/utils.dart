@@ -13,4 +13,12 @@ class Utils {
       throw 'Could not launch $url';
     }
   }
+
+  static double getGradeInPercentage(double grade, double maxGrade) {
+    if (grade == null || maxGrade == null || grade == 0.0 || maxGrade == 0.0) {
+      return 0.0;
+    }
+
+    return ((grade / maxGrade) * 100).roundToDouble();
+  }
 }

@@ -1,5 +1,6 @@
 // FLUTTER / DART / THIRD-PARTIES
 import 'package:flutter/material.dart';
+import 'package:notredame/core/utils/utils.dart';
 import 'package:stacked/stacked.dart';
 
 // MODELS
@@ -47,11 +48,11 @@ class _GradesDetailsViewState extends State<GradesDetailsView> {
                               1.0,
                               key: const Key("GradeCircularProgress_summary"),
                               finalGrade: model.course.grade,
-                              studentGrade: getGradeInPercentage(
+                              studentGrade: Utils.getGradeInPercentage(
                                 model.course.summary.currentMark,
                                 model.course.summary.markOutOf,
                               ),
-                              averageGrade: getGradeInPercentage(
+                              averageGrade: Utils.getGradeInPercentage(
                                 model.course.summary.passMark,
                                 model.course.summary.markOutOf,
                               ),
@@ -63,7 +64,7 @@ class _GradesDetailsViewState extends State<GradesDetailsView> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: <Widget>[
                                 getGradeSummary(
-                                  getGradeInPercentage(
+                                  Utils.getGradeInPercentage(
                                     model.course.summary.currentMark,
                                     model.course.summary.markOutOf,
                                   ),
@@ -74,7 +75,7 @@ class _GradesDetailsViewState extends State<GradesDetailsView> {
                                 Padding(
                                   padding: const EdgeInsets.only(top: 15.0),
                                   child: getGradeSummary(
-                                    getGradeInPercentage(
+                                    Utils.getGradeInPercentage(
                                         model.course.summary.passMark,
                                         model.course.summary.markOutOf),
                                     AppIntl.of(context).grades_average,
@@ -245,14 +246,6 @@ class _GradesDetailsViewState extends State<GradesDetailsView> {
         ),
       ),
     );
-  }
-
-  double getGradeInPercentage(double grade, double maxGrade) {
-    if (grade == null || grade == 0.0) {
-      return 0.0;
-    }
-
-    return ((grade / maxGrade) * 100).roundToDouble();
   }
 
   Column getGradeSummary(
