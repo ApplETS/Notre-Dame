@@ -13,6 +13,7 @@ import 'package:notredame/core/services/navigation_service.dart';
 
 // OTHER
 import 'package:notredame/locator.dart';
+import 'package:notredame/ui/utils/app_theme.dart';
 
 class WebLinkCard extends StatelessWidget {
   final QuickLink _links;
@@ -38,7 +39,7 @@ class WebLinkCard extends StatelessWidget {
               children: [
                 Expanded(
                   flex: 40,
-                  child: Image.asset(_links.image),
+                  child: Image.asset(_links.image, color: AppTheme.etsLightRed),
                 ),
                 Text(
                   _links.name,
