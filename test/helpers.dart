@@ -5,6 +5,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:logger/logger.dart';
+import 'package:notredame/core/services/networking_service.dart';
 
 // OTHER
 import 'package:notredame/locator.dart';
@@ -32,6 +33,7 @@ import 'mock/services/flutter_secure_storage_mock.dart';
 import 'mock/services/github_api_mock.dart';
 import 'mock/services/mon_ets_api_mock.dart';
 import 'mock/services/navigation_service_mock.dart';
+import 'mock/services/networking_service_mock.dart';
 import 'mock/services/preferences_service_mock.dart';
 import 'mock/services/rive_animation_service_mock.dart';
 import 'mock/services/signets_api_mock.dart';
@@ -213,6 +215,15 @@ CourseRepository setupCourseRepositoryMock() {
   final service = CourseRepositoryMock();
 
   locator.registerSingleton<CourseRepository>(service);
+
+  return service;
+}
+
+NetworkingService setupNetworkingServiceMock() {
+  unregister<NetworkingService>();
+  final service = NetworkingServiceMock();
+
+  locator.registerSingleton<NetworkingService>(service);
 
   return service;
 }

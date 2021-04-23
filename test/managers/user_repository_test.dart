@@ -24,6 +24,7 @@ import '../helpers.dart';
 import '../mock/managers/cache_manager_mock.dart';
 import '../mock/services/flutter_secure_storage_mock.dart';
 import '../mock/services/mon_ets_api_mock.dart';
+import '../mock/services/networking_service_mock.dart';
 import '../mock/services/signets_api_mock.dart';
 
 void main() {
@@ -32,6 +33,7 @@ void main() {
   FlutterSecureStorage secureStorage;
   CacheManager cacheManager;
   SignetsApi signetsApi;
+  NetworkingServiceMock networkingService;
 
   UserRepository manager;
 
@@ -43,6 +45,7 @@ void main() {
       secureStorage = setupFlutterSecureStorageMock();
       cacheManager = setupCacheManagerMock();
       signetsApi = setupSignetsApiMock();
+      networkingService = setupNetworkingServiceMock() as NetworkingServiceMock;
       setupLogger();
 
       manager = UserRepository();
@@ -348,6 +351,9 @@ void main() {
         // Stub SignetsApi answer to test only the cache retrieving
         SignetsApiMock.stubGetPrograms(
             signetsApi as SignetsApiMock, username, []);
+
+        // Stub to simulate that the user has an active internet connection
+        NetworkingServiceMock.stubHasConnectivityIssue(networkingService);
       });
 
       test("Programs are loaded from cache", () async {
@@ -507,6 +513,9 @@ void main() {
         // Stub SignetsApi answer to test only the cache retrieving
         SignetsApiMock.stubGetInfo(
             signetsApi as SignetsApiMock, username, null);
+
+        // Stub to simulate that the user has an active internet connection
+        NetworkingServiceMock.stubHasConnectivityIssue(networkingService);
       });
 
       test("Info are loaded from cache", () async {
