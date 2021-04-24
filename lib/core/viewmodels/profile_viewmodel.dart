@@ -73,4 +73,16 @@ class ProfileViewModel extends FutureViewModel<List<Program>> {
             .whenComplete(() => setBusyForObject(isLoadingEvents, false));
         return value;
       });
+
+  Future refresh() async {
+    // ignore: return_type_invalid_for_catch_error
+    try {
+      _userRepository
+          .getInfo()
+          .then((value) => _userRepository.getPrograms());
+      notifyListeners();
+    } on Exception catch (error) {
+      onError(error);
+    }
+  }
 }
