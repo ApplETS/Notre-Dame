@@ -8,6 +8,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_config/flutter_config.dart';
 
@@ -35,9 +36,19 @@ Future<void> main() async {
   // Initialize firebase
   await Firebase.initializeApp();
 
-  /// Manage the settings
+  // Manage the settings
   final SettingsManager settingsManager = locator<SettingsManager>();
   await settingsManager.fetchLanguageAndThemeMode();
+
+  // When the locale isn't defined, set a default locale
+  if (settingsManager.locale == null) {
+    final locale = Locale(Intl.systemLocale.split('_')[0]);
+    if (AppIntl.supportedLocales.contains(locale)) {
+      settingsManager.setLocale(locale.languageCode);
+    } else {
+      settingsManager.setLocale('fr');
+    }
+  }
 
   if (kDebugMode) {
     FlutterConfig.loadEnvVariables();

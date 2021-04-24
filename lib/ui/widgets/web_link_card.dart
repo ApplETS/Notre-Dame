@@ -26,7 +26,7 @@ class WebLinkCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: 130,
+      width: MediaQuery.of(context).size.width / 3.1,
       height: 130,
       child: Card(
         elevation: 4.0,
@@ -41,9 +41,12 @@ class WebLinkCard extends StatelessWidget {
                   flex: 40,
                   child: Image.asset(_links.image, color: AppTheme.etsLightRed),
                 ),
-                Text(
-                  _links.name,
-                  style: const TextStyle(color: AppTheme.etsLightRed, fontSize: 18.0),
+                FittedBox(
+                  fit: BoxFit.fitWidth,
+                  child: Text(
+                    _links.name,
+                    style: const TextStyle(color: Colors.red, fontSize: 18.0),
+                  ),
                 ),
               ],
             ),
