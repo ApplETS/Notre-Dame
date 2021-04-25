@@ -202,5 +202,30 @@ void main() {
         verifyNoMoreInteractions(settingsManager);
       });
     });
+    group('refresh -', () {
+      test(
+          'Call SignetsAPI to get the courses than reload the coursesBySession',
+          () async {
+        CourseRepositoryMock.stubCoursesActivities(
+            courseRepository as CourseRepositoryMock,
+            toReturn: activities);
+
+        await viewModel.refresh();
+
+        final expected = {
+          DateTime(2020): [gen101],
+          DateTime(2020, 1, 2): [gen102, gen103]
+        };
+
+        expect(viewModel.coursesActivities, expected);
+
+        verifyInOrder([
+          courseRepository.getCoursesActivities(),
+          courseRepository.coursesActivities
+        ]);
+
+        verifyNoMoreInteractions(courseRepository);
+      });
+    });
   });
 }
