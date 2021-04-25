@@ -204,7 +204,7 @@ void main() {
     });
     group('refresh -', () {
       test(
-          'Call SignetsAPI to get the courses than reload the coursesBySession',
+          'Call SignetsAPI to get the coursesActivities than reload the coursesActivities',
           () async {
         CourseRepositoryMock.stubCoursesActivities(
             courseRepository as CourseRepositoryMock,
