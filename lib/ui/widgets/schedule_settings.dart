@@ -62,8 +62,7 @@ class _ScheduleSettingsState extends State<ScheduleSettings> {
       BuildContext context, ScheduleSettingsViewModel model) {
     final list = _buildCalendarFormatSection(context, model);
 
-    // TODO Uncomment when https://github.com/aleksanderwozniak/table_calendar/issues/164 is close
-    //list.addAll(_buildStartingDaySection(context, model));
+    list.addAll(_buildStartingDaySection(context, model));
 
     list.addAll(_buildShowTodayButtonSection(context, model));
 

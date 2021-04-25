@@ -1,4 +1,5 @@
 // FLUTTER / DART / THIRD-PARTIES
+import 'package:enum_to_string/enum_to_string.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:stacked/stacked.dart';
 import 'package:table_calendar/table_calendar.dart';
@@ -34,6 +35,12 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
 
   /// Day currently selected
   DateTime selectedDate = DateTime.now();
+
+  /// Day currently focused on
+  DateTime focusedDate = DateTime.now();
+
+  /// The currently selected CalendarFormat
+  CalendarFormat calendarFormat;
 
   /// Get current locale
   Locale get locale => _settingsManager.locale;
@@ -75,13 +82,12 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
     Fluttertoast.showToast(msg: _appIntl.error);
   }
 
-  Future loadSettings(CalendarController calendarController) async {
+  Future loadSettings() async {
     setBusy(true);
     settings.clear();
     settings.addAll(await _settingsManager.getScheduleSettings());
-    calendarController.setCalendarFormat(
-        settings[PreferencesFlag.scheduleSettingsCalendarFormat]
-            as CalendarFormat);
+    calendarFormat = settings[PreferencesFlag.scheduleSettingsCalendarFormat]
+        as CalendarFormat;
     setBusy(false);
   }
 
@@ -115,6 +121,22 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
     if (_coursesActivities.isEmpty) {
       coursesActivities;
     }
-    return _coursesActivities.containsKey(date) ? _coursesActivities[date] : [];
+
+    // Access the array using the same instance inside the map. This is only required
+    // since the version 3.0.0 of table_calendar with the eventLoaders argument.
+    DateTime dateInArray;
+    return _coursesActivities.keys.any((element) {
+      dateInArray = element;
+      return isSameDay(element, date);
+    })
+        ? _coursesActivities[dateInArray]
+        : [];
+  }
+
+  Future setCalendarFormat(CalendarFormat format) async {
+    calendarFormat = format;
+    settings[PreferencesFlag.scheduleSettingsCalendarFormat] = calendarFormat;
+    _settingsManager.setString(PreferencesFlag.scheduleSettingsCalendarFormat,
+        EnumToString.convertToString(calendarFormat));
   }
 }

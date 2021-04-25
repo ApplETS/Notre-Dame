@@ -38,14 +38,11 @@ class _ScheduleViewState extends State<ScheduleView>
 
   static const Color _defaultColor = Color(0xff76859B);
 
-  CalendarController _calendarController;
-
   AnimationController _animationController;
 
   @override
   void initState() {
     super.initState();
-    _calendarController = CalendarController();
     _animationController = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 400),
@@ -57,7 +54,6 @@ class _ScheduleViewState extends State<ScheduleView>
   @override
   void dispose() {
     _animationController.dispose();
-    _calendarController.dispose();
     super.dispose();
   }
 
@@ -69,12 +65,11 @@ class _ScheduleViewState extends State<ScheduleView>
               initialSelectedDate: widget.initialDay),
           onModelReady: (model) {
             if (model.settings.isEmpty) {
-              model.loadSettings(_calendarController);
+              model.loadSettings();
             }
           },
           builder: (context, model, child) => BaseScaffold(
                 isLoading: model.busy(model.isLoadingEvents),
-                isInteractionLimitedWhileLoading: false,
                 appBar: AppBar(
                   title: Text(AppIntl.of(context).title_schedule),
                   centerTitle: false,
@@ -84,7 +79,13 @@ class _ScheduleViewState extends State<ScheduleView>
                 body: Stack(children: [
                   Column(
                     children: [
-                      _buildTableCalendar(model),
+                      // This is required because of the new way the events are handled
+                      // the View Model would not have finished loading the coursesActivities
+                      // before the table.
+                      if (model.busy(model.isLoadingEvents))
+                        const SizedBox(height: 8.0)
+                      else
+                        _buildTableCalendar(model),
                       const SizedBox(height: 8.0),
                       const Divider(indent: 8.0, endIndent: 8.0, thickness: 1),
                       const SizedBox(height: 6.0),
@@ -106,57 +107,77 @@ class _ScheduleViewState extends State<ScheduleView>
               ));
 
   /// Build the square with the number of [events] for the [date]
-  Widget _buildEventsMarker(DateTime date, List events) {
-    return Positioned(
-      right: 1,
-      bottom: 1,
-      child: AnimatedContainer(
-        duration: const Duration(milliseconds: 200),
-        decoration: BoxDecoration(
-          color: _calendarController.isSelected(date)
-              ? _selectedColor
-              : _defaultColor,
-        ),
-        width: 16.0,
-        height: 16.0,
-        child: Center(
-          child: Text(
-            '${events.length}',
-            style: const TextStyle().copyWith(
-              color: Colors.white,
-              fontSize: 12.0,
+  Widget _buildEventsMarker(
+      ScheduleViewModel model, DateTime date, List events) {
+    if (events.isNotEmpty) {
+      return Positioned(
+        right: 1,
+        bottom: 1,
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 200),
+          decoration: BoxDecoration(
+            color: isSameDay(date, model.selectedDate)
+                ? _selectedColor
+                : _defaultColor,
+          ),
+          width: 16.0,
+          height: 16.0,
+          child: Center(
+            child: Text(
+              '${events.length}',
+              style: const TextStyle().copyWith(
+                color: Colors.white,
+                fontSize: 12.0,
+              ),
             ),
           ),
         ),
-      ),
-    );
+      );
+    }
+    return null;
   }
 
   /// Build the calendar
   Widget _buildTableCalendar(ScheduleViewModel model) => TableCalendar(
-        //TODO uncomment when https://github.com/aleksanderwozniak/table_calendar/issues/164 is close
-        // startingDayOfWeek: model.settings[PreferencesFlag.scheduleSettingsStartWeekday] as StartingDayOfWeek,
-        startingDayOfWeek: StartingDayOfWeek.monday,
+        startingDayOfWeek:
+            model.settings[PreferencesFlag.scheduleSettingsStartWeekday]
+                as StartingDayOfWeek,
         locale: model.locale.toLanguageTag(),
-        initialSelectedDay: widget.initialDay ?? DateTime.now(),
+        selectedDayPredicate: (day) {
+          return isSameDay(widget.initialDay ?? DateTime.now(), day);
+        },
         weekendDays: const [],
-        headerStyle: const HeaderStyle(
-            centerHeaderTitle: true, formatButtonVisible: false),
-        events: model.coursesActivities,
-        onDaySelected: (date, events, holidays) => setState(() {
-          model.selectedDate = date;
-        }),
-        builders: CalendarBuilders(
-            todayDayBuilder: (context, date, _) =>
+        headerStyle:
+            const HeaderStyle(titleCentered: true, formatButtonVisible: false),
+        eventLoader: model.coursesActivitiesFor,
+        onDaySelected: (selectedDay, focusedDay) {
+          setState(() {
+            model.selectedDate = selectedDay;
+            model.focusedDate = focusedDay;
+          });
+        },
+        calendarFormat: model.calendarFormat,
+        onFormatChanged: (format) {
+          setState(() {
+            model.setCalendarFormat(format);
+          });
+        },
+        focusedDay: model.focusedDate,
+        onPageChanged: (focusedDay) {
+          model.focusedDate = focusedDay;
+        },
+        calendarBuilders: CalendarBuilders(
+            todayBuilder: (context, date, _) =>
                 _buildSelectedDate(date, _defaultColor),
-            selectedDayBuilder: (context, date, _) => FadeTransition(
+            selectedBuilder: (context, date, _) => FadeTransition(
                   opacity:
                       Tween(begin: 0.0, end: 1.0).animate(_animationController),
                   child: _buildSelectedDate(date, _selectedColor),
                 ),
-            markersBuilder: (context, date, events, holidays) =>
-                [_buildEventsMarker(date, events)]),
-        calendarController: _calendarController,
+            markerBuilder: (context, date, events) =>
+                _buildEventsMarker(model, date, events)),
+        firstDay: model.focusedDate.subtract(const Duration(days: 31)),
+        lastDay: model.focusedDate.add(const Duration(days: 92)),
       );
 
   /// Build the visual for the selected [date]. The [color] parameter set the color for the tile.
@@ -190,7 +211,6 @@ class _ScheduleViewState extends State<ScheduleView>
           IconButton(
               icon: const Icon(Icons.today),
               onPressed: () => setState(() {
-                    _calendarController.setSelectedDay(DateTime.now());
                     model.selectedDate = DateTime.now();
                   })),
         IconButton(
@@ -206,7 +226,7 @@ class _ScheduleViewState extends State<ScheduleView>
                           topLeft: Radius.circular(10),
                           topRight: Radius.circular(10))),
                   builder: (context) => const ScheduleSettings());
-              model.loadSettings(_calendarController);
+              model.loadSettings();
             })
       ];
 }
