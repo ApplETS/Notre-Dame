@@ -3,6 +3,7 @@ import 'package:enum_to_string/enum_to_string.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:logger/logger.dart';
+import 'package:notredame/core/constants/dashboard_flags.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -87,18 +88,18 @@ class SettingsManager with ChangeNotifier {
     final Map<PreferencesFlag, int> dashboard = {};
 
     final aboutUsIndex =
-        await _preferencesService.getInt(PreferencesFlag.aboutUsCard) ?? 1;
+        await _preferencesService.getInt(PreferencesFlag.aboutUsCard) ?? 0;
 
     dashboard.putIfAbsent(PreferencesFlag.aboutUsCard, () => aboutUsIndex);
 
     final scheduleCardIndex =
-        await _preferencesService.getInt(PreferencesFlag.scheduleCard) ?? 2;
+        await _preferencesService.getInt(PreferencesFlag.scheduleCard) ?? 1;
 
     dashboard.putIfAbsent(
         PreferencesFlag.scheduleCard, () => scheduleCardIndex);
 
     final progressBarCardIndex =
-        await _preferencesService.getInt(PreferencesFlag.progressBarCard) ?? 3;
+        await _preferencesService.getInt(PreferencesFlag.progressBarCard) ?? 2;
 
     dashboard.putIfAbsent(
         PreferencesFlag.progressBarCard, () => progressBarCardIndex);

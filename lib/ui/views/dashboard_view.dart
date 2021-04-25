@@ -1,5 +1,6 @@
 // FLUTTER / DART / THIRD-PARTIES
 import 'package:flutter/material.dart';
+import 'package:notredame/core/constants/preferences_flags.dart';
 import 'package:notredame/core/utils/utils.dart';
 import 'package:notredame/core/constants/urls.dart';
 import 'package:notredame/ui/utils/loading.dart';
@@ -13,9 +14,6 @@ import 'package:notredame/core/viewmodels/dashboard_viewmodel.dart';
 // WIDGET
 import 'package:notredame/ui/widgets/base_scaffold.dart';
 
-// OTHER
-import 'package:notredame/ui/utils/app_theme.dart';
-
 class DashboardView extends StatefulWidget {
   const DashboardView({Key key}) : super(key: key);
 
@@ -25,7 +23,6 @@ class DashboardView extends StatefulWidget {
 
 class _DashboardViewState extends State<DashboardView>
     with TickerProviderStateMixin {
-  List<Widget> _buildCards;
   CalendarController _calendarController;
 
   AnimationController _animationController;
@@ -62,13 +59,13 @@ class _DashboardViewState extends State<DashboardView>
                 automaticallyImplyLeading: false,
                 actions: _buildActionButtons(model),
               ),
-              body: model.cards == null ? buildLoading():ReorderableListView(
-                onReorder: (oldIndex, newIndex) =>
-                    onReorder(model, oldIndex, newIndex),
-                children: model.cards
-                    . map((key) => _buildAboutUsCard(colorFor(key.toString())))
-                    .toList(),
-              ));
+              body: model.cards == null
+                  ? buildLoading()
+                  : ReorderableListView(
+                      onReorder: (oldIndex, newIndex) =>
+                          onReorder(model, oldIndex, newIndex),
+                      children: _buildCards(model),
+                    ));
         });
   }
 
@@ -86,9 +83,44 @@ class _DashboardViewState extends State<DashboardView>
     return color;
   }
 
-  Widget _buildAboutUsCard(Color color) {
+  List<Widget> _buildCards(DashboardViewModel model) {
+    final List<Widget> cards = List.empty(growable: true);
+
+    for (final PreferencesFlag element in model.cardsToDisplay) {
+      switch (element) {
+        case PreferencesFlag.aboutUsCard:
+          cards.add(_buildAboutUsCard(Colors.black, model, element));
+          break;
+        case PreferencesFlag.scheduleCard:
+          cards.add(Dismissible(
+              key: UniqueKey(),
+              onDismissed: (DismissDirection direction) {
+                dismissCard(model, element);
+              },
+              child: Text(element.toString(), key: UniqueKey())));
+          break;
+        case PreferencesFlag.progressBarCard:
+          cards.add(Dismissible(
+              key: UniqueKey(),
+              onDismissed: (DismissDirection direction) {
+                dismissCard(model, element);
+              },
+              child: Text(element.toString())));
+          break;
+        default:
+      }
+    }
+
+    return cards;
+  }
+
+  Widget _buildAboutUsCard(
+      Color color, DashboardViewModel model, PreferencesFlag flag) {
     return Dismissible(
-      key: Key(color.toString()),
+      onDismissed: (DismissDirection direction) {
+        dismissCard(model, flag);
+      },
+      key: UniqueKey(),
       child: Card(
         key: Key(color.toString()),
         elevation: 1,
@@ -108,7 +140,7 @@ class _DashboardViewState extends State<DashboardView>
                 child: Text(AppIntl.of(context).card_applets_text,
                     style: Theme.of(context).primaryTextTheme.bodyText2),
               ),
-              Row(children: [
+              Wrap(children: [
                 const SizedBox(width: 10),
                 TextButton(
                   onPressed: () {
@@ -141,11 +173,15 @@ class _DashboardViewState extends State<DashboardView>
     );
   }
 
+  void dismissCard(DashboardViewModel model, PreferencesFlag flag) {
+    model.hideCard(flag);
+  }
+
   void setAllVisible(DashboardViewModel model) => {
         setState(() {
-          model.aboutUsCard = 1;
-          model.scheduleCard = 2;
-          model.progressBarCard = 3;
+          model.setCardVisible(PreferencesFlag.aboutUsCard);
+          model.setCardVisible(PreferencesFlag.scheduleCard);
+          model.setCardVisible(PreferencesFlag.progressBarCard);
         })
       };
 
@@ -154,7 +190,10 @@ class _DashboardViewState extends State<DashboardView>
       newIndex -= 1;
     }
 
-    model.setOrder(model.cards[oldIndex], newIndex);
+    final PreferencesFlag elementMoved = model.cards.keys
+        .firstWhere((element) => model.cards[element] == oldIndex);
+
+    model.setOrder(elementMoved, newIndex, oldIndex);
   }
 
   List<Widget> _buildActionButtons(DashboardViewModel model) => [

@@ -1,5 +1,4 @@
 // FLUTTER / DART / THIRD-PARTIES
-import 'dart:collection';
 
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:notredame/core/constants/preferences_flags.dart';
@@ -12,75 +11,98 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
   /// Manage the cards
   final SettingsManager _settingsManager = locator<SettingsManager>();
 
-  List<PreferencesFlag> _cards;
+  Map<PreferencesFlag, int> _cards;
 
-  List<PreferencesFlag> get cards => _cards;
+  List<PreferencesFlag> _cardsToDisplay;
 
-  /// Current aboutUsCard
-  int _aboutUsCard;
+  Map<PreferencesFlag, int> get cards => _cards;
 
-  int get aboutUsCard => _aboutUsCard;
+  List<PreferencesFlag> get cardsToDisplay => _cardsToDisplay;
 
-  /// Current aboutUsCard
-  int _scheduleCard;
+  /// Set card order
+  void setOrder(PreferencesFlag flag, int newIndex, int oldIndex) {
+    _cardsToDisplay.removeAt(oldIndex);
+    _cardsToDisplay.insert(newIndex, flag);
 
-  int get scheduleCard => _scheduleCard;
+    updatePreferences();
 
-  /// Current aboutUsCard
-  int _progressBarCard;
-
-  int get progressBarCard => _progressBarCard;
-
-  /// Set aboutUsCard
-  set aboutUsCard(int value) {
-    setBusy(true);
-    _settingsManager.setInt(PreferencesFlag.aboutUsCard, value);
-    _aboutUsCard = value;
-    setBusy(false);
+    notifyListeners();
   }
 
-  /// Set scheduleCard
-  set scheduleCard(int value) {
-    setBusy(true);
-    _settingsManager.setInt(PreferencesFlag.scheduleCard, value);
-    _scheduleCard = value;
-    setBusy(false);
-  }
-
-  /// Set progressBarCard
-  set progressBarCard(int value) {
-    setBusy(true);
-    _settingsManager.setInt(PreferencesFlag.progressBarCard, value);
-    _progressBarCard = value;
-    setBusy(false);
-  }
-
-  /// Set progressBarCard
-  void setOrder(PreferencesFlag flag, int index) {
-    _settingsManager.setInt(flag, index).then((value) {
+  /// Hide card from dashboard
+  void hideCard(PreferencesFlag flag) {
+    _settingsManager.setInt(flag, -1).then((value) {
       if (!value) {
         Fluttertoast.showToast(msg: "Failed");
       }
     });
 
-    _cards.remove(flag);
-    _cards.insert(index, flag);
+    _cards.update(flag, (value) => -1);
+
+    _cardsToDisplay.remove(flag);
+
+    updatePreferences();
 
     notifyListeners();
+  }
+
+  /// Set card visible on dashboard
+  void setCardVisible(PreferencesFlag flag) {
+    _settingsManager.setInt(flag, flag.index - 6).then((value) {
+      if (!value) {
+        Fluttertoast.showToast(msg: "Failed");
+      }
+    });
+
+    _cards.update(flag, (value) => flag.index - 6);
+
+    getCardsToDisplay();
+
+    notifyListeners();
+  }
+
+  /// Populate list of cards used in view
+  void getCardsToDisplay() {
+    int numberOfCards = 0;
+
+    _cards.forEach((key, value) {
+      if (value >= 0) {
+        numberOfCards++;
+      }
+    });
+
+    _cardsToDisplay =
+        List.filled(numberOfCards, PreferencesFlag.aboutUsCard, growable: true);
+
+    _cards.forEach((key, value) {
+      if (value >= 0) {
+        _cardsToDisplay[value] = key;
+      }
+    });
+  }
+
+  void updatePreferences() {
+    for (final MapEntry<PreferencesFlag, int> element in _cards.entries) {
+      if (element.value != -1) {
+        _cards[element.key] = _cardsToDisplay.indexOf(element.key);
+        _settingsManager
+            .setInt(element.key, _cardsToDisplay.indexOf(element.key))
+            .then((value) {
+          if (!value) {
+            Fluttertoast.showToast(msg: "Failed");
+          }
+        });
+      }
+    }
   }
 
   @override
   Future<Map<PreferencesFlag, int>> futureToRun() async {
     final dashboard = await _settingsManager.getDashboard();
 
-    _cards = SplayTreeMap<PreferencesFlag, int>.from(dashboard,
-            (key1, key2) => dashboard[key1].compareTo(dashboard[key2]))
-        .keys
-        .toList();
+    _cards = dashboard;
 
-    _aboutUsCard = dashboard[PreferencesFlag.aboutUsCard];
-    _scheduleCard = dashboard[PreferencesFlag.scheduleCard];
-    _progressBarCard = dashboard[PreferencesFlag.progressBarCard];
+    getCardsToDisplay();
 
     return dashboard;
   }
