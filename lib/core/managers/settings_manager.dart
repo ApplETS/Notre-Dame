@@ -64,13 +64,39 @@ class SettingsManager with ChangeNotifier {
   /// Get Locale
   Locale get locale {
     _preferencesService.getString(PreferencesFlag.locale).then((value) {
-      if (value != null) {_locale =
-          AppIntl.supportedLocales.firstWhere((e) => e.toString() == value);}
+      _locale =
+          AppIntl.supportedLocales.firstWhere((e) => e.toString() == value);
     });
     if (_locale == null) {
       return null;
     }
     return Locale(_locale.languageCode);
+  }
+
+  /// Get Dashboard
+  Future<Map<PreferencesFlag, int>> getDashboard() async {
+    final Map<PreferencesFlag, int> dashboard = {};
+
+    final aboutUsIndex =
+        await _preferencesService.getInt(PreferencesFlag.aboutUsCard) ?? 1;
+
+    dashboard.putIfAbsent(PreferencesFlag.aboutUsCard, () => aboutUsIndex);
+
+    final scheduleCardIndex =
+        await _preferencesService.getInt(PreferencesFlag.scheduleCard) ?? 2;
+
+    dashboard.putIfAbsent(
+        PreferencesFlag.scheduleCard, () => scheduleCardIndex);
+
+    final progressBarCardIndex =
+        await _preferencesService.getInt(PreferencesFlag.progressBarCard) ?? 3;
+
+    dashboard.putIfAbsent(
+        PreferencesFlag.progressBarCard, () => progressBarCardIndex);
+
+    _logger.i("$tag - getDashboard - Dashboard loaded: $dashboard");
+
+    return dashboard;
   }
 
   /// Set ThemeMode
@@ -134,6 +160,14 @@ class SettingsManager with ChangeNotifier {
     _analyticsService.logEvent(
         "${tag}_${EnumToString.convertToString(flag)}", value);
     return _preferencesService.setString(flag, value);
+  }
+
+  /// Add/update the value of [flag]
+  Future<bool> setInt(PreferencesFlag flag, int value) async {
+    // Log the event
+    _analyticsService.logEvent(
+        "${tag}_${EnumToString.convertToString(flag)}", value.toString());
+    return _preferencesService.setInt(flag, value);
   }
 
   /// Get the value of [flag]

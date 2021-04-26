@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:notredame/core/utils/utils.dart';
 import 'package:notredame/core/constants/urls.dart';
+import 'package:notredame/ui/utils/loading.dart';
 import 'package:stacked/stacked.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -25,11 +26,10 @@ class DashboardView extends StatefulWidget {
 
 class _DashboardViewState extends State<DashboardView>
     with TickerProviderStateMixin {
+  List<Widget> _buildCards;
   CalendarController _calendarController;
 
   AnimationController _animationController;
-
-  bool isAboutUsVisible = true;
 
   @override
   void initState() {
@@ -41,10 +41,6 @@ class _DashboardViewState extends State<DashboardView>
     );
 
     _animationController.forward();
-
-    SchedulerBinding.instance.addPostFrameCallback((Duration duration) {  
-      DashboardViewModel(intl: AppIntl.of(context)).startDiscovery(context);
-    });
   }
 
   @override
@@ -55,93 +51,118 @@ class _DashboardViewState extends State<DashboardView>
   }
 
   @override
-  Widget build(BuildContext context) =>
-      ViewModelBuilder<DashboardViewModel>.reactive(
-        viewModelBuilder: () => DashboardViewModel(intl: null),
-        builder: (context, model, child) => BaseScaffold(
-          isInteractionLimitedWhileLoading: false,
-          appBar: AppBar(
-            title: Text(AppIntl.of(context).title_dashboard),
-            centerTitle: false,
-            automaticallyImplyLeading: false,
-            actions: _buildActionButtons(),
-          ),
-          body: ListView(children: [
-            if (isAboutUsVisible)
-              Dismissible(
-                key: UniqueKey(),
-                onDismissed: (dismissDirection) => setState(() {
-                  isAboutUsVisible = false;
-                }),
-                child: _buildAboutUsCard(),
+  Widget build(BuildContext context) {
+    return ViewModelBuilder<DashboardViewModel>.reactive(
+        viewModelBuilder: () => DashboardViewModel(),
+        builder: (context, model, child) {
+          return BaseScaffold(
+              isInteractionLimitedWhileLoading: false,
+              appBar: AppBar(
+                title: Text(AppIntl.of(context).title_dashboard),
+                centerTitle: false,
+                automaticallyImplyLeading: false,
+                actions: _buildActionButtons(model),
               ),
-            const SizedBox(height: 6.0),
-          ]),
-        ),
-      );
+              body: model.cards == null ? buildLoading():ReorderableListView(
+                onReorder: (oldIndex, newIndex) =>
+                    onReorder(model, oldIndex, newIndex),
+                children: model.cards
+                    . map((key) => _buildAboutUsCard(colorFor(key.toString())))
+                    .toList(),
+              ));
+        });
+  }
 
-  Widget _buildAboutUsCard() {
-    return Card(
-      elevation: 1,
-      color: AppTheme.appletsPurple,
-      child: Column(mainAxisSize: MainAxisSize.min, children: [
-        Align(
-            alignment: Alignment.centerLeft,
-            child: Container(
-              padding: const EdgeInsets.fromLTRB(17, 10, 0, 0),
-              child: Text(AppIntl.of(context).card_applets_title,
-                  style: Theme.of(context).primaryTextTheme.headline6),
-            )),
-        Column(
-          children: [
-            Container(
-              padding: const EdgeInsets.fromLTRB(17, 10, 15, 10),
-              child: Text(AppIntl.of(context).card_applets_text,
-                  style: Theme.of(context).primaryTextTheme.bodyText2),
-            ),
-            Row(children: [
-              const SizedBox(width: 10),
-              TextButton(
-                onPressed: () {
-                  Utils.launchURL(Urls.clubFacebook, AppIntl.of(context));
-                },
-                child: Text(AppIntl.of(context).facebook.toUpperCase(),
-                    style: Theme.of(context).primaryTextTheme.button),
+  /// Generate a color based on [text].
+  Color colorFor(String text) {
+    var hash = 0;
+    for (var i = 0; i < text.length; i++) {
+      hash = text.codeUnitAt(i) + ((hash << 5) - hash);
+    }
+    final finalHash = hash.abs() % (256 * 256 * 256);
+    final red = (finalHash & 0xFF0000) >> 16;
+    final blue = (finalHash & 0xFF00) >> 8;
+    final green = finalHash & 0xFF;
+    final color = Color.fromRGBO(red, green, blue, 1);
+    return color;
+  }
+
+  Widget _buildAboutUsCard(Color color) {
+    return Dismissible(
+      key: Key(color.toString()),
+      child: Card(
+        key: Key(color.toString()),
+        elevation: 1,
+        color: color,
+        child: Column(mainAxisSize: MainAxisSize.min, children: [
+          Align(
+              alignment: Alignment.centerLeft,
+              child: Container(
+                padding: const EdgeInsets.fromLTRB(17, 10, 0, 0),
+                child: Text(AppIntl.of(context).card_applets_title,
+                    style: Theme.of(context).primaryTextTheme.headline6),
+              )),
+          Column(
+            children: [
+              Container(
+                padding: const EdgeInsets.fromLTRB(17, 10, 15, 10),
+                child: Text(AppIntl.of(context).card_applets_text,
+                    style: Theme.of(context).primaryTextTheme.bodyText2),
               ),
-              const SizedBox(width: 10),
-              TextButton(
-                onPressed: () {
-                  Utils.launchURL(Urls.clubGithub, AppIntl.of(context));
-                },
-                child: Text(AppIntl.of(context).github.toUpperCase(),
-                    style: Theme.of(context).primaryTextTheme.button),
-              ),
-              const SizedBox(width: 10),
-              TextButton(
-                onPressed: () {
-                  Utils.launchURL(Urls.clubEmail, AppIntl.of(context));
-                },
-                child: Text(AppIntl.of(context).email.toUpperCase(),
-                    style: Theme.of(context).primaryTextTheme.button),
-              ),
-            ]),
-          ],
-        ),
-      ]),
+              Row(children: [
+                const SizedBox(width: 10),
+                TextButton(
+                  onPressed: () {
+                    Utils.launchURL(Urls.clubFacebook, AppIntl.of(context));
+                  },
+                  child: Text(AppIntl.of(context).facebook.toUpperCase(),
+                      style: Theme.of(context).primaryTextTheme.button),
+                ),
+                const SizedBox(width: 10),
+                TextButton(
+                  onPressed: () {
+                    Utils.launchURL(Urls.clubGithub, AppIntl.of(context));
+                  },
+                  child: Text(AppIntl.of(context).github.toUpperCase(),
+                      style: Theme.of(context).primaryTextTheme.button),
+                ),
+                const SizedBox(width: 10),
+                TextButton(
+                  onPressed: () {
+                    Utils.launchURL(Urls.clubEmail, AppIntl.of(context));
+                  },
+                  child: Text(AppIntl.of(context).email.toUpperCase(),
+                      style: Theme.of(context).primaryTextTheme.button),
+                ),
+              ]),
+            ],
+          ),
+        ]),
+      ),
     );
   }
 
-  void setAllVisible() => {
+  void setAllVisible(DashboardViewModel model) => {
         setState(() {
-          isAboutUsVisible = true;
+          model.aboutUsCard = 1;
+          model.scheduleCard = 2;
+          model.progressBarCard = 3;
         })
       };
 
-  List<Widget> _buildActionButtons() => [
+  void onReorder(DashboardViewModel model, int oldIndex, int newIndex) {
+    if (newIndex > oldIndex) {
+      newIndex -= 1;
+    }
+
+    model.setOrder(model.cards[oldIndex], newIndex);
+  }
+
+  List<Widget> _buildActionButtons(DashboardViewModel model) => [
         IconButton(
           icon: const Icon(Icons.restore),
           onPressed: () {
-            setAllVisible();
+            setAllVisible(model);
           },
         ),
       ];

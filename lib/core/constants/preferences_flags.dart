@@ -13,6 +13,11 @@ enum PreferencesFlag {
   // Choose language flag
   chooseLanguage,
 
-  // Discovery language flag
-  discovery
+  // Discovery flag
+  welcome,
+  
+  // Dashboard flags
+  aboutUsCard,
+  scheduleCard,
+  progressBarCard,
 }
