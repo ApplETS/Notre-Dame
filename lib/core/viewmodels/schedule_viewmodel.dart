@@ -39,8 +39,9 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
   /// Day currently focused on
   DateTime focusedDate = DateTime.now();
 
-  /// The currently selected CalendarFormat
-  CalendarFormat calendarFormat;
+  /// The currently selected CalendarFormat, A default value is set for test purposes.
+  /// This value is then change to the cache value on load.
+  CalendarFormat calendarFormat = CalendarFormat.week;
 
   /// Get current locale
   Locale get locale => _settingsManager.locale;

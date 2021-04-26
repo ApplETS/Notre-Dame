@@ -49,8 +49,11 @@ class _ScheduleSettingsState extends State<ScheduleSettings> {
                 child: ListTileTheme(
                   selectedColor: Theme.of(context).textTheme.bodyText1.color,
                   child: ListView(
-                      children: _buildSettings(
-                          context, model as ScheduleSettingsViewModel)),
+                    children: (!(model as ScheduleSettingsViewModel).isBusy)
+                        ? _buildSettings(
+                            context, model as ScheduleSettingsViewModel)
+                        : [const SizedBox()],
+                  ),
                 ),
               ),
             ],
@@ -114,8 +117,6 @@ class _ScheduleSettingsState extends State<ScheduleSettings> {
     return tiles;
   }
 
-  // TODO remove ignore when https://github.com/aleksanderwozniak/table_calendar/issues/164 is close
-  // ignore_for_file: unused_element
   List<Widget> _buildStartingDaySection(
       BuildContext context, ScheduleSettingsViewModel model) {
     final list = [
