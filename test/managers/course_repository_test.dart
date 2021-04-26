@@ -26,10 +26,12 @@ import '../helpers.dart';
 // MOCKS
 import '../mock/managers/cache_manager_mock.dart';
 import '../mock/managers/user_repository_mock.dart';
+import '../mock/services/networking_service_mock.dart';
 import '../mock/services/signets_api_mock.dart';
 
 void main() {
   AnalyticsService analyticsService;
+  NetworkingServiceMock networkingService;
   SignetsApi signetsApi;
   UserRepository userRepository;
   CacheManager cacheManager;
@@ -43,6 +45,7 @@ void main() {
       signetsApi = setupSignetsApiMock();
       userRepository = setupUserRepositoryMock();
       cacheManager = setupCacheManagerMock();
+      networkingService = setupNetworkingServiceMock() as NetworkingServiceMock;
       setupLogger();
 
       manager = CourseRepository();
@@ -100,6 +103,9 @@ void main() {
             CourseRepository.sessionsCacheKey, jsonEncode([]));
         SignetsApiMock.stubGetSessions(
             signetsApi as SignetsApiMock, username, [session]);
+
+        // Stub to simulate that the user has an active internet connection
+        NetworkingServiceMock.stubHasConnectivityIssue(networkingService);
       });
 
       test("Activities are loaded from cache.", () async {
@@ -768,6 +774,9 @@ void main() {
             MonETSUser(domain: null, typeUsagerId: null, username: username));
         UserRepositoryMock.stubGetPassword(
             userRepository as UserRepositoryMock, "password");
+
+        // Stub to simulate that the user has an active internet connection
+        NetworkingServiceMock.stubHasConnectivityIssue(networkingService);
       });
 
       test("Courses are loaded from cache and cache is updated", () async {
@@ -1103,6 +1112,9 @@ void main() {
                       teacherMessage: '',
                       ignore: false)
                 ]));
+
+        // Stub to simulate that the user has an active internet connection
+        NetworkingServiceMock.stubHasConnectivityIssue(networkingService);
       });
 
       test("CourseSummary is fetched and cache is updated", () async {
