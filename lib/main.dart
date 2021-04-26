@@ -7,6 +7,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 import 'package:flutter_config/flutter_config.dart';
 
 // ROUTER
@@ -26,67 +29,76 @@ import 'package:notredame/core/managers/settings_manager.dart';
 // VIEW
 import 'package:notredame/ui/views/startup_view.dart';
 
-// OTHER
-import 'package:feature_discovery/feature_discovery.dart';
-
-void main() {
+Future<void> main() async {
   setupLocator();
   WidgetsFlutterBinding.ensureInitialized();
+
+  // Initialize firebase
+  await Firebase.initializeApp();
+
+  // Manage the settings
+  final SettingsManager settingsManager = locator<SettingsManager>();
+  await settingsManager.fetchLanguageAndThemeMode();
+
+  // When the locale isn't defined, set a default locale
+  if (settingsManager.locale == null) {
+    final locale = Locale(Intl.systemLocale.split('_')[0]);
+    if (AppIntl.supportedLocales.contains(locale)) {
+      settingsManager.setLocale(locale.languageCode);
+    } else {
+      settingsManager.setLocale('fr');
+    }
+  }
+
   if (kDebugMode) {
     FlutterConfig.loadEnvVariables();
   }
   runZonedGuarded(() {
     runApp(
-      ETSMobile(),
+      ETSMobile(settingsManager),
     );
   }, (error, stackTrace) {
     FirebaseCrashlytics.instance.recordError(error, stackTrace);
   });
 }
 
-class ETSMobile extends StatefulWidget {
-  @override
-  _ETSMobileState createState() => _ETSMobileState();
-}
-
-class _ETSMobileState extends State<ETSMobile> {
+class ETSMobile extends StatelessWidget {
   /// Manage the settings
-  final SettingsManager _settingsManager = locator<SettingsManager>();
+  final SettingsManager settingsManager;
 
-  @override
-  void initState() {
-    super.initState();
-    _settingsManager.addListener(() {
-      setState(() {});
-    });
-  }
+  const ETSMobile(this.settingsManager);
 
   @override
   Widget build(BuildContext context) {
-    return BetterFeedback(
-      localeOverride: _settingsManager.locale,
-      child: FeatureDiscovery(
-        child: MaterialApp(
-          title: 'ÉTS Mobile',
-          theme: AppTheme.lightTheme,
-          darkTheme: AppTheme.darkTheme,
-          themeMode: _settingsManager.themeMode,
-          localizationsDelegates: const [
-            AppIntl.delegate,
-            GlobalMaterialLocalizations.delegate,
-            GlobalWidgetsLocalizations.delegate,
-            GlobalCupertinoLocalizations.delegate,
-          ],
-          locale: _settingsManager?.locale,
-          supportedLocales: AppIntl.supportedLocales,
-          navigatorKey: locator<NavigationService>().navigatorKey,
-          navigatorObservers: [
-            locator<AnalyticsService>().getAnalyticsObserver(),
-          ],
-          home: StartUpView(),
-          onGenerateRoute: AppRouter.generateRoute,
-        ),
-      ),
+    return ChangeNotifierProvider<SettingsManager>(
+      create: (_) => settingsManager,
+      child: Consumer<SettingsManager>(builder: (context, model, child) {
+        return BetterFeedback(
+          localeOverride: model.locale,
+          child: FeatureDiscovery(
+            child: MaterialApp(
+              title: 'ÉTS Mobile',
+              theme: AppTheme.lightTheme,
+              darkTheme: AppTheme.darkTheme,
+              themeMode: model.themeMode,
+              localizationsDelegates: const [
+                AppIntl.delegate,
+                GlobalMaterialLocalizations.delegate,
+                GlobalWidgetsLocalizations.delegate,
+                GlobalCupertinoLocalizations.delegate,
+              ],
+              locale: model.locale,
+              supportedLocales: AppIntl.supportedLocales,
+              navigatorKey: locator<NavigationService>().navigatorKey,
+              navigatorObservers: [
+                locator<AnalyticsService>().getAnalyticsObserver(),
+              ],
+              home: StartUpView(),
+              onGenerateRoute: AppRouter.generateRoute,
+            ),
+          ),
+        );
+      }),
     );
   }
 }

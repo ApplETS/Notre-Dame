@@ -31,8 +31,9 @@ class MoreView extends StatelessWidget {
                 style: textStyle.copyWith(color: Colors.blue),
                 text: AppIntl.of(context).flutter_website,
                 recognizer: TapGestureRecognizer()
-                  ..onTap = () => 
-                      Utils.launchURL(AppIntl.of(context).flutter_website, AppIntl.of(context))),
+                  ..onTap = () => Utils.launchURL(
+                      AppIntl.of(context).flutter_website,
+                      AppIntl.of(context))),
             TextSpan(style: textStyle, text: '.'),
           ],
         ),
@@ -72,8 +73,9 @@ class MoreView extends StatelessWidget {
                     String feedbackText,
                     Uint8List feedbackScreenshot,
                   ) {
-                    model.sendFeedback(
-                        context, feedbackText, feedbackScreenshot);
+                    model
+                        .sendFeedback(feedbackText, feedbackScreenshot)
+                        .then((value) => BetterFeedback.of(context).hide());
                   }),
                 ),
                 ListTile(
@@ -123,9 +125,7 @@ class MoreView extends StatelessWidget {
                             .more_prompt_log_out_confirmation),
                         actions: [
                           TextButton(
-                              onPressed: () async {
-                                model.logout();
-                              },
+                              onPressed: () async => model.logout(),
                               child: Text(AppIntl.of(context).yes)),
                           TextButton(
                               onPressed: () => Navigator.of(context).pop(),

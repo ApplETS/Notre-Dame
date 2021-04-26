@@ -19,6 +19,7 @@ import 'package:notredame/core/managers/user_repository.dart';
 import 'package:notredame/core/managers/cache_manager.dart';
 import 'package:notredame/core/services/preferences_service.dart';
 import 'package:notredame/core/managers/course_repository.dart';
+import 'package:notredame/core/services/github_api.dart';
 import 'package:notredame/core/managers/settings_manager.dart';
 
 // MOCKS
@@ -28,6 +29,7 @@ import 'mock/managers/settings_manager_mock.dart';
 import 'mock/managers/user_repository_mock.dart';
 import 'mock/services/analytics_service_mock.dart';
 import 'mock/services/flutter_secure_storage_mock.dart';
+import 'mock/services/github_api_mock.dart';
 import 'mock/services/mon_ets_api_mock.dart';
 import 'mock/services/navigation_service_mock.dart';
 import 'mock/services/preferences_service_mock.dart';
@@ -115,6 +117,16 @@ MonETSApi setupMonETSApiMock() {
   final service = MonETSApiMock();
 
   locator.registerSingleton<MonETSApi>(service);
+
+  return service;
+}
+
+/// Load a mock of the [GithubApi]
+GithubApi setupGithubApiMock() {
+  unregister<GithubApi>();
+  final service = GithubApiMock();
+
+  locator.registerSingleton<GithubApi>(service);
 
   return service;
 }
