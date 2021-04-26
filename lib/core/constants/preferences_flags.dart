@@ -14,7 +14,7 @@ enum PreferencesFlag {
   chooseLanguage,
 
   // Discovery flag
-  welcome,
+  discovery,
   
   // Dashboard flags
   aboutUsCard,

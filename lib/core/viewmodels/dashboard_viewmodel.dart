@@ -1,14 +1,23 @@
 // FLUTTER / DART / THIRD-PARTIES
 import 'dart:collection';
 
+import 'package:feature_discovery/feature_discovery.dart';
+import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:notredame/core/constants/preferences_flags.dart';
 import 'package:notredame/core/managers/settings_manager.dart';
+import 'package:notredame/ui/utils/discovery_components.dart';
 import 'package:stacked/stacked.dart';
-
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../../locator.dart';
 
+// CONSTANTS
+import 'package:notredame/core/constants/preferences_flags.dart';
+
 class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
+  /// Localization class of the application.
+  final AppIntl _appIntl;
+
   /// Manage the cards
   final SettingsManager _settingsManager = locator<SettingsManager>();
 
@@ -30,6 +39,8 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
   int _progressBarCard;
 
   int get progressBarCard => _progressBarCard;
+
+  DashboardViewModel({@required AppIntl intl}) : _appIntl = intl;
 
   /// Set aboutUsCard
   set aboutUsCard(int value) {
@@ -83,5 +94,13 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
     _progressBarCard = dashboard[PreferencesFlag.progressBarCard];
 
     return dashboard;
+  }
+
+  Future<void> startDiscovery(BuildContext context) async {
+    if (await _settingsManager.getString(PreferencesFlag.discovery) == null) {
+      final List<String> ids = discoveryComponents(context).map((e) => e.featureId).toList();
+      FeatureDiscovery.discoverFeatures(context, ids);
+      _settingsManager.setString(PreferencesFlag.discovery, 'true');
+    }
   }
 }
