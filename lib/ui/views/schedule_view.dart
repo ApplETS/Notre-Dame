@@ -102,16 +102,12 @@ class _ScheduleViewState extends State<ScheduleView>
                               : _buildEventList(model.selectedDateEvents))
                     ],
                   ),
-                  Positioned(
-                    bottom: 16.0,
-                    right: 16.0,
-                    child: FloatingActionButton(
-                      onPressed: model.refresh,
-                      backgroundColor: AppTheme.etsLightRed,
-                      child: const Icon(Icons.refresh),
-                    ),
-                  )
                 ]),
+                fab: FloatingActionButton(
+                  onPressed: model.refresh,
+                  backgroundColor: AppTheme.etsLightRed,
+                  child: const Icon(Icons.refresh),
+                ),
               ));
 
   /// Build the square with the number of [events] for the [date]
