@@ -81,7 +81,7 @@ class ProfileViewModel extends FutureViewModel<List<Program>> {
           .getInfo()
           .then((value) => _userRepository.getPrograms()
           .then((value) {
-            setBusyForObject(isLoadingEvents, true);
+            setBusyForObject(isLoadingEvents, false);
             notifyListeners();
           }));
     } on Exception catch (error) {
