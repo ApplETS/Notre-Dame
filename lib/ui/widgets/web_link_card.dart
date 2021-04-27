@@ -1,6 +1,7 @@
 // FLUTTER / DART / THIRD-PARTIES
 import 'package:flutter/material.dart';
-import 'package:flutter_inappwebview/flutter_inappwebview.dart';
+import 'package:notredame/core/utils/utils.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 // CONSTANT
 import 'package:notredame/core/constants/router_paths.dart';
@@ -31,7 +32,7 @@ class WebLinkCard extends StatelessWidget {
       child: Card(
         elevation: 4.0,
         child: InkWell(
-          onTap: () => _onLinkClicked(_links.link),
+          onTap: () => _onLinkClicked(_links.link, context),
           splashColor: AppTheme.etsLightRed.withAlpha(50),
           child: Padding(
             padding: const EdgeInsets.all(8.0),
@@ -57,26 +58,11 @@ class WebLinkCard extends StatelessWidget {
   }
 
   /// used to open a website or the security view
-  void _onLinkClicked(String link) {
+  void _onLinkClicked(String link, BuildContext context) {
     if (link == 'security') {
       _navigationService.pushNamed(RouterPaths.security);
     } else {
-      _launchInBrowser(link);
+      Utils.launchURL(link, AppIntl.of(context));
     }
-  }
-
-  /// used to open a website inside AndroidChromeCustomTabs or SFSafariViewController
-  Future<void> _launchInBrowser(String url) async {
-    final ChromeSafariBrowser browser = ChromeSafariBrowser();
-    await browser.open(
-        url: Uri.parse(url),
-        options: ChromeSafariBrowserClassOptions(
-            android: AndroidChromeCustomTabsOptions(
-                addDefaultShareMenuItem: false,
-                enableUrlBarHiding: true,
-                toolbarBackgroundColor: Colors.red),
-            ios: IOSSafariOptions(
-                barCollapsingEnabled: true,
-                preferredBarTintColor: Colors.red)));
   }
 }
