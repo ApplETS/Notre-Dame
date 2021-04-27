@@ -1,6 +1,5 @@
 // FLUTTER / DART / THIRD-PARTIES
 import 'package:flutter/material.dart';
-import 'package:notredame/core/utils/utils.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 // CONSTANT
@@ -15,6 +14,7 @@ import 'package:notredame/core/services/navigation_service.dart';
 // OTHER
 import 'package:notredame/locator.dart';
 import 'package:notredame/ui/utils/app_theme.dart';
+import 'package:notredame/core/utils/utils.dart';
 
 class WebLinkCard extends StatelessWidget {
   final QuickLink _links;
