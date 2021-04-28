@@ -34,6 +34,8 @@ class GradesDetailsViewModel extends FutureViewModel<Course> {
       if (value != null) {
         course = value;
       }
+    })?.whenComplete(() {
+      setBusyForObject(course, false);
     });
 
     notifyListeners();
