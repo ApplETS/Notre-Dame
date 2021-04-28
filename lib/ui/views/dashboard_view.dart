@@ -5,6 +5,7 @@ import 'package:notredame/core/utils/utils.dart';
 import 'package:notredame/core/constants/urls.dart';
 import 'package:notredame/ui/utils/app_theme.dart';
 import 'package:notredame/ui/utils/loading.dart';
+import 'package:notredame/ui/widgets/dismissible_card.dart';
 import 'package:stacked/stacked.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -103,15 +104,12 @@ class _DashboardViewState extends State<DashboardView>
     return cards;
   }
 
-  Widget _buildAboutUsCard(DashboardViewModel model, PreferencesFlag flag) {
-    return Dismissible(
-      onDismissed: (DismissDirection direction) {
-        dismissCard(model, flag);
-      },
-      key: UniqueKey(),
-      child: Card(
-        elevation: 1,
-        color: AppTheme.appletsPurple,
+  Widget _buildAboutUsCard(DashboardViewModel model, PreferencesFlag flag) =>
+      DismissibleCard(
+        onDismissed: (DismissDirection direction) {
+          dismissCard(model, flag);
+        },
+        cardColor: AppTheme.appletsPurple,
         child: Column(mainAxisSize: MainAxisSize.min, children: [
           Align(
               alignment: Alignment.centerLeft,
@@ -157,21 +155,11 @@ class _DashboardViewState extends State<DashboardView>
             ],
           ),
         ]),
-      ),
-    );
-  }
+      );
 
   void dismissCard(DashboardViewModel model, PreferencesFlag flag) {
     model.hideCard(flag);
   }
-
-  void setAllVisible(DashboardViewModel model) => {
-        setState(() {
-          model.setCardVisible(PreferencesFlag.aboutUsCard);
-          model.setCardVisible(PreferencesFlag.scheduleCard);
-          model.setCardVisible(PreferencesFlag.progressBarCard);
-        })
-      };
 
   void onReorder(DashboardViewModel model, int oldIndex, int newIndex) {
     if (newIndex > oldIndex) {
@@ -188,9 +176,7 @@ class _DashboardViewState extends State<DashboardView>
   List<Widget> _buildActionButtons(DashboardViewModel model) => [
         IconButton(
           icon: const Icon(Icons.restore),
-          onPressed: () {
-            setAllVisible(model);
-          },
+          onPressed: model.setAllCardsVisible,
         ),
       ];
 }

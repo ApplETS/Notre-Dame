@@ -31,6 +31,23 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
 
   DashboardViewModel({@required AppIntl intl}) : _appIntl = intl;
 
+  @override
+  Future<Map<PreferencesFlag, int>> futureToRun() async {
+    final dashboard = await _settingsManager.getDashboard();
+
+    _cards = dashboard;
+
+    getCardsToDisplay();
+
+    return dashboard;
+  }
+
+  @override
+  // ignore: type_annotate_public_apis
+  void onError(error) {
+    Fluttertoast.showToast(msg: _appIntl.error);
+  }
+
   /// Set card order
   void setOrder(PreferencesFlag flag, int newIndex, int oldIndex) {
     _cardsToDisplay.removeAt(oldIndex);
@@ -70,6 +87,23 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
     notifyListeners();
   }
 
+  void setAllCardsVisible() {
+    _cards.updateAll((key, value) {
+      _settingsManager
+          .setInt(key, key.index - PreferencesFlag.aboutUsCard.index)
+          .then((value) {
+        if (!value) {
+          Fluttertoast.showToast(msg: _appIntl.error);
+        }
+      });
+      return key.index;
+    });
+
+    getCardsToDisplay();
+
+    notifyListeners();
+  }
+
   /// Populate list of cards used in view
   void getCardsToDisplay() {
     int numberOfCards = 0;
@@ -102,16 +136,5 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
         }
       });
     }
-  }
-
-  @override
-  Future<Map<PreferencesFlag, int>> futureToRun() async {
-    final dashboard = await _settingsManager.getDashboard();
-
-    _cards = dashboard;
-
-    getCardsToDisplay();
-
-    return dashboard;
   }
 }
