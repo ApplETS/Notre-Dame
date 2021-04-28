@@ -237,13 +237,9 @@ class _GradesDetailsViewState extends State<GradesDetailsView> {
         Text(
             AppIntl.of(context).grades_grade_with_percentage(grade, 100, grade),
             style:
-                Theme.of(context).textTheme.headline6.copyWith(color: color)),
+                Theme.of(context).textTheme.headline6.copyWith(color: color, fontSize: 18.0)),
         Text(recipient,
             style: Theme.of(context).textTheme.bodyText1.copyWith(color: color)
-            // style: TextStyle(
-            //   color: color,
-            //   fontSize: 16,
-            // ),
             ),
       ],
     );
