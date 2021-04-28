@@ -1,5 +1,7 @@
 // FLUTTER / DART / THIRD-PARTIES
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:notredame/core/managers/course_repository.dart';
+import 'package:notredame/core/models/course.dart';
 import 'package:stacked/stacked.dart';
 import 'package:flutter/material.dart';
 import 'package:notredame/core/constants/preferences_flags.dart';
@@ -13,6 +15,8 @@ import 'package:notredame/locator.dart';
 
 class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
   final SettingsManager _settingsManager = locator<SettingsManager>();
+
+  final CourseRepository _courseRepository = locator<CourseRepository>();
 
   // All dashboard displayable cards
   Map<PreferencesFlag, int> _cards;
@@ -28,6 +32,9 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
 
   /// Get cards to display
   List<PreferencesFlag> get cardsToDisplay => _cardsToDisplay;
+
+  /// List of courses for the current session
+  final List<Course> courses = [];
 
   DashboardViewModel({@required AppIntl intl}) : _appIntl = intl;
 
@@ -136,5 +143,45 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
         }
       });
     }
+  }
+
+  /// Get the list of courses for the Grades card.
+  Future<List<Course>> futureToRunGrades() async {
+    setBusyForObject(courses, true);
+    if (_courseRepository.sessions == null) {
+      // ignore: return_type_invalid_for_catch_error
+      await _courseRepository.getSessions().catchError(onError);
+    }
+
+    // Determine current sessions
+    final DateTime now = DateTime.now();
+    final currentSession = _courseRepository.sessions.where((session) =>
+        session.endDate.isAfter(now) && session.startDate.isBefore(now)).first;
+
+    return _courseRepository.getCourses(fromCacheOnly: true).then((coursesCached) {
+      courses.clear();
+      for (final Course course in coursesCached) {
+        if(course.session == currentSession.shortName) {
+          courses.add(course);
+        }
+      }
+      notifyListeners();
+      // ignore: return_type_invalid_for_catch_error
+      _courseRepository.getCourses().catchError(onError).then((value) {
+        if (value != null) {
+          // Update the courses list
+          courses.clear();
+          for (final Course course in value) {
+            if(course.session == currentSession.shortName) {
+              courses.add(course);
+            }
+          }
+        }
+      }).whenComplete(() {
+        setBusyForObject(courses, false);
+      });
+
+      return courses;
+    }, onError: onError);
   }
 }

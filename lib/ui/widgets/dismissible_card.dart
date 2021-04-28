@@ -9,12 +9,15 @@ class DismissibleCard extends StatelessWidget {
 
   final double elevation;
 
+  final bool isBusy;
+
   const DismissibleCard(
       {Key key,
       @required this.onDismissed,
       @required this.child,
-        this.elevation = 1,
-      this.cardColor})
+      this.elevation = 1,
+      this.cardColor,
+      this.isBusy = false})
       : super(key: key);
 
   @override
@@ -24,6 +27,6 @@ class DismissibleCard extends StatelessWidget {
       child: Card(
         elevation: elevation,
         color: cardColor,
-        child: child,
+        child: Stack(children: [child]),
       ));
 }

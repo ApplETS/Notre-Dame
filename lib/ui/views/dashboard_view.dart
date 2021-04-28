@@ -106,6 +106,7 @@ class _DashboardViewState extends State<DashboardView>
 
   Widget _buildAboutUsCard(DashboardViewModel model, PreferencesFlag flag) =>
       DismissibleCard(
+        key: UniqueKey(),
         onDismissed: (DismissDirection direction) {
           dismissCard(model, flag);
         },
