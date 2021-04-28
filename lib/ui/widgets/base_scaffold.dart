@@ -12,6 +12,10 @@ class BaseScaffold extends StatelessWidget {
 
   final Widget body;
 
+  final FloatingActionButton fab;
+
+  final FloatingActionButtonLocation fabPosition;
+
   final bool _showBottomBar;
 
   final bool _isLoading;
@@ -22,6 +26,8 @@ class BaseScaffold extends StatelessWidget {
   const BaseScaffold(
       {this.appBar,
       this.body,
+      this.fab,
+      this.fabPosition,
       bool isLoading = false,
       bool isInteractionLimitedWhileLoading = true,
       bool showBottomBar = true})
@@ -47,5 +53,7 @@ class BaseScaffold extends StatelessWidget {
           ),
         ),
         bottomNavigationBar: _showBottomBar ? BottomBar() : null,
+        floatingActionButton: fab,
+        floatingActionButtonLocation: fabPosition,
       );
 }

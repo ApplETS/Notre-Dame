@@ -34,16 +34,38 @@ class SettingsManager with ChangeNotifier {
   /// Get ThemeMode
   ThemeMode get themeMode {
     _preferencesService.getString(PreferencesFlag.theme).then((value) {
-      _themeMode = ThemeMode.values.firstWhere((e) => e.toString() == value);
+      if (value != null) {
+        _themeMode = ThemeMode.values.firstWhere((e) => e.toString() == value);
+      }
     });
     return _themeMode;
+  }
+
+  /// reset Locale and Theme when logout
+  void resetLanguageAndThemeMode() {
+    _locale = null;
+    _themeMode = null;
+    notifyListeners();
+  }
+
+  /// Get Locale and Theme to init app with
+  Future<void> fetchLanguageAndThemeMode() async {
+    final theme = await _preferencesService.getString(PreferencesFlag.theme);
+    if (theme != null) {
+      _themeMode = ThemeMode.values.firstWhere((e) => e.toString() == theme);
+    }
+    final lang = await _preferencesService.getString(PreferencesFlag.locale);
+    if (lang != null) {
+      _locale =
+          AppIntl.supportedLocales.firstWhere((e) => e.toString() == lang);
+    }
   }
 
   /// Get Locale
   Locale get locale {
     _preferencesService.getString(PreferencesFlag.locale).then((value) {
-      _locale = AppIntl.supportedLocales
-          .firstWhere((e) => e.toString() == value);
+      if (value != null) {_locale =
+          AppIntl.supportedLocales.firstWhere((e) => e.toString() == value);}
     });
     if (_locale == null) {
       return null;
@@ -52,20 +74,19 @@ class SettingsManager with ChangeNotifier {
   }
 
   /// Set ThemeMode
-  void setThemeMode(String value) {
-    _themeMode = ThemeMode.values.firstWhere((e) => e.toString() == value);
-    _preferencesService.setString(PreferencesFlag.theme, _themeMode.toString());
+  void setThemeMode(ThemeMode value) {
+    _preferencesService.setString(PreferencesFlag.theme, value.toString());
     // Log the event
     _analyticsService.logEvent(
         "${tag}_${EnumToString.convertToString(PreferencesFlag.theme)}",
-        EnumToString.convertToString(_themeMode));
+        EnumToString.convertToString(value));
+    _themeMode = value;
     notifyListeners();
   }
 
   /// Set Locale
   void setLocale(String value) {
-    _locale = AppIntl.supportedLocales
-        .firstWhere((e) => e.toString() == value);
+    _locale = AppIntl.supportedLocales.firstWhere((e) => e.toString() == value);
     _preferencesService.setString(
         PreferencesFlag.locale, _locale.languageCode.toString());
     // Log the event
@@ -80,19 +101,19 @@ class SettingsManager with ChangeNotifier {
   Future<Map<PreferencesFlag, dynamic>> getScheduleSettings() async {
     final Map<PreferencesFlag, dynamic> settings = {};
 
-    final calendarFormat = EnumToString.fromString(
-            CalendarFormat.values,
-            await _preferencesService
-                .getString(PreferencesFlag.scheduleSettingsCalendarFormat)) ??
-        CalendarFormat.week;
+    final calendarFormat = await _preferencesService
+        .getString(PreferencesFlag.scheduleSettingsCalendarFormat)
+        .then((value) => value == null
+            ? CalendarFormat.week
+            : EnumToString.fromString(CalendarFormat.values, value));
     settings.putIfAbsent(
         PreferencesFlag.scheduleSettingsCalendarFormat, () => calendarFormat);
 
-    final startingWeekDay = EnumToString.fromString(
-            StartingDayOfWeek.values,
-            await _preferencesService
-                .getString(PreferencesFlag.scheduleSettingsStartWeekday)) ??
-        StartingDayOfWeek.monday;
+    final startingWeekDay = await _preferencesService
+        .getString(PreferencesFlag.scheduleSettingsStartWeekday)
+        .then((value) => value == null
+            ? StartingDayOfWeek.monday
+            : EnumToString.fromString(StartingDayOfWeek.values, value));
     settings.putIfAbsent(
         PreferencesFlag.scheduleSettingsStartWeekday, () => startingWeekDay);
 

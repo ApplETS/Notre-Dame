@@ -259,7 +259,7 @@ class SignetsApi {
   Future<XmlElement> _sendSOAPRequest(
       XmlDocument body, String operation) async {
     // Send the envelope
-    final response = await _client.post(Urls.signetsAPI,
+    final response = await _client.post(Uri.parse(Urls.signetsAPI),
         headers: _buildHeaders(Urls.signetsOperationBase + operation),
         body: body.toXmlString());
 

@@ -14,15 +14,18 @@ class AnalyticsService {
 
   /// Log a error. [prefix] should be the service where the error was triggered.
   Future logError(String prefix, String message) async {
+    final mesTruncated =
+        message.length > 100 ? message.substring(0, 99) : message;
     await _analytics.logEvent(
-        name: "${prefix}Error",
-        parameters: {'message': message.substring(0, 99)});
+        name: "${prefix}Error", parameters: {'message': mesTruncated});
   }
 
   /// Log a event. [prefix] should be the service where the event was triggered.
   Future logEvent(String prefix, String message) async {
-    await _analytics.logEvent(
-        name: prefix, parameters: {'message': message.substring(0, 99)});
+    final mesTruncated =
+        message.length > 100 ? message.substring(0, 99) : message;
+    await _analytics
+        .logEvent(name: prefix, parameters: {'message': mesTruncated});
   }
 
   Future setUserProperties({@required String userId, String domain}) async {

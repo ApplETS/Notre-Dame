@@ -22,7 +22,12 @@ void main() {
     setUp(() async {
       intl = await setupAppIntl();
       navigation = setupNavigationServiceMock();
+      setupCourseRepositoryMock();
+      setupPreferencesServiceMock();
+      setupUserRepositoryMock();
       setupCacheManagerMock();
+      setupSettingsManagerMock();
+      setupGithubApiMock();
     });
 
     tearDown(() {});
