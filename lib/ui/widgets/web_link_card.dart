@@ -13,6 +13,7 @@ import 'package:notredame/core/services/navigation_service.dart';
 
 // OTHER
 import 'package:notredame/locator.dart';
+import 'package:notredame/ui/utils/app_theme.dart';
 
 class WebLinkCard extends StatelessWidget {
   final QuickLink _links;
@@ -25,24 +26,27 @@ class WebLinkCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: 130,
+      width: MediaQuery.of(context).size.width / 3.1,
       height: 130,
       child: Card(
         elevation: 4.0,
         child: InkWell(
           onTap: () => _onLinkClicked(_links.link),
-          splashColor: Colors.red.withAlpha(50),
+          splashColor: AppTheme.etsLightRed.withAlpha(50),
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: Column(
               children: [
                 Expanded(
                   flex: 40,
-                  child: Image.asset(_links.image),
+                  child: Image.asset(_links.image, color: AppTheme.etsLightRed),
                 ),
-                Text(
-                  _links.name,
-                  style: const TextStyle(color: Colors.red, fontSize: 18.0),
+                FittedBox(
+                  fit: BoxFit.fitWidth,
+                  child: Text(
+                    _links.name,
+                    style: const TextStyle(color: Colors.red, fontSize: 18.0),
+                  ),
                 ),
               ],
             ),

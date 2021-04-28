@@ -31,7 +31,7 @@ _Note: Ce guide est aussi disponible en: [English](https://github.com/ApplETS/No
 
 - Pour avoir accès a certaines fonctionnalités vous allez avoir besoin du certificat de SignetsAPI, ces fichiers sont encrypté.
   Pour les décrypter vous allez devoir exécuter le script `env_variables.sh` (disponible uniquement sur le Google Drive du club), puis exécuter les commandes suivantes:
-```
+```bash
 chmod +x ./scripts/decrypt.sh
 ./scripts/decrypt.sh
 ```
@@ -39,7 +39,7 @@ chmod +x ./scripts/decrypt.sh
 ## Démarrer le code
 
 - Pour générer les classes pour l'internationalisation, exécuter les commandes suivantes:
-```
+```bash
 flutter pub get
 ```
 

@@ -50,7 +50,6 @@ void main() {
 
           expect(find.text(intl.light_theme), findsOneWidget);
           expect(find.text(intl.dark_theme), findsOneWidget);
-          expect(find.text(intl.system_theme), findsNWidgets(2));
 
           // Tap the button.
           await tester.tap(find.text(intl.light_theme));
@@ -73,7 +72,6 @@ void main() {
 
           expect(find.text(intl.light_theme), findsOneWidget);
           expect(find.text(intl.dark_theme), findsOneWidget);
-          expect(find.text(intl.system_theme), findsNWidgets(2));
 
           // Tap the button.
           await tester.tap(find.text(intl.dark_theme));
@@ -96,7 +94,6 @@ void main() {
 
           expect(find.text(intl.light_theme), findsOneWidget);
           expect(find.text(intl.dark_theme), findsOneWidget);
-          expect(find.text(intl.system_theme), findsNWidgets(2));
 
           // Tap the button.
           await tester.tap(find.text(intl.system_theme).last);
@@ -119,7 +116,7 @@ void main() {
           // Rebuild the widget after the state has changed.
           await tester.pumpAndSettle();
 
-          expect(find.text(intl.settings_french), findsNWidgets(2));
+          expect(find.text(intl.settings_french), findsOneWidget);
           expect(find.text(intl.settings_english), findsOneWidget);
 
           // Tap the button.
@@ -141,7 +138,7 @@ void main() {
           // Rebuild the widget after the state has changed.
           await tester.pumpAndSettle();
 
-          expect(find.text(intl.settings_french), findsNWidgets(2));
+          expect(find.text(intl.settings_french), findsOneWidget);
           expect(find.text(intl.settings_english), findsOneWidget);
 
           // Tap the button.

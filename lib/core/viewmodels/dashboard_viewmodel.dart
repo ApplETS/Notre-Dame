@@ -1,86 +1,116 @@
 // FLUTTER / DART / THIRD-PARTIES
-import 'dart:collection';
-
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:notredame/core/constants/preferences_flags.dart';
-import 'package:notredame/core/managers/settings_manager.dart';
 import 'package:stacked/stacked.dart';
+import 'package:flutter/material.dart';
+import 'package:notredame/core/constants/preferences_flags.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-import '../../locator.dart';
+// MANAGER
+import 'package:notredame/core/managers/settings_manager.dart';
+
+// OTHER
+import 'package:notredame/locator.dart';
 
 class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
-  /// Manage the cards
   final SettingsManager _settingsManager = locator<SettingsManager>();
 
-  List<PreferencesFlag> _cards;
+  // All dashboard displayable cards
+  Map<PreferencesFlag, int> _cards;
 
-  List<PreferencesFlag> get cards => _cards;
+  /// Localization class of the application.
+  final AppIntl _appIntl;
 
-  /// Current aboutUsCard
-  int _aboutUsCard;
+  /// Cards to display on dashboard
+  List<PreferencesFlag> _cardsToDisplay;
 
-  int get aboutUsCard => _aboutUsCard;
+  /// Get the status of all displayable cards
+  Map<PreferencesFlag, int> get cards => _cards;
 
-  /// Current aboutUsCard
-  int _scheduleCard;
+  /// Get cards to display
+  List<PreferencesFlag> get cardsToDisplay => _cardsToDisplay;
 
-  int get scheduleCard => _scheduleCard;
+  DashboardViewModel({@required AppIntl intl}) : _appIntl = intl;
 
-  /// Current aboutUsCard
-  int _progressBarCard;
+  /// Set card order
+  void setOrder(PreferencesFlag flag, int newIndex, int oldIndex) {
+    _cardsToDisplay.removeAt(oldIndex);
+    _cardsToDisplay.insert(newIndex, flag);
 
-  int get progressBarCard => _progressBarCard;
+    updatePreferences();
 
-  /// Set aboutUsCard
-  set aboutUsCard(int value) {
-    setBusy(true);
-    _settingsManager.setInt(PreferencesFlag.aboutUsCard, value);
-    _aboutUsCard = value;
-    setBusy(false);
+    notifyListeners();
   }
 
-  /// Set scheduleCard
-  set scheduleCard(int value) {
-    setBusy(true);
-    _settingsManager.setInt(PreferencesFlag.scheduleCard, value);
-    _scheduleCard = value;
-    setBusy(false);
+  /// Hide card from dashboard
+  void hideCard(PreferencesFlag flag) {
+    _cards.update(flag, (value) => -1);
+
+    _cardsToDisplay.remove(flag);
+
+    updatePreferences();
+
+    notifyListeners();
   }
 
-  /// Set progressBarCard
-  set progressBarCard(int value) {
-    setBusy(true);
-    _settingsManager.setInt(PreferencesFlag.progressBarCard, value);
-    _progressBarCard = value;
-    setBusy(false);
-  }
-
-  /// Set progressBarCard
-  void setOrder(PreferencesFlag flag, int index) {
-    _settingsManager.setInt(flag, index).then((value) {
+  /// Set card visible on dashboard
+  void setCardVisible(PreferencesFlag flag) {
+    _settingsManager
+        .setInt(flag, flag.index - PreferencesFlag.aboutUsCard.index)
+        .then((value) {
       if (!value) {
-        Fluttertoast.showToast(msg: "Failed");
+        Fluttertoast.showToast(msg: _appIntl.error);
       }
     });
 
-    _cards.remove(flag);
-    _cards.insert(index, flag);
+    _cards.update(
+        flag, (value) => flag.index - PreferencesFlag.aboutUsCard.index);
+
+    getCardsToDisplay();
 
     notifyListeners();
+  }
+
+  /// Populate list of cards used in view
+  void getCardsToDisplay() {
+    int numberOfCards = 0;
+
+    _cards.forEach((key, value) {
+      if (value >= 0) {
+        numberOfCards++;
+      }
+    });
+
+    _cardsToDisplay =
+        List.filled(numberOfCards, PreferencesFlag.aboutUsCard, growable: true);
+
+    _cards.forEach((key, value) {
+      if (value >= 0) {
+        _cardsToDisplay[value] = key;
+      }
+    });
+  }
+
+  /// Update cards order and display status in preferences
+  void updatePreferences() {
+    for (final MapEntry<PreferencesFlag, int> element in _cards.entries) {
+      _cards[element.key] = _cardsToDisplay.indexOf(element.key);
+      _settingsManager
+          .setInt(element.key, _cardsToDisplay.indexOf(element.key))
+          .then((value) {
+        if (!value) {
+          Fluttertoast.showToast(msg: _appIntl.error);
+        }
+      });
+    }
   }
 
   @override
   Future<Map<PreferencesFlag, int>> futureToRun() async {
     final dashboard = await _settingsManager.getDashboard();
 
-    _cards = SplayTreeMap<PreferencesFlag, int>.from(dashboard,
-            (key1, key2) => dashboard[key1].compareTo(dashboard[key2]))
-        .keys
-        .toList();
+    _cards = dashboard;
 
-    _aboutUsCard = dashboard[PreferencesFlag.aboutUsCard];
-    _scheduleCard = dashboard[PreferencesFlag.scheduleCard];
-    _progressBarCard = dashboard[PreferencesFlag.progressBarCard];
+    getCardsToDisplay();
 
     return dashboard;
   }

@@ -17,6 +17,7 @@ import 'package:notredame/ui/views/student_view.dart';
 import 'package:notredame/ui/views/about_view.dart';
 import 'package:notredame/ui/views/contributors_view.dart';
 import 'package:notredame/ui/views/choose_language_view.dart';
+import 'package:notredame/ui/views/dashboard_view.dart';
 
 class AppRouter {
   // ignore: missing_return
