@@ -221,6 +221,19 @@ void main() {
         verifyNoMoreInteractions(preferencesService);
         verifyNoMoreInteractions(analyticsService);
       });
+
+      test("default locale isn't set", () {
+        const flag = PreferencesFlag.locale;
+        when((preferencesService as PreferencesServiceMock).getString(flag))
+            .thenAnswer((_) async => null);
+
+        expect(manager.locale, const Locale('en'));
+
+        verify(preferencesService.getString(PreferencesFlag.locale)).called(1);
+
+        verifyNoMoreInteractions(preferencesService);
+        verifyNoMoreInteractions(analyticsService);
+      });
     });
 
     test("fetch theme and locale", () async {
