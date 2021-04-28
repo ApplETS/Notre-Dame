@@ -1,117 +1,53 @@
 // FLUTTER / DART / THIRD-PARTIES
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:notredame/core/managers/course_repository.dart';
+import 'package:notredame/core/models/course.dart';
 import 'package:stacked/stacked.dart';
-import 'package:table_calendar/table_calendar.dart';
 import 'package:flutter/material.dart';
+import 'package:notredame/core/constants/preferences_flags.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 // MANAGER
-import 'package:notredame/core/managers/course_repository.dart';
 import 'package:notredame/core/managers/settings_manager.dart';
-
-// MODELS
-import 'package:notredame/core/models/course_activity.dart';
 
 // OTHER
 import 'package:notredame/locator.dart';
-import 'package:notredame/core/constants/preferences_flags.dart';
 
-import '../models/course.dart';
+class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
+  final SettingsManager _settingsManager = locator<SettingsManager>();
 
-// TODO Replace FutureViewModel<List<CourseActivity>> by FutureViewModel
-class DashboardViewModel extends FutureViewModel<List<CourseActivity>> {
-  /// Load the events
   final CourseRepository _courseRepository = locator<CourseRepository>();
 
-  /// Manage de settings
-  final SettingsManager _settingsManager = locator<SettingsManager>();
+  // All dashboard displayable cards
+  Map<PreferencesFlag, int> _cards;
 
   /// Localization class of the application.
   final AppIntl _appIntl;
 
-  /// Settings of the user for the schedule
-  final Map<PreferencesFlag, dynamic> settings = {};
+  /// Cards to display on dashboard
+  List<PreferencesFlag> _cardsToDisplay;
 
-  /// Activities sorted by day
-  final Map<DateTime, List<CourseActivity>> _coursesActivities = {};
+  /// Get the status of all displayable cards
+  Map<PreferencesFlag, int> get cards => _cards;
 
-  /// Day currently selected
-  DateTime selectedDate = DateTime.now();
+  /// Get cards to display
+  List<PreferencesFlag> get cardsToDisplay => _cardsToDisplay;
 
-  /// Marks the viewmodel as busy and calls notify listeners
-  void setBusy(bool value) {
-    setBusyForObject(this, value);
-  }
+  /// List of courses for the current session
+  final List<Course> courses = [];
 
-
-
-  /// Get current locale
-  Locale get locale => _settingsManager.locale;
-
-  DashboardViewModel({@required AppIntl intl})
-      : _appIntl = intl,
-        selectedDate = DateTime.now();
-
-  /// Activities for the day currently selected
-  List<dynamic> get selectedDateEvents =>
-      _coursesActivities[
-          DateTime(selectedDate.year, selectedDate.month, selectedDate.day)] ??
-      [];
-
-  /// Contains all the courses of the student sorted by session
-  final Map<String, List<Course>> coursesBySession = {};
-
-  /// Activities for today
-  List<dynamic> get todayDateEvents =>
-      _coursesActivities[
-      DateTime(selectedDate.year, 3, 31)] ??
-          [];
-
-  /// Chronological order of the sessions. The first index is the most recent
-  /// session.
-  final List<String> sessionOrder = [];
-
-  bool isLoadingEvents = false;
-
+  DashboardViewModel({@required AppIntl intl}) : _appIntl = intl;
 
   @override
-  // TODO Remove Map<String, List<Course>>
-  Future<Map<String, List<Course>>> futureToRun() async =>
-      /* TODO Load settings to get all the cards to displayed
-          Then call the future needed for each visible cards using
-          setBusyForObject(objectUsedByTheCards, true) (dont forget to turn it
-          off after the future is loaded).
-          So you will need a function (future) for each card and an object for
-          each card.
-          For example:
-            - Schedule card:
-                - object: List<CourseActivities> coursesActivities.
-                - function: Future<List<CourseActivities>> loadCoursesActivities()
-                   this function will call:
-                      setBusyForObject(coursesActivities, true)
-                      CourseRepository.getCoursesActivities(fromCacheOnly: true)
-                      Do some logic to get the activities of today
-                      setBusyForObject(coursesActivities, false) //reload the UI
-                      setBusyForObject(coursesActivities, true)
-                      CourseRepository.getCoursesActivities()
-                      Do some logic to get the activities of today
-                      setBusyForObject(coursesActivities, false) //reload the UI
-       */
-      _courseRepository.getCourses(fromCacheOnly: true).then((coursesCached) {
-        setBusy(true);
-        _buildCoursesBySession(coursesCached);
-        // ignore: return_type_invalid_for_catch_error
-        _courseRepository.getCourses().catchError(onError).then((value) {
-          if (value != null) {
-            // Update the courses list
-            _buildCoursesBySession(_courseRepository.courses);
-          }
-        }).whenComplete(() {
-          setBusy(false);
-        });
+  Future<Map<PreferencesFlag, int>> futureToRun() async {
+    final dashboard = await _settingsManager.getDashboard();
 
-        return coursesBySession;
-      });
+    _cards = dashboard;
+
+    getCardsToDisplay();
+
+    return dashboard;
+  }
 
   @override
   // ignore: type_annotate_public_apis
@@ -119,82 +55,133 @@ class DashboardViewModel extends FutureViewModel<List<CourseActivity>> {
     Fluttertoast.showToast(msg: _appIntl.error);
   }
 
-  Future loadSettings(CalendarController calendarController) async {
-    setBusy(true);
-    settings.clear();
-    settings.addAll(await _settingsManager.getScheduleSettings());
-    calendarController.setCalendarFormat(
-        settings[PreferencesFlag.scheduleSettingsCalendarFormat]
-            as CalendarFormat);
-    setBusy(false);
+  /// Set card order
+  void setOrder(PreferencesFlag flag, int newIndex, int oldIndex) {
+    _cardsToDisplay.removeAt(oldIndex);
+    _cardsToDisplay.insert(newIndex, flag);
+
+    updatePreferences();
+
+    notifyListeners();
   }
 
+  /// Hide card from dashboard
+  void hideCard(PreferencesFlag flag) {
+    _cards.update(flag, (value) => -1);
 
-  /// Return the list of all the courses activities arranged by date.
-  Map<DateTime, List<CourseActivity>> get coursesActivities {
-    if (_coursesActivities.isEmpty) {
-      // Build the map
-      for (final CourseActivity course in _courseRepository.coursesActivities) {
-        final DateTime dateOnly = course.startDateTime.subtract(Duration(
-            hours: course.startDateTime.hour,
-            minutes: course.startDateTime.minute));
-        _coursesActivities.update(dateOnly, (value) {
-          value.add(course);
+    _cardsToDisplay.remove(flag);
 
-          return value;
-        }, ifAbsent: () => [course]);
+    updatePreferences();
+
+    notifyListeners();
+  }
+
+  /// Set card visible on dashboard
+  void setCardVisible(PreferencesFlag flag) {
+    _settingsManager
+        .setInt(flag, flag.index - PreferencesFlag.aboutUsCard.index)
+        .then((value) {
+      if (!value) {
+        Fluttertoast.showToast(msg: _appIntl.error);
       }
+    });
 
-      _coursesActivities.updateAll((key, value) {
-        value.sort((a, b) => a.startDateTime.compareTo(b.startDateTime));
+    _cards.update(
+        flag, (value) => flag.index - PreferencesFlag.aboutUsCard.index);
 
-        return value;
+    getCardsToDisplay();
+
+    notifyListeners();
+  }
+
+  void setAllCardsVisible() {
+    _cards.updateAll((key, value) {
+      _settingsManager
+          .setInt(key, key.index - PreferencesFlag.aboutUsCard.index)
+          .then((value) {
+        if (!value) {
+          Fluttertoast.showToast(msg: _appIntl.error);
+        }
+      });
+      return key.index;
+    });
+
+    getCardsToDisplay();
+
+    notifyListeners();
+  }
+
+  /// Populate list of cards used in view
+  void getCardsToDisplay() {
+    int numberOfCards = 0;
+
+    _cards.forEach((key, value) {
+      if (value >= 0) {
+        numberOfCards++;
+      }
+    });
+
+    _cardsToDisplay =
+        List.filled(numberOfCards, PreferencesFlag.aboutUsCard, growable: true);
+
+    _cards.forEach((key, value) {
+      if (value >= 0) {
+        _cardsToDisplay[value] = key;
+      }
+    });
+  }
+
+  /// Update cards order and display status in preferences
+  void updatePreferences() {
+    for (final MapEntry<PreferencesFlag, int> element in _cards.entries) {
+      _cards[element.key] = _cardsToDisplay.indexOf(element.key);
+      _settingsManager
+          .setInt(element.key, _cardsToDisplay.indexOf(element.key))
+          .then((value) {
+        if (!value) {
+          Fluttertoast.showToast(msg: _appIntl.error);
+        }
       });
     }
-    return _coursesActivities;
   }
 
-  /// Get the activities for a specific [date], return empty if there is no activity for this [date]
-  List<CourseActivity> coursesActivitiesFor(DateTime date) {
-    // Populate the _coursesActivities
-    if (_coursesActivities.isEmpty) {
-      coursesActivities;
+  /// Get the list of courses for the Grades card.
+  Future<List<Course>> futureToRunGrades() async {
+    setBusyForObject(courses, true);
+    if (_courseRepository.sessions == null) {
+      // ignore: return_type_invalid_for_catch_error
+      await _courseRepository.getSessions().catchError(onError);
     }
-    return _coursesActivities.containsKey(date) ? _coursesActivities[date] : [];
+
+    // Determine current sessions
+    final DateTime now = DateTime.now();
+    final currentSession = _courseRepository.sessions.where((session) =>
+        session.endDate.isAfter(now) && session.startDate.isBefore(now)).first;
+
+    return _courseRepository.getCourses(fromCacheOnly: true).then((coursesCached) {
+      courses.clear();
+      for (final Course course in coursesCached) {
+        if(course.session == currentSession.shortName) {
+          courses.add(course);
+        }
+      }
+      notifyListeners();
+      // ignore: return_type_invalid_for_catch_error
+      _courseRepository.getCourses().catchError(onError).then((value) {
+        if (value != null) {
+          // Update the courses list
+          courses.clear();
+          for (final Course course in value) {
+            if(course.session == currentSession.shortName) {
+              courses.add(course);
+            }
+          }
+        }
+      }).whenComplete(() {
+        setBusyForObject(courses, false);
+      });
+
+      return courses;
+    }, onError: onError);
   }
-
-  /// Return session progress based on today's [date]
-  double get getSessionProgress {
-    double progress = 0;
-    if(_courseRepository.activeSessions.first.startDate.isBefore(DateTime.now())) {
-       progress = selectedDate
-          .difference(_courseRepository.activeSessions.first.startDate)
-          .inDays /
-          _courseRepository.activeSessions.first.endDate
-              .difference(_courseRepository.activeSessions.first.startDate)
-              .inDays;
-    }
-    else{
-       progress = 10;
-    }
-    return progress;
-  }
-
-  /// Returns a list containing the number of elapsed days in the active session
-  /// and the total number of days in the session
-  List<int> get getSessionDays {
-    final sessionDays = [
-      selectedDate
-          .difference(_courseRepository.activeSessions.first.startDate)
-          .inDays,
-      _courseRepository.activeSessions.first.endDate
-          .difference(_courseRepository.activeSessions.first.startDate)
-          .inDays
-    ];
-
-    return sessionDays;
-  }
-
-
-
 }
