@@ -90,12 +90,14 @@ void main() {
       // Setting up mocks
       courseRepository = setupCourseRepositoryMock();
       intl = await setupAppIntl();
+      setupFlutterToastMock();
 
       viewModel = GradesDetailsViewModel(course: courseWithoutSummary, intl: intl);
     });
 
     tearDown(() {
       unregister<CourseRepository>();
+      tearDownFlutterToastMock();
     });
 
     group('FutureToRun - -', () {
