@@ -97,6 +97,14 @@ class _DashboardViewState extends State<DashboardView>
               },
               child: Text(element.toString())));
           break;
+        case PreferencesFlag.gradesCards:
+          cards.add(Dismissible(
+              key: UniqueKey(),
+              onDismissed: (DismissDirection direction) {
+                dismissCard(model, element);
+              },
+              child: Text(element.toString())));
+          break;
         default:
       }
     }
@@ -155,6 +163,23 @@ class _DashboardViewState extends State<DashboardView>
               ),
             ],
           ),
+        ]),
+      );
+
+  Widget _buildGradesCards(DashboardViewModel model, PreferencesFlag flag) =>
+      DismissibleCard(
+        key: UniqueKey(),
+        onDismissed: (DismissDirection direction) {
+          dismissCard(model, flag);
+        },
+        child: Column(mainAxisSize: MainAxisSize.min, children: [
+          Align(
+              alignment: Alignment.centerLeft,
+              child: Container(
+                padding: const EdgeInsets.fromLTRB(17, 15, 0, 0),
+                child: Text(AppIntl.of(context).card_applets_title,
+                    style: Theme.of(context).primaryTextTheme.headline6),
+              )),
         ]),
       );
 
