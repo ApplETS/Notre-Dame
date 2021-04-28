@@ -1,15 +1,21 @@
 // FLUTTER / DART / THIRD-PARTIES
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:notredame/core/constants/preferences_flags.dart';
+
+// MANAGERS
 import 'package:notredame/core/managers/settings_manager.dart';
 
 // VIEW
 import 'package:notredame/ui/views/dashboard_view.dart';
 
+// CONSTANTS
+import 'package:notredame/core/constants/preferences_flags.dart';
+
+// OTHERS
 import '../../helpers.dart';
+
+// MOCKS
 import '../../mock/managers/settings_manager_mock.dart';
 
 void main() {
@@ -18,9 +24,16 @@ void main() {
 
   // Some settings
   final Map<PreferencesFlag, int> dashboard = {
-    PreferencesFlag.aboutUsCard: 2,
+    PreferencesFlag.aboutUsCard: 0,
     PreferencesFlag.scheduleCard: 1,
-    PreferencesFlag.progressBarCard: 3
+    PreferencesFlag.progressBarCard: 2
+  };
+
+  // Some settings
+  final Map<PreferencesFlag, int> dashboardHiddenAboutUS = {
+    PreferencesFlag.aboutUsCard: -1,
+    PreferencesFlag.scheduleCard: 0,
+    PreferencesFlag.progressBarCard: 1
   };
 
   group('DashboardView - ', () {
@@ -89,24 +102,46 @@ void main() {
             settingsManager as SettingsManagerMock,
             toReturn: dashboard);
 
+        SettingsManagerMock.stubSetInt(settingsManager as SettingsManagerMock,
+            PreferencesFlag.aboutUsCard);
+
+        SettingsManagerMock.stubSetInt(settingsManager as SettingsManagerMock,
+            PreferencesFlag.scheduleCard);
+
+        SettingsManagerMock.stubSetInt(settingsManager as SettingsManagerMock,
+            PreferencesFlag.progressBarCard);
+
         await tester.pumpWidget(localizedWidget(child: const DashboardView()));
         await tester.pumpAndSettle();
 
-        // Find Dismissible aboutUs Card
-        expect(find.byType(Dismissible), findsOneWidget);
+        // Find Dismissible Cards
+        expect(find.byType(Dismissible), findsNWidgets(3));
+        expect(find.text(intl.card_applets_title), findsOneWidget);
 
         // Swipe Dismissible aboutUs Card horizontally
-        await tester.drag(find.byType(Dismissible), const Offset(1000.0, 0.0));
+        await tester.drag(
+            find.byType(Dismissible).first, const Offset(1000.0, 0.0));
+
+        SettingsManagerMock.stubGetDashboard(
+            settingsManager as SettingsManagerMock,
+            toReturn: dashboardHiddenAboutUS);
 
         // Check that the card is now absent from the view
         await tester.pumpAndSettle();
+        expect(find.byType(Dismissible), findsNWidgets(2));
         expect(find.text(intl.card_applets_title), findsNothing);
+
+        SettingsManagerMock.stubGetDashboard(
+            settingsManager as SettingsManagerMock,
+            toReturn: dashboard);
 
         // Tap the restoreCards button
         await tester.tap(find.byIcon(Icons.restore));
+
         await tester.pumpAndSettle();
 
         // Check that the card is now present in the view
+        expect(find.byType(Dismissible), findsNWidgets(3));
         expect(find.text(intl.card_applets_title), findsOneWidget);
       });
     });
@@ -114,6 +149,10 @@ void main() {
     group("golden - ", () {
       testWidgets("default view", (WidgetTester tester) async {
         tester.binding.window.physicalSizeTestValue = const Size(800, 1410);
+
+        SettingsManagerMock.stubGetDashboard(
+            settingsManager as SettingsManagerMock,
+            toReturn: dashboard);
 
         await tester.pumpWidget(localizedWidget(child: const DashboardView()));
         await tester.pumpAndSettle();
