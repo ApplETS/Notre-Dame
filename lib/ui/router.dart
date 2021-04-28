@@ -4,6 +4,9 @@ import 'package:flutter/material.dart';
 // ROUTES
 import 'package:notredame/core/constants/router_paths.dart';
 
+// MODELS
+import 'package:notredame/core/models/course.dart';
+
 // VIEWS
 import 'package:notredame/ui/views/login_view.dart';
 import 'package:notredame/ui/views/not_found_view.dart';
@@ -17,6 +20,7 @@ import 'package:notredame/ui/views/about_view.dart';
 import 'package:notredame/ui/views/contributors_view.dart';
 import 'package:notredame/ui/views/choose_language_view.dart';
 import 'package:notredame/ui/views/dashboard_view.dart';
+import 'package:notredame/ui/views/grade_details_view.dart';
 
 class AppRouter {
   // ignore: missing_return
@@ -40,6 +44,10 @@ class AppRouter {
         return PageRouteBuilder(
             settings: RouteSettings(name: routeSettings.name),
             pageBuilder: (_, __, ___) => StudentView());
+      case RouterPaths.gradeDetails:
+        return PageRouteBuilder(
+            settings: RouteSettings(name: routeSettings.name),
+            pageBuilder: (_, __, ___) => GradesDetailsView(course: routeSettings.arguments as Course));
       case RouterPaths.ets:
         return PageRouteBuilder(
             settings: RouteSettings(name: routeSettings.name),
