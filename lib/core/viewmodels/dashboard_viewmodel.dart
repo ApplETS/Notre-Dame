@@ -103,7 +103,7 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
           Fluttertoast.showToast(msg: _appIntl.error);
         }
       });
-      return key.index;
+      return key.index - PreferencesFlag.aboutUsCard.index;
     });
 
     getCardsToDisplay();
@@ -113,6 +113,8 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
 
   /// Populate list of cards used in view
   void getCardsToDisplay() {
+
+
     int numberOfCards = 0;
 
     _cards.forEach((key, value) {
@@ -127,8 +129,13 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
     _cards.forEach((key, value) {
       if (value >= 0) {
         _cardsToDisplay[value] = key;
+        if(key == PreferencesFlag.gradesCards) {
+          futureToRunGrades();
+        }
       }
     });
+
+
   }
 
   /// Update cards order and display status in preferences

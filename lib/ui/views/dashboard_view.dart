@@ -6,6 +6,7 @@ import 'package:notredame/core/constants/urls.dart';
 import 'package:notredame/ui/utils/app_theme.dart';
 import 'package:notredame/ui/utils/loading.dart';
 import 'package:notredame/ui/widgets/dismissible_card.dart';
+import 'package:notredame/ui/widgets/grade_button.dart';
 import 'package:stacked/stacked.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -98,12 +99,7 @@ class _DashboardViewState extends State<DashboardView>
               child: Text(element.toString())));
           break;
         case PreferencesFlag.gradesCards:
-          cards.add(Dismissible(
-              key: UniqueKey(),
-              onDismissed: (DismissDirection direction) {
-                dismissCard(model, element);
-              },
-              child: Text(element.toString())));
+          cards.add(_buildGradesCards(model, element));
           break;
         default:
       }
@@ -177,9 +173,18 @@ class _DashboardViewState extends State<DashboardView>
               alignment: Alignment.centerLeft,
               child: Container(
                 padding: const EdgeInsets.fromLTRB(17, 15, 0, 0),
-                child: Text(AppIntl.of(context).card_applets_title,
+                child: Text(AppIntl.of(context).grades_title,
                     style: Theme.of(context).primaryTextTheme.headline6),
               )),
+          if (model.courses.isEmpty)
+            Center(
+                child: Text(
+                    AppIntl.of(context).grades_msg_no_grades.split("\n").first))
+          else
+            Wrap(
+              children:
+                  model.courses.map((course) => GradeButton(course)).toList(),
+            )
         ]),
       );
 
