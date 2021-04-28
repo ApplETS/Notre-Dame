@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:notredame/core/constants/preferences_flags.dart';
 import 'package:notredame/core/utils/utils.dart';
 import 'package:notredame/core/constants/urls.dart';
+import 'package:notredame/ui/utils/app_theme.dart';
 import 'package:notredame/ui/utils/loading.dart';
 import 'package:stacked/stacked.dart';
 import 'package:table_calendar/table_calendar.dart';
@@ -49,7 +50,9 @@ class _DashboardViewState extends State<DashboardView>
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<DashboardViewModel>.reactive(
-        viewModelBuilder: () => DashboardViewModel(),
+        viewModelBuilder: () => DashboardViewModel(
+              intl: AppIntl.of(context),
+            ),
         builder: (context, model, child) {
           return BaseScaffold(
               isInteractionLimitedWhileLoading: false,
@@ -69,27 +72,13 @@ class _DashboardViewState extends State<DashboardView>
         });
   }
 
-  /// Generate a color based on [text].
-  Color colorFor(String text) {
-    var hash = 0;
-    for (var i = 0; i < text.length; i++) {
-      hash = text.codeUnitAt(i) + ((hash << 5) - hash);
-    }
-    final finalHash = hash.abs() % (256 * 256 * 256);
-    final red = (finalHash & 0xFF0000) >> 16;
-    final blue = (finalHash & 0xFF00) >> 8;
-    final green = finalHash & 0xFF;
-    final color = Color.fromRGBO(red, green, blue, 1);
-    return color;
-  }
-
   List<Widget> _buildCards(DashboardViewModel model) {
     final List<Widget> cards = List.empty(growable: true);
 
     for (final PreferencesFlag element in model.cardsToDisplay) {
       switch (element) {
         case PreferencesFlag.aboutUsCard:
-          cards.add(_buildAboutUsCard(Colors.black, model, element));
+          cards.add(_buildAboutUsCard(model, element));
           break;
         case PreferencesFlag.scheduleCard:
           cards.add(Dismissible(
@@ -114,58 +103,57 @@ class _DashboardViewState extends State<DashboardView>
     return cards;
   }
 
-  Widget _buildAboutUsCard(
-      Color color, DashboardViewModel model, PreferencesFlag flag) {
+  Widget _buildAboutUsCard(DashboardViewModel model, PreferencesFlag flag) {
     return Dismissible(
       onDismissed: (DismissDirection direction) {
         dismissCard(model, flag);
       },
       key: UniqueKey(),
       child: Card(
-        key: Key(color.toString()),
         elevation: 1,
-        color: color,
+        color: AppTheme.appletsPurple,
         child: Column(mainAxisSize: MainAxisSize.min, children: [
           Align(
               alignment: Alignment.centerLeft,
               child: Container(
-                padding: const EdgeInsets.fromLTRB(17, 10, 0, 0),
+                padding: const EdgeInsets.fromLTRB(17, 15, 0, 0),
                 child: Text(AppIntl.of(context).card_applets_title,
                     style: Theme.of(context).primaryTextTheme.headline6),
               )),
           Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Container(
                 padding: const EdgeInsets.fromLTRB(17, 10, 15, 10),
                 child: Text(AppIntl.of(context).card_applets_text,
                     style: Theme.of(context).primaryTextTheme.bodyText2),
               ),
-              Wrap(children: [
-                const SizedBox(width: 10),
-                TextButton(
-                  onPressed: () {
-                    Utils.launchURL(Urls.clubFacebook, AppIntl.of(context));
-                  },
-                  child: Text(AppIntl.of(context).facebook.toUpperCase(),
-                      style: Theme.of(context).primaryTextTheme.button),
-                ),
-                const SizedBox(width: 10),
-                TextButton(
-                  onPressed: () {
-                    Utils.launchURL(Urls.clubGithub, AppIntl.of(context));
-                  },
-                  child: Text(AppIntl.of(context).github.toUpperCase(),
-                      style: Theme.of(context).primaryTextTheme.button),
-                ),
-                const SizedBox(width: 10),
-                TextButton(
-                  onPressed: () {
-                    Utils.launchURL(Urls.clubEmail, AppIntl.of(context));
-                  },
-                  child: Text(AppIntl.of(context).email.toUpperCase(),
-                      style: Theme.of(context).primaryTextTheme.button),
-                ),
-              ]),
+              Container(
+                padding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
+                child: Wrap(spacing: 15.0, children: [
+                  TextButton(
+                    onPressed: () {
+                      Utils.launchURL(Urls.clubFacebook, AppIntl.of(context));
+                    },
+                    child: Text(AppIntl.of(context).facebook.toUpperCase(),
+                        style: Theme.of(context).primaryTextTheme.button),
+                  ),
+                  TextButton(
+                    onPressed: () {
+                      Utils.launchURL(Urls.clubGithub, AppIntl.of(context));
+                    },
+                    child: Text(AppIntl.of(context).github.toUpperCase(),
+                        style: Theme.of(context).primaryTextTheme.button),
+                  ),
+                  TextButton(
+                    onPressed: () {
+                      Utils.launchURL(Urls.clubEmail, AppIntl.of(context));
+                    },
+                    child: Text(AppIntl.of(context).email.toUpperCase(),
+                        style: Theme.of(context).primaryTextTheme.button),
+                  ),
+                ]),
+              ),
             ],
           ),
         ]),
@@ -187,6 +175,7 @@ class _DashboardViewState extends State<DashboardView>
 
   void onReorder(DashboardViewModel model, int oldIndex, int newIndex) {
     if (newIndex > oldIndex) {
+      // ignore: parameter_assignments
       newIndex -= 1;
     }
 

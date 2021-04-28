@@ -1,23 +1,35 @@
 // FLUTTER / DART / THIRD-PARTIES
-
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:notredame/core/constants/preferences_flags.dart';
-import 'package:notredame/core/managers/settings_manager.dart';
 import 'package:stacked/stacked.dart';
+import 'package:flutter/material.dart';
+import 'package:notredame/core/constants/preferences_flags.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-import '../../locator.dart';
+// MANAGER
+import 'package:notredame/core/managers/settings_manager.dart';
+
+// OTHER
+import 'package:notredame/locator.dart';
 
 class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
-  /// Manage the cards
   final SettingsManager _settingsManager = locator<SettingsManager>();
 
+  // All dashboard displayable cards
   Map<PreferencesFlag, int> _cards;
 
+  /// Localization class of the application.
+  final AppIntl _appIntl;
+
+  /// Cards to display on dashboard
   List<PreferencesFlag> _cardsToDisplay;
 
+  /// Get the status of all displayable cards
   Map<PreferencesFlag, int> get cards => _cards;
 
+  /// Get cards to display
   List<PreferencesFlag> get cardsToDisplay => _cardsToDisplay;
+
+  DashboardViewModel({@required AppIntl intl}) : _appIntl = intl;
 
   /// Set card order
   void setOrder(PreferencesFlag flag, int newIndex, int oldIndex) {
@@ -31,12 +43,6 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
 
   /// Hide card from dashboard
   void hideCard(PreferencesFlag flag) {
-    _settingsManager.setInt(flag, -1).then((value) {
-      if (!value) {
-        Fluttertoast.showToast(msg: "Failed");
-      }
-    });
-
     _cards.update(flag, (value) => -1);
 
     _cardsToDisplay.remove(flag);
@@ -48,13 +54,16 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
 
   /// Set card visible on dashboard
   void setCardVisible(PreferencesFlag flag) {
-    _settingsManager.setInt(flag, flag.index - 6).then((value) {
+    _settingsManager
+        .setInt(flag, flag.index - PreferencesFlag.aboutUsCard.index)
+        .then((value) {
       if (!value) {
-        Fluttertoast.showToast(msg: "Failed");
+        Fluttertoast.showToast(msg: _appIntl.error);
       }
     });
 
-    _cards.update(flag, (value) => flag.index - 6);
+    _cards.update(
+        flag, (value) => flag.index - PreferencesFlag.aboutUsCard.index);
 
     getCardsToDisplay();
 
@@ -81,18 +90,17 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
     });
   }
 
+  /// Update cards order and display status in preferences
   void updatePreferences() {
     for (final MapEntry<PreferencesFlag, int> element in _cards.entries) {
-      if (element.value != -1) {
-        _cards[element.key] = _cardsToDisplay.indexOf(element.key);
-        _settingsManager
-            .setInt(element.key, _cardsToDisplay.indexOf(element.key))
-            .then((value) {
-          if (!value) {
-            Fluttertoast.showToast(msg: "Failed");
-          }
-        });
-      }
+      _cards[element.key] = _cardsToDisplay.indexOf(element.key);
+      _settingsManager
+          .setInt(element.key, _cardsToDisplay.indexOf(element.key))
+          .then((value) {
+        if (!value) {
+          Fluttertoast.showToast(msg: _appIntl.error);
+        }
+      });
     }
   }
 

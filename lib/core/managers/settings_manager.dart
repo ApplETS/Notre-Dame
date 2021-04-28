@@ -3,7 +3,6 @@ import 'package:enum_to_string/enum_to_string.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:logger/logger.dart';
-import 'package:notredame/core/constants/dashboard_flags.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
