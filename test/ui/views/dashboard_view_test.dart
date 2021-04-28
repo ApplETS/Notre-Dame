@@ -1,15 +1,21 @@
 // FLUTTER / DART / THIRD-PARTIES
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:notredame/core/constants/preferences_flags.dart';
+
+// MANAGERS
 import 'package:notredame/core/managers/settings_manager.dart';
 
 // VIEW
 import 'package:notredame/ui/views/dashboard_view.dart';
 
+// CONSTANTS
+import 'package:notredame/core/constants/preferences_flags.dart';
+
+// OTHERS
 import '../../helpers.dart';
+
+// MOCKS
 import '../../mock/managers/settings_manager_mock.dart';
 
 void main() {
@@ -90,12 +96,20 @@ void main() {
         expect(find.text(intl.email.toUpperCase()), findsOneWidget);
       });
 
-      /// TODO: Skipped until now, restoring doesn't seem to work with SettingsManagerMock
       testWidgets('AboutUsCard is dismissible and can be restored',
           (WidgetTester tester) async {
         SettingsManagerMock.stubGetDashboard(
             settingsManager as SettingsManagerMock,
             toReturn: dashboard);
+
+        SettingsManagerMock.stubSetInt(settingsManager as SettingsManagerMock,
+            PreferencesFlag.aboutUsCard);
+
+        SettingsManagerMock.stubSetInt(settingsManager as SettingsManagerMock,
+            PreferencesFlag.scheduleCard);
+
+        SettingsManagerMock.stubSetInt(settingsManager as SettingsManagerMock,
+            PreferencesFlag.progressBarCard);
 
         await tester.pumpWidget(localizedWidget(child: const DashboardView()));
         await tester.pumpAndSettle();
@@ -130,11 +144,15 @@ void main() {
         expect(find.byType(Dismissible), findsNWidgets(3));
         expect(find.text(intl.card_applets_title), findsOneWidget);
       });
-    }, skip: true);
+    });
 
     group("golden - ", () {
       testWidgets("default view", (WidgetTester tester) async {
         tester.binding.window.physicalSizeTestValue = const Size(800, 1410);
+
+        SettingsManagerMock.stubGetDashboard(
+            settingsManager as SettingsManagerMock,
+            toReturn: dashboard);
 
         await tester.pumpWidget(localizedWidget(child: const DashboardView()));
         await tester.pumpAndSettle();

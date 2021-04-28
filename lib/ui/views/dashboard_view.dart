@@ -1,11 +1,5 @@
 // FLUTTER / DART / THIRD-PARTIES
 import 'package:flutter/material.dart';
-import 'package:notredame/core/constants/preferences_flags.dart';
-import 'package:notredame/core/utils/utils.dart';
-import 'package:notredame/core/constants/urls.dart';
-import 'package:notredame/ui/utils/app_theme.dart';
-import 'package:notredame/ui/utils/loading.dart';
-import 'package:notredame/ui/widgets/dismissible_card.dart';
 import 'package:stacked/stacked.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -13,7 +7,19 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:notredame/core/viewmodels/dashboard_viewmodel.dart';
 
 // WIDGET
+import 'package:notredame/ui/widgets/dismissible_card.dart';
 import 'package:notredame/ui/widgets/base_scaffold.dart';
+
+// CONSTANTS
+import 'package:notredame/core/constants/preferences_flags.dart';
+import 'package:notredame/core/constants/urls.dart';
+
+// UTILS
+import 'package:notredame/core/utils/utils.dart';
+import 'package:notredame/ui/utils/loading.dart';
+
+// OTHER
+import 'package:notredame/ui/utils/app_theme.dart';
 
 class DashboardView extends StatefulWidget {
   const DashboardView({Key key}) : super(key: key);

@@ -1,3 +1,4 @@
+// FLUTTER / DART / THIRD-PARTIES
 import 'package:flutter/material.dart';
 
 class DismissibleCard extends StatelessWidget {
@@ -13,7 +14,7 @@ class DismissibleCard extends StatelessWidget {
       {Key key,
       @required this.onDismissed,
       @required this.child,
-        this.elevation = 1,
+      this.elevation = 1,
       this.cardColor})
       : super(key: key);
 

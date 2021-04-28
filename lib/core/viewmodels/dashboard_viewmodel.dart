@@ -96,7 +96,7 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
           Fluttertoast.showToast(msg: _appIntl.error);
         }
       });
-      return key.index;
+      return key.index - PreferencesFlag.aboutUsCard.index;
     });
 
     getCardsToDisplay();
