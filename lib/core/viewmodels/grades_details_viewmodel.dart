@@ -1,5 +1,8 @@
 // FLUTTER / DART / THIRD-PARTIES
+import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:stacked/stacked.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 // MANAGERS / SERVICES
 import 'package:notredame/core/managers/course_repository.dart';
@@ -14,25 +17,33 @@ class GradesDetailsViewModel extends FutureViewModel<Course> {
   /// Used to get the courses of the student
   final CourseRepository _courseRepository = locator<CourseRepository>();
 
+  /// Localization class of the application.
+  final AppIntl _appIntl;
+
   /// Used to get the current course selected of the student
   Course course;
 
-  GradesDetailsViewModel({this.course});
+  GradesDetailsViewModel({this.course, @required AppIntl intl}): _appIntl = intl;
 
   @override
   Future<Course> futureToRun() async {
-    try {
-      await _courseRepository.getCourseSummary(course)?.then((value) {
-        if (value != null) {
-          course = value;
-        }
-      });
-      notifyListeners();
-    } on Exception catch (error) {
-      onError(error);
-    }
+    setBusyForObject(course, true);
+    
+    await _courseRepository.getCourseSummary(course)?.then((value) {
+      if (value != null) {
+        course = value;
+      }
+    });
+
+    notifyListeners();
 
     return course;
+  }
+
+  @override
+  // ignore: type_annotate_public_apis
+  void onError(error) {
+    Fluttertoast.showToast(msg: _appIntl.error);
   }
 
   Future<bool> refresh() async {

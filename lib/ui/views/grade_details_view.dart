@@ -1,10 +1,11 @@
 // FLUTTER / DART / THIRD-PARTIES
 import 'package:flutter/material.dart';
-import 'package:notredame/core/utils/utils.dart';
 import 'package:stacked/stacked.dart';
 
-// MODELS
+// VIEWMODELS
 import 'package:notredame/core/viewmodels/grades_details_viewmodel.dart';
+
+// MODELS
 import 'package:notredame/core/models/course.dart';
 
 // WIDGETS
@@ -16,6 +17,7 @@ import 'package:notredame/ui/widgets/grade_not_available.dart';
 // OTHERS
 import 'package:notredame/ui/utils/app_theme.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:notredame/core/utils/utils.dart';
 
 class GradesDetailsView extends StatefulWidget {
   final Course course;
@@ -27,12 +29,10 @@ class GradesDetailsView extends StatefulWidget {
 }
 
 class _GradesDetailsViewState extends State<GradesDetailsView> {
-  double topHeight = 0.0;
-
   @override
   Widget build(BuildContext context) =>
       ViewModelBuilder<GradesDetailsViewModel>.reactive(
-        viewModelBuilder: () => GradesDetailsViewModel(course: widget.course),
+        viewModelBuilder: () => GradesDetailsViewModel(course: widget.course, intl: AppIntl.of(context)),
         builder: (context, model, child) => BaseScaffold(
           showBottomBar: false,
           body: NestedScrollView(
@@ -47,7 +47,7 @@ class _GradesDetailsViewState extends State<GradesDetailsView> {
                 expandedHeight: 80.0,
                 flexibleSpace: LayoutBuilder(
                   builder: (BuildContext context, BoxConstraints constraints) {
-                    topHeight = constraints.biggest.height;
+                    final double topHeight = constraints.biggest.height;
                     return FlexibleSpaceBar(
                       centerTitle: true,
                       titlePadding: EdgeInsetsDirectional.only(
@@ -81,8 +81,8 @@ class _GradesDetailsViewState extends State<GradesDetailsView> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        getClassInfo(model.course.title ?? ""),
-                        getClassInfo(AppIntl.of(context)
+                        _buildClassInfo(model.course.title ?? ""),
+                        _buildClassInfo(AppIntl.of(context)
                             .grades_group_number(model.course.group ?? "")),
                       ],
                     ),
@@ -92,13 +92,13 @@ class _GradesDetailsViewState extends State<GradesDetailsView> {
             ],
             body: RefreshIndicator(
               onRefresh: () => model.refresh(),
-              child: getGradeEvaluations(model),
+              child: _buildGradeEvaluations(model),
             ),
           ),
         ),
       );
 
-  Widget getGradeEvaluations(GradesDetailsViewModel model) {
+  Widget _buildGradeEvaluations(GradesDetailsViewModel model) {
     if (model.course.summary != null) {
       return ListView(
         padding: const EdgeInsets.all(5.0),
@@ -132,7 +132,7 @@ class _GradesDetailsViewState extends State<GradesDetailsView> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
-                            getGradeSummary(
+                            _buildHeadersSummary(
                               Utils.getGradeInPercentage(
                                 model.course.summary.currentMark,
                                 model.course.summary.markOutOf,
@@ -143,7 +143,7 @@ class _GradesDetailsViewState extends State<GradesDetailsView> {
                             ),
                             Padding(
                               padding: const EdgeInsets.only(top: 15.0),
-                              child: getGradeSummary(
+                              child: _buildHeadersSummary(
                                 Utils.getGradeInPercentage(
                                     model.course.summary.passMark,
                                     model.course.summary.markOutOf),
@@ -206,7 +206,7 @@ class _GradesDetailsViewState extends State<GradesDetailsView> {
           ),
         ],
       );
-    } else if (model.busy(model.course)) {
+    } else if (model.isBusy) {
       return const Center(child: CircularProgressIndicator());
     } else {
       return Center(
@@ -216,8 +216,8 @@ class _GradesDetailsViewState extends State<GradesDetailsView> {
     }
   }
 
-  Align getClassInfo(String info) {
-    return Align(
+  Align _buildClassInfo(String info) =>
+    Align(
       alignment: Alignment.centerLeft,
       child: Padding(
         padding: const EdgeInsets.only(left: 15.0),
@@ -228,9 +228,8 @@ class _GradesDetailsViewState extends State<GradesDetailsView> {
         ),
       ),
     );
-  }
 
-  Column getGradeSummary(
+  Column _buildHeadersSummary(
       double grade, String recipient, Color color, BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,

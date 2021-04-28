@@ -5,7 +5,6 @@ import 'package:intl/intl.dart';
 
 // MODELS
 import 'package:notredame/core/models/evaluation.dart';
-import 'package:notredame/core/utils/utils.dart';
 
 // WIDGETS
 import 'package:notredame/ui/widgets/grade_circular_progress.dart';
@@ -13,6 +12,7 @@ import 'package:notredame/ui/widgets/grade_circular_progress.dart';
 // OTHER
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:notredame/ui/utils/app_theme.dart';
+import 'package:notredame/core/utils/utils.dart';
 
 class GradeEvaluationTile extends StatefulWidget {
   final Evaluation evaluation;
@@ -143,21 +143,21 @@ class _GradeEvaluationTileState extends State<GradeEvaluationTile>
                 ),
               ),
               children: <Widget>[
-                evaluationsSummary(context, widget.evaluation),
+                _buildEvaluationSummary(context, widget.evaluation),
               ],
             ),
           ),
         ],
       );
 
-  Widget evaluationsSummary(BuildContext context, Evaluation evaluation) {
+  Widget _buildEvaluationSummary(BuildContext context, Evaluation evaluation) {
     return Padding(
       padding: const EdgeInsets.only(left: 25.0, right: 15.0),
       child: SizedBox(
         width: MediaQuery.of(context).size.width * 0.91,
         child: Column(
           children: [
-            getSummary(
+            _buildSummary(
               AppIntl.of(context).grades_grade,
               AppIntl.of(context).grades_grade_with_percentage(
                 evaluation.mark ?? 0.0,
@@ -166,7 +166,7 @@ class _GradeEvaluationTileState extends State<GradeEvaluationTile>
                     evaluation.correctedEvaluationOutOfFormatted),
               ),
             ),
-            getSummary(
+            _buildSummary(
               AppIntl.of(context).grades_average,
               AppIntl.of(context).grades_grade_with_percentage(
                 evaluation.passMark ?? 0.0,
@@ -175,15 +175,15 @@ class _GradeEvaluationTileState extends State<GradeEvaluationTile>
                     evaluation.correctedEvaluationOutOfFormatted),
               ),
             ),
-            getSummary(AppIntl.of(context).grades_median,
+            _buildSummary(AppIntl.of(context).grades_median,
                 validateResult(context, evaluation.median.toString())),
-            getSummary(
+            _buildSummary(
                 AppIntl.of(context).grades_standard_deviation,
                 validateResult(
                     context, evaluation.standardDeviation.toString())),
-            getSummary(AppIntl.of(context).grades_percentile_rank,
+            _buildSummary(AppIntl.of(context).grades_percentile_rank,
                 validateResult(context, evaluation.percentileRank.toString())),
-            getSummary(AppIntl.of(context).grades_target_date,
+            _buildSummary(AppIntl.of(context).grades_target_date,
                 getDate(evaluation.targetDate, context)),
           ],
         ),
@@ -200,7 +200,7 @@ class _GradeEvaluationTileState extends State<GradeEvaluationTile>
     return AppIntl.of(context).grades_not_available;
   }
 
-  Padding getSummary(String title, String grade) {
+  Padding _buildSummary(String title, String grade) {
     return Padding(
       padding: const EdgeInsets.only(top: 10.0, right: 15.0),
       child: Row(
