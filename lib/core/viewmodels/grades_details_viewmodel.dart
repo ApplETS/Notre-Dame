@@ -17,16 +17,11 @@ class GradesDetailsViewModel extends FutureViewModel<Course> {
   /// Used to get the current course selected of the student
   Course course;
 
-  bool _isLoadingCourseSummary = false;
-
-  bool get isLoadingCourseSummary => _isLoadingCourseSummary;
-
   GradesDetailsViewModel({this.course});
 
   @override
   Future<Course> futureToRun() async {
     try {
-      _isLoadingCourseSummary = true;
       await _courseRepository.getCourseSummary(course)?.then((value) {
         if (value != null) {
           course = value;
@@ -37,24 +32,23 @@ class GradesDetailsViewModel extends FutureViewModel<Course> {
       onError(error);
     }
 
-    _isLoadingCourseSummary = false;
     return course;
   }
 
   Future<bool> refresh() async {
     try {
-      _isLoadingCourseSummary = true;
+      setBusyForObject(course, true);
       await _courseRepository.getCourseSummary(course)?.then((value) {
         if (value != null) {
           course = value;
         }
       });
       notifyListeners();
-      _isLoadingCourseSummary = false;
+      setBusyForObject(course, false);
       return true;
     } on Exception catch (error) {
       onError(error);
-      _isLoadingCourseSummary = false;
+      setBusyForObject(course, false);
       return false;
     }
   }
