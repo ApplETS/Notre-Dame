@@ -7,7 +7,6 @@ import 'package:notredame/ui/utils/app_theme.dart';
 import 'package:notredame/ui/utils/loading.dart';
 import 'package:notredame/ui/widgets/dismissible_card.dart';
 import 'package:stacked/stacked.dart';
-import 'package:table_calendar/table_calendar.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 // VIEWMODEL
@@ -25,14 +24,11 @@ class DashboardView extends StatefulWidget {
 
 class _DashboardViewState extends State<DashboardView>
     with TickerProviderStateMixin {
-  CalendarController _calendarController;
-
   AnimationController _animationController;
 
   @override
   void initState() {
     super.initState();
-    _calendarController = CalendarController();
     _animationController = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 400),
@@ -44,7 +40,6 @@ class _DashboardViewState extends State<DashboardView>
   @override
   void dispose() {
     _animationController.dispose();
-    _calendarController.dispose();
     super.dispose();
   }
 
@@ -106,6 +101,7 @@ class _DashboardViewState extends State<DashboardView>
 
   Widget _buildAboutUsCard(DashboardViewModel model, PreferencesFlag flag) =>
       DismissibleCard(
+        key: UniqueKey(),
         onDismissed: (DismissDirection direction) {
           dismissCard(model, flag);
         },
