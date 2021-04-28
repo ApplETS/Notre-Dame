@@ -80,7 +80,7 @@ void main() {
                 'The settings says week format is the current format, the UI should reflet that.');
 
         // Check starting day of week section
-        /*expect(find.text(intl.schedule_settings_starting_weekday_pref),
+        expect(find.text(intl.schedule_settings_starting_weekday_pref),
             findsOneWidget);
         expect(
             find.widgetWithText(
@@ -100,7 +100,7 @@ void main() {
                 .having((source) => source.selected, 'selected', isTrue),
             reason:
                 'The settings says starting day of week is monday, the UI should reflet that.');
-*/
+
         // Check showTodayButton section
         final showTodayBtnFinder = find.widgetWithText(
             ListTile, intl.schedule_settings_show_today_btn_pref);

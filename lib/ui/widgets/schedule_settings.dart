@@ -49,10 +49,8 @@ class _ScheduleSettingsState extends State<ScheduleSettings> {
                 child: ListTileTheme(
                   selectedColor: Theme.of(context).textTheme.bodyText1.color,
                   child: ListView(
-                    children: (!(model as ScheduleSettingsViewModel).isBusy)
-                        ? _buildSettings(
-                            context, model as ScheduleSettingsViewModel)
-                        : [const SizedBox()],
+                    children: _buildSettings(
+                            context, model as ScheduleSettingsViewModel),
                   ),
                 ),
               ),
