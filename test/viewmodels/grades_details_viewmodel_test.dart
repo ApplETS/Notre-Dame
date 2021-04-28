@@ -1,5 +1,6 @@
 // FLUTTER / DART / THIRD-PARTIES
 import 'package:flutter_test/flutter_test.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 
 // MODELS
@@ -20,6 +21,7 @@ import '../helpers.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
+  AppIntl intl;
   GradesDetailsViewModel viewModel;
   CourseRepository courseRepository;
 
@@ -87,8 +89,9 @@ void main() {
     setUp(() async {
       // Setting up mocks
       courseRepository = setupCourseRepositoryMock();
+      intl = await setupAppIntl();
 
-      viewModel = GradesDetailsViewModel(course: courseWithoutSummary);
+      viewModel = GradesDetailsViewModel(course: courseWithoutSummary, intl: intl);
     });
 
     tearDown(() {
@@ -106,7 +109,7 @@ void main() {
         expect(viewModel.course, courseWithSummary);
       });
 
-      test('Signets raised an exception while trying to recover summary',
+      test('Signets raised an exception while trying to recover course',
           () async {
         CourseRepositoryMock.stubGetCourseSummaryException(
             courseRepository as CourseRepositoryMock, courseWithoutSummary);

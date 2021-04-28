@@ -29,7 +29,8 @@ class GradesDetailsViewModel extends FutureViewModel<Course> {
   Future<Course> futureToRun() async {
     setBusyForObject(course, true);
     
-    await _courseRepository.getCourseSummary(course)?.then((value) {
+    // ignore: return_type_invalid_for_catch_error
+    await _courseRepository.getCourseSummary(course).catchError(onError)?.then((value) {
       if (value != null) {
         course = value;
       }

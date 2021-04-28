@@ -77,11 +77,6 @@ void main() {
     });
 
     group('UI - ', () {
-      ScrollController primaryScrollController(WidgetTester tester) {
-        return PrimaryScrollController.of(
-            tester.element(find.byType(CustomScrollView)));
-      }
-
       testWidgets(
           'has a RefreshIndicator, GradeCircularProgress, three cards and evaluation tiles when a course is valid',
           (WidgetTester tester) async {
@@ -118,9 +113,6 @@ void main() {
             localizedWidget(child: GradesDetailsView(course: course)));
         await tester.pumpAndSettle();
 
-        final ScrollController controller = primaryScrollController(tester);
-
-        expect(controller.offset, 0.0);
         expect(find.byType(SliverAppBar), findsOneWidget);
 
         expect(find.text('Cours générique'), findsOneWidget);
@@ -139,9 +131,10 @@ void main() {
             localizedWidget(child: GradesDetailsView(course: course)));
         await tester.pumpAndSettle();
 
-        final ScrollController controller = primaryScrollController(tester);
+        final gesture = await tester.startGesture(const Offset(0, 300)); //Position of the scrollview
+        await gesture.moveBy(const Offset(0, -300)); //How much to scroll by
+        await tester.pump();
 
-        controller.jumpTo(130.0);
         await tester.pump();
 
         expect(find.byType(SliverToBoxAdapter), findsNothing);

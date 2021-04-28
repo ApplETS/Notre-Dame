@@ -22,7 +22,7 @@ void main() {
         await tester.pumpWidget(localizedWidget(child: const GradeNotAvailable()));
         await tester.pumpAndSettle();
 
-        final label = find.text(intl.grades_msg_no_grades);
+        final label = find.text(intl.grades_msg_no_grades.split('\n')[0]);
         expect(label, findsOneWidget);
 
         final icon = find.byIcon(Icons.school);
