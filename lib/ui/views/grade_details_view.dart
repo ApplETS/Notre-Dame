@@ -29,6 +29,8 @@ class GradesDetailsView extends StatefulWidget {
 }
 
 class _GradesDetailsViewState extends State<GradesDetailsView> {
+  double initialTopHeight = 0.0;
+
   @override
   Widget build(BuildContext context) =>
       ViewModelBuilder<GradesDetailsViewModel>.reactive(
@@ -47,19 +49,22 @@ class _GradesDetailsViewState extends State<GradesDetailsView> {
                 expandedHeight: 80.0,
                 flexibleSpace: LayoutBuilder(
                   builder: (BuildContext context, BoxConstraints constraints) {
+                    if(initialTopHeight == 0.0) {
+                      initialTopHeight = constraints.biggest.height;
+                    }                    
                     final double topHeight = constraints.biggest.height;
+
                     return FlexibleSpaceBar(
                       centerTitle: true,
                       titlePadding: EdgeInsetsDirectional.only(
-                        start: topHeight < 120.0 ? 60.0 : 15.0,
-                        top: topHeight < 120.0 ? 5.0 : 15.0,
-                        bottom: topHeight < 120.0 ? 15.0 : 1.0,
+                        start: topHeight < initialTopHeight ? 50.0 : 15.0,
+                        bottom: topHeight < initialTopHeight ? 16.0 : 5.0,
                       ),
                       title: Align(
                         alignment: AlignmentDirectional.bottomStart,
                         child: Text(
                           model.course.acronym ?? "",
-                          style: TextStyle(fontSize: topHeight < 120 ? 20 : 15),
+                          style: TextStyle(fontSize: topHeight < initialTopHeight ? 20 : 19),
                         ),
                       ),
                     );
@@ -234,10 +239,13 @@ class _GradesDetailsViewState extends State<GradesDetailsView> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        Text(
-            AppIntl.of(context).grades_grade_with_percentage(grade, 100, grade),
-            style:
-                Theme.of(context).textTheme.headline6.copyWith(color: color, fontSize: 18.0)),
+        FittedBox(
+            fit: BoxFit.fitWidth,
+            child: Text(
+              AppIntl.of(context).grades_grade_with_percentage(grade, 100, grade),
+              style:
+                  Theme.of(context).textTheme.headline6.copyWith(color: color)),
+        ),
         Text(recipient,
             style: Theme.of(context).textTheme.bodyText1.copyWith(color: color)
             ),
