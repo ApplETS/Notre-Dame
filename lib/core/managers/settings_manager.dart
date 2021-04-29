@@ -87,18 +87,21 @@ class SettingsManager with ChangeNotifier {
     final Map<PreferencesFlag, int> dashboard = {};
 
     final aboutUsIndex =
-        await _preferencesService.getInt(PreferencesFlag.aboutUsCard) ?? 0;
+        await _preferencesService.getInt(PreferencesFlag.aboutUsCard) ??
+            getDefaultCardIndex(PreferencesFlag.aboutUsCard);
 
     dashboard.putIfAbsent(PreferencesFlag.aboutUsCard, () => aboutUsIndex);
 
     final scheduleCardIndex =
-        await _preferencesService.getInt(PreferencesFlag.scheduleCard) ?? 1;
+        await _preferencesService.getInt(PreferencesFlag.scheduleCard) ??
+            getDefaultCardIndex(PreferencesFlag.scheduleCard);
 
     dashboard.putIfAbsent(
         PreferencesFlag.scheduleCard, () => scheduleCardIndex);
 
     final progressBarCardIndex =
-        await _preferencesService.getInt(PreferencesFlag.progressBarCard) ?? 2;
+        await _preferencesService.getInt(PreferencesFlag.progressBarCard) ??
+            getDefaultCardIndex(PreferencesFlag.progressBarCard);
 
     dashboard.putIfAbsent(
         PreferencesFlag.progressBarCard, () => progressBarCardIndex);
@@ -195,4 +198,8 @@ class SettingsManager with ChangeNotifier {
         "${tag}_${EnumToString.convertToString(flag)}", value.toString());
     return _preferencesService.setBool(flag, value: value);
   }
+
+  /// Get the default index of each card
+  int getDefaultCardIndex(PreferencesFlag flag) =>
+      flag.index - PreferencesFlag.aboutUsCard.index;
 }
