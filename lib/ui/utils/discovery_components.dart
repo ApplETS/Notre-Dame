@@ -103,6 +103,13 @@ List<Discovery> discoveryComponents(BuildContext context) => [
                     AppIntl.of(context)
                         .discovery_navbar_student_profile_page_details,
                     textAlign: TextAlign.justify),
+                const Text('\n'),
+                if (AppIntl.of(context).localeName == "fr")
+                  Image.asset(
+                      'assets/animations/discovery/fr/grade_details.gif')
+                else
+                  Image.asset(
+                      'assets/animations/discovery/en/grade_details.gif'),
               ],
             ),
           ),
