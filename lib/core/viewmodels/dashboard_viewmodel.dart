@@ -1,4 +1,6 @@
 // FLUTTER / DART / THIRD-PARTIES
+import 'dart:collection';
+
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:stacked/stacked.dart';
 import 'package:flutter/material.dart';
@@ -106,20 +108,14 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
 
   /// Populate list of cards used in view
   void getCardsToDisplay() {
-    int numberOfCards = 0;
+    _cardsToDisplay = [];
 
-    _cards.forEach((key, value) {
+    final orderedCards = SplayTreeMap<PreferencesFlag, int>.from(
+        _cards, (a, b) => _cards[a].compareTo(_cards[b]));
+
+    orderedCards.forEach((key, value) {
       if (value >= 0) {
-        numberOfCards++;
-      }
-    });
-
-    _cardsToDisplay =
-        List.filled(numberOfCards, PreferencesFlag.aboutUsCard, growable: true);
-
-    _cards.forEach((key, value) {
-      if (value >= 0) {
-        _cardsToDisplay[value] = key;
+        _cardsToDisplay.insert(value, key);
       }
     });
   }
