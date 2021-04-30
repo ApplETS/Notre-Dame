@@ -18,6 +18,7 @@ import '../../helpers.dart';
 import '../../mock/managers/course_repository_mock.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
   CourseRepository courseRepository;
 
   final CourseSummary courseSummary = CourseSummary(
@@ -70,6 +71,7 @@ void main() {
     setUp(() async {
       setupNavigationServiceMock();
       courseRepository = setupCourseRepositoryMock();
+      setupFlutterToastMock();
     });
 
     tearDown(() {
