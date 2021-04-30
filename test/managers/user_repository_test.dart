@@ -450,6 +450,8 @@ void main() {
 
         expect(manager.programs, isNull);
         expect(manager.getPrograms(), throwsA(isInstanceOf<ApiException>()));
+
+        await untilCalled(networkingService.hasConnectivity());
         expect(manager.programs, [],
             reason: 'The programs list should be empty');
 

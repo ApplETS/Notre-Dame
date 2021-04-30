@@ -252,6 +252,8 @@ void main() {
         expect(manager.coursesActivities, isNull);
         expect(manager.getCoursesActivities(),
             throwsA(isInstanceOf<ApiException>()));
+
+        await untilCalled(networkingService.hasConnectivity());
         expect(manager.coursesActivities, isEmpty,
             reason: "The list of activities should be empty");
 
@@ -282,6 +284,8 @@ void main() {
 
         expect(manager.getCoursesActivities(),
             throwsA(isInstanceOf<ApiException>()));
+
+        await untilCalled(networkingService.hasConnectivity());
         expect(manager.coursesActivities, isEmpty,
             reason:
                 "There isn't any activities saved in the cache so the list should be empty");
@@ -385,6 +389,8 @@ void main() {
         expect(manager.coursesActivities, isNull);
         expect(manager.getCoursesActivities(),
             throwsA(isInstanceOf<ApiException>()));
+
+        await untilCalled(networkingService.hasConnectivity());
         expect(manager.coursesActivities, isEmpty,
             reason: "The list of activities should be empty");
 
@@ -902,6 +908,8 @@ void main() {
         expect(manager.courses, isNull);
 
         expect(manager.getCourses(), throwsA(isInstanceOf<ApiException>()));
+
+        await untilCalled(networkingService.hasConnectivity());
         expect(manager.courses, []);
 
         await untilCalled(analyticsService.logError(CourseRepository.tag, any));
@@ -1048,6 +1056,8 @@ void main() {
 
         expect(manager.sessions, isNull);
         expect(manager.getCourses(), throwsA(isInstanceOf<ApiException>()));
+
+        await untilCalled(networkingService.hasConnectivity());
         expect(manager.courses, [], reason: 'The courses list should be empty');
 
         await untilCalled(analyticsService.logError(CourseRepository.tag, any));
