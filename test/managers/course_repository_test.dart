@@ -105,7 +105,7 @@ void main() {
             signetsApi as SignetsApiMock, username, [session]);
 
         // Stub to simulate that the user has an active internet connection
-        NetworkingServiceMock.stubHasConnectivityIssue(networkingService);
+        NetworkingServiceMock.stubHasConnectivity(networkingService);
       });
 
       test("Activities are loaded from cache.", () async {
@@ -776,7 +776,7 @@ void main() {
             userRepository as UserRepositoryMock, "password");
 
         // Stub to simulate that the user has an active internet connection
-        NetworkingServiceMock.stubHasConnectivityIssue(networkingService);
+        NetworkingServiceMock.stubHasConnectivity(networkingService);
       });
 
       test("Courses are loaded from cache and cache is updated", () async {
@@ -1114,7 +1114,7 @@ void main() {
                 ]));
 
         // Stub to simulate that the user has an active internet connection
-        NetworkingServiceMock.stubHasConnectivityIssue(networkingService);
+        NetworkingServiceMock.stubHasConnectivity(networkingService);
       });
 
       test("CourseSummary is fetched and cache is updated", () async {

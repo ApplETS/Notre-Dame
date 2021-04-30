@@ -9,6 +9,7 @@ import 'package:notredame/core/managers/user_repository.dart';
 import 'package:notredame/core/managers/cache_manager.dart';
 import 'package:notredame/core/services/mon_ets_api.dart';
 import 'package:notredame/core/services/analytics_service.dart';
+import 'package:notredame/core/services/networking_service.dart';
 import 'package:notredame/core/services/signets_api.dart';
 
 // MODELS
@@ -59,6 +60,7 @@ void main() {
       unregister<CacheManager>();
       clearInteractions(signetsApi);
       unregister<SignetsApi>();
+      unregister<NetworkingService>();
     });
 
     group('authentication - ', () {
@@ -353,7 +355,7 @@ void main() {
             signetsApi as SignetsApiMock, username, []);
 
         // Stub to simulate that the user has an active internet connection
-        NetworkingServiceMock.stubHasConnectivityIssue(networkingService);
+        NetworkingServiceMock.stubHasConnectivity(networkingService);
       });
 
       test("Programs are loaded from cache", () async {
@@ -515,7 +517,7 @@ void main() {
             signetsApi as SignetsApiMock, username, null);
 
         // Stub to simulate that the user has an active internet connection
-        NetworkingServiceMock.stubHasConnectivityIssue(networkingService);
+        NetworkingServiceMock.stubHasConnectivity(networkingService);
       });
 
       test("Info are loaded from cache", () async {

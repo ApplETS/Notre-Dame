@@ -50,7 +50,7 @@ void main() {
       test('sign in successful', () async {
         UserRepositoryMock.stubSilentAuthenticate(userRepositoryMock);
         UserRepositoryMock.stubWasPreviouslyLoggedIn(userRepositoryMock);
-        NetworkingServiceMock.stubHasConnectivityIssue(networkingService);
+        NetworkingServiceMock.stubHasConnectivity(networkingService);
 
         await viewModel.handleStartUp();
 
@@ -63,7 +63,7 @@ void main() {
         UserRepositoryMock.stubSilentAuthenticate(userRepositoryMock,
             toReturn: false);
         UserRepositoryMock.stubWasPreviouslyLoggedIn(userRepositoryMock);
-        NetworkingServiceMock.stubHasConnectivityIssue(networkingService);
+        NetworkingServiceMock.stubHasConnectivity(networkingService);
 
         SettingsManagerMock.stubGetString(
             settingsManager as SettingsManagerMock, PreferencesFlag.welcome,
@@ -80,7 +80,7 @@ void main() {
         UserRepositoryMock.stubSilentAuthenticate(userRepositoryMock,
             toReturn: false);
         UserRepositoryMock.stubWasPreviouslyLoggedIn(userRepositoryMock);
-        NetworkingServiceMock.stubHasConnectivityIssue(networkingService);
+        NetworkingServiceMock.stubHasConnectivity(networkingService);
 
         await viewModel.handleStartUp();
 

@@ -163,6 +163,7 @@ class UserRepository {
       // ignore: parameter_assignments
       fromCacheOnly = true;
     }
+
     // Load the programs from the cache if the list doesn't exist
     if (_programs == null || fromCacheOnly) {
       try {
