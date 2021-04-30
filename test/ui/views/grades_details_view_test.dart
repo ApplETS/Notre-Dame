@@ -18,7 +18,7 @@ import '../../helpers.dart';
 import '../../mock/managers/course_repository_mock.dart';
 
 void main() {
-  WidgetsFlutterBinding.ensureInitialized();
+  TestWidgetsFlutterBinding.ensureInitialized();
   CourseRepository courseRepository;
 
   final CourseSummary courseSummary = CourseSummary(

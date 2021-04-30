@@ -1,5 +1,4 @@
 // FLUTTER / DART / THIRD-PARTIES
-import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 
@@ -24,7 +23,7 @@ ScheduleViewModel viewModel;
 
 void main() {
   // Needed to support FlutterToast.
-  WidgetsFlutterBinding.ensureInitialized();
+  TestWidgetsFlutterBinding.ensureInitialized();
   // Some activities
   final gen101 = CourseActivity(
       courseGroup: "GEN101",
