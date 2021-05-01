@@ -83,9 +83,8 @@ void main() {
       numberOfCredits: 3,
       title: 'Cours générique');
 
-
   final courses = [courseSummer, courseSummer2];
-  final coursesCache = [courseSummer3, courseSummer4,courseSummer5];
+  final coursesCache = [courseSummer3, courseSummer4, courseSummer5];
 
   final session = [session1];
 
@@ -108,7 +107,8 @@ void main() {
       test('first load from cache than call SignetsAPI to get the courses',
           () async {
         CourseRepositoryMock.stubSessions(
-            courseRepository as CourseRepositoryMock, toReturn: session);
+            courseRepository as CourseRepositoryMock,
+            toReturn: session);
 
         CourseRepositoryMock.stubGetCourses(
             courseRepository as CourseRepositoryMock,
@@ -119,21 +119,22 @@ void main() {
             courseRepository as CourseRepositoryMock,
             toReturn: courses);
 
-        expect(await viewModel.futureToRunGrades(),courses);
-        await untilCalled(courseRepository.courses);
+        expect(await viewModel.futureToRunGrades(), courses);
+
+        await untilCalled(courseRepository.sessions);
+        await untilCalled(courseRepository.sessions);
 
         expect(viewModel.courses, courses);
 
         verifyInOrder([
+          courseRepository.sessions,
+          courseRepository.sessions,
           courseRepository.getCourses(fromCacheOnly: true),
           courseRepository.getCourses(),
-          courseRepository.courses
         ]);
 
         verifyNoMoreInteractions(courseRepository);
       });
-
-
     });
   });
 }
