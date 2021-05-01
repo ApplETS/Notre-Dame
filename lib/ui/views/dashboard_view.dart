@@ -115,51 +115,40 @@ class _DashboardViewState extends State<DashboardView>
           dismissCard(model, flag);
         },
         cardColor: AppTheme.appletsPurple,
-        child: Column(mainAxisSize: MainAxisSize.min, children: [
-          Align(
-              alignment: Alignment.centerLeft,
-              child: Container(
-                padding: const EdgeInsets.fromLTRB(17, 15, 0, 0),
-                child: Text(AppIntl.of(context).card_applets_title,
-                    style: Theme.of(context).primaryTextTheme.headline6),
-              )),
-          Column(
+        child: Column(
+            mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Container(
-                padding: const EdgeInsets.fromLTRB(17, 10, 15, 10),
-                child: Text(AppIntl.of(context).card_applets_text,
-                    style: Theme.of(context).primaryTextTheme.bodyText2),
-              ),
-              Container(
-                padding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
-                child: Wrap(spacing: 15.0, children: [
-                  TextButton(
-                    onPressed: () {
-                      Utils.launchURL(Urls.clubFacebook, AppIntl.of(context));
-                    },
-                    child: Text(AppIntl.of(context).facebook.toUpperCase(),
-                        style: Theme.of(context).primaryTextTheme.button),
-                  ),
-                  TextButton(
-                    onPressed: () {
-                      Utils.launchURL(Urls.clubGithub, AppIntl.of(context));
-                    },
-                    child: Text(AppIntl.of(context).github.toUpperCase(),
-                        style: Theme.of(context).primaryTextTheme.button),
-                  ),
-                  TextButton(
-                    onPressed: () {
-                      Utils.launchURL(Urls.clubEmail, AppIntl.of(context));
-                    },
-                    child: Text(AppIntl.of(context).email.toUpperCase(),
-                        style: Theme.of(context).primaryTextTheme.button),
-                  ),
-                ]),
-              ),
-            ],
-          ),
-        ]),
+              Text(AppIntl.of(context).card_applets_title,
+                  style: Theme.of(context).primaryTextTheme.headline6),
+              const SizedBox(height: 10),
+              Text(AppIntl.of(context).card_applets_text,
+                  style: Theme.of(context).primaryTextTheme.bodyText2),
+              const SizedBox(height: 10),
+              Wrap(spacing: 15.0, children: [
+                TextButton(
+                  onPressed: () {
+                    Utils.launchURL(Urls.clubFacebook, AppIntl.of(context));
+                  },
+                  child: Text(AppIntl.of(context).facebook.toUpperCase(),
+                      style: Theme.of(context).primaryTextTheme.button),
+                ),
+                TextButton(
+                  onPressed: () {
+                    Utils.launchURL(Urls.clubGithub, AppIntl.of(context));
+                  },
+                  child: Text(AppIntl.of(context).github.toUpperCase(),
+                      style: Theme.of(context).primaryTextTheme.button),
+                ),
+                TextButton(
+                  onPressed: () {
+                    Utils.launchURL(Urls.clubEmail, AppIntl.of(context));
+                  },
+                  child: Text(AppIntl.of(context).email.toUpperCase(),
+                      style: Theme.of(context).primaryTextTheme.button),
+                ),
+              ]),
+            ]),
       );
 
   Widget _buildGradesCards(DashboardViewModel model, PreferencesFlag flag) =>
@@ -168,24 +157,27 @@ class _DashboardViewState extends State<DashboardView>
         onDismissed: (DismissDirection direction) {
           dismissCard(model, flag);
         },
-        child: Column(mainAxisSize: MainAxisSize.min, children: [
-          Align(
-              alignment: Alignment.centerLeft,
-              child: Container(
-                padding: const EdgeInsets.fromLTRB(17, 15, 0, 0),
-                child: Text(AppIntl.of(context).grades_title,
-                    style: Theme.of(context).primaryTextTheme.headline6),
-              )),
-          if (model.courses.isEmpty)
-            Center(
-                child: Text(
-                    AppIntl.of(context).grades_msg_no_grades.split("\n").first))
-          else
-            Wrap(
-              children:
-                  model.courses.map((course) => GradeButton(course)).toList(),
-            )
-        ]),
+        isBusy: model.busy(model.courses),
+        child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(AppIntl.of(context).grades_title,
+                  style: Theme.of(context).primaryTextTheme.headline6),
+              const SizedBox(height: 10),
+              if (model.courses.isEmpty)
+                Center(
+                    child: Text(AppIntl.of(context)
+                        .grades_msg_no_grades
+                        .split("\n")
+                        .first))
+              else
+                Wrap(
+                  children: model.courses
+                      .map((course) => GradeButton(course))
+                      .toList(),
+                )
+            ]),
       );
 
   void dismissCard(DashboardViewModel model, PreferencesFlag flag) {

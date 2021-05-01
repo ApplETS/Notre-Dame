@@ -27,6 +27,18 @@ class DismissibleCard extends StatelessWidget {
       child: Card(
         elevation: elevation,
         color: cardColor,
-        child: Stack(children: [child]),
+        child: Padding(
+          padding: const EdgeInsets.all(12.0),
+          child: Stack(children: [
+            child,
+            if (isBusy)
+              const Align(
+                  alignment: Alignment.topRight,
+                  child: SizedBox(
+                      height: 15.0,
+                      width: 15.0,
+                      child: CircularProgressIndicator(strokeWidth: 3.0)))
+          ]),
+        ),
       ));
 }
