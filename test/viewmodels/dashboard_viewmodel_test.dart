@@ -2,6 +2,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:mockito/mockito.dart';
+import 'package:notredame/core/constants/preferences_flags.dart';
 
 // MANAGER
 import 'package:notredame/core/managers/course_repository.dart';
@@ -56,36 +57,7 @@ void main() {
       numberOfCredits: 3,
       title: 'Cours générique');
 
-  final Course courseSummer3 = Course(
-      acronym: 'GEN101',
-      group: '02',
-      session: 'É2020',
-      programCode: '999',
-      grade: 'C+',
-      numberOfCredits: 3,
-      title: 'Cours générique');
-
-  final Course courseSummer4 = Course(
-      acronym: 'GEN101',
-      group: '02',
-      session: 'É2020',
-      programCode: '999',
-      grade: 'C+',
-      numberOfCredits: 3,
-      title: 'Cours générique');
-
-  final Course courseSummer5 = Course(
-      acronym: 'É2020',
-      group: '01',
-      session: 's.o.',
-      programCode: '999',
-      grade: 'K',
-      numberOfCredits: 3,
-      title: 'Cours générique');
-
-
   final courses = [courseSummer, courseSummer2];
-  final coursesCache = [courseSummer3, courseSummer4,courseSummer5];
 
   final session = [session1];
 
@@ -96,7 +68,7 @@ void main() {
       setupFlutterToastMock();
 
       settingsManager = setupSettingsManagerMock();
-      viewModel = DashboardViewModel(intl: await setupAppIntl());
+      viewModel = DashboardViewModel(intl: intl);
     });
 
     tearDown(() {
@@ -108,7 +80,8 @@ void main() {
       test('first load from cache than call SignetsAPI to get the courses',
           () async {
         CourseRepositoryMock.stubSessions(
-            courseRepository as CourseRepositoryMock, toReturn: session);
+            courseRepository as CourseRepositoryMock,
+            toReturn: session);
 
         CourseRepositoryMock.stubGetCourses(
             courseRepository as CourseRepositoryMock,
@@ -119,21 +92,59 @@ void main() {
             courseRepository as CourseRepositoryMock,
             toReturn: courses);
 
-        expect(await viewModel.futureToRunGrades(),courses);
-        await untilCalled(courseRepository.courses);
+        expect(await viewModel.futureToRunGrades(), courses);
+
+        await untilCalled(courseRepository.sessions);
+        await untilCalled(courseRepository.sessions);
 
         expect(viewModel.courses, courses);
 
         verifyInOrder([
+          courseRepository.sessions,
+          courseRepository.sessions,
           courseRepository.getCourses(fromCacheOnly: true),
           courseRepository.getCourses(),
-          courseRepository.courses
         ]);
 
         verifyNoMoreInteractions(courseRepository);
       });
 
+      test('Signets throw an error while trying to get courses', () async {
+        CourseRepositoryMock.stubSessions(
+            courseRepository as CourseRepositoryMock,
+            toReturn: session);
 
+        CourseRepositoryMock.stubGetCourses(
+            courseRepository as CourseRepositoryMock,
+            toReturn: courses,
+            fromCacheOnly: true);
+
+        CourseRepositoryMock.stubGetCoursesException(
+            courseRepository as CourseRepositoryMock,
+            fromCacheOnly: false);
+
+        CourseRepositoryMock.stubGetCourses(
+            courseRepository as CourseRepositoryMock,
+            toReturn: courses);
+
+        expect(await viewModel.futureToRunGrades(), courses,
+            reason:
+                "Even if SignetsAPI call fails, should return the cache contents");
+
+        await untilCalled(courseRepository.sessions);
+        await untilCalled(courseRepository.sessions);
+
+        expect(viewModel.courses, courses);
+
+        verifyInOrder([
+          courseRepository.sessions,
+          courseRepository.sessions,
+          courseRepository.getCourses(fromCacheOnly: true),
+          courseRepository.getCourses(),
+        ]);
+
+        verifyNoMoreInteractions(courseRepository);
+      });
     });
   });
 }
