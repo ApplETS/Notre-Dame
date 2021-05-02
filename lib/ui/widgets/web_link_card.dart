@@ -1,6 +1,5 @@
 // FLUTTER / DART / THIRD-PARTIES
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 // CONSTANT
 import 'package:notredame/core/constants/router_paths.dart';
@@ -14,7 +13,6 @@ import 'package:notredame/core/services/navigation_service.dart';
 // OTHER
 import 'package:notredame/locator.dart';
 import 'package:notredame/ui/utils/app_theme.dart';
-import 'package:notredame/core/utils/utils.dart';
 
 class WebLinkCard extends StatelessWidget {
   final QuickLink _links;
@@ -62,7 +60,7 @@ class WebLinkCard extends StatelessWidget {
     if (link == 'security') {
       _navigationService.pushNamed(RouterPaths.security);
     } else {
-      Utils.launchURL(link, AppIntl.of(context));
+      _navigationService.pushNamed(RouterPaths.webView, arguments: _links);
     }
   }
 }
