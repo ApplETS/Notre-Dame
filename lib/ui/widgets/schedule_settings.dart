@@ -50,7 +50,7 @@ class _ScheduleSettingsState extends State<ScheduleSettings> {
                   selectedColor: Theme.of(context).textTheme.bodyText1.color,
                   child: ListView(
                     children: _buildSettings(
-                            context, model as ScheduleSettingsViewModel),
+                        context, model as ScheduleSettingsViewModel),
                   ),
                 ),
               ),

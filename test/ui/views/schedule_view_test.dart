@@ -216,11 +216,16 @@ void main() {
                 child: ScheduleView(initialDay: DateTime(2020)))));
         await tester.pumpAndSettle();
 
-        // Tap on the day before selected day
+        expect(find.byType(TableCalendar, skipOffstage: false), findsOneWidget);
+        expect(find.text("${DateTime(2020).add(const Duration(days: 1)).day}"),
+            findsOneWidget);
+
+        // Tap on the day after selected day
         await tester.tap(find.descendant(
-            of: find.byType(TableCalendar),
+            of: find.byType(TableCalendar, skipOffstage: false),
             matching: find.text(
-                "${DateTime(2020).subtract(const Duration(days: 1)).day}")));
+                "${DateTime(2020).add(const Duration(days: 1)).day}",
+                skipOffstage: false)));
 
         // Reload the view
         await tester.pump();
