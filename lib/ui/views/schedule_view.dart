@@ -70,6 +70,7 @@ class _ScheduleViewState extends State<ScheduleView>
           },
           builder: (context, model, child) => BaseScaffold(
                 isLoading: model.busy(model.isLoadingEvents),
+                isInteractionLimitedWhileLoading: false,
                 appBar: AppBar(
                   title: Text(AppIntl.of(context).title_schedule),
                   centerTitle: false,
@@ -82,10 +83,10 @@ class _ScheduleViewState extends State<ScheduleView>
                       // This is required because of the new way the events are handled
                       // the View Model would not have finished loading the coursesActivities
                       // before the table.
-                      if (model.busy(model.isLoadingEvents))
+                      /*if (model.busy(model.isLoadingEvents))
                         const SizedBox(height: 8.0)
-                      else
-                        _buildTableCalendar(model),
+                      else*/
+                      _buildTableCalendar(model),
                       const SizedBox(height: 8.0),
                       const Divider(indent: 8.0, endIndent: 8.0, thickness: 1),
                       const SizedBox(height: 6.0),
@@ -149,7 +150,7 @@ class _ScheduleViewState extends State<ScheduleView>
                 as StartingDayOfWeek,
         locale: model.locale.toLanguageTag(),
         selectedDayPredicate: (day) {
-          return isSameDay(widget.initialDay ?? DateTime.now(), day);
+          return isSameDay(model.selectedDate, day);
         },
         weekendDays: const [],
         headerStyle:
@@ -181,8 +182,11 @@ class _ScheduleViewState extends State<ScheduleView>
                 ),
             markerBuilder: (context, date, events) =>
                 _buildEventsMarker(model, date, events)),
-        firstDay: model.focusedDate.subtract(const Duration(days: 31)),
-        lastDay: model.focusedDate.add(const Duration(days: 92)),
+        // Those are now required by the package table_calendar ^3.0.0. In the doc,
+        // it is suggest to set them to values that won't affect user experience.
+        // Outside the range, the date are set to disable so no event can be loaded.
+        firstDay: DateTime.utc(2010, 12, 31),
+        lastDay: DateTime.utc(2100, 12, 31),
       );
 
   /// Build the visual for the selected [date]. The [color] parameter set the color for the tile.
