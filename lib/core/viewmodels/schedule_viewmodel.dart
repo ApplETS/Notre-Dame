@@ -140,4 +140,15 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
     _settingsManager.setString(PreferencesFlag.scheduleSettingsCalendarFormat,
         EnumToString.convertToString(calendarFormat));
   }
+
+  Future<void> refresh() async {
+    try {
+      setBusyForObject(isLoadingEvents, true);
+      await _courseRepository.getCoursesActivities();
+      setBusyForObject(isLoadingEvents, false);
+      notifyListeners();
+    } on Exception catch (error) {
+      onError(error);
+    }
+  }
 }

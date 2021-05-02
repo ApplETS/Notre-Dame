@@ -1,6 +1,7 @@
 // FLUTTER / DART / THIRD-PARTIES
 import 'package:enum_to_string/enum_to_string.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:logger/logger.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -67,10 +68,16 @@ class SettingsManager with ChangeNotifier {
       if (value != null) {_locale =
           AppIntl.supportedLocales.firstWhere((e) => e.toString() == value);}
     });
+    // When the locale isn't defined, set a default locale
     if (_locale == null) {
-      return null;
+      final locale = Locale(Intl.systemLocale.split('_')[0]);
+      if (AppIntl.supportedLocales.contains(locale)) {
+        _locale = locale;
+      } else {
+        _locale = const Locale('fr');
+      }
     }
-    return Locale(_locale.languageCode);
+    return _locale;
   }
 
   /// Set ThemeMode

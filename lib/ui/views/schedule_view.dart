@@ -104,6 +104,11 @@ class _ScheduleViewState extends State<ScheduleView>
                     ],
                   ),
                 ]),
+                fab: FloatingActionButton(
+                  onPressed: model.refresh,
+                  backgroundColor: AppTheme.etsLightRed,
+                  child: const Icon(Icons.refresh),
+                ),
               ));
 
   /// Build the square with the number of [events] for the [date]
