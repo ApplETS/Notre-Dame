@@ -19,7 +19,7 @@ import 'package:notredame/ui/views/student_view.dart';
 import 'package:notredame/ui/views/about_view.dart';
 import 'package:notredame/ui/views/contributors_view.dart';
 import 'package:notredame/ui/views/choose_language_view.dart';
-import 'package:notredame/ui/widgets/web_view.dart';
+import 'package:notredame/ui/widgets/link_web_view.dart';
 
 class AppRouter {
   // ignore: missing_return
@@ -43,7 +43,7 @@ class AppRouter {
             pageBuilder: (_, __, ___) => QuickLinksView());
       case RouterPaths.webView:
         return PageRouteBuilder(
-            pageBuilder: (_, __, ___) => WebViewCard(routeSettings.arguments as QuickLink));
+            pageBuilder: (_, __, ___) => LinkWebView(routeSettings.arguments as QuickLink));
       case RouterPaths.security:
         return PageRouteBuilder(
             settings: RouteSettings(name: routeSettings.name),

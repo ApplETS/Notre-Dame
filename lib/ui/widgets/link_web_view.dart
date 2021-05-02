@@ -5,10 +5,10 @@ import 'package:notredame/core/models/quick_link.dart';
 // OTHER
 import 'package:webview_flutter/webview_flutter.dart';
 
-class WebViewCard extends StatelessWidget {
+class LinkWebView extends StatelessWidget {
   final QuickLink _links;
 
-  const WebViewCard(this._links);
+  const LinkWebView(this._links);
 
   @override
   Widget build(BuildContext context) {
