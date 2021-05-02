@@ -65,8 +65,10 @@ class SettingsManager with ChangeNotifier {
   /// Get Locale
   Locale get locale {
     _preferencesService.getString(PreferencesFlag.locale).then((value) {
-      if (value != null) {_locale =
-          AppIntl.supportedLocales.firstWhere((e) => e.toString() == value);}
+      if (value != null) {
+        _locale =
+            AppIntl.supportedLocales.firstWhere((e) => e.toString() == value);
+      }
     });
     // When the locale isn't defined, set a default locale
     if (_locale == null) {

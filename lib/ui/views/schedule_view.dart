@@ -80,12 +80,6 @@ class _ScheduleViewState extends State<ScheduleView>
                 body: Stack(children: [
                   Column(
                     children: [
-                      // This is required because of the new way the events are handled
-                      // the View Model would not have finished loading the coursesActivities
-                      // before the table.
-                      /*if (model.busy(model.isLoadingEvents))
-                        const SizedBox(height: 8.0)
-                      else*/
                       _buildTableCalendar(model),
                       const SizedBox(height: 8.0),
                       const Divider(indent: 8.0, endIndent: 8.0, thickness: 1),
