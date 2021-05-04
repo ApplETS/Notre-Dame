@@ -137,7 +137,7 @@ class _GradesDetailsViewState extends State<GradesDetailsView> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
-                            _buildHeadersSummary(
+                            _buildGradesSummary(
                               Utils.getGradeInPercentage(
                                 model.course.summary.currentMark,
                                 model.course.summary.markOutOf,
@@ -148,7 +148,7 @@ class _GradesDetailsViewState extends State<GradesDetailsView> {
                             ),
                             Padding(
                               padding: const EdgeInsets.only(top: 15.0),
-                              child: _buildHeadersSummary(
+                              child: _buildGradesSummary(
                                 Utils.getGradeInPercentage(
                                     model.course.summary.passMark,
                                     model.course.summary.markOutOf),
@@ -169,7 +169,7 @@ class _GradesDetailsViewState extends State<GradesDetailsView> {
                   children: <Widget>[
                     Expanded(
                       flex: 3,
-                      child: getHeadersSummary(
+                      child: _buildCourseGradeSummary(
                         AppIntl.of(context).grades_median,
                         validateGrade(
                           context,
@@ -181,7 +181,7 @@ class _GradesDetailsViewState extends State<GradesDetailsView> {
                     ),
                     Expanded(
                       flex: 3,
-                      child: getHeadersSummary(
+                      child: _buildCourseGradeSummary(
                         AppIntl.of(context).grades_standard_deviation,
                         validateGrade(
                           context,
@@ -192,7 +192,7 @@ class _GradesDetailsViewState extends State<GradesDetailsView> {
                     ),
                     Expanded(
                       flex: 3,
-                      child: getHeadersSummary(
+                      child: _buildCourseGradeSummary(
                         AppIntl.of(context).grades_percentile_rank,
                         validateGrade(
                           context,
@@ -234,7 +234,8 @@ class _GradesDetailsViewState extends State<GradesDetailsView> {
       ),
     );
 
-  Column _buildHeadersSummary(
+  /// Build the student grade or the average grade with their title
+  Column _buildGradesSummary(
       double grade, String recipient, Color color, BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -246,9 +247,10 @@ class _GradesDetailsViewState extends State<GradesDetailsView> {
               style:
                   Theme.of(context).textTheme.headline6.copyWith(color: color)),
         ),
-        Text(recipient,
-            style: Theme.of(context).textTheme.bodyText1.copyWith(color: color)
-            ),
+        Text(
+          recipient,
+          style: Theme.of(context).textTheme.bodyText1.copyWith(color: color)
+        ),
       ],
     );
   }
@@ -261,7 +263,8 @@ class _GradesDetailsViewState extends State<GradesDetailsView> {
     return text;
   }
 
-  SizedBox getHeadersSummary(String title, String number) {
+  /// Build the card of the Medidian, Standart deviation or Percentile Rank
+  SizedBox _buildCourseGradeSummary(String title, String number) {
     return SizedBox(
       height: 110,
       width: MediaQuery.of(context).size.width / 3.1,

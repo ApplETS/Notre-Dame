@@ -1,7 +1,6 @@
 // FLUTTER / DART / THIRD-PARTIES
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:notredame/core/constants/router_paths.dart';
 import 'package:stacked/stacked.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -13,6 +12,9 @@ import 'package:notredame/core/managers/course_repository.dart';
 
 // MODEL
 import 'package:notredame/core/models/course.dart';
+
+// CONSTANTS 
+import 'package:notredame/core/constants/router_paths.dart';
 
 // OTHER
 import 'package:notredame/locator.dart';
