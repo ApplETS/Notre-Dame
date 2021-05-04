@@ -1,14 +1,15 @@
 // FLUTTER / DART / THIRD-PARTIES
 import 'dart:collection';
-
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:stacked/stacked.dart';
 import 'package:flutter/material.dart';
-import 'package:notredame/core/constants/preferences_flags.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 // MANAGER
 import 'package:notredame/core/managers/settings_manager.dart';
+
+// CONSTANTS
+import 'package:notredame/core/constants/preferences_flags.dart';
 
 // OTHER
 import 'package:notredame/locator.dart';
@@ -50,9 +51,9 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
     Fluttertoast.showToast(msg: _appIntl.error);
   }
 
-  /// Set card order
-  void setOrder(PreferencesFlag flag, int newIndex, int oldIndex) {
-    _cardsToDisplay.removeAt(oldIndex);
+  /// Change the order of [flag] card from [oldIndex] to [newIndex].
+  void setOrder(PreferencesFlag flag, int newIndex) {
+    _cardsToDisplay.remove(flag);
     _cardsToDisplay.insert(newIndex, flag);
 
     updatePreferences();
@@ -60,7 +61,7 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
     notifyListeners();
   }
 
-  /// Hide card from dashboard
+  /// Hide [flag] card from dashboard by setting int value -1
   void hideCard(PreferencesFlag flag) {
     _cards.update(flag, (value) => -1);
 
@@ -71,7 +72,7 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
     notifyListeners();
   }
 
-  /// Set card visible on dashboard
+  /// Set [flag] card visible on the dashboard
   void setCardVisible(PreferencesFlag flag) {
     _settingsManager
         .setInt(flag, flag.index - PreferencesFlag.aboutUsCard.index)
@@ -89,6 +90,7 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
     notifyListeners();
   }
 
+  /// Reset all card indexes to their default values
   void setAllCardsVisible() {
     _cards.updateAll((key, value) {
       _settingsManager

@@ -152,7 +152,7 @@ void main() {
         ]);
 
         // Call the setter.
-        viewModel.setOrder(PreferencesFlag.progressBarCard, 0, 2);
+        viewModel.setOrder(PreferencesFlag.progressBarCard, 0);
 
         await untilCalled(
             settingsManager.setInt(PreferencesFlag.progressBarCard, 0));

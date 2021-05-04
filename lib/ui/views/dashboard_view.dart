@@ -6,7 +6,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 // VIEWMODEL
 import 'package:notredame/core/viewmodels/dashboard_viewmodel.dart';
 
-// WIDGET
+// WIDGETS
 import 'package:notredame/ui/widgets/dismissible_card.dart';
 import 'package:notredame/ui/widgets/base_scaffold.dart';
 
@@ -59,11 +59,15 @@ class _DashboardViewState extends State<DashboardView>
           return BaseScaffold(
               isInteractionLimitedWhileLoading: false,
               appBar: AppBar(
-                title: Text(AppIntl.of(context).title_dashboard),
-                centerTitle: false,
-                automaticallyImplyLeading: false,
-                actions: _buildActionButtons(model),
-              ),
+                  title: Text(AppIntl.of(context).title_dashboard),
+                  centerTitle: false,
+                  automaticallyImplyLeading: false,
+                  actions: [
+                    IconButton(
+                      icon: const Icon(Icons.restore),
+                      onPressed: model.setAllCardsVisible,
+                    ),
+                  ]),
               body: model.cards == null
                   ? buildLoading()
                   : ReorderableListView(
@@ -172,13 +176,6 @@ class _DashboardViewState extends State<DashboardView>
     final PreferencesFlag elementMoved = model.cards.keys
         .firstWhere((element) => model.cards[element] == oldIndex);
 
-    model.setOrder(elementMoved, newIndex, oldIndex);
+    model.setOrder(elementMoved, newIndex);
   }
-
-  List<Widget> _buildActionButtons(DashboardViewModel model) => [
-        IconButton(
-          icon: const Icon(Icons.restore),
-          onPressed: model.setAllCardsVisible,
-        ),
-      ];
 }
