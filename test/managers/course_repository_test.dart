@@ -441,6 +441,21 @@ void main() {
               session: session.shortName)
         ]);
       });
+
+      test("Should force fromCacheOnly mode when user has no connectivity",
+          () async {
+        // Stub the cache to return 1 activity
+        CacheManagerMock.stubGet(cacheManager as CacheManagerMock,
+            CourseRepository.coursesActivitiesCacheKey, jsonEncode(activities));
+
+        //Stub the networkingService to return no connectivity
+        reset(networkingService);
+        NetworkingServiceMock.stubHasConnectivity(networkingService,
+            hasConnectivity: false);
+
+        final activitiesCache = await manager.getCoursesActivities();
+        expect(activitiesCache, activities);
+      });
     });
 
     group("getSessions - ", () {
@@ -1071,6 +1086,21 @@ void main() {
         verifyNever(signetsApi.getCourses(
             username: anyNamed("username"), password: anyNamed("password")));
         verifyNever(cacheManager.update(CourseRepository.coursesCacheKey, any));
+      });
+
+      test("Should force fromCacheOnly mode when user has no connectivity",
+          () async {
+        // Stub the cache to return 1 activity
+        CacheManagerMock.stubGet(cacheManager as CacheManagerMock,
+            CourseRepository.coursesCacheKey, jsonEncode([courseWithGrade]));
+
+        //Stub the networkingService to return no connectivity
+        reset(networkingService);
+        NetworkingServiceMock.stubHasConnectivity(networkingService,
+            hasConnectivity: false);
+
+        final coursesCache = await manager.getCourses();
+        expect(coursesCache, [courseWithGrade]);
       });
     });
 

@@ -487,6 +487,17 @@ void main() {
             reason:
                 'The programs list should now be loaded even if the caching fails.');
       });
+
+      test("Should force fromCacheOnly mode when user has no connectivity",
+          () async {
+        //Stub the networkingService to return no connectivity
+        reset(networkingService);
+        NetworkingServiceMock.stubHasConnectivity(networkingService,
+            hasConnectivity: false);
+
+        final programsCache = await manager.getPrograms();
+        expect(programsCache, programs);
+      });
     });
 
     group("getInfo - ", () {
@@ -647,6 +658,17 @@ void main() {
         expect(results, info);
         expect(manager.info, info,
             reason: 'The info should now be loaded even if the caching fails.');
+      });
+
+      test("Should force fromCacheOnly mode when user has no connectivity",
+          () async {
+        //Stub the networkingService to return no connectivity
+        reset(networkingService);
+        NetworkingServiceMock.stubHasConnectivity(networkingService,
+            hasConnectivity: false);
+
+        final infoCache = await manager.getInfo();
+        expect(infoCache, info);
       });
     });
   });
