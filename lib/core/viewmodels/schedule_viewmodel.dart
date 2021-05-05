@@ -130,4 +130,15 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
     }
     return _coursesActivities.containsKey(date) ? _coursesActivities[date] : [];
   }
+
+  Future<void> refresh() async {
+    try {
+      setBusyForObject(isLoadingEvents, true);
+      await _courseRepository.getCoursesActivities();
+      setBusyForObject(isLoadingEvents, false);
+      notifyListeners();
+    } on Exception catch (error) {
+      onError(error);
+    }
+  }
 }

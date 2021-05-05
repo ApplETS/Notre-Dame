@@ -88,4 +88,18 @@ class ProfileViewModel extends FutureViewModel<List<Program>> {
       Fluttertoast.showToast(msg: _appIntl.no_connectivity);
     }
   }
+
+  Future refresh() async {
+    try {
+      setBusyForObject(isLoadingEvents, true);
+      _userRepository
+          .getInfo()
+          .then((value) => _userRepository.getPrograms().then((value) {
+                setBusyForObject(isLoadingEvents, false);
+                notifyListeners();
+              }));
+    } on Exception catch (error) {
+      onError(error);
+    }
+  }
 }

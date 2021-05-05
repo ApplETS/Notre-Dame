@@ -35,7 +35,7 @@ Future<void> main() async {
   // Initialize firebase
   await Firebase.initializeApp();
 
-  /// Manage the settings
+  // Manage the settings
   final SettingsManager settingsManager = locator<SettingsManager>();
   await settingsManager.fetchLanguageAndThemeMode();
 

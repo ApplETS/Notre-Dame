@@ -43,6 +43,20 @@ void main() {
 
     group("getScheduleSettings - ", () {
       test("validate default behaviour", () async {
+        // Stubs the answer of the preferences services
+        PreferencesServiceMock.stubGetString(
+            preferencesService as PreferencesServiceMock,
+            PreferencesFlag.scheduleSettingsStartWeekday,
+            toReturn: null);
+        PreferencesServiceMock.stubGetString(
+            preferencesService as PreferencesServiceMock,
+            PreferencesFlag.scheduleSettingsCalendarFormat,
+            toReturn: null);
+        PreferencesServiceMock.stubGetBool(
+            preferencesService as PreferencesServiceMock,
+            PreferencesFlag.scheduleSettingsShowTodayBtn,
+            toReturn: null);
+
         final expected = {
           PreferencesFlag.scheduleSettingsStartWeekday:
               StartingDayOfWeek.monday,
@@ -203,6 +217,19 @@ void main() {
                 "${SettingsManager.tag}_${EnumToString.convertToString(flag)}",
                 any))
             .called(1);
+
+        verifyNoMoreInteractions(preferencesService);
+        verifyNoMoreInteractions(analyticsService);
+      });
+
+      test("default locale isn't set", () {
+        const flag = PreferencesFlag.locale;
+        when((preferencesService as PreferencesServiceMock).getString(flag))
+            .thenAnswer((_) async => null);
+
+        expect(manager.locale, const Locale('en'));
+
+        verify(preferencesService.getString(PreferencesFlag.locale)).called(1);
 
         verifyNoMoreInteractions(preferencesService);
         verifyNoMoreInteractions(analyticsService);

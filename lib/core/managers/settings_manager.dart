@@ -1,6 +1,7 @@
 // FLUTTER / DART / THIRD-PARTIES
 import 'package:enum_to_string/enum_to_string.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:logger/logger.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -69,10 +70,16 @@ class SettingsManager with ChangeNotifier {
             AppIntl.supportedLocales.firstWhere((e) => e.toString() == value);
       }
     });
+    // When the locale isn't defined, set a default locale
     if (_locale == null) {
-      return null;
+      final locale = Locale(Intl.systemLocale.split('_')[0]);
+      if (AppIntl.supportedLocales.contains(locale)) {
+        _locale = locale;
+      } else {
+        _locale = const Locale('fr');
+      }
     }
-    return Locale(_locale.languageCode);
+    return _locale;
   }
 
   /// Set ThemeMode
@@ -103,19 +110,19 @@ class SettingsManager with ChangeNotifier {
   Future<Map<PreferencesFlag, dynamic>> getScheduleSettings() async {
     final Map<PreferencesFlag, dynamic> settings = {};
 
-    final calendarFormat = EnumToString.fromString(
-            CalendarFormat.values,
-            await _preferencesService
-                .getString(PreferencesFlag.scheduleSettingsCalendarFormat)) ??
-        CalendarFormat.week;
+    final calendarFormat = await _preferencesService
+        .getString(PreferencesFlag.scheduleSettingsCalendarFormat)
+        .then((value) => value == null
+            ? CalendarFormat.week
+            : EnumToString.fromString(CalendarFormat.values, value));
     settings.putIfAbsent(
         PreferencesFlag.scheduleSettingsCalendarFormat, () => calendarFormat);
 
-    final startingWeekDay = EnumToString.fromString(
-            StartingDayOfWeek.values,
-            await _preferencesService
-                .getString(PreferencesFlag.scheduleSettingsStartWeekday)) ??
-        StartingDayOfWeek.monday;
+    final startingWeekDay = await _preferencesService
+        .getString(PreferencesFlag.scheduleSettingsStartWeekday)
+        .then((value) => value == null
+            ? StartingDayOfWeek.monday
+            : EnumToString.fromString(StartingDayOfWeek.values, value));
     settings.putIfAbsent(
         PreferencesFlag.scheduleSettingsStartWeekday, () => startingWeekDay);
 
