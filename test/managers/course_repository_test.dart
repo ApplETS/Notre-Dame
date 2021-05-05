@@ -6,7 +6,6 @@ import 'package:mockito/mockito.dart';
 
 // SERVICES / MANAGER
 import 'package:notredame/core/services/analytics_service.dart';
-import 'package:notredame/core/services/networking_service.dart';
 import 'package:notredame/core/services/signets_api.dart';
 import 'package:notredame/core/managers/user_repository.dart';
 import 'package:notredame/core/managers/cache_manager.dart';
