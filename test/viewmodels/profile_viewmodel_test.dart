@@ -17,9 +17,11 @@ import '../helpers.dart';
 
 // MOCKS
 import '../mock/managers/user_repository_mock.dart';
+import '../mock/services/networking_service_mock.dart';
 
 UserRepository userRepository;
 SettingsManager settingsManager;
+NetworkingServiceMock networkingService;
 ProfileViewModel viewModel;
 
 void main() {
@@ -68,13 +70,18 @@ void main() {
     setUp(() async {
       // Setting up mocks
       userRepository = setupUserRepositoryMock();
+      networkingService = setupNetworkingServiceMock() as NetworkingServiceMock;
       setupFlutterToastMock();
+
+      // Stub to simulate that the user has an active internet connection
+      NetworkingServiceMock.stubHasConnectivity(networkingService);
 
       viewModel = ProfileViewModel(intl: await setupAppIntl());
     });
 
     tearDown(() {
       unregister<UserRepository>();
+      unregister<NetworkingServiceMock>();
       tearDownFlutterToastMock();
     });
 

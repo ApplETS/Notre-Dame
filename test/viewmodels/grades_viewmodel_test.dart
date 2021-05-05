@@ -12,10 +12,12 @@ import 'package:notredame/core/viewmodels/grades_viewmodel.dart';
 
 import '../helpers.dart';
 import '../mock/managers/course_repository_mock.dart';
+import '../mock/services/networking_service_mock.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
   CourseRepository courseRepository;
+  NetworkingServiceMock networkingService;
   AppIntl intl;
   GradesViewModel viewModel;
 
@@ -73,19 +75,30 @@ void main() {
     's.o.': [courseWithoutSession]
   };
 
-  final courses = [courseSummer, courseSummer2, courseWinter, courseFall, courseWithoutSession];
+  final courses = [
+    courseSummer,
+    courseSummer2,
+    courseWinter,
+    courseFall,
+    courseWithoutSession
+  ];
 
   group('GradesViewModel -', () {
     setUp(() async {
       courseRepository = setupCourseRepositoryMock();
+      networkingService = setupNetworkingServiceMock() as NetworkingServiceMock;
       intl = await setupAppIntl();
       setupFlutterToastMock();
+
+      // Stub to simulate that the user has an active internet connection
+      NetworkingServiceMock.stubHasConnectivity(networkingService);
 
       viewModel = GradesViewModel(intl: intl);
     });
 
     tearDown(() {
       unregister<CourseRepository>();
+      unregister<NetworkingServiceMock>();
       tearDownFlutterToastMock();
     });
 
