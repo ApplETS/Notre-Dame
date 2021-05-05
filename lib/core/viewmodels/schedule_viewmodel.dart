@@ -15,6 +15,9 @@ import 'package:notredame/core/models/course_activity.dart';
 // SERVICE
 import 'package:notredame/core/services/networking_service.dart';
 
+// UTILS
+import 'package:notredame/core/utils/utils.dart';
+
 // OTHER
 import 'package:notredame/locator.dart';
 import 'package:notredame/core/constants/preferences_flags.dart';
@@ -71,16 +74,10 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
           }
         }).whenComplete(() {
           setBusyForObject(isLoadingEvents, false);
-          displayNoConnectionToast();
+          Utils.showNoConnectionToast(_networkingService, _appIntl);
         });
         return value;
       });
-
-  Future displayNoConnectionToast() async {
-    if (!await _networkingService.hasConnectivity()) {
-      Fluttertoast.showToast(msg: _appIntl.no_connectivity);
-    }
-  }
 
   @override
   // ignore: type_annotate_public_apis

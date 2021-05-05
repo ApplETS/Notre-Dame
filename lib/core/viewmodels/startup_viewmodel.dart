@@ -1,9 +1,9 @@
 // FLUTTER / DART / THIRD-PARTIES
-import 'package:notredame/core/services/networking_service.dart';
 import 'package:stacked/stacked.dart';
 
 // SERVICES / MANAGER
 import 'package:notredame/core/managers/user_repository.dart';
+import 'package:notredame/core/services/networking_service.dart';
 import 'package:notredame/core/services/navigation_service.dart'; // MANAGER
 import 'package:notredame/core/managers/settings_manager.dart';
 

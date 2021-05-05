@@ -14,6 +14,9 @@ import 'package:notredame/core/models/program.dart';
 // SERVICE
 import 'package:notredame/core/services/networking_service.dart';
 
+// UTILS
+import 'package:notredame/core/utils/utils.dart';
+
 // OTHERS
 import '../../locator.dart';
 
@@ -78,16 +81,10 @@ class ProfileViewModel extends FutureViewModel<List<Program>> {
             .then((value) => _userRepository.getPrograms().catchError(onError))
             .whenComplete(() {
           setBusyForObject(isLoadingEvents, false);
-          displayNoConnectionToast();
+          Utils.showNoConnectionToast(_networkingService, _appIntl);
         });
         return value;
       });
-
-  Future displayNoConnectionToast() async {
-    if (!await _networkingService.hasConnectivity()) {
-      Fluttertoast.showToast(msg: _appIntl.no_connectivity);
-    }
-  }
 
   Future refresh() async {
     try {
