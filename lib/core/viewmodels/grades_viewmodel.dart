@@ -10,6 +10,9 @@ import 'package:notredame/core/managers/course_repository.dart';
 // MODEL
 import 'package:notredame/core/models/course.dart';
 
+// SERVICE
+import 'package:notredame/core/services/networking_service.dart';
+
 // OTHER
 import 'package:notredame/locator.dart';
 
@@ -19,6 +22,9 @@ class GradesViewModel extends FutureViewModel<Map<String, List<Course>>> {
 
   /// Localization class of the application.
   final AppIntl _appIntl;
+
+  /// Verify if user has an active internet connection
+  final NetworkingService _networkingService = locator<NetworkingService>();
 
   /// Contains all the courses of the student sorted by session
   final Map<String, List<Course>> coursesBySession = {};
@@ -36,16 +42,23 @@ class GradesViewModel extends FutureViewModel<Map<String, List<Course>>> {
         _buildCoursesBySession(coursesCached);
         // ignore: return_type_invalid_for_catch_error
         _courseRepository.getCourses().catchError(onError).then((value) {
-          if(value != null) {
+          if (value != null) {
             // Update the courses list
             _buildCoursesBySession(_courseRepository.courses);
           }
         }).whenComplete(() {
           setBusy(false);
+          displayNoConnectionToast();
         });
 
         return coursesBySession;
       });
+
+  Future displayNoConnectionToast() async {
+    if (!await _networkingService.hasConnectivity()) {
+      Fluttertoast.showToast(msg: _appIntl.no_connectivity);
+    }
+  }
 
   @override
   // ignore: type_annotate_public_apis
@@ -85,9 +98,9 @@ class GradesViewModel extends FutureViewModel<Map<String, List<Course>>> {
       if (a == b) return 0;
 
       // When the session is 's.o.' we put the course at the end of the list
-      if(a == "s.o.") {
+      if (a == "s.o.") {
         return 1;
-      } else if(b == "s.o.") {
+      } else if (b == "s.o.") {
         return -1;
       }
 

@@ -220,5 +220,7 @@
   "discovery_navbar_ets_page_title": "ÉTS",
   "discovery_navbar_ets_page_details": "This page allows you to quickly consult all of the important ÉTS links, such as Moodle and MonÉTS.",  
   "discovery_navbar_more_page_title": "More",
-  "discovery_navbar_more_page_details": "This page gives you access to additional options for the application."
+  "discovery_navbar_more_page_details": "This page gives you access to additional options for the application.",
+
+  "no_connectivity": "No internet connection"
 }
