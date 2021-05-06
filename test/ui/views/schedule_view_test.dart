@@ -217,7 +217,7 @@ void main() {
         await tester.pumpAndSettle();
 
         expect(find.byType(TableCalendar, skipOffstage: false), findsOneWidget);
-        expect(find.text("${DateTime(2020).add(const Duration(days: 1)).day}"),
+        expect(find.text("${DateTime(2020).add(const Duration(days: 1)).day}", skipOffstage: false),
             findsOneWidget);
 
         // Tap on the day after selected day
