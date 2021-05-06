@@ -78,7 +78,7 @@ class _ScheduleViewState extends State<ScheduleView>
                   actions: _buildActionButtons(model),
                 ),
                 body: Stack(children: [
-                  Column(
+                  ListView(
                     children: [
                       _buildTableCalendar(model),
                       const SizedBox(height: 8.0),
@@ -90,12 +90,15 @@ class _ScheduleViewState extends State<ScheduleView>
                                   .format(model.selectedDate),
                               style: Theme.of(context).textTheme.headline5)),
                       const SizedBox(height: 2.0),
-                      Expanded(
-                          child: model.selectedDateEvents.isEmpty
-                              ? Center(
-                                  child: Text(
-                                      AppIntl.of(context).schedule_no_event))
-                              : _buildEventList(model.selectedDateEvents))
+                      if (model.selectedDateEvents.isEmpty)
+                        Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 64.0),
+                          child: Center(
+                              child:
+                                  Text(AppIntl.of(context).schedule_no_event)),
+                        )
+                      else
+                        _buildEventList(model.selectedDateEvents)
                     ],
                   ),
                 ]),
@@ -199,6 +202,7 @@ class _ScheduleViewState extends State<ScheduleView>
   /// Build the list of the events for the selected day.
   Widget _buildEventList(List<dynamic> events) {
     return ListView.separated(
+        shrinkWrap: true,
         itemBuilder: (_, index) =>
             CourseActivityTile(events[index] as CourseActivity),
         separatorBuilder: (_, index) => (index < events.length)
