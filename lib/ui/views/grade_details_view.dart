@@ -29,6 +29,8 @@ class GradesDetailsView extends StatefulWidget {
 }
 
 class _GradesDetailsViewState extends State<GradesDetailsView> {
+  double initialTopHeight = 0.0;
+
   @override
   Widget build(BuildContext context) =>
       ViewModelBuilder<GradesDetailsViewModel>.reactive(
@@ -47,19 +49,22 @@ class _GradesDetailsViewState extends State<GradesDetailsView> {
                 expandedHeight: 80.0,
                 flexibleSpace: LayoutBuilder(
                   builder: (BuildContext context, BoxConstraints constraints) {
+                    if(initialTopHeight == 0.0) {
+                      initialTopHeight = constraints.biggest.height;
+                    }                    
                     final double topHeight = constraints.biggest.height;
+
                     return FlexibleSpaceBar(
                       centerTitle: true,
                       titlePadding: EdgeInsetsDirectional.only(
-                        start: topHeight < 120.0 ? 60.0 : 15.0,
-                        top: topHeight < 120.0 ? 5.0 : 15.0,
-                        bottom: topHeight < 120.0 ? 15.0 : 1.0,
+                        start: topHeight < initialTopHeight ? 50.0 : 15.0,
+                        bottom: topHeight < initialTopHeight ? 16.0 : 5.0,
                       ),
                       title: Align(
                         alignment: AlignmentDirectional.bottomStart,
                         child: Text(
                           model.course.acronym ?? "",
-                          style: TextStyle(fontSize: topHeight < 120 ? 20 : 15),
+                          style: TextStyle(fontSize: topHeight < initialTopHeight ? 20 : 19),
                         ),
                       ),
                     );
@@ -132,7 +137,7 @@ class _GradesDetailsViewState extends State<GradesDetailsView> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
-                            _buildHeadersSummary(
+                            _buildGradesSummary(
                               Utils.getGradeInPercentage(
                                 model.course.summary.currentMark,
                                 model.course.summary.markOutOf,
@@ -143,7 +148,7 @@ class _GradesDetailsViewState extends State<GradesDetailsView> {
                             ),
                             Padding(
                               padding: const EdgeInsets.only(top: 15.0),
-                              child: _buildHeadersSummary(
+                              child: _buildGradesSummary(
                                 Utils.getGradeInPercentage(
                                     model.course.summary.passMark,
                                     model.course.summary.markOutOf),
@@ -164,7 +169,7 @@ class _GradesDetailsViewState extends State<GradesDetailsView> {
                   children: <Widget>[
                     Expanded(
                       flex: 3,
-                      child: getHeadersSummary(
+                      child: _buildCourseGradeSummary(
                         AppIntl.of(context).grades_median,
                         validateGrade(
                           context,
@@ -176,7 +181,7 @@ class _GradesDetailsViewState extends State<GradesDetailsView> {
                     ),
                     Expanded(
                       flex: 3,
-                      child: getHeadersSummary(
+                      child: _buildCourseGradeSummary(
                         AppIntl.of(context).grades_standard_deviation,
                         validateGrade(
                           context,
@@ -187,7 +192,7 @@ class _GradesDetailsViewState extends State<GradesDetailsView> {
                     ),
                     Expanded(
                       flex: 3,
-                      child: getHeadersSummary(
+                      child: _buildCourseGradeSummary(
                         AppIntl.of(context).grades_percentile_rank,
                         validateGrade(
                           context,
@@ -229,18 +234,23 @@ class _GradesDetailsViewState extends State<GradesDetailsView> {
       ),
     );
 
-  Column _buildHeadersSummary(
+  /// Build the student grade or the average grade with their title
+  Column _buildGradesSummary(
       double grade, String recipient, Color color, BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
+        FittedBox(
+            fit: BoxFit.fitWidth,
+            child: Text(
+              AppIntl.of(context).grades_grade_with_percentage(grade, 100, grade),
+              style:
+                  Theme.of(context).textTheme.headline6.copyWith(color: color)),
+        ),
         Text(
-            AppIntl.of(context).grades_grade_with_percentage(grade, 100, grade),
-            style:
-                Theme.of(context).textTheme.headline6.copyWith(color: color, fontSize: 18.0)),
-        Text(recipient,
-            style: Theme.of(context).textTheme.bodyText1.copyWith(color: color)
-            ),
+          recipient,
+          style: Theme.of(context).textTheme.bodyText1.copyWith(color: color)
+        ),
       ],
     );
   }
@@ -253,7 +263,8 @@ class _GradesDetailsViewState extends State<GradesDetailsView> {
     return text;
   }
 
-  SizedBox getHeadersSummary(String title, String number) {
+  /// Build the card of the Medidian, Standart deviation or Percentile Rank
+  SizedBox _buildCourseGradeSummary(String title, String number) {
     return SizedBox(
       height: 110,
       width: MediaQuery.of(context).size.width / 3.1,

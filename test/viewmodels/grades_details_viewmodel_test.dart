@@ -2,6 +2,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
+import 'package:mockito/mockito.dart';
 
 // MODELS
 import 'package:notredame/core/models/course_summary.dart';
@@ -132,6 +133,19 @@ void main() {
         await viewModel.refresh();
 
         expect(viewModel.course, courseWithSummary);
+      });
+
+      test('Signets throw an error', () async {
+        CourseRepositoryMock.stubGetCourseSummaryException(
+            courseRepository as CourseRepositoryMock, courseWithoutSummary);
+
+        await viewModel.refresh();
+
+        expect(viewModel.course, courseWithoutSummary);
+        
+        verify(courseRepository.getCourseSummary(viewModel.course));
+
+        verifyNoMoreInteractions(courseRepository);
       });
     });
   });

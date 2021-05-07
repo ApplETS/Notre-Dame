@@ -14,6 +14,9 @@ import 'package:notredame/core/managers/course_repository.dart';
 // MODEL
 import 'package:notredame/core/models/course.dart';
 
+// CONSTANTS 
+import 'package:notredame/core/constants/router_paths.dart';
+
 // OTHER
 import 'package:notredame/locator.dart';
 
