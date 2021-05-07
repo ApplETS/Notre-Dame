@@ -65,7 +65,7 @@ void main() {
       testWidgets("Display acronym of the course and the current grade",
           (WidgetTester tester) async {
         await tester
-            .pumpWidget(localizedWidget(child: GradeButton(courseWithGrade)));
+            .pumpWidget(localizedWidget(child: GradeButton(courseWithGrade, null)));
         await tester.pumpAndSettle();
 
         expect(find.text(courseWithGrade.acronym), findsOneWidget);
@@ -75,7 +75,7 @@ void main() {
       testWidgets("Grade not available and summary is loaded.",
           (WidgetTester tester) async {
         await tester
-            .pumpWidget(localizedWidget(child: GradeButton(courseWithSummary)));
+            .pumpWidget(localizedWidget(child: GradeButton(courseWithSummary, null)));
         await tester.pumpAndSettle();
 
         expect(find.text(courseWithGrade.acronym), findsOneWidget);
@@ -91,7 +91,7 @@ void main() {
       testWidgets("Grade and summary not available.",
           (WidgetTester tester) async {
         await tester.pumpWidget(
-            localizedWidget(child: GradeButton(gradesNotAvailable)));
+            localizedWidget(child: GradeButton(gradesNotAvailable, null)));
         await tester.pumpAndSettle();
 
         expect(find.text(courseWithGrade.acronym), findsOneWidget);
