@@ -183,6 +183,7 @@ class _ScheduleViewState extends State<ScheduleView>
   /// Build the list of the events for the selected day.
   Widget _buildEventList(List<dynamic> events) {
     return ListView.separated(
+        physics: const ScrollPhysics(),
         shrinkWrap: true,
         itemBuilder: (_, index) =>
             CourseActivityTile(events[index] as CourseActivity),
