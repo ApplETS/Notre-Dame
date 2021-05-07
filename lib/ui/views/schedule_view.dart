@@ -107,12 +107,6 @@ class _ScheduleViewState extends State<ScheduleView>
                     ],
                   ),
                 ]),
-                fab: FloatingActionButton(
-                  onPressed: model.refresh,
-                  backgroundColor: AppTheme.etsLightRed,
-                  mini: true,
-                  child: const Icon(Icons.refresh),
-                ),
               ));
 
   /// Build the square with the number of [events] for the [date]
@@ -205,6 +199,10 @@ class _ScheduleViewState extends State<ScheduleView>
                     _calendarController.setSelectedDay(DateTime.now());
                     model.selectedDate = DateTime.now();
                   })),
+        IconButton(
+          icon: const Icon(Icons.refresh),
+          onPressed: () => model.refresh(),
+        ),
         IconButton(
             icon: const Icon(Icons.settings),
             onPressed: () async {
