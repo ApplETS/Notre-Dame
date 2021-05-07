@@ -102,13 +102,15 @@ class _ScheduleViewState extends State<ScheduleView>
                                   Text(AppIntl.of(context).schedule_no_event)),
                         )
                       else
-                        _buildEventList(model.selectedDateEvents)
+                        _buildEventList(model.selectedDateEvents),
+                      const SizedBox(height: 16.0),
                     ],
                   ),
                 ]),
                 fab: FloatingActionButton(
                   onPressed: model.refresh,
                   backgroundColor: AppTheme.etsLightRed,
+                  mini: true,
                   child: const Icon(Icons.refresh),
                 ),
               ));
