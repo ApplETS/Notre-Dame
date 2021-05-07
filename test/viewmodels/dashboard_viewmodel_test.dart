@@ -5,6 +5,7 @@ import 'package:notredame/core/constants/preferences_flags.dart';
 
 // MANAGERS
 import 'package:notredame/core/managers/settings_manager.dart';
+import 'package:notredame/core/services/preferences_service.dart';
 
 // VIEW-MODEL
 import 'package:notredame/core/viewmodels/dashboard_viewmodel.dart';
@@ -13,11 +14,13 @@ import '../helpers.dart';
 
 // MOCKS
 import '../mock/managers/settings_manager_mock.dart';
-
-SettingsManager settingsManager;
-DashboardViewModel viewModel;
+import '../mock/services/preferences_service_mock.dart';
 
 void main() {
+  PreferencesService preferenceService;
+  SettingsManager settingsManager;
+  DashboardViewModel viewModel;
+
   // Needed to support FlutterToast.
   TestWidgetsFlutterBinding.ensureInitialized();
 
@@ -46,6 +49,8 @@ void main() {
     setUp(() async {
       // Setting up mocks
       settingsManager = setupSettingsManagerMock();
+      preferenceService = setupPreferencesServiceMock();
+
       setupFlutterToastMock();
 
       viewModel = DashboardViewModel(intl: await setupAppIntl());
@@ -69,6 +74,26 @@ void main() {
           PreferencesFlag.scheduleCard,
           PreferencesFlag.progressBarCard
         ]);
+
+        verify(settingsManager.getDashboard()).called(1);
+        verifyNoMoreInteractions(settingsManager);
+      });
+
+      test("An exception is thrown during the preferenceService call",
+          () async {
+        PreferencesServiceMock.stubException(
+            preferenceService as PreferencesServiceMock,
+            PreferencesFlag.aboutUsCard);
+        PreferencesServiceMock.stubException(
+            preferenceService as PreferencesServiceMock,
+            PreferencesFlag.scheduleCard);
+        PreferencesServiceMock.stubException(
+            preferenceService as PreferencesServiceMock,
+            PreferencesFlag.progressBarCard);
+
+        await viewModel.futureToRun();
+        // expect(viewModel.cards, dashboard);
+        expect(viewModel.cardsToDisplay, null);
 
         verify(settingsManager.getDashboard()).called(1);
         verifyNoMoreInteractions(settingsManager);
