@@ -25,7 +25,6 @@ class _WebLinkCardState extends State<WebLinkCard> {
   @override
   void initState() {
     super.initState();
-    
     model = WebLinkCardViewModel();
   }
 

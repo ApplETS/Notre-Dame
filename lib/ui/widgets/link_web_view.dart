@@ -1,5 +1,7 @@
 // FLUTTER / DART / THIRD-PARTIES
 import 'package:flutter/material.dart';
+
+// MODELS
 import 'package:notredame/core/models/quick_link.dart';
 
 // OTHER

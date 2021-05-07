@@ -1,8 +1,9 @@
 // FLUTTER / DART / THIRD-PARTIES
-import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:notredame/core/models/quick_link.dart';
-import 'package:notredame/core/services/internal_info_service.dart';
 import 'package:stacked/stacked.dart';
+
+// MODELS
+import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 
 // CONSTANTS
 import 'package:notredame/core/constants/router_paths.dart';
@@ -10,6 +11,7 @@ import 'package:notredame/core/constants/router_paths.dart';
 // SERVICES
 import 'package:notredame/core/services/analytics_service.dart';
 import 'package:notredame/core/services/navigation_service.dart';
+import 'package:notredame/core/services/internal_info_service.dart';
 
 // UTILS
 import 'package:notredame/ui/utils/app_theme.dart';

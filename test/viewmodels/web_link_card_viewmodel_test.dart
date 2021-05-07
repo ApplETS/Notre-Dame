@@ -5,6 +5,8 @@ import 'package:mockito/mockito.dart';
 
 // CONSTANTS
 import 'package:notredame/core/constants/router_paths.dart';
+
+// MODELS
 import 'package:notredame/core/models/quick_link.dart';
 
 // SERVICES
@@ -28,6 +30,7 @@ void main() {
   WebLinkCardViewModel viewModel;
   
   final _quickLink = QuickLink(image: 'assets/images/ic_security_red.png', name: 'test', link: 'testlink');
+  final _securityQuickLink = QuickLink(image: 'assets/images/ic_security_red.png', name: 'test', link: 'security');
     
   group('WebLinkCardViewModel - ', () {
     setUp(() async {
@@ -49,7 +52,7 @@ void main() {
 
     group('onLinkClicked -', () {
       test('navigate to security', () async {
-        viewModel.onLinkClicked(_quickLink);
+        await viewModel.onLinkClicked(_securityQuickLink);
 
         verify(navigationService.pushNamed(RouterPaths.security));
       });
@@ -59,7 +62,7 @@ void main() {
 
         await viewModel.onLinkClicked(_quickLink);
 
-        verify(navigationService.pushNamed(RouterPaths.webView, arguments: _quickLink.link));
+        verify(navigationService.pushNamed(RouterPaths.webView, arguments: _quickLink));
       });
 
     });
