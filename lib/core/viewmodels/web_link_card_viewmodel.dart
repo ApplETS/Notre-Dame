@@ -1,5 +1,6 @@
 // FLUTTER / DART / THIRD-PARTIES
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
+import 'package:notredame/core/models/quick_link.dart';
 import 'package:notredame/core/services/internal_info_service.dart';
 import 'package:stacked/stacked.dart';
 
@@ -10,8 +11,10 @@ import 'package:notredame/core/constants/router_paths.dart';
 import 'package:notredame/core/services/analytics_service.dart';
 import 'package:notredame/core/services/navigation_service.dart';
 
-// OTHER
+// UTILS
 import 'package:notredame/ui/utils/app_theme.dart';
+
+// OTHER
 import 'package:notredame/locator.dart';
 
 class WebLinkCardViewModel extends BaseViewModel {
@@ -24,14 +27,14 @@ class WebLinkCardViewModel extends BaseViewModel {
   final InternalInfoService _internalInfoService = locator<InternalInfoService>();
 
    /// used to open a website or the security view
-  Future<void> onLinkClicked(String link) async {
-    if (link == 'security') {
+  Future<void> onLinkClicked(QuickLink link) async {
+    if (link.link == 'security') {
       _navigationService.pushNamed(RouterPaths.security);
     } else {
       try {
-        await launchInBrowser(link);
+        await launchInBrowser(link.link);
       } catch (error) { 
-        await launchWebView(error.toString(), link);     
+        await launchWebView(error.toString(), link);
       }
     }
   }
@@ -51,10 +54,10 @@ class WebLinkCardViewModel extends BaseViewModel {
                 preferredBarTintColor: AppTheme.etsLightRed)));
   }
 
-  Future<void> launchWebView(String error, String url) async {
+  Future<void> launchWebView(String error, QuickLink link) async {
     final String errorMessage = await _internalInfoService.getDeviceInfoForErrorReporting();
 
     _analyticsService.logError("web_link_card", "**Error message : $error\n$errorMessage");
-    _navigationService.pushNamed(RouterPaths.webView, arguments: url);
+    _navigationService.pushNamed(RouterPaths.webView, arguments: link);
   }
 }

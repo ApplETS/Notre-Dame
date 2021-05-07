@@ -28,11 +28,11 @@ void setupLocator() {
   locator.registerLazySingleton(() => AnalyticsService());
   locator.registerLazySingleton(() => RiveAnimationService());
   locator.registerLazySingleton(() => MonETSApi(http.Client()));
+  locator.registerLazySingleton(() => InternalInfoService());
   locator.registerLazySingleton(() => GithubApi());
   locator.registerLazySingleton(() => SignetsApi());
   locator.registerLazySingleton(() => const FlutterSecureStorage());
   locator.registerLazySingleton(() => PreferencesService());
-  locator.registerLazySingleton(() => InternalInfoService());
 
   // Managers
   locator.registerLazySingleton(() => UserRepository());

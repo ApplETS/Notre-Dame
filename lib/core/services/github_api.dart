@@ -64,7 +64,7 @@ class GithubApi {
                 "```$feedbackText```\n\n"
                 "**Screenshot** \n"
                 "![screenshot](https://github.com/$_repositoryReportSlug/blob/main/$fileName?raw=true)\n\n"
-                "${_internalInfoService.getDeviceInfoForErrorReporting()}",
+                "${await _internalInfoService.getDeviceInfoForErrorReporting()}",
             labels: ['bug', 'platform: ${Platform.operatingSystem}']));
   }
 

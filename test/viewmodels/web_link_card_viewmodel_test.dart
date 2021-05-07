@@ -5,6 +5,7 @@ import 'package:mockito/mockito.dart';
 
 // CONSTANTS
 import 'package:notredame/core/constants/router_paths.dart';
+import 'package:notredame/core/models/quick_link.dart';
 
 // SERVICES
 import 'package:notredame/core/services/analytics_service.dart';
@@ -25,7 +26,9 @@ void main() {
   InternalInfoService internalInfoService;
 
   WebLinkCardViewModel viewModel;
-
+  
+  final _quickLink = QuickLink(image: 'assets/images/ic_security_red.png', name: 'test', link: 'testlink');
+    
   group('WebLinkCardViewModel - ', () {
     setUp(() async {
       navigationService = setupNavigationServiceMock();
@@ -46,18 +49,17 @@ void main() {
 
     group('onLinkClicked -', () {
       test('navigate to security', () async {
-        viewModel.onLinkClicked('security');
+        viewModel.onLinkClicked(_quickLink);
 
         verify(navigationService.pushNamed(RouterPaths.security));
       });
 
       test('navigate to web view if launchInBrowser throw', () async {
         InternalInfoServiceMock.stubGetDeviceInfoForErrorReporting(internalInfoService as InternalInfoServiceMock);
-        const url = 'testlink';
 
-        await viewModel.onLinkClicked(url);
+        await viewModel.onLinkClicked(_quickLink);
 
-        verify(navigationService.pushNamed(RouterPaths.webView, arguments: url));
+        verify(navigationService.pushNamed(RouterPaths.webView, arguments: _quickLink.link));
       });
 
     });

@@ -37,7 +37,7 @@ class _WebLinkCardState extends State<WebLinkCard> {
       child: Card(
         elevation: 4.0,
         child: InkWell(
-          onTap: () => model.onLinkClicked(widget._links.link),
+          onTap: () => model.onLinkClicked(widget._links),
           splashColor: AppTheme.etsLightRed.withAlpha(50),
           child: Padding(
             padding: const EdgeInsets.all(8.0),
