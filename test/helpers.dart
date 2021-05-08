@@ -5,7 +5,6 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:logger/logger.dart';
-import 'package:notredame/core/services/networking_service.dart';
 
 // OTHER
 import 'package:notredame/locator.dart';
@@ -22,6 +21,7 @@ import 'package:notredame/core/services/preferences_service.dart';
 import 'package:notredame/core/managers/course_repository.dart';
 import 'package:notredame/core/services/github_api.dart';
 import 'package:notredame/core/managers/settings_manager.dart';
+import 'package:notredame/core/services/networking_service.dart';
 
 // MOCKS
 import 'mock/managers/cache_manager_mock.dart';
@@ -91,7 +91,7 @@ void setupFlutterToastMock() {
   const MethodChannel channel = MethodChannel('PonnamKarthik/fluttertoast');
 
   channel.setMockMethodCallHandler((MethodCall methodCall) async {
-    if(methodCall.method == 'showToast') {
+    if (methodCall.method == 'showToast') {
       return true;
     }
   });
