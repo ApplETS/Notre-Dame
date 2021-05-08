@@ -48,7 +48,8 @@ class _GradesViewState extends State<GradesView> {
                                   model.sessionOrder[index],
                                   AppIntl.of(context)),
                               model.coursesBySession[model
-                                  .sessionOrder[index]])),
+                                  .sessionOrder[index]],
+                              model)),
                 if (model.isBusy)
                   buildLoading(isInteractionLimitedWhileLoading: false)
                 else
@@ -61,7 +62,7 @@ class _GradesViewState extends State<GradesView> {
 
   /// Build a session which is the name of the session and one [GradeButton] for
   /// each [Course] in [courses]
-  Widget _buildSessionCourses(String sessionName, List<Course> courses) =>
+  Widget _buildSessionCourses(String sessionName, List<Course> courses, GradesViewModel model) =>
       Padding(
         padding: const EdgeInsets.fromLTRB(8.0, 8.0, 8.0, 8.0),
         child: Column(
@@ -74,7 +75,7 @@ class _GradesViewState extends State<GradesView> {
                 )),
             const SizedBox(height: 16.0),
             Wrap(
-              children: courses.map((course) => GradeButton(course)).toList(),
+              children: courses.map((course) => GradeButton(course, model)).toList(),
             ),
           ],
         ),

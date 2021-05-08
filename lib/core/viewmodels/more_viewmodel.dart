@@ -76,6 +76,10 @@ class MoreViewModel extends FutureViewModel {
   /// Used to logout user, delete cache, and return to login
   Future<void> logout() async {
     setBusy(true);
+    // Dismiss alertDialog
+    navigationService.pop();
+    navigationService.pushNamedAndRemoveUntil(RouterPaths.login);
+    Fluttertoast.showToast(msg: _appIntl.login_msg_logout_success);
     try {
       await _cacheManager.empty();
     } on Exception catch (e) {
@@ -93,10 +97,6 @@ class MoreViewModel extends FutureViewModel {
     _courseRepository.coursesActivities?.clear();
 
     setBusy(false);
-    // Dismiss alertDialog
-    navigationService.pop();
-    navigationService.pushNamedAndRemoveUntil(RouterPaths.login);
-    Fluttertoast.showToast(msg: _appIntl.login_msg_logout_success);
   }
 
   /// Create a Github issue with [feedbackText] and the screenshot associated.
