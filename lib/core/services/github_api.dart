@@ -10,6 +10,7 @@ import 'package:flutter_config/flutter_config.dart';
 
 // SERVICES
 import 'package:notredame/core/services/networking_service.dart';
+import 'package:notredame/core/services/internal_info_service.dart';
 
 // OTHERS
 import 'package:notredame/locator.dart';
@@ -26,6 +27,8 @@ class GithubApi {
   final NetworkingService _networkingService = locator<NetworkingService>();
 
   GitHub _github;
+
+  final InternalInfoService _internalInfoService = locator<InternalInfoService>();
 
   GithubApi() {
     String githubApiToken;
@@ -69,7 +72,8 @@ class GithubApi {
                 "- **Connectivity:** ${await _networkingService.getConnectionType()} \n"
                 "- **Build number:** ${packageInfo.buildNumber} \n"
                 "- **Platform operating system:** ${Platform.operatingSystem} \n"
-                "- **Platform operating system version:** ${Platform.operatingSystemVersion} \n",
+                "- **Platform operating system version:** ${Platform.operatingSystemVersion} \n"
+                "${await _internalInfoService.getDeviceInfoForErrorReporting()}",
             labels: ['bug', 'platform: ${Platform.operatingSystem}']));
   }
 
