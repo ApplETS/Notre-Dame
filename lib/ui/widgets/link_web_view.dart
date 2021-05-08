@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 // MODELS
 import 'package:notredame/core/models/quick_link.dart';
+import 'package:notredame/ui/utils/loading.dart';
 
 // OTHER
 import 'package:webview_flutter/webview_flutter.dart';
@@ -36,7 +37,7 @@ class _LinkWebViewState extends State<LinkWebView> {
               });
             },
           ),
-          if (isLoading) const Center( child: CircularProgressIndicator(),) else Stack(),
+          if (isLoading) buildLoading() else Stack(),
         ],
       ),
     );

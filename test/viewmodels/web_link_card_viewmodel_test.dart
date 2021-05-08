@@ -55,6 +55,7 @@ void main() {
         await viewModel.onLinkClicked(_securityQuickLink);
 
         verify(navigationService.pushNamed(RouterPaths.security));
+        verifyNoMoreInteractions(navigationService);
       });
 
       test('navigate to web view if launchInBrowser throw', () async {
@@ -63,6 +64,7 @@ void main() {
         await viewModel.onLinkClicked(_quickLink);
 
         verify(navigationService.pushNamed(RouterPaths.webView, arguments: _quickLink));
+        verifyNoMoreInteractions(navigationService);
       });
 
     });
