@@ -150,10 +150,17 @@ void main() {
 
         // Find Dismissible Cards
         expect(find.byType(Dismissible), findsNWidgets(3));
+
+        // Find aboutUs card
         expect(find.text(intl.card_applets_title), findsOneWidget);
 
-        // Check that the card is now in last position
-        await tester.pumpAndSettle();
+        // Check that the aboutUs card is in the first position
+        var text = tester.firstWidget(find.descendant(
+          of: find.byType(Dismissible).first,
+          matching: find.byType(Text),
+        ));
+
+        expect((text as Text).data, intl.card_applets_title);
 
         // Long press then drag and drop card at the end of the list
         await tester
@@ -162,12 +169,14 @@ void main() {
             .whenComplete(() => tester.drag(
                 find.byType(Dismissible).first, const Offset(0, 2000)));
 
-        var text = tester.firstWidget(find.descendant(
+        // Check that the card is now in last position
+        text = tester.firstWidget(find.descendant(
           of: find.byType(Dismissible).last,
           matching: find.byType(Text),
         ));
 
         expect(find.byType(Dismissible), findsNWidgets(3));
+
         // Check that the last card is now AboutUs
         expect((text as Text).data, intl.card_applets_title);
 
