@@ -6,16 +6,24 @@ import 'package:mockito/mockito.dart';
 // MANAGER
 import 'package:notredame/core/managers/course_repository.dart';
 
+// SERVICES
+import 'package:notredame/core/services/navigation_service.dart';
+
 // MODEL
 import 'package:notredame/core/models/course.dart';
 import 'package:notredame/core/viewmodels/grades_viewmodel.dart';
 
+// CONSTANTS
+import 'package:notredame/core/constants/router_paths.dart';
+
+// OTHER
 import '../helpers.dart';
 import '../mock/managers/course_repository_mock.dart';
 import '../mock/services/networking_service_mock.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
+  NavigationService navigationService;
   CourseRepository courseRepository;
   NetworkingServiceMock networkingService;
   AppIntl intl;
@@ -88,6 +96,7 @@ void main() {
       courseRepository = setupCourseRepositoryMock();
       networkingService = setupNetworkingServiceMock() as NetworkingServiceMock;
       intl = await setupAppIntl();
+      navigationService = setupNavigationServiceMock();
       setupFlutterToastMock();
 
       // Stub to simulate that the user has an active internet connection
@@ -98,6 +107,7 @@ void main() {
 
     tearDown(() {
       unregister<CourseRepository>();
+      unregister<NavigationService>();
       unregister<NetworkingServiceMock>();
       tearDownFlutterToastMock();
     });
@@ -220,6 +230,14 @@ void main() {
             [courseRepository.getCourses(), courseRepository.courses]);
 
         verifyNoMoreInteractions(courseRepository);
+      });
+    });
+
+    group('navigateToGradeDetails - ', () {
+      test('navigating back worked', () async {
+        viewModel.navigateToGradeDetails(courseSummer);
+
+        verify(navigationService.pushNamed(RouterPaths.gradeDetails, arguments: courseSummer));
       });
     });
   });

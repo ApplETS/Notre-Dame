@@ -61,13 +61,13 @@
   "grades_msg_no_grades": "Aucune note disponible\nTirer pour recharger",
   "grades_current_rating": "Votre note",
   "grades_average": "Moyenne",
-  "grades_grade_in_percentage": "{grade}%",
+  "grades_grade_in_percentage": "{grade} %",
   "@grades_grade_in_percentage": {
     "placeholders": {
       "grade": {}
     }
   },
-  "grades_grade_with_percentage": "{grade}/{maxGrade} ({inPercentage}%)",
+  "grades_grade_with_percentage": "{grade}/{maxGrade} ({inPercentage} %)",
   "@grades_grade_with_percentage": {
     "placeholders": {
       "grade": {},
@@ -75,7 +75,7 @@
       "inPercentage": {}
     }
   },
-  "grades_weight": "Pondération : {weight}%",
+  "grades_weight": "Pondération : {weight} %",
   "@grades_weight": {
     "placeholders": {
       "weight": {}
