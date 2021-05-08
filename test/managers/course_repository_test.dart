@@ -905,10 +905,6 @@ void main() {
 
         verifyInOrder([
           cacheManager.get(CourseRepository.coursesCacheKey),
-          userRepository.getPassword(),
-          userRepository.monETSUser,
-          signetsApi.getCourses(username: username, password: password),
-          cacheManager.update(CourseRepository.coursesCacheKey, jsonEncode([]))
         ]);
 
         verifyNoMoreInteractions(signetsApi);

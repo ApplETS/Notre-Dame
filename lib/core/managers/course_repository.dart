@@ -93,7 +93,7 @@ class CourseRepository {
     }
 
     // Load the activities from the cache if the list doesn't exist
-    if (_coursesActivities == null || fromCacheOnly) {
+    if (_coursesActivities == null ) {
       _coursesActivities = [];
       try {
         final List responseCache =
@@ -106,13 +106,14 @@ class CourseRepository {
             .toList();
         _logger.d(
             "$tag - getCoursesActivities: ${_coursesActivities.length} activities loaded from cache");
-        if (fromCacheOnly) {
-          return _coursesActivities;
-        }
       } on CacheException catch (_) {
         _logger.e(
             "$tag - getCoursesActivities: exception raised will trying to load activities from cache.");
       }
+    }
+
+    if (fromCacheOnly) {
+      return _coursesActivities;
     }
 
     final List<CourseActivity> fetchedCoursesActivities = [];
@@ -222,7 +223,7 @@ class CourseRepository {
     }
 
     // Load the activities from the cache if the list doesn't exist
-    if (_courses == null || fromCacheOnly) {
+    if (_courses == null) {
       _courses = [];
       try {
         final List responseCache =
@@ -235,13 +236,14 @@ class CourseRepository {
             .toList();
         _logger.d(
             "$tag - getCourses: ${_courses.length} courses loaded from cache");
-        if (fromCacheOnly) {
-          return _courses;
-        }
       } on CacheException catch (_) {
         _logger.e(
             "$tag - getCourses: exception raised will trying to load courses from cache.");
       }
+    }
+
+    if (fromCacheOnly) {
+      return _courses;
     }
 
     final List<Course> fetchedCourses = [];

@@ -165,7 +165,7 @@ class UserRepository {
     }
 
     // Load the programs from the cache if the list doesn't exist
-    if (_programs == null || fromCacheOnly) {
+    if (_programs == null) {
       try {
         _programs = [];
 
@@ -179,13 +179,14 @@ class UserRepository {
             .toList();
         _logger.d(
             "$tag - getPrograms: ${_programs.length} programs loaded from cache.");
-        if (fromCacheOnly) {
-          return _programs;
-        }
       } on CacheException catch (_) {
         _logger.e(
             "$tag - getPrograms: exception raised while trying to load the programs from cache.");
       }
+    }
+
+    if (fromCacheOnly) {
+      return _programs;
     }
 
     try {
@@ -228,7 +229,7 @@ class UserRepository {
     }
 
     // Load the student profile from the cache if the information doesn't exist
-    if (_info == null || fromCacheOnly) {
+    if (_info == null) {
       try {
         final infoCached = jsonDecode(await _cacheManager.get(infoCacheKey))
             as Map<String, dynamic>;
@@ -236,13 +237,14 @@ class UserRepository {
         // Build info loaded from the cache.
         _info = ProfileStudent.fromJson(infoCached);
         _logger.d("$tag - getInfo: $_info info loaded from cache.");
-        if (fromCacheOnly) {
-          return _info;
-        }
       } on CacheException catch (_) {
         _logger.e(
             "$tag - getInfo: exception raised while trying to load the info from cache.");
       }
+    }
+
+    if (fromCacheOnly) {
+      return _info;
     }
 
     try {

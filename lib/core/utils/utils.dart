@@ -1,8 +1,10 @@
 // FLUTTER / DART / THIRD-PARTIES
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:notredame/core/services/networking_service.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
+// SERVICES
+import 'package:notredame/core/services/networking_service.dart';
 
 class Utils {
   /// Used to open a url
