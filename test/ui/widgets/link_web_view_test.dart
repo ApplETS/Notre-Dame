@@ -13,13 +13,12 @@ import 'package:notredame/ui/widgets/link_web_view.dart';
 import '../../helpers.dart';
 
 final _quickLink = QuickLink(
-    image: 'assets/images/ic_security_red.png', name: 'test', link: 'testlink');
+    image: 'assets/images/ic_security_red.png', name: 'test', link: 'https://clubapplets.ca/');
 
 void main() {
   group('LinkWebView - ', () {
     testWidgets('has an AppBar and a WebView', (WidgetTester tester) async {
       await tester.pumpWidget(localizedWidget(child: LinkWebView(_quickLink)));
-      await tester.pumpAndSettle();
 
       final appBar = find.byType(AppBar);
       final webview = find.byType(WebView);
