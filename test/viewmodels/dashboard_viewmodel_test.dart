@@ -92,8 +92,7 @@ void main() {
             PreferencesFlag.progressBarCard);
 
         await viewModel.futureToRun();
-        // expect(viewModel.cards, dashboard);
-        expect(viewModel.cardsToDisplay, null);
+        expect(viewModel.cardsToDisplay, []);
 
         verify(settingsManager.getDashboard()).called(1);
         verifyNoMoreInteractions(settingsManager);

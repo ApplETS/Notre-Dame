@@ -112,14 +112,16 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
   void getCardsToDisplay() {
     _cardsToDisplay = [];
 
-    final orderedCards = SplayTreeMap<PreferencesFlag, int>.from(
-        _cards, (a, b) => _cards[a].compareTo(_cards[b]));
+    if (_cards != null) {
+      final orderedCards = SplayTreeMap<PreferencesFlag, int>.from(
+          _cards, (a, b) => _cards[a].compareTo(_cards[b]));
 
-    orderedCards.forEach((key, value) {
-      if (value >= 0) {
-        _cardsToDisplay.insert(value, key);
-      }
-    });
+      orderedCards.forEach((key, value) {
+        if (value >= 0) {
+          _cardsToDisplay.insert(value, key);
+        }
+      });
+    }
   }
 
   /// Update cards order and display status in preferences
