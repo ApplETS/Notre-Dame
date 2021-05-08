@@ -1,12 +1,12 @@
 // FLUTTER / DART / THIRD-PARTIES
 import 'package:flutter/material.dart';
+import 'package:webview_flutter/webview_flutter.dart';
 
 // MODELS
 import 'package:notredame/core/models/quick_link.dart';
-import 'package:notredame/ui/utils/loading.dart';
 
-// OTHER
-import 'package:webview_flutter/webview_flutter.dart';
+// WIDGETS
+import 'package:notredame/ui/widgets/base_scaffold.dart';
 
 class LinkWebView extends StatefulWidget {
   final QuickLink _links;
@@ -22,7 +22,9 @@ class _LinkWebViewState extends State<LinkWebView> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return BaseScaffold(
+      isLoading: isLoading,
+      showBottomBar: false,
       appBar: AppBar(
         title: Text(widget._links.name),
       ),
@@ -37,7 +39,6 @@ class _LinkWebViewState extends State<LinkWebView> {
               });
             },
           ),
-          if (isLoading) buildLoading() else Stack(),
         ],
       ),
     );
