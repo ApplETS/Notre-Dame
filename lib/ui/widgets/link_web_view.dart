@@ -7,20 +7,37 @@ import 'package:notredame/core/models/quick_link.dart';
 // OTHER
 import 'package:webview_flutter/webview_flutter.dart';
 
-class LinkWebView extends StatelessWidget {
+class LinkWebView extends StatefulWidget {
   final QuickLink _links;
 
   const LinkWebView(this._links);
 
   @override
+  _LinkWebViewState createState() => _LinkWebViewState();
+}
+
+class _LinkWebViewState extends State<LinkWebView> {
+  bool isLoading = true;
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(_links.name),
+        title: Text(widget._links.name),
       ),
-      body: WebView(
-        initialUrl: _links.link,
-        javascriptMode: JavascriptMode.unrestricted,
+      body: Stack(
+        children: <Widget>[
+          WebView(
+            initialUrl: widget._links.link,
+            javascriptMode: JavascriptMode.unrestricted,
+            onPageFinished: (finish) {
+              setState(() {
+                isLoading = false;
+              });
+            },
+          ),
+          if (isLoading) const Center( child: CircularProgressIndicator(),) else Stack(),
+        ],
       ),
     );
   }
