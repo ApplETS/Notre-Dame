@@ -9,4 +9,9 @@ class NetworkingService {
     final connectionStatus = await _connectivity.checkConnectivity();
     return connectionStatus != ConnectivityResult.none;
   }
+
+  Future<String> getConnectionType() async {
+    final connectionStatus = await _connectivity.checkConnectivity();
+    return connectionStatus.toString();
+  }
 }
