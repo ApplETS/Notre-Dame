@@ -9,7 +9,7 @@ import 'package:logger/logger.dart';
 // OTHER
 import 'package:notredame/locator.dart';
 
-// SERVICES
+// SERVICES / MANAGERS
 import 'package:notredame/core/services/navigation_service.dart';
 import 'package:notredame/core/services/analytics_service.dart';
 import 'package:notredame/core/services/rive_animation_service.dart';
@@ -21,6 +21,7 @@ import 'package:notredame/core/services/preferences_service.dart';
 import 'package:notredame/core/managers/course_repository.dart';
 import 'package:notredame/core/services/github_api.dart';
 import 'package:notredame/core/managers/settings_manager.dart';
+import 'package:notredame/core/services/internal_info_service.dart';
 
 // MOCKS
 import 'mock/managers/cache_manager_mock.dart';
@@ -30,6 +31,7 @@ import 'mock/managers/user_repository_mock.dart';
 import 'mock/services/analytics_service_mock.dart';
 import 'mock/services/flutter_secure_storage_mock.dart';
 import 'mock/services/github_api_mock.dart';
+import 'mock/services/internal_info_service_mock.dart';
 import 'mock/services/mon_ets_api_mock.dart';
 import 'mock/services/navigation_service_mock.dart';
 import 'mock/services/preferences_service_mock.dart';
@@ -75,12 +77,22 @@ AnalyticsService setupAnalyticsServiceMock() {
   return service;
 }
 
-/// Load a mock of the [AnalyticsService]
+/// Load a mock of the [RiveAnimationService]
 RiveAnimationService setupRiveAnimationServiceMock() {
   unregister<RiveAnimationService>();
   final service = RiveAnimationServiceMock();
 
   locator.registerSingleton<RiveAnimationService>(service);
+
+  return service;
+}
+
+/// Load a mock of the [InternalInfoService]
+InternalInfoService setupInternalInfoServiceMock() {
+  unregister<InternalInfoService>();
+  final service = InternalInfoServiceMock();
+
+  locator.registerSingleton<InternalInfoService>(service);
 
   return service;
 }

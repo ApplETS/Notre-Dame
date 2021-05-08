@@ -1,6 +1,9 @@
 // FLUTTER / DART / THIRD-PARTIES
 import 'package:flutter/material.dart';
 
+// MODELS
+import 'package:notredame/core/models/quick_link.dart';
+
 // ROUTES
 import 'package:notredame/core/constants/router_paths.dart';
 
@@ -20,6 +23,9 @@ import 'package:notredame/ui/views/about_view.dart';
 import 'package:notredame/ui/views/contributors_view.dart';
 import 'package:notredame/ui/views/choose_language_view.dart';
 import 'package:notredame/ui/views/grade_details_view.dart';
+
+// WIDGETS
+import 'package:notredame/ui/widgets/link_web_view.dart';
 
 class AppRouter {
   // ignore: missing_return
@@ -45,6 +51,9 @@ class AppRouter {
         return PageRouteBuilder(
             settings: RouteSettings(name: routeSettings.name),
             pageBuilder: (_, __, ___) => QuickLinksView());
+      case RouterPaths.webView:
+        return PageRouteBuilder(
+            pageBuilder: (_, __, ___) => LinkWebView(routeSettings.arguments as QuickLink));
       case RouterPaths.security:
         return PageRouteBuilder(
             settings: RouteSettings(name: routeSettings.name),
