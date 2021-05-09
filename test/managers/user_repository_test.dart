@@ -9,6 +9,7 @@ import 'package:notredame/core/managers/user_repository.dart';
 import 'package:notredame/core/managers/cache_manager.dart';
 import 'package:notredame/core/services/mon_ets_api.dart';
 import 'package:notredame/core/services/analytics_service.dart';
+import 'package:notredame/core/services/networking_service.dart';
 import 'package:notredame/core/services/signets_api.dart';
 
 // MODELS
@@ -24,6 +25,7 @@ import '../helpers.dart';
 import '../mock/managers/cache_manager_mock.dart';
 import '../mock/services/flutter_secure_storage_mock.dart';
 import '../mock/services/mon_ets_api_mock.dart';
+import '../mock/services/networking_service_mock.dart';
 import '../mock/services/signets_api_mock.dart';
 
 void main() {
@@ -32,6 +34,7 @@ void main() {
   FlutterSecureStorage secureStorage;
   CacheManager cacheManager;
   SignetsApi signetsApi;
+  NetworkingServiceMock networkingService;
 
   UserRepository manager;
 
@@ -43,6 +46,7 @@ void main() {
       secureStorage = setupFlutterSecureStorageMock();
       cacheManager = setupCacheManagerMock();
       signetsApi = setupSignetsApiMock();
+      networkingService = setupNetworkingServiceMock() as NetworkingServiceMock;
       setupLogger();
 
       manager = UserRepository();
@@ -56,6 +60,7 @@ void main() {
       unregister<CacheManager>();
       clearInteractions(signetsApi);
       unregister<SignetsApi>();
+      unregister<NetworkingService>();
     });
 
     group('authentication - ', () {
@@ -348,6 +353,9 @@ void main() {
         // Stub SignetsApi answer to test only the cache retrieving
         SignetsApiMock.stubGetPrograms(
             signetsApi as SignetsApiMock, username, []);
+
+        // Stub to simulate that the user has an active internet connection
+        NetworkingServiceMock.stubHasConnectivity(networkingService);
       });
 
       test("Programs are loaded from cache", () async {
@@ -442,6 +450,8 @@ void main() {
 
         expect(manager.programs, isNull);
         expect(manager.getPrograms(), throwsA(isInstanceOf<ApiException>()));
+
+        await untilCalled(networkingService.hasConnectivity());
         expect(manager.programs, [],
             reason: 'The programs list should be empty');
 
@@ -477,6 +487,17 @@ void main() {
             reason:
                 'The programs list should now be loaded even if the caching fails.');
       });
+
+      test("Should force fromCacheOnly mode when user has no connectivity",
+          () async {
+        //Stub the networkingService to return no connectivity
+        reset(networkingService);
+        NetworkingServiceMock.stubHasConnectivity(networkingService,
+            hasConnectivity: false);
+
+        final programsCache = await manager.getPrograms();
+        expect(programsCache, programs);
+      });
     });
 
     group("getInfo - ", () {
@@ -507,6 +528,9 @@ void main() {
         // Stub SignetsApi answer to test only the cache retrieving
         SignetsApiMock.stubGetInfo(
             signetsApi as SignetsApiMock, username, null);
+
+        // Stub to simulate that the user has an active internet connection
+        NetworkingServiceMock.stubHasConnectivity(networkingService);
       });
 
       test("Info are loaded from cache", () async {
@@ -634,6 +658,17 @@ void main() {
         expect(results, info);
         expect(manager.info, info,
             reason: 'The info should now be loaded even if the caching fails.');
+      });
+
+      test("Should force fromCacheOnly mode when user has no connectivity",
+          () async {
+        //Stub the networkingService to return no connectivity
+        reset(networkingService);
+        NetworkingServiceMock.stubHasConnectivity(networkingService,
+            hasConnectivity: false);
+
+        final infoCache = await manager.getInfo();
+        expect(infoCache, info);
       });
     });
   });

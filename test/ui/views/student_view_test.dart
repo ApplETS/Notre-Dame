@@ -13,25 +13,34 @@ import 'package:notredame/ui/widgets/base_scaffold.dart';
 // HELPERS
 import '../../helpers.dart';
 import '../../mock/managers/course_repository_mock.dart';
+import '../../mock/services/networking_service_mock.dart';
 
 void main() {
   CourseRepository courseRepository;
+  NetworkingServiceMock networkingService;
 
   group('StudentView - ', () {
     setUp(() async {
       setupNavigationServiceMock();
+      networkingService = setupNetworkingServiceMock() as NetworkingServiceMock;
       courseRepository = setupCourseRepositoryMock();
 
       CourseRepositoryMock.stubCourses(
           courseRepository as CourseRepositoryMock);
       CourseRepositoryMock.stubGetCourses(
-          courseRepository as CourseRepositoryMock, fromCacheOnly: false);
+          courseRepository as CourseRepositoryMock,
+          fromCacheOnly: false);
       CourseRepositoryMock.stubGetCourses(
-          courseRepository as CourseRepositoryMock, fromCacheOnly: true);
+          courseRepository as CourseRepositoryMock,
+          fromCacheOnly: true);
+
+      // Stub to simulate that the user has an active internet connection
+      NetworkingServiceMock.stubHasConnectivity(networkingService);
     });
 
     tearDown(() {
       unregister<CourseRepository>();
+      unregister<NetworkingServiceMock>();
     });
 
     group('UI - ', () {

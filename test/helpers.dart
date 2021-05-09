@@ -21,6 +21,7 @@ import 'package:notredame/core/services/preferences_service.dart';
 import 'package:notredame/core/managers/course_repository.dart';
 import 'package:notredame/core/services/github_api.dart';
 import 'package:notredame/core/managers/settings_manager.dart';
+import 'package:notredame/core/services/networking_service.dart';
 import 'package:notredame/core/services/internal_info_service.dart';
 
 // MOCKS
@@ -34,6 +35,7 @@ import 'mock/services/github_api_mock.dart';
 import 'mock/services/internal_info_service_mock.dart';
 import 'mock/services/mon_ets_api_mock.dart';
 import 'mock/services/navigation_service_mock.dart';
+import 'mock/services/networking_service_mock.dart';
 import 'mock/services/preferences_service_mock.dart';
 import 'mock/services/rive_animation_service_mock.dart';
 import 'mock/services/signets_api_mock.dart';
@@ -101,7 +103,7 @@ void setupFlutterToastMock() {
   const MethodChannel channel = MethodChannel('PonnamKarthik/fluttertoast');
 
   channel.setMockMethodCallHandler((MethodCall methodCall) async {
-    if(methodCall.method == 'showToast') {
+    if (methodCall.method == 'showToast') {
       return true;
     }
   });
@@ -225,6 +227,15 @@ CourseRepository setupCourseRepositoryMock() {
   final service = CourseRepositoryMock();
 
   locator.registerSingleton<CourseRepository>(service);
+
+  return service;
+}
+
+NetworkingService setupNetworkingServiceMock() {
+  unregister<NetworkingService>();
+  final service = NetworkingServiceMock();
+
+  locator.registerSingleton<NetworkingService>(service);
 
   return service;
 }

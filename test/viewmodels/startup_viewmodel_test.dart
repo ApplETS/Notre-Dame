@@ -18,11 +18,13 @@ import 'package:notredame/core/viewmodels/startup_viewmodel.dart';
 import '../helpers.dart';
 import '../mock/managers/settings_manager_mock.dart';
 import '../mock/managers/user_repository_mock.dart';
+import '../mock/services/networking_service_mock.dart';
 
 void main() {
   NavigationService navigationService;
   UserRepositoryMock userRepositoryMock;
   SettingsManager settingsManager;
+  NetworkingServiceMock networkingService;
 
   StartUpViewModel viewModel;
 
@@ -31,6 +33,7 @@ void main() {
       navigationService = setupNavigationServiceMock();
       settingsManager = setupSettingsManagerMock();
       userRepositoryMock = setupUserRepositoryMock() as UserRepositoryMock;
+      networkingService = setupNetworkingServiceMock() as NetworkingServiceMock;
 
       setupLogger();
 
@@ -46,15 +49,25 @@ void main() {
     group('handleStartUp - ', () {
       test('sign in successful', () async {
         UserRepositoryMock.stubSilentAuthenticate(userRepositoryMock);
+        UserRepositoryMock.stubWasPreviouslyLoggedIn(userRepositoryMock);
+        NetworkingServiceMock.stubHasConnectivity(networkingService);
 
         await viewModel.handleStartUp();
 
         verify(navigationService.pushNamed(RouterPaths.dashboard));
       });
-      
-      test('sign in failed redirect to login if Discovery already been completed', () async {
+
+      test(
+          'sign in failed redirect to login if Discovery already been completed',
+          () async {
         UserRepositoryMock.stubSilentAuthenticate(userRepositoryMock,
             toReturn: false);
+        UserRepositoryMock.stubWasPreviouslyLoggedIn(userRepositoryMock);
+        NetworkingServiceMock.stubHasConnectivity(networkingService);
+
+        SettingsManagerMock.stubGetString(
+            settingsManager as SettingsManagerMock, PreferencesFlag.discovery,
+            toReturn: 'true');
 
         SettingsManagerMock.stubGetString(
             settingsManager as SettingsManagerMock, PreferencesFlag.chooseLanguage, toReturn: 'true');
@@ -64,9 +77,13 @@ void main() {
         verify(navigationService.pushNamed(RouterPaths.login));
       });
 
-      test('sign in failed redirect to Choose Language page if Discovery has not been completed', () async {
+      test(
+          'sign in failed redirect to Choose Language page if Discovery has not been completed',
+          () async {
         UserRepositoryMock.stubSilentAuthenticate(userRepositoryMock,
             toReturn: false);
+        UserRepositoryMock.stubWasPreviouslyLoggedIn(userRepositoryMock);
+        NetworkingServiceMock.stubHasConnectivity(networkingService);
 
         await viewModel.handleStartUp();
         
