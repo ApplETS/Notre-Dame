@@ -26,10 +26,12 @@ import '../helpers.dart';
 // MOCKS
 import '../mock/managers/cache_manager_mock.dart';
 import '../mock/managers/user_repository_mock.dart';
+import '../mock/services/networking_service_mock.dart';
 import '../mock/services/signets_api_mock.dart';
 
 void main() {
   AnalyticsService analyticsService;
+  NetworkingServiceMock networkingService;
   SignetsApi signetsApi;
   UserRepository userRepository;
   CacheManager cacheManager;
@@ -43,6 +45,7 @@ void main() {
       signetsApi = setupSignetsApiMock();
       userRepository = setupUserRepositoryMock();
       cacheManager = setupCacheManagerMock();
+      networkingService = setupNetworkingServiceMock() as NetworkingServiceMock;
       setupLogger();
 
       manager = CourseRepository();
@@ -57,6 +60,8 @@ void main() {
       unregister<UserRepository>();
       clearInteractions(cacheManager);
       unregister<CacheManager>();
+      clearInteractions(networkingService);
+      unregister<NetworkingServiceMock>();
     });
 
     group("getCoursesActivities - ", () {
@@ -100,6 +105,9 @@ void main() {
             CourseRepository.sessionsCacheKey, jsonEncode([]));
         SignetsApiMock.stubGetSessions(
             signetsApi as SignetsApiMock, username, [session]);
+
+        // Stub to simulate that the user has an active internet connection
+        NetworkingServiceMock.stubHasConnectivity(networkingService);
       });
 
       test("Activities are loaded from cache.", () async {
@@ -246,6 +254,8 @@ void main() {
         expect(manager.coursesActivities, isNull);
         expect(manager.getCoursesActivities(),
             throwsA(isInstanceOf<ApiException>()));
+
+        await untilCalled(networkingService.hasConnectivity());
         expect(manager.coursesActivities, isEmpty,
             reason: "The list of activities should be empty");
 
@@ -276,6 +286,8 @@ void main() {
 
         expect(manager.getCoursesActivities(),
             throwsA(isInstanceOf<ApiException>()));
+
+        await untilCalled(networkingService.hasConnectivity());
         expect(manager.coursesActivities, isEmpty,
             reason:
                 "There isn't any activities saved in the cache so the list should be empty");
@@ -379,6 +391,8 @@ void main() {
         expect(manager.coursesActivities, isNull);
         expect(manager.getCoursesActivities(),
             throwsA(isInstanceOf<ApiException>()));
+
+        await untilCalled(networkingService.hasConnectivity());
         expect(manager.coursesActivities, isEmpty,
             reason: "The list of activities should be empty");
 
@@ -428,6 +442,21 @@ void main() {
               password: anyNamed("password"),
               session: session.shortName)
         ]);
+      });
+
+      test("Should force fromCacheOnly mode when user has no connectivity",
+          () async {
+        // Stub the cache to return 1 activity
+        CacheManagerMock.stubGet(cacheManager as CacheManagerMock,
+            CourseRepository.coursesActivitiesCacheKey, jsonEncode(activities));
+
+        //Stub the networkingService to return no connectivity
+        reset(networkingService);
+        NetworkingServiceMock.stubHasConnectivity(networkingService,
+            hasConnectivity: false);
+
+        final activitiesCache = await manager.getCoursesActivities();
+        expect(activitiesCache, activities);
       });
     });
 
@@ -768,6 +797,9 @@ void main() {
             MonETSUser(domain: null, typeUsagerId: null, username: username));
         UserRepositoryMock.stubGetPassword(
             userRepository as UserRepositoryMock, "password");
+
+        // Stub to simulate that the user has an active internet connection
+        NetworkingServiceMock.stubHasConnectivity(networkingService);
       });
 
       test("Courses are loaded from cache and cache is updated", () async {
@@ -873,10 +905,6 @@ void main() {
 
         verifyInOrder([
           cacheManager.get(CourseRepository.coursesCacheKey),
-          userRepository.getPassword(),
-          userRepository.monETSUser,
-          signetsApi.getCourses(username: username, password: password),
-          cacheManager.update(CourseRepository.coursesCacheKey, jsonEncode([]))
         ]);
 
         verifyNoMoreInteractions(signetsApi);
@@ -893,6 +921,8 @@ void main() {
         expect(manager.courses, isNull);
 
         expect(manager.getCourses(), throwsA(isInstanceOf<ApiException>()));
+
+        await untilCalled(networkingService.hasConnectivity());
         expect(manager.courses, []);
 
         await untilCalled(analyticsService.logError(CourseRepository.tag, any));
@@ -1039,6 +1069,8 @@ void main() {
 
         expect(manager.sessions, isNull);
         expect(manager.getCourses(), throwsA(isInstanceOf<ApiException>()));
+
+        await untilCalled(networkingService.hasConnectivity());
         expect(manager.courses, [], reason: 'The courses list should be empty');
 
         await untilCalled(analyticsService.logError(CourseRepository.tag, any));
@@ -1052,6 +1084,21 @@ void main() {
         verifyNever(signetsApi.getCourses(
             username: anyNamed("username"), password: anyNamed("password")));
         verifyNever(cacheManager.update(CourseRepository.coursesCacheKey, any));
+      });
+
+      test("Should force fromCacheOnly mode when user has no connectivity",
+          () async {
+        // Stub the cache to return 1 activity
+        CacheManagerMock.stubGet(cacheManager as CacheManagerMock,
+            CourseRepository.coursesCacheKey, jsonEncode([courseWithGrade]));
+
+        //Stub the networkingService to return no connectivity
+        reset(networkingService);
+        NetworkingServiceMock.stubHasConnectivity(networkingService,
+            hasConnectivity: false);
+
+        final coursesCache = await manager.getCourses();
+        expect(coursesCache, [courseWithGrade]);
       });
     });
 
@@ -1103,6 +1150,9 @@ void main() {
                       teacherMessage: '',
                       ignore: false)
                 ]));
+
+        // Stub to simulate that the user has an active internet connection
+        NetworkingServiceMock.stubHasConnectivity(networkingService);
       });
 
       test("CourseSummary is fetched and cache is updated", () async {

@@ -9,6 +9,7 @@ import 'package:logger/logger.dart';
 // SERVICES
 import 'package:notredame/core/services/analytics_service.dart';
 import 'package:notredame/core/services/mon_ets_api.dart';
+import 'package:notredame/core/services/networking_service.dart';
 import 'package:notredame/core/services/signets_api.dart';
 import 'package:notredame/core/managers/cache_manager.dart';
 
@@ -41,6 +42,9 @@ class UserRepository {
 
   /// Will be used to report event and error.
   final AnalyticsService _analyticsService = locator<AnalyticsService>();
+
+  /// Used to verify if the user has connectivity
+  final NetworkingService _networkingService = locator<NetworkingService>();
 
   /// Secure storage manager to access and update the cache.
   final FlutterSecureStorage _secureStorage = locator<FlutterSecureStorage>();
@@ -154,6 +158,12 @@ class UserRepository {
   /// The list from the [CacheManager] is loaded than updated with the results
   /// from the [SignetsApi].
   Future<List<Program>> getPrograms({bool fromCacheOnly = false}) async {
+    // Force fromCacheOnly mode when user has no connectivity
+    if (!(await _networkingService.hasConnectivity())) {
+      // ignore: parameter_assignments
+      fromCacheOnly = true;
+    }
+
     // Load the programs from the cache if the list doesn't exist
     if (_programs == null) {
       try {
@@ -169,13 +179,14 @@ class UserRepository {
             .toList();
         _logger.d(
             "$tag - getPrograms: ${_programs.length} programs loaded from cache.");
-        if (fromCacheOnly) {
-          return _programs;
-        }
       } on CacheException catch (_) {
         _logger.e(
             "$tag - getPrograms: exception raised while trying to load the programs from cache.");
       }
+    }
+
+    if (fromCacheOnly) {
+      return _programs;
     }
 
     try {
@@ -211,6 +222,12 @@ class UserRepository {
   /// The information from the [CacheManager] is loaded than updated with the results
   /// from the [SignetsApi].
   Future<ProfileStudent> getInfo({bool fromCacheOnly = false}) async {
+    // Force fromCacheOnly mode when user has no connectivity
+    if (!(await _networkingService.hasConnectivity())) {
+      // ignore: parameter_assignments
+      fromCacheOnly = true;
+    }
+
     // Load the student profile from the cache if the information doesn't exist
     if (_info == null) {
       try {
@@ -220,13 +237,14 @@ class UserRepository {
         // Build info loaded from the cache.
         _info = ProfileStudent.fromJson(infoCached);
         _logger.d("$tag - getInfo: $_info info loaded from cache.");
-        if (fromCacheOnly) {
-          return _info;
-        }
       } on CacheException catch (_) {
         _logger.e(
             "$tag - getInfo: exception raised while trying to load the info from cache.");
       }
+    }
+
+    if (fromCacheOnly) {
+      return _info;
     }
 
     try {
@@ -253,5 +271,15 @@ class UserRepository {
     }
 
     return _info;
+  }
+
+  Future<bool> wasPreviouslyLoggedIn() async {
+    final String username = await _secureStorage.read(key: usernameSecureKey);
+
+    if (username != null) {
+      final String password = await _secureStorage.read(key: passwordSecureKey);
+      return password.isNotEmpty;
+    }
+    return false;
   }
 }

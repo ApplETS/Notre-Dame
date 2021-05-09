@@ -61,6 +61,7 @@ dependencies:
   feature_discovery: ^0.14.0
   path_provider: ^2.0.1
   rive: ^0.7.1
+  connectivity: ^3.0.3
 
 dev_dependencies:
   flutter_test:
