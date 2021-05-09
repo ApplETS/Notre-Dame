@@ -102,15 +102,11 @@ class _ScheduleViewState extends State<ScheduleView>
                                   Text(AppIntl.of(context).schedule_no_event)),
                         )
                       else
-                        _buildEventList(model.selectedDateEvents)
+                        _buildEventList(model.selectedDateEvents),
+                      const SizedBox(height: 16.0),
                     ],
                   ),
                 ]),
-                fab: FloatingActionButton(
-                  onPressed: model.refresh,
-                  backgroundColor: AppTheme.etsLightRed,
-                  child: const Icon(Icons.refresh),
-                ),
               ));
 
   /// Build the square with the number of [events] for the [date]
@@ -183,6 +179,7 @@ class _ScheduleViewState extends State<ScheduleView>
   /// Build the list of the events for the selected day.
   Widget _buildEventList(List<dynamic> events) {
     return ListView.separated(
+        physics: const ScrollPhysics(),
         shrinkWrap: true,
         itemBuilder: (_, index) =>
             CourseActivityTile(events[index] as CourseActivity),
@@ -202,6 +199,10 @@ class _ScheduleViewState extends State<ScheduleView>
                     _calendarController.setSelectedDay(DateTime.now());
                     model.selectedDate = DateTime.now();
                   })),
+        IconButton(
+          icon: const Icon(Icons.refresh),
+          onPressed: () => model.refresh(),
+        ),
         IconButton(
             icon: const Icon(Icons.settings),
             onPressed: () async {
