@@ -309,5 +309,82 @@ void main() {
           .called(1);
       verify(preferencesService.setBool(flag, value: anyNamed("value")));
     });
+
+    group("Dashboard - ", () {
+      test("validate default behaviour", () async {
+        PreferencesServiceMock.stubGetInt(
+            preferencesService as PreferencesServiceMock,
+            PreferencesFlag.aboutUsCard,
+            toReturn: null);
+        PreferencesServiceMock.stubGetInt(
+            preferencesService as PreferencesServiceMock,
+            PreferencesFlag.scheduleCard,
+            toReturn: null);
+        PreferencesServiceMock.stubGetInt(
+            preferencesService as PreferencesServiceMock,
+            PreferencesFlag.progressBarCard,
+            toReturn: null);
+
+        // Cards
+        final Map<PreferencesFlag, int> expected = {
+          PreferencesFlag.aboutUsCard: 0,
+          PreferencesFlag.scheduleCard: 1,
+          PreferencesFlag.progressBarCard: 2
+        };
+
+        expect(
+          await manager.getDashboard(),
+          expected,
+        );
+
+        verify(preferencesService.getInt(PreferencesFlag.aboutUsCard))
+            .called(1);
+        verify(preferencesService.getInt(PreferencesFlag.scheduleCard))
+            .called(1);
+        verify(preferencesService.getInt(PreferencesFlag.progressBarCard))
+            .called(1);
+
+        verifyNoMoreInteractions(preferencesService);
+        verifyNoMoreInteractions(analyticsService);
+      });
+
+      test("validate the loading of the cards", () async {
+        PreferencesServiceMock.stubGetInt(
+            preferencesService as PreferencesServiceMock,
+            PreferencesFlag.aboutUsCard,
+            // ignore: avoid_redundant_argument_values
+            toReturn: 1);
+        PreferencesServiceMock.stubGetInt(
+            preferencesService as PreferencesServiceMock,
+            PreferencesFlag.scheduleCard,
+            toReturn: 2);
+        PreferencesServiceMock.stubGetInt(
+            preferencesService as PreferencesServiceMock,
+            PreferencesFlag.progressBarCard,
+            toReturn: 0);
+
+        // Cards
+        final Map<PreferencesFlag, int> expected = {
+          PreferencesFlag.aboutUsCard: 1,
+          PreferencesFlag.scheduleCard: 2,
+          PreferencesFlag.progressBarCard: 0
+        };
+
+        expect(
+          await manager.getDashboard(),
+          expected,
+        );
+
+        verify(preferencesService.getInt(PreferencesFlag.aboutUsCard))
+            .called(1);
+        verify(preferencesService.getInt(PreferencesFlag.scheduleCard))
+            .called(1);
+        verify(preferencesService.getInt(PreferencesFlag.progressBarCard))
+            .called(1);
+
+        verifyNoMoreInteractions(preferencesService);
+        verifyNoMoreInteractions(analyticsService);
+      });
+    });
   });
 }

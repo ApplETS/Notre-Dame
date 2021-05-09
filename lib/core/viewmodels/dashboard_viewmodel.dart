@@ -72,24 +72,6 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
     notifyListeners();
   }
 
-  /// Set [flag] card visible on the dashboard
-  void setCardVisible(PreferencesFlag flag) {
-    _settingsManager
-        .setInt(flag, flag.index - PreferencesFlag.aboutUsCard.index)
-        .then((value) {
-      if (!value) {
-        Fluttertoast.showToast(msg: _appIntl.error);
-      }
-    });
-
-    _cards.update(
-        flag, (value) => flag.index - PreferencesFlag.aboutUsCard.index);
-
-    getCardsToDisplay();
-
-    notifyListeners();
-  }
-
   /// Reset all card indexes to their default values
   void setAllCardsVisible() {
     _cards.updateAll((key, value) {

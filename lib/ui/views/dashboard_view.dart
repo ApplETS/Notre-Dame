@@ -17,8 +17,6 @@ import 'package:notredame/core/constants/urls.dart';
 // UTILS
 import 'package:notredame/core/utils/utils.dart';
 import 'package:notredame/ui/utils/loading.dart';
-
-// OTHER
 import 'package:notredame/ui/utils/app_theme.dart';
 
 class DashboardView extends StatefulWidget {
