@@ -3,17 +3,19 @@ import 'package:feature_discovery/feature_discovery.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-// MANAGER
-import 'package:notredame/core/managers/course_repository.dart';
-
 // VIEW
 import 'package:notredame/ui/views/student_view.dart';
 import 'package:notredame/ui/widgets/base_scaffold.dart';
 
-// HELPERS
-import '../../helpers.dart';
+// MANAGER
+import 'package:notredame/core/managers/course_repository.dart';
 import '../../mock/managers/course_repository_mock.dart';
+
+// SERVICE
 import '../../mock/services/networking_service_mock.dart';
+
+// HELPER
+import '../../helpers.dart';
 
 void main() {
   CourseRepository courseRepository;

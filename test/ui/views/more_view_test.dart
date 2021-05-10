@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:feature_discovery/feature_discovery.dart';
 
 // CONSTANTS
 import 'package:notredame/core/constants/router_paths.dart';
@@ -12,9 +13,6 @@ import 'package:notredame/core/services/navigation_service.dart';
 
 // VIEW
 import 'package:notredame/ui/views/more_view.dart';
-
-// OTHER
-import 'package:feature_discovery/feature_discovery.dart';
 
 // HELPERS
 import '../../helpers.dart';

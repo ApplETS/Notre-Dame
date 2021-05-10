@@ -1,6 +1,7 @@
 // FLUTTER / DART / THIRD-PARTIES
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:feature_discovery/feature_discovery.dart';
 
 // SERVICE
 import 'package:notredame/core/services/navigation_service.dart';
@@ -9,8 +10,7 @@ import 'package:notredame/core/services/navigation_service.dart';
 import 'package:notredame/core/constants/router_paths.dart';
 import 'package:notredame/locator.dart';
 
-// OTHER
-import 'package:feature_discovery/feature_discovery.dart';
+// UTILS
 import 'package:notredame/ui/utils/discovery_components.dart';
 import 'package:notredame/ui/utils/app_theme.dart';
 

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:intl/intl.dart';
 import 'package:table_calendar/table_calendar.dart';
+import 'package:feature_discovery/feature_discovery.dart';
 
 // MANAGERS
 import 'package:notredame/core/managers/course_repository.dart';
@@ -24,9 +25,6 @@ import '../../helpers.dart';
 import '../../mock/managers/course_repository_mock.dart';
 import '../../mock/managers/settings_manager_mock.dart';
 import '../../mock/services/networking_service_mock.dart';
-
-// OTHER
-import 'package:feature_discovery/feature_discovery.dart';
 
 void main() {
   SettingsManager settingsManager;

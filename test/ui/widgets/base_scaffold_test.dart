@@ -1,6 +1,7 @@
 // FLUTTER / DART / THIRD-PARTIES
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:feature_discovery/feature_discovery.dart';
 
 // SERVICE
 import 'package:notredame/core/services/navigation_service.dart';
@@ -11,9 +12,6 @@ import 'package:notredame/ui/widgets/bottom_bar.dart';
 
 // HELPERS
 import '../../helpers.dart';
-
-// OTHER
-import 'package:feature_discovery/feature_discovery.dart';
 
 void main() {
   group('BaseScaffold - ', () {
