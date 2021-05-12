@@ -25,6 +25,7 @@ class DismissibleCard extends StatelessWidget {
       child: Card(
         elevation: elevation,
         color: cardColor,
+        margin: const EdgeInsets.all(0),
         child: child,
       ));
 }

@@ -29,6 +29,15 @@ void main() {
     PreferencesFlag.progressBarCard: 2
   };
 
+  Future<void> longPressDrag(
+      WidgetTester tester, Offset start, Offset end) async {
+    final TestGesture drag = await tester.startGesture(start);
+    await tester.pump(const Duration(seconds: 1));
+    await drag.moveTo(end);
+    await tester.pump(const Duration(seconds: 1));
+    await drag.up();
+  }
+
   group('DashboardView - ', () {
     setUp(() async {
       intl = await setupAppIntl();
@@ -132,6 +141,9 @@ void main() {
 
       testWidgets('AboutUsCard is reorderable and can be restored',
           (WidgetTester tester) async {
+        final String progressBarCard =
+            PreferencesFlag.progressBarCard.toString();
+
         SettingsManagerMock.stubGetDashboard(
             settingsManager as SettingsManagerMock,
             toReturn: dashboard);
@@ -163,21 +175,21 @@ void main() {
         expect((text as Text).data, intl.card_applets_title);
 
         // Long press then drag and drop card at the end of the list
-        await tester
-            .timedDrag(find.byType(Dismissible).first, const Offset(0, 0),
-                const Duration(seconds: 3))
-            .whenComplete(() => tester.drag(
-                find.byType(Dismissible).first, const Offset(0, 2000)));
+        await longPressDrag(
+            tester,
+            tester.getCenter(find.text(intl.card_applets_title)),
+            tester.getCenter(find.text(progressBarCard)) +
+                const Offset(0.0, 1000));
+
+        await tester.pumpAndSettle();
+
+        expect(find.byType(Dismissible), findsNWidgets(3));
 
         // Check that the card is now in last position
         text = tester.firstWidget(find.descendant(
           of: find.byType(Dismissible).last,
           matching: find.byType(Text),
         ));
-
-        expect(find.byType(Dismissible), findsNWidgets(3));
-
-        // Check that the last card is now AboutUs
         expect((text as Text).data, intl.card_applets_title);
 
         // Tap the restoreCards button

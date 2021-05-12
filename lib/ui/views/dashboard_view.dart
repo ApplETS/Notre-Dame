@@ -71,6 +71,7 @@ class _DashboardViewState extends State<DashboardView>
                   : ReorderableListView(
                       onReorder: (oldIndex, newIndex) =>
                           onReorder(model, oldIndex, newIndex),
+                      padding: const EdgeInsets.all(8),
                       children: _buildCards(model),
                     ));
         });
