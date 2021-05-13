@@ -82,6 +82,35 @@ class SettingsManager with ChangeNotifier {
     return _locale;
   }
 
+  /// Get Dashboard
+  Future<Map<PreferencesFlag, int>> getDashboard() async {
+    final Map<PreferencesFlag, int> dashboard = {};
+
+    final aboutUsIndex =
+        await _preferencesService.getInt(PreferencesFlag.aboutUsCard) ??
+            getDefaultCardIndex(PreferencesFlag.aboutUsCard);
+
+    dashboard.putIfAbsent(PreferencesFlag.aboutUsCard, () => aboutUsIndex);
+
+    final scheduleCardIndex =
+        await _preferencesService.getInt(PreferencesFlag.scheduleCard) ??
+            getDefaultCardIndex(PreferencesFlag.scheduleCard);
+
+    dashboard.putIfAbsent(
+        PreferencesFlag.scheduleCard, () => scheduleCardIndex);
+
+    final progressBarCardIndex =
+        await _preferencesService.getInt(PreferencesFlag.progressBarCard) ??
+            getDefaultCardIndex(PreferencesFlag.progressBarCard);
+
+    dashboard.putIfAbsent(
+        PreferencesFlag.progressBarCard, () => progressBarCardIndex);
+
+    _logger.i("$tag - getDashboard - Dashboard loaded: $dashboard");
+
+    return dashboard;
+  }
+
   /// Set ThemeMode
   void setThemeMode(ThemeMode value) {
     _preferencesService.setString(PreferencesFlag.theme, value.toString());
@@ -145,6 +174,14 @@ class SettingsManager with ChangeNotifier {
     return _preferencesService.setString(flag, value);
   }
 
+  /// Add/update the value of [flag]
+  Future<bool> setInt(PreferencesFlag flag, int value) async {
+    // Log the event
+    _analyticsService.logEvent(
+        "${tag}_${EnumToString.convertToString(flag)}", value.toString());
+    return _preferencesService.setInt(flag, value);
+  }
+
   /// Get the value of [flag]
   Future<String> getString(PreferencesFlag flag) async {
     // Log the event
@@ -161,4 +198,8 @@ class SettingsManager with ChangeNotifier {
         "${tag}_${EnumToString.convertToString(flag)}", value.toString());
     return _preferencesService.setBool(flag, value: value);
   }
+
+  /// Get the default index of each card
+  int getDefaultCardIndex(PreferencesFlag flag) =>
+      flag.index - PreferencesFlag.aboutUsCard.index;
 }

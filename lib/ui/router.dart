@@ -22,6 +22,7 @@ import 'package:notredame/ui/views/student_view.dart';
 import 'package:notredame/ui/views/about_view.dart';
 import 'package:notredame/ui/views/contributors_view.dart';
 import 'package:notredame/ui/views/choose_language_view.dart';
+import 'package:notredame/ui/views/dashboard_view.dart';
 import 'package:notredame/ui/views/grade_details_view.dart';
 
 // WIDGETS
@@ -35,6 +36,10 @@ class AppRouter {
         return MaterialPageRoute(
             settings: RouteSettings(name: routeSettings.name),
             builder: (_) => LoginView());
+      case RouterPaths.dashboard:
+        return PageRouteBuilder(
+            settings: RouteSettings(name: routeSettings.name),
+            pageBuilder: (_, __, ___) => const DashboardView());
       case RouterPaths.schedule:
         return PageRouteBuilder(
             settings: RouteSettings(name: routeSettings.name),
