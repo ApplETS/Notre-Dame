@@ -177,9 +177,9 @@ class _LoginViewState extends State<LoginView> {
   }
 
   Color get errorTextColor =>
-    Theme.of(context).brightness == Brightness.light
-      ? Colors.amberAccent
-      : Colors.redAccent;
+      Theme.of(context).brightness == Brightness.light
+          ? Colors.amberAccent
+          : Colors.redAccent;
 
   Color get colorButton => Theme.of(context).brightness == Brightness.light
       ? Colors.white

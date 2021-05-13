@@ -11,7 +11,7 @@ enum PreferencesFlag {
   theme,
 
   // Choose language flag
-  chooseLanguage,
+  welcome,
 
   // Discovery flag
   discovery,
