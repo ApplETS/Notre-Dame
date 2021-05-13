@@ -13,22 +13,30 @@ import '../../helpers.dart';
 
 // MOCKS
 import '../../mock/managers/user_repository_mock.dart';
+import '../../mock/services/networking_service_mock.dart';
 
 void main() {
   AppIntl intl;
   UserRepository userRepository;
+  NetworkingServiceMock networkingService;
   group('Profile view - ', () {
     setUp(() async {
       intl = await setupAppIntl();
       setupNavigationServiceMock();
+      networkingService = setupNetworkingServiceMock() as NetworkingServiceMock;
       userRepository = setupUserRepositoryMock();
 
       UserRepositoryMock.stubGetInfo(userRepository as UserRepositoryMock);
 
       UserRepositoryMock.stubGetPrograms(userRepository as UserRepositoryMock);
+
+      // Stub to simulate that the user has an active internet connection
+      NetworkingServiceMock.stubHasConnectivity(networkingService);
     });
 
-    tearDown(() {});
+    tearDown(() {
+      unregister<NetworkingServiceMock>();
+    });
 
     testWidgets('contains student status', (WidgetTester tester) async {
       await tester.pumpWidget(localizedWidget(child: ProfileView()));

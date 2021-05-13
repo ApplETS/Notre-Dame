@@ -16,6 +16,12 @@ import 'package:notredame/core/models/course.dart';
 // CONSTANTS 
 import 'package:notredame/core/constants/router_paths.dart';
 
+// SERVICE
+import 'package:notredame/core/services/networking_service.dart';
+
+// UTILS
+import 'package:notredame/core/utils/utils.dart';
+
 // OTHER
 import 'package:notredame/locator.dart';
 
@@ -28,6 +34,9 @@ class GradesViewModel extends FutureViewModel<Map<String, List<Course>>> {
 
   /// Localization class of the application.
   final AppIntl _appIntl;
+
+  /// Verify if user has an active internet connection
+  final NetworkingService _networkingService = locator<NetworkingService>();
 
   /// Contains all the courses of the student sorted by session
   final Map<String, List<Course>> coursesBySession = {};
@@ -45,12 +54,13 @@ class GradesViewModel extends FutureViewModel<Map<String, List<Course>>> {
         _buildCoursesBySession(coursesCached);
         // ignore: return_type_invalid_for_catch_error
         _courseRepository.getCourses().catchError(onError).then((value) {
-          if(value != null) {
+          if (value != null) {
             // Update the courses list
             _buildCoursesBySession(_courseRepository.courses);
           }
         }).whenComplete(() {
           setBusy(false);
+          Utils.showNoConnectionToast(_networkingService, _appIntl);
         });
 
         return coursesBySession;
@@ -94,9 +104,9 @@ class GradesViewModel extends FutureViewModel<Map<String, List<Course>>> {
       if (a == b) return 0;
 
       // When the session is 's.o.' we put the course at the end of the list
-      if(a == "s.o.") {
+      if (a == "s.o.") {
         return 1;
-      } else if(b == "s.o.") {
+      } else if (b == "s.o.") {
         return -1;
       }
 
