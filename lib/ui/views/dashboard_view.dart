@@ -1,13 +1,12 @@
 // FLUTTER / DART / THIRD-PARTIES
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:stacked/stacked.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 // VIEWMODEL
 import 'package:notredame/core/viewmodels/dashboard_viewmodel.dart';
 
-// WIDGET
+// WIDGETS
 import 'package:notredame/ui/widgets/dismissible_card.dart';
 import 'package:notredame/ui/widgets/base_scaffold.dart';
 
@@ -18,8 +17,6 @@ import 'package:notredame/core/constants/urls.dart';
 // UTILS
 import 'package:notredame/core/utils/utils.dart';
 import 'package:notredame/ui/utils/loading.dart';
-
-// OTHER
 import 'package:notredame/ui/utils/app_theme.dart';
 
 class DashboardView extends StatefulWidget {
@@ -42,10 +39,6 @@ class _DashboardViewState extends State<DashboardView>
     );
 
     _animationController.forward();
-
-    SchedulerBinding.instance.addPostFrameCallback((Duration duration) {  
-      DashboardViewModel(intl: AppIntl.of(context)).startDiscovery(context);
-    });
   }
 
   @override
@@ -64,16 +57,21 @@ class _DashboardViewState extends State<DashboardView>
           return BaseScaffold(
               isInteractionLimitedWhileLoading: false,
               appBar: AppBar(
-                title: Text(AppIntl.of(context).title_dashboard),
-                centerTitle: false,
-                automaticallyImplyLeading: false,
-                actions: _buildActionButtons(model),
-              ),
+                  title: Text(AppIntl.of(context).title_dashboard),
+                  centerTitle: false,
+                  automaticallyImplyLeading: false,
+                  actions: [
+                    IconButton(
+                      icon: const Icon(Icons.restore),
+                      onPressed: model.setAllCardsVisible,
+                    ),
+                  ]),
               body: model.cards == null
                   ? buildLoading()
                   : ReorderableListView(
                       onReorder: (oldIndex, newIndex) =>
                           onReorder(model, oldIndex, newIndex),
+                      padding: const EdgeInsets.all(8),
                       children: _buildCards(model),
                     ));
         });
@@ -177,13 +175,6 @@ class _DashboardViewState extends State<DashboardView>
     final PreferencesFlag elementMoved = model.cards.keys
         .firstWhere((element) => model.cards[element] == oldIndex);
 
-    model.setOrder(elementMoved, newIndex, oldIndex);
+    model.setOrder(elementMoved, newIndex);
   }
-
-  List<Widget> _buildActionButtons(DashboardViewModel model) => [
-        IconButton(
-          icon: const Icon(Icons.restore),
-          onPressed: model.setAllCardsVisible,
-        ),
-      ];
 }

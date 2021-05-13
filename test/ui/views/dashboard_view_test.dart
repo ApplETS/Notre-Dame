@@ -1,4 +1,5 @@
 // FLUTTER / DART / THIRD-PARTIES
+import 'package:feature_discovery/feature_discovery.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -22,19 +23,21 @@ void main() {
   SettingsManager settingsManager;
   AppIntl intl;
 
-  // Some settings
+  // Cards
   final Map<PreferencesFlag, int> dashboard = {
     PreferencesFlag.aboutUsCard: 0,
     PreferencesFlag.scheduleCard: 1,
     PreferencesFlag.progressBarCard: 2
   };
 
-  // Some settings
-  final Map<PreferencesFlag, int> dashboardHiddenAboutUS = {
-    PreferencesFlag.aboutUsCard: -1,
-    PreferencesFlag.scheduleCard: 0,
-    PreferencesFlag.progressBarCard: 1
-  };
+  Future<void> longPressDrag(
+      WidgetTester tester, Offset start, Offset end) async {
+    final TestGesture drag = await tester.startGesture(start);
+    await tester.pump(const Duration(seconds: 1));
+    await drag.moveTo(end);
+    await tester.pump(const Duration(seconds: 1));
+    await drag.up();
+  }
 
   group('DashboardView - ', () {
     setUp(() async {
@@ -52,7 +55,7 @@ void main() {
             settingsManager as SettingsManagerMock,
             toReturn: dashboard);
 
-        await tester.pumpWidget(localizedWidget(child: const DashboardView()));
+        await tester.pumpWidget(localizedWidget(child: FeatureDiscovery(child: const DashboardView())));
         await tester.pumpAndSettle();
 
         // Find Dashboard Title
@@ -72,7 +75,7 @@ void main() {
             settingsManager as SettingsManagerMock,
             toReturn: dashboard);
 
-        await tester.pumpWidget(localizedWidget(child: const DashboardView()));
+        await tester.pumpWidget(localizedWidget(child: FeatureDiscovery(child: const DashboardView())));
         await tester.pumpAndSettle();
 
         // Find aboutUs card
@@ -111,7 +114,7 @@ void main() {
         SettingsManagerMock.stubSetInt(settingsManager as SettingsManagerMock,
             PreferencesFlag.progressBarCard);
 
-        await tester.pumpWidget(localizedWidget(child: const DashboardView()));
+        await tester.pumpWidget(localizedWidget(child: FeatureDiscovery(child: const DashboardView())));
         await tester.pumpAndSettle();
 
         // Find Dismissible Cards
@@ -122,18 +125,10 @@ void main() {
         await tester.drag(
             find.byType(Dismissible).first, const Offset(1000.0, 0.0));
 
-        SettingsManagerMock.stubGetDashboard(
-            settingsManager as SettingsManagerMock,
-            toReturn: dashboardHiddenAboutUS);
-
         // Check that the card is now absent from the view
         await tester.pumpAndSettle();
         expect(find.byType(Dismissible), findsNWidgets(2));
         expect(find.text(intl.card_applets_title), findsNothing);
-
-        SettingsManagerMock.stubGetDashboard(
-            settingsManager as SettingsManagerMock,
-            toReturn: dashboard);
 
         // Tap the restoreCards button
         await tester.tap(find.byIcon(Icons.restore));
@@ -143,6 +138,75 @@ void main() {
         // Check that the card is now present in the view
         expect(find.byType(Dismissible), findsNWidgets(3));
         expect(find.text(intl.card_applets_title), findsOneWidget);
+      });
+
+      testWidgets('AboutUsCard is reorderable and can be restored',
+          (WidgetTester tester) async {
+        final String progressBarCard =
+            PreferencesFlag.progressBarCard.toString();
+
+        SettingsManagerMock.stubGetDashboard(
+            settingsManager as SettingsManagerMock,
+            toReturn: dashboard);
+
+        SettingsManagerMock.stubSetInt(settingsManager as SettingsManagerMock,
+            PreferencesFlag.aboutUsCard);
+
+        SettingsManagerMock.stubSetInt(settingsManager as SettingsManagerMock,
+            PreferencesFlag.scheduleCard);
+
+        SettingsManagerMock.stubSetInt(settingsManager as SettingsManagerMock,
+            PreferencesFlag.progressBarCard);
+
+        await tester.pumpWidget(localizedWidget(child: FeatureDiscovery(child: const DashboardView())));
+        await tester.pumpAndSettle();
+
+        // Find Dismissible Cards
+        expect(find.byType(Dismissible), findsNWidgets(3));
+
+        // Find aboutUs card
+        expect(find.text(intl.card_applets_title), findsOneWidget);
+
+        // Check that the aboutUs card is in the first position
+        var text = tester.firstWidget(find.descendant(
+          of: find.byType(Dismissible).first,
+          matching: find.byType(Text),
+        ));
+
+        expect((text as Text).data, intl.card_applets_title);
+
+        // Long press then drag and drop card at the end of the list
+        await longPressDrag(
+            tester,
+            tester.getCenter(find.text(intl.card_applets_title)),
+            tester.getCenter(find.text(progressBarCard)) +
+                const Offset(0.0, 1000));
+
+        await tester.pumpAndSettle();
+
+        expect(find.byType(Dismissible), findsNWidgets(3));
+
+        // Check that the card is now in last position
+        text = tester.firstWidget(find.descendant(
+          of: find.byType(Dismissible).last,
+          matching: find.byType(Text),
+        ));
+        expect((text as Text).data, intl.card_applets_title);
+
+        // Tap the restoreCards button
+        await tester.tap(find.byIcon(Icons.restore));
+
+        await tester.pumpAndSettle();
+
+        text = tester.firstWidget(find.descendant(
+          of: find.byType(Dismissible).first,
+          matching: find.byType(Text),
+        ));
+
+        expect(find.byType(Dismissible), findsNWidgets(3));
+
+        // Check that the first card is now AboutUs
+        expect((text as Text).data, intl.card_applets_title);
       });
     });
 
@@ -154,7 +218,7 @@ void main() {
             settingsManager as SettingsManagerMock,
             toReturn: dashboard);
 
-        await tester.pumpWidget(localizedWidget(child: const DashboardView()));
+        await tester.pumpWidget(localizedWidget(child: FeatureDiscovery(child: const DashboardView())));
         await tester.pumpAndSettle();
 
         await expectLater(find.byType(DashboardView),

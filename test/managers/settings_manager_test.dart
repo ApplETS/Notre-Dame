@@ -2,6 +2,7 @@
 import 'package:enum_to_string/enum_to_string.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:intl/intl.dart';
 import 'package:mockito/mockito.dart';
 import 'package:table_calendar/table_calendar.dart';
 
@@ -162,6 +163,22 @@ void main() {
         verifyNoMoreInteractions(preferencesService);
         verifyNoMoreInteractions(analyticsService);
       });
+
+      test("validate default behaviour", () async {
+        const flag = PreferencesFlag.theme;
+        PreferencesServiceMock.stubGetString(
+            preferencesService as PreferencesServiceMock, flag,
+            toReturn: ThemeMode.light.toString());
+
+        manager.themeMode;
+        await untilCalled(preferencesService.getString(flag));
+
+        expect(manager.themeMode, ThemeMode.light);
+
+        verify(preferencesService.getString(flag)).called(2);
+
+        verifyNoMoreInteractions(preferencesService);
+      });
     });
 
     group("Locale - ", () {
@@ -253,6 +270,30 @@ void main() {
       verifyNoMoreInteractions(analyticsService);
     });
 
+    test("reset language and theme", () async {
+      // Set local and theme
+      PreferencesServiceMock.stubGetString(
+          preferencesService as PreferencesServiceMock, PreferencesFlag.locale,
+          toReturn: const Locale('fr').toString());
+      PreferencesServiceMock.stubGetString(
+          preferencesService as PreferencesServiceMock, PreferencesFlag.theme,
+          toReturn: 'ThemeMode.system');
+
+      await manager.fetchLanguageAndThemeMode();
+
+      expect(manager.themeMode, ThemeMode.system,
+          reason: "Loaded theme mode should be system");
+      expect(manager.locale, const Locale('fr'),
+          reason: "Loaded locale should be french");
+
+      manager.resetLanguageAndThemeMode();
+
+      expect(manager.themeMode, null,
+          reason: "Default theme mode should be null");
+      expect(manager.locale, Locale(Intl.systemLocale.split('_')[0]),
+          reason: "Default locale should be system language");
+    });
+
     test("setString", () async {
       const flag = PreferencesFlag.scheduleSettingsCalendarFormat;
       PreferencesServiceMock.stubSetString(
@@ -270,6 +311,25 @@ void main() {
               any))
           .called(1);
       verify(preferencesService.setString(flag, any));
+    });
+
+    test("setInt", () async {
+      const flag = PreferencesFlag.aboutUsCard;
+      PreferencesServiceMock.stubSetInt(
+          preferencesService as PreferencesServiceMock, flag);
+
+      expect(await manager.setInt(flag, 0), true,
+          reason:
+              "setInt should return true if the PreferenceService return true");
+
+      untilCalled(analyticsService.logEvent(
+          "${SettingsManager.tag}_${EnumToString.convertToString(flag)}", any));
+
+      verify(analyticsService.logEvent(
+              "${SettingsManager.tag}_${EnumToString.convertToString(flag)}",
+              any))
+          .called(1);
+      verify(preferencesService.setInt(flag, any));
     });
 
     test("getString", () async {
@@ -308,6 +368,83 @@ void main() {
               any))
           .called(1);
       verify(preferencesService.setBool(flag, value: anyNamed("value")));
+    });
+
+    group("Dashboard - ", () {
+      test("validate default behaviour", () async {
+        PreferencesServiceMock.stubGetInt(
+            preferencesService as PreferencesServiceMock,
+            PreferencesFlag.aboutUsCard,
+            toReturn: null);
+        PreferencesServiceMock.stubGetInt(
+            preferencesService as PreferencesServiceMock,
+            PreferencesFlag.scheduleCard,
+            toReturn: null);
+        PreferencesServiceMock.stubGetInt(
+            preferencesService as PreferencesServiceMock,
+            PreferencesFlag.progressBarCard,
+            toReturn: null);
+
+        // Cards
+        final Map<PreferencesFlag, int> expected = {
+          PreferencesFlag.aboutUsCard: 0,
+          PreferencesFlag.scheduleCard: 1,
+          PreferencesFlag.progressBarCard: 2
+        };
+
+        expect(
+          await manager.getDashboard(),
+          expected,
+        );
+
+        verify(preferencesService.getInt(PreferencesFlag.aboutUsCard))
+            .called(1);
+        verify(preferencesService.getInt(PreferencesFlag.scheduleCard))
+            .called(1);
+        verify(preferencesService.getInt(PreferencesFlag.progressBarCard))
+            .called(1);
+
+        verifyNoMoreInteractions(preferencesService);
+        verifyNoMoreInteractions(analyticsService);
+      });
+
+      test("validate the loading of the cards", () async {
+        PreferencesServiceMock.stubGetInt(
+            preferencesService as PreferencesServiceMock,
+            PreferencesFlag.aboutUsCard,
+            // ignore: avoid_redundant_argument_values
+            toReturn: 1);
+        PreferencesServiceMock.stubGetInt(
+            preferencesService as PreferencesServiceMock,
+            PreferencesFlag.scheduleCard,
+            toReturn: 2);
+        PreferencesServiceMock.stubGetInt(
+            preferencesService as PreferencesServiceMock,
+            PreferencesFlag.progressBarCard,
+            toReturn: 0);
+
+        // Cards
+        final Map<PreferencesFlag, int> expected = {
+          PreferencesFlag.aboutUsCard: 1,
+          PreferencesFlag.scheduleCard: 2,
+          PreferencesFlag.progressBarCard: 0
+        };
+
+        expect(
+          await manager.getDashboard(),
+          expected,
+        );
+
+        verify(preferencesService.getInt(PreferencesFlag.aboutUsCard))
+            .called(1);
+        verify(preferencesService.getInt(PreferencesFlag.scheduleCard))
+            .called(1);
+        verify(preferencesService.getInt(PreferencesFlag.progressBarCard))
+            .called(1);
+
+        verifyNoMoreInteractions(preferencesService);
+        verifyNoMoreInteractions(analyticsService);
+      });
     });
   });
 }
