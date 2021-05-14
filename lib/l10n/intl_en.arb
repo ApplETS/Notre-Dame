@@ -188,6 +188,7 @@
   "flutter_license": "Flutter is Google's UI toolkit for building beautiful, natively compiled applications for mobile, web, and desktop from a single codebase. Learn more about Flutter at ",
   "flutter_website": "https://flutter.dev",
 
+  "skip_discovery": "Skip tour",
   "discovery_navbar_dashboard_page_title": "Dashboard",
   "discovery_navbar_dashboard_page_details": "The Dashboard page groups together the most frequently consulted information, in the form of cards.\n\nIf you keep your finger on the card, you can move it up and down to rearrange the cards.\n\nTo delete a card, keep your finger on the card and swipe left or right.",
   "discovery_navbar_dashboard_page_details_restore": "To restore the changes, click on the icon at the top right.",

@@ -186,6 +186,7 @@
   "flutter_license": "Flutter est la boîte à outils d'interface utilisateur de Google pour créer de superbes applications compilées en natif pour mobile, Web et bureau à partir d'une seule base de code. En savoir plus sur Flutter à ",
   "flutter_website": "https://flutter.dev",
 
+  "skip_discovery": "Ignorer la visite",
   "discovery_navbar_dashboard_page_title": "Accueil",
   "discovery_navbar_dashboard_page_details": "La page Accueil regroupe les informations les plus fréquemment consultées, sous forme de cartes.\n\nEn gardant votre doigt sur la carte, vous pouvez les déplacer vers le haut et vers le bas pour les réorganiser.\n\nPour supprimer une carte, simplement glisser votre doigt vers la gauche ou vers la droite.",
   "discovery_navbar_dashboard_page_details_restore": "Pour restaurer les changements, cliquer sur l'icône en haut à droite.",
