@@ -191,7 +191,7 @@
   "discovery_navbar_dashboard_page_details": "La page d'accueil regroupe les informations les plus fréquemment consultées, sous forme de cartes.\n\nEn gardant votre doigt sur la carte, vous pouvez les déplacer vers le haut et vers le bas pour les réorganiser.\n\nPour supprimer une carte, simplement glisser votre doigt vers la gauche ou vers la droite.",
   "discovery_navbar_dashboard_page_details_restore": "Pour restaurer les changements, cliquer sur l'icône en haut à droite.",
   "discovery_navbar_schedule_page_title": "Horaire",
-  "discovery_navbar_schedule_page_details": "La page Horaire affiche les évènements de votre calendrier scolaire.",  
+  "discovery_navbar_schedule_page_details": "Sur cette page vous pourrez trouver votre horaire ainsi que les autres événements importants.",  
   "discovery_navbar_schedule_page_details_format": "Dans les paramètres, vous pouvez changer les paramètres par défaut du calendrier.",
   "discovery_navbar_student_page_title": "Étudiant",
   "discovery_navbar_student_page_details": "La page Étudiant affiche vos notes et les informations de votre profil.",
