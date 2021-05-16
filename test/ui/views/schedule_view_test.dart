@@ -213,18 +213,22 @@ void main() {
         await tester.pumpWidget(localizedWidget(
             child: MediaQuery(
                 data: const MediaQueryData(textScaleFactor: 0.5),
-                child: ScheduleView(initialDay: DateTime(2020)))));
+                child: ScheduleView(initialDay: DateTime(2020, 2, 15)))));
         await tester.pumpAndSettle();
 
         expect(find.byType(TableCalendar, skipOffstage: false), findsOneWidget);
-        expect(find.text("${DateTime(2020).add(const Duration(days: 1)).day}", skipOffstage: false),
+        expect(find.descendant(
+            of: find.byType(TableCalendar, skipOffstage: false),
+            matching: find.text(
+                "${DateTime(2020, 2, 15).add(const Duration(days: 1)).day}",
+                skipOffstage: false)),
             findsOneWidget);
 
         // Tap on the day after selected day
         await tester.tap(find.descendant(
             of: find.byType(TableCalendar, skipOffstage: false),
             matching: find.text(
-                "${DateTime(2020).add(const Duration(days: 1)).day}",
+                "${DateTime(2020, 2, 15).add(const Duration(days: 1)).day}",
                 skipOffstage: false)));
 
         // Reload the view
