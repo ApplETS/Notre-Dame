@@ -33,6 +33,7 @@ class GradesDetailsViewModel extends FutureViewModel<Course> {
     // ignore: return_type_invalid_for_catch_error
     await _courseRepository
         .getCourseSummary(course)
+        // ignore: return_type_invalid_for_catch_error
         .catchError(onError)
         ?.then((value) {
       if (value != null) {
