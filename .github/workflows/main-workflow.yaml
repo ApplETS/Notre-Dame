@@ -1,0 +1,151 @@
+name: Main workflow
+on:
+  push:
+    branches:
+      - main
+    paths-ignore:
+      - '.gitignore'
+      - '.metadata'
+      - 'README.md'
+  pull_request:
+env:
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  MAPS_API_KEY: ${{ secrets.MAPS_API_KEY }}
+  GITHUB_API_TOKEN: ${{ secrets.GITHUB_API_TOKEN }}
+jobs:
+  tagValidation:
+    name: Tag validation
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.split.outputs._0 }}
+    steps:
+      - uses: actions/checkout@v2
+      - name: Get the version from the pubspec
+        id: pubspecVersion
+        uses: CumulusDS/get-yaml-paths-action@v0.1.0
+        with:
+          file: pubspec.yaml
+          version: version
+      - uses: jungwinter/split@v1
+        id: split
+        with:
+          msg: ${{ steps.pubspecVersion.outputs.version }}
+          seperator: '+'
+      - name: Validate that version doesn't exists
+        uses: mukunku/tag-exists-action@v1.0.0
+        id: checkTag
+        with:
+          tag: ${{ steps.split.outputs._0 }}
+      - if: ${{ steps.checkTag.outputs.exists == 'true' && github.event_name == 'pull_request' }}
+        name: Post comment on PR
+        uses: thollander/actions-comment-pull-request@1.0.1
+        with:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          message: '${{ steps.split.outputs._0 }} already exists, please update the pubspec version.'
+      - if: ${{ steps.checkTag.outputs.exists == 'true' }}
+        run: |
+          echo "${{ steps.split.outputs._0 }} already exists, please update the pubspec version."
+          exit 1
+
+  validationWorkflow:
+    name: Tests and checks
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0 # Needed to push to refs
+      - uses: actions/setup-java@v1
+        with:
+          java-version: '12.x'
+      - uses: subosito/flutter-action@v1
+      - name: Install OpenSSL
+        run: sudo apt-get install openssl
+      - name: Decrypt certificates files
+        run: |
+          chmod +x ./scripts/decrypt.sh
+          ./scripts/decrypt.sh
+        env:
+          ENCRYPTED_SIGNETS_API_CERT_PASSWORD: ${{ secrets.ENCRYPTED_SIGNETS_API_CERT_PASSWORD }}
+
+      # Get flutter dependencies.
+      - run: flutter pub get
+
+      # Check the format of the code and check if the code has any errors/warnings
+      - run: flutter format --set-exit-if-changed .
+      - run: flutter analyze
+
+      # Run the tests
+      - run: flutter test --coverage
+
+      # Comment coverage report
+      - name: Comment the coverage of the PR
+        if: ${{ github.event_name == 'pull_request' }}
+        uses: romeovs/lcov-reporter-action@v0.2.21
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          lcov-file: ./coverage/lcov.info
+          lcov-base: ./coverage/lcov.base.info
+      - name: Commit coverage file
+        id: commit
+        if: ${{ github.event_name == 'pull' }}
+        run: |
+          git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          mv converage lcov.info lcov.base.info
+          git add coverage/lcov.base.info
+          if git status | grep coverage/lcov.base.info; then
+            git commit -m "Update coverage file" -a
+            echo "::set-output name=is_commit::true"
+          fi
+      - name: Push coverage changes.
+        if: ${{ github.event_name == 'pull' && steps.commit.is_commit}}
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: ${{ github.head_ref }}
+  androidBuildWorkflow:
+    name: Build the application for Android
+    needs: [validationWorkflow, tagValidation]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-java@v1
+        with:
+          java-version: '12.x'
+      - uses: subosito/flutter-action@v1
+
+      # Get flutter dependencies.
+      - run: flutter pub get
+
+      - name: Build APK for Android
+        run: flutter build apk
+
+
+# Disable for now
+#      - name: Create release
+#        if: "${{ github.event_name == 'push' }}"
+#        uses: marvinpinto/action-automatic-releases@latest
+#        with:
+#          repo_token: ${{ secrets.GITHUB_TOKEN }}
+#          draft: true
+#          automatic_release_tag: ${{ needs.tagValidation.outputs.version }}
+#          title: v${{ needs.tagValidation.outputs.version }}
+#          files: |
+#            build/app/outputs/apk/release/app-release.apk
+
+  iosBuildWorkflow:
+    name: Build the application for iOS
+    needs: [ validationWorkflow, tagValidation]
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-java@v1
+      with:
+        java-version: '12.x'
+        - uses: subosito/flutter-action@v1
+
+      # Get flutter dependencies.
+      - run: flutter pub get
+
+      - name: Build archive
+        run: flutter build ipa
