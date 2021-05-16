@@ -90,7 +90,7 @@ void main() {
         expect(viewModel.isBusy, false);
 
         verify(settingsManager.setString(
-            PreferencesFlag.scheduleSettingsStartWeekday, any))
+                PreferencesFlag.scheduleSettingsStartWeekday, any))
             .called(1);
         verifyNoMoreInteractions(settingsManager);
       });
@@ -114,7 +114,7 @@ void main() {
         expect(viewModel.isBusy, false);
 
         verify(settingsManager.setBool(
-            PreferencesFlag.scheduleSettingsShowTodayBtn, any))
+                PreferencesFlag.scheduleSettingsShowTodayBtn, any))
             .called(1);
         verifyNoMoreInteractions(settingsManager);
       });

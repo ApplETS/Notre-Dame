@@ -20,7 +20,8 @@ class SecurityViewModel extends BaseViewModel {
   final List<Marker> markersList;
 
   SecurityViewModel({@required AppIntl intl})
-      : emergencyProcedureList = emergencyProcedures(intl), markersList = markers(intl);
+      : emergencyProcedureList = emergencyProcedures(intl),
+        markersList = markers(intl);
 
   /// Used to get all security buildings to show in Google Maps
   Set<Marker> getSecurityMarkersForMaps(List<Marker> markersList) {

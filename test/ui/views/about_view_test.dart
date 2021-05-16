@@ -14,9 +14,9 @@ void main() {
     tearDown(() {});
 
     group('UI - ', () {
-      testWidgets('has 6 images and 2 texts and 1 row', (WidgetTester tester) async {
-        await tester.pumpWidget(localizedWidget(
-            child: AboutView()));
+      testWidgets('has 6 images and 2 texts and 1 row',
+          (WidgetTester tester) async {
+        await tester.pumpWidget(localizedWidget(child: AboutView()));
         await tester.pumpAndSettle();
 
         final image = find.byType(Image);

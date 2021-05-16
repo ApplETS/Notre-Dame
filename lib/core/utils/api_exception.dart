@@ -12,6 +12,6 @@ class ApiException implements Exception {
 
   @override
   String toString() {
-    return "$prefix ${errorCode.isNotEmpty ? "Code: $errorCode":""} Message: $message";
+    return "$prefix ${errorCode.isNotEmpty ? "Code: $errorCode" : ""} Message: $message";
   }
 }

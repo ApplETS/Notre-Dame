@@ -15,7 +15,6 @@ class StudentView extends StatefulWidget {
 }
 
 class _StudentViewState extends State<StudentView> {
-
   List<Widget> tabsView = [GradesView(), ProfileView()];
 
   @override

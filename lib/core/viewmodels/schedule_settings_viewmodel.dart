@@ -12,7 +12,6 @@ import 'package:notredame/core/managers/settings_manager.dart';
 // OTHER
 import 'package:notredame/locator.dart';
 
-
 class ScheduleSettingsViewModel
     extends FutureViewModel<Map<PreferencesFlag, dynamic>> {
   /// Manage the settings

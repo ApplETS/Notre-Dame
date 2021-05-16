@@ -36,7 +36,8 @@ class ContributorsView extends StatelessWidget {
                     leading: CircleAvatar(
                         backgroundImage:
                             NetworkImage(snapshot.data[index].avatarUrl)),
-                    onTap: () => Utils.launchURL(snapshot.data[index].htmlUrl, AppIntl.of(context)),
+                    onTap: () => Utils.launchURL(
+                        snapshot.data[index].htmlUrl, AppIntl.of(context)),
                   ),
                 );
               },

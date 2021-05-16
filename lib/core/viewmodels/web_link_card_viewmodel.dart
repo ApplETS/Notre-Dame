@@ -20,22 +20,22 @@ import 'package:notredame/ui/utils/app_theme.dart';
 import 'package:notredame/locator.dart';
 
 class WebLinkCardViewModel extends BaseViewModel {
-
   /// used to redirect on the security.
   final NavigationService _navigationService = locator<NavigationService>();
 
   final AnalyticsService _analyticsService = locator<AnalyticsService>();
 
-  final InternalInfoService _internalInfoService = locator<InternalInfoService>();
+  final InternalInfoService _internalInfoService =
+      locator<InternalInfoService>();
 
-   /// used to open a website or the security view
+  /// used to open a website or the security view
   Future<void> onLinkClicked(QuickLink link) async {
     if (link.link == 'security') {
       _navigationService.pushNamed(RouterPaths.security);
     } else {
       try {
         await launchInBrowser(link.link);
-      } catch (error) { 
+      } catch (error) {
         await launchWebView(error.toString(), link);
       }
     }
@@ -57,9 +57,11 @@ class WebLinkCardViewModel extends BaseViewModel {
   }
 
   Future<void> launchWebView(String error, QuickLink link) async {
-    final String errorMessage = await _internalInfoService.getDeviceInfoForErrorReporting();
+    final String errorMessage =
+        await _internalInfoService.getDeviceInfoForErrorReporting();
 
-    _analyticsService.logError("web_link_card", "**Error message : $error\n$errorMessage");
+    _analyticsService.logError(
+        "web_link_card", "**Error message : $error\n$errorMessage");
     _navigationService.pushNamed(RouterPaths.webView, arguments: link);
   }
 }

@@ -117,8 +117,10 @@ class Session {
         'endDateCourses': endDateCourses.toString(),
         'startDateRegistration': startDateRegistration.toString(),
         'deadlineRegistration': deadlineRegistration.toString(),
-        'startDateCancellationWithRefund': startDateCancellationWithRefund.toString(),
-        'deadlineCancellationWithRefund': deadlineCancellationWithRefund.toString(),
+        'startDateCancellationWithRefund':
+            startDateCancellationWithRefund.toString(),
+        'deadlineCancellationWithRefund':
+            deadlineCancellationWithRefund.toString(),
         'deadlineCancellationWithRefundNewStudent':
             deadlineCancellationWithRefundNewStudent.toString(),
         'startDateCancellationWithoutRefundNewStudent':

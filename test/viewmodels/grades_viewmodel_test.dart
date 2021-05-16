@@ -239,7 +239,8 @@ void main() {
       test('navigating back worked', () async {
         viewModel.navigateToGradeDetails(courseSummer);
 
-        verify(navigationService.pushNamed(RouterPaths.gradeDetails, arguments: courseSummer));
+        verify(navigationService.pushNamed(RouterPaths.gradeDetails,
+            arguments: courseSummer));
       });
     });
   });

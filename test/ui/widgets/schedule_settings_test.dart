@@ -211,10 +211,12 @@ void main() {
             localizedWidget(child: const ScheduleSettings(showHandle: false)));
         await tester.pumpAndSettle();
 
-        await tester.tap(find.widgetWithText(ListTile, intl.schedule_settings_calendar_format_2_weeks));
+        await tester.tap(find.widgetWithText(
+            ListTile, intl.schedule_settings_calendar_format_2_weeks));
         await tester.pump();
 
-        await untilCalled(settingsManager.setString(PreferencesFlag.scheduleSettingsCalendarFormat, any));
+        await untilCalled(settingsManager.setString(
+            PreferencesFlag.scheduleSettingsCalendarFormat, any));
 
         final formatTile = find.widgetWithText(
             ListTile, intl.schedule_settings_calendar_format_2_weeks);
@@ -223,17 +225,15 @@ void main() {
             isA<ListTile>()
                 .having((source) => source.selected, 'selected', isTrue),
             reason:
-            'The settings says 2 week format now, the UI should reflet that.');
+                'The settings says 2 week format now, the UI should reflet that.');
       });
 
       testWidgets("onChange showTodayBtn", (WidgetTester tester) async {
         SettingsManagerMock.stubGetScheduleSettings(
             settingsManager as SettingsManagerMock,
             toReturn: settings);
-        SettingsManagerMock.stubSetBool(
-            settingsManager as SettingsManagerMock,
+        SettingsManagerMock.stubSetBool(settingsManager as SettingsManagerMock,
             PreferencesFlag.scheduleSettingsShowTodayBtn);
-
 
         await tester.pumpWidget(
             localizedWidget(child: const ScheduleSettings(showHandle: false)));
@@ -243,18 +243,27 @@ void main() {
             ListTile, intl.schedule_settings_show_today_btn_pref);
 
         expect(find.byType(Switch), findsOneWidget);
-        // Currently the await tester.tap on a switch in a tile isn't working. Workaround: 
-        (find.descendant(of: find.widgetWithText(ListTile, intl.schedule_settings_show_today_btn_pref), matching: find.byType(Switch)).evaluate().single.widget as Switch).onChanged(false);
+        // Currently the await tester.tap on a switch in a tile isn't working. Workaround:
+        (find
+                .descendant(
+                    of: find.widgetWithText(
+                        ListTile, intl.schedule_settings_show_today_btn_pref),
+                    matching: find.byType(Switch))
+                .evaluate()
+                .single
+                .widget as Switch)
+            .onChanged(false);
         await tester.pumpAndSettle();
 
-        await untilCalled(settingsManager.setBool(PreferencesFlag.scheduleSettingsShowTodayBtn, any));
+        await untilCalled(settingsManager.setBool(
+            PreferencesFlag.scheduleSettingsShowTodayBtn, any));
 
         expect(
             tester.widget(find.descendant(
                 of: showTodayBtnFinder, matching: find.byType(Switch))),
             isA<Switch>().having((source) => source.value, 'value', isFalse),
             reason:
-            "the settings says that the showTodayBtn is enabled, the UI should reflet that.");
+                "the settings says that the showTodayBtn is enabled, the UI should reflet that.");
       });
     });
   });

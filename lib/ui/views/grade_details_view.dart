@@ -34,7 +34,8 @@ class _GradesDetailsViewState extends State<GradesDetailsView> {
   @override
   Widget build(BuildContext context) =>
       ViewModelBuilder<GradesDetailsViewModel>.reactive(
-        viewModelBuilder: () => GradesDetailsViewModel(course: widget.course, intl: AppIntl.of(context)),
+        viewModelBuilder: () => GradesDetailsViewModel(
+            course: widget.course, intl: AppIntl.of(context)),
         builder: (context, model, child) => BaseScaffold(
           showBottomBar: false,
           body: NestedScrollView(
@@ -49,9 +50,9 @@ class _GradesDetailsViewState extends State<GradesDetailsView> {
                 expandedHeight: 80.0,
                 flexibleSpace: LayoutBuilder(
                   builder: (BuildContext context, BoxConstraints constraints) {
-                    if(initialTopHeight == 0.0) {
+                    if (initialTopHeight == 0.0) {
                       initialTopHeight = constraints.biggest.height;
-                    }                    
+                    }
                     final double topHeight = constraints.biggest.height;
 
                     return FlexibleSpaceBar(
@@ -64,7 +65,8 @@ class _GradesDetailsViewState extends State<GradesDetailsView> {
                         alignment: AlignmentDirectional.bottomStart,
                         child: Text(
                           model.course.acronym ?? "",
-                          style: TextStyle(fontSize: topHeight < initialTopHeight ? 20 : 19),
+                          style: TextStyle(
+                              fontSize: topHeight < initialTopHeight ? 20 : 19),
                         ),
                       ),
                     );
@@ -221,18 +223,17 @@ class _GradesDetailsViewState extends State<GradesDetailsView> {
     }
   }
 
-  Align _buildClassInfo(String info) =>
-    Align(
-      alignment: Alignment.centerLeft,
-      child: Padding(
-        padding: const EdgeInsets.only(left: 15.0),
-        child: Text(
-          info,
-          style: const TextStyle(color: Colors.white, fontSize: 16),
-          overflow: TextOverflow.ellipsis,
+  Align _buildClassInfo(String info) => Align(
+        alignment: Alignment.centerLeft,
+        child: Padding(
+          padding: const EdgeInsets.only(left: 15.0),
+          child: Text(
+            info,
+            style: const TextStyle(color: Colors.white, fontSize: 16),
+            overflow: TextOverflow.ellipsis,
+          ),
         ),
-      ),
-    );
+      );
 
   /// Build the student grade or the average grade with their title
   Column _buildGradesSummary(
@@ -241,16 +242,16 @@ class _GradesDetailsViewState extends State<GradesDetailsView> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         FittedBox(
-            fit: BoxFit.fitWidth,
-            child: Text(
-              AppIntl.of(context).grades_grade_with_percentage(grade, 100, grade),
+          fit: BoxFit.fitWidth,
+          child: Text(
+              AppIntl.of(context)
+                  .grades_grade_with_percentage(grade, 100, grade),
               style:
                   Theme.of(context).textTheme.headline6.copyWith(color: color)),
         ),
-        Text(
-          recipient,
-          style: Theme.of(context).textTheme.bodyText1.copyWith(color: color)
-        ),
+        Text(recipient,
+            style:
+                Theme.of(context).textTheme.bodyText1.copyWith(color: color)),
       ],
     );
   }

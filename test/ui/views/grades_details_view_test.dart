@@ -133,7 +133,8 @@ void main() {
             localizedWidget(child: GradesDetailsView(course: course)));
         await tester.pumpAndSettle();
 
-        final gesture = await tester.startGesture(const Offset(0, 300)); //Position of the scrollview
+        final gesture = await tester
+            .startGesture(const Offset(0, 300)); //Position of the scrollview
         await gesture.moveBy(const Offset(0, -300)); //How much to scroll by
         await tester.pump();
 
@@ -172,7 +173,8 @@ void main() {
             matchesGoldenFile(goldenFilePath("gradesDetailsView_1")));
       });
 
-      testWidgets("if there is no grades available", (WidgetTester tester) async {
+      testWidgets("if there is no grades available",
+          (WidgetTester tester) async {
         CourseRepositoryMock.stubGetCourseSummary(
             courseRepository as CourseRepositoryMock, courseWithoutSummary,
             toReturn: courseWithoutSummary);

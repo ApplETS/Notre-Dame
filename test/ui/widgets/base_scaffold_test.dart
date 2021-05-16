@@ -36,10 +36,9 @@ void main() {
     group('loading - ', () {
       testWidgets('the loading is displayed if isLoading is true',
           (WidgetTester tester) async {
-        await tester.pumpWidget(
-            const MaterialApp(
-                home: BaseScaffold(
-                    body: SizedBox(), isLoading: true, showBottomBar: false)));
+        await tester.pumpWidget(const MaterialApp(
+            home: BaseScaffold(
+                body: SizedBox(), isLoading: true, showBottomBar: false)));
 
         expect(find.byType(CircularProgressIndicator), findsOneWidget);
       });
@@ -47,8 +46,7 @@ void main() {
       testWidgets("the loading isn't displayed if isLoading is false",
           (WidgetTester tester) async {
         await tester.pumpWidget(localizedWidget(
-            child: const BaseScaffold(body: SizedBox()),
-            useScaffold: false));
+            child: const BaseScaffold(body: SizedBox()), useScaffold: false));
         await tester.pumpAndSettle();
 
         expect(find.byType(CircularProgressIndicator), findsNothing);

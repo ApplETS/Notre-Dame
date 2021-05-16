@@ -13,7 +13,7 @@ import 'package:notredame/core/managers/course_repository.dart';
 // MODEL
 import 'package:notredame/core/models/course.dart';
 
-// CONSTANTS 
+// CONSTANTS
 import 'package:notredame/core/constants/router_paths.dart';
 
 // SERVICE

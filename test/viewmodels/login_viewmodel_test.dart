@@ -52,12 +52,16 @@ void main() {
       });
 
       test('with empty value should return login_error_field_required', () {
-        expect(viewModel.validateUniversalCode(""), appIntl.login_error_field_required);
+        expect(viewModel.validateUniversalCode(""),
+            appIntl.login_error_field_required);
         expect(viewModel.universalCode, "");
       });
 
-      test('with wrong formatted universal code should return login_error_invalid_universal_code', () {
-        expect(viewModel.validateUniversalCode(universalCodeInvalid), appIntl.login_error_invalid_universal_code);
+      test(
+          'with wrong formatted universal code should return login_error_invalid_universal_code',
+          () {
+        expect(viewModel.validateUniversalCode(universalCodeInvalid),
+            appIntl.login_error_invalid_universal_code);
         expect(viewModel.universalCode, "");
       });
     });
@@ -69,7 +73,8 @@ void main() {
       });
 
       test('with empty value should return login_error_field_required', () {
-        expect(viewModel.validatePassword(passwordCodeInvalid), appIntl.login_error_field_required);
+        expect(viewModel.validatePassword(passwordCodeInvalid),
+            appIntl.login_error_field_required);
         expect(viewModel.password, passwordCodeInvalid);
       });
     });
@@ -96,8 +101,10 @@ void main() {
     });
 
     group('signIn - ', () {
-      test('with right credentials should redirect to the Dashboard route', () async {
-        UserRepositoryMock.stubAuthenticate(userRepositoryMock, universalCodeValid);
+      test('with right credentials should redirect to the Dashboard route',
+          () async {
+        UserRepositoryMock.stubAuthenticate(
+            userRepositoryMock, universalCodeValid);
 
         viewModel.validateUniversalCode(universalCodeValid);
         viewModel.validatePassword(passwordCodeValid);
@@ -106,14 +113,17 @@ void main() {
         verify(navigationService.pushNamed(RouterPaths.dashboard));
       });
 
-      test('universal code and/or password are not set, should return a error message', () async {
+      test(
+          'universal code and/or password are not set, should return a error message',
+          () async {
         viewModel.validateUniversalCode(universalCodeValid);
 
         expect(await viewModel.authenticate(), appIntl.error);
       });
 
       test('with wrong credentials should return a error message', () async {
-        UserRepositoryMock.stubAuthenticate(userRepositoryMock, "AA11112", toReturn: false);
+        UserRepositoryMock.stubAuthenticate(userRepositoryMock, "AA11112",
+            toReturn: false);
 
         viewModel.validateUniversalCode("AA11112");
         viewModel.validatePassword(passwordCodeValid);

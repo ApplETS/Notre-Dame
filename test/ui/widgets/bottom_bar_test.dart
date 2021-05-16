@@ -15,7 +15,6 @@ import 'package:notredame/core/constants/router_paths.dart';
 // HELPERS
 import '../../helpers.dart';
 
-
 NavigationService _navigationService;
 
 void main() {
@@ -28,7 +27,9 @@ void main() {
       unregister<NavigationService>();
     });
 
-    testWidgets('has five sections with icons and titles (dashboard, schedule, student, ets and more)', (WidgetTester tester) async {
+    testWidgets(
+        'has five sections with icons and titles (dashboard, schedule, student, ets and more)',
+        (WidgetTester tester) async {
       await tester.pumpWidget(localizedWidget(child: BottomBar()));
       await tester.pumpAndSettle();
 
@@ -41,8 +42,7 @@ void main() {
 
     group('navigate when tapped to - ', () {
       testWidgets('dashbord', (WidgetTester tester) async {
-        await tester.pumpWidget(
-            localizedWidget(child: BottomBar()));
+        await tester.pumpWidget(localizedWidget(child: BottomBar()));
         await tester.pumpAndSettle();
 
         await tester.tap(find.byIcon(Icons.dashboard));
