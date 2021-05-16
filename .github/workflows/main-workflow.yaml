@@ -87,7 +87,7 @@ jobs:
           lcov-base: ./coverage/lcov.base.info
       - name: Commit coverage file
         id: commit
-        if: ${{ github.event_name == 'pull' }}
+        if: ${{ github.event_name == 'push' }}
         run: |
           git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
@@ -98,7 +98,7 @@ jobs:
             echo "::set-output name=is_commit::true"
           fi
       - name: Push coverage changes.
-        if: ${{ github.event_name == 'pull' && steps.commit.is_commit}}
+        if: ${{ github.event_name == 'push' && steps.commit.is_commit}}
         uses: ad-m/github-push-action@master
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
@@ -140,9 +140,9 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-java@v1
-      with:
-        java-version: '12.x'
-        - uses: subosito/flutter-action@v1
+        with:
+          java-version: '12.x'
+      - uses: subosito/flutter-action@v1
 
       # Get flutter dependencies.
       - run: flutter pub get
