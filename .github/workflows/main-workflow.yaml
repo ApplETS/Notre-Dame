@@ -42,10 +42,6 @@ jobs:
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           message: '${{ steps.split.outputs._0 }} already exists, please update the pubspec version.'
-      - if: ${{ steps.checkTag.outputs.exists == 'true' }}
-        run: |
-          echo "${{ steps.split.outputs._0 }} already exists, please update the pubspec version."
-          exit 1
 
   validationWorkflow:
     name: Tests and checks
@@ -91,7 +87,7 @@ jobs:
         run: |
           git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
-          mv converage lcov.info lcov.base.info
+          mv coverage/lcov.info coverage/lcov.base.info
           git add coverage/lcov.base.info
           if git status | grep coverage/lcov.base.info; then
             git commit -m "Update coverage file" -a
@@ -113,6 +109,14 @@ jobs:
         with:
           java-version: '12.x'
       - uses: subosito/flutter-action@v1
+      - name: Install OpenSSL
+        run: sudo apt-get install openssl
+      - name: Decrypt certificates files
+        run: |
+          chmod +x ./scripts/decrypt.sh
+          ./scripts/decrypt.sh
+        env:
+          ENCRYPTED_SIGNETS_API_CERT_PASSWORD: ${{ secrets.ENCRYPTED_SIGNETS_API_CERT_PASSWORD }}
 
       # Get flutter dependencies.
       - run: flutter pub get
@@ -143,6 +147,14 @@ jobs:
         with:
           java-version: '12.x'
       - uses: subosito/flutter-action@v1
+      - name: Install OpenSSL
+        run: sudo apt-get install openssl
+      - name: Decrypt certificates files
+        run: |
+          chmod +x ./scripts/decrypt.sh
+          ./scripts/decrypt.sh
+        env:
+          ENCRYPTED_SIGNETS_API_CERT_PASSWORD: ${{ secrets.ENCRYPTED_SIGNETS_API_CERT_PASSWORD }}
 
       # Get flutter dependencies.
       - run: flutter pub get
