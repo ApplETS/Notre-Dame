@@ -97,4 +97,9 @@ class UserRepositoryMock extends Mock implements UserRepository {
   static void stubLogOut(UserRepositoryMock mock, {bool toReturn = true}) {
     when(mock.logOut()).thenAnswer((_) async => toReturn);
   }
+
+  static void stubWasPreviouslyLoggedIn(UserRepositoryMock mock,
+      {bool toReturn = true}) {
+    when(mock.wasPreviouslyLoggedIn()).thenAnswer((_) async => toReturn);
+  }
 }

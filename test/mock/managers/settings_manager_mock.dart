@@ -15,6 +15,12 @@ class SettingsManagerMock extends Mock implements SettingsManager {
     when(mock.getScheduleSettings()).thenAnswer((_) async => toReturn);
   }
 
+  /// Stub the [getDashboard] function of [mock], when called return [toReturn].
+  static void stubGetDashboard(SettingsManagerMock mock,
+      {Map<PreferencesFlag, int> toReturn = const {}}) {
+    when(mock.getDashboard()).thenAnswer((_) async => toReturn);
+  }
+
   /// Stub the [setString] function of [mock], when called with [flag] return [toReturn].
   static void stubSetString(SettingsManagerMock mock, PreferencesFlag flag,
       {bool toReturn = true}) {
@@ -31,6 +37,12 @@ class SettingsManagerMock extends Mock implements SettingsManager {
   static void stubSetBool(SettingsManagerMock mock, PreferencesFlag flag,
       {bool toReturn = true}) {
     when(mock.setBool(flag, any)).thenAnswer((_) async => toReturn);
+  }
+
+  /// Stub the [setInt] function of [mock], when called with [flag] return [toReturn].
+  static void stubSetInt(SettingsManagerMock mock, PreferencesFlag flag,
+      {bool toReturn = true}) {
+    when(mock.setInt(flag, any)).thenAnswer((_) async => toReturn);
   }
 
   /// Stub the [locale] function of [mock], when called return [toReturn].
