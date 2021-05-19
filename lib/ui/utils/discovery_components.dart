@@ -37,18 +37,6 @@ List<Discovery> discoveryComponents(BuildContext context) => [
                     else
                       Image.asset(
                           'assets/animations/discovery/en/dashboard_swipe.gif'),
-                    const Text('\n'),
-                    Text(
-                        AppIntl.of(context)
-                            .discovery_navbar_dashboard_page_details_restore,
-                        textAlign: TextAlign.justify),
-                    const Text('\n'),
-                    if (AppIntl.of(context).localeName == "fr")
-                      Image.asset(
-                          'assets/animations/discovery/fr/dashboard_restore.gif')
-                    else
-                      Image.asset(
-                          'assets/animations/discovery/en/dashboard_restore.gif'),
                   ],
                 ),
               ),
@@ -71,11 +59,6 @@ List<Discovery> discoveryComponents(BuildContext context) => [
                   padding: EdgeInsets.zero,
                   children: <Widget>[
                     Text(AppIntl.of(context).discovery_navbar_schedule_page_details,
-                        textAlign: TextAlign.justify),
-                    const Text('\n'),
-                    Text(
-                        AppIntl.of(context)
-                            .discovery_navbar_schedule_page_details_format,
                         textAlign: TextAlign.justify),
                     const Text('\n'),
                     if (AppIntl.of(context).localeName == "fr")
@@ -106,16 +89,6 @@ List<Discovery> discoveryComponents(BuildContext context) => [
                   padding: EdgeInsets.zero,
                   children: <Widget>[
                     Text(AppIntl.of(context).discovery_navbar_student_page_details,
-                        textAlign: TextAlign.justify),
-                    const Text('\n'),
-                    Text(
-                        AppIntl.of(context)
-                            .discovery_navbar_student_grade_page_details,
-                        textAlign: TextAlign.justify),
-                    const Text('\n'),
-                    Text(
-                        AppIntl.of(context)
-                            .discovery_navbar_student_profile_page_details,
                         textAlign: TextAlign.justify),
                     const Text('\n'),
                     if (AppIntl.of(context).localeName == "fr")
