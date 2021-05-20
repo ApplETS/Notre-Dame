@@ -113,29 +113,23 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
 
   /// Populate list of cards used in view
   void getCardsToDisplay() {
-
-
     int numberOfCards = 0;
-
     _cards.forEach((key, value) {
       if (value >= 0) {
         numberOfCards++;
       }
     });
-
     _cardsToDisplay =
         List.filled(numberOfCards, PreferencesFlag.aboutUsCard, growable: true);
 
     _cards.forEach((key, value) {
       if (value >= 0) {
         _cardsToDisplay[value] = key;
-        if(key == PreferencesFlag.gradesCards) {
+        if (key == PreferencesFlag.gradesCards) {
           futureToRunGrades();
         }
       }
     });
-
-
   }
 
   /// Update cards order and display status in preferences
@@ -162,13 +156,16 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
 
     // Determine current sessions
     final DateTime now = DateTime.now();
-    final currentSession = _courseRepository.sessions.where((session) =>
-        session.endDate.isAfter(now) && session.startDate.isBefore(now)).first;
+    final currentSession = _courseRepository.sessions
+        .where((session) =>
+            session.endDate.isAfter(now) && session.startDate.isBefore(now))
+        .first;
 
-    return _courseRepository.getCourses(fromCacheOnly: true).then((coursesCached) {
+    return _courseRepository.getCourses(fromCacheOnly: true).then(
+        (coursesCached) {
       courses.clear();
       for (final Course course in coursesCached) {
-        if(course.session == currentSession.shortName) {
+        if (course.session == currentSession.shortName) {
           courses.add(course);
         }
       }
@@ -179,7 +176,7 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
           // Update the courses list
           courses.clear();
           for (final Course course in value) {
-            if(course.session == currentSession.shortName) {
+            if (course.session == currentSession.shortName) {
               courses.add(course);
             }
           }

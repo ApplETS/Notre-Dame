@@ -1,14 +1,18 @@
 // FLUTTER / DART / THIRD-PARTIES
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:notredame/core/constants/preferences_flags.dart';
+
+// MANAGER
 import 'package:notredame/core/managers/settings_manager.dart';
+
+// CONSTANTS
+import 'package:notredame/core/constants/preferences_flags.dart';
 
 // VIEW
 import 'package:notredame/ui/views/dashboard_view.dart';
 
+// OTHERS
 import '../../helpers.dart';
 import '../../mock/managers/settings_manager_mock.dart';
 
