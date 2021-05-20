@@ -190,7 +190,7 @@
 
   "skip_discovery": "Skip tour",
   "discovery_navbar_dashboard_page_title": "Dashboard",
-  "discovery_navbar_dashboard_page_details": "The Dashboard page groups together the most frequently consulted information, in the form of cards.\n\nIf you keep your finger on the card, you can move it up and down to rearrange the cards.\n\nTo delete a card, keep your finger on the card and swipe left or right.",
+  "discovery_navbar_dashboard_page_details": "The Dashboard page groups together the most frequently consulted information, in the form of cards.\n\nIf you keep your finger on the card, you can move it up and down to rearrange the cards.\n\nTo delete a card, swipe it to the left or right.",
   "discovery_navbar_schedule_page_title": "Schedule",
   "discovery_navbar_schedule_page_details": "The Schedule page allows you to view the events of your school calendar.",
   "discovery_navbar_student_page_title": "Student",
