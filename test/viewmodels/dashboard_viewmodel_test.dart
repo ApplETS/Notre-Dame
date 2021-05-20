@@ -2,7 +2,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:mockito/mockito.dart';
-import 'package:notredame/core/constants/preferences_flags.dart';
 
 // MANAGER
 import 'package:notredame/core/managers/course_repository.dart';
@@ -15,7 +14,7 @@ import 'package:notredame/core/viewmodels/dashboard_viewmodel.dart';
 
 import '../helpers.dart';
 import '../mock/managers/course_repository_mock.dart';
-import '../mock/managers/settings_manager_mock.dart';
+
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
@@ -61,7 +60,7 @@ void main() {
 
   final session = [session1];
 
-  group('GradesViewModel -', () {
+  group('DashboardViewModel  -', () {
     setUp(() async {
       courseRepository = setupCourseRepositoryMock();
       intl = await setupAppIntl();

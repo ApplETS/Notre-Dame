@@ -167,7 +167,7 @@ class _DashboardViewState extends State<DashboardView>
             mainAxisSize: MainAxisSize.min,
             children: [
               Text(AppIntl.of(context).grades_title,
-                  style: Theme.of(context).primaryTextTheme.headline6),
+                  style: Theme.of(context).textTheme.headline6),
               const SizedBox(height: 10),
               if (model.courses.isEmpty)
                 Center(
