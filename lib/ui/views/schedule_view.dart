@@ -137,50 +137,56 @@ class _ScheduleViewState extends State<ScheduleView>
   }
 
   /// Build the calendar
-  Widget _buildTableCalendar(ScheduleViewModel model) => TableCalendar(
-        startingDayOfWeek:
-            model.settings[PreferencesFlag.scheduleSettingsStartWeekday]
-                as StartingDayOfWeek,
-        locale: model.locale.toLanguageTag(),
-        selectedDayPredicate: (day) {
-          return isSameDay(model.selectedDate, day);
-        },
-        weekendDays: const [],
-        headerStyle:
-            const HeaderStyle(titleCentered: true, formatButtonVisible: false),
-        eventLoader: model.coursesActivitiesFor,
-        onDaySelected: (selectedDay, focusedDay) {
-          setState(() {
-            model.selectedDate = selectedDay;
-            model.focusedDate = focusedDay;
-          });
-        },
-        calendarFormat: model.calendarFormat,
-        onFormatChanged: (format) {
-          setState(() {
-            model.setCalendarFormat(format);
-          });
-        },
-        focusedDay: model.focusedDate,
-        onPageChanged: (focusedDay) {
-          model.focusedDate = focusedDay;
-        },
-        calendarBuilders: CalendarBuilders(
-            todayBuilder: (context, date, _) =>
-                _buildSelectedDate(date, _defaultColor),
-            selectedBuilder: (context, date, _) => FadeTransition(
-                  opacity:
-                      Tween(begin: 0.0, end: 1.0).animate(_animationController),
-                  child: _buildSelectedDate(date, _selectedColor),
-                ),
-            markerBuilder: (context, date, events) =>
-                _buildEventsMarker(model, date, events)),
-        // Those are now required by the package table_calendar ^3.0.0. In the doc,
-        // it is suggest to set them to values that won't affect user experience.
-        // Outside the range, the date are set to disable so no event can be loaded.
-        firstDay: DateTime.utc(2010, 12, 31),
-        lastDay: DateTime.utc(2100, 12, 31),
-      );
+  Widget _buildTableCalendar(ScheduleViewModel model) {
+    return ValueListenableBuilder<DateTime>(
+        valueListenable: model.focusedDate,
+        builder: (context, value, _) {
+          return TableCalendar(
+            startingDayOfWeek:
+                model.settings[PreferencesFlag.scheduleSettingsStartWeekday]
+                    as StartingDayOfWeek,
+            locale: model.locale.toLanguageTag(),
+            selectedDayPredicate: (day) {
+              return isSameDay(model.selectedDate, day);
+            },
+            weekendDays: const [],
+            headerStyle: const HeaderStyle(
+                titleCentered: true, formatButtonVisible: false),
+            eventLoader: model.coursesActivitiesFor,
+            onDaySelected: (selectedDay, focusedDay) {
+              setState(() {
+                model.selectedDate = selectedDay;
+                model.focusedDate.value = focusedDay;
+              });
+            },
+            calendarFormat: model.calendarFormat,
+            onFormatChanged: (format) {
+              setState(() {
+                model.setCalendarFormat(format);
+              });
+            },
+            focusedDay: model.focusedDate.value,
+            onPageChanged: (focusedDay) {
+              model.focusedDate.value = focusedDay;
+            },
+            calendarBuilders: CalendarBuilders(
+                todayBuilder: (context, date, _) =>
+                    _buildSelectedDate(date, _defaultColor),
+                selectedBuilder: (context, date, _) => FadeTransition(
+                      opacity: Tween(begin: 0.0, end: 1.0)
+                          .animate(_animationController),
+                      child: _buildSelectedDate(date, _selectedColor),
+                    ),
+                markerBuilder: (context, date, events) =>
+                    _buildEventsMarker(model, date, events)),
+            // Those are now required by the package table_calendar ^3.0.0. In the doc,
+            // it is suggest to set them to values that won't affect user experience.
+            // Outside the range, the date are set to disable so no event can be loaded.
+            firstDay: DateTime.utc(2010, 12, 31),
+            lastDay: DateTime.utc(2100, 12, 31),
+          );
+        });
+  }
 
   /// Build the visual for the selected [date]. The [color] parameter set the color for the tile.
   Widget _buildSelectedDate(DateTime date, Color color) => Container(
@@ -216,6 +222,7 @@ class _ScheduleViewState extends State<ScheduleView>
               icon: const Icon(Icons.today),
               onPressed: () => setState(() {
                     model.selectedDate = DateTime.now();
+                    model.focusedDate.value = DateTime.now();
                   })),
         IconButton(
           icon: const Icon(Icons.refresh),
