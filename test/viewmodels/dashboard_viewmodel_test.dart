@@ -2,9 +2,11 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 import 'package:notredame/core/constants/preferences_flags.dart';
+import 'package:notredame/core/managers/course_repository.dart';
 
 // MANAGERS
 import 'package:notredame/core/managers/settings_manager.dart';
+import 'package:notredame/core/models/course_activity.dart';
 import 'package:notredame/core/services/preferences_service.dart';
 
 // VIEW-MODEL
@@ -13,6 +15,7 @@ import 'package:notredame/core/viewmodels/dashboard_viewmodel.dart';
 import '../helpers.dart';
 
 // MOCKS
+import '../mock/managers/course_repository_mock.dart';
 import '../mock/managers/settings_manager_mock.dart';
 import '../mock/services/preferences_service_mock.dart';
 
@@ -20,6 +23,35 @@ void main() {
   PreferencesService preferenceService;
   SettingsManager settingsManager;
   DashboardViewModel viewModel;
+  CourseRepository courseRepository;
+
+  // Some activities
+  final gen101 = CourseActivity(
+      courseGroup: "GEN101",
+      courseName: "Generic course",
+      activityName: "TD",
+      activityDescription: "Activity description",
+      activityLocation: "location",
+      startDateTime: DateTime(2020, 1, 1, 18),
+      endDateTime: DateTime(2020, 1, 1, 21));
+  final gen102 = CourseActivity(
+      courseGroup: "GEN102",
+      courseName: "Generic course",
+      activityName: "TD",
+      activityDescription: "Activity description",
+      activityLocation: "location",
+      startDateTime: DateTime(2020, 1, 2, 18),
+      endDateTime: DateTime(2020, 1, 2, 21));
+  final gen103 = CourseActivity(
+      courseGroup: "GEN103",
+      courseName: "Generic course",
+      activityName: "TD",
+      activityDescription: "Activity description",
+      activityLocation: "location",
+      startDateTime: DateTime(2020, 1, 2, 18),
+      endDateTime: DateTime(2020, 1, 2, 21));
+
+  final List<CourseActivity> activities = [gen101, gen102, gen103];
 
   // Needed to support FlutterToast.
   TestWidgetsFlutterBinding.ensureInitialized();
@@ -50,6 +82,7 @@ void main() {
       // Setting up mocks
       settingsManager = setupSettingsManagerMock();
       preferenceService = setupPreferencesServiceMock();
+      courseRepository = setupCourseRepositoryMock();
 
       setupFlutterToastMock();
 
@@ -63,6 +96,11 @@ void main() {
 
     group("futureToRun - ", () {
       test("The initial cards are correctly loaded", () async {
+        CourseRepositoryMock.stubGetCoursesActivities(
+            courseRepository as CourseRepositoryMock);
+        CourseRepositoryMock.stubCoursesActivities(
+            courseRepository as CourseRepositoryMock);
+
         SettingsManagerMock.stubGetDashboard(
             settingsManager as SettingsManagerMock,
             toReturn: dashboard);
@@ -81,6 +119,11 @@ void main() {
 
       test("An exception is thrown during the preferenceService call",
           () async {
+        CourseRepositoryMock.stubGetCoursesActivities(
+            courseRepository as CourseRepositoryMock);
+        CourseRepositoryMock.stubCoursesActivities(
+            courseRepository as CourseRepositoryMock);
+
         PreferencesServiceMock.stubException(
             preferenceService as PreferencesServiceMock,
             PreferencesFlag.aboutUsCard);
@@ -101,6 +144,11 @@ void main() {
 
     group("interact with cards - ", () {
       test("can hide a card and reset cards to default layout", () async {
+        CourseRepositoryMock.stubGetCoursesActivities(
+            courseRepository as CourseRepositoryMock);
+        CourseRepositoryMock.stubCoursesActivities(
+            courseRepository as CourseRepositoryMock);
+
         SettingsManagerMock.stubGetDashboard(
             settingsManager as SettingsManagerMock,
             toReturn: dashboard);
@@ -155,6 +203,11 @@ void main() {
       });
 
       test("can set new order for cards", () async {
+        CourseRepositoryMock.stubGetCoursesActivities(
+            courseRepository as CourseRepositoryMock);
+        CourseRepositoryMock.stubCoursesActivities(
+            courseRepository as CourseRepositoryMock);
+
         SettingsManagerMock.stubGetDashboard(
             settingsManager as SettingsManagerMock,
             toReturn: dashboard);
@@ -195,6 +248,27 @@ void main() {
             .called(1);
         verify(settingsManager.setInt(PreferencesFlag.scheduleCard, 2))
             .called(1);
+        verifyNoMoreInteractions(settingsManager);
+      });
+
+      test("build the list of activities sorted by date", () async {
+        CourseRepositoryMock.stubCoursesActivities(
+            courseRepository as CourseRepositoryMock,
+            toReturn: activities);
+
+        final expectedActivities = {
+          DateTime(2020): [gen101],
+          DateTime(2020, 1, 2): [gen102, gen103]
+        };
+
+        final todayDateEvents = [];
+
+        expect(viewModel.coursesActivities, expectedActivities);
+        expect(viewModel.todayDateEvents, todayDateEvents);
+
+        verify(courseRepository.coursesActivities).called(1);
+
+        verifyNoMoreInteractions(courseRepository);
         verifyNoMoreInteractions(settingsManager);
       });
     });
