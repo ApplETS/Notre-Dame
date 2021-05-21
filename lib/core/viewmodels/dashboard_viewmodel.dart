@@ -1,14 +1,19 @@
 // FLUTTER / DART / THIRD-PARTIES
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:notredame/core/managers/course_repository.dart';
-import 'package:notredame/core/models/course.dart';
 import 'package:stacked/stacked.dart';
 import 'package:flutter/material.dart';
-import 'package:notredame/core/constants/preferences_flags.dart';
+import 'dart:collection';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 // MANAGER
 import 'package:notredame/core/managers/settings_manager.dart';
+
+// CONSTANTS
+import 'package:notredame/core/constants/preferences_flags.dart';
+
+// CORE
+import 'package:notredame/core/managers/course_repository.dart';
+import 'package:notredame/core/models/course.dart';
 
 // OTHER
 import 'package:notredame/locator.dart';
@@ -55,9 +60,10 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
     Fluttertoast.showToast(msg: _appIntl.error);
   }
 
-  /// Set card order
-  void setOrder(PreferencesFlag flag, int newIndex, int oldIndex) {
-    _cardsToDisplay.removeAt(oldIndex);
+
+  /// Change the order of [flag] card from [oldIndex] to [newIndex].
+  void setOrder(PreferencesFlag flag, int newIndex) {
+    _cardsToDisplay.remove(flag);
     _cardsToDisplay.insert(newIndex, flag);
 
     updatePreferences();
@@ -65,7 +71,7 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
     notifyListeners();
   }
 
-  /// Hide card from dashboard
+  /// Hide [flag] card from dashboard by setting int value -1
   void hideCard(PreferencesFlag flag) {
     _cards.update(flag, (value) => -1);
 
@@ -76,24 +82,7 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
     notifyListeners();
   }
 
-  /// Set card visible on dashboard
-  void setCardVisible(PreferencesFlag flag) {
-    _settingsManager
-        .setInt(flag, flag.index - PreferencesFlag.aboutUsCard.index)
-        .then((value) {
-      if (!value) {
-        Fluttertoast.showToast(msg: _appIntl.error);
-      }
-    });
-
-    _cards.update(
-        flag, (value) => flag.index - PreferencesFlag.aboutUsCard.index);
-
-    getCardsToDisplay();
-
-    notifyListeners();
-  }
-
+  /// Reset all card indexes to their default values
   void setAllCardsVisible() {
     _cards.updateAll((key, value) {
       _settingsManager
@@ -113,23 +102,21 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
 
   /// Populate list of cards used in view
   void getCardsToDisplay() {
-    int numberOfCards = 0;
-    _cards.forEach((key, value) {
-      if (value >= 0) {
-        numberOfCards++;
-      }
-    });
-    _cardsToDisplay =
-        List.filled(numberOfCards, PreferencesFlag.aboutUsCard, growable: true);
+    _cardsToDisplay = [];
 
-    _cards.forEach((key, value) {
-      if (value >= 0) {
-        _cardsToDisplay[value] = key;
-        if (key == PreferencesFlag.gradesCards) {
-          futureToRunGrades();
+    if (_cards != null) {
+      final orderedCards = SplayTreeMap<PreferencesFlag, int>.from(
+          _cards, (a, b) => _cards[a].compareTo(_cards[b]));
+
+      orderedCards.forEach((key, value) {
+        if (value >= 0) {
+          _cardsToDisplay.insert(value, key);
+          if (key == PreferencesFlag.gradesCards) {
+            futureToRunGrades();
+          }
         }
-      }
-    });
+      });
+    }
   }
 
   /// Update cards order and display status in preferences

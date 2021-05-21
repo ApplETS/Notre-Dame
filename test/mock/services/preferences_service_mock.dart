@@ -43,4 +43,11 @@ class PreferencesServiceMock extends Mock implements PreferencesService {
       {bool toReturn = true}) {
     when(mock.getBool(flag)).thenAnswer((_) async => toReturn);
   }
+
+  /// Stub to throw an [Exception] when the getInt
+  /// will be called with this [flag]
+  static void stubException(PreferencesServiceMock mock, PreferencesFlag flag,
+      {bool toReturn = true}) {
+    when(mock.getInt(flag)).thenThrow(Exception());
+  }
 }

@@ -3,36 +3,40 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-// MANAGER
+// MANAGERS
 import 'package:notredame/core/managers/settings_manager.dart';
-
-// CONSTANTS
-import 'package:notredame/core/constants/preferences_flags.dart';
 
 // VIEW
 import 'package:notredame/ui/views/dashboard_view.dart';
 
+// CONSTANTS
+import 'package:notredame/core/constants/preferences_flags.dart';
+
 // OTHERS
 import '../../helpers.dart';
+
+// MOCKS
 import '../../mock/managers/settings_manager_mock.dart';
 
 void main() {
   SettingsManager settingsManager;
   AppIntl intl;
 
-  // Some settings
+  // Cards
   final Map<PreferencesFlag, int> dashboard = {
     PreferencesFlag.aboutUsCard: 0,
     PreferencesFlag.scheduleCard: 1,
     PreferencesFlag.progressBarCard: 2
   };
 
-  // Some settings
-  final Map<PreferencesFlag, int> dashboardHiddenAboutUS = {
-    PreferencesFlag.aboutUsCard: -1,
-    PreferencesFlag.scheduleCard: 0,
-    PreferencesFlag.progressBarCard: 1
-  };
+  Future<void> longPressDrag(
+      WidgetTester tester, Offset start, Offset end) async {
+    final TestGesture drag = await tester.startGesture(start);
+    await tester.pump(const Duration(seconds: 1));
+    await drag.moveTo(end);
+    await tester.pump(const Duration(seconds: 1));
+    await drag.up();
+  }
 
   group('DashboardView - ', () {
     setUp(() async {
@@ -94,12 +98,20 @@ void main() {
         expect(find.text(intl.email.toUpperCase()), findsOneWidget);
       });
 
-      /// TODO: Skipped until now, restoring doesn't seem to work with SettingsManagerMock
       testWidgets('AboutUsCard is dismissible and can be restored',
           (WidgetTester tester) async {
         SettingsManagerMock.stubGetDashboard(
             settingsManager as SettingsManagerMock,
             toReturn: dashboard);
+
+        SettingsManagerMock.stubSetInt(settingsManager as SettingsManagerMock,
+            PreferencesFlag.aboutUsCard);
+
+        SettingsManagerMock.stubSetInt(settingsManager as SettingsManagerMock,
+            PreferencesFlag.scheduleCard);
+
+        SettingsManagerMock.stubSetInt(settingsManager as SettingsManagerMock,
+            PreferencesFlag.progressBarCard);
 
         await tester.pumpWidget(localizedWidget(child: const DashboardView()));
         await tester.pumpAndSettle();
@@ -112,18 +124,10 @@ void main() {
         await tester.drag(
             find.byType(Dismissible).first, const Offset(1000.0, 0.0));
 
-        SettingsManagerMock.stubGetDashboard(
-            settingsManager as SettingsManagerMock,
-            toReturn: dashboardHiddenAboutUS);
-
         // Check that the card is now absent from the view
         await tester.pumpAndSettle();
         expect(find.byType(Dismissible), findsNWidgets(2));
         expect(find.text(intl.card_applets_title), findsNothing);
-
-        SettingsManagerMock.stubGetDashboard(
-            settingsManager as SettingsManagerMock,
-            toReturn: dashboard);
 
         // Tap the restoreCards button
         await tester.tap(find.byIcon(Icons.restore));
@@ -134,11 +138,84 @@ void main() {
         expect(find.byType(Dismissible), findsNWidgets(3));
         expect(find.text(intl.card_applets_title), findsOneWidget);
       });
-    }, skip: true);
+
+      testWidgets('AboutUsCard is reorderable and can be restored',
+          (WidgetTester tester) async {
+        final String progressBarCard =
+            PreferencesFlag.progressBarCard.toString();
+
+        SettingsManagerMock.stubGetDashboard(
+            settingsManager as SettingsManagerMock,
+            toReturn: dashboard);
+
+        SettingsManagerMock.stubSetInt(settingsManager as SettingsManagerMock,
+            PreferencesFlag.aboutUsCard);
+
+        SettingsManagerMock.stubSetInt(settingsManager as SettingsManagerMock,
+            PreferencesFlag.scheduleCard);
+
+        SettingsManagerMock.stubSetInt(settingsManager as SettingsManagerMock,
+            PreferencesFlag.progressBarCard);
+
+        await tester.pumpWidget(localizedWidget(child: const DashboardView()));
+        await tester.pumpAndSettle();
+
+        // Find Dismissible Cards
+        expect(find.byType(Dismissible), findsNWidgets(3));
+
+        // Find aboutUs card
+        expect(find.text(intl.card_applets_title), findsOneWidget);
+
+        // Check that the aboutUs card is in the first position
+        var text = tester.firstWidget(find.descendant(
+          of: find.byType(Dismissible).first,
+          matching: find.byType(Text),
+        ));
+
+        expect((text as Text).data, intl.card_applets_title);
+
+        // Long press then drag and drop card at the end of the list
+        await longPressDrag(
+            tester,
+            tester.getCenter(find.text(intl.card_applets_title)),
+            tester.getCenter(find.text(progressBarCard)) +
+                const Offset(0.0, 1000));
+
+        await tester.pumpAndSettle();
+
+        expect(find.byType(Dismissible), findsNWidgets(3));
+
+        // Check that the card is now in last position
+        text = tester.firstWidget(find.descendant(
+          of: find.byType(Dismissible).last,
+          matching: find.byType(Text),
+        ));
+        expect((text as Text).data, intl.card_applets_title);
+
+        // Tap the restoreCards button
+        await tester.tap(find.byIcon(Icons.restore));
+
+        await tester.pumpAndSettle();
+
+        text = tester.firstWidget(find.descendant(
+          of: find.byType(Dismissible).first,
+          matching: find.byType(Text),
+        ));
+
+        expect(find.byType(Dismissible), findsNWidgets(3));
+
+        // Check that the first card is now AboutUs
+        expect((text as Text).data, intl.card_applets_title);
+      });
+    });
 
     group("golden - ", () {
       testWidgets("default view", (WidgetTester tester) async {
         tester.binding.window.physicalSizeTestValue = const Size(800, 1410);
+
+        SettingsManagerMock.stubGetDashboard(
+            settingsManager as SettingsManagerMock,
+            toReturn: dashboard);
 
         await tester.pumpWidget(localizedWidget(child: const DashboardView()));
         await tester.pumpAndSettle();

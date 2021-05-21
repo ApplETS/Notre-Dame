@@ -87,24 +87,24 @@ class SettingsManager with ChangeNotifier {
     final Map<PreferencesFlag, int> dashboard = {};
 
     final aboutUsIndex =
-        await _preferencesService.getInt(PreferencesFlag.aboutUsCard) ?? 0;
+        await _preferencesService.getInt(PreferencesFlag.aboutUsCard) ??
+            getDefaultCardIndex(PreferencesFlag.aboutUsCard);
 
     dashboard.putIfAbsent(PreferencesFlag.aboutUsCard, () => aboutUsIndex);
 
     final scheduleCardIndex =
-        await _preferencesService.getInt(PreferencesFlag.scheduleCard) ?? 1;
+        await _preferencesService.getInt(PreferencesFlag.scheduleCard) ??
+            getDefaultCardIndex(PreferencesFlag.scheduleCard);
 
     dashboard.putIfAbsent(
         PreferencesFlag.scheduleCard, () => scheduleCardIndex);
 
     final progressBarCardIndex =
-        await _preferencesService.getInt(PreferencesFlag.progressBarCard) ?? 2;
+        await _preferencesService.getInt(PreferencesFlag.progressBarCard) ??
+            getDefaultCardIndex(PreferencesFlag.progressBarCard);
 
     dashboard.putIfAbsent(
         PreferencesFlag.progressBarCard, () => progressBarCardIndex);
-
-    final gradesCardIndex =
-        await _preferencesService.getInt(PreferencesFlag.gradesCards) ?? 3;
 
     dashboard.putIfAbsent(
         PreferencesFlag.gradesCards, () => gradesCardIndex);

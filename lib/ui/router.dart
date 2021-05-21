@@ -1,9 +1,14 @@
 // FLUTTER / DART / THIRD-PARTIES
 import 'package:flutter/material.dart';
 
+// MODELS
+import 'package:notredame/core/models/quick_link.dart';
+
 // ROUTES
 import 'package:notredame/core/constants/router_paths.dart';
-import 'package:notredame/ui/views/dashboard_view.dart';
+
+// MODELS
+import 'package:notredame/core/models/course.dart';
 
 // VIEWS
 import 'package:notredame/ui/views/login_view.dart';
@@ -17,8 +22,11 @@ import 'package:notredame/ui/views/student_view.dart';
 import 'package:notredame/ui/views/about_view.dart';
 import 'package:notredame/ui/views/contributors_view.dart';
 import 'package:notredame/ui/views/choose_language_view.dart';
+import 'package:notredame/ui/views/dashboard_view.dart';
+import 'package:notredame/ui/views/grade_details_view.dart';
 
-import 'views/dashboard_view.dart';
+// WIDGETS
+import 'package:notredame/ui/widgets/link_web_view.dart';
 
 class AppRouter {
   // ignore: missing_return
@@ -28,12 +36,10 @@ class AppRouter {
         return MaterialPageRoute(
             settings: RouteSettings(name: routeSettings.name),
             builder: (_) => LoginView());
-
       case RouterPaths.dashboard:
         return PageRouteBuilder(
             settings: RouteSettings(name: routeSettings.name),
             pageBuilder: (_, __, ___) => const DashboardView());
-
       case RouterPaths.schedule:
         return PageRouteBuilder(
             settings: RouteSettings(name: routeSettings.name),
@@ -42,10 +48,17 @@ class AppRouter {
         return PageRouteBuilder(
             settings: RouteSettings(name: routeSettings.name),
             pageBuilder: (_, __, ___) => StudentView());
+      case RouterPaths.gradeDetails:
+        return PageRouteBuilder(
+            settings: RouteSettings(name: routeSettings.name),
+            pageBuilder: (_, __, ___) => GradesDetailsView(course: routeSettings.arguments as Course));
       case RouterPaths.ets:
         return PageRouteBuilder(
             settings: RouteSettings(name: routeSettings.name),
             pageBuilder: (_, __, ___) => QuickLinksView());
+      case RouterPaths.webView:
+        return PageRouteBuilder(
+            pageBuilder: (_, __, ___) => LinkWebView(routeSettings.arguments as QuickLink));
       case RouterPaths.security:
         return PageRouteBuilder(
             settings: RouteSettings(name: routeSettings.name),

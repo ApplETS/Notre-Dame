@@ -8,6 +8,13 @@ import 'package:package_info/package_info.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:flutter_config/flutter_config.dart';
 
+// SERVICES
+import 'package:notredame/core/services/networking_service.dart';
+import 'package:notredame/core/services/internal_info_service.dart';
+
+// OTHERS
+import 'package:notredame/locator.dart';
+
 class GithubApi {
   static const String tag = "GithubApi";
   static const String tagError = "$tag - Error";
@@ -16,7 +23,12 @@ class GithubApi {
   static const String _repositorySlug = "ApplETS/Notre-Dame";
   static const String _repositoryReportSlug = "ApplETS/Notre-Dame-Bug-report";
 
+  /// Used to verify if the user has connectivity
+  final NetworkingService _networkingService = locator<NetworkingService>();
+
   GitHub _github;
+
+  final InternalInfoService _internalInfoService = locator<InternalInfoService>();
 
   GithubApi() {
     String githubApiToken;
@@ -57,9 +69,11 @@ class GithubApi {
                 "![screenshot](https://github.com/$_repositoryReportSlug/blob/main/$fileName?raw=true)\n\n"
                 "**Device Infos** \n"
                 "- **Version:** ${packageInfo.version} \n"
+                "- **Connectivity:** ${await _networkingService.getConnectionType()} \n"
                 "- **Build number:** ${packageInfo.buildNumber} \n"
                 "- **Platform operating system:** ${Platform.operatingSystem} \n"
-                "- **Platform operating system version:** ${Platform.operatingSystemVersion} \n",
+                "- **Platform operating system version:** ${Platform.operatingSystemVersion} \n"
+                "${await _internalInfoService.getDeviceInfoForErrorReporting()}",
             labels: ['bug', 'platform: ${Platform.operatingSystem}']));
   }
 
