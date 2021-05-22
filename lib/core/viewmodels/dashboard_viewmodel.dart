@@ -14,6 +14,9 @@ import 'package:notredame/core/managers/course_repository.dart';
 import 'package:notredame/core/constants/preferences_flags.dart';
 import 'package:notredame/core/models/course_activity.dart';
 
+// UTILS
+import 'package:notredame/ui/utils/discovery_components.dart';
+
 // OTHER
 import 'package:notredame/locator.dart';
 
@@ -21,7 +24,7 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
   final SettingsManager _settingsManager = locator<SettingsManager>();
   final CourseRepository _courseRepository = locator<CourseRepository>();
 
-  // All dashboard displayable cards
+  /// All dashboard displayable cards
   Map<PreferencesFlag, int> _cards;
 
   /// Localization class of the application.
@@ -44,13 +47,10 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
   /// Get cards to display
   List<PreferencesFlag> get cardsToDisplay => _cardsToDisplay;
 
+  /// Today's date
+  DateTime todayDate = DateTime.now();
+
   DashboardViewModel({@required AppIntl intl}) : _appIntl = intl;
-
-  /// Day currently selected
-  DateTime todayDate = DateTime.now().subtract(
-      Duration(hours: DateTime.now().hour, minutes: DateTime.now().minute));
-
-  bool isLoadingEvents = false;
 
   @override
   Future<Map<PreferencesFlag, int>> futureToRun() async {
@@ -145,7 +145,7 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
               in _courseRepository.coursesActivities) {
             final DateTime dateOnly = course.startDateTime;
 
-            if (compareDates(todayDate, dateOnly)) {
+            if (isSameDay(todayDate, dateOnly)) {
               _todayDateEvents.add(course);
             }
           }
@@ -174,11 +174,13 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
     }
   }
 
-  bool compareDates(DateTime a, DateTime b) =>
+  /// Returns true if dates [a] and [b] are on the same day
+  bool isSameDay(DateTime a, DateTime b) =>
       a.year == b.year && a.month == b.month && a.day == b.day;
   Future<void> startDiscovery(BuildContext context) async {
     if (await _settingsManager.getString(PreferencesFlag.discovery) == null) {
-      final List<String> ids = discoveryComponents(context).map((e) => e.featureId).toList();
+      final List<String> ids =
+          discoveryComponents(context).map((e) => e.featureId).toList();
       FeatureDiscovery.discoverFeatures(context, ids);
       _settingsManager.setString(PreferencesFlag.discovery, 'true');
     }

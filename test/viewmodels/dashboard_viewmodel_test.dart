@@ -1,18 +1,20 @@
 // FLUTTER / DART / THIRD-PARTIES
-import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
-import 'package:notredame/core/constants/preferences_flags.dart';
-import 'package:notredame/core/managers/course_repository.dart';
 
 // MANAGERS
 import 'package:notredame/core/managers/settings_manager.dart';
-import 'package:notredame/core/models/course_activity.dart';
 import 'package:notredame/core/services/preferences_service.dart';
+import 'package:notredame/core/managers/course_repository.dart';
 
 // VIEW-MODEL
 import 'package:notredame/core/viewmodels/dashboard_viewmodel.dart';
 
+// MODELS / CONSTANTS
+import 'package:notredame/core/models/course_activity.dart';
+import 'package:notredame/core/constants/preferences_flags.dart';
+
+// OTHERS
 import '../helpers.dart';
 
 // MOCKS
@@ -120,6 +122,33 @@ void main() {
         ]);
 
         verify(settingsManager.getDashboard()).called(1);
+        verifyNoMoreInteractions(settingsManager);
+      });
+
+      test("build the list todays activities sorted by time", () async {
+        CourseRepositoryMock.stubGetCoursesActivities(
+            courseRepository as CourseRepositoryMock);
+        CourseRepositoryMock.stubCoursesActivities(
+            courseRepository as CourseRepositoryMock,
+            toReturn: activities);
+
+        await viewModel.futureToRun();
+        await viewModel.futureToRunSchedule();
+
+        await untilCalled(courseRepository.getCoursesActivities());
+
+        expect(viewModel.todayDateEvents, activities);
+
+        verify(courseRepository.getCoursesActivities()).called(1);
+
+        verify(courseRepository.getCoursesActivities(fromCacheOnly: true))
+            .called(1);
+
+        verify(courseRepository.coursesActivities).called(1);
+
+        verify(settingsManager.getDashboard()).called(1);
+
+        verifyNoMoreInteractions(courseRepository);
         verifyNoMoreInteractions(settingsManager);
       });
 
@@ -254,33 +283,6 @@ void main() {
             .called(1);
         verify(settingsManager.setInt(PreferencesFlag.scheduleCard, 2))
             .called(1);
-        verifyNoMoreInteractions(settingsManager);
-      });
-
-      test("build the list of activities sorted by date", () async {
-        CourseRepositoryMock.stubGetCoursesActivities(
-            courseRepository as CourseRepositoryMock);
-        CourseRepositoryMock.stubCoursesActivities(
-            courseRepository as CourseRepositoryMock,
-            toReturn: activities);
-
-        await viewModel.futureToRun();
-        await viewModel.futureToRunSchedule();
-
-        await untilCalled(courseRepository.getCoursesActivities());
-
-        expect(viewModel.todayDateEvents, activities);
-
-        verify(courseRepository.getCoursesActivities()).called(1);
-
-        verify(courseRepository.getCoursesActivities(fromCacheOnly: true))
-            .called(1);
-
-        verify(courseRepository.coursesActivities).called(1);
-
-        verify(settingsManager.getDashboard()).called(1);
-
-        verifyNoMoreInteractions(courseRepository);
         verifyNoMoreInteractions(settingsManager);
       });
     });
