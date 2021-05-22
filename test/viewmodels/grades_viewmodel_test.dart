@@ -94,6 +94,7 @@ void main() {
       courseRepository = setupCourseRepositoryMock();
       networkingService = setupNetworkingServiceMock() as NetworkingServiceMock;
       intl = await setupAppIntl();
+      setupNavigationServiceMock();
       setupFlutterToastMock();
 
       // Stub to simulate that the user has an active internet connection
