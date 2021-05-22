@@ -126,7 +126,8 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
 
   Future<void> startDiscovery(BuildContext context) async {
     if (await _settingsManager.getString(PreferencesFlag.discovery) == null) {
-      final List<String> ids = discoveryComponents(context).map((e) => e.featureId).toList();
+      final List<String> ids =
+          discoveryComponents(context).map((e) => e.featureId).toList();
       FeatureDiscovery.discoverFeatures(context, ids);
       _settingsManager.setString(PreferencesFlag.discovery, 'true');
     }

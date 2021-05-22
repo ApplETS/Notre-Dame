@@ -15,7 +15,7 @@ enum PreferencesFlag {
 
   // Discovery flag
   discovery,
-  
+
   // Dashboard flags
   aboutUsCard,
   scheduleCard,

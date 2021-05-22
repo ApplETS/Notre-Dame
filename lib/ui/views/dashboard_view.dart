@@ -41,7 +41,7 @@ class _DashboardViewState extends State<DashboardView>
 
     _animationController.forward();
 
-    SchedulerBinding.instance.addPostFrameCallback((Duration duration) {  
+    SchedulerBinding.instance.addPostFrameCallback((Duration duration) {
       DashboardViewModel(intl: AppIntl.of(context)).startDiscovery(context);
     });
   }
