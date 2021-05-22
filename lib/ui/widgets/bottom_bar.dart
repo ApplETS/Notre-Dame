@@ -8,7 +8,6 @@ import 'package:notredame/core/services/navigation_service.dart';
 // CONSTANT
 import 'package:notredame/core/constants/router_paths.dart';
 import 'package:notredame/locator.dart';
-import 'package:notredame/ui/utils/app_theme.dart';
 
 /// Bottom navigation bar for the application.
 class BottomBar extends StatelessWidget {
@@ -24,7 +23,6 @@ class BottomBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return BottomNavigationBar(
       type: BottomNavigationBarType.fixed,
-      selectedItemColor: AppTheme.etsLightRed,
       onTap: (value) => _onTap(value),
       items: _buildItems(context),
       currentIndex: _defineIndex(ModalRoute.of(context).settings.name),
