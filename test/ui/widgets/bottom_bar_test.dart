@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
+import 'package:feature_discovery/feature_discovery.dart';
 
 // SERVICE
 import 'package:notredame/core/services/navigation_service.dart';
@@ -15,7 +16,6 @@ import 'package:notredame/core/constants/router_paths.dart';
 // HELPERS
 import '../../helpers.dart';
 
-
 NavigationService _navigationService;
 
 void main() {
@@ -28,8 +28,11 @@ void main() {
       unregister<NavigationService>();
     });
 
-    testWidgets('has five sections with icons and titles (dashboard, schedule, student, ets and more)', (WidgetTester tester) async {
-      await tester.pumpWidget(localizedWidget(child: BottomBar()));
+    testWidgets(
+        'has five sections with icons and titles (dashboard, schedule, student, ets and more)',
+        (WidgetTester tester) async {
+      await tester.pumpWidget(
+          localizedWidget(child: FeatureDiscovery(child: BottomBar())));
       await tester.pumpAndSettle();
 
       final texts = find.byType(Text);
@@ -40,9 +43,9 @@ void main() {
     });
 
     group('navigate when tapped to - ', () {
-      testWidgets('dashbord', (WidgetTester tester) async {
+      testWidgets('dashboard', (WidgetTester tester) async {
         await tester.pumpWidget(
-            localizedWidget(child: BottomBar()));
+            localizedWidget(child: FeatureDiscovery(child: BottomBar())));
         await tester.pumpAndSettle();
 
         await tester.tap(find.byIcon(Icons.dashboard));
@@ -51,7 +54,8 @@ void main() {
       });
 
       testWidgets('schedule', (WidgetTester tester) async {
-        await tester.pumpWidget(localizedWidget(child: BottomBar()));
+        await tester.pumpWidget(
+            localizedWidget(child: FeatureDiscovery(child: BottomBar())));
         await tester.pumpAndSettle();
 
         await tester.tap(find.byIcon(Icons.schedule));
@@ -60,7 +64,8 @@ void main() {
       });
 
       testWidgets('student', (WidgetTester tester) async {
-        await tester.pumpWidget(localizedWidget(child: BottomBar()));
+        await tester.pumpWidget(
+            localizedWidget(child: FeatureDiscovery(child: BottomBar())));
         await tester.pumpAndSettle();
 
         await tester.tap(find.byIcon(Icons.school));
@@ -69,7 +74,8 @@ void main() {
       });
 
       testWidgets('ets', (WidgetTester tester) async {
-        await tester.pumpWidget(localizedWidget(child: BottomBar()));
+        await tester.pumpWidget(
+            localizedWidget(child: FeatureDiscovery(child: BottomBar())));
         await tester.pumpAndSettle();
 
         await tester.tap(find.byIcon(Icons.account_balance));
@@ -78,7 +84,8 @@ void main() {
       });
 
       testWidgets('more', (WidgetTester tester) async {
-        await tester.pumpWidget(localizedWidget(child: BottomBar()));
+        await tester.pumpWidget(
+            localizedWidget(child: FeatureDiscovery(child: BottomBar())));
         await tester.pumpAndSettle();
 
         await tester.tap(find.byIcon(Icons.dehaze));

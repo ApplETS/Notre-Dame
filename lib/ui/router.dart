@@ -43,7 +43,8 @@ class AppRouter {
       case RouterPaths.schedule:
         return PageRouteBuilder(
             settings: RouteSettings(name: routeSettings.name),
-            pageBuilder: (_, __, ___) => const ScheduleView());
+            pageBuilder: (_, __, ___) =>
+                ScheduleView(initialDay: DateTime(2020, 2, 15)));
       case RouterPaths.student:
         return PageRouteBuilder(
             settings: RouteSettings(name: routeSettings.name),
@@ -51,14 +52,16 @@ class AppRouter {
       case RouterPaths.gradeDetails:
         return PageRouteBuilder(
             settings: RouteSettings(name: routeSettings.name),
-            pageBuilder: (_, __, ___) => GradesDetailsView(course: routeSettings.arguments as Course));
+            pageBuilder: (_, __, ___) =>
+                GradesDetailsView(course: routeSettings.arguments as Course));
       case RouterPaths.ets:
         return PageRouteBuilder(
             settings: RouteSettings(name: routeSettings.name),
             pageBuilder: (_, __, ___) => QuickLinksView());
       case RouterPaths.webView:
         return PageRouteBuilder(
-            pageBuilder: (_, __, ___) => LinkWebView(routeSettings.arguments as QuickLink));
+            pageBuilder: (_, __, ___) =>
+                LinkWebView(routeSettings.arguments as QuickLink));
       case RouterPaths.security:
         return PageRouteBuilder(
             settings: RouteSettings(name: routeSettings.name),
