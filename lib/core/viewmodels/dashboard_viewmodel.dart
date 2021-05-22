@@ -64,6 +64,7 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
     Fluttertoast.showToast(msg: _appIntl.error);
   }
 
+
   /// Change the order of [flag] card from [oldIndex] to [newIndex].
   void setOrder(PreferencesFlag flag, int newIndex) {
     _cardsToDisplay.remove(flag);
@@ -157,34 +158,34 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
     final DateTime now = DateTime.now();
     final currentSession = _courseRepository.sessions
         .where((session) =>
-            session.endDate.isAfter(now) && session.startDate.isBefore(now))
+    session.endDate.isAfter(now) && session.startDate.isBefore(now))
         .first;
 
     return _courseRepository.getCourses(fromCacheOnly: true).then(
-        (coursesCached) {
-      courses.clear();
-      for (final Course course in coursesCached) {
-        if (course.session == currentSession.shortName) {
-          courses.add(course);
-        }
-      }
-      notifyListeners();
-      // ignore: return_type_invalid_for_catch_error
-      _courseRepository.getCourses().catchError(onError).then((value) {
-        if (value != null) {
-          // Update the courses list
+            (coursesCached) {
           courses.clear();
-          for (final Course course in value) {
+          for (final Course course in coursesCached) {
             if (course.session == currentSession.shortName) {
               courses.add(course);
             }
           }
-        }
-      }).whenComplete(() {
-        setBusyForObject(courses, false);
-      });
+          notifyListeners();
+          // ignore: return_type_invalid_for_catch_error
+          _courseRepository.getCourses().catchError(onError).then((value) {
+            if (value != null) {
+              // Update the courses list
+              courses.clear();
+              for (final Course course in value) {
+                if (course.session == currentSession.shortName) {
+                  courses.add(course);
+                }
+              }
+            }
+          }).whenComplete(() {
+            setBusyForObject(courses, false);
+          });
 
-      return courses;
-    }, onError: onError);
+          return courses;
+        }, onError: onError);
   }
 }
