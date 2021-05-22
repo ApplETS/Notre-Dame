@@ -21,7 +21,7 @@ class _PasswordFormFieldState extends State<PasswordFormField> {
 
   @override
   Widget build(BuildContext context) => TextFormField(
-        autofillHints: [AutofillHints.password],
+        autofillHints: const [AutofillHints.password],
         cursorColor: Colors.white,
         obscureText: _obscureText,
         decoration: InputDecoration(
