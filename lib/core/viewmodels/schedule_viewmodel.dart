@@ -40,10 +40,10 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
   final Map<DateTime, List<CourseActivity>> _coursesActivities = {};
 
   /// Day currently selected
-  DateTime selectedDate = DateTime.now();
+  DateTime selectedDate;
 
   /// Day currently focused on
-  final ValueNotifier<DateTime> focusedDate = ValueNotifier(DateTime.now());
+  ValueNotifier<DateTime> focusedDate;
 
   /// The currently selected CalendarFormat, A default value is set for test purposes.
   /// This value is then change to the cache value on load.
@@ -57,7 +57,8 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
 
   ScheduleViewModel({@required AppIntl intl, DateTime initialSelectedDate})
       : _appIntl = intl,
-        selectedDate = initialSelectedDate ?? DateTime.now();
+        selectedDate = initialSelectedDate ?? DateTime.now(),
+        focusedDate = ValueNotifier(initialSelectedDate ?? DateTime.now());
 
   /// Activities for the day currently selected
   List<dynamic> get selectedDateEvents =>
