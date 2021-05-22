@@ -159,4 +159,4 @@ jobs:
       - run: flutter pub get
 
       - name: Build archive
-        run: flutter build ipa
+        run: flutter build ios --release --no-codesign
