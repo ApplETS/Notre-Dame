@@ -57,6 +57,6 @@ class _PasswordFormFieldState extends State<PasswordFormField> {
   }
 
   Color get errorTextColor => Theme.of(context).brightness == Brightness.light
-        ? Colors.amberAccent
-        : Colors.redAccent;
+      ? Colors.amberAccent
+      : Colors.redAccent;
 }
