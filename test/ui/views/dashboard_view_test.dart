@@ -1,4 +1,5 @@
 // FLUTTER / DART / THIRD-PARTIES
+import 'package:feature_discovery/feature_discovery.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -54,7 +55,7 @@ void main() {
             settingsManager as SettingsManagerMock,
             toReturn: dashboard);
 
-        await tester.pumpWidget(localizedWidget(child: const DashboardView()));
+        await tester.pumpWidget(localizedWidget(child: FeatureDiscovery(child: const DashboardView())));
         await tester.pumpAndSettle();
 
         // Find Dashboard Title
@@ -74,7 +75,7 @@ void main() {
             settingsManager as SettingsManagerMock,
             toReturn: dashboard);
 
-        await tester.pumpWidget(localizedWidget(child: const DashboardView()));
+        await tester.pumpWidget(localizedWidget(child: FeatureDiscovery(child: const DashboardView())));
         await tester.pumpAndSettle();
 
         // Find aboutUs card
@@ -113,7 +114,7 @@ void main() {
         SettingsManagerMock.stubSetInt(settingsManager as SettingsManagerMock,
             PreferencesFlag.progressBarCard);
 
-        await tester.pumpWidget(localizedWidget(child: const DashboardView()));
+        await tester.pumpWidget(localizedWidget(child: FeatureDiscovery(child: const DashboardView())));
         await tester.pumpAndSettle();
 
         // Find Dismissible Cards
@@ -157,7 +158,7 @@ void main() {
         SettingsManagerMock.stubSetInt(settingsManager as SettingsManagerMock,
             PreferencesFlag.progressBarCard);
 
-        await tester.pumpWidget(localizedWidget(child: const DashboardView()));
+        await tester.pumpWidget(localizedWidget(child: FeatureDiscovery(child: const DashboardView())));
         await tester.pumpAndSettle();
 
         // Find Dismissible Cards
@@ -217,7 +218,7 @@ void main() {
             settingsManager as SettingsManagerMock,
             toReturn: dashboard);
 
-        await tester.pumpWidget(localizedWidget(child: const DashboardView()));
+        await tester.pumpWidget(localizedWidget(child: FeatureDiscovery(child: const DashboardView())));
         await tester.pumpAndSettle();
 
         await expectLater(find.byType(DashboardView),
