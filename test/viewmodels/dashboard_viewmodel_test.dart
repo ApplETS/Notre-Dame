@@ -72,26 +72,27 @@ void main() {
   final Map<PreferencesFlag, int> dashboard = {
     PreferencesFlag.aboutUsCard: 0,
     PreferencesFlag.scheduleCard: 1,
-    PreferencesFlag.progressBarCard: 2
+    PreferencesFlag.progressBarCard: 2,
   };
 
   // Reorderered Cards
   final Map<PreferencesFlag, int> reorderedDashboard = {
     PreferencesFlag.aboutUsCard: 1,
     PreferencesFlag.scheduleCard: 2,
-    PreferencesFlag.progressBarCard: 0
+    PreferencesFlag.progressBarCard: 0,
   };
 
   // Reorderered Cards with hidden scheduleCard
   final Map<PreferencesFlag, int> hiddenCardDashboard = {
     PreferencesFlag.aboutUsCard: 0,
     PreferencesFlag.scheduleCard: -1,
-    PreferencesFlag.progressBarCard: 1
+    PreferencesFlag.progressBarCard: 1,
   };
 
   group("DashboardViewModel - ", () {
     setUp(() async {
       // Setting up mocks
+      courseRepository = setupCourseRepositoryMock();
       settingsManager = setupSettingsManagerMock();
       preferenceService = setupPreferencesServiceMock();
 
