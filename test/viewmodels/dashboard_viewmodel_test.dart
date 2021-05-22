@@ -1,7 +1,6 @@
 // FLUTTER / DART / THIRD-PARTIES
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:notredame/core/constants/preferences_flags.dart';
 import 'package:notredame/core/managers/course_repository.dart';
 
@@ -108,36 +107,36 @@ void main() {
 
     group('futureToRunGrades -', () {
       test('first load from cache than call SignetsAPI to get the courses',
-              () async {
-            CourseRepositoryMock.stubSessions(
-                courseRepository as CourseRepositoryMock,
-                toReturn: session);
+          () async {
+        CourseRepositoryMock.stubSessions(
+            courseRepository as CourseRepositoryMock,
+            toReturn: session);
 
-            CourseRepositoryMock.stubGetCourses(
-                courseRepository as CourseRepositoryMock,
-                toReturn: courses,
-                fromCacheOnly: true);
+        CourseRepositoryMock.stubGetCourses(
+            courseRepository as CourseRepositoryMock,
+            toReturn: courses,
+            fromCacheOnly: true);
 
-            CourseRepositoryMock.stubGetCourses(
-                courseRepository as CourseRepositoryMock,
-                toReturn: courses);
+        CourseRepositoryMock.stubGetCourses(
+            courseRepository as CourseRepositoryMock,
+            toReturn: courses);
 
-            expect(await viewModel.futureToRunGrades(), courses);
+        expect(await viewModel.futureToRunGrades(), courses);
 
-            await untilCalled(courseRepository.sessions);
-            await untilCalled(courseRepository.sessions);
+        await untilCalled(courseRepository.sessions);
+        await untilCalled(courseRepository.sessions);
 
-            expect(viewModel.courses, courses);
+        expect(viewModel.courses, courses);
 
-            verifyInOrder([
-              courseRepository.sessions,
-              courseRepository.sessions,
-              courseRepository.getCourses(fromCacheOnly: true),
-              courseRepository.getCourses(),
-            ]);
+        verifyInOrder([
+          courseRepository.sessions,
+          courseRepository.sessions,
+          courseRepository.getCourses(fromCacheOnly: true),
+          courseRepository.getCourses(),
+        ]);
 
-            verifyNoMoreInteractions(courseRepository);
-          });
+        verifyNoMoreInteractions(courseRepository);
+      });
 
       test('Signets throw an error while trying to get courses', () async {
         CourseRepositoryMock.stubSessions(
@@ -159,7 +158,7 @@ void main() {
 
         expect(await viewModel.futureToRunGrades(), courses,
             reason:
-            "Even if SignetsAPI call fails, should return the cache contents");
+                "Even if SignetsAPI call fails, should return the cache contents");
 
         await untilCalled(courseRepository.sessions);
         await untilCalled(courseRepository.sessions);
@@ -196,23 +195,23 @@ void main() {
       });
 
       test("An exception is thrown during the preferenceService call",
-              () async {
-            PreferencesServiceMock.stubException(
-                preferenceService as PreferencesServiceMock,
-                PreferencesFlag.aboutUsCard);
-            PreferencesServiceMock.stubException(
-                preferenceService as PreferencesServiceMock,
-                PreferencesFlag.scheduleCard);
-            PreferencesServiceMock.stubException(
-                preferenceService as PreferencesServiceMock,
-                PreferencesFlag.progressBarCard);
+          () async {
+        PreferencesServiceMock.stubException(
+            preferenceService as PreferencesServiceMock,
+            PreferencesFlag.aboutUsCard);
+        PreferencesServiceMock.stubException(
+            preferenceService as PreferencesServiceMock,
+            PreferencesFlag.scheduleCard);
+        PreferencesServiceMock.stubException(
+            preferenceService as PreferencesServiceMock,
+            PreferencesFlag.progressBarCard);
 
-            await viewModel.futureToRun();
-            expect(viewModel.cardsToDisplay, []);
+        await viewModel.futureToRun();
+        expect(viewModel.cardsToDisplay, []);
 
-            verify(settingsManager.getDashboard()).called(1);
-            verifyNoMoreInteractions(settingsManager);
-          });
+        verify(settingsManager.getDashboard()).called(1);
+        verifyNoMoreInteractions(settingsManager);
+      });
     });
 
     group("interact with cards - ", () {

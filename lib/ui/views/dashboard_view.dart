@@ -1,5 +1,6 @@
 // FLUTTER / DART / THIRD-PARTIES
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:stacked/stacked.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -40,6 +41,10 @@ class _DashboardViewState extends State<DashboardView>
     );
 
     _animationController.forward();
+
+    SchedulerBinding.instance.addPostFrameCallback((Duration duration) {
+      DashboardViewModel(intl: AppIntl.of(context)).startDiscovery(context);
+    });
   }
 
   @override
@@ -187,11 +192,14 @@ class _DashboardViewState extends State<DashboardView>
                 ),
               ),
               if (model.courses.isEmpty)
-                Center(
-                    child: Text(AppIntl.of(context)
-                        .grades_msg_no_grades
-                        .split("\n")
-                        .first))
+                SizedBox(
+                  height: 100,
+                  child: Center(
+                      child: Text(AppIntl.of(context)
+                          .grades_msg_no_grades
+                          .split("\n")
+                          .first)),
+                )
               else
                 Container(
                   padding: const EdgeInsets.fromLTRB(17, 10, 15, 10),

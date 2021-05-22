@@ -31,14 +31,27 @@ class AppTheme {
   static const Color accent = etsLightRed;
 
   /// Light theme
-  static final ThemeData lightTheme = ThemeData.light()
-      .copyWith(primaryColor: etsLightRed, accentColor: etsLightRed);
+  static ThemeData lightTheme() {
+    final ThemeData lightTheme = ThemeData.light();
+    return lightTheme.copyWith(
+        primaryColor: etsLightRed,
+        accentColor: etsLightRed,
+        colorScheme: lightTheme.colorScheme.copyWith(primary: etsLightRed),
+        bottomNavigationBarTheme: lightTheme.bottomNavigationBarTheme
+            .copyWith(selectedItemColor: etsLightRed));
+  }
 
   /// Dark theme
-  static final ThemeData darkTheme = ThemeData.dark().copyWith(
-      // primaryColor: primaryDark,
-      // appBarTheme: const AppBarTheme(color: Color(0xff121212)),
-      scaffoldBackgroundColor: const Color(0xff121212),
-      cardColor: const Color(0xff1e1e1e),
-      accentColor: etsLightRed);
+  static ThemeData darkTheme() {
+    final ThemeData darkTheme = ThemeData.dark();
+    return darkTheme.copyWith(
+        // primaryColor: primaryDark,
+        // appBarTheme: const AppBarTheme(color: Color(0xff121212)),
+        scaffoldBackgroundColor: const Color(0xff121212),
+        cardColor: const Color(0xff1e1e1e),
+        accentColor: etsLightRed,
+        colorScheme: darkTheme.colorScheme.copyWith(primary: etsLightRed),
+        bottomNavigationBarTheme: darkTheme.bottomNavigationBarTheme
+            .copyWith(selectedItemColor: etsLightRed));
+  }
 }

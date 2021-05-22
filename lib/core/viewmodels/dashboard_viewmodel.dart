@@ -1,9 +1,13 @@
 // FLUTTER / DART / THIRD-PARTIES
+import 'dart:collection';
+import 'package:feature_discovery/feature_discovery.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:stacked/stacked.dart';
 import 'package:flutter/material.dart';
-import 'dart:collection';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
+// UTILS
+import 'package:notredame/ui/utils/discovery_components.dart';
 
 // MANAGER
 import 'package:notredame/core/managers/settings_manager.dart';
@@ -59,7 +63,6 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
   void onError(error) {
     Fluttertoast.showToast(msg: _appIntl.error);
   }
-
 
   /// Change the order of [flag] card from [oldIndex] to [newIndex].
   void setOrder(PreferencesFlag flag, int newIndex) {
@@ -130,6 +133,15 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
           Fluttertoast.showToast(msg: _appIntl.error);
         }
       });
+    }
+  }
+
+  Future<void> startDiscovery(BuildContext context) async {
+    if (await _settingsManager.getString(PreferencesFlag.discovery) == null) {
+      final List<String> ids =
+          discoveryComponents(context).map((e) => e.featureId).toList();
+      FeatureDiscovery.discoverFeatures(context, ids);
+      _settingsManager.setString(PreferencesFlag.discovery, 'true');
     }
   }
 

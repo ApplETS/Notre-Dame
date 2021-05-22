@@ -13,9 +13,6 @@ import 'package:notredame/core/services/navigation_service.dart';
 import 'package:notredame/core/models/course.dart';
 import 'package:notredame/core/viewmodels/grades_viewmodel.dart';
 
-// CONSTANTS
-import 'package:notredame/core/constants/router_paths.dart';
-
 // OTHER
 import '../helpers.dart';
 
@@ -234,6 +231,5 @@ void main() {
         verifyNoMoreInteractions(courseRepository);
       });
     });
-
   });
 }

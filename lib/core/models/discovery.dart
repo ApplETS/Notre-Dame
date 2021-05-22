@@ -2,9 +2,14 @@
 import 'package:flutter/material.dart';
 
 class Discovery {
-  final String id;
+  final String path;
+  final String featureId;
   final String title;
-  final Widget detail;
+  final Widget details;
 
-  Discovery({@required this.id, @required this.title, @required this.detail});
+  Discovery(
+      {@required this.path,
+      @required this.featureId,
+      @required this.title,
+      @required this.details});
 }

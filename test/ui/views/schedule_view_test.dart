@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:intl/intl.dart';
 import 'package:table_calendar/table_calendar.dart';
+import 'package:feature_discovery/feature_discovery.dart';
 
 // MANAGERS
 import 'package:notredame/core/managers/course_repository.dart';
@@ -17,6 +18,7 @@ import 'package:notredame/core/models/course_activity.dart';
 import 'package:notredame/ui/views/schedule_view.dart';
 import 'package:notredame/ui/widgets/schedule_settings.dart';
 
+// HELPERS
 import '../../helpers.dart';
 
 // MOCKS
@@ -115,7 +117,7 @@ void main() {
             toReturn: settings);
 
         await tester.pumpWidget(
-            localizedWidget(child: ScheduleView(initialDay: DateTime(2020))));
+            localizedWidget(child: FeatureDiscovery(child: ScheduleView(initialDay: DateTime(2020)))));
         await tester.pumpAndSettle();
 
         await expectLater(find.byType(ScheduleView),
@@ -141,7 +143,7 @@ void main() {
             toReturn: settings);
 
         await tester.pumpWidget(
-            localizedWidget(child: ScheduleView(initialDay: DateTime(2020))));
+            localizedWidget(child: FeatureDiscovery(child: ScheduleView(initialDay: DateTime(2020)))));
         await tester.pumpAndSettle();
 
         await expectLater(find.byType(ScheduleView),
@@ -164,10 +166,10 @@ void main() {
             settingsManager as SettingsManagerMock,
             toReturn: settings);
 
-        await tester.pumpWidget(localizedWidget(
+        await tester.pumpWidget(localizedWidget(child: FeatureDiscovery(
             child: MediaQuery(
                 data: const MediaQueryData(textScaleFactor: 0.5),
-                child: ScheduleView(initialDay: DateTime(2020)))));
+                child: ScheduleView(initialDay: DateTime(2020))))));
         await tester.pumpAndSettle();
 
         await expectLater(find.byType(ScheduleView),
@@ -192,7 +194,7 @@ void main() {
             toReturn: settings);
 
         await tester.pumpWidget(
-            localizedWidget(child: ScheduleView(initialDay: DateTime(2020))));
+            localizedWidget(child: FeatureDiscovery(child: ScheduleView(initialDay: DateTime(2020)))));
         await tester.pumpAndSettle();
 
         await expectLater(find.byType(ScheduleView),
@@ -217,9 +219,10 @@ void main() {
             toReturn: settings);
 
         await tester.pumpWidget(localizedWidget(
-            child: MediaQuery(
+            child: FeatureDiscovery(
+              child: MediaQuery(
                 data: const MediaQueryData(textScaleFactor: 0.5),
-                child: ScheduleView(initialDay: DateTime(2020)))));
+                child: ScheduleView(initialDay: DateTime(2020))))));
         await tester.pumpAndSettle();
 
         // Tap on the day before selected day
@@ -254,7 +257,8 @@ void main() {
             settingsManager as SettingsManagerMock,
             toReturn: settings);
 
-        await tester.pumpWidget(localizedWidget(child: const ScheduleView()));
+        await tester.pumpWidget(localizedWidget(
+            child: FeatureDiscovery(child: const ScheduleView())));
         await tester.pumpAndSettle();
 
         // DateFormat has to be after the pumpWidget to correctly load the locale
@@ -302,7 +306,7 @@ void main() {
             settingsManager as SettingsManagerMock,
             toReturn: settings);
 
-        await tester.pumpWidget(localizedWidget(child: const ScheduleView()));
+        await tester.pumpWidget(localizedWidget(child: FeatureDiscovery(child: const ScheduleView())));
         await tester.pumpAndSettle();
 
         expect(find.byType(ScheduleSettings), findsNothing,

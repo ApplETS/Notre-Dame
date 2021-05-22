@@ -67,8 +67,8 @@ class ETSMobile extends StatelessWidget {
           child: FeatureDiscovery(
             child: MaterialApp(
               title: 'ÉTS Mobile',
-              theme: AppTheme.lightTheme,
-              darkTheme: AppTheme.darkTheme,
+              theme: AppTheme.lightTheme(),
+              darkTheme: AppTheme.darkTheme(),
               themeMode: model.themeMode,
               localizationsDelegates: const [
                 AppIntl.delegate,

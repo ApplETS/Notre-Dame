@@ -6,7 +6,6 @@ import 'package:notredame/core/constants/router_paths.dart';
 // MODEL
 import 'package:notredame/core/models/course.dart';
 import 'package:notredame/core/services/navigation_service.dart';
-import 'package:notredame/core/viewmodels/grades_viewmodel.dart';
 import 'package:notredame/locator.dart';
 
 // CONSTANT
@@ -23,7 +22,8 @@ class GradeButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Card(
         child: InkWell(
-            onTap: () => _navigationService.pushNamed(RouterPaths.gradeDetails, arguments: course),
+            onTap: () => _navigationService.pushNamed(RouterPaths.gradeDetails,
+                arguments: course),
             child: SizedBox(
               height: 68,
               width: 68,
@@ -35,19 +35,21 @@ class GradeButton extends StatelessWidget {
                         child: DecoratedBox(
                             decoration: const BoxDecoration(
                                 color: AppTheme.etsLightRed,
-                                borderRadius:
-                                    BorderRadius.only(topLeft: Radius.circular(2.5), topRight: Radius.circular(2.5))),
+                                borderRadius: BorderRadius.only(
+                                    topLeft: Radius.circular(2.5),
+                                    topRight: Radius.circular(2.5))),
                             child: Center(
                               child: Padding(
                                 padding: const EdgeInsets.all(4.0),
                                 child: FittedBox(
                                   fit: BoxFit.fitWidth,
-                                  child: Text(course.acronym,
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .bodyText1
-                                              .copyWith(color: Colors.white),
-                                        ),
+                                  child: Text(
+                                    course.acronym,
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .bodyText1
+                                        .copyWith(color: Colors.white),
+                                  ),
                                 ),
                               ),
                             )),
@@ -59,7 +61,8 @@ class GradeButton extends StatelessWidget {
                         child: Text(gradeString(AppIntl.of(context)),
                             style: TextStyle(
                               fontSize: 22,
-                              color: Theme.of(context).brightness == Brightness.light
+                              color: Theme.of(context).brightness ==
+                                      Brightness.light
                                   ? AppTheme.etsDarkGrey
                                   : AppTheme.etsLightGrey,
                             ))),
@@ -72,13 +75,15 @@ class GradeButton extends StatelessWidget {
   /// Build the grade string based on the available information. By default
   /// will return [grades_not_available].
   String gradeString(AppIntl intl) {
-    if (course.grade == null && course.summary != null && course.summary.markOutOf > 0) {
-      return intl.grades_grade_in_percentage(course.summary.currentMarkInPercent.round());
+    if (course.grade == null &&
+        course.summary != null &&
+        course.summary.markOutOf > 0) {
+      return intl.grades_grade_in_percentage(
+          course.summary.currentMarkInPercent.round());
     } else if (course.grade != null) {
       return course.grade;
     }
 
     return intl.grades_not_available;
   }
-
 }
