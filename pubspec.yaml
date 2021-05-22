@@ -33,9 +33,9 @@ dependencies:
   stacked: ^2.0.2
 
   # Firebase
-  firebase_core: ^1.1.0
-  firebase_analytics: ^8.0.2
-  firebase_crashlytics: ^2.0.2
+  firebase_core: ^1.2.0
+  firebase_analytics: ^8.1.0
+  firebase_crashlytics: ^2.0.4
 
   # Utils
   logger: ^1.0.0
@@ -55,7 +55,7 @@ dependencies:
   shared_preferences: ^2.0.5
   webview_flutter: ^2.0.4
   flutter_inappwebview: ^5.3.2
-  google_maps_flutter: ^2.0.3
+  google_maps_flutter: ^2.0.5
   github: ^8.1.0
   package_info: ^2.0.0
   feature_discovery: ^0.14.0
