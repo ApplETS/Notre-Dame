@@ -206,8 +206,7 @@ class _DashboardViewState extends State<DashboardView>
                   child: Wrap(
                     children: model.courses
                         .map((course) => GradeButton(
-                              course,
-                            ))
+                              course))
                         .toList(),
                   ),
                 )
