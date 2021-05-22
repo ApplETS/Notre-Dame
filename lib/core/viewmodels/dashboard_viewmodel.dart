@@ -30,11 +30,13 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
   /// Cards to display on dashboard
   List<PreferencesFlag> _cardsToDisplay;
 
-  /// Activities sorted by day
-  final Map<DateTime, List<CourseActivity>> _coursesActivities = {};
-
-  /// Activities sorted by day
+  /// Activities for today
   final List<CourseActivity> _todayDateEvents = [];
+
+  /// Get the list of activities for today
+  List<CourseActivity> get todayDateEvents {
+    return _todayDateEvents;
+  }
 
   /// Get the status of all displayable cards
   Map<PreferencesFlag, int> get cards => _cards;
@@ -44,11 +46,9 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
 
   DashboardViewModel({@required AppIntl intl}) : _appIntl = intl;
 
-  /// Activities for today
-  List<dynamic> get todayDateEvents => _todayDateEvents;
-
   /// Day currently selected
-  DateTime todayDate = DateTime.now();
+  DateTime todayDate = DateTime.now().subtract(
+      Duration(hours: DateTime.now().hour, minutes: DateTime.now().minute));
 
   bool isLoadingEvents = false;
 
@@ -127,52 +127,33 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
     }
   }
 
-  /// Return the list of all the courses activities arranged by date.
-  Map<DateTime, List<CourseActivity>> get coursesActivities {
-    if (_coursesActivities.isEmpty) {
-      // Build the map
-      for (final CourseActivity course in _courseRepository.coursesActivities) {
-        final DateTime dateOnly = course.startDateTime.subtract(Duration(
-            hours: course.startDateTime.hour,
-            minutes: course.startDateTime.minute));
-        _coursesActivities.update(dateOnly, (value) {
-          value.add(course);
-
-          return value;
-        }, ifAbsent: () => [course]);
-      }
-
-      _coursesActivities.updateAll((key, value) {
-        value.sort((a, b) => a.startDateTime.compareTo(b.startDateTime));
-
-        return value;
-      });
-    }
-    return _coursesActivities;
-  }
-
   Future<List<CourseActivity>> futureToRunSchedule() async {
     return _courseRepository
         .getCoursesActivities(fromCacheOnly: true)
         .then((value) {
-      setBusyForObject(todayDateEvents, true);
-      todayDateEvents.clear();
+      setBusyForObject(_todayDateEvents, true);
+      _todayDateEvents.clear();
 
       _courseRepository
           .getCoursesActivities()
           // ignore: return_type_invalid_for_catch_error
           .catchError(onError)
           .whenComplete(() {
-        coursesActivities;
-        // Reload the list of activities
-        setBusyForObject(todayDateEvents, false);
-        if (_coursesActivities.isNotEmpty &&
-            _coursesActivities[
-                    DateTime(todayDate.year, todayDate.month, todayDate.day)] !=
-                null) {
-          _todayDateEvents.addAll(_coursesActivities[
-              DateTime(todayDate.year, todayDate.month, todayDate.day)]);
+        if (_todayDateEvents.isEmpty) {
+          // Build the list
+          for (final CourseActivity course
+              in _courseRepository.coursesActivities) {
+            final DateTime dateOnly = course.startDateTime;
+
+            if (compareDates(todayDate, dateOnly)) {
+              _todayDateEvents.add(course);
+            }
+          }
         }
+        _todayDateEvents
+            .sort((a, b) => a.startDateTime.compareTo(b.startDateTime));
+
+        setBusyForObject(_todayDateEvents, false);
       });
 
       return value;
@@ -193,6 +174,8 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
     }
   }
 
+  bool compareDates(DateTime a, DateTime b) =>
+      a.year == b.year && a.month == b.month && a.day == b.day;
   Future<void> startDiscovery(BuildContext context) async {
     if (await _settingsManager.getString(PreferencesFlag.discovery) == null) {
       final List<String> ids = discoveryComponents(context).map((e) => e.featureId).toList();

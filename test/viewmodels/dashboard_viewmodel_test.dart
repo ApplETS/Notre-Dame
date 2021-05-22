@@ -1,4 +1,5 @@
 // FLUTTER / DART / THIRD-PARTIES
+import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 import 'package:notredame/core/constants/preferences_flags.dart';
@@ -25,31 +26,36 @@ void main() {
   DashboardViewModel viewModel;
   CourseRepository courseRepository;
 
-  // Some activities
   final gen101 = CourseActivity(
       courseGroup: "GEN101",
       courseName: "Generic course",
       activityName: "TD",
       activityDescription: "Activity description",
       activityLocation: "location",
-      startDateTime: DateTime(2020, 1, 1, 18),
-      endDateTime: DateTime(2020, 1, 1, 21));
+      startDateTime: DateTime(
+          DateTime.now().year, DateTime.now().month, DateTime.now().day, 9),
+      endDateTime: DateTime(
+          DateTime.now().year, DateTime.now().month, DateTime.now().day, 12));
   final gen102 = CourseActivity(
       courseGroup: "GEN102",
       courseName: "Generic course",
       activityName: "TD",
       activityDescription: "Activity description",
       activityLocation: "location",
-      startDateTime: DateTime(2020, 1, 2, 18),
-      endDateTime: DateTime(2020, 1, 2, 21));
+      startDateTime: DateTime(
+          DateTime.now().year, DateTime.now().month, DateTime.now().day, 13),
+      endDateTime: DateTime(
+          DateTime.now().year, DateTime.now().month, DateTime.now().day, 16));
   final gen103 = CourseActivity(
       courseGroup: "GEN103",
       courseName: "Generic course",
       activityName: "TD",
       activityDescription: "Activity description",
       activityLocation: "location",
-      startDateTime: DateTime(2020, 1, 2, 18),
-      endDateTime: DateTime(2020, 1, 2, 21));
+      startDateTime: DateTime(
+          DateTime.now().year, DateTime.now().month, DateTime.now().day, 18),
+      endDateTime: DateTime(
+          DateTime.now().year, DateTime.now().month, DateTime.now().day, 21));
 
   final List<CourseActivity> activities = [gen101, gen102, gen103];
 
@@ -252,21 +258,27 @@ void main() {
       });
 
       test("build the list of activities sorted by date", () async {
+        CourseRepositoryMock.stubGetCoursesActivities(
+            courseRepository as CourseRepositoryMock);
         CourseRepositoryMock.stubCoursesActivities(
             courseRepository as CourseRepositoryMock,
             toReturn: activities);
 
-        final expectedActivities = {
-          DateTime(2020): [gen101],
-          DateTime(2020, 1, 2): [gen102, gen103]
-        };
+        await viewModel.futureToRun();
+        await viewModel.futureToRunSchedule();
 
-        final todayDateEvents = [];
+        await untilCalled(courseRepository.getCoursesActivities());
 
-        expect(viewModel.coursesActivities, expectedActivities);
-        expect(viewModel.todayDateEvents, todayDateEvents);
+        expect(viewModel.todayDateEvents, activities);
+
+        verify(courseRepository.getCoursesActivities()).called(1);
+
+        verify(courseRepository.getCoursesActivities(fromCacheOnly: true))
+            .called(1);
 
         verify(courseRepository.coursesActivities).called(1);
+
+        verify(settingsManager.getDashboard()).called(1);
 
         verifyNoMoreInteractions(courseRepository);
         verifyNoMoreInteractions(settingsManager);
