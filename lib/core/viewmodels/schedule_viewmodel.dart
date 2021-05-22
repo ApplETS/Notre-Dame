@@ -43,7 +43,7 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
   DateTime selectedDate = DateTime.now();
 
   /// Day currently focused on
-  DateTime focusedDate = DateTime.now();
+  final ValueNotifier<DateTime> focusedDate = ValueNotifier(DateTime.now());
 
   /// The currently selected CalendarFormat, A default value is set for test purposes.
   /// This value is then change to the cache value on load.
