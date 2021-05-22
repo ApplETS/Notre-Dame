@@ -43,8 +43,7 @@ class AppRouter {
       case RouterPaths.schedule:
         return PageRouteBuilder(
             settings: RouteSettings(name: routeSettings.name),
-            pageBuilder: (_, __, ___) =>
-                ScheduleView(initialDay: DateTime(2020, 2, 15)));
+            pageBuilder: (_, __, ___) => const ScheduleView());
       case RouterPaths.student:
         return PageRouteBuilder(
             settings: RouteSettings(name: routeSettings.name),

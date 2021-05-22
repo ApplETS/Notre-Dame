@@ -222,7 +222,7 @@ void main() {
             settingsManager as SettingsManagerMock,
             toReturn: settings);
 
-        final testingDate = DateTime(2020, 2, 15);
+        final testingDate = DateTime(2020);
 
         await tester.pumpWidget(localizedWidget(
             child: FeatureDiscovery(
