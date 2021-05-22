@@ -3,9 +3,12 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:notredame/core/constants/preferences_flags.dart';
+import 'package:notredame/core/managers/course_repository.dart';
 
 // MANAGERS
 import 'package:notredame/core/managers/settings_manager.dart';
+import 'package:notredame/core/models/course.dart';
+import 'package:notredame/core/models/session.dart';
 import 'package:notredame/core/services/preferences_service.dart';
 
 // VIEW-MODEL

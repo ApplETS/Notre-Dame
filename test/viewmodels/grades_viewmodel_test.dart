@@ -235,12 +235,5 @@ void main() {
       });
     });
 
-    group('navigateToGradeDetails - ', () {
-      test('navigating back worked', () async {
-        viewModel.navigateToGradeDetails(courseSummer);
-
-        verify(navigationService.pushNamed(RouterPaths.gradeDetails, arguments: courseSummer));
-      });
-    });
   });
 }

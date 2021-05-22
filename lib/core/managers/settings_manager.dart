@@ -106,6 +106,11 @@ class SettingsManager with ChangeNotifier {
     dashboard.putIfAbsent(
         PreferencesFlag.progressBarCard, () => progressBarCardIndex);
 
+
+    final gradesCardIndex =
+        await _preferencesService.getInt(PreferencesFlag.gradesCards) ??
+            getDefaultCardIndex(PreferencesFlag.gradesCards);
+
     dashboard.putIfAbsent(
         PreferencesFlag.gradesCards, () => gradesCardIndex);
 
@@ -145,21 +150,21 @@ class SettingsManager with ChangeNotifier {
     final calendarFormat = await _preferencesService
         .getString(PreferencesFlag.scheduleSettingsCalendarFormat)
         .then((value) => value == null
-            ? CalendarFormat.week
-            : EnumToString.fromString(CalendarFormat.values, value));
+        ? CalendarFormat.week
+        : EnumToString.fromString(CalendarFormat.values, value));
     settings.putIfAbsent(
         PreferencesFlag.scheduleSettingsCalendarFormat, () => calendarFormat);
 
     final startingWeekDay = await _preferencesService
         .getString(PreferencesFlag.scheduleSettingsStartWeekday)
         .then((value) => value == null
-            ? StartingDayOfWeek.monday
-            : EnumToString.fromString(StartingDayOfWeek.values, value));
+        ? StartingDayOfWeek.monday
+        : EnumToString.fromString(StartingDayOfWeek.values, value));
     settings.putIfAbsent(
         PreferencesFlag.scheduleSettingsStartWeekday, () => startingWeekDay);
 
     final showTodayBtn = await _preferencesService
-            .getBool(PreferencesFlag.scheduleSettingsShowTodayBtn) ??
+        .getBool(PreferencesFlag.scheduleSettingsShowTodayBtn) ??
         true;
     settings.putIfAbsent(
         PreferencesFlag.scheduleSettingsShowTodayBtn, () => showTodayBtn);
@@ -201,4 +206,9 @@ class SettingsManager with ChangeNotifier {
         "${tag}_${EnumToString.convertToString(flag)}", value.toString());
     return _preferencesService.setBool(flag, value: value);
   }
+
+  /// Get the default index of each card
+  int getDefaultCardIndex(PreferencesFlag flag) =>
+      flag.index - PreferencesFlag.aboutUsCard.index;
 }
+

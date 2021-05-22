@@ -2,7 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:table_calendar/table_calendar.dart';
+
 
 // VIEWMODEL
 import 'package:notredame/core/viewmodels/dashboard_viewmodel.dart';
@@ -193,7 +193,7 @@ class _DashboardViewState extends State<DashboardView>
               else
                 Wrap(
                   children: model.courses
-                      .map((course) => GradeButton(course))
+                      .map((course) => GradeButton(course,))
                       .toList(),
                 )
             ]),
