@@ -22,7 +22,6 @@ import '../mock/services/networking_service_mock.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
-  NavigationService navigationService;
   CourseRepository courseRepository;
   NetworkingServiceMock networkingService;
   AppIntl intl;
@@ -95,7 +94,6 @@ void main() {
       courseRepository = setupCourseRepositoryMock();
       networkingService = setupNetworkingServiceMock() as NetworkingServiceMock;
       intl = await setupAppIntl();
-      navigationService = setupNavigationServiceMock();
       setupFlutterToastMock();
 
       // Stub to simulate that the user has an active internet connection

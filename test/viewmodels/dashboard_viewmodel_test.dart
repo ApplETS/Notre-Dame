@@ -16,9 +16,9 @@ import 'package:notredame/core/viewmodels/dashboard_viewmodel.dart';
 import '../helpers.dart';
 
 // MOCKS
+import '../mock/managers/course_repository_mock.dart';
 import '../mock/managers/settings_manager_mock.dart';
 import '../mock/services/preferences_service_mock.dart';
-import '../mock/managers/course_repository_mock.dart';
 
 void main() {
   PreferencesService preferenceService;
