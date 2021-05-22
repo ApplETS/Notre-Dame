@@ -122,8 +122,8 @@ jobs:
       # Get flutter dependencies.
       - run: flutter pub get
 
-      - name: Build APK for Android
-        run: flutter build apk
+      - name: Build appbundle for Android
+        run: flutter build appbundle
 
 
 # Disable for now
@@ -136,7 +136,7 @@ jobs:
 #          automatic_release_tag: ${{ needs.tagValidation.outputs.version }}
 #          title: v${{ needs.tagValidation.outputs.version }}
 #          files: |
-#            build/app/outputs/apk/release/app-release.apk
+#            build/app/outputs/bundle/release/app-release.aab
 
   iosBuildWorkflow:
     name: Build the application for iOS
