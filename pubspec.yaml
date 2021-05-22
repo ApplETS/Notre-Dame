@@ -93,6 +93,9 @@ flutter:
     - assets/certificates/
     - assets/icons/
     - assets/animations/
+    - assets/animations/discovery/
+    - assets/animations/discovery/fr/
+    - assets/animations/discovery/en/
     - assets/
 
 flutter_intl:

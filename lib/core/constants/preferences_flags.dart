@@ -10,9 +10,12 @@ enum PreferencesFlag {
   // Theme flag
   theme,
 
-  // Discovery flag
-  welcome,
+  // Choose language flag
+  languageChoice,
 
+  // Discovery flag
+  discovery,
+  
   // Dashboard flags
   aboutUsCard,
   scheduleCard,
