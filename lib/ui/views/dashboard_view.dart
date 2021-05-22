@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-
 // VIEWMODEL
 import 'package:notredame/core/viewmodels/dashboard_viewmodel.dart';
 
@@ -20,8 +19,6 @@ import 'package:notredame/core/constants/urls.dart';
 import 'package:notredame/core/utils/utils.dart';
 import 'package:notredame/ui/utils/loading.dart';
 import 'package:notredame/ui/utils/app_theme.dart';
-
-
 
 class DashboardView extends StatefulWidget {
   const DashboardView({Key key}) : super(key: key);
@@ -55,8 +52,8 @@ class _DashboardViewState extends State<DashboardView>
   Widget build(BuildContext context) {
     return ViewModelBuilder<DashboardViewModel>.reactive(
         viewModelBuilder: () => DashboardViewModel(
-          intl: AppIntl.of(context),
-        ),
+              intl: AppIntl.of(context),
+            ),
         builder: (context, model, child) {
           return BaseScaffold(
               isInteractionLimitedWhileLoading: false,
@@ -73,11 +70,11 @@ class _DashboardViewState extends State<DashboardView>
               body: model.cards == null
                   ? buildLoading()
                   : ReorderableListView(
-                onReorder: (oldIndex, newIndex) =>
-                    onReorder(model, oldIndex, newIndex),
-                padding: const EdgeInsets.all(8),
-                children: _buildCards(model),
-              ));
+                      onReorder: (oldIndex, newIndex) =>
+                          onReorder(model, oldIndex, newIndex),
+                      padding: const EdgeInsets.all(8),
+                      children: _buildCards(model),
+                    ));
         });
   }
 
@@ -181,9 +178,14 @@ class _DashboardViewState extends State<DashboardView>
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
             children: [
-              Text(AppIntl.of(context).grades_title,
-                  style: Theme.of(context).textTheme.headline6),
-              const SizedBox(height: 10),
+              Align(
+                alignment: Alignment.centerLeft,
+                child: Container(
+                  padding: const EdgeInsets.fromLTRB(17, 15, 0, 0),
+                  child: Text(AppIntl.of(context).grades_title,
+                      style: Theme.of(context).textTheme.headline6),
+                ),
+              ),
               if (model.courses.isEmpty)
                 Center(
                     child: Text(AppIntl.of(context)
@@ -191,10 +193,15 @@ class _DashboardViewState extends State<DashboardView>
                         .split("\n")
                         .first))
               else
-                Wrap(
-                  children: model.courses
-                      .map((course) => GradeButton(course,))
-                      .toList(),
+                Container(
+                  padding: const EdgeInsets.fromLTRB(17, 10, 15, 10),
+                  child: Wrap(
+                    children: model.courses
+                        .map((course) => GradeButton(
+                              course,
+                            ))
+                        .toList(),
+                  ),
                 )
             ]),
       );
