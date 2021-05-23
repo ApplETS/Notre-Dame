@@ -64,6 +64,8 @@ void main() {
 
   final List<CourseActivity> activities = [gen101, gen102, gen103];
 
+  const int cardNumber = 2;
+
   // Cards
   final Map<PreferencesFlag, int> dashboard = {
     PreferencesFlag.aboutUsCard: 0,
@@ -91,7 +93,7 @@ void main() {
     tearDown(() {});
 
     group('UI - ', () {
-      testWidgets('Has view title and restore button, displayed',
+      testWidgets('Has view title restore button and cards, displayed',
           (WidgetTester tester) async {
         CourseRepositoryMock.stubCoursesActivities(
             courseRepository as CourseRepositoryMock);
@@ -106,7 +108,8 @@ void main() {
             settingsManager as SettingsManagerMock,
             toReturn: dashboard);
 
-        await tester.pumpWidget(localizedWidget(child: FeatureDiscovery(child: const DashboardView())));
+        await tester.pumpWidget(localizedWidget(
+            child: FeatureDiscovery(child: const DashboardView())));
         await tester.pumpAndSettle();
 
         // Find Dashboard Title
@@ -119,9 +122,12 @@ void main() {
         // Find restoreCards Button
         final restoreCardsIcon = find.byIcon(Icons.restore);
         expect(restoreCardsIcon, findsOneWidget);
+
+        // Find cards
+        expect(find.byType(Card), findsNWidgets(cardNumber));
       });
 
-      testWidgets('Has card aboutUs and schedule displayed properly',
+      testWidgets('Has card aboutUs displayed properly',
           (WidgetTester tester) async {
         CourseRepositoryMock.stubCoursesActivities(
             courseRepository as CourseRepositoryMock,
@@ -138,11 +144,9 @@ void main() {
             settingsManager as SettingsManagerMock,
             toReturn: dashboard);
 
-        await tester.pumpWidget(localizedWidget(child: FeatureDiscovery(child: const DashboardView())));
+        await tester.pumpWidget(localizedWidget(
+            child: FeatureDiscovery(child: const DashboardView())));
         await tester.pumpAndSettle();
-
-        // Find two cards
-        expect(find.byType(Card), findsNWidgets(2));
 
         // Find aboutUs card in first position by its title
         final aboutUsTitle = tester.firstWidget(find.descendant(
@@ -162,6 +166,28 @@ void main() {
         expect(find.text(intl.facebook.toUpperCase()), findsOneWidget);
         expect(find.text(intl.github.toUpperCase()), findsOneWidget);
         expect(find.text(intl.email.toUpperCase()), findsOneWidget);
+      });
+
+      testWidgets('Has card schedule displayed properly',
+          (WidgetTester tester) async {
+        CourseRepositoryMock.stubCoursesActivities(
+            courseRepository as CourseRepositoryMock,
+            toReturn: activities);
+
+        CourseRepositoryMock.stubGetCoursesActivities(
+            courseRepository as CourseRepositoryMock,
+            fromCacheOnly: true);
+        CourseRepositoryMock.stubGetCoursesActivities(
+            courseRepository as CourseRepositoryMock,
+            fromCacheOnly: false);
+
+        SettingsManagerMock.stubGetDashboard(
+            settingsManager as SettingsManagerMock,
+            toReturn: dashboard);
+
+        await tester.pumpWidget(localizedWidget(
+            child: FeatureDiscovery(child: const DashboardView())));
+        await tester.pumpAndSettle();
 
         // Find schedule card in second position by its title
         final scheduleTitle = tester.firstWidget(find.descendant(
@@ -178,11 +204,14 @@ void main() {
             ),
             findsNWidgets(3));
       });
+    });
 
+    group('Interactions - ', () {
       testWidgets('AboutUsCard is dismissible and can be restored',
           (WidgetTester tester) async {
         CourseRepositoryMock.stubCoursesActivities(
             courseRepository as CourseRepositoryMock);
+
         CourseRepositoryMock.stubGetCoursesActivities(
             courseRepository as CourseRepositoryMock,
             fromCacheOnly: true);
@@ -203,7 +232,8 @@ void main() {
         SettingsManagerMock.stubSetInt(settingsManager as SettingsManagerMock,
             PreferencesFlag.progressBarCard);
 
-        await tester.pumpWidget(localizedWidget(child: FeatureDiscovery(child: const DashboardView())));
+        await tester.pumpWidget(localizedWidget(
+            child: FeatureDiscovery(child: const DashboardView())));
         await tester.pumpAndSettle();
 
         // Find Dismissible Cards
@@ -256,7 +286,8 @@ void main() {
         SettingsManagerMock.stubSetInt(settingsManager as SettingsManagerMock,
             PreferencesFlag.progressBarCard);
 
-        await tester.pumpWidget(localizedWidget(child: FeatureDiscovery(child: const DashboardView())));
+        await tester.pumpWidget(localizedWidget(
+            child: FeatureDiscovery(child: const DashboardView())));
         await tester.pumpAndSettle();
 
         // Find Dismissible Cards
@@ -331,7 +362,8 @@ void main() {
         SettingsManagerMock.stubSetInt(settingsManager as SettingsManagerMock,
             PreferencesFlag.progressBarCard);
 
-        await tester.pumpWidget(localizedWidget(child: const DashboardView()));
+        await tester.pumpWidget(localizedWidget(
+            child: FeatureDiscovery(child: const DashboardView())));
         await tester.pumpAndSettle();
 
         // Find Dismissible Cards
@@ -378,11 +410,21 @@ void main() {
       testWidgets("default view", (WidgetTester tester) async {
         tester.binding.window.physicalSizeTestValue = const Size(800, 1410);
 
+        CourseRepositoryMock.stubCoursesActivities(
+            courseRepository as CourseRepositoryMock);
+        CourseRepositoryMock.stubGetCoursesActivities(
+            courseRepository as CourseRepositoryMock,
+            fromCacheOnly: true);
+        CourseRepositoryMock.stubGetCoursesActivities(
+            courseRepository as CourseRepositoryMock,
+            fromCacheOnly: false);
+
         SettingsManagerMock.stubGetDashboard(
             settingsManager as SettingsManagerMock,
             toReturn: dashboard);
 
-        await tester.pumpWidget(localizedWidget(child: FeatureDiscovery(child: const DashboardView())));
+        await tester.pumpWidget(localizedWidget(
+            child: FeatureDiscovery(child: const DashboardView())));
         await tester.pumpAndSettle();
 
         await expectLater(find.byType(DashboardView),
