@@ -43,7 +43,7 @@ class _DashboardViewState extends State<DashboardView>
 
     _animationController.forward();
 
-    SchedulerBinding.instance.addPostFrameCallback((Duration duration) {  
+    SchedulerBinding.instance.addPostFrameCallback((Duration duration) {
       DashboardViewModel(intl: AppIntl.of(context)).startDiscovery(context);
     });
   }
@@ -78,7 +78,7 @@ class _DashboardViewState extends State<DashboardView>
                   : ReorderableListView(
                       onReorder: (oldIndex, newIndex) =>
                           onReorder(model, oldIndex, newIndex),
-                      padding: const EdgeInsets.all(8),
+                      padding: const EdgeInsets.fromLTRB(8, 4, 8, 8),
                       children: _buildCards(model),
                     ));
         });
