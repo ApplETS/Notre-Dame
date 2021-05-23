@@ -8,8 +8,6 @@ import 'package:notredame/ui/views/about_view.dart';
 import '../../helpers.dart';
 
 void main() {
-  TestWidgetsFlutterBinding.ensureInitialized();
-
   group('AboutView - ', () {
     setUp(() async {});
 
@@ -37,9 +35,7 @@ void main() {
 
           await tester.pumpWidget(
               localizedWidget(useScaffold: false, child: AboutView()));
-          // await tester.tap(find.text('simple'));
-          await tester.pumpAndSettle(const Duration(seconds: 1));
-
+          await tester.pumpAndSettle();
           await expectLater(find.byType(AboutView),
               matchesGoldenFile(goldenFilePath("aboutView_1")));
         });
