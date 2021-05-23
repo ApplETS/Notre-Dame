@@ -384,12 +384,17 @@ void main() {
             preferencesService as PreferencesServiceMock,
             PreferencesFlag.progressBarCard,
             toReturn: null);
+        PreferencesServiceMock.stubGetInt(
+            preferencesService as PreferencesServiceMock,
+            PreferencesFlag.gradesCards,
+            toReturn: null);
 
         // Cards
         final Map<PreferencesFlag, int> expected = {
           PreferencesFlag.aboutUsCard: 0,
           PreferencesFlag.scheduleCard: 1,
-          PreferencesFlag.progressBarCard: 2
+          PreferencesFlag.progressBarCard: 2,
+          PreferencesFlag.gradesCards: 3
         };
 
         expect(
@@ -402,6 +407,8 @@ void main() {
         verify(preferencesService.getInt(PreferencesFlag.scheduleCard))
             .called(1);
         verify(preferencesService.getInt(PreferencesFlag.progressBarCard))
+            .called(1);
+        verify(preferencesService.getInt(PreferencesFlag.gradesCards))
             .called(1);
 
         verifyNoMoreInteractions(preferencesService);
@@ -422,12 +429,17 @@ void main() {
             preferencesService as PreferencesServiceMock,
             PreferencesFlag.progressBarCard,
             toReturn: 0);
+        PreferencesServiceMock.stubGetInt(
+            preferencesService as PreferencesServiceMock,
+            PreferencesFlag.gradesCards,
+            toReturn: 3);
 
         // Cards
         final Map<PreferencesFlag, int> expected = {
           PreferencesFlag.aboutUsCard: 1,
           PreferencesFlag.scheduleCard: 2,
-          PreferencesFlag.progressBarCard: 0
+          PreferencesFlag.progressBarCard: 0,
+          PreferencesFlag.gradesCards: 3
         };
 
         expect(
@@ -440,6 +452,8 @@ void main() {
         verify(preferencesService.getInt(PreferencesFlag.scheduleCard))
             .called(1);
         verify(preferencesService.getInt(PreferencesFlag.progressBarCard))
+            .called(1);
+        verify(preferencesService.getInt(PreferencesFlag.gradesCards))
             .called(1);
 
         verifyNoMoreInteractions(preferencesService);

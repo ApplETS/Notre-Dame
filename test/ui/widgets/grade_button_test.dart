@@ -55,6 +55,7 @@ void main() {
   group("GradeButton -", () {
     setUp(() async {
       intl = await setupAppIntl();
+      setupNavigationServiceMock();
     });
 
     tearDown(() {

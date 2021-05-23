@@ -44,6 +44,7 @@ void main() {
       intl = await setupAppIntl();
       settingsManager = setupSettingsManagerMock();
       setupNavigationServiceMock();
+      setupCourseRepositoryMock();
     });
 
     tearDown(() {});
@@ -55,7 +56,8 @@ void main() {
             settingsManager as SettingsManagerMock,
             toReturn: dashboard);
 
-        await tester.pumpWidget(localizedWidget(child: FeatureDiscovery(child: const DashboardView())));
+        await tester.pumpWidget(localizedWidget(
+            child: FeatureDiscovery(child: const DashboardView())));
         await tester.pumpAndSettle();
 
         // Find Dashboard Title
@@ -75,7 +77,8 @@ void main() {
             settingsManager as SettingsManagerMock,
             toReturn: dashboard);
 
-        await tester.pumpWidget(localizedWidget(child: FeatureDiscovery(child: const DashboardView())));
+        await tester.pumpWidget(localizedWidget(
+            child: FeatureDiscovery(child: const DashboardView())));
         await tester.pumpAndSettle();
 
         // Find aboutUs card
@@ -114,7 +117,8 @@ void main() {
         SettingsManagerMock.stubSetInt(settingsManager as SettingsManagerMock,
             PreferencesFlag.progressBarCard);
 
-        await tester.pumpWidget(localizedWidget(child: FeatureDiscovery(child: const DashboardView())));
+        await tester.pumpWidget(localizedWidget(
+            child: FeatureDiscovery(child: const DashboardView())));
         await tester.pumpAndSettle();
 
         // Find Dismissible Cards
@@ -158,7 +162,8 @@ void main() {
         SettingsManagerMock.stubSetInt(settingsManager as SettingsManagerMock,
             PreferencesFlag.progressBarCard);
 
-        await tester.pumpWidget(localizedWidget(child: FeatureDiscovery(child: const DashboardView())));
+        await tester.pumpWidget(localizedWidget(
+            child: FeatureDiscovery(child: const DashboardView())));
         await tester.pumpAndSettle();
 
         // Find Dismissible Cards
@@ -218,7 +223,8 @@ void main() {
             settingsManager as SettingsManagerMock,
             toReturn: dashboard);
 
-        await tester.pumpWidget(localizedWidget(child: FeatureDiscovery(child: const DashboardView())));
+        await tester.pumpWidget(localizedWidget(
+            child: FeatureDiscovery(child: const DashboardView())));
         await tester.pumpAndSettle();
 
         await expectLater(find.byType(DashboardView),
