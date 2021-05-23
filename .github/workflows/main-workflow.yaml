@@ -53,7 +53,8 @@ jobs:
       - uses: actions/setup-java@v1
         with:
           java-version: '12.x'
-      - uses: subosito/flutter-action@v1
+      - uses: subosito/flutter-action@v1.5
+      - run: flutter doctor
       - name: Install OpenSSL
         run: sudo apt-get install openssl
       - name: Decrypt certificates files
@@ -109,7 +110,8 @@ jobs:
       - uses: actions/setup-java@v1
         with:
           java-version: '12.x'
-      - uses: subosito/flutter-action@v1
+      - uses: subosito/flutter-action@v1.5
+      - run: flutter doctor
       - name: Install OpenSSL
         run: sudo apt-get install openssl
       - name: Decrypt certificates files
@@ -122,10 +124,8 @@ jobs:
       # Get flutter dependencies.
       - run: flutter pub get
 
-      - run: flutter doctor --android-licenses
-
       - name: Build appbundle for Android
-        run: flutter build appbundle
+        run: flutter build -v appbundle
 
 
 # Disable for now
@@ -146,10 +146,8 @@ jobs:
     runs-on: macos-latest
     steps:
       - uses: actions/checkout@v2
-      - uses: actions/setup-java@v1
-        with:
-          java-version: '12.x'
-      - uses: subosito/flutter-action@v1
+      - uses: subosito/flutter-action@v1.5
+      - run: flutter doctor
       - name: Decrypt certificates files
         run: |
           chmod +x ./scripts/decrypt.sh
@@ -161,4 +159,4 @@ jobs:
       - run: flutter pub get
 
       - name: Build archive
-        run: flutter build ios --release --no-codesign
+        run: flutter build -v ios --release --no-codesign
