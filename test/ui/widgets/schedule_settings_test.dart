@@ -80,39 +80,44 @@ void main() {
                 'The settings says week format is the current format, the UI should reflet that.');
 
         // Check starting day of week section
-        // TODO uncomment test when https://github.com/aleksanderwozniak/table_calendar/issues/164 is close
-        // expect(find.text(intl.schedule_settings_starting_weekday_pref),
-        //     findsOneWidget);
-        // expect(
-        //     find.widgetWithText(
-        //         ListTile, intl.schedule_settings_starting_weekday_saturday),
-        //     findsOneWidget);
-        // expect(
-        //     find.widgetWithText(
-        //         ListTile, intl.schedule_settings_starting_weekday_sunday),
-        //     findsOneWidget);
-        //
-        // final startingDayTile = find.widgetWithText(
-        //     ListTile, intl.schedule_settings_starting_weekday_monday);
-        // expect(startingDayTile, findsOneWidget);
-        // expect(
-        //     tester.widget(startingDayTile),
-        //     isA<ListTile>()
-        //         .having((source) => source.selected, 'selected', isTrue),
-        //     reason:
-        //     'The settings says starting day of week is monday, the UI should reflet that.');
+        expect(find.text(intl.schedule_settings_starting_weekday_pref),
+            findsOneWidget);
+        expect(
+            find.widgetWithText(
+                ListTile, intl.schedule_settings_starting_weekday_saturday,
+                skipOffstage: false),
+            findsOneWidget);
+        expect(
+            find.widgetWithText(
+                ListTile, intl.schedule_settings_starting_weekday_sunday,
+                skipOffstage: false),
+            findsOneWidget);
+
+        final startingDayTile = find.widgetWithText(
+            ListTile, intl.schedule_settings_starting_weekday_monday,
+            skipOffstage: false);
+        expect(startingDayTile, findsOneWidget);
+        expect(
+            tester.widget(startingDayTile),
+            isA<ListTile>()
+                .having((source) => source.selected, 'selected', isTrue),
+            reason:
+                'The settings says starting day of week is monday, the UI should reflet that.');
 
         // Check showTodayButton section
         final showTodayBtnFinder = find.widgetWithText(
-            ListTile, intl.schedule_settings_show_today_btn_pref);
+            ListTile, intl.schedule_settings_show_today_btn_pref,
+            skipOffstage: false);
         expect(showTodayBtnFinder, findsOneWidget);
         expect(
             tester.widget(showTodayBtnFinder),
             isA<ListTile>().having(
                 (source) => source.trailing, 'trailing', isA<Switch>()));
+
         expect(
             tester.widget(find.descendant(
-                of: showTodayBtnFinder, matching: find.byType(Switch))),
+                of: showTodayBtnFinder,
+                matching: find.byType(Switch, skipOffstage: false))),
             isA<Switch>().having((source) => source.value, 'value', isTrue),
             reason:
                 "the settings says that the showTodayBtn is enabled, the UI should reflet that.");
@@ -159,31 +164,35 @@ void main() {
                 'The settings says week format is the current format, the UI should reflet that.');
 
         // Check starting day of week section
-        // TODO uncomment test when https://github.com/aleksanderwozniak/table_calendar/issues/164 is close
-        // expect(find.text(intl.schedule_settings_starting_weekday_pref),
-        //     findsOneWidget);
-        // expect(
-        //     find.widgetWithText(
-        //         ListTile, intl.schedule_settings_starting_weekday_saturday),
-        //     findsOneWidget);
-        // expect(
-        //     find.widgetWithText(
-        //         ListTile, intl.schedule_settings_starting_weekday_sunday),
-        //     findsOneWidget);
-        //
-        // final startingDayTile = find.widgetWithText(
-        //     ListTile, intl.schedule_settings_starting_weekday_monday);
-        // expect(startingDayTile, findsOneWidget);
-        // expect(
-        //     tester.widget(startingDayTile),
-        //     isA<ListTile>()
-        //         .having((source) => source.selected, 'selected', isTrue),
-        //     reason:
-        //     'The settings says starting day of week is monday, the UI should reflet that.');
+        expect(find.text(intl.schedule_settings_starting_weekday_pref),
+            findsOneWidget);
+
+        expect(
+            find.widgetWithText(
+                ListTile, intl.schedule_settings_starting_weekday_saturday,
+                skipOffstage: false),
+            findsOneWidget);
+        expect(
+            find.widgetWithText(
+                ListTile, intl.schedule_settings_starting_weekday_sunday,
+                skipOffstage: false),
+            findsOneWidget);
+
+        final startingDayTile = find.widgetWithText(
+            ListTile, intl.schedule_settings_starting_weekday_monday,
+            skipOffstage: false);
+        expect(startingDayTile, findsOneWidget);
+        expect(
+            tester.widget(startingDayTile),
+            isA<ListTile>()
+                .having((source) => source.selected, 'selected', isTrue),
+            reason:
+                'The settings says starting day of week is monday, the UI should reflet that.');
 
         // Check showTodayButton section
         final showTodayBtnFinder = find.widgetWithText(
-            ListTile, intl.schedule_settings_show_today_btn_pref);
+            ListTile, intl.schedule_settings_show_today_btn_pref,
+            skipOffstage: false);
         expect(showTodayBtnFinder, findsOneWidget);
         expect(
             tester.widget(showTodayBtnFinder),
@@ -191,7 +200,8 @@ void main() {
                 (source) => source.trailing, 'trailing', isA<Switch>()));
         expect(
             tester.widget(find.descendant(
-                of: showTodayBtnFinder, matching: find.byType(Switch))),
+                of: showTodayBtnFinder,
+                matching: find.byType(Switch, skipOffstage: false))),
             isA<Switch>().having((source) => source.value, 'value', isTrue),
             reason:
                 "the settings says that the showTodayBtn is enabled, the UI should reflet that.");
@@ -211,10 +221,12 @@ void main() {
             localizedWidget(child: const ScheduleSettings(showHandle: false)));
         await tester.pumpAndSettle();
 
-        await tester.tap(find.widgetWithText(ListTile, intl.schedule_settings_calendar_format_2_weeks));
+        await tester.tap(find.widgetWithText(
+            ListTile, intl.schedule_settings_calendar_format_2_weeks));
         await tester.pump();
 
-        await untilCalled(settingsManager.setString(PreferencesFlag.scheduleSettingsCalendarFormat, any));
+        await untilCalled(settingsManager.setString(
+            PreferencesFlag.scheduleSettingsCalendarFormat, any));
 
         final formatTile = find.widgetWithText(
             ListTile, intl.schedule_settings_calendar_format_2_weeks);
@@ -223,38 +235,42 @@ void main() {
             isA<ListTile>()
                 .having((source) => source.selected, 'selected', isTrue),
             reason:
-            'The settings says 2 week format now, the UI should reflet that.');
+                'The settings says 2 week format now, the UI should reflet that.');
       });
 
       testWidgets("onChange showTodayBtn", (WidgetTester tester) async {
         SettingsManagerMock.stubGetScheduleSettings(
             settingsManager as SettingsManagerMock,
             toReturn: settings);
-        SettingsManagerMock.stubSetBool(
-            settingsManager as SettingsManagerMock,
+        SettingsManagerMock.stubSetBool(settingsManager as SettingsManagerMock,
             PreferencesFlag.scheduleSettingsShowTodayBtn);
-
 
         await tester.pumpWidget(
             localizedWidget(child: const ScheduleSettings(showHandle: false)));
         await tester.pumpAndSettle();
 
         final showTodayBtnFinder = find.widgetWithText(
-            ListTile, intl.schedule_settings_show_today_btn_pref);
+            ListTile, intl.schedule_settings_show_today_btn_pref,
+            skipOffstage: false);
 
-        expect(find.byType(Switch), findsOneWidget);
-        // Currently the await tester.tap on a switch in a tile isn't working. Workaround: 
-        (find.descendant(of: find.widgetWithText(ListTile, intl.schedule_settings_show_today_btn_pref), matching: find.byType(Switch)).evaluate().single.widget as Switch).onChanged(false);
+        expect(find.byType(Switch, skipOffstage: false), findsOneWidget);
+        // Currently the await tester.tap on a switch in a tile isn't working. Workaround:
+        (find.byType(Switch, skipOffstage: false).evaluate().single.widget
+                as Switch)
+            .onChanged(false);
+
         await tester.pumpAndSettle();
 
-        await untilCalled(settingsManager.setBool(PreferencesFlag.scheduleSettingsShowTodayBtn, any));
+        await untilCalled(settingsManager.setBool(
+            PreferencesFlag.scheduleSettingsShowTodayBtn, any));
 
         expect(
             tester.widget(find.descendant(
-                of: showTodayBtnFinder, matching: find.byType(Switch))),
+                of: showTodayBtnFinder,
+                matching: find.byType(Switch, skipOffstage: false))),
             isA<Switch>().having((source) => source.value, 'value', isFalse),
             reason:
-            "the settings says that the showTodayBtn is enabled, the UI should reflet that.");
+                "the settings says that the showTodayBtn is enabled, the UI should reflet that.");
       });
     });
   });

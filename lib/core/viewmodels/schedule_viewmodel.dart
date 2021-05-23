@@ -1,4 +1,5 @@
 // FLUTTER / DART / THIRD-PARTIES
+import 'package:enum_to_string/enum_to_string.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:stacked/stacked.dart';
 import 'package:table_calendar/table_calendar.dart';
@@ -39,7 +40,14 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
   final Map<DateTime, List<CourseActivity>> _coursesActivities = {};
 
   /// Day currently selected
-  DateTime selectedDate = DateTime.now();
+  DateTime selectedDate;
+
+  /// Day currently focused on
+  ValueNotifier<DateTime> focusedDate;
+
+  /// The currently selected CalendarFormat, A default value is set for test purposes.
+  /// This value is then change to the cache value on load.
+  CalendarFormat calendarFormat = CalendarFormat.week;
 
   /// Get current locale
   Locale get locale => _settingsManager.locale;
@@ -49,7 +57,8 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
 
   ScheduleViewModel({@required AppIntl intl, DateTime initialSelectedDate})
       : _appIntl = intl,
-        selectedDate = initialSelectedDate ?? DateTime.now();
+        selectedDate = initialSelectedDate ?? DateTime.now(),
+        focusedDate = ValueNotifier(initialSelectedDate ?? DateTime.now());
 
   /// Activities for the day currently selected
   List<dynamic> get selectedDateEvents =>
@@ -85,13 +94,12 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
     Fluttertoast.showToast(msg: _appIntl.error);
   }
 
-  Future loadSettings(CalendarController calendarController) async {
+  Future loadSettings() async {
     setBusy(true);
     settings.clear();
     settings.addAll(await _settingsManager.getScheduleSettings());
-    calendarController.setCalendarFormat(
-        settings[PreferencesFlag.scheduleSettingsCalendarFormat]
-            as CalendarFormat);
+    calendarFormat = settings[PreferencesFlag.scheduleSettingsCalendarFormat]
+        as CalendarFormat;
     setBusy(false);
   }
 
@@ -125,7 +133,23 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
     if (_coursesActivities.isEmpty) {
       coursesActivities;
     }
-    return _coursesActivities.containsKey(date) ? _coursesActivities[date] : [];
+
+    // Access the array using the same instance inside the map. This is only required
+    // since the version 3.0.0 of table_calendar with the eventLoaders argument.
+    DateTime dateInArray;
+    return _coursesActivities.keys.any((element) {
+      dateInArray = element;
+      return isSameDay(element, date);
+    })
+        ? _coursesActivities[dateInArray]
+        : [];
+  }
+
+  Future setCalendarFormat(CalendarFormat format) async {
+    calendarFormat = format;
+    settings[PreferencesFlag.scheduleSettingsCalendarFormat] = calendarFormat;
+    _settingsManager.setString(PreferencesFlag.scheduleSettingsCalendarFormat,
+        EnumToString.convertToString(calendarFormat));
   }
 
   Future<void> refresh() async {
