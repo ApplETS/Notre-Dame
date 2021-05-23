@@ -8,6 +8,7 @@ import 'package:notredame/ui/views/about_view.dart';
 import '../../helpers.dart';
 
 void main() {
+  TestWidgetsFlutterBinding.ensureInitialized();
   group('AboutView - ', () {
     setUp(() async {});
 
