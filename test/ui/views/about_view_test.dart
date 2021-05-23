@@ -35,7 +35,8 @@ void main() {
         testWidgets("default view", (WidgetTester tester) async {
           tester.binding.window.physicalSizeTestValue = const Size(800, 1410);
 
-          await tester.pumpWidget(localizedWidget(useScaffold: false, child: AboutView()));
+          await tester.pumpWidget(
+              localizedWidget(useScaffold: false, child: AboutView()));
           // await tester.tap(find.text('simple'));
           await tester.pumpAndSettle(const Duration(seconds: 1));
 
