@@ -3,19 +3,21 @@ import 'package:feature_discovery/feature_discovery.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:notredame/core/managers/course_repository.dart';
 
 // MANAGERS
 import 'package:notredame/core/managers/settings_manager.dart';
+import 'package:notredame/core/managers/course_repository.dart';
+
+// MODELS
 import 'package:notredame/core/models/course.dart';
 import 'package:notredame/core/models/session.dart';
 
 // VIEW
 import 'package:notredame/ui/views/dashboard_view.dart';
+import 'package:notredame/ui/widgets/grade_button.dart';
 
 // CONSTANTS
 import 'package:notredame/core/constants/preferences_flags.dart';
-import 'package:notredame/ui/widgets/grade_button.dart';
 
 // OTHERS
 import '../../helpers.dart';
