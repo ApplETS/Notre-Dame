@@ -8,15 +8,16 @@ import 'package:notredame/ui/views/about_view.dart';
 import '../../helpers.dart';
 
 void main() {
+  TestWidgetsFlutterBinding.ensureInitialized();
   group('AboutView - ', () {
     setUp(() async {});
 
     tearDown(() {});
 
     group('UI - ', () {
-      testWidgets('has 6 images and 2 texts and 1 row', (WidgetTester tester) async {
-        await tester.pumpWidget(localizedWidget(
-            child: AboutView()));
+      testWidgets('has 6 images and 2 texts and 1 row',
+          (WidgetTester tester) async {
+        await tester.pumpWidget(localizedWidget(child: AboutView()));
         await tester.pumpAndSettle();
 
         final image = find.byType(Image);
