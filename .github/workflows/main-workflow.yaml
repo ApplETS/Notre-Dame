@@ -122,7 +122,7 @@ jobs:
       # Get flutter dependencies.
       - run: flutter pub get
 
-      - run: flutter doctor -v
+      - run: flutter doctor --android-licenses
 
       - name: Build appbundle for Android
         run: flutter build appbundle
