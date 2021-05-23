@@ -116,8 +116,9 @@ void main() {
             settingsManager as SettingsManagerMock,
             toReturn: settings);
 
-        await tester.pumpWidget(
-            localizedWidget(child: FeatureDiscovery(child: ScheduleView(initialDay: DateTime(2020)))));
+        await tester.pumpWidget(localizedWidget(
+            child: FeatureDiscovery(
+                child: ScheduleView(initialDay: DateTime(2020)))));
         await tester.pumpAndSettle();
 
         await expectLater(find.byType(ScheduleView),
@@ -142,8 +143,9 @@ void main() {
             settingsManager as SettingsManagerMock,
             toReturn: settings);
 
-        await tester.pumpWidget(
-            localizedWidget(child: FeatureDiscovery(child: ScheduleView(initialDay: DateTime(2020)))));
+        await tester.pumpWidget(localizedWidget(
+            child: FeatureDiscovery(
+                child: ScheduleView(initialDay: DateTime(2020)))));
         await tester.pumpAndSettle();
 
         await expectLater(find.byType(ScheduleView),
@@ -166,10 +168,11 @@ void main() {
             settingsManager as SettingsManagerMock,
             toReturn: settings);
 
-        await tester.pumpWidget(localizedWidget(child: FeatureDiscovery(
-            child: MediaQuery(
-                data: const MediaQueryData(textScaleFactor: 0.5),
-                child: ScheduleView(initialDay: DateTime(2020))))));
+        await tester.pumpWidget(localizedWidget(
+            child: FeatureDiscovery(
+                child: MediaQuery(
+                    data: const MediaQueryData(textScaleFactor: 0.5),
+                    child: ScheduleView(initialDay: DateTime(2020))))));
         await tester.pumpAndSettle();
 
         await expectLater(find.byType(ScheduleView),
@@ -193,8 +196,9 @@ void main() {
             settingsManager as SettingsManagerMock,
             toReturn: settings);
 
-        await tester.pumpWidget(
-            localizedWidget(child: FeatureDiscovery(child: ScheduleView(initialDay: DateTime(2020)))));
+        await tester.pumpWidget(localizedWidget(
+            child: FeatureDiscovery(
+                child: ScheduleView(initialDay: DateTime(2020)))));
         await tester.pumpAndSettle();
 
         await expectLater(find.byType(ScheduleView),
@@ -218,18 +222,30 @@ void main() {
             settingsManager as SettingsManagerMock,
             toReturn: settings);
 
+        final testingDate = DateTime(2020);
+
         await tester.pumpWidget(localizedWidget(
             child: FeatureDiscovery(
-              child: MediaQuery(
-                data: const MediaQueryData(textScaleFactor: 0.5),
-                child: ScheduleView(initialDay: DateTime(2020))))));
+                child: MediaQuery(
+                    data: const MediaQueryData(textScaleFactor: 0.5),
+                    child: ScheduleView(initialDay: testingDate)))));
         await tester.pumpAndSettle();
 
-        // Tap on the day before selected day
+        expect(find.byType(TableCalendar, skipOffstage: false), findsOneWidget);
+        expect(
+            find.descendant(
+                of: find.byType(TableCalendar, skipOffstage: false),
+                matching: find.text(
+                    "${testingDate.add(const Duration(days: 1)).day}",
+                    skipOffstage: false)),
+            findsOneWidget);
+
+        // Tap on the day after selected day
         await tester.tap(find.descendant(
-            of: find.byType(TableCalendar),
+            of: find.byType(TableCalendar, skipOffstage: false),
             matching: find.text(
-                "${DateTime(2020).subtract(const Duration(days: 1)).day}")));
+                "${testingDate.add(const Duration(days: 1)).day}",
+                skipOffstage: false)));
 
         // Reload the view
         await tester.pump();
@@ -306,7 +322,8 @@ void main() {
             settingsManager as SettingsManagerMock,
             toReturn: settings);
 
-        await tester.pumpWidget(localizedWidget(child: FeatureDiscovery(child: const ScheduleView())));
+        await tester.pumpWidget(localizedWidget(
+            child: FeatureDiscovery(child: const ScheduleView())));
         await tester.pumpAndSettle();
 
         expect(find.byType(ScheduleSettings), findsNothing,

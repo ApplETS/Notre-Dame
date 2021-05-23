@@ -38,14 +38,11 @@ class _ScheduleViewState extends State<ScheduleView>
 
   static const Color _defaultColor = Color(0xff76859B);
 
-  CalendarController _calendarController;
-
   AnimationController _animationController;
 
   @override
   void initState() {
     super.initState();
-    _calendarController = CalendarController();
     _animationController = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 400),
@@ -57,7 +54,6 @@ class _ScheduleViewState extends State<ScheduleView>
   @override
   void dispose() {
     _animationController.dispose();
-    _calendarController.dispose();
     super.dispose();
   }
 
@@ -69,7 +65,7 @@ class _ScheduleViewState extends State<ScheduleView>
               initialSelectedDate: widget.initialDay),
           onModelReady: (model) {
             if (model.settings.isEmpty) {
-              model.loadSettings(_calendarController);
+              model.loadSettings();
             }
           },
           builder: (context, model, child) => BaseScaffold(
@@ -110,58 +106,87 @@ class _ScheduleViewState extends State<ScheduleView>
               ));
 
   /// Build the square with the number of [events] for the [date]
-  Widget _buildEventsMarker(DateTime date, List events) {
-    return Positioned(
-      right: 1,
-      bottom: 1,
-      child: AnimatedContainer(
-        duration: const Duration(milliseconds: 200),
-        decoration: BoxDecoration(
-          color: _calendarController.isSelected(date)
-              ? _selectedColor
-              : _defaultColor,
-        ),
-        width: 16.0,
-        height: 16.0,
-        child: Center(
-          child: Text(
-            '${events.length}',
-            style: const TextStyle().copyWith(
-              color: Colors.white,
-              fontSize: 12.0,
+  Widget _buildEventsMarker(
+      ScheduleViewModel model, DateTime date, List events) {
+    if (events.isNotEmpty) {
+      return Positioned(
+        right: 1,
+        bottom: 1,
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 200),
+          decoration: BoxDecoration(
+            color: isSameDay(date, model.selectedDate)
+                ? _selectedColor
+                : _defaultColor,
+          ),
+          width: 16.0,
+          height: 16.0,
+          child: Center(
+            child: Text(
+              '${events.length}',
+              style: const TextStyle().copyWith(
+                color: Colors.white,
+                fontSize: 12.0,
+              ),
             ),
           ),
         ),
-      ),
-    );
+      );
+    }
+    return null;
   }
 
   /// Build the calendar
-  Widget _buildTableCalendar(ScheduleViewModel model) => TableCalendar(
-        //TODO uncomment when https://github.com/aleksanderwozniak/table_calendar/issues/164 is close
-        // startingDayOfWeek: model.settings[PreferencesFlag.scheduleSettingsStartWeekday] as StartingDayOfWeek,
-        startingDayOfWeek: StartingDayOfWeek.monday,
-        locale: model.locale.toLanguageTag(),
-        initialSelectedDay: widget.initialDay ?? DateTime.now(),
-        weekendDays: const [],
-        headerStyle: const HeaderStyle(
-            centerHeaderTitle: true, formatButtonVisible: false),
-        events: model.coursesActivities,
-        onDaySelected: (date, events, holidays) => setState(() {
-          model.selectedDate = date;
-        }),
-        builders: CalendarBuilders(
-            todayDayBuilder: (context, date, _) =>
-                _buildSelectedDate(date, _defaultColor),
-            selectedDayBuilder: (context, date, _) => FadeTransition(
-                  opacity:
-                      Tween(begin: 0.0, end: 1.0).animate(_animationController),
-                  child: _buildSelectedDate(date, _selectedColor),
-                ),
-            markersBuilder: (context, date, events, holidays) =>
-                [_buildEventsMarker(date, events)]),
-        calendarController: _calendarController,
-      );
+  Widget _buildTableCalendar(ScheduleViewModel model) {
+    return ValueListenableBuilder<DateTime>(
+        valueListenable: model.focusedDate,
+        builder: (context, value, _) {
+          return TableCalendar(
+            startingDayOfWeek:
+                model.settings[PreferencesFlag.scheduleSettingsStartWeekday]
+                    as StartingDayOfWeek,
+            locale: model.locale.toLanguageTag(),
+            selectedDayPredicate: (day) {
+              return isSameDay(model.selectedDate, day);
+            },
+            weekendDays: const [],
+            headerStyle: const HeaderStyle(
+                titleCentered: true, formatButtonVisible: false),
+            eventLoader: model.coursesActivitiesFor,
+            onDaySelected: (selectedDay, focusedDay) {
+              setState(() {
+                model.selectedDate = selectedDay;
+                model.focusedDate.value = focusedDay;
+              });
+            },
+            calendarFormat: model.calendarFormat,
+            onFormatChanged: (format) {
+              setState(() {
+                model.setCalendarFormat(format);
+              });
+            },
+            focusedDay: model.focusedDate.value,
+            onPageChanged: (focusedDay) {
+              model.focusedDate.value = focusedDay;
+            },
+            calendarBuilders: CalendarBuilders(
+                todayBuilder: (context, date, _) =>
+                    _buildSelectedDate(date, _defaultColor),
+                selectedBuilder: (context, date, _) => FadeTransition(
+                      opacity: Tween(begin: 0.0, end: 1.0)
+                          .animate(_animationController),
+                      child: _buildSelectedDate(date, _selectedColor),
+                    ),
+                markerBuilder: (context, date, events) =>
+                    _buildEventsMarker(model, date, events)),
+            // Those are now required by the package table_calendar ^3.0.0. In the doc,
+            // it is suggest to set them to values that won't affect user experience.
+            // Outside the range, the date are set to disable so no event can be loaded.
+            firstDay: DateTime.utc(2010, 12, 31),
+            lastDay: DateTime.utc(2100, 12, 31),
+          );
+        });
+  }
 
   /// Build the visual for the selected [date]. The [color] parameter set the color for the tile.
   Widget _buildSelectedDate(DateTime date, Color color) => Container(
@@ -196,8 +221,8 @@ class _ScheduleViewState extends State<ScheduleView>
           IconButton(
               icon: const Icon(Icons.today),
               onPressed: () => setState(() {
-                    _calendarController.setSelectedDay(DateTime.now());
                     model.selectedDate = DateTime.now();
+                    model.focusedDate.value = DateTime.now();
                   })),
         IconButton(
           icon: const Icon(Icons.refresh),
@@ -216,7 +241,7 @@ class _ScheduleViewState extends State<ScheduleView>
                           topLeft: Radius.circular(10),
                           topRight: Radius.circular(10))),
                   builder: (context) => const ScheduleSettings());
-              model.loadSettings(_calendarController);
+              model.loadSettings();
             })
       ];
 }
