@@ -20,6 +20,9 @@ SettingsManager settingsManager;
 ScheduleSettingsViewModel viewModel;
 
 void main() {
+  // Needed to support FlutterToast.
+  TestWidgetsFlutterBinding.ensureInitialized();
+  
   final Map<PreferencesFlag, dynamic> settings = {
     PreferencesFlag.scheduleSettingsCalendarFormat: CalendarFormat.week,
     PreferencesFlag.scheduleSettingsStartWeekday: StartingDayOfWeek.monday,
@@ -29,7 +32,7 @@ void main() {
   group("ScheduleSettingsViewModel - ", () {
     setUp(() {
       settingsManager = setupSettingsManagerMock();
-
+      setupFlutterToastMock();
       viewModel = ScheduleSettingsViewModel();
     });
 
