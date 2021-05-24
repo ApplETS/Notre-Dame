@@ -41,7 +41,7 @@ class _DashboardViewState extends State<DashboardView>
 
     _animationController.forward();
 
-    SchedulerBinding.instance.addPostFrameCallback((Duration duration) {  
+    SchedulerBinding.instance.addPostFrameCallback((Duration duration) {
       DashboardViewModel(intl: AppIntl.of(context)).startDiscovery(context);
     });
   }
@@ -76,7 +76,7 @@ class _DashboardViewState extends State<DashboardView>
                   : ReorderableListView(
                       onReorder: (oldIndex, newIndex) =>
                           onReorder(model, oldIndex, newIndex),
-                      padding: const EdgeInsets.all(8),
+                      padding: const EdgeInsets.fromLTRB(8, 4, 8, 8),
                       children: _buildCards(model),
                     ));
         });
@@ -99,12 +99,7 @@ class _DashboardViewState extends State<DashboardView>
               child: Text(element.toString(), key: UniqueKey())));
           break;
         case PreferencesFlag.progressBarCard:
-          cards.add(Dismissible(
-              key: UniqueKey(),
-              onDismissed: (DismissDirection direction) {
-                dismissCard(model, element);
-              },
-              child: Text(element.toString())));
+          cards.add(_buildProgressBarCard(model, element));
           break;
         default:
       }
@@ -164,6 +159,47 @@ class _DashboardViewState extends State<DashboardView>
               ),
             ],
           ),
+        ]),
+      );
+
+  Widget _buildProgressBarCard(
+          DashboardViewModel model, PreferencesFlag flag) =>
+      DismissibleCard(
+        isBusy: model.busy(model.progress),
+        key: UniqueKey(),
+        onDismissed: (DismissDirection direction) {
+          dismissCard(model, flag);
+        },
+        child: Column(mainAxisSize: MainAxisSize.min, children: [
+          Align(
+              alignment: Alignment.centerLeft,
+              child: Container(
+                padding: const EdgeInsets.fromLTRB(17, 15, 0, 0),
+                child: Text(AppIntl.of(context).progress_bar_title,
+                    style: Theme.of(context).textTheme.headline6),
+              )),
+          Stack(children: [
+            Container(
+              padding: const EdgeInsets.fromLTRB(17, 10, 15, 20),
+              child: ClipRRect(
+                borderRadius: const BorderRadius.all(Radius.circular(10)),
+                child: LinearProgressIndicator(
+                  value: model.progress,
+                  minHeight: 30,
+                  valueColor: const AlwaysStoppedAnimation<Color>(
+                      AppTheme.gradeGoodMax),
+                  backgroundColor: AppTheme.etsDarkGrey,
+                ),
+              ),
+            ),
+            Container(
+              padding: const EdgeInsets.only(top: 16),
+              child: Center(
+                child: Text(AppIntl.of(context).progress_bar_message(
+                    model.sessionDays[0], model.sessionDays[1])),
+              ),
+            ),
+          ]),
         ]),
       );
 

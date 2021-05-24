@@ -210,5 +210,14 @@
   },
   "go_to_dashboard": "Retour à l'accueil",
 
-  "no_connectivity": "Aucune connexion internet"
+  "no_connectivity": "Aucune connexion internet",
+
+  "progress_bar_title": "Progression de la session",
+  "progress_bar_message": "{elapsedDays} jours écoulés / {totalDays} jours",
+  "@progress_bar_message": {
+    "placeholders": {
+      "elapsedDays": {},
+      "totalDays": {}
+    }
+  }
 }

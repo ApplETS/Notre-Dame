@@ -212,5 +212,14 @@
   },
   "go_to_dashboard": "Go to Dashboard",
 
-  "no_connectivity": "No internet connection"
+  "no_connectivity": "No internet connection",
+
+  "progress_bar_title": "Session progress",
+  "progress_bar_message": "{elapsedDays} days elapsed / {totalDays} days",
+  "@progress_bar_message": {
+    "placeholders": {
+      "elapsedDays": {},
+      "totalDays": {}
+    }
+  }
 }
