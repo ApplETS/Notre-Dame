@@ -52,7 +52,7 @@ jobs:
           fetch-depth: 0 # Needed to push to refs
       - uses: actions/setup-java@v2
         with:
-          distrubution: 'adopt'
+          distribution: 'adopt'
           java-version: '11'
       - uses: subosito/flutter-action@v1.5.0
       - run: flutter doctor
