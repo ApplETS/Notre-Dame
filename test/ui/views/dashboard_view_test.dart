@@ -67,7 +67,7 @@ void main() {
   const int cardNumber = 2;
 
   // Cards
-  final Map<PreferencesFlag, int> dashboard = {
+  Map<PreferencesFlag, int> dashboard = {
     PreferencesFlag.aboutUsCard: 0,
     PreferencesFlag.scheduleCard: 1,
     PreferencesFlag.progressBarCard: 2
@@ -407,7 +407,7 @@ void main() {
     });
 
     group("golden - ", () {
-      testWidgets("default view", (WidgetTester tester) async {
+      testWidgets("Applets card", (WidgetTester tester) async {
         tester.binding.window.physicalSizeTestValue = const Size(800, 1410);
 
         CourseRepositoryMock.stubCoursesActivities(
@@ -419,6 +419,10 @@ void main() {
             courseRepository as CourseRepositoryMock,
             fromCacheOnly: false);
 
+        dashboard = {
+          PreferencesFlag.aboutUsCard: 0,
+        };
+
         SettingsManagerMock.stubGetDashboard(
             settingsManager as SettingsManagerMock,
             toReturn: dashboard);
@@ -428,7 +432,35 @@ void main() {
         await tester.pumpAndSettle();
 
         await expectLater(find.byType(DashboardView),
-            matchesGoldenFile(goldenFilePath("dashboardView_1")));
+            matchesGoldenFile(goldenFilePath("dashboardView_appletsCard_1")));
+      });
+
+      testWidgets("Schedule card", (WidgetTester tester) async {
+        tester.binding.window.physicalSizeTestValue = const Size(800, 1410);
+
+        CourseRepositoryMock.stubCoursesActivities(
+            courseRepository as CourseRepositoryMock);
+        CourseRepositoryMock.stubGetCoursesActivities(
+            courseRepository as CourseRepositoryMock,
+            fromCacheOnly: true);
+        CourseRepositoryMock.stubGetCoursesActivities(
+            courseRepository as CourseRepositoryMock,
+            fromCacheOnly: false);
+
+        dashboard = {
+          PreferencesFlag.scheduleCard: 0,
+        };
+
+        SettingsManagerMock.stubGetDashboard(
+            settingsManager as SettingsManagerMock,
+            toReturn: dashboard);
+
+        await tester.pumpWidget(localizedWidget(
+            child: FeatureDiscovery(child: const DashboardView())));
+        await tester.pumpAndSettle();
+
+        await expectLater(find.byType(DashboardView),
+            matchesGoldenFile(goldenFilePath("dashboardView_scheduleCard_1")));
       });
     });
   });
