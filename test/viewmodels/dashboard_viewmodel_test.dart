@@ -4,7 +4,6 @@ import 'package:mockito/mockito.dart';
 
 // MANAGERS
 import 'package:notredame/core/managers/settings_manager.dart';
-import 'package:notredame/core/services/preferences_service.dart';
 import 'package:notredame/core/managers/course_repository.dart';
 
 // VIEW-MODEL
@@ -13,6 +12,9 @@ import 'package:notredame/core/viewmodels/dashboard_viewmodel.dart';
 // MODELS / CONSTANTS
 import 'package:notredame/core/models/course_activity.dart';
 import 'package:notredame/core/constants/preferences_flags.dart';
+
+// SERVICE
+import 'package:notredame/core/services/preferences_service.dart';
 
 // OTHERS
 import '../helpers.dart';
