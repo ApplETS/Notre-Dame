@@ -195,8 +195,11 @@ class _DashboardViewState extends State<DashboardView>
             Container(
               padding: const EdgeInsets.only(top: 16),
               child: Center(
-                child: Text(AppIntl.of(context).progress_bar_message(
-                    model.sessionDays[0], model.sessionDays[1])),
+                child: Text(
+                  AppIntl.of(context).progress_bar_message(
+                      model.sessionDays[0], model.sessionDays[1]),
+                  style: const TextStyle(color: Colors.white),
+                ),
               ),
             ),
           ]),
