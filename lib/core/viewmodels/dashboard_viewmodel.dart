@@ -33,6 +33,9 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
   /// Localization class of the application.
   final AppIntl _appIntl;
 
+  /// Day currently selected
+  DateTime todayDate = DateTime.now();
+
   /// Cards to display on dashboard
   List<PreferencesFlag> _cardsToDisplay;
 
@@ -155,11 +158,8 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
     }
 
     // Determine current sessions
-    final DateTime now = DateTime.now();
-    final currentSession = _courseRepository.sessions
-        .where((session) =>
-    session.endDate.isAfter(now) && session.startDate.isBefore(now))
-        .first;
+
+    final currentSession = _courseRepository.activeSessions.first;
 
     return _courseRepository.getCourses(fromCacheOnly: true).then(
             (coursesCached) {

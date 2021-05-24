@@ -16,6 +16,9 @@ import 'package:notredame/core/models/session.dart';
 import 'package:notredame/ui/views/dashboard_view.dart';
 import 'package:notredame/ui/widgets/grade_button.dart';
 
+// VIEWMODEL
+import 'package:notredame/core/viewmodels/dashboard_viewmodel.dart';
+
 // CONSTANTS
 import 'package:notredame/core/constants/preferences_flags.dart';
 
@@ -30,6 +33,7 @@ void main() {
   SettingsManager settingsManager;
   AppIntl intl;
   CourseRepository courseRepository;
+  DashboardViewModel viewModel;
 
   // Cards
   final Map<PreferencesFlag, int> dashboard = {
@@ -45,8 +49,8 @@ void main() {
   final Session session = Session(
       shortName: "É2020",
       name: "Ete 2020",
-      startDate: DateTime.now().subtract(const Duration(days: 1)),
-      endDate: DateTime.now().add(const Duration(days: 1)),
+      startDate: DateTime(2020).subtract(const Duration(days: 1)),
+      endDate: DateTime(2020).add(const Duration(days: 1)),
       endDateCourses: DateTime(2022, 1, 10, 1, 1),
       startDateRegistration: DateTime(2017, 1, 9, 1, 1),
       deadlineRegistration: DateTime(2017, 1, 10, 1, 1),
@@ -114,6 +118,12 @@ void main() {
       CourseRepositoryMock.stubSessions(
           courseRepository as CourseRepositoryMock,
           toReturn: [session]);
+      CourseRepositoryMock.stubGetSessions(
+          courseRepository as CourseRepositoryMock,
+          toReturn: [session]);
+      CourseRepositoryMock.stubActiveSessions(
+          courseRepository as CourseRepositoryMock,
+          toReturn: [session]);
       CourseRepositoryMock.stubCourses(
           courseRepository as CourseRepositoryMock);
       CourseRepositoryMock.stubGetCourses(
@@ -122,6 +132,12 @@ void main() {
       CourseRepositoryMock.stubGetCourses(
           courseRepository as CourseRepositoryMock,
           fromCacheOnly: false);
+
+      viewModel = DashboardViewModel(intl: intl);
+
+      viewModel.todayDate = DateTime(2020);
+
+
     });
 
     tearDown(() {});

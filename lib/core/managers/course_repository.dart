@@ -72,7 +72,6 @@ class CourseRepository {
   List<Session> get sessions => _sessions;
 
   /// Return the active sessions which mean the sessions that the endDate isn't already passed.
-  @visibleForTesting
   List<Session> get activeSessions {
     final DateTime now = DateTime.now();
 
