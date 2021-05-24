@@ -6,7 +6,6 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:notredame/ui/views/about_view.dart';
 
 import '../../helpers.dart';
-import '../../test_asset_bundle.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
@@ -35,13 +34,12 @@ void main() {
         testWidgets("default view", (WidgetTester tester) async {
           tester.binding.window.physicalSizeTestValue = const Size(800, 1410);
 
-
           await tester.runAsync(() async {
             await tester.pumpWidget(
                 localizedWidget(useScaffold: false, child: AboutView()));
             final Element element = tester.element(find.byType(Hero));
-            Hero widget = element.widget as Hero;
-            Image image = widget.child as Image;
+            final Hero widget = element.widget as Hero;
+            final Image image = widget.child as Image;
             await precacheImage(image.image, element);
             await tester.pumpAndSettle();
           });

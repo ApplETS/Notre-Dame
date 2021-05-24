@@ -135,8 +135,8 @@ void main() {
             await tester.pumpWidget(
                 localizedWidget(child: FeatureDiscovery(child: MoreView())));
             final Element element = tester.element(find.byType(Hero));
-            Hero widget = element.widget as Hero;
-            Image image = widget.child as Image;
+            final Hero widget = element.widget as Hero;
+            final Image image = widget.child as Image;
             await precacheImage(image.image, element);
             await tester.pumpAndSettle();
           });
