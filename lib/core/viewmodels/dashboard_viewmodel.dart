@@ -57,25 +57,33 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
 
   /// Return session progress based on today's [date]
   double getSessionProgress() {
-    return todayDate
-            .difference(_courseRepository.activeSessions.first.startDate)
-            .inDays /
-        _courseRepository.activeSessions.first.endDate
-            .difference(_courseRepository.activeSessions.first.startDate)
-            .inDays;
+    if (_courseRepository.activeSessions.isEmpty) {
+      return 0.0;
+    } else {
+      return todayDate
+              .difference(_courseRepository.activeSessions.first.startDate)
+              .inDays /
+          _courseRepository.activeSessions.first.endDate
+              .difference(_courseRepository.activeSessions.first.startDate)
+              .inDays;
+    }
   }
 
   /// Returns a list containing the number of elapsed days in the active session
   /// and the total number of days in the session
   List<int> getSessionDays() {
-    return [
-      todayDate
-          .difference(_courseRepository.activeSessions.first.startDate)
-          .inDays,
-      _courseRepository.activeSessions.first.endDate
-          .difference(_courseRepository.activeSessions.first.startDate)
-          .inDays
-    ];
+    if (_courseRepository.activeSessions.isEmpty) {
+      return [0, 0];
+    } else {
+      return [
+        todayDate
+            .difference(_courseRepository.activeSessions.first.startDate)
+            .inDays,
+        _courseRepository.activeSessions.first.endDate
+            .difference(_courseRepository.activeSessions.first.startDate)
+            .inDays
+      ];
+    }
   }
 
   DashboardViewModel({@required AppIntl intl}) : _appIntl = intl;
@@ -148,14 +156,14 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
         if (value >= 0) {
           _cardsToDisplay.insert(value, key);
           if (key == PreferencesFlag.progressBarCard) {
-            futureToRunProgress();
+            futureToRunSessionProgressBar();
           }
         }
       });
     }
   }
 
-  Future<List<Session>> futureToRunProgress() async {
+  Future<List<Session>> futureToRunSessionProgressBar() async {
     setBusyForObject(_progress, true);
     return _courseRepository
         .getSessions()
