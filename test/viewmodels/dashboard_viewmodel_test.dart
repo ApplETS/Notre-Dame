@@ -133,6 +133,30 @@ void main() {
       });
     });
 
+    group("futureToRunSessionProgressBar - ", () {
+      test("There is an active session", () async {
+        CourseRepositoryMock.stubActiveSessions(
+            courseRepository as CourseRepositoryMock,
+            toReturn: [session]);
+        SettingsManagerMock.stubGetDashboard(
+            settingsManager as SettingsManagerMock,
+            toReturn: dashboard);
+        viewModel.todayDate = DateTime(2020);
+        await viewModel.futureToRunSessionProgressBar();
+        expect(viewModel.progress, 0.5);
+        expect(viewModel.sessionDays, [1, 2]);
+      });
+
+      test("Active session is null", () async {
+        CourseRepositoryMock.stubActiveSessions(
+            courseRepository as CourseRepositoryMock);
+
+        await viewModel.futureToRunSessionProgressBar();
+        expect(viewModel.progress, 0.0);
+        expect(viewModel.sessionDays, [0, 0]);
+      });
+    });
+
     group("interact with cards - ", () {
       test("can hide a card and reset cards to default layout", () async {
         SettingsManagerMock.stubSetInt(settingsManager as SettingsManagerMock,
