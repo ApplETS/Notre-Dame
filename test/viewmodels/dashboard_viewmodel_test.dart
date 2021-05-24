@@ -112,7 +112,12 @@ void main() {
         CourseRepositoryMock.stubSessions(
             courseRepository as CourseRepositoryMock,
             toReturn: session);
-
+        CourseRepositoryMock.stubGetSessions(
+            courseRepository as CourseRepositoryMock,
+            toReturn: session);
+        CourseRepositoryMock.stubActiveSessions(
+            courseRepository as CourseRepositoryMock,
+            toReturn: session);
         CourseRepositoryMock.stubGetCourses(
             courseRepository as CourseRepositoryMock,
             toReturn: courses,
@@ -131,7 +136,7 @@ void main() {
 
         verifyInOrder([
           courseRepository.sessions,
-          courseRepository.sessions,
+          courseRepository.activeSessions,
           courseRepository.getCourses(fromCacheOnly: true),
           courseRepository.getCourses(),
         ]);
@@ -141,6 +146,12 @@ void main() {
 
       test('Signets throw an error while trying to get courses', () async {
         CourseRepositoryMock.stubSessions(
+            courseRepository as CourseRepositoryMock,
+            toReturn: session);
+        CourseRepositoryMock.stubGetSessions(
+            courseRepository as CourseRepositoryMock,
+            toReturn: session);
+        CourseRepositoryMock.stubActiveSessions(
             courseRepository as CourseRepositoryMock,
             toReturn: session);
 
@@ -168,7 +179,7 @@ void main() {
 
         verifyInOrder([
           courseRepository.sessions,
-          courseRepository.sessions,
+          courseRepository.activeSessions,
           courseRepository.getCourses(fromCacheOnly: true),
           courseRepository.getCourses(),
         ]);
