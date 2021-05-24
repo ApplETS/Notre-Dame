@@ -131,6 +131,16 @@ void main() {
         testWidgets("default view", (WidgetTester tester) async {
           tester.binding.window.physicalSizeTestValue = const Size(800, 1410);
 
+          await tester.runAsync(() async {
+            await tester.pumpWidget(
+                localizedWidget(child: FeatureDiscovery(child: MoreView())));
+            final Element element = tester.element(find.byType(Hero));
+            Hero widget = element.widget as Hero;
+            Image image = widget.child as Image;
+            await precacheImage(image.image, element);
+            await tester.pumpAndSettle();
+          });
+
           await tester.pumpWidget(
               localizedWidget(child: FeatureDiscovery(child: MoreView())));
           await tester.pumpAndSettle();
