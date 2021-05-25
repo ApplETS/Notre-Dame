@@ -32,6 +32,39 @@ void main() {
   DashboardViewModel viewModel;
   CourseRepository courseRepository;
 
+  final gen101 = CourseActivity(
+      courseGroup: "GEN101",
+      courseName: "Generic course",
+      activityName: "TD",
+      activityDescription: "Activity description",
+      activityLocation: "location",
+      startDateTime: DateTime(
+          DateTime.now().year, DateTime.now().month, DateTime.now().day, 9),
+      endDateTime: DateTime(
+          DateTime.now().year, DateTime.now().month, DateTime.now().day, 12));
+  final gen102 = CourseActivity(
+      courseGroup: "GEN102",
+      courseName: "Generic course",
+      activityName: "TD",
+      activityDescription: "Activity description",
+      activityLocation: "location",
+      startDateTime: DateTime(
+          DateTime.now().year, DateTime.now().month, DateTime.now().day, 13),
+      endDateTime: DateTime(
+          DateTime.now().year, DateTime.now().month, DateTime.now().day, 16));
+  final gen103 = CourseActivity(
+      courseGroup: "GEN103",
+      courseName: "Generic course",
+      activityName: "TD",
+      activityDescription: "Activity description",
+      activityLocation: "location",
+      startDateTime: DateTime(
+          DateTime.now().year, DateTime.now().month, DateTime.now().day, 18),
+      endDateTime: DateTime(
+          DateTime.now().year, DateTime.now().month, DateTime.now().day, 21));
+
+  final List<CourseActivity> activities = [gen101, gen102, gen103];
+
   // Needed to support FlutterToast.
   TestWidgetsFlutterBinding.ensureInitialized();
 
@@ -77,6 +110,7 @@ void main() {
       // Setting up mocks
       settingsManager = setupSettingsManagerMock();
       preferenceService = setupPreferencesServiceMock();
+      courseRepository = setupCourseRepositoryMock();
 
       setupFlutterToastMock();
       courseRepository = setupCourseRepositoryMock();
@@ -97,6 +131,11 @@ void main() {
 
     group("futureToRun - ", () {
       test("The initial cards are correctly loaded", () async {
+        CourseRepositoryMock.stubGetCoursesActivities(
+            courseRepository as CourseRepositoryMock);
+        CourseRepositoryMock.stubCoursesActivities(
+            courseRepository as CourseRepositoryMock);
+
         SettingsManagerMock.stubGetDashboard(
             settingsManager as SettingsManagerMock,
             toReturn: dashboard);
@@ -113,8 +152,40 @@ void main() {
         verifyNoMoreInteractions(settingsManager);
       });
 
+      test("build the list todays activities sorted by time", () async {
+        CourseRepositoryMock.stubGetCoursesActivities(
+            courseRepository as CourseRepositoryMock);
+        CourseRepositoryMock.stubCoursesActivities(
+            courseRepository as CourseRepositoryMock,
+            toReturn: activities);
+
+        await viewModel.futureToRun();
+        await viewModel.futureToRunSchedule();
+
+        await untilCalled(courseRepository.getCoursesActivities());
+
+        expect(viewModel.todayDateEvents, activities);
+
+        verify(courseRepository.getCoursesActivities()).called(1);
+
+        verify(courseRepository.getCoursesActivities(fromCacheOnly: true))
+            .called(1);
+
+        verify(courseRepository.coursesActivities).called(1);
+
+        verify(settingsManager.getDashboard()).called(1);
+
+        verifyNoMoreInteractions(courseRepository);
+        verifyNoMoreInteractions(settingsManager);
+      });
+
       test("An exception is thrown during the preferenceService call",
           () async {
+        CourseRepositoryMock.stubGetCoursesActivities(
+            courseRepository as CourseRepositoryMock);
+        CourseRepositoryMock.stubCoursesActivities(
+            courseRepository as CourseRepositoryMock);
+
         PreferencesServiceMock.stubException(
             preferenceService as PreferencesServiceMock,
             PreferencesFlag.aboutUsCard);
@@ -213,6 +284,11 @@ void main() {
       });
 
       test("can set new order for cards", () async {
+        CourseRepositoryMock.stubGetCoursesActivities(
+            courseRepository as CourseRepositoryMock);
+        CourseRepositoryMock.stubCoursesActivities(
+            courseRepository as CourseRepositoryMock);
+
         SettingsManagerMock.stubGetDashboard(
             settingsManager as SettingsManagerMock,
             toReturn: dashboard);

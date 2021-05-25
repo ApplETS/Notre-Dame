@@ -49,6 +49,14 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
 
   List<int> get sessionDays => _sessionDays;
 
+  /// Activities for today
+  final List<CourseActivity> _todayDateEvents = [];
+
+  /// Get the list of activities for today
+  List<CourseActivity> get todayDateEvents {
+    return _todayDateEvents;
+  }
+
   /// Get the status of all displayable cards
   Map<PreferencesFlag, int> get cards => _cards;
 
@@ -155,6 +163,9 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
       orderedCards.forEach((key, value) {
         if (value >= 0) {
           _cardsToDisplay.insert(value, key);
+          if (key == PreferencesFlag.scheduleCard) {
+            futureToRunSchedule();
+          }
           if (key == PreferencesFlag.progressBarCard) {
             futureToRunSessionProgressBar();
           }
@@ -176,6 +187,39 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
     });
   }
 
+  Future<List<CourseActivity>> futureToRunSchedule() async {
+    return _courseRepository
+        .getCoursesActivities(fromCacheOnly: true)
+        .then((value) {
+      setBusyForObject(_todayDateEvents, true);
+      _todayDateEvents.clear();
+
+      _courseRepository
+          .getCoursesActivities()
+          // ignore: return_type_invalid_for_catch_error
+          .catchError(onError)
+          .whenComplete(() {
+        if (_todayDateEvents.isEmpty) {
+          // Build the list
+          for (final CourseActivity course
+              in _courseRepository.coursesActivities) {
+            final DateTime dateOnly = course.startDateTime;
+
+            if (isSameDay(todayDate, dateOnly)) {
+              _todayDateEvents.add(course);
+            }
+          }
+        }
+        _todayDateEvents
+            .sort((a, b) => a.startDateTime.compareTo(b.startDateTime));
+
+        setBusyForObject(_todayDateEvents, false);
+      });
+
+      return value;
+    });
+  }
+
   /// Update cards order and display status in preferences
   void updatePreferences() {
     for (final MapEntry<PreferencesFlag, int> element in _cards.entries) {
@@ -190,6 +234,9 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
     }
   }
 
+  /// Returns true if dates [a] and [b] are on the same day
+  bool isSameDay(DateTime a, DateTime b) =>
+      a.year == b.year && a.month == b.month && a.day == b.day;
   Future<void> startDiscovery(BuildContext context) async {
     if (await _settingsManager.getString(PreferencesFlag.discovery) == null) {
       final List<String> ids =
