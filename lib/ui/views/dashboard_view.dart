@@ -73,11 +73,15 @@ class _DashboardViewState extends State<DashboardView>
                   ]),
               body: model.cards == null
                   ? buildLoading()
-                  : ReorderableListView(
-                      onReorder: (oldIndex, newIndex) =>
-                          onReorder(model, oldIndex, newIndex),
-                      padding: const EdgeInsets.fromLTRB(8, 4, 8, 8),
-                      children: _buildCards(model),
+                  : Theme(
+                      data: Theme.of(context)
+                          .copyWith(canvasColor: Colors.transparent),
+                      child: ReorderableListView(
+                        onReorder: (oldIndex, newIndex) =>
+                            onReorder(model, oldIndex, newIndex),
+                        padding: const EdgeInsets.fromLTRB(8, 4, 8, 8),
+                        children: _buildCards(model),
+                      ),
                     ));
         });
   }
