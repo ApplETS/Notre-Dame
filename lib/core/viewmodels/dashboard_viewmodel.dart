@@ -15,6 +15,7 @@ import 'package:notredame/core/managers/course_repository.dart';
 
 // MODEL
 import 'package:notredame/core/models/session.dart';
+import 'package:notredame/core/models/course_activity.dart';
 
 // UTILS
 import 'package:notredame/ui/utils/discovery_components.dart';

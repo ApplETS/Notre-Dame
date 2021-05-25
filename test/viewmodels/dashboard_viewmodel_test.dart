@@ -11,6 +11,7 @@ import 'package:notredame/core/managers/settings_manager.dart';
 
 // MODEL
 import 'package:notredame/core/models/session.dart';
+import 'package:notredame/core/models/course_activity.dart';
 
 // SERVICE
 import 'package:notredame/core/services/preferences_service.dart';
@@ -122,6 +123,14 @@ void main() {
       CourseRepositoryMock.stubActiveSessions(
           courseRepository as CourseRepositoryMock,
           toReturn: [session]);
+      CourseRepositoryMock.stubCoursesActivities(
+          courseRepository as CourseRepositoryMock);
+      CourseRepositoryMock.stubGetCoursesActivities(
+          courseRepository as CourseRepositoryMock,
+          fromCacheOnly: true);
+      CourseRepositoryMock.stubGetCoursesActivities(
+          courseRepository as CourseRepositoryMock,
+          fromCacheOnly: false);
     });
 
     tearDown(() {

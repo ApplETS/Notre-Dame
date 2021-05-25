@@ -7,7 +7,6 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 // MANAGERS
 import 'package:notredame/core/managers/course_repository.dart';
 import 'package:notredame/core/managers/settings_manager.dart';
-import 'package:notredame/core/managers/course_repository.dart';
 
 // MODELS
 import 'package:notredame/core/models/session.dart';
@@ -68,14 +67,14 @@ void main() {
 
   final List<CourseActivity> activities = [gen101, gen102, gen103];
 
-  const int cardNumber = 2;
-
   // Cards
   Map<PreferencesFlag, int> dashboard = {
     PreferencesFlag.aboutUsCard: 0,
     PreferencesFlag.scheduleCard: 1,
     PreferencesFlag.progressBarCard: 2
   };
+
+  final numberOfCards = dashboard.entries.length;
 
   // Session
   final Session session = Session(
@@ -92,8 +91,6 @@ void main() {
       startDateCancellationWithoutRefundNewStudent: DateTime(2017, 1, 12, 1, 1),
       deadlineCancellationWithoutRefundNewStudent: DateTime(2017, 1, 12, 1, 1),
       deadlineCancellationASEQ: DateTime(2017, 1, 11, 1, 1));
-
-  final numberOfCards = dashboard.entries.length;
 
   Future<void> longPressDrag(
       WidgetTester tester, Offset start, Offset end) async {
@@ -118,6 +115,14 @@ void main() {
       CourseRepositoryMock.stubActiveSessions(
           courseRepository as CourseRepositoryMock,
           toReturn: [session]);
+      CourseRepositoryMock.stubCoursesActivities(
+          courseRepository as CourseRepositoryMock);
+      CourseRepositoryMock.stubGetCoursesActivities(
+          courseRepository as CourseRepositoryMock,
+          fromCacheOnly: true);
+      CourseRepositoryMock.stubGetCoursesActivities(
+          courseRepository as CourseRepositoryMock,
+          fromCacheOnly: false);
     });
 
     tearDown(() {});
@@ -154,7 +159,7 @@ void main() {
         expect(restoreCardsIcon, findsOneWidget);
 
         // Find cards
-        expect(find.byType(Card), findsNWidgets(cardNumber));
+        expect(find.byType(Card), findsNWidgets(numberOfCards));
       });
 
       testWidgets('Has card aboutUs displayed properly',
@@ -282,7 +287,7 @@ void main() {
         await tester.pumpAndSettle();
 
         // Check that the card is now present in the view
-        expect(find.byType(Dismissible), findsNWidgets(3));
+        expect(find.byType(Dismissible), findsNWidgets(numberOfCards));
         expect(find.text(intl.card_applets_title), findsOneWidget);
       });
 
@@ -356,7 +361,7 @@ void main() {
           matching: find.byType(Text),
         ));
 
-        expect(find.byType(Dismissible), findsNWidgets(3));
+        expect(find.byType(Dismissible), findsNWidgets(numberOfCards));
 
         // Check that the first card is now AboutUs
         expect((text as Text).data, intl.card_applets_title);
@@ -364,15 +369,6 @@ void main() {
 
       testWidgets('ScheduleCard is dismissible and can be restored',
           (WidgetTester tester) async {
-        CourseRepositoryMock.stubCoursesActivities(
-            courseRepository as CourseRepositoryMock);
-        CourseRepositoryMock.stubGetCoursesActivities(
-            courseRepository as CourseRepositoryMock,
-            fromCacheOnly: true);
-        CourseRepositoryMock.stubGetCoursesActivities(
-            courseRepository as CourseRepositoryMock,
-            fromCacheOnly: false);
-
         SettingsManagerMock.stubGetDashboard(
             settingsManager as SettingsManagerMock,
             toReturn: dashboard);
@@ -391,7 +387,7 @@ void main() {
         await tester.pumpAndSettle();
 
         // Find Dismissible Cards
-        expect(find.byType(Dismissible), findsNWidgets(3));
+        expect(find.byType(Dismissible), findsNWidgets(numberOfCards));
         expect(
             find.descendant(
               of: find.byType(Dismissible),
@@ -499,10 +495,6 @@ void main() {
 
       testWidgets('progressBarCard is reorderable and can be restored',
           (WidgetTester tester) async {
-        SettingsManagerMock.stubGetDashboard(
-            settingsManager as SettingsManagerMock,
-            toReturn: dashboard);
-
         SettingsManagerMock.stubSetInt(settingsManager as SettingsManagerMock,
             PreferencesFlag.aboutUsCard);
 
@@ -511,6 +503,10 @@ void main() {
 
         SettingsManagerMock.stubSetInt(settingsManager as SettingsManagerMock,
             PreferencesFlag.progressBarCard);
+
+        SettingsManagerMock.stubGetDashboard(
+            settingsManager as SettingsManagerMock,
+            toReturn: dashboard);
 
         await tester.pumpWidget(localizedWidget(
             child: FeatureDiscovery(child: const DashboardView())));
