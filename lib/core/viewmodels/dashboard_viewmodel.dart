@@ -120,7 +120,6 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
     Fluttertoast.showToast(msg: _appIntl.error);
   }
 
-
   /// Change the order of [flag] card from [oldIndex] to [newIndex].
   void setOrder(PreferencesFlag flag, int newIndex) {
     _cardsToDisplay.remove(flag);
@@ -266,34 +265,37 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
     }
 
     // Determine current sessions
-
+    if (_courseRepository.activeSessions == null) {
+      // ignore: return_type_invalid_for_catch_error
+      await _courseRepository.getSessions().catchError(onError);
+    }
     final currentSession = _courseRepository.activeSessions.first;
 
     return _courseRepository.getCourses(fromCacheOnly: true).then(
-            (coursesCached) {
+        (coursesCached) {
+      courses.clear();
+      for (final Course course in coursesCached) {
+        if (course.session == currentSession.shortName) {
+          courses.add(course);
+        }
+      }
+      notifyListeners();
+      // ignore: return_type_invalid_for_catch_error
+      _courseRepository.getCourses().catchError(onError).then((value) {
+        if (value != null) {
+          // Update the courses list
           courses.clear();
-          for (final Course course in coursesCached) {
+          for (final Course course in value) {
             if (course.session == currentSession.shortName) {
               courses.add(course);
             }
           }
-          notifyListeners();
-          // ignore: return_type_invalid_for_catch_error
-          _courseRepository.getCourses().catchError(onError).then((value) {
-            if (value != null) {
-              // Update the courses list
-              courses.clear();
-              for (final Course course in value) {
-                if (course.session == currentSession.shortName) {
-                  courses.add(course);
-                }
-              }
-            }
-          }).whenComplete(() {
-            setBusyForObject(courses, false);
-          });
+        }
+      }).whenComplete(() {
+        setBusyForObject(courses, false);
+      });
 
-          return courses;
-        }, onError: onError);
+      return courses;
+    }, onError: onError);
   }
 }

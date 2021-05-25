@@ -8,6 +8,7 @@ import 'package:notredame/core/constants/preferences_flags.dart';
 // MANAGERS
 import 'package:notredame/core/managers/course_repository.dart';
 import 'package:notredame/core/managers/settings_manager.dart';
+import 'package:notredame/core/models/course.dart';
 
 // MODEL
 import 'package:notredame/core/models/session.dart';
@@ -15,7 +16,6 @@ import 'package:notredame/core/models/course_activity.dart';
 
 // SERVICE
 import 'package:notredame/core/services/preferences_service.dart';
-import 'package:notredame/core/managers/course_repository.dart';
 
 // VIEWMODEL
 import 'package:notredame/core/viewmodels/dashboard_viewmodel.dart';
@@ -70,22 +70,6 @@ void main() {
   // Needed to support FlutterToast.
   TestWidgetsFlutterBinding.ensureInitialized();
 
-  // Session
-  final Session session1 = Session(
-      shortName: "É2020",
-      name: "Ete 2020",
-      startDate: DateTime(2020, 1, 10, 1, 1),
-      endDate: DateTime(2022, 1, 10, 1, 1),
-      endDateCourses: DateTime(2022, 1, 10, 1, 1),
-      startDateRegistration: DateTime(2017, 1, 9, 1, 1),
-      deadlineRegistration: DateTime(2017, 1, 10, 1, 1),
-      startDateCancellationWithRefund: DateTime(2017, 1, 10, 1, 1),
-      deadlineCancellationWithRefund: DateTime(2017, 1, 11, 1, 1),
-      deadlineCancellationWithRefundNewStudent: DateTime(2017, 1, 11, 1, 1),
-      startDateCancellationWithoutRefundNewStudent: DateTime(2017, 1, 12, 1, 1),
-      deadlineCancellationWithoutRefundNewStudent: DateTime(2017, 1, 12, 1, 1),
-      deadlineCancellationASEQ: DateTime(2017, 1, 11, 1, 1));
-
   // Courses
   final Course courseSummer = Course(
       acronym: 'GEN101',
@@ -106,8 +90,6 @@ void main() {
       title: 'Cours générique');
 
   final courses = [courseSummer, courseSummer2];
-
-  final session = [session1];
 
   // Cards
   final Map<PreferencesFlag, int> dashboard = {
@@ -184,13 +166,13 @@ void main() {
           () async {
         CourseRepositoryMock.stubSessions(
             courseRepository as CourseRepositoryMock,
-            toReturn: session);
+            toReturn: [session]);
         CourseRepositoryMock.stubGetSessions(
             courseRepository as CourseRepositoryMock,
-            toReturn: session);
+            toReturn: [session]);
         CourseRepositoryMock.stubActiveSessions(
             courseRepository as CourseRepositoryMock,
-            toReturn: session);
+            toReturn: [session]);
         CourseRepositoryMock.stubGetCourses(
             courseRepository as CourseRepositoryMock,
             toReturn: courses,
@@ -220,13 +202,13 @@ void main() {
       test('Signets throw an error while trying to get courses', () async {
         CourseRepositoryMock.stubSessions(
             courseRepository as CourseRepositoryMock,
-            toReturn: session);
+            toReturn: [session]);
         CourseRepositoryMock.stubGetSessions(
             courseRepository as CourseRepositoryMock,
-            toReturn: session);
+            toReturn: [session]);
         CourseRepositoryMock.stubActiveSessions(
             courseRepository as CourseRepositoryMock,
-            toReturn: session);
+            toReturn: [session]);
 
         CourseRepositoryMock.stubGetCourses(
             courseRepository as CourseRepositoryMock,

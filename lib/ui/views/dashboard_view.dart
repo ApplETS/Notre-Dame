@@ -11,6 +11,7 @@ import 'package:notredame/core/viewmodels/dashboard_viewmodel.dart';
 import 'package:notredame/ui/widgets/dismissible_card.dart';
 import 'package:notredame/ui/widgets/base_scaffold.dart';
 import 'package:notredame/ui/widgets/course_activity_tile.dart';
+import 'package:notredame/ui/widgets/grade_button.dart';
 
 // MODELS / CONSTANTS
 import 'package:notredame/core/constants/preferences_flags.dart';
@@ -295,8 +296,7 @@ class _DashboardViewState extends State<DashboardView>
                   padding: const EdgeInsets.fromLTRB(17, 10, 15, 10),
                   child: Wrap(
                     children: model.courses
-                        .map((course) => GradeButton(
-                              course))
+                        .map((course) => GradeButton(course))
                         .toList(),
                   ),
                 )

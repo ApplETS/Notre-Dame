@@ -7,7 +7,6 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 // MANAGERS
 import 'package:notredame/core/managers/course_repository.dart';
 import 'package:notredame/core/managers/settings_manager.dart';
-import 'package:notredame/core/managers/course_repository.dart';
 
 // MODELS
 import 'package:notredame/core/models/course.dart';
@@ -15,6 +14,7 @@ import 'package:notredame/core/models/session.dart';
 
 // VIEW
 import 'package:notredame/ui/views/dashboard_view.dart';
+import 'package:notredame/ui/widgets/course_activity_tile.dart';
 import 'package:notredame/ui/widgets/grade_button.dart';
 
 // VIEWMODEL
@@ -35,7 +35,6 @@ void main() {
   SettingsManager settingsManager;
   CourseRepository courseRepository;
   AppIntl intl;
-  CourseRepository courseRepository;
   DashboardViewModel viewModel;
 
   // Activities for today
@@ -170,12 +169,30 @@ void main() {
       CourseRepositoryMock.stubGetCourses(
           courseRepository as CourseRepositoryMock,
           fromCacheOnly: false);
+      CourseRepositoryMock.stubCoursesActivities(
+          courseRepository as CourseRepositoryMock);
+      CourseRepositoryMock.stubGetCoursesActivities(
+          courseRepository as CourseRepositoryMock,
+          fromCacheOnly: true);
+      CourseRepositoryMock.stubGetCoursesActivities(
+          courseRepository as CourseRepositoryMock,
+          fromCacheOnly: false);
+
+      SettingsManagerMock.stubSetInt(
+          settingsManager as SettingsManagerMock, PreferencesFlag.aboutUsCard);
+
+      SettingsManagerMock.stubSetInt(
+          settingsManager as SettingsManagerMock, PreferencesFlag.scheduleCard);
+
+      SettingsManagerMock.stubSetInt(settingsManager as SettingsManagerMock,
+          PreferencesFlag.progressBarCard);
+
+      SettingsManagerMock.stubSetInt(
+          settingsManager as SettingsManagerMock, PreferencesFlag.gradesCard);
 
       viewModel = DashboardViewModel(intl: intl);
 
       viewModel.todayDate = DateTime(2020);
-
-
     });
 
     tearDown(() {});
@@ -183,15 +200,6 @@ void main() {
     group('UI - ', () {
       testWidgets('Has view title restore button and cards, displayed',
           (WidgetTester tester) async {
-        CourseRepositoryMock.stubCoursesActivities(
-            courseRepository as CourseRepositoryMock);
-        CourseRepositoryMock.stubGetCoursesActivities(
-            courseRepository as CourseRepositoryMock,
-            fromCacheOnly: true);
-        CourseRepositoryMock.stubGetCoursesActivities(
-            courseRepository as CourseRepositoryMock,
-            fromCacheOnly: false);
-
         SettingsManagerMock.stubGetDashboard(
             settingsManager as SettingsManagerMock,
             toReturn: dashboard);
@@ -314,8 +322,8 @@ void main() {
         SettingsManagerMock.stubSetInt(settingsManager as SettingsManagerMock,
             PreferencesFlag.scheduleCard);
 
-        SettingsManagerMock.stubSetInt(settingsManager as SettingsManagerMock,
-            PreferencesFlag.gradesCard);
+        SettingsManagerMock.stubSetInt(
+            settingsManager as SettingsManagerMock, PreferencesFlag.gradesCard);
 
         SettingsManagerMock.stubSetInt(settingsManager as SettingsManagerMock,
             PreferencesFlag.progressBarCard);
@@ -368,8 +376,8 @@ void main() {
         SettingsManagerMock.stubSetInt(settingsManager as SettingsManagerMock,
             PreferencesFlag.scheduleCard);
 
-        SettingsManagerMock.stubSetInt(settingsManager as SettingsManagerMock,
-            PreferencesFlag.gradesCard);
+        SettingsManagerMock.stubSetInt(
+            settingsManager as SettingsManagerMock, PreferencesFlag.gradesCard);
 
         SettingsManagerMock.stubSetInt(settingsManager as SettingsManagerMock,
             PreferencesFlag.progressBarCard);
@@ -432,15 +440,6 @@ void main() {
             settingsManager as SettingsManagerMock,
             toReturn: dashboard);
 
-        SettingsManagerMock.stubSetInt(settingsManager as SettingsManagerMock,
-            PreferencesFlag.aboutUsCard);
-
-        SettingsManagerMock.stubSetInt(settingsManager as SettingsManagerMock,
-            PreferencesFlag.scheduleCard);
-
-        SettingsManagerMock.stubSetInt(settingsManager as SettingsManagerMock,
-            PreferencesFlag.progressBarCard);
-
         await tester.pumpWidget(localizedWidget(
             child: FeatureDiscovery(child: const DashboardView())));
         await tester.pumpAndSettle();
@@ -461,7 +460,7 @@ void main() {
         // Check that the card is now absent from the view
         await tester.pumpAndSettle();
 
-        expect(find.byType(Dismissible), findsNWidgets(2));
+        expect(find.byType(Dismissible), findsNWidgets(numberOfCards - 1));
         expect(
             find.descendant(
               of: find.byType(Dismissible),
@@ -475,7 +474,7 @@ void main() {
         await tester.pumpAndSettle();
 
         // Check that the card is now present in the view
-        expect(find.byType(Dismissible), findsNWidgets(3));
+        expect(find.byType(Dismissible), findsNWidgets(numberOfCards));
         expect(
             find.descendant(
               of: find.byType(Dismissible),
@@ -546,10 +545,6 @@ void main() {
 
         testWidgets('gradesCard is dismissible and can be restored',
             (WidgetTester tester) async {
-          SettingsManagerMock.stubGetDashboard(
-              settingsManager as SettingsManagerMock,
-              toReturn: dashboard);
-
           SettingsManagerMock.stubSetInt(settingsManager as SettingsManagerMock,
               PreferencesFlag.aboutUsCard);
 
@@ -561,6 +556,9 @@ void main() {
 
           SettingsManagerMock.stubSetInt(settingsManager as SettingsManagerMock,
               PreferencesFlag.gradesCard);
+          SettingsManagerMock.stubGetDashboard(
+              settingsManager as SettingsManagerMock,
+              toReturn: dashboard);
 
           await tester.pumpWidget(localizedWidget(
               child: FeatureDiscovery(child: const DashboardView())));
@@ -621,15 +619,6 @@ void main() {
             settingsManager as SettingsManagerMock,
             toReturn: dashboard);
 
-        SettingsManagerMock.stubSetInt(settingsManager as SettingsManagerMock,
-            PreferencesFlag.aboutUsCard);
-
-        SettingsManagerMock.stubSetInt(settingsManager as SettingsManagerMock,
-            PreferencesFlag.scheduleCard);
-
-        SettingsManagerMock.stubSetInt(settingsManager as SettingsManagerMock,
-            PreferencesFlag.progressBarCard);
-
         await tester.pumpWidget(localizedWidget(
             child: FeatureDiscovery(child: const DashboardView())));
         await tester.pumpAndSettle();
@@ -660,15 +649,6 @@ void main() {
 
       testWidgets('progressBarCard is reorderable and can be restored',
           (WidgetTester tester) async {
-        SettingsManagerMock.stubSetInt(settingsManager as SettingsManagerMock,
-            PreferencesFlag.aboutUsCard);
-
-        SettingsManagerMock.stubSetInt(settingsManager as SettingsManagerMock,
-            PreferencesFlag.scheduleCard);
-
-        SettingsManagerMock.stubSetInt(settingsManager as SettingsManagerMock,
-            PreferencesFlag.progressBarCard);
-
         SettingsManagerMock.stubGetDashboard(
             settingsManager as SettingsManagerMock,
             toReturn: dashboard);
