@@ -34,7 +34,15 @@ void main() {
         testWidgets("default view (no events)", (WidgetTester tester) async {
           tester.binding.window.physicalSizeTestValue = const Size(800, 1410);
 
-          await tester.pumpWidget(localizedWidget(child: AboutView()));
+          await tester.runAsync(() async {
+            await tester.pumpWidget(
+                localizedWidget(useScaffold: false, child: AboutView()));
+            final Element element = tester.element(find.byType(Hero));
+            final Hero widget = element.widget as Hero;
+            final Image image = widget.child as Image;
+            await precacheImage(image.image, element);
+            await tester.pumpAndSettle();
+          });
           await tester.pumpAndSettle();
 
           await expectLater(find.byType(AboutView),

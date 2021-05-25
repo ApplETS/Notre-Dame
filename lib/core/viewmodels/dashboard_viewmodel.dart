@@ -6,12 +6,15 @@ import 'package:stacked/stacked.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-// MANAGERS
+// CONSTANTS
+import 'package:notredame/core/constants/preferences_flags.dart';
+
+// MANAGER
 import 'package:notredame/core/managers/settings_manager.dart';
 import 'package:notredame/core/managers/course_repository.dart';
 
-// MODELS / CONSTANTS
-import 'package:notredame/core/constants/preferences_flags.dart';
+// MODEL
+import 'package:notredame/core/models/session.dart';
 import 'package:notredame/core/models/course_activity.dart';
 
 // UTILS
@@ -30,8 +33,22 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
   /// Localization class of the application.
   final AppIntl _appIntl;
 
+  /// Day currently selected
+  DateTime todayDate = DateTime.now();
+
   /// Cards to display on dashboard
   List<PreferencesFlag> _cardsToDisplay;
+
+  /// Percentage of completed days for the session
+  double _progress = 0.0;
+
+  /// Numbers of days elapsed and total number of days of the current session
+  List<int> _sessionDays = [0, 0];
+
+  /// Get progress of the session
+  double get progress => _progress;
+
+  List<int> get sessionDays => _sessionDays;
 
   /// Activities for today
   final List<CourseActivity> _todayDateEvents = [];
@@ -47,8 +64,36 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
   /// Get cards to display
   List<PreferencesFlag> get cardsToDisplay => _cardsToDisplay;
 
-  /// Today's date
-  DateTime todayDate = DateTime.now();
+  /// Return session progress based on today's [date]
+  double getSessionProgress() {
+    if (_courseRepository.activeSessions.isEmpty) {
+      return 0.0;
+    } else {
+      return todayDate
+              .difference(_courseRepository.activeSessions.first.startDate)
+              .inDays /
+          _courseRepository.activeSessions.first.endDate
+              .difference(_courseRepository.activeSessions.first.startDate)
+              .inDays;
+    }
+  }
+
+  /// Returns a list containing the number of elapsed days in the active session
+  /// and the total number of days in the session
+  List<int> getSessionDays() {
+    if (_courseRepository.activeSessions.isEmpty) {
+      return [0, 0];
+    } else {
+      return [
+        todayDate
+            .difference(_courseRepository.activeSessions.first.startDate)
+            .inDays,
+        _courseRepository.activeSessions.first.endDate
+            .difference(_courseRepository.activeSessions.first.startDate)
+            .inDays
+      ];
+    }
+  }
 
   DashboardViewModel({@required AppIntl intl}) : _appIntl = intl;
 
@@ -122,9 +167,25 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
           if (key == PreferencesFlag.scheduleCard) {
             futureToRunSchedule();
           }
+          if (key == PreferencesFlag.progressBarCard) {
+            futureToRunSessionProgressBar();
+          }
         }
       });
     }
+  }
+
+  Future<List<Session>> futureToRunSessionProgressBar() async {
+    setBusyForObject(_progress, true);
+    return _courseRepository
+        .getSessions()
+        // ignore: invalid_return_type_for_catch_error
+        .catchError(onError)
+        .whenComplete(() {
+      _sessionDays = getSessionDays();
+      _progress = getSessionProgress();
+      setBusyForObject(_progress, false);
+    });
   }
 
   Future<List<CourseActivity>> futureToRunSchedule() async {

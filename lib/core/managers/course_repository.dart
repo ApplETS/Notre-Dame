@@ -72,7 +72,6 @@ class CourseRepository {
   List<Session> get sessions => _sessions;
 
   /// Return the active sessions which mean the sessions that the endDate isn't already passed.
-  @visibleForTesting
   List<Session> get activeSessions {
     final DateTime now = DateTime.now();
 
@@ -93,7 +92,7 @@ class CourseRepository {
     }
 
     // Load the activities from the cache if the list doesn't exist
-    if (_coursesActivities == null ) {
+    if (_coursesActivities == null) {
       _coursesActivities = [];
       try {
         final List responseCache =
@@ -272,7 +271,7 @@ class CourseRepository {
         } on ApiException catch (_) {
           _logger.e(
               "$tag - getCourses: Exception raised while trying to get summary "
-                  "of ${fetchedCourses[i].acronym}.");
+              "of ${fetchedCourses[i].acronym}.");
         }
       }
     }
@@ -317,15 +316,14 @@ class CourseRepository {
           course: course);
       _logger.d("$tag - getCourseSummary: fetched ${course.acronym} summary.");
     } on Exception catch (e) {
-      if(e is ApiException) {
+      if (e is ApiException) {
         if (e.errorCode == SignetsError.gradesEmpty) {
           _logger.e(
               "$tag - getCourseSummary: Summary is empty for ${course.acronym}.");
           return null;
         }
       }
-      _analyticsService.logError(
-          tag, e.toString());
+      _analyticsService.logError(tag, e.toString());
       _logger.e("$tag - getCourseSummary: Exception raised $e");
       rethrow;
     }
