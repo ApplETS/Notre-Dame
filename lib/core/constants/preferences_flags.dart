@@ -20,5 +20,5 @@ enum PreferencesFlag {
   aboutUsCard,
   scheduleCard,
   progressBarCard,
-  gradesCards
+  gradesCard
 }

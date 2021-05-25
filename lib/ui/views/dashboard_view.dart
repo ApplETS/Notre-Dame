@@ -107,7 +107,7 @@ class _DashboardViewState extends State<DashboardView>
               },
               child: Text(element.toString())));
           break;
-        case PreferencesFlag.gradesCards:
+        case PreferencesFlag.gradesCard:
           cards.add(_buildGradesCards(model, element));
           break;
 

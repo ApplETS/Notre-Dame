@@ -40,7 +40,7 @@ void main() {
     PreferencesFlag.aboutUsCard: 0,
     PreferencesFlag.scheduleCard: 1,
     PreferencesFlag.progressBarCard: 2,
-    PreferencesFlag.gradesCards: 3
+    PreferencesFlag.gradesCard: 3
   };
 
   final numberOfCards = dashboard.entries.length;
@@ -204,7 +204,7 @@ void main() {
             PreferencesFlag.scheduleCard);
 
         SettingsManagerMock.stubSetInt(settingsManager as SettingsManagerMock,
-            PreferencesFlag.gradesCards);
+            PreferencesFlag.gradesCard);
 
         SettingsManagerMock.stubSetInt(settingsManager as SettingsManagerMock,
             PreferencesFlag.progressBarCard);
@@ -253,7 +253,7 @@ void main() {
             PreferencesFlag.scheduleCard);
 
         SettingsManagerMock.stubSetInt(settingsManager as SettingsManagerMock,
-            PreferencesFlag.gradesCards);
+            PreferencesFlag.gradesCard);
 
         SettingsManagerMock.stubSetInt(settingsManager as SettingsManagerMock,
             PreferencesFlag.progressBarCard);
@@ -390,7 +390,7 @@ void main() {
               PreferencesFlag.progressBarCard);
 
           SettingsManagerMock.stubSetInt(settingsManager as SettingsManagerMock,
-              PreferencesFlag.gradesCards);
+              PreferencesFlag.gradesCard);
 
           await tester.pumpWidget(localizedWidget(
               child: FeatureDiscovery(child: const DashboardView())));

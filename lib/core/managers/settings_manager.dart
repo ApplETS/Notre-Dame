@@ -108,11 +108,11 @@ class SettingsManager with ChangeNotifier {
 
 
     final gradesCardIndex =
-        await _preferencesService.getInt(PreferencesFlag.gradesCards) ??
-            getDefaultCardIndex(PreferencesFlag.gradesCards);
+        await _preferencesService.getInt(PreferencesFlag.gradesCard) ??
+            getDefaultCardIndex(PreferencesFlag.gradesCard);
 
     dashboard.putIfAbsent(
-        PreferencesFlag.gradesCards, () => gradesCardIndex);
+        PreferencesFlag.gradesCard, () => gradesCardIndex);
 
     _logger.i("$tag - getDashboard - Dashboard loaded: $dashboard");
 

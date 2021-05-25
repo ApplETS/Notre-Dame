@@ -11,12 +11,12 @@ import 'package:notredame/ui/utils/discovery_components.dart';
 
 // MANAGER
 import 'package:notredame/core/managers/settings_manager.dart';
+import 'package:notredame/core/managers/course_repository.dart';
 
 // CONSTANTS
 import 'package:notredame/core/constants/preferences_flags.dart';
 
 // CORE
-import 'package:notredame/core/managers/course_repository.dart';
 import 'package:notredame/core/models/course.dart';
 
 // OTHER
@@ -118,7 +118,7 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
       orderedCards.forEach((key, value) {
         if (value >= 0) {
           _cardsToDisplay.insert(value, key);
-          if (key == PreferencesFlag.gradesCards) {
+          if (key == PreferencesFlag.gradesCard) {
             futureToRunGrades();
           }
         }

@@ -1,19 +1,22 @@
 // FLUTTER / DART / THIRD-PARTIES
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
-import 'package:notredame/core/constants/preferences_flags.dart';
-import 'package:notredame/core/managers/course_repository.dart';
 
 // MANAGERS
 import 'package:notredame/core/managers/settings_manager.dart';
+import 'package:notredame/core/managers/course_repository.dart';
+
+//SERVICES
+import 'package:notredame/core/services/preferences_service.dart';
+import '../helpers.dart';
+
+//MODELS
 import 'package:notredame/core/models/course.dart';
 import 'package:notredame/core/models/session.dart';
-import 'package:notredame/core/services/preferences_service.dart';
-
-// VIEW-MODEL
 import 'package:notredame/core/viewmodels/dashboard_viewmodel.dart';
 
-import '../helpers.dart';
+//CONSTANTS
+import 'package:notredame/core/constants/preferences_flags.dart';
 
 // MOCKS
 import '../mock/managers/course_repository_mock.dart';

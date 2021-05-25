@@ -1,10 +1,14 @@
 // FLUTTER / DART / THIRD-PARTIES
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
+//CONSTANTS
 import 'package:notredame/core/constants/router_paths.dart';
 
 // MODEL
 import 'package:notredame/core/models/course.dart';
+
+//OTHER
 import 'package:notredame/core/services/navigation_service.dart';
 import 'package:notredame/locator.dart';
 

@@ -386,7 +386,7 @@ void main() {
             toReturn: null);
         PreferencesServiceMock.stubGetInt(
             preferencesService as PreferencesServiceMock,
-            PreferencesFlag.gradesCards,
+            PreferencesFlag.gradesCard,
             toReturn: null);
 
         // Cards
@@ -394,7 +394,7 @@ void main() {
           PreferencesFlag.aboutUsCard: 0,
           PreferencesFlag.scheduleCard: 1,
           PreferencesFlag.progressBarCard: 2,
-          PreferencesFlag.gradesCards: 3
+          PreferencesFlag.gradesCard: 3
         };
 
         expect(
@@ -408,7 +408,7 @@ void main() {
             .called(1);
         verify(preferencesService.getInt(PreferencesFlag.progressBarCard))
             .called(1);
-        verify(preferencesService.getInt(PreferencesFlag.gradesCards))
+        verify(preferencesService.getInt(PreferencesFlag.gradesCard))
             .called(1);
 
         verifyNoMoreInteractions(preferencesService);
@@ -431,7 +431,7 @@ void main() {
             toReturn: 0);
         PreferencesServiceMock.stubGetInt(
             preferencesService as PreferencesServiceMock,
-            PreferencesFlag.gradesCards,
+            PreferencesFlag.gradesCard,
             toReturn: 3);
 
         // Cards
@@ -439,7 +439,7 @@ void main() {
           PreferencesFlag.aboutUsCard: 1,
           PreferencesFlag.scheduleCard: 2,
           PreferencesFlag.progressBarCard: 0,
-          PreferencesFlag.gradesCards: 3
+          PreferencesFlag.gradesCard: 3
         };
 
         expect(
@@ -453,7 +453,7 @@ void main() {
             .called(1);
         verify(preferencesService.getInt(PreferencesFlag.progressBarCard))
             .called(1);
-        verify(preferencesService.getInt(PreferencesFlag.gradesCards))
+        verify(preferencesService.getInt(PreferencesFlag.gradesCard))
             .called(1);
 
         verifyNoMoreInteractions(preferencesService);
