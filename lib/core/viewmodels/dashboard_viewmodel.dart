@@ -6,22 +6,25 @@ import 'package:stacked/stacked.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+// MANAGERS
+import 'package:notredame/core/managers/settings_manager.dart';
+import 'package:notredame/core/managers/course_repository.dart';
+
+// MODELS / CONSTANTS
+import 'package:notredame/core/constants/preferences_flags.dart';
+import 'package:notredame/core/models/course_activity.dart';
+
 // UTILS
 import 'package:notredame/ui/utils/discovery_components.dart';
-
-// MANAGER
-import 'package:notredame/core/managers/settings_manager.dart';
-
-// CONSTANTS
-import 'package:notredame/core/constants/preferences_flags.dart';
 
 // OTHER
 import 'package:notredame/locator.dart';
 
 class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
   final SettingsManager _settingsManager = locator<SettingsManager>();
+  final CourseRepository _courseRepository = locator<CourseRepository>();
 
-  // All dashboard displayable cards
+  /// All dashboard displayable cards
   Map<PreferencesFlag, int> _cards;
 
   /// Localization class of the application.
@@ -30,11 +33,22 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
   /// Cards to display on dashboard
   List<PreferencesFlag> _cardsToDisplay;
 
+  /// Activities for today
+  final List<CourseActivity> _todayDateEvents = [];
+
+  /// Get the list of activities for today
+  List<CourseActivity> get todayDateEvents {
+    return _todayDateEvents;
+  }
+
   /// Get the status of all displayable cards
   Map<PreferencesFlag, int> get cards => _cards;
 
   /// Get cards to display
   List<PreferencesFlag> get cardsToDisplay => _cardsToDisplay;
+
+  /// Today's date
+  DateTime todayDate = DateTime.now();
 
   DashboardViewModel({@required AppIntl intl}) : _appIntl = intl;
 
@@ -105,9 +119,45 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
       orderedCards.forEach((key, value) {
         if (value >= 0) {
           _cardsToDisplay.insert(value, key);
+          if (key == PreferencesFlag.scheduleCard) {
+            futureToRunSchedule();
+          }
         }
       });
     }
+  }
+
+  Future<List<CourseActivity>> futureToRunSchedule() async {
+    return _courseRepository
+        .getCoursesActivities(fromCacheOnly: true)
+        .then((value) {
+      setBusyForObject(_todayDateEvents, true);
+      _todayDateEvents.clear();
+
+      _courseRepository
+          .getCoursesActivities()
+          // ignore: return_type_invalid_for_catch_error
+          .catchError(onError)
+          .whenComplete(() {
+        if (_todayDateEvents.isEmpty) {
+          // Build the list
+          for (final CourseActivity course
+              in _courseRepository.coursesActivities) {
+            final DateTime dateOnly = course.startDateTime;
+
+            if (isSameDay(todayDate, dateOnly)) {
+              _todayDateEvents.add(course);
+            }
+          }
+        }
+        _todayDateEvents
+            .sort((a, b) => a.startDateTime.compareTo(b.startDateTime));
+
+        setBusyForObject(_todayDateEvents, false);
+      });
+
+      return value;
+    });
   }
 
   /// Update cards order and display status in preferences
@@ -124,9 +174,13 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
     }
   }
 
+  /// Returns true if dates [a] and [b] are on the same day
+  bool isSameDay(DateTime a, DateTime b) =>
+      a.year == b.year && a.month == b.month && a.day == b.day;
   Future<void> startDiscovery(BuildContext context) async {
     if (await _settingsManager.getString(PreferencesFlag.discovery) == null) {
-      final List<String> ids = discoveryComponents(context).map((e) => e.featureId).toList();
+      final List<String> ids =
+          discoveryComponents(context).map((e) => e.featureId).toList();
       FeatureDiscovery.discoverFeatures(context, ids);
       _settingsManager.setString(PreferencesFlag.discovery, 'true');
     }
