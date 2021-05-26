@@ -10,10 +10,12 @@ import 'package:notredame/core/viewmodels/dashboard_viewmodel.dart';
 // WIDGETS
 import 'package:notredame/ui/widgets/dismissible_card.dart';
 import 'package:notredame/ui/widgets/base_scaffold.dart';
+import 'package:notredame/ui/widgets/course_activity_tile.dart';
 
-// CONSTANTS
+// MODELS / CONSTANTS
 import 'package:notredame/core/constants/preferences_flags.dart';
 import 'package:notredame/core/constants/urls.dart';
+import 'package:notredame/core/models/course_activity.dart';
 
 // UTILS
 import 'package:notredame/core/utils/utils.dart';
@@ -73,11 +75,15 @@ class _DashboardViewState extends State<DashboardView>
                   ]),
               body: model.cards == null
                   ? buildLoading()
-                  : ReorderableListView(
-                      onReorder: (oldIndex, newIndex) =>
-                          onReorder(model, oldIndex, newIndex),
-                      padding: const EdgeInsets.all(8),
-                      children: _buildCards(model),
+                  : Theme(
+                      data: Theme.of(context)
+                          .copyWith(canvasColor: Colors.transparent),
+                      child: ReorderableListView(
+                        onReorder: (oldIndex, newIndex) =>
+                            onReorder(model, oldIndex, newIndex),
+                        padding: const EdgeInsets.fromLTRB(8, 4, 8, 8),
+                        children: _buildCards(model),
+                      ),
                     ));
         });
   }
@@ -91,20 +97,10 @@ class _DashboardViewState extends State<DashboardView>
           cards.add(_buildAboutUsCard(model, element));
           break;
         case PreferencesFlag.scheduleCard:
-          cards.add(Dismissible(
-              key: UniqueKey(),
-              onDismissed: (DismissDirection direction) {
-                dismissCard(model, element);
-              },
-              child: Text(element.toString(), key: UniqueKey())));
+          cards.add(_buildTodayScheduleCard(model, element));
           break;
         case PreferencesFlag.progressBarCard:
-          cards.add(Dismissible(
-              key: UniqueKey(),
-              onDismissed: (DismissDirection direction) {
-                dismissCard(model, element);
-              },
-              child: Text(element.toString())));
+          cards.add(_buildProgressBarCard(model, element));
           break;
         default:
       }
@@ -166,6 +162,101 @@ class _DashboardViewState extends State<DashboardView>
           ),
         ]),
       );
+
+  Widget _buildProgressBarCard(
+          DashboardViewModel model, PreferencesFlag flag) =>
+      DismissibleCard(
+        isBusy: model.busy(model.progress),
+        key: UniqueKey(),
+        onDismissed: (DismissDirection direction) {
+          dismissCard(model, flag);
+        },
+        child: Column(mainAxisSize: MainAxisSize.min, children: [
+          Align(
+              alignment: Alignment.centerLeft,
+              child: Container(
+                padding: const EdgeInsets.fromLTRB(17, 15, 0, 0),
+                child: Text(AppIntl.of(context).progress_bar_title,
+                    style: Theme.of(context).textTheme.headline6),
+              )),
+          if (model.progress >= 0.0)
+            Stack(children: [
+              Container(
+                padding: const EdgeInsets.fromLTRB(17, 10, 15, 20),
+                child: ClipRRect(
+                  borderRadius: const BorderRadius.all(Radius.circular(10)),
+                  child: LinearProgressIndicator(
+                    value: model.progress,
+                    minHeight: 30,
+                    valueColor: const AlwaysStoppedAnimation<Color>(
+                        AppTheme.gradeGoodMax),
+                    backgroundColor: AppTheme.etsDarkGrey,
+                  ),
+                ),
+              ),
+              Container(
+                padding: const EdgeInsets.only(top: 16),
+                child: Center(
+                  child: Text(
+                    AppIntl.of(context).progress_bar_message(
+                        model.sessionDays[0], model.sessionDays[1]),
+                    style: const TextStyle(color: Colors.white),
+                  ),
+                ),
+              ),
+            ])
+          else
+            Container(
+              padding: const EdgeInsets.all(16),
+              child: Center(
+                child: Text(AppIntl.of(context).session_without),
+              ),
+            ),
+        ]),
+      );
+
+  Widget _buildTodayScheduleCard(
+      DashboardViewModel model, PreferencesFlag flag) {
+    return DismissibleCard(
+      isBusy: model.busy(model.todayDateEvents),
+      onDismissed: (DismissDirection direction) {
+        dismissCard(model, flag);
+      },
+      key: UniqueKey(),
+      child: Padding(
+        padding: const EdgeInsets.only(bottom: 5),
+        child: Column(mainAxisSize: MainAxisSize.min, children: [
+          Align(
+              alignment: Alignment.centerLeft,
+              child: Container(
+                padding: const EdgeInsets.fromLTRB(17, 15, 0, 0),
+                child: Text(AppIntl.of(context).title_schedule,
+                    style: Theme.of(context).textTheme.headline6),
+              )),
+          if (model.todayDateEvents.isEmpty)
+            SizedBox(
+                height: 100,
+                child:
+                    Center(child: Text(AppIntl.of(context).schedule_no_event)))
+          else
+            _buildEventList(model.todayDateEvents)
+        ]),
+      ),
+    );
+  }
+
+  /// Build the list of the events for the selected day.
+  Widget _buildEventList(List<dynamic> events) {
+    return ListView.separated(
+        shrinkWrap: true,
+        padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
+        itemBuilder: (_, index) =>
+            CourseActivityTile(events[index] as CourseActivity),
+        separatorBuilder: (_, index) => (index < events.length)
+            ? const Divider(thickness: 1, indent: 30, endIndent: 30)
+            : const SizedBox(),
+        itemCount: events.length);
+  }
 
   void dismissCard(DashboardViewModel model, PreferencesFlag flag) {
     model.hideCard(flag);

@@ -140,9 +140,6 @@ void main() {
             await precacheImage(image.image, element);
             await tester.pumpAndSettle();
           });
-
-          await tester.pumpWidget(
-              localizedWidget(child: FeatureDiscovery(child: MoreView())));
           await tester.pumpAndSettle();
 
           await expectLater(find.byType(MoreView),

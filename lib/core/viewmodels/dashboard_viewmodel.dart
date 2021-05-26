@@ -6,35 +6,94 @@ import 'package:stacked/stacked.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-// UTILS
-import 'package:notredame/ui/utils/discovery_components.dart';
+// CONSTANTS
+import 'package:notredame/core/constants/preferences_flags.dart';
 
 // MANAGER
 import 'package:notredame/core/managers/settings_manager.dart';
+import 'package:notredame/core/managers/course_repository.dart';
 
-// CONSTANTS
-import 'package:notredame/core/constants/preferences_flags.dart';
+// MODEL
+import 'package:notredame/core/models/session.dart';
+import 'package:notredame/core/models/course_activity.dart';
+
+// UTILS
+import 'package:notredame/ui/utils/discovery_components.dart';
 
 // OTHER
 import 'package:notredame/locator.dart';
 
 class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
   final SettingsManager _settingsManager = locator<SettingsManager>();
+  final CourseRepository _courseRepository = locator<CourseRepository>();
 
-  // All dashboard displayable cards
+  /// All dashboard displayable cards
   Map<PreferencesFlag, int> _cards;
 
   /// Localization class of the application.
   final AppIntl _appIntl;
 
+  /// Day currently selected
+  DateTime todayDate = DateTime.now();
+
   /// Cards to display on dashboard
   List<PreferencesFlag> _cardsToDisplay;
+
+  /// Percentage of completed days for the session
+  double _progress = 0.0;
+
+  /// Numbers of days elapsed and total number of days of the current session
+  List<int> _sessionDays = [0, 0];
+
+  /// Get progress of the session
+  double get progress => _progress;
+
+  List<int> get sessionDays => _sessionDays;
+
+  /// Activities for today
+  final List<CourseActivity> _todayDateEvents = [];
+
+  /// Get the list of activities for today
+  List<CourseActivity> get todayDateEvents {
+    return _todayDateEvents;
+  }
 
   /// Get the status of all displayable cards
   Map<PreferencesFlag, int> get cards => _cards;
 
   /// Get cards to display
   List<PreferencesFlag> get cardsToDisplay => _cardsToDisplay;
+
+  /// Return session progress based on today's [date]
+  double getSessionProgress() {
+    if (_courseRepository.activeSessions.isEmpty) {
+      return 0.0;
+    } else {
+      return todayDate
+              .difference(_courseRepository.activeSessions.first.startDate)
+              .inDays /
+          _courseRepository.activeSessions.first.endDate
+              .difference(_courseRepository.activeSessions.first.startDate)
+              .inDays;
+    }
+  }
+
+  /// Returns a list containing the number of elapsed days in the active session
+  /// and the total number of days in the session
+  List<int> getSessionDays() {
+    if (_courseRepository.activeSessions.isEmpty) {
+      return [0, 0];
+    } else {
+      return [
+        todayDate
+            .difference(_courseRepository.activeSessions.first.startDate)
+            .inDays,
+        _courseRepository.activeSessions.first.endDate
+            .difference(_courseRepository.activeSessions.first.startDate)
+            .inDays
+      ];
+    }
+  }
 
   DashboardViewModel({@required AppIntl intl}) : _appIntl = intl;
 
@@ -105,9 +164,61 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
       orderedCards.forEach((key, value) {
         if (value >= 0) {
           _cardsToDisplay.insert(value, key);
+          if (key == PreferencesFlag.scheduleCard) {
+            futureToRunSchedule();
+          }
+          if (key == PreferencesFlag.progressBarCard) {
+            futureToRunSessionProgressBar();
+          }
         }
       });
     }
+  }
+
+  Future<List<Session>> futureToRunSessionProgressBar() async {
+    setBusyForObject(_progress, true);
+    return _courseRepository
+        .getSessions()
+        // ignore: invalid_return_type_for_catch_error
+        .catchError(onError)
+        .whenComplete(() {
+      _sessionDays = getSessionDays();
+      _progress = getSessionProgress();
+      setBusyForObject(_progress, false);
+    });
+  }
+
+  Future<List<CourseActivity>> futureToRunSchedule() async {
+    return _courseRepository
+        .getCoursesActivities(fromCacheOnly: true)
+        .then((value) {
+      setBusyForObject(_todayDateEvents, true);
+      _todayDateEvents.clear();
+
+      _courseRepository
+          .getCoursesActivities()
+          // ignore: return_type_invalid_for_catch_error
+          .catchError(onError)
+          .whenComplete(() {
+        if (_todayDateEvents.isEmpty) {
+          // Build the list
+          for (final CourseActivity course
+              in _courseRepository.coursesActivities) {
+            final DateTime dateOnly = course.startDateTime;
+
+            if (isSameDay(todayDate, dateOnly)) {
+              _todayDateEvents.add(course);
+            }
+          }
+        }
+        _todayDateEvents
+            .sort((a, b) => a.startDateTime.compareTo(b.startDateTime));
+
+        setBusyForObject(_todayDateEvents, false);
+      });
+
+      return value;
+    });
   }
 
   /// Update cards order and display status in preferences
@@ -124,6 +235,9 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
     }
   }
 
+  /// Returns true if dates [a] and [b] are on the same day
+  bool isSameDay(DateTime a, DateTime b) =>
+      a.year == b.year && a.month == b.month && a.day == b.day;
   Future<void> startDiscovery(BuildContext context) async {
     if (await _settingsManager.getString(PreferencesFlag.discovery) == null) {
       final List<String> ids =

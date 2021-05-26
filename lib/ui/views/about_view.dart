@@ -77,11 +77,15 @@ class _AboutViewState extends State<AboutView> with TickerProviderStateMixin {
           left: 0,
           child: Column(
             children: [
-              Hero(
-                tag: 'about',
-                child: Image.asset(
-                  "assets/images/favicon_applets.png",
-                  scale: 2.0,
+              SizedBox(
+                width: 100,
+                height: 100,
+                child: Hero(
+                  tag: 'about',
+                  child: Image.asset(
+                    "assets/images/favicon_applets.png",
+                    scale: 2.0,
+                  ),
                 ),
               ),
               Padding(
