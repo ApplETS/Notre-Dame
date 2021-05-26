@@ -77,11 +77,15 @@ class _AboutViewState extends State<AboutView> with TickerProviderStateMixin {
           left: 0,
           child: Column(
             children: [
-              Hero(
-                tag: 'about',
-                child: Image.asset(
-                  "assets/images/favicon_applets.png",
-                  scale: 2.0,
+              SizedBox(
+                width: 100,
+                height: 100,
+                child: Hero(
+                  tag: 'about',
+                  child: Image.asset(
+                    "assets/images/favicon_applets.png",
+                    scale: 2.0,
+                  ),
                 ),
               ),
               Padding(
@@ -96,19 +100,24 @@ class _AboutViewState extends State<AboutView> with TickerProviderStateMixin {
                 children: [
                   IconButton(
                       icon: Image.asset("assets/images/website_white.png"),
-                      onPressed: () => Utils.launchURL(Urls.clubWebsite, AppIntl.of(context))),
+                      onPressed: () => Utils.launchURL(
+                          Urls.clubWebsite, AppIntl.of(context))),
                   IconButton(
                       icon: Image.asset("assets/images/github_white.png"),
-                      onPressed: () => Utils.launchURL(Urls.clubGithub, AppIntl.of(context))),
+                      onPressed: () => Utils.launchURL(
+                          Urls.clubGithub, AppIntl.of(context))),
                   IconButton(
                       icon: Image.asset("assets/images/facebook_white.png"),
-                      onPressed: () => Utils.launchURL(Urls.clubFacebook, AppIntl.of(context))),
+                      onPressed: () => Utils.launchURL(
+                          Urls.clubFacebook, AppIntl.of(context))),
                   IconButton(
                       icon: Image.asset("assets/images/twitter_white.png"),
-                      onPressed: () => Utils.launchURL(Urls.clubTwitter, AppIntl.of(context))),
+                      onPressed: () => Utils.launchURL(
+                          Urls.clubTwitter, AppIntl.of(context))),
                   IconButton(
                       icon: Image.asset("assets/images/youtube_white.png"),
-                      onPressed: () => Utils.launchURL(Urls.clubYoutube, AppIntl.of(context))),
+                      onPressed: () => Utils.launchURL(
+                          Urls.clubYoutube, AppIntl.of(context))),
                 ],
               ),
             ],
