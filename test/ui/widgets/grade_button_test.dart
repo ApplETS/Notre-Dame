@@ -1,8 +1,6 @@
 // FLUTTER / DART / THIRD-PARTIES
-import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:feature_discovery/feature_discovery.dart';
 import 'package:mockito/mockito.dart';
 
 // MODELS
@@ -11,7 +9,6 @@ import 'package:notredame/core/models/course_summary.dart';
 
 // SERVICE
 import 'package:notredame/core/services/navigation_service.dart';
-import 'package:notredame/ui/widgets/bottom_bar.dart';
 
 // OTHERS
 import 'package:notredame/core/constants/router_paths.dart';
@@ -112,56 +109,37 @@ void main() {
       });
     });
 
-    group('navigate when tapped to - ', () {
-      testWidgets('dashboard', (WidgetTester tester) async {
-        await tester.pumpWidget(
-            localizedWidget(child: FeatureDiscovery(child: BottomBar())));
+    group('navigate when tapped to grade button - ', () {
+      testWidgets('Display acronym of the course and the current grade ', (WidgetTester tester) async {
+        await tester
+            .pumpWidget(localizedWidget(child: GradeButton(courseWithGrade)));
         await tester.pumpAndSettle();
 
-        await tester.tap(find.byIcon(Icons.dashboard));
+        await tester.tap(find.text(courseWithGrade.acronym));
 
-        verify(_navigationService.pushNamed(RouterPaths.dashboard));
+        verify(_navigationService.pushNamed(RouterPaths.gradeDetails, arguments: courseWithGrade));
       });
 
-      testWidgets('schedule', (WidgetTester tester) async {
+      testWidgets('Grade not available and summary is loaded ', (WidgetTester tester) async {
         await tester.pumpWidget(
-            localizedWidget(child: FeatureDiscovery(child: BottomBar())));
+            localizedWidget(child: GradeButton(courseWithSummary)));
         await tester.pumpAndSettle();
 
-        await tester.tap(find.byIcon(Icons.schedule));
+        await tester.tap(find.text(courseWithGrade.acronym));
 
-        verify(_navigationService.pushNamed(RouterPaths.schedule));
+        verify(_navigationService.pushNamed(RouterPaths.gradeDetails, arguments: courseWithSummary));
       });
 
-      testWidgets('student', (WidgetTester tester) async {
+      testWidgets('Grade and summary not available. ', (WidgetTester tester) async {
         await tester.pumpWidget(
-            localizedWidget(child: FeatureDiscovery(child: BottomBar())));
+            localizedWidget(child: GradeButton(gradesNotAvailable)));
         await tester.pumpAndSettle();
 
-        await tester.tap(find.byIcon(Icons.school));
+        await tester.tap(find.text(courseWithGrade.acronym));
 
-        verify(_navigationService.pushNamed(RouterPaths.student));
+        verify(_navigationService.pushNamed(RouterPaths.gradeDetails, arguments: gradesNotAvailable));
       });
 
-      testWidgets('ets', (WidgetTester tester) async {
-        await tester.pumpWidget(
-            localizedWidget(child: FeatureDiscovery(child: BottomBar())));
-        await tester.pumpAndSettle();
-
-        await tester.tap(find.byIcon(Icons.account_balance));
-
-        verify(_navigationService.pushNamed(RouterPaths.ets));
-      });
-
-      testWidgets('more', (WidgetTester tester) async {
-        await tester.pumpWidget(
-            localizedWidget(child: FeatureDiscovery(child: BottomBar())));
-        await tester.pumpAndSettle();
-
-        await tester.tap(find.byIcon(Icons.dehaze));
-
-        verify(_navigationService.pushNamed(RouterPaths.more));
-      });
     });
   });
 }
