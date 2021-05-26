@@ -135,6 +135,14 @@ jobs:
           distribution: 'adopt'
       - run: flutter doctor -v
 
+      - name: Install iOS dependencies
+        if: matrix.target == 'iOS'
+        run: |
+          cd ios
+          rm Podfile.lock
+          pod install --repo-update
+          flutter clean
+
       # Get dependencies and decrypt needed files.
       - run: flutter pub get
       - name: Decrypt certificates files
