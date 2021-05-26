@@ -56,8 +56,6 @@ jobs:
           java-version: '11'
       - uses: subosito/flutter-action@v1.5.0
       - run: flutter doctor
-      - name: Install OpenSSL
-        run: sudo apt-get install openssl
       - name: Decrypt certificates files
         run: |
           chmod +x ./scripts/decrypt.sh
@@ -102,54 +100,43 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           branch: ${{ github.head_ref }}
 
-  androidBuildWorkflow:
-    name: Build the application for Android
-    needs: [validationWorkflow, tagValidation]
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-java@v2
-        with:
-          distribution: 'adopt'
-          java-version: '11'
-      - uses: subosito/flutter-action@v1.5.0
-      - run: flutter doctor
-      - name: Install OpenSSL
-        run: sudo apt-get install openssl
-      - name: Decrypt certificates files
-        run: |
-          chmod +x ./scripts/decrypt.sh
-          ./scripts/decrypt.sh
-        env:
-          ENCRYPTED_SIGNETS_API_CERT_PASSWORD: ${{ secrets.ENCRYPTED_SIGNETS_API_CERT_PASSWORD }}
-
-      # Get flutter dependencies.
-      - run: flutter pub get
-
-      - name: Build appbundle for Android
-        run: flutter build -v appbundle
-
-
-# Disable for now
-#      - name: Create release
-#        if: "${{ github.event_name == 'push' }}"
-#        uses: marvinpinto/action-automatic-releases@latest
-#        with:
-#          repo_token: ${{ secrets.GITHUB_TOKEN }}
-#          draft: true
-#          automatic_release_tag: ${{ needs.tagValidation.outputs.version }}
-#          title: v${{ needs.tagValidation.outputs.version }}
-#          files: |
-#            build/app/outputs/bundle/release/app-release.aab
-
-  iosBuildWorkflow:
-    name: Build the application for iOS
+  create-build:
+    name: Create ${{ matrix.target }} build
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        target: [ iOS, Android ]
+        include:
+          - os: macos-latest
+            target: iOS
+            build_target: ios
+            build_args: --no-codesign
+            build_path: build/macos/Build/Products/Release
+            asset_extension: .zip
+            asset_content_type: application/zip
+          - os: ubuntu-latest
+            target: Android
+            build_target: appbundle
+            build_args: ''
+            build_path: build/app/outputs/bundle/release
+            asset_extension: .aab
+            asset_content_type: application/zip
+      # Disable fail-fast as we want results from all even if one fails.
+      fail-fast: false
     needs: [ validationWorkflow, tagValidation]
-    runs-on: macos-latest
     steps:
       - uses: actions/checkout@v2
       - uses: subosito/flutter-action@v1.5.0
-      - run: flutter doctor
+      - name: Install Android dependencies
+        if: matrix.target == 'Android'
+        uses: actions/setup-java@v2
+        with:
+          java-version: '11'
+          distribution: 'adopt'
+      - run: flutter doctor -v
+
+      # Get dependencies and decrypt needed files.
+      - run: flutter pub get
       - name: Decrypt certificates files
         run: |
           chmod +x ./scripts/decrypt.sh
@@ -157,8 +144,5 @@ jobs:
         env:
           ENCRYPTED_SIGNETS_API_CERT_PASSWORD: ${{ secrets.ENCRYPTED_SIGNETS_API_CERT_PASSWORD }}
 
-      # Get flutter dependencies.
-      - run: flutter pub get
-
-      - name: Build archive
-        run: flutter build -v ios --release --no-codesign
+      # Build the application.
+      - run: flutter build -v ${{ matrix.build_target }} ${{ matrix.build_args }} --release
