@@ -192,6 +192,7 @@ void main() {
         verifyInOrder([
           courseRepository.sessions,
           courseRepository.activeSessions,
+          courseRepository.activeSessions,
           courseRepository.getCourses(fromCacheOnly: true),
           courseRepository.getCourses(),
         ]);
@@ -234,6 +235,7 @@ void main() {
 
         verifyInOrder([
           courseRepository.sessions,
+          courseRepository.activeSessions,
           courseRepository.activeSessions,
           courseRepository.getCourses(fromCacheOnly: true),
           courseRepository.getCourses(),
