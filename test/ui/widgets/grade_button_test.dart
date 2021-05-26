@@ -109,8 +109,8 @@ void main() {
       });
     });
 
-    group('navigate when tapped to grade button - ', () {
-      testWidgets('Display acronym of the course and the current grade ', (WidgetTester tester) async {
+    group('Interactions - ', () {
+      testWidgets('Grade button redirects to grades view when tapped ', (WidgetTester tester) async {
         await tester
             .pumpWidget(localizedWidget(child: GradeButton(courseWithGrade)));
         await tester.pumpAndSettle();
@@ -118,26 +118,6 @@ void main() {
         await tester.tap(find.text(courseWithGrade.acronym));
 
         verify(_navigationService.pushNamed(RouterPaths.gradeDetails, arguments: courseWithGrade));
-      });
-
-      testWidgets('Grade not available and summary is loaded ', (WidgetTester tester) async {
-        await tester.pumpWidget(
-            localizedWidget(child: GradeButton(courseWithSummary)));
-        await tester.pumpAndSettle();
-
-        await tester.tap(find.text(courseWithGrade.acronym));
-
-        verify(_navigationService.pushNamed(RouterPaths.gradeDetails, arguments: courseWithSummary));
-      });
-
-      testWidgets('Grade and summary not available. ', (WidgetTester tester) async {
-        await tester.pumpWidget(
-            localizedWidget(child: GradeButton(gradesNotAvailable)));
-        await tester.pumpAndSettle();
-
-        await tester.tap(find.text(courseWithGrade.acronym));
-
-        verify(_navigationService.pushNamed(RouterPaths.gradeDetails, arguments: gradesNotAvailable));
       });
 
     });
