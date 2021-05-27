@@ -182,7 +182,6 @@ jobs:
 
       # Upload the build.
       - name: Add packaged build to release draft
-        if:
         id: upload_release_asset
         uses: actions/upload-release-asset@v1
         env:
