@@ -48,6 +48,7 @@ void main() {
           DateTime.now().year, DateTime.now().month, DateTime.now().day, 9),
       endDateTime: DateTime(
           DateTime.now().year, DateTime.now().month, DateTime.now().day, 12));
+
   final gen102 = CourseActivity(
       courseGroup: "GEN102",
       courseName: "Generic course",
@@ -58,6 +59,7 @@ void main() {
           DateTime.now().year, DateTime.now().month, DateTime.now().day, 13),
       endDateTime: DateTime(
           DateTime.now().year, DateTime.now().month, DateTime.now().day, 16));
+
   final gen103 = CourseActivity(
       courseGroup: "GEN103",
       courseName: "Generic course",
@@ -446,11 +448,7 @@ void main() {
 
         // Find Dismissible Cards
         expect(find.byType(Dismissible), findsNWidgets(numberOfCards));
-        expect(
-            find.descendant(
-              of: find.byType(Dismissible),
-              matching: find.text(intl.title_schedule),
-            ),
+        expect(find.widgetWithText(Dismissible, intl.title_schedule),
             findsOneWidget);
 
         // Swipe Dismissible schedule Card horizontally
@@ -461,11 +459,7 @@ void main() {
         await tester.pumpAndSettle();
 
         expect(find.byType(Dismissible), findsNWidgets(numberOfCards - 1));
-        expect(
-            find.descendant(
-              of: find.byType(Dismissible),
-              matching: find.text(intl.title_schedule),
-            ),
+        expect(find.widgetWithText(Dismissible, intl.title_schedule),
             findsNothing);
 
         // Tap the restoreCards button
@@ -475,11 +469,7 @@ void main() {
 
         // Check that the card is now present in the view
         expect(find.byType(Dismissible), findsNWidgets(numberOfCards));
-        expect(
-            find.descendant(
-              of: find.byType(Dismissible),
-              matching: find.text(intl.title_schedule),
-            ),
+        expect(find.widgetWithText(Dismissible, intl.title_schedule),
             findsOneWidget);
       });
 
