@@ -1,6 +1,7 @@
 // FLUTTER / DART / THIRD-PARTIES
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:mockito/mockito.dart';
 
 // MODELS
 import 'package:notredame/core/models/course.dart';
@@ -8,6 +9,9 @@ import 'package:notredame/core/models/course_summary.dart';
 
 // SERVICE
 import 'package:notredame/core/services/navigation_service.dart';
+
+// OTHERS
+import 'package:notredame/core/constants/router_paths.dart';
 
 // WIDGET
 import 'package:notredame/ui/widgets/grade_button.dart';
@@ -17,6 +21,7 @@ import '../../helpers.dart';
 
 void main() {
   AppIntl intl;
+  NavigationService _navigationService;
 
   final Course courseWithGrade = Course(
       acronym: 'GEN101',
@@ -55,6 +60,8 @@ void main() {
   group("GradeButton -", () {
     setUp(() async {
       intl = await setupAppIntl();
+      setupNavigationServiceMock();
+      _navigationService = setupNavigationServiceMock();
     });
 
     tearDown(() {
@@ -65,7 +72,7 @@ void main() {
       testWidgets("Display acronym of the course and the current grade",
           (WidgetTester tester) async {
         await tester
-            .pumpWidget(localizedWidget(child: GradeButton(courseWithGrade, null)));
+            .pumpWidget(localizedWidget(child: GradeButton(courseWithGrade)));
         await tester.pumpAndSettle();
 
         expect(find.text(courseWithGrade.acronym), findsOneWidget);
@@ -75,7 +82,7 @@ void main() {
       testWidgets("Grade not available and summary is loaded.",
           (WidgetTester tester) async {
         await tester
-            .pumpWidget(localizedWidget(child: GradeButton(courseWithSummary, null)));
+            .pumpWidget(localizedWidget(child: GradeButton(courseWithSummary)));
         await tester.pumpAndSettle();
 
         expect(find.text(courseWithGrade.acronym), findsOneWidget);
@@ -91,7 +98,7 @@ void main() {
       testWidgets("Grade and summary not available.",
           (WidgetTester tester) async {
         await tester.pumpWidget(
-            localizedWidget(child: GradeButton(gradesNotAvailable, null)));
+            localizedWidget(child: GradeButton(gradesNotAvailable)));
         await tester.pumpAndSettle();
 
         expect(find.text(courseWithGrade.acronym), findsOneWidget);
@@ -100,6 +107,19 @@ void main() {
                 'There is no grade available and the course summary doesnt exists '
                 'so "N/A" should be displayed');
       });
+    });
+
+    group('Interactions - ', () {
+      testWidgets('Grade button redirects to grades view when tapped ', (WidgetTester tester) async {
+        await tester
+            .pumpWidget(localizedWidget(child: GradeButton(courseWithGrade)));
+        await tester.pumpAndSettle();
+
+        await tester.tap(find.text(courseWithGrade.acronym));
+
+        verify(_navigationService.pushNamed(RouterPaths.gradeDetails, arguments: courseWithGrade));
+      });
+
     });
   });
 }

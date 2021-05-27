@@ -8,6 +8,7 @@ import 'package:notredame/core/constants/preferences_flags.dart';
 // MANAGERS
 import 'package:notredame/core/managers/course_repository.dart';
 import 'package:notredame/core/managers/settings_manager.dart';
+import 'package:notredame/core/models/course.dart';
 
 // MODEL
 import 'package:notredame/core/models/session.dart';
@@ -69,25 +70,46 @@ void main() {
   // Needed to support FlutterToast.
   TestWidgetsFlutterBinding.ensureInitialized();
 
+  // Courses
+  final Course courseSummer = Course(
+      acronym: 'GEN101',
+      group: '02',
+      session: 'É2020',
+      programCode: '999',
+      grade: 'C+',
+      numberOfCredits: 3,
+      title: 'Cours générique');
+
+  final Course courseSummer2 = Course(
+      acronym: 'GEN106',
+      group: '02',
+      session: 'É2020',
+      programCode: '999',
+      grade: 'C+',
+      numberOfCredits: 3,
+      title: 'Cours générique');
+
+  final courses = [courseSummer, courseSummer2];
+
   // Cards
   final Map<PreferencesFlag, int> dashboard = {
     PreferencesFlag.aboutUsCard: 0,
     PreferencesFlag.scheduleCard: 1,
-    PreferencesFlag.progressBarCard: 2
+    PreferencesFlag.progressBarCard: 2,
   };
 
   // Reorderered Cards
   final Map<PreferencesFlag, int> reorderedDashboard = {
     PreferencesFlag.aboutUsCard: 1,
     PreferencesFlag.scheduleCard: 2,
-    PreferencesFlag.progressBarCard: 0
+    PreferencesFlag.progressBarCard: 0,
   };
 
   // Reorderered Cards with hidden scheduleCard
   final Map<PreferencesFlag, int> hiddenCardDashboard = {
     PreferencesFlag.aboutUsCard: 0,
     PreferencesFlag.scheduleCard: -1,
-    PreferencesFlag.progressBarCard: 1
+    PreferencesFlag.progressBarCard: 1,
   };
 
   // Session
@@ -109,6 +131,7 @@ void main() {
   group("DashboardViewModel - ", () {
     setUp(() async {
       // Setting up mocks
+      courseRepository = setupCourseRepositoryMock();
       settingsManager = setupSettingsManagerMock();
       preferenceService = setupPreferencesServiceMock();
       courseRepository = setupCourseRepositoryMock();
@@ -136,6 +159,90 @@ void main() {
     tearDown(() {
       unregister<SettingsManager>();
       tearDownFlutterToastMock();
+    });
+
+    group('futureToRunGrades -', () {
+      test('first load from cache than call SignetsAPI to get the courses',
+          () async {
+        CourseRepositoryMock.stubSessions(
+            courseRepository as CourseRepositoryMock,
+            toReturn: [session]);
+        CourseRepositoryMock.stubGetSessions(
+            courseRepository as CourseRepositoryMock,
+            toReturn: [session]);
+        CourseRepositoryMock.stubActiveSessions(
+            courseRepository as CourseRepositoryMock,
+            toReturn: [session]);
+        CourseRepositoryMock.stubGetCourses(
+            courseRepository as CourseRepositoryMock,
+            toReturn: courses,
+            fromCacheOnly: true);
+
+        CourseRepositoryMock.stubGetCourses(
+            courseRepository as CourseRepositoryMock,
+            toReturn: courses);
+
+        expect(await viewModel.futureToRunGrades(), courses);
+
+        await untilCalled(courseRepository.sessions);
+        await untilCalled(courseRepository.sessions);
+
+        expect(viewModel.courses, courses);
+
+        verifyInOrder([
+          courseRepository.sessions,
+          courseRepository.activeSessions,
+          courseRepository.activeSessions,
+          courseRepository.getCourses(fromCacheOnly: true),
+          courseRepository.getCourses(),
+        ]);
+
+        verifyNoMoreInteractions(courseRepository);
+      });
+
+      test('Signets throw an error while trying to get courses', () async {
+        CourseRepositoryMock.stubSessions(
+            courseRepository as CourseRepositoryMock,
+            toReturn: [session]);
+        CourseRepositoryMock.stubGetSessions(
+            courseRepository as CourseRepositoryMock,
+            toReturn: [session]);
+        CourseRepositoryMock.stubActiveSessions(
+            courseRepository as CourseRepositoryMock,
+            toReturn: [session]);
+
+        CourseRepositoryMock.stubGetCourses(
+            courseRepository as CourseRepositoryMock,
+            toReturn: courses,
+            fromCacheOnly: true);
+
+        CourseRepositoryMock.stubGetCoursesException(
+            courseRepository as CourseRepositoryMock,
+            fromCacheOnly: false);
+
+        CourseRepositoryMock.stubGetCourses(
+            courseRepository as CourseRepositoryMock,
+            toReturn: courses);
+
+        expect(await viewModel.futureToRunGrades(), courses,
+            reason:
+                "Even if SignetsAPI call fails, should return the cache contents");
+
+        await untilCalled(courseRepository.sessions);
+        await untilCalled(courseRepository.sessions);
+
+        expect(viewModel.courses, courses);
+
+        verifyInOrder([
+          courseRepository.sessions,
+          courseRepository.activeSessions,
+          courseRepository.activeSessions,
+          courseRepository.getCourses(fromCacheOnly: true),
+          courseRepository.getCourses(),
+        ]);
+
+        verifyNoMoreInteractions(courseRepository);
+      });
     });
 
     group("futureToRun - ", () {

@@ -17,6 +17,9 @@ import 'package:notredame/core/managers/course_repository.dart';
 import 'package:notredame/core/models/session.dart';
 import 'package:notredame/core/models/course_activity.dart';
 
+// CORE
+import 'package:notredame/core/models/course.dart';
+
 // UTILS
 import 'package:notredame/ui/utils/discovery_components.dart';
 
@@ -95,6 +98,9 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
     }
   }
 
+  /// List of courses for the current session
+  final List<Course> courses = [];
+
   DashboardViewModel({@required AppIntl intl}) : _appIntl = intl;
 
   @override
@@ -169,6 +175,9 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
           }
           if (key == PreferencesFlag.progressBarCard) {
             futureToRunSessionProgressBar();
+          }
+          if (key == PreferencesFlag.gradesCard) {
+            futureToRunGrades();
           }
         }
       });
@@ -245,5 +254,48 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
       FeatureDiscovery.discoverFeatures(context, ids);
       _settingsManager.setString(PreferencesFlag.discovery, 'true');
     }
+  }
+
+  /// Get the list of courses for the Grades card.
+  Future<List<Course>> futureToRunGrades() async {
+    setBusyForObject(courses, true);
+    if (_courseRepository.sessions == null) {
+      // ignore: return_type_invalid_for_catch_error
+      await _courseRepository.getSessions().catchError(onError);
+    }
+
+    // Determine current sessions
+    if (_courseRepository.activeSessions.isEmpty) {
+      // ignore: return_type_invalid_for_catch_error
+      await _courseRepository.getSessions().catchError(onError);
+    }
+    final currentSession = _courseRepository.activeSessions.first;
+
+    return _courseRepository.getCourses(fromCacheOnly: true).then(
+        (coursesCached) {
+      courses.clear();
+      for (final Course course in coursesCached) {
+        if (course.session == currentSession.shortName) {
+          courses.add(course);
+        }
+      }
+      notifyListeners();
+      // ignore: return_type_invalid_for_catch_error
+      _courseRepository.getCourses().catchError(onError).then((value) {
+        if (value != null) {
+          // Update the courses list
+          courses.clear();
+          for (final Course course in value) {
+            if (course.session == currentSession.shortName) {
+              courses.add(course);
+            }
+          }
+        }
+      }).whenComplete(() {
+        setBusyForObject(courses, false);
+      });
+
+      return courses;
+    }, onError: onError);
   }
 }
