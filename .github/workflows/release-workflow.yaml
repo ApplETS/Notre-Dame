@@ -1,0 +1,194 @@
+name: Main workflow
+on:
+  push:
+    branches:
+      - master
+    paths-ignore:
+      - '.gitignore'
+      - '.metadata'
+      - 'README.md'
+      - '.github/**'
+env:
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  MAPS_API_KEY: ${{ secrets.MAPS_API_KEY }}
+  GITHUB_API_TOKEN: ${{ secrets.GITHUB_API_TOKEN }}
+jobs:
+  tagValidation:
+    name: Tag validation
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.split.outputs._0 }}
+    steps:
+      - uses: actions/checkout@v2
+      - name: Get the version from the pubspec
+        id: pubspecVersion
+        uses: CumulusDS/get-yaml-paths-action@v0.1.0
+        with:
+          file: pubspec.yaml
+          version: version
+      - uses: jungwinter/split@v1
+        id: split
+        with:
+          msg: ${{ steps.pubspecVersion.outputs.version }}
+          seperator: '+'
+      - name: Validate that version doesn't exists
+        uses: mukunku/tag-exists-action@v1.0.0
+        id: checkTag
+        with:
+          tag: ${{ steps.split.outputs._0 }}
+
+  validationWorkflow:
+    name: Tests and checks
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0 # Needed to push to refs
+      - uses: actions/setup-java@v2
+        with:
+          distribution: 'adopt'
+          java-version: '11'
+      - uses: subosito/flutter-action@v1.5.0
+      - run: flutter doctor
+      - name: Decrypt certificates files
+        run: |
+          chmod +x ./scripts/decrypt.sh
+          ./scripts/decrypt.sh
+        env:
+          ENCRYPTED_SIGNETS_API_CERT_PASSWORD: ${{ secrets.ENCRYPTED_SIGNETS_API_CERT_PASSWORD }}
+
+      # Get flutter dependencies.
+      - run: flutter pub get
+
+      # Check the format of the code and check if the code has any errors/warnings
+      - run: flutter format --set-exit-if-changed .
+      - run: flutter analyze
+
+      # Run the tests
+      - run: flutter test --coverage
+
+      - name: Commit coverage file
+        id: commit
+        run: |
+          git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          mv coverage/lcov.info coverage/lcov.base.info
+          git add coverage/lcov.base.info
+          if git status | grep coverage/lcov.base.info; then
+            git commit -m "Update coverage file" -a
+            echo "::set-output name=is_commit::true"
+          fi
+      - name: Push coverage changes.
+        if: ${{ github.event_name == 'push' && steps.commit.is_commit}}
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: ${{ github.head_ref }}
+
+  draft-release:
+    name: Draft Github release
+    needs: [ tagValidation, validationWorkflow ]
+    runs-on: ubuntu-20.04
+    outputs:
+      upload_url: ${{ steps.create_release.outputs.upload_url }}
+    steps:
+      - name: Create draft release
+        uses: marvinpinto/action-automatic-releases@latest
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          draft: true
+          automatic_release_tag: ${{ needs.tagValidation.outputs.version }}
+          title: v${{ needs.tagValidation.outputs.version }}
+
+  create-build:
+    name: Create ${{ matrix.target }} build
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        target: [ iOS, Android ]
+        include:
+          - os: macos-latest
+            target: iOS
+            build_target: ios
+            build_args: --no-codesign
+            build_path: build/macos/Build/Products/Release
+            asset_extension: .zip
+            asset_content_type: application/zip
+          - os: ubuntu-latest
+            target: Android
+            build_target: appbundle
+            build_args: ''
+            build_path: build/app/outputs/bundle/release
+            asset_extension: .aab
+            asset_content_type: application/zip
+      # Disable fail-fast as we want results from all even if one fails.
+      fail-fast: false
+    needs: [ tagValidation, validationWorkflow, draft-release]
+    steps:
+      - uses: actions/checkout@v2
+      - uses: subosito/flutter-action@v1.5.0
+      - name: Install Android dependencies
+        if: matrix.target == 'Android'
+        uses: actions/setup-java@v2
+        with:
+          java-version: '11'
+          distribution: 'adopt'
+      - run: flutter doctor -v
+      - name: Install iOS dependencies
+        if: matrix.target == 'iOS'
+        run: |
+          flutter pub get
+          cd ios
+          rm Podfile.lock
+          pod install --repo-update
+          flutter clean
+
+      # Get dependencies and decrypt needed files.
+      - run: flutter pub get
+      - name: Decrypt certificates files
+        run: |
+          chmod +x ./scripts/decrypt.sh
+          ./scripts/decrypt.sh
+        env:
+          ENCRYPTED_SIGNETS_API_CERT_PASSWORD: ${{ secrets.ENCRYPTED_SIGNETS_API_CERT_PASSWORD }}
+
+      #      - name: Configure Keystore for Android
+      #        if: matrix.target == 'Android'
+      #        run: |
+      #          echo "$PLAY_STORE_UPLOAD_KEY" | base64 --decode > app/upload-keystore.jks
+      #          echo "storeFile=upload-keystore.jks" >> key.properties
+      #          echo "keyAlias=$KEYSTORE_KEY_ALIAS" >> key.properties
+      #          echo "storePassword=$KEYSTORE_STORE_PASSWORD" >> key.properties
+      #          echo "keyPassword=$KEYSTORE_KEY_PASSWORD" >> key.properties
+      #        env:
+      #          PLAY_STORE_UPLOAD_KEY: ${{ secrets.PLAY_STORE_UPLOAD_KEY }}
+      #          KEYSTORE_KEY_ALIAS: ${{ secrets.ANDROID_SIGNING_KEYSTORE_ALIAS }}
+      #          KEYSTORE_KEY_PASSWORD: ${{ secrets.ANDROID_SIGNING_KEYSTORE_PASSWORD }}
+      #          KEYSTORE_STORE_PASSWORD: ${{ secrets.KEYSTORE_STORE_PASSWORD }}
+      #        working-directory: android
+
+      # Build the application.
+      - run: flutter build -v ${{ matrix.build_target }} --release
+
+      # Package the build.
+      - name: Rename build for Android
+        if: matrix.target == 'Android' && github.event_name == 'push'
+        run: mv app-release.aab $GITHUB_WORKSPACE/notre_dame_${{ needs.tagValidation.outputs.version }}.aab
+        working-directory: ${{ matrix.build_path }}
+      - name: Compress build for iOS
+        if: matrix.target == 'iOS'
+        run: ditto -c -k --sequesterRsrc --keepParent Flutter\ Gallery.app $GITHUB_WORKSPACE/flutter_gallery_${{ matrix.target }}.zip
+        working-directory: ${{ matrix.build_path }}
+
+      # Upload the build.
+      - name: Add packaged build to release draft
+        if:
+        id: upload_release_asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ needs.draft-release.outputs.upload_url }}
+          asset_path: ./notre_dame_${{ needs.tagValidation.outputs.version }}${{ matrix.asset_extension }}
+          asset_name: notre_dame_${{ needs.tagValidation.outputs.version }}
+          asset_content_type: ${{ matrix.asset_content_type }}
