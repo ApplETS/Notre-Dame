@@ -253,6 +253,7 @@ class _DashboardViewState extends State<DashboardView>
   /// Build the list of the events for the selected day.
   Widget _buildEventList(List<dynamic> events) {
     return ListView.separated(
+        physics: const NeverScrollableScrollPhysics(),
         shrinkWrap: true,
         padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
         itemBuilder: (_, index) =>
