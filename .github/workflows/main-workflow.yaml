@@ -111,7 +111,7 @@ jobs:
             target: iOS
             build_target: ios
             build_args: --no-codesign
-            build_path: build/macos/Build/Products/Release
+            build_path: build/ios/iphoneos
             asset_extension: .zip
             asset_content_type: application/zip
           - os: ubuntu-latest
@@ -123,7 +123,7 @@ jobs:
             asset_content_type: application/zip
       # Disable fail-fast as we want results from all even if one fails.
       fail-fast: false
-    needs: [ validationWorkflow, tagValidation]
+    needs: [ validationWorkflow, tagValidation ]
     steps:
       - uses: actions/checkout@v2
       - uses: subosito/flutter-action@v1.5.0
@@ -145,6 +145,7 @@ jobs:
 
       # Get dependencies and decrypt needed files.
       - run: flutter pub get
+
       - name: Decrypt certificates files
         run: |
           chmod +x ./scripts/decrypt.sh
@@ -153,4 +154,50 @@ jobs:
           ENCRYPTED_SIGNETS_API_CERT_PASSWORD: ${{ secrets.ENCRYPTED_SIGNETS_API_CERT_PASSWORD }}
 
       # Build the application.
-      - run: flutter build -v ${{ matrix.build_target }} ${{ matrix.build_args }} --release
+      - name: Build the application
+        run: flutter build -v ${{ matrix.build_target }} ${{ matrix.build_args }} --release
+
+      - name: Rename Android build
+        if: matrix.target == 'Android'
+        run: mv app-release.aab $GITHUB_WORKSPACE/notre_dame_${{ matrix.target }}_${{ needs.tagValidation.outputs.version }}.aab
+        working-directory: ${{ matrix.build_path }}
+
+      - name: Compress iOS build
+        if: matrix.target == 'iOS'
+        run: |
+          mv Runner.app NotreDame.app
+          ditto -c -k --sequesterRsrc --keepParent NotreDame.app $GITHUB_WORKSPACE/notre_dame_${{ matrix.target }}_${{ needs.tagValidation.outputs.version }}.${{ matrix.asset_extension }}
+        working-directory: ${{ matrix.build_path }}
+
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: ${{ matrix.target }}
+          path: $GITHUB_WORKSPACE/notre_dame_${{ matrix.target }}_${{ needs.tagValidation.outputs.version }}.${{ matrix.asset_extension }}
+
+  create-draft-release:
+    name: Draft Github release
+    if: ${{ github.event_name == 'push' }}
+    needs: [ tagValidation, validationWorkflow, create-build ]
+    runs-on: ubuntu-20.04
+    outputs:
+      upload_url: ${{ steps.create_release.outputs.upload_url }}
+    steps:
+      - name: Download iOS build
+        uses: actions/download-artifact@v2
+          with:
+            name: iOS
+      - name: Download Android build
+          uses: actions/download-artifact@v2
+            with:
+              name: Android
+      - name: Create draft release
+        uses: marvinpinto/action-automatic-releases@latest
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          draft: true
+          automatic_release_tag: ${{ needs.tagValidation.outputs.version }}
+          title: v${{ needs.tagValidation.outputs.version }}
+          files: |
+            notre_dame_Android_${{ needs.tagValidation.outputs.version }}.aab
+            notre_dame_iOS_${{ needs.tagValidation.outputs.version }}.zip
