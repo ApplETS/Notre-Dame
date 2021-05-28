@@ -2,23 +2,32 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+//CONSTANTS
+import 'package:notredame/core/constants/router_paths.dart';
+
 // MODEL
 import 'package:notredame/core/models/course.dart';
-import 'package:notredame/core/viewmodels/grades_viewmodel.dart';
+
+//OTHER
+import 'package:notredame/core/services/navigation_service.dart';
+import 'package:notredame/locator.dart';
 
 // CONSTANT
 import 'package:notredame/ui/utils/app_theme.dart';
 
 class GradeButton extends StatelessWidget {
   final Course course;
-  final GradesViewModel model;
 
-  const GradeButton(this.course, this.model);
+  /// Used to redirect on the dashboard.
+  final NavigationService _navigationService = locator<NavigationService>();
+
+  GradeButton(this.course);
 
   @override
   Widget build(BuildContext context) => Card(
         child: InkWell(
-            onTap: () => model.navigateToGradeDetails(course),
+            onTap: () => _navigationService.pushNamed(RouterPaths.gradeDetails,
+                arguments: course),
             child: SizedBox(
               height: 68,
               width: 68,

@@ -9,15 +9,18 @@ import 'package:notredame/core/managers/course_repository.dart';
 import 'package:notredame/core/managers/settings_manager.dart';
 
 // MODELS
+import 'package:notredame/core/models/course.dart';
 import 'package:notredame/core/models/session.dart';
 
 // VIEW
 import 'package:notredame/ui/views/dashboard_view.dart';
-
-// WIDGETS
 import 'package:notredame/ui/widgets/course_activity_tile.dart';
+import 'package:notredame/ui/widgets/grade_button.dart';
 
-// MODELS / CONSTANTS
+// VIEWMODEL
+import 'package:notredame/core/viewmodels/dashboard_viewmodel.dart';
+
+// CONSTANTS
 import 'package:notredame/core/constants/preferences_flags.dart';
 import 'package:notredame/core/models/course_activity.dart';
 
@@ -32,6 +35,7 @@ void main() {
   SettingsManager settingsManager;
   CourseRepository courseRepository;
   AppIntl intl;
+  DashboardViewModel viewModel;
 
   // Activities for today
   final gen101 = CourseActivity(
@@ -44,6 +48,7 @@ void main() {
           DateTime.now().year, DateTime.now().month, DateTime.now().day, 9),
       endDateTime: DateTime(
           DateTime.now().year, DateTime.now().month, DateTime.now().day, 12));
+
   final gen102 = CourseActivity(
       courseGroup: "GEN102",
       courseName: "Generic course",
@@ -54,6 +59,7 @@ void main() {
           DateTime.now().year, DateTime.now().month, DateTime.now().day, 13),
       endDateTime: DateTime(
           DateTime.now().year, DateTime.now().month, DateTime.now().day, 16));
+
   final gen103 = CourseActivity(
       courseGroup: "GEN103",
       courseName: "Generic course",
@@ -71,7 +77,8 @@ void main() {
   Map<PreferencesFlag, int> dashboard = {
     PreferencesFlag.aboutUsCard: 0,
     PreferencesFlag.scheduleCard: 1,
-    PreferencesFlag.progressBarCard: 2
+    PreferencesFlag.progressBarCard: 2,
+    PreferencesFlag.gradesCard: 3
   };
 
   final numberOfCards = dashboard.entries.length;
@@ -92,6 +99,44 @@ void main() {
       deadlineCancellationWithoutRefundNewStudent: DateTime(2017, 1, 12, 1, 1),
       deadlineCancellationASEQ: DateTime(2017, 1, 11, 1, 1));
 
+  final Course courseSummer = Course(
+      acronym: 'GEN101',
+      group: '02',
+      session: 'É2020',
+      programCode: '999',
+      grade: 'C+',
+      numberOfCredits: 3,
+      title: 'Cours générique');
+
+  final Course courseSummer2 = Course(
+      acronym: 'GEN102',
+      group: '02',
+      session: 'É2020',
+      programCode: '999',
+      grade: 'C+',
+      numberOfCredits: 3,
+      title: 'Cours générique');
+
+  final Course courseWinter = Course(
+      acronym: 'GEN101',
+      group: '02',
+      session: 'H2020',
+      programCode: '999',
+      grade: 'C+',
+      numberOfCredits: 3,
+      title: 'Cours générique');
+
+  final Course courseFall = Course(
+      acronym: 'GEN101',
+      group: '02',
+      session: 'A2020',
+      programCode: '999',
+      grade: 'C+',
+      numberOfCredits: 3,
+      title: 'Cours générique');
+
+  final courses = [courseSummer, courseSummer2, courseWinter, courseFall];
+
   Future<void> longPressDrag(
       WidgetTester tester, Offset start, Offset end) async {
     final TestGesture drag = await tester.startGesture(start);
@@ -109,12 +154,23 @@ void main() {
       setupNavigationServiceMock();
       courseRepository = setupCourseRepositoryMock();
 
+      CourseRepositoryMock.stubSessions(
+          courseRepository as CourseRepositoryMock,
+          toReturn: [session]);
       CourseRepositoryMock.stubGetSessions(
           courseRepository as CourseRepositoryMock,
           toReturn: [session]);
       CourseRepositoryMock.stubActiveSessions(
           courseRepository as CourseRepositoryMock,
           toReturn: [session]);
+      CourseRepositoryMock.stubCourses(
+          courseRepository as CourseRepositoryMock);
+      CourseRepositoryMock.stubGetCourses(
+          courseRepository as CourseRepositoryMock,
+          fromCacheOnly: true);
+      CourseRepositoryMock.stubGetCourses(
+          courseRepository as CourseRepositoryMock,
+          fromCacheOnly: false);
       CourseRepositoryMock.stubCoursesActivities(
           courseRepository as CourseRepositoryMock);
       CourseRepositoryMock.stubGetCoursesActivities(
@@ -123,6 +179,22 @@ void main() {
       CourseRepositoryMock.stubGetCoursesActivities(
           courseRepository as CourseRepositoryMock,
           fromCacheOnly: false);
+
+      SettingsManagerMock.stubSetInt(
+          settingsManager as SettingsManagerMock, PreferencesFlag.aboutUsCard);
+
+      SettingsManagerMock.stubSetInt(
+          settingsManager as SettingsManagerMock, PreferencesFlag.scheduleCard);
+
+      SettingsManagerMock.stubSetInt(settingsManager as SettingsManagerMock,
+          PreferencesFlag.progressBarCard);
+
+      SettingsManagerMock.stubSetInt(
+          settingsManager as SettingsManagerMock, PreferencesFlag.gradesCard);
+
+      viewModel = DashboardViewModel(intl: intl);
+
+      viewModel.todayDate = DateTime(2020);
     });
 
     tearDown(() {});
@@ -130,15 +202,6 @@ void main() {
     group('UI - ', () {
       testWidgets('Has view title restore button and cards, displayed',
           (WidgetTester tester) async {
-        CourseRepositoryMock.stubCoursesActivities(
-            courseRepository as CourseRepositoryMock);
-        CourseRepositoryMock.stubGetCoursesActivities(
-            courseRepository as CourseRepositoryMock,
-            fromCacheOnly: true);
-        CourseRepositoryMock.stubGetCoursesActivities(
-            courseRepository as CourseRepositoryMock,
-            fromCacheOnly: false);
-
         SettingsManagerMock.stubGetDashboard(
             settingsManager as SettingsManagerMock,
             toReturn: dashboard);
@@ -184,7 +247,7 @@ void main() {
         await tester.pumpAndSettle();
 
         // Find aboutUs card
-        final aboutUsCard = find.widgetWithText(Card, intl.card_applets_text);
+        final aboutUsCard = find.widgetWithText(Card, intl.card_applets_title);
         expect(aboutUsCard, findsOneWidget);
 
         // Find aboutUs card Text Paragraph
@@ -261,6 +324,9 @@ void main() {
         SettingsManagerMock.stubSetInt(settingsManager as SettingsManagerMock,
             PreferencesFlag.scheduleCard);
 
+        SettingsManagerMock.stubSetInt(
+            settingsManager as SettingsManagerMock, PreferencesFlag.gradesCard);
+
         SettingsManagerMock.stubSetInt(settingsManager as SettingsManagerMock,
             PreferencesFlag.progressBarCard);
 
@@ -269,7 +335,7 @@ void main() {
         await tester.pumpAndSettle();
 
         // Find Dismissible Cards
-        expect(find.byType(Dismissible), findsNWidgets(3));
+        expect(find.byType(Dismissible), findsNWidgets(numberOfCards));
         expect(find.text(intl.card_applets_title), findsOneWidget);
 
         // Swipe Dismissible aboutUs Card horizontally
@@ -278,7 +344,7 @@ void main() {
 
         // Check that the card is now absent from the view
         await tester.pumpAndSettle();
-        expect(find.byType(Dismissible), findsNWidgets(2));
+        expect(find.byType(Dismissible), findsNWidgets(numberOfCards - 1));
         expect(find.text(intl.card_applets_title), findsNothing);
 
         // Tap the restoreCards button
@@ -312,6 +378,9 @@ void main() {
         SettingsManagerMock.stubSetInt(settingsManager as SettingsManagerMock,
             PreferencesFlag.scheduleCard);
 
+        SettingsManagerMock.stubSetInt(
+            settingsManager as SettingsManagerMock, PreferencesFlag.gradesCard);
+
         SettingsManagerMock.stubSetInt(settingsManager as SettingsManagerMock,
             PreferencesFlag.progressBarCard);
 
@@ -320,7 +389,7 @@ void main() {
         await tester.pumpAndSettle();
 
         // Find Dismissible Cards
-        expect(find.byType(Dismissible), findsNWidgets(3));
+        expect(find.byType(Dismissible), findsNWidgets(numberOfCards));
 
         // Find aboutUs card
         expect(find.text(intl.card_applets_title), findsOneWidget);
@@ -342,7 +411,7 @@ void main() {
 
         await tester.pumpAndSettle();
 
-        expect(find.byType(Dismissible), findsNWidgets(3));
+        expect(find.byType(Dismissible), findsNWidgets(numberOfCards));
 
         // Check that the card is now in last position
         text = tester.firstWidget(find.descendant(
@@ -373,26 +442,13 @@ void main() {
             settingsManager as SettingsManagerMock,
             toReturn: dashboard);
 
-        SettingsManagerMock.stubSetInt(settingsManager as SettingsManagerMock,
-            PreferencesFlag.aboutUsCard);
-
-        SettingsManagerMock.stubSetInt(settingsManager as SettingsManagerMock,
-            PreferencesFlag.scheduleCard);
-
-        SettingsManagerMock.stubSetInt(settingsManager as SettingsManagerMock,
-            PreferencesFlag.progressBarCard);
-
         await tester.pumpWidget(localizedWidget(
             child: FeatureDiscovery(child: const DashboardView())));
         await tester.pumpAndSettle();
 
         // Find Dismissible Cards
         expect(find.byType(Dismissible), findsNWidgets(numberOfCards));
-        expect(
-            find.descendant(
-              of: find.byType(Dismissible),
-              matching: find.text(intl.title_schedule),
-            ),
+        expect(find.widgetWithText(Dismissible, intl.title_schedule),
             findsOneWidget);
 
         // Swipe Dismissible schedule Card horizontally
@@ -402,12 +458,8 @@ void main() {
         // Check that the card is now absent from the view
         await tester.pumpAndSettle();
 
-        expect(find.byType(Dismissible), findsNWidgets(2));
-        expect(
-            find.descendant(
-              of: find.byType(Dismissible),
-              matching: find.text(intl.title_schedule),
-            ),
+        expect(find.byType(Dismissible), findsNWidgets(numberOfCards - 1));
+        expect(find.widgetWithText(Dismissible, intl.title_schedule),
             findsNothing);
 
         // Tap the restoreCards button
@@ -416,13 +468,114 @@ void main() {
         await tester.pumpAndSettle();
 
         // Check that the card is now present in the view
-        expect(find.byType(Dismissible), findsNWidgets(3));
-        expect(
-            find.descendant(
-              of: find.byType(Dismissible),
-              matching: find.text(intl.title_schedule),
-            ),
+        expect(find.byType(Dismissible), findsNWidgets(numberOfCards));
+        expect(find.widgetWithText(Dismissible, intl.title_schedule),
             findsOneWidget);
+      });
+
+      group('UI - gradesCard', () {
+        testWidgets('Has card grades displayed - with no courses',
+            (WidgetTester tester) async {
+          SettingsManagerMock.stubGetDashboard(
+              settingsManager as SettingsManagerMock,
+              toReturn: dashboard);
+
+          await tester.pumpWidget(localizedWidget(
+              child: FeatureDiscovery(child: const DashboardView())));
+          await tester.pumpAndSettle();
+
+          // Find grades card
+          final gradesCard = find.widgetWithText(Card, intl.grades_title);
+          expect(gradesCard, findsOneWidget);
+
+          // Find grades card Title
+          final gradesTitle = find.text(intl.grades_title);
+          expect(gradesTitle, findsOneWidget);
+
+          // Find empty grades card
+          final gradesEmptyTitle =
+              find.text(intl.grades_msg_no_grades.split("\n").first);
+          expect(gradesEmptyTitle, findsOneWidget);
+        });
+
+        testWidgets('Has card grades displayed - with courses',
+            (WidgetTester tester) async {
+          CourseRepositoryMock.stubCourses(
+              courseRepository as CourseRepositoryMock,
+              toReturn: courses);
+          CourseRepositoryMock.stubGetCourses(
+              courseRepository as CourseRepositoryMock,
+              fromCacheOnly: true,
+              toReturn: courses);
+          CourseRepositoryMock.stubGetCourses(
+              courseRepository as CourseRepositoryMock,
+              fromCacheOnly: false,
+              toReturn: courses);
+
+          SettingsManagerMock.stubGetDashboard(
+              settingsManager as SettingsManagerMock,
+              toReturn: dashboard);
+
+          await tester.pumpWidget(localizedWidget(
+              child: FeatureDiscovery(child: const DashboardView())));
+          await tester.pumpAndSettle();
+
+          // Find grades card
+          final gradesCard = find.widgetWithText(Card, intl.grades_title);
+          expect(gradesCard, findsOneWidget);
+
+          // Find grades card Title
+          final gradesTitle = find.text(intl.grades_title);
+          expect(gradesTitle, findsOneWidget);
+
+          // Find grades buttons in the card
+          final gradesButtons = find.byType(GradeButton);
+          expect(gradesButtons, findsNWidgets(2));
+        });
+
+        testWidgets('gradesCard is dismissible and can be restored',
+            (WidgetTester tester) async {
+          SettingsManagerMock.stubSetInt(settingsManager as SettingsManagerMock,
+              PreferencesFlag.aboutUsCard);
+
+          SettingsManagerMock.stubSetInt(settingsManager as SettingsManagerMock,
+              PreferencesFlag.scheduleCard);
+
+          SettingsManagerMock.stubSetInt(settingsManager as SettingsManagerMock,
+              PreferencesFlag.progressBarCard);
+
+          SettingsManagerMock.stubSetInt(settingsManager as SettingsManagerMock,
+              PreferencesFlag.gradesCard);
+          SettingsManagerMock.stubGetDashboard(
+              settingsManager as SettingsManagerMock,
+              toReturn: dashboard);
+
+          await tester.pumpWidget(localizedWidget(
+              child: FeatureDiscovery(child: const DashboardView())));
+          await tester.pumpAndSettle();
+
+          // Find Dismissible Cards
+          expect(find.byType(Dismissible), findsNWidgets(numberOfCards));
+          expect(find.text(intl.grades_title), findsOneWidget);
+
+          // Swipe Dismissible grades Card horizontally
+          await tester.drag(find.widgetWithText(Dismissible, intl.grades_title),
+              const Offset(1000.0, 0.0));
+
+          // Check that the card is now absent from the view
+          await tester.pumpAndSettle();
+          expect(find.byType(Dismissible), findsNWidgets(numberOfCards - 1));
+          expect(find.text(intl.grades_title), findsNothing);
+
+          // Tap the restoreCards button
+          await tester.tap(find.byIcon(Icons.restore));
+
+          await tester.pumpAndSettle();
+
+          // Check that the card is now present in the view
+          expect(find.byType(Dismissible), findsNWidgets(numberOfCards));
+          expect(find.text(intl.grades_title), findsOneWidget);
+        });
       });
     });
 
@@ -456,15 +609,6 @@ void main() {
             settingsManager as SettingsManagerMock,
             toReturn: dashboard);
 
-        SettingsManagerMock.stubSetInt(settingsManager as SettingsManagerMock,
-            PreferencesFlag.aboutUsCard);
-
-        SettingsManagerMock.stubSetInt(settingsManager as SettingsManagerMock,
-            PreferencesFlag.scheduleCard);
-
-        SettingsManagerMock.stubSetInt(settingsManager as SettingsManagerMock,
-            PreferencesFlag.progressBarCard);
-
         await tester.pumpWidget(localizedWidget(
             child: FeatureDiscovery(child: const DashboardView())));
         await tester.pumpAndSettle();
@@ -495,15 +639,6 @@ void main() {
 
       testWidgets('progressBarCard is reorderable and can be restored',
           (WidgetTester tester) async {
-        SettingsManagerMock.stubSetInt(settingsManager as SettingsManagerMock,
-            PreferencesFlag.aboutUsCard);
-
-        SettingsManagerMock.stubSetInt(settingsManager as SettingsManagerMock,
-            PreferencesFlag.scheduleCard);
-
-        SettingsManagerMock.stubSetInt(settingsManager as SettingsManagerMock,
-            PreferencesFlag.progressBarCard);
-
         SettingsManagerMock.stubGetDashboard(
             settingsManager as SettingsManagerMock,
             toReturn: dashboard);
