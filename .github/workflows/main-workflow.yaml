@@ -25,11 +25,11 @@ jobs:
         uses: CumulusDS/get-yaml-paths-action@v0.1.0
         with:
           file: pubspec.yaml
-          name: version
+          version: version
       - uses: jungwinter/split@v1
         id: split
         with:
-          msg: ${{ steps.pubspecVersion.outputs.version }}
+          msg: ${{ steps.pubspecVersion.outputs.name }}
           seperator: '+'
       - name: Validate that version doesn't exists
         uses: mukunku/tag-exists-action@v1.0.0
