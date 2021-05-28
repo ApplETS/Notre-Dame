@@ -179,18 +179,18 @@ jobs:
     name: Draft Github release
     if: ${{ github.event_name == 'push' }}
     needs: [ tagValidation, validationWorkflow, create-build ]
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     outputs:
       upload_url: ${{ steps.create_release.outputs.upload_url }}
     steps:
       - name: Download iOS build
         uses: actions/download-artifact@v2
-          with:
-            name: iOS
+        with:
+          name: iOS
       - name: Download Android build
-          uses: actions/download-artifact@v2
-            with:
-              name: Android
+        uses: actions/download-artifact@v2
+        with:
+          name: Android
       - name: Create draft release
         uses: marvinpinto/action-automatic-releases@latest
         with:
