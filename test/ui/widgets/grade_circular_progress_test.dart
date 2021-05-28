@@ -22,11 +22,11 @@ void main() {
           (WidgetTester tester) async {
         await tester.pumpWidget(localizedWidget(
             child: const GradeCircularProgress(
-              1.0,
-              finalGrade: "B",
-              studentGrade: 90.0,
-              averageGrade: 85.0,
-            )));
+          1.0,
+          finalGrade: "B",
+          studentGrade: 90.0,
+          averageGrade: 85.0,
+        )));
         await tester.pumpAndSettle();
 
         final circularPercentIndicator = find.byType(CircularPercentIndicator);
@@ -37,9 +37,9 @@ void main() {
           (WidgetTester tester) async {
         await tester.pumpWidget(localizedWidget(
             child: const GradeCircularProgress(
-              1.0,
-              finalGrade: "B",
-            )));
+          1.0,
+          finalGrade: "B",
+        )));
         await tester.pumpAndSettle();
 
         final label = find.text("B");
@@ -50,9 +50,9 @@ void main() {
           (WidgetTester tester) async {
         await tester.pumpWidget(localizedWidget(
             child: const GradeCircularProgress(
-              1.0,
-              studentGrade: 90.0,
-            )));
+          1.0,
+          studentGrade: 90.0,
+        )));
         await tester.pumpAndSettle();
 
         final label = find.text("90 %");
@@ -63,9 +63,9 @@ void main() {
           (WidgetTester tester) async {
         await tester.pumpWidget(localizedWidget(
             child: const GradeCircularProgress(
-              1.0,
-              studentGrade: 90.5,
-            )));
+          1.0,
+          studentGrade: 90.5,
+        )));
         await tester.pumpAndSettle();
 
         final label = find.text("91 %");
@@ -76,9 +76,9 @@ void main() {
           (WidgetTester tester) async {
         await tester.pumpWidget(localizedWidget(
             child: const GradeCircularProgress(
-              1.0,
-              studentGrade: 0.0,
-            )));
+          1.0,
+          studentGrade: 0.0,
+        )));
         await tester.pumpAndSettle();
 
         final label = find.text("0 %");
