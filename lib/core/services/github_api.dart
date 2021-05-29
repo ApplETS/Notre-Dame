@@ -9,7 +9,6 @@ import 'package:path_provider/path_provider.dart';
 import 'package:flutter_config/flutter_config.dart';
 
 // SERVICES
-import 'package:notredame/core/services/networking_service.dart';
 import 'package:notredame/core/services/internal_info_service.dart';
 
 // OTHERS
@@ -22,9 +21,6 @@ class GithubApi {
   static const String _envVariableGithubAPIKey = "GITHUB_API_TOKEN";
   static const String _repositorySlug = "ApplETS/Notre-Dame";
   static const String _repositoryReportSlug = "ApplETS/Notre-Dame-Bug-report";
-
-  /// Used to verify if the user has connectivity
-  final NetworkingService _networkingService = locator<NetworkingService>();
 
   GitHub _github;
 
