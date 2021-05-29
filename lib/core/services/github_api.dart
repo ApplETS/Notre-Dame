@@ -67,12 +67,6 @@ class GithubApi {
                 "```$feedbackText```\n\n"
                 "**Screenshot** \n"
                 "![screenshot](https://github.com/$_repositoryReportSlug/blob/main/$fileName?raw=true)\n\n"
-                "**Device Infos** \n"
-                "- **Version:** ${packageInfo.version} \n"
-                "- **Connectivity:** ${await _networkingService.getConnectionType()} \n"
-                "- **Build number:** ${packageInfo.buildNumber} \n"
-                "- **Platform operating system:** ${Platform.operatingSystem} \n"
-                "- **Platform operating system version:** ${Platform.operatingSystemVersion} \n"
                 "${await _internalInfoService.getDeviceInfoForErrorReporting()}",
             labels: ['bug', 'platform: ${Platform.operatingSystem}']));
   }
