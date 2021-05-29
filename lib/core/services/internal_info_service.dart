@@ -7,6 +7,7 @@ import 'package:notredame/locator.dart';
 
 // SERVICES
 import 'package:notredame/core/services/networking_service.dart';
+
 class InternalInfoService {
   
   // Build the error message with the current device informations
