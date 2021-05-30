@@ -15,20 +15,23 @@ import 'package:notredame/ui/utils/app_theme.dart';
 List<Discovery> discoveryComponents(BuildContext context) => [
       Discovery(
         path: RouterPaths.dashboard,
-        featureId: 'navbar_dashboard_page_id', 
+        featureId: 'navbar_dashboard_page_id',
         title: "",
         details: ConstrainedBox(
           constraints: BoxConstraints(
               maxHeight: MediaQuery.of(context).size.height * 0.6),
           child: Column(
             children: [
-              _buildHeader(AppIntl.of(context).discovery_navbar_dashboard_page_title, context),
+              _buildHeader(
+                  AppIntl.of(context).discovery_navbar_dashboard_page_title,
+                  context),
               Expanded(
                 child: ListView(
                   padding: EdgeInsets.zero,
                   children: <Widget>[
                     Text(
-                        AppIntl.of(context).discovery_navbar_dashboard_page_details,
+                        AppIntl.of(context)
+                            .discovery_navbar_dashboard_page_details,
                         textAlign: TextAlign.justify),
                     const Text('\n'),
                     if (AppIntl.of(context).localeName == "fr")
@@ -53,12 +56,16 @@ List<Discovery> discoveryComponents(BuildContext context) => [
               maxHeight: MediaQuery.of(context).size.height * 0.6),
           child: Column(
             children: [
-              _buildHeader(AppIntl.of(context).discovery_navbar_schedule_page_title, context),
+              _buildHeader(
+                  AppIntl.of(context).discovery_navbar_schedule_page_title,
+                  context),
               Expanded(
                 child: ListView(
                   padding: EdgeInsets.zero,
                   children: <Widget>[
-                    Text(AppIntl.of(context).discovery_navbar_schedule_page_details,
+                    Text(
+                        AppIntl.of(context)
+                            .discovery_navbar_schedule_page_details,
                         textAlign: TextAlign.justify),
                     const Text('\n'),
                     if (AppIntl.of(context).localeName == "fr")
@@ -83,12 +90,16 @@ List<Discovery> discoveryComponents(BuildContext context) => [
               maxHeight: MediaQuery.of(context).size.height * 0.6),
           child: Column(
             children: [
-              _buildHeader(AppIntl.of(context).discovery_navbar_student_page_title, context),
+              _buildHeader(
+                  AppIntl.of(context).discovery_navbar_student_page_title,
+                  context),
               Expanded(
                 child: ListView(
                   padding: EdgeInsets.zero,
                   children: <Widget>[
-                    Text(AppIntl.of(context).discovery_navbar_student_page_details,
+                    Text(
+                        AppIntl.of(context)
+                            .discovery_navbar_student_page_details,
                         textAlign: TextAlign.justify),
                     const Text('\n'),
                     if (AppIntl.of(context).localeName == "fr")
@@ -113,7 +124,8 @@ List<Discovery> discoveryComponents(BuildContext context) => [
               maxHeight: MediaQuery.of(context).size.height * 0.6),
           child: Column(
             children: [
-              _buildHeader(AppIntl.of(context).discovery_navbar_ets_page_title, context),
+              _buildHeader(
+                  AppIntl.of(context).discovery_navbar_ets_page_title, context),
               Expanded(
                 child: ListView(
                   padding: EdgeInsets.zero,
@@ -124,7 +136,8 @@ List<Discovery> discoveryComponents(BuildContext context) => [
                     if (AppIntl.of(context).localeName == "fr")
                       Image.asset('assets/animations/discovery/fr/ets_link.gif')
                     else
-                      Image.asset('assets/animations/discovery/en/ets_link.gif'),
+                      Image.asset(
+                          'assets/animations/discovery/en/ets_link.gif'),
                   ],
                 ),
               ),
@@ -141,7 +154,8 @@ List<Discovery> discoveryComponents(BuildContext context) => [
               maxHeight: MediaQuery.of(context).size.height * 0.6),
           child: Column(
             children: [
-              _buildHeader(AppIntl.of(context).discovery_navbar_more_page_title, context),
+              _buildHeader(AppIntl.of(context).discovery_navbar_more_page_title,
+                  context),
               Expanded(
                 child: ListView(
                   padding: EdgeInsets.zero,
@@ -168,14 +182,15 @@ Padding _buildHeader(String title, BuildContext context) {
     child: Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Text(
-            title,
-            style:
-            Theme.of(context).textTheme.headline6.copyWith(color: Colors.white)),
+        Text(title,
+            style: Theme.of(context)
+                .textTheme
+                .headline6
+                .copyWith(color: Colors.white)),
         TextButton(
           onPressed: () => FeatureDiscovery.dismissAll(context),
-          child: Text(AppIntl.of(context).skip_discovery, 
-          style: const TextStyle(color: AppTheme.etsLightRed)),
+          child: Text(AppIntl.of(context).skip_discovery,
+              style: const TextStyle(color: AppTheme.etsLightRed)),
         ),
       ],
     ),

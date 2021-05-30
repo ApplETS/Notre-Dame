@@ -110,16 +110,17 @@ void main() {
     });
 
     group('Interactions - ', () {
-      testWidgets('Grade button redirects to grades view when tapped ', (WidgetTester tester) async {
+      testWidgets('Grade button redirects to grades view when tapped ',
+          (WidgetTester tester) async {
         await tester
             .pumpWidget(localizedWidget(child: GradeButton(courseWithGrade)));
         await tester.pumpAndSettle();
 
         await tester.tap(find.text(courseWithGrade.acronym));
 
-        verify(_navigationService.pushNamed(RouterPaths.gradeDetails, arguments: courseWithGrade));
+        verify(_navigationService.pushNamed(RouterPaths.gradeDetails,
+            arguments: courseWithGrade));
       });
-
     });
   });
 }

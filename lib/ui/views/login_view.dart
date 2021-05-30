@@ -88,8 +88,7 @@ class _LoginViewState extends State<LoginView> {
                                       .login_prompt_universal_code,
                                   labelStyle:
                                       const TextStyle(color: Colors.white54),
-                                  errorStyle:
-                                      TextStyle(color: errorTextColor),
+                                  errorStyle: TextStyle(color: errorTextColor),
                                 ),
                                 autofocus: true,
                                 style: const TextStyle(color: Colors.white),
@@ -117,7 +116,8 @@ class _LoginViewState extends State<LoginView> {
 
                                           setState(() {
                                             if (error.isNotEmpty) {
-                                              Fluttertoast.showToast(msg: error);
+                                              Fluttertoast.showToast(
+                                                  msg: error);
                                             }
                                             formKey.currentState.reset();
                                           });
@@ -176,10 +176,9 @@ class _LoginViewState extends State<LoginView> {
     super.dispose();
   }
 
-  Color get errorTextColor =>
-      Theme.of(context).brightness == Brightness.light
-          ? Colors.amberAccent
-          : Colors.redAccent;
+  Color get errorTextColor => Theme.of(context).brightness == Brightness.light
+      ? Colors.amberAccent
+      : Colors.redAccent;
 
   Color get colorButton => Theme.of(context).brightness == Brightness.light
       ? Colors.white

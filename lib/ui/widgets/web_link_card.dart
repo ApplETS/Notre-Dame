@@ -18,39 +18,39 @@ class WebLinkCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) =>
-    ViewModelBuilder<WebLinkCardViewModel>.reactive(
-      viewModelBuilder: () => WebLinkCardViewModel(),
-      builder: (context, model, child) {
-        return SizedBox(
-          width: MediaQuery.of(context).size.width / 3.1,
-          height: 130,
-          child: Card(
-            elevation: 4.0,
-            child: InkWell(
-              onTap: () => model.onLinkClicked(_links),
-              splashColor: AppTheme.etsLightRed.withAlpha(50),
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Column(
-                  children: [
-                    Expanded(
-                      flex: 40,
-                      child: Image.asset(_links.image, color: AppTheme.etsLightRed),
+      ViewModelBuilder<WebLinkCardViewModel>.reactive(
+          viewModelBuilder: () => WebLinkCardViewModel(),
+          builder: (context, model, child) {
+            return SizedBox(
+              width: MediaQuery.of(context).size.width / 3.1,
+              height: 130,
+              child: Card(
+                elevation: 4.0,
+                child: InkWell(
+                  onTap: () => model.onLinkClicked(_links),
+                  splashColor: AppTheme.etsLightRed.withAlpha(50),
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Column(
+                      children: [
+                        Expanded(
+                          flex: 40,
+                          child: Image.asset(_links.image,
+                              color: AppTheme.etsLightRed),
+                        ),
+                        FittedBox(
+                          fit: BoxFit.fitWidth,
+                          child: Text(
+                            _links.name,
+                            style: const TextStyle(
+                                color: Colors.red, fontSize: 18.0),
+                          ),
+                        ),
+                      ],
                     ),
-                    FittedBox(
-                      fit: BoxFit.fitWidth,
-                      child: Text(
-                        _links.name,
-                        style: const TextStyle(color: Colors.red, fontSize: 18.0),
-                      ),
-                    ),
-                  ],
+                  ),
                 ),
               ),
-            ),
-          ),
-        );
-      }
-    );
+            );
+          });
 }
- 

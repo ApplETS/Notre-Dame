@@ -9,7 +9,7 @@ class NavigationService {
 
   /// Pop the last route of the navigator if possible
   bool pop() {
-    if(_navigatorKey.currentState.canPop()) {
+    if (_navigatorKey.currentState.canPop()) {
       _navigatorKey.currentState.pop();
       return true;
     }
@@ -18,7 +18,8 @@ class NavigationService {
 
   /// Push a named route ([routeName] onto the navigator.
   Future<dynamic> pushNamed(String routeName, {dynamic arguments}) {
-    return _navigatorKey.currentState.pushNamed(routeName, arguments: arguments);
+    return _navigatorKey.currentState
+        .pushNamed(routeName, arguments: arguments);
   }
 
   /// Replace the current route of the navigator by pushing the route named
@@ -31,6 +32,7 @@ class NavigationService {
   /// Replace the current route of the navigator by pushing the route named
   /// [routeName] and then delete the stack of previous routes
   Future<dynamic> pushNamedAndRemoveUntil(String routeName) {
-    return _navigatorKey.currentState.pushNamedAndRemoveUntil(routeName,(Route<dynamic> route) => false);
+    return _navigatorKey.currentState
+        .pushNamedAndRemoveUntil(routeName, (Route<dynamic> route) => false);
   }
 }

@@ -22,7 +22,6 @@ void main() {
   HttpClientMock clientMock;
   MonETSApi service;
 
-
   group('MonETSApi - ', () {
     setUp(() {
       clientMock = HttpClientMock();
@@ -49,8 +48,8 @@ void main() {
             {"Domaine": "domaine", "TypeUsagerId": 1, "Username": username},
             200);
 
-        final result = await service.authenticate(
-            username: username, password: password);
+        final result =
+            await service.authenticate(username: username, password: password);
 
         expect(result, isA<MonETSUser>());
         expect(result.username, username);
@@ -60,14 +59,11 @@ void main() {
         const int statusCode = 500;
         const String message = "An error has occurred.";
 
-        HttpClientMock.stubJsonPost(
-            clientMock,
-            Urls.authenticationMonETS,
-            {"Message": message},
-            statusCode);
+        HttpClientMock.stubJsonPost(clientMock, Urls.authenticationMonETS,
+            {"Message": message}, statusCode);
 
-        expect(service.authenticate(
-            username: "", password: ""), throwsA(isInstanceOf<HttpException>()));
+        expect(service.authenticate(username: "", password: ""),
+            throwsA(isInstanceOf<HttpException>()));
       });
     });
   });

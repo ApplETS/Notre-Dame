@@ -71,16 +71,9 @@ class CourseSummary {
           ? double.parse(
               node.getElement("ecartTypeClasse").innerText.replaceAll(",", "."))
           : null,
-      median: node.getElement("medianeClasse").innerText.isNotEmpty
-          ? double.parse(
-              node.getElement("medianeClasse").innerText.replaceAll(",", "."))
-          : null,
-      percentileRank: node.getElement("rangCentileClasse").innerText.isNotEmpty
-          ? int.parse(
-              node.getElement("rangCentileClasse").innerText.replaceAll(",0", ""))
-          : null,
-      evaluations: node.findAllElements("ElementEvaluation")
-          .map((node) => Evaluation.fromXml(node)).toList());
+      median: node.getElement("medianeClasse").innerText.isNotEmpty ? double.parse(node.getElement("medianeClasse").innerText.replaceAll(",", ".")) : null,
+      percentileRank: node.getElement("rangCentileClasse").innerText.isNotEmpty ? int.parse(node.getElement("rangCentileClasse").innerText.replaceAll(",0", "")) : null,
+      evaluations: node.findAllElements("ElementEvaluation").map((node) => Evaluation.fromXml(node)).toList());
 
   /// Used to create [CourseSummary] instance from a JSON file
   factory CourseSummary.fromJson(Map<String, dynamic> json) => CourseSummary(

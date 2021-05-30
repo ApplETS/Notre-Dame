@@ -158,16 +158,20 @@ void main() {
 
     group('refresh -', () {
       test('Call SignetsAPI to get the user info and programs', () async {
-        UserRepositoryMock.stubProfileStudent(userRepository as UserRepositoryMock, toReturn: info);
-        UserRepositoryMock.stubGetInfo(userRepository as UserRepositoryMock, toReturn: info);
-        UserRepositoryMock.stubGetPrograms(userRepository as UserRepositoryMock);
+        UserRepositoryMock.stubProfileStudent(
+            userRepository as UserRepositoryMock,
+            toReturn: info);
+        UserRepositoryMock.stubGetInfo(userRepository as UserRepositoryMock,
+            toReturn: info);
+        UserRepositoryMock.stubGetPrograms(
+            userRepository as UserRepositoryMock);
 
         await viewModel.refresh();
-        
+
         expect(viewModel.profileStudent, info);
 
         verifyInOrder([
-          userRepository.getInfo(), 
+          userRepository.getInfo(),
           userRepository.getPrograms(),
           userRepository.info,
         ]);

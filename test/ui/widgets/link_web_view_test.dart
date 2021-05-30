@@ -13,7 +13,9 @@ import 'package:notredame/ui/widgets/link_web_view.dart';
 import '../../helpers.dart';
 
 final _quickLink = QuickLink(
-    image: 'assets/images/ic_security_red.png', name: 'test', link: 'https://clubapplets.ca/');
+    image: 'assets/images/ic_security_red.png',
+    name: 'test',
+    link: 'https://clubapplets.ca/');
 
 void main() {
   group('LinkWebView - ', () {

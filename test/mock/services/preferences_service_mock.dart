@@ -23,7 +23,8 @@ class PreferencesServiceMock extends Mock implements PreferencesService {
   /// Stub the answer of [setBool] when the [flag] is used.
   static void stubSetBool(PreferencesServiceMock mock, PreferencesFlag flag,
       {bool toReturn = true}) {
-    when(mock.setBool(flag, value: anyNamed("value"))).thenAnswer((_) async => toReturn);
+    when(mock.setBool(flag, value: anyNamed("value")))
+        .thenAnswer((_) async => toReturn);
   }
 
   /// Stub the answer of [getString] when the [flag] is used.

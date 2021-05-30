@@ -28,10 +28,16 @@ void main() {
   InternalInfoService internalInfoService;
 
   WebLinkCardViewModel viewModel;
-  
-  final _quickLink = QuickLink(image: 'assets/images/ic_security_red.png', name: 'test', link: 'testlink');
-  final _securityQuickLink = QuickLink(image: 'assets/images/ic_security_red.png', name: 'test', link: 'security');
-    
+
+  final _quickLink = QuickLink(
+      image: 'assets/images/ic_security_red.png',
+      name: 'test',
+      link: 'testlink');
+  final _securityQuickLink = QuickLink(
+      image: 'assets/images/ic_security_red.png',
+      name: 'test',
+      link: 'security');
+
   group('WebLinkCardViewModel - ', () {
     setUp(() async {
       navigationService = setupNavigationServiceMock();
@@ -59,15 +65,15 @@ void main() {
       });
 
       test('navigate to web view if launchInBrowser throw', () async {
-        InternalInfoServiceMock.stubGetDeviceInfoForErrorReporting(internalInfoService as InternalInfoServiceMock);
+        InternalInfoServiceMock.stubGetDeviceInfoForErrorReporting(
+            internalInfoService as InternalInfoServiceMock);
 
         await viewModel.onLinkClicked(_quickLink);
 
-        verify(navigationService.pushNamed(RouterPaths.webView, arguments: _quickLink));
+        verify(navigationService.pushNamed(RouterPaths.webView,
+            arguments: _quickLink));
         verifyNoMoreInteractions(navigationService);
       });
-
     });
-
   });
 }

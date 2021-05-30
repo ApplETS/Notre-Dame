@@ -15,24 +15,23 @@ class MonETSApiMock extends Mock implements MonETSApi {
   /// Stub the user to return when a authenticate is called using the username
   /// of [userToReturn]
   static void stubAuthenticate(MonETSApiMock mock, MonETSUser userToReturn) {
-    when(mock.authenticate(username: userToReturn.username, password: anyNamed('password')))
+    when(mock.authenticate(
+            username: userToReturn.username, password: anyNamed('password')))
         .thenAnswer((_) async => userToReturn);
   }
 
   /// Stub to throw an [HttpException] when the authenticate
   /// will be called with this [username]
-  static void stubAuthenticateException(
-      MonETSApiMock mock, String username) {
-    when(mock.authenticate(username: username, password: anyNamed('password'))).thenThrow(
-        HttpException(
-            code: 500, prefix: MonETSApi.tagError, message: ""));
+  static void stubAuthenticateException(MonETSApiMock mock, String username) {
+    when(mock.authenticate(username: username, password: anyNamed('password')))
+        .thenThrow(
+            HttpException(code: 500, prefix: MonETSApi.tagError, message: ""));
   }
 
   /// Stub to throw an [Exception] when the authenticate
   /// will be called with this [username]
-  static void stubException(
-      MonETSApiMock mock, String username) {
-    when(mock.authenticate(username: username, password: anyNamed('password'))).thenThrow(
-        Exception());
+  static void stubException(MonETSApiMock mock, String username) {
+    when(mock.authenticate(username: username, password: anyNamed('password')))
+        .thenThrow(Exception());
   }
 }

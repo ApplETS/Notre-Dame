@@ -13,13 +13,14 @@ void main() {
   AppIntl intl;
 
   group('PasswordFormField - ', () {
-
     setUpAll(() async {
       intl = await setupAppIntl();
     });
 
-    testWidgets('has a label, the visibility icon and obscure text', (WidgetTester tester) async {
-      await tester.pumpWidget(localizedWidget(child: const PasswordFormField()));
+    testWidgets('has a label, the visibility icon and obscure text',
+        (WidgetTester tester) async {
+      await tester
+          .pumpWidget(localizedWidget(child: const PasswordFormField()));
       await tester.pumpAndSettle();
 
       final icon = find.byIcon(Icons.visibility);
@@ -27,12 +28,14 @@ void main() {
 
       expect(icon, findsOneWidget);
       expect(label, findsOneWidget);
-
     });
-    
+
     group('visibility button', () {
-      testWidgets('toggling the visibility button should disable the obscureText property', (WidgetTester tester) async {
-        await tester.pumpWidget(localizedWidget(child: const PasswordFormField()));
+      testWidgets(
+          'toggling the visibility button should disable the obscureText property',
+          (WidgetTester tester) async {
+        await tester
+            .pumpWidget(localizedWidget(child: const PasswordFormField()));
         await tester.pumpAndSettle();
 
         await tester.tap(find.byIcon(Icons.visibility));
@@ -41,11 +44,17 @@ void main() {
         await tester.pump();
 
         expect(find.byIcon(Icons.visibility_off), findsOneWidget);
-        expect(tester.widget(find.byType(TextField)), isA<TextField>().having((source) => source.obscureText, 'obscureText', isFalse));
+        expect(
+            tester.widget(find.byType(TextField)),
+            isA<TextField>().having(
+                (source) => source.obscureText, 'obscureText', isFalse));
       });
 
-      testWidgets('toggling the visibility button two times should enable the obscureText property', (WidgetTester tester) async {
-        await tester.pumpWidget(localizedWidget(child: const PasswordFormField()));
+      testWidgets(
+          'toggling the visibility button two times should enable the obscureText property',
+          (WidgetTester tester) async {
+        await tester
+            .pumpWidget(localizedWidget(child: const PasswordFormField()));
         await tester.pumpAndSettle();
 
         await tester.tap(find.byIcon(Icons.visibility));
@@ -56,7 +65,10 @@ void main() {
         await tester.pump();
 
         expect(find.byIcon(Icons.visibility), findsOneWidget);
-        expect(tester.widget(find.byType(TextField)), isA<TextField>().having((source) => source.obscureText, 'obscureText', isTrue));
+        expect(
+            tester.widget(find.byType(TextField)),
+            isA<TextField>()
+                .having((source) => source.obscureText, 'obscureText', isTrue));
       });
     });
   });
