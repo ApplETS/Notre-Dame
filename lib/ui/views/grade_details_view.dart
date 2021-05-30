@@ -64,7 +64,7 @@ class _GradesDetailsViewState extends State<GradesDetailsView> {
                         alignment: AlignmentDirectional.bottomStart,
                         child: Text(
                           model.course.acronym ?? "",
-                          style: TextStyle(fontSize: topHeight < initialTopHeight ? 20 : 19),
+                          style: TextStyle(fontSize: topHeight < initialTopHeight ? 20 : 19, fontWeight: FontWeight.bold),
                         ),
                       ),
                     );
