@@ -202,7 +202,7 @@ class _GradeEvaluationTileState extends State<GradeEvaluationTile>
 
   Padding _buildSummary(String title, String grade) {
     return Padding(
-      padding: const EdgeInsets.only(top: 10.0, right: 15.0),
+      padding: const EdgeInsets.only(top: 12.0, right: 15.0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
