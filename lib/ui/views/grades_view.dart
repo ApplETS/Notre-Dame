@@ -40,16 +40,19 @@ class _GradesViewState extends State<GradesView> {
                           textAlign: TextAlign.center,
                           style: Theme.of(context).textTheme.headline6))
                 else
-                  ListView.builder(padding: const EdgeInsets.all(0.0),
-                      itemCount: model.coursesBySession.length,
-                      itemBuilder: (BuildContext context, int index) =>
-                          _buildSessionCourses(
-                              _sessionName(
-                                  model.sessionOrder[index],
-                                  AppIntl.of(context)),
-                              model.coursesBySession[model
-                                  .sessionOrder[index]],
-                              model)),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 8.0),
+                    child: ListView.builder(padding: const EdgeInsets.all(0.0),
+                        itemCount: model.coursesBySession.length,
+                        itemBuilder: (BuildContext context, int index) =>
+                            _buildSessionCourses(
+                                _sessionName(
+                                    model.sessionOrder[index],
+                                    AppIntl.of(context)),
+                                model.coursesBySession[model
+                                    .sessionOrder[index]],
+                                model)),
+                  ),
                 if (model.isBusy)
                   buildLoading(isInteractionLimitedWhileLoading: false)
                 else
