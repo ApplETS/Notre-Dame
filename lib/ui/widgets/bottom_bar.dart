@@ -115,7 +115,7 @@ class BottomBar extends StatelessWidget {
       featureId: discovery.featureId,
       title: Text(discovery.title, textAlign: TextAlign.justify),
       description: discovery.details,
-      backgroundColor: AppTheme.appletsPurple,
+      backgroundColor: AppTheme.appletsDarkPurple,
       tapTarget: Icon(icon, color: AppTheme.etsBlack),
       pulseDuration: const Duration(seconds: 5),
       child: Icon(icon),
