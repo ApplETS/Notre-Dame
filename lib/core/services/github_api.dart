@@ -24,7 +24,8 @@ class GithubApi {
 
   GitHub _github;
 
-  final InternalInfoService _internalInfoService = locator<InternalInfoService>();
+  final InternalInfoService _internalInfoService =
+      locator<InternalInfoService>();
 
   GithubApi() {
     String githubApiToken;

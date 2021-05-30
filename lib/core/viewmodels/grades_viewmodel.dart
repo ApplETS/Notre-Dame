@@ -114,6 +114,4 @@ class GradesViewModel extends FutureViewModel<Map<String, List<Course>>> {
       return -1;
     });
   }
-
-
 }

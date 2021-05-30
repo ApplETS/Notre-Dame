@@ -22,7 +22,7 @@ ScheduleSettingsViewModel viewModel;
 void main() {
   // Needed to support FlutterToast.
   TestWidgetsFlutterBinding.ensureInitialized();
-  
+
   final Map<PreferencesFlag, dynamic> settings = {
     PreferencesFlag.scheduleSettingsCalendarFormat: CalendarFormat.week,
     PreferencesFlag.scheduleSettingsStartWeekday: StartingDayOfWeek.monday,

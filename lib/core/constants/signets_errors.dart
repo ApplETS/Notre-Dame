@@ -1,7 +1,7 @@
 /// Errors returned by Signets
 class SignetsError {
-
-  static const String credentialsInvalid = "Code d'accès ou mot de passe invalide";
+  static const String credentialsInvalid =
+      "Code d'accès ou mot de passe invalide";
 
   /// Error message returned when the schedule isn't ready or the session is too
   /// old to be saved on the system
@@ -24,5 +24,6 @@ class SignetsError {
       "ou de thèse.";
 
   static const String gradesEmpty = "GRADES_NOT_AVAILABLE";
-  static const String gradesNotAvailable = "Cours ou bordereau de notes inexistant pour";
+  static const String gradesNotAvailable =
+      "Cours ou bordereau de notes inexistant pour";
 }

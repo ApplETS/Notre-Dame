@@ -31,7 +31,7 @@ void main() {
       });
 
       group("golden - ", () {
-        testWidgets("default view (no events)", (WidgetTester tester) async {
+        testWidgets("default view", (WidgetTester tester) async {
           tester.binding.window.physicalSizeTestValue = const Size(800, 1410);
 
           await tester.runAsync(() async {
@@ -44,7 +44,6 @@ void main() {
             await tester.pumpAndSettle();
           });
           await tester.pumpAndSettle();
-
           await expectLater(find.byType(AboutView),
               matchesGoldenFile(goldenFilePath("aboutView_1")));
         });

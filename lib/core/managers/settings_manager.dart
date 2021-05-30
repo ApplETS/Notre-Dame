@@ -106,13 +106,11 @@ class SettingsManager with ChangeNotifier {
     dashboard.putIfAbsent(
         PreferencesFlag.progressBarCard, () => progressBarCardIndex);
 
-
     final gradesCardIndex =
         await _preferencesService.getInt(PreferencesFlag.gradesCard) ??
             getDefaultCardIndex(PreferencesFlag.gradesCard);
 
-    dashboard.putIfAbsent(
-        PreferencesFlag.gradesCard, () => gradesCardIndex);
+    dashboard.putIfAbsent(PreferencesFlag.gradesCard, () => gradesCardIndex);
 
     _logger.i("$tag - getDashboard - Dashboard loaded: $dashboard");
 
@@ -150,21 +148,21 @@ class SettingsManager with ChangeNotifier {
     final calendarFormat = await _preferencesService
         .getString(PreferencesFlag.scheduleSettingsCalendarFormat)
         .then((value) => value == null
-        ? CalendarFormat.week
-        : EnumToString.fromString(CalendarFormat.values, value));
+            ? CalendarFormat.week
+            : EnumToString.fromString(CalendarFormat.values, value));
     settings.putIfAbsent(
         PreferencesFlag.scheduleSettingsCalendarFormat, () => calendarFormat);
 
     final startingWeekDay = await _preferencesService
         .getString(PreferencesFlag.scheduleSettingsStartWeekday)
         .then((value) => value == null
-        ? StartingDayOfWeek.monday
-        : EnumToString.fromString(StartingDayOfWeek.values, value));
+            ? StartingDayOfWeek.monday
+            : EnumToString.fromString(StartingDayOfWeek.values, value));
     settings.putIfAbsent(
         PreferencesFlag.scheduleSettingsStartWeekday, () => startingWeekDay);
 
     final showTodayBtn = await _preferencesService
-        .getBool(PreferencesFlag.scheduleSettingsShowTodayBtn) ??
+            .getBool(PreferencesFlag.scheduleSettingsShowTodayBtn) ??
         true;
     settings.putIfAbsent(
         PreferencesFlag.scheduleSettingsShowTodayBtn, () => showTodayBtn);
@@ -211,4 +209,3 @@ class SettingsManager with ChangeNotifier {
   int getDefaultCardIndex(PreferencesFlag flag) =>
       flag.index - PreferencesFlag.aboutUsCard.index;
 }
-

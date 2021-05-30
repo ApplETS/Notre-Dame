@@ -12,5 +12,5 @@ class QuickLinksViewModel extends BaseViewModel {
   /// used to get all links for ETS page
   final List<QuickLink> quickLinkList;
 
-  QuickLinksViewModel(AppIntl intl): quickLinkList = quickLinks(intl);
+  QuickLinksViewModel(AppIntl intl) : quickLinkList = quickLinks(intl);
 }

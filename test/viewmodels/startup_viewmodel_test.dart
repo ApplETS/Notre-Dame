@@ -70,8 +70,10 @@ void main() {
             toReturn: 'true');
 
         SettingsManagerMock.stubGetString(
-            settingsManager as SettingsManagerMock, PreferencesFlag.languageChoice, toReturn: 'true');
-            
+            settingsManager as SettingsManagerMock,
+            PreferencesFlag.languageChoice,
+            toReturn: 'true');
+
         await viewModel.handleStartUp();
 
         verify(navigationService.pushNamed(RouterPaths.login));
@@ -86,9 +88,10 @@ void main() {
         NetworkingServiceMock.stubHasConnectivity(networkingService);
 
         await viewModel.handleStartUp();
-        
+
         verify(navigationService.pushNamed(RouterPaths.chooseLanguage));
-        verify(settingsManager.setString(PreferencesFlag.languageChoice, 'true'));
+        verify(
+            settingsManager.setString(PreferencesFlag.languageChoice, 'true'));
       });
     });
   });

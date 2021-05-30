@@ -34,7 +34,8 @@ class CacheManager {
     if (fileInfo == null) {
       _analyticsService.logEvent(
           tag, "Trying to access $key from the cache but file doesn't exists");
-      throw CacheException(prefix: tag, message: "$key doesn't exist in the cache");
+      throw CacheException(
+          prefix: tag, message: "$key doesn't exist in the cache");
     }
 
     return fileInfo.file.readAsString();
@@ -43,9 +44,11 @@ class CacheManager {
   /// Update/create in the cache the value associated with [key].
   Future update(String key, String value) async {
     try {
-      await _cacheManager.putFile(key, UriData.fromString(value, encoding: utf8).contentAsBytes());
+      await _cacheManager.putFile(
+          key, UriData.fromString(value, encoding: utf8).contentAsBytes());
     } on Exception catch (e) {
-      _analyticsService.logError(tag, "Exception raised during cache update of $key: ${e.toString()}");
+      _analyticsService.logError(
+          tag, "Exception raised during cache update of $key: ${e.toString()}");
       rethrow;
     }
   }
@@ -55,9 +58,11 @@ class CacheManager {
     try {
       await _cacheManager.removeFile(key);
     } on Exception catch (e) {
-      _analyticsService.logError(tag, "Exception raised during cache delete of $key: ${e.toString()}");
+      _analyticsService.logError(
+          tag, "Exception raised during cache delete of $key: ${e.toString()}");
     }
   }
+
   /// Empty the cache
   Future empty() async {
     try {

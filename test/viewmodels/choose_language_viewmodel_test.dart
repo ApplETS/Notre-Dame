@@ -48,7 +48,8 @@ void main() {
 
         viewModel.changeLanguage(0);
 
-        verify(settingsManager.setLocale(AppIntl.supportedLocales.first.languageCode));
+        verify(settingsManager
+            .setLocale(AppIntl.supportedLocales.first.languageCode));
         verify(navigationService.pop());
         verify(navigationService.pushNamed(RouterPaths.login));
       });
@@ -59,7 +60,8 @@ void main() {
 
         viewModel.changeLanguage(1);
 
-        verify(settingsManager.setLocale(AppIntl.supportedLocales.last.languageCode));
+        verify(settingsManager
+            .setLocale(AppIntl.supportedLocales.last.languageCode));
         verify(navigationService.pop());
         verify(navigationService.pushNamed(RouterPaths.login));
       });
@@ -68,12 +70,10 @@ void main() {
         SettingsManagerMock.stubSetString(
             settingsManager as SettingsManagerMock, PreferencesFlag.theme);
 
-        expect(() =>
-          viewModel.changeLanguage(-1),
-          throwsException,
-          reason: "No valid language for the index -1 passed in parameters");
-      }); 
-    }); 
+        expect(() => viewModel.changeLanguage(-1), throwsException,
+            reason: "No valid language for the index -1 passed in parameters");
+      });
+    });
 
     group("prop language - ", () {
       test('returns the languages successfully', () async {
@@ -84,12 +84,12 @@ void main() {
 
       test('returns the languages with an exception', () async {
         const AppIntl intlNull = null;
-        final ChooseLanguageViewModel viewModelWithInvalidIntl = ChooseLanguageViewModel(intl: intlNull);
+        final ChooseLanguageViewModel viewModelWithInvalidIntl =
+            ChooseLanguageViewModel(intl: intlNull);
 
-        expect(() =>
-          viewModelWithInvalidIntl.languages,
-          throwsNoSuchMethodError,
-          reason: "The getter 'settings_english' was called on null");
+        expect(
+            () => viewModelWithInvalidIntl.languages, throwsNoSuchMethodError,
+            reason: "The getter 'settings_english' was called on null");
       });
     });
   });

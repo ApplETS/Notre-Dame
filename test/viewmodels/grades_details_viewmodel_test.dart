@@ -93,7 +93,8 @@ void main() {
       intl = await setupAppIntl();
       setupFlutterToastMock();
 
-      viewModel = GradesDetailsViewModel(course: courseWithoutSummary, intl: intl);
+      viewModel =
+          GradesDetailsViewModel(course: courseWithoutSummary, intl: intl);
     });
 
     tearDown(() {
@@ -142,7 +143,7 @@ void main() {
         await viewModel.refresh();
 
         expect(viewModel.course, courseWithoutSummary);
-        
+
         verify(courseRepository.getCourseSummary(viewModel.course));
 
         verifyNoMoreInteractions(courseRepository);

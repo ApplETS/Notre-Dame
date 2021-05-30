@@ -408,8 +408,7 @@ void main() {
             .called(1);
         verify(preferencesService.getInt(PreferencesFlag.progressBarCard))
             .called(1);
-        verify(preferencesService.getInt(PreferencesFlag.gradesCard))
-            .called(1);
+        verify(preferencesService.getInt(PreferencesFlag.gradesCard)).called(1);
 
         verifyNoMoreInteractions(preferencesService);
         verifyNoMoreInteractions(analyticsService);
@@ -453,8 +452,7 @@ void main() {
             .called(1);
         verify(preferencesService.getInt(PreferencesFlag.progressBarCard))
             .called(1);
-        verify(preferencesService.getInt(PreferencesFlag.gradesCard))
-            .called(1);
+        verify(preferencesService.getInt(PreferencesFlag.gradesCard)).called(1);
 
         verifyNoMoreInteractions(preferencesService);
         verifyNoMoreInteractions(analyticsService);
