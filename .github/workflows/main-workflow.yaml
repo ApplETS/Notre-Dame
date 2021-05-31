@@ -95,7 +95,7 @@ jobs:
             echo "::set-output name=is_commit::true"
           fi
       - name: Push coverage changes.
-        if: ${{ github.event_name == 'push' && steps.commit.is_commit}}
+        if: ${{ github.event_name == 'push' && steps.commit.is_commit == 'true' }}
         uses: ad-m/github-push-action@master
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
