@@ -49,7 +49,8 @@ class _GradesViewState extends State<GradesView> {
                             _buildSessionCourses(
                                 _sessionName(model.sessionOrder[index],
                                     AppIntl.of(context)),
-                                model.coursesBySession[model.sessionOrder[index]],
+                                model.coursesBySession[
+                                    model.sessionOrder[index]],
                                 model)),
                   ),
                 if (model.isBusy)
