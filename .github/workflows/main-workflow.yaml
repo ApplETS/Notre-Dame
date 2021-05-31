@@ -12,7 +12,7 @@ on:
 env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   MAPS_API_KEY: ${{ secrets.MAPS_API_KEY }}
-  GITHUB_API_TOKEN: ${{ secrets.GITHUB_API_TOKEN }}
+  GH_API_TOKEN: ${{ secrets.GH_API_TOKEN }}
 jobs:
   tagValidation:
     name: Tag validation
@@ -41,7 +41,7 @@ jobs:
         name: Post comment on PR
         uses: thollander/actions-comment-pull-request@1.0.1
         with:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.TOKEN_GITHUB_API }}
           message: '${{ steps.split.outputs._0 }} already exists, please update the pubspec version.'
 
   validationWorkflow:
