@@ -6,6 +6,7 @@ on:
     paths-ignore:
       - '.gitignore'
       - '.metadata'
+      - '.github/**'
       - 'README.md'
   pull_request:
 env:
@@ -112,14 +113,14 @@ jobs:
             build_target: ios
             build_args: --no-codesign
             build_path: build/ios/iphoneos
-            asset_extension: .zip
+            asset_extension: zip
             asset_content_type: application/zip
           - os: ubuntu-latest
             target: Android
             build_target: appbundle
             build_args: ''
             build_path: build/app/outputs/bundle/release
-            asset_extension: .aab
+            asset_extension: aab
             asset_content_type: application/zip
       # Disable fail-fast as we want results from all even if one fails.
       fail-fast: false
