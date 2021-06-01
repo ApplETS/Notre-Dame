@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:drawable="@color/ic_dark_launcher_background" />
-    <item>
-        <bitmap
-            android:gravity="center"
-            android:src="@drawable/ets_logo" />
-    </item>
+
+    <item
+        android:gravity="center"
+        android:drawable="@drawable/ets_logo" />
 </layer-list>
