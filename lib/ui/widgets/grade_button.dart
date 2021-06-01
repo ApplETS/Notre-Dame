@@ -47,12 +47,15 @@ class GradeButton extends StatelessWidget {
                                 padding: const EdgeInsets.all(4.0),
                                 child: FittedBox(
                                   fit: BoxFit.fitWidth,
-                                  child: Text(
-                                    course.acronym,
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .bodyText1
-                                        .copyWith(color: Colors.white),
+                                  child: Hero(
+                                    tag: 'course_acronym_${course.acronym}',
+                                    child: Text(
+                                      course.acronym,
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodyText1
+                                          .copyWith(color: Colors.white),
+                                    ),
                                   ),
                                 ),
                               ),

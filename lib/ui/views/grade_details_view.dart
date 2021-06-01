@@ -63,11 +63,18 @@ class _GradesDetailsViewState extends State<GradesDetailsView> {
                       ),
                       title: Align(
                         alignment: AlignmentDirectional.bottomStart,
-                        child: Text(
-                          model.course.acronym ?? "",
-                          style: TextStyle(
-                              fontSize: topHeight < initialTopHeight ? 20 : 19,
-                              fontWeight: FontWeight.bold),
+                        child: Hero(
+                          tag: 'course_acronym_${model.course.acronym}',
+                          child: Text(
+                            model.course.acronym ?? "",
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyText1
+                                .copyWith(
+                                    color: Colors.white,
+                                    fontSize: 19,
+                                    fontWeight: FontWeight.bold),
+                          ),
                         ),
                       ),
                     );
