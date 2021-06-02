@@ -38,6 +38,9 @@ class StartUpView extends StatelessWidget {
                                   ? Colors.white
                                   : AppTheme.etsLightRed,
                             )),
+                        const SizedBox(
+                          height: 15,
+                        ),
                         const CircularProgressIndicator(
                             valueColor:
                                 AlwaysStoppedAnimation<Color>(Colors.white))
