@@ -24,17 +24,17 @@ class GradeCircularProgress extends StatelessWidget {
   Widget build(BuildContext context) {
     return CircularPercentIndicator(
       animation: true,
-      animationDuration: completed ? 0 : 1100,
+      animationDuration: 1100,
       radius: 100 * ratio,
       lineWidth: 8.0 * ratio,
-      percent: getGradeInDecimals(studentGrade ?? 0.0),
+      percent: completed ? getGradeInDecimals(studentGrade ?? 0.0) : 0,
       circularStrokeCap: CircularStrokeCap.round,
       center: CircularPercentIndicator(
         animation: true,
-        animationDuration: completed ? 0 : 1100,
+        animationDuration: 700,
         radius: 80 * ratio,
         lineWidth: 8.0 * ratio,
-        percent: getGradeInDecimals(averageGrade ?? 0.0),
+        percent: completed ? getGradeInDecimals(averageGrade ?? 0.0) : 0,
         circularStrokeCap: CircularStrokeCap.round,
         center: Text(
           getGrade(context),

@@ -50,7 +50,7 @@ class AppRouter {
             pageBuilder: (_, __, ___) => StudentView());
       case RouterPaths.gradeDetails:
         return PageRouteBuilder(
-            transitionDuration: const Duration(seconds: 1),
+            transitionDuration: const Duration(milliseconds: 600),
             settings: RouteSettings(name: routeSettings.name),
             pageBuilder: (_, __, ___) =>
                 GradesDetailsView(course: routeSettings.arguments as Course));

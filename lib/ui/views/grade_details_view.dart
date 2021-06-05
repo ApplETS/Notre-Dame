@@ -37,8 +37,8 @@ class _GradesDetailsViewState extends State<GradesDetailsView>
   @override
   void initState() {
     super.initState();
-    _controller =
-        AnimationController(vsync: this, duration: const Duration(seconds: 1));
+    _controller = AnimationController(
+        vsync: this, duration: const Duration(milliseconds: 600));
     _controller.forward();
     _controller.addStatusListener((status) {
       if (status == AnimationStatus.completed) {
