@@ -29,7 +29,8 @@ class GithubApi {
 
   GithubApi() {
     String githubApiToken;
-    if (kDebugMode && FlutterConfig.variables.containsKey(_envVariableGithubAPIKey)) {
+    if (kDebugMode &&
+        FlutterConfig.variables.containsKey(_envVariableGithubAPIKey)) {
       githubApiToken = FlutterConfig.get(_envVariableGithubAPIKey).toString();
     } else {
       githubApiToken = const String.fromEnvironment(_envVariableGithubAPIKey);
