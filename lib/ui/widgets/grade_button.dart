@@ -36,30 +36,32 @@ class GradeButton extends StatelessWidget {
                   Row(
                     children: [
                       Expanded(
-                        child: DecoratedBox(
-                            decoration: const BoxDecoration(
-                                color: AppTheme.etsLightRed,
-                                borderRadius: BorderRadius.only(
-                                    topLeft: Radius.circular(2.5),
-                                    topRight: Radius.circular(2.5))),
-                            child: Center(
-                              child: Padding(
-                                padding: const EdgeInsets.all(4.0),
-                                child: FittedBox(
-                                  fit: BoxFit.fitWidth,
-                                  child: Hero(
-                                    tag: 'course_acronym_${course.acronym}',
-                                    child: Text(
-                                      course.acronym,
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .bodyText1
-                                          .copyWith(color: Colors.white),
+                        child: Hero(
+                          tag: 'course_acronym_${course.acronym}',
+                          child: Material(
+                            child: DecoratedBox(
+                                decoration: const BoxDecoration(
+                                    color: AppTheme.etsLightRed,
+                                    borderRadius: BorderRadius.only(
+                                        topLeft: Radius.circular(2.5),
+                                        topRight: Radius.circular(2.5))),
+                                child: Center(
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(4.0),
+                                    child: FittedBox(
+                                      fit: BoxFit.fitWidth,
+                                      child: Text(
+                                        course.acronym,
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .bodyText1
+                                            .copyWith(color: Colors.white),
+                                      ),
                                     ),
                                   ),
-                                ),
-                              ),
-                            )),
+                                )),
+                          ),
+                        ),
                       ),
                     ],
                   ),

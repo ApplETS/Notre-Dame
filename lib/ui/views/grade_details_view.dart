@@ -28,8 +28,26 @@ class GradesDetailsView extends StatefulWidget {
   _GradesDetailsViewState createState() => _GradesDetailsViewState();
 }
 
-class _GradesDetailsViewState extends State<GradesDetailsView> {
+class _GradesDetailsViewState extends State<GradesDetailsView>
+    with TickerProviderStateMixin {
+  AnimationController _controller;
+  bool _completed = false;
   double initialTopHeight = 0.0;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller =
+        AnimationController(vsync: this, duration: const Duration(seconds: 1));
+    _controller.forward();
+    _controller.addStatusListener((status) {
+      if (status == AnimationStatus.completed) {
+        setState(() {
+          _completed = true;
+        });
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) =>
@@ -38,76 +56,80 @@ class _GradesDetailsViewState extends State<GradesDetailsView> {
             course: widget.course, intl: AppIntl.of(context)),
         builder: (context, model, child) => BaseScaffold(
           showBottomBar: false,
-          body: NestedScrollView(
-            headerSliverBuilder: (context, innerBoxScrolled) => [
-              SliverAppBar(
-                pinned: true,
-                stretch: true,
-                elevation: 0,
-                onStretchTrigger: () {
-                  return Future<void>.value();
-                },
-                expandedHeight: 80.0,
-                flexibleSpace: LayoutBuilder(
-                  builder: (BuildContext context, BoxConstraints constraints) {
-                    if (initialTopHeight == 0.0) {
-                      initialTopHeight = constraints.biggest.height;
-                    }
-                    final double topHeight = constraints.biggest.height;
+          body: Hero(
+            tag: 'course_acronym_${model.course.acronym}',
+            child: Material(
+              child: NestedScrollView(
+                headerSliverBuilder: (context, innerBoxScrolled) => [
+                  SliverAppBar(
+                    pinned: true,
+                    stretch: true,
+                    elevation: 0,
+                    onStretchTrigger: () {
+                      return Future<void>.value();
+                    },
+                    expandedHeight: 80.0,
+                    flexibleSpace: LayoutBuilder(
+                      builder:
+                          (BuildContext context, BoxConstraints constraints) {
+                        if (initialTopHeight == 0.0) {
+                          initialTopHeight = constraints.biggest.height;
+                        }
+                        final double topHeight = constraints.biggest.height;
 
-                    return FlexibleSpaceBar(
-                      centerTitle: true,
-                      titlePadding: EdgeInsetsDirectional.only(
-                        start: topHeight < initialTopHeight ? 50.0 : 15.0,
-                        bottom: topHeight < initialTopHeight ? 16.0 : 5.0,
-                      ),
-                      title: Align(
-                        alignment: AlignmentDirectional.bottomStart,
-                        child: Hero(
-                          tag: 'course_acronym_${model.course.acronym}',
-                          child: Text(
-                            model.course.acronym ?? "",
-                            style: Theme.of(context)
-                                .textTheme
-                                .bodyText1
-                                .copyWith(
-                                    color: Colors.white,
-                                    fontSize: 19,
-                                    fontWeight: FontWeight.bold),
+                        return FlexibleSpaceBar(
+                          centerTitle: true,
+                          titlePadding: EdgeInsetsDirectional.only(
+                            start: topHeight < initialTopHeight ? 50.0 : 15.0,
+                            bottom: topHeight < initialTopHeight ? 16.0 : 5.0,
                           ),
-                        ),
-                      ),
-                    );
-                  },
-                ),
-              ),
-              SliverToBoxAdapter(
-                child: Center(
-                  child: Container(
-                    constraints: BoxConstraints(
-                      minWidth: MediaQuery.of(context).size.width,
-                      maxHeight: 45,
-                    ),
-                    decoration: BoxDecoration(
-                      color: Theme.of(context).brightness == Brightness.light
-                          ? AppTheme.etsLightRed
-                          : const Color(0xff222222),
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        _buildClassInfo(model.course.title ?? ""),
-                        _buildClassInfo(AppIntl.of(context)
-                            .grades_group_number(model.course.group ?? "")),
-                      ],
+                          title: Align(
+                            alignment: AlignmentDirectional.bottomStart,
+                            child: Text(
+                              model.course.acronym ?? "",
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodyText1
+                                  .copyWith(
+                                      color: Colors.white,
+                                      fontSize: 19,
+                                      fontWeight: FontWeight.bold),
+                            ),
+                          ),
+                        );
+                      },
                     ),
                   ),
+                  SliverToBoxAdapter(
+                    child: Center(
+                      child: Container(
+                        constraints: BoxConstraints(
+                          minWidth: MediaQuery.of(context).size.width,
+                          maxHeight: 45,
+                        ),
+                        decoration: BoxDecoration(
+                          color:
+                              Theme.of(context).brightness == Brightness.light
+                                  ? AppTheme.etsLightRed
+                                  : const Color(0xff222222),
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            _buildClassInfo(model.course.title ?? ""),
+                            _buildClassInfo(AppIntl.of(context)
+                                .grades_group_number(model.course.group ?? "")),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+                body: RefreshIndicator(
+                  onRefresh: () => model.refresh(),
+                  child: _buildGradeEvaluations(model),
                 ),
               ),
-            ],
-            body: RefreshIndicator(
-              onRefresh: () => model.refresh(),
-              child: _buildGradeEvaluations(model),
             ),
           ),
         ),
@@ -130,6 +152,7 @@ class _GradesDetailsViewState extends State<GradesDetailsView> {
                         flex: 50,
                         child: GradeCircularProgress(
                           1.0,
+                          completed: _completed,
                           key: const Key("GradeCircularProgress_summary"),
                           finalGrade: model.course.grade,
                           studentGrade: Utils.getGradeInPercentage(
@@ -215,6 +238,7 @@ class _GradesDetailsViewState extends State<GradesDetailsView> {
               Column(children: <Widget>[
                 for (var evaluation in model.course.summary.evaluations)
                   GradeEvaluationTile(evaluation,
+                      completed: _completed,
                       key: Key("GradeEvaluationTile_${evaluation.title}")),
               ]),
             ],
@@ -237,7 +261,10 @@ class _GradesDetailsViewState extends State<GradesDetailsView> {
           padding: const EdgeInsets.only(left: 15.0),
           child: Text(
             info,
-            style: const TextStyle(color: Colors.white, fontSize: 16),
+            style: Theme.of(context)
+                .textTheme
+                .bodyText1
+                .copyWith(color: Colors.white, fontSize: 16),
             overflow: TextOverflow.ellipsis,
           ),
         ),

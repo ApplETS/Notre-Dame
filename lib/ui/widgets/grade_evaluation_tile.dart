@@ -15,9 +15,11 @@ import 'package:notredame/ui/utils/app_theme.dart';
 import 'package:notredame/core/utils/utils.dart';
 
 class GradeEvaluationTile extends StatefulWidget {
+  final bool completed;
   final Evaluation evaluation;
 
-  const GradeEvaluationTile(this.evaluation, {Key key}) : super(key: key);
+  const GradeEvaluationTile(this.evaluation, {Key key, this.completed})
+      : super(key: key);
 
   @override
   _GradeEvaluationTileState createState() => _GradeEvaluationTileState();
@@ -78,6 +80,7 @@ class _GradeEvaluationTileState extends State<GradeEvaluationTile>
                   builder: (context, constraints) {
                     return GradeCircularProgress(
                       constraints.maxHeight / 100,
+                      completed: widget.completed,
                       key: Key(
                           "GradeCircularProgress_${widget.evaluation.title}"),
                       studentGrade: Utils.getGradeInPercentage(
