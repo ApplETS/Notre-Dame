@@ -92,8 +92,8 @@ void main() {
 
       testWidgets("display N/A when no grade is available",
           (WidgetTester tester) async {
-        await tester.pumpWidget(
-            localizedWidget(child: const GradeCircularProgress(1.0, completed: true)));
+        await tester.pumpWidget(localizedWidget(
+            child: const GradeCircularProgress(1.0, completed: true)));
         await tester.pumpAndSettle();
 
         final label = find.text(intl.grades_not_available);
