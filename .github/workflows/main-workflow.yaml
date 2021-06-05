@@ -12,7 +12,6 @@ on:
 env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   MAPS_API_KEY: ${{ secrets.MAPS_API_KEY }}
-  GITHUB_API_TOKEN: ${{ secrets.GITHUB_API_TOKEN }}
 jobs:
   tagValidation:
     name: Tag validation
@@ -95,7 +94,7 @@ jobs:
             echo "::set-output name=is_commit::true"
           fi
       - name: Push coverage changes.
-        if: ${{ github.event_name == 'push' && steps.commit.is_commit}}
+        if: ${{ github.event_name == 'push' && steps.commit.is_commit == 'true' }}
         uses: ad-m/github-push-action@master
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
@@ -156,7 +155,7 @@ jobs:
 
       # Build the application.
       - name: Build the application
-        run: flutter build -v ${{ matrix.build_target }} ${{ matrix.build_args }} --release
+        run: flutter build -v ${{ matrix.build_target }} ${{ matrix.build_args }} --release --dart-define=GH_API_TOKEN=${{ secrets.GH_API_TOKEN }}
 
       - name: Rename Android build
         if: matrix.target == 'Android'

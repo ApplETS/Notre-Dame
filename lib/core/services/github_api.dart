@@ -18,7 +18,7 @@ class GithubApi {
   static const String tag = "GithubApi";
   static const String tagError = "$tag - Error";
 
-  static const String _envVariableGithubAPIKey = "GITHUB_API_TOKEN";
+  static const String _envVariableGithubAPIKey = "GH_API_TOKEN";
   static const String _repositorySlug = "ApplETS/Notre-Dame";
   static const String _repositoryReportSlug = "ApplETS/Notre-Dame-Bug-report";
 
@@ -29,7 +29,8 @@ class GithubApi {
 
   GithubApi() {
     String githubApiToken;
-    if (kDebugMode) {
+    if (kDebugMode &&
+        FlutterConfig.variables.containsKey(_envVariableGithubAPIKey)) {
       githubApiToken = FlutterConfig.get(_envVariableGithubAPIKey).toString();
     } else {
       githubApiToken = const String.fromEnvironment(_envVariableGithubAPIKey);
