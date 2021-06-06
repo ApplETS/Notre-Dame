@@ -144,6 +144,8 @@ class _DashboardViewState extends State<DashboardView>
                     onPressed: () {
                       Utils.launchURL(Urls.clubFacebook, AppIntl.of(context));
                     },
+                    style: TextButton.styleFrom(
+                        side: const BorderSide(color: Colors.white)),
                     child: Text(AppIntl.of(context).facebook.toUpperCase(),
                         style: Theme.of(context).primaryTextTheme.button),
                   ),
@@ -151,6 +153,8 @@ class _DashboardViewState extends State<DashboardView>
                     onPressed: () {
                       Utils.launchURL(Urls.clubGithub, AppIntl.of(context));
                     },
+                    style: TextButton.styleFrom(
+                        side: const BorderSide(color: Colors.white)),
                     child: Text(AppIntl.of(context).github.toUpperCase(),
                         style: Theme.of(context).primaryTextTheme.button),
                   ),
@@ -158,6 +162,8 @@ class _DashboardViewState extends State<DashboardView>
                     onPressed: () {
                       Utils.launchURL(Urls.clubEmail, AppIntl.of(context));
                     },
+                    style: TextButton.styleFrom(
+                        side: const BorderSide(color: Colors.white)),
                     child: Text(AppIntl.of(context).email.toUpperCase(),
                         style: Theme.of(context).primaryTextTheme.button),
                   ),
