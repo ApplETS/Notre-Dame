@@ -50,7 +50,8 @@ void main() {
 
         await tester.tap(find.byIcon(Icons.dashboard));
 
-        verify(_navigationService.pushNamed(RouterPaths.dashboard));
+        verify(
+            _navigationService.pushNamedAndRemoveUntil(RouterPaths.dashboard));
       });
 
       testWidgets('schedule', (WidgetTester tester) async {
@@ -60,7 +61,8 @@ void main() {
 
         await tester.tap(find.byIcon(Icons.schedule));
 
-        verify(_navigationService.pushNamed(RouterPaths.schedule));
+        verify(
+            _navigationService.pushNamedAndRemoveUntil(RouterPaths.schedule));
       });
 
       testWidgets('student', (WidgetTester tester) async {
@@ -70,7 +72,7 @@ void main() {
 
         await tester.tap(find.byIcon(Icons.school));
 
-        verify(_navigationService.pushNamed(RouterPaths.student));
+        verify(_navigationService.pushNamedAndRemoveUntil(RouterPaths.student));
       });
 
       testWidgets('ets', (WidgetTester tester) async {
@@ -80,7 +82,7 @@ void main() {
 
         await tester.tap(find.byIcon(Icons.account_balance));
 
-        verify(_navigationService.pushNamed(RouterPaths.ets));
+        verify(_navigationService.pushNamedAndRemoveUntil(RouterPaths.ets));
       });
 
       testWidgets('more', (WidgetTester tester) async {
@@ -90,7 +92,7 @@ void main() {
 
         await tester.tap(find.byIcon(Icons.dehaze));
 
-        verify(_navigationService.pushNamed(RouterPaths.more));
+        verify(_navigationService.pushNamedAndRemoveUntil(RouterPaths.more));
       });
     });
   });
