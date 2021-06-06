@@ -22,6 +22,11 @@
 		<string>en</string>
 		<string>fr</string>
 	</array>
+	<key>LSApplicationQueriesSchemes</key>
+    <array>
+        <string>tel</string>
+        <string>mailto</string>
+    </array>
 	<key>CFBundleName</key>
 	<string>ÉTS Mobile</string>
 	<key>CFBundlePackageType</key>
