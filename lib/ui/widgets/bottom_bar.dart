@@ -64,19 +64,19 @@ class BottomBar extends StatelessWidget {
   void _onTap(int index) {
     switch (index) {
       case dashboardView:
-        _navigationService.pushNamed(RouterPaths.dashboard);
+        _navigationService.pushNamedAndRemoveUntil(RouterPaths.dashboard);
         break;
       case scheduleView:
-        _navigationService.pushNamed(RouterPaths.schedule);
+        _navigationService.pushNamedAndRemoveUntil(RouterPaths.schedule);
         break;
       case studentView:
-        _navigationService.pushNamed(RouterPaths.student);
+        _navigationService.pushNamedAndRemoveUntil(RouterPaths.student);
         break;
       case etsView:
-        _navigationService.pushNamed(RouterPaths.ets);
+        _navigationService.pushNamedAndRemoveUntil(RouterPaths.ets);
         break;
       case moreView:
-        _navigationService.pushNamed(RouterPaths.more);
+        _navigationService.pushNamedAndRemoveUntil(RouterPaths.more);
         break;
     }
   }

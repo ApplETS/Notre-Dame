@@ -48,6 +48,6 @@ class ChooseLanguageViewModel extends BaseViewModel {
     }
 
     _navigationService.pop();
-    _navigationService.pushNamed(RouterPaths.login);
+    _navigationService.pushNamedAndRemoveUntil(RouterPaths.login);
   }
 }
