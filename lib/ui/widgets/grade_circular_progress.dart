@@ -6,13 +6,18 @@ import 'package:percent_indicator/percent_indicator.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class GradeCircularProgress extends StatelessWidget {
+  final bool completed;
   final String finalGrade;
   final double studentGrade;
   final double averageGrade;
   final double ratio;
 
   const GradeCircularProgress(this.ratio,
-      {Key key, this.finalGrade, this.studentGrade, this.averageGrade})
+      {Key key,
+      this.completed,
+      this.finalGrade,
+      this.studentGrade,
+      this.averageGrade})
       : super(key: key);
 
   @override
@@ -22,14 +27,14 @@ class GradeCircularProgress extends StatelessWidget {
       animationDuration: 1100,
       radius: 100 * ratio,
       lineWidth: 8.0 * ratio,
-      percent: getGradeInDecimals(studentGrade ?? 0.0),
+      percent: completed ? getGradeInDecimals(studentGrade ?? 0.0) : 0,
       circularStrokeCap: CircularStrokeCap.round,
       center: CircularPercentIndicator(
         animation: true,
         animationDuration: 700,
         radius: 80 * ratio,
         lineWidth: 8.0 * ratio,
-        percent: getGradeInDecimals(averageGrade ?? 0.0),
+        percent: completed ? getGradeInDecimals(averageGrade ?? 0.0) : 0,
         circularStrokeCap: CircularStrokeCap.round,
         center: Text(
           getGrade(context),

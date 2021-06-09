@@ -65,8 +65,8 @@ void main() {
           (WidgetTester tester) async {
         final evaluation = courseSummary.evaluations.first;
 
-        await tester.pumpWidget(
-            localizedWidget(child: GradeEvaluationTile(evaluation)));
+        await tester.pumpWidget(localizedWidget(
+            child: GradeEvaluationTile(evaluation, completed: true)));
         await tester.pumpAndSettle();
 
         final circularPercentIndicator = find.byType(GradeCircularProgress);
@@ -83,8 +83,8 @@ void main() {
           (WidgetTester tester) async {
         final evaluation = courseSummary.evaluations.last;
 
-        await tester.pumpWidget(
-            localizedWidget(child: GradeEvaluationTile(evaluation)));
+        await tester.pumpWidget(localizedWidget(
+            child: GradeEvaluationTile(evaluation, completed: true)));
         await tester.pumpAndSettle();
 
         final circularPercentIndicator = find.byType(GradeCircularProgress);
