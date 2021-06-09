@@ -89,12 +89,14 @@ jobs:
           git config --local user.name "github-actions[bot]"
           mv coverage/lcov.info coverage/lcov.base.info
           git add coverage/lcov.base.info
-          if git status | grep coverage/lcov.base.info; then
+          git status
+          git status | grep -o 'coverage/lcov.base.info*'
+          if git status | grep -o 'coverage/lcov.base.info*'; then
             git commit -m "Update coverage file" -a
             echo "::set-output name=is_commit::true"
           fi
       - name: Push coverage changes.
-        if: ${{ github.event_name == 'push' && steps.commit.is_commit == 'true' }}
+        if: ${{ github.event_name == 'push' }}
         uses: ad-m/github-push-action@master
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
