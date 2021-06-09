@@ -40,12 +40,12 @@ dependencies:
   # Utils
   logger: ^1.0.0
   xml: ^5.1.0
-  url_launcher: ^6.0.3
+  url_launcher: ^6.0.6
   enum_to_string: ^2.0.1
   fluttertoast: ^8.0.6
   # Widgets
   table_calendar: ^3.0.0
-  percent_indicator: "^2.1.7+2"
+  percent_indicator: ^3.0.1
   feedback: ^1.2.1
 
   # Other

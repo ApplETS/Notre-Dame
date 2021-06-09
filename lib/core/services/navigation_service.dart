@@ -1,5 +1,6 @@
 // FLUTTER / DART / THIRD-PARTIES
 import 'package:flutter/material.dart';
+import 'package:notredame/core/constants/router_paths.dart';
 
 /// Navigation service who doesn't use the BuildContext which allow us to call it from anywhere.
 class NavigationService {
@@ -23,16 +24,9 @@ class NavigationService {
   }
 
   /// Replace the current route of the navigator by pushing the route named
-  /// [routeName] and then disposing the previous route once the new route has
-  /// finished animating in.
-  Future<dynamic> pushReplacementNamed(String routeName) {
-    return _navigatorKey.currentState.pushReplacementNamed(routeName);
-  }
-
-  /// Replace the current route of the navigator by pushing the route named
   /// [routeName] and then delete the stack of previous routes
   Future<dynamic> pushNamedAndRemoveUntil(String routeName) {
-    return _navigatorKey.currentState
-        .pushNamedAndRemoveUntil(routeName, (Route<dynamic> route) => false);
+    return _navigatorKey.currentState.pushNamedAndRemoveUntil(
+        routeName, ModalRoute.withName(RouterPaths.dashboard));
   }
 }
