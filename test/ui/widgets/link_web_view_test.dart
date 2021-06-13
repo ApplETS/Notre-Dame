@@ -13,7 +13,7 @@ import 'package:notredame/ui/widgets/link_web_view.dart';
 import '../../helpers.dart';
 
 final _quickLink = QuickLink(
-    image: 'assets/images/ic_security_red.png',
+    image: const Icon(Icons.ac_unit),
     name: 'test',
     link: 'https://clubapplets.ca/');
 

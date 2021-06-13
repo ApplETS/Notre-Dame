@@ -2,7 +2,7 @@
 import 'package:flutter/material.dart';
 
 class QuickLink {
-  final String image;
+  final Widget image;
   final String name;
   final String link;
 

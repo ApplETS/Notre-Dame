@@ -28,12 +28,14 @@ class StartUpView extends StatelessWidget {
                         Hero(
                           tag: 'ets_logo',
                           child: Image.asset(
-                            Theme.of(context).brightness == Brightness.light
-                                ? "assets/images/ets_white_logo.png"
-                                : "assets/images/ets_red_logo.png",
+                            "assets/images/ets_red_logo.png",
                             excludeFromSemantics: true,
                             width: 216,
                             height: 216,
+                            color:
+                                Theme.of(context).brightness == Brightness.light
+                                    ? AppTheme.etsLightRed
+                                    : Colors.white,
                           ),
                         ),
                         const CircularProgressIndicator(

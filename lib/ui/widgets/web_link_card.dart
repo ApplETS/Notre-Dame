@@ -35,8 +35,7 @@ class WebLinkCard extends StatelessWidget {
                       children: [
                         Expanded(
                           flex: 40,
-                          child: Image.asset(_links.image,
-                              color: AppTheme.etsLightRed),
+                          child: _links.image,
                         ),
                         FittedBox(
                           fit: BoxFit.fitWidth,

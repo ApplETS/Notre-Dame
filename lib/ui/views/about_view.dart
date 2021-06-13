@@ -2,6 +2,7 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 // CONSTANTS
 import 'package:notredame/core/constants/urls.dart';
@@ -99,23 +100,38 @@ class _AboutViewState extends State<AboutView> with TickerProviderStateMixin {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   IconButton(
-                      icon: Image.asset("assets/images/website_white.png"),
+                      icon: const FaIcon(
+                        FontAwesomeIcons.globeAmericas,
+                        color: Colors.white,
+                      ),
                       onPressed: () => Utils.launchURL(
                           Urls.clubWebsite, AppIntl.of(context))),
                   IconButton(
-                      icon: Image.asset("assets/images/github_white.png"),
+                      icon: const FaIcon(
+                        FontAwesomeIcons.github,
+                        color: Colors.white,
+                      ),
                       onPressed: () => Utils.launchURL(
                           Urls.clubGithub, AppIntl.of(context))),
                   IconButton(
-                      icon: Image.asset("assets/images/facebook_white.png"),
+                      icon: const FaIcon(
+                        FontAwesomeIcons.facebook,
+                        color: Colors.white,
+                      ),
                       onPressed: () => Utils.launchURL(
                           Urls.clubFacebook, AppIntl.of(context))),
                   IconButton(
-                      icon: Image.asset("assets/images/twitter_white.png"),
+                      icon: const FaIcon(
+                        FontAwesomeIcons.twitter,
+                        color: Colors.white,
+                      ),
                       onPressed: () => Utils.launchURL(
                           Urls.clubTwitter, AppIntl.of(context))),
                   IconButton(
-                      icon: Image.asset("assets/images/youtube_white.png"),
+                      icon: const FaIcon(
+                        FontAwesomeIcons.youtube,
+                        color: Colors.white,
+                      ),
                       onPressed: () => Utils.launchURL(
                           Urls.clubYoutube, AppIntl.of(context))),
                 ],
