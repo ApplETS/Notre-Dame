@@ -51,7 +51,7 @@ void main() {
         verify(settingsManager
             .setLocale(AppIntl.supportedLocales.first.languageCode));
         verify(navigationService.pop());
-        verify(navigationService.pushNamed(RouterPaths.login));
+        verify(navigationService.pushNamedAndRemoveUntil(RouterPaths.login));
       });
 
       test('can set language français', () async {
@@ -63,7 +63,7 @@ void main() {
         verify(settingsManager
             .setLocale(AppIntl.supportedLocales.last.languageCode));
         verify(navigationService.pop());
-        verify(navigationService.pushNamed(RouterPaths.login));
+        verify(navigationService.pushNamedAndRemoveUntil(RouterPaths.login));
       });
 
       test('throws an error when index does not exist', () async {

@@ -54,7 +54,8 @@ void main() {
 
         await viewModel.handleStartUp();
 
-        verify(navigationService.pushNamed(RouterPaths.dashboard));
+        verify(
+            navigationService.pushNamedAndRemoveUntil(RouterPaths.dashboard));
       });
 
       test(
@@ -76,7 +77,7 @@ void main() {
 
         await viewModel.handleStartUp();
 
-        verify(navigationService.pushNamed(RouterPaths.login));
+        verify(navigationService.pushNamedAndRemoveUntil(RouterPaths.login));
       });
 
       test(

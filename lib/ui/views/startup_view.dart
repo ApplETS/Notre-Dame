@@ -1,5 +1,6 @@
 // FLUTTER / DART / THIRD-PARTIES
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:stacked/stacked.dart';
 
 // VIEW MODEL
@@ -26,17 +27,19 @@ class StartUpView extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
                         Hero(
-                          tag: 'ets_logo',
-                          child: Image.asset(
-                            "assets/images/ets_red_logo.png",
-                            excludeFromSemantics: true,
-                            width: 216,
-                            height: 216,
-                            color:
-                                Theme.of(context).brightness == Brightness.light
-                                    ? AppTheme.etsLightRed
-                                    : Colors.white,
-                          ),
+                            tag: 'ets_logo',
+                            child: SvgPicture.asset(
+                              "assets/images/ets_white_logo.svg",
+                              excludeFromSemantics: true,
+                              width: 90,
+                              height: 90,
+                              color: Theme.of(context).brightness ==
+                                      Brightness.light
+                                  ? Colors.white
+                                  : AppTheme.etsLightRed,
+                            )),
+                        const SizedBox(
+                          height: 15,
                         ),
                         const CircularProgressIndicator(
                             valueColor:

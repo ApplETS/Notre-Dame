@@ -90,10 +90,13 @@ class MoreView extends StatelessWidget {
                   onTap: () => Navigator.of(context).push(
                     PageRouteBuilder(
                       pageBuilder: (context, _, __) => AboutDialog(
-                        applicationIcon: SizedBox(
-                            width: 75,
-                            child: Image.asset(
-                                'assets/images/favicon_applets.png')),
+                        applicationIcon: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: SizedBox(
+                              width: 75,
+                              child: Image.asset(
+                                  'assets/images/favicon_applets.png')),
+                        ),
                         applicationName:
                             AppIntl.of(context).more_open_source_licenses,
                         applicationVersion: model.appVersion,

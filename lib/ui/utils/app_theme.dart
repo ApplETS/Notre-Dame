@@ -13,6 +13,7 @@ class AppTheme {
 
   // App|ETS colors
   static const Color appletsPurple = Color(0xff19375f);
+  static const Color appletsDarkPurple = Color(0xff122743);
 
   // Grade colors
   static const Color gradeFailureMin = Color(0xffd32f2f);

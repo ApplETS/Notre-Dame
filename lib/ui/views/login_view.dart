@@ -1,6 +1,7 @@
 // FLUTTER / DART / THIRD-PARTIES
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:stacked/stacked.dart';
 
@@ -53,18 +54,23 @@ class _LoginViewState extends State<LoginView> {
                           node: _focusNode,
                           child: Column(
                             children: [
+                              const SizedBox(
+                                height: 60,
+                              ),
                               Hero(
-                                tag: 'ets_logo',
-                                child: Image.asset(
-                                  "assets/images/ets_red_logo.png",
-                                  excludeFromSemantics: true,
-                                  width: 216,
-                                  height: 216,
-                                  color: Theme.of(context).brightness ==
-                                          Brightness.light
-                                      ? AppTheme.etsLightRed
-                                      : Colors.white,
-                                ),
+                                  tag: 'ets_logo',
+                                  child: SvgPicture.asset(
+                                    "assets/images/ets_white_logo.svg",
+                                    excludeFromSemantics: true,
+                                    width: 90,
+                                    height: 90,
+                                    color: Theme.of(context).brightness ==
+                                            Brightness.light
+                                        ? Colors.white
+                                        : AppTheme.etsLightRed,
+                                  )),
+                              const SizedBox(
+                                height: 60,
                               ),
                               TextFormField(
                                 autofillHints: const [AutofillHints.username],

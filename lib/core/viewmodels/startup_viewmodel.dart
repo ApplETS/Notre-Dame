@@ -33,14 +33,14 @@ class StartUpViewModel extends BaseViewModel {
     final bool isLogin = await _userRepository.silentAuthenticate();
 
     if (isLogin) {
-      _navigationService.pushNamed(RouterPaths.dashboard);
+      _navigationService.pushNamedAndRemoveUntil(RouterPaths.dashboard);
     } else {
       if (await _settingsManager.getString(PreferencesFlag.languageChoice) ==
           null) {
         _navigationService.pushNamed(RouterPaths.chooseLanguage);
         _settingsManager.setString(PreferencesFlag.languageChoice, 'true');
       } else {
-        _navigationService.pushNamed(RouterPaths.login);
+        _navigationService.pushNamedAndRemoveUntil(RouterPaths.login);
       }
     }
   }
@@ -53,7 +53,7 @@ class StartUpViewModel extends BaseViewModel {
     final hasConnectivityIssues = !await _networkingService.hasConnectivity();
     final wasLoggedIn = await _userRepository.wasPreviouslyLoggedIn();
     if (hasConnectivityIssues && wasLoggedIn) {
-      _navigationService.pushNamed(RouterPaths.dashboard);
+      _navigationService.pushNamedAndRemoveUntil(RouterPaths.dashboard);
       return true;
     }
     return false;
