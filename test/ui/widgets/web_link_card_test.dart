@@ -40,11 +40,11 @@ void main() {
       await tester.pumpAndSettle();
 
       final text = find.byType(Text);
-      final image = find.byType(Image);
+      final icon1 = find.byType(Icon);
 
       expect(text, findsNWidgets(1));
       expect(_quickLink.name, 'test');
-      expect(image, findsNWidgets(1));
+      expect(icon1, findsNWidgets(1));
     });
   });
 }
