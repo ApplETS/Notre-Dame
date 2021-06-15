@@ -21,7 +21,10 @@ void main() {
         await tester.pumpAndSettle();
 
         final image = find.byType(Image);
-        expect(image, findsNWidgets(6));
+        expect(image, findsOneWidget);
+
+        final iconButton = find.byType(IconButton);
+        expect(iconButton, findsNWidgets(5));
 
         final text = find.byType(Text);
         expect(text, findsNWidgets(2));

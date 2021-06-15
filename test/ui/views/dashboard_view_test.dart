@@ -255,12 +255,8 @@ void main() {
         expect(aboutUsParagraph, findsOneWidget);
 
         // Find aboutUs card Link Buttons
-        final aboutUsLinkButtons = find.byType(TextButton);
-        expect(aboutUsLinkButtons, findsNWidgets(3));
-
-        expect(find.text(intl.facebook.toUpperCase()), findsOneWidget);
-        expect(find.text(intl.github.toUpperCase()), findsOneWidget);
-        expect(find.text(intl.email.toUpperCase()), findsOneWidget);
+        final aboutUsLinkButtons = find.byType(IconButton);
+        expect(aboutUsLinkButtons, findsNWidgets(4));
       });
 
       testWidgets('Has card schedule displayed properly',

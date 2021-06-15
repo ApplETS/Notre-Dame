@@ -1,6 +1,7 @@
 // FLUTTER / DART / THIRD-PARTIES
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:stacked/stacked.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -139,29 +140,38 @@ class _DashboardViewState extends State<DashboardView>
               ),
               Container(
                 padding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
-                child: Wrap(spacing: 15.0, children: [
-                  TextButton(
-                    onPressed: () {
-                      Utils.launchURL(Urls.clubFacebook, AppIntl.of(context));
-                    },
-                    child: Text(AppIntl.of(context).facebook.toUpperCase(),
-                        style: Theme.of(context).primaryTextTheme.button),
-                  ),
-                  TextButton(
-                    onPressed: () {
-                      Utils.launchURL(Urls.clubGithub, AppIntl.of(context));
-                    },
-                    child: Text(AppIntl.of(context).github.toUpperCase(),
-                        style: Theme.of(context).primaryTextTheme.button),
-                  ),
-                  TextButton(
-                    onPressed: () {
-                      Utils.launchURL(Urls.clubEmail, AppIntl.of(context));
-                    },
-                    child: Text(AppIntl.of(context).email.toUpperCase(),
-                        style: Theme.of(context).primaryTextTheme.button),
-                  ),
-                ]),
+                child: Padding(
+                  padding: const EdgeInsets.only(bottom: 8.0),
+                  child: Wrap(spacing: 15.0, children: [
+                    IconButton(
+                      onPressed: () {
+                        Utils.launchURL(Urls.clubFacebook, AppIntl.of(context));
+                      },
+                      icon: const FaIcon(
+                        FontAwesomeIcons.facebook,
+                        color: Colors.white,
+                      ),
+                    ),
+                    IconButton(
+                      onPressed: () {
+                        Utils.launchURL(Urls.clubGithub, AppIntl.of(context));
+                      },
+                      icon: const FaIcon(
+                        FontAwesomeIcons.github,
+                        color: Colors.white,
+                      ),
+                    ),
+                    IconButton(
+                      onPressed: () {
+                        Utils.launchURL(Urls.clubEmail, AppIntl.of(context));
+                      },
+                      icon: const FaIcon(
+                        FontAwesomeIcons.envelope,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ]),
+                ),
               ),
             ],
           ),

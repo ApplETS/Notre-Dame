@@ -183,7 +183,7 @@ void main() {
 
       setUp(() async {
         final ByteData bytes = await rootBundle
-            .load('packages/notredame/assets/images/github_white.png');
+            .load('packages/notredame/assets/images/ets_red_logo.png');
         screenshotData = bytes.buffer.asUint8List();
       });
 
