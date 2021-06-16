@@ -1,7 +1,9 @@
 // FLUTTER / DART / THIRD-PARTIES
 import 'package:flutter/material.dart';
-import 'package:notredame/ui/utils/app_theme.dart';
 import 'package:percent_indicator/percent_indicator.dart';
+
+// UTILS
+import 'package:notredame/ui/utils/app_theme.dart';
 
 // OTHERS
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
