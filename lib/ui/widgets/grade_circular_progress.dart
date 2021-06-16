@@ -45,7 +45,7 @@ class _GradeCircularProgressState extends State<GradeCircularProgress>
 
     animation = ColorTween(
       begin: AppTheme.gradeFailureMin,
-      end: gradePercentageColor(widget.studentGrade),
+      end: gradePercentageColor(widget.studentGrade ?? 0.0),
     ).animate(_controller)
       ..addListener(() {
         setState(() {});
