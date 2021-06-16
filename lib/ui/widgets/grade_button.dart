@@ -37,7 +37,7 @@ class GradeButton extends StatelessWidget {
                     children: [
                       Expanded(
                         child: Hero(
-                          tag: 'course_acronym_${course.acronym}',
+                          tag: 'course_acronym_${course.acronym}_${course.session}',
                           child: Material(
                             child: DecoratedBox(
                                 decoration: const BoxDecoration(

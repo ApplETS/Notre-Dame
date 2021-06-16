@@ -57,7 +57,7 @@ class _GradesDetailsViewState extends State<GradesDetailsView>
         builder: (context, model, child) => BaseScaffold(
           showBottomBar: false,
           body: Hero(
-            tag: 'course_acronym_${model.course.acronym}',
+            tag: 'course_acronym_${model.course.acronym}_${model.course.session}',
             child: Material(
               child: NestedScrollView(
                 headerSliverBuilder: (context, innerBoxScrolled) => [
