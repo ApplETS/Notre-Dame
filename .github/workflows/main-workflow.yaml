@@ -88,7 +88,9 @@ jobs:
         id: coverage
         run: |
           chmod +x ./scripts/determine_code_coverage.sh
-          echo $(./scripts/determine_code_coverage.sh coverage/lcov.info)
+          export COVERAGE=$(./scripts/determine_code_coverage.sh coverage/lcov.info)
+          echo "::set-output name=percentage::$COVERAGE"
+          echo "::debug::Coverage percentage determined is: $COVERAGE"
 
   coverage:
     name: Update coverage
