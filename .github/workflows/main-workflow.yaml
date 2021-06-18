@@ -49,6 +49,8 @@ jobs:
   testing:
     name: Tests and checks
     runs-on: ubuntu-latest
+    outputs:
+      coverage: ${{ steps.coverage.percentage }}
     steps:
       - uses: actions/checkout@v2
         with:
@@ -81,6 +83,12 @@ jobs:
         with:
           name: lcov.info
           path: ${{ github.workspace }}/coverage/lcov.info
+      - name: Get code coverage
+        #        if: ${{ github.event_name == 'push' }}
+        id: coverage
+        run: |
+          chmod +x ./scripts/determine_code_coverage.sh
+          ./scripts/determine_code_coverage.sh coverage/lcov.info
 
   coverage:
     name: Update coverage
@@ -98,23 +106,17 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           lcov-file: ./lcov.info
-#          lcov-base: ./coverage/lcov.base.info
+      #          lcov-base: ./coverage/lcov.base.info
 
-      - name: Get code coverage
-#        if: ${{ github.event_name == 'push' }}
-        id: coverage
-        run: |
-          chmod +x ./scripts/determine_code_coverage.sh
-          ./scripts/determine_code_coverage.sh lcov.info
       - name: Update badge coverage
-#        if: ${{ github.event_name == 'push' }}
+        #        if: ${{ github.event_name == 'push' }}
         uses: schneegans/dynamic-badges-action@v1.1.0
         with:
           auth: ${{ secrets.GIST_SECRET }}
           gitsID: '63e992d7042dbac4db9abaecb78df0eb'
           filename: notre_dame_master_badge_coverage.json
           label: Code coverage
-          message: ${{ steps.coverage.percentage }}
+          message: ${{ needs.testing.outputs.coverage }}
           namedLogo: flutter
           color: green
       - name: Commit coverage file
@@ -216,7 +218,7 @@ jobs:
   create-draft-release:
     name: Draft Github release
     if: ${{ github.event_name == 'push' }}
-    needs: [ create-build ]
+    needs: [ tagValidation, create-build ]
     runs-on: ubuntu-latest
     outputs:
       upload_url: ${{ steps.create_release.outputs.upload_url }}
