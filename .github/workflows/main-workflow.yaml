@@ -50,7 +50,7 @@ jobs:
     name: Tests and checks
     runs-on: ubuntu-latest
     outputs:
-      coverage: ${{ steps.coverage.percentage }}
+      coverage: ${{ steps.coverage.outputs.percentage }}
     steps:
       - uses: actions/checkout@v2
         with:
