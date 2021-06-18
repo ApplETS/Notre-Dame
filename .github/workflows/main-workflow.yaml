@@ -88,7 +88,7 @@ jobs:
         id: coverage
         run: |
           chmod +x ./scripts/determine_code_coverage.sh
-          ./scripts/determine_code_coverage.sh coverage/lcov.info
+          echo $(./scripts/determine_code_coverage.sh coverage/lcov.info)
 
   coverage:
     name: Update coverage
