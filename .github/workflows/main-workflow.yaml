@@ -43,7 +43,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           message: '${{ steps.split.outputs._0 }} already exists, please update the pubspec version.'
 
-  validationWorkflow:
+  testing:
     name: Tests and checks
     runs-on: ubuntu-latest
     steps:
@@ -73,14 +73,47 @@ jobs:
       # Run the tests
       - run: flutter test --coverage
 
+      - name: Upload coverage file
+        uses: actions/upload-artifact@v2
+        with:
+          name: lcov.info
+          path: ${{ github.workspace }}/lcov.info
+
+  coverage:
+    name: Update coverage
+    needs: [ validationWorkflow ]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download coverage file
+        uses: actions/download-artifact@v2
+        with:
+          name: lcov.info
       # Comment coverage report
       - name: Comment the coverage of the PR
         if: ${{ github.event_name == 'pull_request' }}
         uses: romeovs/lcov-reporter-action@v0.2.21
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
-          lcov-file: ./coverage/lcov.info
-          lcov-base: ./coverage/lcov.base.info
+          lcov-file: ./lcov.info
+#          lcov-base: ./coverage/lcov.base.info
+
+      - name: Get code coverage
+#        if: ${{ github.event_name == 'push' }}
+        id: coverage
+        run: |
+          chmod +x ./scripts/determine_code_coverage.sh
+          ./scripts/determine_code_coverage.sh lcov.info
+      - name: Update badge coverage
+#        if: ${{ github.event_name == 'push' }}
+        uses: schneegans/dynamic-badges-action@v1.1.0
+        with:
+          auth: ${{ secrets.GIST_SECRET }}
+          gitsID: '63e992d7042dbac4db9abaecb78df0eb'
+          filename: notre_dame_master_badge_coverage.json
+          label: Code coverage
+          message: ${{ steps.coverage.percentage }}
+          namedLogo: flutter
+          color: green
       - name: Commit coverage file
         id: commit
         if: ${{ github.event_name == 'push' }}
@@ -101,6 +134,7 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           branch: ${{ github.head_ref }}
+
 
   create-build:
     name: Create ${{ matrix.target }} build
