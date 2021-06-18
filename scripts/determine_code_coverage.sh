@@ -19,4 +19,4 @@ while IFS= read -r line; do
     fi
 done < "$1"
 
-printf '%.1f%%\n' "$(echo "$readedLines/$totalLines*100" | bc -l)"
+echo "$readedLines/$totalLines*100" | bc -l | awk '{printf("%.1f%%\n", $1)}'
