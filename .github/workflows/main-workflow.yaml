@@ -89,19 +89,13 @@ jobs:
         run: |
           chmod +x ./scripts/determine_code_coverage.sh
           export COV="$(./scripts/determine_code_coverage.sh coverage/lcov.info)"
-          echo $COV
-          echo "COVERAGE=$COV" >> $GITHUB_ENV
+          echo "Coverage detected is: $COV"
           echo "::set-output name=percentage::$COV"
-          echo "::debug::Coverage percentage determined is: $COV"
   coverage:
     name: Update coverage
     needs: [ testing ]
     runs-on: ubuntu-latest
     steps:
-      - name: Coverage is
-        run: |
-          echo "Coverage is: ${{ needs.testing.outputs.coverage }}"
-          echo "Coverage is: ${{ env.COVERAGE }}"
       - name: Download coverage file
         uses: actions/download-artifact@v2
         with:
@@ -116,7 +110,7 @@ jobs:
       #          lcov-base: ./coverage/lcov.base.info
 
       - name: Update badge coverage
-        #        if: ${{ github.event_name == 'push' }}
+        if: ${{ github.event_name == 'push' }}
         uses: schneegans/dynamic-badges-action@v1.1.0
         with:
           auth: ${{ secrets.GIST_COVERAGE_BADGE_TOKEN }}
@@ -126,26 +120,28 @@ jobs:
           message: ${{ needs.testing.outputs.coverage }}
           namedLogo: flutter
           color: green
-      - name: Commit coverage file
-        id: commit
-        if: ${{ github.event_name == 'push' }}
-        run: |
-          git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git config --local user.name "github-actions[bot]"
-          mv coverage/lcov.info coverage/lcov.base.info
-          git add coverage/lcov.base.info
-          git status
-          git status | grep -o 'coverage/lcov.base.info*'
-          if git status | grep -o 'coverage/lcov.base.info*'; then
-            git commit -m "Update coverage file" -a
-            echo "::set-output name=is_commit::true"
-          fi
-      - name: Push coverage changes.
-        if: ${{ github.event_name == 'fails' }}
-        uses: ad-m/github-push-action@master
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          branch: ${{ github.head_ref }}
+
+#      Disable theses steps for now. Will enable them when we will think of a way to upload lcov.base.info somewhere
+#      - name: Commit coverage file
+#        id: commit
+#        if: ${{ github.event_name == 'push' }}
+#        run: |
+#          git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
+#          git config --local user.name "github-actions[bot]"
+#          mv coverage/lcov.info coverage/lcov.base.info
+#          git add coverage/lcov.base.info
+#          git status
+#          git status | grep -o 'coverage/lcov.base.info*'
+#          if git status | grep -o 'coverage/lcov.base.info*'; then
+#            git commit -m "Update coverage file" -a
+#            echo "::set-output name=is_commit::true"
+#          fi
+#      - name: Push coverage changes.
+#        if: ${{ github.event_name == 'push' && }}
+#        uses: ad-m/github-push-action@master
+#        with:
+#          github_token: ${{ secrets.GITHUB_TOKEN }}
+#          branch: ${{ github.head_ref }}
 
   create-build:
     name: Create ${{ matrix.target }} build

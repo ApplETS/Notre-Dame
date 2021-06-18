@@ -5,7 +5,8 @@
     <br />
     <br />
     <a href="https://travis-ci.org/ApplETS/Notre-Dame" style="text-decoration: none;">
-      <img src="https://github.com/ApplETS/Notre-Dame/actions/workflows/main-workflow.yaml/badge.svg?event=push&branch=master" alt="Build Status"/>
+      <img src="https://github.com/ApplETS/Notre-Dame/actions/workflows/main-workflow.yaml/badge.svg?event=push&branch=master" alt="Statut de la compilation"/>
+      <img src="https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/apomalyn/63e992d7042dbac4db9abaecb78df0eb/raw/notre_dame_master_badge_coverage.json" alt="Code coverage"/>
     </a>
     <br />
   </p>
