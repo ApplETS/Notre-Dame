@@ -115,8 +115,8 @@ jobs:
         #        if: ${{ github.event_name == 'push' }}
         uses: schneegans/dynamic-badges-action@v1.1.0
         with:
-          auth: ${{ secrets.GIST_SECRET }}
-          gistID: '63e992d7042dbac4db9abaecb78df0eb'
+          auth: ${{ secrets.GIST_COVERAGE_BADGE_TOKEN }}
+          gistID: 63e992d7042dbac4db9abaecb78df0eb
           filename: notre_dame_master_badge_coverage.json
           label: Code coverage
           message: ${{ needs.testing.outputs.coverage }}
