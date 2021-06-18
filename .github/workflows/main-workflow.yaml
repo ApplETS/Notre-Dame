@@ -85,12 +85,13 @@ jobs:
           path: ${{ github.workspace }}/coverage/lcov.info
       - name: Get code coverage
         #        if: ${{ github.event_name == 'push' }}
+        uses: actions/github-script@v4
         id: coverage
         run: |
           chmod +x ./scripts/determine_code_coverage.sh
-          export COVERAGE=$(./scripts/determine_code_coverage.sh coverage/lcov.info)
-          echo "::set-output name=percentage::$COVERAGE"
-          echo "::debug::Coverage percentage determined is: $COVERAGE"
+          echo "COVERAGE=$(./scripts/determine_code_coverage.sh coverage/lcov.info)" >> $GITHUB_ENV
+          echo "::set-output name=percentage::$(./scripts/determine_code_coverage.sh coverage/lcov.info)"
+          echo "::debug::Coverage percentage determined is: $(./scripts/determine_code_coverage.sh coverage/lcov.info)"
 
   coverage:
     name: Update coverage
@@ -100,6 +101,7 @@ jobs:
       - name: Coverage is
         run: |
           echo "Coverage is: ${{ needs.testing.outputs.coverage }}"
+          echo "Coverage is: ${{ env.COVERAGE }}"
       - name: Download coverage file
         uses: actions/download-artifact@v2
         with:
