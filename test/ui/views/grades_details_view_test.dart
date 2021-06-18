@@ -17,9 +17,13 @@ import 'package:notredame/ui/views/grade_details_view.dart';
 import '../../helpers.dart';
 import '../../mock/managers/course_repository_mock.dart';
 
+// MOCKS
+import '../../mock/services/networking_service_mock.dart';
+
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
   CourseRepository courseRepository;
+  NetworkingServiceMock networkingService;
 
   final CourseSummary courseSummary = CourseSummary(
     currentMark: 5,
@@ -71,7 +75,11 @@ void main() {
     setUp(() async {
       setupNavigationServiceMock();
       courseRepository = setupCourseRepositoryMock();
+      networkingService = setupNetworkingServiceMock() as NetworkingServiceMock;
       setupFlutterToastMock();
+
+      // Stub to simulate that the user has an active internet connection
+      NetworkingServiceMock.stubHasConnectivity(networkingService);
     });
 
     tearDown(() {

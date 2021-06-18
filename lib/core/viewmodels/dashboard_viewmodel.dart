@@ -21,7 +21,11 @@ import 'package:notredame/core/models/course_activity.dart';
 import 'package:notredame/core/models/course.dart';
 
 // UTILS
+import 'package:notredame/core/utils/utils.dart';
 import 'package:notredame/ui/utils/discovery_components.dart';
+
+// SERVICES
+import 'package:notredame/core/services/networking_service.dart';
 
 // OTHER
 import 'package:notredame/locator.dart';
@@ -29,6 +33,7 @@ import 'package:notredame/locator.dart';
 class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
   final SettingsManager _settingsManager = locator<SettingsManager>();
   final CourseRepository _courseRepository = locator<CourseRepository>();
+  final NetworkingService _networkingService = locator<NetworkingService>();
 
   /// All dashboard displayable cards
   Map<PreferencesFlag, int> _cards;
@@ -292,6 +297,7 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
           }
         }
       }).whenComplete(() {
+        Utils.showNoConnectionToast(_networkingService, _appIntl);
         setBusyForObject(courses, false);
       });
 

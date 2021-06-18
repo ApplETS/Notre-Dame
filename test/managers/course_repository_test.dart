@@ -496,6 +496,9 @@ void main() {
             userRepository as UserRepositoryMock, user);
         UserRepositoryMock.stubGetPassword(
             userRepository as UserRepositoryMock, password);
+
+        // Stub to simulate that the user has an active internet connection
+        NetworkingServiceMock.stubHasConnectivity(networkingService);
       });
 
       test("Sessions are loaded from cache", () async {
@@ -730,6 +733,7 @@ void main() {
             userRepository as UserRepositoryMock, password);
         CacheManagerMock.stubGet(cacheManager as CacheManagerMock,
             CourseRepository.sessionsCacheKey, jsonEncode(sessions));
+        NetworkingServiceMock.stubHasConnectivity(networkingService);
 
         await manager.getSessions();
 

@@ -182,6 +182,11 @@ class CourseRepository {
       }
     }
 
+    // Don't try to update cache when offline
+    if (!(await _networkingService.hasConnectivity())) {
+      return _sessions;
+    }
+
     try {
       // getPassword will try to authenticate the user if not authenticated.
       final String password = await _userRepository.getPassword();
@@ -308,6 +313,12 @@ class CourseRepository {
   /// version of the course. Return the course with the summary set.
   Future<Course> getCourseSummary(Course course) async {
     CourseSummary summary;
+
+    // Don't try to update the summary when user has no connection
+    if (!(await _networkingService.hasConnectivity())) {
+      return course;
+    }
+
     try {
       final String password = await _userRepository.getPassword();
       summary = await _signetsApi.getCourseSummary(
