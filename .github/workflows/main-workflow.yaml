@@ -95,6 +95,9 @@ jobs:
     needs: [ testing ]
     runs-on: ubuntu-latest
     steps:
+      - name: Coverage is
+        run: |
+          echo "Coverage is: ${{ needs.testing.outputs.coverage }}"
       - name: Download coverage file
         uses: actions/download-artifact@v2
         with:
@@ -113,7 +116,7 @@ jobs:
         uses: schneegans/dynamic-badges-action@v1.1.0
         with:
           auth: ${{ secrets.GIST_SECRET }}
-          gitsID: '63e992d7042dbac4db9abaecb78df0eb'
+          gistID: '63e992d7042dbac4db9abaecb78df0eb'
           filename: notre_dame_master_badge_coverage.json
           label: Code coverage
           message: ${{ needs.testing.outputs.coverage }}
