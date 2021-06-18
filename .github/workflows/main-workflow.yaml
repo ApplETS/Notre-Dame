@@ -88,7 +88,7 @@ jobs:
         id: coverage
         run: |
           chmod +x ./scripts/determine_code_coverage.sh
-          export COVERAGE="$(./scripts/determine_code_coverage.sh coverage/lcov.info)"
+          export COV="$(./scripts/determine_code_coverage.sh coverage/lcov.info)"
           echo $COV
           echo "COVERAGE=$COV" >> $GITHUB_ENV
           echo "::set-output name=percentage::$COV"
