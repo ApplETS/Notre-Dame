@@ -85,7 +85,6 @@ jobs:
           path: ${{ github.workspace }}/coverage/lcov.info
       - name: Get code coverage
         #        if: ${{ github.event_name == 'push' }}
-        uses: actions/github-script@v4
         id: coverage
         run: |
           chmod +x ./scripts/determine_code_coverage.sh
