@@ -42,6 +42,9 @@ jobs:
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           message: '${{ steps.split.outputs._0 }} already exists, please update the pubspec version.'
+      - if: ${{ steps.checkTag.outputs.exists == 'true' }}
+        name: Fails because the tag already exists.
+        run: exit 1
 
   testing:
     name: Tests and checks
@@ -77,7 +80,7 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: lcov.info
-          path: ${{ github.workspace }}/lcov.info
+          path: ${{ github.workspace }}/coverage/lcov.info
 
   coverage:
     name: Update coverage
