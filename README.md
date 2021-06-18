@@ -3,8 +3,9 @@
   <p>
     <br /><strong>Notre-Dame Project</strong>
     <br />
+    <br />
     <a href="https://travis-ci.org/ApplETS/Notre-Dame" style="text-decoration: none;">
-        <img src="https://travis-ci.com/ApplETS/Notre-Dame.svg?branch=master" alt="Build Status"/>
+        <img src="https://github.com/ApplETS/Notre-Dame/actions/workflows/main-workflow.yaml/badge.svg?event=push&branch=master" alt="Build Status"/>
     </a>
     <br />
   </p>
