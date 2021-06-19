@@ -5,14 +5,17 @@
     <br />
     <br />
     <a href="https://github.com/ApplETS/Notre-Dame/actions/workflows/main-workflow.yaml" style="text-decoration: none;">
-        <img src="https://github.com/ApplETS/Notre-Dame/actions/workflows/main-workflow.yaml/badge.svg?event=push&branch=master" alt="Build Status"/>
-        <img src="https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/apomalyn/63e992d7042dbac4db9abaecb78df0eb/raw/notre_dame_master_badge_coverage.json" alt="Code coverage"/>
+        <img src="https://github.com/ApplETS/Notre-Dame/actions/workflows/main-workflow.yaml/badge.svg?branch=master" alt="Build Status"/>
     </a>
+    <img src="https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/apomalyn/63e992d7042dbac4db9abaecb78df0eb/raw/notre_dame_master_badge_coverage.json" alt="Code coverage"/>
     <br />
   </p>
 </div>
 
-This project is the placeholder for the fourth version of ÉTSMobile, a mobile which application that is currently available for Android and iOS. ÉTSMobile is the main gateway between the user and the [École de technologie supérieure (ÉTS)](https://www.etsmtl.ca/) on mobile devices. ÉTSMobile is an open-source project and is developped by members of the student club [ApplETS](https://clubapplets.ca/). It offers:
+This project is the placeholder for the fourth version of ÉTSMobile, a mobile which application that is currently
+available for Android and iOS. ÉTSMobile is the main gateway between the user and
+the [École de technologie supérieure (ÉTS)](https://www.etsmtl.ca/) on mobile devices. ÉTSMobile is an open-source
+project and is developped by members of the student club [ApplETS](https://clubapplets.ca/). It offers:
 
 * Access to evaluation grades
 * Access to the student's schedules
@@ -31,7 +34,9 @@ _Note: This guide is also available in: [Français](https://github.com/ApplETS/N
 
 ## Before running the code
 
-- To access some features you will need the SignetsAPI certificate, these files are encrypted. To decrypt them you will need to execute the `env_variables.sh` script (only available on the Google Drive of the club), then run:
+- To access some features you will need the SignetsAPI certificate, these files are encrypted. To decrypt them you will
+  need to execute the `env_variables.sh` script (only available on the Google Drive of the club), then run:
+
 ```
 chmod +x ./scripts/decrypt.sh
 ./scripts/decrypt.sh
@@ -39,21 +44,28 @@ chmod +x ./scripts/decrypt.sh
 
 ## Run the code
 
-- After cloning the repo, you will have to get the packages and generate the l10n classes. To do that run the following command:
+- After cloning the repo, you will have to get the packages and generate the l10n classes. To do that run the following
+  command:
+
 ```
 flutter pub get
 ```
 
 ## Add environment variable for API_KEY
-- To add the Google Maps API TOKEN and the GitHub API TOKEN, you need to rename the file `.env.template` into `.env`.
-In the `.env` file, you need to paste the Google Maps API TOKEN and the GitHub API TOKEN.
+
+- To add the Google Maps API TOKEN and the GitHub API TOKEN, you need to rename the file `.env.template` into `.env`. In
+  the `.env` file, you need to paste the Google Maps API TOKEN and the GitHub API TOKEN.
+
 ## Git hooks
 
-You can find under the folder `.githooks` all the hooks needed for this project. To configure git to use this folder enter the following command:
+You can find under the folder `.githooks` all the hooks needed for this project. To configure git to use this folder
+enter the following command:
+
 ```bash
 git config core.hooksPath .githooks
 ```
 
-
 ## ⚖️ License
-This projet is licensed under the Apache License V2.0. See the [LICENSE](https://github.com/ApplETS/Notre-Dame/blob/master/LICENSE) file for more info.
+
+This projet is licensed under the Apache License V2.0. See
+the [LICENSE](https://github.com/ApplETS/Notre-Dame/blob/master/LICENSE) file for more info.

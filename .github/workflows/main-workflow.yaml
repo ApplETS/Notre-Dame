@@ -8,6 +8,7 @@ on:
       - '.metadata'
       - '.github/**'
       - 'README.md'
+      - 'README.fr.md'
   pull_request:
 env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
