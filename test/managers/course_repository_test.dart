@@ -684,6 +684,21 @@ void main() {
         verifyNever(
             cacheManager.update(CourseRepository.sessionsCacheKey, any));
       });
+
+      test("Should not try to fetch from signets when offline", () async {
+        CacheManagerMock.stubGet(cacheManager as CacheManagerMock,
+            CourseRepository.sessionsCacheKey, jsonEncode(sessions));
+
+        //Stub the networkingService to return no connectivity
+        reset(networkingService);
+        NetworkingServiceMock.stubHasConnectivity(networkingService,
+            hasConnectivity: false);
+
+        final sessionsCache = await manager.getSessions();
+        expect(sessionsCache, sessions);
+        verifyNever(
+            signetsApi.getSessions(username: username, password: password));
+      });
     });
 
     group("activeSessions - ", () {
@@ -1293,6 +1308,18 @@ void main() {
 
         verifyNoMoreInteractions(signetsApi);
         verifyNoMoreInteractions(cacheManager);
+      });
+
+      test("Should not try to update course summary when offline", () async {
+        //Stub the networkingService to return no connectivity
+        reset(networkingService);
+        NetworkingServiceMock.stubHasConnectivity(networkingService,
+            hasConnectivity: false);
+
+        final results = await manager.getCourseSummary(course);
+        expect(results, course);
+        verifyNever(signetsApi.getCourseSummary(
+            username: username, password: password, course: course));
       });
     });
   });
