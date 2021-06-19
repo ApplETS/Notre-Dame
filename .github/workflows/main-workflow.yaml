@@ -42,10 +42,15 @@ jobs:
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           message: '${{ steps.split.outputs._0 }} already exists, please update the pubspec version.'
+      - if: ${{ steps.checkTag.outputs.exists == 'true' }}
+        name: Fails because the tag already exists.
+        run: exit 1
 
-  validationWorkflow:
+  testing:
     name: Tests and checks
     runs-on: ubuntu-latest
+    outputs:
+      coverage: ${{ steps.coverage.outputs.percentage }}
     steps:
       - uses: actions/checkout@v2
         with:
@@ -73,34 +78,70 @@ jobs:
       # Run the tests
       - run: flutter test --coverage
 
+      - name: Upload coverage file
+        uses: actions/upload-artifact@v2
+        with:
+          name: lcov.info
+          path: ${{ github.workspace }}/coverage/lcov.info
+      - name: Get code coverage
+        #        if: ${{ github.event_name == 'push' }}
+        id: coverage
+        run: |
+          chmod +x ./scripts/determine_code_coverage.sh
+          export COV="$(./scripts/determine_code_coverage.sh coverage/lcov.info)"
+          echo "Coverage detected is: $COV"
+          echo "::set-output name=percentage::$COV"
+  coverage:
+    name: Update coverage
+    needs: [ testing ]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download coverage file
+        uses: actions/download-artifact@v2
+        with:
+          name: lcov.info
       # Comment coverage report
       - name: Comment the coverage of the PR
         if: ${{ github.event_name == 'pull_request' }}
         uses: romeovs/lcov-reporter-action@v0.2.21
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
-          lcov-file: ./coverage/lcov.info
-          lcov-base: ./coverage/lcov.base.info
-      - name: Commit coverage file
-        id: commit
+          lcov-file: ./lcov.info
+      #          lcov-base: ./coverage/lcov.base.info
+
+      - name: Update badge coverage
         if: ${{ github.event_name == 'push' }}
-        run: |
-          git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git config --local user.name "github-actions[bot]"
-          mv coverage/lcov.info coverage/lcov.base.info
-          git add coverage/lcov.base.info
-          git status
-          git status | grep -o 'coverage/lcov.base.info*'
-          if git status | grep -o 'coverage/lcov.base.info*'; then
-            git commit -m "Update coverage file" -a
-            echo "::set-output name=is_commit::true"
-          fi
-      - name: Push coverage changes.
-        if: ${{ github.event_name == 'fails' }}
-        uses: ad-m/github-push-action@master
+        uses: schneegans/dynamic-badges-action@v1.1.0
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          branch: ${{ github.head_ref }}
+          auth: ${{ secrets.GIST_COVERAGE_BADGE_TOKEN }}
+          gistID: 63e992d7042dbac4db9abaecb78df0eb
+          filename: notre_dame_master_badge_coverage.json
+          label: Code coverage
+          message: ${{ needs.testing.outputs.coverage }}
+          namedLogo: flutter
+          color: green
+
+#      Disable theses steps for now. Will enable them when we will think of a way to upload lcov.base.info somewhere
+#      - name: Commit coverage file
+#        id: commit
+#        if: ${{ github.event_name == 'push' }}
+#        run: |
+#          git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
+#          git config --local user.name "github-actions[bot]"
+#          mv coverage/lcov.info coverage/lcov.base.info
+#          git add coverage/lcov.base.info
+#          git status
+#          git status | grep -o 'coverage/lcov.base.info*'
+#          if git status | grep -o 'coverage/lcov.base.info*'; then
+#            git commit -m "Update coverage file" -a
+#            echo "::set-output name=is_commit::true"
+#          fi
+#      - name: Push coverage changes.
+#        if: ${{ github.event_name == 'push' && }}
+#        uses: ad-m/github-push-action@master
+#        with:
+#          github_token: ${{ secrets.GITHUB_TOKEN }}
+#          branch: ${{ github.head_ref }}
 
   create-build:
     name: Create ${{ matrix.target }} build
@@ -125,7 +166,7 @@ jobs:
             asset_content_type: application/zip
       # Disable fail-fast as we want results from all even if one fails.
       fail-fast: false
-    needs: [ validationWorkflow, tagValidation ]
+    needs: [ testing, tagValidation ]
     steps:
       - uses: actions/checkout@v2
       - uses: subosito/flutter-action@v1.5.0
@@ -180,7 +221,7 @@ jobs:
   create-draft-release:
     name: Draft Github release
     if: ${{ github.event_name == 'push' }}
-    needs: [ tagValidation, validationWorkflow, create-build ]
+    needs: [ tagValidation, create-build ]
     runs-on: ubuntu-latest
     outputs:
       upload_url: ${{ steps.create_release.outputs.upload_url }}

@@ -1,5 +1,6 @@
 // FLUTTER / DART / THIRD-PARTIES
 import 'package:flutter/material.dart';
+import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:notredame/ui/utils/loading.dart';
 import 'package:stacked/stacked.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -42,16 +43,27 @@ class _GradesViewState extends State<GradesView> {
                 else
                   Padding(
                     padding: const EdgeInsets.only(top: 8.0),
-                    child: ListView.builder(
-                        padding: const EdgeInsets.all(0.0),
-                        itemCount: model.coursesBySession.length,
-                        itemBuilder: (BuildContext context, int index) =>
-                            _buildSessionCourses(
-                                _sessionName(model.sessionOrder[index],
-                                    AppIntl.of(context)),
-                                model.coursesBySession[
-                                    model.sessionOrder[index]],
-                                model)),
+                    child: AnimationLimiter(
+                      child: ListView.builder(
+                          padding: const EdgeInsets.all(0.0),
+                          itemCount: model.coursesBySession.length,
+                          itemBuilder: (BuildContext context, int index) =>
+                              AnimationConfiguration.staggeredList(
+                                position: index,
+                                duration: const Duration(seconds: 1),
+                                child: SlideAnimation(
+                                  verticalOffset: 50.0,
+                                  child: FadeInAnimation(
+                                    child: _buildSessionCourses(
+                                        _sessionName(model.sessionOrder[index],
+                                            AppIntl.of(context)),
+                                        model.coursesBySession[
+                                            model.sessionOrder[index]],
+                                        model),
+                                  ),
+                                ),
+                              )),
+                    ),
                   ),
                 if (model.isBusy)
                   buildLoading(isInteractionLimitedWhileLoading: false)
