@@ -45,20 +45,21 @@ class NotFoundViewModel extends BaseViewModel {
     try {
       _artboard = await _riveAnimationService.loadRiveFile(
           riveFileName: _riveAnimationFileName);
-    } on Exception catch (e) {
+    } on Exception catch (e, stacktrace) {
       _analyticsService.logError(
           tag,
           "An Error has occurred during rive animation $_riveAnimationFileName loading.",
-          e);
+          e,
+          stacktrace);
     }
   }
 
   void startRiveAnimation() {
     try {
       _riveAnimationService.addControllerToAnimation(artboard: _artboard);
-    } on Exception catch (e) {
-      _analyticsService.logError(
-          tag, "An Error has occured during rive animation start.", e);
+    } on Exception catch (e, stacktrace) {
+      _analyticsService.logError(tag,
+          "An Error has occured during rive animation start.", e, stacktrace);
     }
   }
 }

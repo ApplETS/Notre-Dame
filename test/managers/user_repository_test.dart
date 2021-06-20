@@ -99,7 +99,7 @@ void main() {
             reason: "The authentication failed so the result should be false");
 
         // Verify the user id isn't set in the analytics
-        verify(analyticsService.logError(UserRepository.tag, any, any))
+        verify(analyticsService.logError(UserRepository.tag, any, any, any))
             .called(1);
 
         // Verify the secureStorage isn't used
@@ -175,7 +175,7 @@ void main() {
           secureStorage.read(key: UserRepository.usernameSecureKey),
           secureStorage.read(key: UserRepository.passwordSecureKey),
           monETSApi.authenticate(username: username, password: password),
-          analyticsService.logError(UserRepository.tag, any, any)
+          analyticsService.logError(UserRepository.tag, any, any, any)
         ]);
 
         expect(manager.monETSUser, null,
@@ -219,7 +219,8 @@ void main() {
         verify(secureStorage.delete(key: UserRepository.usernameSecureKey));
         verify(secureStorage.delete(key: UserRepository.passwordSecureKey));
 
-        verifyNever(analyticsService.logError(UserRepository.tag, any));
+        verifyNever(
+            analyticsService.logError(UserRepository.tag, any, any, any));
       });
     });
 
@@ -314,9 +315,9 @@ void main() {
                 'The authentication failed so an ApiException should be raised.');
 
         await untilCalled(
-            analyticsService.logError(UserRepository.tag, any, any));
+            analyticsService.logError(UserRepository.tag, any, any, any));
 
-        verify(analyticsService.logError(UserRepository.tag, any, any))
+        verify(analyticsService.logError(UserRepository.tag, any, any, any))
             .called(1);
       });
     });
@@ -459,11 +460,11 @@ void main() {
             reason: 'The programs list should be empty');
 
         await untilCalled(
-            analyticsService.logError(UserRepository.tag, any, any));
+            analyticsService.logError(UserRepository.tag, any, any, any));
 
         verify(cacheManager.get(UserRepository.programsCacheKey));
         verify(manager.getPassword());
-        verify(analyticsService.logError(UserRepository.tag, any, any));
+        verify(analyticsService.logError(UserRepository.tag, any, any, any));
 
         verifyNever(cacheManager.update(UserRepository.programsCacheKey, any));
       });
@@ -633,11 +634,11 @@ void main() {
         expect(manager.info, null, reason: 'The info should be empty');
 
         await untilCalled(
-            analyticsService.logError(UserRepository.tag, any, any));
+            analyticsService.logError(UserRepository.tag, any, any, any));
 
         verify(cacheManager.get(UserRepository.infoCacheKey));
         verify(manager.getPassword());
-        verify(analyticsService.logError(UserRepository.tag, any, any));
+        verify(analyticsService.logError(UserRepository.tag, any, any, any));
 
         verifyNever(cacheManager.update(UserRepository.infoCacheKey, any));
       });

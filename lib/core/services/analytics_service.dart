@@ -16,14 +16,15 @@ class AnalyticsService {
       FirebaseAnalyticsObserver(analytics: _analytics);
 
   /// Log a error. [prefix] should be the service where the error was triggered.
-  Future logError(String prefix, String message, [Exception error]) async {
+  Future logError(String prefix, String message,
+      [Exception error, StackTrace stackTrace]) async {
     final mesTruncated =
         message.length > 100 ? message.substring(0, 99) : message;
     await _analytics.logEvent(
         name: "${prefix}Error", parameters: {'message': mesTruncated});
 
     if (error != null) {
-      await _crashlytics.recordError(error, null, reason: message);
+      await _crashlytics.recordError(error, stackTrace, reason: message);
     }
   }
 
