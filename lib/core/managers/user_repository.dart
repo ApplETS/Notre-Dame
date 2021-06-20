@@ -82,8 +82,8 @@ class UserRepository {
     try {
       _monETSUser =
           await _monETSApi.authenticate(username: username, password: password);
-    } catch (e) {
-      _analyticsService.logError(tag, "Authenticate - ${e.toString()}");
+    } on Exception catch (e) {
+      _analyticsService.logError(tag, "Authenticate - ${e.toString()}", e);
       return false;
     }
 
@@ -97,7 +97,7 @@ class UserRepository {
         await _secureStorage.write(key: passwordSecureKey, value: password);
       } on PlatformException catch (e) {
         _analyticsService.logError(
-            tag, "Authenticate - PlatformException - ${e.toString()}");
+            tag, "Authenticate - PlatformException - ${e.toString()}", e);
         return false;
       }
     }
@@ -130,7 +130,7 @@ class UserRepository {
       await _secureStorage.delete(key: passwordSecureKey);
     } on PlatformException catch (e) {
       _analyticsService.logError(
-          tag, "Authenticate - PlatformException - ${e.toString()}");
+          tag, "Authenticate - PlatformException - ${e.toString()}", e);
       return false;
     }
     return true;
@@ -211,7 +211,7 @@ class UserRepository {
       return _programs;
     } on Exception catch (e) {
       _analyticsService.logError(
-          tag, "Exception raised during getPrograms: $e");
+          tag, "Exception raised during getPrograms: $e", e);
       rethrow;
     }
 
@@ -266,7 +266,7 @@ class UserRepository {
           "$tag - getInfo: exception raised while trying to update the cache.");
       return _info;
     } on Exception catch (e) {
-      _analyticsService.logError(tag, "Exception raised during getInfo: $e");
+      _analyticsService.logError(tag, "Exception raised during getInfo: $e", e);
       rethrow;
     }
 
