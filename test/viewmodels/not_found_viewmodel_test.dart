@@ -2,7 +2,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 import 'package:notredame/core/services/analytics_service.dart';
-import 'package:notredame/core/utils/animation_exception.dart';
 import 'package:rive/rive.dart';
 
 // SERVICES / MANAGERS
