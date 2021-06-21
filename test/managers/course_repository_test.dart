@@ -259,13 +259,14 @@ void main() {
         expect(manager.coursesActivities, isEmpty,
             reason: "The list of activities should be empty");
 
-        await untilCalled(analyticsService.logError(CourseRepository.tag, any));
+        await untilCalled(
+            analyticsService.logError(CourseRepository.tag, any, any, any));
 
         verifyInOrder([
           cacheManager.get(CourseRepository.coursesActivitiesCacheKey),
           userRepository.getPassword(),
           userRepository.monETSUser,
-          analyticsService.logError(CourseRepository.tag, any)
+          analyticsService.logError(CourseRepository.tag, any, any, any)
         ]);
       });
 
@@ -292,12 +293,13 @@ void main() {
             reason:
                 "There isn't any activities saved in the cache so the list should be empty");
 
-        await untilCalled(analyticsService.logError(CourseRepository.tag, any));
+        await untilCalled(
+            analyticsService.logError(CourseRepository.tag, any, any, any));
 
         verifyInOrder([
           cacheManager.get(CourseRepository.coursesActivitiesCacheKey),
           userRepository.getPassword(),
-          analyticsService.logError(CourseRepository.tag, any)
+          analyticsService.logError(CourseRepository.tag, any, any, any)
         ]);
 
         verifyNoMoreInteractions(signetsApi);
@@ -396,7 +398,8 @@ void main() {
         expect(manager.coursesActivities, isEmpty,
             reason: "The list of activities should be empty");
 
-        await untilCalled(analyticsService.logError(CourseRepository.tag, any));
+        await untilCalled(
+            analyticsService.logError(CourseRepository.tag, any, any, any));
 
         verifyInOrder([
           cacheManager.get(CourseRepository.coursesActivitiesCacheKey),
@@ -406,7 +409,7 @@ void main() {
               username: username,
               password: anyNamed("password"),
               session: session.shortName),
-          analyticsService.logError(CourseRepository.tag, any)
+          analyticsService.logError(CourseRepository.tag, any, any, any)
         ]);
       });
 
@@ -608,14 +611,15 @@ void main() {
         expect(manager.sessions, [],
             reason: 'The session list should be empty');
 
-        await untilCalled(analyticsService.logError(CourseRepository.tag, any));
+        await untilCalled(
+            analyticsService.logError(CourseRepository.tag, any, any, any));
 
         verifyInOrder([
           cacheManager.get(CourseRepository.sessionsCacheKey),
           userRepository.getPassword(),
           userRepository.monETSUser,
           signetsApi.getSessions(username: username, password: password),
-          analyticsService.logError(CourseRepository.tag, any)
+          analyticsService.logError(CourseRepository.tag, any, any, any)
         ]);
 
         verifyNever(
@@ -668,12 +672,13 @@ void main() {
         expect(manager.sessions, [],
             reason: 'The session list should be empty');
 
-        await untilCalled(analyticsService.logError(CourseRepository.tag, any));
+        await untilCalled(
+            analyticsService.logError(CourseRepository.tag, any, any, any));
 
         verifyInOrder([
           cacheManager.get(CourseRepository.sessionsCacheKey),
           userRepository.getPassword(),
-          analyticsService.logError(CourseRepository.tag, any)
+          analyticsService.logError(CourseRepository.tag, any, any, any)
         ]);
 
         verifyNever(signetsApi.getSessions(
@@ -925,14 +930,15 @@ void main() {
         await untilCalled(networkingService.hasConnectivity());
         expect(manager.courses, []);
 
-        await untilCalled(analyticsService.logError(CourseRepository.tag, any));
+        await untilCalled(
+            analyticsService.logError(CourseRepository.tag, any, any, any));
 
         verifyInOrder([
           cacheManager.get(CourseRepository.coursesCacheKey),
           userRepository.getPassword(),
           userRepository.monETSUser,
           signetsApi.getCourses(username: username, password: password),
-          analyticsService.logError(CourseRepository.tag, any)
+          analyticsService.logError(CourseRepository.tag, any, any, any)
         ]);
 
         verifyNoMoreInteractions(signetsApi);
@@ -1073,12 +1079,13 @@ void main() {
         await untilCalled(networkingService.hasConnectivity());
         expect(manager.courses, [], reason: 'The courses list should be empty');
 
-        await untilCalled(analyticsService.logError(CourseRepository.tag, any));
+        await untilCalled(
+            analyticsService.logError(CourseRepository.tag, any, any, any));
 
         verifyInOrder([
           cacheManager.get(CourseRepository.coursesCacheKey),
           userRepository.getPassword(),
-          analyticsService.logError(CourseRepository.tag, any)
+          analyticsService.logError(CourseRepository.tag, any, any, any)
         ]);
 
         verifyNever(signetsApi.getCourses(
@@ -1222,14 +1229,15 @@ void main() {
             throwsA(isInstanceOf<ApiException>()));
         expect(manager.courses, isNull);
 
-        await untilCalled(analyticsService.logError(CourseRepository.tag, any));
+        await untilCalled(
+            analyticsService.logError(CourseRepository.tag, any, any, any));
 
         verifyInOrder([
           userRepository.getPassword(),
           userRepository.monETSUser,
           signetsApi.getCourseSummary(
               username: username, password: password, course: course),
-          analyticsService.logError(CourseRepository.tag, any)
+          analyticsService.logError(CourseRepository.tag, any, any, any)
         ]);
 
         verifyNoMoreInteractions(signetsApi);
@@ -1280,11 +1288,12 @@ void main() {
             throwsA(isInstanceOf<ApiException>()));
         expect(manager.courses, isNull);
 
-        await untilCalled(analyticsService.logError(CourseRepository.tag, any));
+        await untilCalled(
+            analyticsService.logError(CourseRepository.tag, any, any, any));
 
         verifyInOrder([
           userRepository.getPassword(),
-          analyticsService.logError(CourseRepository.tag, any)
+          analyticsService.logError(CourseRepository.tag, any, any, any)
         ]);
 
         verifyNoMoreInteractions(signetsApi);
