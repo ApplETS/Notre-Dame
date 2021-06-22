@@ -1,4 +1,5 @@
 // FLUTTER / DART / THIRD-PARTIES
+import 'package:feature_discovery/feature_discovery.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -23,6 +24,7 @@ import 'package:notredame/core/models/course_activity.dart';
 import 'package:notredame/core/utils/utils.dart';
 import 'package:notredame/ui/utils/loading.dart';
 import 'package:notredame/ui/utils/app_theme.dart';
+import 'package:notredame/ui/utils/discovery_components.dart';
 
 class DashboardView extends StatefulWidget {
   const DashboardView({Key key}) : super(key: key);
@@ -70,10 +72,8 @@ class _DashboardViewState extends State<DashboardView>
                   centerTitle: false,
                   automaticallyImplyLeading: false,
                   actions: [
-                    IconButton(
-                      icon: const Icon(Icons.restore),
-                      onPressed: model.setAllCardsVisible,
-                    ),
+                    _buildDiscoveryFeatureDescriptionWidget(
+                        context, Icons.restore, model),
                   ]),
               body: model.cards == null
                   ? buildLoading()
@@ -328,5 +328,26 @@ class _DashboardViewState extends State<DashboardView>
         .firstWhere((element) => model.cards[element] == oldIndex);
 
     model.setOrder(elementMoved, newIndex);
+  }
+
+  DescribedFeatureOverlay _buildDiscoveryFeatureDescriptionWidget(
+      BuildContext context, IconData icon, DashboardViewModel model) {
+    final discovery =
+        getDiscoveryByFeatureId(context, 'page_dashboard_restore_id');
+
+    return DescribedFeatureOverlay(
+      overflowMode: OverflowMode.wrapBackground,
+      contentLocation: ContentLocation.below,
+      featureId: discovery.featureId,
+      title: Text(discovery.title, textAlign: TextAlign.justify),
+      description: discovery.details,
+      backgroundColor: AppTheme.appletsDarkPurple,
+      tapTarget: Icon(icon, color: AppTheme.etsBlack),
+      pulseDuration: const Duration(seconds: 5),
+      child: IconButton(
+        icon: Icon(icon),
+        onPressed: model.setAllCardsVisible,
+      ),
+    );
   }
 }
