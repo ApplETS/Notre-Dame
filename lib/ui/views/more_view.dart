@@ -1,10 +1,15 @@
 // FLUTTER / DART / THIRD-PARTIES
 import 'dart:typed_data';
+import 'package:feature_discovery/feature_discovery.dart';
 import 'package:feedback/feedback.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
+// UTILS
+import 'package:notredame/ui/utils/app_theme.dart';
+import 'package:notredame/ui/utils/discovery_components.dart';
 
 // CONSTANTS
 import 'package:notredame/core/constants/router_paths.dart';
@@ -16,7 +21,21 @@ import 'package:notredame/core/viewmodels/more_viewmodel.dart';
 import 'package:notredame/ui/widgets/base_scaffold.dart';
 import 'package:notredame/core/utils/utils.dart';
 
-class MoreView extends StatelessWidget {
+class MoreView extends StatefulWidget {
+  @override
+  _MoreViewState createState() => _MoreViewState();
+}
+
+class _MoreViewState extends State<MoreView> {
+  @override
+  void initState() {
+    super.initState();
+
+    /*SchedulerBinding.instance.addPostFrameCallback((Duration duration) {
+      MoreViewModel(intl: AppIntl.of(context)).startDiscovery(context);
+    });*/
+  }
+
   /// License text box
   List<Widget> aboutBoxChildren(BuildContext context) {
     final textStyle = Theme.of(context).textTheme.bodyText2;
@@ -68,7 +87,8 @@ class MoreView extends StatelessWidget {
                 ),
                 ListTile(
                   title: Text(AppIntl.of(context).more_report_bug),
-                  leading: const Icon(Icons.bug_report),
+                  leading: _buildDiscoveryFeatureDescriptionWidget(
+                      context, Icons.bug_report, model),
                   onTap: () => BetterFeedback.of(context).show((
                     String feedbackText,
                     Uint8List feedbackScreenshot,
@@ -143,5 +163,23 @@ class MoreView extends StatelessWidget {
             ),
           );
         });
+  }
+
+  DescribedFeatureOverlay _buildDiscoveryFeatureDescriptionWidget(
+      BuildContext context, IconData icon, MoreViewModel model) {
+    final discovery =
+        getDiscoveryByFeatureId(context, 'page_more_bug_report_id');
+
+    return DescribedFeatureOverlay(
+      overflowMode: OverflowMode.wrapBackground,
+      contentLocation: ContentLocation.below,
+      featureId: discovery.featureId,
+      title: Text(discovery.title, textAlign: TextAlign.justify),
+      description: discovery.details,
+      backgroundColor: AppTheme.appletsDarkPurple,
+      tapTarget: Icon(icon, color: AppTheme.etsBlack),
+      pulseDuration: const Duration(seconds: 5),
+      child: Icon(icon),
+    );
   }
 }

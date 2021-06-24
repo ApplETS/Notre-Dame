@@ -2,6 +2,7 @@
 import 'dart:collection';
 import 'package:feature_discovery/feature_discovery.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:notredame/ui/utils/discovery_components.dart';
 import 'package:stacked/stacked.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -19,9 +20,6 @@ import 'package:notredame/core/models/course_activity.dart';
 
 // CORE
 import 'package:notredame/core/models/course.dart';
-
-// UTILS
-import 'package:notredame/ui/utils/discovery_components.dart';
 
 // OTHER
 import 'package:notredame/locator.dart';
@@ -247,10 +245,12 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
   /// Returns true if dates [a] and [b] are on the same day
   bool isSameDay(DateTime a, DateTime b) =>
       a.year == b.year && a.month == b.month && a.day == b.day;
+
   Future<void> startDiscovery(BuildContext context) async {
     if (await _settingsManager.getString(PreferencesFlag.discovery) == null) {
       final List<String> ids =
           discoveryComponents(context).map((e) => e.featureId).toList();
+
       FeatureDiscovery.discoverFeatures(context, ids);
       _settingsManager.setString(PreferencesFlag.discovery, 'true');
     }

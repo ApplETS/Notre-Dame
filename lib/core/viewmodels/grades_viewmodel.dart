@@ -6,6 +6,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 // MANAGER
 import 'package:notredame/core/managers/course_repository.dart';
+import 'package:notredame/core/managers/settings_manager.dart';
 
 // MODEL
 import 'package:notredame/core/models/course.dart';
@@ -20,6 +21,8 @@ import 'package:notredame/core/utils/utils.dart';
 import 'package:notredame/locator.dart';
 
 class GradesViewModel extends FutureViewModel<Map<String, List<Course>>> {
+  final SettingsManager _settingsManager = locator<SettingsManager>();
+
   /// Used to get the courses of the student
   final CourseRepository _courseRepository = locator<CourseRepository>();
 

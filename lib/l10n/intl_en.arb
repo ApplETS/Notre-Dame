@@ -20,6 +20,8 @@
   "title_ets": "ÉTS",
   "title_more": "More",
 
+  "title_ets_mobile": "ÉTSMobile",
+  
   "login_title": "Login",
   "login_prompt_universal_code": "Universal Code",
   "login_prompt_password": "Password",
@@ -189,24 +191,32 @@
   "flutter_website": "https://flutter.dev",
 
   "skip_discovery": "Skip tour",
-  "discovery_navbar_dashboard_page_title": "Dashboard",
-  "discovery_navbar_dashboard_page_details": "The Dashboard page groups together the most frequently consulted information, in the form of cards.\n\nIf you keep your finger on the card, you can move it up and down to rearrange the cards.\n\nTo delete a card, swipe it to the left or right.",
-  "discovery_page_dashboard_page_restore": "To restore the changes, click on the icon at the top right.",
-  "discovery_navbar_schedule_page_title": "Schedule",
-  "discovery_navbar_schedule_page_details": "The Schedule page allows you to view the events of your school calendar.",
-  "discovery_navbar_schedule_page_settings": "In the settings you can change the calendar format and the first day of the week displayed.",
-  "discovery_navbar_student_page_title": "Student",
-  "discovery_navbar_student_page_details": "The Student page displays your grades and profile information.",
-  "discovery_navbar_student_page_grades_session": "Your courses are divided by session, with the most recent at the top, at any time you can drag the list to refresh it.",
-  "discovery_navbar_student_page_grades_grade_button": "Here you see your current rating. By tapping on it you will be able to see the details of all the grades obtained in the course.",
-  "discovery_navbar_student_page_profile": "Here you will find all the information related to your student account, from the balance to your active programs through your permanent code.",
-  "discovery_navbar_ets_page_title": "ÉTS",
-  "discovery_navbar_ets_page_details": "The ÉTS page allows you to quickly consult all of the important ÉTS links, such as Moodle, MonÉTS and security measures.",  
-  "discovery_navbar_more_page_title": "More",
-  "discovery_navbar_more_page_details": "The More page gives you access to additional options of the application.",
-  "discovery_navbar_more_page_report_bug": "The app is not perfect and we are always open to suggestions! If you see a problem or want us to be part of an idea, you can use this feature.",
-  "discovery_navbar_more_page_contributors": "Here you will find the list of all the students who worked on the project from a code point of view.",
-  "discovery_navbar_more_page_settings": "And finally here you can change the general settings of the application!",
+
+  "discovery_navbar_dashboard_title": "Dashboard",
+  "discovery_navbar_dashboard_details": "The Dashboard page groups together the most frequently consulted information, in the form of cards.\n\nIf you keep your finger on the card, you can move it up and down to rearrange the cards.\n\nTo delete a card, swipe it to the left or right.",
+  "discovery_page_dashboard_restore": "To restore the changes, click on the icon at the top right.",
+  
+  "discovery_navbar_schedule_title": "Schedule",
+  "discovery_navbar_schedule_details": "The Schedule page allows you to view the events of your school calendar.",
+  "discovery_page_schedule_settings": "In the settings you can change the calendar format and the first day of the week displayed.",
+  
+  "discovery_navbar_student_title": "Student",
+  "discovery_navbar_student_details": "The Student page displays your grades and profile information.",
+  
+  "discovery_page_student_grades_session": "Your courses are divided by session, with the most recent at the top, at any time you can drag the list to refresh it.",
+  "discovery_page_student_grades_grade_button": "Here you see your current rating. By tapping on it you will be able to see the details of all the grades obtained in the course.",
+  
+  "discovery_page_student_profile": "Here you will find all the information related to your student account, from the balance to your active programs through your permanent code.",
+  
+  "discovery_navbar_ets_title": "ÉTS",
+  "discovery_navbar_ets_details": "The ÉTS page allows you to quickly consult all of the important ÉTS links, such as Moodle, MonÉTS and security measures.",  
+  
+  "discovery_navbar_more_title": "More",
+  "discovery_navbar_more_details": "The More page gives you access to additional options of the application.",
+  "discovery_page_more_report_bug": "The app is not perfect and we are always open to suggestions! If you see a problem or want us to be part of an idea, you can use this feature.",
+  "discovery_page_more_contributors": "Here you will find the list of all the students who worked on the project from a code point of view.",
+  "discovery_page_more_settings": "And finally here you can change the general settings of the application!",
+  
   "discovery_page_thankyou_message": "Thanks again for installing ÉTSMobile! We hope you find this app useful! Lots of new features will arrive in the coming months so think about updating the application!!",
 
   "choose_language_title": "Choose your preferred language",

@@ -1,5 +1,6 @@
 // FLUTTER / DART / THIRD-PARTIES
 import 'package:enum_to_string/enum_to_string.dart';
+import 'package:feature_discovery/feature_discovery.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:stacked/stacked.dart';
 import 'package:table_calendar/table_calendar.dart';

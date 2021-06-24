@@ -17,12 +17,7 @@ import 'package:notredame/ui/widgets/grade_button.dart';
 // OTHER
 import 'package:notredame/ui/utils/app_theme.dart';
 
-class GradesView extends StatefulWidget {
-  @override
-  _GradesViewState createState() => _GradesViewState();
-}
-
-class _GradesViewState extends State<GradesView> {
+class GradesView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<GradesViewModel>.reactive(
