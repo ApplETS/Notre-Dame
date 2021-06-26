@@ -71,4 +71,8 @@ List<QuickLink> quickLinks(AppIntl intl) => [
             size: 64,
           ),
           link: 'http://rubik.clubnaova.ca/'),
+      QuickLink(
+          name: intl.ets_gus,
+          image: Image.asset('assets/images/ic_gus_red.png'),
+          link: 'https://gus.etsmtl.ca/c2atom/mobile/login'),
     ];
