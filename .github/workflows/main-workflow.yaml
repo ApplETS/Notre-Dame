@@ -55,7 +55,8 @@ jobs:
     steps:
       - uses: actions/checkout@v2
         with:
-          fetch-depth: 0 # Needed to push to refs
+          ref: ${{ github.head_ref }}
+          token: ${{ secrets.PAT }}
       - uses: actions/setup-java@v2
         with:
           distribution: 'adopt'
