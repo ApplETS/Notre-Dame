@@ -11,6 +11,8 @@
 .pub-cache/
 .pub/
 build/
+.pubspec.lock
+package-lock.json
 
 # Flutter localization generated files
 lib/generated/
