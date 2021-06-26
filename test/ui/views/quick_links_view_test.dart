@@ -6,7 +6,6 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 // CONSTANTS
 import 'package:notredame/core/constants/quick_links.dart';
-import 'package:notredame/core/services/navigation_service.dart';
 
 // VIEW
 import 'package:notredame/ui/views/quick_links_view.dart';
