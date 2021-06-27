@@ -346,7 +346,7 @@ List<Discovery> discoveryComponents(BuildContext context) => [
         title: "",
         details: ConstrainedBox(
           constraints: BoxConstraints(
-              maxHeight: MediaQuery.of(context).size.height * 0.6),
+              maxHeight: MediaQuery.of(context).size.height * 0.2),
           child: Column(
             children: [
               _buildHeader(AppIntl.of(context).more_report_bug, context),
@@ -392,7 +392,7 @@ List<Discovery> discoveryComponents(BuildContext context) => [
         title: "",
         details: ConstrainedBox(
           constraints: BoxConstraints(
-              maxHeight: MediaQuery.of(context).size.height * 0.6),
+              maxHeight: MediaQuery.of(context).size.height * 0.2),
           child: Column(
             children: [
               _buildHeader(AppIntl.of(context).more_settings, context),
@@ -411,11 +411,11 @@ List<Discovery> discoveryComponents(BuildContext context) => [
       ),
       Discovery(
         path: null,
-        featureId: 'page_thank_you_id',
+        featureId: 'page_more_thank_you_id',
         title: "",
         details: ConstrainedBox(
           constraints: BoxConstraints(
-              maxHeight: MediaQuery.of(context).size.height * 0.6),
+              maxHeight: MediaQuery.of(context).size.height * 0.2),
           child: Column(
             children: [
               _buildHeader(AppIntl.of(context).title_ets_mobile, context),

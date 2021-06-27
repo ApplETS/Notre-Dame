@@ -3,6 +3,7 @@ import 'dart:typed_data';
 import 'package:feature_discovery/feature_discovery.dart';
 import 'package:feedback/feedback.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:stacked/stacked.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -31,9 +32,9 @@ class _MoreViewState extends State<MoreView> {
   void initState() {
     super.initState();
 
-    /*SchedulerBinding.instance.addPostFrameCallback((Duration duration) {
+    SchedulerBinding.instance.addPostFrameCallback((Duration duration) {
       MoreViewModel(intl: AppIntl.of(context)).startDiscovery(context);
-    });*/
+    });
   }
 
   /// License text box
@@ -74,21 +75,24 @@ class _MoreViewState extends State<MoreView> {
               children: [
                 ListTile(
                   title: Text(AppIntl.of(context).more_about_applets_title),
-                  leading: Hero(
-                    tag: 'about',
-                    child: Image.asset(
-                      "assets/images/favicon_applets.png",
-                      height: 24,
-                      width: 24,
-                    ),
-                  ),
+                  leading: _buildDiscoveryFeatureDescriptionWidget(
+                      context,
+                      Hero(
+                        tag: 'about',
+                        child: Image.asset(
+                          "assets/images/favicon_applets.png",
+                          height: 24,
+                          width: 24,
+                        ),
+                      ),
+                      'page_more_thank_you_id'),
                   onTap: () =>
                       model.navigationService.pushNamed(RouterPaths.about),
                 ),
                 ListTile(
                   title: Text(AppIntl.of(context).more_report_bug),
-                  leading: _buildDiscoveryFeatureDescriptionWidget(
-                      context, Icons.bug_report, model),
+                  leading: _buildDiscoveryFeatureDescriptionWidget(context,
+                      const Icon(Icons.bug_report), 'page_more_bug_report_id'),
                   onTap: () => BetterFeedback.of(context).show((
                     String feedbackText,
                     Uint8List feedbackScreenshot,
@@ -100,7 +104,10 @@ class _MoreViewState extends State<MoreView> {
                 ),
                 ListTile(
                   title: Text(AppIntl.of(context).more_contributors),
-                  leading: const Icon(Icons.people_outline),
+                  leading: _buildDiscoveryFeatureDescriptionWidget(
+                      context,
+                      const Icon(Icons.people_outline),
+                      'page_more_contributors_id'),
                   onTap: () => model.navigationService
                       .pushNamed(RouterPaths.contributors),
                 ),
@@ -130,7 +137,8 @@ class _MoreViewState extends State<MoreView> {
                 ),
                 ListTile(
                   title: Text(AppIntl.of(context).settings_title),
-                  leading: const Icon(Icons.settings),
+                  leading: _buildDiscoveryFeatureDescriptionWidget(context,
+                      const Icon(Icons.settings), 'page_more_settings_id'),
                   onTap: () =>
                       model.navigationService.pushNamed(RouterPaths.settings),
                 ),
@@ -166,9 +174,8 @@ class _MoreViewState extends State<MoreView> {
   }
 
   DescribedFeatureOverlay _buildDiscoveryFeatureDescriptionWidget(
-      BuildContext context, IconData icon, MoreViewModel model) {
-    final discovery =
-        getDiscoveryByFeatureId(context, 'page_more_bug_report_id');
+      BuildContext context, Widget icon, String featuredId) {
+    final discovery = getDiscoveryByFeatureId(context, featuredId);
 
     return DescribedFeatureOverlay(
       overflowMode: OverflowMode.wrapBackground,
@@ -177,9 +184,9 @@ class _MoreViewState extends State<MoreView> {
       title: Text(discovery.title, textAlign: TextAlign.justify),
       description: discovery.details,
       backgroundColor: AppTheme.appletsDarkPurple,
-      tapTarget: Icon(icon, color: AppTheme.etsBlack),
+      tapTarget: icon,
       pulseDuration: const Duration(seconds: 5),
-      child: Icon(icon),
+      child: icon,
     );
   }
 }

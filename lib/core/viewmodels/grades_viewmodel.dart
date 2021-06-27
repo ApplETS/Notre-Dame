@@ -1,8 +1,12 @@
 // FLUTTER / DART / THIRD-PARTIES
+import 'package:feature_discovery/feature_discovery.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:stacked/stacked.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
+// CONSTANTS
+import 'package:notredame/core/constants/preferences_flags.dart';
 
 // MANAGER
 import 'package:notredame/core/managers/course_repository.dart';

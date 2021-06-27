@@ -1,6 +1,7 @@
 // FLUTTER / DART / THIRD-PARTIES
 import 'dart:io';
 import 'dart:typed_data';
+import 'package:feature_discovery/feature_discovery.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -8,6 +9,9 @@ import 'package:package_info/package_info.dart';
 import 'package:stacked/stacked.dart';
 import 'package:image/image.dart' as image;
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
+// CONSTANTS
+import 'package:notredame/core/constants/preferences_flags.dart';
 
 // MANAGER
 import 'package:notredame/core/managers/cache_manager.dart';
@@ -120,5 +124,18 @@ class MoreViewModel extends FutureViewModel {
       msg: _appIntl.thank_you_for_the_feedback,
       gravity: ToastGravity.CENTER,
     );
+  }
+
+  Future<void> startDiscovery(BuildContext context) async {
+    if (await settingsManager.getString(PreferencesFlag.discoveryMore) ==
+        null) {
+      FeatureDiscovery.discoverFeatures(context, [
+        'page_more_bug_report_id',
+        'page_more_contributors_id',
+        'page_more_settings_id',
+        'page_more_thank_you_id'
+      ]);
+      settingsManager.setString(PreferencesFlag.discoveryMore, 'true');
+    }
   }
 }
