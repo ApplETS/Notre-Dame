@@ -2,10 +2,17 @@
 import 'package:feature_discovery/feature_discovery.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
+// CONSTANTS
+import 'package:notredame/core/constants/preferences_flags.dart';
 import 'package:notredame/core/constants/router_paths.dart';
+
+// MANAGERS
+import 'package:notredame/core/managers/settings_manager.dart';
 
 // MODELS
 import 'package:notredame/core/models/discovery.dart';
+import 'package:notredame/locator.dart';
 
 // UTILS
 import 'package:notredame/ui/utils/app_theme.dart';
@@ -205,25 +212,18 @@ List<Discovery> discoveryComponents(BuildContext context) => [
       Discovery(
         path: null,
         featureId: 'page_schedule_settings_id',
-        title: AppIntl.of(context).schedule_settings_title,
+        title: "",
         details: ConstrainedBox(
           constraints: BoxConstraints(
               maxHeight: MediaQuery.of(context).size.height * 0.6),
           child: Column(
             children: [
+              _buildHeader(
+                  AppIntl.of(context).schedule_settings_title, context),
               Expanded(
                 child: ListView(
                   padding: EdgeInsets.zero,
                   children: <Widget>[
-                    Align(
-                      alignment: Alignment.topRight,
-                      child: TextButton(
-                        onPressed: () => FeatureDiscovery.dismissAll(context),
-                        child: Text(AppIntl.of(context).skip_discovery,
-                            style:
-                                const TextStyle(color: AppTheme.etsLightRed)),
-                      ),
-                    ),
                     Text(AppIntl.of(context).discovery_navbar_schedule_details,
                         textAlign: TextAlign.justify),
                     const Text('\n'),
@@ -288,15 +288,6 @@ List<Discovery> discoveryComponents(BuildContext context) => [
                 child: ListView(
                   padding: EdgeInsets.zero,
                   children: <Widget>[
-                    Align(
-                      alignment: Alignment.topRight,
-                      child: TextButton(
-                        onPressed: () => FeatureDiscovery.dismissAll(context),
-                        child: Text(AppIntl.of(context).skip_discovery,
-                            style:
-                                const TextStyle(color: AppTheme.etsLightRed)),
-                      ),
-                    ),
                     Text(
                         AppIntl.of(context)
                             .discovery_page_student_grades_grade_button,
@@ -436,13 +427,24 @@ Padding _buildHeader(String title, BuildContext context) {
                 .headline6
                 .copyWith(color: Colors.white)),
         TextButton(
-          onPressed: () => FeatureDiscovery.dismissAll(context),
+          onPressed: () => dismissDiscovery(context),
           child: Text(AppIntl.of(context).skip_discovery,
               style: const TextStyle(color: AppTheme.etsLightRed)),
         ),
       ],
     ),
   );
+}
+
+void dismissDiscovery(BuildContext context) {
+  final SettingsManager _settingsManager = locator<SettingsManager>();
+
+  FeatureDiscovery.dismissAll(context);
+  _settingsManager.setString(PreferencesFlag.discoveryDashboard, 'true');
+  _settingsManager.setString(PreferencesFlag.discoverySchedule, 'true');
+  _settingsManager.setString(PreferencesFlag.discoveryStudentGrade, 'true');
+  _settingsManager.setString(PreferencesFlag.discoveryStudentProfile, 'true');
+  _settingsManager.setString(PreferencesFlag.discoveryMore, 'true');
 }
 
 Discovery getDiscoveryByPath(BuildContext context, String path) {
