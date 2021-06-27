@@ -1,16 +1,11 @@
 // FLUTTER / DART / THIRD-PARTIES
-import 'package:feature_discovery/feature_discovery.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:stacked/stacked.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-// CONSTANTS
-import 'package:notredame/core/constants/preferences_flags.dart';
-
 // MANAGERS
 import 'package:notredame/core/managers/user_repository.dart';
-import 'package:notredame/core/managers/settings_manager.dart';
 
 // MODELS
 import 'package:notredame/core/models/profile_student.dart';
@@ -26,9 +21,6 @@ import 'package:notredame/core/utils/utils.dart';
 import '../../locator.dart';
 
 class ProfileViewModel extends FutureViewModel<List<Program>> {
-  /// Settings manager
-  final SettingsManager _settingsManager = locator<SettingsManager>();
-
   /// Load the user
   final UserRepository _userRepository = locator<UserRepository>();
 
@@ -105,18 +97,6 @@ class ProfileViewModel extends FutureViewModel<List<Program>> {
               }));
     } on Exception catch (error) {
       onError(error);
-    }
-  }
-
-  Future<void> startDiscovery(BuildContext context) async {
-    if (await _settingsManager
-            .getString(PreferencesFlag.discoveryStudentProfile) ==
-        null) {
-      FeatureDiscovery.discoverFeatures(context, [
-        'page_student_page_profile',
-      ]);
-      _settingsManager.setString(
-          PreferencesFlag.discoveryStudentProfile, 'true');
     }
   }
 }

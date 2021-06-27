@@ -232,14 +232,13 @@ List<Discovery> discoveryComponents(BuildContext context) {
     ),
     Discovery(
       path: null,
-      featureId: 'page_students_grade_session_id',
-      title: "",
+      featureId: 'page_students_grade_button_id',
+      title: AppIntl.of(context).grades_title,
       details: ConstrainedBox(
-        constraints:
-            BoxConstraints(maxHeight: MediaQuery.of(context).size.height * 0.2),
+        constraints: BoxConstraints(
+            maxHeight: MediaQuery.of(context).size.height * 0.25),
         child: Column(
           children: [
-            _buildHeader(AppIntl.of(context).grades_title, context),
             Expanded(
               child: ListView(
                 padding: EdgeInsets.zero,
@@ -248,27 +247,7 @@ List<Discovery> discoveryComponents(BuildContext context) {
                   Text(
                       AppIntl.of(context).discovery_page_student_grades_session,
                       textAlign: TextAlign.justify),
-                ],
-              ),
-            ),
-          ],
-        ),
-      ),
-    ),
-    Discovery(
-      path: null,
-      featureId: 'page_students_grade_button_id',
-      title: "",
-      details: ConstrainedBox(
-        constraints:
-            BoxConstraints(maxHeight: MediaQuery.of(context).size.height * 0.2),
-        child: Column(
-          children: [
-            _buildHeader(AppIntl.of(context).grades_title, context),
-            Expanded(
-              child: ListView(
-                padding: EdgeInsets.zero,
-                children: <Widget>[
+                  const Text('\n'),
                   Text(
                       AppIntl.of(context)
                           .discovery_page_student_grades_grade_button,
@@ -315,6 +294,7 @@ List<Discovery> discoveryComponents(BuildContext context) {
               child: ListView(
                 padding: EdgeInsets.zero,
                 children: [
+                  _buildSkipDiscoveryButton(context),
                   Text(AppIntl.of(context).discovery_page_more_report_bug,
                       textAlign: TextAlign.justify),
                 ],

@@ -1,8 +1,12 @@
 // FLUTTER / DART / THIRD-PARTIES
 import 'package:feature_discovery/feature_discovery.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:notredame/ui/views/grades_view.dart';
+
+// VIEWMODELS
+import 'package:notredame/core/viewmodels/student_viewmodel.dart';
 
 // UTILS
 import 'package:notredame/ui/utils/app_theme.dart';
@@ -19,6 +23,15 @@ class StudentView extends StatefulWidget {
 
 class _StudentViewState extends State<StudentView> {
   List<Widget> tabsView = [GradesView(), ProfileView()];
+
+  @override
+  void initState() {
+    super.initState();
+
+    SchedulerBinding.instance.addPostFrameCallback((Duration duration) {
+      StudentViewModel().startDiscovery(context);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
