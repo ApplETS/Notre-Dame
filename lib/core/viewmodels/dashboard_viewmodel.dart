@@ -2,7 +2,6 @@
 import 'dart:collection';
 import 'package:feature_discovery/feature_discovery.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:notredame/ui/utils/discovery_components.dart';
 import 'package:stacked/stacked.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -20,6 +19,9 @@ import 'package:notredame/core/models/course_activity.dart';
 
 // CORE
 import 'package:notredame/core/models/course.dart';
+
+// UTILS
+import 'package:notredame/ui/utils/discovery_components.dart';
 
 // OTHER
 import 'package:notredame/locator.dart';
