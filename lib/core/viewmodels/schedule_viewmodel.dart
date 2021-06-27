@@ -163,4 +163,12 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
       onError(error);
     }
   }
+
+  Future<void> startDiscovery(BuildContext context) async {
+    if (await _settingsManager.getString(PreferencesFlag.discoverySchedule) ==
+        null) {
+      FeatureDiscovery.discoverFeatures(context, ['page_schedule_settings_id']);
+      _settingsManager.setString(PreferencesFlag.discoverySchedule, 'true');
+    }
+  }
 }

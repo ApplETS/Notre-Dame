@@ -247,12 +247,13 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
       a.year == b.year && a.month == b.month && a.day == b.day;
 
   Future<void> startDiscovery(BuildContext context) async {
-    if (await _settingsManager.getString(PreferencesFlag.discovery) == null) {
+    if (await _settingsManager.getString(PreferencesFlag.discoveryDashboard) ==
+        null) {
       final List<String> ids =
           discoveryComponents(context).map((e) => e.featureId).toList();
 
       FeatureDiscovery.discoverFeatures(context, ids);
-      _settingsManager.setString(PreferencesFlag.discovery, 'true');
+      _settingsManager.setString(PreferencesFlag.discoveryDashboard, 'true');
     }
   }
 

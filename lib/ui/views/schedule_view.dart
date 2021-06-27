@@ -1,6 +1,7 @@
 // FLUTTER / DART / THIRD-PARTIES
 import 'package:feature_discovery/feature_discovery.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:intl/intl.dart';
 import 'package:stacked/stacked.dart';
 import 'package:table_calendar/table_calendar.dart';
@@ -53,6 +54,10 @@ class _ScheduleViewState extends State<ScheduleView>
     );
 
     _animationController.forward();
+
+    SchedulerBinding.instance.addPostFrameCallback((Duration duration) {
+      ScheduleViewModel(intl: AppIntl.of(context)).startDiscovery(context);
+    });
   }
 
   @override
