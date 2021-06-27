@@ -398,7 +398,7 @@ Align _buildSkipDiscoveryButton(BuildContext context) {
   return Align(
     alignment: Alignment.topRight,
     child: TextButton(
-      onPressed: () => FeatureDiscovery.dismissAll(context),
+      onPressed: () => dismissDiscovery(context),
       child: Text(AppIntl.of(context).skip_discovery,
           style: const TextStyle(color: AppTheme.etsLightRed)),
     ),
@@ -409,6 +409,7 @@ void dismissDiscovery(BuildContext context) {
   final SettingsManager _settingsManager = locator<SettingsManager>();
 
   FeatureDiscovery.dismissAll(context);
+
   _settingsManager.setString(PreferencesFlag.discoveryDashboard, 'true');
   _settingsManager.setString(PreferencesFlag.discoverySchedule, 'true');
   _settingsManager.setString(PreferencesFlag.discoveryStudentGrade, 'true');
