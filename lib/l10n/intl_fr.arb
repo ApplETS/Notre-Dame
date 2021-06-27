@@ -201,21 +201,21 @@
   "discovery_navbar_student_title": "Étudiant",
   "discovery_navbar_student_details": "La page Étudiant affiche vos notes et les informations de votre profil.", 
   
-  "discovery_page_student_grades_session": "Vos cours sont divisé par session, avec la plus récente en haut, en tout temps vous pouvez tirer sur la liste pour la rafraichir.",
-  "discovery_page_student_grades_grade_button": "Ici vous voyez votre note actuelle. En tapant dessus vous pourrez voir le détails de toutes les notes obtenus dans le cours.",
+  "discovery_page_student_grades_session": "Vos cours sont divisés par session, avec la plus récente en haut, en tout temps vous pouvez tirer sur la liste pour la rafraichir.",
+  "discovery_page_student_grades_grade_button": "Ici vous voyez votre note actuelle. En tapant dessus, vous pourrez voir le détail de toutes les notes obtenues dans le cours.",
   
-  "discovery_page_student_profile": "Vous trouvez ici toute les informations reliés a votre compte étudiant, de la balance à vos programme actifs en passant par votre code permanent.",
+  "discovery_page_student_profile": "Vous trouvez ici toutes les informations reliées à votre compte étudiant, de la balance à vos programmes actifs en passant par votre code permanent.",
   
   "discovery_navbar_ets_title": "ÉTS",
   "discovery_navbar_ets_details": "La page ÉTS vous permet de consulter rapidement tous les liens importants de l’ÉTS, tels que Moodle,  MonÉTS et les mesures de sécurité.",
   
   "discovery_navbar_more_title": "Plus",
   "discovery_navbar_more_details": "La page Plus vous permet d'avoir accès aux options supplémentaires de l'application.",
-  "discovery_page_more_report_bug": "L'application n'est pas parfaite et nous sommes toujours ouvert a des suggestions! Si vous voyez un problème ou souhaitez nous faire partie d'une idée, vous pouvez utiliser cette fonctionnalité",
-  "discovery_page_more_contributors": "Ici vous toruverez la liste de tout les étudiants qui ont travaillé sur le projet d'un point de vu du code.",
-  "discovery_page_more_settings": "Et finalement ici vous pouvez changer les paramêtres généraux de l'application!",
+  "discovery_page_more_report_bug": "L'application n'est pas parfaite et nous sommes toujours ouverts à des suggestions! Si vous voyez un problème ou si vous souhaitez nous faire partie d'une idée, vous pouvez utiliser cette fonctionnalité",
+  "discovery_page_more_contributors": "Ici vous trouverez la liste de tous les étudiants qui ont travaillé sur le projet d'un point de vue du code.",
+  "discovery_page_more_settings": "Et finalement ici vous pouvez changer les paramètres généraux de l'application!",
   
-  "discovery_page_thankyou_message": "Merci encore pour avoir installé ÉTSMobile! Nous espérons que cette application vous sera utile! Plein de nouvelles fonctionnalités vont arriver dans les mois a venir donc penser a mettre a jour l'application!!",
+  "discovery_page_thankyou_message": "Merci encore d'avoir installé ÉTSMobile! Nous espérons que cette application vous sera utile! Plein de nouvelles fonctionnalités vont arriver dans les mois à venir donc penser à mettre à jour l'application!!",
 
   "choose_language_title": "Choisissez votre langue préférée",
   "choose_language_subtitle": "Veuillez sélectionner votre langue",
