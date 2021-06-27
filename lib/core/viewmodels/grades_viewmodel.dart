@@ -25,6 +25,7 @@ import 'package:notredame/core/utils/utils.dart';
 import 'package:notredame/locator.dart';
 
 class GradesViewModel extends FutureViewModel<Map<String, List<Course>>> {
+  /// Settings manager
   final SettingsManager _settingsManager = locator<SettingsManager>();
 
   /// Used to get the courses of the student
@@ -120,5 +121,15 @@ class GradesViewModel extends FutureViewModel<Map<String, List<Course>>> {
       }
       return -1;
     });
+  }
+
+  Future<void> startDiscovery(BuildContext context) async {
+    if (await _settingsManager
+            .getString(PreferencesFlag.discoveryStudentGrade) ==
+        null) {
+      FeatureDiscovery.discoverFeatures(context,
+          ['page_students_grade_button_id', 'page_student_page_profile']);
+      _settingsManager.setString(PreferencesFlag.discoveryStudentGrade, 'true');
+    }
   }
 }

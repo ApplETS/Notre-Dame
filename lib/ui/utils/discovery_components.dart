@@ -262,7 +262,7 @@ List<Discovery> discoveryComponents(BuildContext context) {
     Discovery(
       path: null,
       featureId: 'page_student_page_profile',
-      title: "",
+      title: AppIntl.of(context).profile_title,
       details: ConstrainedBox(
         constraints:
             BoxConstraints(maxHeight: MediaQuery.of(context).size.height * 0.2),
@@ -272,6 +272,7 @@ List<Discovery> discoveryComponents(BuildContext context) {
               child: ListView(
                 padding: EdgeInsets.zero,
                 children: <Widget>[
+                  _buildSkipDiscoveryButton(context),
                   Text(AppIntl.of(context).discovery_page_student_profile,
                       textAlign: TextAlign.justify),
                 ],

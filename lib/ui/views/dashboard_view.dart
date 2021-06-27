@@ -307,7 +307,8 @@ class _DashboardViewState extends State<DashboardView>
                   padding: const EdgeInsets.fromLTRB(17, 10, 15, 10),
                   child: Wrap(
                     children: model.courses
-                        .map((course) => GradeButton(course))
+                        .map((course) =>
+                            GradeButton(course, showDiscovery: false))
                         .toList(),
                   ),
                 )

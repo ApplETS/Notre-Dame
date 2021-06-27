@@ -71,8 +71,8 @@ void main() {
     group("UI -", () {
       testWidgets("Display acronym of the course and the current grade",
           (WidgetTester tester) async {
-        await tester
-            .pumpWidget(localizedWidget(child: GradeButton(courseWithGrade)));
+        await tester.pumpWidget(localizedWidget(
+            child: GradeButton(courseWithGrade, showDiscovery: false)));
         await tester.pumpAndSettle();
 
         expect(find.text(courseWithGrade.acronym), findsOneWidget);
@@ -81,8 +81,8 @@ void main() {
 
       testWidgets("Grade not available and summary is loaded.",
           (WidgetTester tester) async {
-        await tester
-            .pumpWidget(localizedWidget(child: GradeButton(courseWithSummary)));
+        await tester.pumpWidget(localizedWidget(
+            child: GradeButton(courseWithSummary, showDiscovery: false)));
         await tester.pumpAndSettle();
 
         expect(find.text(courseWithGrade.acronym), findsOneWidget);
@@ -97,8 +97,8 @@ void main() {
 
       testWidgets("Grade and summary not available.",
           (WidgetTester tester) async {
-        await tester.pumpWidget(
-            localizedWidget(child: GradeButton(gradesNotAvailable)));
+        await tester.pumpWidget(localizedWidget(
+            child: GradeButton(gradesNotAvailable, showDiscovery: false)));
         await tester.pumpAndSettle();
 
         expect(find.text(courseWithGrade.acronym), findsOneWidget);
@@ -112,8 +112,8 @@ void main() {
     group('Interactions - ', () {
       testWidgets('Grade button redirects to grades view when tapped ',
           (WidgetTester tester) async {
-        await tester
-            .pumpWidget(localizedWidget(child: GradeButton(courseWithGrade)));
+        await tester.pumpWidget(localizedWidget(
+            child: GradeButton(courseWithGrade, showDiscovery: false)));
         await tester.pumpAndSettle();
 
         await tester.tap(find.text(courseWithGrade.acronym));
