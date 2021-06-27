@@ -17,7 +17,7 @@ enum PreferencesFlag {
   discoveryDashboard,
   discoverySchedule,
   discoveryStudentGrade,
-  discoveryStudentProfil,
+  discoveryStudentProfile,
   discoveryETS,
   discoveryMore,
 

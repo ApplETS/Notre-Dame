@@ -1,7 +1,12 @@
 // FLUTTER / DART / THIRD-PARTIES
+import 'package:feature_discovery/feature_discovery.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:stacked/stacked.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
+// UTILS
+import 'package:notredame/ui/utils/discovery_components.dart';
 
 // VIEW-MODEL
 import 'package:notredame/core/viewmodels/profile_viewmodel.dart';
@@ -13,7 +18,21 @@ import 'package:notredame/ui/utils/loading.dart';
 // OTHER
 import 'package:notredame/ui/utils/app_theme.dart';
 
-class ProfileView extends StatelessWidget {
+class ProfileView extends StatefulWidget {
+  @override
+  _ProfileViewState createState() => _ProfileViewState();
+}
+
+class _ProfileViewState extends State<ProfileView> {
+  @override
+  void initState() {
+    super.initState();
+
+    SchedulerBinding.instance.addPostFrameCallback((Duration duration) {
+      ProfileViewModel(intl: AppIntl.of(context)).startDiscovery(context);
+    });
+  }
+
   @override
   Widget build(BuildContext context) =>
       ViewModelBuilder<ProfileViewModel>.reactive(
@@ -79,4 +98,26 @@ class ProfileView extends StatelessWidget {
               ),
             );
           });
+
+  DescribedFeatureOverlay _buildDiscoveryFeatureDescriptionWidget(
+      BuildContext context, List<String> tabs, int index) {
+    final discovery =
+        getDiscoveryByFeatureId(context, 'page_student_page_profile');
+
+    return DescribedFeatureOverlay(
+      overflowMode: OverflowMode.wrapBackground,
+      contentLocation: ContentLocation.below,
+      featureId: discovery.featureId,
+      title: Text(discovery.title, textAlign: TextAlign.justify),
+      description: discovery.details,
+      backgroundColor: AppTheme.appletsDarkPurple,
+      tapTarget: Tab(
+        text: tabs[index],
+      ),
+      pulseDuration: const Duration(seconds: 5),
+      child: Tab(
+        text: tabs[index],
+      ),
+    );
+  }
 }

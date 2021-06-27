@@ -317,20 +317,10 @@ List<Discovery> discoveryComponents(BuildContext context) => [
               maxHeight: MediaQuery.of(context).size.height * 0.2),
           child: Column(
             children: [
-              _buildHeader(AppIntl.of(context).profile_title, context),
               Expanded(
                 child: ListView(
                   padding: EdgeInsets.zero,
                   children: <Widget>[
-                    Align(
-                      alignment: Alignment.topRight,
-                      child: TextButton(
-                        onPressed: () => FeatureDiscovery.dismissAll(context),
-                        child: Text(AppIntl.of(context).skip_discovery,
-                            style:
-                                const TextStyle(color: AppTheme.etsLightRed)),
-                      ),
-                    ),
                     Text(AppIntl.of(context).discovery_page_student_profile,
                         textAlign: TextAlign.justify),
                   ],
