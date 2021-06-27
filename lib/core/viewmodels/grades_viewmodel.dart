@@ -127,8 +127,11 @@ class GradesViewModel extends FutureViewModel<Map<String, List<Course>>> {
     if (await _settingsManager
             .getString(PreferencesFlag.discoveryStudentGrade) ==
         null) {
-      FeatureDiscovery.discoverFeatures(context,
-          ['page_students_grade_button_id', 'page_student_page_profile']);
+      Future.delayed(
+          const Duration(seconds: 1),
+          () => FeatureDiscovery.discoverFeatures(context,
+              ['page_students_grade_button_id', 'page_student_page_profile']));
+
       _settingsManager.setString(PreferencesFlag.discoveryStudentGrade, 'true');
     }
   }
