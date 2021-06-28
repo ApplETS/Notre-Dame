@@ -3,9 +3,11 @@
   <p>
     <br /><strong>Projet Notre-Dame</strong>
     <br />
-    <a href="https://travis-ci.org/ApplETS/Notre-Dame" style="text-decoration: none;">
-        <img src="https://travis-ci.com/ApplETS/Notre-Dame.svg?branch=master" alt="Build Status"/>
+    <br />
+    <a href="https://github.com/ApplETS/Notre-Dame/actions/workflows/main-workflow.yaml" style="text-decoration: none;">
+      <img src="https://github.com/ApplETS/Notre-Dame/actions/workflows/main-workflow.yaml/badge.svg?branch=master" alt="Statut de la compilation"/>
     </a>
+    <img src="https://img.shields.io/endpoint?url=https://gist.github.com/clubapplets-server/e51406de3b919a69f396642a2bcb413c/raw/notre_dame_master_badge_coverage.json" alt="Code coverage"/>
     <br />
   </p>
 </div>

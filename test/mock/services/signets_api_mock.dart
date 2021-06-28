@@ -16,6 +16,12 @@ import 'package:notredame/core/utils/api_exception.dart';
 
 /// Mock for the [SignetsApi]
 class SignetsApiMock extends Mock implements SignetsApi {
+  static const signetsException =
+      ApiException(prefix: SignetsApi.tag, message: "");
+
+  static const courseRepositoryException =
+      ApiException(prefix: CourseRepository.tag, message: "");
+
   /// Stub the answer of the [getCoursesActivities] when the [session] is used.
   static void stubGetCoursesActivities(SignetsApiMock mock, String session,
       List<CourseActivity> coursesActivitiesToReturn) {
@@ -29,8 +35,7 @@ class SignetsApiMock extends Mock implements SignetsApi {
   /// Throw [exceptionToThrow] when [getCoursesActivities] with the [session] is used.
   static void stubGetCoursesActivitiesException(
       SignetsApiMock mock, String session,
-      {ApiException exceptionToThrow =
-          const ApiException(prefix: CourseRepository.tag, message: "")}) {
+      {ApiException exceptionToThrow = courseRepositoryException}) {
     when(mock.getCoursesActivities(
             username: anyNamed("username"),
             password: anyNamed("password"),
@@ -47,8 +52,7 @@ class SignetsApiMock extends Mock implements SignetsApi {
 
   /// Throw [exceptionToThrow] when [getSessions] with the [username] is used.
   static void stubGetSessionsException(SignetsApiMock mock, String username,
-      {ApiException exceptionToThrow =
-          const ApiException(prefix: SignetsApi.tag, message: "")}) {
+      {ApiException exceptionToThrow = signetsException}) {
     when(mock.getSessions(username: username, password: anyNamed("password")))
         .thenThrow(exceptionToThrow);
   }
@@ -62,8 +66,7 @@ class SignetsApiMock extends Mock implements SignetsApi {
 
   /// Throw [exceptionToThrow] when [getPrograms] with the [username] is used.
   static void stubGetProgramsException(SignetsApiMock mock, String username,
-      {ApiException exceptionToThrow =
-          const ApiException(prefix: SignetsApi.tag, message: "")}) {
+      {ApiException exceptionToThrow = signetsException}) {
     when(mock.getPrograms(username: username, password: anyNamed("password")))
         .thenThrow(exceptionToThrow);
   }
@@ -78,8 +81,7 @@ class SignetsApiMock extends Mock implements SignetsApi {
 
   /// Throw [exceptionToThrow] when [getInfo] with the [username] is used.
   static void stubGetInfoException(SignetsApiMock mock, String username,
-      {ApiException exceptionToThrow =
-          const ApiException(prefix: SignetsApi.tag, message: "")}) {
+      {ApiException exceptionToThrow = signetsException}) {
     when(mock.getStudentInfo(
             username: username, password: anyNamed("password")))
         .thenThrow(exceptionToThrow);
@@ -94,8 +96,7 @@ class SignetsApiMock extends Mock implements SignetsApi {
 
   /// Throw [exceptionToThrow] when [getCourses] with the [username] is used.
   static void stubGetCoursesException(SignetsApiMock mock, String username,
-      {ApiException exceptionToThrow =
-          const ApiException(prefix: SignetsApi.tag, message: "")}) {
+      {ApiException exceptionToThrow = signetsException}) {
     when(mock.getCourses(username: username, password: anyNamed("password")))
         .thenThrow(exceptionToThrow);
   }
@@ -112,8 +113,7 @@ class SignetsApiMock extends Mock implements SignetsApi {
   /// Throw [exceptionToThrow] when [getCourseSummary] with the [username] and [course] is used.
   static void stubGetCourseSummaryException(
       SignetsApiMock mock, String username, Course course,
-      {ApiException exceptionToThrow =
-          const ApiException(prefix: SignetsApi.tag, message: "")}) {
+      {ApiException exceptionToThrow = signetsException}) {
     when(mock.getCourseSummary(
             username: username, course: course, password: anyNamed("password")))
         .thenThrow(exceptionToThrow);

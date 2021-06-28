@@ -132,9 +132,9 @@ class CourseRepository {
         _logger.d(
             "$tag - getCoursesActivities: fetched ${fetchedCoursesActivities.length} activities.");
       }
-    } on Exception catch (e) {
-      _analyticsService.logError(
-          tag, "Exception raised during getCoursesActivities: $e");
+    } on Exception catch (e, stacktrace) {
+      _analyticsService.logError(tag,
+          "Exception raised during getCoursesActivities: $e", e, stacktrace);
       _logger.d("$tag - getCoursesActivities: Exception raised $e");
       rethrow;
     }
@@ -208,9 +208,9 @@ class CourseRepository {
       _logger.e(
           "$tag - getSessions: exception raised will trying to update the cache.");
       return _sessions;
-    } on Exception catch (e) {
+    } on Exception catch (e, stacktrace) {
       _analyticsService.logError(
-          tag, "Exception raised during getSessions: $e");
+          tag, "Exception raised during getSessions: $e", e, stacktrace);
       rethrow;
     }
 
@@ -258,8 +258,9 @@ class CourseRepository {
           username: _userRepository.monETSUser.universalCode,
           password: password));
       _logger.d("$tag - getCourses: fetched ${fetchedCourses.length} courses.");
-    } on Exception catch (e) {
-      _analyticsService.logError(tag, "Exception raised during getCourses: $e");
+    } on Exception catch (e, stacktrace) {
+      _analyticsService.logError(
+          tag, "Exception raised during getCourses: $e", e, stacktrace);
       _logger.e("$tag - getCourses: Exception raised $e");
       rethrow;
     }
@@ -326,7 +327,7 @@ class CourseRepository {
           password: password,
           course: course);
       _logger.d("$tag - getCourseSummary: fetched ${course.acronym} summary.");
-    } on Exception catch (e) {
+    } on Exception catch (e, stacktrace) {
       if (e is ApiException) {
         if (e.errorCode == SignetsError.gradesEmpty) {
           _logger.e(
@@ -334,7 +335,7 @@ class CourseRepository {
           return null;
         }
       }
-      _analyticsService.logError(tag, e.toString());
+      _analyticsService.logError(tag, e.toString(), e, stacktrace);
       _logger.e("$tag - getCourseSummary: Exception raised $e");
       rethrow;
     }

@@ -82,8 +82,9 @@ class UserRepository {
     try {
       _monETSUser =
           await _monETSApi.authenticate(username: username, password: password);
-    } catch (e) {
-      _analyticsService.logError(tag, "Authenticate - ${e.toString()}");
+    } on Exception catch (e, stacktrace) {
+      _analyticsService.logError(
+          tag, "Authenticate - ${e.toString()}", e, stacktrace);
       return false;
     }
 
@@ -95,9 +96,12 @@ class UserRepository {
       try {
         await _secureStorage.write(key: usernameSecureKey, value: username);
         await _secureStorage.write(key: passwordSecureKey, value: password);
-      } on PlatformException catch (e) {
+      } on PlatformException catch (e, stacktrace) {
         _analyticsService.logError(
-            tag, "Authenticate - PlatformException - ${e.toString()}");
+            tag,
+            "Authenticate - PlatformException - ${e.toString()}",
+            e,
+            stacktrace);
         return false;
       }
     }
@@ -128,9 +132,9 @@ class UserRepository {
     try {
       await _secureStorage.delete(key: usernameSecureKey);
       await _secureStorage.delete(key: passwordSecureKey);
-    } on PlatformException catch (e) {
-      _analyticsService.logError(
-          tag, "Authenticate - PlatformException - ${e.toString()}");
+    } on PlatformException catch (e, stacktrace) {
+      _analyticsService.logError(tag,
+          "Authenticate - PlatformException - ${e.toString()}", e, stacktrace);
       return false;
     }
     return true;
@@ -209,9 +213,9 @@ class UserRepository {
       _logger.e(
           "$tag - getPrograms: exception raised while trying to update the cache.");
       return _programs;
-    } on Exception catch (e) {
+    } on Exception catch (e, stacktrace) {
       _analyticsService.logError(
-          tag, "Exception raised during getPrograms: $e");
+          tag, "Exception raised during getPrograms: $e", e, stacktrace);
       rethrow;
     }
 
@@ -265,8 +269,9 @@ class UserRepository {
       _logger.e(
           "$tag - getInfo: exception raised while trying to update the cache.");
       return _info;
-    } on Exception catch (e) {
-      _analyticsService.logError(tag, "Exception raised during getInfo: $e");
+    } on Exception catch (e, stacktrace) {
+      _analyticsService.logError(
+          tag, "Exception raised during getInfo: $e", e, stacktrace);
       rethrow;
     }
 

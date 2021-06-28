@@ -104,8 +104,11 @@ void main() {
 
         await viewModel.loadRiveAnimation();
 
-        verify(analyticsService.logError(NotFoundViewModel.tag,
-            "An Error has occured during rive animation $riveFileName loading."));
+        verify(analyticsService.logError(
+            NotFoundViewModel.tag,
+            "An Error has occurred during rive animation $riveFileName loading.",
+            RiveAnimationServiceMock.loadException,
+            any));
       });
     });
 
@@ -124,8 +127,11 @@ void main() {
         await viewModel.loadRiveAnimation();
         viewModel.startRiveAnimation();
 
-        verify(analyticsService.logError(NotFoundViewModel.tag,
-            "An Error has occured during rive animation start."));
+        verify(analyticsService.logError(
+            NotFoundViewModel.tag,
+            "An Error has occured during rive animation start.",
+            RiveAnimationServiceMock.startException,
+            any));
       });
     });
   });
