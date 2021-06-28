@@ -213,6 +213,7 @@
   "go_to_dashboard": "Go to Dashboard",
 
   "no_connectivity": "No internet connection",
+  "close_no_connectivity_snackbar": "Dismiss",
 
   "progress_bar_title": "Session progress",
   "progress_bar_message": "{elapsedDays} days elapsed / {totalDays} days",

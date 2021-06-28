@@ -21,7 +21,6 @@ import 'package:notredame/core/models/course_activity.dart';
 import 'package:notredame/core/models/course.dart';
 
 // UTILS
-import 'package:notredame/core/utils/utils.dart';
 import 'package:notredame/ui/utils/discovery_components.dart';
 
 // SERVICES
@@ -249,6 +248,10 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
     }
   }
 
+  Future displayOfflineMode(BuildContext context) async {
+    _networkingService.displayOfflineMode(context, _appIntl);
+  }
+
   /// Returns true if dates [a] and [b] are on the same day
   bool isSameDay(DateTime a, DateTime b) =>
       a.year == b.year && a.month == b.month && a.day == b.day;
@@ -297,7 +300,6 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
           }
         }
       }).whenComplete(() {
-        Utils.showNoConnectionToast(_networkingService, _appIntl);
         setBusyForObject(courses, false);
       });
 

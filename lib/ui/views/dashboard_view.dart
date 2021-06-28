@@ -47,6 +47,7 @@ class _DashboardViewState extends State<DashboardView>
 
     SchedulerBinding.instance.addPostFrameCallback((Duration duration) {
       DashboardViewModel(intl: AppIntl.of(context)).startDiscovery(context);
+      DashboardViewModel(intl: AppIntl.of(context)).displayOfflineMode(context);
     });
   }
 

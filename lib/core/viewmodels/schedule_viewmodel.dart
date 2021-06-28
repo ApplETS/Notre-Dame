@@ -16,9 +16,6 @@ import 'package:notredame/core/models/course_activity.dart';
 // SERVICE
 import 'package:notredame/core/services/networking_service.dart';
 
-// UTILS
-import 'package:notredame/core/utils/utils.dart';
-
 // OTHER
 import 'package:notredame/locator.dart';
 import 'package:notredame/core/constants/preferences_flags.dart';
@@ -83,7 +80,6 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
           }
         }).whenComplete(() {
           setBusyForObject(isLoadingEvents, false);
-          Utils.showNoConnectionToast(_networkingService, _appIntl);
         });
         return value;
       });
@@ -161,5 +157,9 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
     } on Exception catch (error) {
       onError(error);
     }
+  }
+
+  Future displayOfflineMode(BuildContext context) async {
+    _networkingService.displayOfflineMode(context, _appIntl);
   }
 }

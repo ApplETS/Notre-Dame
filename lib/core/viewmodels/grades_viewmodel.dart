@@ -13,9 +13,6 @@ import 'package:notredame/core/models/course.dart';
 // SERVICE
 import 'package:notredame/core/services/networking_service.dart';
 
-// UTILS
-import 'package:notredame/core/utils/utils.dart';
-
 // OTHER
 import 'package:notredame/locator.dart';
 
@@ -51,7 +48,6 @@ class GradesViewModel extends FutureViewModel<Map<String, List<Course>>> {
           }
         }).whenComplete(() {
           setBusy(false);
-          Utils.showNoConnectionToast(_networkingService, _appIntl);
         });
 
         return coursesBySession;
@@ -113,5 +109,9 @@ class GradesViewModel extends FutureViewModel<Map<String, List<Course>>> {
       }
       return -1;
     });
+  }
+
+  Future displayOfflineMode(BuildContext context) async {
+    _networkingService.displayOfflineMode(context, _appIntl);
   }
 }
