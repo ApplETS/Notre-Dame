@@ -6,6 +6,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 // CONSTANTS
 import 'package:notredame/core/constants/preferences_flags.dart';
 import 'package:notredame/core/constants/router_paths.dart';
+import 'package:notredame/core/constants/discovery_ids.dart';
 
 // MANAGERS
 import 'package:notredame/core/managers/settings_manager.dart';
@@ -22,7 +23,7 @@ import 'package:notredame/locator.dart';
 
 List<GroupDiscovery> discoveryComponents(BuildContext context) {
   return [
-    GroupDiscovery(name: "bottomBar", discoveries: [
+    GroupDiscovery(name: DiscoveryGroupIds.bottomBar, discoveries: [
       Discovery(
         path: RouterPaths.dashboard,
         featureId: 'navbar_dashboard_page_id',
@@ -207,7 +208,7 @@ List<GroupDiscovery> discoveryComponents(BuildContext context) {
         ),
       ),
     ]),
-    GroupDiscovery(name: "pageSchedule", discoveries: [
+    GroupDiscovery(name: DiscoveryGroupIds.pageSchedule, discoveries: [
       Discovery(
         path: null,
         featureId: 'page_schedule_settings_id',
@@ -239,7 +240,7 @@ List<GroupDiscovery> discoveryComponents(BuildContext context) {
         ),
       ),
     ]),
-    GroupDiscovery(name: "pageStudent", discoveries: [
+    GroupDiscovery(name: DiscoveryGroupIds.pageStudent, discoveries: [
       Discovery(
         path: null,
         featureId: 'page_students_grade_button_id',
@@ -294,7 +295,7 @@ List<GroupDiscovery> discoveryComponents(BuildContext context) {
         ),
       ),
     ]),
-    GroupDiscovery(name: "pageMore", discoveries: [
+    GroupDiscovery(name: DiscoveryGroupIds.pageMore, discoveries: [
       Discovery(
         path: null,
         featureId: 'page_more_bug_report_id',

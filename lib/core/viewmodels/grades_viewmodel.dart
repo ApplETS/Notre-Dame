@@ -7,6 +7,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 // CONSTANTS
 import 'package:notredame/core/constants/preferences_flags.dart';
+import 'package:notredame/core/constants/discovery_ids.dart';
 
 // MANAGER
 import 'package:notredame/core/managers/course_repository.dart';
@@ -129,7 +130,7 @@ class GradesViewModel extends FutureViewModel<Map<String, List<Course>>> {
             .getString(PreferencesFlag.discoveryStudentGrade) ==
         null) {
       final List<String> ids =
-          findDiscoveriesByGroupName(context, 'pageStudent')
+          findDiscoveriesByGroupName(context, DiscoveryGroupIds.pageStudent)
               .map((e) => e.featureId)
               .toList();
 

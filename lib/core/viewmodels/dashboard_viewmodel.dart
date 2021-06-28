@@ -8,6 +8,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 // CONSTANTS
 import 'package:notredame/core/constants/preferences_flags.dart';
+import 'package:notredame/core/constants/discovery_ids.dart';
 
 // MANAGER
 import 'package:notredame/core/managers/settings_manager.dart';
@@ -251,9 +252,10 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
   Future<void> startDiscovery(BuildContext context) async {
     if (await _settingsManager.getString(PreferencesFlag.discoveryDashboard) ==
         null) {
-      final List<String> ids = findDiscoveriesByGroupName(context, 'bottomBar')
-          .map((e) => e.featureId)
-          .toList();
+      final List<String> ids =
+          findDiscoveriesByGroupName(context, DiscoveryGroupIds.bottomBar)
+              .map((e) => e.featureId)
+              .toList();
 
       FeatureDiscovery.discoverFeatures(context, ids);
       _settingsManager.setString(PreferencesFlag.discoveryDashboard, 'true');

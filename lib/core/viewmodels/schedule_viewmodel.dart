@@ -7,6 +7,9 @@ import 'package:table_calendar/table_calendar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+// CONSTANTS
+import 'package:notredame/core/constants/discovery_ids.dart';
+
 // MANAGER
 import 'package:notredame/core/managers/course_repository.dart';
 import 'package:notredame/core/managers/settings_manager.dart';
@@ -169,11 +172,12 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
     if (await _settingsManager.getString(PreferencesFlag.discoverySchedule) ==
         null) {
       final List<String> ids =
-          findDiscoveriesByGroupName(context, 'pageSchedule')
+          findDiscoveriesByGroupName(context, DiscoveryGroupIds.pageSchedule)
               .map((e) => e.featureId)
               .toList();
 
-      FeatureDiscovery.discoverFeatures(context, ids);
+      Future.delayed(const Duration(milliseconds: 500),
+          () => FeatureDiscovery.discoverFeatures(context, ids));
 
       _settingsManager.setString(PreferencesFlag.discoverySchedule, 'true');
     }

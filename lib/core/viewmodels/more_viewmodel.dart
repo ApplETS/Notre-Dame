@@ -15,6 +15,7 @@ import 'package:notredame/ui/utils/discovery_components.dart';
 
 // CONSTANTS
 import 'package:notredame/core/constants/preferences_flags.dart';
+import 'package:notredame/core/constants/discovery_ids.dart';
 
 // MANAGER
 import 'package:notredame/core/managers/cache_manager.dart';
@@ -132,11 +133,13 @@ class MoreViewModel extends FutureViewModel {
   Future<void> startDiscovery(BuildContext context) async {
     if (await settingsManager.getString(PreferencesFlag.discoveryMore) ==
         null) {
-      final List<String> ids = findDiscoveriesByGroupName(context, 'pageMore')
-          .map((e) => e.featureId)
-          .toList();
+      final List<String> ids =
+          findDiscoveriesByGroupName(context, DiscoveryGroupIds.pageMore)
+              .map((e) => e.featureId)
+              .toList();
 
-      FeatureDiscovery.discoverFeatures(context, ids);
+      Future.delayed(const Duration(milliseconds: 500),
+          () => FeatureDiscovery.discoverFeatures(context, ids));
 
       settingsManager.setString(PreferencesFlag.discoveryMore, 'true');
     }
