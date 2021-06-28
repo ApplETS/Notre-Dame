@@ -67,8 +67,8 @@ class _StudentViewState extends State<StudentView> {
 
   DescribedFeatureOverlay _buildDiscoveryFeatureDescriptionWidget(
       BuildContext context, List<String> tabs, int index) {
-    final discovery =
-        getDiscoveryByFeatureId(context, 'page_student_page_profile');
+    final discovery = getDiscoveryByFeatureId(
+        context, 'pageStudent', 'page_student_page_profile');
 
     return DescribedFeatureOverlay(
       overflowMode: OverflowMode.wrapBackground,

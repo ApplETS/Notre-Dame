@@ -20,6 +20,7 @@ import 'package:notredame/core/services/networking_service.dart';
 
 // UTILS
 import 'package:notredame/core/utils/utils.dart';
+import 'package:notredame/ui/utils/discovery_components.dart';
 
 // OTHER
 import 'package:notredame/locator.dart';
@@ -127,10 +128,13 @@ class GradesViewModel extends FutureViewModel<Map<String, List<Course>>> {
     if (await _settingsManager
             .getString(PreferencesFlag.discoveryStudentGrade) ==
         null) {
-      Future.delayed(
-          const Duration(seconds: 1),
-          () => FeatureDiscovery.discoverFeatures(context,
-              ['page_students_grade_button_id', 'page_student_page_profile']));
+      final List<String> ids =
+          findDiscoveriesByGroupName(context, 'pageStudent')
+              .map((e) => e.featureId)
+              .toList();
+
+      Future.delayed(const Duration(seconds: 1),
+          () => FeatureDiscovery.discoverFeatures(context, ids));
 
       _settingsManager.setString(PreferencesFlag.discoveryStudentGrade, 'true');
     }

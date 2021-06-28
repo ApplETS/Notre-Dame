@@ -242,8 +242,8 @@ class _ScheduleViewState extends State<ScheduleView>
 
   DescribedFeatureOverlay _buildDiscoveryFeatureDescriptionWidget(
       BuildContext context, IconData icon, ScheduleViewModel model) {
-    final discovery =
-        getDiscoveryByFeatureId(context, 'page_schedule_settings_id');
+    final discovery = getDiscoveryByFeatureId(
+        context, 'pageSchedule', 'page_schedule_settings_id');
 
     return DescribedFeatureOverlay(
         overflowMode: OverflowMode.wrapBackground,

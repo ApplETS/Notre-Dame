@@ -10,6 +10,9 @@ import 'package:stacked/stacked.dart';
 import 'package:image/image.dart' as image;
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+// UTILS
+import 'package:notredame/ui/utils/discovery_components.dart';
+
 // CONSTANTS
 import 'package:notredame/core/constants/preferences_flags.dart';
 
@@ -129,12 +132,12 @@ class MoreViewModel extends FutureViewModel {
   Future<void> startDiscovery(BuildContext context) async {
     if (await settingsManager.getString(PreferencesFlag.discoveryMore) ==
         null) {
-      FeatureDiscovery.discoverFeatures(context, [
-        'page_more_bug_report_id',
-        'page_more_contributors_id',
-        'page_more_settings_id',
-        'page_more_thank_you_id'
-      ]);
+      final List<String> ids = findDiscoveriesByGroupName(context, 'pageMore')
+          .map((e) => e.featureId)
+          .toList();
+
+      FeatureDiscovery.discoverFeatures(context, ids);
+
       settingsManager.setString(PreferencesFlag.discoveryMore, 'true');
     }
   }

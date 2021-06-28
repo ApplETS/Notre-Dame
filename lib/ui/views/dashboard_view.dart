@@ -333,8 +333,8 @@ class _DashboardViewState extends State<DashboardView>
 
   DescribedFeatureOverlay _buildDiscoveryFeatureDescriptionWidget(
       BuildContext context, IconData icon, DashboardViewModel model) {
-    final discovery =
-        getDiscoveryByFeatureId(context, 'page_dashboard_restore_id');
+    final discovery = getDiscoveryByFeatureId(
+        context, 'bottomBar', 'page_dashboard_restore_id');
 
     return DescribedFeatureOverlay(
       overflowMode: OverflowMode.wrapBackground,

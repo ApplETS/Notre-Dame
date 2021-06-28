@@ -108,8 +108,8 @@ class GradeButton extends StatelessWidget {
 
   DescribedFeatureOverlay _buildDiscoveryFeatureDescriptionWidget(
       BuildContext context, Widget gradeButton) {
-    final discovery =
-        getDiscoveryByFeatureId(context, 'page_students_grade_button_id');
+    final discovery = getDiscoveryByFeatureId(
+        context, 'pageStudent', 'page_students_grade_button_id');
 
     return DescribedFeatureOverlay(
         overflowMode: OverflowMode.wrapBackground,

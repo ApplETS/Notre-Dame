@@ -108,7 +108,7 @@ class BottomBar extends StatelessWidget {
 
   DescribedFeatureOverlay _buildDiscoveryFeatureDescriptionWidget(
       BuildContext context, String routerPath, IconData icon) {
-    final discovery = getDiscoveryByPath(context, routerPath);
+    final discovery = getDiscoveryByPath(context, 'bottomBar', routerPath);
 
     return DescribedFeatureOverlay(
       overflowMode: OverflowMode.wrapBackground,

@@ -19,6 +19,7 @@ import 'package:notredame/core/services/networking_service.dart';
 
 // UTILS
 import 'package:notredame/core/utils/utils.dart';
+import 'package:notredame/ui/utils/discovery_components.dart';
 
 // OTHER
 import 'package:notredame/locator.dart';
@@ -167,7 +168,13 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
   Future<void> startDiscovery(BuildContext context) async {
     if (await _settingsManager.getString(PreferencesFlag.discoverySchedule) ==
         null) {
-      FeatureDiscovery.discoverFeatures(context, ['page_schedule_settings_id']);
+      final List<String> ids =
+          findDiscoveriesByGroupName(context, 'pageSchedule')
+              .map((e) => e.featureId)
+              .toList();
+
+      FeatureDiscovery.discoverFeatures(context, ids);
+
       _settingsManager.setString(PreferencesFlag.discoverySchedule, 'true');
     }
   }

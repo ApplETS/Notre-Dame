@@ -12,368 +12,382 @@ import 'package:notredame/core/managers/settings_manager.dart';
 
 // MODELS
 import 'package:notredame/core/models/discovery.dart';
-import 'package:notredame/locator.dart';
+import 'package:notredame/core/models/group_discovery.dart';
 
 // UTILS
 import 'package:notredame/ui/utils/app_theme.dart';
 
-List<Discovery> discoveryComponents(BuildContext context) {
+// OTHER
+import 'package:notredame/locator.dart';
+
+List<GroupDiscovery> discoveryComponents(BuildContext context) {
   return [
-    Discovery(
-      path: RouterPaths.dashboard,
-      featureId: 'navbar_dashboard_page_id',
-      title: "",
-      details: ConstrainedBox(
-        constraints:
-            BoxConstraints(maxHeight: MediaQuery.of(context).size.height * 0.6),
-        child: Column(
-          children: [
-            _buildHeader(
-                AppIntl.of(context).discovery_navbar_dashboard_title, context),
-            Expanded(
-              child: ListView(
-                padding: EdgeInsets.zero,
-                children: <Widget>[
-                  Text(AppIntl.of(context).discovery_navbar_dashboard_details),
-                  const Text('\n'),
-                  if (AppIntl.of(context).localeName == "fr")
-                    Image.asset(
-                        'assets/animations/discovery/fr/dashboard_swipe.gif')
-                  else
-                    Image.asset(
-                        'assets/animations/discovery/en/dashboard_swipe.gif'),
-                ],
+    GroupDiscovery(name: "bottomBar", discoveries: [
+      Discovery(
+        path: RouterPaths.dashboard,
+        featureId: 'navbar_dashboard_page_id',
+        title: "",
+        details: ConstrainedBox(
+          constraints: BoxConstraints(
+              maxHeight: MediaQuery.of(context).size.height * 0.6),
+          child: Column(
+            children: [
+              _buildHeader(AppIntl.of(context).discovery_navbar_dashboard_title,
+                  context),
+              Expanded(
+                child: ListView(
+                  padding: EdgeInsets.zero,
+                  children: <Widget>[
+                    Text(
+                        AppIntl.of(context).discovery_navbar_dashboard_details),
+                    const Text('\n'),
+                    if (AppIntl.of(context).localeName == "fr")
+                      Image.asset(
+                          'assets/animations/discovery/fr/dashboard_swipe.gif')
+                    else
+                      Image.asset(
+                          'assets/animations/discovery/en/dashboard_swipe.gif'),
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
-    ),
-    Discovery(
-      path: null,
-      featureId: 'page_dashboard_restore_id',
-      title: AppIntl.of(context).dashboard_restore_all_cards_title,
-      details: ConstrainedBox(
-        constraints:
-            BoxConstraints(maxHeight: MediaQuery.of(context).size.height * 0.4),
-        child: Column(
-          children: [
-            Expanded(
-              child: ListView(
-                padding: EdgeInsets.zero,
-                children: <Widget>[
-                  _buildSkipDiscoveryButton(context),
-                  Text(
-                    AppIntl.of(context).discovery_page_dashboard_restore,
-                  ),
-                  const Text('\n'),
-                  if (AppIntl.of(context).localeName == "fr")
-                    Image.asset(
-                        'assets/animations/discovery/fr/dashboard_restore.gif')
-                  else
-                    Image.asset(
-                        'assets/animations/discovery/en/dashboard_restore.gif'),
-                ],
+      Discovery(
+        path: null,
+        featureId: 'page_dashboard_restore_id',
+        title: AppIntl.of(context).dashboard_restore_all_cards_title,
+        details: ConstrainedBox(
+          constraints: BoxConstraints(
+              maxHeight: MediaQuery.of(context).size.height * 0.4),
+          child: Column(
+            children: [
+              Expanded(
+                child: ListView(
+                  padding: EdgeInsets.zero,
+                  children: <Widget>[
+                    _buildSkipDiscoveryButton(context),
+                    Text(
+                      AppIntl.of(context).discovery_page_dashboard_restore,
+                    ),
+                    const Text('\n'),
+                    if (AppIntl.of(context).localeName == "fr")
+                      Image.asset(
+                          'assets/animations/discovery/fr/dashboard_restore.gif')
+                    else
+                      Image.asset(
+                          'assets/animations/discovery/en/dashboard_restore.gif'),
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
-    ),
-    Discovery(
-      path: RouterPaths.schedule,
-      featureId: 'navbar_schedule_page_id',
-      title: "",
-      details: ConstrainedBox(
-        constraints:
-            BoxConstraints(maxHeight: MediaQuery.of(context).size.height * 0.6),
-        child: Column(
-          children: [
-            _buildHeader(
-                AppIntl.of(context).discovery_navbar_schedule_title, context),
-            Expanded(
-              child: ListView(
-                padding: EdgeInsets.zero,
-                children: <Widget>[
-                  Text(AppIntl.of(context).discovery_navbar_schedule_details,
-                      textAlign: TextAlign.justify),
-                  const Text('\n'),
-                  if (AppIntl.of(context).localeName == "fr")
-                    Image.asset(
-                        'assets/animations/discovery/fr/schedule_calendar.png')
-                  else
-                    Image.asset(
-                        'assets/animations/discovery/en/schedule_calendar.png'),
-                ],
+      Discovery(
+        path: RouterPaths.schedule,
+        featureId: 'navbar_schedule_page_id',
+        title: "",
+        details: ConstrainedBox(
+          constraints: BoxConstraints(
+              maxHeight: MediaQuery.of(context).size.height * 0.6),
+          child: Column(
+            children: [
+              _buildHeader(
+                  AppIntl.of(context).discovery_navbar_schedule_title, context),
+              Expanded(
+                child: ListView(
+                  padding: EdgeInsets.zero,
+                  children: <Widget>[
+                    Text(AppIntl.of(context).discovery_navbar_schedule_details,
+                        textAlign: TextAlign.justify),
+                    const Text('\n'),
+                    if (AppIntl.of(context).localeName == "fr")
+                      Image.asset(
+                          'assets/animations/discovery/fr/schedule_calendar.png')
+                    else
+                      Image.asset(
+                          'assets/animations/discovery/en/schedule_calendar.png'),
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
-    ),
-    Discovery(
-      path: RouterPaths.student,
-      featureId: 'navbar_students_page_id',
-      title: "",
-      details: ConstrainedBox(
-        constraints:
-            BoxConstraints(maxHeight: MediaQuery.of(context).size.height * 0.6),
-        child: Column(
-          children: [
-            _buildHeader(
-                AppIntl.of(context).discovery_navbar_student_title, context),
-            Expanded(
-              child: ListView(
-                padding: EdgeInsets.zero,
-                children: <Widget>[
-                  Text(AppIntl.of(context).discovery_navbar_student_details,
-                      textAlign: TextAlign.justify),
-                  const Text('\n'),
-                  if (AppIntl.of(context).localeName == "fr")
-                    Image.asset(
-                        'assets/animations/discovery/fr/grade_details.gif')
-                  else
-                    Image.asset(
-                        'assets/animations/discovery/en/grade_details.gif'),
-                ],
+      Discovery(
+        path: RouterPaths.student,
+        featureId: 'navbar_students_page_id',
+        title: "",
+        details: ConstrainedBox(
+          constraints: BoxConstraints(
+              maxHeight: MediaQuery.of(context).size.height * 0.6),
+          child: Column(
+            children: [
+              _buildHeader(
+                  AppIntl.of(context).discovery_navbar_student_title, context),
+              Expanded(
+                child: ListView(
+                  padding: EdgeInsets.zero,
+                  children: <Widget>[
+                    Text(AppIntl.of(context).discovery_navbar_student_details,
+                        textAlign: TextAlign.justify),
+                    const Text('\n'),
+                    if (AppIntl.of(context).localeName == "fr")
+                      Image.asset(
+                          'assets/animations/discovery/fr/grade_details.gif')
+                    else
+                      Image.asset(
+                          'assets/animations/discovery/en/grade_details.gif'),
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
-    ),
-    Discovery(
-      path: RouterPaths.ets,
-      featureId: 'navbar_ets_page_id',
-      title: "",
-      details: ConstrainedBox(
-        constraints:
-            BoxConstraints(maxHeight: MediaQuery.of(context).size.height * 0.6),
-        child: Column(
-          children: [
-            _buildHeader(
-                AppIntl.of(context).discovery_navbar_ets_title, context),
-            Expanded(
-              child: ListView(
-                padding: EdgeInsets.zero,
-                children: <Widget>[
-                  Text(AppIntl.of(context).discovery_navbar_ets_details,
-                      textAlign: TextAlign.justify),
-                  const Text('\n'),
-                  if (AppIntl.of(context).localeName == "fr")
-                    Image.asset('assets/animations/discovery/fr/ets_link.gif')
-                  else
-                    Image.asset('assets/animations/discovery/en/ets_link.gif'),
-                ],
+      Discovery(
+        path: RouterPaths.ets,
+        featureId: 'navbar_ets_page_id',
+        title: "",
+        details: ConstrainedBox(
+          constraints: BoxConstraints(
+              maxHeight: MediaQuery.of(context).size.height * 0.6),
+          child: Column(
+            children: [
+              _buildHeader(
+                  AppIntl.of(context).discovery_navbar_ets_title, context),
+              Expanded(
+                child: ListView(
+                  padding: EdgeInsets.zero,
+                  children: <Widget>[
+                    Text(AppIntl.of(context).discovery_navbar_ets_details,
+                        textAlign: TextAlign.justify),
+                    const Text('\n'),
+                    if (AppIntl.of(context).localeName == "fr")
+                      Image.asset('assets/animations/discovery/fr/ets_link.gif')
+                    else
+                      Image.asset(
+                          'assets/animations/discovery/en/ets_link.gif'),
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
-    ),
-    Discovery(
-      path: RouterPaths.more,
-      featureId: 'navbar_more_page_id',
-      title: "",
-      details: ConstrainedBox(
-        constraints:
-            BoxConstraints(maxHeight: MediaQuery.of(context).size.height * 0.6),
-        child: Column(
-          children: [
-            _buildHeader(
-                AppIntl.of(context).discovery_navbar_more_title, context),
-            Expanded(
-              child: ListView(
-                padding: EdgeInsets.zero,
-                children: <Widget>[
-                  Text(AppIntl.of(context).discovery_navbar_more_details,
-                      textAlign: TextAlign.justify),
-                  const Text('\n'),
-                  if (AppIntl.of(context).localeName == "fr")
-                    Image.asset('assets/animations/discovery/fr/more.jpg')
-                  else
-                    Image.asset('assets/animations/discovery/en/more.jpg'),
-                ],
+      Discovery(
+        path: RouterPaths.more,
+        featureId: 'navbar_more_page_id',
+        title: "",
+        details: ConstrainedBox(
+          constraints: BoxConstraints(
+              maxHeight: MediaQuery.of(context).size.height * 0.6),
+          child: Column(
+            children: [
+              _buildHeader(
+                  AppIntl.of(context).discovery_navbar_more_title, context),
+              Expanded(
+                child: ListView(
+                  padding: EdgeInsets.zero,
+                  children: <Widget>[
+                    Text(AppIntl.of(context).discovery_navbar_more_details,
+                        textAlign: TextAlign.justify),
+                    const Text('\n'),
+                    if (AppIntl.of(context).localeName == "fr")
+                      Image.asset('assets/animations/discovery/fr/more.jpg')
+                    else
+                      Image.asset('assets/animations/discovery/en/more.jpg'),
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
-    ),
-    Discovery(
-      path: null,
-      featureId: 'page_schedule_settings_id',
-      title: AppIntl.of(context).schedule_settings_title,
-      details: ConstrainedBox(
-        constraints:
-            BoxConstraints(maxHeight: MediaQuery.of(context).size.height * 0.6),
-        child: Column(
-          children: [
-            Expanded(
-              child: ListView(
-                padding: EdgeInsets.zero,
-                children: <Widget>[
-                  _buildSkipDiscoveryButton(context),
-                  Text(AppIntl.of(context).discovery_navbar_schedule_details,
-                      textAlign: TextAlign.justify),
-                  const Text('\n'),
-                  if (AppIntl.of(context).localeName == "fr")
-                    Image.asset(
-                        'assets/animations/discovery/fr/schedule_settings.gif')
-                  else
-                    Image.asset(
-                        'assets/animations/discovery/en/schedule_settings.gif'),
-                ],
+    ]),
+    GroupDiscovery(name: "pageSchedule", discoveries: [
+      Discovery(
+        path: null,
+        featureId: 'page_schedule_settings_id',
+        title: AppIntl.of(context).schedule_settings_title,
+        details: ConstrainedBox(
+          constraints: BoxConstraints(
+              maxHeight: MediaQuery.of(context).size.height * 0.6),
+          child: Column(
+            children: [
+              Expanded(
+                child: ListView(
+                  padding: EdgeInsets.zero,
+                  children: <Widget>[
+                    _buildSkipDiscoveryButton(context),
+                    Text(AppIntl.of(context).discovery_navbar_schedule_details,
+                        textAlign: TextAlign.justify),
+                    const Text('\n'),
+                    if (AppIntl.of(context).localeName == "fr")
+                      Image.asset(
+                          'assets/animations/discovery/fr/schedule_settings.gif')
+                    else
+                      Image.asset(
+                          'assets/animations/discovery/en/schedule_settings.gif'),
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
-    ),
-    Discovery(
-      path: null,
-      featureId: 'page_students_grade_button_id',
-      title: AppIntl.of(context).grades_title,
-      details: ConstrainedBox(
-        constraints: BoxConstraints(
-            maxHeight: MediaQuery.of(context).size.height * 0.25),
-        child: Column(
-          children: [
-            Expanded(
-              child: ListView(
-                padding: EdgeInsets.zero,
-                children: <Widget>[
-                  _buildSkipDiscoveryButton(context),
-                  Text(
-                      AppIntl.of(context).discovery_page_student_grades_session,
-                      textAlign: TextAlign.justify),
-                  const Text('\n'),
-                  Text(
-                      AppIntl.of(context)
-                          .discovery_page_student_grades_grade_button,
-                      textAlign: TextAlign.justify),
-                ],
+    ]),
+    GroupDiscovery(name: "pageStudent", discoveries: [
+      Discovery(
+        path: null,
+        featureId: 'page_students_grade_button_id',
+        title: AppIntl.of(context).grades_title,
+        details: ConstrainedBox(
+          constraints: BoxConstraints(
+              maxHeight: MediaQuery.of(context).size.height * 0.25),
+          child: Column(
+            children: [
+              Expanded(
+                child: ListView(
+                  padding: EdgeInsets.zero,
+                  children: <Widget>[
+                    _buildSkipDiscoveryButton(context),
+                    Text(
+                        AppIntl.of(context)
+                            .discovery_page_student_grades_session,
+                        textAlign: TextAlign.justify),
+                    const Text('\n'),
+                    Text(
+                        AppIntl.of(context)
+                            .discovery_page_student_grades_grade_button,
+                        textAlign: TextAlign.justify),
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
-    ),
-    Discovery(
-      path: null,
-      featureId: 'page_student_page_profile',
-      title: AppIntl.of(context).profile_title,
-      details: ConstrainedBox(
-        constraints:
-            BoxConstraints(maxHeight: MediaQuery.of(context).size.height * 0.2),
-        child: Column(
-          children: [
-            Expanded(
-              child: ListView(
-                padding: EdgeInsets.zero,
-                children: <Widget>[
-                  _buildSkipDiscoveryButton(context),
-                  Text(AppIntl.of(context).discovery_page_student_profile,
-                      textAlign: TextAlign.justify),
-                ],
+      Discovery(
+        path: null,
+        featureId: 'page_student_page_profile',
+        title: AppIntl.of(context).profile_title,
+        details: ConstrainedBox(
+          constraints: BoxConstraints(
+              maxHeight: MediaQuery.of(context).size.height * 0.2),
+          child: Column(
+            children: [
+              Expanded(
+                child: ListView(
+                  padding: EdgeInsets.zero,
+                  children: <Widget>[
+                    _buildSkipDiscoveryButton(context),
+                    Text(AppIntl.of(context).discovery_page_student_profile,
+                        textAlign: TextAlign.justify),
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
-    ),
-    Discovery(
-      path: null,
-      featureId: 'page_more_bug_report_id',
-      title: AppIntl.of(context).more_report_bug,
-      details: ConstrainedBox(
-        constraints:
-            BoxConstraints(maxHeight: MediaQuery.of(context).size.height * 0.2),
-        child: Column(
-          children: [
-            Expanded(
-              child: ListView(
-                padding: EdgeInsets.zero,
-                children: [
-                  _buildSkipDiscoveryButton(context),
-                  Text(AppIntl.of(context).discovery_page_more_report_bug,
-                      textAlign: TextAlign.justify),
-                ],
+    ]),
+    GroupDiscovery(name: "pageMore", discoveries: [
+      Discovery(
+        path: null,
+        featureId: 'page_more_bug_report_id',
+        title: AppIntl.of(context).more_report_bug,
+        details: ConstrainedBox(
+          constraints: BoxConstraints(
+              maxHeight: MediaQuery.of(context).size.height * 0.2),
+          child: Column(
+            children: [
+              Expanded(
+                child: ListView(
+                  padding: EdgeInsets.zero,
+                  children: [
+                    _buildSkipDiscoveryButton(context),
+                    Text(AppIntl.of(context).discovery_page_more_report_bug,
+                        textAlign: TextAlign.justify),
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
-    ),
-    Discovery(
-      path: null,
-      featureId: 'page_more_contributors_id',
-      title: AppIntl.of(context).more_contributors,
-      details: ConstrainedBox(
-        constraints:
-            BoxConstraints(maxHeight: MediaQuery.of(context).size.height * 0.2),
-        child: Column(
-          children: [
-            Expanded(
-              child: ListView(
-                padding: EdgeInsets.zero,
-                children: <Widget>[
-                  _buildSkipDiscoveryButton(context),
-                  Text(AppIntl.of(context).discovery_page_more_contributors,
-                      textAlign: TextAlign.justify),
-                ],
+      Discovery(
+        path: null,
+        featureId: 'page_more_contributors_id',
+        title: AppIntl.of(context).more_contributors,
+        details: ConstrainedBox(
+          constraints: BoxConstraints(
+              maxHeight: MediaQuery.of(context).size.height * 0.2),
+          child: Column(
+            children: [
+              Expanded(
+                child: ListView(
+                  padding: EdgeInsets.zero,
+                  children: <Widget>[
+                    _buildSkipDiscoveryButton(context),
+                    Text(AppIntl.of(context).discovery_page_more_contributors,
+                        textAlign: TextAlign.justify),
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
-    ),
-    Discovery(
-      path: null,
-      featureId: 'page_more_settings_id',
-      title: AppIntl.of(context).more_settings,
-      details: ConstrainedBox(
-        constraints:
-            BoxConstraints(maxHeight: MediaQuery.of(context).size.height * 0.2),
-        child: Column(
-          children: [
-            Expanded(
-              child: ListView(
-                padding: EdgeInsets.zero,
-                children: <Widget>[
-                  _buildSkipDiscoveryButton(context),
-                  Text(AppIntl.of(context).discovery_page_more_settings,
-                      textAlign: TextAlign.justify),
-                ],
+      Discovery(
+        path: null,
+        featureId: 'page_more_settings_id',
+        title: AppIntl.of(context).more_settings,
+        details: ConstrainedBox(
+          constraints: BoxConstraints(
+              maxHeight: MediaQuery.of(context).size.height * 0.2),
+          child: Column(
+            children: [
+              Expanded(
+                child: ListView(
+                  padding: EdgeInsets.zero,
+                  children: <Widget>[
+                    _buildSkipDiscoveryButton(context),
+                    Text(AppIntl.of(context).discovery_page_more_settings,
+                        textAlign: TextAlign.justify),
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
-    ),
-    Discovery(
-      path: null,
-      featureId: 'page_more_thank_you_id',
-      title: AppIntl.of(context).title_ets_mobile,
-      details: ConstrainedBox(
-        constraints:
-            BoxConstraints(maxHeight: MediaQuery.of(context).size.height * 0.2),
-        child: Column(
-          children: [
-            Expanded(
-              child: ListView(
-                padding: EdgeInsets.zero,
-                children: <Widget>[
-                  _buildSkipDiscoveryButton(context),
-                  Text(AppIntl.of(context).discovery_page_thankyou_message,
-                      textAlign: TextAlign.justify),
-                ],
+      Discovery(
+        path: null,
+        featureId: 'page_more_thank_you_id',
+        title: AppIntl.of(context).title_ets_mobile,
+        details: ConstrainedBox(
+          constraints: BoxConstraints(
+              maxHeight: MediaQuery.of(context).size.height * 0.2),
+          child: Column(
+            children: [
+              Expanded(
+                child: ListView(
+                  padding: EdgeInsets.zero,
+                  children: <Widget>[
+                    _buildSkipDiscoveryButton(context),
+                    Text(AppIntl.of(context).discovery_page_thankyou_message,
+                        textAlign: TextAlign.justify),
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
-    ),
+    ]),
   ];
 }
 
@@ -417,12 +431,24 @@ void dismissDiscovery(BuildContext context) {
   _settingsManager.setString(PreferencesFlag.discoveryMore, 'true');
 }
 
-Discovery getDiscoveryByPath(BuildContext context, String path) {
+Discovery getDiscoveryByPath(BuildContext context, String group, String path) {
   return discoveryComponents(context)
+      .firstWhere((element) => element.name == group)
+      .discoveries
       .firstWhere((element) => element.path == path);
 }
 
-Discovery getDiscoveryByFeatureId(BuildContext context, String featureId) {
+Discovery getDiscoveryByFeatureId(
+    BuildContext context, String group, String featureId) {
   return discoveryComponents(context)
+      .firstWhere((element) => element.name == group)
+      .discoveries
       .firstWhere((element) => element.featureId == featureId);
+}
+
+List<Discovery> findDiscoveriesByGroupName(
+    BuildContext context, String groupName) {
+  return discoveryComponents(context)
+      .firstWhere((element) => element.name == groupName)
+      .discoveries;
 }

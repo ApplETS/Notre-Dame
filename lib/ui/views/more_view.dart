@@ -175,7 +175,7 @@ class _MoreViewState extends State<MoreView> {
 
   DescribedFeatureOverlay _buildDiscoveryFeatureDescriptionWidget(
       BuildContext context, Widget icon, String featuredId) {
-    final discovery = getDiscoveryByFeatureId(context, featuredId);
+    final discovery = getDiscoveryByFeatureId(context, 'pageMore', featuredId);
 
     return DescribedFeatureOverlay(
       overflowMode: OverflowMode.wrapBackground,
