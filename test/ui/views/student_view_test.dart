@@ -5,7 +5,6 @@ import 'package:flutter_test/flutter_test.dart';
 
 // MANAGER
 import 'package:notredame/core/managers/course_repository.dart';
-import 'package:notredame/core/managers/settings_manager.dart';
 
 // VIEWS
 import 'package:notredame/ui/views/student_view.dart';
@@ -23,14 +22,12 @@ import '../../mock/services/networking_service_mock.dart';
 void main() {
   CourseRepository courseRepository;
   NetworkingServiceMock networkingService;
-  SettingsManager settingsManager;
 
   group('StudentView - ', () {
     setUp(() async {
       setupNavigationServiceMock();
       networkingService = setupNetworkingServiceMock() as NetworkingServiceMock;
       courseRepository = setupCourseRepositoryMock();
-      settingsManager = setupSettingsManagerMock();
 
       CourseRepositoryMock.stubCourses(
           courseRepository as CourseRepositoryMock);
@@ -48,7 +45,6 @@ void main() {
     tearDown(() {
       unregister<CourseRepository>();
       unregister<NetworkingServiceMock>();
-      unregister<SettingsManager>();
     });
 
     group('UI - ', () {
