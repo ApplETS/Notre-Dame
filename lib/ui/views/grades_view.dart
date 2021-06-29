@@ -60,7 +60,7 @@ class _GradesViewState extends State<GradesView> {
                           itemBuilder: (BuildContext context, int index) =>
                               AnimationConfiguration.staggeredList(
                                 position: index,
-                                duration: const Duration(seconds: 1),
+                                duration: const Duration(milliseconds: 750),
                                 child: SlideAnimation(
                                   verticalOffset: 50.0,
                                   child: FadeInAnimation(

@@ -81,11 +81,6 @@ flutter_icons:
   adaptive_icon_background: "#EF3F45"
   adaptive_icon_foreground: "assets/icons/ic_launcher_foreground.png"
 
-
-# For information on the generic Dart part of this file, see the
-# following page: https://dart.dev/tools/pub/pubspec
-
-# The following section is specific to Flutter.
 flutter:
   uses-material-design: true
   generate: true
