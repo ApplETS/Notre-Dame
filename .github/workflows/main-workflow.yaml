@@ -270,7 +270,6 @@ jobs:
         uses: marvinpinto/action-automatic-releases@latest
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
-          draft: true
           automatic_release_tag: ${{ needs.tagValidation.outputs.version }}
           title: v${{ needs.tagValidation.outputs.version }}
           files: |
