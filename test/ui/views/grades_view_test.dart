@@ -141,7 +141,8 @@ void main() {
 
         tester.binding.window.physicalSizeTestValue = const Size(800, 1410);
 
-        await tester.pumpWidget(localizedWidget(child: FeatureDiscovery(child: GradesView())));
+        await tester.pumpWidget(
+            localizedWidget(child: FeatureDiscovery(child: GradesView())));
         await tester.pumpAndSettle(const Duration(seconds: 1));
 
         expect(find.text(intl.grades_msg_no_grades), findsOneWidget);
@@ -164,7 +165,8 @@ void main() {
 
         tester.binding.window.physicalSizeTestValue = const Size(800, 1410);
 
-        await tester.pumpWidget(localizedWidget(child: FeatureDiscovery(child: GradesView())));
+        await tester.pumpWidget(
+            localizedWidget(child: FeatureDiscovery(child: GradesView())));
         await tester.pumpAndSettle(const Duration(seconds: 1));
 
         // Check the summer session list of grades.
