@@ -6,6 +6,7 @@ import 'package:flutter_test/flutter_test.dart';
 
 // MANAGER
 import 'package:notredame/core/managers/course_repository.dart';
+import 'package:notredame/core/managers/settings_manager.dart';
 
 // MODELS
 import 'package:notredame/core/models/course.dart';
@@ -68,6 +69,7 @@ void main() {
       setupNavigationServiceMock();
       networkingService = setupNetworkingServiceMock() as NetworkingServiceMock;
       courseRepository = setupCourseRepositoryMock();
+      setupSettingsManagerMock();
 
       // Stub to simulate that the user has an active internet connection
       NetworkingServiceMock.stubHasConnectivity(networkingService);
@@ -75,6 +77,7 @@ void main() {
     tearDown(() {
       unregister<CourseRepository>();
       unregister<NetworkingServiceMock>();
+      unregister<SettingsManager>();
     });
     group("golden -", () {
       testWidgets("No grades available", (WidgetTester tester) async {
