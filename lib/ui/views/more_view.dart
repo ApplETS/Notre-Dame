@@ -14,6 +14,7 @@ import 'package:notredame/ui/utils/discovery_components.dart';
 
 // CONSTANTS
 import 'package:notredame/core/constants/router_paths.dart';
+import 'package:notredame/core/constants/discovery_ids.dart';
 
 // VIEWMODELS
 import 'package:notredame/core/viewmodels/more_viewmodel.dart';
@@ -85,14 +86,16 @@ class _MoreViewState extends State<MoreView> {
                           width: 24,
                         ),
                       ),
-                      'page_more_thank_you_id'),
+                      DiscoveryIds.detailsMoreThankYou),
                   onTap: () =>
                       model.navigationService.pushNamed(RouterPaths.about),
                 ),
                 ListTile(
                   title: Text(AppIntl.of(context).more_report_bug),
-                  leading: _buildDiscoveryFeatureDescriptionWidget(context,
-                      const Icon(Icons.bug_report), 'page_more_bug_report_id'),
+                  leading: _buildDiscoveryFeatureDescriptionWidget(
+                      context,
+                      const Icon(Icons.bug_report),
+                      DiscoveryIds.detailsMoreBugReport),
                   onTap: () => BetterFeedback.of(context).show((
                     String feedbackText,
                     Uint8List feedbackScreenshot,
@@ -107,7 +110,7 @@ class _MoreViewState extends State<MoreView> {
                   leading: _buildDiscoveryFeatureDescriptionWidget(
                       context,
                       const Icon(Icons.people_outline),
-                      'page_more_contributors_id'),
+                      DiscoveryIds.detailsMoreContributors),
                   onTap: () => model.navigationService
                       .pushNamed(RouterPaths.contributors),
                 ),
@@ -137,8 +140,10 @@ class _MoreViewState extends State<MoreView> {
                 ),
                 ListTile(
                   title: Text(AppIntl.of(context).settings_title),
-                  leading: _buildDiscoveryFeatureDescriptionWidget(context,
-                      const Icon(Icons.settings), 'page_more_settings_id'),
+                  leading: _buildDiscoveryFeatureDescriptionWidget(
+                      context,
+                      const Icon(Icons.settings),
+                      DiscoveryIds.detailsMoreSettings),
                   onTap: () =>
                       model.navigationService.pushNamed(RouterPaths.settings),
                 ),
@@ -175,7 +180,8 @@ class _MoreViewState extends State<MoreView> {
 
   DescribedFeatureOverlay _buildDiscoveryFeatureDescriptionWidget(
       BuildContext context, Widget icon, String featuredId) {
-    final discovery = getDiscoveryByFeatureId(context, 'pageMore', featuredId);
+    final discovery = getDiscoveryByFeatureId(
+        context, DiscoveryGroupIds.pageMore, featuredId);
 
     return DescribedFeatureOverlay(
       overflowMode: OverflowMode.wrapBackground,

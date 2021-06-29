@@ -23,6 +23,7 @@ import 'package:notredame/ui/widgets/schedule_settings.dart';
 
 // CONSTANTS
 import 'package:notredame/core/constants/preferences_flags.dart';
+import 'package:notredame/core/constants/discovery_ids.dart';
 
 // OTHER
 import 'package:notredame/ui/utils/app_theme.dart';
@@ -242,8 +243,8 @@ class _ScheduleViewState extends State<ScheduleView>
 
   DescribedFeatureOverlay _buildDiscoveryFeatureDescriptionWidget(
       BuildContext context, IconData icon, ScheduleViewModel model) {
-    final discovery = getDiscoveryByFeatureId(
-        context, 'pageSchedule', 'page_schedule_settings_id');
+    final discovery = getDiscoveryByFeatureId(context,
+        DiscoveryGroupIds.pageSchedule, DiscoveryIds.detailsScheduleSettings);
 
     return DescribedFeatureOverlay(
         overflowMode: OverflowMode.wrapBackground,

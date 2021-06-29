@@ -19,6 +19,7 @@ import 'package:notredame/ui/widgets/grade_button.dart';
 import 'package:notredame/core/constants/preferences_flags.dart';
 import 'package:notredame/core/constants/urls.dart';
 import 'package:notredame/core/models/course_activity.dart';
+import 'package:notredame/core/constants/discovery_ids.dart';
 
 // UTILS
 import 'package:notredame/core/utils/utils.dart';
@@ -333,8 +334,8 @@ class _DashboardViewState extends State<DashboardView>
 
   DescribedFeatureOverlay _buildDiscoveryFeatureDescriptionWidget(
       BuildContext context, IconData icon, DashboardViewModel model) {
-    final discovery = getDiscoveryByFeatureId(
-        context, 'bottomBar', 'page_dashboard_restore_id');
+    final discovery = getDiscoveryByFeatureId(context,
+        DiscoveryGroupIds.bottomBar, DiscoveryIds.bottomBarDashboardRestore);
 
     return DescribedFeatureOverlay(
       overflowMode: OverflowMode.wrapBackground,

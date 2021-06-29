@@ -26,7 +26,7 @@ List<GroupDiscovery> discoveryComponents(BuildContext context) {
     GroupDiscovery(name: DiscoveryGroupIds.bottomBar, discoveries: [
       Discovery(
         path: RouterPaths.dashboard,
-        featureId: 'navbar_dashboard_page_id',
+        featureId: DiscoveryIds.bottomBarDashboard,
         title: "",
         details: ConstrainedBox(
           constraints: BoxConstraints(
@@ -57,7 +57,7 @@ List<GroupDiscovery> discoveryComponents(BuildContext context) {
       ),
       Discovery(
         path: null,
-        featureId: 'page_dashboard_restore_id',
+        featureId: DiscoveryIds.bottomBarDashboardRestore,
         title: AppIntl.of(context).dashboard_restore_all_cards_title,
         details: ConstrainedBox(
           constraints: BoxConstraints(
@@ -88,7 +88,7 @@ List<GroupDiscovery> discoveryComponents(BuildContext context) {
       ),
       Discovery(
         path: RouterPaths.schedule,
-        featureId: 'navbar_schedule_page_id',
+        featureId: DiscoveryIds.bottomBarSchedule,
         title: "",
         details: ConstrainedBox(
           constraints: BoxConstraints(
@@ -119,7 +119,7 @@ List<GroupDiscovery> discoveryComponents(BuildContext context) {
       ),
       Discovery(
         path: RouterPaths.student,
-        featureId: 'navbar_students_page_id',
+        featureId: DiscoveryIds.bottomBarStudent,
         title: "",
         details: ConstrainedBox(
           constraints: BoxConstraints(
@@ -150,7 +150,7 @@ List<GroupDiscovery> discoveryComponents(BuildContext context) {
       ),
       Discovery(
         path: RouterPaths.ets,
-        featureId: 'navbar_ets_page_id',
+        featureId: DiscoveryIds.bottomBarETS,
         title: "",
         details: ConstrainedBox(
           constraints: BoxConstraints(
@@ -180,7 +180,7 @@ List<GroupDiscovery> discoveryComponents(BuildContext context) {
       ),
       Discovery(
         path: RouterPaths.more,
-        featureId: 'navbar_more_page_id',
+        featureId: DiscoveryIds.bottomBarMore,
         title: "",
         details: ConstrainedBox(
           constraints: BoxConstraints(
@@ -211,7 +211,7 @@ List<GroupDiscovery> discoveryComponents(BuildContext context) {
     GroupDiscovery(name: DiscoveryGroupIds.pageSchedule, discoveries: [
       Discovery(
         path: null,
-        featureId: 'page_schedule_settings_id',
+        featureId: DiscoveryIds.detailsScheduleSettings,
         title: AppIntl.of(context).schedule_settings_title,
         details: ConstrainedBox(
           constraints: BoxConstraints(
@@ -243,7 +243,7 @@ List<GroupDiscovery> discoveryComponents(BuildContext context) {
     GroupDiscovery(name: DiscoveryGroupIds.pageStudent, discoveries: [
       Discovery(
         path: null,
-        featureId: 'page_students_grade_button_id',
+        featureId: DiscoveryIds.detailsStudentGradeButton,
         title: AppIntl.of(context).grades_title,
         details: ConstrainedBox(
           constraints: BoxConstraints(
@@ -273,7 +273,7 @@ List<GroupDiscovery> discoveryComponents(BuildContext context) {
       ),
       Discovery(
         path: null,
-        featureId: 'page_student_page_profile',
+        featureId: DiscoveryIds.detailsStudentProfile,
         title: AppIntl.of(context).profile_title,
         details: ConstrainedBox(
           constraints: BoxConstraints(
@@ -298,7 +298,7 @@ List<GroupDiscovery> discoveryComponents(BuildContext context) {
     GroupDiscovery(name: DiscoveryGroupIds.pageMore, discoveries: [
       Discovery(
         path: null,
-        featureId: 'page_more_bug_report_id',
+        featureId: DiscoveryIds.detailsMoreBugReport,
         title: AppIntl.of(context).more_report_bug,
         details: ConstrainedBox(
           constraints: BoxConstraints(
@@ -321,7 +321,7 @@ List<GroupDiscovery> discoveryComponents(BuildContext context) {
       ),
       Discovery(
         path: null,
-        featureId: 'page_more_contributors_id',
+        featureId: DiscoveryIds.detailsMoreContributors,
         title: AppIntl.of(context).more_contributors,
         details: ConstrainedBox(
           constraints: BoxConstraints(
@@ -344,7 +344,7 @@ List<GroupDiscovery> discoveryComponents(BuildContext context) {
       ),
       Discovery(
         path: null,
-        featureId: 'page_more_settings_id',
+        featureId: DiscoveryIds.detailsMoreSettings,
         title: AppIntl.of(context).more_settings,
         details: ConstrainedBox(
           constraints: BoxConstraints(
@@ -367,7 +367,7 @@ List<GroupDiscovery> discoveryComponents(BuildContext context) {
       ),
       Discovery(
         path: null,
-        featureId: 'page_more_thank_you_id',
+        featureId: DiscoveryIds.detailsMoreSettings,
         title: AppIntl.of(context).title_ets_mobile,
         details: ConstrainedBox(
           constraints: BoxConstraints(

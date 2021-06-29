@@ -5,6 +5,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 //CONSTANTS
 import 'package:notredame/core/constants/router_paths.dart';
+import 'package:notredame/core/constants/discovery_ids.dart';
 
 // MODEL
 import 'package:notredame/core/models/course.dart';
@@ -108,8 +109,8 @@ class GradeButton extends StatelessWidget {
 
   DescribedFeatureOverlay _buildDiscoveryFeatureDescriptionWidget(
       BuildContext context, Widget gradeButton) {
-    final discovery = getDiscoveryByFeatureId(
-        context, 'pageStudent', 'page_students_grade_button_id');
+    final discovery = getDiscoveryByFeatureId(context,
+        DiscoveryGroupIds.pageSchedule, DiscoveryIds.detailsStudentGradeButton);
 
     return DescribedFeatureOverlay(
         overflowMode: OverflowMode.wrapBackground,

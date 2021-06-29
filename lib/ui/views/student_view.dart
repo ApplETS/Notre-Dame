@@ -4,6 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:notredame/ui/views/grades_view.dart';
 
+// CONSTANTS
+import 'package:notredame/core/constants/discovery_ids.dart';
+
 // UTILS
 import 'package:notredame/ui/utils/app_theme.dart';
 import 'package:notredame/ui/utils/discovery_components.dart';
@@ -67,8 +70,8 @@ class _StudentViewState extends State<StudentView> {
 
   DescribedFeatureOverlay _buildDiscoveryFeatureDescriptionWidget(
       BuildContext context, List<String> tabs, int index) {
-    final discovery = getDiscoveryByFeatureId(
-        context, 'pageStudent', 'page_student_page_profile');
+    final discovery = getDiscoveryByFeatureId(context,
+        DiscoveryGroupIds.pageStudent, DiscoveryIds.detailsStudentProfile);
 
     return DescribedFeatureOverlay(
       overflowMode: OverflowMode.wrapBackground,
