@@ -367,7 +367,7 @@ List<GroupDiscovery> discoveryComponents(BuildContext context) {
       ),
       Discovery(
         path: null,
-        featureId: DiscoveryIds.detailsMoreSettings,
+        featureId: DiscoveryIds.detailsMoreThankYou,
         title: AppIntl.of(context).title_ets_mobile,
         details: ConstrainedBox(
           constraints: BoxConstraints(
