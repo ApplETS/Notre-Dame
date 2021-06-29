@@ -176,7 +176,7 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
               .map((e) => e.featureId)
               .toList();
 
-      Future.delayed(const Duration(milliseconds: 500),
+      Future.delayed(const Duration(milliseconds: 700),
           () => FeatureDiscovery.discoverFeatures(context, ids));
 
       _settingsManager.setString(PreferencesFlag.discoverySchedule, 'true');

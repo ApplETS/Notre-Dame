@@ -138,7 +138,7 @@ class MoreViewModel extends FutureViewModel {
               .map((e) => e.featureId)
               .toList();
 
-      Future.delayed(const Duration(milliseconds: 500),
+      Future.delayed(const Duration(milliseconds: 700),
           () => FeatureDiscovery.discoverFeatures(context, ids));
 
       settingsManager.setString(PreferencesFlag.discoveryMore, 'true');
