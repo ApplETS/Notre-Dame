@@ -1,5 +1,6 @@
 // FLUTTER / DART / THIRD-PARTIES
 import 'package:flutter/widgets.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -71,4 +72,9 @@ List<QuickLink> quickLinks(AppIntl intl) => [
             size: 64,
           ),
           link: 'http://rubik.clubnaova.ca/'),
+      QuickLink(
+          name: intl.ets_gus,
+          image: SvgPicture.asset('assets/images/ic_gus_red.svg',
+              color: AppTheme.etsLightRed),
+          link: 'https://gus.etsmtl.ca/c2atom/mobile/login'),
     ];

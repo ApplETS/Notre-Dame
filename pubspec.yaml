@@ -15,7 +15,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 # In iOS, build-name is used as CFBundleShortVersionString while build-number used as CFBundleVersion.
 # Read more about iOS versioning at
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
-version: 4.0.6+1
+version: 4.1.0+1
 
 environment:
   sdk: ">=2.10.0 <3.0.0"
@@ -81,11 +81,6 @@ flutter_icons:
   adaptive_icon_background: "#EF3F45"
   adaptive_icon_foreground: "assets/icons/ic_launcher_foreground.png"
 
-
-# For information on the generic Dart part of this file, see the
-# following page: https://dart.dev/tools/pub/pubspec
-
-# The following section is specific to Flutter.
 flutter:
   uses-material-design: true
   generate: true
