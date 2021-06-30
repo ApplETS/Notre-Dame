@@ -31,7 +31,6 @@ void main() {
       setupAnalyticsServiceMock();
       setupInternalInfoServiceMock();
       setupNetworkingServiceMock();
-      ;
     });
 
     tearDown(() {

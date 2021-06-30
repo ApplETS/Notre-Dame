@@ -17,13 +17,9 @@ import 'package:notredame/ui/views/more_view.dart';
 // HELPERS
 import '../../helpers.dart';
 
-// MOCKS
-import '../../mock/services/networking_service_mock.dart';
-
 void main() {
   AppIntl intl;
   NavigationService navigation;
-  NetworkingServiceMock networkingService;
 
   group('MoreView - ', () {
     setUp(() async {
@@ -35,7 +31,7 @@ void main() {
       setupCacheManagerMock();
       setupSettingsManagerMock();
       setupGithubApiMock();
-      networkingService = setupNetworkingServiceMock() as NetworkingServiceMock;
+      setupNetworkingServiceMock();
     });
 
     tearDown(() {});
