@@ -94,7 +94,7 @@ void main() {
         tester.binding.window.physicalSizeTestValue = const Size(800, 1410);
 
         await tester.pumpWidget(localizedWidget(child: GradesView()));
-        await tester.pumpAndSettle();
+        await tester.pumpAndSettle(const Duration(seconds: 1));
 
         await expectLater(find.byType(GradesView),
             matchesGoldenFile(goldenFilePath("gradesView_1")));

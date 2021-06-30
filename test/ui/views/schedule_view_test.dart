@@ -119,7 +119,7 @@ void main() {
         await tester.pumpWidget(localizedWidget(
             child: FeatureDiscovery(
                 child: ScheduleView(initialDay: DateTime(2020)))));
-        await tester.pumpAndSettle();
+        await tester.pumpAndSettle(const Duration(seconds: 1));
 
         await expectLater(find.byType(ScheduleView),
             matchesGoldenFile(goldenFilePath("scheduleView_1")));
@@ -146,7 +146,7 @@ void main() {
         await tester.pumpWidget(localizedWidget(
             child: FeatureDiscovery(
                 child: ScheduleView(initialDay: DateTime(2020)))));
-        await tester.pumpAndSettle();
+        await tester.pumpAndSettle(const Duration(seconds: 1));
 
         await expectLater(find.byType(ScheduleView),
             matchesGoldenFile(goldenFilePath("scheduleView_2")));
@@ -173,7 +173,7 @@ void main() {
                 child: MediaQuery(
                     data: const MediaQueryData(textScaleFactor: 0.5),
                     child: ScheduleView(initialDay: DateTime(2020))))));
-        await tester.pumpAndSettle();
+        await tester.pumpAndSettle(const Duration(seconds: 1));
 
         await expectLater(find.byType(ScheduleView),
             matchesGoldenFile(goldenFilePath("scheduleView_3")));
@@ -199,7 +199,7 @@ void main() {
         await tester.pumpWidget(localizedWidget(
             child: FeatureDiscovery(
                 child: ScheduleView(initialDay: DateTime(2020)))));
-        await tester.pumpAndSettle();
+       await tester.pumpAndSettle(const Duration(seconds: 1));
 
         await expectLater(find.byType(ScheduleView),
             matchesGoldenFile(goldenFilePath("scheduleView_4")));
@@ -229,7 +229,7 @@ void main() {
                 child: MediaQuery(
                     data: const MediaQueryData(textScaleFactor: 0.5),
                     child: ScheduleView(initialDay: testingDate)))));
-        await tester.pumpAndSettle();
+        await tester.pumpAndSettle(const Duration(seconds: 1));
 
         expect(find.byType(TableCalendar, skipOffstage: false), findsOneWidget);
         expect(
