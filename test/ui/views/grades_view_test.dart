@@ -116,7 +116,7 @@ void main() {
 
         tester.binding.window.physicalSizeTestValue = const Size(800, 1410);
 
-        await tester.pumpWidget(localizedWidget(child: GradesView()));
+        await tester.pumpWidget(localizedWidget(child: FeatureDiscovery(child: GradesView())));
         await tester.pumpAndSettle();
 
         await expectLater(find.byType(GradesView),
