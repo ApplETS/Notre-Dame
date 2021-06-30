@@ -55,7 +55,8 @@ jobs:
     steps:
       - uses: actions/checkout@v2
         with:
-          fetch-depth: 0 # Needed to push to refs
+          ref: ${{ github.head_ref }}
+          token: ${{ secrets.PTA }}
       - uses: actions/setup-java@v2
         with:
           distribution: 'adopt'
@@ -76,8 +77,37 @@ jobs:
       - run: flutter format --set-exit-if-changed .
       - run: flutter analyze
 
-      # Run the tests
+      # Retrieve the last commit message and check if the commit message contains [CI UPDATE GOLDENS].
+      # Set update_goldens output if the hot word is there.
+      - name: "Check if needed to update goldens"
+        if: github.event_name == 'pull_request'
+        id: check_run_goldens
+        run: |
+          commit_msg=$(git log --format=%B -n 1 HEAD)
+
+          if [[ $commit_msg == *"[CI UPDATE GOLDENS]"* ]]; then
+            echo ::set-output name=update_goldens::true
+          fi
+
+      # Run the tests with --update-goldens.
+      - name: Update goldens
+        if: ${{ steps.check_run_goldens.outputs.update_goldens == 'true' }}
+        run: flutter test --coverage --update-goldens
+
+      # Commit and push the goldens files updated.
+      - name: Commit golden files
+        id: commit
+        if: ${{ steps.check_run_goldens.outputs.update_goldens == 'true' }}
+        uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          file_pattern: test/*
+          commit_user_name: github-actions[bot]
+          commit_user_email: 41898282+github-actions[bot]@users.noreply.github.com
+          commit_message: "Update golden files"
+
+        # Run the tests
       - run: flutter test --coverage
+        if: ${{ steps.check_run_goldens.outputs.update_goldens != 'true' }}
 
       - name: Upload coverage file
         uses: actions/upload-artifact@v2
@@ -240,7 +270,6 @@ jobs:
         uses: marvinpinto/action-automatic-releases@latest
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
-          draft: true
           automatic_release_tag: ${{ needs.tagValidation.outputs.version }}
           title: v${{ needs.tagValidation.outputs.version }}
           files: |
