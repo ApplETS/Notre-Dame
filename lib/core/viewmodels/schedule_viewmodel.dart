@@ -13,9 +13,6 @@ import 'package:notredame/core/managers/settings_manager.dart';
 // MODELS
 import 'package:notredame/core/models/course_activity.dart';
 
-// SERVICE
-import 'package:notredame/core/services/networking_service.dart';
-
 // OTHER
 import 'package:notredame/locator.dart';
 import 'package:notredame/core/constants/preferences_flags.dart';
@@ -48,9 +45,6 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
 
   /// Get current locale
   Locale get locale => _settingsManager.locale;
-
-  /// Verify if user has an active internet connection
-  final NetworkingService _networkingService = locator<NetworkingService>();
 
   ScheduleViewModel({@required AppIntl intl, DateTime initialSelectedDate})
       : _appIntl = intl,
@@ -157,9 +151,5 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
     } on Exception catch (error) {
       onError(error);
     }
-  }
-
-  Future displayOfflineMode(BuildContext context) async {
-    _networkingService.displayOfflineMode(context, _appIntl);
   }
 }

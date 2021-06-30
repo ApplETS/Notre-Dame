@@ -1,6 +1,5 @@
 // FLUTTER / DART / THIRD-PARTIES
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:notredame/ui/utils/loading.dart';
 import 'package:stacked/stacked.dart';
@@ -24,15 +23,6 @@ class GradesView extends StatefulWidget {
 }
 
 class _GradesViewState extends State<GradesView> {
-  @override
-  void initState() {
-    super.initState();
-
-    SchedulerBinding.instance.addPostFrameCallback((Duration duration) {
-      GradesViewModel(intl: AppIntl.of(context)).displayOfflineMode(context);
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<GradesViewModel>.reactive(

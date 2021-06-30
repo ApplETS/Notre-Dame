@@ -6,7 +6,6 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 // MANAGERS / SERVICES
 import 'package:notredame/core/managers/course_repository.dart';
-import 'package:notredame/core/services/networking_service.dart';
 
 // MODELS
 import 'package:notredame/core/models/course.dart';
@@ -20,9 +19,6 @@ class GradesDetailsViewModel extends FutureViewModel<Course> {
 
   /// Localization class of the application.
   final AppIntl _appIntl;
-
-  // Used to check for user connectivity status
-  final NetworkingService _networkingService = locator<NetworkingService>();
 
   /// Used to get the current course selected of the student
   Course course;
@@ -74,9 +70,5 @@ class GradesDetailsViewModel extends FutureViewModel<Course> {
       setBusyForObject(course, false);
       return false;
     }
-  }
-
-  Future displayOfflineMode(BuildContext context) async {
-    _networkingService.displayOfflineMode(context, _appIntl);
   }
 }

@@ -1,6 +1,5 @@
 // FLUTTER / DART / THIRD-PARTIES
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:stacked/stacked.dart';
 
 // VIEWMODELS
@@ -47,11 +46,6 @@ class _GradesDetailsViewState extends State<GradesDetailsView>
           _completed = true;
         });
       }
-    });
-
-    SchedulerBinding.instance.addPostFrameCallback((Duration duration) {
-      GradesDetailsViewModel(intl: AppIntl.of(context))
-          .displayOfflineMode(context);
     });
   }
 

@@ -38,6 +38,7 @@ class AppTheme {
         primaryColor: etsLightRed,
         accentColor: etsLightRed,
         colorScheme: lightTheme.colorScheme.copyWith(primary: etsLightRed),
+        snackBarTheme: const SnackBarThemeData(actionTextColor: etsLightRed),
         bottomNavigationBarTheme: lightTheme.bottomNavigationBarTheme
             .copyWith(selectedItemColor: etsLightRed));
   }
@@ -52,6 +53,10 @@ class AppTheme {
         cardColor: const Color(0xff1e1e1e),
         accentColor: etsLightRed,
         colorScheme: darkTheme.colorScheme.copyWith(primary: etsLightRed),
+        snackBarTheme: const SnackBarThemeData(
+            actionTextColor: etsLightRed,
+            backgroundColor: Color(0xff1e1e1e),
+            contentTextStyle: TextStyle(color: Colors.white)),
         bottomNavigationBarTheme: darkTheme.bottomNavigationBarTheme
             .copyWith(selectedItemColor: etsLightRed));
   }

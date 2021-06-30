@@ -10,9 +10,6 @@ import 'package:notredame/core/managers/course_repository.dart';
 // MODEL
 import 'package:notredame/core/models/course.dart';
 
-// SERVICE
-import 'package:notredame/core/services/networking_service.dart';
-
 // OTHER
 import 'package:notredame/locator.dart';
 
@@ -22,9 +19,6 @@ class GradesViewModel extends FutureViewModel<Map<String, List<Course>>> {
 
   /// Localization class of the application.
   final AppIntl _appIntl;
-
-  /// Verify if user has an active internet connection
-  final NetworkingService _networkingService = locator<NetworkingService>();
 
   /// Contains all the courses of the student sorted by session
   final Map<String, List<Course>> coursesBySession = {};
@@ -109,9 +103,5 @@ class GradesViewModel extends FutureViewModel<Map<String, List<Course>>> {
       }
       return -1;
     });
-  }
-
-  Future displayOfflineMode(BuildContext context) async {
-    _networkingService.displayOfflineMode(context, _appIntl);
   }
 }

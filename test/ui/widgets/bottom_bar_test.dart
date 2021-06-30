@@ -16,16 +16,22 @@ import 'package:notredame/core/constants/router_paths.dart';
 // HELPERS
 import '../../helpers.dart';
 
+// MOCKS
+import '../../mock/services/networking_service_mock.dart';
+
 NavigationService _navigationService;
+NetworkingServiceMock networkingService;
 
 void main() {
   group('BottomBar - ', () {
     setUp(() {
       _navigationService = setupNavigationServiceMock();
+      networkingService = setupNetworkingServiceMock() as NetworkingServiceMock;
     });
 
     tearDown(() {
       unregister<NavigationService>();
+      unregister<NetworkingServiceMock>();
     });
 
     testWidgets(

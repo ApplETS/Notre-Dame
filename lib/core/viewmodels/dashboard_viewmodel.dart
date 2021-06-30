@@ -23,16 +23,12 @@ import 'package:notredame/core/models/course.dart';
 // UTILS
 import 'package:notredame/ui/utils/discovery_components.dart';
 
-// SERVICES
-import 'package:notredame/core/services/networking_service.dart';
-
 // OTHER
 import 'package:notredame/locator.dart';
 
 class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
   final SettingsManager _settingsManager = locator<SettingsManager>();
   final CourseRepository _courseRepository = locator<CourseRepository>();
-  final NetworkingService _networkingService = locator<NetworkingService>();
 
   /// All dashboard displayable cards
   Map<PreferencesFlag, int> _cards;
@@ -246,10 +242,6 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
         }
       });
     }
-  }
-
-  Future displayOfflineMode(BuildContext context) async {
-    _networkingService.displayOfflineMode(context, _appIntl);
   }
 
   /// Returns true if dates [a] and [b] are on the same day
