@@ -29,8 +29,9 @@ void main() {
       intl = await setupAppIntl();
       setupNavigationServiceMock();
       setupAnalyticsServiceMock();
-      setupInternalInfoServiceMock()
-      setupNetworkingServiceMock();;
+      setupInternalInfoServiceMock();
+      setupNetworkingServiceMock();
+      ;
     });
 
     tearDown(() {
