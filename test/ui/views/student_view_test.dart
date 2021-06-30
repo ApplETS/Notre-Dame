@@ -70,7 +70,7 @@ void main() {
 
           await tester.pumpWidget(
               localizedWidget(child: FeatureDiscovery(child: StudentView())));
-          await tester.pumpAndSettle();
+          await tester.pumpAndSettle(const Duration(seconds: 1));
 
           await expectLater(find.byType(StudentView),
               matchesGoldenFile(goldenFilePath("studentView_1")));
