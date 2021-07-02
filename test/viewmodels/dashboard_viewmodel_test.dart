@@ -26,7 +26,6 @@ import '../helpers.dart';
 // MOCKS
 import '../mock/managers/course_repository_mock.dart';
 import '../mock/managers/settings_manager_mock.dart';
-import '../mock/services/networking_service_mock.dart';
 import '../mock/services/preferences_service_mock.dart';
 
 void main() {
@@ -34,7 +33,6 @@ void main() {
   SettingsManager settingsManager;
   DashboardViewModel viewModel;
   CourseRepository courseRepository;
-  NetworkingServiceMock networkingService;
 
   final gen101 = CourseActivity(
       courseGroup: "GEN101",
@@ -137,7 +135,6 @@ void main() {
       settingsManager = setupSettingsManagerMock();
       preferenceService = setupPreferencesServiceMock();
       courseRepository = setupCourseRepositoryMock();
-      networkingService = setupNetworkingServiceMock() as NetworkingServiceMock;
 
       setupFlutterToastMock();
       courseRepository = setupCourseRepositoryMock();
@@ -157,7 +154,6 @@ void main() {
       CourseRepositoryMock.stubGetCoursesActivities(
           courseRepository as CourseRepositoryMock,
           fromCacheOnly: false);
-      NetworkingServiceMock.stubHasConnectivity(networkingService);
     });
 
     tearDown(() {

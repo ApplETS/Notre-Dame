@@ -6,6 +6,7 @@ import 'package:feature_discovery/feature_discovery.dart';
 
 // SERVICE
 import 'package:notredame/core/services/navigation_service.dart';
+import 'package:notredame/core/services/networking_service.dart';
 
 // WIDGET
 import 'package:notredame/ui/widgets/bottom_bar.dart';
@@ -16,22 +17,18 @@ import 'package:notredame/core/constants/router_paths.dart';
 // HELPERS
 import '../../helpers.dart';
 
-// MOCKS
-import '../../mock/services/networking_service_mock.dart';
-
-NavigationService _navigationService;
-NetworkingServiceMock networkingService;
+NavigationService navigationService;
 
 void main() {
   group('BottomBar - ', () {
     setUp(() {
-      _navigationService = setupNavigationServiceMock();
-      networkingService = setupNetworkingServiceMock() as NetworkingServiceMock;
+      navigationService = setupNavigationServiceMock();
+      setupNetworkingServiceMock();
     });
 
     tearDown(() {
       unregister<NavigationService>();
-      unregister<NetworkingServiceMock>();
+      unregister<NetworkingService>();
     });
 
     testWidgets(
@@ -57,7 +54,7 @@ void main() {
         await tester.tap(find.byIcon(Icons.dashboard));
 
         verify(
-            _navigationService.pushNamedAndRemoveUntil(RouterPaths.dashboard));
+            navigationService.pushNamedAndRemoveUntil(RouterPaths.dashboard));
       });
 
       testWidgets('schedule', (WidgetTester tester) async {
@@ -67,8 +64,7 @@ void main() {
 
         await tester.tap(find.byIcon(Icons.schedule));
 
-        verify(
-            _navigationService.pushNamedAndRemoveUntil(RouterPaths.schedule));
+        verify(navigationService.pushNamedAndRemoveUntil(RouterPaths.schedule));
       });
 
       testWidgets('student', (WidgetTester tester) async {
@@ -78,7 +74,7 @@ void main() {
 
         await tester.tap(find.byIcon(Icons.school));
 
-        verify(_navigationService.pushNamedAndRemoveUntil(RouterPaths.student));
+        verify(navigationService.pushNamedAndRemoveUntil(RouterPaths.student));
       });
 
       testWidgets('ets', (WidgetTester tester) async {
@@ -88,7 +84,7 @@ void main() {
 
         await tester.tap(find.byIcon(Icons.account_balance));
 
-        verify(_navigationService.pushNamedAndRemoveUntil(RouterPaths.ets));
+        verify(navigationService.pushNamedAndRemoveUntil(RouterPaths.ets));
       });
 
       testWidgets('more', (WidgetTester tester) async {
@@ -98,7 +94,7 @@ void main() {
 
         await tester.tap(find.byIcon(Icons.dehaze));
 
-        verify(_navigationService.pushNamedAndRemoveUntil(RouterPaths.more));
+        verify(navigationService.pushNamedAndRemoveUntil(RouterPaths.more));
       });
     });
   });

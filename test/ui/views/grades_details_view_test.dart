@@ -10,6 +10,9 @@ import 'package:notredame/core/models/course.dart';
 import 'package:notredame/core/models/course_summary.dart';
 import 'package:notredame/core/models/evaluation.dart' as model;
 
+// SERVICES
+import 'package:notredame/core/services/networking_service.dart';
+
 // VIEWS
 import 'package:notredame/ui/views/grade_details_view.dart';
 
@@ -17,13 +20,9 @@ import 'package:notredame/ui/views/grade_details_view.dart';
 import '../../helpers.dart';
 import '../../mock/managers/course_repository_mock.dart';
 
-// MOCKS
-import '../../mock/services/networking_service_mock.dart';
-
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
   CourseRepository courseRepository;
-  NetworkingServiceMock networkingService;
 
   final CourseSummary courseSummary = CourseSummary(
     currentMark: 5,
@@ -75,15 +74,12 @@ void main() {
     setUp(() async {
       setupNavigationServiceMock();
       courseRepository = setupCourseRepositoryMock();
-      networkingService = setupNetworkingServiceMock() as NetworkingServiceMock;
       setupFlutterToastMock();
-
-      // Stub to simulate that the user has an active internet connection
-      NetworkingServiceMock.stubHasConnectivity(networkingService);
     });
 
     tearDown(() {
       unregister<CourseRepository>();
+      unregister<NetworkingService>();
     });
 
     group('UI - ', () {

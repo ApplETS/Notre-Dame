@@ -23,7 +23,7 @@ class NetworkingService {
           content: Text(intl.no_connectivity),
           duration: const Duration(days: 365),
           action: SnackBarAction(
-            label: intl.close_no_connectivity_snackbar.toString().toUpperCase(),
+            label: intl.close_no_connectivity_snackbar.toUpperCase(),
             onPressed: () {
               _isSnackbarDismissed = true;
               ScaffoldMessenger.of(context).hideCurrentSnackBar();

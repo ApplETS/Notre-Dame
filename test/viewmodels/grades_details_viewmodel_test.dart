@@ -20,15 +20,11 @@ import '../mock/managers/course_repository_mock.dart';
 // ignore: directives_ordering
 import '../helpers.dart';
 
-// MOCKS
-import '../mock/services/networking_service_mock.dart';
-
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   AppIntl intl;
   GradesDetailsViewModel viewModel;
   CourseRepository courseRepository;
-  NetworkingServiceMock networkingService;
 
   final CourseSummary courseSummary = CourseSummary(
     currentMark: 5,
@@ -94,12 +90,8 @@ void main() {
     setUp(() async {
       // Setting up mocks
       courseRepository = setupCourseRepositoryMock();
-      networkingService = setupNetworkingServiceMock() as NetworkingServiceMock;
       intl = await setupAppIntl();
       setupFlutterToastMock();
-
-      // Stub to simulate that the user has an active internet connection
-      NetworkingServiceMock.stubHasConnectivity(networkingService);
 
       viewModel =
           GradesDetailsViewModel(course: courseWithoutSummary, intl: intl);
