@@ -18,5 +18,15 @@ void main() {
 
       expect(find.text(cardText), findsOneWidget);
     });
+    testWidgets("isBusy", (WidgetTester tester) async {
+      await tester.pumpWidget(localizedWidget(
+          child: DismissibleCard(
+              isBusy: true,
+              onDismissed: (DismissDirection direction) {},
+              child: const Text(cardText))));
+
+      expect(find.text(cardText), findsOneWidget);
+      expect(find.byType(CircularProgressIndicator), findsOneWidget);
+    });
   });
 }
