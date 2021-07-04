@@ -37,7 +37,8 @@ class AppTheme {
     return lightTheme.copyWith(
         primaryColor: etsLightRed,
         accentColor: etsLightRed,
-        colorScheme: lightTheme.colorScheme.copyWith(primary: etsLightRed),
+        colorScheme: lightTheme.colorScheme
+            .copyWith(primary: etsLightRed, secondary: etsLightRed),
         bottomNavigationBarTheme: lightTheme.bottomNavigationBarTheme
             .copyWith(selectedItemColor: etsLightRed));
   }
@@ -51,7 +52,8 @@ class AppTheme {
         scaffoldBackgroundColor: const Color(0xff121212),
         cardColor: const Color(0xff1e1e1e),
         accentColor: etsLightRed,
-        colorScheme: darkTheme.colorScheme.copyWith(primary: etsLightRed),
+        colorScheme: darkTheme.colorScheme
+            .copyWith(primary: etsLightRed, secondary: etsLightRed),
         bottomNavigationBarTheme: darkTheme.bottomNavigationBarTheme
             .copyWith(selectedItemColor: etsLightRed));
   }
