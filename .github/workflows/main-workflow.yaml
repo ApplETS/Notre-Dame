@@ -8,6 +8,7 @@ on:
       - '.metadata'
       - '.github/**'
       - 'README.md'
+      - 'README.fr.md'
   pull_request:
 env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -42,14 +43,20 @@ jobs:
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           message: '${{ steps.split.outputs._0 }} already exists, please update the pubspec version.'
+      - if: ${{ steps.checkTag.outputs.exists == 'true' }}
+        name: Fails because the tag already exists.
+        run: exit 1
 
-  validationWorkflow:
+  testing:
     name: Tests and checks
     runs-on: ubuntu-latest
+    outputs:
+      coverage: ${{ steps.coverage.outputs.percentage }}
     steps:
       - uses: actions/checkout@v2
         with:
-          fetch-depth: 0 # Needed to push to refs
+          ref: ${{ github.head_ref }}
+          token: ${{ secrets.PTA }}
       - uses: actions/setup-java@v2
         with:
           distribution: 'adopt'
@@ -70,37 +77,103 @@ jobs:
       - run: flutter format --set-exit-if-changed .
       - run: flutter analyze
 
-      # Run the tests
-      - run: flutter test --coverage
+      # Retrieve the last commit message and check if the commit message contains [CI UPDATE GOLDENS].
+      # Set update_goldens output if the hot word is there.
+      - name: "Check if needed to update goldens"
+        if: github.event_name == 'pull_request'
+        id: check_run_goldens
+        run: |
+          commit_msg=$(git log --format=%B -n 1 HEAD)
 
+          if [[ $commit_msg == *"[CI UPDATE GOLDENS]"* ]]; then
+            echo ::set-output name=update_goldens::true
+          fi
+
+      # Run the tests with --update-goldens.
+      - name: Update goldens
+        if: ${{ steps.check_run_goldens.outputs.update_goldens == 'true' }}
+        run: flutter test --coverage --update-goldens
+
+      # Commit and push the goldens files updated.
+      - name: Commit golden files
+        id: commit
+        if: ${{ steps.check_run_goldens.outputs.update_goldens == 'true' }}
+        uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          file_pattern: test/*
+          commit_user_name: github-actions[bot]
+          commit_user_email: 41898282+github-actions[bot]@users.noreply.github.com
+          commit_message: "Update golden files"
+
+        # Run the tests
+      - run: flutter test --coverage
+        if: ${{ steps.check_run_goldens.outputs.update_goldens != 'true' }}
+
+      - name: Upload coverage file
+        uses: actions/upload-artifact@v2
+        with:
+          name: lcov.info
+          path: ${{ github.workspace }}/coverage/lcov.info
+      - name: Get code coverage
+        #        if: ${{ github.event_name == 'push' }}
+        id: coverage
+        run: |
+          chmod +x ./scripts/determine_code_coverage.sh
+          export COV="$(./scripts/determine_code_coverage.sh coverage/lcov.info)"
+          echo "Coverage detected is: $COV"
+          echo "::set-output name=percentage::$COV"
+
+  coverage:
+    name: Update coverage
+    needs: [ testing ]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download coverage file
+        uses: actions/download-artifact@v2
+        with:
+          name: lcov.info
       # Comment coverage report
       - name: Comment the coverage of the PR
         if: ${{ github.event_name == 'pull_request' }}
         uses: romeovs/lcov-reporter-action@v0.2.21
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
-          lcov-file: ./coverage/lcov.info
-          lcov-base: ./coverage/lcov.base.info
-      - name: Commit coverage file
-        id: commit
+          lcov-file: ./lcov.info
+      #          lcov-base: ./coverage/lcov.base.info
+
+      - name: Update badge coverage
         if: ${{ github.event_name == 'push' }}
-        run: |
-          git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git config --local user.name "github-actions[bot]"
-          mv coverage/lcov.info coverage/lcov.base.info
-          git add coverage/lcov.base.info
-          git status
-          git status | grep -o 'coverage/lcov.base.info*'
-          if git status | grep -o 'coverage/lcov.base.info*'; then
-            git commit -m "Update coverage file" -a
-            echo "::set-output name=is_commit::true"
-          fi
-      - name: Push coverage changes.
-        if: ${{ github.event_name == 'fails' }}
-        uses: ad-m/github-push-action@master
+        uses: schneegans/dynamic-badges-action@v1.1.0
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          branch: ${{ github.head_ref }}
+          auth: ${{ secrets.GIST_COVERAGE_BADGE_TOKEN }}
+          gistID: ${{ secrets.GIST_ID_COVERAGE_BADGE }}
+          filename: notre_dame_master_badge_coverage.json
+          label: Code coverage
+          message: ${{ needs.testing.outputs.coverage }}
+          namedLogo: flutter
+          color: green
+
+#      Disable theses steps for now. Will enable them when we will think of a way to upload lcov.base.info somewhere
+#      - name: Commit coverage file
+#        id: commit
+#        if: ${{ github.event_name == 'push' }}
+#        run: |
+#          git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
+#          git config --local user.name "github-actions[bot]"
+#          mv coverage/lcov.info coverage/lcov.base.info
+#          git add coverage/lcov.base.info
+#          git status
+#          git status | grep -o 'coverage/lcov.base.info*'
+#          if git status | grep -o 'coverage/lcov.base.info*'; then
+#            git commit -m "Update coverage file" -a
+#            echo "::set-output name=is_commit::true"
+#          fi
+#      - name: Push coverage changes.
+#        if: ${{ github.event_name == 'push' && }}
+#        uses: ad-m/github-push-action@master
+#        with:
+#          github_token: ${{ secrets.GITHUB_TOKEN }}
+#          branch: ${{ github.head_ref }}
 
   create-build:
     name: Create ${{ matrix.target }} build
@@ -125,7 +198,7 @@ jobs:
             asset_content_type: application/zip
       # Disable fail-fast as we want results from all even if one fails.
       fail-fast: false
-    needs: [ validationWorkflow, tagValidation ]
+    needs: [ testing, tagValidation ]
     steps:
       - uses: actions/checkout@v2
       - uses: subosito/flutter-action@v1.5.0
@@ -180,7 +253,7 @@ jobs:
   create-draft-release:
     name: Draft Github release
     if: ${{ github.event_name == 'push' }}
-    needs: [ tagValidation, validationWorkflow, create-build ]
+    needs: [ tagValidation, create-build ]
     runs-on: ubuntu-latest
     outputs:
       upload_url: ${{ steps.create_release.outputs.upload_url }}
@@ -197,7 +270,6 @@ jobs:
         uses: marvinpinto/action-automatic-releases@latest
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
-          draft: true
           automatic_release_tag: ${{ needs.tagValidation.outputs.version }}
           title: v${{ needs.tagValidation.outputs.version }}
           files: |
