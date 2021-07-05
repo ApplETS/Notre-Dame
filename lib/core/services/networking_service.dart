@@ -11,6 +11,8 @@ class NetworkingService {
   // Offline mode snackbar
   static bool _isSnackbarDismissed = false;
   static bool _isSnackbarActive = false;
+  // ignore: cancel_subscriptions
+  static StreamSubscription _connectionStatusSubscription;
 
   Future<bool> hasConnectivity() async {
     final connectionStatus = await _connectivity.checkConnectivity();
@@ -18,7 +20,15 @@ class NetworkingService {
   }
 
   Future displayOfflineMode(BuildContext context, AppIntl intl) async {
-    if (!await hasConnectivity()) {
+    _connectionStatusSubscription ??=
+        _connectivity.onConnectivityChanged.listen((event) {
+      _showSnackbar(context, intl, event);
+    });
+  }
+
+  void _showSnackbar(
+      BuildContext context, AppIntl intl, ConnectivityResult connectionStatus) {
+    if (!(connectionStatus != ConnectivityResult.none)) {
       if (!_isSnackbarActive && !_isSnackbarDismissed) {
         final snackBar = SnackBar(
           content: Row(
