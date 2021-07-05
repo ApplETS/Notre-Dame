@@ -2,7 +2,8 @@
 import 'dart:async';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
-import 'package:connectivity/connectivity.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class NetworkingService {
   final Connectivity _connectivity = Connectivity();
@@ -20,22 +21,41 @@ class NetworkingService {
     if (!await hasConnectivity()) {
       if (!_isSnackbarActive && !_isSnackbarDismissed) {
         final snackBar = SnackBar(
-          content: Text(intl.no_connectivity),
+          content: Row(
+            children: [
+              Stack(
+                children: const [
+                  FaIcon(
+                    FontAwesomeIcons.wifi,
+                    color: Colors.white,
+                  ),
+                  FaIcon(
+                    FontAwesomeIcons.slash,
+                    color: Colors.white,
+                  )
+                ],
+              ),
+              const SizedBox(
+                width: 20,
+              ),
+              Text(intl.no_connectivity),
+            ],
+          ),
           duration: const Duration(days: 365),
           action: SnackBarAction(
             label: intl.close_no_connectivity_snackbar.toUpperCase(),
             onPressed: () {
               _isSnackbarDismissed = true;
-              ScaffoldMessenger.of(context).hideCurrentSnackBar();
+              ScaffoldMessenger.maybeOf(context).hideCurrentSnackBar();
             },
           ),
         );
-        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+        ScaffoldMessenger.maybeOf(context).showSnackBar(snackBar);
         _isSnackbarActive = true;
       }
     } else {
       // Remove snackbar when back online
-      ScaffoldMessenger.of(context).hideCurrentSnackBar();
+      ScaffoldMessenger.maybeOf(context).hideCurrentSnackBar();
       _isSnackbarActive = false;
       _isSnackbarDismissed = false;
     }
