@@ -4,6 +4,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:feature_discovery/feature_discovery.dart';
 
 // SERVICE
+import 'package:notredame/core/services/networking_service.dart';
 import 'package:notredame/core/services/navigation_service.dart';
 
 // CONSTANT
@@ -24,8 +25,12 @@ class BottomBar extends StatelessWidget {
 
   final NavigationService _navigationService = locator<NavigationService>();
 
+  final NetworkingService _networkingService = locator<NetworkingService>();
+
   @override
   Widget build(BuildContext context) {
+    _networkingService.displayOfflineMode(context, AppIntl.of(context));
+
     return BottomNavigationBar(
       type: BottomNavigationBarType.fixed,
       onTap: (value) => _onTap(value),

@@ -4,6 +4,9 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:feature_discovery/feature_discovery.dart';
 
+// SERVICES
+import 'package:notredame/core/services/networking_service.dart';
+
 // VIEW
 import 'package:notredame/ui/views/settings_view.dart';
 
@@ -16,11 +19,14 @@ void main() {
     setUp(() async {
       intl = await setupAppIntl();
       setupNavigationServiceMock();
+      setupNetworkingServiceMock();
       setupCacheManagerMock();
       setupSettingsManagerMock();
     });
 
-    tearDown(() {});
+    tearDown(() {
+      unregister<NetworkingService>();
+    });
 
     group('UI - ', () {
       testWidgets('has 1 listView and 4 listTiles and 1 divider',

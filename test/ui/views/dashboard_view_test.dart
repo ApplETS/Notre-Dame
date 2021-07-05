@@ -153,6 +153,7 @@ void main() {
       courseRepository = setupCourseRepositoryMock();
       setupNavigationServiceMock();
       courseRepository = setupCourseRepositoryMock();
+      setupNetworkingServiceMock();
 
       CourseRepositoryMock.stubSessions(
           courseRepository as CourseRepositoryMock,

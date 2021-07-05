@@ -9,6 +9,9 @@ import 'package:notredame/core/managers/course_repository.dart';
 // MODELS
 import 'package:notredame/core/models/course.dart';
 
+// SERVICES
+import 'package:notredame/core/services/networking_service.dart';
+
 // VIEW / WIDGETS
 import 'package:notredame/ui/views/grades_view.dart';
 import 'package:notredame/ui/widgets/grade_button.dart';
@@ -16,11 +19,9 @@ import 'package:notredame/ui/widgets/grade_button.dart';
 // OTHERS
 import '../../helpers.dart';
 import '../../mock/managers/course_repository_mock.dart';
-import '../../mock/services/networking_service_mock.dart';
 
 void main() {
   CourseRepository courseRepository;
-  NetworkingServiceMock networkingService;
   AppIntl intl;
 
   final Course courseSummer = Course(
@@ -65,15 +66,11 @@ void main() {
     setUp(() async {
       intl = await setupAppIntl();
       setupNavigationServiceMock();
-      networkingService = setupNetworkingServiceMock() as NetworkingServiceMock;
       courseRepository = setupCourseRepositoryMock();
-
-      // Stub to simulate that the user has an active internet connection
-      NetworkingServiceMock.stubHasConnectivity(networkingService);
     });
     tearDown(() {
       unregister<CourseRepository>();
-      unregister<NetworkingServiceMock>();
+      unregister<NetworkingService>();
     });
     group("golden -", () {
       testWidgets("No grades available", (WidgetTester tester) async {

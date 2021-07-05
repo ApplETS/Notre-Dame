@@ -7,6 +7,9 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 // CONSTANTS
 import 'package:notredame/core/constants/quick_links.dart';
 
+// SERVICES
+import 'package:notredame/core/services/networking_service.dart';
+
 // VIEW
 import 'package:notredame/ui/views/quick_links_view.dart';
 
@@ -27,12 +30,14 @@ void main() {
       setupNavigationServiceMock();
       setupAnalyticsServiceMock();
       setupInternalInfoServiceMock();
+      setupNetworkingServiceMock();
     });
 
     tearDown(() {
       unregister<NavigationServiceMock>();
       unregister<AnalyticsServiceMock>();
       unregister<InternalInfoServiceMock>();
+      unregister<NetworkingService>();
     });
 
     group('UI - ', () {

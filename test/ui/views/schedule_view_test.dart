@@ -24,12 +24,10 @@ import '../../helpers.dart';
 // MOCKS
 import '../../mock/managers/course_repository_mock.dart';
 import '../../mock/managers/settings_manager_mock.dart';
-import '../../mock/services/networking_service_mock.dart';
 
 void main() {
   SettingsManager settingsManager;
   CourseRepository courseRepository;
-  NetworkingServiceMock networkingService;
 
   // Some activities
   CourseActivity activityYesterday;
@@ -85,12 +83,9 @@ void main() {
       setupNavigationServiceMock();
       settingsManager = setupSettingsManagerMock();
       courseRepository = setupCourseRepositoryMock();
-      networkingService = setupNetworkingServiceMock() as NetworkingServiceMock;
+      setupNetworkingServiceMock();
 
       SettingsManagerMock.stubLocale(settingsManager as SettingsManagerMock);
-
-      // Stub to simulate that the user has an active internet connection
-      NetworkingServiceMock.stubHasConnectivity(networkingService);
 
       settings = {
         PreferencesFlag.scheduleSettingsCalendarFormat: CalendarFormat.week,
