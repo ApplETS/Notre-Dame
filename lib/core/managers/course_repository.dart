@@ -318,7 +318,8 @@ class CourseRepository {
       _logger.d("$tag - getCourseSummary: fetched ${course.acronym} summary.");
     } on Exception catch (e, stacktrace) {
       if (e is ApiException) {
-        if (e.errorCode == SignetsError.gradesEmpty) {
+        if (e.errorCode == SignetsError.gradesEmpty ||
+            e.message.startsWith(SignetsError.gradesNotAvailable)) {
           _logger.e(
               "$tag - getCourseSummary: Summary is empty for ${course.acronym}.");
           return null;
