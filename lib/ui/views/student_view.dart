@@ -1,13 +1,19 @@
 // FLUTTER / DART / THIRD-PARTIES
+import 'package:feature_discovery/feature_discovery.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:notredame/ui/views/grades_view.dart';
 
+// CONSTANTS
+import 'package:notredame/core/constants/discovery_ids.dart';
+
+// UTILS
+import 'package:notredame/ui/utils/app_theme.dart';
+import 'package:notredame/ui/utils/discovery_components.dart';
+
 // WIDGET
 import 'package:notredame/ui/views/profile_view.dart';
 import 'package:notredame/ui/widgets/base_scaffold.dart';
-
-// OTHER
 
 class StudentView extends StatefulWidget {
   @override
@@ -43,9 +49,12 @@ class _StudentViewState extends State<StudentView> {
                   indicatorColor: Colors.white,
                   tabs: List.generate(
                     tabs.length,
-                    (index) => Tab(
-                      text: tabs[index],
-                    ),
+                    (index) => index == 1
+                        ? _buildDiscoveryFeatureDescriptionWidget(
+                            context, tabs, index)
+                        : Tab(
+                            text: tabs[index],
+                          ),
                   ),
                 ),
               ),
@@ -55,6 +64,28 @@ class _StudentViewState extends State<StudentView> {
             children: tabsView,
           ),
         ),
+      ),
+    );
+  }
+
+  DescribedFeatureOverlay _buildDiscoveryFeatureDescriptionWidget(
+      BuildContext context, List<String> tabs, int index) {
+    final discovery = getDiscoveryByFeatureId(context,
+        DiscoveryGroupIds.pageStudent, DiscoveryIds.detailsStudentProfile);
+
+    return DescribedFeatureOverlay(
+      overflowMode: OverflowMode.wrapBackground,
+      contentLocation: ContentLocation.below,
+      featureId: discovery.featureId,
+      title: Text(discovery.title, textAlign: TextAlign.justify),
+      description: discovery.details,
+      backgroundColor: AppTheme.appletsDarkPurple,
+      tapTarget: Tab(
+        text: tabs[index],
+      ),
+      pulseDuration: const Duration(seconds: 5),
+      child: Tab(
+        text: tabs[index],
       ),
     );
   }

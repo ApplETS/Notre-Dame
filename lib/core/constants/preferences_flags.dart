@@ -14,7 +14,12 @@ enum PreferencesFlag {
   languageChoice,
 
   // Discovery flag
-  discovery,
+  discoveryDashboard,
+  discoverySchedule,
+  discoveryStudentGrade,
+  discoveryStudentProfile,
+  discoveryETS,
+  discoveryMore,
 
   // Dashboard flags
   aboutUsCard,

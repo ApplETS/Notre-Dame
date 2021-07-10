@@ -8,6 +8,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 // CONSTANTS
 import 'package:notredame/core/constants/preferences_flags.dart';
+import 'package:notredame/core/constants/discovery_ids.dart';
 
 // MANAGER
 import 'package:notredame/core/managers/settings_manager.dart';
@@ -247,12 +248,17 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
   /// Returns true if dates [a] and [b] are on the same day
   bool isSameDay(DateTime a, DateTime b) =>
       a.year == b.year && a.month == b.month && a.day == b.day;
+
   Future<void> startDiscovery(BuildContext context) async {
-    if (await _settingsManager.getString(PreferencesFlag.discovery) == null) {
+    if (await _settingsManager.getString(PreferencesFlag.discoveryDashboard) ==
+        null) {
       final List<String> ids =
-          discoveryComponents(context).map((e) => e.featureId).toList();
+          findDiscoveriesByGroupName(context, DiscoveryGroupIds.bottomBar)
+              .map((e) => e.featureId)
+              .toList();
+
       FeatureDiscovery.discoverFeatures(context, ids);
-      _settingsManager.setString(PreferencesFlag.discovery, 'true');
+      _settingsManager.setString(PreferencesFlag.discoveryDashboard, 'true');
     }
   }
 

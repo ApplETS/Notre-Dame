@@ -5,6 +5,7 @@ import 'package:flutter_test/flutter_test.dart';
 
 // MANAGER
 import 'package:notredame/core/managers/course_repository.dart';
+import 'package:notredame/core/managers/settings_manager.dart';
 
 // VIEWS
 import 'package:notredame/ui/views/student_view.dart';
@@ -28,6 +29,7 @@ void main() {
       setupNavigationServiceMock();
       networkingService = setupNetworkingServiceMock() as NetworkingServiceMock;
       courseRepository = setupCourseRepositoryMock();
+      setupSettingsManagerMock();
 
       CourseRepositoryMock.stubCourses(
           courseRepository as CourseRepositoryMock);
@@ -45,6 +47,7 @@ void main() {
     tearDown(() {
       unregister<CourseRepository>();
       unregister<NetworkingServiceMock>();
+      unregister<SettingsManager>();
     });
 
     group('UI - ', () {
@@ -52,7 +55,7 @@ void main() {
           (WidgetTester tester) async {
         await tester.pumpWidget(
             localizedWidget(child: FeatureDiscovery(child: StudentView())));
-        await tester.pumpAndSettle();
+        await tester.pumpAndSettle(const Duration(seconds: 1));
 
         expect(find.byType(TabBar), findsOneWidget);
 
@@ -67,7 +70,7 @@ void main() {
 
           await tester.pumpWidget(
               localizedWidget(child: FeatureDiscovery(child: StudentView())));
-          await tester.pumpAndSettle();
+          await tester.pumpAndSettle(const Duration(seconds: 1));
 
           await expectLater(find.byType(StudentView),
               matchesGoldenFile(goldenFilePath("studentView_1")));
