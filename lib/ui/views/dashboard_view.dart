@@ -83,7 +83,7 @@ class _DashboardViewState extends State<DashboardView>
                       child: ReorderableListView(
                         onReorder: (oldIndex, newIndex) =>
                             onReorder(model, oldIndex, newIndex),
-                        padding: const EdgeInsets.fromLTRB(8, 4, 8, 8),
+                        padding: const EdgeInsets.fromLTRB(0, 4, 0, 8),
                         children: _buildCards(model),
                       ),
                     ));
