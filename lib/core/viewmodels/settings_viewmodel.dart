@@ -34,12 +34,13 @@ class SettingsViewModel extends FutureViewModel {
   }
 
   String get currentLocale {
+    _currentLocale = _settingsManager.locale.languageCode;
     if (_currentLocale == AppIntl.supportedLocales.first.languageCode) {
       return _appIntl.settings_english;
     } else if (_currentLocale == AppIntl.supportedLocales.last.languageCode) {
       return _appIntl.settings_french;
     } else {
-      return _appIntl.system_theme;
+      return "";
     }
   }
 
@@ -54,12 +55,7 @@ class SettingsViewModel extends FutureViewModel {
   @override
   Future futureToRun() async {
     setBusy(true);
-    await _settingsManager.getString(PreferencesFlag.theme).then((value) =>
-        _selectedTheme =
-            ThemeMode.values.firstWhere((e) => e.toString() == value));
-    await _settingsManager
-        .getString(PreferencesFlag.locale)
-        .then((value) => _currentLocale = value);
+    await _settingsManager.fetchLanguageAndThemeMode();
     setBusy(false);
     return true;
   }
