@@ -3,9 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-// CONSTANTS
-import 'package:notredame/core/constants/preferences_flags.dart';
-
 // MANAGER
 import 'package:notredame/core/managers/settings_manager.dart';
 
