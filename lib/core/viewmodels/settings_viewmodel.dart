@@ -31,7 +31,6 @@ class SettingsViewModel extends FutureViewModel {
   }
 
   String get currentLocale {
-    _currentLocale = _settingsManager.locale.languageCode;
     if (_currentLocale == AppIntl.supportedLocales.first.languageCode) {
       return _appIntl.settings_english;
     } else if (_currentLocale == AppIntl.supportedLocales.last.languageCode) {
@@ -53,6 +52,8 @@ class SettingsViewModel extends FutureViewModel {
   Future futureToRun() async {
     setBusy(true);
     await _settingsManager.fetchLanguageAndThemeMode();
+    _currentLocale = _settingsManager.locale.languageCode;
+    _selectedTheme = _settingsManager.themeMode;
     setBusy(false);
     return true;
   }
