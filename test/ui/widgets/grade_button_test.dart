@@ -150,6 +150,18 @@ void main() {
         verify(_navigationService.pushNamed(RouterPaths.gradeDetails,
             arguments: courseWithGrade));
       });
+
+      testWidgets('Grade button does not redirects to grades view if the grades discovery did not already launch',
+          (WidgetTester tester) async {
+        await tester.pumpWidget(localizedWidget(
+            child: GradeButton(courseWithGrade, showDiscovery: false)));
+        await tester.pumpAndSettle();
+
+        await tester.tap(find.text(courseWithGrade.acronym));
+
+        verifyNever(_navigationService.pushNamed(RouterPaths.gradeDetails,
+            arguments: courseWithGrade));
+      });
     });
   });
 }
