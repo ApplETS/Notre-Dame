@@ -295,6 +295,33 @@ List<GroupDiscovery> discoveryComponents(BuildContext context) {
         ),
       ),
     ]),
+    GroupDiscovery(name: DiscoveryGroupIds.pageGradeDetails, discoveries: [
+      Discovery(
+        path: null,
+        featureId: DiscoveryIds.detailsStudentGradeDetailsEvaluations,
+        title: "",
+        details: ConstrainedBox(
+          constraints: BoxConstraints(
+              maxHeight: MediaQuery.of(context).size.height * 0.2),
+          child: Column(
+            children: [
+              Expanded(
+                child: ListView(
+                  padding: EdgeInsets.zero,
+                  children: <Widget>[
+                    _buildSkipDiscoveryButton(context),
+                    Text(
+                        AppIntl.of(context)
+                            .discovery_page_student_grades_grade_details,
+                        textAlign: TextAlign.justify),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    ]),
     GroupDiscovery(name: DiscoveryGroupIds.pageMore, discoveries: [
       Discovery(
         path: null,
@@ -428,6 +455,7 @@ void dismissDiscovery(BuildContext context) {
   _settingsManager.setString(PreferencesFlag.discoveryDashboard, 'true');
   _settingsManager.setString(PreferencesFlag.discoverySchedule, 'true');
   _settingsManager.setString(PreferencesFlag.discoveryStudentGrade, 'true');
+  _settingsManager.setString(PreferencesFlag.discoveryGradeDetails, 'true');
   _settingsManager.setString(PreferencesFlag.discoveryStudentProfile, 'true');
   _settingsManager.setString(PreferencesFlag.discoveryMore, 'true');
 }
