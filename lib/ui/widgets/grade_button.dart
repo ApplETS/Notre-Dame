@@ -38,9 +38,10 @@ class GradeButton extends StatelessWidget {
   Widget build(BuildContext context) => Card(
         child: InkWell(
           onTap: () async {
-            if (await _settingsManager
-                    .getString(PreferencesFlag.discoveryStudentGrade) ==
-                'true') {
+            if (ModalRoute.of(context).settings.name == RouterPaths.dashboard ||
+                await _settingsManager
+                        .getString(PreferencesFlag.discoveryStudentGrade) ==
+                    'true') {
               _navigationService.pushNamed(RouterPaths.gradeDetails,
                   arguments: course);
             }
