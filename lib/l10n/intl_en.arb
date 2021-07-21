@@ -206,7 +206,7 @@
   
   "discovery_page_student_grades_session": "Your courses are divided by session, with the most recent at the top. At any moment, you can drag the list to refresh it.",
   "discovery_page_student_grades_grade_button": "Here you see your current grades. By tapping on it, you will be able to see the details of all the evaluations obtained in the course.",
-  "discovery_page_student_grades_grade_details": "",  
+  "discovery_page_student_grades_grade_details": "Here you will find the list of the evaluations and the results obtained. The circle on the inside, in red, displays the average and the cercle outside, displays your grade.",  
   "discovery_page_student_profile": "Here you will find all the information related to your student account, from the balance to your active programs through your permanent code.",
   
   "discovery_navbar_ets_title": "ÉTS",

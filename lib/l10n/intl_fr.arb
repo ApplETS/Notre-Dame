@@ -204,7 +204,7 @@
   
   "discovery_page_student_grades_session": "Vos cours sont divisés par session, avec la plus récente en haut, en tout temps vous pouvez tirer sur la liste pour la rafraichir.",
   "discovery_page_student_grades_grade_button": "Ici vous voyez votre note actuelle. En tapant dessus, vous pourrez voir le détail de toutes les notes obtenues dans le cours.",
-  
+  "discovery_page_student_grades_grade_details": "Ici vous trouverez la liste des évaluation du cours et les résultats obtenus. Le cercle à l'intérieur, en rouge, affichent la moyenne et celui à l'extérieur, affiche votre moyenne.",  
   "discovery_page_student_profile": "Vous trouvez ici toutes les informations reliées à votre compte étudiant, de la balance à vos programmes actifs en passant par votre code permanent.",
   
   "discovery_navbar_ets_title": "ÉTS",
