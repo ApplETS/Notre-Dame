@@ -3,9 +3,13 @@ import 'package:feature_discovery/feature_discovery.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+// MANAGERS
+import 'package:notredame/core/managers/settings_manager.dart';
+
 //CONSTANTS
 import 'package:notredame/core/constants/router_paths.dart';
 import 'package:notredame/core/constants/discovery_ids.dart';
+import 'package:notredame/core/constants/preferences_flags.dart';
 
 // MODEL
 import 'package:notredame/core/models/course.dart';
@@ -25,13 +29,22 @@ class GradeButton extends StatelessWidget {
   /// Used to redirect on the dashboard.
   final NavigationService _navigationService = locator<NavigationService>();
 
+  /// Settings manager
+  final SettingsManager _settingsManager = locator<SettingsManager>();
+
   GradeButton(this.course, {this.showDiscovery});
 
   @override
   Widget build(BuildContext context) => Card(
         child: InkWell(
-          onTap: () => _navigationService.pushNamed(RouterPaths.gradeDetails,
-              arguments: course),
+          onTap: () async {
+            if (await _settingsManager
+                    .getString(PreferencesFlag.discoveryStudentGrade) ==
+                'true') {
+              _navigationService.pushNamed(RouterPaths.gradeDetails,
+                  arguments: course);
+            }
+          },
           child: showDiscovery
               ? _buildDiscoveryFeatureDescriptionWidget(
                   context, _buildGradeButton(context))
