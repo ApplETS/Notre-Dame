@@ -18,7 +18,7 @@ class DiscoveryIds {
 
   static const String detailsStudentGradeButton = "page_student_grade_button";
   static const String detailsGradeDetailsEvaluations =
-      "page_grade_details_evaluation";
+      "page_grade_details_evaluations";
   static const String detailsStudentProfile = "page_student_profile";
 
   static const String detailsMoreBugReport = "page_more_bug_report";
