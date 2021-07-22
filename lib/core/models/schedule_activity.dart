@@ -80,7 +80,8 @@ class ScheduleActivity {
         day: map['day'] as String,
         activityCode: map['activityCode'] as String,
         name: map['name'] as String,
-        isPrincipalActivity: (map['isPrincipalActivity'] as String) == "true",
+        isPrincipalActivity:
+            (map['isPrincipalActivity'] as String) == true.toString(),
         startTime: DateFormat('HH:mm').parse(map['startTime'] as String),
         endTime: DateFormat('HH:mm').parse(map['endTime'] as String),
         activityLocation: map['activityLocation'] as String,
