@@ -87,19 +87,21 @@ class _BaseScaffoldState extends State<BaseScaffold> {
       alignment: Alignment.center,
       children: [
         Container(
-          color: AppTheme.etsDarkGrey,
+          color: _isLightTheme(context)
+              ? null
+              : const Color.fromRGBO(48, 48, 48, 1),
           width: MediaQuery.of(context).size.width,
           height: MediaQuery.of(context).size.height / 30,
         ),
         Text(
           AppIntl.of(context).no_connectivity,
           textAlign: TextAlign.center,
-          style: TextStyle(
-              color: Theme.of(context).brightness == Brightness.light
-                  ? Colors.white
-                  : null),
         ),
       ],
     );
+  }
+
+  bool _isLightTheme(BuildContext context) {
+    return Theme.of(context).brightness == Brightness.light;
   }
 }
