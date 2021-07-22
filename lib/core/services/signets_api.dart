@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/io_client.dart';
+import 'package:notredame/core/models/schedule_activity.dart';
 import 'package:xml/xml.dart';
 
 // CONSTANTS & EXCEPTIONS
@@ -106,6 +107,15 @@ class SignetsApi {
         .findAllElements("Seances")
         .map((node) => CourseActivity.fromXmlNode(node))
         .toList();
+  }
+
+  /// Call the SignetsAPI to get the courses activities for the [session] for
+  /// the student ([username]).
+  Future<List<ScheduleActivity>> getScheduleActivities(
+      {@required String username,
+      @required String password,
+      @required String session}) async {
+    return null;
   }
 
   /// Call the SignetsAPI to get the courses of the student ([username]).

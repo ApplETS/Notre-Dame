@@ -3,6 +3,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
+import 'package:notredame/core/models/schedule_activity.dart';
 
 // SERVICES
 import 'package:notredame/core/services/analytics_service.dart';
@@ -64,6 +65,11 @@ class CourseRepository {
   List<CourseActivity> _coursesActivities;
 
   List<CourseActivity> get coursesActivities => _coursesActivities;
+
+  /// List of the schedule activities for the student in the active session
+  List<ScheduleActivity> _scheduleActivities;
+
+  List<ScheduleActivity> get scheduleActivities => _scheduleActivities;
 
   /// List of session where the student has been registered.
   /// The sessions are organized from oldest to youngest
@@ -157,6 +163,21 @@ class CourseRepository {
     }
 
     return _coursesActivities;
+  }
+
+  /// Get and update the list of schedule activities for the active sessions.
+  /// After fetching the new activities from the [SignetsApi] the [CacheManager]
+  /// is updated with the latest version of the schedule activities.
+  Future<List<ScheduleActivity>> getScheduleActivities(
+      {bool fromCacheOnly = false}) async {
+    // Force fromCacheOnly mode when user has no connectivity
+    if (!(await _networkingService.hasConnectivity())) {
+      // ignore: parameter_assignments
+      fromCacheOnly = true;
+    }
+
+    // TODO
+    return null;
   }
 
   /// Get the list of session on which the student was active.
