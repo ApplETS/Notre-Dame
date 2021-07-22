@@ -52,11 +52,7 @@ class _BaseScaffoldState extends State<BaseScaffold> {
     super.initState();
     Connectivity().onConnectivityChanged.listen((event) {
       setState(() {
-        if (event == ConnectivityResult.none) {
-          _isOffline = true;
-        } else {
-          _isOffline = false;
-        }
+        _isOffline = event == ConnectivityResult.none;
       });
     });
   }
