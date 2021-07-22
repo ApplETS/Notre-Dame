@@ -1,4 +1,5 @@
 // FLUTTER / DART / THIRD-PARTIES
+import 'package:feature_discovery/feature_discovery.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -66,7 +67,8 @@ void main() {
         final evaluation = courseSummary.evaluations.first;
 
         await tester.pumpWidget(localizedWidget(
-            child: GradeEvaluationTile(evaluation, completed: true)));
+            child: FeatureDiscovery(
+                child: GradeEvaluationTile(evaluation, completed: true))));
         await tester.pumpAndSettle();
 
         final circularPercentIndicator = find.byType(GradeCircularProgress);
@@ -84,7 +86,9 @@ void main() {
         final evaluation = courseSummary.evaluations.last;
 
         await tester.pumpWidget(localizedWidget(
-            child: GradeEvaluationTile(evaluation, completed: true)));
+            child: FeatureDiscovery(
+                child: GradeEvaluationTile(evaluation, completed: true))));
+
         await tester.pumpAndSettle();
 
         final circularPercentIndicator = find.byType(GradeCircularProgress);
