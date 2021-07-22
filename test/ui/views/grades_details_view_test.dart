@@ -4,6 +4,7 @@ import 'package:flutter_test/flutter_test.dart';
 
 // MANAGERS
 import 'package:notredame/core/managers/course_repository.dart';
+import 'package:notredame/core/managers/settings_manager.dart';
 
 // MODELS
 import 'package:notredame/core/models/course.dart';
@@ -76,6 +77,7 @@ void main() {
 
     tearDown(() {
       unregister<CourseRepository>();
+      unregister<SettingsManager>();
     });
 
     group('UI - ', () {
