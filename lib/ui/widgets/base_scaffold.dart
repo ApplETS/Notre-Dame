@@ -44,6 +44,7 @@ class BaseScaffold extends StatefulWidget {
 }
 
 class _BaseScaffoldState extends State<BaseScaffold> {
+  // Displays text under the app bar when offline.
   static bool _isOffline = false;
 
   @override
