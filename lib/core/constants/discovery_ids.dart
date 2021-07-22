@@ -2,6 +2,7 @@ class DiscoveryGroupIds {
   static const String bottomBar = "bottomBar";
   static const String pageSchedule = "pageSchedule";
   static const String pageStudent = "pageStudent";
+  static const String pageGradeDetails = "pageGradeDetails";
   static const String pageMore = "pageMore";
 }
 
@@ -16,7 +17,8 @@ class DiscoveryIds {
   static const String detailsScheduleSettings = "page_schedule_settings";
 
   static const String detailsStudentGradeButton = "page_student_grade_button";
-  static const String detailsStudentGradeDetails = "page_student_grade_details";
+  static const String detailsGradeDetailsEvaluations =
+      "page_grade_details_evaluation";
   static const String detailsStudentProfile = "page_student_profile";
 
   static const String detailsMoreBugReport = "page_more_bug_report";

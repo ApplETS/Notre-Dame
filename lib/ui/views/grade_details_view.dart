@@ -1,6 +1,14 @@
 // FLUTTER / DART / THIRD-PARTIES
+import 'package:feature_discovery/feature_discovery.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:stacked/stacked.dart';
+
+// UTILS
+import 'package:notredame/ui/utils/discovery_components.dart';
+
+// CONSTANTS
+import 'package:notredame/core/constants/discovery_ids.dart';
 
 // VIEWMODELS
 import 'package:notredame/core/viewmodels/grades_details_viewmodel.dart';
@@ -46,6 +54,10 @@ class _GradesDetailsViewState extends State<GradesDetailsView>
           _completed = true;
         });
       }
+    });
+
+    SchedulerBinding.instance.addPostFrameCallback((Duration duration) {
+      GradesDetailsViewModel(intl: AppIntl.of(context)).startDiscovery(context);
     });
   }
 

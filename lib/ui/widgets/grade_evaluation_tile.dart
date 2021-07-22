@@ -1,10 +1,15 @@
 // FLUTTER / DART / THIRD-PARTIES
 import 'dart:math';
+import 'package:feature_discovery/feature_discovery.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
+// CONSTANTS
+import 'package:notredame/core/constants/discovery_ids.dart';
+
 // MODELS
 import 'package:notredame/core/models/evaluation.dart';
+import 'package:notredame/ui/utils/discovery_components.dart';
 
 // WIDGETS
 import 'package:notredame/ui/widgets/grade_circular_progress.dart';
@@ -78,20 +83,23 @@ class _GradeEvaluationTileState extends State<GradeEvaluationTile>
                 alignment: Alignment.topCenter,
                 child: LayoutBuilder(
                   builder: (context, constraints) {
-                    return GradeCircularProgress(
-                      constraints.maxHeight / 100,
-                      completed: widget.completed,
-                      key: Key(
-                          "GradeCircularProgress_${widget.evaluation.title}"),
-                      studentGrade: Utils.getGradeInPercentage(
-                        widget.evaluation.mark,
-                        widget.evaluation.correctedEvaluationOutOfFormatted,
-                      ),
-                      averageGrade: Utils.getGradeInPercentage(
-                        widget.evaluation.passMark,
-                        widget.evaluation.correctedEvaluationOutOfFormatted,
-                      ),
-                    );
+                    return _buildDiscoveryFeatureDescriptionWidget(
+                        context,
+                        GradeCircularProgress(
+                          constraints.maxHeight / 100,
+                          completed: widget.completed,
+                          key: Key(
+                              "GradeCircularProgress_${widget.evaluation.title}"),
+                          studentGrade: Utils.getGradeInPercentage(
+                            widget.evaluation.mark,
+                            widget.evaluation.correctedEvaluationOutOfFormatted,
+                          ),
+                          averageGrade: Utils.getGradeInPercentage(
+                            widget.evaluation.passMark,
+                            widget.evaluation.correctedEvaluationOutOfFormatted,
+                          ),
+                        ),
+                        DiscoveryIds.detailsGradeDetailsEvaluations);
                   },
                 ),
               ),
@@ -224,5 +232,23 @@ class _GradeEvaluationTileState extends State<GradeEvaluationTile>
     }
 
     return AppIntl.of(context).grades_not_available;
+  }
+
+  DescribedFeatureOverlay _buildDiscoveryFeatureDescriptionWidget(
+      BuildContext context, Widget circularProgressBar, String featuredId) {
+    final discovery = getDiscoveryByFeatureId(
+        context, DiscoveryGroupIds.pageGradeDetails, featuredId);
+
+    return DescribedFeatureOverlay(
+      overflowMode: OverflowMode.wrapBackground,
+      contentLocation: ContentLocation.below,
+      featureId: discovery.featureId,
+      title: Text(discovery.title, textAlign: TextAlign.justify),
+      description: discovery.details,
+      backgroundColor: AppTheme.appletsDarkPurple,
+      tapTarget: circularProgressBar,
+      pulseDuration: const Duration(seconds: 5),
+      child: circularProgressBar,
+    );
   }
 }
