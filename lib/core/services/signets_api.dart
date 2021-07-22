@@ -115,7 +115,36 @@ class SignetsApi {
       {@required String username,
       @required String password,
       @required String session}) async {
-    return null;
+    if (!_sessionShortNameRegExp.hasMatch(session)) {
+      throw FormatException("Session $session isn't correctly formatted");
+    }
+
+    // Generate initial soap envelope
+    final body = buildBasicSOAPBody(Urls.listeHoraireEtProf, username, password)
+        .buildDocument();
+    final operationContent = XmlBuilder();
+
+    // Add the content needed by the operation
+    operationContent.element("pSession", nest: () {
+      operationContent.text(session);
+    });
+
+    // Add the parameters needed inside the request.
+    body
+        .findAllElements(Urls.listClassScheduleOperation,
+            namespace: Urls.signetsOperationBase)
+        .first
+        .children
+        .add(operationContent.buildFragment());
+
+    final responseBody =
+        await _sendSOAPRequest(body, Urls.listClassScheduleOperation);
+
+    /// Build and return the list of CourseActivity
+    return responseBody
+        .findAllElements("HoraireActivite")
+        .map((node) => ScheduleActivity.fromXmlNode(node))
+        .toList();
   }
 
   /// Call the SignetsAPI to get the courses of the student ([username]).
