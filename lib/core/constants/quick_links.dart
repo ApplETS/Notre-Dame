@@ -58,13 +58,6 @@ List<QuickLink> quickLinks(AppIntl intl) => [
           ),
           link: 'https://ena.etsmtl.ca/'),
       QuickLink(
-          name: intl.ets_heuristique_title,
-          image: Image.asset(
-            'assets/images/ic_heuristique_red.png',
-            color: AppTheme.etsLightRed,
-          ),
-          link: 'http://lheuristique.ca'),
-      QuickLink(
           name: intl.ets_schedule_generator,
           image: const FaIcon(
             FontAwesomeIcons.calendar,
