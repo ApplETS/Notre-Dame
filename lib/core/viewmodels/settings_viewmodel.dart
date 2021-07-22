@@ -3,9 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-// CONSTANTS
-import 'package:notredame/core/constants/preferences_flags.dart';
-
 // MANAGER
 import 'package:notredame/core/managers/settings_manager.dart';
 
@@ -39,7 +36,7 @@ class SettingsViewModel extends FutureViewModel {
     } else if (_currentLocale == AppIntl.supportedLocales.last.languageCode) {
       return _appIntl.settings_french;
     } else {
-      return _appIntl.system_theme;
+      return "";
     }
   }
 
@@ -54,12 +51,9 @@ class SettingsViewModel extends FutureViewModel {
   @override
   Future futureToRun() async {
     setBusy(true);
-    await _settingsManager.getString(PreferencesFlag.theme).then((value) =>
-        _selectedTheme =
-            ThemeMode.values.firstWhere((e) => e.toString() == value));
-    await _settingsManager
-        .getString(PreferencesFlag.locale)
-        .then((value) => _currentLocale = value);
+    await _settingsManager.fetchLanguageAndThemeMode();
+    _currentLocale = _settingsManager.locale.languageCode;
+    _selectedTheme = _settingsManager.themeMode;
     setBusy(false);
     return true;
   }

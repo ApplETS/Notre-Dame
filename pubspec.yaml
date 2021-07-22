@@ -28,7 +28,7 @@ dependencies:
   intl: ^0.17.0
 
   # Architecture
-  get_it: ^6.1.1
+  get_it: ^7.2.0
   provider: ^5.0.0
   stacked: ^2.1.0
 
