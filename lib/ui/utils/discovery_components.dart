@@ -310,9 +310,7 @@ List<GroupDiscovery> discoveryComponents(BuildContext context) {
                   padding: EdgeInsets.zero,
                   children: <Widget>[
                     _buildSkipDiscoveryButton(context),
-                    Text(
-                        AppIntl.of(context)
-                            .discovery_page_student_grades_grade_details,
+                    Text(AppIntl.of(context).discovery_page_grade_details,
                         textAlign: TextAlign.justify),
                   ],
                 ),
