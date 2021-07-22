@@ -1,9 +1,11 @@
 // FLUTTER / DART / THIRD-PARTIES
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
+// UTILS
 import 'package:notredame/ui/utils/app_theme.dart';
 import 'package:notredame/ui/utils/loading.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 // WIDGETS
 import 'package:notredame/ui/widgets/bottom_bar.dart';
