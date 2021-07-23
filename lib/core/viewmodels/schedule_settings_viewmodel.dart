@@ -82,9 +82,10 @@ class ScheduleSettingsViewModel
   Map<String, List<ScheduleActivity>> get scheduleActivitiesByCourse =>
       _scheduleActivitiesByCourse;
 
-  ScheduleActivity _selectedScheduleActivity;
+  Map<String, ScheduleActivity> _selectedScheduleActivity;
 
-  ScheduleActivity get selectedScheduleActivity => _selectedScheduleActivity;
+  Map<String, ScheduleActivity> get selectedScheduleActivity =>
+      _selectedScheduleActivity;
 
   /// This function is used to save the state of the selected course settings
   /// for a given course that has different laboratory group
@@ -106,7 +107,7 @@ class ScheduleSettingsViewModel
               specialKey: courseAcronym),
           scheduleActivityToSave.activityCode);
     }
-    _selectedScheduleActivity = scheduleActivityToSave;
+    _selectedScheduleActivity[courseAcronym] = scheduleActivityToSave;
     setBusy(false);
   }
 
@@ -134,6 +135,17 @@ class ScheduleSettingsViewModel
         }
       }
     }
+    for (final courseKey in _scheduleActivitiesByCourse.keys) {
+      final scheduleActivityCode = await _settingsManager.getDynamicString(
+          DynamicPreferencesFlag(
+              groupAssociationFlag:
+                  PreferencesFlag.scheduleSettingsLaboratoryGroup,
+              specialKey: courseKey));
+      _selectedScheduleActivity[courseKey] =
+          _scheduleActivitiesByCourse[courseKey].firstWhere(
+              (element) => element.activityCode == scheduleActivityCode);
+    }
+
     setBusy(false);
     return settings;
   }
