@@ -1,8 +1,11 @@
+import 'package:flutter/cupertino.dart';
+
 enum PreferencesFlag {
   // Schedule flags
   scheduleSettingsCalendarFormat,
   scheduleSettingsStartWeekday,
   scheduleSettingsShowTodayBtn,
+  scheduleSettingsLaboratoryGroupCourse,
 
   // Locale flag
   locale,
@@ -21,4 +24,19 @@ enum PreferencesFlag {
   scheduleCard,
   progressBarCard,
   gradesCard
+}
+
+/// This class can be used instead of the conventional enum to save data to shared Prefs,
+/// if your key value should be decided at runtime.
+class DynamicPreferencesFlag {
+  final String separator;
+  String specialKey;
+  PreferencesFlag groupAssociationFlag;
+
+  DynamicPreferencesFlag(
+      {@required this.groupAssociationFlag,
+      @required this.specialKey,
+      this.separator = "-"});
+
+  String get data => groupAssociationFlag.toString() + separator + specialKey;
 }

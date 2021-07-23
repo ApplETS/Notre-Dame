@@ -181,6 +181,14 @@ class SettingsManager with ChangeNotifier {
   }
 
   /// Add/update the value of [flag]
+  Future<bool> setDynamicString(
+      DynamicPreferencesFlag flag, String value) async {
+    // Log the event
+    _analyticsService.logEvent("${tag}_${flag.data}", value);
+    return _preferencesService.setDynamicString(flag, value);
+  }
+
+  /// Add/update the value of [flag]
   Future<bool> setInt(PreferencesFlag flag, int value) async {
     // Log the event
     _analyticsService.logEvent(
@@ -194,6 +202,13 @@ class SettingsManager with ChangeNotifier {
     _analyticsService.logEvent(
         "${tag}_${EnumToString.convertToString(flag)}", 'getString');
     return _preferencesService.getString(flag);
+  }
+
+  /// Get the value of [flag]
+  Future<String> getDynamicString(DynamicPreferencesFlag flag) async {
+    // Log the event
+    _analyticsService.logEvent("${tag}_${flag.data}", 'getString');
+    return _preferencesService.getDynamicString(flag);
   }
 
   /// Add/update the value of [flag]

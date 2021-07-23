@@ -27,12 +27,6 @@ class ScheduleSettingsViewModel
 
   CalendarFormat get calendarFormat => _calendarFormat;
 
-  /// The schedule activities which needs to be shown (group A or B) grouped as courses
-  final Map<String, List<ScheduleActivity>> _scheduleActivitiesByCourse = {};
-
-  Map<String, List<ScheduleActivity>> get scheduleActivitiesByCourse =>
-      _scheduleActivitiesByCourse;
-
   set calendarFormat(CalendarFormat format) {
     setBusy(true);
     _settingsManager.setString(PreferencesFlag.scheduleSettingsCalendarFormat,
@@ -77,6 +71,40 @@ class ScheduleSettingsViewModel
     _settingsManager.setBool(
         PreferencesFlag.scheduleSettingsShowTodayBtn, newValue);
     _showTodayBtn = newValue;
+    setBusy(false);
+  }
+
+  /// The schedule activities which needs to be shown (group A or B) grouped as courses
+  final Map<String, List<ScheduleActivity>> _scheduleActivitiesByCourse = {};
+
+  Map<String, List<ScheduleActivity>> get scheduleActivitiesByCourse =>
+      _scheduleActivitiesByCourse;
+
+  ScheduleActivity _selectedScheduleActivity;
+
+  ScheduleActivity get selectedScheduleActivity => _selectedScheduleActivity;
+
+  /// This function is used to save the state of the selected course settings
+  /// for a given course that has different laboratory group
+  Future selectScheduleActivity(
+      String courseAcronym, ScheduleActivity scheduleActivityToSave) async {
+    setBusy(true);
+    if (scheduleActivityToSave == null) {
+      await _settingsManager.setDynamicString(
+          DynamicPreferencesFlag(
+              groupAssociationFlag:
+                  PreferencesFlag.scheduleSettingsLaboratoryGroupCourse,
+              specialKey: courseAcronym),
+          null);
+    } else {
+      await _settingsManager.setDynamicString(
+          DynamicPreferencesFlag(
+              groupAssociationFlag:
+                  PreferencesFlag.scheduleSettingsLaboratoryGroupCourse,
+              specialKey: courseAcronym),
+          scheduleActivityToSave.activityCode);
+    }
+    _selectedScheduleActivity = scheduleActivityToSave;
     setBusy(false);
   }
 
