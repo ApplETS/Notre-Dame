@@ -68,7 +68,7 @@ void main() {
 
         await tester.pumpWidget(localizedWidget(
             child: FeatureDiscovery(
-                child: GradeEvaluationTile(evaluation, completed: true))));
+                child: GradeEvaluationTile(evaluation, completed: true, isFirstEvaluation: false))));
         await tester.pumpAndSettle();
 
         final circularPercentIndicator = find.byType(GradeCircularProgress);
@@ -87,7 +87,7 @@ void main() {
 
         await tester.pumpWidget(localizedWidget(
             child: FeatureDiscovery(
-                child: GradeEvaluationTile(evaluation, completed: true))));
+                child: GradeEvaluationTile(evaluation, completed: true, isFirstEvaluation: false))));
 
         await tester.pumpAndSettle();
 
