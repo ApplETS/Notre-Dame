@@ -106,6 +106,8 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
       });
 
   void _assignScheduleActivities(listOfSchedules) {
+    if (listOfSchedules == null) return;
+
     for (final activity in listOfSchedules as List<ScheduleActivity>) {
       if (activity.activityCode == ActivityType.laboratoryGroupA ||
           activity.activityCode == ActivityType.laboratoryGroupB) {

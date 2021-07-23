@@ -36,7 +36,7 @@ class DynamicPreferencesFlag {
   DynamicPreferencesFlag(
       {@required this.groupAssociationFlag,
       @required this.specialKey,
-      this.separator = "-"});
+      this.separator = "_"});
 
   String get data => groupAssociationFlag.toString() + separator + specialKey;
 }
