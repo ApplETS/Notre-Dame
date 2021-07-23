@@ -243,9 +243,13 @@ class _GradesDetailsViewState extends State<GradesDetailsView>
                   ]),
               Column(children: <Widget>[
                 for (var evaluation in model.course.summary.evaluations)
-                  GradeEvaluationTile(evaluation,
-                      completed: _completed,
-                      key: Key("GradeEvaluationTile_${evaluation.title}")),
+                  GradeEvaluationTile(
+                    evaluation,
+                    completed: _completed,
+                    key: Key("GradeEvaluationTile_${evaluation.title}"),
+                    isFirstEvaluation:
+                        evaluation == model.course.summary.evaluations.first,
+                  ),
               ]),
             ],
           ),

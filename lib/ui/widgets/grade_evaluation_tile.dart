@@ -22,8 +22,10 @@ import 'package:notredame/core/utils/utils.dart';
 class GradeEvaluationTile extends StatefulWidget {
   final bool completed;
   final Evaluation evaluation;
+  final bool isFirstEvaluation;
 
-  const GradeEvaluationTile(this.evaluation, {Key key, this.completed})
+  const GradeEvaluationTile(this.evaluation,
+      {Key key, this.completed, this.isFirstEvaluation})
       : super(key: key);
 
   @override
@@ -83,23 +85,30 @@ class _GradeEvaluationTileState extends State<GradeEvaluationTile>
                 alignment: Alignment.topCenter,
                 child: LayoutBuilder(
                   builder: (context, constraints) {
-                    return _buildDiscoveryFeatureDescriptionWidget(
-                        context,
+                    final GradeCircularProgress circularProgress =
                         GradeCircularProgress(
-                          constraints.maxHeight / 100,
-                          completed: widget.completed,
-                          key: Key(
-                              "GradeCircularProgress_${widget.evaluation.title}"),
-                          studentGrade: Utils.getGradeInPercentage(
-                            widget.evaluation.mark,
-                            widget.evaluation.correctedEvaluationOutOfFormatted,
-                          ),
-                          averageGrade: Utils.getGradeInPercentage(
-                            widget.evaluation.passMark,
-                            widget.evaluation.correctedEvaluationOutOfFormatted,
-                          ),
-                        ),
-                        DiscoveryIds.detailsGradeDetailsEvaluations);
+                      constraints.maxHeight / 100,
+                      completed: widget.completed,
+                      key: Key(
+                          "GradeCircularProgress_${widget.evaluation.title}"),
+                      studentGrade: Utils.getGradeInPercentage(
+                        widget.evaluation.mark,
+                        widget.evaluation.correctedEvaluationOutOfFormatted,
+                      ),
+                      averageGrade: Utils.getGradeInPercentage(
+                        widget.evaluation.passMark,
+                        widget.evaluation.correctedEvaluationOutOfFormatted,
+                      ),
+                    );
+
+                    if (widget.isFirstEvaluation) {
+                      return _buildDiscoveryFeatureDescriptionWidget(
+                          context,
+                          circularProgress,
+                          DiscoveryIds.detailsGradeDetailsEvaluations);
+                    }
+
+                    return circularProgress;
                   },
                 ),
               ),
