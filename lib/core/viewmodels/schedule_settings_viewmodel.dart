@@ -1,16 +1,18 @@
 // FLUTTER / DART / THIRD-PARTIES
 import 'package:enum_to_string/enum_to_string.dart';
-import 'package:notredame/core/constants/activity_code.dart';
-import 'package:notredame/core/managers/course_repository.dart';
-import 'package:notredame/core/models/schedule_activity.dart';
 import 'package:stacked/stacked.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 // CONSTANTS
 import 'package:notredame/core/constants/preferences_flags.dart';
+import 'package:notredame/core/constants/activity_code.dart';
 
 // MANAGERS
 import 'package:notredame/core/managers/settings_manager.dart';
+import 'package:notredame/core/managers/course_repository.dart';
+
+// MODELS
+import 'package:notredame/core/models/schedule_activity.dart';
 
 // OTHER
 import 'package:notredame/locator.dart';

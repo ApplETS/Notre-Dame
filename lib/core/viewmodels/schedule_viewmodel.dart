@@ -1,12 +1,13 @@
 // FLUTTER / DART / THIRD-PARTIES
 import 'package:enum_to_string/enum_to_string.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:notredame/core/constants/activity_code.dart';
-import 'package:notredame/core/models/schedule_activity.dart';
 import 'package:stacked/stacked.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
+// CONSTANTS
+import 'package:notredame/core/constants/activity_code.dart';
 
 // MANAGER
 import 'package:notredame/core/managers/course_repository.dart';
@@ -14,6 +15,7 @@ import 'package:notredame/core/managers/settings_manager.dart';
 
 // MODELS
 import 'package:notredame/core/models/course_activity.dart';
+import 'package:notredame/core/models/schedule_activity.dart';
 
 // SERVICE
 import 'package:notredame/core/services/networking_service.dart';
