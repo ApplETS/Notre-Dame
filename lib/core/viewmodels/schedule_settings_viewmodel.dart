@@ -95,14 +95,14 @@ class ScheduleSettingsViewModel
       await _settingsManager.setDynamicString(
           DynamicPreferencesFlag(
               groupAssociationFlag:
-                  PreferencesFlag.scheduleSettingsLaboratoryGroupCourse,
+                  PreferencesFlag.scheduleSettingsLaboratoryGroup,
               specialKey: courseAcronym),
           null);
     } else {
       await _settingsManager.setDynamicString(
           DynamicPreferencesFlag(
               groupAssociationFlag:
-                  PreferencesFlag.scheduleSettingsLaboratoryGroupCourse,
+                  PreferencesFlag.scheduleSettingsLaboratoryGroup,
               specialKey: courseAcronym),
           scheduleActivityToSave.activityCode);
     }

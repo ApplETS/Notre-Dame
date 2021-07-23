@@ -137,7 +137,7 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
       _settingsScheduleActivities[courseAcronym] =
           await _settingsManager.getDynamicString(DynamicPreferencesFlag(
               groupAssociationFlag:
-                  PreferencesFlag.scheduleSettingsLaboratoryGroupCourse,
+                  PreferencesFlag.scheduleSettingsLaboratoryGroup,
               specialKey: courseAcronym));
     }
     setBusy(false);

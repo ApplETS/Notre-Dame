@@ -184,7 +184,7 @@ class SettingsManager with ChangeNotifier {
   Future<bool> setDynamicString(
       DynamicPreferencesFlag flag, String value) async {
     // Log the event
-    _analyticsService.logEvent("${tag}_${flag.data}", value);
+    _analyticsService.logEvent("${tag}_${flag.toString()}", value);
     return _preferencesService.setDynamicString(flag, value);
   }
 
