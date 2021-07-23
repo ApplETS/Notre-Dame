@@ -91,7 +91,7 @@ class _ScheduleSettingsState extends State<ScheduleSettings> {
 
     for (final courseActivities in model.scheduleActivitiesByCourse.values) {
       tiles.add(Padding(
-        padding: const EdgeInsets.only(left: 15.0, right: 15.0, bottom: 2.0),
+        padding: const EdgeInsets.fromLTRB(15.0, 8.0, 15.0, 8.0),
         child: Text(
           courseActivities.first.courseTitle,
           style: const TextStyle(
@@ -100,13 +100,21 @@ class _ScheduleSettingsState extends State<ScheduleSettings> {
         ),
       ));
 
+      tiles.add(ListTile(
+        selected: model.selectedScheduleActivity == null,
+        selectedTileColor: selectedColor,
+        onTap: () => setState(() => model.selectScheduleActivity(
+            courseActivities.first.courseAcronym, null)),
+        title: Text(AppIntl.of(context).course_activity_group_both),
+      ));
+
       for (final course in courseActivities) {
         tiles.add(ListTile(
           selected: model.selectedScheduleActivity == course,
           selectedTileColor: selectedColor,
           onTap: () => setState(
               () => model.selectScheduleActivity(course.courseAcronym, course)),
-          title: Text(course.name),
+          title: Text(_getActivityTitle(course.name)),
         ));
       }
 
@@ -118,6 +126,16 @@ class _ScheduleSettingsState extends State<ScheduleSettings> {
     tiles.add(const Divider(thickness: 1));
 
     return tiles;
+  }
+
+  String _getActivityTitle(String activity) {
+    if (activity == "Laboratoire (Groupe A)") {
+      return AppIntl.of(context).course_activity_group_a;
+    } else if (activity == "Laboratoire (Groupe B)") {
+      return AppIntl.of(context).course_activity_group_b;
+    }
+
+    return "";
   }
 
   List<Widget> _buildShowTodayButtonSection(
