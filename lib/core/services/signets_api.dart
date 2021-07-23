@@ -131,14 +131,13 @@ class SignetsApi {
 
     // Add the parameters needed inside the request.
     body
-        .findAllElements(Urls.listClassScheduleOperation,
+        .findAllElements(Urls.listeHoraireEtProf,
             namespace: Urls.signetsOperationBase)
         .first
         .children
         .add(operationContent.buildFragment());
 
-    final responseBody =
-        await _sendSOAPRequest(body, Urls.listClassScheduleOperation);
+    final responseBody = await _sendSOAPRequest(body, Urls.listeHoraireEtProf);
 
     /// Build and return the list of CourseActivity
     return responseBody
