@@ -1,5 +1,8 @@
 // FLUTTER / DART / THIRD-PARTIES
 import 'package:enum_to_string/enum_to_string.dart';
+import 'package:notredame/core/constants/activity_code.dart';
+import 'package:notredame/core/managers/course_repository.dart';
+import 'package:notredame/core/models/schedule_activity.dart';
 import 'package:stacked/stacked.dart';
 import 'package:table_calendar/table_calendar.dart';
 
@@ -16,11 +19,19 @@ class ScheduleSettingsViewModel
     extends FutureViewModel<Map<PreferencesFlag, dynamic>> {
   /// Manage the settings
   final SettingsManager _settingsManager = locator<SettingsManager>();
+  // Access the course repository
+  final CourseRepository _courseRepository = locator<CourseRepository>();
 
   /// Current calendar format
   CalendarFormat _calendarFormat;
 
   CalendarFormat get calendarFormat => _calendarFormat;
+
+  /// The schedule activities which needs to be shown (group A or B) grouped as courses
+  Map<String, ScheduleActivity> _scheduleActivitiesByCourse;
+
+  Map<String, ScheduleActivity> get scheduleActivitiesByCourse =>
+      _scheduleActivitiesByCourse;
 
   set calendarFormat(CalendarFormat format) {
     setBusy(true);
@@ -71,6 +82,7 @@ class ScheduleSettingsViewModel
 
   @override
   Future<Map<PreferencesFlag, dynamic>> futureToRun() async {
+    setBusy(true);
     final settings = await _settingsManager.getScheduleSettings();
 
     _calendarFormat = settings[PreferencesFlag.scheduleSettingsCalendarFormat]
@@ -80,6 +92,15 @@ class ScheduleSettingsViewModel
     _showTodayBtn =
         settings[PreferencesFlag.scheduleSettingsShowTodayBtn] as bool;
 
+    final schedulesActivities = await _courseRepository.getScheduleActivities();
+    for (final activity in schedulesActivities) {
+      if (activity.activityCode == ActivityType.laboratoryGroupA ||
+          activity.activityCode == ActivityType.laboratoryGroupB) {
+        _scheduleActivitiesByCourse.putIfAbsent(
+            activity.courseAcronym, () => activity);
+      }
+    }
+    setBusy(false);
     return settings;
   }
 }
