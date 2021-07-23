@@ -1,3 +1,4 @@
+import 'package:enum_to_string/enum_to_string.dart';
 import 'package:flutter/cupertino.dart';
 
 enum PreferencesFlag {
@@ -5,7 +6,7 @@ enum PreferencesFlag {
   scheduleSettingsCalendarFormat,
   scheduleSettingsStartWeekday,
   scheduleSettingsShowTodayBtn,
-  scheduleSettingsLaboratoryGroupCourse,
+  scheduleSettingsLaboratoryGroup,
 
   // Locale flag
   locale,
@@ -36,7 +37,14 @@ class DynamicPreferencesFlag {
   DynamicPreferencesFlag(
       {@required this.groupAssociationFlag,
       @required this.specialKey,
-      this.separator = "-"});
+      this.separator = "_"});
 
   String get data => groupAssociationFlag.toString() + separator + specialKey;
+
+  @override
+  String toString() {
+    return EnumToString.convertToString(groupAssociationFlag) +
+        separator +
+        specialKey;
+  }
 }
