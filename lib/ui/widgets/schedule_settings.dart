@@ -102,8 +102,10 @@ class _ScheduleSettingsState extends State<ScheduleSettings> {
 
       for (final course in courseActivities) {
         tiles.add(ListTile(
+          selected: model.selectedScheduleActivity == course,
           selectedTileColor: selectedColor,
-          onTap: () => setState(() {}),
+          onTap: () => setState(
+              () => model.selectScheduleActivity(course.courseAcronym, course)),
           title: Text(course.name),
         ));
       }
