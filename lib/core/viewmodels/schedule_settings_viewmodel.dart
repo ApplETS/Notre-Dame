@@ -28,9 +28,9 @@ class ScheduleSettingsViewModel
   CalendarFormat get calendarFormat => _calendarFormat;
 
   /// The schedule activities which needs to be shown (group A or B) grouped as courses
-  Map<String, ScheduleActivity> _scheduleActivitiesByCourse;
+  final Map<String, List<ScheduleActivity>> _scheduleActivitiesByCourse = {};
 
-  Map<String, ScheduleActivity> get scheduleActivitiesByCourse =>
+  Map<String, List<ScheduleActivity>> get scheduleActivitiesByCourse =>
       _scheduleActivitiesByCourse;
 
   set calendarFormat(CalendarFormat format) {
@@ -96,8 +96,12 @@ class ScheduleSettingsViewModel
     for (final activity in schedulesActivities) {
       if (activity.activityCode == ActivityType.laboratoryGroupA ||
           activity.activityCode == ActivityType.laboratoryGroupB) {
-        _scheduleActivitiesByCourse.putIfAbsent(
-            activity.courseAcronym, () => activity);
+        // Create the list with the new activity inside or add the activity to an existing group
+        if (!_scheduleActivitiesByCourse.containsKey(activity.courseAcronym)) {
+          _scheduleActivitiesByCourse[activity.courseAcronym] = [activity];
+        } else {
+          _scheduleActivitiesByCourse[activity.courseAcronym].add(activity);
+        }
       }
     }
     setBusy(false);
