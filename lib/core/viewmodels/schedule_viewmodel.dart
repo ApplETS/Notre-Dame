@@ -1,6 +1,8 @@
 // FLUTTER / DART / THIRD-PARTIES
 import 'package:enum_to_string/enum_to_string.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:notredame/core/constants/activity_code.dart';
+import 'package:notredame/core/models/schedule_activity.dart';
 import 'package:stacked/stacked.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:flutter/material.dart';
@@ -49,6 +51,12 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
   /// This value is then change to the cache value on load.
   CalendarFormat calendarFormat = CalendarFormat.week;
 
+  /// This map contains the courses that has the group A or group B mark
+  final Map<String, List<ScheduleActivity>> _scheduleActivitiesByCourse = {};
+
+  /// This map contains the direct settings as string for each course that are ambiguous
+  final Map<String, String> _settingsScheduleActivities = {};
+
   /// Get current locale
   Locale get locale => _settingsManager.locale;
 
@@ -81,12 +89,29 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
             // Reload the list of activities
             coursesActivities;
           }
+          _courseRepository
+              .getScheduleActivities()
+              .then(_assignScheduleActivities);
         }).whenComplete(() {
           setBusyForObject(isLoadingEvents, false);
           Utils.showNoConnectionToast(_networkingService, _appIntl);
         });
         return value;
       });
+
+  void _assignScheduleActivities(listOfSchedules) {
+    for (final activity in listOfSchedules as List<ScheduleActivity>) {
+      if (activity.activityCode == ActivityType.laboratoryGroupA ||
+          activity.activityCode == ActivityType.laboratoryGroupB) {
+        // Create the list with the new activity inside or add the activity to an existing group
+        if (!_scheduleActivitiesByCourse.containsKey(activity.courseAcronym)) {
+          _scheduleActivitiesByCourse[activity.courseAcronym] = [activity];
+        } else {
+          _scheduleActivitiesByCourse[activity.courseAcronym].add(activity);
+        }
+      }
+    }
+  }
 
   @override
   // ignore: type_annotate_public_apis
@@ -100,6 +125,13 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
     settings.addAll(await _settingsManager.getScheduleSettings());
     calendarFormat = settings[PreferencesFlag.scheduleSettingsCalendarFormat]
         as CalendarFormat;
+    for (final courseAcronym in _scheduleActivitiesByCourse.keys) {
+      _settingsScheduleActivities[courseAcronym] =
+          await _settingsManager.getDynamicString(DynamicPreferencesFlag(
+              groupAssociationFlag:
+                  PreferencesFlag.scheduleSettingsLaboratoryGroupCourse,
+              specialKey: courseAcronym));
+    }
     setBusy(false);
   }
 
