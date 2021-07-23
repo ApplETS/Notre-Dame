@@ -56,6 +56,7 @@
   "schedule_settings_starting_weekday_saturday": "Samedi",
   "schedule_settings_starting_weekday_sunday": "Dimanche",
   "schedule_no_event": "Aucun évènement à l'horaire.",
+  "schedule_select_course_activity": "Selectionner l'activité du cours",
 
   "grades_title": "Notes",
   "grades_msg_no_grades": "Aucune note disponible\nTirer pour recharger",

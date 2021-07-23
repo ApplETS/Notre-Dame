@@ -58,6 +58,7 @@
   "schedule_settings_starting_weekday_saturday": "Saturday",
   "schedule_settings_starting_weekday_sunday": "Sunday",
   "schedule_error_no_event_found": "No event found",
+  "schedule_select_course_activity": "Select course activity",
 
   "grades_title": "Grades",
   "grades_msg_no_grades": "No grade available\nPull to refresh.",

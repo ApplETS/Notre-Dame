@@ -67,7 +67,55 @@ class _ScheduleSettingsState extends State<ScheduleSettings> {
 
     list.addAll(_buildShowTodayButtonSection(context, model));
 
+    list.addAll(_buildSelectCoursesActivitiesSection(context, model));
+
     return list;
+  }
+
+  List<Widget> _buildSelectCoursesActivitiesSection(
+      BuildContext context, ScheduleSettingsViewModel model) {
+    final tiles = [
+      Padding(
+        padding: const EdgeInsets.only(
+            left: 15.0, right: 15.0, top: 15.0, bottom: 2.0),
+        child: Text(
+          AppIntl.of(context).schedule_select_course_activity,
+          style: TextStyle(
+            color: Theme.of(context).accentColor,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ),
+      const Divider(endIndent: 50, thickness: 1.5),
+    ];
+
+    for (final courseActivities in model.scheduleActivitiesByCourse.values) {
+      tiles.add(Padding(
+        padding: const EdgeInsets.only(left: 15.0, right: 15.0, bottom: 2.0),
+        child: Text(
+          courseActivities.first.courseTitle,
+          style: const TextStyle(
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ));
+
+      for (final course in courseActivities) {
+        tiles.add(ListTile(
+          selectedTileColor: selectedColor,
+          onTap: () => setState(() {}),
+          title: Text(course.name),
+        ));
+      }
+
+      if (model.scheduleActivitiesByCourse.values.length > 1) {
+        tiles.add(const Divider(endIndent: 50, thickness: 1.5));
+      }
+    }
+
+    tiles.add(const Divider(thickness: 1));
+
+    return tiles;
   }
 
   List<Widget> _buildShowTodayButtonSection(
