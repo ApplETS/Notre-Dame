@@ -54,7 +54,8 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
   /// This map contains the courses that has the group A or group B mark
   final Map<String, List<ScheduleActivity>> _scheduleActivitiesByCourse = {};
 
-  /// This map contains the direct settings as string for each course that are ambiguous
+  /// This map contains the direct settings as string for each course that are grouped
+  /// (Exemple: (key, value) => ("ING150", "Laboratoire (Groupe A)"))
   final Map<String, String> _settingsScheduleActivities = {};
 
   /// Get current locale
@@ -91,10 +92,13 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
           }
           _courseRepository
               .getScheduleActivities()
-              .then(_assignScheduleActivities);
-        }).whenComplete(() {
-          setBusyForObject(isLoadingEvents, false);
-          Utils.showNoConnectionToast(_networkingService, _appIntl);
+              // ignore: return_type_invalid_for_catch_error
+              .catchError(onError)
+              .then(_assignScheduleActivities)
+              .whenComplete(() {
+            setBusyForObject(isLoadingEvents, false);
+            Utils.showNoConnectionToast(_networkingService, _appIntl);
+          });
         });
         return value;
       });
