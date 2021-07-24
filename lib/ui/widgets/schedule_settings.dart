@@ -90,11 +90,13 @@ class _ScheduleSettingsState extends State<ScheduleSettings> {
       const Divider(endIndent: 50, thickness: 1.5),
     ];
 
-    for (final courseActivities in model.scheduleActivitiesByCourse.values) {
+    for (final courseActivitiesAcronym
+        in model.scheduleActivitiesByCourse.keys) {
       tiles.add(Padding(
         padding: const EdgeInsets.fromLTRB(15.0, 8.0, 15.0, 8.0),
         child: Text(
-          courseActivities.first.courseTitle,
+          model.scheduleActivitiesByCourse[courseActivitiesAcronym].first
+              .courseTitle,
           style: const TextStyle(
             fontWeight: FontWeight.bold,
           ),
@@ -102,16 +104,19 @@ class _ScheduleSettingsState extends State<ScheduleSettings> {
       ));
 
       tiles.add(ListTile(
-        selected: model.selectedScheduleActivity == null,
+        selected: !model.selectedScheduleActivity
+            .containsKey(courseActivitiesAcronym),
         selectedTileColor: selectedColor,
-        onTap: () => model.selectScheduleActivity(
-            courseActivities.first.courseAcronym, null),
+        onTap: () =>
+            model.selectScheduleActivity(courseActivitiesAcronym, null),
         title: Text(AppIntl.of(context).course_activity_group_both),
       ));
 
-      for (final course in courseActivities) {
+      for (final course
+          in model.scheduleActivitiesByCourse[courseActivitiesAcronym]) {
         tiles.add(ListTile(
-          selected: model.selectedScheduleActivity == course,
+          selected:
+              model.selectedScheduleActivity[course.courseAcronym] == course,
           selectedTileColor: selectedColor,
           onTap: () =>
               model.selectScheduleActivity(course.courseAcronym, course),

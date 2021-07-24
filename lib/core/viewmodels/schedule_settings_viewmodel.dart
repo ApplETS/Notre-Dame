@@ -82,7 +82,7 @@ class ScheduleSettingsViewModel
   Map<String, List<ScheduleActivity>> get scheduleActivitiesByCourse =>
       _scheduleActivitiesByCourse;
 
-  Map<String, ScheduleActivity> _selectedScheduleActivity;
+  final Map<String, ScheduleActivity> _selectedScheduleActivity = {};
 
   Map<String, ScheduleActivity> get selectedScheduleActivity =>
       _selectedScheduleActivity;
