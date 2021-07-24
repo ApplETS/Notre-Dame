@@ -29,22 +29,43 @@ class _ScheduleSettingsState extends State<ScheduleSettings> {
           child: Column(
             children: [
               if (widget.showHandle)
-                Center(
-                  child: Padding(
-                    padding: const EdgeInsets.only(top: 8.0),
-                    child: Container(
-                      height: 5,
-                      width: 50,
-                      decoration: const BoxDecoration(
-                          color: Colors.grey,
-                          borderRadius: BorderRadius.all(Radius.circular(8.0))),
+                Container(
+                  decoration: BoxDecoration(
+                      color: Theme.of(context).brightness == Brightness.light
+                          ? AppTheme.lightThemeBackground
+                          : AppTheme.darkThemeBackground,
+                      borderRadius: const BorderRadius.only(
+                        topLeft: Radius.circular(40.0),
+                        topRight: Radius.circular(40.0),
+                      )),
+                  child: Center(
+                    child: Padding(
+                      padding: const EdgeInsets.only(top: 8.0),
+                      child: Container(
+                        height: 5,
+                        width: 50,
+                        decoration: const BoxDecoration(
+                            color: Colors.grey,
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(8.0))),
+                      ),
                     ),
                   ),
                 ),
-              Padding(
-                  padding: const EdgeInsets.fromLTRB(15, 20, 20, 20),
-                  child: Text(AppIntl.of(context).schedule_settings_title,
-                      style: Theme.of(context).textTheme.headline6)),
+              Container(
+                width: MediaQuery.of(context).size.width,
+                decoration: BoxDecoration(
+                  color: Theme.of(context).brightness == Brightness.light
+                      ? AppTheme.lightThemeBackground
+                      : AppTheme.darkThemeBackground,
+                ),
+                child: Center(
+                  child: Padding(
+                      padding: const EdgeInsets.fromLTRB(15, 20, 20, 20),
+                      child: Text(AppIntl.of(context).schedule_settings_title,
+                          style: Theme.of(context).textTheme.headline6)),
+                ),
+              ),
               Expanded(
                 child: ListTileTheme(
                   selectedColor: Theme.of(context).textTheme.bodyText1.color,
