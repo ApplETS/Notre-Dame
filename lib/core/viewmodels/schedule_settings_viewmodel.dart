@@ -141,9 +141,12 @@ class ScheduleSettingsViewModel
               groupAssociationFlag:
                   PreferencesFlag.scheduleSettingsLaboratoryGroup,
               specialKey: courseKey));
-      _selectedScheduleActivity[courseKey] =
-          _scheduleActivitiesByCourse[courseKey].firstWhere(
-              (element) => element.activityCode == scheduleActivityCode);
+      final scheduleActivity = _scheduleActivitiesByCourse[courseKey]
+          .firstWhere((element) => element.activityCode == scheduleActivityCode,
+              orElse: () => null);
+      if (scheduleActivity != null) {
+        _selectedScheduleActivity[courseKey] = scheduleActivity;
+      }
     }
 
     setBusy(false);
