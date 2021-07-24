@@ -133,7 +133,10 @@ class ScheduleSettingsViewModel
           _scheduleActivitiesByCourse[activity.courseAcronym].add(activity);
         }
       }
+
+      //_selectedScheduleActivity = await _settingsManager.getDynamicString(flag);
     }
+
     setBusy(false);
     return settings;
   }

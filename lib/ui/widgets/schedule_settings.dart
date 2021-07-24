@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:notredame/core/constants/activity_code.dart';
 import 'package:stacked/stacked.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:table_calendar/table_calendar.dart';
@@ -103,8 +104,8 @@ class _ScheduleSettingsState extends State<ScheduleSettings> {
       tiles.add(ListTile(
         selected: model.selectedScheduleActivity == null,
         selectedTileColor: selectedColor,
-        onTap: () => setState(() => model.selectScheduleActivity(
-            courseActivities.first.courseAcronym, null)),
+        onTap: () => model.selectScheduleActivity(
+            courseActivities.first.courseAcronym, null),
         title: Text(AppIntl.of(context).course_activity_group_both),
       ));
 
@@ -112,9 +113,9 @@ class _ScheduleSettingsState extends State<ScheduleSettings> {
         tiles.add(ListTile(
           selected: model.selectedScheduleActivity == course,
           selectedTileColor: selectedColor,
-          onTap: () => setState(
-              () => model.selectScheduleActivity(course.courseAcronym, course)),
-          title: Text(_getActivityTitle(course.name)),
+          onTap: () =>
+              model.selectScheduleActivity(course.courseAcronym, course),
+          title: Text(_getActivityTitle(course.activityCode)),
         ));
       }
 
@@ -128,10 +129,10 @@ class _ScheduleSettingsState extends State<ScheduleSettings> {
     return tiles;
   }
 
-  String _getActivityTitle(String activity) {
-    if (activity == "Laboratoire (Groupe A)") {
+  String _getActivityTitle(String activityCode) {
+    if (activityCode == ActivityType.laboratoryGroupA) {
       return AppIntl.of(context).course_activity_group_a;
-    } else if (activity == "Laboratoire (Groupe B)") {
+    } else if (activityCode == ActivityType.laboratoryGroupB) {
       return AppIntl.of(context).course_activity_group_b;
     }
 
