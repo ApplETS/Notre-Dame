@@ -3,6 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+// UTILS
+import 'package:notredame/core/utils/utils.dart';
+
 // VIEWMODELS
 import 'package:notredame/core/viewmodels/choose_language_viewmodel.dart';
 
@@ -23,9 +26,8 @@ class _ChooseLanguageViewState extends State<ChooseLanguageView> {
       itemCount: model.languages.length,
       itemBuilder: (BuildContext context, int index) {
         return Card(
-            color: Theme.of(context).brightness == Brightness.light
-                ? Colors.white
-                : Colors.grey[900],
+            color: Utils.getColorByBrightness(
+                context, Colors.white, Colors.grey[900]),
             child: Column(mainAxisSize: MainAxisSize.min, children: <Widget>[
               ListTile(
                 title: Text(model.languages[index]),
@@ -46,9 +48,8 @@ class _ChooseLanguageViewState extends State<ChooseLanguageView> {
         viewModelBuilder: () =>
             ChooseLanguageViewModel(intl: AppIntl.of(context)),
         builder: (context, model, child) => Scaffold(
-              backgroundColor: Theme.of(context).brightness == Brightness.light
-                  ? AppTheme.etsLightRed
-                  : AppTheme.primaryDark,
+              backgroundColor: Utils.getColorByBrightness(
+                  context, AppTheme.etsLightRed, AppTheme.primaryDark),
               body: Center(
                 child: ListView(
                   shrinkWrap: true,
@@ -56,9 +57,8 @@ class _ChooseLanguageViewState extends State<ChooseLanguageView> {
                     Icon(
                       Icons.language,
                       size: 80,
-                      color: Theme.of(context).brightness == Brightness.light
-                          ? Colors.white
-                          : AppTheme.etsLightRed,
+                      color: Utils.getColorByBrightness(
+                          context, Colors.white, AppTheme.etsLightRed),
                     ),
                     Padding(
                       padding: const EdgeInsets.only(left: 20, top: 60),
