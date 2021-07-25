@@ -108,9 +108,10 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
   void _assignScheduleActivities(listOfSchedules) {
     if (listOfSchedules == null) return;
 
+    setBusy(true);
     for (final activity in listOfSchedules as List<ScheduleActivity>) {
-      if (activity.activityCode == ActivityType.laboratoryGroupA ||
-          activity.activityCode == ActivityType.laboratoryGroupB) {
+      if (activity.activityCode == ActivityCode.labGroupA ||
+          activity.activityCode == ActivityCode.labGroupB) {
         // Create the list with the new activity inside or add the activity to an existing group
         if (!_scheduleActivitiesByCourse.containsKey(activity.courseAcronym)) {
           _scheduleActivitiesByCourse[activity.courseAcronym] = [activity];
@@ -118,6 +119,18 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
           _scheduleActivitiesByCourse[activity.courseAcronym].add(activity);
         }
       }
+    }
+
+    for (final courseAcronym in _scheduleActivitiesByCourse.keys) {
+      setBusyForObject(courseAcronym, true);
+      setBusy(false);
+      _settingsManager
+          .getDynamicString(DynamicPreferencesFlag(
+              groupAssociationFlag:
+                  PreferencesFlag.scheduleSettingsLaboratoryGroup,
+              uniqueKey: courseAcronym))
+          .then((value) => _settingsScheduleActivities[courseAcronym] = value)
+          .whenComplete(() => setBusyForObject(courseAcronym, false));
     }
   }
 
@@ -133,13 +146,7 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
     settings.addAll(await _settingsManager.getScheduleSettings());
     calendarFormat = settings[PreferencesFlag.scheduleSettingsCalendarFormat]
         as CalendarFormat;
-    for (final courseAcronym in _scheduleActivitiesByCourse.keys) {
-      _settingsScheduleActivities[courseAcronym] =
-          await _settingsManager.getDynamicString(DynamicPreferencesFlag(
-              groupAssociationFlag:
-                  PreferencesFlag.scheduleSettingsLaboratoryGroup,
-              specialKey: courseAcronym));
-    }
+
     setBusy(false);
   }
 

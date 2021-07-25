@@ -97,14 +97,14 @@ class ScheduleSettingsViewModel
           DynamicPreferencesFlag(
               groupAssociationFlag:
                   PreferencesFlag.scheduleSettingsLaboratoryGroup,
-              specialKey: courseAcronym),
+              uniqueKey: courseAcronym),
           null);
     } else {
       await _settingsManager.setDynamicString(
           DynamicPreferencesFlag(
               groupAssociationFlag:
                   PreferencesFlag.scheduleSettingsLaboratoryGroup,
-              specialKey: courseAcronym),
+              uniqueKey: courseAcronym),
           scheduleActivityToSave.activityCode);
     }
     _selectedScheduleActivity[courseAcronym] = scheduleActivityToSave;
@@ -125,8 +125,8 @@ class ScheduleSettingsViewModel
 
     final schedulesActivities = await _courseRepository.getScheduleActivities();
     for (final activity in schedulesActivities) {
-      if (activity.activityCode == ActivityType.laboratoryGroupA ||
-          activity.activityCode == ActivityType.laboratoryGroupB) {
+      if (activity.activityCode == ActivityCode.labGroupA ||
+          activity.activityCode == ActivityCode.labGroupB) {
         // Create the list with the new activity inside or add the activity to an existing group
         if (!_scheduleActivitiesByCourse.containsKey(activity.courseAcronym)) {
           _scheduleActivitiesByCourse[activity.courseAcronym] = [activity];
@@ -140,7 +140,7 @@ class ScheduleSettingsViewModel
           DynamicPreferencesFlag(
               groupAssociationFlag:
                   PreferencesFlag.scheduleSettingsLaboratoryGroup,
-              specialKey: courseKey));
+              uniqueKey: courseKey));
       final scheduleActivity = _scheduleActivitiesByCourse[courseKey]
           .firstWhere((element) => element.activityCode == scheduleActivityCode,
               orElse: () => null);
