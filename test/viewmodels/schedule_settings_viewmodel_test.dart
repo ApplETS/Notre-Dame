@@ -20,9 +20,9 @@ import 'package:notredame/core/constants/preferences_flags.dart';
 import '../helpers.dart';
 import '../mock/managers/course_repository_mock.dart';
 import '../mock/managers/settings_manager_mock.dart';
-import 'schedule_viewmodel_test.dart';
 
 SettingsManager settingsManager;
+CourseRepository courseRepository;
 ScheduleSettingsViewModel viewModel;
 
 void main() {
@@ -88,7 +88,7 @@ void main() {
         activityLocation: "En ligne",
         name: "Activité de cours"),
     ScheduleActivity(
-        courseAcronym: "ABC123",
+        courseAcronym: "XYZ321",
         courseGroup: "01",
         courseTitle: "Sample Course",
         dayOfTheWeek: 2,
@@ -97,10 +97,10 @@ void main() {
         endTime: DateFormat("hh:mm").parse("15:00"),
         activityCode: ActivityCode.labGroupA,
         isPrincipalActivity: true,
-        activityLocation: "D-4001",
+        activityLocation: "D-4003",
         name: "Laboratoire (Groupe A)"),
     ScheduleActivity(
-        courseAcronym: "ABC123",
+        courseAcronym: "XYZ321",
         courseGroup: "01",
         courseTitle: "Sample Course",
         dayOfTheWeek: 2,
@@ -109,7 +109,7 @@ void main() {
         endTime: DateFormat("hh:mm").parse("16:30"),
         activityCode: ActivityCode.labGroupB,
         isPrincipalActivity: true,
-        activityLocation: "D-4002",
+        activityLocation: "D-4004",
         name: "Laboratoire (Groupe B)"),
   ];
   final List<ScheduleActivity> twoClassesWithLaboratoryABscheduleActivities =
@@ -117,6 +117,7 @@ void main() {
   group("ScheduleSettingsViewModel - ", () {
     setUp(() {
       settingsManager = setupSettingsManagerMock();
+      courseRepository = setupCourseRepositoryMock();
       setupFlutterToastMock();
       viewModel = ScheduleSettingsViewModel();
 
@@ -154,7 +155,7 @@ void main() {
       });
 
       test(
-          "If there is on valid class which has grouped laboratory, we parse it and store it (None selected)",
+          "If there is one valid class which has grouped laboratory, we parse it and store it (None selected)",
           () async {
         SettingsManagerMock.stubGetScheduleSettings(
             settingsManager as SettingsManagerMock,
@@ -167,13 +168,12 @@ void main() {
         final courseAcronymWithLaboratory =
             classOneWithLaboratoryABscheduleActivities.first.courseAcronym;
 
-        final dynamicPrefFlag = DynamicPreferencesFlag(
-            groupAssociationFlag:
-                PreferencesFlag.scheduleSettingsLaboratoryGroup,
-            uniqueKey: courseAcronymWithLaboratory);
-
         SettingsManagerMock.stubGetDynamicString(
-            settingsManager as SettingsManagerMock, dynamicPrefFlag,
+            settingsManager as SettingsManagerMock,
+            DynamicPreferencesFlag(
+                groupAssociationFlag:
+                    PreferencesFlag.scheduleSettingsLaboratoryGroup,
+                uniqueKey: courseAcronymWithLaboratory),
             toReturn: null);
 
         expect(await viewModel.futureToRun(), settings);
@@ -185,13 +185,15 @@ void main() {
             viewModel
                 .scheduleActivitiesByCourse[courseAcronymWithLaboratory].length,
             2);
-        expect(viewModel.selectedScheduleActivity[courseAcronymWithLaboratory],
-            null);
+        expect(
+            viewModel.selectedScheduleActivity
+                .containsKey(courseAcronymWithLaboratory),
+            false);
 
         verify(courseRepository.getScheduleActivities()).called(1);
         verifyNoMoreInteractions(courseRepository);
 
-        verify(settingsManager.getDynamicString(dynamicPrefFlag)).called(1);
+        verify(settingsManager.getDynamicString(any)).called(1);
       });
       test(
           "If there is two valid class which has grouped laboratory, we store both (First => none selected, Second => group A selected)",
@@ -210,21 +212,19 @@ void main() {
         final secondCourseAcronymWithLab =
             classTwoWithLaboratoryABscheduleActivities.first.courseAcronym;
 
-        final dynamicPrefFlagFirst = DynamicPreferencesFlag(
-            groupAssociationFlag:
-                PreferencesFlag.scheduleSettingsLaboratoryGroup,
-            uniqueKey: firstCourseAcronymWithLab);
-
-        final dynamicPrefFlagSecond = DynamicPreferencesFlag(
-            groupAssociationFlag:
-                PreferencesFlag.scheduleSettingsLaboratoryGroup,
-            uniqueKey: secondCourseAcronymWithLab);
-
         SettingsManagerMock.stubGetDynamicString(
-            settingsManager as SettingsManagerMock, dynamicPrefFlagFirst,
+            settingsManager as SettingsManagerMock,
+            DynamicPreferencesFlag(
+                groupAssociationFlag:
+                    PreferencesFlag.scheduleSettingsLaboratoryGroup,
+                uniqueKey: firstCourseAcronymWithLab),
             toReturn: null);
         SettingsManagerMock.stubGetDynamicString(
-            settingsManager as SettingsManagerMock, dynamicPrefFlagSecond,
+            settingsManager as SettingsManagerMock,
+            DynamicPreferencesFlag(
+                groupAssociationFlag:
+                    PreferencesFlag.scheduleSettingsLaboratoryGroup,
+                uniqueKey: secondCourseAcronymWithLab),
             toReturn: ActivityCode.labGroupA);
 
         expect(await viewModel.futureToRun(), settings);
@@ -237,8 +237,14 @@ void main() {
             viewModel
                 .scheduleActivitiesByCourse[secondCourseAcronymWithLab].length,
             2);
-        expect(viewModel.selectedScheduleActivity[firstCourseAcronymWithLab],
-            null);
+        expect(
+            viewModel.selectedScheduleActivity
+                .containsKey(firstCourseAcronymWithLab),
+            false);
+        expect(
+            viewModel.selectedScheduleActivity
+                .containsKey(secondCourseAcronymWithLab),
+            true);
         expect(
             viewModel.selectedScheduleActivity[secondCourseAcronymWithLab],
             classTwoWithLaboratoryABscheduleActivities.firstWhere(

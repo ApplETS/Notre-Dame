@@ -47,4 +47,15 @@ class DynamicPreferencesFlag {
         separator +
         uniqueKey;
   }
+
+  @override
+  bool operator ==(Object other) =>
+      other is DynamicPreferencesFlag &&
+      groupAssociationFlag == other.groupAssociationFlag &&
+      separator == other.separator &&
+      uniqueKey == other.uniqueKey;
+
+  @override
+  int get hashCode =>
+      groupAssociationFlag.hashCode ^ separator.hashCode ^ uniqueKey.hashCode;
 }
