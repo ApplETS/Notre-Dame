@@ -5,6 +5,9 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:stacked/stacked.dart';
 
+// UTILS
+import 'package:notredame/core/utils/utils.dart';
+
 // VIEW MODEL
 import 'package:notredame/core/viewmodels/login_viewmodel.dart';
 
@@ -32,9 +35,8 @@ class _LoginViewState extends State<LoginView> {
       ViewModelBuilder<LoginViewModel>.reactive(
         viewModelBuilder: () => LoginViewModel(intl: AppIntl.of(context)),
         builder: (context, model, child) => Scaffold(
-            backgroundColor: Theme.of(context).brightness == Brightness.light
-                ? AppTheme.etsLightRed
-                : AppTheme.primaryDark,
+            backgroundColor: Utils.getColorByBrightness(
+                context, AppTheme.etsLightRed, AppTheme.primaryDark),
             resizeToAvoidBottomInset: false,
             body: Builder(
               builder: (BuildContext context) => SafeArea(
@@ -183,15 +185,12 @@ class _LoginViewState extends State<LoginView> {
     super.dispose();
   }
 
-  Color get errorTextColor => Theme.of(context).brightness == Brightness.light
-      ? Colors.amberAccent
-      : Colors.redAccent;
+  Color get errorTextColor =>
+      Utils.getColorByBrightness(context, Colors.amberAccent, Colors.redAccent);
 
-  Color get colorButton => Theme.of(context).brightness == Brightness.light
-      ? Colors.white
-      : AppTheme.etsLightRed;
+  Color get colorButton =>
+      Utils.getColorByBrightness(context, Colors.white, AppTheme.etsLightRed);
 
-  Color get submitTextColor => Theme.of(context).brightness == Brightness.light
-      ? AppTheme.etsLightRed
-      : Colors.white;
+  Color get submitTextColor =>
+      Utils.getColorByBrightness(context, AppTheme.etsLightRed, Colors.white);
 }
