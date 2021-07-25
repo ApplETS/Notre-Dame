@@ -1,4 +1,5 @@
 // FLUTTER / DART / THIRD-PARTIES
+import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -30,5 +31,12 @@ class Utils {
     if (!await networkingService.hasConnectivity()) {
       Fluttertoast.showToast(msg: intl.no_connectivity);
     }
+  }
+
+  static Color getColorByBrightness(
+      BuildContext context, Color lightColor, Color darkColor) {
+    return Theme.of(context).brightness == Brightness.light
+        ? lightColor
+        : darkColor;
   }
 }
