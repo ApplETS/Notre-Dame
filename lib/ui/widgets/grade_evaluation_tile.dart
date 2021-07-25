@@ -121,11 +121,10 @@ class _GradeEvaluationTileState extends State<GradeEvaluationTile>
                       widget.evaluation.title,
                       overflow: TextOverflow.ellipsis,
                       style: TextStyle(
-                          fontSize: 16,
-                          color:
-                              Theme.of(context).brightness == Brightness.light
-                                  ? Colors.black
-                                  : Colors.white),
+                        fontSize: 16,
+                        color: Utils.getColorByBrightness(
+                            context, Colors.black, Colors.white),
+                      ),
                     ),
                   ),
                   Padding(
@@ -134,11 +133,10 @@ class _GradeEvaluationTileState extends State<GradeEvaluationTile>
                       AppIntl.of(context)
                           .grades_weight(widget.evaluation.weight),
                       style: TextStyle(
-                          fontSize: 14,
-                          color:
-                              Theme.of(context).brightness == Brightness.light
-                                  ? Colors.black
-                                  : Colors.white),
+                        fontSize: 14,
+                        color: Utils.getColorByBrightness(
+                            context, Colors.black, Colors.white),
+                      ),
                     ),
                   ),
                 ],
