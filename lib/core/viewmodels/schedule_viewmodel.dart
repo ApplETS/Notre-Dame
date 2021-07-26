@@ -121,17 +121,7 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
       }
     }
 
-    for (final courseAcronym in _scheduleActivitiesByCourse.keys) {
-      setBusyForObject(courseAcronym, true);
-      setBusy(false);
-      _settingsManager
-          .getDynamicString(DynamicPreferencesFlag(
-              groupAssociationFlag:
-                  PreferencesFlag.scheduleSettingsLaboratoryGroup,
-              uniqueKey: courseAcronym))
-          .then((value) => _settingsScheduleActivities[courseAcronym] = value)
-          .whenComplete(() => setBusyForObject(courseAcronym, false));
-    }
+    loadSettingsScheduleActivities();
   }
 
   @override
@@ -147,7 +137,23 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
     calendarFormat = settings[PreferencesFlag.scheduleSettingsCalendarFormat]
         as CalendarFormat;
 
+    loadSettingsScheduleActivities();
+
     setBusy(false);
+  }
+
+  void loadSettingsScheduleActivities() {
+    for (final courseAcronym in _scheduleActivitiesByCourse.keys) {
+      setBusyForObject(courseAcronym, true);
+      setBusy(false);
+      _settingsManager
+          .getDynamicString(DynamicPreferencesFlag(
+              groupAssociationFlag:
+                  PreferencesFlag.scheduleSettingsLaboratoryGroup,
+              uniqueKey: courseAcronym))
+          .then((value) => _settingsScheduleActivities[courseAcronym] = value)
+          .whenComplete(() => setBusyForObject(courseAcronym, false));
+    }
   }
 
   /// Return the list of all the courses activities arranged by date.
