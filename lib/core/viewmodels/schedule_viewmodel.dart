@@ -54,11 +54,11 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
   CalendarFormat calendarFormat = CalendarFormat.week;
 
   /// This map contains the courses that has the group A or group B mark
-  final Map<String, List<ScheduleActivity>> _scheduleActivitiesByCourse = {};
+  final Map<String, List<ScheduleActivity>> scheduleActivitiesByCourse = {};
 
   /// This map contains the direct settings as string for each course that are grouped
   /// (Exemple: (key, value) => ("ING150", "Laboratoire (Groupe A)"))
-  final Map<String, String> _settingsScheduleActivities = {};
+  final Map<String, String> settingsScheduleActivities = {};
 
   /// Get current locale
   Locale get locale => _settingsManager.locale;
@@ -96,8 +96,9 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
               .getScheduleActivities()
               // ignore: return_type_invalid_for_catch_error
               .catchError(onError)
-              .then(_assignScheduleActivities)
-              .whenComplete(() {
+              .then((value) async {
+            await assignScheduleActivities(value);
+          }).whenComplete(() {
             setBusyForObject(isLoadingEvents, false);
             Utils.showNoConnectionToast(_networkingService, _appIntl);
           });
@@ -105,23 +106,28 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
         return value;
       });
 
-  void _assignScheduleActivities(listOfSchedules) {
-    if (listOfSchedules == null) return;
+  Future assignScheduleActivities(
+      List<ScheduleActivity> listOfSchedules) async {
+    if (listOfSchedules == null ||
+        listOfSchedules.isEmpty ||
+        !listOfSchedules.any((element) =>
+            element.activityCode == ActivityCode.labGroupA ||
+            element.activityCode == ActivityCode.labGroupB)) return;
 
     setBusy(true);
-    for (final activity in listOfSchedules as List<ScheduleActivity>) {
+    for (final activity in listOfSchedules) {
       if (activity.activityCode == ActivityCode.labGroupA ||
           activity.activityCode == ActivityCode.labGroupB) {
         // Create the list with the new activity inside or add the activity to an existing group
-        if (!_scheduleActivitiesByCourse.containsKey(activity.courseAcronym)) {
-          _scheduleActivitiesByCourse[activity.courseAcronym] = [activity];
+        if (!scheduleActivitiesByCourse.containsKey(activity.courseAcronym)) {
+          scheduleActivitiesByCourse[activity.courseAcronym] = [activity];
         } else {
-          _scheduleActivitiesByCourse[activity.courseAcronym].add(activity);
+          scheduleActivitiesByCourse[activity.courseAcronym].add(activity);
         }
       }
     }
 
-    loadSettingsScheduleActivities();
+    await loadSettingsScheduleActivities();
   }
 
   @override
@@ -137,22 +143,22 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
     calendarFormat = settings[PreferencesFlag.scheduleSettingsCalendarFormat]
         as CalendarFormat;
 
-    loadSettingsScheduleActivities();
+    await loadSettingsScheduleActivities();
 
     setBusy(false);
   }
 
-  void loadSettingsScheduleActivities() {
-    for (final courseAcronym in _scheduleActivitiesByCourse.keys) {
-      setBusyForObject(courseAcronym, true);
-      setBusy(false);
-      _settingsManager
-          .getDynamicString(DynamicPreferencesFlag(
+  Future loadSettingsScheduleActivities() async {
+    for (final courseAcronym in scheduleActivitiesByCourse.keys) {
+      final String activityCodeToUse = await _settingsManager.getDynamicString(
+          DynamicPreferencesFlag(
               groupAssociationFlag:
                   PreferencesFlag.scheduleSettingsLaboratoryGroup,
-              uniqueKey: courseAcronym))
-          .then((value) => _settingsScheduleActivities[courseAcronym] = value)
-          .whenComplete(() => setBusyForObject(courseAcronym, false));
+              uniqueKey: courseAcronym));
+      final scheduleActivityToSet = scheduleActivitiesByCourse[courseAcronym]
+          .firstWhere((element) => element.activityCode == activityCodeToUse,
+              orElse: () => null);
+      settingsScheduleActivities[courseAcronym] = scheduleActivityToSet.name;
     }
   }
 
