@@ -2,13 +2,16 @@
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:fluttertoast/fluttertoast.dart';
+
+// SERVICES
 import 'package:notredame/core/services/networking_service.dart';
 
 // UTILS
+import 'package:notredame/core/utils/utils.dart';
 import 'package:notredame/ui/utils/loading.dart';
 
 // CONSTANT
+import 'package:notredame/ui/utils/app_theme.dart';
 import 'package:notredame/locator.dart';
 
 // WIDGETS
@@ -106,9 +109,8 @@ class _BaseScaffoldState extends State<BaseScaffold> {
       alignment: Alignment.center,
       children: [
         Container(
-          color: _isLightTheme(context)
-              ? null
-              : const Color.fromRGBO(48, 48, 48, 1),
+          color: Utils.getColorByBrightness(context,
+              AppTheme.lightThemeBackground, AppTheme.darkThemeBackground),
           width: MediaQuery.of(context).size.width,
           height: MediaQuery.of(context).size.height / 30,
         ),
@@ -118,9 +120,5 @@ class _BaseScaffoldState extends State<BaseScaffold> {
         ),
       ],
     );
-  }
-
-  bool _isLightTheme(BuildContext context) {
-    return Theme.of(context).brightness == Brightness.light;
   }
 }
