@@ -212,7 +212,6 @@
   "go_to_dashboard": "Retour à l'accueil",
 
   "no_connectivity": "Aucune connexion internet",
-  "close_no_connectivity_snackbar": "Fermer",
 
   "progress_bar_title": "Progression de la session",
   "progress_bar_message": "{elapsedDays} jours écoulés / {totalDays} jours",
