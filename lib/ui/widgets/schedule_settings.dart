@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:notredame/core/constants/activity_code.dart';
 import 'package:stacked/stacked.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:table_calendar/table_calendar.dart';
+
+// CONSTANTS
+import 'package:notredame/core/constants/activity_code.dart';
 
 // UTILS
 import 'package:notredame/core/utils/utils.dart';
@@ -163,9 +165,9 @@ class _ScheduleSettingsState extends State<ScheduleSettings> {
   }
 
   String _getActivityTitle(String activityCode) {
-    if (activityCode == ActivityType.laboratoryGroupA) {
+    if (activityCode == ActivityCode.labGroupA) {
       return AppIntl.of(context).course_activity_group_a;
-    } else if (activityCode == ActivityType.laboratoryGroupB) {
+    } else if (activityCode == ActivityCode.labGroupB) {
       return AppIntl.of(context).course_activity_group_b;
     }
 
