@@ -134,8 +134,8 @@ class _ScheduleSettingsState extends State<ScheduleSettings> {
       ));
 
       tiles.add(ListTile(
-        selected: !model.selectedScheduleActivity
-            .containsKey(courseActivitiesAcronym),
+        selected:
+            model.selectedScheduleActivity[courseActivitiesAcronym] == null,
         selectedTileColor: selectedColor,
         onTap: () =>
             model.selectScheduleActivity(courseActivitiesAcronym, null),

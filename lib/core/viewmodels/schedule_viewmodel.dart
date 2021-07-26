@@ -168,9 +168,7 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
             .removeWhere((key, value) => key == courseAcronym);
       }
 
-      if (settingsScheduleActivities.isNotEmpty) {
-        coursesActivities;
-      }
+      coursesActivities;
     }
   }
 
