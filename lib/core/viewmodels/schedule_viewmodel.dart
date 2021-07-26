@@ -158,7 +158,13 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
       final scheduleActivityToSet = scheduleActivitiesByCourse[courseAcronym]
           .firstWhere((element) => element.activityCode == activityCodeToUse,
               orElse: () => null);
-      settingsScheduleActivities[courseAcronym] = scheduleActivityToSet.name;
+      if (scheduleActivityToSet != null) {
+        settingsScheduleActivities[courseAcronym] = scheduleActivityToSet.name;
+      } else {
+        // All group selected
+        settingsScheduleActivities
+            .removeWhere((key, value) => key == courseAcronym);
+      }
     }
   }
 
