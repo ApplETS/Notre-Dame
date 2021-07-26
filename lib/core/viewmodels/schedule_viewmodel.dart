@@ -41,7 +41,7 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
   final Map<PreferencesFlag, dynamic> settings = {};
 
   /// Activities sorted by day
-  final Map<DateTime, List<CourseActivity>> _coursesActivities = {};
+  Map<DateTime, List<CourseActivity>> _coursesActivities = {};
 
   /// Day currently selected
   DateTime selectedDate;
@@ -155,35 +155,65 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
               groupAssociationFlag:
                   PreferencesFlag.scheduleSettingsLaboratoryGroup,
               uniqueKey: courseAcronym));
+
       final scheduleActivityToSet = scheduleActivitiesByCourse[courseAcronym]
           .firstWhere((element) => element.activityCode == activityCodeToUse,
               orElse: () => null);
-      settingsScheduleActivities[courseAcronym] = scheduleActivityToSet.name;
+
+      if (scheduleActivityToSet != null) {
+        settingsScheduleActivities[courseAcronym] = scheduleActivityToSet.name;
+      }
+
+      if (settingsScheduleActivities.isNotEmpty) {
+        coursesActivities;
+      }
     }
   }
 
   /// Return the list of all the courses activities arranged by date.
   Map<DateTime, List<CourseActivity>> get coursesActivities {
-    if (_coursesActivities.isEmpty) {
-      // Build the map
-      for (final CourseActivity course in _courseRepository.coursesActivities) {
-        final DateTime dateOnly = course.startDateTime.subtract(Duration(
-            hours: course.startDateTime.hour,
-            minutes: course.startDateTime.minute));
-        _coursesActivities.update(dateOnly, (value) {
-          value.add(course);
+    _coursesActivities = {};
 
-          return value;
-        }, ifAbsent: () => [course]);
+    // Build the map
+    for (final CourseActivity course in _courseRepository.coursesActivities) {
+      final DateTime dateOnly = course.startDateTime.subtract(Duration(
+          hours: course.startDateTime.hour,
+          minutes: course.startDateTime.minute));
+
+      if (!_coursesActivities.containsKey(dateOnly)) {
+        _coursesActivities[dateOnly] = [];
       }
 
-      _coursesActivities.updateAll((key, value) {
-        value.sort((a, b) => a.startDateTime.compareTo(b.startDateTime));
+      _coursesActivities.update(dateOnly, (value) {
+        final scheduleActivitiesContainsGroup = settingsScheduleActivities
+            .containsKey(course.courseGroup.split("-").first);
+
+        if (scheduleActivitiesContainsGroup) {
+          if (scheduleActivityIsSelected(course)) {
+            value.add(course);
+          }
+        } else {
+          value.add(course);
+        }
 
         return value;
-      });
+      }, ifAbsent: () => [course]);
     }
+
+    _coursesActivities.updateAll((key, value) {
+      value.sort((a, b) => a.startDateTime.compareTo(b.startDateTime));
+
+      return value;
+    });
+
     return _coursesActivities;
+  }
+
+  bool scheduleActivityIsSelected(CourseActivity course) {
+    final activityNameSelected =
+        settingsScheduleActivities[course.courseGroup.split("-").first];
+
+    return activityNameSelected == course.activityDescription;
   }
 
   /// Get the activities for a specific [date], return empty if there is no activity for this [date]
