@@ -177,6 +177,10 @@ class SettingsManager with ChangeNotifier {
     // Log the event
     _analyticsService.logEvent(
         "${tag}_${EnumToString.convertToString(flag)}", value);
+
+    if (value == null) {
+      return _preferencesService.removePreferencesFlag(flag);
+    }
     return _preferencesService.setString(flag, value);
   }
 
@@ -185,6 +189,11 @@ class SettingsManager with ChangeNotifier {
       DynamicPreferencesFlag flag, String value) async {
     // Log the event
     _analyticsService.logEvent("${tag}_${flag.toString()}", value);
+
+    if (value == null) {
+      return _preferencesService.removeDynamicPreferencesFlag(flag);
+    }
+
     return _preferencesService.setDynamicString(flag, value);
   }
 
