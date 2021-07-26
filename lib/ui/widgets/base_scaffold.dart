@@ -60,22 +60,14 @@ class _BaseScaffoldState extends State<BaseScaffold> {
     final isOffline =
         await Connectivity().checkConnectivity() == ConnectivityResult.none;
     setState(() {
-      if (widget._showBottomBar) {
-        _isOffline = isOffline;
-      } else {
-        _isOffline = false;
-      }
+      _isOffline = isOffline;
     });
   }
 
   void _listenToChangeInConnectivity() {
     Connectivity().onConnectivityChanged.listen((event) {
       setState(() {
-        if (widget._showBottomBar) {
-          _isOffline = event == ConnectivityResult.none;
-        } else {
-          _isOffline = false;
-        }
+        _isOffline = event == ConnectivityResult.none;
       });
     });
   }
