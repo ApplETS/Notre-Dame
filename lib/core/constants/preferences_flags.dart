@@ -31,20 +31,31 @@ enum PreferencesFlag {
 /// if your key value should be decided at runtime.
 class DynamicPreferencesFlag {
   final String separator;
-  String specialKey;
+  String uniqueKey;
   PreferencesFlag groupAssociationFlag;
 
   DynamicPreferencesFlag(
       {@required this.groupAssociationFlag,
-      @required this.specialKey,
+      @required this.uniqueKey,
       this.separator = "_"});
 
-  String get data => groupAssociationFlag.toString() + separator + specialKey;
+  String get data => groupAssociationFlag.toString() + separator + uniqueKey;
 
   @override
   String toString() {
     return EnumToString.convertToString(groupAssociationFlag) +
         separator +
-        specialKey;
+        uniqueKey;
   }
+
+  @override
+  bool operator ==(Object other) =>
+      other is DynamicPreferencesFlag &&
+      groupAssociationFlag == other.groupAssociationFlag &&
+      separator == other.separator &&
+      uniqueKey == other.uniqueKey;
+
+  @override
+  int get hashCode =>
+      groupAssociationFlag.hashCode ^ separator.hashCode ^ uniqueKey.hashCode;
 }

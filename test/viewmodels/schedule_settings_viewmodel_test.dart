@@ -1,6 +1,10 @@
 // FLUTTER / DART / THIRD-PARTIES
 import 'package:flutter_test/flutter_test.dart';
+import 'package:intl/intl.dart';
 import 'package:mockito/mockito.dart';
+import 'package:notredame/core/constants/activity_code.dart';
+import 'package:notredame/core/managers/course_repository.dart';
+import 'package:notredame/core/models/schedule_activity.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 // MANAGER
@@ -14,9 +18,11 @@ import 'package:notredame/core/constants/preferences_flags.dart';
 
 // OTHER
 import '../helpers.dart';
+import '../mock/managers/course_repository_mock.dart';
 import '../mock/managers/settings_manager_mock.dart';
 
 SettingsManager settingsManager;
+CourseRepository courseRepository;
 ScheduleSettingsViewModel viewModel;
 
 void main() {
@@ -29,18 +35,109 @@ void main() {
     PreferencesFlag.scheduleSettingsShowTodayBtn: true
   };
 
+  final List<ScheduleActivity> classOneWithLaboratoryABscheduleActivities = [
+    ScheduleActivity(
+        courseAcronym: "ABC123",
+        courseGroup: "01",
+        courseTitle: "Sample Course",
+        dayOfTheWeek: 1,
+        day: "Lundi",
+        startTime: DateFormat("hh:mm").parse("08:30"),
+        endTime: DateFormat("hh:mm").parse("12:00"),
+        activityCode: ActivityCode.lectureCourse,
+        isPrincipalActivity: true,
+        activityLocation: "En ligne",
+        name: "Activité de cours"),
+    ScheduleActivity(
+        courseAcronym: "ABC123",
+        courseGroup: "01",
+        courseTitle: "Sample Course",
+        dayOfTheWeek: 2,
+        day: "Mardi",
+        startTime: DateFormat("hh:mm").parse("13:30"),
+        endTime: DateFormat("hh:mm").parse("15:00"),
+        activityCode: ActivityCode.labGroupA,
+        isPrincipalActivity: true,
+        activityLocation: "D-4001",
+        name: "Laboratoire (Groupe A)"),
+    ScheduleActivity(
+        courseAcronym: "ABC123",
+        courseGroup: "01",
+        courseTitle: "Sample Course",
+        dayOfTheWeek: 2,
+        day: "Mardi",
+        startTime: DateFormat("hh:mm").parse("15:00"),
+        endTime: DateFormat("hh:mm").parse("16:30"),
+        activityCode: ActivityCode.labGroupB,
+        isPrincipalActivity: true,
+        activityLocation: "D-4002",
+        name: "Laboratoire (Groupe B)"),
+  ];
+
+  final List<ScheduleActivity> classTwoWithLaboratoryABscheduleActivities = [
+    ScheduleActivity(
+        courseAcronym: "XYZ321",
+        courseGroup: "01",
+        courseTitle: "Sample Course",
+        dayOfTheWeek: 1,
+        day: "Lundi",
+        startTime: DateFormat("hh:mm").parse("08:30"),
+        endTime: DateFormat("hh:mm").parse("12:00"),
+        activityCode: ActivityCode.lectureCourse,
+        isPrincipalActivity: true,
+        activityLocation: "En ligne",
+        name: "Activité de cours"),
+    ScheduleActivity(
+        courseAcronym: "XYZ321",
+        courseGroup: "01",
+        courseTitle: "Sample Course",
+        dayOfTheWeek: 2,
+        day: "Mardi",
+        startTime: DateFormat("hh:mm").parse("13:30"),
+        endTime: DateFormat("hh:mm").parse("15:00"),
+        activityCode: ActivityCode.labGroupA,
+        isPrincipalActivity: true,
+        activityLocation: "D-4003",
+        name: "Laboratoire (Groupe A)"),
+    ScheduleActivity(
+        courseAcronym: "XYZ321",
+        courseGroup: "01",
+        courseTitle: "Sample Course",
+        dayOfTheWeek: 2,
+        day: "Mardi",
+        startTime: DateFormat("hh:mm").parse("15:00"),
+        endTime: DateFormat("hh:mm").parse("16:30"),
+        activityCode: ActivityCode.labGroupB,
+        isPrincipalActivity: true,
+        activityLocation: "D-4004",
+        name: "Laboratoire (Groupe B)"),
+  ];
+  final List<ScheduleActivity> twoClassesWithLaboratoryABscheduleActivities =
+      [];
   group("ScheduleSettingsViewModel - ", () {
     setUp(() {
       settingsManager = setupSettingsManagerMock();
+      courseRepository = setupCourseRepositoryMock();
       setupFlutterToastMock();
       viewModel = ScheduleSettingsViewModel();
+
+      twoClassesWithLaboratoryABscheduleActivities
+          .addAll(classOneWithLaboratoryABscheduleActivities);
+      twoClassesWithLaboratoryABscheduleActivities
+          .addAll(classTwoWithLaboratoryABscheduleActivities);
     });
 
     group("futureToRun - ", () {
-      test("The settings are correctly loaded and sets", () async {
+      test(
+          "The settings are correctly loaded and sets (if no schedule activities present to use)",
+          () async {
         SettingsManagerMock.stubGetScheduleSettings(
             settingsManager as SettingsManagerMock,
             toReturn: settings);
+
+        CourseRepositoryMock.stubGetScheduleActivities(
+            courseRepository as CourseRepositoryMock,
+            toReturn: []);
 
         expect(await viewModel.futureToRun(), settings);
         expect(viewModel.calendarFormat,
@@ -52,6 +149,111 @@ void main() {
 
         verify(settingsManager.getScheduleSettings()).called(1);
         verifyNoMoreInteractions(settingsManager);
+
+        verify(courseRepository.getScheduleActivities()).called(1);
+        verifyNoMoreInteractions(courseRepository);
+      });
+
+      test(
+          "If there is one valid class which has grouped laboratory, we parse it and store it (None selected)",
+          () async {
+        SettingsManagerMock.stubGetScheduleSettings(
+            settingsManager as SettingsManagerMock,
+            toReturn: settings);
+
+        CourseRepositoryMock.stubGetScheduleActivities(
+            courseRepository as CourseRepositoryMock,
+            toReturn: classOneWithLaboratoryABscheduleActivities);
+
+        final courseAcronymWithLaboratory =
+            classOneWithLaboratoryABscheduleActivities.first.courseAcronym;
+
+        SettingsManagerMock.stubGetDynamicString(
+            settingsManager as SettingsManagerMock,
+            DynamicPreferencesFlag(
+                groupAssociationFlag:
+                    PreferencesFlag.scheduleSettingsLaboratoryGroup,
+                uniqueKey: courseAcronymWithLaboratory),
+            toReturn: null);
+
+        expect(await viewModel.futureToRun(), settings);
+        expect(
+            viewModel.scheduleActivitiesByCourse
+                .containsKey(courseAcronymWithLaboratory),
+            true);
+        expect(
+            viewModel
+                .scheduleActivitiesByCourse[courseAcronymWithLaboratory].length,
+            2);
+        expect(
+            viewModel.selectedScheduleActivity
+                .containsKey(courseAcronymWithLaboratory),
+            false);
+
+        verify(courseRepository.getScheduleActivities()).called(1);
+        verifyNoMoreInteractions(courseRepository);
+
+        verify(settingsManager.getDynamicString(any)).called(1);
+      });
+      test(
+          "If there is two valid class which has grouped laboratory, we store both (First => none selected, Second => group A selected)",
+          () async {
+        SettingsManagerMock.stubGetScheduleSettings(
+            settingsManager as SettingsManagerMock,
+            toReturn: settings);
+
+        CourseRepositoryMock.stubGetScheduleActivities(
+            courseRepository as CourseRepositoryMock,
+            toReturn: twoClassesWithLaboratoryABscheduleActivities);
+
+        final firstCourseAcronymWithLab =
+            classOneWithLaboratoryABscheduleActivities.first.courseAcronym;
+
+        final secondCourseAcronymWithLab =
+            classTwoWithLaboratoryABscheduleActivities.first.courseAcronym;
+
+        SettingsManagerMock.stubGetDynamicString(
+            settingsManager as SettingsManagerMock,
+            DynamicPreferencesFlag(
+                groupAssociationFlag:
+                    PreferencesFlag.scheduleSettingsLaboratoryGroup,
+                uniqueKey: firstCourseAcronymWithLab),
+            toReturn: null);
+        SettingsManagerMock.stubGetDynamicString(
+            settingsManager as SettingsManagerMock,
+            DynamicPreferencesFlag(
+                groupAssociationFlag:
+                    PreferencesFlag.scheduleSettingsLaboratoryGroup,
+                uniqueKey: secondCourseAcronymWithLab),
+            toReturn: ActivityCode.labGroupA);
+
+        expect(await viewModel.futureToRun(), settings);
+        expect(viewModel.scheduleActivitiesByCourse.keys.length, 2);
+        expect(
+            viewModel
+                .scheduleActivitiesByCourse[firstCourseAcronymWithLab].length,
+            2);
+        expect(
+            viewModel
+                .scheduleActivitiesByCourse[secondCourseAcronymWithLab].length,
+            2);
+        expect(
+            viewModel.selectedScheduleActivity
+                .containsKey(firstCourseAcronymWithLab),
+            false);
+        expect(
+            viewModel.selectedScheduleActivity
+                .containsKey(secondCourseAcronymWithLab),
+            true);
+        expect(
+            viewModel.selectedScheduleActivity[secondCourseAcronymWithLab],
+            classTwoWithLaboratoryABscheduleActivities.firstWhere(
+                (element) => element.activityCode == ActivityCode.labGroupA));
+
+        verify(courseRepository.getScheduleActivities()).called(1);
+        verifyNoMoreInteractions(courseRepository);
+
+        verify(settingsManager.getDynamicString(any)).called(2);
       });
     });
 
