@@ -3,16 +3,10 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-// SERVICES
-import 'package:notredame/core/services/networking_service.dart';
-
 // UTILS
 import 'package:notredame/core/utils/utils.dart';
 import 'package:notredame/ui/utils/loading.dart';
-
-// CONSTANT
 import 'package:notredame/ui/utils/app_theme.dart';
-import 'package:notredame/locator.dart';
 
 // WIDGETS
 import 'package:notredame/ui/widgets/bottom_bar.dart';
@@ -55,8 +49,6 @@ class _BaseScaffoldState extends State<BaseScaffold> {
   // Displays text under the app bar when offline.
   static bool _isOffline = false;
 
-  final NetworkingService _networkingService = locator<NetworkingService>();
-
   @override
   void initState() {
     super.initState();
@@ -65,16 +57,25 @@ class _BaseScaffoldState extends State<BaseScaffold> {
   }
 
   Future _setOfflineValue() async {
-    final isOffline = !(await _networkingService.hasConnectivity());
+    final isOffline =
+        await Connectivity().checkConnectivity() == ConnectivityResult.none;
     setState(() {
-      _isOffline = isOffline;
+      if (widget._showBottomBar) {
+        _isOffline = isOffline;
+      } else {
+        _isOffline = false;
+      }
     });
   }
 
   void _listenToChangeInConnectivity() {
     Connectivity().onConnectivityChanged.listen((event) {
       setState(() {
-        _isOffline = event == ConnectivityResult.none;
+        if (widget._showBottomBar) {
+          _isOffline = event == ConnectivityResult.none;
+        } else {
+          _isOffline = false;
+        }
       });
     });
   }
