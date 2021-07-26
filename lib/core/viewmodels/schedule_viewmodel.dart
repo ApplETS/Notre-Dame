@@ -212,6 +212,11 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
   }
 
   bool scheduleActivityIsSelected(CourseActivity course) {
+    if (course.activityDescription != ActivityDescriptionName.labA &&
+        course.activityDescription != ActivityDescriptionName.labB) {
+      return true;
+    }
+
     final activityNameSelected =
         settingsScheduleActivities[course.courseGroup.split("-").first];
 
