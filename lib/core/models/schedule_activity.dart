@@ -91,13 +91,13 @@ class ScheduleActivity {
         'courseAcronym': courseAcronym,
         'courseGroup': courseGroup,
         'courseTitle': courseTitle,
-        'dayOfTheWeek': dayOfTheWeek,
+        'dayOfTheWeek': dayOfTheWeek.toString(),
         'day': day,
         'activityCode': activityCode,
         'name': name,
         'isPrincipalActivity': isPrincipalActivity.toString(),
-        'startTime': startTime.toString(),
-        'endTime': endTime.toString(),
+        'startTime': DateFormat("HH:mm").format(startTime),
+        'endTime': DateFormat("HH:mm").format(endTime),
         'activityLocation': activityLocation
       };
 
@@ -105,7 +105,6 @@ class ScheduleActivity {
   bool operator ==(Object other) =>
       identical(this, other) ||
       other is ScheduleActivity &&
-          runtimeType == other.runtimeType &&
           courseAcronym == other.courseAcronym &&
           courseGroup == other.courseGroup &&
           courseTitle == other.courseTitle &&

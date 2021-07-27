@@ -238,7 +238,7 @@ class CourseRepository {
     try {
       // Update cache
       _cacheManager.update(
-          scheduleActivitiesCacheKey, jsonEncode(_coursesActivities));
+          scheduleActivitiesCacheKey, jsonEncode(_scheduleActivities));
     } on CacheException catch (_) {
       // Do nothing, the caching will retry later and the error has been logged by the [CacheManager]
       _logger.e(
