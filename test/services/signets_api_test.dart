@@ -3,13 +3,12 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:intl/intl.dart';
 import 'package:logger/logger.dart';
 import 'package:mockito/mockito.dart';
-import 'package:notredame/core/constants/activity_code.dart';
-import 'package:notredame/core/models/schedule_activity.dart';
 
 // SERVICE
 import 'package:notredame/core/services/signets_api.dart';
 
 // MODELS
+import 'package:notredame/core/models/schedule_activity.dart';
 import 'package:notredame/core/models/course_activity.dart';
 import 'package:notredame/core/models/session.dart';
 import 'package:notredame/core/models/course.dart';
@@ -19,6 +18,7 @@ import 'package:notredame/core/models/program.dart';
 import 'package:notredame/core/models/course_summary.dart';
 
 // CONSTANTS
+import 'package:notredame/core/constants/activity_code.dart';
 import 'package:notredame/core/constants/urls.dart';
 import 'package:notredame/core/utils/api_exception.dart';
 import 'package:notredame/core/constants/signets_errors.dart';

@@ -2,18 +2,20 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:intl/intl.dart';
 import 'package:mockito/mockito.dart';
-import 'package:notredame/core/constants/activity_code.dart';
-import 'package:notredame/core/managers/course_repository.dart';
-import 'package:notredame/core/models/schedule_activity.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 // MANAGER
 import 'package:notredame/core/managers/settings_manager.dart';
+import 'package:notredame/core/managers/course_repository.dart';
 
 // VIEWMODEL
 import 'package:notredame/core/viewmodels/schedule_settings_viewmodel.dart';
 
+// MODELS
+import 'package:notredame/core/models/schedule_activity.dart';
+
 // CONSTANTS
+import 'package:notredame/core/constants/activity_code.dart';
 import 'package:notredame/core/constants/preferences_flags.dart';
 
 // OTHER
