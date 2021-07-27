@@ -2,6 +2,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:intl/intl.dart';
 import 'package:mockito/mockito.dart';
+import 'package:table_calendar/table_calendar.dart';
 
 // MANAGERS
 import 'package:notredame/core/managers/course_repository.dart';
@@ -13,7 +14,6 @@ import 'package:notredame/core/viewmodels/schedule_viewmodel.dart';
 
 // MODEL
 import 'package:notredame/core/models/course_activity.dart';
-import 'package:table_calendar/table_calendar.dart';
 
 // CONSTANTS
 import 'package:notredame/core/constants/activity_code.dart';
