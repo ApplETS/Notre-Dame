@@ -29,24 +29,3 @@ class ActivityCode {
   static const String labGroupA = "Q";
   static const String labGroupB = "R";
 }
-/**
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- */
