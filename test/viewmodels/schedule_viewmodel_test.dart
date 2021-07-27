@@ -130,6 +130,8 @@ void main() {
             courseRepository as CourseRepositoryMock);
         CourseRepositoryMock.stubCoursesActivities(
             courseRepository as CourseRepositoryMock);
+        CourseRepositoryMock.stubGetScheduleActivities(
+            courseRepository as CourseRepositoryMock);
 
         expect(await viewModel.futureToRun(), []);
 
@@ -150,6 +152,8 @@ void main() {
             courseRepository as CourseRepositoryMock,
             fromCacheOnly: false);
         CourseRepositoryMock.stubCoursesActivities(
+            courseRepository as CourseRepositoryMock);
+        CourseRepositoryMock.stubGetScheduleActivities(
             courseRepository as CourseRepositoryMock);
 
         expect(await viewModel.futureToRun(), [],

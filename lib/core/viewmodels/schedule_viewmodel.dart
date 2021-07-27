@@ -115,6 +115,7 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
             element.activityCode == ActivityCode.labGroupB)) return;
 
     setBusy(true);
+    scheduleActivitiesByCourse.clear();
     for (final activity in listOfSchedules) {
       if (activity.activityCode == ActivityCode.labGroupA ||
           activity.activityCode == ActivityCode.labGroupB) {

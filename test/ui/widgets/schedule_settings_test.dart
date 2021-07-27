@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
+import 'package:notredame/core/managers/course_repository.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -17,10 +18,12 @@ import 'package:notredame/ui/widgets/schedule_settings.dart';
 import '../../helpers.dart';
 
 // MOCK
+import '../../mock/managers/course_repository_mock.dart';
 import '../../mock/managers/settings_manager_mock.dart';
 
 void main() {
   SettingsManager settingsManager;
+  CourseRepositoryMock courseRepository;
   AppIntl intl;
 
   // Some settings
@@ -33,7 +36,10 @@ void main() {
   group("ScheduleSettings - ", () {
     setUp(() async {
       settingsManager = setupSettingsManagerMock();
+      courseRepository = setupCourseRepositoryMock() as CourseRepositoryMock;
       intl = await setupAppIntl();
+
+      CourseRepositoryMock.stubGetScheduleActivities(courseRepository);
     });
 
     group("ui - ", () {
@@ -41,7 +47,6 @@ void main() {
         SettingsManagerMock.stubGetScheduleSettings(
             settingsManager as SettingsManagerMock,
             toReturn: settings);
-
         await tester
             .pumpWidget(localizedWidget(child: const ScheduleSettings()));
         await tester.pumpAndSettle();

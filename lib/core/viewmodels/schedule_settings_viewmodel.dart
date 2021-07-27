@@ -123,6 +123,7 @@ class ScheduleSettingsViewModel
     _showTodayBtn =
         settings[PreferencesFlag.scheduleSettingsShowTodayBtn] as bool;
 
+    scheduleActivitiesByCourse.clear();
     final schedulesActivities = await _courseRepository.getScheduleActivities();
     for (final activity in schedulesActivities) {
       if (activity.activityCode == ActivityCode.labGroupA ||
@@ -131,7 +132,11 @@ class ScheduleSettingsViewModel
         if (!_scheduleActivitiesByCourse.containsKey(activity.courseAcronym)) {
           _scheduleActivitiesByCourse[activity.courseAcronym] = [activity];
         } else {
-          _scheduleActivitiesByCourse[activity.courseAcronym].add(activity);
+          // Remove duplicata
+          if (!_scheduleActivitiesByCourse[activity.courseAcronym]
+              .contains(activity)) {
+            _scheduleActivitiesByCourse[activity.courseAcronym].add(activity);
+          }
         }
       }
     }
