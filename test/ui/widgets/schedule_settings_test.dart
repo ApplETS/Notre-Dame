@@ -22,7 +22,7 @@ import '../../mock/managers/settings_manager_mock.dart';
 
 void main() {
   SettingsManager settingsManager;
-  CourseRepositoryMock courseRepository;
+  CourseRepositoryMock courseRepositoryMock;
   AppIntl intl;
 
   // Some settings
@@ -35,10 +35,11 @@ void main() {
   group("ScheduleSettings - ", () {
     setUp(() async {
       settingsManager = setupSettingsManagerMock();
-      courseRepository = setupCourseRepositoryMock() as CourseRepositoryMock;
+      courseRepositoryMock =
+          setupCourseRepositoryMock() as CourseRepositoryMock;
       intl = await setupAppIntl();
 
-      CourseRepositoryMock.stubGetScheduleActivities(courseRepository);
+      CourseRepositoryMock.stubGetScheduleActivities(courseRepositoryMock);
     });
 
     group("ui - ", () {

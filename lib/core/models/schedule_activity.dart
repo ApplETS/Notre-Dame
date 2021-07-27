@@ -116,18 +116,4 @@ class ScheduleActivity {
           startTime == other.startTime &&
           endTime == other.endTime &&
           activityLocation == other.activityLocation;
-
-  @override
-  int get hashCode =>
-      courseAcronym.hashCode ^
-      courseGroup.hashCode ^
-      courseTitle.hashCode ^
-      dayOfTheWeek.hashCode ^
-      day.hashCode ^
-      activityCode.hashCode ^
-      name.hashCode ^
-      isPrincipalActivity.hashCode ^
-      startTime.hashCode ^
-      endTime.hashCode ^
-      activityLocation.hashCode;
 }
