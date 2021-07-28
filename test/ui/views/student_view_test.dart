@@ -6,6 +6,9 @@ import 'package:flutter_test/flutter_test.dart';
 // MANAGER
 import 'package:notredame/core/managers/course_repository.dart';
 
+// SERVICES
+import 'package:notredame/core/services/networking_service.dart';
+
 // VIEWS
 import 'package:notredame/ui/views/student_view.dart';
 
@@ -17,16 +20,14 @@ import '../../helpers.dart';
 
 // MOCKS
 import '../../mock/managers/course_repository_mock.dart';
-import '../../mock/services/networking_service_mock.dart';
 
 void main() {
   CourseRepository courseRepository;
-  NetworkingServiceMock networkingService;
 
   group('StudentView - ', () {
     setUp(() async {
       setupNavigationServiceMock();
-      networkingService = setupNetworkingServiceMock() as NetworkingServiceMock;
+      setupNetworkingServiceMock();
       courseRepository = setupCourseRepositoryMock();
 
       CourseRepositoryMock.stubCourses(
@@ -37,14 +38,11 @@ void main() {
       CourseRepositoryMock.stubGetCourses(
           courseRepository as CourseRepositoryMock,
           fromCacheOnly: true);
-
-      // Stub to simulate that the user has an active internet connection
-      NetworkingServiceMock.stubHasConnectivity(networkingService);
     });
 
     tearDown(() {
       unregister<CourseRepository>();
-      unregister<NetworkingServiceMock>();
+      unregister<NetworkingService>();
     });
 
     group('UI - ', () {
