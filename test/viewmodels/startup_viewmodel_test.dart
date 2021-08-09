@@ -67,7 +67,8 @@ void main() {
         NetworkingServiceMock.stubHasConnectivity(networkingService);
 
         SettingsManagerMock.stubGetString(
-            settingsManager as SettingsManagerMock, PreferencesFlag.discovery,
+            settingsManager as SettingsManagerMock,
+            PreferencesFlag.discoveryDashboard,
             toReturn: 'true');
 
         SettingsManagerMock.stubGetString(

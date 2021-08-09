@@ -5,6 +5,7 @@ import 'package:mockito/mockito.dart';
 
 // MANAGER
 import 'package:notredame/core/managers/course_repository.dart';
+import 'package:notredame/core/managers/settings_manager.dart';
 
 // SERVICES
 import 'package:notredame/core/services/navigation_service.dart';
@@ -91,6 +92,7 @@ void main() {
     setUp(() async {
       courseRepository = setupCourseRepositoryMock();
       intl = await setupAppIntl();
+      setupSettingsManagerMock();
       setupNavigationServiceMock();
       setupFlutterToastMock();
 
@@ -100,6 +102,7 @@ void main() {
     tearDown(() {
       unregister<CourseRepository>();
       unregister<NavigationService>();
+      unregister<SettingsManager>();
       tearDownFlutterToastMock();
     });
 
