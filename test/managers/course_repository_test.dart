@@ -21,8 +21,10 @@ import 'package:notredame/core/models/course.dart';
 import 'package:notredame/core/models/course_summary.dart';
 import 'package:notredame/core/models/evaluation.dart' as model;
 
-// UTILS
+// CONSTANTS
 import 'package:notredame/core/constants/activity_code.dart';
+
+// UTILS
 import 'package:notredame/core/utils/api_exception.dart';
 import '../helpers.dart';
 
