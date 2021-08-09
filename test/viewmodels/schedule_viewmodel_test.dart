@@ -7,13 +7,13 @@ import 'package:table_calendar/table_calendar.dart';
 // MANAGERS
 import 'package:notredame/core/managers/course_repository.dart';
 import 'package:notredame/core/managers/settings_manager.dart';
-import 'package:notredame/core/models/schedule_activity.dart';
 
 // VIEW-MODEL
 import 'package:notredame/core/viewmodels/schedule_viewmodel.dart';
 
 // MODEL
 import 'package:notredame/core/models/course_activity.dart';
+import 'package:notredame/core/models/schedule_activity.dart';
 
 // CONSTANTS
 import 'package:notredame/core/constants/activity_code.dart';
@@ -25,7 +25,6 @@ import '../helpers.dart';
 // MOCKS
 import '../mock/managers/course_repository_mock.dart';
 import '../mock/managers/settings_manager_mock.dart';
-import '../mock/services/networking_service_mock.dart';
 
 CourseRepository courseRepository;
 SettingsManager settingsManager;

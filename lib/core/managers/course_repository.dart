@@ -3,7 +3,6 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
-import 'package:notredame/core/models/schedule_activity.dart';
 
 // SERVICES
 import 'package:notredame/core/services/analytics_service.dart';
@@ -17,6 +16,7 @@ import 'package:notredame/core/models/course_activity.dart';
 import 'package:notredame/core/models/course.dart';
 import 'package:notredame/core/models/course_summary.dart';
 import 'package:notredame/core/models/session.dart';
+import 'package:notredame/core/models/schedule_activity.dart';
 
 // UTILS
 import 'package:notredame/core/utils/cache_exception.dart';
