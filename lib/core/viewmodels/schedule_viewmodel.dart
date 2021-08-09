@@ -51,7 +51,7 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
   final Map<String, List<ScheduleActivity>> scheduleActivitiesByCourse = {};
 
   /// This map contains the direct settings as string for each course that are grouped
-  /// (Exemple: (key, value) => ("ING150", "Laboratoire (Groupe A)"))
+  /// (Example: (key, value) => ("ING150", "Laboratoire (Groupe A)"))
   final Map<String, String> settingsScheduleActivities = {};
 
   /// Get current locale
