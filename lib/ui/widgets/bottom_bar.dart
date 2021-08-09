@@ -31,6 +31,7 @@ class BottomBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return BottomNavigationBar(
       type: BottomNavigationBarType.fixed,
+      elevation: 0,
       onTap: (value) => _onTap(value),
       items: _buildItems(context),
       currentIndex: _defineIndex(ModalRoute.of(context).settings.name),

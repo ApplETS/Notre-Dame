@@ -12,6 +12,9 @@ import 'package:notredame/core/models/course.dart';
 import 'package:notredame/core/models/course_summary.dart';
 import 'package:notredame/core/models/evaluation.dart' as model;
 
+// SERVICES
+import 'package:notredame/core/services/networking_service.dart';
+
 // VIEWS
 import 'package:notredame/ui/views/grade_details_view.dart';
 
@@ -80,6 +83,7 @@ void main() {
     tearDown(() {
       unregister<CourseRepository>();
       unregister<SettingsManager>();
+      unregister<NetworkingService>();
     });
 
     group('UI - ', () {
