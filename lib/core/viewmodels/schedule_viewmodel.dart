@@ -91,7 +91,6 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
             await assignScheduleActivities(value);
           }).whenComplete(() {
             setBusyForObject(isLoadingEvents, false);
-            Utils.showNoConnectionToast(_networkingService, _appIntl);
           });
         });
         return value;
