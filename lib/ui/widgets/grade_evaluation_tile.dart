@@ -9,6 +9,8 @@ import 'package:notredame/core/constants/discovery_ids.dart';
 
 // MODELS
 import 'package:notredame/core/models/evaluation.dart';
+
+// UTILS
 import 'package:notredame/ui/utils/discovery_components.dart';
 
 // WIDGETS
