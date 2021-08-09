@@ -132,7 +132,7 @@ class ScheduleSettingsViewModel
         if (!_scheduleActivitiesByCourse.containsKey(activity.courseAcronym)) {
           _scheduleActivitiesByCourse[activity.courseAcronym] = [activity];
         } else {
-          // Remove duplicata
+          // Add the activity to the course.
           if (!_scheduleActivitiesByCourse[activity.courseAcronym]
               .contains(activity)) {
             _scheduleActivitiesByCourse[activity.courseAcronym].add(activity);
