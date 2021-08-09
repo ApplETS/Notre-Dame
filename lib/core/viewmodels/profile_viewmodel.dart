@@ -11,12 +11,6 @@ import 'package:notredame/core/managers/user_repository.dart';
 import 'package:notredame/core/models/profile_student.dart';
 import 'package:notredame/core/models/program.dart';
 
-// SERVICE
-import 'package:notredame/core/services/networking_service.dart';
-
-// UTILS
-import 'package:notredame/core/utils/utils.dart';
-
 // OTHERS
 import '../../locator.dart';
 
@@ -26,9 +20,6 @@ class ProfileViewModel extends FutureViewModel<List<Program>> {
 
   /// Localization class of the application.
   final AppIntl _appIntl;
-
-  /// Verify if user has an active internet connection
-  final NetworkingService _networkingService = locator<NetworkingService>();
 
   /// List of the programs
   List<Program> _programList = List.empty();
@@ -81,7 +72,6 @@ class ProfileViewModel extends FutureViewModel<List<Program>> {
             .then((value) => _userRepository.getPrograms().catchError(onError))
             .whenComplete(() {
           setBusyForObject(isLoadingEvents, false);
-          Utils.showNoConnectionToast(_networkingService, _appIntl);
         });
         return value;
       });

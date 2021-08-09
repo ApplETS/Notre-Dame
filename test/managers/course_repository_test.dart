@@ -823,6 +823,9 @@ void main() {
             userRepository as UserRepositoryMock, user);
         UserRepositoryMock.stubGetPassword(
             userRepository as UserRepositoryMock, password);
+
+        // Stub to simulate that the user has an active internet connection
+        NetworkingServiceMock.stubHasConnectivity(networkingService);
       });
 
       test("Sessions are loaded from cache", () async {
@@ -1010,6 +1013,21 @@ void main() {
         verifyNever(
             cacheManager.update(CourseRepository.sessionsCacheKey, any));
       });
+
+      test("Should not try to fetch from signets when offline", () async {
+        CacheManagerMock.stubGet(cacheManager as CacheManagerMock,
+            CourseRepository.sessionsCacheKey, jsonEncode(sessions));
+
+        //Stub the networkingService to return no connectivity
+        reset(networkingService);
+        NetworkingServiceMock.stubHasConnectivity(networkingService,
+            hasConnectivity: false);
+
+        final sessionsCache = await manager.getSessions();
+        expect(sessionsCache, sessions);
+        verifyNever(
+            signetsApi.getSessions(username: username, password: password));
+      });
     });
 
     group("activeSessions - ", () {
@@ -1059,6 +1077,7 @@ void main() {
             userRepository as UserRepositoryMock, password);
         CacheManagerMock.stubGet(cacheManager as CacheManagerMock,
             CourseRepository.sessionsCacheKey, jsonEncode(sessions));
+        NetworkingServiceMock.stubHasConnectivity(networkingService);
 
         await manager.getSessions();
 
@@ -1622,6 +1641,18 @@ void main() {
 
         verifyNoMoreInteractions(signetsApi);
         verifyNoMoreInteractions(cacheManager);
+      });
+
+      test("Should not try to update course summary when offline", () async {
+        //Stub the networkingService to return no connectivity
+        reset(networkingService);
+        NetworkingServiceMock.stubHasConnectivity(networkingService,
+            hasConnectivity: false);
+
+        final results = await manager.getCourseSummary(course);
+        expect(results, course);
+        verifyNever(signetsApi.getCourseSummary(
+            username: username, password: password, course: course));
       });
     });
   });

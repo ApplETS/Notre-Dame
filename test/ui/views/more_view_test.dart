@@ -20,6 +20,7 @@ import '../../helpers.dart';
 void main() {
   AppIntl intl;
   NavigationService navigation;
+
   group('MoreView - ', () {
     setUp(() async {
       intl = await setupAppIntl();
@@ -30,6 +31,7 @@ void main() {
       setupCacheManagerMock();
       setupSettingsManagerMock();
       setupGithubApiMock();
+      setupNetworkingServiceMock();
     });
 
     tearDown(() {});

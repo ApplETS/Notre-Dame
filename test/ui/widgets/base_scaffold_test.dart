@@ -5,6 +5,7 @@ import 'package:feature_discovery/feature_discovery.dart';
 
 // SERVICE
 import 'package:notredame/core/services/navigation_service.dart';
+import 'package:notredame/core/services/networking_service.dart';
 
 // WIDGET
 import 'package:notredame/ui/widgets/base_scaffold.dart';
@@ -17,10 +18,12 @@ void main() {
   group('BaseScaffold - ', () {
     setUp(() {
       setupNavigationServiceMock();
+      setupNetworkingServiceMock();
     });
 
     tearDown(() {
       unregister<NavigationService>();
+      unregister<NetworkingService>();
     });
 
     testWidgets(
