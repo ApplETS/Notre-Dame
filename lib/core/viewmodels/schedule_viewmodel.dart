@@ -17,12 +17,6 @@ import 'package:notredame/core/managers/settings_manager.dart';
 import 'package:notredame/core/models/course_activity.dart';
 import 'package:notredame/core/models/schedule_activity.dart';
 
-// SERVICE
-import 'package:notredame/core/services/networking_service.dart';
-
-// UTILS
-import 'package:notredame/core/utils/utils.dart';
-
 // OTHER
 import 'package:notredame/locator.dart';
 import 'package:notredame/core/constants/preferences_flags.dart';
@@ -57,14 +51,11 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
   final Map<String, List<ScheduleActivity>> scheduleActivitiesByCourse = {};
 
   /// This map contains the direct settings as string for each course that are grouped
-  /// (Exemple: (key, value) => ("ING150", "Laboratoire (Groupe A)"))
+  /// (Example: (key, value) => ("ING150", "Laboratoire (Groupe A)"))
   final Map<String, String> settingsScheduleActivities = {};
 
   /// Get current locale
   Locale get locale => _settingsManager.locale;
-
-  /// Verify if user has an active internet connection
-  final NetworkingService _networkingService = locator<NetworkingService>();
 
   ScheduleViewModel({@required AppIntl intl, DateTime initialSelectedDate})
       : _appIntl = intl,
@@ -100,7 +91,6 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
             await assignScheduleActivities(value);
           }).whenComplete(() {
             setBusyForObject(isLoadingEvents, false);
-            Utils.showNoConnectionToast(_networkingService, _appIntl);
           });
         });
         return value;
@@ -115,6 +105,7 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
             element.activityCode == ActivityCode.labGroupB)) return;
 
     setBusy(true);
+    scheduleActivitiesByCourse.clear();
     for (final activity in listOfSchedules) {
       if (activity.activityCode == ActivityCode.labGroupA ||
           activity.activityCode == ActivityCode.labGroupB) {

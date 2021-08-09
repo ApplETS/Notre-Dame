@@ -7,13 +7,13 @@ import 'package:table_calendar/table_calendar.dart';
 // MANAGERS
 import 'package:notredame/core/managers/course_repository.dart';
 import 'package:notredame/core/managers/settings_manager.dart';
-import 'package:notredame/core/models/schedule_activity.dart';
 
 // VIEW-MODEL
 import 'package:notredame/core/viewmodels/schedule_viewmodel.dart';
 
 // MODEL
 import 'package:notredame/core/models/course_activity.dart';
+import 'package:notredame/core/models/schedule_activity.dart';
 
 // CONSTANTS
 import 'package:notredame/core/constants/activity_code.dart';
@@ -25,11 +25,9 @@ import '../helpers.dart';
 // MOCKS
 import '../mock/managers/course_repository_mock.dart';
 import '../mock/managers/settings_manager_mock.dart';
-import '../mock/services/networking_service_mock.dart';
 
 CourseRepository courseRepository;
 SettingsManager settingsManager;
-NetworkingServiceMock networkingService;
 ScheduleViewModel viewModel;
 
 void main() {
@@ -106,11 +104,7 @@ void main() {
       // Setting up mocks
       courseRepository = setupCourseRepositoryMock();
       settingsManager = setupSettingsManagerMock();
-      networkingService = setupNetworkingServiceMock() as NetworkingServiceMock;
       setupFlutterToastMock();
-
-      // Stub to simulate that the user has an active internet connection
-      NetworkingServiceMock.stubHasConnectivity(networkingService);
 
       viewModel = ScheduleViewModel(intl: await setupAppIntl());
     });
@@ -118,7 +112,6 @@ void main() {
     tearDown(() {
       unregister<CourseRepository>();
       unregister<SettingsManager>();
-      unregister<NetworkingServiceMock>();
       tearDownFlutterToastMock();
     });
 
@@ -129,6 +122,8 @@ void main() {
         CourseRepositoryMock.stubGetCoursesActivities(
             courseRepository as CourseRepositoryMock);
         CourseRepositoryMock.stubCoursesActivities(
+            courseRepository as CourseRepositoryMock);
+        CourseRepositoryMock.stubGetScheduleActivities(
             courseRepository as CourseRepositoryMock);
 
         expect(await viewModel.futureToRun(), []);
@@ -150,6 +145,8 @@ void main() {
             courseRepository as CourseRepositoryMock,
             fromCacheOnly: false);
         CourseRepositoryMock.stubCoursesActivities(
+            courseRepository as CourseRepositoryMock);
+        CourseRepositoryMock.stubGetScheduleActivities(
             courseRepository as CourseRepositoryMock);
 
         expect(await viewModel.futureToRun(), [],

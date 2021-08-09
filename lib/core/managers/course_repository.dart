@@ -3,7 +3,6 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
-import 'package:notredame/core/models/schedule_activity.dart';
 
 // SERVICES
 import 'package:notredame/core/services/analytics_service.dart';
@@ -17,6 +16,7 @@ import 'package:notredame/core/models/course_activity.dart';
 import 'package:notredame/core/models/course.dart';
 import 'package:notredame/core/models/course_summary.dart';
 import 'package:notredame/core/models/session.dart';
+import 'package:notredame/core/models/schedule_activity.dart';
 
 // UTILS
 import 'package:notredame/core/utils/cache_exception.dart';
@@ -271,6 +271,11 @@ class CourseRepository {
       }
     }
 
+    // Don't try to update cache when offline
+    if (!(await _networkingService.hasConnectivity())) {
+      return _sessions;
+    }
+
     try {
       // getPassword will try to authenticate the user if not authenticated.
       final String password = await _userRepository.getPassword();
@@ -398,6 +403,12 @@ class CourseRepository {
   /// version of the course. Return the course with the summary set.
   Future<Course> getCourseSummary(Course course) async {
     CourseSummary summary;
+
+    // Don't try to update the summary when user has no connection
+    if (!(await _networkingService.hasConnectivity())) {
+      return course;
+    }
+
     try {
       final String password = await _userRepository.getPassword();
       summary = await _signetsApi.getCourseSummary(

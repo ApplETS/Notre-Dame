@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/io_client.dart';
-import 'package:notredame/core/models/schedule_activity.dart';
 import 'package:xml/xml.dart';
 
 // CONSTANTS & EXCEPTIONS
@@ -19,6 +18,7 @@ import 'package:notredame/core/models/profile_student.dart';
 import 'package:notredame/core/models/program.dart';
 import 'package:notredame/core/models/course.dart';
 import 'package:notredame/core/models/course_summary.dart';
+import 'package:notredame/core/models/schedule_activity.dart';
 
 class SignetsApi {
   static const String tag = "SignetsApi";
