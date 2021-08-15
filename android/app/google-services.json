@@ -1,170 +1,34 @@
 {
   "project_info": {
-    "project_number": "577038598461",
-    "firebase_url": "https://etsmobile-98e54.firebaseio.com",
-    "project_id": "etsmobile-98e54",
-    "storage_bucket": "etsmobile-98e54.appspot.com"
+    "project_number": "791091683642",
+    "project_id": "etsmobile-14206",
+    "storage_bucket": "etsmobile-14206.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:577038598461:android:18284ebc7a5e7ce2",
+        "mobilesdk_app_id": "1:791091683642:android:26c4a5ab95f1ccb99ab003",
         "android_client_info": {
           "package_name": "ca.etsmtl.applets.etsmobile"
         }
       },
       "oauth_client": [
         {
-          "client_id": "577038598461-nt6trij5jiuf4rr2o73duufe0hakqv7d.apps.googleusercontent.com",
+          "client_id": "791091683642-ofluf1kb0nbkeoi5pgcbm109u8jalhic.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyCFf3eKVTnplP5HZGmks5fynkUdEMKRI0U"
-        },
-        {
-          "current_key": "AIzaSyDjCWSOLdpe1kkRj-vyYZ4iEV_YZ5vHrI8"
+          "current_key": "AIzaSyDA0KXXjHLvjxQb7c8RHArPnYDAy546-aI"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "577038598461-nt6trij5jiuf4rr2o73duufe0hakqv7d.apps.googleusercontent.com",
+              "client_id": "791091683642-ofluf1kb0nbkeoi5pgcbm109u8jalhic.apps.googleusercontent.com",
               "client_type": 3
-            },
-            {
-              "client_id": "577038598461-1hvobb02usrqjkeijkn91gfbgbdrj4iv.apps.googleusercontent.com",
-              "client_type": 2,
-              "ios_info": {
-                "bundle_id": "ca.etsmtl.ETS-mobile"
-              }
-            }
-          ]
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:577038598461:android:fd9d5f1b682fa181",
-        "android_client_info": {
-          "package_name": "ca.etsmtl.applets.etsmobile.beta"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "577038598461-emhdrvv2eioe5tpmi9g3nhmrrkrnrcme.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "ca.etsmtl.applets.etsmobile.beta",
-            "certificate_hash": "a0921215119b114cd184cd480e949f13029ff888"
-          }
-        },
-        {
-          "client_id": "577038598461-nt6trij5jiuf4rr2o73duufe0hakqv7d.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyCFf3eKVTnplP5HZGmks5fynkUdEMKRI0U"
-        },
-        {
-          "current_key": "AIzaSyDjCWSOLdpe1kkRj-vyYZ4iEV_YZ5vHrI8"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "577038598461-nt6trij5jiuf4rr2o73duufe0hakqv7d.apps.googleusercontent.com",
-              "client_type": 3
-            },
-            {
-              "client_id": "577038598461-1hvobb02usrqjkeijkn91gfbgbdrj4iv.apps.googleusercontent.com",
-              "client_type": 2,
-              "ios_info": {
-                "bundle_id": "ca.etsmtl.ETS-mobile"
-              }
-            }
-          ]
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:577038598461:android:e48a6139d55b1d4a",
-        "android_client_info": {
-          "package_name": "ca.etsmtl.applets.etsmobile.beta.debug"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "577038598461-nt6trij5jiuf4rr2o73duufe0hakqv7d.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyCFf3eKVTnplP5HZGmks5fynkUdEMKRI0U"
-        },
-        {
-          "current_key": "AIzaSyDjCWSOLdpe1kkRj-vyYZ4iEV_YZ5vHrI8"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "577038598461-nt6trij5jiuf4rr2o73duufe0hakqv7d.apps.googleusercontent.com",
-              "client_type": 3
-            },
-            {
-              "client_id": "577038598461-1hvobb02usrqjkeijkn91gfbgbdrj4iv.apps.googleusercontent.com",
-              "client_type": 2,
-              "ios_info": {
-                "bundle_id": "ca.etsmtl.ETS-mobile"
-              }
-            }
-          ]
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:577038598461:android:fe3c0890b86effbbff0554",
-        "android_client_info": {
-          "package_name": "ca.etsmtl.applets.notredame"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "577038598461-nt6trij5jiuf4rr2o73duufe0hakqv7d.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyCFf3eKVTnplP5HZGmks5fynkUdEMKRI0U"
-        },
-        {
-          "current_key": "AIzaSyDjCWSOLdpe1kkRj-vyYZ4iEV_YZ5vHrI8"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "577038598461-nt6trij5jiuf4rr2o73duufe0hakqv7d.apps.googleusercontent.com",
-              "client_type": 3
-            },
-            {
-              "client_id": "577038598461-1hvobb02usrqjkeijkn91gfbgbdrj4iv.apps.googleusercontent.com",
-              "client_type": 2,
-              "ios_info": {
-                "bundle_id": "ca.etsmtl.ETS-mobile"
-              }
             }
           ]
         }
