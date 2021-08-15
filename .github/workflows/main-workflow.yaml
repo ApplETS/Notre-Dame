@@ -194,7 +194,7 @@ jobs:
             build_target: appbundle
             build_args: ''
             build_path: build/app/outputs/bundle/release
-            asset_extension: aab
+            asset_extension: apk
             asset_content_type: application/zip
       # Disable fail-fast as we want results from all even if one fails.
       fail-fast: false

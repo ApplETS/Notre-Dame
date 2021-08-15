@@ -103,7 +103,6 @@ void main() {
       unregister<CourseRepository>();
       unregister<NavigationService>();
       unregister<SettingsManager>();
-      tearDownFlutterToastMock();
     });
 
     group('futureToRun -', () {

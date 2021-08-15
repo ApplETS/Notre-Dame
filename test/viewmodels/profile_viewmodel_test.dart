@@ -75,7 +75,6 @@ void main() {
 
     tearDown(() {
       unregister<UserRepository>();
-      tearDownFlutterToastMock();
     });
 
     group("futureToRun - ", () {

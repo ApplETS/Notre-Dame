@@ -260,7 +260,7 @@ class UserRepository {
       _logger.d("$tag - getInfo: $fetchedInfo info fetched.");
 
       if (_info != fetchedInfo) {
-        _info = fetchedInfo;
+        _info = fetchedInfo ?? _info;
 
         // Update cache
         _cacheManager.update(infoCacheKey, jsonEncode(_info));
