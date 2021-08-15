@@ -222,7 +222,7 @@ class UserRepository {
     return _programs;
   }
 
-  /// Get the profile informations on which the student was active.
+  /// Get the profile information.
   /// The information from the [CacheManager] is loaded than updated with the results
   /// from the [SignetsApi].
   Future<ProfileStudent> getInfo({bool fromCacheOnly = false}) async {
@@ -260,7 +260,7 @@ class UserRepository {
       _logger.d("$tag - getInfo: $fetchedInfo info fetched.");
 
       if (_info != fetchedInfo) {
-        _info ??= fetchedInfo;
+        _info = fetchedInfo;
 
         // Update cache
         _cacheManager.update(infoCacheKey, jsonEncode(_info));
