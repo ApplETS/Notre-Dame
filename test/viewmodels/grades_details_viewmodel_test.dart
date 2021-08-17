@@ -102,7 +102,6 @@ void main() {
     tearDown(() {
       unregister<CourseRepository>();
       unregister<SettingsManager>();
-      tearDownFlutterToastMock();
     });
 
     group('FutureToRun - -', () {

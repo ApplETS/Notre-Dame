@@ -36,6 +36,10 @@ void main() {
       viewModel = ScheduleSettingsViewModel();
     });
 
+    tearDown(() {
+      unregister<SettingsManager>();
+    });
+
     group("futureToRun - ", () {
       test("The settings are correctly loaded and sets", () async {
         SettingsManagerMock.stubGetScheduleSettings(

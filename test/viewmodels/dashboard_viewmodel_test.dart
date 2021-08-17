@@ -158,7 +158,6 @@ void main() {
 
     tearDown(() {
       unregister<SettingsManager>();
-      tearDownFlutterToastMock();
     });
 
     group('futureToRunGrades -', () {

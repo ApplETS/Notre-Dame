@@ -153,7 +153,6 @@ void main() {
       unregister<UserRepository>();
       unregister<NavigationService>();
       unregister<GithubApi>();
-      tearDownFlutterToastMock();
     });
 
     group('logout - ', () {
