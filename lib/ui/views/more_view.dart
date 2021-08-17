@@ -1,13 +1,20 @@
 // FLUTTER / DART / THIRD-PARTIES
 import 'dart:typed_data';
+import 'package:feature_discovery/feature_discovery.dart';
 import 'package:feedback/feedback.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:stacked/stacked.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+// UTILS
+import 'package:notredame/ui/utils/app_theme.dart';
+import 'package:notredame/ui/utils/discovery_components.dart';
+
 // CONSTANTS
 import 'package:notredame/core/constants/router_paths.dart';
+import 'package:notredame/core/constants/discovery_ids.dart';
 
 // VIEWMODELS
 import 'package:notredame/core/viewmodels/more_viewmodel.dart';
@@ -16,7 +23,21 @@ import 'package:notredame/core/viewmodels/more_viewmodel.dart';
 import 'package:notredame/ui/widgets/base_scaffold.dart';
 import 'package:notredame/core/utils/utils.dart';
 
-class MoreView extends StatelessWidget {
+class MoreView extends StatefulWidget {
+  @override
+  _MoreViewState createState() => _MoreViewState();
+}
+
+class _MoreViewState extends State<MoreView> {
+  @override
+  void initState() {
+    super.initState();
+
+    SchedulerBinding.instance.addPostFrameCallback((Duration duration) {
+      MoreViewModel(intl: AppIntl.of(context)).startDiscovery(context);
+    });
+  }
+
   /// License text box
   List<Widget> aboutBoxChildren(BuildContext context) {
     final textStyle = Theme.of(context).textTheme.bodyText2;
@@ -55,20 +76,26 @@ class MoreView extends StatelessWidget {
               children: [
                 ListTile(
                   title: Text(AppIntl.of(context).more_about_applets_title),
-                  leading: Hero(
-                    tag: 'about',
-                    child: Image.asset(
-                      "assets/images/favicon_applets.png",
-                      height: 24,
-                      width: 24,
-                    ),
-                  ),
+                  leading: _buildDiscoveryFeatureDescriptionWidget(
+                      context,
+                      Hero(
+                        tag: 'about',
+                        child: Image.asset(
+                          "assets/images/favicon_applets.png",
+                          height: 24,
+                          width: 24,
+                        ),
+                      ),
+                      DiscoveryIds.detailsMoreThankYou),
                   onTap: () =>
                       model.navigationService.pushNamed(RouterPaths.about),
                 ),
                 ListTile(
                   title: Text(AppIntl.of(context).more_report_bug),
-                  leading: const Icon(Icons.bug_report),
+                  leading: _buildDiscoveryFeatureDescriptionWidget(
+                      context,
+                      const Icon(Icons.bug_report),
+                      DiscoveryIds.detailsMoreBugReport),
                   onTap: () => BetterFeedback.of(context).show((
                     String feedbackText,
                     Uint8List feedbackScreenshot,
@@ -80,7 +107,10 @@ class MoreView extends StatelessWidget {
                 ),
                 ListTile(
                   title: Text(AppIntl.of(context).more_contributors),
-                  leading: const Icon(Icons.people_outline),
+                  leading: _buildDiscoveryFeatureDescriptionWidget(
+                      context,
+                      const Icon(Icons.people_outline),
+                      DiscoveryIds.detailsMoreContributors),
                   onTap: () => model.navigationService
                       .pushNamed(RouterPaths.contributors),
                 ),
@@ -110,7 +140,10 @@ class MoreView extends StatelessWidget {
                 ),
                 ListTile(
                   title: Text(AppIntl.of(context).settings_title),
-                  leading: const Icon(Icons.settings),
+                  leading: _buildDiscoveryFeatureDescriptionWidget(
+                      context,
+                      const Icon(Icons.settings),
+                      DiscoveryIds.detailsMoreSettings),
                   onTap: () =>
                       model.navigationService.pushNamed(RouterPaths.settings),
                 ),
@@ -143,5 +176,23 @@ class MoreView extends StatelessWidget {
             ),
           );
         });
+  }
+
+  DescribedFeatureOverlay _buildDiscoveryFeatureDescriptionWidget(
+      BuildContext context, Widget icon, String featuredId) {
+    final discovery = getDiscoveryByFeatureId(
+        context, DiscoveryGroupIds.pageMore, featuredId);
+
+    return DescribedFeatureOverlay(
+      overflowMode: OverflowMode.wrapBackground,
+      contentLocation: ContentLocation.below,
+      featureId: discovery.featureId,
+      title: Text(discovery.title, textAlign: TextAlign.justify),
+      description: discovery.details,
+      backgroundColor: AppTheme.appletsDarkPurple,
+      tapTarget: icon,
+      pulseDuration: const Duration(seconds: 5),
+      child: icon,
+    );
   }
 }

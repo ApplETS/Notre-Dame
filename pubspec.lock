@@ -49,7 +49,7 @@ packages:
       name: build
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.0.3"
+    version: "2.0.2"
   built_collection:
     dependency: transitive
     description:
@@ -84,7 +84,7 @@ packages:
       name: cli_util
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.3.3"
+    version: "0.3.1"
   clock:
     dependency: transitive
     description:
@@ -231,7 +231,7 @@ packages:
       name: firebase_analytics
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "8.2.0"
+    version: "8.1.2"
   firebase_analytics_platform_interface:
     dependency: transitive
     description:
@@ -252,7 +252,7 @@ packages:
       name: firebase_core
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.4.0"
+    version: "1.3.0"
   firebase_core_platform_interface:
     dependency: transitive
     description:
@@ -273,14 +273,14 @@ packages:
       name: firebase_crashlytics
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.1.1"
+    version: "2.0.6"
   firebase_crashlytics_platform_interface:
     dependency: transitive
     description:
       name: firebase_crashlytics_platform_interface
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "3.1.0"
+    version: "3.0.6"
   fixnum:
     dependency: transitive
     description:
@@ -503,7 +503,7 @@ packages:
       name: mockito
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "5.0.11"
+    version: "5.0.10"
   nested:
     dependency: transitive
     description:
@@ -615,7 +615,7 @@ packages:
       name: plugin_platform_interface
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.0.1"
+    version: "2.0.0"
   process:
     dependency: transitive
     description:
@@ -643,7 +643,7 @@ packages:
       name: rive
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.7.23"
+    version: "0.7.22"
   rxdart:
     dependency: transitive
     description:
@@ -711,7 +711,7 @@ packages:
       name: source_gen
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.0.3"
+    version: "1.0.2"
   source_span:
     dependency: transitive
     description:
@@ -746,7 +746,7 @@ packages:
       name: stacked
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.2.2"
+    version: "2.2.3"
   stream_channel:
     dependency: transitive
     description:
@@ -781,7 +781,7 @@ packages:
       name: table_calendar
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "3.0.1"
+    version: "3.0.0"
   term_glyph:
     dependency: transitive
     description:
@@ -816,7 +816,7 @@ packages:
       name: url_launcher
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "6.0.9"
+    version: "6.0.7"
   url_launcher_linux:
     dependency: transitive
     description:
@@ -837,7 +837,7 @@ packages:
       name: url_launcher_platform_interface
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.0.4"
+    version: "2.0.3"
   url_launcher_web:
     dependency: transitive
     description:
@@ -879,14 +879,14 @@ packages:
       name: webview_flutter
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.0.10"
+    version: "2.0.9"
   win32:
     dependency: transitive
     description:
       name: win32
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.2.5"
+    version: "2.2.4"
   xdg_directories:
     dependency: transitive
     description:

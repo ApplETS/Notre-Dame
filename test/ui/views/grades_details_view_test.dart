@@ -1,9 +1,11 @@
 // FLUTTER / DART / THIRD-PARTIES
+import 'package:feature_discovery/feature_discovery.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 // MANAGERS
 import 'package:notredame/core/managers/course_repository.dart';
+import 'package:notredame/core/managers/settings_manager.dart';
 
 // MODELS
 import 'package:notredame/core/models/course.dart';
@@ -75,10 +77,12 @@ void main() {
       setupNavigationServiceMock();
       courseRepository = setupCourseRepositoryMock();
       setupFlutterToastMock();
+      setupSettingsManagerMock();
     });
 
     tearDown(() {
       unregister<CourseRepository>();
+      unregister<SettingsManager>();
       unregister<NetworkingService>();
     });
 
@@ -86,8 +90,8 @@ void main() {
       testWidgets(
           'has a RefreshIndicator, GradeCircularProgress, three cards and evaluation tiles when a course is valid',
           (WidgetTester tester) async {
-        await tester.pumpWidget(
-            localizedWidget(child: GradesDetailsView(course: course)));
+        await tester.pumpWidget(localizedWidget(
+            child: FeatureDiscovery(child: GradesDetailsView(course: course))));
         await tester.pumpAndSettle();
 
         expect(find.byType(RefreshIndicator), findsOneWidget);
@@ -115,8 +119,8 @@ void main() {
             courseRepository as CourseRepositoryMock, courseWithoutSummary,
             toReturn: course);
 
-        await tester.pumpWidget(
-            localizedWidget(child: GradesDetailsView(course: course)));
+        await tester.pumpWidget(localizedWidget(
+            child: FeatureDiscovery(child: GradesDetailsView(course: course))));
         await tester.pumpAndSettle();
 
         expect(find.byType(SliverAppBar), findsOneWidget);
@@ -133,8 +137,8 @@ void main() {
             courseRepository as CourseRepositoryMock, courseWithoutSummary,
             toReturn: course);
 
-        await tester.pumpWidget(
-            localizedWidget(child: GradesDetailsView(course: course)));
+        await tester.pumpWidget(localizedWidget(
+            child: FeatureDiscovery(child: GradesDetailsView(course: course))));
         await tester.pumpAndSettle();
 
         final gesture = await tester
@@ -154,8 +158,9 @@ void main() {
             toReturn: courseWithoutSummary);
 
         await tester.pumpWidget(localizedWidget(
-            child: GradesDetailsView(course: courseWithoutSummary)));
-        await tester.pumpAndSettle();
+            child: FeatureDiscovery(
+                child: GradesDetailsView(course: courseWithoutSummary))));
+        await tester.pumpAndSettle(const Duration(seconds: 1));
 
         expect(find.byKey(const Key("GradeNotAvailable")), findsOneWidget);
       });
@@ -169,8 +174,8 @@ void main() {
 
         tester.binding.window.physicalSizeTestValue = const Size(800, 1410);
 
-        await tester.pumpWidget(
-            localizedWidget(child: GradesDetailsView(course: course)));
+        await tester.pumpWidget(localizedWidget(
+            child: FeatureDiscovery(child: GradesDetailsView(course: course))));
         await tester.pumpAndSettle();
 
         await expectLater(find.byType(GradesDetailsView),
@@ -185,8 +190,8 @@ void main() {
 
         tester.binding.window.physicalSizeTestValue = const Size(800, 1410);
 
-        await tester.pumpWidget(
-            localizedWidget(child: GradesDetailsView(course: course)));
+        await tester.pumpWidget(localizedWidget(
+            child: FeatureDiscovery(child: GradesDetailsView(course: course))));
         await tester.pumpAndSettle();
 
         await expectLater(find.byType(GradesDetailsView),

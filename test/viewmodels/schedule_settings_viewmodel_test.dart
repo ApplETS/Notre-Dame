@@ -129,6 +129,10 @@ void main() {
           .addAll(classTwoWithLaboratoryABscheduleActivities);
     });
 
+    tearDown(() {
+      unregister<SettingsManager>();
+    });
+
     group("futureToRun - ", () {
       test(
           "The settings are correctly loaded and sets (if no schedule activities present to use)",

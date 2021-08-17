@@ -1,9 +1,14 @@
 // FLUTTER / DART / THIRD-PARTIES
+import 'package:feature_discovery/feature_discovery.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:intl/intl.dart';
 import 'package:stacked/stacked.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
+// UTILS
+import 'package:notredame/ui/utils/discovery_components.dart';
 
 // VIEWMODEL
 import 'package:notredame/core/viewmodels/schedule_viewmodel.dart';
@@ -18,6 +23,7 @@ import 'package:notredame/ui/widgets/schedule_settings.dart';
 
 // CONSTANTS
 import 'package:notredame/core/constants/preferences_flags.dart';
+import 'package:notredame/core/constants/discovery_ids.dart';
 
 // OTHER
 import 'package:notredame/ui/utils/app_theme.dart';
@@ -49,6 +55,10 @@ class _ScheduleViewState extends State<ScheduleView>
     );
 
     _animationController.forward();
+
+    SchedulerBinding.instance.addPostFrameCallback((Duration duration) {
+      ScheduleViewModel(intl: AppIntl.of(context)).startDiscovery(context);
+    });
   }
 
   @override
@@ -228,7 +238,24 @@ class _ScheduleViewState extends State<ScheduleView>
           icon: const Icon(Icons.refresh),
           onPressed: () => model.refresh(),
         ),
-        IconButton(
+        _buildDiscoveryFeatureDescriptionWidget(context, Icons.settings, model),
+      ];
+
+  DescribedFeatureOverlay _buildDiscoveryFeatureDescriptionWidget(
+      BuildContext context, IconData icon, ScheduleViewModel model) {
+    final discovery = getDiscoveryByFeatureId(context,
+        DiscoveryGroupIds.pageSchedule, DiscoveryIds.detailsScheduleSettings);
+
+    return DescribedFeatureOverlay(
+        overflowMode: OverflowMode.wrapBackground,
+        contentLocation: ContentLocation.below,
+        featureId: discovery.featureId,
+        title: Text(discovery.title, textAlign: TextAlign.justify),
+        description: discovery.details,
+        backgroundColor: AppTheme.appletsDarkPurple,
+        tapTarget: Icon(icon, color: AppTheme.etsBlack),
+        pulseDuration: const Duration(seconds: 5),
+        child: IconButton(
             icon: const Icon(Icons.settings),
             onPressed: () async {
               await showModalBottomSheet(
@@ -242,6 +269,6 @@ class _ScheduleViewState extends State<ScheduleView>
                           topRight: Radius.circular(10))),
                   builder: (context) => const ScheduleSettings());
               model.loadSettings();
-            })
-      ];
+            }));
+  }
 }

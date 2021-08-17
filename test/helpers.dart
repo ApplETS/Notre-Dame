@@ -109,12 +109,6 @@ void setupFlutterToastMock() {
   });
 }
 
-void tearDownFlutterToastMock() {
-  const MethodChannel channel = MethodChannel('PonnamKarthik/fluttertoast');
-
-  channel.setMockMethodCallHandler(null);
-}
-
 /// Load a mock of the [NavigationService]
 NavigationService setupNavigationServiceMock() {
   unregister<NavigationService>();

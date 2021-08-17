@@ -41,7 +41,7 @@ void main() {
           (WidgetTester tester) async {
         await tester.pumpWidget(
             localizedWidget(child: FeatureDiscovery(child: MoreView())));
-        await tester.pumpAndSettle();
+        await tester.pumpAndSettle(const Duration(seconds: 1));
 
         final listview = find.byType(ListView);
         expect(listview, findsOneWidget);
@@ -54,7 +54,7 @@ void main() {
         testWidgets('about', (WidgetTester tester) async {
           await tester.pumpWidget(
               localizedWidget(child: FeatureDiscovery(child: MoreView())));
-          await tester.pumpAndSettle();
+          await tester.pumpAndSettle(const Duration(seconds: 1));
 
           // Tap the button.
           await tester.tap(
@@ -69,7 +69,7 @@ void main() {
         testWidgets('contributors', (WidgetTester tester) async {
           await tester.pumpWidget(
               localizedWidget(child: FeatureDiscovery(child: MoreView())));
-          await tester.pumpAndSettle();
+          await tester.pumpAndSettle(const Duration(seconds: 1));
 
           // Tap the button.
           await tester
@@ -84,14 +84,14 @@ void main() {
         testWidgets('licenses', (WidgetTester tester) async {
           await tester.pumpWidget(
               localizedWidget(child: FeatureDiscovery(child: MoreView())));
-          await tester.pumpAndSettle();
+          await tester.pumpAndSettle(const Duration(seconds: 1));
 
           // Tap the button.
           await tester.tap(
               find.widgetWithText(ListTile, intl.more_open_source_licenses));
 
           // Rebuild the widget after the state has changed.
-          await tester.pumpAndSettle();
+          await tester.pumpAndSettle(const Duration(seconds: 1));
 
           expect(find.text('CLOSE'), findsOneWidget);
           expect(find.text('VIEW LICENSES'), findsOneWidget);
@@ -101,7 +101,7 @@ void main() {
         testWidgets('settings', (WidgetTester tester) async {
           await tester.pumpWidget(
               localizedWidget(child: FeatureDiscovery(child: MoreView())));
-          await tester.pumpAndSettle();
+          await tester.pumpAndSettle(const Duration(seconds: 1));
 
           // Tap the button.
           await tester.tap(find.widgetWithText(ListTile, intl.settings_title));
@@ -115,13 +115,13 @@ void main() {
         testWidgets('logout', (WidgetTester tester) async {
           await tester.pumpWidget(
               localizedWidget(child: FeatureDiscovery(child: MoreView())));
-          await tester.pumpAndSettle();
+          await tester.pumpAndSettle(const Duration(seconds: 1));
 
           // Tap the button.
           await tester.tap(find.widgetWithText(ListTile, intl.more_log_out));
 
           // Rebuild the widget after the state has changed.
-          await tester.pumpAndSettle();
+          await tester.pumpAndSettle(const Duration(seconds: 1));
 
           expect(find.text('Yes'), findsOneWidget);
           expect(find.text('No'), findsOneWidget);
@@ -142,7 +142,7 @@ void main() {
             await precacheImage(image.image, element);
             await tester.pumpAndSettle();
           });
-          await tester.pumpAndSettle();
+          await tester.pumpAndSettle(const Duration(seconds: 1));
 
           await expectLater(find.byType(MoreView),
               matchesGoldenFile(goldenFilePath("moreView_1")));

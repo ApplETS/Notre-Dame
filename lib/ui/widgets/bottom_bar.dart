@@ -8,11 +8,14 @@ import 'package:notredame/core/services/navigation_service.dart';
 
 // CONSTANT
 import 'package:notredame/core/constants/router_paths.dart';
-import 'package:notredame/locator.dart';
+import 'package:notredame/core/constants/discovery_ids.dart';
 
 // UTILS
 import 'package:notredame/ui/utils/discovery_components.dart';
 import 'package:notredame/ui/utils/app_theme.dart';
+
+// OTHER
+import 'package:notredame/locator.dart';
 
 /// Bottom navigation bar for the application.
 class BottomBar extends StatelessWidget {
@@ -109,7 +112,8 @@ class BottomBar extends StatelessWidget {
 
   DescribedFeatureOverlay _buildDiscoveryFeatureDescriptionWidget(
       BuildContext context, String routerPath, IconData icon) {
-    final discovery = getDiscoveryByPath(context, routerPath);
+    final discovery =
+        getDiscoveryByPath(context, DiscoveryGroupIds.bottomBar, routerPath);
 
     return DescribedFeatureOverlay(
       overflowMode: OverflowMode.wrapBackground,

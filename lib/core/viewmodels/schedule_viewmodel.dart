@@ -1,5 +1,6 @@
 // FLUTTER / DART / THIRD-PARTIES
 import 'package:enum_to_string/enum_to_string.dart';
+import 'package:feature_discovery/feature_discovery.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:stacked/stacked.dart';
 import 'package:table_calendar/table_calendar.dart';
@@ -8,6 +9,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 // CONSTANTS
 import 'package:notredame/core/constants/activity_code.dart';
+import 'package:notredame/core/constants/discovery_ids.dart';
 
 // MANAGER
 import 'package:notredame/core/managers/course_repository.dart';
@@ -16,6 +18,9 @@ import 'package:notredame/core/managers/settings_manager.dart';
 // MODELS
 import 'package:notredame/core/models/course_activity.dart';
 import 'package:notredame/core/models/schedule_activity.dart';
+
+// UTILS
+import 'package:notredame/ui/utils/discovery_components.dart';
 
 // OTHER
 import 'package:notredame/locator.dart';
@@ -247,6 +252,21 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
       notifyListeners();
     } on Exception catch (error) {
       onError(error);
+    }
+  }
+
+  Future<void> startDiscovery(BuildContext context) async {
+    if (await _settingsManager.getString(PreferencesFlag.discoverySchedule) ==
+        null) {
+      final List<String> ids =
+          findDiscoveriesByGroupName(context, DiscoveryGroupIds.pageSchedule)
+              .map((e) => e.featureId)
+              .toList();
+
+      Future.delayed(const Duration(milliseconds: 700),
+          () => FeatureDiscovery.discoverFeatures(context, ids));
+
+      _settingsManager.setString(PreferencesFlag.discoverySchedule, 'true');
     }
   }
 }
