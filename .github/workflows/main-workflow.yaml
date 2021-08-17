@@ -191,9 +191,9 @@ jobs:
             asset_content_type: application/zip
           - os: ubuntu-latest
             target: Android
-            build_target: appbundle
+            build_target: apk
             build_args: ''
-            build_path: build/app/outputs/bundle/release
+            build_path: build/app/outputs/apk/release
             asset_extension: apk
             asset_content_type: application/zip
       # Disable fail-fast as we want results from all even if one fails.
@@ -234,7 +234,7 @@ jobs:
 
       - name: Rename Android build
         if: matrix.target == 'Android'
-        run: mv app-release.aab ${{ github.workspace }}/notre_dame_${{ matrix.target }}.${{ matrix.asset_extension }}
+        run: mv app-release.${{ matrix.asset_extension }} ${{ github.workspace }}/notre_dame_${{ matrix.target }}.${{ matrix.asset_extension }}
         working-directory: ${{ matrix.build_path }}
 
       - name: Compress iOS build
@@ -273,5 +273,5 @@ jobs:
           automatic_release_tag: ${{ needs.tagValidation.outputs.version }}
           title: v${{ needs.tagValidation.outputs.version }}
           files: |
-            notre_dame_Android.aab
+            notre_dame_Android.apk
             notre_dame_iOS.zip
