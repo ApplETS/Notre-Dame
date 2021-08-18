@@ -13,14 +13,14 @@
 # Uncomment the line if you want fastlane to automatically update itself
 # update_fastlane
 
-default_platform(:ios)
+default_platform(:android)
 
-platform :ios do
-  desc "Deploy a new version to the Apple Store"
+platform :android do
+  desc "Deploy a new version to the Google Play"
   lane :deploy do
-    sh "flutter build ipa --build-number=$(date '+%s') --release --dart-define=GH_API_TOKEN=$GH_API_TOKEN"
-    upload_to_add_store(
-        ipa: '../build/ios/archive/Runner.xcarchive'
+    sh "flutter build appbundle --build-number=$(date '+%s') --release --dart-define=GH_API_TOKEN=$GH_API_TOKEN"
+    upload_to_play_store(
+        aab: '../build/app/outputs/bundle/release/app-release.aab'
     )
   end
 end
