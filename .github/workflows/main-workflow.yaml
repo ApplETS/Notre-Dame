@@ -63,12 +63,13 @@ jobs:
           java-version: '11'
       - uses: subosito/flutter-action@v1.5.0
       - run: flutter doctor
-      - name: Decrypt certificates files
+      - name: Decrypt SignETS certificate and Google Services files
         run: |
           chmod +x ./scripts/decrypt.sh
           ./scripts/decrypt.sh
         env:
           ENCRYPTED_SIGNETS_API_CERT_PASSWORD: ${{ secrets.ENCRYPTED_SIGNETS_API_CERT_PASSWORD }}
+          ENCRYPTED_GOOGLE_SERVICE_PASSWORD: ${{ secrets.ENCRYPTED_GOOGLE_SERVICE_PASSWORD }}
 
       # Get flutter dependencies.
       - run: flutter pub get
@@ -221,12 +222,13 @@ jobs:
       # Get dependencies and decrypt needed files.
       - run: flutter pub get
 
-      - name: Decrypt certificates files
+      - name: Decrypt SignETS certificate and Google Services files
         run: |
           chmod +x ./scripts/decrypt.sh
           ./scripts/decrypt.sh
         env:
           ENCRYPTED_SIGNETS_API_CERT_PASSWORD: ${{ secrets.ENCRYPTED_SIGNETS_API_CERT_PASSWORD }}
+          ENCRYPTED_GOOGLE_SERVICE_PASSWORD: ${{ secrets.ENCRYPTED_GOOGLE_SERVICE_PASSWORD }}
 
       # Build the application.
       - name: Build the application
