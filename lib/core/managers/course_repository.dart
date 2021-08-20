@@ -73,10 +73,13 @@ class CourseRepository {
 
   /// Return the active sessions which mean the sessions that the endDate isn't already passed.
   List<Session> get activeSessions {
-    final DateTime now = DateTime.now();
+    DateTime now = DateTime.now();
+    now = DateTime(now.year, now.month, now.day);
 
     return _sessions
-        ?.where((session) => session.endDate.isAfter(now))
+        ?.where((session) =>
+            session.endDate.isAfter(now) ||
+            session.endDate.isAtSameMomentAs(now))
         ?.toList();
   }
 
@@ -180,6 +183,11 @@ class CourseRepository {
         _logger.e(
             "$tag - getSessions: exception raised will trying to load the sessions from cache.");
       }
+    }
+
+    // Don't try to update cache when offline
+    if (!(await _networkingService.hasConnectivity())) {
+      return _sessions;
     }
 
     try {
@@ -309,6 +317,12 @@ class CourseRepository {
   /// version of the course. Return the course with the summary set.
   Future<Course> getCourseSummary(Course course) async {
     CourseSummary summary;
+
+    // Don't try to update the summary when user has no connection
+    if (!(await _networkingService.hasConnectivity())) {
+      return course;
+    }
+
     try {
       final String password = await _userRepository.getPassword();
       summary = await _signetsApi.getCourseSummary(

@@ -1,10 +1,17 @@
 // FLUTTER / DART / THIRD-PARTIES
 import 'dart:math';
+import 'package:feature_discovery/feature_discovery.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
+// CONSTANTS
+import 'package:notredame/core/constants/discovery_ids.dart';
+
 // MODELS
 import 'package:notredame/core/models/evaluation.dart';
+
+// UTILS
+import 'package:notredame/ui/utils/discovery_components.dart';
 
 // WIDGETS
 import 'package:notredame/ui/widgets/grade_circular_progress.dart';
@@ -17,8 +24,10 @@ import 'package:notredame/core/utils/utils.dart';
 class GradeEvaluationTile extends StatefulWidget {
   final bool completed;
   final Evaluation evaluation;
+  final bool isFirstEvaluation;
 
-  const GradeEvaluationTile(this.evaluation, {Key key, this.completed})
+  const GradeEvaluationTile(this.evaluation,
+      {Key key, this.completed, this.isFirstEvaluation})
       : super(key: key);
 
   @override
@@ -78,7 +87,8 @@ class _GradeEvaluationTileState extends State<GradeEvaluationTile>
                 alignment: Alignment.topCenter,
                 child: LayoutBuilder(
                   builder: (context, constraints) {
-                    return GradeCircularProgress(
+                    final GradeCircularProgress circularProgress =
+                        GradeCircularProgress(
                       constraints.maxHeight / 100,
                       completed: widget.completed,
                       key: Key(
@@ -92,6 +102,15 @@ class _GradeEvaluationTileState extends State<GradeEvaluationTile>
                         widget.evaluation.correctedEvaluationOutOfFormatted,
                       ),
                     );
+
+                    if (widget.isFirstEvaluation) {
+                      return _buildDiscoveryFeatureDescriptionWidget(
+                          context,
+                          circularProgress,
+                          DiscoveryIds.detailsGradeDetailsEvaluations);
+                    }
+
+                    return circularProgress;
                   },
                 ),
               ),
@@ -104,11 +123,10 @@ class _GradeEvaluationTileState extends State<GradeEvaluationTile>
                       widget.evaluation.title,
                       overflow: TextOverflow.ellipsis,
                       style: TextStyle(
-                          fontSize: 16,
-                          color:
-                              Theme.of(context).brightness == Brightness.light
-                                  ? Colors.black
-                                  : Colors.white),
+                        fontSize: 16,
+                        color: Utils.getColorByBrightness(
+                            context, Colors.black, Colors.white),
+                      ),
                     ),
                   ),
                   Padding(
@@ -117,11 +135,10 @@ class _GradeEvaluationTileState extends State<GradeEvaluationTile>
                       AppIntl.of(context)
                           .grades_weight(widget.evaluation.weight),
                       style: TextStyle(
-                          fontSize: 14,
-                          color:
-                              Theme.of(context).brightness == Brightness.light
-                                  ? Colors.black
-                                  : Colors.white),
+                        fontSize: 14,
+                        color: Utils.getColorByBrightness(
+                            context, Colors.black, Colors.white),
+                      ),
                     ),
                   ),
                 ],
@@ -224,5 +241,23 @@ class _GradeEvaluationTileState extends State<GradeEvaluationTile>
     }
 
     return AppIntl.of(context).grades_not_available;
+  }
+
+  DescribedFeatureOverlay _buildDiscoveryFeatureDescriptionWidget(
+      BuildContext context, Widget circularProgressBar, String featuredId) {
+    final discovery = getDiscoveryByFeatureId(
+        context, DiscoveryGroupIds.pageGradeDetails, featuredId);
+
+    return DescribedFeatureOverlay(
+      overflowMode: OverflowMode.wrapBackground,
+      contentLocation: ContentLocation.below,
+      featureId: discovery.featureId,
+      title: Text(discovery.title, textAlign: TextAlign.justify),
+      description: discovery.details,
+      backgroundColor: AppTheme.appletsDarkPurple,
+      tapTarget: circularProgressBar,
+      pulseDuration: const Duration(seconds: 5),
+      child: circularProgressBar,
+    );
   }
 }

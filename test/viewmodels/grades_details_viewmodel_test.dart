@@ -12,6 +12,7 @@ import 'package:notredame/core/models/evaluation.dart' as model;
 import 'package:notredame/core/viewmodels/grades_details_viewmodel.dart';
 
 // MANAGER
+import 'package:notredame/core/managers/settings_manager.dart';
 import 'package:notredame/core/models/course.dart';
 import 'package:notredame/core/managers/course_repository.dart';
 import '../mock/managers/course_repository_mock.dart';
@@ -92,6 +93,7 @@ void main() {
       courseRepository = setupCourseRepositoryMock();
       intl = await setupAppIntl();
       setupFlutterToastMock();
+      setupSettingsManagerMock();
 
       viewModel =
           GradesDetailsViewModel(course: courseWithoutSummary, intl: intl);
@@ -99,7 +101,7 @@ void main() {
 
     tearDown(() {
       unregister<CourseRepository>();
-      tearDownFlutterToastMock();
+      unregister<SettingsManager>();
     });
 
     group('FutureToRun - -', () {

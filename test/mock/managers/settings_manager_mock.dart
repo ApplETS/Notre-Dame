@@ -1,5 +1,5 @@
 // FLUTTER / DART / THIRD-PARTIES
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:mockito/mockito.dart';
 
 // MANAGER
@@ -49,5 +49,11 @@ class SettingsManagerMock extends Mock implements SettingsManager {
   static void stubLocale(SettingsManagerMock mock,
       {Locale toReturn = const Locale('en')}) {
     when(mock.locale).thenReturn(toReturn);
+  }
+
+  /// Stub the [themeMode] function of [mock], when called return [toReturn].
+  static void stubThemeMode(SettingsManagerMock mock,
+      {ThemeMode toReturn = ThemeMode.system}) {
+    when(mock.themeMode).thenReturn(toReturn);
   }
 }

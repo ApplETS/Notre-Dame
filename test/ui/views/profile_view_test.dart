@@ -6,6 +6,9 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 // MANAGERS
 import 'package:notredame/core/managers/user_repository.dart';
 
+// SERVICES
+import 'package:notredame/core/services/networking_service.dart';
+
 // VIEW
 import 'package:notredame/ui/views/profile_view.dart';
 
@@ -13,29 +16,23 @@ import '../../helpers.dart';
 
 // MOCKS
 import '../../mock/managers/user_repository_mock.dart';
-import '../../mock/services/networking_service_mock.dart';
 
 void main() {
   AppIntl intl;
   UserRepository userRepository;
-  NetworkingServiceMock networkingService;
   group('Profile view - ', () {
     setUp(() async {
       intl = await setupAppIntl();
       setupNavigationServiceMock();
-      networkingService = setupNetworkingServiceMock() as NetworkingServiceMock;
       userRepository = setupUserRepositoryMock();
 
       UserRepositoryMock.stubGetInfo(userRepository as UserRepositoryMock);
 
       UserRepositoryMock.stubGetPrograms(userRepository as UserRepositoryMock);
-
-      // Stub to simulate that the user has an active internet connection
-      NetworkingServiceMock.stubHasConnectivity(networkingService);
     });
 
     tearDown(() {
-      unregister<NetworkingServiceMock>();
+      unregister<NetworkingService>();
     });
 
     testWidgets('contains student status', (WidgetTester tester) async {

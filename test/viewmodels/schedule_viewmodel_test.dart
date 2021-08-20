@@ -16,11 +16,9 @@ import '../helpers.dart';
 
 // MOCKS
 import '../mock/managers/course_repository_mock.dart';
-import '../mock/services/networking_service_mock.dart';
 
 CourseRepository courseRepository;
 SettingsManager settingsManager;
-NetworkingServiceMock networkingService;
 ScheduleViewModel viewModel;
 
 void main() {
@@ -59,11 +57,7 @@ void main() {
       // Setting up mocks
       courseRepository = setupCourseRepositoryMock();
       settingsManager = setupSettingsManagerMock();
-      networkingService = setupNetworkingServiceMock() as NetworkingServiceMock;
       setupFlutterToastMock();
-
-      // Stub to simulate that the user has an active internet connection
-      NetworkingServiceMock.stubHasConnectivity(networkingService);
 
       viewModel = ScheduleViewModel(intl: await setupAppIntl());
     });
@@ -71,8 +65,6 @@ void main() {
     tearDown(() {
       unregister<CourseRepository>();
       unregister<SettingsManager>();
-      unregister<NetworkingServiceMock>();
-      tearDownFlutterToastMock();
     });
 
     group("futureToRun - ", () {

@@ -1,13 +1,18 @@
 // FLUTTER / DART / THIRD-PARTIES
+import 'package:feature_discovery/feature_discovery.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 // MANAGER
 import 'package:notredame/core/managers/course_repository.dart';
+import 'package:notredame/core/managers/settings_manager.dart';
 
 // MODELS
 import 'package:notredame/core/models/course.dart';
+
+// SERVICES
+import 'package:notredame/core/services/networking_service.dart';
 
 // VIEW / WIDGETS
 import 'package:notredame/ui/views/grades_view.dart';
@@ -16,11 +21,9 @@ import 'package:notredame/ui/widgets/grade_button.dart';
 // OTHERS
 import '../../helpers.dart';
 import '../../mock/managers/course_repository_mock.dart';
-import '../../mock/services/networking_service_mock.dart';
 
 void main() {
   CourseRepository courseRepository;
-  NetworkingServiceMock networkingService;
   AppIntl intl;
 
   final Course courseSummer = Course(
@@ -65,16 +68,16 @@ void main() {
     setUp(() async {
       intl = await setupAppIntl();
       setupNavigationServiceMock();
-      networkingService = setupNetworkingServiceMock() as NetworkingServiceMock;
       courseRepository = setupCourseRepositoryMock();
-
-      // Stub to simulate that the user has an active internet connection
-      NetworkingServiceMock.stubHasConnectivity(networkingService);
+      setupSettingsManagerMock();
     });
+
     tearDown(() {
       unregister<CourseRepository>();
-      unregister<NetworkingServiceMock>();
+      unregister<NetworkingService>();
+      unregister<SettingsManager>();
     });
+
     group("golden -", () {
       testWidgets("No grades available", (WidgetTester tester) async {
         // Mock the repository to have 0 courses available
@@ -89,8 +92,9 @@ void main() {
 
         tester.binding.window.physicalSizeTestValue = const Size(800, 1410);
 
-        await tester.pumpWidget(localizedWidget(child: GradesView()));
-        await tester.pumpAndSettle();
+        await tester.pumpWidget(
+            localizedWidget(child: FeatureDiscovery(child: GradesView())));
+        await tester.pumpAndSettle(const Duration(seconds: 1));
 
         await expectLater(find.byType(GradesView),
             matchesGoldenFile(goldenFilePath("gradesView_1")));
@@ -112,7 +116,8 @@ void main() {
 
         tester.binding.window.physicalSizeTestValue = const Size(800, 1410);
 
-        await tester.pumpWidget(localizedWidget(child: GradesView()));
+        await tester.pumpWidget(
+            localizedWidget(child: FeatureDiscovery(child: GradesView())));
         await tester.pumpAndSettle();
 
         await expectLater(find.byType(GradesView),
@@ -136,8 +141,9 @@ void main() {
 
         tester.binding.window.physicalSizeTestValue = const Size(800, 1410);
 
-        await tester.pumpWidget(localizedWidget(child: GradesView()));
-        await tester.pumpAndSettle();
+        await tester.pumpWidget(
+            localizedWidget(child: FeatureDiscovery(child: GradesView())));
+        await tester.pumpAndSettle(const Duration(seconds: 1));
 
         expect(find.text(intl.grades_msg_no_grades), findsOneWidget);
       });
@@ -159,8 +165,9 @@ void main() {
 
         tester.binding.window.physicalSizeTestValue = const Size(800, 1410);
 
-        await tester.pumpWidget(localizedWidget(child: GradesView()));
-        await tester.pumpAndSettle();
+        await tester.pumpWidget(
+            localizedWidget(child: FeatureDiscovery(child: GradesView())));
+        await tester.pumpAndSettle(const Duration(seconds: 1));
 
         // Check the summer session list of grades.
         final summerSessionText = find.text("${intl.session_summer} 2020");

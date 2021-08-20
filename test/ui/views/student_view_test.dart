@@ -5,6 +5,10 @@ import 'package:flutter_test/flutter_test.dart';
 
 // MANAGER
 import 'package:notredame/core/managers/course_repository.dart';
+import 'package:notredame/core/managers/settings_manager.dart';
+
+// SERVICES
+import 'package:notredame/core/services/networking_service.dart';
 
 // VIEWS
 import 'package:notredame/ui/views/student_view.dart';
@@ -17,17 +21,16 @@ import '../../helpers.dart';
 
 // MOCKS
 import '../../mock/managers/course_repository_mock.dart';
-import '../../mock/services/networking_service_mock.dart';
 
 void main() {
   CourseRepository courseRepository;
-  NetworkingServiceMock networkingService;
 
   group('StudentView - ', () {
     setUp(() async {
       setupNavigationServiceMock();
-      networkingService = setupNetworkingServiceMock() as NetworkingServiceMock;
+      setupNetworkingServiceMock();
       courseRepository = setupCourseRepositoryMock();
+      setupSettingsManagerMock();
 
       CourseRepositoryMock.stubCourses(
           courseRepository as CourseRepositoryMock);
@@ -37,14 +40,12 @@ void main() {
       CourseRepositoryMock.stubGetCourses(
           courseRepository as CourseRepositoryMock,
           fromCacheOnly: true);
-
-      // Stub to simulate that the user has an active internet connection
-      NetworkingServiceMock.stubHasConnectivity(networkingService);
     });
 
     tearDown(() {
       unregister<CourseRepository>();
-      unregister<NetworkingServiceMock>();
+      unregister<NetworkingService>();
+      unregister<SettingsManager>();
     });
 
     group('UI - ', () {
@@ -52,7 +53,7 @@ void main() {
           (WidgetTester tester) async {
         await tester.pumpWidget(
             localizedWidget(child: FeatureDiscovery(child: StudentView())));
-        await tester.pumpAndSettle();
+        await tester.pumpAndSettle(const Duration(seconds: 1));
 
         expect(find.byType(TabBar), findsOneWidget);
 
@@ -67,7 +68,7 @@ void main() {
 
           await tester.pumpWidget(
               localizedWidget(child: FeatureDiscovery(child: StudentView())));
-          await tester.pumpAndSettle();
+          await tester.pumpAndSettle(const Duration(seconds: 1));
 
           await expectLater(find.byType(StudentView),
               matchesGoldenFile(goldenFilePath("studentView_1")));

@@ -1,10 +1,14 @@
 // FLUTTER / DART / THIRD-PARTIES
 import 'package:enum_to_string/enum_to_string.dart';
+import 'package:feature_discovery/feature_discovery.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:stacked/stacked.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
+// CONSTANTS
+import 'package:notredame/core/constants/discovery_ids.dart';
 
 // MANAGER
 import 'package:notredame/core/managers/course_repository.dart';
@@ -13,11 +17,8 @@ import 'package:notredame/core/managers/settings_manager.dart';
 // MODELS
 import 'package:notredame/core/models/course_activity.dart';
 
-// SERVICE
-import 'package:notredame/core/services/networking_service.dart';
-
 // UTILS
-import 'package:notredame/core/utils/utils.dart';
+import 'package:notredame/ui/utils/discovery_components.dart';
 
 // OTHER
 import 'package:notredame/locator.dart';
@@ -52,9 +53,6 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
   /// Get current locale
   Locale get locale => _settingsManager.locale;
 
-  /// Verify if user has an active internet connection
-  final NetworkingService _networkingService = locator<NetworkingService>();
-
   ScheduleViewModel({@required AppIntl intl, DateTime initialSelectedDate})
       : _appIntl = intl,
         selectedDate = initialSelectedDate ?? DateTime.now(),
@@ -83,7 +81,6 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
           }
         }).whenComplete(() {
           setBusyForObject(isLoadingEvents, false);
-          Utils.showNoConnectionToast(_networkingService, _appIntl);
         });
         return value;
       });
@@ -160,6 +157,21 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
       notifyListeners();
     } on Exception catch (error) {
       onError(error);
+    }
+  }
+
+  Future<void> startDiscovery(BuildContext context) async {
+    if (await _settingsManager.getString(PreferencesFlag.discoverySchedule) ==
+        null) {
+      final List<String> ids =
+          findDiscoveriesByGroupName(context, DiscoveryGroupIds.pageSchedule)
+              .map((e) => e.featureId)
+              .toList();
+
+      Future.delayed(const Duration(milliseconds: 700),
+          () => FeatureDiscovery.discoverFeatures(context, ids));
+
+      _settingsManager.setString(PreferencesFlag.discoverySchedule, 'true');
     }
   }
 }

@@ -3,6 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:stacked/stacked.dart';
 
+// UTILS
+import 'package:notredame/core/utils/utils.dart';
+
 // VIEW MODEL
 import 'package:notredame/core/viewmodels/startup_viewmodel.dart';
 
@@ -16,10 +19,8 @@ class StartUpView extends StatelessWidget {
           viewModelBuilder: () => StartUpViewModel(),
           onModelReady: (StartUpViewModel model) => model.handleStartUp(),
           builder: (context, model, child) => Scaffold(
-                backgroundColor:
-                    Theme.of(context).brightness == Brightness.light
-                        ? AppTheme.etsLightRed
-                        : AppTheme.primaryDark,
+                backgroundColor: Utils.getColorByBrightness(
+                    context, AppTheme.etsLightRed, AppTheme.primaryDark),
                 body: SafeArea(
                   minimum: const EdgeInsets.all(20),
                   child: Center(

@@ -499,6 +499,9 @@ void main() {
             userRepository as UserRepositoryMock, user);
         UserRepositoryMock.stubGetPassword(
             userRepository as UserRepositoryMock, password);
+
+        // Stub to simulate that the user has an active internet connection
+        NetworkingServiceMock.stubHasConnectivity(networkingService);
       });
 
       test("Sessions are loaded from cache", () async {
@@ -686,35 +689,50 @@ void main() {
         verifyNever(
             cacheManager.update(CourseRepository.sessionsCacheKey, any));
       });
+
+      test("Should not try to fetch from signets when offline", () async {
+        CacheManagerMock.stubGet(cacheManager as CacheManagerMock,
+            CourseRepository.sessionsCacheKey, jsonEncode(sessions));
+
+        //Stub the networkingService to return no connectivity
+        reset(networkingService);
+        NetworkingServiceMock.stubHasConnectivity(networkingService,
+            hasConnectivity: false);
+
+        final sessionsCache = await manager.getSessions();
+        expect(sessionsCache, sessions);
+        verifyNever(
+            signetsApi.getSessions(username: username, password: password));
+      });
     });
 
     group("activeSessions - ", () {
       const String username = "username";
       const String password = "password";
 
-      final List<Session> sessions = [
-        Session(
-            shortName: 'H2018',
-            name: 'Hiver 2018',
-            startDate: DateTime(2018, 1, 4),
-            endDate: DateTime(2018, 4, 23),
-            endDateCourses: DateTime(2018, 4, 11),
-            startDateRegistration: DateTime(2017, 10, 30),
-            deadlineRegistration: DateTime(2017, 11, 14),
-            startDateCancellationWithRefund: DateTime(2018, 1, 4),
-            deadlineCancellationWithRefund: DateTime(2018, 1, 17),
-            deadlineCancellationWithRefundNewStudent: DateTime(2018, 1, 31),
-            startDateCancellationWithoutRefundNewStudent: DateTime(2018, 2),
-            deadlineCancellationWithoutRefundNewStudent: DateTime(2018, 3, 14),
-            deadlineCancellationASEQ: DateTime(2018, 1, 31))
-      ];
+      final now = DateTime.now();
 
-      test("get the session active", () async {
+      final Session oldSession = Session(
+          shortName: 'H2018',
+          name: 'Hiver 2018',
+          startDate: DateTime(2018, 1, 4),
+          endDate: DateTime(2018, 4, 23),
+          endDateCourses: DateTime(2018, 4, 11),
+          startDateRegistration: DateTime(2017, 10, 30),
+          deadlineRegistration: DateTime(2017, 11, 14),
+          startDateCancellationWithRefund: DateTime(2018, 1, 4),
+          deadlineCancellationWithRefund: DateTime(2018, 1, 17),
+          deadlineCancellationWithRefundNewStudent: DateTime(2018, 1, 31),
+          startDateCancellationWithoutRefundNewStudent: DateTime(2018, 2),
+          deadlineCancellationWithoutRefundNewStudent: DateTime(2018, 3, 14),
+          deadlineCancellationASEQ: DateTime(2018, 1, 31));
+
+      test("current session ends today", () async {
         final Session active = Session(
             shortName: 'NOW',
             name: 'now',
             startDate: DateTime(2020),
-            endDate: DateTime.now().add(const Duration(days: 10)),
+            endDate: DateTime(now.year, now.month, now.day),
             endDateCourses: DateTime(2020),
             startDateRegistration: DateTime(2020),
             deadlineRegistration: DateTime(2020),
@@ -725,7 +743,7 @@ void main() {
             deadlineCancellationWithoutRefundNewStudent: DateTime(2020),
             deadlineCancellationASEQ: DateTime(2020));
 
-        sessions.add(active);
+        final sessions = [oldSession, active];
 
         SignetsApiMock.stubGetSessions(
             signetsApi as SignetsApiMock, username, sessions);
@@ -735,6 +753,75 @@ void main() {
             userRepository as UserRepositoryMock, password);
         CacheManagerMock.stubGet(cacheManager as CacheManagerMock,
             CourseRepository.sessionsCacheKey, jsonEncode(sessions));
+        NetworkingServiceMock.stubHasConnectivity(networkingService);
+
+        await manager.getSessions();
+
+        expect(manager.activeSessions, [active]);
+      });
+
+      test("current session ended yesterday", () async {
+        final Session old = Session(
+            shortName: 'NOW',
+            name: 'now',
+            startDate: DateTime(2020),
+            endDate: DateTime(now.year, now.month, now.day)
+                .subtract(const Duration(days: 1)),
+            endDateCourses: DateTime(2020),
+            startDateRegistration: DateTime(2020),
+            deadlineRegistration: DateTime(2020),
+            startDateCancellationWithRefund: DateTime(2020),
+            deadlineCancellationWithRefund: DateTime(2020),
+            deadlineCancellationWithRefundNewStudent: DateTime(2020),
+            startDateCancellationWithoutRefundNewStudent: DateTime(2020),
+            deadlineCancellationWithoutRefundNewStudent: DateTime(2020),
+            deadlineCancellationASEQ: DateTime(2020));
+
+        final sessions = [oldSession, old];
+
+        SignetsApiMock.stubGetSessions(
+            signetsApi as SignetsApiMock, username, sessions);
+        UserRepositoryMock.stubMonETSUser(userRepository as UserRepositoryMock,
+            MonETSUser(domain: null, typeUsagerId: null, username: username));
+        UserRepositoryMock.stubGetPassword(
+            userRepository as UserRepositoryMock, password);
+        CacheManagerMock.stubGet(cacheManager as CacheManagerMock,
+            CourseRepository.sessionsCacheKey, jsonEncode(sessions));
+        NetworkingServiceMock.stubHasConnectivity(networkingService);
+
+        await manager.getSessions();
+
+        expect(manager.activeSessions, []);
+      });
+
+      test("current session ends tomorrow", () async {
+        final Session active = Session(
+            shortName: 'NOW',
+            name: 'now',
+            startDate: DateTime(2020),
+            endDate: DateTime(now.year, now.month, now.day)
+                .add(const Duration(days: 1)),
+            endDateCourses: DateTime(2020),
+            startDateRegistration: DateTime(2020),
+            deadlineRegistration: DateTime(2020),
+            startDateCancellationWithRefund: DateTime(2020),
+            deadlineCancellationWithRefund: DateTime(2020),
+            deadlineCancellationWithRefundNewStudent: DateTime(2020),
+            startDateCancellationWithoutRefundNewStudent: DateTime(2020),
+            deadlineCancellationWithoutRefundNewStudent: DateTime(2020),
+            deadlineCancellationASEQ: DateTime(2020));
+
+        final sessions = [oldSession, active];
+
+        SignetsApiMock.stubGetSessions(
+            signetsApi as SignetsApiMock, username, sessions);
+        UserRepositoryMock.stubMonETSUser(userRepository as UserRepositoryMock,
+            MonETSUser(domain: null, typeUsagerId: null, username: username));
+        UserRepositoryMock.stubGetPassword(
+            userRepository as UserRepositoryMock, password);
+        CacheManagerMock.stubGet(cacheManager as CacheManagerMock,
+            CourseRepository.sessionsCacheKey, jsonEncode(sessions));
+        NetworkingServiceMock.stubHasConnectivity(networkingService);
 
         await manager.getSessions();
 
@@ -1298,6 +1385,18 @@ void main() {
 
         verifyNoMoreInteractions(signetsApi);
         verifyNoMoreInteractions(cacheManager);
+      });
+
+      test("Should not try to update course summary when offline", () async {
+        //Stub the networkingService to return no connectivity
+        reset(networkingService);
+        NetworkingServiceMock.stubHasConnectivity(networkingService,
+            hasConnectivity: false);
+
+        final results = await manager.getCourseSummary(course);
+        expect(results, course);
+        verifyNever(signetsApi.getCourseSummary(
+            username: username, password: password, course: course));
       });
     });
   });

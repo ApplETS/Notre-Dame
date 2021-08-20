@@ -1,33 +1,36 @@
 // FLUTTER / DART / THIRD-PARTIES
+import 'package:feature_discovery/feature_discovery.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:stacked/stacked.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+// CONSTANTS
+import 'package:notredame/core/constants/preferences_flags.dart';
+import 'package:notredame/core/constants/discovery_ids.dart';
+
 // MANAGER
 import 'package:notredame/core/managers/course_repository.dart';
+import 'package:notredame/core/managers/settings_manager.dart';
 
 // MODEL
 import 'package:notredame/core/models/course.dart';
 
-// SERVICE
-import 'package:notredame/core/services/networking_service.dart';
-
 // UTILS
-import 'package:notredame/core/utils/utils.dart';
+import 'package:notredame/ui/utils/discovery_components.dart';
 
 // OTHER
 import 'package:notredame/locator.dart';
 
 class GradesViewModel extends FutureViewModel<Map<String, List<Course>>> {
+  /// Settings manager
+  final SettingsManager _settingsManager = locator<SettingsManager>();
+
   /// Used to get the courses of the student
   final CourseRepository _courseRepository = locator<CourseRepository>();
 
   /// Localization class of the application.
   final AppIntl _appIntl;
-
-  /// Verify if user has an active internet connection
-  final NetworkingService _networkingService = locator<NetworkingService>();
 
   /// Contains all the courses of the student sorted by session
   final Map<String, List<Course>> coursesBySession = {};
@@ -51,7 +54,6 @@ class GradesViewModel extends FutureViewModel<Map<String, List<Course>>> {
           }
         }).whenComplete(() {
           setBusy(false);
-          Utils.showNoConnectionToast(_networkingService, _appIntl);
         });
 
         return coursesBySession;
@@ -113,5 +115,21 @@ class GradesViewModel extends FutureViewModel<Map<String, List<Course>>> {
       }
       return -1;
     });
+  }
+
+  Future<void> startDiscovery(BuildContext context) async {
+    if (await _settingsManager
+            .getString(PreferencesFlag.discoveryStudentGrade) ==
+        null) {
+      final List<String> ids =
+          findDiscoveriesByGroupName(context, DiscoveryGroupIds.pageStudent)
+              .map((e) => e.featureId)
+              .toList();
+
+      Future.delayed(const Duration(seconds: 1),
+          () => FeatureDiscovery.discoverFeatures(context, ids));
+
+      _settingsManager.setString(PreferencesFlag.discoveryStudentGrade, 'true');
+    }
   }
 }

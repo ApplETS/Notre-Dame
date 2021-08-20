@@ -24,12 +24,10 @@ import '../../helpers.dart';
 // MOCKS
 import '../../mock/managers/course_repository_mock.dart';
 import '../../mock/managers/settings_manager_mock.dart';
-import '../../mock/services/networking_service_mock.dart';
 
 void main() {
   SettingsManager settingsManager;
   CourseRepository courseRepository;
-  NetworkingServiceMock networkingService;
 
   // Some activities
   CourseActivity activityYesterday;
@@ -85,12 +83,9 @@ void main() {
       setupNavigationServiceMock();
       settingsManager = setupSettingsManagerMock();
       courseRepository = setupCourseRepositoryMock();
-      networkingService = setupNetworkingServiceMock() as NetworkingServiceMock;
+      setupNetworkingServiceMock();
 
       SettingsManagerMock.stubLocale(settingsManager as SettingsManagerMock);
-
-      // Stub to simulate that the user has an active internet connection
-      NetworkingServiceMock.stubHasConnectivity(networkingService);
 
       settings = {
         PreferencesFlag.scheduleSettingsCalendarFormat: CalendarFormat.week,
@@ -119,7 +114,7 @@ void main() {
         await tester.pumpWidget(localizedWidget(
             child: FeatureDiscovery(
                 child: ScheduleView(initialDay: DateTime(2020)))));
-        await tester.pumpAndSettle();
+        await tester.pumpAndSettle(const Duration(seconds: 1));
 
         await expectLater(find.byType(ScheduleView),
             matchesGoldenFile(goldenFilePath("scheduleView_1")));
@@ -146,7 +141,7 @@ void main() {
         await tester.pumpWidget(localizedWidget(
             child: FeatureDiscovery(
                 child: ScheduleView(initialDay: DateTime(2020)))));
-        await tester.pumpAndSettle();
+        await tester.pumpAndSettle(const Duration(seconds: 1));
 
         await expectLater(find.byType(ScheduleView),
             matchesGoldenFile(goldenFilePath("scheduleView_2")));
@@ -173,7 +168,7 @@ void main() {
                 child: MediaQuery(
                     data: const MediaQueryData(textScaleFactor: 0.5),
                     child: ScheduleView(initialDay: DateTime(2020))))));
-        await tester.pumpAndSettle();
+        await tester.pumpAndSettle(const Duration(seconds: 1));
 
         await expectLater(find.byType(ScheduleView),
             matchesGoldenFile(goldenFilePath("scheduleView_3")));
@@ -199,7 +194,7 @@ void main() {
         await tester.pumpWidget(localizedWidget(
             child: FeatureDiscovery(
                 child: ScheduleView(initialDay: DateTime(2020)))));
-        await tester.pumpAndSettle();
+        await tester.pumpAndSettle(const Duration(seconds: 1));
 
         await expectLater(find.byType(ScheduleView),
             matchesGoldenFile(goldenFilePath("scheduleView_4")));
@@ -229,7 +224,7 @@ void main() {
                 child: MediaQuery(
                     data: const MediaQueryData(textScaleFactor: 0.5),
                     child: ScheduleView(initialDay: testingDate)))));
-        await tester.pumpAndSettle();
+        await tester.pumpAndSettle(const Duration(seconds: 1));
 
         expect(find.byType(TableCalendar, skipOffstage: false), findsOneWidget);
         expect(
@@ -275,7 +270,7 @@ void main() {
 
         await tester.pumpWidget(localizedWidget(
             child: FeatureDiscovery(child: const ScheduleView())));
-        await tester.pumpAndSettle();
+        await tester.pumpAndSettle(const Duration(seconds: 1));
 
         // DateFormat has to be after the pumpWidget to correctly load the locale
         final dateFormat = DateFormat.MMMMEEEEd();

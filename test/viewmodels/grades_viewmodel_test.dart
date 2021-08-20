@@ -5,6 +5,7 @@ import 'package:mockito/mockito.dart';
 
 // MANAGER
 import 'package:notredame/core/managers/course_repository.dart';
+import 'package:notredame/core/managers/settings_manager.dart';
 
 // SERVICES
 import 'package:notredame/core/services/navigation_service.dart';
@@ -18,12 +19,10 @@ import '../helpers.dart';
 
 // MOCKS
 import '../mock/managers/course_repository_mock.dart';
-import '../mock/services/networking_service_mock.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
   CourseRepository courseRepository;
-  NetworkingServiceMock networkingService;
   AppIntl intl;
   GradesViewModel viewModel;
 
@@ -92,13 +91,10 @@ void main() {
   group('GradesViewModel -', () {
     setUp(() async {
       courseRepository = setupCourseRepositoryMock();
-      networkingService = setupNetworkingServiceMock() as NetworkingServiceMock;
       intl = await setupAppIntl();
+      setupSettingsManagerMock();
       setupNavigationServiceMock();
       setupFlutterToastMock();
-
-      // Stub to simulate that the user has an active internet connection
-      NetworkingServiceMock.stubHasConnectivity(networkingService);
 
       viewModel = GradesViewModel(intl: intl);
     });
@@ -106,8 +102,7 @@ void main() {
     tearDown(() {
       unregister<CourseRepository>();
       unregister<NavigationService>();
-      unregister<NetworkingServiceMock>();
-      tearDownFlutterToastMock();
+      unregister<SettingsManager>();
     });
 
     group('futureToRun -', () {

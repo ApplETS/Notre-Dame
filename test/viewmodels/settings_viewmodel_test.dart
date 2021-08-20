@@ -37,19 +37,20 @@ void main() {
 
     group("futureToRun - ", () {
       test("The settings are correctly loaded and sets", () async {
-        SettingsManagerMock.stubGetString(
-            settingsManager as SettingsManagerMock, PreferencesFlag.locale,
-            toReturn: 'en');
+        SettingsManagerMock.stubLocale(settingsManager as SettingsManagerMock);
 
-        SettingsManagerMock.stubGetString(
-            settingsManager as SettingsManagerMock, PreferencesFlag.theme,
-            toReturn: ThemeMode.system.toString());
+        SettingsManagerMock.stubThemeMode(
+            settingsManager as SettingsManagerMock);
 
         await viewModel.futureToRun();
         expect(viewModel.currentLocale, 'English');
         expect(viewModel.selectedTheme, ThemeMode.system);
 
-        verify(settingsManager.getString(any)).called(2);
+        verifyInOrder([
+          settingsManager.fetchLanguageAndThemeMode(),
+          settingsManager.locale,
+          settingsManager.themeMode
+        ]);
         verifyNoMoreInteractions(settingsManager);
       });
     });
