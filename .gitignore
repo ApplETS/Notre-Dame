@@ -32,6 +32,8 @@ assets/certificates/
 **/android/local.properties
 **/android/**/GeneratedPluginRegistrant.java
 **/google-services.json
+**/keystore.properties
+**/etsm_upload_ks.jks
 
 # VS Code related
 .vscode/
