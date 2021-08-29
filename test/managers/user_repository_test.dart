@@ -540,16 +540,15 @@ void main() {
 
       test("Info are loaded from cache", () async {
         expect(manager.info, isNull);
-        final results = await manager.getInfo();
+        final results = await manager.getInfo(fromCacheOnly: true);
 
         expect(results, isInstanceOf<ProfileStudent>());
         expect(results, info);
         expect(manager.info, info, reason: 'The info should now be loaded.');
 
         verify(cacheManager.get(UserRepository.infoCacheKey));
-        verify(manager.getPassword());
-        verify(
-            cacheManager.update(UserRepository.infoCacheKey, jsonEncode(info)));
+        verifyNoMoreInteractions(cacheManager as CacheManagerMock);
+        verifyNoMoreInteractions(signetsApi as SignetsApiMock);
       });
 
       test("Trying to load info from cache but cache doesn't exist", () async {
@@ -590,13 +589,14 @@ void main() {
         final results = await manager.getInfo();
 
         expect(results, isInstanceOf<ProfileStudent>());
-        expect(results, info);
-        expect(manager.info, info, reason: 'The info should now be loaded.');
+        expect(results, anotherInfo);
+        expect(manager.info, anotherInfo,
+            reason: 'The new info should now be loaded.');
 
         verify(cacheManager.get(UserRepository.infoCacheKey));
         verify(manager.getPassword());
-        verify(
-            cacheManager.update(UserRepository.infoCacheKey, jsonEncode(info)));
+        verify(cacheManager.update(
+            UserRepository.infoCacheKey, jsonEncode(anotherInfo)));
       });
 
       test("SignetsAPI return a info that already exists", () async {

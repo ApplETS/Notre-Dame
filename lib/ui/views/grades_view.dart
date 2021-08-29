@@ -1,5 +1,6 @@
 // FLUTTER / DART / THIRD-PARTIES
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:notredame/ui/utils/loading.dart';
 import 'package:stacked/stacked.dart';
@@ -23,6 +24,15 @@ class GradesView extends StatefulWidget {
 }
 
 class _GradesViewState extends State<GradesView> {
+  @override
+  void initState() {
+    super.initState();
+
+    SchedulerBinding.instance.addPostFrameCallback((Duration duration) {
+      GradesViewModel(intl: AppIntl.of(context)).startDiscovery(context);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<GradesViewModel>.reactive(
@@ -55,6 +65,7 @@ class _GradesViewState extends State<GradesView> {
                                   verticalOffset: 50.0,
                                   child: FadeInAnimation(
                                     child: _buildSessionCourses(
+                                        index,
                                         _sessionName(model.sessionOrder[index],
                                             AppIntl.of(context)),
                                         model.coursesBySession[
@@ -77,8 +88,8 @@ class _GradesViewState extends State<GradesView> {
 
   /// Build a session which is the name of the session and one [GradeButton] for
   /// each [Course] in [courses]
-  Widget _buildSessionCourses(
-          String sessionName, List<Course> courses, GradesViewModel model) =>
+  Widget _buildSessionCourses(int index, String sessionName,
+          List<Course> courses, GradesViewModel model) =>
       Padding(
         padding: const EdgeInsets.fromLTRB(8.0, 8.0, 8.0, 8.0),
         child: Column(
@@ -91,7 +102,11 @@ class _GradesViewState extends State<GradesView> {
                 )),
             const SizedBox(height: 16.0),
             Wrap(
-              children: courses.map((course) => GradeButton(course)).toList(),
+              children: courses
+                  .map((course) => index == 0
+                      ? GradeButton(course, showDiscovery: true)
+                      : GradeButton(course, showDiscovery: false))
+                  .toList(),
             ),
           ],
         ),

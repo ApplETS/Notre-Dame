@@ -1,10 +1,12 @@
 // FLUTTER / DART / THIRD-PARTIES
+import 'package:feature_discovery/feature_discovery.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 // MANAGER
 import 'package:notredame/core/managers/course_repository.dart';
+import 'package:notredame/core/managers/settings_manager.dart';
 
 // MODELS
 import 'package:notredame/core/models/course.dart';
@@ -67,11 +69,15 @@ void main() {
       intl = await setupAppIntl();
       setupNavigationServiceMock();
       courseRepository = setupCourseRepositoryMock();
+      setupSettingsManagerMock();
     });
+
     tearDown(() {
       unregister<CourseRepository>();
       unregister<NetworkingService>();
+      unregister<SettingsManager>();
     });
+
     group("golden -", () {
       testWidgets("No grades available", (WidgetTester tester) async {
         // Mock the repository to have 0 courses available
@@ -86,8 +92,9 @@ void main() {
 
         tester.binding.window.physicalSizeTestValue = const Size(800, 1410);
 
-        await tester.pumpWidget(localizedWidget(child: GradesView()));
-        await tester.pumpAndSettle();
+        await tester.pumpWidget(
+            localizedWidget(child: FeatureDiscovery(child: GradesView())));
+        await tester.pumpAndSettle(const Duration(seconds: 1));
 
         await expectLater(find.byType(GradesView),
             matchesGoldenFile(goldenFilePath("gradesView_1")));
@@ -109,7 +116,8 @@ void main() {
 
         tester.binding.window.physicalSizeTestValue = const Size(800, 1410);
 
-        await tester.pumpWidget(localizedWidget(child: GradesView()));
+        await tester.pumpWidget(
+            localizedWidget(child: FeatureDiscovery(child: GradesView())));
         await tester.pumpAndSettle();
 
         await expectLater(find.byType(GradesView),
@@ -133,8 +141,9 @@ void main() {
 
         tester.binding.window.physicalSizeTestValue = const Size(800, 1410);
 
-        await tester.pumpWidget(localizedWidget(child: GradesView()));
-        await tester.pumpAndSettle();
+        await tester.pumpWidget(
+            localizedWidget(child: FeatureDiscovery(child: GradesView())));
+        await tester.pumpAndSettle(const Duration(seconds: 1));
 
         expect(find.text(intl.grades_msg_no_grades), findsOneWidget);
       });
@@ -156,8 +165,9 @@ void main() {
 
         tester.binding.window.physicalSizeTestValue = const Size(800, 1410);
 
-        await tester.pumpWidget(localizedWidget(child: GradesView()));
-        await tester.pumpAndSettle();
+        await tester.pumpWidget(
+            localizedWidget(child: FeatureDiscovery(child: GradesView())));
+        await tester.pumpAndSettle(const Duration(seconds: 1));
 
         // Check the summer session list of grades.
         final summerSessionText = find.text("${intl.session_summer} 2020");

@@ -82,10 +82,13 @@ class CourseRepository {
 
   /// Return the active sessions which mean the sessions that the endDate isn't already passed.
   List<Session> get activeSessions {
-    final DateTime now = DateTime.now();
+    DateTime now = DateTime.now();
+    now = DateTime(now.year, now.month, now.day);
 
     return _sessions
-        ?.where((session) => session.endDate.isAfter(now))
+        ?.where((session) =>
+            session.endDate.isAfter(now) ||
+            session.endDate.isAtSameMomentAs(now))
         ?.toList();
   }
 
