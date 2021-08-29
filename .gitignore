@@ -33,7 +33,8 @@ assets/certificates/
 **/android/**/GeneratedPluginRegistrant.java
 **/google-services.json
 **/keystore.properties
-**/etsm_upload_ks.jks
+**/*.jks
+**/service_account_credentials.json
 
 # VS Code related
 .vscode/
