@@ -242,6 +242,29 @@ void main() {
 
         verifyNoMoreInteractions(courseRepository);
       });
+
+      test('There is no session active', () async {
+        CourseRepositoryMock.stubSessions(
+            courseRepository as CourseRepositoryMock,
+            toReturn: []);
+        CourseRepositoryMock.stubActiveSessions(
+            courseRepository as CourseRepositoryMock,
+            toReturn: []);
+
+        expect(await viewModel.futureToRunGrades(), [],
+            reason: "Should return empty if there is no session active.");
+
+        await untilCalled(courseRepository.sessions);
+
+        expect(viewModel.courses, []);
+
+        verifyInOrder([
+          courseRepository.sessions,
+          courseRepository.activeSessions,
+        ]);
+
+        verifyNoMoreInteractions(courseRepository);
+      });
     });
 
     group("futureToRun - ", () {

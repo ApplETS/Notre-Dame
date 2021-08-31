@@ -827,6 +827,26 @@ void main() {
 
         expect(manager.activeSessions, [active]);
       });
+
+      test("there is no session", () async {
+        SignetsApiMock.stubGetSessions(
+            signetsApi as SignetsApiMock, username, []);
+        UserRepositoryMock.stubMonETSUser(userRepository as UserRepositoryMock,
+            MonETSUser(domain: null, typeUsagerId: null, username: username));
+        UserRepositoryMock.stubGetPassword(
+            userRepository as UserRepositoryMock, password);
+        CacheManagerMock.stubGet(cacheManager as CacheManagerMock,
+            CourseRepository.sessionsCacheKey, jsonEncode([]));
+        NetworkingServiceMock.stubHasConnectivity(networkingService);
+
+        await manager.getSessions();
+
+        expect(manager.activeSessions, []);
+      });
+
+      test("there is no session loaded", () async {
+        expect(manager.activeSessions, []);
+      });
     });
 
     group("getCourses - ", () {

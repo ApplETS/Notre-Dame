@@ -272,8 +272,7 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
 
     // Determine current sessions
     if (_courseRepository.activeSessions.isEmpty) {
-      // ignore: return_type_invalid_for_catch_error
-      await _courseRepository.getSessions().catchError(onError);
+      return [];
     }
     final currentSession = _courseRepository.activeSessions.first;
 
