@@ -2,6 +2,7 @@
 import 'dart:collection';
 import 'package:feature_discovery/feature_discovery.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:logger/logger.dart';
 import 'package:stacked/stacked.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -265,13 +266,14 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
   /// Get the list of courses for the Grades card.
   Future<List<Course>> futureToRunGrades() async {
     setBusyForObject(courses, true);
-    if (_courseRepository.sessions == null) {
+    if (_courseRepository.sessions?.isEmpty) {
       // ignore: return_type_invalid_for_catch_error
       await _courseRepository.getSessions().catchError(onError);
     }
 
     // Determine current sessions
     if (_courseRepository.activeSessions.isEmpty) {
+      setBusyForObject(courses, false);
       return [];
     }
     final currentSession = _courseRepository.activeSessions.first;
