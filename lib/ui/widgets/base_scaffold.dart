@@ -1,4 +1,5 @@
 // FLUTTER / DART / THIRD-PARTIES
+import 'dart:async';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -49,6 +50,8 @@ class _BaseScaffoldState extends State<BaseScaffold> {
   // Displays text under the app bar when offline.
   static bool _isOffline = false;
 
+  StreamSubscription<ConnectivityResult> _subscription;
+
   @override
   void initState() {
     super.initState();
@@ -65,7 +68,7 @@ class _BaseScaffoldState extends State<BaseScaffold> {
   }
 
   void _listenToChangeInConnectivity() {
-    Connectivity().onConnectivityChanged.listen((event) {
+    _subscription = Connectivity().onConnectivityChanged.listen((event) {
       setState(() {
         _isOffline = event == ConnectivityResult.none;
       });
@@ -113,5 +116,12 @@ class _BaseScaffoldState extends State<BaseScaffold> {
         ),
       ],
     );
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+
+    _subscription.cancel();
   }
 }
