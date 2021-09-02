@@ -30,3 +30,8 @@ if [[ -n $ENCRYPTED_ANDROID_SERVICE_ACCOUNT_CREDENTIALS_PASSWORD ]]; then
   echo "Decoding Android service account credentials"
   openssl aes-256-cbc -pbkdf2 -d -k "$ENCRYPTED_ANDROID_SERVICE_ACCOUNT_CREDENTIALS_PASSWORD" -in ./encryptedFiles/service_account_credentials.json.enc -out ./android/service_account_credentials.json -md md5
 fi
+
+if [[ -n $ENCRYPTED_IOS_MATCHFILE_PASSWORD ]]; then
+  echo "Decoding Fastlane Matchfile for iOS"
+  openssl aes-256-cbc -pbkdf2 -d -k "$ENCRYPTED_IOS_MATCHFILE_PASSWORD" -in ./encryptedFiles/Matchfile.enc -out ./ios/fastlane/Matchfile -md md5
+fi
