@@ -18,9 +18,21 @@ default_platform(:ios)
 platform :ios do
   desc "Deploy a new version to the Apple Store"
   lane :deploy do
-    sh "flutter build ipa --build-number=$(date '+%s') --release --dart-define=GH_API_TOKEN=$GH_API_TOKEN"
-    upload_to_add_store(
-        ipa: '../build/ios/archive/Runner.xcarchive'
+    #sh "flutter build ios --no-codesign --build-number=$(date '+%s') --release --dart-define=GH_API_TOKEN=$GH_API_TOKEN"
+    match(
+        type: "appstore",
+        readonly: false,
+        keychain_name: ENV['MATCH_KEYCHAIN_NAME'],
+        keychain_password: ENV["MATCH_KEYCHAIN_PASSWORD"],
+      )
+
+    build_ios_app(
+        export_method: 'app-store',
+        workspace: 'Runner.xcworkspace'
+    )
+    upload_to_app_store(
+        skip_screenshots: true,
+        reject_if_possible: true
     )
   end
 end

@@ -1,5 +1,5 @@
-app_identifier("ca.etsmtl.applets.etsmobile") # The bundle identifier of your app
-apple_id("chretienxavier42@gmail.com") # Your Apple email address
+app_identifier("ca.etsmtl.applets.ETSMobile") # The bundle identifier of your app
+apple_id("applets@etsmtl.net") # Your Apple email address
 
 itc_team_id("1063266") # App Store Connect Team ID
 team_id("N742HF354K") # Developer Portal Team ID
