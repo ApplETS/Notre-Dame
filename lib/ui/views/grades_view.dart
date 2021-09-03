@@ -55,7 +55,7 @@ class _GradesViewState extends State<GradesView> {
                     padding: const EdgeInsets.only(top: 8.0),
                     child: AnimationLimiter(
                       child: ListView.builder(
-                          padding: const EdgeInsets.all(0.0),
+                          padding: EdgeInsets.zero,
                           itemCount: model.coursesBySession.length,
                           itemBuilder: (BuildContext context, int index) =>
                               AnimationConfiguration.staggeredList(
