@@ -43,11 +43,11 @@ List<GroupDiscovery> discoveryComponents(BuildContext context) {
                         AppIntl.of(context).discovery_navbar_dashboard_details),
                     const Text('\n'),
                     if (AppIntl.of(context).localeName == "fr")
-                      Image.asset(
-                          'assets/animations/discovery/fr/dashboard_swipe.gif')
+                      Image.network(
+                          'https://github.com/ApplETS/Notre-Dame/tree/master/discovery/fr/dashboard_swipe.gif')
                     else
-                      Image.asset(
-                          'assets/animations/discovery/en/dashboard_swipe.gif'),
+                      Image.network(
+                          'https://github.com/ApplETS/Notre-Dame/tree/master/discovery/en/dashboard_swipe.gif'),
                   ],
                 ),
               ),
@@ -74,11 +74,11 @@ List<GroupDiscovery> discoveryComponents(BuildContext context) {
                     ),
                     const Text('\n'),
                     if (AppIntl.of(context).localeName == "fr")
-                      Image.asset(
-                          'assets/animations/discovery/fr/dashboard_restore.gif')
+                      Image.network(
+                          'https://github.com/ApplETS/Notre-Dame/tree/master/discovery/fr/dashboard_restore.gif')
                     else
-                      Image.asset(
-                          'assets/animations/discovery/en/dashboard_restore.gif'),
+                      Image.network(
+                          'https://github.com/ApplETS/Notre-Dame/tree/master/discovery/en/dashboard_restore.gif'),
                   ],
                 ),
               ),
@@ -105,11 +105,11 @@ List<GroupDiscovery> discoveryComponents(BuildContext context) {
                         textAlign: TextAlign.justify),
                     const Text('\n'),
                     if (AppIntl.of(context).localeName == "fr")
-                      Image.asset(
-                          'assets/animations/discovery/fr/schedule_calendar.png')
+                      Image.network(
+                          'https://github.com/ApplETS/Notre-Dame/tree/master/discovery/fr/schedule_calendar.png')
                     else
-                      Image.asset(
-                          'assets/animations/discovery/en/schedule_calendar.png'),
+                      Image.network(
+                          'https://github.com/ApplETS/Notre-Dame/tree/master/discovery/en/schedule_calendar.png'),
                   ],
                 ),
               ),
@@ -136,11 +136,11 @@ List<GroupDiscovery> discoveryComponents(BuildContext context) {
                         textAlign: TextAlign.justify),
                     const Text('\n'),
                     if (AppIntl.of(context).localeName == "fr")
-                      Image.asset(
-                          'assets/animations/discovery/fr/grade_details.gif')
+                      Image.network(
+                          'https://github.com/ApplETS/Notre-Dame/tree/master/discovery/fr/grade_details.gif')
                     else
-                      Image.asset(
-                          'assets/animations/discovery/en/grade_details.gif'),
+                      Image.network(
+                          'https://github.com/ApplETS/Notre-Dame/tree/master/discovery/en/grade_details.gif'),
                   ],
                 ),
               ),
@@ -167,10 +167,11 @@ List<GroupDiscovery> discoveryComponents(BuildContext context) {
                         textAlign: TextAlign.justify),
                     const Text('\n'),
                     if (AppIntl.of(context).localeName == "fr")
-                      Image.asset('assets/animations/discovery/fr/ets_link.gif')
+                      Image.network(
+                          'https://github.com/ApplETS/Notre-Dame/tree/master/discovery/fr/ets_link.gif')
                     else
-                      Image.asset(
-                          'assets/animations/discovery/en/ets_link.gif'),
+                      Image.network(
+                          'https://github.com/ApplETS/Notre-Dame/tree/master/discovery/en/ets_link.gif'),
                   ],
                 ),
               ),
@@ -197,9 +198,11 @@ List<GroupDiscovery> discoveryComponents(BuildContext context) {
                         textAlign: TextAlign.justify),
                     const Text('\n'),
                     if (AppIntl.of(context).localeName == "fr")
-                      Image.asset('assets/animations/discovery/fr/more.jpg')
+                      Image.network(
+                          'https://github.com/ApplETS/Notre-Dame/tree/master/discovery/fr/more.jpg')
                     else
-                      Image.asset('assets/animations/discovery/en/more.jpg'),
+                      Image.network(
+                          'https://github.com/ApplETS/Notre-Dame/tree/master/discovery/en/more.jpg'),
                   ],
                 ),
               ),
@@ -227,11 +230,11 @@ List<GroupDiscovery> discoveryComponents(BuildContext context) {
                         textAlign: TextAlign.justify),
                     const Text('\n'),
                     if (AppIntl.of(context).localeName == "fr")
-                      Image.asset(
-                          'assets/animations/discovery/fr/schedule_settings.gif')
+                      Image.network(
+                          'https://github.com/ApplETS/Notre-Dame/tree/master/discovery/fr/schedule_settings.gif')
                     else
-                      Image.asset(
-                          'assets/animations/discovery/en/schedule_settings.gif'),
+                      Image.network(
+                          'https://github.com/ApplETS/Notre-Dame/tree/master/discovery/en/schedule_settings.gif'),
                   ],
                 ),
               ),
