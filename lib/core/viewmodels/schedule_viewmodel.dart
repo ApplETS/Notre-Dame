@@ -173,29 +173,31 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
     _coursesActivities = {};
 
     // Build the map
-    for (final CourseActivity course in _courseRepository.coursesActivities) {
-      final DateTime dateOnly = course.startDateTime.subtract(Duration(
-          hours: course.startDateTime.hour,
-          minutes: course.startDateTime.minute));
+    if(_courseRepository.coursesActivities != null) {
+      for (final CourseActivity course in _courseRepository.coursesActivities) {
+        final DateTime dateOnly = course.startDateTime.subtract(Duration(
+            hours: course.startDateTime.hour,
+            minutes: course.startDateTime.minute));
 
-      if (!_coursesActivities.containsKey(dateOnly)) {
-        _coursesActivities[dateOnly] = [];
-      }
-
-      _coursesActivities.update(dateOnly, (value) {
-        final scheduleActivitiesContainsGroup = settingsScheduleActivities
-            .containsKey(course.courseGroup.split("-").first);
-
-        if (scheduleActivitiesContainsGroup) {
-          if (scheduleActivityIsSelected(course)) {
-            value.add(course);
-          }
-        } else {
-          value.add(course);
+        if (!_coursesActivities.containsKey(dateOnly)) {
+          _coursesActivities[dateOnly] = [];
         }
 
-        return value;
-      }, ifAbsent: () => [course]);
+        _coursesActivities.update(dateOnly, (value) {
+          final scheduleActivitiesContainsGroup = settingsScheduleActivities
+              .containsKey(course.courseGroup.split("-").first);
+
+          if (scheduleActivitiesContainsGroup) {
+            if (scheduleActivityIsSelected(course)) {
+              value.add(course);
+            }
+          } else {
+            value.add(course);
+          }
+
+          return value;
+        }, ifAbsent: () => [course]);
+      }
     }
 
     _coursesActivities.updateAll((key, value) {

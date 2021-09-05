@@ -293,6 +293,7 @@ void main() {
         verify(settingsManager.getScheduleSettings()).called(1);
         verifyNoMoreInteractions(settingsManager);
       });
+      
       test('assignScheduleActivities - format the schedule activities in a map',
           () async {
         // Test if null, return without doing any change to the schedule list
