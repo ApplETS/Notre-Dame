@@ -177,7 +177,7 @@ void main() {
 
         expect(viewModel.coursesActivities, expected);
 
-        verify(courseRepository.coursesActivities).called(1);
+        verify(courseRepository.coursesActivities).called(2);
 
         verifyNoMoreInteractions(courseRepository);
         verifyNoMoreInteractions(settingsManager);
@@ -194,7 +194,7 @@ void main() {
 
         expect(viewModel.coursesActivitiesFor(DateTime(2020, 1, 2)), expected);
 
-        verify(courseRepository.coursesActivities).called(1);
+        verify(courseRepository.coursesActivities).called(2);
 
         verifyNoMoreInteractions(courseRepository);
         verifyNoMoreInteractions(settingsManager);
@@ -208,7 +208,7 @@ void main() {
         expect(viewModel.coursesActivitiesFor(DateTime(2020, 1, 3)), isEmpty,
             reason: "There is no events for the 3rd Jan on activities");
 
-        verify(courseRepository.coursesActivities).called(1);
+        verify(courseRepository.coursesActivities).called(2);
 
         verifyNoMoreInteractions(courseRepository);
         verifyNoMoreInteractions(settingsManager);
@@ -271,6 +271,7 @@ void main() {
 
         verifyInOrder([
           courseRepository.getCoursesActivities(),
+          courseRepository.coursesActivities,
           courseRepository.coursesActivities
         ]);
 
