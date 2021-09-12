@@ -96,7 +96,8 @@ class _ScheduleSettingsState extends State<ScheduleSettings> {
 
     list.addAll(_buildShowTodayButtonSection(context, model));
 
-    if (model.scheduleActivitiesByCourse.isNotEmpty) {
+    if (model.scheduleActivitiesByCourse.isNotEmpty &&
+        model.scheduleActivitiesByCourse.length > 1) {
       list.addAll(_buildSelectCoursesActivitiesSection(context, model));
     }
 

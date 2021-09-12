@@ -173,7 +173,7 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
     _coursesActivities = {};
 
     // Build the map
-    if(_courseRepository.coursesActivities != null) {
+    if (_courseRepository.coursesActivities != null) {
       for (final CourseActivity course in _courseRepository.coursesActivities) {
         final DateTime dateOnly = course.startDateTime.subtract(Duration(
             hours: course.startDateTime.hour,
