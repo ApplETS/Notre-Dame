@@ -34,7 +34,7 @@ class _MoreViewState extends State<MoreView> {
     super.initState();
 
     SchedulerBinding.instance.addPostFrameCallback((Duration duration) {
-      MoreViewModel(intl: AppIntl.of(context)).startDiscovery(context);
+      MoreViewModel.startDiscovery(context);
     });
   }
 
@@ -86,7 +86,7 @@ class _MoreViewState extends State<MoreView> {
                           width: 24,
                         ),
                       ),
-                      DiscoveryIds.detailsMoreThankYou),
+                      DiscoveryIds.detailsMoreThankYou, model),
                   onTap: () =>
                       model.navigationService.pushNamed(RouterPaths.about),
                 ),
@@ -95,7 +95,7 @@ class _MoreViewState extends State<MoreView> {
                   leading: _buildDiscoveryFeatureDescriptionWidget(
                       context,
                       const Icon(Icons.bug_report),
-                      DiscoveryIds.detailsMoreBugReport),
+                      DiscoveryIds.detailsMoreBugReport, model),
                   onTap: () => BetterFeedback.of(context).show((
                     String feedbackText,
                     Uint8List feedbackScreenshot,
@@ -110,7 +110,7 @@ class _MoreViewState extends State<MoreView> {
                   leading: _buildDiscoveryFeatureDescriptionWidget(
                       context,
                       const Icon(Icons.people_outline),
-                      DiscoveryIds.detailsMoreContributors),
+                      DiscoveryIds.detailsMoreContributors, model),
                   onTap: () => model.navigationService
                       .pushNamed(RouterPaths.contributors),
                 ),
@@ -143,7 +143,7 @@ class _MoreViewState extends State<MoreView> {
                   leading: _buildDiscoveryFeatureDescriptionWidget(
                       context,
                       const Icon(Icons.settings),
-                      DiscoveryIds.detailsMoreSettings),
+                      DiscoveryIds.detailsMoreSettings, model),
                   onTap: () =>
                       model.navigationService.pushNamed(RouterPaths.settings),
                 ),
@@ -179,7 +179,7 @@ class _MoreViewState extends State<MoreView> {
   }
 
   DescribedFeatureOverlay _buildDiscoveryFeatureDescriptionWidget(
-      BuildContext context, Widget icon, String featuredId) {
+      BuildContext context, Widget icon, String featuredId, MoreViewModel model) {
     final discovery = getDiscoveryByFeatureId(
         context, DiscoveryGroupIds.pageMore, featuredId);
 
@@ -193,6 +193,7 @@ class _MoreViewState extends State<MoreView> {
       tapTarget: icon,
       pulseDuration: const Duration(seconds: 5),
       child: icon,
+      onComplete: () => model.discoveryCompleted()
     );
   }
 }

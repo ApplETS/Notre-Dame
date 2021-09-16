@@ -37,7 +37,7 @@ class MoreViewModel extends FutureViewModel {
   final CacheManager _cacheManager = locator<CacheManager>();
 
   /// Settings manager
-  final SettingsManager settingsManager = locator<SettingsManager>();
+  final SettingsManager _settingsManager = locator<SettingsManager>();
 
   /// Course repository
   final CourseRepository _courseRepository = locator<CourseRepository>();
@@ -85,8 +85,7 @@ class MoreViewModel extends FutureViewModel {
   Future<void> logout() async {
     setBusy(true);
     // Dismiss alertDialog
-    navigationService.pop();
-    navigationService.pushNamedAndRemoveUntil(RouterPaths.login);
+    navigationService.pushNamedAndRemoveUntil(RouterPaths.login, RouterPaths.chooseLanguage);
     Fluttertoast.showToast(msg: _appIntl.login_msg_logout_success);
     try {
       await _cacheManager.empty();
@@ -97,7 +96,7 @@ class MoreViewModel extends FutureViewModel {
     await _preferencesService.clear();
 
     await _userRepository.logOut();
-    settingsManager.resetLanguageAndThemeMode();
+    _settingsManager.resetLanguageAndThemeMode();
 
     // clear all previous cached value in courseRepository
     _courseRepository.sessions?.clear();
@@ -130,7 +129,10 @@ class MoreViewModel extends FutureViewModel {
     );
   }
 
-  Future<void> startDiscovery(BuildContext context) async {
+  /// Start the discovery of this page if needed
+  static Future<void> startDiscovery(BuildContext context) async {
+    final SettingsManager settingsManager = locator<SettingsManager>();
+
     if (await settingsManager.getBool(PreferencesFlag.discoveryMore) ==
         null) {
       final List<String> ids =
@@ -141,7 +143,14 @@ class MoreViewModel extends FutureViewModel {
       Future.delayed(const Duration(milliseconds: 700),
           () => FeatureDiscovery.discoverFeatures(context, ids));
 
-      settingsManager.setString(PreferencesFlag.discoveryMore, 'true');
+      settingsManager.setBool(PreferencesFlag.discoveryMore, true);
     }
+  }
+
+  /// Mark the discovery of this page completed
+  Future<bool> discoveryCompleted() async {
+    await _settingsManager.setBool(PreferencesFlag.discoveryMore, true);
+
+    return true;
   }
 }

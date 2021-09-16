@@ -50,7 +50,7 @@ class _GradesDetailsViewState extends State<GradesDetailsView>
     });
 
     SchedulerBinding.instance.addPostFrameCallback((Duration duration) {
-      GradesDetailsViewModel(intl: AppIntl.of(context)).startDiscovery(context);
+      GradesDetailsViewModel.startDiscovery(context);
     });
   }
 

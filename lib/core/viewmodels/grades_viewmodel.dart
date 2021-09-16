@@ -117,7 +117,9 @@ class GradesViewModel extends FutureViewModel<Map<String, List<Course>>> {
     });
   }
 
-  Future<void> startDiscovery(BuildContext context) async {
+  static Future<void> startDiscovery(BuildContext context) async {
+    final SettingsManager _settingsManager = locator<SettingsManager>();
+
     if (await _settingsManager
             .getBool(PreferencesFlag.discoveryStudentGrade) ==
         null) {
@@ -129,7 +131,7 @@ class GradesViewModel extends FutureViewModel<Map<String, List<Course>>> {
       Future.delayed(const Duration(seconds: 1),
           () => FeatureDiscovery.discoverFeatures(context, ids));
 
-      _settingsManager.setString(PreferencesFlag.discoveryStudentGrade, 'true');
+      _settingsManager.setBool(PreferencesFlag.discoveryStudentGrade, true);
     }
   }
 }

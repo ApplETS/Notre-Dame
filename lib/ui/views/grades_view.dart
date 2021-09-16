@@ -29,7 +29,7 @@ class _GradesViewState extends State<GradesView> {
     super.initState();
 
     SchedulerBinding.instance.addPostFrameCallback((Duration duration) {
-      GradesViewModel(intl: AppIntl.of(context)).startDiscovery(context);
+      GradesViewModel.startDiscovery(context);
     });
   }
 

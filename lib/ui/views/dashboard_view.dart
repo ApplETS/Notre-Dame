@@ -39,9 +39,8 @@ class _DashboardViewState extends State<DashboardView> {
   @override
   void initState() {
     super.initState();
-
     SchedulerBinding.instance.addPostFrameCallback((Duration duration) {
-      DashboardViewModel(intl: AppIntl.of(context)).startDiscovery(context);
+      DashboardViewModel.startDiscovery(context);
     });
   }
 
@@ -331,6 +330,7 @@ class _DashboardViewState extends State<DashboardView> {
       description: discovery.details,
       backgroundColor: AppTheme.appletsDarkPurple,
       tapTarget: Icon(icon, color: AppTheme.etsBlack),
+      onComplete: () => model.discoveryCompleted(),
       pulseDuration: const Duration(seconds: 5),
       child: IconButton(
         icon: Icon(icon),

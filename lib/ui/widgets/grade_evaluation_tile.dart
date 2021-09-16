@@ -257,7 +257,7 @@ class _GradeEvaluationTileState extends State<GradeEvaluationTile>
       backgroundColor: AppTheme.appletsDarkPurple,
       tapTarget: circularProgressBar,
       pulseDuration: const Duration(seconds: 5),
-      child: circularProgressBar,
+      child: circularProgressBar
     );
   }
 }

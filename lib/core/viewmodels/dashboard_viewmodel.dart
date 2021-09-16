@@ -249,8 +249,10 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
   bool isSameDay(DateTime a, DateTime b) =>
       a.year == b.year && a.month == b.month && a.day == b.day;
 
-  Future<void> startDiscovery(BuildContext context) async {
-    if (await _settingsManager.getString(PreferencesFlag.discoveryDashboard) ==
+  /// Start discovery is needed
+  static Future<void> startDiscovery(BuildContext context) async {
+    final SettingsManager _settingsManager = locator<SettingsManager>();
+    if (await _settingsManager.getBool(PreferencesFlag.discoveryDashboard) ==
         null) {
       final List<String> ids =
           findDiscoveriesByGroupName(context, DiscoveryGroupIds.bottomBar)
@@ -258,8 +260,14 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
               .toList();
 
       FeatureDiscovery.discoverFeatures(context, ids);
-      _settingsManager.setBool(PreferencesFlag.discoveryDashboard, true);
     }
+  }
+
+  /// Mark as complete the discovery step
+  Future<bool> discoveryCompleted() async {
+    await _settingsManager.setBool(PreferencesFlag.discoveryDashboard, true);
+
+    return true;
   }
 
   /// Get the list of courses for the Grades card.
