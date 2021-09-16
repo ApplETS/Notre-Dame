@@ -34,29 +34,15 @@ class DashboardView extends StatefulWidget {
   _DashboardViewState createState() => _DashboardViewState();
 }
 
-class _DashboardViewState extends State<DashboardView>
-    with TickerProviderStateMixin {
-  AnimationController _animationController;
+class _DashboardViewState extends State<DashboardView> {
 
   @override
   void initState() {
     super.initState();
-    _animationController = AnimationController(
-      vsync: this,
-      duration: const Duration(milliseconds: 400),
-    );
-
-    _animationController.forward();
 
     SchedulerBinding.instance.addPostFrameCallback((Duration duration) {
       DashboardViewModel(intl: AppIntl.of(context)).startDiscovery(context);
     });
-  }
-
-  @override
-  void dispose() {
-    _animationController.dispose();
-    super.dispose();
   }
 
   @override
