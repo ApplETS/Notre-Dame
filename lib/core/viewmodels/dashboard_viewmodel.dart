@@ -258,7 +258,7 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
               .toList();
 
       FeatureDiscovery.discoverFeatures(context, ids);
-      _settingsManager.setString(PreferencesFlag.discoveryDashboard, 'true');
+      _settingsManager.setBool(PreferencesFlag.discoveryDashboard, true);
     }
   }
 
