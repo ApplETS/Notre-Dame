@@ -1,7 +1,6 @@
 // FLUTTER / DART / THIRD-PARTIES
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:flutter/material.dart';
 import 'package:mockito/mockito.dart';
 
 // MODELS
@@ -22,7 +21,7 @@ import '../mock/managers/course_repository_mock.dart';
 import '../helpers.dart';
 
 void main() {
-  WidgetsFlutterBinding.ensureInitialized();
+  TestWidgetsFlutterBinding.ensureInitialized();
   AppIntl intl;
   GradesDetailsViewModel viewModel;
   CourseRepository courseRepository;
@@ -92,7 +91,6 @@ void main() {
       // Setting up mocks
       courseRepository = setupCourseRepositoryMock();
       intl = await setupAppIntl();
-      setupFlutterToastMock();
       setupSettingsManagerMock();
 
       viewModel =
@@ -117,10 +115,12 @@ void main() {
 
       test('Signets raised an exception while trying to recover course',
           () async {
+        setupFlutterToastMock();
         CourseRepositoryMock.stubGetCourseSummaryException(
             courseRepository as CourseRepositoryMock, courseWithoutSummary);
-
+        print('Hello');
         await viewModel.futureToRun();
+        print('there');
 
         expect(viewModel.course, courseWithoutSummary);
       });
@@ -129,6 +129,7 @@ void main() {
     group('refresh -', () {
       test('Call SignetsAPI to get the summary of the course selected',
           () async {
+        setupFlutterToastMock();
         CourseRepositoryMock.stubGetCourseSummary(
             courseRepository as CourseRepositoryMock, courseWithoutSummary,
             toReturn: courseWithSummary);
@@ -141,7 +142,7 @@ void main() {
       test('Signets throw an error', () async {
         CourseRepositoryMock.stubGetCourseSummaryException(
             courseRepository as CourseRepositoryMock, courseWithoutSummary);
-
+        setupFlutterToastMock();
         await viewModel.refresh();
 
         expect(viewModel.course, courseWithoutSummary);

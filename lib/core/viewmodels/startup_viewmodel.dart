@@ -35,12 +35,13 @@ class StartUpViewModel extends BaseViewModel {
     if (isLogin) {
       _navigationService.pushNamedAndRemoveUntil(RouterPaths.dashboard);
     } else {
-      if (await _settingsManager.getString(PreferencesFlag.languageChoice) ==
+      if (await _settingsManager.getBool(PreferencesFlag.languageChoice) ==
           null) {
         _navigationService.pushNamed(RouterPaths.chooseLanguage);
-        _settingsManager.setString(PreferencesFlag.languageChoice, 'true');
+        _settingsManager.setBool(PreferencesFlag.languageChoice, true);
       } else {
-        _navigationService.pushNamedAndRemoveUntil(RouterPaths.login);
+        _navigationService.pop();
+        _navigationService.pushNamed(RouterPaths.login);
       }
     }
   }

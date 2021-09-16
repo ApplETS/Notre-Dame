@@ -115,8 +115,8 @@ void main() {
 
     // Check if navigation has been rerouted to login page
     verifyInOrder([
-      navigationService.pop(),
-      navigationService.pushNamedAndRemoveUntil(RouterPaths.login)
+      navigationService.pushNamedAndRemoveUntil(
+          RouterPaths.login, RouterPaths.chooseLanguage)
     ]);
 
     verifyNoMoreInteractions(navigationService);
@@ -134,7 +134,6 @@ void main() {
       githubApiMock = setupGithubApiMock() as GithubApiMock;
       appIntl = await setupAppIntl();
       setupLogger();
-      setupFlutterToastMock();
 
       viewModel = MoreViewModel(intl: appIntl);
 
@@ -158,6 +157,7 @@ void main() {
     group('logout - ', () {
       test('If the correct function have been called when logout occur',
           () async {
+        setupFlutterToastMock();
         UserRepositoryMock.stubLogOut(userRepositoryMock);
 
         await viewModel.logout();
@@ -168,6 +168,7 @@ void main() {
       test(
           'If an error occur from the cache manager that the logout function finishes out',
           () async {
+        setupFlutterToastMock();
         CacheManagerMock.stubEmptyException(cacheManagerMock);
         UserRepositoryMock.stubLogOut(userRepositoryMock);
 
@@ -189,6 +190,7 @@ void main() {
       test('If the file uploaded matches', () async {
         final File file = File('bugReportTest.png');
         GithubApiMock.stubLocalFile(githubApiMock, file);
+        setupFlutterToastMock();
 
         await file.writeAsBytes(image.encodePng(
             image.copyResize(image.decodeImage(screenshotData), width: 307)));

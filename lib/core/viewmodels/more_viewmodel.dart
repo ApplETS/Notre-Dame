@@ -85,7 +85,8 @@ class MoreViewModel extends FutureViewModel {
   Future<void> logout() async {
     setBusy(true);
     // Dismiss alertDialog
-    navigationService.pushNamedAndRemoveUntil(RouterPaths.login, RouterPaths.chooseLanguage);
+    navigationService.pushNamedAndRemoveUntil(
+        RouterPaths.login, RouterPaths.chooseLanguage);
     Fluttertoast.showToast(msg: _appIntl.login_msg_logout_success);
     try {
       await _cacheManager.empty();
@@ -133,8 +134,7 @@ class MoreViewModel extends FutureViewModel {
   static Future<void> startDiscovery(BuildContext context) async {
     final SettingsManager settingsManager = locator<SettingsManager>();
 
-    if (await settingsManager.getBool(PreferencesFlag.discoveryMore) ==
-        null) {
+    if (await settingsManager.getBool(PreferencesFlag.discoveryMore) == null) {
       final List<String> ids =
           findDiscoveriesByGroupName(context, DiscoveryGroupIds.pageMore)
               .map((e) => e.featureId)

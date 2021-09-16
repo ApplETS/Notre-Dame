@@ -67,8 +67,9 @@ class _GradeEvaluationTileState extends State<GradeEvaluationTile>
           Theme(
             data: Theme.of(context).copyWith(
               dividerColor: Colors.transparent,
-              accentColor: Colors.red,
               unselectedWidgetColor: Colors.red,
+              colorScheme:
+                  ColorScheme.fromSwatch().copyWith(secondary: Colors.red),
             ),
             child: ExpansionTile(
               onExpansionChanged: (value) {
@@ -249,15 +250,14 @@ class _GradeEvaluationTileState extends State<GradeEvaluationTile>
         context, DiscoveryGroupIds.pageGradeDetails, featuredId);
 
     return DescribedFeatureOverlay(
-      overflowMode: OverflowMode.wrapBackground,
-      contentLocation: ContentLocation.below,
-      featureId: discovery.featureId,
-      title: Text(discovery.title, textAlign: TextAlign.justify),
-      description: discovery.details,
-      backgroundColor: AppTheme.appletsDarkPurple,
-      tapTarget: circularProgressBar,
-      pulseDuration: const Duration(seconds: 5),
-      child: circularProgressBar
-    );
+        overflowMode: OverflowMode.wrapBackground,
+        contentLocation: ContentLocation.below,
+        featureId: discovery.featureId,
+        title: Text(discovery.title, textAlign: TextAlign.justify),
+        description: discovery.details,
+        backgroundColor: AppTheme.appletsDarkPurple,
+        tapTarget: circularProgressBar,
+        pulseDuration: const Duration(seconds: 5),
+        child: circularProgressBar);
   }
 }

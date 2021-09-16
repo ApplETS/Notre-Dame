@@ -94,7 +94,6 @@ void main() {
       intl = await setupAppIntl();
       setupSettingsManagerMock();
       setupNavigationServiceMock();
-      setupFlutterToastMock();
 
       viewModel = GradesViewModel(intl: intl);
     });

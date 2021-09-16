@@ -86,7 +86,8 @@ class _MoreViewState extends State<MoreView> {
                           width: 24,
                         ),
                       ),
-                      DiscoveryIds.detailsMoreThankYou, model),
+                      DiscoveryIds.detailsMoreThankYou,
+                      model),
                   onTap: () =>
                       model.navigationService.pushNamed(RouterPaths.about),
                 ),
@@ -95,7 +96,8 @@ class _MoreViewState extends State<MoreView> {
                   leading: _buildDiscoveryFeatureDescriptionWidget(
                       context,
                       const Icon(Icons.bug_report),
-                      DiscoveryIds.detailsMoreBugReport, model),
+                      DiscoveryIds.detailsMoreBugReport,
+                      model),
                   onTap: () => BetterFeedback.of(context).show((
                     String feedbackText,
                     Uint8List feedbackScreenshot,
@@ -110,7 +112,8 @@ class _MoreViewState extends State<MoreView> {
                   leading: _buildDiscoveryFeatureDescriptionWidget(
                       context,
                       const Icon(Icons.people_outline),
-                      DiscoveryIds.detailsMoreContributors, model),
+                      DiscoveryIds.detailsMoreContributors,
+                      model),
                   onTap: () => model.navigationService
                       .pushNamed(RouterPaths.contributors),
                 ),
@@ -143,7 +146,8 @@ class _MoreViewState extends State<MoreView> {
                   leading: _buildDiscoveryFeatureDescriptionWidget(
                       context,
                       const Icon(Icons.settings),
-                      DiscoveryIds.detailsMoreSettings, model),
+                      DiscoveryIds.detailsMoreSettings,
+                      model),
                   onTap: () =>
                       model.navigationService.pushNamed(RouterPaths.settings),
                 ),
@@ -179,21 +183,23 @@ class _MoreViewState extends State<MoreView> {
   }
 
   DescribedFeatureOverlay _buildDiscoveryFeatureDescriptionWidget(
-      BuildContext context, Widget icon, String featuredId, MoreViewModel model) {
+      BuildContext context,
+      Widget icon,
+      String featuredId,
+      MoreViewModel model) {
     final discovery = getDiscoveryByFeatureId(
         context, DiscoveryGroupIds.pageMore, featuredId);
 
     return DescribedFeatureOverlay(
-      overflowMode: OverflowMode.wrapBackground,
-      contentLocation: ContentLocation.below,
-      featureId: discovery.featureId,
-      title: Text(discovery.title, textAlign: TextAlign.justify),
-      description: discovery.details,
-      backgroundColor: AppTheme.appletsDarkPurple,
-      tapTarget: icon,
-      pulseDuration: const Duration(seconds: 5),
-      child: icon,
-      onComplete: () => model.discoveryCompleted()
-    );
+        overflowMode: OverflowMode.wrapBackground,
+        contentLocation: ContentLocation.below,
+        featureId: discovery.featureId,
+        title: Text(discovery.title, textAlign: TextAlign.justify),
+        description: discovery.details,
+        backgroundColor: AppTheme.appletsDarkPurple,
+        tapTarget: icon,
+        pulseDuration: const Duration(seconds: 5),
+        child: icon,
+        onComplete: () => model.discoveryCompleted());
   }
 }

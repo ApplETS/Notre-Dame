@@ -273,7 +273,8 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
   /// Get the list of courses for the Grades card.
   Future<List<Course>> futureToRunGrades() async {
     setBusyForObject(courses, true);
-    if (_courseRepository.sessions?.isEmpty) {
+    if (_courseRepository.sessions == null ||
+        _courseRepository.sessions.isEmpty) {
       // ignore: return_type_invalid_for_catch_error
       await _courseRepository.getSessions().catchError(onError);
     }

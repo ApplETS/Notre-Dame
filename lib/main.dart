@@ -84,7 +84,7 @@ class ETSMobile extends StatelessWidget {
                 locator<AnalyticsService>().getAnalyticsObserver(),
               ],
               home: StartUpView(),
-              onGenerateRoute: AppRouter.generateRoute,
+              onGenerateRoute: generateRoute,
             ),
           ),
         );

@@ -136,7 +136,6 @@ void main() {
       preferenceService = setupPreferencesServiceMock();
       courseRepository = setupCourseRepositoryMock();
 
-      setupFlutterToastMock();
       courseRepository = setupCourseRepositoryMock();
 
       viewModel = DashboardViewModel(intl: await setupAppIntl());
@@ -190,6 +189,7 @@ void main() {
 
         verifyInOrder([
           courseRepository.sessions,
+          courseRepository.sessions,
           courseRepository.activeSessions,
           courseRepository.activeSessions,
           courseRepository.getCourses(fromCacheOnly: true),
@@ -200,6 +200,7 @@ void main() {
       });
 
       test('Signets throw an error while trying to get courses', () async {
+        setupFlutterToastMock();
         CourseRepositoryMock.stubSessions(
             courseRepository as CourseRepositoryMock,
             toReturn: [session]);
@@ -234,6 +235,7 @@ void main() {
 
         verifyInOrder([
           courseRepository.sessions,
+          courseRepository.sessions,
           courseRepository.activeSessions,
           courseRepository.activeSessions,
           courseRepository.getCourses(fromCacheOnly: true),
@@ -260,6 +262,8 @@ void main() {
 
         verifyInOrder([
           courseRepository.sessions,
+          courseRepository.sessions,
+          courseRepository.getSessions(),
           courseRepository.activeSessions,
         ]);
 
@@ -269,6 +273,7 @@ void main() {
 
     group("futureToRun - ", () {
       test("The initial cards are correctly loaded", () async {
+        setupFlutterToastMock();
         CourseRepositoryMock.stubGetCoursesActivities(
             courseRepository as CourseRepositoryMock);
         CourseRepositoryMock.stubCoursesActivities(
@@ -319,6 +324,7 @@ void main() {
 
       test("An exception is thrown during the preferenceService call",
           () async {
+        setupFlutterToastMock();
         CourseRepositoryMock.stubGetCoursesActivities(
             courseRepository as CourseRepositoryMock);
         CourseRepositoryMock.stubCoursesActivities(
