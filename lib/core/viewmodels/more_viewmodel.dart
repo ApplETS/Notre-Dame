@@ -131,7 +131,7 @@ class MoreViewModel extends FutureViewModel {
   }
 
   Future<void> startDiscovery(BuildContext context) async {
-    if (await settingsManager.getString(PreferencesFlag.discoveryMore) ==
+    if (await settingsManager.getBool(PreferencesFlag.discoveryMore) ==
         null) {
       final List<String> ids =
           findDiscoveriesByGroupName(context, DiscoveryGroupIds.pageMore)

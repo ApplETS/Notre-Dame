@@ -161,7 +161,7 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
   }
 
   Future<void> startDiscovery(BuildContext context) async {
-    if (await _settingsManager.getString(PreferencesFlag.discoverySchedule) ==
+    if (await _settingsManager.getBool(PreferencesFlag.discoverySchedule) ==
         null) {
       final List<String> ids =
           findDiscoveriesByGroupName(context, DiscoveryGroupIds.pageSchedule)

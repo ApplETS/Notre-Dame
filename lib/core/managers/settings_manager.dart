@@ -205,6 +205,14 @@ class SettingsManager with ChangeNotifier {
     return _preferencesService.setBool(flag, value: value);
   }
 
+  /// Get the value of [flag]
+  Future<bool> getBool(PreferencesFlag flag) async {
+    // Log the event
+    _analyticsService.logEvent(
+        "${tag}_${EnumToString.convertToString(flag)}", 'getString');
+    return _preferencesService.getBool(flag);
+  }
+
   /// Get the default index of each card
   int getDefaultCardIndex(PreferencesFlag flag) =>
       flag.index - PreferencesFlag.aboutUsCard.index;

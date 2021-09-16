@@ -86,7 +86,7 @@ class GradesDetailsViewModel extends FutureViewModel<Course> {
 
   Future<void> startDiscovery(BuildContext context) async {
     if (await _settingsManager
-            .getString(PreferencesFlag.discoveryGradeDetails) ==
+            .getBool(PreferencesFlag.discoveryGradeDetails) ==
         null) {
       final List<String> ids = findDiscoveriesByGroupName(
               context, DiscoveryGroupIds.pageGradeDetails)
