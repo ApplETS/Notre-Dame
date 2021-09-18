@@ -40,8 +40,8 @@ class GradeButton extends StatelessWidget {
           onTap: () async {
             if (ModalRoute.of(context).settings.name == RouterPaths.dashboard ||
                 await _settingsManager
-                        .getString(PreferencesFlag.discoveryStudentGrade) ==
-                    'true') {
+                        .getBool(PreferencesFlag.discoveryStudentGrade) ==
+                    true) {
               _navigationService.pushNamed(RouterPaths.gradeDetails,
                   arguments: course);
             }
