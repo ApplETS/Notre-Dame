@@ -38,5 +38,5 @@ fi
 
 if [[ -n $ENCRYPTED_IOS_SERVICE_ACCOUNT_CREDENTIALS_PASSWORD ]]; then
   echo "Decoding iOS service account credentials"
-  openssl aes-256-cbc -pbkdf2 -d -k "$ENCRYPTED_IOS_SERVICE_ACCOUNT_CREDENTIALS_PASSWORD" -in ./encryptedFiles/ios_service_account_credentials.json.enc -out ./ios/ios_service_account_credentials.json -md md5
+  openssl aes-256-cbc -pbkdf2 -d -k "$ENCRYPTED_IOS_SERVICE_ACCOUNT_CREDENTIALS_PASSWORD" -in ./encryptedFiles/ios_service_account_credentials.json.enc -out ./ios/service_account_credentials.json -md md5
 fi
