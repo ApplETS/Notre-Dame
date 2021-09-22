@@ -71,7 +71,7 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
   /// Return session progress based on today's [date]
   double getSessionProgress() {
     if (_courseRepository.activeSessions.isEmpty) {
-      return 0.0;
+      return -1.0;
     } else {
       return todayDate
               .difference(_courseRepository.activeSessions.first.startDate)
@@ -186,7 +186,7 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
   }
 
   Future<List<Session>> futureToRunSessionProgressBar() async {
-    setBusyForObject(_progress, true);
+    setBusyForObject(progress, true);
     return _courseRepository
         .getSessions()
         // ignore: invalid_return_type_for_catch_error
@@ -194,7 +194,7 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
         .whenComplete(() {
       _sessionDays = getSessionDays();
       _progress = getSessionProgress();
-      setBusyForObject(_progress, false);
+      setBusyForObject(progress, false);
     });
   }
 

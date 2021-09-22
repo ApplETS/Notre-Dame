@@ -367,7 +367,7 @@ void main() {
             courseRepository as CourseRepositoryMock);
 
         await viewModel.futureToRunSessionProgressBar();
-        expect(viewModel.progress, 0.0);
+        expect(viewModel.progress, -1.0);
         expect(viewModel.sessionDays, [0, 0]);
       });
     });
