@@ -154,7 +154,7 @@ jobs:
           namedLogo: flutter
           color: green
 
-#      Disable theses steps for now. Will enable them when we will think of a way to upload lcov.base.info somewhere
+#      Disable these steps for now. Will enable them when we will think of a way to upload lcov.base.info somewhere
 #      - name: Commit coverage file
 #        id: commit
 #        if: ${{ github.event_name == 'push' }}
@@ -229,6 +229,8 @@ jobs:
         env:
           ENCRYPTED_SIGNETS_API_CERT_PASSWORD: ${{ secrets.ENCRYPTED_SIGNETS_API_CERT_PASSWORD }}
           ENCRYPTED_GOOGLE_SERVICE_PASSWORD: ${{ secrets.ENCRYPTED_GOOGLE_SERVICE_PASSWORD }}
+          ENCRYPTED_ETSMOBILE_KEYSTORE_PASSWORD: ${{ secrets.ENCRYPTED_ETSMOBILE_KEYSTORE_PASSWORD }}
+          ENCRYPTED_KEYSTORE_PROPERTIES_PASSWORD: ${{ secrets.ENCRYPTED_KEYSTORE_PROPERTIES_PASSWORD }}
 
       # Build the application.
       - name: Build the application
