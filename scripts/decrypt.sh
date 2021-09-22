@@ -6,7 +6,7 @@ pwd
 openssl version -v
 
 # Decrypt Signets API
-if [[ -n "$ENCRYPTED_GOOGLE_SERVICE_PASSWORD" ]]; then
+if [[ -n "$ENCRYPTED_SIGNETS_API_CERT_PASSWORD" ]]; then
   mkdir -p ./assets/certificates
   echo "Decoding SignETS certificates"
   openssl enc -aes-256-cbc -pbkdf2 -d -k "$ENCRYPTED_SIGNETS_API_CERT_PASSWORD" -in ./encryptedFiles/signets_cert.crt.enc -out ./assets/certificates/signets_cert.crt -md md5
@@ -28,10 +28,15 @@ fi
 
 if [[ -n $ENCRYPTED_ANDROID_SERVICE_ACCOUNT_CREDENTIALS_PASSWORD ]]; then
   echo "Decoding Android service account credentials"
-  openssl aes-256-cbc -pbkdf2 -d -k "$ENCRYPTED_ANDROID_SERVICE_ACCOUNT_CREDENTIALS_PASSWORD" -in ./encryptedFiles/service_account_credentials.json.enc -out ./android/service_account_credentials.json -md md5
+  openssl aes-256-cbc -pbkdf2 -d -k "$ENCRYPTED_ANDROID_SERVICE_ACCOUNT_CREDENTIALS_PASSWORD" -in ./encryptedFiles/android_service_account_credentials.json.enc -out ./android/service_account_credentials.json -md md5
 fi
 
 if [[ -n $ENCRYPTED_IOS_MATCHFILE_PASSWORD ]]; then
   echo "Decoding Fastlane Matchfile for iOS"
   openssl aes-256-cbc -pbkdf2 -d -k "$ENCRYPTED_IOS_MATCHFILE_PASSWORD" -in ./encryptedFiles/Matchfile.enc -out ./ios/fastlane/Matchfile -md md5
+fi
+
+if [[ -n $ENCRYPTED_IOS_SERVICE_ACCOUNT_CREDENTIALS_PASSWORD ]]; then
+  echo "Decoding iOS service account credentials"
+  openssl aes-256-cbc -pbkdf2 -d -k "$ENCRYPTED_IOS_SERVICE_ACCOUNT_CREDENTIALS_PASSWORD" -in ./encryptedFiles/ios_service_account_credentials.json.enc -out ./ios/ios_service_account_credentials.json -md md5
 fi
