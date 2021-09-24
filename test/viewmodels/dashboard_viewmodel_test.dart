@@ -264,6 +264,8 @@ void main() {
         ]);
 
         verify(settingsManager.getDashboard()).called(1);
+        verify(settingsManager.getString(PreferencesFlag.showDaysRemaining))
+            .called(1);
         verifyNoMoreInteractions(settingsManager);
       });
 
@@ -341,6 +343,23 @@ void main() {
         expect(viewModel.progress, 0.0);
         expect(viewModel.sessionDays, [0, 0]);
       });
+
+      test(
+          "ShowDaysRemaining flag should be set to true when it is the first time changeProgressBarText is called",
+          () async {
+        CourseRepositoryMock.stubActiveSessions(
+            courseRepository as CourseRepositoryMock);
+
+        viewModel.changeProgressBarText();
+        verify(settingsManager.setString(
+                PreferencesFlag.showDaysRemaining, 'false'))
+            .called(1);
+
+        viewModel.changeProgressBarText();
+        verify(settingsManager.setString(
+                PreferencesFlag.showDaysRemaining, 'true'))
+            .called(1);
+      });
     });
 
     group("interact with cards - ", () {
@@ -395,6 +414,8 @@ void main() {
             .called(1);
         verify(settingsManager.setInt(PreferencesFlag.progressBarCard, 2))
             .called(1);
+        verify(settingsManager.getString(PreferencesFlag.showDaysRemaining))
+            .called(2);
         verifyNoMoreInteractions(settingsManager);
       });
 
@@ -443,6 +464,8 @@ void main() {
         verify(settingsManager.setInt(PreferencesFlag.aboutUsCard, 1))
             .called(1);
         verify(settingsManager.setInt(PreferencesFlag.scheduleCard, 2))
+            .called(1);
+        verify(settingsManager.getString(PreferencesFlag.showDaysRemaining))
             .called(1);
         verifyNoMoreInteractions(settingsManager);
       });
