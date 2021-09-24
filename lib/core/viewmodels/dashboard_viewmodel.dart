@@ -68,6 +68,10 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
   /// Get cards to display
   List<PreferencesFlag> get cardsToDisplay => _cardsToDisplay;
 
+  bool _showDaysInProgressBar = true;
+
+  bool get showDaysInProgressBar => _showDaysInProgressBar;
+
   /// Return session progress based on today's [date]
   double getSessionProgress() {
     if (_courseRepository.activeSessions.isEmpty) {
@@ -80,6 +84,13 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
               .difference(_courseRepository.activeSessions.first.startDate)
               .inDays;
     }
+  }
+
+  void changeProgressBarText() {
+    _showDaysInProgressBar = !_showDaysInProgressBar;
+
+    _settingsManager.setString(
+        PreferencesFlag.showDaysRemaining, showDaysInProgressBar.toString());
   }
 
   /// Returns a list containing the number of elapsed days in the active session
@@ -186,6 +197,11 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
   }
 
   Future<List<Session>> futureToRunSessionProgressBar() async {
+    if (await _settingsManager.getString(PreferencesFlag.showDaysRemaining) ==
+        'false') {
+      _showDaysInProgressBar = false;
+    }
+
     setBusyForObject(_progress, true);
     return _courseRepository
         .getSessions()
