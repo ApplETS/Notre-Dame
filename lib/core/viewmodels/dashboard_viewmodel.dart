@@ -197,9 +197,11 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
   }
 
   Future<List<Session>> futureToRunSessionProgressBar() async {
-    if (!await _settingsManager.getBool(PreferencesFlag.showDaysRemaining)) {
-      _showDaysInProgressBar = false;
-    }
+    bool isShowDaysRemaining =
+        await _settingsManager.getBool(PreferencesFlag.showDaysRemaining);
+    isShowDaysRemaining ??= true;
+
+    _showDaysInProgressBar = isShowDaysRemaining;
 
     setBusyForObject(_progress, true);
     return _courseRepository

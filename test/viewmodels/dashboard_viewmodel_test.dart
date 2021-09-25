@@ -264,7 +264,7 @@ void main() {
         ]);
 
         verify(settingsManager.getDashboard()).called(1);
-        verify(settingsManager.getString(PreferencesFlag.showDaysRemaining))
+        verify(settingsManager.getBool(PreferencesFlag.showDaysRemaining))
             .called(1);
         verifyNoMoreInteractions(settingsManager);
       });
@@ -413,7 +413,7 @@ void main() {
             .called(1);
         verify(settingsManager.setInt(PreferencesFlag.progressBarCard, 2))
             .called(1);
-        verify(settingsManager.getString(PreferencesFlag.showDaysRemaining))
+        verify(settingsManager.getBool(PreferencesFlag.showDaysRemaining))
             .called(2);
         verifyNoMoreInteractions(settingsManager);
       });
@@ -464,7 +464,7 @@ void main() {
             .called(1);
         verify(settingsManager.setInt(PreferencesFlag.scheduleCard, 2))
             .called(1);
-        verify(settingsManager.getString(PreferencesFlag.showDaysRemaining))
+        verify(settingsManager.getBool(PreferencesFlag.showDaysRemaining))
             .called(1);
         verifyNoMoreInteractions(settingsManager);
       });
