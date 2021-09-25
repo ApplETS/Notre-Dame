@@ -89,8 +89,8 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
   void changeProgressBarText() {
     _showDaysInProgressBar = !_showDaysInProgressBar;
 
-    _settingsManager.setString(
-        PreferencesFlag.showDaysRemaining, showDaysInProgressBar.toString());
+    _settingsManager.setBool(
+        PreferencesFlag.showDaysRemaining, showDaysInProgressBar);
   }
 
   /// Returns a list containing the number of elapsed days in the active session
@@ -197,8 +197,7 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
   }
 
   Future<List<Session>> futureToRunSessionProgressBar() async {
-    if (await _settingsManager.getString(PreferencesFlag.showDaysRemaining) ==
-        'false') {
+    if (!await _settingsManager.getBool(PreferencesFlag.showDaysRemaining)) {
       _showDaysInProgressBar = false;
     }
 

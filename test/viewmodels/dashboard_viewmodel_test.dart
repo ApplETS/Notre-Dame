@@ -351,13 +351,12 @@ void main() {
             courseRepository as CourseRepositoryMock);
 
         viewModel.changeProgressBarText();
-        verify(settingsManager.setString(
-                PreferencesFlag.showDaysRemaining, 'false'))
+        verify(settingsManager.setBool(
+                PreferencesFlag.showDaysRemaining, false))
             .called(1);
 
         viewModel.changeProgressBarText();
-        verify(settingsManager.setString(
-                PreferencesFlag.showDaysRemaining, 'true'))
+        verify(settingsManager.setBool(PreferencesFlag.showDaysRemaining, true))
             .called(1);
       });
     });
