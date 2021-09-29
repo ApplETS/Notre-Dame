@@ -145,6 +145,7 @@ void main() {
         CourseRepositoryMock.stubCourses(
             courseRepository as CourseRepositoryMock,
             toReturn: courses);
+        setupFlutterToastMock();
 
         expect(await viewModel.futureToRun(), coursesBySession,
             reason:
@@ -197,6 +198,7 @@ void main() {
         CourseRepositoryMock.stubCourses(
             courseRepository as CourseRepositoryMock,
             toReturn: courses);
+        setupFlutterToastMock();
 
         // Populate the list of courses
         await viewModel.futureToRun();
