@@ -77,6 +77,7 @@ void main() {
       setupNavigationServiceMock();
       courseRepository = setupCourseRepositoryMock();
       setupSettingsManagerMock();
+      setupNetworkingServiceMock();
     });
 
     tearDown(() {
