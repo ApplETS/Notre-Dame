@@ -236,6 +236,8 @@ CourseRepository setupCourseRepositoryMock() {
   return service;
 }
 
+/// Load a mock of the [NetworkingService]
+/// Will also stub the first value of changeConnectivityStream
 NetworkingService setupNetworkingServiceMock() {
   unregister<NetworkingService>();
   final service = NetworkingServiceMock();
