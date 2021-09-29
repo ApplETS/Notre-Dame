@@ -118,9 +118,7 @@ void main() {
         setupFlutterToastMock();
         CourseRepositoryMock.stubGetCourseSummaryException(
             courseRepository as CourseRepositoryMock, courseWithoutSummary);
-        print('Hello');
         await viewModel.futureToRun();
-        print('there');
 
         expect(viewModel.course, courseWithoutSummary);
       });
