@@ -242,8 +242,7 @@ NetworkingService setupNetworkingServiceMock() {
 
   locator.registerSingleton<NetworkingService>(service);
 
-  NetworkingServiceMock.stubChangeConnectivityStream(
-      service as NetworkingServiceMock);
+  NetworkingServiceMock.stubChangeConnectivityStream(service);
 
   return service;
 }
