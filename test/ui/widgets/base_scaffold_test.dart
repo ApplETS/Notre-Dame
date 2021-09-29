@@ -23,7 +23,8 @@ void main() {
       setupNavigationServiceMock();
       networkingService = setupNetworkingServiceMock();
 
-      NetworkingServiceMock.stubChangeConnectivityStream(networkingService as NetworkingServiceMock);
+      NetworkingServiceMock.stubChangeConnectivityStream(
+          networkingService as NetworkingServiceMock);
     });
 
     tearDown(() {

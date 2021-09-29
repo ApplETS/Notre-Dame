@@ -5,7 +5,8 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 class NetworkingService {
   final Connectivity _connectivity = Connectivity();
 
-  Stream<ConnectivityResult> get onConnectivityChanged => _connectivity.onConnectivityChanged;
+  Stream<ConnectivityResult> get onConnectivityChanged =>
+      _connectivity.onConnectivityChanged;
 
   Future<bool> hasConnectivity() async {
     final connectionStatus = await _connectivity.checkConnectivity();
