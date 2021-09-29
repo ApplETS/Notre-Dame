@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:notredame/core/services/networking_service.dart';
 
 // UTILS
 import 'package:notredame/core/utils/utils.dart';
@@ -11,6 +12,8 @@ import 'package:notredame/ui/utils/app_theme.dart';
 
 // WIDGETS
 import 'package:notredame/ui/widgets/bottom_bar.dart';
+
+import '../../locator.dart';
 
 /// Basic Scaffold to avoid boilerplate code in the application.
 /// Contains a loader controlled by [_isLoading]
@@ -50,6 +53,8 @@ class _BaseScaffoldState extends State<BaseScaffold> {
   // Displays text under the app bar when offline.
   static bool _isOffline = false;
 
+  final NetworkingService _networkingService = locator<NetworkingService>();
+
   StreamSubscription<ConnectivityResult> _subscription;
 
   @override
@@ -61,14 +66,14 @@ class _BaseScaffoldState extends State<BaseScaffold> {
 
   Future _setOfflineValue() async {
     final isOffline =
-        await Connectivity().checkConnectivity() == ConnectivityResult.none;
+        await _networkingService.hasConnectivity();
     setState(() {
       _isOffline = isOffline;
     });
   }
 
   void _listenToChangeInConnectivity() {
-    _subscription = Connectivity().onConnectivityChanged.listen((event) {
+    _subscription = _networkingService.onConnectivityChanged.listen((event) {
       setState(() {
         _isOffline = event == ConnectivityResult.none;
       });
