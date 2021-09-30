@@ -136,7 +136,6 @@ void main() {
       preferenceService = setupPreferencesServiceMock();
       courseRepository = setupCourseRepositoryMock();
 
-      setupFlutterToastMock();
       courseRepository = setupCourseRepositoryMock();
 
       viewModel = DashboardViewModel(intl: await setupAppIntl());
@@ -190,6 +189,7 @@ void main() {
 
         verifyInOrder([
           courseRepository.sessions,
+          courseRepository.sessions,
           courseRepository.activeSessions,
           courseRepository.activeSessions,
           courseRepository.getCourses(fromCacheOnly: true),
@@ -200,6 +200,7 @@ void main() {
       });
 
       test('Signets throw an error while trying to get courses', () async {
+        setupFlutterToastMock();
         CourseRepositoryMock.stubSessions(
             courseRepository as CourseRepositoryMock,
             toReturn: [session]);
@@ -234,6 +235,7 @@ void main() {
 
         verifyInOrder([
           courseRepository.sessions,
+          courseRepository.sessions,
           courseRepository.activeSessions,
           courseRepository.activeSessions,
           courseRepository.getCourses(fromCacheOnly: true),
@@ -242,10 +244,36 @@ void main() {
 
         verifyNoMoreInteractions(courseRepository);
       });
+
+      test('There is no session active', () async {
+        CourseRepositoryMock.stubSessions(
+            courseRepository as CourseRepositoryMock,
+            toReturn: []);
+        CourseRepositoryMock.stubActiveSessions(
+            courseRepository as CourseRepositoryMock,
+            toReturn: []);
+
+        expect(await viewModel.futureToRunGrades(), [],
+            reason: "Should return empty if there is no session active.");
+
+        await untilCalled(courseRepository.sessions);
+
+        expect(viewModel.courses, []);
+
+        verifyInOrder([
+          courseRepository.sessions,
+          courseRepository.sessions,
+          courseRepository.getSessions(),
+          courseRepository.activeSessions,
+        ]);
+
+        verifyNoMoreInteractions(courseRepository);
+      });
     });
 
     group("futureToRun - ", () {
       test("The initial cards are correctly loaded", () async {
+        setupFlutterToastMock();
         CourseRepositoryMock.stubGetCoursesActivities(
             courseRepository as CourseRepositoryMock);
         CourseRepositoryMock.stubCoursesActivities(
@@ -296,6 +324,7 @@ void main() {
 
       test("An exception is thrown during the preferenceService call",
           () async {
+        setupFlutterToastMock();
         CourseRepositoryMock.stubGetCoursesActivities(
             courseRepository as CourseRepositoryMock);
         CourseRepositoryMock.stubCoursesActivities(
@@ -338,7 +367,7 @@ void main() {
             courseRepository as CourseRepositoryMock);
 
         await viewModel.futureToRunSessionProgressBar();
-        expect(viewModel.progress, 0.0);
+        expect(viewModel.progress, -1.0);
         expect(viewModel.sessionDays, [0, 0]);
       });
     });

@@ -23,9 +23,6 @@ import 'package:notredame/core/models/course.dart';
 import 'package:notredame/locator.dart';
 
 class GradesDetailsViewModel extends FutureViewModel<Course> {
-  /// Settings manager
-  final SettingsManager _settingsManager = locator<SettingsManager>();
-
   /// Used to get the courses of the student
   final CourseRepository _courseRepository = locator<CourseRepository>();
 
@@ -84,9 +81,10 @@ class GradesDetailsViewModel extends FutureViewModel<Course> {
     }
   }
 
-  Future<void> startDiscovery(BuildContext context) async {
-    if (await _settingsManager
-            .getString(PreferencesFlag.discoveryGradeDetails) ==
+  /// Start the discovery process of this page if needed
+  static Future<void> startDiscovery(BuildContext context) async {
+    final SettingsManager _settingsManager = locator<SettingsManager>();
+    if (await _settingsManager.getBool(PreferencesFlag.discoveryGradeDetails) ==
         null) {
       final List<String> ids = findDiscoveriesByGroupName(
               context, DiscoveryGroupIds.pageGradeDetails)
@@ -96,7 +94,7 @@ class GradesDetailsViewModel extends FutureViewModel<Course> {
       Future.delayed(const Duration(seconds: 1),
           () => FeatureDiscovery.discoverFeatures(context, ids));
 
-      _settingsManager.setString(PreferencesFlag.discoveryGradeDetails, 'true');
+      _settingsManager.setBool(PreferencesFlag.discoveryGradeDetails, true);
     }
   }
 }

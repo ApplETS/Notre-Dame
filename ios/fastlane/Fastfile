@@ -1,0 +1,56 @@
+default_platform(:ios)
+
+TEMP_KEYCHAIN_NAME = ENV["TEMP_KEYCHAIN_NAME"]
+TEMP_KEYCHAIN_PASSWORD = ENV["TEMP_KEYCHAIN_PASSWORD"]
+
+def delete_temp_keychain(name)
+  delete_keychain(
+    name: name
+  ) if File.exist? File.expand_path("~/Library/Keychains/#{name}-db")
+end
+
+def create_temp_keychain(name, password)
+  create_keychain(
+    name: name,
+    password: password,
+    unlock: false,
+    timeout: 0
+  )
+end
+
+def ensure_temp_keychain(name, password)
+  delete_temp_keychain(name)
+  create_temp_keychain(name, password)
+end
+
+platform :ios do
+  desc "Deploy a new version to the Apple Store"
+  lane :deploy do
+    keychain_name = TEMP_KEYCHAIN_NAME
+    keychain_password = TEMP_KEYCHAIN_PASSWORD
+    ensure_temp_keychain(keychain_name, keychain_password)
+
+    match(
+        type: "appstore",
+        readonly: true,
+        git_basic_authorization: Base64.strict_encode64(ENV["GIT_AUTHORIZATION"])
+        keychain_name: ENV['MATCH_KEYCHAIN_NAME'],
+        keychain_password: ENV["MATCH_KEYCHAIN_PASSWORD"],
+    )
+
+    build_ios_app(
+        export_method: 'app-store',
+        workspace: 'Runner.xcworkspace'
+    )
+
+    upload_to_app_store(
+        api_key_path: "service_account_credentials.json"
+        skip_screenshots: true,
+        release_notes: true,
+        force: true, # Skip HTML report verification
+        submit_for_review: true,
+        reject_if_possible: true,
+        automatic_release: true
+    )
+  end
+end

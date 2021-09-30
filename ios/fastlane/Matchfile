@@ -1,0 +1,10 @@
+git_url("git@github.com:ApplETS/fastlane-ios-certificates.git")
+
+storage_mode("git")
+
+type("development") # The default type, can be: appstore, adhoc, enterprise or development
+
+app_identifier(["ca.etsmtl.applets.ETSMobile"])
+username("applets@etsmtl.net")
+
+# The docs are available on https://docs.fastlane.tools/actions/match
