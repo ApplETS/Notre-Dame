@@ -32,7 +32,6 @@ void main() {
   group("ScheduleSettingsViewModel - ", () {
     setUp(() {
       settingsManager = setupSettingsManagerMock();
-      setupFlutterToastMock();
       viewModel = ScheduleSettingsViewModel();
     });
 

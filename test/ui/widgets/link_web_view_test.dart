@@ -19,6 +19,10 @@ final _quickLink = QuickLink(
 
 void main() {
   group('LinkWebView - ', () {
+    setUp(() {
+      setupNetworkingServiceMock();
+    });
+
     testWidgets('has an AppBar and a WebView', (WidgetTester tester) async {
       await tester.pumpWidget(localizedWidget(child: LinkWebView(_quickLink)));
 

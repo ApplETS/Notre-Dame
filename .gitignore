@@ -31,6 +31,10 @@ assets/certificates/
 **/android/gradlew.bat
 **/android/local.properties
 **/android/**/GeneratedPluginRegistrant.java
+**/google-services.json
+**/keystore.properties
+**/*.jks
+**/service_account_credentials.json
 
 # VS Code related
 .vscode/
@@ -62,6 +66,7 @@ assets/certificates/
 **/ios/Flutter/flutter_export_environment.sh
 **/ios/ServiceDefinitions.json
 **/ios/Runner/GeneratedPluginRegistrant.*
+**/GoogleService-Info.plist
 
 # Exceptions to above rules.
 !**/ios/**/default.mode1v3

@@ -66,7 +66,7 @@ class LoginViewModel extends BaseViewModel {
 
     setBusy(true);
     final response = await _userRepository.authenticate(
-        username: _universalCode, password: _password);
+        username: _universalCode.toUpperCase(), password: _password);
 
     if (response) {
       _navigationService.pushNamedAndRemoveUntil(RouterPaths.dashboard);

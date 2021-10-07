@@ -28,70 +28,67 @@ import 'package:notredame/ui/views/grade_details_view.dart';
 // WIDGETS
 import 'package:notredame/ui/widgets/link_web_view.dart';
 
-class AppRouter {
-  // ignore: missing_return
-  static Route<dynamic> generateRoute(RouteSettings routeSettings) {
-    switch (routeSettings.name) {
-      case RouterPaths.login:
-        return MaterialPageRoute(
-            settings: RouteSettings(name: routeSettings.name),
-            builder: (_) => LoginView());
-      case RouterPaths.dashboard:
-        return PageRouteBuilder(
-            settings: RouteSettings(name: routeSettings.name),
-            pageBuilder: (_, __, ___) => const DashboardView());
-      case RouterPaths.schedule:
-        return PageRouteBuilder(
-            settings: RouteSettings(name: routeSettings.name),
-            pageBuilder: (_, __, ___) => const ScheduleView());
-      case RouterPaths.student:
-        return PageRouteBuilder(
-            settings: RouteSettings(name: routeSettings.name),
-            pageBuilder: (_, __, ___) => StudentView());
-      case RouterPaths.gradeDetails:
-        return PageRouteBuilder(
-            transitionDuration: const Duration(milliseconds: 600),
-            settings: RouteSettings(name: routeSettings.name),
-            pageBuilder: (_, __, ___) =>
-                GradesDetailsView(course: routeSettings.arguments as Course));
-      case RouterPaths.ets:
-        return PageRouteBuilder(
-            settings: RouteSettings(name: routeSettings.name),
-            pageBuilder: (_, __, ___) => QuickLinksView());
-      case RouterPaths.webView:
-        return PageRouteBuilder(
-            pageBuilder: (_, __, ___) =>
-                LinkWebView(routeSettings.arguments as QuickLink));
-      case RouterPaths.security:
-        return PageRouteBuilder(
-            settings: RouteSettings(name: routeSettings.name),
-            pageBuilder: (_, __, ___) => SecurityView());
-      case RouterPaths.more:
-        return PageRouteBuilder(
-            settings: RouteSettings(name: routeSettings.name),
-            pageBuilder: (_, __, ___) => MoreView());
-      case RouterPaths.settings:
-        return PageRouteBuilder(
-            settings: RouteSettings(name: routeSettings.name),
-            pageBuilder: (_, __, ___) => SettingsView());
-      case RouterPaths.contributors:
-        return PageRouteBuilder(
-            settings: RouteSettings(name: routeSettings.name),
-            pageBuilder: (_, __, ___) => ContributorsView());
-      case RouterPaths.about:
-        return PageRouteBuilder(
-            transitionDuration: const Duration(seconds: 1),
-            settings: RouteSettings(name: routeSettings.name),
-            pageBuilder: (_, __, ___) => AboutView());
-      case RouterPaths.chooseLanguage:
-        return MaterialPageRoute(
-            settings: RouteSettings(name: routeSettings.name),
-            builder: (_) => ChooseLanguageView());
-      default:
-        return PageRouteBuilder(
-            settings: RouteSettings(name: routeSettings.name),
-            pageBuilder: (_, __, ___) =>
-                NotFoundView(pageName: routeSettings.name));
-    }
+Route<dynamic> generateRoute(RouteSettings routeSettings) {
+  switch (routeSettings.name) {
+    case RouterPaths.login:
+      return MaterialPageRoute(
+          settings: RouteSettings(name: routeSettings.name),
+          builder: (_) => LoginView());
+    case RouterPaths.dashboard:
+      return PageRouteBuilder(
+          settings: RouteSettings(name: routeSettings.name),
+          pageBuilder: (_, __, ___) => const DashboardView());
+    case RouterPaths.schedule:
+      return PageRouteBuilder(
+          settings: RouteSettings(name: routeSettings.name),
+          pageBuilder: (_, __, ___) => const ScheduleView());
+    case RouterPaths.student:
+      return PageRouteBuilder(
+          settings: RouteSettings(name: routeSettings.name),
+          pageBuilder: (_, __, ___) => StudentView());
+    case RouterPaths.gradeDetails:
+      return PageRouteBuilder(
+          transitionDuration: const Duration(milliseconds: 600),
+          settings: RouteSettings(name: routeSettings.name),
+          pageBuilder: (_, __, ___) =>
+              GradesDetailsView(course: routeSettings.arguments as Course));
+    case RouterPaths.ets:
+      return PageRouteBuilder(
+          settings: RouteSettings(name: routeSettings.name),
+          pageBuilder: (_, __, ___) => QuickLinksView());
+    case RouterPaths.webView:
+      return PageRouteBuilder(
+          pageBuilder: (_, __, ___) =>
+              LinkWebView(routeSettings.arguments as QuickLink));
+    case RouterPaths.security:
+      return PageRouteBuilder(
+          settings: RouteSettings(name: routeSettings.name),
+          pageBuilder: (_, __, ___) => SecurityView());
+    case RouterPaths.more:
+      return PageRouteBuilder(
+          settings: RouteSettings(name: routeSettings.name),
+          pageBuilder: (_, __, ___) => MoreView());
+    case RouterPaths.settings:
+      return PageRouteBuilder(
+          settings: RouteSettings(name: routeSettings.name),
+          pageBuilder: (_, __, ___) => SettingsView());
+    case RouterPaths.contributors:
+      return PageRouteBuilder(
+          settings: RouteSettings(name: routeSettings.name),
+          pageBuilder: (_, __, ___) => ContributorsView());
+    case RouterPaths.about:
+      return PageRouteBuilder(
+          transitionDuration: const Duration(seconds: 1),
+          settings: RouteSettings(name: routeSettings.name),
+          pageBuilder: (_, __, ___) => AboutView());
+    case RouterPaths.chooseLanguage:
+      return MaterialPageRoute(
+          settings: RouteSettings(name: routeSettings.name),
+          builder: (_) => ChooseLanguageView());
+    default:
+      return PageRouteBuilder(
+          settings: RouteSettings(name: routeSettings.name),
+          pageBuilder: (_, __, ___) =>
+              NotFoundView(pageName: routeSettings.name));
   }
 }

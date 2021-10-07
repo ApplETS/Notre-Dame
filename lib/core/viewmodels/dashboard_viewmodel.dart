@@ -75,7 +75,7 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
   /// Return session progress based on today's [date]
   double getSessionProgress() {
     if (_courseRepository.activeSessions.isEmpty) {
-      return 0.0;
+      return -1.0;
     } else {
       return todayDate
               .difference(_courseRepository.activeSessions.first.startDate)
@@ -203,7 +203,7 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
 
     _showDaysInProgressBar = isShowDaysRemaining;
 
-    setBusyForObject(_progress, true);
+    setBusyForObject(progress, true);
     return _courseRepository
         .getSessions()
         // ignore: invalid_return_type_for_catch_error
@@ -211,7 +211,7 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
         .whenComplete(() {
       _sessionDays = getSessionDays();
       _progress = getSessionProgress();
-      setBusyForObject(_progress, false);
+      setBusyForObject(progress, false);
     });
   }
 
@@ -266,8 +266,10 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
   bool isSameDay(DateTime a, DateTime b) =>
       a.year == b.year && a.month == b.month && a.day == b.day;
 
-  Future<void> startDiscovery(BuildContext context) async {
-    if (await _settingsManager.getString(PreferencesFlag.discoveryDashboard) ==
+  /// Start discovery is needed
+  static Future<void> startDiscovery(BuildContext context) async {
+    final SettingsManager _settingsManager = locator<SettingsManager>();
+    if (await _settingsManager.getBool(PreferencesFlag.discoveryDashboard) ==
         null) {
       final List<String> ids =
           findDiscoveriesByGroupName(context, DiscoveryGroupIds.bottomBar)
@@ -275,22 +277,29 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
               .toList();
 
       FeatureDiscovery.discoverFeatures(context, ids);
-      _settingsManager.setString(PreferencesFlag.discoveryDashboard, 'true');
     }
+  }
+
+  /// Mark as complete the discovery step
+  Future<bool> discoveryCompleted() async {
+    await _settingsManager.setBool(PreferencesFlag.discoveryDashboard, true);
+
+    return true;
   }
 
   /// Get the list of courses for the Grades card.
   Future<List<Course>> futureToRunGrades() async {
     setBusyForObject(courses, true);
-    if (_courseRepository.sessions == null) {
+    if (_courseRepository.sessions == null ||
+        _courseRepository.sessions.isEmpty) {
       // ignore: return_type_invalid_for_catch_error
       await _courseRepository.getSessions().catchError(onError);
     }
 
     // Determine current sessions
     if (_courseRepository.activeSessions.isEmpty) {
-      // ignore: return_type_invalid_for_catch_error
-      await _courseRepository.getSessions().catchError(onError);
+      setBusyForObject(courses, false);
+      return [];
     }
     final currentSession = _courseRepository.activeSessions.first;
 

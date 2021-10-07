@@ -370,7 +370,7 @@ packages:
       name: fluttertoast
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "8.0.7"
+    version: "8.0.8"
   font_awesome_flutter:
     dependency: "direct main"
     description:
@@ -405,7 +405,7 @@ packages:
       name: google_maps_flutter
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.0.6"
+    version: "2.0.8"
   google_maps_flutter_platform_interface:
     dependency: transitive
     description:

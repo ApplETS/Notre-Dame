@@ -1,0 +1,91 @@
+name: Release the application to the stores
+on:
+  release:
+    types: [released]
+jobs:
+  release-to-store:
+    name: Create ${{ matrix.target }} build
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        target: [ iOS, Android ]
+        include:
+          - os: macos-latest
+            target: iOS
+            build_target: ios
+            build_args: --no-codesign
+            working_directory: ios
+            metadata_path: 'fastlane/metadata'
+            changelog_path: 'release-notes.txt'
+          - os: ubuntu-latest
+            target: Android
+            build_target: appbundle
+            build_args: ''
+            working_directory: android
+            metadata_path: 'fastlane/metadata/android'
+            changelog_path: 'changelogs/default.txt'
+      # Disable fail-fast as we want results from all even if one fails.
+      fail-fast: false
+    steps:
+      - uses: actions/checkout@v2
+      - uses: subosito/flutter-action@v1
+      - name: Setup Fastlane
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '2.7'
+          bundler-cache: true
+          working-directory: ${{ matrix.working_directory }}
+      - name: Install Android dependencies
+        if: matrix.target == 'Android'
+        uses: actions/setup-java@v2
+        with:
+          java-version: '11'
+          distribution: 'adopt'
+      - name: Install iOS dependencies
+        if: matrix.target == 'iOS'
+        run: |
+          flutter pub get
+          cd ios
+          rm Podfile.lock
+          pod install --repo-update
+          flutter clean
+      - run: flutter doctor -v
+
+      # Get dependencies and decrypt needed files.
+      - run: flutter pub get
+
+      - name: Decrypt certificates files
+        run: |
+          chmod +x ./scripts/decrypt.sh
+          ./scripts/decrypt.sh
+        env:
+          ENCRYPTED_SIGNETS_API_CERT_PASSWORD: ${{ secrets.ENCRYPTED_SIGNETS_API_CERT_PASSWORD }}
+          ENCRYPTED_GOOGLE_SERVICE_PASSWORD: ${{ secrets.ENCRYPTED_GOOGLE_SERVICE_PASSWORD }}
+          ENCRYPTED_ETSMOBILE_KEYSTORE_PASSWORD: ${{ secrets.ENCRYPTED_ETSMOBILE_KEYSTORE_PASSWORD }}
+          ENCRYPTED_KEYSTORE_PROPERTIES_PASSWORD: ${{ secrets.ENCRYPTED_KEYSTORE_PROPERTIES_PASSWORD }}
+          ENCRYPTED_ANDROID_SERVICE_ACCOUNT_CREDENTIALS_PASSWORD: ${{ secrets.ENCRYPTED_ANDROID_SERVICE_ACCOUNT_CREDENTIALS_PASSWORD }}
+          ENCRYPTED_IOS_SERVICE_ACCOUNT_CREDENTIALS_PASSWORD: ${{ secrets.ENCRYPTED_IOS_SERVICE_ACCOUNT_CREDENTIALS_PASSWORD }}
+          ENCRYPTED_IOS_MATCHFILE_PASSWORD: ${{ secrets.ENCRYPTED_IOS_MATCHFILE_PASSWORD }}
+
+      - name: Build the application
+        run: flutter build -v ${{ matrix.build_target }} ${{ matrix.build_args }} --build-number=$(date '+%s') --release --dart-define=GH_API_TOKEN=${{ secrets.GH_API_TOKEN }}
+        env:
+          MAPS_API_KEY: ${{ secrets.MAPS_API_KEY }}
+
+      - name: Set changelog for each platform
+        run: |
+          enChangelog=$(echo ${{ github.event.body }} | sed -n '/^## English version$/,/^## End english version/p' | sed '1d;$d')
+          frChangelog=$(echo ${{ github.event.body }} | sed -n '/^## French version$/,/^## End french version/p' | sed '1d;$d')
+
+          [ ! -z "$en" ] && echo $en > ${{ matrix.metadata_path }}/en-CA/${{ matrix.changelog_path }}
+          [ ! -z "$frChangelog" ] && echo $enChangelog > ${{ matrix.metadata_path }}/fr-CA/${{ matrix.changelog_path }}
+        working-directory: ${{ matrix.working_directory }}
+
+      - name: Deploy to store
+        run: bundle exec fastlane deploy
+        working-directory: ${{ matrix.working_directory }}
+        env:
+          MATCH_KEYCHAIN_NAME: ${{ secrets.MATCH_KEYCHAIN_NAME }} # Used only by iOS
+          MATCH_KEYCHAIN_PASSWORD: ${{ secrets.MATCH_KEYCHAIN_PASSWORD }} # Used only by iOS
+          MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }} # Used only by iOS
+          GIT_AUTHORIZATION: ${{ secret.MATCH_GIT_AUTHORIZATION }} # Used only by iOS

@@ -68,7 +68,6 @@ void main() {
     setUp(() async {
       // Setting up mocks
       userRepository = setupUserRepositoryMock();
-      setupFlutterToastMock();
 
       viewModel = ProfileViewModel(intl: await setupAppIntl());
     });
@@ -97,6 +96,7 @@ void main() {
       });
 
       test("Signets throw an error while trying to get new events", () async {
+        setupFlutterToastMock();
         UserRepositoryMock.stubGetInfo(userRepository as UserRepositoryMock,
             fromCacheOnly: true);
         UserRepositoryMock.stubGetInfoException(
