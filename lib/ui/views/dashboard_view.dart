@@ -37,7 +37,6 @@ class DashboardView extends StatefulWidget {
 class _DashboardViewState extends State<DashboardView>
     with TickerProviderStateMixin {
   Text progressBarText;
-  AnimationController _animationController;
 
   @override
   void initState() {
