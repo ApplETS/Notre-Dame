@@ -213,7 +213,10 @@ class _GradesDetailsViewState extends State<GradesDetailsView>
                         validateGrade(
                           context,
                           model.course.summary.median.toString(),
-                          model.course.summary.median.toString(),
+                          AppIntl.of(context).grades_grade_in_percentage(
+                              Utils.getGradeInPercentage(
+                                  model.course.summary.median,
+                                  model.course.summary.markOutOf)),
                         ),
                       ),
                     ),
