@@ -27,5 +27,5 @@ enum PreferencesFlag {
   scheduleCard,
   progressBarCard,
   gradesCard,
-  showDaysRemaining
+  progressBarText
 }

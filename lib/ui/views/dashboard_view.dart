@@ -20,6 +20,7 @@ import 'package:notredame/core/constants/preferences_flags.dart';
 import 'package:notredame/core/constants/urls.dart';
 import 'package:notredame/core/models/course_activity.dart';
 import 'package:notredame/core/constants/discovery_ids.dart';
+import 'package:notredame/core/constants/progress_bar_text_options.dart';
 
 // UTILS
 import 'package:notredame/core/utils/utils.dart';
@@ -240,16 +241,23 @@ class _DashboardViewState extends State<DashboardView>
       return;
     }
 
-    if (model.showDaysInProgressBar) {
+    if (model.currentProgressBarText ==
+        ProgessBarText.daysElapsedWithTotalDays) {
       progressBarText = Text(
         AppIntl.of(context)
             .progress_bar_message(model.sessionDays[0], model.sessionDays[1]),
         style: const TextStyle(color: Colors.white),
       );
-    } else {
+    } else if (model.currentProgressBarText == ProgessBarText.percentage) {
       progressBarText = Text(
         AppIntl.of(context).progress_bar_message_percentage(
             ((model.sessionDays[0] / model.sessionDays[1]) * 100).round()),
+        style: const TextStyle(color: Colors.white),
+      );
+    } else {
+      progressBarText = Text(
+        AppIntl.of(context).progress_bar_message_remaining_days(
+            model.sessionDays[1] - model.sessionDays[0]),
         style: const TextStyle(color: Colors.white),
       );
     }

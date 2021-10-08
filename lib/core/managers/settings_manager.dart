@@ -209,7 +209,7 @@ class SettingsManager with ChangeNotifier {
   Future<bool> getBool(PreferencesFlag flag) async {
     // Log the event
     _analyticsService.logEvent(
-        "${tag}_${EnumToString.convertToString(flag)}", 'getString');
+        "${tag}_${EnumToString.convertToString(flag)}", 'getBool');
     return _preferencesService.getBool(flag);
   }
 

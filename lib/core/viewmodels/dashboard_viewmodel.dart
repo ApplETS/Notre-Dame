@@ -9,6 +9,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 // CONSTANTS
 import 'package:notredame/core/constants/preferences_flags.dart';
 import 'package:notredame/core/constants/discovery_ids.dart';
+import 'package:notredame/core/constants/progress_bar_text_options.dart';
 
 // MANAGER
 import 'package:notredame/core/managers/settings_manager.dart';
@@ -68,9 +69,10 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
   /// Get cards to display
   List<PreferencesFlag> get cardsToDisplay => _cardsToDisplay;
 
-  bool _showDaysInProgressBar = true;
+  ProgessBarText _currentProgressBarText =
+      ProgessBarText.daysElapsedWithTotalDays;
 
-  bool get showDaysInProgressBar => _showDaysInProgressBar;
+  ProgessBarText get currentProgressBarText => _currentProgressBarText;
 
   /// Return session progress based on today's [date]
   double getSessionProgress() {
@@ -87,10 +89,15 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
   }
 
   void changeProgressBarText() {
-    _showDaysInProgressBar = !_showDaysInProgressBar;
+    if (currentProgressBarText.index <= 1) {
+      _currentProgressBarText =
+          ProgessBarText.values[currentProgressBarText.index + 1];
+    } else {
+      _currentProgressBarText = ProgessBarText.values[0];
+    }
 
-    _settingsManager.setBool(
-        PreferencesFlag.showDaysRemaining, showDaysInProgressBar);
+    _settingsManager.setString(
+        PreferencesFlag.progressBarText, _currentProgressBarText.toString());
   }
 
   /// Returns a list containing the number of elapsed days in the active session
@@ -197,11 +204,13 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
   }
 
   Future<List<Session>> futureToRunSessionProgressBar() async {
-    bool isShowDaysRemaining =
-        await _settingsManager.getBool(PreferencesFlag.showDaysRemaining);
-    isShowDaysRemaining ??= true;
+    String progressBarText =
+        await _settingsManager.getString(PreferencesFlag.progressBarText);
 
-    _showDaysInProgressBar = isShowDaysRemaining;
+    progressBarText ??= ProgessBarText.daysElapsedWithTotalDays.toString();
+
+    _currentProgressBarText = ProgessBarText.values
+        .firstWhere((e) => e.toString() == progressBarText);
 
     setBusyForObject(progress, true);
     return _courseRepository

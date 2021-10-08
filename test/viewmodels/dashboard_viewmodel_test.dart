@@ -292,7 +292,7 @@ void main() {
         ]);
 
         verify(settingsManager.getDashboard()).called(1);
-        verify(settingsManager.getBool(PreferencesFlag.showDaysRemaining))
+        verify(settingsManager.getBool(PreferencesFlag.progressBarText))
             .called(1);
         verifyNoMoreInteractions(settingsManager);
       });
@@ -380,12 +380,11 @@ void main() {
             courseRepository as CourseRepositoryMock);
 
         viewModel.changeProgressBarText();
-        verify(settingsManager.setBool(
-                PreferencesFlag.showDaysRemaining, false))
+        verify(settingsManager.setBool(PreferencesFlag.progressBarText, false))
             .called(1);
 
         viewModel.changeProgressBarText();
-        verify(settingsManager.setBool(PreferencesFlag.showDaysRemaining, true))
+        verify(settingsManager.setBool(PreferencesFlag.progressBarText, true))
             .called(1);
       });
     });
@@ -442,7 +441,7 @@ void main() {
             .called(1);
         verify(settingsManager.setInt(PreferencesFlag.progressBarCard, 2))
             .called(1);
-        verify(settingsManager.getBool(PreferencesFlag.showDaysRemaining))
+        verify(settingsManager.getBool(PreferencesFlag.progressBarText))
             .called(2);
         verifyNoMoreInteractions(settingsManager);
       });
@@ -493,7 +492,7 @@ void main() {
             .called(1);
         verify(settingsManager.setInt(PreferencesFlag.scheduleCard, 2))
             .called(1);
-        verify(settingsManager.getBool(PreferencesFlag.showDaysRemaining))
+        verify(settingsManager.getBool(PreferencesFlag.progressBarText))
             .called(1);
         verifyNoMoreInteractions(settingsManager);
       });

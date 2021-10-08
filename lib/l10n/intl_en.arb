@@ -247,5 +247,11 @@
     "placeholders": {
       "percentage": {}
     }
+  },
+  "progress_bar_message_remaining_days": "{remainingDays} remaining days",
+  "@progress_bar_message_remaining_days": {
+    "placeholders": {
+      "remainingDays": {}
+    }
   }
 }
