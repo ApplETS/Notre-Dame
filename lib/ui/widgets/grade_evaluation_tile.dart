@@ -196,8 +196,15 @@ class _GradeEvaluationTileState extends State<GradeEvaluationTile>
                     evaluation.correctedEvaluationOutOfFormatted),
               ),
             ),
-            _buildSummary(AppIntl.of(context).grades_median,
-                validateResult(context, evaluation.median.toString())),
+            _buildSummary(
+              AppIntl.of(context).grades_median,
+              AppIntl.of(context).grades_grade_with_percentage(
+                evaluation.median ?? 0.0,
+                evaluation.correctedEvaluationOutOf ?? 0.0,
+                Utils.getGradeInPercentage(evaluation.median,
+                    evaluation.correctedEvaluationOutOfFormatted),
+              ),
+            ),
             _buildSummary(
                 AppIntl.of(context).grades_standard_deviation,
                 validateResult(

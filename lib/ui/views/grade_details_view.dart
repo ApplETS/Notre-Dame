@@ -214,7 +214,9 @@ class _GradesDetailsViewState extends State<GradesDetailsView>
                           context,
                           model.course.summary.median.toString(),
                           AppIntl.of(context).grades_grade_in_percentage(
-                              model.course.summary.median),
+                              Utils.getGradeInPercentage(
+                                  model.course.summary.median,
+                                  model.course.summary.markOutOf)),
                         ),
                       ),
                     ),

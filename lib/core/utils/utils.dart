@@ -20,7 +20,7 @@ mixin Utils {
       return 0.0;
     }
 
-    return ((grade / maxGrade) * 100).roundToDouble();
+    return double.parse(((grade / maxGrade) * 100).toStringAsFixed(1));
   }
 
   static Color getColorByBrightness(
