@@ -4,6 +4,7 @@ import 'package:mockito/mockito.dart';
 
 // CONSTANTS
 import 'package:notredame/core/constants/preferences_flags.dart';
+import 'package:notredame/core/constants/progress_bar_text_options.dart';
 
 // MANAGERS
 import 'package:notredame/core/managers/course_repository.dart';
@@ -292,7 +293,7 @@ void main() {
         ]);
 
         verify(settingsManager.getDashboard()).called(1);
-        verify(settingsManager.getBool(PreferencesFlag.progressBarText))
+        verify(settingsManager.getString(PreferencesFlag.progressBarText))
             .called(1);
         verifyNoMoreInteractions(settingsManager);
       });
@@ -374,17 +375,42 @@ void main() {
       });
 
       test(
-          "ShowDaysRemaining flag should be set to true when it is the first time changeProgressBarText is called",
+          "currentProgressBarText should be set to ProgessBarText.percentage when it is the first time changeProgressBarText is called",
           () async {
         CourseRepositoryMock.stubActiveSessions(
             courseRepository as CourseRepositoryMock);
 
         viewModel.changeProgressBarText();
-        verify(settingsManager.setBool(PreferencesFlag.progressBarText, false))
+        verify(settingsManager.setString(PreferencesFlag.progressBarText,
+                ProgessBarText.values[1].toString()))
             .called(1);
+      });
+
+      test(
+          "currentProgressBarText flag should be set to ProgessBarText.remainingDays when it is the second time changeProgressBarText is called",
+          () async {
+        CourseRepositoryMock.stubActiveSessions(
+            courseRepository as CourseRepositoryMock);
 
         viewModel.changeProgressBarText();
-        verify(settingsManager.setBool(PreferencesFlag.progressBarText, true))
+        viewModel.changeProgressBarText();
+        verify(settingsManager.setString(PreferencesFlag.progressBarText,
+                ProgessBarText.values[2].toString()))
+            .called(1);
+      });
+
+      test(
+          "currentProgressBarText flag should be set to ProgessBarText.daysElapsedWithTotalDays when it is the third time changeProgressBarText is called",
+          () async {
+        CourseRepositoryMock.stubActiveSessions(
+            courseRepository as CourseRepositoryMock);
+
+        viewModel.changeProgressBarText();
+        viewModel.changeProgressBarText();
+        viewModel.changeProgressBarText();
+
+        verify(settingsManager.setString(PreferencesFlag.progressBarText,
+                ProgessBarText.values[0].toString()))
             .called(1);
       });
     });
@@ -441,7 +467,7 @@ void main() {
             .called(1);
         verify(settingsManager.setInt(PreferencesFlag.progressBarCard, 2))
             .called(1);
-        verify(settingsManager.getBool(PreferencesFlag.progressBarText))
+        verify(settingsManager.getString(PreferencesFlag.progressBarText))
             .called(2);
         verifyNoMoreInteractions(settingsManager);
       });
@@ -492,7 +518,7 @@ void main() {
             .called(1);
         verify(settingsManager.setInt(PreferencesFlag.scheduleCard, 2))
             .called(1);
-        verify(settingsManager.getBool(PreferencesFlag.progressBarText))
+        verify(settingsManager.getString(PreferencesFlag.progressBarText))
             .called(1);
         verifyNoMoreInteractions(settingsManager);
       });
