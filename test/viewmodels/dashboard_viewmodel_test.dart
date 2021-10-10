@@ -375,19 +375,19 @@ void main() {
       });
 
       test(
-          "currentProgressBarText should be set to ProgessBarText.percentage when it is the first time changeProgressBarText is called",
+          "currentProgressBarText should be set to ProgressBarText.percentage when it is the first time changeProgressBarText is called",
           () async {
         CourseRepositoryMock.stubActiveSessions(
             courseRepository as CourseRepositoryMock);
 
         viewModel.changeProgressBarText();
         verify(settingsManager.setString(PreferencesFlag.progressBarText,
-                ProgessBarText.values[1].toString()))
+                ProgressBarText.values[1].toString()))
             .called(1);
       });
 
       test(
-          "currentProgressBarText flag should be set to ProgessBarText.remainingDays when it is the second time changeProgressBarText is called",
+          "currentProgressBarText flag should be set to ProgressBarText.remainingDays when it is the second time changeProgressBarText is called",
           () async {
         CourseRepositoryMock.stubActiveSessions(
             courseRepository as CourseRepositoryMock);
@@ -395,12 +395,12 @@ void main() {
         viewModel.changeProgressBarText();
         viewModel.changeProgressBarText();
         verify(settingsManager.setString(PreferencesFlag.progressBarText,
-                ProgessBarText.values[2].toString()))
+                ProgressBarText.values[2].toString()))
             .called(1);
       });
 
       test(
-          "currentProgressBarText flag should be set to ProgessBarText.daysElapsedWithTotalDays when it is the third time changeProgressBarText is called",
+          "currentProgressBarText flag should be set to ProgressBarText.daysElapsedWithTotalDays when it is the third time changeProgressBarText is called",
           () async {
         CourseRepositoryMock.stubActiveSessions(
             courseRepository as CourseRepositoryMock);
@@ -410,7 +410,7 @@ void main() {
         viewModel.changeProgressBarText();
 
         verify(settingsManager.setString(PreferencesFlag.progressBarText,
-                ProgessBarText.values[0].toString()))
+                ProgressBarText.values[0].toString()))
             .called(1);
       });
     });

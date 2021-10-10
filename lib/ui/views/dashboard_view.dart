@@ -242,13 +242,13 @@ class _DashboardViewState extends State<DashboardView>
     }
 
     if (model.currentProgressBarText ==
-        ProgessBarText.daysElapsedWithTotalDays) {
+        ProgressBarText.daysElapsedWithTotalDays) {
       progressBarText = Text(
         AppIntl.of(context)
             .progress_bar_message(model.sessionDays[0], model.sessionDays[1]),
         style: const TextStyle(color: Colors.white),
       );
-    } else if (model.currentProgressBarText == ProgessBarText.percentage) {
+    } else if (model.currentProgressBarText == ProgressBarText.percentage) {
       progressBarText = Text(
         AppIntl.of(context).progress_bar_message_percentage(
             ((model.sessionDays[0] / model.sessionDays[1]) * 100).round()),

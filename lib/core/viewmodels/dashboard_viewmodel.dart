@@ -69,10 +69,10 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
   /// Get cards to display
   List<PreferencesFlag> get cardsToDisplay => _cardsToDisplay;
 
-  ProgessBarText _currentProgressBarText =
-      ProgessBarText.daysElapsedWithTotalDays;
+  ProgressBarText _currentProgressBarText =
+      ProgressBarText.daysElapsedWithTotalDays;
 
-  ProgessBarText get currentProgressBarText => _currentProgressBarText;
+  ProgressBarText get currentProgressBarText => _currentProgressBarText;
 
   /// Return session progress based on today's [date]
   double getSessionProgress() {
@@ -91,9 +91,9 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
   void changeProgressBarText() {
     if (currentProgressBarText.index <= 1) {
       _currentProgressBarText =
-          ProgessBarText.values[currentProgressBarText.index + 1];
+          ProgressBarText.values[currentProgressBarText.index + 1];
     } else {
-      _currentProgressBarText = ProgessBarText.values[0];
+      _currentProgressBarText = ProgressBarText.values[0];
     }
 
     _settingsManager.setString(
@@ -207,9 +207,9 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
     String progressBarText =
         await _settingsManager.getString(PreferencesFlag.progressBarText);
 
-    progressBarText ??= ProgessBarText.daysElapsedWithTotalDays.toString();
+    progressBarText ??= ProgressBarText.daysElapsedWithTotalDays.toString();
 
-    _currentProgressBarText = ProgessBarText.values
+    _currentProgressBarText = ProgressBarText.values
         .firstWhere((e) => e.toString() == progressBarText);
 
     setBusyForObject(progress, true);
