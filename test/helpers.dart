@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_test/flutter_test.dart';
 import 'package:logger/logger.dart';
 
 // OTHER
@@ -99,13 +100,23 @@ InternalInfoService setupInternalInfoServiceMock() {
   return service;
 }
 
-void setupFlutterToastMock() {
+void setupFlutterToastMock([WidgetTester tester]) {
   const MethodChannel channel = MethodChannel('PonnamKarthik/fluttertoast');
 
-  channel.setMockMethodCallHandler((MethodCall methodCall) async {
+  TestDefaultBinaryMessenger messenger;
+
+  if (tester != null) {
+    messenger = tester.binding.defaultBinaryMessenger;
+  } else {
+    messenger =
+        TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger;
+  }
+
+  messenger.setMockMethodCallHandler(channel, (MethodCall methodCall) async {
     if (methodCall.method == 'showToast') {
       return true;
     }
+    return false;
   });
 }
 
@@ -225,11 +236,15 @@ CourseRepository setupCourseRepositoryMock() {
   return service;
 }
 
+/// Load a mock of the [NetworkingService]
+/// Will also stub the first value of changeConnectivityStream
 NetworkingService setupNetworkingServiceMock() {
   unregister<NetworkingService>();
   final service = NetworkingServiceMock();
 
   locator.registerSingleton<NetworkingService>(service);
+
+  NetworkingServiceMock.stubChangeConnectivityStream(service);
 
   return service;
 }

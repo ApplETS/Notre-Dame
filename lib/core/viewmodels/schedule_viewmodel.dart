@@ -223,8 +223,11 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
     }
   }
 
-  Future<void> startDiscovery(BuildContext context) async {
-    if (await _settingsManager.getString(PreferencesFlag.discoverySchedule) ==
+  /// Start Discovery if needed.
+  static Future<void> startDiscovery(BuildContext context) async {
+    final SettingsManager _settingsManager = locator<SettingsManager>();
+
+    if (await _settingsManager.getBool(PreferencesFlag.discoverySchedule) ==
         null) {
       final List<String> ids =
           findDiscoveriesByGroupName(context, DiscoveryGroupIds.pageSchedule)
@@ -233,8 +236,13 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
 
       Future.delayed(const Duration(milliseconds: 700),
           () => FeatureDiscovery.discoverFeatures(context, ids));
-
-      _settingsManager.setString(PreferencesFlag.discoverySchedule, 'true');
     }
+  }
+
+  /// Mark the discovery of this view completed
+  Future<bool> discoveryCompleted() async {
+    await _settingsManager.setBool(PreferencesFlag.discoverySchedule, true);
+
+    return true;
   }
 }

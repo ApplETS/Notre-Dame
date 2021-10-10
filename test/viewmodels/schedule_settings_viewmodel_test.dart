@@ -120,7 +120,6 @@ void main() {
     setUp(() {
       settingsManager = setupSettingsManagerMock();
       courseRepository = setupCourseRepositoryMock();
-      setupFlutterToastMock();
       viewModel = ScheduleSettingsViewModel();
 
       twoClassesWithLaboratoryABscheduleActivities

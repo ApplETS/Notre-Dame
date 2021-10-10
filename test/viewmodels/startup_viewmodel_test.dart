@@ -66,19 +66,20 @@ void main() {
         UserRepositoryMock.stubWasPreviouslyLoggedIn(userRepositoryMock);
         NetworkingServiceMock.stubHasConnectivity(networkingService);
 
-        SettingsManagerMock.stubGetString(
-            settingsManager as SettingsManagerMock,
-            PreferencesFlag.discoveryDashboard,
-            toReturn: 'true');
-
-        SettingsManagerMock.stubGetString(
-            settingsManager as SettingsManagerMock,
+        SettingsManagerMock.stubGetBool(settingsManager as SettingsManagerMock,
             PreferencesFlag.languageChoice,
-            toReturn: 'true');
+            toReturn: true);
 
         await viewModel.handleStartUp();
 
-        verify(navigationService.pushNamedAndRemoveUntil(RouterPaths.login));
+        verifyInOrder([
+          settingsManager.getBool(PreferencesFlag.languageChoice),
+          navigationService.pop(),
+          navigationService.pushNamed(RouterPaths.login)
+        ]);
+
+        verifyNoMoreInteractions(settingsManager);
+        verifyNoMoreInteractions(navigationService);
       });
 
       test(
@@ -91,9 +92,14 @@ void main() {
 
         await viewModel.handleStartUp();
 
-        verify(navigationService.pushNamed(RouterPaths.chooseLanguage));
-        verify(
-            settingsManager.setString(PreferencesFlag.languageChoice, 'true'));
+        verifyInOrder([
+          settingsManager.getBool(PreferencesFlag.languageChoice),
+          navigationService.pushNamed(RouterPaths.chooseLanguage),
+          settingsManager.setBool(PreferencesFlag.languageChoice, true)
+        ]);
+
+        verifyNoMoreInteractions(settingsManager);
+        verifyNoMoreInteractions(navigationService);
       });
     });
   });
