@@ -4,6 +4,7 @@ import 'package:mockito/mockito.dart';
 
 // CONSTANTS
 import 'package:notredame/core/constants/preferences_flags.dart';
+import 'package:notredame/core/constants/progress_bar_text_options.dart';
 
 // MANAGERS
 import 'package:notredame/core/managers/course_repository.dart';
@@ -292,6 +293,8 @@ void main() {
         ]);
 
         verify(settingsManager.getDashboard()).called(1);
+        verify(settingsManager.getString(PreferencesFlag.progressBarText))
+            .called(1);
         verifyNoMoreInteractions(settingsManager);
       });
 
@@ -370,6 +373,46 @@ void main() {
         expect(viewModel.progress, -1.0);
         expect(viewModel.sessionDays, [0, 0]);
       });
+
+      test(
+          "currentProgressBarText should be set to ProgressBarText.percentage when it is the first time changeProgressBarText is called",
+          () async {
+        CourseRepositoryMock.stubActiveSessions(
+            courseRepository as CourseRepositoryMock);
+
+        viewModel.changeProgressBarText();
+        verify(settingsManager.setString(PreferencesFlag.progressBarText,
+                ProgressBarText.values[1].toString()))
+            .called(1);
+      });
+
+      test(
+          "currentProgressBarText flag should be set to ProgressBarText.remainingDays when it is the second time changeProgressBarText is called",
+          () async {
+        CourseRepositoryMock.stubActiveSessions(
+            courseRepository as CourseRepositoryMock);
+
+        viewModel.changeProgressBarText();
+        viewModel.changeProgressBarText();
+        verify(settingsManager.setString(PreferencesFlag.progressBarText,
+                ProgressBarText.values[2].toString()))
+            .called(1);
+      });
+
+      test(
+          "currentProgressBarText flag should be set to ProgressBarText.daysElapsedWithTotalDays when it is the third time changeProgressBarText is called",
+          () async {
+        CourseRepositoryMock.stubActiveSessions(
+            courseRepository as CourseRepositoryMock);
+
+        viewModel.changeProgressBarText();
+        viewModel.changeProgressBarText();
+        viewModel.changeProgressBarText();
+
+        verify(settingsManager.setString(PreferencesFlag.progressBarText,
+                ProgressBarText.values[0].toString()))
+            .called(1);
+      });
     });
 
     group("interact with cards - ", () {
@@ -423,6 +466,8 @@ void main() {
             .called(1);
         verify(settingsManager.setInt(PreferencesFlag.progressBarCard, 2))
             .called(1);
+        verify(settingsManager.getString(PreferencesFlag.progressBarText))
+            .called(2);
         verifyNoMoreInteractions(settingsManager);
       });
 
@@ -471,6 +516,8 @@ void main() {
         verify(settingsManager.setInt(PreferencesFlag.aboutUsCard, 1))
             .called(1);
         verify(settingsManager.setInt(PreferencesFlag.scheduleCard, 2))
+            .called(1);
+        verify(settingsManager.getString(PreferencesFlag.progressBarText))
             .called(1);
         verifyNoMoreInteractions(settingsManager);
       });

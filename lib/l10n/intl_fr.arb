@@ -239,5 +239,17 @@
       "elapsedDays": {},
       "totalDays": {}
     }
+  },
+  "progress_bar_message_percentage": "{percentage} %",
+  "@progress_bar_message_percentage": {
+    "placeholders": {
+      "percentage": {}
+    }
+  },
+  "progress_bar_message_remaining_days": "{remainingDays} jours restant",
+  "@progress_bar_message_remaining_days": {
+    "placeholders": {
+      "remainingDays": {}
+    }
   }
 }

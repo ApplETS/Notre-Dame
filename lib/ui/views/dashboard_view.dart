@@ -20,6 +20,7 @@ import 'package:notredame/core/constants/preferences_flags.dart';
 import 'package:notredame/core/constants/urls.dart';
 import 'package:notredame/core/models/course_activity.dart';
 import 'package:notredame/core/constants/discovery_ids.dart';
+import 'package:notredame/core/constants/progress_bar_text_options.dart';
 
 // UTILS
 import 'package:notredame/core/utils/utils.dart';
@@ -34,7 +35,10 @@ class DashboardView extends StatefulWidget {
   _DashboardViewState createState() => _DashboardViewState();
 }
 
-class _DashboardViewState extends State<DashboardView> {
+class _DashboardViewState extends State<DashboardView>
+    with TickerProviderStateMixin {
+  Text progressBarText;
+
   @override
   void initState() {
     super.initState();
@@ -95,6 +99,8 @@ class _DashboardViewState extends State<DashboardView> {
 
         default:
       }
+
+      setText(model);
     }
 
     return cards;
@@ -185,22 +191,37 @@ class _DashboardViewState extends State<DashboardView> {
                 padding: const EdgeInsets.fromLTRB(17, 10, 15, 20),
                 child: ClipRRect(
                   borderRadius: const BorderRadius.all(Radius.circular(10)),
-                  child: LinearProgressIndicator(
-                    value: model.progress,
-                    minHeight: 30,
-                    valueColor: const AlwaysStoppedAnimation<Color>(
-                        AppTheme.gradeGoodMax),
-                    backgroundColor: AppTheme.etsDarkGrey,
+                  child: GestureDetector(
+                    onTap: () => setState(
+                      () => setState(() {
+                        model.changeProgressBarText();
+                        setText(model);
+                      }),
+                    ),
+                    child: LinearProgressIndicator(
+                      value: model.progress,
+                      minHeight: 30,
+                      valueColor: const AlwaysStoppedAnimation<Color>(
+                          AppTheme.gradeGoodMax),
+                      backgroundColor: AppTheme.etsDarkGrey,
+                    ),
                   ),
                 ),
               ),
-              Container(
-                padding: const EdgeInsets.only(top: 16),
-                child: Center(
-                  child: Text(
-                    AppIntl.of(context).progress_bar_message(
-                        model.sessionDays[0], model.sessionDays[1]),
-                    style: const TextStyle(color: Colors.white),
+              GestureDetector(
+                onTap: () => setState(() {
+                  model.changeProgressBarText();
+                  setText(model);
+                }),
+                child: Container(
+                  padding: const EdgeInsets.only(top: 16),
+                  child: Center(
+                    child: progressBarText ??
+                        Text(
+                          AppIntl.of(context).progress_bar_message(
+                              model.sessionDays[0], model.sessionDays[1]),
+                          style: const TextStyle(color: Colors.white),
+                        ),
                   ),
                 ),
               ),
@@ -214,6 +235,33 @@ class _DashboardViewState extends State<DashboardView> {
             ),
         ]),
       );
+
+  void setText(DashboardViewModel model) {
+    if (model.sessionDays[0] == 0 || model.sessionDays[1] == 0) {
+      return;
+    }
+
+    if (model.currentProgressBarText ==
+        ProgressBarText.daysElapsedWithTotalDays) {
+      progressBarText = Text(
+        AppIntl.of(context)
+            .progress_bar_message(model.sessionDays[0], model.sessionDays[1]),
+        style: const TextStyle(color: Colors.white),
+      );
+    } else if (model.currentProgressBarText == ProgressBarText.percentage) {
+      progressBarText = Text(
+        AppIntl.of(context).progress_bar_message_percentage(
+            ((model.sessionDays[0] / model.sessionDays[1]) * 100).round()),
+        style: const TextStyle(color: Colors.white),
+      );
+    } else {
+      progressBarText = Text(
+        AppIntl.of(context).progress_bar_message_remaining_days(
+            model.sessionDays[1] - model.sessionDays[0]),
+        style: const TextStyle(color: Colors.white),
+      );
+    }
+  }
 
   Widget _buildTodayScheduleCard(
       DashboardViewModel model, PreferencesFlag flag) {
