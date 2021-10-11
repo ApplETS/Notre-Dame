@@ -59,10 +59,53 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
         focusedDate = ValueNotifier(initialSelectedDate ?? DateTime.now());
 
   /// Activities for the day currently selected
-  List<dynamic> get selectedDateEvents =>
-      _coursesActivities[
-          DateTime(selectedDate.year, selectedDate.month, selectedDate.day)] ??
-      [];
+  List<dynamic> get selectedDateEvents {
+    if (isWeekEventsMode) {
+      final selectedFirstDay =
+          settings[PreferencesFlag.scheduleSettingsStartWeekday]
+              as StartingDayOfWeek;
+
+      final firstDayOfWeek = getFirstDayOfWeek(selectedFirstDay);
+      final events = [];
+      for (var i = 0; i < 7; i++) {
+        events.addAll(_coursesActivities[DateTime(firstDayOfWeek.year,
+                firstDayOfWeek.month, firstDayOfWeek.day + i)] ??
+            []);
+      }
+      return events;
+    }
+    return _coursesActivities[DateTime(
+            selectedDate.year, selectedDate.month, selectedDate.day)] ??
+        [];
+  }
+
+  /// Get first day of the week depending on startingDay which corresponds to weekday
+  DateTime getFirstDayOfWeek(StartingDayOfWeek startingDay) {
+    var firstDayOfWeek = DateTime(selectedDate.year, selectedDate.month,
+        selectedDate.day - selectedDate.weekday + startingDay.index);
+    switch (startingDay) {
+      case StartingDayOfWeek.monday:
+        final tempDate =
+            selectedDate.subtract(Duration(days: selectedDate.weekday - 1));
+        firstDayOfWeek = DateTime(tempDate.year, tempDate.month, tempDate.day);
+        break;
+      case StartingDayOfWeek.saturday:
+        final tempDate =
+            selectedDate.subtract(Duration(days: selectedDate.weekday + 1));
+        firstDayOfWeek = DateTime(tempDate.year, tempDate.month, tempDate.day);
+        break;
+      // Sunday as default
+      default:
+        final tempDate =
+            selectedDate.subtract(Duration(days: selectedDate.weekday % 7));
+        firstDayOfWeek = DateTime(tempDate.year, tempDate.month, tempDate.day);
+    }
+    return firstDayOfWeek;
+  }
+
+  bool get isWeekEventsMode =>
+      settings[PreferencesFlag.scheduleSettingsShowWeekEventsBtn] as bool ??
+      false;
 
   bool isLoadingEvents = false;
 

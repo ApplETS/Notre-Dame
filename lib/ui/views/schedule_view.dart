@@ -94,11 +94,7 @@ class _ScheduleViewState extends State<ScheduleView>
                       const SizedBox(height: 8.0),
                       const Divider(indent: 8.0, endIndent: 8.0, thickness: 1),
                       const SizedBox(height: 6.0),
-                      Center(
-                          child: Text(
-                              DateFormat.MMMMEEEEd(model.locale.toString())
-                                  .format(model.selectedDate),
-                              style: Theme.of(context).textTheme.headline5)),
+                      buildEventListTitle(model, context),
                       const SizedBox(height: 2.0),
                       if (model.selectedDateEvents.isEmpty)
                         Padding(
@@ -114,6 +110,21 @@ class _ScheduleViewState extends State<ScheduleView>
                   ),
                 ]),
               ));
+
+  Widget buildEventListTitle(ScheduleViewModel model, BuildContext context) {
+    final weekPrefix = AppIntl.of(context).schedule_week_event_prefix;
+    final dateAsString = DateFormat.MMMMEEEEd(model.locale.toString()).format(
+        model.isWeekEventsMode
+            ? model.getFirstDayOfWeek(
+                model.settings[PreferencesFlag.scheduleSettingsStartWeekday]
+                    as StartingDayOfWeek)
+            : model.selectedDate);
+    return Center(
+        child: model.isWeekEventsMode
+            ? Text("$weekPrefix $dateAsString",
+                style: Theme.of(context).textTheme.headline5)
+            : Text(dateAsString, style: Theme.of(context).textTheme.headline5));
+  }
 
   /// Build the square with the number of [events] for the [date]
   Widget _buildEventsMarker(

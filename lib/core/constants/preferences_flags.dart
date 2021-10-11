@@ -3,6 +3,7 @@ enum PreferencesFlag {
   scheduleSettingsCalendarFormat,
   scheduleSettingsStartWeekday,
   scheduleSettingsShowTodayBtn,
+  scheduleSettingsShowWeekEventsBtn,
 
   // Locale flag
   locale,

@@ -69,6 +69,18 @@ class ScheduleSettingsViewModel
     setBusy(false);
   }
 
+  bool _showWeekEventsBtn = false;
+
+  bool get showWeekEventsBtn => _showWeekEventsBtn;
+
+  set showWeekEventsBtn(bool newValue) {
+    setBusy(true);
+    _settingsManager.setBool(
+        PreferencesFlag.scheduleSettingsShowWeekEventsBtn, newValue);
+    _showWeekEventsBtn = newValue;
+    setBusy(false);
+  }
+
   @override
   Future<Map<PreferencesFlag, dynamic>> futureToRun() async {
     final settings = await _settingsManager.getScheduleSettings();
@@ -79,6 +91,8 @@ class ScheduleSettingsViewModel
         as StartingDayOfWeek;
     _showTodayBtn =
         settings[PreferencesFlag.scheduleSettingsShowTodayBtn] as bool;
+    _showWeekEventsBtn =
+        settings[PreferencesFlag.scheduleSettingsShowWeekEventsBtn] as bool;
 
     return settings;
   }

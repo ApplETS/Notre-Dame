@@ -45,6 +45,7 @@
   
   "schedule_settings_title": "Paramètres de l'horaire",
   "schedule_settings_show_today_btn_pref": "Afficher le bouton Aujourd'hui",
+  "schedule_settings_show_week_events_btn_pref": "Afficher les activités de la semaine",
   "schedule_settings_calendar_format_pref": "Format du calendrier",
   "schedule_settings_calendar_format_month": "Mois",
   "schedule_settings_calendar_format_2_weeks": "2 semaines",
@@ -58,6 +59,7 @@
   "schedule_settings_starting_weekday_saturday": "Samedi",
   "schedule_settings_starting_weekday_sunday": "Dimanche",
   "schedule_no_event": "Aucun évènement à l'horaire.",
+  "schedule_week_event_prefix": "Semaine du",
 
   "grades_title": "Notes",
   "grades_msg_no_grades": "Aucune note disponible\nTirer pour recharger",
