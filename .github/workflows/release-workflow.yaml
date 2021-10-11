@@ -88,4 +88,4 @@ jobs:
           MATCH_KEYCHAIN_NAME: ${{ secrets.MATCH_KEYCHAIN_NAME }} # Used only by iOS
           MATCH_KEYCHAIN_PASSWORD: ${{ secrets.MATCH_KEYCHAIN_PASSWORD }} # Used only by iOS
           MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }} # Used only by iOS
-          GIT_AUTHORIZATION: ${{ secret.MATCH_GIT_AUTHORIZATION }} # Used only by iOS
+          GIT_AUTHORIZATION: ${{ secrets.MATCH_GIT_AUTHORIZATION }} # Used only by iOS
