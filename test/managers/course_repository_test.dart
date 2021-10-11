@@ -956,7 +956,8 @@ void main() {
       });
 
       test("Courses are loaded from cache and cache is updated", () async {
-        SignetsApiMock.stubGetCourses(signetsApi as SignetsApiMock, username);
+        SignetsApiMock.stubGetCourses(signetsApi as SignetsApiMock, username,
+            coursesToReturn: [courseWithGrade]);
         CacheManagerMock.stubGet(cacheManager as CacheManagerMock,
             CourseRepository.coursesCacheKey, jsonEncode([courseWithGrade]));
 
@@ -1022,7 +1023,7 @@ void main() {
             CourseRepository.coursesCacheKey,
             jsonEncode([courseWithGrade, courseWithGradeDuplicate]));
         SignetsApiMock.stubGetCourses(signetsApi as SignetsApiMock, username,
-            coursesToReturn: [courseFetched]);
+            coursesToReturn: [courseFetched, courseWithGradeDuplicate]);
 
         expect(manager.courses, isNull);
         final results = await manager.getCourses();
@@ -1068,6 +1069,36 @@ void main() {
           () async {
         CacheManagerMock.stubGet(cacheManager as CacheManagerMock,
             CourseRepository.coursesCacheKey, jsonEncode([]));
+        SignetsApiMock.stubGetCoursesException(
+            signetsApi as SignetsApiMock, username);
+
+        expect(manager.courses, isNull);
+
+        expect(manager.getCourses(), throwsA(isInstanceOf<ApiException>()));
+
+        await untilCalled(networkingService.hasConnectivity());
+        expect(manager.courses, []);
+
+        await untilCalled(
+            analyticsService.logError(CourseRepository.tag, any, any, any));
+
+        verifyInOrder([
+          cacheManager.get(CourseRepository.coursesCacheKey),
+          userRepository.getPassword(),
+          userRepository.monETSUser,
+          signetsApi.getCourses(username: username, password: password),
+          analyticsService.logError(CourseRepository.tag, any, any, any)
+        ]);
+
+        verifyNoMoreInteractions(signetsApi);
+        verifyNoMoreInteractions(cacheManager);
+        verifyNoMoreInteractions(userRepository);
+      });
+
+      test("Student dropped out of a course, the course should disappear",
+          () async {
+        CacheManagerMock.stubGet(cacheManager as CacheManagerMock,
+            CourseRepository.coursesCacheKey, jsonEncode([courseWithoutGrade]));
         SignetsApiMock.stubGetCoursesException(
             signetsApi as SignetsApiMock, username);
 
@@ -1186,7 +1217,8 @@ void main() {
 
       test("Cache update fails, should still return the list of courses",
           () async {
-        SignetsApiMock.stubGetCourses(signetsApi as SignetsApiMock, username);
+        SignetsApiMock.stubGetCourses(signetsApi as SignetsApiMock, username,
+            coursesToReturn: [courseWithGrade]);
         CacheManagerMock.stubGet(cacheManager as CacheManagerMock,
             CourseRepository.coursesCacheKey, jsonEncode([courseWithGrade]));
         CacheManagerMock.stubUpdateException(
