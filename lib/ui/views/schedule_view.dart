@@ -57,7 +57,7 @@ class _ScheduleViewState extends State<ScheduleView>
     _animationController.forward();
 
     SchedulerBinding.instance.addPostFrameCallback((Duration duration) {
-      ScheduleViewModel(intl: AppIntl.of(context)).startDiscovery(context);
+      ScheduleViewModel.startDiscovery(context);
     });
   }
 
@@ -255,6 +255,7 @@ class _ScheduleViewState extends State<ScheduleView>
         backgroundColor: AppTheme.appletsDarkPurple,
         tapTarget: Icon(icon, color: AppTheme.etsBlack),
         pulseDuration: const Duration(seconds: 5),
+        onComplete: () => model.discoveryCompleted(),
         child: IconButton(
             icon: const Icon(Icons.settings),
             onPressed: () async {

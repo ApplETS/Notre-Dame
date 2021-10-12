@@ -86,10 +86,11 @@ class CourseRepository {
     now = DateTime(now.year, now.month, now.day);
 
     return _sessions
-        ?.where((session) =>
-            session.endDate.isAfter(now) ||
-            session.endDate.isAtSameMomentAs(now))
-        ?.toList();
+            ?.where((session) =>
+                session.endDate.isAfter(now) ||
+                session.endDate.isAtSameMomentAs(now))
+            ?.toList() ??
+        [];
   }
 
   /// Get and update the list of courses activities for the active sessions.

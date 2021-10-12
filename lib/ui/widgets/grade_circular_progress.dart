@@ -79,11 +79,7 @@ class _GradeCircularProgressState extends State<GradeCircularProgress>
         circularStrokeCap: CircularStrokeCap.round,
         center: Text(
           getGrade(context),
-          style: TextStyle(
-              color: Theme.of(context).brightness == Brightness.light
-                  ? Colors.black
-                  : Colors.white,
-              fontSize: 22 * widget.ratio),
+          style: TextStyle(fontSize: 22 * widget.ratio),
         ),
         progressColor: Colors.red,
       ),

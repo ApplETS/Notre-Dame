@@ -104,7 +104,6 @@ void main() {
       // Setting up mocks
       courseRepository = setupCourseRepositoryMock();
       settingsManager = setupSettingsManagerMock();
-      setupFlutterToastMock();
 
       viewModel = ScheduleViewModel(intl: await setupAppIntl());
     });
@@ -137,6 +136,7 @@ void main() {
       });
 
       test("Signets throw an error while trying to get new events", () async {
+        setupFlutterToastMock();
         CourseRepositoryMock.stubGetCoursesActivities(
             courseRepository as CourseRepositoryMock,
             fromCacheOnly: true);
