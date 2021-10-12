@@ -9,6 +9,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 // CONSTANTS
 import 'package:notredame/core/constants/preferences_flags.dart';
 import 'package:notredame/core/constants/discovery_ids.dart';
+import 'package:notredame/core/constants/progress_bar_text_options.dart';
 
 // MANAGER
 import 'package:notredame/core/managers/settings_manager.dart';
@@ -68,6 +69,11 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
   /// Get cards to display
   List<PreferencesFlag> get cardsToDisplay => _cardsToDisplay;
 
+  ProgressBarText _currentProgressBarText =
+      ProgressBarText.daysElapsedWithTotalDays;
+
+  ProgressBarText get currentProgressBarText => _currentProgressBarText;
+
   /// Return session progress based on today's [date]
   double getSessionProgress() {
     if (_courseRepository.activeSessions.isEmpty) {
@@ -80,6 +86,18 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
               .difference(_courseRepository.activeSessions.first.startDate)
               .inDays;
     }
+  }
+
+  void changeProgressBarText() {
+    if (currentProgressBarText.index <= 1) {
+      _currentProgressBarText =
+          ProgressBarText.values[currentProgressBarText.index + 1];
+    } else {
+      _currentProgressBarText = ProgressBarText.values[0];
+    }
+
+    _settingsManager.setString(
+        PreferencesFlag.progressBarText, _currentProgressBarText.toString());
   }
 
   /// Returns a list containing the number of elapsed days in the active session
@@ -186,6 +204,14 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
   }
 
   Future<List<Session>> futureToRunSessionProgressBar() async {
+    String progressBarText =
+        await _settingsManager.getString(PreferencesFlag.progressBarText);
+
+    progressBarText ??= ProgressBarText.daysElapsedWithTotalDays.toString();
+
+    _currentProgressBarText = ProgressBarText.values
+        .firstWhere((e) => e.toString() == progressBarText);
+
     setBusyForObject(progress, true);
     return _courseRepository
         .getSessions()

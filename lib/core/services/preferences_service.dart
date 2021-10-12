@@ -49,7 +49,6 @@ class PreferencesService {
 
   Future<bool> getBool(PreferencesFlag flag) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-
     return prefs.getBool(flag.toString());
   }
 
