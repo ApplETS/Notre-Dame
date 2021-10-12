@@ -197,15 +197,9 @@ class UserRepository {
       // getPassword will try to authenticate the user if not authenticated.
       final String password = await getPassword();
 
-      final List<Program> fetchedProgram = await _signetsApi.getPrograms(
+      _programs = await _signetsApi.getPrograms(
           username: monETSUser.universalCode, password: password);
-      _logger
-          .d("$tag - getPrograms: ${fetchedProgram.length} programs fetched.");
-      for (final Program program in fetchedProgram) {
-        if (!_programs.contains(program)) {
-          _programs.add(program);
-        }
-      }
+      _logger.d("$tag - getPrograms: ${_programs.length} programs fetched.");
 
       // Update cache
       _cacheManager.update(programsCacheKey, jsonEncode(_programs));

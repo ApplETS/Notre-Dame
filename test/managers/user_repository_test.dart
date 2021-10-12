@@ -364,7 +364,7 @@ void main() {
 
       test("Programs are loaded from cache", () async {
         expect(manager.programs, isNull);
-        final results = await manager.getPrograms();
+        final results = await manager.getPrograms(fromCacheOnly: true);
 
         expect(results, isInstanceOf<List<Program>>());
         expect(results, programs);
@@ -372,9 +372,7 @@ void main() {
             reason: 'The programs list should now be loaded.');
 
         verify(cacheManager.get(UserRepository.programsCacheKey));
-        verify(manager.getPassword());
-        verify(cacheManager.update(
-            UserRepository.programsCacheKey, jsonEncode(programs)));
+        verifyNoMoreInteractions(cacheManager);
       });
 
       test("Trying to load programs from cache but cache doesn't exist",
@@ -415,26 +413,6 @@ void main() {
         expect(results, programs);
         expect(manager.programs, programs,
             reason: 'The programs list should now be loaded.');
-
-        verify(cacheManager.get(UserRepository.programsCacheKey));
-        verify(manager.getPassword());
-        verify(cacheManager.update(
-            UserRepository.programsCacheKey, jsonEncode(programs)));
-      });
-
-      test("SignetsAPI return a program that already exists", () async {
-        // Stub SignetsApi answer to test only the cache retrieving
-        reset(signetsApi as SignetsApiMock);
-        SignetsApiMock.stubGetPrograms(
-            signetsApi as SignetsApiMock, username, programs);
-
-        expect(manager.programs, isNull);
-        final results = await manager.getPrograms();
-
-        expect(results, isInstanceOf<List<Program>>());
-        expect(results, programs);
-        expect(manager.programs, programs,
-            reason: 'The programs list should not have any duplicata..');
 
         verify(cacheManager.get(UserRepository.programsCacheKey));
         verify(manager.getPassword());
