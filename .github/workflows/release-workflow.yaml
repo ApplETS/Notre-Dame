@@ -77,8 +77,8 @@ jobs:
           enChangelog=$(echo ${{ github.event.body }} | sed -n '/^## English version$/,/^## End english version/p' | sed '1d;$d')
           frChangelog=$(echo ${{ github.event.body }} | sed -n '/^## French version$/,/^## End french version/p' | sed '1d;$d')
 
-          [ ! -z "$en" ] && echo $en > ${{ matrix.metadata_path }}/en-CA/${{ matrix.changelog_path }}
-          [ ! -z "$frChangelog" ] && echo $enChangelog > ${{ matrix.metadata_path }}/fr-CA/${{ matrix.changelog_path }}
+          [ ! -z "$enChangelog" ] && echo $enChangelog > ${{ matrix.metadata_path }}/en-CA/${{ matrix.changelog_path }}
+          [ ! -z "$frChangelog" ] && echo $frChangelog > ${{ matrix.metadata_path }}/fr-CA/${{ matrix.changelog_path }}
         working-directory: ${{ matrix.working_directory }}
 
       - name: Deploy to store
