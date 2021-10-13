@@ -18,6 +18,7 @@ import 'package:notredame/core/models/profile_student.dart';
 import 'package:notredame/core/models/program.dart';
 import 'package:notredame/core/models/course.dart';
 import 'package:notredame/core/models/course_summary.dart';
+import 'package:notredame/core/models/schedule_activity.dart';
 
 class SignetsApi {
   static const String tag = "SignetsApi";
@@ -105,6 +106,43 @@ class SignetsApi {
     return responseBody
         .findAllElements("Seances")
         .map((node) => CourseActivity.fromXmlNode(node))
+        .toList();
+  }
+
+  /// Call the SignetsAPI to get the courses activities for the [session] for
+  /// the student ([username]).
+  Future<List<ScheduleActivity>> getScheduleActivities(
+      {@required String username,
+      @required String password,
+      @required String session}) async {
+    if (!_sessionShortNameRegExp.hasMatch(session)) {
+      throw FormatException("Session $session isn't correctly formatted");
+    }
+
+    // Generate initial soap envelope
+    final body = buildBasicSOAPBody(Urls.listeHoraireEtProf, username, password)
+        .buildDocument();
+    final operationContent = XmlBuilder();
+
+    // Add the content needed by the operation
+    operationContent.element("pSession", nest: () {
+      operationContent.text(session);
+    });
+
+    // Add the parameters needed inside the request.
+    body
+        .findAllElements(Urls.listeHoraireEtProf,
+            namespace: Urls.signetsOperationBase)
+        .first
+        .children
+        .add(operationContent.buildFragment());
+
+    final responseBody = await _sendSOAPRequest(body, Urls.listeHoraireEtProf);
+
+    /// Build and return the list of CourseActivity
+    return responseBody
+        .findAllElements("HoraireActivite")
+        .map((node) => ScheduleActivity.fromXmlNode(node))
         .toList();
   }
 

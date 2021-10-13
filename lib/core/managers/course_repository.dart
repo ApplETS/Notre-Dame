@@ -16,6 +16,7 @@ import 'package:notredame/core/models/course_activity.dart';
 import 'package:notredame/core/models/course.dart';
 import 'package:notredame/core/models/course_summary.dart';
 import 'package:notredame/core/models/session.dart';
+import 'package:notredame/core/models/schedule_activity.dart';
 
 // UTILS
 import 'package:notredame/core/utils/cache_exception.dart';
@@ -31,6 +32,9 @@ class CourseRepository {
 
   @visibleForTesting
   static const String coursesActivitiesCacheKey = "coursesActivitiesCache";
+
+  @visibleForTesting
+  static const String scheduleActivitiesCacheKey = "scheduleActivitiesCache";
 
   @visibleForTesting
   static const String sessionsCacheKey = "sessionsCache";
@@ -64,6 +68,11 @@ class CourseRepository {
   List<CourseActivity> _coursesActivities;
 
   List<CourseActivity> get coursesActivities => _coursesActivities;
+
+  /// List of the schedule activities for the student in the active session
+  List<ScheduleActivity> _scheduleActivities;
+
+  List<ScheduleActivity> get scheduleActivities => _scheduleActivities;
 
   /// List of session where the student has been registered.
   /// The sessions are organized from oldest to youngest
@@ -171,6 +180,86 @@ class CourseRepository {
     }
 
     return _coursesActivities;
+  }
+
+  /// Get and update the list of schedule activities for the active sessions.
+  /// After fetching the new activities from the [SignetsApi] the [CacheManager]
+  /// is updated with the latest version of the schedule activities.
+  Future<List<ScheduleActivity>> getScheduleActivities(
+      {bool fromCacheOnly = false}) async {
+    // Force fromCacheOnly mode when user has no connectivity
+    if (!(await _networkingService.hasConnectivity())) {
+      // ignore: parameter_assignments
+      fromCacheOnly = true;
+    }
+
+    // Load the activities from the cache if the list doesn't exist
+    if (_scheduleActivities == null) {
+      _scheduleActivities = [];
+      try {
+        final List responseCache =
+            jsonDecode(await _cacheManager.get(scheduleActivitiesCacheKey))
+                as List<dynamic>;
+
+        // Build list of activities loaded from the cache.
+        _scheduleActivities = responseCache
+            .map((e) => ScheduleActivity.fromJson(e as Map<String, dynamic>))
+            .toList();
+        _logger.d(
+            "$tag - getScheduleActivities: ${_scheduleActivities.length} activities loaded from cache");
+      } on CacheException catch (_) {
+        _logger.e(
+            "$tag - getScheduleActivities: exception raised will trying to load activities from cache.");
+      }
+    }
+
+    if (fromCacheOnly) {
+      return _scheduleActivities;
+    }
+
+    final List<ScheduleActivity> fetchedScheduleActivities = [];
+
+    try {
+      // If there is no sessions loaded, load them.
+      if (_sessions == null) {
+        await getSessions();
+      }
+
+      final String password = await _userRepository.getPassword();
+      for (final Session session in activeSessions) {
+        fetchedScheduleActivities.addAll(
+            await _signetsApi.getScheduleActivities(
+                username: _userRepository.monETSUser.universalCode,
+                password: password,
+                session: session.shortName));
+        _logger.d(
+            "$tag - getScheduleActivities: fetched ${fetchedScheduleActivities.length} activities.");
+      }
+    } on Exception catch (e, stacktrace) {
+      _analyticsService.logError(tag,
+          "Exception raised during getScheduleActivities: $e", e, stacktrace);
+      _logger.d("$tag - getScheduleActivities: Exception raised $e");
+      rethrow;
+    }
+
+    // Update the list of activities to avoid duplicate activities
+    for (final ScheduleActivity activity in fetchedScheduleActivities) {
+      if (!_scheduleActivities.contains(activity)) {
+        _scheduleActivities.add(activity);
+      }
+    }
+
+    try {
+      // Update cache
+      _cacheManager.update(
+          scheduleActivitiesCacheKey, jsonEncode(_scheduleActivities));
+    } on CacheException catch (_) {
+      // Do nothing, the caching will retry later and the error has been logged by the [CacheManager]
+      _logger.e(
+          "$tag - getScheduleActivities: exception raised will trying to update the cache.");
+    }
+
+    return _scheduleActivities;
   }
 
   /// Get the list of session on which the student was active.

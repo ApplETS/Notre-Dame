@@ -7,6 +7,7 @@ import 'package:notredame/core/models/course_activity.dart';
 import 'package:notredame/core/models/course_summary.dart';
 import 'package:notredame/core/models/profile_student.dart';
 import 'package:notredame/core/models/program.dart';
+import 'package:notredame/core/models/schedule_activity.dart';
 import 'package:notredame/core/models/session.dart';
 import 'package:notredame/core/models/course.dart';
 
@@ -37,6 +38,27 @@ class SignetsApiMock extends Mock implements SignetsApi {
       SignetsApiMock mock, String session,
       {ApiException exceptionToThrow = courseRepositoryException}) {
     when(mock.getCoursesActivities(
+            username: anyNamed("username"),
+            password: anyNamed("password"),
+            session: session))
+        .thenThrow(exceptionToThrow);
+  }
+
+  /// Stub the answer of the [getCoursesActivities] when the [session] is used.
+  static void stubGetScheduleActivities(SignetsApiMock mock, String session,
+      List<ScheduleActivity> coursesActivitiesToReturn) {
+    when(mock.getScheduleActivities(
+            username: anyNamed("username"),
+            password: anyNamed("password"),
+            session: session))
+        .thenAnswer((_) async => coursesActivitiesToReturn);
+  }
+
+  /// Throw [exceptionToThrow] when [getScheduleActivities] with the [session] is used.
+  static void stubGetScheduleActivitiesException(
+      SignetsApiMock mock, String session,
+      {ApiException exceptionToThrow = courseRepositoryException}) {
+    when(mock.getScheduleActivities(
             username: anyNamed("username"),
             password: anyNamed("password"),
             session: session))
