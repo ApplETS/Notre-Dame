@@ -17,10 +17,12 @@ import 'package:notredame/ui/widgets/schedule_settings.dart';
 import '../../helpers.dart';
 
 // MOCK
+import '../../mock/managers/course_repository_mock.dart';
 import '../../mock/managers/settings_manager_mock.dart';
 
 void main() {
   SettingsManager settingsManager;
+  CourseRepositoryMock courseRepositoryMock;
   AppIntl intl;
 
   // Some settings
@@ -33,7 +35,11 @@ void main() {
   group("ScheduleSettings - ", () {
     setUp(() async {
       settingsManager = setupSettingsManagerMock();
+      courseRepositoryMock =
+          setupCourseRepositoryMock() as CourseRepositoryMock;
       intl = await setupAppIntl();
+
+      CourseRepositoryMock.stubGetScheduleActivities(courseRepositoryMock);
     });
 
     group("ui - ", () {
@@ -41,7 +47,6 @@ void main() {
         SettingsManagerMock.stubGetScheduleSettings(
             settingsManager as SettingsManagerMock,
             toReturn: settings);
-
         await tester
             .pumpWidget(localizedWidget(child: const ScheduleSettings()));
         await tester.pumpAndSettle();

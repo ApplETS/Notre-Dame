@@ -1,5 +1,6 @@
 // FLUTTER / DART / THIRD-PARTIES
 import 'package:flutter_test/flutter_test.dart';
+import 'package:intl/intl.dart';
 import 'package:logger/logger.dart';
 import 'package:mockito/mockito.dart';
 
@@ -7,6 +8,7 @@ import 'package:mockito/mockito.dart';
 import 'package:notredame/core/services/signets_api.dart';
 
 // MODELS
+import 'package:notredame/core/models/schedule_activity.dart';
 import 'package:notredame/core/models/course_activity.dart';
 import 'package:notredame/core/models/session.dart';
 import 'package:notredame/core/models/course.dart';
@@ -16,6 +18,7 @@ import 'package:notredame/core/models/program.dart';
 import 'package:notredame/core/models/course_summary.dart';
 
 // CONSTANTS
+import 'package:notredame/core/constants/activity_code.dart';
 import 'package:notredame/core/constants/urls.dart';
 import 'package:notredame/core/utils/api_exception.dart';
 import 'package:notredame/core/constants/signets_errors.dart';
@@ -261,6 +264,106 @@ void main() {
             throwsA(isInstanceOf<ApiException>()),
             reason:
                 "If the SignetsAPI return an error the service should return the error.");
+      });
+    });
+    group("getScheduleActivities - ", () {
+      const String scheduleActivityXML = """
+      <HoraireActivite>
+          <sigle>GEN101</sigle>
+          <groupe>01</groupe>
+          <jour>1</jour>
+          <journee>Lundi</journee>
+          <codeActivite>M</codeActivite>
+          <nomActivite>Laboratoire aux 2 semaines</nomActivite>
+          <activitePrincipale>Non</activitePrincipale>
+          <heureDebut>08:30</heureDebut>
+          <heureFin>12:30</heureFin>
+          <local>À distance</local>
+          <titreCours>Generic title</titreCours>
+      </HoraireActivite>
+      """;
+
+      final ScheduleActivity scheduleActivity = ScheduleActivity(
+        courseAcronym: 'GEN101',
+        courseGroup: '01',
+        dayOfTheWeek: 1,
+        day: 'Lundi',
+        activityCode: ActivityCode.labEvery2Weeks,
+        name: 'Laboratoire aux 2 semaines',
+        isPrincipalActivity: false,
+        startTime: DateFormat('HH:mm').parse("08:30"),
+        endTime: DateFormat('HH:mm').parse("12:30"),
+        activityLocation: 'À distance',
+        courseTitle: 'Generic title',
+      );
+
+      test("right credentials and valid parameters", () async {
+        const String username = "username";
+        const String password = "password";
+        const String session = "A2020";
+
+        final String stubResponse = buildResponse(Urls.listeHoraireEtProf,
+            scheduleActivityXML + scheduleActivityXML, 'listeActivites');
+
+        HttpClientMock.stubPost(clientMock, Urls.signetsAPI, stubResponse);
+
+        final result = await service.getScheduleActivities(
+            username: username, password: password, session: session);
+
+        expect(result, isA<List<ScheduleActivity>>());
+        expect(result.first == scheduleActivity, isTrue);
+        expect(result.length, 2);
+      });
+
+      test("Wrong credentials", () async {
+        const String username = "username";
+        const String password = "password";
+        const String session = "A2020";
+
+        final String stubResponse = buildErrorResponse(Urls.listeHoraireEtProf,
+            SignetsError.credentialsInvalid, 'listeActivites');
+
+        HttpClientMock.stubPost(clientMock, Urls.signetsAPI, stubResponse);
+
+        expect(
+            service.getScheduleActivities(
+                username: username, password: password, session: session),
+            throwsA(isInstanceOf<ApiException>()),
+            reason:
+                "If the SignetsAPI return an error the service should return the error.");
+      });
+
+      test("An error occurred", () async {
+        const String username = "username";
+        const String password = "password";
+        const String session = "A2020";
+
+        final String stubResponse = buildErrorResponse(
+            Urls.listeHoraireEtProf, 'An error occurred', 'listeActivites');
+
+        HttpClientMock.stubPost(clientMock, Urls.signetsAPI, stubResponse);
+
+        expect(
+            service.getScheduleActivities(
+                username: username, password: password, session: session),
+            throwsA(isInstanceOf<ApiException>()),
+            reason:
+                "If the SignetsAPI return an error the service should return the error.");
+      });
+
+      group("invalid parameters - ", () {
+        test("session", () async {
+          const String username = "username";
+          const String password = "password";
+          const String session = "A202";
+
+          expect(
+              service.getScheduleActivities(
+                  username: username, password: password, session: session),
+              throwsA(isInstanceOf<FormatException>()),
+              reason:
+                  "The session should validate the regex: /^([A-E-H][0-9]{4})/");
+        });
       });
     });
 
