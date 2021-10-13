@@ -126,23 +126,15 @@ void main() {
 
         expect(manager.coursesActivities, isNull);
         final List<CourseActivity> results =
-            await manager.getCoursesActivities();
+            await manager.getCoursesActivities(fromCacheOnly: true);
 
         expect(results, isInstanceOf<List<CourseActivity>>());
         expect(results, activities);
         expect(manager.coursesActivities, activities,
             reason: "The list of activities should not be empty");
 
-        verifyInOrder([
-          cacheManager.get(CourseRepository.coursesActivitiesCacheKey),
-          userRepository.getPassword(),
-          userRepository.monETSUser,
-          signetsApi.getCoursesActivities(
-              username: username,
-              password: anyNamed("password"),
-              session: session.shortName),
-          cacheManager.update(CourseRepository.coursesActivitiesCacheKey, any)
-        ]);
+        verifyInOrder(
+            [cacheManager.get(CourseRepository.coursesActivitiesCacheKey)]);
       });
 
       test("Activities are only loaded from cache.", () async {
@@ -208,9 +200,9 @@ void main() {
         CacheManagerMock.stubGet(cacheManager as CacheManagerMock,
             CourseRepository.coursesActivitiesCacheKey, jsonEncode(activities));
 
-        // Stub the SignetsAPI to return 0 activities
+        // Stub the SignetsAPI to return 1 activities
         SignetsApiMock.stubGetCoursesActivities(
-            signetsApi as SignetsApiMock, session.shortName, []);
+            signetsApi as SignetsApiMock, session.shortName, activities);
 
         // Load the sessions
         await manager.getSessions();
@@ -321,13 +313,13 @@ void main() {
         final CourseActivity courseActivity = CourseActivity(
             courseGroup: "GEN102",
             courseName: "Generic course",
-            activityName: "Class",
+            activityName: "Another activity name",
             activityDescription: "Activity description",
-            activityLocation: "location",
+            activityLocation: "Another location",
             startDateTime: DateTime(2020, 1, 2, 18),
             endDateTime: DateTime(2020, 1, 2, 21));
 
-        // Stub the SignetsAPI to return 1 activity
+        // Stub the SignetsAPI to return 2 activities
         SignetsApiMock.stubGetCoursesActivities(signetsApi as SignetsApiMock,
             session.shortName, [activity, courseActivity]);
 
@@ -386,6 +378,55 @@ void main() {
         ]);
       });
 
+      test(
+          "SignetsAPI returns activities that changed (for example class location changed).",
+          () async {
+        // Stub the cache to return 1 activity
+        CacheManagerMock.stubGet(cacheManager as CacheManagerMock,
+            CourseRepository.coursesActivitiesCacheKey, jsonEncode(activities));
+
+        // Load the sessions
+        await manager.getSessions();
+        expect(manager.sessions, isNotEmpty);
+        clearInteractions(cacheManager);
+        clearInteractions(userRepository);
+        clearInteractions(signetsApi);
+
+        final changedActivity = CourseActivity(
+            courseGroup: activity.courseGroup,
+            courseName: activity.courseName,
+            activityName: activity.activityName,
+            activityDescription: 'Another description',
+            activityLocation: 'Changed location',
+            startDateTime: activity.startDateTime,
+            endDateTime: activity.endDateTime);
+
+        // Stub the SignetsAPI to return the same activity as the cache
+        SignetsApiMock.stubGetCoursesActivities(
+            signetsApi as SignetsApiMock, session.shortName, [changedActivity]);
+
+        expect(manager.coursesActivities, isNull);
+        final List<CourseActivity> results =
+            await manager.getCoursesActivities();
+
+        expect(results, isInstanceOf<List<CourseActivity>>());
+        expect(results, [changedActivity]);
+        expect(manager.coursesActivities, [changedActivity],
+            reason: "The list of activities should be updated");
+
+        verifyInOrder([
+          cacheManager.get(CourseRepository.coursesActivitiesCacheKey),
+          userRepository.getPassword(),
+          userRepository.monETSUser,
+          signetsApi.getCoursesActivities(
+              username: username,
+              password: anyNamed("password"),
+              session: session.shortName),
+          cacheManager.update(CourseRepository.coursesActivitiesCacheKey,
+              jsonEncode([changedActivity]))
+        ]);
+      });
+
       test("SignetsAPI raise a exception.", () async {
         // Stub the cache to return no activity
         CacheManagerMock.stubGet(cacheManager as CacheManagerMock,
@@ -425,9 +466,9 @@ void main() {
         CacheManagerMock.stubGet(cacheManager as CacheManagerMock,
             CourseRepository.coursesActivitiesCacheKey, jsonEncode(activities));
 
-        // Stub the SignetsAPI to return 0 activities
+        // Stub the SignetsAPI to return 1 activity
         SignetsApiMock.stubGetCoursesActivities(
-            signetsApi as SignetsApiMock, session.shortName, []);
+            signetsApi as SignetsApiMock, session.shortName, activities);
 
         CacheManagerMock.stubUpdateException(cacheManager as CacheManagerMock,
             CourseRepository.coursesActivitiesCacheKey);
@@ -1241,7 +1282,8 @@ void main() {
       });
 
       test("Courses are loaded from cache and cache is updated", () async {
-        SignetsApiMock.stubGetCourses(signetsApi as SignetsApiMock, username);
+        SignetsApiMock.stubGetCourses(signetsApi as SignetsApiMock, username,
+            coursesToReturn: [courseWithGrade]);
         CacheManagerMock.stubGet(cacheManager as CacheManagerMock,
             CourseRepository.coursesCacheKey, jsonEncode([courseWithGrade]));
 
@@ -1307,7 +1349,7 @@ void main() {
             CourseRepository.coursesCacheKey,
             jsonEncode([courseWithGrade, courseWithGradeDuplicate]));
         SignetsApiMock.stubGetCourses(signetsApi as SignetsApiMock, username,
-            coursesToReturn: [courseFetched]);
+            coursesToReturn: [courseFetched, courseWithGradeDuplicate]);
 
         expect(manager.courses, isNull);
         final results = await manager.getCourses();
@@ -1353,6 +1395,36 @@ void main() {
           () async {
         CacheManagerMock.stubGet(cacheManager as CacheManagerMock,
             CourseRepository.coursesCacheKey, jsonEncode([]));
+        SignetsApiMock.stubGetCoursesException(
+            signetsApi as SignetsApiMock, username);
+
+        expect(manager.courses, isNull);
+
+        expect(manager.getCourses(), throwsA(isInstanceOf<ApiException>()));
+
+        await untilCalled(networkingService.hasConnectivity());
+        expect(manager.courses, []);
+
+        await untilCalled(
+            analyticsService.logError(CourseRepository.tag, any, any, any));
+
+        verifyInOrder([
+          cacheManager.get(CourseRepository.coursesCacheKey),
+          userRepository.getPassword(),
+          userRepository.monETSUser,
+          signetsApi.getCourses(username: username, password: password),
+          analyticsService.logError(CourseRepository.tag, any, any, any)
+        ]);
+
+        verifyNoMoreInteractions(signetsApi);
+        verifyNoMoreInteractions(cacheManager);
+        verifyNoMoreInteractions(userRepository);
+      });
+
+      test("Student dropped out of a course, the course should disappear",
+          () async {
+        CacheManagerMock.stubGet(cacheManager as CacheManagerMock,
+            CourseRepository.coursesCacheKey, jsonEncode([courseWithoutGrade]));
         SignetsApiMock.stubGetCoursesException(
             signetsApi as SignetsApiMock, username);
 
@@ -1471,7 +1543,8 @@ void main() {
 
       test("Cache update fails, should still return the list of courses",
           () async {
-        SignetsApiMock.stubGetCourses(signetsApi as SignetsApiMock, username);
+        SignetsApiMock.stubGetCourses(signetsApi as SignetsApiMock, username,
+            coursesToReturn: [courseWithGrade]);
         CacheManagerMock.stubGet(cacheManager as CacheManagerMock,
             CourseRepository.coursesCacheKey, jsonEncode([courseWithGrade]));
         CacheManagerMock.stubUpdateException(

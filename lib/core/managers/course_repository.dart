@@ -152,6 +152,16 @@ class CourseRepository {
       rethrow;
     }
 
+    // Remove all the activities that are in the actives sessions.
+    DateTime _activeSessionStartDate = DateTime.now();
+    for (final element in activeSessions) {
+      if (element.startDate.isBefore(_activeSessionStartDate)) {
+        _activeSessionStartDate = element.startDate;
+      }
+    }
+    _coursesActivities.removeWhere(
+        (element) => element.startDateTime.isAfter(_activeSessionStartDate));
+
     // Update the list of activities to avoid duplicate activities
     for (final CourseActivity activity in fetchedCoursesActivities) {
       if (!_coursesActivities.contains(activity)) {
@@ -358,35 +368,19 @@ class CourseRepository {
       rethrow;
     }
 
-    for (int i = 0; i < fetchedCourses.length; i++) {
-      // If there isn't the grade yet, will fetch the summary.
-      // We don't do this for every course to avoid losing time.
-      if (fetchedCourses[i].grade == null) {
+    _courses = fetchedCourses;
+
+    // If there isn't the grade yet, will fetch the summary.
+    // We don't do this for every course to avoid losing time.
+    for (final course in _courses) {
+      if (course.grade == null) {
         try {
-          if (await getCourseSummary(fetchedCourses[i]) != null) {
-            fetchedCourses.remove(fetchedCourses[i]);
-            i--;
-          }
+          await getCourseSummary(course);
         } on ApiException catch (_) {
           _logger.e(
               "$tag - getCourses: Exception raised while trying to get summary "
-              "of ${fetchedCourses[i].acronym}.");
+              "of ${course.acronym}.");
         }
-      }
-    }
-
-    // Update the list of courses
-    for (final Course course in fetchedCourses) {
-      final index = _courses.indexWhere((element) =>
-          element.acronym == course.acronym &&
-          course.session == element.session);
-      if (index != -1) {
-        if (_courses[index] != course) {
-          _courses.removeAt(index);
-          _courses.insert(index, course);
-        }
-      } else {
-        _courses.add(course);
       }
     }
 

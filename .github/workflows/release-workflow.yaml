@@ -74,11 +74,11 @@ jobs:
 
       - name: Set changelog for each platform
         run: |
-          enChangelog=$(echo ${{ github.event.body }} | sed -n '/^## English version$/,/^## End english version/p' | sed '1d;$d')
-          frChangelog=$(echo ${{ github.event.body }} | sed -n '/^## French version$/,/^## End french version/p' | sed '1d;$d')
+          enChangelog=$(echo "${{ github.event.release.body }}" | sed -n '/^## English version$/,/^## End english version/p' | sed '1d;$d')
+          frChangelog=$(echo "${{ github.event.release.body }}" | sed -n '/^## French version$/,/^## End french version/p' | sed '1d;$d')
 
-          [ ! -z "$en" ] && echo $en > ${{ matrix.metadata_path }}/en-CA/${{ matrix.changelog_path }}
-          [ ! -z "$frChangelog" ] && echo $enChangelog > ${{ matrix.metadata_path }}/fr-CA/${{ matrix.changelog_path }}
+          [ ! -z "$enChangelog" ] && echo $enChangelog > ${{ matrix.metadata_path }}/en-CA/${{ matrix.changelog_path }}
+          [ ! -z "$frChangelog" ] && echo $frChangelog > ${{ matrix.metadata_path }}/fr-CA/${{ matrix.changelog_path }}
         working-directory: ${{ matrix.working_directory }}
 
       - name: Deploy to store
@@ -88,4 +88,4 @@ jobs:
           MATCH_KEYCHAIN_NAME: ${{ secrets.MATCH_KEYCHAIN_NAME }} # Used only by iOS
           MATCH_KEYCHAIN_PASSWORD: ${{ secrets.MATCH_KEYCHAIN_PASSWORD }} # Used only by iOS
           MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }} # Used only by iOS
-          GIT_AUTHORIZATION: ${{ secret.MATCH_GIT_AUTHORIZATION }} # Used only by iOS
+          GIT_AUTHORIZATION: ${{ secrets.MATCH_GIT_AUTHORIZATION }} # Used only by iOS
