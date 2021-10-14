@@ -15,6 +15,7 @@ import '../../helpers.dart';
 
 void main() {
   AppIntl intl;
+
   group('SettingsView - ', () {
     setUp(() async {
       intl = await setupAppIntl();

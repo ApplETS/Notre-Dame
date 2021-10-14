@@ -1,4 +1,4 @@
-package ca.etsmtl.applets.notredame
+package ca.etsmtl.applets.etsmobile
 
 import io.flutter.embedding.android.FlutterActivity
 

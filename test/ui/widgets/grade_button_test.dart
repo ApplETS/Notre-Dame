@@ -137,10 +137,9 @@ void main() {
     group('Interactions - ', () {
       testWidgets('Grade button redirects to grades view when tapped ',
           (WidgetTester tester) async {
-        SettingsManagerMock.stubGetString(
-            _settingsManager as SettingsManagerMock,
+        SettingsManagerMock.stubGetBool(_settingsManager as SettingsManagerMock,
             PreferencesFlag.discoveryStudentGrade,
-            toReturn: 'true');
+            toReturn: true);
         await tester.pumpWidget(localizedWidget(
             child: GradeButton(courseWithGrade, showDiscovery: false)));
         await tester.pumpAndSettle();

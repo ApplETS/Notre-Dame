@@ -9,6 +9,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 // CONSTANTS
 import 'package:notredame/core/constants/preferences_flags.dart';
 import 'package:notredame/core/constants/discovery_ids.dart';
+import 'package:notredame/core/constants/progress_bar_text_options.dart';
 
 // MANAGER
 import 'package:notredame/core/managers/settings_manager.dart';
@@ -68,10 +69,15 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
   /// Get cards to display
   List<PreferencesFlag> get cardsToDisplay => _cardsToDisplay;
 
+  ProgressBarText _currentProgressBarText =
+      ProgressBarText.daysElapsedWithTotalDays;
+
+  ProgressBarText get currentProgressBarText => _currentProgressBarText;
+
   /// Return session progress based on today's [date]
   double getSessionProgress() {
     if (_courseRepository.activeSessions.isEmpty) {
-      return 0.0;
+      return -1.0;
     } else {
       return todayDate
               .difference(_courseRepository.activeSessions.first.startDate)
@@ -80,6 +86,18 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
               .difference(_courseRepository.activeSessions.first.startDate)
               .inDays;
     }
+  }
+
+  void changeProgressBarText() {
+    if (currentProgressBarText.index <= 1) {
+      _currentProgressBarText =
+          ProgressBarText.values[currentProgressBarText.index + 1];
+    } else {
+      _currentProgressBarText = ProgressBarText.values[0];
+    }
+
+    _settingsManager.setString(
+        PreferencesFlag.progressBarText, _currentProgressBarText.toString());
   }
 
   /// Returns a list containing the number of elapsed days in the active session
@@ -186,7 +204,15 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
   }
 
   Future<List<Session>> futureToRunSessionProgressBar() async {
-    setBusyForObject(_progress, true);
+    String progressBarText =
+        await _settingsManager.getString(PreferencesFlag.progressBarText);
+
+    progressBarText ??= ProgressBarText.daysElapsedWithTotalDays.toString();
+
+    _currentProgressBarText = ProgressBarText.values
+        .firstWhere((e) => e.toString() == progressBarText);
+
+    setBusyForObject(progress, true);
     return _courseRepository
         .getSessions()
         // ignore: invalid_return_type_for_catch_error
@@ -194,7 +220,7 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
         .whenComplete(() {
       _sessionDays = getSessionDays();
       _progress = getSessionProgress();
-      setBusyForObject(_progress, false);
+      setBusyForObject(progress, false);
     });
   }
 
@@ -249,8 +275,10 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
   bool isSameDay(DateTime a, DateTime b) =>
       a.year == b.year && a.month == b.month && a.day == b.day;
 
-  Future<void> startDiscovery(BuildContext context) async {
-    if (await _settingsManager.getString(PreferencesFlag.discoveryDashboard) ==
+  /// Start discovery is needed
+  static Future<void> startDiscovery(BuildContext context) async {
+    final SettingsManager _settingsManager = locator<SettingsManager>();
+    if (await _settingsManager.getBool(PreferencesFlag.discoveryDashboard) ==
         null) {
       final List<String> ids =
           findDiscoveriesByGroupName(context, DiscoveryGroupIds.bottomBar)
@@ -258,22 +286,29 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
               .toList();
 
       FeatureDiscovery.discoverFeatures(context, ids);
-      _settingsManager.setString(PreferencesFlag.discoveryDashboard, 'true');
     }
+  }
+
+  /// Mark as complete the discovery step
+  Future<bool> discoveryCompleted() async {
+    await _settingsManager.setBool(PreferencesFlag.discoveryDashboard, true);
+
+    return true;
   }
 
   /// Get the list of courses for the Grades card.
   Future<List<Course>> futureToRunGrades() async {
     setBusyForObject(courses, true);
-    if (_courseRepository.sessions == null) {
+    if (_courseRepository.sessions == null ||
+        _courseRepository.sessions.isEmpty) {
       // ignore: return_type_invalid_for_catch_error
       await _courseRepository.getSessions().catchError(onError);
     }
 
     // Determine current sessions
     if (_courseRepository.activeSessions.isEmpty) {
-      // ignore: return_type_invalid_for_catch_error
-      await _courseRepository.getSessions().catchError(onError);
+      setBusyForObject(courses, false);
+      return [];
     }
     final currentSession = _courseRepository.activeSessions.first;
 

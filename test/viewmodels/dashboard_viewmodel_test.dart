@@ -4,6 +4,7 @@ import 'package:mockito/mockito.dart';
 
 // CONSTANTS
 import 'package:notredame/core/constants/preferences_flags.dart';
+import 'package:notredame/core/constants/progress_bar_text_options.dart';
 
 // MANAGERS
 import 'package:notredame/core/managers/course_repository.dart';
@@ -136,7 +137,6 @@ void main() {
       preferenceService = setupPreferencesServiceMock();
       courseRepository = setupCourseRepositoryMock();
 
-      setupFlutterToastMock();
       courseRepository = setupCourseRepositoryMock();
 
       viewModel = DashboardViewModel(intl: await setupAppIntl());
@@ -190,6 +190,7 @@ void main() {
 
         verifyInOrder([
           courseRepository.sessions,
+          courseRepository.sessions,
           courseRepository.activeSessions,
           courseRepository.activeSessions,
           courseRepository.getCourses(fromCacheOnly: true),
@@ -200,6 +201,7 @@ void main() {
       });
 
       test('Signets throw an error while trying to get courses', () async {
+        setupFlutterToastMock();
         CourseRepositoryMock.stubSessions(
             courseRepository as CourseRepositoryMock,
             toReturn: [session]);
@@ -234,6 +236,7 @@ void main() {
 
         verifyInOrder([
           courseRepository.sessions,
+          courseRepository.sessions,
           courseRepository.activeSessions,
           courseRepository.activeSessions,
           courseRepository.getCourses(fromCacheOnly: true),
@@ -242,10 +245,36 @@ void main() {
 
         verifyNoMoreInteractions(courseRepository);
       });
+
+      test('There is no session active', () async {
+        CourseRepositoryMock.stubSessions(
+            courseRepository as CourseRepositoryMock,
+            toReturn: []);
+        CourseRepositoryMock.stubActiveSessions(
+            courseRepository as CourseRepositoryMock,
+            toReturn: []);
+
+        expect(await viewModel.futureToRunGrades(), [],
+            reason: "Should return empty if there is no session active.");
+
+        await untilCalled(courseRepository.sessions);
+
+        expect(viewModel.courses, []);
+
+        verifyInOrder([
+          courseRepository.sessions,
+          courseRepository.sessions,
+          courseRepository.getSessions(),
+          courseRepository.activeSessions,
+        ]);
+
+        verifyNoMoreInteractions(courseRepository);
+      });
     });
 
     group("futureToRun - ", () {
       test("The initial cards are correctly loaded", () async {
+        setupFlutterToastMock();
         CourseRepositoryMock.stubGetCoursesActivities(
             courseRepository as CourseRepositoryMock);
         CourseRepositoryMock.stubCoursesActivities(
@@ -264,6 +293,8 @@ void main() {
         ]);
 
         verify(settingsManager.getDashboard()).called(1);
+        verify(settingsManager.getString(PreferencesFlag.progressBarText))
+            .called(1);
         verifyNoMoreInteractions(settingsManager);
       });
 
@@ -296,6 +327,7 @@ void main() {
 
       test("An exception is thrown during the preferenceService call",
           () async {
+        setupFlutterToastMock();
         CourseRepositoryMock.stubGetCoursesActivities(
             courseRepository as CourseRepositoryMock);
         CourseRepositoryMock.stubCoursesActivities(
@@ -338,8 +370,48 @@ void main() {
             courseRepository as CourseRepositoryMock);
 
         await viewModel.futureToRunSessionProgressBar();
-        expect(viewModel.progress, 0.0);
+        expect(viewModel.progress, -1.0);
         expect(viewModel.sessionDays, [0, 0]);
+      });
+
+      test(
+          "currentProgressBarText should be set to ProgressBarText.percentage when it is the first time changeProgressBarText is called",
+          () async {
+        CourseRepositoryMock.stubActiveSessions(
+            courseRepository as CourseRepositoryMock);
+
+        viewModel.changeProgressBarText();
+        verify(settingsManager.setString(PreferencesFlag.progressBarText,
+                ProgressBarText.values[1].toString()))
+            .called(1);
+      });
+
+      test(
+          "currentProgressBarText flag should be set to ProgressBarText.remainingDays when it is the second time changeProgressBarText is called",
+          () async {
+        CourseRepositoryMock.stubActiveSessions(
+            courseRepository as CourseRepositoryMock);
+
+        viewModel.changeProgressBarText();
+        viewModel.changeProgressBarText();
+        verify(settingsManager.setString(PreferencesFlag.progressBarText,
+                ProgressBarText.values[2].toString()))
+            .called(1);
+      });
+
+      test(
+          "currentProgressBarText flag should be set to ProgressBarText.daysElapsedWithTotalDays when it is the third time changeProgressBarText is called",
+          () async {
+        CourseRepositoryMock.stubActiveSessions(
+            courseRepository as CourseRepositoryMock);
+
+        viewModel.changeProgressBarText();
+        viewModel.changeProgressBarText();
+        viewModel.changeProgressBarText();
+
+        verify(settingsManager.setString(PreferencesFlag.progressBarText,
+                ProgressBarText.values[0].toString()))
+            .called(1);
       });
     });
 
@@ -351,7 +423,6 @@ void main() {
             PreferencesFlag.scheduleCard);
         SettingsManagerMock.stubSetInt(settingsManager as SettingsManagerMock,
             PreferencesFlag.progressBarCard);
-
         SettingsManagerMock.stubGetDashboard(
             settingsManager as SettingsManagerMock,
             toReturn: dashboard);
@@ -395,6 +466,8 @@ void main() {
             .called(1);
         verify(settingsManager.setInt(PreferencesFlag.progressBarCard, 2))
             .called(1);
+        verify(settingsManager.getString(PreferencesFlag.progressBarText))
+            .called(2);
         verifyNoMoreInteractions(settingsManager);
       });
 
@@ -443,6 +516,8 @@ void main() {
         verify(settingsManager.setInt(PreferencesFlag.aboutUsCard, 1))
             .called(1);
         verify(settingsManager.setInt(PreferencesFlag.scheduleCard, 2))
+            .called(1);
+        verify(settingsManager.getString(PreferencesFlag.progressBarText))
             .called(1);
         verifyNoMoreInteractions(settingsManager);
       });

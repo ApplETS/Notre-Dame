@@ -8,14 +8,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 // CONSTANTS
+import 'package:notredame/core/constants/activity_code.dart';
 import 'package:notredame/core/constants/discovery_ids.dart';
-
 // MANAGER
 import 'package:notredame/core/managers/course_repository.dart';
 import 'package:notredame/core/managers/settings_manager.dart';
 
 // MODELS
 import 'package:notredame/core/models/course_activity.dart';
+import 'package:notredame/core/models/schedule_activity.dart';
 
 // UTILS
 import 'package:notredame/ui/utils/discovery_components.dart';
@@ -50,6 +51,13 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
   /// This value is then change to the cache value on load.
   CalendarFormat calendarFormat = CalendarFormat.week;
 
+  /// This map contains the courses that has the group A or group B mark
+  final Map<String, List<ScheduleActivity>> scheduleActivitiesByCourse = {};
+
+  /// This map contains the direct settings as string for each course that are grouped
+  /// (Example: (key, value) => ("ING150", "Laboratoire (Groupe A)"))
+  final Map<String, String> settingsScheduleActivities = {};
+
   /// Get current locale
   Locale get locale => _settingsManager.locale;
 
@@ -79,11 +87,43 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
             // Reload the list of activities
             coursesActivities;
           }
-        }).whenComplete(() {
-          setBusyForObject(isLoadingEvents, false);
+          _courseRepository
+              .getScheduleActivities()
+              // ignore: return_type_invalid_for_catch_error
+              .catchError(onError)
+              .then((value) async {
+            await assignScheduleActivities(value);
+          }).whenComplete(() {
+            setBusyForObject(isLoadingEvents, false);
+          });
         });
         return value;
       });
+
+  Future assignScheduleActivities(
+      List<ScheduleActivity> listOfSchedules) async {
+    if (listOfSchedules == null ||
+        listOfSchedules.isEmpty ||
+        !listOfSchedules.any((element) =>
+            element.activityCode == ActivityCode.labGroupA ||
+            element.activityCode == ActivityCode.labGroupB)) return;
+
+    setBusy(true);
+    scheduleActivitiesByCourse.clear();
+    for (final activity in listOfSchedules) {
+      if (activity.activityCode == ActivityCode.labGroupA ||
+          activity.activityCode == ActivityCode.labGroupB) {
+        // Create the list with the new activity inside or add the activity to an existing group
+        if (!scheduleActivitiesByCourse.containsKey(activity.courseAcronym)) {
+          scheduleActivitiesByCourse[activity.courseAcronym] = [activity];
+        } else {
+          scheduleActivitiesByCourse[activity.courseAcronym].add(activity);
+        }
+      }
+    }
+
+    await loadSettingsScheduleActivities();
+  }
 
   @override
   // ignore: type_annotate_public_apis
@@ -97,7 +137,30 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
     settings.addAll(await _settingsManager.getScheduleSettings());
     calendarFormat = settings[PreferencesFlag.scheduleSettingsCalendarFormat]
         as CalendarFormat;
+
+    await loadSettingsScheduleActivities();
+
     setBusy(false);
+  }
+
+  Future loadSettingsScheduleActivities() async {
+    for (final courseAcronym in scheduleActivitiesByCourse.keys) {
+      final String activityCodeToUse = await _settingsManager.getDynamicString(
+          DynamicPreferencesFlag(
+              groupAssociationFlag:
+                  PreferencesFlag.scheduleSettingsLaboratoryGroup,
+              uniqueKey: courseAcronym));
+      final scheduleActivityToSet = scheduleActivitiesByCourse[courseAcronym]
+          .firstWhere((element) => element.activityCode == activityCodeToUse,
+              orElse: () => null);
+      if (scheduleActivityToSet != null) {
+        settingsScheduleActivities[courseAcronym] = scheduleActivityToSet.name;
+      } else {
+        // All group selected
+        settingsScheduleActivities
+            .removeWhere((key, value) => key == courseAcronym);
+      }
+    }
   }
 
   /// Return the list of all the courses activities arranged by date.
@@ -160,8 +223,11 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
     }
   }
 
-  Future<void> startDiscovery(BuildContext context) async {
-    if (await _settingsManager.getString(PreferencesFlag.discoverySchedule) ==
+  /// Start Discovery if needed.
+  static Future<void> startDiscovery(BuildContext context) async {
+    final SettingsManager _settingsManager = locator<SettingsManager>();
+
+    if (await _settingsManager.getBool(PreferencesFlag.discoverySchedule) ==
         null) {
       final List<String> ids =
           findDiscoveriesByGroupName(context, DiscoveryGroupIds.pageSchedule)
@@ -170,8 +236,13 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
 
       Future.delayed(const Duration(milliseconds: 700),
           () => FeatureDiscovery.discoverFeatures(context, ids));
-
-      _settingsManager.setString(PreferencesFlag.discoverySchedule, 'true');
     }
+  }
+
+  /// Mark the discovery of this view completed
+  Future<bool> discoveryCompleted() async {
+    await _settingsManager.setBool(PreferencesFlag.discoverySchedule, true);
+
+    return true;
   }
 }

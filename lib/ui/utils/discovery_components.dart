@@ -453,12 +453,12 @@ void dismissDiscovery(BuildContext context) {
 
   FeatureDiscovery.dismissAll(context);
 
-  _settingsManager.setString(PreferencesFlag.discoveryDashboard, 'true');
-  _settingsManager.setString(PreferencesFlag.discoverySchedule, 'true');
-  _settingsManager.setString(PreferencesFlag.discoveryStudentGrade, 'true');
-  _settingsManager.setString(PreferencesFlag.discoveryGradeDetails, 'true');
-  _settingsManager.setString(PreferencesFlag.discoveryStudentProfile, 'true');
-  _settingsManager.setString(PreferencesFlag.discoveryMore, 'true');
+  _settingsManager.setBool(PreferencesFlag.discoveryDashboard, true);
+  _settingsManager.setBool(PreferencesFlag.discoverySchedule, true);
+  _settingsManager.setBool(PreferencesFlag.discoveryStudentGrade, true);
+  _settingsManager.setBool(PreferencesFlag.discoveryGradeDetails, true);
+  _settingsManager.setBool(PreferencesFlag.discoveryStudentProfile, true);
+  _settingsManager.setBool(PreferencesFlag.discoveryMore, true);
 }
 
 Discovery getDiscoveryByPath(BuildContext context, String group, String path) {

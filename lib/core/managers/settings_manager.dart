@@ -177,7 +177,24 @@ class SettingsManager with ChangeNotifier {
     // Log the event
     _analyticsService.logEvent(
         "${tag}_${EnumToString.convertToString(flag)}", value);
+
+    if (value == null) {
+      return _preferencesService.removePreferencesFlag(flag);
+    }
     return _preferencesService.setString(flag, value);
+  }
+
+  /// Add/update the value of [flag]
+  Future<bool> setDynamicString(
+      DynamicPreferencesFlag flag, String value) async {
+    // Log the event
+    _analyticsService.logEvent("${tag}_${flag.toString()}", value);
+
+    if (value == null) {
+      return _preferencesService.removeDynamicPreferencesFlag(flag);
+    }
+
+    return _preferencesService.setDynamicString(flag, value);
   }
 
   /// Add/update the value of [flag]
@@ -196,6 +213,13 @@ class SettingsManager with ChangeNotifier {
     return _preferencesService.getString(flag);
   }
 
+  /// Get the value of [flag]
+  Future<String> getDynamicString(DynamicPreferencesFlag flag) async {
+    // Log the event
+    _analyticsService.logEvent("${tag}_${flag.toString()}", 'getString');
+    return _preferencesService.getDynamicString(flag);
+  }
+
   /// Add/update the value of [flag]
   // ignore: avoid_positional_boolean_parameters
   Future<bool> setBool(PreferencesFlag flag, bool value) async {
@@ -203,6 +227,14 @@ class SettingsManager with ChangeNotifier {
     _analyticsService.logEvent(
         "${tag}_${EnumToString.convertToString(flag)}", value.toString());
     return _preferencesService.setBool(flag, value: value);
+  }
+
+  /// Get the value of [flag]
+  Future<bool> getBool(PreferencesFlag flag) async {
+    // Log the event
+    _analyticsService.logEvent(
+        "${tag}_${EnumToString.convertToString(flag)}", 'getBool');
+    return _preferencesService.getBool(flag);
   }
 
   /// Get the default index of each card

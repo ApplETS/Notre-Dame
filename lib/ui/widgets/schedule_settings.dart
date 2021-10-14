@@ -119,7 +119,7 @@ class _ScheduleSettingsState extends State<ScheduleSettings> {
         child: Text(
           AppIntl.of(context).schedule_settings_calendar_format_pref,
           style: TextStyle(
-            color: Theme.of(context).accentColor,
+            color: Theme.of(context).colorScheme.secondary,
             fontWeight: FontWeight.bold,
           ),
         ),
@@ -150,7 +150,7 @@ class _ScheduleSettingsState extends State<ScheduleSettings> {
         child: Text(
           AppIntl.of(context).schedule_settings_starting_weekday_pref,
           style: TextStyle(
-            color: Theme.of(context).accentColor,
+            color: Theme.of(context).colorScheme.secondary,
             fontWeight: FontWeight.bold,
           ),
         ),

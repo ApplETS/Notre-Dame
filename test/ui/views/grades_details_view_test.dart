@@ -76,8 +76,8 @@ void main() {
     setUp(() async {
       setupNavigationServiceMock();
       courseRepository = setupCourseRepositoryMock();
-      setupFlutterToastMock();
       setupSettingsManagerMock();
+      setupNetworkingServiceMock();
     });
 
     tearDown(() {
@@ -90,6 +90,7 @@ void main() {
       testWidgets(
           'has a RefreshIndicator, GradeCircularProgress, three cards and evaluation tiles when a course is valid',
           (WidgetTester tester) async {
+        setupFlutterToastMock(tester);
         await tester.pumpWidget(localizedWidget(
             child: FeatureDiscovery(child: GradesDetailsView(course: course))));
         await tester.pumpAndSettle();
@@ -115,6 +116,7 @@ void main() {
       testWidgets(
           'when the page is at the top, it displays the course title, acronym and group',
           (WidgetTester tester) async {
+        setupFlutterToastMock(tester);
         CourseRepositoryMock.stubGetCourseSummary(
             courseRepository as CourseRepositoryMock, courseWithoutSummary,
             toReturn: course);
@@ -133,6 +135,7 @@ void main() {
       testWidgets(
           'when the page is scrolled at the bottom, it does not display the SliverToBoxAdapter',
           (WidgetTester tester) async {
+        setupFlutterToastMock(tester);
         CourseRepositoryMock.stubGetCourseSummary(
             courseRepository as CourseRepositoryMock, courseWithoutSummary,
             toReturn: course);
@@ -153,6 +156,7 @@ void main() {
 
       testWidgets("display GradeNotAvailable when a course summary is null",
           (WidgetTester tester) async {
+        setupFlutterToastMock(tester);
         CourseRepositoryMock.stubGetCourseSummary(
             courseRepository as CourseRepositoryMock, courseWithoutSummary,
             toReturn: courseWithoutSummary);
@@ -168,6 +172,7 @@ void main() {
 
     group("golden - ", () {
       testWidgets("default view", (WidgetTester tester) async {
+        setupFlutterToastMock(tester);
         CourseRepositoryMock.stubGetCourseSummary(
             courseRepository as CourseRepositoryMock, courseWithoutSummary,
             toReturn: course);
@@ -184,6 +189,7 @@ void main() {
 
       testWidgets("if there is no grades available",
           (WidgetTester tester) async {
+        setupFlutterToastMock(tester);
         CourseRepositoryMock.stubGetCourseSummary(
             courseRepository as CourseRepositoryMock, courseWithoutSummary,
             toReturn: courseWithoutSummary);

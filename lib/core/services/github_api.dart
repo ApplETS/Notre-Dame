@@ -4,12 +4,14 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 import 'package:github/github.dart';
-import 'package:package_info/package_info.dart';
+import 'package:logger/logger.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:flutter_config/flutter_config.dart';
 
 // SERVICES
 import 'package:notredame/core/services/internal_info_service.dart';
+import 'package:notredame/core/services/analytics_service.dart';
 
 // OTHERS
 import 'package:notredame/locator.dart';
@@ -23,6 +25,10 @@ class GithubApi {
   static const String _repositoryReportSlug = "ApplETS/Notre-Dame-Bug-report";
 
   GitHub _github;
+
+  final Logger _logger = locator<Logger>();
+
+  final AnalyticsService _analyticsService = locator<AnalyticsService>();
 
   final InternalInfoService _internalInfoService =
       locator<InternalInfoService>();
@@ -40,15 +46,21 @@ class GithubApi {
 
   /// Upload a file to the ApplETS/Notre-Dame-Bug-report repository
   void uploadFileToGithub({@required String filePath, @required File file}) {
-    _github.repositories.createFile(
-        RepositorySlug.full(_repositoryReportSlug),
-        CreateFile(
-            path: filePath,
-            content: base64Encode(file.readAsBytesSync()).toString(),
-            message: DateTime.now().toString(),
-            committer:
-                CommitUser('clubapplets-server', 'clubapplets@gmail.com'),
-            branch: 'main'));
+    _github.repositories
+        .createFile(
+            RepositorySlug.full(_repositoryReportSlug),
+            CreateFile(
+                path: filePath,
+                content: base64Encode(file.readAsBytesSync()).toString(),
+                message: DateTime.now().toString(),
+                committer:
+                    CommitUser('clubapplets-server', 'clubapplets@gmail.com'),
+                branch: 'main'))
+        .catchError((error) {
+      _logger.e("uploadFileToGithub error: ${error.message}");
+      _analyticsService.logError(
+          tag, "uploadFileToGithub: ${error.message}", error as GitHubError);
+    });
   }
 
   /// Create Github issue into the Notre-Dame repository with the labels bugs and the platform used.
@@ -57,16 +69,22 @@ class GithubApi {
   Future<void> createGithubIssue(
       {@required String feedbackText, @required String fileName}) async {
     final PackageInfo packageInfo = await PackageInfo.fromPlatform();
-    _github.issues.create(
-        RepositorySlug.full(_repositorySlug),
-        IssueRequest(
-            title: 'Issue from ${packageInfo.appName} ',
-            body: " **Describe the issue** \n"
-                "```$feedbackText```\n\n"
-                "**Screenshot** \n"
-                "![screenshot](https://github.com/$_repositoryReportSlug/blob/main/$fileName?raw=true)\n\n"
-                "${await _internalInfoService.getDeviceInfoForErrorReporting()}",
-            labels: ['bug', 'platform: ${Platform.operatingSystem}']));
+    _github.issues
+        .create(
+            RepositorySlug.full(_repositorySlug),
+            IssueRequest(
+                title: 'Issue from ${packageInfo.appName} ',
+                body: " **Describe the issue** \n"
+                    "```$feedbackText```\n\n"
+                    "**Screenshot** \n"
+                    "![screenshot](https://github.com/$_repositoryReportSlug/blob/main/$fileName?raw=true)\n\n"
+                    "${await _internalInfoService.getDeviceInfoForErrorReporting()}",
+                labels: ['bug', 'platform: ${Platform.operatingSystem}']))
+        .catchError((error) {
+      _logger.e("createGithubIssue error: ${error.message}");
+      _analyticsService.logError(
+          tag, "createGithubIssue: ${error.message}", error as GitHubError);
+    });
   }
 
   /// Create an empty bug picture in the local storage

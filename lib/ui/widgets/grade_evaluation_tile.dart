@@ -67,8 +67,9 @@ class _GradeEvaluationTileState extends State<GradeEvaluationTile>
           Theme(
             data: Theme.of(context).copyWith(
               dividerColor: Colors.transparent,
-              accentColor: Colors.red,
               unselectedWidgetColor: Colors.red,
+              colorScheme:
+                  ColorScheme.fromSwatch().copyWith(secondary: Colors.red),
             ),
             child: ExpansionTile(
               onExpansionChanged: (value) {
@@ -195,8 +196,15 @@ class _GradeEvaluationTileState extends State<GradeEvaluationTile>
                     evaluation.correctedEvaluationOutOfFormatted),
               ),
             ),
-            _buildSummary(AppIntl.of(context).grades_median,
-                validateResult(context, evaluation.median.toString())),
+            _buildSummary(
+              AppIntl.of(context).grades_median,
+              AppIntl.of(context).grades_grade_with_percentage(
+                evaluation.median ?? 0.0,
+                evaluation.correctedEvaluationOutOf ?? 0.0,
+                Utils.getGradeInPercentage(evaluation.median,
+                    evaluation.correctedEvaluationOutOfFormatted),
+              ),
+            ),
             _buildSummary(
                 AppIntl.of(context).grades_standard_deviation,
                 validateResult(
@@ -249,15 +257,14 @@ class _GradeEvaluationTileState extends State<GradeEvaluationTile>
         context, DiscoveryGroupIds.pageGradeDetails, featuredId);
 
     return DescribedFeatureOverlay(
-      overflowMode: OverflowMode.wrapBackground,
-      contentLocation: ContentLocation.below,
-      featureId: discovery.featureId,
-      title: Text(discovery.title, textAlign: TextAlign.justify),
-      description: discovery.details,
-      backgroundColor: AppTheme.appletsDarkPurple,
-      tapTarget: circularProgressBar,
-      pulseDuration: const Duration(seconds: 5),
-      child: circularProgressBar,
-    );
+        overflowMode: OverflowMode.wrapBackground,
+        contentLocation: ContentLocation.below,
+        featureId: discovery.featureId,
+        title: Text(discovery.title, textAlign: TextAlign.justify),
+        description: discovery.details,
+        backgroundColor: AppTheme.appletsDarkPurple,
+        tapTarget: circularProgressBar,
+        pulseDuration: const Duration(seconds: 5),
+        child: circularProgressBar);
   }
 }

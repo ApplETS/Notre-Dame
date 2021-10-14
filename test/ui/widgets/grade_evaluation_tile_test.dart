@@ -108,11 +108,11 @@ void main() {
         expect(label2, findsOneWidget);
 
         final label3 = find.text(intl.grades_not_available);
-        //grades_median, grades_standard_deviation, grades_percentile_rank
-        expect(label3, findsNWidgets(3));
+        //grades_standard_deviation, grades_percentile_rank
+        expect(label3, findsNWidgets(2));
 
         final label4 = find.text("0.0/30 (0.0%)");
-        expect(label4, findsNWidgets(2));
+        expect(label4, findsNWidgets(3));
       });
     });
   });

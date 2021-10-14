@@ -50,7 +50,7 @@ class _GradesDetailsViewState extends State<GradesDetailsView>
     });
 
     SchedulerBinding.instance.addPostFrameCallback((Duration duration) {
-      GradesDetailsViewModel(intl: AppIntl.of(context)).startDiscovery(context);
+      GradesDetailsViewModel.startDiscovery(context);
     });
   }
 
@@ -117,7 +117,7 @@ class _GradesDetailsViewState extends State<GradesDetailsView>
                           color:
                               Theme.of(context).brightness == Brightness.light
                                   ? AppTheme.etsLightRed
-                                  : const Color(0xff222222),
+                                  : Theme.of(context).bottomAppBarColor,
                         ),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -214,7 +214,9 @@ class _GradesDetailsViewState extends State<GradesDetailsView>
                           context,
                           model.course.summary.median.toString(),
                           AppIntl.of(context).grades_grade_in_percentage(
-                              model.course.summary.median),
+                              Utils.getGradeInPercentage(
+                                  model.course.summary.median,
+                                  model.course.summary.markOutOf)),
                         ),
                       ),
                     ),

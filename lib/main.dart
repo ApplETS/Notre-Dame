@@ -65,6 +65,7 @@ class ETSMobile extends StatelessWidget {
         return BetterFeedback(
           localeOverride: model.locale,
           child: FeatureDiscovery(
+            recordStepsInSharedPreferences: false,
             child: MaterialApp(
               title: 'ÉTS Mobile',
               theme: AppTheme.lightTheme(),
@@ -83,7 +84,7 @@ class ETSMobile extends StatelessWidget {
                 locator<AnalyticsService>().getAnalyticsObserver(),
               ],
               home: StartUpView(),
-              onGenerateRoute: AppRouter.generateRoute,
+              onGenerateRoute: generateRoute,
             ),
           ),
         );
