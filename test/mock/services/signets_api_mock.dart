@@ -54,7 +54,7 @@ class SignetsApiMock extends Mock implements SignetsApi {
         .thenAnswer((_) async => coursesActivitiesToReturn);
   }
 
-  /// Throw [exceptionToThrow] when [getCoursesActivities] with the [session] is used.
+  /// Throw [exceptionToThrow] when [getScheduleActivities] with the [session] is used.
   static void stubGetScheduleActivitiesException(
       SignetsApiMock mock, String session,
       {ApiException exceptionToThrow = courseRepositoryException}) {
