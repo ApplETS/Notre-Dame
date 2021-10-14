@@ -44,10 +44,10 @@ List<GroupDiscovery> discoveryComponents(BuildContext context) {
                     const Text('\n'),
                     if (AppIntl.of(context).localeName == "fr")
                       Image.asset(
-                          'asset/animations/discovery/fr/dashboard_swipe.gif')
+                          'assets/animations/discovery/fr/dashboard_swipe.gif')
                     else
                       Image.asset(
-                          'asset/animations/discovery/en/dashboard_swipe.gif'),
+                          'assets/animations/discovery/en/dashboard_swipe.gif'),
                   ],
                 ),
               ),
@@ -75,10 +75,10 @@ List<GroupDiscovery> discoveryComponents(BuildContext context) {
                     const Text('\n'),
                     if (AppIntl.of(context).localeName == "fr")
                       Image.asset(
-                          'asset/animations/discovery/fr/dashboard_restore.gif')
+                          'assets/animations/discovery/fr/dashboard_restore.gif')
                     else
                       Image.asset(
-                          'asset/animations/discovery/en/dashboard_restore.gif'),
+                          'assets/animations/discovery/en/dashboard_restore.gif'),
                   ],
                 ),
               ),
@@ -106,10 +106,10 @@ List<GroupDiscovery> discoveryComponents(BuildContext context) {
                     const Text('\n'),
                     if (AppIntl.of(context).localeName == "fr")
                       Image.asset(
-                          'asset/animations/discovery/fr/schedule_calendar.png')
+                          'assets/animations/discovery/fr/schedule_calendar.png')
                     else
                       Image.asset(
-                          'asset/animations/discovery/en/schedule_calendar.png'),
+                          'assets/animations/discovery/en/schedule_calendar.png'),
                   ],
                 ),
               ),
@@ -137,10 +137,10 @@ List<GroupDiscovery> discoveryComponents(BuildContext context) {
                     const Text('\n'),
                     if (AppIntl.of(context).localeName == "fr")
                       Image.asset(
-                          'asset/animations/discovery/fr/grade_details.gif')
+                          'assets/animations/discovery/fr/grade_details.gif')
                     else
                       Image.asset(
-                          'asset/animations/discovery/en/grade_details.gif'),
+                          'assets/animations/discovery/en/grade_details.gif'),
                   ],
                 ),
               ),
@@ -167,9 +167,10 @@ List<GroupDiscovery> discoveryComponents(BuildContext context) {
                         textAlign: TextAlign.justify),
                     const Text('\n'),
                     if (AppIntl.of(context).localeName == "fr")
-                      Image.asset('asset/animations/discovery/fr/ets_link.gif')
+                      Image.asset('assets/animations/discovery/fr/ets_link.gif')
                     else
-                      Image.asset('asset/animations/discovery/en/ets_link.gif'),
+                      Image.asset(
+                          'assets/animations/discovery/en/ets_link.gif'),
                   ],
                 ),
               ),
@@ -196,9 +197,9 @@ List<GroupDiscovery> discoveryComponents(BuildContext context) {
                         textAlign: TextAlign.justify),
                     const Text('\n'),
                     if (AppIntl.of(context).localeName == "fr")
-                      Image.asset('asset/animations/discovery/fr/more.jpg')
+                      Image.asset('assets/animations/discovery/fr/more.jpg')
                     else
-                      Image.asset('asset/animations/discovery/en/more.jpg'),
+                      Image.asset('assets/animations/discovery/en/more.jpg'),
                   ],
                 ),
               ),
@@ -227,10 +228,10 @@ List<GroupDiscovery> discoveryComponents(BuildContext context) {
                     const Text('\n'),
                     if (AppIntl.of(context).localeName == "fr")
                       Image.asset(
-                          'asset/animations/discovery/fr/schedule_settings.gif')
+                          'assets/animations/discovery/fr/schedule_settings.gif')
                     else
                       Image.asset(
-                          'asset/animations/discovery/en/schedule_settings.gif'),
+                          'assets/animations/discovery/en/schedule_settings.gif'),
                   ],
                 ),
               ),
