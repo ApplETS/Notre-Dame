@@ -65,7 +65,7 @@ class _BaseScaffoldState extends State<BaseScaffold> {
   }
 
   Future _setOfflineValue() async {
-    final isOffline = await _networkingService.hasConnectivity();
+    final isOffline = !await _networkingService.hasConnectivity();
     setState(() {
       _isOffline = isOffline;
     });
