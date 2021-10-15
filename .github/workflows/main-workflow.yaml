@@ -157,6 +157,20 @@ jobs:
           namedLogo: flutter
           color: green
 
+  create-labels:
+    name: Create labels on PR
+    runs-on: ubuntu-latest
+    steps:
+      - name: Run the Github actions
+        if: ${{ github.event_name == 'pull_request' }}
+        uses: alexromer0/pull-request-labeler@2.1.1
+        with:
+          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+          xs_limit: '50'
+          sm_limit: '100'
+          md_limit: '300'
+          lg_limit: '600'
+
 #      Disable these steps for now. Will enable them when we will think of a way to upload lcov.base.info somewhere
 #      - name: Commit coverage file
 #        id: commit
