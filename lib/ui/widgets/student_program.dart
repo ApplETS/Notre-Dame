@@ -49,7 +49,7 @@ class StudentProgram extends StatelessWidget {
           ),
         ),
         ListView.builder(
-            padding: const EdgeInsets.all(0.0),
+            padding: EdgeInsets.zero,
             physics: const NeverScrollableScrollPhysics(),
             shrinkWrap: true,
             itemBuilder: (context, index) {
