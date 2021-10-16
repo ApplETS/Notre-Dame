@@ -16,17 +16,10 @@ import '../../helpers.dart';
 import '../../mock/services/networking_service_mock.dart';
 
 void main() {
-  NetworkingService networkingService;
-
   group('BaseScaffold - ', () {
     setUp(() {
       setupNavigationServiceMock();
-      networkingService = setupNetworkingServiceMock();
-
-      NetworkingServiceMock.stubChangeConnectivityStream(
-          networkingService as NetworkingServiceMock);
-      NetworkingServiceMock.stubHasConnectivity(
-          networkingService as NetworkingServiceMock);
+      setupNetworkingServiceMock();
     });
 
     tearDown(() {
