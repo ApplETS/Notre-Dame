@@ -13,7 +13,6 @@ import 'package:notredame/ui/widgets/bottom_bar.dart';
 
 // HELPERS
 import '../../helpers.dart';
-import '../../mock/services/networking_service_mock.dart';
 
 void main() {
   group('BaseScaffold - ', () {
