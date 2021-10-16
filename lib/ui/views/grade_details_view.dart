@@ -177,10 +177,8 @@ class _GradesDetailsViewState extends State<GradesDetailsView>
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
                             _buildGradesSummary(
-                              Utils.getGradeInPercentage(
-                                model.course.summary.currentMark,
-                                model.course.summary.markOutOf,
-                              ),
+                              model.course.summary.currentMark,
+                              model.course.summary.markOutOf,
                               AppIntl.of(context).grades_current_rating,
                               Colors.green,
                               context,
@@ -188,9 +186,8 @@ class _GradesDetailsViewState extends State<GradesDetailsView>
                             Padding(
                               padding: const EdgeInsets.only(top: 15.0),
                               child: _buildGradesSummary(
-                                Utils.getGradeInPercentage(
-                                    model.course.summary.passMark,
-                                    model.course.summary.markOutOf),
+                                model.course.summary.passMark ?? 0.0,
+                                model.course.summary.markOutOf,
                                 AppIntl.of(context).grades_average,
                                 Colors.red,
                                 context,
@@ -283,16 +280,22 @@ class _GradesDetailsViewState extends State<GradesDetailsView>
       );
 
   /// Build the student grade or the average grade with their title
-  Column _buildGradesSummary(
-      double grade, String recipient, Color color, BuildContext context) {
+  Column _buildGradesSummary(double currentGrade, double maxGrade,
+      String recipient, Color color, BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         FittedBox(
           fit: BoxFit.fitWidth,
           child: Text(
-              AppIntl.of(context)
-                  .grades_grade_with_percentage(grade, 100, grade),
+              AppIntl.of(context).grades_grade_with_percentage(
+                currentGrade,
+                maxGrade,
+                Utils.getGradeInPercentage(
+                  currentGrade,
+                  maxGrade,
+                ),
+              ),
               style:
                   Theme.of(context).textTheme.headline6.copyWith(color: color)),
         ),
