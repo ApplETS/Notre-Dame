@@ -1,0 +1,32 @@
+name: Main workflow
+on:
+  pull_request:
+    paths-ignore:
+      - '.gitignore'
+      - '.metadata'
+      - '.github/**'
+      - 'README.md'
+      - 'README.fr.md'
+      
+env:
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+jobs:
+  determine-pr-size:
+    name: Determine the size of the PR
+    runs-on: ubuntu-latest
+    steps:
+      - name: Run the Github actions
+        uses: alexromer0/pull-request-labeler@2.1.1
+        with:
+          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+          xs_limit: '50'
+          sm_limit: '100'
+          md_limit: '300'
+          lg_limit: '600'
+          # Uncomment when this PR will be approved https://github.com/alexromer0/pull-request-labeler/pull/6
+          # custom_tag_xs: 'size: xs'
+          # custom_tag_sm: 'size: sm'
+          # custom_tag_md: 'size: md'
+          # custom_tag_lg: 'size: lg'
+          # custom_tag_xl: 'size: xl'

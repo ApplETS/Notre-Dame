@@ -16,7 +16,7 @@ on:
       - '.github/**'
       - 'README.md'
       - 'README.fr.md'
-      
+
 env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   MAPS_API_KEY: ${{ secrets.MAPS_API_KEY }}
@@ -163,20 +163,6 @@ jobs:
           message: ${{ needs.testing.outputs.coverage }}
           namedLogo: flutter
           color: green
-
-  determine-pr-size:
-    name: Determine the size of the PR
-    runs-on: ubuntu-latest
-    steps:
-      - name: Run the Github actions
-        if: ${{ github.event_name == 'pull_request' }}
-        uses: alexromer0/pull-request-labeler@2.1.1
-        with:
-          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
-          xs_limit: '50'
-          sm_limit: '100'
-          md_limit: '300'
-          lg_limit: '600'
 
 #      Disable these steps for now. Will enable them when we will think of a way to upload lcov.base.info somewhere
 #      - name: Commit coverage file
