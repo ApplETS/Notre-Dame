@@ -25,6 +25,8 @@ void main() {
 
       NetworkingServiceMock.stubChangeConnectivityStream(
           networkingService as NetworkingServiceMock);
+      NetworkingServiceMock.stubHasConnectivity(
+          networkingService as NetworkingServiceMock);
     });
 
     tearDown(() {
