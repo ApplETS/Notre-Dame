@@ -157,8 +157,8 @@ jobs:
           namedLogo: flutter
           color: green
 
-  create-labels:
-    name: Create labels on PR
+  determine-pr-size:
+    name: Determine the size of the PR
     runs-on: ubuntu-latest
     steps:
       - name: Run the Github actions
