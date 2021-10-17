@@ -74,14 +74,16 @@ jobs:
 
       - name: Set changelog for each platform
         run: |
-          enChangelog=$(echo "${{ github.event.release.body }}" | sed -n '/## English version$/,/## End english version/p' | sed '1d;$d')
-          frChangelog=$(echo "${{ github.event.release.body }}" | sed -n '/## French version$/,/## End french version/p' | sed '1d;$d')
+          enChangelog=$(echo "${{ github.event.release.body }}" | sed -n '/## English version$/,/## End english version/p' | sed '1d;$d');
+          frChangelog=$(echo "${{ github.event.release.body }}" | sed -n '/## French version$/,/## End french version/p' | sed '1d;$d');
+          
+          echo $enChangelog;
+          echo $frChangelog;
+          
+          cat ${{ matrix.metadata_path }}/en-CA/${{ matrix.changelog_path }};
 
-          touch ${{ matrix.metadata_path }}/en-CA/${{ matrix.changelog_path }}
-          touch ${{ matrix.metadata_path }}/fr-CA/${{ matrix.changelog_path }}
-
-          [ ! -z "$enChangelog" ] && echo $enChangelog > ${{ matrix.metadata_path }}/en-CA/${{ matrix.changelog_path }}
-          [ ! -z "$frChangelog" ] && echo $frChangelog > ${{ matrix.metadata_path }}/fr-CA/${{ matrix.changelog_path }}
+          [ ! -z "$enChangelog" ] && echo $enChangelog > ${{ matrix.metadata_path }}/en-CA/${{ matrix.changelog_path }};
+          [ ! -z "$frChangelog" ] && echo $frChangelog > ${{ matrix.metadata_path }}/fr-CA/${{ matrix.changelog_path }};
         working-directory: ${{ matrix.working_directory }}
 
       - name: Deploy to store
