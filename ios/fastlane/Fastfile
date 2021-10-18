@@ -33,7 +33,7 @@ platform :ios do
     match(
         type: "appstore",
         readonly: true,
-        git_basic_authorization: Base64.strict_encode64(ENV["GIT_AUTHORIZATION"])
+        git_basic_authorization: Base64.strict_encode64(ENV["GIT_AUTHORIZATION"]),
         keychain_name: ENV['MATCH_KEYCHAIN_NAME'],
         keychain_password: ENV["MATCH_KEYCHAIN_PASSWORD"],
     )
