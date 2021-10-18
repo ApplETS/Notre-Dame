@@ -1,12 +1,6 @@
-name: Main workflow
+name: Dev tools workflow
 on:
   pull_request:
-    paths-ignore:
-      - '.gitignore'
-      - '.metadata'
-      - '.github/**'
-      - 'README.md'
-      - 'README.fr.md'
       
 env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -15,7 +9,6 @@ jobs:
   determine-pr-size:
     name: Determine the size of the PR
     runs-on: ubuntu-latest
-    name: Label the PR size
     steps:
       - uses: codelytv/pr-size-labeler@v1
         with:
