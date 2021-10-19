@@ -1,8 +1,5 @@
 default_platform(:ios)
 
-TEMP_KEYCHAIN_NAME = ENV["TEMP_KEYCHAIN_NAME"]
-TEMP_KEYCHAIN_PASSWORD = ENV["TEMP_KEYCHAIN_PASSWORD"]
-
 def delete_temp_keychain(name)
   delete_keychain(
     name: name
@@ -33,7 +30,7 @@ platform :ios do
     match(
         type: "appstore",
         readonly: true,
-        git_basic_authorization: Base64.strict_encode64(ENV["GIT_AUTHORIZATION"]),
+        git_private_key: ENV["GIT_SSH_KEY"],
         keychain_name: ENV['MATCH_KEYCHAIN_NAME'],
         keychain_password: ENV["MATCH_KEYCHAIN_PASSWORD"],
     )
