@@ -1,14 +1,13 @@
 name: Release the application to the stores
 on:
-  release:
-    types: [released]
+  pull_request:
 jobs:
   release-to-store:
     name: Create ${{ matrix.target }} build
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        target: [ iOS, Android ]
+        target: [ iOS ]
         include:
           - os: macos-latest
             target: iOS
@@ -17,14 +16,6 @@ jobs:
             working_directory: ios
             metadata_path: 'fastlane/metadata'
             changelog_path: 'release-notes.txt'
-          - os: ubuntu-latest
-            target: Android
-            build_target: appbundle
-            build_args: ''
-            working_directory: android
-            metadata_path: 'fastlane/metadata/android'
-            changelog_path: 'changelogs/default.txt'
-      # Disable fail-fast as we want results from all even if one fails.
       fail-fast: false
     steps:
       - uses: actions/checkout@v2
@@ -74,7 +65,23 @@ jobs:
 
       - name: Set changelog for each platform
         run: |
-          echo "${{ github.event.release.body }}" > releaseBody.txt
+          echo "## English version
+                Improve the user experience by fixing some bugs and giving you alternative ways to show the progress of the session.
+                Tap on the progress bar to see alternatives!
+                Fix the cache issues after an update.
+                ## End english version
+
+                ## French version
+                Améliore l'expérience utilisateur en corrigeant quelques bogues et en vous donnant d'autres méthodes pour visualiser l'avancement de la session.
+                Tapper sur la barre de progression de la session pour voir les alternatives!
+                Régle les problèmes de cache lors de mise à jour.
+                ## End french version
+
+                ## What's Changed
+                * Add cache removal for version mismatch by @MysticFragilist in https://github.com/ApplETS/Notre-Dame/pull/248
+
+
+                **Full Changelog**: https://github.com/ApplETS/Notre-Dame/compare/4.4.4...4.4.5" > releaseBody.txt
           enChangelog=$(cat releaseBody.txt | sed -n '/## English version$/,/## End english version/p' | sed '1d;$d');
           frChangelog=$(cat releaseBody.txt | sed -n '/## French version$/,/## End french version/p' | sed '1d;$d');
           
