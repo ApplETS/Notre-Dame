@@ -85,11 +85,11 @@ class StartUpViewModel extends BaseViewModel {
     return versionSaved == null || versionSaved == currentVersion;
   }
 
-  /// Set the version in the prefs to be able to
+  /// Set the version in the prefs to be able to retrieve it and match them together
   Future setSemanticVersionInPrefs() async {
     final currentVersion =
         (await _internalInfoService.getPackageInfo()).version;
-    final version = await _settingsManager.setString(
+    await _settingsManager.setString(
         PreferencesFlag.appVersion, currentVersion);
   }
 }

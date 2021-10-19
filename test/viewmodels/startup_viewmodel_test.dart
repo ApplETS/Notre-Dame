@@ -23,7 +23,6 @@ import '../mock/managers/settings_manager_mock.dart';
 import '../mock/managers/user_repository_mock.dart';
 import '../mock/services/internal_info_service_mock.dart';
 import '../mock/services/networking_service_mock.dart';
-import '../mock/services/preferences_service_mock.dart';
 
 void main() {
   NavigationService navigationService;
@@ -97,7 +96,6 @@ void main() {
           navigationService.pushNamed(RouterPaths.login)
         ]);
 
-        verifyNoMoreInteractions(settingsManagerMock);
         verifyNoMoreInteractions(navigationService);
       });
 
@@ -122,25 +120,32 @@ void main() {
           settingsManagerMock.setBool(PreferencesFlag.languageChoice, true)
         ]);
 
-        verifyNoMoreInteractions(settingsManagerMock);
         verifyNoMoreInteractions(navigationService);
       });
 
       test('verify cache removal if version mismatch', () async {
+        const String versionToSave = "4.0.0";
         UserRepositoryMock.stubSilentAuthenticate(userRepositoryMock);
         UserRepositoryMock.stubWasPreviouslyLoggedIn(userRepositoryMock);
         NetworkingServiceMock.stubHasConnectivity(networkingService);
         InternalInfoServiceMock.stubGetPackageInfo(internalInfoServiceMock,
-            version: "4.0.0");
+            version: versionToSave);
         SettingsManagerMock.stubGetString(
             settingsManagerMock, PreferencesFlag.appVersion,
             toReturn: "4.0.1");
+        SettingsManagerMock.stubSetString(
+            settingsManagerMock, PreferencesFlag.appVersion);
+
+        SettingsManagerMock.stubGetBool(
+            settingsManagerMock, PreferencesFlag.languageChoice,
+            toReturn: true);
 
         await viewModel.handleStartUp();
 
         verifyInOrder([
           cacheManagerMock.empty(),
-          settingsManagerMock.setString(PreferencesFlag.appVersion, "4.0.1")
+          settingsManagerMock.setString(
+              PreferencesFlag.appVersion, versionToSave)
         ]);
       });
 
