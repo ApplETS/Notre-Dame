@@ -5,11 +5,9 @@ import 'package:mockito/mockito.dart';
 // CONSTANTS
 import 'package:notredame/core/constants/preferences_flags.dart';
 import 'package:notredame/core/constants/router_paths.dart';
-import 'package:notredame/core/managers/cache_manager.dart';
 
 // SERVICES / MANAGERS
 import 'package:notredame/core/managers/user_repository.dart';
-import 'package:notredame/core/services/internal_info_service.dart';
 import 'package:notredame/core/services/navigation_service.dart';
 import 'package:notredame/core/managers/settings_manager.dart';
 
@@ -136,10 +134,6 @@ void main() {
         SettingsManagerMock.stubSetString(
             settingsManagerMock, PreferencesFlag.appVersion);
 
-        SettingsManagerMock.stubGetBool(
-            settingsManagerMock, PreferencesFlag.languageChoice,
-            toReturn: true);
-
         await viewModel.handleStartUp();
 
         verifyInOrder([
@@ -161,10 +155,9 @@ void main() {
 
         await viewModel.handleStartUp();
 
-        verify(cacheManagerMock.empty()).called(0);
-        verify(settingsManagerMock.setString(
-                PreferencesFlag.appVersion, "4.0.1"))
-            .called(0);
+        verifyNever(cacheManagerMock.empty());
+        verifyNever(
+            settingsManagerMock.setString(PreferencesFlag.appVersion, "4.0.1"));
       });
 
       test('verify cache removal has trigger for no present version', () async {
@@ -179,10 +172,10 @@ void main() {
 
         await viewModel.handleStartUp();
 
-        verify(cacheManagerMock.empty()).called(0);
-        verify(settingsManagerMock.setString(
-                PreferencesFlag.appVersion, "4.0.1"))
-            .called(0);
+        verifyInOrder([
+          cacheManagerMock.empty(),
+          settingsManagerMock.setString(PreferencesFlag.appVersion, "4.0.0")
+        ]);
       });
     });
   });

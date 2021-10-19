@@ -41,7 +41,7 @@ class StartUpViewModel extends BaseViewModel {
     if (await handleConnectivityIssues()) return;
 
     final bool hasTheSameVersionAsBefore = await hasSameSemanticVersion();
-    if (hasTheSameVersionAsBefore) {
+    if (!hasTheSameVersionAsBefore) {
       _cacheManager.empty();
       setSemanticVersionInPrefs();
     }
@@ -82,7 +82,11 @@ class StartUpViewModel extends BaseViewModel {
         (await _internalInfoService.getPackageInfo()).version;
     final versionSaved =
         await _settingsManager.getString(PreferencesFlag.appVersion);
-    return versionSaved == null || versionSaved == currentVersion;
+
+    if (versionSaved != null) {
+      return versionSaved == currentVersion;
+    }
+    return false;
   }
 
   /// Set the version in the prefs to be able to retrieve it and match them together
