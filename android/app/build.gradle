@@ -43,6 +43,7 @@ android {
 
     lintOptions {
         disable 'InvalidPackage'
+        checkDependencies true
     }
 
     defaultConfig {
@@ -76,6 +77,8 @@ android {
             minifyEnabled true
             shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            ext.enableCrashlytics = false
+            ext.alwaysUpdateBuildId = false
         }
     }
 }
