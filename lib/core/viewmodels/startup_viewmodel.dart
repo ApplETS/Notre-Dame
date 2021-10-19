@@ -6,6 +6,8 @@ import 'package:notredame/core/managers/user_repository.dart';
 import 'package:notredame/core/services/networking_service.dart';
 import 'package:notredame/core/services/navigation_service.dart'; // MANAGER
 import 'package:notredame/core/managers/settings_manager.dart';
+import 'package:notredame/core/managers/cache_manager.dart';
+import 'package:notredame/core/services/internal_info_service.dart';
 
 // CONSTANTS
 import 'package:notredame/core/constants/preferences_flags.dart';
@@ -27,9 +29,23 @@ class StartUpViewModel extends BaseViewModel {
   /// Used to redirect on the dashboard.
   final NavigationService _navigationService = locator<NavigationService>();
 
+  /// Cache manager
+  final CacheManager _cacheManager = locator<CacheManager>();
+
+  /// Internal Info Service
+  final InternalInfoService _internalInfoService =
+      locator<InternalInfoService>();
+
   /// Try to silent authenticate the user then redirect to [LoginView] or [DashboardView]
   Future handleStartUp() async {
     if (await handleConnectivityIssues()) return;
+
+    final bool hasTheSameVersionAsBefore = await hasSameSemanticVersion();
+    if (hasTheSameVersionAsBefore) {
+      _cacheManager.empty();
+      setSemanticVersionInPrefs();
+    }
+
     final bool isLogin = await _userRepository.silentAuthenticate();
 
     if (isLogin) {
@@ -58,5 +74,22 @@ class StartUpViewModel extends BaseViewModel {
       return true;
     }
     return false;
+  }
+
+  /// Check whether prefs contains the right version
+  Future<bool> hasSameSemanticVersion() async {
+    final currentVersion =
+        (await _internalInfoService.getPackageInfo()).version;
+    final versionSaved =
+        await _settingsManager.getString(PreferencesFlag.appVersion);
+    return versionSaved == null || versionSaved == currentVersion;
+  }
+
+  /// Set the version in the prefs to be able to
+  Future setSemanticVersionInPrefs() async {
+    final currentVersion =
+        (await _internalInfoService.getPackageInfo()).version;
+    final version = await _settingsManager.setString(
+        PreferencesFlag.appVersion, currentVersion);
   }
 }

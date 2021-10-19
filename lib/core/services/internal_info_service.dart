@@ -33,4 +33,8 @@ class InternalInfoService {
         "- **Platform operating system:** ${Platform.operatingSystem} \n"
         "- **Platform operating system version:** ${Platform.operatingSystemVersion} \n";
   }
+
+  Future<PackageInfo> getPackageInfo() async {
+    return PackageInfo.fromPlatform();
+  }
 }

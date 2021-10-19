@@ -5,9 +5,11 @@ import 'package:mockito/mockito.dart';
 // CONSTANTS
 import 'package:notredame/core/constants/preferences_flags.dart';
 import 'package:notredame/core/constants/router_paths.dart';
+import 'package:notredame/core/managers/cache_manager.dart';
 
 // SERVICES / MANAGERS
 import 'package:notredame/core/managers/user_repository.dart';
+import 'package:notredame/core/services/internal_info_service.dart';
 import 'package:notredame/core/services/navigation_service.dart';
 import 'package:notredame/core/managers/settings_manager.dart';
 
@@ -16,24 +18,31 @@ import 'package:notredame/core/viewmodels/startup_viewmodel.dart';
 
 // OTHER
 import '../helpers.dart';
+import '../mock/managers/cache_manager_mock.dart';
 import '../mock/managers/settings_manager_mock.dart';
 import '../mock/managers/user_repository_mock.dart';
+import '../mock/services/internal_info_service_mock.dart';
 import '../mock/services/networking_service_mock.dart';
+import '../mock/services/preferences_service_mock.dart';
 
 void main() {
   NavigationService navigationService;
   UserRepositoryMock userRepositoryMock;
-  SettingsManager settingsManager;
+  SettingsManagerMock settingsManagerMock;
   NetworkingServiceMock networkingService;
-
+  InternalInfoServiceMock internalInfoServiceMock;
+  CacheManagerMock cacheManagerMock;
   StartUpViewModel viewModel;
 
   group('StartupViewModel - ', () {
     setUp(() async {
       navigationService = setupNavigationServiceMock();
-      settingsManager = setupSettingsManagerMock();
+      settingsManagerMock = setupSettingsManagerMock() as SettingsManagerMock;
       userRepositoryMock = setupUserRepositoryMock() as UserRepositoryMock;
       networkingService = setupNetworkingServiceMock() as NetworkingServiceMock;
+      internalInfoServiceMock =
+          setupInternalInfoServiceMock() as InternalInfoServiceMock;
+      cacheManagerMock = setupCacheManagerMock() as CacheManagerMock;
 
       setupLogger();
 
@@ -51,6 +60,11 @@ void main() {
         UserRepositoryMock.stubSilentAuthenticate(userRepositoryMock);
         UserRepositoryMock.stubWasPreviouslyLoggedIn(userRepositoryMock);
         NetworkingServiceMock.stubHasConnectivity(networkingService);
+        InternalInfoServiceMock.stubGetPackageInfo(internalInfoServiceMock,
+            version: "4.0.0");
+        SettingsManagerMock.stubGetString(
+            settingsManagerMock, PreferencesFlag.appVersion,
+            toReturn: "4.0.0");
 
         await viewModel.handleStartUp();
 
@@ -65,20 +79,25 @@ void main() {
             toReturn: false);
         UserRepositoryMock.stubWasPreviouslyLoggedIn(userRepositoryMock);
         NetworkingServiceMock.stubHasConnectivity(networkingService);
+        InternalInfoServiceMock.stubGetPackageInfo(internalInfoServiceMock,
+            version: "4.0.0");
+        SettingsManagerMock.stubGetString(
+            settingsManagerMock, PreferencesFlag.appVersion,
+            toReturn: "4.0.0");
 
-        SettingsManagerMock.stubGetBool(settingsManager as SettingsManagerMock,
-            PreferencesFlag.languageChoice,
+        SettingsManagerMock.stubGetBool(
+            settingsManagerMock, PreferencesFlag.languageChoice,
             toReturn: true);
 
         await viewModel.handleStartUp();
 
         verifyInOrder([
-          settingsManager.getBool(PreferencesFlag.languageChoice),
+          settingsManagerMock.getBool(PreferencesFlag.languageChoice),
           navigationService.pop(),
           navigationService.pushNamed(RouterPaths.login)
         ]);
 
-        verifyNoMoreInteractions(settingsManager);
+        verifyNoMoreInteractions(settingsManagerMock);
         verifyNoMoreInteractions(navigationService);
       });
 
@@ -89,17 +108,76 @@ void main() {
             toReturn: false);
         UserRepositoryMock.stubWasPreviouslyLoggedIn(userRepositoryMock);
         NetworkingServiceMock.stubHasConnectivity(networkingService);
+        InternalInfoServiceMock.stubGetPackageInfo(internalInfoServiceMock,
+            version: "4.0.0");
+        SettingsManagerMock.stubGetString(
+            settingsManagerMock, PreferencesFlag.appVersion,
+            toReturn: "4.0.0");
 
         await viewModel.handleStartUp();
 
         verifyInOrder([
-          settingsManager.getBool(PreferencesFlag.languageChoice),
+          settingsManagerMock.getBool(PreferencesFlag.languageChoice),
           navigationService.pushNamed(RouterPaths.chooseLanguage),
-          settingsManager.setBool(PreferencesFlag.languageChoice, true)
+          settingsManagerMock.setBool(PreferencesFlag.languageChoice, true)
         ]);
 
-        verifyNoMoreInteractions(settingsManager);
+        verifyNoMoreInteractions(settingsManagerMock);
         verifyNoMoreInteractions(navigationService);
+      });
+
+      test('verify cache removal if version mismatch', () async {
+        UserRepositoryMock.stubSilentAuthenticate(userRepositoryMock);
+        UserRepositoryMock.stubWasPreviouslyLoggedIn(userRepositoryMock);
+        NetworkingServiceMock.stubHasConnectivity(networkingService);
+        InternalInfoServiceMock.stubGetPackageInfo(internalInfoServiceMock,
+            version: "4.0.0");
+        SettingsManagerMock.stubGetString(
+            settingsManagerMock, PreferencesFlag.appVersion,
+            toReturn: "4.0.1");
+
+        await viewModel.handleStartUp();
+
+        verifyInOrder([
+          cacheManagerMock.empty(),
+          settingsManagerMock.setString(PreferencesFlag.appVersion, "4.0.1")
+        ]);
+      });
+
+      test('verify cache removal has not trigger for same version', () async {
+        UserRepositoryMock.stubSilentAuthenticate(userRepositoryMock);
+        UserRepositoryMock.stubWasPreviouslyLoggedIn(userRepositoryMock);
+        NetworkingServiceMock.stubHasConnectivity(networkingService);
+        InternalInfoServiceMock.stubGetPackageInfo(internalInfoServiceMock,
+            version: "4.0.0");
+        SettingsManagerMock.stubGetString(
+            settingsManagerMock, PreferencesFlag.appVersion,
+            toReturn: "4.0.0");
+
+        await viewModel.handleStartUp();
+
+        verify(cacheManagerMock.empty()).called(0);
+        verify(settingsManagerMock.setString(
+                PreferencesFlag.appVersion, "4.0.1"))
+            .called(0);
+      });
+
+      test('verify cache removal has trigger for no present version', () async {
+        UserRepositoryMock.stubSilentAuthenticate(userRepositoryMock);
+        UserRepositoryMock.stubWasPreviouslyLoggedIn(userRepositoryMock);
+        NetworkingServiceMock.stubHasConnectivity(networkingService);
+        InternalInfoServiceMock.stubGetPackageInfo(internalInfoServiceMock,
+            version: "4.0.0");
+        SettingsManagerMock.stubGetString(
+            settingsManagerMock, PreferencesFlag.appVersion,
+            toReturn: null);
+
+        await viewModel.handleStartUp();
+
+        verify(cacheManagerMock.empty()).called(0);
+        verify(settingsManagerMock.setString(
+                PreferencesFlag.appVersion, "4.0.1"))
+            .called(0);
       });
     });
   });
