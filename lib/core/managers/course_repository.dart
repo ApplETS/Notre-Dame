@@ -368,11 +368,11 @@ class CourseRepository {
       rethrow;
     }
 
-    _courses = fetchedCourses;
+    _courses.clear();
 
     // If there isn't the grade yet, will fetch the summary.
     // We don't do this for every course to avoid losing time.
-    for (final course in _courses) {
+    for (final course in fetchedCourses) {
       if (course.grade == null) {
         try {
           await getCourseSummary(course);
@@ -381,6 +381,8 @@ class CourseRepository {
               "$tag - getCourses: Exception raised while trying to get summary "
               "of ${course.acronym}.");
         }
+      } else {
+        _courses.add(course);
       }
     }
 
