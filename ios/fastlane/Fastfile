@@ -45,7 +45,8 @@ platform :ios do
         force: true, # Skip HTML report verification
         submit_for_review: true,
         reject_if_possible: true,
-        automatic_release: true
+        automatic_release: true,
+        precheck_include_in_app_purchases: false
     )
   end
 end
