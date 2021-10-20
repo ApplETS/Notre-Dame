@@ -16,7 +16,7 @@ jobs:
             build_args: --no-codesign
             working_directory: ios
             metadata_path: 'fastlane/metadata'
-            changelog_path: 'release-notes.txt'
+            changelog_path: 'release_notes.txt'
           - os: ubuntu-latest
             target: Android
             build_target: appbundle
