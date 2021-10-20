@@ -30,7 +30,6 @@ platform :ios do
     match(
         type: "appstore",
         readonly: true,
-        git_private_key: ENV["GIT_SSH_KEY"],
         keychain_name: ENV['MATCH_KEYCHAIN_NAME'],
         keychain_password: ENV["MATCH_KEYCHAIN_PASSWORD"],
     )
@@ -45,9 +44,9 @@ platform :ios do
         skip_screenshots: true,
         release_notes: true,
         force: true, # Skip HTML report verification
-        submit_for_review: true,
+        submit_for_review: false, # TODO put true when everything will be tested
         reject_if_possible: true,
-        automatic_release: true
+        automatic_release: false # TODO put true when everything will be tested
     )
   end
 end
