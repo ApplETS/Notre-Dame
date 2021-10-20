@@ -32,6 +32,11 @@ jobs:
         with:
           java-version: '11'
           distribution: 'adopt'
+      - name: Setup SSH Key to download match repository for iOS only
+        if: matrix.target == 'iOS'
+        uses: webfactory/ssh-agent@v0.5.3
+        with:
+          ssh-private-key: ${{ secrets.MATCH_GIT_SSH_KEY }}
       - name: Install iOS dependencies
         if: matrix.target == 'iOS'
         run: |
@@ -104,16 +109,6 @@ jobs:
             cat ${{ matrix.metadata_path }}/fr-FR/${{ matrix.changelog_path }}
           fi
         working-directory: ${{ matrix.working_directory }}
-
-      - name: Setup SSH Key to download match repository for iOS only
-        if: matrix.target == 'iOS'
-        env:
-          SSH_AUTH_SOCK: /tmp/ssh_agent.sock
-        run: |
-          mkdir -p ~/.ssh
-          ssh-keyscan github.com >> ~/.ssh/known_hosts
-          ssh-agent -a $SSH_AUTH_SOCK > /dev/null
-          ssh-add - <<< "${{ secrets.SSH_PRIVATE_KEY }}"
 
       - name: Deploy to store
         run: bundle exec fastlane deploy
