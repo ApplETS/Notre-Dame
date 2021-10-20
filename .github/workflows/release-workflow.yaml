@@ -77,24 +77,18 @@ jobs:
           echo "${{ github.event.release.body }}" > releaseBody.txt
           enChangelog=$(cat releaseBody.txt | sed -n '/## English version$/,/## End english version/p' | sed '1d;$d');
           frChangelog=$(cat releaseBody.txt | sed -n '/## French version$/,/## End french version/p' | sed '1d;$d');
-          
-          echo "EN CHANGELOG - $enChangelog - END"
-          echo "FR CHANGELOG - $frChangelog - END"
 
           if [[ ! -z "$enChangelog" ]]; then
             echo "Changing english changelog"
             echo $enChangelog > ${{ matrix.metadata_path }}/en-CA/${{ matrix.changelog_path }}
-            echo "EN Changelog file cat:"
+            echo "en-CA Changelog file cat:"
             cat ${{ matrix.metadata_path }}/en-CA/${{ matrix.changelog_path }}
           fi
           if [[ ! -z "$frChangelog" ]]; then
             echo "Changing english changelog"
             echo $frChangelog > ${{ matrix.metadata_path }}/fr-CA/${{ matrix.changelog_path }}
-            echo $frChangelog > ${{ matrix.metadata_path }}/fr-FR/${{ matrix.changelog_path }}
             echo "fr-CA Changelog file cat:"
             cat ${{ matrix.metadata_path }}/fr-CA/${{ matrix.changelog_path }}
-            echo "fr-FR Changelog file cat:"
-            cat ${{ matrix.metadata_path }}/fr-FR/${{ matrix.changelog_path }}
           fi
         working-directory: ${{ matrix.working_directory }}
 
