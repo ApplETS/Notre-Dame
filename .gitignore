@@ -171,3 +171,5 @@ modules.xml
 .env.template
 
 coverage/html/
+
+.gradle/
