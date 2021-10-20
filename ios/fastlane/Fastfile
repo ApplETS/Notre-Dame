@@ -30,7 +30,6 @@ platform :ios do
     match(
         type: "appstore",
         readonly: true,
-        git_private_key: ENV["GIT_SSH_KEY"],
         keychain_name: ENV['MATCH_KEYCHAIN_NAME'],
         keychain_password: ENV["MATCH_KEYCHAIN_PASSWORD"],
     )

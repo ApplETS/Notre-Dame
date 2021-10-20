@@ -26,89 +26,98 @@ jobs:
           ruby-version: '2.7'
           bundler-cache: true
           working-directory: ${{ matrix.working_directory }}
-      - name: Install Android dependencies
-        if: matrix.target == 'Android'
-        uses: actions/setup-java@v2
-        with:
-          java-version: '11'
-          distribution: 'adopt'
       - name: Setup SSH Key to download match repository for iOS only
         if: matrix.target == 'iOS'
-        uses: webfactory/ssh-agent@v0.5.3
-        with:
-          ssh-private-key: ${{ secrets.MATCH_GIT_SSH_KEY }}
-      - name: Install iOS dependencies
-        if: matrix.target == 'iOS'
+        # Copied from https://github.com/maddox/actions/blob/master/ssh/entrypoint.sh
         run: |
-          flutter pub get
-          cd ios
-          rm Podfile.lock
-          pod install --repo-update
-          flutter clean
-      - run: flutter doctor -v
+          SSH_PATH="$HOME/.ssh"
 
-      # Get dependencies and decrypt needed files.
-      - run: flutter pub get
+          mkdir -p "$SSH_PATH"
+          touch "$SSH_PATH/known_hosts"
 
-      - name: Decrypt certificates files
-        run: |
-          chmod +x ./scripts/decrypt.sh
-          ./scripts/decrypt.sh
+          echo "$PRIVATE_KEY" > "$SSH_PATH/id_rsa"
+
+          chmod 700 "$SSH_PATH"
+          ssh-keyscan github.com >> ~/.ssh/known_hosts
+          chmod 600 "$SSH_PATH/known_hosts"
+          chmod 600 "$SSH_PATH/id_rsa"
+
+          eval $(ssh-agent)
+          ssh-add "$SSH_PATH/id_rsa"
         env:
-          ENCRYPTED_SIGNETS_API_CERT_PASSWORD: ${{ secrets.ENCRYPTED_SIGNETS_API_CERT_PASSWORD }}
-          ENCRYPTED_GOOGLE_SERVICE_PASSWORD: ${{ secrets.ENCRYPTED_GOOGLE_SERVICE_PASSWORD }}
-          ENCRYPTED_ETSMOBILE_KEYSTORE_PASSWORD: ${{ secrets.ENCRYPTED_ETSMOBILE_KEYSTORE_PASSWORD }}
-          ENCRYPTED_KEYSTORE_PROPERTIES_PASSWORD: ${{ secrets.ENCRYPTED_KEYSTORE_PROPERTIES_PASSWORD }}
-          ENCRYPTED_ANDROID_SERVICE_ACCOUNT_CREDENTIALS_PASSWORD: ${{ secrets.ENCRYPTED_ANDROID_SERVICE_ACCOUNT_CREDENTIALS_PASSWORD }}
-          ENCRYPTED_IOS_SERVICE_ACCOUNT_CREDENTIALS_PASSWORD: ${{ secrets.ENCRYPTED_IOS_SERVICE_ACCOUNT_CREDENTIALS_PASSWORD }}
-          ENCRYPTED_IOS_MATCHFILE_PASSWORD: ${{ secrets.ENCRYPTED_IOS_MATCHFILE_PASSWORD }}
+          PRIVATE_KEY: ${{ secrets.MATCH_GIT_SSH_KEY }}
+#      - name: Install iOS dependencies
+#        if: matrix.target == 'iOS'
+#        run: |
+#          flutter pub get
+#          cd ios
+#          rm Podfile.lock
+#          pod install --repo-update
+#          flutter clean
+#      - run: flutter doctor -v
+#
+#      # Get dependencies and decrypt needed files.
+#      - run: flutter pub get
 
-      - name: Build the application
-        run: flutter build -v ${{ matrix.build_target }} ${{ matrix.build_args }} --build-number=$(date '+%s') --release --dart-define=GH_API_TOKEN=${{ secrets.GH_API_TOKEN }}
-        env:
-          MAPS_API_KEY: ${{ secrets.MAPS_API_KEY }}
+#      - name: Decrypt certificates files
+#        run: |
+#          chmod +x ./scripts/decrypt.sh
+#          ./scripts/decrypt.sh
+#        env:
+#          ENCRYPTED_SIGNETS_API_CERT_PASSWORD: ${{ secrets.ENCRYPTED_SIGNETS_API_CERT_PASSWORD }}
+#          ENCRYPTED_GOOGLE_SERVICE_PASSWORD: ${{ secrets.ENCRYPTED_GOOGLE_SERVICE_PASSWORD }}
+#          ENCRYPTED_ETSMOBILE_KEYSTORE_PASSWORD: ${{ secrets.ENCRYPTED_ETSMOBILE_KEYSTORE_PASSWORD }}
+#          ENCRYPTED_KEYSTORE_PROPERTIES_PASSWORD: ${{ secrets.ENCRYPTED_KEYSTORE_PROPERTIES_PASSWORD }}
+#          ENCRYPTED_ANDROID_SERVICE_ACCOUNT_CREDENTIALS_PASSWORD: ${{ secrets.ENCRYPTED_ANDROID_SERVICE_ACCOUNT_CREDENTIALS_PASSWORD }}
+#          ENCRYPTED_IOS_SERVICE_ACCOUNT_CREDENTIALS_PASSWORD: ${{ secrets.ENCRYPTED_IOS_SERVICE_ACCOUNT_CREDENTIALS_PASSWORD }}
+#          ENCRYPTED_IOS_MATCHFILE_PASSWORD: ${{ secrets.ENCRYPTED_IOS_MATCHFILE_PASSWORD }}
 
-      - name: Set changelog for each platform
-        run: |
-          echo "## English version
-                Improve the user experience by fixing some bugs and giving you alternative ways to show the progress of the session.
-                Tap on the progress bar to see alternatives!
-                Fix the cache issues after an update.
-                ## End english version
+#      - name: Build the application
+#        run: flutter build -v ${{ matrix.build_target }} ${{ matrix.build_args }} --build-number=$(date '+%s') --release --dart-define=GH_API_TOKEN=${{ secrets.GH_API_TOKEN }}
+#        env:
+#          MAPS_API_KEY: ${{ secrets.MAPS_API_KEY }}
 
-                ## French version
-                Améliore l'expérience utilisateur en corrigeant quelques bogues et en vous donnant d'autres méthodes pour visualiser l'avancement de la session.
-                Tapper sur la barre de progression de la session pour voir les alternatives!
-                Régle les problèmes de cache lors de mise à jour.
-                ## End french version
-
-                ## What's Changed
-                * Add cache removal for version mismatch by @MysticFragilist in https://github.com/ApplETS/Notre-Dame/pull/248
-
-
-                **Full Changelog**: https://github.com/ApplETS/Notre-Dame/compare/4.4.4...4.4.5" > releaseBody.txt
-          enChangelog=$(cat releaseBody.txt | sed -n '/## English version$/,/## End english version/p' | sed '1d;$d');
-          frChangelog=$(cat releaseBody.txt | sed -n '/## French version$/,/## End french version/p' | sed '1d;$d');
-          
-          echo "EN CHANGELOG - $enChangelog - END"
-          echo "FR CHANGELOG - $frChangelog - END"
-
-          if [[ ! -z "$enChangelog" ]]; then
-            echo "Changing english changelog"
-            echo $enChangelog > ${{ matrix.metadata_path }}/en-CA/${{ matrix.changelog_path }}
-            echo "EN Changelog file cat:"
-            cat ${{ matrix.metadata_path }}/en-CA/${{ matrix.changelog_path }}
-          fi
-          if [[ ! -z "$frChangelog" ]]; then
-            echo "Changing english changelog"
-            echo $frChangelog > ${{ matrix.metadata_path }}/fr-CA/${{ matrix.changelog_path }}
-            echo $frChangelog > ${{ matrix.metadata_path }}/fr-FR/${{ matrix.changelog_path }}
-            echo "fr-CA Changelog file cat:"
-            cat ${{ matrix.metadata_path }}/fr-CA/${{ matrix.changelog_path }}
-            echo "fr-FR Changelog file cat:"
-            cat ${{ matrix.metadata_path }}/fr-FR/${{ matrix.changelog_path }}
-          fi
-        working-directory: ${{ matrix.working_directory }}
+#      - name: Set changelog for each platform
+#        run: |
+#          echo "## English version
+#                Improve the user experience by fixing some bugs and giving you alternative ways to show the progress of the session.
+#                Tap on the progress bar to see alternatives!
+#                Fix the cache issues after an update.
+#                ## End english version
+#
+#                ## French version
+#                Améliore l'expérience utilisateur en corrigeant quelques bogues et en vous donnant d'autres méthodes pour visualiser l'avancement de la session.
+#                Tapper sur la barre de progression de la session pour voir les alternatives!
+#                Régle les problèmes de cache lors de mise à jour.
+#                ## End french version
+#
+#                ## What's Changed
+#                * Add cache removal for version mismatch by @MysticFragilist in https://github.com/ApplETS/Notre-Dame/pull/248
+#
+#
+#                **Full Changelog**: https://github.com/ApplETS/Notre-Dame/compare/4.4.4...4.4.5" > releaseBody.txt
+#          enChangelog=$(cat releaseBody.txt | sed -n '/## English version$/,/## End english version/p' | sed '1d;$d');
+#          frChangelog=$(cat releaseBody.txt | sed -n '/## French version$/,/## End french version/p' | sed '1d;$d');
+#
+#          echo "EN CHANGELOG - $enChangelog - END"
+#          echo "FR CHANGELOG - $frChangelog - END"
+#
+#          if [[ ! -z "$enChangelog" ]]; then
+#            echo "Changing english changelog"
+#            echo $enChangelog > ${{ matrix.metadata_path }}/en-CA/${{ matrix.changelog_path }}
+#            echo "EN Changelog file cat:"
+#            cat ${{ matrix.metadata_path }}/en-CA/${{ matrix.changelog_path }}
+#          fi
+#          if [[ ! -z "$frChangelog" ]]; then
+#            echo "Changing english changelog"
+#            echo $frChangelog > ${{ matrix.metadata_path }}/fr-CA/${{ matrix.changelog_path }}
+#            echo $frChangelog > ${{ matrix.metadata_path }}/fr-FR/${{ matrix.changelog_path }}
+#            echo "fr-CA Changelog file cat:"
+#            cat ${{ matrix.metadata_path }}/fr-CA/${{ matrix.changelog_path }}
+#            echo "fr-FR Changelog file cat:"
+#            cat ${{ matrix.metadata_path }}/fr-FR/${{ matrix.changelog_path }}
+#          fi
+#        working-directory: ${{ matrix.working_directory }}
 
       - name: Deploy to store
         run: bundle exec fastlane deploy
@@ -117,4 +126,3 @@ jobs:
           MATCH_KEYCHAIN_NAME: ${{ secrets.MATCH_KEYCHAIN_NAME }} # Used only by iOS
           MATCH_KEYCHAIN_PASSWORD: ${{ secrets.MATCH_KEYCHAIN_PASSWORD }} # Used only by iOS
           MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }} # Used only by iOS
-          GIT_SSH_KEY: /tmp/ssh_agent.sock  # Used only by iOS
