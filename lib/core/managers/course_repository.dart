@@ -380,6 +380,7 @@ class CourseRepository {
           _logger.e(
               "$tag - getCourses: Exception raised while trying to get summary "
               "of ${course.acronym}.");
+          _courses.add(course);
         }
       } else {
         _courses.add(course);
