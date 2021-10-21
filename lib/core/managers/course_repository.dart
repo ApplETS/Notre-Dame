@@ -423,7 +423,7 @@ class CourseRepository {
             e.message.startsWith(SignetsError.gradesNotAvailable)) {
           _logger.e(
               "$tag - getCourseSummary: Summary is empty for ${course.acronym}.");
-          return null;
+          rethrow;
         }
       }
       _analyticsService.logError(tag, e.toString(), e, stacktrace);
