@@ -10,8 +10,8 @@ on:
       - '.github/**'
       - 'README.md'
       - 'README.fr.md'
-      - 'android/fastlane'
-      - 'ios/fastlane'
+      - 'android/fastlane/**'
+      - 'ios/fastlane/**'
   pull_request:
     paths-ignore:
       - '.gitignore'
@@ -19,8 +19,8 @@ on:
       - '.github/**'
       - 'README.md'
       - 'README.fr.md'
-      - 'android/fastlane'
-      - 'ios/fastlane'
+      - 'android/fastlane/**'
+      - 'ios/fastlane/**'
 
 env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
