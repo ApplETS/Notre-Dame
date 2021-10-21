@@ -155,7 +155,7 @@ void main() {
 
         await viewModel.handleStartUp();
 
-        verify(preferencesServiceMock.getPreferencesFlag(any)).called(7);
+        verify(preferencesServiceMock.getPreferencesFlag(any)).called(8);
 
         verifyInOrder([
           settingsManagerMock.getString(PreferencesFlag.appVersion),
@@ -224,7 +224,7 @@ void main() {
 
         await viewModel.handleStartUp();
 
-        verify(preferencesServiceMock.getPreferencesFlag(any)).called(7);
+        verify(preferencesServiceMock.getPreferencesFlag(any)).called(8);
 
         verifyInOrder([
           settingsManagerMock.getString(PreferencesFlag.appVersion),
