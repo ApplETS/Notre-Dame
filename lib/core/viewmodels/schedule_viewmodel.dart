@@ -150,11 +150,9 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
               groupAssociationFlag:
                   PreferencesFlag.scheduleSettingsLaboratoryGroup,
               uniqueKey: courseAcronym));
-
       final scheduleActivityToSet = scheduleActivitiesByCourse[courseAcronym]
           .firstWhere((element) => element.activityCode == activityCodeToUse,
               orElse: () => null);
-
       if (scheduleActivityToSet != null) {
         settingsScheduleActivities[courseAcronym] = scheduleActivityToSet.name;
       } else {

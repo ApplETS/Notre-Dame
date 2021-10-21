@@ -140,7 +140,6 @@ class ScheduleSettingsViewModel
         }
       }
     }
-
     for (final courseKey in _scheduleActivitiesByCourse.keys) {
       final scheduleActivityCode = await _settingsManager.getDynamicString(
           DynamicPreferencesFlag(
