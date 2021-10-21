@@ -6,5 +6,6 @@
  -keep class io.flutter.** { *; }
  -keep class io.flutter.plugins.** { *; }
  -keep class com.google.firebase.** { *; }
+ -keepattributes SourceFile,LineNumberTable        # Keep file names and line numbers.
  -dontwarn io.flutter.embedding.**
  -ignorewarnings
