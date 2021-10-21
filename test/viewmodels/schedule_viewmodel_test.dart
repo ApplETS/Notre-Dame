@@ -61,6 +61,33 @@ void main() {
 
   final List<CourseActivity> activities = [gen101, gen102, gen103];
 
+  final gen101WithLabA = CourseActivity(
+      courseGroup: "GEN101-04",
+      courseName: "Generic course",
+      activityName: "TD",
+      activityDescription: "Laboratoire (Groupe A)",
+      activityLocation: "location",
+      startDateTime: DateTime(2020, 1, 2, 18),
+      endDateTime: DateTime(2020, 1, 2, 21));
+
+  final gen101WithoutLabA = CourseActivity(
+      courseGroup: "GEN101-04",
+      courseName: "Generic course",
+      activityName: "TD",
+      activityDescription: "",
+      activityLocation: "location",
+      startDateTime: DateTime(2020, 1, 2, 18),
+      endDateTime: DateTime(2020, 1, 2, 21));
+
+    final gen103WithLabA = CourseActivity(
+      courseGroup: "GEN103-04",
+      courseName: "Generic course",
+      activityName: "TD",
+      activityDescription: "Laboratoire (Groupe A)",
+      activityLocation: "location",
+      startDateTime: DateTime(2020, 1, 2, 18),
+      endDateTime: DateTime(2020, 1, 2, 21));
+
   final List<ScheduleActivity> classOneWithLaboratoryABscheduleActivities = [
     ScheduleActivity(
         courseAcronym: "GEN101",
@@ -181,6 +208,54 @@ void main() {
 
         verifyNoMoreInteractions(courseRepository);
         verifyNoMoreInteractions(settingsManager);
+      });
+
+      test(
+          'scheduleActivityIsSelected returns true when activityDescription is not labA or labB',
+          () async {
+        expect(viewModel.scheduleActivityIsSelected(gen101WithoutLabA), true);
+      });
+
+      test(
+          'scheduleActivityIsSelected returns true when the course does not have an activity',
+          () async {
+        expect(viewModel.scheduleActivityIsSelected(gen101WithoutLabA), true);
+      });
+
+     test(
+          'scheduleActivityIsSelected returns false when there is no activity selected',
+          () async {
+        SettingsManagerMock.stubGetDynamicString(
+            settingsManager as SettingsManagerMock,
+            DynamicPreferencesFlag(
+                groupAssociationFlag:
+                    PreferencesFlag.scheduleSettingsLaboratoryGroup,
+                uniqueKey: classOneWithLaboratoryABscheduleActivities
+                    .first.courseAcronym),
+            toReturn: ActivityCode.labGroupA);
+
+        await viewModel.assignScheduleActivities(
+            classOneWithLaboratoryABscheduleActivities);
+            
+        expect(viewModel.scheduleActivityIsSelected(gen103WithLabA), false);
+      });
+
+      test(
+          'scheduleActivityIsSelected returns true when the courseGroup has an activity selected',
+          () async {
+       SettingsManagerMock.stubGetDynamicString(
+            settingsManager as SettingsManagerMock,
+            DynamicPreferencesFlag(
+                groupAssociationFlag:
+                    PreferencesFlag.scheduleSettingsLaboratoryGroup,
+                uniqueKey: classOneWithLaboratoryABscheduleActivities
+                    .first.courseAcronym),
+            toReturn: ActivityCode.labGroupA);
+
+        await viewModel.assignScheduleActivities(
+            classOneWithLaboratoryABscheduleActivities);
+
+        expect(viewModel.scheduleActivityIsSelected(gen101WithLabA), true);
       });
     });
 
