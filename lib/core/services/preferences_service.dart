@@ -31,6 +31,11 @@ class PreferencesService {
     await prefs.clear();
   }
 
+  Future<Object> getPreferencesFlag(PreferencesFlag flag) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.get(flag.toString());
+  }
+
   Future<bool> removePreferencesFlag(PreferencesFlag flag) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     return prefs.remove(flag.toString());

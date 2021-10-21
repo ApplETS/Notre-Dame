@@ -10,36 +10,38 @@ import 'package:notredame/core/constants/router_paths.dart';
 import 'package:notredame/core/managers/user_repository.dart';
 import 'package:notredame/core/services/navigation_service.dart';
 import 'package:notredame/core/managers/settings_manager.dart';
+import 'package:notredame/core/services/preferences_service.dart';
 
 // VIEW MODEL
 import 'package:notredame/core/viewmodels/startup_viewmodel.dart';
 
 // OTHER
 import '../helpers.dart';
-import '../mock/managers/cache_manager_mock.dart';
 import '../mock/managers/settings_manager_mock.dart';
 import '../mock/managers/user_repository_mock.dart';
 import '../mock/services/internal_info_service_mock.dart';
 import '../mock/services/networking_service_mock.dart';
+import '../mock/services/preferences_service_mock.dart';
 
 void main() {
   NavigationService navigationService;
   UserRepositoryMock userRepositoryMock;
   SettingsManagerMock settingsManagerMock;
+  PreferencesServiceMock preferencesServiceMock;
   NetworkingServiceMock networkingService;
   InternalInfoServiceMock internalInfoServiceMock;
-  CacheManagerMock cacheManagerMock;
   StartUpViewModel viewModel;
 
   group('StartupViewModel - ', () {
     setUp(() async {
       navigationService = setupNavigationServiceMock();
       settingsManagerMock = setupSettingsManagerMock() as SettingsManagerMock;
+      preferencesServiceMock =
+          setupPreferencesServiceMock() as PreferencesServiceMock;
       userRepositoryMock = setupUserRepositoryMock() as UserRepositoryMock;
       networkingService = setupNetworkingServiceMock() as NetworkingServiceMock;
       internalInfoServiceMock =
           setupInternalInfoServiceMock() as InternalInfoServiceMock;
-      cacheManagerMock = setupCacheManagerMock() as CacheManagerMock;
 
       setupLogger();
 
@@ -50,6 +52,7 @@ void main() {
       unregister<NavigationService>();
       unregister<UserRepository>();
       unregister<SettingsManager>();
+      unregister<PreferencesService>();
     });
 
     group('handleStartUp - ', () {
@@ -121,8 +124,8 @@ void main() {
         verifyNoMoreInteractions(navigationService);
       });
 
-      test('verify cache removal if version mismatch', () async {
-        const String versionToSave = "4.0.0";
+      test('verify discovery flags are bool if version mismatch', () async {
+        const String versionToSave = "4.1.0";
         UserRepositoryMock.stubSilentAuthenticate(userRepositoryMock);
         UserRepositoryMock.stubWasPreviouslyLoggedIn(userRepositoryMock);
         NetworkingServiceMock.stubHasConnectivity(networkingService);
@@ -130,20 +133,52 @@ void main() {
             version: versionToSave);
         SettingsManagerMock.stubGetString(
             settingsManagerMock, PreferencesFlag.appVersion,
-            toReturn: "4.0.1");
+            toReturn: "4.0.0");
         SettingsManagerMock.stubSetString(
             settingsManagerMock, PreferencesFlag.appVersion);
+        PreferencesServiceMock.stubGetPreferencesFlag(
+            preferencesServiceMock, PreferencesFlag.discoveryDashboard,
+            toReturn: 'true');
+        PreferencesServiceMock.stubGetPreferencesFlag(
+            preferencesServiceMock, PreferencesFlag.discoverySchedule,
+            toReturn: 'false');
+        PreferencesServiceMock.stubGetPreferencesFlag(
+            preferencesServiceMock, PreferencesFlag.discoveryStudentGrade,
+            toReturn: 'true');
+        PreferencesServiceMock.stubGetPreferencesFlag(
+            preferencesServiceMock, PreferencesFlag.discoveryGradeDetails,
+            toReturn: 'true');
+        PreferencesServiceMock.stubGetPreferencesFlag(
+            preferencesServiceMock, PreferencesFlag.discoveryStudentProfile);
+        PreferencesServiceMock.stubGetPreferencesFlag(
+            preferencesServiceMock, PreferencesFlag.discoveryETS);
 
         await viewModel.handleStartUp();
 
+        verify(preferencesServiceMock.getPreferencesFlag(any)).called(7);
+
         verifyInOrder([
-          cacheManagerMock.empty(),
+          settingsManagerMock.getString(PreferencesFlag.appVersion),
+          preferencesServiceMock
+              .removePreferencesFlag(PreferencesFlag.discoveryDashboard),
+          settingsManagerMock.setBool(PreferencesFlag.discoveryDashboard, true),
+          preferencesServiceMock
+              .removePreferencesFlag(PreferencesFlag.discoverySchedule),
+          settingsManagerMock.setBool(PreferencesFlag.discoverySchedule, false),
+          preferencesServiceMock
+              .removePreferencesFlag(PreferencesFlag.discoveryStudentGrade),
+          settingsManagerMock.setBool(
+              PreferencesFlag.discoveryStudentGrade, true),
+          preferencesServiceMock
+              .removePreferencesFlag(PreferencesFlag.discoveryGradeDetails),
+          settingsManagerMock.setBool(
+              PreferencesFlag.discoveryGradeDetails, true),
           settingsManagerMock.setString(
               PreferencesFlag.appVersion, versionToSave)
         ]);
       });
 
-      test('verify cache removal has not trigger for same version', () async {
+      test('verify discovery flags are not changed for same version', () async {
         UserRepositoryMock.stubSilentAuthenticate(userRepositoryMock);
         UserRepositoryMock.stubWasPreviouslyLoggedIn(userRepositoryMock);
         NetworkingServiceMock.stubHasConnectivity(networkingService);
@@ -155,25 +190,58 @@ void main() {
 
         await viewModel.handleStartUp();
 
-        verifyNever(cacheManagerMock.empty());
+        verifyNever(preferencesServiceMock.getPreferencesFlag(any));
+        verifyNever(settingsManagerMock.setBool(any, any));
         verifyNever(
             settingsManagerMock.setString(PreferencesFlag.appVersion, "4.0.1"));
       });
 
-      test('verify cache removal has trigger for no present version', () async {
+      test('verify discovery flags are bool is trigger for no present version',
+          () async {
         UserRepositoryMock.stubSilentAuthenticate(userRepositoryMock);
         UserRepositoryMock.stubWasPreviouslyLoggedIn(userRepositoryMock);
         NetworkingServiceMock.stubHasConnectivity(networkingService);
         InternalInfoServiceMock.stubGetPackageInfo(internalInfoServiceMock,
             version: "4.0.0");
-        SettingsManagerMock.stubGetString(
-            settingsManagerMock, PreferencesFlag.appVersion,
-            toReturn: null);
+        SettingsManagerMock.stubSetString(
+            settingsManagerMock, PreferencesFlag.appVersion);
+        PreferencesServiceMock.stubGetPreferencesFlag(
+            preferencesServiceMock, PreferencesFlag.discoveryDashboard,
+            toReturn: 'true');
+        PreferencesServiceMock.stubGetPreferencesFlag(
+            preferencesServiceMock, PreferencesFlag.discoverySchedule,
+            toReturn: 'false');
+        PreferencesServiceMock.stubGetPreferencesFlag(
+            preferencesServiceMock, PreferencesFlag.discoveryStudentGrade,
+            toReturn: 'true');
+        PreferencesServiceMock.stubGetPreferencesFlag(
+            preferencesServiceMock, PreferencesFlag.discoveryGradeDetails,
+            toReturn: 'true');
+        PreferencesServiceMock.stubGetPreferencesFlag(
+            preferencesServiceMock, PreferencesFlag.discoveryStudentProfile);
+        PreferencesServiceMock.stubGetPreferencesFlag(
+            preferencesServiceMock, PreferencesFlag.discoveryETS);
 
         await viewModel.handleStartUp();
 
+        verify(preferencesServiceMock.getPreferencesFlag(any)).called(7);
+
         verifyInOrder([
-          cacheManagerMock.empty(),
+          settingsManagerMock.getString(PreferencesFlag.appVersion),
+          preferencesServiceMock
+              .removePreferencesFlag(PreferencesFlag.discoveryDashboard),
+          settingsManagerMock.setBool(PreferencesFlag.discoveryDashboard, true),
+          preferencesServiceMock
+              .removePreferencesFlag(PreferencesFlag.discoverySchedule),
+          settingsManagerMock.setBool(PreferencesFlag.discoverySchedule, false),
+          preferencesServiceMock
+              .removePreferencesFlag(PreferencesFlag.discoveryStudentGrade),
+          settingsManagerMock.setBool(
+              PreferencesFlag.discoveryStudentGrade, true),
+          preferencesServiceMock
+              .removePreferencesFlag(PreferencesFlag.discoveryGradeDetails),
+          settingsManagerMock.setBool(
+              PreferencesFlag.discoveryGradeDetails, true),
           settingsManagerMock.setString(PreferencesFlag.appVersion, "4.0.0")
         ]);
       });

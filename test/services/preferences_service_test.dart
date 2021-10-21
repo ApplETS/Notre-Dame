@@ -74,6 +74,16 @@ void main() {
     });
 
     group("getters - ", () {
+      test("get", () async {
+        SharedPreferences.setMockInitialValues(
+            {PreferencesFlag.scheduleSettingsCalendarFormat.toString(): true});
+
+        expect(
+            await service.getPreferencesFlag(
+                PreferencesFlag.scheduleSettingsCalendarFormat),
+            isInstanceOf<bool>());
+      });
+
       test("getBool", () async {
         SharedPreferences.setMockInitialValues(
             {PreferencesFlag.scheduleSettingsCalendarFormat.toString(): true});
