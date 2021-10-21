@@ -1,5 +1,6 @@
 name: Main workflow
 on:
+  workflow_dispatch:
   push:
     branches:
       - master
@@ -10,6 +11,13 @@ on:
       - 'README.md'
       - 'README.fr.md'
   pull_request:
+    paths-ignore:
+      - '.gitignore'
+      - '.metadata'
+      - '.github/**'
+      - 'README.md'
+      - 'README.fr.md'
+
 env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   MAPS_API_KEY: ${{ secrets.MAPS_API_KEY }}
@@ -262,7 +270,7 @@ jobs:
 
   create-draft-release:
     name: Draft Github release
-    if: ${{ github.event_name == 'push' }}
+    if: ${{ github.event_name == 'push' || (github.event_name == 'workflow-dispatch' && github.head_ref == 'master') }}
     needs: [ tagValidation, create-build ]
     runs-on: ubuntu-latest
     outputs:
