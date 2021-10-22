@@ -11,7 +11,6 @@ import 'package:notredame/core/constants/router_paths.dart';
 // SERVICES
 import 'package:notredame/core/services/analytics_service.dart';
 import 'package:notredame/core/services/navigation_service.dart';
-import 'package:notredame/core/services/internal_info_service.dart';
 
 // UTILS
 import 'package:notredame/ui/utils/app_theme.dart';
@@ -25,9 +24,6 @@ class WebLinkCardViewModel extends BaseViewModel {
 
   final AnalyticsService _analyticsService = locator<AnalyticsService>();
 
-  final InternalInfoService _internalInfoService =
-      locator<InternalInfoService>();
-
   /// used to open a website or the security view
   Future<void> onLinkClicked(QuickLink link) async {
     _analyticsService.logEvent("QuickLink", "QuickLink clicked: ${link.name}");
@@ -37,7 +33,7 @@ class WebLinkCardViewModel extends BaseViewModel {
       try {
         await launchInBrowser(link.link);
       } catch (error) {
-        await launchWebView(error.toString(), link);
+        await launchWebView(link);
       }
     }
   }
@@ -57,12 +53,7 @@ class WebLinkCardViewModel extends BaseViewModel {
                 preferredBarTintColor: AppTheme.etsLightRed)));
   }
 
-  Future<void> launchWebView(String error, QuickLink link) async {
-    final String errorMessage =
-        await _internalInfoService.getDeviceInfoForErrorReporting();
-
-    _analyticsService.logError(
-        "web_link_card", "**Error message : $error\n$errorMessage");
+  Future<void> launchWebView(QuickLink link) async {
     _navigationService.pushNamed(RouterPaths.webView, arguments: link);
   }
 }
