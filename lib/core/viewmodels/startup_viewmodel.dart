@@ -52,6 +52,7 @@ class StartUpViewModel extends BaseViewModel {
         PreferencesFlag.discoveryStudentProfile,
         PreferencesFlag.discoveryETS,
         PreferencesFlag.discoveryMore,
+        PreferencesFlag.languageChoice
       ];
 
       for (final PreferencesFlag flag in flagsToCheck) {
