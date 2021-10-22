@@ -62,7 +62,7 @@ void main() {
   final List<CourseActivity> activities = [gen101, gen102, gen103];
 
   final gen101WithLabA = CourseActivity(
-      courseGroup: "GEN101-04",
+      courseGroup: "GEN101-01",
       courseName: "Generic course",
       activityName: "TD",
       activityDescription: "Laboratoire (Groupe A)",
@@ -70,16 +70,16 @@ void main() {
       startDateTime: DateTime(2020, 1, 2, 18),
       endDateTime: DateTime(2020, 1, 2, 21));
 
-  final gen101WithoutLabA = CourseActivity(
-      courseGroup: "GEN101-04",
+  final gen101WithLabB = CourseActivity(
+      courseGroup: "GEN101-01",
       courseName: "Generic course",
       activityName: "TD",
-      activityDescription: "",
+      activityDescription: "Laboratoire (Groupe B)",
       activityLocation: "location",
       startDateTime: DateTime(2020, 1, 2, 18),
       endDateTime: DateTime(2020, 1, 2, 21));
 
-    final gen103WithLabA = CourseActivity(
+  final gen103WithLabA = CourseActivity(
       courseGroup: "GEN103-04",
       courseName: "Generic course",
       activityName: "TD",
@@ -87,6 +87,32 @@ void main() {
       activityLocation: "location",
       startDateTime: DateTime(2020, 1, 2, 18),
       endDateTime: DateTime(2020, 1, 2, 21));
+
+  final gen103WithLabB = CourseActivity(
+      courseGroup: "GEN103-04",
+      courseName: "Generic course",
+      activityName: "TD",
+      activityDescription: "Laboratoire (Groupe B)",
+      activityLocation: "location",
+      startDateTime: DateTime(2020, 1, 2, 18),
+      endDateTime: DateTime(2020, 1, 2, 21));
+
+  final gia540 = CourseActivity(
+      courseGroup: "GIA540-02",
+      courseName: "Generic course",
+      activityName: "TD",
+      activityDescription: "Activity description",
+      activityLocation: "location",
+      startDateTime: DateTime(2020, 1, 2, 18),
+      endDateTime: DateTime(2020, 1, 2, 21));
+
+  final List<CourseActivity> activitiesLabs = [
+    gen101WithLabA,
+    gen101WithLabB,
+    gen103WithLabA,
+    gen103WithLabB,
+    gia540
+  ];
 
   final List<ScheduleActivity> classOneWithLaboratoryABscheduleActivities = [
     ScheduleActivity(
@@ -213,16 +239,58 @@ void main() {
       test(
           'scheduleActivityIsSelected returns true when activityDescription is not labA or labB',
           () async {
-        expect(viewModel.scheduleActivityIsSelected(gen101WithoutLabA), true);
+        CourseRepositoryMock.stubCoursesActivities(
+            courseRepository as CourseRepositoryMock,
+            toReturn: activitiesLabs);
+
+        SettingsManagerMock.stubGetDynamicString(
+            settingsManager as SettingsManagerMock,
+            DynamicPreferencesFlag(
+                groupAssociationFlag:
+                    PreferencesFlag.scheduleSettingsLaboratoryGroup,
+                uniqueKey: "GEN103"),
+            toReturn: ActivityCode.labGroupA);
+
+        await viewModel.assignScheduleActivities([
+          ScheduleActivity(
+              courseAcronym: "GEN103",
+              courseGroup: "01",
+              courseTitle: "Generic Course",
+              dayOfTheWeek: 1,
+              day: "Lundi",
+              startTime: DateFormat("hh:mm").parse("08:30"),
+              endTime: DateFormat("hh:mm").parse("12:00"),
+              activityCode: ActivityCode.labGroupA,
+              isPrincipalActivity: true,
+              activityLocation: "En ligne",
+              name: "Activity description")
+        ]);
+
+        expect(viewModel.scheduleActivityIsSelected(gia540), true);
       });
 
       test(
           'scheduleActivityIsSelected returns true when the course does not have an activity',
           () async {
-        expect(viewModel.scheduleActivityIsSelected(gen101WithoutLabA), true);
+        CourseRepositoryMock.stubCoursesActivities(
+            courseRepository as CourseRepositoryMock,
+            toReturn: activitiesLabs);
+
+        SettingsManagerMock.stubGetDynamicString(
+            settingsManager as SettingsManagerMock,
+            DynamicPreferencesFlag(
+                groupAssociationFlag:
+                    PreferencesFlag.scheduleSettingsLaboratoryGroup,
+                uniqueKey: classOneWithLaboratoryABscheduleActivities
+                    .first.courseAcronym),
+            toReturn: null);
+
+        await viewModel.assignScheduleActivities([]);
+
+        expect(viewModel.scheduleActivityIsSelected(gia540), true);
       });
 
-     test(
+      test(
           'scheduleActivityIsSelected returns false when there is no activity selected',
           () async {
         SettingsManagerMock.stubGetDynamicString(
@@ -236,14 +304,14 @@ void main() {
 
         await viewModel.assignScheduleActivities(
             classOneWithLaboratoryABscheduleActivities);
-            
+
         expect(viewModel.scheduleActivityIsSelected(gen103WithLabA), false);
       });
 
       test(
           'scheduleActivityIsSelected returns true when the courseGroup has an activity selected',
           () async {
-       SettingsManagerMock.stubGetDynamicString(
+        SettingsManagerMock.stubGetDynamicString(
             settingsManager as SettingsManagerMock,
             DynamicPreferencesFlag(
                 groupAssociationFlag:
@@ -369,7 +437,6 @@ void main() {
         verify(settingsManager.getScheduleSettings()).called(1);
         verifyNoMoreInteractions(settingsManager);
       });
-
       test('assignScheduleActivities - format the schedule activities in a map',
           () async {
         // Test if null, return without doing any change to the schedule list
@@ -463,6 +530,133 @@ void main() {
             "Laboratoire (Groupe A)");
 
         verify(settingsManager.getDynamicString(any)).called(1);
+      });
+
+      test(
+          'coursesActivities - should fill coursesActivities with the activities',
+          () async {
+        CourseRepositoryMock.stubCoursesActivities(
+            courseRepository as CourseRepositoryMock,
+            toReturn: activitiesLabs);
+
+        SettingsManagerMock.stubGetDynamicString(
+            settingsManager as SettingsManagerMock,
+            DynamicPreferencesFlag(
+                groupAssociationFlag:
+                    PreferencesFlag.scheduleSettingsLaboratoryGroup,
+                uniqueKey: "GEN103"),
+            toReturn: ActivityCode.labGroupA);
+
+        await viewModel.assignScheduleActivities([
+          ScheduleActivity(
+              courseAcronym: "GEN103",
+              courseGroup: "01",
+              courseTitle: "Generic Course",
+              dayOfTheWeek: 1,
+              day: "Lundi",
+              startTime: DateFormat("hh:mm").parse("08:30"),
+              endTime: DateFormat("hh:mm").parse("12:00"),
+              activityCode: ActivityCode.labGroupA,
+              isPrincipalActivity: true,
+              activityLocation: "En ligne",
+              name: "Laboratoire (Groupe A)")
+        ]);
+
+        final activities = viewModel.coursesActivities;
+
+        expect(activities.entries.toList()[0].value.length, 4);
+      });
+
+      test(
+          'coursesActivities - should fill coursesActivities with the activities with no LabB for GEN103',
+          () async {
+        CourseRepositoryMock.stubCoursesActivities(
+            courseRepository as CourseRepositoryMock,
+            toReturn: activitiesLabs);
+
+        SettingsManagerMock.stubGetDynamicString(
+            settingsManager as SettingsManagerMock,
+            DynamicPreferencesFlag(
+                groupAssociationFlag:
+                    PreferencesFlag.scheduleSettingsLaboratoryGroup,
+                uniqueKey: "GEN103"),
+            toReturn: ActivityCode.labGroupA);
+
+        await viewModel.assignScheduleActivities([
+          ScheduleActivity(
+              courseAcronym: "GEN103",
+              courseGroup: "01",
+              courseTitle: "Generic Course",
+              dayOfTheWeek: 1,
+              day: "Lundi",
+              startTime: DateFormat("hh:mm").parse("08:30"),
+              endTime: DateFormat("hh:mm").parse("12:00"),
+              activityCode: ActivityCode.labGroupA,
+              isPrincipalActivity: true,
+              activityLocation: "En ligne",
+              name: "Laboratoire (Groupe A)")
+        ]);
+
+        final activities = viewModel.coursesActivities;
+
+        expect(activities.entries.toList()[0].value.length, 4);
+      });
+
+      test(
+          'coursesActivities - should fill coursesActivities with the activities with no LabA for GEN103',
+          () async {
+        CourseRepositoryMock.stubCoursesActivities(
+            courseRepository as CourseRepositoryMock,
+            toReturn: activitiesLabs);
+
+        SettingsManagerMock.stubGetDynamicString(
+            settingsManager as SettingsManagerMock,
+            DynamicPreferencesFlag(
+                groupAssociationFlag:
+                    PreferencesFlag.scheduleSettingsLaboratoryGroup,
+                uniqueKey: "GEN103"),
+            toReturn: ActivityCode.labGroupB);
+
+        await viewModel.assignScheduleActivities([
+          ScheduleActivity(
+              courseAcronym: "GEN103",
+              courseGroup: "01",
+              courseTitle: "Generic Course",
+              dayOfTheWeek: 1,
+              day: "Lundi",
+              startTime: DateFormat("hh:mm").parse("08:30"),
+              endTime: DateFormat("hh:mm").parse("12:00"),
+              activityCode: ActivityCode.labGroupB,
+              isPrincipalActivity: true,
+              activityLocation: "En ligne",
+              name: "Laboratoire (Groupe B)")
+        ]);
+
+        final activities = viewModel.coursesActivities;
+
+        expect(activities.entries.toList()[0].value.length, 4);
+      });
+
+      test(
+          'coursesActivities - should fill coursesActivities with all the activities if none are selected',
+          () async {
+        CourseRepositoryMock.stubCoursesActivities(
+            courseRepository as CourseRepositoryMock,
+            toReturn: activitiesLabs);
+
+        SettingsManagerMock.stubGetDynamicString(
+            settingsManager as SettingsManagerMock,
+            DynamicPreferencesFlag(
+                groupAssociationFlag:
+                    PreferencesFlag.scheduleSettingsLaboratoryGroup,
+                uniqueKey: "GEN103"),
+            toReturn: null);
+
+        await viewModel.assignScheduleActivities([]);
+
+        final activities = viewModel.coursesActivities;
+
+        expect(activities.entries.toList()[0].value.length, 5);
       });
     });
   });
