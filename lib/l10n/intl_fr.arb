@@ -251,5 +251,7 @@
     "placeholders": {
       "remainingDays": {}
     }
-  }
+  },
+  "rate_app_title": "Votre avis nous intéresse",
+  "rate_app_message": "Nous essayons toujours d'améliorer ce que nous faisons et vos commentaires sont inestimables."
 }
