@@ -16,7 +16,7 @@ jobs:
             build_args: --no-codesign
             working_directory: ios
             metadata_path: 'fastlane/metadata'
-            changelog_path: 'release-notes.txt'
+            changelog_path: 'release_notes.txt'
           - os: ubuntu-latest
             target: Android
             build_target: appbundle
@@ -74,12 +74,44 @@ jobs:
 
       - name: Set changelog for each platform
         run: |
-          enChangelog=$(echo "${{ github.event.release.body }}" | sed -n '/^## English version$/,/^## End english version/p' | sed '1d;$d')
-          frChangelog=$(echo "${{ github.event.release.body }}" | sed -n '/^## French version$/,/^## End french version/p' | sed '1d;$d')
+          echo "${{ github.event.release.body }}" > releaseBody.txt
+          enChangelog=$(cat releaseBody.txt | sed -n '/## English version$/,/## End english version/p' | sed '1d;$d');
+          frChangelog=$(cat releaseBody.txt | sed -n '/## French version$/,/## End french version/p' | sed '1d;$d');
 
-          [ ! -z "$enChangelog" ] && echo $enChangelog > ${{ matrix.metadata_path }}/en-CA/${{ matrix.changelog_path }}
-          [ ! -z "$frChangelog" ] && echo $frChangelog > ${{ matrix.metadata_path }}/fr-CA/${{ matrix.changelog_path }}
+          if [[ ! -z "$enChangelog" ]]; then
+            echo "Changing english changelog"
+            echo $enChangelog > ${{ matrix.metadata_path }}/en-CA/${{ matrix.changelog_path }}
+            echo "en-CA Changelog file cat:"
+            cat ${{ matrix.metadata_path }}/en-CA/${{ matrix.changelog_path }}
+          fi
+          if [[ ! -z "$frChangelog" ]]; then
+            echo "Changing english changelog"
+            echo $frChangelog > ${{ matrix.metadata_path }}/fr-CA/${{ matrix.changelog_path }}
+            echo "fr-CA Changelog file cat:"
+            cat ${{ matrix.metadata_path }}/fr-CA/${{ matrix.changelog_path }}
+          fi
         working-directory: ${{ matrix.working_directory }}
+
+      - name: Setup SSH Key to download match repository for iOS only
+        if: matrix.target == 'iOS'
+        # Copied from https://github.com/maddox/actions/blob/master/ssh/entrypoint.sh
+        run: |
+          SSH_PATH="$HOME/.ssh"
+
+          mkdir -p "$SSH_PATH"
+          touch "$SSH_PATH/known_hosts"
+
+          echo "$PRIVATE_KEY" > "$SSH_PATH/id_rsa"
+
+          chmod 700 "$SSH_PATH"
+          ssh-keyscan github.com >> ~/.ssh/known_hosts
+          chmod 600 "$SSH_PATH/known_hosts"
+          chmod 600 "$SSH_PATH/id_rsa"
+
+          eval $(ssh-agent)
+          ssh-add "$SSH_PATH/id_rsa"
+        env:
+          PRIVATE_KEY: ${{ secrets.MATCH_GIT_SSH_KEY }}
 
       - name: Deploy to store
         run: bundle exec fastlane deploy
@@ -88,4 +120,3 @@ jobs:
           MATCH_KEYCHAIN_NAME: ${{ secrets.MATCH_KEYCHAIN_NAME }} # Used only by iOS
           MATCH_KEYCHAIN_PASSWORD: ${{ secrets.MATCH_KEYCHAIN_PASSWORD }} # Used only by iOS
           MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }} # Used only by iOS
-          GIT_AUTHORIZATION: ${{ secrets.MATCH_GIT_AUTHORIZATION }} # Used only by iOS
