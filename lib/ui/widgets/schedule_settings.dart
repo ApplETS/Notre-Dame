@@ -113,7 +113,7 @@ class _ScheduleSettingsState extends State<ScheduleSettings> {
         child: Text(
           AppIntl.of(context).schedule_select_course_activity,
           style: TextStyle(
-            color: Theme.of(context).accentColor,
+            color: Theme.of(context).colorScheme.secondary,
             fontWeight: FontWeight.bold,
           ),
         ),
