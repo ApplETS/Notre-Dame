@@ -94,36 +94,48 @@ class _ScheduleViewState extends State<ScheduleView>
                       const SizedBox(height: 8.0),
                       const Divider(indent: 8.0, endIndent: 8.0, thickness: 1),
                       const SizedBox(height: 6.0),
-                      buildEventListTitle(model, context),
+                      if (model.isWeekEventsMode)
+                        for (Widget widget in _buildWeekEvents(model, context))
+                          widget
+                      else
+                        _buildTitleForDate(model.selectedDate, model),
                       const SizedBox(height: 2.0),
-                      if (model.selectedDateEvents.isEmpty)
+                      if (!model.isWeekEventsMode &&
+                          model.getEventsForDate(model.selectedDate).isEmpty)
                         Padding(
                           padding: const EdgeInsets.symmetric(vertical: 64.0),
                           child: Center(
                               child:
                                   Text(AppIntl.of(context).schedule_no_event)),
                         )
-                      else
-                        _buildEventList(model.selectedDateEvents),
+                      else if (!model.isWeekEventsMode)
+                        _buildEventList(
+                            model.getEventsForDate(model.selectedDate)),
                       const SizedBox(height: 16.0),
                     ],
                   ),
                 ]),
               ));
 
-  Widget buildEventListTitle(ScheduleViewModel model, BuildContext context) {
-    final weekPrefix = AppIntl.of(context).schedule_week_event_prefix;
-    final dateAsString = DateFormat.MMMMEEEEd(model.locale.toString()).format(
-        model.isWeekEventsMode
-            ? model.getFirstDayOfWeek(
-                model.settings[PreferencesFlag.scheduleSettingsStartWeekday]
-                    as StartingDayOfWeek)
-            : model.selectedDate);
-    return Center(
-        child: model.isWeekEventsMode
-            ? Text("$weekPrefix $dateAsString",
-                style: Theme.of(context).textTheme.headline5)
-            : Text(dateAsString, style: Theme.of(context).textTheme.headline5));
+  Widget _buildTitleForDate(DateTime date, ScheduleViewModel model) => Center(
+          child: Text(
+        DateFormat.MMMMEEEEd(model.locale.toString()).format(date),
+        style: Theme.of(context).textTheme.headline5,
+      ));
+
+  List<Widget> _buildWeekEvents(ScheduleViewModel model, BuildContext context) {
+    final firstDayOfWeek = model.getFirstDayOfCurrentWeek();
+    final List<Widget> widgets = [];
+    for (int i = 0; i < 6; i++) {
+      final date = firstDayOfWeek.add(Duration(days: i));
+      final eventsForDay = model.getEventsForDate(date);
+      if (eventsForDay.isNotEmpty) {
+        widgets.add(_buildTitleForDate(date, model));
+        widgets.add(_buildEventList(model.getEventsForDate(date)));
+        widgets.add(const SizedBox(height: 20.0));
+      }
+    }
+    return widgets;
   }
 
   /// Build the square with the number of [events] for the [date]
