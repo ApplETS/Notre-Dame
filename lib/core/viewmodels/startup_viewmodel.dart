@@ -1,6 +1,10 @@
 // FLUTTER / DART / THIRD-PARTIES
-import 'package:notredame/core/services/preferences_service.dart';
+import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
+import 'package:flutter_siren/flutter_siren.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:new_version/new_version.dart';
+import 'package:pub_semver/pub_semver.dart';
 
 // SERVICES / MANAGER
 import 'package:notredame/core/managers/user_repository.dart';
@@ -8,9 +12,11 @@ import 'package:notredame/core/services/networking_service.dart';
 import 'package:notredame/core/services/navigation_service.dart';
 import 'package:notredame/core/managers/settings_manager.dart';
 import 'package:notredame/core/services/internal_info_service.dart';
+import 'package:notredame/core/services/preferences_service.dart';
 
 // CONSTANTS
 import 'package:notredame/core/constants/preferences_flags.dart';
+import 'package:notredame/core/constants/update_code.dart';
 
 // OTHER
 import 'package:notredame/locator.dart';
@@ -71,7 +77,9 @@ class StartUpViewModel extends BaseViewModel {
     final bool isLogin = await _userRepository.silentAuthenticate();
 
     if (isLogin) {
-      _navigationService.pushNamedAndRemoveUntil(RouterPaths.dashboard);
+      final updateStatus = await checkUpdateStatus();
+      _navigationService.pushNamedAndRemoveUntil(
+          RouterPaths.dashboard, RouterPaths.dashboard, updateStatus);
     } else {
       if (await _settingsManager.getBool(PreferencesFlag.languageChoice) ==
           null) {
@@ -117,5 +125,25 @@ class StartUpViewModel extends BaseViewModel {
         (await _internalInfoService.getPackageInfo()).version;
     await _settingsManager.setString(
         PreferencesFlag.appVersion, currentVersion);
+  }
+
+  /// Check if the user has a new version of the app and show a message to
+  /// prompt him to update it. Returns the [UpdateCode] that can be used to
+  /// handle the update.
+  Future<UpdateCode> checkUpdateStatus() async {
+    final newVersion = NewVersion();
+    final status = await newVersion.getVersionStatus();
+    if (status.canUpdate) {
+      final latestVersion = Version.parse(status.storeVersion);
+      final localVersion = Version.parse(status.localVersion);
+      if (latestVersion.minor == localVersion.minor &&
+          latestVersion.patch != localVersion.patch) {
+        return UpdateCode.force;
+      } else if (latestVersion.minor == localVersion.minor ||
+          latestVersion.major == localVersion.major) {
+        return UpdateCode.ask;
+      }
+    }
+    return UpdateCode.none;
   }
 }

@@ -4,16 +4,19 @@ import 'package:feature_discovery/feature_discovery.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:stacked/stacked.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_siren/flutter_siren.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 // CONSTANTS
 import 'package:notredame/core/constants/preferences_flags.dart';
 import 'package:notredame/core/constants/discovery_ids.dart';
 import 'package:notredame/core/constants/progress_bar_text_options.dart';
+import 'package:notredame/core/constants/update_code.dart';
 
 // MANAGER
 import 'package:notredame/core/managers/settings_manager.dart';
 import 'package:notredame/core/managers/course_repository.dart';
+import 'package:notredame/core/services/navigation_service.dart';
 
 // MODEL
 import 'package:notredame/core/models/session.dart';
@@ -31,12 +34,16 @@ import 'package:notredame/locator.dart';
 class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
   final SettingsManager _settingsManager = locator<SettingsManager>();
   final CourseRepository _courseRepository = locator<CourseRepository>();
+  final GlobalKey<NavigatorState> _navigatorKey = GlobalKey<NavigatorState>();
 
   /// All dashboard displayable cards
   Map<PreferencesFlag, int> _cards;
 
   /// Localization class of the application.
   final AppIntl _appIntl;
+
+  /// Update code that must be used to prompt user for update if necessary.
+  UpdateCode updateCode;
 
   /// Day currently selected
   DateTime todayDate = DateTime.now();
@@ -120,7 +127,10 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
   /// List of courses for the current session
   final List<Course> courses = [];
 
-  DashboardViewModel({@required AppIntl intl}) : _appIntl = intl;
+  DashboardViewModel({@required AppIntl intl, UpdateCode updateCode})
+      : _appIntl = intl {
+    this.updateCode = updateCode;
+  }
 
   @override
   Future<Map<PreferencesFlag, int>> futureToRun() async {
@@ -338,5 +348,37 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
 
       return courses;
     }, onError: onError);
+  }
+
+  /// Prompt the update for the app if the navigation service arguments passed
+  /// is not none. When [UpdateCode] is forced, the user will be force to update.
+  /// If [UpdateCode] is not forced, the user will be prompted to update.
+  static Future<void> promptUpdate(
+      BuildContext context, UpdateCode updateCode) async {
+    if (updateCode != null && updateCode != UpdateCode.none) {
+      bool isAForcedUpdate = false;
+      String message = '';
+      switch (updateCode) {
+        case UpdateCode.force:
+          isAForcedUpdate = true;
+          message = AppIntl.of(context).update_version_message_force;
+          break;
+        case UpdateCode.ask:
+          isAForcedUpdate = false;
+          message = AppIntl.of(context).update_version_message;
+          break;
+        case UpdateCode.none:
+          isAForcedUpdate = false;
+          message = '';
+          break;
+      }
+      final siren = Siren();
+      siren.promptUpdate(context,
+          title: AppIntl.of(context).update_version_title,
+          message: message,
+          buttonUpgradeText: AppIntl.of(context).update_version_button_text,
+          buttonCancelText: AppIntl.of(context).cancel_button_text,
+          forceUpgrade: isAForcedUpdate);
+    }
   }
 }

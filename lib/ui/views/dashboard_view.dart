@@ -21,6 +21,7 @@ import 'package:notredame/core/constants/urls.dart';
 import 'package:notredame/core/models/course_activity.dart';
 import 'package:notredame/core/constants/discovery_ids.dart';
 import 'package:notredame/core/constants/progress_bar_text_options.dart';
+import 'package:notredame/core/constants/update_code.dart';
 
 // UTILS
 import 'package:notredame/core/utils/utils.dart';
@@ -29,7 +30,11 @@ import 'package:notredame/ui/utils/app_theme.dart';
 import 'package:notredame/ui/utils/discovery_components.dart';
 
 class DashboardView extends StatefulWidget {
-  const DashboardView({Key key}) : super(key: key);
+  UpdateCode updateCodeForThePageLaunch;
+
+  DashboardView({Key key, UpdateCode updateCode}) : super(key: key) {
+    updateCodeForThePageLaunch = updateCode;
+  }
 
   @override
   _DashboardViewState createState() => _DashboardViewState();
@@ -45,14 +50,22 @@ class _DashboardViewState extends State<DashboardView>
     SchedulerBinding.instance.addPostFrameCallback((Duration duration) {
       DashboardViewModel.startDiscovery(context);
     });
+    WidgetsBinding.instance.addPostFrameCallback((Duration duration) {
+      if (widget.updateCodeForThePageLaunch != UpdateCode.none) {
+        setState(() {
+          DashboardViewModel.promptUpdate(
+              context, widget.updateCodeForThePageLaunch);
+        });
+      }
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<DashboardViewModel>.reactive(
         viewModelBuilder: () => DashboardViewModel(
-              intl: AppIntl.of(context),
-            ),
+            intl: AppIntl.of(context),
+            updateCode: widget.updateCodeForThePageLaunch),
         builder: (context, model, child) {
           return BaseScaffold(
               isInteractionLimitedWhileLoading: false,

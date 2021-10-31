@@ -14,6 +14,13 @@
   "github": "GitHub",
   "email": "Email",
 
+  "cancel_button_text": "Cancel",
+
+  "update_version_title": "New version available",
+  "update_version_message": "A new version of the app is available. Do you want to update?",
+  "update_version_message_force": "A new version of the app is available, update the app now.",
+  "update_version_button_text": "Update", 
+
   "title_schedule": "Schedule",
   "title_student": "Student",
   "title_dashboard": "Dashboard",
