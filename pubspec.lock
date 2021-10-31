@@ -392,9 +392,9 @@ packages:
   flutter_siren:
     dependency: "direct main"
     description:
-      name: flutter_siren
-      url: "https://pub.dartlang.org"
-    source: hosted
+      path: "../flutter_siren"
+      relative: true
+    source: path
     version: "1.1.1"
   flutter_staggered_animations:
     dependency: "direct main"

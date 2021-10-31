@@ -131,17 +131,19 @@ class StartUpViewModel extends BaseViewModel {
   /// prompt him to update it. Returns the [UpdateCode] that can be used to
   /// handle the update.
   Future<UpdateCode> checkUpdateStatus() async {
-    final newVersion = NewVersion();
-    final status = await newVersion.getVersionStatus();
-    if (status.canUpdate) {
-      final latestVersion = Version.parse(status.storeVersion);
-      final localVersion = Version.parse(status.localVersion);
-      if (latestVersion.minor == localVersion.minor &&
+    final siren = Siren();
+
+    if (await siren.updateIsAvailable()) {
+      final latestVersion = await siren.storeVersion;
+      final localVersion = await siren.localVersion;
+
+      if (latestVersion.major != localVersion.major ||
+          latestVersion.minor != localVersion.minor) {
+        return UpdateCode.ask;
+      } else if (latestVersion.major == localVersion.major &&
+          latestVersion.minor == localVersion.minor &&
           latestVersion.patch != localVersion.patch) {
         return UpdateCode.force;
-      } else if (latestVersion.minor == localVersion.minor ||
-          latestVersion.major == localVersion.major) {
-        return UpdateCode.ask;
       }
     }
     return UpdateCode.none;

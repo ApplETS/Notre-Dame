@@ -2,6 +2,7 @@
 import 'package:feature_discovery/feature_discovery.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
+import 'package:flutter_siren/flutter_siren.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:stacked/stacked.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -49,23 +50,15 @@ class _DashboardViewState extends State<DashboardView>
     super.initState();
     SchedulerBinding.instance.addPostFrameCallback((Duration duration) {
       DashboardViewModel.startDiscovery(context);
-    });
-    WidgetsBinding.instance.addPostFrameCallback((Duration duration) {
-      if (widget.updateCodeForThePageLaunch != UpdateCode.none) {
-        setState(() {
-          DashboardViewModel.promptUpdate(
-              context, widget.updateCodeForThePageLaunch);
-        });
-      }
+      DashboardViewModel.promptUpdate(
+          context, widget.updateCodeForThePageLaunch);
     });
   }
 
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<DashboardViewModel>.reactive(
-        viewModelBuilder: () => DashboardViewModel(
-            intl: AppIntl.of(context),
-            updateCode: widget.updateCodeForThePageLaunch),
+        viewModelBuilder: () => DashboardViewModel(intl: AppIntl.of(context)),
         builder: (context, model, child) {
           return BaseScaffold(
               isInteractionLimitedWhileLoading: false,
