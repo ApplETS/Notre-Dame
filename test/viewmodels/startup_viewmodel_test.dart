@@ -1,6 +1,7 @@
 // FLUTTER / DART / THIRD-PARTIES
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
+import 'package:pub_semver/pub_semver.dart';
 
 // CONSTANTS
 import 'package:notredame/core/constants/preferences_flags.dart';
@@ -16,7 +17,6 @@ import 'package:notredame/core/services/siren_flutter_service.dart';
 
 // VIEW MODEL
 import 'package:notredame/core/viewmodels/startup_viewmodel.dart';
-import 'package:pub_semver/pub_semver.dart';
 
 // OTHER
 import '../helpers.dart';
