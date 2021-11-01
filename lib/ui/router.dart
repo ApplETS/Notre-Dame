@@ -38,8 +38,7 @@ Route<dynamic> generateRoute(RouteSettings routeSettings) {
           settings: RouteSettings(name: routeSettings.name),
           builder: (_) => LoginView());
     case RouterPaths.dashboard:
-      UpdateCode code =
-          (routeSettings.arguments as UpdateCode) ?? UpdateCode.none;
+      final code = (routeSettings.arguments as UpdateCode) ?? UpdateCode.none;
       return PageRouteBuilder(
           settings: RouteSettings(
               name: routeSettings.name, arguments: routeSettings.arguments),
