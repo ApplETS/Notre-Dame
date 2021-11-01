@@ -2,8 +2,9 @@ import 'package:enum_to_string/enum_to_string.dart';
 import 'package:flutter/cupertino.dart';
 
 enum PreferencesFlag {
-  // Version flag to trigger a cache clear if it change
+  // Meta flag concerning the app versioning
   appVersion,
+  updateAskedVersion,
 
   // Schedule flags
   scheduleSettingsCalendarFormat,

@@ -2,6 +2,7 @@
 import 'dart:collection';
 import 'package:feature_discovery/feature_discovery.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:notredame/core/services/preferences_service.dart';
 import 'package:stacked/stacked.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_siren/flutter_siren.dart';
@@ -353,28 +354,41 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
   static Future<void> promptUpdate(
       BuildContext context, UpdateCode updateCode) async {
     if (updateCode != null && updateCode != UpdateCode.none) {
+      final appIntl = AppIntl.of(context);
+
       bool isAForcedUpdate = false;
       String message = '';
       switch (updateCode) {
         case UpdateCode.force:
           isAForcedUpdate = true;
-          message = AppIntl.of(context).update_version_message_force;
+          message = appIntl.update_version_message_force;
           break;
         case UpdateCode.ask:
           isAForcedUpdate = false;
-          message = AppIntl.of(context).update_version_message;
+          message = appIntl.update_version_message;
           break;
         case UpdateCode.none:
-          isAForcedUpdate = false;
-          message = '';
-          break;
+          return;
       }
-      locator<SirenFlutterService>().promptUpdate(context,
-          title: AppIntl.of(context).update_version_title,
-          message: message,
-          buttonUpgradeText: AppIntl.of(context).update_version_button_text,
-          buttonCancelText: AppIntl.of(context).close_button_text,
-          forceUpgrade: isAForcedUpdate);
+      final prefService = locator<PreferencesService>();
+      final sirenService = locator<SirenFlutterService>();
+
+      final storeVersion = await sirenService.storeVersion;
+
+      final versionStoredInPrefs =
+          await prefService.getString(PreferencesFlag.updateAskedVersion);
+
+      if (versionStoredInPrefs != storeVersion.toString()) {
+        // ignore: use_build_context_synchronously
+        await sirenService.promptUpdate(context,
+            title: appIntl.update_version_title,
+            message: message,
+            buttonUpgradeText: appIntl.update_version_button_text,
+            buttonCancelText: appIntl.close_button_text,
+            forceUpgrade: isAForcedUpdate);
+      }
+      prefService.setString(
+          PreferencesFlag.updateAskedVersion, storeVersion.toString());
     }
   }
 }
