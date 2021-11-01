@@ -40,7 +40,7 @@ dependencies:
   percent_indicator: ^3.0.1
   feedback: ^1.2.1
   flutter_staggered_animations: ^1.0.0
-  flutter_siren: ^1.1.1
+  flutter_siren: ^1.2.0
 
   # Other
   http: ^0.13.1
@@ -60,10 +60,6 @@ dependencies:
   font_awesome_flutter: ^9.1.0
   device_info_plus: ^3.1.0
   pub_semver: ^2.1.0
-
-dependency_overrides:
-  flutter_siren:
-    path: ../flutter_siren/
 
 dev_dependencies:
   flutter_test:

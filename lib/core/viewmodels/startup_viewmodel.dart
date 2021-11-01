@@ -1,5 +1,6 @@
 // FLUTTER / DART / THIRD-PARTIES
 import 'package:flutter/material.dart';
+import 'package:notredame/core/services/siren_flutter_service.dart';
 import 'package:stacked/stacked.dart';
 import 'package:flutter_siren/flutter_siren.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -38,6 +39,10 @@ class StartUpViewModel extends BaseViewModel {
 
   /// Used to redirect on the dashboard.
   final NavigationService _navigationService = locator<NavigationService>();
+
+  /// Used to redirect on the dashboard.
+  final SirenFlutterService _sirenFlutterService =
+      locator<SirenFlutterService>();
 
   /// Internal Info Service
   final InternalInfoService _internalInfoService =
@@ -131,11 +136,9 @@ class StartUpViewModel extends BaseViewModel {
   /// prompt him to update it. Returns the [UpdateCode] that can be used to
   /// handle the update.
   Future<UpdateCode> checkUpdateStatus() async {
-    final siren = Siren();
-
-    if (await siren.updateIsAvailable()) {
-      final latestVersion = await siren.storeVersion;
-      final localVersion = await siren.localVersion;
+    if (await _sirenFlutterService.updateIsAvailable()) {
+      final latestVersion = await _sirenFlutterService.storeVersion;
+      final localVersion = await _sirenFlutterService.localVersion;
 
       if (latestVersion.major != localVersion.major ||
           latestVersion.minor != localVersion.minor) {

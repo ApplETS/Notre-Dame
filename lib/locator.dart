@@ -20,6 +20,7 @@ import 'package:notredame/core/managers/user_repository.dart';
 import 'package:notredame/core/managers/course_repository.dart';
 import 'package:notredame/core/managers/cache_manager.dart';
 import 'package:notredame/core/managers/settings_manager.dart';
+import 'package:notredame/core/services/siren_flutter_service.dart';
 
 GetIt locator = GetIt.instance;
 
@@ -35,6 +36,7 @@ void setupLocator() {
   locator.registerLazySingleton(() => const FlutterSecureStorage());
   locator.registerLazySingleton(() => PreferencesService());
   locator.registerLazySingleton(() => NetworkingService());
+  locator.registerLazySingleton(() => SirenFlutterService());
 
   // Managers
   locator.registerLazySingleton(() => UserRepository());
