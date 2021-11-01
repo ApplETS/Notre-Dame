@@ -13,9 +13,10 @@ import 'package:notredame/core/constants/discovery_ids.dart';
 import 'package:notredame/core/constants/progress_bar_text_options.dart';
 import 'package:notredame/core/constants/update_code.dart';
 
-// MANAGER
+// MANAGER / SERVICE
 import 'package:notredame/core/managers/settings_manager.dart';
 import 'package:notredame/core/managers/course_repository.dart';
+import 'package:notredame/core/services/siren_flutter_service.dart';
 
 // MODEL
 import 'package:notredame/core/models/session.dart';
@@ -368,12 +369,11 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
           message = '';
           break;
       }
-      final siren = Siren();
-      siren.promptUpdate(context,
+      locator<SirenFlutterService>().promptUpdate(context,
           title: AppIntl.of(context).update_version_title,
           message: message,
           buttonUpgradeText: AppIntl.of(context).update_version_button_text,
-          buttonCancelText: AppIntl.of(context).cancel_button_text,
+          buttonCancelText: AppIntl.of(context).close_button_text,
           forceUpgrade: isAForcedUpdate);
     }
   }

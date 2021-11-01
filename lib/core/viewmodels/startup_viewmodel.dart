@@ -35,7 +35,7 @@ class StartUpViewModel extends BaseViewModel {
   /// Used to redirect on the dashboard.
   final NavigationService _navigationService = locator<NavigationService>();
 
-  /// Used to redirect on the dashboard.
+  /// Used to access the lib siren for updates
   final SirenFlutterService _sirenFlutterService =
       locator<SirenFlutterService>();
 

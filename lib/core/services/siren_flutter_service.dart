@@ -1,4 +1,5 @@
 // FLUTTER / DART / THIRD-PARTIES
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_siren/flutter_siren.dart';
 
 // SERVICES
@@ -26,5 +27,20 @@ class SirenFlutterService {
   Future<Version> get storeVersion async {
     final store = await _siren.storeVersion;
     return Version.parse(store.toString());
+  }
+
+  // Relay prompt update info to Siren package
+  Future<void> promptUpdate(BuildContext context,
+      {String title,
+      String message,
+      String buttonUpgradeText,
+      String buttonCancelText,
+      bool forceUpgrade = false}) async {
+    return _siren.promptUpdate(context,
+        title: title,
+        message: message,
+        buttonUpgradeText: buttonUpgradeText,
+        buttonCancelText: buttonCancelText,
+        forceUpgrade: forceUpgrade);
   }
 }
