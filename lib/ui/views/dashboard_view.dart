@@ -30,11 +30,8 @@ import 'package:notredame/ui/utils/app_theme.dart';
 import 'package:notredame/ui/utils/discovery_components.dart';
 
 class DashboardView extends StatefulWidget {
-  UpdateCode updateCodeForThePageLaunch;
-
-  DashboardView({Key key, UpdateCode updateCode}) : super(key: key) {
-    updateCodeForThePageLaunch = updateCode;
-  }
+  final UpdateCode updateCode;
+  const DashboardView({Key key, this.updateCode}) : super(key: key);
 
   @override
   _DashboardViewState createState() => _DashboardViewState();
@@ -49,8 +46,7 @@ class _DashboardViewState extends State<DashboardView>
     super.initState();
     SchedulerBinding.instance.addPostFrameCallback((Duration duration) {
       DashboardViewModel.startDiscovery(context);
-      DashboardViewModel.promptUpdate(
-          context, widget.updateCodeForThePageLaunch);
+      DashboardViewModel.promptUpdate(context, widget.updateCode);
     });
   }
 
