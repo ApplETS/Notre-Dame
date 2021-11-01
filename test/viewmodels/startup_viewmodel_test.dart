@@ -1,16 +1,19 @@
 // FLUTTER / DART / THIRD-PARTIES
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
+import 'package:pub_semver/pub_semver.dart';
 
 // CONSTANTS
 import 'package:notredame/core/constants/preferences_flags.dart';
 import 'package:notredame/core/constants/router_paths.dart';
+import 'package:notredame/core/constants/update_code.dart';
 
 // SERVICES / MANAGERS
 import 'package:notredame/core/managers/user_repository.dart';
 import 'package:notredame/core/services/navigation_service.dart';
 import 'package:notredame/core/managers/settings_manager.dart';
 import 'package:notredame/core/services/preferences_service.dart';
+import 'package:notredame/core/services/siren_flutter_service.dart';
 
 // VIEW MODEL
 import 'package:notredame/core/viewmodels/startup_viewmodel.dart';
@@ -22,6 +25,7 @@ import '../mock/managers/user_repository_mock.dart';
 import '../mock/services/internal_info_service_mock.dart';
 import '../mock/services/networking_service_mock.dart';
 import '../mock/services/preferences_service_mock.dart';
+import '../mock/services/siren_flutter_service_mock.dart';
 
 void main() {
   NavigationService navigationService;
@@ -30,6 +34,8 @@ void main() {
   PreferencesServiceMock preferencesServiceMock;
   NetworkingServiceMock networkingService;
   InternalInfoServiceMock internalInfoServiceMock;
+  SirenFlutterServiceMock sirenFlutterServiceMock;
+
   StartUpViewModel viewModel;
 
   group('StartupViewModel - ', () {
@@ -42,10 +48,13 @@ void main() {
       networkingService = setupNetworkingServiceMock() as NetworkingServiceMock;
       internalInfoServiceMock =
           setupInternalInfoServiceMock() as InternalInfoServiceMock;
-
+      sirenFlutterServiceMock =
+          setupSirenFlutterServiceMock() as SirenFlutterServiceMock;
       setupLogger();
 
       viewModel = StartUpViewModel();
+
+      SirenFlutterServiceMock.stubUpdateIsAvailable(sirenFlutterServiceMock);
     });
 
     tearDown(() {
@@ -53,6 +62,7 @@ void main() {
       unregister<UserRepository>();
       unregister<SettingsManager>();
       unregister<PreferencesService>();
+      unregister<SirenFlutterService>();
     });
 
     group('handleStartUp - ', () {
@@ -68,8 +78,8 @@ void main() {
 
         await viewModel.handleStartUp();
 
-        verify(
-            navigationService.pushNamedAndRemoveUntil(RouterPaths.dashboard));
+        verify(navigationService.pushNamedAndRemoveUntil(
+            RouterPaths.dashboard, RouterPaths.dashboard, UpdateCode.none));
       });
 
       test(
@@ -244,6 +254,56 @@ void main() {
               PreferencesFlag.discoveryGradeDetails, true),
           settingsManagerMock.setString(PreferencesFlag.appVersion, "4.0.0")
         ]);
+      });
+    });
+
+    group('checkUpdateStatus - ', () {
+      test('should return UpdateCode.none if update is not available',
+          () async {
+        SirenFlutterServiceMock.stubUpdateIsAvailable(sirenFlutterServiceMock);
+
+        final result = await viewModel.checkUpdateStatus();
+
+        expect(result, UpdateCode.none);
+      });
+
+      test(
+          "should return UpdateCode.ask if update is available and it's a minor or major changes",
+          () async {
+        SirenFlutterServiceMock.stubUpdateIsAvailable(sirenFlutterServiceMock,
+            valueToReturn: true);
+        SirenFlutterServiceMock.stubLocalVersion(sirenFlutterServiceMock,
+            valueToReturn: Version(4, 0, 0));
+        SirenFlutterServiceMock.stubStoreVersion(sirenFlutterServiceMock,
+            valueToReturn: Version(4, 1, 0));
+
+        var result = await viewModel.checkUpdateStatus();
+
+        expect(result, UpdateCode.ask);
+
+        SirenFlutterServiceMock.stubLocalVersion(sirenFlutterServiceMock,
+            valueToReturn: Version(4, 0, 0));
+        SirenFlutterServiceMock.stubStoreVersion(sirenFlutterServiceMock,
+            valueToReturn: Version(5, 0, 0));
+
+        result = await viewModel.checkUpdateStatus();
+
+        expect(result, UpdateCode.ask);
+      });
+
+      test(
+          "should return UpdateCode.force if update is available and it's a revision changes",
+          () async {
+        SirenFlutterServiceMock.stubUpdateIsAvailable(sirenFlutterServiceMock,
+            valueToReturn: true);
+        SirenFlutterServiceMock.stubLocalVersion(sirenFlutterServiceMock,
+            valueToReturn: Version(4, 0, 0));
+        SirenFlutterServiceMock.stubStoreVersion(sirenFlutterServiceMock,
+            valueToReturn: Version(4, 0, 1));
+
+        final result = await viewModel.checkUpdateStatus();
+
+        expect(result, UpdateCode.force);
       });
     });
   });

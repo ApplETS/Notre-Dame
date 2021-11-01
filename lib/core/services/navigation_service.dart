@@ -26,8 +26,10 @@ class NavigationService {
   /// Replace the current route of the navigator by pushing the route named
   /// [routeName] and then delete the stack of previous routes
   Future<dynamic> pushNamedAndRemoveUntil(String routeName,
-      [String removeUntilRouteNamed = RouterPaths.dashboard]) {
+      [String removeUntilRouteNamed = RouterPaths.dashboard,
+      Object arguments]) {
     return _navigatorKey.currentState.pushNamedAndRemoveUntil(
-        routeName, ModalRoute.withName(removeUntilRouteNamed));
+        routeName, ModalRoute.withName(removeUntilRouteNamed),
+        arguments: arguments);
   }
 }

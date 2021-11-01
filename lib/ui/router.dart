@@ -28,6 +28,9 @@ import 'package:notredame/ui/views/grade_details_view.dart';
 // WIDGETS
 import 'package:notredame/ui/widgets/link_web_view.dart';
 
+// CONSTANTS
+import 'package:notredame/core/constants/update_code.dart';
+
 Route<dynamic> generateRoute(RouteSettings routeSettings) {
   switch (routeSettings.name) {
     case RouterPaths.login:
@@ -35,9 +38,11 @@ Route<dynamic> generateRoute(RouteSettings routeSettings) {
           settings: RouteSettings(name: routeSettings.name),
           builder: (_) => LoginView());
     case RouterPaths.dashboard:
+      final code = (routeSettings.arguments as UpdateCode) ?? UpdateCode.none;
       return PageRouteBuilder(
-          settings: RouteSettings(name: routeSettings.name),
-          pageBuilder: (_, __, ___) => const DashboardView());
+          settings: RouteSettings(
+              name: routeSettings.name, arguments: routeSettings.arguments),
+          pageBuilder: (_, __, ___) => DashboardView(updateCode: code));
     case RouterPaths.schedule:
       return PageRouteBuilder(
           settings: RouteSettings(name: routeSettings.name),
