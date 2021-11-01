@@ -1,11 +1,5 @@
 // FLUTTER / DART / THIRD-PARTIES
-import 'package:flutter/material.dart';
-import 'package:notredame/core/services/siren_flutter_service.dart';
 import 'package:stacked/stacked.dart';
-import 'package:flutter_siren/flutter_siren.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:new_version/new_version.dart';
-import 'package:pub_semver/pub_semver.dart';
 
 // SERVICES / MANAGER
 import 'package:notredame/core/managers/user_repository.dart';
@@ -14,6 +8,7 @@ import 'package:notredame/core/services/navigation_service.dart';
 import 'package:notredame/core/managers/settings_manager.dart';
 import 'package:notredame/core/services/internal_info_service.dart';
 import 'package:notredame/core/services/preferences_service.dart';
+import 'package:notredame/core/services/siren_flutter_service.dart';
 
 // CONSTANTS
 import 'package:notredame/core/constants/preferences_flags.dart';

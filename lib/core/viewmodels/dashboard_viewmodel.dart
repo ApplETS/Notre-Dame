@@ -16,7 +16,6 @@ import 'package:notredame/core/constants/update_code.dart';
 // MANAGER
 import 'package:notredame/core/managers/settings_manager.dart';
 import 'package:notredame/core/managers/course_repository.dart';
-import 'package:notredame/core/services/navigation_service.dart';
 
 // MODEL
 import 'package:notredame/core/models/session.dart';

@@ -17,8 +17,8 @@
 
   "update_version_title": "Nouvelle version disponible",
   "update_version_message": "Une nouvelle version de l'application est disponible. Voulez-vous la télécharger maintenant?",
-  "update_version_message_force": "Une nouvelle version de l'application est disponible, télécharger la maintenant.",
-  "update_version_button_text": "Update", 
+  "update_version_message_force": "Une nouvelle version de l'application est disponible. La version présente n'est plus supportée. Télécharger-la maintenant.",
+  "update_version_button_text": "Mettre à jour", 
 
   "title_schedule": "Horaire",
   "title_student": "Étudiant",
