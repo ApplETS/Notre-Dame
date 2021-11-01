@@ -78,8 +78,8 @@ void main() {
 
         await viewModel.handleStartUp();
 
-        verify(
-            navigationService.pushNamedAndRemoveUntil(RouterPaths.dashboard));
+        verify(navigationService.pushNamedAndRemoveUntil(
+            RouterPaths.dashboard, RouterPaths.dashboard, UpdateCode.none));
       });
 
       test(
@@ -260,11 +260,7 @@ void main() {
     group('checkUpdateStatus - ', () {
       test('should return UpdateCode.none if update is not available',
           () async {
-        SirenFlutterServiceMock.stubUpdateIsAvailable(sirenFlutterServiceMock,
-            valueToReturn: true);
-
-        when(sirenFlutterServiceMock.updateIsAvailable())
-            .thenAnswer((_) => Future.value(false));
+        SirenFlutterServiceMock.stubUpdateIsAvailable(sirenFlutterServiceMock);
 
         final result = await viewModel.checkUpdateStatus();
 
@@ -307,7 +303,7 @@ void main() {
 
         final result = await viewModel.checkUpdateStatus();
 
-        expect(result, UpdateCode.ask);
+        expect(result, UpdateCode.force);
       });
     });
   });
