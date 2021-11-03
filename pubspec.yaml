@@ -5,7 +5,7 @@ description: The 4th generation of ÉTSMobile, the main gateway between the Éco
 # pub.dev using `pub publish`. This is preferred for private packages.
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 
-version: 4.4.9+1
+version: 4.5.1+1
 
 environment:
   sdk: ">=2.10.0 <3.0.0"
@@ -39,6 +39,7 @@ dependencies:
   percent_indicator: ^3.0.1
   feedback: ^1.2.1
   flutter_staggered_animations: ^1.0.0
+  flutter_siren: ^1.2.0
 
   # Other
   http: ^0.13.1
@@ -57,6 +58,7 @@ dependencies:
   flutter_svg: ^0.22.0
   font_awesome_flutter: ^9.1.0
   device_info_plus: ^3.1.0
+  pub_semver: ^2.1.0
 
 dev_dependencies:
   flutter_test:

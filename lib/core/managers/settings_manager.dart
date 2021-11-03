@@ -131,8 +131,7 @@ class SettingsManager with ChangeNotifier {
   /// Set Locale
   void setLocale(String value) {
     _locale = AppIntl.supportedLocales.firstWhere((e) => e.toString() == value);
-    _preferencesService.setString(
-        PreferencesFlag.locale, _locale.languageCode.toString());
+    _preferencesService.setString(PreferencesFlag.locale, _locale.languageCode);
     // Log the event
     _analyticsService.logEvent(
         "${tag}_${EnumToString.convertToString(PreferencesFlag.locale)}",
