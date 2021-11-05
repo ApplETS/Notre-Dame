@@ -1,5 +1,4 @@
 // FLUTTER / DART / THIRD-PARTIES
-import 'package:notredame/core/services/preferences_service.dart';
 import 'package:stacked/stacked.dart';
 
 // SERVICES / MANAGER
@@ -8,9 +7,12 @@ import 'package:notredame/core/services/networking_service.dart';
 import 'package:notredame/core/services/navigation_service.dart';
 import 'package:notredame/core/managers/settings_manager.dart';
 import 'package:notredame/core/services/internal_info_service.dart';
+import 'package:notredame/core/services/preferences_service.dart';
+import 'package:notredame/core/services/siren_flutter_service.dart';
 
 // CONSTANTS
 import 'package:notredame/core/constants/preferences_flags.dart';
+import 'package:notredame/core/constants/update_code.dart';
 
 // OTHER
 import 'package:notredame/locator.dart';
@@ -32,6 +34,10 @@ class StartUpViewModel extends BaseViewModel {
 
   /// Used to redirect on the dashboard.
   final NavigationService _navigationService = locator<NavigationService>();
+
+  /// Used to access the lib siren for updates
+  final SirenFlutterService _sirenFlutterService =
+      locator<SirenFlutterService>();
 
   /// Internal Info Service
   final InternalInfoService _internalInfoService =
@@ -71,7 +77,9 @@ class StartUpViewModel extends BaseViewModel {
     final bool isLogin = await _userRepository.silentAuthenticate();
 
     if (isLogin) {
-      _navigationService.pushNamedAndRemoveUntil(RouterPaths.dashboard);
+      final updateStatus = await checkUpdateStatus();
+      _navigationService.pushNamedAndRemoveUntil(
+          RouterPaths.dashboard, RouterPaths.dashboard, updateStatus);
     } else {
       if (await _settingsManager.getBool(PreferencesFlag.languageChoice) ==
           null) {
@@ -117,5 +125,25 @@ class StartUpViewModel extends BaseViewModel {
         (await _internalInfoService.getPackageInfo()).version;
     await _settingsManager.setString(
         PreferencesFlag.appVersion, currentVersion);
+  }
+
+  /// Check if the user has a new version of the app and show a message to
+  /// prompt him to update it. Returns the [UpdateCode] that can be used to
+  /// handle the update.
+  Future<UpdateCode> checkUpdateStatus() async {
+    if (await _sirenFlutterService.updateIsAvailable()) {
+      final latestVersion = await _sirenFlutterService.storeVersion;
+      final localVersion = await _sirenFlutterService.localVersion;
+
+      if (latestVersion.major != localVersion.major ||
+          latestVersion.minor != localVersion.minor) {
+        return UpdateCode.ask;
+      } else if (latestVersion.major == localVersion.major &&
+          latestVersion.minor == localVersion.minor &&
+          latestVersion.patch != localVersion.patch) {
+        return UpdateCode.force;
+      }
+    }
+    return UpdateCode.none;
   }
 }
