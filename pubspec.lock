@@ -382,6 +382,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "4.2.1"
+  flutter_siren:
+    dependency: "direct main"
+    description:
+      name: flutter_siren
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.2.0"
   flutter_staggered_animations:
     dependency: "direct main"
     description:
@@ -715,7 +722,7 @@ packages:
     source: hosted
     version: "5.0.0"
   pub_semver:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: pub_semver
       url: "https://pub.dartlang.org"
@@ -950,6 +957,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.1.0"
+  version:
+    dependency: transitive
+    description:
+      name: version
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.0.0"
   watcher:
     dependency: transitive
     description:

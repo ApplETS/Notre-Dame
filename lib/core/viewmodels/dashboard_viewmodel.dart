@@ -10,10 +10,13 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:notredame/core/constants/preferences_flags.dart';
 import 'package:notredame/core/constants/discovery_ids.dart';
 import 'package:notredame/core/constants/progress_bar_text_options.dart';
+import 'package:notredame/core/constants/update_code.dart';
 
-// MANAGER
+// MANAGER / SERVICE
 import 'package:notredame/core/managers/settings_manager.dart';
 import 'package:notredame/core/managers/course_repository.dart';
+import 'package:notredame/core/services/siren_flutter_service.dart';
+import 'package:notredame/core/services/preferences_service.dart';
 
 // MODEL
 import 'package:notredame/core/models/session.dart';
@@ -37,6 +40,9 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
 
   /// Localization class of the application.
   final AppIntl _appIntl;
+
+  /// Update code that must be used to prompt user for update if necessary.
+  UpdateCode updateCode;
 
   /// Day currently selected
   DateTime todayDate = DateTime.now();
@@ -338,5 +344,49 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
 
       return courses;
     }, onError: onError);
+  }
+
+  /// Prompt the update for the app if the navigation service arguments passed
+  /// is not none. When [UpdateCode] is forced, the user will be force to update.
+  /// If [UpdateCode] is not forced, the user will be prompted to update.
+  static Future<void> promptUpdate(
+      BuildContext context, UpdateCode updateCode) async {
+    if (updateCode != null && updateCode != UpdateCode.none) {
+      final appIntl = AppIntl.of(context);
+
+      bool isAForcedUpdate = false;
+      String message = '';
+      switch (updateCode) {
+        case UpdateCode.force:
+          isAForcedUpdate = true;
+          message = appIntl.update_version_message_force;
+          break;
+        case UpdateCode.ask:
+          isAForcedUpdate = false;
+          message = appIntl.update_version_message;
+          break;
+        case UpdateCode.none:
+          return;
+      }
+      final prefService = locator<PreferencesService>();
+      final sirenService = locator<SirenFlutterService>();
+
+      final storeVersion = await sirenService.storeVersion;
+
+      final versionStoredInPrefs =
+          await prefService.getString(PreferencesFlag.updateAskedVersion);
+
+      if (versionStoredInPrefs != storeVersion.toString()) {
+        // ignore: use_build_context_synchronously
+        await sirenService.promptUpdate(context,
+            title: appIntl.update_version_title,
+            message: message,
+            buttonUpgradeText: appIntl.update_version_button_text,
+            buttonCancelText: appIntl.close_button_text,
+            forceUpgrade: isAForcedUpdate);
+      }
+      prefService.setString(
+          PreferencesFlag.updateAskedVersion, storeVersion.toString());
+    }
   }
 }

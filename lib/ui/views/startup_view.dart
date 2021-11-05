@@ -17,7 +17,9 @@ class StartUpView extends StatelessWidget {
   Widget build(BuildContext context) =>
       ViewModelBuilder<StartUpViewModel>.nonReactive(
           viewModelBuilder: () => StartUpViewModel(),
-          onModelReady: (StartUpViewModel model) => model.handleStartUp(),
+          onModelReady: (StartUpViewModel model) {
+            model.handleStartUp();
+          },
           builder: (context, model, child) => Scaffold(
                 backgroundColor: Utils.getColorByBrightness(
                     context, AppTheme.etsLightRed, AppTheme.primaryDark),

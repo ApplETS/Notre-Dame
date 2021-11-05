@@ -6,7 +6,6 @@ linter:
     directives_ordering: false
     require_trailing_commas: false
     depend_on_referenced_packages: false
-
 analyzer:
   exclude:
     - "lib/generated"
