@@ -16,8 +16,13 @@ struct Provider: TimelineProvider {
     }
 
     func getSnapshot(in context: Context, completion: @escaping (SimpleEntry) -> ()) {
-        let data = UserDefaults.init(suiteName:widgetGroupId)
-        let entry = SimpleEntry(date: Date(), progress: data?.double(forKey: "progress") ?? 0.5)
+        let entry: SimpleEntry
+        if context.isPreview {
+            entry = SimpleEntry(date: Date(), progress: 0.5)
+        } else {
+            let data = UserDefaults.init(suiteName:widgetGroupId)
+            entry = SimpleEntry(date: Date(), progress: data?.double(forKey: "progress") ?? 0.5)
+        }
         completion(entry)
     }
 
@@ -46,13 +51,13 @@ struct CustomProgressView: View {
                 let width = geometry.size.width
                         ZStack(alignment: .leading) {
                             Rectangle()
-                                .foregroundColor(Color.green)
+                                .foregroundColor(Color.gray)
                                 .frame(width: width,
                                        height: height)
                                 .cornerRadius(height / 2.0)
 
                             Rectangle()
-                                .foregroundColor(Color.blue)
+                                .foregroundColor(Color.green)
                                 .frame(width: width * self.progress,
                                        height: height)
                                 .cornerRadius(height / 2.0)
@@ -60,8 +65,6 @@ struct CustomProgressView: View {
                     }
             .padding(EdgeInsets(top: 10, leading: 10, bottom: 10, trailing: 10))
         }
-        
-        
     }
 }
 
@@ -72,6 +75,7 @@ struct ETSMobile_WidgetEntryView : View {
     var body: some View {
         VStack {
             Text("Progression de la session")
+            Text("\(entry.progress)")
             
             Spacer()
             

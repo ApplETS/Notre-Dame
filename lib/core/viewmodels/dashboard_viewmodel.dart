@@ -2,6 +2,9 @@
 import 'dart:collection';
 import 'package:feature_discovery/feature_discovery.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:home_widget/home_widget.dart';
+import 'package:notredame/core/services/analytics_service.dart';
+import 'package:notredame/core/utils/app_widget_utils.dart';
 import 'package:stacked/stacked.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -34,6 +37,7 @@ import 'package:notredame/locator.dart';
 class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
   final SettingsManager _settingsManager = locator<SettingsManager>();
   final CourseRepository _courseRepository = locator<CourseRepository>();
+  final AnalyticsService _analyticsService = locator<AnalyticsService>();
 
   /// All dashboard displayable cards
   Map<PreferencesFlag, int> _cards;
@@ -136,7 +140,22 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
 
     getCardsToDisplay();
 
+    await fetchInfoForAppWidget();
+
     return dashboard;
+  }
+
+  Future fetchInfoForAppWidget() async {
+    try {
+      await _courseRepository.getSessions();
+
+      final progressAppWidget = getSessionProgress();
+
+      await AppWidgetUtils.sendProgressData(progressAppWidget);
+      await AppWidgetUtils.updateWidget();
+    } on Exception catch (e) {
+    _analyticsService.logError('DashboardViewModel', e.toString());
+    }
   }
 
   @override
