@@ -7,7 +7,8 @@ import 'package:notredame/locator.dart';
 import 'package:workmanager/workmanager.dart';
 
 mixin AppWidgetUtils {
-
+  static const String appWidgetProgressTaskId = "app_widget_progress";
+  static double progress = 0.0;
   static Future<void> sendProgressData(double progress) async {
     try {
       return await HomeWidget.saveWidgetData<double>('progress', progress);
@@ -27,17 +28,32 @@ mixin AppWidgetUtils {
     }
   }
 
-  static void callbackDispatcher() {
+  static void _callbackDispatcher() {
     Workmanager().executeTask((task, inputData) {
-      print("Native called background task: $task"); //simpleTask will be emitted here.
+      switch (task) {
+        case appWidgetProgressTaskId:
+          progress += 0.1;
+          sendProgressData(progress).then((_) {
+            updateWidget();
+          });
+          print(progress);
+        break;
+      }
+      print("Background processing task");
       return Future.value(true);
     });
   }
-  static void initWorkManager() {
+  static Future<void> initWorkManager() async {
     HomeWidget.setAppGroupId('group.ca.etsmtl.applets.ETSMobile');
-    Workmanager().initialize(
-        callbackDispatcher, // The top level function, aka callbackDispatcher
+    await Workmanager().initialize(
+        _callbackDispatcher, // The top level function, aka callbackDispatcher
         isInDebugMode: true // If enabled it will post a notification whenever the task is running. Handy for debugging tasks
+    );
+
+    Workmanager().registerPeriodicTask(
+      "main_background_thread",
+      appWidgetProgressTaskId,
+      frequency: const Duration(seconds: 1),
     );
   }
 }

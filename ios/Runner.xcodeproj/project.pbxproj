@@ -219,7 +219,7 @@
 			buildConfigurationList = 97C147051CF9000F007C117D /* Build configuration list for PBXNativeTarget "Runner" */;
 			buildPhases = (
 				5C0D26B233968F29B3707C4F /* [CP] Check Pods Manifest.lock */,
-				9740EEB61CF901F6004384FC /* Run Script */,
+				9740EEB61CF901F6004384FC /* Run Flutter */,
 				97C146EA1CF9000F007C117D /* Sources */,
 				97C146EB1CF9000F007C117D /* Frameworks */,
 				97C146EC1CF9000F007C117D /* Resources */,
@@ -227,8 +227,9 @@
 				3B06AD1E1E4923F5004D2608 /* Thin Binary */,
 				BD61C70EAC3CE97E71BF28E0 /* [CP] Embed Pods Frameworks */,
 				1D413CCD3ABEEDC0115585C2 /* [CP] Copy Pods Resources */,
-				7E6A99BB25EBF11900F08BA7 /* ShellScript */,
+				7E6A99BB25EBF11900F08BA7 /* Run Script */,
 				1843157127345A43007F7DD5 /* Embed App Extensions */,
+				186A982E27370F7600170D40 /* Sync CFBundleVersion */,
 			);
 			buildRules = (
 			);
@@ -302,6 +303,24 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		186A982E27370F7600170D40 /* Sync CFBundleVersion */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Sync CFBundleVersion";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "generatedPath=\"$SRCROOT/Flutter/Generated.xcconfig\"\nversionNumber=$(grep FLUTTER_BUILD_NAME $generatedPath | cut -d '=' -f2)\nbuildNumber=$(grep FLUTTER_BUILD_NUMBER $generatedPath | cut -d '=' -f2)\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $buildNumber\" \"$SRCROOT/ETSMobile Widget/Info.plist\"\n/usr/libexec/PlistBuddy -c \"Set :CFBundleShortVersionString $versionNumber\" \"$SRCROOT/ETSMobile Widget/Info.plist\"\n";
+		};
 		1D413CCD3ABEEDC0115585C2 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -355,7 +374,7 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		7E6A99BB25EBF11900F08BA7 /* ShellScript */ = {
+		7E6A99BB25EBF11900F08BA7 /* Run Script */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -364,6 +383,7 @@
 			);
 			inputPaths = (
 			);
+			name = "Run Script";
 			outputFileListPaths = (
 			);
 			outputPaths = (
@@ -372,14 +392,14 @@
 			shellPath = /bin/sh;
 			shellScript = "${PODS_ROOT}/FirebaseCrashlytics/run\n";
 		};
-		9740EEB61CF901F6004384FC /* Run Script */ = {
+		9740EEB61CF901F6004384FC /* Run Flutter */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 12;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "Run Script";
+			name = "Run Flutter";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;

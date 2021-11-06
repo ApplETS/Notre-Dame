@@ -35,7 +35,7 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   // Initialize WorkManager to handle data sending to android or iOS
-  AppWidgetUtils.initWorkManager();
+  await AppWidgetUtils.initWorkManager();
 
   // Initialize firebase
   await Firebase.initializeApp();
