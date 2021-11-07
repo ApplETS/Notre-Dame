@@ -3,8 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:intl/intl.dart';
 import 'package:mockito/mockito.dart';
-import 'package:notredame/core/constants/activity_code.dart';
-import 'package:notredame/core/models/schedule_activity.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -13,6 +11,10 @@ import 'package:notredame/core/managers/settings_manager.dart';
 
 // CONSTANTS
 import 'package:notredame/core/constants/preferences_flags.dart';
+import 'package:notredame/core/constants/activity_code.dart';
+
+// MODELS
+import 'package:notredame/core/models/schedule_activity.dart';
 
 // WIDGET
 import 'package:notredame/ui/widgets/schedule_settings.dart';
