@@ -1,7 +1,11 @@
 // FLUTTER / DART / THIRD-PARTIES
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:intl/intl.dart';
 import 'package:mockito/mockito.dart';
+import 'package:notredame/core/constants/activity_code.dart';
+import 'package:notredame/core/models/course_activity.dart';
+import 'package:notredame/core/models/schedule_activity.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -31,7 +35,45 @@ void main() {
     PreferencesFlag.scheduleSettingsStartWeekday: StartingDayOfWeek.monday,
     PreferencesFlag.scheduleSettingsShowTodayBtn: true
   };
-
+  
+  final List<ScheduleActivity> classOneWithLaboratoryABscheduleActivities = [
+    ScheduleActivity(
+        courseAcronym: "GEN101",
+        courseGroup: "01",
+        courseTitle: "Generic Course",
+        dayOfTheWeek: 1,
+        day: "Lundi",
+        startTime: DateFormat("hh:mm").parse("08:30"),
+        endTime: DateFormat("hh:mm").parse("12:00"),
+        activityCode: ActivityCode.lectureCourse,
+        isPrincipalActivity: true,
+        activityLocation: "En ligne",
+        name: "Activité de cours"),
+    ScheduleActivity(
+        courseAcronym: "GEN101",
+        courseGroup: "01",
+        courseTitle: "Generic Course",
+        dayOfTheWeek: 2,
+        day: "Mardi",
+        startTime: DateFormat("hh:mm").parse("13:30"),
+        endTime: DateFormat("hh:mm").parse("15:00"),
+        activityCode: ActivityCode.labGroupA,
+        isPrincipalActivity: true,
+        activityLocation: "D-4001",
+        name: "Laboratoire (Groupe A)"),
+    ScheduleActivity(
+        courseAcronym: "GEN101",
+        courseGroup: "01",
+        courseTitle: "Generic Course",
+        dayOfTheWeek: 2,
+        day: "Mardi",
+        startTime: DateFormat("hh:mm").parse("15:00"),
+        endTime: DateFormat("hh:mm").parse("16:30"),
+        activityCode: ActivityCode.labGroupB,
+        isPrincipalActivity: true,
+        activityLocation: "D-4002",
+        name: "Laboratoire (Groupe B)"),
+  ];
   group("ScheduleSettings - ", () {
     setUp(() async {
       settingsManager = setupSettingsManagerMock();
@@ -210,6 +252,26 @@ void main() {
             isA<Switch>().having((source) => source.value, 'value', isTrue),
             reason:
                 "the settings says that the showTodayBtn is enabled, the UI should reflet that.");
+      });
+    });
+
+    group("ScheduleActivities", () {
+      testWidgets("Should display activity selection section when a course has activities", (WidgetTester tester) async {
+        SettingsManagerMock.stubGetScheduleSettings(
+            settingsManager as SettingsManagerMock,
+            toReturn: settings);
+        CourseRepositoryMock.stubGetScheduleActivities(
+            courseRepositoryMock,
+            toReturn: classOneWithLaboratoryABscheduleActivities);
+
+        const scheduleSettings = ScheduleSettings(showHandle: false);
+        
+        await tester.pumpWidget(
+            localizedWidget(child: scheduleSettings));
+        await tester.pumpAndSettle();
+        await tester.dragUntilVisible(find.text("Select the group of the labo"), find.byKey(const ValueKey("SettingsScrollingArea")), const Offset(0, -250));
+        final titleLabo = find.textContaining("Select the group of the labo");
+        expect(titleLabo, findsOneWidget);
       });
     });
 

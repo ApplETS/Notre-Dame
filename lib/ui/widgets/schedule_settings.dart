@@ -78,6 +78,7 @@ class _ScheduleSettingsState extends State<ScheduleSettings> {
                 child: ListTileTheme(
                   selectedColor: Theme.of(context).textTheme.bodyText1.color,
                   child: ListView(
+                    key: const ValueKey("SettingsScrollingArea"),
                     children: _buildSettings(
                         context, model as ScheduleSettingsViewModel),
                   ),
@@ -96,8 +97,7 @@ class _ScheduleSettingsState extends State<ScheduleSettings> {
 
     list.addAll(_buildShowTodayButtonSection(context, model));
 
-    if (model.scheduleActivitiesByCourse.isNotEmpty &&
-        model.scheduleActivitiesByCourse.length > 1) {
+    if (model.scheduleActivitiesByCourse.isNotEmpty) {
       list.addAll(_buildSelectCoursesActivitiesSection(context, model));
     }
 
@@ -151,7 +151,7 @@ class _ScheduleSettingsState extends State<ScheduleSettings> {
           selectedTileColor: selectedColor,
           onTap: () =>
               model.selectScheduleActivity(course.courseAcronym, course),
-          title: Text(_getActivityTitle(course.activityCode)),
+          title: Text(getActivityTitle(course.activityCode)),
         ));
       }
 
@@ -165,7 +165,7 @@ class _ScheduleSettingsState extends State<ScheduleSettings> {
     return tiles;
   }
 
-  String _getActivityTitle(String activityCode) {
+  String getActivityTitle(String activityCode) {
     if (activityCode == ActivityCode.labGroupA) {
       return AppIntl.of(context).course_activity_group_a;
     } else if (activityCode == ActivityCode.labGroupB) {
