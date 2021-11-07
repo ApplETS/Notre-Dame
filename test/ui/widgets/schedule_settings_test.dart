@@ -328,6 +328,7 @@ void main() {
             find.byKey(const ValueKey("SettingsScrollingArea")),
             const Offset(0, -250));
         expect(laboB, findsOneWidget);
+
         // check if laboB is selected
         expect(
             tester.widget(laboB),
