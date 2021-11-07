@@ -271,21 +271,22 @@ void main() {
 
         final titleLabo =
             find.textContaining(intl.schedule_select_course_activity);
-        await tester.dragUntilVisible(titleLabo,
+        await tester.dragUntilVisible(
+            titleLabo,
             find.byKey(const ValueKey("SettingsScrollingArea")),
             const Offset(0, -250));
         expect(titleLabo, findsOneWidget);
 
-        final laboA =
-            find.textContaining(intl.course_activity_group_a);
-        await tester.dragUntilVisible(laboA,
+        final laboA = find.textContaining(intl.course_activity_group_a);
+        await tester.dragUntilVisible(
+            laboA,
             find.byKey(const ValueKey("SettingsScrollingArea")),
             const Offset(0, -250));
         expect(laboA, findsOneWidget);
 
-        final laboB =
-            find.textContaining(intl.course_activity_group_b);
-        await tester.dragUntilVisible(laboB,
+        final laboB = find.textContaining(intl.course_activity_group_b);
+        await tester.dragUntilVisible(
+            laboB,
             find.byKey(const ValueKey("SettingsScrollingArea")),
             const Offset(0, -250));
         expect(laboB, findsOneWidget);
@@ -307,17 +308,23 @@ void main() {
         CourseRepositoryMock.stubGetScheduleActivities(courseRepositoryMock,
             toReturn: classOneWithLaboratoryABscheduleActivities);
         // preselect the laboB
-        SettingsManagerMock.stubGetDynamicString(settingsManager as SettingsManagerMock,
-            DynamicPreferencesFlag(groupAssociationFlag: PreferencesFlag.scheduleSettingsLaboratoryGroup,
-            uniqueKey: "GEN101"), toReturn: ActivityCode.labGroupB);
+        SettingsManagerMock.stubGetDynamicString(
+            settingsManager as SettingsManagerMock,
+            DynamicPreferencesFlag(
+                groupAssociationFlag:
+                    PreferencesFlag.scheduleSettingsLaboratoryGroup,
+                uniqueKey: "GEN101"),
+            toReturn: ActivityCode.labGroupB);
 
         const scheduleSettings = ScheduleSettings(showHandle: false);
 
         await tester.pumpWidget(localizedWidget(child: scheduleSettings));
         await tester.pumpAndSettle();
 
-        final laboB = find.widgetWithText(ListTile, intl.course_activity_group_b);
-        await tester.dragUntilVisible(laboB,
+        final laboB =
+            find.widgetWithText(ListTile, intl.course_activity_group_b);
+        await tester.dragUntilVisible(
+            laboB,
             find.byKey(const ValueKey("SettingsScrollingArea")),
             const Offset(0, -250));
         expect(laboB, findsOneWidget);
@@ -336,8 +343,10 @@ void main() {
         SettingsManagerMock.stubGetScheduleSettings(
             settingsManager as SettingsManagerMock,
             toReturn: settings);
-        final courseWithOnlyLabA = List<ScheduleActivity>.from(classOneWithLaboratoryABscheduleActivities);
-        courseWithOnlyLabA.removeWhere((element) => element.activityCode == ActivityCode.labGroupB);
+        final courseWithOnlyLabA = List<ScheduleActivity>.from(
+            classOneWithLaboratoryABscheduleActivities);
+        courseWithOnlyLabA.removeWhere(
+            (element) => element.activityCode == ActivityCode.labGroupB);
         CourseRepositoryMock.stubGetScheduleActivities(courseRepositoryMock,
             toReturn: courseWithOnlyLabA);
 
@@ -348,9 +357,12 @@ void main() {
 
         final titleLabo =
             find.textContaining(intl.schedule_select_course_activity);
-        expect(() async => tester.dragUntilVisible(titleLabo,
-            find.byKey(const ValueKey("SettingsScrollingArea")),
-            const Offset(0, -250)), throwsA(const TypeMatcher<StateError>()));
+        expect(
+            () async => tester.dragUntilVisible(
+                titleLabo,
+                find.byKey(const ValueKey("SettingsScrollingArea")),
+                const Offset(0, -250)),
+            throwsA(const TypeMatcher<StateError>()));
       });
     });
 
