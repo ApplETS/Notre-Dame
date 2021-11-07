@@ -35,7 +35,7 @@ void main() {
     PreferencesFlag.scheduleSettingsStartWeekday: StartingDayOfWeek.monday,
     PreferencesFlag.scheduleSettingsShowTodayBtn: true
   };
-  
+
   final List<ScheduleActivity> classOneWithLaboratoryABscheduleActivities = [
     ScheduleActivity(
         courseAcronym: "GEN101",
@@ -256,21 +256,25 @@ void main() {
     });
 
     group("ScheduleActivities", () {
-      testWidgets("Should display activity selection section when a course has activities", (WidgetTester tester) async {
+      testWidgets(
+          "Should display activity selection section when a course has activities",
+          (WidgetTester tester) async {
         SettingsManagerMock.stubGetScheduleSettings(
             settingsManager as SettingsManagerMock,
             toReturn: settings);
-        CourseRepositoryMock.stubGetScheduleActivities(
-            courseRepositoryMock,
+        CourseRepositoryMock.stubGetScheduleActivities(courseRepositoryMock,
             toReturn: classOneWithLaboratoryABscheduleActivities);
 
         const scheduleSettings = ScheduleSettings(showHandle: false);
-        
-        await tester.pumpWidget(
-            localizedWidget(child: scheduleSettings));
+
+        await tester.pumpWidget(localizedWidget(child: scheduleSettings));
         await tester.pumpAndSettle();
-        await tester.dragUntilVisible(find.text("Select the group of the labo"), find.byKey(const ValueKey("SettingsScrollingArea")), const Offset(0, -250));
-        final titleLabo = find.textContaining("Select the group of the labo");
+        await tester.dragUntilVisible(
+            find.text(intl.schedule_select_course_activity),
+            find.byKey(const ValueKey("SettingsScrollingArea")),
+            const Offset(0, -250));
+        final titleLabo =
+            find.textContaining(intl.schedule_select_course_activity);
         expect(titleLabo, findsOneWidget);
       });
     });
