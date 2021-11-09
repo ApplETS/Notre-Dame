@@ -78,6 +78,24 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
+    flavorDimensions "etsmobile"
+    
+    productFlavors {
+        beta {
+            dimension "etsmobile"
+            applicationIdSuffix ".beta"
+            resValue "string", "app_name", "ÉTSMobile Bêta"
+            versionNameSuffix ".dev"
+        }
+        prod {
+            dimension "etsmobile"
+            applicationIdSuffix ".prod"
+            resValue "string", "app_name", "ÉTSMobile Production"
+            versionNameSuffix ".prod"
+        }
+    }
+}
 }
 
 flutter {

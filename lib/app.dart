@@ -6,7 +6,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_config/flutter_config.dart';
@@ -21,6 +20,7 @@ import 'package:notredame/core/services/analytics_service.dart';
 // UTILS
 import 'package:notredame/locator.dart';
 import 'package:notredame/ui/utils/app_theme.dart';
+import 'package:notredame/core/utils/app_config.dart';
 
 // MANAGER
 import 'package:notredame/core/managers/settings_manager.dart';
@@ -28,7 +28,8 @@ import 'package:notredame/core/managers/settings_manager.dart';
 // VIEW
 import 'package:notredame/ui/views/startup_view.dart';
 
-Future<void> main() async {
+
+Future<Widget> initializeApp(AppConfig appConfig) async {
   setupLocator();
   WidgetsFlutterBinding.ensureInitialized();
 
@@ -42,14 +43,10 @@ Future<void> main() async {
   if (kDebugMode) {
     FlutterConfig.loadEnvVariables();
   }
-  runZonedGuarded(() {
-    runApp(
-      ETSMobile(settingsManager),
-    );
-  }, (error, stackTrace) {
-    FirebaseCrashlytics.instance.recordError(error, stackTrace);
-  });
+  
+  return ETSMobile(settingsManager);
 }
+
 
 class ETSMobile extends StatelessWidget {
   /// Manage the settings
