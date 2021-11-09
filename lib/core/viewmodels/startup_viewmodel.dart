@@ -1,4 +1,5 @@
 // FLUTTER / DART / THIRD-PARTIES
+import 'package:notredame/core/services/analytics_service.dart';
 import 'package:stacked/stacked.dart';
 
 // SERVICES / MANAGER
@@ -42,6 +43,10 @@ class StartUpViewModel extends BaseViewModel {
   /// Internal Info Service
   final InternalInfoService _internalInfoService =
       locator<InternalInfoService>();
+
+  /// Internal Info Service
+  final AnalyticsService _analyticsService =
+      locator<AnalyticsService>();
 
   /// Try to silent authenticate the user then redirect to [LoginView] or [DashboardView]
   Future handleStartUp() async {
@@ -131,19 +136,25 @@ class StartUpViewModel extends BaseViewModel {
   /// prompt him to update it. Returns the [UpdateCode] that can be used to
   /// handle the update.
   Future<UpdateCode> checkUpdateStatus() async {
-    if (await _sirenFlutterService.updateIsAvailable()) {
-      final latestVersion = await _sirenFlutterService.storeVersion;
-      final localVersion = await _sirenFlutterService.localVersion;
+    try {
+      if (await _sirenFlutterService.updateIsAvailable()) {
+        
+        final latestVersion = await _sirenFlutterService.storeVersion;
+        final localVersion = await _sirenFlutterService.localVersion;
 
-      if (latestVersion.major != localVersion.major ||
-          latestVersion.minor != localVersion.minor) {
-        return UpdateCode.ask;
-      } else if (latestVersion.major == localVersion.major &&
-          latestVersion.minor == localVersion.minor &&
-          latestVersion.patch != localVersion.patch) {
-        return UpdateCode.force;
+        if (latestVersion.major != localVersion.major ||
+            latestVersion.minor != localVersion.minor) {
+          return UpdateCode.ask;
+        } else if (latestVersion.major == localVersion.major &&
+            latestVersion.minor == localVersion.minor &&
+            latestVersion.patch != localVersion.patch) {
+          return UpdateCode.force;
+        }
       }
+    } on Exception catch (e) {
+      _analyticsService.logError("StartupViewModel", e.toString());
     }
+
     return UpdateCode.none;
   }
 }

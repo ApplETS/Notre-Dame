@@ -440,7 +440,7 @@ Align _buildSkipDiscoveryButton(BuildContext context) {
     child: TextButton(
       onPressed: () => dismissDiscovery(context),
       child: Text(AppIntl.of(context).skip_discovery,
-          style: const TextStyle(color: AppTheme.etsLightRed)),
+          style: TextStyle(color: AppTheme.etsLightRed)),
     ),
   );
 }

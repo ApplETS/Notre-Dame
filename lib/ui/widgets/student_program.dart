@@ -45,7 +45,7 @@ class StudentProgram extends StatelessWidget {
         ListTile(
           title: Text(
             _program.name,
-            style: const TextStyle(color: AppTheme.etsLightRed),
+            style: TextStyle(color: AppTheme.etsLightRed),
           ),
         ),
         ListView.builder(

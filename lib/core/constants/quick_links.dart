@@ -13,7 +13,7 @@ import 'package:notredame/ui/utils/app_theme.dart';
 List<QuickLink> quickLinks(AppIntl intl) => [
       QuickLink(
           name: intl.ets_security_title,
-          image: const FaIcon(
+          image: FaIcon(
             FontAwesomeIcons.shieldAlt,
             color: AppTheme.etsLightRed,
             size: 64,
@@ -28,7 +28,7 @@ List<QuickLink> quickLinks(AppIntl intl) => [
           link: 'https://portail.etsmtl.ca'),
       QuickLink(
           name: intl.ets_bibliotech_title,
-          image: const FaIcon(
+          image: FaIcon(
             FontAwesomeIcons.book,
             color: AppTheme.etsLightRed,
             size: 64,
@@ -36,7 +36,7 @@ List<QuickLink> quickLinks(AppIntl intl) => [
           link: 'https://www.etsmtl.ca/Bibliotheque/Accueil'),
       QuickLink(
           name: intl.ets_news_title,
-          image: const FaIcon(
+          image: FaIcon(
             FontAwesomeIcons.newspaper,
             color: AppTheme.etsLightRed,
             size: 64,
@@ -44,7 +44,7 @@ List<QuickLink> quickLinks(AppIntl intl) => [
           link: 'https://www.etsmtl.ca/nouvelles'),
       QuickLink(
           name: intl.ets_directory_title,
-          image: const FaIcon(
+          image: FaIcon(
             FontAwesomeIcons.addressBook,
             color: AppTheme.etsLightRed,
             size: 64,
@@ -59,7 +59,7 @@ List<QuickLink> quickLinks(AppIntl intl) => [
           link: 'https://ena.etsmtl.ca/'),
       QuickLink(
           name: intl.ets_schedule_generator,
-          image: const FaIcon(
+          image: FaIcon(
             FontAwesomeIcons.calendar,
             color: AppTheme.etsLightRed,
             size: 64,

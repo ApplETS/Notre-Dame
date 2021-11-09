@@ -58,7 +58,7 @@ class _SecurityViewState extends State<SecurityView> {
                   padding: const EdgeInsets.all(8.0),
                   child: Text(
                     AppIntl.of(context).security_reach_security,
-                    style: const TextStyle(
+                    style: TextStyle(
                         color: AppTheme.etsLightRed, fontSize: 24),
                   ),
                 ),
@@ -95,7 +95,7 @@ class _SecurityViewState extends State<SecurityView> {
                   padding: const EdgeInsets.all(8.0),
                   child: Text(
                     AppIntl.of(context).security_emergency_procedures,
-                    style: const TextStyle(
+                    style: TextStyle(
                         color: AppTheme.etsLightRed, fontSize: 24),
                   ),
                 ),

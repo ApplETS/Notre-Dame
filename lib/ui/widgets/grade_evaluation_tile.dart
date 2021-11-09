@@ -151,13 +151,13 @@ class _GradeEvaluationTileState extends State<GradeEvaluationTile>
                   builder: (BuildContext context, Widget child) {
                     return Transform.rotate(
                       angle: rotateAnimation.value,
-                      child: const Icon(
+                      child: Icon(
                         Icons.keyboard_arrow_down_sharp,
                         color: AppTheme.etsLightRed,
                       ),
                     );
                   },
-                  child: const Icon(
+                  child: Icon(
                     Icons.keyboard_arrow_down_sharp,
                     color: AppTheme.etsLightRed,
                   ),

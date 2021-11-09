@@ -13,6 +13,7 @@ Future<void> main() async {
   final prodAppConfig = AppConfig(appName: 'ÉTSMobile Production', flavor: 'prod');
   
   final etsMobile = await initializeApp(prodAppConfig);
+  
   runZonedGuarded(() {
     runApp(
       etsMobile

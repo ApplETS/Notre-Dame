@@ -16,7 +16,7 @@ class GradeNotAvailable extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       mainAxisSize: MainAxisSize.min,
       children: [
-        const Icon(
+        Icon(
           Icons.school,
           size: 100,
           color: AppTheme.etsLightRed,

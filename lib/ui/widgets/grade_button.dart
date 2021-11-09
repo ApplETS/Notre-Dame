@@ -81,9 +81,9 @@ class GradeButton extends StatelessWidget {
                   tag: 'course_acronym_${course.acronym}_${course.session}',
                   child: Material(
                     child: DecoratedBox(
-                        decoration: const BoxDecoration(
+                        decoration: BoxDecoration(
                             color: AppTheme.etsLightRed,
-                            borderRadius: BorderRadius.only(
+                            borderRadius: const BorderRadius.only(
                                 topLeft: Radius.circular(2.5),
                                 topRight: Radius.circular(2.5))),
                         child: Center(

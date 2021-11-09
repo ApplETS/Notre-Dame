@@ -31,7 +31,7 @@ class _SettingsViewState extends State<SettingsView> {
               ListTile(
                 title: Text(
                   AppIntl.of(context).settings_display_pref_category,
-                  style: const TextStyle(color: AppTheme.etsLightRed),
+                  style: TextStyle(color: AppTheme.etsLightRed),
                 ),
               ),
               PopupMenuButton(
@@ -90,7 +90,7 @@ class _SettingsViewState extends State<SettingsView> {
               ListTile(
                 title: Text(
                   AppIntl.of(context).settings_miscellaneous_category,
-                  style: const TextStyle(color: AppTheme.etsLightRed),
+                  style: TextStyle(color: AppTheme.etsLightRed),
                 ),
               ),
               PopupMenuButton(
