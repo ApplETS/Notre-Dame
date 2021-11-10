@@ -1,4 +1,5 @@
 // FLUTTER / DART / THIRD-PARTIES
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:home_widget/home_widget.dart';
@@ -47,7 +48,7 @@ mixin AppWidgetUtils {
     HomeWidget.setAppGroupId('group.ca.etsmtl.applets.ETSMobile');
     await Workmanager().initialize(
         _callbackDispatcher, // The top level function, aka callbackDispatcher
-        isInDebugMode: true // If enabled it will post a notification whenever the task is running. Handy for debugging tasks
+        isInDebugMode: kDebugMode // If enabled it will post a notification whenever the task is running. Handy for debugging tasks
     );
 
     Workmanager().registerPeriodicTask(
