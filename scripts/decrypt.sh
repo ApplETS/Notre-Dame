@@ -17,8 +17,10 @@ if [[ -n "$ENCRYPTED_GOOGLE_SERVICE_PASSWORD" ]]; then
   echo "Decoding google-services files"
   openssl enc -aes-256-cbc -pbkdf2 -d -k "$ENCRYPTED_GOOGLE_SERVICE_PASSWORD" -in ./encryptedFiles/google-services.prod.json.enc -out ./android/app/src/prod/google-services.json -md md5
   openssl enc -aes-256-cbc -pbkdf2 -d -k "$ENCRYPTED_GOOGLE_SERVICE_PASSWORD" -in ./encryptedFiles/google-services.beta.json.enc -out ./android/app/src/beta/google-services.json -md md5
+  openssl enc -aes-256-cbc -pbkdf2 -d -k "$ENCRYPTED_GOOGLE_SERVICE_PASSWORD" -in ./encryptedFiles/google-services.dev.json.enc -out ./android/app/src/dev/google-services.json -md md5
   openssl enc -aes-256-cbc -pbkdf2 -d -k "$ENCRYPTED_GOOGLE_SERVICE_PASSWORD" -in ./encryptedFiles/GoogleService-Info.prod.plist.enc -out ./ios/config/prod/GoogleService-Info.plist -md md5
   openssl enc -aes-256-cbc -pbkdf2 -d -k "$ENCRYPTED_GOOGLE_SERVICE_PASSWORD" -in ./encryptedFiles/GoogleService-Info.beta.plist.enc -out ./ios/config/beta/GoogleService-Info.plist -md md5
+  openssl enc -aes-256-cbc -pbkdf2 -d -k "$ENCRYPTED_GOOGLE_SERVICE_PASSWORD" -in ./encryptedFiles/GoogleService-Info.dev.plist.enc -out ./ios/config/dev/GoogleService-Info.plist -md md5
 fi
 
 # Decrypt Android Keystore, JKS and service account credentials

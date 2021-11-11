@@ -82,17 +82,20 @@ android {
     flavorDimensions "etsmobile"
     
     productFlavors {
+        dev {
+            dimension "etsmobile"
+            applicationIdSuffix ".dev"
+            resValue "string", "app_name", "ÉTSMobile Development"
+            versionNameSuffix ".dev"
+        }
         beta {
             dimension "etsmobile"
-            applicationIdSuffix ".beta"
             resValue "string", "app_name", "ÉTSMobile Bêta"
-            versionNameSuffix ".dev"
+            versionNameSuffix ".beta"
         }
         prod {
             dimension "etsmobile"
-            applicationIdSuffix ".prod"
             resValue "string", "app_name", "ÉTSMobile Production"
-            versionNameSuffix ".prod"
         }
     }
 }
