@@ -75,7 +75,7 @@ void main() {
         activityLocation: "D-4002",
         name: "Laboratoire (Groupe B)"),
   ];
-  
+
   group("ScheduleSettings - ", () {
     setUp(() async {
       settingsManager = setupSettingsManagerMock();
