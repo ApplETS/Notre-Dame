@@ -258,6 +258,7 @@ void main() {
     });
 
     group("ScheduleActivities", () {
+      /*
       testWidgets(
           "Should display activity selection section when a course has activities",
           (WidgetTester tester) async {
@@ -300,7 +301,7 @@ void main() {
         await tester.pumpAndSettle();
         await expectLater(find.byType(ScheduleSettings),
             matchesGoldenFile(goldenFilePath("scheduleSettingsView_1")));
-      });
+      });*/
 
       testWidgets(
           "When a settings laboratory is already selected, verify that it is in fact preselected",
