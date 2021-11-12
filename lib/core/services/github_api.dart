@@ -51,7 +51,7 @@ class GithubApi {
             RepositorySlug.full(_repositoryReportSlug),
             CreateFile(
                 path: filePath,
-                content: base64Encode(file.readAsBytesSync()).toString(),
+                content: base64Encode(file.readAsBytesSync()),
                 message: DateTime.now().toString(),
                 committer:
                     CommitUser('clubapplets-server', 'clubapplets@gmail.com'),
