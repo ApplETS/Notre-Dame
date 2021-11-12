@@ -258,7 +258,6 @@ void main() {
     });
 
     group("ScheduleActivities", () {
-      /*
       testWidgets(
           "Should display activity selection section when a course has activities",
           (WidgetTester tester) async {
@@ -294,14 +293,7 @@ void main() {
             find.byKey(const ValueKey("SettingsScrollingArea")),
             const Offset(0, -250));
         expect(laboB, findsOneWidget);
-
-        // generate a golden file
-        tester.binding.window.physicalSizeTestValue = const Size(800, 1410);
-
-        await tester.pumpAndSettle();
-        await expectLater(find.byType(ScheduleSettings),
-            matchesGoldenFile(goldenFilePath("scheduleSettingsView_1")));
-      });*/
+      });
 
       testWidgets(
           "When a settings laboratory is already selected, verify that it is in fact preselected",
@@ -434,6 +426,37 @@ void main() {
             isA<Switch>().having((source) => source.value, 'value', isFalse),
             reason:
                 "the settings says that the showTodayBtn is enabled, the UI should reflet that.");
+      });
+    });
+
+    group("golden - ", () {
+      testWidgets(
+          "Should display activity selection section when a course has activities",
+          (WidgetTester tester) async {
+        SettingsManagerMock.stubGetScheduleSettings(
+            settingsManager as SettingsManagerMock,
+            toReturn: settings);
+        CourseRepositoryMock.stubGetScheduleActivities(courseRepositoryMock,
+            toReturn: classOneWithLaboratoryABscheduleActivities);
+
+        const scheduleSettings = ScheduleSettings(showHandle: false);
+
+        await tester.pumpWidget(localizedWidget(child: scheduleSettings));
+        await tester.pumpAndSettle();
+
+        final laboB = find.textContaining(intl.course_activity_group_b);
+        await tester.dragUntilVisible(
+            laboB,
+            find.byKey(const ValueKey("SettingsScrollingArea")),
+            const Offset(0, -250));
+        expect(laboB, findsOneWidget);
+
+        // generate a golden file
+        tester.binding.window.physicalSizeTestValue = const Size(800, 1410);
+
+        await tester.pumpAndSettle();
+        await expectLater(find.byType(ScheduleSettings),
+            matchesGoldenFile(goldenFilePath("scheduleSettingsView_1")));
       });
     });
   });
