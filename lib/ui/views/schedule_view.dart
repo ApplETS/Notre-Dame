@@ -79,15 +79,16 @@ class _ScheduleViewState extends State<ScheduleView>
             }
           },
           builder: (context, model, child) => BaseScaffold(
-                isLoading: model.busy(model.isLoadingEvents),
-                isInteractionLimitedWhileLoading: false,
-                appBar: AppBar(
-                  title: Text(AppIntl.of(context).title_schedule),
-                  centerTitle: false,
-                  automaticallyImplyLeading: false,
-                  actions: _buildActionButtons(model),
-                ),
-                body: Stack(children: [
+              isLoading: model.busy(model.isLoadingEvents),
+              isInteractionLimitedWhileLoading: false,
+              appBar: AppBar(
+                title: Text(AppIntl.of(context).title_schedule),
+                centerTitle: false,
+                automaticallyImplyLeading: false,
+                actions: _buildActionButtons(model),
+              ),
+              body: RefreshIndicator(
+                child: Stack(children: [
                   ListView(
                     children: [
                       _buildTableCalendar(model),
@@ -113,7 +114,8 @@ class _ScheduleViewState extends State<ScheduleView>
                     ],
                   ),
                 ]),
-              ));
+                onRefresh: () => model.refresh(),
+              )));
 
   /// Build the square with the number of [events] for the [date]
   Widget _buildEventsMarker(
@@ -234,10 +236,6 @@ class _ScheduleViewState extends State<ScheduleView>
                     model.selectedDate = DateTime.now();
                     model.focusedDate.value = DateTime.now();
                   })),
-        IconButton(
-          icon: const Icon(Icons.refresh),
-          onPressed: () => model.refresh(),
-        ),
         _buildDiscoveryFeatureDescriptionWidget(context, Icons.settings, model),
       ];
 
