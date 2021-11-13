@@ -455,7 +455,7 @@ void main() {
         tester.binding.window.physicalSizeTestValue = const Size(800, 1410);
 
         await tester.pumpAndSettle();
-        
+
         await expectLater(find.byType(ScheduleSettings),
             matchesGoldenFile(goldenFilePath("scheduleSettingsView_1")));
       });
