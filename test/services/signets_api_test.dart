@@ -16,6 +16,7 @@ import 'package:notredame/core/models/evaluation.dart' as model;
 import 'package:notredame/core/models/profile_student.dart';
 import 'package:notredame/core/models/program.dart';
 import 'package:notredame/core/models/course_summary.dart';
+import 'package:notredame/core/models/course_evaluation.dart';
 
 // CONSTANTS
 import 'package:notredame/core/constants/activity_code.dart';
@@ -30,6 +31,21 @@ import '../mock/services/http_client_mock.dart';
 void main() {
   HttpClientMock clientMock;
   SignetsApi service;
+
+  final Session session = Session(
+      shortName: 'H2018',
+      name: 'Hiver 2018',
+      startDate: DateTime(2018, 1, 4),
+      endDate: DateTime(2018, 4, 23),
+      endDateCourses: DateTime(2018, 4, 11),
+      startDateRegistration: DateTime(2017, 10, 30),
+      deadlineRegistration: DateTime(2017, 11, 14),
+      startDateCancellationWithRefund: DateTime(2018, 1, 4),
+      deadlineCancellationWithRefund: DateTime(2018, 1, 17),
+      deadlineCancellationWithRefundNewStudent: DateTime(2018, 1, 31),
+      startDateCancellationWithoutRefundNewStudent: DateTime(2018, 2),
+      deadlineCancellationWithoutRefundNewStudent: DateTime(2018, 3, 14),
+      deadlineCancellationASEQ: DateTime(2018, 1, 31));
 
   group('SignetsApi - ', () {
     setUp(() {
@@ -102,7 +118,11 @@ void main() {
         HttpClientMock.stubPost(clientMock, Urls.signetsAPI, stubResponse);
 
         final result = await service.getCoursesActivities(
-            username: username, password: password, session: session);
+            username: username,
+            password: password,
+            session: session,
+            startDate: DateTime(2020, 9, 3, 18),
+            endDate: DateTime(2020, 9, 3, 20));
 
         expect(result, isA<List<CourseActivity>>());
         expect(result.first == courseActivity, isTrue);
@@ -384,21 +404,6 @@ void main() {
           '<dateLimitePourAnnulerASEQ>2018-01-31</dateLimitePourAnnulerASEQ>'
           '</Trimestre>';
 
-      final Session session = Session(
-          shortName: 'H2018',
-          name: 'Hiver 2018',
-          startDate: DateTime(2018, 1, 4),
-          endDate: DateTime(2018, 4, 23),
-          endDateCourses: DateTime(2018, 4, 11),
-          startDateRegistration: DateTime(2017, 10, 30),
-          deadlineRegistration: DateTime(2017, 11, 14),
-          startDateCancellationWithRefund: DateTime(2018, 1, 4),
-          deadlineCancellationWithRefund: DateTime(2018, 1, 17),
-          deadlineCancellationWithRefundNewStudent: DateTime(2018, 1, 31),
-          startDateCancellationWithoutRefundNewStudent: DateTime(2018, 2),
-          deadlineCancellationWithoutRefundNewStudent: DateTime(2018, 3, 14),
-          deadlineCancellationASEQ: DateTime(2018, 1, 31));
-
       test("right credentials", () async {
         const String username = "username";
         const String password = "password";
@@ -622,7 +627,7 @@ void main() {
       });
     });
 
-    group("getCourseEvaluations - ", () {
+    group("getCourseSummary - ", () {
       final Course course = Course(
           acronym: 'GEN101',
           group: '02',
@@ -766,6 +771,85 @@ void main() {
         expect(
             service.getCourseSummary(
                 username: username, password: password, course: course),
+            throwsA(isInstanceOf<ApiException>()),
+            reason:
+                "If the SignetsAPI return an error the service should return the error.");
+      });
+    });
+
+    group("getCoursesEvaluation - ", () {
+      const String courseEvaluationCompletedXML = '<EvaluationCours> '
+          '<Sigle>GEN101</Sigle> '
+          '<Groupe>01</Groupe> '
+          '<Enseignant>April, Alain</Enseignant> '
+          '<DateDebutEvaluation>2021-03-19T00:00:00</DateDebutEvaluation> '
+          '<DateFinEvaluation>2021-03-28T23:59:00</DateFinEvaluation> '
+          '<TypeEvaluation>Cours</TypeEvaluation> '
+          '<EstComplete>true</EstComplete> '
+          '</EvaluationCours>';
+
+      const String courseEvaluationNotCompletedXML = '<EvaluationCours> '
+          '<Sigle>GEN102</Sigle> '
+          '<Groupe>01</Groupe> '
+          '<Enseignant>April, Alain</Enseignant> '
+          '<DateDebutEvaluation>2021-03-19T00:00:00</DateDebutEvaluation> '
+          '<DateFinEvaluation>2021-03-28T23:59:00</DateFinEvaluation> '
+          '<TypeEvaluation>Cours</TypeEvaluation> '
+          '<EstComplete>false</EstComplete> '
+          '</EvaluationCours>';
+
+      final CourseEvaluation courseEvaluationCompleted = CourseEvaluation(
+          acronym: 'GEN101',
+          group: '01',
+          teacherName: 'April, Alain',
+          startAt: DateTime(2021, 03, 19),
+          endAt: DateTime(2021, 03, 28, 23, 59),
+          type: 'Cours',
+          isCompleted: true);
+
+      final CourseEvaluation courseEvaluationNotCompleted = CourseEvaluation(
+          acronym: 'GEN102',
+          group: '01',
+          teacherName: 'April, Alain',
+          startAt: DateTime(2021, 03, 19),
+          endAt: DateTime(2021, 03, 28, 23, 59),
+          type: 'Cours',
+          isCompleted: false);
+
+      test("right credentials", () async {
+        const String username = "username";
+        const String password = "password";
+
+        final String stubResponse = buildResponse(
+            Urls.readCourseEvaluationOperation,
+            courseEvaluationCompletedXML + courseEvaluationNotCompletedXML,
+            'liste');
+
+        HttpClientMock.stubPost(clientMock, Urls.signetsAPI, stubResponse);
+
+        final result = await service.getCoursesEvaluation(
+            username: username, password: password, session: session);
+
+        expect(result, isA<List<CourseEvaluation>>());
+        expect(result, containsAll([
+          courseEvaluationCompleted, courseEvaluationNotCompleted
+        ]));
+      });
+
+      // Currently SignetsAPI doesn't have a clear way to indicate which error
+      // occurred (no error code, no change of http code, just a text)
+      // so for now whatever the error we will throw a generic error
+      test("wrong credentials / an error occurred", () async {
+        const String username = "username";
+        const String password = "password";
+
+        final String stubResponse = buildErrorResponse(
+            Urls.readCourseEvaluationOperation, 'An error occurred', 'liste');
+
+        HttpClientMock.stubPost(clientMock, Urls.signetsAPI, stubResponse);
+
+        expect(service.getCoursesEvaluation(
+        username: username, password: password, session: session),
             throwsA(isInstanceOf<ApiException>()),
             reason:
                 "If the SignetsAPI return an error the service should return the error.");

@@ -18,6 +18,7 @@ import 'package:notredame/core/models/profile_student.dart';
 import 'package:notredame/core/models/program.dart';
 import 'package:notredame/core/models/course.dart';
 import 'package:notredame/core/models/course_summary.dart';
+import 'package:notredame/core/models/course_evaluation.dart';
 import 'package:notredame/core/models/schedule_activity.dart';
 
 class SignetsApi {
@@ -256,6 +257,38 @@ class SignetsApi {
     return responseBody
         .findAllElements("Programme")
         .map((node) => Program.fromXmlNode(node))
+        .toList();
+  }
+
+  /// Call the SignetsAPI to get the list of all [CourseEvaluation] for the [session]
+  /// of the student ([username]).
+  Future<List<CourseEvaluation>> getCoursesEvaluation(
+      {@required String username, @required String password, @required Session session}) async {
+    // Generate initial soap envelope
+    final body =
+    buildBasicSOAPBody(Urls.readCourseEvaluationOperation, username, password)
+        .buildDocument();
+
+    final operationContent = XmlBuilder();
+
+    operationContent.element("pSession", nest: () {
+      operationContent.text(session.shortName);
+    });
+
+    body
+        .findAllElements(Urls.readCourseEvaluationOperation,
+        namespace: Urls.signetsOperationBase)
+        .first
+        .children
+        .add(operationContent.buildFragment());
+
+    final responseBody =
+    await _sendSOAPRequest(body, Urls.readCourseEvaluationOperation);
+
+    /// Build and return the list of Program
+    return responseBody
+        .findAllElements("EvaluationCours")
+        .map((node) => CourseEvaluation.fromXmlNode(node))
         .toList();
   }
 
