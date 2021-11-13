@@ -17,6 +17,7 @@ import 'package:notredame/core/models/course.dart';
 import 'package:notredame/core/models/course_summary.dart';
 import 'package:notredame/core/models/session.dart';
 import 'package:notredame/core/models/schedule_activity.dart';
+import 'package:notredame/core/models/course_evaluation.dart';
 
 // UTILS
 import 'package:notredame/core/utils/cache_exception.dart';
@@ -354,6 +355,7 @@ class CourseRepository {
     }
 
     final List<Course> fetchedCourses = [];
+    final Map<String, List<CourseEvaluation>> fetchedCoursesEvaluations = {};
 
     try {
       final String password = await _userRepository.getPassword();
@@ -368,11 +370,19 @@ class CourseRepository {
       rethrow;
     }
 
+    try {
+      fetchedCoursesEvaluations.addAll(await _getCoursesEvaluations());
+    } on Exception catch (e) {
+      _logger.d("$tag - getCourses: $e during getCoursesEvaluations. Ignored");
+    }
+
     _courses.clear();
 
     // If there isn't the grade yet, will fetch the summary.
     // We don't do this for every course to avoid losing time.
     for (final course in fetchedCourses) {
+      course.evaluation =
+          _getEvaluationForCourse(course, fetchedCoursesEvaluations);
       if (course.grade == null) {
         try {
           await getCourseSummary(course);
@@ -451,5 +461,50 @@ class CourseRepository {
     }
 
     return course;
+  }
+
+  /// Retrieve the evaluation filtered by sessions.
+  Future<Map<String, List<CourseEvaluation>>> _getCoursesEvaluations() async {
+    final Map<String, List<CourseEvaluation>> evaluations = {};
+    List<CourseEvaluation> sessionEvaluations = [];
+
+    try {
+      final String password = await _userRepository.getPassword();
+
+      // If there is no sessions loaded, load them.
+      if (_sessions == null) {
+        await getSessions();
+      }
+
+      for (final Session session in _sessions) {
+        sessionEvaluations = await _signetsApi.getCoursesEvaluation(
+            username: _userRepository.monETSUser.universalCode,
+            password: password,
+            session: session);
+        evaluations.putIfAbsent(session.shortName, () => sessionEvaluations);
+        _logger.d(
+            "$tag - getCoursesEvaluations: fetched ${evaluations[session.shortName].length} "
+                "evaluations for session ${session.shortName}.");
+      }
+    } on Exception catch (e, stacktrace) {
+      _analyticsService.logError(tag, e.toString(), e, stacktrace);
+      _logger.e("$tag - getCourseSummary: Exception raised $e");
+      rethrow;
+    }
+
+    return evaluations;
+  }
+
+  /// Get the evaluation for a course or null if not found.
+  CourseEvaluation _getEvaluationForCourse(
+      Course course, Map<String, List<CourseEvaluation>> evaluations) {
+    if (evaluations.containsKey(course.session)) {
+      return evaluations[course.session].firstWhere(
+          (element) =>
+              element.acronym == course.acronym &&
+              element.group == course.group,
+          orElse: () => null);
+    }
+    return null;
   }
 }

@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:intl/intl.dart';
 import 'package:mockito/mockito.dart';
+import 'package:notredame/core/models/course_evaluation.dart';
 
 // SERVICES / MANAGER
 import 'package:notredame/core/services/analytics_service.dart';
@@ -43,6 +44,21 @@ void main() {
 
   CourseRepository manager;
 
+  final Session session = Session(
+      shortName: 'NOW',
+      name: 'now',
+      startDate: DateTime(2020),
+      endDate: DateTime.now().add(const Duration(days: 10)),
+      endDateCourses: DateTime(2020),
+      startDateRegistration: DateTime(2020),
+      deadlineRegistration: DateTime(2020),
+      startDateCancellationWithRefund: DateTime(2020),
+      deadlineCancellationWithRefund: DateTime(2020),
+      deadlineCancellationWithRefundNewStudent: DateTime(2020),
+      startDateCancellationWithoutRefundNewStudent: DateTime(2020),
+      deadlineCancellationWithoutRefundNewStudent: DateTime(2020),
+      deadlineCancellationASEQ: DateTime(2020));
+
   group("CourseRepository - ", () {
     setUp(() {
       // Setup needed services and managers
@@ -70,21 +86,6 @@ void main() {
     });
 
     group("getCoursesActivities - ", () {
-      final Session session = Session(
-          shortName: 'NOW',
-          name: 'now',
-          startDate: DateTime(2020),
-          endDate: DateTime.now().add(const Duration(days: 10)),
-          endDateCourses: DateTime(2020),
-          startDateRegistration: DateTime(2020),
-          deadlineRegistration: DateTime(2020),
-          startDateCancellationWithRefund: DateTime(2020),
-          deadlineCancellationWithRefund: DateTime(2020),
-          deadlineCancellationWithRefundNewStudent: DateTime(2020),
-          startDateCancellationWithoutRefundNewStudent: DateTime(2020),
-          deadlineCancellationWithoutRefundNewStudent: DateTime(2020),
-          deadlineCancellationASEQ: DateTime(2020));
-
       final CourseActivity activity = CourseActivity(
           courseGroup: "GEN101",
           courseName: "Generic course",
@@ -1224,7 +1225,15 @@ void main() {
           programCode: '999',
           grade: 'C+',
           numberOfCredits: 3,
-          title: 'Cours générique');
+          title: 'Cours générique',
+          evaluation: CourseEvaluation(
+              acronym: 'GEN101',
+              group: '02',
+              teacherName: 'April, Alain',
+              startAt: DateTime(2020),
+              endAt: DateTime(2020, 1, 1, 23, 59),
+              isCompleted: true,
+              type: 'Cours'));
       final Course courseWithGradeDuplicate = Course(
           acronym: 'GEN101',
           group: '02',
@@ -1259,7 +1268,7 @@ void main() {
                     teacherMessage: '',
                     ignore: false)
               ]));
-      final Course courseWithoutGradeAndSummary = Course(
+      final Course courseWithoutGradeAndSummaryAndEvaluation = Course(
           acronym: 'GEN101',
           group: '02',
           session: 'H2020',
@@ -1277,6 +1286,12 @@ void main() {
         UserRepositoryMock.stubGetPassword(
             userRepository as UserRepositoryMock, "password");
 
+        // Stub some sessions
+        SignetsApiMock.stubGetSessions(
+            signetsApi as SignetsApiMock, username, [session]);
+        CacheManagerMock.stubGet(cacheManager as CacheManagerMock,
+            CourseRepository.sessionsCacheKey, jsonEncode([]));
+
         // Stub to simulate that the user has an active internet connection
         NetworkingServiceMock.stubHasConnectivity(networkingService);
       });
@@ -1284,6 +1299,8 @@ void main() {
       test("Courses are loaded from cache and cache is updated", () async {
         SignetsApiMock.stubGetCourses(signetsApi as SignetsApiMock, username,
             coursesToReturn: [courseWithGrade]);
+        SignetsApiMock.stubGetCoursesEvaluation(
+            signetsApi as SignetsApiMock, username);
         CacheManagerMock.stubGet(cacheManager as CacheManagerMock,
             CourseRepository.coursesCacheKey, jsonEncode([courseWithGrade]));
 
@@ -1313,7 +1330,7 @@ void main() {
             jsonEncode([
               courseWithGrade,
               courseWithoutGrade,
-              courseWithoutGradeAndSummary
+              courseWithoutGradeAndSummaryAndEvaluation
             ]));
         final results = await manager.getCourses(fromCacheOnly: true);
 
@@ -1321,10 +1338,15 @@ void main() {
         expect(results, [
           courseWithGrade,
           courseWithoutGrade,
-          courseWithoutGradeAndSummary
+          courseWithoutGradeAndSummaryAndEvaluation
         ]);
-        expect(manager.courses,
-            [courseWithGrade, courseWithoutGrade, courseWithoutGradeAndSummary],
+        expect(
+            manager.courses,
+            [
+              courseWithGrade,
+              courseWithoutGrade,
+              courseWithoutGradeAndSummaryAndEvaluation
+            ],
             reason: 'The courses list should now be loaded.');
 
         verifyInOrder([cacheManager.get(CourseRepository.coursesCacheKey)]);
@@ -1350,6 +1372,8 @@ void main() {
             jsonEncode([courseWithGrade, courseWithGradeDuplicate]));
         SignetsApiMock.stubGetCourses(signetsApi as SignetsApiMock, username,
             coursesToReturn: [courseFetched, courseWithGradeDuplicate]);
+        SignetsApiMock.stubGetCoursesEvaluation(
+            signetsApi as SignetsApiMock, username);
 
         expect(manager.courses, isNull);
         final results = await manager.getCourses();
@@ -1479,6 +1503,8 @@ void main() {
 
         SignetsApiMock.stubGetCourses(signetsApi as SignetsApiMock, username,
             coursesToReturn: [courseFetched]);
+        SignetsApiMock.stubGetCoursesEvaluation(
+            signetsApi as SignetsApiMock, username);
         SignetsApiMock.stubGetCourseSummary(
             signetsApi as SignetsApiMock, username, courseFetched,
             summaryToReturn: summary);
@@ -1516,6 +1542,8 @@ void main() {
 
         SignetsApiMock.stubGetCourses(signetsApi as SignetsApiMock, username,
             coursesToReturn: [courseFetched]);
+        SignetsApiMock.stubGetCoursesEvaluation(
+            signetsApi as SignetsApiMock, username);
         SignetsApiMock.stubGetCourseSummaryException(
             signetsApi as SignetsApiMock, username, courseFetched);
         CacheManagerMock.stubGet(cacheManager as CacheManagerMock,
@@ -1545,6 +1573,8 @@ void main() {
           () async {
         SignetsApiMock.stubGetCourses(signetsApi as SignetsApiMock, username,
             coursesToReturn: [courseWithGrade]);
+        SignetsApiMock.stubGetCoursesEvaluation(
+            signetsApi as SignetsApiMock, username);
         CacheManagerMock.stubGet(cacheManager as CacheManagerMock,
             CourseRepository.coursesCacheKey, jsonEncode([courseWithGrade]));
         CacheManagerMock.stubUpdateException(
@@ -1612,6 +1642,140 @@ void main() {
 
         final coursesCache = await manager.getCourses();
         expect(coursesCache, [courseWithGrade]);
+      });
+
+      test("there is no evaluation for a course, should return null", () async {
+        final Course courseFetched = Course(
+            acronym: 'GEN101',
+            group: '02',
+            session: 'H2020',
+            grade: 'A+',
+            programCode: '999',
+            numberOfCredits: 3,
+            title: 'Cours générique');
+
+        SignetsApiMock.stubGetCourses(signetsApi as SignetsApiMock, username,
+            coursesToReturn: [courseFetched]);
+        SignetsApiMock.stubGetCoursesEvaluation(
+            signetsApi as SignetsApiMock, username,
+            session: session);
+        CacheManagerMock.stubGet(cacheManager as CacheManagerMock,
+            CourseRepository.coursesCacheKey, jsonEncode([]));
+
+        expect(manager.courses, isNull);
+        final results = await manager.getCourses();
+
+        expect(results, isInstanceOf<List<Course>>());
+        expect(results, [courseFetched]);
+        expect(manager.courses, [courseFetched],
+            reason: 'The courses list should now be loaded.');
+
+        verifyInOrder([
+          cacheManager.get(CourseRepository.coursesCacheKey),
+          userRepository.getPassword(),
+          userRepository.monETSUser,
+          signetsApi.getCourses(username: username, password: password),
+          signetsApi.getCoursesEvaluation(
+              username: username, password: password, session: session),
+          cacheManager.update(
+              CourseRepository.coursesCacheKey, jsonEncode([courseFetched]))
+        ]);
+      });
+
+      test("there is an evaluation for a course, course should be updated",
+          () async {
+        final Course courseFetched = Course(
+            acronym: 'GEN101',
+            group: '02',
+            session: 'NOW',
+            grade: 'A+',
+            programCode: '999',
+            numberOfCredits: 3,
+            title: 'Cours générique');
+
+        final CourseEvaluation evaluation = CourseEvaluation(
+            acronym: 'GEN101',
+            group: '02',
+            teacherName: 'April, Alain',
+            startAt: DateTime(2021, 03, 19),
+            endAt: DateTime(2021, 03, 28, 23, 59),
+            type: 'Cours',
+            isCompleted: true);
+
+        final Course updated = Course(
+            acronym: 'GEN101',
+            group: '02',
+            session: 'NOW',
+            grade: 'A+',
+            programCode: '999',
+            numberOfCredits: 3,
+            title: 'Cours générique',
+            evaluation: evaluation);
+
+        SignetsApiMock.stubGetCourses(signetsApi as SignetsApiMock, username,
+            coursesToReturn: [courseFetched]);
+        SignetsApiMock.stubGetCoursesEvaluation(
+            signetsApi as SignetsApiMock, username,
+            session: session, evaluationsToReturn: [evaluation]);
+        CacheManagerMock.stubGet(cacheManager as CacheManagerMock,
+            CourseRepository.coursesCacheKey, jsonEncode([]));
+
+        expect(manager.courses, isNull);
+        final results = await manager.getCourses();
+
+        expect(results, isInstanceOf<List<Course>>());
+        expect(results, [updated]);
+        expect(manager.courses, [updated],
+            reason: 'The courses list should now be loaded.');
+
+        verifyInOrder([
+          cacheManager.get(CourseRepository.coursesCacheKey),
+          userRepository.getPassword(),
+          userRepository.monETSUser,
+          signetsApi.getCourses(username: username, password: password),
+          signetsApi.getCoursesEvaluation(
+              username: username, password: password, session: session),
+          cacheManager.update(
+              CourseRepository.coursesCacheKey, jsonEncode([updated]))
+        ]);
+      });
+
+      test("_getCoursesEvaluations fails", () async {
+        final Course courseFetched = Course(
+            acronym: 'GEN101',
+            group: '02',
+            session: 'H2020',
+            grade: 'A+',
+            programCode: '999',
+            numberOfCredits: 3,
+            title: 'Cours générique');
+
+        SignetsApiMock.stubGetCourses(signetsApi as SignetsApiMock, username,
+            coursesToReturn: [courseFetched]);
+        SignetsApiMock.stubGetCoursesEvaluationException(
+            signetsApi as SignetsApiMock, username,
+            session: session);
+        CacheManagerMock.stubGet(cacheManager as CacheManagerMock,
+            CourseRepository.coursesCacheKey, jsonEncode([]));
+
+        expect(manager.courses, isNull);
+        final results = await manager.getCourses();
+
+        expect(results, isInstanceOf<List<Course>>());
+        expect(results, [courseFetched]);
+        expect(manager.courses, [courseFetched],
+            reason: 'The courses list should now be loaded.');
+
+        verifyInOrder([
+          cacheManager.get(CourseRepository.coursesCacheKey),
+          userRepository.getPassword(),
+          userRepository.monETSUser,
+          signetsApi.getCourses(username: username, password: password),
+          signetsApi.getCoursesEvaluation(
+              username: username, password: password, session: session),
+          cacheManager.update(
+              CourseRepository.coursesCacheKey, jsonEncode([courseFetched]))
+        ]);
       });
     });
 
