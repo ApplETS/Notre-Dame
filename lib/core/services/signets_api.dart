@@ -263,10 +263,12 @@ class SignetsApi {
   /// Call the SignetsAPI to get the list of all [CourseEvaluation] for the [session]
   /// of the student ([username]).
   Future<List<CourseEvaluation>> getCoursesEvaluation(
-      {@required String username, @required String password, @required Session session}) async {
+      {@required String username,
+      @required String password,
+      @required Session session}) async {
     // Generate initial soap envelope
-    final body =
-    buildBasicSOAPBody(Urls.readCourseEvaluationOperation, username, password)
+    final body = buildBasicSOAPBody(
+            Urls.readCourseEvaluationOperation, username, password)
         .buildDocument();
 
     final operationContent = XmlBuilder();
@@ -277,13 +279,13 @@ class SignetsApi {
 
     body
         .findAllElements(Urls.readCourseEvaluationOperation,
-        namespace: Urls.signetsOperationBase)
+            namespace: Urls.signetsOperationBase)
         .first
         .children
         .add(operationContent.buildFragment());
 
     final responseBody =
-    await _sendSOAPRequest(body, Urls.readCourseEvaluationOperation);
+        await _sendSOAPRequest(body, Urls.readCourseEvaluationOperation);
 
     /// Build and return the list of Program
     return responseBody

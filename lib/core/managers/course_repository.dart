@@ -484,7 +484,7 @@ class CourseRepository {
         evaluations.putIfAbsent(session.shortName, () => sessionEvaluations);
         _logger.d(
             "$tag - getCoursesEvaluations: fetched ${evaluations[session.shortName].length} "
-                "evaluations for session ${session.shortName}.");
+            "evaluations for session ${session.shortName}.");
       }
     } on Exception catch (e, stacktrace) {
       _analyticsService.logError(tag, e.toString(), e, stacktrace);

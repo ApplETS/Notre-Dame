@@ -831,9 +831,10 @@ void main() {
             username: username, password: password, session: session);
 
         expect(result, isA<List<CourseEvaluation>>());
-        expect(result, containsAll([
-          courseEvaluationCompleted, courseEvaluationNotCompleted
-        ]));
+        expect(
+            result,
+            containsAll(
+                [courseEvaluationCompleted, courseEvaluationNotCompleted]));
       });
 
       // Currently SignetsAPI doesn't have a clear way to indicate which error
@@ -848,8 +849,9 @@ void main() {
 
         HttpClientMock.stubPost(clientMock, Urls.signetsAPI, stubResponse);
 
-        expect(service.getCoursesEvaluation(
-        username: username, password: password, session: session),
+        expect(
+            service.getCoursesEvaluation(
+                username: username, password: password, session: session),
             throwsA(isInstanceOf<ApiException>()),
             reason:
                 "If the SignetsAPI return an error the service should return the error.");
