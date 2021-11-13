@@ -30,7 +30,7 @@ class GradeNotAvailable extends StatelessWidget {
           isEvaluationPeriod
               ? AppIntl.of(context)
                   .grades_error_course_evaluations_not_completed
-              : AppIntl.of(context).grades_msg_no_grades,
+              : AppIntl.of(context).grades_msg_no_grade,
           textAlign: TextAlign.center,
           softWrap: true,
           style: isEvaluationPeriod

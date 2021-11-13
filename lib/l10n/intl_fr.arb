@@ -67,7 +67,8 @@
   "schedule_no_event": "Aucun évènement à l'horaire.",
 
   "grades_title": "Notes",
-  "grades_msg_no_grades": "Aucune note disponible",
+  "grades_msg_no_grades": "Aucune note disponible.\nTirez pour rafraichir",
+  "grades_msg_no_grade": "Aucune note disponible",
   "grades_current_rating": "Votre note",
   "grades_average": "Moyenne",
   "grades_grade_in_percentage": "{grade} %",

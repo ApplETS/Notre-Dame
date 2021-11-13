@@ -260,8 +260,7 @@ void main() {
         tester.binding.window.physicalSizeTestValue = const Size(800, 1410);
 
         await tester.pumpWidget(localizedWidget(
-            child: FeatureDiscovery(
-                child: GradesDetailsView(course: courseWithoutSummary))));
+            child: FeatureDiscovery(child: GradesDetailsView(course: course))));
         await tester.pumpAndSettle();
 
         await expectLater(
