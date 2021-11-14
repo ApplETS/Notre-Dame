@@ -4,7 +4,6 @@ import 'dart:convert';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:intl/intl.dart';
 import 'package:mockito/mockito.dart';
-import 'package:notredame/core/models/course_evaluation.dart';
 
 // SERVICES / MANAGER
 import 'package:notredame/core/services/analytics_service.dart';
@@ -21,6 +20,7 @@ import 'package:notredame/core/models/mon_ets_user.dart';
 import 'package:notredame/core/models/course.dart';
 import 'package:notredame/core/models/course_summary.dart';
 import 'package:notredame/core/models/evaluation.dart' as model;
+import 'package:notredame/core/models/course_evaluation.dart';
 
 // CONSTANTS
 import 'package:notredame/core/constants/activity_code.dart';
