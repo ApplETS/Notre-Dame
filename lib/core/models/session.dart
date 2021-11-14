@@ -169,4 +169,21 @@ class Session {
       startDateCancellationWithoutRefundNewStudent.hashCode ^
       deadlineCancellationWithoutRefundNewStudent.hashCode ^
       deadlineCancellationASEQ.hashCode;
+
+  @override
+  String toString() {
+    return 'Session{shortName: $shortName, '
+        'name: $name, '
+        'startDate: $startDate, '
+        'endDate: $endDate, '
+        'endDateCourses: $endDateCourses, '
+        'startDateRegistration: $startDateRegistration, '
+        'deadlineRegistration: $deadlineRegistration, '
+        'startDateCancellationWithRefund: $startDateCancellationWithRefund, '
+        'deadlineCancellationWithRefund: $deadlineCancellationWithRefund, '
+        'deadlineCancellationWithRefundNewStudent: $deadlineCancellationWithRefundNewStudent, '
+        'startDateCancellationWithoutRefundNewStudent: $startDateCancellationWithoutRefundNewStudent, '
+        'deadlineCancellationWithoutRefundNewStudent: $deadlineCancellationWithoutRefundNewStudent, '
+        'deadlineCancellationASEQ: $deadlineCancellationASEQ}';
+  }
 }

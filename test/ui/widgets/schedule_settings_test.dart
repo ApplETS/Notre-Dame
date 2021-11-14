@@ -1,6 +1,7 @@
 // FLUTTER / DART / THIRD-PARTIES
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:intl/intl.dart';
 import 'package:mockito/mockito.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -10,6 +11,10 @@ import 'package:notredame/core/managers/settings_manager.dart';
 
 // CONSTANTS
 import 'package:notredame/core/constants/preferences_flags.dart';
+import 'package:notredame/core/constants/activity_code.dart';
+
+// MODELS
+import 'package:notredame/core/models/schedule_activity.dart';
 
 // WIDGET
 import 'package:notredame/ui/widgets/schedule_settings.dart';
@@ -31,6 +36,45 @@ void main() {
     PreferencesFlag.scheduleSettingsStartWeekday: StartingDayOfWeek.monday,
     PreferencesFlag.scheduleSettingsShowTodayBtn: true
   };
+
+  final List<ScheduleActivity> classOneWithLaboratoryABscheduleActivities = [
+    ScheduleActivity(
+        courseAcronym: "GEN101",
+        courseGroup: "01",
+        courseTitle: "Generic Course",
+        dayOfTheWeek: 1,
+        day: "Lundi",
+        startTime: DateFormat("hh:mm").parse("08:30"),
+        endTime: DateFormat("hh:mm").parse("12:00"),
+        activityCode: ActivityCode.lectureCourse,
+        isPrincipalActivity: true,
+        activityLocation: "En ligne",
+        name: "Activité de cours"),
+    ScheduleActivity(
+        courseAcronym: "GEN101",
+        courseGroup: "01",
+        courseTitle: "Generic Course",
+        dayOfTheWeek: 2,
+        day: "Mardi",
+        startTime: DateFormat("hh:mm").parse("13:30"),
+        endTime: DateFormat("hh:mm").parse("15:00"),
+        activityCode: ActivityCode.labGroupA,
+        isPrincipalActivity: true,
+        activityLocation: "D-4001",
+        name: "Laboratoire (Groupe A)"),
+    ScheduleActivity(
+        courseAcronym: "GEN101",
+        courseGroup: "01",
+        courseTitle: "Generic Course",
+        dayOfTheWeek: 2,
+        day: "Mardi",
+        startTime: DateFormat("hh:mm").parse("15:00"),
+        endTime: DateFormat("hh:mm").parse("16:30"),
+        activityCode: ActivityCode.labGroupB,
+        isPrincipalActivity: true,
+        activityLocation: "D-4002",
+        name: "Laboratoire (Groupe B)"),
+  ];
 
   group("ScheduleSettings - ", () {
     setUp(() async {
@@ -213,6 +257,112 @@ void main() {
       });
     });
 
+    group("ScheduleActivities", () {
+      testWidgets(
+          "Should display activity selection section when a course has activities",
+          (WidgetTester tester) async {
+        SettingsManagerMock.stubGetScheduleSettings(
+            settingsManager as SettingsManagerMock,
+            toReturn: settings);
+        CourseRepositoryMock.stubGetScheduleActivities(courseRepositoryMock,
+            toReturn: classOneWithLaboratoryABscheduleActivities);
+
+        const scheduleSettings = ScheduleSettings(showHandle: false);
+
+        await tester.pumpWidget(localizedWidget(child: scheduleSettings));
+        await tester.pumpAndSettle();
+
+        final titleLabo =
+            find.textContaining(intl.schedule_select_course_activity);
+        await tester.dragUntilVisible(
+            titleLabo,
+            find.byKey(const ValueKey("SettingsScrollingArea")),
+            const Offset(0, -250));
+        expect(titleLabo, findsOneWidget);
+
+        final laboA = find.textContaining(intl.course_activity_group_a);
+        await tester.dragUntilVisible(
+            laboA,
+            find.byKey(const ValueKey("SettingsScrollingArea")),
+            const Offset(0, -250));
+        expect(laboA, findsOneWidget);
+
+        final laboB = find.textContaining(intl.course_activity_group_b);
+        await tester.dragUntilVisible(
+            laboB,
+            find.byKey(const ValueKey("SettingsScrollingArea")),
+            const Offset(0, -250));
+        expect(laboB, findsOneWidget);
+      });
+
+      testWidgets(
+          "When a settings laboratory is already selected, verify that it is in fact preselected",
+          (WidgetTester tester) async {
+        SettingsManagerMock.stubGetScheduleSettings(
+            settingsManager as SettingsManagerMock,
+            toReturn: settings);
+        CourseRepositoryMock.stubGetScheduleActivities(courseRepositoryMock,
+            toReturn: classOneWithLaboratoryABscheduleActivities);
+        // preselect the laboB
+        SettingsManagerMock.stubGetDynamicString(
+            settingsManager as SettingsManagerMock,
+            DynamicPreferencesFlag(
+                groupAssociationFlag:
+                    PreferencesFlag.scheduleSettingsLaboratoryGroup,
+                uniqueKey: "GEN101"),
+            toReturn: ActivityCode.labGroupB);
+
+        const scheduleSettings = ScheduleSettings(showHandle: false);
+
+        await tester.pumpWidget(localizedWidget(child: scheduleSettings));
+        await tester.pumpAndSettle();
+
+        final laboB =
+            find.widgetWithText(ListTile, intl.course_activity_group_b);
+        await tester.dragUntilVisible(
+            laboB,
+            find.byKey(const ValueKey("SettingsScrollingArea")),
+            const Offset(0, -250));
+        expect(laboB, findsOneWidget);
+
+        // check if laboB is selected
+        expect(
+            tester.widget(laboB),
+            isA<ListTile>()
+                .having((source) => source.selected, 'selected', isTrue),
+            reason:
+                'The settings says laboB is the current labo, the UI should reflet that.');
+      });
+
+      testWidgets(
+          "if there is only a laboA (no labo b) the options should not appear on screen",
+          (WidgetTester tester) async {
+        SettingsManagerMock.stubGetScheduleSettings(
+            settingsManager as SettingsManagerMock,
+            toReturn: settings);
+        final courseWithOnlyLabA = List<ScheduleActivity>.from(
+            classOneWithLaboratoryABscheduleActivities);
+        courseWithOnlyLabA.removeWhere(
+            (element) => element.activityCode == ActivityCode.labGroupB);
+        CourseRepositoryMock.stubGetScheduleActivities(courseRepositoryMock,
+            toReturn: courseWithOnlyLabA);
+
+        const scheduleSettings = ScheduleSettings(showHandle: false);
+
+        await tester.pumpWidget(localizedWidget(child: scheduleSettings));
+        await tester.pumpAndSettle();
+
+        final titleLabo =
+            find.textContaining(intl.schedule_select_course_activity);
+        expect(
+            () async => tester.dragUntilVisible(
+                titleLabo,
+                find.byKey(const ValueKey("SettingsScrollingArea")),
+                const Offset(0, -250)),
+            throwsA(const TypeMatcher<StateError>()));
+      });
+    });
+
     group("interactions - ", () {
       testWidgets("onChange calendarFormat", (WidgetTester tester) async {
         SettingsManagerMock.stubGetScheduleSettings(
@@ -276,6 +426,38 @@ void main() {
             isA<Switch>().having((source) => source.value, 'value', isFalse),
             reason:
                 "the settings says that the showTodayBtn is enabled, the UI should reflet that.");
+      });
+    });
+
+    group("golden - ", () {
+      testWidgets(
+          "Should display activity selection section when a course has activities",
+          (WidgetTester tester) async {
+        SettingsManagerMock.stubGetScheduleSettings(
+            settingsManager as SettingsManagerMock,
+            toReturn: settings);
+        CourseRepositoryMock.stubGetScheduleActivities(courseRepositoryMock,
+            toReturn: classOneWithLaboratoryABscheduleActivities);
+
+        const scheduleSettings = ScheduleSettings(showHandle: false);
+
+        await tester.pumpWidget(localizedWidget(child: scheduleSettings));
+        await tester.pumpAndSettle();
+
+        final laboB = find.textContaining(intl.course_activity_group_b);
+        await tester.dragUntilVisible(
+            laboB,
+            find.byKey(const ValueKey("SettingsScrollingArea")),
+            const Offset(0, -250));
+        expect(laboB, findsOneWidget);
+
+        // generate a golden file
+        tester.binding.window.physicalSizeTestValue = const Size(800, 1410);
+
+        await tester.pumpAndSettle();
+
+        await expectLater(find.byType(ScheduleSettings),
+            matchesGoldenFile(goldenFilePath("scheduleSettingsView_1")));
       });
     });
   });
