@@ -65,6 +65,10 @@
   "schedule_settings_starting_weekday_saturday": "Samedi",
   "schedule_settings_starting_weekday_sunday": "Dimanche",
   "schedule_no_event": "Aucun évènement à l'horaire.",
+  "schedule_select_course_activity": "Sélectionner le groupe du laboratoire",
+  "course_activity_group_a": "Groupe A",
+  "course_activity_group_b": "Groupe B",
+  "course_activity_group_both": "Les deux groupes",
 
   "grades_title": "Notes",
   "grades_msg_no_grades": "Aucune note disponible\nTirer pour recharger",
