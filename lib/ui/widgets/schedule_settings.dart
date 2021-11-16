@@ -131,11 +131,7 @@ class _ScheduleSettingsState extends State<ScheduleSettings> {
             fontWeight: FontWeight.bold,
           ),
         ),
-      ));
-
-
-
-      tiles.add(ListTile(
+      ));tiles.add(ListTile(
         selected:
             model.selectedScheduleActivity[courseActivitiesAcronym] == null,
         selectedTileColor: selectedColor,
