@@ -135,7 +135,6 @@ class _ScheduleSettingsState extends State<ScheduleSettings> {
 
 
 
-
       tiles.add(ListTile(
         selected:
             model.selectedScheduleActivity[courseActivitiesAcronym] == null,
