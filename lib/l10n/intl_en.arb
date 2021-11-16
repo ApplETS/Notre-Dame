@@ -67,9 +67,14 @@
   "schedule_settings_starting_weekday_saturday": "Saturday",
   "schedule_settings_starting_weekday_sunday": "Sunday",
   "schedule_error_no_event_found": "No event found",
+  "schedule_select_course_activity": "Select the group of the labo",
+  "course_activity_group_a": "Group A",
+  "course_activity_group_b": "Group B",
+  "course_activity_group_both": "Both groups",
 
   "grades_title": "Grades",
-  "grades_msg_no_grades": "No grade available\nPull to refresh.",
+  "grades_msg_no_grades": "No grade available\nPull to refresh",
+  "grades_msg_no_grade": "No grade available",
   "grades_current_rating": "Your grade",
   "grades_average": "Average",
   "grades_grade_in_percentage": "{grade} %",
@@ -107,6 +112,12 @@
   "@grades_group_number": {
     "placeholders": {
       "number": {}
+    }
+  },
+  "grades_teacher": "Professor: {teacherName}",
+  "@grades_teacher": {
+    "placeholders": {
+      "teacherName": {}
     }
   },
   "grades_error_course_evaluations_not_completed": "During the evaluation period, you will not be able access your grades if you haven't completed your evaluations.",

@@ -123,7 +123,7 @@ class ScheduleSettingsViewModel
     _showTodayBtn =
         settings[PreferencesFlag.scheduleSettingsShowTodayBtn] as bool;
 
-    scheduleActivitiesByCourse.clear();
+    _scheduleActivitiesByCourse.clear();
     final schedulesActivities = await _courseRepository.getScheduleActivities();
     for (final activity in schedulesActivities) {
       if (activity.activityCode == ActivityCode.labGroupA ||
@@ -140,6 +140,10 @@ class ScheduleSettingsViewModel
         }
       }
     }
+    // Check if there is only one activity for each map, remove the map
+    _scheduleActivitiesByCourse.removeWhere((key, value) => value.length == 1);
+
+    // Preselect the right schedule activity
     for (final courseKey in _scheduleActivitiesByCourse.keys) {
       final scheduleActivityCode = await _settingsManager.getDynamicString(
           DynamicPreferencesFlag(

@@ -4,6 +4,7 @@ import 'package:notredame/core/managers/course_repository.dart';
 
 // MODELS
 import 'package:notredame/core/models/course_activity.dart';
+import 'package:notredame/core/models/course_evaluation.dart';
 import 'package:notredame/core/models/course_summary.dart';
 import 'package:notredame/core/models/profile_student.dart';
 import 'package:notredame/core/models/program.dart';
@@ -138,6 +139,30 @@ class SignetsApiMock extends Mock implements SignetsApi {
       {ApiException exceptionToThrow = signetsException}) {
     when(mock.getCourseSummary(
             username: username, course: course, password: anyNamed("password")))
+        .thenThrow(exceptionToThrow);
+  }
+
+  /// Stub the answer of the [getCoursesEvaluation] when the [username] and [session] is used.
+  /// If [session] is null any session will be accepted.
+  static void stubGetCoursesEvaluation(SignetsApiMock mock, String username,
+      {Session session,
+      List<CourseEvaluation> evaluationsToReturn = const []}) {
+    when(mock.getCoursesEvaluation(
+            username: username,
+            session: session ?? anyNamed('session'),
+            password: anyNamed("password")))
+        .thenAnswer((_) async => evaluationsToReturn);
+  }
+
+  /// Throw [exceptionToThrow] when [getCoursesEvaluation] with the [username] and [session] is used.
+  /// If [session] is null any session will be accepted.
+  static void stubGetCoursesEvaluationException(
+      SignetsApiMock mock, String username,
+      {Session session, ApiException exceptionToThrow = signetsException}) {
+    when(mock.getCoursesEvaluation(
+            username: username,
+            session: session ?? anyNamed('session'),
+            password: anyNamed("password")))
         .thenThrow(exceptionToThrow);
   }
 }
