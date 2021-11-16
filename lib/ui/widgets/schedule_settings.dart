@@ -157,9 +157,7 @@ class _ScheduleSettingsState extends State<ScheduleSettings> {
         tiles.add(const Divider(endIndent: 50, thickness: 1.5));
       }
     }
-
     tiles.add(const Divider(thickness: 1));
-
     return tiles;
   }
 
