@@ -95,7 +95,7 @@ jobs:
       - name: Commit formatted files
         uses: stefanzweifel/git-auto-commit-action@v4
         with:
-          file_pattern: test/*.dart lib/*.dart
+          file_pattern: *.dart
           commit_user_name: github-actions[bot]
           commit_user_email: 41898282+github-actions[bot]@users.noreply.github.com
           commit_message: "Apply format."
