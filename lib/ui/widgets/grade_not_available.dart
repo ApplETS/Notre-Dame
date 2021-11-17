@@ -8,7 +8,11 @@ import 'package:notredame/ui/utils/app_theme.dart';
 class GradeNotAvailable extends StatelessWidget {
   final VoidCallback onPressed;
 
-  const GradeNotAvailable({Key key, this.onPressed}) : super(key: key);
+  final bool isEvaluationPeriod;
+
+  const GradeNotAvailable(
+      {Key key, this.onPressed, this.isEvaluationPeriod = false})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -23,9 +27,15 @@ class GradeNotAvailable extends StatelessWidget {
         ),
         const SizedBox(height: 25),
         Text(
-          AppIntl.of(context).grades_msg_no_grades.split('\n')[0],
+          isEvaluationPeriod
+              ? AppIntl.of(context)
+                  .grades_error_course_evaluations_not_completed
+              : AppIntl.of(context).grades_msg_no_grade,
           textAlign: TextAlign.center,
-          style: Theme.of(context).textTheme.headline6,
+          softWrap: true,
+          style: isEvaluationPeriod
+              ? Theme.of(context).textTheme.bodyText1
+              : Theme.of(context).textTheme.headline6,
         ),
         const SizedBox(height: 25),
         ElevatedButton(

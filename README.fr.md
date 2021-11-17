@@ -35,11 +35,12 @@ _Note: Ce guide est aussi disponible en: [English](https://github.com/ApplETS/No
 
 ## Avant de démarrer le code
 
-- Pour avoir accès a certaines fonctionnalités vous allez avoir besoin du certificat de SignetsAPI, ces fichiers sont encrypté.
-  Pour les décrypter vous allez devoir exécuter le script `env_variables.sh` (disponible uniquement sur le Google Drive du club), puis exécuter les commandes suivantes:
+- Pour avoir accès a certaines fonctionnalités vous allez avoir besoin du certificat de SignetsAPI, la clef Google Drive., etc. , ces fichiers sont encrypté.
+  Pour les décrypter vous allez devoir exécuter le script `env_variables.sh` (disponible uniquement sur le Google Drive du club), 
+- puis exécuter les commandes suivantes à la racine du projet:
 ```bash
-chmod +x ./scripts/decrypt.sh
-./scripts/decrypt.sh
+chmod +x ./env_variables.sh
+./env_variables.sh
 ```
 
 ## Démarrer le code

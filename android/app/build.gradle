@@ -43,6 +43,7 @@ android {
 
     lintOptions {
         disable 'InvalidPackage'
+        checkDependencies true
     }
 
     defaultConfig {
@@ -70,12 +71,17 @@ android {
             minifyEnabled true
             shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            firebaseCrashlytics {
+                mappingFileUploadEnabled false
+            }
         }
         debug {
             signingConfig signingConfigs.debug
             minifyEnabled true
             shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            ext.enableCrashlytics = false
+            ext.alwaysUpdateBuildId = false
         }
     }
 

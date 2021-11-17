@@ -89,8 +89,19 @@ jobs:
       # Get flutter dependencies.
       - run: flutter pub get
 
-      # Check the format of the code and check if the code has any errors/warnings
-      - run: flutter format --set-exit-if-changed .
+      # Check the format of the code and commit the formatted files.
+      - name: Format files
+        run: flutter format lib test
+      - name: Commit formatted files
+        uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          file_pattern: "*.dart"
+          commit_user_name: github-actions[bot]
+          commit_user_email: 41898282+github-actions[bot]@users.noreply.github.com
+          commit_message: "Apply format."
+          add_options: '-u'
+
+      # Check if the code has any errors/warnings
       - run: flutter analyze
 
       # Retrieve the last commit message and check if the commit message contains [CI UPDATE GOLDENS].
