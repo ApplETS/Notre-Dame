@@ -50,6 +50,7 @@ void main() {
           setupInternalInfoServiceMock() as InternalInfoServiceMock;
       sirenFlutterServiceMock =
           setupSirenFlutterServiceMock() as SirenFlutterServiceMock;
+      setupAnalyticsServiceMock();
       setupLogger();
 
       viewModel = StartUpViewModel();
