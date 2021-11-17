@@ -267,7 +267,7 @@ jobs:
 
       - name: Rename Android build
         if: matrix.target == 'Android'
-        run: mv app-release.${{ matrix.asset_extension }} ${{ github.workspace }}/notre_dame_${{ matrix.target }}.${{ matrix.asset_extension }}
+        run: mv app-prod-release.${{ matrix.asset_extension }} ${{ github.workspace }}/notre_dame_${{ matrix.target }}.${{ matrix.asset_extension }}
         working-directory: ${{ matrix.build_path }}
 
       - name: Compress iOS build
