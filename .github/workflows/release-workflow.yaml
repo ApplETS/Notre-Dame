@@ -68,7 +68,7 @@ jobs:
           ENCRYPTED_IOS_MATCHFILE_PASSWORD: ${{ secrets.ENCRYPTED_IOS_MATCHFILE_PASSWORD }}
 
       - name: Build the application
-        run: flutter build -v ${{ matrix.build_target }} ${{ matrix.build_args }} --build-number=$(date '+%s') --release --dart-define=GH_API_TOKEN=${{ secrets.GH_API_TOKEN }}
+        run: flutter build -v ${{ matrix.build_target }} ${{ matrix.build_args }} --build-number=$(date '+%s') --release --dart-define=GH_API_TOKEN=${{ secrets.GH_API_TOKEN }} -t lib/main_prod.dart --flavor=prod
         env:
           MAPS_API_KEY: ${{ secrets.MAPS_API_KEY }}
 

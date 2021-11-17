@@ -252,7 +252,7 @@ jobs:
 
       # Build the application.
       - name: Build the application
-        run: flutter build -v ${{ matrix.build_target }} ${{ matrix.build_args }} --release --dart-define=GH_API_TOKEN=${{ secrets.GH_API_TOKEN }}
+        run: flutter build -v ${{ matrix.build_target }} ${{ matrix.build_args }} --release --dart-define=GH_API_TOKEN=${{ secrets.GH_API_TOKEN }} -t lib/main_prod.dart --flavor=prod
 
       - name: Rename Android build
         if: matrix.target == 'Android'
