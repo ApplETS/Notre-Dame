@@ -27,7 +27,7 @@ class ProfileView extends StatelessWidget {
                     ListTile(
                       title: Text(
                         AppIntl.of(context).profile_student_status_title,
-                        style: TextStyle(color: AppTheme.etsLightRed),
+                        style: const TextStyle(color: AppTheme.etsLightRed),
                       ),
                     ),
                     ListTile(
@@ -42,7 +42,7 @@ class ProfileView extends StatelessWidget {
                     ListTile(
                       title: Text(
                         AppIntl.of(context).profile_personal_information_title,
-                        style: TextStyle(color: AppTheme.etsLightRed),
+                        style: const TextStyle(color: AppTheme.etsLightRed),
                       ),
                     ),
                     ListTile(

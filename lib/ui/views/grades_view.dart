@@ -96,7 +96,7 @@ class _GradesViewState extends State<GradesView> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Text(sessionName,
-                style: TextStyle(
+                style: const TextStyle(
                   fontSize: 25,
                   color: AppTheme.etsLightRed,
                 )),

@@ -6,8 +6,8 @@ class AppTheme {
   AppTheme._();
 
   // ETS colors
-  static Color etsLightRed = const Color(0xffef3e45);
-  static Color etsDarkRed = const Color(0xffbf311a);
+  static const Color etsLightRed = Color(0xffef3e45);
+  static const Color etsDarkRed = Color(0xffbf311a);
 
   static const Color etsLightGrey = Color(0xff807f83);
   static const Color etsDarkGrey = Color(0xff636467);
@@ -18,8 +18,8 @@ class AppTheme {
   static const Color lightThemeBackground = Color(0xfffafafa);
 
   // App|ETS colors
-  static Color appletsPurple = const Color(0xff19375f);
-  static Color appletsDarkPurple = const Color(0xff122743);
+  static const Color appletsPurple = Color(0xff19375f);
+  static const Color appletsDarkPurple = Color(0xff122743);
 
   // Grade colors
   static const Color gradeFailureMin = Color(0xffd32f2f);
