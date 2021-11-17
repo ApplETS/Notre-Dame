@@ -45,8 +45,7 @@ class StartUpViewModel extends BaseViewModel {
       locator<InternalInfoService>();
 
   /// Internal Info Service
-  final AnalyticsService _analyticsService =
-      locator<AnalyticsService>();
+  final AnalyticsService _analyticsService = locator<AnalyticsService>();
 
   /// Try to silent authenticate the user then redirect to [LoginView] or [DashboardView]
   Future handleStartUp() async {
@@ -138,7 +137,6 @@ class StartUpViewModel extends BaseViewModel {
   Future<UpdateCode> checkUpdateStatus() async {
     try {
       if (await _sirenFlutterService.updateIsAvailable()) {
-        
         final latestVersion = await _sirenFlutterService.storeVersion;
         final localVersion = await _sirenFlutterService.localVersion;
 

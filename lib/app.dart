@@ -28,7 +28,6 @@ import 'package:notredame/core/managers/settings_manager.dart';
 // VIEW
 import 'package:notredame/ui/views/startup_view.dart';
 
-
 Future<Widget> initializeApp(AppConfig appConfig) async {
   setupLocator();
   WidgetsFlutterBinding.ensureInitialized();
@@ -43,10 +42,9 @@ Future<Widget> initializeApp(AppConfig appConfig) async {
   if (kDebugMode) {
     FlutterConfig.loadEnvVariables();
   }
-  
+
   return ETSMobile(settingsManager);
 }
-
 
 class ETSMobile extends StatelessWidget {
   /// Manage the settings

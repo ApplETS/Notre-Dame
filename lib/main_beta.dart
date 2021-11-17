@@ -13,13 +13,11 @@ import 'package:notredame/core/utils/app_config.dart';
 /// application.
 Future<void> main() async {
   final betaAppConfig = AppConfig(appName: 'ÉTSMobile Bêta', flavor: 'beta');
-    
+
   final etsMobile = await initializeApp(betaAppConfig);
-  
+
   runZonedGuarded(() {
-    runApp(
-      etsMobile
-    );
+    runApp(etsMobile);
   }, (error, stackTrace) {
     FirebaseCrashlytics.instance.recordError(error, stackTrace);
   });

@@ -44,9 +44,14 @@ chmod +x ./scripts/decrypt.sh
 
 ## Démarrer le code
 
-- Pour générer les classes pour l'internationalisation, exécuter les commandes suivantes:
-```bash
+- Pour générer les classes pour l'internationalisation, exécuter la commande suivante:
+```sh
 flutter pub get
+```
+
+- Une fois les dépendances correctement importées, il est possible de lancer l'application en mode dev en exécutant la commande suivante:
+```sh
+$ flutter run --debug -t lib/main_dev.dart --flavor=dev
 ```
 
 ## Ajouter une variable d'environnement pour une API_KEY

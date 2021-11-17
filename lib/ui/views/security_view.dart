@@ -58,8 +58,7 @@ class _SecurityViewState extends State<SecurityView> {
                   padding: const EdgeInsets.all(8.0),
                   child: Text(
                     AppIntl.of(context).security_reach_security,
-                    style: TextStyle(
-                        color: AppTheme.etsLightRed, fontSize: 24),
+                    style: TextStyle(color: AppTheme.etsLightRed, fontSize: 24),
                   ),
                 ),
                 Card(
@@ -95,8 +94,7 @@ class _SecurityViewState extends State<SecurityView> {
                   padding: const EdgeInsets.all(8.0),
                   child: Text(
                     AppIntl.of(context).security_emergency_procedures,
-                    style: TextStyle(
-                        color: AppTheme.etsLightRed, fontSize: 24),
+                    style: TextStyle(color: AppTheme.etsLightRed, fontSize: 24),
                   ),
                 ),
                 SingleChildScrollView(

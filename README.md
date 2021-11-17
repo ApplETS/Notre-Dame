@@ -50,9 +50,13 @@ chmod +x ./scripts/decrypt.sh
 
 - After cloning the repo, you will have to get the packages and generate the l10n classes. To do that run the following
   command:
-
-```
+```sh
 flutter pub get
+```
+
+- Once the packages have successfully been imported, you can simply launch the app in dev mode by calling this command:
+```sh
+$ flutter run --debug -t lib/main_dev.dart --flavor=dev
 ```
 
 ## Add environment variable for API_KEY

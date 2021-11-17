@@ -12,10 +12,10 @@ import 'package:notredame/core/utils/app_config.dart';
 /// Here is the entry point for the beta (ca.etsmtl.applets.etsmobile.beta)
 /// application.
 Future<void> main() async {
-  final prodAppConfig =
-      AppConfig(appName: 'ÉTSMobile Production', flavor: 'prod');
+  final devAppConfig =
+      AppConfig(appName: 'ÉTSMobile Développement', flavor: 'dev');
 
-  final etsMobile = await initializeApp(prodAppConfig);
+  final etsMobile = await initializeApp(devAppConfig);
 
   runZonedGuarded(() {
     runApp(etsMobile);
