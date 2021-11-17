@@ -2,13 +2,11 @@ import 'package:flutter/material.dart';
 
 /// Contains all the colors and theme of the ETS, App|ETS and specific to the app
 class AppTheme {
-  static String flavorName;
   AppTheme._();
 
   // ETS colors
   static const Color etsLightRed = Color(0xffef3e45);
   static const Color etsDarkRed = Color(0xffbf311a);
-
   static const Color etsLightGrey = Color(0xff807f83);
   static const Color etsDarkGrey = Color(0xff636467);
   static const Color etsBlack = Color(0xff2e2a25);
@@ -29,13 +27,13 @@ class AppTheme {
   static const Color gradeGoodMax = Color(0xff43a047);
 
   // Primary
-  static Color primary = etsLightRed;
+  static const Color primary = etsLightRed;
 
   // Primary dark
   static const Color primaryDark = Color(0xff121212);
 
   // Accent
-  static Color accent = etsDarkRed;
+  static const Color accent = etsDarkRed;
 
   /// Light theme
   static ThemeData lightTheme() {

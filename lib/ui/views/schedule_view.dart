@@ -40,7 +40,7 @@ class ScheduleView extends StatefulWidget {
 
 class _ScheduleViewState extends State<ScheduleView>
     with TickerProviderStateMixin {
-  static final Color _selectedColor = AppTheme.etsLightRed;
+  static const Color _selectedColor = AppTheme.etsLightRed;
 
   static const Color _defaultColor = Color(0xff76859B);
 
