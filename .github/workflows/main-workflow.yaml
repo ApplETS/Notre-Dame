@@ -220,7 +220,7 @@ jobs:
             target: Android
             build_target: apk
             build_args: ''
-            build_path: build/app/outputs/apk/release
+            build_path: build/app/outputs/flutter-apk
             asset_extension: apk
             asset_content_type: application/zip
       # Disable fail-fast as we want results from all even if one fails.
