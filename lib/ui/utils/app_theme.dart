@@ -6,15 +6,8 @@ class AppTheme {
   AppTheme._();
 
   // ETS colors
-  static Color _etsLightRed = const Color(0xffef3e45);
-  static Color get etsLightRed {
-    return _etsLightRed;
-  }
-
-  static Color _etsDarkRed = const Color(0xffbf311a);
-  static Color get etsDarkRed {
-    return _etsDarkRed;
-  }
+  static Color etsLightRed = const Color(0xffef3e45);
+  static Color etsDarkRed = const Color(0xffbf311a);
 
   static const Color etsLightGrey = Color(0xff807f83);
   static const Color etsDarkGrey = Color(0xff636467);
@@ -25,15 +18,8 @@ class AppTheme {
   static const Color lightThemeBackground = Color(0xfffafafa);
 
   // App|ETS colors
-  static Color _appletsPurple = const Color(0xff19375f);
-  static Color get appletsPurple {
-    return _appletsPurple;
-  }
-
-  static Color _appletsDarkPurple = const Color(0xff122743);
-  static Color get appletsDarkPurple {
-    return _appletsDarkPurple;
-  }
+  static Color appletsPurple = const Color(0xff19375f);
+  static Color appletsDarkPurple = const Color(0xff122743);
 
   // Grade colors
   static const Color gradeFailureMin = Color(0xffd32f2f);
@@ -43,13 +29,13 @@ class AppTheme {
   static const Color gradeGoodMax = Color(0xff43a047);
 
   // Primary
-  static Color primary = _etsLightRed;
+  static Color primary = etsLightRed;
 
   // Primary dark
   static const Color primaryDark = Color(0xff121212);
 
   // Accent
-  static Color accent = _etsDarkRed;
+  static Color accent = etsDarkRed;
 
   /// Light theme
   static ThemeData lightTheme() {
@@ -76,14 +62,5 @@ class AppTheme {
         colorScheme: darkTheme.colorScheme
             .copyWith(primary: etsLightRed, secondary: etsLightRed)
             .copyWith(secondary: etsLightRed));
-  }
-
-  static void setFlavorBeta() {
-    final tempPrimary = _etsLightRed;
-    final tempAccent = _etsDarkRed;
-    _etsLightRed = _appletsPurple;
-    _etsDarkRed = _appletsDarkPurple;
-    _appletsPurple = tempPrimary;
-    _appletsDarkPurple = tempAccent;
   }
 }
