@@ -101,7 +101,7 @@ android {
         }
         prod {
             dimension "etsmobile"
-            resValue "string", "app_name", "ÉTSMobile Production"
+            resValue "string", "app_name", "ÉTSMobile"
         }
     }
 }
