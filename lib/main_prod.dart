@@ -12,8 +12,7 @@ import 'package:notredame/core/utils/app_config.dart';
 /// Here is the entry point for the production (ca.etsmtl.applets.etsmobile)
 /// application.
 Future<void> main() async {
-  final prodAppConfig =
-      AppConfig(appName: 'ÉTSMobile', flavor: 'prod');
+  final prodAppConfig = AppConfig(appName: 'ÉTSMobile', flavor: 'prod');
 
   final etsMobile = await initializeApp(prodAppConfig);
 

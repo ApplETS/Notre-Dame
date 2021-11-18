@@ -12,8 +12,7 @@ import 'package:notredame/core/utils/app_config.dart';
 /// Here is the entry point for the dev env (ca.etsmtl.applets.etsmobile.dev)
 /// application.
 Future<void> main() async {
-  final devAppConfig =
-      AppConfig(appName: 'ÉTSMobile Dev', flavor: 'dev');
+  final devAppConfig = AppConfig(appName: 'ÉTSMobile Dev', flavor: 'dev');
 
   final etsMobile = await initializeApp(devAppConfig);
 
