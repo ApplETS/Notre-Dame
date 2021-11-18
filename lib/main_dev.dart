@@ -9,7 +9,7 @@ import 'package:notredame/app.dart';
 // UTILS
 import 'package:notredame/core/utils/app_config.dart';
 
-/// Here is the entry point for the beta (ca.etsmtl.applets.etsmobile.beta)
+/// Here is the entry point for the dev env (ca.etsmtl.applets.etsmobile.dev)
 /// application.
 Future<void> main() async {
   final devAppConfig =
