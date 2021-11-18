@@ -13,7 +13,7 @@ import 'package:notredame/core/utils/app_config.dart';
 /// application.
 Future<void> main() async {
   final prodAppConfig =
-      AppConfig(appName: 'ÉTSMobile Production', flavor: 'prod');
+      AppConfig(appName: 'ÉTSMobile', flavor: 'prod');
 
   final etsMobile = await initializeApp(prodAppConfig);
 
