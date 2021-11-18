@@ -365,12 +365,12 @@ class SignetsApi {
 
   /// Create a [http.Client] with the certificate to access the SignetsAPI
   Future _signetsClient() async {
-    final ByteData data =
+    /*final ByteData data =
         await rootBundle.load("assets/certificates/signets_cert.crt");
     final securityContext = SecurityContext()
       ..setTrustedCertificatesBytes(data.buffer.asUint8List());
-
-    final ioClient = HttpClient(context: securityContext);
+*/
+    final ioClient = HttpClient();
 
     _client = IOClient(ioClient);
   }
