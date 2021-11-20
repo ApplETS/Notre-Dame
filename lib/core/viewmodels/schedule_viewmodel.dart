@@ -70,6 +70,21 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
   List<dynamic> getEventsForDate(DateTime date) =>
       _coursesActivities[DateTime(date.year, date.month, date.day)] ?? [];
 
+  Map<DateTime, List<dynamic>> getEventsForWeek() {
+    final Map<DateTime, List<dynamic>> events = {};
+
+    final firstDayOfWeek = getFirstDayOfCurrentWeek();
+    for (int i = 0; i < 6; i++) {
+      final date = firstDayOfWeek.add(Duration(days: i));
+      final eventsForDay = getEventsForDate(date);
+      if (eventsForDay.isNotEmpty) {
+        events[date] = eventsForDay;
+      }
+    }
+
+    return events;
+  }
+
   /// Get first day of the week depending on startingDay which corresponds to weekday
   DateTime getFirstDayOfCurrentWeek() {
     // Get starting day as enum

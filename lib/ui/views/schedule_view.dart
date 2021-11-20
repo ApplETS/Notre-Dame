@@ -126,16 +126,12 @@ class _ScheduleViewState extends State<ScheduleView>
       ));
 
   List<Widget> _buildWeekEvents(ScheduleViewModel model, BuildContext context) {
-    final firstDayOfWeek = model.getFirstDayOfCurrentWeek();
     final List<Widget> widgets = [];
-    for (int i = 0; i < 6; i++) {
-      final date = firstDayOfWeek.add(Duration(days: i));
-      final eventsForDay = model.getEventsForDate(date);
-      if (eventsForDay.isNotEmpty) {
-        widgets.add(_buildTitleForDate(date, model));
-        widgets.add(_buildEventList(model.getEventsForDate(date)));
-        widgets.add(const SizedBox(height: 20.0));
-      }
+    final eventsByDate = model.getEventsForWeek();
+    for (final events in eventsByDate.entries) {
+      widgets.add(_buildTitleForDate(events.key, model));
+      widgets.add(_buildEventList(events.value));
+      widgets.add(const SizedBox(height: 20.0));
     }
     return widgets;
   }
