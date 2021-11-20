@@ -76,17 +76,6 @@ class ScheduleSettingsViewModel
     setBusy(false);
   }
 
-  bool _showWeekEventsBtn = false;
-
-  bool get showWeekEventsBtn => _showWeekEventsBtn;
-
-  set showWeekEventsBtn(bool newValue) {
-    setBusy(true);
-    _settingsManager.setBool(
-        PreferencesFlag.scheduleSettingsShowWeekEventsBtn, newValue);
-    _showWeekEventsBtn = newValue;
-  }
-
   /// The schedule activities which needs to be shown (group A or B) grouped as courses
   final Map<String, List<ScheduleActivity>> _scheduleActivitiesByCourse = {};
 
@@ -133,8 +122,6 @@ class ScheduleSettingsViewModel
         as StartingDayOfWeek;
     _showTodayBtn =
         settings[PreferencesFlag.scheduleSettingsShowTodayBtn] as bool;
-    _showWeekEventsBtn =
-        settings[PreferencesFlag.scheduleSettingsShowWeekEventsBtn] as bool;
 
     _scheduleActivitiesByCourse.clear();
     final schedulesActivities = await _courseRepository.getScheduleActivities();

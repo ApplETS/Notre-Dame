@@ -95,13 +95,13 @@ class _ScheduleViewState extends State<ScheduleView>
                       const SizedBox(height: 8.0),
                       const Divider(indent: 8.0, endIndent: 8.0, thickness: 1),
                       const SizedBox(height: 6.0),
-                      if (model.isWeekEventsMode)
+                      if (model.showWeekEvents)
                         for (Widget widget in _buildWeekEvents(model, context))
                           widget
                       else
                         _buildTitleForDate(model.selectedDate, model),
                       const SizedBox(height: 2.0),
-                      if (!model.isWeekEventsMode &&
+                      if (!model.showWeekEvents &&
                           model.getEventsForDate(model.selectedDate).isEmpty)
                         Padding(
                           padding: const EdgeInsets.symmetric(vertical: 64.0),
@@ -109,7 +109,7 @@ class _ScheduleViewState extends State<ScheduleView>
                               child:
                                   Text(AppIntl.of(context).schedule_no_event)),
                         )
-                      else if (!model.isWeekEventsMode)
+                      else if (!model.showWeekEvents)
                         _buildEventList(
                             model.getEventsForDate(model.selectedDate)),
                       const SizedBox(height: 16.0),
@@ -259,6 +259,11 @@ class _ScheduleViewState extends State<ScheduleView>
                     model.selectedDate = DateTime.now();
                     model.focusedDate.value = DateTime.now();
                   })),
+        Switch(
+          value: model.showWeekEvents,
+          onChanged: (value) => model.showWeekEvents = value,
+          activeColor: Colors.white,
+        ),
         _buildDiscoveryFeatureDescriptionWidget(context, Icons.settings, model),
       ];
 

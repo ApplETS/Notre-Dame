@@ -97,29 +97,12 @@ class _ScheduleSettingsState extends State<ScheduleSettings> {
 
     list.addAll(_buildShowTodayButtonSection(context, model));
 
-    list.addAll(_buildShowEntireWeekSection(context, model));
-
     if (model.scheduleActivitiesByCourse.isNotEmpty) {
       list.addAll(_buildSelectCoursesActivitiesSection(context, model));
     }
 
     return list;
   }
-
-  List<Widget> _buildShowEntireWeekSection(
-          BuildContext context, ScheduleSettingsViewModel model) =>
-      [
-        ListTile(
-          trailing: Switch(
-            value: model.showWeekEventsBtn,
-            onChanged: (value) => model.showWeekEventsBtn = value,
-            activeColor: AppTheme.etsLightRed,
-          ),
-          title: Text(
-              AppIntl.of(context).schedule_settings_show_week_events_btn_pref),
-        ),
-        const Divider(thickness: 1)
-      ];
 
   List<Widget> _buildSelectCoursesActivitiesSection(
       BuildContext context, ScheduleSettingsViewModel model) {
