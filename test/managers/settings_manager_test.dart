@@ -57,12 +57,17 @@ void main() {
             preferencesService as PreferencesServiceMock,
             PreferencesFlag.scheduleSettingsShowTodayBtn,
             toReturn: null);
+        PreferencesServiceMock.stubGetBool(
+            preferencesService as PreferencesServiceMock,
+            PreferencesFlag.scheduleSettingsShowWeekEvents,
+            toReturn: null);
 
         final expected = {
           PreferencesFlag.scheduleSettingsStartWeekday:
               StartingDayOfWeek.monday,
           PreferencesFlag.scheduleSettingsCalendarFormat: CalendarFormat.week,
-          PreferencesFlag.scheduleSettingsShowTodayBtn: true
+          PreferencesFlag.scheduleSettingsShowTodayBtn: true,
+          PreferencesFlag.scheduleSettingsShowWeekEvents: true,
         };
 
         final result = await manager.getScheduleSettings();
@@ -77,6 +82,9 @@ void main() {
             .called(1);
         verify(preferencesService
                 .getBool(PreferencesFlag.scheduleSettingsShowTodayBtn))
+            .called(1);
+        verify(preferencesService
+                .getBool(PreferencesFlag.scheduleSettingsShowWeekEvents))
             .called(1);
 
         verifyNoMoreInteractions(preferencesService);
@@ -97,12 +105,17 @@ void main() {
             preferencesService as PreferencesServiceMock,
             PreferencesFlag.scheduleSettingsShowTodayBtn,
             toReturn: false);
+        PreferencesServiceMock.stubGetBool(
+            preferencesService as PreferencesServiceMock,
+            PreferencesFlag.scheduleSettingsShowWeekEvents,
+            toReturn: false);
 
         final expected = {
           PreferencesFlag.scheduleSettingsStartWeekday:
               StartingDayOfWeek.sunday,
           PreferencesFlag.scheduleSettingsCalendarFormat: CalendarFormat.month,
-          PreferencesFlag.scheduleSettingsShowTodayBtn: false
+          PreferencesFlag.scheduleSettingsShowTodayBtn: false,
+          PreferencesFlag.scheduleSettingsShowWeekEvents: false,
         };
 
         final result = await manager.getScheduleSettings();
@@ -117,6 +130,9 @@ void main() {
             .called(1);
         verify(preferencesService
                 .getBool(PreferencesFlag.scheduleSettingsShowTodayBtn))
+            .called(1);
+        verify(preferencesService
+                .getBool(PreferencesFlag.scheduleSettingsShowWeekEvents))
             .called(1);
 
         verifyNoMoreInteractions(preferencesService);
