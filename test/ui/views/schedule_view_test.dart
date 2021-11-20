@@ -92,6 +92,9 @@ void main() {
         PreferencesFlag.scheduleSettingsStartWeekday: StartingDayOfWeek.monday,
         PreferencesFlag.scheduleSettingsShowTodayBtn: true
       };
+
+      CourseRepositoryMock.stubGetScheduleActivities(
+          courseRepository as CourseRepositoryMock);
     });
 
     group("golden - ", () {

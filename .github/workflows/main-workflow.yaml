@@ -1,5 +1,6 @@
 name: Main workflow
 on:
+  workflow_dispatch:
   push:
     branches:
       - master
@@ -9,7 +10,18 @@ on:
       - '.github/**'
       - 'README.md'
       - 'README.fr.md'
+      - 'android/fastlane/**'
+      - 'ios/fastlane/**'
   pull_request:
+    paths-ignore:
+      - '.gitignore'
+      - '.metadata'
+      - '.github/**'
+      - 'README.md'
+      - 'README.fr.md'
+      - 'android/fastlane/**'
+      - 'ios/fastlane/**'
+
 env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   MAPS_API_KEY: ${{ secrets.MAPS_API_KEY }}
@@ -77,8 +89,19 @@ jobs:
       # Get flutter dependencies.
       - run: flutter pub get
 
-      # Check the format of the code and check if the code has any errors/warnings
-      - run: flutter format --set-exit-if-changed .
+      # Check the format of the code and commit the formatted files.
+      - name: Format files
+        run: flutter format lib test
+      - name: Commit formatted files
+        uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          file_pattern: "*.dart"
+          commit_user_name: github-actions[bot]
+          commit_user_email: 41898282+github-actions[bot]@users.noreply.github.com
+          commit_message: "Apply format."
+          add_options: '-u'
+
+      # Check if the code has any errors/warnings
       - run: flutter analyze
 
       # Retrieve the last commit message and check if the commit message contains [CI UPDATE GOLDENS].
@@ -262,7 +285,7 @@ jobs:
 
   create-draft-release:
     name: Draft Github release
-    if: ${{ github.event_name == 'push' }}
+    if: ${{ github.event_name == 'push' || (github.event_name == 'workflow-dispatch' && github.head_ref == 'master') }}
     needs: [ tagValidation, create-build ]
     runs-on: ubuntu-latest
     outputs:

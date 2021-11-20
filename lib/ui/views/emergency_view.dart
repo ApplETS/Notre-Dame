@@ -48,11 +48,10 @@ class _EmergencyViewState extends State<EmergencyView> {
             backgroundColor: AppTheme.etsLightRed,
           ),
           body: WebView(
-            initialUrl: '',
-            javascriptMode: JavascriptMode.unrestricted,
             onWebViewCreated: (WebViewController webViewController) async {
               model.webViewController = webViewController;
-              await model.loadHtmlFromAssets(widget.description, context);
+              await model.loadHtmlFromAssets(
+                  widget.description, Theme.of(context).brightness);
             },
           ),
         ),

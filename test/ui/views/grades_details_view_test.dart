@@ -9,6 +9,7 @@ import 'package:notredame/core/managers/settings_manager.dart';
 
 // MODELS
 import 'package:notredame/core/models/course.dart';
+import 'package:notredame/core/models/course_evaluation.dart';
 import 'package:notredame/core/models/course_summary.dart';
 import 'package:notredame/core/models/evaluation.dart' as model;
 
@@ -53,15 +54,24 @@ void main() {
     ],
   );
 
+  final CourseEvaluation evaluationCompleted = CourseEvaluation(
+      acronym: 'GEN101',
+      group: '02',
+      teacherName: 'TEST',
+      startAt: DateTime.now().subtract(const Duration(days: 1)),
+      endAt: DateTime.now().add(const Duration(days: 1)),
+      type: 'Cours',
+      isCompleted: true);
+
   final Course course = Course(
-    acronym: 'GEN101',
-    group: '02',
-    session: 'H2020',
-    programCode: '999',
-    numberOfCredits: 3,
-    title: 'Cours générique',
-    summary: courseSummary,
-  );
+      acronym: 'GEN101',
+      group: '02',
+      session: 'H2020',
+      programCode: '999',
+      numberOfCredits: 3,
+      title: 'Cours générique',
+      summary: courseSummary,
+      evaluation: evaluationCompleted);
 
   final Course courseWithoutSummary = Course(
     acronym: 'GEN101',
@@ -71,6 +81,23 @@ void main() {
     numberOfCredits: 3,
     title: 'Cours générique',
   );
+
+  final Course courseWithEvaluationNotCompleted = Course(
+      acronym: 'GEN101',
+      group: '02',
+      session: 'H2020',
+      programCode: '999',
+      numberOfCredits: 3,
+      title: 'Cours générique',
+      summary: courseSummary,
+      evaluation: CourseEvaluation(
+          acronym: 'GEN101',
+          group: '02',
+          teacherName: 'TEST',
+          startAt: DateTime.now().subtract(const Duration(days: 1)),
+          endAt: DateTime.now().add(const Duration(days: 1)),
+          type: 'Cours',
+          isCompleted: false));
 
   group('GradesDetailsView - ', () {
     setUp(() async {
@@ -114,7 +141,7 @@ void main() {
       });
 
       testWidgets(
-          'when the page is at the top, it displays the course title, acronym and group',
+          'when the page is at the top, it displays the course title, acronym, group and professor name',
           (WidgetTester tester) async {
         setupFlutterToastMock(tester);
         CourseRepositoryMock.stubGetCourseSummary(
@@ -130,6 +157,7 @@ void main() {
         expect(find.text('Cours générique'), findsOneWidget);
         expect(find.text('GEN101'), findsOneWidget);
         expect(find.text('Group 02'), findsOneWidget);
+        expect(find.text('Professor: TEST'), findsOneWidget);
       });
 
       testWidgets(
@@ -168,6 +196,24 @@ void main() {
 
         expect(find.byKey(const Key("GradeNotAvailable")), findsOneWidget);
       });
+
+      testWidgets(
+          "display GradeNotAvailable when in the evaluation period and the evaluation isn't completed",
+          (WidgetTester tester) async {
+        setupFlutterToastMock(tester);
+        CourseRepositoryMock.stubGetCourseSummary(
+            courseRepository as CourseRepositoryMock,
+            courseWithEvaluationNotCompleted,
+            toReturn: courseWithEvaluationNotCompleted);
+
+        await tester.pumpWidget(localizedWidget(
+            child: FeatureDiscovery(
+                child: GradesDetailsView(
+                    course: courseWithEvaluationNotCompleted))));
+        await tester.pumpAndSettle(const Duration(seconds: 1));
+
+        expect(find.byKey(const Key("EvaluationNotCompleted")), findsOneWidget);
+      });
     });
 
     group("golden - ", () {
@@ -202,6 +248,25 @@ void main() {
 
         await expectLater(find.byType(GradesDetailsView),
             matchesGoldenFile(goldenFilePath("gradesDetailsView_2")));
+      });
+
+      testWidgets("if in the evaluation period and evaluation not completed",
+          (WidgetTester tester) async {
+        setupFlutterToastMock(tester);
+        CourseRepositoryMock.stubGetCourseSummary(
+            courseRepository as CourseRepositoryMock, courseWithoutSummary,
+            toReturn: courseWithEvaluationNotCompleted);
+
+        tester.binding.window.physicalSizeTestValue = const Size(800, 1410);
+
+        await tester.pumpWidget(localizedWidget(
+            child: FeatureDiscovery(child: GradesDetailsView(course: course))));
+        await tester.pumpAndSettle();
+
+        await expectLater(
+            find.byType(GradesDetailsView),
+            matchesGoldenFile(
+                goldenFilePath("gradesDetailsView_evaluation_not_completed")));
       });
     });
   });

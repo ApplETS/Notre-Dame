@@ -1,8 +1,5 @@
 default_platform(:ios)
 
-TEMP_KEYCHAIN_NAME = ENV["TEMP_KEYCHAIN_NAME"]
-TEMP_KEYCHAIN_PASSWORD = ENV["TEMP_KEYCHAIN_PASSWORD"]
-
 def delete_temp_keychain(name)
   delete_keychain(
     name: name
@@ -26,14 +23,13 @@ end
 platform :ios do
   desc "Deploy a new version to the Apple Store"
   lane :deploy do
-    keychain_name = TEMP_KEYCHAIN_NAME
-    keychain_password = TEMP_KEYCHAIN_PASSWORD
+    keychain_name = ENV['MATCH_KEYCHAIN_NAME']
+    keychain_password = ENV["MATCH_KEYCHAIN_PASSWORD"]
     ensure_temp_keychain(keychain_name, keychain_password)
 
     match(
         type: "appstore",
         readonly: true,
-        git_basic_authorization: Base64.strict_encode64(ENV["GIT_AUTHORIZATION"])
         keychain_name: ENV['MATCH_KEYCHAIN_NAME'],
         keychain_password: ENV["MATCH_KEYCHAIN_PASSWORD"],
     )
@@ -44,13 +40,17 @@ platform :ios do
     )
 
     upload_to_app_store(
-        api_key_path: "service_account_credentials.json"
+        api_key_path: "service_account_credentials.json",
         skip_screenshots: true,
-        release_notes: true,
         force: true, # Skip HTML report verification
         submit_for_review: true,
         reject_if_possible: true,
-        automatic_release: true
+        automatic_release: true,
+        precheck_include_in_app_purchases: false,
+        submission_information: {
+            export_compliance_uses_encryption: false,
+            add_id_info_uses_idfa: false
+        },
     )
   end
 end

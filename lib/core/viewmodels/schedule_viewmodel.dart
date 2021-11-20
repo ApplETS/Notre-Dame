@@ -8,14 +8,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 // CONSTANTS
+import 'package:notredame/core/constants/activity_code.dart';
 import 'package:notredame/core/constants/discovery_ids.dart';
-
 // MANAGER
 import 'package:notredame/core/managers/course_repository.dart';
 import 'package:notredame/core/managers/settings_manager.dart';
 
 // MODELS
 import 'package:notredame/core/models/course_activity.dart';
+import 'package:notredame/core/models/schedule_activity.dart';
 
 // UTILS
 import 'package:notredame/ui/utils/discovery_components.dart';
@@ -38,7 +39,7 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
   final Map<PreferencesFlag, dynamic> settings = {};
 
   /// Activities sorted by day
-  final Map<DateTime, List<CourseActivity>> _coursesActivities = {};
+  Map<DateTime, List<CourseActivity>> _coursesActivities = {};
 
   /// Day currently selected
   DateTime selectedDate;
@@ -49,6 +50,13 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
   /// The currently selected CalendarFormat, A default value is set for test purposes.
   /// This value is then change to the cache value on load.
   CalendarFormat calendarFormat = CalendarFormat.week;
+
+  /// This map contains the courses that has the group A or group B mark
+  final Map<String, List<ScheduleActivity>> scheduleActivitiesByCourse = {};
+
+  /// This map contains the direct settings as string for each course that are grouped
+  /// (Example: (key, value) => ("ING150", "Laboratoire (Groupe A)"))
+  final Map<String, String> settingsScheduleActivities = {};
 
   /// Get current locale
   Locale get locale => _settingsManager.locale;
@@ -107,11 +115,43 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
             // Reload the list of activities
             coursesActivities;
           }
-        }).whenComplete(() {
-          setBusyForObject(isLoadingEvents, false);
+          _courseRepository
+              .getScheduleActivities()
+              // ignore: return_type_invalid_for_catch_error
+              .catchError(onError)
+              .then((value) async {
+            await assignScheduleActivities(value);
+          }).whenComplete(() {
+            setBusyForObject(isLoadingEvents, false);
+          });
         });
         return value;
       });
+
+  Future assignScheduleActivities(
+      List<ScheduleActivity> listOfSchedules) async {
+    if (listOfSchedules == null ||
+        listOfSchedules.isEmpty ||
+        !listOfSchedules.any((element) =>
+            element.activityCode == ActivityCode.labGroupA ||
+            element.activityCode == ActivityCode.labGroupB)) return;
+
+    setBusy(true);
+    scheduleActivitiesByCourse.clear();
+    for (final activity in listOfSchedules) {
+      if (activity.activityCode == ActivityCode.labGroupA ||
+          activity.activityCode == ActivityCode.labGroupB) {
+        // Create the list with the new activity inside or add the activity to an existing group
+        if (!scheduleActivitiesByCourse.containsKey(activity.courseAcronym)) {
+          scheduleActivitiesByCourse[activity.courseAcronym] = [activity];
+        } else {
+          scheduleActivitiesByCourse[activity.courseAcronym].add(activity);
+        }
+      }
+    }
+
+    await loadSettingsScheduleActivities();
+  }
 
   @override
   // ignore: type_annotate_public_apis
@@ -125,31 +165,85 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
     settings.addAll(await _settingsManager.getScheduleSettings());
     calendarFormat = settings[PreferencesFlag.scheduleSettingsCalendarFormat]
         as CalendarFormat;
+
+    await loadSettingsScheduleActivities();
+
     setBusy(false);
+  }
+
+  Future loadSettingsScheduleActivities() async {
+    for (final courseAcronym in scheduleActivitiesByCourse.keys) {
+      final String activityCodeToUse = await _settingsManager.getDynamicString(
+          DynamicPreferencesFlag(
+              groupAssociationFlag:
+                  PreferencesFlag.scheduleSettingsLaboratoryGroup,
+              uniqueKey: courseAcronym));
+      final scheduleActivityToSet = scheduleActivitiesByCourse[courseAcronym]
+          .firstWhere((element) => element.activityCode == activityCodeToUse,
+              orElse: () => null);
+      if (scheduleActivityToSet != null) {
+        settingsScheduleActivities[courseAcronym] = scheduleActivityToSet.name;
+      } else {
+        // All group selected
+        settingsScheduleActivities
+            .removeWhere((key, value) => key == courseAcronym);
+      }
+
+      coursesActivities;
+    }
   }
 
   /// Return the list of all the courses activities arranged by date.
   Map<DateTime, List<CourseActivity>> get coursesActivities {
-    if (_coursesActivities.isEmpty) {
-      // Build the map
+    _coursesActivities = {};
+
+    // Build the map
+    if (_courseRepository.coursesActivities != null) {
       for (final CourseActivity course in _courseRepository.coursesActivities) {
         final DateTime dateOnly = course.startDateTime.subtract(Duration(
             hours: course.startDateTime.hour,
             minutes: course.startDateTime.minute));
+
+        if (!_coursesActivities.containsKey(dateOnly)) {
+          _coursesActivities[dateOnly] = [];
+        }
+
         _coursesActivities.update(dateOnly, (value) {
-          value.add(course);
+          final scheduleActivitiesContainsGroup = settingsScheduleActivities
+              .containsKey(course.courseGroup.split("-").first);
+
+          if (scheduleActivitiesContainsGroup) {
+            if (scheduleActivityIsSelected(course)) {
+              value.add(course);
+            }
+          } else {
+            value.add(course);
+          }
 
           return value;
         }, ifAbsent: () => [course]);
       }
-
-      _coursesActivities.updateAll((key, value) {
-        value.sort((a, b) => a.startDateTime.compareTo(b.startDateTime));
-
-        return value;
-      });
     }
+
+    _coursesActivities.updateAll((key, value) {
+      value.sort((a, b) => a.startDateTime.compareTo(b.startDateTime));
+
+      return value;
+    });
+
     return _coursesActivities;
+  }
+
+  bool scheduleActivityIsSelected(CourseActivity course) {
+    if (course.activityDescription != ActivityDescriptionName.labA &&
+        course.activityDescription != ActivityDescriptionName.labB) {
+      return true;
+    }
+
+    final activityNameSelected =
+        settingsScheduleActivities[course.courseGroup.split("-").first];
+
+    return activityNameSelected == course.activityDescription;
   }
 
   /// Get the activities for a specific [date], return empty if there is no activity for this [date]

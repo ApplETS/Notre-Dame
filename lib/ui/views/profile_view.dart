@@ -23,7 +23,7 @@ class ProfileView extends StatelessWidget {
               onRefresh: () => model.refresh(),
               child: Stack(
                 children: [
-                  ListView(padding: const EdgeInsets.all(0.0), children: [
+                  ListView(padding: EdgeInsets.zero, children: [
                     ListTile(
                       title: Text(
                         AppIntl.of(context).profile_student_status_title,
@@ -61,7 +61,7 @@ class ProfileView extends StatelessWidget {
                             AppIntl.of(context).login_prompt_universal_code),
                         trailing: Text(model.universalAccessCode)),
                     ListView.builder(
-                      padding: const EdgeInsets.all(0.0),
+                      padding: EdgeInsets.zero,
                       shrinkWrap: true,
                       reverse: true,
                       physics: const ScrollPhysics(),

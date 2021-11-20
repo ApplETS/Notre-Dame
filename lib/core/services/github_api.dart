@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 import 'package:github/github.dart';
 import 'package:logger/logger.dart';
-import 'package:package_info/package_info.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:flutter_config/flutter_config.dart';
 
@@ -51,7 +51,7 @@ class GithubApi {
             RepositorySlug.full(_repositoryReportSlug),
             CreateFile(
                 path: filePath,
-                content: base64Encode(file.readAsBytesSync()).toString(),
+                content: base64Encode(file.readAsBytesSync()),
                 message: DateTime.now().toString(),
                 committer:
                     CommitUser('clubapplets-server', 'clubapplets@gmail.com'),

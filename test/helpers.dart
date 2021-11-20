@@ -24,6 +24,7 @@ import 'package:notredame/core/services/github_api.dart';
 import 'package:notredame/core/managers/settings_manager.dart';
 import 'package:notredame/core/services/networking_service.dart';
 import 'package:notredame/core/services/internal_info_service.dart';
+import 'package:notredame/core/services/siren_flutter_service.dart';
 
 // MOCKS
 import 'mock/managers/cache_manager_mock.dart';
@@ -40,6 +41,7 @@ import 'mock/services/networking_service_mock.dart';
 import 'mock/services/preferences_service_mock.dart';
 import 'mock/services/rive_animation_service_mock.dart';
 import 'mock/services/signets_api_mock.dart';
+import 'mock/services/siren_flutter_service_mock.dart';
 
 /// Return the path of the [goldenName] file.
 String goldenFilePath(String goldenName) => "./goldenFiles/$goldenName.png";
@@ -96,6 +98,16 @@ InternalInfoService setupInternalInfoServiceMock() {
   final service = InternalInfoServiceMock();
 
   locator.registerSingleton<InternalInfoService>(service);
+
+  return service;
+}
+
+/// Load a mock of the [SirenFlutterService]
+SirenFlutterService setupSirenFlutterServiceMock() {
+  unregister<SirenFlutterService>();
+  final service = SirenFlutterServiceMock();
+
+  locator.registerSingleton<SirenFlutterService>(service);
 
   return service;
 }
@@ -245,6 +257,7 @@ NetworkingService setupNetworkingServiceMock() {
   locator.registerSingleton<NetworkingService>(service);
 
   NetworkingServiceMock.stubChangeConnectivityStream(service);
+  NetworkingServiceMock.stubHasConnectivity(service);
 
   return service;
 }

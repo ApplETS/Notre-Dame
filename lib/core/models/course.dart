@@ -4,6 +4,7 @@ import 'package:xml/xml.dart';
 
 // MODELS
 import 'package:notredame/core/models/course_summary.dart';
+import 'package:notredame/core/models/course_evaluation.dart';
 
 /// Data-class that represent a course
 class Course {
@@ -33,6 +34,32 @@ class Course {
   /// Can be null!!
   CourseSummary summary;
 
+  /// Information about when the course will be evaluated by the student.
+  /// Can be null!!
+  CourseEvaluation evaluation;
+
+  /// Get the teacher name if available
+  String get teacherName => evaluation?.teacherName;
+
+  /// Determine if we are currently in the evaluation period for this course.
+  bool get inEvaluationPeriod {
+    if (evaluation == null) {
+      return false;
+    }
+
+    final now = DateTime.now();
+
+    return now.isAfter(evaluation.startAt) && now.isBefore(evaluation.endAt);
+  }
+
+  /// Determine if the evaluation of this course is completed.
+  bool get evaluationCompleted {
+    if (evaluation == null) {
+      return true;
+    }
+    return evaluation.isCompleted;
+  }
+
   Course(
       {@required this.acronym,
       @required this.title,
@@ -41,7 +68,8 @@ class Course {
       @required this.programCode,
       @required this.numberOfCredits,
       this.grade,
-      this.summary});
+      this.summary,
+      this.evaluation});
 
   /// Used to create a new [Course] instance from a [XMLElement].
   factory Course.fromXmlNode(XmlElement node) => Course(
@@ -66,6 +94,9 @@ class Course {
       grade: map['grade'] != null ? map['grade'] as String : null,
       summary: map["summary"] != null
           ? CourseSummary.fromJson(map["summary"] as Map<String, dynamic>)
+          : null,
+      evaluation: map["evaluation"] != null
+          ? CourseEvaluation.fromJson(map["evaluation"] as Map<String, dynamic>)
           : null);
 
   Map<String, dynamic> toJson() => {
@@ -76,8 +107,23 @@ class Course {
         'programCode': programCode,
         'numberOfCredits': numberOfCredits,
         'grade': grade,
-        'summary': summary
+        'summary': summary,
+        'evaluation': evaluation
       };
+
+  @override
+  String toString() {
+    return 'Course{'
+        'acronym: $acronym, '
+        'title: $title, '
+        'group: $group, '
+        'session: $session, '
+        'programCode: $programCode, '
+        'grade: $grade, '
+        'numberOfCredits: $numberOfCredits, '
+        'summary: $summary, '
+        'evaluation: $evaluation}';
+  }
 
   @override
   bool operator ==(Object other) =>
@@ -91,7 +137,8 @@ class Course {
           programCode == other.programCode &&
           grade == other.grade &&
           numberOfCredits == other.numberOfCredits &&
-          summary == other.summary;
+          summary == other.summary &&
+          evaluation == other.evaluation;
 
   @override
   int get hashCode =>
@@ -102,18 +149,6 @@ class Course {
       programCode.hashCode ^
       grade.hashCode ^
       numberOfCredits.hashCode ^
-      summary.hashCode;
-
-  @override
-  String toString() {
-    return 'Course{'
-        'acronym: $acronym, '
-        'title: $title, '
-        'group: $group, '
-        'session: $session, '
-        'programCode: $programCode, '
-        'grade: $grade, '
-        'numberOfCredits: $numberOfCredits, '
-        'summary: $summary}';
-  }
+      summary.hashCode ^
+      evaluation.hashCode;
 }

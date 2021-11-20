@@ -1,4 +1,4 @@
 #!/usr/bin/env bash
 
-flutter format lib/ test/
-flutter analyze
+flutter format .
+git add -u

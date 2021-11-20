@@ -9,6 +9,10 @@
     </a>
     <img src="https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/clubapplets-server/e51406de3b919a69f396642a2bcb413c/raw/notre_dame_master_badge_coverage.json" alt="Code coverage"/>
     <br />
+    <img src="https://img.shields.io/endpoint?color=green&logo=google-play&logoColor=green&url=https%3A%2F%2Fplayshields.herokuapp.com%2Fplay%3Fi%3Dca.etsmtl.applets.etsmobile%26l%3DPlay%2520Store%2520version%26m%3D%24version" alt="Play store version"/>
+    <br />
+    <img src="https://img.shields.io/itunes/v/557463461?label=App%20Store%20version&logo=appstore" alt="App store version"/>
+    <br />
   </p>
 </div>
 
@@ -34,12 +38,14 @@ _Note: This guide is also available in: [Français](https://github.com/ApplETS/N
 
 ## Before running the code
 
-- To access some features you will need the SignetsAPI certificate, these files are encrypted. To decrypt them you will
-  need to execute the `env_variables.sh` script (only available on the Google Drive of the club), then run:
+- To access some features you will need the SignetsAPI certificate, these files are encrypted. To decrypt them you will have to do two simple steps:
 
-```
+You need to copy the script `env_variables.sh` (only available on the Google Drive of the club) to the root folder of your project, then run:
+
+```sh
 chmod +x ./scripts/decrypt.sh
-./scripts/decrypt.sh
+chmod +x ./env_variables.sh
+./env_variables.sh
 ```
 
 ## Run the code

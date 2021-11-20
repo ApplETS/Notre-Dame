@@ -1,15 +1,19 @@
 // FLUTTER / DART / THIRD-PARTIES
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
+import 'package:pub_semver/pub_semver.dart';
 
 // CONSTANTS
 import 'package:notredame/core/constants/preferences_flags.dart';
 import 'package:notredame/core/constants/router_paths.dart';
+import 'package:notredame/core/constants/update_code.dart';
 
 // SERVICES / MANAGERS
 import 'package:notredame/core/managers/user_repository.dart';
 import 'package:notredame/core/services/navigation_service.dart';
 import 'package:notredame/core/managers/settings_manager.dart';
+import 'package:notredame/core/services/preferences_service.dart';
+import 'package:notredame/core/services/siren_flutter_service.dart';
 
 // VIEW MODEL
 import 'package:notredame/core/viewmodels/startup_viewmodel.dart';
@@ -18,32 +22,47 @@ import 'package:notredame/core/viewmodels/startup_viewmodel.dart';
 import '../helpers.dart';
 import '../mock/managers/settings_manager_mock.dart';
 import '../mock/managers/user_repository_mock.dart';
+import '../mock/services/internal_info_service_mock.dart';
 import '../mock/services/networking_service_mock.dart';
+import '../mock/services/preferences_service_mock.dart';
+import '../mock/services/siren_flutter_service_mock.dart';
 
 void main() {
   NavigationService navigationService;
   UserRepositoryMock userRepositoryMock;
-  SettingsManager settingsManager;
+  SettingsManagerMock settingsManagerMock;
+  PreferencesServiceMock preferencesServiceMock;
   NetworkingServiceMock networkingService;
+  InternalInfoServiceMock internalInfoServiceMock;
+  SirenFlutterServiceMock sirenFlutterServiceMock;
 
   StartUpViewModel viewModel;
 
   group('StartupViewModel - ', () {
     setUp(() async {
       navigationService = setupNavigationServiceMock();
-      settingsManager = setupSettingsManagerMock();
+      settingsManagerMock = setupSettingsManagerMock() as SettingsManagerMock;
+      preferencesServiceMock =
+          setupPreferencesServiceMock() as PreferencesServiceMock;
       userRepositoryMock = setupUserRepositoryMock() as UserRepositoryMock;
       networkingService = setupNetworkingServiceMock() as NetworkingServiceMock;
-
+      internalInfoServiceMock =
+          setupInternalInfoServiceMock() as InternalInfoServiceMock;
+      sirenFlutterServiceMock =
+          setupSirenFlutterServiceMock() as SirenFlutterServiceMock;
       setupLogger();
 
       viewModel = StartUpViewModel();
+
+      SirenFlutterServiceMock.stubUpdateIsAvailable(sirenFlutterServiceMock);
     });
 
     tearDown(() {
       unregister<NavigationService>();
       unregister<UserRepository>();
       unregister<SettingsManager>();
+      unregister<PreferencesService>();
+      unregister<SirenFlutterService>();
     });
 
     group('handleStartUp - ', () {
@@ -51,11 +70,16 @@ void main() {
         UserRepositoryMock.stubSilentAuthenticate(userRepositoryMock);
         UserRepositoryMock.stubWasPreviouslyLoggedIn(userRepositoryMock);
         NetworkingServiceMock.stubHasConnectivity(networkingService);
+        InternalInfoServiceMock.stubGetPackageInfo(internalInfoServiceMock,
+            version: "4.0.0");
+        SettingsManagerMock.stubGetString(
+            settingsManagerMock, PreferencesFlag.appVersion,
+            toReturn: "4.0.0");
 
         await viewModel.handleStartUp();
 
-        verify(
-            navigationService.pushNamedAndRemoveUntil(RouterPaths.dashboard));
+        verify(navigationService.pushNamedAndRemoveUntil(
+            RouterPaths.dashboard, RouterPaths.dashboard, UpdateCode.none));
       });
 
       test(
@@ -65,20 +89,24 @@ void main() {
             toReturn: false);
         UserRepositoryMock.stubWasPreviouslyLoggedIn(userRepositoryMock);
         NetworkingServiceMock.stubHasConnectivity(networkingService);
+        InternalInfoServiceMock.stubGetPackageInfo(internalInfoServiceMock,
+            version: "4.0.0");
+        SettingsManagerMock.stubGetString(
+            settingsManagerMock, PreferencesFlag.appVersion,
+            toReturn: "4.0.0");
 
-        SettingsManagerMock.stubGetBool(settingsManager as SettingsManagerMock,
-            PreferencesFlag.languageChoice,
+        SettingsManagerMock.stubGetBool(
+            settingsManagerMock, PreferencesFlag.languageChoice,
             toReturn: true);
 
         await viewModel.handleStartUp();
 
         verifyInOrder([
-          settingsManager.getBool(PreferencesFlag.languageChoice),
+          settingsManagerMock.getBool(PreferencesFlag.languageChoice),
           navigationService.pop(),
           navigationService.pushNamed(RouterPaths.login)
         ]);
 
-        verifyNoMoreInteractions(settingsManager);
         verifyNoMoreInteractions(navigationService);
       });
 
@@ -89,17 +117,193 @@ void main() {
             toReturn: false);
         UserRepositoryMock.stubWasPreviouslyLoggedIn(userRepositoryMock);
         NetworkingServiceMock.stubHasConnectivity(networkingService);
+        InternalInfoServiceMock.stubGetPackageInfo(internalInfoServiceMock,
+            version: "4.0.0");
+        SettingsManagerMock.stubGetString(
+            settingsManagerMock, PreferencesFlag.appVersion,
+            toReturn: "4.0.0");
 
         await viewModel.handleStartUp();
 
         verifyInOrder([
-          settingsManager.getBool(PreferencesFlag.languageChoice),
+          settingsManagerMock.getBool(PreferencesFlag.languageChoice),
           navigationService.pushNamed(RouterPaths.chooseLanguage),
-          settingsManager.setBool(PreferencesFlag.languageChoice, true)
+          settingsManagerMock.setBool(PreferencesFlag.languageChoice, true)
         ]);
 
-        verifyNoMoreInteractions(settingsManager);
         verifyNoMoreInteractions(navigationService);
+      });
+
+      test('verify discovery flags are bool if version mismatch', () async {
+        const String versionToSave = "4.1.0";
+        UserRepositoryMock.stubSilentAuthenticate(userRepositoryMock);
+        UserRepositoryMock.stubWasPreviouslyLoggedIn(userRepositoryMock);
+        NetworkingServiceMock.stubHasConnectivity(networkingService);
+        InternalInfoServiceMock.stubGetPackageInfo(internalInfoServiceMock,
+            version: versionToSave);
+        SettingsManagerMock.stubGetString(
+            settingsManagerMock, PreferencesFlag.appVersion,
+            toReturn: "4.0.0");
+        SettingsManagerMock.stubSetString(
+            settingsManagerMock, PreferencesFlag.appVersion);
+        PreferencesServiceMock.stubGetPreferencesFlag(
+            preferencesServiceMock, PreferencesFlag.discoveryDashboard,
+            toReturn: 'true');
+        PreferencesServiceMock.stubGetPreferencesFlag(
+            preferencesServiceMock, PreferencesFlag.discoverySchedule,
+            toReturn: 'false');
+        PreferencesServiceMock.stubGetPreferencesFlag(
+            preferencesServiceMock, PreferencesFlag.discoveryStudentGrade,
+            toReturn: 'true');
+        PreferencesServiceMock.stubGetPreferencesFlag(
+            preferencesServiceMock, PreferencesFlag.discoveryGradeDetails,
+            toReturn: 'true');
+        PreferencesServiceMock.stubGetPreferencesFlag(
+            preferencesServiceMock, PreferencesFlag.discoveryStudentProfile);
+        PreferencesServiceMock.stubGetPreferencesFlag(
+            preferencesServiceMock, PreferencesFlag.discoveryETS);
+
+        await viewModel.handleStartUp();
+
+        verify(preferencesServiceMock.getPreferencesFlag(any)).called(8);
+
+        verifyInOrder([
+          settingsManagerMock.getString(PreferencesFlag.appVersion),
+          preferencesServiceMock
+              .removePreferencesFlag(PreferencesFlag.discoveryDashboard),
+          settingsManagerMock.setBool(PreferencesFlag.discoveryDashboard, true),
+          preferencesServiceMock
+              .removePreferencesFlag(PreferencesFlag.discoverySchedule),
+          settingsManagerMock.setBool(PreferencesFlag.discoverySchedule, false),
+          preferencesServiceMock
+              .removePreferencesFlag(PreferencesFlag.discoveryStudentGrade),
+          settingsManagerMock.setBool(
+              PreferencesFlag.discoveryStudentGrade, true),
+          preferencesServiceMock
+              .removePreferencesFlag(PreferencesFlag.discoveryGradeDetails),
+          settingsManagerMock.setBool(
+              PreferencesFlag.discoveryGradeDetails, true),
+          settingsManagerMock.setString(
+              PreferencesFlag.appVersion, versionToSave)
+        ]);
+      });
+
+      test('verify discovery flags are not changed for same version', () async {
+        UserRepositoryMock.stubSilentAuthenticate(userRepositoryMock);
+        UserRepositoryMock.stubWasPreviouslyLoggedIn(userRepositoryMock);
+        NetworkingServiceMock.stubHasConnectivity(networkingService);
+        InternalInfoServiceMock.stubGetPackageInfo(internalInfoServiceMock,
+            version: "4.0.0");
+        SettingsManagerMock.stubGetString(
+            settingsManagerMock, PreferencesFlag.appVersion,
+            toReturn: "4.0.0");
+
+        await viewModel.handleStartUp();
+
+        verifyNever(preferencesServiceMock.getPreferencesFlag(any));
+        verifyNever(settingsManagerMock.setBool(any, any));
+        verifyNever(
+            settingsManagerMock.setString(PreferencesFlag.appVersion, "4.0.1"));
+      });
+
+      test('verify discovery flags are bool is trigger for no present version',
+          () async {
+        UserRepositoryMock.stubSilentAuthenticate(userRepositoryMock);
+        UserRepositoryMock.stubWasPreviouslyLoggedIn(userRepositoryMock);
+        NetworkingServiceMock.stubHasConnectivity(networkingService);
+        InternalInfoServiceMock.stubGetPackageInfo(internalInfoServiceMock,
+            version: "4.0.0");
+        SettingsManagerMock.stubSetString(
+            settingsManagerMock, PreferencesFlag.appVersion);
+        PreferencesServiceMock.stubGetPreferencesFlag(
+            preferencesServiceMock, PreferencesFlag.discoveryDashboard,
+            toReturn: 'true');
+        PreferencesServiceMock.stubGetPreferencesFlag(
+            preferencesServiceMock, PreferencesFlag.discoverySchedule,
+            toReturn: 'false');
+        PreferencesServiceMock.stubGetPreferencesFlag(
+            preferencesServiceMock, PreferencesFlag.discoveryStudentGrade,
+            toReturn: 'true');
+        PreferencesServiceMock.stubGetPreferencesFlag(
+            preferencesServiceMock, PreferencesFlag.discoveryGradeDetails,
+            toReturn: 'true');
+        PreferencesServiceMock.stubGetPreferencesFlag(
+            preferencesServiceMock, PreferencesFlag.discoveryStudentProfile);
+        PreferencesServiceMock.stubGetPreferencesFlag(
+            preferencesServiceMock, PreferencesFlag.discoveryETS);
+
+        await viewModel.handleStartUp();
+
+        verify(preferencesServiceMock.getPreferencesFlag(any)).called(8);
+
+        verifyInOrder([
+          settingsManagerMock.getString(PreferencesFlag.appVersion),
+          preferencesServiceMock
+              .removePreferencesFlag(PreferencesFlag.discoveryDashboard),
+          settingsManagerMock.setBool(PreferencesFlag.discoveryDashboard, true),
+          preferencesServiceMock
+              .removePreferencesFlag(PreferencesFlag.discoverySchedule),
+          settingsManagerMock.setBool(PreferencesFlag.discoverySchedule, false),
+          preferencesServiceMock
+              .removePreferencesFlag(PreferencesFlag.discoveryStudentGrade),
+          settingsManagerMock.setBool(
+              PreferencesFlag.discoveryStudentGrade, true),
+          preferencesServiceMock
+              .removePreferencesFlag(PreferencesFlag.discoveryGradeDetails),
+          settingsManagerMock.setBool(
+              PreferencesFlag.discoveryGradeDetails, true),
+          settingsManagerMock.setString(PreferencesFlag.appVersion, "4.0.0")
+        ]);
+      });
+    });
+
+    group('checkUpdateStatus - ', () {
+      test('should return UpdateCode.none if update is not available',
+          () async {
+        SirenFlutterServiceMock.stubUpdateIsAvailable(sirenFlutterServiceMock);
+
+        final result = await viewModel.checkUpdateStatus();
+
+        expect(result, UpdateCode.none);
+      });
+
+      test(
+          "should return UpdateCode.ask if update is available and it's a minor or major changes",
+          () async {
+        SirenFlutterServiceMock.stubUpdateIsAvailable(sirenFlutterServiceMock,
+            valueToReturn: true);
+        SirenFlutterServiceMock.stubLocalVersion(sirenFlutterServiceMock,
+            valueToReturn: Version(4, 0, 0));
+        SirenFlutterServiceMock.stubStoreVersion(sirenFlutterServiceMock,
+            valueToReturn: Version(4, 1, 0));
+
+        var result = await viewModel.checkUpdateStatus();
+
+        expect(result, UpdateCode.ask);
+
+        SirenFlutterServiceMock.stubLocalVersion(sirenFlutterServiceMock,
+            valueToReturn: Version(4, 0, 0));
+        SirenFlutterServiceMock.stubStoreVersion(sirenFlutterServiceMock,
+            valueToReturn: Version(5, 0, 0));
+
+        result = await viewModel.checkUpdateStatus();
+
+        expect(result, UpdateCode.ask);
+      });
+
+      test(
+          "should return UpdateCode.force if update is available and it's a revision changes",
+          () async {
+        SirenFlutterServiceMock.stubUpdateIsAvailable(sirenFlutterServiceMock,
+            valueToReturn: true);
+        SirenFlutterServiceMock.stubLocalVersion(sirenFlutterServiceMock,
+            valueToReturn: Version(4, 0, 0));
+        SirenFlutterServiceMock.stubStoreVersion(sirenFlutterServiceMock,
+            valueToReturn: Version(4, 0, 1));
+
+        final result = await viewModel.checkUpdateStatus();
+
+        expect(result, UpdateCode.force);
       });
     });
   });

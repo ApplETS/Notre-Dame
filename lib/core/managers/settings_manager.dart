@@ -131,8 +131,7 @@ class SettingsManager with ChangeNotifier {
   /// Set Locale
   void setLocale(String value) {
     _locale = AppIntl.supportedLocales.firstWhere((e) => e.toString() == value);
-    _preferencesService.setString(
-        PreferencesFlag.locale, _locale.languageCode.toString());
+    _preferencesService.setString(PreferencesFlag.locale, _locale.languageCode);
     // Log the event
     _analyticsService.logEvent(
         "${tag}_${EnumToString.convertToString(PreferencesFlag.locale)}",
@@ -183,7 +182,24 @@ class SettingsManager with ChangeNotifier {
     // Log the event
     _analyticsService.logEvent(
         "${tag}_${EnumToString.convertToString(flag)}", value);
+
+    if (value == null) {
+      return _preferencesService.removePreferencesFlag(flag);
+    }
     return _preferencesService.setString(flag, value);
+  }
+
+  /// Add/update the value of [flag]
+  Future<bool> setDynamicString(
+      DynamicPreferencesFlag flag, String value) async {
+    // Log the event
+    _analyticsService.logEvent("${tag}_${flag.toString()}", value);
+
+    if (value == null) {
+      return _preferencesService.removeDynamicPreferencesFlag(flag);
+    }
+
+    return _preferencesService.setDynamicString(flag, value);
   }
 
   /// Add/update the value of [flag]
@@ -200,6 +216,13 @@ class SettingsManager with ChangeNotifier {
     _analyticsService.logEvent(
         "${tag}_${EnumToString.convertToString(flag)}", 'getString');
     return _preferencesService.getString(flag);
+  }
+
+  /// Get the value of [flag]
+  Future<String> getDynamicString(DynamicPreferencesFlag flag) async {
+    // Log the event
+    _analyticsService.logEvent("${tag}_${flag.toString()}", 'getString');
+    return _preferencesService.getDynamicString(flag);
   }
 
   /// Add/update the value of [flag]

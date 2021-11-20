@@ -6,6 +6,7 @@ import 'package:notredame/core/managers/course_repository.dart';
 
 // MODELS
 import 'package:notredame/core/models/course_activity.dart';
+import 'package:notredame/core/models/schedule_activity.dart';
 import 'package:notredame/core/models/session.dart';
 import 'package:notredame/core/models/course.dart';
 
@@ -103,6 +104,24 @@ class CourseRepositoryMock extends Mock implements CourseRepository {
       {Exception toThrow =
           const ApiException(prefix: 'ApiException', message: '')}) {
     when(mock.getCourseSummary(courseCalled)).thenAnswer((_) =>
+        Future.delayed(const Duration(milliseconds: 50))
+            .then((value) => throw toThrow));
+  }
+
+  /// Stub the function [getScheduleActivities] of [mock] when called will return [toReturn].
+  static void stubGetScheduleActivities(CourseRepositoryMock mock,
+      {List<ScheduleActivity> toReturn = const [], bool fromCacheOnly}) {
+    when(mock.getScheduleActivities(
+            fromCacheOnly: fromCacheOnly ?? anyNamed("fromCacheOnly")))
+        .thenAnswer((_) async => toReturn);
+  }
+
+  /// Stub the function [getScheduleActivities] of [mock] when called will throw [toThrow].
+  static void stubGetScheduleActivitiesException(
+      CourseRepositoryMock mock, Course courseCalled,
+      {Exception toThrow =
+          const ApiException(prefix: 'ApiException', message: '')}) {
+    when(mock.getScheduleActivities()).thenAnswer((_) =>
         Future.delayed(const Duration(milliseconds: 50))
             .then((value) => throw toThrow));
   }
