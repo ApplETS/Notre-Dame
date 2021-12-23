@@ -134,6 +134,13 @@ class _AboutViewState extends State<AboutView> with TickerProviderStateMixin {
                       ),
                       onPressed: () => Utils.launchURL(
                           Urls.clubYoutube, AppIntl.of(context))),
+                  IconButton(
+                      icon: const FaIcon(
+                        FontAwesomeIcons.discord,
+                        color: Colors.white,
+                      ),
+                      onPressed: () => Utils.launchURL(
+                          Urls.clubDiscord, AppIntl.of(context))),
                 ],
               ),
             ],
