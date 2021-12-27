@@ -96,52 +96,55 @@ class _AboutViewState extends State<AboutView> with TickerProviderStateMixin {
                   style: const TextStyle(color: Colors.white),
                 ),
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  IconButton(
-                      icon: const FaIcon(
-                        FontAwesomeIcons.globeAmericas,
-                        color: Colors.white,
-                      ),
-                      onPressed: () => Utils.launchURL(
-                          Urls.clubWebsite, AppIntl.of(context))),
-                  IconButton(
-                      icon: const FaIcon(
-                        FontAwesomeIcons.github,
-                        color: Colors.white,
-                      ),
-                      onPressed: () => Utils.launchURL(
-                          Urls.clubGithub, AppIntl.of(context))),
-                  IconButton(
-                      icon: const FaIcon(
-                        FontAwesomeIcons.facebook,
-                        color: Colors.white,
-                      ),
-                      onPressed: () => Utils.launchURL(
-                          Urls.clubFacebook, AppIntl.of(context))),
-                  IconButton(
-                      icon: const FaIcon(
-                        FontAwesomeIcons.twitter,
-                        color: Colors.white,
-                      ),
-                      onPressed: () => Utils.launchURL(
-                          Urls.clubTwitter, AppIntl.of(context))),
-                  IconButton(
-                      icon: const FaIcon(
-                        FontAwesomeIcons.youtube,
-                        color: Colors.white,
-                      ),
-                      onPressed: () => Utils.launchURL(
-                          Urls.clubYoutube, AppIntl.of(context))),
-                  IconButton(
-                      icon: const FaIcon(
-                        FontAwesomeIcons.discord,
-                        color: Colors.white,
-                      ),
-                      onPressed: () => Utils.launchURL(
-                          Urls.clubDiscord, AppIntl.of(context))),
-                ],
+              SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    IconButton(
+                        icon: const FaIcon(
+                          FontAwesomeIcons.globeAmericas,
+                          color: Colors.white,
+                        ),
+                        onPressed: () => Utils.launchURL(
+                            Urls.clubWebsite, AppIntl.of(context))),
+                    IconButton(
+                        icon: const FaIcon(
+                          FontAwesomeIcons.github,
+                          color: Colors.white,
+                        ),
+                        onPressed: () => Utils.launchURL(
+                            Urls.clubGithub, AppIntl.of(context))),
+                    IconButton(
+                        icon: const FaIcon(
+                          FontAwesomeIcons.facebook,
+                          color: Colors.white,
+                        ),
+                        onPressed: () => Utils.launchURL(
+                            Urls.clubFacebook, AppIntl.of(context))),
+                    IconButton(
+                        icon: const FaIcon(
+                          FontAwesomeIcons.twitter,
+                          color: Colors.white,
+                        ),
+                        onPressed: () => Utils.launchURL(
+                            Urls.clubTwitter, AppIntl.of(context))),
+                    IconButton(
+                        icon: const FaIcon(
+                          FontAwesomeIcons.youtube,
+                          color: Colors.white,
+                        ),
+                        onPressed: () => Utils.launchURL(
+                            Urls.clubYoutube, AppIntl.of(context))),
+                    IconButton(
+                        icon: const FaIcon(
+                          FontAwesomeIcons.discord,
+                          color: Colors.white,
+                        ),
+                        onPressed: () => Utils.launchURL(
+                            Urls.clubDiscord, AppIntl.of(context))),
+                  ],
+                ),
               ),
             ],
           ),
