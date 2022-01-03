@@ -2,6 +2,7 @@
 import 'dart:collection';
 import 'package:feature_discovery/feature_discovery.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:in_app_review/in_app_review.dart';
 import 'package:stacked/stacked.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -80,8 +81,13 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
 
   ProgressBarText get currentProgressBarText => _currentProgressBarText;
 
+  /// Use to get the value associated to each settings key
+  final PreferencesService _preferencesService = locator<PreferencesService>();
+
   /// Return session progress based on today's [date]
   double getSessionProgress() {
+    launchInAppReview();
+
     if (_courseRepository.activeSessions.isEmpty) {
       return -1.0;
     } else {
@@ -91,6 +97,28 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
           _courseRepository.activeSessions.first.endDate
               .difference(_courseRepository.activeSessions.first.startDate)
               .inDays;
+    }
+  }
+
+  Future<void> launchInAppReview() async {
+    DateTime ratingTimerFlagDate =
+        await _preferencesService.getDateTime(PreferencesFlag.ratingTimer);
+
+    // If the user is already logged in while doing the update containing the In_App_Review pr.
+    if (ratingTimerFlagDate == null) {
+      _preferencesService.setDateTime(PreferencesFlag.ratingTimer,
+          DateTime.now().add(const Duration(days: 7)));
+      ratingTimerFlagDate =
+          await _preferencesService.getDateTime(PreferencesFlag.ratingTimer);
+    }
+
+    final InAppReview inAppReview = InAppReview.instance;
+
+    if (await inAppReview.isAvailable() &&
+        DateTime.now().isAfter(ratingTimerFlagDate)) {
+      await Future.delayed(const Duration(seconds: 2), () {
+        inAppReview.requestReview();
+      });
     }
   }
 

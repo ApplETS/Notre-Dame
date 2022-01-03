@@ -52,6 +52,11 @@ class PreferencesService {
     return prefs.setInt(flag.toString(), value);
   }
 
+  Future<bool> setDateTime(PreferencesFlag flag, DateTime value) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.setString(flag.toString(), value.toIso8601String());
+  }
+
   Future<bool> getBool(PreferencesFlag flag) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     return prefs.getBool(flag.toString());
@@ -73,5 +78,14 @@ class PreferencesService {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
 
     return prefs.getString(flag.data);
+  }
+
+  Future<DateTime> getDateTime(PreferencesFlag flag) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    try {
+      return DateTime.parse(prefs.getString(flag.toString()));
+    } catch (e) {
+      return null;
+    }
   }
 }
