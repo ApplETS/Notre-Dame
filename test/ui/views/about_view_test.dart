@@ -15,7 +15,7 @@ void main() {
     tearDown(() {});
 
     group('UI - ', () {
-      testWidgets('has 6 images and 2 texts and 1 row',
+      testWidgets('has 7 images and 2 texts and 1 row',
           (WidgetTester tester) async {
         await tester.pumpWidget(localizedWidget(child: AboutView()));
         await tester.pumpAndSettle();
@@ -24,7 +24,7 @@ void main() {
         expect(image, findsOneWidget);
 
         final iconButton = find.byType(IconButton);
-        expect(iconButton, findsNWidgets(5));
+        expect(iconButton, findsNWidgets(6));
 
         final text = find.byType(Text);
         expect(text, findsNWidgets(2));
