@@ -271,7 +271,5 @@
     "placeholders": {
       "remainingDays": {}
     }
-  },
-  "rate_app_title": "Your opinion matters to us",
-  "rate_app_message": "We are always trying to improve what we do and your feedback is invaluable."
+  }
 }
