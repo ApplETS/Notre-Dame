@@ -154,6 +154,7 @@ void main() {
       setupNavigationServiceMock();
       courseRepository = setupCourseRepositoryMock();
       setupNetworkingServiceMock();
+      setupPreferencesServiceMock();
 
       CourseRepositoryMock.stubSessions(
           courseRepository as CourseRepositoryMock,

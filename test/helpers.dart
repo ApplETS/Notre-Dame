@@ -262,7 +262,7 @@ NetworkingService setupNetworkingServiceMock() {
   return service;
 }
 
-void setupInAppReview([WidgetTester tester]) {
+void setupInAppReviewMock([WidgetTester tester]) {
   const MethodChannel channel = MethodChannel('dev.britannio.in_app_review');
 
   TestDefaultBinaryMessenger messenger;

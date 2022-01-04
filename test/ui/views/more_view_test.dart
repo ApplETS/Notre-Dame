@@ -11,6 +11,9 @@ import 'package:notredame/core/constants/router_paths.dart';
 // SERVICES
 import 'package:notredame/core/services/navigation_service.dart';
 
+// VIEWMODELS
+import 'package:notredame/core/viewmodels/more_viewmodel.dart';
+
 // VIEW
 import 'package:notredame/ui/views/more_view.dart';
 
@@ -47,7 +50,7 @@ void main() {
         expect(listview, findsOneWidget);
 
         final listTile = find.byType(ListTile);
-        expect(listTile, findsNWidgets(6));
+        expect(listTile, findsNWidgets(7));
       });
 
       group('navigation - ', () {
@@ -64,6 +67,22 @@ void main() {
           await tester.pump();
 
           verify(navigation.pushNamed(RouterPaths.about)).called(1);
+        });
+
+        testWidgets('rate us', (WidgetTester tester) async {
+          setupInAppReviewMock();
+          await tester.pumpWidget(
+              localizedWidget(child: FeatureDiscovery(child: MoreView())));
+          await tester.pumpAndSettle(const Duration(seconds: 1));
+
+          // Tap the button.
+          await tester
+              .tap(find.widgetWithText(ListTile, intl.in_app_review_title));
+
+          // Rebuild the widget after the state has changed.
+          await tester.pump();
+
+          verify(await MoreViewModel.launchInAppReview()).called(1);
         });
 
         testWidgets('contributors', (WidgetTester tester) async {

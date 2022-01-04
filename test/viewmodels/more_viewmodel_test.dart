@@ -217,7 +217,7 @@ void main() {
 
     group('In app review - ', () {
       test('should call requestReview()', () async {
-        setupInAppReview();
+        setupInAppReviewMock();
         expect(await MoreViewModel.launchInAppReview(), true);
       });
     });
