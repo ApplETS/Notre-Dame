@@ -261,3 +261,23 @@ NetworkingService setupNetworkingServiceMock() {
 
   return service;
 }
+
+void setupInAppReview([WidgetTester tester]) {
+  const MethodChannel channel = MethodChannel('dev.britannio.in_app_review');
+
+  TestDefaultBinaryMessenger messenger;
+
+  if (tester != null) {
+    messenger = tester.binding.defaultBinaryMessenger;
+  } else {
+    messenger =
+        TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger;
+  }
+
+  messenger.setMockMethodCallHandler(channel, (MethodCall methodCall) async {
+    if (methodCall.method == 'isAvailable') {
+      return true;
+    }
+    return false;
+  });
+}

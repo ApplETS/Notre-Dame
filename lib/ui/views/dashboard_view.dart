@@ -48,6 +48,7 @@ class _DashboardViewState extends State<DashboardView>
       DashboardViewModel.startDiscovery(context);
       DashboardViewModel.promptUpdate(context, widget.updateCode);
     });
+    DashboardViewModel.launchInAppReview();
   }
 
   @override

@@ -81,13 +81,8 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
 
   ProgressBarText get currentProgressBarText => _currentProgressBarText;
 
-  /// Use to get the value associated to each settings key
-  final PreferencesService _preferencesService = locator<PreferencesService>();
-
   /// Return session progress based on today's [date]
   double getSessionProgress() {
-    launchInAppReview();
-
     if (_courseRepository.activeSessions.isEmpty) {
       return -1.0;
     } else {
@@ -100,16 +95,18 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
     }
   }
 
-  Future<void> launchInAppReview() async {
+  static Future<bool> launchInAppReview() async {
+    final PreferencesService _preferencesService = locator<PreferencesService>();
+
     DateTime ratingTimerFlagDate =
         await _preferencesService.getDateTime(PreferencesFlag.ratingTimer);
 
     // If the user is already logged in while doing the update containing the In_App_Review pr.
     if (ratingTimerFlagDate == null) {
+      final sevenDaysLater = DateTime.now().add(const Duration(days: 7));
       _preferencesService.setDateTime(PreferencesFlag.ratingTimer,
-          DateTime.now().add(const Duration(days: 7)));
-      ratingTimerFlagDate =
-          await _preferencesService.getDateTime(PreferencesFlag.ratingTimer);
+          sevenDaysLater);
+      ratingTimerFlagDate = sevenDaysLater;
     }
 
     final InAppReview inAppReview = InAppReview.instance;
@@ -119,7 +116,10 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
       await Future.delayed(const Duration(seconds: 2), () {
         inAppReview.requestReview();
       });
+
+      return true;
     }
+    return false;
   }
 
   void changeProgressBarText() {

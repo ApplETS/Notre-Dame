@@ -1,5 +1,6 @@
 // FLUTTER / DART / THIRD-PARTIES
 import 'package:flutter_test/flutter_test.dart';
+import 'package:in_app_review/in_app_review.dart';
 import 'package:mockito/mockito.dart';
 
 // CONSTANTS
@@ -34,6 +35,7 @@ void main() {
   SettingsManager settingsManager;
   DashboardViewModel viewModel;
   CourseRepository courseRepository;
+  PreferencesServiceMock preferencesServiceMock;
 
   final gen101 = CourseActivity(
       courseGroup: "GEN101",
@@ -136,6 +138,8 @@ void main() {
       settingsManager = setupSettingsManagerMock();
       preferenceService = setupPreferencesServiceMock();
       courseRepository = setupCourseRepositoryMock();
+      preferencesServiceMock =
+          setupPreferencesServiceMock() as PreferencesServiceMock;
 
       courseRepository = setupCourseRepositoryMock();
 
@@ -520,6 +524,34 @@ void main() {
         verify(settingsManager.getString(PreferencesFlag.progressBarText))
             .called(1);
         verifyNoMoreInteractions(settingsManager);
+      });
+    });
+
+    group("In app review - ", () {
+      test("returns true when todays date is after the day set in cache", () async {
+        final day = DateTime.now().add(const Duration(days: -1));
+        setupInAppReview();
+        PreferencesServiceMock.stubGetDateTime(
+          preferencesServiceMock, PreferencesFlag.ratingTimer, toReturn: day);
+        
+        expect(await DashboardViewModel.launchInAppReview(), true);
+      });
+
+      test("returns false when todays date is the before the day set in cache", () async {
+        final day = DateTime.now().add(const Duration(days: 2));
+        setupInAppReview();
+        PreferencesServiceMock.stubGetDateTime(
+          preferencesServiceMock, PreferencesFlag.ratingTimer, toReturn: day);
+        
+        expect(await DashboardViewModel.launchInAppReview(), false);
+      });
+
+      test("returns false when the cache date hasn't been set (null)", () async {
+        setupInAppReview();
+        PreferencesServiceMock.stubGetDateTime(
+          preferencesServiceMock, PreferencesFlag.ratingTimer);
+        
+        expect(await DashboardViewModel.launchInAppReview(), false);
       });
     });
   });
