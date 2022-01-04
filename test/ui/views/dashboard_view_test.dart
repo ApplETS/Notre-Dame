@@ -695,6 +695,10 @@ void main() {
     });
 
     group("golden - ", () {
+      setUp(() async {
+        setupInAppReviewMock();
+      });
+
       testWidgets("Applets Card", (WidgetTester tester) async {
         tester.binding.window.physicalSizeTestValue = const Size(800, 1410);
 
