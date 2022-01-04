@@ -126,12 +126,12 @@ void main() {
       });
 
       test("getDateTime", () async {
-        SharedPreferences.setMockInitialValues(
-            {PreferencesFlag.ratingTimer.toString(): DateTime(2000, 01, 02).toIso8601String()});
+        SharedPreferences.setMockInitialValues({
+          PreferencesFlag.ratingTimer.toString():
+              DateTime(2000, 01, 02).toIso8601String()
+        });
 
-        expect(
-            await service
-                .getDateTime(PreferencesFlag.ratingTimer),
+        expect(await service.getDateTime(PreferencesFlag.ratingTimer),
             DateTime(2000, 01, 02));
       });
     });
