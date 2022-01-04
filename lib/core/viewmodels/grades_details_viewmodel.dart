@@ -60,7 +60,9 @@ class GradesDetailsViewModel extends FutureViewModel<Course> {
   @override
   // ignore: type_annotate_public_apis
   void onError(error) {
-    Fluttertoast.showToast(msg: _appIntl.error);
+    if (course.summary != null) {
+      Fluttertoast.showToast(msg: _appIntl.error);
+    }
   }
 
   Future<bool> refresh() async {
