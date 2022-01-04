@@ -7,6 +7,7 @@ import 'package:flutter_test/flutter_test.dart';
 // MANAGER
 import 'package:notredame/core/managers/course_repository.dart';
 import 'package:notredame/core/managers/settings_manager.dart';
+import '../../mock/managers/course_repository_mock.dart';
 
 // MODELS
 import 'package:notredame/core/models/course.dart';
@@ -20,7 +21,6 @@ import 'package:notredame/ui/widgets/grade_button.dart';
 
 // OTHERS
 import '../../helpers.dart';
-import '../../mock/managers/course_repository_mock.dart';
 
 void main() {
   CourseRepository courseRepository;
