@@ -269,7 +269,8 @@
   "progress_bar_message_remaining_days": "{remainingDays} remaining days",
   "@progress_bar_message_remaining_days": {
     "placeholders": {
-      "remainingDays": {}
+    "remainingDays": {}
     }
-  }
+  },
+  "in_app_review_title": "Rate us!"
 }

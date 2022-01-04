@@ -2,9 +2,9 @@
 import 'dart:io';
 import 'dart:typed_data';
 import 'package:feature_discovery/feature_discovery.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:in_app_review/in_app_review.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:stacked/stacked.dart';
 import 'package:image/image.dart' as image;
@@ -152,5 +152,21 @@ class MoreViewModel extends FutureViewModel {
     await _settingsManager.setBool(PreferencesFlag.discoveryMore, true);
 
     return true;
+  }
+
+  static Future<bool> launchInAppReview() async {
+    final PreferencesService _preferencesService =
+        locator<PreferencesService>();
+
+    final InAppReview inAppReview = InAppReview.instance;
+
+    if (await inAppReview.isAvailable()) {
+      await inAppReview.requestReview();
+      _preferencesService.setBool(PreferencesFlag.hasRatingBeenRequested,
+          value: true);
+
+      return true;
+    }
+    return false;
   }
 }

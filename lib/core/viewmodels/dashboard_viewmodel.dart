@@ -96,25 +96,33 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
   }
 
   static Future<bool> launchInAppReview() async {
-    final PreferencesService _preferencesService = locator<PreferencesService>();
+    final PreferencesService _preferencesService =
+        locator<PreferencesService>();
 
     DateTime ratingTimerFlagDate =
         await _preferencesService.getDateTime(PreferencesFlag.ratingTimer);
 
+    final hasRatingBeenRequested = await _preferencesService
+            .getBool(PreferencesFlag.hasRatingBeenRequested) ??
+        false;
+
     // If the user is already logged in while doing the update containing the In_App_Review pr.
     if (ratingTimerFlagDate == null) {
       final sevenDaysLater = DateTime.now().add(const Duration(days: 7));
-      _preferencesService.setDateTime(PreferencesFlag.ratingTimer,
-          sevenDaysLater);
+      _preferencesService.setDateTime(
+          PreferencesFlag.ratingTimer, sevenDaysLater);
       ratingTimerFlagDate = sevenDaysLater;
     }
 
     final InAppReview inAppReview = InAppReview.instance;
 
     if (await inAppReview.isAvailable() &&
+        !hasRatingBeenRequested &&
         DateTime.now().isAfter(ratingTimerFlagDate)) {
-      await Future.delayed(const Duration(seconds: 2), () {
-        inAppReview.requestReview();
+      await Future.delayed(const Duration(seconds: 2), () async {
+        await inAppReview.requestReview();
+        _preferencesService.setBool(PreferencesFlag.hasRatingBeenRequested,
+            value: true);
       });
 
       return true;
