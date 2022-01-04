@@ -11,6 +11,7 @@ import 'package:notredame/core/constants/preferences_flags.dart';
 import 'package:notredame/core/constants/discovery_ids.dart';
 import 'package:notredame/core/constants/progress_bar_text_options.dart';
 import 'package:notredame/core/constants/update_code.dart';
+import 'package:notredame/core/constants/activity_code.dart';
 
 // MANAGER / SERVICE
 import 'package:notredame/core/managers/settings_manager.dart';
@@ -256,11 +257,37 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
         _todayDateEvents
             .sort((a, b) => a.startDateTime.compareTo(b.startDateTime));
 
+        removeLaboratoryGroup();
+
         setBusyForObject(_todayDateEvents, false);
       });
 
       return value;
     });
+  }
+
+  Future<void> removeLaboratoryGroup() async {
+    final _todayDateEventsCopy = List.from(_todayDateEvents);
+
+    for (final courseAcronym in _todayDateEventsCopy) {
+      final courseKey = courseAcronym.courseGroup.toString().split('-')[0];
+
+      final String activityCodeToUse = await _settingsManager.getDynamicString(
+          DynamicPreferencesFlag(
+              groupAssociationFlag:
+                  PreferencesFlag.scheduleSettingsLaboratoryGroup,
+              uniqueKey: courseKey));
+
+      if (activityCodeToUse == ActivityCode.labGroupA) {
+        _todayDateEvents.removeWhere((element) =>
+            element.activityDescription == ActivityDescriptionName.labB &&
+            element.courseGroup == courseAcronym.courseGroup);
+      } else if (activityCodeToUse == ActivityCode.labGroupB) {
+        _todayDateEvents.removeWhere((element) =>
+            element.activityDescription == ActivityDescriptionName.labA &&
+            element.courseGroup == courseAcronym.courseGroup);
+      }
+    }
   }
 
   /// Update cards order and display status in preferences
