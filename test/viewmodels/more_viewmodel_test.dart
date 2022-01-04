@@ -214,5 +214,12 @@ void main() {
             fileName: file.path.split('/').last));
       });
     });
+
+    group('In app review - ', () {
+      test('should call requestReview()', () async {
+        setupInAppReview();
+        expect(await MoreViewModel.launchInAppReview(), true);
+      });
+    });
   });
 }

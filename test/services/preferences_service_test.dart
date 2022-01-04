@@ -55,6 +55,16 @@ void main() {
                 PreferencesFlag.scheduleSettingsCalendarFormat.toString()),
             1);
       });
+
+      test("setDateTime", () async {
+        expect(
+            await service.setDateTime(
+                PreferencesFlag.ratingTimer, DateTime(2000, 01, 02)),
+            isTrue);
+        expect(
+            sharedPreferences.getString(PreferencesFlag.ratingTimer.toString()),
+            DateTime(2000, 01, 02).toIso8601String());
+      });
     });
 
     test("clear", () async {
@@ -113,6 +123,16 @@ void main() {
             await service
                 .getInt(PreferencesFlag.scheduleSettingsCalendarFormat),
             1);
+      });
+
+      test("getDateTime", () async {
+        SharedPreferences.setMockInitialValues(
+            {PreferencesFlag.ratingTimer.toString(): DateTime(2000, 01, 02).toIso8601String()});
+
+        expect(
+            await service
+                .getDateTime(PreferencesFlag.ratingTimer),
+            DateTime(2000, 01, 02));
       });
     });
   });

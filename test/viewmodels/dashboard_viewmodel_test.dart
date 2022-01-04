@@ -535,6 +535,35 @@ void main() {
           preferencesServiceMock, PreferencesFlag.ratingTimer, toReturn: day);
         
         expect(await DashboardViewModel.launchInAppReview(), true);
+        verify(preferencesServiceMock.setBool(PreferencesFlag.hasRatingBeenRequested, value: true)).called(1);
+      });
+
+      test("returns false when todays date is after the day set in cache and when the function is called twice", () async {
+        final day = DateTime.now().add(const Duration(days: -1));
+        setupInAppReview();
+        PreferencesServiceMock.stubGetDateTime(
+          preferencesServiceMock, PreferencesFlag.ratingTimer, toReturn: day);
+        PreferencesServiceMock.stubGetBool(preferencesServiceMock, PreferencesFlag.hasRatingBeenRequested, toReturn: false);
+
+        expect(await DashboardViewModel.launchInAppReview(), true);
+
+        PreferencesServiceMock.stubGetBool(preferencesServiceMock, PreferencesFlag.hasRatingBeenRequested);
+
+        expect(await DashboardViewModel.launchInAppReview(), false);
+      });
+
+      test("returns false when todays date is after the day set in cache and when the function is called twice", () async {
+        final day = DateTime.now().add(const Duration(days: -1));
+        setupInAppReview();
+        PreferencesServiceMock.stubGetDateTime(
+          preferencesServiceMock, PreferencesFlag.ratingTimer, toReturn: day);
+        PreferencesServiceMock.stubGetBool(preferencesServiceMock, PreferencesFlag.hasRatingBeenRequested, toReturn: null);
+
+        expect(await DashboardViewModel.launchInAppReview(), true);
+
+        PreferencesServiceMock.stubGetBool(preferencesServiceMock, PreferencesFlag.hasRatingBeenRequested);
+
+        expect(await DashboardViewModel.launchInAppReview(), false);
       });
 
       test("returns false when todays date is the before the day set in cache", () async {
