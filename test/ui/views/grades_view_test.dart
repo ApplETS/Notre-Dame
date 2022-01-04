@@ -118,7 +118,7 @@ void main() {
 
         await tester.pumpWidget(
             localizedWidget(child: FeatureDiscovery(child: GradesView())));
-        await tester.pumpAndSettle();
+        await tester.pumpAndSettle(const Duration(seconds: 1));
 
         await expectLater(find.byType(GradesView),
             matchesGoldenFile(goldenFilePath("gradesView_2")));
@@ -167,7 +167,7 @@ void main() {
 
         await tester.pumpWidget(
             localizedWidget(child: FeatureDiscovery(child: GradesView())));
-        await tester.pumpAndSettle(const Duration(seconds: 1));
+        await tester.pumpAndSettle(const Duration(seconds: 2));
 
         // Check the summer session list of grades.
         final summerSessionText = find.text("${intl.session_summer} 2020");
