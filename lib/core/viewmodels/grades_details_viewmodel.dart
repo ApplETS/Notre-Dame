@@ -8,6 +8,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 // CONSTANTS
 import 'package:notredame/core/constants/discovery_ids.dart';
 import 'package:notredame/core/constants/preferences_flags.dart';
+import 'package:notredame/core/constants/signets_errors.dart';
 
 // UTILS
 import 'package:notredame/ui/utils/discovery_components.dart';
@@ -60,7 +61,7 @@ class GradesDetailsViewModel extends FutureViewModel<Course> {
   @override
   // ignore: type_annotate_public_apis
   void onError(error) {
-    if (course.summary != null) {
+    if (error.errorCode != SignetsError.gradesEmpty) {
       Fluttertoast.showToast(msg: _appIntl.error);
     }
   }
