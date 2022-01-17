@@ -63,7 +63,7 @@ class GradesDetailsViewModel extends FutureViewModel<Course> {
   void onError(error) {
     if (error.errorCode != SignetsError.gradesEmpty) {
       Fluttertoast.showToast(msg: _appIntl.error);
-    }
+    } 
   }
 
   Future<bool> refresh() async {
