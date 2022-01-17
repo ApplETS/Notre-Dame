@@ -77,7 +77,7 @@ class _DashboardViewState extends State<DashboardView>
                         padding: const EdgeInsets.fromLTRB(0, 4, 0, 8),
                         children: _buildCards(model),
                         proxyDecorator: (child, _, __) {
-                          return HapticsContainer(content: child);
+                          return HapticsContainer(child: child);
                         },
                       ),
                     ));
