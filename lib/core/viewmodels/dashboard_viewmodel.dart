@@ -242,7 +242,7 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
           .getCoursesActivities()
           // ignore: return_type_invalid_for_catch_error
           .catchError(onError)
-          .whenComplete(() {
+          .whenComplete(() async {
         if (_todayDateEvents.isEmpty) {
           // Build the list
           for (final CourseActivity course
@@ -257,7 +257,7 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
         _todayDateEvents
             .sort((a, b) => a.startDateTime.compareTo(b.startDateTime));
 
-        removeLaboratoryGroup();
+        await removeLaboratoryGroup();
 
         setBusyForObject(_todayDateEvents, false);
       });
@@ -273,10 +273,8 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
       final courseKey = courseAcronym.courseGroup.toString().split('-')[0];
 
       final String activityCodeToUse = await _settingsManager.getDynamicString(
-          DynamicPreferencesFlag(
-              groupAssociationFlag:
-                  PreferencesFlag.scheduleSettingsLaboratoryGroup,
-              uniqueKey: courseKey));
+        PreferencesFlag.scheduleSettingsLaboratoryGroup,
+        courseKey);
 
       if (activityCodeToUse == ActivityCode.labGroupA) {
         _todayDateEvents.removeWhere((element) =>
