@@ -2,6 +2,7 @@
 import 'package:feature_discovery/feature_discovery.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:notredame/core/utils/api_exception.dart';
 import 'package:stacked/stacked.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -61,7 +62,7 @@ class GradesDetailsViewModel extends FutureViewModel<Course> {
   @override
   // ignore: type_annotate_public_apis
   void onError(error) {
-    if (error != "" && error.errorCode != SignetsError.gradesEmpty) {
+    if (error is! ApiException && error.errorCode != SignetsError.gradesEmpty) {
       Fluttertoast.showToast(msg: _appIntl.error);
     }
   }
