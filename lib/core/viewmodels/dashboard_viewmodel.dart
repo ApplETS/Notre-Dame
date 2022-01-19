@@ -63,7 +63,7 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
   List<int> get sessionDays => _sessionDays;
 
   /// Activities for today
-  final List<CourseActivity> _todayDateEvents = [];
+  List<CourseActivity> _todayDateEvents = [];
 
   /// Get the list of activities for today
   List<CourseActivity> get todayDateEvents {
@@ -257,7 +257,7 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
         _todayDateEvents
             .sort((a, b) => a.startDateTime.compareTo(b.startDateTime));
 
-        await removeLaboratoryGroup();
+        _todayDateEvents = await removeLaboratoryGroup(_todayDateEvents);
 
         setBusyForObject(_todayDateEvents, false);
       });
@@ -266,10 +266,10 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
     });
   }
 
-  Future<void> removeLaboratoryGroup() async {
-    final _todayDateEventsCopy = List.from(_todayDateEvents);
-
-    for (final courseAcronym in _todayDateEventsCopy) {
+  Future<List<CourseActivity>> removeLaboratoryGroup(List todayDateEvents) async {
+    final List<CourseActivity> todayDateEventsCopy = List.from(todayDateEvents);
+    
+    for (final courseAcronym in todayDateEvents) {
       final courseKey = courseAcronym.courseGroup.toString().split('-')[0];
 
       final String activityCodeToUse = await _settingsManager.getDynamicString(
@@ -277,15 +277,17 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
         courseKey);
 
       if (activityCodeToUse == ActivityCode.labGroupA) {
-        _todayDateEvents.removeWhere((element) =>
+        todayDateEventsCopy.removeWhere((element) =>
             element.activityDescription == ActivityDescriptionName.labB &&
             element.courseGroup == courseAcronym.courseGroup);
       } else if (activityCodeToUse == ActivityCode.labGroupB) {
-        _todayDateEvents.removeWhere((element) =>
+        todayDateEventsCopy.removeWhere((element) =>
             element.activityDescription == ActivityDescriptionName.labA &&
             element.courseGroup == courseAcronym.courseGroup);
       }
     }
+
+    return todayDateEventsCopy;
   }
 
   /// Update cards order and display status in preferences

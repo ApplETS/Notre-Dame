@@ -347,7 +347,7 @@ void main() {
         verifyNoMoreInteractions(courseRepository);
       });
 
-      test("build the list todays activities with the right course activities", () async {
+      test("build the list todays activities with the right course activities (should not have labo A)", () async {
         CourseRepositoryMock.stubGetCoursesActivities(
             courseRepository as CourseRepositoryMock);
         CourseRepositoryMock.stubCoursesActivities(
@@ -372,15 +372,66 @@ void main() {
             "GEN103",
             toReturn: ActivityCode.labGroupB);
             
-        await viewModel.futureToRunSchedule();
+        expect(await viewModel.removeLaboratoryGroup(activitiesWithLabs), 
+          [activitiesWithLabs[0], activitiesWithLabs[1], activitiesWithLabs[2], activitiesWithLabs[4]]);
+      });
 
-        await untilCalled(courseRepository.getCoursesActivities());
-        
-        expect(viewModel.todayDateEvents[0], activitiesWithLabs[0]); // GEN101 Cours
-        expect(viewModel.todayDateEvents[1], activitiesWithLabs[1]); // GEN102 Cours
-        expect(viewModel.todayDateEvents[2], activitiesWithLabs[2]); // GEN103 Cours
-        expect(viewModel.todayDateEvents[3], activitiesWithLabs[4]); // GEN103 LabB
-        expect(viewModel.todayDateEvents.length == 4, true);
+      test("build the list todays activities with the right course activities (should not have labo B)", () async {
+        CourseRepositoryMock.stubGetCoursesActivities(
+            courseRepository as CourseRepositoryMock);
+        CourseRepositoryMock.stubCoursesActivities(
+            courseRepository as CourseRepositoryMock,
+            toReturn: activitiesWithLabs);
+
+        SettingsManagerMock.stubGetDynamicString(
+            settingsManager as SettingsManagerMock,
+            PreferencesFlag.scheduleSettingsLaboratoryGroup,
+            "GEN101",
+            toReturn: null);
+
+        SettingsManagerMock.stubGetDynamicString(
+            settingsManager as SettingsManagerMock,
+            PreferencesFlag.scheduleSettingsLaboratoryGroup,
+            "GEN102",
+            toReturn: null);
+
+        SettingsManagerMock.stubGetDynamicString(
+            settingsManager as SettingsManagerMock,
+            PreferencesFlag.scheduleSettingsLaboratoryGroup,
+            "GEN103",
+            toReturn: ActivityCode.labGroupA);
+            
+        expect(await viewModel.removeLaboratoryGroup(activitiesWithLabs), 
+          [activitiesWithLabs[0], activitiesWithLabs[1], activitiesWithLabs[2], activitiesWithLabs[3]]);
+      });
+
+      test("build the list todays activities with the right course activities (should have both labs)", () async {
+        CourseRepositoryMock.stubGetCoursesActivities(
+            courseRepository as CourseRepositoryMock);
+        CourseRepositoryMock.stubCoursesActivities(
+            courseRepository as CourseRepositoryMock,
+            toReturn: activitiesWithLabs);
+
+        SettingsManagerMock.stubGetDynamicString(
+            settingsManager as SettingsManagerMock,
+            PreferencesFlag.scheduleSettingsLaboratoryGroup,
+            "GEN101",
+            toReturn: null);
+
+        SettingsManagerMock.stubGetDynamicString(
+            settingsManager as SettingsManagerMock,
+            PreferencesFlag.scheduleSettingsLaboratoryGroup,
+            "GEN102",
+            toReturn: null);
+
+        SettingsManagerMock.stubGetDynamicString(
+            settingsManager as SettingsManagerMock,
+            PreferencesFlag.scheduleSettingsLaboratoryGroup,
+            "GEN103",
+            toReturn: null);
+            
+        expect(await viewModel.removeLaboratoryGroup(activitiesWithLabs), 
+          activitiesWithLabs);
       });
 
       test("An exception is thrown during the preferenceService call",
