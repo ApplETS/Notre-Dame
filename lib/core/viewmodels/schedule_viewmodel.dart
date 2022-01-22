@@ -2,7 +2,6 @@
 import 'package:enum_to_string/enum_to_string.dart';
 import 'package:feature_discovery/feature_discovery.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:notredame/core/utils/utils.dart';
 import 'package:stacked/stacked.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:flutter/material.dart';
@@ -21,6 +20,7 @@ import 'package:notredame/core/models/schedule_activity.dart';
 
 // UTILS
 import 'package:notredame/ui/utils/discovery_components.dart';
+import 'package:notredame/core/utils/utils.dart';
 
 // OTHER
 import 'package:notredame/locator.dart';
