@@ -3,6 +3,7 @@ import 'package:feature_discovery/feature_discovery.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:intl/intl.dart';
+import 'package:pub_semver/pub_semver.dart';
 import 'package:stacked/stacked.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -25,7 +26,7 @@ import 'package:notredame/ui/widgets/schedule_settings.dart';
 import 'package:notredame/core/constants/preferences_flags.dart';
 import 'package:notredame/core/constants/discovery_ids.dart';
 
-// OTHER
+// RESPONSIVE (THEME & VIEW FRAMES)
 import 'package:notredame/ui/utils/app_theme.dart';
 
 class ScheduleView extends StatefulWidget {
@@ -88,34 +89,80 @@ class _ScheduleViewState extends State<ScheduleView>
                 actions: _buildActionButtons(model),
               ),
               body: RefreshIndicator(
-                child: Stack(children: [
-                  ListView(
-                    children: [
-                      _buildTableCalendar(model),
-                      const SizedBox(height: 8.0),
-                      const Divider(indent: 8.0, endIndent: 8.0, thickness: 1),
-                      const SizedBox(height: 6.0),
-                      Center(
-                          child: Text(
-                              DateFormat.MMMMEEEEd(model.locale.toString())
-                                  .format(model.selectedDate),
-                              style: Theme.of(context).textTheme.headline5)),
-                      const SizedBox(height: 2.0),
-                      if (model.selectedDateEvents.isEmpty)
-                        Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 64.0),
-                          child: Center(
-                              child:
-                                  Text(AppIntl.of(context).schedule_no_event)),
-                        )
-                      else
-                        _buildEventList(model.selectedDateEvents),
-                      const SizedBox(height: 16.0),
-                    ],
-                  ),
-                ]),
-                onRefresh: () => model.refresh(),
-              )));
+                  child: LayoutBuilder(builder: (context, constraints) {
+                    //FIXME define the responsive values in a responsive file import
+                    if (constraints.maxWidth < 1000) {
+                      return verticalRectLayout(model);
+                    } else {
+                      return horizontalRectLayout(model);
+                    }
+                  }),
+                  onRefresh: () => model.refresh())));
+
+  Widget verticalRectLayout(ScheduleViewModel model) {
+    return Stack(children: [
+      ListView(
+        children: [
+          _buildTableCalendar(model),
+          const SizedBox(height: 8.0),
+          const Divider(indent: 8.0, endIndent: 8.0, thickness: 1),
+          const SizedBox(height: 6.0),
+          Center(
+              child: Text(
+                  DateFormat.MMMMEEEEd(model.locale.toString())
+                      .format(model.selectedDate),
+                  style: Theme.of(context).textTheme.headline5)),
+          const SizedBox(height: 2.0),
+          if (model.selectedDateEvents.isEmpty)
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 64.0),
+              child: Center(child: Text(AppIntl.of(context).schedule_no_event)),
+            )
+          else
+            _buildEventList(model.selectedDateEvents),
+          const SizedBox(height: 16.0),
+        ],
+      ),
+    ]);
+  }
+
+  Widget horizontalRectLayout(ScheduleViewModel model) {
+    return Row(mainAxisSize: MainAxisSize.max, children: [
+      Expanded(
+        flex: 3,
+        child: _buildTableCalendar(model),
+      ),
+      const SizedBox(height: 8.0),
+      const Divider(indent: 8.0, endIndent: 8.0, thickness: 1),
+      const SizedBox(height: 6.0),
+      Center(
+          child: Column(children: [
+        Text(
+            DateFormat.MMMMEEEEd(model.locale.toString())
+                .format(model.selectedDate),
+            style: Theme.of(context).textTheme.headline5),
+        const SizedBox(height: 32.0),
+        _statefulEventList(model)
+      ])),
+      const SizedBox(height: 2.0),
+      const SizedBox(height: 16.0),
+    ]);
+  }
+
+  Widget _statefulEventList(ScheduleViewModel model) {
+    if (model.selectedDateEvents.isEmpty) {
+      return SizedBox(
+        height: 300,
+        width: 500,
+        child: Center(child: Text(AppIntl.of(context).schedule_no_event)),
+      );
+    } else {
+      return SizedBox(
+          height: 500,
+          width: 500,
+          child: _buildEventList(model.selectedDateEvents));
+    }
+  }
 
   /// Build the square with the number of [events] for the [date]
   Widget _buildEventsMarker(
