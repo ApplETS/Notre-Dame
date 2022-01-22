@@ -496,7 +496,7 @@ void main() {
 
         // Setting up the viewmodel
         viewModel.coursesActivities;
-        viewModel.selectedDate = DateTime(2020, 1, 7);
+        viewModel.selectedDate = DateTime(2020, 1, 8);
         clearInteractions(courseRepository);
 
         expect(viewModel.selectedWeekEvents(), expected);
