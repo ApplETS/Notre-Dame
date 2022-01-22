@@ -102,7 +102,7 @@ class _ScheduleViewState extends State<ScheduleView>
                         _buildTitleForDate(model.selectedDate, model),
                       const SizedBox(height: 2.0),
                       if (!model.showWeekEvents &&
-                          model.getEventsForDate(model.selectedDate).isEmpty)
+                          model.selectedDateEvents(model.selectedDate).isEmpty)
                         Padding(
                           padding: const EdgeInsets.symmetric(vertical: 64.0),
                           child: Center(
@@ -111,7 +111,7 @@ class _ScheduleViewState extends State<ScheduleView>
                         )
                       else if (!model.showWeekEvents)
                         _buildEventList(
-                            model.getEventsForDate(model.selectedDate)),
+                            model.selectedDateEvents(model.selectedDate)),
                       const SizedBox(height: 16.0),
                     ],
                   ),
@@ -127,7 +127,7 @@ class _ScheduleViewState extends State<ScheduleView>
 
   List<Widget> _buildWeekEvents(ScheduleViewModel model, BuildContext context) {
     final List<Widget> widgets = [];
-    final eventsByDate = model.getEventsForWeek();
+    final eventsByDate = model.selectedWeekEvents();
     for (final events in eventsByDate.entries) {
       widgets.add(_buildTitleForDate(events.key, model));
       widgets.add(_buildEventList(events.value));

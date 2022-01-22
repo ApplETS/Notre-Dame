@@ -2,6 +2,7 @@
 import 'package:enum_to_string/enum_to_string.dart';
 import 'package:feature_discovery/feature_discovery.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:notredame/core/utils/utils.dart';
 import 'package:stacked/stacked.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:flutter/material.dart';
@@ -67,48 +68,25 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
         focusedDate = ValueNotifier(initialSelectedDate ?? DateTime.now());
 
   /// Activities for the day currently selected
-  List<dynamic> getEventsForDate(DateTime date) =>
+  List<dynamic> selectedDateEvents(DateTime date) =>
       _coursesActivities[DateTime(date.year, date.month, date.day)] ?? [];
 
-  Map<DateTime, List<dynamic>> getEventsForWeek() {
+  Map<DateTime, List<dynamic>> selectedWeekEvents() {
     final Map<DateTime, List<dynamic>> events = {};
+    final firstDayOfWeek = Utils.getFirstDayOfCurrentWeek(
+        selectedDate,
+        settings[PreferencesFlag.scheduleSettingsStartWeekday]
+            as StartingDayOfWeek);
 
-    final firstDayOfWeek = getFirstDayOfCurrentWeek();
-    for (int i = 0; i < 6; i++) {
+    for (int i = 0; i < 7; i++) {
       final date = firstDayOfWeek.add(Duration(days: i));
-      final eventsForDay = getEventsForDate(date);
+      final eventsForDay = selectedDateEvents(date);
       if (eventsForDay.isNotEmpty) {
         events[date] = eventsForDay;
       }
     }
 
     return events;
-  }
-
-  /// Get first day of the week depending on startingDay which corresponds to weekday
-  DateTime getFirstDayOfCurrentWeek() {
-    // Get starting day as enum
-    final startingDay = settings[PreferencesFlag.scheduleSettingsStartWeekday]
-        as StartingDayOfWeek;
-    var firstDayOfWeek = DateTime.now();
-    switch (startingDay) {
-      case StartingDayOfWeek.monday:
-        final tempDate =
-            selectedDate.subtract(Duration(days: selectedDate.weekday - 1));
-        firstDayOfWeek = DateTime(tempDate.year, tempDate.month, tempDate.day);
-        break;
-      case StartingDayOfWeek.saturday:
-        final tempDate =
-            selectedDate.subtract(Duration(days: selectedDate.weekday + 1));
-        firstDayOfWeek = DateTime(tempDate.year, tempDate.month, tempDate.day);
-        break;
-      // Sunday as default
-      default:
-        final tempDate =
-            selectedDate.subtract(Duration(days: selectedDate.weekday % 7));
-        firstDayOfWeek = DateTime(tempDate.year, tempDate.month, tempDate.day);
-    }
-    return firstDayOfWeek;
   }
 
   bool _showWeekEvents = false;

@@ -53,7 +53,6 @@
 
   "schedule_settings_title": "Schedule Settings",
   "schedule_settings_show_today_btn_pref": "Show Today button",
-  "schedule_settings_show_week_events_btn_pref": "Show Entire Week Activies",
   "schedule_settings_calendar_format_pref": "Calendar format",
   "schedule_settings_calendar_format_month": "Month",
   "schedule_settings_calendar_format_2_weeks": "2 weeks",
