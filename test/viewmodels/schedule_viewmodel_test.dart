@@ -231,10 +231,6 @@ void main() {
       // Setting up mocks
       courseRepository = setupCourseRepositoryMock();
       settingsManager = setupSettingsManagerMock();
-      final Map<PreferencesFlag, dynamic> settings = {
-        PreferencesFlag.scheduleSettingsCalendarFormat: CalendarFormat.week,
-        PreferencesFlag.scheduleSettingsStartWeekday: StartingDayOfWeek.saturday
-      };
 
       viewModel = ScheduleViewModel(intl: await setupAppIntl());
     });
@@ -475,10 +471,10 @@ void main() {
     });
 
     group('selectedWeekEvents', () {
-      Map<PreferencesFlag, dynamic> settingsStartingDayMonday = {
+      final Map<PreferencesFlag, dynamic> settingsStartingDayMonday = {
         PreferencesFlag.scheduleSettingsStartWeekday: StartingDayOfWeek.monday,
       };
-      Map<PreferencesFlag, dynamic> settingsStartingDaySaturday = {
+      final Map<PreferencesFlag, dynamic> settingsStartingDaySaturday = {
         PreferencesFlag.scheduleSettingsStartWeekday:
             StartingDayOfWeek.saturday,
       };
