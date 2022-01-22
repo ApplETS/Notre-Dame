@@ -162,6 +162,15 @@ class _DashboardViewState extends State<DashboardView>
                         color: Colors.white,
                       ),
                     ),
+                    IconButton(
+                      onPressed: () {
+                        Utils.launchURL(Urls.clubDiscord, AppIntl.of(context));
+                      },
+                      icon: const FaIcon(
+                        FontAwesomeIcons.discord,
+                        color: Colors.white,
+                      ),
+                    ),
                   ]),
                 ),
               ),

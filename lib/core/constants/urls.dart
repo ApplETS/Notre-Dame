@@ -29,4 +29,5 @@ class Urls {
   static const String clubEmail = "mailto:info@clubapplets.ca";
   static const String clubYoutube =
       "https://youtube.com/channel/UCiSzzfW1bVbE_0KcEZO52ew";
+  static const String clubDiscord = "https://discord.gg/adMkWptn6Y";
 }
