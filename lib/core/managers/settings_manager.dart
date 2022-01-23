@@ -187,7 +187,7 @@ class SettingsManager with ChangeNotifier {
   Future<bool> setDynamicString(
       PreferencesFlag flag, String key, String value) async {
     if (value == null) {
-      return _preferencesService.removeDynamicPreferencesFlag(flag);
+      return _preferencesService.removeDynamicPreferencesFlag(flag, key);
     }
 
     // Log the event
