@@ -66,7 +66,7 @@ void main() {
           DateTime.now().year, DateTime.now().month, DateTime.now().day, 18),
       endDateTime: DateTime(
           DateTime.now().year, DateTime.now().month, DateTime.now().day, 21));
-    final gen104LabA = CourseActivity(
+  final gen104LabA = CourseActivity(
       courseGroup: "GEN103",
       courseName: "Generic course",
       activityName: "TD",
@@ -76,7 +76,7 @@ void main() {
           DateTime.now().year, DateTime.now().month, DateTime.now().day, 18),
       endDateTime: DateTime(
           DateTime.now().year, DateTime.now().month, DateTime.now().day, 21));
-    final gen104LabB = CourseActivity(
+  final gen104LabB = CourseActivity(
       courseGroup: "GEN103",
       courseName: "Generic course",
       activityName: "TD",
@@ -88,8 +88,14 @@ void main() {
           DateTime.now().year, DateTime.now().month, DateTime.now().day, 21));
 
   final List<CourseActivity> activities = [gen101, gen102, gen103];
-  
-  final List<CourseActivity> activitiesWithLabs = [gen101, gen102, gen103, gen104LabA, gen104LabB];
+
+  final List<CourseActivity> activitiesWithLabs = [
+    gen101,
+    gen102,
+    gen103,
+    gen104LabA,
+    gen104LabB
+  ];
 
   // Needed to support FlutterToast.
   TestWidgetsFlutterBinding.ensureInitialized();
@@ -347,7 +353,9 @@ void main() {
         verifyNoMoreInteractions(courseRepository);
       });
 
-      test("build the list todays activities with the right course activities (should not have labo A)", () async {
+      test(
+          "build the list todays activities with the right course activities (should not have labo A)",
+          () async {
         CourseRepositoryMock.stubGetCoursesActivities(
             courseRepository as CourseRepositoryMock);
         CourseRepositoryMock.stubCoursesActivities(
@@ -371,12 +379,18 @@ void main() {
             PreferencesFlag.scheduleSettingsLaboratoryGroup,
             "GEN103",
             toReturn: ActivityCode.labGroupB);
-            
-        expect(await viewModel.removeLaboratoryGroup(activitiesWithLabs), 
-          [activitiesWithLabs[0], activitiesWithLabs[1], activitiesWithLabs[2], activitiesWithLabs[4]]);
+
+        expect(await viewModel.removeLaboratoryGroup(activitiesWithLabs), [
+          activitiesWithLabs[0],
+          activitiesWithLabs[1],
+          activitiesWithLabs[2],
+          activitiesWithLabs[4]
+        ]);
       });
 
-      test("build the list todays activities with the right course activities (should not have labo B)", () async {
+      test(
+          "build the list todays activities with the right course activities (should not have labo B)",
+          () async {
         CourseRepositoryMock.stubGetCoursesActivities(
             courseRepository as CourseRepositoryMock);
         CourseRepositoryMock.stubCoursesActivities(
@@ -400,12 +414,18 @@ void main() {
             PreferencesFlag.scheduleSettingsLaboratoryGroup,
             "GEN103",
             toReturn: ActivityCode.labGroupA);
-            
-        expect(await viewModel.removeLaboratoryGroup(activitiesWithLabs), 
-          [activitiesWithLabs[0], activitiesWithLabs[1], activitiesWithLabs[2], activitiesWithLabs[3]]);
+
+        expect(await viewModel.removeLaboratoryGroup(activitiesWithLabs), [
+          activitiesWithLabs[0],
+          activitiesWithLabs[1],
+          activitiesWithLabs[2],
+          activitiesWithLabs[3]
+        ]);
       });
 
-      test("build the list todays activities with the right course activities (should have both labs)", () async {
+      test(
+          "build the list todays activities with the right course activities (should have both labs)",
+          () async {
         CourseRepositoryMock.stubGetCoursesActivities(
             courseRepository as CourseRepositoryMock);
         CourseRepositoryMock.stubCoursesActivities(
@@ -429,9 +449,9 @@ void main() {
             PreferencesFlag.scheduleSettingsLaboratoryGroup,
             "GEN103",
             toReturn: null);
-            
-        expect(await viewModel.removeLaboratoryGroup(activitiesWithLabs), 
-          activitiesWithLabs);
+
+        expect(await viewModel.removeLaboratoryGroup(activitiesWithLabs),
+            activitiesWithLabs);
       });
 
       test("An exception is thrown during the preferenceService call",

@@ -277,8 +277,7 @@ void main() {
         SettingsManagerMock.stubGetDynamicString(
             settingsManager as SettingsManagerMock,
             PreferencesFlag.scheduleSettingsLaboratoryGroup,
-            classOneWithLaboratoryABscheduleActivities
-                    .first.courseAcronym,
+            classOneWithLaboratoryABscheduleActivities.first.courseAcronym,
             toReturn: null);
 
         await viewModel.assignScheduleActivities([]);
@@ -292,8 +291,7 @@ void main() {
         SettingsManagerMock.stubGetDynamicString(
             settingsManager as SettingsManagerMock,
             PreferencesFlag.scheduleSettingsLaboratoryGroup,
-            classOneWithLaboratoryABscheduleActivities
-                    .first.courseAcronym,
+            classOneWithLaboratoryABscheduleActivities.first.courseAcronym,
             toReturn: ActivityCode.labGroupA);
 
         await viewModel.assignScheduleActivities(
@@ -308,8 +306,7 @@ void main() {
         SettingsManagerMock.stubGetDynamicString(
             settingsManager as SettingsManagerMock,
             PreferencesFlag.scheduleSettingsLaboratoryGroup,
-            classOneWithLaboratoryABscheduleActivities
-                    .first.courseAcronym,
+            classOneWithLaboratoryABscheduleActivities.first.courseAcronym,
             toReturn: ActivityCode.labGroupA);
 
         await viewModel.assignScheduleActivities(
@@ -462,8 +459,7 @@ void main() {
         SettingsManagerMock.stubGetDynamicString(
             settingsManager as SettingsManagerMock,
             PreferencesFlag.scheduleSettingsLaboratoryGroup,
-            classOneWithLaboratoryABscheduleActivities
-                    .first.courseAcronym,
+            classOneWithLaboratoryABscheduleActivities.first.courseAcronym,
             toReturn: ActivityCode.labGroupA);
         await viewModel.assignScheduleActivities(
             classOneWithLaboratoryABscheduleActivities);
@@ -491,8 +487,7 @@ void main() {
         SettingsManagerMock.stubGetDynamicString(
             settingsManager as SettingsManagerMock,
             PreferencesFlag.scheduleSettingsLaboratoryGroup,
-            classOneWithLaboratoryABscheduleActivities
-                    .first.courseAcronym,
+            classOneWithLaboratoryABscheduleActivities.first.courseAcronym,
             toReturn: ActivityCode.labGroupA);
 
         expect(await viewModel.futureToRun(), activities,

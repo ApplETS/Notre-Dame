@@ -94,9 +94,7 @@ class ScheduleSettingsViewModel
     setBusy(true);
     if (scheduleActivityToSave == null) {
       await _settingsManager.setDynamicString(
-          PreferencesFlag.scheduleSettingsLaboratoryGroup,
-          courseAcronym,
-          null);
+          PreferencesFlag.scheduleSettingsLaboratoryGroup, courseAcronym, null);
     } else {
       await _settingsManager.setDynamicString(
           PreferencesFlag.scheduleSettingsLaboratoryGroup,
@@ -142,8 +140,7 @@ class ScheduleSettingsViewModel
     // Preselect the right schedule activity
     for (final courseKey in _scheduleActivitiesByCourse.keys) {
       final scheduleActivityCode = await _settingsManager.getDynamicString(
-          PreferencesFlag.scheduleSettingsLaboratoryGroup,
-          courseKey);
+          PreferencesFlag.scheduleSettingsLaboratoryGroup, courseKey);
       final scheduleActivity = _scheduleActivitiesByCourse[courseKey]
           .firstWhere((element) => element.activityCode == scheduleActivityCode,
               orElse: () => null);
