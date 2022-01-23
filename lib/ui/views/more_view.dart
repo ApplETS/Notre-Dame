@@ -29,6 +29,7 @@ class MoreView extends StatefulWidget {
 }
 
 class _MoreViewState extends State<MoreView> {
+  bool isDiscoveryOverlayActive = false;
   @override
   void initState() {
     super.initState();
@@ -95,7 +96,10 @@ class _MoreViewState extends State<MoreView> {
                   title: Text(AppIntl.of(context).more_report_bug),
                   leading: _buildDiscoveryFeatureDescriptionWidget(
                       context,
-                      const Icon(Icons.bug_report),
+                      (Theme.of(context).brightness == Brightness.dark &&
+                              isDiscoveryOverlayActive)
+                          ? const Icon(Icons.bug_report, color: Colors.black)
+                          : const Icon(Icons.bug_report),
                       DiscoveryIds.detailsMoreBugReport,
                       model),
                   onTap: () => BetterFeedback.of(context).show((
@@ -111,7 +115,11 @@ class _MoreViewState extends State<MoreView> {
                   title: Text(AppIntl.of(context).more_contributors),
                   leading: _buildDiscoveryFeatureDescriptionWidget(
                       context,
-                      const Icon(Icons.people_outline),
+                      (Theme.of(context).brightness == Brightness.dark &&
+                              isDiscoveryOverlayActive)
+                          ? const Icon(Icons.people_outline,
+                              color: Colors.black)
+                          : const Icon(Icons.people_outline),
                       DiscoveryIds.detailsMoreContributors,
                       model),
                   onTap: () => model.navigationService
@@ -145,7 +153,10 @@ class _MoreViewState extends State<MoreView> {
                   title: Text(AppIntl.of(context).settings_title),
                   leading: _buildDiscoveryFeatureDescriptionWidget(
                       context,
-                      const Icon(Icons.settings),
+                      (Theme.of(context).brightness == Brightness.dark &&
+                              isDiscoveryOverlayActive)
+                          ? const Icon(Icons.settings, color: Colors.black)
+                          : const Icon(Icons.settings),
                       DiscoveryIds.detailsMoreSettings,
                       model),
                   onTap: () =>
@@ -200,6 +211,17 @@ class _MoreViewState extends State<MoreView> {
         tapTarget: icon,
         pulseDuration: const Duration(seconds: 5),
         child: icon,
-        onComplete: () => model.discoveryCompleted());
+        onComplete: () {
+          setState(() {
+            isDiscoveryOverlayActive = false;
+          });
+          return model.discoveryCompleted();
+        },
+        onOpen: () async {
+          setState(() {
+            isDiscoveryOverlayActive = true;
+          });
+          return true;
+        });
   }
 }
