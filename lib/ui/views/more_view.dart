@@ -39,6 +39,14 @@ class _MoreViewState extends State<MoreView> {
     });
   }
 
+  /// Returns right icon color for discovery depending on theme.
+  Widget getProperIconAccordingToTheme(IconData icon) {
+    return (Theme.of(context).brightness == Brightness.dark &&
+            isDiscoveryOverlayActive)
+        ? Icon(icon, color: Colors.black)
+        : Icon(icon);
+  }
+
   /// License text box
   List<Widget> aboutBoxChildren(BuildContext context) {
     final textStyle = Theme.of(context).textTheme.bodyText2;
@@ -96,10 +104,7 @@ class _MoreViewState extends State<MoreView> {
                   title: Text(AppIntl.of(context).more_report_bug),
                   leading: _buildDiscoveryFeatureDescriptionWidget(
                       context,
-                      (Theme.of(context).brightness == Brightness.dark &&
-                              isDiscoveryOverlayActive)
-                          ? const Icon(Icons.bug_report, color: Colors.black)
-                          : const Icon(Icons.bug_report),
+                      getProperIconAccordingToTheme(Icons.bug_report),
                       DiscoveryIds.detailsMoreBugReport,
                       model),
                   onTap: () => BetterFeedback.of(context).show((
@@ -115,11 +120,7 @@ class _MoreViewState extends State<MoreView> {
                   title: Text(AppIntl.of(context).more_contributors),
                   leading: _buildDiscoveryFeatureDescriptionWidget(
                       context,
-                      (Theme.of(context).brightness == Brightness.dark &&
-                              isDiscoveryOverlayActive)
-                          ? const Icon(Icons.people_outline,
-                              color: Colors.black)
-                          : const Icon(Icons.people_outline),
+                      getProperIconAccordingToTheme(Icons.people_outline),
                       DiscoveryIds.detailsMoreContributors,
                       model),
                   onTap: () => model.navigationService
@@ -153,10 +154,7 @@ class _MoreViewState extends State<MoreView> {
                   title: Text(AppIntl.of(context).settings_title),
                   leading: _buildDiscoveryFeatureDescriptionWidget(
                       context,
-                      (Theme.of(context).brightness == Brightness.dark &&
-                              isDiscoveryOverlayActive)
-                          ? const Icon(Icons.settings, color: Colors.black)
-                          : const Icon(Icons.settings),
+                      getProperIconAccordingToTheme(Icons.settings),
                       DiscoveryIds.detailsMoreSettings,
                       model),
                   onTap: () =>
