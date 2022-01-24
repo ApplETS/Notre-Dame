@@ -1,7 +1,6 @@
 // FLUTTER / DART / THIRD-PARTIES
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/io_client.dart';
 import 'package:xml/xml.dart';
@@ -363,14 +362,9 @@ class SignetsApi {
     return responseBody;
   }
 
-  /// Create a [http.Client] with the certificate to access the SignetsAPI
+  /// Create a [http.Client]
   Future _signetsClient() async {
-    final ByteData data =
-        await rootBundle.load("assets/certificates/signets_cert.crt");
-    final securityContext = SecurityContext()
-      ..setTrustedCertificatesBytes(data.buffer.asUint8List());
-
-    final ioClient = HttpClient(context: securityContext);
+    final ioClient = HttpClient();
 
     _client = IOClient(ioClient);
   }

@@ -81,7 +81,12 @@ class _StudentViewState extends State<StudentView> {
       description: discovery.details,
       backgroundColor: AppTheme.appletsDarkPurple,
       tapTarget: Tab(
-        text: tabs[index],
+        child: Text(
+          tabs[index],
+          style: (Theme.of(context).brightness == Brightness.dark)
+              ? const TextStyle(color: Colors.black)
+              : null,
+        ),
       ),
       pulseDuration: const Duration(seconds: 5),
       child: Tab(

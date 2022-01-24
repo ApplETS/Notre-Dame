@@ -14,6 +14,7 @@ import 'package:notredame/ui/widgets/dismissible_card.dart';
 import 'package:notredame/ui/widgets/base_scaffold.dart';
 import 'package:notredame/ui/widgets/course_activity_tile.dart';
 import 'package:notredame/ui/widgets/grade_button.dart';
+import 'package:notredame/ui/widgets/haptics_container.dart';
 
 // MODELS / CONSTANTS
 import 'package:notredame/core/constants/preferences_flags.dart';
@@ -75,6 +76,9 @@ class _DashboardViewState extends State<DashboardView>
                             onReorder(model, oldIndex, newIndex),
                         padding: const EdgeInsets.fromLTRB(0, 4, 0, 8),
                         children: _buildCards(model),
+                        proxyDecorator: (child, _, __) {
+                          return HapticsContainer(child: child);
+                        },
                       ),
                     ));
         });
@@ -159,6 +163,15 @@ class _DashboardViewState extends State<DashboardView>
                       },
                       icon: const FaIcon(
                         FontAwesomeIcons.envelope,
+                        color: Colors.white,
+                      ),
+                    ),
+                    IconButton(
+                      onPressed: () {
+                        Utils.launchURL(Urls.clubDiscord, AppIntl.of(context));
+                      },
+                      icon: const FaIcon(
+                        FontAwesomeIcons.discord,
                         color: Colors.white,
                       ),
                     ),
