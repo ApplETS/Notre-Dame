@@ -59,10 +59,10 @@ void main() {
               child: FeatureDiscovery(child: QuickLinksView()),
               useScaffold: false));
           await tester.pumpAndSettle();
-          await Future.delayed(const Duration(seconds: 1), () async {
-            await expectLater(find.byType(QuickLinksView),
-                matchesGoldenFile(goldenFilePath("quicksLinksView_1")));
-          });
+          await tester.pump(const Duration(milliseconds: 500));
+
+          await expectLater(find.byType(QuickLinksView),
+              matchesGoldenFile(goldenFilePath("quicksLinksView_1")));
         });
       });
     });
