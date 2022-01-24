@@ -245,10 +245,8 @@ void main() {
 
         SettingsManagerMock.stubGetDynamicString(
             settingsManager as SettingsManagerMock,
-            DynamicPreferencesFlag(
-                groupAssociationFlag:
-                    PreferencesFlag.scheduleSettingsLaboratoryGroup,
-                uniqueKey: "GEN103"),
+            PreferencesFlag.scheduleSettingsLaboratoryGroup,
+            "GEN103",
             toReturn: ActivityCode.labGroupA);
 
         await viewModel.assignScheduleActivities([
@@ -278,11 +276,8 @@ void main() {
 
         SettingsManagerMock.stubGetDynamicString(
             settingsManager as SettingsManagerMock,
-            DynamicPreferencesFlag(
-                groupAssociationFlag:
-                    PreferencesFlag.scheduleSettingsLaboratoryGroup,
-                uniqueKey: classOneWithLaboratoryABscheduleActivities
-                    .first.courseAcronym),
+            PreferencesFlag.scheduleSettingsLaboratoryGroup,
+            classOneWithLaboratoryABscheduleActivities.first.courseAcronym,
             toReturn: null);
 
         await viewModel.assignScheduleActivities([]);
@@ -295,11 +290,8 @@ void main() {
           () async {
         SettingsManagerMock.stubGetDynamicString(
             settingsManager as SettingsManagerMock,
-            DynamicPreferencesFlag(
-                groupAssociationFlag:
-                    PreferencesFlag.scheduleSettingsLaboratoryGroup,
-                uniqueKey: classOneWithLaboratoryABscheduleActivities
-                    .first.courseAcronym),
+            PreferencesFlag.scheduleSettingsLaboratoryGroup,
+            classOneWithLaboratoryABscheduleActivities.first.courseAcronym,
             toReturn: ActivityCode.labGroupA);
 
         await viewModel.assignScheduleActivities(
@@ -313,11 +305,8 @@ void main() {
           () async {
         SettingsManagerMock.stubGetDynamicString(
             settingsManager as SettingsManagerMock,
-            DynamicPreferencesFlag(
-                groupAssociationFlag:
-                    PreferencesFlag.scheduleSettingsLaboratoryGroup,
-                uniqueKey: classOneWithLaboratoryABscheduleActivities
-                    .first.courseAcronym),
+            PreferencesFlag.scheduleSettingsLaboratoryGroup,
+            classOneWithLaboratoryABscheduleActivities.first.courseAcronym,
             toReturn: ActivityCode.labGroupA);
 
         await viewModel.assignScheduleActivities(
@@ -469,11 +458,8 @@ void main() {
         // Test normal cases, with laboratory
         SettingsManagerMock.stubGetDynamicString(
             settingsManager as SettingsManagerMock,
-            DynamicPreferencesFlag(
-                groupAssociationFlag:
-                    PreferencesFlag.scheduleSettingsLaboratoryGroup,
-                uniqueKey: classOneWithLaboratoryABscheduleActivities
-                    .first.courseAcronym),
+            PreferencesFlag.scheduleSettingsLaboratoryGroup,
+            classOneWithLaboratoryABscheduleActivities.first.courseAcronym,
             toReturn: ActivityCode.labGroupA);
         await viewModel.assignScheduleActivities(
             classOneWithLaboratoryABscheduleActivities);
@@ -500,11 +486,8 @@ void main() {
             });
         SettingsManagerMock.stubGetDynamicString(
             settingsManager as SettingsManagerMock,
-            DynamicPreferencesFlag(
-                groupAssociationFlag:
-                    PreferencesFlag.scheduleSettingsLaboratoryGroup,
-                uniqueKey: classOneWithLaboratoryABscheduleActivities
-                    .first.courseAcronym),
+            PreferencesFlag.scheduleSettingsLaboratoryGroup,
+            classOneWithLaboratoryABscheduleActivities.first.courseAcronym,
             toReturn: ActivityCode.labGroupA);
 
         expect(await viewModel.futureToRun(), activities,
@@ -529,7 +512,7 @@ void main() {
                 classOneWithLaboratoryABscheduleActivities.first.courseAcronym],
             "Laboratoire (Groupe A)");
 
-        verify(settingsManager.getDynamicString(any)).called(1);
+        verify(settingsManager.getDynamicString(any, any)).called(1);
       });
 
       test(
@@ -541,10 +524,8 @@ void main() {
 
         SettingsManagerMock.stubGetDynamicString(
             settingsManager as SettingsManagerMock,
-            DynamicPreferencesFlag(
-                groupAssociationFlag:
-                    PreferencesFlag.scheduleSettingsLaboratoryGroup,
-                uniqueKey: "GEN103"),
+            PreferencesFlag.scheduleSettingsLaboratoryGroup,
+            "GEN103",
             toReturn: ActivityCode.labGroupA);
 
         await viewModel.assignScheduleActivities([
@@ -576,10 +557,8 @@ void main() {
 
         SettingsManagerMock.stubGetDynamicString(
             settingsManager as SettingsManagerMock,
-            DynamicPreferencesFlag(
-                groupAssociationFlag:
-                    PreferencesFlag.scheduleSettingsLaboratoryGroup,
-                uniqueKey: "GEN103"),
+            PreferencesFlag.scheduleSettingsLaboratoryGroup,
+            "GEN103",
             toReturn: ActivityCode.labGroupA);
 
         await viewModel.assignScheduleActivities([
@@ -611,10 +590,8 @@ void main() {
 
         SettingsManagerMock.stubGetDynamicString(
             settingsManager as SettingsManagerMock,
-            DynamicPreferencesFlag(
-                groupAssociationFlag:
-                    PreferencesFlag.scheduleSettingsLaboratoryGroup,
-                uniqueKey: "GEN103"),
+            PreferencesFlag.scheduleSettingsLaboratoryGroup,
+            "GEN103",
             toReturn: ActivityCode.labGroupB);
 
         await viewModel.assignScheduleActivities([
@@ -646,10 +623,8 @@ void main() {
 
         SettingsManagerMock.stubGetDynamicString(
             settingsManager as SettingsManagerMock,
-            DynamicPreferencesFlag(
-                groupAssociationFlag:
-                    PreferencesFlag.scheduleSettingsLaboratoryGroup,
-                uniqueKey: "GEN103"),
+            PreferencesFlag.scheduleSettingsLaboratoryGroup,
+            "GEN103",
             toReturn: null);
 
         await viewModel.assignScheduleActivities([]);

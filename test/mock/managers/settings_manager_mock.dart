@@ -35,9 +35,9 @@ class SettingsManagerMock extends Mock implements SettingsManager {
 
   /// Stub the [getDynamicString] function of [mock], when called with [flag] return [toReturn].
   static void stubGetDynamicString(
-      SettingsManagerMock mock, DynamicPreferencesFlag flag,
+      SettingsManagerMock mock, PreferencesFlag flag, String key,
       {String toReturn = 'test'}) {
-    when(mock.getDynamicString(flag)).thenAnswer((_) async => toReturn);
+    when(mock.getDynamicString(flag, key)).thenAnswer((_) async => toReturn);
   }
 
   /// Stub the [getBool] function of [mock], when called with [flag] return [toReturn].
