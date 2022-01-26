@@ -31,6 +31,9 @@ class WebLinkCardViewModel extends BaseViewModel {
       try {
         await launchInBrowser(link.link);
       } catch (error) {
+        // An exception is thrown if browser app is not installed on Android device.
+        _analyticsService.logError(
+            "WebLinkCardViewModel", "Error while launching url in tabs $error");
         await launchWebView(link);
       }
     }
@@ -38,35 +41,29 @@ class WebLinkCardViewModel extends BaseViewModel {
 
   /// used to open a website inside AndroidChromeCustomTabs or SFSafariViewController
   Future<void> launchInBrowser(String url) async {
-    try {
-      await launch(
-        'https://flutter.dev',
-        customTabsOption: CustomTabsOption(
-          toolbarColor: AppTheme.etsLightRed,
-          enableDefaultShare: false,
-          enableUrlBarHiding: true,
-          showPageTitle: true,
-          animation: CustomTabsSystemAnimation.slideIn(),
-          extraCustomTabs: const <String>[
-            // ref. https://play.google.com/store/apps/details?id=org.mozilla.firefox
-            'org.mozilla.firefox',
-            // ref. https://play.google.com/store/apps/details?id=com.microsoft.emmx
-            'com.microsoft.emmx',
-          ],
-        ),
-        safariVCOption: const SafariViewControllerOption(
-          preferredBarTintColor: AppTheme.etsLightRed,
-          preferredControlTintColor: AppTheme.lightThemeBackground,
-          barCollapsingEnabled: true,
-          entersReaderIfAvailable: false,
-          dismissButtonStyle: SafariViewControllerDismissButtonStyle.close,
-        ),
-      );
-    } catch (e) {
-      // An exception is thrown if browser app is not installed on Android device.
-      _analyticsService.logError(
-          "WebLinkCardViewModel", "Error while launching url in tabs $e");
-    }
+    await launch(
+      url,
+      customTabsOption: CustomTabsOption(
+        toolbarColor: AppTheme.etsLightRed,
+        enableDefaultShare: false,
+        enableUrlBarHiding: true,
+        showPageTitle: true,
+        animation: CustomTabsSystemAnimation.slideIn(),
+        extraCustomTabs: const <String>[
+          // ref. https://play.google.com/store/apps/details?id=org.mozilla.firefox
+          'org.mozilla.firefox',
+          // ref. https://play.google.com/store/apps/details?id=com.microsoft.emmx
+          'com.microsoft.emmx',
+        ],
+      ),
+      safariVCOption: const SafariViewControllerOption(
+        preferredBarTintColor: AppTheme.etsLightRed,
+        preferredControlTintColor: AppTheme.lightThemeBackground,
+        barCollapsingEnabled: true,
+        entersReaderIfAvailable: false,
+        dismissButtonStyle: SafariViewControllerDismissButtonStyle.close,
+      ),
+    );
   }
 
   Future<void> launchWebView(QuickLink link) async {
