@@ -12,6 +12,7 @@ import 'package:notredame/core/constants/preferences_flags.dart';
 import 'package:notredame/core/constants/discovery_ids.dart';
 import 'package:notredame/core/constants/progress_bar_text_options.dart';
 import 'package:notredame/core/constants/update_code.dart';
+import 'package:notredame/core/constants/activity_code.dart';
 
 // MANAGER / SERVICE
 import 'package:notredame/core/managers/settings_manager.dart';
@@ -63,7 +64,7 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
   List<int> get sessionDays => _sessionDays;
 
   /// Activities for today
-  final List<CourseActivity> _todayDateEvents = [];
+  List<CourseActivity> _todayDateEvents = [];
 
   /// Get the list of activities for today
   List<CourseActivity> get todayDateEvents {
@@ -277,7 +278,7 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
           .getCoursesActivities()
           // ignore: return_type_invalid_for_catch_error
           .catchError(onError)
-          .whenComplete(() {
+          .whenComplete(() async {
         if (_todayDateEvents.isEmpty) {
           // Build the list
           for (final CourseActivity course
@@ -292,11 +293,37 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
         _todayDateEvents
             .sort((a, b) => a.startDateTime.compareTo(b.startDateTime));
 
+        _todayDateEvents = await removeLaboratoryGroup(_todayDateEvents);
+
         setBusyForObject(_todayDateEvents, false);
       });
 
       return value;
     });
+  }
+
+  Future<List<CourseActivity>> removeLaboratoryGroup(
+      List todayDateEvents) async {
+    final List<CourseActivity> todayDateEventsCopy = List.from(todayDateEvents);
+
+    for (final courseAcronym in todayDateEvents) {
+      final courseKey = courseAcronym.courseGroup.toString().split('-')[0];
+
+      final String activityCodeToUse = await _settingsManager.getDynamicString(
+          PreferencesFlag.scheduleSettingsLaboratoryGroup, courseKey);
+
+      if (activityCodeToUse == ActivityCode.labGroupA) {
+        todayDateEventsCopy.removeWhere((element) =>
+            element.activityDescription == ActivityDescriptionName.labB &&
+            element.courseGroup == courseAcronym.courseGroup);
+      } else if (activityCodeToUse == ActivityCode.labGroupB) {
+        todayDateEventsCopy.removeWhere((element) =>
+            element.activityDescription == ActivityDescriptionName.labA &&
+            element.courseGroup == courseAcronym.courseGroup);
+      }
+    }
+
+    return todayDateEventsCopy;
   }
 
   /// Update cards order and display status in preferences

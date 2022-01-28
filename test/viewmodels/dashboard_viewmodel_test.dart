@@ -5,6 +5,7 @@ import 'package:mockito/mockito.dart';
 // CONSTANTS
 import 'package:notredame/core/constants/preferences_flags.dart';
 import 'package:notredame/core/constants/progress_bar_text_options.dart';
+import 'package:notredame/core/constants/activity_code.dart';
 
 // MANAGERS
 import 'package:notredame/core/managers/course_repository.dart';
@@ -66,8 +67,36 @@ void main() {
           DateTime.now().year, DateTime.now().month, DateTime.now().day, 18),
       endDateTime: DateTime(
           DateTime.now().year, DateTime.now().month, DateTime.now().day, 21));
+  final gen104LabA = CourseActivity(
+      courseGroup: "GEN103",
+      courseName: "Generic course",
+      activityName: "TD",
+      activityDescription: ActivityDescriptionName.labA,
+      activityLocation: "location",
+      startDateTime: DateTime(
+          DateTime.now().year, DateTime.now().month, DateTime.now().day, 18),
+      endDateTime: DateTime(
+          DateTime.now().year, DateTime.now().month, DateTime.now().day, 21));
+  final gen104LabB = CourseActivity(
+      courseGroup: "GEN103",
+      courseName: "Generic course",
+      activityName: "TD",
+      activityDescription: ActivityDescriptionName.labB,
+      activityLocation: "location",
+      startDateTime: DateTime(
+          DateTime.now().year, DateTime.now().month, DateTime.now().day, 18),
+      endDateTime: DateTime(
+          DateTime.now().year, DateTime.now().month, DateTime.now().day, 21));
 
   final List<CourseActivity> activities = [gen101, gen102, gen103];
+
+  final List<CourseActivity> activitiesWithLabs = [
+    gen101,
+    gen102,
+    gen103,
+    gen104LabA,
+    gen104LabB
+  ];
 
   // Needed to support FlutterToast.
   TestWidgetsFlutterBinding.ensureInitialized();
@@ -325,7 +354,107 @@ void main() {
         verify(settingsManager.getDashboard()).called(1);
 
         verifyNoMoreInteractions(courseRepository);
-        verifyNoMoreInteractions(settingsManager);
+      });
+
+      test(
+          "build the list todays activities with the right course activities (should not have labo A)",
+          () async {
+        CourseRepositoryMock.stubGetCoursesActivities(
+            courseRepository as CourseRepositoryMock);
+        CourseRepositoryMock.stubCoursesActivities(
+            courseRepository as CourseRepositoryMock,
+            toReturn: activitiesWithLabs);
+
+        SettingsManagerMock.stubGetDynamicString(
+            settingsManager as SettingsManagerMock,
+            PreferencesFlag.scheduleSettingsLaboratoryGroup,
+            "GEN101",
+            toReturn: null);
+
+        SettingsManagerMock.stubGetDynamicString(
+            settingsManager as SettingsManagerMock,
+            PreferencesFlag.scheduleSettingsLaboratoryGroup,
+            "GEN102",
+            toReturn: null);
+
+        SettingsManagerMock.stubGetDynamicString(
+            settingsManager as SettingsManagerMock,
+            PreferencesFlag.scheduleSettingsLaboratoryGroup,
+            "GEN103",
+            toReturn: ActivityCode.labGroupB);
+
+        expect(await viewModel.removeLaboratoryGroup(activitiesWithLabs), [
+          activitiesWithLabs[0],
+          activitiesWithLabs[1],
+          activitiesWithLabs[2],
+          activitiesWithLabs[4]
+        ]);
+      });
+
+      test(
+          "build the list todays activities with the right course activities (should not have labo B)",
+          () async {
+        CourseRepositoryMock.stubGetCoursesActivities(
+            courseRepository as CourseRepositoryMock);
+        CourseRepositoryMock.stubCoursesActivities(
+            courseRepository as CourseRepositoryMock,
+            toReturn: activitiesWithLabs);
+
+        SettingsManagerMock.stubGetDynamicString(
+            settingsManager as SettingsManagerMock,
+            PreferencesFlag.scheduleSettingsLaboratoryGroup,
+            "GEN101",
+            toReturn: null);
+
+        SettingsManagerMock.stubGetDynamicString(
+            settingsManager as SettingsManagerMock,
+            PreferencesFlag.scheduleSettingsLaboratoryGroup,
+            "GEN102",
+            toReturn: null);
+
+        SettingsManagerMock.stubGetDynamicString(
+            settingsManager as SettingsManagerMock,
+            PreferencesFlag.scheduleSettingsLaboratoryGroup,
+            "GEN103",
+            toReturn: ActivityCode.labGroupA);
+
+        expect(await viewModel.removeLaboratoryGroup(activitiesWithLabs), [
+          activitiesWithLabs[0],
+          activitiesWithLabs[1],
+          activitiesWithLabs[2],
+          activitiesWithLabs[3]
+        ]);
+      });
+
+      test(
+          "build the list todays activities with the right course activities (should have both labs)",
+          () async {
+        CourseRepositoryMock.stubGetCoursesActivities(
+            courseRepository as CourseRepositoryMock);
+        CourseRepositoryMock.stubCoursesActivities(
+            courseRepository as CourseRepositoryMock,
+            toReturn: activitiesWithLabs);
+
+        SettingsManagerMock.stubGetDynamicString(
+            settingsManager as SettingsManagerMock,
+            PreferencesFlag.scheduleSettingsLaboratoryGroup,
+            "GEN101",
+            toReturn: null);
+
+        SettingsManagerMock.stubGetDynamicString(
+            settingsManager as SettingsManagerMock,
+            PreferencesFlag.scheduleSettingsLaboratoryGroup,
+            "GEN102",
+            toReturn: null);
+
+        SettingsManagerMock.stubGetDynamicString(
+            settingsManager as SettingsManagerMock,
+            PreferencesFlag.scheduleSettingsLaboratoryGroup,
+            "GEN103",
+            toReturn: null);
+
+        expect(await viewModel.removeLaboratoryGroup(activitiesWithLabs),
+            activitiesWithLabs);
       });
 
       test("An exception is thrown during the preferenceService call",
