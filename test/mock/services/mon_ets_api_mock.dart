@@ -32,6 +32,7 @@ class MonETSApiMock extends Mock implements MonETSApi {
   /// will be called with this [username]
   static void stubException(MonETSApiMock mock, String username,
       {Exception exception}) {
+    exception ??= Exception();
     when(mock.authenticate(username: username, password: anyNamed('password')))
         .thenThrow(exception);
   }
