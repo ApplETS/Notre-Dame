@@ -92,7 +92,9 @@ class UserRepository {
           if (await _signetsApi.authenticate(
               username: username, password: password)) {
             _monETSUser = MonETSUser(
-                domain: "student", typeUsagerId: 1, username: username);
+                domain: MonETSUser.mainDomain,
+                typeUsagerId: MonETSUser.studentRoleId,
+                username: username);
           } else {
             _analyticsService.logError(
                 tag, "Authenticate - ${e.toString()}", e, stacktrace);
