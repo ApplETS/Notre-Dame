@@ -50,6 +50,7 @@ void main() {
       setupLogger();
 
       manager = UserRepository();
+      SignetsApiMock.stubAuthenticate(signetsApi as SignetsApiMock);
     });
 
     tearDown(() {

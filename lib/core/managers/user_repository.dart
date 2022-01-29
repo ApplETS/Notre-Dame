@@ -94,6 +94,8 @@ class UserRepository {
             _monETSUser = MonETSUser(
                 domain: "student", typeUsagerId: 1, username: username);
           } else {
+            _analyticsService.logError(
+                tag, "Authenticate - ${e.toString()}", e, stacktrace);
             return false;
           }
         } on Exception catch (e, stacktrace) {
