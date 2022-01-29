@@ -87,8 +87,6 @@ class UserRepository {
       // Try login in from signets if monETS failed
       if (e is HttpException) {
         try {
-          _analyticsService.logError(
-              tag, "Authenticate - ${e.toString()}", e, stacktrace);
           if (await _signetsApi.authenticate(
               username: username, password: password)) {
             _monETSUser = MonETSUser(
