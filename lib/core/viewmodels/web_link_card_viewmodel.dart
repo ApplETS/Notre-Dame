@@ -32,8 +32,6 @@ class WebLinkCardViewModel extends BaseViewModel {
         await launchInBrowser(link.link);
       } catch (error) {
         // An exception is thrown if browser app is not installed on Android device.
-        _analyticsService.logError(
-            "WebLinkCardViewModel", "Error while launching url in tabs $error");
         await launchWebView(link);
       }
     }
@@ -52,8 +50,18 @@ class WebLinkCardViewModel extends BaseViewModel {
         extraCustomTabs: const <String>[
           // ref. https://play.google.com/store/apps/details?id=org.mozilla.firefox
           'org.mozilla.firefox',
+          // https://play.google.com/store/apps/details?id=com.brave.browser
+          'com.brave.browser',
+          // https://play.google.com/store/apps/details?id=com.opera.browser
+          'com.opera.browser',
+          'com.opera.mini.native',
+          'com.opera.gx',
+          // https://play.google.com/store/apps/details?id=com.sec.android.app.sbrowser
+          'com.sec.android.app.sbrowser',
           // ref. https://play.google.com/store/apps/details?id=com.microsoft.emmx
           'com.microsoft.emmx',
+          // https://play.google.com/store/apps/details?id=com.UCMobile.intl
+          'com.UCMobile.intl',
         ],
       ),
       safariVCOption: const SafariViewControllerOption(
