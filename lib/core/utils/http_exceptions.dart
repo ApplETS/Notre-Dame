@@ -13,6 +13,10 @@ class HttpException implements Exception {
         _code = code,
         _prefix = prefix;
 
+  int get code {
+    return _code;
+  }
+
   @override
   String toString() {
     return "$_prefix - $_code $_message";

@@ -21,6 +21,7 @@ import 'package:notredame/core/models/program.dart';
 // UTILS
 import 'package:notredame/core/utils/api_exception.dart';
 import 'package:notredame/core/utils/cache_exception.dart';
+import 'package:notredame/core/utils/http_exceptions.dart';
 
 // OTHER
 import 'package:notredame/locator.dart';
@@ -83,9 +84,28 @@ class UserRepository {
       _monETSUser =
           await _monETSApi.authenticate(username: username, password: password);
     } on Exception catch (e, stacktrace) {
-      _analyticsService.logError(
-          tag, "Authenticate - ${e.toString()}", e, stacktrace);
-      return false;
+      // Try login in from signets if monETS failed
+      if (e is HttpException) {
+        try {
+          _analyticsService.logError(
+              tag, "Authenticate - ${e.toString()}", e, stacktrace);
+          if (await _signetsApi.authenticate(
+              username: username, password: password)) {
+            _monETSUser = MonETSUser(
+                domain: "student", typeUsagerId: 1, username: username);
+          } else {
+            return false;
+          }
+        } on Exception catch (e, stacktrace) {
+          _analyticsService.logError(
+              tag, "Authenticate - ${e.toString()}", e, stacktrace);
+          return false;
+        }
+      } else {
+        _analyticsService.logError(
+            tag, "Authenticate - ${e.toString()}", e, stacktrace);
+        return false;
+      }
     }
 
     await _analyticsService.setUserProperties(
