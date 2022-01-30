@@ -42,6 +42,19 @@ class SignetsApi {
     }
   }
 
+  Future<bool> authenticate(
+      {@required String username, @required String password}) async {
+    // Generate initial soap envelope
+    final body = buildBasicSOAPBody(
+            Urls.donneesAuthentificationValides, username, password)
+        .buildDocument();
+    final responseBody =
+        await _sendSOAPRequest(body, Urls.donneesAuthentificationValides);
+
+    /// Build and return the authentication status
+    return responseBody.innerText == "true";
+  }
+
   /// Call the SignetsAPI to get the courses activities for the [session] for
   /// the student ([username]). By specifying [courseGroup] we can filter the
   /// results to get only the activities for this course.
@@ -340,11 +353,12 @@ class SignetsApi {
         .first;
 
     // Throw exception if the error tag contains a blocking error
-    if (responseBody
-        .findElements(_signetsErrorTag)
-        .first
-        .innerText
-        .isNotEmpty) {
+    if (responseBody.findElements(_signetsErrorTag).isNotEmpty &&
+        responseBody
+            .findElements(_signetsErrorTag)
+            .first
+            .innerText
+            .isNotEmpty) {
       switch (responseBody.findElements(_signetsErrorTag).first.innerText) {
         case SignetsError.scheduleNotAvailable:
         case SignetsError.scheduleNotAvailableF:

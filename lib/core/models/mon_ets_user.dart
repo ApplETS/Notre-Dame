@@ -3,6 +3,9 @@ import 'package:flutter/material.dart';
 
 /// User received from MonETS after a authentication
 class MonETSUser {
+  static const int studentRoleId = 1;
+  static const String mainDomain = "ENS";
+
   final String domain;
 
   final int typeUsagerId;

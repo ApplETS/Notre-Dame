@@ -175,10 +175,8 @@ void main() {
 
         SettingsManagerMock.stubGetDynamicString(
             settingsManager as SettingsManagerMock,
-            DynamicPreferencesFlag(
-                groupAssociationFlag:
-                    PreferencesFlag.scheduleSettingsLaboratoryGroup,
-                uniqueKey: courseAcronymWithLaboratory),
+            PreferencesFlag.scheduleSettingsLaboratoryGroup,
+            courseAcronymWithLaboratory,
             toReturn: null);
 
         expect(await viewModel.futureToRun(), settings);
@@ -198,7 +196,7 @@ void main() {
         verify(courseRepository.getScheduleActivities()).called(1);
         verifyNoMoreInteractions(courseRepository);
 
-        verify(settingsManager.getDynamicString(any)).called(1);
+        verify(settingsManager.getDynamicString(any, any)).called(1);
       });
       test(
           "If there is two valid class which has grouped laboratory, we store both (First => none selected, Second => group A selected)",
@@ -219,17 +217,13 @@ void main() {
 
         SettingsManagerMock.stubGetDynamicString(
             settingsManager as SettingsManagerMock,
-            DynamicPreferencesFlag(
-                groupAssociationFlag:
-                    PreferencesFlag.scheduleSettingsLaboratoryGroup,
-                uniqueKey: firstCourseAcronymWithLab),
+            PreferencesFlag.scheduleSettingsLaboratoryGroup,
+            firstCourseAcronymWithLab,
             toReturn: null);
         SettingsManagerMock.stubGetDynamicString(
             settingsManager as SettingsManagerMock,
-            DynamicPreferencesFlag(
-                groupAssociationFlag:
-                    PreferencesFlag.scheduleSettingsLaboratoryGroup,
-                uniqueKey: secondCourseAcronymWithLab),
+            PreferencesFlag.scheduleSettingsLaboratoryGroup,
+            secondCourseAcronymWithLab,
             toReturn: ActivityCode.labGroupA);
 
         expect(await viewModel.futureToRun(), settings);
@@ -258,7 +252,7 @@ void main() {
         verify(courseRepository.getScheduleActivities()).called(1);
         verifyNoMoreInteractions(courseRepository);
 
-        verify(settingsManager.getDynamicString(any)).called(2);
+        verify(settingsManager.getDynamicString(any, any)).called(2);
       });
     });
 

@@ -306,10 +306,8 @@ void main() {
         // preselect the laboB
         SettingsManagerMock.stubGetDynamicString(
             settingsManager as SettingsManagerMock,
-            DynamicPreferencesFlag(
-                groupAssociationFlag:
-                    PreferencesFlag.scheduleSettingsLaboratoryGroup,
-                uniqueKey: "GEN101"),
+            PreferencesFlag.scheduleSettingsLaboratoryGroup,
+            "GEN101",
             toReturn: ActivityCode.labGroupB);
 
         const scheduleSettings = ScheduleSettings(showHandle: false);

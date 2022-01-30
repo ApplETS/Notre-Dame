@@ -24,6 +24,13 @@ class SignetsApiMock extends Mock implements SignetsApi {
   static const courseRepositoryException =
       ApiException(prefix: CourseRepository.tag, message: "");
 
+  /// Stub the answer of the [authenticate].
+  static void stubAuthenticate(SignetsApiMock mock, {bool connected = false}) {
+    when(mock.authenticate(
+            username: anyNamed("username"), password: anyNamed("password")))
+        .thenAnswer((_) async => connected);
+  }
+
   /// Stub the answer of the [getCoursesActivities] when the [session] is used.
   static void stubGetCoursesActivities(SignetsApiMock mock, String session,
       List<CourseActivity> coursesActivitiesToReturn) {
