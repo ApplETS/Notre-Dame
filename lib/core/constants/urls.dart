@@ -12,6 +12,8 @@ class Urls {
 
   // SOAP Operations supported by the Signets API
   static const String signetsOperationBase = "http://etsmtl.ca/";
+  static const String donneesAuthentificationValides =
+      "donneesAuthentificationValides";
   static const String infoStudentOperation = "infoEtudiant";
   static const String listProgramsOperation = "listeProgrammes";
   static const String listClassScheduleOperation = "lireHoraireDesSeances";
