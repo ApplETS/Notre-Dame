@@ -62,7 +62,7 @@ class GradesDetailsViewModel extends FutureViewModel<Course> {
   @override
   // ignore: type_annotate_public_apis
   void onError(error) {
-    if (error is! ApiException && error.errorCode != SignetsError.gradesEmpty) {
+    if (error is ApiException && error.errorCode != SignetsError.gradesEmpty) {
       Fluttertoast.showToast(msg: _appIntl.error);
     }
   }
