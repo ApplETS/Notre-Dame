@@ -17,6 +17,7 @@ import 'package:notredame/core/models/mon_ets_user.dart';
 import 'package:notredame/core/models/profile_student.dart';
 import 'package:notredame/core/models/program.dart';
 import 'package:notredame/core/utils/api_exception.dart';
+import 'package:notredame/core/utils/http_exceptions.dart';
 
 // HELPERS
 import '../helpers.dart';
@@ -50,6 +51,7 @@ void main() {
       setupLogger();
 
       manager = UserRepository();
+      SignetsApiMock.stubAuthenticate(signetsApi as SignetsApiMock);
     });
 
     tearDown(() {
@@ -117,6 +119,70 @@ void main() {
       });
     });
 
+    group('authentication Signets - ', () {
+      test('right credentials but bad MonETS API', () async {
+        final MonETSUser user =
+            MonETSUser(domain: "ENS", typeUsagerId: 1, username: "AAXXXXXX");
+
+        MonETSApiMock.stubException(monETSApi as MonETSApiMock, user.username,
+            exception: HttpException(
+                prefix: "MonETSAPI",
+                code: 415,
+                message:
+                    "{ \"Message\": \"The request contains an entity body but no Content-Type header. The inferred media type 'application/octet-stream' is not supported for this resource.\"}"));
+        SignetsApiMock.stubAuthenticate(signetsApi as SignetsApiMock,
+            connected: true);
+
+        // Result is true
+        expect(
+            await manager.authenticate(username: user.username, password: ""),
+            isTrue,
+            reason: "Check the authentication is successful");
+
+        // Verify the secureStorage is used
+        verify(secureStorage.write(
+            key: UserRepository.usernameSecureKey, value: user.username));
+        verify(secureStorage.write(
+            key: UserRepository.passwordSecureKey, value: ""));
+
+        // Verify the user id is set in the analytics
+        verify(analyticsService.setUserProperties(
+            userId: user.username, domain: user.domain));
+      });
+
+      test('MonETSAPI failed and SignetsAPI return false', () async {
+        const String username = "exceptionUser";
+
+        MonETSApiMock.stubException(monETSApi as MonETSApiMock, username,
+            exception: HttpException(
+                prefix: "MonETSAPI",
+                code: 415,
+                message:
+                    "{ \"Message\": \"The request contains an entity body but no Content-Type header. The inferred media type 'application/octet-stream' is not supported for this resource.\"}"));
+        SignetsApiMock.stubAuthenticate(signetsApi as SignetsApiMock);
+
+        expect(await manager.authenticate(username: username, password: ""),
+            isFalse,
+            reason: "The authentication failed so the result should be false");
+
+        // Verify the user id isn't set in the analytics
+        verify(analyticsService.logError(UserRepository.tag, any, any, any))
+            .called(1);
+
+        // Verify the secureStorage isn't used
+        verifyNever(secureStorage.write(
+            key: UserRepository.usernameSecureKey, value: username));
+        verifyNever(secureStorage.write(
+            key: UserRepository.passwordSecureKey, value: ""));
+
+        // Verify the user id is set in the analytics
+        verifyNever(analyticsService.setUserProperties(
+            userId: username, domain: anyNamed("domain")));
+
+        expect(manager.monETSUser, null,
+            reason: "Verify the user stored should be null");
+      });
+    });
     group('silentAuthenticate - ', () {
       test('credentials are saved so the authentication should be done',
           () async {
