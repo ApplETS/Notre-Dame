@@ -12,7 +12,7 @@ import 'package:notredame/core/managers/settings_manager.dart';
 import 'package:notredame/core/managers/course_repository.dart';
 
 // MODELS
-import 'package:notredame/core/models/schedule_activity.dart';
+import 'package:signets_api_client/models.dart';
 
 // OTHER
 import 'package:notredame/locator.dart';

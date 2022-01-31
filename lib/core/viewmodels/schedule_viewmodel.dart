@@ -15,8 +15,7 @@ import 'package:notredame/core/managers/course_repository.dart';
 import 'package:notredame/core/managers/settings_manager.dart';
 
 // MODELS
-import 'package:notredame/core/models/course_activity.dart';
-import 'package:notredame/core/models/schedule_activity.dart';
+import 'package:signets_api_client/models.dart';
 
 // UTILS
 import 'package:notredame/ui/utils/discovery_components.dart';

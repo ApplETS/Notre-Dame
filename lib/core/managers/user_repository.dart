@@ -8,23 +8,19 @@ import 'package:logger/logger.dart';
 
 // SERVICES
 import 'package:notredame/core/services/analytics_service.dart';
-import 'package:notredame/core/services/mon_ets_api.dart';
 import 'package:notredame/core/services/networking_service.dart';
-import 'package:notredame/core/services/signets_api.dart';
 import 'package:notredame/core/managers/cache_manager.dart';
 
 // MODELS
-import 'package:notredame/core/models/mon_ets_user.dart';
-import 'package:notredame/core/models/profile_student.dart';
-import 'package:notredame/core/models/program.dart';
+import 'package:signets_api_client/models.dart';
 
 // UTILS
-import 'package:notredame/core/utils/api_exception.dart';
+import 'package:signets_api_client/exceptions.dart';
 import 'package:notredame/core/utils/cache_exception.dart';
-import 'package:notredame/core/utils/http_exceptions.dart';
 
 // OTHER
 import 'package:notredame/locator.dart';
+import 'package:signets_api_client/clients.dart';
 
 class UserRepository {
   static const String tag = "UserRepository";
@@ -38,9 +34,6 @@ class UserRepository {
 
   final Logger _logger = locator<Logger>();
 
-  /// Principal access to the MonETSAPI
-  final MonETSApi _monETSApi = locator<MonETSApi>();
-
   /// Will be used to report event and error.
   final AnalyticsService _analyticsService = locator<AnalyticsService>();
 
@@ -52,9 +45,6 @@ class UserRepository {
 
   /// Cache manager to access and update the cache.
   final CacheManager _cacheManager = locator<CacheManager>();
-
-  /// Principal access to the SignetsAPI
-  final SignetsApi _signetsApi = locator<SignetsApi>();
 
   /// Mon ETS user for the student
   MonETSUser _monETSUser;
@@ -81,14 +71,14 @@ class UserRepository {
       @required String password,
       bool isSilent = false}) async {
     try {
-      _monETSUser =
-          await _monETSApi.authenticate(username: username, password: password);
+      final monETSAPIClient = MonETSAPIClient(username, password);
+      await monETSAPIClient.authenticate();
     } on Exception catch (e, stacktrace) {
       // Try login in from signets if monETS failed
       if (e is HttpException) {
         try {
-          if (await _signetsApi.authenticate(
-              username: username, password: password)) {
+          final signetsAPIClient = SignetsAPIClient(username, password);
+          if (await signetsAPIClient.authenticate()) {
             _monETSUser = MonETSUser(
                 domain: MonETSUser.mainDomain,
                 typeUsagerId: MonETSUser.studentRoleId,
@@ -219,8 +209,10 @@ class UserRepository {
       // getPassword will try to authenticate the user if not authenticated.
       final String password = await getPassword();
 
-      _programs = await _signetsApi.getPrograms(
-          username: monETSUser.universalCode, password: password);
+      final signetsAPIClient =
+          SignetsAPIClient(_monETSUser.universalCode, password);
+      _programs = await signetsAPIClient.getPrograms();
+
       _logger.d("$tag - getPrograms: ${_programs.length} programs fetched.");
 
       // Update cache
@@ -271,8 +263,10 @@ class UserRepository {
       // getPassword will try to authenticate the user if not authenticated.
       final String password = await getPassword();
 
-      final fetchedInfo = await _signetsApi.getStudentInfo(
-          username: monETSUser.universalCode, password: password);
+      final signetsAPIClient =
+          SignetsAPIClient(_monETSUser.universalCode, password);
+      final fetchedInfo = await signetsAPIClient.getStudentInfo();
+
       _logger.d("$tag - getInfo: $fetchedInfo info fetched.");
 
       if (_info != fetchedInfo) {

@@ -12,7 +12,7 @@ import 'package:notredame/core/constants/discovery_ids.dart';
 import 'package:notredame/core/constants/preferences_flags.dart';
 
 // MODEL
-import 'package:notredame/core/models/course.dart';
+import 'package:signets_api_client/models.dart';
 
 //OTHER
 import 'package:notredame/core/services/navigation_service.dart';

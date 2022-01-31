@@ -8,7 +8,7 @@ import 'package:intl/intl.dart';
 import 'package:notredame/core/constants/discovery_ids.dart';
 
 // MODELS
-import 'package:notredame/core/models/evaluation.dart';
+import 'package:signets_api_client/models.dart';
 
 // UTILS
 import 'package:notredame/ui/utils/discovery_components.dart';

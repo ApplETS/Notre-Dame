@@ -39,7 +39,11 @@ dependencies:
   feedback: ^1.2.1
   flutter_staggered_animations: ^1.0.0
   flutter_siren: ^1.2.0
-
+  
+  # Customs
+  signets_api_client:
+    path: ../signets_api_client/
+  
   # Other
   http: ^0.13.4
   flutter_cache_manager: ^3.0.1

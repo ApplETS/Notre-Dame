@@ -14,8 +14,6 @@ import 'package:notredame/locator.dart';
 import 'package:notredame/core/services/navigation_service.dart';
 import 'package:notredame/core/services/analytics_service.dart';
 import 'package:notredame/core/services/rive_animation_service.dart';
-import 'package:notredame/core/services/mon_ets_api.dart';
-import 'package:notredame/core/services/signets_api.dart';
 import 'package:notredame/core/managers/user_repository.dart';
 import 'package:notredame/core/managers/cache_manager.dart';
 import 'package:notredame/core/services/preferences_service.dart';
@@ -142,16 +140,6 @@ NavigationService setupNavigationServiceMock() {
   return service;
 }
 
-/// Load a mock of the [MonETSApi]
-MonETSApi setupMonETSApiMock() {
-  unregister<MonETSApi>();
-  final service = MonETSApiMock();
-
-  locator.registerSingleton<MonETSApi>(service);
-
-  return service;
-}
-
 /// Load a mock of the [GithubApi]
 GithubApi setupGithubApiMock() {
   unregister<GithubApi>();
@@ -185,16 +173,6 @@ UserRepository setupUserRepositoryMock() {
 /// Load the Internationalization class
 Future<AppIntl> setupAppIntl() async {
   return AppIntl.delegate.load(const Locale('en'));
-}
-
-/// Load a mock of the [SignetsApi]
-SignetsApi setupSignetsApiMock() {
-  unregister<SignetsApi>();
-  final service = SignetsApiMock();
-
-  locator.registerSingleton<SignetsApi>(service);
-
-  return service;
 }
 
 /// Load a mock of the [CacheManager]

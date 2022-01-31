@@ -7,25 +7,19 @@ import 'package:logger/logger.dart';
 // SERVICES
 import 'package:notredame/core/services/analytics_service.dart';
 import 'package:notredame/core/services/networking_service.dart';
-import 'package:notredame/core/services/signets_api.dart';
 import 'package:notredame/core/managers/cache_manager.dart';
 import 'package:notredame/core/managers/user_repository.dart';
 
 // MODELS
-import 'package:notredame/core/models/course_activity.dart';
-import 'package:notredame/core/models/course.dart';
-import 'package:notredame/core/models/course_summary.dart';
-import 'package:notredame/core/models/session.dart';
-import 'package:notredame/core/models/schedule_activity.dart';
-import 'package:notredame/core/models/course_evaluation.dart';
+import 'package:signets_api_client/models.dart';
 
 // UTILS
 import 'package:notredame/core/utils/cache_exception.dart';
-import 'package:notredame/core/utils/api_exception.dart';
-import 'package:notredame/core/constants/signets_errors.dart';
+import 'package:signets_api_client/exceptions.dart';
 
 // OTHER
 import 'package:notredame/locator.dart';
+import 'package:signets_api_client/clients.dart';
 
 /// Repository to access all the data related to courses taken by the student
 class CourseRepository {
@@ -47,9 +41,6 @@ class CourseRepository {
 
   /// Will be used to report event and error.
   final AnalyticsService _analyticsService = locator<AnalyticsService>();
-
-  /// Principal access to the SignetsAPI
-  final SignetsApi _signetsApi = locator<SignetsApi>();
 
   /// To access the user currently logged
   final UserRepository _userRepository = locator<UserRepository>();
@@ -139,10 +130,10 @@ class CourseRepository {
 
       final String password = await _userRepository.getPassword();
       for (final Session session in activeSessions) {
-        fetchedCoursesActivities.addAll(await _signetsApi.getCoursesActivities(
-            username: _userRepository.monETSUser.universalCode,
-            password: password,
-            session: session.shortName));
+        final signetsAPIClient = SignetsAPIClient(
+            _userRepository.monETSUser.universalCode, password);
+        fetchedCoursesActivities.addAll(await signetsAPIClient
+            .getCoursesActivities(session: session.shortName));
         _logger.d(
             "$tag - getCoursesActivities: fetched ${fetchedCoursesActivities.length} activities.");
       }
@@ -227,12 +218,12 @@ class CourseRepository {
       }
 
       final String password = await _userRepository.getPassword();
+
+      final signetsAPIClient =
+          SignetsAPIClient(_userRepository.monETSUser.universalCode, password);
       for (final Session session in activeSessions) {
-        fetchedScheduleActivities.addAll(
-            await _signetsApi.getScheduleActivities(
-                username: _userRepository.monETSUser.universalCode,
-                password: password,
-                session: session.shortName));
+        fetchedScheduleActivities.addAll(await signetsAPIClient
+            .getScheduleActivities(session: session.shortName));
         _logger.d(
             "$tag - getScheduleActivities: fetched ${fetchedScheduleActivities.length} activities.");
       }
@@ -295,9 +286,9 @@ class CourseRepository {
       // getPassword will try to authenticate the user if not authenticated.
       final String password = await _userRepository.getPassword();
 
-      final List<Session> fetchedSession = await _signetsApi.getSessions(
-          username: _userRepository.monETSUser.universalCode,
-          password: password);
+      final signetsAPIClient =
+          SignetsAPIClient(_userRepository.monETSUser.universalCode, password);
+      final List<Session> fetchedSession = await signetsAPIClient.getSessions();
       _logger
           .d("$tag - getSessions: ${fetchedSession.length} sessions fetched.");
       for (final Session session in fetchedSession) {
@@ -359,9 +350,10 @@ class CourseRepository {
 
     try {
       final String password = await _userRepository.getPassword();
-      fetchedCourses.addAll(await _signetsApi.getCourses(
-          username: _userRepository.monETSUser.universalCode,
-          password: password));
+
+      final signetsAPIClient =
+          SignetsAPIClient(_userRepository.monETSUser.universalCode, password);
+      fetchedCourses.addAll(await signetsAPIClient.getCourses());
       _logger.d("$tag - getCourses: fetched ${fetchedCourses.length} courses.");
     } on Exception catch (e, stacktrace) {
       _analyticsService.logError(
@@ -422,10 +414,10 @@ class CourseRepository {
 
     try {
       final String password = await _userRepository.getPassword();
-      summary = await _signetsApi.getCourseSummary(
-          username: _userRepository.monETSUser.universalCode,
-          password: password,
-          course: course);
+
+      final signetsAPIClient =
+          SignetsAPIClient(_userRepository.monETSUser.universalCode, password);
+      summary = await signetsAPIClient.getCourseSummary(course: course);
       _logger.d("$tag - getCourseSummary: fetched ${course.acronym} summary.");
     } on Exception catch (e, stacktrace) {
       if (e is ApiException) {
@@ -477,10 +469,10 @@ class CourseRepository {
       }
 
       for (final Session session in _sessions) {
-        sessionEvaluations = await _signetsApi.getCoursesEvaluation(
-            username: _userRepository.monETSUser.universalCode,
-            password: password,
-            session: session);
+        final signetsAPIClient = SignetsAPIClient(
+            _userRepository.monETSUser.universalCode, password);
+        sessionEvaluations =
+            await signetsAPIClient.getCoursesEvaluation(session: session);
         evaluations.putIfAbsent(session.shortName, () => sessionEvaluations);
         _logger.d(
             "$tag - getCoursesEvaluations: fetched ${evaluations[session.shortName].length} "

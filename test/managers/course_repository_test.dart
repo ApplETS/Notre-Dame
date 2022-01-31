@@ -7,20 +7,12 @@ import 'package:mockito/mockito.dart';
 
 // SERVICES / MANAGER
 import 'package:notredame/core/services/analytics_service.dart';
-import 'package:notredame/core/services/signets_api.dart';
 import 'package:notredame/core/managers/user_repository.dart';
 import 'package:notredame/core/managers/cache_manager.dart';
 import 'package:notredame/core/managers/course_repository.dart';
 
 // MODELS
-import 'package:notredame/core/models/schedule_activity.dart';
-import 'package:notredame/core/models/session.dart';
-import 'package:notredame/core/models/course_activity.dart';
-import 'package:notredame/core/models/mon_ets_user.dart';
-import 'package:notredame/core/models/course.dart';
-import 'package:notredame/core/models/course_summary.dart';
-import 'package:notredame/core/models/evaluation.dart' as model;
-import 'package:notredame/core/models/course_evaluation.dart';
+import 'package:signets_api_client/models.dart';
 
 // CONSTANTS
 import 'package:notredame/core/constants/activity_code.dart';
@@ -38,7 +30,6 @@ import '../mock/services/signets_api_mock.dart';
 void main() {
   AnalyticsService analyticsService;
   NetworkingServiceMock networkingService;
-  SignetsApi signetsApi;
   UserRepository userRepository;
   CacheManager cacheManager;
 
