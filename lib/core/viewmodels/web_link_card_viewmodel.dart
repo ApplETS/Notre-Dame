@@ -1,9 +1,7 @@
 // FLUTTER / DART / THIRD-PARTIES
 import 'package:notredame/core/models/quick_link.dart';
 import 'package:stacked/stacked.dart';
-
-// MODELS
-import 'package:flutter_inappwebview/flutter_inappwebview.dart';
+import 'package:flutter_custom_tabs/flutter_custom_tabs.dart';
 
 // CONSTANTS
 import 'package:notredame/core/constants/router_paths.dart';
@@ -33,6 +31,7 @@ class WebLinkCardViewModel extends BaseViewModel {
       try {
         await launchInBrowser(link.link);
       } catch (error) {
+        // An exception is thrown if browser app is not installed on Android device.
         await launchWebView(link);
       }
     }
@@ -40,17 +39,39 @@ class WebLinkCardViewModel extends BaseViewModel {
 
   /// used to open a website inside AndroidChromeCustomTabs or SFSafariViewController
   Future<void> launchInBrowser(String url) async {
-    final ChromeSafariBrowser browser = ChromeSafariBrowser();
-    await browser.open(
-        url: Uri.parse(url),
-        options: ChromeSafariBrowserClassOptions(
-            android: AndroidChromeCustomTabsOptions(
-                addDefaultShareMenuItem: false,
-                enableUrlBarHiding: true,
-                toolbarBackgroundColor: AppTheme.etsLightRed),
-            ios: IOSSafariOptions(
-                barCollapsingEnabled: true,
-                preferredBarTintColor: AppTheme.etsLightRed)));
+    await launch(
+      url,
+      customTabsOption: CustomTabsOption(
+        toolbarColor: AppTheme.etsLightRed,
+        enableDefaultShare: false,
+        enableUrlBarHiding: true,
+        showPageTitle: true,
+        animation: CustomTabsSystemAnimation.slideIn(),
+        extraCustomTabs: const <String>[
+          // ref. https://play.google.com/store/apps/details?id=org.mozilla.firefox
+          'org.mozilla.firefox',
+          // https://play.google.com/store/apps/details?id=com.brave.browser
+          'com.brave.browser',
+          // https://play.google.com/store/apps/details?id=com.opera.browser
+          'com.opera.browser',
+          'com.opera.mini.native',
+          'com.opera.gx',
+          // https://play.google.com/store/apps/details?id=com.sec.android.app.sbrowser
+          'com.sec.android.app.sbrowser',
+          // ref. https://play.google.com/store/apps/details?id=com.microsoft.emmx
+          'com.microsoft.emmx',
+          // https://play.google.com/store/apps/details?id=com.UCMobile.intl
+          'com.UCMobile.intl',
+        ],
+      ),
+      safariVCOption: const SafariViewControllerOption(
+        preferredBarTintColor: AppTheme.etsLightRed,
+        preferredControlTintColor: AppTheme.lightThemeBackground,
+        barCollapsingEnabled: true,
+        entersReaderIfAvailable: false,
+        dismissButtonStyle: SafariViewControllerDismissButtonStyle.close,
+      ),
+    );
   }
 
   Future<void> launchWebView(QuickLink link) async {
