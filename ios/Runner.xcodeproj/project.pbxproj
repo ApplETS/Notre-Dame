@@ -10,9 +10,13 @@
 		1498D2341E8E89220040F4C2 /* GeneratedPluginRegistrant.m in Sources */ = {isa = PBXBuildFile; fileRef = 1498D2331E8E89220040F4C2 /* GeneratedPluginRegistrant.m */; };
 		1843157B27346F7F007F7DD5 /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1843156127345A42007F7DD5 /* WidgetKit.framework */; };
 		1843157C27346F80007F7DD5 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1843156327345A42007F7DD5 /* SwiftUI.framework */; };
-		1843157F27346F80007F7DD5 /* ETSMobile_Widget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1843157E27346F80007F7DD5 /* ETSMobile_Widget.swift */; };
+		1843157F27346F80007F7DD5 /* ETSMobileWidgets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1843157E27346F80007F7DD5 /* ETSMobileWidgets.swift */; };
 		1843158127346F80007F7DD5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1843158027346F80007F7DD5 /* Assets.xcassets */; };
 		1843158527346F80007F7DD5 /* ETSMobile WidgetExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 1843157A27346F7F007F7DD5 /* ETSMobile WidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		18F9C5B327AB28D4009B6FF4 /* ProgressEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18F9C5B227AB28D4009B6FF4 /* ProgressEntry.swift */; };
+		18F9C5B627AB2939009B6FF4 /* ProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18F9C5B527AB2939009B6FF4 /* ProgressView.swift */; };
+		18F9C5B827AB2E98009B6FF4 /* ProgressWidgetEntryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18F9C5B727AB2E98009B6FF4 /* ProgressWidgetEntryView.swift */; };
+		18F9C5BB27AB31F7009B6FF4 /* ProgressWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18F9C5BA27AB31F7009B6FF4 /* ProgressWidget.swift */; };
 		3B3967161E833CAA004F5970 /* AppFrameworkInfo.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3B3967151E833CAA004F5970 /* AppFrameworkInfo.plist */; };
 		74858FAF1ED2DC5600515810 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74858FAE1ED2DC5600515810 /* AppDelegate.swift */; };
 		7E818C2424A7BD5200197B31 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7E818C2324A7BD5200197B31 /* GoogleService-Info.plist */; };
@@ -63,11 +67,15 @@
 		1843156127345A42007F7DD5 /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
 		1843156327345A42007F7DD5 /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
 		1843157A27346F7F007F7DD5 /* ETSMobile WidgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "ETSMobile WidgetExtension.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
-		1843157E27346F80007F7DD5 /* ETSMobile_Widget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ETSMobile_Widget.swift; sourceTree = "<group>"; };
+		1843157E27346F80007F7DD5 /* ETSMobileWidgets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ETSMobileWidgets.swift; sourceTree = "<group>"; };
 		1843158027346F80007F7DD5 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		1843158227346F80007F7DD5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		186A982C273484B900170D40 /* Runner.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Runner.entitlements; sourceTree = "<group>"; };
 		186A982D273484EE00170D40 /* ETSMobile WidgetExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "ETSMobile WidgetExtension.entitlements"; sourceTree = "<group>"; };
+		18F9C5B227AB28D4009B6FF4 /* ProgressEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressEntry.swift; sourceTree = "<group>"; };
+		18F9C5B527AB2939009B6FF4 /* ProgressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressView.swift; sourceTree = "<group>"; };
+		18F9C5B727AB2E98009B6FF4 /* ProgressWidgetEntryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressWidgetEntryView.swift; sourceTree = "<group>"; };
+		18F9C5BA27AB31F7009B6FF4 /* ProgressWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressWidget.swift; sourceTree = "<group>"; };
 		3B3967151E833CAA004F5970 /* AppFrameworkInfo.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = AppFrameworkInfo.plist; path = Flutter/AppFrameworkInfo.plist; sourceTree = "<group>"; };
 		74858FAD1ED2DC5600515810 /* Runner-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Runner-Bridging-Header.h"; sourceTree = "<group>"; };
 		74858FAE1ED2DC5600515810 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -109,11 +117,39 @@
 		1843157D27346F80007F7DD5 /* ETSMobile Widget */ = {
 			isa = PBXGroup;
 			children = (
-				1843157E27346F80007F7DD5 /* ETSMobile_Widget.swift */,
+				18F9C5B927AB31E3009B6FF4 /* Widget */,
+				18F9C5B427AB290E009B6FF4 /* View */,
+				18F9C5B127AB28B0009B6FF4 /* Model */,
+				1843157E27346F80007F7DD5 /* ETSMobileWidgets.swift */,
 				1843158027346F80007F7DD5 /* Assets.xcassets */,
 				1843158227346F80007F7DD5 /* Info.plist */,
 			);
 			path = "ETSMobile Widget";
+			sourceTree = "<group>";
+		};
+		18F9C5B127AB28B0009B6FF4 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				18F9C5B227AB28D4009B6FF4 /* ProgressEntry.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		18F9C5B427AB290E009B6FF4 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				18F9C5B527AB2939009B6FF4 /* ProgressView.swift */,
+				18F9C5B727AB2E98009B6FF4 /* ProgressWidgetEntryView.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		18F9C5B927AB31E3009B6FF4 /* Widget */ = {
+			isa = PBXGroup;
+			children = (
+				18F9C5BA27AB31F7009B6FF4 /* ProgressWidget.swift */,
+			);
+			path = Widget;
 			sourceTree = "<group>";
 		};
 		6C1C3463BE8992D71329C204 /* Pods */ = {
@@ -430,7 +466,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1843157F27346F80007F7DD5 /* ETSMobile_Widget.swift in Sources */,
+				1843157F27346F80007F7DD5 /* ETSMobileWidgets.swift in Sources */,
+				18F9C5BB27AB31F7009B6FF4 /* ProgressWidget.swift in Sources */,
+				18F9C5B327AB28D4009B6FF4 /* ProgressEntry.swift in Sources */,
+				18F9C5B827AB2E98009B6FF4 /* ProgressWidgetEntryView.swift in Sources */,
+				18F9C5B627AB2939009B6FF4 /* ProgressView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

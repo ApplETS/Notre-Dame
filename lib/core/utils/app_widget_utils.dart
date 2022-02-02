@@ -22,7 +22,7 @@ mixin AppWidgetUtils {
   static Future<void> updateWidget() async {
     try {
       return HomeWidget.updateWidget(
-          name: 'ETSMobile_WidgetProvider', androidName:'HomeWidgetExampleProvider', iOSName: 'ETSMobile_Widget');
+          name: 'ETSMobile_WidgetProvider', androidName:'HomeWidgetExampleProvider', iOSName: 'ETSMobile_ProgressWidget');
     } on PlatformException catch (exception) {
       debugPrint('Error Updating Widget. $exception');
       locator<AnalyticsService>().logError('AppWidgetUtils', 'Error updating widget.');
