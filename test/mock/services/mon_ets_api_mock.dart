@@ -26,8 +26,7 @@ class MonETSAPIClientMock extends Mock implements MonETSAPIClient {
   static void stubAuthenticateException(
       MonETSAPIClientMock mock, String username) {
     when(mock.authenticate(username: username, password: anyNamed('password')))
-        .thenThrow(HttpException(
-            code: 500, prefix: MonETSAPIClient.tagError, message: ""));
+        .thenThrow(HttpException(code: 500, prefix: MonETSAPIClient.tagError));
   }
 
   /// Stub to throw an [Exception] when the authenticate

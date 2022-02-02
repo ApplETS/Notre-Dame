@@ -37,8 +37,7 @@ class CourseRepositoryMock extends Mock implements CourseRepository {
 
   /// Stub the function [getCoursesActivities] of [mock] when called will throw [toThrow].
   static void stubGetCoursesActivitiesException(CourseRepositoryMock mock,
-      {Exception toThrow =
-          const ApiException(prefix: 'ApiException', message: ''),
+      {Exception toThrow = const ApiException(prefix: 'ApiException'),
       bool fromCacheOnly}) {
     when(mock.getCoursesActivities(
             fromCacheOnly: fromCacheOnly ?? anyNamed("fromCacheOnly")))
@@ -54,8 +53,7 @@ class CourseRepositoryMock extends Mock implements CourseRepository {
 
   /// Stub the function [getSessions] of [mock] when called will throw [toThrow].
   static void stubGetSessionsException(CourseRepositoryMock mock,
-      {Exception toThrow =
-          const ApiException(prefix: 'ApiException', message: '')}) {
+      {Exception toThrow = const ApiException(prefix: 'ApiException')}) {
     when(mock.getSessions()).thenAnswer((_) =>
         Future.delayed(const Duration(milliseconds: 50))
             .then((value) => throw toThrow));
@@ -77,8 +75,7 @@ class CourseRepositoryMock extends Mock implements CourseRepository {
 
   /// Stub the function [getCourses] of [mock] when called will throw [toThrow].
   static void stubGetCoursesException(CourseRepositoryMock mock,
-      {Exception toThrow =
-          const ApiException(prefix: 'ApiException', message: ''),
+      {Exception toThrow = const ApiException(prefix: 'ApiException'),
       bool fromCacheOnly}) {
     when(mock.getCourses(
             fromCacheOnly: fromCacheOnly ?? anyNamed("fromCacheOnly")))
@@ -96,8 +93,7 @@ class CourseRepositoryMock extends Mock implements CourseRepository {
   /// Stub the function [getCourseSummary] of [mock] when called will throw [toThrow].
   static void stubGetCourseSummaryException(
       CourseRepositoryMock mock, Course courseCalled,
-      {Exception toThrow =
-          const ApiException(prefix: 'ApiException', message: '')}) {
+      {Exception toThrow = const ApiException(prefix: 'ApiException')}) {
     when(mock.getCourseSummary(courseCalled)).thenAnswer((_) =>
         Future.delayed(const Duration(milliseconds: 50))
             .then((value) => throw toThrow));
@@ -114,8 +110,7 @@ class CourseRepositoryMock extends Mock implements CourseRepository {
   /// Stub the function [getScheduleActivities] of [mock] when called will throw [toThrow].
   static void stubGetScheduleActivitiesException(
       CourseRepositoryMock mock, Course courseCalled,
-      {Exception toThrow =
-          const ApiException(prefix: 'ApiException', message: '')}) {
+      {Exception toThrow = const ApiException(prefix: 'ApiException')}) {
     when(mock.getScheduleActivities()).thenAnswer((_) =>
         Future.delayed(const Duration(milliseconds: 50))
             .then((value) => throw toThrow));

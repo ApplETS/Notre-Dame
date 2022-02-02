@@ -83,6 +83,7 @@ class UserRepository {
       // Try login in from signets if monETS failed
       if (e is HttpException) {
         try {
+          // ignore: deprecated_member_use
           if (await _signetsApiClient.authenticate(
               username: username, password: password)) {
             _monETSUser = MonETSUser(

@@ -39,7 +39,7 @@ class UserRepositoryMock extends Mock implements UserRepository {
   /// Stub the getPassword function to throw [exceptionToReturn]
   static void stubGetPasswordException(UserRepositoryMock mock,
       {ApiException exceptionToReturn =
-          const ApiException(prefix: UserRepository.tag, message: "")}) {
+          const ApiException(prefix: UserRepository.tag)}) {
     when(mock.getPassword()).thenThrow(exceptionToReturn);
   }
 
@@ -59,8 +59,7 @@ class UserRepositoryMock extends Mock implements UserRepository {
 
   /// Stub the function [getInfo] of [mock] when called will throw [toThrow].
   static void stubGetInfoException(UserRepositoryMock mock,
-      {Exception toThrow =
-          const ApiException(prefix: 'ApiException', message: ''),
+      {Exception toThrow = const ApiException(prefix: 'ApiException'),
       bool fromCacheOnly}) {
     when(mock.getInfo(
             fromCacheOnly: fromCacheOnly ?? anyNamed("fromCacheOnly")))
@@ -84,8 +83,7 @@ class UserRepositoryMock extends Mock implements UserRepository {
 
   /// Stub the function [getPrograms] of [mock] when called will throw [toThrow].
   static void stubGetProgramsException(UserRepositoryMock mock,
-      {Exception toThrow =
-          const ApiException(prefix: 'ApiException', message: ''),
+      {Exception toThrow = const ApiException(prefix: 'ApiException'),
       bool fromCacheOnly}) {
     when(mock.getPrograms(
             fromCacheOnly: fromCacheOnly ?? anyNamed("fromCacheOnly")))

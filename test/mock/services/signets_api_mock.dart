@@ -11,15 +11,16 @@ import 'package:ets_api_clients/exceptions.dart';
 
 /// Mock for the [SignetsApi]
 class SignetsAPIClientMock extends Mock implements SignetsAPIClient {
-  static const signetsException =
-      ApiException(prefix: SignetsAPIClient.tag, message: "");
+  static const signetsException = ApiException(prefix: SignetsAPIClient.tag);
 
   static const courseRepositoryException =
-      ApiException(prefix: CourseRepository.tag, message: "");
+      ApiException(prefix: CourseRepository.tag);
 
+  // ignore: deprecated_member_use
   /// Stub the answer of the [authenticate].
   static void stubAuthenticate(SignetsAPIClientMock mock,
       {bool connected = false}) {
+    // ignore: deprecated_member_use
     when(mock.authenticate(
             username: anyNamed("username"), password: anyNamed("password")))
         .thenAnswer((_) async => connected);

@@ -2,14 +2,12 @@
 import 'package:feature_discovery/feature_discovery.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:notredame/core/utils/api_exception.dart';
 import 'package:stacked/stacked.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 // CONSTANTS
 import 'package:notredame/core/constants/discovery_ids.dart';
 import 'package:notredame/core/constants/preferences_flags.dart';
-import 'package:notredame/core/constants/signets_errors.dart';
 
 // UTILS
 import 'package:notredame/ui/utils/discovery_components.dart';
@@ -19,6 +17,7 @@ import 'package:notredame/core/managers/course_repository.dart';
 import 'package:notredame/core/managers/settings_manager.dart';
 
 // MODELS
+import 'package:ets_api_clients/exceptions.dart';
 import 'package:ets_api_clients/models.dart';
 
 // OTHER
