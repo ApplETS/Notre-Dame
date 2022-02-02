@@ -12,7 +12,7 @@ import 'package:notredame/core/managers/settings_manager.dart';
 
 // MODELS / CONSTANTS
 import 'package:notredame/core/constants/preferences_flags.dart';
-import 'package:notredame/core/models/course_activity.dart';
+import 'package:signets_api_client/models.dart';
 
 // VIEW / WIDGETS
 import 'package:notredame/ui/views/schedule_view.dart';

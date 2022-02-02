@@ -9,7 +9,7 @@ import 'package:notredame/core/managers/course_repository.dart';
 import 'package:notredame/core/managers/settings_manager.dart';
 
 // MODELS
-import 'package:notredame/core/models/course.dart';
+import 'package:signets_api_client/models.dart';
 
 // SERVICES
 import 'package:notredame/core/services/networking_service.dart';

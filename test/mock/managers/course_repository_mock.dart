@@ -5,13 +5,8 @@ import 'package:mockito/mockito.dart';
 import 'package:notredame/core/managers/course_repository.dart';
 
 // MODELS
-import 'package:notredame/core/models/course_activity.dart';
-import 'package:notredame/core/models/schedule_activity.dart';
-import 'package:notredame/core/models/session.dart';
-import 'package:notredame/core/models/course.dart';
-
-// EXCEPTIONS
-import 'package:notredame/core/utils/api_exception.dart';
+import 'package:signets_api_client/models.dart';
+import 'package:signets_api_client/exceptions.dart';
 
 class CourseRepositoryMock extends Mock implements CourseRepository {
   /// Stub the getter [coursesActivities] of [mock] when called will return [toReturn].

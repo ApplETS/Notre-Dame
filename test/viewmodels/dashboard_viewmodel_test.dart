@@ -5,16 +5,13 @@ import 'package:mockito/mockito.dart';
 // CONSTANTS
 import 'package:notredame/core/constants/preferences_flags.dart';
 import 'package:notredame/core/constants/progress_bar_text_options.dart';
-import 'package:notredame/core/constants/activity_code.dart';
 
 // MANAGERS
 import 'package:notredame/core/managers/course_repository.dart';
 import 'package:notredame/core/managers/settings_manager.dart';
-import 'package:notredame/core/models/course.dart';
 
 // MODEL
-import 'package:notredame/core/models/session.dart';
-import 'package:notredame/core/models/course_activity.dart';
+import 'package:signets_api_client/models.dart';
 
 // SERVICE
 import 'package:notredame/core/services/preferences_service.dart';

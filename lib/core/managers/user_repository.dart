@@ -46,6 +46,12 @@ class UserRepository {
   /// Cache manager to access and update the cache.
   final CacheManager _cacheManager = locator<CacheManager>();
 
+  /// Used to access the Signets API
+  final SignetsAPIClient _signetsApiClient = locator<SignetsAPIClient>();
+
+  /// Used to access the Signets API
+  final MonETSAPIClient _monEtsApiClient = locator<MonETSAPIClient>();
+
   /// Mon ETS user for the student
   MonETSUser _monETSUser;
 
@@ -71,14 +77,14 @@ class UserRepository {
       @required String password,
       bool isSilent = false}) async {
     try {
-      final monETSAPIClient = MonETSAPIClient(username, password);
-      await monETSAPIClient.authenticate();
+      _monETSUser = await _monEtsApiClient.authenticate(
+          username: username, password: password);
     } on Exception catch (e, stacktrace) {
       // Try login in from signets if monETS failed
       if (e is HttpException) {
         try {
-          final signetsAPIClient = SignetsAPIClient(username, password);
-          if (await signetsAPIClient.authenticate()) {
+          if (await _signetsApiClient.authenticate(
+              username: username, password: password)) {
             _monETSUser = MonETSUser(
                 domain: MonETSUser.mainDomain,
                 typeUsagerId: MonETSUser.studentRoleId,
@@ -209,9 +215,8 @@ class UserRepository {
       // getPassword will try to authenticate the user if not authenticated.
       final String password = await getPassword();
 
-      final signetsAPIClient =
-          SignetsAPIClient(_monETSUser.universalCode, password);
-      _programs = await signetsAPIClient.getPrograms();
+      _programs = await _signetsApiClient.getPrograms(
+          username: _monETSUser.universalCode, password: password);
 
       _logger.d("$tag - getPrograms: ${_programs.length} programs fetched.");
 
@@ -263,9 +268,8 @@ class UserRepository {
       // getPassword will try to authenticate the user if not authenticated.
       final String password = await getPassword();
 
-      final signetsAPIClient =
-          SignetsAPIClient(_monETSUser.universalCode, password);
-      final fetchedInfo = await signetsAPIClient.getStudentInfo();
+      final fetchedInfo = await _signetsApiClient.getStudentInfo(
+          username: _monETSUser.universalCode, password: password);
 
       _logger.d("$tag - getInfo: $fetchedInfo info fetched.");
 

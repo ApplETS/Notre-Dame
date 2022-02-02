@@ -51,6 +51,9 @@ class CourseRepository {
   /// Used to verify if the user has connectivity
   final NetworkingService _networkingService = locator<NetworkingService>();
 
+  /// Used to access the Signets API
+  final SignetsAPIClient _signetsApiClient = locator<SignetsAPIClient>();
+
   /// Student list of courses
   List<Course> _courses;
 
@@ -130,10 +133,11 @@ class CourseRepository {
 
       final String password = await _userRepository.getPassword();
       for (final Session session in activeSessions) {
-        final signetsAPIClient = SignetsAPIClient(
-            _userRepository.monETSUser.universalCode, password);
-        fetchedCoursesActivities.addAll(await signetsAPIClient
-            .getCoursesActivities(session: session.shortName));
+        fetchedCoursesActivities.addAll(
+            await _signetsApiClient.getCoursesActivities(
+                username: _userRepository.monETSUser.universalCode,
+                password: password,
+                session: session.shortName));
         _logger.d(
             "$tag - getCoursesActivities: fetched ${fetchedCoursesActivities.length} activities.");
       }
@@ -219,11 +223,12 @@ class CourseRepository {
 
       final String password = await _userRepository.getPassword();
 
-      final signetsAPIClient =
-          SignetsAPIClient(_userRepository.monETSUser.universalCode, password);
       for (final Session session in activeSessions) {
-        fetchedScheduleActivities.addAll(await signetsAPIClient
-            .getScheduleActivities(session: session.shortName));
+        fetchedScheduleActivities.addAll(
+            await _signetsApiClient.getScheduleActivities(
+                username: _userRepository.monETSUser.universalCode,
+                password: password,
+                session: session.shortName));
         _logger.d(
             "$tag - getScheduleActivities: fetched ${fetchedScheduleActivities.length} activities.");
       }
@@ -286,9 +291,9 @@ class CourseRepository {
       // getPassword will try to authenticate the user if not authenticated.
       final String password = await _userRepository.getPassword();
 
-      final signetsAPIClient =
-          SignetsAPIClient(_userRepository.monETSUser.universalCode, password);
-      final List<Session> fetchedSession = await signetsAPIClient.getSessions();
+      final List<Session> fetchedSession = await _signetsApiClient.getSessions(
+          username: _userRepository.monETSUser.universalCode,
+          password: password);
       _logger
           .d("$tag - getSessions: ${fetchedSession.length} sessions fetched.");
       for (final Session session in fetchedSession) {
@@ -351,9 +356,9 @@ class CourseRepository {
     try {
       final String password = await _userRepository.getPassword();
 
-      final signetsAPIClient =
-          SignetsAPIClient(_userRepository.monETSUser.universalCode, password);
-      fetchedCourses.addAll(await signetsAPIClient.getCourses());
+      fetchedCourses.addAll(await _signetsApiClient.getCourses(
+          username: _userRepository.monETSUser.universalCode,
+          password: password));
       _logger.d("$tag - getCourses: fetched ${fetchedCourses.length} courses.");
     } on Exception catch (e, stacktrace) {
       _analyticsService.logError(
@@ -415,9 +420,10 @@ class CourseRepository {
     try {
       final String password = await _userRepository.getPassword();
 
-      final signetsAPIClient =
-          SignetsAPIClient(_userRepository.monETSUser.universalCode, password);
-      summary = await signetsAPIClient.getCourseSummary(course: course);
+      summary = await _signetsApiClient.getCourseSummary(
+          username: _userRepository.monETSUser.universalCode,
+          password: password,
+          course: course);
       _logger.d("$tag - getCourseSummary: fetched ${course.acronym} summary.");
     } on Exception catch (e, stacktrace) {
       if (e is ApiException) {
@@ -469,10 +475,10 @@ class CourseRepository {
       }
 
       for (final Session session in _sessions) {
-        final signetsAPIClient = SignetsAPIClient(
-            _userRepository.monETSUser.universalCode, password);
-        sessionEvaluations =
-            await signetsAPIClient.getCoursesEvaluation(session: session);
+        sessionEvaluations = await _signetsApiClient.getCoursesEvaluation(
+            username: _userRepository.monETSUser.universalCode,
+            password: password,
+            session: session);
         evaluations.putIfAbsent(session.shortName, () => sessionEvaluations);
         _logger.d(
             "$tag - getCoursesEvaluations: fetched ${evaluations[session.shortName].length} "

@@ -8,10 +8,8 @@ import 'package:notredame/core/managers/course_repository.dart';
 import 'package:notredame/core/managers/settings_manager.dart';
 
 // MODELS
-import 'package:notredame/core/models/course.dart';
-import 'package:notredame/core/models/course_evaluation.dart';
-import 'package:notredame/core/models/course_summary.dart';
-import 'package:notredame/core/models/evaluation.dart' as model;
+import 'package:signets_api_client/models.dart';
+import 'package:signets_api_client/models.dart' as models;
 
 // SERVICES
 import 'package:notredame/core/services/networking_service.dart';
@@ -36,7 +34,7 @@ void main() {
     median: 4.5,
     percentileRank: 99,
     evaluations: [
-      model.Evaluation(
+      models.Evaluation(
         courseGroup: "02",
         title: "Laboratoire 1",
         weight: 10,

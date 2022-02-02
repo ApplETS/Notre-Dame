@@ -23,6 +23,7 @@ import 'package:notredame/core/managers/settings_manager.dart';
 import 'package:notredame/core/services/networking_service.dart';
 import 'package:notredame/core/services/internal_info_service.dart';
 import 'package:notredame/core/services/siren_flutter_service.dart';
+import 'package:signets_api_client/clients.dart';
 
 // MOCKS
 import 'mock/managers/cache_manager_mock.dart';
@@ -69,6 +70,26 @@ Widget localizedWidget(
         home: useScaffold ? Scaffold(body: child) : child,
       ),
     );
+
+/// Load a mock of the [SignetsAPIClient]
+SignetsAPIClient setupSignetsApiMock() {
+  unregister<SignetsAPIClient>();
+  final service = SignetsAPIClientMock();
+
+  locator.registerSingleton<SignetsAPIClient>(service);
+
+  return service;
+}
+
+/// Load a mock of the [MonETSAPIClient]
+MonETSAPIClient setupMonETSApiMock() {
+  unregister<MonETSAPIClient>();
+  final service = MonETSAPIClientMock();
+
+  locator.registerSingleton<MonETSAPIClient>(service);
+
+  return service;
+}
 
 /// Load a mock of the [AnalyticsService]
 AnalyticsService setupAnalyticsServiceMock() {

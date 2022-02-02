@@ -3,10 +3,10 @@ import 'package:mockito/mockito.dart';
 
 // SERVICE
 import 'package:notredame/core/managers/user_repository.dart';
-import 'package:notredame/core/models/mon_ets_user.dart';
-import 'package:notredame/core/models/profile_student.dart';
-import 'package:notredame/core/models/program.dart';
-import 'package:notredame/core/utils/api_exception.dart';
+
+// MODELS
+import 'package:signets_api_client/models.dart';
+import 'package:signets_api_client/exceptions.dart';
 
 /// Mock for the [UserRepository]
 class UserRepositoryMock extends Mock implements UserRepository {

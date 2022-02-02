@@ -790,7 +790,7 @@ packages:
       path: "../signets_api_client"
       relative: true
     source: path
-    version: "0.0.1"
+    version: "0.1.0"
   simple_gesture_detector:
     dependency: transitive
     description:

@@ -5,7 +5,6 @@ import 'package:table_calendar/table_calendar.dart';
 
 // CONSTANTS
 import 'package:notredame/core/constants/preferences_flags.dart';
-import 'package:notredame/core/constants/activity_code.dart';
 
 // MANAGERS
 import 'package:notredame/core/managers/settings_manager.dart';

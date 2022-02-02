@@ -9,8 +9,7 @@ import 'package:notredame/core/managers/course_repository.dart';
 import 'package:notredame/core/managers/settings_manager.dart';
 
 // MODELS
-import 'package:notredame/core/models/course.dart';
-import 'package:notredame/core/models/session.dart';
+import 'package:signets_api_client/models.dart';
 
 // VIEW
 import 'package:notredame/ui/views/dashboard_view.dart';
@@ -22,7 +21,6 @@ import 'package:notredame/core/viewmodels/dashboard_viewmodel.dart';
 
 // CONSTANTS
 import 'package:notredame/core/constants/preferences_flags.dart';
-import 'package:notredame/core/models/course_activity.dart';
 
 // OTHERS
 import '../../helpers.dart';

@@ -11,10 +11,9 @@ import 'package:notredame/core/managers/settings_manager.dart';
 
 // CONSTANTS
 import 'package:notredame/core/constants/preferences_flags.dart';
-import 'package:notredame/core/constants/activity_code.dart';
 
 // MODELS
-import 'package:notredame/core/models/schedule_activity.dart';
+import 'package:signets_api_client/models.dart';
 
 // WIDGET
 import 'package:notredame/ui/widgets/schedule_settings.dart';

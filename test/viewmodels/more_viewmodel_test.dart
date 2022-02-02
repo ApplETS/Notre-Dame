@@ -17,9 +17,7 @@ import 'package:notredame/core/services/preferences_service.dart';
 import 'package:notredame/core/managers/course_repository.dart';
 
 // MODELS
-import 'package:notredame/core/models/course.dart';
-import 'package:notredame/core/models/course_activity.dart';
-import 'package:notredame/core/models/session.dart';
+import 'package:signets_api_client/models.dart';
 
 // VIEW MODEL
 import 'package:notredame/core/viewmodels/more_viewmodel.dart';
