@@ -174,3 +174,4 @@ coverage/html/
 
 .DS_Store
 local.properties
+.gradle/

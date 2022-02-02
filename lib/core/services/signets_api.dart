@@ -1,7 +1,6 @@
 // FLUTTER / DART / THIRD-PARTIES
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/io_client.dart';
 import 'package:xml/xml.dart';
@@ -18,6 +17,7 @@ import 'package:notredame/core/models/profile_student.dart';
 import 'package:notredame/core/models/program.dart';
 import 'package:notredame/core/models/course.dart';
 import 'package:notredame/core/models/course_summary.dart';
+import 'package:notredame/core/models/course_evaluation.dart';
 import 'package:notredame/core/models/schedule_activity.dart';
 
 class SignetsApi {
@@ -40,6 +40,19 @@ class SignetsApi {
     } else {
       _client = client;
     }
+  }
+
+  Future<bool> authenticate(
+      {@required String username, @required String password}) async {
+    // Generate initial soap envelope
+    final body = buildBasicSOAPBody(
+            Urls.donneesAuthentificationValides, username, password)
+        .buildDocument();
+    final responseBody =
+        await _sendSOAPRequest(body, Urls.donneesAuthentificationValides);
+
+    /// Build and return the authentication status
+    return responseBody.innerText == "true";
   }
 
   /// Call the SignetsAPI to get the courses activities for the [session] for
@@ -259,6 +272,40 @@ class SignetsApi {
         .toList();
   }
 
+  /// Call the SignetsAPI to get the list of all [CourseEvaluation] for the [session]
+  /// of the student ([username]).
+  Future<List<CourseEvaluation>> getCoursesEvaluation(
+      {@required String username,
+      @required String password,
+      @required Session session}) async {
+    // Generate initial soap envelope
+    final body = buildBasicSOAPBody(
+            Urls.readCourseEvaluationOperation, username, password)
+        .buildDocument();
+
+    final operationContent = XmlBuilder();
+
+    operationContent.element("pSession", nest: () {
+      operationContent.text(session.shortName);
+    });
+
+    body
+        .findAllElements(Urls.readCourseEvaluationOperation,
+            namespace: Urls.signetsOperationBase)
+        .first
+        .children
+        .add(operationContent.buildFragment());
+
+    final responseBody =
+        await _sendSOAPRequest(body, Urls.readCourseEvaluationOperation);
+
+    /// Build and return the list of Program
+    return responseBody
+        .findAllElements("EvaluationCours")
+        .map((node) => CourseEvaluation.fromXmlNode(node))
+        .toList();
+  }
+
   /// Build the basic headers for a SOAP request on.
   Map<String, String> _buildHeaders(String soapAction) =>
       {"Content-Type": "text/xml", "SOAPAction": soapAction};
@@ -306,11 +353,12 @@ class SignetsApi {
         .first;
 
     // Throw exception if the error tag contains a blocking error
-    if (responseBody
-        .findElements(_signetsErrorTag)
-        .first
-        .innerText
-        .isNotEmpty) {
+    if (responseBody.findElements(_signetsErrorTag).isNotEmpty &&
+        responseBody
+            .findElements(_signetsErrorTag)
+            .first
+            .innerText
+            .isNotEmpty) {
       switch (responseBody.findElements(_signetsErrorTag).first.innerText) {
         case SignetsError.scheduleNotAvailable:
         case SignetsError.scheduleNotAvailableF:
@@ -328,14 +376,9 @@ class SignetsApi {
     return responseBody;
   }
 
-  /// Create a [http.Client] with the certificate to access the SignetsAPI
+  /// Create a [http.Client]
   Future _signetsClient() async {
-    final ByteData data =
-        await rootBundle.load("assets/certificates/signets_cert.crt");
-    final securityContext = SecurityContext()
-      ..setTrustedCertificatesBytes(data.buffer.asUint8List());
-
-    final ioClient = HttpClient(context: securityContext);
+    final ioClient = HttpClient();
 
     _client = IOClient(ioClient);
   }

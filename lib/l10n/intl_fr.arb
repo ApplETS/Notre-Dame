@@ -65,9 +65,14 @@
   "schedule_settings_starting_weekday_saturday": "Samedi",
   "schedule_settings_starting_weekday_sunday": "Dimanche",
   "schedule_no_event": "Aucun évènement à l'horaire.",
+  "schedule_select_course_activity": "Sélectionner le groupe du laboratoire",
+  "course_activity_group_a": "Groupe A",
+  "course_activity_group_b": "Groupe B",
+  "course_activity_group_both": "Les deux groupes",
 
   "grades_title": "Notes",
-  "grades_msg_no_grades": "Aucune note disponible\nTirer pour recharger",
+  "grades_msg_no_grades": "Aucune note disponible.\nTirez pour rafraichir",
+  "grades_msg_no_grade": "Aucune note disponible",
   "grades_current_rating": "Votre note",
   "grades_average": "Moyenne",
   "grades_grade_in_percentage": "{grade} %",
@@ -105,6 +110,12 @@
   "@grades_group_number": {
     "placeholders": {
       "number": {}
+    }
+  },
+  "grades_teacher": "Enseignant: {teacherName}",
+  "@grades_teacher": {
+    "placeholders": {
+      "teacherName": {}
     }
   },
   "grades_error_course_evaluations_not_completed": "Vous n'aurez pas accès à vos notes au cours de la période d'évaluation tant que vous n'aurez pas effectué vos évaluations.",

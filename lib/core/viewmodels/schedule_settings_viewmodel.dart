@@ -94,17 +94,11 @@ class ScheduleSettingsViewModel
     setBusy(true);
     if (scheduleActivityToSave == null) {
       await _settingsManager.setDynamicString(
-          DynamicPreferencesFlag(
-              groupAssociationFlag:
-                  PreferencesFlag.scheduleSettingsLaboratoryGroup,
-              uniqueKey: courseAcronym),
-          null);
+          PreferencesFlag.scheduleSettingsLaboratoryGroup, courseAcronym, null);
     } else {
       await _settingsManager.setDynamicString(
-          DynamicPreferencesFlag(
-              groupAssociationFlag:
-                  PreferencesFlag.scheduleSettingsLaboratoryGroup,
-              uniqueKey: courseAcronym),
+          PreferencesFlag.scheduleSettingsLaboratoryGroup,
+          courseAcronym,
           scheduleActivityToSave.activityCode);
     }
     _selectedScheduleActivity[courseAcronym] = scheduleActivityToSave;
@@ -123,7 +117,7 @@ class ScheduleSettingsViewModel
     _showTodayBtn =
         settings[PreferencesFlag.scheduleSettingsShowTodayBtn] as bool;
 
-    scheduleActivitiesByCourse.clear();
+    _scheduleActivitiesByCourse.clear();
     final schedulesActivities = await _courseRepository.getScheduleActivities();
     for (final activity in schedulesActivities) {
       if (activity.activityCode == ActivityCode.labGroupA ||
@@ -140,12 +134,13 @@ class ScheduleSettingsViewModel
         }
       }
     }
+    // Check if there is only one activity for each map, remove the map
+    _scheduleActivitiesByCourse.removeWhere((key, value) => value.length == 1);
+
+    // Preselect the right schedule activity
     for (final courseKey in _scheduleActivitiesByCourse.keys) {
       final scheduleActivityCode = await _settingsManager.getDynamicString(
-          DynamicPreferencesFlag(
-              groupAssociationFlag:
-                  PreferencesFlag.scheduleSettingsLaboratoryGroup,
-              uniqueKey: courseKey));
+          PreferencesFlag.scheduleSettingsLaboratoryGroup, courseKey);
       final scheduleActivity = _scheduleActivitiesByCourse[courseKey]
           .firstWhere((element) => element.activityCode == scheduleActivityCode,
               orElse: () => null);

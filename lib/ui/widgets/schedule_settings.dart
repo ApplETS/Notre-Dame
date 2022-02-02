@@ -3,6 +3,9 @@ import 'package:stacked/stacked.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:table_calendar/table_calendar.dart';
 
+// CONSTANTS
+import 'package:notredame/core/constants/activity_code.dart';
+
 // UTILS
 import 'package:notredame/core/utils/utils.dart';
 
@@ -75,6 +78,7 @@ class _ScheduleSettingsState extends State<ScheduleSettings> {
                 child: ListTileTheme(
                   selectedColor: Theme.of(context).textTheme.bodyText1.color,
                   child: ListView(
+                    key: const ValueKey("SettingsScrollingArea"),
                     children: _buildSettings(
                         context, model as ScheduleSettingsViewModel),
                   ),
@@ -93,7 +97,78 @@ class _ScheduleSettingsState extends State<ScheduleSettings> {
 
     list.addAll(_buildShowTodayButtonSection(context, model));
 
+    if (model.scheduleActivitiesByCourse.isNotEmpty) {
+      list.addAll(_buildSelectCoursesActivitiesSection(context, model));
+    }
+
     return list;
+  }
+
+  List<Widget> _buildSelectCoursesActivitiesSection(
+      BuildContext context, ScheduleSettingsViewModel model) {
+    final tiles = [
+      Padding(
+        padding: const EdgeInsets.only(
+            left: 15.0, right: 15.0, top: 15.0, bottom: 2.0),
+        child: Text(
+          AppIntl.of(context).schedule_select_course_activity,
+          style: TextStyle(
+            color: Theme.of(context).colorScheme.secondary,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ),
+      const Divider(endIndent: 50, thickness: 1.5),
+    ];
+
+    for (final courseActivitiesAcronym
+        in model.scheduleActivitiesByCourse.keys) {
+      tiles.add(Padding(
+        padding: const EdgeInsets.fromLTRB(15.0, 8.0, 15.0, 8.0),
+        child: Text(
+          '${model.scheduleActivitiesByCourse[courseActivitiesAcronym].first.courseAcronym} - ${model.scheduleActivitiesByCourse[courseActivitiesAcronym].first.courseTitle}',
+          style: const TextStyle(
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ));
+      tiles.add(ListTile(
+        selected:
+            model.selectedScheduleActivity[courseActivitiesAcronym] == null,
+        selectedTileColor: selectedColor,
+        onTap: () =>
+            model.selectScheduleActivity(courseActivitiesAcronym, null),
+        title: Text(AppIntl.of(context).course_activity_group_both),
+      ));
+
+      for (final course
+          in model.scheduleActivitiesByCourse[courseActivitiesAcronym]) {
+        tiles.add(ListTile(
+          selected:
+              model.selectedScheduleActivity[course.courseAcronym] == course,
+          selectedTileColor: selectedColor,
+          onTap: () =>
+              model.selectScheduleActivity(course.courseAcronym, course),
+          title: Text(getActivityTitle(course.activityCode)),
+        ));
+      }
+
+      if (model.scheduleActivitiesByCourse.values.length > 1) {
+        tiles.add(const Divider(endIndent: 50, thickness: 1.5));
+      }
+    }
+    tiles.add(const Divider(thickness: 1));
+    return tiles;
+  }
+
+  String getActivityTitle(String activityCode) {
+    if (activityCode == ActivityCode.labGroupA) {
+      return AppIntl.of(context).course_activity_group_a;
+    } else if (activityCode == ActivityCode.labGroupB) {
+      return AppIntl.of(context).course_activity_group_b;
+    }
+
+    return "";
   }
 
   List<Widget> _buildShowTodayButtonSection(

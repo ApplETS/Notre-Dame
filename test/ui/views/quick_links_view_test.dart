@@ -59,6 +59,8 @@ void main() {
               child: FeatureDiscovery(child: QuickLinksView()),
               useScaffold: false));
           await tester.pumpAndSettle();
+          await tester.pump(const Duration(milliseconds: 500));
+
           await expectLater(find.byType(QuickLinksView),
               matchesGoldenFile(goldenFilePath("quicksLinksView_1")));
         });

@@ -20,9 +20,9 @@ struct Provider: TimelineProvider {
         if context.isPreview {
             entry = SimpleEntry(date: Date(), progress: 0.5)
         } else {
-            entry = SimpleEntry(date: Date(), progress: 0.5)
-//            let data = UserDefaults.init(suiteName:widgetGroupId)
-//            entry = SimpleEntry(date: Date(), progress: data?.double(forKey: "progress") ?? 0.5)
+//            entry = SimpleEntry(date: Date(), progress: 0.5)      // debug
+            let data = UserDefaults.init(suiteName:widgetGroupId)
+            entry = SimpleEntry(date: Date(), progress: data?.double(forKey: "progress") ?? 0.5)
         }
         completion(entry)
     }

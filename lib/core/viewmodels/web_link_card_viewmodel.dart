@@ -1,9 +1,7 @@
 // FLUTTER / DART / THIRD-PARTIES
 import 'package:notredame/core/models/quick_link.dart';
 import 'package:stacked/stacked.dart';
-
-// MODELS
-import 'package:flutter_inappwebview/flutter_inappwebview.dart';
+import 'package:flutter_custom_tabs/flutter_custom_tabs.dart';
 
 // CONSTANTS
 import 'package:notredame/core/constants/router_paths.dart';
@@ -11,7 +9,6 @@ import 'package:notredame/core/constants/router_paths.dart';
 // SERVICES
 import 'package:notredame/core/services/analytics_service.dart';
 import 'package:notredame/core/services/navigation_service.dart';
-import 'package:notredame/core/services/internal_info_service.dart';
 
 // UTILS
 import 'package:notredame/ui/utils/app_theme.dart';
@@ -25,9 +22,6 @@ class WebLinkCardViewModel extends BaseViewModel {
 
   final AnalyticsService _analyticsService = locator<AnalyticsService>();
 
-  final InternalInfoService _internalInfoService =
-      locator<InternalInfoService>();
-
   /// used to open a website or the security view
   Future<void> onLinkClicked(QuickLink link) async {
     _analyticsService.logEvent("QuickLink", "QuickLink clicked: ${link.name}");
@@ -37,32 +31,50 @@ class WebLinkCardViewModel extends BaseViewModel {
       try {
         await launchInBrowser(link.link);
       } catch (error) {
-        await launchWebView(error.toString(), link);
+        // An exception is thrown if browser app is not installed on Android device.
+        await launchWebView(link);
       }
     }
   }
 
   /// used to open a website inside AndroidChromeCustomTabs or SFSafariViewController
   Future<void> launchInBrowser(String url) async {
-    final ChromeSafariBrowser browser = ChromeSafariBrowser();
-    await browser.open(
-        url: Uri.parse(url),
-        options: ChromeSafariBrowserClassOptions(
-            android: AndroidChromeCustomTabsOptions(
-                addDefaultShareMenuItem: false,
-                enableUrlBarHiding: true,
-                toolbarBackgroundColor: AppTheme.etsLightRed),
-            ios: IOSSafariOptions(
-                barCollapsingEnabled: true,
-                preferredBarTintColor: AppTheme.etsLightRed)));
+    await launch(
+      url,
+      customTabsOption: CustomTabsOption(
+        toolbarColor: AppTheme.etsLightRed,
+        enableDefaultShare: false,
+        enableUrlBarHiding: true,
+        showPageTitle: true,
+        animation: CustomTabsSystemAnimation.slideIn(),
+        extraCustomTabs: const <String>[
+          // ref. https://play.google.com/store/apps/details?id=org.mozilla.firefox
+          'org.mozilla.firefox',
+          // https://play.google.com/store/apps/details?id=com.brave.browser
+          'com.brave.browser',
+          // https://play.google.com/store/apps/details?id=com.opera.browser
+          'com.opera.browser',
+          'com.opera.mini.native',
+          'com.opera.gx',
+          // https://play.google.com/store/apps/details?id=com.sec.android.app.sbrowser
+          'com.sec.android.app.sbrowser',
+          // ref. https://play.google.com/store/apps/details?id=com.microsoft.emmx
+          'com.microsoft.emmx',
+          // https://play.google.com/store/apps/details?id=com.UCMobile.intl
+          'com.UCMobile.intl',
+        ],
+      ),
+      safariVCOption: const SafariViewControllerOption(
+        preferredBarTintColor: AppTheme.etsLightRed,
+        preferredControlTintColor: AppTheme.lightThemeBackground,
+        barCollapsingEnabled: true,
+        entersReaderIfAvailable: false,
+        dismissButtonStyle: SafariViewControllerDismissButtonStyle.close,
+      ),
+    );
   }
 
-  Future<void> launchWebView(String error, QuickLink link) async {
-    final String errorMessage =
-        await _internalInfoService.getDeviceInfoForErrorReporting();
-
-    _analyticsService.logError(
-        "web_link_card", "**Error message : $error\n$errorMessage");
+  Future<void> launchWebView(QuickLink link) async {
     _navigationService.pushNamed(RouterPaths.webView, arguments: link);
   }
 }

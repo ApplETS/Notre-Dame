@@ -12,6 +12,8 @@ class Urls {
 
   // SOAP Operations supported by the Signets API
   static const String signetsOperationBase = "http://etsmtl.ca/";
+  static const String donneesAuthentificationValides =
+      "donneesAuthentificationValides";
   static const String infoStudentOperation = "infoEtudiant";
   static const String listProgramsOperation = "listeProgrammes";
   static const String listClassScheduleOperation = "lireHoraireDesSeances";
@@ -19,6 +21,7 @@ class Urls {
   static const String listCourseOperation = "listeCours";
   static const String listEvaluationsOperation = "listeElementsEvaluation";
   static const String listeHoraireEtProf = "listeHoraireEtProf";
+  static const String readCourseEvaluationOperation = "lireEvaluationCours";
 
   // Urls related to club websites
   static const String clubWebsite = "https://clubapplets.ca/";
@@ -28,4 +31,5 @@ class Urls {
   static const String clubEmail = "mailto:info@clubapplets.ca";
   static const String clubYoutube =
       "https://youtube.com/channel/UCiSzzfW1bVbE_0KcEZO52ew";
+  static const String clubDiscord = "https://discord.gg/adMkWptn6Y";
 }
