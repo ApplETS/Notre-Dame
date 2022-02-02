@@ -11,4 +11,6 @@ import WidgetKit
 struct ProgressEntry: TimelineEntry {
     var date: Date
     let progress: Double
+    let elapsedDays: Int
+    let totalDays: Int
 }

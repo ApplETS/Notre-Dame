@@ -13,18 +13,20 @@ struct ProgressWidgetEntryView : View {
     var body: some View {
         VStack {
             
-            Spacer()
-            
             Text("Progression de la session")
                 .multilineTextAlignment(.center)
                 .font(.system(size: 18))
+                .padding(EdgeInsets.init(top: 5, leading: 0, bottom: 0, trailing: 0))
             
             Spacer()
             
             Text("\(Int(entry.progress * 100))%")
                 .font(.system(size: 22))
             
-            ProgressView(progress: entry.progress)
+            Text("\(entry.elapsedDays)j / \(entry.totalDays)j")
+                .font(.system(size: 18))
+            
+            ProgressBarView(progress: entry.progress)
         }
     }
 }

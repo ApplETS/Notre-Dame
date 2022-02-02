@@ -150,9 +150,12 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
     try {
       await _courseRepository.getSessions();
 
-      final progressAppWidget = getSessionProgress();
+      final progress = getSessionProgress();
+      final sessionDays = getSessionDays();
+      final elapsedDays = sessionDays[0];
+      final totalDays = sessionDays[1];
 
-      await AppWidgetUtils.sendProgressData(progressAppWidget);
+      await AppWidgetUtils.sendProgressData(progress, elapsedDays, totalDays);
       await AppWidgetUtils.updateWidget();
     } on Exception catch (e) {
     _analyticsService.logError('DashboardViewModel', e.toString());

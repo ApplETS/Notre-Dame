@@ -11,18 +11,29 @@ import SwiftUI
 private let widgetGroupId = "group.ca.etsmtl.applets.ETSMobile"
 
 struct Provider: TimelineProvider {
+    
+    let placeholderProgressEntry = ProgressEntry(date: Date(), progress: 0.5, elapsedDays: 51, totalDays: 102)
+    
     func placeholder(in context: Context) -> ProgressEntry {
-        ProgressEntry(date: Date(), progress: 0.5)
+        placeholderProgressEntry
     }
     
     func getSnapshot(in context: Context, completion: @escaping (ProgressEntry) -> ()) {
         let entry: ProgressEntry
         if context.isPreview {
-            entry = ProgressEntry(date: Date(), progress: 0.5)
+            entry = placeholderProgressEntry
         } else {
-//            entry = SimpleEntry(date: Date(), progress: 0.5)      // debug
+//            entry = placeholderProgressEntry      // debug
+            
             let data = UserDefaults.init(suiteName:widgetGroupId)
-            entry = ProgressEntry(date: Date(), progress: data?.double(forKey: "progress") ?? 0.5)
+            let progress = data?.double(forKey: "progress")
+            let elapsedDays = data?.integer(forKey: "elapsedDays")
+            let totalDays = data?.integer(forKey: "totalDays")
+            
+            entry = ProgressEntry(date: Date(),
+                                  progress: progress ?? 0.5,
+                                  elapsedDays: elapsedDays ?? 51,
+                                  totalDays: totalDays ?? 102)
         }
         completion(entry)
     }
@@ -49,7 +60,7 @@ struct ETSMobile_Widget_Previews: PreviewProvider {
     static var previews: some View {
         VStack {
             
-            ProgressWidgetEntryView(entry: ProgressEntry(date: Date(), progress: 0.5))
+            ProgressWidgetEntryView(entry: ProgressEntry(date: Date(), progress: 0.5, elapsedDays: 10, totalDays: 20))
                 .previewContext(WidgetPreviewContext(family: .systemSmall))
         }
     }

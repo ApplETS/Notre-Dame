@@ -10,11 +10,13 @@ import 'package:workmanager/workmanager.dart';
 mixin AppWidgetUtils {
   static const String appWidgetProgressTaskId = "app_widget_progress";
   static double progress = 0.0;
-  static Future<void> sendProgressData(double progress) async {
+  static Future<void> sendProgressData(double progress, int elapsedDays, int totalDays) async {
     try {
-      return await HomeWidget.saveWidgetData<double>('progress', progress);
+      await HomeWidget.saveWidgetData<double>('progress', progress);
+      await HomeWidget.saveWidgetData<int>('elapsedDays', elapsedDays);
+      return await HomeWidget.saveWidgetData<int>('totalDays', totalDays);
     } on PlatformException catch (exception) {
-      debugPrint('Error Sending Data. $exception');
+      debugPrint('Error Sending Progress Data. $exception');
       locator<AnalyticsService>().logError('AppWidgetUtils', 'Error sending data to progress bar widget.');
     }
   }
@@ -33,14 +35,15 @@ mixin AppWidgetUtils {
     Workmanager().executeTask((task, inputData) {
       switch (task) {
         case appWidgetProgressTaskId:
+          // FIXME not working atm
           progress += 0.1;
-          sendProgressData(progress).then((_) {
+          sendProgressData(progress, 0, 100).then((_) {
             updateWidget();
           });
-          print(progress);
+          print(progress);    // debug
         break;
       }
-      print("Background processing task");
+      print("Background processing task");    // debug
       return Future.value(true);
     });
   }
