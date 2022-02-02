@@ -10,7 +10,7 @@ import 'package:notredame/core/constants/preferences_flags.dart';
 import 'package:notredame/core/managers/settings_manager.dart';
 
 // MODELS
-import 'package:signets_api_client/models.dart';
+import 'package:ets_api_clients/models.dart';
 // SERVICE
 import 'package:notredame/core/services/navigation_service.dart';
 

@@ -11,15 +11,15 @@ import 'package:notredame/core/managers/cache_manager.dart';
 import 'package:notredame/core/managers/user_repository.dart';
 
 // MODELS
-import 'package:signets_api_client/models.dart';
+import 'package:ets_api_clients/models.dart';
 
 // UTILS
 import 'package:notredame/core/utils/cache_exception.dart';
-import 'package:signets_api_client/exceptions.dart';
+import 'package:ets_api_clients/exceptions.dart';
 
 // OTHER
 import 'package:notredame/locator.dart';
-import 'package:signets_api_client/clients.dart';
+import 'package:ets_api_clients/clients.dart';
 
 /// Repository to access all the data related to courses taken by the student
 class CourseRepository {

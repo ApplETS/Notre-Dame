@@ -11,9 +11,9 @@ import 'package:notredame/core/services/analytics_service.dart';
 import 'package:notredame/core/services/networking_service.dart';
 
 // MODELS
-import 'package:signets_api_client/models.dart';
-import 'package:signets_api_client/clients.dart';
-import 'package:signets_api_client/exceptions.dart';
+import 'package:ets_api_clients/models.dart';
+import 'package:ets_api_clients/clients.dart';
+import 'package:ets_api_clients/exceptions.dart';
 
 // HELPERS
 import '../helpers.dart';

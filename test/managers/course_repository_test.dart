@@ -9,12 +9,12 @@ import 'package:notredame/core/services/analytics_service.dart';
 import 'package:notredame/core/managers/user_repository.dart';
 import 'package:notredame/core/managers/cache_manager.dart';
 import 'package:notredame/core/managers/course_repository.dart';
-import 'package:signets_api_client/clients.dart';
+import 'package:ets_api_clients/clients.dart';
 
 // MODELS
-import 'package:signets_api_client/models.dart';
-import 'package:signets_api_client/models.dart' as models;
-import 'package:signets_api_client/exceptions.dart';
+import 'package:ets_api_clients/models.dart';
+import 'package:ets_api_clients/models.dart' as models;
+import 'package:ets_api_clients/exceptions.dart';
 
 // UTILS
 import '../helpers.dart';

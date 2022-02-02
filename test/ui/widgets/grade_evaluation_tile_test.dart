@@ -9,8 +9,8 @@ import 'package:notredame/ui/widgets/grade_evaluation_tile.dart';
 import 'package:notredame/ui/widgets/grade_circular_progress.dart';
 
 // MODELS
-import 'package:signets_api_client/models.dart';
-import 'package:signets_api_client/models.dart' as models;
+import 'package:ets_api_clients/models.dart';
+import 'package:ets_api_clients/models.dart' as models;
 
 // HELPERS
 import '../../helpers.dart';

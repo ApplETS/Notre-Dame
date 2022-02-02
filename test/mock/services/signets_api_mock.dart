@@ -3,11 +3,11 @@ import 'package:mockito/mockito.dart';
 import 'package:notredame/core/managers/course_repository.dart';
 
 // MODELS
-import 'package:signets_api_client/models.dart';
+import 'package:ets_api_clients/models.dart';
 
 // SERVICE
-import 'package:signets_api_client/clients.dart';
-import 'package:signets_api_client/exceptions.dart';
+import 'package:ets_api_clients/clients.dart';
+import 'package:ets_api_clients/exceptions.dart';
 
 /// Mock for the [SignetsApi]
 class SignetsAPIClientMock extends Mock implements SignetsAPIClient {

@@ -2,13 +2,13 @@
 import 'package:mockito/mockito.dart';
 
 // MODELS
-import 'package:signets_api_client/models.dart';
+import 'package:ets_api_clients/models.dart';
 
 // SERVICE
-import 'package:signets_api_client/clients.dart';
+import 'package:ets_api_clients/clients.dart';
 
 // UTILS
-import 'package:signets_api_client/exceptions.dart';
+import 'package:ets_api_clients/exceptions.dart';
 
 /// Mock for the [MonETSApi]
 class MonETSAPIClientMock extends Mock implements MonETSAPIClient {

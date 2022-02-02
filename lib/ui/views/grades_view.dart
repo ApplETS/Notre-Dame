@@ -7,7 +7,7 @@ import 'package:stacked/stacked.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 // MODELS
-import 'package:signets_api_client/models.dart';
+import 'package:ets_api_clients/models.dart';
 
 // VIEW MODEL
 import 'package:notredame/core/viewmodels/grades_viewmodel.dart';

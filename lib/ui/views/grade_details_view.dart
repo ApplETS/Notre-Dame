@@ -7,7 +7,7 @@ import 'package:stacked/stacked.dart';
 import 'package:notredame/core/viewmodels/grades_details_viewmodel.dart';
 
 // MODELS
-import 'package:signets_api_client/models.dart';
+import 'package:ets_api_clients/models.dart';
 
 // WIDGETS
 import 'package:notredame/ui/widgets/grade_circular_progress.dart';

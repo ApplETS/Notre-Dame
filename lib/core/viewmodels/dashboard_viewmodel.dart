@@ -19,7 +19,7 @@ import 'package:notredame/core/services/siren_flutter_service.dart';
 import 'package:notredame/core/services/preferences_service.dart';
 
 // MODEL
-import 'package:signets_api_client/models.dart';
+import 'package:ets_api_clients/models.dart';
 
 // UTILS
 import 'package:notredame/ui/utils/discovery_components.dart';

@@ -5,8 +5,8 @@ import 'package:mockito/mockito.dart';
 import 'package:notredame/core/managers/user_repository.dart';
 
 // MODELS
-import 'package:signets_api_client/models.dart';
-import 'package:signets_api_client/exceptions.dart';
+import 'package:ets_api_clients/models.dart';
+import 'package:ets_api_clients/exceptions.dart';
 
 /// Mock for the [UserRepository]
 class UserRepositoryMock extends Mock implements UserRepository {

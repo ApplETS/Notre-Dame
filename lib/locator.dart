@@ -19,7 +19,7 @@ import 'package:notredame/core/managers/course_repository.dart';
 import 'package:notredame/core/managers/cache_manager.dart';
 import 'package:notredame/core/managers/settings_manager.dart';
 import 'package:notredame/core/services/siren_flutter_service.dart';
-import 'package:signets_api_client/clients.dart';
+import 'package:ets_api_clients/clients.dart';
 
 GetIt locator = GetIt.instance;
 

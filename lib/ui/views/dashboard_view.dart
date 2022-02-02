@@ -17,7 +17,7 @@ import 'package:notredame/ui/widgets/grade_button.dart';
 import 'package:notredame/ui/widgets/haptics_container.dart';
 
 // MODELS / CONSTANTS
-import 'package:signets_api_client/models.dart';
+import 'package:ets_api_clients/models.dart';
 import 'package:notredame/core/constants/preferences_flags.dart';
 import 'package:notredame/core/constants/urls.dart';
 import 'package:notredame/core/constants/discovery_ids.dart';

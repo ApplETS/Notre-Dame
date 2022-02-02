@@ -12,15 +12,15 @@ import 'package:notredame/core/services/networking_service.dart';
 import 'package:notredame/core/managers/cache_manager.dart';
 
 // MODELS
-import 'package:signets_api_client/models.dart';
+import 'package:ets_api_clients/models.dart';
 
 // UTILS
-import 'package:signets_api_client/exceptions.dart';
+import 'package:ets_api_clients/exceptions.dart';
 import 'package:notredame/core/utils/cache_exception.dart';
 
 // OTHER
 import 'package:notredame/locator.dart';
-import 'package:signets_api_client/clients.dart';
+import 'package:ets_api_clients/clients.dart';
 
 class UserRepository {
   static const String tag = "UserRepository";

@@ -10,7 +10,7 @@ import 'package:notredame/core/managers/user_repository.dart';
 import 'package:notredame/core/viewmodels/profile_viewmodel.dart';
 
 // MODEL
-import 'package:signets_api_client/models.dart';
+import 'package:ets_api_clients/models.dart';
 
 import '../helpers.dart';
 

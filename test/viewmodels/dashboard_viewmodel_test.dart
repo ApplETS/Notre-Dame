@@ -11,7 +11,7 @@ import 'package:notredame/core/managers/course_repository.dart';
 import 'package:notredame/core/managers/settings_manager.dart';
 
 // MODEL
-import 'package:signets_api_client/models.dart';
+import 'package:ets_api_clients/models.dart';
 
 // SERVICE
 import 'package:notredame/core/services/preferences_service.dart';

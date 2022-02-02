@@ -23,7 +23,7 @@ import 'package:notredame/core/managers/settings_manager.dart';
 import 'package:notredame/core/services/networking_service.dart';
 import 'package:notredame/core/services/internal_info_service.dart';
 import 'package:notredame/core/services/siren_flutter_service.dart';
-import 'package:signets_api_client/clients.dart';
+import 'package:ets_api_clients/clients.dart';
 
 // MOCKS
 import 'mock/managers/cache_manager_mock.dart';
