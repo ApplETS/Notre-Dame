@@ -225,6 +225,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.0.1"
+  ets_api_clients:
+    dependency: "direct main"
+    description:
+      path: "../signets_api_client"
+      relative: true
+    source: path
+    version: "0.1.0"
   fake_async:
     dependency: transitive
     description:
@@ -798,13 +805,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.0.2"
-  signets_api_client:
-    dependency: "direct main"
-    description:
-      path: "../signets_api_client"
-      relative: true
-    source: path
-    version: "0.1.0"
   simple_gesture_detector:
     dependency: transitive
     description:

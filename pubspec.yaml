@@ -41,7 +41,7 @@ dependencies:
   flutter_siren: ^1.2.0
   
   # Customs
-  signets_api_client:
+  ets_api_clients:
     path: ../signets_api_client/
   
   # Other
