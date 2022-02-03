@@ -49,7 +49,7 @@ class UserRepository {
   /// Used to access the Signets API
   final SignetsAPIClient _signetsApiClient = locator<SignetsAPIClient>();
 
-  /// Used to access the Signets API
+  /// Used to access the MonÉTS API
   final MonETSAPIClient _monEtsApiClient = locator<MonETSAPIClient>();
 
   /// Mon ETS user for the student
