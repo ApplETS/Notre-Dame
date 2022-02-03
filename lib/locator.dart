@@ -42,7 +42,7 @@ void setupLocator() {
   locator.registerLazySingleton(() => SettingsManager());
 
   // Other
-  locator.registerLazySingleton(() => SignetsAPIClient(http.Client()));
-  locator.registerLazySingleton(() => MonETSAPIClient(http.Client()));
+  locator.registerLazySingleton(() => SignetsAPIClient());
+  locator.registerLazySingleton(() => MonETSAPIClient());
   locator.registerLazySingleton(() => Logger());
 }
