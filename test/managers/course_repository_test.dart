@@ -20,10 +20,10 @@ import 'package:ets_api_clients/exceptions.dart';
 import '../helpers.dart';
 
 // MOCKS
+import 'package:ets_api_clients/testing.dart';
 import '../mock/managers/cache_manager_mock.dart';
 import '../mock/managers/user_repository_mock.dart';
 import '../mock/services/networking_service_mock.dart';
-import '../mock/services/signets_api_mock.dart';
 
 void main() {
   AnalyticsService analyticsService;
@@ -429,7 +429,8 @@ void main() {
 
         // Stub the SignetsAPI to throw an exception
         SignetsAPIClientMock.stubGetCoursesActivitiesException(
-            signetsApi as SignetsAPIClientMock, session.shortName);
+            signetsApi as SignetsAPIClientMock, session.shortName,
+            exceptionToThrow: const ApiException(prefix: CourseRepository.tag));
 
         expect(manager.coursesActivities, isNull);
         expect(manager.getCoursesActivities(),
@@ -802,7 +803,8 @@ void main() {
 
         // Stub the SignetsAPI to throw an exception
         SignetsAPIClientMock.stubGetScheduleActivitiesException(
-            signetsApi as SignetsAPIClientMock, session.shortName);
+            signetsApi as SignetsAPIClientMock, session.shortName,
+            exceptionToThrow: const ApiException(prefix: CourseRepository.tag));
 
         expect(manager.scheduleActivities, isNull);
         expect(manager.getScheduleActivities(),

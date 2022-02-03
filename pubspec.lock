@@ -228,11 +228,9 @@ packages:
   ets_api_clients:
     dependency: "direct main"
     description:
-      path: "."
-      ref: "v0.2.2"
-      resolved-ref: "0c2222502ca7906ab1ba5d9387e8dbac9806d08a"
-      url: "https://github.com/ApplETS/ETS-API-Clients.git"
-    source: git
+      path: "../signets_api_client"
+      relative: true
+    source: path
     version: "0.2.2"
   fake_async:
     dependency: transitive

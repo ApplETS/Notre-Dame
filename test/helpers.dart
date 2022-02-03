@@ -26,6 +26,7 @@ import 'package:notredame/core/services/siren_flutter_service.dart';
 import 'package:ets_api_clients/clients.dart';
 
 // MOCKS
+import 'package:ets_api_clients/testing.dart';
 import 'mock/managers/cache_manager_mock.dart';
 import 'mock/managers/course_repository_mock.dart';
 import 'mock/managers/settings_manager_mock.dart';
@@ -34,12 +35,10 @@ import 'mock/services/analytics_service_mock.dart';
 import 'mock/services/flutter_secure_storage_mock.dart';
 import 'mock/services/github_api_mock.dart';
 import 'mock/services/internal_info_service_mock.dart';
-import 'mock/services/mon_ets_api_mock.dart';
 import 'mock/services/navigation_service_mock.dart';
 import 'mock/services/networking_service_mock.dart';
 import 'mock/services/preferences_service_mock.dart';
 import 'mock/services/rive_animation_service_mock.dart';
-import 'mock/services/signets_api_mock.dart';
 import 'mock/services/siren_flutter_service_mock.dart';
 
 /// Return the path of the [goldenName] file.

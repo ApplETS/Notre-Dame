@@ -19,11 +19,10 @@ import 'package:ets_api_clients/exceptions.dart';
 import '../helpers.dart';
 
 // MOCKS
+import 'package:ets_api_clients/testing.dart';
 import '../mock/managers/cache_manager_mock.dart';
 import '../mock/services/flutter_secure_storage_mock.dart';
-import '../mock/services/mon_ets_api_mock.dart';
 import '../mock/services/networking_service_mock.dart';
-import '../mock/services/signets_api_mock.dart';
 
 void main() {
   AnalyticsService analyticsService;
