@@ -15,6 +15,7 @@ import 'package:notredame/core/constants/discovery_ids.dart';
 import 'package:notredame/core/constants/progress_bar_text_options.dart';
 import 'package:notredame/core/constants/update_code.dart';
 import 'package:notredame/core/constants/activity_code.dart';
+import 'package:notredame/core/constants/widget_types.dart';
 
 // MANAGER / SERVICE
 import 'package:notredame/core/managers/settings_manager.dart';
@@ -156,7 +157,7 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
       final totalDays = sessionDays[1];
 
       await AppWidgetUtils.sendProgressData(progress, elapsedDays, totalDays);
-      await AppWidgetUtils.updateWidget();
+      await AppWidgetUtils.updateWidget(WidgetType.progress);
     } on Exception catch (e) {
     _analyticsService.logError('DashboardViewModel', e.toString());
     }

@@ -16,7 +16,7 @@ struct ProgressWidgetEntryView : View {
             Text("Progression de la session")
                 .multilineTextAlignment(.center)
                 .font(.system(size: 18))
-                .padding(EdgeInsets.init(top: 5, leading: 0, bottom: 0, trailing: 0))
+                .padding(EdgeInsets.init(top: 7, leading: 0, bottom: 0, trailing: 0))
             
             Spacer()
             
@@ -27,6 +27,7 @@ struct ProgressWidgetEntryView : View {
                 .font(.system(size: 18))
             
             ProgressBarView(progress: entry.progress)
+                .padding(EdgeInsets.init(top: -10, leading: 10, bottom: 0, trailing: 10))
         }
     }
 }
