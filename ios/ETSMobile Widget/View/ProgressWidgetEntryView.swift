@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct ProgressWidgetEntryView : View {
-    var entry: Provider.Entry
+    var entry: ProgressProvider.Entry
     
     var body: some View {
         VStack {

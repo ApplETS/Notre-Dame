@@ -13,6 +13,13 @@
 		1843157F27346F80007F7DD5 /* ETSMobileWidgets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1843157E27346F80007F7DD5 /* ETSMobileWidgets.swift */; };
 		1843158127346F80007F7DD5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1843158027346F80007F7DD5 /* Assets.xcassets */; };
 		1843158527346F80007F7DD5 /* ETSMobile WidgetExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 1843157A27346F7F007F7DD5 /* ETSMobile WidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		189E5ABB27AC7BD10077E706 /* GradesWidgetEntryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 189E5ABA27AC7BD10077E706 /* GradesWidgetEntryView.swift */; };
+		189E5ABE27AC7D390077E706 /* ProgressProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 189E5ABD27AC7D390077E706 /* ProgressProvider.swift */; };
+		189E5AC027AC7D890077E706 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 189E5ABF27AC7D890077E706 /* Constants.swift */; };
+		189E5AC227AC7EB00077E706 /* GradesWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 189E5AC127AC7EB00077E706 /* GradesWidget.swift */; };
+		189E5AC427AC7F470077E706 /* GradesProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 189E5AC327AC7F470077E706 /* GradesProvider.swift */; };
+		189E5AC627AC7F6C0077E706 /* GradesEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 189E5AC527AC7F6C0077E706 /* GradesEntry.swift */; };
+		189E5AC827AC85840077E706 /* SingleGradeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 189E5AC727AC85840077E706 /* SingleGradeView.swift */; };
 		18F9C5B327AB28D4009B6FF4 /* ProgressEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18F9C5B227AB28D4009B6FF4 /* ProgressEntry.swift */; };
 		18F9C5B627AB2939009B6FF4 /* ProgressBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18F9C5B527AB2939009B6FF4 /* ProgressBarView.swift */; };
 		18F9C5B827AB2E98009B6FF4 /* ProgressWidgetEntryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18F9C5B727AB2E98009B6FF4 /* ProgressWidgetEntryView.swift */; };
@@ -72,6 +79,13 @@
 		1843158227346F80007F7DD5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		186A982C273484B900170D40 /* Runner.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Runner.entitlements; sourceTree = "<group>"; };
 		186A982D273484EE00170D40 /* ETSMobile WidgetExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "ETSMobile WidgetExtension.entitlements"; sourceTree = "<group>"; };
+		189E5ABA27AC7BD10077E706 /* GradesWidgetEntryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradesWidgetEntryView.swift; sourceTree = "<group>"; };
+		189E5ABD27AC7D390077E706 /* ProgressProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressProvider.swift; sourceTree = "<group>"; };
+		189E5ABF27AC7D890077E706 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		189E5AC127AC7EB00077E706 /* GradesWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradesWidget.swift; sourceTree = "<group>"; };
+		189E5AC327AC7F470077E706 /* GradesProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradesProvider.swift; sourceTree = "<group>"; };
+		189E5AC527AC7F6C0077E706 /* GradesEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradesEntry.swift; sourceTree = "<group>"; };
+		189E5AC727AC85840077E706 /* SingleGradeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleGradeView.swift; sourceTree = "<group>"; };
 		18F9C5B227AB28D4009B6FF4 /* ProgressEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressEntry.swift; sourceTree = "<group>"; };
 		18F9C5B527AB2939009B6FF4 /* ProgressBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressBarView.swift; sourceTree = "<group>"; };
 		18F9C5B727AB2E98009B6FF4 /* ProgressWidgetEntryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressWidgetEntryView.swift; sourceTree = "<group>"; };
@@ -117,20 +131,32 @@
 		1843157D27346F80007F7DD5 /* ETSMobile Widget */ = {
 			isa = PBXGroup;
 			children = (
+				189E5ABC27AC7D200077E706 /* Provider */,
 				18F9C5B927AB31E3009B6FF4 /* Widget */,
 				18F9C5B427AB290E009B6FF4 /* View */,
 				18F9C5B127AB28B0009B6FF4 /* Model */,
 				1843157E27346F80007F7DD5 /* ETSMobileWidgets.swift */,
+				189E5ABF27AC7D890077E706 /* Constants.swift */,
 				1843158027346F80007F7DD5 /* Assets.xcassets */,
 				1843158227346F80007F7DD5 /* Info.plist */,
 			);
 			path = "ETSMobile Widget";
 			sourceTree = "<group>";
 		};
+		189E5ABC27AC7D200077E706 /* Provider */ = {
+			isa = PBXGroup;
+			children = (
+				189E5ABD27AC7D390077E706 /* ProgressProvider.swift */,
+				189E5AC327AC7F470077E706 /* GradesProvider.swift */,
+			);
+			path = Provider;
+			sourceTree = "<group>";
+		};
 		18F9C5B127AB28B0009B6FF4 /* Model */ = {
 			isa = PBXGroup;
 			children = (
 				18F9C5B227AB28D4009B6FF4 /* ProgressEntry.swift */,
+				189E5AC527AC7F6C0077E706 /* GradesEntry.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -140,6 +166,8 @@
 			children = (
 				18F9C5B527AB2939009B6FF4 /* ProgressBarView.swift */,
 				18F9C5B727AB2E98009B6FF4 /* ProgressWidgetEntryView.swift */,
+				189E5ABA27AC7BD10077E706 /* GradesWidgetEntryView.swift */,
+				189E5AC727AC85840077E706 /* SingleGradeView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -148,6 +176,7 @@
 			isa = PBXGroup;
 			children = (
 				18F9C5BA27AB31F7009B6FF4 /* ProgressWidget.swift */,
+				189E5AC127AC7EB00077E706 /* GradesWidget.swift */,
 			);
 			path = Widget;
 			sourceTree = "<group>";
@@ -469,8 +498,15 @@
 				1843157F27346F80007F7DD5 /* ETSMobileWidgets.swift in Sources */,
 				18F9C5BB27AB31F7009B6FF4 /* ProgressWidget.swift in Sources */,
 				18F9C5B327AB28D4009B6FF4 /* ProgressEntry.swift in Sources */,
+				189E5AC227AC7EB00077E706 /* GradesWidget.swift in Sources */,
+				189E5AC827AC85840077E706 /* SingleGradeView.swift in Sources */,
+				189E5ABE27AC7D390077E706 /* ProgressProvider.swift in Sources */,
+				189E5ABB27AC7BD10077E706 /* GradesWidgetEntryView.swift in Sources */,
+				189E5AC427AC7F470077E706 /* GradesProvider.swift in Sources */,
 				18F9C5B827AB2E98009B6FF4 /* ProgressWidgetEntryView.swift in Sources */,
+				189E5AC627AC7F6C0077E706 /* GradesEntry.swift in Sources */,
 				18F9C5B627AB2939009B6FF4 /* ProgressBarView.swift in Sources */,
+				189E5AC027AC7D890077E706 /* Constants.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

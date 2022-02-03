@@ -16,11 +16,11 @@ struct ProgressWidget: Widget {
     let kind: String = "ETSMobile_ProgressWidget"
     
     var body: some WidgetConfiguration {
-        StaticConfiguration(kind: kind, provider: Provider()) { entry in
+        StaticConfiguration(kind: kind, provider: ProgressProvider()) { entry in
             ProgressWidgetEntryView(entry: entry)
         }
         .configurationDisplayName("Session progress")
         .description("Display the current session progress")
-        .supportedFamilies([.systemSmall, .systemMedium])
+        .supportedFamilies([.systemSmall])
     }
 }
