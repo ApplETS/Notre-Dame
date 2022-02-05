@@ -128,7 +128,7 @@ class ScheduleSettingsViewModel
         as StartingDayOfWeek;
     _showTodayBtn =
         settings[PreferencesFlag.scheduleSettingsShowTodayBtn] as bool;
-    _showTodayBtn =
+    _showWeekEvents =
         settings[PreferencesFlag.scheduleSettingsShowWeekEvents] as bool;
 
     _scheduleActivitiesByCourse.clear();
