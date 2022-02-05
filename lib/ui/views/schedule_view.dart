@@ -246,11 +246,6 @@ class _ScheduleViewState extends State<ScheduleView>
   }
 
   List<Widget> _buildActionButtons(ScheduleViewModel model) => [
-        Switch(
-          value: model.showWeekEvents,
-          onChanged: (value) => model.showWeekEvents = value,
-          activeColor: Colors.white,
-        ),
         if ((model.settings[PreferencesFlag.scheduleSettingsShowTodayBtn]
                 as bool) ==
             true)

@@ -89,17 +89,8 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
     return events;
   }
 
-  bool _showWeekEvents = false;
-
-  bool get showWeekEvents => _showWeekEvents;
-
-  set showWeekEvents(bool newValue) {
-    setBusy(true);
-    _showWeekEvents = newValue;
-    settings[PreferencesFlag.scheduleSettingsShowWeekEvents] = newValue;
-    _settingsManager.setBool(
-        PreferencesFlag.scheduleSettingsShowWeekEvents, newValue);
-  }
+  bool get showWeekEvents =>
+      settings[PreferencesFlag.scheduleSettingsShowWeekEvents] as bool ?? false;
 
   bool isLoadingEvents = false;
 
@@ -164,8 +155,6 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
     setBusy(true);
     settings.clear();
     settings.addAll(await _settingsManager.getScheduleSettings());
-    _showWeekEvents =
-        settings[PreferencesFlag.scheduleSettingsShowWeekEvents] as bool;
     calendarFormat = settings[PreferencesFlag.scheduleSettingsCalendarFormat]
         as CalendarFormat;
 
