@@ -21,7 +21,8 @@
         android:name="io.flutter.app.FlutterApplication"
         android:label="ÉTS Mobile"
         android:icon="@mipmap/launcher_icon"
-        android:usesCleartextTraffic="true">
+        android:usesCleartextTraffic="true"
+        android:allowBackup="false">
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"

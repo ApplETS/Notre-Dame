@@ -119,6 +119,7 @@ class UserRepository {
         await _secureStorage.write(key: usernameSecureKey, value: username);
         await _secureStorage.write(key: passwordSecureKey, value: password);
       } on PlatformException catch (e, stacktrace) {
+        await _secureStorage.deleteAll();
         _analyticsService.logError(
             tag,
             "Authenticate - PlatformException - ${e.toString()}",
@@ -134,15 +135,23 @@ class UserRepository {
   /// Check if there are credentials saved and so authenticate the user, otherwise
   /// return false
   Future<bool> silentAuthenticate() async {
-    final String username = await _secureStorage.read(key: usernameSecureKey);
-
-    if (username != null) {
-      final String password = await _secureStorage.read(key: passwordSecureKey);
-
-      return authenticate(
-          username: username, password: password, isSilent: true);
+    String username;
+    String password;
+    try {
+      username = await _secureStorage.read(key: usernameSecureKey);
+      if (username != null) {
+        password = await _secureStorage.read(key: passwordSecureKey);
+        return await authenticate(
+            username: username, password: password, isSilent: true);
+      }
+    } on PlatformException catch (e, stacktrace) {
+      await _secureStorage.deleteAll();
+      _analyticsService.logError(
+          tag,
+          "SilentAuthenticate - PlatformException(Handled) - ${e.toString()}",
+          e,
+          stacktrace);
     }
-
     return false;
   }
 
@@ -155,6 +164,7 @@ class UserRepository {
       await _secureStorage.delete(key: usernameSecureKey);
       await _secureStorage.delete(key: passwordSecureKey);
     } on PlatformException catch (e, stacktrace) {
+      await _secureStorage.deleteAll();
       _analyticsService.logError(tag,
           "Authenticate - PlatformException - ${e.toString()}", e, stacktrace);
       return false;
@@ -174,9 +184,15 @@ class UserRepository {
         throw const ApiException(prefix: tag, message: "Not authenticated");
       }
     }
-
-    final String password = await _secureStorage.read(key: passwordSecureKey);
-
+    String password;
+    try {
+      password = await _secureStorage.read(key: passwordSecureKey);
+    } on PlatformException catch (e, stacktrace) {
+      await _secureStorage.deleteAll();
+      _analyticsService.logError(tag,
+          "getPassword - PlatformException - ${e.toString()}", e, stacktrace);
+      throw const ApiException(prefix: tag, message: "Not authenticated");
+    }
     return password;
   }
 
@@ -295,11 +311,17 @@ class UserRepository {
   }
 
   Future<bool> wasPreviouslyLoggedIn() async {
-    final String username = await _secureStorage.read(key: usernameSecureKey);
-
-    if (username != null) {
-      final String password = await _secureStorage.read(key: passwordSecureKey);
-      return password.isNotEmpty;
+    try {
+      final String username = await _secureStorage.read(key: passwordSecureKey);
+      if (username != null) {
+        final String password =
+            await _secureStorage.read(key: passwordSecureKey);
+        return password.isNotEmpty;
+      }
+    } on PlatformException catch (e, stacktrace) {
+      await _secureStorage.deleteAll();
+      _analyticsService.logError(tag,
+          "getPassword - PlatformException - ${e.toString()}", e, stacktrace);
     }
     return false;
   }
