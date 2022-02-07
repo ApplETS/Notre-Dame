@@ -135,12 +135,10 @@ class UserRepository {
   /// Check if there are credentials saved and so authenticate the user, otherwise
   /// return false
   Future<bool> silentAuthenticate() async {
-    String username;
-    String password;
     try {
-      username = await _secureStorage.read(key: usernameSecureKey);
+      final username = await _secureStorage.read(key: usernameSecureKey);
       if (username != null) {
-        password = await _secureStorage.read(key: passwordSecureKey);
+        final password = await _secureStorage.read(key: passwordSecureKey);
         return await authenticate(
             username: username, password: password, isSilent: true);
       }
@@ -184,16 +182,15 @@ class UserRepository {
         throw const ApiException(prefix: tag, message: "Not authenticated");
       }
     }
-    String password;
     try {
-      password = await _secureStorage.read(key: passwordSecureKey);
+      final password = await _secureStorage.read(key: passwordSecureKey);
+      return password;
     } on PlatformException catch (e, stacktrace) {
       await _secureStorage.deleteAll();
       _analyticsService.logError(tag,
           "getPassword - PlatformException - ${e.toString()}", e, stacktrace);
       throw const ApiException(prefix: tag, message: "Not authenticated");
     }
-    return password;
   }
 
   /// Get the list of programs on which the student was active.
