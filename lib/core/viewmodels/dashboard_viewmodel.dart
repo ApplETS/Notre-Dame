@@ -202,7 +202,7 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
           if (key == PreferencesFlag.progressBarCard) {
             futureToRunSessionProgressBar();
           }
-          if (key == PreferencesFlag.gradesCard) {
+          if (key == PreferencesFlag.gradesCard && !busy(courses)) {
             futureToRunGrades();
           }
         }
