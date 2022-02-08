@@ -5,7 +5,6 @@ import 'package:mockito/mockito.dart';
 
 // MODELS
 import 'package:ets_api_clients/models.dart';
-import 'package:ets_api_clients/models.dart' as models;
 
 // VIEWMODEL
 import 'package:notredame/core/viewmodels/grades_details_viewmodel.dart';
