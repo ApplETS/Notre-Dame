@@ -1697,7 +1697,7 @@ void main() {
             numberOfCredits: 3,
             title: 'Cours générique');
 
-        final CourseReview evaluation = CourseReview(
+        final CourseReview review = CourseReview(
             acronym: 'GEN101',
             group: '02',
             teacherName: 'April, Alain',
@@ -1714,14 +1714,14 @@ void main() {
             programCode: '999',
             numberOfCredits: 3,
             title: 'Cours générique',
-            review: evaluation);
+            review: review);
 
         SignetsAPIClientMock.stubGetCourses(
             signetsApi as SignetsAPIClientMock, username,
             coursesToReturn: [courseFetched]);
         SignetsAPIClientMock.stubGetCourseReviews(
             signetsApi as SignetsAPIClientMock, username,
-            session: session, evaluationsToReturn: [evaluation]);
+            session: session, evaluationsToReturn: [review]);
         CacheManagerMock.stubGet(cacheManager as CacheManagerMock,
             CourseRepository.coursesCacheKey, jsonEncode([]));
 
