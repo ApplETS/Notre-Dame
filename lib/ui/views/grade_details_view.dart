@@ -149,8 +149,7 @@ class _GradesDetailsViewState extends State<GradesDetailsView>
   Widget _buildGradeEvaluations(GradesDetailsViewModel model) {
     if (model.isBusy) {
       return const Center(child: CircularProgressIndicator());
-    } else if (model.course.inEvaluationPeriod &&
-        !model.course.evaluationCompleted) {
+    } else if (model.course.inReviewPeriod && !model.course.reviewCompleted) {
       return Center(
         child: GradeNotAvailable(
             key: const Key("EvaluationNotCompleted"),

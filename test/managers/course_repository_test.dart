@@ -1223,7 +1223,7 @@ void main() {
           grade: 'C+',
           numberOfCredits: 3,
           title: 'Cours générique',
-          evaluation: CourseReview(
+          review: CourseReview(
               acronym: 'GEN101',
               group: '02',
               teacherName: 'April, Alain',
@@ -1714,7 +1714,7 @@ void main() {
             programCode: '999',
             numberOfCredits: 3,
             title: 'Cours générique',
-            evaluation: evaluation);
+            review: evaluation);
 
         SignetsAPIClientMock.stubGetCourses(
             signetsApi as SignetsAPIClientMock, username,

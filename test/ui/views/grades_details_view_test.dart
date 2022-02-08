@@ -51,7 +51,7 @@ void main() {
     ],
   );
 
-  final CourseReview evaluationCompleted = CourseReview(
+  final CourseReview reviewCompleted = CourseReview(
       acronym: 'GEN101',
       group: '02',
       teacherName: 'TEST',
@@ -68,7 +68,7 @@ void main() {
       numberOfCredits: 3,
       title: 'Cours générique',
       summary: courseSummary,
-      evaluation: evaluationCompleted);
+      review: reviewCompleted);
 
   final Course courseWithoutSummary = Course(
     acronym: 'GEN101',
@@ -87,7 +87,7 @@ void main() {
       numberOfCredits: 3,
       title: 'Cours générique',
       summary: courseSummary,
-      evaluation: CourseReview(
+      review: CourseReview(
           acronym: 'GEN101',
           group: '02',
           teacherName: 'TEST',

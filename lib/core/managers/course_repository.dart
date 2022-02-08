@@ -378,7 +378,7 @@ class CourseRepository {
     // If there isn't the grade yet, will fetch the summary.
     // We don't do this for every course to avoid losing time.
     for (final course in fetchedCourses) {
-      course.evaluation = _getReviewForCourse(course, fetchedCourseReviews);
+      course.review = _getReviewForCourse(course, fetchedCourseReviews);
       if (course.grade == null) {
         try {
           await getCourseSummary(course);
@@ -462,8 +462,8 @@ class CourseRepository {
 
   /// Retrieve the evaluation filtered by sessions.
   Future<Map<String, List<CourseReview>>> _getCoursesReviews() async {
-    final Map<String, List<CourseReview>> evaluations = {};
-    List<CourseReview> sessionEvaluations = [];
+    final Map<String, List<CourseReview>> reviews = {};
+    List<CourseReview> sessionReviews = [];
 
     try {
       final String password = await _userRepository.getPassword();
@@ -474,13 +474,13 @@ class CourseRepository {
       }
 
       for (final Session session in _sessions) {
-        sessionEvaluations = await _signetsApiClient.getCourseReviews(
+        sessionReviews = await _signetsApiClient.getCourseReviews(
             username: _userRepository.monETSUser.universalCode,
             password: password,
             session: session);
-        evaluations.putIfAbsent(session.shortName, () => sessionEvaluations);
+        reviews.putIfAbsent(session.shortName, () => sessionReviews);
         _logger.d(
-            "$tag - getCoursesEvaluations: fetched ${evaluations[session.shortName].length} "
+            "$tag - getCoursesEvaluations: fetched ${reviews[session.shortName].length} "
             "evaluations for session ${session.shortName}.");
       }
     } on Exception catch (e, stacktrace) {
@@ -489,14 +489,14 @@ class CourseRepository {
       rethrow;
     }
 
-    return evaluations;
+    return reviews;
   }
 
   /// Get the evaluation for a course or null if not found.
   CourseReview _getReviewForCourse(
-      Course course, Map<String, List<CourseReview>> evaluations) {
-    if (evaluations.containsKey(course.session)) {
-      return evaluations[course.session].firstWhere(
+      Course course, Map<String, List<CourseReview>> reviews) {
+    if (reviews.containsKey(course.session)) {
+      return reviews[course.session].firstWhere(
           (element) =>
               element.acronym == course.acronym &&
               element.group == course.group,
