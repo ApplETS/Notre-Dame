@@ -1721,7 +1721,7 @@ void main() {
             coursesToReturn: [courseFetched]);
         SignetsAPIClientMock.stubGetCourseReviews(
             signetsApi as SignetsAPIClientMock, username,
-            session: session, evaluationsToReturn: [review]);
+            session: session, reviewsToReturn: [review]);
         CacheManagerMock.stubGet(cacheManager as CacheManagerMock,
             CourseRepository.coursesCacheKey, jsonEncode([]));
 
