@@ -42,10 +42,10 @@ dependencies:
   
   # Customs
   ets_api_clients:
-    # path: ../signets_api_client/
+    # path: ../ets_api_clients/
     git:
       url: https://github.com/ApplETS/ETS-API-Clients.git
-      ref: v0.3.1
+      ref: v0.4.0
   
   # Other
   http: ^0.13.4

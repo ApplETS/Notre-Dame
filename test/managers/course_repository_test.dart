@@ -13,7 +13,6 @@ import 'package:ets_api_clients/clients.dart';
 
 // MODELS
 import 'package:ets_api_clients/models.dart';
-import 'package:ets_api_clients/models.dart' as models;
 import 'package:ets_api_clients/exceptions.dart';
 
 // UTILS
@@ -1224,7 +1223,7 @@ void main() {
           grade: 'C+',
           numberOfCredits: 3,
           title: 'Cours générique',
-          evaluation: CourseEvaluation(
+          evaluation: CourseReview(
               acronym: 'GEN101',
               group: '02',
               teacherName: 'April, Alain',
@@ -1257,7 +1256,7 @@ void main() {
               median: 4.5,
               percentileRank: 99,
               evaluations: [
-                models.Evaluation(
+                CourseEvaluation(
                     courseGroup: 'GEN101-02',
                     title: 'Test',
                     correctedEvaluationOutOf: "20",
@@ -1298,7 +1297,7 @@ void main() {
         SignetsAPIClientMock.stubGetCourses(
             signetsApi as SignetsAPIClientMock, username,
             coursesToReturn: [courseWithGrade]);
-        SignetsAPIClientMock.stubGetCoursesEvaluation(
+        SignetsAPIClientMock.stubGetCourseReviews(
             signetsApi as SignetsAPIClientMock, username);
         CacheManagerMock.stubGet(cacheManager as CacheManagerMock,
             CourseRepository.coursesCacheKey, jsonEncode([courseWithGrade]));
@@ -1372,7 +1371,7 @@ void main() {
         SignetsAPIClientMock.stubGetCourses(
             signetsApi as SignetsAPIClientMock, username,
             coursesToReturn: [courseFetched, courseWithGradeDuplicate]);
-        SignetsAPIClientMock.stubGetCoursesEvaluation(
+        SignetsAPIClientMock.stubGetCourseReviews(
             signetsApi as SignetsAPIClientMock, username);
 
         expect(manager.courses, isNull);
@@ -1505,7 +1504,7 @@ void main() {
         SignetsAPIClientMock.stubGetCourses(
             signetsApi as SignetsAPIClientMock, username,
             coursesToReturn: [courseFetched]);
-        SignetsAPIClientMock.stubGetCoursesEvaluation(
+        SignetsAPIClientMock.stubGetCourseReviews(
             signetsApi as SignetsAPIClientMock, username);
         SignetsAPIClientMock.stubGetCourseSummary(
             signetsApi as SignetsAPIClientMock, username, courseFetched,
@@ -1545,7 +1544,7 @@ void main() {
         SignetsAPIClientMock.stubGetCourses(
             signetsApi as SignetsAPIClientMock, username,
             coursesToReturn: [courseFetched]);
-        SignetsAPIClientMock.stubGetCoursesEvaluation(
+        SignetsAPIClientMock.stubGetCourseReviews(
             signetsApi as SignetsAPIClientMock, username);
         SignetsAPIClientMock.stubGetCourseSummaryException(
             signetsApi as SignetsAPIClientMock, username, courseFetched);
@@ -1577,7 +1576,7 @@ void main() {
         SignetsAPIClientMock.stubGetCourses(
             signetsApi as SignetsAPIClientMock, username,
             coursesToReturn: [courseWithGrade]);
-        SignetsAPIClientMock.stubGetCoursesEvaluation(
+        SignetsAPIClientMock.stubGetCourseReviews(
             signetsApi as SignetsAPIClientMock, username);
         CacheManagerMock.stubGet(cacheManager as CacheManagerMock,
             CourseRepository.coursesCacheKey, jsonEncode([courseWithGrade]));
@@ -1661,7 +1660,7 @@ void main() {
         SignetsAPIClientMock.stubGetCourses(
             signetsApi as SignetsAPIClientMock, username,
             coursesToReturn: [courseFetched]);
-        SignetsAPIClientMock.stubGetCoursesEvaluation(
+        SignetsAPIClientMock.stubGetCourseReviews(
             signetsApi as SignetsAPIClientMock, username,
             session: session);
         CacheManagerMock.stubGet(cacheManager as CacheManagerMock,
@@ -1680,7 +1679,7 @@ void main() {
           userRepository.getPassword(),
           userRepository.monETSUser,
           signetsApi.getCourses(username: username, password: password),
-          signetsApi.getCoursesEvaluation(
+          signetsApi.getCourseReviews(
               username: username, password: password, session: session),
           cacheManager.update(
               CourseRepository.coursesCacheKey, jsonEncode([courseFetched]))
@@ -1698,7 +1697,7 @@ void main() {
             numberOfCredits: 3,
             title: 'Cours générique');
 
-        final CourseEvaluation evaluation = CourseEvaluation(
+        final CourseReview evaluation = CourseReview(
             acronym: 'GEN101',
             group: '02',
             teacherName: 'April, Alain',
@@ -1720,7 +1719,7 @@ void main() {
         SignetsAPIClientMock.stubGetCourses(
             signetsApi as SignetsAPIClientMock, username,
             coursesToReturn: [courseFetched]);
-        SignetsAPIClientMock.stubGetCoursesEvaluation(
+        SignetsAPIClientMock.stubGetCourseReviews(
             signetsApi as SignetsAPIClientMock, username,
             session: session, evaluationsToReturn: [evaluation]);
         CacheManagerMock.stubGet(cacheManager as CacheManagerMock,
@@ -1739,14 +1738,14 @@ void main() {
           userRepository.getPassword(),
           userRepository.monETSUser,
           signetsApi.getCourses(username: username, password: password),
-          signetsApi.getCoursesEvaluation(
+          signetsApi.getCourseReviews(
               username: username, password: password, session: session),
           cacheManager.update(
               CourseRepository.coursesCacheKey, jsonEncode([updated]))
         ]);
       });
 
-      test("_getCoursesEvaluations fails", () async {
+      test("_getCourseReviewss fails", () async {
         final Course courseFetched = Course(
             acronym: 'GEN101',
             group: '02',
@@ -1759,7 +1758,7 @@ void main() {
         SignetsAPIClientMock.stubGetCourses(
             signetsApi as SignetsAPIClientMock, username,
             coursesToReturn: [courseFetched]);
-        SignetsAPIClientMock.stubGetCoursesEvaluationException(
+        SignetsAPIClientMock.stubGetCourseReviewsException(
             signetsApi as SignetsAPIClientMock, username,
             session: session);
         CacheManagerMock.stubGet(cacheManager as CacheManagerMock,
@@ -1778,7 +1777,7 @@ void main() {
           userRepository.getPassword(),
           userRepository.monETSUser,
           signetsApi.getCourses(username: username, password: password),
-          signetsApi.getCoursesEvaluation(
+          signetsApi.getCourseReviews(
               username: username, password: password, session: session),
           cacheManager.update(
               CourseRepository.coursesCacheKey, jsonEncode([courseFetched]))
@@ -1825,7 +1824,7 @@ void main() {
                 median: 4.5,
                 percentileRank: 99,
                 evaluations: [
-                  models.Evaluation(
+                  CourseEvaluation(
                       courseGroup: 'GEN101-02',
                       title: 'Test',
                       correctedEvaluationOutOf: "20",

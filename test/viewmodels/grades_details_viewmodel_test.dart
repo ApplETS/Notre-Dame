@@ -34,7 +34,7 @@ void main() {
     median: 4.5,
     percentileRank: 99,
     evaluations: [
-      models.Evaluation(
+      CourseEvaluation(
         courseGroup: "02",
         title: "Laboratoire 1",
         weight: 10,
@@ -49,7 +49,7 @@ void main() {
         published: true,
         targetDate: DateTime(2021, 01, 05),
       ),
-      models.Evaluation(
+      CourseEvaluation(
         courseGroup: "02",
         title: "Laboratoire 2",
         weight: 10,

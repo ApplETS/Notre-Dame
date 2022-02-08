@@ -23,7 +23,7 @@ import 'package:notredame/core/utils/utils.dart';
 
 class GradeEvaluationTile extends StatefulWidget {
   final bool completed;
-  final Evaluation evaluation;
+  final CourseEvaluation evaluation;
   final bool isFirstEvaluation;
 
   const GradeEvaluationTile(this.evaluation,
@@ -171,7 +171,8 @@ class _GradeEvaluationTileState extends State<GradeEvaluationTile>
         ],
       );
 
-  Widget _buildEvaluationSummary(BuildContext context, Evaluation evaluation) {
+  Widget _buildEvaluationSummary(
+      BuildContext context, CourseEvaluation evaluation) {
     return Padding(
       padding: const EdgeInsets.only(left: 25.0, right: 15.0),
       child: SizedBox(

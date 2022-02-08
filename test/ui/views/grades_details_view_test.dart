@@ -9,7 +9,6 @@ import 'package:notredame/core/managers/settings_manager.dart';
 
 // MODELS
 import 'package:ets_api_clients/models.dart';
-import 'package:ets_api_clients/models.dart' as models;
 
 // SERVICES
 import 'package:notredame/core/services/networking_service.dart';
@@ -34,7 +33,7 @@ void main() {
     median: 4.5,
     percentileRank: 99,
     evaluations: [
-      models.Evaluation(
+      CourseEvaluation(
         courseGroup: "02",
         title: "Laboratoire 1",
         weight: 10,
@@ -52,7 +51,7 @@ void main() {
     ],
   );
 
-  final CourseEvaluation evaluationCompleted = CourseEvaluation(
+  final CourseReview evaluationCompleted = CourseReview(
       acronym: 'GEN101',
       group: '02',
       teacherName: 'TEST',
@@ -88,7 +87,7 @@ void main() {
       numberOfCredits: 3,
       title: 'Cours générique',
       summary: courseSummary,
-      evaluation: CourseEvaluation(
+      evaluation: CourseReview(
           acronym: 'GEN101',
           group: '02',
           teacherName: 'TEST',

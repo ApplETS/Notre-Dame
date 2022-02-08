@@ -10,7 +10,6 @@ import 'package:notredame/ui/widgets/grade_circular_progress.dart';
 
 // MODELS
 import 'package:ets_api_clients/models.dart';
-import 'package:ets_api_clients/models.dart' as models;
 
 // HELPERS
 import '../../helpers.dart';
@@ -27,7 +26,7 @@ void main() {
     median: 4.5,
     percentileRank: 99,
     evaluations: [
-      models.Evaluation(
+      CourseEvaluation(
         courseGroup: "02",
         title: "Laboratoire 1",
         weight: 10,
@@ -42,7 +41,7 @@ void main() {
         published: true,
         targetDate: DateTime(2021, 01, 05),
       ),
-      models.Evaluation(
+      CourseEvaluation(
         courseGroup: "02",
         title: "Laboratoire 2",
         weight: 15,

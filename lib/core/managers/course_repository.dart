@@ -351,7 +351,7 @@ class CourseRepository {
     }
 
     final List<Course> fetchedCourses = [];
-    final Map<String, List<CourseEvaluation>> fetchedCoursesEvaluations = {};
+    final Map<String, List<CourseReview>> fetchedCourseReviews = {};
 
     try {
       final String password = await _userRepository.getPassword();
@@ -368,7 +368,7 @@ class CourseRepository {
     }
 
     try {
-      fetchedCoursesEvaluations.addAll(await _getCoursesEvaluations());
+      fetchedCourseReviews.addAll(await _getCoursesReviews());
     } on Exception catch (e) {
       _logger.d("$tag - getCourses: $e during getCoursesEvaluations. Ignored");
     }
@@ -378,8 +378,7 @@ class CourseRepository {
     // If there isn't the grade yet, will fetch the summary.
     // We don't do this for every course to avoid losing time.
     for (final course in fetchedCourses) {
-      course.evaluation =
-          _getEvaluationForCourse(course, fetchedCoursesEvaluations);
+      course.evaluation = _getReviewForCourse(course, fetchedCourseReviews);
       if (course.grade == null) {
         try {
           await getCourseSummary(course);
@@ -462,9 +461,9 @@ class CourseRepository {
   }
 
   /// Retrieve the evaluation filtered by sessions.
-  Future<Map<String, List<CourseEvaluation>>> _getCoursesEvaluations() async {
-    final Map<String, List<CourseEvaluation>> evaluations = {};
-    List<CourseEvaluation> sessionEvaluations = [];
+  Future<Map<String, List<CourseReview>>> _getCoursesReviews() async {
+    final Map<String, List<CourseReview>> evaluations = {};
+    List<CourseReview> sessionEvaluations = [];
 
     try {
       final String password = await _userRepository.getPassword();
@@ -475,7 +474,7 @@ class CourseRepository {
       }
 
       for (final Session session in _sessions) {
-        sessionEvaluations = await _signetsApiClient.getCoursesEvaluation(
+        sessionEvaluations = await _signetsApiClient.getCourseReviews(
             username: _userRepository.monETSUser.universalCode,
             password: password,
             session: session);
@@ -494,8 +493,8 @@ class CourseRepository {
   }
 
   /// Get the evaluation for a course or null if not found.
-  CourseEvaluation _getEvaluationForCourse(
-      Course course, Map<String, List<CourseEvaluation>> evaluations) {
+  CourseReview _getReviewForCourse(
+      Course course, Map<String, List<CourseReview>> evaluations) {
     if (evaluations.containsKey(course.session)) {
       return evaluations[course.session].firstWhere(
           (element) =>
