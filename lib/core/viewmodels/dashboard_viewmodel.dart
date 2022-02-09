@@ -2,7 +2,6 @@
 import 'dart:collection';
 import 'package:feature_discovery/feature_discovery.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:home_widget/home_widget.dart';
 import 'package:notredame/core/services/analytics_service.dart';
 import 'package:notredame/core/utils/app_widget_utils.dart';
 import 'package:stacked/stacked.dart';
@@ -142,12 +141,12 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
 
     getCardsToDisplay();
 
-    await fetchInfoForAppWidget();
+    await fetchInfoForProgressWidget();
 
     return dashboard;
   }
 
-  Future fetchInfoForAppWidget() async {
+  Future fetchInfoForProgressWidget() async {
     try {
       await _courseRepository.getSessions();
 
@@ -160,6 +159,20 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
       await AppWidgetUtils.updateWidget(WidgetType.progress);
     } on Exception catch (e) {
     _analyticsService.logError('DashboardViewModel', e.toString());
+    }
+  }
+
+  Future fetchInfoForGradesWidget() async {
+    try {
+      // await _courseRepository.getCourses();
+
+      List<String> acronyms = <String>['ABC', 'DEF', 'GHI'];
+      List<String> grades = <String>['A+', 'C', 'B-'];
+
+      await AppWidgetUtils.sendGradesData(acronyms, grades);
+      await AppWidgetUtils.updateWidget(WidgetType.grades);
+    } on Exception catch (e) {
+      _analyticsService.logError('DashboardViewModel', e.toString());
     }
   }
 

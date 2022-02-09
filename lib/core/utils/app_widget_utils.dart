@@ -27,7 +27,19 @@ mixin AppWidgetUtils {
       return await HomeWidget.saveWidgetData<int>('totalDays', totalDays);
     } on PlatformException catch (exception) {
       debugPrint('Error Sending Progress Data. $exception');
-      locator<AnalyticsService>().logError('AppWidgetUtils', 'Error sending data to progress bar widget.');
+      locator<AnalyticsService>().logError('AppWidgetUtils', 'Error sending data to session progress widget.');
+    }
+  }
+
+  /// Update grades widget with provided data
+  static Future<void> sendGradesData(List<String> courseAcronyms, List<String> grades) async {
+    try {
+      // TODO: test if saveWidgetData works with lists
+      await HomeWidget.saveWidgetData<List<String>>('courseAcronyms', courseAcronyms);
+      return await HomeWidget.saveWidgetData<List<String>>('grades', grades);
+    } on PlatformException catch (exception) {
+      debugPrint('Error Sending Grades Data. $exception');
+      locator<AnalyticsService>().logError('AppWidgetUtils', 'Error sending data to grades widget.');
     }
   }
 

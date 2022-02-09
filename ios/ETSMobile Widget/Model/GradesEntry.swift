@@ -10,5 +10,6 @@ import WidgetKit
 // Structure holding data passed from Flutter
 struct GradesEntry: TimelineEntry {
     var date: Date
-    let value: Double
+    let courseAcronyms: [String]
+    let grades: [String]
 }

@@ -9,7 +9,9 @@ import WidgetKit
 
 struct GradesProvider: TimelineProvider {
     
-    let placeholderGradesEntry = GradesEntry(date: Date(), value: 0.5)
+    let placeholderGradesEntry = GradesEntry(date: Date(),
+                                             courseAcronyms: ["ABC123", "DEF456", "GHI789", "ABC123", "DEF456"],
+                                             grades: ["A+", "B", "A+", "B", "A+"])
     
     func placeholder(in context: Context) -> GradesEntry {
         placeholderGradesEntry
@@ -20,17 +22,17 @@ struct GradesProvider: TimelineProvider {
         if context.isPreview {
             entry = placeholderGradesEntry
         } else {
-            entry = placeholderGradesEntry      // debug
             
-//            let data = UserDefaults.init(suiteName: widgetGroupId)
-//            let progress = data?.double(forKey: "progress")
-//            let elapsedDays = data?.integer(forKey: "elapsedDays")
-//            let totalDays = data?.integer(forKey: "totalDays")
-//
-//            entry = GradesEntry(date: Date(),
-//                                  progress: progress ?? 0.5,
-//                                  elapsedDays: elapsedDays ?? 51,
-//                                  totalDays: totalDays ?? 102)
+            if let data = UserDefaults.init(suiteName: widgetGroupId) {
+                // TODO: handle nil values better
+                let courseAcronyms = data.object(forKey: "courseAcronyms") as? [String] ?? []
+                let grades = data.object(forKey: "grades") as? [String] ?? []
+                
+                entry = GradesEntry(date: Date(), courseAcronyms: courseAcronyms, grades: grades)
+            } else {    // error reading userdefaults
+                entry = placeholderGradesEntry      // debug
+            }
+
         }
         completion(entry)
     }
