@@ -10,9 +10,6 @@ import SwiftUI
 struct GradesWidgetEntryView: View {
     var entry: GradesProvider.Entry
     
-    let testData = ["ABC123", "DEF456", "GHI789", "ABC123", "DEF456"]
-//    let testData = ["ABC123", "DEF456", "GHI789"]
-    
     var body: some View {
         VStack {
             
@@ -23,8 +20,8 @@ struct GradesWidgetEntryView: View {
             Divider()
             
             HStack {
-                ForEach (testData, id: \.self) { value in
-                    SingleGradeView(course: value, grade: "A+")
+                ForEach(Array(entry.courseAcronyms.enumerated()), id: \.element) { index, element in
+                    SingleGradeView(course: element, grade: entry.grades[index])
                 }
             }
             .padding(EdgeInsets(top: 0, leading: 5, bottom: 0, trailing: 5))

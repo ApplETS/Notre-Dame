@@ -22,15 +22,15 @@ struct GradesProvider: TimelineProvider {
         if context.isPreview {
             entry = placeholderGradesEntry
         } else {
-            
             if let data = UserDefaults.init(suiteName: widgetGroupId) {
-                // TODO: handle nil values better
-                let courseAcronyms = data.object(forKey: "courseAcronyms") as? [String] ?? []
-                let grades = data.object(forKey: "grades") as? [String] ?? []
-                
-                entry = GradesEntry(date: Date(), courseAcronyms: courseAcronyms, grades: grades)
-            } else {    // error reading userdefaults
-                entry = placeholderGradesEntry      // debug
+                if let courseAcronyms = data.object(forKey: "courseAcronyms") as? [String],
+                   let grades = data.object(forKey: "grades") as? [String]  {
+                    entry = GradesEntry(date: Date(), courseAcronyms: courseAcronyms, grades: grades)
+                } else {    // error when reading crouseAcronyms or grades arrays
+                    entry = placeholderGradesEntry
+                }
+            } else {    // error when reading userdefaults
+                entry = placeholderGradesEntry
             }
 
         }

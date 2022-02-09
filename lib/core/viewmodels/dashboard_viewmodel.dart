@@ -141,7 +141,8 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
 
     getCardsToDisplay();
 
-    await fetchInfoForProgressWidget();
+    fetchInfoForProgressWidget();   // FIXME: somehow never completing
+    fetchInfoForGradesWidget();
 
     return dashboard;
   }
@@ -166,8 +167,9 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
     try {
       // await _courseRepository.getCourses();
 
+      // test
       List<String> acronyms = <String>['ABC', 'DEF', 'GHI'];
-      List<String> grades = <String>['A+', 'C', 'B-'];
+      List<String> grades = <String>['A+', '81%', 'B-'];
 
       await AppWidgetUtils.sendGradesData(acronyms, grades);
       await AppWidgetUtils.updateWidget(WidgetType.grades);
