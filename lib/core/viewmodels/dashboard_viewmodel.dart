@@ -142,7 +142,7 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
     getCardsToDisplay();
 
     fetchInfoForProgressWidget();   // FIXME: somehow never completing
-    fetchInfoForGradesWidget();
+    // fetchInfoForGradesWidget();
 
     return dashboard;
   }
@@ -159,19 +159,39 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
       await AppWidgetUtils.sendProgressData(progress, elapsedDays, totalDays);
       await AppWidgetUtils.updateWidget(WidgetType.progress);
     } on Exception catch (e) {
-    _analyticsService.logError('DashboardViewModel', e.toString());
+      _analyticsService.logError('DashboardViewModel', e.toString());
     }
   }
 
+  /// Update grades widget with current courses data
+  /// MUST be called after futureToRunGrades() completed (uses courses object)
   Future fetchInfoForGradesWidget() async {
     try {
-      // await _courseRepository.getCourses();
+      // used to populate grades with the current session's data by the grades
+      // card -> might not be called if the grades card is dismissed
+      // if (!busy(courses))
+      //   await futureToRunGrades();    // TODO: refactor this out?
+
+      List<String> acronyms = courses.map((course) => course.acronym).toList();
+      List<String> grades = courses.map((course) {
+        // Code copied from GradeButton.gradeString -> TODO: refactor this
+        if (course.grade != null) {
+          return course.grade;
+        } else if (course.summary != null &&
+            course.summary.markOutOf > 0 &&
+            !(course.inEvaluationPeriod && !course.evaluationCompleted)) {
+          return _appIntl.grades_grade_in_percentage(
+              course.summary.currentMarkInPercent.round());
+        }
+        return _appIntl.grades_not_available;
+      }).toList();
 
       // test
-      List<String> acronyms = <String>['ABC', 'DEF', 'GHI'];
-      List<String> grades = <String>['A+', '81%', 'B-'];
+      // List<String> acronyms = <String>['ABC123', 'DEF456', 'GHI789', 'ABC123', 'DEF456', 'GHI789'];
+      // List<String> grades = <String>['A+', '81%', 'B-', 'A+', '81%', 'B-'];
 
-      await AppWidgetUtils.sendGradesData(acronyms, grades);
+      // might not work if no course in this session?
+      await AppWidgetUtils.sendGradesData(acronyms, grades, courses[0].session);
       await AppWidgetUtils.updateWidget(WidgetType.grades);
     } on Exception catch (e) {
       _analyticsService.logError('DashboardViewModel', e.toString());
@@ -241,7 +261,8 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
             futureToRunSessionProgressBar();
           }
           if (key == PreferencesFlag.gradesCard) {
-            futureToRunGrades();
+            futureToRunGrades()
+            .then((_) => fetchInfoForGradesWidget());   // TODO: find a better place to call this
           }
         }
       });

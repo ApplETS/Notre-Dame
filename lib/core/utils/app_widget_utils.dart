@@ -31,10 +31,11 @@ mixin AppWidgetUtils {
   }
 
   /// Update grades widget with provided data
-  static Future<void> sendGradesData(List<String> courseAcronyms, List<String> grades) async {
+  static Future<void> sendGradesData(List<String> courseAcronyms, List<String> grades, String session) async {
     try {
       var res = await HomeWidget.saveWidgetData<List<String>>('courseAcronyms', courseAcronyms);
       res &= await HomeWidget.saveWidgetData<List<String>>('grades', grades);
+      res &= await HomeWidget.saveWidgetData<String>('session', session);
       if (!res) {
         locator<AnalyticsService>().logError('AppWidgetUtils', 'Error saving grades widget data.');
       }

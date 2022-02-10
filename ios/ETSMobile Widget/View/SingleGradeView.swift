@@ -29,7 +29,7 @@ struct SingleGradeView: View {
                 .font(.system(size: 24))
                 .padding(EdgeInsets(top: 4, leading: 0, bottom: 4, trailing: 0))
         }
-        .frame(minWidth: 50, idealWidth: 64, maxWidth: 70, minHeight: 60, idealHeight: 70, maxHeight: 70, alignment: .center)
+        .frame(minWidth: 60, idealWidth: 64, maxWidth: 70, minHeight: 60, idealHeight: 70, maxHeight: 70, alignment: .center)
         .border(Color.gray, width: 0.2)
         .cornerRadius(6)    // fixme cutting off corners
 //        .shadow(color: .gray, radius: 0.5, x: -1, y: -1)

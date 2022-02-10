@@ -11,7 +11,8 @@ struct GradesProvider: TimelineProvider {
     
     let placeholderGradesEntry = GradesEntry(date: Date(),
                                              courseAcronyms: ["ABC123", "DEF456", "GHI789", "ABC123", "DEF456"],
-                                             grades: ["A+", "B", "A+", "B", "A+"])
+                                             grades: ["A+", "B", "A+", "B", "A+"],
+                                             session: "A2021")
     
     func placeholder(in context: Context) -> GradesEntry {
         placeholderGradesEntry
@@ -24,8 +25,12 @@ struct GradesProvider: TimelineProvider {
         } else {
             if let data = UserDefaults.init(suiteName: widgetGroupId) {
                 if let courseAcronyms = data.object(forKey: "courseAcronyms") as? [String],
-                   let grades = data.object(forKey: "grades") as? [String]  {
-                    entry = GradesEntry(date: Date(), courseAcronyms: courseAcronyms, grades: grades)
+                   let grades = data.object(forKey: "grades") as? [String],
+                   let session = data.string(forKey: "session") {
+                    entry = GradesEntry(date: Date(),
+                                        courseAcronyms: courseAcronyms,
+                                        grades: grades,
+                                        session: session)
                 } else {    // error when reading crouseAcronyms or grades arrays
                     entry = placeholderGradesEntry
                 }

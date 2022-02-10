@@ -12,4 +12,5 @@ struct GradesEntry: TimelineEntry {
     var date: Date
     let courseAcronyms: [String]
     let grades: [String]
+    let session: String
 }
