@@ -19,10 +19,8 @@ struct GradesProvider: TimelineProvider {
     }
     
     func getSnapshot(in context: Context, completion: @escaping (GradesEntry) -> ()) {
-        let entry: GradesEntry
-        if context.isPreview {
-            entry = placeholderGradesEntry
-        } else {
+        var entry: GradesEntry = placeholderGradesEntry
+        if !context.isPreview {
             if let data = UserDefaults.init(suiteName: widgetGroupId) {
                 if let courseAcronyms = data.object(forKey: "courseAcronyms") as? [String],
                    let grades = data.object(forKey: "grades") as? [String],
@@ -31,13 +29,8 @@ struct GradesProvider: TimelineProvider {
                                         courseAcronyms: courseAcronyms,
                                         grades: grades,
                                         session: session)
-                } else {    // error when reading crouseAcronyms or grades arrays
-                    entry = placeholderGradesEntry
                 }
-            } else {    // error when reading userdefaults
-                entry = placeholderGradesEntry
             }
-
         }
         completion(entry)
     }

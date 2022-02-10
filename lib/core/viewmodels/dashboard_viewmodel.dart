@@ -139,10 +139,14 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
 
     _cards = dashboard;
 
+    // load data for both grade cards & grades home screen widget
+    // (moved from getCardsToDisplay())
+    futureToRunGrades()
+        .then((_) => fetchInfoForGradesWidget());
+
     getCardsToDisplay();
 
     fetchInfoForProgressWidget();   // FIXME: somehow never completing
-    // fetchInfoForGradesWidget();
 
     return dashboard;
   }
@@ -167,11 +171,6 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
   /// MUST be called after futureToRunGrades() completed (uses courses object)
   Future fetchInfoForGradesWidget() async {
     try {
-      // used to populate grades with the current session's data by the grades
-      // card -> might not be called if the grades card is dismissed
-      // if (!busy(courses))
-      //   await futureToRunGrades();    // TODO: refactor this out?
-
       List<String> acronyms = courses.map((course) => course.acronym).toList();
       List<String> grades = courses.map((course) {
         // Code copied from GradeButton.gradeString -> TODO: refactor this
@@ -261,8 +260,8 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
             futureToRunSessionProgressBar();
           }
           if (key == PreferencesFlag.gradesCard) {
-            futureToRunGrades()
-            .then((_) => fetchInfoForGradesWidget());   // TODO: find a better place to call this
+            // nothing, code moved in futureToRun (needs to be ran every time
+            // for the grades widget
           }
         }
       });
