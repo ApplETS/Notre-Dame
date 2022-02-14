@@ -58,6 +58,7 @@
   "schedule_settings_calendar_format_2_weeks": "2 weeks",
   "schedule_settings_calendar_format_week": "Week",
   "schedule_settings_starting_weekday_pref": "First day of the week",
+  "schedule_settings_show_week_events_btn_pref": "Show activies for entire week",
   "schedule_no_event": "No events scheduled.",
   "schedule_settings_starting_weekday_monday": "Monday",
   "schedule_settings_starting_weekday_tuesday": "Tuesday",

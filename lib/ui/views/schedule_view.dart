@@ -95,27 +95,46 @@ class _ScheduleViewState extends State<ScheduleView>
                       const SizedBox(height: 8.0),
                       const Divider(indent: 8.0, endIndent: 8.0, thickness: 1),
                       const SizedBox(height: 6.0),
-                      Center(
-                          child: Text(
-                              DateFormat.MMMMEEEEd(model.locale.toString())
-                                  .format(model.selectedDate),
-                              style: Theme.of(context).textTheme.headline5)),
+                      if (model.showWeekEvents)
+                        for (Widget widget in _buildWeekEvents(model, context))
+                          widget
+                      else
+                        _buildTitleForDate(model.selectedDate, model),
                       const SizedBox(height: 2.0),
-                      if (model.selectedDateEvents.isEmpty)
+                      if (!model.showWeekEvents &&
+                          model.selectedDateEvents(model.selectedDate).isEmpty)
                         Padding(
                           padding: const EdgeInsets.symmetric(vertical: 64.0),
                           child: Center(
                               child:
                                   Text(AppIntl.of(context).schedule_no_event)),
                         )
-                      else
-                        _buildEventList(model.selectedDateEvents),
+                      else if (!model.showWeekEvents)
+                        _buildEventList(
+                            model.selectedDateEvents(model.selectedDate)),
                       const SizedBox(height: 16.0),
                     ],
                   ),
                 ]),
                 onRefresh: () => model.refresh(),
               )));
+
+  Widget _buildTitleForDate(DateTime date, ScheduleViewModel model) => Center(
+          child: Text(
+        DateFormat.MMMMEEEEd(model.locale.toString()).format(date),
+        style: Theme.of(context).textTheme.headline5,
+      ));
+
+  List<Widget> _buildWeekEvents(ScheduleViewModel model, BuildContext context) {
+    final List<Widget> widgets = [];
+    final eventsByDate = model.selectedWeekEvents();
+    for (final events in eventsByDate.entries) {
+      widgets.add(_buildTitleForDate(events.key, model));
+      widgets.add(_buildEventList(events.value));
+      widgets.add(const SizedBox(height: 20.0));
+    }
+    return widgets;
+  }
 
   /// Build the square with the number of [events] for the [date]
   Widget _buildEventsMarker(
