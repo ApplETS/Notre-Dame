@@ -229,11 +229,11 @@ packages:
     dependency: "direct main"
     description:
       path: "."
-      ref: "v0.4.1"
-      resolved-ref: a1e33cae8b761e83b87b73760c41629bbfc94b22
+      ref: "v0.4.2"
+      resolved-ref: "1f5ce32ded1d2ef8c02767ccbe0048759c390cf3"
       url: "https://github.com/ApplETS/ETS-API-Clients.git"
     source: git
-    version: "0.4.1"
+    version: "0.4.2"
   fake_async:
     dependency: transitive
     description:

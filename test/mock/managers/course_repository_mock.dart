@@ -6,6 +6,8 @@ import 'package:notredame/core/managers/course_repository.dart';
 
 // MODELS
 import 'package:ets_api_clients/models.dart';
+
+// UTILS
 import 'package:ets_api_clients/exceptions.dart';
 
 class CourseRepositoryMock extends Mock implements CourseRepository {

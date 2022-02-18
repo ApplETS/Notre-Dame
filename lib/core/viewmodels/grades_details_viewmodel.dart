@@ -11,13 +11,13 @@ import 'package:notredame/core/constants/preferences_flags.dart';
 
 // UTILS
 import 'package:notredame/ui/utils/discovery_components.dart';
+import 'package:ets_api_clients/exceptions.dart';
 
 // MANAGERS / SERVICES
 import 'package:notredame/core/managers/course_repository.dart';
 import 'package:notredame/core/managers/settings_manager.dart';
 
 // MODELS
-import 'package:ets_api_clients/exceptions.dart';
 import 'package:ets_api_clients/models.dart';
 
 // OTHER

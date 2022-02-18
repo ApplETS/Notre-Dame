@@ -9,6 +9,7 @@ import 'package:logger/logger.dart';
 
 // OTHER
 import 'package:notredame/locator.dart';
+import 'package:ets_api_clients/clients.dart';
 
 // SERVICES / MANAGERS
 import 'package:notredame/core/services/navigation_service.dart';
@@ -23,7 +24,6 @@ import 'package:notredame/core/managers/settings_manager.dart';
 import 'package:notredame/core/services/networking_service.dart';
 import 'package:notredame/core/services/internal_info_service.dart';
 import 'package:notredame/core/services/siren_flutter_service.dart';
-import 'package:ets_api_clients/clients.dart';
 
 // MOCKS
 import 'package:ets_api_clients/testing.dart';

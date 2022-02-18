@@ -12,7 +12,8 @@ import 'package:notredame/core/services/networking_service.dart';
 
 // MODELS
 import 'package:ets_api_clients/models.dart';
-import 'package:ets_api_clients/clients.dart';
+
+// UTILS
 import 'package:ets_api_clients/exceptions.dart';
 
 // HELPERS
@@ -23,6 +24,9 @@ import 'package:ets_api_clients/testing.dart';
 import '../mock/managers/cache_manager_mock.dart';
 import '../mock/services/flutter_secure_storage_mock.dart';
 import '../mock/services/networking_service_mock.dart';
+
+// OTHER
+import 'package:ets_api_clients/clients.dart';
 
 void main() {
   AnalyticsService analyticsService;
