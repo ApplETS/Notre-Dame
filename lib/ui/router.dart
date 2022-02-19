@@ -8,7 +8,7 @@ import 'package:notredame/core/models/quick_link.dart';
 import 'package:notredame/core/constants/router_paths.dart';
 
 // MODELS
-import 'package:notredame/core/models/course.dart';
+import 'package:ets_api_clients/models.dart';
 
 // VIEWS
 import 'package:notredame/ui/views/login_view.dart';

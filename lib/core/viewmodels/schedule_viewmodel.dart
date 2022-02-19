@@ -8,15 +8,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 // CONSTANTS
-import 'package:notredame/core/constants/activity_code.dart';
 import 'package:notredame/core/constants/discovery_ids.dart';
 // MANAGER
 import 'package:notredame/core/managers/course_repository.dart';
 import 'package:notredame/core/managers/settings_manager.dart';
 
 // MODELS
-import 'package:notredame/core/models/course_activity.dart';
-import 'package:notredame/core/models/schedule_activity.dart';
+import 'package:ets_api_clients/models.dart';
 
 // UTILS
 import 'package:notredame/ui/utils/discovery_components.dart';

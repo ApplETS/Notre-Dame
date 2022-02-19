@@ -1,5 +1,4 @@
 // FLUTTER / DART / THIRD-PARTIES
-import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:intl/intl.dart';
@@ -12,7 +11,7 @@ import 'package:notredame/core/managers/settings_manager.dart';
 
 // MODELS / CONSTANTS
 import 'package:notredame/core/constants/preferences_flags.dart';
-import 'package:notredame/core/models/course_activity.dart';
+import 'package:ets_api_clients/models.dart';
 
 // VIEW / WIDGETS
 import 'package:notredame/ui/views/schedule_view.dart';

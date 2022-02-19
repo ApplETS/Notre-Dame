@@ -14,7 +14,7 @@ import 'package:notredame/ui/utils/discovery_components.dart';
 import 'package:notredame/core/viewmodels/schedule_viewmodel.dart';
 
 // MODELS
-import 'package:notredame/core/models/course_activity.dart';
+import 'package:ets_api_clients/models.dart';
 
 // WIDGET
 import 'package:notredame/ui/widgets/base_scaffold.dart';

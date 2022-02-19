@@ -7,7 +7,7 @@ import 'package:stacked/stacked.dart';
 import 'package:notredame/core/viewmodels/grades_details_viewmodel.dart';
 
 // MODELS
-import 'package:notredame/core/models/course.dart';
+import 'package:ets_api_clients/models.dart';
 
 // WIDGETS
 import 'package:notredame/ui/widgets/grade_circular_progress.dart';
@@ -149,8 +149,7 @@ class _GradesDetailsViewState extends State<GradesDetailsView>
   Widget _buildGradeEvaluations(GradesDetailsViewModel model) {
     if (model.isBusy) {
       return const Center(child: CircularProgressIndicator());
-    } else if (model.course.inEvaluationPeriod &&
-        !model.course.evaluationCompleted) {
+    } else if (model.course.inReviewPeriod && !model.course.reviewCompleted) {
       return Center(
         child: GradeNotAvailable(
             key: const Key("EvaluationNotCompleted"),

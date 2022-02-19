@@ -12,11 +12,9 @@ import 'package:notredame/core/managers/settings_manager.dart';
 import 'package:notredame/core/viewmodels/schedule_viewmodel.dart';
 
 // MODEL
-import 'package:notredame/core/models/course_activity.dart';
-import 'package:notredame/core/models/schedule_activity.dart';
+import 'package:ets_api_clients/models.dart';
 
 // CONSTANTS
-import 'package:notredame/core/constants/activity_code.dart';
 import 'package:notredame/core/constants/preferences_flags.dart';
 
 // OTHERS

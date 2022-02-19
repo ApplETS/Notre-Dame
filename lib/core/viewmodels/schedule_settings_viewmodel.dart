@@ -5,14 +5,13 @@ import 'package:table_calendar/table_calendar.dart';
 
 // CONSTANTS
 import 'package:notredame/core/constants/preferences_flags.dart';
-import 'package:notredame/core/constants/activity_code.dart';
 
 // MANAGERS
 import 'package:notredame/core/managers/settings_manager.dart';
 import 'package:notredame/core/managers/course_repository.dart';
 
 // MODELS
-import 'package:notredame/core/models/schedule_activity.dart';
+import 'package:ets_api_clients/models.dart';
 
 // OTHER
 import 'package:notredame/locator.dart';

@@ -225,6 +225,15 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.0.1"
+  ets_api_clients:
+    dependency: "direct main"
+    description:
+      path: "."
+      ref: "v0.4.2"
+      resolved-ref: "1f5ce32ded1d2ef8c02767ccbe0048759c390cf3"
+      url: "https://github.com/ApplETS/ETS-API-Clients.git"
+    source: git
+    version: "0.4.2"
   fake_async:
     dependency: transitive
     description:

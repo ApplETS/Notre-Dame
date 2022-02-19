@@ -7,25 +7,19 @@ import 'package:logger/logger.dart';
 // SERVICES
 import 'package:notredame/core/services/analytics_service.dart';
 import 'package:notredame/core/services/networking_service.dart';
-import 'package:notredame/core/services/signets_api.dart';
 import 'package:notredame/core/managers/cache_manager.dart';
 import 'package:notredame/core/managers/user_repository.dart';
 
 // MODELS
-import 'package:notredame/core/models/course_activity.dart';
-import 'package:notredame/core/models/course.dart';
-import 'package:notredame/core/models/course_summary.dart';
-import 'package:notredame/core/models/session.dart';
-import 'package:notredame/core/models/schedule_activity.dart';
-import 'package:notredame/core/models/course_evaluation.dart';
+import 'package:ets_api_clients/models.dart';
 
 // UTILS
 import 'package:notredame/core/utils/cache_exception.dart';
-import 'package:notredame/core/utils/api_exception.dart';
-import 'package:notredame/core/constants/signets_errors.dart';
+import 'package:ets_api_clients/exceptions.dart';
 
 // OTHER
 import 'package:notredame/locator.dart';
+import 'package:ets_api_clients/clients.dart';
 
 /// Repository to access all the data related to courses taken by the student
 class CourseRepository {
@@ -48,9 +42,6 @@ class CourseRepository {
   /// Will be used to report event and error.
   final AnalyticsService _analyticsService = locator<AnalyticsService>();
 
-  /// Principal access to the SignetsAPI
-  final SignetsApi _signetsApi = locator<SignetsApi>();
-
   /// To access the user currently logged
   final UserRepository _userRepository = locator<UserRepository>();
 
@@ -59,6 +50,9 @@ class CourseRepository {
 
   /// Used to verify if the user has connectivity
   final NetworkingService _networkingService = locator<NetworkingService>();
+
+  /// Used to access the Signets API
+  final SignetsAPIClient _signetsApiClient = locator<SignetsAPIClient>();
 
   /// Student list of courses
   List<Course> _courses;
@@ -139,10 +133,11 @@ class CourseRepository {
 
       final String password = await _userRepository.getPassword();
       for (final Session session in activeSessions) {
-        fetchedCoursesActivities.addAll(await _signetsApi.getCoursesActivities(
-            username: _userRepository.monETSUser.universalCode,
-            password: password,
-            session: session.shortName));
+        fetchedCoursesActivities.addAll(
+            await _signetsApiClient.getCoursesActivities(
+                username: _userRepository.monETSUser.universalCode,
+                password: password,
+                session: session.shortName));
         _logger.d(
             "$tag - getCoursesActivities: fetched ${fetchedCoursesActivities.length} activities.");
       }
@@ -227,9 +222,10 @@ class CourseRepository {
       }
 
       final String password = await _userRepository.getPassword();
+
       for (final Session session in activeSessions) {
         fetchedScheduleActivities.addAll(
-            await _signetsApi.getScheduleActivities(
+            await _signetsApiClient.getScheduleActivities(
                 username: _userRepository.monETSUser.universalCode,
                 password: password,
                 session: session.shortName));
@@ -295,7 +291,7 @@ class CourseRepository {
       // getPassword will try to authenticate the user if not authenticated.
       final String password = await _userRepository.getPassword();
 
-      final List<Session> fetchedSession = await _signetsApi.getSessions(
+      final List<Session> fetchedSession = await _signetsApiClient.getSessions(
           username: _userRepository.monETSUser.universalCode,
           password: password);
       _logger
@@ -355,11 +351,12 @@ class CourseRepository {
     }
 
     final List<Course> fetchedCourses = [];
-    final Map<String, List<CourseEvaluation>> fetchedCoursesEvaluations = {};
+    final Map<String, List<CourseReview>> fetchedCourseReviews = {};
 
     try {
       final String password = await _userRepository.getPassword();
-      fetchedCourses.addAll(await _signetsApi.getCourses(
+
+      fetchedCourses.addAll(await _signetsApiClient.getCourses(
           username: _userRepository.monETSUser.universalCode,
           password: password));
       _logger.d("$tag - getCourses: fetched ${fetchedCourses.length} courses.");
@@ -371,7 +368,7 @@ class CourseRepository {
     }
 
     try {
-      fetchedCoursesEvaluations.addAll(await _getCoursesEvaluations());
+      fetchedCourseReviews.addAll(await _getCoursesReviews());
     } on Exception catch (e) {
       _logger.d("$tag - getCourses: $e during getCoursesEvaluations. Ignored");
     }
@@ -381,8 +378,7 @@ class CourseRepository {
     // If there isn't the grade yet, will fetch the summary.
     // We don't do this for every course to avoid losing time.
     for (final course in fetchedCourses) {
-      course.evaluation =
-          _getEvaluationForCourse(course, fetchedCoursesEvaluations);
+      course.review = _getReviewForCourse(course, fetchedCourseReviews);
       if (course.grade == null) {
         try {
           await getCourseSummary(course);
@@ -422,7 +418,8 @@ class CourseRepository {
 
     try {
       final String password = await _userRepository.getPassword();
-      summary = await _signetsApi.getCourseSummary(
+
+      summary = await _signetsApiClient.getCourseSummary(
           username: _userRepository.monETSUser.universalCode,
           password: password,
           course: course);
@@ -464,9 +461,9 @@ class CourseRepository {
   }
 
   /// Retrieve the evaluation filtered by sessions.
-  Future<Map<String, List<CourseEvaluation>>> _getCoursesEvaluations() async {
-    final Map<String, List<CourseEvaluation>> evaluations = {};
-    List<CourseEvaluation> sessionEvaluations = [];
+  Future<Map<String, List<CourseReview>>> _getCoursesReviews() async {
+    final Map<String, List<CourseReview>> reviews = {};
+    List<CourseReview> sessionReviews = [];
 
     try {
       final String password = await _userRepository.getPassword();
@@ -477,13 +474,13 @@ class CourseRepository {
       }
 
       for (final Session session in _sessions) {
-        sessionEvaluations = await _signetsApi.getCoursesEvaluation(
+        sessionReviews = await _signetsApiClient.getCourseReviews(
             username: _userRepository.monETSUser.universalCode,
             password: password,
             session: session);
-        evaluations.putIfAbsent(session.shortName, () => sessionEvaluations);
+        reviews.putIfAbsent(session.shortName, () => sessionReviews);
         _logger.d(
-            "$tag - getCoursesEvaluations: fetched ${evaluations[session.shortName].length} "
+            "$tag - getCoursesEvaluations: fetched ${reviews[session.shortName].length} "
             "evaluations for session ${session.shortName}.");
       }
     } on Exception catch (e, stacktrace) {
@@ -492,14 +489,14 @@ class CourseRepository {
       rethrow;
     }
 
-    return evaluations;
+    return reviews;
   }
 
   /// Get the evaluation for a course or null if not found.
-  CourseEvaluation _getEvaluationForCourse(
-      Course course, Map<String, List<CourseEvaluation>> evaluations) {
-    if (evaluations.containsKey(course.session)) {
-      return evaluations[course.session].firstWhere(
+  CourseReview _getReviewForCourse(
+      Course course, Map<String, List<CourseReview>> reviews) {
+    if (reviews.containsKey(course.session)) {
+      return reviews[course.session].firstWhere(
           (element) =>
               element.acronym == course.acronym &&
               element.group == course.group,

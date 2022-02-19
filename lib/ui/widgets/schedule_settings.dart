@@ -3,8 +3,8 @@ import 'package:stacked/stacked.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:table_calendar/table_calendar.dart';
 
-// CONSTANTS
-import 'package:notredame/core/constants/activity_code.dart';
+// MODELS
+import 'package:ets_api_clients/models.dart';
 
 // UTILS
 import 'package:notredame/core/utils/utils.dart';
