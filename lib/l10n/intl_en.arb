@@ -271,5 +271,6 @@
     "placeholders": {
       "remainingDays": {}
     }
-  }
+  },
+  "progress_bar_suffix": "days"
 }

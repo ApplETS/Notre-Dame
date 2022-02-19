@@ -8,7 +8,6 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:notredame/core/utils/app_widget_utils.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_config/flutter_config.dart';
 
@@ -18,6 +17,7 @@ import 'package:notredame/ui/router.dart';
 // SERVICES
 import 'package:notredame/core/services/navigation_service.dart';
 import 'package:notredame/core/services/analytics_service.dart';
+import 'core/services/app_widget_service.dart';
 
 // UTILS
 import 'package:notredame/locator.dart';
@@ -28,14 +28,10 @@ import 'package:notredame/core/managers/settings_manager.dart';
 
 // VIEW
 import 'package:notredame/ui/views/startup_view.dart';
-import 'package:workmanager/workmanager.dart';
 
 Future<void> main() async {
   setupLocator();
   WidgetsFlutterBinding.ensureInitialized();
-
-  // Initialize WorkManager to handle data sending to android or iOS
-  await AppWidgetUtils.initWorkManager();
 
   // Initialize firebase
   await Firebase.initializeApp();
@@ -43,6 +39,10 @@ Future<void> main() async {
   // Manage the settings
   final SettingsManager settingsManager = locator<SettingsManager>();
   await settingsManager.fetchLanguageAndThemeMode();
+
+  // init home widget
+  final AppWidgetService appWidgetService = locator<AppWidgetService>();
+  await appWidgetService.init();
 
   if (kDebugMode) {
     FlutterConfig.loadEnvVariables();

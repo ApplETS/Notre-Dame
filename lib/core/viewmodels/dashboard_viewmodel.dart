@@ -2,8 +2,6 @@
 import 'dart:collection';
 import 'package:feature_discovery/feature_discovery.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:notredame/core/services/analytics_service.dart';
-import 'package:notredame/core/utils/app_widget_utils.dart';
 import 'package:stacked/stacked.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -21,10 +19,13 @@ import 'package:notredame/core/managers/settings_manager.dart';
 import 'package:notredame/core/managers/course_repository.dart';
 import 'package:notredame/core/services/siren_flutter_service.dart';
 import 'package:notredame/core/services/preferences_service.dart';
+import 'package:notredame/core/services/analytics_service.dart';
+import 'package:notredame/core/services/app_widget_service.dart';
 
 // MODEL
 import 'package:notredame/core/models/session.dart';
 import 'package:notredame/core/models/course_activity.dart';
+import 'package:notredame/core/models/widget_models.dart';
 
 // CORE
 import 'package:notredame/core/models/course.dart';
@@ -39,6 +40,7 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
   final SettingsManager _settingsManager = locator<SettingsManager>();
   final CourseRepository _courseRepository = locator<CourseRepository>();
   final AnalyticsService _analyticsService = locator<AnalyticsService>();
+  final AppWidgetService _appWidgetService = locator<AppWidgetService>();
 
   /// All dashboard displayable cards
   Map<PreferencesFlag, int> _cards;
@@ -139,29 +141,37 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
 
     _cards = dashboard;
 
-    // load data for both grade cards & grades home screen widget
-    // (moved from getCardsToDisplay())
-    futureToRunGrades()
-        .then((_) => fetchInfoForGradesWidget());
-
     getCardsToDisplay();
 
-    fetchInfoForProgressWidget();   // FIXME: somehow never completing
+    // load data for both grade cards & grades home screen widget
+    // (moved from getCardsToDisplay())
+    Future.wait([
+      futureToRunGrades(),
+      futureToRunSessionProgressBar(),
+      futureToRunSchedule()
+    ]).then((_) {
+      updateGradesWidget();
+      updateProgressWidget();
+    });
+
 
     return dashboard;
   }
 
-  Future fetchInfoForProgressWidget() async {
+  Future updateProgressWidget() async {
     try {
-      await _courseRepository.getSessions();
-
-      final progress = getSessionProgress();
-      final sessionDays = getSessionDays();
+      final progress = _progress;
+      final sessionDays = _sessionDays;
       final elapsedDays = sessionDays[0];
       final totalDays = sessionDays[1];
 
-      await AppWidgetUtils.sendProgressData(progress, elapsedDays, totalDays);
-      await AppWidgetUtils.updateWidget(WidgetType.progress);
+      await _appWidgetService.sendProgressData(ProgressWidgetData(
+          title: _appIntl.progress_bar_title,
+          progress: progress,
+          elapsedDays: elapsedDays,
+          totalDays: totalDays,
+          suffix: _appIntl.progress_bar_suffix));
+      await _appWidgetService.updateWidget(WidgetType.progress);
     } on Exception catch (e) {
       _analyticsService.logError('DashboardViewModel', e.toString());
     }
@@ -169,7 +179,7 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
 
   /// Update grades widget with current courses data
   /// MUST be called after futureToRunGrades() completed (uses courses object)
-  Future fetchInfoForGradesWidget() async {
+  Future updateGradesWidget() async {
     try {
       List<String> acronyms = courses.map((course) => course.acronym).toList();
       List<String> grades = courses.map((course) {
@@ -190,8 +200,11 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
       // List<String> grades = <String>['A+', '81%', 'B-', 'A+', '81%', 'B-'];
 
       // might not work if no course in this session?
-      await AppWidgetUtils.sendGradesData(acronyms, grades, courses[0].session);
-      await AppWidgetUtils.updateWidget(WidgetType.grades);
+      await _appWidgetService.sendGradesData(GradesWidgetData(
+          title: "${_appIntl.grades_title} - ${courses[0].session}",
+          courseAcronyms: acronyms,
+          grades: grades));
+      await _appWidgetService.updateWidget(WidgetType.grades);
     } on Exception catch (e) {
       _analyticsService.logError('DashboardViewModel', e.toString());
     }
@@ -253,16 +266,6 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
       orderedCards.forEach((key, value) {
         if (value >= 0) {
           _cardsToDisplay.insert(value, key);
-          if (key == PreferencesFlag.scheduleCard) {
-            futureToRunSchedule();
-          }
-          if (key == PreferencesFlag.progressBarCard) {
-            futureToRunSessionProgressBar();
-          }
-          if (key == PreferencesFlag.gradesCard) {
-            // nothing, code moved in futureToRun (needs to be ran every time
-            // for the grades widget
-          }
         }
       });
     }

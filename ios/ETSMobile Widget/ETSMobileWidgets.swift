@@ -18,14 +18,3 @@ struct ETSMobileWidgets: WidgetBundle {
         GradesWidget()
     }
 }
-
-// Preview anything in Xcode (only used for development, not working for some reason)
-struct ETSMobile_Widget_Previews: PreviewProvider {
-    static var previews: some View {
-        VStack {
-            
-            ProgressWidgetEntryView(entry: ProgressEntry(date: Date(), progress: 0.5, elapsedDays: 10, totalDays: 20))
-                .previewContext(WidgetPreviewContext(family: .systemSmall))
-        }
-    }
-}

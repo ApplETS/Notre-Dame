@@ -12,20 +12,18 @@ struct GradesWidgetEntryView: View {
     
     var body: some View {
         VStack {
-            
-            Text("Notes - \(entry.session)")
+            Text(entry.title)
                 .font(.system(size: 20))
                 .frame(maxHeight: 20)
             
             Divider()
             
             HStack {
-                // TODO: don't take more than 5 entries? (to avoid overflow)
-                ForEach(Array(entry.courseAcronyms.enumerated()), id: \.element) { index, element in
-                    SingleGradeView(course: element, grade: entry.grades[index])
+                ForEach(0..<min(5, entry.courseAcronyms.count)) { index in
+                    SingleGradeView(course: entry.courseAcronyms[index], grade: entry.grades[index])
                 }
             }
-            .padding(EdgeInsets(top: 0, leading: 5, bottom: 0, trailing: 5))
+            .padding([.leading, .trailing], 5)
         }
     }
 }

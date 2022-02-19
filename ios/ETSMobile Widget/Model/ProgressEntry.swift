@@ -13,4 +13,6 @@ struct ProgressEntry: TimelineEntry {
     let progress: Double
     let elapsedDays: Int
     let totalDays: Int
+    let suffix: String
+    let title: String
 }
