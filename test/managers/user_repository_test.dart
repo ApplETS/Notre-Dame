@@ -147,7 +147,6 @@ void main() {
             userId: user.username, domain: anyNamed("domain")));
 
         expect(manager.monETSUser, user);
-
         // Verify the secureStorage is deleted
         verify(secureStorage.deleteAll());
       });
