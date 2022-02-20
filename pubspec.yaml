@@ -39,7 +39,14 @@ dependencies:
   feedback: ^1.2.1
   flutter_staggered_animations: ^1.0.0
   flutter_siren: ^1.2.0
-
+  
+  # Customs
+  ets_api_clients:
+    # path: ../ets_api_clients/
+    git:
+      url: https://github.com/ApplETS/ETS-API-Clients.git
+      ref: v0.4.2
+  
   # Other
   http: ^0.13.4
   flutter_cache_manager: ^3.0.1
