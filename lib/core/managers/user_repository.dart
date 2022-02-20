@@ -307,6 +307,7 @@ class UserRepository {
     return _info;
   }
 
+  /// Check whether the user was previously authenticated.
   Future<bool> wasPreviouslyLoggedIn() async {
     try {
       final String username = await _secureStorage.read(key: passwordSecureKey);
