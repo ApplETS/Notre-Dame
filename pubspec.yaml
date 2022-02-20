@@ -52,7 +52,7 @@ dependencies:
   flutter_cache_manager: ^3.0.1
   flutter_secure_storage: ^4.2.0
   shared_preferences: ^2.0.5
-  webview_flutter: ^2.1.1
+  webview_flutter: ^3.0.0
   flutter_custom_tabs: ^1.0.4
   google_maps_flutter: ^2.0.11
   github: ^8.2.0
