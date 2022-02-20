@@ -262,11 +262,11 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
   }
 
   Future<List<CourseActivity>> removeLaboratoryGroup(
-      List todayDateEvents) async {
+      List<CourseActivity> todayDateEvents) async {
     final List<CourseActivity> todayDateEventsCopy = List.from(todayDateEvents);
 
     for (final courseAcronym in todayDateEvents) {
-      final courseKey = courseAcronym.courseGroup.toString().split('-')[0];
+      final courseKey = courseAcronym.courseGroup.split('-')[0];
 
       final String activityCodeToUse = await _settingsManager.getDynamicString(
           PreferencesFlag.scheduleSettingsLaboratoryGroup, courseKey);

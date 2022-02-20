@@ -126,7 +126,8 @@ void main() {
         final MonETSUser user = MonETSUser(
             domain: "ENS", typeUsagerId: 1, username: "right credentials");
 
-        MonETSApiMock.stubAuthenticate(monETSApi as MonETSApiMock, user);
+        MonETSAPIClientMock.stubAuthenticate(
+            monETSApi as MonETSAPIClientMock, user);
         FlutterSecureStorageMock.stubWriteException(secureStorage,
             key: UserRepository.usernameSecureKey,
             exceptionToThrow: PlatformException(code: "bad key"));
@@ -306,7 +307,8 @@ void main() {
         final MonETSUser user = MonETSUser(
             domain: "ENS", typeUsagerId: 1, username: "right credentials");
 
-        MonETSApiMock.stubAuthenticate(monETSApi as MonETSApiMock, user);
+        MonETSAPIClientMock.stubAuthenticate(
+            monETSApi as MonETSAPIClientMock, user);
         FlutterSecureStorageMock.stubReadException(secureStorage,
             key: UserRepository.usernameSecureKey,
             exceptionToThrow: PlatformException(code: "bad key"));
@@ -451,7 +453,8 @@ void main() {
         final MonETSUser user =
             MonETSUser(domain: "ENS", typeUsagerId: 1, username: username);
 
-        MonETSApiMock.stubAuthenticate(monETSApi as MonETSApiMock, user);
+        MonETSAPIClientMock.stubAuthenticate(
+            monETSApi as MonETSAPIClientMock, user);
         FlutterSecureStorageMock.stubReadException(secureStorage,
             key: UserRepository.passwordSecureKey,
             exceptionToThrow: PlatformException(code: "bad key"));
