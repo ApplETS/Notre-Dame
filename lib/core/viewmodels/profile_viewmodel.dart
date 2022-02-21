@@ -11,7 +11,7 @@ import 'package:notredame/core/managers/user_repository.dart';
 import 'package:ets_api_clients/models.dart';
 
 // OTHERS
-import '../../locator.dart';
+import 'package:notredame/locator.dart';
 
 class ProfileViewModel extends FutureViewModel<List<Program>> {
   /// Load the user
