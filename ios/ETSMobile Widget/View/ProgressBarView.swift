@@ -8,34 +8,42 @@
 import SwiftUI
 
 struct ProgressBarView: View {
-    var progress: Double
+    var progress: Double        // [0..1]
+    var elapsedDays: Int
+    var totalDays: Int
+    
+    let lineWidth = 10.0
     
     var body: some View {
-        VStack {
-            GeometryReader { geometry in
-                let height = 10.0
-                let width = geometry.size.width
+        GeometryReader { metrics in
+            ZStack {
+                // background (full) circle
+                Circle()
+                    .stroke(lineWidth: lineWidth)
+                    .opacity(0.3)
+                    .foregroundColor(Color("ProgressBackground"))
                 
-                ZStack(alignment: .leading) {
-                    Rectangle()
-                        .foregroundColor(Color.gray)
-                        .frame(width: width,
-                               height: height)
-                        .cornerRadius(height / 2.0)
-                    
-                    Rectangle()
-                        .foregroundColor(Color.green)
-                        .frame(width: width * self.progress,
-                               height: height)
-                        .cornerRadius(height / 2.0)
+                // progress circle
+                Circle()
+                    .trim(from: 0.0, to: progress)
+                    .stroke(style: StrokeStyle(lineWidth: lineWidth, lineCap: .round, lineJoin: .round))
+                    .foregroundColor(Color("ProgressForeground"))
+                    .rotationEffect(Angle(degrees: 270.0))      // start at the top
+                
+                // inner circle
+                Circle()
+                    .fill(Color("ProgressBackground"))
+                    .opacity(0.5)
+                    .frame(width: metrics.size.height * 0.7,
+                           height: metrics.size.height * 0.7)
+                
+                // progress text
+                VStack {
+                    Text("\(Int(progress * 100)) %")
+                    Text("\(elapsedDays) / \(totalDays)")
+                        .font(.system(size: 10))
                 }
-                .position(x: geometry.frame(in: .local).midX, y: geometry.frame(in: .local).midY)
-                .frame(
-                    width: geometry.frame(in: .global).width,
-                    height: geometry.frame(in: .global).height
-                )
             }
-            .padding(EdgeInsets(top: 0, leading: 10, bottom: 0, trailing: 10))
         }
     }
 }

@@ -11,19 +11,23 @@ struct GradesWidgetEntryView: View {
     var entry: GradesProvider.Entry
     
     var body: some View {
-        VStack {
-            Text(entry.title)
-                .font(.system(size: 20))
-                .frame(maxHeight: 20)
+        ZStack {
+            Color("BackgroundColor")   // use app theme
             
-            Divider()
-            
-            HStack {
-                ForEach(0..<min(5, entry.courseAcronyms.count)) { index in
-                    SingleGradeView(course: entry.courseAcronyms[index], grade: entry.grades[index])
+            VStack {
+                Text(entry.title)
+                    .font(.system(size: 20))
+                    .frame(maxHeight: 20)
+                
+                Divider()
+                
+                HStack {
+                    ForEach(0..<min(5, entry.courseAcronyms.count)) { index in
+                        SingleGradeView(course: entry.courseAcronyms[index], grade: entry.grades[index])
+                    }
                 }
+                .padding([.leading, .trailing], 5)
             }
-            .padding([.leading, .trailing], 5)
         }
     }
 }

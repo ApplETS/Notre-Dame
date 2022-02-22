@@ -10,25 +10,34 @@ import SwiftUI
 struct ProgressWidgetEntryView : View {
     var entry: ProgressProvider.Entry
     
+    let spacing = 8.0
+    
     var body: some View {
-        VStack {
+        ZStack {        // wrapper to apply custom background color
+            Color("BackgroundColor")   // use app theme
             
-            Text(entry.title)
-                .multilineTextAlignment(.center)
-                .font(.system(size: 18))
-                .fixedSize(horizontal: false, vertical: true)
-            
-            ProgressBarView(progress: entry.progress)
-                .padding(EdgeInsets.init(top: -10, leading: 10, bottom: 0, trailing: 10))
-            
-            Text("\(entry.elapsedDays) / \(entry.totalDays) \(entry.suffix)")
-                .font(.system(size: 18))
-            // TODO: add intent config to choose between these displays
-            //            Text("\(Int(entry.progress * 100))%")
-            //                .font(.system(size: 22))
-                        
-            
+            VStack(spacing: spacing) {
+                
+                HStack {        // align text left
+                    Text(entry.title)
+                        .multilineTextAlignment(.leading)
+                        .font(.system(size: 14))
+                        .fixedSize(horizontal: false, vertical: true)
+                    Spacer()
+                }
+                .padding([.leading, .trailing], 16)
+                
+                
+                Divider()
+                    .padding([.leading, .trailing], 6.0)
+                
+                ProgressBarView(progress: entry.progress,
+                                elapsedDays: entry.elapsedDays,
+                                totalDays: entry.totalDays)
+                    .scaledToFit()
+                    .padding(spacing + 2.0)
+            }
+            .padding([.top, .bottom], spacing)
         }
-        .padding([.top, .bottom], 20)
     }
 }
