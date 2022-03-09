@@ -651,5 +651,13 @@ void main() {
         verifyNoMoreInteractions(settingsManager);
       });
     });
+
+    group("Update widgets - ", () {
+      test("progress widget is updated on dashboard load", () async {
+        // TODO
+      });
+
+      // TODO
+    });
   });
 }
