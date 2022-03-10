@@ -11,7 +11,6 @@ import 'package:notredame/core/constants/preferences_flags.dart';
 import 'package:notredame/core/constants/discovery_ids.dart';
 import 'package:notredame/core/constants/progress_bar_text_options.dart';
 import 'package:notredame/core/constants/update_code.dart';
-import 'package:notredame/core/constants/activity_code.dart';
 
 // MANAGER / SERVICE
 import 'package:notredame/core/managers/settings_manager.dart';
@@ -20,11 +19,7 @@ import 'package:notredame/core/services/siren_flutter_service.dart';
 import 'package:notredame/core/services/preferences_service.dart';
 
 // MODEL
-import 'package:notredame/core/models/session.dart';
-import 'package:notredame/core/models/course_activity.dart';
-
-// CORE
-import 'package:notredame/core/models/course.dart';
+import 'package:ets_api_clients/models.dart';
 
 // UTILS
 import 'package:notredame/ui/utils/discovery_components.dart';
@@ -267,11 +262,11 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
   }
 
   Future<List<CourseActivity>> removeLaboratoryGroup(
-      List todayDateEvents) async {
+      List<CourseActivity> todayDateEvents) async {
     final List<CourseActivity> todayDateEventsCopy = List.from(todayDateEvents);
 
     for (final courseAcronym in todayDateEvents) {
-      final courseKey = courseAcronym.courseGroup.toString().split('-')[0];
+      final courseKey = courseAcronym.courseGroup.split('-')[0];
 
       final String activityCodeToUse = await _settingsManager.getDynamicString(
           PreferencesFlag.scheduleSettingsLaboratoryGroup, courseKey);

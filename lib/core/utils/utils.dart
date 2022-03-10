@@ -1,6 +1,7 @@
 // FLUTTER / DART / THIRD-PARTIES
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:table_calendar/table_calendar.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -28,5 +29,31 @@ mixin Utils {
     return Theme.of(context).brightness == Brightness.light
         ? lightColor
         : darkColor;
+  }
+
+  /// Get first day of the week depending on startingDay which corresponds to weekday
+  static DateTime getFirstDayOfCurrentWeek(
+      DateTime currentDate, StartingDayOfWeek startingDay) {
+    var firstDayOfWeek = DateTime.now();
+    switch (startingDay) {
+      case StartingDayOfWeek.monday:
+        final tempDate =
+            currentDate.subtract(Duration(days: currentDate.weekday - 1));
+        firstDayOfWeek = DateTime(tempDate.year, tempDate.month, tempDate.day);
+        break;
+      case StartingDayOfWeek.saturday:
+        final tempDate = currentDate.subtract(Duration(
+            days: currentDate.weekday == 6 || currentDate.weekday == 7
+                ? currentDate.weekday - 6
+                : currentDate.weekday + 1));
+        firstDayOfWeek = DateTime(tempDate.year, tempDate.month, tempDate.day);
+        break;
+      // Sunday as default
+      default:
+        final tempDate =
+            currentDate.subtract(Duration(days: currentDate.weekday % 7));
+        firstDayOfWeek = DateTime(tempDate.year, tempDate.month, tempDate.day);
+    }
+    return firstDayOfWeek;
   }
 }

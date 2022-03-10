@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 // MODELS
-import 'package:notredame/core/models/course_activity.dart';
+import 'package:ets_api_clients/models.dart';
 
 class CourseActivityTile extends StatelessWidget {
   /// Course to display

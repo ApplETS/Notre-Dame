@@ -11,13 +11,14 @@ import 'package:notredame/core/constants/preferences_flags.dart';
 
 // UTILS
 import 'package:notredame/ui/utils/discovery_components.dart';
+import 'package:ets_api_clients/exceptions.dart';
 
 // MANAGERS / SERVICES
 import 'package:notredame/core/managers/course_repository.dart';
 import 'package:notredame/core/managers/settings_manager.dart';
 
 // MODELS
-import 'package:notredame/core/models/course.dart';
+import 'package:ets_api_clients/models.dart';
 
 // OTHER
 import 'package:notredame/locator.dart';
@@ -60,7 +61,9 @@ class GradesDetailsViewModel extends FutureViewModel<Course> {
   @override
   // ignore: type_annotate_public_apis
   void onError(error) {
-    Fluttertoast.showToast(msg: _appIntl.error);
+    if (error is ApiException && error.errorCode != SignetsError.gradesEmpty) {
+      Fluttertoast.showToast(msg: _appIntl.error);
+    }
   }
 
   Future<bool> refresh() async {

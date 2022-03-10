@@ -35,7 +35,7 @@ apply plugin: 'com.google.gms.google-services'
 apply plugin: 'com.google.firebase.crashlytics'
 
 android {
-    compileSdkVersion 30
+    compileSdkVersion 31
 
     sourceSets {
         main.java.srcDirs += 'src/main/kotlin'
@@ -49,11 +49,11 @@ android {
     defaultConfig {
         applicationId "ca.etsmtl.applets.etsmobile"
         minSdkVersion 20
-        targetSdkVersion 30
+        targetSdkVersion 31
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
         multiDexEnabled true
-        manifestPlaceholders = [mapsApiKey: project.env.get("MAPS_API_KEY") ?:"$System.env.MAPS_API_KEY"]
+        manifestPlaceholders += [mapsApiKey: project.env.get("MAPS_API_KEY") ?:"$System.env.MAPS_API_KEY"]
     }
 
     signingConfigs {
@@ -70,7 +70,7 @@ android {
             signingConfig signingConfigs.release
             minifyEnabled true
             shrinkResources true
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             firebaseCrashlytics {
                 mappingFileUploadEnabled false
             }
@@ -79,7 +79,7 @@ android {
             signingConfig signingConfigs.debug
             minifyEnabled true
             shrinkResources true
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             ext.enableCrashlytics = false
             ext.alwaysUpdateBuildId = false
         }

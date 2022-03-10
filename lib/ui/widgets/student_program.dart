@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 // MODEL
-import 'package:notredame/core/models/program.dart';
+import 'package:ets_api_clients/models.dart';
 
 // OTHER
 import 'package:notredame/ui/utils/app_theme.dart';

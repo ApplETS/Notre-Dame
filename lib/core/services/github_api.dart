@@ -1,7 +1,6 @@
 // FLUTTER / DART / THIRD-PARTIES
 import 'dart:convert';
 import 'dart:io';
-import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 import 'package:github/github.dart';
 import 'package:logger/logger.dart';
@@ -57,9 +56,13 @@ class GithubApi {
                     CommitUser('clubapplets-server', 'clubapplets@gmail.com'),
                 branch: 'main'))
         .catchError((error) {
+      // ignore: avoid_dynamic_calls
       _logger.e("uploadFileToGithub error: ${error.message}");
       _analyticsService.logError(
-          tag, "uploadFileToGithub: ${error.message}", error as GitHubError);
+          tag,
+          // ignore: avoid_dynamic_calls
+          "uploadFileToGithub: ${error.message}",
+          error as GitHubError);
     });
   }
 
@@ -81,9 +84,13 @@ class GithubApi {
                     "${await _internalInfoService.getDeviceInfoForErrorReporting()}",
                 labels: ['bug', 'platform: ${Platform.operatingSystem}']))
         .catchError((error) {
+      // ignore: avoid_dynamic_calls
       _logger.e("createGithubIssue error: ${error.message}");
       _analyticsService.logError(
-          tag, "createGithubIssue: ${error.message}", error as GitHubError);
+          tag,
+          // ignore: avoid_dynamic_calls
+          "createGithubIssue: ${error.message}",
+          error as GitHubError);
     });
   }
 
