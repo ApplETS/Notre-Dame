@@ -193,7 +193,7 @@ void main() {
         await file.writeAsBytes(image.encodePng(
             image.copyResize(image.decodeImage(screenshotData), width: 307)));
 
-        await viewModel.sendFeedback('Notre-Dame bug report', screenshotData);
+        await viewModel.sendFeedback('Notre-Dame bug report', screenshotData, 'bugReport');
 
         verify(githubApiMock.uploadFileToGithub(
           filePath: file.path.split('/').last,
@@ -205,11 +205,11 @@ void main() {
         final File file = File('bugReportTest.png');
         GithubApiMock.stubLocalFile(githubApiMock, file);
 
-        await viewModel.sendFeedback('Notre-Dame bug report', screenshotData);
+        await viewModel.sendFeedback('Notre-Dame bug report', screenshotData, 'bugReport');
 
         verify(githubApiMock.createGithubIssue(
             feedbackText: 'Notre-Dame bug report',
-            fileName: file.path.split('/').last));
+            fileName: file.path.split('/').last, feedbackType: 'bugReport'));
       });
     });
   });
