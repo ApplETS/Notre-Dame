@@ -107,8 +107,8 @@ class MoreViewModel extends FutureViewModel {
   }
 
   /// Create a Github issue with [feedbackText] and the screenshot associated.
-  Future<void> sendFeedback(
-      String feedbackText, Uint8List feedbackScreenshot, String feedbackType) async {
+  Future<void> sendFeedback(String feedbackText, Uint8List feedbackScreenshot,
+      String feedbackType) async {
     //Generate info to pass to github
     final File file = await _githubApi.localFile;
     await file.writeAsBytes(image.encodePng(
@@ -120,7 +120,9 @@ class MoreViewModel extends FutureViewModel {
     _githubApi.uploadFileToGithub(filePath: fileName, file: file);
 
     _githubApi.createGithubIssue(
-        feedbackText: feedbackText, fileName: fileName, feedbackType: feedbackType);
+        feedbackText: feedbackText,
+        fileName: fileName,
+        feedbackType: feedbackType);
 
     file.deleteSync();
     Fluttertoast.showToast(
