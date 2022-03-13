@@ -108,7 +108,13 @@ class _MoreViewState extends State<MoreView> {
                       model),
                   onTap: () => BetterFeedback.of(context).show((feedback) {
                     model
-                        .sendFeedback(feedback.text, feedback.screenshot, feedback.extra.entries.first.value.toString().split('.').last)
+                        .sendFeedback(
+                            feedback.text,
+                            feedback.screenshot,
+                            feedback.extra.entries.first.value
+                                .toString()
+                                .split('.')
+                                .last)
                         .then((value) => BetterFeedback.of(context).hide());
                   }),
                 ),

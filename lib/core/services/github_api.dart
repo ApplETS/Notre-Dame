@@ -70,7 +70,9 @@ class GithubApi {
   /// The bug report will contain a file, a description [feedbackText] and also some information about the
   /// application/device.
   Future<void> createGithubIssue(
-      {@required String feedbackText, @required String fileName, @required String feedbackType}) async {
+      {@required String feedbackText,
+      @required String fileName,
+      @required String feedbackType}) async {
     final PackageInfo packageInfo = await PackageInfo.fromPlatform();
     _github.issues
         .create(
@@ -82,7 +84,10 @@ class GithubApi {
                     "**Screenshot** \n"
                     "![screenshot](https://github.com/$_repositoryReportSlug/blob/main/$fileName?raw=true)\n\n"
                     "${await _internalInfoService.getDeviceInfoForErrorReporting()}",
-                labels: [feedbackType, 'platform: ${Platform.operatingSystem}']))
+                labels: [
+                  feedbackType,
+                  'platform: ${Platform.operatingSystem}'
+                ]))
         .catchError((error) {
       // ignore: avoid_dynamic_calls
       _logger.e("createGithubIssue error: ${error.message}");
