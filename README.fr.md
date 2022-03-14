@@ -52,8 +52,39 @@ flutter pub get
 
 - Une fois les dépendances correctement importées, il est possible de lancer l'application en mode dev en exécutant la commande suivante:
 ```sh
-$ flutter run --debug -t lib/main_dev.dart --flavor=dev
+$ flutter run --flavor=dev
 ```
+
+#### Android Studio / Intelli IDEA
+
+Pour configurer la commande dans Android Studio IDE, il est uniquement nécessaire de raouter le paramètre `dev` au champ builfd flavor de la configuration.
+
+Premièrement, sélectionner la configuration main.dart dans la boîte de  dialogue "Edit Configurations".
+
+Ensuite, cliquer sur le champs text Build Flavor et écrire `dev`.
+<img src="docs/images/intelli_config_2.png" alt="IntelliJ IDEA config"/>
+
+#### VSCode
+
+To setup this command line in VS Code, you have to create a json configuration file.
+
+First click on Run -> Add Configuration ...
+It will create a new configuration file in .vscode/launch.json
+Add the following object in the array of `configurations`:
+```json
+{
+  "name": "Notre-Dame",
+  "request": "launch",
+  "type": "dart",
+  "flutterMode": "debug",
+  "program": "lib/main.dart",
+  "args": [
+    "--flavor",
+    "dev"
+  ]
+}
+```
+
 
 ## Ajouter une variable d'environnement pour une API_KEY
 - Pour ajouter le Google Maps API TOKEN et le GitHub API TOKEN, vous devez renommer le fichier `.env.template` en `.env`.

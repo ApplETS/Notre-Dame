@@ -62,7 +62,37 @@ flutter pub get
 
 - Once the packages have successfully been imported, you can simply launch the app in dev mode by calling this command:
 ```sh
-$ flutter run --debug -t lib/main_dev.dart --flavor=dev
+$ flutter run --flavor=dev
+```
+
+#### Android Studio / Intelli IDEA
+
+To setup this command line in Android Studio IDE, you simply need to add dev to the build flavor field of the configuration.
+
+First select your main.dart configuration in the Edit Configurations dialog.
+
+Then, in the Android tab, click on the Build Flavor textfield and write `dev`.
+<img src="docs/images/intelli_config_2.png" alt="IntelliJ IDEA config"/>
+
+#### VSCode
+
+To setup this command line in VS Code, you have to create a json configuration file.
+
+First click on Run -> Add Configuration ...
+It will create a new configuration file in .vscode/launch.json
+Add the following object in the array of configurations:
+```json
+{
+  "name": "Notre-Dame",
+  "request": "launch",
+  "type": "dart",
+  "flutterMode": "debug",
+  "program": "lib/main.dart",
+  "args": [
+    "--flavor",
+    "dev"
+  ]
+}
 ```
 
 ## Add environment variable for API_KEY
