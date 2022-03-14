@@ -20,7 +20,7 @@ jobs:
           - os: ubuntu-latest
             target: Android
             build_target: appbundle
-            build_args: ''
+            build_args: '-scheme release-prod'
             working_directory: android
             metadata_path: 'fastlane/metadata/android'
             changelog_path: 'changelogs/default.txt'
