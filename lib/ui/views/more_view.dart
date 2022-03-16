@@ -106,17 +106,8 @@ class _MoreViewState extends State<MoreView> {
                       getProperIconAccordingToTheme(Icons.bug_report),
                       DiscoveryIds.detailsMoreBugReport,
                       model),
-                  onTap: () => BetterFeedback.of(context).show((feedback) {
-                    model
-                        .sendFeedback(
-                            feedback.text,
-                            feedback.screenshot,
-                            feedback.extra.entries.first.value
-                                .toString()
-                                .split('.')
-                                .last)
-                        .then((value) => BetterFeedback.of(context).hide());
-                  }),
+                  onTap: () => model.navigationService
+                      .pushNamed(RouterPaths.feedback),
                 ),
                 ListTile(
                   title: Text(AppIntl.of(context).more_contributors),

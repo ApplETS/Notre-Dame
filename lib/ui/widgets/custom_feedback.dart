@@ -1,43 +1,11 @@
 import 'package:feedback/feedback.dart';
 import 'package:flutter/material.dart';
+import 'package:notredame/core/constants/feedback_types.dart';
+import 'package:notredame/core/models/feedback.dart';
 
-/// A data type holding user feedback consisting of a feedback type, free from
-/// feedback text, and a sentiment rating.
-class CustomFeedback {
-  CustomFeedback({
-    this.feedbackType,
-    this.feedbackText,
-  });
-
-  FeedbackType feedbackType;
-  String feedbackText;
-
-  @override
-  String toString() {
-    return {
-      'feedback_type': feedbackType.toString(),
-      'feedback_text': feedbackText,
-    }.toString();
-  }
-
-  Map<String, dynamic> toMap() {
-    return <String, dynamic>{
-      'feedback_type': feedbackType.toString(),
-      'feedback_text': feedbackText,
-    };
-  }
-}
-
-/// What type of feedback the user wants to provide.
-enum FeedbackType {
-  bugReport,
-  featureRequest,
-}
-
-/// A form that prompts the user for the type of feedback they want to give,
-/// free form text feedback, and a sentiment rating.
-/// The submit button is disabled until the user provides the feedback type. All
-/// other fields are optional.
+/// A form that prompts the user for the type of feedback they want to give and a
+/// free form text feedback.
+/// The submit button is disabled until the user provides the feedback type and a feedback text.
 class CustomFeedbackForm extends StatefulWidget {
   const CustomFeedbackForm({
     Key key,
@@ -83,11 +51,7 @@ class _CustomFeedbackFormState extends State<CustomFeedbackForm> {
                               .map(
                                 (type) => DropdownMenuItem<FeedbackType>(
                                   value: type,
-                                  child: Text(type
-                                      .toString()
-                                      .split('.')
-                                      .last
-                                      .replaceAll('_', ' ')),
+                                  child: Text(type.toString().split('.').last),
                                 ),
                               )
                               .toList(),
