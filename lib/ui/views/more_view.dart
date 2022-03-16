@@ -106,8 +106,8 @@ class _MoreViewState extends State<MoreView> {
                       getProperIconAccordingToTheme(Icons.bug_report),
                       DiscoveryIds.detailsMoreBugReport,
                       model),
-                  onTap: () => model.navigationService
-                      .pushNamed(RouterPaths.feedback),
+                  onTap: () =>
+                      model.navigationService.pushNamed(RouterPaths.feedback),
                 ),
                 ListTile(
                   title: Text(AppIntl.of(context).more_contributors),
