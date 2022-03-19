@@ -1,6 +1,5 @@
 // FLUTTER / DART / THIRD-PARTIES
 import 'package:feature_discovery/feature_discovery.dart';
-import 'package:feedback/feedback.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:stacked/stacked.dart';
