@@ -16,7 +16,6 @@ import 'package:notredame/core/services/github_api.dart';
 import 'package:notredame/locator.dart';
 
 class FeedbackViewModel extends FutureViewModel {
-
   /// Used to redirect on the dashboard.
   final NavigationService navigationService = locator<NavigationService>();
 
