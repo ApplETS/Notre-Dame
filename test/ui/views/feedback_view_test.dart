@@ -15,13 +15,13 @@ void main() {
     tearDown(() {});
 
     group('UI - ', () {
-      testWidgets('has 7 textspan and a elevated button',
+      testWidgets('has a richText and an elevated button',
           (WidgetTester tester) async {
         await tester.pumpWidget(localizedWidget(child: FeedbackView()));
         await tester.pumpAndSettle();
 
-        final textSpan = find.byType(TextSpan);
-        expect(textSpan, findsNWidgets(3));
+        final richText = find.byType(RichText);
+        expect(richText, findsOneWidget);
 
         final elevatedButton = find.byType(ElevatedButton);
         expect(elevatedButton, findsOneWidget);
