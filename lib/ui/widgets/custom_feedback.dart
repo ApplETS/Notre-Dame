@@ -1,6 +1,6 @@
+// FLUTTER / DART / THIRD-PARTIES
 import 'package:feedback/feedback.dart';
 import 'package:flutter/material.dart';
-import 'package:notredame/core/constants/feedback_types.dart';
 import 'package:notredame/core/models/feedback.dart';
 
 /// A form that prompts the user for the type of feedback they want to give and a
@@ -45,13 +45,16 @@ class _CustomFeedbackFormState extends State<CustomFeedbackForm> {
                   Row(
                     children: [
                       Flexible(
-                        child: DropdownButton<FeedbackType>(
+                        child: DropdownButton<String>(
                           value: _customFeedback.feedbackType,
-                          items: FeedbackType.values
+                          items: (Localizations.localeOf(context).toString() ==
+                                      'fr'
+                                  ? ['Bogue', 'Amélioration']
+                                  : ['Bug report', 'Feature request'])
                               .map(
-                                (type) => DropdownMenuItem<FeedbackType>(
+                                (type) => DropdownMenuItem<String>(
                                   value: type,
-                                  child: Text(type.toString().split('.').last),
+                                  child: Text(type),
                                 ),
                               )
                               .toList(),
