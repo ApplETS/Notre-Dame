@@ -8,7 +8,7 @@
   "session_fall": "Fall",
   "session_winter": "Winter",
   "session_summer": "Summer",
-  "session_without": "No active session",
+  "session_without": "No active semester",
   "oss_license_title": "Open source licenses",
   "facebook": "Facebook",
   "github": "GitHub",
@@ -223,7 +223,7 @@
   "discovery_navbar_student_title": "Student",
   "discovery_navbar_student_details": "The Student page displays your grades and profile information.",
   
-  "discovery_page_student_grades_session": "Your courses are divided by session, with the most recent at the top. At any moment, you can drag the list to refresh it.",
+  "discovery_page_student_grades_session": "Your courses are divided by semester, with the most recent at the top. At any moment, you can drag the list to refresh it.",
   "discovery_page_student_grades_grade_button": "Here you see your current grades. By tapping on it, you will be able to see the details of all the evaluations obtained in the course.",
   "discovery_page_grade_details": "Here you will find the list of the evaluations and the results obtained. The circle on the inside, in red, displays the average and the cercle outside, displays your grade.",  
   "discovery_page_student_profile": "Here you will find all the information related to your student account, from the balance to your active programs through your permanent code.",
@@ -253,7 +253,7 @@
 
   "no_connectivity": "No internet connection",
 
-  "progress_bar_title": "Session progress",
+  "progress_bar_title": "Semester progress",
   "progress_bar_message": "{elapsedDays} days elapsed / {totalDays} days",
   "@progress_bar_message": {
     "placeholders": {
