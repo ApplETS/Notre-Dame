@@ -3,7 +3,6 @@ import 'dart:io';
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:package_info_plus/package_info_plus.dart';
 import 'package:stacked/stacked.dart';
 import 'package:image/image.dart' as image;
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -14,37 +13,14 @@ import 'package:notredame/core/services/github_api.dart';
 // OTHERS
 import 'package:notredame/locator.dart';
 
-class FeedbackViewModel extends FutureViewModel {
+class FeedbackViewModel extends BaseViewModel {
 
   /// Used to access Github functionalities
   final GithubApi _githubApi = locator<GithubApi>();
 
-  String _appVersion;
-
   final AppIntl _appIntl;
 
-  /// Get the application version
-  String get appVersion => _appVersion;
-
   FeedbackViewModel({@required AppIntl intl}) : _appIntl = intl;
-
-  @override
-  Future futureToRun() async {
-    setBusy(true);
-
-    await PackageInfo.fromPlatform()
-        .then((value) => _appVersion = value.version)
-        .onError((error, stackTrace) => null);
-
-    setBusy(false);
-    return true;
-  }
-
-  @override
-  // ignore: type_annotate_public_apis
-  void onError(error) {
-    Fluttertoast.showToast(msg: _appIntl.error);
-  }
 
   /// Create a Github issue with [feedbackText] and the screenshot associated.
   Future<void> sendFeedback(String feedbackText, Uint8List feedbackScreenshot,
