@@ -15,7 +15,6 @@ import 'package:notredame/core/services/github_api.dart';
 import 'package:notredame/locator.dart';
 
 class FeedbackViewModel extends FutureViewModel {
-
   /// Used to access Github functionalities
   final GithubApi _githubApi = locator<GithubApi>();
 
