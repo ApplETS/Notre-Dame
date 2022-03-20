@@ -9,15 +9,12 @@ import 'package:image/image.dart' as image;
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 //SERVICE
-import 'package:notredame/core/services/navigation_service.dart';
 import 'package:notredame/core/services/github_api.dart';
 
 // OTHERS
 import 'package:notredame/locator.dart';
 
 class FeedbackViewModel extends FutureViewModel {
-  /// Used to redirect on the dashboard.
-  final NavigationService navigationService = locator<NavigationService>();
 
   /// Used to access Github functionalities
   final GithubApi _githubApi = locator<GithubApi>();
