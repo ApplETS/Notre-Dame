@@ -1,15 +1,10 @@
 // FLUTTER / DART / THIRD-PARTIES
-import 'dart:io';
-import 'dart:typed_data';
-import 'package:flutter/services.dart';
-import 'package:image/image.dart' as image;
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 // SERVICES / MANAGERS
 import 'package:notredame/core/managers/user_repository.dart';
-import 'package:notredame/core/services/github_api.dart';
 import 'package:notredame/core/services/navigation_service.dart';
 import 'package:notredame/core/managers/cache_manager.dart';
 import 'package:notredame/core/managers/settings_manager.dart';
@@ -31,7 +26,6 @@ import '../mock/managers/cache_manager_mock.dart';
 import '../mock/managers/course_repository_mock.dart';
 import '../mock/managers/settings_manager_mock.dart';
 import '../mock/managers/user_repository_mock.dart';
-import '../mock/services/github_api_mock.dart';
 
 void main() {
   // Needed to support FlutterToast.
@@ -43,7 +37,6 @@ void main() {
   PreferencesService preferenceService;
   UserRepositoryMock userRepositoryMock;
   NavigationService navigationService;
-  GithubApiMock githubApiMock;
 
   AppIntl appIntl;
   MoreViewModel viewModel;
@@ -129,7 +122,6 @@ void main() {
       preferenceService = setupPreferencesServiceMock();
       userRepositoryMock = setupUserRepositoryMock() as UserRepositoryMock;
       navigationService = setupNavigationServiceMock();
-      githubApiMock = setupGithubApiMock() as GithubApiMock;
       appIntl = await setupAppIntl();
       setupLogger();
 
@@ -149,7 +141,6 @@ void main() {
       unregister<PreferencesService>();
       unregister<UserRepository>();
       unregister<NavigationService>();
-      unregister<GithubApi>();
     });
 
     group('logout - ', () {
@@ -173,46 +164,6 @@ void main() {
         await viewModel.logout();
 
         verifyEveryFunctionsInLogout();
-      });
-    });
-
-    group('sendFeedback - ', () {
-      Uint8List screenshotData;
-
-      setUp(() async {
-        final ByteData bytes = await rootBundle
-            .load('packages/notredame/assets/images/ets_red_logo.png');
-        screenshotData = bytes.buffer.asUint8List();
-      });
-
-      test('If the file uploaded matches', () async {
-        final File file = File('bugReportTest.png');
-        GithubApiMock.stubLocalFile(githubApiMock, file);
-        setupFlutterToastMock();
-
-        await file.writeAsBytes(image.encodePng(
-            image.copyResize(image.decodeImage(screenshotData), width: 307)));
-
-        await viewModel.sendFeedback(
-            'Notre-Dame bug report', screenshotData, 'bugReport');
-
-        verify(githubApiMock.uploadFileToGithub(
-          filePath: file.path.split('/').last,
-          file: file,
-        ));
-      });
-
-      test('If the github issue has been created', () async {
-        final File file = File('bugReportTest.png');
-        GithubApiMock.stubLocalFile(githubApiMock, file);
-
-        await viewModel.sendFeedback(
-            'Notre-Dame bug report', screenshotData, 'bugReport');
-
-        verify(githubApiMock.createGithubIssue(
-            feedbackText: 'Notre-Dame bug report',
-            fileName: file.path.split('/').last,
-            feedbackType: 'bugReport'));
       });
     });
   });
