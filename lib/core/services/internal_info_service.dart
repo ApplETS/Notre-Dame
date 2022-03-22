@@ -34,6 +34,7 @@ class InternalInfoService {
         "- **Platform operating system version:** ${Platform.operatingSystemVersion} \n";
   }
 
+  /// Get the current device informations to show for error reporting
   Future<PackageInfo> getPackageInfo() async {
     return PackageInfo.fromPlatform();
   }
