@@ -9,6 +9,7 @@ import 'package:notredame/core/constants/router_paths.dart';
 
 // MODELS
 import 'package:ets_api_clients/models.dart';
+import 'package:notredame/ui/views/feedback_view.dart';
 
 // VIEWS
 import 'package:notredame/ui/views/login_view.dart';
@@ -81,6 +82,10 @@ Route<dynamic> generateRoute(RouteSettings routeSettings) {
       return PageRouteBuilder(
           settings: RouteSettings(name: routeSettings.name),
           pageBuilder: (_, __, ___) => ContributorsView());
+    case RouterPaths.feedback:
+      return PageRouteBuilder(
+          settings: RouteSettings(name: routeSettings.name),
+          pageBuilder: (_, __, ___) => FeedbackView());
     case RouterPaths.about:
       return PageRouteBuilder(
           transitionDuration: const Duration(seconds: 1),
