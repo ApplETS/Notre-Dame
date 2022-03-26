@@ -18,12 +18,12 @@ import 'package:notredame/locator.dart';
 class AppWidgetService {
   static const String TAG = "AppWidgetService";
 
-  Future init() async {
-    await HomeWidget.setAppGroupId('group.ca.etsmtl.applets.ETSMobile');
+  Future<bool> init() async {
+    return HomeWidget.setAppGroupId('group.ca.etsmtl.applets.ETSMobile');
   }
 
   /// Update session progress widget with provided data
-  Future<void> sendProgressData(ProgressWidgetData progressWidgetData) async {
+  Future<bool> sendProgressData(ProgressWidgetData progressWidgetData) async {
     try {
       await HomeWidget.saveWidgetData<double>('${ProgressWidgetData.KEY_PREFIX}progress', progressWidgetData.progress);
       await HomeWidget.saveWidgetData<int>('${ProgressWidgetData.KEY_PREFIX}elapsedDays', progressWidgetData.elapsedDays);
@@ -32,18 +32,16 @@ class AppWidgetService {
       return await HomeWidget.saveWidgetData<String>('${ProgressWidgetData.KEY_PREFIX}title', progressWidgetData.title);
     } on PlatformException catch (exception) {
       locator<AnalyticsService>().logError(TAG, 'Error sending data to session progress widget.');
+      rethrow;
     }
   }
 
   /// Update grades widget with provided data
   Future<void> sendGradesData(GradesWidgetData gradeWidgetData) async {
     try {
-      var res = await HomeWidget.saveWidgetData<List<String>>('${GradesWidgetData.KEY_PREFIX}courseAcronyms', gradeWidgetData.courseAcronyms);
-      res = res && await HomeWidget.saveWidgetData<List<String>>('${GradesWidgetData.KEY_PREFIX}grades', gradeWidgetData.grades);
-      res = res && await HomeWidget.saveWidgetData<String>('${GradesWidgetData.KEY_PREFIX}title', gradeWidgetData.title);
-      if (!res) {
-        locator<AnalyticsService>().logError(TAG, 'Error saving grades widget data.');
-      }
+      await HomeWidget.saveWidgetData<List<String>>('${GradesWidgetData.KEY_PREFIX}courseAcronyms', gradeWidgetData.courseAcronyms);
+      await HomeWidget.saveWidgetData<List<String>>('${GradesWidgetData.KEY_PREFIX}grades', gradeWidgetData.grades);
+      return await HomeWidget.saveWidgetData<String>('${GradesWidgetData.KEY_PREFIX}title', gradeWidgetData.title);
     } on PlatformException catch (exception) {
       locator<AnalyticsService>().logError(TAG, 'Error sending data to grades widget.');
     }
