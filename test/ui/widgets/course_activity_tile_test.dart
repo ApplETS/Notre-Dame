@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 // MODEL
-import 'package:notredame/core/models/course_activity.dart';
+import 'package:ets_api_clients/models.dart';
 
 // WIDGET
 import 'package:notredame/ui/widgets/course_activity_tile.dart';

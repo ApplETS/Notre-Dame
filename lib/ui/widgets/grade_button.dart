@@ -12,7 +12,7 @@ import 'package:notredame/core/constants/discovery_ids.dart';
 import 'package:notredame/core/constants/preferences_flags.dart';
 
 // MODEL
-import 'package:notredame/core/models/course.dart';
+import 'package:ets_api_clients/models.dart';
 
 //OTHER
 import 'package:notredame/core/services/navigation_service.dart';
@@ -60,7 +60,7 @@ class GradeButton extends StatelessWidget {
       return course.grade;
     } else if (course.summary != null &&
         course.summary.markOutOf > 0 &&
-        !(course.inEvaluationPeriod && !course.evaluationCompleted)) {
+        !(course.inReviewPeriod && !course.reviewCompleted)) {
       return intl.grades_grade_in_percentage(
           course.summary.currentMarkInPercent.round());
     }

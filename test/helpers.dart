@@ -9,13 +9,12 @@ import 'package:logger/logger.dart';
 
 // OTHER
 import 'package:notredame/locator.dart';
+import 'package:ets_api_clients/clients.dart';
 
 // SERVICES / MANAGERS
 import 'package:notredame/core/services/navigation_service.dart';
 import 'package:notredame/core/services/analytics_service.dart';
 import 'package:notredame/core/services/rive_animation_service.dart';
-import 'package:notredame/core/services/mon_ets_api.dart';
-import 'package:notredame/core/services/signets_api.dart';
 import 'package:notredame/core/managers/user_repository.dart';
 import 'package:notredame/core/managers/cache_manager.dart';
 import 'package:notredame/core/services/preferences_service.dart';
@@ -27,6 +26,7 @@ import 'package:notredame/core/services/internal_info_service.dart';
 import 'package:notredame/core/services/siren_flutter_service.dart';
 
 // MOCKS
+import 'package:ets_api_clients/testing.dart';
 import 'mock/managers/cache_manager_mock.dart';
 import 'mock/managers/course_repository_mock.dart';
 import 'mock/managers/settings_manager_mock.dart';
@@ -35,12 +35,10 @@ import 'mock/services/analytics_service_mock.dart';
 import 'mock/services/flutter_secure_storage_mock.dart';
 import 'mock/services/github_api_mock.dart';
 import 'mock/services/internal_info_service_mock.dart';
-import 'mock/services/mon_ets_api_mock.dart';
 import 'mock/services/navigation_service_mock.dart';
 import 'mock/services/networking_service_mock.dart';
 import 'mock/services/preferences_service_mock.dart';
 import 'mock/services/rive_animation_service_mock.dart';
-import 'mock/services/signets_api_mock.dart';
 import 'mock/services/siren_flutter_service_mock.dart';
 
 /// Return the path of the [goldenName] file.
@@ -71,6 +69,26 @@ Widget localizedWidget(
         home: useScaffold ? Scaffold(body: child) : child,
       ),
     );
+
+/// Load a mock of the [SignetsAPIClient]
+SignetsAPIClient setupSignetsApiMock() {
+  unregister<SignetsAPIClient>();
+  final service = SignetsAPIClientMock();
+
+  locator.registerSingleton<SignetsAPIClient>(service);
+
+  return service;
+}
+
+/// Load a mock of the [MonETSAPIClient]
+MonETSAPIClient setupMonETSApiMock() {
+  unregister<MonETSAPIClient>();
+  final service = MonETSAPIClientMock();
+
+  locator.registerSingleton<MonETSAPIClient>(service);
+
+  return service;
+}
 
 /// Load a mock of the [AnalyticsService]
 AnalyticsService setupAnalyticsServiceMock() {
@@ -142,16 +160,6 @@ NavigationService setupNavigationServiceMock() {
   return service;
 }
 
-/// Load a mock of the [MonETSApi]
-MonETSApi setupMonETSApiMock() {
-  unregister<MonETSApi>();
-  final service = MonETSApiMock();
-
-  locator.registerSingleton<MonETSApi>(service);
-
-  return service;
-}
-
 /// Load a mock of the [GithubApi]
 GithubApi setupGithubApiMock() {
   unregister<GithubApi>();
@@ -185,16 +193,6 @@ UserRepository setupUserRepositoryMock() {
 /// Load the Internationalization class
 Future<AppIntl> setupAppIntl() async {
   return AppIntl.delegate.load(const Locale('en'));
-}
-
-/// Load a mock of the [SignetsApi]
-SignetsApi setupSignetsApiMock() {
-  unregister<SignetsApi>();
-  final service = SignetsApiMock();
-
-  locator.registerSingleton<SignetsApi>(service);
-
-  return service;
 }
 
 /// Load a mock of the [CacheManager]

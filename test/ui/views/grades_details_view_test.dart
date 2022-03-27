@@ -8,10 +8,7 @@ import 'package:notredame/core/managers/course_repository.dart';
 import 'package:notredame/core/managers/settings_manager.dart';
 
 // MODELS
-import 'package:notredame/core/models/course.dart';
-import 'package:notredame/core/models/course_evaluation.dart';
-import 'package:notredame/core/models/course_summary.dart';
-import 'package:notredame/core/models/evaluation.dart' as model;
+import 'package:ets_api_clients/models.dart';
 
 // SERVICES
 import 'package:notredame/core/services/networking_service.dart';
@@ -36,7 +33,7 @@ void main() {
     median: 4.5,
     percentileRank: 99,
     evaluations: [
-      model.Evaluation(
+      CourseEvaluation(
         courseGroup: "02",
         title: "Laboratoire 1",
         weight: 10,
@@ -54,7 +51,7 @@ void main() {
     ],
   );
 
-  final CourseEvaluation evaluationCompleted = CourseEvaluation(
+  final CourseReview reviewCompleted = CourseReview(
       acronym: 'GEN101',
       group: '02',
       teacherName: 'TEST',
@@ -71,7 +68,7 @@ void main() {
       numberOfCredits: 3,
       title: 'Cours générique',
       summary: courseSummary,
-      evaluation: evaluationCompleted);
+      review: reviewCompleted);
 
   final Course courseWithoutSummary = Course(
     acronym: 'GEN101',
@@ -90,7 +87,7 @@ void main() {
       numberOfCredits: 3,
       title: 'Cours générique',
       summary: courseSummary,
-      evaluation: CourseEvaluation(
+      review: CourseReview(
           acronym: 'GEN101',
           group: '02',
           teacherName: 'TEST',
