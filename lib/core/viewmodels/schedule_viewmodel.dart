@@ -8,18 +8,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 // CONSTANTS
-import 'package:notredame/core/constants/activity_code.dart';
 import 'package:notredame/core/constants/discovery_ids.dart';
 // MANAGER
 import 'package:notredame/core/managers/course_repository.dart';
 import 'package:notredame/core/managers/settings_manager.dart';
 
 // MODELS
-import 'package:notredame/core/models/course_activity.dart';
-import 'package:notredame/core/models/schedule_activity.dart';
+import 'package:ets_api_clients/models.dart';
 
 // UTILS
 import 'package:notredame/ui/utils/discovery_components.dart';
+import 'package:notredame/core/utils/utils.dart';
 
 // OTHER
 import 'package:notredame/locator.dart';
@@ -67,10 +66,29 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
         focusedDate = ValueNotifier(initialSelectedDate ?? DateTime.now());
 
   /// Activities for the day currently selected
-  List<dynamic> get selectedDateEvents =>
-      _coursesActivities[
-          DateTime(selectedDate.year, selectedDate.month, selectedDate.day)] ??
-      [];
+  List<dynamic> selectedDateEvents(DateTime date) =>
+      _coursesActivities[DateTime(date.year, date.month, date.day)] ?? [];
+
+  Map<DateTime, List<dynamic>> selectedWeekEvents() {
+    final Map<DateTime, List<dynamic>> events = {};
+    final firstDayOfWeek = Utils.getFirstDayOfCurrentWeek(
+        selectedDate,
+        settings[PreferencesFlag.scheduleSettingsStartWeekday]
+            as StartingDayOfWeek);
+
+    for (int i = 0; i < 7; i++) {
+      final date = firstDayOfWeek.add(Duration(days: i));
+      final eventsForDay = selectedDateEvents(date);
+      if (eventsForDay.isNotEmpty) {
+        events[date] = eventsForDay;
+      }
+    }
+
+    return events;
+  }
+
+  bool get showWeekEvents =>
+      settings[PreferencesFlag.scheduleSettingsShowWeekEvents] as bool ?? false;
 
   bool isLoadingEvents = false;
 

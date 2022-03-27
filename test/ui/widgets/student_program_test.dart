@@ -4,7 +4,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 // MODEL
-import 'package:notredame/core/models/program.dart';
+import 'package:ets_api_clients/models.dart';
 
 // VIEW
 import 'package:notredame/ui/widgets/student_program.dart';

@@ -11,7 +11,7 @@ import 'package:notredame/core/managers/settings_manager.dart';
 import 'package:notredame/core/services/navigation_service.dart';
 
 // MODEL
-import 'package:notredame/core/models/course.dart';
+import 'package:ets_api_clients/models.dart';
 import 'package:notredame/core/viewmodels/grades_viewmodel.dart';
 
 // OTHER

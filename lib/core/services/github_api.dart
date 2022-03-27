@@ -1,7 +1,6 @@
 // FLUTTER / DART / THIRD-PARTIES
 import 'dart:convert';
 import 'dart:io';
-import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 import 'package:github/github.dart';
 import 'package:logger/logger.dart';
@@ -57,9 +56,13 @@ class GithubApi {
                     CommitUser('clubapplets-server', 'clubapplets@gmail.com'),
                 branch: 'main'))
         .catchError((error) {
+      // ignore: avoid_dynamic_calls
       _logger.e("uploadFileToGithub error: ${error.message}");
       _analyticsService.logError(
-          tag, "uploadFileToGithub: ${error.message}", error as GitHubError);
+          tag,
+          // ignore: avoid_dynamic_calls
+          "uploadFileToGithub: ${error.message}",
+          error as GitHubError);
     });
   }
 
@@ -67,7 +70,9 @@ class GithubApi {
   /// The bug report will contain a file, a description [feedbackText] and also some information about the
   /// application/device.
   Future<void> createGithubIssue(
-      {@required String feedbackText, @required String fileName}) async {
+      {@required String feedbackText,
+      @required String fileName,
+      @required String feedbackType}) async {
     final PackageInfo packageInfo = await PackageInfo.fromPlatform();
     _github.issues
         .create(
@@ -79,11 +84,18 @@ class GithubApi {
                     "**Screenshot** \n"
                     "![screenshot](https://github.com/$_repositoryReportSlug/blob/main/$fileName?raw=true)\n\n"
                     "${await _internalInfoService.getDeviceInfoForErrorReporting()}",
-                labels: ['bug', 'platform: ${Platform.operatingSystem}']))
+                labels: [
+                  feedbackType,
+                  'platform: ${Platform.operatingSystem}'
+                ]))
         .catchError((error) {
+      // ignore: avoid_dynamic_calls
       _logger.e("createGithubIssue error: ${error.message}");
       _analyticsService.logError(
-          tag, "createGithubIssue: ${error.message}", error as GitHubError);
+          tag,
+          // ignore: avoid_dynamic_calls
+          "createGithubIssue: ${error.message}",
+          error as GitHubError);
     });
   }
 

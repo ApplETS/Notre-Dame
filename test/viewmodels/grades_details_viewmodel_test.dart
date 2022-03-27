@@ -4,15 +4,13 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:mockito/mockito.dart';
 
 // MODELS
-import 'package:notredame/core/models/course_summary.dart';
-import 'package:notredame/core/models/evaluation.dart' as model;
+import 'package:ets_api_clients/models.dart';
 
 // VIEWMODEL
 import 'package:notredame/core/viewmodels/grades_details_viewmodel.dart';
 
 // MANAGER
 import 'package:notredame/core/managers/settings_manager.dart';
-import 'package:notredame/core/models/course.dart';
 import 'package:notredame/core/managers/course_repository.dart';
 import '../mock/managers/course_repository_mock.dart';
 
@@ -35,7 +33,7 @@ void main() {
     median: 4.5,
     percentileRank: 99,
     evaluations: [
-      model.Evaluation(
+      CourseEvaluation(
         courseGroup: "02",
         title: "Laboratoire 1",
         weight: 10,
@@ -50,7 +48,7 @@ void main() {
         published: true,
         targetDate: DateTime(2021, 01, 05),
       ),
-      model.Evaluation(
+      CourseEvaluation(
         courseGroup: "02",
         title: "Laboratoire 2",
         weight: 10,
