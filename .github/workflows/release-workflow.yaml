@@ -3,7 +3,7 @@ on:
   release:
     types: [released]
 jobs:
-  release-to-store:
+  release_to_store:
     name: Create ${{ matrix.target }} build
     runs-on: ${{ matrix.os }}
     strategy:

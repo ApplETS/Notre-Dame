@@ -6,7 +6,7 @@ on:
     types:
       - completed
 jobs:
-  artifacts-url-comments:
+  artifacts_url_comments:
     name:  Add artifacts links to pull request and related issues.
     runs-on: ubuntu-latest
     steps:
