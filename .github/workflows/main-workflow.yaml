@@ -41,6 +41,8 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       version: ${{ steps.split.outputs._0 }}
+    needs:
+      - delete_bot_comments
     steps:
       - uses: actions/checkout@v2
       - name: Get the version from the pubspec
@@ -159,7 +161,9 @@ jobs:
 
   coverage:
     name: Update coverage
-    needs: [ testing ]
+    needs:
+      - testing
+      - delete_bot_comments
     runs-on: ubuntu-latest
     steps:
       - name: Download coverage file
@@ -232,7 +236,9 @@ jobs:
             asset_content_type: application/zip
       # Disable fail-fast as we want results from all even if one fails.
       fail-fast: false
-    needs: [ testing, tag_validation ]
+    needs:
+      - testing
+      - tag_validation
     steps:
       - uses: actions/checkout@v2
       - uses: subosito/flutter-action@v2
@@ -294,7 +300,9 @@ jobs:
   create_pre_release:
     name: Create Github release
     if: ${{ github.event_name == 'push' || (github.event_name == 'workflow-dispatch' && github.head_ref == 'master') }}
-    needs: [ tag_validation, build ]
+    needs:
+      - tag_validation
+      - build
     runs-on: ubuntu-latest
     outputs:
       upload_url: ${{ steps.create_release.outputs.upload_url }}
