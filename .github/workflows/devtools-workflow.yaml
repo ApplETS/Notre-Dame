@@ -6,7 +6,7 @@ env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
 jobs:
-  determine-pr-size:
+  determine_pr_size:
     name: Determine the size of the PR
     runs-on: ubuntu-latest
     steps:

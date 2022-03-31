@@ -3,7 +3,7 @@ on:
   release:
     types: [released]
 jobs:
-  release-to-store:
+  release_to_store:
     name: Create ${{ matrix.target }} build
     runs-on: ${{ matrix.os }}
     strategy:
@@ -28,10 +28,11 @@ jobs:
       fail-fast: false
     steps:
       - uses: actions/checkout@v2
-      - uses: subosito/flutter-action@v1
+      - uses: subosito/flutter-action@v2
         with:
           flutter-version: '2.10.x'
           channel: 'stable'
+          cache: true
       - name: Setup Fastlane
         uses: ruby/setup-ruby@v1
         with:

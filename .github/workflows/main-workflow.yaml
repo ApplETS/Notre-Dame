@@ -25,12 +25,24 @@ on:
 env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   MAPS_API_KEY: ${{ secrets.MAPS_API_KEY }}
+  APP_NAME: 'notre_dame'
 jobs:
-  tagValidation:
+  delete_bot_comments:
+    name: Delete the bot comments on the PR.
+    runs-on: ubuntu-latest
+    steps:
+      - uses: izhangzhihao/delete-comment@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          delete_user_name: github-actions[bot]
+          issue_number: ${{ github.event.number }}
+  tag_validation:
     name: Tag validation
     runs-on: ubuntu-latest
     outputs:
       version: ${{ steps.split.outputs._0 }}
+    needs:
+      - delete_bot_comments
     steps:
       - uses: actions/checkout@v2
       - name: Get the version from the pubspec
@@ -50,15 +62,10 @@ jobs:
         with:
           tag: ${{ steps.split.outputs._0 }}
       - if: ${{ steps.checkTag.outputs.exists == 'true' && github.event_name == 'pull_request' }}
-        name: Post comment on PR
-        uses: thollander/actions-comment-pull-request@1.0.1
-        with:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          message: '${{ steps.split.outputs._0 }} already exists, please update the pubspec version.'
-      - if: ${{ steps.checkTag.outputs.exists == 'true' }}
-        name: Fails because the tag already exists.
-        run: exit 1
-
+        name: Post comment on PR and fail.
+        run: |
+          gh pr comment ${{ github.event.pull_request.number }} -b '${{ steps.split.outputs._0 }} already exists, please update the pubspec version.'
+          exit 1
   testing:
     name: Tests and checks
     runs-on: ubuntu-latest
@@ -73,10 +80,11 @@ jobs:
         with:
           distribution: 'adopt'
           java-version: '11'
-      - uses: subosito/flutter-action@v1
+      - uses: subosito/flutter-action@v2
         with:
           flutter-version: '2.10.x'
           channel: 'stable'
+          cache: true
       - run: flutter doctor
       - name: Decrypt SignETS certificate and Google Services files
         run: |
@@ -90,7 +98,7 @@ jobs:
       - run: flutter pub get
 
       # Check the format of the code and commit the formatted files.
-      - name: Format files
+      - name: Format files in lib and test directories
         run: flutter format lib test
       - name: Commit formatted files
         uses: stefanzweifel/git-auto-commit-action@v4
@@ -98,11 +106,12 @@ jobs:
           file_pattern: "*.dart"
           commit_user_name: github-actions[bot]
           commit_user_email: 41898282+github-actions[bot]@users.noreply.github.com
-          commit_message: "Apply format."
+          commit_message: "[BOT] Applying format."
           add_options: '-u'
 
       # Check if the code has any errors/warnings
-      - run: flutter analyze
+      - name: Analyze code
+        run: flutter analyze
 
       # Retrieve the last commit message and check if the commit message contains [CI UPDATE GOLDENS].
       # Set update_goldens output if the hot word is there.
@@ -130,7 +139,7 @@ jobs:
           file_pattern: test/*
           commit_user_name: github-actions[bot]
           commit_user_email: 41898282+github-actions[bot]@users.noreply.github.com
-          commit_message: "Update golden files"
+          commit_message: "[BOT] Update golden files"
 
         # Run the tests
       - run: flutter test --coverage
@@ -152,7 +161,9 @@ jobs:
 
   coverage:
     name: Update coverage
-    needs: [ testing ]
+    needs:
+      - testing
+      - delete_bot_comments
     runs-on: ubuntu-latest
     steps:
       - name: Download coverage file
@@ -202,7 +213,7 @@ jobs:
 #          github_token: ${{ secrets.GITHUB_TOKEN }}
 #          branch: ${{ github.head_ref }}
 
-  create-build:
+  build:
     name: Create ${{ matrix.target }} build
     runs-on: ${{ matrix.os }}
     strategy:
@@ -225,13 +236,16 @@ jobs:
             asset_content_type: application/zip
       # Disable fail-fast as we want results from all even if one fails.
       fail-fast: false
-    needs: [ testing, tagValidation ]
+    needs:
+      - testing
+      - tag_validation
     steps:
       - uses: actions/checkout@v2
-      - uses: subosito/flutter-action@v1
+      - uses: subosito/flutter-action@v2
         with:
           flutter-version: '2.10.x'
           channel: 'stable'
+          cache: true
       - name: Install Android dependencies
         if: matrix.target == 'Android'
         uses: actions/setup-java@v2
@@ -267,26 +281,28 @@ jobs:
 
       - name: Rename Android build
         if: matrix.target == 'Android'
-        run: mv app-release.${{ matrix.asset_extension }} ${{ github.workspace }}/notre_dame_${{ matrix.target }}.${{ matrix.asset_extension }}
+        run: mv app-release.${{ matrix.asset_extension }} ${{ github.workspace }}/${{ env.APP_NAME }}_${{ matrix.target }}.${{ matrix.asset_extension }}
         working-directory: ${{ matrix.build_path }}
 
       - name: Compress iOS build
         if: matrix.target == 'iOS'
         run: |
-          mv Runner.app NotreDame.app
-          ditto -c -k --sequesterRsrc --keepParent NotreDame.app ${{ github.workspace }}/notre_dame_${{ matrix.target }}.${{ matrix.asset_extension }}
+          mv Runner.app ${{ env.APP_NAME }}.app
+          ditto -c -k --sequesterRsrc --keepParent ${{ env.APP_NAME }}.app ${{ github.workspace }}/${{ env.APP_NAME }}_${{ matrix.target }}.${{ matrix.asset_extension }}
         working-directory: ${{ matrix.build_path }}
 
       - name: Upload build artifact
         uses: actions/upload-artifact@v2
         with:
           name: ${{ matrix.target }}
-          path: ${{ github.workspace }}/notre_dame_${{ matrix.target }}.${{ matrix.asset_extension }}
+          path: ${{ github.workspace }}/${{ env.APP_NAME }}_${{ matrix.target }}.${{ matrix.asset_extension }}
 
-  create-draft-release:
-    name: Draft Github release
+  create_pre_release:
+    name: Create Github release
     if: ${{ github.event_name == 'push' || (github.event_name == 'workflow-dispatch' && github.head_ref == 'master') }}
-    needs: [ tagValidation, create-build ]
+    needs:
+      - tag_validation
+      - build
     runs-on: ubuntu-latest
     outputs:
       upload_url: ${{ steps.create_release.outputs.upload_url }}
@@ -299,12 +315,11 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: Android
-      - name: Create draft release
-        uses: marvinpinto/action-automatic-releases@latest
+      - name: Download build of Android and iOS
+        uses: actions/download-artifact@v3
         with:
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
-          automatic_release_tag: ${{ needs.tagValidation.outputs.version }}
-          title: v${{ needs.tagValidation.outputs.version }}
-          files: |
-            notre_dame_Android.apk
-            notre_dame_iOS.zip
+          path: build
+      - name: Create pre-release
+        run: |
+          gh release create ${{ needs.tag_validation.outputs.version }} */** --title v${{ needs.tag_validation.outputs.version }} -R '${{ github.repository }}' --prerelease --generate-notes
+        working-directory: build
