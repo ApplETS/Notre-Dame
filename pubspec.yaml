@@ -18,7 +18,7 @@ dependencies:
 
   # Architecture
   get_it: ^7.2.0
-  provider: ^5.0.0
+  provider: ">=5.0.0 <7.0.0"
   stacked: ^2.1.0
 
   # Firebase
