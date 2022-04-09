@@ -35,6 +35,7 @@ void main() {
       setupSettingsManagerMock();
       setupGithubApiMock();
       setupNetworkingServiceMock();
+      setupInAppReviewServiceMock();
     });
 
     tearDown(() {});
