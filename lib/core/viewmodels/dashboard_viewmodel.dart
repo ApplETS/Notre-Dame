@@ -2,7 +2,6 @@
 import 'dart:collection';
 import 'package:feature_discovery/feature_discovery.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:in_app_review/in_app_review.dart';
 import 'package:notredame/core/services/in_app_review_service.dart';
 import 'package:stacked/stacked.dart';
 import 'package:flutter/material.dart';
