@@ -125,6 +125,8 @@ void main() {
 
       testWidgets("default view (no events), showTodayButton disabled",
           (WidgetTester tester) async {
+        SettingsManagerMock.stubGetBool(settingsManager as SettingsManagerMock,
+            PreferencesFlag.discoverySchedule);
         tester.binding.window.physicalSizeTestValue = const Size(800, 1410);
 
         settings[PreferencesFlag.scheduleSettingsShowTodayBtn] = false;
@@ -144,6 +146,7 @@ void main() {
         await tester.pumpWidget(localizedWidget(
             child: FeatureDiscovery(
                 child: ScheduleView(initialDay: DateTime(2020)))));
+        await tester.pumpAndSettle();
 
         await expectLater(find.byType(ScheduleView),
             matchesGoldenFile(goldenFilePath("scheduleView_2")));
