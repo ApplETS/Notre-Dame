@@ -4,6 +4,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:feature_discovery/feature_discovery.dart';
+import 'package:notredame/core/constants/preferences_flags.dart';
 
 // CONSTANTS
 import 'package:notredame/core/constants/router_paths.dart';
@@ -11,18 +12,19 @@ import 'package:notredame/core/constants/router_paths.dart';
 // SERVICES
 import 'package:notredame/core/services/navigation_service.dart';
 
-// VIEWMODELS
-import 'package:notredame/core/viewmodels/more_viewmodel.dart';
-
 // VIEW
 import 'package:notredame/ui/views/more_view.dart';
 
 // HELPERS
 import '../../helpers.dart';
+import '../../mock/managers/settings_manager_mock.dart';
+import '../../mock/services/in_app_review_service_mock.dart';
 
 void main() {
   AppIntl intl;
   NavigationService navigation;
+  InAppReviewServiceMock inAppReviewServiceMock;
+  SettingsManagerMock settingsManagerMock;
 
   group('MoreView - ', () {
     setUp(() async {
@@ -32,10 +34,15 @@ void main() {
       setupPreferencesServiceMock();
       setupUserRepositoryMock();
       setupCacheManagerMock();
-      setupSettingsManagerMock();
+      settingsManagerMock = setupSettingsManagerMock() as SettingsManagerMock;
       setupGithubApiMock();
       setupNetworkingServiceMock();
-      setupInAppReviewServiceMock();
+      inAppReviewServiceMock =
+          setupInAppReviewServiceMock() as InAppReviewServiceMock;
+
+      SettingsManagerMock.stubGetBool(
+          settingsManagerMock, PreferencesFlag.discoveryMore,
+          toReturn: true);
     });
 
     tearDown(() {});
@@ -70,20 +77,42 @@ void main() {
           verify(navigation.pushNamed(RouterPaths.about)).called(1);
         });
 
-        testWidgets('rate us', (WidgetTester tester) async {
-          setupInAppReviewMock();
+        testWidgets('rate us is not available', (WidgetTester tester) async {
+          InAppReviewServiceMock.stubIsAvailable(inAppReviewServiceMock,
+              toReturn: false);
+
           await tester.pumpWidget(
               localizedWidget(child: FeatureDiscovery(child: MoreView())));
-          await tester.pumpAndSettle(const Duration(seconds: 1));
+          await tester.pumpAndSettle();
 
           // Tap the button.
           await tester
               .tap(find.widgetWithText(ListTile, intl.in_app_review_title));
 
           // Rebuild the widget after the state has changed.
-          await tester.pump();
+          await tester.pumpAndSettle();
 
-          verify(await MoreViewModel.launchInAppReview()).called(1);
+          verify(await inAppReviewServiceMock.isAvailable()).called(1);
+          verifyNoMoreInteractions(inAppReviewServiceMock);
+        });
+
+        testWidgets('rate us is available', (WidgetTester tester) async {
+          InAppReviewServiceMock.stubIsAvailable(inAppReviewServiceMock);
+
+          await tester.pumpWidget(
+              localizedWidget(child: FeatureDiscovery(child: MoreView())));
+          await tester.pumpAndSettle();
+
+          // Tap the button.
+          await tester
+              .tap(find.widgetWithText(ListTile, intl.in_app_review_title));
+
+          // Rebuild the widget after the state has changed.
+          await tester.pumpAndSettle();
+
+          verify(await inAppReviewServiceMock.isAvailable()).called(1);
+          verify(await inAppReviewServiceMock.requestReview()).called(1);
+          verifyNoMoreInteractions(inAppReviewServiceMock);
         });
 
         testWidgets('contributors', (WidgetTester tester) async {
