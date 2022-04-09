@@ -166,49 +166,5 @@ void main() {
         verifyEveryFunctionsInLogout();
       });
     });
-
-    group('sendFeedback - ', () {
-      Uint8List screenshotData;
-
-      setUp(() async {
-        final ByteData bytes = await rootBundle
-            .load('packages/notredame/assets/images/ets_red_logo.png');
-        screenshotData = bytes.buffer.asUint8List();
-      });
-
-      test('If the file uploaded matches', () async {
-        final File file = File('bugReportTest.png');
-        GithubApiMock.stubLocalFile(githubApiMock, file);
-        setupFlutterToastMock();
-
-        await file.writeAsBytes(image.encodePng(
-            image.copyResize(image.decodeImage(screenshotData), width: 307)));
-
-        await viewModel.sendFeedback('Notre-Dame bug report', screenshotData);
-
-        verify(githubApiMock.uploadFileToGithub(
-          filePath: file.path.split('/').last,
-          file: file,
-        ));
-      });
-
-      test('If the github issue has been created', () async {
-        final File file = File('bugReportTest.png');
-        GithubApiMock.stubLocalFile(githubApiMock, file);
-
-        await viewModel.sendFeedback('Notre-Dame bug report', screenshotData);
-
-        verify(githubApiMock.createGithubIssue(
-            feedbackText: 'Notre-Dame bug report',
-            fileName: file.path.split('/').last));
-      });
-    });
-
-    group('In app review - ', () {
-      test('should call requestReview()', () async {
-        setupInAppReviewMock();
-        expect(await MoreViewModel.launchInAppReview(), true);
-      });
-    });
   });
 }
