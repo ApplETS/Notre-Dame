@@ -104,7 +104,7 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
             .getBool(PreferencesFlag.hasRatingBeenRequested) ??
         false;
 
-    // If the user is already logged in while doing the update containing the In_App_Review pr.
+    // If the user is already logged in while doing the update containing the In_App_Review PR.
     if (ratingTimerFlagDate == null) {
       final sevenDaysLater = DateTime.now().add(const Duration(days: 7));
       _preferencesService.setDateTime(
