@@ -32,6 +32,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: izhangzhihao/delete-comment@master
+        if: ${{ github.event_name == 'pull_request' }}
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           delete_user_name: github-actions[bot]
@@ -299,7 +300,7 @@ jobs:
 
   create_pre_release:
     name: Create Github release
-    if: ${{ github.event_name == 'push' || (github.event_name == 'workflow-dispatch' && github.head_ref == 'master') }}
+    if: ${{ github.event_name == 'push' || (github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/master') }}
     needs:
       - tag_validation
       - build
