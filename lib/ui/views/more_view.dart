@@ -1,7 +1,5 @@
 // FLUTTER / DART / THIRD-PARTIES
-import 'dart:typed_data';
 import 'package:feature_discovery/feature_discovery.dart';
-import 'package:feedback/feedback.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:stacked/stacked.dart';
@@ -107,14 +105,8 @@ class _MoreViewState extends State<MoreView> {
                       getProperIconAccordingToTheme(Icons.bug_report),
                       DiscoveryIds.detailsMoreBugReport,
                       model),
-                  onTap: () => BetterFeedback.of(context).show((
-                    String feedbackText,
-                    Uint8List feedbackScreenshot,
-                  ) {
-                    model
-                        .sendFeedback(feedbackText, feedbackScreenshot)
-                        .then((value) => BetterFeedback.of(context).hide());
-                  }),
+                  onTap: () =>
+                      model.navigationService.pushNamed(RouterPaths.feedback),
                 ),
                 ListTile(
                     title: Text(AppIntl.of(context).in_app_review_title),

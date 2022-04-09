@@ -10,7 +10,7 @@ import 'package:notredame/core/managers/settings_manager.dart';
 import '../../mock/managers/course_repository_mock.dart';
 
 // MODELS
-import 'package:notredame/core/models/course.dart';
+import 'package:ets_api_clients/models.dart';
 
 // SERVICES
 import 'package:notredame/core/services/networking_service.dart';

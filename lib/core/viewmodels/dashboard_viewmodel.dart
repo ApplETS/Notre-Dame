@@ -12,7 +12,6 @@ import 'package:notredame/core/constants/preferences_flags.dart';
 import 'package:notredame/core/constants/discovery_ids.dart';
 import 'package:notredame/core/constants/progress_bar_text_options.dart';
 import 'package:notredame/core/constants/update_code.dart';
-import 'package:notredame/core/constants/activity_code.dart';
 
 // MANAGER / SERVICE
 import 'package:notredame/core/managers/settings_manager.dart';
@@ -21,11 +20,7 @@ import 'package:notredame/core/services/siren_flutter_service.dart';
 import 'package:notredame/core/services/preferences_service.dart';
 
 // MODEL
-import 'package:notredame/core/models/session.dart';
-import 'package:notredame/core/models/course_activity.dart';
-
-// CORE
-import 'package:notredame/core/models/course.dart';
+import 'package:ets_api_clients/models.dart';
 
 // UTILS
 import 'package:notredame/ui/utils/discovery_components.dart';
@@ -303,11 +298,11 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
   }
 
   Future<List<CourseActivity>> removeLaboratoryGroup(
-      List todayDateEvents) async {
+      List<CourseActivity> todayDateEvents) async {
     final List<CourseActivity> todayDateEventsCopy = List.from(todayDateEvents);
 
     for (final courseAcronym in todayDateEvents) {
-      final courseKey = courseAcronym.courseGroup.toString().split('-')[0];
+      final courseKey = courseAcronym.courseGroup.split('-')[0];
 
       final String activityCodeToUse = await _settingsManager.getDynamicString(
           PreferencesFlag.scheduleSettingsLaboratoryGroup, courseKey);
@@ -366,47 +361,50 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
   }
 
   /// Get the list of courses for the Grades card.
+  // ignore: missing_return
   Future<List<Course>> futureToRunGrades() async {
-    setBusyForObject(courses, true);
-    if (_courseRepository.sessions == null ||
-        _courseRepository.sessions.isEmpty) {
-      // ignore: return_type_invalid_for_catch_error
-      await _courseRepository.getSessions().catchError(onError);
-    }
-
-    // Determine current sessions
-    if (_courseRepository.activeSessions.isEmpty) {
-      setBusyForObject(courses, false);
-      return [];
-    }
-    final currentSession = _courseRepository.activeSessions.first;
-
-    return _courseRepository.getCourses(fromCacheOnly: true).then(
-        (coursesCached) {
-      courses.clear();
-      for (final Course course in coursesCached) {
-        if (course.session == currentSession.shortName) {
-          courses.add(course);
-        }
+    if (!busy(courses)) {
+      setBusyForObject(courses, true);
+      if (_courseRepository.sessions == null ||
+          _courseRepository.sessions.isEmpty) {
+        // ignore: return_type_invalid_for_catch_error
+        await _courseRepository.getSessions().catchError(onError);
       }
-      notifyListeners();
-      // ignore: return_type_invalid_for_catch_error
-      _courseRepository.getCourses().catchError(onError).then((value) {
-        if (value != null) {
-          // Update the courses list
-          courses.clear();
-          for (final Course course in value) {
-            if (course.session == currentSession.shortName) {
-              courses.add(course);
-            }
+
+      // Determine current sessions
+      if (_courseRepository.activeSessions.isEmpty) {
+        setBusyForObject(courses, false);
+        return [];
+      }
+      final currentSession = _courseRepository.activeSessions.first;
+
+      return _courseRepository.getCourses(fromCacheOnly: true).then(
+          (coursesCached) {
+        courses.clear();
+        for (final Course course in coursesCached) {
+          if (course.session == currentSession.shortName) {
+            courses.add(course);
           }
         }
-      }).whenComplete(() {
-        setBusyForObject(courses, false);
-      });
+        notifyListeners();
+        // ignore: return_type_invalid_for_catch_error
+        _courseRepository.getCourses().catchError(onError).then((value) {
+          if (value != null) {
+            // Update the courses list
+            courses.clear();
+            for (final Course course in value) {
+              if (course.session == currentSession.shortName) {
+                courses.add(course);
+              }
+            }
+          }
+        }).whenComplete(() {
+          setBusyForObject(courses, false);
+        });
 
-      return courses;
-    }, onError: onError);
+        return courses;
+      }, onError: onError);
+    }
   }
 
   /// Prompt the update for the app if the navigation service arguments passed

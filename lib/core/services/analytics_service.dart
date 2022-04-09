@@ -36,6 +36,7 @@ class AnalyticsService {
         .logEvent(name: prefix, parameters: {'message': mesTruncated});
   }
 
+  /// Set user properties to identify the user against firebase app.
   Future setUserProperties({@required String userId, String domain}) async {
     await _analytics.setUserId(userId);
     await _analytics.setUserProperty(
