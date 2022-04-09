@@ -25,6 +25,7 @@ import '../helpers.dart';
 // MOCKS
 import '../mock/managers/course_repository_mock.dart';
 import '../mock/managers/settings_manager_mock.dart';
+import '../mock/services/in_app_review_service_mock.dart';
 import '../mock/services/preferences_service_mock.dart';
 
 void main() {
@@ -33,6 +34,7 @@ void main() {
   DashboardViewModel viewModel;
   CourseRepository courseRepository;
   PreferencesServiceMock preferencesServiceMock;
+  InAppReviewServiceMock inAppReviewServiceMock;
 
   final gen101 = CourseActivity(
       courseGroup: "GEN101",
@@ -183,6 +185,9 @@ void main() {
       CourseRepositoryMock.stubGetCoursesActivities(
           courseRepository as CourseRepositoryMock,
           fromCacheOnly: false);
+
+      inAppReviewServiceMock =
+          setupInAppReviewServiceMock() as InAppReviewServiceMock;
     });
 
     tearDown(() {
@@ -655,8 +660,10 @@ void main() {
     group("In app review - ", () {
       test("returns true when todays date is after the day set in cache",
           () async {
+        InAppReviewServiceMock.stubIsAvailable(inAppReviewServiceMock);
+        InAppReviewServiceMock.stubRequestReview(inAppReviewServiceMock);
+
         final day = DateTime.now().add(const Duration(days: -1));
-        setupInAppReviewMock();
         PreferencesServiceMock.stubGetDateTime(
             preferencesServiceMock, PreferencesFlag.ratingTimer,
             toReturn: day);
@@ -670,8 +677,9 @@ void main() {
       test(
           "returns false when todays date is after the day set in cache and when the function is called twice",
           () async {
+        InAppReviewServiceMock.stubIsAvailable(inAppReviewServiceMock);
+        InAppReviewServiceMock.stubRequestReview(inAppReviewServiceMock);
         final day = DateTime.now().add(const Duration(days: -1));
-        setupInAppReviewMock();
         PreferencesServiceMock.stubGetDateTime(
             preferencesServiceMock, PreferencesFlag.ratingTimer,
             toReturn: day);
@@ -690,8 +698,9 @@ void main() {
       test(
           "returns false when todays date is after the day set in cache and when the function is called twice",
           () async {
+        InAppReviewServiceMock.stubIsAvailable(inAppReviewServiceMock);
+        InAppReviewServiceMock.stubRequestReview(inAppReviewServiceMock);
         final day = DateTime.now().add(const Duration(days: -1));
-        setupInAppReviewMock();
         PreferencesServiceMock.stubGetDateTime(
             preferencesServiceMock, PreferencesFlag.ratingTimer,
             toReturn: day);
@@ -709,8 +718,9 @@ void main() {
 
       test("returns false when todays date is the before the day set in cache",
           () async {
+        InAppReviewServiceMock.stubIsAvailable(inAppReviewServiceMock);
+        InAppReviewServiceMock.stubRequestReview(inAppReviewServiceMock);
         final day = DateTime.now().add(const Duration(days: 2));
-        setupInAppReviewMock();
         PreferencesServiceMock.stubGetDateTime(
             preferencesServiceMock, PreferencesFlag.ratingTimer,
             toReturn: day);
@@ -720,7 +730,8 @@ void main() {
 
       test("returns false when the cache date hasn't been set (null)",
           () async {
-        setupInAppReviewMock();
+        InAppReviewServiceMock.stubIsAvailable(inAppReviewServiceMock);
+        InAppReviewServiceMock.stubRequestReview(inAppReviewServiceMock);
         PreferencesServiceMock.stubGetDateTime(
             preferencesServiceMock, PreferencesFlag.ratingTimer);
 
