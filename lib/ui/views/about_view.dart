@@ -102,7 +102,7 @@ class _AboutViewState extends State<AboutView> with TickerProviderStateMixin {
                   children: [
                     IconButton(
                         icon: const FaIcon(
-                          FontAwesomeIcons.globeAmericas,
+                          FontAwesomeIcons.earthAmericas,
                           color: Colors.white,
                         ),
                         onPressed: () => Utils.launchURL(
