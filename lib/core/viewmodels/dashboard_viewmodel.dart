@@ -3,6 +3,7 @@ import 'dart:collection';
 import 'package:feature_discovery/feature_discovery.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:in_app_review/in_app_review.dart';
+import 'package:notredame/core/services/in_app_review_service.dart';
 import 'package:stacked/stacked.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -94,6 +95,8 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
   static Future<bool> launchInAppReview() async {
     final PreferencesService _preferencesService =
         locator<PreferencesService>();
+    final InAppReviewService _inAppReviewService =
+        locator<InAppReviewService>();
 
     DateTime ratingTimerFlagDate =
         await _preferencesService.getDateTime(PreferencesFlag.ratingTimer);
@@ -110,13 +113,11 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
       ratingTimerFlagDate = sevenDaysLater;
     }
 
-    final InAppReview inAppReview = InAppReview.instance;
-
-    if (await inAppReview.isAvailable() &&
+    if (await _inAppReviewService.isAvailable() &&
         !hasRatingBeenRequested &&
         DateTime.now().isAfter(ratingTimerFlagDate)) {
       await Future.delayed(const Duration(seconds: 2), () async {
-        await inAppReview.requestReview();
+        await _inAppReviewService.requestReview();
         _preferencesService.setBool(PreferencesFlag.hasRatingBeenRequested,
             value: true);
       });

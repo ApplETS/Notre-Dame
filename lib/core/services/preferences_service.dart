@@ -6,6 +6,18 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:notredame/core/constants/preferences_flags.dart';
 
 class PreferencesService {
+  final persistentsKey = [
+    PreferencesFlag.discoveryDashboard,
+    PreferencesFlag.discoveryETS,
+    PreferencesFlag.discoveryGradeDetails,
+    PreferencesFlag.discoveryMore,
+    PreferencesFlag.discoverySchedule,
+    PreferencesFlag.discoveryStudentGrade,
+    PreferencesFlag.discoveryStudentProfile,
+    PreferencesFlag.ratingTimer,
+    PreferencesFlag.hasRatingBeenRequested
+  ];
+
   Future<bool> setBool(PreferencesFlag flag, {@required bool value}) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
 
@@ -27,8 +39,34 @@ class PreferencesService {
 
   Future<void> clear() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-
     await prefs.clear();
+  }
+
+  /// Get persitent flags and reput them in the cache once the clear is done
+  Future<void> clearWithoutPersistentKey() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final Map<PreferencesFlag, dynamic> allPersistentPrefs = {};
+
+    // Save the persistent flags
+    for (final flag in persistentsKey) {
+      final value = prefs.get(flag.toString());
+
+      if (value != null) {
+        allPersistentPrefs[flag] = value;
+      }
+    }
+
+    // Clear the cache
+    prefs.clear();
+
+    // Put the persistent flags back in the preferences
+    allPersistentPrefs.forEach((key, value) async {
+      if (value is bool) {
+        await setBool(key, value: value);
+      } else if (value is String) {
+        await setString(key, value);
+      }
+    });
   }
 
   Future<Object> getPreferencesFlag(PreferencesFlag flag) async {

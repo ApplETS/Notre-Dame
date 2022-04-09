@@ -144,7 +144,6 @@ void main() {
         await tester.pumpWidget(localizedWidget(
             child: FeatureDiscovery(
                 child: ScheduleView(initialDay: DateTime(2020)))));
-        await tester.pumpAndSettle(const Duration(seconds: 1));
 
         await expectLater(find.byType(ScheduleView),
             matchesGoldenFile(goldenFilePath("scheduleView_2")));

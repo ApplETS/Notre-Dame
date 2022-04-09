@@ -1,5 +1,6 @@
 // FLUTTER / DART / THIRD-PARTIES
 import 'package:flutter_test/flutter_test.dart';
+import 'package:mockito/mockito.dart';
 import 'package:notredame/core/services/preferences_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -81,6 +82,26 @@ void main() {
       expect(
           await service.getBool(PreferencesFlag.scheduleSettingsCalendarFormat),
           null);
+    });
+
+    test("clearWithoutPersistentKey", () async {
+      SharedPreferences.setMockInitialValues({
+        PreferencesFlag.scheduleSettingsCalendarFormat.toString(): true,
+        PreferencesFlag.discoveryDashboard.toString(): true
+      });
+
+      expect(
+          await service.getBool(PreferencesFlag.scheduleSettingsCalendarFormat),
+          isTrue);
+      expect(await service.getBool(PreferencesFlag.discoveryDashboard), isTrue);
+
+      service.clearWithoutPersistentKey();
+
+      expect(
+          await service.getBool(PreferencesFlag.scheduleSettingsCalendarFormat),
+          null);
+
+      expect(await service.getBool(PreferencesFlag.discoveryDashboard), isTrue);
     });
 
     group("getters - ", () {

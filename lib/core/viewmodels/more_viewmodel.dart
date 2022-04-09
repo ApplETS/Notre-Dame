@@ -2,7 +2,6 @@
 import 'package:feature_discovery/feature_discovery.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:in_app_review/in_app_review.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:stacked/stacked.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -23,6 +22,7 @@ import 'package:notredame/core/managers/course_repository.dart';
 //SERVICE
 import 'package:notredame/core/services/navigation_service.dart';
 import 'package:notredame/core/services/preferences_service.dart';
+import 'package:notredame/core/services/in_app_review_service.dart';
 
 // OTHERS
 import 'package:notredame/core/constants/router_paths.dart';
@@ -87,7 +87,7 @@ class MoreViewModel extends FutureViewModel {
       onError(e);
     }
 
-    await _preferencesService.clear();
+    await _preferencesService.clearWithoutPersistentKey();
 
     await _userRepository.logOut();
     _settingsManager.resetLanguageAndThemeMode();
@@ -127,11 +127,11 @@ class MoreViewModel extends FutureViewModel {
   static Future<bool> launchInAppReview() async {
     final PreferencesService _preferencesService =
         locator<PreferencesService>();
+    final InAppReviewService _inAppReviewService =
+        locator<InAppReviewService>();
 
-    final InAppReview inAppReview = InAppReview.instance;
-
-    if (await inAppReview.isAvailable()) {
-      await inAppReview.requestReview();
+    if (await _inAppReviewService.isAvailable()) {
+      await _inAppReviewService.requestReview();
       _preferencesService.setBool(PreferencesFlag.hasRatingBeenRequested,
           value: true);
 
