@@ -147,7 +147,7 @@ jobs:
         if: ${{ steps.check_run_goldens.outputs.update_goldens != 'true' }}
 
       - name: Upload coverage file
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: lcov.info
           path: ${{ github.workspace }}/coverage/lcov.info
@@ -293,7 +293,7 @@ jobs:
         working-directory: ${{ matrix.build_path }}
 
       - name: Upload build artifact
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: ${{ matrix.target }}
           path: ${{ github.workspace }}/${{ env.APP_NAME }}_${{ matrix.target }}.${{ matrix.asset_extension }}
