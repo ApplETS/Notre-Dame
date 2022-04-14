@@ -175,3 +175,9 @@ coverage/html/
 .DS_Store
 local.properties
 .gradle/
+
+# iOS App packaging
+*.ipa
+*.dSYM.zip
+*.dSYM
+
