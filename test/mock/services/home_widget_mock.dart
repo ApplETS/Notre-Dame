@@ -45,13 +45,7 @@ class HomeWidgetMock extends Mock {
           return true;
         }
       }
-      /**if (methodCall.method == 'saveWidgetData' &&
-          methodCall.arguments.toString() == {
-            'id': expectedId,
-            'data': expectedData,
-          }.toString()) {
-        return true;
-      }**/
+
       throw PlatformException(code: "ERR1", message: "Test failed, wrong data");
     });
   }

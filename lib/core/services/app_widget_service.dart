@@ -37,13 +37,14 @@ class AppWidgetService {
   }
 
   /// Update grades widget with provided data
-  Future<void> sendGradesData(GradesWidgetData gradeWidgetData) async {
+  Future<bool> sendGradesData(GradesWidgetData gradeWidgetData) async {
     try {
       await HomeWidget.saveWidgetData<List<String>>('${GradesWidgetData.KEY_PREFIX}courseAcronyms', gradeWidgetData.courseAcronyms);
       await HomeWidget.saveWidgetData<List<String>>('${GradesWidgetData.KEY_PREFIX}grades', gradeWidgetData.grades);
       return await HomeWidget.saveWidgetData<String>('${GradesWidgetData.KEY_PREFIX}title', gradeWidgetData.title);
     } on PlatformException catch (exception) {
       locator<AnalyticsService>().logError(TAG, 'Error sending data to grades widget.');
+      rethrow;
     }
   }
 
