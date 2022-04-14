@@ -11,6 +11,7 @@ struct ProgressWidgetEntryView : View {
     var entry: ProgressProvider.Entry
     
     let spacing = 8.0
+    let dividerPadding = 16.0
     
     var body: some View {
         ZStack {        // wrapper to apply custom background color
@@ -29,7 +30,8 @@ struct ProgressWidgetEntryView : View {
                 
                 
                 Divider()
-                    .padding([.leading, .trailing], 6.0)
+                    .background(Color("DividerColor"))
+                    .padding([.leading, .trailing], dividerPadding)
                 
                 ProgressBarView(progress: entry.progress,
                                 elapsedDays: entry.elapsedDays,

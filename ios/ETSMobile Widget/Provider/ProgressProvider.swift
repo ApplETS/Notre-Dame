@@ -16,7 +16,7 @@ struct ProgressProvider: TimelineProvider {
         elapsedDays: 51,
         totalDays: 102,
         suffix: "days",
-        title: "Session Progress (plch)")
+        title: "Session Progress")
     
     func placeholder(in context: Context) -> ProgressEntry {
         placeholderProgressEntry
