@@ -109,7 +109,7 @@ void main() {
       ];
       homeWidgetMock.stubSaveWidgetDataMock(listIds, listDatas);
       expect(() async => service.sendProgressData(progressWidgetData), throwsException,
-        reason: "Data is invalid for widget");
+          reason: "Data is invalid for widget");
     });
 
     test("sendGradesData", () async {
