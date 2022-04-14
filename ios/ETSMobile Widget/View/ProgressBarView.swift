@@ -11,8 +11,9 @@ struct ProgressBarView: View {
     var progress: Double        // [0..1]
     var elapsedDays: Int
     var totalDays: Int
+    var suffix: String
     
-    let lineWidth = 10.0
+    let lineWidth = 10.0        // TODO: use metrics.size.height to adapt line width
     
     var body: some View {
         GeometryReader { metrics in
@@ -20,7 +21,7 @@ struct ProgressBarView: View {
                 // background (full) circle
                 Circle()
                     .stroke(lineWidth: lineWidth)
-                    .opacity(0.3)
+                    .opacity(0.4)
                     .foregroundColor(Color("ProgressBackground"))
                 
                 // progress circle
@@ -33,16 +34,22 @@ struct ProgressBarView: View {
                 // inner circle
                 Circle()
                     .fill(Color("ProgressBackground"))
-                    .opacity(0.5)
+                    .opacity(0.4)
                     .frame(width: metrics.size.height * 0.7,
                            height: metrics.size.height * 0.7)
                 
                 // progress text
                 VStack {
                     Text("\(Int(progress * 100)) %")
-                    Text("\(elapsedDays) / \(totalDays)")
-                        .font(.system(size: 10))
+                        .lineLimit(1)
+                        .minimumScaleFactor(0.5)
+                    Text("\(elapsedDays) / \(totalDays) \(suffix)")
+                        .font(.system(size: 9))
+                        .lineLimit(1)
+                        .minimumScaleFactor(0.5)
                 }
+                .frame(width: metrics.size.height * 0.5,
+                       height: metrics.size.height * 0.6)
             }
         }
     }

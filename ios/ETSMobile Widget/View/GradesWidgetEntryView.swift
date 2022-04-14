@@ -15,7 +15,7 @@ struct GradesWidgetEntryView: View {
     
     var body: some View {
         ZStack {
-            Color("BackgroundColor")   // use app theme
+            Color("BackgroundColor")
 
             VStack {
                 
@@ -23,7 +23,7 @@ struct GradesWidgetEntryView: View {
                 
                 HStack{
                     Text(entry.title)
-                        .font(.system(size: 20))
+                        .font(.system(size: 18))
                         .frame(maxHeight: 20)
                     
                     Spacer()

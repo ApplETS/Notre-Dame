@@ -15,7 +15,7 @@ struct ProgressWidgetEntryView : View {
     
     var body: some View {
         ZStack {        // wrapper to apply custom background color
-            Color("BackgroundColor")   // use app theme
+            Color("BackgroundColor")
             
             VStack(spacing: spacing) {
                 
@@ -23,10 +23,12 @@ struct ProgressWidgetEntryView : View {
                     Text(entry.title)
                         .multilineTextAlignment(.leading)
                         .font(.system(size: 14))
-                        .fixedSize(horizontal: false, vertical: true)
+                        .lineLimit(2)
+                        .minimumScaleFactor(0.5)
                     Spacer()
                 }
-                .padding([.leading, .trailing], 16)
+                .frame(maxHeight: 25)       // TODO: scale to widget size
+                .padding([.leading, .trailing], dividerPadding)
                 
                 
                 Divider()
@@ -35,9 +37,10 @@ struct ProgressWidgetEntryView : View {
                 
                 ProgressBarView(progress: entry.progress,
                                 elapsedDays: entry.elapsedDays,
-                                totalDays: entry.totalDays)
+                                totalDays: entry.totalDays,
+                                suffix: String(entry.suffix.prefix(1)))
                     .scaledToFit()
-                    .padding(spacing + 2.0)
+                    .padding(spacing)
             }
             .padding([.top, .bottom], spacing)
         }
