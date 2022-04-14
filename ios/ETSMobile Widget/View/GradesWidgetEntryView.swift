@@ -28,13 +28,11 @@ struct GradesWidgetEntryView: View {
                     
                     Spacer()
                 }
-                .padding([.leading, .trailing], dividerPadding)
                 
                 Spacer()
                 
                 Divider()
                     .background(Color("DividerColor"))
-                    .padding([.leading, .trailing], dividerPadding)
                 
                 Spacer()
                 Spacer()
@@ -45,11 +43,12 @@ struct GradesWidgetEntryView: View {
                         SingleGradeView(course: entry.courseAcronyms[index], grade: entry.grades[index])
                     }
                 }
-                .padding([.leading, .trailing], 5)
+                .padding([.leading, .trailing], 5 - spacing)
                 
                 Spacer()
                 Spacer()
             }
+            .padding([.leading, .trailing], dividerPadding)
             .frame(maxHeight: .infinity)
         }
     }

@@ -22,18 +22,17 @@ struct SingleGradeView: View {
                 Text(course)
                     .foregroundColor(.white)
                     .font(.system(size: 16))
-//                    .padding(EdgeInsets(top: 0, leading: 4, bottom: 0, trailing: 4))    // FIXME: leading/trailing not working
-                    .scaledToFill()
+                    .lineLimit(1)
                     .minimumScaleFactor(0.5)
-//                    .padding(EdgeInsets(top: 7, leading: 0, bottom: 7, trailing: 0))    // FIXME: leading/trailing not working
+                    .padding([.leading, .trailing], 2)
             }
-            .frame(height: 30, alignment: .center)    // changing the height offsets the outline
+            .frame(height: 30, alignment: .center)    // warning: changing the height offsets the outline
             
             Divider()
             
             Text(grade)
                 .font(.system(size: 24))
-                .padding(EdgeInsets(top: 4, leading: 0, bottom: 4, trailing: 0))
+                .padding([.top, .bottom], 4)
         }
         .frame(minWidth: 50, idealWidth: 64, maxWidth: 70, minHeight: 60, idealHeight: 70, maxHeight: 70, alignment: .center)
         .cornerRadius(cornerRadius)
