@@ -45,7 +45,7 @@ jobs:
     needs:
       - delete_bot_comments
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Get the version from the pubspec
         id: pubspecVersion
         uses: CumulusDS/get-yaml-paths-action@v0.1.1
@@ -73,7 +73,7 @@ jobs:
     outputs:
       coverage: ${{ steps.coverage.outputs.percentage }}
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           ref: ${{ github.head_ref }}
           token: ${{ secrets.PTA }}
@@ -241,7 +241,7 @@ jobs:
       - testing
       - tag_validation
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - uses: subosito/flutter-action@v2
         with:
           flutter-version: '2.10.x'
