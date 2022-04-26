@@ -12,6 +12,7 @@ struct ProgressWidgetEntryView : View {
     
     let spacing = 8.0
     let dividerPadding = 16.0
+    let titleHeightRatio = 0.2
     
     var body: some View {
         ZStack {        // wrapper to apply custom background color
@@ -27,9 +28,8 @@ struct ProgressWidgetEntryView : View {
                         .minimumScaleFactor(0.5)
                     Spacer()
                 }
-                .frame(maxHeight: 25)       // TODO: scale to widget size
+                .frame(maxHeight: entry.widgetHeight * titleHeightRatio)
                 .padding([.leading, .trailing], dividerPadding)
-                
                 
                 Divider()
                     .background(Color("DividerColor"))

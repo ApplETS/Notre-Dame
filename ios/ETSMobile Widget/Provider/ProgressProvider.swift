@@ -10,22 +10,29 @@ import WidgetKit
 struct ProgressProvider: TimelineProvider {
     static let KEY_PREFIX = "progress_"
     
-    let placeholderProgressEntry = ProgressEntry(
-        date: Date(),
-        progress: 0.5,
-        elapsedDays: 51,
-        totalDays: 102,
-        suffix: "days",
-        title: "Session Progress")
+    let placeholderDate = Date()
+    let placeholderProgress = 0.5
+    let placeholderElapsedDays = 51
+    let placeholderTotalDays = 102
+    let placeholderSuffix = "days"
+    let placeholderTitle = "Session Progress"
     
     func placeholder(in context: Context) -> ProgressEntry {
-        placeholderProgressEntry
+        return ProgressEntry(
+            date: placeholderDate,
+            progress: placeholderProgress,
+            elapsedDays: placeholderElapsedDays,
+            totalDays: placeholderTotalDays,
+            suffix: placeholderSuffix,
+            title: placeholderTitle,
+            widgetHeight: context.displaySize.height)
     }
     
     func getSnapshot(in context: Context, completion: @escaping (ProgressEntry) -> ()) {
+        
         let entry: ProgressEntry
         if context.isPreview {
-            entry = placeholderProgressEntry
+            entry = placeholder(in: context)
         } else {            
             let data = UserDefaults.init(suiteName: widgetGroupId)
             let progress = data?.double(forKey: ProgressProvider.KEY_PREFIX + "progress")
@@ -35,11 +42,12 @@ struct ProgressProvider: TimelineProvider {
             let title = data?.string(forKey: ProgressProvider.KEY_PREFIX + "title")
             
             entry = ProgressEntry(date: Date(),
-                                  progress: progress ?? 0.5,
-                                  elapsedDays: elapsedDays ?? 51,
-                                  totalDays: totalDays ?? 102,
-                                  suffix: suffix ?? "days",
-                                  title: title ?? "Session Progress")
+                                  progress: progress ?? placeholderProgress,
+                                  elapsedDays: elapsedDays ?? placeholderElapsedDays,
+                                  totalDays: totalDays ?? placeholderTotalDays,
+                                  suffix: suffix ?? placeholderSuffix,
+                                  title: title ?? placeholderTitle,
+                                  widgetHeight: context.displaySize.height)
         }
         completion(entry)
     }
