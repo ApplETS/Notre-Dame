@@ -1,6 +1,5 @@
 // FLUTTER / DART / THIRD-PARTIES
 import 'package:firebase_analytics/firebase_analytics.dart';
-import 'package:firebase_analytics/observer.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 
@@ -8,7 +7,7 @@ import 'package:flutter/material.dart';
 class AnalyticsService {
   static const String _userPropertiesDomainKey = "domain";
 
-  final FirebaseAnalytics _analytics = FirebaseAnalytics();
+  final FirebaseAnalytics _analytics = FirebaseAnalytics.instance;
 
   final FirebaseCrashlytics _crashlytics = FirebaseCrashlytics.instance;
 
@@ -36,8 +35,9 @@ class AnalyticsService {
         .logEvent(name: prefix, parameters: {'message': mesTruncated});
   }
 
+  /// Set user properties to identify the user against firebase app.
   Future setUserProperties({@required String userId, String domain}) async {
-    await _analytics.setUserId(userId);
+    await _analytics.setUserId(id: userId);
     await _analytics.setUserProperty(
         name: _userPropertiesDomainKey, value: domain);
     await _crashlytics.setUserIdentifier(userId);

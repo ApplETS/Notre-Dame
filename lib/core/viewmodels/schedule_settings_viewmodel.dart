@@ -5,14 +5,13 @@ import 'package:table_calendar/table_calendar.dart';
 
 // CONSTANTS
 import 'package:notredame/core/constants/preferences_flags.dart';
-import 'package:notredame/core/constants/activity_code.dart';
 
 // MANAGERS
 import 'package:notredame/core/managers/settings_manager.dart';
 import 'package:notredame/core/managers/course_repository.dart';
 
 // MODELS
-import 'package:notredame/core/models/schedule_activity.dart';
+import 'package:ets_api_clients/models.dart';
 
 // OTHER
 import 'package:notredame/locator.dart';
@@ -76,6 +75,18 @@ class ScheduleSettingsViewModel
     setBusy(false);
   }
 
+  bool _showWeekEvents = false;
+
+  bool get showWeekEvents => _showWeekEvents;
+
+  set showWeekEvents(bool newValue) {
+    setBusy(true);
+    _settingsManager.setBool(
+        PreferencesFlag.scheduleSettingsShowWeekEvents, newValue);
+    _showWeekEvents = newValue;
+    setBusy(false);
+  }
+
   /// The schedule activities which needs to be shown (group A or B) grouped as courses
   final Map<String, List<ScheduleActivity>> _scheduleActivitiesByCourse = {};
 
@@ -116,6 +127,8 @@ class ScheduleSettingsViewModel
         as StartingDayOfWeek;
     _showTodayBtn =
         settings[PreferencesFlag.scheduleSettingsShowTodayBtn] as bool;
+    _showWeekEvents =
+        settings[PreferencesFlag.scheduleSettingsShowWeekEvents] as bool;
 
     _scheduleActivitiesByCourse.clear();
     final schedulesActivities = await _courseRepository.getScheduleActivities();

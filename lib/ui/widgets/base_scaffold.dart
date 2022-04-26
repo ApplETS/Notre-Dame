@@ -13,7 +13,7 @@ import 'package:notredame/ui/utils/app_theme.dart';
 // WIDGETS
 import 'package:notredame/ui/widgets/bottom_bar.dart';
 
-import '../../locator.dart';
+import 'package:notredame/locator.dart';
 
 /// Basic Scaffold to avoid boilerplate code in the application.
 /// Contains a loader controlled by [_isLoading]

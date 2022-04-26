@@ -5,7 +5,7 @@ description: The 4th generation of ÉTSMobile, the main gateway between the Éco
 # pub.dev using `pub publish`. This is preferred for private packages.
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 
-version: 4.7.2+1
+version: 4.9.11+1
 
 environment:
   sdk: ">=2.10.0 <3.0.0"
@@ -18,44 +18,50 @@ dependencies:
 
   # Architecture
   get_it: ^7.2.0
-  provider: ^5.0.0
+  provider: "^6.0.2"
   stacked: ^2.1.0
 
   # Firebase
-  firebase_core: ^1.3.0
-  firebase_analytics: ^8.1.2
-  firebase_crashlytics: ^2.0.6
+  firebase_core: ^1.14.0
+  firebase_analytics: ^9.1.4
+  firebase_crashlytics: ^2.6.1
 
   # Utils
   logger: ^1.0.0
-  xml: ^5.1.0
   url_launcher: ^6.0.6
   enum_to_string: ^2.0.1
   fluttertoast: ^8.0.8
 
   # Widgets
-  table_calendar: ^3.0.0
-  percent_indicator: ^3.0.1
-  feedback: ^1.2.1
+  table_calendar: ^3.0.5
+  percent_indicator: ^3.4.0
+  feedback: ^2.4.1
   flutter_staggered_animations: ^1.0.0
   flutter_siren: ^1.2.0
-
+  
+  # Customs
+  ets_api_clients:
+#    path: ../ETS-API-Clients/
+    git:
+      url: https://github.com/ApplETS/ETS-API-Clients.git
+      ref: 0.5.0
+  
   # Other
   http: ^0.13.4
   flutter_cache_manager: ^3.0.1
-  flutter_secure_storage: ^4.2.0
+  flutter_secure_storage: ^5.0.2
   shared_preferences: ^2.0.5
-  webview_flutter: ^2.1.1
+  webview_flutter: ^3.0.2
   flutter_custom_tabs: ^1.0.4
-  google_maps_flutter: ^2.0.11
-  github: ^8.2.0
-  package_info_plus: ^1.3.0
+  google_maps_flutter: ^2.1.3
+  github: ^9.1.0
+  package_info_plus: ^1.4.2
   feature_discovery: ^0.14.0
   path_provider: ^2.0.1
-  rive: ^0.7.3
-  connectivity_plus: ^1.0.4
-  flutter_svg: ^0.22.0
-  font_awesome_flutter: ^9.1.0
+  rive: ^0.8.4
+  connectivity_plus: ^2.2.1
+  flutter_svg: ^1.0.3
+  font_awesome_flutter: "^10.1.0"
   device_info_plus: ^3.1.0
   pub_semver: ^2.1.0
   home_widget: ^0.1.3
@@ -82,7 +88,6 @@ flutter:
   assets:
     - assets/images/
     - assets/html/
-    - assets/certificates/
     - assets/icons/
     - assets/animations/
     - assets/animations/discovery/en/

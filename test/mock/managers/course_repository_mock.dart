@@ -5,13 +5,10 @@ import 'package:mockito/mockito.dart';
 import 'package:notredame/core/managers/course_repository.dart';
 
 // MODELS
-import 'package:notredame/core/models/course_activity.dart';
-import 'package:notredame/core/models/schedule_activity.dart';
-import 'package:notredame/core/models/session.dart';
-import 'package:notredame/core/models/course.dart';
+import 'package:ets_api_clients/models.dart';
 
-// EXCEPTIONS
-import 'package:notredame/core/utils/api_exception.dart';
+// UTILS
+import 'package:ets_api_clients/exceptions.dart';
 
 class CourseRepositoryMock extends Mock implements CourseRepository {
   /// Stub the getter [coursesActivities] of [mock] when called will return [toReturn].
@@ -42,8 +39,7 @@ class CourseRepositoryMock extends Mock implements CourseRepository {
 
   /// Stub the function [getCoursesActivities] of [mock] when called will throw [toThrow].
   static void stubGetCoursesActivitiesException(CourseRepositoryMock mock,
-      {Exception toThrow =
-          const ApiException(prefix: 'ApiException', message: ''),
+      {Exception toThrow = const ApiException(prefix: 'ApiException'),
       bool fromCacheOnly}) {
     when(mock.getCoursesActivities(
             fromCacheOnly: fromCacheOnly ?? anyNamed("fromCacheOnly")))
@@ -59,8 +55,7 @@ class CourseRepositoryMock extends Mock implements CourseRepository {
 
   /// Stub the function [getSessions] of [mock] when called will throw [toThrow].
   static void stubGetSessionsException(CourseRepositoryMock mock,
-      {Exception toThrow =
-          const ApiException(prefix: 'ApiException', message: '')}) {
+      {Exception toThrow = const ApiException(prefix: 'ApiException')}) {
     when(mock.getSessions()).thenAnswer((_) =>
         Future.delayed(const Duration(milliseconds: 50))
             .then((value) => throw toThrow));
@@ -82,8 +77,7 @@ class CourseRepositoryMock extends Mock implements CourseRepository {
 
   /// Stub the function [getCourses] of [mock] when called will throw [toThrow].
   static void stubGetCoursesException(CourseRepositoryMock mock,
-      {Exception toThrow =
-          const ApiException(prefix: 'ApiException', message: ''),
+      {Exception toThrow = const ApiException(prefix: 'ApiException'),
       bool fromCacheOnly}) {
     when(mock.getCourses(
             fromCacheOnly: fromCacheOnly ?? anyNamed("fromCacheOnly")))
@@ -101,8 +95,7 @@ class CourseRepositoryMock extends Mock implements CourseRepository {
   /// Stub the function [getCourseSummary] of [mock] when called will throw [toThrow].
   static void stubGetCourseSummaryException(
       CourseRepositoryMock mock, Course courseCalled,
-      {Exception toThrow =
-          const ApiException(prefix: 'ApiException', message: '')}) {
+      {Exception toThrow = const ApiException(prefix: 'ApiException')}) {
     when(mock.getCourseSummary(courseCalled)).thenAnswer((_) =>
         Future.delayed(const Duration(milliseconds: 50))
             .then((value) => throw toThrow));
@@ -119,8 +112,7 @@ class CourseRepositoryMock extends Mock implements CourseRepository {
   /// Stub the function [getScheduleActivities] of [mock] when called will throw [toThrow].
   static void stubGetScheduleActivitiesException(
       CourseRepositoryMock mock, Course courseCalled,
-      {Exception toThrow =
-          const ApiException(prefix: 'ApiException', message: '')}) {
+      {Exception toThrow = const ApiException(prefix: 'ApiException')}) {
     when(mock.getScheduleActivities()).thenAnswer((_) =>
         Future.delayed(const Duration(milliseconds: 50))
             .then((value) => throw toThrow));

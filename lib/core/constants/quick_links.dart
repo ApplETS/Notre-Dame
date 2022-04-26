@@ -14,7 +14,7 @@ List<QuickLink> quickLinks(AppIntl intl) => [
       QuickLink(
           name: intl.ets_security_title,
           image: const FaIcon(
-            FontAwesomeIcons.shieldAlt,
+            FontAwesomeIcons.shieldHalved,
             color: AppTheme.etsLightRed,
             size: 64,
           ),

@@ -170,6 +170,7 @@ modules.xml
 .env
 .env.template
 
+# Coverage file
 coverage/html/
 
 .DS_Store

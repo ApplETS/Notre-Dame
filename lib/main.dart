@@ -8,6 +8,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:notredame/ui/widgets/custom_feedback.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_config/flutter_config.dart';
 
@@ -68,6 +69,12 @@ class ETSMobile extends StatelessWidget {
       create: (_) => settingsManager,
       child: Consumer<SettingsManager>(builder: (context, model, child) {
         return BetterFeedback(
+          mode: FeedbackMode.navigate,
+          feedbackBuilder: (context, onSubmit, scrollController) =>
+              CustomFeedbackForm(
+            onSubmit: onSubmit,
+            scrollController: scrollController,
+          ),
           localeOverride: model.locale,
           child: FeatureDiscovery(
             recordStepsInSharedPreferences: false,

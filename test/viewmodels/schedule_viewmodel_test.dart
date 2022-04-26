@@ -12,11 +12,9 @@ import 'package:notredame/core/managers/settings_manager.dart';
 import 'package:notredame/core/viewmodels/schedule_viewmodel.dart';
 
 // MODEL
-import 'package:notredame/core/models/course_activity.dart';
-import 'package:notredame/core/models/schedule_activity.dart';
+import 'package:ets_api_clients/models.dart';
 
 // CONSTANTS
-import 'package:notredame/core/constants/activity_code.dart';
 import 'package:notredame/core/constants/preferences_flags.dart';
 
 // OTHERS
@@ -152,6 +150,80 @@ void main() {
         activityLocation: "D-4002",
         name: "Laboratoire (Groupe B)"),
   ];
+
+  final gen104 = CourseActivity(
+      courseGroup: "GEN104",
+      courseName: "Generic course",
+      activityName: "TD",
+      activityDescription: "Activity description",
+      activityLocation: "location",
+      startDateTime: DateTime(2020, 1, 5, 18),
+      endDateTime: DateTime(2020, 1, 5, 21));
+
+  final gen105 = CourseActivity(
+      courseGroup: "GEN105",
+      courseName: "Generic course",
+      activityName: "TD",
+      activityDescription: "Activity description",
+      activityLocation: "location",
+      startDateTime: DateTime(2020, 1, 6, 18),
+      endDateTime: DateTime(2020, 1, 6, 21));
+
+  final gen106 = CourseActivity(
+      courseGroup: "GEN106",
+      courseName: "Generic course",
+      activityName: "TD",
+      activityDescription: "Activity description",
+      activityLocation: "location",
+      startDateTime: DateTime(2020, 1, 7, 18),
+      endDateTime: DateTime(2020, 1, 7, 21));
+
+  final gen107 = CourseActivity(
+      courseGroup: "GEN107",
+      courseName: "Generic course",
+      activityName: "TD",
+      activityDescription: "Activity description",
+      activityLocation: "location",
+      startDateTime: DateTime(2020, 1, 8, 18),
+      endDateTime: DateTime(2020, 1, 8, 21));
+
+  final gen108 = CourseActivity(
+      courseGroup: "GEN108",
+      courseName: "Generic course",
+      activityName: "TD",
+      activityDescription: "Activity description",
+      activityLocation: "location",
+      startDateTime: DateTime(2020, 1, 9, 18),
+      endDateTime: DateTime(2020, 1, 9, 21));
+
+  final gen109 = CourseActivity(
+      courseGroup: "GEN109",
+      courseName: "Generic course",
+      activityName: "TD",
+      activityDescription: "Activity description",
+      activityLocation: "location",
+      startDateTime: DateTime(2020, 1, 10, 18),
+      endDateTime: DateTime(2020, 1, 10, 21));
+
+  final gen110 = CourseActivity(
+      courseGroup: "GEN110",
+      courseName: "Generic course",
+      activityName: "TD",
+      activityDescription: "Activity description",
+      activityLocation: "location",
+      startDateTime: DateTime(2020, 1, 11, 18),
+      endDateTime: DateTime(2020, 1, 11, 21));
+
+  final List<CourseActivity> weekOfActivities = [
+    gen104,
+    gen105,
+    gen106,
+    gen107,
+    gen108,
+    gen109,
+    gen110
+  ];
+
   group("ScheduleViewModel - ", () {
     setUp(() async {
       // Setting up mocks
@@ -360,7 +432,7 @@ void main() {
         viewModel.selectedDate = DateTime(2020, 1, 2);
         clearInteractions(courseRepository);
 
-        expect(viewModel.selectedDateEvents, expected);
+        expect(viewModel.selectedDateEvents(viewModel.selectedDate), expected);
 
         verifyNoMoreInteractions(courseRepository);
         verifyNoMoreInteractions(settingsManager);
@@ -378,12 +450,98 @@ void main() {
         viewModel.selectedDate = DateTime(2020, 1, 3);
         clearInteractions(courseRepository);
 
-        expect(viewModel.selectedDateEvents, expected);
+        expect(viewModel.selectedDateEvents(viewModel.selectedDate), expected);
 
         verifyNoMoreInteractions(courseRepository);
         verifyNoMoreInteractions(settingsManager);
       });
     });
+
+    group('selectedWeekEvents', () {
+      final Map<PreferencesFlag, dynamic> settingsStartingDayMonday = {
+        PreferencesFlag.scheduleSettingsStartWeekday: StartingDayOfWeek.monday,
+      };
+      final Map<PreferencesFlag, dynamic> settingsStartingDaySaturday = {
+        PreferencesFlag.scheduleSettingsStartWeekday:
+            StartingDayOfWeek.saturday,
+      };
+
+      test('selectedWeekEvents for starting day sunday', () {
+        CourseRepositoryMock.stubCoursesActivities(
+            courseRepository as CourseRepositoryMock,
+            toReturn: weekOfActivities);
+
+        final expected = {
+          DateTime(2020, 1, 5): [gen104],
+          DateTime(2020, 1, 6): [gen105],
+          DateTime(2020, 1, 7): [gen106],
+          DateTime(2020, 1, 8): [gen107],
+          DateTime(2020, 1, 9): [gen108],
+          DateTime(2020, 1, 10): [gen109],
+          DateTime(2020, 1, 11): [gen110],
+        };
+
+        // Setting up the viewmodel
+        viewModel.coursesActivities;
+        viewModel.selectedDate = DateTime(2020, 1, 8);
+        clearInteractions(courseRepository);
+
+        expect(viewModel.selectedWeekEvents(), expected);
+      });
+
+      test('selectedWeekEvents for starting day monday', () async {
+        SettingsManagerMock.stubGetScheduleSettings(
+            settingsManager as SettingsManagerMock,
+            toReturn: settingsStartingDayMonday);
+        CourseRepositoryMock.stubCoursesActivities(
+            courseRepository as CourseRepositoryMock,
+            toReturn: weekOfActivities);
+
+        final expected = {
+          DateTime(2020, 1, 6): [gen105],
+          DateTime(2020, 1, 7): [gen106],
+          DateTime(2020, 1, 8): [gen107],
+          DateTime(2020, 1, 9): [gen108],
+          DateTime(2020, 1, 10): [gen109],
+          DateTime(2020, 1, 11): [gen110],
+        };
+
+        // Setting up the viewmodel
+        viewModel.coursesActivities;
+        viewModel.selectedDate = DateTime(2020, 1, 7);
+        await viewModel.loadSettings();
+        clearInteractions(courseRepository);
+
+        expect(viewModel.selectedWeekEvents(), expected);
+      });
+
+      test('selectedWeekEvents for starting day saturday', () async {
+        SettingsManagerMock.stubGetScheduleSettings(
+            settingsManager as SettingsManagerMock,
+            toReturn: settingsStartingDaySaturday);
+        CourseRepositoryMock.stubCoursesActivities(
+            courseRepository as CourseRepositoryMock,
+            toReturn: weekOfActivities);
+
+        final expected = {
+          DateTime(2020, 1, 5): [gen104],
+          DateTime(2020, 1, 6): [gen105],
+          DateTime(2020, 1, 7): [gen106],
+          DateTime(2020, 1, 8): [gen107],
+          DateTime(2020, 1, 9): [gen108],
+          DateTime(2020, 1, 10): [gen109],
+        };
+
+        // Setting up the viewmodel
+        viewModel.coursesActivities;
+        viewModel.selectedDate = DateTime(2020, 1, 7);
+        await viewModel.loadSettings();
+        clearInteractions(courseRepository);
+
+        expect(viewModel.selectedWeekEvents(), expected);
+      });
+    });
+
     group('refresh -', () {
       test(
           'Call SignetsAPI to get the coursesActivities than reload the coursesActivities',

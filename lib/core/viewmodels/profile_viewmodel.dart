@@ -8,11 +8,10 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:notredame/core/managers/user_repository.dart';
 
 // MODELS
-import 'package:notredame/core/models/profile_student.dart';
-import 'package:notredame/core/models/program.dart';
+import 'package:ets_api_clients/models.dart';
 
 // OTHERS
-import '../../locator.dart';
+import 'package:notredame/locator.dart';
 
 class ProfileViewModel extends FutureViewModel<List<Program>> {
   /// Load the user
