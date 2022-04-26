@@ -1,12 +1,8 @@
 /// An enum for all kinds of supported home screen widgets
-enum WidgetType {
-  progress,
-  grades
-}
+enum WidgetType { progress, grades }
 
 /// The extension corresponding to WidgetType to get associated constants
 extension WidgetTypeExtension on WidgetType {
-
   /// ID used by iOS systems to update the corresponding widget
   String get iOSname {
     switch (this) {
@@ -37,5 +33,4 @@ extension WidgetTypeExtension on WidgetType {
   /// Task IDs used by the system's work manager
   static const String progressTaskId = "app_widget_progress";
   static const String gradesTaskId = "app_widget_grades";
-
 }

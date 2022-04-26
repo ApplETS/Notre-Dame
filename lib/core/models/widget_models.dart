@@ -23,11 +23,10 @@ class ProgressWidgetData {
   int totalDays;
   String suffix;
 
-  ProgressWidgetData({
-    @required this.title,
-    @required this.progress,
-    @required this.elapsedDays,
-    @required this.totalDays,
-    @required this.suffix
-  });
+  ProgressWidgetData(
+      {@required this.title,
+      @required this.progress,
+      @required this.elapsedDays,
+      @required this.totalDays,
+      @required this.suffix});
 }
