@@ -151,7 +151,6 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
       updateProgressWidget();
     });
 
-
     return dashboard;
   }
 

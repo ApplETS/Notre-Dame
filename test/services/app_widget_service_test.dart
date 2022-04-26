@@ -34,13 +34,10 @@ void main() {
 
     test("init", () async {
       homeWidgetMock.stubInit();
-      expect(
-          await service.init(),
-          true);
+      expect(await service.init(), true);
     });
 
     group("Progress Widget", () {
-
       const String title = "Widget title";
       const double progress = 0.5;
       const int elapsedDays = 10;
@@ -63,13 +60,7 @@ void main() {
           '${ProgressWidgetData.KEY_PREFIX}suffix',
           '${ProgressWidgetData.KEY_PREFIX}title'
         ];
-        final listDatas = [
-          progress,
-          elapsedDays,
-          totalDays,
-          suffix,
-          title
-        ];
+        final listDatas = [progress, elapsedDays, totalDays, suffix, title];
         homeWidgetMock.stubSaveWidgetDataMock(listIds, listDatas);
 
         final test = await service.sendProgressData(progressWidgetData);
@@ -101,7 +92,8 @@ void main() {
         ];
         homeWidgetMock.stubSaveWidgetDataMock(listIds, listDatas);
 
-        expect(() async => service.sendProgressData(progressWidgetData), throwsException,
+        expect(() async => service.sendProgressData(progressWidgetData),
+            throwsException,
             reason: "Data is invalid for widget");
       });
     });
@@ -113,9 +105,7 @@ void main() {
 
       test("sendGradesData is successful", () async {
         final GradesWidgetData gradesWidgetData = GradesWidgetData(
-            title: title,
-            courseAcronyms: courseAcronyms,
-            grades: grades);
+            title: title, courseAcronyms: courseAcronyms, grades: grades);
 
         // stub HomeWidget saveData behavior to match given input
         final listIds = [
@@ -123,11 +113,7 @@ void main() {
           '${GradesWidgetData.KEY_PREFIX}grades',
           '${GradesWidgetData.KEY_PREFIX}title'
         ];
-        final listDatas = [
-          courseAcronyms,
-          grades,
-          title
-        ];
+        final listDatas = [courseAcronyms, grades, title];
         homeWidgetMock.stubSaveWidgetDataMock(listIds, listDatas);
 
         final test = await service.sendGradesData(gradesWidgetData);
@@ -136,9 +122,7 @@ void main() {
 
       test("sendGradesData stopped on error", () async {
         final GradesWidgetData gradesWidgetData = GradesWidgetData(
-            title: title,
-            courseAcronyms: courseAcronyms,
-            grades: grades);
+            title: title, courseAcronyms: courseAcronyms, grades: grades);
 
         // stub HomeWidget saveData behavior to match given input
         final listIds = [
@@ -146,14 +130,11 @@ void main() {
           '${GradesWidgetData.KEY_PREFIX}grades',
           '${GradesWidgetData.KEY_PREFIX}title'
         ];
-        final listDatas = [
-          courseAcronyms,
-          grades,
-          "Not the given title"
-        ];
+        final listDatas = [courseAcronyms, grades, "Not the given title"];
         homeWidgetMock.stubSaveWidgetDataMock(listIds, listDatas);
 
-        expect(() async => service.sendGradesData(gradesWidgetData), throwsException,
+        expect(() async => service.sendGradesData(gradesWidgetData),
+            throwsException,
             reason: "Data is invalid for widget");
       });
     });
@@ -161,19 +142,25 @@ void main() {
     group("updateWidget", () {
       test("progress", () async {
         const WidgetType type = WidgetType.progress;
-        homeWidgetMock.stubUpdateWidgetMock(type.androidName, type.androidName, type.iOSname);
+        homeWidgetMock.stubUpdateWidgetMock(
+            type.androidName, type.androidName, type.iOSname);
         expect(
             await HomeWidget.updateWidget(
-                name: type.androidName, androidName: type.androidName, iOSName: type.iOSname),
+                name: type.androidName,
+                androidName: type.androidName,
+                iOSName: type.iOSname),
             true);
       });
 
       test("grades", () async {
         const WidgetType type = WidgetType.grades;
-        homeWidgetMock.stubUpdateWidgetMock(type.androidName, type.androidName, type.iOSname);
+        homeWidgetMock.stubUpdateWidgetMock(
+            type.androidName, type.androidName, type.iOSname);
         expect(
             await HomeWidget.updateWidget(
-                name: type.androidName, androidName: type.androidName, iOSName: type.iOSname),
+                name: type.androidName,
+                androidName: type.androidName,
+                iOSName: type.iOSname),
             true);
       });
     });

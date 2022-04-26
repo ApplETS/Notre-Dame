@@ -23,9 +23,11 @@ class HomeWidgetMock extends Mock {
   /// Overrides [HomeWidget]'s channel messenger behavior on [HomeWidget.setAppGroupId]
   /// to enable [AppWidgetService.init] testing
   void stubInit() {
-    _messenger.setMockMethodCallHandler(_channel, (MethodCall methodCall) async {
+    _messenger.setMockMethodCallHandler(_channel,
+        (MethodCall methodCall) async {
       if (methodCall.method == 'setAppGroupId' &&
-          methodCall.arguments.toString() == {'groupId': 'group.ca.etsmtl.applets.ETSMobile'}.toString()) {
+          methodCall.arguments.toString() ==
+              {'groupId': 'group.ca.etsmtl.applets.ETSMobile'}.toString()) {
         return true;
       }
       return false;
@@ -34,14 +36,17 @@ class HomeWidgetMock extends Mock {
 
   /// Overrides [HomeWidget]'s channel messenger behavior on [HomeWidget.saveWidgetData]
   /// to enable [AppWidgetService] send...Data testing
-  void stubSaveWidgetDataMock(List<String> expectedIds, List<dynamic> expectedDatas) {
-    _messenger.setMockMethodCallHandler(_channel, (MethodCall methodCall) async {
+  void stubSaveWidgetDataMock(
+      List<String> expectedIds, List<dynamic> expectedDatas) {
+    _messenger.setMockMethodCallHandler(_channel,
+        (MethodCall methodCall) async {
       for (int i = 0; i < expectedIds.length; i++) {
         if (methodCall.method == 'saveWidgetData' &&
-            methodCall.arguments.toString() == {
-              'id': expectedIds[i],
-              'data': expectedDatas[i],
-            }.toString()) {
+            methodCall.arguments.toString() ==
+                {
+                  'id': expectedIds[i],
+                  'data': expectedDatas[i],
+                }.toString()) {
           return true;
         }
       }
@@ -53,13 +58,15 @@ class HomeWidgetMock extends Mock {
   /// Overrides [HomeWidget]'s channel messenger behavior on [HomeWidget.saveWidgetData]
   /// to enable [AppWidgetService] send...Data testing
   void stubUpdateWidgetMock(name, androidName, iOSName) {
-    _messenger.setMockMethodCallHandler(_channel, (MethodCall methodCall) async {
+    _messenger.setMockMethodCallHandler(_channel,
+        (MethodCall methodCall) async {
       if (methodCall.method == 'updateWidget' &&
-          methodCall.arguments.toString() == {
-            'name': name,
-            'android': androidName,
-            'ios': iOSName,
-          }.toString()) {
+          methodCall.arguments.toString() ==
+              {
+                'name': name,
+                'android': androidName,
+                'ios': iOSName,
+              }.toString()) {
         return true;
       }
       return false;
