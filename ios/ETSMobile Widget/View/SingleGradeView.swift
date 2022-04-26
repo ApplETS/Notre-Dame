@@ -17,7 +17,7 @@ struct SingleGradeView: View {
         VStack (alignment: .center, spacing: 0) {
             
             ZStack {
-                Color.red.edgesIgnoringSafeArea(.all)
+                Color("ETSLightRed").edgesIgnoringSafeArea(.all)
                 
                 Text(course)
                     .foregroundColor(.white)
