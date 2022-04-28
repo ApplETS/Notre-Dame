@@ -1,5 +1,4 @@
 // FLUTTER / DART / THIRD-PARTIES
-import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:home_widget/home_widget.dart';
@@ -57,7 +56,7 @@ class HomeWidgetMock extends Mock {
 
   /// Overrides [HomeWidget]'s channel messenger behavior on [HomeWidget.saveWidgetData]
   /// to enable [AppWidgetService] send...Data testing
-  void stubUpdateWidgetMock(name, androidName, iOSName) {
+  void stubUpdateWidgetMock(String name, String androidName, String iOSName) {
     _messenger.setMockMethodCallHandler(_channel,
         (MethodCall methodCall) async {
       if (methodCall.method == 'updateWidget' &&

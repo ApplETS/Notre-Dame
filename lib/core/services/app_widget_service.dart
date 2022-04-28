@@ -1,5 +1,4 @@
 // FLUTTER / DART / THIRD-PARTIES
-import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:home_widget/home_widget.dart';
 
@@ -15,7 +14,7 @@ import 'package:notredame/locator.dart';
 
 /// Manage the app widget function to update data and visual.
 class AppWidgetService {
-  static const String TAG = "AppWidgetService";
+  static const String tag = "AppWidgetService";
 
   final AnalyticsService _analyticsService = locator<AnalyticsService>();
 
@@ -27,21 +26,21 @@ class AppWidgetService {
   Future<bool> sendProgressData(ProgressWidgetData progressWidgetData) async {
     try {
       await HomeWidget.saveWidgetData<double>(
-          '${ProgressWidgetData.KEY_PREFIX}progress',
+          '${ProgressWidgetData.keyPrefix}progress',
           progressWidgetData.progress);
       await HomeWidget.saveWidgetData<int>(
-          '${ProgressWidgetData.KEY_PREFIX}elapsedDays',
+          '${ProgressWidgetData.keyPrefix}elapsedDays',
           progressWidgetData.elapsedDays);
       await HomeWidget.saveWidgetData<int>(
-          '${ProgressWidgetData.KEY_PREFIX}totalDays',
+          '${ProgressWidgetData.keyPrefix}totalDays',
           progressWidgetData.totalDays);
       await HomeWidget.saveWidgetData<String>(
-          '${ProgressWidgetData.KEY_PREFIX}suffix', progressWidgetData.suffix);
+          '${ProgressWidgetData.keyPrefix}suffix', progressWidgetData.suffix);
       return await HomeWidget.saveWidgetData<String>(
-          '${ProgressWidgetData.KEY_PREFIX}title', progressWidgetData.title);
-    } on PlatformException catch (exception) {
+          '${ProgressWidgetData.keyPrefix}title', progressWidgetData.title);
+    } on PlatformException {
       _analyticsService.logError(
-          TAG, 'Error sending data to session progress widget.');
+          tag, 'Error sending data to session progress widget.');
       rethrow;
     }
   }
@@ -50,14 +49,14 @@ class AppWidgetService {
   Future<bool> sendGradesData(GradesWidgetData gradeWidgetData) async {
     try {
       await HomeWidget.saveWidgetData<List<String>>(
-          '${GradesWidgetData.KEY_PREFIX}courseAcronyms',
+          '${GradesWidgetData.keyPrefix}courseAcronyms',
           gradeWidgetData.courseAcronyms);
       await HomeWidget.saveWidgetData<List<String>>(
-          '${GradesWidgetData.KEY_PREFIX}grades', gradeWidgetData.grades);
+          '${GradesWidgetData.keyPrefix}grades', gradeWidgetData.grades);
       return await HomeWidget.saveWidgetData<String>(
-          '${GradesWidgetData.KEY_PREFIX}title', gradeWidgetData.title);
-    } on PlatformException catch (exception) {
-      _analyticsService.logError(TAG, 'Error sending data to grades widget.');
+          '${GradesWidgetData.keyPrefix}title', gradeWidgetData.title);
+    } on PlatformException {
+      _analyticsService.logError(tag, 'Error sending data to grades widget.');
       rethrow;
     }
   }
@@ -69,8 +68,8 @@ class AppWidgetService {
           name: type.androidName,
           androidName: type.androidName,
           iOSName: type.iOSname);
-    } on PlatformException catch (exception) {
-      _analyticsService.logError(TAG, 'Error updating widget ${type.iOSname}.');
+    } on PlatformException {
+      _analyticsService.logError(tag, 'Error updating widget ${type.iOSname}.');
     }
   }
 }

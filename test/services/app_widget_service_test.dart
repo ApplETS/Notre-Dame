@@ -1,7 +1,6 @@
 // FLUTTER / DART / THIRD-PARTIES
 import 'package:flutter_test/flutter_test.dart';
 import 'package:home_widget/home_widget.dart';
-import 'package:mockito/mockito.dart';
 
 // CONSTANTS
 import 'package:notredame/core/constants/widget_helper.dart';
@@ -26,10 +25,9 @@ void main() {
 
   group("AppWidgetServiceTest - ", () {
     setUp(() {
+      analyticsService = setupAnalyticsServiceMock();
       service = AppWidgetService();
       homeWidgetMock = HomeWidgetMock();
-
-      analyticsService = setupAnalyticsServiceMock();
     });
 
     test("init", () async {
@@ -44,7 +42,7 @@ void main() {
       const int totalDays = 20;
       const String suffix = "d";
 
-      test("sendProgressData is sucessful", () async {
+      test("sendProgressData is successful", () async {
         final ProgressWidgetData progressWidgetData = ProgressWidgetData(
             title: title,
             progress: progress,
@@ -54,11 +52,11 @@ void main() {
 
         // stub HomeWidget saveData behavior to match given input
         final listIds = [
-          '${ProgressWidgetData.KEY_PREFIX}progress',
-          '${ProgressWidgetData.KEY_PREFIX}elapsedDays',
-          '${ProgressWidgetData.KEY_PREFIX}totalDays',
-          '${ProgressWidgetData.KEY_PREFIX}suffix',
-          '${ProgressWidgetData.KEY_PREFIX}title'
+          '${ProgressWidgetData.keyPrefix}progress',
+          '${ProgressWidgetData.keyPrefix}elapsedDays',
+          '${ProgressWidgetData.keyPrefix}totalDays',
+          '${ProgressWidgetData.keyPrefix}suffix',
+          '${ProgressWidgetData.keyPrefix}title'
         ];
         final listDatas = [progress, elapsedDays, totalDays, suffix, title];
         homeWidgetMock.stubSaveWidgetDataMock(listIds, listDatas);
@@ -77,11 +75,11 @@ void main() {
 
         // stub HomeWidget saveData behavior to match given input
         final listIds = [
-          '${ProgressWidgetData.KEY_PREFIX}progress',
-          '${ProgressWidgetData.KEY_PREFIX}elapsedDays',
-          '${ProgressWidgetData.KEY_PREFIX}totalDays',
-          '${ProgressWidgetData.KEY_PREFIX}suffix',
-          '${ProgressWidgetData.KEY_PREFIX}title'
+          '${ProgressWidgetData.keyPrefix}progress',
+          '${ProgressWidgetData.keyPrefix}elapsedDays',
+          '${ProgressWidgetData.keyPrefix}totalDays',
+          '${ProgressWidgetData.keyPrefix}suffix',
+          '${ProgressWidgetData.keyPrefix}title'
         ];
         final listDatas = [
           progress,
@@ -109,9 +107,9 @@ void main() {
 
         // stub HomeWidget saveData behavior to match given input
         final listIds = [
-          '${GradesWidgetData.KEY_PREFIX}courseAcronyms',
-          '${GradesWidgetData.KEY_PREFIX}grades',
-          '${GradesWidgetData.KEY_PREFIX}title'
+          '${GradesWidgetData.keyPrefix}courseAcronyms',
+          '${GradesWidgetData.keyPrefix}grades',
+          '${GradesWidgetData.keyPrefix}title'
         ];
         final listDatas = [courseAcronyms, grades, title];
         homeWidgetMock.stubSaveWidgetDataMock(listIds, listDatas);
@@ -126,9 +124,9 @@ void main() {
 
         // stub HomeWidget saveData behavior to match given input
         final listIds = [
-          '${GradesWidgetData.KEY_PREFIX}courseAcronyms',
-          '${GradesWidgetData.KEY_PREFIX}grades',
-          '${GradesWidgetData.KEY_PREFIX}title'
+          '${GradesWidgetData.keyPrefix}courseAcronyms',
+          '${GradesWidgetData.keyPrefix}grades',
+          '${GradesWidgetData.keyPrefix}title'
         ];
         final listDatas = [courseAcronyms, grades, "Not the given title"];
         homeWidgetMock.stubSaveWidgetDataMock(listIds, listDatas);

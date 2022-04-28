@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 
 class GradesWidgetData {
-  static const String KEY_PREFIX = "grade_";
+  static const String keyPrefix = "grade_";
 
   List<String> courseAcronyms;
   List<String> grades;
@@ -15,7 +15,7 @@ class GradesWidgetData {
 }
 
 class ProgressWidgetData {
-  static const String KEY_PREFIX = "progress_";
+  static const String keyPrefix = "progress_";
 
   String title;
   double progress;
