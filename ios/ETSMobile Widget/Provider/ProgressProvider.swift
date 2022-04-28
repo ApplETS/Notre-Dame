@@ -11,8 +11,8 @@ struct ProgressProvider: TimelineProvider {
     static let KEY_PREFIX = "progress_"
     
     let placeholderDate = Date()
-    let placeholderProgress = 0.5
-    let placeholderElapsedDays = 51
+    let placeholderProgress = 0.66
+    let placeholderElapsedDays = 67
     let placeholderTotalDays = 102
     let placeholderSuffix = "days"
     let placeholderTitle = "Session Progress"
@@ -33,7 +33,7 @@ struct ProgressProvider: TimelineProvider {
         let entry: ProgressEntry
         if context.isPreview {
             entry = placeholder(in: context)
-        } else {            
+        } else {
             let data = UserDefaults.init(suiteName: widgetGroupId)
             let progress = data?.double(forKey: ProgressProvider.KEY_PREFIX + "progress")
             let elapsedDays = data?.integer(forKey: ProgressProvider.KEY_PREFIX + "elapsedDays")
