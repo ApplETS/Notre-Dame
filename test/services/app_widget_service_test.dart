@@ -4,7 +4,7 @@ import 'package:home_widget/home_widget.dart';
 import 'package:mockito/mockito.dart';
 
 // CONSTANTS
-import 'package:notredame/core/constants/widget_types.dart';
+import 'package:notredame/core/constants/widget_helper.dart';
 import 'package:notredame/core/services/analytics_service.dart';
 
 // SERVICE

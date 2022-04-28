@@ -12,8 +12,8 @@ struct GradesProvider: TimelineProvider {
     
     let placeholderGradesEntry = GradesEntry(
         date: Date(),
-        courseAcronyms: ["ABC123", "DEF456", "GHI789", "ABC123", "DEF456", "GHI789"],
-        grades: ["A+", "B", "A+", "B", "A+" , "E"],
+        courseAcronyms: ["ABC123", "DEF456", "GHI789", "JKL012", "MNO345"],
+        grades: ["A+", "B", "A+", "B", "A+"],
         title: "Grades - A2022")
     
     func placeholder(in context: Context) -> GradesEntry {

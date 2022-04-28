@@ -4,7 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:home_widget/home_widget.dart';
 
 // CONSTANTS
-import 'package:notredame/core/constants/widget_types.dart';
+import 'package:notredame/core/constants/widget_helper.dart';
 import 'package:notredame/core/models/widget_models.dart';
 
 // MANAGER / SERVICE
@@ -16,6 +16,8 @@ import 'package:notredame/locator.dart';
 /// Manage the app widget function to update data and visual.
 class AppWidgetService {
   static const String TAG = "AppWidgetService";
+
+  final AnalyticsService _analyticsService = locator<AnalyticsService>();
 
   Future<bool> init() async {
     return HomeWidget.setAppGroupId('group.ca.etsmtl.applets.ETSMobile');
@@ -38,8 +40,7 @@ class AppWidgetService {
       return await HomeWidget.saveWidgetData<String>(
           '${ProgressWidgetData.KEY_PREFIX}title', progressWidgetData.title);
     } on PlatformException catch (exception) {
-      locator<AnalyticsService>()
-          .logError(TAG, 'Error sending data to session progress widget.');
+      _analyticsService.logError(TAG, 'Error sending data to session progress widget.');
       rethrow;
     }
   }
@@ -55,8 +56,7 @@ class AppWidgetService {
       return await HomeWidget.saveWidgetData<String>(
           '${GradesWidgetData.KEY_PREFIX}title', gradeWidgetData.title);
     } on PlatformException catch (exception) {
-      locator<AnalyticsService>()
-          .logError(TAG, 'Error sending data to grades widget.');
+      _analyticsService.logError(TAG, 'Error sending data to grades widget.');
       rethrow;
     }
   }
@@ -69,9 +69,7 @@ class AppWidgetService {
           androidName: type.androidName,
           iOSName: type.iOSname);
     } on PlatformException catch (exception) {
-      debugPrint('Error Updating Widget. $exception');
-      locator<AnalyticsService>()
-          .logError(TAG, 'Error updating widget ${type.iOSname}.');
+      _analyticsService.logError(TAG, 'Error updating widget ${type.iOSname}.');
     }
   }
 }

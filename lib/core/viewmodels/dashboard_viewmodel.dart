@@ -11,7 +11,7 @@ import 'package:notredame/core/constants/preferences_flags.dart';
 import 'package:notredame/core/constants/discovery_ids.dart';
 import 'package:notredame/core/constants/progress_bar_text_options.dart';
 import 'package:notredame/core/constants/update_code.dart';
-import 'package:notredame/core/constants/widget_types.dart';
+import 'package:notredame/core/constants/widget_helper.dart';
 
 // MANAGER / SERVICE
 import 'package:notredame/core/managers/settings_manager.dart';
