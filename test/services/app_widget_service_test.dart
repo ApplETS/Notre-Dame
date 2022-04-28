@@ -4,7 +4,6 @@ import 'package:home_widget/home_widget.dart';
 
 // CONSTANTS
 import 'package:notredame/core/constants/widget_helper.dart';
-import 'package:notredame/core/services/analytics_service.dart';
 
 // SERVICE
 import 'package:notredame/core/services/app_widget_service.dart';
@@ -21,11 +20,10 @@ void main() {
 
   AppWidgetService service;
   HomeWidgetMock homeWidgetMock;
-  AnalyticsService analyticsService;
 
   group("AppWidgetServiceTest - ", () {
     setUp(() {
-      analyticsService = setupAnalyticsServiceMock();
+      setupAnalyticsServiceMock();
       service = AppWidgetService();
       homeWidgetMock = HomeWidgetMock();
     });

@@ -18,7 +18,7 @@ import 'package:notredame/ui/router.dart';
 // SERVICES
 import 'package:notredame/core/services/navigation_service.dart';
 import 'package:notredame/core/services/analytics_service.dart';
-import 'core/services/app_widget_service.dart';
+import 'package:notredame/core/services/app_widget_service.dart';
 
 // UTILS
 import 'package:notredame/locator.dart';
