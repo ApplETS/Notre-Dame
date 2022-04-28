@@ -40,7 +40,8 @@ class AppWidgetService {
       return await HomeWidget.saveWidgetData<String>(
           '${ProgressWidgetData.KEY_PREFIX}title', progressWidgetData.title);
     } on PlatformException catch (exception) {
-      _analyticsService.logError(TAG, 'Error sending data to session progress widget.');
+      _analyticsService.logError(
+          TAG, 'Error sending data to session progress widget.');
       rethrow;
     }
   }
