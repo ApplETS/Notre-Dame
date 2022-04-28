@@ -177,7 +177,8 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
   /// MUST be called after futureToRunGrades() completed (uses courses object)
   Future updateGradesWidget() async {
     try {
-      final List<String> acronyms = courses.map((course) => course.acronym).toList();
+      final List<String> acronyms =
+          courses.map((course) => course.acronym).toList();
       final List<String> grades = courses.map((course) {
         // Code copied from GradeButton.gradeString -> TODO: refactor this
         if (course.grade != null) {
