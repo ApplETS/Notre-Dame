@@ -22,7 +22,6 @@ end
 
 platform :ios do
   desc "Deploy a new version to the Apple Store"
-  
   lane :deploy do
     keychain_name = ENV['MATCH_KEYCHAIN_NAME']
     keychain_password = ENV["MATCH_KEYCHAIN_PASSWORD"]
