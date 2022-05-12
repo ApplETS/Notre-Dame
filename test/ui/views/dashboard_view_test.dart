@@ -152,6 +152,8 @@ void main() {
       setupNavigationServiceMock();
       courseRepository = setupCourseRepositoryMock();
       setupNetworkingServiceMock();
+      setupAnalyticsServiceMock();
+      setupAppWidgetServiceMock();
 
       CourseRepositoryMock.stubSessions(
           courseRepository as CourseRepositoryMock,
