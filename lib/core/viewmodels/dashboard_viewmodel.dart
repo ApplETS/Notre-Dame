@@ -142,16 +142,20 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
 
     // load data for both grade cards & grades home screen widget
     // (moved from getCardsToDisplay())
-    Future.wait([
-      futureToRunGrades(),
-      futureToRunSessionProgressBar(),
-      futureToRunSchedule()
-    ]).then((_) {
-      updateGradesWidget();
-      updateProgressWidget();
-    });
+    await loadDataAndUpdateWidget();
 
     return dashboard;
+  }
+
+  Future loadDataAndUpdateWidget() async {
+      return Future.wait([
+        futureToRunGrades(),
+        futureToRunSessionProgressBar(),
+        futureToRunSchedule()
+      ]).then((_) {
+        updateGradesWidget();
+        updateProgressWidget();
+      });
   }
 
   Future updateProgressWidget() async {
@@ -180,7 +184,7 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
       final List<String> acronyms =
           courses.map((course) => course.acronym).toList();
       final List<String> grades = courses.map((course) {
-        // Code copied from GradeButton.gradeString -> TODO: refactor this
+        // Code copied from GradeButton.gradeString
         if (course.grade != null) {
           return course.grade;
         } else if (course.summary != null &&
@@ -192,13 +196,8 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
         return _appIntl.grades_not_available;
       }).toList();
 
-      // test
-      // List<String> acronyms = <String>['ABC123', 'DEF456', 'GHI789', 'ABC123', 'DEF456', 'GHI789'];
-      // List<String> grades = <String>['A+', '81%', 'B-', 'A+', '81%', 'B-'];
-
-      // might not work if no course in this session?
       await _appWidgetService.sendGradesData(GradesWidgetData(
-          title: "${_appIntl.grades_title} - ${courses[0].session}",
+          title: "${_appIntl.grades_title} - ${_courseRepository.activeSessions ?? _appIntl.session_without}",
           courseAcronyms: acronyms,
           grades: grades));
       await _appWidgetService.updateWidget(WidgetType.grades);
@@ -248,6 +247,8 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
     });
 
     getCardsToDisplay();
+
+    loadDataAndUpdateWidget();
 
     notifyListeners();
   }

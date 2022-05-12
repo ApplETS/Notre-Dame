@@ -6,6 +6,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:logger/logger.dart';
+import 'package:notredame/core/services/app_widget_service.dart';
 
 // OTHER
 import 'package:notredame/locator.dart';
@@ -32,6 +33,7 @@ import 'mock/managers/course_repository_mock.dart';
 import 'mock/managers/settings_manager_mock.dart';
 import 'mock/managers/user_repository_mock.dart';
 import 'mock/services/analytics_service_mock.dart';
+import 'mock/services/app_widget_service_mock.dart';
 import 'mock/services/flutter_secure_storage_mock.dart';
 import 'mock/services/github_api_mock.dart';
 import 'mock/services/internal_info_service_mock.dart';
@@ -148,6 +150,16 @@ void setupFlutterToastMock([WidgetTester tester]) {
     }
     return false;
   });
+}
+
+/// Load a mock of the [AppWidgetService]
+AppWidgetService setupAppWidgetServiceMock() {
+  unregister<AppWidgetService>();
+  final service = AppWidgetServiceMock();
+
+  locator.registerSingleton<AppWidgetService>(service);
+
+  return service;
 }
 
 /// Load a mock of the [NavigationService]
