@@ -148,14 +148,14 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
   }
 
   Future loadDataAndUpdateWidget() async {
-      return Future.wait([
-        futureToRunGrades(),
-        futureToRunSessionProgressBar(),
-        futureToRunSchedule()
-      ]).then((_) {
-        updateGradesWidget();
-        updateProgressWidget();
-      });
+    return Future.wait([
+      futureToRunGrades(),
+      futureToRunSessionProgressBar(),
+      futureToRunSchedule()
+    ]).then((_) {
+      updateGradesWidget();
+      updateProgressWidget();
+    });
   }
 
   Future updateProgressWidget() async {
@@ -197,7 +197,8 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
       }).toList();
 
       await _appWidgetService.sendGradesData(GradesWidgetData(
-          title: "${_appIntl.grades_title} - ${_courseRepository.activeSessions ?? _appIntl.session_without}",
+          title:
+              "${_appIntl.grades_title} - ${_courseRepository.activeSessions ?? _appIntl.session_without}",
           courseAcronyms: acronyms,
           grades: grades));
       await _appWidgetService.updateWidget(WidgetType.grades);
