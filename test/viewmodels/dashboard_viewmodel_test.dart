@@ -301,14 +301,18 @@ void main() {
       test("The initial cards are correctly loaded", () async {
         setupFlutterToastMock();
         CourseRepositoryMock.stubGetCoursesActivities(
-            courseRepository as CourseRepositoryMock, fromCacheOnly: true);
+            courseRepository as CourseRepositoryMock,
+            fromCacheOnly: true);
         CourseRepositoryMock.stubGetCourses(
-            courseRepository as CourseRepositoryMock, fromCacheOnly: true);
+            courseRepository as CourseRepositoryMock,
+            fromCacheOnly: true);
         CourseRepositoryMock.stubGetCoursesException(
-            courseRepository as CourseRepositoryMock, fromCacheOnly: true);
+            courseRepository as CourseRepositoryMock,
+            fromCacheOnly: true);
         CourseRepositoryMock.stubGetSessions(
             courseRepository as CourseRepositoryMock);
-        CourseRepositoryMock.stubActiveSessions(courseRepository as CourseRepositoryMock);
+        CourseRepositoryMock.stubActiveSessions(
+            courseRepository as CourseRepositoryMock);
         CourseRepositoryMock.stubCoursesActivities(
             courseRepository as CourseRepositoryMock);
 
@@ -337,7 +341,8 @@ void main() {
             courseRepository as CourseRepositoryMock,
             toReturn: activities);
         CourseRepositoryMock.stubGetCourses(
-            courseRepository as CourseRepositoryMock, toReturn: courses);
+            courseRepository as CourseRepositoryMock,
+            toReturn: courses);
 
         await viewModel.futureToRun();
 
