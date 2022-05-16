@@ -22,7 +22,7 @@ dependencies:
   stacked: ^2.1.0
 
   # Firebase
-  firebase_core: ^1.14.0
+  firebase_core: ^1.17.0
   firebase_analytics: ^9.1.4
   firebase_crashlytics: ^2.6.1
 
