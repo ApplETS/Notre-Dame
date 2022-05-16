@@ -275,5 +275,6 @@
     "placeholders": {
       "remainingDays": {}
     }
-  }
+  },
+  "in_app_review_title": "Évaluez-nous!"
 }

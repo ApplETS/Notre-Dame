@@ -22,6 +22,7 @@ import 'package:notredame/core/managers/course_repository.dart';
 //SERVICE
 import 'package:notredame/core/services/navigation_service.dart';
 import 'package:notredame/core/services/preferences_service.dart';
+import 'package:notredame/core/services/in_app_review_service.dart';
 
 // OTHERS
 import 'package:notredame/core/constants/router_paths.dart';
@@ -86,7 +87,7 @@ class MoreViewModel extends FutureViewModel {
       onError(e);
     }
 
-    await _preferencesService.clear();
+    await _preferencesService.clearWithoutPersistentKey();
 
     await _userRepository.logOut();
     _settingsManager.resetLanguageAndThemeMode();
@@ -121,5 +122,21 @@ class MoreViewModel extends FutureViewModel {
     await _settingsManager.setBool(PreferencesFlag.discoveryMore, true);
 
     return true;
+  }
+
+  static Future<bool> launchInAppReview() async {
+    final PreferencesService _preferencesService =
+        locator<PreferencesService>();
+    final InAppReviewService _inAppReviewService =
+        locator<InAppReviewService>();
+
+    if (await _inAppReviewService.isAvailable()) {
+      await _inAppReviewService.requestReview();
+      _preferencesService.setBool(PreferencesFlag.hasRatingBeenRequested,
+          value: true);
+
+      return true;
+    }
+    return false;
   }
 }

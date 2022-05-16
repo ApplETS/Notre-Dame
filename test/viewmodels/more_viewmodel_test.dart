@@ -85,7 +85,7 @@ void main() {
       // Check if the cacheManager has been emptied out
       cacheManagerMock.empty(),
       // Check if preference manager is clear
-      preferenceService.clear(),
+      preferenceService.clearWithoutPersistentKey(),
       // Check if user repository logOut is called
       userRepositoryMock.logOut(),
       // Check if the settings manager has reset lang and theme and notified his listener
