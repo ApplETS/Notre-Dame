@@ -491,6 +491,32 @@ void main() {
         expect(viewModel.sessionDays, [1, 2]);
       });
 
+      test("Invalid date (Superior limit)", () async {
+        CourseRepositoryMock.stubActiveSessions(
+            courseRepository as CourseRepositoryMock,
+            toReturn: [session]);
+        SettingsManagerMock.stubGetDashboard(
+            settingsManager as SettingsManagerMock,
+            toReturn: dashboard);
+        viewModel.todayDate = DateTime(2020, 1, 20);
+        await viewModel.futureToRunSessionProgressBar();
+        expect(viewModel.progress, 1);
+        expect(viewModel.sessionDays, [2, 2]);
+      });
+
+      test("Invalid date (Lower limit)", () async {
+        CourseRepositoryMock.stubActiveSessions(
+            courseRepository as CourseRepositoryMock,
+            toReturn: [session]);
+        SettingsManagerMock.stubGetDashboard(
+            settingsManager as SettingsManagerMock,
+            toReturn: dashboard);
+        viewModel.todayDate = DateTime(2019, 12, 31);
+        await viewModel.futureToRunSessionProgressBar();
+        expect(viewModel.progress, 0);
+        expect(viewModel.sessionDays, [0, 2]);
+      });
+
       test("Active session is null", () async {
         CourseRepositoryMock.stubActiveSessions(
             courseRepository as CourseRepositoryMock);

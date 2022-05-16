@@ -81,12 +81,7 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
     if (_courseRepository.activeSessions.isEmpty) {
       return -1.0;
     } else {
-      return todayDate
-              .difference(_courseRepository.activeSessions.first.startDate)
-              .inDays /
-          _courseRepository.activeSessions.first.endDate
-              .difference(_courseRepository.activeSessions.first.startDate)
-              .inDays;
+      return sessionDays[0] / sessionDays[1];
     }
   }
 
@@ -108,14 +103,20 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
     if (_courseRepository.activeSessions.isEmpty) {
       return [0, 0];
     } else {
-      return [
-        todayDate
-            .difference(_courseRepository.activeSessions.first.startDate)
-            .inDays,
-        _courseRepository.activeSessions.first.endDate
-            .difference(_courseRepository.activeSessions.first.startDate)
-            .inDays
-      ];
+      int dayCompleted = todayDate
+          .difference(_courseRepository.activeSessions.first.startDate)
+          .inDays;
+      final dayInTheSession = _courseRepository.activeSessions.first.endDate
+          .difference(_courseRepository.activeSessions.first.startDate)
+          .inDays;
+
+      if (dayCompleted > dayInTheSession) {
+        dayCompleted = dayInTheSession;
+      } else if (dayCompleted < 0) {
+        dayCompleted = 0;
+      }
+
+      return [dayCompleted, dayInTheSession];
     }
   }
 
