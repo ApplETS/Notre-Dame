@@ -18,11 +18,14 @@ import 'package:notredame/ui/widgets/haptics_container.dart';
 
 // MODELS / CONSTANTS
 import 'package:ets_api_clients/models.dart';
+import 'package:notredame/locator.dart';
 import 'package:notredame/core/constants/preferences_flags.dart';
 import 'package:notredame/core/constants/urls.dart';
 import 'package:notredame/core/constants/discovery_ids.dart';
 import 'package:notredame/core/constants/progress_bar_text_options.dart';
 import 'package:notredame/core/constants/update_code.dart';
+import 'package:notredame/core/constants/router_paths.dart';
+import 'package:notredame/core/services/navigation_service.dart';
 
 // UTILS
 import 'package:notredame/core/utils/utils.dart';
@@ -41,6 +44,7 @@ class DashboardView extends StatefulWidget {
 class _DashboardViewState extends State<DashboardView>
     with TickerProviderStateMixin {
   Text progressBarText;
+  final NavigationService _navigationService = locator<NavigationService>();
 
   @override
   void initState() {
@@ -292,8 +296,12 @@ class _DashboardViewState extends State<DashboardView>
               alignment: Alignment.centerLeft,
               child: Container(
                 padding: const EdgeInsets.fromLTRB(17, 15, 0, 0),
-                child: Text(AppIntl.of(context).title_schedule,
-                    style: Theme.of(context).textTheme.headline6),
+                child: GestureDetector(
+                  onTap: () => _navigationService
+                      .pushNamedAndRemoveUntil(RouterPaths.schedule),
+                  child: Text(AppIntl.of(context).title_schedule,
+                      style: Theme.of(context).textTheme.headline6),
+                ),
               )),
           if (model.todayDateEvents.isEmpty)
             SizedBox(
@@ -336,8 +344,12 @@ class _DashboardViewState extends State<DashboardView>
                 alignment: Alignment.centerLeft,
                 child: Container(
                   padding: const EdgeInsets.fromLTRB(17, 15, 0, 0),
-                  child: Text(AppIntl.of(context).grades_title,
-                      style: Theme.of(context).textTheme.headline6),
+                  child: GestureDetector(
+                    onTap: () => _navigationService
+                        .pushNamedAndRemoveUntil(RouterPaths.student),
+                    child: Text(AppIntl.of(context).grades_title,
+                        style: Theme.of(context).textTheme.headline6),
+                  ),
                 ),
               ),
               if (model.courses.isEmpty)
