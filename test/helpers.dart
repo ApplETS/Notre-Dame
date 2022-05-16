@@ -6,7 +6,6 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:logger/logger.dart';
-import 'package:notredame/core/services/app_widget_service.dart';
 
 // OTHER
 import 'package:notredame/locator.dart';
@@ -25,6 +24,8 @@ import 'package:notredame/core/managers/settings_manager.dart';
 import 'package:notredame/core/services/networking_service.dart';
 import 'package:notredame/core/services/internal_info_service.dart';
 import 'package:notredame/core/services/siren_flutter_service.dart';
+import 'package:notredame/core/services/app_widget_service.dart';
+import 'package:notredame/core/services/in_app_review_service.dart';
 
 // MOCKS
 import 'package:ets_api_clients/testing.dart';
@@ -36,6 +37,7 @@ import 'mock/services/analytics_service_mock.dart';
 import 'mock/services/app_widget_service_mock.dart';
 import 'mock/services/flutter_secure_storage_mock.dart';
 import 'mock/services/github_api_mock.dart';
+import 'mock/services/in_app_review_service_mock.dart';
 import 'mock/services/internal_info_service_mock.dart';
 import 'mock/services/navigation_service_mock.dart';
 import 'mock/services/networking_service_mock.dart';
@@ -78,6 +80,16 @@ SignetsAPIClient setupSignetsApiMock() {
   final service = SignetsAPIClientMock();
 
   locator.registerSingleton<SignetsAPIClient>(service);
+
+  return service;
+}
+
+/// Load a mock of the [InAppReviewService]
+InAppReviewService setupInAppReviewServiceMock() {
+  unregister<InAppReviewService>();
+  final service = InAppReviewServiceMock();
+
+  locator.registerSingleton<InAppReviewService>(service);
 
   return service;
 }
@@ -270,4 +282,24 @@ NetworkingService setupNetworkingServiceMock() {
   NetworkingServiceMock.stubHasConnectivity(service);
 
   return service;
+}
+
+void setupInAppReviewMock([WidgetTester tester]) {
+  const MethodChannel channel = MethodChannel('dev.britannio.in_app_review');
+
+  TestDefaultBinaryMessenger messenger;
+
+  if (tester != null) {
+    messenger = tester.binding.defaultBinaryMessenger;
+  } else {
+    messenger =
+        TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger;
+  }
+
+  messenger.setMockMethodCallHandler(channel, (MethodCall methodCall) async {
+    if (methodCall.method == 'isAvailable') {
+      return true;
+    }
+    return false;
+  });
 }

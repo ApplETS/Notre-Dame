@@ -276,5 +276,7 @@
       "remainingDays": {}
     }
   },
-  "progress_bar_suffix": "jours"
+  "progress_bar_suffix": "jours",
+  
+  "in_app_review_title": "Évaluez-nous!"
 }

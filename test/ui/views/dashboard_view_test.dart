@@ -28,12 +28,14 @@ import '../../helpers.dart';
 // MOCKS
 import '../../mock/managers/course_repository_mock.dart';
 import '../../mock/managers/settings_manager_mock.dart';
+import '../../mock/services/in_app_review_service_mock.dart';
 
 void main() {
   SettingsManager settingsManager;
   CourseRepository courseRepository;
   AppIntl intl;
   DashboardViewModel viewModel;
+  InAppReviewServiceMock inAppReviewServiceMock;
 
   // Activities for today
   final gen101 = CourseActivity(
@@ -154,6 +156,12 @@ void main() {
       setupNetworkingServiceMock();
       setupAnalyticsServiceMock();
       setupAppWidgetServiceMock();
+      setupPreferencesServiceMock();
+
+      inAppReviewServiceMock =
+          setupInAppReviewServiceMock() as InAppReviewServiceMock;
+      InAppReviewServiceMock.stubIsAvailable(inAppReviewServiceMock,
+          toReturn: false);
 
       CourseRepositoryMock.stubSessions(
           courseRepository as CourseRepositoryMock,
@@ -180,6 +188,10 @@ void main() {
       CourseRepositoryMock.stubGetCoursesActivities(
           courseRepository as CourseRepositoryMock,
           fromCacheOnly: false);
+
+      SettingsManagerMock.stubGetBool(settingsManager as SettingsManagerMock,
+          PreferencesFlag.discoveryDashboard,
+          toReturn: true);
 
       SettingsManagerMock.stubSetInt(
           settingsManager as SettingsManagerMock, PreferencesFlag.aboutUsCard);
@@ -636,6 +648,7 @@ void main() {
 
       testWidgets('progressBarCard is reorderable and can be restored',
           (WidgetTester tester) async {
+        InAppReviewServiceMock.stubIsAvailable(inAppReviewServiceMock);
         SettingsManagerMock.stubGetDashboard(
             settingsManager as SettingsManagerMock,
             toReturn: dashboard);
@@ -694,6 +707,10 @@ void main() {
     });
 
     group("golden - ", () {
+      setUp(() async {
+        setupInAppReviewMock();
+      });
+
       testWidgets("Applets Card", (WidgetTester tester) async {
         tester.binding.window.physicalSizeTestValue = const Size(800, 1410);
 
