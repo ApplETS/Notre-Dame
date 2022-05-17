@@ -6,10 +6,14 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 // SERVICE
 import 'package:notredame/core/managers/user_repository.dart';
 import 'package:notredame/core/services/navigation_service.dart';
+import 'package:notredame/core/services/preferences_service.dart';
+
+// CONSTANTS
+import 'package:notredame/core/constants/preferences_flags.dart';
+import 'package:notredame/core/constants/router_paths.dart';
 
 // OTHER
 import 'package:notredame/locator.dart';
-import 'package:notredame/core/constants/router_paths.dart';
 
 class LoginViewModel extends BaseViewModel {
   /// Used to authenticate the user
@@ -34,6 +38,9 @@ class LoginViewModel extends BaseViewModel {
   bool get canSubmit => _universalCode.isNotEmpty && _password.isNotEmpty;
 
   LoginViewModel({@required AppIntl intl}) : _appIntl = intl;
+
+  /// Use to get the value associated to each settings key
+  final PreferencesService _preferencesService = locator<PreferencesService>();
 
   /// Validate the format of the universal code
   String validateUniversalCode(String value) {
@@ -70,6 +77,8 @@ class LoginViewModel extends BaseViewModel {
 
     if (response) {
       _navigationService.pushNamedAndRemoveUntil(RouterPaths.dashboard);
+      _preferencesService.setDateTime(PreferencesFlag.ratingTimer,
+          DateTime.now().add(const Duration(days: 7)));
       return '';
     }
 

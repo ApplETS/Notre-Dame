@@ -7,6 +7,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:notredame/core/managers/user_repository.dart';
 import 'package:notredame/core/services/navigation_service.dart';
 import 'package:notredame/core/managers/settings_manager.dart';
+import 'package:notredame/core/services/preferences_service.dart';
 
 // VIEWS
 import 'package:notredame/ui/views/login_view.dart';
@@ -24,12 +25,14 @@ void main() {
       setupUserRepositoryMock();
       setupNavigationServiceMock();
       setupSettingsManagerMock();
+      setupPreferencesServiceMock();
     });
 
     tearDown(() {
       unregister<UserRepository>();
       unregister<NavigationService>();
       unregister<SettingsManager>();
+      unregister<PreferencesService>();
     });
 
     group('UI - ', () {
