@@ -39,10 +39,13 @@ class EmergencyViewModel extends SecurityViewModel {
   String scaleText(String fileText) {
     return fileText.replaceAll(
         '<html>',
-        "<html> <meta name= "
+        // ignore: missing_whitespace_between_adjacent_strings
+        "<html><meta name="
             "viewport"
-            "content= "
-            'width=device-width, initial-scale=1.0 '
+            // ignore: missing_whitespace_between_adjacent_strings
+            " content="
+            // ignore: missing_whitespace_between_adjacent_strings
+            'width=device-width, initial-scale=1.0'
             ">");
   }
 }
