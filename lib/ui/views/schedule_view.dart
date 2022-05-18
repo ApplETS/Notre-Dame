@@ -252,8 +252,8 @@ class _ScheduleViewState extends State<ScheduleView>
           IconButton(
               icon: const Icon(Icons.today),
               onPressed: () => setState(() {
-                model.selectToday();
-              })),
+                    model.selectToday();
+                  })),
         _buildDiscoveryFeatureDescriptionWidget(context, Icons.settings, model),
       ];
 

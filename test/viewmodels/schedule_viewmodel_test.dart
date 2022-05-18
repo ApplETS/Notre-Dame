@@ -794,7 +794,6 @@ void main() {
     });
 
     group('dateSelection -', () {
-
       setUp(() async {
         setupFlutterToastMock();
       });
