@@ -269,6 +269,17 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
     }
   }
 
+  /// Set current selected date to today (used by the today button in the view).
+  /// Show a toaster instead if the selected date is already today.
+  void selectToday() {
+    if (DateTime.now().day == selectedDate.day) {
+      Fluttertoast.showToast(msg: _appIntl.schedule_already_today_toast);
+    } else {
+      selectedDate = DateTime.now();
+      focusedDate.value = DateTime.now();
+    }
+  }
+
   /// Start Discovery if needed.
   static Future<void> startDiscovery(BuildContext context) async {
     final SettingsManager _settingsManager = locator<SettingsManager>();

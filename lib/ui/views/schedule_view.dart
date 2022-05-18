@@ -2,6 +2,7 @@
 import 'package:feature_discovery/feature_discovery.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 import 'package:stacked/stacked.dart';
 import 'package:table_calendar/table_calendar.dart';
@@ -252,9 +253,8 @@ class _ScheduleViewState extends State<ScheduleView>
           IconButton(
               icon: const Icon(Icons.today),
               onPressed: () => setState(() {
-                    model.selectedDate = DateTime.now();
-                    model.focusedDate.value = DateTime.now();
-                  })),
+                model.selectToday();
+              })),
         _buildDiscoveryFeatureDescriptionWidget(context, Icons.settings, model),
       ];
 

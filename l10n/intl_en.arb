@@ -69,6 +69,7 @@
   "schedule_settings_starting_weekday_sunday": "Sunday",
   "schedule_error_no_event_found": "No event found",
   "schedule_select_course_activity": "Select the group of the labo",
+  "schedule_already_today_toast": "Already showing today's schedule",
   "course_activity_group_a": "Group A",
   "course_activity_group_b": "Group B",
   "course_activity_group_both": "Both groups",

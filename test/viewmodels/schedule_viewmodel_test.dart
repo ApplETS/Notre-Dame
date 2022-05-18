@@ -1,8 +1,10 @@
 // FLUTTER / DART / THIRD-PARTIES
 import 'package:flutter_test/flutter_test.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 import 'package:mockito/mockito.dart';
 import 'package:table_calendar/table_calendar.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 // MANAGERS
 import 'package:notredame/core/managers/course_repository.dart';
@@ -790,6 +792,42 @@ void main() {
         final activities = viewModel.coursesActivities;
 
         expect(activities.entries.toList()[0].value.length, 5);
+      });
+    });
+
+    group('dateSelection -', () {
+      AppIntl intl;
+
+      setUp(() async {
+        setupFlutterToastMock();
+        intl = await setupAppIntl();
+      });
+
+      test('go back to todays schedule', () async {
+        final oldSelectedDate = DateTime(2022, 1, 2);
+        final currentDate = DateTime.now();
+
+        viewModel.selectedDate = oldSelectedDate;
+        viewModel.focusedDate.value = oldSelectedDate;
+
+        viewModel.selectToday();
+
+        expect(viewModel.selectedDate.day, currentDate.day);
+        expect(viewModel.focusedDate.value.day, currentDate.day);
+        verifyNever(Fluttertoast.showToast(msg: intl.schedule_already_today_toast));
+      });
+
+      test('show toaster if already today selected', () async {
+        final today = DateTime.now();
+
+        viewModel.selectedDate = today;
+        viewModel.focusedDate.value = today;
+
+        viewModel.selectToday();
+
+        expect(viewModel.selectedDate.day, today.day);
+        expect(viewModel.focusedDate.value.day, today.day);
+        verify(Fluttertoast.showToast(msg: intl.schedule_already_today_toast)).called(1);
       });
     });
   });
