@@ -810,24 +810,22 @@ void main() {
         viewModel.selectedDate = oldSelectedDate;
         viewModel.focusedDate.value = oldSelectedDate;
 
-        viewModel.selectToday();
+        final res = viewModel.selectToday();
 
         expect(viewModel.selectedDate.day, currentDate.day);
         expect(viewModel.focusedDate.value.day, currentDate.day);
-        verifyNever(Fluttertoast.showToast(msg: intl.schedule_already_today_toast));
+        expect(res, true, reason: "Today was not selected before");
       });
 
-      test('show toaster if already today selected', () async {
+      test('show toast if today already selected', () async {
         final today = DateTime.now();
 
         viewModel.selectedDate = today;
         viewModel.focusedDate.value = today;
 
-        viewModel.selectToday();
+        final res = viewModel.selectToday();
 
-        expect(viewModel.selectedDate.day, today.day);
-        expect(viewModel.focusedDate.value.day, today.day);
-        verify(Fluttertoast.showToast(msg: intl.schedule_already_today_toast)).called(1);
+        expect(res, false, reason: "Today is already selected");
       });
     });
   });
