@@ -109,6 +109,10 @@ class _MoreViewState extends State<MoreView> {
                       model.navigationService.pushNamed(RouterPaths.feedback),
                 ),
                 ListTile(
+                    title: Text(AppIntl.of(context).in_app_review_title),
+                    leading: const Icon(Icons.rate_review),
+                    onTap: () => MoreViewModel.launchInAppReview()),
+                ListTile(
                   title: Text(AppIntl.of(context).more_contributors),
                   leading: _buildDiscoveryFeatureDescriptionWidget(
                       context,

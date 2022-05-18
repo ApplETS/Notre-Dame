@@ -17,6 +17,7 @@ class ContributorsViewModel extends FutureViewModel {
         .listContributors(
           RepositorySlug.full("ApplETS/Notre-Dame"),
         )
+        .where((cont) => cont.id != 49699333) // Remove dependabot
         .toList();
   }
 }
