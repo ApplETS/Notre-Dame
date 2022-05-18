@@ -35,6 +35,7 @@ void main() {
       navigationService = setupNavigationServiceMock();
       userRepositoryMock = setupUserRepositoryMock() as UserRepositoryMock;
       setupLogger();
+      setupPreferencesServiceMock();
       appIntl = await setupAppIntl();
 
       viewModel = LoginViewModel(intl: appIntl);

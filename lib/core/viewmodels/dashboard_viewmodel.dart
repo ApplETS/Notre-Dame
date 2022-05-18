@@ -2,6 +2,7 @@
 import 'dart:collection';
 import 'package:feature_discovery/feature_discovery.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:notredame/core/services/in_app_review_service.dart';
 import 'package:stacked/stacked.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -88,6 +89,41 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
               .difference(_courseRepository.activeSessions.first.startDate)
               .inDays;
     }
+  }
+
+  static Future<bool> launchInAppReview() async {
+    final PreferencesService _preferencesService =
+        locator<PreferencesService>();
+    final InAppReviewService _inAppReviewService =
+        locator<InAppReviewService>();
+
+    DateTime ratingTimerFlagDate =
+        await _preferencesService.getDateTime(PreferencesFlag.ratingTimer);
+
+    final hasRatingBeenRequested = await _preferencesService
+            .getBool(PreferencesFlag.hasRatingBeenRequested) ??
+        false;
+
+    // If the user is already logged in while doing the update containing the In_App_Review PR.
+    if (ratingTimerFlagDate == null) {
+      final sevenDaysLater = DateTime.now().add(const Duration(days: 7));
+      _preferencesService.setDateTime(
+          PreferencesFlag.ratingTimer, sevenDaysLater);
+      ratingTimerFlagDate = sevenDaysLater;
+    }
+
+    if (await _inAppReviewService.isAvailable() &&
+        !hasRatingBeenRequested &&
+        DateTime.now().isAfter(ratingTimerFlagDate)) {
+      await Future.delayed(const Duration(seconds: 2), () async {
+        await _inAppReviewService.requestReview();
+        _preferencesService.setBool(PreferencesFlag.hasRatingBeenRequested,
+            value: true);
+      });
+
+      return true;
+    }
+    return false;
   }
 
   void changeProgressBarText() {
