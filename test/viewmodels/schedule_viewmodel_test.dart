@@ -1,10 +1,8 @@
 // FLUTTER / DART / THIRD-PARTIES
 import 'package:flutter_test/flutter_test.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 import 'package:mockito/mockito.dart';
 import 'package:table_calendar/table_calendar.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 // MANAGERS
 import 'package:notredame/core/managers/course_repository.dart';
@@ -796,11 +794,9 @@ void main() {
     });
 
     group('dateSelection -', () {
-      AppIntl intl;
 
       setUp(() async {
         setupFlutterToastMock();
-        intl = await setupAppIntl();
       });
 
       test('go back to todays schedule', () async {
