@@ -45,6 +45,12 @@ class PreferencesServiceMock extends Mock implements PreferencesService {
     when(mock.getBool(flag)).thenAnswer((_) async => toReturn);
   }
 
+  /// Stub the answer of [getDateTime] when the [flag] is used.
+  static void stubGetDateTime(PreferencesServiceMock mock, PreferencesFlag flag,
+      {DateTime toReturn}) {
+    when(mock.getDateTime(flag)).thenAnswer((_) async => toReturn);
+  }
+
   /// Stub the answer of [getPreferencesFlag] when the [flag] is used.
   static void stubGetPreferencesFlag(
       PreferencesServiceMock mock, PreferencesFlag flag,

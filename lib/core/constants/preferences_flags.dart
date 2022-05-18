@@ -36,7 +36,11 @@ enum PreferencesFlag {
   scheduleCard,
   progressBarCard,
   gradesCard,
-  progressBarText
+  progressBarText,
+
+  // Rating flag
+  ratingTimer,
+  hasRatingBeenRequested,
 }
 
 /// This class can be used instead of the conventional enum to save data to shared Prefs,

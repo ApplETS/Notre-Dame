@@ -25,6 +25,7 @@ import '../helpers.dart';
 // MOCKS
 import '../mock/managers/course_repository_mock.dart';
 import '../mock/managers/settings_manager_mock.dart';
+import '../mock/services/in_app_review_service_mock.dart';
 import '../mock/services/preferences_service_mock.dart';
 
 void main() {
@@ -32,6 +33,8 @@ void main() {
   SettingsManager settingsManager;
   DashboardViewModel viewModel;
   CourseRepository courseRepository;
+  PreferencesServiceMock preferencesServiceMock;
+  InAppReviewServiceMock inAppReviewServiceMock;
 
   final gen101 = CourseActivity(
       courseGroup: "GEN101",
@@ -162,6 +165,8 @@ void main() {
       settingsManager = setupSettingsManagerMock();
       preferenceService = setupPreferencesServiceMock();
       courseRepository = setupCourseRepositoryMock();
+      preferencesServiceMock =
+          setupPreferencesServiceMock() as PreferencesServiceMock;
 
       courseRepository = setupCourseRepositoryMock();
 
@@ -180,6 +185,9 @@ void main() {
       CourseRepositoryMock.stubGetCoursesActivities(
           courseRepository as CourseRepositoryMock,
           fromCacheOnly: false);
+
+      inAppReviewServiceMock =
+          setupInAppReviewServiceMock() as InAppReviewServiceMock;
     });
 
     tearDown(() {
@@ -672,6 +680,88 @@ void main() {
         verify(settingsManager.getString(PreferencesFlag.progressBarText))
             .called(1);
         verifyNoMoreInteractions(settingsManager);
+      });
+    });
+
+    group("In app review - ", () {
+      test("returns true when todays date is after the day set in cache",
+          () async {
+        InAppReviewServiceMock.stubIsAvailable(inAppReviewServiceMock);
+        InAppReviewServiceMock.stubRequestReview(inAppReviewServiceMock);
+
+        final day = DateTime.now().add(const Duration(days: -1));
+        PreferencesServiceMock.stubGetDateTime(
+            preferencesServiceMock, PreferencesFlag.ratingTimer,
+            toReturn: day);
+
+        expect(await DashboardViewModel.launchInAppReview(), true);
+        verify(preferencesServiceMock
+                .setBool(PreferencesFlag.hasRatingBeenRequested, value: true))
+            .called(1);
+      });
+
+      test(
+          "returns false when todays date is after the day set in cache and when the function is called twice",
+          () async {
+        InAppReviewServiceMock.stubIsAvailable(inAppReviewServiceMock);
+        InAppReviewServiceMock.stubRequestReview(inAppReviewServiceMock);
+        final day = DateTime.now().add(const Duration(days: -1));
+        PreferencesServiceMock.stubGetDateTime(
+            preferencesServiceMock, PreferencesFlag.ratingTimer,
+            toReturn: day);
+        PreferencesServiceMock.stubGetBool(
+            preferencesServiceMock, PreferencesFlag.hasRatingBeenRequested,
+            toReturn: false);
+
+        expect(await DashboardViewModel.launchInAppReview(), true);
+
+        PreferencesServiceMock.stubGetBool(
+            preferencesServiceMock, PreferencesFlag.hasRatingBeenRequested);
+
+        expect(await DashboardViewModel.launchInAppReview(), false);
+      });
+
+      test(
+          "returns false when todays date is after the day set in cache and when the function is called twice",
+          () async {
+        InAppReviewServiceMock.stubIsAvailable(inAppReviewServiceMock);
+        InAppReviewServiceMock.stubRequestReview(inAppReviewServiceMock);
+        final day = DateTime.now().add(const Duration(days: -1));
+        PreferencesServiceMock.stubGetDateTime(
+            preferencesServiceMock, PreferencesFlag.ratingTimer,
+            toReturn: day);
+        PreferencesServiceMock.stubGetBool(
+            preferencesServiceMock, PreferencesFlag.hasRatingBeenRequested,
+            toReturn: null);
+
+        expect(await DashboardViewModel.launchInAppReview(), true);
+
+        PreferencesServiceMock.stubGetBool(
+            preferencesServiceMock, PreferencesFlag.hasRatingBeenRequested);
+
+        expect(await DashboardViewModel.launchInAppReview(), false);
+      });
+
+      test("returns false when todays date is the before the day set in cache",
+          () async {
+        InAppReviewServiceMock.stubIsAvailable(inAppReviewServiceMock);
+        InAppReviewServiceMock.stubRequestReview(inAppReviewServiceMock);
+        final day = DateTime.now().add(const Duration(days: 2));
+        PreferencesServiceMock.stubGetDateTime(
+            preferencesServiceMock, PreferencesFlag.ratingTimer,
+            toReturn: day);
+
+        expect(await DashboardViewModel.launchInAppReview(), false);
+      });
+
+      test("returns false when the cache date hasn't been set (null)",
+          () async {
+        InAppReviewServiceMock.stubIsAvailable(inAppReviewServiceMock);
+        InAppReviewServiceMock.stubRequestReview(inAppReviewServiceMock);
+        PreferencesServiceMock.stubGetDateTime(
+            preferencesServiceMock, PreferencesFlag.ratingTimer);
+
+        expect(await DashboardViewModel.launchInAppReview(), false);
       });
     });
   });
