@@ -153,7 +153,7 @@
   "more_report_bug": "Rapporter un bogue",
   "more_report_bug_steps_title": "Comment faire?\n\n",
   "more_report_bug_button": "Fournir un avis",
-  "more_report_bug_step1": "1. Appuyer sur le bouton 'Fournir un avis'.\n\n",
+  "more_report_bug_step1": "1. Appuyer sur le bouton `Fournir un avis`.\n\n",
   "more_report_bug_step2": "2. La vue retour d'information s'ouvre. Vous pouvez choisir entre le mode Dessiner et Naviguer. Dans le mode Naviguer, vous pouvez vous déplacer dans l'application entière. Pour changer au mode Dessiner, appuyer sur le bouton sur le côté droit. Vous pouvez dessiner sur l'écran.\n\n",
   "more_report_bug_step3": "3. Pour terminer votre retour d'information, écrivez un message détaillé et appuyez sur le bouton 'Envoyer'.\n\n",
   "more_prompt_report_bug_method": "Comment souhaitez-vous rapporter le bogue?",
