@@ -792,5 +792,36 @@ void main() {
         expect(activities.entries.toList()[0].value.length, 5);
       });
     });
+
+    group('dateSelection -', () {
+      setUp(() async {
+        setupFlutterToastMock();
+      });
+
+      test('go back to todays schedule', () async {
+        final oldSelectedDate = DateTime(2022, 1, 2);
+        final currentDate = DateTime.now();
+
+        viewModel.selectedDate = oldSelectedDate;
+        viewModel.focusedDate.value = oldSelectedDate;
+
+        final res = viewModel.selectToday();
+
+        expect(viewModel.selectedDate.day, currentDate.day);
+        expect(viewModel.focusedDate.value.day, currentDate.day);
+        expect(res, true, reason: "Today was not selected before");
+      });
+
+      test('show toast if today already selected', () async {
+        final today = DateTime.now();
+
+        viewModel.selectedDate = today;
+        viewModel.focusedDate.value = today;
+
+        final res = viewModel.selectToday();
+
+        expect(res, false, reason: "Today is already selected");
+      });
+    });
   });
 }
