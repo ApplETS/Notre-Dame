@@ -2,7 +2,6 @@
 import 'dart:collection';
 import 'package:feature_discovery/feature_discovery.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:notredame/core/services/in_app_review_service.dart';
 import 'package:stacked/stacked.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -17,6 +16,7 @@ import 'package:notredame/core/constants/widget_helper.dart';
 // MANAGER / SERVICE
 import 'package:notredame/core/managers/settings_manager.dart';
 import 'package:notredame/core/managers/course_repository.dart';
+import 'package:notredame/core/services/in_app_review_service.dart';
 import 'package:notredame/core/services/siren_flutter_service.dart';
 import 'package:notredame/core/services/preferences_service.dart';
 import 'package:notredame/core/services/analytics_service.dart';
@@ -24,8 +24,6 @@ import 'package:notredame/core/services/app_widget_service.dart';
 
 // MODEL
 import 'package:notredame/core/models/widget_models.dart';
-
-// CORE
 import 'package:ets_api_clients/models.dart';
 
 // UTILS

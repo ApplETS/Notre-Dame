@@ -2,9 +2,11 @@
 import 'package:flutter/services.dart';
 import 'package:home_widget/home_widget.dart';
 
+// MODEL
+import 'package:notredame/core/models/widget_models.dart';
+
 // CONSTANTS
 import 'package:notredame/core/constants/widget_helper.dart';
-import 'package:notredame/core/models/widget_models.dart';
 
 // MANAGER / SERVICE
 import 'package:notredame/core/services/analytics_service.dart';
