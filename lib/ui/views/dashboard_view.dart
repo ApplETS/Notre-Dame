@@ -25,13 +25,15 @@ import 'package:notredame/core/constants/discovery_ids.dart';
 import 'package:notredame/core/constants/progress_bar_text_options.dart';
 import 'package:notredame/core/constants/update_code.dart';
 import 'package:notredame/core/constants/router_paths.dart';
-import 'package:notredame/core/services/navigation_service.dart';
 
 // UTILS
 import 'package:notredame/core/utils/utils.dart';
 import 'package:notredame/ui/utils/loading.dart';
 import 'package:notredame/ui/utils/app_theme.dart';
 import 'package:notredame/ui/utils/discovery_components.dart';
+
+// SERVICES
+import 'package:notredame/core/services/navigation_service.dart';
 
 class DashboardView extends StatefulWidget {
   final UpdateCode updateCode;
