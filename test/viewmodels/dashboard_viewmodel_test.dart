@@ -164,11 +164,11 @@ void main() {
       courseRepository = setupCourseRepositoryMock();
       settingsManager = setupSettingsManagerMock();
       preferenceService = setupPreferencesServiceMock();
+      setupAnalyticsServiceMock();
+      setupAppWidgetServiceMock();
       courseRepository = setupCourseRepositoryMock();
       preferencesServiceMock =
           setupPreferencesServiceMock() as PreferencesServiceMock;
-
-      courseRepository = setupCourseRepositoryMock();
 
       viewModel = DashboardViewModel(intl: await setupAppIntl());
       CourseRepositoryMock.stubGetSessions(
@@ -310,6 +310,17 @@ void main() {
       test("The initial cards are correctly loaded", () async {
         setupFlutterToastMock();
         CourseRepositoryMock.stubGetCoursesActivities(
+            courseRepository as CourseRepositoryMock,
+            fromCacheOnly: true);
+        CourseRepositoryMock.stubGetCourses(
+            courseRepository as CourseRepositoryMock,
+            fromCacheOnly: true);
+        CourseRepositoryMock.stubGetCoursesException(
+            courseRepository as CourseRepositoryMock,
+            fromCacheOnly: true);
+        CourseRepositoryMock.stubGetSessions(
+            courseRepository as CourseRepositoryMock);
+        CourseRepositoryMock.stubActiveSessions(
             courseRepository as CourseRepositoryMock);
         CourseRepositoryMock.stubCoursesActivities(
             courseRepository as CourseRepositoryMock);
@@ -338,9 +349,11 @@ void main() {
         CourseRepositoryMock.stubCoursesActivities(
             courseRepository as CourseRepositoryMock,
             toReturn: activities);
+        CourseRepositoryMock.stubGetCourses(
+            courseRepository as CourseRepositoryMock,
+            toReturn: courses);
 
         await viewModel.futureToRun();
-        await viewModel.futureToRunSchedule();
 
         await untilCalled(courseRepository.getCoursesActivities());
 
@@ -354,8 +367,6 @@ void main() {
         verify(courseRepository.coursesActivities).called(1);
 
         verify(settingsManager.getDashboard()).called(1);
-
-        verifyNoMoreInteractions(courseRepository);
       });
 
       test(
@@ -466,6 +477,8 @@ void main() {
             courseRepository as CourseRepositoryMock);
         CourseRepositoryMock.stubCoursesActivities(
             courseRepository as CourseRepositoryMock);
+        CourseRepositoryMock.stubGetCourses(
+            courseRepository as CourseRepositoryMock);
 
         PreferencesServiceMock.stubException(
             preferenceService as PreferencesServiceMock,
@@ -481,7 +494,6 @@ void main() {
         expect(viewModel.cardsToDisplay, []);
 
         verify(settingsManager.getDashboard()).called(1);
-        verifyNoMoreInteractions(settingsManager);
       });
     });
 
@@ -561,6 +573,9 @@ void main() {
             settingsManager as SettingsManagerMock,
             toReturn: dashboard);
 
+        CourseRepositoryMock.stubGetCourses(
+            courseRepository as CourseRepositoryMock);
+
         await viewModel.futureToRun();
 
         // Call the setter.
@@ -609,6 +624,8 @@ void main() {
         CourseRepositoryMock.stubGetCoursesActivities(
             courseRepository as CourseRepositoryMock);
         CourseRepositoryMock.stubCoursesActivities(
+            courseRepository as CourseRepositoryMock);
+        CourseRepositoryMock.stubGetCourses(
             courseRepository as CourseRepositoryMock);
 
         SettingsManagerMock.stubGetDashboard(
