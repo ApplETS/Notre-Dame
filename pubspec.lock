@@ -519,7 +519,7 @@ packages:
       name: home_widget
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.1.5"
+    version: "0.1.6"
   http:
     dependency: "direct main"
     description:
