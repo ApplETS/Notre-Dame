@@ -1,6 +1,9 @@
 // FLUTTER / DART / THIRD-PARTIES
 import 'package:in_app_review/in_app_review.dart';
 
+// CONSTANTS
+import 'package:notredame/core/constants/more_ids.dart';
+
 /// Manage the analytics of the application
 class InAppReviewService {
   final InAppReview _inAppReview = InAppReview.instance;
@@ -16,7 +19,7 @@ class InAppReviewService {
 
   /// Opens the Play Store on Android, the App Store with a review
   Future<void> openStoreListing({
-    String appStoreId,
+    String appStoreId = MoreIds.appStoreId,
     String microsoftStoreId,
   }) =>
       _inAppReview.openStoreListing(
