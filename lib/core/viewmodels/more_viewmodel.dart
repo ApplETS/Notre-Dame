@@ -131,7 +131,7 @@ class MoreViewModel extends FutureViewModel {
         locator<InAppReviewService>();
 
     if (await _inAppReviewService.isAvailable()) {
-      await _inAppReviewService.requestReview();
+      await _inAppReviewService.openStoreListing();
       _preferencesService.setBool(PreferencesFlag.hasRatingBeenRequested,
           value: true);
 
