@@ -2,7 +2,7 @@
 import 'package:in_app_review/in_app_review.dart';
 
 // CONSTANTS
-import 'package:notredame/core/constants/more_ids.dart';
+import 'package:notredame/core/constants/app_info.dart';
 
 /// Manage the analytics of the application
 class InAppReviewService {
@@ -19,7 +19,7 @@ class InAppReviewService {
 
   /// Opens the Play Store on Android, the App Store with a review
   Future<void> openStoreListing({
-    String appStoreId = MoreIds.appStoreId,
+    String appStoreId = AppInfo.appStoreId,
     String microsoftStoreId,
   }) =>
       _inAppReview.openStoreListing(
