@@ -279,7 +279,7 @@
     "remainingDays": {}
     }
   },
-  "progress_bar_suffix": "days",
-  
-  "in_app_review_title": "Rate us!"
+  "progress_bar_suffix": "days",  
+  "in_app_review_title": "Rate us!",
+  "need_help_contact_us": "Need help? Contact us!"
 }

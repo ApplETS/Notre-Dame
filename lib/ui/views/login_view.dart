@@ -4,6 +4,11 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:stacked/stacked.dart';
+import 'package:flutter/gestures.dart';
+import 'package:url_launcher/url_launcher.dart';
+
+// SERVICE
+import 'package:notredame/core/services/analytics_service.dart';
 
 // UTILS
 import 'package:notredame/core/utils/utils.dart';
@@ -16,6 +21,7 @@ import 'package:notredame/ui/widgets/password_text_field.dart';
 
 // OTHER
 import 'package:notredame/ui/utils/app_theme.dart';
+import 'package:notredame/locator.dart';
 
 class LoginView extends StatefulWidget {
   @override
@@ -26,6 +32,8 @@ class _LoginViewState extends State<LoginView> {
   final double borderRadiusOnFocus = 2.0;
 
   final FocusScopeNode _focusNode = FocusScopeNode();
+
+  final String clubEmail = "mailto:applets@etsmtl.net?subject=Problème ÉTS Mobile";
 
   /// Unique key of the login form form
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
@@ -150,7 +158,25 @@ class _LoginViewState extends State<LoginView> {
                                         fontSize: 18),
                                   ),
                                 ),
-                              )
+                              ),
+                              Center(
+                                child: Padding(
+                                  padding: const EdgeInsets.all(15.0),
+                                  child: RichText(
+                                    text: TextSpan(
+                                      style: const TextStyle(
+                                        decoration: TextDecoration.underline,
+                                        color: Colors.white
+                                      ),
+                                      text: AppIntl.of(context).need_help_contact_us,
+                                      recognizer: TapGestureRecognizer()
+                                        ..onTap = () async {
+                                          _sendEmail();
+                                        }
+                                    ),
+                                  ),
+                                ),
+                              ),
                             ],
                           ),
                         ),
@@ -193,4 +219,14 @@ class _LoginViewState extends State<LoginView> {
 
   Color get submitTextColor =>
       Utils.getColorByBrightness(context, AppTheme.etsLightRed, Colors.white);
+
+  Future<void> _sendEmail() async {
+    final urllaunchable = await canLaunch(clubEmail);
+    
+    if(urllaunchable){
+        await launch(clubEmail);
+    } else{
+      locator<AnalyticsService>().logError("login_view", "Cannot send email.");
+    }
+  }
 }
