@@ -38,6 +38,9 @@ class _LoginViewState extends State<LoginView> {
   /// Unique key of the login form form
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
+ /// Unique key of the tooltip
+  final GlobalKey<TooltipState> tooltipkey = GlobalKey<TooltipState>();
+
   @override
   Widget build(BuildContext context) =>
       ViewModelBuilder<LoginViewModel>.reactive(
@@ -106,6 +109,19 @@ class _LoginViewState extends State<LoginView> {
                                   labelStyle:
                                       const TextStyle(color: Colors.white54),
                                   errorStyle: TextStyle(color: errorTextColor),
+                                  suffixIcon: Tooltip(
+                                  key: tooltipkey,
+                                  triggerMode: TooltipTriggerMode.manual,
+                                  message: AppIntl.of(context).universal_code_example,
+                                  preferBelow: true,
+                                  child : IconButton(
+                                    icon: const Icon(Icons.help,
+                                        color: Colors.white),
+                                    onPressed: () {
+                                      tooltipkey.currentState?.ensureTooltipVisible();
+                                    },
+                                  )
+                                ),
                                 ),
                                 autofocus: true,
                                 style: const TextStyle(color: Colors.white),
@@ -154,14 +170,13 @@ class _LoginViewState extends State<LoginView> {
                                         color: model.canSubmit
                                             ? submitTextColor
                                             : Colors.white60,
-                                        //Color.fromRGBO(239, 62, 69, 1),
                                         fontSize: 18),
                                   ),
                                 ),
                               ),
                               Center(
                                 child: Padding(
-                                  padding: const EdgeInsets.all(15.0),
+                                  padding: const EdgeInsets.only(top: 30),
                                   child: RichText(
                                     text: TextSpan(
                                       style: const TextStyle(
