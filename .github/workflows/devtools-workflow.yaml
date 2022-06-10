@@ -28,3 +28,16 @@ jobs:
             Please make sure you are NOT addressing multiple issues with one PR.
             Note this PR might be rejected due to its size.’
           github_api_url: 'api.github.com'
+          
+  bump-version:
+    name: Bump app version using PR labels
+    runs-on: ubuntu-latest
+    if: ${{ github.event_name == 'pull_request' }}
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    steps:
+      - uses: actions/checkout@v3
+      - name: Bump version
+        uses: apomalyn/bump-version-using-labels@1.0.1
+        with:
+          file_path: 'pubspec.yaml'
