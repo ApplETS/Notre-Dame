@@ -9,6 +9,7 @@ import 'package:url_launcher/url_launcher.dart';
 
 // SERVICE
 import 'package:notredame/core/services/analytics_service.dart';
+import 'package:notredame/core/services/launch_url_service.dart';
 
 // UTILS
 import 'package:notredame/core/utils/utils.dart';
@@ -34,6 +35,8 @@ class _LoginViewState extends State<LoginView> {
   final FocusScopeNode _focusNode = FocusScopeNode();
 
   final String clubEmail = "mailto:applets@etsmtl.net?subject=Problème ÉTS Mobile";
+
+  final LaunchUrlService _launchUrlService = locator<LaunchUrlService>();
 
   /// Unique key of the login form form
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
@@ -186,7 +189,7 @@ class _LoginViewState extends State<LoginView> {
                                       text: AppIntl.of(context).need_help_contact_us,
                                       recognizer: TapGestureRecognizer()
                                         ..onTap = () async {
-                                          _sendEmail();
+                                          sendEmail();
                                         }
                                     ),
                                   ),
@@ -235,11 +238,11 @@ class _LoginViewState extends State<LoginView> {
   Color get submitTextColor =>
       Utils.getColorByBrightness(context, AppTheme.etsLightRed, Colors.white);
 
-  Future<void> _sendEmail() async {
-    final urllaunchable = await canLaunch(clubEmail);
+  Future<void> sendEmail() async {
+    final urllaunchable = await _launchUrlService.canLaunchUrl(clubEmail);
     
     if(urllaunchable){
-        await launch(clubEmail);
+      await _launchUrlService.launchUrl(clubEmail);
     } else{
       locator<AnalyticsService>().logError("login_view", "Cannot send email.");
     }
