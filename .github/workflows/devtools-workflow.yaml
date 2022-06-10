@@ -1,7 +1,13 @@
 name: Dev tools workflow
 on:
   pull_request:
-      
+    types:
+      - unlabeled
+      - labeled
+      - synchronize
+      - opened
+      - reopened
+
 env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
