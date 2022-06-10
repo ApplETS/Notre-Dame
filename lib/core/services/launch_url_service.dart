@@ -2,7 +2,6 @@
 import 'package:url_launcher/url_launcher.dart';
 
 class LaunchUrlService {
-  
   Future<bool> canLaunchUrl(String url) async {
     return canLaunch(url);
   }

@@ -34,14 +34,15 @@ class _LoginViewState extends State<LoginView> {
 
   final FocusScopeNode _focusNode = FocusScopeNode();
 
-  final String clubEmail = "mailto:applets@etsmtl.net?subject=Problème ÉTS Mobile";
+  final String clubEmail =
+      "mailto:applets@etsmtl.net?subject=Problème ÉTS Mobile";
 
   final LaunchUrlService _launchUrlService = locator<LaunchUrlService>();
 
   /// Unique key of the login form form
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
- /// Unique key of the tooltip
+  /// Unique key of the tooltip
   final GlobalKey<TooltipState> tooltipkey = GlobalKey<TooltipState>();
 
   @override
@@ -113,18 +114,19 @@ class _LoginViewState extends State<LoginView> {
                                       const TextStyle(color: Colors.white54),
                                   errorStyle: TextStyle(color: errorTextColor),
                                   suffixIcon: Tooltip(
-                                  key: tooltipkey,
-                                  triggerMode: TooltipTriggerMode.manual,
-                                  message: AppIntl.of(context).universal_code_example,
-                                  preferBelow: true,
-                                  child : IconButton(
-                                    icon: const Icon(Icons.help,
-                                        color: Colors.white),
-                                    onPressed: () {
-                                      tooltipkey.currentState?.ensureTooltipVisible();
-                                    },
-                                  )
-                                ),
+                                      key: tooltipkey,
+                                      triggerMode: TooltipTriggerMode.manual,
+                                      message: AppIntl.of(context)
+                                          .universal_code_example,
+                                      preferBelow: true,
+                                      child: IconButton(
+                                        icon: const Icon(Icons.help,
+                                            color: Colors.white),
+                                        onPressed: () {
+                                          tooltipkey.currentState
+                                              ?.ensureTooltipVisible();
+                                        },
+                                      )),
                                 ),
                                 autofocus: true,
                                 style: const TextStyle(color: Colors.white),
@@ -182,16 +184,16 @@ class _LoginViewState extends State<LoginView> {
                                   padding: const EdgeInsets.only(top: 30),
                                   child: RichText(
                                     text: TextSpan(
-                                      style: const TextStyle(
-                                        decoration: TextDecoration.underline,
-                                        color: Colors.white
-                                      ),
-                                      text: AppIntl.of(context).need_help_contact_us,
-                                      recognizer: TapGestureRecognizer()
-                                        ..onTap = () async {
-                                          sendEmail();
-                                        }
-                                    ),
+                                        style: const TextStyle(
+                                            decoration:
+                                                TextDecoration.underline,
+                                            color: Colors.white),
+                                        text: AppIntl.of(context)
+                                            .need_help_contact_us,
+                                        recognizer: TapGestureRecognizer()
+                                          ..onTap = () async {
+                                            sendEmail();
+                                          }),
                                   ),
                                 ),
                               ),
@@ -240,10 +242,10 @@ class _LoginViewState extends State<LoginView> {
 
   Future<void> sendEmail() async {
     final urllaunchable = await _launchUrlService.canLaunchUrl(clubEmail);
-    
-    if(urllaunchable){
+
+    if (urllaunchable) {
       await _launchUrlService.launchUrl(clubEmail);
-    } else{
+    } else {
       locator<AnalyticsService>().logError("login_view", "Cannot send email.");
     }
   }

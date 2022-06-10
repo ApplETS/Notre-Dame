@@ -69,21 +69,16 @@ void main() {
                 .having((source) => source.onPressed, 'onPressed', isNull));
       });
 
-      testWidgets('should open emails',
-          (WidgetTester tester) async {
+      testWidgets('should open emails', (WidgetTester tester) async {
         const url = 'mailto:applets@etsmtl.net?subject=Problème ÉTS Mobile';
-        LaunchUrlServiceMock.stubCanLaunchUrl(
-            launchUrlService,
-            url);
-        LaunchUrlServiceMock.stubLaunchUrl(
-            launchUrlService,
-            url);
+        LaunchUrlServiceMock.stubCanLaunchUrl(launchUrlService, url);
+        LaunchUrlServiceMock.stubLaunchUrl(launchUrlService, url);
 
         await tester.pumpWidget(localizedWidget(child: LoginView()));
         await tester.pumpAndSettle();
 
-        await tester.tap(
-              find.widgetWithText(ListTile, intl.need_help_contact_us));
+        await tester
+            .tap(find.widgetWithText(ListTile, intl.need_help_contact_us));
 
         // Rebuild the widget after the state has changed.
         await tester.pump();
@@ -96,20 +91,16 @@ void main() {
       testWidgets('cannot launch email on this platform',
           (WidgetTester tester) async {
         const url = 'mailto:applets@etsmtl.net?subject=Problème ÉTS Mobile';
-        LaunchUrlServiceMock.stubCanLaunchUrl(
-            launchUrlService,
-            url,
+        LaunchUrlServiceMock.stubCanLaunchUrl(launchUrlService, url,
             toReturn: false);
-        LaunchUrlServiceMock.stubLaunchUrl(
-            launchUrlService,
-            url,
+        LaunchUrlServiceMock.stubLaunchUrl(launchUrlService, url,
             toReturn: false);
 
         await tester.pumpWidget(localizedWidget(child: LoginView()));
         await tester.pumpAndSettle();
 
-        await tester.tap(
-              find.widgetWithText(ListTile, intl.need_help_contact_us));
+        await tester
+            .tap(find.widgetWithText(ListTile, intl.need_help_contact_us));
 
         // Rebuild the widget after the state has changed.
         await tester.pump();
