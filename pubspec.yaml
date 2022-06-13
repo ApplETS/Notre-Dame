@@ -66,7 +66,7 @@ dependencies:
   device_info_plus: ^3.1.0
   pub_semver: ^2.1.0
   home_widget: ^0.1.6
-  marquee: ^2.2.3
+  marquee: 2.2.1
 
 dev_dependencies:
   flutter_test:
