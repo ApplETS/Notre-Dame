@@ -85,10 +85,12 @@ void main() {
           (WidgetTester tester) async {
         final evaluation = courseSummary.evaluations.last;
 
-        await tester.pumpWidget(localizedWidget(
+        final widget = localizedWidget(
             child: FeatureDiscovery(
                 child: GradeEvaluationTile(evaluation,
-                    completed: true, isFirstEvaluation: false))));
+                    completed: true, isFirstEvaluation: false)));
+
+        await tester.pumpWidget(widget);
 
         await tester.pumpAndSettle();
 
@@ -98,10 +100,10 @@ void main() {
         // Tap the button.
         await tester.tap(find.byType(ExpansionTile));
 
-        await tester.pump();
+        await tester.pumpFrames(widget, const Duration(seconds: 5));
 
         final label = find.text("Laboratoire 2");
-        expect(label, findsOneWidget);
+        expect(label, findsNWidgets(2));
 
         final label2 = find.text("Weight: 15.0 %");
         expect(label2, findsOneWidget);
