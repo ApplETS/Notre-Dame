@@ -65,6 +65,7 @@ class HomeWidgetMock extends Mock {
                 'name': name,
                 'android': androidName,
                 'ios': iOSName,
+                'qualifiedAndroidName': null
               }.toString()) {
         return true;
       }
