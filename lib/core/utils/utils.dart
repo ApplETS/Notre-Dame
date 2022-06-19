@@ -8,8 +8,9 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 mixin Utils {
   /// Used to open a url
   static Future<void> launchURL(String url, AppIntl intl) async {
-    if (await canLaunch(url)) {
-      await launch(url);
+    final uri = Uri.parse(url);
+    if (await canLaunchUrl(uri)) {
+      await launchUrl(uri);
     } else {
       Fluttertoast.showToast(msg: intl.error);
       throw 'Could not launch $url';
