@@ -35,7 +35,7 @@ dependencies:
   # Widgets
   table_calendar: ^3.0.5
   percent_indicator: ^3.4.0
-  feedback: ^2.4.1
+  feedback: ^2.5.0
   flutter_staggered_animations: ^1.0.0
   flutter_siren: ^1.2.0
   
