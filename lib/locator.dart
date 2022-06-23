@@ -11,6 +11,8 @@ import 'package:notredame/core/services/preferences_service.dart';
 import 'package:notredame/core/services/rive_animation_service.dart';
 import 'package:notredame/core/services/github_api.dart';
 import 'package:notredame/core/services/internal_info_service.dart';
+import 'package:notredame/core/services/siren_flutter_service.dart';
+import 'package:notredame/core/services/app_widget_service.dart';
 import 'package:notredame/core/services/in_app_review_service.dart';
 
 // MANAGERS
@@ -18,7 +20,6 @@ import 'package:notredame/core/managers/user_repository.dart';
 import 'package:notredame/core/managers/course_repository.dart';
 import 'package:notredame/core/managers/cache_manager.dart';
 import 'package:notredame/core/managers/settings_manager.dart';
-import 'package:notredame/core/services/siren_flutter_service.dart';
 
 // OTHER
 import 'package:ets_api_clients/clients.dart';
@@ -36,6 +37,7 @@ void setupLocator() {
   locator.registerLazySingleton(() => PreferencesService());
   locator.registerLazySingleton(() => NetworkingService());
   locator.registerLazySingleton(() => SirenFlutterService());
+  locator.registerLazySingleton(() => AppWidgetService());
   locator.registerLazySingleton(() => InAppReviewService());
 
   // Managers

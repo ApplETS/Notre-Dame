@@ -154,6 +154,8 @@ void main() {
       setupNavigationServiceMock();
       courseRepository = setupCourseRepositoryMock();
       setupNetworkingServiceMock();
+      setupAnalyticsServiceMock();
+      setupAppWidgetServiceMock();
       setupPreferencesServiceMock();
 
       inAppReviewServiceMock =
