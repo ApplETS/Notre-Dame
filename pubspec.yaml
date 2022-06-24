@@ -22,7 +22,7 @@ dependencies:
   stacked: ^2.1.0
 
   # Firebase
-  firebase_core: ^1.14.0
+  firebase_core: ^1.18.0
   firebase_analytics: ^9.1.4
   firebase_crashlytics: ^2.6.1
 
@@ -50,7 +50,7 @@ dependencies:
   http: ^0.13.4
   flutter_cache_manager: ^3.0.1
   flutter_secure_storage: ^5.0.2
-  shared_preferences: ^2.0.5
+  shared_preferences: ^2.0.15
   webview_flutter: ^3.0.2
   flutter_custom_tabs: ^1.0.4
   google_maps_flutter: ^2.1.3
