@@ -5,7 +5,7 @@ description: The 4th generation of ÉTSMobile, the main gateway between the Éco
 # pub.dev using `pub publish`. This is preferred for private packages.
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 
-version: 4.11.4+1
+version: 4.11.11+1
 
 environment:
   sdk: ">=2.10.0 <3.0.0"
@@ -22,7 +22,7 @@ dependencies:
   stacked: ^2.1.0
 
   # Firebase
-  firebase_core: ^1.14.0
+  firebase_core: ^1.18.0
   firebase_analytics: ^9.1.4
   firebase_crashlytics: ^2.6.1
 
@@ -35,7 +35,7 @@ dependencies:
   # Widgets
   table_calendar: ^3.0.5
   percent_indicator: ^3.4.0
-  feedback: ^2.4.1
+  feedback: ^2.5.0
   flutter_staggered_animations: ^1.0.0
   flutter_siren: ^1.2.0
   
@@ -50,7 +50,7 @@ dependencies:
   http: ^0.13.4
   flutter_cache_manager: ^3.0.1
   flutter_secure_storage: ^5.0.2
-  shared_preferences: ^2.0.5
+  shared_preferences: ^2.0.15
   webview_flutter: ^3.0.2
   flutter_custom_tabs: ^1.0.4
   google_maps_flutter: ^2.1.3
