@@ -258,6 +258,8 @@
   "go_to_dashboard": "Go to Dashboard",
 
   "no_connectivity": "No internet connection",
+  "service_outage": "Sorry, we are currently experiencing connection problems. Please try again later.",
+  "service_outage_contact": "If the problem persists you can contact us: ",
 
   "progress_bar_title": "Semester progress",
   "progress_bar_message": "{elapsedDays} days elapsed / {totalDays} days",
