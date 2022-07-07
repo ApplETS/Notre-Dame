@@ -20,6 +20,7 @@ import 'package:notredame/ui/router.dart';
 import 'package:notredame/core/services/navigation_service.dart';
 import 'package:notredame/core/services/analytics_service.dart';
 import 'package:notredame/core/services/app_widget_service.dart';
+import 'package:notredame/core/services/remote_config_service.dart';
 
 // UTILS
 import 'package:notredame/locator.dart';
@@ -30,8 +31,6 @@ import 'package:notredame/core/managers/settings_manager.dart';
 
 // VIEW
 import 'package:notredame/ui/views/startup_view.dart';
-
-import 'core/services/remote_config_service.dart';
 
 Future<void> main() async {
   setupLocator();
@@ -73,7 +72,7 @@ class ETSMobile extends StatelessWidget {
   Widget build(BuildContext context) {
     final RemoteConfigService remoteConfigService =
         locator<RemoteConfigService>();
-    bool _outage = remoteConfigService.outage;
+    final bool _outage = remoteConfigService.outage;
     return ChangeNotifierProvider<SettingsManager>(
       create: (_) => settingsManager,
       child: Consumer<SettingsManager>(builder: (context, model, child) {
