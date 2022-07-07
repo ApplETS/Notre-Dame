@@ -1,7 +1,6 @@
 // FLUTTER / DART / THIRD-PARTIES
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:notredame/core/viewmodels/outage_viewmodel.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:stacked/stacked.dart';
 
@@ -9,12 +8,11 @@ import 'package:stacked/stacked.dart';
 import 'package:notredame/core/utils/utils.dart';
 
 // VIEW MODEL
-import 'package:notredame/core/viewmodels/startup_viewmodel.dart';
+import 'package:notredame/core/viewmodels/outage_viewmodel.dart';
 
 // OTHER
 import 'package:notredame/ui/utils/app_theme.dart';
-
-import '../../core/constants/urls.dart';
+import 'package:notredame/core/constants/urls.dart';
 
 class OutageView extends StatelessWidget {
   @override

@@ -1,8 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-import 'package:notredame/core/constants/router_paths.dart';
-import 'package:notredame/core/services/navigation_service.dart';
-import 'package:notredame/locator.dart';
 import 'package:notredame/ui/views/startup_view.dart';
 import 'package:stacked/stacked.dart';
 

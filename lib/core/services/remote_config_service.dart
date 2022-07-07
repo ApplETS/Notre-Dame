@@ -1,24 +1,26 @@
 // FLUTTER / DART / THIRD-PARTIES
 import 'package:firebase_remote_config/firebase_remote_config.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
 
 /// Manage the analytics of the application
 class RemoteConfigService {
-  static const _ServiceIsDown = "service_is_down";
+  static const _serviceIsDown = "service_is_down";
   final FirebaseRemoteConfig _remoteConfig = FirebaseRemoteConfig.instance;
-  final defaults = <String, dynamic>{_ServiceIsDown: false};
+  final defaults = <String, dynamic>{_serviceIsDown: false};
 
   Future initialise() async {
     try {
       await _remoteConfig.setDefaults(defaults);
       await _fetchAndActivate();
     } catch (exception) {
-      print('Unable to fetch remote config. Cached or default values will be '
-          'used');
+      if (kDebugMode) {
+        print('Unable to fetch remote config. Cached or default values will be '
+            'used');
+      }
     }
   }
 
-  bool get outage => _remoteConfig.getBool(_ServiceIsDown);
+  bool get outage => _remoteConfig.getBool(_serviceIsDown);
 
   Future _fetchAndActivate() async {
     await _remoteConfig.fetch();
