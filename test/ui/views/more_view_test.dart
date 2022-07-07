@@ -111,7 +111,7 @@ void main() {
           await tester.pumpAndSettle();
 
           verify(await inAppReviewServiceMock.isAvailable()).called(1);
-          verify(await inAppReviewServiceMock.requestReview()).called(1);
+          verify(await inAppReviewServiceMock.openStoreListing()).called(1);
           verifyNoMoreInteractions(inAppReviewServiceMock);
         });
 

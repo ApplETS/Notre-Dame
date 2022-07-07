@@ -18,6 +18,7 @@ import 'package:notredame/ui/router.dart';
 // SERVICES
 import 'package:notredame/core/services/navigation_service.dart';
 import 'package:notredame/core/services/analytics_service.dart';
+import 'package:notredame/core/services/app_widget_service.dart';
 
 // UTILS
 import 'package:notredame/locator.dart';
@@ -39,6 +40,10 @@ Future<void> main() async {
   // Manage the settings
   final SettingsManager settingsManager = locator<SettingsManager>();
   await settingsManager.fetchLanguageAndThemeMode();
+
+  // init home widget
+  final AppWidgetService appWidgetService = locator<AppWidgetService>();
+  await appWidgetService.init();
 
   if (kDebugMode) {
     FlutterConfig.loadEnvVariables();

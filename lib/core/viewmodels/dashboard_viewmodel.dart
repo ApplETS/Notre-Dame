@@ -2,7 +2,6 @@
 import 'dart:collection';
 import 'package:feature_discovery/feature_discovery.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:notredame/core/services/in_app_review_service.dart';
 import 'package:stacked/stacked.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -12,14 +11,19 @@ import 'package:notredame/core/constants/preferences_flags.dart';
 import 'package:notredame/core/constants/discovery_ids.dart';
 import 'package:notredame/core/constants/progress_bar_text_options.dart';
 import 'package:notredame/core/constants/update_code.dart';
+import 'package:notredame/core/constants/widget_helper.dart';
 
 // MANAGER / SERVICE
 import 'package:notredame/core/managers/settings_manager.dart';
 import 'package:notredame/core/managers/course_repository.dart';
+import 'package:notredame/core/services/in_app_review_service.dart';
 import 'package:notredame/core/services/siren_flutter_service.dart';
 import 'package:notredame/core/services/preferences_service.dart';
+import 'package:notredame/core/services/analytics_service.dart';
+import 'package:notredame/core/services/app_widget_service.dart';
 
 // MODEL
+import 'package:notredame/core/models/widget_models.dart';
 import 'package:ets_api_clients/models.dart';
 
 // UTILS
@@ -31,6 +35,8 @@ import 'package:notredame/locator.dart';
 class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
   final SettingsManager _settingsManager = locator<SettingsManager>();
   final CourseRepository _courseRepository = locator<CourseRepository>();
+  final AnalyticsService _analyticsService = locator<AnalyticsService>();
+  final AppWidgetService _appWidgetService = locator<AppWidgetService>();
 
   /// All dashboard displayable cards
   Map<PreferencesFlag, int> _cards;
@@ -169,7 +175,71 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
 
     getCardsToDisplay();
 
+    // load data for both grade cards & grades home screen widget
+    // (moved from getCardsToDisplay())
+    await loadDataAndUpdateWidget();
+
     return dashboard;
+  }
+
+  Future loadDataAndUpdateWidget() async {
+    return Future.wait([
+      futureToRunGrades(),
+      futureToRunSessionProgressBar(),
+      futureToRunSchedule()
+    ]).then((_) {
+      updateGradesWidget();
+      updateProgressWidget();
+    });
+  }
+
+  Future updateProgressWidget() async {
+    try {
+      final progress = _progress;
+      final sessionDays = _sessionDays;
+      final elapsedDays = sessionDays[0];
+      final totalDays = sessionDays[1];
+
+      await _appWidgetService.sendProgressData(ProgressWidgetData(
+          title: _appIntl.progress_bar_title,
+          progress: progress,
+          elapsedDays: elapsedDays,
+          totalDays: totalDays,
+          suffix: _appIntl.progress_bar_suffix));
+      await _appWidgetService.updateWidget(WidgetType.progress);
+    } on Exception catch (e) {
+      _analyticsService.logError('DashboardViewModel', e.toString());
+    }
+  }
+
+  /// Update grades widget with current courses data
+  /// MUST be called after futureToRunGrades() completed (uses courses object)
+  Future updateGradesWidget() async {
+    try {
+      final List<String> acronyms =
+          courses.map((course) => course.acronym).toList();
+      final List<String> grades = courses.map((course) {
+        // Code copied from GradeButton.gradeString
+        if (course.grade != null) {
+          return course.grade;
+        } else if (course.summary != null &&
+            course.summary.markOutOf > 0 &&
+            !(course.inReviewPeriod && !course.reviewCompleted)) {
+          return _appIntl.grades_grade_in_percentage(
+              course.summary.currentMarkInPercent.round());
+        }
+        return _appIntl.grades_not_available;
+      }).toList();
+
+      await _appWidgetService.sendGradesData(GradesWidgetData(
+          title:
+              "${_appIntl.grades_title} - ${_courseRepository.activeSessions ?? _appIntl.session_without}",
+          courseAcronyms: acronyms,
+          grades: grades));
+      await _appWidgetService.updateWidget(WidgetType.grades);
+    } on Exception catch (e) {
+      _analyticsService.logError('DashboardViewModel', e.toString());
+    }
   }
 
   @override
@@ -214,6 +284,8 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
 
     getCardsToDisplay();
 
+    loadDataAndUpdateWidget();
+
     notifyListeners();
   }
 
@@ -228,15 +300,6 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
       orderedCards.forEach((key, value) {
         if (value >= 0) {
           _cardsToDisplay.insert(value, key);
-          if (key == PreferencesFlag.scheduleCard) {
-            futureToRunSchedule();
-          }
-          if (key == PreferencesFlag.progressBarCard) {
-            futureToRunSessionProgressBar();
-          }
-          if (key == PreferencesFlag.gradesCard) {
-            futureToRunGrades();
-          }
         }
       });
     }
