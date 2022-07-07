@@ -9,6 +9,7 @@ import 'package:notredame/core/managers/settings_manager.dart';
 import 'package:notredame/core/services/internal_info_service.dart';
 import 'package:notredame/core/services/preferences_service.dart';
 import 'package:notredame/core/services/siren_flutter_service.dart';
+import 'package:notredame/core/services/analytics_service.dart';
 
 // CONSTANTS
 import 'package:notredame/core/constants/preferences_flags.dart';
@@ -42,6 +43,9 @@ class StartUpViewModel extends BaseViewModel {
   /// Internal Info Service
   final InternalInfoService _internalInfoService =
       locator<InternalInfoService>();
+
+  /// Analytics
+  final AnalyticsService _analyticsService = locator<AnalyticsService>();
 
   /// Try to silent authenticate the user then redirect to [LoginView] or [DashboardView]
   Future handleStartUp() async {
@@ -131,7 +135,14 @@ class StartUpViewModel extends BaseViewModel {
   /// prompt him to update it. Returns the [UpdateCode] that can be used to
   /// handle the update.
   Future<UpdateCode> checkUpdateStatus() async {
-    if (await _sirenFlutterService.updateIsAvailable()) {
+    bool isUpdateAvailable = false;
+    try {
+      isUpdateAvailable = await _sirenFlutterService.updateIsAvailable();
+    } catch (e) {
+      _analyticsService.logError(
+          "Error while checking for update", e.toString());
+    }
+    if (isUpdateAvailable) {
       final latestVersion = await _sirenFlutterService.storeVersion;
       final localVersion = await _sirenFlutterService.localVersion;
 

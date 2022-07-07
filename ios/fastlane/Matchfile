@@ -4,7 +4,7 @@ storage_mode("git")
 
 type("development") # The default type, can be: appstore, adhoc, enterprise or development
 
-app_identifier(["ca.etsmtl.applets.ETSMobile"])
+app_identifier(["ca.etsmtl.applets.ETSMobile", "ca.etsmtl.applets.ETSMobile.Widget"])
 username("applets@etsmtl.net")
 
 # The docs are available on https://docs.fastlane.tools/actions/match

@@ -40,6 +40,7 @@ void main() {
 
   group('StartupViewModel - ', () {
     setUp(() async {
+      setupAnalyticsServiceMock();
       navigationService = setupNavigationServiceMock();
       settingsManagerMock = setupSettingsManagerMock() as SettingsManagerMock;
       preferencesServiceMock =
