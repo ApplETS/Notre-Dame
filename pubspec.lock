@@ -221,9 +221,11 @@ packages:
   ets_api_clients:
     dependency: "direct main"
     description:
-      path: "../ETS-API-Clients"
-      relative: true
-    source: path
+      path: "."
+      ref: "0.5.0"
+      resolved-ref: cefaa19955323ce4790b64aa45c598925df71109
+      url: "https://github.com/ApplETS/ETS-API-Clients.git"
+    source: git
     version: "0.5.0"
   fake_async:
     dependency: transitive
