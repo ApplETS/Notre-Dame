@@ -69,6 +69,7 @@
   "schedule_settings_starting_weekday_sunday": "Sunday",
   "schedule_error_no_event_found": "No event found",
   "schedule_select_course_activity": "Select the group of the labo",
+  "schedule_already_today_toast": "Already showing today's schedule",
   "course_activity_group_a": "Group A",
   "course_activity_group_b": "Group B",
   "course_activity_group_both": "Both groups",
@@ -154,9 +155,9 @@
   "more_report_bug": "Report a bug",
   "more_report_bug_steps_title": "How does it work?\n\n",
   "more_report_bug_button": "Provide feedback",
-  "more_report_bug_step1": "1. Press the `Provide feedback` button.\n\n",
-  "more_report_bug_step2": "2. The feedback view opens. You can choose between draw and navigation mode. When in navigate mode, you can freely navigate in the app. To switch to the drawing mode just press the `Draw` button on the right side. Now you can draw on the screen.\n\n",
-  "more_report_bug_step3": "3. To finish your feedback just write a message below and send it by pressing the `Submit` button.\n\n",
+  "more_report_bug_step1": "1. Press the 'Provide feedback' button.\n\n",
+  "more_report_bug_step2": "2. The feedback view opens. You can choose between draw and navigation mode. When in navigate mode, you can freely navigate in the app. To switch to the drawing mode just press the 'Draw' button on the right side. Now you can draw on the screen.\n\n",
+  "more_report_bug_step3": "3. To finish your feedback just write a message below and send it by pressing the 'Submit' button.\n\n",
   "more_prompt_report_bug_method": "How would you like to report the bug?",
   "more_report_bug_method_screenshot": "Screenshot",
   "more_report_bug_method_video": "Video recording",
@@ -278,5 +279,7 @@
     "remainingDays": {}
     }
   },
+  "progress_bar_suffix": "days",
+  
   "in_app_review_title": "Rate us!"
 }
