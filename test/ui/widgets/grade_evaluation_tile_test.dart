@@ -103,7 +103,7 @@ void main() {
         await tester.pumpFrames(widget, const Duration(seconds: 5));
 
         final label = find.text("Laboratoire 2");
-        expect(label, findsNWidgets(2));
+        expect(label, findsOneWidget);
 
         final label2 = find.text("Weight: 15.0 %");
         expect(label2, findsOneWidget);
