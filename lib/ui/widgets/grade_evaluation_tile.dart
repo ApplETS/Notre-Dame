@@ -2,6 +2,7 @@
 import 'dart:math';
 import 'package:feature_discovery/feature_discovery.dart';
 import 'package:flutter/material.dart';
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:marquee/marquee.dart';
 import 'package:intl/intl.dart';
 
@@ -137,14 +138,24 @@ class _GradeEvaluationTileState extends State<GradeEvaluationTile>
                       height: 49,
                       child: Padding(
                         padding: const EdgeInsets.only(top: 30.0),
-                        child: Marquee(
-                          text: widget.evaluation.title,
-                          velocity: 15,
-                          blankSpace: 200,
+                        child: AutoSizeText(
+                          widget.evaluation.title,
                           style: TextStyle(
                             fontSize: 16,
                             color: Utils.getColorByBrightness(
                                 context, Colors.black, Colors.white),
+                          ),
+                          maxLines: 1,
+                          minFontSize: 16,
+                          overflowReplacement: Marquee(
+                            text: widget.evaluation.title,
+                            velocity: 15,
+                            blankSpace: 200,
+                            style: TextStyle(
+                              fontSize: 16,
+                              color: Utils.getColorByBrightness(
+                                  context, Colors.black, Colors.white),
+                            ),
                           ),
                         ),
                       ),
