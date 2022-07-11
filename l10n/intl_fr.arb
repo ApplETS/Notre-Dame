@@ -256,8 +256,8 @@
   "go_to_dashboard": "Retour à l'accueil",
 
   "no_connectivity": "Aucune connexion internet",
-  "service_outage": "Désoler nous éprouvons actuellement des problèmes de connexion. Veuillez réessayer plus tard.",
-  "service_outage_contact": "Si le problème persiste vous pouvez nous contacter: ",
+  "service_outage": "Désolé, nous éprouvons actuellement des problèmes de connexion. Veuillez réessayer plus tard.",
+  "service_outage_contact": "Si le problème persiste, vous pouvez nous contacter: ",
 
   "progress_bar_title": "Progression de la session",
   "progress_bar_message": "{elapsedDays} jours écoulés / {totalDays} jours",
