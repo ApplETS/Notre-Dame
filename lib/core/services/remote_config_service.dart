@@ -8,7 +8,7 @@ class RemoteConfigService {
   final FirebaseRemoteConfig _remoteConfig = FirebaseRemoteConfig.instance;
   final defaults = <String, dynamic>{_serviceIsDown: false};
 
-  Future initialise() async {
+  Future initialize() async {
     try {
       await _remoteConfig.setDefaults(defaults);
       await _fetchAndActivate();
@@ -26,8 +26,8 @@ class RemoteConfigService {
     await _remoteConfig.fetch();
     await _remoteConfig.fetchAndActivate();
     _remoteConfig.setConfigSettings(RemoteConfigSettings(
-      fetchTimeout: const Duration(minutes: 1),
-      minimumFetchInterval: const Duration(seconds: 30),
+      fetchTimeout: const Duration(seconds: 30),
+      minimumFetchInterval: const Duration(minutes: 1),
     ));
   }
 }

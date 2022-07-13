@@ -40,7 +40,7 @@ Future<void> main() async {
   await Firebase.initializeApp();
   final RemoteConfigService remoteConfigService =
       locator<RemoteConfigService>();
-  await remoteConfigService.initialise();
+  await remoteConfigService.initialize();
 
   // Manage the settings
   final SettingsManager settingsManager = locator<SettingsManager>();
