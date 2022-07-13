@@ -806,7 +806,7 @@ packages:
       name: provider
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "6.0.2"
+    version: "6.0.3"
   pub_semver:
     dependency: "direct main"
     description:
@@ -937,7 +937,14 @@ packages:
       name: stacked
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.3.0"
+    version: "2.3.13"
+  stacked_core:
+    dependency: transitive
+    description:
+      name: stacked_core
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.2.3"
   stream_channel:
     dependency: transitive
     description:
