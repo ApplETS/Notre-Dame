@@ -1,9 +1,11 @@
 // FLUTTER / DART / THIRD-PARTIES
 import 'package:feedback/feedback.dart';
 import 'package:flutter/material.dart';
-import 'package:notredame/core/viewmodels/feedback_viewmodel.dart';
 import 'package:stacked/stacked.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
+// VIEWMODEL
+import 'package:notredame/core/viewmodels/feedback_viewmodel.dart';
 
 class FeedbackView extends StatelessWidget {
   @override
