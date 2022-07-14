@@ -39,6 +39,7 @@ void setupLocator() {
   locator.registerLazySingleton(() => SirenFlutterService());
   locator.registerLazySingleton(() => AppWidgetService());
   locator.registerLazySingleton(() => InAppReviewService());
+  locator.registerLazySingleton(() => LaunchUrlService());
 
   // Managers
   locator.registerLazySingleton(() => UserRepository());
