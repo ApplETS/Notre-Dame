@@ -13,6 +13,7 @@
   "facebook": "Facebook",
   "github": "GitHub",
   "email": "Email",
+  "email_subject": "ÉTSMobile Problem",
 
   "close_button_text": "Close",
 
@@ -280,6 +281,8 @@
     }
   },
   "progress_bar_suffix": "days",
-  
-  "in_app_review_title": "Rate us!"
+
+  "in_app_review_title": "Rate us!",
+  "need_help_contact_us": "Need help? Contact us!",
+  "universal_code_example": "Ex: AB12345"
 }
