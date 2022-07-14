@@ -12,6 +12,7 @@ import 'package:notredame/core/viewmodels/login_viewmodel.dart';
 
 // CONSTANTS
 import 'package:notredame/core/constants/router_paths.dart';
+
 // OTHER
 import '../helpers.dart';
 import '../mock/managers/user_repository_mock.dart';
