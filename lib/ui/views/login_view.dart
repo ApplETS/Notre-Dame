@@ -240,7 +240,8 @@ class _LoginViewState extends State<LoginView> {
       Utils.getColorByBrightness(context, AppTheme.etsLightRed, Colors.white);
 
   Future<void> sendEmail(LoginViewModel model) async {
-    final clubEmail = model.mailtoStr(AppInfo.email, AppIntl.of(context).email_subject);
+    final clubEmail =
+        model.mailtoStr(AppInfo.email, AppIntl.of(context).email_subject);
     final urllaunchable = await _launchUrlService.canLaunchUrl(clubEmail);
 
     if (urllaunchable) {
