@@ -19,6 +19,9 @@ import 'package:notredame/core/viewmodels/login_viewmodel.dart';
 // WIDGETS
 import 'package:notredame/ui/widgets/password_text_field.dart';
 
+// CONSTANTS
+import 'package:notredame/core/constants/app_info.dart';
+
 // OTHER
 import 'package:notredame/ui/utils/app_theme.dart';
 import 'package:notredame/locator.dart';
@@ -32,9 +35,6 @@ class _LoginViewState extends State<LoginView> {
   final double borderRadiusOnFocus = 2.0;
 
   final FocusScopeNode _focusNode = FocusScopeNode();
-
-  final String clubEmail =
-      "mailto:applets@etsmtl.net?subject=Problème ÉTS Mobile";
 
   final LaunchUrlService _launchUrlService = locator<LaunchUrlService>();
 
@@ -191,7 +191,7 @@ class _LoginViewState extends State<LoginView> {
                                             .need_help_contact_us,
                                         recognizer: TapGestureRecognizer()
                                           ..onTap = () async {
-                                            sendEmail();
+                                            sendEmail(model);
                                           }),
                                   ),
                                 ),
@@ -239,7 +239,8 @@ class _LoginViewState extends State<LoginView> {
   Color get submitTextColor =>
       Utils.getColorByBrightness(context, AppTheme.etsLightRed, Colors.white);
 
-  Future<void> sendEmail() async {
+  Future<void> sendEmail(LoginViewModel model) async {
+    final clubEmail = model.mailtoStr(AppInfo.email, AppIntl.of(context).email_subject);
     final urllaunchable = await _launchUrlService.canLaunchUrl(clubEmail);
 
     if (urllaunchable) {

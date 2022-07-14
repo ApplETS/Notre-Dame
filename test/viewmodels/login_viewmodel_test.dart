@@ -12,7 +12,7 @@ import 'package:notredame/core/viewmodels/login_viewmodel.dart';
 
 // CONSTANTS
 import 'package:notredame/core/constants/router_paths.dart';
-
+import 'package:notredame/core/constants/app_info.dart';
 // OTHER
 import '../helpers.dart';
 import '../mock/managers/user_repository_mock.dart';
@@ -132,6 +132,14 @@ void main() {
 
         expect(await viewModel.authenticate(), appIntl.error);
         expect(viewModel.password, "");
+      });
+    });
+
+    group('Emails - ', () {
+      test('Has the right mailto', () {
+        final str = viewModel.mailtoStr("email", "subject");
+
+        expect(str, "mailto:{email}?subject={subject}");
       });
     });
   });

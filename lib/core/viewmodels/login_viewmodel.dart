@@ -88,4 +88,8 @@ class LoginViewModel extends BaseViewModel {
 
     return _appIntl.error;
   }
+
+  String mailtoStr(String email, String subject) {
+    return 'mailto:{email}?subject={subject}';
+  }
 }
