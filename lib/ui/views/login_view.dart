@@ -183,15 +183,13 @@ class _LoginViewState extends State<LoginView> {
                                   padding: const EdgeInsets.only(top: 30),
                                   child: InkWell(
                                     child: Text(
-                                      AppIntl.of(context)
-                                              .need_help_contact_us,
+                                      AppIntl.of(context).need_help_contact_us,
                                       style: const TextStyle(
-                                          decoration:
-                                              TextDecoration.underline,
+                                          decoration: TextDecoration.underline,
                                           color: Colors.white),
-                                      ),
+                                    ),
                                     onTap: () async {
-                                        sendEmail(model);
+                                      sendEmail(model);
                                     },
                                   ),
                                 ),

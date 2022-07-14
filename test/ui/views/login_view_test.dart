@@ -93,7 +93,8 @@ void main() {
       testWidgets('cannot launch email on this platform',
           (WidgetTester tester) async {
         const url = 'mailto:applets@etsmtl.net?subject=ÉTSMobile Problem';
-        LaunchUrlServiceMock.stubCanLaunchUrl(launchUrlService, url, toReturn: false);
+        LaunchUrlServiceMock.stubCanLaunchUrl(launchUrlService, url,
+            toReturn: false);
         LaunchUrlServiceMock.stubLaunchUrl(launchUrlService, url,
             toReturn: false);
 
