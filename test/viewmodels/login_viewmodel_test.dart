@@ -139,7 +139,7 @@ void main() {
       test('Has the right mailto', () {
         final str = viewModel.mailtoStr("email", "subject");
 
-        expect(str, "mailto:{email}?subject={subject}");
+        expect(str, "mailto:email?subject=subject");
       });
     });
   });
