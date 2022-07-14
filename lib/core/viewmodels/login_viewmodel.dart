@@ -90,6 +90,6 @@ class LoginViewModel extends BaseViewModel {
   }
 
   String mailtoStr(String email, String subject) {
-    return 'mailto:{email}?subject={subject}';
+    return 'mailto:$email?subject=$subject';
   }
 }

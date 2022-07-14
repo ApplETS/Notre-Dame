@@ -72,7 +72,7 @@ void main() {
       });
 
       testWidgets('should open emails', (WidgetTester tester) async {
-        const url = 'mailto:applets@etsmtl.net?subject=Problème ÉTS Mobile';
+        const url = 'mailto:applets@etsmtl.net?subject=ÉTSMobile Problem';
         LaunchUrlServiceMock.stubCanLaunchUrl(launchUrlService, url);
         LaunchUrlServiceMock.stubLaunchUrl(launchUrlService, url);
 
@@ -80,7 +80,7 @@ void main() {
         await tester.pumpAndSettle();
 
         await tester
-            .tap(find.widgetWithText(ListTile, intl.need_help_contact_us));
+            .tap(find.widgetWithText(InkWell, intl.need_help_contact_us));
 
         // Rebuild the widget after the state has changed.
         await tester.pump();
@@ -92,9 +92,8 @@ void main() {
 
       testWidgets('cannot launch email on this platform',
           (WidgetTester tester) async {
-        const url = 'mailto:applets@etsmtl.net?subject=Problème ÉTS Mobile';
-        LaunchUrlServiceMock.stubCanLaunchUrl(launchUrlService, url,
-            toReturn: false);
+        const url = 'mailto:applets@etsmtl.net?subject=ÉTSMobile Problem';
+        LaunchUrlServiceMock.stubCanLaunchUrl(launchUrlService, url, toReturn: false);
         LaunchUrlServiceMock.stubLaunchUrl(launchUrlService, url,
             toReturn: false);
 
@@ -102,10 +101,10 @@ void main() {
         await tester.pumpAndSettle();
 
         await tester
-            .tap(find.widgetWithText(ListTile, intl.need_help_contact_us));
+            .tap(find.widgetWithText(InkWell, intl.need_help_contact_us));
 
         // Rebuild the widget after the state has changed.
-        await tester.pump();
+        await tester.pumpAndSettle();
 
         verify(launchUrlService.canLaunchUrl(url)).called(1);
         verifyNever(launchUrlService.launchUrl(url));
