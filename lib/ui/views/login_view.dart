@@ -5,6 +5,10 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:stacked/stacked.dart';
 
+// SERVICE
+import 'package:notredame/core/services/analytics_service.dart';
+import 'package:notredame/core/services/launch_url_service.dart';
+
 // UTILS
 import 'package:notredame/core/utils/utils.dart';
 
@@ -14,8 +18,12 @@ import 'package:notredame/core/viewmodels/login_viewmodel.dart';
 // WIDGETS
 import 'package:notredame/ui/widgets/password_text_field.dart';
 
+// CONSTANTS
+import 'package:notredame/core/constants/app_info.dart';
+
 // OTHER
 import 'package:notredame/ui/utils/app_theme.dart';
+import 'package:notredame/locator.dart';
 
 class LoginView extends StatefulWidget {
   @override
@@ -27,8 +35,13 @@ class _LoginViewState extends State<LoginView> {
 
   final FocusScopeNode _focusNode = FocusScopeNode();
 
+  final LaunchUrlService _launchUrlService = locator<LaunchUrlService>();
+
   /// Unique key of the login form form
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+
+  /// Unique key of the tooltip
+  final GlobalKey<TooltipState> tooltipkey = GlobalKey<TooltipState>();
 
   @override
   Widget build(BuildContext context) =>
@@ -98,6 +111,20 @@ class _LoginViewState extends State<LoginView> {
                                   labelStyle:
                                       const TextStyle(color: Colors.white54),
                                   errorStyle: TextStyle(color: errorTextColor),
+                                  suffixIcon: Tooltip(
+                                      key: tooltipkey,
+                                      triggerMode: TooltipTriggerMode.manual,
+                                      message: AppIntl.of(context)
+                                          .universal_code_example,
+                                      preferBelow: true,
+                                      child: IconButton(
+                                        icon: const Icon(Icons.help,
+                                            color: Colors.white),
+                                        onPressed: () {
+                                          tooltipkey.currentState
+                                              ?.ensureTooltipVisible();
+                                        },
+                                      )),
                                 ),
                                 autofocus: true,
                                 style: const TextStyle(color: Colors.white),
@@ -146,11 +173,26 @@ class _LoginViewState extends State<LoginView> {
                                         color: model.canSubmit
                                             ? submitTextColor
                                             : Colors.white60,
-                                        //Color.fromRGBO(239, 62, 69, 1),
                                         fontSize: 18),
                                   ),
                                 ),
-                              )
+                              ),
+                              Center(
+                                child: Padding(
+                                  padding: const EdgeInsets.only(top: 30),
+                                  child: InkWell(
+                                    child: Text(
+                                      AppIntl.of(context).need_help_contact_us,
+                                      style: const TextStyle(
+                                          decoration: TextDecoration.underline,
+                                          color: Colors.white),
+                                    ),
+                                    onTap: () async {
+                                      sendEmail(model);
+                                    },
+                                  ),
+                                ),
+                              ),
                             ],
                           ),
                         ),
@@ -193,4 +235,16 @@ class _LoginViewState extends State<LoginView> {
 
   Color get submitTextColor =>
       Utils.getColorByBrightness(context, AppTheme.etsLightRed, Colors.white);
+
+  Future<void> sendEmail(LoginViewModel model) async {
+    final clubEmail =
+        model.mailtoStr(AppInfo.email, AppIntl.of(context).email_subject);
+    final urlLaunchable = await _launchUrlService.canLaunchUrl(clubEmail);
+
+    if (urlLaunchable) {
+      await _launchUrlService.launchUrl(clubEmail);
+    } else {
+      locator<AnalyticsService>().logError("login_view", "Cannot send email.");
+    }
+  }
 }

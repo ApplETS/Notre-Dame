@@ -3,8 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-// SERVICE
+// MANAGER
 import 'package:notredame/core/managers/user_repository.dart';
+
+// SERVICE
 import 'package:notredame/core/services/navigation_service.dart';
 import 'package:notredame/core/services/preferences_service.dart';
 
@@ -87,5 +89,9 @@ class LoginViewModel extends BaseViewModel {
     notifyListeners();
 
     return _appIntl.error;
+  }
+
+  String mailtoStr(String email, String subject) {
+    return 'mailto:$email?subject=$subject';
   }
 }

@@ -12,6 +12,7 @@
   "facebook": "Facebook",
   "github": "GitHub",
   "email": "Courriel",
+  "email_subject": "Problème ÉTSMobile",
   
   "close_button_text": "Fermer",
 
@@ -280,6 +281,8 @@
     }
   },
   "progress_bar_suffix": "jours",
-  
-  "in_app_review_title": "Évaluez-nous!"
+
+  "in_app_review_title": "Évaluez-nous!",  
+  "need_help_contact_us": "Besoin d'aide? Contactez-nous!",
+  "universal_code_example": "Ex: AB12345"
 }
