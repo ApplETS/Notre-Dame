@@ -20,7 +20,15 @@ class RemoteConfigService {
     }
   }
 
-  bool get outage => _remoteConfig.getBool(_serviceIsDown);
+  bool get outage {
+    fetch();
+    return _remoteConfig.getBool(_serviceIsDown);
+  }
+
+  Future<void> fetch() async {
+    await _remoteConfig.fetch();
+    await _remoteConfig.fetchAndActivate();
+  }
 
   Future _fetchAndActivate() async {
     await _remoteConfig.fetch();

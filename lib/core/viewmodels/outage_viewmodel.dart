@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:notredame/core/constants/router_paths.dart';
+import 'package:notredame/core/services/navigation_service.dart';
+import 'package:notredame/core/services/remote_config_service.dart';
+import 'package:notredame/locator.dart';
 import 'package:notredame/ui/views/startup_view.dart';
 import 'package:stacked/stacked.dart';
 
@@ -14,8 +18,21 @@ class OutageViewModel extends BaseViewModel {
     return MediaQuery.of(context).size.height * 0.20;
   }
 
+  double getButtonPlacement(BuildContext context) {
+    return MediaQuery.of(context).size.height * 0.08;
+  }
+
   double getContactTextPlacement(BuildContext context) {
     return MediaQuery.of(context).size.height * 0.04;
+  }
+
+  void tapRefreshButton(BuildContext context) {
+    final RemoteConfigService remoteConfigService =
+        locator<RemoteConfigService>();
+    if (!remoteConfigService.outage) {
+      final NavigationService _navigationService = locator<NavigationService>();
+      _navigationService.pushNamedAndRemoveUntil(RouterPaths.dashboard);
+    }
   }
 
   void triggerTap(BuildContext context) {

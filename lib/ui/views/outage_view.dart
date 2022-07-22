@@ -53,6 +53,16 @@ class OutageView extends StatelessWidget {
                         style:
                             const TextStyle(fontSize: 18, color: Colors.white),
                       ),
+                      SizedBox(height: model.getButtonPlacement(context)),
+                      ElevatedButton(
+                        onPressed: () {
+                          model.tapRefreshButton(context);
+                        },
+                        child: Text(
+                          AppIntl.of(context).service_outage_refresh,
+                          style: const TextStyle(fontSize: 17),
+                        ),
+                      ),
                       Expanded(
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.end,
