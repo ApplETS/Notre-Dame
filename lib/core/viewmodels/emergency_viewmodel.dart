@@ -17,8 +17,10 @@ class EmergencyViewModel extends SecurityViewModel {
   Future loadHtmlFromAssets(String filename, Brightness brightness) async {
     final String fileText = await rootBundle.loadString(filename);
 
-    final String data = Uri.dataFromString(darkMode(fileText, brightness),
-            mimeType: 'text/html', encoding: Encoding.getByName('utf-8'))
+    final String data = Uri.dataFromString(
+            darkMode(scaleText(fileText), brightness),
+            mimeType: 'text/html',
+            encoding: Encoding.getByName('utf-8'))
         .toString();
     await webViewController.loadUrl(data);
   }
@@ -28,8 +30,22 @@ class EmergencyViewModel extends SecurityViewModel {
     String colorFileText = fileText;
     if (brightness == Brightness.dark) {
       colorFileText = colorFileText.replaceAll('<html>',
-          "<html> <style> body { background-color: black; color: white;} </style>");
+          "<html><style> body { background-color: black; color: white;} </style>");
     }
+
     return colorFileText;
+  }
+
+  String scaleText(String fileText) {
+    return fileText.replaceAll(
+        '<html>',
+        // ignore: missing_whitespace_between_adjacent_strings
+        "<html><meta name="
+            "viewport"
+            // ignore: missing_whitespace_between_adjacent_strings
+            " content="
+            // ignore: missing_whitespace_between_adjacent_strings
+            'width=device-width, initial-scale=1.0'
+            ">");
   }
 }
