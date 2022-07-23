@@ -150,7 +150,7 @@ class _GradeEvaluationTileState extends State<GradeEvaluationTile>
                           overflowReplacement: Marquee(
                             text: widget.evaluation.title,
                             velocity: 15,
-                            blankSpace: 200,
+                            blankSpace: 50,
                             style: TextStyle(
                               fontSize: 16,
                               color: Utils.getColorByBrightness(
