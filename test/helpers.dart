@@ -26,6 +26,7 @@ import 'package:notredame/core/services/internal_info_service.dart';
 import 'package:notredame/core/services/siren_flutter_service.dart';
 import 'package:notredame/core/services/app_widget_service.dart';
 import 'package:notredame/core/services/in_app_review_service.dart';
+import 'package:notredame/core/services/launch_url_service.dart';
 
 // MOCKS
 import 'package:ets_api_clients/testing.dart';
@@ -39,6 +40,7 @@ import 'mock/services/flutter_secure_storage_mock.dart';
 import 'mock/services/github_api_mock.dart';
 import 'mock/services/in_app_review_service_mock.dart';
 import 'mock/services/internal_info_service_mock.dart';
+import 'mock/services/launch_url_service_mock.dart';
 import 'mock/services/navigation_service_mock.dart';
 import 'mock/services/networking_service_mock.dart';
 import 'mock/services/preferences_service_mock.dart';
@@ -302,4 +304,14 @@ void setupInAppReviewMock([WidgetTester tester]) {
     }
     return false;
   });
+}
+
+/// Load a mock of the [LaunchUrlService]
+LaunchUrlService setupLaunchUrlServiceMock() {
+  unregister<LaunchUrlService>();
+  final service = LaunchUrlServiceMock();
+
+  locator.registerSingleton<LaunchUrlService>(service);
+
+  return service;
 }

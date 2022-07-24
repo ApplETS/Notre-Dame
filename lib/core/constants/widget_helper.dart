@@ -19,6 +19,9 @@ extension WidgetTypeExtension on WidgetType {
   ///
   /// This MUST be equal to the classname of the Android WidgetProvider (see
   /// home_widget's README for more info)
+  ///
+  /// Another option would be to use qualifiedAndroidName instead of androidName
+  /// (see home_widget's updateWidget method for more info)
   String get androidName {
     switch (this) {
       case WidgetType.progress:
