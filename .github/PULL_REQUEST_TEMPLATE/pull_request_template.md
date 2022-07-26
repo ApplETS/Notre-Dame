@@ -15,7 +15,7 @@
 - [ ] I have performed a self-review of my code.
 - [ ] If it is a core feature, I have added thorough tests.
 - [ ] Do we need to implement analytics?
-- [ ] Did we updated the version in `pubspec.yaml`?
+- [ ] Did we update the version in `pubspec.yaml`?
 
 ### 🖼️ Screenshots (if useful):
 <!--- If it's a visual change, please provide a screenshot -->
