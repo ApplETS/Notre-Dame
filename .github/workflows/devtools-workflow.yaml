@@ -44,6 +44,6 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Bump version
-        uses: apomalyn/bump-version-using-labels@1.2.1
+        uses: apomalyn/bump-version-using-labels
         with:
           file_path: 'pubspec.yaml'
