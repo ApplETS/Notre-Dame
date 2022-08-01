@@ -47,3 +47,4 @@ jobs:
         uses: apomalyn/bump-version-using-labels@v1.2.1
         with:
           file_path: 'pubspec.yaml'
+          reference_branch: 'master'
