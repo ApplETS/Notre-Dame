@@ -1,23 +1,19 @@
 // FLUTTER / DART / THIRD-PARTIES
 import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/foundation.dart';
+import 'package:notredame/core/services/analytics_service.dart';
+import 'package:notredame/locator.dart';
 
 /// Manage the analytics of the application
 class RemoteConfigService {
   static const _serviceIsDown = "service_is_down";
   final FirebaseRemoteConfig _remoteConfig = FirebaseRemoteConfig.instance;
   final defaults = <String, dynamic>{_serviceIsDown: false};
+  static const String tag = "RmoteConfigService";
 
   Future initialize() async {
-    try {
-      await _remoteConfig.setDefaults(defaults);
-      await _fetchAndActivate();
-    } catch (exception) {
-      if (kDebugMode) {
-        print('Unable to fetch remote config. Cached or default values will be '
-            'used');
-      }
-    }
+    await _remoteConfig.setDefaults(defaults);
+    await _fetchAndActivate();
   }
 
   bool get outage {
@@ -26,13 +22,20 @@ class RemoteConfigService {
   }
 
   Future<void> fetch() async {
-    await _remoteConfig.fetch();
-    await _remoteConfig.fetchAndActivate();
+    final AnalyticsService _analyticsService = locator<AnalyticsService>();
+    try {
+      await _remoteConfig.fetch();
+      await _remoteConfig.fetchAndActivate();
+    } on Exception catch (exception) {
+      _analyticsService.logError(
+          tag,
+          "Exception raised during fetching: ${exception.toString()}",
+          exception);
+    }
   }
 
   Future _fetchAndActivate() async {
-    await _remoteConfig.fetch();
-    await _remoteConfig.fetchAndActivate();
+    fetch();
     _remoteConfig.setConfigSettings(RemoteConfigSettings(
       fetchTimeout: const Duration(seconds: 30),
       minimumFetchInterval: const Duration(minutes: 1),
