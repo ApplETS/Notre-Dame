@@ -1,6 +1,9 @@
 // FLUTTER / DART / THIRD-PARTIES
-import 'package:firebase_remote_config/firebase_remote_config.dart';
+//SERVICE
 import 'package:notredame/core/services/analytics_service.dart';
+
+//OTHERS
+import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:notredame/locator.dart';
 
 /// Manage the analytics of the application
@@ -8,7 +11,7 @@ class RemoteConfigService {
   static const _serviceIsDown = "service_is_down";
   final FirebaseRemoteConfig _remoteConfig = FirebaseRemoteConfig.instance;
   final defaults = <String, dynamic>{_serviceIsDown: false};
-  static const String tag = "RmoteConfigService";
+  static const String tag = "RemoteConfigService";
 
   Future initialize() async {
     await _remoteConfig.setDefaults(defaults);

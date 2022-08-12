@@ -1,9 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:notredame/core/constants/router_paths.dart';
+
+//SERVICE
 import 'package:notredame/core/services/navigation_service.dart';
 import 'package:notredame/core/services/remote_config_service.dart';
-import 'package:notredame/locator.dart';
+
+//VIEW
 import 'package:notredame/ui/views/startup_view.dart';
+
+//CONSTANT
+import 'package:notredame/core/constants/router_paths.dart';
+
+//OTHERS
+import 'package:notredame/locator.dart';
 import 'package:stacked/stacked.dart';
 
 class OutageViewModel extends BaseViewModel {

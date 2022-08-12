@@ -10,8 +10,10 @@ import 'package:notredame/core/utils/utils.dart';
 // VIEW MODEL
 import 'package:notredame/core/viewmodels/outage_viewmodel.dart';
 
-// OTHER
+//UTILS
 import 'package:notredame/ui/utils/app_theme.dart';
+
+//CONSTANT
 import 'package:notredame/core/constants/urls.dart';
 
 class OutageView extends StatelessWidget {

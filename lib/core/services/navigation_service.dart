@@ -1,7 +1,13 @@
 // FLUTTER / DART / THIRD-PARTIES
 import 'package:flutter/material.dart';
-import 'package:notredame/core/constants/router_paths.dart';
+
+//SERVICE
 import 'package:notredame/core/services/remote_config_service.dart';
+
+//CONSTANT
+import 'package:notredame/core/constants/router_paths.dart';
+
+//OTHERS
 import 'package:notredame/locator.dart';
 
 /// Navigation service who doesn't use the BuildContext which allow us to call it from anywhere.
