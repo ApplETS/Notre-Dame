@@ -37,6 +37,7 @@ void main() {
       settingsManagerMock = setupSettingsManagerMock() as SettingsManagerMock;
       setupGithubApiMock();
       setupNetworkingServiceMock();
+      setupAnalyticsServiceMock();
       inAppReviewServiceMock =
           setupInAppReviewServiceMock() as InAppReviewServiceMock;
 
@@ -44,8 +45,6 @@ void main() {
           settingsManagerMock, PreferencesFlag.discoveryMore,
           toReturn: true);
     });
-
-    tearDown(() {});
 
     group('UI - ', () {
       testWidgets('has 1 listView and 6 listTiles',
