@@ -71,7 +71,7 @@ class BottomBar extends StatelessWidget {
     switch (index) {
       case dashboardView:
         _navigationService.pushNamedAndRemoveUntil(RouterPaths.dashboard);
-         _analyticsService.logEvent("BottomBar", "DashboardView clicked");
+        _analyticsService.logEvent("BottomBar", "DashboardView clicked");
         break;
       case scheduleView:
         _navigationService.pushNamedAndRemoveUntil(RouterPaths.schedule);

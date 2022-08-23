@@ -32,9 +32,9 @@ class MoreView extends StatefulWidget {
 
 class _MoreViewState extends State<MoreView> {
   final AnalyticsService _analyticsService = locator<AnalyticsService>();
-  static const String tag = "MoreView"; 
+  static const String tag = "MoreView";
   bool isDiscoveryOverlayActive = false;
-  
+
   @override
   void initState() {
     super.initState();
@@ -89,95 +89,88 @@ class _MoreViewState extends State<MoreView> {
             body: ListView(
               children: [
                 ListTile(
-                  title: Text(AppIntl.of(context).more_about_applets_title),
-                  leading: _buildDiscoveryFeatureDescriptionWidget(
-                      context,
-                      Hero(
-                        tag: 'about',
-                        child: Image.asset(
-                          "assets/images/favicon_applets.png",
-                          height: 24,
-                          width: 24,
+                    title: Text(AppIntl.of(context).more_about_applets_title),
+                    leading: _buildDiscoveryFeatureDescriptionWidget(
+                        context,
+                        Hero(
+                          tag: 'about',
+                          child: Image.asset(
+                            "assets/images/favicon_applets.png",
+                            height: 24,
+                            width: 24,
+                          ),
                         ),
-                      ),
-                      DiscoveryIds.detailsMoreThankYou,
-                      model),
-                  onTap: () {
+                        DiscoveryIds.detailsMoreThankYou,
+                        model),
+                    onTap: () {
                       _analyticsService.logEvent(tag, "About App|ETS clicked");
                       model.navigationService.pushNamed(RouterPaths.about);
-                  }
-                ),
+                    }),
                 ListTile(
-                  title: Text(AppIntl.of(context).more_report_bug),
-                  leading: _buildDiscoveryFeatureDescriptionWidget(
-                      context,
-                      getProperIconAccordingToTheme(Icons.bug_report),
-                      DiscoveryIds.detailsMoreBugReport,
-                      model),
-                  onTap: () {
-                    _analyticsService.logEvent(tag, "Report a bug clicked");
-                    model.navigationService.pushNamed(RouterPaths.feedback);
-                  }
-                ),
+                    title: Text(AppIntl.of(context).more_report_bug),
+                    leading: _buildDiscoveryFeatureDescriptionWidget(
+                        context,
+                        getProperIconAccordingToTheme(Icons.bug_report),
+                        DiscoveryIds.detailsMoreBugReport,
+                        model),
+                    onTap: () {
+                      _analyticsService.logEvent(tag, "Report a bug clicked");
+                      model.navigationService.pushNamed(RouterPaths.feedback);
+                    }),
                 ListTile(
                     title: Text(AppIntl.of(context).in_app_review_title),
                     leading: const Icon(Icons.rate_review),
                     onTap: () {
                       _analyticsService.logEvent(tag, "Rate us clicked");
                       MoreViewModel.launchInAppReview();
-                    }
-                ),
+                    }),
                 ListTile(
-                  title: Text(AppIntl.of(context).more_contributors),
-                  leading: _buildDiscoveryFeatureDescriptionWidget(
-                      context,
-                      getProperIconAccordingToTheme(Icons.people_outline),
-                      DiscoveryIds.detailsMoreContributors,
-                      model),
-                  onTap: () {
-                    _analyticsService.logEvent(tag, "Contributors clicked");
-                    model.navigationService.pushNamed(RouterPaths.contributors);
-                  }
-                ),
+                    title: Text(AppIntl.of(context).more_contributors),
+                    leading: _buildDiscoveryFeatureDescriptionWidget(
+                        context,
+                        getProperIconAccordingToTheme(Icons.people_outline),
+                        DiscoveryIds.detailsMoreContributors,
+                        model),
+                    onTap: () {
+                      _analyticsService.logEvent(tag, "Contributors clicked");
+                      model.navigationService
+                          .pushNamed(RouterPaths.contributors);
+                    }),
                 ListTile(
-                  title: Text(AppIntl.of(context).more_open_source_licenses),
-                  leading: const Icon(Icons.code),
-                  onTap: () {
-                    _analyticsService.logEvent(tag, "Rate us clicked");
-                    Navigator.of(context).push(
-                    PageRouteBuilder(
-                      pageBuilder: (context, _, __) => AboutDialog(
-                        applicationIcon: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: SizedBox(
-                              width: 75,
-                              child: Image.asset(
-                                  'assets/images/favicon_applets.png')),
+                    title: Text(AppIntl.of(context).more_open_source_licenses),
+                    leading: const Icon(Icons.code),
+                    onTap: () {
+                      _analyticsService.logEvent(tag, "Rate us clicked");
+                      Navigator.of(context).push(PageRouteBuilder(
+                        pageBuilder: (context, _, __) => AboutDialog(
+                          applicationIcon: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: SizedBox(
+                                width: 75,
+                                child: Image.asset(
+                                    'assets/images/favicon_applets.png')),
+                          ),
+                          applicationName:
+                              AppIntl.of(context).more_open_source_licenses,
+                          applicationVersion: model.appVersion,
+                          applicationLegalese:
+                              '\u{a9} ${DateTime.now().year} App|ETS',
+                          children: aboutBoxChildren(context),
                         ),
-                        applicationName:
-                            AppIntl.of(context).more_open_source_licenses,
-                        applicationVersion: model.appVersion,
-                        applicationLegalese:
-                            '\u{a9} ${DateTime.now().year} App|ETS',
-                        children: aboutBoxChildren(context),
-                      ),
-                      opaque: false,
-                    )
-                    );
-                  }
-                ),
+                        opaque: false,
+                      ));
+                    }),
                 ListTile(
-                  title: Text(AppIntl.of(context).settings_title),
-                  leading: _buildDiscoveryFeatureDescriptionWidget(
-                      context,
-                      getProperIconAccordingToTheme(Icons.settings),
-                      DiscoveryIds.detailsMoreSettings,
-                      model),
-                  onTap: () {
-                    _analyticsService.logEvent(tag, "Settings clicked");
-                    model.navigationService.pushNamed(RouterPaths.settings);
-                  }
-                ),
+                    title: Text(AppIntl.of(context).settings_title),
+                    leading: _buildDiscoveryFeatureDescriptionWidget(
+                        context,
+                        getProperIconAccordingToTheme(Icons.settings),
+                        DiscoveryIds.detailsMoreSettings,
+                        model),
+                    onTap: () {
+                      _analyticsService.logEvent(tag, "Settings clicked");
+                      model.navigationService.pushNamed(RouterPaths.settings);
+                    }),
                 ListTile(
                   title: Text(AppIntl.of(context).more_log_out),
                   leading: const Icon(Icons.logout),
@@ -193,7 +186,8 @@ class _MoreViewState extends State<MoreView> {
                         actions: [
                           TextButton(
                               onPressed: () async {
-                                _analyticsService.logEvent(tag, "Log out clicked");
+                                _analyticsService.logEvent(
+                                    tag, "Log out clicked");
                                 model.logout();
                               },
                               child: Text(AppIntl.of(context).yes)),

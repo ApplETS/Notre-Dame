@@ -26,7 +26,7 @@ class ProfileView extends StatefulWidget {
 
 class _ProfileViewState extends State<ProfileView> {
   final AnalyticsService _analyticsService = locator<AnalyticsService>();
-  
+
   @override
   void initState() {
     super.initState();

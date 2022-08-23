@@ -54,7 +54,7 @@ class ProfileViewModel extends FutureViewModel<List<Program>> {
     }
 
     _programList.sort((a, b) => b.status.compareTo(a.status));
-    
+
     return _programList;
   }
 

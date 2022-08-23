@@ -34,7 +34,7 @@ import 'package:notredame/locator.dart';
 
 class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
   static const String tag = "DashboardViewModel";
-  
+
   final SettingsManager _settingsManager = locator<SettingsManager>();
   final CourseRepository _courseRepository = locator<CourseRepository>();
   final AnalyticsService _analyticsService = locator<AnalyticsService>();

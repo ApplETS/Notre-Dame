@@ -616,7 +616,8 @@ void main() {
         expect(viewModel.cardsToDisplay,
             [PreferencesFlag.aboutUsCard, PreferencesFlag.progressBarCard]);
 
-        verify(analyticsService.logEvent("DashboardViewModel", "Deleting scheduleCard"));
+        verify(analyticsService.logEvent(
+            "DashboardViewModel", "Deleting scheduleCard"));
         verify(settingsManager.setInt(PreferencesFlag.scheduleCard, -1))
             .called(1);
         verify(settingsManager.setInt(PreferencesFlag.aboutUsCard, 0))
@@ -637,7 +638,8 @@ void main() {
           PreferencesFlag.progressBarCard
         ]);
 
-        verify(analyticsService.logEvent("DashboardViewModel", "Restoring cards"));
+        verify(
+            analyticsService.logEvent("DashboardViewModel", "Restoring cards"));
         verify(settingsManager.getDashboard()).called(1);
         verify(settingsManager.setInt(PreferencesFlag.aboutUsCard, 0))
             .called(1);
@@ -691,7 +693,8 @@ void main() {
           PreferencesFlag.scheduleCard
         ]);
 
-        verify(analyticsService.logEvent("DashboardViewModel", "Reordoring progressBarCard"));
+        verify(analyticsService.logEvent(
+            "DashboardViewModel", "Reordoring progressBarCard"));
         verify(settingsManager.getDashboard()).called(1);
         verify(settingsManager.setInt(PreferencesFlag.progressBarCard, 0))
             .called(1);
