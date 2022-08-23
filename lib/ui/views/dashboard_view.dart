@@ -34,6 +34,7 @@ import 'package:notredame/ui/utils/discovery_components.dart';
 
 // SERVICES
 import 'package:notredame/core/services/navigation_service.dart';
+import 'package:notredame/core/services/analytics_service.dart';
 
 class DashboardView extends StatefulWidget {
   final UpdateCode updateCode;
@@ -47,6 +48,8 @@ class _DashboardViewState extends State<DashboardView>
     with TickerProviderStateMixin {
   Text progressBarText;
   final NavigationService _navigationService = locator<NavigationService>();
+  final AnalyticsService _analyticsService = locator<AnalyticsService>();
+  static const String tag = "DashboardViewModel";
 
   @override
   void initState() {
@@ -148,6 +151,7 @@ class _DashboardViewState extends State<DashboardView>
                   child: Wrap(spacing: 15.0, children: [
                     IconButton(
                       onPressed: () {
+                        _analyticsService.logEvent(tag, "Facebook clicked");
                         Utils.launchURL(Urls.clubFacebook, AppIntl.of(context));
                       },
                       icon: const FaIcon(
@@ -157,6 +161,7 @@ class _DashboardViewState extends State<DashboardView>
                     ),
                     IconButton(
                       onPressed: () {
+                        _analyticsService.logEvent(tag, "Github clicked");
                         Utils.launchURL(Urls.clubGithub, AppIntl.of(context));
                       },
                       icon: const FaIcon(
@@ -166,6 +171,7 @@ class _DashboardViewState extends State<DashboardView>
                     ),
                     IconButton(
                       onPressed: () {
+                        _analyticsService.logEvent(tag, "Email clicked");
                         Utils.launchURL(Urls.clubEmail, AppIntl.of(context));
                       },
                       icon: const FaIcon(
@@ -175,6 +181,7 @@ class _DashboardViewState extends State<DashboardView>
                     ),
                     IconButton(
                       onPressed: () {
+                        _analyticsService.logEvent(tag, "Discord clicked");
                         Utils.launchURL(Urls.clubDiscord, AppIntl.of(context));
                       },
                       icon: const FaIcon(
