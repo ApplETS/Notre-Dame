@@ -34,6 +34,8 @@ class AppTheme {
 
   // Accent
   static const Color accent = etsLightRed;
+  static const Color lightThemeAccent = Color.fromARGB(255, 228, 225, 225);
+  static const Color darkThemeAccent = Color(0xff424242);
 
   /// Light theme
   static ThemeData lightTheme() {

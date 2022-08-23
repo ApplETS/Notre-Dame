@@ -102,7 +102,7 @@ class _MoreViewState extends State<MoreView> {
                   title: Text(AppIntl.of(context).more_report_bug),
                   leading: _buildDiscoveryFeatureDescriptionWidget(
                       context,
-                      getProperIconAccordingToTheme(Icons.bug_report),
+                      getProperIconAccordingToTheme(Icons.report),
                       DiscoveryIds.detailsMoreBugReport,
                       model),
                   onTap: () =>
