@@ -56,6 +56,7 @@ void main() {
       test('navigate to security', () async {
         await viewModel.onLinkClicked(_securityQuickLink);
 
+        verify(analyticsService.logEvent("QuickLink", "QuickLink clicked: test"));
         verify(navigationService.pushNamed(RouterPaths.security));
         verifyNoMoreInteractions(navigationService);
       });

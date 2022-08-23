@@ -25,6 +25,7 @@ class WebLinkCardViewModel extends BaseViewModel {
   /// used to open a website or the security view
   Future<void> onLinkClicked(QuickLink link) async {
     _analyticsService.logEvent("QuickLink", "QuickLink clicked: ${link.name}");
+    
     if (link.link == 'security') {
       _navigationService.pushNamed(RouterPaths.security);
     } else {
