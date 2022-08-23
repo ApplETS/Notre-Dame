@@ -14,9 +14,9 @@ import 'package:notredame/ui/widgets/student_program.dart';
 
 // UTILS
 import 'package:notredame/ui/utils/loading.dart';
+import 'package:notredame/ui/utils/app_theme.dart';
 
 // OTHER
-import 'package:notredame/ui/utils/app_theme.dart';
 import 'package:notredame/locator.dart';
 
 class ProfileView extends StatefulWidget {
