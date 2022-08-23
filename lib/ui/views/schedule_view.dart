@@ -16,6 +16,9 @@ import 'package:notredame/core/viewmodels/schedule_viewmodel.dart';
 // MODELS
 import 'package:ets_api_clients/models.dart';
 
+// SERVICES
+import 'package:notredame/core/services/analytics_service.dart';
+
 // WIDGET
 import 'package:notredame/ui/widgets/base_scaffold.dart';
 import 'package:notredame/ui/widgets/course_activity_tile.dart';
@@ -27,6 +30,7 @@ import 'package:notredame/core/constants/discovery_ids.dart';
 
 // OTHER
 import 'package:notredame/ui/utils/app_theme.dart';
+import 'package:notredame/locator.dart';
 
 class ScheduleView extends StatefulWidget {
   @visibleForTesting
@@ -40,8 +44,10 @@ class ScheduleView extends StatefulWidget {
 
 class _ScheduleViewState extends State<ScheduleView>
     with TickerProviderStateMixin {
-  static const Color _selectedColor = AppTheme.etsLightRed;
+  final AnalyticsService _analyticsService = locator<AnalyticsService>();
 
+  static const String tag = "ScheduleView";
+  static const Color _selectedColor = AppTheme.etsLightRed;
   static const Color _defaultColor = Color(0xff76859B);
 
   AnimationController _animationController;
@@ -253,6 +259,7 @@ class _ScheduleViewState extends State<ScheduleView>
               icon: const Icon(Icons.today),
               onPressed: () => setState(() {
                     model.selectToday();
+                    _analyticsService.logEvent(tag, "Select today clicked");
                   })),
         _buildDiscoveryFeatureDescriptionWidget(context, Icons.settings, model),
       ];
@@ -275,6 +282,7 @@ class _ScheduleViewState extends State<ScheduleView>
         child: IconButton(
             icon: const Icon(Icons.settings),
             onPressed: () async {
+              _analyticsService.logEvent(tag, "Settings clicked");
               await showModalBottomSheet(
                   isDismissible: true,
                   enableDrag: true,
