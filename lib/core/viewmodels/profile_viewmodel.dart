@@ -52,6 +52,9 @@ class ProfileViewModel extends FutureViewModel<List<Program>> {
     if (_userRepository.programs != null) {
       _programList = _userRepository.programs;
     }
+
+    _programList.sort((a, b) => b.status.compareTo(a.status));
+    
     return _programList;
   }
 
