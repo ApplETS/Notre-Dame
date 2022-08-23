@@ -15,6 +15,7 @@ import 'package:ets_api_clients/models.dart';
 
 // SERVICE
 import 'package:notredame/core/services/preferences_service.dart';
+import 'package:notredame/core/services/analytics_service.dart';
 
 // VIEWMODEL
 import 'package:notredame/core/viewmodels/dashboard_viewmodel.dart';
@@ -35,6 +36,7 @@ void main() {
   CourseRepository courseRepository;
   PreferencesServiceMock preferencesServiceMock;
   InAppReviewServiceMock inAppReviewServiceMock;
+  AnalyticsService analyticsService;
 
   final gen101 = CourseActivity(
       courseGroup: "GEN101",
@@ -164,7 +166,7 @@ void main() {
       courseRepository = setupCourseRepositoryMock();
       settingsManager = setupSettingsManagerMock();
       preferenceService = setupPreferencesServiceMock();
-      setupAnalyticsServiceMock();
+      analyticsService = setupAnalyticsServiceMock();
       setupAppWidgetServiceMock();
       courseRepository = setupCourseRepositoryMock();
       preferencesServiceMock =
@@ -614,6 +616,7 @@ void main() {
         expect(viewModel.cardsToDisplay,
             [PreferencesFlag.aboutUsCard, PreferencesFlag.progressBarCard]);
 
+        verify(analyticsService.logEvent("DashboardViewModel", "Deleting scheduleCard"));
         verify(settingsManager.setInt(PreferencesFlag.scheduleCard, -1))
             .called(1);
         verify(settingsManager.setInt(PreferencesFlag.aboutUsCard, 0))
@@ -634,6 +637,7 @@ void main() {
           PreferencesFlag.progressBarCard
         ]);
 
+        verify(analyticsService.logEvent("DashboardViewModel", "Restoring cards"));
         verify(settingsManager.getDashboard()).called(1);
         verify(settingsManager.setInt(PreferencesFlag.aboutUsCard, 0))
             .called(1);
@@ -687,6 +691,7 @@ void main() {
           PreferencesFlag.scheduleCard
         ]);
 
+        verify(analyticsService.logEvent("DashboardViewModel", "Reordoring progressBarCard"));
         verify(settingsManager.getDashboard()).called(1);
         verify(settingsManager.setInt(PreferencesFlag.progressBarCard, 0))
             .called(1);

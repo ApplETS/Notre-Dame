@@ -33,6 +33,8 @@ import 'package:notredame/ui/utils/discovery_components.dart';
 import 'package:notredame/locator.dart';
 
 class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
+  static const String tag = "DashboardViewModel";
+  
   final SettingsManager _settingsManager = locator<SettingsManager>();
   final CourseRepository _courseRepository = locator<CourseRepository>();
   final AnalyticsService _analyticsService = locator<AnalyticsService>();
@@ -208,7 +210,7 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
           suffix: _appIntl.progress_bar_suffix));
       await _appWidgetService.updateWidget(WidgetType.progress);
     } on Exception catch (e) {
-      _analyticsService.logError('DashboardViewModel', e.toString());
+      _analyticsService.logError(tag, e.toString());
     }
   }
 
@@ -238,7 +240,7 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
           grades: grades));
       await _appWidgetService.updateWidget(WidgetType.grades);
     } on Exception catch (e) {
-      _analyticsService.logError('DashboardViewModel', e.toString());
+      _analyticsService.logError(tag, e.toString());
     }
   }
 
@@ -256,6 +258,8 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
     updatePreferences();
 
     notifyListeners();
+
+    _analyticsService.logEvent(tag, "Reordoring ${flag.name}");
   }
 
   /// Hide [flag] card from dashboard by setting int value -1
@@ -267,6 +271,8 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
     updatePreferences();
 
     notifyListeners();
+
+    _analyticsService.logEvent(tag, "Deleting ${flag.name}");
   }
 
   /// Reset all card indexes to their default values
@@ -303,6 +309,8 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
         }
       });
     }
+
+    _analyticsService.logEvent(tag, "Restoring cards");
   }
 
   Future<List<Session>> futureToRunSessionProgressBar() async {
