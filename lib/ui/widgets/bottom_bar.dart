@@ -5,6 +5,7 @@ import 'package:feature_discovery/feature_discovery.dart';
 
 // SERVICE
 import 'package:notredame/core/services/navigation_service.dart';
+import 'package:notredame/core/services/analytics_service.dart';
 
 // CONSTANT
 import 'package:notredame/core/constants/router_paths.dart';
@@ -26,6 +27,7 @@ class BottomBar extends StatelessWidget {
   static const int moreView = 4;
 
   final NavigationService _navigationService = locator<NavigationService>();
+  final AnalyticsService _analyticsService = locator<AnalyticsService>();
 
   @override
   Widget build(BuildContext context) {
@@ -69,18 +71,23 @@ class BottomBar extends StatelessWidget {
     switch (index) {
       case dashboardView:
         _navigationService.pushNamedAndRemoveUntil(RouterPaths.dashboard);
+         _analyticsService.logEvent("BottomBar", "DashboardView clicked");
         break;
       case scheduleView:
         _navigationService.pushNamedAndRemoveUntil(RouterPaths.schedule);
+        _analyticsService.logEvent("BottomBar", "ScheduleView clicked");
         break;
       case studentView:
         _navigationService.pushNamedAndRemoveUntil(RouterPaths.student);
+        _analyticsService.logEvent("BottomBar", "StudentView clicked");
         break;
       case etsView:
         _navigationService.pushNamedAndRemoveUntil(RouterPaths.ets);
+        _analyticsService.logEvent("BottomBar", "EtsView clicked");
         break;
       case moreView:
         _navigationService.pushNamedAndRemoveUntil(RouterPaths.more);
+        _analyticsService.logEvent("BottomBar", "MoreView clicked");
         break;
     }
   }
