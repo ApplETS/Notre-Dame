@@ -6,14 +6,34 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 // VIEW-MODEL
 import 'package:notredame/core/viewmodels/profile_viewmodel.dart';
 
+// SERVICES
+import 'package:notredame/core/services/analytics_service.dart';
+
 // WIDGETS
 import 'package:notredame/ui/widgets/student_program.dart';
+
+// UTILS
 import 'package:notredame/ui/utils/loading.dart';
 
 // OTHER
 import 'package:notredame/ui/utils/app_theme.dart';
+import 'package:notredame/locator.dart';
 
-class ProfileView extends StatelessWidget {
+class ProfileView extends StatefulWidget {
+  @override
+  State<ProfileView> createState() => _ProfileViewState();
+}
+
+class _ProfileViewState extends State<ProfileView> {
+  final AnalyticsService _analyticsService = locator<AnalyticsService>();
+  
+  @override
+  void initState() {
+    super.initState();
+
+    _analyticsService.logEvent("ProfileView", "Opened");
+  }
+
   @override
   Widget build(BuildContext context) =>
       ViewModelBuilder<ProfileViewModel>.reactive(
