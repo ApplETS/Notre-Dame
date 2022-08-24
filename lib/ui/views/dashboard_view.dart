@@ -49,7 +49,7 @@ class _DashboardViewState extends State<DashboardView>
   Text progressBarText;
   final NavigationService _navigationService = locator<NavigationService>();
   final AnalyticsService _analyticsService = locator<AnalyticsService>();
-  static const String tag = "DashboardViewModel";
+  static const String tag = "DashboardView";
 
   @override
   void initState() {
