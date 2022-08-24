@@ -7,6 +7,9 @@ import 'package:stacked/stacked.dart';
 import 'package:image/image.dart' as image;
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+// CONSTANTS
+import 'package:notredame/core/constants/feedback_type.dart';
+
 //SERVICE
 import 'package:notredame/core/services/github_api.dart';
 
@@ -22,8 +25,7 @@ class FeedbackViewModel extends BaseViewModel {
   FeedbackViewModel({@required AppIntl intl}) : _appIntl = intl;
 
   /// Create a Github issue with [feedbackText] and the screenshot associated.
-  Future<void> sendFeedback(String feedbackText, Uint8List feedbackScreenshot,
-      String feedbackType) async {
+  Future<void> sendFeedback(String feedbackText, Uint8List feedbackScreenshot, FeedbackType type) async {
     //Generate info to pass to github
     final File file = await _githubApi.localFile;
     await file.writeAsBytes(image.encodePng(
@@ -37,7 +39,7 @@ class FeedbackViewModel extends BaseViewModel {
     _githubApi.createGithubIssue(
         feedbackText: feedbackText,
         fileName: fileName,
-        feedbackType: feedbackType);
+        feedbackType: type.toString());
 
     file.deleteSync();
     Fluttertoast.showToast(

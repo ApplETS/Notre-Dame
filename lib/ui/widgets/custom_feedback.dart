@@ -1,7 +1,13 @@
 // FLUTTER / DART / THIRD-PARTIES
 import 'package:feedback/feedback.dart';
 import 'package:flutter/material.dart';
+import 'package:notredame/core/constants/custom_feedback_localization.dart';
+
+// MODELS
 import 'package:notredame/core/models/feedback.dart';
+
+// OTHERS
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 /// A form that prompts the user for the type of feedback they want to give and a
 /// free form text feedback.
@@ -36,46 +42,19 @@ class _CustomFeedbackFormState extends State<CustomFeedbackForm> {
                 controller: widget.scrollController,
                 padding: const EdgeInsets.fromLTRB(16, 20, 16, 0),
                 children: [
-                  Text(
-                    Localizations.localeOf(context).toString() == 'fr'
-                        ? "Quel type de signalement voulez-vous faire?"
-                        : "What kind of feedback do you want to give?",
-                    style: const TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                  Row(
-                    children: [
-                      Flexible(
-                        child: DropdownButton<String>(
-                          value: _customFeedback.feedbackType,
-                          items: (Localizations.localeOf(context).toString() ==
-                                      'fr'
-                                  ? ['Bogue', 'Amélioration']
-                                  : ['Bug report', 'Feature request'])
-                              .map(
-                                (type) => DropdownMenuItem<String>(
-                                  value: type,
-                                  child: Text(type),
-                                ),
-                              )
-                              .toList(),
-                          onChanged: (feedbackType) => setState(() =>
-                              _customFeedback.feedbackType = feedbackType),
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 8),
                   TextField(
-                    decoration: InputDecoration(
-                        labelText: FeedbackLocalizations.of(context)
-                            .feedbackDescriptionText),
+                    decoration: InputDecoration(labelText: (FeedbackLocalizations.of(context) as CustomFeedbackLocalizations).email),
+                    minLines: 1,
+                    textInputAction: TextInputAction.done,
+                    onChanged: (feedbackEmail) => _customFeedback.feedbackEmail = feedbackEmail,
+                  ),
+                  TextField(
+                    decoration: InputDecoration(labelText: (FeedbackLocalizations.of(context) as CustomFeedbackLocalizations).feedbackDescriptionText),
                     maxLines: 10,
                     minLines: 1,
                     textInputAction: TextInputAction.done,
-                    onChanged: (newFeedback) =>
-                        _customFeedback.feedbackText = newFeedback,
+                    onChanged: (feedbackDescription) => _customFeedback.feedbackText = feedbackDescription,
                   ),
-                  const SizedBox(height: 8),
                 ],
               ),
             ],
@@ -83,8 +62,7 @@ class _CustomFeedbackFormState extends State<CustomFeedbackForm> {
         ),
         TextButton(
           // disable this button until the user has specified a feedback
-          onPressed: _customFeedback.feedbackType != null &&
-                  _customFeedback.feedbackText != null &&
+          onPressed: _customFeedback.feedbackText != null &&
                   _customFeedback.feedbackText.isNotEmpty
               ? () => widget.onSubmit(
                     _customFeedback.feedbackText,

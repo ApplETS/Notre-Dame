@@ -174,12 +174,12 @@
   "more_report_bug_feature": "Request a feature",
   "more_report_bug_feature_subtitle": "\nDo you have an idea that would make our app better ? We would love to know !",
   "more_report_tips": "Tips \n\n",
-  "more_report_bug_step1": "After selecting the option, the feedbackview will open.\n\nYou can choose between ",
+  "more_report_bug_step1": "After selecting the option, the feedback view will open.\n\nYou can choose between ",
   "more_report_bug_step2": "Navigate ",
   "more_report_bug_step3": "and ",
   "more_report_bug_step4": "Draw ",
   "more_report_bug_step5": "mode on the right side. \n\nWhen in navigation mode, you can freely navigate in the app.\n\nTo switch to the drawing mode just press the 'Draw' button. Now you can draw on the screen.\n\nTo finish your feedback just write a description below and send it by pressing the 'Submit' button.",
-  
+
   "security_bomb_threat_title": "Bomb threat",
   "security_bomb_threat_detail": "bomb_threat_detail_en.html",
   "security_suspicious_packages_title": "Suspicious packages",

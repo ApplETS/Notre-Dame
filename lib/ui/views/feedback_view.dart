@@ -1,11 +1,16 @@
 // FLUTTER / DART / THIRD-PARTIES
 import 'package:feedback/feedback.dart';
 import 'package:flutter/material.dart';
-import 'package:notredame/ui/utils/app_theme.dart';
 import 'package:stacked/stacked.dart';
 
 // VIEWMODEL
 import 'package:notredame/core/viewmodels/feedback_viewmodel.dart';
+
+// CONSTANTS
+import 'package:notredame/core/constants/feedback_type.dart';
+
+// UTILS
+import 'package:notredame/ui/utils/app_theme.dart';
 
 // OTHERS
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -25,87 +30,83 @@ class _FeedbackViewState extends State<FeedbackView> {
             appBar: AppBar(
               title: Text(AppIntl.of(context).more_report_bug),
             ),
-            body: Padding(
-              padding: const EdgeInsets.all(6.0),
-              child: Column(
-                children: [
-                  Card(
-                    color: Theme.of(context).brightness == Brightness.light ? AppTheme.lightThemeBackground : AppTheme.darkThemeAccent,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10.0),
-                      side: BorderSide(color: AppTheme.etsLightGrey.withOpacity(0.1)),
-                    ),
-                    child: ElevatedButton(
-                      onPressed: () {
-                        BetterFeedback.of(context).show((feedback) {
-                          model.sendFeedback(
-                                feedback.text,
-                                feedback.screenshot,
-                                feedback.extra.entries.first.value
-                                    .toString()
-                                    .split('.')
-                                    .last)
-                            .then((value) => BetterFeedback.of(context).hide());
-                        });
-                      }, 
-                      style: ElevatedButton.styleFrom(primary: Theme.of(context).brightness == Brightness.light ? AppTheme.lightThemeBackground : AppTheme.darkThemeAccent, padding: EdgeInsets.zero),
-                      child: getCardInfo(
-                        context,
-                        AppIntl.of(context).more_report_bug_bug,
-                        AppIntl.of(context).more_report_bug_bug_subtitle,
-                        Icons.bug_report,
-                        const Color.fromRGBO(252, 196, 238, 1),
-                        const Color.fromRGBO(153, 78, 174, 1),
+            body: SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.all(6.0),
+                child: Column(
+                  children: [
+                    Card(
+                      color: Theme.of(context).brightness == Brightness.light ? AppTheme.lightThemeBackground : AppTheme.darkThemeAccent,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10.0),
+                        side: BorderSide(color: AppTheme.etsLightGrey.withOpacity(0.1)),
+                      ),
+                      child: ElevatedButton(
+                        onPressed: () {
+                          BetterFeedback.of(context).show((feedback) {
+                            model.sendFeedback(
+                                  feedback.text,
+                                  feedback.screenshot,
+                                  FeedbackType.bug)
+                              .then((value) => BetterFeedback.of(context).hide());
+                          });
+                        }, 
+                        style: ElevatedButton.styleFrom(primary: Theme.of(context).brightness == Brightness.light ? AppTheme.lightThemeBackground : AppTheme.darkThemeAccent, padding: EdgeInsets.zero),
+                        child: getCardInfo(
+                          context,
+                          AppIntl.of(context).more_report_bug_bug,
+                          AppIntl.of(context).more_report_bug_bug_subtitle,
+                          Icons.bug_report,
+                          const Color.fromRGBO(252, 196, 238, 1),
+                          const Color.fromRGBO(153, 78, 174, 1),
+                        ),
                       ),
                     ),
-                  ),
-                  Card(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10.0),
-                      side: BorderSide(color: AppTheme.etsLightGrey.withOpacity(0.1)),
-                    ),
-                    child: ElevatedButton(
-                      onPressed: () {
-                        BetterFeedback.of(context).show((feedback) {
-                          model.sendFeedback(
-                                feedback.text,
-                                feedback.screenshot,
-                                feedback.extra.entries.first.value
-                                    .toString()
-                                    .split('.')
-                                    .last)
-                            .then((value) => BetterFeedback.of(context).hide());
-                        });
-                      }, 
-                      style: ElevatedButton.styleFrom(primary: Theme.of(context).brightness == Brightness.light ? AppTheme.lightThemeBackground : AppTheme.darkThemeAccent, padding: EdgeInsets.zero),
-                      child: getCardInfo(
-                        context,
-                        AppIntl.of(context).more_report_bug_feature,
-                        AppIntl.of(context).more_report_bug_feature_subtitle,
-                        Icons.design_services,
-                        const Color.fromRGBO(63, 219, 251, 1),
-                        const Color.fromRGBO(14, 127, 188, 1)
+                    Card(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10.0),
+                        side: BorderSide(color: AppTheme.etsLightGrey.withOpacity(0.1)),
+                      ),
+                      child: ElevatedButton(
+                        onPressed: () {
+                          BetterFeedback.of(context).show((feedback) {
+                            model.sendFeedback(
+                                  feedback.text,
+                                  feedback.screenshot,
+                                  FeedbackType.enhancement)
+                              .then((value) => BetterFeedback.of(context).hide());
+                          });
+                        }, 
+                        style: ElevatedButton.styleFrom(primary: Theme.of(context).brightness == Brightness.light ? AppTheme.lightThemeBackground : AppTheme.darkThemeAccent, padding: EdgeInsets.zero),
+                        child: getCardInfo(
+                          context,
+                          AppIntl.of(context).more_report_bug_feature,
+                          AppIntl.of(context).more_report_bug_feature_subtitle,
+                          Icons.design_services,
+                          const Color.fromRGBO(63, 219, 251, 1),
+                          const Color.fromRGBO(14, 127, 188, 1)
+                        ),
                       ),
                     ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(5, 15, 5, 5),
-                    child: RichText(
-                      text: TextSpan(
-                        children: <TextSpan>[
-                          TextSpan(text: AppIntl.of(context).more_report_tips, style: Theme.of(context).textTheme.headline5),
-                          TextSpan(text: AppIntl.of(context).more_report_bug_step1, style: Theme.of(context).textTheme.bodyText2.copyWith(fontSize: 18)),
-                          TextSpan(text: AppIntl.of(context).more_report_bug_step2, style: Theme.of(context).textTheme.bodyText2.copyWith(fontSize: 18, 
-                            color: Theme.of(context).brightness == Brightness.light ? const Color.fromRGBO(14, 127, 188, 1) : const Color.fromRGBO(63, 219, 251, 1))),
-                          TextSpan(text: AppIntl.of(context).more_report_bug_step3, style: Theme.of(context).textTheme.bodyText2.copyWith(fontSize: 18)),
-                          TextSpan(text: AppIntl.of(context).more_report_bug_step4, style: Theme.of(context).textTheme.bodyText2.copyWith(fontSize: 18, 
-                            color: Theme.of(context).brightness == Brightness.light ? const Color.fromRGBO(14, 127, 188, 1) : const Color.fromRGBO(63, 219, 251, 1))),
-                          TextSpan(text: AppIntl.of(context).more_report_bug_step5, style: Theme.of(context).textTheme.bodyText2.copyWith(fontSize: 18)),
-                        ],
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(5, 15, 5, 5),
+                      child: RichText(
+                        text: TextSpan(
+                          children: <TextSpan>[
+                            TextSpan(text: AppIntl.of(context).more_report_tips, style: Theme.of(context).textTheme.headline5),
+                            TextSpan(text: AppIntl.of(context).more_report_bug_step1, style: Theme.of(context).textTheme.bodyText2.copyWith(fontSize: 18)),
+                            TextSpan(text: AppIntl.of(context).more_report_bug_step2, style: Theme.of(context).textTheme.bodyText2.copyWith(fontSize: 18, 
+                              color: Theme.of(context).brightness == Brightness.light ? const Color.fromRGBO(14, 127, 188, 1) : const Color.fromRGBO(63, 219, 251, 1))),
+                            TextSpan(text: AppIntl.of(context).more_report_bug_step3, style: Theme.of(context).textTheme.bodyText2.copyWith(fontSize: 18)),
+                            TextSpan(text: AppIntl.of(context).more_report_bug_step4, style: Theme.of(context).textTheme.bodyText2.copyWith(fontSize: 18, 
+                              color: Theme.of(context).brightness == Brightness.light ? const Color.fromRGBO(14, 127, 188, 1) : const Color.fromRGBO(63, 219, 251, 1))),
+                            TextSpan(text: AppIntl.of(context).more_report_bug_step5, style: Theme.of(context).textTheme.bodyText2.copyWith(fontSize: 18)),
+                          ],
+                        ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           );
@@ -134,11 +135,12 @@ class _FeedbackViewState extends State<FeedbackView> {
                 children: <Widget>[
                   Text(
                     title,
-                    style: const TextStyle(fontSize: 20),
+                    style: Theme.of(context).textTheme.bodyText2.copyWith(fontSize: 19),
                     textAlign: TextAlign.left,
                   ),
                   Text(
                     subtitle,
+                    style: Theme.of(context).textTheme.bodyText2.copyWith(fontSize: 16),
                     textAlign: TextAlign.left,
                   )
                 ],

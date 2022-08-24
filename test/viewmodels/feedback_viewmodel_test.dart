@@ -7,6 +7,9 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+// CONSTANTS
+import 'package:notredame/core/constants/feedback_type.dart';
+
 // SERVICES / MANAGERS
 import 'package:notredame/core/services/github_api.dart';
 import 'package:notredame/core/services/navigation_service.dart';
@@ -60,7 +63,7 @@ void main() {
             image.copyResize(image.decodeImage(screenshotData), width: 307)));
 
         await viewModel.sendFeedback(
-            'Notre-Dame bug report', screenshotData, 'bugReport');
+            'Notre-Dame bug report', screenshotData, FeedbackType.bug);
 
         verify(githubApiMock.uploadFileToGithub(
           filePath: file.path.split('/').last,
@@ -73,7 +76,7 @@ void main() {
         GithubApiMock.stubLocalFile(githubApiMock, file);
 
         await viewModel.sendFeedback(
-            'Notre-Dame bug report', screenshotData, 'bugReport');
+            'Notre-Dame bug report', screenshotData, FeedbackType.bug);
 
         verify(githubApiMock.createGithubIssue(
             feedbackText: 'Notre-Dame bug report',
