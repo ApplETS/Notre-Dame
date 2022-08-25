@@ -9,6 +9,7 @@ import 'package:notredame/core/managers/settings_manager.dart';
 
 // SERVICES
 import 'package:notredame/core/services/networking_service.dart';
+import '../../mock/services/analytics_service_mock.dart';
 
 // VIEWS
 import 'package:notredame/ui/views/student_view.dart';
@@ -31,6 +32,7 @@ void main() {
       setupNetworkingServiceMock();
       courseRepository = setupCourseRepositoryMock();
       setupSettingsManagerMock();
+      setupAnalyticsServiceMock();
 
       CourseRepositoryMock.stubCourses(
           courseRepository as CourseRepositoryMock);
@@ -46,6 +48,7 @@ void main() {
       unregister<CourseRepository>();
       unregister<NetworkingService>();
       unregister<SettingsManager>();
+      unregister<AnalyticsServiceMock>();
     });
 
     group('UI - ', () {
