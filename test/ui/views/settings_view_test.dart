@@ -6,6 +6,7 @@ import 'package:feature_discovery/feature_discovery.dart';
 
 // SERVICES
 import 'package:notredame/core/services/networking_service.dart';
+import '../../mock/services/analytics_service_mock.dart';
 
 // VIEW
 import 'package:notredame/ui/views/settings_view.dart';
@@ -23,10 +24,12 @@ void main() {
       setupNetworkingServiceMock();
       setupCacheManagerMock();
       setupSettingsManagerMock();
+      setupAnalyticsServiceMock();
     });
 
     tearDown(() {
       unregister<NetworkingService>();
+      unregister<AnalyticsServiceMock>();
     });
 
     group('UI - ', () {
