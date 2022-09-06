@@ -8,6 +8,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:notredame/ui/views/outage_view.dart';
 import 'package:notredame/ui/widgets/custom_feedback.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_config/flutter_config.dart';
@@ -19,6 +20,7 @@ import 'package:notredame/ui/router.dart';
 import 'package:notredame/core/services/navigation_service.dart';
 import 'package:notredame/core/services/analytics_service.dart';
 import 'package:notredame/core/services/app_widget_service.dart';
+import 'package:notredame/core/services/remote_config_service.dart';
 
 // UTILS
 import 'package:notredame/locator.dart';
@@ -36,6 +38,9 @@ Future<void> main() async {
 
   // Initialize firebase
   await Firebase.initializeApp();
+  final RemoteConfigService remoteConfigService =
+      locator<RemoteConfigService>();
+  await remoteConfigService.initialize();
 
   // Manage the settings
   final SettingsManager settingsManager = locator<SettingsManager>();
@@ -65,6 +70,9 @@ class ETSMobile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final RemoteConfigService remoteConfigService =
+        locator<RemoteConfigService>();
+    final bool _outage = remoteConfigService.outage;
     return ChangeNotifierProvider<SettingsManager>(
       create: (_) => settingsManager,
       child: Consumer<SettingsManager>(builder: (context, model, child) {
@@ -95,7 +103,7 @@ class ETSMobile extends StatelessWidget {
               navigatorObservers: [
                 locator<AnalyticsService>().getAnalyticsObserver(),
               ],
-              home: StartUpView(),
+              home: _outage ? OutageView() : StartUpView(),
               onGenerateRoute: generateRoute,
             ),
           ),
