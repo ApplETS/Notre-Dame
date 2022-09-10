@@ -2,7 +2,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
-import 'package:notredame/ui/utils/loading.dart';
 import 'package:stacked/stacked.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -15,8 +14,15 @@ import 'package:notredame/core/viewmodels/grades_viewmodel.dart';
 // WIDGETS
 import 'package:notredame/ui/widgets/grade_button.dart';
 
+// SERVICES
+import 'package:notredame/core/services/analytics_service.dart';
+
+// UTILS
+import 'package:notredame/ui/utils/loading.dart';
+
 // OTHER
 import 'package:notredame/ui/utils/app_theme.dart';
+import 'package:notredame/locator.dart';
 
 class GradesView extends StatefulWidget {
   @override
@@ -24,6 +30,8 @@ class GradesView extends StatefulWidget {
 }
 
 class _GradesViewState extends State<GradesView> {
+  final AnalyticsService _analyticsService = locator<AnalyticsService>();
+
   @override
   void initState() {
     super.initState();
@@ -31,6 +39,8 @@ class _GradesViewState extends State<GradesView> {
     SchedulerBinding.instance.addPostFrameCallback((Duration duration) {
       GradesViewModel.startDiscovery(context);
     });
+
+    _analyticsService.logEvent("GradesView", "Opened");
   }
 
   @override
