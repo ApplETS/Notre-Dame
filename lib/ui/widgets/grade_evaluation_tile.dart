@@ -2,6 +2,8 @@
 import 'dart:math';
 import 'package:feature_discovery/feature_discovery.dart';
 import 'package:flutter/material.dart';
+import 'package:auto_size_text/auto_size_text.dart';
+import 'package:marquee/marquee.dart';
 import 'package:intl/intl.dart';
 
 // CONSTANTS
@@ -118,18 +120,46 @@ class _GradeEvaluationTileState extends State<GradeEvaluationTile>
               title: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Padding(
-                    padding: const EdgeInsets.only(top: 30.0),
-                    child: Text(
-                      widget.evaluation.title,
-                      overflow: TextOverflow.ellipsis,
-                      style: TextStyle(
-                        fontSize: 16,
-                        color: Utils.getColorByBrightness(
-                            context, Colors.black, Colors.white),
+                  if (!showEvaluationDetails)
+                    Padding(
+                      padding: const EdgeInsets.only(top: 30.0),
+                      child: Text(
+                        widget.evaluation.title,
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(
+                          fontSize: 16,
+                          color: Utils.getColorByBrightness(
+                              context, Colors.black, Colors.white),
+                        ),
+                      ),
+                    )
+                  else
+                    SizedBox(
+                      height: 49,
+                      child: Padding(
+                        padding: const EdgeInsets.only(top: 30.0),
+                        child: AutoSizeText(
+                          widget.evaluation.title,
+                          style: TextStyle(
+                            fontSize: 16,
+                            color: Utils.getColorByBrightness(
+                                context, Colors.black, Colors.white),
+                          ),
+                          maxLines: 1,
+                          minFontSize: 16,
+                          overflowReplacement: Marquee(
+                            text: widget.evaluation.title,
+                            velocity: 15,
+                            blankSpace: 50,
+                            style: TextStyle(
+                              fontSize: 16,
+                              color: Utils.getColorByBrightness(
+                                  context, Colors.black, Colors.white),
+                            ),
+                          ),
+                        ),
                       ),
                     ),
-                  ),
                   Padding(
                     padding: const EdgeInsets.only(top: 10.0, bottom: 20.0),
                     child: Text(
