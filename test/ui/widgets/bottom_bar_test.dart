@@ -7,6 +7,7 @@ import 'package:feature_discovery/feature_discovery.dart';
 // SERVICE
 import 'package:notredame/core/services/navigation_service.dart';
 import 'package:notredame/core/services/networking_service.dart';
+import '../../mock/services/analytics_service_mock.dart';
 
 // WIDGET
 import 'package:notredame/ui/widgets/bottom_bar.dart';
@@ -24,11 +25,13 @@ void main() {
     setUp(() {
       navigationService = setupNavigationServiceMock();
       setupNetworkingServiceMock();
+      setupAnalyticsServiceMock();
     });
 
     tearDown(() {
       unregister<NavigationService>();
       unregister<NetworkingService>();
+      unregister<AnalyticsServiceMock>();
     });
 
     testWidgets(

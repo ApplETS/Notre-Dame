@@ -15,6 +15,7 @@ import 'package:notredame/ui/views/feedback_view.dart';
 import 'package:notredame/ui/views/login_view.dart';
 import 'package:notredame/ui/views/not_found_view.dart';
 import 'package:notredame/ui/views/more_view.dart';
+import 'package:notredame/ui/views/outage_view.dart';
 import 'package:notredame/ui/views/quick_links_view.dart';
 import 'package:notredame/ui/views/schedule_view.dart';
 import 'package:notredame/ui/views/security_view.dart';
@@ -34,6 +35,10 @@ import 'package:notredame/core/constants/update_code.dart';
 
 Route<dynamic> generateRoute(RouteSettings routeSettings) {
   switch (routeSettings.name) {
+    case RouterPaths.serviceOutage:
+      return MaterialPageRoute(
+          settings: RouteSettings(name: routeSettings.name),
+          builder: (_) => OutageView());
     case RouterPaths.login:
       return MaterialPageRoute(
           settings: RouteSettings(name: routeSettings.name),

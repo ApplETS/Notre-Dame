@@ -8,6 +8,7 @@ import 'package:notredame/core/managers/user_repository.dart';
 
 // SERVICES
 import 'package:notredame/core/services/networking_service.dart';
+import '../../mock/services/analytics_service_mock.dart';
 
 // VIEW
 import 'package:notredame/ui/views/profile_view.dart';
@@ -25,6 +26,7 @@ void main() {
       intl = await setupAppIntl();
       setupNavigationServiceMock();
       userRepository = setupUserRepositoryMock();
+      setupAnalyticsServiceMock();
 
       UserRepositoryMock.stubGetInfo(userRepository as UserRepositoryMock);
 
@@ -33,6 +35,7 @@ void main() {
 
     tearDown(() {
       unregister<NetworkingService>();
+      unregister<AnalyticsServiceMock>();
     });
 
     testWidgets('contains student status', (WidgetTester tester) async {

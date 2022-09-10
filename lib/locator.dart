@@ -14,6 +14,7 @@ import 'package:notredame/core/services/internal_info_service.dart';
 import 'package:notredame/core/services/siren_flutter_service.dart';
 import 'package:notredame/core/services/app_widget_service.dart';
 import 'package:notredame/core/services/in_app_review_service.dart';
+import 'package:notredame/core/services/remote_config_service.dart';
 import 'package:notredame/core/services/launch_url_service.dart';
 
 // MANAGERS
@@ -40,6 +41,7 @@ void setupLocator() {
   locator.registerLazySingleton(() => SirenFlutterService());
   locator.registerLazySingleton(() => AppWidgetService());
   locator.registerLazySingleton(() => InAppReviewService());
+  locator.registerLazySingleton(() => RemoteConfigService());
   locator.registerLazySingleton(() => LaunchUrlService());
 
   // Managers
