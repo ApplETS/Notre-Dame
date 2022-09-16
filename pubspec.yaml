@@ -73,6 +73,7 @@ dependencies:
   home_widget: ^0.1.6
   marquee: 2.2.1
   auto_size_text: ^3.0.0
+  calendar_view: ^1.0.0
 
 dev_dependencies:
   flutter_test:
