@@ -1,4 +1,5 @@
 // FLUTTER / DART / THIRD-PARTIES
+import 'package:calendar_view/calendar_view.dart';
 import 'package:enum_to_string/enum_to_string.dart';
 import 'package:feature_discovery/feature_discovery.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -69,6 +70,17 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
   List<dynamic> selectedDateEvents(DateTime date) =>
       _coursesActivities[DateTime(date.year, date.month, date.day)] ?? [];
 
+  List<CalendarEventData> selectedDateCalendarEvents(DateTime date) {
+    return _coursesActivities[DateTime(date.year, date.month, date.day)]
+            ?.map((e) => CalendarEventData(
+                title: "${e.activityName}\n${e.courseGroup}",
+                date: e.startDateTime,
+                startTime: e.startDateTime,
+                endTime: e.endDateTime))
+            ?.toList() ??
+        [];
+  }
+
   Map<DateTime, List<dynamic>> selectedWeekEvents() {
     final Map<DateTime, List<dynamic>> events = {};
     final firstDayOfWeek = Utils.getFirstDayOfCurrentWeek(
@@ -81,6 +93,24 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
       final eventsForDay = selectedDateEvents(date);
       if (eventsForDay.isNotEmpty) {
         events[date] = eventsForDay;
+      }
+    }
+
+    return events;
+  }
+
+  List<CalendarEventData> selectedWeekCalendarEvents() {
+    final List<CalendarEventData> events = [];
+    final firstDayOfWeek = Utils.getFirstDayOfCurrentWeek(
+        DateTime.now(),
+        settings[PreferencesFlag.scheduleSettingsStartWeekday]
+            as StartingDayOfWeek);
+
+    for (int i = 0; i < 7; i++) {
+      final date = firstDayOfWeek.add(Duration(days: i));
+      final eventsForDay = selectedDateCalendarEvents(date);
+      if (eventsForDay.isNotEmpty) {
+        events.addAll(eventsForDay);
       }
     }
 
