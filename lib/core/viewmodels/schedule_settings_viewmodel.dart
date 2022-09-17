@@ -75,6 +75,18 @@ class ScheduleSettingsViewModel
     setBusy(false);
   }
 
+  bool _toggleCalendarView = true;
+
+  bool get toggleCalendarView => _toggleCalendarView;
+
+  set toggleCalendarView(bool newValue) {
+    setBusy(true);
+    _settingsManager.setBool(
+        PreferencesFlag.scheduleSettingsCalendarView, newValue);
+    _toggleCalendarView = newValue;
+    setBusy(false);
+  }
+
   bool _showWeekEvents = false;
 
   bool get showWeekEvents => _showWeekEvents;
@@ -127,6 +139,8 @@ class ScheduleSettingsViewModel
         as StartingDayOfWeek;
     _showTodayBtn =
         settings[PreferencesFlag.scheduleSettingsShowTodayBtn] as bool;
+    _toggleCalendarView =
+        settings[PreferencesFlag.scheduleSettingsCalendarView] as bool;
     _showWeekEvents =
         settings[PreferencesFlag.scheduleSettingsShowWeekEvents] as bool;
 

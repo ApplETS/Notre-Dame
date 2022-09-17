@@ -99,6 +99,8 @@ class _ScheduleSettingsState extends State<ScheduleSettings> {
 
     list.addAll(_buildShowWeekSection(context, model));
 
+    list.addAll(_buildToggleCalendarView(context, model));
+
     if (model.scheduleActivitiesByCourse.isNotEmpty) {
       list.addAll(_buildSelectCoursesActivitiesSection(context, model));
     }
@@ -199,6 +201,20 @@ class _ScheduleSettingsState extends State<ScheduleSettings> {
           ),
           title:
               Text(AppIntl.of(context).schedule_settings_show_today_btn_pref),
+        ),
+        const Divider(thickness: 1)
+      ];
+
+  List<Widget> _buildToggleCalendarView(
+          BuildContext context, ScheduleSettingsViewModel model) =>
+      [
+        ListTile(
+          trailing: Switch(
+            value: model.toggleCalendarView,
+            onChanged: (value) => model.toggleCalendarView = value,
+            activeColor: AppTheme.etsLightRed,
+          ),
+          title: const Text("Toggle Calendar View"),
         ),
         const Divider(thickness: 1)
       ];

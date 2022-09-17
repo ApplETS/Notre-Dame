@@ -166,6 +166,12 @@ class SettingsManager with ChangeNotifier {
     settings.putIfAbsent(
         PreferencesFlag.scheduleSettingsShowTodayBtn, () => showTodayBtn);
 
+    final toggleCalendarView = await _preferencesService
+            .getBool(PreferencesFlag.scheduleSettingsCalendarView) ??
+        true;
+    settings.putIfAbsent(
+        PreferencesFlag.scheduleSettingsCalendarView, () => toggleCalendarView);
+
     final showWeekEventsBtn = await _preferencesService
             .getBool(PreferencesFlag.scheduleSettingsShowWeekEvents) ??
         true;
