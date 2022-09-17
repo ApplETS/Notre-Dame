@@ -99,19 +99,60 @@ class _ScheduleViewState extends State<ScheduleView>
                 actions: _buildActionButtons(model),
               ),
               body: RefreshIndicator(
-                child: Scaffold(
-                  body: WeekView(
-                    controller: EventController()
-                      ..add(CalendarEventData(
-                        title: "Test",
-                        date: DateTime(2022, 09, 12),
-                        startTime: DateTime(2022, 09, 12, 4),
-                        endTime: DateTime(2022, 09, 12, 5),
-                      )),
-                    backgroundColor: Utils.getColorByBrightness(
-                        context, AppTheme.etsLightRed, AppTheme.etsBlack),
-                  ),
-                ),
+                child: model.settings[
+                        PreferencesFlag.scheduleSettingsCalendarView] as bool
+                    ? Scaffold(
+                        body: WeekView(
+                          controller: EventController()
+                            ..addAll(model.selectedWeekCalendarEvents()),
+                          backgroundColor: Utils.getColorByBrightness(
+                              context,
+                              AppTheme.lightThemeBackground,
+                              AppTheme.primaryDark),
+                          heightPerMinute: 0.65, // see until 9:00PM
+                          scrollOffset: 300, // start at 8:00AM
+                          weekDays: const [
+                            WeekDays.monday,
+                            WeekDays.tuesday,
+                            WeekDays.wednesday,
+                            WeekDays.thursday,
+                            WeekDays.friday
+                          ],
+                        ),
+                      )
+                    : Stack(children: [
+                        ListView(
+                          children: [
+                            _buildTableCalendar(model),
+                            const SizedBox(height: 8.0),
+                            const Divider(
+                                indent: 8.0, endIndent: 8.0, thickness: 1),
+                            const SizedBox(height: 6.0),
+                            if (model.showWeekEvents)
+                              for (Widget widget
+                                  in _buildWeekEvents(model, context))
+                                widget
+                            else
+                              _buildTitleForDate(model.selectedDate, model),
+                            const SizedBox(height: 2.0),
+                            if (!model.showWeekEvents &&
+                                model
+                                    .selectedDateEvents(model.selectedDate)
+                                    .isEmpty)
+                              Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 64.0),
+                                child: Center(
+                                    child: Text(
+                                        AppIntl.of(context).schedule_no_event)),
+                              )
+                            else if (!model.showWeekEvents)
+                              _buildEventList(
+                                  model.selectedDateEvents(model.selectedDate)),
+                            const SizedBox(height: 16.0),
+                          ],
+                        ),
+                      ]),
                 onRefresh: () => model.refresh(),
               )));
 
