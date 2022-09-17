@@ -13,6 +13,7 @@ import 'package:notredame/ui/views/outage_view.dart';
 import 'package:notredame/ui/widgets/custom_feedback.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_config/flutter_config.dart';
+import 'package:calendar_view/calendar_view.dart';
 
 // ROUTER
 import 'package:notredame/ui/router.dart';
@@ -87,25 +88,28 @@ class ETSMobile extends StatelessWidget {
           localeOverride: model.locale,
           child: FeatureDiscovery(
             recordStepsInSharedPreferences: false,
-            child: MaterialApp(
-              title: 'ÉTS Mobile',
-              theme: AppTheme.lightTheme(),
-              darkTheme: AppTheme.darkTheme(),
-              themeMode: model.themeMode,
-              localizationsDelegates: const [
-                AppIntl.delegate,
-                GlobalMaterialLocalizations.delegate,
-                GlobalWidgetsLocalizations.delegate,
-                GlobalCupertinoLocalizations.delegate,
-              ],
-              locale: model.locale,
-              supportedLocales: AppIntl.supportedLocales,
-              navigatorKey: locator<NavigationService>().navigatorKey,
-              navigatorObservers: [
-                locator<AnalyticsService>().getAnalyticsObserver(),
-              ],
-              home: _outage ? OutageView() : StartUpView(),
-              onGenerateRoute: generateRoute,
+            child: CalendarControllerProvider(
+              controller: EventController(),
+              child: MaterialApp(
+                title: 'ÉTS Mobile',
+                theme: AppTheme.lightTheme(),
+                darkTheme: AppTheme.darkTheme(),
+                themeMode: model.themeMode,
+                localizationsDelegates: const [
+                  AppIntl.delegate,
+                  GlobalMaterialLocalizations.delegate,
+                  GlobalWidgetsLocalizations.delegate,
+                  GlobalCupertinoLocalizations.delegate,
+                ],
+                locale: model.locale,
+                supportedLocales: AppIntl.supportedLocales,
+                navigatorKey: locator<NavigationService>().navigatorKey,
+                navigatorObservers: [
+                  locator<AnalyticsService>().getAnalyticsObserver(),
+                ],
+                home: _outage ? OutageView() : StartUpView(),
+                onGenerateRoute: generateRoute,
+              ),
             ),
           ),
         );
