@@ -99,10 +99,16 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
     return events;
   }
 
+  List<CalendarEventData> changeWeek(DateTime date) {
+    selectedDate = date;
+    final List<CalendarEventData> events = selectedWeekCalendarEvents();
+    return events;
+  }
+
   List<CalendarEventData> selectedWeekCalendarEvents() {
     final List<CalendarEventData> events = [];
     final firstDayOfWeek = Utils.getFirstDayOfCurrentWeek(
-        DateTime.now(),
+        selectedDate,
         settings[PreferencesFlag.scheduleSettingsStartWeekday]
             as StartingDayOfWeek);
 
