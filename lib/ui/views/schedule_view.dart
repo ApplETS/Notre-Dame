@@ -11,7 +11,6 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 // UTILS
 import 'package:notredame/ui/utils/discovery_components.dart';
-import 'package:notredame/core/utils/utils.dart';
 
 // VIEWMODEL
 import 'package:notredame/core/viewmodels/schedule_viewmodel.dart';
