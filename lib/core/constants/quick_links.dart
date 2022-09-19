@@ -25,7 +25,7 @@ List<QuickLink> quickLinks(AppIntl intl) => [
             'assets/images/ic_monets_sans_nom_red.png',
             color: AppTheme.etsLightRed,
           ),
-          link: 'https://portail.etsmtl.ca'),
+          link: 'https://portail.etsmtl.ca/home'),
       QuickLink(
           name: intl.ets_bibliotech_title,
           image: const FaIcon(
