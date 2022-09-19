@@ -46,10 +46,6 @@ dependencies:
     git:
       url: https://github.com/ApplETS/ETS-API-Clients.git
       ref: 0.5.0
-  calendar_view:
-    git:
-      url: https://github.com/SimformSolutionsPvtLtd/flutter_calendar_view.git
-      ref: master
 
   # Other
   http: ^0.13.4
