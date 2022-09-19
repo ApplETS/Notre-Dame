@@ -79,82 +79,90 @@ class _ScheduleViewState extends State<ScheduleView>
   }
 
   @override
-  Widget build(BuildContext context) =>
-      ViewModelBuilder<ScheduleViewModel>.reactive(
-          viewModelBuilder: () => ScheduleViewModel(
-              intl: AppIntl.of(context),
-              initialSelectedDate: widget.initialDay),
-          onModelReady: (model) {
-            if (model.settings.isEmpty) {
-              model.loadSettings();
-            }
-          },
-          builder: (context, model, child) => BaseScaffold(
-              isLoading: model.busy(model.isLoadingEvents),
-              isInteractionLimitedWhileLoading: false,
-              appBar: AppBar(
-                title: Text(AppIntl.of(context).title_schedule),
-                centerTitle: false,
-                automaticallyImplyLeading: false,
-                actions: _buildActionButtons(model),
-              ),
-              body: RefreshIndicator(
-                child: model.settings[
-                        PreferencesFlag.scheduleSettingsCalendarView] as bool
-                    ? Scaffold(
-                        body: WeekView(
-                          controller: EventController()
-                            ..addAll(model.selectedWeekCalendarEvents()),
-                          backgroundColor: Utils.getColorByBrightness(
-                              context,
-                              AppTheme.lightThemeBackground,
-                              AppTheme.primaryDark),
-                          heightPerMinute: 0.65, // see until 9:00PM
-                          scrollOffset: 300, // start at 8:00AM
-                          weekDays: const [
-                            WeekDays.monday,
-                            WeekDays.tuesday,
-                            WeekDays.wednesday,
-                            WeekDays.thursday,
-                            WeekDays.friday
-                          ],
-                        ),
-                      )
-                    : Stack(children: [
-                        ListView(
-                          children: [
-                            _buildTableCalendar(model),
-                            const SizedBox(height: 8.0),
-                            const Divider(
-                                indent: 8.0, endIndent: 8.0, thickness: 1),
-                            const SizedBox(height: 6.0),
-                            if (model.showWeekEvents)
-                              for (Widget widget
-                                  in _buildWeekEvents(model, context))
-                                widget
-                            else
-                              _buildTitleForDate(model.selectedDate, model),
-                            const SizedBox(height: 2.0),
-                            if (!model.showWeekEvents &&
-                                model
-                                    .selectedDateEvents(model.selectedDate)
-                                    .isEmpty)
-                              Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(vertical: 64.0),
-                                child: Center(
-                                    child: Text(
-                                        AppIntl.of(context).schedule_no_event)),
-                              )
-                            else if (!model.showWeekEvents)
-                              _buildEventList(
-                                  model.selectedDateEvents(model.selectedDate)),
-                            const SizedBox(height: 16.0),
-                          ],
-                        ),
-                      ]),
-                onRefresh: () => model.refresh(),
-              )));
+  Widget build(BuildContext context) => ViewModelBuilder<
+          ScheduleViewModel>.reactive(
+      viewModelBuilder: () => ScheduleViewModel(
+          intl: AppIntl.of(context), initialSelectedDate: widget.initialDay),
+      onModelReady: (model) {
+        if (model.settings.isEmpty) {
+          model.loadSettings();
+        }
+      },
+      builder: (context, model, child) => CalendarControllerProvider(
+            controller: CalendarControllerProvider.of(context).controller,
+            child: BaseScaffold(
+                isLoading: model.busy(model.isLoadingEvents),
+                isInteractionLimitedWhileLoading: false,
+                appBar: AppBar(
+                  title: Text(AppIntl.of(context).title_schedule),
+                  centerTitle: false,
+                  automaticallyImplyLeading: false,
+                  actions: _buildActionButtons(model),
+                ),
+                body: RefreshIndicator(
+                  child: model.settings[
+                          PreferencesFlag.scheduleSettingsCalendarView] as bool
+                      ? Scaffold(
+                          body: WeekView(
+                            controller: CalendarControllerProvider.of(context)
+                                .controller
+                              ..addAll(model.selectedWeekCalendarEvents()),
+                            onPageChange: (date, page) =>
+                                CalendarControllerProvider.of(context)
+                                    .controller
+                                    .addAll(model.changeWeek(date)),
+                            backgroundColor: Utils.getColorByBrightness(
+                                context,
+                                AppTheme.lightThemeBackground,
+                                AppTheme.primaryDark),
+                            heightPerMinute: 0.65, // see until 9:00PM
+                            scrollOffset: 300, // start at 8:00AM
+                            weekDays: const [
+                              WeekDays.monday,
+                              WeekDays.tuesday,
+                              WeekDays.wednesday,
+                              WeekDays.thursday,
+                              WeekDays.friday
+                            ],
+                            onEventTap: (events, date) => print(events),
+                          ),
+                        )
+                      : Stack(children: [
+                          ListView(
+                            children: [
+                              _buildTableCalendar(model),
+                              const SizedBox(height: 8.0),
+                              const Divider(
+                                  indent: 8.0, endIndent: 8.0, thickness: 1),
+                              const SizedBox(height: 6.0),
+                              if (model.showWeekEvents)
+                                for (Widget widget
+                                    in _buildWeekEvents(model, context))
+                                  widget
+                              else
+                                _buildTitleForDate(model.selectedDate, model),
+                              const SizedBox(height: 2.0),
+                              if (!model.showWeekEvents &&
+                                  model
+                                      .selectedDateEvents(model.selectedDate)
+                                      .isEmpty)
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      vertical: 64.0),
+                                  child: Center(
+                                      child: Text(AppIntl.of(context)
+                                          .schedule_no_event)),
+                                )
+                              else if (!model.showWeekEvents)
+                                _buildEventList(model
+                                    .selectedDateEvents(model.selectedDate)),
+                              const SizedBox(height: 16.0),
+                            ],
+                          ),
+                        ]),
+                  onRefresh: () => model.refresh(),
+                )),
+          ));
 
   Widget _buildTitleForDate(DateTime date, ScheduleViewModel model) => Center(
           child: Text(
