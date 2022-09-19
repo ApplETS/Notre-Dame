@@ -8,7 +8,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 version: 4.15.5+1
 
 environment:
-  sdk: ">=2.10.0 <3.0.0"
+  sdk: '>=2.10.0 <3.0.0'
 
 dependencies:
   flutter:
@@ -39,14 +39,14 @@ dependencies:
   feedback: ^2.5.0
   flutter_staggered_animations: ^1.0.0
   flutter_siren: ^1.2.0
-  
+
   # Customs
   ets_api_clients:
-#    path: ../ETS-API-Clients/
+    #    path: ../ETS-API-Clients/
     git:
       url: https://github.com/ApplETS/ETS-API-Clients.git
       ref: 0.5.0
-  
+
   # Other
   http: ^0.13.4
   flutter_cache_manager: ^3.0.1
@@ -80,11 +80,11 @@ dev_dependencies:
   flutter_launcher_icons: ^0.9.0
 
 flutter_icons:
-  android: "launcher_icon"
-  ios: "LaunchImage"
-  image_path: "assets/icons/launcher_icon.png"
-  adaptive_icon_background: "#EF3F45"
-  adaptive_icon_foreground: "assets/icons/ic_launcher_foreground.png"
+  android: 'launcher_icon'
+  ios: 'LaunchImage'
+  image_path: 'assets/icons/launcher_icon.png'
+  adaptive_icon_background: '#EF3F45'
+  adaptive_icon_foreground: 'assets/icons/ic_launcher_foreground.png'
 
 flutter:
   uses-material-design: true
