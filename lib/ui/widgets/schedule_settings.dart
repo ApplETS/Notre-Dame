@@ -214,7 +214,7 @@ class _ScheduleSettingsState extends State<ScheduleSettings> {
             onChanged: (value) => model.toggleCalendarView = value,
             activeColor: AppTheme.etsLightRed,
           ),
-          title: const Text("Toggle Calendar View"),
+          title: Text(AppIntl.of(context).schedule_settings_legacy_view),
         ),
         const Divider(thickness: 1)
       ];
