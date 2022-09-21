@@ -59,6 +59,10 @@ void main() {
             toReturn: null);
         PreferencesServiceMock.stubGetBool(
             preferencesService as PreferencesServiceMock,
+            PreferencesFlag.scheduleSettingsCalendarView,
+            toReturn: null);
+        PreferencesServiceMock.stubGetBool(
+            preferencesService as PreferencesServiceMock,
             PreferencesFlag.scheduleSettingsShowWeekEvents,
             toReturn: null);
 
@@ -67,6 +71,7 @@ void main() {
               StartingDayOfWeek.monday,
           PreferencesFlag.scheduleSettingsCalendarFormat: CalendarFormat.week,
           PreferencesFlag.scheduleSettingsShowTodayBtn: true,
+          PreferencesFlag.scheduleSettingsCalendarView: true,
           PreferencesFlag.scheduleSettingsShowWeekEvents: true,
         };
 
@@ -82,6 +87,9 @@ void main() {
             .called(1);
         verify(preferencesService
                 .getBool(PreferencesFlag.scheduleSettingsShowTodayBtn))
+            .called(1);
+        verify(preferencesService
+                .getBool(PreferencesFlag.scheduleSettingsCalendarView))
             .called(1);
         verify(preferencesService
                 .getBool(PreferencesFlag.scheduleSettingsShowWeekEvents))
@@ -107,6 +115,10 @@ void main() {
             toReturn: false);
         PreferencesServiceMock.stubGetBool(
             preferencesService as PreferencesServiceMock,
+            PreferencesFlag.scheduleSettingsCalendarView,
+            toReturn: false);
+        PreferencesServiceMock.stubGetBool(
+            preferencesService as PreferencesServiceMock,
             PreferencesFlag.scheduleSettingsShowWeekEvents,
             toReturn: false);
 
@@ -115,6 +127,7 @@ void main() {
               StartingDayOfWeek.sunday,
           PreferencesFlag.scheduleSettingsCalendarFormat: CalendarFormat.month,
           PreferencesFlag.scheduleSettingsShowTodayBtn: false,
+          PreferencesFlag.scheduleSettingsCalendarView: false,
           PreferencesFlag.scheduleSettingsShowWeekEvents: false,
         };
 
@@ -130,6 +143,9 @@ void main() {
             .called(1);
         verify(preferencesService
                 .getBool(PreferencesFlag.scheduleSettingsShowTodayBtn))
+            .called(1);
+        verify(preferencesService
+                .getBool(PreferencesFlag.scheduleSettingsCalendarView))
             .called(1);
         verify(preferencesService
                 .getBool(PreferencesFlag.scheduleSettingsShowWeekEvents))
