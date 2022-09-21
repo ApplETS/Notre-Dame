@@ -12,7 +12,7 @@ enum PreferencesFlag {
   scheduleSettingsShowTodayBtn,
   scheduleSettingsShowWeekEvents,
   scheduleSettingsLaboratoryGroup,
-  scheduleSettingsCalendarView,
+  scheduleSettingsLegacyView,
 
   // Locale flag
   locale,

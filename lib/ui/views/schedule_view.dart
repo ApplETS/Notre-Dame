@@ -98,32 +98,8 @@ class _ScheduleViewState extends State<ScheduleView>
                 ),
                 body: RefreshIndicator(
                   child: model.settings[
-                          PreferencesFlag.scheduleSettingsCalendarView] as bool
-                      ? Scaffold(
-                          body: WeekView(
-                            controller: CalendarControllerProvider.of(context)
-                                .controller
-                              ..addAll(model.selectedWeekCalendarEvents()),
-                            onPageChange: (date, page) =>
-                                CalendarControllerProvider.of(context)
-                                    .controller
-                                    .addAll(model.changeWeek(date)),
-                            backgroundColor: Utils.getColorByBrightness(
-                                context,
-                                AppTheme.lightThemeBackground,
-                                AppTheme.primaryDark),
-                            heightPerMinute: 0.65, // see until 9:00PM
-                            scrollOffset: 300, // start at 8:00AM
-                            weekDays: const [
-                              WeekDays.monday,
-                              WeekDays.tuesday,
-                              WeekDays.wednesday,
-                              WeekDays.thursday,
-                              WeekDays.friday
-                            ],
-                          ),
-                        )
-                      : Stack(children: [
+                          PreferencesFlag.scheduleSettingsLegacyView] as bool
+                      ? Stack(children: [
                           ListView(
                             children: [
                               _buildTableCalendar(model),
@@ -155,7 +131,31 @@ class _ScheduleViewState extends State<ScheduleView>
                               const SizedBox(height: 16.0),
                             ],
                           ),
-                        ]),
+                        ])
+                      : Scaffold(
+                          body: WeekView(
+                            controller: CalendarControllerProvider.of(context)
+                                .controller
+                              ..addAll(model.selectedWeekCalendarEvents()),
+                            onPageChange: (date, page) =>
+                                CalendarControllerProvider.of(context)
+                                    .controller
+                                    .addAll(model.changeWeek(date)),
+                            backgroundColor: Utils.getColorByBrightness(
+                                context,
+                                AppTheme.lightThemeBackground,
+                                AppTheme.primaryDark),
+                            heightPerMinute: 0.65, // see until 9:00PM
+                            scrollOffset: 300, // start at 8:00AM
+                            weekDays: const [
+                              WeekDays.monday,
+                              WeekDays.tuesday,
+                              WeekDays.wednesday,
+                              WeekDays.thursday,
+                              WeekDays.friday
+                            ],
+                          ),
+                        ),
                   onRefresh: () => model.refresh(),
                 )),
           ));
