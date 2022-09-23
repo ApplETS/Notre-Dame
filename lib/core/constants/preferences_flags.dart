@@ -37,6 +37,7 @@ enum PreferencesFlag {
   progressBarCard,
   gradesCard,
   progressBarText,
+  broadcastCard,
 
   // Rating flag
   ratingTimer,

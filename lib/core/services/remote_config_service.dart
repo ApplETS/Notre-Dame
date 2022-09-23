@@ -23,6 +23,16 @@ class RemoteConfigService {
     return _remoteConfig.getBool(_serviceIsDown);
   }
 
+  Future<String> get dashboardMessageFr async {
+    fetch();
+    return _remoteConfig.getString("dashboard_message_fr");
+  }
+
+  Future<String> get dashboardMessageEn async {
+    fetch();
+    return _remoteConfig.getString("dashboard_message_en");
+  }
+
   Future<void> fetch() async {
     final AnalyticsService _analyticsService = locator<AnalyticsService>();
     try {
