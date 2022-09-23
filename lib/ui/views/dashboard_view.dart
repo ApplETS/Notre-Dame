@@ -97,6 +97,7 @@ class _DashboardViewState extends State<DashboardView>
         });
   }
 
+  // TODO: add broadcast card
   List<Widget> _buildCards(DashboardViewModel model) {
     final List<Widget> cards = List.empty(growable: true);
 

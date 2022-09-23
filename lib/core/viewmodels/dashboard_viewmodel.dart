@@ -21,6 +21,7 @@ import 'package:notredame/core/services/siren_flutter_service.dart';
 import 'package:notredame/core/services/preferences_service.dart';
 import 'package:notredame/core/services/analytics_service.dart';
 import 'package:notredame/core/services/app_widget_service.dart';
+import 'package:notredame/core/services/remote_config_service.dart';
 
 // MODEL
 import 'package:notredame/core/models/widget_models.dart';
@@ -57,6 +58,10 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
 
   /// Numbers of days elapsed and total number of days of the current session
   List<int> _sessionDays = [0, 0];
+
+  /// Message to display in case of urgent/important broadcast need (Firebase
+  /// remote config)
+  String broadcastMessage;
 
   /// Get progress of the session
   double get progress => _progress;
@@ -533,6 +538,23 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
       }
       prefService.setString(
           PreferencesFlag.updateAskedVersion, storeVersion.toString());
+    }
+  }
+
+  Future<void> futureToRunBroadcast() async {
+    final RemoteConfigService remoteConfigService = locator<RemoteConfigService>();
+
+    String broadcastMessage = "";
+    if (_appIntl.localeName == "fr") {
+      broadcastMessage = await remoteConfigService.dashboardMessageFr;
+    } else {
+      broadcastMessage = await remoteConfigService.dashboardMessageEn;
+    }
+
+    if (broadcastMessage != "") {
+      _cardsToDisplay.add(PreferencesFlag.broadcastCard);
+      this.broadcastMessage = broadcastMessage;
+      // TODO: notify view ?
     }
   }
 }
