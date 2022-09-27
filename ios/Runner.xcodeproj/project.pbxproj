@@ -12,7 +12,7 @@
 		1843157C27346F80007F7DD5 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1843156327345A42007F7DD5 /* SwiftUI.framework */; };
 		1843157F27346F80007F7DD5 /* ETSMobileWidgets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1843157E27346F80007F7DD5 /* ETSMobileWidgets.swift */; };
 		1843158127346F80007F7DD5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1843158027346F80007F7DD5 /* Assets.xcassets */; };
-		1843158527346F80007F7DD5 /* ETSMobile WidgetExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 1843157A27346F7F007F7DD5 /* ETSMobile WidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		1843158527346F80007F7DD5 /* ETSMobile WidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 1843157A27346F7F007F7DD5 /* ETSMobile WidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		189E5ABB27AC7BD10077E706 /* GradesWidgetEntryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 189E5ABA27AC7BD10077E706 /* GradesWidgetEntryView.swift */; };
 		189E5ABE27AC7D390077E706 /* ProgressProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 189E5ABD27AC7D390077E706 /* ProgressProvider.swift */; };
 		189E5AC027AC7D890077E706 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 189E5ABF27AC7D890077E706 /* Constants.swift */; };
@@ -44,15 +44,15 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		1843157127345A43007F7DD5 /* Embed App Extensions */ = {
+		1843157127345A43007F7DD5 /* Embed Foundation Extensions */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 12;
 			dstPath = "";
 			dstSubfolderSpec = 13;
 			files = (
-				1843158527346F80007F7DD5 /* ETSMobile WidgetExtension.appex in Embed App Extensions */,
+				1843158527346F80007F7DD5 /* ETSMobile WidgetExtension.appex in Embed Foundation Extensions */,
 			);
-			name = "Embed App Extensions";
+			name = "Embed Foundation Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		9705A1C41CF9048500538489 /* Embed Frameworks */ = {
@@ -291,7 +291,7 @@
 				9705A1C41CF9048500538489 /* Embed Frameworks */,
 				3B06AD1E1E4923F5004D2608 /* Thin Binary */,
 				7E6A99BB25EBF11900F08BA7 /* Run Script */,
-				1843157127345A43007F7DD5 /* Embed App Extensions */,
+				1843157127345A43007F7DD5 /* Embed Foundation Extensions */,
 				186A982E27370F7600170D40 /* Sync CFBundleVersion */,
 				A6719960FF044940BEA93F80 /* [CP] Embed Pods Frameworks */,
 				AF40BA5D7F66B2852E262199 /* [CP] Copy Pods Resources */,
@@ -313,7 +313,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 1310;
-				LastUpgradeCheck = 1300;
+				LastUpgradeCheck = 1400;
 				ORGANIZATIONNAME = "";
 				TargetAttributes = {
 					1843157927346F7F007F7DD5 = {
@@ -607,6 +607,7 @@
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = N742HF354K;
+				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = N742HF354K;
 				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = arm64;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -624,8 +625,9 @@
 				PRODUCT_BUNDLE_IDENTIFIER = ca.etsmtl.applets.ETSMobile.Widget;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "match AppStore ca.etsmtl.applets.ETSMobile.Widget";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "match AppStore ca.etsmtl.applets.ETSMobile.Widget";
 				SKIP_INSTALL = YES;
-				SWIFT_COMPILATION_MODE = singlefile;
+				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -809,7 +811,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
-				ONLY_ACTIVE_ARCH = NO;
+				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -916,9 +918,11 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Runner/Runner.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = N742HF354K;
+				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = N742HF354K;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -937,7 +941,8 @@
 				PRODUCT_BUNDLE_IDENTIFIER = ca.etsmtl.applets.ETSMobile;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "match AppStore ca.etsmtl.applets.ETSMobile";
-				SWIFT_COMPILATION_MODE = singlefile;
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "match AppStore ca.etsmtl.applets.ETSMobile";
+				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
