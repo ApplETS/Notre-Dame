@@ -51,14 +51,12 @@ class FeedbackView extends StatelessWidget {
                 FloatingActionButtonLocation.centerFloat,
             floatingActionButton: FloatingActionButton.extended(
               onPressed: () => BetterFeedback.of(context).show((feedback) {
-                _hasSubmitted
-                    ? null
-                    : {
-                        _hasSubmitted = true,
-                        model
-                            .sendFeedback(feedback)
-                            .then((value) => BetterFeedback.of(context).hide())
-                      };
+                if (!_hasSubmitted) {
+                  _hasSubmitted = true;
+                  model
+                      .sendFeedback(feedback)
+                      .then((value) => BetterFeedback.of(context).hide());
+                }
               }),
               label: Text(AppIntl.of(context).more_report_bug_button),
             ),
