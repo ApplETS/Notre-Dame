@@ -69,12 +69,12 @@ class GithubApi {
   /// Create Github issue into the Notre-Dame repository with the labels bugs and the platform used.
   /// The bug report will contain a file, a description [feedbackText] and also some information about the
   /// application/device.
-  Future<void> createGithubIssue(
+  Future<Issue> createGithubIssue(
       {@required String feedbackText,
       @required String fileName,
       @required String feedbackType}) async {
     final PackageInfo packageInfo = await PackageInfo.fromPlatform();
-    _github.issues
+    return _github.issues
         .create(
             RepositorySlug.full(_repositorySlug),
             IssueRequest(
@@ -97,6 +97,24 @@ class GithubApi {
           "createGithubIssue: ${error.message}",
           error as GitHubError);
     });
+  }
+
+  Future<List<Issue>> fetchIssuesByNumbers(List<int> numbers) async {
+    final List<Issue> issues = [];
+    for (int i = 0; i < numbers.length; i++) {
+      issues.add(await _github.issues
+          .get(RepositorySlug.full(_repositorySlug), numbers[i])
+          .catchError((error) {
+        // ignore: avoid_dynamic_calls
+        _logger.e("fetchIssuesByNumbers error: ${error.message}");
+        _analyticsService.logError(
+            tag,
+            // ignore: avoid_dynamic_calls
+            "fetchIssuesByNumbers: ${error.message}",
+            error as GitHubError);
+      }));
+    }
+    return issues;
   }
 
   /// Create an empty bug picture in the local storage

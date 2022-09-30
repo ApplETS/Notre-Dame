@@ -1,6 +1,7 @@
 // FLUTTER / DART / THIRD-PARTIES
 import 'package:feedback/feedback.dart';
 import 'package:flutter/material.dart';
+import 'package:notredame/core/utils/utils.dart';
 import 'package:stacked/stacked.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -44,6 +45,30 @@ class FeedbackView extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 8),
+                Padding(
+                    padding: const EdgeInsets.only(left: 8.0, right: 8.0),
+                    child: Text(AppIntl.of(context).my_tickets,
+                        style: Theme.of(context).textTheme.headline4)),
+                const SizedBox(height: 8),
+                // List of myIssues but with a better design (left, the time of the creation, right the state of the issue)
+                ListView.builder(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemCount: model.myIssues.length,
+                  itemBuilder: (context, index) {
+                    return ListTile(
+                      title: Text(model.myIssues[index].createdAt.toString()),
+                      trailing: Text(model.myIssues[index].state.toString(),
+                          style: TextStyle(
+                              color: model.myIssues[index].state == 'open'
+                                  ? Colors.green
+                                  : Colors.red)),
+                      onTap: () => Utils.launchURL(
+                          model.myIssues[index].htmlUrl, AppIntl.of(context)),
+                    );
+                  },
+                ),
+                const SizedBox(height: 80),
               ],
             ),
             floatingActionButtonLocation:

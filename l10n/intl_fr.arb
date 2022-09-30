@@ -286,5 +286,6 @@
 
   "in_app_review_title": "Évaluez-nous!",  
   "need_help_contact_us": "Besoin d'aide? Contactez-nous!",
-  "universal_code_example": "Ex: AB12345"
+  "universal_code_example": "Ex: AB12345",
+  "my_tickets": "Mes billets"
 }
