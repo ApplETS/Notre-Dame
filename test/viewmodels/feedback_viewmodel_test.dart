@@ -1,5 +1,7 @@
 // FLUTTER / DART / THIRD-PARTIES
 import 'dart:io';
+import 'dart:typed_data';
+import 'package:feedback/feedback.dart';
 import 'package:flutter/services.dart';
 import 'package:image/image.dart' as image;
 import 'package:flutter_test/flutter_test.dart';
@@ -25,6 +27,12 @@ void main() {
 
   AppIntl appIntl;
   FeedbackViewModel viewModel;
+  const String feedBackText = 'Notre-Dame bug report';
+  final Map<String, dynamic> extra = {'': 'bugReport'};
+
+  String getUserFeedBackType() {
+    return extra.entries.first.value.toString().split('.').last;
+  }
 
   group('FeedbackViewModel - ', () {
     setUp(() async {
@@ -58,8 +66,8 @@ void main() {
         await file.writeAsBytes(image.encodePng(
             image.copyResize(image.decodeImage(screenshotData), width: 307)));
 
-        await viewModel.sendFeedback(
-            'Notre-Dame bug report', screenshotData, 'bugReport');
+        await viewModel.sendFeedback(UserFeedback(
+            text: feedBackText, screenshot: screenshotData, extra: extra));
 
         verify(githubApiMock.uploadFileToGithub(
           filePath: file.path.split('/').last,
@@ -71,13 +79,13 @@ void main() {
         final File file = File('bugReportTest.png');
         GithubApiMock.stubLocalFile(githubApiMock, file);
 
-        await viewModel.sendFeedback(
-            'Notre-Dame bug report', screenshotData, 'bugReport');
+        await viewModel.sendFeedback(UserFeedback(
+            text: feedBackText, screenshot: screenshotData, extra: extra));
 
         verify(githubApiMock.createGithubIssue(
-            feedbackText: 'Notre-Dame bug report',
+            feedbackText: feedBackText,
             fileName: file.path.split('/').last,
-            feedbackType: 'bugReport'));
+            feedbackType: getUserFeedBackType()));
       });
     });
   });

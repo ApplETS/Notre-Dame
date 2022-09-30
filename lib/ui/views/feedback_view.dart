@@ -8,13 +8,12 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:notredame/core/viewmodels/feedback_viewmodel.dart';
 
 class FeedbackView extends StatelessWidget {
-  bool _hasSubmited = false;
-
   @override
   Widget build(BuildContext context) =>
       ViewModelBuilder<FeedbackViewModel>.reactive(
         viewModelBuilder: () => FeedbackViewModel(intl: AppIntl.of(context)),
         builder: (context, model, child) {
+          bool _hasSubmitted = false;
           return Scaffold(
             appBar: AppBar(
               title: Text(AppIntl.of(context).more_report_bug),
@@ -52,19 +51,13 @@ class FeedbackView extends StatelessWidget {
                 FloatingActionButtonLocation.centerFloat,
             floatingActionButton: FloatingActionButton.extended(
               onPressed: () => BetterFeedback.of(context).show((feedback) {
-                _hasSubmited
+                _hasSubmitted
                     ? null
                     : {
-                        _hasSubmited = true,
+                        _hasSubmitted = true,
                         model
-                            .sendFeedback(
-                                feedback.text,
-                                feedback.screenshot,
-                                feedback.extra.entries.first.value
-                                    .toString()
-                                    .split('.')
-                                    .last)
-                            .then((value) => BetterFeedback.of(context).hide()),
+                            .sendFeedback(feedback)
+                            .then((value) => BetterFeedback.of(context).hide())
                       };
               }),
               label: Text(AppIntl.of(context).more_report_bug_button),
