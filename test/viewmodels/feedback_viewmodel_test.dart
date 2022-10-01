@@ -27,7 +27,9 @@ void main() {
 
   AppIntl appIntl;
   FeedbackViewModel viewModel;
-  const String feedBackText = 'Notre-Dame bug report';
+  const feedBackText = 'Notre-Dame bug report';
+  final file = File('bugReportTest.png');
+  final filePath = file.path.split('/').last;
   final Map<String, dynamic> extra = {'': 'bugReport'};
 
   String getUserFeedBackType() {
@@ -59,7 +61,6 @@ void main() {
       });
 
       test('If the file uploaded matches', () async {
-        final File file = File('bugReportTest.png');
         GithubApiMock.stubLocalFile(githubApiMock, file);
         setupFlutterToastMock();
 
@@ -70,13 +71,12 @@ void main() {
             text: feedBackText, screenshot: screenshotData, extra: extra));
 
         verify(githubApiMock.uploadFileToGithub(
-          filePath: file.path.split('/').last,
+          filePath: filePath,
           file: file,
         ));
       });
 
       test('If the github issue has been created', () async {
-        final File file = File('bugReportTest.png');
         GithubApiMock.stubLocalFile(githubApiMock, file);
 
         await viewModel.sendFeedback(UserFeedback(
@@ -84,7 +84,7 @@ void main() {
 
         verify(githubApiMock.createGithubIssue(
             feedbackText: feedBackText,
-            fileName: file.path.split('/').last,
+            fileName: filePath,
             feedbackType: getUserFeedBackType()));
       });
     });
