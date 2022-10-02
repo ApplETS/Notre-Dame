@@ -276,7 +276,7 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
   /// return false otherwise (today was already selected, show toast for
   /// visual feedback).
   bool selectToday() {
-    if (DateTime.now().day == selectedDate.day) {
+    if (compareDates(selectedDate, DateTime.now())) {
       Fluttertoast.showToast(msg: _appIntl.schedule_already_today_toast);
       return false;
     } else {
@@ -284,6 +284,16 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
       focusedDate.value = DateTime.now();
       return true;
     }
+  }
+
+  /// This function is used to compare two dates without taking
+  /// into account the time.
+  ///
+  /// Return true if the dates are the same, false otherwise.
+  bool compareDates(DateTime date1, DateTime date2) {
+    return date1.year == date2.year &&
+        date1.month == date2.month &&
+        date1.day == date2.day;
   }
 
   /// Start Discovery if needed.
