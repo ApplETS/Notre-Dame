@@ -97,9 +97,45 @@ class _ScheduleViewState extends State<ScheduleView>
                   actions: _buildActionButtons(model),
                 ),
                 body: RefreshIndicator(
-                  child: model.settings[
-                          PreferencesFlag.scheduleSettingsLegacyView] as bool
-                      ? Stack(children: [
+                  child: !(model.settings[PreferencesFlag
+                              .scheduleSettingsLegacyView] as bool) &&
+                          model.getCalendarViewEnabled(context)
+                      ? Scaffold(
+                          body: WeekView(
+                              controller: CalendarControllerProvider.of(context).controller
+                                ..addAll(model.selectedWeekCalendarEvents()),
+                              onPageChange: (date, page) =>
+                                  CalendarControllerProvider.of(context)
+                                      .controller
+                                      .addAll(model.changeWeek(date)),
+                              backgroundColor: Utils.getColorByBrightness(
+                                  context,
+                                  AppTheme.lightThemeBackground,
+                                  AppTheme.primaryDark),
+                              heightPerMinute: 0.65, // see until 9:00PM
+                              scrollOffset: 300, // start at 8:00AM
+                              timeLineWidth: 50,
+                              weekDays: const [
+                                WeekDays.monday,
+                                WeekDays.tuesday,
+                                WeekDays.wednesday,
+                                WeekDays.thursday,
+                                WeekDays.friday,
+                                WeekDays.saturday
+                              ],
+                              weekPageHeaderBuilder: (DateTime date1, DateTime date2) =>
+                                  _buildWeekPageHeader(date1, date2),
+                              eventTileBuilder: (DateTime date1,
+                                      List<CalendarEventData<Object>> events,
+                                      Rect rect,
+                                      DateTime date2,
+                                      DateTime date3) =>
+                                  _buildEventTile(
+                                      date1, events, rect, date2, date3),
+                              onEventTap: (List<CalendarEventData<Object>> events, DateTime date) =>
+                                  print(events)),
+                        )
+                      : Stack(children: [
                           ListView(
                             children: [
                               _buildTableCalendar(model),
@@ -131,31 +167,7 @@ class _ScheduleViewState extends State<ScheduleView>
                               const SizedBox(height: 16.0),
                             ],
                           ),
-                        ])
-                      : Scaffold(
-                          body: WeekView(
-                            controller: CalendarControllerProvider.of(context)
-                                .controller
-                              ..addAll(model.selectedWeekCalendarEvents()),
-                            onPageChange: (date, page) =>
-                                CalendarControllerProvider.of(context)
-                                    .controller
-                                    .addAll(model.changeWeek(date)),
-                            backgroundColor: Utils.getColorByBrightness(
-                                context,
-                                AppTheme.lightThemeBackground,
-                                AppTheme.primaryDark),
-                            heightPerMinute: 0.65, // see until 9:00PM
-                            scrollOffset: 300, // start at 8:00AM
-                            weekDays: const [
-                              WeekDays.monday,
-                              WeekDays.tuesday,
-                              WeekDays.wednesday,
-                              WeekDays.thursday,
-                              WeekDays.friday
-                            ],
-                          ),
-                        ),
+                        ]),
                   onRefresh: () => model.refresh(),
                 )),
           ));
@@ -284,6 +296,34 @@ class _ScheduleViewState extends State<ScheduleView>
             ? const Divider(thickness: 1, indent: 30, endIndent: 30)
             : const SizedBox(),
         itemCount: events.length);
+  }
+
+  Widget _buildWeekPageHeader(DateTime date1, DateTime date2) {
+    return WeekPageHeader(
+      startDate: date1,
+      endDate: date2,
+      backgroundColor: Utils.getColorByBrightness(
+          context, AppTheme.lightThemeBackground, AppTheme.etsLightGrey),
+    );
+  }
+
+  Widget _buildEventTile(DateTime date1, List<CalendarEventData<Object>> events,
+      Rect rect, DateTime date2, DateTime date3) {
+    if (events.isNotEmpty) {
+      return RoundedEventTile(
+        borderRadius: BorderRadius.circular(6.0),
+        title: events[0].title,
+        titleStyle: TextStyle(
+          fontSize: 12,
+          color: events[0].color.accent,
+        ),
+        totalEvents: events.length,
+        padding: const EdgeInsets.all(7.0),
+        backgroundColor: events[0].color,
+      );
+    } else {
+      return Container();
+    }
   }
 
   List<Widget> _buildActionButtons(ScheduleViewModel model) => [

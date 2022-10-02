@@ -3,6 +3,7 @@ import 'package:calendar_view/calendar_view.dart';
 import 'package:enum_to_string/enum_to_string.dart';
 import 'package:feature_discovery/feature_discovery.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:notredame/core/services/remote_config_service.dart';
 import 'package:stacked/stacked.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:flutter/material.dart';
@@ -73,7 +74,7 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
   List<CalendarEventData> selectedDateCalendarEvents(DateTime date) {
     return _coursesActivities[DateTime(date.year, date.month, date.day)]
             ?.map((e) => CalendarEventData(
-                title: "${e.activityName}\n${e.courseGroup}",
+                title: e.courseGroup,
                 date: e.startDateTime,
                 startTime: e.startDateTime,
                 endTime: e.endDateTime))
@@ -127,6 +128,12 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
       settings[PreferencesFlag.scheduleSettingsShowWeekEvents] as bool ?? false;
 
   bool isLoadingEvents = false;
+
+  bool getCalendarViewEnabled(BuildContext context) {
+    final RemoteConfigService remoteConfigService =
+        locator<RemoteConfigService>();
+    return remoteConfigService.calendarView;
+  }
 
   @override
   Future<List<CourseActivity>> futureToRun() =>

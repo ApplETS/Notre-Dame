@@ -23,6 +23,11 @@ class RemoteConfigService {
     return _remoteConfig.getBool(_serviceIsDown);
   }
 
+  bool get calendarView {
+    fetch();
+    return _remoteConfig.getBool("calendar_view");
+  }
+
   Future<void> fetch() async {
     final AnalyticsService _analyticsService = locator<AnalyticsService>();
     try {
