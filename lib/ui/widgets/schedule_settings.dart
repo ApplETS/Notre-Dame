@@ -99,7 +99,9 @@ class _ScheduleSettingsState extends State<ScheduleSettings> {
 
     list.addAll(_buildShowWeekSection(context, model));
 
-    list.addAll(_buildToggleCalendarView(context, model));
+    if (model.getCalendarViewEnabled()) {
+      list.addAll(_buildToggleCalendarView(context, model));
+    }
 
     if (model.scheduleActivitiesByCourse.isNotEmpty) {
       list.addAll(_buildSelectCoursesActivitiesSection(context, model));

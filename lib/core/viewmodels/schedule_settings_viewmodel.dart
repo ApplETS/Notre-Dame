@@ -1,5 +1,6 @@
 // FLUTTER / DART / THIRD-PARTIES
 import 'package:enum_to_string/enum_to_string.dart';
+import 'package:notredame/core/services/remote_config_service.dart';
 import 'package:stacked/stacked.dart';
 import 'package:table_calendar/table_calendar.dart';
 
@@ -85,6 +86,12 @@ class ScheduleSettingsViewModel
         PreferencesFlag.scheduleSettingsLegacyView, newValue);
     _toggleCalendarView = newValue;
     setBusy(false);
+  }
+
+  bool getCalendarViewEnabled() {
+    final RemoteConfigService remoteConfigService =
+        locator<RemoteConfigService>();
+    return remoteConfigService.calendarView;
   }
 
   bool _showWeekEvents = false;
