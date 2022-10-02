@@ -1,6 +1,5 @@
 // FLUTTER / DART / THIRD-PARTIES
 import 'dart:io';
-import 'dart:typed_data';
 import 'package:feedback/feedback.dart';
 import 'package:flutter/services.dart';
 import 'package:image/image.dart' as image;
@@ -32,7 +31,7 @@ void main() {
   final filePath = file.path.split('/').last;
   final Map<String, dynamic> extra = {'': 'bugReport'};
 
-  String getUserFeedBackType() {
+  String getUserFeedbackType() {
     return extra.entries.first.value.toString().split('.').last;
   }
 
@@ -85,7 +84,7 @@ void main() {
         verify(githubApiMock.createGithubIssue(
             feedbackText: feedBackText,
             fileName: filePath,
-            feedbackType: getUserFeedBackType()));
+            feedbackType: getUserFeedbackType()));
       });
     });
   });

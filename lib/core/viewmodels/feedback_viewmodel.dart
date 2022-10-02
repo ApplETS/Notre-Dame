@@ -20,14 +20,15 @@ class FeedbackViewModel extends BaseViewModel {
 
   final AppIntl _appIntl;
 
+  final int _screenshotImageWidth = 307;
+
   FeedbackViewModel({@required AppIntl intl}) : _appIntl = intl;
 
-  /// Create a Github issue with [feedbackText] and the screenshot associated.
+  /// Create a Github issue with [UserFeedback] and the screenshot associated.
   Future<void> sendFeedback(UserFeedback feedback) async {
     //Generate info to pass to github
     final File file = await _githubApi.localFile;
-    await file.writeAsBytes(image.encodePng(
-        image.copyResize(image.decodeImage(feedback.screenshot), width: 307)));
+    await file.writeAsBytes(encodeScreenshotForGithub(feedback.screenshot));
 
     final String fileName = file.path.split('/').last;
 
@@ -37,16 +38,22 @@ class FeedbackViewModel extends BaseViewModel {
     _githubApi.createGithubIssue(
         feedbackText: feedback.text,
         fileName: fileName,
-        feedbackType: getUserFeedBackType(feedback));
+        feedbackType: getUserFeedbackType(feedback));
 
     file.deleteSync();
+
     Fluttertoast.showToast(
       msg: _appIntl.thank_you_for_the_feedback,
       gravity: ToastGravity.CENTER,
     );
   }
 
-  String getUserFeedBackType(UserFeedback userFeedback) {
+  List<int> encodeScreenshotForGithub(Uint8List screenshot) {
+    return image.encodePng(image.copyResize(image.decodeImage(screenshot),
+        width: _screenshotImageWidth));
+  }
+
+  String getUserFeedbackType(UserFeedback userFeedback) {
     return userFeedback.extra.entries.first.value.toString().split('.').last;
   }
 }
