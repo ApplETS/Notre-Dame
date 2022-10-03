@@ -33,7 +33,6 @@ class _GradesDetailsViewState extends State<GradesDetailsView>
     with TickerProviderStateMixin {
   AnimationController _controller;
   bool _completed = false;
-  double initialTopHeight = 0.0;
 
   @override
   void initState() {
@@ -69,41 +68,20 @@ class _GradesDetailsViewState extends State<GradesDetailsView>
                 headerSliverBuilder: (context, innerBoxScrolled) => [
                   SliverAppBar(
                     pinned: true,
-                    stretch: true,
-                    elevation: 0,
                     onStretchTrigger: () {
                       return Future<void>.value();
                     },
-                    expandedHeight: 80.0,
-                    flexibleSpace: LayoutBuilder(
-                      builder:
-                          (BuildContext context, BoxConstraints constraints) {
-                        if (initialTopHeight == 0.0) {
-                          initialTopHeight = constraints.biggest.height;
-                        }
-                        final double topHeight = constraints.biggest.height;
-
-                        return FlexibleSpaceBar(
-                          centerTitle: true,
-                          titlePadding: EdgeInsetsDirectional.only(
-                            start: topHeight < initialTopHeight ? 50.0 : 15.0,
-                            bottom: topHeight < initialTopHeight ? 16.0 : 5.0,
-                          ),
-                          title: Align(
-                            alignment: AlignmentDirectional.bottomStart,
-                            child: Text(
-                              model.course.acronym ?? "",
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .bodyText1
-                                  .copyWith(
-                                      color: Colors.white,
-                                      fontSize: 19,
-                                      fontWeight: FontWeight.bold),
-                            ),
-                          ),
-                        );
-                      },
+                    titleSpacing: 0,
+                    leading: IconButton(
+                      icon: const Icon(Icons.arrow_back),
+                      onPressed: () => Navigator.of(context).pop(),
+                    ),
+                    title: Text(
+                      model.course.acronym ?? "",
+                      style: Theme.of(context).textTheme.bodyText1.copyWith(
+                          color: Colors.white,
+                          fontSize: 25,
+                          fontWeight: FontWeight.bold),
                     ),
                   ),
                   SliverToBoxAdapter(
