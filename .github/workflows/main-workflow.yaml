@@ -7,7 +7,6 @@ on:
     paths-ignore:
       - '.gitignore'
       - '.metadata'
-      - '.github/**'
       - 'README.md'
       - 'README.fr.md'
       - 'android/fastlane/**'
@@ -16,7 +15,6 @@ on:
     paths-ignore:
       - '.gitignore'
       - '.metadata'
-      - '.github/**'
       - 'README.md'
       - 'README.fr.md'
       - 'android/fastlane/**'
