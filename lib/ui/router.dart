@@ -65,7 +65,7 @@ Route<dynamic> generateRoute(RouteSettings routeSettings) {
             const end = Offset.zero;
             const curve = Curves.ease;
 
-            var tween =
+            final tween =
                 Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
 
             return SlideTransition(
