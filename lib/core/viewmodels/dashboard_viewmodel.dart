@@ -351,7 +351,6 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
       _todayDateEvents.clear();
       _tomorrowDateEvents.clear();
 
-
       _courseRepository
           .getCoursesActivities()
           // ignore: return_type_invalid_for_catch_error
@@ -363,7 +362,8 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
           for (final CourseActivity course
               in _courseRepository.coursesActivities) {
             final DateTime dateOnly = course.startDateTime;
-            if (isSameDay(todayDate, dateOnly) && todayDate.compareTo(course.endDateTime) < 0) {
+            if (isSameDay(todayDate, dateOnly) &&
+                todayDate.compareTo(course.endDateTime) < 0) {
               _todayDateEvents.add(course);
             } else if (isSameDay(tomorrowDate, dateOnly)) {
               _tomorrowDateEvents.add(course);

@@ -294,11 +294,12 @@ class _DashboardViewState extends State<DashboardView>
   Widget _buildTodayScheduleCard(
       DashboardViewModel model, PreferencesFlag flag) {
     var title = AppIntl.of(context).title_schedule;
-    if(model.todayDateEvents.isEmpty && model.tomorrowDateEvents.isNotEmpty) {
+    if (model.todayDateEvents.isEmpty && model.tomorrowDateEvents.isNotEmpty) {
       title = title + AppIntl.of(context).card_schedule_tomorrow;
     }
     return DismissibleCard(
-      isBusy: model.busy(model.todayDateEvents) || model.busy(model.tomorrowDateEvents),
+      isBusy: model.busy(model.todayDateEvents) ||
+          model.busy(model.tomorrowDateEvents),
       onDismissed: (DismissDirection direction) {
         dismissCard(model, flag);
       },
@@ -313,19 +314,18 @@ class _DashboardViewState extends State<DashboardView>
                 child: GestureDetector(
                   onTap: () => _navigationService
                       .pushNamedAndRemoveUntil(RouterPaths.schedule),
-                  child: Text(title,
-                      style: Theme.of(context).textTheme.headline6),
+                  child:
+                      Text(title, style: Theme.of(context).textTheme.headline6),
                 ),
               )),
           if (model.todayDateEvents.isEmpty)
-            if(model.tomorrowDateEvents.isEmpty)
+            if (model.tomorrowDateEvents.isEmpty)
               SizedBox(
                   height: 100,
-                  child:
-                      Center(child: Text(AppIntl.of(context).schedule_no_event)))
+                  child: Center(
+                      child: Text(AppIntl.of(context).schedule_no_event)))
             else
               _buildEventList(model.tomorrowDateEvents)
-
           else
             _buildEventList(model.todayDateEvents)
         ]),
