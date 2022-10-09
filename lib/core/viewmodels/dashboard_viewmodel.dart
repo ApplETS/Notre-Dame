@@ -74,6 +74,14 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
     return _todayDateEvents;
   }
 
+  // Activities for tomorrow
+  List<CourseActivity> _tomorrowDateEvents = [];
+
+  /// Get the list of activities for tomorrow
+  List<CourseActivity> get tomorrowDateEvents {
+    return _tomorrowDateEvents;
+  }
+
   /// Get the status of all displayable cards
   Map<PreferencesFlag, int> get cards => _cards;
 
@@ -339,7 +347,10 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
         .getCoursesActivities(fromCacheOnly: true)
         .then((value) {
       setBusyForObject(_todayDateEvents, true);
+      setBusyForObject(_tomorrowDateEvents, true);
       _todayDateEvents.clear();
+      _tomorrowDateEvents.clear();
+
 
       _courseRepository
           .getCoursesActivities()
@@ -347,22 +358,28 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
           .catchError(onError)
           .whenComplete(() async {
         if (_todayDateEvents.isEmpty) {
+          final DateTime tomorrowDate = todayDate.add(const Duration(days: 1));
           // Build the list
           for (final CourseActivity course
               in _courseRepository.coursesActivities) {
             final DateTime dateOnly = course.startDateTime;
-
-            if (isSameDay(todayDate, dateOnly)) {
+            if (isSameDay(todayDate, dateOnly) && todayDate.compareTo(course.endDateTime) < 0) {
               _todayDateEvents.add(course);
+            } else if (isSameDay(tomorrowDate, dateOnly)) {
+              _tomorrowDateEvents.add(course);
             }
           }
         }
         _todayDateEvents
             .sort((a, b) => a.startDateTime.compareTo(b.startDateTime));
+        _tomorrowDateEvents
+            .sort((a, b) => a.startDateTime.compareTo(b.startDateTime));
 
         _todayDateEvents = await removeLaboratoryGroup(_todayDateEvents);
+        _tomorrowDateEvents = await removeLaboratoryGroup(_tomorrowDateEvents);
 
         setBusyForObject(_todayDateEvents, false);
+        setBusyForObject(_tomorrowDateEvents, false);
       });
 
       return value;
