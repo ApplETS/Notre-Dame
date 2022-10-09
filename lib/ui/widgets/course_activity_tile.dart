@@ -1,31 +1,51 @@
 // FLUTTER / DART / THIRD-PARTIES
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 
 // MODELS
 import 'package:ets_api_clients/models.dart';
+import 'package:notredame/core/utils/utils.dart';
+import 'package:notredame/core/viewmodels/schedule_viewmodel.dart';
 
 class CourseActivityTile extends StatelessWidget {
   /// Course to display
   final CourseActivity activity;
 
+  final VoidCallback onLongAction;
+
+  final ScheduleViewModel scheduleViewModel;
+
   DateFormat get timeFormat => DateFormat.Hm();
 
   /// Display an [activity] with the start and end time of the activity,
   /// it name, shortname, type of activity and local.
-  const CourseActivityTile(this.activity);
+  const CourseActivityTile(
+      {this.activity, this.onLongAction, this.scheduleViewModel});
 
   @override
   Widget build(BuildContext context) => Padding(
         padding: const EdgeInsets.fromLTRB(8.0, 2.0, 8.0, 1.0),
         child: ListTile(
-          leading: _buildLeading(),
-          dense: false,
-          title: Text(activity.courseGroup),
-          subtitle:
-              Text("${activity.courseName}\n${activity.activityDescription}"),
-          trailing: Text(activity.activityLocation),
-        ),
+            leading: _buildLeading(),
+            dense: false,
+            title: Text(activity.courseGroup),
+            subtitle:
+                Text("${activity.courseName}\n${activity.activityDescription}"),
+            trailing: Text(activity.activityLocation),
+            onTap: onLongAction,
+            onLongPress: () => {
+                  if (activity.activityDescription
+                          .contains(ActivityDescriptionName.labA) ||
+                      activity.activityDescription
+                          .contains(ActivityDescriptionName.labB))
+                    {onLongAction}
+                  else
+                    {
+                      Fluttertoast.showToast(
+                          msg: "You long pressed a course Title")
+                    }
+                }),
       );
 
   Widget _buildLeading() => ConstrainedBox(

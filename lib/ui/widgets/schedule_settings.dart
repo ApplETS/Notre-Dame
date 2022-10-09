@@ -128,7 +128,7 @@ class _ScheduleSettingsState extends State<ScheduleSettings> {
       tiles.add(Padding(
         padding: const EdgeInsets.fromLTRB(15.0, 8.0, 15.0, 8.0),
         child: Text(
-          '${model.scheduleActivitiesByCourse[courseActivitiesAcronym].first.courseAcronym} - ${model.scheduleActivitiesByCourse[courseActivitiesAcronym].first.courseTitle}',
+          '$courseActivitiesAcronym - ${model.scheduleActivitiesByCourse[courseActivitiesAcronym].first.courseTitle}',
           style: const TextStyle(
             fontWeight: FontWeight.bold,
           ),

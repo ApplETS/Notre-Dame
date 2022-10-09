@@ -54,6 +54,18 @@ class CourseRepository {
   /// Used to access the Signets API
   final SignetsAPIClient _signetsApiClient = locator<SignetsAPIClient>();
 
+  final Map<String, List<ScheduleActivity>>
+      _scheduleActivitiesWithMultipleGroups = {};
+
+  Map<String, List<ScheduleActivity>>
+      get scheduleActivitiesWithMultipleGroups =>
+          _scheduleActivitiesWithMultipleGroups;
+
+  List<ScheduleActivity> _scheduleActivitiesGroup;
+
+  List<ScheduleActivity> get scheduleActivitiesGroup =>
+      _scheduleActivitiesGroup;
+
   /// Student list of courses
   List<Course> _courses;
 
@@ -503,5 +515,15 @@ class CourseRepository {
           orElse: () => null);
     }
     return null;
+  }
+
+  Future<List<ScheduleActivity>> getGroupScheduleActivities() async {
+    final schedulesActivities = await getScheduleActivities();
+
+    _scheduleActivitiesGroup.addAll(schedulesActivities.where((element) =>
+        element.activityCode == ActivityCode.labGroupA ||
+        element.activityCode == ActivityCode.labGroupB));
+
+    return _scheduleActivitiesGroup;
   }
 }

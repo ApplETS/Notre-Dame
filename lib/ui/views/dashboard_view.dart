@@ -338,8 +338,8 @@ class _DashboardViewState extends State<DashboardView>
         physics: const NeverScrollableScrollPhysics(),
         shrinkWrap: true,
         padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
-        itemBuilder: (_, index) =>
-            CourseActivityTile(events[index] as CourseActivity),
+        itemBuilder: (_, index) => CourseActivityTile(
+            activity: events[index] as CourseActivity, onLongAction: () => {}),
         separatorBuilder: (_, index) => (index < events.length)
             ? const Divider(thickness: 1, indent: 30, endIndent: 30)
             : const SizedBox(),

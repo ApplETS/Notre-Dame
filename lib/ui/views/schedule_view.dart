@@ -117,7 +117,8 @@ class _ScheduleViewState extends State<ScheduleView>
                         )
                       else if (!model.showWeekEvents)
                         _buildEventList(
-                            model.selectedDateEvents(model.selectedDate)),
+                            model.selectedDateEvents(model.selectedDate),
+                            model),
                       const SizedBox(height: 16.0),
                     ],
                   ),
@@ -136,7 +137,7 @@ class _ScheduleViewState extends State<ScheduleView>
     final eventsByDate = model.selectedWeekEvents();
     for (final events in eventsByDate.entries) {
       widgets.add(_buildTitleForDate(events.key, model));
-      widgets.add(_buildEventList(events.value));
+      widgets.add(_buildEventList(events.value, model));
       widgets.add(const SizedBox(height: 20.0));
     }
     return widgets;
@@ -239,12 +240,45 @@ class _ScheduleViewState extends State<ScheduleView>
       );
 
   /// Build the list of the events for the selected day.
-  Widget _buildEventList(List<dynamic> events) {
+  Widget _buildEventList(List<dynamic> events, ScheduleViewModel model) {
     return ListView.separated(
         physics: const ScrollPhysics(),
         shrinkWrap: true,
-        itemBuilder: (_, index) =>
-            CourseActivityTile(events[index] as CourseActivity),
+        itemBuilder: (BuildContext context, index) => CourseActivityTile(
+            activity: events[index] as CourseActivity,
+            onLongAction: () => {
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return AlertDialog(
+                        title: const Text("Group selection"),
+                        content: const Text(
+                            "Select which group you're assigned to."),
+                        actions: [
+                          TextButton(
+                            child: const Text("Groupe A"),
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                          ),
+                          TextButton(
+                            child: const Text("BOTH"),
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                          ),
+                          TextButton(
+                            child: const Text("Groupe B"),
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                          )
+                        ],
+                      );
+                    },
+                  )
+                },
+            scheduleViewModel: model),
         separatorBuilder: (_, index) => (index < events.length)
             ? const Divider(thickness: 1, indent: 30, endIndent: 30)
             : const SizedBox(),
