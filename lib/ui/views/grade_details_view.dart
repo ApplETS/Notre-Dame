@@ -60,64 +60,64 @@ class _GradesDetailsViewState extends State<GradesDetailsView>
             course: widget.course, intl: AppIntl.of(context)),
         builder: (context, model, child) => BaseScaffold(
           showBottomBar: false,
-          body: Hero(
-            tag:
-                'course_acronym_${model.course.acronym}_${model.course.session}',
-            child: Material(
-              child: NestedScrollView(
-                headerSliverBuilder: (context, innerBoxScrolled) => [
-                  SliverAppBar(
-                    pinned: true,
-                    onStretchTrigger: () {
-                      return Future<void>.value();
-                    },
-                    titleSpacing: 0,
-                    leading: IconButton(
-                      icon: const Icon(Icons.arrow_back),
-                      onPressed: () => Navigator.of(context).pop(),
-                    ),
-                    title: Text(
+          body: Material(
+            child: NestedScrollView(
+              headerSliverBuilder: (context, innerBoxScrolled) => [
+                SliverAppBar(
+                  pinned: true,
+                  onStretchTrigger: () {
+                    return Future<void>.value();
+                  },
+                  titleSpacing: 0,
+                  leading: IconButton(
+                    icon: const Icon(Icons.arrow_back),
+                    onPressed: () => Navigator.of(context).pop(),
+                  ),
+                  title: Hero(
+                    tag:
+                        'course_acronym_${model.course.acronym}_${model.course.session}',
+                    child: Text(
                       model.course.acronym ?? "",
+                      overflow: TextOverflow.visible,
+                      softWrap: false,
                       style: Theme.of(context).textTheme.bodyText1.copyWith(
                           color: Colors.white,
                           fontSize: 25,
                           fontWeight: FontWeight.bold),
                     ),
                   ),
-                  SliverToBoxAdapter(
-                    child: Center(
-                      child: Container(
-                        constraints: BoxConstraints(
-                          minWidth: MediaQuery.of(context).size.width,
-                        ),
-                        decoration: BoxDecoration(
-                          color:
-                              Theme.of(context).brightness == Brightness.light
-                                  ? AppTheme.etsLightRed
-                                  : Theme.of(context).bottomAppBarColor,
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.only(bottom: 8.0),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              _buildClassInfo(model.course.title ?? ""),
+                ),
+                SliverToBoxAdapter(
+                  child: Center(
+                    child: Container(
+                      constraints: BoxConstraints(
+                        minWidth: MediaQuery.of(context).size.width,
+                      ),
+                      decoration: BoxDecoration(
+                        color: Theme.of(context).brightness == Brightness.light
+                            ? AppTheme.etsLightRed
+                            : Theme.of(context).bottomAppBarColor,
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.only(bottom: 8.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            _buildClassInfo(model.course.title ?? ""),
+                            _buildClassInfo(AppIntl.of(context)
+                                .grades_group_number(model.course.group ?? "")),
+                            if (model.course.teacherName != null)
                               _buildClassInfo(AppIntl.of(context)
-                                  .grades_group_number(
-                                      model.course.group ?? "")),
-                              if (model.course.teacherName != null)
-                                _buildClassInfo(AppIntl.of(context)
-                                    .grades_teacher(model.course.teacherName))
-                            ],
-                          ),
+                                  .grades_teacher(model.course.teacherName))
+                          ],
                         ),
                       ),
                     ),
                   ),
-                ],
-                body: SafeArea(
-                  child: _buildGradeEvaluations(model),
                 ),
+              ],
+              body: SafeArea(
+                child: _buildGradeEvaluations(model),
               ),
             ),
           ),
