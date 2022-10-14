@@ -14,6 +14,7 @@ void main() {
     setUp(() async {
       await setupAppIntl();
       setupNavigationServiceMock();
+      setupPreferencesServiceMock();
       setupGithubApiMock();
     });
 

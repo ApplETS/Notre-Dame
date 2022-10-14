@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:github/github.dart';
 import 'package:notredame/core/constants/preferences_flags.dart';
+import 'package:notredame/core/models/feedback_issue.dart';
 import 'package:notredame/core/services/preferences_service.dart';
 import 'package:notredame/core/utils/utils.dart';
 import 'package:stacked/stacked.dart';
@@ -26,10 +27,10 @@ class FeedbackViewModel extends FutureViewModel {
 
   final AppIntl _appIntl;
 
-  List<Issue> _myIssues = [];
+  List<FeedbackIssue> _myIssues = [];
 
   // get the list of issues
-  List<Issue> get myIssues => _myIssues;
+  List<FeedbackIssue> get myIssues => _myIssues;
 
   FeedbackViewModel({@required AppIntl intl}) : _appIntl = intl;
 
@@ -52,7 +53,12 @@ class FeedbackViewModel extends FutureViewModel {
         feedbackType: feedbackType);
 
     if (issue != null) {
-      _myIssues.add(issue);
+      setBusy(true);
+      _myIssues.add(FeedbackIssue(issue));
+      // Sort by state open first and by number descending
+      _myIssues.sort(
+          (a, b) => b.state.compareTo(a.state) * 1000 + b.number - a.number);
+      setBusy(false);
       // Save the issue number in the preferences
       _preferencesService.setString(
           PreferencesFlag.ghIssues, _myIssues.map((e) => e.number).join(','));
@@ -69,20 +75,23 @@ class FeedbackViewModel extends FutureViewModel {
   @override
   Future<int> futureToRun() async {
     // Get the issues number from the preferences
-    final String issues =
+    final String issuesString =
         await _preferencesService.getString(PreferencesFlag.ghIssues);
 
     // If there is no issues, return 0
-    if (issues == null) {
+    if (issuesString == null || issuesString.isEmpty) {
       return 0;
     }
 
     // Split the issues number
-    final List<String> issuesList = issues.split(',');
+    final List<String> issuesNumberList = issuesString.split(',');
 
     // To integers instead of String and fetch it
-    _myIssues = await _githubApi
-        .fetchIssuesByNumbers(issuesList.map((e) => int.parse(e)).toList());
+    _myIssues = await _githubApi.fetchIssuesByNumbers(
+        issuesNumberList.map((e) => int.parse(e)).toList(), _appIntl);
+    // Sort by state open first and by number descending
+    _myIssues.sort(
+        (a, b) => b.state.compareTo(a.state) * 1000 + b.number - a.number);
 
     return _myIssues.length;
   }

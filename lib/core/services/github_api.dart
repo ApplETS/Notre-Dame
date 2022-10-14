@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:github/github.dart';
 import 'package:logger/logger.dart';
+import 'package:notredame/core/models/feedback_issue.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:flutter_config/flutter_config.dart';
@@ -11,6 +12,7 @@ import 'package:flutter_config/flutter_config.dart';
 // SERVICES
 import 'package:notredame/core/services/internal_info_service.dart';
 import 'package:notredame/core/services/analytics_service.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 // OTHERS
 import 'package:notredame/locator.dart';
@@ -99,10 +101,11 @@ class GithubApi {
     });
   }
 
-  Future<List<Issue>> fetchIssuesByNumbers(List<int> numbers) async {
-    final List<Issue> issues = [];
+  Future<List<FeedbackIssue>> fetchIssuesByNumbers(
+      List<int> numbers, AppIntl appIntl) async {
+    final List<FeedbackIssue> issues = [];
     for (int i = 0; i < numbers.length; i++) {
-      issues.add(await _github.issues
+      issues.add(FeedbackIssue(await _github.issues
           .get(RepositorySlug.full(_repositorySlug), numbers[i])
           .catchError((error) {
         // ignore: avoid_dynamic_calls
@@ -112,7 +115,7 @@ class GithubApi {
             // ignore: avoid_dynamic_calls
             "fetchIssuesByNumbers: ${error.message}",
             error as GitHubError);
-      }));
+      })));
     }
     return issues;
   }
