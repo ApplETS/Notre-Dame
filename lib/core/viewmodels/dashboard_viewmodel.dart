@@ -360,7 +360,8 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
           for (final CourseActivity course
               in _courseRepository.coursesActivities) {
             final DateTime dateOnly = course.startDateTime;
-            if (isSameDay(todayDate, dateOnly) && todayDate.compareTo(course.endDateTime) < 0) {
+            if (isSameDay(todayDate, dateOnly) &&
+                todayDate.compareTo(course.endDateTime) < 0) {
               _todayDateEvents.add(course);
             } else if (isSameDay(tomorrowDate, dateOnly)) {
               _tomorrowDateEvents.add(course);
