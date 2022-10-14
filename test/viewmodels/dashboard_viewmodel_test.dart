@@ -89,36 +89,43 @@ void main() {
       endDateTime: DateTime(
           DateTime.now().year, DateTime.now().month, DateTime.now().day, 21));
   final gen105 = CourseActivity(
-    courseGroup: "GEN105",
-    courseName: "Generic course",
-    activityName: "TD",
-    activityDescription: "Activity description",
-    activityLocation: "location",
-    startDateTime: DateTime(
-        DateTime.now().year, DateTime.now().month, DateTime.now().day + 1, 8),
-    endDateTime: DateTime(
-        DateTime.now().year, DateTime.now().month, DateTime.now().day + 1, 12));
+      courseGroup: "GEN105",
+      courseName: "Generic course",
+      activityName: "TD",
+      activityDescription: "Activity description",
+      activityLocation: "location",
+      startDateTime: DateTime(
+          DateTime.now().year, DateTime.now().month, DateTime.now().day + 1, 8),
+      endDateTime: DateTime(DateTime.now().year, DateTime.now().month,
+          DateTime.now().day + 1, 12));
   final gen106 = CourseActivity(
-    courseGroup: "GEN106",
-    courseName: "Generic course",
-    activityName: "TD",
-    activityDescription: "Activity description",
-    activityLocation: "location",
-    startDateTime: DateTime(
-        DateTime.now().year, DateTime.now().month, DateTime.now().day + 1, 13),
-    endDateTime: DateTime(
-        DateTime.now().year, DateTime.now().month, DateTime.now().day + 1, 16));
+      courseGroup: "GEN106",
+      courseName: "Generic course",
+      activityName: "TD",
+      activityDescription: "Activity description",
+      activityLocation: "location",
+      startDateTime: DateTime(DateTime.now().year, DateTime.now().month,
+          DateTime.now().day + 1, 13),
+      endDateTime: DateTime(DateTime.now().year, DateTime.now().month,
+          DateTime.now().day + 1, 16));
   final gen107 = CourseActivity(
-    courseGroup: "GEN107",
-    courseName: "Generic course",
-    activityName: "TD",
-    activityDescription: "Activity description",
-    activityLocation: "location",
-    startDateTime: DateTime(
-        DateTime.now().year, DateTime.now().month, DateTime.now().day + 2, 13),
-    endDateTime: DateTime(
-        DateTime.now().year, DateTime.now().month, DateTime.now().day + 2, 16));
-  final List<CourseActivity> activities = [gen101, gen102, gen103, gen105, gen106, gen107];
+      courseGroup: "GEN107",
+      courseName: "Generic course",
+      activityName: "TD",
+      activityDescription: "Activity description",
+      activityLocation: "location",
+      startDateTime: DateTime(DateTime.now().year, DateTime.now().month,
+          DateTime.now().day + 2, 13),
+      endDateTime: DateTime(DateTime.now().year, DateTime.now().month,
+          DateTime.now().day + 2, 16));
+  final List<CourseActivity> activities = [
+    gen101,
+    gen102,
+    gen103,
+    gen105,
+    gen106,
+    gen107
+  ];
   final List<CourseActivity> todayActivities = [gen101, gen102, gen103];
   final List<CourseActivity> tomorrowActivities = [gen105, gen106];
 
@@ -219,9 +226,8 @@ void main() {
           courseRepository as CourseRepositoryMock,
           fromCacheOnly: false);
       SettingsManagerMock.stubDateTimeNow(
-        settingsManager as SettingsManagerMock,
-        toReturn: DateTime(2020)
-      );
+          settingsManager as SettingsManagerMock,
+          toReturn: DateTime(2020));
 
       inAppReviewServiceMock =
           setupInAppReviewServiceMock() as InAppReviewServiceMock;
@@ -377,8 +383,7 @@ void main() {
         verify(settingsManager.getDashboard()).called(1);
         verify(settingsManager.getString(PreferencesFlag.progressBarText))
             .called(1);
-        verify(settingsManager.dateTimeNow)
-            .called(1);
+        verify(settingsManager.dateTimeNow).called(1);
         verifyNoMoreInteractions(settingsManager);
       });
 
@@ -412,7 +417,9 @@ void main() {
         verify(settingsManager.getDashboard()).called(1);
       });
 
-      test("build the list todays activities (doesnt remove activity when pending completion)", () async {
+      test(
+          "build the list todays activities (doesnt remove activity when pending completion)",
+          () async {
         CourseRepositoryMock.stubGetCoursesActivities(
             courseRepository as CourseRepositoryMock);
         CourseRepositoryMock.stubCoursesActivities(
@@ -424,7 +431,7 @@ void main() {
         final now = DateTime.now();
         SettingsManagerMock.stubDateTimeNow(
             settingsManager as SettingsManagerMock,
-            toReturn: DateTime(now.year, now.month, now.day, 11,59));
+            toReturn: DateTime(now.year, now.month, now.day, 11, 59));
 
         await viewModel.futureToRun();
 
@@ -442,7 +449,8 @@ void main() {
         verify(settingsManager.getDashboard()).called(1);
       });
 
-      test("build the list todays activities (remove activity when finished)", () async {
+      test("build the list todays activities (remove activity when finished)",
+          () async {
         CourseRepositoryMock.stubGetCoursesActivities(
             courseRepository as CourseRepositoryMock);
         CourseRepositoryMock.stubCoursesActivities(
@@ -460,8 +468,8 @@ void main() {
 
         await untilCalled(courseRepository.getCoursesActivities());
 
-        final activitiesFinishedCourse = List<CourseActivity>.from(todayActivities)
-          ..remove(gen101);
+        final activitiesFinishedCourse =
+            List<CourseActivity>.from(todayActivities)..remove(gen101);
         expect(viewModel.todayDateEvents, activitiesFinishedCourse);
 
         verify(courseRepository.getCoursesActivities()).called(1);
@@ -641,8 +649,8 @@ void main() {
             settingsManager as SettingsManagerMock,
             toReturn: dashboard);
         SettingsManagerMock.stubDateTimeNow(
-          settingsManager as SettingsManagerMock,
-          toReturn: DateTime(2020));
+            settingsManager as SettingsManagerMock,
+            toReturn: DateTime(2020));
         await viewModel.futureToRunSessionProgressBar();
         expect(viewModel.progress, 0.5);
         expect(viewModel.sessionDays, [1, 2]);
@@ -656,8 +664,8 @@ void main() {
             settingsManager as SettingsManagerMock,
             toReturn: dashboard);
         SettingsManagerMock.stubDateTimeNow(
-          settingsManager as SettingsManagerMock,
-          toReturn: DateTime(2020, 1, 20));
+            settingsManager as SettingsManagerMock,
+            toReturn: DateTime(2020, 1, 20));
         await viewModel.futureToRunSessionProgressBar();
         expect(viewModel.progress, 1);
         expect(viewModel.sessionDays, [2, 2]);
@@ -671,8 +679,8 @@ void main() {
             settingsManager as SettingsManagerMock,
             toReturn: dashboard);
         SettingsManagerMock.stubDateTimeNow(
-          settingsManager as SettingsManagerMock,
-          toReturn: DateTime(2019, 12, 31));
+            settingsManager as SettingsManagerMock,
+            toReturn: DateTime(2019, 12, 31));
         await viewModel.futureToRunSessionProgressBar();
         expect(viewModel.progress, 0);
         expect(viewModel.sessionDays, [0, 2]);
@@ -788,8 +796,7 @@ void main() {
             .called(1);
         verify(settingsManager.getString(PreferencesFlag.progressBarText))
             .called(2);
-        verify(settingsManager.dateTimeNow)
-            .called(3);
+        verify(settingsManager.dateTimeNow).called(3);
         verifyNoMoreInteractions(settingsManager);
       });
 
@@ -845,8 +852,7 @@ void main() {
             .called(1);
         verify(settingsManager.getString(PreferencesFlag.progressBarText))
             .called(1);
-        verify(settingsManager.dateTimeNow)
-            .called(2);
+        verify(settingsManager.dateTimeNow).called(2);
         verifyNoMoreInteractions(settingsManager);
       });
     });

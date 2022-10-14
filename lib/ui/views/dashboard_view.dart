@@ -291,8 +291,7 @@ class _DashboardViewState extends State<DashboardView>
     }
   }
 
-  Widget _buildScheduleCard(
-      DashboardViewModel model, PreferencesFlag flag) {
+  Widget _buildScheduleCard(DashboardViewModel model, PreferencesFlag flag) {
     var title = AppIntl.of(context).title_schedule;
     if (model.todayDateEvents.isEmpty && model.tomorrowDateEvents.isNotEmpty) {
       title = title + AppIntl.of(context).card_schedule_tomorrow;

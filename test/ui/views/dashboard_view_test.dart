@@ -142,7 +142,8 @@ void main() {
     await drag.up();
   }
 
-  Future<Widget> testDashboardSchedule(WidgetTester tester, DateTime now, List<CourseActivity> courses, int expected) async {
+  Future<Widget> testDashboardSchedule(WidgetTester tester, DateTime now,
+      List<CourseActivity> courses, int expected) async {
     CourseRepositoryMock.stubCoursesActivities(
         courseRepository as CourseRepositoryMock,
         toReturn: courses);
@@ -154,16 +155,14 @@ void main() {
         courseRepository as CourseRepositoryMock,
         fromCacheOnly: false);
 
-    SettingsManagerMock.stubGetDashboard(
-        settingsManager as SettingsManagerMock,
+    SettingsManagerMock.stubGetDashboard(settingsManager as SettingsManagerMock,
         toReturn: dashboard);
-    
-    SettingsManagerMock.stubDateTimeNow(
-      settingsManager as SettingsManagerMock,
-      toReturn: now);
 
-    await tester.pumpWidget(localizedWidget(
-        child: FeatureDiscovery(child: const DashboardView())));
+    SettingsManagerMock.stubDateTimeNow(settingsManager as SettingsManagerMock,
+        toReturn: now);
+
+    await tester.pumpWidget(
+        localizedWidget(child: FeatureDiscovery(child: const DashboardView())));
     await tester.pumpAndSettle();
 
     // Find schedule card in second position by its title
@@ -171,7 +170,6 @@ void main() {
       of: find.byType(Dismissible).at(1),
       matching: find.byType(Text),
     ));
-    
   }
 
   group('DashboardView - ', () {
@@ -234,9 +232,8 @@ void main() {
           settingsManager as SettingsManagerMock, PreferencesFlag.gradesCard);
 
       SettingsManagerMock.stubDateTimeNow(
-        settingsManager as SettingsManagerMock,
-        toReturn: DateTime.now()
-      );
+          settingsManager as SettingsManagerMock,
+          toReturn: DateTime.now());
     });
 
     tearDown(() {});
@@ -305,61 +302,64 @@ void main() {
           (WidgetTester tester) async {
         final now = DateTime.now();
         final simulatedDate = DateTime(now.year, now.month, now.day, 8);
-        final scheduleTitle = await testDashboardSchedule(tester, simulatedDate, activities, 3);
+        final scheduleTitle =
+            await testDashboardSchedule(tester, simulatedDate, activities, 3);
         expect((scheduleTitle as Text).data, intl.title_schedule);
 
         // Find three activities in the card
         expect(
-          find.descendant(
-            of: find.byType(Dismissible),
-            matching: find.byType(CourseActivityTile),
-          ),
-          findsNWidgets(3));
+            find.descendant(
+              of: find.byType(Dismissible),
+              matching: find.byType(CourseActivityTile),
+            ),
+            findsNWidgets(3));
       });
 
-      testWidgets("Has card schedule displayed tomorrow events properly after today's last event",
+      testWidgets(
+          "Has card schedule displayed tomorrow events properly after today's last event",
           (WidgetTester tester) async {
         final now = DateTime.now();
         final simulatedDate = DateTime(now.year, now.month, now.day, 21, 0, 1);
         final gen104 = CourseActivity(
-          courseGroup: "GEN104",
-          courseName: "Generic course",
-          activityName: "TD",
-          activityDescription: "Activity description",
-          activityLocation: "location",
-          startDateTime: DateTime(
-              now.year, now.month, now.day + 1, 9),
-          endDateTime: DateTime(
-              now.year, now.month, now.day + 1, 12));
-        final courses = List<CourseActivity>.from(activities)
-            ..add(gen104);
-        final scheduleTitle = await testDashboardSchedule(tester, simulatedDate, courses, 1);
-        expect((scheduleTitle as Text).data, intl.title_schedule + intl.card_schedule_tomorrow);
+            courseGroup: "GEN104",
+            courseName: "Generic course",
+            activityName: "TD",
+            activityDescription: "Activity description",
+            activityLocation: "location",
+            startDateTime: DateTime(now.year, now.month, now.day + 1, 9),
+            endDateTime: DateTime(now.year, now.month, now.day + 1, 12));
+        final courses = List<CourseActivity>.from(activities)..add(gen104);
+        final scheduleTitle =
+            await testDashboardSchedule(tester, simulatedDate, courses, 1);
+        expect((scheduleTitle as Text).data,
+            intl.title_schedule + intl.card_schedule_tomorrow);
 
         // Find one activities in the card
         expect(
-          find.descendant(
-            of: find.byType(Dismissible),
-            matching: find.byType(CourseActivityTile),
-          ),
-          findsNWidgets(1));
+            find.descendant(
+              of: find.byType(Dismissible),
+              matching: find.byType(CourseActivityTile),
+            ),
+            findsNWidgets(1));
       });
 
-      testWidgets("Has card schedule displayed no event when today's last activity is finished and no events the day after",
+      testWidgets(
+          "Has card schedule displayed no event when today's last activity is finished and no events the day after",
           (WidgetTester tester) async {
         final now = DateTime.now();
         final simulatedDate = DateTime(now.year, now.month, now.day, 21, 0, 1);
 
-        final scheduleTitle = await testDashboardSchedule(tester, simulatedDate, activities, 1);
+        final scheduleTitle =
+            await testDashboardSchedule(tester, simulatedDate, activities, 1);
         expect((scheduleTitle as Text).data, intl.title_schedule);
 
         // Find no activity and no grade available text boxes
         expect(
-          find.descendant(
-            of: find.byType(SizedBox),
-            matching: find.byType(Text),
-          ),
-          findsNWidgets(2));
+            find.descendant(
+              of: find.byType(SizedBox),
+              matching: find.byType(Text),
+            ),
+            findsNWidgets(2));
       });
     });
 
