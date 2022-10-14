@@ -16,9 +16,6 @@ import 'package:notredame/ui/views/dashboard_view.dart';
 import 'package:notredame/ui/widgets/course_activity_tile.dart';
 import 'package:notredame/ui/widgets/grade_button.dart';
 
-// VIEWMODEL
-import 'package:notredame/core/viewmodels/dashboard_viewmodel.dart';
-
 // CONSTANTS
 import 'package:notredame/core/constants/preferences_flags.dart';
 
@@ -34,7 +31,6 @@ void main() {
   SettingsManager settingsManager;
   CourseRepository courseRepository;
   AppIntl intl;
-  DashboardViewModel viewModel;
   InAppReviewServiceMock inAppReviewServiceMock;
 
   // Activities for today
@@ -146,6 +142,38 @@ void main() {
     await drag.up();
   }
 
+  Future<Widget> testDashboardSchedule(WidgetTester tester, DateTime now, List<CourseActivity> courses, int expected) async {
+    CourseRepositoryMock.stubCoursesActivities(
+        courseRepository as CourseRepositoryMock,
+        toReturn: courses);
+
+    CourseRepositoryMock.stubGetCoursesActivities(
+        courseRepository as CourseRepositoryMock,
+        fromCacheOnly: true);
+    CourseRepositoryMock.stubGetCoursesActivities(
+        courseRepository as CourseRepositoryMock,
+        fromCacheOnly: false);
+
+    SettingsManagerMock.stubGetDashboard(
+        settingsManager as SettingsManagerMock,
+        toReturn: dashboard);
+    
+    SettingsManagerMock.stubDateTimeNow(
+      settingsManager as SettingsManagerMock,
+      toReturn: now);
+
+    await tester.pumpWidget(localizedWidget(
+        child: FeatureDiscovery(child: const DashboardView())));
+    await tester.pumpAndSettle();
+
+    // Find schedule card in second position by its title
+    return tester.firstWidget(find.descendant(
+      of: find.byType(Dismissible).at(1),
+      matching: find.byType(Text),
+    ));
+    
+  }
+
   group('DashboardView - ', () {
     setUp(() async {
       intl = await setupAppIntl();
@@ -205,9 +233,10 @@ void main() {
       SettingsManagerMock.stubSetInt(
           settingsManager as SettingsManagerMock, PreferencesFlag.gradesCard);
 
-      viewModel = DashboardViewModel(intl: intl);
-
-      viewModel.todayDate = DateTime(2020);
+      SettingsManagerMock.stubDateTimeNow(
+        settingsManager as SettingsManagerMock,
+        toReturn: DateTime.now()
+      );
     });
 
     tearDown(() {});
@@ -272,41 +301,65 @@ void main() {
         expect(aboutUsLinkButtons, findsNWidgets(5));
       });
 
-      testWidgets('Has card schedule displayed properly',
+      testWidgets("Has card schedule displayed today's events properly",
           (WidgetTester tester) async {
-        CourseRepositoryMock.stubCoursesActivities(
-            courseRepository as CourseRepositoryMock,
-            toReturn: activities);
-
-        CourseRepositoryMock.stubGetCoursesActivities(
-            courseRepository as CourseRepositoryMock,
-            fromCacheOnly: true);
-        CourseRepositoryMock.stubGetCoursesActivities(
-            courseRepository as CourseRepositoryMock,
-            fromCacheOnly: false);
-
-        SettingsManagerMock.stubGetDashboard(
-            settingsManager as SettingsManagerMock,
-            toReturn: dashboard);
-
-        await tester.pumpWidget(localizedWidget(
-            child: FeatureDiscovery(child: const DashboardView())));
-        await tester.pumpAndSettle();
-
-        // Find schedule card in second position by its title
-        final scheduleTitle = tester.firstWidget(find.descendant(
-          of: find.byType(Dismissible).at(1),
-          matching: find.byType(Text),
-        ));
+        final now = DateTime.now();
+        final simulatedDate = DateTime(now.year, now.month, now.day, 8);
+        final scheduleTitle = await testDashboardSchedule(tester, simulatedDate, activities, 3);
         expect((scheduleTitle as Text).data, intl.title_schedule);
 
         // Find three activities in the card
         expect(
-            find.descendant(
-              of: find.byType(Dismissible),
-              matching: find.byType(CourseActivityTile),
-            ),
-            findsNWidgets(3));
+          find.descendant(
+            of: find.byType(Dismissible),
+            matching: find.byType(CourseActivityTile),
+          ),
+          findsNWidgets(3));
+      });
+
+      testWidgets("Has card schedule displayed tomorrow events properly after today's last event",
+          (WidgetTester tester) async {
+        final now = DateTime.now();
+        final simulatedDate = DateTime(now.year, now.month, now.day, 21, 0, 1);
+        final gen104 = CourseActivity(
+          courseGroup: "GEN104",
+          courseName: "Generic course",
+          activityName: "TD",
+          activityDescription: "Activity description",
+          activityLocation: "location",
+          startDateTime: DateTime(
+              now.year, now.month, now.day + 1, 9),
+          endDateTime: DateTime(
+              now.year, now.month, now.day + 1, 12));
+        final courses = List<CourseActivity>.from(activities)
+            ..add(gen104);
+        final scheduleTitle = await testDashboardSchedule(tester, simulatedDate, courses, 1);
+        expect((scheduleTitle as Text).data, intl.title_schedule + intl.card_schedule_tomorrow);
+
+        // Find one activities in the card
+        expect(
+          find.descendant(
+            of: find.byType(Dismissible),
+            matching: find.byType(CourseActivityTile),
+          ),
+          findsNWidgets(1));
+      });
+
+      testWidgets("Has card schedule displayed no event when today's last activity is finished and no events the day after",
+          (WidgetTester tester) async {
+        final now = DateTime.now();
+        final simulatedDate = DateTime(now.year, now.month, now.day, 21, 0, 1);
+
+        final scheduleTitle = await testDashboardSchedule(tester, simulatedDate, activities, 1);
+        expect((scheduleTitle as Text).data, intl.title_schedule);
+
+        // Find no activity and no grade available text boxes
+        expect(
+          find.descendant(
+            of: find.byType(SizedBox),
+            matching: find.byType(Text),
+          ),
+          findsNWidgets(2));
       });
     });
 

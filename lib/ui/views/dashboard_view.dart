@@ -103,7 +103,7 @@ class _DashboardViewState extends State<DashboardView>
           cards.add(_buildAboutUsCard(model, element));
           break;
         case PreferencesFlag.scheduleCard:
-          cards.add(_buildTodayScheduleCard(model, element));
+          cards.add(_buildScheduleCard(model, element));
           break;
         case PreferencesFlag.progressBarCard:
           cards.add(_buildProgressBarCard(model, element));
@@ -291,7 +291,7 @@ class _DashboardViewState extends State<DashboardView>
     }
   }
 
-  Widget _buildTodayScheduleCard(
+  Widget _buildScheduleCard(
       DashboardViewModel model, PreferencesFlag flag) {
     var title = AppIntl.of(context).title_schedule;
     if(model.todayDateEvents.isEmpty && model.tomorrowDateEvents.isNotEmpty) {

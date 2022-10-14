@@ -49,9 +49,6 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
   /// Update code that must be used to prompt user for update if necessary.
   UpdateCode updateCode;
 
-  /// Day currently selected
-  DateTime todayDate = DateTime.now();
-
   /// Cards to display on dashboard
   List<PreferencesFlag> _cardsToDisplay;
 
@@ -155,7 +152,7 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
     if (_courseRepository.activeSessions.isEmpty) {
       return [0, 0];
     } else {
-      int dayCompleted = todayDate
+      int dayCompleted = _settingsManager.dateTimeNow
           .difference(_courseRepository.activeSessions.first.startDate)
           .inDays;
       final dayInTheSession = _courseRepository.activeSessions.first.endDate
@@ -351,7 +348,7 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
       _todayDateEvents.clear();
       _tomorrowDateEvents.clear();
 
-
+      final todayDate = _settingsManager.dateTimeNow;
       _courseRepository
           .getCoursesActivities()
           // ignore: return_type_invalid_for_catch_error
