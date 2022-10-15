@@ -538,4 +538,3 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
     }
   }
 }
-
