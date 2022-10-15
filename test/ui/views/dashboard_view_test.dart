@@ -342,6 +342,7 @@ void main() {
             ),
             findsNWidgets(1));
       });
+    });
 
     group('Interactions - ', () {
       testWidgets('AboutUsCard is dismissible and can be restored',
