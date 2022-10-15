@@ -342,6 +342,25 @@ void main() {
             ),
             findsNWidgets(1));
       });
+
+      testWidgets(
+          "Has card schedule displayed no event when today's last activity is finished and no events the day after",
+          (WidgetTester tester) async {
+        final now = DateTime.now();
+        final simulatedDate = DateTime(now.year, now.month, now.day, 21, 0, 1);
+
+        final scheduleTitle =
+            await testDashboardSchedule(tester, simulatedDate, activities, 1);
+        expect((scheduleTitle as Text).data, intl.title_schedule);
+
+        // Find no activity and no grade available text boxes
+        expect(
+            find.descendant(
+              of: find.byType(SizedBox),
+              matching: find.byType(Text),
+            ),
+            findsNWidgets(2));
+      });
     });
 
     group('Interactions - ', () {
