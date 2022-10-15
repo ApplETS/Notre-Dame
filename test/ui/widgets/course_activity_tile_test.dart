@@ -4,12 +4,19 @@ import 'package:flutter_test/flutter_test.dart';
 
 // MODEL
 import 'package:ets_api_clients/models.dart';
+import 'package:mockito/mockito.dart';
+import 'package:notredame/core/managers/course_repository.dart';
+import 'package:notredame/core/viewmodels/schedule_viewmodel.dart';
 
 // WIDGET
 import 'package:notredame/ui/widgets/course_activity_tile.dart';
 
 // HELPERS
 import '../../helpers.dart';
+import '../../mock/managers/course_repository_mock.dart';
+
+ScheduleViewModel scheduleViewModel;
+CourseRepository courseRepository;
 
 final CourseActivity course = CourseActivity(
     courseGroup: 'GEN101-01',
@@ -20,16 +27,30 @@ final CourseActivity course = CourseActivity(
     startDateTime: DateTime(2020, 9, 3, 18),
     endDateTime: DateTime(2020, 9, 3, 20));
 
+final List<CourseActivity> activities = [course];
+
 void main() {
   group("CourseActivityTile - ", () {
+    setUp(() async {
+      scheduleViewModel = ScheduleViewModel(intl: await setupAppIntl());
+      courseRepository = setupCourseRepositoryMock();
+    });
     testWidgets(
         "display the short title, entire title, type of activity, hours and local of the course",
         (WidgetTester tester) async {
+      CourseRepositoryMock.stubGetCoursesActivities(
+          courseRepository as CourseRepositoryMock);
       // Set the textScaleFactor to 0.5 otherwise the row overflow, only happen in test.
-      await tester.pumpWidget(localizedWidget(
+      await tester.pumpWidget(
+        localizedWidget(
           child: MediaQuery(
               data: const MediaQueryData(textScaleFactor: 0.5),
-              child: CourseActivityTile(course))));
+              child: CourseActivityTile(
+                  activity: course,
+                  onLongPressedAction: () => {},
+                  scheduleViewModel: scheduleViewModel)),
+        ),
+      );
       await tester.pumpAndSettle();
 
       expect(find.text(course.courseGroup), findsOneWidget);

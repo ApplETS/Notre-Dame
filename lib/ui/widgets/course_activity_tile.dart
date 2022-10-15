@@ -12,7 +12,7 @@ class CourseActivityTile extends StatelessWidget {
   /// Course to display
   final CourseActivity activity;
 
-  final VoidCallback onLongAction;
+  final VoidCallback onLongPressedAction;
 
   final ScheduleViewModel scheduleViewModel;
 
@@ -21,7 +21,7 @@ class CourseActivityTile extends StatelessWidget {
   /// Display an [activity] with the start and end time of the activity,
   /// it name, shortname, type of activity and local.
   const CourseActivityTile(
-      {this.activity, this.onLongAction, this.scheduleViewModel});
+      {this.activity, this.onLongPressedAction, this.scheduleViewModel});
 
   @override
   Widget build(BuildContext context) => Padding(
@@ -33,19 +33,7 @@ class CourseActivityTile extends StatelessWidget {
             subtitle:
                 Text("${activity.courseName}\n${activity.activityDescription}"),
             trailing: Text(activity.activityLocation),
-            onTap: onLongAction,
-            onLongPress: () => {
-                  if (activity.activityDescription
-                          .contains(ActivityDescriptionName.labA) ||
-                      activity.activityDescription
-                          .contains(ActivityDescriptionName.labB))
-                    {onLongAction}
-                  else
-                    {
-                      Fluttertoast.showToast(
-                          msg: "You long pressed a course Title")
-                    }
-                }),
+            onLongPress: onLongPressed),
       );
 
   Widget _buildLeading() => ConstrainedBox(
@@ -82,5 +70,11 @@ class CourseActivityTile extends StatelessWidget {
     final green = finalHash & 0xFF;
     final color = Color.fromRGBO(red, green, blue, 1);
     return color;
+  }
+
+  void onLongPressed() {
+    if (scheduleViewModel.doesCourseActivityBelongToMultipleGroup(activity)) {
+      onLongPressedAction();
+    }
   }
 }

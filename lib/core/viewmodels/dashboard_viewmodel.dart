@@ -389,7 +389,7 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
     final List<CourseActivity> todayDateEventsCopy = List.from(todayDateEvents);
 
     for (final courseAcronym in todayDateEvents) {
-      final courseKey = courseAcronym.courseGroup.split('-')[0];
+      final courseKey = courseAcronym.courseGroup.split('-').first;
 
       final String activityCodeToUse = await _settingsManager.getDynamicString(
           PreferencesFlag.scheduleSettingsLaboratoryGroup, courseKey);

@@ -1,4 +1,6 @@
 // FLUTTER / DART / THIRD-PARTIES
+import 'dart:ffi';
+
 import 'package:enum_to_string/enum_to_string.dart';
 import 'package:feature_discovery/feature_discovery.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -317,5 +319,51 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
     await _settingsManager.setBool(PreferencesFlag.discoverySchedule, true);
 
     return true;
+  }
+
+  bool doesCourseActivityBelongToMultipleGroup(CourseActivity activity) =>
+      activity.activityDescription.contains(ActivityDescriptionName.labA) ||
+      activity.activityDescription.contains(ActivityDescriptionName.labB);
+
+  Future<void> onGroupAPressed(CourseActivity courseActivity) async {
+    saveGroupSelectionSettings(
+        courseActivity,
+        scheduleActivitiesByCourse[getCourseAcronym(courseActivity)]
+            .first
+            .activityCode);
+  }
+
+  String getCourseAcronym(CourseActivity courseActivity) =>
+      courseActivity.courseGroup.split('-').first;
+
+  void onGroupBPressed(CourseActivity courseActivity) {
+    saveGroupSelectionSettings(
+        courseActivity,
+        scheduleActivitiesByCourse[getCourseAcronym(courseActivity)]
+            .last
+            .activityCode);
+  }
+
+  Future<void> onBothGroupPressed(CourseActivity courseActivity) async {
+    saveGroupSelectionSettings(courseActivity, null);
+  }
+
+  Future<void> saveGroupSelectionSettings(
+      CourseActivity courseActivity, String activityCode) async {
+    setBusy(true);
+
+    await _settingsManager.setDynamicString(
+        PreferencesFlag.scheduleSettingsLaboratoryGroup,
+        getCourseAcronym(courseActivity),
+        activityCode);
+
+    loadSettings();
+
+    setBusy(false);
+  }
+
+  bool isGroupSelected(CourseActivity courseActivity, String activityCode) {
+    return settingsScheduleActivities[getCourseAcronym(courseActivity)] ==
+        activityCode;
   }
 }

@@ -99,78 +99,7 @@ class _ScheduleSettingsState extends State<ScheduleSettings> {
 
     list.addAll(_buildShowWeekSection(context, model));
 
-    if (model.scheduleActivitiesByCourse.isNotEmpty) {
-      list.addAll(_buildSelectCoursesActivitiesSection(context, model));
-    }
-
     return list;
-  }
-
-  List<Widget> _buildSelectCoursesActivitiesSection(
-      BuildContext context, ScheduleSettingsViewModel model) {
-    final tiles = [
-      Padding(
-        padding: const EdgeInsets.only(
-            left: 15.0, right: 15.0, top: 15.0, bottom: 2.0),
-        child: Text(
-          AppIntl.of(context).schedule_select_course_activity,
-          style: TextStyle(
-            color: Theme.of(context).colorScheme.secondary,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-      ),
-      const Divider(endIndent: 50, thickness: 1.5),
-    ];
-
-    for (final courseActivitiesAcronym
-        in model.scheduleActivitiesByCourse.keys) {
-      tiles.add(Padding(
-        padding: const EdgeInsets.fromLTRB(15.0, 8.0, 15.0, 8.0),
-        child: Text(
-          '$courseActivitiesAcronym - ${model.scheduleActivitiesByCourse[courseActivitiesAcronym].first.courseTitle}',
-          style: const TextStyle(
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-      ));
-      tiles.add(ListTile(
-        selected:
-            model.selectedScheduleActivity[courseActivitiesAcronym] == null,
-        selectedTileColor: selectedColor,
-        onTap: () =>
-            model.selectScheduleActivity(courseActivitiesAcronym, null),
-        title: Text(AppIntl.of(context).course_activity_group_both),
-      ));
-
-      for (final course
-          in model.scheduleActivitiesByCourse[courseActivitiesAcronym]) {
-        tiles.add(ListTile(
-          selected:
-              model.selectedScheduleActivity[course.courseAcronym] == course,
-          selectedTileColor: selectedColor,
-          onTap: () =>
-              model.selectScheduleActivity(course.courseAcronym, course),
-          title: Text(getActivityTitle(course.activityCode)),
-        ));
-      }
-
-      if (model.scheduleActivitiesByCourse.values.length > 1) {
-        tiles.add(const Divider(endIndent: 50, thickness: 1.5));
-      }
-    }
-    tiles.add(const Divider(thickness: 1));
-    return tiles;
-  }
-
-  String getActivityTitle(String activityCode) {
-    if (activityCode == ActivityCode.labGroupA) {
-      return AppIntl.of(context).course_activity_group_a;
-    } else if (activityCode == ActivityCode.labGroupB) {
-      return AppIntl.of(context).course_activity_group_b;
-    }
-
-    return "";
   }
 
   Iterable<Widget> _buildShowWeekSection(

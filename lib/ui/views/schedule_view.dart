@@ -1,5 +1,6 @@
 // FLUTTER / DART / THIRD-PARTIES
 import 'package:feature_discovery/feature_discovery.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:intl/intl.dart';
@@ -246,37 +247,9 @@ class _ScheduleViewState extends State<ScheduleView>
         shrinkWrap: true,
         itemBuilder: (BuildContext context, index) => CourseActivityTile(
             activity: events[index] as CourseActivity,
-            onLongAction: () => {
-                  showDialog(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return AlertDialog(
-                        title: const Text("Group selection"),
-                        content: const Text(
-                            "Select which group you're assigned to."),
-                        actions: [
-                          TextButton(
-                            child: const Text("Groupe A"),
-                            onPressed: () {
-                              Navigator.of(context).pop();
-                            },
-                          ),
-                          TextButton(
-                            child: const Text("BOTH"),
-                            onPressed: () {
-                              Navigator.of(context).pop();
-                            },
-                          ),
-                          TextButton(
-                            child: const Text("Groupe B"),
-                            onPressed: () {
-                              Navigator.of(context).pop();
-                            },
-                          )
-                        ],
-                      );
-                    },
-                  )
+            onLongPressedAction: () => {
+                  _showBottomGroupSelectionSheet(
+                      context, events[index] as CourseActivity, model)
                 },
             scheduleViewModel: model),
         separatorBuilder: (_, index) => (index < events.length)
@@ -329,5 +302,74 @@ class _ScheduleViewState extends State<ScheduleView>
                   builder: (context) => const ScheduleSettings());
               model.loadSettings();
             }));
+  }
+
+  void _showBottomGroupSelectionSheet(BuildContext context,
+      CourseActivity courseActivity, ScheduleViewModel model) {
+    showModalBottomSheet(
+      context: context,
+      shape: const RoundedRectangleBorder(
+        // <-- SEE HERE
+        borderRadius: BorderRadius.vertical(
+          top: Radius.circular(8.0),
+        ),
+      ),
+      builder: (context) {
+        return Wrap(
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(
+                  left: 15.0, right: 15.0, top: 15.0, bottom: 2.0),
+              child: Text(
+                AppIntl.of(context).schedule_select_course_activity,
+                style: TextStyle(
+                  color: Theme.of(context).colorScheme.secondary,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+            const Divider(thickness: 1),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(15.0, 8.0, 15.0, 8.0),
+              child: Text(
+                "${model.getCourseAcronym(courseActivity)} - ${courseActivity.courseName}",
+                style: const TextStyle(
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+            ListTile(
+              title: Text(AppIntl.of(context).course_activity_group_both),
+              onTap: () {
+                model.onBothGroupPressed(courseActivity);
+                Navigator.pop(context);
+              },
+              selected: model.isGroupSelected(courseActivity, null),
+              selectedTileColor: AppTheme.etsLightRed.withOpacity(0.5),
+            ),
+            ListTile(
+              title: Text(AppIntl.of(context).course_activity_group_a),
+              onTap: () {
+                model.onGroupAPressed(courseActivity);
+                Navigator.pop(context);
+              },
+              selected: model.isGroupSelected(
+                  courseActivity, ActivityDescriptionName.labA),
+              selectedTileColor: AppTheme.etsLightRed.withOpacity(0.5),
+            ),
+            ListTile(
+              title: Text(AppIntl.of(context).course_activity_group_b),
+              onTap: () {
+                model.onGroupBPressed(courseActivity);
+                Navigator.pop(context);
+              },
+              selected: model.isGroupSelected(
+                  courseActivity, ActivityDescriptionName.labB),
+              selectedTileColor: AppTheme.etsLightRed.withOpacity(0.5),
+            ),
+          ],
+        );
+      },
+    );
   }
 }
