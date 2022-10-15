@@ -104,8 +104,10 @@ class _ScheduleViewState extends State<ScheduleView>
                           model.getCalendarViewEnabled(context)
                       ? Scaffold(
                           body: WeekView(
-                              controller: CalendarControllerProvider.of(context).controller
+                              controller: CalendarControllerProvider.of(context)
+                                  .controller
                                 ..addAll(model.selectedWeekCalendarEvents()),
+                              key: _calendarKey,
                               onPageChange: (date, page) =>
                                   CalendarControllerProvider.of(context)
                                       .controller
@@ -125,17 +127,17 @@ class _ScheduleViewState extends State<ScheduleView>
                                 WeekDays.friday,
                                 WeekDays.saturday
                               ],
-                              weekPageHeaderBuilder: (DateTime date1, DateTime date2) =>
-                                  _buildWeekPageHeader(date1, date2),
+                              weekPageHeaderBuilder:
+                                  (DateTime date1, DateTime date2) =>
+                                      _buildWeekPageHeader(
+                                          date1, date2, _calendarKey),
                               eventTileBuilder: (DateTime date1,
                                       List<CalendarEventData<Object>> events,
                                       Rect rect,
                                       DateTime date2,
                                       DateTime date3) =>
-                                  _buildEventTile(
-                                      date1, events, rect, date2, date3),
-                              onEventTap: (List<CalendarEventData<Object>> events, DateTime date) =>
-                                  print(events)),
+                                  _buildEventTile(date1, events, rect, date2, date3),
+                              onEventTap: (List<CalendarEventData<Object>> events, DateTime date) => print(events)),
                         )
                       : Stack(children: [
                           ListView(
@@ -300,12 +302,15 @@ class _ScheduleViewState extends State<ScheduleView>
         itemCount: events.length);
   }
 
-  Widget _buildWeekPageHeader(DateTime date1, DateTime date2) {
+  Widget _buildWeekPageHeader(
+      DateTime date1, DateTime date2, GlobalKey<WeekViewState> calendarKey) {
     return WeekPageHeader(
       startDate: date1,
       endDate: date2,
       backgroundColor: Utils.getColorByBrightness(
           context, AppTheme.lightThemeBackground, AppTheme.etsLightGrey),
+      onNextDay: calendarKey.currentState.nextPage,
+      onPreviousDay: calendarKey.currentState.previousPage,
     );
   }
 
@@ -321,7 +326,7 @@ class _ScheduleViewState extends State<ScheduleView>
         ),
         totalEvents: events.length,
         padding: const EdgeInsets.all(7.0),
-        backgroundColor: events[0].color,
+        backgroundColor: AppTheme.appletsPurple,
       );
     } else {
       return Container();
