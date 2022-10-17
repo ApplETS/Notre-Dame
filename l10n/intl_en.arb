@@ -46,7 +46,7 @@
   "dashboard_msg_card_removed": "Card removed",
   "dashboard_restore_all_cards_title": "Restore all cards",
 
-  "card_schedule_no_seances_today": "No class scheduled today",
+  "card_schedule_tomorrow": " - tomorrow",
 
   "card_applets_title": "ApplETS",
   "card_applets_text": "ÉTSMobile was made by the club ApplETS. Support us by liking our Facebook page, contributing to GitHub or sending us your comments via email.",
