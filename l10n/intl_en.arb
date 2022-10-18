@@ -151,6 +151,7 @@
   "ets_heuristique_title": "L'heuristique",
   "ets_schedule_generator": "Rubik",
   "ets_gus": "GUS",
+  "ets_papercut_title":"PaperCut",
 
   "more_about_applets_title": "About ApplETS",
   "more_report_bug": "Report a bug",

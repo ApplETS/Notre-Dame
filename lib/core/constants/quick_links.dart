@@ -70,4 +70,12 @@ List<QuickLink> quickLinks(AppIntl intl) => [
           image: SvgPicture.asset('assets/images/ic_gus_red.svg',
               color: AppTheme.etsLightRed),
           link: 'https://gus.etsmtl.ca/c2atom/mobile/login'),
+      QuickLink(
+          name: intl.ets_papercut_title,
+          image: const FaIcon(
+            FontAwesomeIcons.print,
+            color: AppTheme.etsLightRed,
+            size: 64,
+          ),
+          link: 'https://cls.etsmtl.ca/user'),
     ];
