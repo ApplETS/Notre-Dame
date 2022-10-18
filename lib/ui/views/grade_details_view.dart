@@ -78,8 +78,8 @@ class _GradesDetailsViewState extends State<GradesDetailsView>
                         'course_acronym_${model.course.acronym}_${model.course.session}',
                     child: Text(
                       model.course.acronym ?? "",
-                      overflow: TextOverflow.visible,
                       softWrap: false,
+                      overflow: TextOverflow.visible,
                       style: Theme.of(context).textTheme.bodyText1.copyWith(
                           color: Colors.white,
                           fontSize: 25,
