@@ -32,6 +32,9 @@ class SettingsManager with ChangeNotifier {
   /// current Locale
   Locale _locale;
 
+  /// Get current time
+  DateTime get dateTimeNow => DateTime.now();
+
   /// Get ThemeMode
   ThemeMode get themeMode {
     _preferencesService.getString(PreferencesFlag.theme).then((value) {

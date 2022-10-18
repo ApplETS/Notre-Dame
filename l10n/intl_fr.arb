@@ -45,7 +45,7 @@
   "dashboard_msg_card_removed": "Carte supprimée",
   "dashboard_restore_all_cards_title": "Restaurer toutes les cartes",
 
-  "card_schedule_no_seances_today": "Aucune séance de cours à l'horaire aujourd'hui",
+  "card_schedule_tomorrow": " - demain",
 
   "card_applets_title": "ApplETS",
   "card_applets_text": "ÉTSMobile a été conçue par le club ApplETS. Supportez-nous en aimant notre page Facebook, en contribuant sur GitHub ou en nous faisant part de vos commentaires par courriel.",
@@ -149,7 +149,8 @@
   "ets_heuristique_title": "L'heuristique",
   "ets_schedule_generator": "Rubik",
   "ets_gus": "GUS",
-  
+  "ets_papercut_title":"PaperCut",
+
   "more_about_applets_title": "À propos d'ApplETS",
   "more_report_bug": "Rapporter un bogue",
   "more_report_bug_steps_title": "Comment faire?\n\n",
