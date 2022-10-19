@@ -112,21 +112,8 @@ jobs:
       - name: Analyze code
         run: flutter analyze
 
-      # Retrieve the last commit message and check if the commit message contains [CI UPDATE GOLDENS].
-      # Set update_goldens output if the hot word is there.
-      - name: "Check if needed to update goldens"
-        if: github.event_name == 'pull_request'
-        id: check_run_goldens
-        run: |
-          commit_msg=$(git log --format=%B -n 1 HEAD)
-
-          if [[ $commit_msg == *"[CI UPDATE GOLDENS]"* ]]; then
-            echo ::set-output name=update_goldens::true
-          fi
-
       # Run the tests with --update-goldens.
       - name: Update goldens
-        if: ${{ steps.check_run_goldens.outputs.update_goldens == 'true' }}
         run: flutter test --coverage --update-goldens
 
       # Commit and push the goldens files updated.
