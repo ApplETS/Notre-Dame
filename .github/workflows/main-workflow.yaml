@@ -126,9 +126,6 @@ jobs:
           commit_user_email: 41898282+github-actions[bot]@users.noreply.github.com
           commit_message: "[BOT] Update golden files"
 
-        # Run the tests
-      - run: flutter test --coverage
-
       - name: Upload coverage file
         uses: actions/upload-artifact@v3
         with:
