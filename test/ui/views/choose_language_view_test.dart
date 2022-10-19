@@ -56,7 +56,7 @@ void main() {
 
         await expectLater(find.byType(ChooseLanguageView),
             matchesGoldenFile(goldenFilePath("chooseLanguageView_1")));
-      }, skip: !Platform.isLinux);
-    });
+      });
+    }, skip: !Platform.isLinux);
   });
 }
