@@ -39,18 +39,18 @@ platform :ios do
         workspace: 'Runner.xcworkspace'
     )
 
-    #upload_to_app_store(
-    #    api_key_path: "service_account_credentials.json",
-    #    skip_screenshots: true,
-    #    force: true, # Skip HTML report verification
-    #    submit_for_review: true,
-    #    reject_if_possible: true,
-    #    automatic_release: true,
-    #    precheck_include_in_app_purchases: false,
-    #    submission_information: {
-    #        export_compliance_uses_encryption: false,
-    #        add_id_info_uses_idfa: false
-    #    },
-    #)
+    upload_to_app_store(
+        api_key_path: "service_account_credentials.json",
+        skip_screenshots: true,
+        force: true, # Skip HTML report verification
+        submit_for_review: true,
+        reject_if_possible: true,
+        automatic_release: true,
+        precheck_include_in_app_purchases: false,
+        submission_information: {
+            export_compliance_uses_encryption: false,
+            add_id_info_uses_idfa: false
+        },
+    )
   end
 end
