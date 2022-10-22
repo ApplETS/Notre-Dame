@@ -1,4 +1,5 @@
 // FLUTTER / DART / THIRD-PARTIES
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -44,7 +45,7 @@ void main() {
           await expectLater(find.byType(NotFoundView),
               matchesGoldenFile(goldenFilePath("notFoundView_1")));
         });
-      });
+      }, skip: !Platform.isLinux);
     });
   });
 }
