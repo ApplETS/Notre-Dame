@@ -44,7 +44,10 @@ class _AboutViewState extends State<AboutView> with TickerProviderStateMixin {
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
-        title: Text(AppIntl.of(context).more_about_applets_title),
+        foregroundColor: Colors.white,
+        title: Text(
+          AppIntl.of(context).more_about_applets_title,
+        ),
         elevation: 0,
         backgroundColor: Colors.transparent,
       ),

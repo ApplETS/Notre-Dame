@@ -46,7 +46,13 @@ class _StudentViewState extends State<StudentView> {
                 title: Text(AppIntl.of(context).title_student),
                 forceElevated: innerBoxIsScrolled,
                 bottom: TabBar(
-                  indicatorColor: Colors.white,
+                  indicatorColor:
+                      (Theme.of(context).brightness == Brightness.dark)
+                          ? Colors.white
+                          : Colors.black26,
+                  labelColor: (Theme.of(context).brightness == Brightness.dark)
+                      ? Colors.white
+                      : Colors.black,
                   tabs: List.generate(
                     tabs.length,
                     (index) => index == 1
