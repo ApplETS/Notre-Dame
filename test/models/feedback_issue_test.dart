@@ -1,11 +1,6 @@
 import 'package:github/github.dart';
 import 'package:notredame/core/models/feedback_issue.dart';
-
-import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:feature_discovery/feature_discovery.dart';
-// HELPERS
-import '../helpers.dart';
 
 void main() {
   group('FeedBackIssue - ', () {

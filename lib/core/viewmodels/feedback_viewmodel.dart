@@ -7,7 +7,6 @@ import 'package:github/github.dart';
 import 'package:notredame/core/constants/preferences_flags.dart';
 import 'package:notredame/core/models/feedback_issue.dart';
 import 'package:notredame/core/services/preferences_service.dart';
-import 'package:notredame/core/utils/utils.dart';
 import 'package:stacked/stacked.dart';
 import 'package:image/image.dart' as image;
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';

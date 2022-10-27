@@ -1,6 +1,4 @@
-import 'package:flutter/widgets.dart';
 import 'package:github/github.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class FeedbackIssue {
   int id;
