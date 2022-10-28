@@ -1,4 +1,5 @@
 // FLUTTER / DART / THIRD-PARTIES
+import 'dart:io';
 import 'package:feature_discovery/feature_discovery.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -64,7 +65,7 @@ void main() {
           await expectLater(find.byType(QuickLinksView),
               matchesGoldenFile(goldenFilePath("quicksLinksView_1")));
         });
-      });
+      }, skip: !Platform.isLinux);
     });
   });
 }

@@ -1,4 +1,5 @@
 // FLUTTER / DART / THIRD-PARTIES
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -179,7 +180,7 @@ void main() {
           await expectLater(find.byType(SettingsView),
               matchesGoldenFile(goldenFilePath("settingsView_1")));
         });
-      });
+      }, skip: !Platform.isLinux);
     });
   });
 }
