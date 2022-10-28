@@ -1,4 +1,5 @@
 // FLUTTER / DART / THIRD-PARTIES
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:intl/intl.dart';
@@ -254,7 +255,7 @@ void main() {
         await expectLater(find.byType(ScheduleView),
             matchesGoldenFile(goldenFilePath("scheduleView_5")));
       });
-    });
+    }, skip: !Platform.isLinux);
 
     group("interactions - ", () {
       testWidgets("tap on today button to return on today",
