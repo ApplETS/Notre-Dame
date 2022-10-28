@@ -365,7 +365,7 @@ void main() {
             courseRepository as CourseRepositoryMock);
         CourseRepositoryMock.stubActiveSessions(
             courseRepository as CourseRepositoryMock,
-            toReturn: [ session ]);
+            toReturn: [session]);
         CourseRepositoryMock.stubCoursesActivities(
             courseRepository as CourseRepositoryMock);
 
