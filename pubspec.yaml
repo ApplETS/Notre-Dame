@@ -6,7 +6,7 @@ description: The 4th generation of ÉTSMobile, the main gateway between the Éco
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 
 <<<<<<< HEAD
-version: 4.14.2+1
+version: 4.15.0+1
 =======
 version: 4.14.0+1
 >>>>>>> calendar-view
