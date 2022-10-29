@@ -20,15 +20,18 @@ void main() {
     tearDown(() {});
 
     group('UI - ', () {
-      testWidgets('has button and listview', (WidgetTester tester) async {
+      testWidgets('has 2 cards, 2 ElevatedButton and SingleChildScrollView', (WidgetTester tester) async {
         await tester.pumpWidget(localizedWidget(child: FeedbackView()));
         await tester.pumpAndSettle();
 
-        final listView = find.byType(ListView);
-        expect(listView, findsOneWidget);
+        final singleChildScrollView = find.byType(SingleChildScrollView);
+        expect(singleChildScrollView, findsOneWidget);
 
-        final button = find.byType(FloatingActionButton);
-        expect(button, findsOneWidget);
+        final card = find.byType(Card);
+        expect(card, findsNWidgets(2));
+
+        final elevatedButton = find.byType(ElevatedButton);
+        expect(elevatedButton, findsNWidgets(2));
       });
     });
     group("golden - ", () {

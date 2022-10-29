@@ -39,7 +39,7 @@ class FeedbackViewModel extends BaseViewModel {
     _githubApi.createGithubIssue(
         feedbackText: feedbackText,
         fileName: fileName,
-        feedbackType: type.toString());
+        feedbackType: type.name);
 
     file.deleteSync();
     Fluttertoast.showToast(

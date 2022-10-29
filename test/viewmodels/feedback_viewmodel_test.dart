@@ -81,7 +81,7 @@ void main() {
         verify(githubApiMock.createGithubIssue(
             feedbackText: 'Notre-Dame bug report',
             fileName: file.path.split('/').last,
-            feedbackType: 'bugReport'));
+            feedbackType: 'bug'));
       });
     });
   });
