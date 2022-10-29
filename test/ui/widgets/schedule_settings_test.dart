@@ -1,4 +1,5 @@
 // FLUTTER / DART / THIRD-PARTIES
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:intl/intl.dart';
@@ -456,6 +457,6 @@ void main() {
         await expectLater(find.byType(ScheduleSettings),
             matchesGoldenFile(goldenFilePath("scheduleSettingsView_1")));
       });
-    });
+    }, skip: !Platform.isLinux);
   });
 }

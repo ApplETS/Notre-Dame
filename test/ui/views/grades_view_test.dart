@@ -1,4 +1,5 @@
 // FLUTTER / DART / THIRD-PARTIES
+import 'dart:io';
 import 'package:feature_discovery/feature_discovery.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -124,7 +125,7 @@ void main() {
         await expectLater(find.byType(GradesView),
             matchesGoldenFile(goldenFilePath("gradesView_2")));
       });
-    });
+    }, skip: !Platform.isLinux);
 
     group("UI -", () {
       testWidgets(

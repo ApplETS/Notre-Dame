@@ -14,4 +14,5 @@ class RouterPaths {
   static const String feedback = "/more/feedback";
   static const String about = "/more/about";
   static const String chooseLanguage = "/discovery/choose-language";
+  static const String serviceOutage = "/service/outage";
 }

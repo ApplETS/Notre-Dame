@@ -49,9 +49,6 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
   /// Update code that must be used to prompt user for update if necessary.
   UpdateCode updateCode;
 
-  /// Day currently selected
-  DateTime todayDate = DateTime.now();
-
   /// Cards to display on dashboard
   List<PreferencesFlag> _cardsToDisplay;
 
@@ -72,6 +69,14 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
   /// Get the list of activities for today
   List<CourseActivity> get todayDateEvents {
     return _todayDateEvents;
+  }
+
+  // Activities for tomorrow
+  List<CourseActivity> _tomorrowDateEvents = [];
+
+  /// Get the list of activities for tomorrow
+  List<CourseActivity> get tomorrowDateEvents {
+    return _tomorrowDateEvents;
   }
 
   /// Get the status of all displayable cards
@@ -147,7 +152,7 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
     if (_courseRepository.activeSessions.isEmpty) {
       return [0, 0];
     } else {
-      int dayCompleted = todayDate
+      int dayCompleted = _settingsManager.dateTimeNow
           .difference(_courseRepository.activeSessions.first.startDate)
           .inDays;
       final dayInTheSession = _courseRepository.activeSessions.first.endDate
@@ -339,30 +344,40 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
         .getCoursesActivities(fromCacheOnly: true)
         .then((value) {
       setBusyForObject(_todayDateEvents, true);
+      setBusyForObject(_tomorrowDateEvents, true);
       _todayDateEvents.clear();
+      _tomorrowDateEvents.clear();
 
+      final todayDate = _settingsManager.dateTimeNow;
       _courseRepository
           .getCoursesActivities()
           // ignore: return_type_invalid_for_catch_error
           .catchError(onError)
           .whenComplete(() async {
         if (_todayDateEvents.isEmpty) {
+          final DateTime tomorrowDate = todayDate.add(const Duration(days: 1));
           // Build the list
           for (final CourseActivity course
               in _courseRepository.coursesActivities) {
             final DateTime dateOnly = course.startDateTime;
-
-            if (isSameDay(todayDate, dateOnly)) {
+            if (isSameDay(todayDate, dateOnly) &&
+                todayDate.compareTo(course.endDateTime) < 0) {
               _todayDateEvents.add(course);
+            } else if (isSameDay(tomorrowDate, dateOnly)) {
+              _tomorrowDateEvents.add(course);
             }
           }
         }
         _todayDateEvents
             .sort((a, b) => a.startDateTime.compareTo(b.startDateTime));
+        _tomorrowDateEvents
+            .sort((a, b) => a.startDateTime.compareTo(b.startDateTime));
 
         _todayDateEvents = await removeLaboratoryGroup(_todayDateEvents);
+        _tomorrowDateEvents = await removeLaboratoryGroup(_tomorrowDateEvents);
 
         setBusyForObject(_todayDateEvents, false);
+        setBusyForObject(_tomorrowDateEvents, false);
       });
 
       return value;
