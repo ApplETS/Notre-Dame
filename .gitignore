@@ -181,4 +181,4 @@ local.properties
 *.ipa
 *.dSYM.zip
 *.dSYM
-
+firebase_app_id_file.json
