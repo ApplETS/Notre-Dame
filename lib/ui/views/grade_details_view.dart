@@ -67,6 +67,10 @@ class _GradesDetailsViewState extends State<GradesDetailsView>
               child: NestedScrollView(
                 headerSliverBuilder: (context, innerBoxScrolled) => [
                   SliverAppBar(
+                    backgroundColor:
+                        Theme.of(context).brightness == Brightness.light
+                            ? AppTheme.etsLightRed
+                            : Theme.of(context).bottomAppBarColor,
                     pinned: true,
                     onStretchTrigger: () {
                       return Future<void>.value();
