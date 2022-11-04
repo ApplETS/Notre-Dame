@@ -134,7 +134,7 @@ jobs:
           chmod +x ./scripts/determine_code_coverage.sh
           export COV="$(./scripts/determine_code_coverage.sh coverage/lcov.info)"
           echo "Coverage detected is: $COV"
-          echo "percentage::$COV" >> $GITHUB_OUTPUT
+          echo "percentage=$COV" >> $GITHUB_OUTPUT
   coverage:
     name: Update coverage
     needs:
