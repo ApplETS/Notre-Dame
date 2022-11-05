@@ -76,17 +76,6 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
   List<dynamic> selectedDateEvents(DateTime date) =>
       _coursesActivities[DateTime(date.year, date.month, date.day)] ?? [];
 
-  List<CalendarEventData> selectedDateCalendarEvents(DateTime date) {
-    return _coursesActivities[DateTime(date.year, date.month, date.day)]
-            ?.map((e) => CalendarEventData(
-                title: e.courseGroup,
-                date: e.startDateTime,
-                startTime: e.startDateTime,
-                endTime: e.endDateTime))
-            ?.toList() ??
-        [];
-  }
-
   Map<DateTime, List<dynamic>> selectedWeekEvents() {
     final Map<DateTime, List<dynamic>> events = {};
     final firstDayOfWeek = Utils.getFirstDayOfCurrentWeek(
@@ -129,13 +118,15 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
                 startTime: e.startDateTime,
                 endTime: e.endDateTime,
                 location: e.activityLocation,
-                color: e.activityName == 'Cours'
+                color: e.courseGroup.split('-')[0] == 'GTI510'
                     ? AppTheme.appletsPurple
-                    : e.activityName == 'Labo'
+                    : e.courseGroup.split('-')[0] == 'MTI860'
                         ? Colors.red
-                        : e.activityName == 'Examen'
-                            ? Colors.orange
-                            : Colors.grey))
+                        : e.courseGroup.split('-')[0] == 'GTI611'
+                            ? Colors.purple
+                            : e.courseGroup.split('-')[0] == 'PHY335'
+                                ? Color.fromARGB(255, 56, 208, 61)
+                                : Colors.grey))
             ?.where((course) => seen.add(course.notes))
             ?.toList() ??
         [];
