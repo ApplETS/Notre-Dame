@@ -5,6 +5,7 @@ import 'package:feature_discovery/feature_discovery.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:notredame/core/services/remote_config_service.dart';
 import 'package:stacked/stacked.dart';
+import 'package:syncfusion_flutter_calendar/calendar.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -44,6 +45,9 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
 
   /// Day currently selected
   DateTime selectedDate;
+
+  /// List of currently visible events
+  DataSource calendarEvents = DataSource([]);
 
   /// Day currently focused on
   ValueNotifier<DateTime> focusedDate;
@@ -147,6 +151,7 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
           if (value != null) {
             // Reload the list of activities
             coursesActivities;
+            calendarEvents = selectedWeekCalendarEvents();
           }
           _courseRepository
               .getScheduleActivities()
@@ -339,6 +344,21 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
         date1.day == date2.day;
   }
 
+  bool isLoadRangeInList(List<DateTime> list, DateTime date) {
+    if (list == null || list.isEmpty) return false;
+    var found = 0;
+    for (int i = -1; i <= 1; i++) {
+      for (int j = 0; j < list.length; j++) {
+        if (list[j].month == date.month &&
+            list[j].day == date.add(Duration(days: i * 7)).day) {
+          found++;
+          break;
+        }
+      }
+    }
+    return found == 3;
+  }
+
   /// Start Discovery if needed.
   static Future<void> startDiscovery(BuildContext context) async {
     final SettingsManager _settingsManager = locator<SettingsManager>();
@@ -360,5 +380,11 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
     await _settingsManager.setBool(PreferencesFlag.discoverySchedule, true);
 
     return true;
+  }
+}
+
+class DataSource extends CalendarDataSource {
+  DataSource(List<Appointment> source) {
+    appointments = source;
   }
 }
