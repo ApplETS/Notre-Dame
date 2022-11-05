@@ -34,7 +34,8 @@ void main() {
   final Map<PreferencesFlag, dynamic> settings = {
     PreferencesFlag.scheduleSettingsCalendarFormat: CalendarFormat.week,
     PreferencesFlag.scheduleSettingsStartWeekday: StartingDayOfWeek.monday,
-    PreferencesFlag.scheduleSettingsShowTodayBtn: true
+    PreferencesFlag.scheduleSettingsShowTodayBtn: true,
+    PreferencesFlag.scheduleSettingsLegacyView: true
   };
 
   final List<ScheduleActivity> classOneWithLaboratoryABscheduleActivities = [
