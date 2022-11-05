@@ -110,9 +110,6 @@ class _ScheduleViewState extends State<ScheduleView>
                           timeIntervalHeight: -1),
                       appointmentTextStyle: const TextStyle(
                           fontSize: 12, fontWeight: FontWeight.bold),
-                      onTap: (calendarTapDetails) {
-                        print(calendarTapDetails.appointments.single);
-                      },
                       onViewChanged: (viewChangedDetails) {
                         model.handleViewChanged(viewChangedDetails);
                       },
