@@ -4,7 +4,9 @@ import 'package:enum_to_string/enum_to_string.dart';
 import 'package:feature_discovery/feature_discovery.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:notredame/core/services/remote_config_service.dart';
+import 'package:notredame/ui/utils/app_theme.dart';
 import 'package:stacked/stacked.dart';
+import 'package:syncfusion_flutter_calendar/calendar.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -44,6 +46,9 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
 
   /// Day currently selected
   DateTime selectedDate;
+
+  /// List of currently visible events
+  DataSource calendarEvents = DataSource([]);
 
   /// Day currently focused on
   ValueNotifier<DateTime> focusedDate;
@@ -100,28 +105,58 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
     return events;
   }
 
-  List<CalendarEventData> changeWeek(DateTime date) {
-    selectedDate = date;
-    final List<CalendarEventData> events = selectedWeekCalendarEvents();
-    return events;
+  void handleViewChanged(ViewChangedDetails viewChangedDetails) {
+    selectedDate = viewChangedDetails.visibleDates.first;
+    final eventsToAdd = selectedWeekCalendarEvents().appointments;
+    final List<dynamic> eventsAdded = [];
+    for (int i = 0; i < eventsToAdd.length; i++) {
+      if (!calendarEvents.appointments.contains(eventsToAdd[i])) {
+        calendarEvents.appointments.add(eventsToAdd[i]);
+        eventsAdded.add(eventsToAdd[i]);
+      }
+    }
+    if (calendarEvents.appointments.isNotEmpty) {
+      calendarEvents.notifyListeners(CalendarDataSourceAction.add, eventsAdded);
+    }
   }
 
-  List<CalendarEventData> selectedWeekCalendarEvents() {
-    final List<CalendarEventData> events = [];
+  List<Appointment> selectedDateCalendarEvents(DateTime date) {
+    var seen = Set<String>();
+    return _coursesActivities[DateTime(date.year, date.month, date.day)]
+            ?.map((e) => Appointment(
+                subject: e.courseGroup.split('-')[0],
+                notes: e.courseGroup,
+                startTime: e.startDateTime,
+                endTime: e.endDateTime,
+                location: e.activityLocation,
+                color: e.activityName == 'Cours'
+                    ? AppTheme.appletsPurple
+                    : e.activityName == 'Labo'
+                        ? Colors.red
+                        : e.activityName == 'Examen'
+                            ? Colors.orange
+                            : Colors.grey))
+            ?.where((course) => seen.add(course.notes))
+            ?.toList() ??
+        [];
+  }
+
+  DataSource selectedWeekCalendarEvents() {
+    final List<Appointment> events = [];
     final firstDayOfWeek = Utils.getFirstDayOfCurrentWeek(
         selectedDate,
         settings[PreferencesFlag.scheduleSettingsStartWeekday]
             as StartingDayOfWeek);
-
-    for (int i = 0; i < 7; i++) {
-      final date = firstDayOfWeek.add(Duration(days: i));
-      final eventsForDay = selectedDateCalendarEvents(date);
-      if (eventsForDay.isNotEmpty) {
-        events.addAll(eventsForDay);
+    for (int i = -1; i <= 1; i++) {
+      for (int j = 0; j < 7; j++) {
+        final date = firstDayOfWeek.add(Duration(days: j + i * 7));
+        final eventsForDay = selectedDateCalendarEvents(date);
+        if (eventsForDay.isNotEmpty) {
+          events.addAll(eventsForDay);
+        }
       }
     }
-
-    return events;
+    return DataSource(events);
   }
 
   bool get showWeekEvents =>
@@ -147,6 +182,7 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
           if (value != null) {
             // Reload the list of activities
             coursesActivities;
+            calendarEvents = selectedWeekCalendarEvents();
           }
           _courseRepository
               .getScheduleActivities()
@@ -339,6 +375,21 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
         date1.day == date2.day;
   }
 
+  bool isLoadRangeInList(List<DateTime> list, DateTime date) {
+    if (list == null || list.isEmpty) return false;
+    var found = 0;
+    for (int i = -1; i <= 1; i++) {
+      for (int j = 0; j < list.length; j++) {
+        if (list[j].month == date.month &&
+            list[j].day == date.add(Duration(days: i * 7)).day) {
+          found++;
+          break;
+        }
+      }
+    }
+    return found == 3;
+  }
+
   /// Start Discovery if needed.
   static Future<void> startDiscovery(BuildContext context) async {
     final SettingsManager _settingsManager = locator<SettingsManager>();
@@ -360,5 +411,11 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
     await _settingsManager.setBool(PreferencesFlag.discoverySchedule, true);
 
     return true;
+  }
+}
+
+class DataSource extends CalendarDataSource {
+  DataSource(List<Appointment> source) {
+    appointments = source;
   }
 }
