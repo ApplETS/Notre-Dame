@@ -63,7 +63,7 @@ class _GradeCircularProgressState extends State<GradeCircularProgress>
     return CircularPercentIndicator(
       animation: true,
       animationDuration: 1100,
-      radius: 100 * widget.ratio,
+      radius: (100 * widget.ratio)/2,
       lineWidth: 8.0 * widget.ratio,
       percent:
           widget.completed ? getGradeInDecimals(widget.studentGrade ?? 0.0) : 0,
@@ -71,7 +71,7 @@ class _GradeCircularProgressState extends State<GradeCircularProgress>
       center: CircularPercentIndicator(
         animation: true,
         animationDuration: 700,
-        radius: 80 * widget.ratio,
+        radius: (80 * widget.ratio)/2,
         lineWidth: 8.0 * widget.ratio,
         percent: widget.completed
             ? getGradeInDecimals(widget.averageGrade ?? 0.0)
