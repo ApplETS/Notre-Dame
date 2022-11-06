@@ -42,17 +42,25 @@ class _CustomFeedbackFormState extends State<CustomFeedbackForm> {
                 padding: const EdgeInsets.fromLTRB(16, 20, 16, 0),
                 children: [
                   TextField(
-                    decoration: InputDecoration(labelText: (FeedbackLocalizations.of(context) as CustomFeedbackLocalizations).email),
+                    decoration: InputDecoration(
+                        labelText: (FeedbackLocalizations.of(context)
+                                as CustomFeedbackLocalizations)
+                            .email),
                     minLines: 1,
                     textInputAction: TextInputAction.done,
-                    onChanged: (feedbackEmail) => _customFeedback.feedbackEmail = feedbackEmail,
+                    onChanged: (feedbackEmail) =>
+                        _customFeedback.feedbackEmail = feedbackEmail,
                   ),
                   TextField(
-                    decoration: InputDecoration(labelText: (FeedbackLocalizations.of(context) as CustomFeedbackLocalizations).feedbackDescriptionText),
+                    decoration: InputDecoration(
+                        labelText: (FeedbackLocalizations.of(context)
+                                as CustomFeedbackLocalizations)
+                            .feedbackDescriptionText),
                     maxLines: 10,
                     minLines: 1,
                     textInputAction: TextInputAction.done,
-                    onChanged: (feedbackDescription) => _customFeedback.feedbackText = feedbackDescription,
+                    onChanged: (feedbackDescription) =>
+                        _customFeedback.feedbackText = feedbackDescription,
                   ),
                 ],
               ),

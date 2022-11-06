@@ -83,8 +83,8 @@ void main() {
         final File file = File('bugReportTest.png');
         GithubApiMock.stubLocalFile(githubApiMock, file);
 
-        await viewModel.sendFeedback(
-            'Notre-Dame bug report', screenshotData, FeedbackType.bug, 'email@email.com');
+        await viewModel.sendFeedback('Notre-Dame bug report', screenshotData,
+            FeedbackType.bug, 'email@email.com');
 
         verify(githubApiMock.createGithubIssue(
             feedbackText: 'Notre-Dame bug report',

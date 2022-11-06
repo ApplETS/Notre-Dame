@@ -38,23 +38,32 @@ class _FeedbackViewState extends State<FeedbackView> {
               children: <Widget>[
                 const SizedBox(height: 8),
                 Card(
-                  color: Theme.of(context).brightness == Brightness.light ? AppTheme.lightThemeBackground : AppTheme.darkThemeAccent,
+                  color: Theme.of(context).brightness == Brightness.light
+                      ? AppTheme.lightThemeBackground
+                      : AppTheme.darkThemeAccent,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10.0),
-                    side: BorderSide(color: AppTheme.etsLightGrey.withOpacity(0.1)),
+                    side: BorderSide(
+                        color: AppTheme.etsLightGrey.withOpacity(0.1)),
                   ),
                   child: ElevatedButton(
                     onPressed: () {
                       BetterFeedback.of(context).show((feedback) {
-                        model.sendFeedback(
-                              feedback.text,
-                              feedback.screenshot,
-                              FeedbackType.bug,
-                              feedback.extra['email'].toString())
-                          .then((value) => BetterFeedback.of(context).hide());
+                        model
+                            .sendFeedback(
+                                feedback.text,
+                                feedback.screenshot,
+                                FeedbackType.bug,
+                                feedback.extra['email'].toString())
+                            .then((value) => BetterFeedback.of(context).hide());
                       });
-                    }, 
-                    style: ElevatedButton.styleFrom(primary: Theme.of(context).brightness == Brightness.light ? AppTheme.lightThemeBackground : AppTheme.darkThemeAccent, padding: EdgeInsets.zero),
+                    },
+                    style: ElevatedButton.styleFrom(
+                        primary:
+                            Theme.of(context).brightness == Brightness.light
+                                ? AppTheme.lightThemeBackground
+                                : AppTheme.darkThemeAccent,
+                        padding: EdgeInsets.zero),
                     child: getCardInfo(
                       context,
                       AppIntl.of(context).more_report_bug_bug,
@@ -69,28 +78,34 @@ class _FeedbackViewState extends State<FeedbackView> {
                 Card(
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10.0),
-                    side: BorderSide(color: AppTheme.etsLightGrey.withOpacity(0.1)),
+                    side: BorderSide(
+                        color: AppTheme.etsLightGrey.withOpacity(0.1)),
                   ),
                   child: ElevatedButton(
                     onPressed: () {
                       BetterFeedback.of(context).show((feedback) {
-                        model.sendFeedback(
-                              feedback.text,
-                              feedback.screenshot,
-                              FeedbackType.enhancement,
-                              feedback.extra['email'].toString())
-                          .then((value) => BetterFeedback.of(context).hide());
+                        model
+                            .sendFeedback(
+                                feedback.text,
+                                feedback.screenshot,
+                                FeedbackType.enhancement,
+                                feedback.extra['email'].toString())
+                            .then((value) => BetterFeedback.of(context).hide());
                       });
-                    }, 
-                    style: ElevatedButton.styleFrom(primary: Theme.of(context).brightness == Brightness.light ? AppTheme.lightThemeBackground : AppTheme.darkThemeAccent, padding: EdgeInsets.zero),
+                    },
+                    style: ElevatedButton.styleFrom(
+                        primary:
+                            Theme.of(context).brightness == Brightness.light
+                                ? AppTheme.lightThemeBackground
+                                : AppTheme.darkThemeAccent,
+                        padding: EdgeInsets.zero),
                     child: getCardInfo(
-                      context,
-                      AppIntl.of(context).more_report_bug_feature,
-                      AppIntl.of(context).more_report_bug_feature_subtitle,
-                      Icons.design_services,
-                      const Color.fromRGBO(63, 219, 251, 1),
-                      const Color.fromRGBO(14, 127, 188, 1)
-                    ),
+                        context,
+                        AppIntl.of(context).more_report_bug_feature,
+                        AppIntl.of(context).more_report_bug_feature_subtitle,
+                        Icons.design_services,
+                        const Color.fromRGBO(63, 219, 251, 1),
+                        const Color.fromRGBO(14, 127, 188, 1)),
                   ),
                 ),
                 const SizedBox(height: 8),
@@ -221,13 +236,48 @@ class _FeedbackViewState extends State<FeedbackView> {
                   child: RichText(
                     text: TextSpan(
                       children: <TextSpan>[
-                        TextSpan(text: AppIntl.of(context).more_report_bug_step1, style: Theme.of(context).textTheme.bodyText2.copyWith(fontSize: 18)),
-                        TextSpan(text: AppIntl.of(context).more_report_bug_step2, style: Theme.of(context).textTheme.bodyText2.copyWith(fontSize: 18, 
-                          color: Theme.of(context).brightness == Brightness.light ? const Color.fromRGBO(14, 127, 188, 1) : const Color.fromRGBO(63, 219, 251, 1))),
-                        TextSpan(text: AppIntl.of(context).more_report_bug_step3, style: Theme.of(context).textTheme.bodyText2.copyWith(fontSize: 18)),
-                        TextSpan(text: AppIntl.of(context).more_report_bug_step4, style: Theme.of(context).textTheme.bodyText2.copyWith(fontSize: 18, 
-                          color: Theme.of(context).brightness == Brightness.light ? const Color.fromRGBO(14, 127, 188, 1) : const Color.fromRGBO(63, 219, 251, 1))),
-                        TextSpan(text: AppIntl.of(context).more_report_bug_step5, style: Theme.of(context).textTheme.bodyText2.copyWith(fontSize: 18)),
+                        TextSpan(
+                            text: AppIntl.of(context).more_report_bug_step1,
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyText2
+                                .copyWith(fontSize: 18)),
+                        TextSpan(
+                            text: AppIntl.of(context).more_report_bug_step2,
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyText2
+                                .copyWith(
+                                    fontSize: 18,
+                                    color: Theme.of(context).brightness ==
+                                            Brightness.light
+                                        ? const Color.fromRGBO(14, 127, 188, 1)
+                                        : const Color.fromRGBO(
+                                            63, 219, 251, 1))),
+                        TextSpan(
+                            text: AppIntl.of(context).more_report_bug_step3,
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyText2
+                                .copyWith(fontSize: 18)),
+                        TextSpan(
+                            text: AppIntl.of(context).more_report_bug_step4,
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyText2
+                                .copyWith(
+                                    fontSize: 18,
+                                    color: Theme.of(context).brightness ==
+                                            Brightness.light
+                                        ? const Color.fromRGBO(14, 127, 188, 1)
+                                        : const Color.fromRGBO(
+                                            63, 219, 251, 1))),
+                        TextSpan(
+                            text: AppIntl.of(context).more_report_bug_step5,
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyText2
+                                .copyWith(fontSize: 18)),
                       ],
                     ),
                   ),
@@ -238,7 +288,8 @@ class _FeedbackViewState extends State<FeedbackView> {
         },
       );
 
-  Padding getCardInfo(BuildContext context, String title, String subtitle, IconData icon, Color iconColor, Color circleColor) {
+  Padding getCardInfo(BuildContext context, String title, String subtitle,
+      IconData icon, Color iconColor, Color circleColor) {
     return Padding(
       padding: const EdgeInsets.all(12.0),
       child: Row(
@@ -255,17 +306,23 @@ class _FeedbackViewState extends State<FeedbackView> {
             child: Padding(
               padding: const EdgeInsets.all(8.0),
               child: Column(
-                mainAxisSize:MainAxisSize.min,
-                crossAxisAlignment:CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Text(
                     title,
-                    style: Theme.of(context).textTheme.bodyText2.copyWith(fontSize: 19),
+                    style: Theme.of(context)
+                        .textTheme
+                        .bodyText2
+                        .copyWith(fontSize: 19),
                     textAlign: TextAlign.left,
                   ),
                   Text(
                     subtitle,
-                    style: Theme.of(context).textTheme.bodyText2.copyWith(fontSize: 16),
+                    style: Theme.of(context)
+                        .textTheme
+                        .bodyText2
+                        .copyWith(fontSize: 16),
                     textAlign: TextAlign.left,
                   )
                 ],

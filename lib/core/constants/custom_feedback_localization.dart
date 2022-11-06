@@ -17,10 +17,9 @@ class FrFeedbackLocalizations implements CustomFeedbackLocalizations {
 
   @override
   String get submitButtonText => "Envoyer";
-  
+
   @override
   String get email => "Courriel (facultatif)";
-  
 }
 
 class EnFeedbackLocalizations implements CustomFeedbackLocalizations {
@@ -35,13 +34,13 @@ class EnFeedbackLocalizations implements CustomFeedbackLocalizations {
 
   @override
   String get submitButtonText => "Submit";
-  
+
   @override
   String get email => "Email (Optional)";
-  
 }
 
-class CustomFeedbackLocalizationsDelegate extends GlobalFeedbackLocalizationsDelegate {
+class CustomFeedbackLocalizationsDelegate
+    extends GlobalFeedbackLocalizationsDelegate {
   @override
   // ignore: overridden_fields
   final supportedLocales = <Locale, FeedbackLocalizations>{

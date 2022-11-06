@@ -1,4 +1,1 @@
-enum FeedbackType { 
-  bug,
-  enhancement
-}
+enum FeedbackType { bug, enhancement }

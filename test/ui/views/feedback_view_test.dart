@@ -21,7 +21,8 @@ void main() {
     tearDown(() {});
 
     group('UI - ', () {
-      testWidgets('has 2 cards, 2 ElevatedButton and SingleChildScrollView', (WidgetTester tester) async {
+      testWidgets('has 2 cards, 2 ElevatedButton and SingleChildScrollView',
+          (WidgetTester tester) async {
         await tester.pumpWidget(localizedWidget(child: FeedbackView()));
         await tester.pumpAndSettle();
 
