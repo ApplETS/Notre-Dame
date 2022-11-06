@@ -97,7 +97,7 @@ class _FeedbackViewState extends State<FeedbackView> {
                 Padding(
                     padding: const EdgeInsets.only(left: 8.0, right: 8.0),
                     child: Text(AppIntl.of(context).my_tickets,
-                        style: Theme.of(context).textTheme.headline4.copyWith(
+                        style: Theme.of(context).textTheme.headline5.copyWith(
                             color:
                                 isLightMode ? Colors.black87 : Colors.white))),
                 const Divider(
@@ -196,7 +196,7 @@ class _FeedbackViewState extends State<FeedbackView> {
                                       style: Theme.of(context)
                                           .textTheme
                                           .headline6
-                                          .copyWith(color: Colors.black38),
+                                          .copyWith(color: Colors.white),
                                     ),
                             ),
                           ),
@@ -206,11 +206,21 @@ class _FeedbackViewState extends State<FeedbackView> {
                   ),
                 const SizedBox(height: 10),
                 Padding(
-                  padding: const EdgeInsets.fromLTRB(5, 15, 5, 5),
+                    padding: const EdgeInsets.only(left: 8.0, right: 8.0),
+                    child: Text(AppIntl.of(context).more_report_tips,
+                        style: Theme.of(context).textTheme.headline5.copyWith(
+                            color:
+                                isLightMode ? Colors.black87 : Colors.white))),
+                const Divider(
+                  thickness: 1,
+                  indent: 10,
+                  endIndent: 10,
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(left: 8.0, right: 8.0),
                   child: RichText(
                     text: TextSpan(
                       children: <TextSpan>[
-                        TextSpan(text: AppIntl.of(context).more_report_tips, style: Theme.of(context).textTheme.headline5),
                         TextSpan(text: AppIntl.of(context).more_report_bug_step1, style: Theme.of(context).textTheme.bodyText2.copyWith(fontSize: 18)),
                         TextSpan(text: AppIntl.of(context).more_report_bug_step2, style: Theme.of(context).textTheme.bodyText2.copyWith(fontSize: 18, 
                           color: Theme.of(context).brightness == Brightness.light ? const Color.fromRGBO(14, 127, 188, 1) : const Color.fromRGBO(63, 219, 251, 1))),

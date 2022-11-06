@@ -1,6 +1,8 @@
 // FLUTTER / DART / THIRD-PARTIES
 import 'package:feedback/feedback.dart';
 import 'package:flutter/material.dart';
+
+// CONSTANTS
 import 'package:notredame/core/constants/custom_feedback_localization.dart';
 
 // MODELS

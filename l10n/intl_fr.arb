@@ -172,7 +172,7 @@
   "more_report_bug_bug_subtitle": "\nFaites-le nous savoir afin que nous puissions l'ajouter à notre liste de bogues.",
   "more_report_bug_feature": "Demander une fonctionnalité",
   "more_report_bug_feature_subtitle": "\nAvez-vous une idée qui améliorerait notre application ? Nous aimerions savoir !",  
-  "more_report_tips": "Astuce \n\n",
+  "more_report_tips": "Astuce",
   "more_report_bug_step1": "Après avoir sélectionné l'option, la vue des commentaires s'ouvrira.\n\nVous pouvez choisir entre le mode ",
   "more_report_bug_step2": "Naviguer ",
   "more_report_bug_step3": "et ",
