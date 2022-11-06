@@ -21,13 +21,10 @@ void main() {
     tearDown(() {});
 
     group('UI - ', () {
-      testWidgets('has 2 cards, 2 ElevatedButton and SingleChildScrollView',
+      testWidgets('has 2 cards and 2 ElevatedButton',
           (WidgetTester tester) async {
         await tester.pumpWidget(localizedWidget(child: FeedbackView()));
         await tester.pumpAndSettle();
-
-        final singleChildScrollView = find.byType(SingleChildScrollView);
-        expect(singleChildScrollView, findsOneWidget);
 
         final card = find.byType(Card);
         expect(card, findsNWidgets(2));
