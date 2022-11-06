@@ -6,9 +6,6 @@ import 'package:notredame/core/constants/custom_feedback_localization.dart';
 // MODELS
 import 'package:notredame/core/models/feedback.dart';
 
-// OTHERS
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-
 /// A form that prompts the user for the type of feedback they want to give and a
 /// free form text feedback.
 /// The submit button is disabled until the user provides the feedback type and a feedback text.
@@ -66,7 +63,9 @@ class _CustomFeedbackFormState extends State<CustomFeedbackForm> {
                   _customFeedback.feedbackText.isNotEmpty
               ? () => widget.onSubmit(
                     _customFeedback.feedbackText,
-                    extras: _customFeedback.toMap(),
+                    extras: {
+                      'email': _customFeedback.feedbackEmail,
+                    },
                   )
               : null,
           child: Text(FeedbackLocalizations.of(context).submitButtonText),

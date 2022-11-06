@@ -47,7 +47,8 @@ class _FeedbackViewState extends State<FeedbackView> {
                             model.sendFeedback(
                                   feedback.text,
                                   feedback.screenshot,
-                                  FeedbackType.bug)
+                                  FeedbackType.bug,
+                                  feedback.extra['email'].toString())
                               .then((value) => BetterFeedback.of(context).hide());
                           });
                         }, 
@@ -73,7 +74,8 @@ class _FeedbackViewState extends State<FeedbackView> {
                             model.sendFeedback(
                                   feedback.text,
                                   feedback.screenshot,
-                                  FeedbackType.enhancement)
+                                  FeedbackType.enhancement,
+                                  feedback.extra['email'].toString())
                               .then((value) => BetterFeedback.of(context).hide());
                           });
                         }, 

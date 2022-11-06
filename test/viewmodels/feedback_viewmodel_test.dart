@@ -63,7 +63,7 @@ void main() {
             image.copyResize(image.decodeImage(screenshotData), width: 307)));
 
         await viewModel.sendFeedback(
-            'Notre-Dame bug report', screenshotData, FeedbackType.bug);
+            'Notre-Dame bug report', screenshotData, FeedbackType.bug, null);
 
         verify(githubApiMock.uploadFileToGithub(
           filePath: file.path.split('/').last,
@@ -71,12 +71,26 @@ void main() {
         ));
       });
 
-      test('If the github issue has been created', () async {
+      test('If the github issue has been created with email', () async {
         final File file = File('bugReportTest.png');
         GithubApiMock.stubLocalFile(githubApiMock, file);
 
         await viewModel.sendFeedback(
-            'Notre-Dame bug report', screenshotData, FeedbackType.bug);
+            'Notre-Dame bug report', screenshotData, FeedbackType.bug, 'email@email.com');
+
+        verify(githubApiMock.createGithubIssue(
+            feedbackText: 'Notre-Dame bug report',
+            fileName: file.path.split('/').last,
+            feedbackType: 'bug',
+            email: 'email@email.com'));
+      });
+
+      test('If the github issue has been created without email', () async {
+        final File file = File('bugReportTest.png');
+        GithubApiMock.stubLocalFile(githubApiMock, file);
+
+        await viewModel.sendFeedback(
+            'Notre-Dame bug report', screenshotData, FeedbackType.bug, null);
 
         verify(githubApiMock.createGithubIssue(
             feedbackText: 'Notre-Dame bug report',
