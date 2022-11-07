@@ -8,7 +8,6 @@
 import WidgetKit
 import SwiftUI
 
-
 // Bundle to group all the widgets supported by the app
 @main
 struct ETSMobileWidgets: WidgetBundle {

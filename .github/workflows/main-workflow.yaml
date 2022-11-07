@@ -81,7 +81,7 @@ jobs:
           java-version: '11'
       - uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.0.x'
+          flutter-version: '3.3.x'
           channel: 'stable'
           cache: true
       - run: flutter doctor
@@ -162,7 +162,7 @@ jobs:
 
       - name: Update badge coverage
         if: ${{ github.event_name == 'push' }}
-        uses: schneegans/dynamic-badges-action@v1.4.0
+        uses: schneegans/dynamic-badges-action@v1.6.0
         with:
           auth: ${{ secrets.GIST_COVERAGE_BADGE_TOKEN }}
           gistID: ${{ secrets.GIST_ID_COVERAGE_BADGE }}
@@ -224,7 +224,7 @@ jobs:
       - uses: actions/checkout@v3
       - uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.0.x'
+          flutter-version: '3.3.x'
           channel: 'stable'
           cache: true
       - name: Install Android dependencies

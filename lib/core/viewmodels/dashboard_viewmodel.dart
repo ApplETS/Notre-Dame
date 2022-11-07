@@ -240,7 +240,7 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
 
       await _appWidgetService.sendGradesData(GradesWidgetData(
           title:
-              "${_appIntl.grades_title} - ${_courseRepository.activeSessions ?? _appIntl.session_without}",
+              "${_appIntl.grades_title} - ${_courseRepository.activeSessions.first.shortName ?? _appIntl.session_without}",
           courseAcronyms: acronyms,
           grades: grades));
       await _appWidgetService.updateWidget(WidgetType.grades);

@@ -364,7 +364,8 @@ void main() {
         CourseRepositoryMock.stubGetSessions(
             courseRepository as CourseRepositoryMock);
         CourseRepositoryMock.stubActiveSessions(
-            courseRepository as CourseRepositoryMock);
+            courseRepository as CourseRepositoryMock,
+            toReturn: [session]);
         CourseRepositoryMock.stubCoursesActivities(
             courseRepository as CourseRepositoryMock);
 
@@ -383,7 +384,7 @@ void main() {
         verify(settingsManager.getDashboard()).called(1);
         verify(settingsManager.getString(PreferencesFlag.progressBarText))
             .called(1);
-        verify(settingsManager.dateTimeNow).called(1);
+        verify(settingsManager.dateTimeNow).called(2);
         verifyNoMoreInteractions(settingsManager);
       });
 
