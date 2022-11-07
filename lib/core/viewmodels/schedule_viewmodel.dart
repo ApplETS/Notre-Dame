@@ -64,6 +64,13 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
   /// (Example: (key, value) => ("ING150", "Laboratoire (Groupe A)"))
   final Map<String, String> settingsScheduleActivities = {};
 
+  /// A map that contains a color from the AppTheme.SchedulePalette palette associated with each course.
+  final Map<String, Color> courseColors = {};
+
+  /// The color palette corresponding to the schedule courses.
+  List<Color> schedulePaletteThemeLight =
+      AppTheme.schedulePaletteLight.toList();
+
   /// Get current locale
   Locale get locale => _settingsManager.locale;
 
@@ -118,18 +125,17 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
                 startTime: e.startDateTime,
                 endTime: e.endDateTime,
                 location: e.activityLocation,
-                color: e.courseGroup.split('-')[0] == 'GTI510'
-                    ? AppTheme.appletsPurple
-                    : e.courseGroup.split('-')[0] == 'MTI860'
-                        ? Colors.red
-                        : e.courseGroup.split('-')[0] == 'GTI611'
-                            ? Colors.purple
-                            : e.courseGroup.split('-')[0] == 'PHY335'
-                                ? Color.fromARGB(255, 56, 208, 61)
-                                : Colors.grey))
+                color: getCourseColor(e.courseGroup.split('-')[0])))
             ?.where((course) => seen.add(course.notes))
             ?.toList() ??
         [];
+  }
+
+  Color getCourseColor(String courseName) {
+    if (!courseColors.containsKey(courseName)) {
+      courseColors[courseName] = schedulePaletteThemeLight.removeLast();
+    }
+    return courseColors[courseName];
   }
 
   DataSource selectedWeekCalendarEvents() {
