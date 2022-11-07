@@ -1,4 +1,5 @@
 // FLUTTER / DART / THIRD-PARTIES
+
 import 'package:calendar_view/calendar_view.dart';
 import 'package:enum_to_string/enum_to_string.dart';
 import 'package:feature_discovery/feature_discovery.dart';
@@ -120,7 +121,8 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
     var seen = Set<String>();
     return _coursesActivities[DateTime(date.year, date.month, date.day)]
             ?.map((e) => Appointment(
-                subject: e.courseGroup.split('-')[0],
+                subject:
+                    "${e.courseGroup.split('-')[0]}\n${e.activityLocation}\n${e.activityName}",
                 notes: e.courseGroup,
                 startTime: e.startDateTime,
                 endTime: e.endDateTime,
@@ -370,21 +372,6 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
     return date1.year == date2.year &&
         date1.month == date2.month &&
         date1.day == date2.day;
-  }
-
-  bool isLoadRangeInList(List<DateTime> list, DateTime date) {
-    if (list == null || list.isEmpty) return false;
-    var found = 0;
-    for (int i = -1; i <= 1; i++) {
-      for (int j = 0; j < list.length; j++) {
-        if (list[j].month == date.month &&
-            list[j].day == date.add(Duration(days: i * 7)).day) {
-          found++;
-          break;
-        }
-      }
-    }
-    return found == 3;
   }
 
   /// Start Discovery if needed.
