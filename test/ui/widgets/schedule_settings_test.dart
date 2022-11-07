@@ -24,9 +24,11 @@ import '../../helpers.dart';
 // MOCK
 import '../../mock/managers/course_repository_mock.dart';
 import '../../mock/managers/settings_manager_mock.dart';
+import '../../mock/services/remote_config_service_mock.dart';
 
 void main() {
   SettingsManager settingsManager;
+  RemoteConfigServiceMock remoteConfigService;
   CourseRepositoryMock courseRepositoryMock;
   AppIntl intl;
 
@@ -82,6 +84,8 @@ void main() {
       settingsManager = setupSettingsManagerMock();
       courseRepositoryMock =
           setupCourseRepositoryMock() as CourseRepositoryMock;
+      remoteConfigService =
+          setupRemoteConfigServiceMock() as RemoteConfigServiceMock;
       intl = await setupAppIntl();
 
       CourseRepositoryMock.stubGetScheduleActivities(courseRepositoryMock);
