@@ -8,11 +8,11 @@ import 'package:notredame/core/services/launch_url_service.dart';
 class LaunchUrlServiceMock extends Mock implements LaunchUrlService {
   static void stubCanLaunchUrl(LaunchUrlServiceMock client, String url,
       {bool toReturn = true}) {
-    when(client.canLaunchUrl(url)).thenAnswer((_) async => toReturn);
+    when(client.canLaunch(url)).thenAnswer((_) async => toReturn);
   }
 
   static void stubLaunchUrl(LaunchUrlServiceMock client, String url,
       {bool toReturn = true}) {
-    when(client.launchUrl(url)).thenAnswer((_) async => toReturn);
+    when(client.launch(url)).thenAnswer((_) async => toReturn);
   }
 }
