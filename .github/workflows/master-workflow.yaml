@@ -116,7 +116,7 @@ jobs:
         with:
           name: lcov.info
       - name: Update badge coverage
-        uses: schneegans/dynamic-badges-action@v1.4.0
+        uses: schneegans/dynamic-badges-action@v1.6.0
         with:
           auth: ${{ secrets.GIST_COVERAGE_BADGE_TOKEN }}
           gistID: ${{ secrets.GIST_ID_COVERAGE_BADGE }}
