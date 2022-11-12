@@ -117,7 +117,7 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
   }
 
   List<Appointment> selectedDateCalendarEvents(DateTime date) {
-    var seen = Set<String>();
+    final seen = <String>{};
     return _coursesActivities[DateTime(date.year, date.month, date.day)]
             ?.map((e) => Appointment(
                 subject:

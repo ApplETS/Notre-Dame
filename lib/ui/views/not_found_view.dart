@@ -89,7 +89,7 @@ class _NotFoundState extends State<NotFoundView> {
                         Flexible(
                           child: ElevatedButton(
                             style: ElevatedButton.styleFrom(
-                              primary: AppTheme.primary,
+                              bakcgroundColor: AppTheme.primary,
                             ),
                             onPressed: () {
                               model.navigateToDashboard();

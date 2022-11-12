@@ -53,8 +53,6 @@ class _ScheduleViewState extends State<ScheduleView>
   static const Color _selectedColor = AppTheme.etsLightRed;
   static const Color _defaultColor = Color(0xff76859B);
 
-  final GlobalKey<WeekViewState> _calendarKey = GlobalKey();
-
   AnimationController _animationController;
 
   @override
@@ -277,37 +275,6 @@ class _ScheduleViewState extends State<ScheduleView>
             ? const Divider(thickness: 1, indent: 30, endIndent: 30)
             : const SizedBox(),
         itemCount: events.length);
-  }
-
-  Widget _buildWeekPageHeader(
-      DateTime date1, DateTime date2, GlobalKey<WeekViewState> calendarKey) {
-    return WeekPageHeader(
-      startDate: date1,
-      endDate: date2,
-      backgroundColor: Utils.getColorByBrightness(
-          context, AppTheme.lightThemeBackground, AppTheme.etsLightGrey),
-      onNextDay: calendarKey.currentState.nextPage,
-      onPreviousDay: calendarKey.currentState.previousPage,
-    );
-  }
-
-  Widget _buildEventTile(DateTime date1, List<CalendarEventData<Object>> events,
-      Rect rect, DateTime date2, DateTime date3) {
-    if (events.isNotEmpty) {
-      return RoundedEventTile(
-        borderRadius: BorderRadius.circular(6.0),
-        title: events[0].title,
-        titleStyle: TextStyle(
-          fontSize: 12,
-          color: events[0].color.accent,
-        ),
-        totalEvents: events.length,
-        padding: const EdgeInsets.all(7.0),
-        backgroundColor: AppTheme.appletsPurple,
-      );
-    } else {
-      return Container();
-    }
   }
 
   List<Widget> _buildActionButtons(ScheduleViewModel model) => [
