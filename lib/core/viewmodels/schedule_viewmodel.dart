@@ -1,6 +1,5 @@
 // FLUTTER / DART / THIRD-PARTIES
 
-import 'package:calendar_view/calendar_view.dart';
 import 'package:enum_to_string/enum_to_string.dart';
 import 'package:feature_discovery/feature_discovery.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -163,7 +162,11 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
 
   bool isLoadingEvents = false;
 
-  bool getCalendarViewEnabled(BuildContext context) {
+  bool getCalendarViewSetting() {
+    return settings[PreferencesFlag.scheduleSettingsLegacyView] as bool ?? true;
+  }
+
+  bool getCalendarViewEnabled() {
     final RemoteConfigService remoteConfigService =
         locator<RemoteConfigService>();
     return remoteConfigService.calendarView;

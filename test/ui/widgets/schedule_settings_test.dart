@@ -88,6 +88,7 @@ void main() {
       intl = await setupAppIntl();
 
       CourseRepositoryMock.stubGetScheduleActivities(courseRepositoryMock);
+      RemoteConfigServiceMock.stubGetCalendarViewEnabled(remoteConfigService);
     });
 
     group("ui - ", () {
