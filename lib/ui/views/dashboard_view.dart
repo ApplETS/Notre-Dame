@@ -64,34 +64,39 @@ class _DashboardViewState extends State<DashboardView>
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<DashboardViewModel>.reactive(
-        viewModelBuilder: () => DashboardViewModel(intl: AppIntl.of(context)),
-        builder: (context, model, child) {
-          return BaseScaffold(
-              isInteractionLimitedWhileLoading: false,
-              appBar: AppBar(
-                  title: Text(AppIntl.of(context).title_dashboard),
-                  centerTitle: false,
-                  automaticallyImplyLeading: false,
-                  actions: [
-                    _buildDiscoveryFeatureDescriptionWidget(
-                        context, Icons.restore, model),
-                  ]),
-              body: model.cards == null
-                  ? buildLoading()
-                  : Theme(
-                      data: Theme.of(context)
-                          .copyWith(canvasColor: Colors.transparent),
-                      child: ReorderableListView(
-                        onReorder: (oldIndex, newIndex) =>
-                            onReorder(model, oldIndex, newIndex),
-                        padding: const EdgeInsets.fromLTRB(0, 4, 0, 8),
-                        children: _buildCards(model),
-                        proxyDecorator: (child, _, __) {
-                          return HapticsContainer(child: child);
-                        },
-                      ),
-                    ));
-        });
+      viewModelBuilder: () => DashboardViewModel(intl: AppIntl.of(context)),
+      builder: (context, model, child) {
+        return BaseScaffold(
+          isInteractionLimitedWhileLoading: false,
+          appBar: AppBar(
+            title: Text(AppIntl.of(context).title_dashboard),
+            centerTitle: false,
+            automaticallyImplyLeading: false,
+            actions: [
+              _buildDiscoveryFeatureDescriptionWidget(
+                context, Icons.restore, model),
+            ]),
+          body: model.cards == null
+            ? buildLoading()
+            : RefreshIndicator(
+              child: Theme(
+                data: Theme.of(context)
+                  .copyWith(canvasColor: Colors.transparent),
+                child: ReorderableListView(
+                  onReorder: (oldIndex, newIndex) =>
+                    onReorder(model, oldIndex, newIndex),
+                  padding: const EdgeInsets.fromLTRB(0, 4, 0, 8),
+                  children: _buildCards(model),
+                  proxyDecorator: (child, _, __) {
+                    return HapticsContainer(child: child);
+                  },
+                ),
+              ),
+              onRefresh: () => model.loadDataAndUpdateWidget(),
+            )
+        );
+      }
+    );
   }
 
   List<Widget> _buildCards(DashboardViewModel model) {
