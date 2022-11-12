@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:intl/intl.dart';
+import 'package:notredame/core/services/remote_config_service.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:feature_discovery/feature_discovery.dart';
 
@@ -24,10 +25,12 @@ import '../../helpers.dart';
 // MOCKS
 import '../../mock/managers/course_repository_mock.dart';
 import '../../mock/managers/settings_manager_mock.dart';
+import '../../mock/services/remote_config_service_mock.dart';
 
 void main() {
   SettingsManager settingsManager;
   CourseRepository courseRepository;
+  RemoteConfigService remoteConfigService;
 
   // Some activities
   CourseActivity activityYesterday;
@@ -83,6 +86,7 @@ void main() {
       setupNavigationServiceMock();
       settingsManager = setupSettingsManagerMock();
       courseRepository = setupCourseRepositoryMock();
+      remoteConfigService = setupRemoteConfigServiceMock();
       setupNetworkingServiceMock();
       setupAnalyticsServiceMock();
 
@@ -93,10 +97,13 @@ void main() {
         PreferencesFlag.scheduleSettingsStartWeekday: StartingDayOfWeek.monday,
         PreferencesFlag.scheduleSettingsShowTodayBtn: true,
         PreferencesFlag.scheduleSettingsShowWeekEvents: false,
+        PreferencesFlag.scheduleSettingsLegacyView: true,
       };
 
       CourseRepositoryMock.stubGetScheduleActivities(
           courseRepository as CourseRepositoryMock);
+      RemoteConfigServiceMock.stubGetCalendarViewEnabled(
+          remoteConfigService as RemoteConfigServiceMock);
     });
 
     group("golden - ", () {
