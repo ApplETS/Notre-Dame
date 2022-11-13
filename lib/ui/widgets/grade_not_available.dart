@@ -39,9 +39,10 @@ class GradeNotAvailable extends StatelessWidget {
         ),
         const SizedBox(height: 25),
         ElevatedButton(
-            style: ButtonStyle(
-                backgroundColor:
-                    MaterialStateProperty.all(AppTheme.etsLightRed)),
+            style: ElevatedButton.styleFrom(
+                backgroundColor: AppTheme.etsLightRed,
+                foregroundColor: Colors.white
+            ),
             onPressed: onPressed,
             child: Text(AppIntl.of(context).retry))
       ],
