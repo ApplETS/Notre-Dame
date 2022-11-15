@@ -218,6 +218,7 @@ jobs:
   create_pre_release:
     name: Create Github release
     needs:
+      - tag_validation
       - build
     runs-on: ubuntu-latest
     outputs:

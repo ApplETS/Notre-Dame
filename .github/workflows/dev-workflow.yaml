@@ -110,7 +110,7 @@ jobs:
         run: flutter analyze
 
       # Run the tests with --update-goldens.
-      - name: Update goldens
+      - name: Run tests
         run: flutter test --coverage --update-goldens
 
       # Commit and push the goldens files updated.
