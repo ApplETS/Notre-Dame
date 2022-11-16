@@ -62,7 +62,7 @@ dependencies:
   rive: ^0.9.1
   connectivity_plus: ^2.3.7
   flutter_svg: ^1.0.3
-  font_awesome_flutter: ^10.1.0
+  font_awesome_flutter: ^10.2.1
   in_app_review: ^2.0.3
   device_info_plus: ^4.0.0
   pub_semver: ^2.1.0
