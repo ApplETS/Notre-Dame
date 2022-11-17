@@ -72,7 +72,7 @@ void main() {
       title: 'Cours générique');
 
   final sessionOrder = ['A2020', 'É2020', 'H2020', 'É2019', 's.o.'];
-  
+
   final coursesBySession = {
     'A2020': [courseFall],
     'É2020': [courseSummer],
