@@ -1,4 +1,4 @@
-app_identifier([ "ca.etsmtl.applets.ETSMobile", "ca.etsmtl.applets.ETSMobile.Widget" ]) # The bundle identifier of your app
+app_identifier("ca.etsmtl.applets.ETSMobile") # The bundle identifier of your app
 apple_id("applets@etsmtl.net") # Your Apple email address
 
 itc_team_id("1063266") # App Store Connect Team ID
