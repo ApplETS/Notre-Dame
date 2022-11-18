@@ -3,7 +3,6 @@
 import 'package:enum_to_string/enum_to_string.dart';
 import 'package:feature_discovery/feature_discovery.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:notredame/core/services/remote_config_service.dart';
 import 'package:notredame/ui/utils/app_theme.dart';
 import 'package:stacked/stacked.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
