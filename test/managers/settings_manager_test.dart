@@ -12,6 +12,7 @@ import 'package:notredame/core/services/analytics_service.dart';
 
 // SERVICE
 import 'package:notredame/core/services/preferences_service.dart';
+import 'package:notredame/core/services/remote_config_service.dart';
 
 // CONSTANTS
 import 'package:notredame/core/constants/preferences_flags.dart';
@@ -20,9 +21,11 @@ import '../helpers.dart';
 
 // MOCK
 import '../mock/services/preferences_service_mock.dart';
+import '../mock/services/remote_config_service_mock.dart';
 
 void main() {
   AnalyticsService analyticsService;
+  RemoteConfigService remoteConfigService;
   PreferencesService preferencesService;
   SettingsManager manager;
 
@@ -32,6 +35,7 @@ void main() {
       setupLogger();
       analyticsService = setupAnalyticsServiceMock();
       preferencesService = setupPreferencesServiceMock();
+      remoteConfigService = setupRemoteConfigServiceMock();
 
       await setupAppIntl();
 
@@ -65,13 +69,15 @@ void main() {
             preferencesService as PreferencesServiceMock,
             PreferencesFlag.scheduleSettingsShowWeekEvents,
             toReturn: null);
+        RemoteConfigServiceMock.stubGetCalendarViewEnabled(
+            remoteConfigService as RemoteConfigServiceMock);
 
         final expected = {
           PreferencesFlag.scheduleSettingsStartWeekday:
               StartingDayOfWeek.monday,
           PreferencesFlag.scheduleSettingsCalendarFormat: CalendarFormat.week,
           PreferencesFlag.scheduleSettingsShowTodayBtn: true,
-          PreferencesFlag.scheduleSettingsListView: false,
+          PreferencesFlag.scheduleSettingsListView: getCalendarViewEnabled(),
           PreferencesFlag.scheduleSettingsShowWeekEvents: true,
         };
 

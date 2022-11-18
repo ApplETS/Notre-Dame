@@ -327,3 +327,9 @@ RemoteConfigService setupRemoteConfigServiceMock() {
 
   return service;
 }
+
+bool getCalendarViewEnabled() {
+  final RemoteConfigService remoteConfigService =
+      locator<RemoteConfigService>();
+  return remoteConfigService.calendarView;
+}
