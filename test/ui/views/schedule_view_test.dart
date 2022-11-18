@@ -97,7 +97,7 @@ void main() {
         PreferencesFlag.scheduleSettingsStartWeekday: StartingDayOfWeek.monday,
         PreferencesFlag.scheduleSettingsShowTodayBtn: true,
         PreferencesFlag.scheduleSettingsShowWeekEvents: false,
-        PreferencesFlag.scheduleSettingsLegacyView: true,
+        PreferencesFlag.scheduleSettingsListView: true,
       };
 
       CourseRepositoryMock.stubGetScheduleActivities(

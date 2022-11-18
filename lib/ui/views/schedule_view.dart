@@ -94,8 +94,7 @@ class _ScheduleViewState extends State<ScheduleView>
               actions: _buildActionButtons(model),
             ),
             body: RefreshIndicator(
-              child: !model.getCalendarViewSetting() &&
-                      model.getCalendarViewEnabled()
+              child: !model.getCalendarViewSetting()
                   ? Scaffold(
                       body: SfCalendar(
                       view: CalendarView.workWeek,

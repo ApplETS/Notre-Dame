@@ -9,6 +9,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 // SERVICES
 import 'package:notredame/core/services/analytics_service.dart';
 import 'package:notredame/core/services/preferences_service.dart';
+import 'package:notredame/core/services/remote_config_service.dart';
 
 // CONSTANTS
 import 'package:notredame/core/constants/preferences_flags.dart';
@@ -170,10 +171,10 @@ class SettingsManager with ChangeNotifier {
         PreferencesFlag.scheduleSettingsShowTodayBtn, () => showTodayBtn);
 
     final toggleCalendarView = await _preferencesService
-            .getBool(PreferencesFlag.scheduleSettingsLegacyView) ??
-        false;
+            .getBool(PreferencesFlag.scheduleSettingsListView) ??
+        getCalendarViewEnabled();
     settings.putIfAbsent(
-        PreferencesFlag.scheduleSettingsLegacyView, () => toggleCalendarView);
+        PreferencesFlag.scheduleSettingsListView, () => toggleCalendarView);
 
     final showWeekEventsBtn = await _preferencesService
             .getBool(PreferencesFlag.scheduleSettingsShowWeekEvents) ??
@@ -254,4 +255,10 @@ class SettingsManager with ChangeNotifier {
   /// Get the default index of each card
   int getDefaultCardIndex(PreferencesFlag flag) =>
       flag.index - PreferencesFlag.aboutUsCard.index;
+
+  bool getCalendarViewEnabled() {
+    final RemoteConfigService remoteConfigService =
+        locator<RemoteConfigService>();
+    return remoteConfigService.calendarView;
+  }
 }

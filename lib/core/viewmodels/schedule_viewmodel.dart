@@ -163,13 +163,7 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
   bool isLoadingEvents = false;
 
   bool getCalendarViewSetting() {
-    return settings[PreferencesFlag.scheduleSettingsLegacyView] as bool ?? true;
-  }
-
-  bool getCalendarViewEnabled() {
-    final RemoteConfigService remoteConfigService =
-        locator<RemoteConfigService>();
-    return remoteConfigService.calendarView;
+    return settings[PreferencesFlag.scheduleSettingsListView] as bool ?? true;
   }
 
   @override
