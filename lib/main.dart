@@ -13,7 +13,6 @@ import 'package:notredame/ui/views/outage_view.dart';
 import 'package:notredame/ui/widgets/custom_feedback.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_config/flutter_config.dart';
-import 'package:calendar_view/calendar_view.dart';
 
 // ROUTER
 import 'package:notredame/ui/router.dart';
@@ -87,9 +86,7 @@ class ETSMobile extends StatelessWidget {
           ),
           localeOverride: model.locale,
           child: FeatureDiscovery(
-            recordStepsInSharedPreferences: false,
-            child: CalendarControllerProvider(
-              controller: EventController(),
+              recordStepsInSharedPreferences: false,
               child: MaterialApp(
                 title: 'ÉTS Mobile',
                 theme: AppTheme.lightTheme(),
@@ -109,9 +106,7 @@ class ETSMobile extends StatelessWidget {
                 ],
                 home: _outage ? OutageView() : StartUpView(),
                 onGenerateRoute: generateRoute,
-              ),
-            ),
-          ),
+              )),
         );
       }),
     );

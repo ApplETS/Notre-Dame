@@ -23,9 +23,9 @@ class RemoteConfigService {
     return _remoteConfig.getBool(_serviceIsDown);
   }
 
-  bool get calendarView {
+  bool get scheduleListViewDefault {
     fetch();
-    return _remoteConfig.getBool("calendar_view");
+    return _remoteConfig.getBool("schedule_list_view_default");
   }
 
   Future<void> fetch() async {

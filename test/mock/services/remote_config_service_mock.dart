@@ -7,6 +7,6 @@ class RemoteConfigServiceMock extends Mock implements RemoteConfigService {
   /// Stub the getter [coursesActivities] of [mock] when called will return [toReturn].
   static void stubGetCalendarViewEnabled(RemoteConfigServiceMock mock,
       {bool toReturn = true}) {
-    when(mock.calendarView).thenReturn(toReturn);
+    when(mock.scheduleListViewDefault).thenReturn(toReturn);
   }
 }

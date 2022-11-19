@@ -259,6 +259,6 @@ class SettingsManager with ChangeNotifier {
   bool getCalendarViewEnabled() {
     final RemoteConfigService remoteConfigService =
         locator<RemoteConfigService>();
-    return remoteConfigService.calendarView;
+    return remoteConfigService.scheduleListViewDefault;
   }
 }
