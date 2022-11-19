@@ -98,13 +98,20 @@ class _ScheduleViewState extends State<ScheduleView>
                   ? Scaffold(
                       body: SfCalendar(
                       view: CalendarView.workWeek,
+                      headerStyle: const CalendarHeaderStyle(
+                          textAlign: TextAlign.center,
+                          textStyle: TextStyle(
+                              fontSize: 20,
+                              letterSpacing: 3,
+                              fontWeight: FontWeight.w500)),
                       dataSource: model.calendarEvents,
                       firstDayOfWeek: 1,
                       timeSlotViewSettings: const TimeSlotViewSettings(
                           startHour: 7,
                           endHour: 23,
                           nonWorkingDays: <int>[DateTime.sunday],
-                          timeIntervalHeight: -1),
+                          timeIntervalHeight: -1,
+                          timeFormat: 'HH:mm'),
                       appointmentTextStyle: const TextStyle(
                           fontSize: 12, fontWeight: FontWeight.bold),
                       onViewChanged: (viewChangedDetails) {
