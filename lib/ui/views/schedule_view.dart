@@ -210,7 +210,7 @@ class _ScheduleViewState extends State<ScheduleView>
         builder: (context, value, _) {
           return TableCalendar(
             startingDayOfWeek:
-                model.settings[PreferencesFlag.scheduleSettingsStartWeekday]
+                model.settings[PreferencesFlag.scheduleStartWeekday]
                     as StartingDayOfWeek,
             locale: model.locale.toLanguageTag(),
             selectedDayPredicate: (day) {
@@ -282,8 +282,7 @@ class _ScheduleViewState extends State<ScheduleView>
   }
 
   List<Widget> _buildActionButtons(ScheduleViewModel model) => [
-        if ((model.settings[PreferencesFlag.scheduleSettingsShowTodayBtn]
-                as bool) ==
+        if ((model.settings[PreferencesFlag.scheduleShowTodayBtn] as bool) ==
             true)
           IconButton(
               icon: const Icon(Icons.today),

@@ -51,34 +51,33 @@ void main() {
         // Stubs the answer of the preferences services
         PreferencesServiceMock.stubGetString(
             preferencesService as PreferencesServiceMock,
-            PreferencesFlag.scheduleSettingsStartWeekday,
+            PreferencesFlag.scheduleStartWeekday,
             toReturn: null);
         PreferencesServiceMock.stubGetString(
             preferencesService as PreferencesServiceMock,
-            PreferencesFlag.scheduleSettingsCalendarFormat,
+            PreferencesFlag.scheduleCalendarFormat,
             toReturn: null);
         PreferencesServiceMock.stubGetBool(
             preferencesService as PreferencesServiceMock,
-            PreferencesFlag.scheduleSettingsShowTodayBtn,
+            PreferencesFlag.scheduleShowTodayBtn,
             toReturn: null);
         PreferencesServiceMock.stubGetBool(
             preferencesService as PreferencesServiceMock,
-            PreferencesFlag.scheduleSettingsListView,
+            PreferencesFlag.scheduleListView,
             toReturn: null);
         PreferencesServiceMock.stubGetBool(
             preferencesService as PreferencesServiceMock,
-            PreferencesFlag.scheduleSettingsShowWeekEvents,
+            PreferencesFlag.scheduleShowWeekEvents,
             toReturn: null);
         RemoteConfigServiceMock.stubGetCalendarViewEnabled(
             remoteConfigService as RemoteConfigServiceMock);
 
         final expected = {
-          PreferencesFlag.scheduleSettingsStartWeekday:
-              StartingDayOfWeek.monday,
-          PreferencesFlag.scheduleSettingsCalendarFormat: CalendarFormat.week,
-          PreferencesFlag.scheduleSettingsShowTodayBtn: true,
-          PreferencesFlag.scheduleSettingsListView: getCalendarViewEnabled(),
-          PreferencesFlag.scheduleSettingsShowWeekEvents: true,
+          PreferencesFlag.scheduleStartWeekday: StartingDayOfWeek.monday,
+          PreferencesFlag.scheduleCalendarFormat: CalendarFormat.week,
+          PreferencesFlag.scheduleShowTodayBtn: true,
+          PreferencesFlag.scheduleListView: getCalendarViewEnabled(),
+          PreferencesFlag.scheduleShowWeekEvents: true,
         };
 
         final result = await manager.getScheduleSettings();
@@ -86,19 +85,17 @@ void main() {
         expect(result, expected);
 
         verify(preferencesService
-                .getString(PreferencesFlag.scheduleSettingsStartWeekday))
+                .getString(PreferencesFlag.scheduleStartWeekday))
             .called(1);
         verify(preferencesService
-                .getString(PreferencesFlag.scheduleSettingsCalendarFormat))
+                .getString(PreferencesFlag.scheduleCalendarFormat))
+            .called(1);
+        verify(preferencesService.getBool(PreferencesFlag.scheduleShowTodayBtn))
+            .called(1);
+        verify(preferencesService.getBool(PreferencesFlag.scheduleListView))
             .called(1);
         verify(preferencesService
-                .getBool(PreferencesFlag.scheduleSettingsShowTodayBtn))
-            .called(1);
-        verify(preferencesService
-                .getBool(PreferencesFlag.scheduleSettingsListView))
-            .called(1);
-        verify(preferencesService
-                .getBool(PreferencesFlag.scheduleSettingsShowWeekEvents))
+                .getBool(PreferencesFlag.scheduleShowWeekEvents))
             .called(1);
 
         verifyNoMoreInteractions(preferencesService);
@@ -109,32 +106,31 @@ void main() {
         // Stubs the answer of the preferences services
         PreferencesServiceMock.stubGetString(
             preferencesService as PreferencesServiceMock,
-            PreferencesFlag.scheduleSettingsStartWeekday,
+            PreferencesFlag.scheduleStartWeekday,
             toReturn: EnumToString.convertToString(StartingDayOfWeek.sunday));
         PreferencesServiceMock.stubGetString(
             preferencesService as PreferencesServiceMock,
-            PreferencesFlag.scheduleSettingsCalendarFormat,
+            PreferencesFlag.scheduleCalendarFormat,
             toReturn: EnumToString.convertToString(CalendarFormat.month));
         PreferencesServiceMock.stubGetBool(
             preferencesService as PreferencesServiceMock,
-            PreferencesFlag.scheduleSettingsShowTodayBtn,
+            PreferencesFlag.scheduleShowTodayBtn,
             toReturn: false);
         PreferencesServiceMock.stubGetBool(
             preferencesService as PreferencesServiceMock,
-            PreferencesFlag.scheduleSettingsListView,
+            PreferencesFlag.scheduleListView,
             toReturn: false);
         PreferencesServiceMock.stubGetBool(
             preferencesService as PreferencesServiceMock,
-            PreferencesFlag.scheduleSettingsShowWeekEvents,
+            PreferencesFlag.scheduleShowWeekEvents,
             toReturn: false);
 
         final expected = {
-          PreferencesFlag.scheduleSettingsStartWeekday:
-              StartingDayOfWeek.sunday,
-          PreferencesFlag.scheduleSettingsCalendarFormat: CalendarFormat.month,
-          PreferencesFlag.scheduleSettingsShowTodayBtn: false,
-          PreferencesFlag.scheduleSettingsListView: false,
-          PreferencesFlag.scheduleSettingsShowWeekEvents: false,
+          PreferencesFlag.scheduleStartWeekday: StartingDayOfWeek.sunday,
+          PreferencesFlag.scheduleCalendarFormat: CalendarFormat.month,
+          PreferencesFlag.scheduleShowTodayBtn: false,
+          PreferencesFlag.scheduleListView: false,
+          PreferencesFlag.scheduleShowWeekEvents: false,
         };
 
         final result = await manager.getScheduleSettings();
@@ -142,19 +138,17 @@ void main() {
         expect(result, expected);
 
         verify(preferencesService
-                .getString(PreferencesFlag.scheduleSettingsStartWeekday))
+                .getString(PreferencesFlag.scheduleStartWeekday))
             .called(1);
         verify(preferencesService
-                .getString(PreferencesFlag.scheduleSettingsCalendarFormat))
+                .getString(PreferencesFlag.scheduleCalendarFormat))
+            .called(1);
+        verify(preferencesService.getBool(PreferencesFlag.scheduleShowTodayBtn))
+            .called(1);
+        verify(preferencesService.getBool(PreferencesFlag.scheduleListView))
             .called(1);
         verify(preferencesService
-                .getBool(PreferencesFlag.scheduleSettingsShowTodayBtn))
-            .called(1);
-        verify(preferencesService
-                .getBool(PreferencesFlag.scheduleSettingsListView))
-            .called(1);
-        verify(preferencesService
-                .getBool(PreferencesFlag.scheduleSettingsShowWeekEvents))
+                .getBool(PreferencesFlag.scheduleShowWeekEvents))
             .called(1);
 
         verifyNoMoreInteractions(preferencesService);
@@ -333,7 +327,7 @@ void main() {
     });
 
     test("setString", () async {
-      const flag = PreferencesFlag.scheduleSettingsCalendarFormat;
+      const flag = PreferencesFlag.scheduleCalendarFormat;
       PreferencesServiceMock.stubSetString(
           preferencesService as PreferencesServiceMock, flag);
 
@@ -371,7 +365,7 @@ void main() {
     });
 
     test("getString", () async {
-      const flag = PreferencesFlag.scheduleSettingsCalendarFormat;
+      const flag = PreferencesFlag.scheduleCalendarFormat;
       PreferencesServiceMock.stubGetString(
           preferencesService as PreferencesServiceMock, flag);
 
@@ -390,7 +384,7 @@ void main() {
     });
 
     test("setBool", () async {
-      const flag = PreferencesFlag.scheduleSettingsCalendarFormat;
+      const flag = PreferencesFlag.scheduleCalendarFormat;
       PreferencesServiceMock.stubSetBool(
           preferencesService as PreferencesServiceMock, flag);
 

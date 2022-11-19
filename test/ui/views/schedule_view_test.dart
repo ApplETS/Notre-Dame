@@ -39,9 +39,9 @@ void main() {
 
   // Some settings
   Map<PreferencesFlag, dynamic> settings = {
-    PreferencesFlag.scheduleSettingsCalendarFormat: CalendarFormat.week,
-    PreferencesFlag.scheduleSettingsStartWeekday: StartingDayOfWeek.monday,
-    PreferencesFlag.scheduleSettingsShowTodayBtn: true
+    PreferencesFlag.scheduleCalendarFormat: CalendarFormat.week,
+    PreferencesFlag.scheduleStartWeekday: StartingDayOfWeek.monday,
+    PreferencesFlag.scheduleShowTodayBtn: true
   };
 
   group("ScheduleView - ", () {
@@ -93,11 +93,11 @@ void main() {
       SettingsManagerMock.stubLocale(settingsManager as SettingsManagerMock);
 
       settings = {
-        PreferencesFlag.scheduleSettingsCalendarFormat: CalendarFormat.week,
-        PreferencesFlag.scheduleSettingsStartWeekday: StartingDayOfWeek.monday,
-        PreferencesFlag.scheduleSettingsShowTodayBtn: true,
-        PreferencesFlag.scheduleSettingsShowWeekEvents: false,
-        PreferencesFlag.scheduleSettingsListView: true,
+        PreferencesFlag.scheduleCalendarFormat: CalendarFormat.week,
+        PreferencesFlag.scheduleStartWeekday: StartingDayOfWeek.monday,
+        PreferencesFlag.scheduleShowTodayBtn: true,
+        PreferencesFlag.scheduleShowWeekEvents: false,
+        PreferencesFlag.scheduleListView: true,
       };
 
       CourseRepositoryMock.stubGetScheduleActivities(
@@ -138,7 +138,7 @@ void main() {
             PreferencesFlag.discoverySchedule);
         tester.binding.window.physicalSizeTestValue = const Size(800, 1410);
 
-        settings[PreferencesFlag.scheduleSettingsShowTodayBtn] = false;
+        settings[PreferencesFlag.scheduleShowTodayBtn] = false;
 
         CourseRepositoryMock.stubCoursesActivities(
             courseRepository as CourseRepositoryMock);

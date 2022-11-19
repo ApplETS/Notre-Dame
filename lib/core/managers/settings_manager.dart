@@ -149,38 +149,38 @@ class SettingsManager with ChangeNotifier {
     final Map<PreferencesFlag, dynamic> settings = {};
 
     final calendarFormat = await _preferencesService
-        .getString(PreferencesFlag.scheduleSettingsCalendarFormat)
+        .getString(PreferencesFlag.scheduleCalendarFormat)
         .then((value) => value == null
             ? CalendarFormat.week
             : EnumToString.fromString(CalendarFormat.values, value));
     settings.putIfAbsent(
-        PreferencesFlag.scheduleSettingsCalendarFormat, () => calendarFormat);
+        PreferencesFlag.scheduleCalendarFormat, () => calendarFormat);
 
     final startingWeekDay = await _preferencesService
-        .getString(PreferencesFlag.scheduleSettingsStartWeekday)
+        .getString(PreferencesFlag.scheduleStartWeekday)
         .then((value) => value == null
             ? StartingDayOfWeek.monday
             : EnumToString.fromString(StartingDayOfWeek.values, value));
     settings.putIfAbsent(
-        PreferencesFlag.scheduleSettingsStartWeekday, () => startingWeekDay);
+        PreferencesFlag.scheduleStartWeekday, () => startingWeekDay);
 
     final showTodayBtn = await _preferencesService
-            .getBool(PreferencesFlag.scheduleSettingsShowTodayBtn) ??
+            .getBool(PreferencesFlag.scheduleShowTodayBtn) ??
         true;
     settings.putIfAbsent(
-        PreferencesFlag.scheduleSettingsShowTodayBtn, () => showTodayBtn);
+        PreferencesFlag.scheduleShowTodayBtn, () => showTodayBtn);
 
-    final toggleCalendarView = await _preferencesService
-            .getBool(PreferencesFlag.scheduleSettingsListView) ??
-        getCalendarViewEnabled();
+    final toggleCalendarView =
+        await _preferencesService.getBool(PreferencesFlag.scheduleListView) ??
+            getCalendarViewEnabled();
     settings.putIfAbsent(
-        PreferencesFlag.scheduleSettingsListView, () => toggleCalendarView);
+        PreferencesFlag.scheduleListView, () => toggleCalendarView);
 
     final showWeekEventsBtn = await _preferencesService
-            .getBool(PreferencesFlag.scheduleSettingsShowWeekEvents) ??
+            .getBool(PreferencesFlag.scheduleShowWeekEvents) ??
         true;
-    settings.putIfAbsent(PreferencesFlag.scheduleSettingsShowWeekEvents,
-        () => showWeekEventsBtn);
+    settings.putIfAbsent(
+        PreferencesFlag.scheduleShowWeekEvents, () => showWeekEventsBtn);
 
     _logger.i("$tag - getScheduleSettings - Settings loaded: $settings");
 

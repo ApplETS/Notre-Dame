@@ -31,7 +31,7 @@ class ScheduleSettingsViewModel
 
   set calendarFormat(CalendarFormat format) {
     setBusy(true);
-    _settingsManager.setString(PreferencesFlag.scheduleSettingsCalendarFormat,
+    _settingsManager.setString(PreferencesFlag.scheduleCalendarFormat,
         EnumToString.convertToString(format));
     _calendarFormat = format;
     setBusy(false);
@@ -51,7 +51,7 @@ class ScheduleSettingsViewModel
 
   set startingDayOfWeek(StartingDayOfWeek day) {
     setBusy(true);
-    _settingsManager.setString(PreferencesFlag.scheduleSettingsStartWeekday,
+    _settingsManager.setString(PreferencesFlag.scheduleStartWeekday,
         EnumToString.convertToString(day));
     _startingDayOfWeek = day;
     setBusy(false);
@@ -70,8 +70,7 @@ class ScheduleSettingsViewModel
 
   set showTodayBtn(bool newValue) {
     setBusy(true);
-    _settingsManager.setBool(
-        PreferencesFlag.scheduleSettingsShowTodayBtn, newValue);
+    _settingsManager.setBool(PreferencesFlag.scheduleShowTodayBtn, newValue);
     _showTodayBtn = newValue;
     setBusy(false);
   }
@@ -82,8 +81,7 @@ class ScheduleSettingsViewModel
 
   set toggleCalendarView(bool newValue) {
     setBusy(true);
-    _settingsManager.setBool(
-        PreferencesFlag.scheduleSettingsListView, newValue);
+    _settingsManager.setBool(PreferencesFlag.scheduleListView, newValue);
     _toggleCalendarView = newValue;
     setBusy(false);
   }
@@ -100,8 +98,7 @@ class ScheduleSettingsViewModel
 
   set showWeekEvents(bool newValue) {
     setBusy(true);
-    _settingsManager.setBool(
-        PreferencesFlag.scheduleSettingsShowWeekEvents, newValue);
+    _settingsManager.setBool(PreferencesFlag.scheduleShowWeekEvents, newValue);
     _showWeekEvents = newValue;
     setBusy(false);
   }
@@ -124,10 +121,10 @@ class ScheduleSettingsViewModel
     setBusy(true);
     if (scheduleActivityToSave == null) {
       await _settingsManager.setDynamicString(
-          PreferencesFlag.scheduleSettingsLaboratoryGroup, courseAcronym, null);
+          PreferencesFlag.scheduleLaboratoryGroup, courseAcronym, null);
     } else {
       await _settingsManager.setDynamicString(
-          PreferencesFlag.scheduleSettingsLaboratoryGroup,
+          PreferencesFlag.scheduleLaboratoryGroup,
           courseAcronym,
           scheduleActivityToSave.activityCode);
     }
@@ -140,16 +137,13 @@ class ScheduleSettingsViewModel
     setBusy(true);
     final settings = await _settingsManager.getScheduleSettings();
 
-    _calendarFormat = settings[PreferencesFlag.scheduleSettingsCalendarFormat]
-        as CalendarFormat;
-    _startingDayOfWeek = settings[PreferencesFlag.scheduleSettingsStartWeekday]
-        as StartingDayOfWeek;
-    _showTodayBtn =
-        settings[PreferencesFlag.scheduleSettingsShowTodayBtn] as bool;
-    _toggleCalendarView =
-        settings[PreferencesFlag.scheduleSettingsListView] as bool;
-    _showWeekEvents =
-        settings[PreferencesFlag.scheduleSettingsShowWeekEvents] as bool;
+    _calendarFormat =
+        settings[PreferencesFlag.scheduleCalendarFormat] as CalendarFormat;
+    _startingDayOfWeek =
+        settings[PreferencesFlag.scheduleStartWeekday] as StartingDayOfWeek;
+    _showTodayBtn = settings[PreferencesFlag.scheduleShowTodayBtn] as bool;
+    _toggleCalendarView = settings[PreferencesFlag.scheduleListView] as bool;
+    _showWeekEvents = settings[PreferencesFlag.scheduleShowWeekEvents] as bool;
 
     _scheduleActivitiesByCourse.clear();
     final schedulesActivities = await _courseRepository.getScheduleActivities();
@@ -174,7 +168,7 @@ class ScheduleSettingsViewModel
     // Preselect the right schedule activity
     for (final courseKey in _scheduleActivitiesByCourse.keys) {
       final scheduleActivityCode = await _settingsManager.getDynamicString(
-          PreferencesFlag.scheduleSettingsLaboratoryGroup, courseKey);
+          PreferencesFlag.scheduleLaboratoryGroup, courseKey);
       final scheduleActivity = _scheduleActivitiesByCourse[courseKey]
           .firstWhere((element) => element.activityCode == scheduleActivityCode,
               orElse: () => null);

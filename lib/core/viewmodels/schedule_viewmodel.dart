@@ -84,10 +84,8 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
 
   Map<DateTime, List<dynamic>> selectedWeekEvents() {
     final Map<DateTime, List<dynamic>> events = {};
-    final firstDayOfWeek = Utils.getFirstDayOfCurrentWeek(
-        selectedDate,
-        settings[PreferencesFlag.scheduleSettingsStartWeekday]
-            as StartingDayOfWeek);
+    final firstDayOfWeek = Utils.getFirstDayOfCurrentWeek(selectedDate,
+        settings[PreferencesFlag.scheduleStartWeekday] as StartingDayOfWeek);
 
     for (int i = 0; i < 7; i++) {
       final date = firstDayOfWeek.add(Duration(days: i));
@@ -140,10 +138,8 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
 
   DataSource selectedWeekCalendarEvents() {
     final List<Appointment> events = [];
-    final firstDayOfWeek = Utils.getFirstDayOfCurrentWeek(
-        selectedDate,
-        settings[PreferencesFlag.scheduleSettingsStartWeekday]
-            as StartingDayOfWeek);
+    final firstDayOfWeek = Utils.getFirstDayOfCurrentWeek(selectedDate,
+        settings[PreferencesFlag.scheduleStartWeekday] as StartingDayOfWeek);
     for (int i = -1; i <= 1; i++) {
       for (int j = 0; j < 7; j++) {
         final date = firstDayOfWeek.add(Duration(days: j + i * 7));
@@ -157,12 +153,12 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
   }
 
   bool get showWeekEvents =>
-      settings[PreferencesFlag.scheduleSettingsShowWeekEvents] as bool ?? false;
+      settings[PreferencesFlag.scheduleShowWeekEvents] as bool ?? false;
 
   bool isLoadingEvents = false;
 
   bool getCalendarViewSetting() {
-    return settings[PreferencesFlag.scheduleSettingsListView] as bool ?? true;
+    return settings[PreferencesFlag.scheduleListView] as bool ?? true;
   }
 
   @override
@@ -227,8 +223,8 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
     setBusy(true);
     settings.clear();
     settings.addAll(await _settingsManager.getScheduleSettings());
-    calendarFormat = settings[PreferencesFlag.scheduleSettingsCalendarFormat]
-        as CalendarFormat;
+    calendarFormat =
+        settings[PreferencesFlag.scheduleCalendarFormat] as CalendarFormat;
 
     await loadSettingsScheduleActivities();
 
@@ -238,7 +234,7 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
   Future loadSettingsScheduleActivities() async {
     for (final courseAcronym in scheduleActivitiesByCourse.keys) {
       final String activityCodeToUse = await _settingsManager.getDynamicString(
-          PreferencesFlag.scheduleSettingsLaboratoryGroup, courseAcronym);
+          PreferencesFlag.scheduleLaboratoryGroup, courseAcronym);
       final scheduleActivityToSet = scheduleActivitiesByCourse[courseAcronym]
           .firstWhere((element) => element.activityCode == activityCodeToUse,
               orElse: () => null);
@@ -327,8 +323,8 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
 
   Future setCalendarFormat(CalendarFormat format) async {
     calendarFormat = format;
-    settings[PreferencesFlag.scheduleSettingsCalendarFormat] = calendarFormat;
-    _settingsManager.setString(PreferencesFlag.scheduleSettingsCalendarFormat,
+    settings[PreferencesFlag.scheduleCalendarFormat] = calendarFormat;
+    _settingsManager.setString(PreferencesFlag.scheduleCalendarFormat,
         EnumToString.convertToString(calendarFormat));
   }
 
