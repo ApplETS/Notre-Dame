@@ -9,6 +9,7 @@ import 'package:notredame/locator.dart';
 /// Manage the analytics of the application
 class RemoteConfigService {
   static const _serviceIsDown = "service_is_down";
+  static const _scheduleListViewDefault = "schedule_list_view_default";
   final FirebaseRemoteConfig _remoteConfig = FirebaseRemoteConfig.instance;
   final defaults = <String, dynamic>{_serviceIsDown: false};
   static const String tag = "RemoteConfigService";
@@ -25,7 +26,7 @@ class RemoteConfigService {
 
   bool get scheduleListViewDefault {
     fetch();
-    return _remoteConfig.getBool("schedule_list_view_default");
+    return _remoteConfig.getBool(_scheduleListViewDefault);
   }
 
   Future<void> fetch() async {

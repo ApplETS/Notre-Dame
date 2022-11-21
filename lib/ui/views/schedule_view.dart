@@ -95,65 +95,62 @@ class _ScheduleViewState extends State<ScheduleView>
             ),
             body: RefreshIndicator(
               child: !model.getCalendarViewSetting()
-                  ? Scaffold(
-                      body: SfCalendar(
-                      view: CalendarView.workWeek,
-                      headerStyle: const CalendarHeaderStyle(
-                          textAlign: TextAlign.center,
-                          textStyle: TextStyle(
-                              fontSize: 20,
-                              letterSpacing: 3,
-                              fontWeight: FontWeight.w500)),
-                      dataSource: model.calendarEvents,
-                      firstDayOfWeek: 1,
-                      timeSlotViewSettings: const TimeSlotViewSettings(
-                          startHour: 7,
-                          endHour: 23,
-                          nonWorkingDays: <int>[DateTime.sunday],
-                          timeIntervalHeight: -1,
-                          timeFormat: 'HH:mm'),
-                      appointmentTextStyle: const TextStyle(
-                          fontSize: 12, fontWeight: FontWeight.bold),
-                      onViewChanged: (viewChangedDetails) {
-                        model.handleViewChanged(viewChangedDetails);
-                      },
-                    ))
-                  : Stack(children: [
-                      ListView(
-                        children: [
-                          _buildTableCalendar(model),
-                          const SizedBox(height: 8.0),
-                          const Divider(
-                              indent: 8.0, endIndent: 8.0, thickness: 1),
-                          const SizedBox(height: 6.0),
-                          if (model.showWeekEvents)
-                            for (Widget widget
-                                in _buildWeekEvents(model, context))
-                              widget
-                          else
-                            _buildTitleForDate(model.selectedDate, model),
-                          const SizedBox(height: 2.0),
-                          if (!model.showWeekEvents &&
-                              model
-                                  .selectedDateEvents(model.selectedDate)
-                                  .isEmpty)
-                            Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(vertical: 64.0),
-                              child: Center(
-                                  child: Text(
-                                      AppIntl.of(context).schedule_no_event)),
-                            )
-                          else if (!model.showWeekEvents)
-                            _buildEventList(
-                                model.selectedDateEvents(model.selectedDate)),
-                          const SizedBox(height: 16.0),
-                        ],
-                      ),
-                    ]),
+                  ? _buildCalendarView(model)
+                  : _buildListView(model, context),
               onRefresh: () => model.refresh(),
             )),
       );
+
+  Widget _buildListView(ScheduleViewModel model, BuildContext context) {
+    return Stack(children: [
+      ListView(
+        children: [
+          _buildTableCalendar(model),
+          const SizedBox(height: 8.0),
+          const Divider(indent: 8.0, endIndent: 8.0, thickness: 1),
+          const SizedBox(height: 6.0),
+          if (model.showWeekEvents)
+            for (Widget widget in _buildWeekEvents(model, context)) widget
+          else
+            _buildTitleForDate(model.selectedDate, model),
+          const SizedBox(height: 2.0),
+          if (!model.showWeekEvents &&
+              model.selectedDateEvents(model.selectedDate).isEmpty)
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 64.0),
+              child: Center(child: Text(AppIntl.of(context).schedule_no_event)),
+            )
+          else if (!model.showWeekEvents)
+            _buildEventList(model.selectedDateEvents(model.selectedDate)),
+          const SizedBox(height: 16.0),
+        ],
+      ),
+    ]);
+  }
+
+  Widget _buildCalendarView(ScheduleViewModel model) {
+    return Scaffold(
+        body: SfCalendar(
+      view: CalendarView.workWeek,
+      headerStyle: const CalendarHeaderStyle(
+          textAlign: TextAlign.center,
+          textStyle: TextStyle(
+              fontSize: 20, letterSpacing: 3, fontWeight: FontWeight.w500)),
+      dataSource: model.calendarEvents,
+      firstDayOfWeek: 1,
+      timeSlotViewSettings: const TimeSlotViewSettings(
+          startHour: 7,
+          endHour: 23,
+          nonWorkingDays: <int>[DateTime.sunday],
+          timeIntervalHeight: -1,
+          timeFormat: 'HH:mm'),
+      appointmentTextStyle:
+          const TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
+      onViewChanged: (viewChangedDetails) {
+        model.handleViewChanged(viewChangedDetails);
+      },
+    ));
+  }
 
   Widget _buildTitleForDate(DateTime date, ScheduleViewModel model) => Center(
           child: Text(
