@@ -74,7 +74,7 @@ class _BottomBarState extends State<BottomBar> {
   }
 
   void _onTap(int index) {
-    if(_currentView == index) {
+    if (_currentView == index) {
       return;
     }
 
