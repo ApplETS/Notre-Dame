@@ -39,12 +39,13 @@ class _BottomBarState extends State<BottomBar> {
 
   @override
   Widget build(BuildContext context) {
+    _currentView = _defineIndex(ModalRoute.of(context).settings.name);
     return BottomNavigationBar(
       type: BottomNavigationBarType.fixed,
       elevation: 0,
       onTap: (value) => _onTap(value),
       items: _buildItems(context),
-      currentIndex: _defineIndex(ModalRoute.of(context).settings.name),
+      currentIndex: _currentView,
     );
   }
 
@@ -100,6 +101,7 @@ class _BottomBarState extends State<BottomBar> {
         _analyticsService.logEvent("BottomBar", "MoreView clicked");
         break;
     }
+    _currentView = index;
   }
 
   List<BottomNavigationBarItem> _buildItems(BuildContext context) {

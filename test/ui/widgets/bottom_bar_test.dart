@@ -48,12 +48,29 @@ void main() {
       expect(icons, findsNWidgets(5));
     });
 
+    testWidgets('not navigate when tapped multiple times', (WidgetTester tester) async {
+      await tester.pumpWidget(
+          localizedWidget(child: FeatureDiscovery(child: BottomBar())));
+      await tester.pumpAndSettle();
+
+      await tester.tap(find.byIcon(Icons.school));
+      await tester.tap(find.byIcon(Icons.school));
+      await tester.tap(find.byIcon(Icons.school));
+      await tester.tap(find.byIcon(Icons.school));
+      await tester.tap(find.byIcon(Icons.school));
+      await tester.tap(find.byIcon(Icons.school));
+
+      verify(navigationService.pushNamedAndRemoveUntil(RouterPaths.student)).called(1);
+    });
+    
     group('navigate when tapped to - ', () {
       testWidgets('dashboard', (WidgetTester tester) async {
         await tester.pumpWidget(
             localizedWidget(child: FeatureDiscovery(child: BottomBar())));
         await tester.pumpAndSettle();
 
+        
+        await tester.tap(find.byIcon(Icons.schedule));        
         await tester.tap(find.byIcon(Icons.dashboard));
 
         verify(
