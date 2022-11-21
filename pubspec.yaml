@@ -76,7 +76,7 @@ dev_dependencies:
   lint: ^1.5.3
   mockito: ^5.3.2
   flutter_config: ^2.0.0
-  flutter_launcher_icons: ^0.9.0
+  flutter_launcher_icons: ^0.11.0
 
 flutter_icons:
   android: "launcher_icon"
