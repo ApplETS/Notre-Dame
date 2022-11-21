@@ -32,7 +32,6 @@ class BottomBar extends StatefulWidget {
 
 class _BottomBarState extends State<BottomBar> {
   final NavigationService _navigationService = locator<NavigationService>();
-
   final AnalyticsService _analyticsService = locator<AnalyticsService>();
 
   int _currentView = BottomBar.dashboardView;
