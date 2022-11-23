@@ -1,4 +1,5 @@
 // FLUTTER / DART / THIRD-PARTIES
+import 'package:easter_egg_trigger/easter_egg_trigger.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -17,6 +18,13 @@ class AboutView extends StatefulWidget {
 class _AboutViewState extends State<AboutView> with TickerProviderStateMixin {
   AnimationController _controller;
   bool _completed = false;
+  bool _easterEggTrigger = false;
+
+  void toggleTrigger() {
+    setState(() {
+      _easterEggTrigger = !_easterEggTrigger;
+    });
+  }
 
   @override
   void initState() {
@@ -80,14 +88,24 @@ class _AboutViewState extends State<AboutView> with TickerProviderStateMixin {
           left: 0,
           child: Column(
             children: [
-              SizedBox(
-                width: 100,
-                height: 100,
-                child: Hero(
-                  tag: 'about',
-                  child: Image.asset(
-                    "assets/images/favicon_applets.png",
-                    scale: 2.0,
+              EasterEggTrigger(
+                action: () => toggleTrigger(),
+                codes: const [
+                  EasterEggTriggers.SwipeUp,
+                  EasterEggTriggers.SwipeRight,
+                  EasterEggTriggers.SwipeDown,
+                  EasterEggTriggers.SwipeLeft,
+                  EasterEggTriggers.Tap
+                ],
+                child: SizedBox(
+                  width: 100,
+                  height: 100,
+                  child: Hero(
+                    tag: 'about',
+                    child: Image.asset(
+                      "assets/images/favicon_applets.png",
+                      scale: 2.0,
+                    ),
                   ),
                 ),
               ),
@@ -148,6 +166,18 @@ class _AboutViewState extends State<AboutView> with TickerProviderStateMixin {
                   ],
                 ),
               ),
+              if (_easterEggTrigger)
+                SizedBox(
+                  width: 200,
+                  height: 200,
+                  child: Hero(
+                    tag: 'capra',
+                    child: Image.asset(
+                      "assets/images/capra_long.png",
+                      scale: 1.0,
+                    ),
+                  ),
+                ),
             ],
           ),
         ),
