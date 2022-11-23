@@ -239,10 +239,10 @@ class _LoginViewState extends State<LoginView> {
   Future<void> sendEmail(LoginViewModel model) async {
     final clubEmail =
         model.mailtoStr(AppInfo.email, AppIntl.of(context).email_subject);
-    final urlLaunchable = await _launchUrlService.canLaunchUrl(clubEmail);
+    final urlLaunchable = await _launchUrlService.canLaunch(clubEmail);
 
     if (urlLaunchable) {
-      await _launchUrlService.launchUrl(clubEmail);
+      await _launchUrlService.launch(clubEmail);
     } else {
       locator<AnalyticsService>().logError("login_view", "Cannot send email.");
     }
