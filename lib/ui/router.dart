@@ -60,6 +60,19 @@ Route<dynamic> generateRoute(RouteSettings routeSettings) {
     case RouterPaths.gradeDetails:
       return PageRouteBuilder(
           transitionDuration: const Duration(milliseconds: 600),
+          transitionsBuilder: (context, animation, secondaryAnimation, child) {
+            const begin = Offset(0.0, 1.0);
+            const end = Offset.zero;
+            const curve = Curves.ease;
+
+            final tween =
+                Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+
+            return SlideTransition(
+              position: animation.drive(tween),
+              child: child,
+            );
+          },
           settings: RouteSettings(name: routeSettings.name),
           pageBuilder: (_, __, ___) =>
               GradesDetailsView(course: routeSettings.arguments as Course));
