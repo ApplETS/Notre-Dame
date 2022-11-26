@@ -46,6 +46,7 @@ class ScheduleView extends StatefulWidget {
 class _ScheduleViewState extends State<ScheduleView>
     with TickerProviderStateMixin {
   final AnalyticsService _analyticsService = locator<AnalyticsService>();
+  final CalendarController _calendarController = CalendarController();
 
   static const String tag = "ScheduleView";
   static const Color _selectedColor = AppTheme.etsLightRed;
@@ -132,6 +133,7 @@ class _ScheduleViewState extends State<ScheduleView>
     return Scaffold(
         body: SfCalendar(
       view: CalendarView.workWeek,
+      controller: _calendarController,
       headerStyle: const CalendarHeaderStyle(
           textAlign: TextAlign.center,
           textStyle: TextStyle(
@@ -284,7 +286,7 @@ class _ScheduleViewState extends State<ScheduleView>
           IconButton(
               icon: const Icon(Icons.today),
               onPressed: () => setState(() {
-                    model.selectToday();
+                    model.selectToday(_calendarController);
                     _analyticsService.logEvent(tag, "Select today clicked");
                   })),
         _buildDiscoveryFeatureDescriptionWidget(context, Icons.settings, model),

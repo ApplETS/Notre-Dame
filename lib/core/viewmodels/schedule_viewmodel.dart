@@ -345,14 +345,20 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
   /// Return true if switched selected date to today (= today was not selected),
   /// return false otherwise (today was already selected, show toast for
   /// visual feedback).
-  bool selectToday() {
+  bool selectToday(CalendarController calendarController) {
     if (compareDates(selectedDate, DateTime.now())) {
       Fluttertoast.showToast(msg: _appIntl.schedule_already_today_toast);
       return false;
     } else {
-      selectedDate = DateTime.now();
-      focusedDate.value = DateTime.now();
-      return true;
+      if (!getCalendarViewSetting()) {
+        selectedDate = DateTime.now();
+        calendarController.displayDate = DateTime.now();
+        return true;
+      } else {
+        selectedDate = DateTime.now();
+        focusedDate.value = DateTime.now();
+        return true;
+      }
     }
   }
 
