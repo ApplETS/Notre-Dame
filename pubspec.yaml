@@ -74,6 +74,7 @@ dependencies:
   marquee: 2.2.1
   auto_size_text: ^3.0.0
   syncfusion_flutter_calendar: ^20.3.52
+  easter_egg_trigger: ^1.0.1
 
 dev_dependencies:
   flutter_test:
