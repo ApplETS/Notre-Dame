@@ -19,7 +19,7 @@ dependencies:
   # Architecture
   get_it: ^7.2.0
   provider: ^6.0.4
-  stacked: ^2.3.13
+  stacked: ^3.0.1
 
   # Firebase
   firebase_core: ^1.18.0

@@ -1021,14 +1021,14 @@ packages:
       name: stacked
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.3.13"
+    version: "3.0.1"
   stacked_core:
     dependency: transitive
     description:
       name: stacked_core
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.2.3"
+    version: "1.2.4"
   stream_channel:
     dependency: transitive
     description:
