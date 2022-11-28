@@ -345,7 +345,7 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
   /// Return true if switched selected date to today (= today was not selected),
   /// return false otherwise (today was already selected, show toast for
   /// visual feedback).
-  bool selectToday(CalendarController calendarController) {
+  bool selectToday([CalendarController calendarController]) {
     if (compareDates(selectedDate, DateTime.now())) {
       Fluttertoast.showToast(msg: _appIntl.schedule_already_today_toast);
       return false;
