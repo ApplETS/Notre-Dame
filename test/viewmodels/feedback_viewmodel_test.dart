@@ -1,5 +1,6 @@
 // FLUTTER / DART / THIRD-PARTIES
 import 'dart:io';
+import 'package:feedback/feedback.dart';
 import 'package:flutter/services.dart';
 import 'package:image/image.dart' as image;
 import 'package:flutter_test/flutter_test.dart';
@@ -25,6 +26,14 @@ void main() {
 
   AppIntl appIntl;
   FeedbackViewModel viewModel;
+  const feedBackText = 'Notre-Dame bug report';
+  final file = File('bugReportTest.png');
+  final filePath = file.path.split('/').last;
+  final Map<String, dynamic> extra = {'': 'bugReport'};
+
+  String getUserFeedbackType() {
+    return extra.entries.first.value.toString().split('.').last;
+  }
 
   group('FeedbackViewModel - ', () {
     setUp(() async {
@@ -51,33 +60,31 @@ void main() {
       });
 
       test('If the file uploaded matches', () async {
-        final File file = File('bugReportTest.png');
         GithubApiMock.stubLocalFile(githubApiMock, file);
         setupFlutterToastMock();
 
         await file.writeAsBytes(image.encodePng(
             image.copyResize(image.decodeImage(screenshotData), width: 307)));
 
-        await viewModel.sendFeedback(
-            'Notre-Dame bug report', screenshotData, 'bugReport');
+        await viewModel.sendFeedback(UserFeedback(
+            text: feedBackText, screenshot: screenshotData, extra: extra));
 
         verify(githubApiMock.uploadFileToGithub(
-          filePath: file.path.split('/').last,
+          filePath: filePath,
           file: file,
         ));
       });
 
       test('If the github issue has been created', () async {
-        final File file = File('bugReportTest.png');
         GithubApiMock.stubLocalFile(githubApiMock, file);
 
-        await viewModel.sendFeedback(
-            'Notre-Dame bug report', screenshotData, 'bugReport');
+        await viewModel.sendFeedback(UserFeedback(
+            text: feedBackText, screenshot: screenshotData, extra: extra));
 
         verify(githubApiMock.createGithubIssue(
-            feedbackText: 'Notre-Dame bug report',
-            fileName: file.path.split('/').last,
-            feedbackType: 'bugReport'));
+            feedbackText: feedBackText,
+            fileName: filePath,
+            feedbackType: getUserFeedbackType()));
       });
     });
   });
