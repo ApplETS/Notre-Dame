@@ -13,6 +13,7 @@ class FeedbackView extends StatelessWidget {
       ViewModelBuilder<FeedbackViewModel>.reactive(
         viewModelBuilder: () => FeedbackViewModel(intl: AppIntl.of(context)),
         builder: (context, model, child) {
+          bool _hasSubmittedFeedback = false;
           return Scaffold(
             appBar: AppBar(
               title: Text(AppIntl.of(context).more_report_bug),
@@ -49,17 +50,17 @@ class FeedbackView extends StatelessWidget {
             floatingActionButtonLocation:
                 FloatingActionButtonLocation.centerFloat,
             floatingActionButton: FloatingActionButton.extended(
-              onPressed: () => BetterFeedback.of(context).show((feedback) {
-                model
-                    .sendFeedback(
-                        feedback.text,
-                        feedback.screenshot,
-                        feedback.extra.entries.first.value
-                            .toString()
-                            .split('.')
-                            .last)
-                    .then((value) => BetterFeedback.of(context).hide());
-              }),
+              onPressed: () => {
+                BetterFeedback.of(context).show((feedback) {
+                  if (!_hasSubmittedFeedback) {
+                    _hasSubmittedFeedback = true;
+                    model
+                        .sendFeedback(feedback)
+                        .then((value) => BetterFeedback.of(context).hide());
+                  }
+                }),
+                _hasSubmittedFeedback = false
+              },
               label: Text(AppIntl.of(context).more_report_bug_button),
             ),
           );

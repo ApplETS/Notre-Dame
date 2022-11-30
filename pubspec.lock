@@ -239,6 +239,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.1.1"
+  easter_egg_trigger:
+    dependency: "direct main"
+    description:
+      name: easter_egg_trigger
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.1"
   enum_to_string:
     dependency: "direct main"
     description:
