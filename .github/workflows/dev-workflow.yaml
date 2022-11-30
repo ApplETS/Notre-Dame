@@ -1,5 +1,6 @@
 name: Development workflow
 on:
+  workflow_dispatch:
   pull_request:
     paths-ignore:
       - '.gitignore'
