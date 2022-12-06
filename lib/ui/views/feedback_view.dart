@@ -132,7 +132,11 @@ class _FeedbackViewState extends State<FeedbackView> {
                                       style: Theme.of(context)
                                           .textTheme
                                           .headline6
-                                          .copyWith(color: Colors.black38),
+                                          .copyWith(
+                                              color: isLightMode
+                                                  ? const Color.fromARGB(
+                                                      168, 0, 0, 0)
+                                                  : Colors.white),
                                     ),
                             ),
                           ),

@@ -1,6 +1,9 @@
+// FLUTTER / DART / THIRD-PARTIES
 import 'package:github/github.dart';
-import 'package:notredame/core/models/feedback_issue.dart';
 import 'package:flutter_test/flutter_test.dart';
+
+// MODELS
+import 'package:notredame/core/models/feedback_issue.dart';
 
 void main() {
   group('FeedBackIssue - ', () {
