@@ -46,10 +46,6 @@ dependencies:
     git:
       url: https://github.com/ApplETS/ETS-API-Clients.git
       ref: 0.5.0
-  calendar_view:
-    git:
-      url: https://github.com/SimformSolutionsPvtLtd/flutter_calendar_view.git
-      ref: master
 
   # Other
   http: ^0.13.4
@@ -75,6 +71,7 @@ dependencies:
   auto_size_text: ^3.0.0
   syncfusion_flutter_calendar: ^20.3.52
   easter_egg_trigger: ^1.0.1
+  calendar_view: ^1.0.1
 
 dev_dependencies:
   flutter_test:

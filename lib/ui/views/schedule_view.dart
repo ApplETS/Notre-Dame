@@ -1,11 +1,11 @@
 // FLUTTER / DART / THIRD-PARTIES
+import 'package:calendar_view/calendar_view.dart' as calendar_view;
 import 'package:feature_discovery/feature_discovery.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:intl/intl.dart';
 import 'package:stacked/stacked.dart';
 import 'package:table_calendar/table_calendar.dart';
-import 'package:syncfusion_flutter_calendar/calendar.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 // UTILS
@@ -46,7 +46,6 @@ class ScheduleView extends StatefulWidget {
 class _ScheduleViewState extends State<ScheduleView>
     with TickerProviderStateMixin {
   final AnalyticsService _analyticsService = locator<AnalyticsService>();
-  final CalendarController _calendarController = CalendarController();
 
   static const String tag = "ScheduleView";
   static const Color _selectedColor = AppTheme.etsLightRed;
@@ -131,26 +130,24 @@ class _ScheduleViewState extends State<ScheduleView>
 
   Widget _buildCalendarView(ScheduleViewModel model) {
     return Scaffold(
-        body: SfCalendar(
-      view: CalendarView.workWeek,
-      controller: _calendarController,
-      headerStyle: const CalendarHeaderStyle(
-          textAlign: TextAlign.center,
-          textStyle: TextStyle(
-              fontSize: 20, letterSpacing: 3, fontWeight: FontWeight.w500)),
-      dataSource: model.calendarEvents,
-      firstDayOfWeek: 1,
-      timeSlotViewSettings: const TimeSlotViewSettings(
-          startHour: 7,
-          endHour: 23,
-          nonWorkingDays: <int>[DateTime.sunday],
-          timeIntervalHeight: -1,
-          timeFormat: 'HH:mm'),
-      appointmentTextStyle:
-          const TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
-      onViewChanged: (viewChangedDetails) {
-        model.handleViewChanged(viewChangedDetails);
-      },
+        body: calendar_view.WeekView(
+      controller: calendar_view.EventController(),
+      backgroundColor: AppTheme.primaryDark,
+      headerStyle: const calendar_view.HeaderStyle(
+        decoration: BoxDecoration(
+          color: AppTheme.primaryDark,
+        ),
+      ),
+      weekDays: const [
+        calendar_view.WeekDays.monday,
+        calendar_view.WeekDays.tuesday,
+        calendar_view.WeekDays.wednesday,
+        calendar_view.WeekDays.thursday,
+        calendar_view.WeekDays.friday,
+        calendar_view.WeekDays.saturday,
+      ],
+      initialDay: DateTime.now(),
+      heightPerMinute: 1, // height occupied by 1 minute time span.
     ));
   }
 
@@ -286,7 +283,7 @@ class _ScheduleViewState extends State<ScheduleView>
           IconButton(
               icon: const Icon(Icons.today),
               onPressed: () => setState(() {
-                    model.selectToday(_calendarController);
+                    model.selectToday();
                     _analyticsService.logEvent(tag, "Select today clicked");
                   })),
         _buildDiscoveryFeatureDescriptionWidget(context, Icons.settings, model),

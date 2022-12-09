@@ -81,12 +81,10 @@ packages:
   calendar_view:
     dependency: "direct main"
     description:
-      path: "."
-      ref: master
-      resolved-ref: ae25c1b06bd93128aaefa8c06d00ab93c804cb08
-      url: "https://github.com/SimformSolutionsPvtLtd/flutter_calendar_view.git"
-    source: git
-    version: "1.0.0"
+      name: calendar_view
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.1"
   characters:
     dependency: transitive
     description:
@@ -1065,21 +1063,21 @@ packages:
       name: syncfusion_flutter_calendar
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "20.3.52"
+    version: "20.3.59"
   syncfusion_flutter_core:
     dependency: transitive
     description:
       name: syncfusion_flutter_core
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "20.3.52"
+    version: "20.3.59"
   syncfusion_flutter_datepicker:
     dependency: transitive
     description:
       name: syncfusion_flutter_datepicker
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "20.3.52"
+    version: "20.3.59"
   synchronized:
     dependency: transitive
     description:
