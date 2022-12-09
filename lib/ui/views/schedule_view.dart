@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:intl/intl.dart';
 import 'package:stacked/stacked.dart';
+import 'package:syncfusion_flutter_calendar/calendar.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -95,7 +96,7 @@ class _ScheduleViewState extends State<ScheduleView>
             ),
             body: RefreshIndicator(
               child: !model.getCalendarViewSetting()
-                  ? _buildCalendarView(model)
+                  ? _buildCalendarView(model, context)
                   : _buildListView(model, context),
               onRefresh: () => model.refresh(),
             )),
@@ -128,27 +129,36 @@ class _ScheduleViewState extends State<ScheduleView>
     ]);
   }
 
-  Widget _buildCalendarView(ScheduleViewModel model) {
+  Widget _buildCalendarView(ScheduleViewModel model, BuildContext context) {
+    final calendar_view.EventController eventController =
+        calendar_view.EventController();
     return Scaffold(
-        body: calendar_view.WeekView(
-      controller: calendar_view.EventController(),
-      backgroundColor: AppTheme.primaryDark,
-      headerStyle: const calendar_view.HeaderStyle(
-        decoration: BoxDecoration(
-          color: AppTheme.primaryDark,
+      body: calendar_view.WeekView(
+        controller: eventController..addAll(model.selectedWeekCalendarEvents()),
+        onPageChange: (date, page) =>
+            model.handleViewChanged(date, eventController),
+        backgroundColor: AppTheme.primaryDark,
+        headerStyle: const calendar_view.HeaderStyle(
+          decoration: BoxDecoration(
+            color: AppTheme.primaryDark,
+          ),
         ),
+        weekDays: const [
+          calendar_view.WeekDays.monday,
+          calendar_view.WeekDays.tuesday,
+          calendar_view.WeekDays.wednesday,
+          calendar_view.WeekDays.thursday,
+          calendar_view.WeekDays.friday,
+          calendar_view.WeekDays.saturday,
+        ],
+        initialDay: DateTime.now(),
+        heightPerMinute: 0.65, // height occupied by 1 minute time span.
+        hourIndicatorSettings: const calendar_view.HourIndicatorSettings(
+          color: AppTheme.etsDarkGrey,
+        ),
+        scrollOffset: 305,
       ),
-      weekDays: const [
-        calendar_view.WeekDays.monday,
-        calendar_view.WeekDays.tuesday,
-        calendar_view.WeekDays.wednesday,
-        calendar_view.WeekDays.thursday,
-        calendar_view.WeekDays.friday,
-        calendar_view.WeekDays.saturday,
-      ],
-      initialDay: DateTime.now(),
-      heightPerMinute: 1, // height occupied by 1 minute time span.
-    ));
+    );
   }
 
   Widget _buildTitleForDate(DateTime date, ScheduleViewModel model) => Center(
