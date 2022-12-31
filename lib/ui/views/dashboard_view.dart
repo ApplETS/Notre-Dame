@@ -78,18 +78,21 @@ class _DashboardViewState extends State<DashboardView>
                   ]),
               body: model.cards == null
                   ? buildLoading()
-                  : Theme(
-                      data: Theme.of(context)
-                          .copyWith(canvasColor: Colors.transparent),
-                      child: ReorderableListView(
-                        onReorder: (oldIndex, newIndex) =>
-                            onReorder(model, oldIndex, newIndex),
-                        padding: const EdgeInsets.fromLTRB(0, 4, 0, 8),
-                        children: _buildCards(model),
-                        proxyDecorator: (child, _, __) {
-                          return HapticsContainer(child: child);
-                        },
+                  : RefreshIndicator(
+                      child: Theme(
+                        data: Theme.of(context)
+                            .copyWith(canvasColor: Colors.transparent),
+                        child: ReorderableListView(
+                          onReorder: (oldIndex, newIndex) =>
+                              onReorder(model, oldIndex, newIndex),
+                          padding: const EdgeInsets.fromLTRB(0, 4, 0, 8),
+                          children: _buildCards(model),
+                          proxyDecorator: (child, _, __) {
+                            return HapticsContainer(child: child);
+                          },
+                        ),
                       ),
+                      onRefresh: () => model.loadDataAndUpdateWidget(),
                     ));
         });
   }
