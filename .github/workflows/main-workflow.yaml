@@ -46,7 +46,7 @@ jobs:
       - uses: actions/checkout@v3
       - name: Get the version from the pubspec
         id: pubspecVersion
-        uses: CumulusDS/get-yaml-paths-action@v1.0.0
+        uses: CumulusDS/get-yaml-paths-action@v1.0.1
         with:
           file: pubspec.yaml
           version: version
