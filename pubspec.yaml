@@ -22,10 +22,10 @@ dependencies:
   stacked: ^3.0.1
 
   # Firebase
-  firebase_core: ^1.18.0
-  firebase_analytics: ^9.3.8
-  firebase_crashlytics: ^2.9.0
-  firebase_remote_config: ^2.0.7
+  firebase_core: ^2.3.0
+  firebase_analytics: ^10.0.6
+  firebase_crashlytics: ^3.0.6
+  firebase_remote_config: ^3.0.6
 
   # Utils
   logger: ^1.0.0
