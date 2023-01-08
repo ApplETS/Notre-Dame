@@ -546,8 +546,10 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
   Future<void> futureToRunBroadcast() async {
     final RemoteConfigService remoteConfigService =
         locator<RemoteConfigService>();
+    const PreferencesFlag flag = PreferencesFlag.broadcastCard;
 
-    // TODO: maybe set busy broadcastMessage?
+    setBusyForObject(this.broadcastMessage, true);
+
     String broadcastMessage = "";
     if (_appIntl.localeName == "fr") {
       broadcastMessage = await remoteConfigService.dashboardMessageFr;
@@ -556,11 +558,14 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
     }
 
     if (broadcastMessage != "") {
-      _cardsToDisplay.add(PreferencesFlag.broadcastCard);
+      _cardsToDisplay.remove(flag);
+      _cardsToDisplay.insert(0, flag);
       this.broadcastMessage = broadcastMessage;
     } else {
       // TODO: check if the logic is correct
-      _cardsToDisplay.remove(PreferencesFlag.broadcastCard);
+      _cardsToDisplay.remove(flag);
     }
+
+    setBusyForObject(this.broadcastMessage, false);
   }
 }

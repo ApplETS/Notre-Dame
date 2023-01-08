@@ -8,10 +8,17 @@ import 'package:notredame/locator.dart';
 
 /// Manage the analytics of the application
 class RemoteConfigService {
-  static const _serviceIsDown = "service_is_down";
-  final FirebaseRemoteConfig _remoteConfig = FirebaseRemoteConfig.instance;
-  final defaults = <String, dynamic>{_serviceIsDown: false};
   static const String tag = "RemoteConfigService";
+  static const _serviceIsDown = "service_is_down";
+  static const _dashboardMsgFr = "dashboard_message_fr";
+  static const _dashboardMsgEn = "dashboard_message_en";
+
+  final FirebaseRemoteConfig _remoteConfig = FirebaseRemoteConfig.instance;
+  final defaults = <String, dynamic>{
+    _serviceIsDown: false,
+    _dashboardMsgFr: "",
+    _dashboardMsgEn: ""
+  };
 
   Future initialize() async {
     await _remoteConfig.setDefaults(defaults);
@@ -25,12 +32,12 @@ class RemoteConfigService {
 
   Future<String> get dashboardMessageFr async {
     fetch();
-    return _remoteConfig.getString("dashboard_message_fr");
+    return _remoteConfig.getString(_dashboardMsgFr);
   }
 
   Future<String> get dashboardMessageEn async {
     fetch();
-    return _remoteConfig.getString("dashboard_message_en");
+    return _remoteConfig.getString(_dashboardMsgEn);
   }
 
   Future<void> fetch() async {
