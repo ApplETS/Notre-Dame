@@ -97,12 +97,19 @@ class _DashboardViewState extends State<DashboardView>
         });
   }
 
-  // TODO: add broadcast card
   List<Widget> _buildCards(DashboardViewModel model) {
     final List<Widget> cards = List.empty(growable: true);
 
+    // always try to build broadcast cart so the user doesn't miss out on
+    // important info if they dismissed it previously
+    // TODO: fetch if broadcast message first ?
+
     for (final PreferencesFlag element in model.cardsToDisplay) {
       switch (element) {
+        // TODO: move first somehow
+        case PreferencesFlag.broadcastCard:
+          cards.add(_buildMessageBroadcastCard(model, element));
+          break;
         case PreferencesFlag.aboutUsCard:
           cards.add(_buildAboutUsCard(model, element));
           break;
@@ -394,6 +401,49 @@ class _DashboardViewState extends State<DashboardView>
                 )
             ]),
       );
+
+  Widget _buildMessageBroadcastCard(
+          DashboardViewModel model, PreferencesFlag flag) =>
+      DismissibleCard(
+          key: UniqueKey(),
+          onDismissed: (DismissDirection direction) {
+            dismissCard(model, flag);
+          },
+          // isBusy: model.busy(model.courses),   // TODO: see if model should be used
+          cardColor: AppTheme
+              .etsDarkRed, // TODO: maybe change color w/ remote config ?
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(17, 10, 15, 20),
+            child: Column(mainAxisSize: MainAxisSize.min, children: [
+              // title row
+              Row(
+                mainAxisSize: MainAxisSize.max,
+                children: [
+                  Expanded(
+                    child: Align(
+                      alignment: Alignment.centerLeft,
+                      child: Text(AppIntl.of(context).card_broadcast_title,
+                          style: Theme.of(context).primaryTextTheme.headline6),
+                    ),
+                  ),
+                  const Align(
+                    alignment: Alignment.centerRight,
+                    child: InkWell(
+                      child: Icon(
+                        Icons.campaign,
+                        color: AppTheme.lightThemeBackground,
+                        size: 36.0,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              // main text
+              Text(model.broadcastMessage == null
+                  ? "Null"
+                  : model.broadcastMessage)
+            ]),
+          ));
 
   void dismissCard(DashboardViewModel model, PreferencesFlag flag) {
     model.hideCard(flag);

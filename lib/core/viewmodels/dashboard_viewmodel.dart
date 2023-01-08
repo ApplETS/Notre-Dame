@@ -194,6 +194,7 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
 
   Future loadDataAndUpdateWidget() async {
     return Future.wait([
+      futureToRunBroadcast(),
       futureToRunGrades(),
       futureToRunSessionProgressBar(),
       futureToRunSchedule()
@@ -284,6 +285,7 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
   }
 
   /// Reset all card indexes to their default values
+  // TODO: order for broadcast card
   void setAllCardsVisible() {
     _cards.updateAll((key, value) {
       _settingsManager
@@ -542,8 +544,10 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
   }
 
   Future<void> futureToRunBroadcast() async {
-    final RemoteConfigService remoteConfigService = locator<RemoteConfigService>();
+    final RemoteConfigService remoteConfigService =
+        locator<RemoteConfigService>();
 
+    // TODO: maybe set busy broadcastMessage?
     String broadcastMessage = "";
     if (_appIntl.localeName == "fr") {
       broadcastMessage = await remoteConfigService.dashboardMessageFr;
@@ -554,7 +558,9 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
     if (broadcastMessage != "") {
       _cardsToDisplay.add(PreferencesFlag.broadcastCard);
       this.broadcastMessage = broadcastMessage;
-      // TODO: notify view ?
+    } else {
+      // TODO: check if the logic is correct
+      _cardsToDisplay.remove(PreferencesFlag.broadcastCard);
     }
   }
 }

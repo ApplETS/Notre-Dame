@@ -89,6 +89,7 @@ class SettingsManager with ChangeNotifier {
   Future<Map<PreferencesFlag, int>> getDashboard() async {
     final Map<PreferencesFlag, int> dashboard = {};
 
+    // TODO: add broadcast card order
     final aboutUsIndex =
         await _preferencesService.getInt(PreferencesFlag.aboutUsCard) ??
             getDefaultCardIndex(PreferencesFlag.aboutUsCard);
@@ -246,6 +247,7 @@ class SettingsManager with ChangeNotifier {
   }
 
   /// Get the default index of each card
+  // TODO: use broadcast card as default 0 index
   int getDefaultCardIndex(PreferencesFlag flag) =>
       flag.index - PreferencesFlag.aboutUsCard.index;
 }
