@@ -4,9 +4,6 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:github/github.dart';
-import 'package:notredame/core/constants/preferences_flags.dart';
-import 'package:notredame/core/models/feedback_issue.dart';
-import 'package:notredame/core/services/preferences_service.dart';
 import 'package:stacked/stacked.dart';
 import 'package:image/image.dart' as image;
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -16,6 +13,13 @@ import 'package:notredame/core/constants/feedback_type.dart';
 
 //SERVICE
 import 'package:notredame/core/services/github_api.dart';
+import 'package:notredame/core/services/preferences_service.dart';
+
+// MODELS
+import 'package:notredame/core/models/feedback_issue.dart';
+
+// CONSTANTS
+import 'package:notredame/core/constants/preferences_flags.dart';
 
 // OTHERS
 import 'package:notredame/locator.dart';
@@ -60,7 +64,7 @@ class FeedbackViewModel extends FutureViewModel {
       _myIssues.add(FeedbackIssue(issue));
       // Sort by state open first and by number descending
       _myIssues.sort(
-          (a, b) => b.state.compareTo(a.state) * 1000 + b.number - a.number);
+          (a, b) => b.state.compareTo(a.state) * 100000 + b.number - a.number);
       setBusy(false);
       // Save the issue number in the preferences
       _preferencesService.setString(
@@ -94,7 +98,7 @@ class FeedbackViewModel extends FutureViewModel {
         issuesNumberList.map((e) => int.parse(e)).toList(), _appIntl);
     // Sort by state open first and by number descending
     _myIssues.sort(
-        (a, b) => b.state.compareTo(a.state) * 1000 + b.number - a.number);
+        (a, b) => b.state.compareTo(a.state) * 100000 + b.number - a.number);
 
     return _myIssues.length;
   }

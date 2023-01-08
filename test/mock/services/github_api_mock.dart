@@ -1,10 +1,13 @@
 // FLUTTER / DART / THIRD-PARTIES
 import 'dart:io';
-
 import 'package:mockito/mockito.dart';
-import 'package:notredame/core/models/feedback_issue.dart';
-import 'package:notredame/core/services/github_api.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
+// MODELS
+import 'package:notredame/core/models/feedback_issue.dart';
+
+// SERVICES
+import 'package:notredame/core/services/github_api.dart';
 
 /// Mock for the [GithubApi]
 class GithubApiMock extends Mock implements GithubApi {
