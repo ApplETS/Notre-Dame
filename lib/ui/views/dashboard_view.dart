@@ -106,7 +106,6 @@ class _DashboardViewState extends State<DashboardView>
 
     for (final PreferencesFlag element in model.cardsToDisplay) {
       switch (element) {
-        // TODO: move first somehow
         case PreferencesFlag.broadcastCard:
           cards.add(_buildMessageBroadcastCard(model, element));
           break;
@@ -409,7 +408,7 @@ class _DashboardViewState extends State<DashboardView>
           onDismissed: (DismissDirection direction) {
             dismissCard(model, flag);
           },
-          // isBusy: model.busy(model.courses),   // TODO: see if model should be used
+          isBusy: model.busy(model.broadcastMessage),
           cardColor: AppTheme
               .etsDarkRed, // TODO: maybe change color w/ remote config ?
           child: Padding(
@@ -417,7 +416,6 @@ class _DashboardViewState extends State<DashboardView>
             child: Column(mainAxisSize: MainAxisSize.min, children: [
               // title row
               Row(
-                mainAxisSize: MainAxisSize.max,
                 children: [
                   Expanded(
                     child: Align(
@@ -439,9 +437,7 @@ class _DashboardViewState extends State<DashboardView>
                 ],
               ),
               // main text
-              Text(model.broadcastMessage == null
-                  ? "Null"
-                  : model.broadcastMessage)
+              Text(model.broadcastMessage ?? "")
             ]),
           ));
 
