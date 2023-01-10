@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:intl/intl.dart';
 import 'package:stacked/stacked.dart';
-import 'package:syncfusion_flutter_calendar/calendar.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -51,6 +50,7 @@ class _ScheduleViewState extends State<ScheduleView>
   static const String tag = "ScheduleView";
   static const Color _selectedColor = AppTheme.etsLightRed;
   static const Color _defaultColor = Color(0xff76859B);
+  static final List<String> weekTitles = ["L", "M", "M", "J", "V", "S", "D"];
 
   AnimationController _animationController;
 
@@ -157,6 +157,15 @@ class _ScheduleViewState extends State<ScheduleView>
           color: AppTheme.etsDarkGrey,
         ),
         scrollOffset: 305,
+        timeLineStringBuilder: (date, {secondaryDate}) {
+          return DateFormat('HH:mm').format(date);
+        },
+        weekDayStringBuilder: (p0) {
+          return weekTitles[p0];
+        },
+        headerStringBuilder: (date, {secondaryDate}) {
+          return 'Du ${date.day} ${DateFormat.MMMM("fr").format(date)} au ${secondaryDate.day} ${DateFormat.MMMM("fr").format(secondaryDate)}';
+        },
       ),
     );
   }

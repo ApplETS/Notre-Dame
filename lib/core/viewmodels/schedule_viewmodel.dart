@@ -105,7 +105,6 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
     final List<CalendarEventData> eventsAdded = [];
     for (int i = 0; i < eventsToAdd.length; i++) {
       if (!calendarEvents.contains(eventsToAdd[i])) {
-        print(eventsToAdd[i]);
         calendarEvents.add(eventsToAdd[i]);
         eventsAdded.add(eventsToAdd[i]);
       }
@@ -141,13 +140,11 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
     final List<CalendarEventData> events = [];
     final firstDayOfWeek = Utils.getFirstDayOfCurrentWeek(selectedDate,
         settings[PreferencesFlag.scheduleStartWeekday] as StartingDayOfWeek);
-    for (int i = -1; i <= 1; i++) {
-      for (int j = 0; j < 7; j++) {
-        final date = firstDayOfWeek.add(Duration(days: j + i * 7));
-        final eventsForDay = selectedDateCalendarEvents(date);
-        if (eventsForDay.isNotEmpty) {
-          events.addAll(eventsForDay);
-        }
+    for (int i = 0; i < 7; i++) {
+      final date = firstDayOfWeek.add(Duration(days: i));
+      final eventsForDay = selectedDateCalendarEvents(date);
+      if (eventsForDay.isNotEmpty) {
+        events.addAll(eventsForDay);
       }
     }
     return events;
