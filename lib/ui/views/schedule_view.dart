@@ -2,6 +2,7 @@
 import 'package:feature_discovery/feature_discovery.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
+import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:stacked/stacked.dart';
 import 'package:table_calendar/table_calendar.dart';
@@ -106,6 +107,7 @@ class _ScheduleViewState extends State<ScheduleView>
                             .subtract(const Duration(days: 7));
                       }
                       model.selectedDate = model.focusedDate.value;
+                      HapticFeedback.lightImpact();
                     });
                   } else if (details.velocity.pixelsPerSecond.dx < -5) {
                     setState(() {
@@ -117,6 +119,7 @@ class _ScheduleViewState extends State<ScheduleView>
                             .add(const Duration(days: 7));
                       }
                       model.selectedDate = model.focusedDate.value;
+                      HapticFeedback.lightImpact();
                     });
                   }
                 },
