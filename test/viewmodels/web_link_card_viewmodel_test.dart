@@ -29,9 +29,9 @@ void main() {
 
   WebLinkCardViewModel viewModel;
 
-  final _quickLink = QuickLink(
+  final quickLink = QuickLink(
       image: const Icon(Icons.ac_unit), name: 'test', link: 'testlink');
-  final _securityQuickLink = QuickLink(
+  final securityQuickLink = QuickLink(
       image: const Icon(Icons.ac_unit), name: 'test', link: 'security');
 
   group('WebLinkCardViewModel - ', () {
@@ -54,7 +54,7 @@ void main() {
 
     group('onLinkClicked -', () {
       test('navigate to security', () async {
-        await viewModel.onLinkClicked(_securityQuickLink);
+        await viewModel.onLinkClicked(securityQuickLink);
 
         verify(
             analyticsService.logEvent("QuickLink", "QuickLink clicked: test"));
@@ -66,10 +66,10 @@ void main() {
         InternalInfoServiceMock.stubGetDeviceInfoForErrorReporting(
             internalInfoService as InternalInfoServiceMock);
 
-        await viewModel.onLinkClicked(_quickLink);
+        await viewModel.onLinkClicked(quickLink);
 
         verify(navigationService.pushNamed(RouterPaths.webView,
-            arguments: _quickLink));
+            arguments: quickLink));
         verifyNoMoreInteractions(navigationService);
       });
     });
