@@ -27,6 +27,9 @@ class SettingsManager with ChangeNotifier {
 
   final AnalyticsService _analyticsService = locator<AnalyticsService>();
 
+  final RemoteConfigService _remoteConfigService =
+      locator<RemoteConfigService>();
+
   /// current ThemeMode
   ThemeMode _themeMode;
 
@@ -170,11 +173,11 @@ class SettingsManager with ChangeNotifier {
     settings.putIfAbsent(
         PreferencesFlag.scheduleShowTodayBtn, () => showTodayBtn);
 
-    final toggleCalendarView =
+    final scheduleListView =
         await _preferencesService.getBool(PreferencesFlag.scheduleListView) ??
             getCalendarViewEnabled();
     settings.putIfAbsent(
-        PreferencesFlag.scheduleListView, () => toggleCalendarView);
+        PreferencesFlag.scheduleListView, () => scheduleListView);
 
     final showWeekEventsBtn = await _preferencesService
             .getBool(PreferencesFlag.scheduleShowWeekEvents) ??
@@ -257,8 +260,6 @@ class SettingsManager with ChangeNotifier {
       flag.index - PreferencesFlag.aboutUsCard.index;
 
   bool getCalendarViewEnabled() {
-    final RemoteConfigService remoteConfigService =
-        locator<RemoteConfigService>();
-    return remoteConfigService.scheduleListViewDefault;
+    return _remoteConfigService.scheduleListViewDefault;
   }
 }
