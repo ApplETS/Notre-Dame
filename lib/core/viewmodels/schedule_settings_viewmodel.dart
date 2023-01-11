@@ -87,7 +87,9 @@ class ScheduleSettingsViewModel
   }
 
   bool getCalendarViewEnabled() {
-    return _settingsManager.getCalendarViewEnabled();
+    final RemoteConfigService remoteConfigService =
+        locator<RemoteConfigService>();
+    return remoteConfigService.scheduleListViewDefault;
   }
 
   bool _showWeekEvents = false;

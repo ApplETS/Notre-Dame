@@ -27,9 +27,6 @@ class SettingsManager with ChangeNotifier {
 
   final AnalyticsService _analyticsService = locator<AnalyticsService>();
 
-  final RemoteConfigService _remoteConfigService =
-      locator<RemoteConfigService>();
-
   /// current ThemeMode
   ThemeMode _themeMode;
 
@@ -260,6 +257,8 @@ class SettingsManager with ChangeNotifier {
       flag.index - PreferencesFlag.aboutUsCard.index;
 
   bool getCalendarViewEnabled() {
-    return _remoteConfigService.scheduleListViewDefault;
+    final RemoteConfigService remoteConfigService =
+        locator<RemoteConfigService>();
+    return remoteConfigService.scheduleListViewDefault;
   }
 }
