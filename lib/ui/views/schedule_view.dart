@@ -309,7 +309,6 @@ class _ScheduleViewState extends State<ScheduleView>
     showModalBottomSheet(
       context: context,
       shape: const RoundedRectangleBorder(
-        // <-- SEE HERE
         borderRadius: BorderRadius.vertical(
           top: Radius.circular(8.0),
         ),

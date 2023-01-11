@@ -1,4 +1,6 @@
 // FLUTTER / DART / THIRD-PARTIES
+import 'dart:js';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -26,6 +28,16 @@ final CourseActivity course = CourseActivity(
     activityLocation: 'À distance',
     startDateTime: DateTime(2020, 9, 3, 18),
     endDateTime: DateTime(2020, 9, 3, 20));
+
+final CourseActivity courseAvecPlusieurGroup = CourseActivity(
+    courseGroup: 'LOG710-01',
+    courseName:
+        'Principes des systèmes d’exploitation et programmation système',
+    activityName: 'TP',
+    activityDescription: 'Laboratoire (Groupe A)',
+    activityLocation: 'À distance',
+    startDateTime: DateTime(2022, 9, 3, 18),
+    endDateTime: DateTime(2023, 9, 3, 20));
 
 final List<CourseActivity> activities = [course];
 
@@ -61,5 +73,28 @@ void main() {
       expect(find.text("18:00"), findsOneWidget);
       expect(find.text("20:00"), findsOneWidget);
     });
+
+    // testWidgets("onLongPressed calls onLongPressedAction",
+    //         (WidgetTester tester) async {
+    //       CourseRepositoryMock.stubGetCoursesActivities(
+    //           courseRepository as CourseRepositoryMock);
+    //       // Set the textScaleFactor to 0.5 otherwise the row overflow, only happen in test.
+    //
+    //       await tester.pumpWidget(
+    //           CourseActivityTile(
+    //               activity: courseAvecPlusieurGroup,
+    //               onLongPressedAction: () => {
+    //               },
+    //               scheduleViewModel: scheduleViewModel
+    //           )
+    //       );
+    //
+    //
+    //       await tester.longPress(find.text(course.courseGroup));
+    //
+    //       await tester.pumpAndSettle();
+    //
+    //       expect(find.)
+    //     });
   });
 }
