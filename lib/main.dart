@@ -87,30 +87,31 @@ class ETSMobile extends StatelessWidget {
           ),
           localeOverride: model.locale,
           child: FeatureDiscovery(
-              recordStepsInSharedPreferences: false,
-              child: CalendarControllerProvider(
-                controller: EventController(),
-                child: MaterialApp(
-                  title: 'ÉTS Mobile',
-                  theme: AppTheme.lightTheme(),
-                  darkTheme: AppTheme.darkTheme(),
-                  themeMode: model.themeMode,
-                  localizationsDelegates: const [
-                    AppIntl.delegate,
-                    GlobalMaterialLocalizations.delegate,
-                    GlobalWidgetsLocalizations.delegate,
-                    GlobalCupertinoLocalizations.delegate,
-                  ],
-                  locale: model.locale,
-                  supportedLocales: AppIntl.supportedLocales,
-                  navigatorKey: locator<NavigationService>().navigatorKey,
-                  navigatorObservers: [
-                    locator<AnalyticsService>().getAnalyticsObserver(),
-                  ],
-                  home: _outage ? OutageView() : StartUpView(),
-                  onGenerateRoute: generateRoute,
-                ),
-              )),
+            recordStepsInSharedPreferences: false,
+            child: CalendarControllerProvider(
+              controller: EventController(),
+              child: MaterialApp(
+                title: 'ÉTS Mobile',
+                theme: AppTheme.lightTheme(),
+                darkTheme: AppTheme.darkTheme(),
+                themeMode: model.themeMode,
+                localizationsDelegates: const [
+                  AppIntl.delegate,
+                  GlobalMaterialLocalizations.delegate,
+                  GlobalWidgetsLocalizations.delegate,
+                  GlobalCupertinoLocalizations.delegate,
+                ],
+                locale: model.locale,
+                supportedLocales: AppIntl.supportedLocales,
+                navigatorKey: locator<NavigationService>().navigatorKey,
+                navigatorObservers: [
+                  locator<AnalyticsService>().getAnalyticsObserver(),
+                ],
+                home: _outage ? OutageView() : StartUpView(),
+                onGenerateRoute: generateRoute,
+              ),
+            ),
+          ),
         );
       }),
     );

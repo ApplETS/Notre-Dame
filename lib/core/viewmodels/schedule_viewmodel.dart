@@ -4,7 +4,6 @@ import 'package:calendar_view/calendar_view.dart';
 import 'package:enum_to_string/enum_to_string.dart';
 import 'package:feature_discovery/feature_discovery.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:notredame/ui/utils/app_theme.dart';
 import 'package:stacked/stacked.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 import 'package:table_calendar/table_calendar.dart';
@@ -23,6 +22,7 @@ import 'package:ets_api_clients/models.dart';
 // UTILS
 import 'package:notredame/ui/utils/discovery_components.dart';
 import 'package:notredame/core/utils/utils.dart';
+import 'package:notredame/ui/utils/app_theme.dart';
 
 // OTHER
 import 'package:notredame/locator.dart';

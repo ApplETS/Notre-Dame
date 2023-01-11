@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:intl/intl.dart';
-import 'package:notredame/core/services/remote_config_service.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:feature_discovery/feature_discovery.dart';
 
@@ -21,6 +20,9 @@ import 'package:notredame/ui/widgets/schedule_settings.dart';
 
 // HELPERS
 import '../../helpers.dart';
+
+// SERVICES
+import 'package:notredame/core/services/remote_config_service.dart';
 
 // MOCKS
 import '../../mock/managers/course_repository_mock.dart';
