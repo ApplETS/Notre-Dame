@@ -100,32 +100,30 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
   }
 
   static Future<bool> launchInAppReview() async {
-    final PreferencesService _preferencesService =
-        locator<PreferencesService>();
-    final InAppReviewService _inAppReviewService =
-        locator<InAppReviewService>();
+    final PreferencesService preferencesService = locator<PreferencesService>();
+    final InAppReviewService inAppReviewService = locator<InAppReviewService>();
 
     DateTime ratingTimerFlagDate =
-        await _preferencesService.getDateTime(PreferencesFlag.ratingTimer);
+        await preferencesService.getDateTime(PreferencesFlag.ratingTimer);
 
-    final hasRatingBeenRequested = await _preferencesService
+    final hasRatingBeenRequested = await preferencesService
             .getBool(PreferencesFlag.hasRatingBeenRequested) ??
         false;
 
     // If the user is already logged in while doing the update containing the In_App_Review PR.
     if (ratingTimerFlagDate == null) {
       final sevenDaysLater = DateTime.now().add(const Duration(days: 7));
-      _preferencesService.setDateTime(
+      preferencesService.setDateTime(
           PreferencesFlag.ratingTimer, sevenDaysLater);
       ratingTimerFlagDate = sevenDaysLater;
     }
 
-    if (await _inAppReviewService.isAvailable() &&
+    if (await inAppReviewService.isAvailable() &&
         !hasRatingBeenRequested &&
         DateTime.now().isAfter(ratingTimerFlagDate)) {
       await Future.delayed(const Duration(seconds: 2), () async {
-        await _inAppReviewService.requestReview();
-        _preferencesService.setBool(PreferencesFlag.hasRatingBeenRequested,
+        await inAppReviewService.requestReview();
+        preferencesService.setBool(PreferencesFlag.hasRatingBeenRequested,
             value: true);
       });
 
@@ -428,8 +426,8 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
 
   /// Start discovery is needed
   static Future<void> startDiscovery(BuildContext context) async {
-    final SettingsManager _settingsManager = locator<SettingsManager>();
-    if (await _settingsManager.getBool(PreferencesFlag.discoveryDashboard) ==
+    final SettingsManager settingsManager = locator<SettingsManager>();
+    if (await settingsManager.getBool(PreferencesFlag.discoveryDashboard) ==
         null) {
       final List<String> ids =
           findDiscoveriesByGroupName(context, DiscoveryGroupIds.bottomBar)

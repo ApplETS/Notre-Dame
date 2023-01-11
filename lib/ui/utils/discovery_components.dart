@@ -446,16 +446,16 @@ Align _buildSkipDiscoveryButton(BuildContext context) {
 }
 
 void dismissDiscovery(BuildContext context) {
-  final SettingsManager _settingsManager = locator<SettingsManager>();
+  final SettingsManager settingsManager = locator<SettingsManager>();
 
   FeatureDiscovery.dismissAll(context);
 
-  _settingsManager.setBool(PreferencesFlag.discoveryDashboard, true);
-  _settingsManager.setBool(PreferencesFlag.discoverySchedule, true);
-  _settingsManager.setBool(PreferencesFlag.discoveryStudentGrade, true);
-  _settingsManager.setBool(PreferencesFlag.discoveryGradeDetails, true);
-  _settingsManager.setBool(PreferencesFlag.discoveryStudentProfile, true);
-  _settingsManager.setBool(PreferencesFlag.discoveryMore, true);
+  settingsManager.setBool(PreferencesFlag.discoveryDashboard, true);
+  settingsManager.setBool(PreferencesFlag.discoverySchedule, true);
+  settingsManager.setBool(PreferencesFlag.discoveryStudentGrade, true);
+  settingsManager.setBool(PreferencesFlag.discoveryGradeDetails, true);
+  settingsManager.setBool(PreferencesFlag.discoveryStudentProfile, true);
+  settingsManager.setBool(PreferencesFlag.discoveryMore, true);
 }
 
 Discovery getDiscoveryByPath(BuildContext context, String group, String path) {

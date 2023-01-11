@@ -74,7 +74,7 @@ class ETSMobile extends StatelessWidget {
   Widget build(BuildContext context) {
     final RemoteConfigService remoteConfigService =
         locator<RemoteConfigService>();
-    final bool _outage = remoteConfigService.outage;
+    final bool outage = remoteConfigService.outage;
     return ChangeNotifierProvider<SettingsManager>(
       create: (_) => settingsManager,
       child: Consumer<SettingsManager>(builder: (context, model, child) {
@@ -107,7 +107,7 @@ class ETSMobile extends StatelessWidget {
                 navigatorObservers: [
                   locator<AnalyticsService>().getAnalyticsObserver(),
                 ],
-                home: _outage ? OutageView() : StartUpView(),
+                home: outage ? OutageView() : StartUpView(),
                 onGenerateRoute: generateRoute,
               ),
             ),

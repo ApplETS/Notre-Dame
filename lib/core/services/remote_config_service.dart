@@ -30,12 +30,12 @@ class RemoteConfigService {
   }
 
   Future<void> fetch() async {
-    final AnalyticsService _analyticsService = locator<AnalyticsService>();
+    final AnalyticsService analyticsService = locator<AnalyticsService>();
     try {
       await _remoteConfig.fetch();
       await _remoteConfig.fetchAndActivate();
     } on Exception catch (exception) {
-      _analyticsService.logError(
+      analyticsService.logError(
           tag,
           "Exception raised during fetching: ${exception.toString()}",
           exception);
