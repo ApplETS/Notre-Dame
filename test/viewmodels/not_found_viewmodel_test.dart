@@ -24,7 +24,7 @@ void main() {
   NotFoundViewModel viewModel;
 
   group('NotFoundViewModel - ', () {
-    const String _pageNotFoundPassed = "/test";
+    const String pageNotFoundPassed = "/test";
     const String riveFileName = 'dot_jumping';
 
     setUp(() async {
@@ -33,7 +33,7 @@ void main() {
       analyticsService = setupAnalyticsServiceMock();
       setupLogger();
 
-      viewModel = NotFoundViewModel(pageName: _pageNotFoundPassed);
+      viewModel = NotFoundViewModel(pageName: pageNotFoundPassed);
     });
 
     tearDown(() {
@@ -65,7 +65,7 @@ void main() {
       test('get the page pass in parameter', () async {
         final notFoundName = viewModel.notFoundPageName;
 
-        expect(_pageNotFoundPassed, notFoundName);
+        expect(pageNotFoundPassed, notFoundName);
       });
     });
 
