@@ -2,7 +2,7 @@ import 'package:flutter/services.dart';
 
 class LoginMask extends TextInputFormatter {
   final numberOfLetters = 2;
-  final maxCaracters = 8;
+  final maxCharacters = 8;
 
   ///Mask to match this regex "[A-Z]{2}[0-9]{5}"
   ///To use it add this mask to the inputFormatters in a TextField.
@@ -22,15 +22,15 @@ class LoginMask extends TextInputFormatter {
     if (newTextLength > numberOfLetters &&
         RegExp("^[0-9]*\$")
             .hasMatch(newValue.text.substring(2, newTextLength)) &&
-        newTextLength < maxCaracters) {
+        newTextLength < maxCharacters) {
       newText.write(newValue.text.toUpperCase());
     } else if (newTextLength > numberOfLetters &&
-        newTextLength < maxCaracters) {
+        newTextLength < maxCharacters) {
       newText.write(newValue.text.substring(0, newTextLength - 1));
     }
 
-    if (newTextLength >= maxCaracters) {
-      newText.write(newValue.text.substring(0, maxCaracters - 1));
+    if (newTextLength >= maxCharacters) {
+      newText.write(newValue.text.substring(0, maxCharacters - 1));
     }
 
     return newValue.copyWith(
