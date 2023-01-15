@@ -1,12 +1,10 @@
 // FLUTTER / DART / THIRD-PARTIES
 import 'package:flutter/material.dart';
 import 'package:mockito/mockito.dart';
-
-// MANAGER
-import 'package:notredame/core/managers/settings_manager.dart';
-
 // MODEL
 import 'package:notredame/core/constants/preferences_flags.dart';
+// MANAGER
+import 'package:notredame/core/managers/settings_manager.dart';
 
 class SettingsManagerMock extends Mock implements SettingsManager {
   /// Stub the [getScheduleSettings] function of [mock], when called return [toReturn].
@@ -38,6 +36,14 @@ class SettingsManagerMock extends Mock implements SettingsManager {
       SettingsManagerMock mock, PreferencesFlag flag, String key,
       {String toReturn = 'test'}) {
     when(mock.getDynamicString(flag, key)).thenAnswer((_) async => toReturn);
+  }
+
+  /// Stub the [setDynamicString] function of [mock], when called return [toReturn].
+  static void stubSetDynamicString(
+      SettingsManagerMock mock, PreferencesFlag flag, String key,
+      {bool toReturn = true}) {
+    when(mock.setDynamicString(flag, key, any))
+        .thenAnswer((_) async => toReturn);
   }
 
   /// Stub the [getBool] function of [mock], when called with [flag] return [toReturn].

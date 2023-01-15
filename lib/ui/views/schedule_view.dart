@@ -1,37 +1,30 @@
 // FLUTTER / DART / THIRD-PARTIES
+// MODELS
+import 'package:ets_api_clients/models.dart';
 import 'package:feature_discovery/feature_discovery.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
-import 'package:intl/intl.dart';
-import 'package:stacked/stacked.dart';
-import 'package:table_calendar/table_calendar.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-
-// UTILS
-import 'package:notredame/ui/utils/discovery_components.dart';
-
-// VIEWMODEL
-import 'package:notredame/core/viewmodels/schedule_viewmodel.dart';
-
-// MODELS
-import 'package:ets_api_clients/models.dart';
-
+import 'package:intl/intl.dart';
+import 'package:notredame/core/constants/discovery_ids.dart';
+// CONSTANTS
+import 'package:notredame/core/constants/preferences_flags.dart';
 // SERVICES
 import 'package:notredame/core/services/analytics_service.dart';
-
+// VIEWMODEL
+import 'package:notredame/core/viewmodels/schedule_viewmodel.dart';
+import 'package:notredame/locator.dart';
+// OTHER
+import 'package:notredame/ui/utils/app_theme.dart';
+// UTILS
+import 'package:notredame/ui/utils/discovery_components.dart';
 // WIDGET
 import 'package:notredame/ui/widgets/base_scaffold.dart';
 import 'package:notredame/ui/widgets/course_activity_tile.dart';
 import 'package:notredame/ui/widgets/schedule_settings.dart';
-
-// CONSTANTS
-import 'package:notredame/core/constants/preferences_flags.dart';
-import 'package:notredame/core/constants/discovery_ids.dart';
-
-// OTHER
-import 'package:notredame/ui/utils/app_theme.dart';
-import 'package:notredame/locator.dart';
+import 'package:stacked/stacked.dart';
+import 'package:table_calendar/table_calendar.dart';
 
 class ScheduleView extends StatefulWidget {
   @visibleForTesting
@@ -144,7 +137,7 @@ class _ScheduleViewState extends State<ScheduleView>
                       )
                     else if (!model.showWeekEvents)
                       _buildEventList(
-                          model.selectedDateEvents(model.selectedDate)),
+                          model.selectedDateEvents(model.selectedDate), model),
                     const SizedBox(height: 16.0),
                   ],
                 ),
@@ -164,7 +157,7 @@ class _ScheduleViewState extends State<ScheduleView>
     final eventsByDate = model.selectedWeekEvents();
     for (final events in eventsByDate.entries) {
       widgets.add(_buildTitleForDate(events.key, model));
-      widgets.add(_buildEventList(events.value));
+      widgets.add(_buildEventList(events.value, model));
       widgets.add(const SizedBox(height: 20.0));
     }
     return widgets;
@@ -267,12 +260,17 @@ class _ScheduleViewState extends State<ScheduleView>
       );
 
   /// Build the list of the events for the selected day.
-  Widget _buildEventList(List<dynamic> events) {
+  Widget _buildEventList(List<dynamic> events, ScheduleViewModel model) {
     return ListView.separated(
         physics: const ScrollPhysics(),
         shrinkWrap: true,
-        itemBuilder: (_, index) =>
-            CourseActivityTile(events[index] as CourseActivity),
+        itemBuilder: (BuildContext context, index) => CourseActivityTile(
+            activity: events[index] as CourseActivity,
+            onLongPressedAction: () => {
+                  _showBottomGroupSelectionSheet(
+                      context, events[index] as CourseActivity, model)
+                },
+            scheduleViewModel: model),
         separatorBuilder: (_, index) => (index < events.length)
             ? const Divider(thickness: 1, indent: 30, endIndent: 30)
             : const SizedBox(),
@@ -323,5 +321,73 @@ class _ScheduleViewState extends State<ScheduleView>
                   builder: (context) => const ScheduleSettings());
               model.loadSettings();
             }));
+  }
+
+  void _showBottomGroupSelectionSheet(BuildContext context,
+      CourseActivity courseActivity, ScheduleViewModel model) {
+    showModalBottomSheet(
+      context: context,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(
+          top: Radius.circular(8.0),
+        ),
+      ),
+      builder: (context) {
+        return Wrap(
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(
+                  left: 15.0, right: 15.0, top: 15.0, bottom: 2.0),
+              child: Text(
+                AppIntl.of(context).schedule_select_course_activity,
+                style: TextStyle(
+                  color: Theme.of(context).colorScheme.secondary,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+            const Divider(thickness: 1),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(15.0, 8.0, 15.0, 8.0),
+              child: Text(
+                "${model.getCourseAcronym(courseActivity)} - ${courseActivity.courseName}",
+                style: const TextStyle(
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+            ListTile(
+              title: Text(AppIntl.of(context).course_activity_group_both),
+              onTap: () {
+                model.onBothGroupPressed(courseActivity);
+                Navigator.pop(context);
+              },
+              selected: model.isGroupSelected(courseActivity, null),
+              selectedTileColor: AppTheme.etsLightRed.withOpacity(0.5),
+            ),
+            ListTile(
+              title: Text(AppIntl.of(context).course_activity_group_a),
+              onTap: () {
+                model.onGroupAPressed(courseActivity);
+                Navigator.pop(context);
+              },
+              selected: model.isGroupSelected(
+                  courseActivity, ActivityDescriptionName.labA),
+              selectedTileColor: AppTheme.etsLightRed.withOpacity(0.5),
+            ),
+            ListTile(
+              title: Text(AppIntl.of(context).course_activity_group_b),
+              onTap: () {
+                model.onGroupBPressed(courseActivity);
+                Navigator.pop(context);
+              },
+              selected: model.isGroupSelected(
+                  courseActivity, ActivityDescriptionName.labB),
+              selectedTileColor: AppTheme.etsLightRed.withOpacity(0.5),
+            ),
+          ],
+        );
+      },
+    );
   }
 }

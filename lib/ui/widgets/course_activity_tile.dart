@@ -1,19 +1,24 @@
 // FLUTTER / DART / THIRD-PARTIES
-import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
-
 // MODELS
 import 'package:ets_api_clients/models.dart';
+import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:notredame/core/viewmodels/schedule_viewmodel.dart';
 
 class CourseActivityTile extends StatelessWidget {
   /// Course to display
   final CourseActivity activity;
 
+  final VoidCallback onLongPressedAction;
+
+  final ScheduleViewModel scheduleViewModel;
+
   DateFormat get timeFormat => DateFormat.Hm();
 
   /// Display an [activity] with the start and end time of the activity,
   /// it name, shortname, type of activity and local.
-  const CourseActivityTile(this.activity);
+  const CourseActivityTile(
+      {this.activity, this.onLongPressedAction, this.scheduleViewModel});
 
   @override
   Widget build(BuildContext context) => Padding(
@@ -25,6 +30,7 @@ class CourseActivityTile extends StatelessWidget {
           subtitle:
               Text("${activity.courseName}\n${activity.activityDescription}"),
           trailing: Text(activity.activityLocation),
+          onLongPress: onLongPressed,
         ),
       );
 
@@ -62,5 +68,11 @@ class CourseActivityTile extends StatelessWidget {
     final green = finalHash & 0xFF;
     final color = Color.fromRGBO(red, green, blue, 1);
     return color;
+  }
+
+  void onLongPressed() {
+    if (scheduleViewModel.doesCourseActivityBelongToMultipleGroup(activity)) {
+      onLongPressedAction();
+    }
   }
 }

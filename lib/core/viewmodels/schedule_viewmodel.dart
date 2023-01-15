@@ -1,28 +1,24 @@
 // FLUTTER / DART / THIRD-PARTIES
 import 'package:enum_to_string/enum_to_string.dart';
+// MODELS
+import 'package:ets_api_clients/models.dart';
 import 'package:feature_discovery/feature_discovery.dart';
-import 'package:fluttertoast/fluttertoast.dart';
-import 'package:stacked/stacked.dart';
-import 'package:table_calendar/table_calendar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-
+import 'package:fluttertoast/fluttertoast.dart';
 // CONSTANTS
 import 'package:notredame/core/constants/discovery_ids.dart';
+import 'package:notredame/core/constants/preferences_flags.dart';
 // MANAGER
 import 'package:notredame/core/managers/course_repository.dart';
 import 'package:notredame/core/managers/settings_manager.dart';
-
-// MODELS
-import 'package:ets_api_clients/models.dart';
-
-// UTILS
-import 'package:notredame/ui/utils/discovery_components.dart';
 import 'package:notredame/core/utils/utils.dart';
-
 // OTHER
 import 'package:notredame/locator.dart';
-import 'package:notredame/core/constants/preferences_flags.dart';
+// UTILS
+import 'package:notredame/ui/utils/discovery_components.dart';
+import 'package:stacked/stacked.dart';
+import 'package:table_calendar/table_calendar.dart';
 
 class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
   /// Load the events
@@ -317,5 +313,51 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
     await _settingsManager.setBool(PreferencesFlag.discoverySchedule, true);
 
     return true;
+  }
+
+  bool doesCourseActivityBelongToMultipleGroup(CourseActivity activity) =>
+      activity.activityDescription.contains(ActivityDescriptionName.labA) ||
+      activity.activityDescription.contains(ActivityDescriptionName.labB);
+
+  Future<void> onGroupAPressed(CourseActivity courseActivity) async {
+    saveGroupSelectionSettings(
+        courseActivity,
+        scheduleActivitiesByCourse[getCourseAcronym(courseActivity)]
+            .first
+            .activityCode);
+  }
+
+  String getCourseAcronym(CourseActivity courseActivity) =>
+      courseActivity.courseGroup.split('-').first;
+
+  void onGroupBPressed(CourseActivity courseActivity) {
+    saveGroupSelectionSettings(
+        courseActivity,
+        scheduleActivitiesByCourse[getCourseAcronym(courseActivity)]
+            .last
+            .activityCode);
+  }
+
+  Future<void> onBothGroupPressed(CourseActivity courseActivity) async {
+    saveGroupSelectionSettings(courseActivity, null);
+  }
+
+  Future<void> saveGroupSelectionSettings(
+      CourseActivity courseActivity, String activityCode) async {
+    setBusy(true);
+
+    await _settingsManager.setDynamicString(
+        PreferencesFlag.scheduleSettingsLaboratoryGroup,
+        getCourseAcronym(courseActivity),
+        activityCode);
+
+    loadSettings();
+
+    setBusy(false);
+  }
+
+  bool isGroupSelected(CourseActivity courseActivity, String activityCode) {
+    return settingsScheduleActivities[getCourseAcronym(courseActivity)] ==
+        activityCode;
   }
 }

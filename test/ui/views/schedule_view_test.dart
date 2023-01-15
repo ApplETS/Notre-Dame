@@ -1,26 +1,23 @@
 // FLUTTER / DART / THIRD-PARTIES
 import 'dart:io';
+
+import 'package:ets_api_clients/models.dart';
+import 'package:feature_discovery/feature_discovery.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:intl/intl.dart';
-import 'package:table_calendar/table_calendar.dart';
-import 'package:feature_discovery/feature_discovery.dart';
-
+// MODELS / CONSTANTS
+import 'package:notredame/core/constants/preferences_flags.dart';
 // MANAGERS
 import 'package:notredame/core/managers/course_repository.dart';
 import 'package:notredame/core/managers/settings_manager.dart';
-
-// MODELS / CONSTANTS
-import 'package:notredame/core/constants/preferences_flags.dart';
-import 'package:ets_api_clients/models.dart';
-
 // VIEW / WIDGETS
 import 'package:notredame/ui/views/schedule_view.dart';
 import 'package:notredame/ui/widgets/schedule_settings.dart';
+import 'package:table_calendar/table_calendar.dart';
 
 // HELPERS
 import '../../helpers.dart';
-
 // MOCKS
 import '../../mock/managers/course_repository_mock.dart';
 import '../../mock/managers/settings_manager_mock.dart';
@@ -33,6 +30,8 @@ void main() {
   CourseActivity activityYesterday;
   CourseActivity activityToday;
   CourseActivity activityTomorrow;
+  CourseActivity activityGroupA;
+  CourseActivity activityGroupB;
 
   // Some settings
   Map<PreferencesFlag, dynamic> settings = {
@@ -40,6 +39,35 @@ void main() {
     PreferencesFlag.scheduleSettingsStartWeekday: StartingDayOfWeek.monday,
     PreferencesFlag.scheduleSettingsShowTodayBtn: true
   };
+
+  final List<ScheduleActivity> classOneWithLaboratoryABscheduleActivities = [
+    ScheduleActivity(
+        courseAcronym: "LOG710",
+        courseGroup: "01",
+        courseTitle:
+            "Principes des systèmes d’exploitation et programmation système",
+        dayOfTheWeek: 1,
+        day: "Lundi",
+        startTime: DateFormat("hh:mm").parse("08:30"),
+        endTime: DateFormat("hh:mm").parse("12:00"),
+        activityCode: ActivityCode.labGroupA,
+        isPrincipalActivity: true,
+        activityLocation: "En ligne",
+        name: "Laboratoire (Groupe A)"),
+    ScheduleActivity(
+        courseAcronym: "LOG710",
+        courseGroup: "01",
+        courseTitle:
+            "Principes des systèmes d’exploitation et programmation système",
+        dayOfTheWeek: 1,
+        day: "Lundi",
+        startTime: DateFormat("hh:mm").parse("13:30"),
+        endTime: DateFormat("hh:mm").parse("15:00"),
+        activityCode: ActivityCode.labGroupB,
+        isPrincipalActivity: true,
+        activityLocation: "En ligne",
+        name: "Laboratoire (Groupe B)")
+  ];
 
   group("ScheduleView - ", () {
     setUpAll(() {
@@ -52,6 +80,7 @@ void main() {
           microseconds: today.microsecond));
       final DateTime yesterday = today.subtract(const Duration(days: 1));
       final DateTime tomorrow = today.add(const Duration(days: 1));
+      final DateTime twoDaysFromToday = today.add(const Duration(days: 2));
 
       activityYesterday = CourseActivity(
           courseGroup: "GEN102",
@@ -77,6 +106,24 @@ void main() {
           activityLocation: "location",
           startDateTime: yesterday,
           endDateTime: yesterday.add(const Duration(hours: 4)));
+      activityGroupA = CourseActivity(
+          courseGroup: 'LOG710-01',
+          courseName:
+              'Principes des systèmes d’exploitation et programmation système',
+          activityName: 'TP',
+          activityDescription: 'Laboratoire (Groupe A)',
+          activityLocation: 'À distance',
+          startDateTime: twoDaysFromToday,
+          endDateTime: twoDaysFromToday.add(const Duration(hours: 4)));
+      activityGroupB = CourseActivity(
+          courseGroup: 'LOG710-01',
+          courseName:
+              'Principes des systèmes d’exploitation et programmation système',
+          activityName: 'TP',
+          activityDescription: 'Laboratoire (Groupe B)',
+          activityLocation: 'À distance',
+          startDateTime: twoDaysFromToday.add(const Duration(hours: 4)),
+          endDateTime: twoDaysFromToday.add(const Duration(hours: 8)));
     });
 
     setUp(() async {
@@ -339,6 +386,189 @@ void main() {
         expect(find.byType(ScheduleSettings), findsOneWidget,
             reason: "The settings view should be open");
       });
+
+      testWidgets("tap and hold on activity shows bottom menu sheet",
+          (WidgetTester tester) async {
+        tester.binding.window.physicalSizeTestValue = const Size(800, 1410);
+
+        CourseRepositoryMock.stubCoursesActivities(
+            courseRepository as CourseRepositoryMock,
+            toReturn: [activityGroupA, activityGroupB]);
+        CourseRepositoryMock.stubGetCoursesActivities(
+            courseRepository as CourseRepositoryMock,
+            fromCacheOnly: true);
+        CourseRepositoryMock.stubGetScheduleActivities(
+            courseRepository as CourseRepositoryMock,
+            toReturn: classOneWithLaboratoryABscheduleActivities);
+        CourseRepositoryMock.stubGetCoursesActivities(
+            courseRepository as CourseRepositoryMock,
+            fromCacheOnly: false);
+        SettingsManagerMock.stubGetScheduleSettings(
+            settingsManager as SettingsManagerMock,
+            toReturn: settings);
+
+        SettingsManagerMock.stubSetDynamicString(
+            settingsManager as SettingsManagerMock,
+            PreferencesFlag.scheduleSettingsLaboratoryGroup,
+            activityGroupA.courseGroup.split('-').first);
+
+        final testingDate = DateTime(2020);
+
+        final DateTime twoDaysFromToday =
+            testingDate.add(const Duration(days: 2));
+
+        final testingDay = twoDaysFromToday.day;
+
+        await tester.pumpWidget(localizedWidget(
+            child: FeatureDiscovery(
+                child: MediaQuery(
+                    data: const MediaQueryData(textScaleFactor: 0.5),
+                    child: ScheduleView(initialDay: twoDaysFromToday)))));
+        await tester.pumpAndSettle(const Duration(seconds: 1));
+
+        await tester.tap(find.descendant(
+            of: find.byType(TableCalendar, skipOffstage: false),
+            matching: find.text("${testingDay}", skipOffstage: false)));
+
+        await tester.pump();
+
+        await tester.longPress(find.text(
+            "${activityGroupA.courseName}\n${activityGroupA.activityDescription}"));
+
+        await tester.pump();
+
+        expect(find.byType(BottomSheet), findsOneWidget,
+            reason: "Should show bottom sheet menu");
+      });
+    });
+
+    testWidgets(
+        "When a settings laboratory is already selected, verify that it is in fact preselected",
+        (WidgetTester tester) async {
+      tester.binding.window.physicalSizeTestValue = const Size(800, 1410);
+
+      CourseRepositoryMock.stubCoursesActivities(
+          courseRepository as CourseRepositoryMock,
+          toReturn: [activityGroupA, activityGroupB]);
+      CourseRepositoryMock.stubGetCoursesActivities(
+          courseRepository as CourseRepositoryMock,
+          fromCacheOnly: true);
+      CourseRepositoryMock.stubGetScheduleActivities(
+          courseRepository as CourseRepositoryMock,
+          toReturn: classOneWithLaboratoryABscheduleActivities);
+      CourseRepositoryMock.stubGetCoursesActivities(
+          courseRepository as CourseRepositoryMock,
+          fromCacheOnly: false);
+      SettingsManagerMock.stubGetScheduleSettings(
+          settingsManager as SettingsManagerMock,
+          toReturn: settings);
+
+      // preselect the laboB
+      SettingsManagerMock.stubGetDynamicString(
+          settingsManager as SettingsManagerMock,
+          PreferencesFlag.scheduleSettingsLaboratoryGroup,
+          activityGroupB.courseGroup.split('-').first,
+          toReturn: ActivityCode.labGroupB);
+
+      final testingDate = DateTime(2020);
+
+      final DateTime twoDaysFromToday =
+          testingDate.add(const Duration(days: 2));
+
+      final testingDay = twoDaysFromToday.day;
+
+      await tester.pumpWidget(localizedWidget(
+          child: FeatureDiscovery(
+              child: MediaQuery(
+                  data: const MediaQueryData(textScaleFactor: 0.5),
+                  child: ScheduleView(initialDay: twoDaysFromToday)))));
+
+      await tester.pumpAndSettle();
+
+      await tester.tap(find.descendant(
+          of: find.byType(TableCalendar, skipOffstage: false),
+          matching: find.text("${testingDay}", skipOffstage: false)));
+
+      await tester.pump();
+
+      await tester.ensureVisible(find.text(
+          "${activityGroupB.courseName}\n${activityGroupB.activityDescription}"));
+
+      await tester.pump();
+
+      await tester.longPress(find.text(
+          "${activityGroupB.courseName}\n${activityGroupB.activityDescription}"));
+
+      await tester.pump();
+
+      final laboB = find.widgetWithText(ListTile, "Group B");
+
+      expect(
+          tester.widget(laboB),
+          isA<ListTile>()
+              .having((source) => source.selected, 'selected', isTrue),
+          reason: 'LaboB is the current labo, the UI should reflect that.');
+    });
+
+    testWidgets(
+        "if there is only a laboA (no labo b) the options should not appear on screen",
+        (WidgetTester tester) async {
+      tester.binding.window.physicalSizeTestValue = const Size(800, 1410);
+
+      final courseWithOnlyLabA = List<ScheduleActivity>.from(
+          classOneWithLaboratoryABscheduleActivities);
+      courseWithOnlyLabA.removeWhere(
+          (element) => element.activityCode == ActivityCode.labGroupB);
+
+      CourseRepositoryMock.stubCoursesActivities(
+          courseRepository as CourseRepositoryMock,
+          toReturn: [activityGroupA, activityGroupB]);
+      CourseRepositoryMock.stubGetCoursesActivities(
+          courseRepository as CourseRepositoryMock,
+          fromCacheOnly: true);
+      CourseRepositoryMock.stubGetScheduleActivities(
+          courseRepository as CourseRepositoryMock,
+          toReturn: courseWithOnlyLabA);
+      CourseRepositoryMock.stubGetCoursesActivities(
+          courseRepository as CourseRepositoryMock,
+          fromCacheOnly: false);
+      SettingsManagerMock.stubGetScheduleSettings(
+          settingsManager as SettingsManagerMock,
+          toReturn: settings);
+
+      final testingDate = DateTime(2020);
+
+      final DateTime twoDaysFromToday =
+          testingDate.add(const Duration(days: 2));
+
+      final testingDay = twoDaysFromToday.day;
+
+      await tester.pumpWidget(localizedWidget(
+          child: FeatureDiscovery(
+              child: MediaQuery(
+                  data: const MediaQueryData(textScaleFactor: 0.5),
+                  child: ScheduleView(initialDay: twoDaysFromToday)))));
+
+      await tester.pumpAndSettle();
+
+      await tester.tap(find.descendant(
+          of: find.byType(TableCalendar, skipOffstage: false),
+          matching: find.text("${testingDay}", skipOffstage: false)));
+
+      await tester.pump();
+
+      await tester.longPress(find.text(
+          "${activityGroupA.courseName}\n${activityGroupA.activityDescription}"));
+
+      await tester.pump();
+
+      final labo =
+          find.widgetWithText(ListTile, "Select the group of the labo");
+
+      expect(
+          () async => tester.dragUntilVisible(
+              labo, find.byType(BottomSheet), const Offset(0, -250)),
+          throwsA(const TypeMatcher<StateError>()));
     });
   });
 }
