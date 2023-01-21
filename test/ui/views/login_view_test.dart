@@ -85,8 +85,8 @@ void main() {
         // Rebuild the widget after the state has changed.
         await tester.pump();
 
-        verify(launchUrlService.canLaunchUrl(url)).called(1);
-        verify(launchUrlService.launchUrl(url)).called(1);
+        verify(launchUrlService.canLaunch(url)).called(1);
+        verify(launchUrlService.launch(url)).called(1);
         verifyNoMoreInteractions(launchUrlService);
       });
 
@@ -107,8 +107,8 @@ void main() {
         // Rebuild the widget after the state has changed.
         await tester.pumpAndSettle();
 
-        verify(launchUrlService.canLaunchUrl(url)).called(1);
-        verifyNever(launchUrlService.launchUrl(url));
+        verify(launchUrlService.canLaunch(url)).called(1);
+        verifyNever(launchUrlService.launch(url));
         verifyNoMoreInteractions(launchUrlService);
 
         verify(analyticsService.logError(any, any)).called(1);

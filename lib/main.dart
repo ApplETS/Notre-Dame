@@ -8,6 +8,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:notredame/firebase_options.dart';
 import 'package:notredame/ui/views/outage_view.dart';
 import 'package:notredame/ui/widgets/custom_feedback.dart';
 import 'package:provider/provider.dart';
@@ -37,7 +38,7 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   // Initialize firebase
-  await Firebase.initializeApp();
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   final RemoteConfigService remoteConfigService =
       locator<RemoteConfigService>();
   await remoteConfigService.initialize();
@@ -72,7 +73,7 @@ class ETSMobile extends StatelessWidget {
   Widget build(BuildContext context) {
     final RemoteConfigService remoteConfigService =
         locator<RemoteConfigService>();
-    final bool _outage = remoteConfigService.outage;
+    final bool outage = remoteConfigService.outage;
     return ChangeNotifierProvider<SettingsManager>(
       create: (_) => settingsManager,
       child: Consumer<SettingsManager>(builder: (context, model, child) {
@@ -103,7 +104,7 @@ class ETSMobile extends StatelessWidget {
               navigatorObservers: [
                 locator<AnalyticsService>().getAnalyticsObserver(),
               ],
-              home: _outage ? OutageView() : StartUpView(),
+              home: outage ? OutageView() : StartUpView(),
               onGenerateRoute: generateRoute,
             ),
           ),

@@ -33,10 +33,10 @@ _Note: This guide is also available in: [Français](https://github.com/ApplETS/N
 
 ## Requirements
 
-- Flutter SDK v3.0.1
+- Flutter SDK v3.3.8
 ```sh
 # to downgrade flutter version to the required version, simply do:
-$ flutter downgrade 3.0.1
+$ flutter downgrade 3.3.8
 ```
 - Openssl v1.1.1g or higher
 

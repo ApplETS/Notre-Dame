@@ -1,6 +1,7 @@
 // FLUTTER / DART / THIRD-PARTIES
 import 'dart:io';
 import 'dart:typed_data';
+import 'package:feedback/feedback.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:github/github.dart';
@@ -30,6 +31,8 @@ class FeedbackViewModel extends FutureViewModel {
 
   final AppIntl _appIntl;
 
+  final int _screenshotImageWidth = 307;
+
   List<FeedbackIssue> _myIssues = [];
 
   // get the list of issues
@@ -37,13 +40,11 @@ class FeedbackViewModel extends FutureViewModel {
 
   FeedbackViewModel({@required AppIntl intl}) : _appIntl = intl;
 
-  /// Create a Github issue with [feedbackText] and the screenshot associated.
-  Future<void> sendFeedback(String feedbackText, Uint8List feedbackScreenshot,
-      String feedbackType) async {
+  /// Create a Github issue with [UserFeedback] and the screenshot associated.
+  Future<void> sendFeedback(UserFeedback feedback) async {
     //Generate info to pass to github
     final File file = await _githubApi.localFile;
-    await file.writeAsBytes(image.encodePng(
-        image.copyResize(image.decodeImage(feedbackScreenshot), width: 307)));
+    await file.writeAsBytes(encodeScreenshotForGithub(feedback.screenshot));
 
     final String fileName = file.path.split('/').last;
 
@@ -51,9 +52,9 @@ class FeedbackViewModel extends FutureViewModel {
     _githubApi.uploadFileToGithub(filePath: fileName, file: file);
 
     final Issue issue = await _githubApi.createGithubIssue(
-        feedbackText: feedbackText,
+        feedbackText: feedback.text,
         fileName: fileName,
-        feedbackType: feedbackType);
+        feedbackType: getUserFeedbackType(feedback));
 
     if (issue != null) {
       setBusy(true);
@@ -68,10 +69,20 @@ class FeedbackViewModel extends FutureViewModel {
     }
 
     file.deleteSync();
+
     Fluttertoast.showToast(
       msg: _appIntl.thank_you_for_the_feedback,
       gravity: ToastGravity.CENTER,
     );
+  }
+
+  List<int> encodeScreenshotForGithub(Uint8List screenshot) {
+    return image.encodePng(image.copyResize(image.decodeImage(screenshot),
+        width: _screenshotImageWidth));
+  }
+
+  String getUserFeedbackType(UserFeedback userFeedback) {
+    return userFeedback.extra.entries.first.value.toString().split('.').last;
   }
 
   // @override

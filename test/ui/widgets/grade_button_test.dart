@@ -26,8 +26,8 @@ import '../../mock/managers/settings_manager_mock.dart';
 
 void main() {
   AppIntl intl;
-  NavigationService _navigationService;
-  SettingsManager _settingsManager;
+  NavigationService navigationService;
+  SettingsManager settingsManager;
 
   final Course courseWithGrade = Course(
       acronym: 'GEN101',
@@ -65,10 +65,10 @@ void main() {
 
   group("GradeButton -", () {
     setUp(() async {
-      _settingsManager = setupSettingsManagerMock();
+      settingsManager = setupSettingsManagerMock();
       intl = await setupAppIntl();
       setupNavigationServiceMock();
-      _navigationService = setupNavigationServiceMock();
+      navigationService = setupNavigationServiceMock();
     });
 
     tearDown(() {
@@ -80,7 +80,7 @@ void main() {
       testWidgets("Display acronym of the course and the current grade",
           (WidgetTester tester) async {
         SettingsManagerMock.stubGetString(
-            _settingsManager as SettingsManagerMock,
+            settingsManager as SettingsManagerMock,
             PreferencesFlag.discoveryStudentGrade,
             toReturn: 'true');
 
@@ -95,7 +95,7 @@ void main() {
       testWidgets("Grade not available and summary is loaded.",
           (WidgetTester tester) async {
         SettingsManagerMock.stubGetString(
-            _settingsManager as SettingsManagerMock,
+            settingsManager as SettingsManagerMock,
             PreferencesFlag.discoveryStudentGrade,
             toReturn: 'true');
 
@@ -116,7 +116,7 @@ void main() {
       testWidgets("Grade and summary not available.",
           (WidgetTester tester) async {
         SettingsManagerMock.stubGetString(
-            _settingsManager as SettingsManagerMock,
+            settingsManager as SettingsManagerMock,
             PreferencesFlag.discoveryStudentGrade,
             toReturn: 'true');
 
@@ -135,7 +135,7 @@ void main() {
     group('Interactions - ', () {
       testWidgets('Grade button redirects to grades view when tapped ',
           (WidgetTester tester) async {
-        SettingsManagerMock.stubGetBool(_settingsManager as SettingsManagerMock,
+        SettingsManagerMock.stubGetBool(settingsManager as SettingsManagerMock,
             PreferencesFlag.discoveryStudentGrade,
             toReturn: true);
         await tester.pumpWidget(localizedWidget(
@@ -144,7 +144,7 @@ void main() {
 
         await tester.tap(find.text(courseWithGrade.acronym));
 
-        verify(_navigationService.pushNamed(RouterPaths.gradeDetails,
+        verify(navigationService.pushNamed(RouterPaths.gradeDetails,
             arguments: courseWithGrade));
       });
 
@@ -157,7 +157,7 @@ void main() {
 
         await tester.tap(find.text(courseWithGrade.acronym));
 
-        verifyNever(_navigationService.pushNamed(RouterPaths.gradeDetails,
+        verifyNever(navigationService.pushNamed(RouterPaths.gradeDetails,
             arguments: courseWithGrade));
       });
     });

@@ -125,14 +125,12 @@ class MoreViewModel extends FutureViewModel {
   }
 
   static Future<bool> launchInAppReview() async {
-    final PreferencesService _preferencesService =
-        locator<PreferencesService>();
-    final InAppReviewService _inAppReviewService =
-        locator<InAppReviewService>();
+    final PreferencesService preferencesService = locator<PreferencesService>();
+    final InAppReviewService inAppReviewService = locator<InAppReviewService>();
 
-    if (await _inAppReviewService.isAvailable()) {
-      await _inAppReviewService.openStoreListing();
-      _preferencesService.setBool(PreferencesFlag.hasRatingBeenRequested,
+    if (await inAppReviewService.isAvailable()) {
+      await inAppReviewService.openStoreListing();
+      preferencesService.setBool(PreferencesFlag.hasRatingBeenRequested,
           value: true);
 
       return true;
