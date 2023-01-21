@@ -4,8 +4,8 @@
     <br /><strong>Notre-Dame Project</strong>
     <br />
     <br />
-    <a href="https://github.com/ApplETS/Notre-Dame/actions/workflows/main-workflow.yaml" style="text-decoration: none;">
-        <img src="https://github.com/ApplETS/Notre-Dame/actions/workflows/main-workflow.yaml/badge.svg?branch=master" alt="Build Status"/>
+    <a href="https://github.com/ApplETS/Notre-Dame/actions/workflows/master-workflow.yaml" style="text-decoration: none;">
+        <img src="https://github.com/ApplETS/Notre-Dame/actions/workflows/master-workflow.yaml/badge.svg?branch=master" alt="Build Status"/>
     </a>
     <img src="https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/clubapplets-server/e51406de3b919a69f396642a2bcb413c/raw/notre_dame_master_badge_coverage.json" alt="Code coverage"/>
     <br />
