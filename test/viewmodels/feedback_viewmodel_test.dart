@@ -40,7 +40,10 @@ void main() {
   const feedBackText = 'Notre-Dame bug report';
   final file = File('bugReportTest.png');
   final filePath = file.path.split('/').last;
-  final Map<String, dynamic> extra = {'': 'bugReport', 'email': 'email@email.com'};
+  final Map<String, dynamic> extra = {
+    '': 'bugReport',
+    'email': 'email@email.com'
+  };
   final Map<String, dynamic> extra2 = {'': 'bugReport'};
 
   String getUserFeedbackType() {
@@ -94,7 +97,7 @@ void main() {
         GithubApiMock.stubLocalFile(githubApiMock, file);
 
         await viewModel.sendFeedback(UserFeedback(
-          text: feedBackText, screenshot: screenshotData, extra: extra));
+            text: feedBackText, screenshot: screenshotData, extra: extra));
 
         verify(githubApiMock.createGithubIssue(
             feedbackText: 'Notre-Dame bug report',
@@ -108,26 +111,25 @@ void main() {
         GithubApiMock.stubLocalFile(githubApiMock, file);
 
         await viewModel.sendFeedback(UserFeedback(
-          text: feedBackText, screenshot: screenshotData, extra: extra2));
+            text: feedBackText, screenshot: screenshotData, extra: extra2));
 
         verify(githubApiMock.createGithubIssue(
             feedbackText: 'Notre-Dame bug report',
             fileName: file.path.split('/').last,
             feedbackType: 'bug'));
-    });
-    
-    test('If the github issue has been created', () async {
-      GithubApiMock.stubLocalFile(githubApiMock, file);
+      });
 
-      await viewModel.sendFeedback(UserFeedback(
-          text: feedBackText, screenshot: screenshotData, extra: extra));
+      test('If the github issue has been created', () async {
+        GithubApiMock.stubLocalFile(githubApiMock, file);
 
-      verify(githubApiMock.createGithubIssue(
-          feedbackText: feedBackText,
-          fileName: filePath,
-          feedbackType: getUserFeedbackType()));
-    });
+        await viewModel.sendFeedback(UserFeedback(
+            text: feedBackText, screenshot: screenshotData, extra: extra));
 
+        verify(githubApiMock.createGithubIssue(
+            feedbackText: feedBackText,
+            fileName: filePath,
+            feedbackType: getUserFeedbackType()));
+      });
     });
 
     group('futureToRun - ', () {
