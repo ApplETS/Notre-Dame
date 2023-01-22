@@ -21,8 +21,7 @@ void main() {
     tearDown(() {});
 
     group('UI - ', () {
-      testWidgets('has 2 ElevatedButton',
-          (WidgetTester tester) async {
+      testWidgets('has 2 ElevatedButton', (WidgetTester tester) async {
         await tester.pumpWidget(localizedWidget(child: FeedbackView()));
         await tester.pumpAndSettle();
 
