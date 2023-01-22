@@ -268,22 +268,6 @@ class _FeedbackViewState extends State<FeedbackView> {
                 ),
               ],
             ),
-            floatingActionButtonLocation:
-                FloatingActionButtonLocation.centerFloat,
-            floatingActionButton: FloatingActionButton.extended(
-              onPressed: () => {
-                BetterFeedback.of(context).show((feedback) {
-                  if (!hasSubmittedFeedback) {
-                    hasSubmittedFeedback = true;
-                    model
-                        .sendFeedback(feedback)
-                        .then((value) => BetterFeedback.of(context).hide());
-                  }
-                }),
-                hasSubmittedFeedback = false
-              },
-              label: Text(AppIntl.of(context).more_report_bug_button),
-            ),
           );
         },
       );
