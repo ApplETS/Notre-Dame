@@ -287,5 +287,10 @@
 
   "in_app_review_title": "Rate us!",
   "need_help_contact_us": "Need help? Contact us!",
-  "universal_code_example": "Ex: AB12345"
+  "universal_code_example": "Ex: AB12345",
+  "my_tickets": "My tickets",
+  "no_ticket": "No ticket",
+  "ticket_status_open": "Open",
+  "ticket_status_closed": "Closed",
+  "loading": "Loading..."
 }
