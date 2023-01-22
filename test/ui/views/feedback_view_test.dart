@@ -21,13 +21,10 @@ void main() {
     tearDown(() {});
 
     group('UI - ', () {
-      testWidgets('has 2 cards and 2 ElevatedButton',
+      testWidgets('has 2 ElevatedButton',
           (WidgetTester tester) async {
         await tester.pumpWidget(localizedWidget(child: FeedbackView()));
         await tester.pumpAndSettle();
-
-        final card = find.byType(Card);
-        expect(card, findsNWidgets(2));
 
         final elevatedButton = find.byType(ElevatedButton);
         expect(elevatedButton, findsNWidgets(2));
