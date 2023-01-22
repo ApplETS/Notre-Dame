@@ -23,7 +23,6 @@ class _FeedbackViewState extends State<FeedbackView> {
       ViewModelBuilder<FeedbackViewModel>.reactive(
         viewModelBuilder: () => FeedbackViewModel(intl: AppIntl.of(context)),
         builder: (context, model, child) {
-          bool hasSubmittedFeedback = false;
           final bool isLightMode =
               Theme.of(context).brightness == Brightness.light;
           return Scaffold(
