@@ -117,6 +117,12 @@
       "number": {}
     }
   },
+  "credits_number": "Credits: {number}",
+  "@credits_number": {
+    "placeholders": {
+      "number": {}
+    }
+  },
   "grades_teacher": "Professor: {teacherName}",
   "@grades_teacher": {
     "placeholders": {
