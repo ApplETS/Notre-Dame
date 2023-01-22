@@ -8,9 +8,6 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-// CONSTANTS
-import 'package:notredame/core/constants/feedback_type.dart';
-
 // SERVICES / MANAGERS
 import 'package:notredame/core/services/github_api.dart';
 import 'package:notredame/core/services/navigation_service.dart';
