@@ -33,15 +33,8 @@ class _FeedbackViewState extends State<FeedbackView> {
             body: ListView(
               children: <Widget>[
                 const SizedBox(height: 8),
-                Card(
-                  color: Theme.of(context).brightness == Brightness.light
-                      ? AppTheme.lightThemeBackground
-                      : AppTheme.darkThemeAccent,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10.0),
-                    side: BorderSide(
-                        color: AppTheme.etsLightGrey.withOpacity(0.1)),
-                  ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
                   child: ElevatedButton(
                     onPressed: () {
                       BetterFeedback.of(context).show((feedback) {
@@ -50,12 +43,13 @@ class _FeedbackViewState extends State<FeedbackView> {
                             .then((value) => BetterFeedback.of(context).hide());
                       });
                     },
-                    style: ElevatedButton.styleFrom(
-                        backgroundColor:
-                            Theme.of(context).brightness == Brightness.light
-                                ? AppTheme.lightThemeBackground
-                                : AppTheme.darkThemeAccent,
-                        padding: EdgeInsets.zero),
+                    style: ButtonStyle(
+                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                        RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8.0),
+                        ),
+                      )
+                    ),
                     child: getCardInfo(
                       context,
                       AppIntl.of(context).more_report_bug_bug,
@@ -67,12 +61,8 @@ class _FeedbackViewState extends State<FeedbackView> {
                   ),
                 ),
                 const SizedBox(height: 5),
-                Card(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10.0),
-                    side: BorderSide(
-                        color: AppTheme.etsLightGrey.withOpacity(0.1)),
-                  ),
+                Padding(
+                  padding: const EdgeInsets.only(left: 8.0, right: 8.0),
                   child: ElevatedButton(
                     onPressed: () {
                       BetterFeedback.of(context).show((feedback) {
@@ -81,28 +71,30 @@ class _FeedbackViewState extends State<FeedbackView> {
                             .then((value) => BetterFeedback.of(context).hide());
                       });
                     },
-                    style: ElevatedButton.styleFrom(
-                        backgroundColor:
-                            Theme.of(context).brightness == Brightness.light
-                                ? AppTheme.lightThemeBackground
-                                : AppTheme.darkThemeAccent,
-                        padding: EdgeInsets.zero),
+                    style: ButtonStyle(
+                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                        RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8.0),
+                        ),
+                      )
+                    ),
                     child: getCardInfo(
-                        context,
-                        AppIntl.of(context).more_report_bug_feature,
-                        AppIntl.of(context).more_report_bug_feature_subtitle,
-                        Icons.design_services,
-                        const Color.fromRGBO(63, 219, 251, 1),
-                        const Color.fromRGBO(14, 127, 188, 1)),
+                      context,
+                      AppIntl.of(context).more_report_bug_feature,
+                      AppIntl.of(context).more_report_bug_feature_subtitle,
+                      Icons.design_services,
+                      const Color.fromRGBO(63, 219, 251, 1),
+                      const Color.fromRGBO(14, 127, 188, 1),
+                    ),
                   ),
                 ),
-                const SizedBox(height: 8),
+                const SizedBox(height: 25),
                 Padding(
-                    padding: const EdgeInsets.only(left: 8.0, right: 8.0),
-                    child: Text(AppIntl.of(context).my_tickets,
-                        style: Theme.of(context).textTheme.headline5.copyWith(
-                            color:
-                                isLightMode ? Colors.black87 : Colors.white))),
+                  padding: const EdgeInsets.only(left: 8.0, right: 8.0),
+                  child: Text(AppIntl.of(context).my_tickets,
+                      style: Theme.of(context).textTheme.headline5.copyWith(
+                          color:
+                              isLightMode ? Colors.black87 : Colors.white))),
                 const Divider(
                   thickness: 1,
                   indent: 10,
@@ -211,7 +203,7 @@ class _FeedbackViewState extends State<FeedbackView> {
                       ),
                     ],
                   ),
-                const SizedBox(height: 10),
+                const SizedBox(height: 25),
                 Padding(
                     padding: const EdgeInsets.only(left: 8.0, right: 8.0),
                     child: Text(AppIntl.of(context).more_report_tips,
@@ -296,49 +288,53 @@ class _FeedbackViewState extends State<FeedbackView> {
         },
       );
 
-  Padding getCardInfo(BuildContext context, String title, String subtitle,
+  Color getColor(BuildContext context) {
+    return Theme.of(context).brightness == Brightness.light
+                    ? AppTheme.lightThemeBackground
+                    : AppTheme.darkThemeAccent;
+  }
+
+  Row getCardInfo(BuildContext context, String title, String subtitle,
       IconData icon, Color iconColor, Color circleColor) {
-    return Padding(
-      padding: const EdgeInsets.all(12.0),
-      child: Row(
-        children: <Widget>[
-          Expanded(
-            child: CircleAvatar(
-              backgroundColor: circleColor,
-              radius: 25,
-              child: Icon(icon, color: iconColor),
+    return Row(
+      children: <Widget>[
+        Column(
+          children: <Widget>[
+            CircleAvatar(
+            backgroundColor: circleColor,
+            radius: 25,
+            child: Icon(icon, color: iconColor),
+          ),
+          ],
+        ),
+        Expanded(
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(15, 15, 0, 15),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Text(
+                  title,
+                  style: Theme.of(context)
+                      .textTheme
+                      .bodyText2
+                      .copyWith(fontSize: 19),
+                  textAlign: TextAlign.left,
+                ),
+                Text(
+                  subtitle,
+                  style: Theme.of(context)
+                      .textTheme
+                      .bodyText2
+                      .copyWith(fontSize: 16),
+                  textAlign: TextAlign.left,
+                )
+              ],
             ),
           ),
-          Expanded(
-            flex: 5,
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Text(
-                    title,
-                    style: Theme.of(context)
-                        .textTheme
-                        .bodyText2
-                        .copyWith(fontSize: 19),
-                    textAlign: TextAlign.left,
-                  ),
-                  Text(
-                    subtitle,
-                    style: Theme.of(context)
-                        .textTheme
-                        .bodyText2
-                        .copyWith(fontSize: 16),
-                    textAlign: TextAlign.left,
-                  )
-                ],
-              ),
-            ),
-          )
-        ],
-      ),
+        )
+      ],
     );
   }
 
