@@ -1,21 +1,16 @@
 // FLUTTER / DART / THIRD-PARTIES
 import 'package:feedback/feedback.dart';
 import 'package:flutter/material.dart';
-import 'package:stacked/stacked.dart';
-
-// CONSTANTS
-import 'package:notredame/core/constants/feedback_type.dart';
-
-// UTILS
 import 'package:notredame/core/utils/utils.dart';
 import 'package:notredame/ui/utils/app_theme.dart';
+import 'package:stacked/stacked.dart';
+
+// UTILS
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:notredame/ui/utils/loading.dart';
 
 // VIEWMODEL
 import 'package:notredame/core/viewmodels/feedback_viewmodel.dart';
-
-// OTHERS
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class FeedbackView extends StatefulWidget {
   @override
@@ -28,6 +23,7 @@ class _FeedbackViewState extends State<FeedbackView> {
       ViewModelBuilder<FeedbackViewModel>.reactive(
         viewModelBuilder: () => FeedbackViewModel(intl: AppIntl.of(context)),
         builder: (context, model, child) {
+          bool hasSubmittedFeedback = false;
           final bool isLightMode =
               Theme.of(context).brightness == Brightness.light;
           return Scaffold(
@@ -50,16 +46,12 @@ class _FeedbackViewState extends State<FeedbackView> {
                     onPressed: () {
                       BetterFeedback.of(context).show((feedback) {
                         model
-                            .sendFeedback(
-                                feedback.text,
-                                feedback.screenshot,
-                                FeedbackType.bug,
-                                feedback.extra['email'].toString())
+                            .sendFeedback(feedback)
                             .then((value) => BetterFeedback.of(context).hide());
                       });
                     },
                     style: ElevatedButton.styleFrom(
-                        primary:
+                        backgroundColor:
                             Theme.of(context).brightness == Brightness.light
                                 ? AppTheme.lightThemeBackground
                                 : AppTheme.darkThemeAccent,
@@ -85,16 +77,12 @@ class _FeedbackViewState extends State<FeedbackView> {
                     onPressed: () {
                       BetterFeedback.of(context).show((feedback) {
                         model
-                            .sendFeedback(
-                                feedback.text,
-                                feedback.screenshot,
-                                FeedbackType.enhancement,
-                                feedback.extra['email'].toString())
+                            .sendFeedback(feedback)
                             .then((value) => BetterFeedback.of(context).hide());
                       });
                     },
                     style: ElevatedButton.styleFrom(
-                        primary:
+                        backgroundColor:
                             Theme.of(context).brightness == Brightness.light
                                 ? AppTheme.lightThemeBackground
                                 : AppTheme.darkThemeAccent,
@@ -287,6 +275,22 @@ class _FeedbackViewState extends State<FeedbackView> {
                   ),
                 ),
               ],
+            ),
+            floatingActionButtonLocation:
+                FloatingActionButtonLocation.centerFloat,
+            floatingActionButton: FloatingActionButton.extended(
+              onPressed: () => {
+                BetterFeedback.of(context).show((feedback) {
+                  if (!hasSubmittedFeedback) {
+                    hasSubmittedFeedback = true;
+                    model
+                        .sendFeedback(feedback)
+                        .then((value) => BetterFeedback.of(context).hide());
+                  }
+                }),
+                hasSubmittedFeedback = false
+              },
+              label: Text(AppIntl.of(context).more_report_bug_button),
             ),
           );
         },

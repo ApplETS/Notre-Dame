@@ -11,7 +11,7 @@ import '../../helpers.dart';
 
 void main() {
   group('NotFoundView - ', () {
-    const String _pageNotFoundPassed = "/test";
+    const String pageNotFoundPassed = "/test";
     setUp(() async {
       setupNavigationServiceMock();
       setupAnalyticsServiceMock();
@@ -24,7 +24,7 @@ void main() {
       testWidgets('has a go back to dashboard button',
           (WidgetTester tester) async {
         await tester.pumpWidget(localizedWidget(
-            child: const NotFoundView(pageName: _pageNotFoundPassed)));
+            child: const NotFoundView(pageName: pageNotFoundPassed)));
         await tester.pumpAndSettle();
 
         expect(find.byType(ElevatedButton), findsOneWidget);
@@ -32,14 +32,14 @@ void main() {
         // one for the button text
         expect(find.byType(Text), findsNWidgets(3));
         // Make sure to find the page name somewhere
-        expect(find.textContaining(_pageNotFoundPassed), findsOneWidget);
+        expect(find.textContaining(pageNotFoundPassed), findsOneWidget);
       });
       group("golden - ", () {
         testWidgets("default view (no events)", (WidgetTester tester) async {
           tester.binding.window.physicalSizeTestValue = const Size(800, 1410);
 
           await tester.pumpWidget(localizedWidget(
-              child: const NotFoundView(pageName: _pageNotFoundPassed)));
+              child: const NotFoundView(pageName: pageNotFoundPassed)));
           await tester.pumpAndSettle();
 
           await expectLater(find.byType(NotFoundView),

@@ -4,8 +4,8 @@
     <br /><strong>Notre-Dame Project</strong>
     <br />
     <br />
-    <a href="https://github.com/ApplETS/Notre-Dame/actions/workflows/main-workflow.yaml" style="text-decoration: none;">
-        <img src="https://github.com/ApplETS/Notre-Dame/actions/workflows/main-workflow.yaml/badge.svg?branch=master" alt="Build Status"/>
+    <a href="https://github.com/ApplETS/Notre-Dame/actions/workflows/master-workflow.yaml" style="text-decoration: none;">
+        <img src="https://github.com/ApplETS/Notre-Dame/actions/workflows/master-workflow.yaml/badge.svg?branch=master" alt="Build Status"/>
     </a>
     <img src="https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/clubapplets-server/e51406de3b919a69f396642a2bcb413c/raw/notre_dame_master_badge_coverage.json" alt="Code coverage"/>
     <br />
@@ -33,10 +33,10 @@ _Note: This guide is also available in: [Français](https://github.com/ApplETS/N
 
 ## Requirements
 
-- Flutter SDK v3.0.1
+- Flutter SDK v3.3.8
 ```sh
 # to downgrade flutter version to the required version, simply do:
-$ flutter downgrade 3.0.1
+$ flutter downgrade 3.3.8
 ```
 - Openssl v1.1.1g or higher
 

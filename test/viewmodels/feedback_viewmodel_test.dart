@@ -1,6 +1,6 @@
 // FLUTTER / DART / THIRD-PARTIES
 import 'dart:io';
-import 'dart:typed_data';
+import 'package:feedback/feedback.dart';
 import 'package:flutter/services.dart';
 import 'package:github/github.dart';
 import 'package:image/image.dart' as image;
@@ -37,6 +37,15 @@ void main() {
 
   AppIntl appIntl;
   FeedbackViewModel viewModel;
+  const feedBackText = 'Notre-Dame bug report';
+  final file = File('bugReportTest.png');
+  final filePath = file.path.split('/').last;
+  final Map<String, dynamic> extra = {'': 'bugReport', 'email': 'email@email.com'};
+  final Map<String, dynamic> extra2 = {'': 'bugReport'};
+
+  String getUserFeedbackType() {
+    return extra.entries.first.value.toString().split('.').last;
+  }
 
   group('FeedbackViewModel - ', () {
     setUp(() async {
@@ -65,18 +74,17 @@ void main() {
       });
 
       test('If the file uploaded matches', () async {
-        final File file = File('bugReportTest.png');
         GithubApiMock.stubLocalFile(githubApiMock, file);
         setupFlutterToastMock();
 
         await file.writeAsBytes(image.encodePng(
             image.copyResize(image.decodeImage(screenshotData), width: 307)));
 
-        await viewModel.sendFeedback(
-            'Notre-Dame bug report', screenshotData, FeedbackType.bug, null);
+        await viewModel.sendFeedback(UserFeedback(
+            text: feedBackText, screenshot: screenshotData, extra: extra));
 
         verify(githubApiMock.uploadFileToGithub(
-          filePath: file.path.split('/').last,
+          filePath: filePath,
           file: file,
         ));
       });
@@ -85,8 +93,8 @@ void main() {
         final File file = File('bugReportTest.png');
         GithubApiMock.stubLocalFile(githubApiMock, file);
 
-        await viewModel.sendFeedback('Notre-Dame bug report', screenshotData,
-            FeedbackType.bug, 'email@email.com');
+        await viewModel.sendFeedback(UserFeedback(
+          text: feedBackText, screenshot: screenshotData, extra: extra));
 
         verify(githubApiMock.createGithubIssue(
             feedbackText: 'Notre-Dame bug report',
@@ -99,14 +107,27 @@ void main() {
         final File file = File('bugReportTest.png');
         GithubApiMock.stubLocalFile(githubApiMock, file);
 
-        await viewModel.sendFeedback(
-            'Notre-Dame bug report', screenshotData, FeedbackType.bug, null);
+        await viewModel.sendFeedback(UserFeedback(
+          text: feedBackText, screenshot: screenshotData, extra: extra2));
 
         verify(githubApiMock.createGithubIssue(
             feedbackText: 'Notre-Dame bug report',
             fileName: file.path.split('/').last,
             feedbackType: 'bug'));
-      });
+    });
+    
+    test('If the github issue has been created', () async {
+      GithubApiMock.stubLocalFile(githubApiMock, file);
+
+      await viewModel.sendFeedback(UserFeedback(
+          text: feedBackText, screenshot: screenshotData, extra: extra));
+
+      verify(githubApiMock.createGithubIssue(
+          feedbackText: feedBackText,
+          fileName: filePath,
+          feedbackType: getUserFeedbackType()));
+    });
+
     });
 
     group('futureToRun - ', () {

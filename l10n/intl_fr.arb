@@ -160,7 +160,6 @@
   "more_report_bug_method_video": "Capture vidéo",
   "more_contributors": "Contributeurs",
   "more_open_source_licenses": "Licences des logiciels libres",
-  "more_beta_faq": "FAQ Bêta",
   "more_settings": "Paramètres",
   "more_log_out": "Se déconnecter",
   "more_prompt_log_out_confirmation": "Êtes-vous certain de vouloir vous déconnecter?",
@@ -177,7 +176,7 @@
   "more_report_bug_step2": "Naviguer ",
   "more_report_bug_step3": "et ",
   "more_report_bug_step4": "Dessiner ",
-  "more_report_bug_step5": "sur le côté droit. \n\nEn mode navigation, vous pouvez naviguer librement dans l'application.\n\nPour passer en mode dessin, appuyez simplement sur le bouton 'Draw'. Vous pouvez maintenant dessiner sur l'écran.\n\nPour terminer votre commentaire, écrivez simplement une description ci-dessous et envoyez-la en appuyant sur le bouton 'Soumettre'.",  
+  "more_report_bug_step5": "sur le côté droit. \n\nEn mode navigation, vous pouvez naviguer librement dans l'application.\n\nPour passer en mode dessin, appuyez simplement sur le bouton 'Dessiner'. Vous pouvez maintenant dessiner sur l'écran.\n\nPour terminer votre commentaire, écrivez simplement une description ci-dessous et envoyez-la en appuyant sur le bouton 'Soumettre'.",  
 
   "security_bomb_threat_title": "Alerte à la bombe",
   "security_bomb_threat_detail": "bomb_threat_detail_fr.html",

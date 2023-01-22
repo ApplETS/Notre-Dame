@@ -41,18 +41,21 @@ class AppTheme {
   static ThemeData lightTheme() {
     final ThemeData lightTheme = ThemeData.light();
     return lightTheme.copyWith(
+        useMaterial3: true,
         primaryColor: etsLightRed,
         bottomNavigationBarTheme: lightTheme.bottomNavigationBarTheme
             .copyWith(selectedItemColor: etsLightRed),
         colorScheme: lightTheme.colorScheme
             .copyWith(primary: etsLightRed, secondary: etsLightRed)
-            .copyWith(secondary: etsLightRed));
+            .copyWith(secondary: etsLightRed)
+            .copyWith(surfaceTint: Colors.white));
   }
 
   /// Dark theme
   static ThemeData darkTheme() {
     final ThemeData darkTheme = ThemeData.dark();
     return darkTheme.copyWith(
+        useMaterial3: true,
         // primaryColor: primaryDark,
         // appBarTheme: const AppBarTheme(color: Color(0xff121212)),
         scaffoldBackgroundColor: const Color(0xff121212),
@@ -61,6 +64,9 @@ class AppTheme {
             .copyWith(selectedItemColor: etsLightRed),
         colorScheme: darkTheme.colorScheme
             .copyWith(primary: etsLightRed, secondary: etsLightRed)
-            .copyWith(secondary: etsLightRed));
+            .copyWith(secondary: etsLightRed)
+            .copyWith(
+                surface: const Color(0xff1e1e1e),
+                surfaceTint: const Color(0xff1e1e1e)));
   }
 }

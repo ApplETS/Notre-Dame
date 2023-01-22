@@ -14,7 +14,7 @@
 ### ☑️ Checklist before requesting a review
 - [ ] I have performed a self-review of my code.
 - [ ] If it is a core feature, I have added thorough tests.
-- [ ] Do we need to implement analytics?
+- [ ] If needed, I added analytics.
 - [ ] Make sure to add either one of the following labels: `version: Major`,`version: Minor` or `version: Patch`. 
 - [ ] Make sure golden files changes were reviewed and approved.
 
