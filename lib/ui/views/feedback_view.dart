@@ -44,12 +44,12 @@ class _FeedbackViewState extends State<FeedbackView> {
                       });
                     },
                     style: ButtonStyle(
-                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                        RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8.0),
-                        ),
-                      )
-                    ),
+                        shape:
+                            MaterialStateProperty.all<RoundedRectangleBorder>(
+                      RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8.0),
+                      ),
+                    )),
                     child: getCardInfo(
                       context,
                       AppIntl.of(context).more_report_bug_bug,
@@ -72,12 +72,12 @@ class _FeedbackViewState extends State<FeedbackView> {
                       });
                     },
                     style: ButtonStyle(
-                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                        RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8.0),
-                        ),
-                      )
-                    ),
+                        shape:
+                            MaterialStateProperty.all<RoundedRectangleBorder>(
+                      RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8.0),
+                      ),
+                    )),
                     child: getCardInfo(
                       context,
                       AppIntl.of(context).more_report_bug_feature,
@@ -90,11 +90,11 @@ class _FeedbackViewState extends State<FeedbackView> {
                 ),
                 const SizedBox(height: 25),
                 Padding(
-                  padding: const EdgeInsets.only(left: 8.0, right: 8.0),
-                  child: Text(AppIntl.of(context).my_tickets,
-                      style: Theme.of(context).textTheme.headline5.copyWith(
-                          color:
-                              isLightMode ? Colors.black87 : Colors.white))),
+                    padding: const EdgeInsets.only(left: 8.0, right: 8.0),
+                    child: Text(AppIntl.of(context).my_tickets,
+                        style: Theme.of(context).textTheme.headline5.copyWith(
+                            color:
+                                isLightMode ? Colors.black87 : Colors.white))),
                 const Divider(
                   thickness: 1,
                   indent: 10,
@@ -290,8 +290,8 @@ class _FeedbackViewState extends State<FeedbackView> {
 
   Color getColor(BuildContext context) {
     return Theme.of(context).brightness == Brightness.light
-                    ? AppTheme.lightThemeBackground
-                    : AppTheme.darkThemeAccent;
+        ? AppTheme.lightThemeBackground
+        : AppTheme.darkThemeAccent;
   }
 
   Row getCardInfo(BuildContext context, String title, String subtitle,
@@ -301,10 +301,10 @@ class _FeedbackViewState extends State<FeedbackView> {
         Column(
           children: <Widget>[
             CircleAvatar(
-            backgroundColor: circleColor,
-            radius: 25,
-            child: Icon(icon, color: iconColor),
-          ),
+              backgroundColor: circleColor,
+              radius: 25,
+              child: Icon(icon, color: iconColor),
+            ),
           ],
         ),
         Expanded(
