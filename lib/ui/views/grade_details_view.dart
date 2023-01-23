@@ -113,8 +113,8 @@ class _GradesDetailsViewState extends State<GradesDetailsView>
                                   .grades_teacher(model.course.teacherName)),
                             _buildClassInfo(AppIntl.of(context)
                                 .grades_group_number(model.course.group ?? "")),
-                            _buildClassInfo(AppIntl.of(context)
-                                .credits_number(model.course.numberOfCredits ?? "")),
+                            _buildClassInfo(AppIntl.of(context).credits_number(
+                                model.course.numberOfCredits ?? "")),
                           ],
                         ),
                       ),
