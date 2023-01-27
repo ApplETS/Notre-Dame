@@ -4,6 +4,8 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:stacked/stacked.dart';
+import 'package:url_launcher/url_launcher.dart';
+
 
 // SERVICE
 import 'package:notredame/core/services/analytics_service.dart';
@@ -187,6 +189,22 @@ class _LoginViewState extends State<LoginView> {
                                   padding: const EdgeInsets.only(top: 30),
                                   child: InkWell(
                                     child: Text(
+                                      AppIntl.of(context).forgot_password,
+                                      style: const TextStyle(
+                                          decoration: TextDecoration.underline,
+                                          color: Colors.white),
+                                    ),
+                                    onTap: () async {
+                                      openUrl("https://signets-ens.etsmtl.ca/Public/MotDePassePerdu.aspx");
+                                    },
+                                  ),
+                                ),
+                              ),
+                              Center(
+                                child: Padding(
+                                  padding: const EdgeInsets.only(top: 30),
+                                  child: InkWell(
+                                    child: Text(
                                       AppIntl.of(context).need_help_contact_us,
                                       style: const TextStyle(
                                           decoration: TextDecoration.underline,
@@ -250,6 +268,15 @@ class _LoginViewState extends State<LoginView> {
       await _launchUrlService.launch(clubEmail);
     } else {
       locator<AnalyticsService>().logError("login_view", "Cannot send email.");
+    }
+  }
+
+  Future<void> openUrl(String url) async {
+    final uri = Uri.parse(url);
+    if(await canLaunchUrl(uri)){
+      await launchUrl(uri);
+    }else{
+      locator<AnalyticsService>().logError("login_view", "Could not open url : '$url'");
     }
   }
 }
