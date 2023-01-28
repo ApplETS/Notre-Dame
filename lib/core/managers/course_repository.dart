@@ -1,9 +1,7 @@
 // FLUTTER / DART / THIRD-PARTIES
 import 'dart:convert';
 
-// OTHER
 import 'package:ets_api_clients/clients.dart';
-// UTILS
 import 'package:ets_api_clients/exceptions.dart';
 // MODELS
 import 'package:ets_api_clients/models.dart';
@@ -14,7 +12,9 @@ import 'package:notredame/core/managers/user_repository.dart';
 // SERVICES
 import 'package:notredame/core/services/analytics_service.dart';
 import 'package:notredame/core/services/networking_service.dart';
+// UTILS
 import 'package:notredame/core/utils/cache_exception.dart';
+// OTHER
 import 'package:notredame/locator.dart';
 
 /// Repository to access all the data related to courses taken by the student
