@@ -4,6 +4,7 @@ import 'package:enum_to_string/enum_to_string.dart';
 import 'package:ets_api_clients/models.dart';
 // CONSTANTS
 import 'package:notredame/core/constants/preferences_flags.dart';
+import 'package:notredame/core/managers/course_repository.dart';
 // MANAGERS
 import 'package:notredame/core/managers/settings_manager.dart';
 // OTHER
@@ -15,6 +16,8 @@ class ScheduleSettingsViewModel
     extends FutureViewModel<Map<PreferencesFlag, dynamic>> {
   /// Manage the settings
   final SettingsManager _settingsManager = locator<SettingsManager>();
+  // Access the course repository
+  final CourseRepository _courseRepository = locator<CourseRepository>();
 
   /// Current calendar format
   CalendarFormat _calendarFormat;
@@ -91,6 +94,24 @@ class ScheduleSettingsViewModel
   Map<String, ScheduleActivity> get selectedScheduleActivity =>
       _selectedScheduleActivity;
 
+  /// This function is used to save the state of the selected course settings
+  /// for a given course that has different laboratory group
+  Future selectScheduleActivity(
+      String courseAcronym, ScheduleActivity scheduleActivityToSave) async {
+    setBusy(true);
+    if (scheduleActivityToSave == null) {
+      await _settingsManager.setDynamicString(
+          PreferencesFlag.scheduleSettingsLaboratoryGroup, courseAcronym, null);
+    } else {
+      await _settingsManager.setDynamicString(
+          PreferencesFlag.scheduleSettingsLaboratoryGroup,
+          courseAcronym,
+          scheduleActivityToSave.activityCode);
+    }
+    _selectedScheduleActivity[courseAcronym] = scheduleActivityToSave;
+    setBusy(false);
+  }
+
   @override
   Future<Map<PreferencesFlag, dynamic>> futureToRun() async {
     setBusy(true);
@@ -106,6 +127,36 @@ class ScheduleSettingsViewModel
         settings[PreferencesFlag.scheduleSettingsShowWeekEvents] as bool;
 
     _scheduleActivitiesByCourse.clear();
+    final schedulesActivities = await _courseRepository.getScheduleActivities();
+    for (final activity in schedulesActivities) {
+      if (activity.activityCode == ActivityCode.labGroupA ||
+          activity.activityCode == ActivityCode.labGroupB) {
+        // Create the list with the new activity inside or add the activity to an existing group
+        if (!_scheduleActivitiesByCourse.containsKey(activity.courseAcronym)) {
+          _scheduleActivitiesByCourse[activity.courseAcronym] = [activity];
+        } else {
+          // Add the activity to the course.
+          if (!_scheduleActivitiesByCourse[activity.courseAcronym]
+              .contains(activity)) {
+            _scheduleActivitiesByCourse[activity.courseAcronym].add(activity);
+          }
+        }
+      }
+    }
+    // Check if there is only one activity for each map, remove the map
+    _scheduleActivitiesByCourse.removeWhere((key, value) => value.length == 1);
+
+    // Preselect the right schedule activity
+    for (final courseKey in _scheduleActivitiesByCourse.keys) {
+      final scheduleActivityCode = await _settingsManager.getDynamicString(
+          PreferencesFlag.scheduleSettingsLaboratoryGroup, courseKey);
+      final scheduleActivity = _scheduleActivitiesByCourse[courseKey]
+          .firstWhere((element) => element.activityCode == scheduleActivityCode,
+              orElse: () => null);
+      if (scheduleActivity != null) {
+        _selectedScheduleActivity[courseKey] = scheduleActivity;
+      }
+    }
 
     setBusy(false);
     return settings;
