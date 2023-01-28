@@ -163,15 +163,18 @@ class _ScheduleViewState extends State<ScheduleView>
   Widget _buildCalendarView(ScheduleViewModel model, BuildContext context) {
     final calendar_view.EventController eventController =
         calendar_view.EventController();
+    final backgroundColor = Theme.of(context).brightness == Brightness.light
+        ? AppTheme.lightThemeBackground
+        : AppTheme.primaryDark;
     return Scaffold(
       body: calendar_view.WeekView(
         controller: eventController..addAll(model.selectedWeekCalendarEvents()),
         onPageChange: (date, page) =>
             model.handleViewChanged(date, eventController),
-        backgroundColor: AppTheme.primaryDark,
-        headerStyle: const calendar_view.HeaderStyle(
+        backgroundColor: backgroundColor,
+        headerStyle: calendar_view.HeaderStyle(
           decoration: BoxDecoration(
-            color: AppTheme.primaryDark,
+            color: backgroundColor,
           ),
         ),
         weekDays: const [
@@ -185,7 +188,7 @@ class _ScheduleViewState extends State<ScheduleView>
         initialDay: DateTime.now(),
         heightPerMinute: 0.65, // height occupied by 1 minute time span.
         hourIndicatorSettings: const calendar_view.HourIndicatorSettings(
-          color: AppTheme.etsDarkGrey,
+          color: AppTheme.scheduleLineColor,
         ),
         scrollOffset: 305,
         timeLineStringBuilder: (date, {secondaryDate}) {
@@ -197,8 +200,33 @@ class _ScheduleViewState extends State<ScheduleView>
         headerStringBuilder: (date, {secondaryDate}) {
           return 'Du ${date.day} ${DateFormat.MMMM("fr").format(date)} au ${secondaryDate.day} ${DateFormat.MMMM("fr").format(secondaryDate)}';
         },
+        eventTileBuilder: _buildEventTile,
       ),
     );
+  }
+
+  Widget _buildEventTile(
+    DateTime date,
+    List<calendar_view.CalendarEventData<dynamic>> events,
+    Rect boundary,
+    DateTime startDuration,
+    DateTime endDuration,
+  ) {
+    if (events.isNotEmpty) {
+      return calendar_view.RoundedEventTile(
+        borderRadius: BorderRadius.circular(6.0),
+        title: events[0].title,
+        titleStyle: TextStyle(
+          fontSize: 10,
+          color: events[0].color.accent,
+        ),
+        totalEvents: events.length,
+        padding: const EdgeInsets.all(7.0),
+        backgroundColor: events[0].color,
+      );
+    } else {
+      return Container();
+    }
   }
 
   Widget _buildTitleForDate(DateTime date, ScheduleViewModel model) => Center(

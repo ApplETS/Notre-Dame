@@ -48,7 +48,6 @@ class AppTheme {
     Color(0xffe67e22),
     Color(0xffe74c3c)
   ];
-
   static const List<Color> schedulePaletteDark = [
     Color(0xfff39c12),
     Color(0xff16a085),
@@ -61,6 +60,9 @@ class AppTheme {
     Color(0xffd35400),
     Color(0xffc0392b)
   ];
+
+  /// Schedule calendar colors
+  static const Color scheduleLineColor = Color(0xffb7b6ba);
 
   /// Light theme
   static ThemeData lightTheme() {
