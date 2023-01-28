@@ -1,22 +1,26 @@
 // FLUTTER / DART / THIRD-PARTIES
 import 'dart:io';
-
-// MODELS
-import 'package:ets_api_clients/models.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:intl/intl.dart';
 import 'package:mockito/mockito.dart';
-// CONSTANTS
-import 'package:notredame/core/constants/preferences_flags.dart';
+import 'package:table_calendar/table_calendar.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 // MANAGERS
 import 'package:notredame/core/managers/settings_manager.dart';
+
+// CONSTANTS
+import 'package:notredame/core/constants/preferences_flags.dart';
+
+// MODELS
+import 'package:ets_api_clients/models.dart';
+
 // WIDGET
 import 'package:notredame/ui/widgets/schedule_settings.dart';
-import 'package:table_calendar/table_calendar.dart';
 
 import '../../helpers.dart';
+
 // MOCK
 import '../../mock/managers/course_repository_mock.dart';
 import '../../mock/managers/settings_manager_mock.dart';
