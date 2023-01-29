@@ -94,7 +94,7 @@ void main() {
 
         verify(githubApiMock.createGithubIssue(
             feedbackText: 'Notre-Dame bug report',
-            fileName:'bugReportTest.png',
+            fileName: 'bugReportTest.png',
             feedbackType: 'bugReport',
             email: 'email@email.com'));
       });
