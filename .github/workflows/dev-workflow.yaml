@@ -49,7 +49,7 @@ jobs:
             'This PR exceeds the recommended size of 1000 lines.
             Please make sure you are NOT addressing multiple issues with one PR.
             Note this PR might be rejected due to its size.’
-  bump-version:
+  bump_version:
     name: Bump app version using PR labels
     runs-on: ubuntu-latest
     env:
@@ -67,6 +67,8 @@ jobs:
   testing:
     name: Tests and checks
     runs-on: ubuntu-latest
+    needs:
+      - bump_version
     outputs:
       coverage: ${{ steps.coverage.outputs.percentage }}
     steps:
