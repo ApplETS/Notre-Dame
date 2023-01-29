@@ -1,16 +1,20 @@
 // FLUTTER / DART / THIRD-PARTIES
-// MODEL
-import 'package:ets_api_clients/models.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+
+// MODEL
+import 'package:ets_api_clients/models.dart';
+import 'package:notredame/core/viewmodels/schedule_viewmodel.dart';
+
 //MANAGERS
 import 'package:notredame/core/managers/course_repository.dart';
-import 'package:notredame/core/viewmodels/schedule_viewmodel.dart';
+
 // WIDGET
 import 'package:notredame/ui/widgets/course_activity_tile.dart';
 
 // HELPERS
 import '../../helpers.dart';
+
 //MOCKS
 import '../../mock/managers/course_repository_mock.dart';
 

@@ -1,23 +1,26 @@
 // FLUTTER / DART / THIRD-PARTIES
 import 'dart:io';
-
-import 'package:ets_api_clients/models.dart';
-import 'package:feature_discovery/feature_discovery.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:intl/intl.dart';
-// MODELS / CONSTANTS
-import 'package:notredame/core/constants/preferences_flags.dart';
+import 'package:table_calendar/table_calendar.dart';
+import 'package:feature_discovery/feature_discovery.dart';
+
 // MANAGERS
 import 'package:notredame/core/managers/course_repository.dart';
 import 'package:notredame/core/managers/settings_manager.dart';
+
+// MODELS / CONSTANTS
+import 'package:notredame/core/constants/preferences_flags.dart';
+import 'package:ets_api_clients/models.dart';
+
 // VIEW / WIDGETS
 import 'package:notredame/ui/views/schedule_view.dart';
 import 'package:notredame/ui/widgets/schedule_settings.dart';
-import 'package:table_calendar/table_calendar.dart';
 
 // HELPERS
 import '../../helpers.dart';
+
 // MOCKS
 import '../../mock/managers/course_repository_mock.dart';
 import '../../mock/managers/settings_manager_mock.dart';
