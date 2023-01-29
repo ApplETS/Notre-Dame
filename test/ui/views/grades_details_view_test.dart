@@ -139,7 +139,7 @@ void main() {
       });
 
       testWidgets(
-          'when the page is at the top, it displays the course title, acronym, group and professor name',
+          'when the page is at the top, it displays the course title, acronym, group, professor name and number of credits',
           (WidgetTester tester) async {
         setupFlutterToastMock(tester);
         CourseRepositoryMock.stubGetCourseSummary(
@@ -156,6 +156,7 @@ void main() {
         expect(find.text('GEN101'), findsOneWidget);
         expect(find.text('Group 02'), findsOneWidget);
         expect(find.text('Professor: TEST'), findsOneWidget);
+        expect(find.text('Credits: 3'), findsOneWidget);
       });
 
       testWidgets(

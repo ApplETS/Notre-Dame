@@ -108,11 +108,13 @@ class _GradesDetailsViewState extends State<GradesDetailsView>
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
                             _buildClassInfo(model.course.title ?? ""),
-                            _buildClassInfo(AppIntl.of(context)
-                                .grades_group_number(model.course.group ?? "")),
                             if (model.course.teacherName != null)
                               _buildClassInfo(AppIntl.of(context)
-                                  .grades_teacher(model.course.teacherName))
+                                  .grades_teacher(model.course.teacherName)),
+                            _buildClassInfo(AppIntl.of(context)
+                                .grades_group_number(model.course.group ?? "")),
+                            _buildClassInfo(AppIntl.of(context).credits_number(
+                                model.course.numberOfCredits ?? "")),
                           ],
                         ),
                       ),
