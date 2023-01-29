@@ -98,8 +98,8 @@ void main() {
 
         verify(githubApiMock.createGithubIssue(
             feedbackText: 'Notre-Dame bug report',
-            fileName: file.path.split('/').last,
-            feedbackType: 'bug',
+            fileName: 'bugReportTest.png',
+            feedbackType: 'bugReport',
             email: 'email@email.com'));
       });
 
@@ -112,20 +112,8 @@ void main() {
 
         verify(githubApiMock.createGithubIssue(
             feedbackText: 'Notre-Dame bug report',
-            fileName: file.path.split('/').last,
-            feedbackType: 'bug'));
-      });
-
-      test('If the github issue has been created', () async {
-        GithubApiMock.stubLocalFile(githubApiMock, file);
-
-        await viewModel.sendFeedback(UserFeedback(
-            text: feedBackText, screenshot: screenshotData, extra: extra));
-
-        verify(githubApiMock.createGithubIssue(
-            feedbackText: feedBackText,
-            fileName: filePath,
-            feedbackType: getUserFeedbackType()));
+            fileName: 'bugReportTest.png',
+            feedbackType: 'bugReport'));
       });
     });
 

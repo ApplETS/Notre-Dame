@@ -55,7 +55,7 @@ class FeedbackViewModel extends FutureViewModel {
         feedbackText: feedback.text,
         fileName: fileName,
         feedbackType: getUserFeedbackType(feedback),
-        email: feedback.extra['email'].toString());
+        email: feedback.extra['email'] == 'null' ? feedback.extra['email'].toString() : null);
 
     if (issue != null) {
       setBusy(true);
