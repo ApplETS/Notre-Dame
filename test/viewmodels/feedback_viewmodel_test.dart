@@ -43,10 +43,6 @@ void main() {
   };
   final Map<String, dynamic> extra2 = {'': 'bugReport'};
 
-  String getUserFeedbackType() {
-    return extra.entries.first.value.toString().split('.').last;
-  }
-
   group('FeedbackViewModel - ', () {
     setUp(() async {
       setupNavigationServiceMock();
@@ -98,7 +94,7 @@ void main() {
 
         verify(githubApiMock.createGithubIssue(
             feedbackText: 'Notre-Dame bug report',
-            fileName: 'bugReportTest.png',
+            fileName:'bugReportTest.png',
             feedbackType: 'bugReport',
             email: 'email@email.com'));
       });
