@@ -14,6 +14,9 @@ import 'package:notredame/ui/widgets/custom_feedback.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_config/flutter_config.dart';
 
+//CONSTANTS
+import 'package:notredame/core/constants/custom_feedback_localization.dart';
+
 // ROUTER
 import 'package:notredame/ui/router.dart';
 
@@ -84,6 +87,11 @@ class ETSMobile extends StatelessWidget {
             onSubmit: onSubmit,
             scrollController: scrollController,
           ),
+          localizationsDelegates: [
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+            CustomFeedbackLocalizationsDelegate(),
+          ],
           localeOverride: model.locale,
           child: FeatureDiscovery(
             recordStepsInSharedPreferences: false,

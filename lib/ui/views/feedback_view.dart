@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:notredame/core/utils/utils.dart';
 import 'package:notredame/ui/utils/app_theme.dart';
 import 'package:stacked/stacked.dart';
+
+// UTILS
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:notredame/ui/utils/loading.dart';
 
@@ -21,7 +23,6 @@ class _FeedbackViewState extends State<FeedbackView> {
       ViewModelBuilder<FeedbackViewModel>.reactive(
         viewModelBuilder: () => FeedbackViewModel(intl: AppIntl.of(context)),
         builder: (context, model, child) {
-          bool hasSubmittedFeedback = false;
           final bool isLightMode =
               Theme.of(context).brightness == Brightness.light;
           return Scaffold(
@@ -32,9 +33,65 @@ class _FeedbackViewState extends State<FeedbackView> {
               children: <Widget>[
                 const SizedBox(height: 8),
                 Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: ElevatedButton(
+                    onPressed: () {
+                      BetterFeedback.of(context).show((feedback) {
+                        model
+                            .sendFeedback(feedback)
+                            .then((value) => BetterFeedback.of(context).hide());
+                      });
+                    },
+                    style: ButtonStyle(
+                        shape:
+                            MaterialStateProperty.all<RoundedRectangleBorder>(
+                      RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8.0),
+                      ),
+                    )),
+                    child: getCardInfo(
+                      context,
+                      AppIntl.of(context).more_report_bug_bug,
+                      AppIntl.of(context).more_report_bug_bug_subtitle,
+                      Icons.bug_report,
+                      const Color.fromRGBO(252, 196, 238, 1),
+                      const Color.fromRGBO(153, 78, 174, 1),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 5),
+                Padding(
+                  padding: const EdgeInsets.only(left: 8.0, right: 8.0),
+                  child: ElevatedButton(
+                    onPressed: () {
+                      BetterFeedback.of(context).show((feedback) {
+                        model
+                            .sendFeedback(feedback)
+                            .then((value) => BetterFeedback.of(context).hide());
+                      });
+                    },
+                    style: ButtonStyle(
+                        shape:
+                            MaterialStateProperty.all<RoundedRectangleBorder>(
+                      RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8.0),
+                      ),
+                    )),
+                    child: getCardInfo(
+                      context,
+                      AppIntl.of(context).more_report_bug_feature,
+                      AppIntl.of(context).more_report_bug_feature_subtitle,
+                      Icons.design_services,
+                      const Color.fromRGBO(63, 219, 251, 1),
+                      const Color.fromRGBO(14, 127, 188, 1),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 25),
+                Padding(
                     padding: const EdgeInsets.only(left: 8.0, right: 8.0),
                     child: Text(AppIntl.of(context).my_tickets,
-                        style: Theme.of(context).textTheme.headline4.copyWith(
+                        style: Theme.of(context).textTheme.headline5.copyWith(
                             color:
                                 isLightMode ? Colors.black87 : Colors.white))),
                 const Divider(
@@ -145,51 +202,124 @@ class _FeedbackViewState extends State<FeedbackView> {
                       ),
                     ],
                   ),
-                const SizedBox(height: 10),
+                const SizedBox(height: 25),
                 Padding(
-                  padding: const EdgeInsets.all(8.0),
+                    padding: const EdgeInsets.only(left: 8.0, right: 8.0),
+                    child: Text(AppIntl.of(context).more_report_tips,
+                        style: Theme.of(context).textTheme.headline5.copyWith(
+                            color:
+                                isLightMode ? Colors.black87 : Colors.white))),
+                const Divider(
+                  thickness: 1,
+                  indent: 10,
+                  endIndent: 10,
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(left: 8.0, right: 8.0),
                   child: RichText(
                     text: TextSpan(
-                      style: Theme.of(context).textTheme.bodyText1,
                       children: <TextSpan>[
                         TextSpan(
-                            text:
-                                AppIntl.of(context).more_report_bug_steps_title,
-                            style: const TextStyle(fontSize: 32)),
-                        TextSpan(
                             text: AppIntl.of(context).more_report_bug_step1,
-                            style: const TextStyle(fontSize: 24)),
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyText2
+                                .copyWith(fontSize: 18)),
                         TextSpan(
                             text: AppIntl.of(context).more_report_bug_step2,
-                            style: const TextStyle(fontSize: 24)),
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyText2
+                                .copyWith(
+                                    fontSize: 18,
+                                    color: Theme.of(context).brightness ==
+                                            Brightness.light
+                                        ? const Color.fromRGBO(14, 127, 188, 1)
+                                        : const Color.fromRGBO(
+                                            63, 219, 251, 1))),
                         TextSpan(
                             text: AppIntl.of(context).more_report_bug_step3,
-                            style: const TextStyle(fontSize: 24)),
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyText2
+                                .copyWith(fontSize: 18)),
+                        TextSpan(
+                            text: AppIntl.of(context).more_report_bug_step4,
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyText2
+                                .copyWith(
+                                    fontSize: 18,
+                                    color: Theme.of(context).brightness ==
+                                            Brightness.light
+                                        ? const Color.fromRGBO(14, 127, 188, 1)
+                                        : const Color.fromRGBO(
+                                            63, 219, 251, 1))),
+                        TextSpan(
+                            text: AppIntl.of(context).more_report_bug_step5,
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyText2
+                                .copyWith(fontSize: 18)),
                       ],
                     ),
                   ),
                 ),
               ],
             ),
-            floatingActionButtonLocation:
-                FloatingActionButtonLocation.centerFloat,
-            floatingActionButton: FloatingActionButton.extended(
-              onPressed: () => {
-                BetterFeedback.of(context).show((feedback) {
-                  if (!hasSubmittedFeedback) {
-                    hasSubmittedFeedback = true;
-                    model
-                        .sendFeedback(feedback)
-                        .then((value) => BetterFeedback.of(context).hide());
-                  }
-                }),
-                hasSubmittedFeedback = false
-              },
-              label: Text(AppIntl.of(context).more_report_bug_button),
-            ),
           );
         },
       );
+
+  Color getColor(BuildContext context) {
+    return Theme.of(context).brightness == Brightness.light
+        ? AppTheme.lightThemeBackground
+        : AppTheme.darkThemeAccent;
+  }
+
+  Row getCardInfo(BuildContext context, String title, String subtitle,
+      IconData icon, Color iconColor, Color circleColor) {
+    return Row(
+      children: <Widget>[
+        Column(
+          children: <Widget>[
+            CircleAvatar(
+              backgroundColor: circleColor,
+              radius: 25,
+              child: Icon(icon, color: iconColor),
+            ),
+          ],
+        ),
+        Expanded(
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(15, 15, 0, 15),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Text(
+                  title,
+                  style: Theme.of(context)
+                      .textTheme
+                      .bodyText2
+                      .copyWith(fontSize: 19),
+                  textAlign: TextAlign.left,
+                ),
+                Text(
+                  subtitle,
+                  style: Theme.of(context)
+                      .textTheme
+                      .bodyText2
+                      .copyWith(fontSize: 16),
+                  textAlign: TextAlign.left,
+                )
+              ],
+            ),
+          ),
+        )
+      ],
+    );
+  }
 
   Widget createListTag(String text, {Color textColor, Color color}) {
     return Container(
