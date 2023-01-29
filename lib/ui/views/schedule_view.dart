@@ -1,30 +1,37 @@
 // FLUTTER / DART / THIRD-PARTIES
-// MODELS
-import 'package:ets_api_clients/models.dart';
 import 'package:feature_discovery/feature_discovery.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:intl/intl.dart';
-import 'package:notredame/core/constants/discovery_ids.dart';
-// CONSTANTS
-import 'package:notredame/core/constants/preferences_flags.dart';
-// SERVICES
-import 'package:notredame/core/services/analytics_service.dart';
-// VIEWMODEL
-import 'package:notredame/core/viewmodels/schedule_viewmodel.dart';
-import 'package:notredame/locator.dart';
-// OTHER
-import 'package:notredame/ui/utils/app_theme.dart';
+import 'package:stacked/stacked.dart';
+import 'package:table_calendar/table_calendar.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 // UTILS
 import 'package:notredame/ui/utils/discovery_components.dart';
+
+// VIEWMODEL
+import 'package:notredame/core/viewmodels/schedule_viewmodel.dart';
+
+// MODELS
+import 'package:ets_api_clients/models.dart';
+
+// SERVICES
+import 'package:notredame/core/services/analytics_service.dart';
+
 // WIDGET
 import 'package:notredame/ui/widgets/base_scaffold.dart';
 import 'package:notredame/ui/widgets/course_activity_tile.dart';
 import 'package:notredame/ui/widgets/schedule_settings.dart';
-import 'package:stacked/stacked.dart';
-import 'package:table_calendar/table_calendar.dart';
+
+// CONSTANTS
+import 'package:notredame/core/constants/preferences_flags.dart';
+import 'package:notredame/core/constants/discovery_ids.dart';
+
+// OTHER
+import 'package:notredame/ui/utils/app_theme.dart';
+import 'package:notredame/locator.dart';
 
 class ScheduleView extends StatefulWidget {
   @visibleForTesting

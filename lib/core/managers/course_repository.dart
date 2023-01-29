@@ -1,21 +1,25 @@
 // FLUTTER / DART / THIRD-PARTIES
 import 'dart:convert';
 
-import 'package:ets_api_clients/clients.dart';
-import 'package:ets_api_clients/exceptions.dart';
-// MODELS
-import 'package:ets_api_clients/models.dart';
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
-import 'package:notredame/core/managers/cache_manager.dart';
-import 'package:notredame/core/managers/user_repository.dart';
+
 // SERVICES
 import 'package:notredame/core/services/analytics_service.dart';
 import 'package:notredame/core/services/networking_service.dart';
+import 'package:notredame/core/managers/cache_manager.dart';
+import 'package:notredame/core/managers/user_repository.dart';
+
+// MODELS
+import 'package:ets_api_clients/models.dart';
+
 // UTILS
 import 'package:notredame/core/utils/cache_exception.dart';
+import 'package:ets_api_clients/exceptions.dart';
+
 // OTHER
 import 'package:notredame/locator.dart';
+import 'package:ets_api_clients/clients.dart';
 
 /// Repository to access all the data related to courses taken by the student
 class CourseRepository {

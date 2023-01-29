@@ -1,24 +1,28 @@
 // FLUTTER / DART / THIRD-PARTIES
 import 'package:enum_to_string/enum_to_string.dart';
-// MODELS
-import 'package:ets_api_clients/models.dart';
 import 'package:feature_discovery/feature_discovery.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:stacked/stacked.dart';
+import 'package:table_calendar/table_calendar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:fluttertoast/fluttertoast.dart';
+
 // CONSTANTS
 import 'package:notredame/core/constants/discovery_ids.dart';
-import 'package:notredame/core/constants/preferences_flags.dart';
 // MANAGER
 import 'package:notredame/core/managers/course_repository.dart';
 import 'package:notredame/core/managers/settings_manager.dart';
-import 'package:notredame/core/utils/utils.dart';
-// OTHER
-import 'package:notredame/locator.dart';
+
+// MODELS
+import 'package:ets_api_clients/models.dart';
+
 // UTILS
 import 'package:notredame/ui/utils/discovery_components.dart';
-import 'package:stacked/stacked.dart';
-import 'package:table_calendar/table_calendar.dart';
+import 'package:notredame/core/utils/utils.dart';
+
+// OTHER
+import 'package:notredame/locator.dart';
+import 'package:notredame/core/constants/preferences_flags.dart';
 
 class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
   /// Load the events

@@ -1,8 +1,9 @@
 // FLUTTER / DART / THIRD-PARTIES
-// MODELS
-import 'package:ets_api_clients/models.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+
+// MODELS
+import 'package:ets_api_clients/models.dart';
 import 'package:notredame/core/viewmodels/schedule_viewmodel.dart';
 
 class CourseActivityTile extends StatelessWidget {
