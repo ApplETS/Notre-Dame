@@ -156,7 +156,7 @@ void main() {
         expect(find.text('GEN101'), findsOneWidget);
         expect(find.text('Group 02'), findsOneWidget);
         expect(find.text('Professor: TEST'), findsOneWidget);
-        expect(find.text('Crédits: 3'), findsOneWidget);
+        expect(find.text('Credits: 3'), findsOneWidget);
       });
 
       testWidgets(
