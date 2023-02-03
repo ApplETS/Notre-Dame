@@ -5,7 +5,6 @@ import 'package:enum_to_string/enum_to_string.dart';
 import 'package:feature_discovery/feature_discovery.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:stacked/stacked.dart';
-import 'package:syncfusion_flutter_calendar/calendar.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -343,20 +342,14 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
   /// Return true if switched selected date to today (= today was not selected),
   /// return false otherwise (today was already selected, show toast for
   /// visual feedback).
-  bool selectToday([CalendarController calendarController]) {
+  bool selectToday() {
     if (compareDates(selectedDate, DateTime.now())) {
       Fluttertoast.showToast(msg: _appIntl.schedule_already_today_toast);
       return false;
     } else {
-      if (!getCalendarViewSetting()) {
-        selectedDate = DateTime.now();
-        calendarController.displayDate = DateTime.now();
-        return true;
-      } else {
-        selectedDate = DateTime.now();
-        focusedDate.value = DateTime.now();
-        return true;
-      }
+      selectedDate = DateTime.now();
+      focusedDate.value = DateTime.now();
+      return true;
     }
   }
 

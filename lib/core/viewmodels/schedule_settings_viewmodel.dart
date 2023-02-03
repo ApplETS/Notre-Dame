@@ -85,10 +85,6 @@ class ScheduleSettingsViewModel
     setBusy(false);
   }
 
-  bool getCalendarViewEnabled() {
-    return _settingsManager.getCalendarViewEnabled();
-  }
-
   bool _showWeekEvents = false;
 
   bool get showWeekEvents => _showWeekEvents;
