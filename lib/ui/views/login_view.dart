@@ -6,7 +6,6 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:stacked/stacked.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-
 // SERVICE
 import 'package:notredame/core/services/analytics_service.dart';
 import 'package:notredame/core/services/launch_url_service.dart';
@@ -34,7 +33,8 @@ class LoginView extends StatefulWidget {
 }
 
 class _LoginViewState extends State<LoginView> {
-  final String forgotPasswordLink = "https://signets-ens.etsmtl.ca/Public/MotDePassePerdu.aspx";
+  final String forgotPasswordLink =
+      "https://signets-ens.etsmtl.ca/Public/MotDePassePerdu.aspx";
 
   final double borderRadiusOnFocus = 2.0;
 
@@ -146,24 +146,23 @@ class _LoginViewState extends State<LoginView> {
                               ),
                               PasswordFormField(
                                   validator: model.validatePassword,
-                                  onEditionComplete: _focusNode.nextFocus
-                              ),
+                                  onEditionComplete: _focusNode.nextFocus),
                               Align(
-                                    alignment: Alignment.topRight,
-                                    child: Padding(
-                                      padding: const EdgeInsets.only(top: 5),
-                                      child: InkWell(
-                                        child: Text(
-                                          AppIntl.of(context).forgot_password,
-                                          style: const TextStyle(
-                                              decoration: TextDecoration.underline,
-                                              color: Colors.white),
-                                        ),
-                                        onTap: () async {
-                                          openUrl(forgotPasswordLink);
-                                        },
-                                      ),
+                                alignment: Alignment.topRight,
+                                child: Padding(
+                                  padding: const EdgeInsets.only(top: 5),
+                                  child: InkWell(
+                                    child: Text(
+                                      AppIntl.of(context).forgot_password,
+                                      style: const TextStyle(
+                                          decoration: TextDecoration.underline,
+                                          color: Colors.white),
                                     ),
+                                    onTap: () async {
+                                      openUrl(forgotPasswordLink);
+                                    },
+                                  ),
+                                ),
                               ),
                               const SizedBox(
                                 height: 30.0,
@@ -277,10 +276,11 @@ class _LoginViewState extends State<LoginView> {
 
   Future<void> openUrl(String url) async {
     final uri = Uri.parse(url);
-    if(await canLaunchUrl(uri)){
+    if (await canLaunchUrl(uri)) {
       await launchUrl(uri);
-    }else{
-      locator<AnalyticsService>().logError("login_view", "Could not open url : '$url'");
+    } else {
+      locator<AnalyticsService>()
+          .logError("login_view", "Could not open url : '$url'");
     }
   }
 }
