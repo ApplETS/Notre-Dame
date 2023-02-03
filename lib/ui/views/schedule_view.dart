@@ -166,6 +166,9 @@ class _ScheduleViewState extends State<ScheduleView>
     final backgroundColor = Theme.of(context).brightness == Brightness.light
         ? AppTheme.lightThemeBackground
         : AppTheme.primaryDark;
+    final scheduleLineColor = Theme.of(context).brightness == Brightness.light
+        ? AppTheme.scheduleLineColorLight
+        : AppTheme.scheduleLineColorDark;
     return Scaffold(
       body: calendar_view.WeekView(
         controller: eventController..addAll(model.selectedWeekCalendarEvents()),
@@ -187,8 +190,8 @@ class _ScheduleViewState extends State<ScheduleView>
         ],
         initialDay: DateTime.now(),
         heightPerMinute: 0.65, // height occupied by 1 minute time span.
-        hourIndicatorSettings: const calendar_view.HourIndicatorSettings(
-          color: AppTheme.scheduleLineColor,
+        hourIndicatorSettings: calendar_view.HourIndicatorSettings(
+          color: scheduleLineColor,
         ),
         scrollOffset: 305,
         timeLineStringBuilder: (date, {secondaryDate}) {
