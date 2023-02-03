@@ -10,14 +10,20 @@ import 'package:notredame/locator.dart';
 class RemoteConfigService {
   static const String tag = "RemoteConfigService";
   static const _serviceIsDown = "service_is_down";
+  
+  // dashboard message remote config keys
+  static const _dashboardMsgToggle = "dashboard_message_toggle";
   static const _dashboardMsgFr = "dashboard_message_fr";
   static const _dashboardMsgEn = "dashboard_message_en";
+  static const _dashboardMsgTitleFr = "dashboard_message_title_fr";
+  static const _dashboardMsgTitleEn = "dashboard_message_title_en";
 
   final FirebaseRemoteConfig _remoteConfig = FirebaseRemoteConfig.instance;
   final defaults = <String, dynamic>{
     _serviceIsDown: false,
     _dashboardMsgFr: "",
     _dashboardMsgEn: ""
+    // TODO: either add default values for the rest or delete the ones above
   };
 
   Future initialize() async {
@@ -29,6 +35,11 @@ class RemoteConfigService {
     fetch();
     return _remoteConfig.getBool(_serviceIsDown);
   }
+  
+  bool get dashboardMessageActive {
+    fetch();
+    return _remoteConfig.getBool(_dashboardMsgToggle);
+  }
 
   Future<String> get dashboardMessageFr async {
     fetch();
@@ -38,6 +49,16 @@ class RemoteConfigService {
   Future<String> get dashboardMessageEn async {
     fetch();
     return _remoteConfig.getString(_dashboardMsgEn);
+  }
+
+  Future<String> get dashboardMessageTitleFr async {
+    fetch();
+    return _remoteConfig.getString(_dashboardMsgTitleFr);
+  }
+
+  Future<String> get dashboardMessageTitleEn async {
+    fetch();
+    return _remoteConfig.getString(_dashboardMsgTitleEn);
   }
 
   Future<void> fetch() async {

@@ -420,7 +420,7 @@ class _DashboardViewState extends State<DashboardView>
                   Expanded(
                     child: Align(
                       alignment: Alignment.centerLeft,
-                      child: Text(AppIntl.of(context).card_broadcast_title,
+                      child: Text(AppIntl.of(context).card_broadcast_title,   // TODO: use remote config
                           style: Theme.of(context).primaryTextTheme.headline6),
                     ),
                   ),

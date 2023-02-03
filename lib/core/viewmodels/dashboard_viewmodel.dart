@@ -60,8 +60,9 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
   List<int> _sessionDays = [0, 0];
 
   /// Message to display in case of urgent/important broadcast need (Firebase
-  /// remote config)
+  /// remote config), and the associated card title
   String broadcastMessage;
+  String broadcastTitle;
 
   /// Get progress of the session
   double get progress => _progress;
@@ -550,19 +551,18 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
 
     setBusyForObject(this.broadcastMessage, true);
 
-    String broadcastMessage = "";
-    if (_appIntl.localeName == "fr") {
-      broadcastMessage = await remoteConfigService.dashboardMessageFr;
-    } else {
-      broadcastMessage = await remoteConfigService.dashboardMessageEn;
-    }
-
-    if (broadcastMessage != "") {
+    if (await remoteConfigService.dashboardMessageActive) {
       _cardsToDisplay.remove(flag);
       _cardsToDisplay.insert(0, flag);
-      this.broadcastMessage = broadcastMessage;
+
+      if (_appIntl.localeName == "fr") {
+        this.broadcastMessage = await remoteConfigService.dashboardMessageFr;
+        this.broadcastTitle = await remoteConfigService.dashboardMessageTitleFr; 
+      } else {
+        this.broadcastMessage = await remoteConfigService.dashboardMessageEn;
+        this.broadcastTitle = await remoteConfigService.dashboardMessageTitleEn; 
+      }
     } else {
-      // TODO: check if the logic is correct
       _cardsToDisplay.remove(flag);
     }
 
