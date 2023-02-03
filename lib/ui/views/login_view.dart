@@ -34,6 +34,8 @@ class LoginView extends StatefulWidget {
 }
 
 class _LoginViewState extends State<LoginView> {
+  final String forgotPasswordLink = "https://signets-ens.etsmtl.ca/Public/MotDePassePerdu.aspx";
+
   final double borderRadiusOnFocus = 2.0;
 
   final FocusScopeNode _focusNode = FocusScopeNode();
@@ -144,7 +146,25 @@ class _LoginViewState extends State<LoginView> {
                               ),
                               PasswordFormField(
                                   validator: model.validatePassword,
-                                  onEditionComplete: _focusNode.nextFocus),
+                                  onEditionComplete: _focusNode.nextFocus
+                              ),
+                              Align(
+                                    alignment: Alignment.topRight,
+                                    child: Padding(
+                                      padding: const EdgeInsets.only(top: 5),
+                                      child: InkWell(
+                                        child: Text(
+                                          AppIntl.of(context).forgot_password,
+                                          style: const TextStyle(
+                                              decoration: TextDecoration.underline,
+                                              color: Colors.white),
+                                        ),
+                                        onTap: () async {
+                                          openUrl(forgotPasswordLink);
+                                        },
+                                      ),
+                                    ),
+                              ),
                               const SizedBox(
                                 height: 30.0,
                               ),
@@ -181,22 +201,6 @@ class _LoginViewState extends State<LoginView> {
                                             ? submitTextColor
                                             : Colors.white60,
                                         fontSize: 18),
-                                  ),
-                                ),
-                              ),
-                              Center(
-                                child: Padding(
-                                  padding: const EdgeInsets.only(top: 30),
-                                  child: InkWell(
-                                    child: Text(
-                                      AppIntl.of(context).forgot_password,
-                                      style: const TextStyle(
-                                          decoration: TextDecoration.underline,
-                                          color: Colors.white),
-                                    ),
-                                    onTap: () async {
-                                      openUrl("https://signets-ens.etsmtl.ca/Public/MotDePassePerdu.aspx");
-                                    },
                                   ),
                                 ),
                               ),
