@@ -169,6 +169,9 @@ class _ScheduleViewState extends State<ScheduleView>
     final scheduleLineColor = Theme.of(context).brightness == Brightness.light
         ? AppTheme.scheduleLineColorLight
         : AppTheme.scheduleLineColorDark;
+    final chevronColor = Theme.of(context).brightness == Brightness.light
+        ? AppTheme.primaryDark
+        : AppTheme.lightThemeBackground;
     return Scaffold(
       body: calendar_view.WeekView(
         controller: eventController..addAll(model.selectedWeekCalendarEvents()),
@@ -176,10 +179,19 @@ class _ScheduleViewState extends State<ScheduleView>
             model.handleViewChanged(date, eventController),
         backgroundColor: backgroundColor,
         headerStyle: calendar_view.HeaderStyle(
-          decoration: BoxDecoration(
-            color: backgroundColor,
-          ),
-        ),
+            decoration: BoxDecoration(
+              color: backgroundColor,
+            ),
+            leftIcon: Icon(
+              Icons.chevron_left,
+              size: 30,
+              color: chevronColor,
+            ),
+            rightIcon: Icon(
+              Icons.chevron_right,
+              size: 30,
+              color: chevronColor,
+            )),
         weekDays: const [
           calendar_view.WeekDays.monday,
           calendar_view.WeekDays.tuesday,
