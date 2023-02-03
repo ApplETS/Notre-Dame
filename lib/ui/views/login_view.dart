@@ -11,6 +11,7 @@ import 'package:notredame/core/services/launch_url_service.dart';
 
 // UTILS
 import 'package:notredame/core/utils/utils.dart';
+import 'package:notredame/core/utils/login_mask.dart';
 
 // VIEW MODEL
 import 'package:notredame/core/viewmodels/login_viewmodel.dart';
@@ -90,6 +91,7 @@ class _LoginViewState extends State<LoginView> {
                               TextFormField(
                                 autofillHints: const [AutofillHints.username],
                                 cursorColor: Colors.white,
+                                keyboardType: TextInputType.visiblePassword,
                                 decoration: InputDecoration(
                                   enabledBorder: const OutlineInputBorder(
                                       borderSide:
@@ -131,6 +133,9 @@ class _LoginViewState extends State<LoginView> {
                                 onEditingComplete: _focusNode.nextFocus,
                                 validator: model.validateUniversalCode,
                                 initialValue: model.universalCode,
+                                inputFormatters: [
+                                  LoginMask(),
+                                ],
                               ),
                               const SizedBox(
                                 height: 20,

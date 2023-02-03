@@ -1,16 +1,6 @@
-name: Main workflow
+name: Development workflow
 on:
   workflow_dispatch:
-  push:
-    branches:
-      - master
-    paths-ignore:
-      - '.gitignore'
-      - '.metadata'
-      - 'README.md'
-      - 'README.fr.md'
-      - 'android/fastlane/**'
-      - 'ios/fastlane/**'
   pull_request:
     paths-ignore:
       - '.gitignore'
@@ -19,62 +9,72 @@ on:
       - 'README.fr.md'
       - 'android/fastlane/**'
       - 'ios/fastlane/**'
-
 env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   MAPS_API_KEY: ${{ secrets.MAPS_API_KEY }}
   APP_NAME: 'notre_dame'
+
 jobs:
+  ##############################################################
+  # Setup
+  ##############################################################
   delete_bot_comments:
     name: Delete the bot comments on the PR.
     runs-on: ubuntu-latest
     steps:
       - uses: izhangzhihao/delete-comment@master
-        if: ${{ github.event_name == 'pull_request' }}
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           delete_user_name: github-actions[bot]
           issue_number: ${{ github.event.number }}
-  tag_validation:
-    name: Tag validation
+
+  determine_pr_size:
+    name: Determine the size of the PR
     runs-on: ubuntu-latest
-    outputs:
-      version: ${{ steps.split.outputs._0 }}
-    needs:
-      - delete_bot_comments
+    steps:
+      - uses: codelytv/pr-size-labeler@v1
+        with:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          xs_label: 'size: XS'
+          xs_max_size: '30'
+          s_label: 'size: S'
+          s_max_size: '100'
+          m_label: 'size: M'
+          m_max_size: '500'
+          l_label: 'size: L'
+          l_max_size: '1000'
+          xl_label: 'size: XL'
+          fail_if_xl: 'false'
+          message_if_xl: >
+            'This PR exceeds the recommended size of 1000 lines.
+            Please make sure you are NOT addressing multiple issues with one PR.
+            Note this PR might be rejected due to its size.’
+  bump_version:
+    name: Bump app version using PR labels
+    runs-on: ubuntu-latest
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     steps:
       - uses: actions/checkout@v3
-      - name: Get the version from the pubspec
-        id: pubspecVersion
-        uses: CumulusDS/get-yaml-paths-action@v1.0.1
+      - name: Bump version
+        uses: apomalyn/bump-version-using-labels@1.3.1
         with:
-          file: pubspec.yaml
-          version: version
-      - uses: jungwinter/split@v2
-        id: split
-        with:
-          msg: ${{ steps.pubspecVersion.outputs.version }}
-          separator: '+'
-      - name: Validate that version doesn't exists
-        uses: mukunku/tag-exists-action@v1.2.0
-        id: checkTag
-        with:
-          tag: ${{ steps.split.outputs._0 }}
-      - if: ${{ steps.checkTag.outputs.exists == 'true' && github.event_name == 'pull_request' }}
-        name: Post comment on PR and fail.
-        run: |
-          gh pr comment ${{ github.event.pull_request.number }} -b '${{ steps.split.outputs._0 }} already exists, please update the pubspec version.'
-          exit 1
+          file_path: 'pubspec.yaml'
+          reference_branch: 'master'
+  ##############################################################
+  # Testing
+  ##############################################################
   testing:
     name: Tests and checks
     runs-on: ubuntu-latest
+    needs:
+      - bump_version
     outputs:
       coverage: ${{ steps.coverage.outputs.percentage }}
     steps:
       - uses: actions/checkout@v3
         with:
           ref: ${{ github.head_ref }}
-          token: ${{ secrets.PTA }}
       - uses: actions/setup-java@v3
         with:
           distribution: 'adopt'
@@ -113,7 +113,7 @@ jobs:
         run: flutter analyze
 
       # Run the tests with --update-goldens.
-      - name: Update goldens
+      - name: Run tests
         run: flutter test --coverage --update-goldens
 
       # Commit and push the goldens files updated.
@@ -132,14 +132,12 @@ jobs:
           name: lcov.info
           path: ${{ github.workspace }}/coverage/lcov.info
       - name: Get code coverage
-        #        if: ${{ github.event_name == 'push' }}
         id: coverage
         run: |
           chmod +x ./scripts/determine_code_coverage.sh
           export COV="$(./scripts/determine_code_coverage.sh coverage/lcov.info)"
           echo "Coverage detected is: $COV"
-          echo "::set-output name=percentage::$COV"
-
+          echo "percentage=$COV" >> $GITHUB_OUTPUT
   coverage:
     name: Update coverage
     needs:
@@ -153,47 +151,14 @@ jobs:
           name: lcov.info
       # Comment coverage report
       - name: Comment the coverage of the PR
-        if: ${{ github.event_name == 'pull_request' }}
         uses: romeovs/lcov-reporter-action@v0.3.1
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           lcov-file: ./lcov.info
-      #          lcov-base: ./coverage/lcov.base.info
 
-      - name: Update badge coverage
-        if: ${{ github.event_name == 'push' }}
-        uses: schneegans/dynamic-badges-action@v1.6.0
-        with:
-          auth: ${{ secrets.GIST_COVERAGE_BADGE_TOKEN }}
-          gistID: ${{ secrets.GIST_ID_COVERAGE_BADGE }}
-          filename: notre_dame_master_badge_coverage.json
-          label: Code coverage
-          message: ${{ needs.testing.outputs.coverage }}
-          namedLogo: flutter
-          color: green
-
-#      Disable these steps for now. Will enable them when we will think of a way to upload lcov.base.info somewhere
-#      - name: Commit coverage file
-#        id: commit
-#        if: ${{ github.event_name == 'push' }}
-#        run: |
-#          git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
-#          git config --local user.name "github-actions[bot]"
-#          mv coverage/lcov.info coverage/lcov.base.info
-#          git add coverage/lcov.base.info
-#          git status
-#          git status | grep -o 'coverage/lcov.base.info*'
-#          if git status | grep -o 'coverage/lcov.base.info*'; then
-#            git commit -m "Update coverage file" -a
-#            echo "::set-output name=is_commit::true"
-#          fi
-#      - name: Push coverage changes.
-#        if: ${{ github.event_name == 'push' && }}
-#        uses: ad-m/github-push-action@master
-#        with:
-#          github_token: ${{ secrets.GITHUB_TOKEN }}
-#          branch: ${{ github.head_ref }}
-
+  ##############################################################
+  # Build
+  ##############################################################
   build:
     name: Create ${{ matrix.target }} build
     runs-on: ${{ matrix.os }}
@@ -219,7 +184,6 @@ jobs:
       fail-fast: false
     needs:
       - testing
-      - tag_validation
     steps:
       - uses: actions/checkout@v3
       - uses: subosito/flutter-action@v2
@@ -277,30 +241,3 @@ jobs:
         with:
           name: ${{ matrix.target }}
           path: ${{ github.workspace }}/${{ env.APP_NAME }}_${{ matrix.target }}.${{ matrix.asset_extension }}
-
-  create_pre_release:
-    name: Create Github release
-    if: ${{ github.event_name == 'push' || (github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/master') }}
-    needs:
-      - tag_validation
-      - build
-    runs-on: ubuntu-latest
-    outputs:
-      upload_url: ${{ steps.create_release.outputs.upload_url }}
-    steps:
-      - name: Download iOS build
-        uses: actions/download-artifact@v3
-        with:
-          name: iOS
-      - name: Download Android build
-        uses: actions/download-artifact@v3
-        with:
-          name: Android
-      - name: Download build of Android and iOS
-        uses: actions/download-artifact@v3
-        with:
-          path: build
-      - name: Create pre-release
-        run: |
-          gh release create ${{ needs.tag_validation.outputs.version }} */** --title v${{ needs.tag_validation.outputs.version }} -R '${{ github.repository }}' --prerelease --generate-notes
-        working-directory: build

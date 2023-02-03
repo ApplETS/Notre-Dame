@@ -1,0 +1,242 @@
+name: Master workflow
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - master
+    paths-ignore:
+      - '.gitignore'
+      - '.metadata'
+      - 'README.md'
+      - 'README.fr.md'
+      - 'android/fastlane/**'
+      - 'ios/fastlane/**'
+
+env:
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  MAPS_API_KEY: ${{ secrets.MAPS_API_KEY }}
+  APP_NAME: 'notre_dame'
+
+jobs:
+  ##############################################################
+  # Setup
+  ##############################################################
+  tag_validation:
+    name: Tag validation
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.split.outputs._0 }}
+    steps:
+      - uses: actions/checkout@v3
+      - name: Get the version from the pubspec
+        id: pubspecVersion
+        uses: CumulusDS/get-yaml-paths-action@v1.0.1
+        with:
+          file: pubspec.yaml
+          version: version
+      - uses: jungwinter/split@v2
+        id: split
+        with:
+          msg: ${{ steps.pubspecVersion.outputs.version }}
+          separator: '+'
+      - name: Validate that version doesn't exists
+        uses: mukunku/tag-exists-action@v1.2.0
+        id: checkTag
+        with:
+          tag: ${{ steps.split.outputs._0 }}
+      - if: ${{ steps.checkTag.outputs.exists == 'true' }}
+        name: Post comment on PR and fail.
+        run: |
+          echo '${{ steps.split.outputs._0 }} already exists, please update the pubspec version.'
+          exit 1
+
+  ##############################################################
+  # Tests
+  ##############################################################
+  testing:
+    name: Tests and checks
+    runs-on: ubuntu-latest
+    outputs:
+      coverage: ${{ steps.coverage.outputs.percentage }}
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          ref: ${{ github.head_ref }}
+      - uses: actions/setup-java@v3
+        with:
+          distribution: 'adopt'
+          java-version: '11'
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.3.x'
+          channel: 'stable'
+          cache: true
+      - run: flutter doctor
+      - name: Decrypt SignETS certificate and Google Services files
+        run: |
+          chmod +x ./scripts/decrypt.sh
+          ./scripts/decrypt.sh
+        env:
+          ENCRYPTED_SIGNETS_API_CERT_PASSWORD: ${{ secrets.ENCRYPTED_SIGNETS_API_CERT_PASSWORD }}
+          ENCRYPTED_GOOGLE_SERVICE_PASSWORD: ${{ secrets.ENCRYPTED_GOOGLE_SERVICE_PASSWORD }}
+
+      # Get flutter dependencies.
+      - run: flutter pub get
+
+      # Check if the code has any errors/warnings
+      - name: Analyze code
+        run: flutter analyze
+
+      # Run the tests.
+      - name: Run tests
+        run: flutter test --coverage
+
+      - name: Upload coverage file
+        uses: actions/upload-artifact@v3
+        with:
+          name: lcov.info
+          path: ${{ github.workspace }}/coverage/lcov.info
+
+      - name: Get code coverage
+        id: coverage
+        run: |
+          chmod +x ./scripts/determine_code_coverage.sh
+          export COV="$(./scripts/determine_code_coverage.sh coverage/lcov.info)"
+          echo "Coverage detected is: $COV"
+          echo "percentage=$COV" >> $GITHUB_OUTPUT
+
+  coverage:
+    name: Update coverage
+    needs:
+      - testing
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download coverage file
+        uses: actions/download-artifact@v3
+        with:
+          name: lcov.info
+      - name: Update badge coverage
+        uses: schneegans/dynamic-badges-action@v1.6.0
+        with:
+          auth: ${{ secrets.GIST_COVERAGE_BADGE_TOKEN }}
+          gistID: ${{ secrets.GIST_ID_COVERAGE_BADGE }}
+          filename: notre_dame_master_badge_coverage.json
+          label: Code coverage
+          message: ${{ needs.testing.outputs.coverage }}
+          namedLogo: flutter
+          color: green
+
+  ##############################################################
+  # Build
+  ##############################################################
+  build:
+    name: Create ${{ matrix.target }} build
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        target: [ iOS, Android ]
+        include:
+          - os: macos-latest
+            target: iOS
+            build_target: ios
+            build_args: --no-codesign
+            build_path: build/ios/iphoneos
+            asset_extension: zip
+            asset_content_type: application/zip
+          - os: ubuntu-latest
+            target: Android
+            build_target: apk
+            build_args: ''
+            build_path: build/app/outputs/apk/release
+            asset_extension: apk
+            asset_content_type: application/zip
+      # Disable fail-fast as we want results from all even if one fails.
+      fail-fast: false
+    needs:
+      - testing
+    steps:
+      - uses: actions/checkout@v3
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.3.x'
+          channel: 'stable'
+          cache: true
+      - name: Install Android dependencies
+        if: matrix.target == 'Android'
+        uses: actions/setup-java@v3
+        with:
+          java-version: '11'
+          distribution: 'adopt'
+      - run: flutter doctor -v
+      - name: Install iOS dependencies
+        if: matrix.target == 'iOS'
+        run: |
+          flutter pub get
+          cd ios
+          rm Podfile.lock
+          pod install --repo-update
+          flutter clean
+
+      # Get dependencies and decrypt needed files.
+      - run: flutter pub get
+
+      - name: Decrypt SignETS certificate and Google Services files
+        run: |
+          chmod +x ./scripts/decrypt.sh
+          ./scripts/decrypt.sh
+        env:
+          ENCRYPTED_SIGNETS_API_CERT_PASSWORD: ${{ secrets.ENCRYPTED_SIGNETS_API_CERT_PASSWORD }}
+          ENCRYPTED_GOOGLE_SERVICE_PASSWORD: ${{ secrets.ENCRYPTED_GOOGLE_SERVICE_PASSWORD }}
+          ENCRYPTED_ETSMOBILE_KEYSTORE_PASSWORD: ${{ secrets.ENCRYPTED_ETSMOBILE_KEYSTORE_PASSWORD }}
+          ENCRYPTED_KEYSTORE_PROPERTIES_PASSWORD: ${{ secrets.ENCRYPTED_KEYSTORE_PROPERTIES_PASSWORD }}
+
+      # Build the application.
+      - name: Build the application
+        run: flutter build -v ${{ matrix.build_target }} ${{ matrix.build_args }} --release --dart-define=GH_API_TOKEN=${{ secrets.GH_API_TOKEN }}
+
+      - name: Rename Android build
+        if: matrix.target == 'Android'
+        run: mv app-release.${{ matrix.asset_extension }} ${{ github.workspace }}/${{ env.APP_NAME }}_${{ matrix.target }}.${{ matrix.asset_extension }}
+        working-directory: ${{ matrix.build_path }}
+
+      - name: Compress iOS build
+        if: matrix.target == 'iOS'
+        run: |
+          mv Runner.app ${{ env.APP_NAME }}.app
+          ditto -c -k --sequesterRsrc --keepParent ${{ env.APP_NAME }}.app ${{ github.workspace }}/${{ env.APP_NAME }}_${{ matrix.target }}.${{ matrix.asset_extension }}
+        working-directory: ${{ matrix.build_path }}
+
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: ${{ matrix.target }}
+          path: ${{ github.workspace }}/${{ env.APP_NAME }}_${{ matrix.target }}.${{ matrix.asset_extension }}
+
+  ##############################################################
+  # Post-build
+  ##############################################################
+  create_pre_release:
+    name: Create Github release
+    needs:
+      - tag_validation
+      - build
+    runs-on: ubuntu-latest
+    outputs:
+      upload_url: ${{ steps.create_release.outputs.upload_url }}
+    steps:
+      - name: Download iOS build
+        uses: actions/download-artifact@v3
+        with:
+          name: iOS
+      - name: Download Android build
+        uses: actions/download-artifact@v3
+        with:
+          name: Android
+      - name: Download build of Android and iOS
+        uses: actions/download-artifact@v3
+        with:
+          path: build
+      - name: Create pre-release
+        run: |
+          gh release create ${{ needs.tag_validation.outputs.version }} */** --title v${{ needs.tag_validation.outputs.version }} -R '${{ github.repository }}' --prerelease --generate-notes
+        working-directory: build
