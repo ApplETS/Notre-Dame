@@ -198,7 +198,9 @@ class _ScheduleViewState extends State<ScheduleView>
           return weekTitles[p0];
         },
         headerStringBuilder: (date, {secondaryDate}) {
-          return 'Du ${date.day} ${DateFormat.MMMM("fr").format(date)} au ${secondaryDate.day} ${DateFormat.MMMM("fr").format(secondaryDate)}';
+          final from = AppIntl.of(context).schedule_calendar_from;
+          final to = AppIntl.of(context).schedule_calendar_to;
+          return '$from ${date.day} ${DateFormat.MMMM("fr").format(date)} $to ${secondaryDate.day} ${DateFormat.MMMM("fr").format(secondaryDate)}';
         },
         eventTileBuilder: _buildEventTile,
       ),
@@ -217,7 +219,7 @@ class _ScheduleViewState extends State<ScheduleView>
         borderRadius: BorderRadius.circular(6.0),
         title: events[0].title,
         titleStyle: TextStyle(
-          fontSize: 10,
+          fontSize: 12,
           color: events[0].color.accent,
         ),
         totalEvents: events.length,

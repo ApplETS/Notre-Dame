@@ -70,6 +70,8 @@
   "schedule_no_event": "Aucun évènement à l'horaire.",
   "schedule_select_course_activity": "Sélectionner le groupe du laboratoire",
   "schedule_already_today_toast": "Déjà sur l'horaire d'aujourd'hui",
+  "schedule_calendar_from": "Du",
+  "schedule_calendar_to": "au",
   "course_activity_group_a": "Groupe A",
   "course_activity_group_b": "Groupe B",
   "course_activity_group_both": "Les deux groupes",
