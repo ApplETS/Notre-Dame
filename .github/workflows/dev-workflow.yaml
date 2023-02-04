@@ -9,6 +9,10 @@ on:
       - 'README.fr.md'
       - 'android/fastlane/**'
       - 'ios/fastlane/**'
+  push:
+    pusher:
+      name:
+        - 'github-actions[bot]'
 env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   MAPS_API_KEY: ${{ secrets.MAPS_API_KEY }}
