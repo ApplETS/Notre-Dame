@@ -9,10 +9,6 @@ on:
       - 'README.fr.md'
       - 'android/fastlane/**'
       - 'ios/fastlane/**'
-  push:
-    pusher:
-      name:
-        - 'github-actions[bot]'
 env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   MAPS_API_KEY: ${{ secrets.MAPS_API_KEY }}
@@ -21,7 +17,7 @@ env:
 jobs:
   ##############################################################
   # Setup
-  ###############################################################
+  ##############################################################
   delete_bot_comments:
     name: Delete the bot comments on the PR.
     runs-on: ubuntu-latest
