@@ -52,7 +52,7 @@ jobs:
   bump_version:
     name: Bump app version using PR labels
     runs-on: ubuntu-latest
-    # TODO: voir si possible d'enlever, fail si modifié
+    # TODO: voir si possible d'enlever, fail si modifié. Test ?
     env:
       GITHUB_TOKEN: ${{ secrets.PTA }}
     steps:
