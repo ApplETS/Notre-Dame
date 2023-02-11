@@ -215,7 +215,8 @@ class _ScheduleViewState extends State<ScheduleView>
         headerStringBuilder: (date, {secondaryDate}) {
           final from = AppIntl.of(context).schedule_calendar_from;
           final to = AppIntl.of(context).schedule_calendar_to;
-          return '$from ${date.day} ${DateFormat.MMMM("fr").format(date)} $to ${secondaryDate.day} ${DateFormat.MMMM("fr").format(secondaryDate)}';
+          final locale = AppIntl.of(context).localeName;
+          return '$from ${date.day} ${DateFormat.MMMM(locale).format(date)} $to ${secondaryDate.day} ${DateFormat.MMMM(locale).format(secondaryDate)}';
         },
         eventTileBuilder: _buildEventTile,
       ),
