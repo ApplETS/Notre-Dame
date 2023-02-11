@@ -131,9 +131,11 @@ jobs:
           commit_message: "[BOT] Update golden files and applying format"
 
       # Fail workflow, because new commit will execute workflow
-      - name: Fail workflow if commit
-        if: steps.commit_golden_files.outputs.changes_detected == 'true'
-        fail: '[WARNING] Fail to let the new commit workflow run'
+      - if: ${{ steps.commit.outputs.changes_detected == 'true' }}
+        name: Fail workflow if commit
+        run: |
+          echo 'Golden files and linting applied, run bot commit workflow'
+          exit 0
 
       - name: Upload coverage file
         uses: actions/upload-artifact@v3
