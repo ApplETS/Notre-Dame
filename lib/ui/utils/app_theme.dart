@@ -64,7 +64,7 @@ class AppTheme {
   ];
 
   /// Schedule calendar colors
-  static const Color scheduleLineColorLight = Color(0xffb8b8b8);
+  static const Color scheduleLineColorLight = Color(0xffe8e8e8);
   static const Color scheduleLineColorDark = Color(0xff3d3d3d);
 
   /// Light theme

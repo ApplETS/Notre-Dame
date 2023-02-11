@@ -115,17 +115,26 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
   List<CalendarEventData> selectedDateCalendarEvents(DateTime date) {
     final seen = <String>{};
     return _coursesActivities[DateTime(date.year, date.month, date.day)]
-            ?.map((e) => CalendarEventData(
-                title:
-                    "${e.courseGroup.split('-')[0]}\n${e.activityLocation}\n${e.activityName}",
-                description: e.courseGroup,
-                date: e.startDateTime,
-                startTime: e.startDateTime,
-                endTime: e.endDateTime,
-                color: getCourseColor(e.courseGroup.split('-')[0])))
+            ?.map((eventData) => calendarEventData(eventData))
             ?.where((course) => seen.add(course.description))
             ?.toList() ??
         [];
+  }
+
+  CalendarEventData<Object> calendarEventData(CourseActivity eventData) {
+    final courseName = eventData.courseGroup.split('-')[0].substring(0, 3);
+    final courseNumber = eventData.courseGroup.split('-')[0].substring(3);
+    final courseLocation = eventData.activityLocation == "Non assign"
+        ? "N/A"
+        : eventData.activityLocation;
+    return CalendarEventData(
+        title:
+            "$courseName\n$courseNumber\n$courseLocation\n${eventData.activityName}",
+        description: eventData.courseGroup,
+        date: eventData.startDateTime,
+        startTime: eventData.startDateTime,
+        endTime: eventData.endDateTime,
+        color: getCourseColor(eventData.courseGroup.split('-')[0]));
   }
 
   Color getCourseColor(String courseName) {

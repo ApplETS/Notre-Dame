@@ -11,7 +11,10 @@ class RemoteConfigService {
   static const _serviceIsDown = "service_is_down";
   static const _scheduleListViewDefault = "schedule_list_view_default";
   final FirebaseRemoteConfig _remoteConfig = FirebaseRemoteConfig.instance;
-  final defaults = <String, dynamic>{_serviceIsDown: false};
+  final defaults = <String, dynamic>{
+    _serviceIsDown: false,
+    _scheduleListViewDefault: true
+  };
   static const String tag = "RemoteConfigService";
 
   Future initialize() async {
