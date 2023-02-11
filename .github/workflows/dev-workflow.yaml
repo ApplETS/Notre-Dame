@@ -9,6 +9,10 @@ on:
       - 'README.fr.md'
       - 'android/fastlane/**'
       - 'ios/fastlane/**'
+strategy:
+  concurrency:
+    group: ${{ github.ref }}
+    cancel-in-progress: true
 env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   MAPS_API_KEY: ${{ secrets.MAPS_API_KEY }}
@@ -52,9 +56,6 @@ jobs:
   bump_version:
     name: Bump app version using PR labels
     runs-on: ubuntu-latest
-    # TODO: voir si possible d'enlever, fail si modifié.
-    env:
-      GITHUB_TOKEN: ${{ secrets.PTA }}
     steps:
       - uses: actions/checkout@v3
         with:
@@ -103,14 +104,22 @@ jobs:
       # Check the format of the code
       - name: Format files in lib and test directories
         run: flutter format lib test
-      # - name: Commit formatted files
-      #   uses: stefanzweifel/git-auto-commit-action@v4
-      #   with:
-      #     file_pattern: "*.dart"
-      #     commit_user_name: github-actions[bot]
-      #     commit_user_email: 41898282+github-actions[bot]@users.noreply.github.com
-      #     commit_message: "[BOT] Applying format."
-      #     add_options: '-u'
+        id: commit_linting
+      - name: Commit formatted files
+        uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          file_pattern: '*.dart'
+          commit_user_name: github-actions[bot]
+          commit_user_email: 41898282+github-actions[bot]@users.noreply.github.com
+          commit_message: "[BOT] Applying format."
+          add_options: '-u'
+
+      # Fail workflow, because new commit will execute bot commit workflow
+      - if: ${{ steps.commit_linting.outputs.changes_detected == 'true' }}
+        name: Fail workflow if commit
+        run: |
+          echo 'Linting change commit, running bot commit workflow'
+          exit 1
 
       # Check if the code has any errors/warnings
       - name: Analyze code
@@ -121,20 +130,20 @@ jobs:
         run: flutter test --coverage --update-goldens
 
       # Commit and push the goldens files and formatting updated.
-      - name: Commit golden files and formatting
-        id: commit
+      - name: Commit golden files
+        id: commit_golden
         uses: stefanzweifel/git-auto-commit-action@v4
         with:
-          file_pattern: 'test/* *.dart'
+          file_pattern: 'test/*'
           commit_user_name: github-actions[bot]
           commit_user_email: 41898282+github-actions[bot]@users.noreply.github.com
-          commit_message: '[BOT] Update golden files and applying format'
+          commit_message: '[BOT] Update golden files'
 
-      # Fail workflow, because new commit will execute workflow
-      - if: ${{ steps.commit.outputs.changes_detected == 'true' }}
+      # Fail workflow, because new commit will execute bot commit workflow
+      - if: ${{ steps.commit_golden.outputs.changes_detected == 'true' }}
         name: Fail workflow if commit
         run: |
-          echo 'Golden files and linting applied, running bot commit workflow'
+          echo 'Golden files were commit, running bot commit workflow'
           exit 1
 
       - name: Upload coverage file
