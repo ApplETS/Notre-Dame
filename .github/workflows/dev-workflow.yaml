@@ -100,9 +100,9 @@ jobs:
       # Get flutter dependencies.
       - run: flutter pub get
 
-      # # Check the format of the code and commit the formatted files.
-      # - name: Format files in lib and test directories
-      #   run: flutter format lib test
+      # Check the format of the code
+      - name: Format files in lib and test directories
+        run: flutter format lib test
       # - name: Commit formatted files
       #   uses: stefanzweifel/git-auto-commit-action@v4
       #   with:
@@ -120,8 +120,8 @@ jobs:
       - name: Run tests
         run: flutter test --coverage --update-goldens
 
-      # Commit and push the goldens files updated.
-      - name: Commit golden files
+      # Commit and push the goldens files and formatting updated.
+      - name: Commit golden files and formatting
         id: commit
         uses: stefanzweifel/git-auto-commit-action@v4
         with:
