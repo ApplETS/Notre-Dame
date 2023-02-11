@@ -126,7 +126,6 @@ jobs:
         uses: stefanzweifel/git-auto-commit-action@v4
         with:
           file_pattern: 'test/* *.dart'
-          disable_globbing: true
           commit_user_name: github-actions[bot]
           commit_user_email: 41898282+github-actions[bot]@users.noreply.github.com
           commit_message: '[BOT] Update golden files and applying format'
@@ -135,8 +134,8 @@ jobs:
       - if: ${{ steps.commit.outputs.changes_detected == 'true' }}
         name: Fail workflow if commit
         run: |
-          echo 'Golden files and linting applied, run bot commit workflow'
-          exit 0
+          echo 'Golden files and linting applied, running bot commit workflow'
+          exit 1
 
       - name: Upload coverage file
         uses: actions/upload-artifact@v3
