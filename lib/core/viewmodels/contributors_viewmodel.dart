@@ -20,18 +20,4 @@ class ContributorsViewModel extends FutureViewModel {
         .where((cont) => cont.id != 49699333) // Remove dependabot
         .toList();
   }
-
-
-
-
-
-
-
-
-
-
-
-
-
-  
 }
