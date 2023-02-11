@@ -175,7 +175,7 @@ class SettingsManager with ChangeNotifier {
 
     final scheduleListView =
         await _preferencesService.getBool(PreferencesFlag.scheduleListView) ??
-            getCalendarViewEnabled();
+            calendarViewSetting;
     settings.putIfAbsent(
         PreferencesFlag.scheduleListView, () => scheduleListView);
 
@@ -259,7 +259,5 @@ class SettingsManager with ChangeNotifier {
   int getDefaultCardIndex(PreferencesFlag flag) =>
       flag.index - PreferencesFlag.aboutUsCard.index;
 
-  bool getCalendarViewEnabled() {
-    return _remoteConfigService.scheduleListViewDefault;
-  }
+  bool get calendarViewSetting => _remoteConfigService.scheduleListViewDefault;
 }

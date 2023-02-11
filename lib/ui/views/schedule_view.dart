@@ -96,7 +96,7 @@ class _ScheduleViewState extends State<ScheduleView>
               actions: _buildActionButtons(model),
             ),
             body: RefreshIndicator(
-              child: !model.getCalendarViewSetting()
+              child: !model.calendarViewSetting
                   ? _buildCalendarView(model, context)
                   : _buildListView(model, context),
               onRefresh: () => model.refresh(),
