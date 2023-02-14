@@ -24,35 +24,32 @@ void main() {
     group("setters - ", () {
       test("setBool", () async {
         expect(
-            await service.setBool(
-                PreferencesFlag.scheduleSettingsCalendarFormat,
+            await service.setBool(PreferencesFlag.scheduleCalendarFormat,
                 value: true),
             isTrue);
         expect(
-            sharedPreferences.getBool(
-                PreferencesFlag.scheduleSettingsCalendarFormat.toString()),
+            sharedPreferences
+                .getBool(PreferencesFlag.scheduleCalendarFormat.toString()),
             isTrue);
       });
 
       test("setString", () async {
         expect(
             await service.setString(
-                PreferencesFlag.scheduleSettingsCalendarFormat, "Test"),
+                PreferencesFlag.scheduleCalendarFormat, "Test"),
             isTrue);
         expect(
-            sharedPreferences.getString(
-                PreferencesFlag.scheduleSettingsCalendarFormat.toString()),
+            sharedPreferences
+                .getString(PreferencesFlag.scheduleCalendarFormat.toString()),
             "Test");
       });
 
       test("setInt", () async {
-        expect(
-            await service.setInt(
-                PreferencesFlag.scheduleSettingsCalendarFormat, 1),
+        expect(await service.setInt(PreferencesFlag.scheduleCalendarFormat, 1),
             isTrue);
         expect(
-            sharedPreferences.getInt(
-                PreferencesFlag.scheduleSettingsCalendarFormat.toString()),
+            sharedPreferences
+                .getInt(PreferencesFlag.scheduleCalendarFormat.toString()),
             1);
       });
 
@@ -69,36 +66,32 @@ void main() {
 
     test("clear", () async {
       SharedPreferences.setMockInitialValues(
-          {PreferencesFlag.scheduleSettingsCalendarFormat.toString(): true});
+          {PreferencesFlag.scheduleCalendarFormat.toString(): true});
 
-      expect(
-          await service.getBool(PreferencesFlag.scheduleSettingsCalendarFormat),
+      expect(await service.getBool(PreferencesFlag.scheduleCalendarFormat),
           isTrue);
 
       final SharedPreferences prefs = await SharedPreferences.getInstance();
       prefs.clear();
 
       expect(
-          await service.getBool(PreferencesFlag.scheduleSettingsCalendarFormat),
-          null);
+          await service.getBool(PreferencesFlag.scheduleCalendarFormat), null);
     });
 
     test("clearWithoutPersistentKey", () async {
       SharedPreferences.setMockInitialValues({
-        PreferencesFlag.scheduleSettingsCalendarFormat.toString(): true,
+        PreferencesFlag.scheduleCalendarFormat.toString(): true,
         PreferencesFlag.discoveryDashboard.toString(): true
       });
 
-      expect(
-          await service.getBool(PreferencesFlag.scheduleSettingsCalendarFormat),
+      expect(await service.getBool(PreferencesFlag.scheduleCalendarFormat),
           isTrue);
       expect(await service.getBool(PreferencesFlag.discoveryDashboard), isTrue);
 
       service.clearWithoutPersistentKey();
 
       expect(
-          await service.getBool(PreferencesFlag.scheduleSettingsCalendarFormat),
-          null);
+          await service.getBool(PreferencesFlag.scheduleCalendarFormat), null);
 
       expect(await service.getBool(PreferencesFlag.discoveryDashboard), isTrue);
     });
@@ -106,43 +99,35 @@ void main() {
     group("getters - ", () {
       test("get", () async {
         SharedPreferences.setMockInitialValues(
-            {PreferencesFlag.scheduleSettingsCalendarFormat.toString(): true});
+            {PreferencesFlag.scheduleCalendarFormat.toString(): true});
 
         expect(
-            await service.getPreferencesFlag(
-                PreferencesFlag.scheduleSettingsCalendarFormat),
+            await service
+                .getPreferencesFlag(PreferencesFlag.scheduleCalendarFormat),
             isInstanceOf<bool>());
       });
 
       test("getBool", () async {
         SharedPreferences.setMockInitialValues(
-            {PreferencesFlag.scheduleSettingsCalendarFormat.toString(): true});
+            {PreferencesFlag.scheduleCalendarFormat.toString(): true});
 
-        expect(
-            await service
-                .getBool(PreferencesFlag.scheduleSettingsCalendarFormat),
+        expect(await service.getBool(PreferencesFlag.scheduleCalendarFormat),
             isTrue);
       });
 
       test("getString", () async {
-        SharedPreferences.setMockInitialValues({
-          PreferencesFlag.scheduleSettingsCalendarFormat.toString(): "Test"
-        });
+        SharedPreferences.setMockInitialValues(
+            {PreferencesFlag.scheduleCalendarFormat.toString(): "Test"});
 
-        expect(
-            await service
-                .getString(PreferencesFlag.scheduleSettingsCalendarFormat),
+        expect(await service.getString(PreferencesFlag.scheduleCalendarFormat),
             "Test");
       });
 
       test("getInt", () async {
         SharedPreferences.setMockInitialValues(
-            {PreferencesFlag.scheduleSettingsCalendarFormat.toString(): 1});
+            {PreferencesFlag.scheduleCalendarFormat.toString(): 1});
 
-        expect(
-            await service
-                .getInt(PreferencesFlag.scheduleSettingsCalendarFormat),
-            1);
+        expect(await service.getInt(PreferencesFlag.scheduleCalendarFormat), 1);
       });
 
       test("getDateTime", () async {

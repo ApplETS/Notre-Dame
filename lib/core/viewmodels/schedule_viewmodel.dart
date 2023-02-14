@@ -1,4 +1,6 @@
 // FLUTTER / DART / THIRD-PARTIES
+
+import 'package:calendar_view/calendar_view.dart';
 import 'package:enum_to_string/enum_to_string.dart';
 import 'package:feature_discovery/feature_discovery.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -19,6 +21,7 @@ import 'package:ets_api_clients/models.dart';
 // UTILS
 import 'package:notredame/ui/utils/discovery_components.dart';
 import 'package:notredame/core/utils/utils.dart';
+import 'package:notredame/ui/utils/app_theme.dart';
 
 // OTHER
 import 'package:notredame/locator.dart';
@@ -46,6 +49,9 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
   /// Day currently focused on
   ValueNotifier<DateTime> focusedDate;
 
+  /// List of currently loaded events
+  List<CalendarEventData> calendarEvents = [];
+
   /// The currently selected CalendarFormat, A default value is set for test purposes.
   /// This value is then change to the cache value on load.
   CalendarFormat calendarFormat = CalendarFormat.week;
@@ -56,6 +62,13 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
   /// This map contains the direct settings as string for each course that are grouped
   /// (Example: (key, value) => ("ING150", "Laboratoire (Groupe A)"))
   final Map<String, String> settingsScheduleActivities = {};
+
+  /// A map that contains a color from the AppTheme.SchedulePalette palette associated with each course.
+  final Map<String, Color> courseColors = {};
+
+  /// The color palette corresponding to the schedule courses.
+  List<Color> schedulePaletteThemeLight =
+      AppTheme.schedulePaletteLight.toList();
 
   /// Get current locale
   Locale get locale => _settingsManager.locale;
@@ -71,10 +84,8 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
 
   Map<DateTime, List<dynamic>> selectedWeekEvents() {
     final Map<DateTime, List<dynamic>> events = {};
-    final firstDayOfWeek = Utils.getFirstDayOfCurrentWeek(
-        selectedDate,
-        settings[PreferencesFlag.scheduleSettingsStartWeekday]
-            as StartingDayOfWeek);
+    final firstDayOfWeek = Utils.getFirstDayOfCurrentWeek(selectedDate,
+        settings[PreferencesFlag.scheduleStartWeekday] as StartingDayOfWeek);
 
     for (int i = 0; i < 7; i++) {
       final date = firstDayOfWeek.add(Duration(days: i));
@@ -87,10 +98,73 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
     return events;
   }
 
+  void handleViewChanged(DateTime date, EventController controller) {
+    selectedDate = date;
+    final eventsToAdd = selectedWeekCalendarEvents();
+    final List<CalendarEventData> eventsAdded = [];
+    for (int i = 0; i < eventsToAdd.length; i++) {
+      if (!calendarEvents.contains(eventsToAdd[i])) {
+        calendarEvents.add(eventsToAdd[i]);
+        eventsAdded.add(eventsToAdd[i]);
+      }
+    }
+
+    controller.addAll(eventsAdded);
+  }
+
+  List<CalendarEventData> selectedDateCalendarEvents(DateTime date) {
+    final seen = <String>{};
+    return _coursesActivities[DateTime(date.year, date.month, date.day)]
+            ?.map((eventData) => calendarEventData(eventData))
+            ?.where((course) => seen.add(course.description))
+            ?.toList() ??
+        [];
+  }
+
+  CalendarEventData<Object> calendarEventData(CourseActivity eventData) {
+    final courseName = eventData.courseGroup.split('-')[0].substring(0, 3);
+    final courseNumber = eventData.courseGroup.split('-')[0].substring(3);
+    final courseLocation = eventData.activityLocation == "Non assign"
+        ? "N/A"
+        : eventData.activityLocation;
+    return CalendarEventData(
+        title:
+            "$courseName\n$courseNumber\n$courseLocation\n${eventData.activityName}",
+        description: eventData.courseGroup,
+        date: eventData.startDateTime,
+        startTime: eventData.startDateTime,
+        endTime: eventData.endDateTime,
+        color: getCourseColor(eventData.courseGroup.split('-')[0]));
+  }
+
+  Color getCourseColor(String courseName) {
+    if (!courseColors.containsKey(courseName)) {
+      courseColors[courseName] = schedulePaletteThemeLight.removeLast();
+    }
+    return courseColors[courseName];
+  }
+
+  List<CalendarEventData> selectedWeekCalendarEvents() {
+    final List<CalendarEventData> events = [];
+    final firstDayOfWeek = Utils.getFirstDayOfCurrentWeek(selectedDate,
+        settings[PreferencesFlag.scheduleStartWeekday] as StartingDayOfWeek);
+    for (int i = 0; i < 7; i++) {
+      final date = firstDayOfWeek.add(Duration(days: i));
+      final eventsForDay = selectedDateCalendarEvents(date);
+      if (eventsForDay.isNotEmpty) {
+        events.addAll(eventsForDay);
+      }
+    }
+    return events;
+  }
+
   bool get showWeekEvents =>
-      settings[PreferencesFlag.scheduleSettingsShowWeekEvents] as bool ?? false;
+      settings[PreferencesFlag.scheduleShowWeekEvents] as bool ?? false;
 
   bool isLoadingEvents = false;
+
+  bool get calendarViewSetting =>
+      settings[PreferencesFlag.scheduleListView] as bool ?? true;
 
   @override
   Future<List<CourseActivity>> futureToRun() =>
@@ -104,6 +178,7 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
           if (value != null) {
             // Reload the list of activities
             coursesActivities;
+            calendarEvents = selectedWeekCalendarEvents();
           }
           _courseRepository
               .getScheduleActivities()
@@ -153,8 +228,8 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
     setBusy(true);
     settings.clear();
     settings.addAll(await _settingsManager.getScheduleSettings());
-    calendarFormat = settings[PreferencesFlag.scheduleSettingsCalendarFormat]
-        as CalendarFormat;
+    calendarFormat =
+        settings[PreferencesFlag.scheduleCalendarFormat] as CalendarFormat;
 
     await loadSettingsScheduleActivities();
 
@@ -164,7 +239,7 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
   Future loadSettingsScheduleActivities() async {
     for (final courseAcronym in scheduleActivitiesByCourse.keys) {
       final String activityCodeToUse = await _settingsManager.getDynamicString(
-          PreferencesFlag.scheduleSettingsLaboratoryGroup, courseAcronym);
+          PreferencesFlag.scheduleLaboratoryGroup, courseAcronym);
       final scheduleActivityToSet = scheduleActivitiesByCourse[courseAcronym]
           .firstWhere((element) => element.activityCode == activityCodeToUse,
               orElse: () => null);
@@ -253,8 +328,8 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
 
   Future setCalendarFormat(CalendarFormat format) async {
     calendarFormat = format;
-    settings[PreferencesFlag.scheduleSettingsCalendarFormat] = calendarFormat;
-    _settingsManager.setString(PreferencesFlag.scheduleSettingsCalendarFormat,
+    settings[PreferencesFlag.scheduleCalendarFormat] = calendarFormat;
+    _settingsManager.setString(PreferencesFlag.scheduleCalendarFormat,
         EnumToString.convertToString(calendarFormat));
   }
 
