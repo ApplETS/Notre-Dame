@@ -122,7 +122,7 @@ jobs:
 
       # Commit and push the goldens files and formatting updated.
       - name: Commit golden files and formatting
-        id: commit
+        id: commit_golden
         uses: stefanzweifel/git-auto-commit-action@v4
         with:
           file_pattern: 'test/* *.dart'
@@ -131,7 +131,7 @@ jobs:
           commit_message: '[BOT] Update golden files and applying format'
 
       # Fail workflow, because new commit will execute workflow
-      - if: ${{ steps.commit.outputs.changes_detected == 'true' }}
+      - if: ${{ steps.commit_golden.outputs.changes_detected == 'true' }}
         name: Fail workflow if commit
         run: |
           echo 'Golden files and linting applied, running bot commit workflow'
