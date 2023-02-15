@@ -136,7 +136,7 @@ jobs:
           file_pattern: test/*
           commit_user_name: github-actions[bot]
           commit_user_email: 41898282+github-actions[bot]@users.noreply.github.com
-          commit_message: '[BOT] Update golden files and applying format'
+          commit_message: '[BOT] Update golden files'
 
       # Fail workflow, because new commit will execute workflow
       - if: ${{ steps.commit_golden.outputs.changes_detected == 'true' }}
