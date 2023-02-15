@@ -524,19 +524,19 @@ void main() {
 
         SettingsManagerMock.stubGetDynamicString(
             settingsManager as SettingsManagerMock,
-            PreferencesFlag.scheduleSettingsLaboratoryGroup,
+            PreferencesFlag.scheduleLaboratoryGroup,
             "GEN101",
             toReturn: null);
 
         SettingsManagerMock.stubGetDynamicString(
             settingsManager as SettingsManagerMock,
-            PreferencesFlag.scheduleSettingsLaboratoryGroup,
+            PreferencesFlag.scheduleLaboratoryGroup,
             "GEN102",
             toReturn: null);
 
         SettingsManagerMock.stubGetDynamicString(
             settingsManager as SettingsManagerMock,
-            PreferencesFlag.scheduleSettingsLaboratoryGroup,
+            PreferencesFlag.scheduleLaboratoryGroup,
             "GEN103",
             toReturn: ActivityCode.labGroupB);
 
@@ -559,19 +559,19 @@ void main() {
 
         SettingsManagerMock.stubGetDynamicString(
             settingsManager as SettingsManagerMock,
-            PreferencesFlag.scheduleSettingsLaboratoryGroup,
+            PreferencesFlag.scheduleLaboratoryGroup,
             "GEN101",
             toReturn: null);
 
         SettingsManagerMock.stubGetDynamicString(
             settingsManager as SettingsManagerMock,
-            PreferencesFlag.scheduleSettingsLaboratoryGroup,
+            PreferencesFlag.scheduleLaboratoryGroup,
             "GEN102",
             toReturn: null);
 
         SettingsManagerMock.stubGetDynamicString(
             settingsManager as SettingsManagerMock,
-            PreferencesFlag.scheduleSettingsLaboratoryGroup,
+            PreferencesFlag.scheduleLaboratoryGroup,
             "GEN103",
             toReturn: ActivityCode.labGroupA);
 
@@ -594,19 +594,19 @@ void main() {
 
         SettingsManagerMock.stubGetDynamicString(
             settingsManager as SettingsManagerMock,
-            PreferencesFlag.scheduleSettingsLaboratoryGroup,
+            PreferencesFlag.scheduleLaboratoryGroup,
             "GEN101",
             toReturn: null);
 
         SettingsManagerMock.stubGetDynamicString(
             settingsManager as SettingsManagerMock,
-            PreferencesFlag.scheduleSettingsLaboratoryGroup,
+            PreferencesFlag.scheduleLaboratoryGroup,
             "GEN102",
             toReturn: null);
 
         SettingsManagerMock.stubGetDynamicString(
             settingsManager as SettingsManagerMock,
-            PreferencesFlag.scheduleSettingsLaboratoryGroup,
+            PreferencesFlag.scheduleLaboratoryGroup,
             "GEN103",
             toReturn: null);
 
