@@ -103,14 +103,22 @@ jobs:
       # Check the format of the code
       - name: Format files in lib and test directories
         run: flutter format lib test
-      # - name: Commit formatted files
-      #   uses: stefanzweifel/git-auto-commit-action@v4
-      #   with:
-      #     file_pattern: "*.dart"
-      #     commit_user_name: github-actions[bot]
-      #     commit_user_email: 41898282+github-actions[bot]@users.noreply.github.com
-      #     commit_message: "[BOT] Applying format."
-      #     add_options: '-u'
+      - name: Commit formatted files
+        id: commit_formatted
+        uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          file_pattern: "*.dart"
+          commit_user_name: github-actions[bot]
+          commit_user_email: 41898282+github-actions[bot]@users.noreply.github.com
+          commit_message: "[BOT] Applying format."
+          add_options: '-u'
+
+      # Fail workflow, because new commit will execute workflow
+      - if: ${{ steps.commit_formatted.outputs.changes_detected == 'true' }}
+        name: Fail workflow if linting commit
+        run: |
+          echo 'Linting applied, running bot commit workflow'
+          exit 1
 
       # Check if the code has any errors/warnings
       - name: Analyze code
@@ -121,20 +129,20 @@ jobs:
         run: flutter test --coverage --update-goldens
 
       # Commit and push the goldens files and formatting updated.
-      - name: Commit golden files and formatting
+      - name: Commit golden files
         id: commit_golden
         uses: stefanzweifel/git-auto-commit-action@v4
         with:
-          file_pattern: 'test/* *.dart'
+          file_pattern: 'test/*'
           commit_user_name: github-actions[bot]
           commit_user_email: 41898282+github-actions[bot]@users.noreply.github.com
           commit_message: '[BOT] Update golden files and applying format'
 
       # Fail workflow, because new commit will execute workflow
       - if: ${{ steps.commit_golden.outputs.changes_detected == 'true' }}
-        name: Fail workflow if commit
+        name: Fail workflow if golden commit
         run: |
-          echo 'Golden files and linting applied, running bot commit workflow'
+          echo 'Golden files changes commit, running bot commit workflow'
           exit 1
 
       - name: Upload coverage file
