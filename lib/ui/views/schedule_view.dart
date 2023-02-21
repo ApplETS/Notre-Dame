@@ -46,6 +46,8 @@ class ScheduleView extends StatefulWidget {
 
 class _ScheduleViewState extends State<ScheduleView>
     with TickerProviderStateMixin {
+  final GlobalKey<calendar_view.WeekViewState> weekViewKey =
+      GlobalKey<calendar_view.WeekViewState>();
   final AnalyticsService _analyticsService = locator<AnalyticsService>();
 
   static const String tag = "ScheduleView";
@@ -174,6 +176,7 @@ class _ScheduleViewState extends State<ScheduleView>
         : AppTheme.lightThemeBackground;
     return Scaffold(
       body: calendar_view.WeekView(
+        key: weekViewKey,
         controller: eventController..addAll(model.selectedWeekCalendarEvents()),
         onPageChange: (date, page) =>
             model.handleViewChanged(date, eventController),
@@ -192,13 +195,15 @@ class _ScheduleViewState extends State<ScheduleView>
               size: 30,
               color: chevronColor,
             )),
-        weekDays: const [
+        weekDays: [
           calendar_view.WeekDays.monday,
           calendar_view.WeekDays.tuesday,
           calendar_view.WeekDays.wednesday,
           calendar_view.WeekDays.thursday,
           calendar_view.WeekDays.friday,
-          calendar_view.WeekDays.saturday,
+          if (model.settings[PreferencesFlag.scheduleStartWeekday] ==
+              StartingDayOfWeek.monday)
+            calendar_view.WeekDays.saturday,
         ],
         initialDay: DateTime.now(),
         heightPerMinute: 0.65, // height occupied by 1 minute time span.
@@ -379,6 +384,10 @@ class _ScheduleViewState extends State<ScheduleView>
           IconButton(
               icon: const Icon(Icons.today),
               onPressed: () => setState(() {
+                    if (!(model.settings[PreferencesFlag.scheduleListView]
+                        as bool)) {
+                      weekViewKey.currentState?.animateToWeek(DateTime.now());
+                    }
                     model.selectToday();
                     _analyticsService.logEvent(tag, "Select today clicked");
                   })),

@@ -116,7 +116,6 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
     final seen = <String>{};
     return _coursesActivities[DateTime(date.year, date.month, date.day)]
             ?.map((eventData) => calendarEventData(eventData))
-            ?.where((course) => seen.add(course.description))
             ?.toList() ??
         [];
   }
@@ -133,7 +132,7 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
         description: eventData.courseGroup,
         date: eventData.startDateTime,
         startTime: eventData.startDateTime,
-        endTime: eventData.endDateTime,
+        endTime: eventData.endDateTime.subtract(const Duration(minutes: 1)),
         color: getCourseColor(eventData.courseGroup.split('-')[0]));
   }
 
