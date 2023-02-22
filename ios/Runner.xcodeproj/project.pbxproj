@@ -24,8 +24,24 @@
 		187D826029031A3900821D5F /* SingleGradeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 187D825C29031A3900821D5F /* SingleGradeView.swift */; };
 		187D826229031CDC00821D5F /* GradesEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 187D8246290318A700821D5F /* GradesEntry.swift */; };
 		187D826329031CDC00821D5F /* ProgressEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 187D8247290318A700821D5F /* ProgressEntry.swift */; };
+		1A8AB02DF9C31285A1188007 /* Pods_ETSMobile_WidgetExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C88FE022BBE39D1D65FFD7DD /* Pods_ETSMobile_WidgetExtension.framework */; };
 		3B3967161E833CAA004F5970 /* AppFrameworkInfo.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3B3967151E833CAA004F5970 /* AppFrameworkInfo.plist */; };
 		74858FAF1ED2DC5600515810 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74858FAE1ED2DC5600515810 /* AppDelegate.swift */; };
+		7E9A05E429A657EE00EA7344 /* SoapRequestHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E9A05D329A657EE00EA7344 /* SoapRequestHelper.swift */; };
+		7E9A05E629A657EE00EA7344 /* MonETSService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E9A05D429A657EE00EA7344 /* MonETSService.swift */; };
+		7E9A05E829A657EE00EA7344 /* KeychainService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E9A05D529A657EE00EA7344 /* KeychainService.swift */; };
+		7E9A05EA29A657EE00EA7344 /* CourseReview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E9A05D729A657EE00EA7344 /* CourseReview.swift */; };
+		7E9A05EC29A657EE00EA7344 /* CourseSummary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E9A05D829A657EE00EA7344 /* CourseSummary.swift */; };
+		7E9A05EE29A657EE00EA7344 /* ScheduleActivity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E9A05D929A657EE00EA7344 /* ScheduleActivity.swift */; };
+		7E9A05F029A657EE00EA7344 /* CourseActivity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E9A05DA29A657EE00EA7344 /* CourseActivity.swift */; };
+		7E9A05F229A657EE00EA7344 /* Session.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E9A05DB29A657EE00EA7344 /* Session.swift */; };
+		7E9A05F429A657EE00EA7344 /* ProfileStudent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E9A05DC29A657EE00EA7344 /* ProfileStudent.swift */; };
+		7E9A05F629A657EE00EA7344 /* CourseEvaluation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E9A05DD29A657EE00EA7344 /* CourseEvaluation.swift */; };
+		7E9A05F829A657EE00EA7344 /* Course.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E9A05DE29A657EE00EA7344 /* Course.swift */; };
+		7E9A05FA29A657EE00EA7344 /* Program.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E9A05DF29A657EE00EA7344 /* Program.swift */; };
+		7E9A05FC29A657EE00EA7344 /* MonETSUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E9A05E029A657EE00EA7344 /* MonETSUser.swift */; };
+		7E9A05FE29A657EE00EA7344 /* SignetsServiceProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E9A05E129A657EE00EA7344 /* SignetsServiceProtocol.swift */; };
+		7E9A060029A657EE00EA7344 /* SignetsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E9A05E229A657EE00EA7344 /* SignetsService.swift */; };
 		97C146FC1CF9000F007C117D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 97C146FA1CF9000F007C117D /* Main.storyboard */; };
 		97C146FE1CF9000F007C117D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 97C146FD1CF9000F007C117D /* Assets.xcassets */; };
 		97C147011CF9000F007C117D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 97C146FF1CF9000F007C117D /* LaunchScreen.storyboard */; };
@@ -67,6 +83,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		12D3F8C05330E7BDCC3696EA /* Pods-ETSMobile WidgetExtension.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ETSMobile WidgetExtension.release.xcconfig"; path = "Target Support Files/Pods-ETSMobile WidgetExtension/Pods-ETSMobile WidgetExtension.release.xcconfig"; sourceTree = "<group>"; };
 		1498D2321E8E86230040F4C2 /* GeneratedPluginRegistrant.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GeneratedPluginRegistrant.h; sourceTree = "<group>"; };
 		1498D2331E8E89220040F4C2 /* GeneratedPluginRegistrant.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GeneratedPluginRegistrant.m; sourceTree = "<group>"; };
 		187D821D290314B300821D5F /* ETSMobile WidgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "ETSMobile WidgetExtension.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -97,6 +114,22 @@
 		7AFA3C8E1D35360C0083082E /* Release.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = Release.xcconfig; path = Flutter/Release.xcconfig; sourceTree = "<group>"; };
 		7E9A05D029A6532700EA7344 /* ETSMobile WidgetExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "ETSMobile WidgetExtension.entitlements"; sourceTree = "<group>"; };
 		7E9A05D129A6534E00EA7344 /* Runner.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Runner.entitlements; sourceTree = "<group>"; };
+		7E9A05D329A657EE00EA7344 /* SoapRequestHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SoapRequestHelper.swift; sourceTree = "<group>"; };
+		7E9A05D429A657EE00EA7344 /* MonETSService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MonETSService.swift; sourceTree = "<group>"; };
+		7E9A05D529A657EE00EA7344 /* KeychainService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeychainService.swift; sourceTree = "<group>"; };
+		7E9A05D729A657EE00EA7344 /* CourseReview.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CourseReview.swift; sourceTree = "<group>"; };
+		7E9A05D829A657EE00EA7344 /* CourseSummary.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CourseSummary.swift; sourceTree = "<group>"; };
+		7E9A05D929A657EE00EA7344 /* ScheduleActivity.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScheduleActivity.swift; sourceTree = "<group>"; };
+		7E9A05DA29A657EE00EA7344 /* CourseActivity.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CourseActivity.swift; sourceTree = "<group>"; };
+		7E9A05DB29A657EE00EA7344 /* Session.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Session.swift; sourceTree = "<group>"; };
+		7E9A05DC29A657EE00EA7344 /* ProfileStudent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileStudent.swift; sourceTree = "<group>"; };
+		7E9A05DD29A657EE00EA7344 /* CourseEvaluation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CourseEvaluation.swift; sourceTree = "<group>"; };
+		7E9A05DE29A657EE00EA7344 /* Course.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Course.swift; sourceTree = "<group>"; };
+		7E9A05DF29A657EE00EA7344 /* Program.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Program.swift; sourceTree = "<group>"; };
+		7E9A05E029A657EE00EA7344 /* MonETSUser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MonETSUser.swift; sourceTree = "<group>"; };
+		7E9A05E129A657EE00EA7344 /* SignetsServiceProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignetsServiceProtocol.swift; sourceTree = "<group>"; };
+		7E9A05E229A657EE00EA7344 /* SignetsService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignetsService.swift; sourceTree = "<group>"; };
+		8F0770ACE02EC70D418BB80D /* Pods-ETSMobile WidgetExtension.profile.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ETSMobile WidgetExtension.profile.xcconfig"; path = "Target Support Files/Pods-ETSMobile WidgetExtension/Pods-ETSMobile WidgetExtension.profile.xcconfig"; sourceTree = "<group>"; };
 		9740EEB21CF90195004384FC /* Debug.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = Debug.xcconfig; path = Flutter/Debug.xcconfig; sourceTree = "<group>"; };
 		9740EEB31CF90195004384FC /* Generated.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = Generated.xcconfig; path = Flutter/Generated.xcconfig; sourceTree = "<group>"; };
 		97C146EE1CF9000F007C117D /* Runner.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Runner.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -104,6 +137,8 @@
 		97C146FD1CF9000F007C117D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		97C147001CF9000F007C117D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		97C147021CF9000F007C117D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		98A3272A234DF77B4355FB92 /* Pods-ETSMobile WidgetExtension.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ETSMobile WidgetExtension.debug.xcconfig"; path = "Target Support Files/Pods-ETSMobile WidgetExtension/Pods-ETSMobile WidgetExtension.debug.xcconfig"; sourceTree = "<group>"; };
+		C88FE022BBE39D1D65FFD7DD /* Pods_ETSMobile_WidgetExtension.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ETSMobile_WidgetExtension.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F965315A0CF40E92838FC684 /* Pods-Runner.profile.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Runner.profile.xcconfig"; path = "Target Support Files/Pods-Runner/Pods-Runner.profile.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -114,6 +149,7 @@
 			files = (
 				187D8221290314B300821D5F /* SwiftUI.framework in Frameworks */,
 				187D821F290314B300821D5F /* WidgetKit.framework in Frameworks */,
+				1A8AB02DF9C31285A1188007 /* Pods_ETSMobile_WidgetExtension.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -181,12 +217,43 @@
 			path = View;
 			sourceTree = "<group>";
 		};
+		7E9A05D229A657EE00EA7344 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				7E9A05D629A657EE00EA7344 /* Models */,
+				7E9A05D329A657EE00EA7344 /* SoapRequestHelper.swift */,
+				7E9A05D429A657EE00EA7344 /* MonETSService.swift */,
+				7E9A05D529A657EE00EA7344 /* KeychainService.swift */,
+				7E9A05E129A657EE00EA7344 /* SignetsServiceProtocol.swift */,
+				7E9A05E229A657EE00EA7344 /* SignetsService.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		7E9A05D629A657EE00EA7344 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				7E9A05D729A657EE00EA7344 /* CourseReview.swift */,
+				7E9A05D829A657EE00EA7344 /* CourseSummary.swift */,
+				7E9A05D929A657EE00EA7344 /* ScheduleActivity.swift */,
+				7E9A05DA29A657EE00EA7344 /* CourseActivity.swift */,
+				7E9A05DB29A657EE00EA7344 /* Session.swift */,
+				7E9A05DC29A657EE00EA7344 /* ProfileStudent.swift */,
+				7E9A05DD29A657EE00EA7344 /* CourseEvaluation.swift */,
+				7E9A05DE29A657EE00EA7344 /* Course.swift */,
+				7E9A05DF29A657EE00EA7344 /* Program.swift */,
+				7E9A05E029A657EE00EA7344 /* MonETSUser.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
 		8F8EE8F370C8C408BC95DB75 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
 				4CB6A027751D7D60A83831B1 /* Pods_Runner.framework */,
 				187D821E290314B300821D5F /* WidgetKit.framework */,
 				187D8220290314B300821D5F /* SwiftUI.framework */,
+				C88FE022BBE39D1D65FFD7DD /* Pods_ETSMobile_WidgetExtension.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -197,6 +264,9 @@
 				521B32A4ADAE8CE33249A08C /* Pods-Runner.debug.xcconfig */,
 				6022C1CB24F298446FCD0732 /* Pods-Runner.release.xcconfig */,
 				F965315A0CF40E92838FC684 /* Pods-Runner.profile.xcconfig */,
+				98A3272A234DF77B4355FB92 /* Pods-ETSMobile WidgetExtension.debug.xcconfig */,
+				12D3F8C05330E7BDCC3696EA /* Pods-ETSMobile WidgetExtension.release.xcconfig */,
+				8F0770ACE02EC70D418BB80D /* Pods-ETSMobile WidgetExtension.profile.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -220,6 +290,7 @@
 				9740EEB11CF90186004384FC /* Flutter */,
 				97C146F01CF9000F007C117D /* Runner */,
 				187D8222290314B300821D5F /* ETSMobile Widget */,
+				7E9A05D229A657EE00EA7344 /* Services */,
 				97C146EF1CF9000F007C117D /* Products */,
 				91ECCE52C2A91F6A486A1C6C /* Pods */,
 				8F8EE8F370C8C408BC95DB75 /* Frameworks */,
@@ -259,6 +330,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 187D822B290314B500821D5F /* Build configuration list for PBXNativeTarget "ETSMobile WidgetExtension" */;
 			buildPhases = (
+				2A1ED4AF2083971F8EA52F27 /* [CP] Check Pods Manifest.lock */,
 				187D8219290314B300821D5F /* Sources */,
 				187D821A290314B300821D5F /* Frameworks */,
 				187D821B290314B300821D5F /* Resources */,
@@ -375,6 +447,28 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Runner/Pods-Runner-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
+		2A1ED4AF2083971F8EA52F27 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-ETSMobile WidgetExtension-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
 		3B06AD1E1E4923F5004D2608 /* Thin Binary */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -449,18 +543,33 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7E9A05F229A657EE00EA7344 /* Session.swift in Sources */,
+				7E9A060029A657EE00EA7344 /* SignetsService.swift in Sources */,
+				7E9A05EA29A657EE00EA7344 /* CourseReview.swift in Sources */,
+				7E9A05E429A657EE00EA7344 /* SoapRequestHelper.swift in Sources */,
 				187D826029031A3900821D5F /* SingleGradeView.swift in Sources */,
 				187D826329031CDC00821D5F /* ProgressEntry.swift in Sources */,
 				187D825F29031A3900821D5F /* ProgressWidgetEntryView.swift in Sources */,
+				7E9A05F029A657EE00EA7344 /* CourseActivity.swift in Sources */,
+				7E9A05FC29A657EE00EA7344 /* MonETSUser.swift in Sources */,
+				7E9A05EE29A657EE00EA7344 /* ScheduleActivity.swift in Sources */,
+				7E9A05FE29A657EE00EA7344 /* SignetsServiceProtocol.swift in Sources */,
+				7E9A05FA29A657EE00EA7344 /* Program.swift in Sources */,
 				187D82522903199800821D5F /* ProgressWidget.swift in Sources */,
+				7E9A05EC29A657EE00EA7344 /* CourseSummary.swift in Sources */,
 				187D82512903199800821D5F /* GradesWidget.swift in Sources */,
 				187D825629031A0200821D5F /* ProgressProvider.swift in Sources */,
+				7E9A05F429A657EE00EA7344 /* ProfileStudent.swift in Sources */,
 				187D82402903186600821D5F /* ETSMobileWidgets.swift in Sources */,
+				7E9A05E829A657EE00EA7344 /* KeychainService.swift in Sources */,
 				187D825729031A0200821D5F /* GradesProvider.swift in Sources */,
 				187D825E29031A3900821D5F /* GradesWidgetEntryView.swift in Sources */,
 				187D826229031CDC00821D5F /* GradesEntry.swift in Sources */,
+				7E9A05F629A657EE00EA7344 /* CourseEvaluation.swift in Sources */,
+				7E9A05E629A657EE00EA7344 /* MonETSService.swift in Sources */,
 				187D82452903188600821D5F /* Constants.swift in Sources */,
 				187D825D29031A3900821D5F /* ProgressBarView.swift in Sources */,
+				7E9A05F829A657EE00EA7344 /* Course.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -505,6 +614,7 @@
 /* Begin XCBuildConfiguration section */
 		187D822C290314B500821D5F /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 98A3272A234DF77B4355FB92 /* Pods-ETSMobile WidgetExtension.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
@@ -547,6 +657,7 @@
 		};
 		187D822D290314B500821D5F /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 12D3F8C05330E7BDCC3696EA /* Pods-ETSMobile WidgetExtension.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
@@ -588,6 +699,7 @@
 		};
 		187D822E290314B500821D5F /* Profile */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 8F0770ACE02EC70D418BB80D /* Pods-ETSMobile WidgetExtension.profile.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
