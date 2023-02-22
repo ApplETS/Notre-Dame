@@ -1,5 +1,6 @@
 // FLUTTER / DART / THIRD-PARTIES
 import 'dart:async';
+import 'package:calendar_view/calendar_view.dart';
 import 'package:feature_discovery/feature_discovery.dart';
 import 'package:feedback/feedback.dart';
 import 'package:flutter/foundation.dart';
@@ -13,6 +14,9 @@ import 'package:notredame/ui/views/outage_view.dart';
 import 'package:notredame/ui/widgets/custom_feedback.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_config/flutter_config.dart';
+
+//CONSTANTS
+import 'package:notredame/core/constants/custom_feedback_localization.dart';
 
 // ROUTER
 import 'package:notredame/ui/router.dart';
@@ -84,28 +88,36 @@ class ETSMobile extends StatelessWidget {
             onSubmit: onSubmit,
             scrollController: scrollController,
           ),
+          localizationsDelegates: [
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+            CustomFeedbackLocalizationsDelegate(),
+          ],
           localeOverride: model.locale,
           child: FeatureDiscovery(
             recordStepsInSharedPreferences: false,
-            child: MaterialApp(
-              title: 'ÉTS Mobile',
-              theme: AppTheme.lightTheme(),
-              darkTheme: AppTheme.darkTheme(),
-              themeMode: model.themeMode,
-              localizationsDelegates: const [
-                AppIntl.delegate,
-                GlobalMaterialLocalizations.delegate,
-                GlobalWidgetsLocalizations.delegate,
-                GlobalCupertinoLocalizations.delegate,
-              ],
-              locale: model.locale,
-              supportedLocales: AppIntl.supportedLocales,
-              navigatorKey: locator<NavigationService>().navigatorKey,
-              navigatorObservers: [
-                locator<AnalyticsService>().getAnalyticsObserver(),
-              ],
-              home: outage ? OutageView() : StartUpView(),
-              onGenerateRoute: generateRoute,
+            child: CalendarControllerProvider(
+              controller: EventController(),
+              child: MaterialApp(
+                title: 'ÉTS Mobile',
+                theme: AppTheme.lightTheme(),
+                darkTheme: AppTheme.darkTheme(),
+                themeMode: model.themeMode,
+                localizationsDelegates: const [
+                  AppIntl.delegate,
+                  GlobalMaterialLocalizations.delegate,
+                  GlobalWidgetsLocalizations.delegate,
+                  GlobalCupertinoLocalizations.delegate,
+                ],
+                locale: model.locale,
+                supportedLocales: AppIntl.supportedLocales,
+                navigatorKey: locator<NavigationService>().navigatorKey,
+                navigatorObservers: [
+                  locator<AnalyticsService>().getAnalyticsObserver(),
+                ],
+                home: outage ? OutageView() : StartUpView(),
+                onGenerateRoute: generateRoute,
+              ),
             ),
           ),
         );

@@ -37,11 +37,11 @@ void main() {
   const feedBackText = 'Notre-Dame bug report';
   final file = File('bugReportTest.png');
   final filePath = file.path.split('/').last;
-  final Map<String, dynamic> extra = {'': 'bugReport'};
-
-  String getUserFeedbackType() {
-    return extra.entries.first.value.toString().split('.').last;
-  }
+  final Map<String, dynamic> extra = {
+    '': 'bugReport',
+    'email': 'email@email.com'
+  };
+  final Map<String, dynamic> extra2 = {'': 'bugReport'};
 
   group('FeedbackViewModel - ', () {
     setUp(() async {
@@ -85,16 +85,31 @@ void main() {
         ));
       });
 
-      test('If the github issue has been created', () async {
+      test('If the github issue has been created with email', () async {
+        final File file = File('bugReportTest.png');
         GithubApiMock.stubLocalFile(githubApiMock, file);
 
         await viewModel.sendFeedback(UserFeedback(
             text: feedBackText, screenshot: screenshotData, extra: extra));
 
         verify(githubApiMock.createGithubIssue(
-            feedbackText: feedBackText,
-            fileName: filePath,
-            feedbackType: getUserFeedbackType()));
+            feedbackText: 'Notre-Dame bug report',
+            fileName: 'bugReportTest.png',
+            feedbackType: 'bugReport',
+            email: 'email@email.com'));
+      });
+
+      test('If the github issue has been created without email', () async {
+        final File file = File('bugReportTest.png');
+        GithubApiMock.stubLocalFile(githubApiMock, file);
+
+        await viewModel.sendFeedback(UserFeedback(
+            text: feedBackText, screenshot: screenshotData, extra: extra2));
+
+        verify(githubApiMock.createGithubIssue(
+            feedbackText: 'Notre-Dame bug report',
+            fileName: 'bugReportTest.png',
+            feedbackType: 'bugReport'));
       });
     });
 

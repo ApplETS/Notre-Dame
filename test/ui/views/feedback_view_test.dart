@@ -21,15 +21,12 @@ void main() {
     tearDown(() {});
 
     group('UI - ', () {
-      testWidgets('has button and listview', (WidgetTester tester) async {
+      testWidgets('has 2 ElevatedButton', (WidgetTester tester) async {
         await tester.pumpWidget(localizedWidget(child: FeedbackView()));
         await tester.pumpAndSettle();
 
-        final listView = find.byType(ListView);
-        expect(listView, findsOneWidget);
-
-        final button = find.byType(FloatingActionButton);
-        expect(button, findsOneWidget);
+        final elevatedButton = find.byType(ElevatedButton);
+        expect(elevatedButton, findsNWidgets(2));
       });
     });
     group("golden - ", () {
