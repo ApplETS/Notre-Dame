@@ -75,7 +75,7 @@ class _LoginViewState extends State<LoginView> {
                           child: Column(
                             children: [
                               const SizedBox(
-                                height: 60,
+                                height: 48,
                               ),
                               Hero(
                                   tag: 'ets_logo',
@@ -90,7 +90,7 @@ class _LoginViewState extends State<LoginView> {
                                         : AppTheme.etsLightRed,
                                   )),
                               const SizedBox(
-                                height: 60,
+                                height: 48,
                               ),
                               TextFormField(
                                 autofillHints: const [AutofillHints.username],
@@ -141,17 +141,17 @@ class _LoginViewState extends State<LoginView> {
                                   LoginMask(),
                                 ],
                               ),
-                              const SizedBox(
-                                height: 20,
-                              ),
-                              PasswordFormField(
-                                  validator: model.validatePassword,
-                                  onEditionComplete: _focusNode.nextFocus
+                              Padding(
+                                padding: const EdgeInsets.only(top: 16),
+                                child: PasswordFormField(
+                                    validator: model.validatePassword,
+                                    onEditionComplete: _focusNode.nextFocus
+                                ),
                               ),
                               Align(
                                     alignment: Alignment.topRight,
                                     child: Padding(
-                                      padding: const EdgeInsets.only(top: 5),
+                                      padding: const EdgeInsets.only(top: 4),
                                       child: InkWell(
                                         child: Text(
                                           AppIntl.of(context).forgot_password,
@@ -166,7 +166,7 @@ class _LoginViewState extends State<LoginView> {
                                     ),
                               ),
                               const SizedBox(
-                                height: 30.0,
+                                height: 24,
                               ),
                               SizedBox(
                                 width: double.infinity,
@@ -206,7 +206,7 @@ class _LoginViewState extends State<LoginView> {
                               ),
                               Center(
                                 child: Padding(
-                                  padding: const EdgeInsets.only(top: 30),
+                                  padding: const EdgeInsets.only(top: 24),
                                   child: InkWell(
                                     child: Text(
                                       AppIntl.of(context).need_help_contact_us,
