@@ -141,12 +141,12 @@ class _LoginViewState extends State<LoginView> {
                                   LoginMask(),
                                 ],
                               ),
-                              Padding(
-                                padding: const EdgeInsets.only(top: 16),
-                                child: PasswordFormField(
-                                    validator: model.validatePassword,
-                                    onEditionComplete: _focusNode.nextFocus
-                                ),
+                              const SizedBox(
+                                height: 16,
+                              ),
+                              PasswordFormField(
+                                  validator: model.validatePassword,
+                                  onEditionComplete: _focusNode.nextFocus
                               ),
                               Align(
                                     alignment: Alignment.topRight,
