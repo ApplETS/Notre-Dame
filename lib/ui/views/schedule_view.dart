@@ -227,7 +227,7 @@ class _ScheduleViewState extends State<ScheduleView>
           return '$from ${date.day} ${DateFormat.MMMM(locale).format(date)} $to ${secondaryDate.day} ${DateFormat.MMMM(locale).format(secondaryDate)}';
         },
         eventTileBuilder: _buildEventTile,
-        weekDayBuilder: _buildWeekDay,
+        weekDayBuilder: (DateTime date) => _buildWeekDay(date, model),
       ),
     );
   }
@@ -256,13 +256,13 @@ class _ScheduleViewState extends State<ScheduleView>
     }
   }
 
-  Widget _buildWeekDay(DateTime date) {
+  Widget _buildWeekDay(DateTime date, ScheduleViewModel model) {
     return Center(
       child: Container(
         width: 40,
         height: 80,
         decoration: BoxDecoration(
-            color: date.day == DateTime.now().day
+            color: model.compareDates(date, DateTime.now())
                 ? AppTheme.etsLightRed.withOpacity(0.2)
                 : Colors.transparent,
             borderRadius: BorderRadius.circular(6.0)),

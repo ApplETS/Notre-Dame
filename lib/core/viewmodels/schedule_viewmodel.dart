@@ -100,7 +100,6 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
 
   void handleViewChanged(DateTime date, EventController controller) {
     controller.removeWhere((event) => true);
-    print("handleViewChanged");
     selectedDate = date;
     final eventsToAdd = selectedWeekCalendarEvents();
     controller.addAll(eventsToAdd);
@@ -114,14 +113,12 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
   }
 
   CalendarEventData<Object> calendarEventData(CourseActivity eventData) {
-    final courseName = eventData.courseGroup.split('-')[0].substring(0, 3);
-    final courseNumber = eventData.courseGroup.split('-')[0].substring(3);
     final courseLocation = eventData.activityLocation == "Non assign"
         ? "N/A"
         : eventData.activityLocation;
     return CalendarEventData(
         title:
-            "$courseName\n$courseNumber\n$courseLocation\n${eventData.activityName}",
+            "${eventData.courseGroup.split('-')[0]}\n$courseLocation\n${eventData.activityName}",
         description: eventData.courseGroup,
         date: eventData.startDateTime,
         startTime: eventData.startDateTime,
