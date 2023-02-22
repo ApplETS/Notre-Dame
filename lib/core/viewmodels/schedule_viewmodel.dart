@@ -99,17 +99,11 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
   }
 
   void handleViewChanged(DateTime date, EventController controller) {
+    controller.removeWhere((event) => true);
+    print("handleViewChanged");
     selectedDate = date;
     final eventsToAdd = selectedWeekCalendarEvents();
-    final List<CalendarEventData> eventsAdded = [];
-    for (int i = 0; i < eventsToAdd.length; i++) {
-      if (!calendarEvents.contains(eventsToAdd[i])) {
-        calendarEvents.add(eventsToAdd[i]);
-        eventsAdded.add(eventsToAdd[i]);
-      }
-    }
-
-    controller.addAll(eventsAdded);
+    controller.addAll(eventsToAdd);
   }
 
   List<CalendarEventData> selectedDateCalendarEvents(DateTime date) {
