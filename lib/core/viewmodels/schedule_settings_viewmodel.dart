@@ -1,4 +1,5 @@
 // FLUTTER / DART / THIRD-PARTIES
+import 'package:calendar_view/calendar_view.dart';
 import 'package:enum_to_string/enum_to_string.dart';
 import 'package:stacked/stacked.dart';
 import 'package:table_calendar/table_calendar.dart';
@@ -64,11 +65,11 @@ class ScheduleSettingsViewModel
   ];
 
   /// Current weekend day shown
-  StartingDayOfWeek _otherDayOfWeek;
+  WeekDays _otherDayOfWeek;
 
-  StartingDayOfWeek get otherDayOfWeek => _otherDayOfWeek;
+  WeekDays get otherDayOfWeek => _otherDayOfWeek;
 
-  set otherDayOfWeek(StartingDayOfWeek day) {
+  set otherDayOfWeek(WeekDays day) {
     setBusy(true);
     _settingsManager.setString(PreferencesFlag.scheduleOtherWeekday,
         EnumToString.convertToString(day));
@@ -77,9 +78,9 @@ class ScheduleSettingsViewModel
   }
 
   /// List of possible days to show in the calendar view
-  List<StartingDayOfWeek> otherDayPossible = [
-    StartingDayOfWeek.saturday,
-    StartingDayOfWeek.sunday,
+  List<WeekDays> otherDayPossible = [
+    WeekDays.saturday,
+    WeekDays.sunday,
   ];
 
   bool _showTodayBtn = true;

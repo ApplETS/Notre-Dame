@@ -1,4 +1,5 @@
 // FLUTTER / DART / THIRD-PARTIES
+import 'package:calendar_view/calendar_view.dart';
 import 'package:enum_to_string/enum_to_string.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -77,7 +78,7 @@ void main() {
             remoteConfigService as RemoteConfigServiceMock);
 
         final expected = {
-          PreferencesFlag.scheduleOtherWeekday: StartingDayOfWeek.monday,
+          PreferencesFlag.scheduleOtherWeekday: WeekDays.monday,
           PreferencesFlag.scheduleStartWeekday: StartingDayOfWeek.monday,
           PreferencesFlag.scheduleCalendarFormat: CalendarFormat.week,
           PreferencesFlag.scheduleShowTodayBtn: true,
@@ -119,7 +120,7 @@ void main() {
         PreferencesServiceMock.stubGetString(
             preferencesService as PreferencesServiceMock,
             PreferencesFlag.scheduleOtherWeekday,
-            toReturn: EnumToString.convertToString(StartingDayOfWeek.monday));
+            toReturn: EnumToString.convertToString(WeekDays.monday));
         PreferencesServiceMock.stubGetString(
             preferencesService as PreferencesServiceMock,
             PreferencesFlag.scheduleCalendarFormat,
@@ -138,7 +139,7 @@ void main() {
             toReturn: false);
 
         final expected = {
-          PreferencesFlag.scheduleOtherWeekday: StartingDayOfWeek.monday,
+          PreferencesFlag.scheduleOtherWeekday: WeekDays.monday,
           PreferencesFlag.scheduleStartWeekday: StartingDayOfWeek.sunday,
           PreferencesFlag.scheduleCalendarFormat: CalendarFormat.month,
           PreferencesFlag.scheduleShowTodayBtn: false,

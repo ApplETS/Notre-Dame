@@ -1,3 +1,4 @@
+import 'package:calendar_view/calendar_view.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -211,19 +212,18 @@ class _ScheduleSettingsState extends State<ScheduleSettings> {
     ];
 
     list.add(ListTile(
-      selected: model.otherDayOfWeek == StartingDayOfWeek.monday,
+      selected: model.otherDayOfWeek == WeekDays.monday,
       selectedTileColor: selectedColor,
-      onTap: () =>
-          setState(() => model.otherDayOfWeek = StartingDayOfWeek.monday),
+      onTap: () => setState(() => model.otherDayOfWeek = WeekDays.monday),
       title: Text(AppIntl.of(context).schedule_settings_show_weekend_day_none),
     ));
 
-    for (final StartingDayOfWeek day in model.otherDayPossible) {
+    for (final WeekDays day in model.otherDayPossible) {
       list.add(ListTile(
         selected: model.otherDayOfWeek == day,
         selectedTileColor: selectedColor,
         onTap: () => setState(() => model.otherDayOfWeek = day),
-        title: Text(getTextForDay(context, day)),
+        title: Text(getTextForWeekDay(context, day)),
       ));
     }
 
@@ -342,6 +342,19 @@ class _ScheduleSettingsState extends State<ScheduleSettings> {
       case StartingDayOfWeek.saturday:
         return AppIntl.of(context).schedule_settings_starting_weekday_saturday;
       case StartingDayOfWeek.monday:
+        return AppIntl.of(context).schedule_settings_starting_weekday_monday;
+    }
+    return AppIntl.of(context).schedule_settings_starting_weekday_monday;
+  }
+
+  String getTextForWeekDay(BuildContext context, WeekDays day) {
+    // ignore: missing_enum_constant_in_switch
+    switch (day) {
+      case WeekDays.sunday:
+        return AppIntl.of(context).schedule_settings_starting_weekday_sunday;
+      case WeekDays.saturday:
+        return AppIntl.of(context).schedule_settings_starting_weekday_saturday;
+      case WeekDays.monday:
         return AppIntl.of(context).schedule_settings_starting_weekday_monday;
     }
     return AppIntl.of(context).schedule_settings_starting_weekday_monday;
