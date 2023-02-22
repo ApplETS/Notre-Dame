@@ -227,6 +227,7 @@ class _ScheduleViewState extends State<ScheduleView>
           return '$from ${date.day} ${DateFormat.MMMM(locale).format(date)} $to ${secondaryDate.day} ${DateFormat.MMMM(locale).format(secondaryDate)}';
         },
         eventTileBuilder: _buildEventTile,
+        weekDayBuilder: _buildWeekDay,
       ),
     );
   }
@@ -253,6 +254,28 @@ class _ScheduleViewState extends State<ScheduleView>
     } else {
       return Container();
     }
+  }
+
+  Widget _buildWeekDay(DateTime date) {
+    return Center(
+      child: Container(
+        width: 40,
+        height: 80,
+        decoration: BoxDecoration(
+            color: date.day == DateTime.now().day
+                ? AppTheme.etsLightRed.withOpacity(0.2)
+                : Colors.transparent,
+            borderRadius: BorderRadius.circular(6.0)),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(weekTitles[date.weekday - 1]),
+            Text(date.day.toString()),
+          ],
+        ),
+      ),
+    );
   }
 
   Widget _buildTitleForDate(DateTime date, ScheduleViewModel model) => Center(
