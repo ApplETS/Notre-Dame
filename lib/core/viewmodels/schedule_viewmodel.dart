@@ -113,7 +113,6 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
   }
 
   List<CalendarEventData> selectedDateCalendarEvents(DateTime date) {
-    final seen = <String>{};
     return _coursesActivities[DateTime(date.year, date.month, date.day)]
             ?.map((eventData) => calendarEventData(eventData))
             ?.toList() ??

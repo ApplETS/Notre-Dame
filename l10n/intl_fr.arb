@@ -58,6 +58,8 @@
   "schedule_settings_calendar_format_2_weeks": "2 semaines",
   "schedule_settings_calendar_format_week": "Semaine",
   "schedule_settings_starting_weekday_pref": "Premier jour de la semaine",
+  "schedule_settings_show_weekend_day": "Afficher les jours",
+  "schedule_settings_show_weekend_day_none": "Aucun",
   "schedule_settings_show_week_events_btn_pref": "Afficher les activités de la semaine",
   "schedule_settings_list_view": "Liste défilante",
   "schedule_settings_starting_weekday_monday": "Lundi",

@@ -201,9 +201,12 @@ class _ScheduleViewState extends State<ScheduleView>
           calendar_view.WeekDays.wednesday,
           calendar_view.WeekDays.thursday,
           calendar_view.WeekDays.friday,
-          if (model.settings[PreferencesFlag.scheduleStartWeekday] ==
-              StartingDayOfWeek.monday)
+          if (model.settings[PreferencesFlag.scheduleOtherWeekday] ==
+              StartingDayOfWeek.saturday)
             calendar_view.WeekDays.saturday,
+          if (model.settings[PreferencesFlag.scheduleOtherWeekday] ==
+              StartingDayOfWeek.sunday)
+            calendar_view.WeekDays.sunday,
         ],
         initialDay: DateTime.now(),
         heightPerMinute: 0.65, // height occupied by 1 minute time span.

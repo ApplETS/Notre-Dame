@@ -63,6 +63,25 @@ class ScheduleSettingsViewModel
     StartingDayOfWeek.monday,
   ];
 
+  /// Current weekend day shown
+  StartingDayOfWeek _otherDayOfWeek;
+
+  StartingDayOfWeek get otherDayOfWeek => _otherDayOfWeek;
+
+  set otherDayOfWeek(StartingDayOfWeek day) {
+    setBusy(true);
+    _settingsManager.setString(PreferencesFlag.scheduleOtherWeekday,
+        EnumToString.convertToString(day));
+    _otherDayOfWeek = day;
+    setBusy(false);
+  }
+
+  /// List of possible days to show in the calendar view
+  List<StartingDayOfWeek> otherDayPossible = [
+    StartingDayOfWeek.saturday,
+    StartingDayOfWeek.sunday,
+  ];
+
   bool _showTodayBtn = true;
 
   bool get showTodayBtn => _showTodayBtn;
