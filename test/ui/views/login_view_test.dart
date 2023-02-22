@@ -72,7 +72,7 @@ void main() {
       });
 
       testWidgets('should open emails', (WidgetTester tester) async {
-        const url = 'mailto:applets@etsmtl.net?subject=ÉTSMobile Problem';
+        const url = 'mailto:applets@ens.etsmtl.ca?subject=ÉTSMobile Problem';
         LaunchUrlServiceMock.stubCanLaunchUrl(launchUrlService, url);
         LaunchUrlServiceMock.stubLaunchUrl(launchUrlService, url);
 
@@ -92,7 +92,7 @@ void main() {
 
       testWidgets('cannot launch email on this platform',
           (WidgetTester tester) async {
-        const url = 'mailto:applets@etsmtl.net?subject=ÉTSMobile Problem';
+        const url = 'mailto:applets@ens.etsmtl.ca?subject=ÉTSMobile Problem';
         LaunchUrlServiceMock.stubCanLaunchUrl(launchUrlService, url,
             toReturn: false);
         LaunchUrlServiceMock.stubLaunchUrl(launchUrlService, url,
