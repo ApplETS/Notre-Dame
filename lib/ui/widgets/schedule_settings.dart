@@ -93,14 +93,14 @@ class _ScheduleSettingsState extends State<ScheduleSettings> {
       BuildContext context, ScheduleSettingsViewModel model) {
     final list = _buildCalendarFormatSection(context, model);
 
+    list.addAll(_buildShowTodayButtonSection(context, model));
+
     if (model.toggleCalendarView) {
       list.addAll(_buildStartingDaySection(context, model));
       list.addAll(_buildShowWeekSection(context, model));
     } else {
       list.addAll(_buildShowWeekendDaySection(context, model));
     }
-
-    list.addAll(_buildShowTodayButtonSection(context, model));
 
     list.addAll(_buildToggleCalendarView(context, model));
 
