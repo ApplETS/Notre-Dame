@@ -213,6 +213,9 @@ class _ScheduleViewState extends State<ScheduleView>
         hourIndicatorSettings: calendar_view.HourIndicatorSettings(
           color: scheduleLineColor,
         ),
+        liveTimeIndicatorSettings: calendar_view.HourIndicatorSettings(
+          color: chevronColor,
+        ),
         scrollOffset: 305,
         timeLineStringBuilder: (date, {secondaryDate}) {
           return DateFormat('HH:mm').format(date);
@@ -257,13 +260,15 @@ class _ScheduleViewState extends State<ScheduleView>
   }
 
   Widget _buildWeekDay(DateTime date, ScheduleViewModel model) {
+    final indicatorColorOpacity =
+        Theme.of(context).brightness == Brightness.light ? 0.2 : 0.8;
     return Center(
       child: Container(
         width: 40,
         height: 80,
         decoration: BoxDecoration(
             color: model.compareDates(date, DateTime.now())
-                ? AppTheme.etsLightRed.withOpacity(0.2)
+                ? AppTheme.etsLightRed.withOpacity(indicatorColorOpacity)
                 : Colors.transparent,
             borderRadius: BorderRadius.circular(6.0)),
         child: Column(
