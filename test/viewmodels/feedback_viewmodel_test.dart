@@ -77,8 +77,10 @@ void main() {
         await file.writeAsBytes(image.encodePng(
             image.copyResize(image.decodeImage(screenshotData), width: 307)));
 
-        await viewModel.sendFeedback(UserFeedback(
-            text: feedBackText, screenshot: screenshotData, extra: extra), FeedbackType.bug);
+        await viewModel.sendFeedback(
+            UserFeedback(
+                text: feedBackText, screenshot: screenshotData, extra: extra),
+            FeedbackType.bug);
 
         verify(githubApiMock.uploadFileToGithub(
           filePath: filePath,
@@ -90,8 +92,10 @@ void main() {
         final File file = File('bugReportTest.png');
         GithubApiMock.stubLocalFile(githubApiMock, file);
 
-        await viewModel.sendFeedback(UserFeedback(
-            text: feedBackText, screenshot: screenshotData, extra: extra), FeedbackType.bug);
+        await viewModel.sendFeedback(
+            UserFeedback(
+                text: feedBackText, screenshot: screenshotData, extra: extra),
+            FeedbackType.bug);
 
         verify(githubApiMock.createGithubIssue(
             feedbackText: 'Notre-Dame bug report',
@@ -100,12 +104,15 @@ void main() {
             email: 'email@email.com'));
       });
 
-      test('If the github enhancement issue has been created with email', () async {
+      test('If the github enhancement issue has been created with email',
+          () async {
         final File file = File('enhancementTest.png');
         GithubApiMock.stubLocalFile(githubApiMock, file);
 
-        await viewModel.sendFeedback(UserFeedback(
-            text: feedBackText, screenshot: screenshotData, extra: extra), FeedbackType.enhancement);
+        await viewModel.sendFeedback(
+            UserFeedback(
+                text: feedBackText, screenshot: screenshotData, extra: extra),
+            FeedbackType.enhancement);
 
         verify(githubApiMock.createGithubIssue(
             feedbackText: 'Notre-Dame bug report',
@@ -118,8 +125,10 @@ void main() {
         final File file = File('bugReportTest.png');
         GithubApiMock.stubLocalFile(githubApiMock, file);
 
-        await viewModel.sendFeedback(UserFeedback(
-            text: feedBackText, screenshot: screenshotData, extra: extra2), FeedbackType.bug);
+        await viewModel.sendFeedback(
+            UserFeedback(
+                text: feedBackText, screenshot: screenshotData, extra: extra2),
+            FeedbackType.bug);
 
         verify(githubApiMock.createGithubIssue(
             feedbackText: 'Notre-Dame bug report',
@@ -127,12 +136,15 @@ void main() {
             feedbackType: 'bug'));
       });
 
-      test('If the github enhancement issue has been created without email', () async {
+      test('If the github enhancement issue has been created without email',
+          () async {
         final File file = File('enhancementTest.png');
         GithubApiMock.stubLocalFile(githubApiMock, file);
 
-        await viewModel.sendFeedback(UserFeedback(
-            text: feedBackText, screenshot: screenshotData, extra: extra2), FeedbackType.enhancement);
+        await viewModel.sendFeedback(
+            UserFeedback(
+                text: feedBackText, screenshot: screenshotData, extra: extra2),
+            FeedbackType.enhancement);
 
         verify(githubApiMock.createGithubIssue(
             feedbackText: 'Notre-Dame bug report',

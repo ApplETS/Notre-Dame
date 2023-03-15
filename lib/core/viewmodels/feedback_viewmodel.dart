@@ -42,7 +42,8 @@ class FeedbackViewModel extends FutureViewModel {
   FeedbackViewModel({@required AppIntl intl}) : _appIntl = intl;
 
   /// Create a Github issue with [UserFeedback] and the screenshot associated.
-  Future<void> sendFeedback(UserFeedback feedback, FeedbackType reportType) async {
+  Future<void> sendFeedback(
+      UserFeedback feedback, FeedbackType reportType) async {
     //Generate info to pass to github
     final File file = await _githubApi.localFile;
     await file.writeAsBytes(encodeScreenshotForGithub(feedback.screenshot));
