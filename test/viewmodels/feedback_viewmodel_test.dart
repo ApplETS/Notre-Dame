@@ -18,6 +18,7 @@ import 'package:notredame/core/models/feedback_issue.dart';
 
 // CONSTANTS
 import 'package:notredame/core/constants/preferences_flags.dart';
+import 'package:notredame/core/constants/feedback_type.dart';
 
 // OTHER
 import '../helpers.dart';
@@ -77,7 +78,7 @@ void main() {
             image.copyResize(image.decodeImage(screenshotData), width: 307)));
 
         await viewModel.sendFeedback(UserFeedback(
-            text: feedBackText, screenshot: screenshotData, extra: extra));
+            text: feedBackText, screenshot: screenshotData, extra: extra), FeedbackType.bug);
 
         verify(githubApiMock.uploadFileToGithub(
           filePath: filePath,
@@ -85,31 +86,58 @@ void main() {
         ));
       });
 
-      test('If the github issue has been created with email', () async {
+      test('If the github bug issue has been created with email', () async {
         final File file = File('bugReportTest.png');
         GithubApiMock.stubLocalFile(githubApiMock, file);
 
         await viewModel.sendFeedback(UserFeedback(
-            text: feedBackText, screenshot: screenshotData, extra: extra));
+            text: feedBackText, screenshot: screenshotData, extra: extra), FeedbackType.bug);
 
         verify(githubApiMock.createGithubIssue(
             feedbackText: 'Notre-Dame bug report',
             fileName: 'bugReportTest.png',
-            feedbackType: 'bugReport',
+            feedbackType: 'bug',
             email: 'email@email.com'));
       });
 
-      test('If the github issue has been created without email', () async {
+      test('If the github enhancement issue has been created with email', () async {
+        final File file = File('enhancementTest.png');
+        GithubApiMock.stubLocalFile(githubApiMock, file);
+
+        await viewModel.sendFeedback(UserFeedback(
+            text: feedBackText, screenshot: screenshotData, extra: extra), FeedbackType.enhancement);
+
+        verify(githubApiMock.createGithubIssue(
+            feedbackText: 'Notre-Dame bug report',
+            fileName: 'enhancementTest.png',
+            feedbackType: 'enhancement',
+            email: 'email@email.com'));
+      });
+
+      test('If the github bug issue has been created without email', () async {
         final File file = File('bugReportTest.png');
         GithubApiMock.stubLocalFile(githubApiMock, file);
 
         await viewModel.sendFeedback(UserFeedback(
-            text: feedBackText, screenshot: screenshotData, extra: extra2));
+            text: feedBackText, screenshot: screenshotData, extra: extra2), FeedbackType.bug);
 
         verify(githubApiMock.createGithubIssue(
             feedbackText: 'Notre-Dame bug report',
             fileName: 'bugReportTest.png',
-            feedbackType: 'bugReport'));
+            feedbackType: 'bug'));
+      });
+
+      test('If the github enhancement issue has been created without email', () async {
+        final File file = File('enhancementTest.png');
+        GithubApiMock.stubLocalFile(githubApiMock, file);
+
+        await viewModel.sendFeedback(UserFeedback(
+            text: feedBackText, screenshot: screenshotData, extra: extra2), FeedbackType.enhancement);
+
+        verify(githubApiMock.createGithubIssue(
+            feedbackText: 'Notre-Dame bug report',
+            fileName: 'enhancementTest.png',
+            feedbackType: 'enhancement'));
       });
     });
 

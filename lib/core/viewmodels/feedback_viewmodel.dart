@@ -18,6 +18,7 @@ import 'package:notredame/core/models/feedback_issue.dart';
 
 // CONSTANTS
 import 'package:notredame/core/constants/preferences_flags.dart';
+import 'package:notredame/core/constants/feedback_type.dart';
 
 // OTHERS
 import 'package:notredame/locator.dart';
@@ -41,7 +42,7 @@ class FeedbackViewModel extends FutureViewModel {
   FeedbackViewModel({@required AppIntl intl}) : _appIntl = intl;
 
   /// Create a Github issue with [UserFeedback] and the screenshot associated.
-  Future<void> sendFeedback(UserFeedback feedback) async {
+  Future<void> sendFeedback(UserFeedback feedback, FeedbackType reportType) async {
     //Generate info to pass to github
     final File file = await _githubApi.localFile;
     await file.writeAsBytes(encodeScreenshotForGithub(feedback.screenshot));
@@ -54,7 +55,7 @@ class FeedbackViewModel extends FutureViewModel {
     final Issue issue = await _githubApi.createGithubIssue(
         feedbackText: feedback.text,
         fileName: fileName,
-        feedbackType: getUserFeedbackType(feedback),
+        feedbackType: reportType.name,
         email: feedback.extra.containsKey('email')
             ? feedback.extra['email'].toString()
             : null);
@@ -82,10 +83,6 @@ class FeedbackViewModel extends FutureViewModel {
   List<int> encodeScreenshotForGithub(Uint8List screenshot) {
     return image.encodePng(image.copyResize(image.decodeImage(screenshot),
         width: _screenshotImageWidth));
-  }
-
-  String getUserFeedbackType(UserFeedback userFeedback) {
-    return userFeedback.extra.entries.first.value.toString().split('.').last;
   }
 
   // @override
