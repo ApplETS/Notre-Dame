@@ -210,9 +210,9 @@
 			isa = PBXGroup;
 			children = (
 				187D825A29031A3800821D5F /* GradesWidgetEntryView.swift */,
+				187D825C29031A3900821D5F /* SingleGradeView.swift */,
 				187D825929031A3800821D5F /* ProgressBarView.swift */,
 				187D825B29031A3800821D5F /* ProgressWidgetEntryView.swift */,
-				187D825C29031A3900821D5F /* SingleGradeView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
