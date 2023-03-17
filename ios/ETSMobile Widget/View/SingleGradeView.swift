@@ -42,17 +42,15 @@ struct SingleGradeView: View {
             }
             .frame(height: 30, alignment: .center)
             
-            // Custom separator using Rectangle
-            Rectangle()
-                .fill(Color.gray)
-                .frame(height: 0.3)
-            
             Text(roundedGrade)
                 .font(.system(size: 24))
                 .padding([.top, .bottom], 4)
         }
-        .frame(minWidth: 50, idealWidth: 64, maxWidth: 70, minHeight: 60, idealHeight: 70, maxHeight: 70, alignment: .center)
-        .border(Color.gray, width: 0.3)
+        .frame(minWidth: 50, idealWidth: 64, maxWidth: 70, minHeight: 60, idealHeight: 70, maxHeight: 70, alignment: .top)
+        .background(
+            RoundedRectangle(cornerRadius: cornerRadius)
+                .strokeBorder(Color.gray, lineWidth: 0.3)
+        )
         .cornerRadius(cornerRadius)
     }
 }
