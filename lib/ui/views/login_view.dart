@@ -4,7 +4,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:stacked/stacked.dart';
-import 'package:url_launcher/url_launcher.dart';
+import 'package:flutter_custom_tabs/flutter_custom_tabs.dart';
 
 
 // SERVICE
@@ -159,8 +159,8 @@ class _LoginViewState extends State<LoginView> {
                                               decoration: TextDecoration.underline,
                                               color: Colors.white),
                                         ),
-                                        onTap: () async {
-                                          openUrl(forgotPasswordLink);
+                                        onTap: () {
+                                          launchInBrowser(forgotPasswordLink);
                                         },
                                       ),
                                     ),
@@ -275,12 +275,40 @@ class _LoginViewState extends State<LoginView> {
     }
   }
 
-  Future<void> openUrl(String url) async {
-    final uri = Uri.parse(url);
-    if(await canLaunchUrl(uri)){
-      await launchUrl(uri);
-    }else{
-      locator<AnalyticsService>().logError("login_view", "Could not open url : '$url'");
-    }
+  //From web_link_card_viewmodel
+  Future<void> launchInBrowser(String url) async {
+    await launch(
+      url,
+      customTabsOption: CustomTabsOption(
+        toolbarColor: AppTheme.etsLightRed,
+        enableDefaultShare: false,
+        enableUrlBarHiding: true,
+        showPageTitle: true,
+        animation: CustomTabsSystemAnimation.slideIn(),
+        extraCustomTabs: const <String>[
+          // ref. https://play.google.com/store/apps/details?id=org.mozilla.firefox
+          'org.mozilla.firefox',
+          // https://play.google.com/store/apps/details?id=com.brave.browser
+          'com.brave.browser',
+          // https://play.google.com/store/apps/details?id=com.opera.browser
+          'com.opera.browser',
+          'com.opera.mini.native',
+          'com.opera.gx',
+          // https://play.google.com/store/apps/details?id=com.sec.android.app.sbrowser
+          'com.sec.android.app.sbrowser',
+          // ref. https://play.google.com/store/apps/details?id=com.microsoft.emmx
+          'com.microsoft.emmx',
+          // https://play.google.com/store/apps/details?id=com.UCMobile.intl
+          'com.UCMobile.intl',
+        ],
+      ),
+      safariVCOption: const SafariViewControllerOption(
+        preferredBarTintColor: AppTheme.etsLightRed,
+        preferredControlTintColor: AppTheme.lightThemeBackground,
+        barCollapsingEnabled: true,
+        entersReaderIfAvailable: false,
+        dismissButtonStyle: SafariViewControllerDismissButtonStyle.close,
+      ),
+    );
   }
 }
