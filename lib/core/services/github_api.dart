@@ -76,7 +76,8 @@ class GithubApi {
   Future<Issue> createGithubIssue(
       {@required String feedbackText,
       @required String fileName,
-      @required String feedbackType}) async {
+      @required String feedbackType,
+      String email}) async {
     final PackageInfo packageInfo = await PackageInfo.fromPlatform();
     return _github.issues
         .create(
@@ -87,7 +88,8 @@ class GithubApi {
                     "```$feedbackText```\n\n"
                     "**Screenshot** \n"
                     "![screenshot](https://github.com/$_repositoryReportSlug/blob/main/$fileName?raw=true)\n\n"
-                    "${await _internalInfoService.getDeviceInfoForErrorReporting()}",
+                    "${await _internalInfoService.getDeviceInfoForErrorReporting()}"
+                    "**Email: ** ${email ?? 'Not provided'}",
                 labels: [
                   feedbackType,
                   'platform: ${Platform.operatingSystem}'

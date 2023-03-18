@@ -24,17 +24,20 @@ import '../../helpers.dart';
 // MOCK
 import '../../mock/managers/course_repository_mock.dart';
 import '../../mock/managers/settings_manager_mock.dart';
+import '../../mock/services/remote_config_service_mock.dart';
 
 void main() {
   SettingsManager settingsManager;
+  RemoteConfigServiceMock remoteConfigService;
   CourseRepositoryMock courseRepositoryMock;
   AppIntl intl;
 
   // Some settings
   final Map<PreferencesFlag, dynamic> settings = {
-    PreferencesFlag.scheduleSettingsCalendarFormat: CalendarFormat.week,
-    PreferencesFlag.scheduleSettingsStartWeekday: StartingDayOfWeek.monday,
-    PreferencesFlag.scheduleSettingsShowTodayBtn: true
+    PreferencesFlag.scheduleCalendarFormat: CalendarFormat.week,
+    PreferencesFlag.scheduleStartWeekday: StartingDayOfWeek.monday,
+    PreferencesFlag.scheduleShowTodayBtn: true,
+    PreferencesFlag.scheduleListView: true
   };
 
   final List<ScheduleActivity> classOneWithLaboratoryABscheduleActivities = [
@@ -81,9 +84,12 @@ void main() {
       settingsManager = setupSettingsManagerMock();
       courseRepositoryMock =
           setupCourseRepositoryMock() as CourseRepositoryMock;
+      remoteConfigService =
+          setupRemoteConfigServiceMock() as RemoteConfigServiceMock;
       intl = await setupAppIntl();
 
       CourseRepositoryMock.stubGetScheduleActivities(courseRepositoryMock);
+      RemoteConfigServiceMock.stubGetCalendarViewEnabled(remoteConfigService);
     });
 
     group("ui - ", () {
@@ -306,7 +312,7 @@ void main() {
         // preselect the laboB
         SettingsManagerMock.stubGetDynamicString(
             settingsManager as SettingsManagerMock,
-            PreferencesFlag.scheduleSettingsLaboratoryGroup,
+            PreferencesFlag.scheduleLaboratoryGroup,
             "GEN101",
             toReturn: ActivityCode.labGroupB);
 
@@ -368,7 +374,7 @@ void main() {
             toReturn: settings);
         SettingsManagerMock.stubSetString(
             settingsManager as SettingsManagerMock,
-            PreferencesFlag.scheduleSettingsCalendarFormat);
+            PreferencesFlag.scheduleCalendarFormat);
 
         await tester.pumpWidget(
             localizedWidget(child: const ScheduleSettings(showHandle: false)));
@@ -379,7 +385,7 @@ void main() {
         await tester.pump();
 
         await untilCalled(settingsManager.setString(
-            PreferencesFlag.scheduleSettingsCalendarFormat, any));
+            PreferencesFlag.scheduleCalendarFormat, any));
 
         final formatTile = find.widgetWithText(
             ListTile, intl.schedule_settings_calendar_format_2_weeks);
@@ -396,7 +402,7 @@ void main() {
             settingsManager as SettingsManagerMock,
             toReturn: settings);
         SettingsManagerMock.stubSetBool(settingsManager as SettingsManagerMock,
-            PreferencesFlag.scheduleSettingsShowTodayBtn);
+            PreferencesFlag.scheduleShowTodayBtn);
 
         await tester.pumpWidget(
             localizedWidget(child: const ScheduleSettings(showHandle: false)));
@@ -414,8 +420,8 @@ void main() {
 
         await tester.pumpAndSettle();
 
-        await untilCalled(settingsManager.setBool(
-            PreferencesFlag.scheduleSettingsShowTodayBtn, any));
+        await untilCalled(
+            settingsManager.setBool(PreferencesFlag.scheduleShowTodayBtn, any));
 
         expect(
             tester.widget(find.descendant(

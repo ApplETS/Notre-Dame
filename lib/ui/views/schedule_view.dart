@@ -1,4 +1,5 @@
 // FLUTTER / DART / THIRD-PARTIES
+import 'package:calendar_view/calendar_view.dart' as calendar_view;
 import 'package:feature_discovery/feature_discovery.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
@@ -50,6 +51,7 @@ class _ScheduleViewState extends State<ScheduleView>
   static const String tag = "ScheduleView";
   static const Color _selectedColor = AppTheme.etsLightRed;
   static const Color _defaultColor = Color(0xff76859B);
+  static final List<String> weekTitles = ["L", "M", "M", "J", "V", "S", "D"];
 
   AnimationController _animationController;
 
@@ -75,83 +77,175 @@ class _ScheduleViewState extends State<ScheduleView>
   }
 
   @override
-  Widget build(BuildContext context) => ViewModelBuilder<
-          ScheduleViewModel>.reactive(
-      viewModelBuilder: () => ScheduleViewModel(
-          intl: AppIntl.of(context), initialSelectedDate: widget.initialDay),
-      onModelReady: (model) {
-        if (model.settings.isEmpty) {
-          model.loadSettings();
-        }
-      },
-      builder: (context, model, child) => BaseScaffold(
-          isLoading: model.busy(model.isLoadingEvents),
-          isInteractionLimitedWhileLoading: false,
-          appBar: AppBar(
-            title: Text(AppIntl.of(context).title_schedule),
-            centerTitle: false,
-            automaticallyImplyLeading: false,
-            actions: _buildActionButtons(model),
-          ),
-          body: RefreshIndicator(
-            child: Stack(children: [
-              GestureDetector(
-                onPanEnd: (details) {
-                  if (details.velocity.pixelsPerSecond.dx > 0) {
-                    setState(() {
-                      if (!model.showWeekEvents) {
-                        model.focusedDate.value = model.focusedDate.value
-                            .subtract(const Duration(days: 1));
-                      } else {
-                        model.focusedDate.value = model.focusedDate.value
-                            .subtract(const Duration(days: 7));
-                      }
-                      model.selectedDate = model.focusedDate.value;
-                      HapticFeedback.lightImpact();
-                    });
-                  } else if (details.velocity.pixelsPerSecond.dx < -5) {
-                    setState(() {
-                      if (!model.showWeekEvents) {
-                        model.focusedDate.value = model.focusedDate.value
-                            .add(const Duration(days: 1));
-                      } else {
-                        model.focusedDate.value = model.focusedDate.value
-                            .add(const Duration(days: 7));
-                      }
-                      model.selectedDate = model.focusedDate.value;
-                      HapticFeedback.lightImpact();
-                    });
-                  }
-                },
-                child: ListView(
-                  children: [
-                    _buildTableCalendar(model),
-                    const SizedBox(height: 8.0),
-                    const Divider(indent: 8.0, endIndent: 8.0, thickness: 1),
-                    const SizedBox(height: 6.0),
-                    if (model.showWeekEvents)
-                      for (Widget widget in _buildWeekEvents(model, context))
-                        widget
-                    else
-                      _buildTitleForDate(model.selectedDate, model),
-                    const SizedBox(height: 2.0),
-                    if (!model.showWeekEvents &&
-                        model.selectedDateEvents(model.selectedDate).isEmpty)
-                      Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 64.0),
-                        child: Center(
-                            child: Text(AppIntl.of(context).schedule_no_event)),
-                      )
-                    else if (!model.showWeekEvents)
-                      _buildEventList(
-                          model.selectedDateEvents(model.selectedDate)),
-                    const SizedBox(height: 16.0),
-                  ],
-                ),
-              ),
-            ]),
-            onRefresh: () => model.refresh(),
-          )));
+  Widget build(BuildContext context) =>
+      ViewModelBuilder<ScheduleViewModel>.reactive(
+        viewModelBuilder: () => ScheduleViewModel(
+            intl: AppIntl.of(context), initialSelectedDate: widget.initialDay),
+        onModelReady: (model) {
+          if (model.settings.isEmpty) {
+            model.loadSettings();
+          }
+        },
+        builder: (context, model, child) => BaseScaffold(
+            isLoading: model.busy(model.isLoadingEvents),
+            isInteractionLimitedWhileLoading: false,
+            appBar: AppBar(
+              title: Text(AppIntl.of(context).title_schedule),
+              centerTitle: false,
+              automaticallyImplyLeading: false,
+              actions: _buildActionButtons(model),
+            ),
+            body: RefreshIndicator(
+              child: !model.calendarViewSetting
+                  ? _buildCalendarView(model, context)
+                  : _buildListView(model, context),
+              onRefresh: () => model.refresh(),
+            )),
+      );
+
+  Widget _buildListView(ScheduleViewModel model, BuildContext context) {
+    return Stack(children: [
+      GestureDetector(
+        onPanEnd: (details) {
+          if (details.velocity.pixelsPerSecond.dx > 0) {
+            setState(() {
+              if (!model.showWeekEvents) {
+                model.focusedDate.value =
+                    model.focusedDate.value.subtract(const Duration(days: 1));
+              } else {
+                model.focusedDate.value =
+                    model.focusedDate.value.subtract(const Duration(days: 7));
+              }
+              model.selectedDate = model.focusedDate.value;
+              HapticFeedback.lightImpact();
+            });
+          } else if (details.velocity.pixelsPerSecond.dx < -5) {
+            setState(() {
+              if (!model.showWeekEvents) {
+                model.focusedDate.value =
+                    model.focusedDate.value.add(const Duration(days: 1));
+              } else {
+                model.focusedDate.value =
+                    model.focusedDate.value.add(const Duration(days: 7));
+              }
+              model.selectedDate = model.focusedDate.value;
+              HapticFeedback.lightImpact();
+            });
+          }
+        },
+        child: ListView(
+          children: [
+            _buildTableCalendar(model),
+            const SizedBox(height: 8.0),
+            const Divider(indent: 8.0, endIndent: 8.0, thickness: 1),
+            const SizedBox(height: 6.0),
+            if (model.showWeekEvents)
+              for (Widget widget in _buildWeekEvents(model, context)) widget
+            else
+              _buildTitleForDate(model.selectedDate, model),
+            const SizedBox(height: 2.0),
+            if (!model.showWeekEvents &&
+                model.selectedDateEvents(model.selectedDate).isEmpty)
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 64.0),
+                child:
+                    Center(child: Text(AppIntl.of(context).schedule_no_event)),
+              )
+            else if (!model.showWeekEvents)
+              _buildEventList(model.selectedDateEvents(model.selectedDate)),
+            const SizedBox(height: 16.0),
+          ],
+        ),
+      ),
+    ]);
+  }
+
+  Widget _buildCalendarView(ScheduleViewModel model, BuildContext context) {
+    final calendar_view.EventController eventController =
+        calendar_view.EventController();
+    final backgroundColor = Theme.of(context).brightness == Brightness.light
+        ? AppTheme.lightThemeBackground
+        : AppTheme.primaryDark;
+    final scheduleLineColor = Theme.of(context).brightness == Brightness.light
+        ? AppTheme.scheduleLineColorLight
+        : AppTheme.scheduleLineColorDark;
+    final chevronColor = Theme.of(context).brightness == Brightness.light
+        ? AppTheme.primaryDark
+        : AppTheme.lightThemeBackground;
+    return Scaffold(
+      body: calendar_view.WeekView(
+        controller: eventController..addAll(model.selectedWeekCalendarEvents()),
+        onPageChange: (date, page) =>
+            model.handleViewChanged(date, eventController),
+        backgroundColor: backgroundColor,
+        headerStyle: calendar_view.HeaderStyle(
+            decoration: BoxDecoration(
+              color: backgroundColor,
+            ),
+            leftIcon: Icon(
+              Icons.chevron_left,
+              size: 30,
+              color: chevronColor,
+            ),
+            rightIcon: Icon(
+              Icons.chevron_right,
+              size: 30,
+              color: chevronColor,
+            )),
+        weekDays: const [
+          calendar_view.WeekDays.monday,
+          calendar_view.WeekDays.tuesday,
+          calendar_view.WeekDays.wednesday,
+          calendar_view.WeekDays.thursday,
+          calendar_view.WeekDays.friday,
+          calendar_view.WeekDays.saturday,
+        ],
+        initialDay: DateTime.now(),
+        heightPerMinute: 0.65, // height occupied by 1 minute time span.
+        hourIndicatorSettings: calendar_view.HourIndicatorSettings(
+          color: scheduleLineColor,
+        ),
+        scrollOffset: 305,
+        timeLineStringBuilder: (date, {secondaryDate}) {
+          return DateFormat('HH:mm').format(date);
+        },
+        weekDayStringBuilder: (p0) {
+          return weekTitles[p0];
+        },
+        headerStringBuilder: (date, {secondaryDate}) {
+          final from = AppIntl.of(context).schedule_calendar_from;
+          final to = AppIntl.of(context).schedule_calendar_to;
+          final locale = AppIntl.of(context).localeName;
+          return '$from ${date.day} ${DateFormat.MMMM(locale).format(date)} $to ${secondaryDate.day} ${DateFormat.MMMM(locale).format(secondaryDate)}';
+        },
+        eventTileBuilder: _buildEventTile,
+      ),
+    );
+  }
+
+  Widget _buildEventTile(
+    DateTime date,
+    List<calendar_view.CalendarEventData<dynamic>> events,
+    Rect boundary,
+    DateTime startDuration,
+    DateTime endDuration,
+  ) {
+    if (events.isNotEmpty) {
+      return calendar_view.RoundedEventTile(
+        borderRadius: BorderRadius.circular(6.0),
+        title: events[0].title,
+        titleStyle: TextStyle(
+          fontSize: 12,
+          color: events[0].color.accent,
+        ),
+        totalEvents: events.length,
+        padding: const EdgeInsets.all(7.0),
+        backgroundColor: events[0].color,
+      );
+    } else {
+      return Container();
+    }
+  }
 
   Widget _buildTitleForDate(DateTime date, ScheduleViewModel model) => Center(
           child: Text(
@@ -208,7 +302,7 @@ class _ScheduleViewState extends State<ScheduleView>
         builder: (context, value, _) {
           return TableCalendar(
             startingDayOfWeek:
-                model.settings[PreferencesFlag.scheduleSettingsStartWeekday]
+                model.settings[PreferencesFlag.scheduleStartWeekday]
                     as StartingDayOfWeek,
             locale: model.locale.toLanguageTag(),
             selectedDayPredicate: (day) {
@@ -280,8 +374,7 @@ class _ScheduleViewState extends State<ScheduleView>
   }
 
   List<Widget> _buildActionButtons(ScheduleViewModel model) => [
-        if ((model.settings[PreferencesFlag.scheduleSettingsShowTodayBtn]
-                as bool) ==
+        if ((model.settings[PreferencesFlag.scheduleShowTodayBtn] as bool) ==
             true)
           IconButton(
               icon: const Icon(Icons.today),

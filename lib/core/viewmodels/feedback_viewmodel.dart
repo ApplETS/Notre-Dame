@@ -54,7 +54,10 @@ class FeedbackViewModel extends FutureViewModel {
     final Issue issue = await _githubApi.createGithubIssue(
         feedbackText: feedback.text,
         fileName: fileName,
-        feedbackType: getUserFeedbackType(feedback));
+        feedbackType: getUserFeedbackType(feedback),
+        email: feedback.extra.containsKey('email')
+            ? feedback.extra['email'].toString()
+            : null);
 
     if (issue != null) {
       setBusy(true);

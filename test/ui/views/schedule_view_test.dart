@@ -21,13 +21,18 @@ import 'package:notredame/ui/widgets/schedule_settings.dart';
 // HELPERS
 import '../../helpers.dart';
 
+// SERVICES
+import 'package:notredame/core/services/remote_config_service.dart';
+
 // MOCKS
 import '../../mock/managers/course_repository_mock.dart';
 import '../../mock/managers/settings_manager_mock.dart';
+import '../../mock/services/remote_config_service_mock.dart';
 
 void main() {
   SettingsManager settingsManager;
   CourseRepository courseRepository;
+  RemoteConfigService remoteConfigService;
 
   // Some activities
   CourseActivity activityYesterday;
@@ -36,9 +41,9 @@ void main() {
 
   // Some settings
   Map<PreferencesFlag, dynamic> settings = {
-    PreferencesFlag.scheduleSettingsCalendarFormat: CalendarFormat.week,
-    PreferencesFlag.scheduleSettingsStartWeekday: StartingDayOfWeek.monday,
-    PreferencesFlag.scheduleSettingsShowTodayBtn: true
+    PreferencesFlag.scheduleCalendarFormat: CalendarFormat.week,
+    PreferencesFlag.scheduleStartWeekday: StartingDayOfWeek.monday,
+    PreferencesFlag.scheduleShowTodayBtn: true
   };
 
   group("ScheduleView - ", () {
@@ -83,20 +88,24 @@ void main() {
       setupNavigationServiceMock();
       settingsManager = setupSettingsManagerMock();
       courseRepository = setupCourseRepositoryMock();
+      remoteConfigService = setupRemoteConfigServiceMock();
       setupNetworkingServiceMock();
       setupAnalyticsServiceMock();
 
       SettingsManagerMock.stubLocale(settingsManager as SettingsManagerMock);
 
       settings = {
-        PreferencesFlag.scheduleSettingsCalendarFormat: CalendarFormat.week,
-        PreferencesFlag.scheduleSettingsStartWeekday: StartingDayOfWeek.monday,
-        PreferencesFlag.scheduleSettingsShowTodayBtn: true,
-        PreferencesFlag.scheduleSettingsShowWeekEvents: false,
+        PreferencesFlag.scheduleCalendarFormat: CalendarFormat.week,
+        PreferencesFlag.scheduleStartWeekday: StartingDayOfWeek.monday,
+        PreferencesFlag.scheduleShowTodayBtn: true,
+        PreferencesFlag.scheduleShowWeekEvents: false,
+        PreferencesFlag.scheduleListView: true,
       };
 
       CourseRepositoryMock.stubGetScheduleActivities(
           courseRepository as CourseRepositoryMock);
+      RemoteConfigServiceMock.stubGetCalendarViewEnabled(
+          remoteConfigService as RemoteConfigServiceMock);
     });
 
     group("golden - ", () {
@@ -131,7 +140,7 @@ void main() {
             PreferencesFlag.discoverySchedule);
         tester.binding.window.physicalSizeTestValue = const Size(800, 1410);
 
-        settings[PreferencesFlag.scheduleSettingsShowTodayBtn] = false;
+        settings[PreferencesFlag.scheduleShowTodayBtn] = false;
 
         CourseRepositoryMock.stubCoursesActivities(
             courseRepository as CourseRepositoryMock);
