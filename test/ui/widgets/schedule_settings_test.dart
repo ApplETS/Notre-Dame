@@ -135,7 +135,9 @@ void main() {
                 'The settings says week format is the current format, the UI should reflet that.');
 
         // Check starting day of week section
-        expect(find.text(intl.schedule_settings_starting_weekday_pref),
+        expect(
+            find.text(intl.schedule_settings_starting_weekday_pref,
+                skipOffstage: false),
             findsOneWidget);
         expect(
             find.widgetWithText(
@@ -219,7 +221,9 @@ void main() {
                 'The settings says week format is the current format, the UI should reflet that.');
 
         // Check starting day of week section
-        expect(find.text(intl.schedule_settings_starting_weekday_pref),
+        expect(
+            find.text(intl.schedule_settings_starting_weekday_pref,
+                skipOffstage: false),
             findsOneWidget);
 
         expect(

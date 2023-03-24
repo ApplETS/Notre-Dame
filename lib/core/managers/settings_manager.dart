@@ -1,4 +1,5 @@
 // FLUTTER / DART / THIRD-PARTIES
+import 'package:calendar_view/calendar_view.dart';
 import 'package:enum_to_string/enum_to_string.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -166,6 +167,14 @@ class SettingsManager with ChangeNotifier {
             : EnumToString.fromString(StartingDayOfWeek.values, value));
     settings.putIfAbsent(
         PreferencesFlag.scheduleStartWeekday, () => startingWeekDay);
+
+    final otherWeekDay = await _preferencesService
+        .getString(PreferencesFlag.scheduleOtherWeekday)
+        .then((value) => value == null
+            ? WeekDays.monday
+            : EnumToString.fromString(WeekDays.values, value));
+    settings.putIfAbsent(
+        PreferencesFlag.scheduleOtherWeekday, () => otherWeekDay);
 
     final showTodayBtn = await _preferencesService
             .getBool(PreferencesFlag.scheduleShowTodayBtn) ??
