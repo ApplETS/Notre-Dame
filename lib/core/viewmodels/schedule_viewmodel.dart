@@ -101,7 +101,7 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
   void handleViewChanged(DateTime date, EventController controller) {
     controller.removeWhere((event) => true);
     selectedDate = date;
-    final eventsToAdd = selectedWeekCalendarEvents();
+    final eventsToAdd = selectedMonthCalendarEvents(); //week normalement
     controller.addAll(eventsToAdd);
   }
 
@@ -138,6 +138,20 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
     final firstDayOfWeek = Utils.getFirstDayOfCurrentWeek(selectedDate,
         settings[PreferencesFlag.scheduleStartWeekday] as StartingDayOfWeek);
     for (int i = 0; i < 7; i++) {
+      final date = firstDayOfWeek.add(Duration(days: i));
+      final eventsForDay = selectedDateCalendarEvents(date);
+      if (eventsForDay.isNotEmpty) {
+        events.addAll(eventsForDay);
+      }
+    }
+    return events;
+  }
+
+  List<CalendarEventData> selectedMonthCalendarEvents() {
+    final List<CalendarEventData> events = [];
+    final firstDayOfWeek = Utils.getFirstDayOfCurrentWeek(selectedDate,
+        settings[PreferencesFlag.scheduleStartWeekday] as StartingDayOfWeek);
+    for (int i = 0; i < 42; i++) {
       final date = firstDayOfWeek.add(Duration(days: i));
       final eventsForDay = selectedDateCalendarEvents(date);
       if (eventsForDay.isNotEmpty) {
@@ -346,6 +360,18 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
     } else {
       selectedDate = DateTime.now();
       focusedDate.value = DateTime.now();
+      return true;
+    }
+  }
+
+  bool selectTodayMonth() {
+    if (compareDates(
+        selectedDate, DateTime(DateTime.now().year, DateTime.now().month))) {
+      Fluttertoast.showToast(msg: _appIntl.schedule_already_today_toast);
+      return false;
+    } else {
+      selectedDate = DateTime(DateTime.now().year, DateTime.now().month);
+      focusedDate.value = DateTime(DateTime.now().year, DateTime.now().month);
       return true;
     }
   }

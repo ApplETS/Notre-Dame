@@ -1,4 +1,6 @@
 // FLUTTER / DART / THIRD-PARTIES
+import 'dart:ui';
+
 import 'package:calendar_view/calendar_view.dart' as calendar_view;
 import 'package:feature_discovery/feature_discovery.dart';
 import 'package:flutter/material.dart';
@@ -48,6 +50,8 @@ class _ScheduleViewState extends State<ScheduleView>
     with TickerProviderStateMixin {
   final GlobalKey<calendar_view.WeekViewState> weekViewKey =
       GlobalKey<calendar_view.WeekViewState>();
+  final GlobalKey<calendar_view.MonthViewState> monthViewKey =
+      GlobalKey<calendar_view.MonthViewState>();
   final AnalyticsService _analyticsService = locator<AnalyticsService>();
 
   static const String tag = "ScheduleView";
@@ -174,7 +178,7 @@ class _ScheduleViewState extends State<ScheduleView>
     final chevronColor = Theme.of(context).brightness == Brightness.light
         ? AppTheme.primaryDark
         : AppTheme.lightThemeBackground;
-    return Scaffold(
+    Scaffold(
       body: calendar_view.WeekView(
         key: weekViewKey,
         controller: eventController..addAll(model.selectedWeekCalendarEvents()),
@@ -233,6 +237,38 @@ class _ScheduleViewState extends State<ScheduleView>
         weekDayBuilder: (DateTime date) => _buildWeekDay(date, model),
       ),
     );
+    return Scaffold(
+        body: calendar_view.MonthView(
+      key: monthViewKey,
+      controller: eventController..addAll(model.selectedMonthCalendarEvents()),
+      // to provide custom UI for month cells.
+      cellAspectRatio: 0.78,
+      onPageChange: (date, page) =>
+          model.handleViewChanged(date, eventController),
+      headerStyle: calendar_view.HeaderStyle(
+          decoration: BoxDecoration(
+            color: backgroundColor,
+          ),
+          leftIcon: Icon(
+            Icons.chevron_left,
+            size: 30,
+            color: chevronColor,
+          ),
+          rightIcon: Icon(
+            Icons.chevron_right,
+            size: 30,
+            color: chevronColor,
+          )),
+      weekDayStringBuilder: (p0) {
+        return weekTitles[p0];
+      },
+      headerStringBuilder: (date, {secondaryDate}) {
+        final locale = AppIntl.of(context).localeName;
+        return '${DateFormat.MMMM(locale).format(date).characters.first.toUpperCase()}${DateFormat.MMMM(locale).format(date).substring(1)} ${date.year}';
+      },
+      startDay: calendar_view.WeekDays.sunday,
+      initialMonth: DateTime(DateTime.now().year, DateTime.now().month),
+    ));
   }
 
   Widget _buildEventTile(
@@ -417,11 +453,19 @@ class _ScheduleViewState extends State<ScheduleView>
               onPressed: () => setState(() {
                     if (!(model.settings[PreferencesFlag.scheduleListView]
                         as bool)) {
+                      monthViewKey.currentState?.animateToMonth(
+                          DateTime(DateTime.now().year, DateTime.now().month));
+                    }
+                    model.selectTodayMonth();
+                    _analyticsService.logEvent(tag, "Select today clicked");
+                  })),
+        /* if (!(model.settings[PreferencesFlag.scheduleListView]
+                        as bool)) {
                       weekViewKey.currentState?.animateToWeek(DateTime.now());
                     }
                     model.selectToday();
                     _analyticsService.logEvent(tag, "Select today clicked");
-                  })),
+                  })),*/
         _buildDiscoveryFeatureDescriptionWidget(context, Icons.settings, model),
       ];
 
