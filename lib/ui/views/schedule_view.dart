@@ -46,6 +46,8 @@ class ScheduleView extends StatefulWidget {
 
 class _ScheduleViewState extends State<ScheduleView>
     with TickerProviderStateMixin {
+  final GlobalKey<calendar_view.WeekViewState> weekViewKey =
+      GlobalKey<calendar_view.WeekViewState>();
   final AnalyticsService _analyticsService = locator<AnalyticsService>();
 
   static const String tag = "ScheduleView";
@@ -174,6 +176,7 @@ class _ScheduleViewState extends State<ScheduleView>
         : AppTheme.lightThemeBackground;
     return Scaffold(
       body: calendar_view.WeekView(
+        key: weekViewKey,
         controller: eventController..addAll(model.selectedWeekCalendarEvents()),
         onPageChange: (date, page) =>
             model.handleViewChanged(date, eventController),
@@ -192,18 +195,26 @@ class _ScheduleViewState extends State<ScheduleView>
               size: 30,
               color: chevronColor,
             )),
-        weekDays: const [
+        weekDays: [
           calendar_view.WeekDays.monday,
           calendar_view.WeekDays.tuesday,
           calendar_view.WeekDays.wednesday,
           calendar_view.WeekDays.thursday,
           calendar_view.WeekDays.friday,
-          calendar_view.WeekDays.saturday,
+          if (model.settings[PreferencesFlag.scheduleOtherWeekday] ==
+              calendar_view.WeekDays.saturday)
+            calendar_view.WeekDays.saturday,
+          if (model.settings[PreferencesFlag.scheduleOtherWeekday] ==
+              calendar_view.WeekDays.sunday)
+            calendar_view.WeekDays.sunday,
         ],
         initialDay: DateTime.now(),
         heightPerMinute: 0.65, // height occupied by 1 minute time span.
         hourIndicatorSettings: calendar_view.HourIndicatorSettings(
           color: scheduleLineColor,
+        ),
+        liveTimeIndicatorSettings: calendar_view.HourIndicatorSettings(
+          color: chevronColor,
         ),
         scrollOffset: 305,
         timeLineStringBuilder: (date, {secondaryDate}) {
@@ -219,6 +230,7 @@ class _ScheduleViewState extends State<ScheduleView>
           return '$from ${date.day} ${DateFormat.MMMM(locale).format(date)} $to ${secondaryDate.day} ${DateFormat.MMMM(locale).format(secondaryDate)}';
         },
         eventTileBuilder: _buildEventTile,
+        weekDayBuilder: (DateTime date) => _buildWeekDay(date, model),
       ),
     );
   }
@@ -245,6 +257,30 @@ class _ScheduleViewState extends State<ScheduleView>
     } else {
       return Container();
     }
+  }
+
+  Widget _buildWeekDay(DateTime date, ScheduleViewModel model) {
+    final indicatorColorOpacity =
+        Theme.of(context).brightness == Brightness.light ? 0.2 : 0.8;
+    return Center(
+      child: Container(
+        width: 40,
+        height: 80,
+        decoration: BoxDecoration(
+            color: model.compareDates(date, DateTime.now())
+                ? AppTheme.etsLightRed.withOpacity(indicatorColorOpacity)
+                : Colors.transparent,
+            borderRadius: BorderRadius.circular(6.0)),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(weekTitles[date.weekday - 1]),
+            Text(date.day.toString()),
+          ],
+        ),
+      ),
+    );
   }
 
   Widget _buildTitleForDate(DateTime date, ScheduleViewModel model) => Center(
@@ -379,6 +415,10 @@ class _ScheduleViewState extends State<ScheduleView>
           IconButton(
               icon: const Icon(Icons.today),
               onPressed: () => setState(() {
+                    if (!(model.settings[PreferencesFlag.scheduleListView]
+                        as bool)) {
+                      weekViewKey.currentState?.animateToWeek(DateTime.now());
+                    }
                     model.selectToday();
                     _analyticsService.logEvent(tag, "Select today clicked");
                   })),

@@ -1,3 +1,4 @@
+import 'package:calendar_view/calendar_view.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -93,11 +94,14 @@ class _ScheduleSettingsState extends State<ScheduleSettings> {
       BuildContext context, ScheduleSettingsViewModel model) {
     final list = _buildCalendarFormatSection(context, model);
 
-    list.addAll(_buildStartingDaySection(context, model));
-
     list.addAll(_buildShowTodayButtonSection(context, model));
 
-    list.addAll(_buildShowWeekSection(context, model));
+    if (model.toggleCalendarView) {
+      list.addAll(_buildStartingDaySection(context, model));
+      list.addAll(_buildShowWeekSection(context, model));
+    } else {
+      list.addAll(_buildShowWeekendDaySection(context, model));
+    }
 
     list.addAll(_buildToggleCalendarView(context, model));
 
@@ -189,6 +193,44 @@ class _ScheduleSettingsState extends State<ScheduleSettings> {
         ),
         const Divider(thickness: 1)
       ];
+
+  List<Widget> _buildShowWeekendDaySection(
+      BuildContext context, ScheduleSettingsViewModel model) {
+    final list = [
+      Padding(
+        padding: const EdgeInsets.only(
+            left: 15.0, right: 15.0, top: 15.0, bottom: 2.0),
+        child: Text(
+          AppIntl.of(context).schedule_settings_show_weekend_day,
+          style: TextStyle(
+            color: Theme.of(context).colorScheme.secondary,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ),
+      const Divider(endIndent: 50, thickness: 1.5),
+    ];
+
+    list.add(ListTile(
+      selected: model.otherDayOfWeek == WeekDays.monday,
+      selectedTileColor: selectedColor,
+      onTap: () => setState(() => model.otherDayOfWeek = WeekDays.monday),
+      title: Text(AppIntl.of(context).schedule_settings_show_weekend_day_none),
+    ));
+
+    for (final WeekDays day in model.otherDayPossible) {
+      list.add(ListTile(
+        selected: model.otherDayOfWeek == day,
+        selectedTileColor: selectedColor,
+        onTap: () => setState(() => model.otherDayOfWeek = day),
+        title: Text(getTextForWeekDay(context, day)),
+      ));
+    }
+
+    list.add(const Divider(thickness: 1));
+
+    return list;
+  }
 
   List<Widget> _buildShowTodayButtonSection(
           BuildContext context, ScheduleSettingsViewModel model) =>
@@ -300,6 +342,19 @@ class _ScheduleSettingsState extends State<ScheduleSettings> {
       case StartingDayOfWeek.saturday:
         return AppIntl.of(context).schedule_settings_starting_weekday_saturday;
       case StartingDayOfWeek.monday:
+        return AppIntl.of(context).schedule_settings_starting_weekday_monday;
+    }
+    return AppIntl.of(context).schedule_settings_starting_weekday_monday;
+  }
+
+  String getTextForWeekDay(BuildContext context, WeekDays day) {
+    // ignore: missing_enum_constant_in_switch
+    switch (day) {
+      case WeekDays.sunday:
+        return AppIntl.of(context).schedule_settings_starting_weekday_sunday;
+      case WeekDays.saturday:
+        return AppIntl.of(context).schedule_settings_starting_weekday_saturday;
+      case WeekDays.monday:
         return AppIntl.of(context).schedule_settings_starting_weekday_monday;
     }
     return AppIntl.of(context).schedule_settings_starting_weekday_monday;
