@@ -12,12 +12,26 @@ struct SingleGradeView: View {
     let grade: String
     
     let cornerRadius = 6.0
-    
+
+    var roundedGrade: String {
+        let gradeWithPeriod = grade.replacingOccurrences(of: ",", with: ".") // Replace comma with period
+        
+        if let gradeValue = Double(gradeWithPeriod) {
+            let roundedValue = Int(round(gradeValue))
+            return "\(roundedValue) %"
+        } else {
+            // If the grade is not a numeric value, display the original grade string (e.g., "A-")
+            return grade
+        }
+    }
+
+
     var body: some View {
         VStack (alignment: .center, spacing: 0) {
             
             ZStack {
-                Color("ETSLightRed").edgesIgnoringSafeArea(.all)
+                Color("ETSLightRed")
+                    .frame(height: 30)
                 
                 Text(course)
                     .foregroundColor(.white)
@@ -26,23 +40,21 @@ struct SingleGradeView: View {
                     .minimumScaleFactor(0.5)
                     .padding([.leading, .trailing], 2)
             }
-            .frame(height: 30, alignment: .center)    // warning: changing the height offsets the outline
+            .frame(height: 30, alignment: .center)
             
-            Divider()
-            
-            Text(grade)
+            Text(roundedGrade)
                 .font(.system(size: 24))
                 .padding([.top, .bottom], 4)
         }
-        .frame(minWidth: 50, idealWidth: 64, maxWidth: 70, minHeight: 60, idealHeight: 70, maxHeight: 70, alignment: .center)
-        .cornerRadius(cornerRadius)
-        .overlay(
+        .frame(minWidth: 50, idealWidth: 64, maxWidth: 70, minHeight: 60, idealHeight: 70, maxHeight: 70, alignment: .top)
+        .background(
             RoundedRectangle(cornerRadius: cornerRadius)
-                .stroke(Color.gray, lineWidth: 0.3)
-                .offset(y: 1)      // fixes the small blank area between the top of the red bg and the outline
+                .strokeBorder(Color.gray, lineWidth: 0.3)
         )
+        .cornerRadius(cornerRadius)
     }
 }
+
 
 struct SingleGradeView_Previews: PreviewProvider {
     static var previews: some View {
