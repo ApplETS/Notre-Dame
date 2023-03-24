@@ -20,6 +20,7 @@ import 'package:notredame/ui/views/quick_links_view.dart';
 import 'package:notredame/ui/views/schedule_view.dart';
 import 'package:notredame/ui/views/security_view.dart';
 import 'package:notredame/ui/views/settings_view.dart';
+import 'package:notredame/ui/views/startup_view.dart';
 import 'package:notredame/ui/views/student_view.dart';
 import 'package:notredame/ui/views/about_view.dart';
 import 'package:notredame/ui/views/contributors_view.dart';
@@ -35,6 +36,10 @@ import 'package:notredame/core/constants/update_code.dart';
 
 Route<dynamic> generateRoute(RouteSettings routeSettings) {
   switch (routeSettings.name) {
+    case RouterPaths.startup:
+      return PageRouteBuilder(
+          settings: RouteSettings(name: routeSettings.name),
+          pageBuilder: (_, __, ___) => StartUpView());
     case RouterPaths.serviceOutage:
       return MaterialPageRoute(
           settings: RouteSettings(name: routeSettings.name),
