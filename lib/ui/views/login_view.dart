@@ -6,7 +6,6 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:stacked/stacked.dart';
 import 'package:flutter_custom_tabs/flutter_custom_tabs.dart';
 
-
 // SERVICE
 import 'package:notredame/core/services/analytics_service.dart';
 import 'package:notredame/core/services/launch_url_service.dart';
@@ -34,7 +33,8 @@ class LoginView extends StatefulWidget {
 }
 
 class _LoginViewState extends State<LoginView> {
-  final String forgotPasswordLink = "https://signets-ens.etsmtl.ca/Public/MotDePassePerdu.aspx";
+  final String forgotPasswordLink =
+      "https://signets-ens.etsmtl.ca/Public/MotDePassePerdu.aspx";
 
   final double borderRadiusOnFocus = 2.0;
 
@@ -146,24 +146,23 @@ class _LoginViewState extends State<LoginView> {
                               ),
                               PasswordFormField(
                                   validator: model.validatePassword,
-                                  onEditionComplete: _focusNode.nextFocus
-                              ),
+                                  onEditionComplete: _focusNode.nextFocus),
                               Align(
-                                    alignment: Alignment.topRight,
-                                    child: Padding(
-                                      padding: const EdgeInsets.only(top: 4),
-                                      child: InkWell(
-                                        child: Text(
-                                          AppIntl.of(context).forgot_password,
-                                          style: const TextStyle(
-                                              decoration: TextDecoration.underline,
-                                              color: Colors.white),
-                                        ),
-                                        onTap: () {
-                                          launchInBrowser(forgotPasswordLink);
-                                        },
-                                      ),
+                                alignment: Alignment.topRight,
+                                child: Padding(
+                                  padding: const EdgeInsets.only(top: 4),
+                                  child: InkWell(
+                                    child: Text(
+                                      AppIntl.of(context).forgot_password,
+                                      style: const TextStyle(
+                                          decoration: TextDecoration.underline,
+                                          color: Colors.white),
                                     ),
+                                    onTap: () {
+                                      launchInBrowser(forgotPasswordLink);
+                                    },
+                                  ),
+                                ),
                               ),
                               const SizedBox(
                                 height: 24,
