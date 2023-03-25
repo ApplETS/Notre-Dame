@@ -26,6 +26,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: izhangzhihao/delete-comment@master
+        if: ${{ github.event_name == 'pull_request' }}
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           delete_user_name: github-actions[bot]
@@ -54,16 +55,24 @@ jobs:
             Note this PR might be rejected due to its size.’
   bump_version:
     name: Bump app version using PR labels
+    id: commit_version
     runs-on: ubuntu-latest
+    if: ${{ github.event_name == 'pull_request' }}
     steps:
       - uses: actions/checkout@v3
         with:
           token: ${{ secrets.PTA }}
-      - name: Bump version
-        uses: apomalyn/bump-version-using-labels@1.3.1
+      - name: Bump version using labels
+        uses: apomalyn/bump-version-using-labels@v1.5.0
         with:
           file_path: 'pubspec.yaml'
           reference_branch: 'master'
+      # Fail workflow, because new commit will execute workflow
+      - if: ${{ steps.commit_version.outputs.has_changed == 'true' }}
+        name: Fail workflow if version commit
+        run: |
+          echo 'Version changed, running bot commit workflow'
+          exit 1
   ##############################################################
   # Testing
   ##############################################################
