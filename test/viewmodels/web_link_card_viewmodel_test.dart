@@ -27,7 +27,7 @@ void main() {
   NavigationService navigationService;
   AnalyticsService analyticsService;
   InternalInfoService internalInfoService;
-  LaunchUrlService launchUrlService;
+  //LaunchUrlService launchUrlService;
 
   WebLinkCardViewModel viewModel;
 
@@ -41,7 +41,7 @@ void main() {
       navigationService = setupNavigationServiceMock();
       analyticsService = setupAnalyticsServiceMock();
       internalInfoService = setupInternalInfoServiceMock();
-      launchUrlService = setupLaunchUrlServiceMock();
+      //launchUrlService = setupLaunchUrlServiceMock();
 
       setupLogger();
 
@@ -53,7 +53,7 @@ void main() {
       clearInteractions(analyticsService);
       unregister<AnalyticsService>();
       unregister<InternalInfoService>();
-      unregister<LaunchUrlService>();
+      //unregister<LaunchUrlService>();
     });
 
     group('onLinkClicked -', () {
