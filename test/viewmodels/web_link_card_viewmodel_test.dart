@@ -13,7 +13,7 @@ import 'package:notredame/core/models/quick_link.dart';
 import 'package:notredame/core/services/analytics_service.dart';
 import 'package:notredame/core/services/internal_info_service.dart';
 import 'package:notredame/core/services/navigation_service.dart';
-import 'package:notredame/core/services/launch_url_service.dart';
+//import 'package:notredame/core/services/launch_url_service.dart';
 
 // VIEWMODELS
 import 'package:notredame/core/viewmodels/web_link_card_viewmodel.dart';
