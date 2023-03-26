@@ -29,7 +29,7 @@ class WebLinkCardViewModel extends BaseViewModel {
       _navigationService.pushNamed(RouterPaths.security);
     } else {
       try {
-        await  _launchUrlService.launchInBrowser(link.link);
+        await _launchUrlService.launchInBrowser(link.link);
       } catch (error) {
         // An exception is thrown if browser app is not installed on Android device.
         await launchWebView(link);

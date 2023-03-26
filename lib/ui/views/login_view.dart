@@ -158,7 +158,8 @@ class _LoginViewState extends State<LoginView> {
                                           color: Colors.white),
                                     ),
                                     onTap: () {
-                                      _launchUrlService.launchInBrowser(forgotPasswordLink);
+                                      _launchUrlService
+                                          .launchInBrowser(forgotPasswordLink);
                                     },
                                   ),
                                 ),

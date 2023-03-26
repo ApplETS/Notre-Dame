@@ -47,10 +47,9 @@ class LaunchUrlService {
         preferredControlTintColor: AppTheme.lightThemeBackground,
         barCollapsingEnabled: true,
         entersReaderIfAvailable: false,
-        dismissButtonStyle: custom_tabs.SafariViewControllerDismissButtonStyle.close,
+        dismissButtonStyle:
+            custom_tabs.SafariViewControllerDismissButtonStyle.close,
       ),
     );
   }
 }
-
-
