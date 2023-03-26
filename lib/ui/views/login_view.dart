@@ -21,6 +21,7 @@ import 'package:notredame/ui/widgets/password_text_field.dart';
 
 // CONSTANTS
 import 'package:notredame/core/constants/app_info.dart';
+import 'package:notredame/core/constants/urls.dart';
 
 // OTHER
 import 'package:notredame/ui/utils/app_theme.dart';
@@ -32,8 +33,6 @@ class LoginView extends StatefulWidget {
 }
 
 class _LoginViewState extends State<LoginView> {
-  final String forgotPasswordLink =
-      "https://signets-ens.etsmtl.ca/Public/MotDePassePerdu.aspx";
 
   final double borderRadiusOnFocus = 2.0;
 
@@ -159,7 +158,7 @@ class _LoginViewState extends State<LoginView> {
                                     ),
                                     onTap: () {
                                       _launchUrlService
-                                          .launchInBrowser(forgotPasswordLink);
+                                          .launchInBrowser(Urls.signetsForgottenPword);
                                     },
                                   ),
                                 ),
