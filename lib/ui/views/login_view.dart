@@ -8,7 +8,6 @@ import 'package:stacked/stacked.dart';
 // SERVICE
 import 'package:notredame/core/services/analytics_service.dart';
 import 'package:notredame/core/services/launch_url_service.dart';
-import 'package:notredame/core/services/launch_url_in_browser_service.dart';
 
 // UTILS
 import 'package:notredame/core/utils/utils.dart';
@@ -159,7 +158,7 @@ class _LoginViewState extends State<LoginView> {
                                           color: Colors.white),
                                     ),
                                     onTap: () {
-                                      launchInBrowser(forgotPasswordLink);
+                                      _launchUrlService.launchInBrowser(forgotPasswordLink);
                                     },
                                   ),
                                 ),

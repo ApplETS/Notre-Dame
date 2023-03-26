@@ -8,7 +8,7 @@ import 'package:notredame/core/constants/router_paths.dart';
 // SERVICES
 import 'package:notredame/core/services/analytics_service.dart';
 import 'package:notredame/core/services/navigation_service.dart';
-import 'package:notredame/core/services/launch_url_in_browser_service.dart';
+import 'package:notredame/core/services/launch_url_service.dart';
 
 // OTHER
 import 'package:notredame/locator.dart';
@@ -19,6 +19,8 @@ class WebLinkCardViewModel extends BaseViewModel {
 
   final AnalyticsService _analyticsService = locator<AnalyticsService>();
 
+  final LaunchUrlService _launchUrlService = locator<LaunchUrlService>();
+
   /// used to open a website or the security view
   Future<void> onLinkClicked(QuickLink link) async {
     _analyticsService.logEvent("QuickLink", "QuickLink clicked: ${link.name}");
@@ -27,7 +29,7 @@ class WebLinkCardViewModel extends BaseViewModel {
       _navigationService.pushNamed(RouterPaths.security);
     } else {
       try {
-        await launchInBrowser(link.link);
+        await  _launchUrlService.launchInBrowser(link.link);
       } catch (error) {
         // An exception is thrown if browser app is not installed on Android device.
         await launchWebView(link);
