@@ -33,7 +33,6 @@ class LoginView extends StatefulWidget {
 }
 
 class _LoginViewState extends State<LoginView> {
-
   final double borderRadiusOnFocus = 2.0;
 
   final FocusScopeNode _focusNode = FocusScopeNode();
@@ -157,8 +156,8 @@ class _LoginViewState extends State<LoginView> {
                                           color: Colors.white),
                                     ),
                                     onTap: () {
-                                      _launchUrlService
-                                          .launchInBrowser(Urls.signetsForgottenPword);
+                                      _launchUrlService.launchInBrowser(
+                                          Urls.signetsForgottenPword);
                                     },
                                   ),
                                 ),
