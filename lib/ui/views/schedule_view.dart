@@ -25,6 +25,7 @@ import 'package:notredame/core/services/analytics_service.dart';
 import 'package:notredame/ui/widgets/base_scaffold.dart';
 import 'package:notredame/ui/widgets/course_activity_tile.dart';
 import 'package:notredame/ui/widgets/schedule_settings.dart';
+import 'package:notredame/ui/widgets/schedule_calendar_tile.dart';
 
 // CONSTANTS
 import 'package:notredame/core/constants/preferences_flags.dart';
@@ -243,16 +244,19 @@ class _ScheduleViewState extends State<ScheduleView>
     DateTime endDuration,
   ) {
     if (events.isNotEmpty) {
-      return calendar_view.RoundedEventTile(
-        borderRadius: BorderRadius.circular(6.0),
+      return ScheduleCalendarTile(
         title: events[0].title,
+        description: events[0].description,
+        start: events[0].startTime,
+        end: events[0].endTime,
         titleStyle: TextStyle(
-          fontSize: 12,
+          fontSize: 14,
           color: events[0].color.accent,
         ),
         totalEvents: events.length,
         padding: const EdgeInsets.all(7.0),
         backgroundColor: events[0].color,
+        borderRadius: BorderRadius.circular(6.0),
       );
     } else {
       return Container();

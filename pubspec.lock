@@ -435,6 +435,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.0"
+  flutter_keychain:
+    dependency: "direct main"
+    description:
+      name: flutter_keychain
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.2.1"
   flutter_launcher_icons:
     dependency: "direct dev"
     description:
