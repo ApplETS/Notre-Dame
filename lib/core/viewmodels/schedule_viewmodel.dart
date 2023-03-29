@@ -175,7 +175,9 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
           if (value != null) {
             // Reload the list of activities
             coursesActivities;
-            await _courseRepository.getCourses().then((value) {
+            await _courseRepository
+                .getCourses(fromCacheOnly: true)
+                .then((value) {
               courses = value;
             });
             calendarEvents = selectedWeekCalendarEvents();

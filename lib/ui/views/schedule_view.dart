@@ -230,7 +230,10 @@ class _ScheduleViewState extends State<ScheduleView>
           final locale = AppIntl.of(context).localeName;
           return '$from ${date.day} ${DateFormat.MMMM(locale).format(date)} $to ${secondaryDate.day} ${DateFormat.MMMM(locale).format(secondaryDate)}';
         },
-        eventTileBuilder: _buildEventTile,
+        eventTileBuilder: (date, events, boundary, startDuration,
+                endDuration) =>
+            _buildEventTile(
+                date, events, boundary, startDuration, endDuration, context),
         weekDayBuilder: (DateTime date) => _buildWeekDay(date, model),
       ),
     );
@@ -242,6 +245,7 @@ class _ScheduleViewState extends State<ScheduleView>
     Rect boundary,
     DateTime startDuration,
     DateTime endDuration,
+    BuildContext context,
   ) {
     if (events.isNotEmpty) {
       return ScheduleCalendarTile(
@@ -257,6 +261,7 @@ class _ScheduleViewState extends State<ScheduleView>
         padding: const EdgeInsets.all(7.0),
         backgroundColor: events[0].color,
         borderRadius: BorderRadius.circular(6.0),
+        buildContext: context,
       );
     } else {
       return Container();
