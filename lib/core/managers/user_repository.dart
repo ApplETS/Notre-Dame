@@ -175,8 +175,7 @@ class UserRepository {
 
     // Delete the credentials from the secure storage
     try {
-      _username = "";
-      _password = "";
+      clearCache();
       await _secureStorage.delete(key: usernameSecureKey);
       await _secureStorage.delete(key: passwordSecureKey);
     } on PlatformException catch (e, stacktrace) {
