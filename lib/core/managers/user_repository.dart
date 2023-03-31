@@ -32,6 +32,12 @@ class UserRepository {
   @visibleForTesting
   static const String programsCacheKey = "programsCache";
 
+  /// Username of the current authenticated user
+  String _username = "";
+
+  /// Password of the current authenticated user
+  String _password = "";
+
   final Logger _logger = locator<Logger>();
 
   /// Will be used to report event and error.
@@ -66,6 +72,13 @@ class UserRepository {
   List<Program> _programs;
 
   List<Program> get programs => _programs;
+
+  /// Clear username and password cache variables
+  /// Used for testing
+  void clearCache() {
+    _username = "";
+    _password = "";
+  }
 
   /// Authenticate the user using the [username] (for a student should be the
   /// universal code like AAXXXXX).
@@ -113,6 +126,8 @@ class UserRepository {
     // Save the credentials in the secure storage
     if (!isSilent) {
       try {
+        _username = username;
+        _password = password;
         await _secureStorage.write(key: usernameSecureKey, value: username);
         await _secureStorage.write(key: passwordSecureKey, value: password);
       } on PlatformException catch (e, stacktrace) {
@@ -141,6 +156,10 @@ class UserRepository {
       }
     } on PlatformException catch (e, stacktrace) {
       await _secureStorage.deleteAll();
+      if (_username != "" && _password != "") {
+        return await authenticate(
+            username: _username, password: _password, isSilent: true);
+      }
       _analyticsService.logError(
           tag,
           "SilentAuthenticate - PlatformException(Handled) - ${e.toString()}",
@@ -156,6 +175,8 @@ class UserRepository {
 
     // Delete the credentials from the secure storage
     try {
+      _username = "";
+      _password = "";
       await _secureStorage.delete(key: usernameSecureKey);
       await _secureStorage.delete(key: passwordSecureKey);
     } on PlatformException catch (e, stacktrace) {
@@ -186,6 +207,9 @@ class UserRepository {
       await _secureStorage.deleteAll();
       _analyticsService.logError(tag,
           "getPassword - PlatformException - ${e.toString()}", e, stacktrace);
+      if (_password != "") {
+        return _password;
+      }
       throw const ApiException(prefix: tag, message: "Not authenticated");
     }
   }

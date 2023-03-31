@@ -134,7 +134,8 @@ void main() {
 
         // Result is false
         expect(
-            await manager.authenticate(username: user.username, password: ""),
+            await manager.authenticate(
+                username: user.username, password: "123"),
             isFalse,
             reason: "Check the authentication is successful");
 
@@ -459,6 +460,9 @@ void main() {
             exceptionToThrow: PlatformException(code: "bad key"));
 
         await manager.authenticate(username: username, password: password);
+
+        // clear memory cache to force a localstorage read
+        manager.clearCache();
 
         expect(manager.getPassword(), throwsA(isInstanceOf<ApiException>()),
             reason: "localStorage failed, should sent out a custom exception");

@@ -104,6 +104,8 @@ void main() {
     group('signIn - ', () {
       test('with right credentials should redirect to the Dashboard route',
           () async {
+        TestWidgetsFlutterBinding.ensureInitialized();
+
         UserRepositoryMock.stubAuthenticate(
             userRepositoryMock, universalCodeValid);
 
