@@ -157,7 +157,7 @@ class UserRepository {
     } on PlatformException catch (e, stacktrace) {
       await _secureStorage.deleteAll();
       if (_username != "" && _password != "") {
-        return await authenticate(
+        return authenticate(
             username: _username, password: _password, isSilent: true);
       }
       _analyticsService.logError(
