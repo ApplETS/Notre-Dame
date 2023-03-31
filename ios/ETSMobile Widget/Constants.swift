@@ -6,9 +6,9 @@
 //
 
 public let widgetGroupId = "group.ca.etsmtl.applets.ETSMobile"
-public let keychainServiceAttr = "flutter_keychain"
-public let usernameKey = "WidgetSecureUser"
-public let passwordKey = "WidgetSecurePass"
+public let keychainServiceAttr = "flutter_secure_storage_service"
+public let usernameKey = "usernameKey"
+public let passwordKey = "passwordKey"
 
 // Urls related to MonETS
 public let monEtsAPI = "https://portail.etsmtl.ca/api/"
