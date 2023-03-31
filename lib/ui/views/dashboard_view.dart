@@ -3,8 +3,10 @@ import 'package:feature_discovery/feature_discovery.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:notredame/core/viewmodels/news_viewmodel.dart';
 import 'package:stacked/stacked.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:timeago/timeago.dart' as timeago;
 
 // VIEWMODEL
 import 'package:notredame/core/viewmodels/dashboard_viewmodel.dart';
@@ -18,6 +20,7 @@ import 'package:notredame/ui/widgets/haptics_container.dart';
 
 // MODELS / CONSTANTS
 import 'package:ets_api_clients/models.dart';
+import 'package:notredame/core/models/News.dart';
 import 'package:notredame/locator.dart';
 import 'package:notredame/core/constants/preferences_flags.dart';
 import 'package:notredame/core/constants/urls.dart';
@@ -86,7 +89,7 @@ class _DashboardViewState extends State<DashboardView>
                           onReorder: (oldIndex, newIndex) =>
                               onReorder(model, oldIndex, newIndex),
                           padding: const EdgeInsets.fromLTRB(0, 4, 0, 8),
-                          children: _buildCards(model),
+                          children: _buildCards(model, NewsViewModel(intl: AppIntl.of(context))),
                           proxyDecorator: (child, _, __) {
                             return HapticsContainer(child: child);
                           },
@@ -97,7 +100,7 @@ class _DashboardViewState extends State<DashboardView>
         });
   }
 
-  List<Widget> _buildCards(DashboardViewModel model) {
+  List<Widget> _buildCards(DashboardViewModel model, NewsViewModel newsModel) {
     final List<Widget> cards = List.empty(growable: true);
 
     for (final PreferencesFlag element in model.cardsToDisplay) {
@@ -113,6 +116,10 @@ class _DashboardViewState extends State<DashboardView>
           break;
         case PreferencesFlag.gradesCard:
           cards.add(_buildGradesCards(model, element));
+          // TEST
+          for (final News news in newsModel.news) {
+            cards.add(_buildNewsCard(newsModel, news));
+          }
           break;
 
         default:
@@ -392,6 +399,100 @@ class _DashboardViewState extends State<DashboardView>
                   ),
                 )
             ]),
+      );
+
+  Widget _buildNewsCard(NewsViewModel model, News news) =>
+      DismissibleCard(
+        key: UniqueKey(),
+        onDismissed: (DismissDirection direction) {
+          // Nothing for test
+        },
+        isBusy: model.busy(model.news),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Align(
+              alignment: Alignment.centerLeft,
+              child: Container(
+                padding: const EdgeInsets.fromLTRB(17, 15, 0, 0),
+                /*child: GestureDetector(
+                  onTap: () => _navigationService
+                      .pushNamedAndRemoveUntil(RouterPaths.news),
+                  child: Text(AppIntl.of(context).news_title,
+                      style: Theme.of(context).textTheme.headline6),
+                ),*/
+              ),
+            ),
+            Container(
+              padding: const EdgeInsets.fromLTRB(17, 10, 15, 10),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  if (news.image != null)
+                    Stack(
+                      children: [
+                        Image.network(
+                          news.image,
+                          fit: BoxFit.cover,
+                        ),
+                        Positioned(
+                          top: 20, // adjust the position of the tags as per your requirement
+                          left: 20,
+                          child: Container(
+                            padding: EdgeInsets.all(8),
+                            decoration: BoxDecoration(
+                              color: Colors.blueGrey,
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  'Tags',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                Text(
+                                  'Tags',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+
+                  const SizedBox(height: 10),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Flexible(
+                        child: Text(
+                          news.title,
+                          style: Theme.of(context).textTheme.headline6,
+                        ),
+                      ),
+                      const SizedBox(width: 10),
+                      Text(
+                        // Format date news date
+                          timeago.format(news.date,
+                              locale: AppIntl.of(context).localeName),
+                        style: Theme.of(context).textTheme.caption,
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
       );
 
   void dismissCard(DashboardViewModel model, PreferencesFlag flag) {
