@@ -20,7 +20,7 @@ struct GradesProvider: TimelineProvider {
         title: "Grades - A2022")
     
     init() {
-        keychainService = KeychainService()
+        keychainService = KeychainService(accessGroup: "group.ca.etsmtl.applets.ETSMobile")
         signetsService = SignetsService.shared
     }
     
