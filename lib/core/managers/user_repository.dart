@@ -169,10 +169,12 @@ class UserRepository {
 
     // Delete the credentials from the secure storage
     try {
-      await _secureStorage.delete(key: usernameSecureKey);
-      await _secureStorage.delete(key: passwordSecureKey);
+      await _secureStorage.delete(
+          key: usernameSecureKey, iOptions: _getIOSOptions());
+      await _secureStorage.delete(
+          key: passwordSecureKey, iOptions: _getIOSOptions());
     } on PlatformException catch (e, stacktrace) {
-      await _secureStorage.deleteAll();
+      await _secureStorage.deleteAll(iOptions: _getIOSOptions());
       _analyticsService.logError(tag,
           "Authenticate - PlatformException - ${e.toString()}", e, stacktrace);
       return false;
