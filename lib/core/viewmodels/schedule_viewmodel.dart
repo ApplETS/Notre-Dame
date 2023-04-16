@@ -86,7 +86,6 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
     final Map<DateTime, List<dynamic>> events = {};
     final firstDayOfWeek = Utils.getFirstDayOfCurrentWeek(selectedDate,
         settings[PreferencesFlag.scheduleStartWeekday] as StartingDayOfWeek);
-
     for (int i = 0; i < 7; i++) {
       final date = firstDayOfWeek.add(Duration(days: i));
       final eventsForDay = selectedDateEvents(date);
@@ -101,7 +100,10 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
   void handleViewChanged(DateTime date, EventController controller) {
     controller.removeWhere((event) => true);
     selectedDate = date;
-    final eventsToAdd = selectedMonthCalendarEvents(); //week normalement
+    final eventsToAdd = selectedMonthCalendarEvents();
+    if (calendarFormat == CalendarFormat.week) {
+      final eventsToAdd = selectedWeekCalendarEvents();
+    }
     controller.addAll(eventsToAdd);
   }
 
@@ -149,11 +151,9 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
 
   List<CalendarEventData> selectedMonthCalendarEvents() {
     final List<CalendarEventData> events = [];
-    final firstDayOfWeek = Utils.getFirstDayOfCurrentWeek(selectedDate,
-        settings[PreferencesFlag.scheduleStartWeekday] as StartingDayOfWeek);
+    final date = selectedDate.datesOfMonths();
     for (int i = 0; i < 42; i++) {
-      final date = firstDayOfWeek.add(Duration(days: i));
-      final eventsForDay = selectedDateCalendarEvents(date);
+      final eventsForDay = selectedDateCalendarEvents(date.elementAt(i));
       if (eventsForDay.isNotEmpty) {
         events.addAll(eventsForDay);
       }
@@ -181,7 +181,11 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
           if (value != null) {
             // Reload the list of activities
             coursesActivities;
-            calendarEvents = selectedWeekCalendarEvents();
+            if (calendarFormat == CalendarFormat.week) {
+              calendarEvents = selectedWeekCalendarEvents();
+            } else {
+              calendarEvents = selectedMonthCalendarEvents();
+            }
           }
           _courseRepository
               .getScheduleActivities()

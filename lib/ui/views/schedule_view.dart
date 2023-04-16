@@ -169,6 +169,7 @@ class _ScheduleViewState extends State<ScheduleView>
   Widget _buildCalendarView(ScheduleViewModel model, BuildContext context) {
     final calendar_view.EventController eventController =
         calendar_view.EventController();
+
     final backgroundColor = Theme.of(context).brightness == Brightness.light
         ? AppTheme.lightThemeBackground
         : AppTheme.primaryDark;
@@ -178,7 +179,45 @@ class _ScheduleViewState extends State<ScheduleView>
     final chevronColor = Theme.of(context).brightness == Brightness.light
         ? AppTheme.primaryDark
         : AppTheme.lightThemeBackground;
-    Scaffold(
+
+    model.handleViewChanged(DateTime.now(), eventController);
+
+    if (model.calendarFormat == CalendarFormat.month) {
+      return Scaffold(
+          body: calendar_view.MonthView(
+        key: monthViewKey,
+        controller: eventController
+          ..addAll(model.selectedMonthCalendarEvents()),
+        // to provide custom UI for month cells.
+        cellAspectRatio: 0.78,
+        onPageChange: (date, page) =>
+            model.handleViewChanged(date, eventController),
+        headerStyle: calendar_view.HeaderStyle(
+            decoration: BoxDecoration(
+              color: backgroundColor,
+            ),
+            leftIcon: Icon(
+              Icons.chevron_left,
+              size: 30,
+              color: chevronColor,
+            ),
+            rightIcon: Icon(
+              Icons.chevron_right,
+              size: 30,
+              color: chevronColor,
+            )),
+        weekDayStringBuilder: (p0) {
+          return weekTitles[p0];
+        },
+        headerStringBuilder: (date, {secondaryDate}) {
+          final locale = AppIntl.of(context).localeName;
+          return '${DateFormat.MMMM(locale).format(date).characters.first.toUpperCase()}${DateFormat.MMMM(locale).format(date).substring(1)} ${date.year}';
+        },
+        startDay: calendar_view.WeekDays.sunday,
+        initialMonth: DateTime(DateTime.now().year, DateTime.now().month),
+      ));
+    }
+    return Scaffold(
       body: calendar_view.WeekView(
         key: weekViewKey,
         controller: eventController..addAll(model.selectedWeekCalendarEvents()),
@@ -237,38 +276,6 @@ class _ScheduleViewState extends State<ScheduleView>
         weekDayBuilder: (DateTime date) => _buildWeekDay(date, model),
       ),
     );
-    return Scaffold(
-        body: calendar_view.MonthView(
-      key: monthViewKey,
-      controller: eventController..addAll(model.selectedMonthCalendarEvents()),
-      // to provide custom UI for month cells.
-      cellAspectRatio: 0.78,
-      onPageChange: (date, page) =>
-          model.handleViewChanged(date, eventController),
-      headerStyle: calendar_view.HeaderStyle(
-          decoration: BoxDecoration(
-            color: backgroundColor,
-          ),
-          leftIcon: Icon(
-            Icons.chevron_left,
-            size: 30,
-            color: chevronColor,
-          ),
-          rightIcon: Icon(
-            Icons.chevron_right,
-            size: 30,
-            color: chevronColor,
-          )),
-      weekDayStringBuilder: (p0) {
-        return weekTitles[p0];
-      },
-      headerStringBuilder: (date, {secondaryDate}) {
-        final locale = AppIntl.of(context).localeName;
-        return '${DateFormat.MMMM(locale).format(date).characters.first.toUpperCase()}${DateFormat.MMMM(locale).format(date).substring(1)} ${date.year}';
-      },
-      startDay: calendar_view.WeekDays.sunday,
-      initialMonth: DateTime(DateTime.now().year, DateTime.now().month),
-    ));
   }
 
   Widget _buildEventTile(
@@ -453,19 +460,18 @@ class _ScheduleViewState extends State<ScheduleView>
               onPressed: () => setState(() {
                     if (!(model.settings[PreferencesFlag.scheduleListView]
                         as bool)) {
-                      monthViewKey.currentState?.animateToMonth(
-                          DateTime(DateTime.now().year, DateTime.now().month));
-                    }
-                    model.selectTodayMonth();
-                    _analyticsService.logEvent(tag, "Select today clicked");
-                  })),
-        /* if (!(model.settings[PreferencesFlag.scheduleListView]
-                        as bool)) {
                       weekViewKey.currentState?.animateToWeek(DateTime.now());
+                      if (model.calendarFormat == CalendarFormat.month) {
+                        monthViewKey.currentState?.animateToMonth(DateTime(
+                            DateTime.now().year, DateTime.now().month));
+                      }
                     }
                     model.selectToday();
+                    if (model.calendarFormat == CalendarFormat.month) {
+                      model.selectTodayMonth();
+                    }
                     _analyticsService.logEvent(tag, "Select today clicked");
-                  })),*/
+                  })),
         _buildDiscoveryFeatureDescriptionWidget(context, Icons.settings, model),
       ];
 

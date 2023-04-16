@@ -99,7 +99,7 @@ class _ScheduleSettingsState extends State<ScheduleSettings> {
     if (model.toggleCalendarView) {
       list.addAll(_buildStartingDaySection(context, model));
       list.addAll(_buildShowWeekSection(context, model));
-    } else {
+    } else if (model.calendarFormat == CalendarFormat.week) {
       list.addAll(_buildShowWeekendDaySection(context, model));
     }
 
