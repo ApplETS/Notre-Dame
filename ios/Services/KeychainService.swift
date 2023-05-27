@@ -8,19 +8,27 @@
 import Foundation
 
 struct KeychainService {
+    let accessGroup: String
+
+    init(accessGroup: String) {
+        self.accessGroup = accessGroup
+    }
+
     func get(key: String) -> String? {
         let searchQuery: [String: Any] = [
             kSecClass as String: kSecClassGenericPassword,
-            kSecAttrService as String: keychainServiceAttr,
             kSecAttrAccount as String: key,
+            kSecAttrAccessGroup as String: accessGroup,
+            kSecAttrService as String: keychainServiceAttr,
             kSecReturnData as String: kCFBooleanTrue ?? true
         ]
-        
+
         var item: CFTypeRef?
-        var status = SecItemCopyMatching(searchQuery as CFDictionary, &item)
+        let status = SecItemCopyMatching(searchQuery as CFDictionary, &item)
         guard status == errSecSuccess else { return nil }
         let data = Data(referencing: item as! NSData)
         let stringData = String(data: data, encoding: String.Encoding.utf8)
         return stringData
     }
 }
+

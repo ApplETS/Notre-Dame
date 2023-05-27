@@ -27,6 +27,7 @@ class UserRepository {
 
   static const String usernameSecureKey = "usernameKey";
   static const String passwordSecureKey = "passwordKey";
+  static const String groupOption = "group.ca.etsmtl.applets.ETSMobile";
   @visibleForTesting
   static const String infoCacheKey = "infoCache";
   @visibleForTesting
@@ -113,8 +114,14 @@ class UserRepository {
     // Save the credentials in the secure storage
     if (!isSilent) {
       try {
-        await _secureStorage.write(key: usernameSecureKey, value: username);
-        await _secureStorage.write(key: passwordSecureKey, value: password);
+        await _secureStorage.write(
+            key: usernameSecureKey,
+            value: username,
+            iOptions: _getIOSOptions());
+        await _secureStorage.write(
+            key: passwordSecureKey,
+            value: password,
+            iOptions: _getIOSOptions());
       } on PlatformException catch (e, stacktrace) {
         await _secureStorage.deleteAll();
         _analyticsService.logError(
@@ -129,13 +136,19 @@ class UserRepository {
     return true;
   }
 
+  IOSOptions _getIOSOptions() {
+    return const IOSOptions(groupId: groupOption);
+  }
+
   /// Check if there are credentials saved and so authenticate the user, otherwise
   /// return false
   Future<bool> silentAuthenticate() async {
     try {
-      final username = await _secureStorage.read(key: usernameSecureKey);
+      final username = await _secureStorage.read(
+          key: usernameSecureKey, iOptions: _getIOSOptions());
       if (username != null) {
-        final password = await _secureStorage.read(key: passwordSecureKey);
+        final password = await _secureStorage.read(
+            key: passwordSecureKey, iOptions: _getIOSOptions());
         return await authenticate(
             username: username, password: password, isSilent: true);
       }
@@ -156,10 +169,12 @@ class UserRepository {
 
     // Delete the credentials from the secure storage
     try {
-      await _secureStorage.delete(key: usernameSecureKey);
-      await _secureStorage.delete(key: passwordSecureKey);
+      await _secureStorage.delete(
+          key: usernameSecureKey, iOptions: _getIOSOptions());
+      await _secureStorage.delete(
+          key: passwordSecureKey, iOptions: _getIOSOptions());
     } on PlatformException catch (e, stacktrace) {
-      await _secureStorage.deleteAll();
+      await _secureStorage.deleteAll(iOptions: _getIOSOptions());
       _analyticsService.logError(tag,
           "Authenticate - PlatformException - ${e.toString()}", e, stacktrace);
       return false;
@@ -180,7 +195,8 @@ class UserRepository {
       }
     }
     try {
-      final password = await _secureStorage.read(key: passwordSecureKey);
+      final password = await _secureStorage.read(
+          key: passwordSecureKey, iOptions: _getIOSOptions());
       return password;
     } on PlatformException catch (e, stacktrace) {
       await _secureStorage.deleteAll();
@@ -309,10 +325,11 @@ class UserRepository {
   /// Check whether the user was previously authenticated.
   Future<bool> wasPreviouslyLoggedIn() async {
     try {
-      final String username = await _secureStorage.read(key: passwordSecureKey);
+      final String username = await _secureStorage.read(
+          key: passwordSecureKey, iOptions: _getIOSOptions());
       if (username != null) {
-        final String password =
-            await _secureStorage.read(key: passwordSecureKey);
+        final String password = await _secureStorage.read(
+            key: passwordSecureKey, iOptions: _getIOSOptions());
         return password.isNotEmpty;
       }
     } on PlatformException catch (e, stacktrace) {
