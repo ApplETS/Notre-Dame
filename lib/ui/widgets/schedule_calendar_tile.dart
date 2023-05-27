@@ -77,7 +77,7 @@ class _ScheduleCalendarTileState extends State<ScheduleCalendarTile> {
                 ),
               ),
               Text(
-                "${AppIntl.of(widget.buildContext).schedule_calendar_from_time} ${startTime} ${AppIntl.of(widget.buildContext).schedule_calendar_to_time} ${endTime}",
+                "${AppIntl.of(widget.buildContext).schedule_calendar_from_time} $startTime ${AppIntl.of(widget.buildContext).schedule_calendar_to_time} $endTime",
                 style: const TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.w500,
