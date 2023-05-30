@@ -180,7 +180,9 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
                 .then((value2) {
               courses = value2;
             });
-            calendarEvents = selectedWeekCalendarEvents();
+            if (_coursesActivities.isNotEmpty) {
+              calendarEvents = selectedWeekCalendarEvents();
+            }
           }
           _courseRepository
               .getScheduleActivities()
