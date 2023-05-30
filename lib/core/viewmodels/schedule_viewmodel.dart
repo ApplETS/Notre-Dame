@@ -119,10 +119,10 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
     final courseLocation = eventData.activityLocation == "Non assign"
         ? "N/A"
         : eventData.activityLocation;
-    final associatedCourse = courses
-        ?.where(
-            (element) => element.acronym == eventData.courseGroup.split('-')[0])
-        ?.first;
+    final associatedCourses = courses?.where(
+        (element) => element.acronym == eventData.courseGroup.split('-')[0]);
+    final associatedCourse =
+        associatedCourses?.isNotEmpty == true ? associatedCourses.first : null;
     return CalendarEventData(
         title:
             "${eventData.courseGroup.split('-')[0]}\n$courseLocation\n${eventData.activityName}",
