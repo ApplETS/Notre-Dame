@@ -171,14 +171,14 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
             .getCoursesActivities()
             // ignore: return_type_invalid_for_catch_error
             .catchError(onError)
-            .then((value) async {
-          if (value != null) {
+            .then((value1) async {
+          if (value1 != null) {
             // Reload the list of activities
             coursesActivities;
             await _courseRepository
                 .getCourses(fromCacheOnly: true)
-                .then((value) {
-              courses = value;
+                .then((value2) {
+              courses = value2;
             });
             calendarEvents = selectedWeekCalendarEvents();
           }

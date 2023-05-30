@@ -118,6 +118,12 @@ void main() {
         CourseRepositoryMock.stubGetCoursesActivities(
             courseRepository as CourseRepositoryMock,
             fromCacheOnly: true);
+        CourseRepositoryMock.stubGetCourses(
+            courseRepository as CourseRepositoryMock,
+            fromCacheOnly: true);
+        CourseRepositoryMock.stubGetCourses(
+            courseRepository as CourseRepositoryMock,
+            fromCacheOnly: false);
         CourseRepositoryMock.stubGetCoursesActivities(
             courseRepository as CourseRepositoryMock,
             fromCacheOnly: false);
@@ -147,6 +153,12 @@ void main() {
         CourseRepositoryMock.stubGetCoursesActivities(
             courseRepository as CourseRepositoryMock,
             fromCacheOnly: true);
+        CourseRepositoryMock.stubGetCourses(
+            courseRepository as CourseRepositoryMock,
+            fromCacheOnly: true);
+        CourseRepositoryMock.stubGetCourses(
+            courseRepository as CourseRepositoryMock,
+            fromCacheOnly: false);
         CourseRepositoryMock.stubGetCoursesActivities(
             courseRepository as CourseRepositoryMock,
             fromCacheOnly: false);
@@ -172,6 +184,12 @@ void main() {
         CourseRepositoryMock.stubGetCoursesActivities(
             courseRepository as CourseRepositoryMock,
             fromCacheOnly: true);
+        CourseRepositoryMock.stubGetCourses(
+            courseRepository as CourseRepositoryMock,
+            fromCacheOnly: true);
+        CourseRepositoryMock.stubGetCourses(
+            courseRepository as CourseRepositoryMock,
+            fromCacheOnly: false);
         CourseRepositoryMock.stubGetCoursesActivities(
             courseRepository as CourseRepositoryMock,
             fromCacheOnly: false);
@@ -200,6 +218,12 @@ void main() {
         CourseRepositoryMock.stubGetCoursesActivities(
             courseRepository as CourseRepositoryMock,
             fromCacheOnly: true);
+        CourseRepositoryMock.stubGetCourses(
+            courseRepository as CourseRepositoryMock,
+            fromCacheOnly: true);
+        CourseRepositoryMock.stubGetCourses(
+            courseRepository as CourseRepositoryMock,
+            fromCacheOnly: false);
         CourseRepositoryMock.stubGetCoursesActivities(
             courseRepository as CourseRepositoryMock,
             fromCacheOnly: false);
@@ -226,6 +250,12 @@ void main() {
         CourseRepositoryMock.stubGetCoursesActivities(
             courseRepository as CourseRepositoryMock,
             fromCacheOnly: true);
+        CourseRepositoryMock.stubGetCourses(
+            courseRepository as CourseRepositoryMock,
+            fromCacheOnly: true);
+        CourseRepositoryMock.stubGetCourses(
+            courseRepository as CourseRepositoryMock,
+            fromCacheOnly: false);
         CourseRepositoryMock.stubGetCoursesActivities(
             courseRepository as CourseRepositoryMock,
             fromCacheOnly: false);
