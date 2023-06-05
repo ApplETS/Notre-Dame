@@ -2,6 +2,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:intl/intl.dart';
 import 'package:mockito/mockito.dart';
+import 'package:notredame/core/viewmodels/schedule_viewmodel.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 // MANAGER
@@ -33,7 +34,8 @@ void main() {
   final Map<PreferencesFlag, dynamic> settings = {
     PreferencesFlag.scheduleCalendarFormat: CalendarFormat.week,
     PreferencesFlag.scheduleStartWeekday: StartingDayOfWeek.monday,
-    PreferencesFlag.scheduleShowTodayBtn: true
+    PreferencesFlag.scheduleShowTodayBtn: true,
+    PreferencesFlag.scheduleShowWeekendDays: false
   };
 
   final List<ScheduleActivity> classOneWithLaboratoryABscheduleActivities = [
@@ -272,6 +274,54 @@ void main() {
 
         verify(settingsManager.setString(
                 PreferencesFlag.scheduleCalendarFormat, any))
+            .called(1);
+        verifyNoMoreInteractions(settingsManager);
+      });
+    });
+
+    group("setter calendarView - ", () {
+      test("calendarView is updated on the settings", () async {
+        SettingsManagerMock.stubSetString(
+            settingsManager as SettingsManagerMock,
+            PreferencesFlag.scheduleListView);
+
+        const expected = true;
+
+        // Call the setter.
+        viewModel.toggleCalendarView = expected;
+
+        await untilCalled(
+            settingsManager.setBool(PreferencesFlag.scheduleListView, any));
+
+        expect(viewModel.toggleCalendarView, true);
+        expect(viewModel.isBusy, false);
+
+        verify(settingsManager.setBool(PreferencesFlag.scheduleListView, any))
+            .called(1);
+        verifyNoMoreInteractions(settingsManager);
+      });
+    });
+
+    group("setter scheduleShowWeekendDays - ", () {
+      test("scheduleShowWeekendDays is updated on the settings", () async {
+        SettingsManagerMock.stubSetString(
+            settingsManager as SettingsManagerMock,
+            PreferencesFlag.scheduleShowWeekendDays);
+
+        const expected = true;
+
+        // Call the setter.
+
+        viewModel.showWeekendDays = expected;
+
+        await untilCalled(settingsManager.setBool(
+            PreferencesFlag.scheduleShowWeekendDays, any));
+
+        expect(viewModel.showWeekendDays, true);
+        expect(viewModel.isBusy, false);
+
+        verify(settingsManager.setBool(
+                PreferencesFlag.scheduleShowWeekendDays, any))
             .called(1);
         verifyNoMoreInteractions(settingsManager);
       });
