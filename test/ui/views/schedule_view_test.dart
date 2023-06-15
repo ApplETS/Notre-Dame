@@ -118,6 +118,12 @@ void main() {
         CourseRepositoryMock.stubGetCoursesActivities(
             courseRepository as CourseRepositoryMock,
             fromCacheOnly: true);
+        CourseRepositoryMock.stubGetCourses(
+            courseRepository as CourseRepositoryMock,
+            fromCacheOnly: true);
+        CourseRepositoryMock.stubGetCourses(
+            courseRepository as CourseRepositoryMock,
+            fromCacheOnly: false);
         CourseRepositoryMock.stubGetCoursesActivities(
             courseRepository as CourseRepositoryMock,
             fromCacheOnly: false);
@@ -147,6 +153,12 @@ void main() {
         CourseRepositoryMock.stubGetCoursesActivities(
             courseRepository as CourseRepositoryMock,
             fromCacheOnly: true);
+        CourseRepositoryMock.stubGetCourses(
+            courseRepository as CourseRepositoryMock,
+            fromCacheOnly: true);
+        CourseRepositoryMock.stubGetCourses(
+            courseRepository as CourseRepositoryMock,
+            fromCacheOnly: false);
         CourseRepositoryMock.stubGetCoursesActivities(
             courseRepository as CourseRepositoryMock,
             fromCacheOnly: false);
@@ -172,6 +184,12 @@ void main() {
         CourseRepositoryMock.stubGetCoursesActivities(
             courseRepository as CourseRepositoryMock,
             fromCacheOnly: true);
+        CourseRepositoryMock.stubGetCourses(
+            courseRepository as CourseRepositoryMock,
+            fromCacheOnly: true);
+        CourseRepositoryMock.stubGetCourses(
+            courseRepository as CourseRepositoryMock,
+            fromCacheOnly: false);
         CourseRepositoryMock.stubGetCoursesActivities(
             courseRepository as CourseRepositoryMock,
             fromCacheOnly: false);
@@ -200,6 +218,12 @@ void main() {
         CourseRepositoryMock.stubGetCoursesActivities(
             courseRepository as CourseRepositoryMock,
             fromCacheOnly: true);
+        CourseRepositoryMock.stubGetCourses(
+            courseRepository as CourseRepositoryMock,
+            fromCacheOnly: true);
+        CourseRepositoryMock.stubGetCourses(
+            courseRepository as CourseRepositoryMock,
+            fromCacheOnly: false);
         CourseRepositoryMock.stubGetCoursesActivities(
             courseRepository as CourseRepositoryMock,
             fromCacheOnly: false);
@@ -226,6 +250,12 @@ void main() {
         CourseRepositoryMock.stubGetCoursesActivities(
             courseRepository as CourseRepositoryMock,
             fromCacheOnly: true);
+        CourseRepositoryMock.stubGetCourses(
+            courseRepository as CourseRepositoryMock,
+            fromCacheOnly: true);
+        CourseRepositoryMock.stubGetCourses(
+            courseRepository as CourseRepositoryMock,
+            fromCacheOnly: false);
         CourseRepositoryMock.stubGetCoursesActivities(
             courseRepository as CourseRepositoryMock,
             fromCacheOnly: false);
@@ -280,6 +310,12 @@ void main() {
         CourseRepositoryMock.stubGetCoursesActivities(
             courseRepository as CourseRepositoryMock,
             fromCacheOnly: false);
+        CourseRepositoryMock.stubGetCourses(
+            courseRepository as CourseRepositoryMock,
+            fromCacheOnly: true);
+        CourseRepositoryMock.stubGetCourses(
+            courseRepository as CourseRepositoryMock,
+            fromCacheOnly: false);
         SettingsManagerMock.stubGetScheduleSettings(
             settingsManager as SettingsManagerMock,
             toReturn: settings);
@@ -327,6 +363,12 @@ void main() {
             courseRepository as CourseRepositoryMock,
             fromCacheOnly: true);
         CourseRepositoryMock.stubGetCoursesActivities(
+            courseRepository as CourseRepositoryMock,
+            fromCacheOnly: false);
+        CourseRepositoryMock.stubGetCourses(
+            courseRepository as CourseRepositoryMock,
+            fromCacheOnly: true);
+        CourseRepositoryMock.stubGetCourses(
             courseRepository as CourseRepositoryMock,
             fromCacheOnly: false);
         SettingsManagerMock.stubGetScheduleSettings(

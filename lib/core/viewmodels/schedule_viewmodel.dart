@@ -43,6 +43,9 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
   /// Activities sorted by day
   Map<DateTime, List<CourseActivity>> _coursesActivities = {};
 
+  /// Courses associated to the student
+  List<Course> courses;
+
   /// Day currently selected
   DateTime selectedDate;
 
@@ -116,10 +119,15 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
     final courseLocation = eventData.activityLocation == "Non assign"
         ? "N/A"
         : eventData.activityLocation;
+    final associatedCourses = courses?.where(
+        (element) => element.acronym == eventData.courseGroup.split('-')[0]);
+    final associatedCourse =
+        associatedCourses?.isNotEmpty == true ? associatedCourses.first : null;
     return CalendarEventData(
         title:
             "${eventData.courseGroup.split('-')[0]}\n$courseLocation\n${eventData.activityName}",
-        description: eventData.courseGroup,
+        description:
+            "${eventData.courseGroup};$courseLocation;${eventData.activityName};${associatedCourse?.teacherName}",
         date: eventData.startDateTime,
         startTime: eventData.startDateTime,
         endTime: eventData.endDateTime.subtract(const Duration(minutes: 1)),
@@ -163,11 +171,18 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
             .getCoursesActivities()
             // ignore: return_type_invalid_for_catch_error
             .catchError(onError)
-            .then((value) {
-          if (value != null) {
+            .then((value1) async {
+          if (value1 != null) {
             // Reload the list of activities
             coursesActivities;
-            calendarEvents = selectedWeekCalendarEvents();
+            await _courseRepository
+                .getCourses(fromCacheOnly: true)
+                .then((value2) {
+              courses = value2;
+            });
+            if (_coursesActivities.isNotEmpty) {
+              calendarEvents = selectedWeekCalendarEvents();
+            }
           }
           _courseRepository
               .getScheduleActivities()
