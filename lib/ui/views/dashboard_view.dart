@@ -63,7 +63,7 @@ class _DashboardViewState extends State<DashboardView>
     });
     DashboardViewModel.launchInAppReview();
     // TODO move this to a better place
-    timeago.setLocaleMessages('fr', timeago.FrMessages());
+    timeago.setLocaleMessages('fr', timeago.FrShortMessages());
   }
 
   @override
