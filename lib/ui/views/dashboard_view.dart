@@ -62,6 +62,8 @@ class _DashboardViewState extends State<DashboardView>
       DashboardViewModel.promptUpdate(context, widget.updateCode);
     });
     DashboardViewModel.launchInAppReview();
+    // TODO move this to a better place
+    timeago.setLocaleMessages('fr', timeago.FrMessages());
   }
 
   @override
@@ -89,7 +91,8 @@ class _DashboardViewState extends State<DashboardView>
                           onReorder: (oldIndex, newIndex) =>
                               onReorder(model, oldIndex, newIndex),
                           padding: const EdgeInsets.fromLTRB(0, 4, 0, 8),
-                          children: _buildCards(model, NewsViewModel(intl: AppIntl.of(context))),
+                          children: _buildCards(
+                              model, NewsViewModel(intl: AppIntl.of(context))),
                           proxyDecorator: (child, _, __) {
                             return HapticsContainer(child: child);
                           },
@@ -401,8 +404,8 @@ class _DashboardViewState extends State<DashboardView>
             ]),
       );
 
-  Widget _buildNewsCard(NewsViewModel model, News news) =>
-      DismissibleCard(
+  Widget _buildNewsCard(NewsViewModel model, News news) => DismissibleCard(
+        cardColor: news.important ? AppTheme.accent : null,
         key: UniqueKey(),
         onDismissed: (DismissDirection direction) {
           // Nothing for test
@@ -412,79 +415,69 @@ class _DashboardViewState extends State<DashboardView>
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
           children: [
-            Align(
-              alignment: Alignment.centerLeft,
-              child: Container(
-                padding: const EdgeInsets.fromLTRB(17, 15, 0, 0),
-                /*child: GestureDetector(
-                  onTap: () => _navigationService
-                      .pushNamedAndRemoveUntil(RouterPaths.news),
-                  child: Text(AppIntl.of(context).news_title,
-                      style: Theme.of(context).textTheme.headline6),
-                ),*/
-              ),
-            ),
             Container(
-              padding: const EdgeInsets.fromLTRB(17, 10, 15, 10),
+              padding: const EdgeInsets.fromLTRB(8, 8, 8, 8),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  // Image with tags
                   if (news.image != null)
                     Stack(
                       children: [
-                        Image.network(
-                          news.image,
-                          fit: BoxFit.cover,
-                        ),
-                        Positioned(
-                          top: 20, // adjust the position of the tags as per your requirement
-                          left: 20,
-                          child: Container(
-                            padding: EdgeInsets.all(8),
-                            decoration: BoxDecoration(
-                              color: Colors.blueGrey,
-                              borderRadius: BorderRadius.circular(8),
-                            ),
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  'Tags',
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                                Text(
-                                  'Tags',
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ],
-                            ),
+                        ClipRRect(
+                          borderRadius: BorderRadius.circular(8.0),
+                          child: Image.network(
+                            news.image,
+                            fit: BoxFit.cover,
                           ),
                         ),
+                        Positioned(
+                            top: 8,
+                            left: 8,
+                            child: Wrap(
+                              spacing: 8,
+                              children: List.generate(
+                                news.tags.length,
+                                (index) => Container(
+                                  padding: const EdgeInsets.all(8),
+                                  decoration: BoxDecoration(
+                                    color: Colors.blueGrey,
+                                    borderRadius: BorderRadius.circular(8),
+                                  ),
+                                  child: Text(
+                                    news.tags[index],
+                                    style: const TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            )),
                       ],
                     ),
-
-                  const SizedBox(height: 10),
+                  const SizedBox(height: 8),
+                  // Text and time
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
+                      // Write title with more margin over and under the title
                       Flexible(
-                        child: Text(
-                          news.title,
-                          style: Theme.of(context).textTheme.headline6,
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(vertical: 8.0),
+                          child: Text(
+                            news.title,
+                            style: Theme.of(context).textTheme.titleMedium,
+                          ),
                         ),
                       ),
                       const SizedBox(width: 10),
                       Text(
-                        // Format date news date
-                          timeago.format(news.date,
-                              locale: AppIntl.of(context).localeName),
-                        style: Theme.of(context).textTheme.caption,
+                        // Format news date
+                        timeago.format(news.date,
+                            locale: AppIntl.of(context).localeName),
+                        style: Theme.of(context).textTheme.bodySmall,
                       ),
                     ],
                   ),
