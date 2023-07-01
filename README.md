@@ -39,6 +39,7 @@ _Note: This guide is also available in: [Français](https://github.com/ApplETS/N
 $ flutter downgrade 3.3.10
 ```
 - Openssl v1.1.1g or higher
+- Java sdk 11
 
 ## Before running the code
 
