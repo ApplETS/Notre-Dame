@@ -146,7 +146,7 @@
   "profile_first_name": "First Name",
   "profile_last_name": "Last Name",
   "profile_permanent_code": "Permanent Code",
-  "profile_balance": "Balance",
+  "profile_balance": "My balance",
   "profile_code_program": "Code",
   "profile_average_program": "Average",
   "profile_number_accumulated_credits_program": "Accumulated Credits",
@@ -155,6 +155,8 @@
   "profile_number_failed_courses_program": "Failed Courses",
   "profile_number_equivalent_courses_program": "Equivalent Courses",
   "profile_status_program": "Status",
+  "profile_program_completion": "Program completion",
+  "profile_other_programs": "Other Programs",
 
   "ets_security_title": "Security",
   "ets_monets_title": "MonÉTS",

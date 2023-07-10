@@ -144,7 +144,7 @@
   "profile_first_name": "Prénom",
   "profile_last_name": "Nom de famille",
   "profile_permanent_code": "Code permanent",
-  "profile_balance": "Solde",
+  "profile_balance": "Votre solde",
   "profile_code_program": "Code",
   "profile_average_program": "Moyenne",
   "profile_number_accumulated_credits_program": "Crédits complétés",
@@ -153,6 +153,8 @@
   "profile_number_failed_courses_program": "Cours échoués",
   "profile_number_equivalent_courses_program": "Cours d'équivalence",
   "profile_status_program": "Statut",
+  "profile_program_completion": "Complétion du programme",
+  "profile_other_programs": "Autres Programmes",
   
   "ets_security_title": "Sécurité",
   "ets_monets_title": "MonÉTS",
