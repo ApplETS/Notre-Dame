@@ -19,9 +19,26 @@ class QuickLinksView extends StatefulWidget {
   _QuickLinksViewState createState() => _QuickLinksViewState();
 }
 
-class _QuickLinksViewState extends State<QuickLinksView> {
+class _QuickLinksViewState extends State<QuickLinksView>
+    with SingleTickerProviderStateMixin {
   // Enable/Disable the edit state
   bool _editMode = false;
+
+  // Animation Controller for Shake Animation
+  AnimationController _controller;
+  Animation<double> _animation;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _controller = AnimationController(
+      duration: const Duration(milliseconds: 250),
+      vsync: this,
+    );
+
+    _animation = Tween<double>(begin: -0.05, end: 0.05).animate(_controller);
+  }
 
   @override
   Widget build(BuildContext context) =>
@@ -35,9 +52,13 @@ class _QuickLinksViewState extends State<QuickLinksView> {
           ),
           body: GestureDetector(
             onTap: () {
-              setState(() {
-                _editMode = false;
-              });
+              if (_editMode) {
+                _controller
+                    .reset(); // Reset the animation when _editMode is set to false
+                setState(() {
+                  _editMode = false;
+                });
+              }
             },
             child: SafeArea(
               child: Align(
@@ -57,37 +78,48 @@ class _QuickLinksViewState extends State<QuickLinksView> {
                             onLongPress: _editMode
                                 ? null
                                 : () {
+                                    _controller.repeat(reverse: true);
                                     setState(() {
                                       _editMode = true;
                                     });
                                   },
-                            child: Stack(
-                              children: [
-                                WebLinkCard(model.quickLinkList[index]),
-                                if (_editMode)
-                                  Positioned(
-                                    top: 0,
-                                    right: 0,
-                                    child: Container(
-                                      width: 32,
-                                      height: 32,
-                                      decoration: const BoxDecoration(
-                                        color: Colors.red,
-                                        shape: BoxShape.circle,
-                                      ),
-                                      child: IconButton(
-                                        padding: EdgeInsets.zero,
-                                        icon: const Icon(Icons.close,
-                                            color: Colors.white, size: 16),
-                                        onPressed: () {
-                                          setState(() {
-                                            model.quickLinkList.removeAt(index);
-                                          });
-                                        },
+                            child: AnimatedBuilder(
+                              animation: _animation,
+                              builder: (BuildContext context, Widget child) {
+                                return Transform.rotate(
+                                  angle: _editMode ? _animation.value : 0,
+                                  child: child,
+                                );
+                              },
+                              child: Stack(
+                                children: [
+                                  WebLinkCard(model.quickLinkList[index]),
+                                  if (_editMode)
+                                    Positioned(
+                                      top: 0,
+                                      left: 0,
+                                      child: Container(
+                                        width: 32,
+                                        height: 32,
+                                        decoration: const BoxDecoration(
+                                          color: Colors.red,
+                                          shape: BoxShape.circle,
+                                        ),
+                                        child: IconButton(
+                                          padding: EdgeInsets.zero,
+                                          icon: const Icon(Icons.close,
+                                              color: Colors.white, size: 16),
+                                          onPressed: () {
+                                            setState(() {
+                                              model.quickLinkList
+                                                  .removeAt(index);
+                                            });
+                                          },
+                                        ),
                                       ),
                                     ),
-                                  ),
-                              ],
+                                ],
+                              ),
                             ),
                           ),
                         );
@@ -95,9 +127,6 @@ class _QuickLinksViewState extends State<QuickLinksView> {
                     ),
                     onReorder: (oldIndex, newIndex) {
                       setState(() {
-                        if (oldIndex < newIndex) {
-                          newIndex -= 1;
-                        }
                         final QuickLink item =
                             model.quickLinkList.removeAt(oldIndex);
                         model.quickLinkList.insert(newIndex, item);
@@ -110,4 +139,10 @@ class _QuickLinksViewState extends State<QuickLinksView> {
           ),
         ),
       );
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
 }
