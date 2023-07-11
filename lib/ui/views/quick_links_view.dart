@@ -1,5 +1,7 @@
 // FLUTTER / DART / THIRD-PARTIES
 import 'package:flutter/material.dart';
+import 'package:notredame/core/models/quick_link.dart';
+import 'package:reorderable_grid_view/reorderable_grid_view.dart';
 import 'package:stacked/stacked.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -31,14 +33,31 @@ class _QuickLinksViewState extends State<QuickLinksView> {
           body: SafeArea(
             child: Align(
               alignment: Alignment.topCenter,
-              child: SingleChildScrollView(
+              child: Padding(
                 padding: const EdgeInsets.only(top: 8.0),
-                child: Wrap(
-                  alignment: WrapAlignment.center,
+                child: ReorderableGridView.count(
+                  mainAxisSpacing: 2.0,
+                  crossAxisSpacing: 2.0,
+                  crossAxisCount: 3,
                   children: List.generate(
                     model.quickLinkList.length,
-                    (index) => WebLinkCard(model.quickLinkList[index]),
+                    (index) {
+                      return KeyedSubtree(
+                        key: ValueKey(model.quickLinkList[index].id),
+                        child: WebLinkCard(model.quickLinkList[index]),
+                      );
+                    },
                   ),
+                  onReorder: (oldIndex, newIndex) {
+                    setState(() {
+                      if (oldIndex < newIndex) {
+                        newIndex -= 1;
+                      }
+                      final QuickLink item =
+                          model.quickLinkList.removeAt(oldIndex);
+                      model.quickLinkList.insert(newIndex, item);
+                    });
+                  },
                 ),
               ),
             ),

@@ -15,8 +15,8 @@ import 'package:notredame/ui/widgets/web_link_card.dart';
 
 import '../../helpers.dart';
 
-final _quickLink =
-    QuickLink(image: const Icon(Icons.ac_unit), name: 'test', link: 'testlink');
+final _quickLink = QuickLink(
+    id: 1, image: const Icon(Icons.ac_unit), name: 'test', link: 'testlink');
 
 void main() {
   AnalyticsService analyticsService;

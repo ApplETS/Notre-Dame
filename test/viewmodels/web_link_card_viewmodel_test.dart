@@ -30,9 +30,9 @@ void main() {
   WebLinkCardViewModel viewModel;
 
   final quickLink = QuickLink(
-      image: const Icon(Icons.ac_unit), name: 'test', link: 'testlink');
+      id: 1, image: const Icon(Icons.ac_unit), name: 'test', link: 'testlink');
   final securityQuickLink = QuickLink(
-      image: const Icon(Icons.ac_unit), name: 'test', link: 'security');
+      id: 1, image: const Icon(Icons.ac_unit), name: 'test', link: 'security');
 
   group('WebLinkCardViewModel - ', () {
     setUp(() async {

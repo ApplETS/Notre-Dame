@@ -71,6 +71,7 @@ dependencies:
   auto_size_text: ^3.0.0
   easter_egg_trigger: ^1.0.1
   calendar_view: ^1.0.1
+  reorderable_grid_view: ^2.2.6
 
 dev_dependencies:
   flutter_test:
