@@ -4,11 +4,17 @@ import 'package:stacked/stacked.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+// SERVICES
+import 'package:notredame/core/services/analytics_service.dart';
+
 // MANAGERS
 import 'package:notredame/core/managers/user_repository.dart';
 
 // MODELS
 import 'package:ets_api_clients/models.dart';
+
+// CONSTANTS
+import 'package:notredame/core/constants/programs_credits.dart';
 
 // OTHERS
 import 'package:notredame/locator.dart';
@@ -16,6 +22,8 @@ import 'package:notredame/locator.dart';
 class ProfileViewModel extends FutureViewModel<List<Program>> {
   /// Load the user
   final UserRepository _userRepository = locator<UserRepository>();
+
+  final AnalyticsService analyticsService = locator<AnalyticsService>();
 
   /// Localization class of the application.
   final AppIntl _appIntl;
@@ -37,6 +45,30 @@ class ProfileViewModel extends FutureViewModel<List<Program>> {
       _userRepository?.monETSUser?.universalCode ?? '';
 
   ProfileViewModel({@required AppIntl intl}) : _appIntl = intl;
+
+  double get programProgression {
+    final ProgramCredits programCredits = ProgramCredits();
+    final int numberOfCreditsCompleted = int.parse(programList[programList.length - 1].accumulatedCredits);
+    final String code = programList[programList.length - 1].code; 
+    int percentage = 0;
+    bool foundMatch = false;
+
+    programCredits.programsCredits.forEach((key, value) {
+      if (key == code ||
+          programList[programList.length - 1].name.startsWith(key)) {
+        percentage = (numberOfCreditsCompleted / value * 100).round();
+        foundMatch = true;
+      }
+    });
+
+    if (!foundMatch) {
+      final String programName = programList[programList.length - 1].name;
+      analyticsService.logEvent("profile_view", 'The program $programName (code: $code) does not match any program');
+      percentage = 0;
+    }
+    
+    return percentage.toDouble();
+  }
 
   @override
   // ignore: type_annotate_public_apis

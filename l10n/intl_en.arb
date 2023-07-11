@@ -156,6 +156,7 @@
   "profile_number_equivalent_courses_program": "Equivalent Courses",
   "profile_status_program": "Status",
   "profile_program_completion": "Program completion",
+  "profile_program_completion_not_available": "N/A",
   "profile_other_programs": "Other Programs",
 
   "ets_security_title": "Security",

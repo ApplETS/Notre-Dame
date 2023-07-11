@@ -20,6 +20,9 @@ import 'package:notredame/ui/widgets/student_program.dart';
 // UTILS
 import 'package:notredame/ui/utils/loading.dart';
 
+// CONSTANTS
+import 'package:notredame/core/constants/programs_credits.dart';
+
 // OTHER
 import 'package:notredame/locator.dart';
 
@@ -251,29 +254,32 @@ Card getProgramCompletion(ProfileViewModel model, BuildContext context) {
           ),
           Padding(
             padding: const EdgeInsets.only(top: 30.0, bottom: 37.0),
-            child: Center(child: getLoadingIndicator()),
-          )
+            child: Center(child: getLoadingIndicator(model, context))
+          ),
         ],
       ),
     ),
   );
 }
 
-CircularPercentIndicator getLoadingIndicator() {
+CircularPercentIndicator getLoadingIndicator(ProfileViewModel model, BuildContext context) {
+  final double percentage = model.programProgression;
+
   return CircularPercentIndicator(
-      animation: true,
-      animationDuration: 1100,
-      radius: 40,
-      lineWidth: 10,
-      percent: 0.88,
-      circularStrokeCap: CircularStrokeCap.round,
-      center: const Text(
-          "88.0",
-          style: TextStyle(fontSize: 20),
-        ),
-      progressColor: Colors.green,
-    );
+    animation: true,
+    animationDuration: 1100,
+    radius: 40,
+    lineWidth: 10,
+    percent: percentage / 100,
+    circularStrokeCap: CircularStrokeCap.round,
+    center: Text(
+      percentage != 0 ? '$percentage%' : AppIntl.of(context).profile_program_completion_not_available,
+      style: const TextStyle(fontSize: 20),
+    ),
+    progressColor: Colors.green,
+  );
 }
+
 
 Column getCurrentProgramTile(Program program, BuildContext context) {
   final List<String> dataTitles = [
