@@ -20,6 +20,9 @@ class QuickLinksView extends StatefulWidget {
 }
 
 class _QuickLinksViewState extends State<QuickLinksView> {
+  // Show delete icon flag
+  bool _showDeleteIcon = false;
+
   @override
   Widget build(BuildContext context) =>
       ViewModelBuilder<QuickLinksViewModel>.reactive(
@@ -30,34 +33,62 @@ class _QuickLinksViewState extends State<QuickLinksView> {
             title: Text(AppIntl.of(context).title_ets),
             automaticallyImplyLeading: false,
           ),
-          body: SafeArea(
-            child: Align(
-              alignment: Alignment.topCenter,
-              child: Padding(
-                padding: const EdgeInsets.only(top: 8.0),
-                child: ReorderableGridView.count(
-                  mainAxisSpacing: 2.0,
-                  crossAxisSpacing: 2.0,
-                  crossAxisCount: 3,
-                  children: List.generate(
-                    model.quickLinkList.length,
-                    (index) {
-                      return KeyedSubtree(
-                        key: ValueKey(model.quickLinkList[index].id),
-                        child: WebLinkCard(model.quickLinkList[index]),
-                      );
+          body: GestureDetector(
+            onTap: () {
+              setState(() {
+                _showDeleteIcon = false;
+              });
+            },
+            child: SafeArea(
+              child: Align(
+                alignment: Alignment.topCenter,
+                child: Padding(
+                  padding: const EdgeInsets.only(top: 8.0),
+                  child: ReorderableGridView.count(
+                    mainAxisSpacing: 2.0,
+                    crossAxisSpacing: 2.0,
+                    crossAxisCount: 3,
+                    children: List.generate(
+                      model.quickLinkList.length,
+                      (index) {
+                        return KeyedSubtree(
+                          key: ValueKey(model.quickLinkList[index].id),
+                          child: GestureDetector(
+                            onLongPress: () {
+                              setState(() {
+                                _showDeleteIcon = true;
+                              });
+                            },
+                            child: Stack(
+                              alignment: Alignment.topRight,
+                              children: [
+                                WebLinkCard(model.quickLinkList[index]),
+                                if (_showDeleteIcon)
+                                  IconButton(
+                                    icon: const Icon(Icons.close),
+                                    onPressed: () {
+                                      setState(() {
+                                        model.quickLinkList.removeAt(index);
+                                      });
+                                    },
+                                  ),
+                              ],
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                    onReorder: (oldIndex, newIndex) {
+                      setState(() {
+                        if (oldIndex < newIndex) {
+                          newIndex -= 1;
+                        }
+                        final QuickLink item =
+                            model.quickLinkList.removeAt(oldIndex);
+                        model.quickLinkList.insert(newIndex, item);
+                      });
                     },
                   ),
-                  onReorder: (oldIndex, newIndex) {
-                    setState(() {
-                      if (oldIndex < newIndex) {
-                        newIndex -= 1;
-                      }
-                      final QuickLink item =
-                          model.quickLinkList.removeAt(oldIndex);
-                      model.quickLinkList.insert(newIndex, item);
-                    });
-                  },
                 ),
               ),
             ),
