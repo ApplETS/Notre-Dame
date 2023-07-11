@@ -20,8 +20,8 @@ class QuickLinksView extends StatefulWidget {
 }
 
 class _QuickLinksViewState extends State<QuickLinksView> {
-  // Show delete icon flag
-  bool _showDeleteIcon = false;
+  // Enable/Disable the edit state
+  bool _editMode = false;
 
   @override
   Widget build(BuildContext context) =>
@@ -36,7 +36,7 @@ class _QuickLinksViewState extends State<QuickLinksView> {
           body: GestureDetector(
             onTap: () {
               setState(() {
-                _showDeleteIcon = false;
+                _editMode = false;
               });
             },
             child: SafeArea(
@@ -54,16 +54,18 @@ class _QuickLinksViewState extends State<QuickLinksView> {
                         return KeyedSubtree(
                           key: ValueKey(model.quickLinkList[index].id),
                           child: GestureDetector(
-                            onLongPress: () {
-                              setState(() {
-                                _showDeleteIcon = true;
-                              });
-                            },
+                            onLongPress: _editMode
+                                ? null
+                                : () {
+                                    setState(() {
+                                      _editMode = true;
+                                    });
+                                  },
                             child: Stack(
                               alignment: Alignment.topRight,
                               children: [
                                 WebLinkCard(model.quickLinkList[index]),
-                                if (_showDeleteIcon)
+                                if (_editMode)
                                   IconButton(
                                     icon: const Icon(Icons.close),
                                     onPressed: () {
