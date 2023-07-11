@@ -62,17 +62,30 @@ class _QuickLinksViewState extends State<QuickLinksView> {
                                     });
                                   },
                             child: Stack(
-                              alignment: Alignment.topRight,
                               children: [
                                 WebLinkCard(model.quickLinkList[index]),
                                 if (_editMode)
-                                  IconButton(
-                                    icon: const Icon(Icons.close),
-                                    onPressed: () {
-                                      setState(() {
-                                        model.quickLinkList.removeAt(index);
-                                      });
-                                    },
+                                  Positioned(
+                                    top: 0,
+                                    right: 0,
+                                    child: Container(
+                                      width: 32,
+                                      height: 32,
+                                      decoration: const BoxDecoration(
+                                        color: Colors.red,
+                                        shape: BoxShape.circle,
+                                      ),
+                                      child: IconButton(
+                                        padding: EdgeInsets.zero,
+                                        icon: const Icon(Icons.close,
+                                            color: Colors.white, size: 16),
+                                        onPressed: () {
+                                          setState(() {
+                                            model.quickLinkList.removeAt(index);
+                                          });
+                                        },
+                                      ),
+                                    ),
                                   ),
                               ],
                             ),
