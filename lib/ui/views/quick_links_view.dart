@@ -1,6 +1,5 @@
 // FLUTTER / DART / THIRD-PARTIES
 import 'package:flutter/material.dart';
-import 'package:notredame/core/models/quick_link.dart';
 import 'package:notredame/ui/utils/app_theme.dart';
 import 'package:reorderable_grid_view/reorderable_grid_view.dart';
 import 'package:stacked/stacked.dart';
@@ -97,8 +96,7 @@ class _QuickLinksViewState extends State<QuickLinksView>
       ),
       onReorder: (oldIndex, newIndex) {
         setState(() {
-          final QuickLink item = model.quickLinkList.removeAt(oldIndex);
-          model.quickLinkList.insert(newIndex, item);
+          model.reorderQuickLinks(oldIndex, newIndex);
         });
       },
     );
@@ -151,7 +149,7 @@ class _QuickLinksViewState extends State<QuickLinksView>
         icon: const Icon(Icons.close, color: Colors.white, size: 16),
         onPressed: () {
           setState(() {
-            model.quickLinkList.removeAt(index);
+            model.deleteQuickLink(index);
           });
         },
       ),
