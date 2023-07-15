@@ -12,6 +12,8 @@ import 'package:notredame/core/viewmodels/quick_links_viewmodel.dart';
 import 'package:notredame/ui/widgets/base_scaffold.dart';
 import 'package:notredame/ui/widgets/web_link_card.dart';
 
+import '../../core/models/quick_link.dart';
+
 // OTHER
 
 class QuickLinksView extends StatefulWidget {
@@ -84,28 +86,53 @@ class _QuickLinksViewState extends State<QuickLinksView>
         }
       },
       child: SafeArea(
-        child: Align(
-          alignment: Alignment.topCenter,
-          child: Padding(
-            padding: const EdgeInsets.only(top: 8.0, left: 8.0, right: 8.0),
-            child: _buildReorderableGridView(model),
-          ),
+        child: Column(
+          children: [
+            Expanded(
+              flex: 2,
+              child: Padding(
+                padding: const EdgeInsets.only(top: 8.0, left: 8.0, right: 8.0),
+                child: _buildReorderableGridView(
+                    model, model.quickLinkList, _buildDeleteButton),
+              ),
+            ),
+            if (_editMode) ...[
+              //Text("Restore QuickLinks!"),
+              const Divider(
+                thickness: 2,
+                indent: 10,
+                endIndent: 10,
+              ),
+              Expanded(
+                child: Padding(
+                  padding:
+                      const EdgeInsets.only(top: 8.0, left: 8.0, right: 8.0),
+                  child: _buildReorderableGridView(
+                      model, model.deletedQuickLinks, _buildAddButton),
+                ),
+              ),
+            ],
+          ],
         ),
       ),
     );
   }
 
-  ReorderableGridView _buildReorderableGridView(QuickLinksViewModel model) {
+  ReorderableGridView _buildReorderableGridView(
+      QuickLinksViewModel model,
+      List<QuickLink> quickLinks,
+      Widget Function(QuickLinksViewModel, int) buildButtonFunction) {
     return ReorderableGridView.count(
       mainAxisSpacing: 2.0,
       crossAxisSpacing: 2.0,
       crossAxisCount: 3,
       children: List.generate(
-        model.quickLinkList.length,
+        quickLinks.length,
         (index) {
           return KeyedSubtree(
-            key: ValueKey(model.quickLinkList[index].id),
-            child: _buildGridChild(context, model, index),
+            key: ValueKey(quickLinks[index].id),
+            child:
+                _buildGridChild(model, index, quickLinks, buildButtonFunction),
           );
         },
       ),
@@ -118,7 +145,10 @@ class _QuickLinksViewState extends State<QuickLinksView>
   }
 
   Widget _buildGridChild(
-      BuildContext context, QuickLinksViewModel model, int index) {
+      QuickLinksViewModel model,
+      int index,
+      List<QuickLink> quickLinks,
+      Widget Function(QuickLinksViewModel, int) buildButtonFunction) {
     return GestureDetector(
       onLongPress: _editMode
           ? null
@@ -138,12 +168,12 @@ class _QuickLinksViewState extends State<QuickLinksView>
         },
         child: Stack(
           children: [
-            WebLinkCard(model.quickLinkList[index]),
+            WebLinkCard(quickLinks[index]),
             if (_editMode)
               Positioned(
                 top: 0,
                 left: 0,
-                child: _buildDeleteButton(model, index),
+                child: buildButtonFunction(model, index),
               ),
           ],
         ),
@@ -165,6 +195,26 @@ class _QuickLinksViewState extends State<QuickLinksView>
         onPressed: () {
           setState(() {
             model.deleteQuickLink(index);
+          });
+        },
+      ),
+    );
+  }
+
+  Container _buildAddButton(QuickLinksViewModel model, int index) {
+    return Container(
+      width: 32,
+      height: 32,
+      decoration: const BoxDecoration(
+        color: AppTheme.etsDarkGrey,
+        shape: BoxShape.circle,
+      ),
+      child: IconButton(
+        padding: EdgeInsets.zero,
+        icon: const Icon(Icons.add, color: Colors.white, size: 20),
+        onPressed: () {
+          setState(() {
+            model.restoreQuickLink(index);
           });
         },
       ),
