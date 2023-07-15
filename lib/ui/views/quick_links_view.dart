@@ -96,7 +96,7 @@ class _QuickLinksViewState extends State<QuickLinksView>
                     model, model.quickLinkList, _buildDeleteButton),
               ),
             ),
-            if (_editMode) ...[
+            if (_editMode && model.deletedQuickLinks.isNotEmpty) ...[
               //Text("Restore QuickLinks!"),
               const Divider(
                 thickness: 2,
