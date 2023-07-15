@@ -46,16 +46,31 @@ class _QuickLinksViewState extends State<QuickLinksView>
         viewModelBuilder: () => QuickLinksViewModel(AppIntl.of(context)),
         builder: (context, model, child) => BaseScaffold(
           isLoading: model.isBusy,
-          appBar: _buildAppBar(context),
+          appBar: _buildAppBar(context, model),
           body: _buildBody(context, model),
         ),
       );
 
-  AppBar _buildAppBar(BuildContext context) {
+  AppBar _buildAppBar(BuildContext context, QuickLinksViewModel model) {
     return AppBar(
       title: Text(AppIntl.of(context).title_ets),
       automaticallyImplyLeading: false,
+      actions: [if (_editMode) _buildQuickLinkAction(context, model)],
     );
+  }
+
+  IconButton _buildQuickLinkAction(
+      BuildContext context, QuickLinksViewModel model) {
+    return IconButton(
+        icon: const Icon(Icons.restore),
+        onPressed: () {
+          showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return _buildRestoreDialog(context, model);
+            },
+          );
+        });
   }
 
   Widget _buildBody(BuildContext context, QuickLinksViewModel model) {
@@ -72,7 +87,7 @@ class _QuickLinksViewState extends State<QuickLinksView>
         child: Align(
           alignment: Alignment.topCenter,
           child: Padding(
-            padding: const EdgeInsets.only(top: 8.0),
+            padding: const EdgeInsets.only(top: 8.0, left: 8.0, right: 8.0),
             child: _buildReorderableGridView(model),
           ),
         ),
@@ -152,6 +167,34 @@ class _QuickLinksViewState extends State<QuickLinksView>
             model.deleteQuickLink(index);
           });
         },
+      ),
+    );
+  }
+
+  Widget _buildRestoreDialog(BuildContext context, QuickLinksViewModel model) {
+    return AlertDialog(
+      title: const Text('Restore QuickLinks'),
+      content: SizedBox(
+        width: double.maxFinite,
+        child: model.deletedQuickLinks.isEmpty
+            ? Text("No quick links to restore!")
+            : ListView.builder(
+                shrinkWrap: true,
+                itemCount: model.deletedQuickLinks.length,
+                itemBuilder: (context, index) {
+                  final deletedQuickLink = model.deletedQuickLinks[index];
+                  return ListTile(
+                    title: Text(deletedQuickLink.name),
+                    trailing: IconButton(
+                      icon: const Icon(Icons.add),
+                      onPressed: () {
+                        model.restoreQuickLink(index);
+                        Navigator.of(context).pop();
+                      },
+                    ),
+                  );
+                },
+              ),
       ),
     );
   }
