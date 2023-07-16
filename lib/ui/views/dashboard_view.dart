@@ -3,10 +3,10 @@ import 'package:feature_discovery/feature_discovery.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:notredame/core/viewmodels/news_viewmodel.dart';
+//import 'package:notredame/core/viewmodels/news_viewmodel.dart';
 import 'package:stacked/stacked.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:timeago/timeago.dart' as timeago;
+//import 'package:timeago/timeago.dart' as timeago;
 
 // VIEWMODEL
 import 'package:notredame/core/viewmodels/dashboard_viewmodel.dart';
@@ -20,7 +20,7 @@ import 'package:notredame/ui/widgets/haptics_container.dart';
 
 // MODELS / CONSTANTS
 import 'package:ets_api_clients/models.dart';
-import 'package:notredame/core/models/news.dart';
+//import 'package:notredame/core/models/news.dart';
 import 'package:notredame/locator.dart';
 import 'package:notredame/core/constants/preferences_flags.dart';
 import 'package:notredame/core/constants/urls.dart';
@@ -63,7 +63,7 @@ class _DashboardViewState extends State<DashboardView>
     });
     DashboardViewModel.launchInAppReview();
     // TODO move this to a better place
-    timeago.setLocaleMessages('fr', timeago.FrShortMessages());
+    //timeago.setLocaleMessages('fr', timeago.FrShortMessages());
   }
 
   @override
@@ -92,7 +92,7 @@ class _DashboardViewState extends State<DashboardView>
                               onReorder(model, oldIndex, newIndex),
                           padding: const EdgeInsets.fromLTRB(0, 4, 0, 8),
                           children: _buildCards(
-                              model, NewsViewModel(intl: AppIntl.of(context))),
+                              model/*, NewsViewModel(intl: AppIntl.of(context))*/),
                           proxyDecorator: (child, _, __) {
                             return HapticsContainer(child: child);
                           },
@@ -103,7 +103,7 @@ class _DashboardViewState extends State<DashboardView>
         });
   }
 
-  List<Widget> _buildCards(DashboardViewModel model, NewsViewModel newsModel) {
+  List<Widget> _buildCards(DashboardViewModel model/*, NewsViewModel newsModel*/) {
     final List<Widget> cards = List.empty(growable: true);
 
     for (final PreferencesFlag element in model.cardsToDisplay) {
@@ -119,10 +119,10 @@ class _DashboardViewState extends State<DashboardView>
           break;
         case PreferencesFlag.gradesCard:
           cards.add(_buildGradesCards(model, element));
-          // TEST
-          for (final News news in newsModel.news) {
+          // TODO : move to news page
+          /*for (final News news in newsModel.news) {
             cards.add(_buildNewsCard(newsModel, news));
-          }
+          }*/
           break;
 
         default:
@@ -403,7 +403,7 @@ class _DashboardViewState extends State<DashboardView>
                 )
             ]),
       );
-
+/* TODO : Move to news page
   Widget _buildImageWithTags(News news) {
   if (news.image == null) {
     return const SizedBox.shrink();
@@ -518,7 +518,7 @@ Color _getTagTextColor(Color backgroundColor) {
       ),
     );
   }
-
+*/
   void dismissCard(DashboardViewModel model, PreferencesFlag flag) {
     model.hideCard(flag);
   }
