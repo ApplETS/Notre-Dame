@@ -10,7 +10,7 @@ import 'package:notredame/core/services/networking_service.dart';
 import 'package:notredame/core/managers/cache_manager.dart';
 
 // MODELS
-import 'package:notredame/core/models/News.dart';
+import 'package:notredame/core/models/news.dart';
 
 // UTILS
 import 'package:notredame/core/utils/cache_exception.dart';
@@ -39,29 +39,42 @@ class NewsRepository {
   /// List of the news with 3 test news.
   List<News> _news = <News>[
     News(
-        id: 1,
-        title: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec tempus arcu sed quam tincidunt, non venenatis orci mollis.",
-        description: "Test 1 description",
-        date: DateTime.now(),
-        image: "https://picsum.photos/400/200",
-        tags: <String>["tag1", "tag2"],
-        important: true,),
+      id: 1,
+      title:
+          "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec tempus arcu sed quam tincidunt, non venenatis orci mollis.",
+      description: "Test 1 description",
+      date: DateTime.now(),
+      image: "https://picsum.photos/400/200",
+      tags: <Tag>[
+        Tag(text: "tag1", color: Colors.blue),
+        Tag(text: "tag2", color: Colors.green),
+      ],
+      important: true,
+    ),
     News(
-        id: 2,
-        title: "Test 2",
-        description: "Test 2 description",
-        date: DateTime.now(),
-        image: "https://picsum.photos/400/200",
-        tags: <String>["tag1", "tag2"],
-        important: false,),
+      id: 2,
+      title: "Test 2",
+      description: "Test 2 description",
+      date: DateTime.now(),
+      image: "https://picsum.photos/400/200",
+      tags: <Tag>[
+        Tag(text: "tag1", color: Colors.blue),
+        Tag(text: "tag2", color: Colors.green),
+      ],
+      important: false,
+    ),
     News(
-        id: 3,
-        title: "Test 3",
-        description: "Test 3 description",
-        date: DateTime.now(),
-        image: "https://picsum.photos/400/200",
-        tags: <String>["tag1", "tag2"],
-        important: true,),
+      id: 3,
+      title: "Test 3",
+      description: "Test 3 description",
+      date: DateTime.now(),
+      image: "https://picsum.photos/400/200",
+      tags: <Tag>[
+        Tag(text: "tag1", color: Colors.blue),
+        Tag(text: "tag2", color: Colors.green),
+      ],
+      important: true,
+    ),
   ];
 
   List<News> get news => _news;
@@ -69,8 +82,7 @@ class NewsRepository {
   /// Get and update the list of news.
   /// After fetching the news from the [?] the [CacheManager]
   /// is updated with the latest version of the news.
-  Future<List<News>> getNews(
-      {bool fromCacheOnly = false}) async {
+  Future<List<News>> getNews({bool fromCacheOnly = false}) async {
     // Force fromCacheOnly mode when user has no connectivity
     if (!(await _networkingService.hasConnectivity())) {
       // ignore: parameter_assignments
@@ -97,8 +109,7 @@ class NewsRepository {
 
     try {
       // Update cache
-      _cacheManager.update(
-          newsCacheKey, jsonEncode(_news));
+      _cacheManager.update(newsCacheKey, jsonEncode(_news));
     } on CacheException catch (_) {
       // Do nothing, the caching will retry later and the error has been logged by the [CacheManager]
       _logger.e(
@@ -112,15 +123,15 @@ class NewsRepository {
     _news = [];
     try {
       final List responseCache =
-          jsonDecode(await _cacheManager.get(newsCacheKey))
-              as List<dynamic>;
+          jsonDecode(await _cacheManager.get(newsCacheKey)) as List<dynamic>;
 
       // Build list of news loaded from the cache.
-      _news = responseCache.map((e) =>
-          News.fromJson(e as Map<String, dynamic>)).toList();
+      _news = responseCache
+          .map((e) => News.fromJson(e as Map<String, dynamic>))
+          .toList();
 
-      _logger.d(
-          "$tag - getNewsFromCache: ${_news.length} news loaded from cache");
+      _logger
+          .d("$tag - getNewsFromCache: ${_news.length} news loaded from cache");
     } on CacheException catch (_) {
       _logger.e(
           "$tag - getNewsFromCache: exception raised will trying to load news from cache.");
@@ -132,32 +143,36 @@ class NewsRepository {
     final List<News> fetchedNews = [];
 
     fetchedNews.add(News(
-        id: 1,
-        title: "Nouvelle fonctionnalité",
-        description:
-        "Vous pouvez désormais consulter les nouvelles de votre école directement dans l'application. Pour cela, cliquez sur le menu en haut à gauche et sélectionnez \"Nouvelles\".",
-        image: "https://i.imgur.com/1ZQ2Z0M.png",
-        tags: ["Nouvelles"],
-        date: DateTime.now(),
-        important: true));
+      id: 1,
+      title: "Nouvelle fonctionnalité",
+      description:
+          "Vous pouvez désormais consulter les nouvelles de votre école directement dans l'application. Pour cela, cliquez sur le menu en haut à gauche et sélectionnez \"Nouvelles\".",
+      image: "https://i.imgur.com/1ZQ2Z0M.png",
+      tags: [
+        Tag(text: "Nouvelles", color: Colors.blue),
+      ],
+      date: DateTime.now(),
+      important: true,
+    ));
 
-    // Add three more random news
+// Add three more random news
     for (int i = 0; i < 3; i++) {
       fetchedNews.add(News(
-          id: i + 2,
-          title: "Nouvelle fonctionnalité",
-          description:
-          "Vous pouvez désormais consulter les nouvelles de votre école directement dans l'application. Pour cela, cliquez sur le menu en haut à gauche et sélectionnez \"Nouvelles\".",
-          image: "https://i.imgur.com/1ZQ2Z0M.png",
-          tags: ["Nouvelles"],
-          date: DateTime.now(),
-          important: false));
+        id: i + 2,
+        title: "Nouvelle fonctionnalité",
+        description:
+            "Vous pouvez désormais consulter les nouvelles de votre école directement dans l'application. Pour cela, cliquez sur le menu en haut à gauche et sélectionnez \"Nouvelles\".",
+        image: "https://i.imgur.com/1ZQ2Z0M.png",
+        tags: [
+          Tag(text: "Nouvelles", color: Colors.blue),
+        ],
+        date: DateTime.now(),
+        important: false,
+      ));
     }
 
-    _logger.d(
-        "$tag - getNews: fetched ${fetchedNews.length} news.");
+    _logger.d("$tag - getNews: fetched ${fetchedNews.length} news.");
 
     return fetchedNews;
   }
-
 }

@@ -13,7 +13,7 @@ import 'package:notredame/core/managers/news_repository.dart';
 import 'package:notredame/core/managers/settings_manager.dart';
 
 // MODELS
-import 'package:notredame/core/models/News.dart';
+import 'package:notredame/core/models/news.dart';
 
 // UTILS
 
