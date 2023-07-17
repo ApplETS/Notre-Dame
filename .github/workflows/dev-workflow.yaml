@@ -57,7 +57,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Bump version
-        uses: apomalyn/bump-version-using-labels@1.5.0
+        uses: apomalyn/bump-version-using-labels@v1.5.0
         with:
           file_path: 'pubspec.yaml'
           reference_branch: 'master'
