@@ -2,6 +2,7 @@
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get_it/get_it.dart';
 import 'package:logger/logger.dart';
+import 'package:notredame/core/managers/quick_link_repository.dart';
 
 // SERVICES
 import 'package:notredame/core/services/navigation_service.dart';
@@ -49,6 +50,7 @@ void setupLocator() {
   locator.registerLazySingleton(() => CourseRepository());
   locator.registerLazySingleton(() => CacheManager());
   locator.registerLazySingleton(() => SettingsManager());
+  locator.registerLazySingleton(() => QuickLinkRepository());
 
   // Other
   locator.registerLazySingleton(() => SignetsAPIClient());
