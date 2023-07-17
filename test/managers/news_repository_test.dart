@@ -7,6 +7,7 @@ import 'package:notredame/core/managers/news_repository.dart';
 // MODEL
 import 'package:notredame/core/models/news.dart';
 
+// UTILS
 import '../helpers.dart';
 
 void main() {

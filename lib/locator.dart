@@ -2,7 +2,6 @@
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get_it/get_it.dart';
 import 'package:logger/logger.dart';
-import 'package:notredame/core/managers/news_repository.dart';
 
 // SERVICES
 import 'package:notredame/core/services/navigation_service.dart';
