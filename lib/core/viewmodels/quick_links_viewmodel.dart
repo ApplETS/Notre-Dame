@@ -62,7 +62,6 @@ class QuickLinksViewModel extends FutureViewModel<List<QuickLink>> {
   }
 
   Future deleteQuickLink(int index) async {
-    // Map current quick links to quick link data
     final deletedQuickLink = quickLinkList.removeAt(index);
     deletedQuickLinks.add(deletedQuickLink);
     await _quickLinkRepository.updateQuickLinkDataToCache(quickLinkList);
@@ -70,14 +69,12 @@ class QuickLinksViewModel extends FutureViewModel<List<QuickLink>> {
   }
 
   Future restoreQuickLink(int index) async {
-    // Map current quick links to quick link data
     final deletedQuickLink = deletedQuickLinks.removeAt(index);
     quickLinkList.add(deletedQuickLink);
     await _quickLinkRepository.updateQuickLinkDataToCache(quickLinkList);
     notifyListeners();
   }
 
-  // Function that updates the cache with the new order of quick links
   Future reorderQuickLinks(int oldIndex, int newIndex) async {
     final QuickLink item = quickLinkList.removeAt(oldIndex);
     quickLinkList.insert(newIndex, item);
