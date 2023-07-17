@@ -1,6 +1,5 @@
 // FLUTTER / DART / THIRD-PARTIES
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
 
@@ -11,12 +10,14 @@ import 'package:notredame/core/managers/cache_manager.dart';
 
 // MODELS
 import 'package:notredame/core/models/news.dart';
+import 'package:notredame/core/models/tags.dart';
 
 // UTILS
 import 'package:notredame/core/utils/cache_exception.dart';
 
 // OTHER
 import 'package:notredame/locator.dart';
+
 
 /// Repository to access all the news
 class NewsRepository {

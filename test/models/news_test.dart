@@ -4,6 +4,7 @@ import 'package:flutter_test/flutter_test.dart';
 
 // MODELS
 import 'package:notredame/core/models/news.dart';
+import 'package:notredame/core/models/tags.dart';
 
 void main() {
   group('News class tests', () {
