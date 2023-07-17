@@ -57,22 +57,21 @@ class NewsViewModel extends FutureViewModel<List<News>> {
         setBusyForObject(isLoadingEvents, true);
         _newsRepository
             .getNews()
-        // ignore: return_type_invalid_for_catch_error
+            // ignore: return_type_invalid_for_catch_error
             .catchError(onError)
             .then((value) {
           if (value != null) {
             // Reload the list of news
             news;
           }
-          }).whenComplete(() {
-            setBusyForObject(isLoadingEvents, false);
-          });
+        }).whenComplete(() {
+          setBusyForObject(isLoadingEvents, false);
         });
+      });
 
   @override
   // ignore: type_annotate_public_apis
   void onError(error) {
     Fluttertoast.showToast(msg: _appIntl.error);
   }
-
 }

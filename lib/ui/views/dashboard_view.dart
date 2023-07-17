@@ -92,7 +92,7 @@ class _DashboardViewState extends State<DashboardView>
                               onReorder(model, oldIndex, newIndex),
                           padding: const EdgeInsets.fromLTRB(0, 4, 0, 8),
                           children: _buildCards(
-                              model/*, NewsViewModel(intl: AppIntl.of(context))*/),
+                              model /*, NewsViewModel(intl: AppIntl.of(context))*/),
                           proxyDecorator: (child, _, __) {
                             return HapticsContainer(child: child);
                           },
@@ -103,7 +103,8 @@ class _DashboardViewState extends State<DashboardView>
         });
   }
 
-  List<Widget> _buildCards(DashboardViewModel model/*, NewsViewModel newsModel*/) {
+  List<Widget> _buildCards(
+      DashboardViewModel model /*, NewsViewModel newsModel*/) {
     final List<Widget> cards = List.empty(growable: true);
 
     for (final PreferencesFlag element in model.cardsToDisplay) {

@@ -18,7 +18,6 @@ import 'package:notredame/core/utils/cache_exception.dart';
 // OTHER
 import 'package:notredame/locator.dart';
 
-
 /// Repository to access all the news
 class NewsRepository {
   static const String tag = "NewsRepository";
