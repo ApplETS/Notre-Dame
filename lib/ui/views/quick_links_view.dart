@@ -57,22 +57,8 @@ class _QuickLinksViewState extends State<QuickLinksView>
     return AppBar(
       title: Text(AppIntl.of(context).title_ets),
       automaticallyImplyLeading: false,
-      actions: [if (_editMode) _buildQuickLinkAction(context, model)],
+      actions: [],
     );
-  }
-
-  IconButton _buildQuickLinkAction(
-      BuildContext context, QuickLinksViewModel model) {
-    return IconButton(
-        icon: const Icon(Icons.restore),
-        onPressed: () {
-          showDialog(
-            context: context,
-            builder: (BuildContext context) {
-              return _buildRestoreDialog(context, model);
-            },
-          );
-        });
   }
 
   Widget _buildBody(BuildContext context, QuickLinksViewModel model) {
@@ -206,7 +192,7 @@ class _QuickLinksViewState extends State<QuickLinksView>
       width: 32,
       height: 32,
       decoration: const BoxDecoration(
-        color: AppTheme.etsDarkGrey,
+        color: Colors.green,
         shape: BoxShape.circle,
       ),
       child: IconButton(
@@ -217,34 +203,6 @@ class _QuickLinksViewState extends State<QuickLinksView>
             model.restoreQuickLink(index);
           });
         },
-      ),
-    );
-  }
-
-  Widget _buildRestoreDialog(BuildContext context, QuickLinksViewModel model) {
-    return AlertDialog(
-      title: const Text('Restore QuickLinks'),
-      content: SizedBox(
-        width: double.maxFinite,
-        child: model.deletedQuickLinks.isEmpty
-            ? Text("No quick links to restore!")
-            : ListView.builder(
-                shrinkWrap: true,
-                itemCount: model.deletedQuickLinks.length,
-                itemBuilder: (context, index) {
-                  final deletedQuickLink = model.deletedQuickLinks[index];
-                  return ListTile(
-                    title: Text(deletedQuickLink.name),
-                    trailing: IconButton(
-                      icon: const Icon(Icons.add),
-                      onPressed: () {
-                        model.restoreQuickLink(index);
-                        Navigator.of(context).pop();
-                      },
-                    ),
-                  );
-                },
-              ),
       ),
     );
   }
