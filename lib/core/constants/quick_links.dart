@@ -64,7 +64,7 @@ List<QuickLink> quickLinks(AppIntl intl) => [
             color: AppTheme.etsLightRed,
             size: 64,
           ),
-          link: 'http://rubik.clubnaova.ca/'),
+          link: 'https://horairets.emmanuelcoulombe.dev/'),
       QuickLink(
           name: intl.ets_gus,
           image: SvgPicture.asset('assets/images/ic_gus_red.svg',
