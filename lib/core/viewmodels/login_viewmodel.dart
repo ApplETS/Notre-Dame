@@ -24,9 +24,6 @@ class LoginViewModel extends BaseViewModel {
   /// Used to redirect on the dashboard.
   final NavigationService _navigationService = locator<NavigationService>();
 
-  /// Regex matcher to validate the Universal code pattern
-  final RegExp _universalCodeMatcher = RegExp(r'[a-zA-Z]{2}\d{5}');
-
   /// l10n class used to return the right error message
   final AppIntl _appIntl;
 
@@ -49,10 +46,8 @@ class LoginViewModel extends BaseViewModel {
     if (value.isEmpty) {
       _universalCode = "";
       return _appIntl.login_error_field_required;
-    } else if (!_universalCodeMatcher.hasMatch(value)) {
-      _universalCode = "";
-      return _appIntl.login_error_invalid_universal_code;
     }
+
     _universalCode = value;
     return null;
   }
