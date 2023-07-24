@@ -38,6 +38,7 @@
   "login_error_invalid_password": "This password is incorrect",
   "login_error_incorrect_password": "This password is incorrect",
   "login_error_field_required": "This field is required",
+  "login_error_invalid_credentials": "The universal code or the password you entered is invalid",
   "login_info_universal_code": "The format of your universal code is AB12345. It was sent to you by the Bureau du registraire upon your admission.",
   "login_msg_logout_success": "You have logged out",
   "login_applets_logo": "Made by",
