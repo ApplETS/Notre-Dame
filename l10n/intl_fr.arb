@@ -34,7 +34,7 @@
   "login_prompt_password": "Mot de passe",
   "login_action_sign_in": "Se connecter",
   "login_error_field_required": "Ce champ est requis",
-  "login_error_invalid_credentials": "Le code universel ou le mot de passe que vous avez entré est invalide",
+  "login_error_invalid_credentials": "Identifiants invalides. Possiblement une erreur côté serveur.",
   "login_info_universal_code": "Votre code d'accès universel est sous la forme AB12345. Celui-ci vous a été transmis par le Bureau du registraire lors de votre admission.",
   "login_msg_logout_success": "Vous vous êtes déconnecté",
   "login_applets_logo": "Conçue par",
