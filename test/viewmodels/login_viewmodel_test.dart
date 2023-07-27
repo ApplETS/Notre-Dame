@@ -19,6 +19,7 @@ import '../mock/managers/user_repository_mock.dart';
 
 void main() {
   const String universalCodeValid = "AA11111";
+  const String universalCodeInvalid = "A1111";
   const String passwordCodeValid = "password";
   const String passwordCodeInvalid = "";
 
