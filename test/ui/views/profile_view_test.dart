@@ -22,6 +22,7 @@ import '../../mock/managers/user_repository_mock.dart';
 void main() {
   AppIntl intl;
   UserRepository userRepository;
+  
   group('Profile view - ', () {
     setUp(() async {
       intl = await setupAppIntl();
