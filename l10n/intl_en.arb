@@ -33,6 +33,7 @@
   "login_prompt_universal_code": "Universal Code",
   "login_prompt_password": "Password",
   "login_action_sign_in": "Sign in",
+  "login_error_invalid_universal_code": "This universal code is invalid",
   "login_error_field_required": "This field is required",
   "login_error_invalid_credentials": "Universal code or password is invalid. Could be a server error.",
   "login_info_universal_code": "The format of your universal code is AB12345. It was sent to you by the Bureau du registraire upon your admission.",
