@@ -92,7 +92,7 @@ Widget build(BuildContext context) => ViewModelBuilder<ProfileViewModel>.reactiv
                   indent: 10,
                   endIndent: 10,
                 ),
-                getCurrentProgramTile(model.programList[model.programList.length - 1], context),
+                getCurrentProgramTile(model.programList, context),
                 const Divider(
                   thickness: 2,
                   indent: 10,
@@ -167,42 +167,41 @@ Card getMainInfoCard(ProfileViewModel model) {
 
 Card getMyInfosCard(ProfileViewModel model, BuildContext context) {
   return Card(
-    child: Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        Padding(
-          padding: const EdgeInsets.only(top: 16.0, left: 16.0, bottom: 3.0),
-          child: Text(
-            AppIntl.of(context).profile_permanent_code,
-            style: const TextStyle(
-              fontSize: 16,
+    child: Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Padding(
+            padding: const EdgeInsets.only(bottom: 3.0),
+            child: Text(
+              AppIntl.of(context).profile_permanent_code,
+              style: const TextStyle(
+                fontSize: 16,
+              ),
             ),
           ),
-        ),
-        Padding(
-          padding: const EdgeInsets.only(left: 16.0),
-          child: Text(
-            model.profileStudent.permanentCode,
-            style: const TextStyle(fontSize: 14),
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.only(top: 16.0, left: 16.0, bottom: 3.0),
-          child: Text(
-            AppIntl.of(context).login_prompt_universal_code,
-            style: const TextStyle(
-              fontSize: 16,
+          Center(
+            child: Text(
+              model.profileStudent.permanentCode,
+              style: const TextStyle(fontSize: 14),
             ),
           ),
-        ),
-        Padding(
-          padding: const EdgeInsets.only(left: 16.0, bottom: 16.0),
-          child: Text(
-            model.universalAccessCode,
-            style: const TextStyle(fontSize: 14),
+          Padding(
+            padding: const EdgeInsets.only(top: 16.0, bottom: 3.0),
+            child: Text(
+              AppIntl.of(context).login_prompt_universal_code,
+              style: const TextStyle(fontSize: 16),
+            ),
           ),
-        ),
-      ],
+          Center(
+            child: Text(
+              model.universalAccessCode,
+              style: const TextStyle(fontSize: 14),
+            ),
+          ),
+        ],
+      ),
     ),
   );
 }
@@ -228,7 +227,7 @@ Card getMyBalanceCard(ProfileViewModel model, BuildContext context) {
           child: Center(
             child: Text(
               balance,
-              style: const TextStyle(fontSize: 20),
+              style: const TextStyle(fontSize: 18),
             ),
           ),
         ),
@@ -280,9 +279,11 @@ CircularPercentIndicator getLoadingIndicator(ProfileViewModel model, BuildContex
   );
 }
 
+Column getCurrentProgramTile(List<Program> programList, BuildContext context) {
+  if (programList.isNotEmpty) {
+    final program = programList.last;
 
-Column getCurrentProgramTile(Program program, BuildContext context) {
-  final List<String> dataTitles = [
+    final List<String> dataTitles = [
       AppIntl.of(context).profile_code_program,
       AppIntl.of(context).profile_average_program,
       AppIntl.of(context).profile_number_accumulated_credits_program,
@@ -304,33 +305,35 @@ Column getCurrentProgramTile(Program program, BuildContext context) {
       program.status
     ];
 
-  return Column(
-    crossAxisAlignment: CrossAxisAlignment.stretch,
-    children: [
-      Padding(
-        padding: const EdgeInsets.fromLTRB(16.0, 8.0, 16.0, 8.0),
-        child: Text(
-          program.name,
-          style: const TextStyle(
-            fontSize: 18,
-            fontWeight: FontWeight.bold,
-            color: AppTheme.etsLightRed
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        Padding(
+          padding: const EdgeInsets.fromLTRB(16.0, 8.0, 16.0, 8.0),
+          child: Text(
+            program.name,
+            style: const TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+                color: AppTheme.etsLightRed
+            ),
           ),
         ),
-      ),
-      ...List<Widget>.generate(dataTitles.length, (index) {
-        return Padding(
-          padding: const EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 8.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              Text(dataTitles[index]),
-              Text(dataFetched[index]),
-            ],
-          ),
-        );
-      }),
-    ],
-  );
-
+        ...List<Widget>.generate(dataTitles.length, (index) {
+          return Padding(
+            padding: const EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 8.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Text(dataTitles[index]),
+                Text(dataFetched[index]),
+              ],
+            ),
+          );
+        }),
+      ],
+    );
+  } else {
+    return Column();
+  }
 }
