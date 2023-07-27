@@ -57,6 +57,14 @@ void main() {
             appIntl.login_error_field_required);
         expect(viewModel.universalCode, "");
       });
+
+      test(
+          'with wrong formatted universal code should return login_error_invalid_universal_code',
+          () {
+        expect(viewModel.validateUniversalCode(universalCodeInvalid),
+            appIntl.login_error_invalid_universal_code);
+        expect(viewModel.universalCode, "");
+      });
     });
 
     group('validatePassword - ', () {
