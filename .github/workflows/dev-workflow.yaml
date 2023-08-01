@@ -1,0 +1,281 @@
+name: Development workflow
+on:
+  workflow_dispatch:
+  pull_request:
+    paths-ignore:
+      - '.gitignore'
+      - '.metadata'
+      - 'README.md'
+      - 'README.fr.md'
+      - 'android/fastlane/**'
+      - 'ios/fastlane/**'
+concurrency:
+  group: ${{ github.ref }}
+  cancel-in-progress: true
+env:
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  MAPS_API_KEY: ${{ secrets.MAPS_API_KEY }}
+  APP_NAME: 'notre_dame'
+
+jobs:
+  ##############################################################
+  # Setup
+  ##############################################################
+  delete_bot_comments:
+    name: Delete the bot comments on the PR.
+    runs-on: ubuntu-latest
+    steps:
+      - uses: izhangzhihao/delete-comment@master
+        if: ${{ github.event_name == 'pull_request' }}
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          delete_user_name: github-actions[bot]
+          issue_number: ${{ github.event.number }}
+
+  determine_pr_size:
+    name: Determine the size of the PR
+    runs-on: ubuntu-latest
+    steps:
+      - uses: codelytv/pr-size-labeler@v1
+        with:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          xs_label: 'size: XS'
+          xs_max_size: '30'
+          s_label: 'size: S'
+          s_max_size: '100'
+          m_label: 'size: M'
+          m_max_size: '500'
+          l_label: 'size: L'
+          l_max_size: '1000'
+          xl_label: 'size: XL'
+          fail_if_xl: 'false'
+          message_if_xl: >
+            'This PR exceeds the recommended size of 1000 lines.
+            Please make sure you are NOT addressing multiple issues with one PR.
+            Note this PR might be rejected due to its size.’
+  bump_version:
+    name: Bump app version using PR labels
+    runs-on: ubuntu-latest
+    if: ${{ github.event_name == 'pull_request' }}
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.PTA }}
+      - name: Bump version using labels
+        uses: apomalyn/bump-version-using-labels@v1.5.0
+        with:
+          file_path: 'pubspec.yaml'
+          reference_branch: 'master'
+          commit: 'false'
+      - name: Commit versioned files
+        id: commit_version
+        uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          file_pattern: "*.yaml"
+          commit_user_name: github-actions[bot]
+          commit_user_email: 41898282+github-actions[bot]@users.noreply.github.com
+          commit_message: "[BOT] Applying version."
+          add_options: '-u'
+
+      # Fail workflow, because new commit will execute workflow
+      - if: ${{ steps.commit_version.outputs.changes_detected == 'true' }}
+        name: Fail workflow if version commit
+        run: |
+          echo 'Version changed, running bot commit workflow'
+          exit 1
+  ##############################################################
+  # Testing
+  ##############################################################
+  testing:
+    name: Tests and checks
+    runs-on: ubuntu-latest
+    needs:
+      - bump_version
+    outputs:
+      coverage: ${{ steps.coverage.outputs.percentage }}
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          ref: ${{ github.head_ref }}
+          token: ${{ secrets.PTA }}
+      - uses: actions/setup-java@v3
+        with:
+          distribution: 'adopt'
+          java-version: '11'
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.3.x'
+          channel: 'stable'
+          cache: true
+      - run: flutter doctor
+      - name: Decrypt SignETS certificate and Google Services files
+        run: |
+          chmod +x ./scripts/decrypt.sh
+          ./scripts/decrypt.sh
+        env:
+          ENCRYPTED_SIGNETS_API_CERT_PASSWORD: ${{ secrets.ENCRYPTED_SIGNETS_API_CERT_PASSWORD }}
+          ENCRYPTED_GOOGLE_SERVICE_PASSWORD: ${{ secrets.ENCRYPTED_GOOGLE_SERVICE_PASSWORD }}
+
+      # Get flutter dependencies.
+      - run: flutter pub get
+
+      # Check the format of the code and commit the formatted files.
+      - name: Format files in lib and test directories
+        run: flutter format lib test
+      - name: Commit formatted files
+        id: commit_formatted
+        uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          file_pattern: "*.dart"
+          commit_user_name: github-actions[bot]
+          commit_user_email: 41898282+github-actions[bot]@users.noreply.github.com
+          commit_message: "[BOT] Applying format."
+          add_options: '-u'
+
+      # Fail workflow, because new commit will execute workflow
+      - if: ${{ steps.commit_formatted.outputs.changes_detected == 'true' }}
+        name: Fail workflow if linting commit
+        run: |
+          echo 'Linting applied, running bot commit workflow'
+          exit 1
+
+      # Check if the code has any errors/warnings
+      - name: Analyze code
+        run: flutter analyze
+
+      # Run the tests with --update-goldens.
+      - name: Run tests
+        run: flutter test --coverage --update-goldens
+
+      # Commit and push the goldens files updated.
+      - name: Commit golden files
+        id: commit_golden
+        uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          file_pattern: test/*
+          commit_user_name: github-actions[bot]
+          commit_user_email: 41898282+github-actions[bot]@users.noreply.github.com
+          commit_message: '[BOT] Update golden files'
+
+      # Fail workflow, because new commit will execute workflow
+      - if: ${{ steps.commit_golden.outputs.changes_detected == 'true' }}
+        name: Fail workflow if golden commit
+        run: |
+          echo 'Golden files changes commit, running bot commit workflow'
+          exit 1
+
+      - name: Upload coverage file
+        uses: actions/upload-artifact@v3
+        with:
+          name: lcov.info
+          path: ${{ github.workspace }}/coverage/lcov.info
+      - name: Get code coverage
+        id: coverage
+        run: |
+          chmod +x ./scripts/determine_code_coverage.sh
+          export COV="$(./scripts/determine_code_coverage.sh coverage/lcov.info)"
+          echo "Coverage detected is: $COV"
+          echo "percentage=$COV" >> $GITHUB_OUTPUT
+  coverage:
+    name: Update coverage
+    needs:
+      - testing
+      - delete_bot_comments
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download coverage file
+        uses: actions/download-artifact@v3
+        with:
+          name: lcov.info
+      # Comment coverage report
+      - name: Comment the coverage of the PR
+        uses: romeovs/lcov-reporter-action@v0.3.1
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          lcov-file: ./lcov.info
+
+  ##############################################################
+  # Build
+  ##############################################################
+  build:
+    name: Create ${{ matrix.target }} build
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        target: [ iOS, Android ]
+        include:
+          - os: macos-latest
+            target: iOS
+            build_target: ios
+            build_args: --no-codesign
+            build_path: build/ios/iphoneos
+            asset_extension: zip
+            asset_content_type: application/zip
+          - os: ubuntu-latest
+            target: Android
+            build_target: apk
+            build_args: ''
+            build_path: build/app/outputs/apk/release
+            asset_extension: apk
+            asset_content_type: application/zip
+      # Disable fail-fast as we want results from all even if one fails.
+      fail-fast: false
+    needs:
+      - testing
+    steps:
+      - uses: actions/checkout@v3
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.3.x'
+          channel: 'stable'
+          cache: true
+      - name: Install Android dependencies
+        if: matrix.target == 'Android'
+        uses: actions/setup-java@v3
+        with:
+          java-version: '11'
+          distribution: 'adopt'
+      - run: flutter doctor -v
+      - name: Install iOS dependencies
+        if: matrix.target == 'iOS'
+        run: |
+          flutter pub get
+          cd ios
+          rm Podfile.lock
+          pod install --repo-update
+          flutter clean
+
+      # Get dependencies and decrypt needed files.
+      - run: flutter pub get
+
+      - name: Decrypt SignETS certificate and Google Services files
+        run: |
+          chmod +x ./scripts/decrypt.sh
+          ./scripts/decrypt.sh
+        env:
+          ENCRYPTED_SIGNETS_API_CERT_PASSWORD: ${{ secrets.ENCRYPTED_SIGNETS_API_CERT_PASSWORD }}
+          ENCRYPTED_GOOGLE_SERVICE_PASSWORD: ${{ secrets.ENCRYPTED_GOOGLE_SERVICE_PASSWORD }}
+          ENCRYPTED_ETSMOBILE_KEYSTORE_PASSWORD: ${{ secrets.ENCRYPTED_ETSMOBILE_KEYSTORE_PASSWORD }}
+          ENCRYPTED_KEYSTORE_PROPERTIES_PASSWORD: ${{ secrets.ENCRYPTED_KEYSTORE_PROPERTIES_PASSWORD }}
+
+      # Build the application.
+      - name: Build the application
+        run: flutter build -v ${{ matrix.build_target }} ${{ matrix.build_args }} --release --dart-define=GH_API_TOKEN=${{ secrets.GH_API_TOKEN }}
+
+      - name: Rename Android build
+        if: matrix.target == 'Android'
+        run: mv app-release.${{ matrix.asset_extension }} ${{ github.workspace }}/${{ env.APP_NAME }}_${{ matrix.target }}.${{ matrix.asset_extension }}
+        working-directory: ${{ matrix.build_path }}
+
+      - name: Compress iOS build
+        if: matrix.target == 'iOS'
+        run: |
+          mv Runner.app ${{ env.APP_NAME }}.app
+          ditto -c -k --sequesterRsrc --keepParent ${{ env.APP_NAME }}.app ${{ github.workspace }}/${{ env.APP_NAME }}_${{ matrix.target }}.${{ matrix.asset_extension }}
+        working-directory: ${{ matrix.build_path }}
+
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: ${{ matrix.target }}
+          path: ${{ github.workspace }}/${{ env.APP_NAME }}_${{ matrix.target }}.${{ matrix.asset_extension }}

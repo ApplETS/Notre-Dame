@@ -7,10 +7,14 @@ import 'package:logger/logger.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:flutter_config/flutter_config.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 // SERVICES
 import 'package:notredame/core/services/internal_info_service.dart';
 import 'package:notredame/core/services/analytics_service.dart';
+
+// MODELS
+import 'package:notredame/core/models/feedback_issue.dart';
 
 // OTHERS
 import 'package:notredame/locator.dart';
@@ -69,12 +73,13 @@ class GithubApi {
   /// Create Github issue into the Notre-Dame repository with the labels bugs and the platform used.
   /// The bug report will contain a file, a description [feedbackText] and also some information about the
   /// application/device.
-  Future<void> createGithubIssue(
+  Future<Issue> createGithubIssue(
       {@required String feedbackText,
       @required String fileName,
-      @required String feedbackType}) async {
+      @required String feedbackType,
+      String email}) async {
     final PackageInfo packageInfo = await PackageInfo.fromPlatform();
-    _github.issues
+    return _github.issues
         .create(
             RepositorySlug.full(_repositorySlug),
             IssueRequest(
@@ -83,7 +88,8 @@ class GithubApi {
                     "```$feedbackText```\n\n"
                     "**Screenshot** \n"
                     "![screenshot](https://github.com/$_repositoryReportSlug/blob/main/$fileName?raw=true)\n\n"
-                    "${await _internalInfoService.getDeviceInfoForErrorReporting()}",
+                    "${await _internalInfoService.getDeviceInfoForErrorReporting()}"
+                    "- **Email:** ${email ?? 'Not provided'} \n",
                 labels: [
                   feedbackType,
                   'platform: ${Platform.operatingSystem}'
@@ -97,6 +103,25 @@ class GithubApi {
           "createGithubIssue: ${error.message}",
           error as GitHubError);
     });
+  }
+
+  Future<List<FeedbackIssue>> fetchIssuesByNumbers(
+      List<int> numbers, AppIntl appIntl) async {
+    final List<FeedbackIssue> issues = [];
+    for (int i = 0; i < numbers.length; i++) {
+      issues.add(FeedbackIssue(await _github.issues
+          .get(RepositorySlug.full(_repositorySlug), numbers[i])
+          .catchError((error) {
+        // ignore: avoid_dynamic_calls
+        _logger.e("fetchIssuesByNumbers error: ${error.message}");
+        _analyticsService.logError(
+            tag,
+            // ignore: avoid_dynamic_calls
+            "fetchIssuesByNumbers: ${error.message}",
+            error as GitHubError);
+      })));
+    }
+    return issues;
   }
 
   /// Create an empty bug picture in the local storage

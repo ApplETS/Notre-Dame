@@ -4,8 +4,8 @@
     <br /><strong>Projet Notre-Dame</strong>
     <br />
     <br />
-    <a href="https://github.com/ApplETS/Notre-Dame/actions/workflows/main-workflow.yaml" style="text-decoration: none;">
-      <img src="https://github.com/ApplETS/Notre-Dame/actions/workflows/main-workflow.yaml/badge.svg?branch=master" alt="Statut de la compilation"/>
+    <a href="https://github.com/ApplETS/Notre-Dame/actions/workflows/master-workflow.yaml" style="text-decoration: none;">
+      <img src="https://github.com/ApplETS/Notre-Dame/actions/workflows/master-workflow.yaml/badge.svg?branch=master" alt="Statut de la compilation"/>
     </a>
     <img src="https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/clubapplets-server/e51406de3b919a69f396642a2bcb413c/raw/notre_dame_master_badge_coverage.json" alt="Code coverage"/>
     <br />
@@ -30,15 +30,21 @@ _Note: Ce guide est aussi disponible en: [English](https://github.com/ApplETS/No
 
 ## Requis
 
-- Flutter SDK v2.2.0 ou supérieure
+- Flutter SDK v3.3.10
+```sh
+# pour rétrograder la version de flutter à la version requise, il suffit de faire :
+$ flutter downgrade 3.3.10
+```
 - Openssl v1.1.1g ou supérieure
+- Java sdk 11
 
 ## Avant de démarrer le code
 
 - Pour avoir accès a certaines fonctionnalités vous allez avoir besoin du certificat de SignetsAPI, la clef Google Drive., etc. , ces fichiers sont encrypté.
   Pour les décrypter vous allez devoir exécuter le script `env_variables.sh` (disponible uniquement sur le Google Drive du club), 
 - puis exécuter les commandes suivantes à la racine du projet:
-```bash
+```sh
+chmod +x ./scripts/decrypt.sh
 chmod +x ./env_variables.sh
 ./env_variables.sh
 ```

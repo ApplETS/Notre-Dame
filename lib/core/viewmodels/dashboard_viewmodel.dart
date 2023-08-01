@@ -398,7 +398,7 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
       final courseKey = courseAcronym.courseGroup.split('-')[0];
 
       final String activityCodeToUse = await _settingsManager.getDynamicString(
-          PreferencesFlag.scheduleSettingsLaboratoryGroup, courseKey);
+          PreferencesFlag.scheduleLaboratoryGroup, courseKey);
 
       if (activityCodeToUse == ActivityCode.labGroupA) {
         todayDateEventsCopy.removeWhere((element) =>
@@ -557,10 +557,10 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
 
       if (_appIntl.localeName == "fr") {
         this.broadcastMessage = await remoteConfigService.dashboardMessageFr;
-        this.broadcastTitle = await remoteConfigService.dashboardMessageTitleFr; 
+        this.broadcastTitle = await remoteConfigService.dashboardMessageTitleFr;
       } else {
         this.broadcastMessage = await remoteConfigService.dashboardMessageEn;
-        this.broadcastTitle = await remoteConfigService.dashboardMessageTitleEn; 
+        this.broadcastTitle = await remoteConfigService.dashboardMessageTitleEn;
       }
     } else {
       _cardsToDisplay.remove(flag);

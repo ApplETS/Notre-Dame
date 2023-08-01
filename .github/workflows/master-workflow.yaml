@@ -1,4 +1,4 @@
-name: Main workflow
+name: Master workflow
 on:
   workflow_dispatch:
   push:
@@ -11,37 +11,23 @@ on:
       - 'README.fr.md'
       - 'android/fastlane/**'
       - 'ios/fastlane/**'
-  pull_request:
-    paths-ignore:
-      - '.gitignore'
-      - '.metadata'
-      - 'README.md'
-      - 'README.fr.md'
-      - 'android/fastlane/**'
-      - 'ios/fastlane/**'
-
+concurrency:
+  group: ${{ github.ref }}
+  cancel-in-progress: true
 env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   MAPS_API_KEY: ${{ secrets.MAPS_API_KEY }}
   APP_NAME: 'notre_dame'
+
 jobs:
-  delete_bot_comments:
-    name: Delete the bot comments on the PR.
-    runs-on: ubuntu-latest
-    steps:
-      - uses: izhangzhihao/delete-comment@master
-        if: ${{ github.event_name == 'pull_request' }}
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          delete_user_name: github-actions[bot]
-          issue_number: ${{ github.event.number }}
+  ##############################################################
+  # Setup
+  ##############################################################
   tag_validation:
     name: Tag validation
     runs-on: ubuntu-latest
     outputs:
       version: ${{ steps.split.outputs._0 }}
-    needs:
-      - delete_bot_comments
     steps:
       - uses: actions/checkout@v3
       - name: Get the version from the pubspec
@@ -60,11 +46,15 @@ jobs:
         id: checkTag
         with:
           tag: ${{ steps.split.outputs._0 }}
-      - if: ${{ steps.checkTag.outputs.exists == 'true' && github.event_name == 'pull_request' }}
+      - if: ${{ steps.checkTag.outputs.exists == 'true' }}
         name: Post comment on PR and fail.
         run: |
-          gh pr comment ${{ github.event.pull_request.number }} -b '${{ steps.split.outputs._0 }} already exists, please update the pubspec version.'
+          echo '${{ steps.split.outputs._0 }} already exists, please update the pubspec version.'
           exit 1
+
+  ##############################################################
+  # Tests
+  ##############################################################
   testing:
     name: Tests and checks
     runs-on: ubuntu-latest
@@ -74,7 +64,6 @@ jobs:
       - uses: actions/checkout@v3
         with:
           ref: ${{ github.head_ref }}
-          token: ${{ secrets.PTA }}
       - uses: actions/setup-java@v3
         with:
           distribution: 'adopt'
@@ -96,72 +85,39 @@ jobs:
       # Get flutter dependencies.
       - run: flutter pub get
 
-      # Check the format of the code and commit the formatted files.
-      - name: Format files in lib and test directories
-        run: flutter format lib test
-      - name: Commit formatted files
-        uses: stefanzweifel/git-auto-commit-action@v4
-        with:
-          file_pattern: "*.dart"
-          commit_user_name: github-actions[bot]
-          commit_user_email: 41898282+github-actions[bot]@users.noreply.github.com
-          commit_message: "[BOT] Applying format."
-          add_options: '-u'
-
       # Check if the code has any errors/warnings
       - name: Analyze code
         run: flutter analyze
 
-      # Run the tests with --update-goldens.
-      - name: Update goldens
-        run: flutter test --coverage --update-goldens
-
-      # Commit and push the goldens files updated.
-      - name: Commit golden files
-        id: commit
-        uses: stefanzweifel/git-auto-commit-action@v4
-        with:
-          file_pattern: test/*
-          commit_user_name: github-actions[bot]
-          commit_user_email: 41898282+github-actions[bot]@users.noreply.github.com
-          commit_message: "[BOT] Update golden files"
+      # Run the tests.
+      - name: Run tests
+        run: flutter test --coverage
 
       - name: Upload coverage file
         uses: actions/upload-artifact@v3
         with:
           name: lcov.info
           path: ${{ github.workspace }}/coverage/lcov.info
+
       - name: Get code coverage
-        #        if: ${{ github.event_name == 'push' }}
         id: coverage
         run: |
           chmod +x ./scripts/determine_code_coverage.sh
           export COV="$(./scripts/determine_code_coverage.sh coverage/lcov.info)"
           echo "Coverage detected is: $COV"
-          echo "::set-output name=percentage::$COV"
+          echo "percentage=$COV" >> $GITHUB_OUTPUT
 
   coverage:
     name: Update coverage
     needs:
       - testing
-      - delete_bot_comments
     runs-on: ubuntu-latest
     steps:
       - name: Download coverage file
         uses: actions/download-artifact@v3
         with:
           name: lcov.info
-      # Comment coverage report
-      - name: Comment the coverage of the PR
-        if: ${{ github.event_name == 'pull_request' }}
-        uses: romeovs/lcov-reporter-action@v0.3.1
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          lcov-file: ./lcov.info
-      #          lcov-base: ./coverage/lcov.base.info
-
       - name: Update badge coverage
-        if: ${{ github.event_name == 'push' }}
         uses: schneegans/dynamic-badges-action@v1.6.0
         with:
           auth: ${{ secrets.GIST_COVERAGE_BADGE_TOKEN }}
@@ -172,28 +128,9 @@ jobs:
           namedLogo: flutter
           color: green
 
-#      Disable these steps for now. Will enable them when we will think of a way to upload lcov.base.info somewhere
-#      - name: Commit coverage file
-#        id: commit
-#        if: ${{ github.event_name == 'push' }}
-#        run: |
-#          git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
-#          git config --local user.name "github-actions[bot]"
-#          mv coverage/lcov.info coverage/lcov.base.info
-#          git add coverage/lcov.base.info
-#          git status
-#          git status | grep -o 'coverage/lcov.base.info*'
-#          if git status | grep -o 'coverage/lcov.base.info*'; then
-#            git commit -m "Update coverage file" -a
-#            echo "::set-output name=is_commit::true"
-#          fi
-#      - name: Push coverage changes.
-#        if: ${{ github.event_name == 'push' && }}
-#        uses: ad-m/github-push-action@master
-#        with:
-#          github_token: ${{ secrets.GITHUB_TOKEN }}
-#          branch: ${{ github.head_ref }}
-
+  ##############################################################
+  # Build
+  ##############################################################
   build:
     name: Create ${{ matrix.target }} build
     runs-on: ${{ matrix.os }}
@@ -219,7 +156,6 @@ jobs:
       fail-fast: false
     needs:
       - testing
-      - tag_validation
     steps:
       - uses: actions/checkout@v3
       - uses: subosito/flutter-action@v2
@@ -278,9 +214,11 @@ jobs:
           name: ${{ matrix.target }}
           path: ${{ github.workspace }}/${{ env.APP_NAME }}_${{ matrix.target }}.${{ matrix.asset_extension }}
 
+  ##############################################################
+  # Post-build
+  ##############################################################
   create_pre_release:
     name: Create Github release
-    if: ${{ github.event_name == 'push' || (github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/master') }}
     needs:
       - tag_validation
       - build

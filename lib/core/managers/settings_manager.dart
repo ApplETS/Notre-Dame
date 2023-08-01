@@ -1,4 +1,5 @@
 // FLUTTER / DART / THIRD-PARTIES
+import 'package:calendar_view/calendar_view.dart';
 import 'package:enum_to_string/enum_to_string.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -9,6 +10,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 // SERVICES
 import 'package:notredame/core/services/analytics_service.dart';
 import 'package:notredame/core/services/preferences_service.dart';
+import 'package:notredame/core/services/remote_config_service.dart';
 
 // CONSTANTS
 import 'package:notredame/core/constants/preferences_flags.dart';
@@ -25,6 +27,9 @@ class SettingsManager with ChangeNotifier {
   final PreferencesService _preferencesService = locator<PreferencesService>();
 
   final AnalyticsService _analyticsService = locator<AnalyticsService>();
+
+  final RemoteConfigService _remoteConfigService =
+      locator<RemoteConfigService>();
 
   /// current ThemeMode
   ThemeMode _themeMode;
@@ -149,32 +154,46 @@ class SettingsManager with ChangeNotifier {
     final Map<PreferencesFlag, dynamic> settings = {};
 
     final calendarFormat = await _preferencesService
-        .getString(PreferencesFlag.scheduleSettingsCalendarFormat)
+        .getString(PreferencesFlag.scheduleCalendarFormat)
         .then((value) => value == null
             ? CalendarFormat.week
             : EnumToString.fromString(CalendarFormat.values, value));
     settings.putIfAbsent(
-        PreferencesFlag.scheduleSettingsCalendarFormat, () => calendarFormat);
+        PreferencesFlag.scheduleCalendarFormat, () => calendarFormat);
 
     final startingWeekDay = await _preferencesService
-        .getString(PreferencesFlag.scheduleSettingsStartWeekday)
+        .getString(PreferencesFlag.scheduleStartWeekday)
         .then((value) => value == null
             ? StartingDayOfWeek.monday
             : EnumToString.fromString(StartingDayOfWeek.values, value));
     settings.putIfAbsent(
-        PreferencesFlag.scheduleSettingsStartWeekday, () => startingWeekDay);
+        PreferencesFlag.scheduleStartWeekday, () => startingWeekDay);
+
+    final otherWeekDay = await _preferencesService
+        .getString(PreferencesFlag.scheduleOtherWeekday)
+        .then((value) => value == null
+            ? WeekDays.monday
+            : EnumToString.fromString(WeekDays.values, value));
+    settings.putIfAbsent(
+        PreferencesFlag.scheduleOtherWeekday, () => otherWeekDay);
 
     final showTodayBtn = await _preferencesService
-            .getBool(PreferencesFlag.scheduleSettingsShowTodayBtn) ??
+            .getBool(PreferencesFlag.scheduleShowTodayBtn) ??
         true;
     settings.putIfAbsent(
-        PreferencesFlag.scheduleSettingsShowTodayBtn, () => showTodayBtn);
+        PreferencesFlag.scheduleShowTodayBtn, () => showTodayBtn);
+
+    final scheduleListView =
+        await _preferencesService.getBool(PreferencesFlag.scheduleListView) ??
+            calendarViewSetting;
+    settings.putIfAbsent(
+        PreferencesFlag.scheduleListView, () => scheduleListView);
 
     final showWeekEventsBtn = await _preferencesService
-            .getBool(PreferencesFlag.scheduleSettingsShowWeekEvents) ??
+            .getBool(PreferencesFlag.scheduleShowWeekEvents) ??
         true;
-    settings.putIfAbsent(PreferencesFlag.scheduleSettingsShowWeekEvents,
-        () => showWeekEventsBtn);
+    settings.putIfAbsent(
+        PreferencesFlag.scheduleShowWeekEvents, () => showWeekEventsBtn);
 
     _logger.i("$tag - getScheduleSettings - Settings loaded: $settings");
 
@@ -250,4 +269,6 @@ class SettingsManager with ChangeNotifier {
   // TODO: use broadcast card as default 0 index
   int getDefaultCardIndex(PreferencesFlag flag) =>
       flag.index - PreferencesFlag.aboutUsCard.index;
+
+  bool get calendarViewSetting => _remoteConfigService.scheduleListViewDefault;
 }

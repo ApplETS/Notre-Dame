@@ -59,7 +59,10 @@
   "schedule_settings_calendar_format_2_weeks": "2 semaines",
   "schedule_settings_calendar_format_week": "Semaine",
   "schedule_settings_starting_weekday_pref": "Premier jour de la semaine",
+  "schedule_settings_show_weekend_day": "Afficher la fin de semaine",
+  "schedule_settings_show_weekend_day_none": "Aucun",
   "schedule_settings_show_week_events_btn_pref": "Afficher les activités de la semaine",
+  "schedule_settings_list_view": "Liste défilante",
   "schedule_settings_starting_weekday_monday": "Lundi",
   "schedule_settings_starting_weekday_tuesday": "Mardi",
   "schedule_settings_starting_weekday_wednesday": "Mercredi",
@@ -70,6 +73,11 @@
   "schedule_no_event": "Aucun évènement à l'horaire.",
   "schedule_select_course_activity": "Sélectionner le groupe du laboratoire",
   "schedule_already_today_toast": "Déjà sur l'horaire d'aujourd'hui",
+  "schedule_calendar_from": "Du",
+  "schedule_calendar_to": "au",
+  "schedule_calendar_from_time": "De",
+  "schedule_calendar_to_time": "à",
+  "schedule_calendar_by": "Par",
   "course_activity_group_a": "Groupe A",
   "course_activity_group_b": "Groupe B",
   "course_activity_group_both": "Les deux groupes",
@@ -116,6 +124,12 @@
       "number": {}
     }
   },
+  "credits_number": "Crédits: {number}",
+  "@credits_number": {
+    "placeholders": {
+      "number": {}
+    }
+  },
   "grades_teacher": "Enseignant: {teacherName}",
   "@grades_teacher": {
     "placeholders": {
@@ -153,12 +167,9 @@
   "ets_papercut_title":"PaperCut",
 
   "more_about_applets_title": "À propos d'ApplETS",
-  "more_report_bug": "Rapporter un bogue",
+  "more_report_bug": "Rapporter un bogue ou une amélioration",
   "more_report_bug_steps_title": "Comment faire?\n\n",
   "more_report_bug_button": "Fournir un avis",
-  "more_report_bug_step1": "1. Appuyer sur le bouton 'Fournir un avis'.\n\n",
-  "more_report_bug_step2": "2. La vue retour d'information s'ouvre. Vous pouvez choisir entre le mode Dessiner et Naviguer. Dans le mode Naviguer, vous pouvez vous déplacer dans l'application entière. Pour changer au mode Dessiner, appuyer sur le bouton sur le côté droit. Vous pouvez dessiner sur l'écran.\n\n",
-  "more_report_bug_step3": "3. Pour terminer votre retour d'information, écrivez un message détaillé et appuyez sur le bouton 'Envoyer'.\n\n",
   "more_prompt_report_bug_method": "Comment souhaitez-vous rapporter le bogue?",
   "more_report_bug_method_screenshot": "Capture d'écran",
   "more_report_bug_method_video": "Capture vidéo",
@@ -171,6 +182,17 @@
   
   "more_applets_about_details": "ÉTSMobile a été réalisée par le club scientifique ApplETS de l'École de technologie supérieure.\n\nApplETS se veut, avant tout, un regroupement d’étudiants qui partagent un intérêt commun pour le domaine des télécommunications et des applications mobiles. La mission d'ApplETS est de former les étudiants au développement mobile et de promouvoir la production d'applications mobiles au sein de la communauté étudiante.\n\nSuivez-nous sur : ",
   
+  "more_report_bug_bug": "Rapporter un bogue",
+  "more_report_bug_bug_subtitle": "\nFaites-le nous savoir afin que nous puissions l'ajouter à notre liste de bogues.",
+  "more_report_bug_feature": "Demander une fonctionnalité",
+  "more_report_bug_feature_subtitle": "\nAvez-vous une idée qui améliorerait notre application ? Nous aimerions savoir !",  
+  "more_report_tips": "Astuce",
+  "more_report_bug_step1": "Après avoir sélectionné l'option, la vue des commentaires s'ouvrira.\n\nVous pouvez choisir entre le mode ",
+  "more_report_bug_step2": "Naviguer ",
+  "more_report_bug_step3": "et ",
+  "more_report_bug_step4": "Dessiner ",
+  "more_report_bug_step5": "sur le côté droit. \n\nEn mode navigation, vous pouvez naviguer librement dans l'application.\n\nPour passer en mode dessin, appuyez simplement sur le bouton 'Dessiner'. Vous pouvez maintenant dessiner sur l'écran.\n\nPour terminer votre commentaire, écrivez simplement une description ci-dessous et envoyez-la en appuyant sur le bouton 'Soumettre'.",  
+
   "security_bomb_threat_title": "Alerte à la bombe",
   "security_bomb_threat_detail": "bomb_threat_detail_fr.html",
   "security_suspicious_packages_title": "Colis suspect",
@@ -286,5 +308,10 @@
 
   "in_app_review_title": "Évaluez-nous!",  
   "need_help_contact_us": "Besoin d'aide? Contactez-nous!",
-  "universal_code_example": "Ex: AB12345"
+  "universal_code_example": "Ex: AB12345",
+  "my_tickets": "Mes billets",
+  "no_ticket": "Aucun billet",
+  "ticket_status_open": "Ouvert",
+  "ticket_status_closed": "Fermé",
+  "loading": "Chargement..."
 }
