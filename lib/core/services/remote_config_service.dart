@@ -17,6 +17,7 @@ class RemoteConfigService {
   static const _dashboardMsgEn = "dashboard_message_en";
   static const _dashboardMsgTitleFr = "dashboard_message_title_fr";
   static const _dashboardMsgTitleEn = "dashboard_message_title_en";
+  static const _dashboardMsgColor = "dashboard_message_color";
 
   static const _scheduleListViewDefault = "schedule_list_view_default";
   final FirebaseRemoteConfig _remoteConfig = FirebaseRemoteConfig.instance;
@@ -24,11 +25,11 @@ class RemoteConfigService {
     _serviceIsDown: false,
     _dashboardMsgFr: "",
     _dashboardMsgEn: "",
+    _dashboardMsgTitleFr: "",
+    _dashboardMsgTitleEn: "",
+    _dashboardMsgColor: "",
     _scheduleListViewDefault: true
-    // TODO: either add default values for the rest or delete the ones above
   };
-
-  static const String tag = "RemoteConfigService";
 
   Future initialize() async {
     await _remoteConfig.setDefaults(defaults);
@@ -68,6 +69,11 @@ class RemoteConfigService {
   Future<String> get dashboardMessageTitleEn async {
     fetch();
     return _remoteConfig.getString(_dashboardMsgTitleEn);
+  }
+
+  String get dashboardMsgColor {
+    fetch();
+    return _remoteConfig.getString(_dashboardMsgColor);
   }
 
   Future<void> fetch() async {

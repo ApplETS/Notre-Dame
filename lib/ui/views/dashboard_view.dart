@@ -409,8 +409,7 @@ class _DashboardViewState extends State<DashboardView>
             dismissCard(model, flag);
           },
           isBusy: model.busy(model.broadcastMessage),
-          cardColor: AppTheme
-              .etsDarkRed, // TODO: maybe change color w/ remote config ?
+          cardColor: Color(int.parse(model.dashboardMsgColor)),
           child: Padding(
             padding: const EdgeInsets.fromLTRB(17, 10, 15, 20),
             child: Column(mainAxisSize: MainAxisSize.min, children: [
