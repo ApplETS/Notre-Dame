@@ -403,8 +403,9 @@ class _DashboardViewState extends State<DashboardView>
 
   Widget _buildMessageBroadcastCard(
       DashboardViewModel model, PreferencesFlag flag) {
-    final broadcastMsgColor =
-        Color(int.parse(model.dashboardMsgColor)) ?? AppTheme.etsDarkRed;
+    final broadcastMsgColor = model.dashboardMsgColor.isNotEmpty
+        ? Color(int.parse(model.dashboardMsgColor))
+        : AppTheme.etsDarkRed;
     return DismissibleCard(
         key: UniqueKey(),
         onDismissed: (DismissDirection direction) {
@@ -440,7 +441,8 @@ class _DashboardViewState extends State<DashboardView>
               ],
             ),
             // main text
-            Text(model.broadcastMessage ?? "")
+            Text(model.broadcastMessage ?? "",
+                style: Theme.of(context).primaryTextTheme.bodyText2)
           ]),
         ));
   }
