@@ -402,45 +402,48 @@ class _DashboardViewState extends State<DashboardView>
       );
 
   Widget _buildMessageBroadcastCard(
-          DashboardViewModel model, PreferencesFlag flag) =>
-      DismissibleCard(
-          key: UniqueKey(),
-          onDismissed: (DismissDirection direction) {
-            dismissCard(model, flag);
-          },
-          isBusy: model.busy(model.broadcastMessage),
-          cardColor: Color(int.parse(model.dashboardMsgColor)),
-          child: Padding(
-            padding: const EdgeInsets.fromLTRB(17, 10, 15, 20),
-            child: Column(mainAxisSize: MainAxisSize.min, children: [
-              // title row
-              Row(
-                children: [
-                  Expanded(
-                    child: Align(
-                      alignment: Alignment.centerLeft,
-                      child: Text(
-                          AppIntl.of(context)
-                              .card_broadcast_title, // TODO: use remote config
-                          style: Theme.of(context).primaryTextTheme.headline6),
+      DashboardViewModel model, PreferencesFlag flag) {
+    final broadcastMsgColor =
+        Color(int.parse(model.dashboardMsgColor)) ?? AppTheme.etsDarkRed;
+    return DismissibleCard(
+        key: UniqueKey(),
+        onDismissed: (DismissDirection direction) {
+          dismissCard(model, flag);
+        },
+        isBusy: model.busy(model.broadcastMessage),
+        cardColor: broadcastMsgColor,
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(17, 10, 15, 20),
+          child: Column(mainAxisSize: MainAxisSize.min, children: [
+            // title row
+            Row(
+              children: [
+                Expanded(
+                  child: Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                        AppIntl.of(context)
+                            .card_broadcast_title, // TODO: use remote config
+                        style: Theme.of(context).primaryTextTheme.headline6),
+                  ),
+                ),
+                const Align(
+                  alignment: Alignment.centerRight,
+                  child: InkWell(
+                    child: Icon(
+                      Icons.campaign,
+                      color: AppTheme.lightThemeBackground,
+                      size: 36.0,
                     ),
                   ),
-                  const Align(
-                    alignment: Alignment.centerRight,
-                    child: InkWell(
-                      child: Icon(
-                        Icons.campaign,
-                        color: AppTheme.lightThemeBackground,
-                        size: 36.0,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              // main text
-              Text(model.broadcastMessage ?? "")
-            ]),
-          ));
+                ),
+              ],
+            ),
+            // main text
+            Text(model.broadcastMessage ?? "")
+          ]),
+        ));
+  }
 
   void dismissCard(DashboardViewModel model, PreferencesFlag flag) {
     model.hideCard(flag);
