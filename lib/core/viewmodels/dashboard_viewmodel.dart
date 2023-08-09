@@ -65,6 +65,7 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
   /// remote config), and the associated card title
   String broadcastMessage;
   String broadcastTitle;
+  String broadcastColor;
 
   /// Get progress of the session
   double get progress => _progress;
@@ -97,8 +98,6 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
       ProgressBarText.daysElapsedWithTotalDays;
 
   ProgressBarText get currentProgressBarText => _currentProgressBarText;
-
-  String get dashboardMsgColor => remoteConfigService.dashboardMsgColor;
 
   /// Return session progress based on today's [date]
   double getSessionProgress() {
@@ -290,17 +289,16 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
   }
 
   /// Reset all card indexes to their default values
-  // TODO: order for broadcast card
   void setAllCardsVisible() {
     _cards.updateAll((key, value) {
       _settingsManager
-          .setInt(key, key.index - PreferencesFlag.aboutUsCard.index)
+          .setInt(key, key.index - PreferencesFlag.broadcastCard.index)
           .then((value) {
         if (!value) {
           Fluttertoast.showToast(msg: _appIntl.error);
         }
       });
-      return key.index - PreferencesFlag.aboutUsCard.index;
+      return key.index - PreferencesFlag.broadcastCard.index;
     });
 
     getCardsToDisplay();
@@ -554,9 +552,6 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
     setBusyForObject(broadcastMessage, true);
 
     if (remoteConfigService.dashboardMessageActive) {
-      _cardsToDisplay.remove(flag);
-      _cardsToDisplay.insert(0, flag);
-
       if (_appIntl.localeName == "fr") {
         broadcastMessage = await remoteConfigService.dashboardMessageFr;
         broadcastTitle = await remoteConfigService.dashboardMessageTitleFr;
@@ -564,6 +559,7 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
         broadcastMessage = await remoteConfigService.dashboardMessageEn;
         broadcastTitle = await remoteConfigService.dashboardMessageTitleEn;
       }
+      broadcastColor = await remoteConfigService.dashboardMsgColor;
     } else {
       _cardsToDisplay.remove(flag);
     }

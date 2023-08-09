@@ -102,7 +102,6 @@ class _DashboardViewState extends State<DashboardView>
 
     // always try to build broadcast cart so the user doesn't miss out on
     // important info if they dismissed it previously
-    // TODO: fetch if broadcast message first ?
 
     for (final PreferencesFlag element in model.cardsToDisplay) {
       switch (element) {
@@ -403,9 +402,7 @@ class _DashboardViewState extends State<DashboardView>
 
   Widget _buildMessageBroadcastCard(
       DashboardViewModel model, PreferencesFlag flag) {
-    final broadcastMsgColor = model.dashboardMsgColor.isNotEmpty
-        ? Color(int.parse(model.dashboardMsgColor))
-        : AppTheme.etsDarkRed;
+    final broadcastMsgColor = Color(int.parse(model.broadcastColor));
     return DismissibleCard(
         key: UniqueKey(),
         onDismissed: (DismissDirection direction) {
@@ -422,9 +419,7 @@ class _DashboardViewState extends State<DashboardView>
                 Expanded(
                   child: Align(
                     alignment: Alignment.centerLeft,
-                    child: Text(
-                        AppIntl.of(context)
-                            .card_broadcast_title, // TODO: use remote config
+                    child: Text(model.broadcastTitle,
                         style: Theme.of(context).primaryTextTheme.headline6),
                   ),
                 ),
@@ -432,7 +427,8 @@ class _DashboardViewState extends State<DashboardView>
                   alignment: Alignment.centerRight,
                   child: InkWell(
                     child: Icon(
-                      Icons.campaign,
+                      Icons
+                          .campaign, // TODO Chose from a pre-defined list depending on the case
                       color: AppTheme.lightThemeBackground,
                       size: 36.0,
                     ),

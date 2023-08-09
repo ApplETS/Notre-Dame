@@ -71,7 +71,7 @@ class RemoteConfigService {
     return _remoteConfig.getString(_dashboardMsgTitleEn);
   }
 
-  String get dashboardMsgColor {
+  Future<String> get dashboardMsgColor async {
     fetch();
     return _remoteConfig.getString(_dashboardMsgColor);
   }
