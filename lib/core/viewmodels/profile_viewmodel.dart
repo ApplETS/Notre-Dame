@@ -48,25 +48,30 @@ class ProfileViewModel extends FutureViewModel<List<Program>> {
 
   double get programProgression {
     final ProgramCredits programCredits = ProgramCredits();
-    final int numberOfCreditsCompleted = int.parse(programList[programList.length - 1].accumulatedCredits);
-    final String code = programList[programList.length - 1].code; 
     int percentage = 0;
-    bool foundMatch = false;
 
-    programCredits.programsCredits.forEach((key, value) {
-      if (key == code ||
-          programList[programList.length - 1].name.startsWith(key)) {
-        percentage = (numberOfCreditsCompleted / value * 100).round();
-        foundMatch = true;
+    if (programList.isNotEmpty) {
+      final int numberOfCreditsCompleted =
+          int.parse(programList[programList.length - 1].accumulatedCredits);
+      final String code = programList[programList.length - 1].code;
+      bool foundMatch = false;
+
+      programCredits.programsCredits.forEach((key, value) {
+        if (key == code ||
+            programList[programList.length - 1].name.startsWith(key)) {
+          percentage = (numberOfCreditsCompleted / value * 100).round();
+          foundMatch = true;
+        }
+      });
+
+      if (!foundMatch) {
+        final String programName = programList[programList.length - 1].name;
+        analyticsService.logEvent("profile_view",
+            'The program $programName (code: $code) does not match any program');
+        percentage = 0;
       }
-    });
-
-    if (!foundMatch) {
-      final String programName = programList[programList.length - 1].name;
-      analyticsService.logEvent("profile_view", 'The program $programName (code: $code) does not match any program');
-      percentage = 0;
     }
-    
+
     return percentage.toDouble();
   }
 

@@ -1,9 +1,12 @@
 // FLUTTER / DART / THIRD-PARTIES
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:notredame/ui/utils/app_theme.dart';
 import 'package:stacked/stacked.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:percent_indicator/percent_indicator.dart';
+import 'package:logger/logger.dart';
 
 // VIEW-MODEL
 import 'package:notredame/core/viewmodels/profile_viewmodel.dart';
@@ -34,6 +37,8 @@ class ProfileView extends StatefulWidget {
 class _ProfileViewState extends State<ProfileView> {
   final AnalyticsService _analyticsService = locator<AnalyticsService>();
 
+  final Logger _logger = locator<Logger>();
+
   @override
   void initState() {
     super.initState();
@@ -42,96 +47,98 @@ class _ProfileViewState extends State<ProfileView> {
   }
 
   @override
-Widget build(BuildContext context) => ViewModelBuilder<ProfileViewModel>.reactive(
-      viewModelBuilder: () => ProfileViewModel(intl: AppIntl.of(context)),
-      builder: (context, model, child) {
-        return RefreshIndicator(
-          onRefresh: () => model.refresh(),
-          child: SingleChildScrollView(
-            child: Column(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(5.0, 10.0, 5.0, 5.0),
-                  child: SizedBox(
-                    height: 90,
-                    child: getMainInfoCard(model),
+  Widget build(BuildContext context) =>
+      ViewModelBuilder<ProfileViewModel>.reactive(
+        viewModelBuilder: () => ProfileViewModel(intl: AppIntl.of(context)),
+        builder: (context, model, child) {
+          return RefreshIndicator(
+            onRefresh: () => model.refresh(),
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(5.0, 10.0, 5.0, 5.0),
+                    child: SizedBox(
+                      height: 90,
+                      child: getMainInfoCard(model),
+                    ),
                   ),
-                ),
-                Row(
-                  children: <Widget>[
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: <Widget>[
-                          Padding(
-                            padding: const EdgeInsets.fromLTRB(8.0, 0.0, 8.0, 8.0),
-                            child: getMyInfosCard(model, context),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.fromLTRB(8.0, 0.0, 8.0, 4.0),
-                            child: getMyBalanceCard(model, context),
-                          ),
-                        ],
-                      ),
-                    ),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: <Widget>[
-                          Padding(
-                            padding: const EdgeInsets.fromLTRB(0.0, 0.0, 8.0, 4.0),
-                            child: getProgramCompletion(model, context),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-                const Divider(
-                  thickness: 2,
-                  indent: 10,
-                  endIndent: 10,
-                ),
-                getCurrentProgramTile(model.programList, context),
-                const Divider(
-                  thickness: 2,
-                  indent: 10,
-                  endIndent: 10,
-                ),
-                Row(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(left: 16.0, top: 8.0, bottom: 8.0),
-                      child: Text(
-                        AppIntl.of(context).profile_other_programs,
-                        style: const TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                          color: AppTheme.etsLightRed
+                  Row(
+                    children: <Widget>[
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: <Widget>[
+                            Padding(
+                              padding:
+                                  const EdgeInsets.fromLTRB(8.0, 0.0, 8.0, 8.0),
+                              child: getMyInfosCard(model, context),
+                            ),
+                            Padding(
+                              padding:
+                                  const EdgeInsets.fromLTRB(8.0, 0.0, 8.0, 4.0),
+                              child: getMyBalanceCard(model, context),
+                            ),
+                          ],
                         ),
                       ),
-                    ),
-                  ],
-                ),
-                 Column(
-                  children: [
-                    for (var i = 0; i < model.programList.length - 1; i++)
-                      StudentProgram(model.programList[i]),
-                  ],
-                ),
-                const SizedBox(
-                  height: 10.0
-                ),
-                if (model.isBusy)
-                  buildLoading(isInteractionLimitedWhileLoading: false)
-                else
-                  const SizedBox()
-              ],
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: <Widget>[
+                            Padding(
+                              padding:
+                                  const EdgeInsets.fromLTRB(0.0, 0.0, 8.0, 4.0),
+                              child: getProgramCompletion(model, context),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                  const Divider(
+                    thickness: 2,
+                    indent: 10,
+                    endIndent: 10,
+                  ),
+                  getCurrentProgramTile(model.programList, context),
+                  const Divider(
+                    thickness: 2,
+                    indent: 10,
+                    endIndent: 10,
+                  ),
+                  Row(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(
+                            left: 16.0, top: 8.0, bottom: 8.0),
+                        child: Text(
+                          AppIntl.of(context).profile_other_programs,
+                          style: const TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                              color: AppTheme.etsLightRed),
+                        ),
+                      ),
+                    ],
+                  ),
+                  Column(
+                    children: [
+                      for (var i = 0; i < model.programList.length - 1; i++)
+                        StudentProgram(model.programList[i]),
+                    ],
+                  ),
+                  const SizedBox(height: 10.0),
+                  if (model.isBusy)
+                    buildLoading(isInteractionLimitedWhileLoading: false)
+                  else
+                    const SizedBox()
+                ],
+              ),
             ),
-          ),
-        );
-      },
-    );
+          );
+        },
+      );
 }
 
 Card getMainInfoCard(ProfileViewModel model) {
@@ -207,9 +214,17 @@ Card getMyInfosCard(ProfileViewModel model, BuildContext context) {
 }
 
 Card getMyBalanceCard(ProfileViewModel model, BuildContext context) {
-  final balance = model.profileStudent.balance;
-  return Card( 
-    color: double.parse(balance.substring(0, balance.length - 1).replaceAll(",", ".")) > 0 ? Colors.red : Colors.green,
+  final stringBalance = model.profileStudent.balance;
+  var balance = 0.0;
+
+  if (stringBalance.isNotEmpty) {
+    balance = double.parse(stringBalance
+        .substring(0, stringBalance.length - 1)
+        .replaceAll(",", "."));
+  }
+
+  return Card(
+    color: balance > 0 ? Colors.red : Colors.green,
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
@@ -226,7 +241,7 @@ Card getMyBalanceCard(ProfileViewModel model, BuildContext context) {
           padding: const EdgeInsets.only(bottom: 16.0),
           child: Center(
             child: Text(
-              balance,
+              stringBalance,
               style: const TextStyle(fontSize: 18),
             ),
           ),
@@ -252,16 +267,16 @@ Card getProgramCompletion(ProfileViewModel model, BuildContext context) {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.only(top: 30.0, bottom: 37.0),
-            child: Center(child: getLoadingIndicator(model, context))
-          ),
+              padding: const EdgeInsets.only(top: 30.0, bottom: 37.0),
+              child: Center(child: getLoadingIndicator(model, context))),
         ],
       ),
     ),
   );
 }
 
-CircularPercentIndicator getLoadingIndicator(ProfileViewModel model, BuildContext context) {
+CircularPercentIndicator getLoadingIndicator(
+    ProfileViewModel model, BuildContext context) {
   final double percentage = model.programProgression;
 
   return CircularPercentIndicator(
@@ -272,7 +287,9 @@ CircularPercentIndicator getLoadingIndicator(ProfileViewModel model, BuildContex
     percent: percentage / 100,
     circularStrokeCap: CircularStrokeCap.round,
     center: Text(
-      percentage != 0 ? '$percentage%' : AppIntl.of(context).profile_program_completion_not_available,
+      percentage != 0
+          ? '$percentage%'
+          : AppIntl.of(context).profile_program_completion_not_available,
       style: const TextStyle(fontSize: 20),
     ),
     progressColor: Colors.green,
@@ -315,8 +332,7 @@ Column getCurrentProgramTile(List<Program> programList, BuildContext context) {
             style: const TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
-                color: AppTheme.etsLightRed
-            ),
+                color: AppTheme.etsLightRed),
           ),
         ),
         ...List<Widget>.generate(dataTitles.length, (index) {
