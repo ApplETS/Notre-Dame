@@ -56,83 +56,10 @@ class _ProfileViewState extends State<ProfileView> {
             child: SingleChildScrollView(
               child: Column(
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(5.0, 10.0, 5.0, 5.0),
-                    child: SizedBox(
-                      height: 90,
-                      child: getMainInfoCard(model),
-                    ),
-                  ),
-                  Row(
-                    children: <Widget>[
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          children: <Widget>[
-                            Padding(
-                              padding:
-                                  const EdgeInsets.fromLTRB(8.0, 0.0, 8.0, 8.0),
-                              child: getMyInfosCard(model, context),
-                            ),
-                            Padding(
-                              padding:
-                                  const EdgeInsets.fromLTRB(8.0, 0.0, 8.0, 4.0),
-                              child: getMyBalanceCard(model, context),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          children: <Widget>[
-                            Padding(
-                              padding:
-                                  const EdgeInsets.fromLTRB(0.0, 0.0, 8.0, 4.0),
-                              child: getProgramCompletion(model, context),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                  const Divider(
-                    thickness: 2,
-                    indent: 10,
-                    endIndent: 10,
-                  ),
-                  getCurrentProgramTile(model.programList, context),
-                  const Divider(
-                    thickness: 2,
-                    indent: 10,
-                    endIndent: 10,
-                  ),
-                  Row(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(
-                            left: 16.0, top: 8.0, bottom: 8.0),
-                        child: Text(
-                          AppIntl.of(context).profile_other_programs,
-                          style: const TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
-                              color: AppTheme.etsLightRed),
-                        ),
-                      ),
-                    ],
-                  ),
-                  Column(
-                    children: [
-                      for (var i = 0; i < model.programList.length - 1; i++)
-                        StudentProgram(model.programList[i]),
-                    ],
-                  ),
-                  const SizedBox(height: 10.0),
                   if (model.isBusy)
                     buildLoading(isInteractionLimitedWhileLoading: false)
                   else
-                    const SizedBox()
+                    buildPage(context, model)
                 ],
               ),
             ),
@@ -141,7 +68,86 @@ class _ProfileViewState extends State<ProfileView> {
       );
 }
 
+Widget buildPage(BuildContext context, ProfileViewModel model) => Column(
+      children: [
+        Padding(
+          padding: const EdgeInsets.fromLTRB(5.0, 10.0, 5.0, 5.0),
+          child: SizedBox(
+            height: 90,
+            child: getMainInfoCard(model),
+          ),
+        ),
+        Row(
+          children: <Widget>[
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: <Widget>[
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(8.0, 0.0, 8.0, 8.0),
+                    child: getMyInfosCard(model, context),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(8.0, 0.0, 8.0, 4.0),
+                    child: getMyBalanceCard(model, context),
+                  ),
+                ],
+              ),
+            ),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: <Widget>[
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(0.0, 0.0, 8.0, 4.0),
+                    child: getProgramCompletion(model, context),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+        const Divider(
+          thickness: 2,
+          indent: 10,
+          endIndent: 10,
+        ),
+        getCurrentProgramTile(model.programList, context),
+        const Divider(
+          thickness: 2,
+          indent: 10,
+          endIndent: 10,
+        ),
+        Row(
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(left: 16.0, top: 8.0, bottom: 8.0),
+              child: Text(
+                AppIntl.of(context).profile_other_programs,
+                style: const TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    color: AppTheme.etsLightRed),
+              ),
+            ),
+          ],
+        ),
+        Column(
+          children: [
+            for (var i = 0; i < model.programList.length - 1; i++)
+              StudentProgram(model.programList[i]),
+          ],
+        ),
+        const SizedBox(height: 10.0),
+      ],
+    );
+
 Card getMainInfoCard(ProfileViewModel model) {
+  var programName = "";
+  if (model.programList.isNotEmpty) {
+    programName = model.programList.last.name;
+  }
+
   return Card(
     child: Center(
       child: Column(
@@ -157,11 +163,11 @@ Card getMainInfoCard(ProfileViewModel model) {
               ),
             ),
           ),
-          const Padding(
-            padding: EdgeInsets.all(5.0),
+          Padding(
+            padding: const EdgeInsets.all(5.0),
             child: Text(
-              'Génie logiciel',
-              style: TextStyle(
+              programName,
+              style: const TextStyle(
                 fontSize: 16,
               ),
             ),
