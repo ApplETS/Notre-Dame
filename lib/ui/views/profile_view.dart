@@ -2,7 +2,6 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
-import 'package:notredame/ui/utils/app_theme.dart';
 import 'package:stacked/stacked.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:percent_indicator/percent_indicator.dart';
@@ -21,6 +20,7 @@ import 'package:notredame/ui/widgets/student_program.dart';
 
 // UTILS
 import 'package:notredame/ui/utils/loading.dart';
+import 'package:notredame/ui/utils/app_theme.dart';
 
 // CONSTANTS
 import 'package:notredame/core/constants/programs_credits.dart';

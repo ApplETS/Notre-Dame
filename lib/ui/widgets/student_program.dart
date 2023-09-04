@@ -1,12 +1,12 @@
 // FLUTTER / DART / THIRD-PARTIES
 import 'dart:math';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-// MODELS
+// MODEL
 import 'package:ets_api_clients/models.dart';
 
 // OTHER
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:notredame/ui/utils/app_theme.dart';
 
 class StudentProgram extends StatefulWidget {

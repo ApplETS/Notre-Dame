@@ -1,9 +1,11 @@
 // FLUTTER / DART / THIRD-PARTIES
 import 'dart:io';
-import 'package:ets_api_clients/models.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
+// MODELS
+import 'package:ets_api_clients/models.dart';
 
 // MANAGERS
 import 'package:notredame/core/managers/user_repository.dart';
