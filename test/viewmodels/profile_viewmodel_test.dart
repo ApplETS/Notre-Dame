@@ -214,9 +214,6 @@ void main() {
         UserRepositoryMock.stubPrograms(userRepository as UserRepositoryMock,
             toReturn: testPrograms);
 
-        // Create an instance of ProgramCredits
-        final ProgramCredits programCredits = ProgramCredits();
-
         // Calculate the program progression
         final double progression = viewModel.programProgression;
 
