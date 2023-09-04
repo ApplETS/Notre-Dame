@@ -6,7 +6,6 @@ import 'package:notredame/ui/utils/app_theme.dart';
 import 'package:stacked/stacked.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:percent_indicator/percent_indicator.dart';
-import 'package:logger/logger.dart';
 
 // VIEW-MODEL
 import 'package:notredame/core/viewmodels/profile_viewmodel.dart';
@@ -36,8 +35,6 @@ class ProfileView extends StatefulWidget {
 
 class _ProfileViewState extends State<ProfileView> {
   final AnalyticsService _analyticsService = locator<AnalyticsService>();
-
-  final Logger _logger = locator<Logger>();
 
   @override
   void initState() {
