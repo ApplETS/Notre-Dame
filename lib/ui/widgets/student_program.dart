@@ -18,7 +18,7 @@ class StudentProgram extends StatefulWidget {
 }
 
 class _StudentProgramState extends State<StudentProgram>
-  with TickerProviderStateMixin<StudentProgram> {
+    with TickerProviderStateMixin<StudentProgram> {
   bool showProgramDetails = false;
   AnimationController controller;
   Animation<double> rotateAnimation;
@@ -46,8 +46,7 @@ class _StudentProgramState extends State<StudentProgram>
 
   @override
   Widget build(BuildContext context) {
-    final bool isLightMode =
-              Theme.of(context).brightness == Brightness.light;
+    final bool isLightMode = Theme.of(context).brightness == Brightness.light;
 
     final List<String> dataTitles = [
       AppIntl.of(context).profile_code_program,
@@ -75,7 +74,9 @@ class _StudentProgramState extends State<StudentProgram>
       data: Theme.of(context).copyWith(
         dividerColor: Colors.transparent,
         unselectedWidgetColor: Colors.red,
-        colorScheme: ColorScheme.fromSwatch().copyWith(onSecondary: Colors.red,),
+        colorScheme: ColorScheme.fromSwatch().copyWith(
+          onSecondary: Colors.red,
+        ),
       ),
       child: ExpansionTile(
         onExpansionChanged: (value) {
