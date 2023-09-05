@@ -49,7 +49,11 @@ class _ProfileViewState extends State<ProfileView> {
               child: Column(
                 children: [
                   if (model.isBusy)
-                    buildLoading(isInteractionLimitedWhileLoading: false)
+                    Padding(
+                      padding: const EdgeInsets.only(top: 10.0),
+                      child:
+                          buildLoading(isInteractionLimitedWhileLoading: false),
+                    )
                   else
                     buildPage(context, model)
                 ],
