@@ -14,7 +14,7 @@ import 'package:notredame/locator.dart';
 
 class LaunchUrlService {
   final SettingsManager settingsManager = locator<SettingsManager>();
-  
+
   Future<bool> canLaunch(String url) async {
     final uri = Uri.parse(url);
     return url_launch.canLaunchUrl(uri);
