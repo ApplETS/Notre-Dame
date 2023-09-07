@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
 
 // SERVICES
-import 'package:notredame/core/services/analytics_service.dart';
 import 'package:notredame/core/services/networking_service.dart';
 import 'package:notredame/core/managers/cache_manager.dart';
 
