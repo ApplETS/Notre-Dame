@@ -904,7 +904,7 @@ packages:
       name: pub_semver
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.1.1"
+    version: "2.1.4"
   rive:
     dependency: "direct main"
     description:
