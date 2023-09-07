@@ -26,6 +26,7 @@ class LaunchUrlService {
   }
 
   Future<void> launchInBrowser(String url) async {
+    final theme = settingsManager.themeMode;
     await custom_tabs.launch(
       url,
       customTabsOption: custom_tabs.CustomTabsOption(
@@ -53,7 +54,7 @@ class LaunchUrlService {
       ),
       safariVCOption: custom_tabs.SafariViewControllerOption(
         preferredBarTintColor: AppTheme.etsLightRed,
-        preferredControlTintColor: settingsManager.themeMode == Brightness.light
+        preferredControlTintColor: theme == Brightness.light
         ? AppTheme.lightThemeBackground
         : AppTheme.darkThemeAccent,
         barCollapsingEnabled: true,
