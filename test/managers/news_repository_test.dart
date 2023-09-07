@@ -51,7 +51,7 @@ void main() {
       //expect(repository.news, isEmpty);
 
       final List<News> fetchedNews =
-          await repository.getNews(fromCacheOnly: false);
+          await repository.getNews();
 
       expect(repository.news, isNotEmpty);
       expect(repository.news, equals(fetchedNews));

@@ -27,9 +27,6 @@ class NewsRepository {
 
   final Logger _logger = locator<Logger>();
 
-  /// Will be used to report event and error.
-  final AnalyticsService _analyticsService = locator<AnalyticsService>();
-
   /// Cache manager to access and update the cache.
   final CacheManager _cacheManager = locator<CacheManager>();
 
