@@ -20,19 +20,19 @@ import 'package:notredame/core/viewmodels/web_link_card_viewmodel.dart';
 
 // OTHER
 import '../helpers.dart';
-//import '../mock/services/internal_info_service_mock.dart';
+import '../mock/services/internal_info_service_mock.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   NavigationService navigationService;
   AnalyticsService analyticsService;
-  //InternalInfoService internalInfoService;
+  InternalInfoService internalInfoService;
   LaunchUrlService launchUrlService;
 
   WebLinkCardViewModel viewModel;
 
-  //final quickLink = QuickLink(
-  //    image: const Icon(Icons.ac_unit), name: 'test', link: 'testlink');
+  final quickLink = QuickLink(
+      image: const Icon(Icons.ac_unit), name: 'test', link: 'testlink');
   final securityQuickLink = QuickLink(
       image: const Icon(Icons.ac_unit), name: 'test', link: 'security');
 
@@ -40,7 +40,7 @@ void main() {
     setUp(() async {
       navigationService = setupNavigationServiceMock();
       analyticsService = setupAnalyticsServiceMock();
-      //internalInfoService = setupInternalInfoServiceMock();
+      internalInfoService = setupInternalInfoServiceMock();
       launchUrlService = setupLaunchUrlServiceMock();
 
       setupLogger();
@@ -66,16 +66,15 @@ void main() {
         verifyNoMoreInteractions(navigationService);
       });
 
-      /*test('navigate to web view if launchInBrowser throw', () async {
+      test('navigate to web view if launchInBrowser throw', () async {
         InternalInfoServiceMock.stubGetDeviceInfoForErrorReporting(
             internalInfoService as InternalInfoServiceMock);
 
         await viewModel.onLinkClicked(quickLink);
 
-        verify(navigationService.pushNamed(RouterPaths.webView,
-            arguments: quickLink));
+        verify(launchUrlService.launchInBrowser(quickLink.link));
         verifyNoMoreInteractions(navigationService);
-      });*/
+      });
     });
   });
 }
