@@ -6,6 +6,9 @@ import 'package:mockito/mockito.dart';
 // CONSTANTS
 import 'package:notredame/core/constants/router_paths.dart';
 
+// MANAGERS
+import 'package:notredame/core/managers/settings_manager.dart';
+
 // MODELS
 import 'package:notredame/core/models/quick_link.dart';
 
@@ -42,6 +45,7 @@ void main() {
       analyticsService = setupAnalyticsServiceMock();
       internalInfoService = setupInternalInfoServiceMock();
       launchUrlService = setupLaunchUrlServiceMock();
+      setupSettingsManagerMock();
 
       setupLogger();
 
@@ -54,6 +58,7 @@ void main() {
       clearInteractions(launchUrlService);
       unregister<AnalyticsService>();
       unregister<InternalInfoService>();
+      unregister<SettingsManager>();
     });
 
     group('onLinkClicked -', () {

@@ -1,11 +1,20 @@
 // FLUTTER / DART / THIRD-PARTIES
+import 'package:flutter/material.dart';
 import 'package:flutter_custom_tabs/flutter_custom_tabs.dart' as custom_tabs;
 import 'package:url_launcher/url_launcher.dart' as url_launch;
+
+// Managers
+import 'package:notredame/core/managers/settings_manager.dart';
 
 // UTILS
 import 'package:notredame/ui/utils/app_theme.dart';
 
+// OTHER
+import 'package:notredame/locator.dart';
+
 class LaunchUrlService {
+  final SettingsManager settingsManager = locator<SettingsManager>();
+  
   Future<bool> canLaunch(String url) async {
     final uri = Uri.parse(url);
     return url_launch.canLaunchUrl(uri);
@@ -42,9 +51,11 @@ class LaunchUrlService {
           'com.UCMobile.intl',
         ],
       ),
-      safariVCOption: const custom_tabs.SafariViewControllerOption(
+      safariVCOption: custom_tabs.SafariViewControllerOption(
         preferredBarTintColor: AppTheme.etsLightRed,
-        preferredControlTintColor: AppTheme.lightThemeBackground,
+        preferredControlTintColor: settingsManager.themeMode == Brightness.light
+        ? AppTheme.lightThemeBackground
+        : AppTheme.darkThemeAccent,
         barCollapsingEnabled: true,
         entersReaderIfAvailable: false,
         dismissButtonStyle:
