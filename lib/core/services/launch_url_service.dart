@@ -55,8 +55,8 @@ class LaunchUrlService {
       safariVCOption: custom_tabs.SafariViewControllerOption(
         preferredBarTintColor: AppTheme.etsLightRed,
         preferredControlTintColor: theme == Brightness.light
-        ? AppTheme.lightThemeBackground
-        : AppTheme.darkThemeAccent,
+            ? AppTheme.lightThemeBackground
+            : AppTheme.darkThemeAccent,
         barCollapsingEnabled: true,
         entersReaderIfAvailable: false,
         dismissButtonStyle:
