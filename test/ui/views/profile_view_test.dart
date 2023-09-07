@@ -1,5 +1,4 @@
 // FLUTTER / DART / THIRD-PARTIES
-import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -111,7 +110,7 @@ void main() {
 
     group("golden - ", () {
       testWidgets("default view (no events)", (WidgetTester tester) async {
-        tester.binding.window.physicalSizeTestValue = const Size(800, 1410);
+        tester.binding.window.physicalSizeTestValue = const Size(1080, 1920);
 
         await tester.pumpWidget(localizedWidget(child: ProfileView()));
         await tester.pumpAndSettle();
