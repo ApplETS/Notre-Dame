@@ -14,7 +14,7 @@ import 'package:notredame/locator.dart';
 
 class LaunchUrlService {
   final SettingsManager settingsManager = locator<SettingsManager>();
-  
+
   Future<bool> canLaunch(String url) async {
     final uri = Uri.parse(url);
     return url_launch.canLaunchUrl(uri);
@@ -54,8 +54,8 @@ class LaunchUrlService {
       safariVCOption: custom_tabs.SafariViewControllerOption(
         preferredBarTintColor: AppTheme.etsLightRed,
         preferredControlTintColor: settingsManager.themeMode == Brightness.light
-        ? AppTheme.lightThemeBackground
-        : AppTheme.darkThemeAccent,
+            ? AppTheme.lightThemeBackground
+            : AppTheme.darkThemeAccent,
         barCollapsingEnabled: true,
         entersReaderIfAvailable: false,
         dismissButtonStyle:
