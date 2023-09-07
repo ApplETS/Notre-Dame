@@ -5,7 +5,15 @@ updates:
     directory: "/"
     schedule:
       interval: "weekly"
+    labels:
+      - "dart"
+      - "dependencies"
+      - "version: Patch"
   - package-ecosystem: github-actions
     directory: /
     schedule:
       interval: weekly
+    labels:
+      - "yaml"
+      - "dependencies"
+      - "version: Patch"
