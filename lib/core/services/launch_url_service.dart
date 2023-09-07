@@ -1,7 +1,6 @@
 // FLUTTER / DART / THIRD-PARTIES
 import 'package:flutter/material.dart';
 import 'package:flutter_custom_tabs/flutter_custom_tabs.dart' as custom_tabs;
-import 'package:notredame/core/utils/utils.dart';
 import 'package:url_launcher/url_launcher.dart' as url_launch;
 
 // Managers
