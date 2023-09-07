@@ -33,65 +33,51 @@ void main() {
     tearDown(() {});
 
     group('has all categories - ', () {
-      testWidgets('contains one divider and one column',
-          (WidgetTester tester) async {
+      testWidgets('contains one expansion tile', (WidgetTester tester) async {
         await tester
             .pumpWidget(localizedWidget(child: StudentProgram(_program)));
         await tester.pumpAndSettle();
 
-        final divider = find.byType(Divider);
-        expect(divider, findsNWidgets(1));
+        expect(find.byType(ExpansionTile), findsOneWidget);
 
-        final column = find.byType(Column);
-        expect(column, findsNWidgets(1));
+        expect(find.text(_program.name), findsOneWidget);
       });
 
-      testWidgets('contains 9 listTile', (WidgetTester tester) async {
+      testWidgets('contains infos', (WidgetTester tester) async {
         await tester
             .pumpWidget(localizedWidget(child: StudentProgram(_program)));
         await tester.pumpAndSettle();
 
-        final listTiles = find.byType(ListTile);
-        expect(listTiles, findsNWidgets(9));
+        // Find the ExpansionTile and tap it to expand
+        final expansionTile = find.byType(ExpansionTile);
+        expect(expansionTile, findsOneWidget);
+        await tester.tap(expansionTile);
+        await tester.pumpAndSettle();
 
-        expect(find.widgetWithText(ListTile, intl.profile_code_program),
+        expect(find.text(intl.profile_code_program), findsOneWidget);
+        expect(find.text(intl.profile_average_program), findsOneWidget);
+        expect(find.text(intl.profile_number_accumulated_credits_program),
             findsOneWidget);
-
-        expect(find.widgetWithText(ListTile, intl.profile_average_program),
+        expect(find.text(intl.profile_number_registered_credits_program),
             findsOneWidget);
-
-        expect(
-            find.widgetWithText(
-                ListTile, intl.profile_number_accumulated_credits_program),
+        expect(find.text(intl.profile_number_completed_courses_program),
             findsOneWidget);
-
-        expect(
-            find.widgetWithText(
-                ListTile, intl.profile_number_registered_credits_program),
+        expect(find.text(intl.profile_number_failed_courses_program),
             findsOneWidget);
-
-        expect(
-            find.widgetWithText(
-                ListTile, intl.profile_number_completed_courses_program),
+        expect(find.text(intl.profile_number_equivalent_courses_program),
             findsOneWidget);
-
-        expect(
-            find.widgetWithText(
-                ListTile, intl.profile_number_failed_courses_program),
-            findsOneWidget);
-
-        expect(
-            find.widgetWithText(
-                ListTile, intl.profile_number_equivalent_courses_program),
-            findsOneWidget);
-
-        expect(find.widgetWithText(ListTile, intl.profile_status_program),
-            findsOneWidget);
+        expect(find.text(intl.profile_status_program), findsOneWidget);
       });
 
       testWidgets('contains 17 Text fields', (WidgetTester tester) async {
         await tester
             .pumpWidget(localizedWidget(child: StudentProgram(_program)));
+        await tester.pumpAndSettle();
+
+        // Find the ExpansionTile and tap it to expand
+        final expansionTile = find.byType(ExpansionTile);
+        expect(expansionTile, findsOneWidget);
+        await tester.tap(expansionTile);
         await tester.pumpAndSettle();
 
         final text = find.byType(Text);
