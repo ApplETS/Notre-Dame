@@ -50,8 +50,7 @@ void main() {
       // TODO : remove when the news will be empty by default without test news
       //expect(repository.news, isEmpty);
 
-      final List<News> fetchedNews =
-          await repository.getNews();
+      final List<News> fetchedNews = await repository.getNews();
 
       expect(repository.news, isNotEmpty);
       expect(repository.news, equals(fetchedNews));
