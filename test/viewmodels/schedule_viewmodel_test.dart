@@ -56,8 +56,33 @@ void main() {
       activityLocation: "location",
       startDateTime: DateTime(2020, 1, 2, 18),
       endDateTime: DateTime(2020, 1, 2, 21));
+  final course1 = Course(
+      title: "Generic course",
+      acronym: "GEN101",
+      group: "01",
+      session: "H2020",
+      programCode: "999",
+      grade: "A+",
+      numberOfCredits: 3);
+  final course2 = Course(
+      title: "Generic course",
+      acronym: "GEN102",
+      group: "01",
+      session: "H2020",
+      programCode: "999",
+      grade: "A+",
+      numberOfCredits: 3);
+  final course3 = Course(
+      title: "Generic course",
+      acronym: "GEN103",
+      group: "04",
+      session: "H2020",
+      programCode: "999",
+      grade: "A+",
+      numberOfCredits: 3);
 
   final List<CourseActivity> activities = [gen101, gen102, gen103];
+  final List<Course> courses = [course1, course2, course3];
 
   final gen101WithLabA = CourseActivity(
       courseGroup: "GEN101-01",
@@ -246,6 +271,12 @@ void main() {
             courseRepository as CourseRepositoryMock);
         CourseRepositoryMock.stubCoursesActivities(
             courseRepository as CourseRepositoryMock);
+        CourseRepositoryMock.stubGetCourses(
+            courseRepository as CourseRepositoryMock,
+            fromCacheOnly: true);
+        CourseRepositoryMock.stubGetCourses(
+            courseRepository as CourseRepositoryMock,
+            fromCacheOnly: false);
         CourseRepositoryMock.stubGetScheduleActivities(
             courseRepository as CourseRepositoryMock);
 
@@ -266,6 +297,12 @@ void main() {
             courseRepository as CourseRepositoryMock,
             fromCacheOnly: true);
         CourseRepositoryMock.stubGetCoursesActivitiesException(
+            courseRepository as CourseRepositoryMock,
+            fromCacheOnly: false);
+        CourseRepositoryMock.stubGetCourses(
+            courseRepository as CourseRepositoryMock,
+            fromCacheOnly: true);
+        CourseRepositoryMock.stubGetCourses(
             courseRepository as CourseRepositoryMock,
             fromCacheOnly: false);
         CourseRepositoryMock.stubCoursesActivities(
@@ -317,7 +354,7 @@ void main() {
 
         SettingsManagerMock.stubGetDynamicString(
             settingsManager as SettingsManagerMock,
-            PreferencesFlag.scheduleSettingsLaboratoryGroup,
+            PreferencesFlag.scheduleLaboratoryGroup,
             "GEN103",
             toReturn: ActivityCode.labGroupA);
 
@@ -348,7 +385,7 @@ void main() {
 
         SettingsManagerMock.stubGetDynamicString(
             settingsManager as SettingsManagerMock,
-            PreferencesFlag.scheduleSettingsLaboratoryGroup,
+            PreferencesFlag.scheduleLaboratoryGroup,
             classOneWithLaboratoryABscheduleActivities.first.courseAcronym,
             toReturn: null);
 
@@ -362,7 +399,7 @@ void main() {
           () async {
         SettingsManagerMock.stubGetDynamicString(
             settingsManager as SettingsManagerMock,
-            PreferencesFlag.scheduleSettingsLaboratoryGroup,
+            PreferencesFlag.scheduleLaboratoryGroup,
             classOneWithLaboratoryABscheduleActivities.first.courseAcronym,
             toReturn: ActivityCode.labGroupA);
 
@@ -377,7 +414,7 @@ void main() {
           () async {
         SettingsManagerMock.stubGetDynamicString(
             settingsManager as SettingsManagerMock,
-            PreferencesFlag.scheduleSettingsLaboratoryGroup,
+            PreferencesFlag.scheduleLaboratoryGroup,
             classOneWithLaboratoryABscheduleActivities.first.courseAcronym,
             toReturn: ActivityCode.labGroupA);
 
@@ -459,11 +496,10 @@ void main() {
 
     group('selectedWeekEvents', () {
       final Map<PreferencesFlag, dynamic> settingsStartingDayMonday = {
-        PreferencesFlag.scheduleSettingsStartWeekday: StartingDayOfWeek.monday,
+        PreferencesFlag.scheduleStartWeekday: StartingDayOfWeek.monday,
       };
       final Map<PreferencesFlag, dynamic> settingsStartingDaySaturday = {
-        PreferencesFlag.scheduleSettingsStartWeekday:
-            StartingDayOfWeek.saturday,
+        PreferencesFlag.scheduleStartWeekday: StartingDayOfWeek.saturday,
       };
 
       test('selectedWeekEvents for starting day sunday', () {
@@ -574,8 +610,7 @@ void main() {
         SettingsManagerMock.stubGetScheduleSettings(
             settingsManager as SettingsManagerMock,
             toReturn: {
-              PreferencesFlag.scheduleSettingsCalendarFormat:
-                  CalendarFormat.month
+              PreferencesFlag.scheduleCalendarFormat: CalendarFormat.month
             });
         expect(viewModel.calendarFormat, CalendarFormat.week);
 
@@ -616,7 +651,7 @@ void main() {
         // Test normal cases, with laboratory
         SettingsManagerMock.stubGetDynamicString(
             settingsManager as SettingsManagerMock,
-            PreferencesFlag.scheduleSettingsLaboratoryGroup,
+            PreferencesFlag.scheduleLaboratoryGroup,
             classOneWithLaboratoryABscheduleActivities.first.courseAcronym,
             toReturn: ActivityCode.labGroupA);
         await viewModel.assignScheduleActivities(
@@ -633,23 +668,35 @@ void main() {
             toReturn: activities);
         CourseRepositoryMock.stubCoursesActivities(
             courseRepository as CourseRepositoryMock);
+        CourseRepositoryMock.stubGetCourses(
+            courseRepository as CourseRepositoryMock,
+            fromCacheOnly: true,
+            toReturn: courses);
+        CourseRepositoryMock.stubGetCourses(
+            courseRepository as CourseRepositoryMock,
+            fromCacheOnly: false);
         CourseRepositoryMock.stubGetScheduleActivities(
             courseRepository as CourseRepositoryMock,
             toReturn: classOneWithLaboratoryABscheduleActivities);
         SettingsManagerMock.stubGetScheduleSettings(
             settingsManager as SettingsManagerMock,
             toReturn: {
-              PreferencesFlag.scheduleSettingsCalendarFormat:
-                  CalendarFormat.month
+              PreferencesFlag.scheduleCalendarFormat: CalendarFormat.month
             });
         SettingsManagerMock.stubGetDynamicString(
             settingsManager as SettingsManagerMock,
-            PreferencesFlag.scheduleSettingsLaboratoryGroup,
+            PreferencesFlag.scheduleLaboratoryGroup,
             classOneWithLaboratoryABscheduleActivities.first.courseAcronym,
             toReturn: ActivityCode.labGroupA);
 
         expect(await viewModel.futureToRun(), activities,
             reason: "Even if SignetsAPI fails we should receives a list.");
+
+        List<ScheduleActivity> listScheduleActivities;
+        await courseRepository.getScheduleActivities().then((value) {
+          listScheduleActivities = value;
+        });
+        await viewModel.assignScheduleActivities(listScheduleActivities);
 
         await untilCalled(courseRepository.getCoursesActivities());
         await untilCalled(courseRepository.getScheduleActivities());
@@ -670,7 +717,7 @@ void main() {
                 classOneWithLaboratoryABscheduleActivities.first.courseAcronym],
             "Laboratoire (Groupe A)");
 
-        verify(settingsManager.getDynamicString(any, any)).called(1);
+        verify(settingsManager.getDynamicString(any, any)).called(2);
       });
 
       test(
@@ -682,7 +729,7 @@ void main() {
 
         SettingsManagerMock.stubGetDynamicString(
             settingsManager as SettingsManagerMock,
-            PreferencesFlag.scheduleSettingsLaboratoryGroup,
+            PreferencesFlag.scheduleLaboratoryGroup,
             "GEN103",
             toReturn: ActivityCode.labGroupA);
 
@@ -715,7 +762,7 @@ void main() {
 
         SettingsManagerMock.stubGetDynamicString(
             settingsManager as SettingsManagerMock,
-            PreferencesFlag.scheduleSettingsLaboratoryGroup,
+            PreferencesFlag.scheduleLaboratoryGroup,
             "GEN103",
             toReturn: ActivityCode.labGroupA);
 
@@ -748,7 +795,7 @@ void main() {
 
         SettingsManagerMock.stubGetDynamicString(
             settingsManager as SettingsManagerMock,
-            PreferencesFlag.scheduleSettingsLaboratoryGroup,
+            PreferencesFlag.scheduleLaboratoryGroup,
             "GEN103",
             toReturn: ActivityCode.labGroupB);
 
@@ -781,7 +828,7 @@ void main() {
 
         SettingsManagerMock.stubGetDynamicString(
             settingsManager as SettingsManagerMock,
-            PreferencesFlag.scheduleSettingsLaboratoryGroup,
+            PreferencesFlag.scheduleLaboratoryGroup,
             "GEN103",
             toReturn: null);
 

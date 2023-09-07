@@ -12,6 +12,9 @@ import 'package:notredame/ui/utils/loading.dart';
 // VIEWMODEL
 import 'package:notredame/core/viewmodels/feedback_viewmodel.dart';
 
+// CONSTANTS
+import 'package:notredame/core/constants/feedback_type.dart';
+
 class FeedbackView extends StatefulWidget {
   @override
   State<FeedbackView> createState() => _FeedbackViewState();
@@ -38,7 +41,7 @@ class _FeedbackViewState extends State<FeedbackView> {
                     onPressed: () {
                       BetterFeedback.of(context).show((feedback) {
                         model
-                            .sendFeedback(feedback)
+                            .sendFeedback(feedback, FeedbackType.bug)
                             .then((value) => BetterFeedback.of(context).hide());
                       });
                     },
@@ -66,7 +69,7 @@ class _FeedbackViewState extends State<FeedbackView> {
                     onPressed: () {
                       BetterFeedback.of(context).show((feedback) {
                         model
-                            .sendFeedback(feedback)
+                            .sendFeedback(feedback, FeedbackType.enhancement)
                             .then((value) => BetterFeedback.of(context).hide());
                       });
                     },

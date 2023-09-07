@@ -37,6 +37,36 @@ class AppTheme {
   static const Color lightThemeAccent = Color.fromARGB(255, 228, 225, 225);
   static const Color darkThemeAccent = Color(0xff424242);
 
+  // Schedule color palettes
+  static const List<Color> schedulePaletteLight = [
+    Color(0xfff1c40f),
+    Color(0xff1abc9c),
+    Color(0xff2ecc71),
+    Color(0xff2ecc71),
+    Color(0xff2ecc71),
+    Color(0xff3498db),
+    Color(0xff9b59b6),
+    Color(0xff34495e),
+    Color(0xffe67e22),
+    Color(0xffe74c3c)
+  ];
+  static const List<Color> schedulePaletteDark = [
+    Color(0xfff39c12),
+    Color(0xff16a085),
+    Color(0xff27ae60),
+    Color(0xff2ecc71),
+    Color(0xff2ecc71),
+    Color(0xff2980b9),
+    Color(0xff8e44ad),
+    Color(0xff2c3e50),
+    Color(0xffd35400),
+    Color(0xffc0392b)
+  ];
+
+  /// Schedule calendar colors
+  static const Color scheduleLineColorLight = Color(0xffe8e8e8);
+  static const Color scheduleLineColorDark = Color(0xff3d3d3d);
+
   /// Light theme
   static ThemeData lightTheme() {
     final ThemeData lightTheme = ThemeData.light();

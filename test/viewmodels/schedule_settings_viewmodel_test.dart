@@ -31,9 +31,9 @@ void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
   final Map<PreferencesFlag, dynamic> settings = {
-    PreferencesFlag.scheduleSettingsCalendarFormat: CalendarFormat.week,
-    PreferencesFlag.scheduleSettingsStartWeekday: StartingDayOfWeek.monday,
-    PreferencesFlag.scheduleSettingsShowTodayBtn: true
+    PreferencesFlag.scheduleCalendarFormat: CalendarFormat.week,
+    PreferencesFlag.scheduleStartWeekday: StartingDayOfWeek.monday,
+    PreferencesFlag.scheduleShowTodayBtn: true
   };
 
   final List<ScheduleActivity> classOneWithLaboratoryABscheduleActivities = [
@@ -145,11 +145,11 @@ void main() {
 
         expect(await viewModel.futureToRun(), settings);
         expect(viewModel.calendarFormat,
-            settings[PreferencesFlag.scheduleSettingsCalendarFormat]);
+            settings[PreferencesFlag.scheduleCalendarFormat]);
         expect(viewModel.startingDayOfWeek,
-            settings[PreferencesFlag.scheduleSettingsStartWeekday]);
+            settings[PreferencesFlag.scheduleStartWeekday]);
         expect(viewModel.showTodayBtn,
-            settings[PreferencesFlag.scheduleSettingsShowTodayBtn]);
+            settings[PreferencesFlag.scheduleShowTodayBtn]);
 
         verify(settingsManager.getScheduleSettings()).called(1);
         verifyNoMoreInteractions(settingsManager);
@@ -174,7 +174,7 @@ void main() {
 
         SettingsManagerMock.stubGetDynamicString(
             settingsManager as SettingsManagerMock,
-            PreferencesFlag.scheduleSettingsLaboratoryGroup,
+            PreferencesFlag.scheduleLaboratoryGroup,
             courseAcronymWithLaboratory,
             toReturn: null);
 
@@ -216,12 +216,12 @@ void main() {
 
         SettingsManagerMock.stubGetDynamicString(
             settingsManager as SettingsManagerMock,
-            PreferencesFlag.scheduleSettingsLaboratoryGroup,
+            PreferencesFlag.scheduleLaboratoryGroup,
             firstCourseAcronymWithLab,
             toReturn: null);
         SettingsManagerMock.stubGetDynamicString(
             settingsManager as SettingsManagerMock,
-            PreferencesFlag.scheduleSettingsLaboratoryGroup,
+            PreferencesFlag.scheduleLaboratoryGroup,
             secondCourseAcronymWithLab,
             toReturn: ActivityCode.labGroupA);
 
@@ -259,19 +259,19 @@ void main() {
       test("calendarFormat is updated on the settings", () async {
         SettingsManagerMock.stubSetString(
             settingsManager as SettingsManagerMock,
-            PreferencesFlag.scheduleSettingsCalendarFormat);
+            PreferencesFlag.scheduleCalendarFormat);
 
         // Call the setter.
         viewModel.calendarFormat = CalendarFormat.twoWeeks;
 
         await untilCalled(settingsManager.setString(
-            PreferencesFlag.scheduleSettingsCalendarFormat, any));
+            PreferencesFlag.scheduleCalendarFormat, any));
 
         expect(viewModel.calendarFormat, CalendarFormat.twoWeeks);
         expect(viewModel.isBusy, false);
 
         verify(settingsManager.setString(
-                PreferencesFlag.scheduleSettingsCalendarFormat, any))
+                PreferencesFlag.scheduleCalendarFormat, any))
             .called(1);
         verifyNoMoreInteractions(settingsManager);
       });
@@ -281,19 +281,19 @@ void main() {
       test("startingDayOfWeek is updated on the settings", () async {
         SettingsManagerMock.stubSetString(
             settingsManager as SettingsManagerMock,
-            PreferencesFlag.scheduleSettingsStartWeekday);
+            PreferencesFlag.scheduleStartWeekday);
 
         // Call the setter.
         viewModel.startingDayOfWeek = StartingDayOfWeek.friday;
 
         await untilCalled(settingsManager.setString(
-            PreferencesFlag.scheduleSettingsStartWeekday, any));
+            PreferencesFlag.scheduleStartWeekday, any));
 
         expect(viewModel.startingDayOfWeek, StartingDayOfWeek.friday);
         expect(viewModel.isBusy, false);
 
         verify(settingsManager.setString(
-                PreferencesFlag.scheduleSettingsStartWeekday, any))
+                PreferencesFlag.scheduleStartWeekday, any))
             .called(1);
         verifyNoMoreInteractions(settingsManager);
       });
@@ -303,21 +303,21 @@ void main() {
       test("showTodayBtn is updated on the settings", () async {
         SettingsManagerMock.stubSetString(
             settingsManager as SettingsManagerMock,
-            PreferencesFlag.scheduleSettingsStartWeekday);
+            PreferencesFlag.scheduleStartWeekday);
 
         const expected = false;
 
         // Call the setter.
         viewModel.showTodayBtn = expected;
 
-        await untilCalled(settingsManager.setBool(
-            PreferencesFlag.scheduleSettingsShowTodayBtn, any));
+        await untilCalled(
+            settingsManager.setBool(PreferencesFlag.scheduleShowTodayBtn, any));
 
         expect(viewModel.showTodayBtn, expected);
         expect(viewModel.isBusy, false);
 
         verify(settingsManager.setBool(
-                PreferencesFlag.scheduleSettingsShowTodayBtn, any))
+                PreferencesFlag.scheduleShowTodayBtn, any))
             .called(1);
         verifyNoMoreInteractions(settingsManager);
       });
