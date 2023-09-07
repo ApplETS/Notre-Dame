@@ -1,5 +1,6 @@
 // FLUTTER / DART / THIRD-PARTIES
 import 'package:flutter/material.dart';
+import 'package:notredame/core/managers/settings_manager.dart';
 import 'package:stacked/stacked.dart';
 
 // VIEWMODEL
@@ -27,7 +28,8 @@ class WebLinkCard extends StatelessWidget {
               child: Card(
                 elevation: 4.0,
                 child: InkWell(
-                  onTap: () => model.onLinkClicked(_links),
+                  onTap: () =>
+                      model.onLinkClicked(_links, Theme.of(context).brightness),
                   splashColor: AppTheme.etsLightRed.withAlpha(50),
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),

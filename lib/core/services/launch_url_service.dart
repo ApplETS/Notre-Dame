@@ -1,6 +1,7 @@
 // FLUTTER / DART / THIRD-PARTIES
 import 'package:flutter/material.dart';
 import 'package:flutter_custom_tabs/flutter_custom_tabs.dart' as custom_tabs;
+import 'package:notredame/core/utils/utils.dart';
 import 'package:url_launcher/url_launcher.dart' as url_launch;
 
 // Managers
@@ -25,12 +26,13 @@ class LaunchUrlService {
     return url_launch.launchUrl(uri);
   }
 
-  Future<void> launchInBrowser(String url) async {
-    final theme = settingsManager.themeMode;
+  Future<void> launchInBrowser(String url, Brightness brightness) async {
     await custom_tabs.launch(
       url,
       customTabsOption: custom_tabs.CustomTabsOption(
-        toolbarColor: AppTheme.etsLightRed,
+        toolbarColor: brightness == Brightness.light
+            ? AppTheme.etsLightRed
+            : AppTheme.etsDarkRed,
         enableDefaultShare: false,
         enableUrlBarHiding: true,
         showPageTitle: true,
@@ -53,10 +55,12 @@ class LaunchUrlService {
         ],
       ),
       safariVCOption: custom_tabs.SafariViewControllerOption(
-        preferredBarTintColor: AppTheme.etsLightRed,
-        preferredControlTintColor: theme == Brightness.light
-        ? AppTheme.lightThemeBackground
-        : AppTheme.darkThemeAccent,
+        preferredBarTintColor: brightness == Brightness.light
+            ? AppTheme.etsLightRed
+            : AppTheme.etsDarkRed,
+        preferredControlTintColor: brightness == Brightness.light
+            ? AppTheme.lightThemeBackground
+            : AppTheme.darkThemeBackground,
         barCollapsingEnabled: true,
         entersReaderIfAvailable: false,
         dismissButtonStyle:

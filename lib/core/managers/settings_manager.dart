@@ -41,22 +41,15 @@ class SettingsManager with ChangeNotifier {
   DateTime get dateTimeNow => DateTime.now();
 
   /// Get ThemeMode
-  Future<ThemeMode> get themeModeAsync async {
-    final value = await _preferencesService.getString(PreferencesFlag.theme);
-    if (value != null) {
-      _themeMode = ThemeMode.values.firstWhere((e) => e.toString() == value);
-    }
-    
-    return _themeMode;
-  }
-
   ThemeMode get themeMode {
     _preferencesService.getString(PreferencesFlag.theme).then((value) => {
-      if (value != null) {
-        _themeMode = ThemeMode.values.firstWhere((e) => e.toString() == value)
-      }
-    });
-    
+          if (value != null)
+            {
+              _themeMode =
+                  ThemeMode.values.firstWhere((e) => e.toString() == value)
+            }
+        });
+
     return _themeMode;
   }
 

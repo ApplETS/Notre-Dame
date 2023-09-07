@@ -1,4 +1,6 @@
 // FLUTTER / DART / THIRD-PARTIES
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:notredame/core/models/quick_link.dart';
 import 'package:stacked/stacked.dart';
 
@@ -22,14 +24,14 @@ class WebLinkCardViewModel extends BaseViewModel {
   final LaunchUrlService _launchUrlService = locator<LaunchUrlService>();
 
   /// used to open a website or the security view
-  Future<void> onLinkClicked(QuickLink link) async {
+  Future<void> onLinkClicked(QuickLink link, Brightness brightness) async {
     _analyticsService.logEvent("QuickLink", "QuickLink clicked: ${link.name}");
 
     if (link.link == 'security') {
       _navigationService.pushNamed(RouterPaths.security);
     } else {
       try {
-        await _launchUrlService.launchInBrowser(link.link);
+        await _launchUrlService.launchInBrowser(link.link, brightness);
       } catch (error) {
         // An exception is thrown if browser app is not installed on Android device.
         await launchWebView(link);
