@@ -7,11 +7,13 @@ enum PreferencesFlag {
   updateAskedVersion,
 
   // Schedule flags
-  scheduleSettingsCalendarFormat,
-  scheduleSettingsStartWeekday,
-  scheduleSettingsShowTodayBtn,
-  scheduleSettingsShowWeekEvents,
-  scheduleSettingsLaboratoryGroup,
+  scheduleCalendarFormat,
+  scheduleStartWeekday,
+  scheduleOtherWeekday,
+  scheduleShowTodayBtn,
+  scheduleShowWeekEvents,
+  scheduleLaboratoryGroup,
+  scheduleListView,
 
   // Locale flag
   locale,

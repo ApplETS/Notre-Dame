@@ -27,6 +27,7 @@ import 'package:notredame/core/services/siren_flutter_service.dart';
 import 'package:notredame/core/services/app_widget_service.dart';
 import 'package:notredame/core/services/in_app_review_service.dart';
 import 'package:notredame/core/services/launch_url_service.dart';
+import 'package:notredame/core/services/remote_config_service.dart';
 
 // MOCKS
 import 'package:ets_api_clients/testing.dart';
@@ -44,6 +45,7 @@ import 'mock/services/launch_url_service_mock.dart';
 import 'mock/services/navigation_service_mock.dart';
 import 'mock/services/networking_service_mock.dart';
 import 'mock/services/preferences_service_mock.dart';
+import 'mock/services/remote_config_service_mock.dart';
 import 'mock/services/rive_animation_service_mock.dart';
 import 'mock/services/siren_flutter_service_mock.dart';
 
@@ -314,4 +316,20 @@ LaunchUrlService setupLaunchUrlServiceMock() {
   locator.registerSingleton<LaunchUrlService>(service);
 
   return service;
+}
+
+/// Load a mock of the [RemoteConfigService]
+RemoteConfigService setupRemoteConfigServiceMock() {
+  unregister<RemoteConfigService>();
+  final service = RemoteConfigServiceMock();
+
+  locator.registerSingleton<RemoteConfigService>(service);
+
+  return service;
+}
+
+bool getCalendarViewEnabled() {
+  final RemoteConfigService remoteConfigService =
+      locator<RemoteConfigService>();
+  return remoteConfigService.scheduleListViewDefault;
 }

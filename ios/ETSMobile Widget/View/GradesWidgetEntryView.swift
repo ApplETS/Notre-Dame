@@ -18,24 +18,18 @@ struct GradesWidgetEntryView: View {
             Color("BackgroundColor")
 
             VStack {
-                
-                Spacer()
-                
-                HStack{
+                HStack {
                     Text(entry.title)
                         .font(.system(size: 18))
                         .frame(maxHeight: 20)
                     
                     Spacer()
                 }
-                
-                Spacer()
+                .padding(.top) // Add padding to the top
                 
                 Divider()
                     .background(Color("DividerColor"))
-                
-                Spacer()
-                Spacer()
+                    .padding(.bottom) // Add padding to the bottom
                 
                 HStack {
                     // limit to 5 single grade views to prevent overflow
@@ -45,8 +39,7 @@ struct GradesWidgetEntryView: View {
                 }
                 .padding([.leading, .trailing], 5 - spacing)
                 
-                Spacer()
-                Spacer()
+                Spacer() // Only one Spacer is needed
             }
             .padding([.leading, .trailing], dividerPadding)
             .frame(maxHeight: .infinity)

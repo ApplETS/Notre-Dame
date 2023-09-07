@@ -89,7 +89,7 @@ class GithubApi {
                     "**Screenshot** \n"
                     "![screenshot](https://github.com/$_repositoryReportSlug/blob/main/$fileName?raw=true)\n\n"
                     "${await _internalInfoService.getDeviceInfoForErrorReporting()}"
-                    "**Email: ** ${email ?? 'Not provided'}",
+                    "- **Email:** ${email ?? 'Not provided'} \n",
                 labels: [
                   feedbackType,
                   'platform: ${Platform.operatingSystem}'

@@ -8,25 +8,29 @@ class FlutterSecureStorageMock extends Mock implements FlutterSecureStorage {
   /// Stub the read function of [FlutterSecureStorage]
   static void stubRead(FlutterSecureStorageMock mock,
       {@required String key, @required String valueToReturn}) {
-    when(mock.read(key: key)).thenAnswer((_) async => valueToReturn);
+    when(mock.read(key: key, iOptions: anyNamed("iOptions")))
+        .thenAnswer((_) async => valueToReturn);
   }
 
   /// Stub the read function of [FlutterSecureStorage] with an [Exception]
   static void stubReadException(FlutterSecureStorageMock mock,
       {@required String key, @required Exception exceptionToThrow}) {
-    when(mock.read(key: key)).thenThrow(exceptionToThrow);
+    when(mock.read(key: key, iOptions: anyNamed("iOptions")))
+        .thenThrow(exceptionToThrow);
   }
 
   /// Stub the write function of [FlutterSecureStorage] with an [Exception]
   static void stubWriteException(FlutterSecureStorageMock mock,
       {@required String key, @required Exception exceptionToThrow}) {
-    when(mock.write(key: key, value: anyNamed("value")))
+    when(mock.write(
+            key: key, value: anyNamed("value"), iOptions: anyNamed("iOptions")))
         .thenThrow(exceptionToThrow);
   }
 
   /// Stub the delete function of [FlutterSecureStorage] with an [Exception]
   static void stubDeleteException(FlutterSecureStorageMock mock,
       {@required String key, @required Exception exceptionToThrow}) {
-    when(mock.delete(key: key)).thenThrow(exceptionToThrow);
+    when(mock.delete(key: key, iOptions: anyNamed("iOptions")))
+        .thenThrow(exceptionToThrow);
   }
 }
