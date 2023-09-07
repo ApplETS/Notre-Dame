@@ -54,18 +54,18 @@ dependencies:
   shared_preferences: ^2.0.15
   webview_flutter: ^3.0.4
   flutter_custom_tabs: ^1.0.4
-  google_maps_flutter: ^2.2.1
+  google_maps_flutter: ^2.3.0
   github: ^9.1.0
   package_info_plus: ^1.4.2
   feature_discovery: ^0.14.0
   path_provider: ^2.0.11
   rive: ^0.9.1
-  connectivity_plus: ^2.3.7
+  connectivity_plus: ^4.0.2
   flutter_svg: ^1.0.3
   font_awesome_flutter: ^10.2.1
   in_app_review: ^2.0.6
   device_info_plus: ^4.0.0
-  pub_semver: ^2.1.0
+  pub_semver: ^2.1.4
   home_widget: ^0.1.6
   marquee: 2.2.1
   auto_size_text: ^3.0.0
