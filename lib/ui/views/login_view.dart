@@ -157,7 +157,7 @@ class _LoginViewState extends State<LoginView> {
                                     ),
                                     onTap: () {
                                       _launchUrlService.launchInBrowser(
-                                          Urls.signetsForgottenPword,
+                                          Urls.signetsForgottenPassword,
                                           Theme.of(context).brightness);
                                     },
                                   ),
