@@ -42,7 +42,7 @@ jobs:
           msg: ${{ steps.pubspecVersion.outputs.version }}
           separator: '+'
       - name: Validate that version doesn't exists
-        uses: mukunku/tag-exists-action@v1.2.0
+        uses: mukunku/tag-exists-action@v1.3.0
         id: checkTag
         with:
           tag: ${{ steps.split.outputs._0 }}
