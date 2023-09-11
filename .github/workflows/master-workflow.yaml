@@ -31,7 +31,7 @@ jobs:
     outputs:
       version: ${{ steps.split.outputs._0 }}
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Get the version from the pubspec
         id: pubspecVersion
         uses: CumulusDS/get-yaml-paths-action@v1.0.2
@@ -63,7 +63,7 @@ jobs:
     outputs:
       coverage: ${{ steps.coverage.outputs.percentage }}
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           ref: ${{ github.head_ref }}
       - uses: actions/setup-java@v3
@@ -159,7 +159,7 @@ jobs:
     needs:
       - testing
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: subosito/flutter-action@v2
         with:
           flutter-version: '3.3.x'
