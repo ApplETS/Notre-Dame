@@ -103,9 +103,9 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
   void handleViewChanged(DateTime date, EventController controller) {
     controller.removeWhere((event) => true);
     selectedDate = date;
-    final eventsToAdd = selectedMonthCalendarEvents();
+    var eventsToAdd = selectedMonthCalendarEvents();
     if (calendarFormat == CalendarFormat.week) {
-      final eventsToAdd = selectedWeekCalendarEvents();
+      eventsToAdd = selectedWeekCalendarEvents();
     }
     controller.addAll(eventsToAdd);
   }

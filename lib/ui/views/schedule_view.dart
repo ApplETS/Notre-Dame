@@ -1,5 +1,4 @@
 // FLUTTER / DART / THIRD-PARTIES
-import 'dart:ui';
 
 import 'package:calendar_view/calendar_view.dart' as calendar_view;
 import 'package:feature_discovery/feature_discovery.dart';
