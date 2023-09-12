@@ -10,6 +10,7 @@ import 'package:notredame/core/constants/quick_links.dart';
 
 // SERVICES
 import 'package:notredame/core/services/networking_service.dart';
+import 'package:notredame/core/services/launch_url_service.dart';
 
 // VIEW
 import 'package:notredame/ui/views/quick_links_view.dart';
@@ -32,6 +33,7 @@ void main() {
       setupAnalyticsServiceMock();
       setupInternalInfoServiceMock();
       setupNetworkingServiceMock();
+      setupLaunchUrlServiceMock();
     });
 
     tearDown(() {
@@ -39,6 +41,7 @@ void main() {
       unregister<AnalyticsServiceMock>();
       unregister<InternalInfoServiceMock>();
       unregister<NetworkingService>();
+      unregister<LaunchUrlService>();
     });
 
     group('UI - ', () {

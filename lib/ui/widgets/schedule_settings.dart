@@ -102,6 +102,8 @@ class _ScheduleSettingsState extends State<ScheduleSettings> {
     } else if (model.calendarFormat == CalendarFormat.week) {
       model.showWeekendDays = true;
       list.addAll(_buildShowWeekendDaySection(context, model));
+    } else {
+      list.addAll(_buildShowWeekendDaySection(context, model));
     }
 
     list.addAll(_buildToggleCalendarView(context, model));

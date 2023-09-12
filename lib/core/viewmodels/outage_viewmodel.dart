@@ -39,7 +39,7 @@ class OutageViewModel extends BaseViewModel {
         locator<RemoteConfigService>();
     if (!remoteConfigService.outage) {
       final NavigationService navigationService = locator<NavigationService>();
-      navigationService.pushNamedAndRemoveUntil(RouterPaths.dashboard);
+      navigationService.pushNamedAndRemoveUntil(RouterPaths.startup);
     }
   }
 

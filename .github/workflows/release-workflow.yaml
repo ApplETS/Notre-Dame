@@ -87,12 +87,14 @@ jobs:
             echo $enChangelog > ${{ matrix.metadata_path }}/en-CA/${{ matrix.changelog_path }}
             echo "en-CA Changelog file cat:"
             cat ${{ matrix.metadata_path }}/en-CA/${{ matrix.changelog_path }}
+            echo ${{ matrix.metadata_path }}/en-CA/${{ matrix.changelog_path }}
           fi
           if [[ ! -z "$frChangelog" ]]; then
             echo "Changing english changelog"
             echo $frChangelog > ${{ matrix.metadata_path }}/fr-CA/${{ matrix.changelog_path }}
             echo "fr-CA Changelog file cat:"
             cat ${{ matrix.metadata_path }}/fr-CA/${{ matrix.changelog_path }}
+            echo ${{ matrix.metadata_path }}/en-CA/${{ matrix.changelog_path }}
           fi
         working-directory: ${{ matrix.working_directory }}
 

@@ -120,7 +120,8 @@ void main() {
           () async {
         viewModel.validateUniversalCode(universalCodeValid);
 
-        expect(await viewModel.authenticate(), appIntl.error);
+        expect(await viewModel.authenticate(),
+            appIntl.login_error_invalid_credentials);
       });
 
       test('with wrong credentials should return a error message', () async {
@@ -130,7 +131,8 @@ void main() {
         viewModel.validateUniversalCode("AA11112");
         viewModel.validatePassword(passwordCodeValid);
 
-        expect(await viewModel.authenticate(), appIntl.error);
+        expect(await viewModel.authenticate(),
+            appIntl.login_error_invalid_credentials);
         expect(viewModel.password, "");
       });
     });

@@ -10,8 +10,6 @@ import 'package:notredame/core/viewmodels/quick_links_viewmodel.dart';
 import 'package:notredame/ui/widgets/base_scaffold.dart';
 import 'package:notredame/ui/widgets/web_link_card.dart';
 
-// OTHER
-
 class QuickLinksView extends StatefulWidget {
   @override
   _QuickLinksViewState createState() => _QuickLinksViewState();

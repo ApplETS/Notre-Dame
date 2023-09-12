@@ -6,5 +6,9 @@
 	<array>
 		<string>group.ca.etsmtl.applets.ETSMobile</string>
 	</array>
+	<key>keychain-access-groups</key>
+	<array>
+		<string>$(AppIdentifierPrefix)shared.ca.etsmtl.applets.ETSMobile</string>
+	</array>
 </dict>
 </plist>
