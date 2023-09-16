@@ -1,4 +1,6 @@
 // FLUTTER / DART / THIRD-PARTIES
+// ignore_for_file: avoid_dynamic_calls
+
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
