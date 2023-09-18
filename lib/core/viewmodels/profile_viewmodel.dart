@@ -51,21 +51,27 @@ class ProfileViewModel extends FutureViewModel<List<Program>> {
     int percentage = 0;
 
     if (programList.isNotEmpty) {
+      Program currentProgram = programList.first;
+      for (final program in programList) {
+        if (int.parse(program.registeredCredits) >
+            int.parse(currentProgram.registeredCredits)) {
+          currentProgram = program;
+        }
+      }
       final int numberOfCreditsCompleted =
-          int.parse(programList[programList.length - 1].accumulatedCredits);
-      final String code = programList[programList.length - 1].code;
+          int.parse(currentProgram.accumulatedCredits);
+      final String code = currentProgram.code;
       bool foundMatch = false;
 
       programCredits.programsCredits.forEach((key, value) {
-        if (key == code ||
-            programList[programList.length - 1].name.startsWith(key)) {
+        if (key == code || currentProgram.name.startsWith(key)) {
           percentage = (numberOfCreditsCompleted / value * 100).round();
           foundMatch = true;
         }
       });
 
       if (!foundMatch) {
-        final String programName = programList[programList.length - 1].name;
+        final String programName = currentProgram.name;
         analyticsService.logEvent("profile_view",
             'The program $programName (code: $code) does not match any program');
         percentage = 0;
