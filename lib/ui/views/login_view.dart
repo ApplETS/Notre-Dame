@@ -6,8 +6,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:stacked/stacked.dart';
 
 // SERVICE
-import 'package:notredame/core/services/analytics_service.dart';
-import 'package:notredame/core/services/launch_url_service.dart';
+import 'package:notredame/core/services/navigation_service.dart';
 
 // UTILS
 import 'package:notredame/core/utils/utils.dart';
@@ -37,7 +36,7 @@ class _LoginViewState extends State<LoginView> {
 
   final FocusScopeNode _focusNode = FocusScopeNode();
 
-  final LaunchUrlService _launchUrlService = locator<LaunchUrlService>();
+  final NavigationService _navigationService = locator<NavigationService>();
 
   /// Unique key of the login form form
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
@@ -207,13 +206,13 @@ class _LoginViewState extends State<LoginView> {
                                   padding: const EdgeInsets.only(top: 24),
                                   child: InkWell(
                                     child: Text(
-                                      AppIntl.of(context).need_help_contact_us,
+                                      AppIntl.of(context).need_help,
                                       style: const TextStyle(
                                           decoration: TextDecoration.underline,
                                           color: Colors.white),
                                     ),
                                     onTap: () async {
-                                      sendEmail(model);
+                                      _navigationService.pushNamed(RouterPaths.loginFaq);
                                     },
                                   ),
                                 ),
@@ -261,15 +260,4 @@ class _LoginViewState extends State<LoginView> {
   Color get submitTextColor =>
       Utils.getColorByBrightness(context, AppTheme.etsLightRed, Colors.white);
 
-  Future<void> sendEmail(LoginViewModel model) async {
-    final clubEmail =
-        model.mailtoStr(AppInfo.email, AppIntl.of(context).email_subject);
-    final urlLaunchable = await _launchUrlService.canLaunch(clubEmail);
-
-    if (urlLaunchable) {
-      await _launchUrlService.launch(clubEmail);
-    } else {
-      locator<AnalyticsService>().logError("login_view", "Cannot send email.");
-    }
-  }
 }

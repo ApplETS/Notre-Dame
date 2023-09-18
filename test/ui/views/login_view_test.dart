@@ -80,7 +80,7 @@ void main() {
         await tester.pumpAndSettle();
 
         await tester
-            .tap(find.widgetWithText(InkWell, intl.need_help_contact_us));
+            .tap(find.widgetWithText(InkWell, intl.need_help));
 
         // Rebuild the widget after the state has changed.
         await tester.pump();
@@ -102,7 +102,7 @@ void main() {
         await tester.pumpAndSettle();
 
         await tester
-            .tap(find.widgetWithText(InkWell, intl.need_help_contact_us));
+            .tap(find.widgetWithText(InkWell, intl.need_help));
 
         // Rebuild the widget after the state has changed.
         await tester.pumpAndSettle();
