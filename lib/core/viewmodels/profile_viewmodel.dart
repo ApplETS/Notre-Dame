@@ -97,6 +97,8 @@ class ProfileViewModel extends FutureViewModel<List<Program>> {
     }
 
     _programList.sort((a, b) => b.status.compareTo(a.status));
+    _programList
+        .sort((a, b) => a.registeredCredits.compareTo(b.registeredCredits));
 
     return _programList;
   }
