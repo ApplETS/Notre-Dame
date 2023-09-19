@@ -11,6 +11,7 @@ import 'package:notredame/core/managers/quick_link_repository.dart';
 
 // SERVICES
 import 'package:notredame/core/services/networking_service.dart';
+import 'package:notredame/core/services/launch_url_service.dart';
 
 // VIEW
 import 'package:notredame/ui/views/quick_links_view.dart';
@@ -36,6 +37,7 @@ void main() {
       setupAnalyticsServiceMock();
       setupInternalInfoServiceMock();
       setupNetworkingServiceMock();
+      setupLaunchUrlServiceMock();
       quickLinkRepository = setupQuickLinkRepositoryMock();
       QuickLinkRepositoryMock.stubGetDefaultQuickLinks(
           quickLinkRepository as QuickLinkRepositoryMock,
@@ -50,6 +52,7 @@ void main() {
       unregister<AnalyticsServiceMock>();
       unregister<InternalInfoServiceMock>();
       unregister<NetworkingService>();
+      unregister<LaunchUrlService>();
       unregister<QuickLinkRepository>();
     });
 

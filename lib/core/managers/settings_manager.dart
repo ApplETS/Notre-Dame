@@ -42,11 +42,14 @@ class SettingsManager with ChangeNotifier {
 
   /// Get ThemeMode
   ThemeMode get themeMode {
-    _preferencesService.getString(PreferencesFlag.theme).then((value) {
-      if (value != null) {
-        _themeMode = ThemeMode.values.firstWhere((e) => e.toString() == value);
-      }
-    });
+    _preferencesService.getString(PreferencesFlag.theme).then((value) => {
+          if (value != null)
+            {
+              _themeMode =
+                  ThemeMode.values.firstWhere((e) => e.toString() == value)
+            }
+        });
+
     return _themeMode;
   }
 

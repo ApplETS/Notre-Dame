@@ -70,7 +70,7 @@ class LoginViewModel extends BaseViewModel {
   /// Try to authenticate the user. Redirect to the [DashboardView] if everything is correct
   Future<String> authenticate() async {
     if (!canSubmit) {
-      return _appIntl.error;
+      return _appIntl.login_error_invalid_credentials;
     }
 
     setBusy(true);
@@ -88,7 +88,7 @@ class LoginViewModel extends BaseViewModel {
     setBusy(false);
     notifyListeners();
 
-    return _appIntl.error;
+    return _appIntl.login_error_invalid_credentials;
   }
 
   String mailtoStr(String email, String subject) {

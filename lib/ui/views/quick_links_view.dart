@@ -5,16 +5,15 @@ import 'package:reorderable_grid_view/reorderable_grid_view.dart';
 import 'package:stacked/stacked.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+// MODEL
+import 'package:notredame/core/models/quick_link.dart';
+
 // VIEW-MODEL
 import 'package:notredame/core/viewmodels/quick_links_viewmodel.dart';
 
 // WIDGETS
 import 'package:notredame/ui/widgets/base_scaffold.dart';
 import 'package:notredame/ui/widgets/web_link_card.dart';
-
-import '../../core/models/quick_link.dart';
-
-// OTHER
 
 class QuickLinksView extends StatefulWidget {
   @override
