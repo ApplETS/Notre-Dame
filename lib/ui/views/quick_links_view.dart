@@ -56,7 +56,7 @@ class _QuickLinksViewState extends State<QuickLinksView>
     return AppBar(
       title: Text(AppIntl.of(context).title_ets),
       automaticallyImplyLeading: false,
-      actions: [],
+      actions: const [],
     );
   }
 
