@@ -6,6 +6,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:logger/logger.dart';
+import 'package:notredame/core/managers/quick_link_repository.dart';
 
 // OTHER
 import 'package:notredame/locator.dart';
@@ -33,6 +34,7 @@ import 'package:notredame/core/services/remote_config_service.dart';
 import 'package:ets_api_clients/testing.dart';
 import 'mock/managers/cache_manager_mock.dart';
 import 'mock/managers/course_repository_mock.dart';
+import 'mock/managers/quick_links_repository_mock.dart';
 import 'mock/managers/settings_manager_mock.dart';
 import 'mock/managers/user_repository_mock.dart';
 import 'mock/services/analytics_service_mock.dart';
@@ -326,6 +328,16 @@ RemoteConfigService setupRemoteConfigServiceMock() {
   locator.registerSingleton<RemoteConfigService>(service);
 
   return service;
+}
+
+/// Load a mock of the [QuickLinkRepository]
+QuickLinkRepository setupQuickLinkRepositoryMock() {
+  unregister<QuickLinkRepository>();
+  final repository = QuickLinkRepositoryMock();
+
+  locator.registerSingleton<QuickLinkRepository>(repository);
+
+  return repository;
 }
 
 bool getCalendarViewEnabled() {

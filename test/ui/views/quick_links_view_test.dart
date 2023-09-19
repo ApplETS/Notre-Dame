@@ -1,5 +1,6 @@
 // FLUTTER / DART / THIRD-PARTIES
 import 'dart:io';
+import 'package:ets_api_clients/exceptions.dart';
 import 'package:feature_discovery/feature_discovery.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -7,6 +8,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 // CONSTANTS
 import 'package:notredame/core/constants/quick_links.dart';
+import 'package:notredame/core/managers/quick_link_repository.dart';
 
 // SERVICES
 import 'package:notredame/core/services/networking_service.dart';
@@ -18,12 +20,15 @@ import 'package:notredame/ui/views/quick_links_view.dart';
 import 'package:notredame/ui/widgets/web_link_card.dart';
 
 import '../../helpers.dart';
+import '../../mock/managers/quick_links_repository_mock.dart';
 import '../../mock/services/analytics_service_mock.dart';
 import '../../mock/services/internal_info_service_mock.dart';
 import '../../mock/services/navigation_service_mock.dart';
 
 void main() {
   AppIntl intl;
+
+  QuickLinkRepository quickLinkRepository;
 
   group('QuickLinksView - ', () {
     setUp(() async {
@@ -32,6 +37,13 @@ void main() {
       setupAnalyticsServiceMock();
       setupInternalInfoServiceMock();
       setupNetworkingServiceMock();
+      quickLinkRepository = setupQuickLinkRepositoryMock();
+      QuickLinkRepositoryMock.stubGetDefaultQuickLinks(
+          quickLinkRepository as QuickLinkRepositoryMock,
+          toReturn: quickLinks(intl));
+
+      QuickLinkRepositoryMock.stubGetQuickLinkDataFromCacheException(
+          quickLinkRepository as QuickLinkRepositoryMock);
     });
 
     tearDown(() {
@@ -39,6 +51,7 @@ void main() {
       unregister<AnalyticsServiceMock>();
       unregister<InternalInfoServiceMock>();
       unregister<NetworkingService>();
+      unregister<QuickLinkRepository>();
     });
 
     group('UI - ', () {
@@ -48,8 +61,8 @@ void main() {
             useScaffold: false));
         await tester.pumpAndSettle();
 
-        expect(
-            find.byType(WebLinkCard), findsNWidgets(quickLinks(intl).length));
+        expect(find.byType(WebLinkCard, skipOffstage: false),
+            findsNWidgets(quickLinks(intl).length));
       });
 
       group("golden - ", () {

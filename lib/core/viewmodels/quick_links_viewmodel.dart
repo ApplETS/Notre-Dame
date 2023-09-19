@@ -21,9 +21,9 @@ class QuickLinksViewModel extends FutureViewModel<List<QuickLink>> {
   final AppIntl _appIntl;
 
   /// used to get all links for ETS page
-  List<QuickLink> quickLinkList = List.empty();
+  List<QuickLink> quickLinkList = [];
 
-  List<QuickLink> deletedQuickLinks = List.empty();
+  List<QuickLink> deletedQuickLinks = [];
 
   final QuickLinkRepository _quickLinkRepository =
       locator<QuickLinkRepository>();
@@ -31,7 +31,7 @@ class QuickLinksViewModel extends FutureViewModel<List<QuickLink>> {
   QuickLinksViewModel(AppIntl intl) : _appIntl = intl;
 
   Future<List<QuickLink>> getQuickLinks() async {
-    List<QuickLinkData> quickLinkDataList;
+    List<QuickLinkData> quickLinkDataList = [];
     try {
       quickLinkDataList =
           await _quickLinkRepository.getQuickLinkDataFromCache();
