@@ -18,6 +18,8 @@ class RemoteConfigService {
   static const _dashboardMsgTitleFr = "dashboard_message_title_fr";
   static const _dashboardMsgTitleEn = "dashboard_message_title_en";
   static const _dashboardMsgColor = "dashboard_message_color";
+  static const _dashboardMsgUrl = "dashboard_message_url";
+  static const _dashboardMsgType = "dashboard_message_type";
 
   static const _scheduleListViewDefault = "schedule_list_view_default";
   final FirebaseRemoteConfig _remoteConfig = FirebaseRemoteConfig.instance;
@@ -28,6 +30,8 @@ class RemoteConfigService {
     _dashboardMsgTitleFr: "",
     _dashboardMsgTitleEn: "",
     _dashboardMsgColor: "",
+    _dashboardMsgUrl: "",
+    _dashboardMsgType: "",
     _scheduleListViewDefault: true
   };
 
@@ -74,6 +78,16 @@ class RemoteConfigService {
   Future<String> get dashboardMsgColor async {
     fetch();
     return _remoteConfig.getString(_dashboardMsgColor);
+  }
+
+  Future<String> get dashboardMsgUrl async {
+    fetch();
+    return _remoteConfig.getString(_dashboardMsgUrl);
+  }
+
+  Future<String> get dashboardMsgType async {
+    fetch();
+    return _remoteConfig.getString(_dashboardMsgType);
   }
 
   Future<void> fetch() async {

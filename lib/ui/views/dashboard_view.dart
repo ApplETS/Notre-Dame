@@ -1,4 +1,5 @@
 // FLUTTER / DART / THIRD-PARTIES
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:feature_discovery/feature_discovery.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
@@ -35,6 +36,7 @@ import 'package:notredame/ui/utils/discovery_components.dart';
 // SERVICES
 import 'package:notredame/core/services/navigation_service.dart';
 import 'package:notredame/core/services/analytics_service.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class DashboardView extends StatefulWidget {
   final UpdateCode updateCode;
@@ -403,6 +405,8 @@ class _DashboardViewState extends State<DashboardView>
   Widget _buildMessageBroadcastCard(
       DashboardViewModel model, PreferencesFlag flag) {
     final broadcastMsgColor = Color(int.parse(model.broadcastColor));
+    final broadcastMsgType = model.broadcastType;
+    final broadcastMsgUrl = model.broadcastUrl;
     return DismissibleCard(
         key: UniqueKey(),
         onDismissed: (DismissDirection direction) {
@@ -423,24 +427,52 @@ class _DashboardViewState extends State<DashboardView>
                         style: Theme.of(context).primaryTextTheme.headline6),
                   ),
                 ),
-                const Align(
+                Align(
                   alignment: Alignment.centerRight,
                   child: InkWell(
-                    child: Icon(
-                      Icons
-                          .campaign, // TODO Chose from a pre-defined list depending on the case
-                      color: AppTheme.lightThemeBackground,
-                      size: 36.0,
-                    ),
+                    child: getBroadcastIcon(broadcastMsgType, broadcastMsgUrl),
                   ),
                 ),
               ],
             ),
             // main text
-            Text(model.broadcastMessage ?? "",
+            AutoSizeText(model.broadcastMessage ?? "",
                 style: Theme.of(context).primaryTextTheme.bodyText2)
           ]),
         ));
+  }
+
+  Widget getBroadcastIcon(String type, String url) {
+    switch (type) {
+      case "warning":
+        return const Icon(
+          Icons.warning_rounded,
+          color: AppTheme.lightThemeBackground,
+          size: 36.0,
+        );
+      case "alert":
+        return const Icon(
+          Icons.error,
+          color: AppTheme.lightThemeBackground,
+          size: 36.0,
+        );
+      case "link":
+        return IconButton(
+          onPressed: () {
+            Utils.launchURL(url, AppIntl.of(context));
+          },
+          icon: const Icon(
+            Icons.open_in_new,
+            color: AppTheme.lightThemeBackground,
+            size: 30.0,
+          ),
+        );
+    }
+    return const Icon(
+      Icons.campaign,
+      color: AppTheme.lightThemeBackground,
+      size: 36.0,
+    );
   }
 
   void dismissCard(DashboardViewModel model, PreferencesFlag flag) {

@@ -66,6 +66,8 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
   String broadcastMessage;
   String broadcastTitle;
   String broadcastColor;
+  String broadcastUrl;
+  String broadcastType;
 
   /// Get progress of the session
   double get progress => _progress;
@@ -290,15 +292,16 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
 
   /// Reset all card indexes to their default values
   void setAllCardsVisible() {
+    final firstIndex = remoteConfigService.dashboardMessageActive
+        ? PreferencesFlag.broadcastCard.index
+        : PreferencesFlag.aboutUsCard.index;
     _cards.updateAll((key, value) {
-      _settingsManager
-          .setInt(key, key.index - PreferencesFlag.broadcastCard.index)
-          .then((value) {
+      _settingsManager.setInt(key, key.index - firstIndex).then((value) {
         if (!value) {
           Fluttertoast.showToast(msg: _appIntl.error);
         }
       });
-      return key.index - PreferencesFlag.broadcastCard.index;
+      return key.index - firstIndex;
     });
 
     getCardsToDisplay();
@@ -550,6 +553,10 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
     const PreferencesFlag flag = PreferencesFlag.broadcastCard;
 
     setBusyForObject(broadcastMessage, true);
+    setBusyForObject(broadcastTitle, true);
+    setBusyForObject(broadcastColor, true);
+    setBusyForObject(broadcastUrl, true);
+    setBusyForObject(broadcastType, true);
 
     if (remoteConfigService.dashboardMessageActive) {
       if (_appIntl.localeName == "fr") {
@@ -560,10 +567,16 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
         broadcastTitle = await remoteConfigService.dashboardMessageTitleEn;
       }
       broadcastColor = await remoteConfigService.dashboardMsgColor;
+      broadcastUrl = await remoteConfigService.dashboardMsgUrl;
+      broadcastType = await remoteConfigService.dashboardMsgType;
     } else {
       _cardsToDisplay.remove(flag);
     }
 
     setBusyForObject(broadcastMessage, false);
+    setBusyForObject(broadcastTitle, false);
+    setBusyForObject(broadcastColor, false);
+    setBusyForObject(broadcastUrl, false);
+    setBusyForObject(broadcastType, false);
   }
 }

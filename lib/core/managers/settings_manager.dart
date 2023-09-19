@@ -98,8 +98,10 @@ class SettingsManager with ChangeNotifier {
         await _preferencesService.getInt(PreferencesFlag.broadcastCard) ??
             getDefaultCardIndex(PreferencesFlag.broadcastCard);
 
-    dashboard.putIfAbsent(
-        PreferencesFlag.broadcastCard, () => broadcastCardIndex);
+    if (_remoteConfigService.dashboardMessageActive) {
+      dashboard.putIfAbsent(
+          PreferencesFlag.broadcastCard, () => broadcastCardIndex);
+    }
 
     final aboutUsIndex =
         await _preferencesService.getInt(PreferencesFlag.aboutUsCard) ??

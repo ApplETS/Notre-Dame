@@ -34,12 +34,12 @@ enum PreferencesFlag {
   discoveryMore,
 
   // Dashboard flags
+  broadcastCard,
   aboutUsCard,
   scheduleCard,
   progressBarCard,
   gradesCard,
   progressBarText,
-  broadcastCard,
 
   // Rating flag
   ratingTimer,
