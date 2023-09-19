@@ -82,7 +82,6 @@ class _QuickLinksViewState extends State<QuickLinksView>
               ),
             ),
             if (_editMode && model.deletedQuickLinks.isNotEmpty) ...[
-              //Text("Restore QuickLinks!"),
               const Divider(
                 thickness: 2,
                 indent: 10,
@@ -154,7 +153,9 @@ class _QuickLinksViewState extends State<QuickLinksView>
         child: Stack(
           children: [
             WebLinkCard(quickLinks[index]),
-            if (_editMode)
+            if (_editMode &&
+                quickLinks[index].id !=
+                    1) // Don't show delete button for Security QuickLink
               Positioned(
                 top: 0,
                 left: 0,
