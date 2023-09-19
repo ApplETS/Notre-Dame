@@ -2,7 +2,6 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:intl/intl.dart';
 import 'package:mockito/mockito.dart';
 import 'package:notredame/core/managers/quick_link_repository.dart';
 
@@ -17,7 +16,6 @@ import 'package:notredame/core/models/quick_link_data.dart';
 import '../helpers.dart';
 
 // MOCKS
-import 'package:ets_api_clients/testing.dart';
 import '../mock/managers/cache_manager_mock.dart';
 
 void main() {

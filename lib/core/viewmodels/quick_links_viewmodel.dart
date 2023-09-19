@@ -1,13 +1,7 @@
 // FLUTTER / DART / THIRD-PARTIES
-import 'dart:convert';
-import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:notredame/core/managers/cache_manager.dart';
 import 'package:notredame/core/managers/quick_link_repository.dart';
 import 'package:stacked/stacked.dart';
-
-// CONSTANTS
-import 'package:notredame/core/constants/quick_links.dart';
 
 // MODELS
 import 'package:notredame/core/models/quick_link.dart';
