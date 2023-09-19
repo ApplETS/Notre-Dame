@@ -153,6 +153,7 @@
   "profile_number_equivalent_courses_program": "Equivalent Courses",
   "profile_status_program": "Status",
 
+  "useful_link_title": "Useful links",
   "ets_security_title": "Security",
   "ets_monets_title": "MonÉTS",
   "ets_bibliotech_title": "Bibliotech",
@@ -163,6 +164,8 @@
   "ets_schedule_generator": "Rubik",
   "ets_gus": "GUS",
   "ets_papercut_title":"PaperCut",
+
+  "news_title" : "News",
 
   "more_about_applets_title": "About ApplETS",
   "more_report_bug": "Report a bug or request a feature",

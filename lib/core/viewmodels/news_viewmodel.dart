@@ -74,4 +74,14 @@ class NewsViewModel extends FutureViewModel<List<News>> {
   void onError(error) {
     Fluttertoast.showToast(msg: _appIntl.error);
   }
+
+  Future refresh() async {
+    try {
+      setBusyForObject(isLoadingEvents, true);
+      _newsRepository.getNews();
+      notifyListeners();
+    } on Exception catch (error) {
+      onError(error);
+    }
+  }
 }

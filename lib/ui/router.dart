@@ -9,6 +9,7 @@ import 'package:notredame/core/constants/router_paths.dart';
 
 // MODELS
 import 'package:ets_api_clients/models.dart';
+import 'package:notredame/ui/views/ets_view.dart';
 import 'package:notredame/ui/views/feedback_view.dart';
 
 // VIEWS
@@ -82,6 +83,14 @@ Route<dynamic> generateRoute(RouteSettings routeSettings) {
           pageBuilder: (_, __, ___) =>
               GradesDetailsView(course: routeSettings.arguments as Course));
     case RouterPaths.ets:
+      return PageRouteBuilder(
+          settings: RouteSettings(name: routeSettings.name),
+          pageBuilder: (_, __, ___) => ETSView());
+    case RouterPaths.usefulLinks:
+      return PageRouteBuilder(
+          settings: RouteSettings(name: routeSettings.name),
+          pageBuilder: (_, __, ___) => QuickLinksView());
+    case RouterPaths.news: // TODO
       return PageRouteBuilder(
           settings: RouteSettings(name: routeSettings.name),
           pageBuilder: (_, __, ___) => QuickLinksView());

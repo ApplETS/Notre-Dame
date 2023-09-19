@@ -138,35 +138,6 @@ class NewsRepository {
   List<News> fetchNewsFromAPI() {
     final List<News> fetchedNews = [];
 
-    fetchedNews.add(News(
-      id: 1,
-      title: "Nouvelle fonctionnalité",
-      description:
-          "Vous pouvez désormais consulter les nouvelles de votre école directement dans l'application. Pour cela, cliquez sur le menu en haut à gauche et sélectionnez \"Nouvelles\".",
-      image: "https://i.imgur.com/1ZQ2Z0M.png",
-      tags: [
-        Tag(text: "Nouvelles", color: Colors.blue),
-      ],
-      date: DateTime.now(),
-      important: true,
-    ));
-
-// Add three more random news
-    for (int i = 0; i < 3; i++) {
-      fetchedNews.add(News(
-        id: i + 2,
-        title: "Nouvelle fonctionnalité",
-        description:
-            "Vous pouvez désormais consulter les nouvelles de votre école directement dans l'application. Pour cela, cliquez sur le menu en haut à gauche et sélectionnez \"Nouvelles\".",
-        image: "https://i.imgur.com/1ZQ2Z0M.png",
-        tags: [
-          Tag(text: "Nouvelles", color: Colors.blue),
-        ],
-        date: DateTime.now(),
-        important: false,
-      ));
-    }
-
     _logger.d("$tag - getNews: fetched ${fetchedNews.length} news.");
 
     return fetchedNews;

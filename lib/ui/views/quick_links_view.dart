@@ -7,7 +7,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:notredame/core/viewmodels/quick_links_viewmodel.dart';
 
 // WIDGETS
-import 'package:notredame/ui/widgets/base_scaffold.dart';
+import 'package:notredame/ui/widgets/scaffold_safe_area.dart';
 import 'package:notredame/ui/widgets/web_link_card.dart';
 
 // OTHER
@@ -22,12 +22,8 @@ class _QuickLinksViewState extends State<QuickLinksView> {
   Widget build(BuildContext context) =>
       ViewModelBuilder<QuickLinksViewModel>.reactive(
         viewModelBuilder: () => QuickLinksViewModel(AppIntl.of(context)),
-        builder: (context, model, child) => BaseScaffold(
+        builder: (context, model, child) => ScaffoldSafeArea(
           isLoading: model.isBusy,
-          appBar: AppBar(
-            title: Text(AppIntl.of(context).title_ets),
-            automaticallyImplyLeading: false,
-          ),
           body: SafeArea(
             child: Align(
               alignment: Alignment.topCenter,

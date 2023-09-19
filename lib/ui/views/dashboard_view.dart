@@ -3,10 +3,8 @@ import 'package:feature_discovery/feature_discovery.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-//import 'package:notredame/core/viewmodels/news_viewmodel.dart';
 import 'package:stacked/stacked.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-//import 'package:timeago/timeago.dart' as timeago;
 
 // VIEWMODEL
 import 'package:notredame/core/viewmodels/dashboard_viewmodel.dart';
@@ -20,7 +18,6 @@ import 'package:notredame/ui/widgets/haptics_container.dart';
 
 // MODELS / CONSTANTS
 import 'package:ets_api_clients/models.dart';
-//import 'package:notredame/core/models/news.dart';
 import 'package:notredame/locator.dart';
 import 'package:notredame/core/constants/preferences_flags.dart';
 import 'package:notredame/core/constants/urls.dart';
@@ -62,8 +59,6 @@ class _DashboardViewState extends State<DashboardView>
       DashboardViewModel.promptUpdate(context, widget.updateCode);
     });
     DashboardViewModel.launchInAppReview();
-    // TODO move this to a better place
-    //timeago.setLocaleMessages('fr', timeago.FrShortMessages());
   }
 
   @override
@@ -91,8 +86,7 @@ class _DashboardViewState extends State<DashboardView>
                           onReorder: (oldIndex, newIndex) =>
                               onReorder(model, oldIndex, newIndex),
                           padding: const EdgeInsets.fromLTRB(0, 4, 0, 8),
-                          children: _buildCards(
-                              model /*, NewsViewModel(intl: AppIntl.of(context))*/),
+                          children: _buildCards(model),
                           proxyDecorator: (child, _, __) {
                             return HapticsContainer(child: child);
                           },
@@ -103,8 +97,7 @@ class _DashboardViewState extends State<DashboardView>
         });
   }
 
-  List<Widget> _buildCards(
-      DashboardViewModel model /*, NewsViewModel newsModel*/) {
+  List<Widget> _buildCards(DashboardViewModel model) {
     final List<Widget> cards = List.empty(growable: true);
 
     for (final PreferencesFlag element in model.cardsToDisplay) {
@@ -120,10 +113,6 @@ class _DashboardViewState extends State<DashboardView>
           break;
         case PreferencesFlag.gradesCard:
           cards.add(_buildGradesCards(model, element));
-          // TODO : move to news page
-          /*for (final News news in newsModel.news) {
-            cards.add(_buildNewsCard(newsModel, news));
-          }*/
           break;
 
         default:
@@ -404,122 +393,7 @@ class _DashboardViewState extends State<DashboardView>
                 )
             ]),
       );
-/* TODO : Move to news page
-  Widget _buildImageWithTags(News news) {
-  if (news.image == null) {
-    return const SizedBox.shrink();
-  }
 
-  return Stack(
-    children: [
-      ClipRRect(
-        borderRadius: BorderRadius.circular(8.0),
-        child: Image.network(
-          news.image,
-          fit: BoxFit.cover,
-        ),
-      ),
-      Positioned(
-        top: 8,
-        left: 8,
-        child: Wrap(
-          spacing: 8,
-          children: List.generate(
-            news.tags.length,
-            (index) => Container(
-              padding: const EdgeInsets.all(8),
-              decoration: BoxDecoration(
-                color: news.tags[index].color,
-                borderRadius: BorderRadius.circular(8),
-              ),
-              child: Text(
-                news.tags[index].text,
-                style: TextStyle(
-                  color: _getTagTextColor(news.tags[index].color),
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ),
-          ),
-        ),
-      ),
-    ],
-  );
-}
-
-Color _getTagTextColor(Color backgroundColor) {
-  final luminance = backgroundColor.computeLuminance();
-  return luminance > 0.5 ? Colors.black : Colors.white;
-}
-
-
-  Widget _buildTitleAndTime(News news, BuildContext context) {
-    final TextStyle titleStyle = news.important
-        ? Theme.of(context).textTheme.titleMedium.copyWith(
-              color: Colors.white,
-              fontWeight: FontWeight.bold,
-            )
-        : Theme.of(context).textTheme.titleMedium.copyWith(
-              fontWeight: FontWeight.w500,
-            );
-
-    final TextStyle timeStyle = news.important && !Utils.isDarkTheme(context)
-        ? Theme.of(context).textTheme.bodySmall.copyWith(
-              color: Colors.white,
-              fontWeight: FontWeight.bold,
-            )
-        : Theme.of(context).textTheme.bodySmall;
-
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Flexible(
-          child: Padding(
-            padding: EdgeInsets.symmetric(vertical: 8.0),
-            child: Text(
-              news.title,
-              style: titleStyle,
-            ),
-          ),
-        ),
-        const SizedBox(width: 10),
-        Text(
-          timeago.format(news.date, locale: AppIntl.of(context).localeName),
-          style: timeStyle,
-        ),
-      ],
-    );
-  }
-
-  Widget _buildNewsCard(NewsViewModel model, News news) {
-    return DismissibleCard(
-      cardColor: news.important ? AppTheme.accent : null,
-      key: UniqueKey(),
-      onDismissed: (DismissDirection direction) {
-        // Nothing for test
-      },
-      isBusy: model.busy(model.news),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Container(
-            padding: const EdgeInsets.fromLTRB(8, 8, 8, 8),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                _buildImageWithTags(news),
-                const SizedBox(height: 8),
-                _buildTitleAndTime(news, context),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-*/
   void dismissCard(DashboardViewModel model, PreferencesFlag flag) {
     model.hideCard(flag);
   }
