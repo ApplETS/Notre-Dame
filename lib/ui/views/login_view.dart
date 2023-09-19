@@ -7,6 +7,7 @@ import 'package:stacked/stacked.dart';
 
 // SERVICE
 import 'package:notredame/core/services/navigation_service.dart';
+import 'package:notredame/core/services/launch_url_service.dart';
 
 // UTILS
 import 'package:notredame/core/utils/utils.dart';
@@ -19,8 +20,8 @@ import 'package:notredame/core/viewmodels/login_viewmodel.dart';
 import 'package:notredame/ui/widgets/password_text_field.dart';
 
 // CONSTANTS
-import 'package:notredame/core/constants/app_info.dart';
 import 'package:notredame/core/constants/urls.dart';
+import 'package:notredame/core/constants/router_paths.dart';
 
 // OTHER
 import 'package:notredame/ui/utils/app_theme.dart';
@@ -37,6 +38,8 @@ class _LoginViewState extends State<LoginView> {
   final FocusScopeNode _focusNode = FocusScopeNode();
 
   final NavigationService _navigationService = locator<NavigationService>();
+
+  final LaunchUrlService _launchUrlService = locator<LaunchUrlService>();
 
   /// Unique key of the login form form
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
