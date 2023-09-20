@@ -292,16 +292,15 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
 
   /// Reset all card indexes to their default values
   void setAllCardsVisible() {
-    final firstIndex = remoteConfigService.dashboardMessageActive
-        ? PreferencesFlag.broadcastCard.index
-        : PreferencesFlag.aboutUsCard.index;
     _cards.updateAll((key, value) {
-      _settingsManager.setInt(key, key.index - firstIndex).then((value) {
+      _settingsManager
+          .setInt(key, key.index - PreferencesFlag.broadcastCard.index)
+          .then((value) {
         if (!value) {
           Fluttertoast.showToast(msg: _appIntl.error);
         }
       });
-      return key.index - firstIndex;
+      return key.index - PreferencesFlag.broadcastCard.index;
     });
 
     getCardsToDisplay();
@@ -558,20 +557,16 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
     setBusyForObject(broadcastUrl, true);
     setBusyForObject(broadcastType, true);
 
-    if (remoteConfigService.dashboardMessageActive) {
-      if (_appIntl.localeName == "fr") {
-        broadcastMessage = await remoteConfigService.dashboardMessageFr;
-        broadcastTitle = await remoteConfigService.dashboardMessageTitleFr;
-      } else {
-        broadcastMessage = await remoteConfigService.dashboardMessageEn;
-        broadcastTitle = await remoteConfigService.dashboardMessageTitleEn;
-      }
-      broadcastColor = await remoteConfigService.dashboardMsgColor;
-      broadcastUrl = await remoteConfigService.dashboardMsgUrl;
-      broadcastType = await remoteConfigService.dashboardMsgType;
+    if (_appIntl.localeName == "fr") {
+      broadcastMessage = await remoteConfigService.dashboardMessageFr;
+      broadcastTitle = await remoteConfigService.dashboardMessageTitleFr;
     } else {
-      _cardsToDisplay.remove(flag);
+      broadcastMessage = await remoteConfigService.dashboardMessageEn;
+      broadcastTitle = await remoteConfigService.dashboardMessageTitleEn;
     }
+    broadcastColor = await remoteConfigService.dashboardMsgColor;
+    broadcastUrl = await remoteConfigService.dashboardMsgUrl;
+    broadcastType = await remoteConfigService.dashboardMsgType;
 
     setBusyForObject(broadcastMessage, false);
     setBusyForObject(broadcastTitle, false);

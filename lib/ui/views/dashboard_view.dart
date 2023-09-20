@@ -108,7 +108,9 @@ class _DashboardViewState extends State<DashboardView>
     for (final PreferencesFlag element in model.cardsToDisplay) {
       switch (element) {
         case PreferencesFlag.broadcastCard:
-          cards.add(_buildMessageBroadcastCard(model, element));
+          if (model.remoteConfigService.dashboardMessageActive) {
+            cards.add(_buildMessageBroadcastCard(model, element));
+          }
           break;
         case PreferencesFlag.aboutUsCard:
           cards.add(_buildAboutUsCard(model, element));
