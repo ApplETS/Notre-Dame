@@ -51,10 +51,12 @@ class _FaqViewState extends State<FaqView> {
                           return Container(
                             width: MediaQuery.of(context).size.width,
                             margin: const EdgeInsets.symmetric(horizontal: 5.0),
-                            decoration: const BoxDecoration(
-                              color: Color.fromARGB(255, 240, 238, 238),
+                            decoration: BoxDecoration(
+                              color: Theme.of(context).brightness == Brightness.light
+                            ? const Color.fromARGB(255, 240, 238, 238)
+                            : const Color.fromARGB(255, 40, 40, 40),
                               borderRadius:
-                                  BorderRadius.all(Radius.circular(8.0)),
+                                const BorderRadius.all(Radius.circular(8.0)),
                             ),
                             child: getQuestionCard(
                               question.title[model.locale.languageCode],
@@ -161,7 +163,9 @@ class _FaqViewState extends State<FaqView> {
                 textScaleFactor: 1.0,
                 style: Theme.of(context).textTheme.bodyText2.copyWith(
                       fontSize: 20,
-                      color: Colors.black,
+                      color: Theme.of(context).brightness == Brightness.light
+                            ? Colors.black
+                            : Colors.white,
                     ),
                 textAlign: TextAlign.justify,
               ),
@@ -171,7 +175,9 @@ class _FaqViewState extends State<FaqView> {
                 textScaleFactor: 1.0,
                 style: Theme.of(context).textTheme.bodyText2.copyWith(
                       fontSize: 16,
-                      color: Colors.black,
+                      color: Theme.of(context).brightness == Brightness.light
+                            ? Colors.black
+                            : Colors.white,
                     ),
                 textAlign: TextAlign.justify,
               ),
