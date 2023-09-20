@@ -6,7 +6,7 @@ class ActionItem {
   final Map<String, String> description;
   final ActionType type;
   final String link;
-  final String iconName;
+  final IconData iconName;
   final Color iconColor;
   final Color circleColor;
 

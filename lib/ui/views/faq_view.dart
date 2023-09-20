@@ -1,4 +1,5 @@
 // FLUTTER / DART / THIRD-PARTIES
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:notredame/locator.dart';
 import 'package:stacked/stacked.dart';
@@ -13,11 +14,13 @@ import 'package:notredame/core/viewmodels/faq_viewmodel.dart';
 import 'package:notredame/core/models/faq_actions.dart';
 
 // SERVICES
-import 'package:notredame/core/services/preferences_service.dart';
+import 'package:notredame/core/services/launch_url_service.dart';
+import 'package:notredame/core/services/analytics_service.dart';
+import 'package:notredame/core/services/navigation_service.dart';
 
 // CONSTANTS
 import 'package:notredame/core/constants/faq.dart';
-import 'package:notredame/core/constants/preferences_flags.dart';
+import 'package:notredame/core/constants/app_info.dart';
 
 // UTILS
 import 'package:notredame/core/utils/utils.dart';
@@ -31,19 +34,15 @@ class FaqView extends StatefulWidget {
 class _FaqViewState extends State<FaqView> {
   final Faq faq = Faq();
   
-  final PreferencesService _preferencesService = locator<PreferencesService>();
+  final LaunchUrlService _launchUrlService = locator<LaunchUrlService>();
 
-  final PageController _pageController = PageController(
-    viewportFraction: 0.80,
-  );
+  final NavigationService _navigationService = locator<NavigationService>();
   
   @override
   Widget build(BuildContext context) =>
     ViewModelBuilder<FaqViewModel>.reactive(
-      viewModelBuilder: () => FaqViewModel(intl: AppIntl.of(context)),
+      viewModelBuilder: () => FaqViewModel(),
       builder: (context, model, child) {
-        final bool isLightMode =
-            Theme.of(context).brightness == Brightness.light;
         return Scaffold(
           backgroundColor: Utils.getColorByBrightness(
                 context, AppTheme.etsLightRed, AppTheme.primaryDark),
@@ -52,46 +51,57 @@ class _FaqViewState extends State<FaqView> {
             children: <Widget>[
               getTitle(),
               getSubtitle(AppIntl.of(context).questions_and_answers),
-              Expanded(
-                child: PageView.builder(
-                  controller: _pageController,
-                  itemCount: faq.questions.length,
-                  itemBuilder: (context, index) {
+              Padding(
+                padding: const EdgeInsets.only(left: 15.0, right: 15.0),
+                child: CarouselSlider(
+                  options: CarouselOptions(
+                    height: 250.0,
+                  ),
+                  items: faq.questions.asMap().entries.map((entry) {
+                    final int index = entry.key;
                     final question = faq.questions[index];
 
-                    return getQuestionCard(
-                      question.title["en"],
-                      question.description["en"],
+                    return Builder(
+                      builder: (BuildContext context) {
+                        return Container(
+                          width: MediaQuery.of(context).size.width,
+                          margin: const EdgeInsets.symmetric(horizontal: 5.0),
+                          decoration: const BoxDecoration(
+                            color: Color.fromARGB(255, 240, 238, 238),
+                            borderRadius: BorderRadius.all(Radius.circular(8.0)),
+                          ),
+                          child: getQuestionCard(
+                            question.title[model.locale.languageCode],
+                            question.description[model.locale.languageCode],
+                          ),
+                        );
+                      },
                     );
-                  },
-                  pageSnapping: false,
-                  physics: const BouncingScrollPhysics(), // Optional: Add bounce effect
+                  }).toList(),
                 ),
               ),
               getSubtitle(AppIntl.of(context).actions),
               Expanded(
                 child: ListView.builder(
+                  padding: const EdgeInsets.only(top: 1.0),
                   itemCount: faq.actions.length,
                   itemBuilder: (context, index) {
                     final action = faq.actions[index];
-                    // TODO
-                    final lang = _preferencesService.getString(PreferencesFlag.locale);
-                    print(lang);
-                    
+
                     return getActionCard(
-                      action.title["fr"], 
-                      action.description["fr"],
-                      ActionType.email, // TODO : action.type
+                      action.title[model.locale.languageCode], 
+                      action.description[model.locale.languageCode],
+                      action.type,
                       action.link,
                       action.iconName,
                       action.iconColor,
                       action.circleColor,
                       context,
+                      model
                     );
                   },
                 ),
-              ),
-              const SizedBox(height: 10.0)
+              )
             ],
           ),
         );
@@ -100,7 +110,7 @@ class _FaqViewState extends State<FaqView> {
 
   Padding getTitle() {
     return Padding(
-      padding: const EdgeInsets.only(top: 60.0, bottom: 20.0),
+      padding: const EdgeInsets.only(top: 60.0),
         child: Row(
           children: [
             Padding(
@@ -135,7 +145,7 @@ class _FaqViewState extends State<FaqView> {
 
   Padding getSubtitle(String subtitle) {
     return Padding(
-      padding: const EdgeInsets.only(left: 18.0, top: 10.0),
+      padding: const EdgeInsets.only(left: 18.0, top: 18.0, bottom: 10.0),
       child: Text(
           subtitle,
           style: Theme.of(context).textTheme.headline5.copyWith(
@@ -147,48 +157,32 @@ class _FaqViewState extends State<FaqView> {
 
   Padding getQuestionCard(String title, String description) {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(15.0, 15.0, 15.0, 15.0),
-      child: Container(
-        width: MediaQuery.of(context).size.width * 0.8, // Set the desired width
-        child: ElevatedButton(
-          onPressed: () {},
-          style: ButtonStyle(
-            shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-              RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8.0),
-              ),
-            ),
-          ),
-          child: Padding(
-            padding: const EdgeInsets.only(top: 15.0, bottom: 15.0),
-            child: Align(
-              alignment: Alignment.topLeft,
-              child: IntrinsicHeight(
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Text(
-                      title,
-                      style: Theme.of(context).textTheme.bodyText2.copyWith(
-                            fontSize: 20,
-                            color: getTextColor(context),
-                          ),
-                      textAlign: TextAlign.left,
+      padding: const EdgeInsets.only(top: 20.0, left: 20.0, right: 20.0),
+      child: Align(
+        alignment: Alignment.topLeft,
+        child: IntrinsicHeight(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Text(
+                title,
+                style: Theme.of(context).textTheme.bodyText2.copyWith(
+                      fontSize: 20,
+                      color: Colors.black,
                     ),
-                    const SizedBox(height: 20.0),
-                    Text(
-                      description,
-                      style: Theme.of(context).textTheme.bodyText2.copyWith(
-                            fontSize: 16,
-                            color: getTextColor(context),
-                          ),
-                      textAlign: TextAlign.left,
-                    ),
-                  ],
-                ),
+                textAlign: TextAlign.justify,
               ),
-            ),
+              const SizedBox(height: 20.0),
+              Text(
+                description,
+                style: Theme.of(context).textTheme.bodyText2.copyWith(
+                      fontSize: 16,
+                      color: Colors.black,
+                    ),
+                textAlign: TextAlign.justify,
+              ),
+            ],
           ),
         ),
       ),
@@ -199,26 +193,26 @@ class _FaqViewState extends State<FaqView> {
       String title, 
       String description, 
       ActionType type, 
-      String link, 
-      String iconName,
+      String link,
+      IconData iconName,
       Color iconColor,
       Color circleColor,
       BuildContext context,
+      FaqViewModel model
     ) {
     return Padding(
       padding: const EdgeInsets.fromLTRB(15.0, 0.0, 15.0, 15.0),
       child: ElevatedButton(
         onPressed: () {
-          if (type == ActionType.webview) {
-            // TODO : Implement webview
-          } else if (type == ActionType.email) {
-            // TODO : Implement email
-            
+          if (type.name == ActionType.webview.name) {
+            openWebview(model, link);
+          } else if (type.name == ActionType.email.name) {
+            openMail(model, link);
           }
         },
         style: ButtonStyle(
-            shape:
-                MaterialStateProperty.all<RoundedRectangleBorder>(
+          elevation: MaterialStateProperty.all<double>(8.0),
+          shape: MaterialStateProperty.all<RoundedRectangleBorder>(
           RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(8.0),
           ),
@@ -227,7 +221,7 @@ class _FaqViewState extends State<FaqView> {
           context,
           title,
           description,
-          Icons.design_services,
+          iconName,
           iconColor,
           circleColor,
         ),
@@ -236,7 +230,7 @@ class _FaqViewState extends State<FaqView> {
   }
 
   Row getActionCardInfo(BuildContext context, String title, String description,
-      IconData icon, Color iconColor, Color circleColor) {
+      IconData iconName, Color iconColor, Color circleColor) {
     return Row(
       children: <Widget>[
         Column(
@@ -244,7 +238,7 @@ class _FaqViewState extends State<FaqView> {
             CircleAvatar(
               backgroundColor: circleColor,
               radius: 25,
-              child: Icon(icon, color: iconColor),
+              child: Icon(iconName, color: iconColor),
             ),
           ],
         ),
@@ -259,7 +253,9 @@ class _FaqViewState extends State<FaqView> {
                   title,
                   style: Theme.of(context).textTheme.bodyText2.copyWith(
                     fontSize: 18,
-                    color: getTextColor(context),
+                    color: Theme.of(context).brightness == Brightness.light
+                      ? Colors.black
+                      : Colors.white,
                   ),
                   textAlign: TextAlign.left,
                 ),
@@ -268,9 +264,11 @@ class _FaqViewState extends State<FaqView> {
                   description,
                   style: Theme.of(context).textTheme.bodyText2.copyWith(
                     fontSize: 16,
-                    color: getTextColor(context),
+                    color:  Theme.of(context).brightness == Brightness.light
+                      ? Colors.black
+                      : Colors.white,
                   ),
-                  textAlign: TextAlign.left,
+                  textAlign: TextAlign.justify,
                 )
               ],
             ),
@@ -280,9 +278,26 @@ class _FaqViewState extends State<FaqView> {
     );
   }
 
-  Color getTextColor(BuildContext context) {
-    return Theme.of(context).brightness == Brightness.light
-        ? Colors.black
-        : Colors.white;
+  Future<void> openWebview(FaqViewModel model, String link) async {
+     model.launchWebsite(link, Theme.of(context).brightness);
+  }
+
+  Future<void> openMail(FaqViewModel model, String addressEmail) async {
+    var email = "";
+    if (addressEmail == AppInfo.email) {
+      email =
+        model.mailtoStr(addressEmail, AppIntl.of(context).email_subject);
+    } else {
+      email =
+        model.mailtoStr(addressEmail, "");
+    }
+    
+    final urlLaunchable = await _launchUrlService.canLaunch(email);
+
+    if (urlLaunchable) {
+      await _launchUrlService.launch(email);
+    } else {
+      locator<AnalyticsService>().logError("login_view", "Cannot send email.");
+    }
   }
 }

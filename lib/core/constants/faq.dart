@@ -5,6 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:notredame/core/models/faq_actions.dart';
 import 'package:notredame/core/models/faq_questions.dart';
 
+// CONSTANTS
+import 'package:notredame/core/constants/app_info.dart';
+
 class Faq {
   List<QuestionItem> questions = [
     QuestionItem(
@@ -40,7 +43,7 @@ class Faq {
     QuestionItem(
       title: {
         "fr": "Je ne vois plus mes notes de contrôle",
-        "en": "I can't see my control grades anymore."
+        "en": "I can't see my grades anymore."
       },
       description: {
         "fr": "Il est possible qu’il s’agit de la période d'évaluation des cours. Vous devez compléter les évaluations sur SignETS. Les notes seront disponibles après avoir répondu aux évaluations.",
@@ -56,14 +59,14 @@ class Faq {
         "en": "Where can I find my universal code?"
       },
       description: {
-        "fr": "Il se trouve dans la décision d’admission sur le portail de monÉTS.",
-        "en": "It can be found in the admission decision on the MonÉTS portal."
+        "fr": "Le code universel se trouve dans la décision d’admission sur le portail de monÉTS.",
+        "en": "The universal code can be found in the admission decision on the MonÉTS portal."
       },
       type: ActionType.webview,
       link: "https://portail.etsmtl.ca/home/Admission",
-      iconName: "icon_universal_code",
-      iconColor: const Color.fromRGBO(63, 219, 251, 1),
-      circleColor: const Color.fromRGBO(14, 127, 188, 1),
+      iconName: Icons.person,
+      iconColor: const Color(0xFFD5A8F8),
+      circleColor: const Color(0xFF6939B7),
     ),
     ActionItem(
       title: {
@@ -76,9 +79,9 @@ class Faq {
       },
       type: ActionType.webview,
       link: "https://formulaires.etsmtl.ca/ReactivationCompte",
-      iconName: "icon_reactivate_account",
-      iconColor: const Color.fromRGBO(63, 219, 251, 1),
-      circleColor: const Color.fromRGBO(14, 127, 188, 1),
+      iconName: Icons.school,
+      iconColor: const Color(0xFF78E2BC),
+      circleColor: const Color(0xFF39B78A),
     ),
     ActionItem(
       title: {
@@ -86,14 +89,14 @@ class Faq {
         "en": "Questions about your admission conditions, registrations, and conditions for continuing your studies"
       },
       description: {
-        "fr": "Veuillez contacter le Bureau de la registraire",
-        "en": "Please contact the Office of the Registrar"
+        "fr": "Veuillez contacter le Bureau de la registraire.",
+        "en": "Please contact the Office of the Registrar."
       },
       type: ActionType.email,
       link: "accueilbdr@etsmtl.ca",
-      iconName: "icon_contact_registrar",
-      iconColor: const Color.fromRGBO(63, 219, 251, 1),
-      circleColor: const Color.fromRGBO(14, 127, 188, 1),
+      iconName: Icons.email,
+      iconColor: const Color(0xFFFCA4A4),
+      circleColor: const Color(0xFFDA4444),
     ),
     ActionItem(
       title: {
@@ -105,10 +108,10 @@ class Faq {
         "en": "Please contact App|ETS."
       },
       type: ActionType.email,
-      link: "AppInfo.email",
-      iconName: "icon_contact_app_ets",
-      iconColor: const Color.fromRGBO(63, 219, 251, 1),
-      circleColor: const Color.fromRGBO(14, 127, 188, 1),
+      link: AppInfo.email,
+      iconName: Icons.install_mobile,
+      iconColor: const Color(0xFF71D8F7),
+      circleColor: const Color(0xFF397DB7),
     ),
   ];
 }
