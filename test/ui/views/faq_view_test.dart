@@ -88,7 +88,7 @@ void main() {
       testWidgets("default view", (WidgetTester tester) async {
         tester.binding.window.physicalSizeTestValue = const Size(800, 1410);
 
-        await tester.pumpWidget(localizedWidget(child: FaqView()));
+        await tester.pumpWidget(localizedWidget(child: const FaqView()));
         await tester.pumpAndSettle();
 
         await expectLater(find.byType(FaqView),
