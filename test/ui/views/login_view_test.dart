@@ -2,7 +2,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:mockito/mockito.dart';
 
 // MANAGERS / SERVICES
 import 'package:notredame/core/managers/user_repository.dart';
@@ -25,8 +24,6 @@ import '../../helpers.dart';
 
 void main() {
   AppIntl intl;
-  LaunchUrlServiceMock launchUrlService;
-  AnalyticsServiceMock analyticsService;
 
   group('LoginView - ', () {
     setUp(() async {
@@ -35,8 +32,8 @@ void main() {
       setupNavigationServiceMock();
       setupSettingsManagerMock();
       setupPreferencesServiceMock();
-      launchUrlService = setupLaunchUrlServiceMock() as LaunchUrlServiceMock;
-      analyticsService = setupAnalyticsServiceMock() as AnalyticsServiceMock;
+      setupLaunchUrlServiceMock() as LaunchUrlServiceMock;
+      setupAnalyticsServiceMock() as AnalyticsServiceMock;
     });
 
     tearDown(() {
