@@ -155,36 +155,36 @@ class _FaqViewState extends State<FaqView> {
       child: Align(
         alignment: Alignment.topLeft,
         child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Text(
-                title,
-                textScaleFactor: 1.0,
-                style: Theme.of(context).textTheme.bodyText2.copyWith(
-                      fontSize: 20,
-                      color: Theme.of(context).brightness == Brightness.light
-                          ? Colors.black
-                          : Colors.white,
-                    ),
-                textAlign: TextAlign.justify,
-              ),
-              const SizedBox(height: 20.0),
-              Text(
-                description,
-                textScaleFactor: 1.0,
-                style: Theme.of(context).textTheme.bodyText2.copyWith(
-                      fontSize: 16,
-                      color: Theme.of(context).brightness == Brightness.light
-                          ? Colors.black
-                          : Colors.white,
-                    ),
-                textAlign: TextAlign.justify,
-              ),
-            ],
-          ),
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Text(
+              title,
+              textScaleFactor: 1.0,
+              style: Theme.of(context).textTheme.bodyText2.copyWith(
+                    fontSize: 20,
+                    color: Theme.of(context).brightness == Brightness.light
+                        ? Colors.black
+                        : Colors.white,
+                  ),
+              textAlign: TextAlign.justify,
+            ),
+            const SizedBox(height: 20.0),
+            Text(
+              description,
+              textScaleFactor: 1.0,
+              style: Theme.of(context).textTheme.bodyText2.copyWith(
+                    fontSize: 16,
+                    color: Theme.of(context).brightness == Brightness.light
+                        ? Colors.black
+                        : Colors.white,
+                  ),
+              textAlign: TextAlign.justify,
+            ),
+          ],
         ),
-      );
+      ),
+    );
   }
 
   Padding getActionCard(
