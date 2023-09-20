@@ -52,11 +52,12 @@ class _FaqViewState extends State<FaqView> {
                             width: MediaQuery.of(context).size.width,
                             margin: const EdgeInsets.symmetric(horizontal: 5.0),
                             decoration: BoxDecoration(
-                              color: Theme.of(context).brightness == Brightness.light
-                            ? const Color.fromARGB(255, 240, 238, 238)
-                            : const Color.fromARGB(255, 40, 40, 40),
+                              color: Theme.of(context).brightness ==
+                                      Brightness.light
+                                  ? const Color.fromARGB(255, 240, 238, 238)
+                                  : const Color.fromARGB(255, 40, 40, 40),
                               borderRadius:
-                                const BorderRadius.all(Radius.circular(8.0)),
+                                  const BorderRadius.all(Radius.circular(8.0)),
                             ),
                             child: getQuestionCard(
                               question.title[model.locale.languageCode],
@@ -163,8 +164,8 @@ class _FaqViewState extends State<FaqView> {
                 style: Theme.of(context).textTheme.bodyText2.copyWith(
                       fontSize: 20,
                       color: Theme.of(context).brightness == Brightness.light
-                            ? Colors.black
-                            : Colors.white,
+                          ? Colors.black
+                          : Colors.white,
                     ),
                 textAlign: TextAlign.justify,
               ),
@@ -175,8 +176,8 @@ class _FaqViewState extends State<FaqView> {
                 style: Theme.of(context).textTheme.bodyText2.copyWith(
                       fontSize: 16,
                       color: Theme.of(context).brightness == Brightness.light
-                            ? Colors.black
-                            : Colors.white,
+                          ? Colors.black
+                          : Colors.white,
                     ),
                 textAlign: TextAlign.justify,
               ),
