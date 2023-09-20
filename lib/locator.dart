@@ -2,7 +2,6 @@
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get_it/get_it.dart';
 import 'package:logger/logger.dart';
-import 'package:notredame/core/managers/quick_link_repository.dart';
 
 // SERVICES
 import 'package:notredame/core/services/navigation_service.dart';
@@ -23,6 +22,7 @@ import 'package:notredame/core/managers/user_repository.dart';
 import 'package:notredame/core/managers/course_repository.dart';
 import 'package:notredame/core/managers/cache_manager.dart';
 import 'package:notredame/core/managers/settings_manager.dart';
+import 'package:notredame/core/managers/quick_link_repository.dart';
 
 // OTHER
 import 'package:ets_api_clients/clients.dart';

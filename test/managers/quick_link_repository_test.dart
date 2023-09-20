@@ -3,14 +3,14 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
-import 'package:notredame/core/managers/quick_link_repository.dart';
 
 // SERVICES / MANAGER
 import 'package:notredame/core/managers/cache_manager.dart';
-import 'package:notredame/core/models/quick_link.dart';
-import 'package:notredame/core/models/quick_link_data.dart';
+import 'package:notredame/core/managers/quick_link_repository.dart';
 
 // MODELS
+import 'package:notredame/core/models/quick_link.dart';
+import 'package:notredame/core/models/quick_link_data.dart';
 
 // UTILS
 import '../helpers.dart';

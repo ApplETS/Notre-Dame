@@ -6,7 +6,6 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:logger/logger.dart';
-import 'package:notredame/core/managers/quick_link_repository.dart';
 
 // OTHER
 import 'package:notredame/locator.dart';
@@ -29,6 +28,7 @@ import 'package:notredame/core/services/app_widget_service.dart';
 import 'package:notredame/core/services/in_app_review_service.dart';
 import 'package:notredame/core/services/launch_url_service.dart';
 import 'package:notredame/core/services/remote_config_service.dart';
+import 'package:notredame/core/managers/quick_link_repository.dart';
 
 // MOCKS
 import 'package:ets_api_clients/testing.dart';
