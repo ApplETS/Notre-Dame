@@ -183,40 +183,20 @@ class _ScheduleViewState extends State<ScheduleView>
     model.handleViewChanged(DateTime.now(), eventController);
 
     if (model.calendarFormat == CalendarFormat.month) {
-      return Scaffold(
-          body: calendar_view.MonthView(
-        key: monthViewKey,
-        controller: eventController
-          ..addAll(model.selectedMonthCalendarEvents()),
-        // to provide custom UI for month cells.
-        cellAspectRatio: 0.78,
-        onPageChange: (date, page) =>
-            model.handleViewChanged(date, eventController),
-        headerStyle: calendar_view.HeaderStyle(
-            decoration: BoxDecoration(
-              color: backgroundColor,
-            ),
-            leftIcon: Icon(
-              Icons.chevron_left,
-              size: 30,
-              color: chevronColor,
-            ),
-            rightIcon: Icon(
-              Icons.chevron_right,
-              size: 30,
-              color: chevronColor,
-            )),
-        weekDayStringBuilder: (p0) {
-          return weekTitles[p0];
-        },
-        headerStringBuilder: (date, {secondaryDate}) {
-          final locale = AppIntl.of(context).localeName;
-          return '${DateFormat.MMMM(locale).format(date).characters.first.toUpperCase()}${DateFormat.MMMM(locale).format(date).substring(1)} ${date.year}';
-        },
-        startDay: calendar_view.WeekDays.sunday,
-        initialMonth: DateTime(DateTime.now().year, DateTime.now().month),
-      ));
+      return _buildCalendarViewMonthly(
+          model, context, eventController, backgroundColor, chevronColor);
     }
+    return _buildCalendarViewWeekly(model, context, eventController,
+        backgroundColor, chevronColor, scheduleLineColor);
+  }
+
+  Widget _buildCalendarViewWeekly(
+      ScheduleViewModel model,
+      BuildContext context,
+      calendar_view.EventController eventController,
+      Color backgroundColor,
+      Color chevronColor,
+      Color scheduleLineColor) {
     return Scaffold(
       body: calendar_view.WeekView(
         key: weekViewKey,
@@ -279,6 +259,46 @@ class _ScheduleViewState extends State<ScheduleView>
         weekDayBuilder: (DateTime date) => _buildWeekDay(date, model),
       ),
     );
+  }
+
+  Widget _buildCalendarViewMonthly(
+      ScheduleViewModel model,
+      BuildContext context,
+      calendar_view.EventController eventController,
+      Color backgroundColor,
+      Color chevronColor) {
+    return Scaffold(
+        body: calendar_view.MonthView(
+      key: monthViewKey,
+      controller: eventController..addAll(model.selectedMonthCalendarEvents()),
+      // to provide custom UI for month cells.
+      cellAspectRatio: 0.78,
+      onPageChange: (date, page) =>
+          model.handleViewChanged(date, eventController),
+      headerStyle: calendar_view.HeaderStyle(
+          decoration: BoxDecoration(
+            color: backgroundColor,
+          ),
+          leftIcon: Icon(
+            Icons.chevron_left,
+            size: 30,
+            color: chevronColor,
+          ),
+          rightIcon: Icon(
+            Icons.chevron_right,
+            size: 30,
+            color: chevronColor,
+          )),
+      weekDayStringBuilder: (p0) {
+        return weekTitles[p0];
+      },
+      headerStringBuilder: (date, {secondaryDate}) {
+        final locale = AppIntl.of(context).localeName;
+        return '${DateFormat.MMMM(locale).format(date).characters.first.toUpperCase()}${DateFormat.MMMM(locale).format(date).substring(1)} ${date.year}';
+      },
+      startDay: calendar_view.WeekDays.sunday,
+      initialMonth: DateTime(DateTime.now().year, DateTime.now().month),
+    ));
   }
 
   Widget _buildEventTile(

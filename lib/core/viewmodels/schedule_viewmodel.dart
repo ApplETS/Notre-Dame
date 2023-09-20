@@ -37,6 +37,9 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
   /// Localization class of the application.
   final AppIntl _appIntl;
 
+  /// Number of days in a month (6 weeks)
+  final int daysInMonth = 42;
+
   /// Settings of the user for the schedule
   final Map<PreferencesFlag, dynamic> settings = {};
 
@@ -160,7 +163,7 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
   List<CalendarEventData> selectedMonthCalendarEvents() {
     final List<CalendarEventData> events = [];
     final date = selectedDate.datesOfMonths();
-    for (int i = 0; i < 42; i++) {
+    for (int i = 0; i < daysInMonth; i++) {
       final eventsForDay = selectedDateCalendarEvents(date.elementAt(i));
       if (eventsForDay.isNotEmpty) {
         events.addAll(eventsForDay);
