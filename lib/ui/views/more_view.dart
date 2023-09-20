@@ -169,11 +169,9 @@ class _MoreViewState extends State<MoreView> {
                         model),
                     onTap: () {
                       _analyticsService.logEvent(tag, "FAQ clicked");
-                      model.navigationService.pushNamed(
-                        RouterPaths.faq,
-                        arguments: Utils.getColorByBrightness(
-                          context, Colors.white, AppTheme.primaryDark)
-                        );
+                      model.navigationService.pushNamed(RouterPaths.faq,
+                          arguments: Utils.getColorByBrightness(
+                              context, Colors.white, AppTheme.primaryDark));
                     }),
                 ListTile(
                     title: Text(AppIntl.of(context).settings_title),

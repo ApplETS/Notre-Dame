@@ -16,8 +16,10 @@ class Faq {
         "en": "What password should I use to log in?"
       },
       description: {
-        "fr": "Le mot de passe à utiliser correspond à celui utilisé pour la connexion à MonÉTS et les autres systèmes informatiques de l’ÉTS.",
-        "en": "The password is the one you use for logging into MonÉTS and other ÉTS computer systems."
+        "fr":
+            "Le mot de passe à utiliser correspond à celui utilisé pour la connexion à MonÉTS et les autres systèmes informatiques de l’ÉTS.",
+        "en":
+            "The password is the one you use for logging into MonÉTS and other ÉTS computer systems."
       },
     ),
     QuestionItem(
@@ -26,13 +28,16 @@ class Faq {
         "en": "I don't have access to the courses and program."
       },
       description: {
-        "fr": "Les nouveaux étudiants pourraient ne pas voir l’horaire et les cours inscrits avant le début de la première session de cours. Cependant, ces informations apparaissent dès le début de la première session de cours.",
-        "en": "New students may not see the schedule and courses before the start of the first course session. However, this information becomes available at the beginning of the first course session."
+        "fr":
+            "Les nouveaux étudiants pourraient ne pas voir l’horaire et les cours inscrits avant le début de la première session de cours. Cependant, ces informations apparaissent dès le début de la première session de cours.",
+        "en":
+            "New students may not see the schedule and courses before the start of the first course session. However, this information becomes available at the beginning of the first course session."
       },
     ),
     QuestionItem(
       title: {
-        "fr": "Je suis diplômé de l’ÉTS et je souhaite faire réactiver mon compte.",
+        "fr":
+            "Je suis diplômé de l’ÉTS et je souhaite faire réactiver mon compte.",
         "en": "I am an ÉTS graduate, and I want to reactivate my account."
       },
       description: {
@@ -46,8 +51,10 @@ class Faq {
         "en": "I can't see my grades anymore."
       },
       description: {
-        "fr": "Il est possible qu’il s’agit de la période d'évaluation des cours. Vous devez compléter les évaluations sur SignETS. Les notes seront disponibles après avoir répondu aux évaluations.",
-        "en": "It is possible that this is the course evaluation period. You need to complete the evaluations on SignETS. Grades will be available after responding to the evaluations."
+        "fr":
+            "Il est possible qu’il s’agit de la période d'évaluation des cours. Vous devez compléter les évaluations sur SignETS. Les notes seront disponibles après avoir répondu aux évaluations.",
+        "en":
+            "It is possible that this is the course evaluation period. You need to complete the evaluations on SignETS. Grades will be available after responding to the evaluations."
       },
     ),
   ];
@@ -59,8 +66,10 @@ class Faq {
         "en": "Where can I find my universal code?"
       },
       description: {
-        "fr": "Le code universel se trouve dans la décision d’admission sur le portail de monÉTS.",
-        "en": "The universal code can be found in the admission decision on the MonÉTS portal."
+        "fr":
+            "Le code universel se trouve dans la décision d’admission sur le portail de monÉTS.",
+        "en":
+            "The universal code can be found in the admission decision on the MonÉTS portal."
       },
       type: ActionType.webview,
       link: "https://portail.etsmtl.ca/home/Admission",
@@ -70,7 +79,8 @@ class Faq {
     ),
     ActionItem(
       title: {
-        "fr": "Je suis diplômé de l’ÉTS et je souhaite faire réactiver mon compte.",
+        "fr":
+            "Je suis diplômé de l’ÉTS et je souhaite faire réactiver mon compte.",
         "en": "I am an ÉTS graduate, and I want to reactivate my account."
       },
       description: {
@@ -85,8 +95,10 @@ class Faq {
     ),
     ActionItem(
       title: {
-        "fr": "Questions concernant vos conditions d'admission, des inscriptions et des conditions relatives à la poursuite de vos études",
-        "en": "Questions about your admission conditions, registrations, and conditions for continuing your studies"
+        "fr":
+            "Questions concernant vos conditions d'admission, des inscriptions et des conditions relatives à la poursuite de vos études",
+        "en":
+            "Questions about your admission conditions, registrations, and conditions for continuing your studies"
       },
       description: {
         "fr": "Veuillez contacter le Bureau de la registraire.",

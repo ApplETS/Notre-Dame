@@ -24,126 +24,125 @@ class FaqView extends StatefulWidget {
 
 class _FaqViewState extends State<FaqView> {
   final Faq faq = Faq();
-  
+
   @override
-  Widget build(BuildContext context) =>
-    ViewModelBuilder<FaqViewModel>.reactive(
-      viewModelBuilder: () => FaqViewModel(),
-      builder: (context, model, child) {
-        return Scaffold(
-          backgroundColor: widget.backgroundColor,
-          body: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              getTitle(),
-              getSubtitle(AppIntl.of(context).questions_and_answers),
-              Padding(
-                padding: const EdgeInsets.only(left: 15.0, right: 15.0),
-                child: CarouselSlider(
-                  options: CarouselOptions(
-                    height: 250.0,
+  Widget build(BuildContext context) => ViewModelBuilder<FaqViewModel>.reactive(
+        viewModelBuilder: () => FaqViewModel(),
+        builder: (context, model, child) {
+          return Scaffold(
+            backgroundColor: widget.backgroundColor,
+            body: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                getTitle(),
+                getSubtitle(AppIntl.of(context).questions_and_answers),
+                Padding(
+                  padding: const EdgeInsets.only(left: 15.0, right: 15.0),
+                  child: CarouselSlider(
+                    options: CarouselOptions(
+                      height: 250.0,
+                    ),
+                    items: faq.questions.asMap().entries.map((entry) {
+                      final int index = entry.key;
+                      final question = faq.questions[index];
+
+                      return Builder(
+                        builder: (BuildContext context) {
+                          return Container(
+                            width: MediaQuery.of(context).size.width,
+                            margin: const EdgeInsets.symmetric(horizontal: 5.0),
+                            decoration: const BoxDecoration(
+                              color: Color.fromARGB(255, 240, 238, 238),
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(8.0)),
+                            ),
+                            child: getQuestionCard(
+                              question.title[model.locale.languageCode],
+                              question.description[model.locale.languageCode],
+                            ),
+                          );
+                        },
+                      );
+                    }).toList(),
                   ),
-                  items: faq.questions.asMap().entries.map((entry) {
-                    final int index = entry.key;
-                    final question = faq.questions[index];
-
-                    return Builder(
-                      builder: (BuildContext context) {
-                        return Container(
-                          width: MediaQuery.of(context).size.width,
-                          margin: const EdgeInsets.symmetric(horizontal: 5.0),
-                          decoration: const BoxDecoration(
-                            color: Color.fromARGB(255, 240, 238, 238),
-                            borderRadius: BorderRadius.all(Radius.circular(8.0)),
-                          ),
-                          child: getQuestionCard(
-                            question.title[model.locale.languageCode],
-                            question.description[model.locale.languageCode],
-                          ),
-                        );
-                      },
-                    );
-                  }).toList(),
                 ),
-              ),
-              getSubtitle(AppIntl.of(context).actions),
-              Expanded(
-                child: ListView.builder(
-                  padding: const EdgeInsets.only(top: 1.0),
-                  itemCount: faq.actions.length,
-                  itemBuilder: (context, index) {
-                    final action = faq.actions[index];
+                getSubtitle(AppIntl.of(context).actions),
+                Expanded(
+                  child: ListView.builder(
+                    padding: const EdgeInsets.only(top: 1.0),
+                    itemCount: faq.actions.length,
+                    itemBuilder: (context, index) {
+                      final action = faq.actions[index];
 
-                    return getActionCard(
-                      action.title[model.locale.languageCode], 
-                      action.description[model.locale.languageCode],
-                      action.type,
-                      action.link,
-                      action.iconName,
-                      action.iconColor,
-                      action.circleColor,
-                      context,
-                      model
-                    );
-                  },
-                ),
-              )
-            ],
-          ),
-        );
-      },
-    );
+                      return getActionCard(
+                          action.title[model.locale.languageCode],
+                          action.description[model.locale.languageCode],
+                          action.type,
+                          action.link,
+                          action.iconName,
+                          action.iconColor,
+                          action.circleColor,
+                          context,
+                          model);
+                    },
+                  ),
+                )
+              ],
+            ),
+          );
+        },
+      );
 
   Padding getTitle() {
     return Padding(
       padding: const EdgeInsets.only(top: 60.0),
-        child: Row(
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(left: 5.0),
-              child: GestureDetector(
-                onTap: () {
-                  Navigator.of(context).pop();
-                },
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 10.0),
-                  child: Icon(
-                    Icons.arrow_back,
-                    color: widget.backgroundColor == Colors.white
+      child: Row(
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(left: 5.0),
+            child: GestureDetector(
+              onTap: () {
+                Navigator.of(context).pop();
+              },
+              child: Padding(
+                padding: const EdgeInsets.only(left: 10.0),
+                child: Icon(
+                  Icons.arrow_back,
+                  color: widget.backgroundColor == Colors.white
                       ? Colors.black
                       : Colors.white,
+                ),
+              ),
+            ),
+          ),
+          const SizedBox(width: 8.0),
+          Expanded(
+            child: Text(
+              AppIntl.of(context).need_help,
+              textAlign: TextAlign.center,
+              style: Theme.of(context).textTheme.headline5.copyWith(
+                    color: widget.backgroundColor == Colors.white
+                        ? Colors.black
+                        : Colors.white,
                   ),
-                ),
-              ),
             ),
-            const SizedBox(width: 8.0),
-            Expanded(
-              child: Text(
-                AppIntl.of(context).need_help,
-                textAlign: TextAlign.center,
-                style: Theme.of(context).textTheme.headline5.copyWith(
-                  color:  widget.backgroundColor == Colors.white
-                    ? Colors.black
-                    : Colors.white,
-                ),
-              ),
-            ),
-          ],
-        ),
-      );
+          ),
+        ],
+      ),
+    );
   }
 
   Padding getSubtitle(String subtitle) {
     return Padding(
       padding: const EdgeInsets.only(left: 18.0, top: 18.0, bottom: 10.0),
       child: Text(
-          subtitle,
-          style: Theme.of(context).textTheme.headline5.copyWith(
-            color:  widget.backgroundColor == Colors.white
-              ? Colors.black
-              : Colors.white,
-          ),
-        ),
+        subtitle,
+        style: Theme.of(context).textTheme.headline5.copyWith(
+              color: widget.backgroundColor == Colors.white
+                  ? Colors.black
+                  : Colors.white,
+            ),
+      ),
     );
   }
 
@@ -184,16 +183,15 @@ class _FaqViewState extends State<FaqView> {
   }
 
   Padding getActionCard(
-      String title, 
-      String description, 
-      ActionType type, 
+      String title,
+      String description,
+      ActionType type,
       String link,
       IconData iconName,
       Color iconColor,
       Color circleColor,
       BuildContext context,
-      FaqViewModel model
-    ) {
+      FaqViewModel model) {
     return Padding(
       padding: const EdgeInsets.fromLTRB(15.0, 0.0, 15.0, 15.0),
       child: ElevatedButton(
@@ -205,12 +203,12 @@ class _FaqViewState extends State<FaqView> {
           }
         },
         style: ButtonStyle(
-          elevation: MaterialStateProperty.all<double>(8.0),
-          shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-          RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(8.0),
-          ),
-        )),
+            elevation: MaterialStateProperty.all<double>(8.0),
+            shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+              RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8.0),
+              ),
+            )),
         child: getActionCardInfo(
           context,
           title,
@@ -246,22 +244,22 @@ class _FaqViewState extends State<FaqView> {
                 Text(
                   title,
                   style: Theme.of(context).textTheme.bodyText2.copyWith(
-                    fontSize: 18,
-                    color: Theme.of(context).brightness == Brightness.light
-                      ? Colors.black
-                      : Colors.white,
-                  ),
+                        fontSize: 18,
+                        color: Theme.of(context).brightness == Brightness.light
+                            ? Colors.black
+                            : Colors.white,
+                      ),
                   textAlign: TextAlign.left,
                 ),
                 const SizedBox(height: 10.0),
                 Text(
                   description,
                   style: Theme.of(context).textTheme.bodyText2.copyWith(
-                    fontSize: 16,
-                    color:  Theme.of(context).brightness == Brightness.light
-                      ? Colors.black
-                      : Colors.white,
-                  ),
+                        fontSize: 16,
+                        color: Theme.of(context).brightness == Brightness.light
+                            ? Colors.black
+                            : Colors.white,
+                      ),
                   textAlign: TextAlign.justify,
                 )
               ],
@@ -273,10 +271,11 @@ class _FaqViewState extends State<FaqView> {
   }
 
   Future<void> openWebview(FaqViewModel model, String link) async {
-     model.launchWebsite(link, Theme.of(context).brightness);
+    model.launchWebsite(link, Theme.of(context).brightness);
   }
 
-  Future<void> openMail(FaqViewModel model, BuildContext context, String addressEmail) async {
+  Future<void> openMail(
+      FaqViewModel model, BuildContext context, String addressEmail) async {
     model.openMail(addressEmail, context);
   }
 }

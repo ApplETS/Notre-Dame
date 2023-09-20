@@ -44,7 +44,9 @@ void main() {
       test('Calls launchInBrowser', () {
         viewModel.launchWebsite("https://clubapplets.ca/", Brightness.light);
 
-        verify(launchUrlService.launchInBrowser("https://clubapplets.ca/", Brightness.light)).called(1);
+        verify(launchUrlService.launchInBrowser(
+                "https://clubapplets.ca/", Brightness.light))
+            .called(1);
       });
     });
   });

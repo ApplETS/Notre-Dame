@@ -216,10 +216,11 @@ class _LoginViewState extends State<LoginView> {
                                     ),
                                     onTap: () async {
                                       _navigationService.pushNamed(
-                                        RouterPaths.faq,
-                                        arguments: Utils.getColorByBrightness(
-                                          context, AppTheme.etsLightRed, AppTheme.primaryDark)
-                                      );
+                                          RouterPaths.faq,
+                                          arguments: Utils.getColorByBrightness(
+                                              context,
+                                              AppTheme.etsLightRed,
+                                              AppTheme.primaryDark));
                                     },
                                   ),
                                 ),
@@ -266,5 +267,4 @@ class _LoginViewState extends State<LoginView> {
 
   Color get submitTextColor =>
       Utils.getColorByBrightness(context, AppTheme.etsLightRed, Colors.white);
-
 }

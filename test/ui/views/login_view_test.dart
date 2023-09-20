@@ -79,8 +79,7 @@ void main() {
         await tester.pumpWidget(localizedWidget(child: LoginView()));
         await tester.pumpAndSettle();
 
-        await tester
-            .tap(find.widgetWithText(InkWell, intl.need_help));
+        await tester.tap(find.widgetWithText(InkWell, intl.need_help));
 
         // Rebuild the widget after the state has changed.
         await tester.pump();
@@ -101,8 +100,7 @@ void main() {
         await tester.pumpWidget(localizedWidget(child: LoginView()));
         await tester.pumpAndSettle();
 
-        await tester
-            .tap(find.widgetWithText(InkWell, intl.need_help));
+        await tester.tap(find.widgetWithText(InkWell, intl.need_help));
 
         // Rebuild the widget after the state has changed.
         await tester.pumpAndSettle();

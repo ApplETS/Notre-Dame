@@ -22,7 +22,7 @@ import 'package:notredame/core/constants/faq.dart';
 void main() {
   group('FaqView - ', () {
     AppIntl appIntl;
-    
+
     SettingsManager settingsManager;
 
     setUp(() async {
@@ -47,21 +47,23 @@ void main() {
         expect(elevatedButton, findsNWidgets(numberOfButtons));
       });
 
-      testWidgets('has x IntrinsicHeight for the questions', (WidgetTester tester) async {
+      testWidgets('has x IntrinsicHeight for the questions',
+          (WidgetTester tester) async {
         SettingsManagerMock.stubLocale(settingsManager as SettingsManagerMock);
-        
+
         await tester.pumpWidget(localizedWidget(child: const FaqView()));
         await tester.pumpAndSettle();
 
-        final instrinsicHeight = find.byType(IntrinsicHeight, skipOffstage: false);
+        final instrinsicHeight =
+            find.byType(IntrinsicHeight, skipOffstage: false);
 
-      // Seulement 3 tuiles du carousel sont affichées à la fois
+        // Seulement 3 tuiles du carousel sont affichées à la fois
         expect(instrinsicHeight, findsNWidgets(3));
       });
 
       testWidgets('has 2 subtitles', (WidgetTester tester) async {
         SettingsManagerMock.stubLocale(settingsManager as SettingsManagerMock);
-        
+
         await tester.pumpWidget(localizedWidget(child: const FaqView()));
         await tester.pumpAndSettle();
 
@@ -74,7 +76,7 @@ void main() {
 
       testWidgets('has 1 title', (WidgetTester tester) async {
         SettingsManagerMock.stubLocale(settingsManager as SettingsManagerMock);
-        
+
         await tester.pumpWidget(localizedWidget(child: const FaqView()));
         await tester.pumpAndSettle();
 
