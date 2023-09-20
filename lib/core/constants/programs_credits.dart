@@ -7,9 +7,7 @@ class ProgramCredits {
     "6556": 117,
     "6557": 118,
     "7086": 116,
-    // TODO: Ajouter le code lorsque le programme sera en vigeur
-    // (https://www.etsmtl.ca/etudes/premier-cycle/Baccalaureat-informatique-distribuee)
-    // "À venir" : 90",
+    "6646": 90,
     "5766": 30,
     "4567": 30,
     "4412": 30,
