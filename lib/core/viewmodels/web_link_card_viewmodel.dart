@@ -40,6 +40,6 @@ class WebLinkCardViewModel extends BaseViewModel {
   }
 
   Future<void> launchWebView(QuickLink link) async {
-    _navigationService.pushNamed(RouterPaths.webView);
+    _navigationService.pushNamed(RouterPaths.webView, arguments: link);
   }
 }

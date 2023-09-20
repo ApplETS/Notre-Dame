@@ -1,11 +1,7 @@
 // FLUTTER / DART / THIRD-PARTIES
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
-import 'package:notredame/locator.dart';
-import 'package:notredame/ui/utils/app_theme.dart';
 import 'package:stacked/stacked.dart';
-
-// UTILS
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 // VIEWMODEL
@@ -14,13 +10,8 @@ import 'package:notredame/core/viewmodels/faq_viewmodel.dart';
 // MODELS
 import 'package:notredame/core/models/faq_actions.dart';
 
-// SERVICES
-import 'package:notredame/core/services/launch_url_service.dart';
-import 'package:notredame/core/services/analytics_service.dart';
-
 // CONSTANTS
 import 'package:notredame/core/constants/faq.dart';
-import 'package:notredame/core/constants/app_info.dart';
 
 class FaqView extends StatefulWidget {
   final Color backgroundColor;
@@ -33,8 +24,6 @@ class FaqView extends StatefulWidget {
 
 class _FaqViewState extends State<FaqView> {
   final Faq faq = Faq();
-  
-  final LaunchUrlService _launchUrlService = locator<LaunchUrlService>();
   
   @override
   Widget build(BuildContext context) =>
@@ -212,7 +201,7 @@ class _FaqViewState extends State<FaqView> {
           if (type.name == ActionType.webview.name) {
             openWebview(model, link);
           } else if (type.name == ActionType.email.name) {
-            openMail(model, link);
+            openMail(model, context, link);
           }
         },
         style: ButtonStyle(
@@ -287,22 +276,7 @@ class _FaqViewState extends State<FaqView> {
      model.launchWebsite(link, Theme.of(context).brightness);
   }
 
-  Future<void> openMail(FaqViewModel model, String addressEmail) async {
-    var email = "";
-    if (addressEmail == AppInfo.email) {
-      email =
-        model.mailtoStr(addressEmail, AppIntl.of(context).email_subject);
-    } else {
-      email =
-        model.mailtoStr(addressEmail, "");
-    }
-    
-    final urlLaunchable = await _launchUrlService.canLaunch(email);
-
-    if (urlLaunchable) {
-      await _launchUrlService.launch(email);
-    } else {
-      locator<AnalyticsService>().logError("login_view", "Cannot send email.");
-    }
+  Future<void> openMail(FaqViewModel model, BuildContext context, String addressEmail) async {
+    model.openMail(addressEmail, context);
   }
 }
