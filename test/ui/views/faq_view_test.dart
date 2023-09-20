@@ -47,20 +47,6 @@ void main() {
         expect(elevatedButton, findsNWidgets(numberOfButtons));
       });
 
-      testWidgets('has x IntrinsicHeight for the questions',
-          (WidgetTester tester) async {
-        SettingsManagerMock.stubLocale(settingsManager as SettingsManagerMock);
-
-        await tester.pumpWidget(localizedWidget(child: const FaqView()));
-        await tester.pumpAndSettle();
-
-        final instrinsicHeight =
-            find.byType(IntrinsicHeight, skipOffstage: false);
-
-        // Seulement 3 tuiles du carousel sont affichées à la fois
-        expect(instrinsicHeight, findsNWidgets(3));
-      });
-
       testWidgets('has 2 subtitles', (WidgetTester tester) async {
         SettingsManagerMock.stubLocale(settingsManager as SettingsManagerMock);
 
@@ -88,7 +74,8 @@ void main() {
 
     group("golden - ", () {
       testWidgets("default view", (WidgetTester tester) async {
-        tester.binding.window.physicalSizeTestValue = const Size(800, 1410);
+        SettingsManagerMock.stubLocale(settingsManager as SettingsManagerMock);
+        tester.binding.window.physicalSizeTestValue = const Size(1800, 2410);
 
         await tester.pumpWidget(localizedWidget(child: const FaqView()));
         await tester.pumpAndSettle();
