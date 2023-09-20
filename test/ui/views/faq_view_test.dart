@@ -3,11 +3,12 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:notredame/core/managers/settings_manager.dart';
 
 // SERVICES
-import 'package:notredame/core/services/preferences_service.dart';
 import '../../mock/managers/settings_manager_mock.dart';
+
+// MANAGERS
+import 'package:notredame/core/managers/settings_manager.dart';
 
 // VIEW
 import 'package:notredame/ui/views/faq_view.dart';
@@ -18,10 +19,8 @@ import '../../helpers.dart';
 // CONSTANTS
 import 'package:notredame/core/constants/faq.dart';
 
-
 void main() {
   group('FaqView - ', () {
-    PreferencesService preferencesService;
     AppIntl appIntl;
     
     SettingsManager settingsManager;
@@ -37,7 +36,7 @@ void main() {
     group('UI - ', () {
       testWidgets('has x ElevatedButton', (WidgetTester tester) async {
         SettingsManagerMock.stubLocale(settingsManager as SettingsManagerMock);
-            
+
         await tester.pumpWidget(localizedWidget(child: const FaqView()));
         await tester.pumpAndSettle();
 
@@ -50,15 +49,14 @@ void main() {
 
       testWidgets('has x IntrinsicHeight for the questions', (WidgetTester tester) async {
         SettingsManagerMock.stubLocale(settingsManager as SettingsManagerMock);
-            
+        
         await tester.pumpWidget(localizedWidget(child: const FaqView()));
         await tester.pumpAndSettle();
 
         final instrinsicHeight = find.byType(IntrinsicHeight, skipOffstage: false);
 
-        final Faq faq = Faq();
-        final numberOfQuestions = faq.questions.length;
-        expect(instrinsicHeight, findsNWidgets(numberOfQuestions));
+      // Seulement 3 tuiles du carousel sont affichées à la fois
+        expect(instrinsicHeight, findsNWidgets(3));
       });
 
       testWidgets('has 2 subtitles', (WidgetTester tester) async {

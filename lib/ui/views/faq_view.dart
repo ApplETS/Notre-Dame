@@ -170,6 +170,7 @@ class _FaqViewState extends State<FaqView> {
             children: <Widget>[
               Text(
                 title,
+                textScaleFactor: 1.0,
                 style: Theme.of(context).textTheme.bodyText2.copyWith(
                       fontSize: 20,
                       color: Colors.black,
@@ -179,6 +180,7 @@ class _FaqViewState extends State<FaqView> {
               const SizedBox(height: 20.0),
               Text(
                 description,
+                textScaleFactor: 1.0,
                 style: Theme.of(context).textTheme.bodyText2.copyWith(
                       fontSize: 16,
                       color: Colors.black,
