@@ -215,7 +215,11 @@ class _LoginViewState extends State<LoginView> {
                                           color: Colors.white),
                                     ),
                                     onTap: () async {
-                                      _navigationService.pushNamed(RouterPaths.loginFaq);
+                                      _navigationService.pushNamed(
+                                        RouterPaths.faq,
+                                        arguments: Utils.getColorByBrightness(
+                                          context, AppTheme.etsLightRed, AppTheme.primaryDark)
+                                      );
                                     },
                                   ),
                                 ),

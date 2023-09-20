@@ -161,6 +161,21 @@ class _MoreViewState extends State<MoreView> {
                       ));
                     }),
                 ListTile(
+                    title: Text(AppIntl.of(context).need_help),
+                    leading: _buildDiscoveryFeatureDescriptionWidget(
+                        context,
+                        getProperIconAccordingToTheme(Icons.question_answer),
+                        DiscoveryIds.detailsMoreFaq,
+                        model),
+                    onTap: () {
+                      _analyticsService.logEvent(tag, "FAQ clicked");
+                      model.navigationService.pushNamed(
+                        RouterPaths.faq,
+                        arguments: Utils.getColorByBrightness(
+                          context, Colors.white, AppTheme.primaryDark)
+                        );
+                    }),
+                ListTile(
                     title: Text(AppIntl.of(context).settings_title),
                     leading: _buildDiscoveryFeatureDescriptionWidget(
                         context,

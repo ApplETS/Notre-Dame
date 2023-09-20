@@ -2,6 +2,7 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:notredame/locator.dart';
+import 'package:notredame/ui/utils/app_theme.dart';
 import 'package:stacked/stacked.dart';
 
 // UTILS
@@ -16,17 +17,16 @@ import 'package:notredame/core/models/faq_actions.dart';
 // SERVICES
 import 'package:notredame/core/services/launch_url_service.dart';
 import 'package:notredame/core/services/analytics_service.dart';
-import 'package:notredame/core/services/navigation_service.dart';
 
 // CONSTANTS
 import 'package:notredame/core/constants/faq.dart';
 import 'package:notredame/core/constants/app_info.dart';
 
-// UTILS
-import 'package:notredame/core/utils/utils.dart';
-import 'package:notredame/ui/utils/app_theme.dart';
-
 class FaqView extends StatefulWidget {
+  final Color backgroundColor;
+
+  const FaqView({this.backgroundColor});
+
   @override
   State<FaqView> createState() => _FaqViewState();
 }
@@ -35,8 +35,6 @@ class _FaqViewState extends State<FaqView> {
   final Faq faq = Faq();
   
   final LaunchUrlService _launchUrlService = locator<LaunchUrlService>();
-
-  final NavigationService _navigationService = locator<NavigationService>();
   
   @override
   Widget build(BuildContext context) =>
@@ -44,8 +42,7 @@ class _FaqViewState extends State<FaqView> {
       viewModelBuilder: () => FaqViewModel(),
       builder: (context, model, child) {
         return Scaffold(
-          backgroundColor: Utils.getColorByBrightness(
-                context, AppTheme.etsLightRed, AppTheme.primaryDark),
+          backgroundColor: widget.backgroundColor,
           body: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
@@ -119,11 +116,13 @@ class _FaqViewState extends State<FaqView> {
                 onTap: () {
                   Navigator.of(context).pop();
                 },
-                child: const Padding(
-                  padding: EdgeInsets.only(left: 10.0),
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 10.0),
                   child: Icon(
                     Icons.arrow_back,
-                    color: Colors.white,
+                    color: widget.backgroundColor == Colors.white
+                      ? Colors.black
+                      : Colors.white,
                   ),
                 ),
               ),
@@ -134,7 +133,9 @@ class _FaqViewState extends State<FaqView> {
                 AppIntl.of(context).need_help,
                 textAlign: TextAlign.center,
                 style: Theme.of(context).textTheme.headline5.copyWith(
-                  color: Colors.white,
+                  color:  widget.backgroundColor == Colors.white
+                    ? Colors.black
+                    : Colors.white,
                 ),
               ),
             ),
@@ -149,7 +150,9 @@ class _FaqViewState extends State<FaqView> {
       child: Text(
           subtitle,
           style: Theme.of(context).textTheme.headline5.copyWith(
-            color: Colors.white,
+            color:  widget.backgroundColor == Colors.white
+              ? Colors.black
+              : Colors.white,
           ),
         ),
     );

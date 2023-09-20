@@ -49,10 +49,10 @@ Route<dynamic> generateRoute(RouteSettings routeSettings) {
       return MaterialPageRoute(
           settings: RouteSettings(name: routeSettings.name),
           builder: (_) => LoginView());
-    case RouterPaths.loginFaq:
+    case RouterPaths.faq:
       return MaterialPageRoute(
           settings: RouteSettings(name: routeSettings.name),
-          builder: (_) => FaqView());
+          builder: (_) => FaqView(backgroundColor: routeSettings.arguments as Color));
     case RouterPaths.dashboard:
       final code = (routeSettings.arguments as UpdateCode) ?? UpdateCode.none;
       return PageRouteBuilder(
