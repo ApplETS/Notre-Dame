@@ -32,13 +32,11 @@ class FaqViewModel extends BaseViewModel {
   Future<void> openMail(String addressEmail, BuildContext context) async {
     var email = "";
     if (addressEmail == AppInfo.email) {
-      email =
-        mailtoStr(addressEmail, AppIntl.of(context).email_subject);
+      email = mailtoStr(addressEmail, AppIntl.of(context).email_subject);
     } else {
-      email =
-        mailtoStr(addressEmail, "");
+      email = mailtoStr(addressEmail, "");
     }
-    
+
     final urlLaunchable = await _launchUrlService.canLaunch(email);
 
     if (urlLaunchable) {

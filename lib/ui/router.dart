@@ -52,7 +52,8 @@ Route<dynamic> generateRoute(RouteSettings routeSettings) {
     case RouterPaths.faq:
       return MaterialPageRoute(
           settings: RouteSettings(name: routeSettings.name),
-          builder: (_) => FaqView(backgroundColor: routeSettings.arguments as Color));
+          builder: (_) =>
+              FaqView(backgroundColor: routeSettings.arguments as Color));
     case RouterPaths.dashboard:
       final code = (routeSettings.arguments as UpdateCode) ?? UpdateCode.none;
       return PageRouteBuilder(

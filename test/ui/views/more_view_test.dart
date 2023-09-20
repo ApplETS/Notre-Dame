@@ -158,7 +158,8 @@ void main() {
           // Rebuild the widget after the state has changed.
           await tester.pump();
 
-          verify(navigation.pushNamed(RouterPaths.faq, arguments: Colors.white)).called(1);
+          verify(navigation.pushNamed(RouterPaths.faq, arguments: Colors.white))
+              .called(1);
         });
 
         testWidgets('settings', (WidgetTester tester) async {
