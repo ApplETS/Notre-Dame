@@ -4,6 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+// MODELS
+import 'package:ets_api_clients/models.dart';
+
 // MANAGERS
 import 'package:notredame/core/managers/user_repository.dart';
 
@@ -22,6 +25,27 @@ import '../../mock/managers/user_repository_mock.dart';
 void main() {
   AppIntl intl;
   UserRepository userRepository;
+
+  final profileStudent = ProfileStudent(
+      firstName: "John",
+      lastName: "Doe",
+      permanentCode: "ABC123",
+      balance: "123456789");
+
+  // Make a test program object
+  final program = Program(
+      name: "Program name",
+      code: "1234",
+      average: "4.20",
+      accumulatedCredits: "123",
+      registeredCredits: "123",
+      completedCourses: "123",
+      failedCourses: "123",
+      equivalentCourses: "123",
+      status: "Actif");
+
+  final programList = [program];
+
   group('Profile view - ', () {
     setUp(() async {
       intl = await setupAppIntl();
@@ -29,9 +53,17 @@ void main() {
       userRepository = setupUserRepositoryMock();
       setupAnalyticsServiceMock();
 
-      UserRepositoryMock.stubGetInfo(userRepository as UserRepositoryMock);
+      UserRepositoryMock.stubGetInfo(userRepository as UserRepositoryMock,
+          toReturn: profileStudent);
+      UserRepositoryMock.stubProfileStudent(
+          userRepository as UserRepositoryMock,
+          toReturn: profileStudent);
 
-      UserRepositoryMock.stubGetPrograms(userRepository as UserRepositoryMock);
+      UserRepositoryMock.stubGetPrograms(userRepository as UserRepositoryMock,
+          toReturn: programList);
+
+      UserRepositoryMock.stubPrograms(userRepository as UserRepositoryMock,
+          toReturn: programList);
     });
 
     tearDown(() {
@@ -39,42 +71,47 @@ void main() {
       unregister<AnalyticsServiceMock>();
     });
 
-    testWidgets('contains student status', (WidgetTester tester) async {
+    testWidgets('contains main info', (WidgetTester tester) async {
       await tester.pumpWidget(localizedWidget(child: ProfileView()));
       await tester.pumpAndSettle();
 
-      expect(find.widgetWithText(ListTile, intl.profile_student_status_title),
+      expect(
+          find.text("${profileStudent.firstName} ${profileStudent.lastName}"),
           findsOneWidget);
 
-      expect(
-          find.widgetWithText(ListTile, intl.profile_balance), findsOneWidget);
+      expect(find.text(program.name), findsNWidgets(2));
     });
 
     testWidgets('contains personal info', (WidgetTester tester) async {
       await tester.pumpWidget(localizedWidget(child: ProfileView()));
       await tester.pumpAndSettle();
 
-      expect(
-          find.widgetWithText(
-              ListTile, intl.profile_personal_information_title),
-          findsOneWidget);
+      expect(find.text(profileStudent.permanentCode), findsOneWidget);
 
-      expect(find.widgetWithText(ListTile, intl.profile_first_name),
-          findsOneWidget);
+      expect(find.text(intl.profile_permanent_code), findsOneWidget);
 
-      expect(find.widgetWithText(ListTile, intl.profile_last_name),
-          findsOneWidget);
+      expect(find.text(intl.login_prompt_universal_code), findsOneWidget);
+    });
 
-      expect(find.widgetWithText(ListTile, intl.profile_permanent_code),
-          findsOneWidget);
+    testWidgets('contains balance info', (WidgetTester tester) async {
+      await tester.pumpWidget(localizedWidget(child: ProfileView()));
+      await tester.pumpAndSettle();
 
-      expect(find.widgetWithText(ListTile, intl.login_prompt_universal_code),
-          findsOneWidget);
+      expect(find.text(profileStudent.balance), findsOneWidget);
+
+      expect(find.text(intl.profile_balance), findsOneWidget);
+    });
+
+    testWidgets('contains program completion', (WidgetTester tester) async {
+      await tester.pumpWidget(localizedWidget(child: ProfileView()));
+      await tester.pumpAndSettle();
+
+      expect(find.text(intl.profile_program_completion), findsOneWidget);
     });
 
     group("golden - ", () {
       testWidgets("default view (no events)", (WidgetTester tester) async {
-        tester.binding.window.physicalSizeTestValue = const Size(800, 1410);
+        tester.binding.window.physicalSizeTestValue = const Size(1080, 1920);
 
         await tester.pumpWidget(localizedWidget(child: ProfileView()));
         await tester.pumpAndSettle();
