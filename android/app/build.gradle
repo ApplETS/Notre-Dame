@@ -49,7 +49,7 @@ android {
     defaultConfig {
         applicationId "ca.etsmtl.applets.etsmobile"
         minSdkVersion 20
-        targetSdkVersion 31
+        targetSdkVersion 33
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
         multiDexEnabled true

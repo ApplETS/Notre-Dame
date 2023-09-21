@@ -6,12 +6,16 @@ import 'package:mockito/mockito.dart';
 // CONSTANTS
 import 'package:notredame/core/constants/router_paths.dart';
 
+// MANAGERS
+import 'package:notredame/core/managers/settings_manager.dart';
+
 // MODELS
 import 'package:notredame/core/models/quick_link.dart';
 
 // SERVICES
 import 'package:notredame/core/services/analytics_service.dart';
 import 'package:notredame/core/services/internal_info_service.dart';
+import 'package:notredame/core/services/launch_url_service.dart';
 import 'package:notredame/core/services/navigation_service.dart';
 
 // VIEWMODELS
@@ -26,6 +30,7 @@ void main() {
   NavigationService navigationService;
   AnalyticsService analyticsService;
   InternalInfoService internalInfoService;
+  LaunchUrlService launchUrlService;
 
   WebLinkCardViewModel viewModel;
 
@@ -39,6 +44,8 @@ void main() {
       navigationService = setupNavigationServiceMock();
       analyticsService = setupAnalyticsServiceMock();
       internalInfoService = setupInternalInfoServiceMock();
+      launchUrlService = setupLaunchUrlServiceMock();
+      setupSettingsManagerMock();
 
       setupLogger();
 
@@ -48,13 +55,15 @@ void main() {
     tearDown(() {
       unregister<NavigationService>();
       clearInteractions(analyticsService);
+      clearInteractions(launchUrlService);
       unregister<AnalyticsService>();
       unregister<InternalInfoService>();
+      unregister<SettingsManager>();
     });
 
     group('onLinkClicked -', () {
       test('navigate to security', () async {
-        await viewModel.onLinkClicked(securityQuickLink);
+        await viewModel.onLinkClicked(securityQuickLink, Brightness.light);
 
         verify(
             analyticsService.logEvent("QuickLink", "QuickLink clicked: test"));
@@ -66,10 +75,10 @@ void main() {
         InternalInfoServiceMock.stubGetDeviceInfoForErrorReporting(
             internalInfoService as InternalInfoServiceMock);
 
-        await viewModel.onLinkClicked(quickLink);
+        await viewModel.onLinkClicked(quickLink, Brightness.light);
 
-        verify(navigationService.pushNamed(RouterPaths.webView,
-            arguments: quickLink));
+        verify(
+            launchUrlService.launchInBrowser(quickLink.link, Brightness.light));
         verifyNoMoreInteractions(navigationService);
       });
     });

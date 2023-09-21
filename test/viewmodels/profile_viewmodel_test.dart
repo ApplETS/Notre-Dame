@@ -1,6 +1,7 @@
 // FLUTTER / DART / THIRD-PARTIES
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
+import 'package:notredame/core/constants/programs_credits.dart';
 
 // MANAGERS
 import 'package:notredame/core/managers/settings_manager.dart';
@@ -67,6 +68,7 @@ void main() {
     setUp(() async {
       // Setting up mocks
       userRepository = setupUserRepositoryMock();
+      setupAnalyticsServiceMock();
 
       viewModel = ProfileViewModel(intl: await setupAppIntl());
     });
@@ -144,6 +146,79 @@ void main() {
         verify(userRepository.programs).called(2);
 
         verifyNoMoreInteractions(userRepository);
+      });
+    });
+
+    group("programProgression - ", () {
+      test("calculates program progression correctly", () {
+        // Create a list of programs for testing
+        final List<Program> testPrograms = [
+          Program(
+            name: 'Program A',
+            code: '7625', // Program code with matching entry in ProgramCredits
+            average: '3.50',
+            accumulatedCredits: '30',
+            registeredCredits: '60',
+            completedCourses: '10',
+            failedCourses: '0',
+            equivalentCourses: '0',
+            status: 'Actif',
+          ),
+          Program(
+            name: 'Program B',
+            code: '7694', // Program code with matching entry in ProgramCredits
+            average: '3.20',
+            accumulatedCredits: '45',
+            registeredCredits: '90',
+            completedCourses: '20',
+            failedCourses: '5',
+            equivalentCourses: '0',
+            status: 'Actif',
+          ),
+        ];
+
+        UserRepositoryMock.stubPrograms(userRepository as UserRepositoryMock,
+            toReturn: testPrograms);
+
+        // Create an instance of ProgramCredits
+        final ProgramCredits programCredits = ProgramCredits();
+
+        // Calculate the program progression
+        final double progression = viewModel.programProgression;
+
+        // Calculate the expected progression based on the defined ProgramCredits
+        final double expectedProgression =
+            (45 / programCredits.programsCredits['7694'] * 100).roundToDouble();
+
+        // Verify that the calculated progression matches the expected value
+        expect(progression, expectedProgression);
+      });
+
+      test("handles no matching program code", () {
+        // Create a list of programs with no matching program code
+        final List<Program> testPrograms = [
+          Program(
+            name: 'Program X',
+            code:
+                '9999', // Program code with no matching entry in ProgramCredits
+            average: '3.00',
+            accumulatedCredits: '20',
+            registeredCredits: '40',
+            completedCourses: '5',
+            failedCourses: '2',
+            equivalentCourses: '0',
+            status: 'Actif',
+          ),
+        ];
+
+        UserRepositoryMock.stubPrograms(userRepository as UserRepositoryMock,
+            toReturn: testPrograms);
+
+        // Calculate the program progression
+        final double progression = viewModel.programProgression;
+
+        // The expected progression should be 0 when there is no matching program code
+        expect(progression, 0.0);
       });
     });
 
