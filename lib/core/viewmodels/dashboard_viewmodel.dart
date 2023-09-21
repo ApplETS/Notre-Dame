@@ -549,8 +549,6 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
   }
 
   Future<void> futureToRunBroadcast() async {
-    const PreferencesFlag flag = PreferencesFlag.broadcastCard;
-
     setBusyForObject(broadcastMessage, true);
     setBusyForObject(broadcastTitle, true);
     setBusyForObject(broadcastColor, true);
@@ -558,15 +556,15 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
     setBusyForObject(broadcastType, true);
 
     if (_appIntl.localeName == "fr") {
-      broadcastMessage = await remoteConfigService.dashboardMessageFr;
-      broadcastTitle = await remoteConfigService.dashboardMessageTitleFr;
+      broadcastMessage = remoteConfigService.dashboardMessageFr;
+      broadcastTitle = remoteConfigService.dashboardMessageTitleFr;
     } else {
-      broadcastMessage = await remoteConfigService.dashboardMessageEn;
-      broadcastTitle = await remoteConfigService.dashboardMessageTitleEn;
+      broadcastMessage = remoteConfigService.dashboardMessageEn;
+      broadcastTitle = remoteConfigService.dashboardMessageTitleEn;
     }
-    broadcastColor = await remoteConfigService.dashboardMsgColor;
-    broadcastUrl = await remoteConfigService.dashboardMsgUrl;
-    broadcastType = await remoteConfigService.dashboardMsgType;
+    broadcastColor = remoteConfigService.dashboardMsgColor;
+    broadcastUrl = remoteConfigService.dashboardMsgUrl;
+    broadcastType = remoteConfigService.dashboardMsgType;
 
     setBusyForObject(broadcastMessage, false);
     setBusyForObject(broadcastTitle, false);

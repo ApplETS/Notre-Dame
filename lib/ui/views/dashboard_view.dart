@@ -36,7 +36,6 @@ import 'package:notredame/ui/utils/discovery_components.dart';
 // SERVICES
 import 'package:notredame/core/services/navigation_service.dart';
 import 'package:notredame/core/services/analytics_service.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 class DashboardView extends StatefulWidget {
   final UpdateCode updateCode;
