@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
+import 'package:notredame/core/managers/course_repository.dart';
+import 'package:notredame/core/utils/calendar_utils.dart';
 import 'package:stacked/stacked.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -419,6 +421,15 @@ class _ScheduleViewState extends State<ScheduleView>
   }
 
   List<Widget> _buildActionButtons(ScheduleViewModel model) => [
+        IconButton(
+          icon: const Icon(Icons.today),
+          onPressed: () {
+            final CourseRepository courseRepository =
+                locator<CourseRepository>();
+
+            CalendarUtils.export(courseRepository.coursesActivities);
+          },
+        ),
         if ((model.settings[PreferencesFlag.scheduleShowTodayBtn] as bool) ==
             true)
           IconButton(
