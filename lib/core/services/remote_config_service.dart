@@ -55,37 +55,37 @@ class RemoteConfigService {
     return _remoteConfig.getBool(_scheduleListViewDefault);
   }
 
-  Future<String> get dashboardMessageFr async {
+  String get dashboardMessageFr {
     fetch();
     return _remoteConfig.getString(_dashboardMsgFr);
   }
 
-  Future<String> get dashboardMessageEn async {
+  String get dashboardMessageEn {
     fetch();
     return _remoteConfig.getString(_dashboardMsgEn);
   }
 
-  Future<String> get dashboardMessageTitleFr async {
+  String get dashboardMessageTitleFr {
     fetch();
     return _remoteConfig.getString(_dashboardMsgTitleFr);
   }
 
-  Future<String> get dashboardMessageTitleEn async {
+  String get dashboardMessageTitleEn {
     fetch();
     return _remoteConfig.getString(_dashboardMsgTitleEn);
   }
 
-  Future<String> get dashboardMsgColor async {
+  String get dashboardMsgColor {
     fetch();
     return _remoteConfig.getString(_dashboardMsgColor);
   }
 
-  Future<String> get dashboardMsgUrl async {
+  String get dashboardMsgUrl {
     fetch();
     return _remoteConfig.getString(_dashboardMsgUrl);
   }
 
-  Future<String> get dashboardMsgType async {
+  String get dashboardMsgType {
     fetch();
     return _remoteConfig.getString(_dashboardMsgType);
   }

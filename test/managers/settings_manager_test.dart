@@ -440,10 +440,11 @@ void main() {
 
         // Cards
         final Map<PreferencesFlag, int> expected = {
-          PreferencesFlag.aboutUsCard: 0,
-          PreferencesFlag.scheduleCard: 1,
-          PreferencesFlag.progressBarCard: 2,
-          PreferencesFlag.gradesCard: 3
+          PreferencesFlag.broadcastCard: 0,
+          PreferencesFlag.aboutUsCard: 1,
+          PreferencesFlag.scheduleCard: 2,
+          PreferencesFlag.progressBarCard: 3,
+          PreferencesFlag.gradesCard: 4
         };
 
         expect(
@@ -451,6 +452,8 @@ void main() {
           expected,
         );
 
+        verify(preferencesService.getInt(PreferencesFlag.broadcastCard))
+            .called(1);
         verify(preferencesService.getInt(PreferencesFlag.aboutUsCard))
             .called(1);
         verify(preferencesService.getInt(PreferencesFlag.scheduleCard))
@@ -466,28 +469,33 @@ void main() {
       test("validate the loading of the cards", () async {
         PreferencesServiceMock.stubGetInt(
             preferencesService as PreferencesServiceMock,
+            PreferencesFlag.broadcastCard,
+            toReturn: 0);
+        PreferencesServiceMock.stubGetInt(
+            preferencesService as PreferencesServiceMock,
             PreferencesFlag.aboutUsCard,
+            toReturn: 2);
+        PreferencesServiceMock.stubGetInt(
+            preferencesService as PreferencesServiceMock,
+            PreferencesFlag.scheduleCard,
+            toReturn: 3);
+        PreferencesServiceMock.stubGetInt(
+            preferencesService as PreferencesServiceMock,
+            PreferencesFlag.progressBarCard,
             // ignore: avoid_redundant_argument_values
             toReturn: 1);
         PreferencesServiceMock.stubGetInt(
             preferencesService as PreferencesServiceMock,
-            PreferencesFlag.scheduleCard,
-            toReturn: 2);
-        PreferencesServiceMock.stubGetInt(
-            preferencesService as PreferencesServiceMock,
-            PreferencesFlag.progressBarCard,
-            toReturn: 0);
-        PreferencesServiceMock.stubGetInt(
-            preferencesService as PreferencesServiceMock,
             PreferencesFlag.gradesCard,
-            toReturn: 3);
+            toReturn: 4);
 
         // Cards
         final Map<PreferencesFlag, int> expected = {
-          PreferencesFlag.aboutUsCard: 1,
-          PreferencesFlag.scheduleCard: 2,
-          PreferencesFlag.progressBarCard: 0,
-          PreferencesFlag.gradesCard: 3
+          PreferencesFlag.broadcastCard: 0,
+          PreferencesFlag.aboutUsCard: 2,
+          PreferencesFlag.scheduleCard: 3,
+          PreferencesFlag.progressBarCard: 1,
+          PreferencesFlag.gradesCard: 4
         };
 
         expect(
@@ -495,6 +503,8 @@ void main() {
           expected,
         );
 
+        verify(preferencesService.getInt(PreferencesFlag.broadcastCard))
+            .called(1);
         verify(preferencesService.getInt(PreferencesFlag.aboutUsCard))
             .called(1);
         verify(preferencesService.getInt(PreferencesFlag.scheduleCard))

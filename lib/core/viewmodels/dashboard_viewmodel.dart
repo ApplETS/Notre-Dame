@@ -63,11 +63,11 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
 
   /// Message to display in case of urgent/important broadcast need (Firebase
   /// remote config), and the associated card title
-  String broadcastMessage;
-  String broadcastTitle;
-  String broadcastColor;
-  String broadcastUrl;
-  String broadcastType;
+  String broadcastMessage = "";
+  String broadcastTitle = "";
+  String broadcastColor = "";
+  String broadcastUrl = "";
+  String broadcastType = "";
 
   /// Get progress of the session
   double get progress => _progress;
