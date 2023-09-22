@@ -369,6 +369,29 @@ List<GroupDiscovery> discoveryComponents(BuildContext context) {
       ),
       Discovery(
         path: null,
+        featureId: DiscoveryIds.detailsMoreFaq,
+        title: AppIntl.of(context).need_help,
+        details: ConstrainedBox(
+          constraints: BoxConstraints(
+              maxHeight: MediaQuery.of(context).size.height * 0.2),
+          child: Column(
+            children: [
+              Expanded(
+                child: ListView(
+                  padding: EdgeInsets.zero,
+                  children: <Widget>[
+                    _buildSkipDiscoveryButton(context),
+                    Text(AppIntl.of(context).discovery_page_faq,
+                        textAlign: TextAlign.justify),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+      Discovery(
+        path: null,
         featureId: DiscoveryIds.detailsMoreSettings,
         title: AppIntl.of(context).more_settings,
         details: ConstrainedBox(

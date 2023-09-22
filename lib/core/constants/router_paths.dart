@@ -2,6 +2,7 @@
 class RouterPaths {
   static const String startup = "/startup";
   static const String login = "/login";
+  static const String faq = "/faq";
   static const String dashboard = "/dashboard";
   static const String schedule = "/schedule";
   static const String student = "/student";
