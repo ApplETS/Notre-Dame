@@ -6,13 +6,13 @@ import 'package:mockito/mockito.dart';
 // SERVICES / MANAGERS
 import 'package:notredame/core/services/launch_url_service.dart';
 import 'package:notredame/core/managers/settings_manager.dart';
+import '../mock/services/launch_url_service_mock.dart';
 
 // VIEW MODEL
 import 'package:notredame/core/viewmodels/faq_viewmodel.dart';
 
 // OTHER
 import '../helpers.dart';
-import '../mock/services/launch_url_service_mock.dart';
 
 void main() {
   LaunchUrlServiceMock launchUrlService;
