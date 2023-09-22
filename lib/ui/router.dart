@@ -13,6 +13,7 @@ import 'package:notredame/ui/views/feedback_view.dart';
 
 // VIEWS
 import 'package:notredame/ui/views/login_view.dart';
+import 'package:notredame/ui/views/faq_view.dart';
 import 'package:notredame/ui/views/not_found_view.dart';
 import 'package:notredame/ui/views/more_view.dart';
 import 'package:notredame/ui/views/outage_view.dart';
@@ -48,6 +49,11 @@ Route<dynamic> generateRoute(RouteSettings routeSettings) {
       return MaterialPageRoute(
           settings: RouteSettings(name: routeSettings.name),
           builder: (_) => LoginView());
+    case RouterPaths.faq:
+      return MaterialPageRoute(
+          settings: RouteSettings(name: routeSettings.name),
+          builder: (_) =>
+              FaqView(backgroundColor: routeSettings.arguments as Color));
     case RouterPaths.dashboard:
       final code = (routeSettings.arguments as UpdateCode) ?? UpdateCode.none;
       return PageRouteBuilder(

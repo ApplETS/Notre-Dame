@@ -136,13 +136,5 @@ void main() {
         expect(viewModel.password, "");
       });
     });
-
-    group('Emails - ', () {
-      test('Has the right mailto', () {
-        final str = viewModel.mailtoStr("email", "subject");
-
-        expect(str, "mailto:email?subject=subject");
-      });
-    });
   });
 }
