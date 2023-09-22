@@ -3,8 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-// SERVICES
-
 // MANAGERS
 import 'package:notredame/core/managers/settings_manager.dart';
 import '../../mock/managers/settings_manager_mock.dart';
