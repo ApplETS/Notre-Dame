@@ -1,14 +1,13 @@
 // FLUTTER / DART / THIRD-PARTIES
-import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 // SERVICES
-import '../../mock/managers/settings_manager_mock.dart';
 
 // MANAGERS
 import 'package:notredame/core/managers/settings_manager.dart';
+import '../../mock/managers/settings_manager_mock.dart';
 
 // VIEW
 import 'package:notredame/ui/views/faq_view.dart';
@@ -83,6 +82,6 @@ void main() {
         await expectLater(find.byType(FaqView),
             matchesGoldenFile(goldenFilePath("FaqView_1")));
       });
-    }, skip: !Platform.isLinux);
+    });
   });
 }
