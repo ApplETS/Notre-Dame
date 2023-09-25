@@ -850,6 +850,9 @@ void main() {
       });
 
       testWidgets("Schedule card", (WidgetTester tester) async {
+        RemoteConfigServiceMock.stubGetBroadcastEnabled(
+            remoteConfigService as RemoteConfigServiceMock,
+            toReturn: false);
         tester.binding.window.physicalSizeTestValue = const Size(800, 1410);
 
         CourseRepositoryMock.stubCoursesActivities(
@@ -862,7 +865,8 @@ void main() {
             fromCacheOnly: false);
 
         dashboard = {
-          PreferencesFlag.scheduleCard: 0,
+          PreferencesFlag.broadcastCard: 0,
+          PreferencesFlag.scheduleCard: 1,
         };
 
         SettingsManagerMock.stubGetDashboard(
@@ -877,10 +881,14 @@ void main() {
             matchesGoldenFile(goldenFilePath("dashboardView_scheduleCard_1")));
       });
       testWidgets("progressBar Card", (WidgetTester tester) async {
+        RemoteConfigServiceMock.stubGetBroadcastEnabled(
+            remoteConfigService as RemoteConfigServiceMock,
+            toReturn: false);
         tester.binding.window.physicalSizeTestValue = const Size(800, 1410);
 
         dashboard = {
-          PreferencesFlag.progressBarCard: 0,
+          PreferencesFlag.broadcastCard: 0,
+          PreferencesFlag.progressBarCard: 1,
         };
 
         SettingsManagerMock.stubGetDashboard(
