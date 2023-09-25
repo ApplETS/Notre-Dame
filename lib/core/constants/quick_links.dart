@@ -12,6 +12,7 @@ import 'package:notredame/ui/utils/app_theme.dart';
 
 List<QuickLink> quickLinks(AppIntl intl) => [
       QuickLink(
+          id: 1,
           name: intl.ets_security_title,
           image: const FaIcon(
             FontAwesomeIcons.shieldHalved,
@@ -20,6 +21,7 @@ List<QuickLink> quickLinks(AppIntl intl) => [
           ),
           link: 'security'),
       QuickLink(
+          id: 2,
           name: intl.ets_monets_title,
           image: Image.asset(
             'assets/images/ic_monets_sans_nom_red.png',
@@ -27,6 +29,7 @@ List<QuickLink> quickLinks(AppIntl intl) => [
           ),
           link: 'https://portail.etsmtl.ca/home'),
       QuickLink(
+          id: 3,
           name: intl.ets_bibliotech_title,
           image: const FaIcon(
             FontAwesomeIcons.book,
@@ -35,6 +38,7 @@ List<QuickLink> quickLinks(AppIntl intl) => [
           ),
           link: 'https://www.etsmtl.ca/Bibliotheque/Accueil'),
       QuickLink(
+          id: 4,
           name: intl.ets_news_title,
           image: const FaIcon(
             FontAwesomeIcons.newspaper,
@@ -43,6 +47,7 @@ List<QuickLink> quickLinks(AppIntl intl) => [
           ),
           link: 'https://www.etsmtl.ca/nouvelles'),
       QuickLink(
+          id: 5,
           name: intl.ets_directory_title,
           image: const FaIcon(
             FontAwesomeIcons.addressBook,
@@ -51,6 +56,7 @@ List<QuickLink> quickLinks(AppIntl intl) => [
           ),
           link: 'https://www.etsmtl.ca/bottin'),
       QuickLink(
+          id: 6,
           name: intl.ets_moodle_title,
           image: Image.asset(
             'assets/images/ic_moodle_red.png',
@@ -58,6 +64,7 @@ List<QuickLink> quickLinks(AppIntl intl) => [
           ),
           link: 'https://ena.etsmtl.ca/'),
       QuickLink(
+          id: 7,
           name: intl.ets_schedule_generator,
           image: const FaIcon(
             FontAwesomeIcons.calendar,
@@ -66,11 +73,13 @@ List<QuickLink> quickLinks(AppIntl intl) => [
           ),
           link: 'https://horairets.emmanuelcoulombe.dev/'),
       QuickLink(
+          id: 8,
           name: intl.ets_gus,
           image: SvgPicture.asset('assets/images/ic_gus_red.svg',
               color: AppTheme.etsLightRed),
           link: 'https://gus.etsmtl.ca/c2atom/mobile/login'),
       QuickLink(
+          id: 9,
           name: intl.ets_papercut_title,
           image: const FaIcon(
             FontAwesomeIcons.print,

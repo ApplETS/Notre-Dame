@@ -22,6 +22,7 @@ import 'package:notredame/core/managers/user_repository.dart';
 import 'package:notredame/core/managers/course_repository.dart';
 import 'package:notredame/core/managers/cache_manager.dart';
 import 'package:notredame/core/managers/settings_manager.dart';
+import 'package:notredame/core/managers/quick_link_repository.dart';
 
 // OTHER
 import 'package:ets_api_clients/clients.dart';
@@ -49,6 +50,7 @@ void setupLocator() {
   locator.registerLazySingleton(() => CourseRepository());
   locator.registerLazySingleton(() => CacheManager());
   locator.registerLazySingleton(() => SettingsManager());
+  locator.registerLazySingleton(() => QuickLinkRepository());
 
   // Other
   locator.registerLazySingleton(() => SignetsAPIClient());

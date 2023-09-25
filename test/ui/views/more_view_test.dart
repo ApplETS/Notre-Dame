@@ -48,7 +48,7 @@ void main() {
     });
 
     group('UI - ', () {
-      testWidgets('has 1 listView and 6 listTiles',
+      testWidgets('has 1 listView and 8 listTiles',
           (WidgetTester tester) async {
         await tester.pumpWidget(
             localizedWidget(child: FeatureDiscovery(child: MoreView())));
@@ -58,7 +58,7 @@ void main() {
         expect(listview, findsOneWidget);
 
         final listTile = find.byType(ListTile);
-        expect(listTile, findsNWidgets(7));
+        expect(listTile, findsNWidgets(8));
       });
 
       group('navigation - ', () {
@@ -145,6 +145,21 @@ void main() {
           expect(find.text('CLOSE'), findsOneWidget);
           expect(find.text('VIEW LICENSES'), findsOneWidget);
           expect(find.byType(AboutDialog), findsOneWidget);
+        });
+
+        testWidgets('need help', (WidgetTester tester) async {
+          await tester.pumpWidget(
+              localizedWidget(child: FeatureDiscovery(child: MoreView())));
+          await tester.pumpAndSettle(const Duration(seconds: 1));
+
+          // Tap the button.
+          await tester.tap(find.widgetWithText(ListTile, intl.need_help));
+
+          // Rebuild the widget after the state has changed.
+          await tester.pump();
+
+          verify(navigation.pushNamed(RouterPaths.faq, arguments: Colors.white))
+              .called(1);
         });
 
         testWidgets('settings', (WidgetTester tester) async {
