@@ -827,10 +827,14 @@ void main() {
       });
 
       testWidgets("Applets Card", (WidgetTester tester) async {
+        RemoteConfigServiceMock.stubGetBroadcastEnabled(
+            remoteConfigService as RemoteConfigServiceMock,
+            toReturn: false);
         tester.binding.window.physicalSizeTestValue = const Size(800, 1410);
 
-        dashboard = {
-          PreferencesFlag.aboutUsCard: 0,
+        Map<PreferencesFlag, int> dashboard = {
+          PreferencesFlag.broadcastCard: 0,
+          PreferencesFlag.aboutUsCard: 1,
         };
 
         SettingsManagerMock.stubGetDashboard(
