@@ -832,7 +832,7 @@ void main() {
             toReturn: false);
         tester.binding.window.physicalSizeTestValue = const Size(800, 1410);
 
-        Map<PreferencesFlag, int> dashboard = {
+        final Map<PreferencesFlag, int> dashboard = {
           PreferencesFlag.broadcastCard: 0,
           PreferencesFlag.aboutUsCard: 1,
         };
