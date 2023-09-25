@@ -238,6 +238,9 @@ void main() {
 
       RemoteConfigServiceMock.stubGetBroadcastEnabled(
           remoteConfigService as RemoteConfigServiceMock);
+      RemoteConfigServiceMock.stubGetBroadcastEn(
+          remoteConfigService as RemoteConfigServiceMock,
+          toReturn: "");
 
       inAppReviewServiceMock =
           setupInAppReviewServiceMock() as InAppReviewServiceMock;
@@ -408,6 +411,9 @@ void main() {
         CourseRepositoryMock.stubGetCourses(
             courseRepository as CourseRepositoryMock,
             toReturn: courses);
+        SettingsManagerMock.stubGetDashboard(
+            settingsManager as SettingsManagerMock,
+            toReturn: dashboard);
         final now = DateTime.now();
         SettingsManagerMock.stubDateTimeNow(
             settingsManager as SettingsManagerMock,
@@ -440,6 +446,9 @@ void main() {
         CourseRepositoryMock.stubGetCourses(
             courseRepository as CourseRepositoryMock,
             toReturn: courses);
+        SettingsManagerMock.stubGetDashboard(
+            settingsManager as SettingsManagerMock,
+            toReturn: dashboard);
         final now = DateTime.now();
         SettingsManagerMock.stubDateTimeNow(
             settingsManager as SettingsManagerMock,
@@ -471,6 +480,9 @@ void main() {
         CourseRepositoryMock.stubGetCourses(
             courseRepository as CourseRepositoryMock,
             toReturn: courses);
+        SettingsManagerMock.stubGetDashboard(
+            settingsManager as SettingsManagerMock,
+            toReturn: dashboard);
         final now = DateTime.now();
         SettingsManagerMock.stubDateTimeNow(
             settingsManager as SettingsManagerMock,
@@ -503,6 +515,9 @@ void main() {
         CourseRepositoryMock.stubGetCourses(
             courseRepository as CourseRepositoryMock,
             toReturn: courses);
+        SettingsManagerMock.stubGetDashboard(
+            settingsManager as SettingsManagerMock,
+            toReturn: dashboard);
         final now = DateTime.now();
         SettingsManagerMock.stubDateTimeNow(
             settingsManager as SettingsManagerMock,
