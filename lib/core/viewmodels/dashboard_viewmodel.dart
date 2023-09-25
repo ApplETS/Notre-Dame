@@ -37,6 +37,7 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
   static const String tag = "DashboardViewModel";
 
   final SettingsManager _settingsManager = locator<SettingsManager>();
+  final PreferencesService _preferencesService = locator<PreferencesService>();
   final CourseRepository _courseRepository = locator<CourseRepository>();
   final AnalyticsService _analyticsService = locator<AnalyticsService>();
   final AppWidgetService _appWidgetService = locator<AppWidgetService>();
@@ -189,6 +190,8 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
 
     _cards = dashboard;
 
+    await checkForBroadcastChange();
+
     getCardsToDisplay();
 
     // load data for both grade cards & grades home screen widget
@@ -326,6 +329,27 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
     }
 
     _analyticsService.logEvent(tag, "Restoring cards");
+  }
+
+  Future<void> checkForBroadcastChange() async {
+    final broadcastChange =
+        await _preferencesService.getString(PreferencesFlag.broadcastChange) ??
+            "";
+    if (broadcastChange != remoteConfigService.dashboardMessageEn) {
+      // Update pref
+      _preferencesService.setString(PreferencesFlag.broadcastChange,
+          remoteConfigService.dashboardMessageEn);
+      if (_cards[PreferencesFlag.broadcastCard] < 0) {
+        _cards.updateAll((key, value) {
+          if (value >= 0) {
+            return value + 1;
+          } else {
+            return value;
+          }
+        });
+        _cards[PreferencesFlag.broadcastCard] = 0;
+      }
+    }
   }
 
   Future<List<Session>> futureToRunSessionProgressBar() async {
