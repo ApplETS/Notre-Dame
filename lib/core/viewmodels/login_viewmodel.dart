@@ -90,8 +90,4 @@ class LoginViewModel extends BaseViewModel {
 
     return _appIntl.login_error_invalid_credentials;
   }
-
-  String mailtoStr(String email, String subject) {
-    return 'mailto:$email?subject=$subject';
-  }
 }
