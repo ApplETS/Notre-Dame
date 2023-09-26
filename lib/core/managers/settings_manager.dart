@@ -97,6 +97,13 @@ class SettingsManager with ChangeNotifier {
   Future<Map<PreferencesFlag, int>> getDashboard() async {
     final Map<PreferencesFlag, int> dashboard = {};
 
+    final broadcastCardIndex =
+        await _preferencesService.getInt(PreferencesFlag.broadcastCard) ??
+            getDefaultCardIndex(PreferencesFlag.broadcastCard);
+
+    dashboard.putIfAbsent(
+        PreferencesFlag.broadcastCard, () => broadcastCardIndex);
+
     final aboutUsIndex =
         await _preferencesService.getInt(PreferencesFlag.aboutUsCard) ??
             getDefaultCardIndex(PreferencesFlag.aboutUsCard);
@@ -268,8 +275,9 @@ class SettingsManager with ChangeNotifier {
   }
 
   /// Get the default index of each card
-  int getDefaultCardIndex(PreferencesFlag flag) =>
-      flag.index - PreferencesFlag.aboutUsCard.index;
+  int getDefaultCardIndex(PreferencesFlag flag) {
+    return flag.index - PreferencesFlag.broadcastCard.index;
+  }
 
   bool get calendarViewSetting => _remoteConfigService.scheduleListViewDefault;
 }

@@ -8,14 +8,32 @@ import 'package:notredame/locator.dart';
 
 /// Manage the analytics of the application
 class RemoteConfigService {
+  static const String tag = "RemoteConfigService";
   static const _serviceIsDown = "service_is_down";
+
+  // dashboard message remote config keys
+  static const _dashboardMsgToggle = "dashboard_message_toggle";
+  static const _dashboardMsgFr = "dashboard_message_fr";
+  static const _dashboardMsgEn = "dashboard_message_en";
+  static const _dashboardMsgTitleFr = "dashboard_message_title_fr";
+  static const _dashboardMsgTitleEn = "dashboard_message_title_en";
+  static const _dashboardMsgColor = "dashboard_message_color";
+  static const _dashboardMsgUrl = "dashboard_message_url";
+  static const _dashboardMsgType = "dashboard_message_type";
+
   static const _scheduleListViewDefault = "schedule_list_view_default";
   final FirebaseRemoteConfig _remoteConfig = FirebaseRemoteConfig.instance;
   final defaults = <String, dynamic>{
     _serviceIsDown: false,
+    _dashboardMsgFr: "",
+    _dashboardMsgEn: "",
+    _dashboardMsgTitleFr: "",
+    _dashboardMsgTitleEn: "",
+    _dashboardMsgColor: "",
+    _dashboardMsgUrl: "",
+    _dashboardMsgType: "",
     _scheduleListViewDefault: true
   };
-  static const String tag = "RemoteConfigService";
 
   Future initialize() async {
     await _remoteConfig.setDefaults(defaults);
@@ -27,9 +45,49 @@ class RemoteConfigService {
     return _remoteConfig.getBool(_serviceIsDown);
   }
 
+  bool get dashboardMessageActive {
+    fetch();
+    return _remoteConfig.getBool(_dashboardMsgToggle);
+  }
+
   bool get scheduleListViewDefault {
     fetch();
     return _remoteConfig.getBool(_scheduleListViewDefault);
+  }
+
+  String get dashboardMessageFr {
+    fetch();
+    return _remoteConfig.getString(_dashboardMsgFr);
+  }
+
+  String get dashboardMessageEn {
+    fetch();
+    return _remoteConfig.getString(_dashboardMsgEn);
+  }
+
+  String get dashboardMessageTitleFr {
+    fetch();
+    return _remoteConfig.getString(_dashboardMsgTitleFr);
+  }
+
+  String get dashboardMessageTitleEn {
+    fetch();
+    return _remoteConfig.getString(_dashboardMsgTitleEn);
+  }
+
+  String get dashboardMsgColor {
+    fetch();
+    return _remoteConfig.getString(_dashboardMsgColor);
+  }
+
+  String get dashboardMsgUrl {
+    fetch();
+    return _remoteConfig.getString(_dashboardMsgUrl);
+  }
+
+  String get dashboardMsgType {
+    fetch();
+    return _remoteConfig.getString(_dashboardMsgType);
   }
 
   Future<void> fetch() async {
