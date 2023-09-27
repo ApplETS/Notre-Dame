@@ -16,6 +16,7 @@ import 'package:ets_api_clients/models.dart';
 // SERVICE
 import 'package:notredame/core/services/preferences_service.dart';
 import 'package:notredame/core/services/analytics_service.dart';
+import 'package:notredame/core/services/remote_config_service.dart';
 
 // VIEWMODEL
 import 'package:notredame/core/viewmodels/dashboard_viewmodel.dart';
@@ -28,12 +29,14 @@ import '../mock/managers/course_repository_mock.dart';
 import '../mock/managers/settings_manager_mock.dart';
 import '../mock/services/in_app_review_service_mock.dart';
 import '../mock/services/preferences_service_mock.dart';
+import '../mock/services/remote_config_service_mock.dart';
 
 void main() {
   PreferencesService preferenceService;
   SettingsManager settingsManager;
   DashboardViewModel viewModel;
   CourseRepository courseRepository;
+  RemoteConfigService remoteConfigService;
   PreferencesServiceMock preferencesServiceMock;
   InAppReviewServiceMock inAppReviewServiceMock;
   AnalyticsService analyticsService;
@@ -163,23 +166,26 @@ void main() {
 
   // Cards
   final Map<PreferencesFlag, int> dashboard = {
-    PreferencesFlag.aboutUsCard: 0,
-    PreferencesFlag.scheduleCard: 1,
-    PreferencesFlag.progressBarCard: 2,
+    PreferencesFlag.broadcastCard: 0,
+    PreferencesFlag.aboutUsCard: 1,
+    PreferencesFlag.scheduleCard: 2,
+    PreferencesFlag.progressBarCard: 3,
   };
 
   // Reorderered Cards
   final Map<PreferencesFlag, int> reorderedDashboard = {
-    PreferencesFlag.aboutUsCard: 1,
-    PreferencesFlag.scheduleCard: 2,
+    PreferencesFlag.broadcastCard: 1,
+    PreferencesFlag.aboutUsCard: 2,
+    PreferencesFlag.scheduleCard: 3,
     PreferencesFlag.progressBarCard: 0,
   };
 
   // Reorderered Cards with hidden scheduleCard
   final Map<PreferencesFlag, int> hiddenCardDashboard = {
-    PreferencesFlag.aboutUsCard: 0,
+    PreferencesFlag.broadcastCard: 0,
+    PreferencesFlag.aboutUsCard: 1,
     PreferencesFlag.scheduleCard: -1,
-    PreferencesFlag.progressBarCard: 1,
+    PreferencesFlag.progressBarCard: 2,
   };
 
   // Session
@@ -202,6 +208,7 @@ void main() {
     setUp(() async {
       // Setting up mocks
       courseRepository = setupCourseRepositoryMock();
+      remoteConfigService = setupRemoteConfigServiceMock();
       settingsManager = setupSettingsManagerMock();
       preferenceService = setupPreferencesServiceMock();
       analyticsService = setupAnalyticsServiceMock();
@@ -228,6 +235,12 @@ void main() {
       SettingsManagerMock.stubDateTimeNow(
           settingsManager as SettingsManagerMock,
           toReturn: DateTime(2020));
+
+      RemoteConfigServiceMock.stubGetBroadcastEnabled(
+          remoteConfigService as RemoteConfigServiceMock);
+      RemoteConfigServiceMock.stubGetBroadcastEn(
+          remoteConfigService as RemoteConfigServiceMock,
+          toReturn: "");
 
       inAppReviewServiceMock =
           setupInAppReviewServiceMock() as InAppReviewServiceMock;
@@ -376,6 +389,7 @@ void main() {
         await viewModel.futureToRun();
         expect(viewModel.cards, dashboard);
         expect(viewModel.cardsToDisplay, [
+          PreferencesFlag.broadcastCard,
           PreferencesFlag.aboutUsCard,
           PreferencesFlag.scheduleCard,
           PreferencesFlag.progressBarCard
@@ -397,6 +411,9 @@ void main() {
         CourseRepositoryMock.stubGetCourses(
             courseRepository as CourseRepositoryMock,
             toReturn: courses);
+        SettingsManagerMock.stubGetDashboard(
+            settingsManager as SettingsManagerMock,
+            toReturn: dashboard);
         final now = DateTime.now();
         SettingsManagerMock.stubDateTimeNow(
             settingsManager as SettingsManagerMock,
@@ -429,6 +446,9 @@ void main() {
         CourseRepositoryMock.stubGetCourses(
             courseRepository as CourseRepositoryMock,
             toReturn: courses);
+        SettingsManagerMock.stubGetDashboard(
+            settingsManager as SettingsManagerMock,
+            toReturn: dashboard);
         final now = DateTime.now();
         SettingsManagerMock.stubDateTimeNow(
             settingsManager as SettingsManagerMock,
@@ -460,6 +480,9 @@ void main() {
         CourseRepositoryMock.stubGetCourses(
             courseRepository as CourseRepositoryMock,
             toReturn: courses);
+        SettingsManagerMock.stubGetDashboard(
+            settingsManager as SettingsManagerMock,
+            toReturn: dashboard);
         final now = DateTime.now();
         SettingsManagerMock.stubDateTimeNow(
             settingsManager as SettingsManagerMock,
@@ -492,6 +515,9 @@ void main() {
         CourseRepositoryMock.stubGetCourses(
             courseRepository as CourseRepositoryMock,
             toReturn: courses);
+        SettingsManagerMock.stubGetDashboard(
+            settingsManager as SettingsManagerMock,
+            toReturn: dashboard);
         final now = DateTime.now();
         SettingsManagerMock.stubDateTimeNow(
             settingsManager as SettingsManagerMock,
@@ -626,6 +652,9 @@ void main() {
 
         PreferencesServiceMock.stubException(
             preferenceService as PreferencesServiceMock,
+            PreferencesFlag.broadcastCard);
+        PreferencesServiceMock.stubException(
+            preferenceService as PreferencesServiceMock,
             PreferencesFlag.aboutUsCard);
         PreferencesServiceMock.stubException(
             preferenceService as PreferencesServiceMock,
@@ -740,6 +769,8 @@ void main() {
     group("interact with cards - ", () {
       test("can hide a card and reset cards to default layout", () async {
         SettingsManagerMock.stubSetInt(settingsManager as SettingsManagerMock,
+            PreferencesFlag.broadcastCard);
+        SettingsManagerMock.stubSetInt(settingsManager as SettingsManagerMock,
             PreferencesFlag.aboutUsCard);
         SettingsManagerMock.stubSetInt(settingsManager as SettingsManagerMock,
             PreferencesFlag.scheduleCard);
@@ -761,26 +792,32 @@ void main() {
             settingsManager.setInt(PreferencesFlag.scheduleCard, -1));
 
         expect(viewModel.cards, hiddenCardDashboard);
-        expect(viewModel.cardsToDisplay,
-            [PreferencesFlag.aboutUsCard, PreferencesFlag.progressBarCard]);
+        expect(viewModel.cardsToDisplay, [
+          PreferencesFlag.broadcastCard,
+          PreferencesFlag.aboutUsCard,
+          PreferencesFlag.progressBarCard
+        ]);
 
         verify(analyticsService.logEvent(
             "DashboardViewModel", "Deleting scheduleCard"));
         verify(settingsManager.setInt(PreferencesFlag.scheduleCard, -1))
             .called(1);
-        verify(settingsManager.setInt(PreferencesFlag.aboutUsCard, 0))
+        verify(settingsManager.setInt(PreferencesFlag.broadcastCard, 0))
             .called(1);
-        verify(settingsManager.setInt(PreferencesFlag.progressBarCard, 1))
+        verify(settingsManager.setInt(PreferencesFlag.aboutUsCard, 1))
+            .called(1);
+        verify(settingsManager.setInt(PreferencesFlag.progressBarCard, 2))
             .called(1);
 
         // Call the setter.
         viewModel.setAllCardsVisible();
 
         await untilCalled(
-            settingsManager.setInt(PreferencesFlag.progressBarCard, 2));
+            settingsManager.setInt(PreferencesFlag.progressBarCard, 3));
 
         expect(viewModel.cards, dashboard);
         expect(viewModel.cardsToDisplay, [
+          PreferencesFlag.broadcastCard,
           PreferencesFlag.aboutUsCard,
           PreferencesFlag.scheduleCard,
           PreferencesFlag.progressBarCard
@@ -789,11 +826,13 @@ void main() {
         verify(
             analyticsService.logEvent("DashboardViewModel", "Restoring cards"));
         verify(settingsManager.getDashboard()).called(1);
-        verify(settingsManager.setInt(PreferencesFlag.aboutUsCard, 0))
+        verify(settingsManager.setInt(PreferencesFlag.broadcastCard, 0))
             .called(1);
-        verify(settingsManager.setInt(PreferencesFlag.scheduleCard, 1))
+        verify(settingsManager.setInt(PreferencesFlag.aboutUsCard, 1))
             .called(1);
-        verify(settingsManager.setInt(PreferencesFlag.progressBarCard, 2))
+        verify(settingsManager.setInt(PreferencesFlag.scheduleCard, 2))
+            .called(1);
+        verify(settingsManager.setInt(PreferencesFlag.progressBarCard, 3))
             .called(1);
         verify(settingsManager.getString(PreferencesFlag.progressBarText))
             .called(2);
@@ -814,6 +853,8 @@ void main() {
             toReturn: dashboard);
 
         SettingsManagerMock.stubSetInt(settingsManager as SettingsManagerMock,
+            PreferencesFlag.broadcastCard);
+        SettingsManagerMock.stubSetInt(settingsManager as SettingsManagerMock,
             PreferencesFlag.aboutUsCard);
         SettingsManagerMock.stubSetInt(settingsManager as SettingsManagerMock,
             PreferencesFlag.scheduleCard);
@@ -824,6 +865,7 @@ void main() {
 
         expect(viewModel.cards, dashboard);
         expect(viewModel.cardsToDisplay, [
+          PreferencesFlag.broadcastCard,
           PreferencesFlag.aboutUsCard,
           PreferencesFlag.scheduleCard,
           PreferencesFlag.progressBarCard,
@@ -838,6 +880,7 @@ void main() {
         expect(viewModel.cards, reorderedDashboard);
         expect(viewModel.cardsToDisplay, [
           PreferencesFlag.progressBarCard,
+          PreferencesFlag.broadcastCard,
           PreferencesFlag.aboutUsCard,
           PreferencesFlag.scheduleCard
         ]);
@@ -847,9 +890,11 @@ void main() {
         verify(settingsManager.getDashboard()).called(1);
         verify(settingsManager.setInt(PreferencesFlag.progressBarCard, 0))
             .called(1);
-        verify(settingsManager.setInt(PreferencesFlag.aboutUsCard, 1))
+        verify(settingsManager.setInt(PreferencesFlag.broadcastCard, 1))
             .called(1);
-        verify(settingsManager.setInt(PreferencesFlag.scheduleCard, 2))
+        verify(settingsManager.setInt(PreferencesFlag.aboutUsCard, 2))
+            .called(1);
+        verify(settingsManager.setInt(PreferencesFlag.scheduleCard, 3))
             .called(1);
         verify(settingsManager.getString(PreferencesFlag.progressBarText))
             .called(1);

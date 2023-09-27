@@ -20,6 +20,9 @@ import 'package:notredame/ui/widgets/grade_button.dart';
 // CONSTANTS
 import 'package:notredame/core/constants/preferences_flags.dart';
 
+// SERVICES
+import 'package:notredame/core/services/remote_config_service.dart';
+
 // OTHERS
 import '../../helpers.dart';
 
@@ -27,10 +30,12 @@ import '../../helpers.dart';
 import '../../mock/managers/course_repository_mock.dart';
 import '../../mock/managers/settings_manager_mock.dart';
 import '../../mock/services/in_app_review_service_mock.dart';
+import '../../mock/services/remote_config_service_mock.dart';
 
 void main() {
   SettingsManager settingsManager;
   CourseRepository courseRepository;
+  RemoteConfigService remoteConfigService;
   AppIntl intl;
   InAppReviewServiceMock inAppReviewServiceMock;
 
@@ -72,10 +77,11 @@ void main() {
 
   // Cards
   Map<PreferencesFlag, int> dashboard = {
-    PreferencesFlag.aboutUsCard: 0,
-    PreferencesFlag.scheduleCard: 1,
-    PreferencesFlag.progressBarCard: 2,
-    PreferencesFlag.gradesCard: 3
+    PreferencesFlag.broadcastCard: 0,
+    PreferencesFlag.aboutUsCard: 1,
+    PreferencesFlag.scheduleCard: 2,
+    PreferencesFlag.progressBarCard: 3,
+    PreferencesFlag.gradesCard: 4
   };
 
   final numberOfCards = dashboard.entries.length;
@@ -168,7 +174,7 @@ void main() {
 
     // Find schedule card in second position by its title
     return tester.firstWidget(find.descendant(
-      of: find.byType(Dismissible).at(1),
+      of: find.byType(Dismissible, skipOffstage: false).at(2),
       matching: find.byType(Text),
     ));
   }
@@ -178,6 +184,7 @@ void main() {
       intl = await setupAppIntl();
       settingsManager = setupSettingsManagerMock();
       courseRepository = setupCourseRepositoryMock();
+      remoteConfigService = setupRemoteConfigServiceMock();
       setupNavigationServiceMock();
       courseRepository = setupCourseRepositoryMock();
       setupNetworkingServiceMock();
@@ -216,9 +223,29 @@ void main() {
           courseRepository as CourseRepositoryMock,
           fromCacheOnly: false);
 
+      RemoteConfigServiceMock.stubGetBroadcastEnabled(
+          remoteConfigService as RemoteConfigServiceMock);
+      RemoteConfigServiceMock.stubGetBroadcastColor(
+          remoteConfigService as RemoteConfigServiceMock);
+      RemoteConfigServiceMock.stubGetBroadcastEn(
+          remoteConfigService as RemoteConfigServiceMock);
+      RemoteConfigServiceMock.stubGetBroadcastFr(
+          remoteConfigService as RemoteConfigServiceMock);
+      RemoteConfigServiceMock.stubGetBroadcastTitleEn(
+          remoteConfigService as RemoteConfigServiceMock);
+      RemoteConfigServiceMock.stubGetBroadcastTitleFr(
+          remoteConfigService as RemoteConfigServiceMock);
+      RemoteConfigServiceMock.stubGetBroadcastType(
+          remoteConfigService as RemoteConfigServiceMock);
+      RemoteConfigServiceMock.stubGetBroadcastUrl(
+          remoteConfigService as RemoteConfigServiceMock);
+
       SettingsManagerMock.stubGetBool(settingsManager as SettingsManagerMock,
           PreferencesFlag.discoveryDashboard,
           toReturn: true);
+
+      SettingsManagerMock.stubSetInt(settingsManager as SettingsManagerMock,
+          PreferencesFlag.broadcastCard);
 
       SettingsManagerMock.stubSetInt(
           settingsManager as SettingsManagerMock, PreferencesFlag.aboutUsCard);
@@ -262,7 +289,8 @@ void main() {
         expect(restoreCardsIcon, findsOneWidget);
 
         // Find cards
-        expect(find.byType(Card), findsNWidgets(numberOfCards));
+        expect(find.byType(Card, skipOffstage: false),
+            findsNWidgets(numberOfCards));
       });
 
       testWidgets('Has card aboutUs displayed properly',
@@ -310,7 +338,7 @@ void main() {
         // Find three activities in the card
         expect(
             find.descendant(
-              of: find.byType(Dismissible),
+              of: find.byType(Dismissible, skipOffstage: false),
               matching: find.byType(CourseActivityTile),
             ),
             findsNWidgets(3));
@@ -338,7 +366,7 @@ void main() {
         // Find one activities in the card
         expect(
             find.descendant(
-              of: find.byType(Dismissible),
+              of: find.byType(Dismissible, skipOffstage: false),
               matching: find.byType(CourseActivityTile),
             ),
             findsNWidgets(1));
@@ -357,10 +385,10 @@ void main() {
         // Find no activity and no grade available text boxes
         expect(
             find.descendant(
-              of: find.byType(SizedBox),
+              of: find.byType(SizedBox, skipOffstage: false),
               matching: find.byType(Text),
             ),
-            findsNWidgets(2));
+            findsNWidgets(1));
       });
     });
 
@@ -382,6 +410,9 @@ void main() {
             toReturn: dashboard);
 
         SettingsManagerMock.stubSetInt(settingsManager as SettingsManagerMock,
+            PreferencesFlag.broadcastCard);
+
+        SettingsManagerMock.stubSetInt(settingsManager as SettingsManagerMock,
             PreferencesFlag.aboutUsCard);
 
         SettingsManagerMock.stubSetInt(settingsManager as SettingsManagerMock,
@@ -398,16 +429,18 @@ void main() {
         await tester.pumpAndSettle();
 
         // Find Dismissible Cards
-        expect(find.byType(Dismissible), findsNWidgets(numberOfCards));
+        expect(find.byType(Dismissible, skipOffstage: false),
+            findsNWidgets(numberOfCards));
         expect(find.text(intl.card_applets_title), findsOneWidget);
 
         // Swipe Dismissible aboutUs Card horizontally
-        await tester.drag(
-            find.byType(Dismissible).first, const Offset(1000.0, 0.0));
+        await tester.drag(find.byType(Dismissible, skipOffstage: false).at(1),
+            const Offset(1000.0, 0.0));
 
         // Check that the card is now absent from the view
         await tester.pumpAndSettle();
-        expect(find.byType(Dismissible), findsNWidgets(numberOfCards - 1));
+        expect(find.byType(Dismissible, skipOffstage: false),
+            findsNWidgets(numberOfCards - 1));
         expect(find.text(intl.card_applets_title), findsNothing);
 
         // Tap the restoreCards button
@@ -416,7 +449,8 @@ void main() {
         await tester.pumpAndSettle();
 
         // Check that the card is now present in the view
-        expect(find.byType(Dismissible), findsNWidgets(numberOfCards));
+        expect(find.byType(Dismissible, skipOffstage: false),
+            findsNWidgets(numberOfCards));
         expect(find.text(intl.card_applets_title), findsOneWidget);
       });
 
@@ -436,6 +470,9 @@ void main() {
             fromCacheOnly: false);
 
         SettingsManagerMock.stubSetInt(settingsManager as SettingsManagerMock,
+            PreferencesFlag.broadcastCard);
+
+        SettingsManagerMock.stubSetInt(settingsManager as SettingsManagerMock,
             PreferencesFlag.aboutUsCard);
 
         SettingsManagerMock.stubSetInt(settingsManager as SettingsManagerMock,
@@ -452,14 +489,15 @@ void main() {
         await tester.pumpAndSettle();
 
         // Find Dismissible Cards
-        expect(find.byType(Dismissible), findsNWidgets(numberOfCards));
+        expect(find.byType(Dismissible, skipOffstage: false),
+            findsNWidgets(numberOfCards));
 
         // Find aboutUs card
         expect(find.text(intl.card_applets_title), findsOneWidget);
 
         // Check that the aboutUs card is in the first position
         var text = tester.firstWidget(find.descendant(
-          of: find.byType(Dismissible).first,
+          of: find.byType(Dismissible, skipOffstage: false).at(1),
           matching: find.byType(Text),
         ));
 
@@ -474,11 +512,12 @@ void main() {
 
         await tester.pumpAndSettle();
 
-        expect(find.byType(Dismissible), findsNWidgets(numberOfCards));
+        expect(find.byType(Dismissible, skipOffstage: false),
+            findsNWidgets(numberOfCards));
 
         // Check that the card is now in last position
         text = tester.firstWidget(find.descendant(
-          of: find.byType(Dismissible).last,
+          of: find.byType(Dismissible, skipOffstage: false).last,
           matching: find.byType(Text),
         ));
         expect((text as Text).data, intl.card_applets_title);
@@ -489,11 +528,12 @@ void main() {
         await tester.pumpAndSettle();
 
         text = tester.firstWidget(find.descendant(
-          of: find.byType(Dismissible).first,
+          of: find.byType(Dismissible, skipOffstage: false).at(1),
           matching: find.byType(Text),
         ));
 
-        expect(find.byType(Dismissible), findsNWidgets(numberOfCards));
+        expect(find.byType(Dismissible, skipOffstage: false),
+            findsNWidgets(numberOfCards));
 
         // Check that the first card is now AboutUs
         expect((text as Text).data, intl.card_applets_title);
@@ -510,18 +550,20 @@ void main() {
         await tester.pumpAndSettle();
 
         // Find Dismissible Cards
-        expect(find.byType(Dismissible), findsNWidgets(numberOfCards));
+        expect(find.byType(Dismissible, skipOffstage: false),
+            findsNWidgets(numberOfCards));
         expect(find.widgetWithText(Dismissible, intl.title_schedule),
             findsOneWidget);
 
         // Swipe Dismissible schedule Card horizontally
-        await tester.drag(
-            find.byType(Dismissible).at(1), const Offset(1000.0, 0.0));
+        await tester.drag(find.byType(Dismissible, skipOffstage: false).at(2),
+            const Offset(1000.0, 0.0));
 
         // Check that the card is now absent from the view
         await tester.pumpAndSettle();
 
-        expect(find.byType(Dismissible), findsNWidgets(numberOfCards - 1));
+        expect(find.byType(Dismissible, skipOffstage: false),
+            findsNWidgets(numberOfCards - 1));
         expect(find.widgetWithText(Dismissible, intl.title_schedule),
             findsNothing);
 
@@ -531,7 +573,8 @@ void main() {
         await tester.pumpAndSettle();
 
         // Check that the card is now present in the view
-        expect(find.byType(Dismissible), findsNWidgets(numberOfCards));
+        expect(find.byType(Dismissible, skipOffstage: false),
+            findsNWidgets(numberOfCards));
         expect(find.widgetWithText(Dismissible, intl.title_schedule),
             findsOneWidget);
       });
@@ -548,16 +591,18 @@ void main() {
           await tester.pumpAndSettle();
 
           // Find grades card
-          final gradesCard = find.widgetWithText(Card, intl.grades_title);
+          final gradesCard =
+              find.widgetWithText(Card, intl.grades_title, skipOffstage: false);
           expect(gradesCard, findsOneWidget);
 
           // Find grades card Title
-          final gradesTitle = find.text(intl.grades_title);
+          final gradesTitle = find.text(intl.grades_title, skipOffstage: false);
           expect(gradesTitle, findsOneWidget);
 
           // Find empty grades card
-          final gradesEmptyTitle =
-              find.text(intl.grades_msg_no_grades.split("\n").first);
+          final gradesEmptyTitle = find.text(
+              intl.grades_msg_no_grades.split("\n").first,
+              skipOffstage: false);
           expect(gradesEmptyTitle, findsOneWidget);
         });
 
@@ -584,20 +629,24 @@ void main() {
           await tester.pumpAndSettle();
 
           // Find grades card
-          final gradesCard = find.widgetWithText(Card, intl.grades_title);
+          final gradesCard =
+              find.widgetWithText(Card, intl.grades_title, skipOffstage: false);
           expect(gradesCard, findsOneWidget);
 
           // Find grades card Title
-          final gradesTitle = find.text(intl.grades_title);
+          final gradesTitle = find.text(intl.grades_title, skipOffstage: false);
           expect(gradesTitle, findsOneWidget);
 
           // Find grades buttons in the card
-          final gradesButtons = find.byType(GradeButton);
+          final gradesButtons = find.byType(GradeButton, skipOffstage: false);
           expect(gradesButtons, findsNWidgets(2));
         });
 
         testWidgets('gradesCard is dismissible and can be restored',
             (WidgetTester tester) async {
+          SettingsManagerMock.stubSetInt(settingsManager as SettingsManagerMock,
+              PreferencesFlag.broadcastCard);
+
           SettingsManagerMock.stubSetInt(settingsManager as SettingsManagerMock,
               PreferencesFlag.aboutUsCard);
 
@@ -618,11 +667,15 @@ void main() {
           await tester.pumpAndSettle();
 
           // Find Dismissible Cards
-          expect(find.byType(Dismissible), findsNWidgets(numberOfCards));
-          expect(find.text(intl.grades_title), findsOneWidget);
+          expect(find.byType(Dismissible, skipOffstage: false),
+              findsNWidgets(numberOfCards));
+          expect(find.text(intl.grades_title, skipOffstage: false),
+              findsOneWidget);
 
           // Swipe Dismissible grades Card horizontally
-          await tester.drag(find.widgetWithText(Dismissible, intl.grades_title),
+          await tester.drag(
+              find.widgetWithText(Dismissible, intl.grades_title,
+                  skipOffstage: false),
               const Offset(1000.0, 0.0));
 
           // Check that the card is now absent from the view
@@ -636,8 +689,10 @@ void main() {
           await tester.pumpAndSettle();
 
           // Check that the card is now present in the view
-          expect(find.byType(Dismissible), findsNWidgets(numberOfCards));
-          expect(find.text(intl.grades_title), findsOneWidget);
+          expect(find.byType(Dismissible, skipOffstage: false),
+              findsNWidgets(numberOfCards));
+          expect(find.text(intl.grades_title, skipOffstage: false),
+              findsOneWidget);
         });
       });
     });
@@ -677,7 +732,8 @@ void main() {
         await tester.pumpAndSettle();
 
         // Find Dismissible Cards
-        expect(find.byType(Dismissible), findsNWidgets(numberOfCards));
+        expect(find.byType(Dismissible, skipOffstage: false),
+            findsNWidgets(numberOfCards));
         expect(find.text(intl.progress_bar_title), findsOneWidget);
 
         // Swipe Dismissible progress Card horizontally
@@ -687,7 +743,8 @@ void main() {
 
         // Check that the card is now absent from the view
         await tester.pumpAndSettle();
-        expect(find.byType(Dismissible), findsNWidgets(numberOfCards - 1));
+        expect(find.byType(Dismissible, skipOffstage: false),
+            findsNWidgets(numberOfCards - 1));
         expect(find.text(intl.progress_bar_title), findsNothing);
 
         // Tap the restoreCards button
@@ -696,7 +753,8 @@ void main() {
         await tester.pumpAndSettle();
 
         // Check that the card is now present in the view
-        expect(find.byType(Dismissible), findsNWidgets(numberOfCards));
+        expect(find.byType(Dismissible, skipOffstage: false),
+            findsNWidgets(numberOfCards));
         expect(find.text(intl.progress_bar_title), findsOneWidget);
       });
 
@@ -712,7 +770,8 @@ void main() {
         await tester.pumpAndSettle();
 
         // Find Dismissible Cards
-        expect(find.byType(Dismissible), findsNWidgets(numberOfCards));
+        expect(find.byType(Dismissible, skipOffstage: false),
+            findsNWidgets(numberOfCards));
 
         // Find progressBar card
         expect(find.text(intl.progress_bar_title), findsOneWidget);
@@ -734,7 +793,8 @@ void main() {
 
         await tester.pumpAndSettle();
 
-        expect(find.byType(Dismissible), findsNWidgets(numberOfCards));
+        expect(find.byType(Dismissible, skipOffstage: false),
+            findsNWidgets(numberOfCards));
 
         // Check that the card is now in last position
         text = tester.firstWidget(find.descendant(
@@ -753,7 +813,8 @@ void main() {
           matching: find.byType(Text),
         ));
 
-        expect(find.byType(Dismissible), findsNWidgets(numberOfCards));
+        expect(find.byType(Dismissible, skipOffstage: false),
+            findsNWidgets(numberOfCards));
 
         // Check that the first card is now AboutUs
         expect((text as Text).data, intl.progress_bar_title);
@@ -766,10 +827,14 @@ void main() {
       });
 
       testWidgets("Applets Card", (WidgetTester tester) async {
+        RemoteConfigServiceMock.stubGetBroadcastEnabled(
+            remoteConfigService as RemoteConfigServiceMock,
+            toReturn: false);
         tester.binding.window.physicalSizeTestValue = const Size(800, 1410);
 
-        dashboard = {
-          PreferencesFlag.aboutUsCard: 0,
+        final Map<PreferencesFlag, int> dashboard = {
+          PreferencesFlag.broadcastCard: 0,
+          PreferencesFlag.aboutUsCard: 1,
         };
 
         SettingsManagerMock.stubGetDashboard(
@@ -785,6 +850,9 @@ void main() {
       });
 
       testWidgets("Schedule card", (WidgetTester tester) async {
+        RemoteConfigServiceMock.stubGetBroadcastEnabled(
+            remoteConfigService as RemoteConfigServiceMock,
+            toReturn: false);
         tester.binding.window.physicalSizeTestValue = const Size(800, 1410);
 
         CourseRepositoryMock.stubCoursesActivities(
@@ -797,7 +865,8 @@ void main() {
             fromCacheOnly: false);
 
         dashboard = {
-          PreferencesFlag.scheduleCard: 0,
+          PreferencesFlag.broadcastCard: 0,
+          PreferencesFlag.scheduleCard: 1,
         };
 
         SettingsManagerMock.stubGetDashboard(
@@ -812,10 +881,14 @@ void main() {
             matchesGoldenFile(goldenFilePath("dashboardView_scheduleCard_1")));
       });
       testWidgets("progressBar Card", (WidgetTester tester) async {
+        RemoteConfigServiceMock.stubGetBroadcastEnabled(
+            remoteConfigService as RemoteConfigServiceMock,
+            toReturn: false);
         tester.binding.window.physicalSizeTestValue = const Size(800, 1410);
 
         dashboard = {
-          PreferencesFlag.progressBarCard: 0,
+          PreferencesFlag.broadcastCard: 0,
+          PreferencesFlag.progressBarCard: 1,
         };
 
         SettingsManagerMock.stubGetDashboard(
