@@ -1,8 +1,6 @@
 // Dart imports:
 import 'dart:convert';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart' as lib;
-
-// Project imports:
 import 'package:notredame/core/services/analytics_service.dart';
 import 'package:notredame/core/utils/cache_exception.dart';
 import 'package:notredame/locator.dart';
