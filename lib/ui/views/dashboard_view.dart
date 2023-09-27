@@ -1,4 +1,5 @@
 // FLUTTER / DART / THIRD-PARTIES
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:feature_discovery/feature_discovery.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
@@ -100,8 +101,16 @@ class _DashboardViewState extends State<DashboardView>
   List<Widget> _buildCards(DashboardViewModel model) {
     final List<Widget> cards = List.empty(growable: true);
 
+    // always try to build broadcast cart so the user doesn't miss out on
+    // important info if they dismissed it previously
+
     for (final PreferencesFlag element in model.cardsToDisplay) {
       switch (element) {
+        case PreferencesFlag.broadcastCard:
+          if (model.remoteConfigService.dashboardMessageActive) {
+            cards.add(_buildMessageBroadcastCard(model, element));
+          }
+          break;
         case PreferencesFlag.aboutUsCard:
           cards.add(_buildAboutUsCard(model, element));
           break;
@@ -393,6 +402,79 @@ class _DashboardViewState extends State<DashboardView>
                 )
             ]),
       );
+
+  Widget _buildMessageBroadcastCard(
+      DashboardViewModel model, PreferencesFlag flag) {
+    final broadcastMsgColor = Color(int.parse(model.broadcastColor));
+    final broadcastMsgType = model.broadcastType;
+    final broadcastMsgUrl = model.broadcastUrl;
+    return DismissibleCard(
+        key: UniqueKey(),
+        onDismissed: (DismissDirection direction) {
+          dismissCard(model, flag);
+        },
+        isBusy: model.busy(model.broadcastMessage),
+        cardColor: broadcastMsgColor,
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(17, 10, 15, 20),
+          child: Column(mainAxisSize: MainAxisSize.min, children: [
+            // title row
+            Row(
+              children: [
+                Expanded(
+                  child: Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text(model.broadcastTitle,
+                        style: Theme.of(context).primaryTextTheme.headline6),
+                  ),
+                ),
+                Align(
+                  alignment: Alignment.centerRight,
+                  child: InkWell(
+                    child: getBroadcastIcon(broadcastMsgType, broadcastMsgUrl),
+                  ),
+                ),
+              ],
+            ),
+            // main text
+            AutoSizeText(model.broadcastMessage ?? "",
+                style: Theme.of(context).primaryTextTheme.bodyText2)
+          ]),
+        ));
+  }
+
+  Widget getBroadcastIcon(String type, String url) {
+    switch (type) {
+      case "warning":
+        return const Icon(
+          Icons.warning_rounded,
+          color: AppTheme.lightThemeBackground,
+          size: 36.0,
+        );
+      case "alert":
+        return const Icon(
+          Icons.error,
+          color: AppTheme.lightThemeBackground,
+          size: 36.0,
+        );
+      case "link":
+        return IconButton(
+          onPressed: () {
+            Utils.launchURL(url, AppIntl.of(context));
+          },
+          icon: const Icon(
+            Icons.open_in_new,
+            color: AppTheme.lightThemeBackground,
+            size: 30.0,
+          ),
+        );
+    }
+    return const Icon(
+      Icons.campaign,
+      color: AppTheme.lightThemeBackground,
+      size: 36.0,
+    );
+  }
 
   void dismissCard(DashboardViewModel model, PreferencesFlag flag) {
     model.hideCard(flag);
