@@ -1,9 +1,13 @@
-// FLUTTER / DART / THIRD-PARTIES
+// Flutter imports:
 import 'package:flutter/material.dart';
+
+// Package imports:
 import 'package:shared_preferences/shared_preferences.dart';
 
-// CONSTANT
+// Project imports:
 import 'package:notredame/core/constants/preferences_flags.dart';
+
+// CONSTANT
 
 class PreferencesService {
   final persistentsKey = [

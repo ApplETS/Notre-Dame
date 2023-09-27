@@ -1,24 +1,18 @@
-// FLUTTER / DART / THIRD-PARTIES
-import 'package:feature_discovery/feature_discovery.dart';
+// Flutter imports:
 import 'package:flutter/material.dart';
+
+// Package imports:
+import 'package:ets_api_clients/models.dart';
+import 'package:feature_discovery/feature_discovery.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-// MANAGERS
-import 'package:notredame/core/managers/settings_manager.dart';
-
-//CONSTANTS
-import 'package:notredame/core/constants/router_paths.dart';
+// Project imports:
 import 'package:notredame/core/constants/discovery_ids.dart';
 import 'package:notredame/core/constants/preferences_flags.dart';
-
-// MODEL
-import 'package:ets_api_clients/models.dart';
-
-//OTHER
+import 'package:notredame/core/constants/router_paths.dart';
+import 'package:notredame/core/managers/settings_manager.dart';
 import 'package:notredame/core/services/navigation_service.dart';
 import 'package:notredame/locator.dart';
-
-// CONSTANT
 import 'package:notredame/ui/utils/app_theme.dart';
 import 'package:notredame/ui/utils/discovery_components.dart';
 

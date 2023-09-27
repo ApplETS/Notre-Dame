@@ -1,12 +1,12 @@
-// FLUTTER / DART / THIRD-PARTIES
+// Dart imports:
 import 'dart:io';
-import 'package:mockito/mockito.dart';
+
+// Package imports:
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:mockito/mockito.dart';
 
-// MODELS
+// Project imports:
 import 'package:notredame/core/models/feedback_issue.dart';
-
-// SERVICES
 import 'package:notredame/core/services/github_api.dart';
 
 /// Mock for the [GithubApi]

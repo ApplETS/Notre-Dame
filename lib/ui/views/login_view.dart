@@ -1,31 +1,23 @@
-// FLUTTER / DART / THIRD-PARTIES
+// Flutter imports:
 import 'package:flutter/material.dart';
+
+// Package imports:
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:stacked/stacked.dart';
 
-// SERVICE
-import 'package:notredame/core/services/navigation_service.dart';
-import 'package:notredame/core/services/launch_url_service.dart';
-
-// UTILS
-import 'package:notredame/core/utils/utils.dart';
-import 'package:notredame/core/utils/login_mask.dart';
-
-// VIEW MODEL
-import 'package:notredame/core/viewmodels/login_viewmodel.dart';
-
-// WIDGETS
-import 'package:notredame/ui/widgets/password_text_field.dart';
-
-// CONSTANTS
-import 'package:notredame/core/constants/urls.dart';
+// Project imports:
 import 'package:notredame/core/constants/router_paths.dart';
-
-// OTHER
-import 'package:notredame/ui/utils/app_theme.dart';
+import 'package:notredame/core/constants/urls.dart';
+import 'package:notredame/core/services/launch_url_service.dart';
+import 'package:notredame/core/services/navigation_service.dart';
+import 'package:notredame/core/utils/login_mask.dart';
+import 'package:notredame/core/utils/utils.dart';
+import 'package:notredame/core/viewmodels/login_viewmodel.dart';
 import 'package:notredame/locator.dart';
+import 'package:notredame/ui/utils/app_theme.dart';
+import 'package:notredame/ui/widgets/password_text_field.dart';
 
 class LoginView extends StatefulWidget {
   @override

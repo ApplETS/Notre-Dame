@@ -1,22 +1,20 @@
-// FLUTTER / DART / THIRD-PARTIES
+// Dart imports:
 import 'dart:io';
+
+// Flutter imports:
 import 'package:flutter/material.dart';
+
+// Package imports:
+import 'package:feature_discovery/feature_discovery.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:feature_discovery/feature_discovery.dart';
+
+// Project imports:
 import 'package:notredame/core/constants/preferences_flags.dart';
-
-// CONSTANTS
 import 'package:notredame/core/constants/router_paths.dart';
-
-// SERVICES
 import 'package:notredame/core/services/navigation_service.dart';
-
-// VIEW
 import 'package:notredame/ui/views/more_view.dart';
-
-// HELPERS
 import '../../helpers.dart';
 import '../../mock/managers/settings_manager_mock.dart';
 import '../../mock/services/in_app_review_service_mock.dart';

@@ -1,26 +1,16 @@
-// FLUTTER / DART / THIRD-PARTIES
+// Package imports:
+import 'package:ets_api_clients/models.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:intl/intl.dart';
 import 'package:mockito/mockito.dart';
 import 'package:table_calendar/table_calendar.dart';
 
-// MANAGERS
+// Project imports:
+import 'package:notredame/core/constants/preferences_flags.dart';
 import 'package:notredame/core/managers/course_repository.dart';
 import 'package:notredame/core/managers/settings_manager.dart';
-
-// VIEW-MODEL
 import 'package:notredame/core/viewmodels/schedule_viewmodel.dart';
-
-// MODEL
-import 'package:ets_api_clients/models.dart';
-
-// CONSTANTS
-import 'package:notredame/core/constants/preferences_flags.dart';
-
-// OTHERS
 import '../helpers.dart';
-
-// MOCKS
 import '../mock/managers/course_repository_mock.dart';
 import '../mock/managers/settings_manager_mock.dart';
 

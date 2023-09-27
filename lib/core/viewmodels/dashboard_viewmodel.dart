@@ -1,37 +1,33 @@
-// FLUTTER / DART / THIRD-PARTIES
+// Dart imports:
 import 'dart:collection';
+
+// Flutter imports:
+import 'package:flutter/material.dart';
+
+// Package imports:
+import 'package:ets_api_clients/models.dart';
 import 'package:feature_discovery/feature_discovery.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:stacked/stacked.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-// CONSTANTS
-import 'package:notredame/core/constants/preferences_flags.dart';
+// Project imports:
 import 'package:notredame/core/constants/discovery_ids.dart';
+import 'package:notredame/core/constants/preferences_flags.dart';
 import 'package:notredame/core/constants/progress_bar_text_options.dart';
 import 'package:notredame/core/constants/update_code.dart';
 import 'package:notredame/core/constants/widget_helper.dart';
-
-// MANAGER / SERVICE
-import 'package:notredame/core/managers/settings_manager.dart';
 import 'package:notredame/core/managers/course_repository.dart';
-import 'package:notredame/core/services/in_app_review_service.dart';
-import 'package:notredame/core/services/siren_flutter_service.dart';
-import 'package:notredame/core/services/preferences_service.dart';
+import 'package:notredame/core/managers/settings_manager.dart';
+import 'package:notredame/core/models/widget_models.dart';
 import 'package:notredame/core/services/analytics_service.dart';
 import 'package:notredame/core/services/app_widget_service.dart';
+import 'package:notredame/core/services/in_app_review_service.dart';
+import 'package:notredame/core/services/preferences_service.dart';
 import 'package:notredame/core/services/remote_config_service.dart';
-
-// MODEL
-import 'package:notredame/core/models/widget_models.dart';
-import 'package:ets_api_clients/models.dart';
-
-// UTILS
-import 'package:notredame/ui/utils/discovery_components.dart';
-
-// OTHER
+import 'package:notredame/core/services/siren_flutter_service.dart';
 import 'package:notredame/locator.dart';
+import 'package:notredame/ui/utils/discovery_components.dart';
 
 class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
   static const String tag = "DashboardViewModel";

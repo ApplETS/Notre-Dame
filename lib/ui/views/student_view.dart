@@ -1,17 +1,15 @@
-// FLUTTER / DART / THIRD-PARTIES
-import 'package:feature_discovery/feature_discovery.dart';
+// Flutter imports:
 import 'package:flutter/material.dart';
+
+// Package imports:
+import 'package:feature_discovery/feature_discovery.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:notredame/ui/views/grades_view.dart';
 
-// CONSTANTS
+// Project imports:
 import 'package:notredame/core/constants/discovery_ids.dart';
-
-// UTILS
 import 'package:notredame/ui/utils/app_theme.dart';
 import 'package:notredame/ui/utils/discovery_components.dart';
-
-// WIDGET
+import 'package:notredame/ui/views/grades_view.dart';
 import 'package:notredame/ui/views/profile_view.dart';
 import 'package:notredame/ui/widgets/base_scaffold.dart';
 

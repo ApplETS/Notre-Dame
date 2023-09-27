@@ -1,26 +1,15 @@
-// FLUTTER / DART / THIRD-PARTIES
-import 'package:flutter_test/flutter_test.dart';
+// Package imports:
+import 'package:ets_api_clients/models.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 
-// CONSTANTS
+// Project imports:
 import 'package:notredame/core/constants/preferences_flags.dart';
-
-// MANAGERS
-import 'package:notredame/core/managers/settings_manager.dart';
-
-// MODELS
-import 'package:ets_api_clients/models.dart';
-// SERVICE
-import 'package:notredame/core/services/navigation_service.dart';
-
-// OTHERS
 import 'package:notredame/core/constants/router_paths.dart';
-
-// WIDGET
+import 'package:notredame/core/managers/settings_manager.dart';
+import 'package:notredame/core/services/navigation_service.dart';
 import 'package:notredame/ui/widgets/grade_button.dart';
-
-// HELPERS
 import '../../helpers.dart';
 import '../../mock/managers/settings_manager_mock.dart';
 

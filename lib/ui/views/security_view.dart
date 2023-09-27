@@ -1,20 +1,18 @@
-// Flutter / DART / THIRD-PARTIES
+// Flutter imports:
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+
+// Package imports:
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:stacked/stacked.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-// VIEW MODEL
-import 'package:notredame/core/viewmodels/security_viewmodel.dart';
-
-// VIEWS
-import 'package:notredame/ui/views/emergency_view.dart';
-
-// OTHER
-import 'package:notredame/ui/utils/app_theme.dart';
+// Project imports:
 import 'package:notredame/core/utils/utils.dart';
+import 'package:notredame/core/viewmodels/security_viewmodel.dart';
+import 'package:notredame/ui/utils/app_theme.dart';
+import 'package:notredame/ui/views/emergency_view.dart';
 
 class SecurityView extends StatefulWidget {
   @override

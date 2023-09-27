@@ -1,18 +1,16 @@
-// FLUTTER / DART / THIRD-PARTIES
+// Flutter imports:
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:notredame/core/models/quick_link.dart';
+
+// Package imports:
 import 'package:stacked/stacked.dart';
 
-// CONSTANTS
+// Project imports:
 import 'package:notredame/core/constants/router_paths.dart';
-
-// SERVICES
+import 'package:notredame/core/models/quick_link.dart';
 import 'package:notredame/core/services/analytics_service.dart';
-import 'package:notredame/core/services/navigation_service.dart';
 import 'package:notredame/core/services/launch_url_service.dart';
-
-// OTHER
+import 'package:notredame/core/services/navigation_service.dart';
 import 'package:notredame/locator.dart';
 
 class WebLinkCardViewModel extends BaseViewModel {

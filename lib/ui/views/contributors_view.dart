@@ -1,16 +1,16 @@
-// FLUTTER / DART / THIRD-PARTIES
+// Flutter imports:
 import 'package:flutter/material.dart';
+
+// Package imports:
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:github/github.dart';
 import 'package:stacked/stacked.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-// VIEWMODEL
+// Project imports:
+import 'package:notredame/core/utils/utils.dart';
 import 'package:notredame/core/viewmodels/contributors_viewmodel.dart';
-
-// OTHERS
 import 'package:notredame/ui/utils/loading.dart';
 import 'package:notredame/ui/widgets/base_scaffold.dart';
-import 'package:notredame/core/utils/utils.dart';
 
 class ContributorsView extends StatelessWidget {
   @override

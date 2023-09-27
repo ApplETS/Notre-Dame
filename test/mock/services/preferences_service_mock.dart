@@ -1,10 +1,8 @@
-// FLUTTER / DART / THIRD-PARTIES
+// Package imports:
 import 'package:mockito/mockito.dart';
 
-// CONSTANT
+// Project imports:
 import 'package:notredame/core/constants/preferences_flags.dart';
-
-// SERVICE
 import 'package:notredame/core/services/preferences_service.dart';
 
 class PreferencesServiceMock extends Mock implements PreferencesService {

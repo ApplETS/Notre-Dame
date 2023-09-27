@@ -1,26 +1,22 @@
-// FLUTTER / DART / THIRD-PARTIES
+// Flutter imports:
 import 'package:flutter/material.dart';
-import 'package:flutter_test/flutter_test.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-// MANAGERS / SERVICES
+// Package imports:
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_test/flutter_test.dart';
+
+// Project imports:
+import 'package:notredame/core/managers/settings_manager.dart';
 import 'package:notredame/core/managers/user_repository.dart';
 import 'package:notredame/core/services/analytics_service.dart';
 import 'package:notredame/core/services/launch_url_service.dart';
 import 'package:notredame/core/services/navigation_service.dart';
-import 'package:notredame/core/managers/settings_manager.dart';
 import 'package:notredame/core/services/preferences_service.dart';
-
-// MOCKS
-import '../../mock/services/analytics_service_mock.dart';
-import '../../mock/services/launch_url_service_mock.dart';
-
-// VIEWS
 import 'package:notredame/ui/views/login_view.dart';
 import 'package:notredame/ui/widgets/password_text_field.dart';
-
-// HELPERS
 import '../../helpers.dart';
+import '../../mock/services/analytics_service_mock.dart';
+import '../../mock/services/launch_url_service_mock.dart';
 
 void main() {
   AppIntl intl;

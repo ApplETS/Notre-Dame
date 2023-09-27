@@ -1,21 +1,19 @@
-// FLUTTER / DART / THIRD-PARTIES
+// Dart imports:
 import 'dart:convert';
+
+// Flutter imports:
 import 'package:flutter/material.dart';
+
+// Package imports:
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 
-// SERVICES / MANAGER
+// Project imports:
 import 'package:notredame/core/managers/cache_manager.dart';
 import 'package:notredame/core/managers/quick_link_repository.dart';
-
-// MODELS
 import 'package:notredame/core/models/quick_link.dart';
 import 'package:notredame/core/models/quick_link_data.dart';
-
-// UTILS
 import '../helpers.dart';
-
-// MOCKS
 import '../mock/managers/cache_manager_mock.dart';
 
 void main() {

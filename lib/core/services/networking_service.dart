@@ -1,5 +1,7 @@
-// FLUTTER / DART / THIRD-PARTIES
+// Dart imports:
 import 'dart:async';
+
+// Package imports:
 import 'package:connectivity_plus/connectivity_plus.dart';
 
 class NetworkingService {

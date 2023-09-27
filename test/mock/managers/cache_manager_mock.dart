@@ -1,10 +1,8 @@
-// FLUTTER / DART / THIRD-PARTIES
+// Package imports:
 import 'package:mockito/mockito.dart';
 
-// SERVICE
+// Project imports:
 import 'package:notredame/core/managers/cache_manager.dart';
-
-// UTILS
 import 'package:notredame/core/utils/cache_exception.dart';
 
 /// Mock for the [CacheManager]

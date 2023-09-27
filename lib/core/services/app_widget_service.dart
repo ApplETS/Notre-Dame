@@ -1,18 +1,22 @@
-// FLUTTER / DART / THIRD-PARTIES
+// Flutter imports:
 import 'package:flutter/services.dart';
+
+// Package imports:
 import 'package:home_widget/home_widget.dart';
 
-// MODEL
+// Project imports:
+import 'package:notredame/core/constants/widget_helper.dart';
 import 'package:notredame/core/models/widget_models.dart';
+import 'package:notredame/core/services/analytics_service.dart';
+import 'package:notredame/locator.dart';
+
+// MODEL
 
 // CONSTANTS
-import 'package:notredame/core/constants/widget_helper.dart';
 
 // MANAGER / SERVICE
-import 'package:notredame/core/services/analytics_service.dart';
 
 // OTHER
-import 'package:notredame/locator.dart';
 
 /// Manage the app widget function to update data and visual.
 class AppWidgetService {

@@ -1,10 +1,13 @@
-// FLUTTER / DART / THIRD-PARTIES
 //SERVICE
+
+// Package imports:
+import 'package:firebase_remote_config/firebase_remote_config.dart';
+
+// Project imports:
 import 'package:notredame/core/services/analytics_service.dart';
+import 'package:notredame/locator.dart';
 
 //OTHERS
-import 'package:firebase_remote_config/firebase_remote_config.dart';
-import 'package:notredame/locator.dart';
 
 /// Manage the analytics of the application
 class RemoteConfigService {
