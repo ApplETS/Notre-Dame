@@ -34,7 +34,7 @@ dependencies:
   fluttertoast: ^8.0.8
 
   # Widgets
-  table_calendar: ^3.0.6
+  table_calendar: ^3.0.8
   percent_indicator: ^4.2.2
   feedback: ^2.5.0
   flutter_staggered_animations: ^1.1.1
