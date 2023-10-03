@@ -1,21 +1,17 @@
-// FLUTTER / DART / THIRD-PARTIES
+// Flutter imports:
 import 'package:flutter/material.dart';
-import 'package:stacked/stacked.dart';
+
+// Package imports:
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:reorderable_grid_view/reorderable_grid_view.dart';
+import 'package:stacked/stacked.dart';
 
-// MODEL
+// Project imports:
 import 'package:notredame/core/models/quick_link.dart';
-
-// VIEW-MODEL
 import 'package:notredame/core/viewmodels/quick_links_viewmodel.dart';
-
-// UTILS
 import 'package:notredame/ui/utils/app_theme.dart';
-
-// WIDGETS
 import 'package:notredame/ui/widgets/base_scaffold.dart';
 import 'package:notredame/ui/widgets/web_link_card.dart';
-import 'package:reorderable_grid_view/reorderable_grid_view.dart';
 
 class QuickLinksView extends StatefulWidget {
   @override

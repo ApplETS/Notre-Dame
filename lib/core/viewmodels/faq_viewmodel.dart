@@ -1,18 +1,16 @@
-// FLUTTER / DART / THIRD-PARTIES
+// Flutter imports:
 import 'package:flutter/material.dart';
-import 'package:notredame/locator.dart';
-import 'package:stacked/stacked.dart';
+
+// Package imports:
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:stacked/stacked.dart';
 
-// MANAGERS
-import 'package:notredame/core/managers/settings_manager.dart';
-
-// SERVICES
-import 'package:notredame/core/services/launch_url_service.dart';
-import 'package:notredame/core/services/analytics_service.dart';
-
-// CONSTANTS
+// Project imports:
 import 'package:notredame/core/constants/app_info.dart';
+import 'package:notredame/core/managers/settings_manager.dart';
+import 'package:notredame/core/services/analytics_service.dart';
+import 'package:notredame/core/services/launch_url_service.dart';
+import 'package:notredame/locator.dart';
 
 class FaqViewModel extends BaseViewModel {
   final SettingsManager _settingsManager = locator<SettingsManager>();

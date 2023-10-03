@@ -1,4 +1,4 @@
-// FLUTTER / DART / THIRD-PARTIES
+// Flutter imports:
 import 'package:flutter/material.dart';
 
 /// Exception that can be thrown by the rive animation service

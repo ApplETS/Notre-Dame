@@ -1,27 +1,19 @@
-// FLUTTER / DART / THIRD-PARTIES
+// Flutter imports:
 import 'package:flutter/material.dart';
-import 'package:stacked/stacked.dart';
+
+// Package imports:
+import 'package:ets_api_clients/models.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:percent_indicator/percent_indicator.dart';
+import 'package:stacked/stacked.dart';
 
-// VIEW-MODEL
-import 'package:notredame/core/viewmodels/profile_viewmodel.dart';
-
-// MODEL
-import 'package:ets_api_clients/models.dart';
-
-// SERVICES
+// Project imports:
 import 'package:notredame/core/services/analytics_service.dart';
-
-// WIDGETS
-import 'package:notredame/ui/widgets/student_program.dart';
-
-// UTILS
-import 'package:notredame/ui/utils/loading.dart';
-import 'package:notredame/ui/utils/app_theme.dart';
-
-// OTHER
+import 'package:notredame/core/viewmodels/profile_viewmodel.dart';
 import 'package:notredame/locator.dart';
+import 'package:notredame/ui/utils/app_theme.dart';
+import 'package:notredame/ui/utils/loading.dart';
+import 'package:notredame/ui/widgets/student_program.dart';
 
 class ProfileView extends StatefulWidget {
   @override

@@ -1,16 +1,14 @@
-// FLUTTER / DART / THIRD-PARTIES
+// Flutter imports:
 import 'package:flutter/material.dart';
-import 'package:stacked/stacked.dart';
+
+// Package imports:
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:stacked/stacked.dart';
 
-// VIEWMODEL
+// Project imports:
 import 'package:notredame/core/viewmodels/settings_viewmodel.dart';
-
-// WIDGETS
-import 'package:notredame/ui/widgets/base_scaffold.dart';
-
-// OTHERS
 import 'package:notredame/ui/utils/app_theme.dart';
+import 'package:notredame/ui/widgets/base_scaffold.dart';
 
 class SettingsView extends StatefulWidget {
   @override

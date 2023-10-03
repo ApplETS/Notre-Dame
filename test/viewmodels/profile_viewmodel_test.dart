@@ -1,21 +1,14 @@
-// FLUTTER / DART / THIRD-PARTIES
+// Package imports:
+import 'package:ets_api_clients/models.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
-import 'package:notredame/core/constants/programs_credits.dart';
 
-// MANAGERS
+// Project imports:
+import 'package:notredame/core/constants/programs_credits.dart';
 import 'package:notredame/core/managers/settings_manager.dart';
 import 'package:notredame/core/managers/user_repository.dart';
-
-// VIEW-MODEL
 import 'package:notredame/core/viewmodels/profile_viewmodel.dart';
-
-// MODEL
-import 'package:ets_api_clients/models.dart';
-
 import '../helpers.dart';
-
-// MOCKS
 import '../mock/managers/user_repository_mock.dart';
 
 UserRepository userRepository;

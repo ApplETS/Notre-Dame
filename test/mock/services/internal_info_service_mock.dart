@@ -1,7 +1,9 @@
-// FLUTTER / DART / THIRD-PARTIES
+// Package imports:
 import 'package:mockito/mockito.dart';
-import 'package:notredame/core/services/internal_info_service.dart';
 import 'package:package_info_plus/package_info_plus.dart';
+
+// Project imports:
+import 'package:notredame/core/services/internal_info_service.dart';
 
 class InternalInfoServiceMock extends Mock implements InternalInfoService {
   /// Stub the answer of [getDeviceInfoForErrorReporting]

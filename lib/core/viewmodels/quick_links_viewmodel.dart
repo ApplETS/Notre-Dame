@@ -1,15 +1,11 @@
-// FLUTTER / DART / THIRD-PARTIES
+// Package imports:
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:stacked/stacked.dart';
 
-// MANAGERS
+// Project imports:
 import 'package:notredame/core/managers/quick_link_repository.dart';
-
-// MODELS
 import 'package:notredame/core/models/quick_link.dart';
 import 'package:notredame/core/models/quick_link_data.dart';
-
-// OTHERS
 import 'package:notredame/locator.dart';
 
 class QuickLinksViewModel extends FutureViewModel<List<QuickLink>> {

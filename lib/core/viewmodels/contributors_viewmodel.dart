@@ -1,4 +1,4 @@
-// FLUTTER / DART / THIRD-PARTIES
+// Package imports:
 import 'package:github/github.dart';
 import 'package:stacked/stacked.dart';
 

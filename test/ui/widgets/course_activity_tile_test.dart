@@ -1,14 +1,12 @@
-// FLUTTER / DART / THIRD-PARTIES
+// Flutter imports:
 import 'package:flutter/material.dart';
+
+// Package imports:
+import 'package:ets_api_clients/models.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-// MODEL
-import 'package:ets_api_clients/models.dart';
-
-// WIDGET
+// Project imports:
 import 'package:notredame/ui/widgets/course_activity_tile.dart';
-
-// HELPERS
 import '../../helpers.dart';
 
 final CourseActivity course = CourseActivity(

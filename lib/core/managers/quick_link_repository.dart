@@ -1,18 +1,14 @@
-// FLUTTER / DART / THIRD-PARTIES
+// Dart imports:
 import 'dart:convert';
+
+// Package imports:
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-// SERVICES
+// Project imports:
+import 'package:notredame/core/constants/quick_links.dart';
 import 'package:notredame/core/managers/cache_manager.dart';
-
-// MODELS
 import 'package:notredame/core/models/quick_link.dart';
 import 'package:notredame/core/models/quick_link_data.dart';
-
-// CONSTANTS
-import 'package:notredame/core/constants/quick_links.dart';
-
-// OTHERS
 import 'package:notredame/locator.dart';
 
 class QuickLinkRepository {

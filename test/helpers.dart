@@ -1,37 +1,35 @@
-// FLUTTER / DART / THIRD-PARTIES
+// Flutter imports:
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+
+// Package imports:
+import 'package:ets_api_clients/clients.dart';
+import 'package:ets_api_clients/testing.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:logger/logger.dart';
 
-// OTHER
-import 'package:notredame/locator.dart';
-import 'package:ets_api_clients/clients.dart';
-
-// SERVICES / MANAGERS
-import 'package:notredame/core/services/navigation_service.dart';
-import 'package:notredame/core/services/analytics_service.dart';
-import 'package:notredame/core/services/rive_animation_service.dart';
-import 'package:notredame/core/managers/user_repository.dart';
+// Project imports:
 import 'package:notredame/core/managers/cache_manager.dart';
-import 'package:notredame/core/services/preferences_service.dart';
 import 'package:notredame/core/managers/course_repository.dart';
-import 'package:notredame/core/services/github_api.dart';
-import 'package:notredame/core/managers/settings_manager.dart';
-import 'package:notredame/core/services/networking_service.dart';
-import 'package:notredame/core/services/internal_info_service.dart';
-import 'package:notredame/core/services/siren_flutter_service.dart';
-import 'package:notredame/core/services/app_widget_service.dart';
-import 'package:notredame/core/services/in_app_review_service.dart';
-import 'package:notredame/core/services/launch_url_service.dart';
-import 'package:notredame/core/services/remote_config_service.dart';
 import 'package:notredame/core/managers/quick_link_repository.dart';
-
-// MOCKS
-import 'package:ets_api_clients/testing.dart';
+import 'package:notredame/core/managers/settings_manager.dart';
+import 'package:notredame/core/managers/user_repository.dart';
+import 'package:notredame/core/services/analytics_service.dart';
+import 'package:notredame/core/services/app_widget_service.dart';
+import 'package:notredame/core/services/github_api.dart';
+import 'package:notredame/core/services/in_app_review_service.dart';
+import 'package:notredame/core/services/internal_info_service.dart';
+import 'package:notredame/core/services/launch_url_service.dart';
+import 'package:notredame/core/services/navigation_service.dart';
+import 'package:notredame/core/services/networking_service.dart';
+import 'package:notredame/core/services/preferences_service.dart';
+import 'package:notredame/core/services/remote_config_service.dart';
+import 'package:notredame/core/services/rive_animation_service.dart';
+import 'package:notredame/core/services/siren_flutter_service.dart';
+import 'package:notredame/locator.dart';
 import 'mock/managers/cache_manager_mock.dart';
 import 'mock/managers/course_repository_mock.dart';
 import 'mock/managers/quick_links_repository_mock.dart';

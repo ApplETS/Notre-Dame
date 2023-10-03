@@ -1,9 +1,11 @@
-// FLUTTER / DART / THIRD-PARTIES
+// Flutter imports:
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+
+// Package imports:
 import 'package:rive/rive.dart';
 
-// OTHER
+// Project imports:
 import 'package:notredame/core/utils/animation_exception.dart';
 
 /// Manage the rive animation for the application

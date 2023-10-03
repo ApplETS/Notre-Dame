@@ -1,32 +1,24 @@
-// FLUTTER / DART / THIRD-PARTIES
+// Dart imports:
 import 'dart:io';
-import 'package:feature_discovery/feature_discovery.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_test/flutter_test.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-// MANAGERS
+// Flutter imports:
+import 'package:flutter/material.dart';
+
+// Package imports:
+import 'package:ets_api_clients/models.dart';
+import 'package:feature_discovery/feature_discovery.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_test/flutter_test.dart';
+
+// Project imports:
+import 'package:notredame/core/constants/preferences_flags.dart';
 import 'package:notredame/core/managers/course_repository.dart';
 import 'package:notredame/core/managers/settings_manager.dart';
-
-// MODELS
-import 'package:ets_api_clients/models.dart';
-
-// VIEW
+import 'package:notredame/core/services/remote_config_service.dart';
 import 'package:notredame/ui/views/dashboard_view.dart';
 import 'package:notredame/ui/widgets/course_activity_tile.dart';
 import 'package:notredame/ui/widgets/grade_button.dart';
-
-// CONSTANTS
-import 'package:notredame/core/constants/preferences_flags.dart';
-
-// SERVICES
-import 'package:notredame/core/services/remote_config_service.dart';
-
-// OTHERS
 import '../../helpers.dart';
-
-// MOCKS
 import '../../mock/managers/course_repository_mock.dart';
 import '../../mock/managers/settings_manager_mock.dart';
 import '../../mock/services/in_app_review_service_mock.dart';

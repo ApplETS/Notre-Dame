@@ -1,15 +1,11 @@
-// FLUTTER / DART / THIRD-PARTIES
+// Package imports:
+import 'package:ets_api_clients/exceptions.dart';
 import 'package:mockito/mockito.dart';
 
-// MANAGER
+// Project imports:
 import 'package:notredame/core/managers/quick_link_repository.dart';
-
-// MODELS
 import 'package:notredame/core/models/quick_link.dart';
 import 'package:notredame/core/models/quick_link_data.dart';
-
-// UTILS
-import 'package:ets_api_clients/exceptions.dart';
 
 class QuickLinkRepositoryMock extends Mock implements QuickLinkRepository {
   /// Stub the function [getQuickLinkDataFromCache] of [mock] when called will return [toReturn].

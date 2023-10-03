@@ -1,26 +1,21 @@
-// FLUTTER / DART / THIRD-PARTIES
+// Flutter imports:
+import 'package:flutter/material.dart';
+
+// Package imports:
 import 'package:calendar_view/calendar_view.dart';
 import 'package:enum_to_string/enum_to_string.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:intl/intl.dart';
 import 'package:mockito/mockito.dart';
 import 'package:table_calendar/table_calendar.dart';
 
-// MANAGER
+// Project imports:
+import 'package:notredame/core/constants/preferences_flags.dart';
 import 'package:notredame/core/managers/settings_manager.dart';
 import 'package:notredame/core/services/analytics_service.dart';
-
-// SERVICE
 import 'package:notredame/core/services/preferences_service.dart';
 import 'package:notredame/core/services/remote_config_service.dart';
-
-// CONSTANTS
-import 'package:notredame/core/constants/preferences_flags.dart';
-
 import '../helpers.dart';
-
-// MOCK
 import '../mock/services/preferences_service_mock.dart';
 import '../mock/services/remote_config_service_mock.dart';
 

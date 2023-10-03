@@ -1,22 +1,18 @@
-// FLUTTER / DART / THIRD-PARTIES
+// Flutter imports:
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
+// Package imports:
 import 'package:feature_discovery/feature_discovery.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-// SERVICE
-import 'package:notredame/core/services/navigation_service.dart';
-import 'package:notredame/core/services/analytics_service.dart';
-
-// CONSTANT
-import 'package:notredame/core/constants/router_paths.dart';
+// Project imports:
 import 'package:notredame/core/constants/discovery_ids.dart';
-
-// UTILS
-import 'package:notredame/ui/utils/discovery_components.dart';
-import 'package:notredame/ui/utils/app_theme.dart';
-
-// OTHER
+import 'package:notredame/core/constants/router_paths.dart';
+import 'package:notredame/core/services/analytics_service.dart';
+import 'package:notredame/core/services/navigation_service.dart';
 import 'package:notredame/locator.dart';
+import 'package:notredame/ui/utils/app_theme.dart';
+import 'package:notredame/ui/utils/discovery_components.dart';
 
 /// Bottom navigation bar for the application.
 class BottomBar extends StatefulWidget {

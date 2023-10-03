@@ -1,7 +1,9 @@
-// FLUTTER / DART / THIRD-PARTIES
+// Flutter imports:
+import 'package:flutter/material.dart';
+
+// Package imports:
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
-import 'package:flutter/material.dart';
 
 /// Manage the analytics of the application
 class AnalyticsService {

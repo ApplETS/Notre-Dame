@@ -1,19 +1,16 @@
-import 'package:calendar_view/calendar_view.dart';
+// Flutter imports:
 import 'package:flutter/material.dart';
-import 'package:stacked/stacked.dart';
+
+// Package imports:
+import 'package:calendar_view/calendar_view.dart';
+import 'package:ets_api_clients/models.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:stacked/stacked.dart';
 import 'package:table_calendar/table_calendar.dart';
 
-// MODELS
-import 'package:ets_api_clients/models.dart';
-
-// UTILS
+// Project imports:
 import 'package:notredame/core/utils/utils.dart';
-
-// VIEWMODELS
 import 'package:notredame/core/viewmodels/schedule_settings_viewmodel.dart';
-
-// OTHER
 import 'package:notredame/ui/utils/app_theme.dart';
 
 class ScheduleSettings extends StatefulWidget {

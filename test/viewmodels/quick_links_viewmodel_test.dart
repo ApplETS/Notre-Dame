@@ -1,19 +1,13 @@
-// FLUTTER / DART / THIRD-PARTIES
-import 'package:flutter_test/flutter_test.dart';
+// Package imports:
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:notredame/core/constants/quick_links.dart';
+import 'package:flutter_test/flutter_test.dart';
 
-// MODELS
+// Project imports:
+import 'package:notredame/core/constants/quick_links.dart';
+import 'package:notredame/core/managers/quick_link_repository.dart';
 import 'package:notredame/core/models/quick_link.dart';
 import 'package:notredame/core/models/quick_link_data.dart';
-
-// VIEWMODEL
 import 'package:notredame/core/viewmodels/quick_links_viewmodel.dart';
-
-// MANAGER
-import 'package:notredame/core/managers/quick_link_repository.dart';
-
-// OTHERS
 import '../helpers.dart';
 import '../mock/managers/quick_links_repository_mock.dart';
 

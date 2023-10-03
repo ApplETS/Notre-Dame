@@ -1,15 +1,15 @@
-// FLUTTER / DART / THIRD-PARTIES
+// Flutter imports:
 import 'package:flutter/material.dart';
-import 'package:stacked/stacked.dart';
+
+// Package imports:
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:stacked/stacked.dart';
 
-// SERVICE
-import 'package:notredame/core/services/navigation_service.dart';
-import 'package:notredame/core/managers/settings_manager.dart';
-
-// OTHER
-import 'package:notredame/locator.dart';
+// Project imports:
 import 'package:notredame/core/constants/router_paths.dart';
+import 'package:notredame/core/managers/settings_manager.dart';
+import 'package:notredame/core/services/navigation_service.dart';
+import 'package:notredame/locator.dart';
 
 class ChooseLanguageViewModel extends BaseViewModel {
   static const int english = 0;

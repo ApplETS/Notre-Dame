@@ -1,21 +1,19 @@
-// FLUTTER / DART / THIRD-PARTIES
+// Flutter imports:
+import 'package:flutter/material.dart';
+
+// Package imports:
 import 'package:calendar_view/calendar_view.dart';
 import 'package:enum_to_string/enum_to_string.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:intl/intl.dart';
 import 'package:logger/logger.dart';
 import 'package:table_calendar/table_calendar.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-// SERVICES
+// Project imports:
+import 'package:notredame/core/constants/preferences_flags.dart';
 import 'package:notredame/core/services/analytics_service.dart';
 import 'package:notredame/core/services/preferences_service.dart';
 import 'package:notredame/core/services/remote_config_service.dart';
-
-// CONSTANTS
-import 'package:notredame/core/constants/preferences_flags.dart';
-
-// OTHER
 import 'package:notredame/locator.dart';
 
 class SettingsManager with ChangeNotifier {

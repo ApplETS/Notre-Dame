@@ -1,18 +1,16 @@
-// FLUTTER / DART / THIRD-PARTIES
+// Flutter imports:
 import 'package:flutter/material.dart';
+
+// Package imports:
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 
-// SERVICES / MANAGERS
-import 'package:notredame/core/services/launch_url_service.dart';
+// Project imports:
 import 'package:notredame/core/managers/settings_manager.dart';
-import '../mock/services/launch_url_service_mock.dart';
-
-// VIEW MODEL
+import 'package:notredame/core/services/launch_url_service.dart';
 import 'package:notredame/core/viewmodels/faq_viewmodel.dart';
-
-// OTHER
 import '../helpers.dart';
+import '../mock/services/launch_url_service_mock.dart';
 
 void main() {
   LaunchUrlServiceMock launchUrlService;

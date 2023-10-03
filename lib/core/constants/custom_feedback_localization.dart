@@ -1,5 +1,8 @@
-import 'package:feedback/feedback.dart';
+// Flutter imports:
 import 'package:flutter/material.dart';
+
+// Package imports:
+import 'package:feedback/feedback.dart';
 
 abstract class CustomFeedbackLocalizations implements FeedbackLocalizations {
   String get email;

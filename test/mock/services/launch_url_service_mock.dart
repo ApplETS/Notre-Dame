@@ -1,7 +1,7 @@
-// FLUTTER / DART / THIRD-PARTIES
+// Package imports:
 import 'package:mockito/mockito.dart';
 
-// SERVICE
+// Project imports:
 import 'package:notredame/core/services/launch_url_service.dart';
 
 /// Mock for the [LaunchUrlService]

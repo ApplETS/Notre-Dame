@@ -1,30 +1,22 @@
-// FLUTTER / DART / THIRD-PARTIES
+// Dart imports:
 import 'dart:io';
-import 'package:feature_discovery/feature_discovery.dart';
+
+// Flutter imports:
 import 'package:flutter/material.dart';
-import 'package:flutter_test/flutter_test.dart';
+
+// Package imports:
+import 'package:feature_discovery/feature_discovery.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_test/flutter_test.dart';
 
-// CONSTANTS
+// Project imports:
 import 'package:notredame/core/constants/quick_links.dart';
-
-// SERVICES
-import 'package:notredame/core/services/networking_service.dart';
-import 'package:notredame/core/services/launch_url_service.dart';
-
-// MANAGERS
 import 'package:notredame/core/managers/quick_link_repository.dart';
-
-// VIEW
+import 'package:notredame/core/services/launch_url_service.dart';
+import 'package:notredame/core/services/networking_service.dart';
 import 'package:notredame/ui/views/quick_links_view.dart';
-
-// WIDGETS
 import 'package:notredame/ui/widgets/web_link_card.dart';
-
-// UTILS
 import '../../helpers.dart';
-
-// MOCKS
 import '../../mock/managers/quick_links_repository_mock.dart';
 import '../../mock/services/analytics_service_mock.dart';
 import '../../mock/services/internal_info_service_mock.dart';

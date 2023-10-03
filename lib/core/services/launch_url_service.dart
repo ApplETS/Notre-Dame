@@ -1,16 +1,20 @@
-// FLUTTER / DART / THIRD-PARTIES
+// Flutter imports:
 import 'package:flutter/material.dart';
+
+// Package imports:
 import 'package:flutter_custom_tabs/flutter_custom_tabs.dart' as custom_tabs;
 import 'package:url_launcher/url_launcher.dart' as url_launch;
 
-// Managers
+// Project imports:
 import 'package:notredame/core/managers/settings_manager.dart';
-
-// UTILS
+import 'package:notredame/locator.dart';
 import 'package:notredame/ui/utils/app_theme.dart';
 
+// Managers
+
+// UTILS
+
 // OTHER
-import 'package:notredame/locator.dart';
 
 class LaunchUrlService {
   final SettingsManager settingsManager = locator<SettingsManager>();

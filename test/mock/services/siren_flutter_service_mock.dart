@@ -1,9 +1,11 @@
-// FLUTTER / DART / THIRD-PARTIES
+// Flutter imports:
 import 'package:flutter/material.dart';
+
+// Package imports:
 import 'package:mockito/mockito.dart';
 import 'package:pub_semver/pub_semver.dart';
 
-// SERVICE
+// Project imports:
 import 'package:notredame/core/services/siren_flutter_service.dart';
 
 /// Mock for the [SirenFlutterService]

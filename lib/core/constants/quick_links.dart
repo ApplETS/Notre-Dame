@@ -1,13 +1,13 @@
-// FLUTTER / DART / THIRD-PARTIES
+// Flutter imports:
 import 'package:flutter/widgets.dart';
+
+// Package imports:
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-// MODELS
+// Project imports:
 import 'package:notredame/core/models/quick_link.dart';
-
-// UTILS
 import 'package:notredame/ui/utils/app_theme.dart';
 
 List<QuickLink> quickLinks(AppIntl intl) => [
