@@ -1,9 +1,13 @@
 import 'dart:collection';
 import 'package:device_calendar/device_calendar.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import 'package:ets_api_clients/models.dart';
 
 mixin CalendarUtils {
+
+  static MethodChannel _channel = MethodChannel('native_calendar');
   static Future<void> checkPermissions() async {
     if (!(await deviceCalendarPlugin.hasPermissions()).isSuccess) {
       await deviceCalendarPlugin.requestPermissions();
