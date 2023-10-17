@@ -1,19 +1,20 @@
-// FLUTTER / DART / THIRD-PARTIES
+// Dart imports:
 import 'dart:async';
-import 'package:connectivity_plus/connectivity_plus.dart';
+
+// Flutter imports:
 import 'package:flutter/material.dart';
+
+// Package imports:
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
+// Project imports:
 import 'package:notredame/core/services/networking_service.dart';
-
-// UTILS
 import 'package:notredame/core/utils/utils.dart';
-import 'package:notredame/ui/utils/loading.dart';
-import 'package:notredame/ui/utils/app_theme.dart';
-
-// WIDGETS
-import 'package:notredame/ui/widgets/bottom_bar.dart';
-
 import 'package:notredame/locator.dart';
+import 'package:notredame/ui/utils/app_theme.dart';
+import 'package:notredame/ui/utils/loading.dart';
+import 'package:notredame/ui/widgets/bottom_bar.dart';
 
 /// Basic Scaffold to avoid boilerplate code in the application.
 /// Contains a loader controlled by [_isLoading]

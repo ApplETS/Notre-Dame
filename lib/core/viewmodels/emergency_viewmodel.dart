@@ -1,11 +1,15 @@
-// FLUTTER / DART / THIRD-PARTIES
+// Dart imports:
 import 'dart:convert';
+
+// Flutter imports:
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:webview_flutter/webview_flutter.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-// VIEWMODEL
+// Package imports:
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:webview_flutter/webview_flutter.dart';
+
+// Project imports:
 import 'package:notredame/core/viewmodels/security_viewmodel.dart';
 
 class EmergencyViewModel extends SecurityViewModel {

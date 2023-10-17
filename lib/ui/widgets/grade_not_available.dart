@@ -1,8 +1,10 @@
-// FLUTTER / DART / THIRD-PARTIES
+// Flutter imports:
 import 'package:flutter/material.dart';
 
-// OTHER
+// Package imports:
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
+// Project imports:
 import 'package:notredame/ui/utils/app_theme.dart';
 
 class GradeNotAvailable extends StatelessWidget {

@@ -1,8 +1,8 @@
-// FLUTTER / DART / THIRD-PARTIES
+// Package imports:
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:mockito/mockito.dart';
 
-// SERVICE
+// Project imports:
 import 'package:notredame/core/services/networking_service.dart';
 
 /// Mock for the [NetworkingService]

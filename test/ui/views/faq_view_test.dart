@@ -1,20 +1,16 @@
-// FLUTTER / DART / THIRD-PARTIES
+// Flutter imports:
 import 'package:flutter/material.dart';
-import 'package:flutter_test/flutter_test.dart';
+
+// Package imports:
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_test/flutter_test.dart';
 
-// MANAGERS
-import 'package:notredame/core/managers/settings_manager.dart';
-import '../../mock/managers/settings_manager_mock.dart';
-
-// VIEW
-import 'package:notredame/ui/views/faq_view.dart';
-
-// HELPERS
-import '../../helpers.dart';
-
-// CONSTANTS
+// Project imports:
 import 'package:notredame/core/constants/faq.dart';
+import 'package:notredame/core/managers/settings_manager.dart';
+import 'package:notredame/ui/views/faq_view.dart';
+import '../../helpers.dart';
+import '../../mock/managers/settings_manager_mock.dart';
 
 void main() {
   group('FaqView - ', () {

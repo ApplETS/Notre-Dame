@@ -1,19 +1,17 @@
-// FLUTTER / DART / THIRD-PARTIES
+// Flutter imports:
 import 'package:flutter/material.dart';
-import 'package:flutter_test/flutter_test.dart';
-import 'package:feature_discovery/feature_discovery.dart';
 
-// SERVICE
+// Package imports:
+import 'package:feature_discovery/feature_discovery.dart';
+import 'package:flutter_test/flutter_test.dart';
+
+// Project imports:
 import 'package:notredame/core/services/navigation_service.dart';
 import 'package:notredame/core/services/networking_service.dart';
-import '../../mock/services/analytics_service_mock.dart';
-
-// WIDGET
 import 'package:notredame/ui/widgets/base_scaffold.dart';
 import 'package:notredame/ui/widgets/bottom_bar.dart';
-
-// HELPERS
 import '../../helpers.dart';
+import '../../mock/services/analytics_service_mock.dart';
 
 void main() {
   group('BaseScaffold - ', () {

@@ -1,23 +1,19 @@
-// FLUTTER / DART / THIRD-PARTIES
+// Package imports:
 import 'package:stacked/stacked.dart';
 
-// SERVICES / MANAGER
-import 'package:notredame/core/managers/user_repository.dart';
-import 'package:notredame/core/services/networking_service.dart';
-import 'package:notredame/core/services/navigation_service.dart';
+// Project imports:
+import 'package:notredame/core/constants/preferences_flags.dart';
+import 'package:notredame/core/constants/router_paths.dart';
+import 'package:notredame/core/constants/update_code.dart';
 import 'package:notredame/core/managers/settings_manager.dart';
+import 'package:notredame/core/managers/user_repository.dart';
+import 'package:notredame/core/services/analytics_service.dart';
 import 'package:notredame/core/services/internal_info_service.dart';
+import 'package:notredame/core/services/navigation_service.dart';
+import 'package:notredame/core/services/networking_service.dart';
 import 'package:notredame/core/services/preferences_service.dart';
 import 'package:notredame/core/services/siren_flutter_service.dart';
-import 'package:notredame/core/services/analytics_service.dart';
-
-// CONSTANTS
-import 'package:notredame/core/constants/preferences_flags.dart';
-import 'package:notredame/core/constants/update_code.dart';
-
-// OTHER
 import 'package:notredame/locator.dart';
-import 'package:notredame/core/constants/router_paths.dart';
 
 class StartUpViewModel extends BaseViewModel {
   /// Manage the settings

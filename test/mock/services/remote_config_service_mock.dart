@@ -1,5 +1,7 @@
-// FLUTTER / DART / THIRD-PARTIES
+// Package imports:
 import 'package:mockito/mockito.dart';
+
+// Project imports:
 import 'package:notredame/core/services/remote_config_service.dart';
 
 /// Mock for the [RemoteConfigService]

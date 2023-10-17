@@ -1,5 +1,8 @@
-import 'package:enum_to_string/enum_to_string.dart';
+// Flutter imports:
 import 'package:flutter/cupertino.dart';
+
+// Package imports:
+import 'package:enum_to_string/enum_to_string.dart';
 
 enum PreferencesFlag {
   // Meta flag concerning the app versioning

@@ -1,12 +1,12 @@
-// FLUTTER / DART / THIRD-PARTIES
+// Flutter imports:
 import 'package:flutter/material.dart';
+
+// Package imports:
 import 'package:mockito/mockito.dart';
 
-// MANAGER
-import 'package:notredame/core/managers/settings_manager.dart';
-
-// MODEL
+// Project imports:
 import 'package:notredame/core/constants/preferences_flags.dart';
+import 'package:notredame/core/managers/settings_manager.dart';
 
 class SettingsManagerMock extends Mock implements SettingsManager {
   /// Stub the [getScheduleSettings] function of [mock], when called return [toReturn].

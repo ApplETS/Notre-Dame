@@ -1,8 +1,10 @@
-// FLUTTER / DART / THIRD-PARTIES
+// Package imports:
 import 'package:in_app_review/in_app_review.dart';
 
-// CONSTANTS
+// Project imports:
 import 'package:notredame/core/constants/app_info.dart';
+
+// CONSTANTS
 
 /// Manage the analytics of the application
 class InAppReviewService {

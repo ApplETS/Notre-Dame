@@ -1,16 +1,17 @@
-// FLUTTER / DART / THIRD-PARTIES
+// Dart imports:
 import 'dart:io';
+
+// Flutter imports:
 import 'package:flutter/material.dart';
-import 'package:flutter_test/flutter_test.dart';
+
+// Package imports:
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_test/flutter_test.dart';
 
-// MANAGERS / SERVICES
-import 'package:notredame/core/services/navigation_service.dart';
+// Project imports:
 import 'package:notredame/core/managers/settings_manager.dart';
-
-// VIEW
+import 'package:notredame/core/services/navigation_service.dart';
 import 'package:notredame/ui/views/choose_language_view.dart';
-
 import '../../helpers.dart';
 
 void main() {

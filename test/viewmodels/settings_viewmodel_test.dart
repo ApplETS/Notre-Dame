@@ -1,19 +1,15 @@
-// FLUTTER / DART / THIRD-PARTIES
+// Flutter imports:
 import 'package:flutter/material.dart';
+
+// Package imports:
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-// MANAGER
-import 'package:notredame/core/managers/settings_manager.dart';
-
-// VIEWMODEL
-import 'package:notredame/core/viewmodels/settings_viewmodel.dart';
-
-// CONSTANTS
+// Project imports:
 import 'package:notredame/core/constants/preferences_flags.dart';
-
-// OTHERS
+import 'package:notredame/core/managers/settings_manager.dart';
+import 'package:notredame/core/viewmodels/settings_viewmodel.dart';
 import '../helpers.dart';
 import '../mock/managers/settings_manager_mock.dart';
 

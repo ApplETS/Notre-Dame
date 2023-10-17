@@ -1,17 +1,15 @@
-// FLUTTER / DART / THIRD-PARTIES
-import 'package:carousel_slider/carousel_slider.dart';
+// Flutter imports:
 import 'package:flutter/material.dart';
-import 'package:stacked/stacked.dart';
+
+// Package imports:
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:stacked/stacked.dart';
 
-// VIEWMODEL
-import 'package:notredame/core/viewmodels/faq_viewmodel.dart';
-
-// MODELS
-import 'package:notredame/core/models/faq_actions.dart';
-
-// CONSTANTS
+// Project imports:
 import 'package:notredame/core/constants/faq.dart';
+import 'package:notredame/core/models/faq_actions.dart';
+import 'package:notredame/core/viewmodels/faq_viewmodel.dart';
 
 class FaqView extends StatefulWidget {
   final Color backgroundColor;

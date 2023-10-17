@@ -1,15 +1,13 @@
-// FLUTTER / DART / THIRD-PARTIES
+// Flutter imports:
 import 'package:flutter/material.dart';
+
+// Package imports:
 import 'package:flutter_test/flutter_test.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
-// MODELS
+// Project imports:
 import 'package:notredame/core/models/quick_link.dart';
-
-// WIDGETS
 import 'package:notredame/ui/widgets/link_web_view.dart';
-
-// OTHER
 import '../../helpers.dart';
 
 final _quickLink = QuickLink(

@@ -1,26 +1,23 @@
-// FLUTTER / DART / THIRD-PARTIES
+// Dart imports:
 import 'dart:convert';
 
+// Flutter imports:
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+
+// Package imports:
+import 'package:ets_api_clients/clients.dart';
+import 'package:ets_api_clients/exceptions.dart';
+import 'package:ets_api_clients/models.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:logger/logger.dart';
 
-// SERVICES
+// Project imports:
+import 'package:notredame/core/managers/cache_manager.dart';
 import 'package:notredame/core/services/analytics_service.dart';
 import 'package:notredame/core/services/networking_service.dart';
-import 'package:notredame/core/managers/cache_manager.dart';
-
-// MODELS
-import 'package:ets_api_clients/models.dart';
-
-// UTILS
-import 'package:ets_api_clients/exceptions.dart';
 import 'package:notredame/core/utils/cache_exception.dart';
-
-// OTHER
 import 'package:notredame/locator.dart';
-import 'package:ets_api_clients/clients.dart';
 
 class UserRepository {
   static const String tag = "UserRepository";

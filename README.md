@@ -35,8 +35,11 @@ _Note: This guide is also available in: [Français](https://github.com/ApplETS/N
 
 - Flutter SDK v3.3.10
 ```sh
-# to downgrade flutter version to the required version, simply do:
-$ flutter downgrade 3.3.10
+# to downgrade flutter version to the required version, simply do theses steps:
+$ cd /path/to/flutter
+$ git checkout 3.3.10
+$ flutter doctor
+# Make sure the output of flutter doctor is alright
 ```
 - Openssl v1.1.1g or higher
 - Java sdk 11

@@ -1,7 +1,7 @@
-// FLUTTER / DART / THIRD-PARTIES
+// Package imports:
 import 'package:mockito/mockito.dart';
 
-// SERVICE
+// Project imports:
 import 'package:notredame/core/services/navigation_service.dart';
 
 /// Mock for the [NavigationService]

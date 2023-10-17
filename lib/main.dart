@@ -1,41 +1,35 @@
-// FLUTTER / DART / THIRD-PARTIES
+// Dart imports:
 import 'dart:async';
+
+// Flutter imports:
+import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
+
+// Package imports:
 import 'package:calendar_view/calendar_view.dart';
 import 'package:feature_discovery/feature_discovery.dart';
 import 'package:feedback/feedback.dart';
-import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:notredame/firebase_options.dart';
-import 'package:notredame/ui/views/outage_view.dart';
-import 'package:notredame/ui/widgets/custom_feedback.dart';
-import 'package:provider/provider.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter_config/flutter_config.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:provider/provider.dart';
 
-//CONSTANTS
+// Project imports:
 import 'package:notredame/core/constants/custom_feedback_localization.dart';
-
-// ROUTER
-import 'package:notredame/ui/router.dart';
-
-// SERVICES
-import 'package:notredame/core/services/navigation_service.dart';
+import 'package:notredame/core/managers/settings_manager.dart';
 import 'package:notredame/core/services/analytics_service.dart';
 import 'package:notredame/core/services/app_widget_service.dart';
+import 'package:notredame/core/services/navigation_service.dart';
 import 'package:notredame/core/services/remote_config_service.dart';
-
-// UTILS
+import 'package:notredame/firebase_options.dart';
 import 'package:notredame/locator.dart';
+import 'package:notredame/ui/router.dart';
 import 'package:notredame/ui/utils/app_theme.dart';
-
-// MANAGER
-import 'package:notredame/core/managers/settings_manager.dart';
-
-// VIEW
+import 'package:notredame/ui/views/outage_view.dart';
 import 'package:notredame/ui/views/startup_view.dart';
+import 'package:notredame/ui/widgets/custom_feedback.dart';
 
 Future<void> main() async {
   setupLocator();

@@ -1,17 +1,11 @@
-// FLUTTER / DART / THIRD-PARTIES
+// Package imports:
 import 'package:flutter_test/flutter_test.dart';
 import 'package:home_widget/home_widget.dart';
 
-// CONSTANTS
+// Project imports:
 import 'package:notredame/core/constants/widget_helper.dart';
-
-// SERVICE
-import 'package:notredame/core/services/app_widget_service.dart';
-
-// MODEL
 import 'package:notredame/core/models/widget_models.dart';
-
-// OTHER
+import 'package:notredame/core/services/app_widget_service.dart';
 import '../helpers.dart';
 import '../mock/services/home_widget_mock.dart';
 

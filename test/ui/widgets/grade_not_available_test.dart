@@ -1,12 +1,12 @@
-// FLUTTER / DART / THIRD-PARTIES
+// Flutter imports:
 import 'package:flutter/material.dart';
-import 'package:flutter_test/flutter_test.dart';
+
+// Package imports:
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_test/flutter_test.dart';
 
-// MODELS
+// Project imports:
 import 'package:notredame/ui/widgets/grade_not_available.dart';
-
-// HELPERS
 import '../../helpers.dart';
 
 void main() {

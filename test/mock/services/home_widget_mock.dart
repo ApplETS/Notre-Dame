@@ -1,10 +1,12 @@
-// FLUTTER / DART / THIRD-PARTIES
+// Flutter imports:
 import 'package:flutter/services.dart';
+
+// Package imports:
 import 'package:flutter_test/flutter_test.dart';
 import 'package:home_widget/home_widget.dart';
 import 'package:mockito/mockito.dart';
 
-// SERVICE
+// Project imports:
 import 'package:notredame/core/services/app_widget_service.dart';
 
 /// Pseudo-mock for the static [HomeWidget] class (mocks the channel instead)

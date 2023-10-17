@@ -1,28 +1,20 @@
-// FLUTTER / DART / THIRD-PARTIES
+// Flutter imports:
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
+
+// Package imports:
+import 'package:ets_api_clients/models.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:stacked/stacked.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-// MODELS
-import 'package:ets_api_clients/models.dart';
-
-// VIEW MODEL
-import 'package:notredame/core/viewmodels/grades_viewmodel.dart';
-
-// WIDGETS
-import 'package:notredame/ui/widgets/grade_button.dart';
-
-// SERVICES
+// Project imports:
 import 'package:notredame/core/services/analytics_service.dart';
-
-// UTILS
-import 'package:notredame/ui/utils/loading.dart';
-
-// OTHER
-import 'package:notredame/ui/utils/app_theme.dart';
+import 'package:notredame/core/viewmodels/grades_viewmodel.dart';
 import 'package:notredame/locator.dart';
+import 'package:notredame/ui/utils/app_theme.dart';
+import 'package:notredame/ui/utils/loading.dart';
+import 'package:notredame/ui/widgets/grade_button.dart';
 
 class GradesView extends StatefulWidget {
   @override

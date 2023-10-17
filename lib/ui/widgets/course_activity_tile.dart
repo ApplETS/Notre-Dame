@@ -1,9 +1,9 @@
-// FLUTTER / DART / THIRD-PARTIES
+// Flutter imports:
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 
-// MODELS
+// Package imports:
 import 'package:ets_api_clients/models.dart';
+import 'package:intl/intl.dart';
 
 class CourseActivityTile extends StatelessWidget {
   /// Course to display
