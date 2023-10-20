@@ -1,0 +1,28 @@
+{
+  "name": "Dart (Community)",
+  "build": {
+    "dockerfile": "Dockerfile",
+    // Update VARIANT to pick a Dart version
+    "args": {
+      "VARIANT": "2"
+    }
+  },
+  // Configure tool-specific properties.
+  "customizations": {
+    // Configure properties specific to VS Code.
+    "vscode": {
+      // Add the IDs of extensions you want installed when the container is created.
+      "extensions": ["dart-code.dart-code"]
+    }
+  },
+  // Run script when connecting to remote container that setups up flutter version, java version and accepts android licenses
+  "postStartCommand": "sh /workspaces/Notre-Dame/.devcontainer/library-scripts/applets-setup.sh",
+
+  // Set `remoteUser` to `root` to connect as root instead. More info: https://aka.ms/vscode-remote/containers/non-root.
+  "remoteUser": "root",
+
+  "features": {
+    "ghcr.io/jarrodcolburn/features/flutter-sdk:0": {},
+    "ghcr.io/nordcominc/devcontainer-features/android-sdk:1": {}
+  }
+}
