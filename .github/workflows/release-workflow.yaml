@@ -50,8 +50,7 @@ jobs:
         run: |
           flutter pub get
           cd ios
-          rm Podfile.lock
-          pod install --repo-update
+          pod install
           flutter clean
       - run: flutter doctor -v
 
