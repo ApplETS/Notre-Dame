@@ -1,11 +1,9 @@
-// FLUTTER / DART / THIRD-PARTIES
+// Package imports:
 import 'package:mockito/mockito.dart';
-
-// SERVICE
-import 'package:notredame/core/services/rive_animation_service.dart';
 import 'package:rive/rive.dart';
 
-// OTHER
+// Project imports:
+import 'package:notredame/core/services/rive_animation_service.dart';
 import 'package:notredame/core/utils/animation_exception.dart';
 
 /// Mock for the [RiveAnimationService]

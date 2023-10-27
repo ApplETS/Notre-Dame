@@ -1,12 +1,12 @@
-// FLUTTER / DART / THIRD-PARTIES
+// Flutter imports:
 import 'package:flutter/material.dart';
-import 'package:stacked/stacked.dart';
+
+// Package imports:
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:stacked/stacked.dart';
 
-// MANAGER
+// Project imports:
 import 'package:notredame/core/managers/settings_manager.dart';
-
-// OTHERS
 import 'package:notredame/locator.dart';
 
 class SettingsViewModel extends FutureViewModel {

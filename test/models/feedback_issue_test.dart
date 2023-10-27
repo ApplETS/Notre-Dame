@@ -1,8 +1,8 @@
-// FLUTTER / DART / THIRD-PARTIES
-import 'package:github/github.dart';
+// Package imports:
 import 'package:flutter_test/flutter_test.dart';
+import 'package:github/github.dart';
 
-// MODELS
+// Project imports:
 import 'package:notredame/core/models/feedback_issue.dart';
 
 void main() {

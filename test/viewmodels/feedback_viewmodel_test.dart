@@ -1,26 +1,24 @@
-// FLUTTER / DART / THIRD-PARTIES
+// Dart imports:
 import 'dart:io';
-import 'package:feedback/feedback.dart';
+
+// Flutter imports:
 import 'package:flutter/services.dart';
+
+// Package imports:
+import 'package:feedback/feedback.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_test/flutter_test.dart';
 import 'package:github/github.dart';
 import 'package:image/image.dart' as image;
-import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-// SERVICES / MANAGERS
+// Project imports:
+import 'package:notredame/core/constants/feedback_type.dart';
+import 'package:notredame/core/constants/preferences_flags.dart';
+import 'package:notredame/core/models/feedback_issue.dart';
 import 'package:notredame/core/services/github_api.dart';
 import 'package:notredame/core/services/navigation_service.dart';
-
-// VIEW MODEL
 import 'package:notredame/core/viewmodels/feedback_viewmodel.dart';
-import 'package:notredame/core/models/feedback_issue.dart';
-
-// CONSTANTS
-import 'package:notredame/core/constants/preferences_flags.dart';
-import 'package:notredame/core/constants/feedback_type.dart';
-
-// OTHER
 import '../helpers.dart';
 import '../mock/services/github_api_mock.dart';
 import '../mock/services/preferences_service_mock.dart';

@@ -1,20 +1,16 @@
-// FLUTTER / DART / THIRD-PARTIES
+// Flutter imports:
 import 'package:flutter/material.dart';
-import 'package:stacked/stacked.dart';
+
+// Package imports:
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:stacked/stacked.dart';
 
-// MANAGER
-import 'package:notredame/core/managers/user_repository.dart';
-
-// SERVICE
-import 'package:notredame/core/services/navigation_service.dart';
-import 'package:notredame/core/services/preferences_service.dart';
-
-// CONSTANTS
+// Project imports:
 import 'package:notredame/core/constants/preferences_flags.dart';
 import 'package:notredame/core/constants/router_paths.dart';
-
-// OTHER
+import 'package:notredame/core/managers/user_repository.dart';
+import 'package:notredame/core/services/navigation_service.dart';
+import 'package:notredame/core/services/preferences_service.dart';
 import 'package:notredame/locator.dart';
 
 class LoginViewModel extends BaseViewModel {

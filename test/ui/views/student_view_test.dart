@@ -1,28 +1,22 @@
-// FLUTTER / DART / THIRD-PARTIES
+// Dart imports:
 import 'dart:io';
-import 'package:feature_discovery/feature_discovery.dart';
+
+// Flutter imports:
 import 'package:flutter/material.dart';
+
+// Package imports:
+import 'package:feature_discovery/feature_discovery.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-// MANAGER
+// Project imports:
 import 'package:notredame/core/managers/course_repository.dart';
 import 'package:notredame/core/managers/settings_manager.dart';
-
-// SERVICES
 import 'package:notredame/core/services/networking_service.dart';
-import '../../mock/services/analytics_service_mock.dart';
-
-// VIEWS
 import 'package:notredame/ui/views/student_view.dart';
-
-//WIDGETS
 import 'package:notredame/ui/widgets/base_scaffold.dart';
-
-// HELPER
 import '../../helpers.dart';
-
-// MOCKS
 import '../../mock/managers/course_repository_mock.dart';
+import '../../mock/services/analytics_service_mock.dart';
 
 void main() {
   CourseRepository courseRepository;

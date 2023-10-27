@@ -1,15 +1,14 @@
-// FLUTTER / DART / THIRD-PARTIES
+// Flutter imports:
 import 'package:flutter/material.dart';
+
+// Package imports:
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-// CONSTANTS
+// Project imports:
 import 'package:notredame/core/constants/emergency_procedures.dart';
-
-// VIEW
 import 'package:notredame/ui/views/security_view.dart';
-
 import '../../helpers.dart';
 
 void main() {

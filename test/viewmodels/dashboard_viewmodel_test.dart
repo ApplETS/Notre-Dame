@@ -1,30 +1,18 @@
-// FLUTTER / DART / THIRD-PARTIES
+// Package imports:
+import 'package:ets_api_clients/models.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 
-// CONSTANTS
+// Project imports:
 import 'package:notredame/core/constants/preferences_flags.dart';
 import 'package:notredame/core/constants/progress_bar_text_options.dart';
-
-// MANAGERS
 import 'package:notredame/core/managers/course_repository.dart';
 import 'package:notredame/core/managers/settings_manager.dart';
-
-// MODEL
-import 'package:ets_api_clients/models.dart';
-
-// SERVICE
-import 'package:notredame/core/services/preferences_service.dart';
 import 'package:notredame/core/services/analytics_service.dart';
+import 'package:notredame/core/services/preferences_service.dart';
 import 'package:notredame/core/services/remote_config_service.dart';
-
-// VIEWMODEL
 import 'package:notredame/core/viewmodels/dashboard_viewmodel.dart';
-
-// OTHER
 import '../helpers.dart';
-
-// MOCKS
 import '../mock/managers/course_repository_mock.dart';
 import '../mock/managers/settings_manager_mock.dart';
 import '../mock/services/in_app_review_service_mock.dart';
