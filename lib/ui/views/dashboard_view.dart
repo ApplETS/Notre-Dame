@@ -168,7 +168,8 @@ class _DashboardViewState extends State<DashboardView>
                     IconButton(
                       onPressed: () {
                         _analyticsService.logEvent(tag, "Instagram clicked");
-                        Utils.launchURL(Urls.clubInstagram, AppIntl.of(context));
+                        Utils.launchURL(
+                            Urls.clubInstagram, AppIntl.of(context));
                       },
                       icon: const FaIcon(
                         FontAwesomeIcons.instagram,
