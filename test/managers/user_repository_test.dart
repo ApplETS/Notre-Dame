@@ -76,13 +76,9 @@ void main() {
 
         // Verify the secureStorage is used
         verify(secureStorage.write(
-            key: UserRepository.usernameSecureKey,
-            value: user.username,
-            iOptions: const IOSOptions(groupId: UserRepository.groupOption)));
+            key: UserRepository.usernameSecureKey, value: user.username));
         verify(secureStorage.write(
-            key: UserRepository.passwordSecureKey,
-            value: "",
-            iOptions: const IOSOptions(groupId: UserRepository.groupOption)));
+            key: UserRepository.passwordSecureKey, value: ""));
 
         // Verify the user id is set in the analytics
         verify(analyticsService.setUserProperties(
@@ -138,9 +134,7 @@ void main() {
 
         // Verify the secureStorage is used
         verify(secureStorage.write(
-            key: UserRepository.usernameSecureKey,
-            value: user.username,
-            iOptions: const IOSOptions(groupId: UserRepository.groupOption)));
+            key: UserRepository.usernameSecureKey, value: user.username));
 
         // Verify the user id is set in the analytics
         verify(analyticsService.setUserProperties(
@@ -176,13 +170,9 @@ void main() {
 
         // Verify the secureStorage is used
         verify(secureStorage.write(
-            key: UserRepository.usernameSecureKey,
-            value: user.username,
-            iOptions: const IOSOptions(groupId: UserRepository.groupOption)));
+            key: UserRepository.usernameSecureKey, value: user.username));
         verify(secureStorage.write(
-            key: UserRepository.passwordSecureKey,
-            value: "",
-            iOptions: const IOSOptions(groupId: UserRepository.groupOption)));
+            key: UserRepository.passwordSecureKey, value: ""));
 
         // Verify the user id is set in the analytics
         verify(analyticsService.setUserProperties(
@@ -246,12 +236,8 @@ void main() {
             reason: "Result should be true");
 
         verifyInOrder([
-          secureStorage.read(
-              key: UserRepository.usernameSecureKey,
-              iOptions: const IOSOptions(groupId: UserRepository.groupOption)),
-          secureStorage.read(
-              key: UserRepository.passwordSecureKey,
-              iOptions: const IOSOptions(groupId: UserRepository.groupOption)),
+          secureStorage.read(key: UserRepository.usernameSecureKey),
+          secureStorage.read(key: UserRepository.passwordSecureKey),
           monETSApi.authenticate(username: username, password: password),
           analyticsService.setUserProperties(
               userId: username, domain: user.domain)
@@ -277,12 +263,8 @@ void main() {
             reason: "Result should be false");
 
         verifyInOrder([
-          secureStorage.read(
-              key: UserRepository.usernameSecureKey,
-              iOptions: const IOSOptions(groupId: UserRepository.groupOption)),
-          secureStorage.read(
-              key: UserRepository.passwordSecureKey,
-              iOptions: const IOSOptions(groupId: UserRepository.groupOption)),
+          secureStorage.read(key: UserRepository.usernameSecureKey),
+          secureStorage.read(key: UserRepository.passwordSecureKey),
           monETSApi.authenticate(username: username, password: password),
           analyticsService.logError(UserRepository.tag, any, any, any)
         ]);
@@ -301,11 +283,8 @@ void main() {
         expect(await manager.silentAuthenticate(), isFalse,
             reason: "Result should be false");
 
-        verifyInOrder([
-          secureStorage.read(
-              key: UserRepository.usernameSecureKey,
-              iOptions: const IOSOptions(groupId: UserRepository.groupOption))
-        ]);
+        verifyInOrder(
+            [secureStorage.read(key: UserRepository.usernameSecureKey)]);
 
         verifyNoMoreInteractions(secureStorage);
         verifyZeroInteractions(monETSApi);
@@ -332,9 +311,7 @@ void main() {
             reason: "Result should be false");
 
         verifyInOrder([
-          secureStorage.read(
-              key: UserRepository.usernameSecureKey,
-              iOptions: const IOSOptions(groupId: UserRepository.groupOption)),
+          secureStorage.read(key: UserRepository.usernameSecureKey),
           secureStorage.deleteAll(),
           analyticsService.logError(UserRepository.tag, any, any, any)
         ]);
@@ -348,12 +325,8 @@ void main() {
         expect(manager.monETSUser, null,
             reason: "The user shouldn't be available after a logout");
 
-        verify(secureStorage.delete(
-            key: UserRepository.usernameSecureKey,
-            iOptions: const IOSOptions(groupId: UserRepository.groupOption)));
-        verify(secureStorage.delete(
-            key: UserRepository.passwordSecureKey,
-            iOptions: const IOSOptions(groupId: UserRepository.groupOption)));
+        verify(secureStorage.delete(key: UserRepository.usernameSecureKey));
+        verify(secureStorage.delete(key: UserRepository.passwordSecureKey));
 
         verifyNever(
             analyticsService.logError(UserRepository.tag, any, any, any));
@@ -370,11 +343,8 @@ void main() {
         expect(manager.monETSUser, null,
             reason: "The user shouldn't be available after a logout");
 
-        verify(secureStorage.delete(
-            key: UserRepository.usernameSecureKey,
-            iOptions: const IOSOptions(groupId: UserRepository.groupOption)));
-        verify(secureStorage.deleteAll(
-            iOptions: const IOSOptions(groupId: UserRepository.groupOption)));
+        verify(secureStorage.delete(key: UserRepository.usernameSecureKey));
+        verify(secureStorage.deleteAll());
         verify(analyticsService.logError(UserRepository.tag, any, any, any));
       });
     });
@@ -405,12 +375,8 @@ void main() {
             reason: "Result should be 'password'");
 
         verifyInOrder([
-          secureStorage.read(
-              key: UserRepository.usernameSecureKey,
-              iOptions: const IOSOptions(groupId: UserRepository.groupOption)),
-          secureStorage.read(
-              key: UserRepository.passwordSecureKey,
-              iOptions: const IOSOptions(groupId: UserRepository.groupOption)),
+          secureStorage.read(key: UserRepository.usernameSecureKey),
+          secureStorage.read(key: UserRepository.passwordSecureKey),
           monETSApi.authenticate(username: username, password: password),
           analyticsService.setUserProperties(
               userId: username, domain: user.domain)
@@ -438,12 +404,8 @@ void main() {
 
         verifyInOrder([
           analyticsService.logEvent(UserRepository.tag, any),
-          secureStorage.read(
-              key: UserRepository.usernameSecureKey,
-              iOptions: const IOSOptions(groupId: UserRepository.groupOption)),
-          secureStorage.read(
-              key: UserRepository.passwordSecureKey,
-              iOptions: const IOSOptions(groupId: UserRepository.groupOption)),
+          secureStorage.read(key: UserRepository.usernameSecureKey),
+          secureStorage.read(key: UserRepository.passwordSecureKey),
           monETSApi.authenticate(username: username, password: password),
           analyticsService.setUserProperties(
               userId: username, domain: user.domain)

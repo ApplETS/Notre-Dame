@@ -2,6 +2,8 @@
 import 'package:flutter/material.dart';
 
 // Package imports:
+import 'package:flutter_keychain/flutter_keychain.dart';
+import 'package:stacked/stacked.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:stacked/stacked.dart';
 
@@ -74,6 +76,8 @@ class LoginViewModel extends BaseViewModel {
         username: _universalCode.toUpperCase(), password: _password);
 
     if (response) {
+      await FlutterKeychain.put(key: "WidgetSecureUser", value: _universalCode);
+      await FlutterKeychain.put(key: "WidgetSecurePass", value: _password);
       _navigationService.pushNamedAndRemoveUntil(RouterPaths.dashboard);
       _preferencesService.setDateTime(PreferencesFlag.ratingTimer,
           DateTime.now().add(const Duration(days: 7)));
