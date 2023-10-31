@@ -9,6 +9,8 @@ on:
       - 'README.fr.md'
       - 'android/fastlane/**'
       - 'ios/fastlane/**'
+      - '.github/master-workflow.yaml'
+      - '.github/release-workflow.yaml'
 concurrency:
   group: ${{ github.ref }}
   cancel-in-progress: true
@@ -241,9 +243,26 @@ jobs:
         run: |
           flutter pub get
           cd ios
-          rm Podfile.lock
-          pod install --repo-update
+          pod update
           flutter clean
+ 
+      - name: Commit pod updates
+        if: matrix.target == 'iOS'
+        id: commit_pod_versions
+        uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          file_pattern: "*.lock"
+          commit_user_name: github-actions[bot]
+          commit_user_email: 41898282+github-actions[bot]@users.noreply.github.com
+          commit_message: "[BOT] Applying pod update."
+          add_options: '-u'
+
+      # Fail workflow, because new commit will execute workflow
+      - if: ${{ matrix.target == 'iOS' && steps.commit_pod_versions.outputs.changes_detected == 'true' }}
+        name: Fail workflow if pod version change
+        run: |
+          echo 'Pod update applied, running bot commit workflow'
+          exit 1
 
       # Get dependencies and decrypt needed files.
       - run: flutter pub get
