@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_keychain/flutter_keychain.dart';
 import 'package:stacked/stacked.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:stacked/stacked.dart';
 
 // Project imports:
 import 'package:notredame/core/constants/preferences_flags.dart';
