@@ -11,6 +11,9 @@ on:
       - 'README.fr.md'
       - 'android/fastlane/**'
       - 'ios/fastlane/**'
+      - '.github/dev-workflow.yaml'
+      - '.github/release-workflow.yaml'
+
 concurrency:
   group: ${{ github.ref }}
   cancel-in-progress: true
@@ -175,8 +178,7 @@ jobs:
         run: |
           flutter pub get
           cd ios
-          rm Podfile.lock
-          pod install --repo-update
+          pod install
           flutter clean
 
       # Get dependencies and decrypt needed files.
