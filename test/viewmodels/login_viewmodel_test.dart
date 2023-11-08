@@ -10,7 +10,6 @@ import 'package:notredame/core/services/navigation_service.dart';
 import 'package:notredame/core/viewmodels/login_viewmodel.dart';
 import '../helpers.dart';
 import '../mock/managers/user_repository_mock.dart';
-import '../mock/services/flutter_secure_storage_mock.dart';
 
 void main() {
   // Needed to support FlutterToast.
@@ -23,7 +22,6 @@ void main() {
 
   NavigationService navigationService;
   UserRepositoryMock userRepositoryMock;
-  FlutterSecureStorageMock flutterSecureStorageMock;
 
   AppIntl appIntl;
 
@@ -32,8 +30,7 @@ void main() {
   group('LoginViewModel - ', () {
     setUp(() async {
       navigationService = setupNavigationServiceMock();
-      flutterSecureStorageMock =
-          setupFlutterSecureStorageMock() as FlutterSecureStorageMock;
+      setupFlutterSecureStorageMock();
       userRepositoryMock = setupUserRepositoryMock() as UserRepositoryMock;
       setupLogger();
       setupPreferencesServiceMock();
