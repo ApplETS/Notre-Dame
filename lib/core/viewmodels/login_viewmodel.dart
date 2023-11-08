@@ -1,8 +1,8 @@
 // Flutter imports:
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 // Package imports:
-import 'package:flutter_keychain/flutter_keychain.dart';
 import 'package:stacked/stacked.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -20,6 +20,9 @@ class LoginViewModel extends BaseViewModel {
 
   /// Used to redirect on the dashboard.
   final NavigationService _navigationService = locator<NavigationService>();
+
+  final FlutterSecureStorage _flutterSecureStorage =
+      locator<FlutterSecureStorage>();
 
   /// Regex matcher to validate the Universal code pattern
   final RegExp _universalCodeMatcher = RegExp(r'[a-zA-Z]{2}\d{5}');
@@ -75,8 +78,10 @@ class LoginViewModel extends BaseViewModel {
         username: _universalCode.toUpperCase(), password: _password);
 
     if (response) {
-      await FlutterKeychain.put(key: "WidgetSecureUser", value: _universalCode);
-      await FlutterKeychain.put(key: "WidgetSecurePass", value: _password);
+      await _flutterSecureStorage.write(
+          key: "WidgetSecureUser", value: _universalCode);
+      await _flutterSecureStorage.write(
+          key: "WidgetSecurePass", value: _password);
       _navigationService.pushNamedAndRemoveUntil(RouterPaths.dashboard);
       _preferencesService.setDateTime(PreferencesFlag.ratingTimer,
           DateTime.now().add(const Duration(days: 7)));

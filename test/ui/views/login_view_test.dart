@@ -27,6 +27,7 @@ void main() {
       setupUserRepositoryMock();
       setupNavigationServiceMock();
       setupSettingsManagerMock();
+      setupFlutterSecureStorageMock();
       setupPreferencesServiceMock();
       setupLaunchUrlServiceMock() as LaunchUrlServiceMock;
       setupAnalyticsServiceMock() as AnalyticsServiceMock;
