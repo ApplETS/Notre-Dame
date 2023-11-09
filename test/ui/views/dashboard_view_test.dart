@@ -316,7 +316,7 @@ void main() {
 
         // Find aboutUs card Link Buttons
         final aboutUsLinkButtons = find.byType(IconButton);
-        expect(aboutUsLinkButtons, findsNWidgets(5));
+        expect(aboutUsLinkButtons, findsNWidgets(6));
       });
 
       testWidgets("Has card schedule displayed today's events properly",
