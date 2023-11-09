@@ -182,6 +182,7 @@ Card getMyInfosCard(ProfileViewModel model, BuildContext context) {
               ));
             },
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Padding(
                   padding: const EdgeInsets.only(bottom: 3.0),
@@ -209,6 +210,7 @@ Card getMyInfosCard(ProfileViewModel model, BuildContext context) {
               ));
             },
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Padding(
                   padding: const EdgeInsets.only(top: 16.0, bottom: 3.0),
