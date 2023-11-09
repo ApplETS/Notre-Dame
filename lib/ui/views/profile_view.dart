@@ -176,9 +176,11 @@ Card getMyInfosCard(ProfileViewModel model, BuildContext context) {
         children: <Widget>[
           GestureDetector(
             onTap: () {
-              Clipboard.setData(ClipboardData(text: model.profileStudent.permanentCode));
+              Clipboard.setData(
+                  ClipboardData(text: model.profileStudent.permanentCode));
               ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                content: Text(AppIntl.of(context).profile_permanent_code_copied_to_clipboard),
+                content: Text(AppIntl.of(context)
+                    .profile_permanent_code_copied_to_clipboard),
               ));
             },
             child: Column(
@@ -206,7 +208,8 @@ Card getMyInfosCard(ProfileViewModel model, BuildContext context) {
             onTap: () {
               Clipboard.setData(ClipboardData(text: model.universalAccessCode));
               ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                content: Text(AppIntl.of(context).profile_universal_code_copied_to_clipboard),
+                content: Text(AppIntl.of(context)
+                    .profile_universal_code_copied_to_clipboard),
               ));
             },
             child: Column(

@@ -96,7 +96,8 @@ void main() {
       await tester.tap(find.text(profileStudent.permanentCode));
       await tester.pumpAndSettle();
 
-      expect(find.text(intl.profile_permanent_code_copied_to_clipboard), findsOneWidget);
+      expect(find.text(intl.profile_permanent_code_copied_to_clipboard),
+          findsOneWidget);
 
       // Could not test clipboard content, could be due to https://github.com/flutter/flutter/issues/47448
     });
