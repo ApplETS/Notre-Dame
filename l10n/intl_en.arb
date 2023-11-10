@@ -143,6 +143,8 @@
   "profile_first_name": "First Name",
   "profile_last_name": "Last Name",
   "profile_permanent_code": "Permanent Code",
+  "profile_permanent_code_copied_to_clipboard": "Permanent code copied to clipboard",
+  "profile_universal_code_copied_to_clipboard": "Universal code copied to clipboard",
   "profile_balance": "My balance",
   "profile_code_program": "Code",
   "profile_average_program": "Average",

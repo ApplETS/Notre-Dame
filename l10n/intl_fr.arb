@@ -143,6 +143,8 @@
   "profile_first_name": "Prénom",
   "profile_last_name": "Nom de famille",
   "profile_permanent_code": "Code permanent",
+  "profile_permanent_code_copied_to_clipboard": "Code permanent copié dans le presse-papier",
+  "profile_universal_code_copied_to_clipboard": "Code universel copié dans le presse-papier",
   "profile_balance": "Votre solde",
   "profile_code_program": "Code",
   "profile_average_program": "Moyenne",
