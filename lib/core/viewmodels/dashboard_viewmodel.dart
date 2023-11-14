@@ -9,6 +9,9 @@ import 'package:ets_api_clients/models.dart';
 import 'package:feature_discovery/feature_discovery.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:notredame/core/constants/router_paths.dart';
+import 'package:notredame/core/services/launch_url_service.dart';
+import 'package:notredame/core/services/navigation_service.dart';
 import 'package:stacked/stacked.dart';
 
 // Project imports:
@@ -138,6 +141,17 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
       return true;
     }
     return false;
+  }
+
+  static Future<void> launchBroadcastUrl(String url) async {
+    final LaunchUrlService launchUrlService = locator<LaunchUrlService>();
+    final NavigationService navigationService = locator<NavigationService>();
+    try {
+      await launchUrlService.launchInBrowser(url, Brightness.light);
+    } catch (error) {
+      // An exception is thrown if browser app is not installed on Android device.
+      await navigationService.pushNamed(RouterPaths.webView, arguments: url);
+    }
   }
 
   void changeProgressBarText() {
