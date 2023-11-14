@@ -31,6 +31,9 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
   /// Localization class of the application.
   final AppIntl _appIntl;
 
+  /// Number of days in a month (6 weeks)
+  final int daysInMonth = 42;
+
   /// Settings of the user for the schedule
   final Map<PreferencesFlag, dynamic> settings = {};
 
@@ -83,7 +86,6 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
     final Map<DateTime, List<dynamic>> events = {};
     final firstDayOfWeek = Utils.getFirstDayOfCurrentWeek(selectedDate,
         settings[PreferencesFlag.scheduleStartWeekday] as StartingDayOfWeek);
-
     for (int i = 0; i < 7; i++) {
       final date = firstDayOfWeek.add(Duration(days: i));
       final eventsForDay = selectedDateEvents(date);
@@ -98,7 +100,10 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
   void handleViewChanged(DateTime date, EventController controller) {
     controller.removeWhere((event) => true);
     selectedDate = date;
-    final eventsToAdd = selectedWeekCalendarEvents();
+    var eventsToAdd = selectedMonthCalendarEvents();
+    if (calendarFormat == CalendarFormat.week) {
+      eventsToAdd = selectedWeekCalendarEvents();
+    }
     controller.addAll(eventsToAdd);
   }
 
@@ -149,6 +154,18 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
     return events;
   }
 
+  List<CalendarEventData> selectedMonthCalendarEvents() {
+    final List<CalendarEventData> events = [];
+    final date = selectedDate.datesOfMonths();
+    for (int i = 0; i < daysInMonth; i++) {
+      final eventsForDay = selectedDateCalendarEvents(date.elementAt(i));
+      if (eventsForDay.isNotEmpty) {
+        events.addAll(eventsForDay);
+      }
+    }
+    return events;
+  }
+
   bool get showWeekEvents =>
       settings[PreferencesFlag.scheduleShowWeekEvents] as bool ?? false;
 
@@ -169,13 +186,18 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
           if (value1 != null) {
             // Reload the list of activities
             coursesActivities;
+
             await _courseRepository
                 .getCourses(fromCacheOnly: true)
                 .then((value2) {
               courses = value2;
             });
             if (_coursesActivities.isNotEmpty) {
-              calendarEvents = selectedWeekCalendarEvents();
+              if (calendarFormat == CalendarFormat.week) {
+                calendarEvents = selectedWeekCalendarEvents();
+              } else {
+                calendarEvents = selectedMonthCalendarEvents();
+              }
             }
           }
           _courseRepository
@@ -355,6 +377,18 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
     } else {
       selectedDate = DateTime.now();
       focusedDate.value = DateTime.now();
+      return true;
+    }
+  }
+
+  bool selectTodayMonth() {
+    if (compareDates(
+        selectedDate, DateTime(DateTime.now().year, DateTime.now().month))) {
+      Fluttertoast.showToast(msg: _appIntl.schedule_already_today_toast);
+      return false;
+    } else {
+      selectedDate = DateTime(DateTime.now().year, DateTime.now().month);
+      focusedDate.value = DateTime(DateTime.now().year, DateTime.now().month);
       return true;
     }
   }
