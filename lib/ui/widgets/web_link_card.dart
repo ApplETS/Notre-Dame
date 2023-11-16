@@ -19,9 +19,8 @@ class WebLinkCard extends StatelessWidget {
       ViewModelBuilder<WebLinkCardViewModel>.reactive(
           viewModelBuilder: () => WebLinkCardViewModel(),
           builder: (context, model, child) {
-            return SizedBox(
-              width: MediaQuery.of(context).size.width / 3.1,
-              height: MediaQuery.of(context).size.width / 3.1,
+            return ConstrainedBox(
+              constraints: const BoxConstraints.expand(),
               child: Card(
                 elevation: 4.0,
                 child: InkWell(
