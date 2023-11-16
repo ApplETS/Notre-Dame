@@ -21,7 +21,7 @@ class WebLinkCard extends StatelessWidget {
           builder: (context, model, child) {
             return SizedBox(
               width: MediaQuery.of(context).size.width / 3.1,
-              height: 130,
+              height: MediaQuery.of(context).size.width / 3.1,
               child: Card(
                 elevation: 4.0,
                 child: InkWell(
