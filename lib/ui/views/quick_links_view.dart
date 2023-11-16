@@ -107,8 +107,7 @@ class _QuickLinksViewState extends State<QuickLinksView>
     return ReorderableGridView.count(
       mainAxisSpacing: 2.0,
       crossAxisSpacing: 2.0,
-      crossAxisCount:
-          (MediaQuery.of(context).orientation == Orientation.portrait) ? 3 : 6,
+      crossAxisCount: ((MediaQuery.of(context).size.width) / 100).floor(),
       children: List.generate(
         quickLinks.length,
         (index) {
