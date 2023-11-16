@@ -12,12 +12,14 @@ import 'package:notredame/core/managers/settings_manager.dart';
 import 'package:notredame/core/managers/user_repository.dart';
 import 'package:notredame/core/services/navigation_service.dart';
 import 'package:notredame/core/services/preferences_service.dart';
+import 'package:notredame/core/services/remote_config_service.dart';
 import 'package:notredame/core/viewmodels/more_viewmodel.dart';
 import '../helpers.dart';
 import '../mock/managers/cache_manager_mock.dart';
 import '../mock/managers/course_repository_mock.dart';
 import '../mock/managers/settings_manager_mock.dart';
 import '../mock/managers/user_repository_mock.dart';
+import '../mock/services/remote_config_service_mock.dart';
 
 void main() {
   // Needed to support FlutterToast.
@@ -27,6 +29,7 @@ void main() {
   SettingsManagerMock settingsManagerMock;
   CourseRepositoryMock courseRepositoryMock;
   PreferencesService preferenceService;
+  RemoteConfigService remoteConfigService;
   UserRepositoryMock userRepositoryMock;
   NavigationService navigationService;
 
@@ -111,6 +114,7 @@ void main() {
       settingsManagerMock = setupSettingsManagerMock() as SettingsManagerMock;
       courseRepositoryMock =
           setupCourseRepositoryMock() as CourseRepositoryMock;
+      remoteConfigService = setupRemoteConfigServiceMock();
       preferenceService = setupPreferencesServiceMock();
       userRepositoryMock = setupUserRepositoryMock() as UserRepositoryMock;
       navigationService = setupNavigationServiceMock();
@@ -124,6 +128,8 @@ void main() {
           toReturn: sessions);
       CourseRepositoryMock.stubCoursesActivities(courseRepositoryMock,
           toReturn: coursesActivities);
+      RemoteConfigServiceMock.stubGetPrivacyPolicyEnabled(
+          remoteConfigService as RemoteConfigServiceMock);
     });
 
     tearDown(() {
@@ -138,6 +144,9 @@ void main() {
     group('logout - ', () {
       test('If the correct function have been called when logout occur',
           () async {
+        RemoteConfigServiceMock.stubGetPrivacyPolicyEnabled(
+            remoteConfigService as RemoteConfigServiceMock,
+            toReturn: false);
         setupFlutterToastMock();
         UserRepositoryMock.stubLogOut(userRepositoryMock);
 
@@ -149,6 +158,9 @@ void main() {
       test(
           'If an error occur from the cache manager that the logout function finishes out',
           () async {
+        RemoteConfigServiceMock.stubGetPrivacyPolicyEnabled(
+            remoteConfigService as RemoteConfigServiceMock,
+            toReturn: false);
         setupFlutterToastMock();
         CacheManagerMock.stubEmptyException(cacheManagerMock);
         UserRepositoryMock.stubLogOut(userRepositoryMock);

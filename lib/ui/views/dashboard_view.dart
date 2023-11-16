@@ -465,7 +465,7 @@ class _DashboardViewState extends State<DashboardView>
       case "link":
         return IconButton(
           onPressed: () {
-            Utils.launchURL(url, AppIntl.of(context));
+            DashboardViewModel.launchBroadcastUrl(url);
           },
           icon: const Icon(
             Icons.open_in_new,
