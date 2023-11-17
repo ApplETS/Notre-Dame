@@ -9,7 +9,8 @@ on:
       - 'README.fr.md'
       - 'android/fastlane/**'
       - 'ios/fastlane/**'
-
+      - '.github/**'
+      - '!.github/dev-workflow.yaml'
 concurrency:
   group: ${{ github.ref }}
   cancel-in-progress: true
