@@ -9,8 +9,7 @@ on:
       - 'README.fr.md'
       - 'android/fastlane/**'
       - 'ios/fastlane/**'
-      - '.github/master-workflow.yaml'
-      - '.github/release-workflow.yaml'
+
 concurrency:
   group: ${{ github.ref }}
   cancel-in-progress: true
@@ -21,78 +20,11 @@ env:
 
 jobs:
   ##############################################################
-  # Setup
-  ##############################################################
-  delete_bot_comments:
-    name: Delete the bot comments on the PR.
-    runs-on: ubuntu-latest
-    steps:
-      - uses: izhangzhihao/delete-comment@master
-        if: ${{ github.event_name == 'pull_request' }}
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          delete_user_name: github-actions[bot]
-          issue_number: ${{ github.event.number }}
-
-  determine_pr_size:
-    name: Determine the size of the PR
-    runs-on: ubuntu-latest
-    steps:
-      - uses: codelytv/pr-size-labeler@v1
-        with:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          xs_label: 'size: XS'
-          xs_max_size: '30'
-          s_label: 'size: S'
-          s_max_size: '100'
-          m_label: 'size: M'
-          m_max_size: '500'
-          l_label: 'size: L'
-          l_max_size: '1000'
-          xl_label: 'size: XL'
-          fail_if_xl: 'false'
-          message_if_xl: >
-            'This PR exceeds the recommended size of 1000 lines.
-            Please make sure you are NOT addressing multiple issues with one PR.
-            Note this PR might be rejected due to its size.’
-  bump_version:
-    name: Bump app version using PR labels
-    runs-on: ubuntu-latest
-    if: ${{ github.event_name == 'pull_request' }}
-    steps:
-      - uses: actions/checkout@v3
-        with:
-          token: ${{ secrets.PTA }}
-      - name: Bump version using labels
-        uses: apomalyn/bump-version-using-labels@v1.5.0
-        with:
-          file_path: 'pubspec.yaml'
-          reference_branch: 'master'
-          commit: 'false'
-      - name: Commit versioned files
-        id: commit_version
-        uses: stefanzweifel/git-auto-commit-action@v4
-        with:
-          file_pattern: "*.yaml"
-          commit_user_name: github-actions[bot]
-          commit_user_email: 41898282+github-actions[bot]@users.noreply.github.com
-          commit_message: "[BOT] Applying version."
-          add_options: '-u'
-
-      # Fail workflow, because new commit will execute workflow
-      - if: ${{ steps.commit_version.outputs.changes_detected == 'true' }}
-        name: Fail workflow if version commit
-        run: |
-          echo 'Version changed, running bot commit workflow'
-          exit 1
-  ##############################################################
   # Testing
   ##############################################################
   testing:
     name: Tests and checks
     runs-on: ubuntu-latest
-    needs:
-      - bump_version
     outputs:
       coverage: ${{ steps.coverage.outputs.percentage }}
     steps:
@@ -182,7 +114,6 @@ jobs:
     name: Update coverage
     needs:
       - testing
-      - delete_bot_comments
     runs-on: ubuntu-latest
     steps:
       - name: Download coverage file
