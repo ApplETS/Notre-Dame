@@ -5,13 +5,11 @@ on:
     paths-ignore:
       - '.gitignore'
       - '.metadata'
+      
       - 'README.md'
       - 'README.fr.md'
       - 'android/fastlane/**'
       - 'ios/fastlane/**'
-concurrency:
-  group: ${{ github.ref }}
-  cancel-in-progress: true
 
 jobs:
   ##############################################################
