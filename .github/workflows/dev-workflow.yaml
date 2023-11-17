@@ -10,7 +10,7 @@ on:
       - 'android/fastlane/**'
       - 'ios/fastlane/**'
       - '.github/**'
-      - '!.github/dev-workflow.yaml'
+      - '!.github/workflows/dev-workflow.yaml'
 concurrency:
   group: ${{ github.ref }}
   cancel-in-progress: true
