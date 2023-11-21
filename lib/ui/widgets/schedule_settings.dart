@@ -24,12 +24,35 @@ class ScheduleSettings extends StatefulWidget {
 
 class _ScheduleSettingsState extends State<ScheduleSettings> {
   final Color selectedColor = AppTheme.etsLightRed.withOpacity(0.5);
+  double panelHeight = 0.5;
 
   @override
   Widget build(BuildContext context) => ViewModelBuilder.reactive(
-        viewModelBuilder: () => ScheduleSettingsViewModel(),
-        builder: (context, model, child) => SizedBox(
-          height: MediaQuery.of(context).size.height * 0.50,
+      viewModelBuilder: () => ScheduleSettingsViewModel(),
+      builder: (context, model, child) => GestureDetector(
+        onVerticalDragUpdate: (details) {
+          setState(() {
+            panelHeight -= details.primaryDelta / MediaQuery.of(context).size.height;
+            panelHeight = panelHeight.clamp(0.4, 0.85).toDouble();
+          });
+        },
+        onVerticalDragEnd: (details) {
+          // Increase size
+          if (details.primaryVelocity < 0) {
+            panelHeight = 0.85;
+          }
+          // Reduce size
+          else {
+            if (panelHeight >= 0.5) {
+              panelHeight = 0.5;
+            }
+            else {
+              Navigator.pop(context);
+            }
+          }
+        },
+        child: SizedBox(
+          height: MediaQuery.of(context).size.height * panelHeight,
           child: Column(
             children: [
               if (widget.showHandle)
@@ -85,7 +108,8 @@ class _ScheduleSettingsState extends State<ScheduleSettings> {
             ],
           ),
         ),
-      );
+      ),
+  );
 
   List<Widget> _buildSettings(
       BuildContext context, ScheduleSettingsViewModel model) {
