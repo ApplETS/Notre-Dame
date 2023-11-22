@@ -104,10 +104,20 @@ class _QuickLinksViewState extends State<QuickLinksView>
       QuickLinksViewModel model,
       List<QuickLink> quickLinks,
       Widget Function(QuickLinksViewModel, int) buildButtonFunction) {
+    final double screenWidth = MediaQuery.of(context).size.width;
+    int crossAxisCount;
+
+    if (screenWidth > 310 && screenWidth < 440) {
+      crossAxisCount = 3;
+    } else {
+      crossAxisCount =
+          (screenWidth / 110).floor().clamp(1, double.infinity).toInt();
+    }
+
     return ReorderableGridView.count(
       mainAxisSpacing: 2.0,
       crossAxisSpacing: 2.0,
-      crossAxisCount: 3,
+      crossAxisCount: crossAxisCount,
       children: List.generate(
         quickLinks.length,
         (index) {
