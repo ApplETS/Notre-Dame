@@ -18,13 +18,13 @@ class SirenFlutterServiceMock extends Mock implements SirenFlutterService {
 
   /// Stub the localVersion function of [SirenFlutterService]
   static void stubLocalVersion(SirenFlutterServiceMock mock,
-      {@required Version valueToReturn}) {
+      {required Version valueToReturn}) {
     when(mock.localVersion).thenAnswer((_) async => valueToReturn);
   }
 
   /// Stub the storeVersion function of [SirenFlutterService]
   static void stubStoreVersion(SirenFlutterServiceMock mock,
-      {@required Version valueToReturn}) {
+      {required Version valueToReturn}) {
     when(mock.storeVersion).thenAnswer((_) async => valueToReturn);
   }
 }

@@ -19,7 +19,7 @@ class SecurityViewModel extends BaseViewModel {
 
   final List<Marker> markersList;
 
-  SecurityViewModel({@required AppIntl intl})
+  SecurityViewModel({required AppIntl intl})
       : emergencyProcedureList = emergencyProcedures(intl),
         markersList = markers(intl);
 

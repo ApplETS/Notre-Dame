@@ -14,8 +14,8 @@ class DismissibleCard extends StatelessWidget {
 
   const DismissibleCard(
       {Key key,
-      @required this.onDismissed,
-      @required this.child,
+      required this.onDismissed,
+      required this.child,
       this.elevation = 1,
       this.cardColor,
       this.isBusy = false})
