@@ -512,16 +512,9 @@ class _ScheduleViewState extends State<ScheduleView>
             onPressed: () async {
               _analyticsService.logEvent(tag, "Settings clicked");
               await showModalBottomSheet(
-                  isDismissible: true,
-                  enableDrag: true,
-                  isScrollControlled: true,
                   context: context,
-                  shape: const RoundedRectangleBorder(
-                      borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(10),
-                          topRight: Radius.circular(10))),
+                  isScrollControlled: true,
                   builder: (context) => const ScheduleSettings());
-              model.loadSettings();
             }));
   }
 }
