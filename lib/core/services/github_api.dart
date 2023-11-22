@@ -29,11 +29,11 @@ class GithubApi {
 
   late GitHub _github;
 
-  late final Logger _logger = locator<Logger>();
+  final Logger _logger = locator<Logger>();
 
-  late final AnalyticsService _analyticsService = locator<AnalyticsService>();
+  final AnalyticsService _analyticsService = locator<AnalyticsService>();
 
-  late final InternalInfoService _internalInfoService =
+  final InternalInfoService _internalInfoService =
       locator<InternalInfoService>();
 
   GithubApi() {

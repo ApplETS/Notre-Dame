@@ -14,9 +14,9 @@ import 'package:notredame/locator.dart';
 
 /// Navigation service who doesn't use the BuildContext which allow us to call it from anywhere.
 class NavigationService {
-  late final RemoteConfigService remoteConfigService =
+  final RemoteConfigService remoteConfigService =
       locator<RemoteConfigService>();
-  late final GlobalKey<NavigatorState> _navigatorKey = GlobalKey<NavigatorState>();
+  final GlobalKey<NavigatorState> _navigatorKey = GlobalKey<NavigatorState>();
 
   GlobalKey<NavigatorState> get navigatorKey => _navigatorKey;
 
