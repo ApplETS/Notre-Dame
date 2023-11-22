@@ -27,7 +27,7 @@ class GradesDetailsViewModel extends FutureViewModel<Course> {
   /// Used to get the current course selected of the student
   Course course;
 
-  GradesDetailsViewModel({this.course, @required AppIntl intl})
+  GradesDetailsViewModel({this.course, required AppIntl intl})
       : _appIntl = intl;
 
   @override

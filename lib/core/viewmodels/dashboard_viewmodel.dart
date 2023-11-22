@@ -192,7 +192,7 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
   /// List of courses for the current session
   final List<Course> courses = [];
 
-  DashboardViewModel({@required AppIntl intl}) : _appIntl = intl;
+  DashboardViewModel({required AppIntl intl}) : _appIntl = intl;
 
   @override
   Future<Map<PreferencesFlag, int>> futureToRun() async {

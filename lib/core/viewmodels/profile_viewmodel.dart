@@ -38,7 +38,7 @@ class ProfileViewModel extends FutureViewModel<List<Program>> {
   String get universalAccessCode =>
       _userRepository?.monETSUser?.universalCode ?? '';
 
-  ProfileViewModel({@required AppIntl intl}) : _appIntl = intl;
+  ProfileViewModel({required AppIntl intl}) : _appIntl = intl;
 
   double get programProgression {
     final ProgramCredits programCredits = ProgramCredits();

@@ -73,7 +73,7 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
   /// Get current locale
   Locale get locale => _settingsManager.locale;
 
-  ScheduleViewModel({@required AppIntl intl, DateTime initialSelectedDate})
+  ScheduleViewModel({required AppIntl intl, DateTime initialSelectedDate})
       : _appIntl = intl,
         selectedDate = initialSelectedDate ?? DateTime.now(),
         focusedDate = ValueNotifier(initialSelectedDate ?? DateTime.now());

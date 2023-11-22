@@ -61,7 +61,7 @@ void unregister<T>() {
 
 /// Load the l10n classes. Take the [child] widget to test
 Widget localizedWidget(
-        {@required Widget child,
+        {required Widget child,
         bool useScaffold = true,
         String locale = 'en',
         double textScaleFactor = 0.9}) =>

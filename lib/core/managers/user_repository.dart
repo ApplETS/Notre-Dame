@@ -70,8 +70,8 @@ class UserRepository {
   /// will be saved in the secure storage of the device to authorize a silent
   /// authentication next time.
   Future<bool> authenticate(
-      {@required String username,
-      @required String password,
+      {required String username,
+      required String password,
       bool isSilent = false}) async {
     try {
       _monETSUser = await _monEtsApiClient.authenticate(

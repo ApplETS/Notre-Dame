@@ -32,7 +32,7 @@ class NotFoundViewModel extends BaseViewModel {
   Artboard _artboard;
   Artboard get artboard => _artboard;
 
-  NotFoundViewModel({@required String pageName}) : notFoundPageName = pageName {
+  NotFoundViewModel({required String pageName}) : notFoundPageName = pageName {
     _analyticsService.logEvent(
         tag, "An unknown page ($pageName) has been access from the app.");
   }

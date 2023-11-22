@@ -9,7 +9,7 @@ class GroupDiscovery {
   final List<Discovery> discoveries;
 
   GroupDiscovery({
-    @required this.name,
-    @required this.discoveries,
+    required this.name,
+    required this.discoveries,
   });
 }

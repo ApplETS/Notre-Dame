@@ -39,7 +39,7 @@ class LoginViewModel extends BaseViewModel {
   /// Used to enable/disable the "log in" button
   bool get canSubmit => _universalCode.isNotEmpty && _password.isNotEmpty;
 
-  LoginViewModel({@required AppIntl intl}) : _appIntl = intl;
+  LoginViewModel({required AppIntl intl}) : _appIntl = intl;
 
   /// Use to get the value associated to each settings key
   final PreferencesService _preferencesService = locator<PreferencesService>();

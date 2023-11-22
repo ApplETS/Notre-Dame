@@ -25,7 +25,7 @@ class ChooseLanguageViewModel extends BaseViewModel {
   /// Localization class of the application.
   final AppIntl _appIntl;
 
-  ChooseLanguageViewModel({@required AppIntl intl}) : _appIntl = intl;
+  ChooseLanguageViewModel({required AppIntl intl}) : _appIntl = intl;
 
   List<String> get languages {
     return [_appIntl.settings_english, _appIntl.settings_french];
