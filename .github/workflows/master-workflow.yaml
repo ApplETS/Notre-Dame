@@ -11,8 +11,7 @@ on:
       - 'README.fr.md'
       - 'android/fastlane/**'
       - 'ios/fastlane/**'
-      - '.github/dev-workflow.yaml'
-      - '.github/release-workflow.yaml'
+      - '.github/**'
 
 concurrency:
   group: ${{ github.ref }}
