@@ -1,6 +1,3 @@
-// Flutter imports:
-import 'package:flutter/material.dart';
-
 // Package imports:
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
@@ -18,7 +15,7 @@ class AnalyticsService {
 
   /// Log a error. [prefix] should be the service where the error was triggered.
   Future logError(String prefix, String message,
-      [Exception error, StackTrace stackTrace]) async {
+      [Exception? error, StackTrace? stackTrace]) async {
     final mesTruncated =
         message.length > 100 ? message.substring(0, 99) : message;
     await _analytics.logEvent(
@@ -38,7 +35,7 @@ class AnalyticsService {
   }
 
   /// Set user properties to identify the user against firebase app.
-  Future setUserProperties({@required String userId, String domain}) async {
+  Future setUserProperties({required String userId, required String domain}) async {
     await _analytics.setUserId(id: userId);
     await _analytics.setUserProperty(
         name: _userPropertiesDomainKey, value: domain);
