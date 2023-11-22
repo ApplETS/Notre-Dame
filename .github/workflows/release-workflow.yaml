@@ -27,7 +27,7 @@ jobs:
       # Disable fail-fast as we want results from all even if one fails.
       fail-fast: false
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: subosito/flutter-action@v2
         with:
           flutter-version: '3.3.x'
