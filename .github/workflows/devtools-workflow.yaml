@@ -65,7 +65,7 @@ jobs:
           commit: 'false'
       - name: Commit versioned files
         id: commit_version
-        uses: stefanzweifel/git-auto-commit-action@v4
+        uses: stefanzweifel/git-auto-commit-action@v5
         with:
           file_pattern: "*.yaml"
           commit_user_name: github-actions[bot]
