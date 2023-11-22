@@ -22,7 +22,7 @@ import 'package:notredame/locator.dart';
 class AppWidgetService {
   static const String tag = "AppWidgetService";
 
-  late final AnalyticsService _analyticsService = locator<AnalyticsService>();
+  final AnalyticsService _analyticsService = locator<AnalyticsService>();
 
   Future<bool?> init() async {
     return HomeWidget.setAppGroupId('group.ca.etsmtl.applets.ETSMobile');
