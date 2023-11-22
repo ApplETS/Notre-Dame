@@ -54,7 +54,7 @@ class MoreViewModel extends FutureViewModel {
   /// Get the application version
   String get appVersion => _appVersion;
 
-  MoreViewModel({@required AppIntl intl}) : _appIntl = intl;
+  MoreViewModel({required AppIntl intl}) : _appIntl = intl;
 
   @override
   Future futureToRun() async {

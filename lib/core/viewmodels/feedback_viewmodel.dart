@@ -37,7 +37,7 @@ class FeedbackViewModel extends FutureViewModel {
   // get the list of issues
   List<FeedbackIssue> get myIssues => _myIssues;
 
-  FeedbackViewModel({@required AppIntl intl}) : _appIntl = intl;
+  FeedbackViewModel({required AppIntl intl}) : _appIntl = intl;
 
   /// Create a Github issue with [UserFeedback] and the screenshot associated.
   Future<void> sendFeedback(

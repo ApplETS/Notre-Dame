@@ -8,8 +8,8 @@ class QuickLink {
   final String link;
 
   QuickLink(
-      {@required this.id,
-      @required this.image,
-      @required this.name,
-      @required this.link});
+      {required this.id,
+      required this.image,
+      required this.name,
+      required this.link});
 }
