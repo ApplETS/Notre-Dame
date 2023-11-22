@@ -17,7 +17,7 @@ import 'package:notredame/ui/utils/app_theme.dart';
 // OTHER
 
 class LaunchUrlService {
-  late final SettingsManager settingsManager = locator<SettingsManager>();
+  final SettingsManager settingsManager = locator<SettingsManager>();
 
   Future<bool> canLaunch(String url) async {
     final uri = Uri.parse(url);
