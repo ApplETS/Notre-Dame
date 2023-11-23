@@ -1,9 +1,9 @@
 // Flutter imports:
-import 'package:calendar_view/calendar_view.dart';
 import 'package:flutter/material.dart';
 
 // Package imports:
 import 'package:calendar_view/calendar_view.dart' as calendar_view;
+import 'package:calendar_view/calendar_view.dart';
 import 'package:github/github.dart';
 
 // Project imports:
@@ -11,10 +11,11 @@ import 'package:notredame/ui/utils/app_theme.dart';
 import 'package:notredame/ui/widgets/schedule_calendar_tile.dart';
 
 class ScheduleDefault extends StatefulWidget {
-  // final ScheduleDefaultViewModel model;
+  final List<CalendarEventData<Object>> calendarEvents;
 
   const ScheduleDefault(
-      {Key key,})
+      {Key key,
+      this.calendarEvents})
       : super(key: key);
 
   @override
@@ -23,11 +24,17 @@ class ScheduleDefault extends StatefulWidget {
 
 class _ScheduleDefaultState extends State<ScheduleDefault> {
   static final List<String> weekTitles = ["L", "M", "M", "J", "V", "S", "D"];
+  final GlobalKey<calendar_view.WeekViewState> weekViewKey =
+      GlobalKey<calendar_view.WeekViewState>();
+
+  final eventController = EventController();
   
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: calendar_view.WeekView(
+        key: weekViewKey,
+        controller: eventController..addAll(widget.calendarEvents),
         backgroundColor: AppTheme.darkThemeBackground,
         weekDays: const [
           calendar_view.WeekDays.monday,
@@ -37,29 +44,28 @@ class _ScheduleDefaultState extends State<ScheduleDefault> {
           calendar_view.WeekDays.friday,
           calendar_view.WeekDays.saturday
         ],
-        scrollOffset: 305,
+        scrollOffset: 475,
         headerStyle: const calendar_view.HeaderStyle(
-          headerTextStyle: TextStyle(
-            color: Colors.transparent,
-            fontSize: 0,
-          ),
-          decoration: BoxDecoration(
-            color: Colors.transparent,
-          ),
+          headerTextStyle: TextStyle(fontSize: 0), // Minimize text size
           leftIconVisible: false,
-          rightIconVisible: false
-        ),
+          rightIconVisible: false,
+          decoration: BoxDecoration(color: Colors.transparent)),
         eventTileBuilder: (date, events, boundary, startDuration,
                 endDuration) =>
-            _buildEventTile(_events, context),
+            _buildEventTile(
+                date, events, boundary, startDuration, endDuration, context),
         weekDayBuilder: (DateTime date) => _buildWeekDay(date),
       ),
     );
   }
 
   Widget _buildEventTile(
-    List<calendar_view.CalendarEventData<dynamic>> events,
-    BuildContext context,
+    DateTime date,
+    List<CalendarEventData<dynamic>> events,
+    Rect boundary,
+    DateTime startDuration,
+    DateTime endDuration,
+    BuildContext context
   ) {
     if (events.isNotEmpty) {
       return ScheduleCalendarTile(
@@ -103,20 +109,26 @@ class _ScheduleDefaultState extends State<ScheduleDefault> {
       date: DateTime.now(),
       title: "Project meeting",
       description: "Today is project meeting.",
-      startTime: DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day, 18, 30),
-      endTime: DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day, 22),
+      startTime: DateTime(DateTime.now().year, DateTime.now().month,
+          DateTime.now().day, 18, 30),
+      endTime: DateTime(
+          DateTime.now().year, DateTime.now().month, DateTime.now().day, 22),
     ),
     CalendarEventData(
       date: DateTime.now().add(const Duration(days: 1)),
-      startTime: DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day, 18),
-      endTime: DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day, 19),
+      startTime: DateTime(
+          DateTime.now().year, DateTime.now().month, DateTime.now().day, 18),
+      endTime: DateTime(
+          DateTime.now().year, DateTime.now().month, DateTime.now().day, 19),
       title: "Wedding anniversary",
       description: "Attend uncle's wedding anniversary.",
     ),
     CalendarEventData(
       date: DateTime.now(),
-      startTime: DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day, 14),
-      endTime: DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day, 17),
+      startTime: DateTime(
+          DateTime.now().year, DateTime.now().month, DateTime.now().day, 14),
+      endTime: DateTime(
+          DateTime.now().year, DateTime.now().month, DateTime.now().day, 17),
       title: "Football Tournament",
       description: "Go to football tournament.",
     ),

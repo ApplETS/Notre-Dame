@@ -179,15 +179,15 @@ class CourseRepository {
   /// After fetching the new activities from the [SignetsApi] the [CacheManager]
   /// is updated with the latest version of the schedule activities.
   Future<List<ScheduleActivity>> getScheduleActivities(
-      {bool fromCacheOnly = false}) async {
+      {String session, bool fromCacheOnly = false}) async {
     // Force fromCacheOnly mode when user has no connectivity
     if (!(await _networkingService.hasConnectivity())) {
       // ignore: parameter_assignments
       fromCacheOnly = true;
     }
 
-    // Load the activities from the cache if the list doesn't exist
-    if (_scheduleActivities == null) {
+    // Load the activities from the cache if the list doesn't exist or if another session is provided
+    if (session != null && _scheduleActivities == null) {
       _scheduleActivities = [];
       try {
         final List responseCache =
@@ -214,18 +214,18 @@ class CourseRepository {
 
     try {
       // If there is no sessions loaded, load them.
-      if (_sessions == null) {
+      if (session == null && _sessions == null) {
         await getSessions();
       }
 
       final String password = await _userRepository.getPassword();
 
-      for (final Session session in activeSessions) {
+      for (final Session oneSession in activeSessions) {
         fetchedScheduleActivities.addAll(
             await _signetsApiClient.getScheduleActivities(
                 username: _userRepository.monETSUser.universalCode,
                 password: password,
-                session: session.shortName));
+                session: session ?? oneSession.shortName));
         _logger.d(
             "$tag - getScheduleActivities: fetched ${fetchedScheduleActivities.length} activities.");
       }
