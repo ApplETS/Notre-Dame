@@ -6,6 +6,8 @@ import 'package:flutter/scheduler.dart';
 import 'package:ets_api_clients/models.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
+import 'package:notredame/core/constants/router_paths.dart';
+import 'package:notredame/core/services/navigation_service.dart';
 import 'package:stacked/stacked.dart';
 
 // Project imports:
@@ -23,6 +25,9 @@ class GradesView extends StatefulWidget {
 
 class _GradesViewState extends State<GradesView> {
   final AnalyticsService _analyticsService = locator<AnalyticsService>();
+  
+  /// Used to redirect on the dashboard.
+  final NavigationService _navigationService = locator<NavigationService>();
 
   @override
   void initState() {
@@ -97,11 +102,23 @@ class _GradesViewState extends State<GradesView> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            Text(sessionName,
-                style: const TextStyle(
-                  fontSize: 25,
-                  color: AppTheme.etsLightRed,
-                )),
+            Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  sessionName,
+                  style: const TextStyle(
+                    fontSize: 25,
+                    color: AppTheme.etsLightRed,
+                  ),
+                ),
+                IconButton(
+                  icon: const Icon(Icons.today, color: AppTheme.etsDarkGrey),
+                  onPressed: () => _navigationService.pushNamed(RouterPaths.defaultSchedule,
+                    arguments: model.sessionOrder[index]),
+                ),
+              ],
+            ),
             const SizedBox(height: 16.0),
             Wrap(
               children: courses
