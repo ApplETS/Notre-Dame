@@ -29,7 +29,8 @@ class CourseRepository {
   static const String scheduleActivitiesCacheKey = "scheduleActivitiesCache";
 
   @visibleForTesting
-  static const String scheduleDefaultActivitiesCacheKey = "scheduleDefaultActivitiesCache";
+  static const String scheduleDefaultActivitiesCacheKey =
+      "scheduleDefaultActivitiesCache";
 
   @visibleForTesting
   static const String sessionsCacheKey = "sessionsCache";
@@ -182,6 +183,7 @@ class CourseRepository {
 
     return _coursesActivities;
   }
+
   /// Get and update the list of schedule activities for the active sessions.
   /// After fetching the new activities from the [SignetsApi] the [CacheManager]
   /// is updated with the latest version of the schedule activities.
@@ -194,12 +196,11 @@ class CourseRepository {
     }
 
     // Load the activities from the cache if the list doesn't exist or if another session is provided
-    if ( _scheduleDefaultActivities == null) {
+    if (_scheduleDefaultActivities == null) {
       _scheduleDefaultActivities = [];
       try {
-        final List responseCache =
-            jsonDecode(await _cacheManager.get(scheduleDefaultActivitiesCacheKey + session))
-                as List<dynamic>;
+        final List responseCache = jsonDecode(await _cacheManager
+            .get(scheduleDefaultActivitiesCacheKey + session)) as List<dynamic>;
 
         // Build list of activities loaded from the cache.
         _scheduleDefaultActivities = responseCache
@@ -221,13 +222,13 @@ class CourseRepository {
     try {
       final String password = await _userRepository.getPassword();
 
-        fetchedScheduleActivities.addAll(
-            await _signetsApiClient.getScheduleActivities(
-                username: _userRepository.monETSUser.universalCode,
-                password: password,
-                session: session));
-        _logger.d(
-            "$tag - getDefaultScheduleActivities: fetched ${fetchedScheduleActivities.length} default activities.");
+      fetchedScheduleActivities.addAll(
+          await _signetsApiClient.getScheduleActivities(
+              username: _userRepository.monETSUser.universalCode,
+              password: password,
+              session: session));
+      _logger.d(
+          "$tag - getDefaultScheduleActivities: fetched ${fetchedScheduleActivities.length} default activities.");
     } on Exception catch (e, stacktrace) {
       _analyticsService.logError(tag,
           "Exception raised during getScheduleActivities: $e", e, stacktrace);
@@ -240,8 +241,8 @@ class CourseRepository {
 
     try {
       // Update cache
-      _cacheManager.update(
-          scheduleDefaultActivitiesCacheKey + session, jsonEncode(_scheduleDefaultActivities));
+      _cacheManager.update(scheduleDefaultActivitiesCacheKey + session,
+          jsonEncode(_scheduleDefaultActivities));
     } on CacheException catch (_) {
       // Do nothing, the caching will retry later and the error has been logged by the [CacheManager]
       _logger.e(
@@ -250,7 +251,6 @@ class CourseRepository {
 
     return _scheduleDefaultActivities;
   }
-
 
   /// Get and update the list of schedule activities for the active sessions.
   /// After fetching the new activities from the [SignetsApi] the [CacheManager]
@@ -264,7 +264,7 @@ class CourseRepository {
     }
 
     // Load the activities from the cache if the list doesn't exist or if another session is provided
-    if ( _scheduleActivities == null) {
+    if (_scheduleActivities == null) {
       _scheduleActivities = [];
       try {
         final List responseCache =

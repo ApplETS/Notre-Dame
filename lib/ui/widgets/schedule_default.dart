@@ -28,6 +28,19 @@ class _ScheduleDefaultState extends State<ScheduleDefault> {
 
   @override
   Widget build(BuildContext context) {
+    // Check if there are no events
+    if (widget.calendarEvents.isEmpty) {
+      return const Scaffold(
+        backgroundColor: Colors.transparent,
+        body: Center(
+          child: Text(
+          "Il n'y a aucun événement à l'horaire pour l'instant",
+        ),
+        ),
+      );
+    }
+
+    // If there are events, display the calendar
     return Scaffold(
       body: calendar_view.WeekView(
         key: weekViewKey,
@@ -47,14 +60,13 @@ class _ScheduleDefaultState extends State<ScheduleDefault> {
             leftIconVisible: false,
             rightIconVisible: false,
             decoration: BoxDecoration(color: Colors.transparent)),
-        eventTileBuilder: (date, events, boundary, startDuration,
-                endDuration) =>
-            _buildEventTile(
-                date, events, boundary, startDuration, endDuration, context),
+        eventTileBuilder: (date, events, boundary, startDuration, endDuration) =>
+            _buildEventTile(date, events, boundary, startDuration, endDuration, context),
         weekDayBuilder: (DateTime date) => _buildWeekDay(date),
       ),
     );
   }
+
 
   Widget _buildEventTile(
       DateTime date,
