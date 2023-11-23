@@ -28,24 +28,26 @@ class _ScheduleSettingsState extends State<ScheduleSettings> {
   @override
   Widget build(BuildContext context) => ViewModelBuilder.reactive(
       viewModelBuilder: () => ScheduleSettingsViewModel(),
-      builder: (context, model, child) => DraggableScrollableSheet(
-          maxChildSize: 0.85,
-          minChildSize: 0.5,
-          initialChildSize: 0.55,
-          expand: false,
-          snap: true,
-          snapSizes: const [
-            0.55,
-            0.85,
-          ],
-          builder: (context, ScrollController scrollController) {
-            return Column(children: [
-              if (widget.showHandle)
-                Container(
+      builder: (context, model, child) => ClipRRect(
+        borderRadius: const BorderRadius.vertical(top: Radius.circular(10)),
+        child: DraggableScrollableSheet(
+            maxChildSize: 0.85,
+            minChildSize: 0.5,
+            initialChildSize: 0.55,
+            expand: false,
+            snap: true,
+            snapSizes: const [
+              0.55,
+              0.85,
+            ],
+            builder: (context, ScrollController scrollController) {
+              return Column(children: [
+                if (widget.showHandle)
+                  Container(
                     decoration: BoxDecoration(
-                        color: Utils.getColorByBrightness(
-                            context, AppTheme.lightThemeBackground, AppTheme.darkThemeBackground),
-                        ),
+                      color: Utils.getColorByBrightness(
+                          context, AppTheme.lightThemeBackground, AppTheme.darkThemeBackground),
+                    ),
                     child: Center(
                       child: Padding(
                         padding: const EdgeInsets.only(top: 8.0),
@@ -58,31 +60,38 @@ class _ScheduleSettingsState extends State<ScheduleSettings> {
                       ),
                     ),
                   ),
-
-                 Container(
-
+                Container(
                   width: MediaQuery.of(context).size.width,
                   decoration: BoxDecoration(
-                    color: Utils.getColorByBrightness(
-                        context, AppTheme.lightThemeBackground, AppTheme.darkThemeBackground),
+                    color:
+                        Utils.getColorByBrightness(context, AppTheme.lightThemeBackground, AppTheme.darkThemeBackground),
                   ),
                   child: Center(
                     child: Padding(
-                        padding: const EdgeInsets.fromLTRB(15, 20, 20, 20),
+                        padding: const EdgeInsets.symmetric(vertical: 20),
                         child: Text(AppIntl.of(context).schedule_settings_title,
                             style: Theme.of(context).textTheme.headline6)),
                   ),
                 ),
-
-              Expanded(
-                child: ListView(
-                  controller: scrollController,
-                  key: const ValueKey("SettingsScrollingArea"),
-                  children: _buildSettings(context, model as ScheduleSettingsViewModel),
-                ),
-              )
-            ]);
-          }));
+                Expanded(
+                  child: ListTileTheme(
+                    selectedColor: Theme.of(context).textTheme.bodyText1.color,
+                    child: Card(
+                      margin: EdgeInsets.zero,
+                      elevation: 0,
+                      shape: const RoundedRectangleBorder(),
+                      color: Colors.transparent,
+                      child: ListView(
+                        controller: scrollController,
+                        key: const ValueKey("SettingsScrollingArea"),
+                        children: _buildSettings(context, model as ScheduleSettingsViewModel),
+                      ),
+                    ),
+                  ),
+                )
+              ]);
+            }),
+      ));
 
   List<Widget> _buildSettings(BuildContext context, ScheduleSettingsViewModel model) {
     final list = _buildCalendarFormatSection(context, model);
