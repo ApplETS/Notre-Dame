@@ -517,6 +517,7 @@ class _ScheduleViewState extends State<ScheduleView>
                   context: context,
                   isScrollControlled: true,
                   builder: (context) => const ScheduleSettings());
+              model.loadSettings();
             }));
   }
 }
