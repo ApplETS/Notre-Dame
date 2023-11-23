@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 
 // Package imports:
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:calendar_view/calendar_view.dart' as calendar_view;
 import 'package:calendar_view/calendar_view.dart';
 import 'package:github/github.dart';
@@ -30,12 +31,12 @@ class _ScheduleDefaultState extends State<ScheduleDefault> {
   Widget build(BuildContext context) {
     // Check if there are no events
     if (widget.calendarEvents.isEmpty) {
-      return const Scaffold(
+      return Scaffold(
         backgroundColor: Colors.transparent,
         body: Center(
           child: Text(
-          "Il n'y a aucun événement à l'horaire pour l'instant",
-        ),
+            AppIntl.of(context).no_schedule_available,
+          ),
         ),
       );
     }
@@ -60,13 +61,14 @@ class _ScheduleDefaultState extends State<ScheduleDefault> {
             leftIconVisible: false,
             rightIconVisible: false,
             decoration: BoxDecoration(color: Colors.transparent)),
-        eventTileBuilder: (date, events, boundary, startDuration, endDuration) =>
-            _buildEventTile(date, events, boundary, startDuration, endDuration, context),
+        eventTileBuilder: (date, events, boundary, startDuration,
+                endDuration) =>
+            _buildEventTile(
+                date, events, boundary, startDuration, endDuration, context),
         weekDayBuilder: (DateTime date) => _buildWeekDay(date),
       ),
     );
   }
-
 
   Widget _buildEventTile(
       DateTime date,
