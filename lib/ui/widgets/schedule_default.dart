@@ -13,10 +13,7 @@ import 'package:notredame/ui/widgets/schedule_calendar_tile.dart';
 class ScheduleDefault extends StatefulWidget {
   final List<CalendarEventData<Object>> calendarEvents;
 
-  const ScheduleDefault(
-      {Key key,
-      this.calendarEvents})
-      : super(key: key);
+  const ScheduleDefault({Key key, this.calendarEvents}) : super(key: key);
 
   @override
   _ScheduleDefaultState createState() => _ScheduleDefaultState();
@@ -28,7 +25,7 @@ class _ScheduleDefaultState extends State<ScheduleDefault> {
       GlobalKey<calendar_view.WeekViewState>();
 
   final eventController = EventController();
-  
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -46,10 +43,10 @@ class _ScheduleDefaultState extends State<ScheduleDefault> {
         ],
         scrollOffset: 475,
         headerStyle: const calendar_view.HeaderStyle(
-          headerTextStyle: TextStyle(fontSize: 0), // Minimize text size
-          leftIconVisible: false,
-          rightIconVisible: false,
-          decoration: BoxDecoration(color: Colors.transparent)),
+            headerTextStyle: TextStyle(fontSize: 0), // Minimize text size
+            leftIconVisible: false,
+            rightIconVisible: false,
+            decoration: BoxDecoration(color: Colors.transparent)),
         eventTileBuilder: (date, events, boundary, startDuration,
                 endDuration) =>
             _buildEventTile(
@@ -60,13 +57,12 @@ class _ScheduleDefaultState extends State<ScheduleDefault> {
   }
 
   Widget _buildEventTile(
-    DateTime date,
-    List<CalendarEventData<dynamic>> events,
-    Rect boundary,
-    DateTime startDuration,
-    DateTime endDuration,
-    BuildContext context
-  ) {
+      DateTime date,
+      List<CalendarEventData<dynamic>> events,
+      Rect boundary,
+      DateTime startDuration,
+      DateTime endDuration,
+      BuildContext context) {
     if (events.isNotEmpty) {
       return ScheduleCalendarTile(
         title: events[0].title,

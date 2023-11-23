@@ -2,8 +2,8 @@
 import 'package:flutter/material.dart';
 
 // Package imports:
-import 'package:stacked/stacked.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:stacked/stacked.dart';
 
 // Project imports:
 import 'package:notredame/core/viewmodels/schedule_default_viewmodel.dart';
@@ -37,25 +37,27 @@ class _ScheduleDefaultViewState extends State<ScheduleDefaultView> {
             child: NestedScrollView(
               headerSliverBuilder: (context, innerBoxScrolled) => [
                 SliverAppBar(
-                    backgroundColor:
-                        Theme.of(context).brightness == Brightness.light
-                            ? AppTheme.etsLightRed
-                            : Theme.of(context).bottomAppBarColor,
-                    pinned: true,
-                    onStretchTrigger: () {
-                      return Future<void>.value();
-                    },
-                    titleSpacing: 0,
-                    leading: IconButton(
-                      icon: const Icon(Icons.arrow_back),
-                      onPressed: () => Navigator.of(context).pop(),
-                    ),
-                    title: Text(_sessionName(widget.sessionCode, AppIntl.of(context))),)
+                  backgroundColor:
+                      Theme.of(context).brightness == Brightness.light
+                          ? AppTheme.etsLightRed
+                          : Theme.of(context).bottomAppBarColor,
+                  pinned: true,
+                  onStretchTrigger: () {
+                    return Future<void>.value();
+                  },
+                  titleSpacing: 0,
+                  leading: IconButton(
+                    icon: const Icon(Icons.arrow_back),
+                    onPressed: () => Navigator.of(context).pop(),
+                  ),
+                  title: Text(
+                      _sessionName(widget.sessionCode, AppIntl.of(context))),
+                )
               ],
               body: SafeArea(
-                child: model.isBusy 
-                  ? const Center(child: CircularProgressIndicator()) 
-                  : ScheduleDefault(calendarEvents: model.calendarEvents),
+                child: model.isBusy
+                    ? const Center(child: CircularProgressIndicator())
+                    : ScheduleDefault(calendarEvents: model.calendarEvents),
               ),
             ),
           ),

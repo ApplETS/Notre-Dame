@@ -11,7 +11,8 @@ import 'package:notredame/core/managers/course_repository.dart';
 import 'package:notredame/locator.dart';
 import 'package:notredame/ui/utils/app_theme.dart';
 
-class ScheduleDefaultViewModel extends FutureViewModel<List<CalendarEventData<Object>>> {
+class ScheduleDefaultViewModel
+    extends FutureViewModel<List<CalendarEventData<Object>>> {
   /// Load the events
   final CourseRepository _courseRepository = locator<CourseRepository>();
 
@@ -32,8 +33,11 @@ class ScheduleDefaultViewModel extends FutureViewModel<List<CalendarEventData<Ob
   @override
   Future<List<CalendarEventData<Object>>> futureToRun() async {
     setBusy(true);
-    final defaultScheduleActivities = await _courseRepository.getScheduleActivities(session: _sessionCode);
-    final filteredScheduleActivities = defaultScheduleActivities.where((activity) => activity.activityCode.toLowerCase() != "exam").toList();
+    final defaultScheduleActivities =
+        await _courseRepository.getScheduleActivities(session: _sessionCode);
+    final filteredScheduleActivities = defaultScheduleActivities
+        .where((activity) => activity.activityCode.toLowerCase() != "exam")
+        .toList();
 
     for (final activity in filteredScheduleActivities) {
       final event = calendarEventData(activity);
@@ -46,27 +50,18 @@ class ScheduleDefaultViewModel extends FutureViewModel<List<CalendarEventData<Ob
 
   CalendarEventData<Object> calendarEventData(ScheduleActivity eventData) {
     final courseLocation = eventData.activityLocation == "Non assign"
-    ? "N/A"
-    : eventData.activityLocation;
+        ? "N/A"
+        : eventData.activityLocation;
 
     final DateTime now = DateTime.now();
     final int daysToAdd = eventData.dayOfTheWeek - now.weekday;
 
     final DateTime targetDate = now.add(Duration(days: daysToAdd));
-    final DateTime newStartTime = DateTime(
-        targetDate.year,
-        targetDate.month,
-        targetDate.day,
-        eventData.startTime.hour,
-        eventData.startTime.minute
-    );
-    final DateTime newEndTime = DateTime(
-        targetDate.year,
-        targetDate.month,
-        targetDate.day,
-        eventData.endTime.hour,
-        eventData.endTime.minute
-    ).subtract(const Duration(minutes: 1));
+    final DateTime newStartTime = DateTime(targetDate.year, targetDate.month,
+        targetDate.day, eventData.startTime.hour, eventData.startTime.minute);
+    final DateTime newEndTime = DateTime(targetDate.year, targetDate.month,
+            targetDate.day, eventData.endTime.hour, eventData.endTime.minute)
+        .subtract(const Duration(minutes: 1));
 
     return CalendarEventData(
         title: "${eventData.courseAcronym}\n$courseLocation",
