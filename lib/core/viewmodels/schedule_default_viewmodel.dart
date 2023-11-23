@@ -33,8 +33,7 @@ class ScheduleDefaultViewModel
   @override
   Future<List<CalendarEventData<Object>>> futureToRun() async {
     setBusy(true);
-    final defaultScheduleActivities =
-        await _courseRepository.getScheduleActivities(session: _sessionCode);
+    final defaultScheduleActivities = await _courseRepository.getDefaultScheduleActivities(session: _sessionCode);
     final filteredScheduleActivities = defaultScheduleActivities
         .where((activity) => activity.activityCode.toLowerCase() != "exam")
         .toList();
