@@ -30,16 +30,16 @@ class SettingsManager with ChangeNotifier {
       locator<RemoteConfigService>();
 
   /// current ThemeMode
-  ThemeMode _themeMode;
+  ThemeMode? _themeMode;
 
   /// current Locale
-  Locale _locale;
+  Locale? _locale;
 
   /// Get current time
   DateTime get dateTimeNow => DateTime.now();
 
   /// Get ThemeMode
-  ThemeMode get themeMode {
+  ThemeMode? get themeMode {
     _preferencesService.getString(PreferencesFlag.theme).then((value) => {
           if (value != null)
             {
@@ -72,7 +72,7 @@ class SettingsManager with ChangeNotifier {
   }
 
   /// Get Locale
-  Locale get locale {
+  Locale? get locale {
     _preferencesService.getString(PreferencesFlag.locale).then((value) {
       if (value != null) {
         _locale =
@@ -136,7 +136,7 @@ class SettingsManager with ChangeNotifier {
   /// Set ThemeMode
   void setThemeMode(ThemeMode value) {
     _preferencesService.setString(PreferencesFlag.theme, value.toString());
-    // Log the event
+
     _analyticsService.logEvent(
         "${tag}_${EnumToString.convertToString(PreferencesFlag.theme)}",
         EnumToString.convertToString(value));
@@ -144,16 +144,18 @@ class SettingsManager with ChangeNotifier {
     notifyListeners();
   }
 
-  /// Set Locale
   void setLocale(String value) {
     _locale = AppIntl.supportedLocales.firstWhere((e) => e.toString() == value);
-    _preferencesService.setString(PreferencesFlag.locale, _locale.languageCode);
-    // Log the event
+
     _analyticsService.logEvent(
         "${tag}_${EnumToString.convertToString(PreferencesFlag.locale)}",
-        _locale.languageCode);
-    _locale = Locale(_locale.languageCode);
-    notifyListeners();
+        _locale?.languageCode ?? 'Not found');
+
+    if(_locale != null) {
+      _preferencesService.setString(PreferencesFlag.locale, _locale!.languageCode);
+      _locale = Locale(_locale!.languageCode);
+      notifyListeners();
+    }
   }
 
   /// Get the settings of the schedule, these are loaded from the user preferences.
@@ -221,7 +223,7 @@ class SettingsManager with ChangeNotifier {
 
   /// Add/update the value of [flag]
   Future<bool> setDynamicString(
-      PreferencesFlag flag, String key, String value) async {
+      PreferencesFlag flag, String key, String? value) async {
     if (value == null) {
       return _preferencesService.removeDynamicPreferencesFlag(flag, key);
     }
@@ -241,7 +243,7 @@ class SettingsManager with ChangeNotifier {
   }
 
   /// Get the value of [flag]
-  Future<String> getString(PreferencesFlag flag) async {
+  Future<String?> getString(PreferencesFlag flag) async {
     // Log the event
     _analyticsService.logEvent(
         "${tag}_${EnumToString.convertToString(flag)}", 'getString');
@@ -249,7 +251,7 @@ class SettingsManager with ChangeNotifier {
   }
 
   /// Get the value of [flag]
-  Future<String> getDynamicString(PreferencesFlag flag, String key) async {
+  Future<String?> getDynamicString(PreferencesFlag flag, String key) async {
     // Log the event
     _analyticsService.logEvent("${tag}_${flag.toString()}", 'getString');
     return _preferencesService.getDynamicString(flag, key);
@@ -265,7 +267,7 @@ class SettingsManager with ChangeNotifier {
   }
 
   /// Get the value of [flag]
-  Future<bool> getBool(PreferencesFlag flag) async {
+  Future<bool?> getBool(PreferencesFlag flag) async {
     // Log the event
     _analyticsService.logEvent(
         "${tag}_${EnumToString.convertToString(flag)}", 'getBool');
