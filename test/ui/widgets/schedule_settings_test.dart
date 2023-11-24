@@ -99,7 +99,7 @@ void main() {
         // Check the handle
         expect(
           find.byWidgetPredicate((widget) =>
-          widget is Container &&
+              widget is Container &&
               widget.decoration is BoxDecoration &&
               (widget.decoration as BoxDecoration).color == Colors.grey),
           findsOneWidget,
@@ -188,7 +188,7 @@ void main() {
 
         expect(
           find.byWidgetPredicate((widget) =>
-          widget is Container &&
+              widget is Container &&
               widget.decoration is BoxDecoration &&
               (widget.decoration as BoxDecoration).color == Colors.grey),
           findsNothing,
@@ -416,7 +416,9 @@ void main() {
             skipOffstage: false);
 
         expect(find.byType(Switch, skipOffstage: false), findsNWidgets(2));
-        (find.byType(Switch, skipOffstage: false).evaluate().first.widget as Switch).onChanged(false);
+        (find.byType(Switch, skipOffstage: false).evaluate().first.widget
+                as Switch)
+            .onChanged(false);
 
         await tester.pumpAndSettle();
 

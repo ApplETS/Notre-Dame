@@ -513,7 +513,8 @@ class _ScheduleViewState extends State<ScheduleView>
               _analyticsService.logEvent(tag, "Settings clicked");
               await showModalBottomSheet(
                   shape: const RoundedRectangleBorder(
-                      borderRadius: BorderRadius.vertical(top: Radius.circular(10))),
+                      borderRadius:
+                          BorderRadius.vertical(top: Radius.circular(10))),
                   context: context,
                   isScrollControlled: true,
                   builder: (context) => const ScheduleSettings());
