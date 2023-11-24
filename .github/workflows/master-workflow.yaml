@@ -11,8 +11,7 @@ on:
       - 'README.fr.md'
       - 'android/fastlane/**'
       - 'ios/fastlane/**'
-      - '.github/dev-workflow.yaml'
-      - '.github/release-workflow.yaml'
+      - '.github/**'
 
 concurrency:
   group: ${{ github.ref }}
@@ -32,7 +31,7 @@ jobs:
     outputs:
       version: ${{ steps.split.outputs._0 }}
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Get the version from the pubspec
         id: pubspecVersion
         uses: CumulusDS/get-yaml-paths-action@v1.0.2
@@ -45,7 +44,7 @@ jobs:
           msg: ${{ steps.pubspecVersion.outputs.version }}
           separator: '+'
       - name: Validate that version doesn't exists
-        uses: mukunku/tag-exists-action@v1.2.0
+        uses: mukunku/tag-exists-action@v1.4.0
         id: checkTag
         with:
           tag: ${{ steps.split.outputs._0 }}
@@ -64,7 +63,7 @@ jobs:
     outputs:
       coverage: ${{ steps.coverage.outputs.percentage }}
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           ref: ${{ github.head_ref }}
       - uses: actions/setup-java@v3
@@ -121,7 +120,7 @@ jobs:
         with:
           name: lcov.info
       - name: Update badge coverage
-        uses: schneegans/dynamic-badges-action@v1.6.0
+        uses: schneegans/dynamic-badges-action@v1.7.0
         with:
           auth: ${{ secrets.GIST_COVERAGE_BADGE_TOKEN }}
           gistID: ${{ secrets.GIST_ID_COVERAGE_BADGE }}
@@ -160,7 +159,7 @@ jobs:
     needs:
       - testing
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: subosito/flutter-action@v2
         with:
           flutter-version: '3.3.x'
