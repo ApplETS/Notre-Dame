@@ -98,11 +98,13 @@ void main() {
 
         // Check the handle
         expect(
-            find.byWidgetPredicate((widget) =>
-                widget is Container &&
-                (widget.decoration as BoxDecoration).color == Colors.grey),
-            findsOneWidget,
-            reason: "The handle should be grey");
+          find.byWidgetPredicate((widget) =>
+          widget is Container &&
+              widget.decoration is BoxDecoration &&
+              (widget.decoration as BoxDecoration).color == Colors.grey),
+          findsOneWidget,
+          reason: "The handle should be grey",
+        );
 
         // Check the title
         expect(find.text(intl.schedule_settings_title), findsOneWidget);
@@ -185,11 +187,13 @@ void main() {
         await tester.pumpAndSettle();
 
         expect(
-            find.byWidgetPredicate((widget) =>
-                widget is Container &&
-                (widget.decoration as BoxDecoration).color == Colors.grey),
-            findsNothing,
-            reason: "There should not have a handle.");
+          find.byWidgetPredicate((widget) =>
+          widget is Container &&
+              widget.decoration is BoxDecoration &&
+              (widget.decoration as BoxDecoration).color == Colors.grey),
+          findsNothing,
+          reason: "There sould not have an handle",
+        );
 
         expect(find.text(intl.schedule_settings_title), findsOneWidget);
 
@@ -411,11 +415,8 @@ void main() {
             ListTile, intl.schedule_settings_show_today_btn_pref,
             skipOffstage: false);
 
-        expect(find.byType(Switch, skipOffstage: false), findsOneWidget);
-        // Currently the await tester.tap on a switch in a tile isn't working. Workaround:
-        (find.byType(Switch, skipOffstage: false).evaluate().single.widget
-                as Switch)
-            .onChanged(false);
+        expect(find.byType(Switch, skipOffstage: false), findsNWidgets(2));
+        (find.byType(Switch, skipOffstage: false).evaluate().first.widget as Switch).onChanged(false);
 
         await tester.pumpAndSettle();
 
