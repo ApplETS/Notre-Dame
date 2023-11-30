@@ -74,8 +74,17 @@ class AppTheme {
     return lightTheme.copyWith(
         useMaterial3: true,
         primaryColor: etsLightRed,
-        bottomNavigationBarTheme: lightTheme.bottomNavigationBarTheme
-            .copyWith(selectedItemColor: etsLightRed),
+        tabBarTheme: const TabBarTheme(
+          labelColor:  Colors.black,
+        ),
+        bottomNavigationBarTheme: lightTheme.bottomNavigationBarTheme.copyWith(selectedItemColor: etsLightRed),
+        navigationRailTheme: const NavigationRailThemeData(
+          backgroundColor: Color(0xffcccccc),
+          groupAlignment: 0,
+          indicatorColor: Colors.transparent,
+          selectedLabelTextStyle: TextStyle(color: etsLightRed),
+          selectedIconTheme: IconThemeData(color: etsLightRed),
+        ),
         colorScheme: lightTheme.colorScheme
             .copyWith(primary: etsLightRed, secondary: etsLightRed)
             .copyWith(secondary: etsLightRed)
@@ -89,15 +98,22 @@ class AppTheme {
         useMaterial3: true,
         // primaryColor: primaryDark,
         // appBarTheme: const AppBarTheme(color: Color(0xff121212)),
+        tabBarTheme: const TabBarTheme(
+          labelColor:  Colors.white,
+        ),
         scaffoldBackgroundColor: const Color(0xff121212),
         cardColor: const Color(0xff1e1e1e),
-        bottomNavigationBarTheme: darkTheme.bottomNavigationBarTheme
-            .copyWith(selectedItemColor: etsLightRed),
+        bottomNavigationBarTheme: darkTheme.bottomNavigationBarTheme.copyWith(selectedItemColor: etsLightRed),
+        navigationRailTheme: const NavigationRailThemeData(
+          backgroundColor: Color(0xff2a2a2a),
+          groupAlignment: 0,
+          indicatorColor: Colors.transparent,
+          selectedLabelTextStyle: TextStyle(color: etsLightRed),
+          selectedIconTheme: IconThemeData(color: etsLightRed),
+        ),
         colorScheme: darkTheme.colorScheme
             .copyWith(primary: etsLightRed, secondary: etsLightRed)
             .copyWith(secondary: etsLightRed)
-            .copyWith(
-                surface: const Color(0xff1e1e1e),
-                surfaceTint: const Color(0xff1e1e1e)));
+            .copyWith(surface: const Color(0xff1e1e1e), surfaceTint: const Color(0xff1e1e1e)));
   }
 }
