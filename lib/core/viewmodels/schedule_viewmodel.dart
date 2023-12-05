@@ -67,8 +67,7 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
   final Map<String, Color> courseColors = {};
 
   /// The color palette corresponding to the schedule courses.
-  List<Color> schedulePaletteThemeLight =
-      AppTheme.schedulePaletteLight.toList();
+  List<Color> schedulePaletteTheme = AppTheme.schedulePalette.toList();
 
   /// Get current locale
   Locale get locale => _settingsManager.locale;
@@ -135,7 +134,7 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
 
   Color getCourseColor(String courseName) {
     if (!courseColors.containsKey(courseName)) {
-      courseColors[courseName] = schedulePaletteThemeLight.removeLast();
+      courseColors[courseName] = schedulePaletteTheme.removeLast();
     }
     return courseColors[courseName];
   }
