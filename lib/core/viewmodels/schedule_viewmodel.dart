@@ -67,7 +67,7 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
   final Map<String, Color> courseColors = {};
 
   /// The color palette corresponding to the schedule courses.
-  List<Color> schedulePaletteTheme = AppTheme.schedulePalette.toList();
+  List<Color> schedulePaletteTheme = [];
 
   /// Get current locale
   Locale get locale => _settingsManager.locale;
@@ -96,12 +96,13 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
     return events;
   }
 
-  void handleViewChanged(DateTime date, EventController controller) {
+  void handleViewChanged(DateTime date, EventController controller,
+      List<Color> scheduleCardsPalette) {
     controller.removeWhere((event) => true);
     selectedDate = date;
-    var eventsToAdd = selectedMonthCalendarEvents();
+    var eventsToAdd = selectedMonthCalendarEvents(scheduleCardsPalette);
     if (calendarFormat == CalendarFormat.week) {
-      eventsToAdd = selectedWeekCalendarEvents();
+      eventsToAdd = selectedWeekCalendarEvents(scheduleCardsPalette);
     }
     controller.addAll(eventsToAdd);
   }
@@ -139,7 +140,13 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
     return courseColors[courseName];
   }
 
-  List<CalendarEventData> selectedWeekCalendarEvents() {
+  List<CalendarEventData> selectedWeekCalendarEvents(
+      List<Color> scheduleCardsPalette) {
+    if (scheduleCardsPalette.isNotEmpty) {
+      schedulePaletteTheme = scheduleCardsPalette;
+    } else {
+      schedulePaletteTheme = AppTheme.schedulePaletteLight;
+    }
     final List<CalendarEventData> events = [];
     final firstDayOfWeek = Utils.getFirstDayOfCurrentWeek(selectedDate,
         settings[PreferencesFlag.scheduleStartWeekday] as StartingDayOfWeek);
@@ -153,7 +160,13 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
     return events;
   }
 
-  List<CalendarEventData> selectedMonthCalendarEvents() {
+  List<CalendarEventData> selectedMonthCalendarEvents(
+      List<Color> scheduleCardsPalette) {
+    if (scheduleCardsPalette.isNotEmpty) {
+      schedulePaletteTheme = scheduleCardsPalette;
+    } else {
+      schedulePaletteTheme = AppTheme.schedulePaletteLight;
+    }
     final List<CalendarEventData> events = [];
     final date = selectedDate.datesOfMonths();
     for (int i = 0; i < daysInMonth; i++) {
@@ -193,9 +206,9 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
             });
             if (_coursesActivities.isNotEmpty) {
               if (calendarFormat == CalendarFormat.week) {
-                calendarEvents = selectedWeekCalendarEvents();
+                calendarEvents = selectedWeekCalendarEvents([]);
               } else {
-                calendarEvents = selectedMonthCalendarEvents();
+                calendarEvents = selectedMonthCalendarEvents([]);
               }
             }
           }

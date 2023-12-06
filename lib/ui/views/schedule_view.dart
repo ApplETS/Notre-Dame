@@ -168,15 +168,20 @@ class _ScheduleViewState extends State<ScheduleView>
     final chevronColor = Theme.of(context).brightness == Brightness.light
         ? AppTheme.primaryDark
         : AppTheme.lightThemeBackground;
+    final scheduleCardsPalette =
+        Theme.of(context).brightness == Brightness.light
+            ? AppTheme.schedulePaletteLight.toList()
+            : AppTheme.schedulePaletteDark.toList();
 
-    model.handleViewChanged(DateTime.now(), eventController);
+    model.handleViewChanged(
+        DateTime.now(), eventController, scheduleCardsPalette);
 
     if (model.calendarFormat == CalendarFormat.month) {
-      return _buildCalendarViewMonthly(
-          model, context, eventController, backgroundColor, chevronColor);
+      return _buildCalendarViewMonthly(model, context, eventController,
+          backgroundColor, chevronColor, scheduleCardsPalette);
     }
     return _buildCalendarViewWeekly(model, context, eventController,
-        backgroundColor, chevronColor, scheduleLineColor);
+        backgroundColor, chevronColor, scheduleLineColor, scheduleCardsPalette);
   }
 
   Widget _buildCalendarViewWeekly(
@@ -185,13 +190,15 @@ class _ScheduleViewState extends State<ScheduleView>
       calendar_view.EventController eventController,
       Color backgroundColor,
       Color chevronColor,
-      Color scheduleLineColor) {
+      Color scheduleLineColor,
+      List<Color> scheduleCardsPalette) {
     return Scaffold(
       body: calendar_view.WeekView(
         key: weekViewKey,
-        controller: eventController..addAll(model.selectedWeekCalendarEvents()),
-        onPageChange: (date, page) =>
-            model.handleViewChanged(date, eventController),
+        controller: eventController
+          ..addAll(model.selectedWeekCalendarEvents(scheduleCardsPalette)),
+        onPageChange: (date, page) => model.handleViewChanged(
+            date, eventController, scheduleCardsPalette),
         backgroundColor: backgroundColor,
         headerStyle: calendar_view.HeaderStyle(
             decoration: BoxDecoration(
@@ -255,15 +262,17 @@ class _ScheduleViewState extends State<ScheduleView>
       BuildContext context,
       calendar_view.EventController eventController,
       Color backgroundColor,
-      Color chevronColor) {
+      Color chevronColor,
+      List<Color> scheduleCardsPalette) {
     return Scaffold(
         body: calendar_view.MonthView(
       key: monthViewKey,
-      controller: eventController..addAll(model.selectedMonthCalendarEvents()),
+      controller: eventController
+        ..addAll(model.selectedMonthCalendarEvents(scheduleCardsPalette)),
       // to provide custom UI for month cells.
       cellAspectRatio: 0.78,
       onPageChange: (date, page) =>
-          model.handleViewChanged(date, eventController),
+          model.handleViewChanged(date, eventController, []),
       headerStyle: calendar_view.HeaderStyle(
           decoration: BoxDecoration(
             color: backgroundColor,

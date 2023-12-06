@@ -72,6 +72,7 @@ class _ScheduleCalendarTileState extends State<ScheduleCalendarTile> {
                   fontWeight: FontWeight.w500,
                 ),
               ),
+              /* *******Section removed because we receive "null" from the API*******
               Text(
                 "${AppIntl.of(widget.buildContext).schedule_calendar_by} $teacherName",
                 style: const TextStyle(
@@ -79,6 +80,7 @@ class _ScheduleCalendarTileState extends State<ScheduleCalendarTile> {
                   fontWeight: FontWeight.w500,
                 ),
               ),
+              */
               Text(
                 "${AppIntl.of(widget.buildContext).schedule_calendar_from_time} $startTime ${AppIntl.of(widget.buildContext).schedule_calendar_to_time} $endTime",
                 style: const TextStyle(

@@ -39,10 +39,10 @@ class AppTheme {
   static const Color darkThemeAccent = Color(0xff424242);
 
   // Schedule color palettes
-  static const List<Color> schedulePalette = [
+  static const List<Color> schedulePaletteLight = [
     Color(0xfff1c40f),
-    Color(0xff1abc9c),
-    Color(0xff7f8c8d),
+    Color(0xffe67e22),
+    Color(0xffe91e63),
     Color(0xff16a085),
     Color(0xff2ecc71),
     Color(0xff3498db),
@@ -50,6 +50,20 @@ class AppTheme {
     Color(0xff34495e),
     Color(0xffe67e22),
     Color(0xffe74c3c),
+  ];
+
+  // schedulePaletteDark, same colors than schedulePaletteLight but darker
+  static const List<Color> schedulePaletteDark = [
+    Color(0xffb7950b),
+    Color(0xffa84300),
+    Color(0xffad1457),
+    Color(0xff0b5345),
+    Color(0xff1b5e20),
+    Color(0xff1e3a56),
+    Color(0xff6a1b9a),
+    Color(0xff2c3e50),
+    Color(0xffa84300),
+    Color(0xff992d22),
   ];
 
   /// Schedule calendar colors
