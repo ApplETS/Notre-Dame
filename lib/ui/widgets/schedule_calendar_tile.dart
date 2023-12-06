@@ -41,7 +41,6 @@ class _ScheduleCalendarTileState extends State<ScheduleCalendarTile> {
     final courseName = courseInfos[0].split("-")[0];
     final courseLocation = courseInfos[1];
     final courseType = courseInfos[2];
-    final teacherName = courseInfos[3];
     final startTime =
         "${widget.start.hour}:${widget.start.minute.toString().padLeft(2, '0')}";
     final endTime =
