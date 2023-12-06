@@ -145,7 +145,7 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
     if (scheduleCardsPalette.isNotEmpty) {
       schedulePaletteTheme = scheduleCardsPalette;
     } else {
-      schedulePaletteTheme = AppTheme.schedulePaletteLight;
+      schedulePaletteTheme = AppTheme.schedulePaletteLight.toList();
     }
     final List<CalendarEventData> events = [];
     final firstDayOfWeek = Utils.getFirstDayOfCurrentWeek(selectedDate,
@@ -165,7 +165,7 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
     if (scheduleCardsPalette.isNotEmpty) {
       schedulePaletteTheme = scheduleCardsPalette;
     } else {
-      schedulePaletteTheme = AppTheme.schedulePaletteLight;
+      schedulePaletteTheme = AppTheme.schedulePaletteLight.toList();
     }
     final List<CalendarEventData> events = [];
     final date = selectedDate.datesOfMonths();
