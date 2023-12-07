@@ -34,7 +34,7 @@ class QuickLinksViewModel extends FutureViewModel<List<QuickLink>> {
 
     // otherwise, return quickLinks according to the cache
     final defaultQuickLinks =
-        _quickLinkRepository.getDefaultQuickLinks(_appIntl);
+        await _quickLinkRepository.getDefaultQuickLinks(_appIntl);
     quickLinkDataList.sort((a, b) => a.index.compareTo(b.index));
     return quickLinkDataList
         .map((data) => defaultQuickLinks
@@ -47,8 +47,8 @@ class QuickLinksViewModel extends FutureViewModel<List<QuickLink>> {
     final currentQuickLinkIds = quickLinkList.map((e) => e.id).toList();
 
     // Return those not in current quick links but in default list
-    return _quickLinkRepository
-        .getDefaultQuickLinks(_appIntl)
+    final defaults = await _quickLinkRepository.getDefaultQuickLinks(_appIntl);
+    return defaults
         .where((element) => !currentQuickLinkIds.contains(element.id))
         .toList();
   }

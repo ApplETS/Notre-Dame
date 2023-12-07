@@ -26,7 +26,7 @@ class QuickLinkRepositoryMock extends Mock implements QuickLinkRepository {
   /// Stub the function [getDefaultQuickLinks] of [mock] when called will return [toReturn].
   static void stubGetDefaultQuickLinks(QuickLinkRepositoryMock mock,
       {List<QuickLink> toReturn = const []}) {
-    when(mock.getDefaultQuickLinks(any)).thenAnswer((_) => toReturn);
+    when(mock.getDefaultQuickLinks(any)).thenAnswer((_) async => toReturn);
   }
 
   /// Stub the function [updateQuickLinkDataToCache] of [mock] when called will complete without errors.

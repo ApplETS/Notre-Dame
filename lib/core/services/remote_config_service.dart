@@ -1,13 +1,11 @@
-//SERVICE
-
 // Package imports:
+import 'dart:convert';
+
 import 'package:firebase_remote_config/firebase_remote_config.dart';
 
 // Project imports:
 import 'package:notredame/core/services/analytics_service.dart';
 import 'package:notredame/locator.dart';
-
-//OTHERS
 
 /// Manage the analytics of the application
 class RemoteConfigService {
@@ -26,6 +24,7 @@ class RemoteConfigService {
   static const _dashboardMsgColor = "dashboard_message_color";
   static const _dashboardMsgUrl = "dashboard_message_url";
   static const _dashboardMsgType = "dashboard_message_type";
+  static const _quicklinksValues = "quicklinks_values";
 
   static const _scheduleListViewDefault = "schedule_list_view_default";
   final FirebaseRemoteConfig _remoteConfig = FirebaseRemoteConfig.instance;
@@ -106,6 +105,11 @@ class RemoteConfigService {
   String get dashboardMsgType {
     fetch();
     return _remoteConfig.getString(_dashboardMsgType);
+  }
+
+  Future<dynamic> get quicklinks_values async {
+    await fetch();
+    return jsonDecode(_remoteConfig.getString(_quicklinksValues));
   }
 
   Future<void> fetch() async {
