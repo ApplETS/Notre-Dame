@@ -1,4 +1,5 @@
 // Flutter imports:
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 
@@ -6,6 +7,9 @@ import 'package:flutter/scheduler.dart';
 import 'package:ets_api_clients/models.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
+import 'package:notredame/core/constants/preferences_flags.dart';
+import 'package:notredame/core/viewmodels/dashboard_viewmodel.dart';
+import 'package:notredame/ui/widgets/dismissible_card.dart';
 import 'package:stacked/stacked.dart';
 
 // Project imports:
@@ -97,6 +101,8 @@ class _GradesViewState extends State<GradesView> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
+            if (model.remoteConfigService.gradesMessageActive && index == 0)
+              _buildMessageBroadcastCard(model),
             Text(sessionName,
                 style: const TextStyle(
                   fontSize: 25,
@@ -113,6 +119,80 @@ class _GradesViewState extends State<GradesView> {
           ],
         ),
       );
+
+  Widget _buildMessageBroadcastCard(GradesViewModel model) {
+    final broadcastMsgColor = Color(int.parse(model.broadcastColor));
+    final broadcastMsgType = model.broadcastType;
+    final broadcastMsgUrl = model.broadcastUrl;
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 8.0),
+      child: DismissibleCard(
+          key: UniqueKey(),
+          onDismissed: (DismissDirection direction) {},
+          isBusy: model.busy(model.broadcastMessage),
+          cardColor: broadcastMsgColor,
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(17, 10, 15, 20),
+            child: Column(mainAxisSize: MainAxisSize.min, children: [
+              // title row
+              Row(
+                children: [
+                  Expanded(
+                    child: Align(
+                      alignment: Alignment.centerLeft,
+                      child: Text(model.broadcastTitle,
+                          style: Theme.of(context).primaryTextTheme.headline6),
+                    ),
+                  ),
+                  Align(
+                    alignment: Alignment.centerRight,
+                    child: InkWell(
+                      child:
+                          getBroadcastIcon(broadcastMsgType, broadcastMsgUrl),
+                    ),
+                  ),
+                ],
+              ),
+              // main text
+              AutoSizeText(model.broadcastMessage ?? "",
+                  style: Theme.of(context).primaryTextTheme.bodyText2)
+            ]),
+          )),
+    );
+  }
+
+  Widget getBroadcastIcon(String type, String url) {
+    switch (type) {
+      case "warning":
+        return const Icon(
+          Icons.warning_rounded,
+          color: AppTheme.lightThemeBackground,
+          size: 36.0,
+        );
+      case "alert":
+        return const Icon(
+          Icons.error,
+          color: AppTheme.lightThemeBackground,
+          size: 36.0,
+        );
+      case "link":
+        return IconButton(
+          onPressed: () {
+            DashboardViewModel.launchBroadcastUrl(url);
+          },
+          icon: const Icon(
+            Icons.open_in_new,
+            color: AppTheme.lightThemeBackground,
+            size: 30.0,
+          ),
+        );
+    }
+    return const Icon(
+      Icons.campaign,
+      color: AppTheme.lightThemeBackground,
+      size: 36.0,
+    );
+  }
 
   /// Build the complete name of the session for the user local.
   String _sessionName(String shortName, AppIntl intl) {

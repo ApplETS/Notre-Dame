@@ -18,6 +18,7 @@ class RemoteConfigService {
   static const _privacyPolicyURL = "privacy_policy_url";
 
   // dashboard message remote config keys
+  static const _gradesMsgToggle = "grades_message_toggle";
   static const _dashboardMsgToggle = "dashboard_message_toggle";
   static const _dashboardMsgFr = "dashboard_message_fr";
   static const _dashboardMsgEn = "dashboard_message_en";
@@ -56,6 +57,11 @@ class RemoteConfigService {
   bool get dashboardMessageActive {
     fetch();
     return _remoteConfig.getBool(_dashboardMsgToggle);
+  }
+
+  bool get gradesMessageActive {
+    fetch();
+    return _remoteConfig.getBool(_gradesMsgToggle);
   }
 
   bool get scheduleListViewDefault {
