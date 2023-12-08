@@ -12,6 +12,11 @@ class RemoteConfigServiceMock extends Mock implements RemoteConfigService {
     when(mock.scheduleListViewDefault).thenReturn(toReturn);
   }
 
+  static void stubGetGradesEnabled(RemoteConfigServiceMock mock,
+      {bool toReturn = true}) {
+    when(mock.gradesMessageActive).thenReturn(toReturn);
+  }
+
   static void stubGetBroadcastEnabled(RemoteConfigServiceMock mock,
       {bool toReturn = true}) {
     when(mock.dashboardMessageActive).thenReturn(toReturn);

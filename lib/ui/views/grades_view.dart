@@ -7,7 +7,6 @@ import 'package:flutter/scheduler.dart';
 import 'package:ets_api_clients/models.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
-import 'package:notredame/core/constants/preferences_flags.dart';
 import 'package:notredame/core/viewmodels/dashboard_viewmodel.dart';
 import 'package:notredame/ui/widgets/dismissible_card.dart';
 import 'package:stacked/stacked.dart';

@@ -14,13 +14,16 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:notredame/core/managers/course_repository.dart';
 import 'package:notredame/core/managers/settings_manager.dart';
 import 'package:notredame/core/services/networking_service.dart';
+import 'package:notredame/core/services/remote_config_service.dart';
 import 'package:notredame/ui/views/grades_view.dart';
 import 'package:notredame/ui/widgets/grade_button.dart';
 import '../../helpers.dart';
 import '../../mock/managers/course_repository_mock.dart';
+import '../../mock/services/remote_config_service_mock.dart';
 
 void main() {
   CourseRepository courseRepository;
+  RemoteConfigService remoteConfigService;
   AppIntl intl;
 
   final Course courseSummer = Course(
@@ -66,6 +69,7 @@ void main() {
       intl = await setupAppIntl();
       setupNavigationServiceMock();
       courseRepository = setupCourseRepositoryMock();
+      remoteConfigService = setupRemoteConfigServiceMock();
       setupSettingsManagerMock();
       setupAnalyticsServiceMock();
     });
@@ -136,6 +140,9 @@ void main() {
         CourseRepositoryMock.stubGetCourses(
             courseRepository as CourseRepositoryMock,
             fromCacheOnly: true);
+        RemoteConfigServiceMock.stubGetGradesEnabled(
+            remoteConfigService as RemoteConfigServiceMock,
+            toReturn: false);
 
         tester.binding.window.physicalSizeTestValue = const Size(800, 1410);
 
@@ -160,6 +167,9 @@ void main() {
             courseRepository as CourseRepositoryMock,
             toReturn: courses,
             fromCacheOnly: true);
+        RemoteConfigServiceMock.stubGetGradesEnabled(
+            remoteConfigService as RemoteConfigServiceMock,
+            toReturn: false);
 
         tester.binding.window.physicalSizeTestValue = const Size(800, 1410);
 

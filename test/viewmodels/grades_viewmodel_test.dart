@@ -8,13 +8,16 @@ import 'package:mockito/mockito.dart';
 import 'package:notredame/core/managers/course_repository.dart';
 import 'package:notredame/core/managers/settings_manager.dart';
 import 'package:notredame/core/services/navigation_service.dart';
+import 'package:notredame/core/services/remote_config_service.dart';
 import 'package:notredame/core/viewmodels/grades_viewmodel.dart';
 import '../helpers.dart';
 import '../mock/managers/course_repository_mock.dart';
+import '../mock/services/remote_config_service_mock.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
   CourseRepository courseRepository;
+  RemoteConfigService remoteConfigService;
   AppIntl intl;
   GradesViewModel viewModel;
 
@@ -84,9 +87,13 @@ void main() {
   group('GradesViewModel -', () {
     setUp(() async {
       courseRepository = setupCourseRepositoryMock();
+      remoteConfigService = setupRemoteConfigServiceMock();
       intl = await setupAppIntl();
       setupSettingsManagerMock();
       setupNavigationServiceMock();
+
+      RemoteConfigServiceMock.stubGetGradesEnabled(
+          remoteConfigService as RemoteConfigServiceMock);
 
       viewModel = GradesViewModel(intl: intl);
     });
