@@ -6,6 +6,7 @@ import 'package:ets_api_clients/models.dart';
 import 'package:feature_discovery/feature_discovery.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:notredame/core/services/remote_config_service.dart';
 import 'package:stacked/stacked.dart';
 
 // Project imports:
@@ -19,6 +20,8 @@ import 'package:notredame/ui/utils/discovery_components.dart';
 class GradesViewModel extends FutureViewModel<Map<String, List<Course>>> {
   /// Used to get the courses of the student
   final CourseRepository _courseRepository = locator<CourseRepository>();
+  final RemoteConfigService remoteConfigService =
+      locator<RemoteConfigService>();
 
   /// Localization class of the application.
   final AppIntl _appIntl;
@@ -30,11 +33,20 @@ class GradesViewModel extends FutureViewModel<Map<String, List<Course>>> {
   /// session.
   final List<String> sessionOrder = [];
 
+  /// Message to display in case of urgent/important broadcast need (Firebase
+  /// remote config), and the associated card title
+  String broadcastMessage = "";
+  String broadcastTitle = "";
+  String broadcastColor = "";
+  String broadcastUrl = "";
+  String broadcastType = "";
+
   GradesViewModel({@required AppIntl intl}) : _appIntl = intl;
 
   @override
   Future<Map<String, List<Course>>> futureToRun() async =>
       _courseRepository.getCourses(fromCacheOnly: true).then((coursesCached) {
+        futureToRunBroadcast();
         setBusy(true);
         _buildCoursesBySession(coursesCached);
         // ignore: return_type_invalid_for_catch_error
@@ -123,5 +135,30 @@ class GradesViewModel extends FutureViewModel<Map<String, List<Course>>> {
 
       settingsManager.setBool(PreferencesFlag.discoveryStudentGrade, true);
     }
+  }
+
+  Future<void> futureToRunBroadcast() async {
+    setBusyForObject(broadcastMessage, true);
+    setBusyForObject(broadcastTitle, true);
+    setBusyForObject(broadcastColor, true);
+    setBusyForObject(broadcastUrl, true);
+    setBusyForObject(broadcastType, true);
+
+    if (_appIntl.localeName == "fr") {
+      broadcastMessage = remoteConfigService.dashboardMessageFr;
+      broadcastTitle = remoteConfigService.dashboardMessageTitleFr;
+    } else {
+      broadcastMessage = remoteConfigService.dashboardMessageEn;
+      broadcastTitle = remoteConfigService.dashboardMessageTitleEn;
+    }
+    broadcastColor = remoteConfigService.dashboardMsgColor;
+    broadcastUrl = remoteConfigService.dashboardMsgUrl;
+    broadcastType = remoteConfigService.dashboardMsgType;
+
+    setBusyForObject(broadcastMessage, false);
+    setBusyForObject(broadcastTitle, false);
+    setBusyForObject(broadcastColor, false);
+    setBusyForObject(broadcastUrl, false);
+    setBusyForObject(broadcastType, false);
   }
 }
