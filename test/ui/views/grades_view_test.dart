@@ -115,6 +115,9 @@ void main() {
             courseRepository as CourseRepositoryMock,
             toReturn: courses,
             fromCacheOnly: true);
+        RemoteConfigServiceMock.stubGetGradesEnabled(
+            remoteConfigService as RemoteConfigServiceMock,
+            toReturn: false);
 
         tester.binding.window.physicalSizeTestValue = const Size(800, 1410);
 
