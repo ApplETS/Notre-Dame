@@ -1,4 +1,0 @@
-[submodule "font_awesome_flutter"]
-	path = font_awesome_flutter
-	url = git@github.com:ApplETS/font_awesome_flutter.git
-  branch = ets-mobile

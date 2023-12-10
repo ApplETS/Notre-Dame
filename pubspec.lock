@@ -551,9 +551,11 @@ packages:
   font_awesome_flutter:
     dependency: "direct main"
     description:
-      path: font_awesome_flutter
-      relative: true
-    source: path
+      path: "."
+      ref: ets-mobile
+      resolved-ref: e8ceccbebd9ec7f614e5232defc900fe608d3310
+      url: "https://github.com/ApplETS/font_awesome_flutter.git"
+    source: git
     version: "10.2.1"
   get_it:
     dependency: "direct main"
