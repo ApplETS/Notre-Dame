@@ -1,4 +1,5 @@
 // Dart imports:
+import 'dart:async';
 import 'dart:convert';
 
 // Flutter imports:
@@ -7,14 +8,17 @@ import 'package:flutter/material.dart';
 // Package imports:
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 // Project imports:
 import 'package:notredame/core/managers/cache_manager.dart';
 import 'package:notredame/core/managers/quick_link_repository.dart';
 import 'package:notredame/core/models/quick_link.dart';
 import 'package:notredame/core/models/quick_link_data.dart';
+import 'package:notredame/core/services/remote_config_service.dart';
 import '../helpers.dart';
 import '../mock/managers/cache_manager_mock.dart';
+import '../mock/services/remote_config_service_mock.dart';
 
 void main() {
   CacheManager cacheManager;
@@ -90,6 +94,71 @@ void main() {
 
         expect(quickLinkRepository.updateQuickLinkDataToCache([quickLink]),
             throwsA(isInstanceOf<Exception>()));
+      });
+    });
+
+    group("getDefaultQuickLinks", () {
+      AppIntl appIntl;
+      RemoteConfigServiceMock remoteConfigServiceMock;
+
+      dynamic quicklinkRemoteConfigIconStub = [
+        {
+          "id": 0,
+          "nameEn": "ETS Portal",
+          "nameFr": "Portail de l'ÉTS",
+          "icon": "home"
+        },
+      ];
+
+      setUp(() async {
+        appIntl = await setupAppIntl();
+
+        remoteConfigServiceMock =
+            setupRemoteConfigServiceMock() as RemoteConfigServiceMock;
+      });
+
+      tearDown(() {
+        clearInteractions(remoteConfigServiceMock);
+        unregister<RemoteConfigService>();
+      });
+
+      test("Trying to get quicklinks when remote config is inacessible.",
+          () async {
+        when(remoteConfigServiceMock.quicklinks_values).thenAnswer(null);
+
+        final quickLinks =
+            await quickLinkRepository.getDefaultQuickLinks(appIntl);
+
+        verify(remoteConfigServiceMock.quicklinks_values).called(1);
+        verify(remoteConfigServiceMock).called(0);
+        verify(cacheManager).called(0);
+        expect(quickLinks, isInstanceOf<List<QuickLink>>());
+        expect(quickLinks.length, 9);
+        expect(quickLinks.length, 9);
+        for (int i = 0; i < quickLinks.length; i++) {
+          expect(quickLinks[i].id, i);
+        }
+      });
+
+      test(
+          "Trying to get quicklinks from remote config with one icon attribute.",
+          () async {
+        // Stub the remote config to have values for quicklinks
+        when(remoteConfigServiceMock.quicklinks_values)
+            .thenAnswer((_) async => quicklinkRemoteConfigIconStub);
+
+        final quickLinks =
+            await quickLinkRepository.getDefaultQuickLinks(appIntl);
+
+        verify(remoteConfigServiceMock.quicklinks_values).called(1);
+        verify(remoteConfigServiceMock).called(0);
+        verify(cacheManager).called(0);
+        expect(quickLinks, isInstanceOf<List<QuickLink>>());
+        expect(quickLinks.length, 9);
+        expect(quickLinks.length, 9);
+        for (int i = 0; i < quickLinks.length; i++) {
+          expect(quickLinks[i].id, i);
+        }
       });
     });
   });

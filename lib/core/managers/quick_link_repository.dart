@@ -1,5 +1,7 @@
 // Dart imports:
 import 'dart:convert';
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/foundation.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:notredame/ui/utils/app_theme.dart';
 import 'package:font_awesome_flutter/name_icon_mapping.dart';
@@ -58,7 +60,6 @@ class QuickLinkRepository {
     for (var i = 0; i < listValues.length; i++) {
       Widget imageWidget;
       Map<String, dynamic> map = listValues[i] as Map<String, dynamic>;
-
       if (map['icon'] != null) {
         final String iconName = map['icon'] as String;
         imageWidget = FaIcon(
@@ -67,10 +68,24 @@ class QuickLinkRepository {
           size: 64,
         );
       } else if (map['remotePath'] != null) {
-        final remoteUrl =
-            await _storageService.getImageUrl(map['remotePath'] as String);
-        imageWidget = Image.network(
-          remoteUrl,
+        // from cache
+        final String remotePathKey = map['remotePath'] as String;
+        String imageUrl;
+        try {
+          imageUrl = await _cacheManager.get(remotePathKey);
+        } on Exception catch (_) {
+          if (kDebugMode) {
+            print(
+                "Image not in cache, fetching from cloud storage: $remotePathKey");
+          }
+
+          imageUrl =
+              await _storageService.getImageUrl(map['remotePath'] as String);
+          _cacheManager.update(remotePathKey, imageUrl);
+        }
+
+        imageWidget = CachedNetworkImage(
+          imageUrl: imageUrl,
           color: AppTheme.etsLightRed,
         );
       }
