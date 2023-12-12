@@ -1,12 +1,13 @@
 // Dart imports:
-import 'dart:async';
 import 'dart:convert';
 
 // Flutter imports:
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
 // Package imports:
 import 'package:flutter_test/flutter_test.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:mockito/mockito.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -18,23 +19,33 @@ import 'package:notredame/core/models/quick_link_data.dart';
 import 'package:notredame/core/services/remote_config_service.dart';
 import '../helpers.dart';
 import '../mock/managers/cache_manager_mock.dart';
+import '../mock/services/firebase_storage_mock.dart';
 import '../mock/services/remote_config_service_mock.dart';
 
 void main() {
+  AppIntl appIntl;
   CacheManager cacheManager;
   QuickLinkRepository quickLinkRepository;
+  RemoteConfigServiceMock remoteConfigServiceMock;
+  FirebaseStorageServiceMock storageServiceMock;
 
   group("QuickLinkRepository - ", () {
-    setUp(() {
+    setUp(() async {
       // Setup needed services and managers
       cacheManager = setupCacheManagerMock();
-
+      setupAnalyticsServiceMock();
+      appIntl = await setupAppIntl();
+      remoteConfigServiceMock =
+          setupRemoteConfigServiceMock() as RemoteConfigServiceMock;
+      storageServiceMock =
+          setupFirebaseStorageServiceMock() as FirebaseStorageServiceMock;
       quickLinkRepository = QuickLinkRepository();
     });
 
     tearDown(() {
       clearInteractions(cacheManager);
       unregister<CacheManager>();
+      unregister<RemoteConfigService>();
     });
 
     group("getQuickLinkDataFromCache - ", () {
@@ -98,45 +109,40 @@ void main() {
     });
 
     group("getDefaultQuickLinks", () {
-      AppIntl appIntl;
-      RemoteConfigServiceMock remoteConfigServiceMock;
-
-      dynamic quicklinkRemoteConfigIconStub = [
+      final quicklinkRemoteConfigRemoteImageStub = [
         {
-          "id": 0,
+          "id": "1",
           "nameEn": "ETS Portal",
           "nameFr": "Portail de l'ÉTS",
-          "icon": "home"
+          "remotePath": "ic_monets.png"
         },
       ];
 
-      setUp(() async {
-        appIntl = await setupAppIntl();
-
-        remoteConfigServiceMock =
-            setupRemoteConfigServiceMock() as RemoteConfigServiceMock;
-      });
-
-      tearDown(() {
-        clearInteractions(remoteConfigServiceMock);
-        unregister<RemoteConfigService>();
-      });
+      final quicklinkRemoteConfigIconStub = [
+        {
+          "id": "1",
+          "nameEn": "Répertoire",
+          "nameFr": "Directory",
+          "icon": "address-book"
+        },
+      ];
 
       test("Trying to get quicklinks when remote config is inacessible.",
           () async {
-        when(remoteConfigServiceMock.quicklinks_values).thenAnswer(null);
+        when(remoteConfigServiceMock.quicklinks_values)
+            .thenAnswer((_) async => null);
 
         final quickLinks =
             await quickLinkRepository.getDefaultQuickLinks(appIntl);
 
         verify(remoteConfigServiceMock.quicklinks_values).called(1);
-        verify(remoteConfigServiceMock).called(0);
-        verify(cacheManager).called(0);
+        verifyNoMoreInteractions(remoteConfigServiceMock);
+        verifyNoMoreInteractions(cacheManager);
         expect(quickLinks, isInstanceOf<List<QuickLink>>());
-        expect(quickLinks.length, 9);
+        // There should have 9 quicklinks if none is found in remote config
         expect(quickLinks.length, 9);
         for (int i = 0; i < quickLinks.length; i++) {
-          expect(quickLinks[i].id, i);
+          expect(quickLinks[i].id, i + 1);
         }
       });
 
@@ -151,13 +157,85 @@ void main() {
             await quickLinkRepository.getDefaultQuickLinks(appIntl);
 
         verify(remoteConfigServiceMock.quicklinks_values).called(1);
-        verify(remoteConfigServiceMock).called(0);
-        verify(cacheManager).called(0);
+        verifyNoMoreInteractions(remoteConfigServiceMock);
+        verifyNoMoreInteractions(cacheManager);
         expect(quickLinks, isInstanceOf<List<QuickLink>>());
-        expect(quickLinks.length, 9);
-        expect(quickLinks.length, 9);
+        expect(quickLinks.length, 1);
+        expect(quickLinks[0].image, isInstanceOf<FaIcon>());
+        // Verify that the icon is the right one (Icon data, size and color)
+        expect((quickLinks[0].image as FaIcon).icon.codePoint, 62137);
+        expect((quickLinks[0].image as FaIcon).size, 64);
+        expect((quickLinks[0].image as FaIcon).color,
+            const Color.fromARGB(255, 239, 62, 69));
         for (int i = 0; i < quickLinks.length; i++) {
-          expect(quickLinks[i].id, i);
+          expect(quickLinks[i].id, i + 1);
+        }
+      });
+
+      test(
+          "Trying to get quicklinks from remote config with one remote_path attribute (cached).",
+          () async {
+        // Arrange
+        when(remoteConfigServiceMock.quicklinks_values)
+            .thenAnswer((_) async => quicklinkRemoteConfigRemoteImageStub);
+        const String url = "https://url.com";
+        CacheManagerMock.stubGet(
+            cacheManager as CacheManagerMock, "ic_monets.png", url);
+
+        // Act
+        final quickLinks =
+            await quickLinkRepository.getDefaultQuickLinks(appIntl);
+
+        // Assert
+        verify(remoteConfigServiceMock.quicklinks_values).called(1);
+        verifyNoMoreInteractions(storageServiceMock);
+
+        verify(cacheManager.get("ic_monets.png")).called(1);
+
+        verifyNoMoreInteractions(remoteConfigServiceMock);
+        verifyNoMoreInteractions(cacheManager);
+
+        expect(quickLinks, isInstanceOf<List<QuickLink>>());
+        expect(quickLinks.length, 1);
+        expect(quickLinks[0].image, isInstanceOf<CachedNetworkImage>());
+        for (int i = 0; i < quickLinks.length; i++) {
+          expect(quickLinks[i].id, i + 1);
+        }
+      });
+
+      test(
+          "Trying to get quicklinks from remote config with one remote_path attribute (not previously cached).",
+          () async {
+        // Arrange
+        when(remoteConfigServiceMock.quicklinks_values)
+            .thenAnswer((_) async => quicklinkRemoteConfigRemoteImageStub);
+        const String url = "https://url.com";
+        CacheManagerMock.stubGetException(
+            cacheManager as CacheManagerMock, "ic_monets.png");
+        when(storageServiceMock.getImageUrl("ic_monets.png"))
+            .thenAnswer((_) async => url);
+
+        // Act
+        final quickLinks =
+            await quickLinkRepository.getDefaultQuickLinks(appIntl);
+
+        // Assert
+        verify(remoteConfigServiceMock.quicklinks_values).called(1);
+        verifyNoMoreInteractions(remoteConfigServiceMock);
+
+        verify(cacheManager.get("ic_monets.png")).called(1);
+
+        verify(storageServiceMock.getImageUrl("ic_monets.png")).called(1);
+        verify(cacheManager.update("ic_monets.png", url)).called(1);
+        verifyNoMoreInteractions(storageServiceMock);
+        verifyNoMoreInteractions(cacheManager);
+
+        expect(quickLinks, isInstanceOf<List<QuickLink>>());
+        expect(quickLinks.length, 1);
+        expect(quickLinks[0].image, isInstanceOf<CachedNetworkImage>());
+        expect((quickLinks[0].image as CachedNetworkImage).imageUrl, url);
+        for (int i = 0; i < quickLinks.length; i++) {
+          expect(quickLinks[i].id, i + 1);
         }
       });
     });

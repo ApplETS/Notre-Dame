@@ -341,7 +341,7 @@ QuickLinkRepository setupQuickLinkRepositoryMock() {
 }
 
 /// Load a mock of the [FirebaseStorageService]
-FirebaseStorageServiceMock setupFirebaseStorageServiceMock() {
+FirebaseStorageService setupFirebaseStorageServiceMock() {
   unregister<FirebaseStorageService>();
   final storage = FirebaseStorageServiceMock();
 

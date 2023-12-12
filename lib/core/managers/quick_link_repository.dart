@@ -1,7 +1,6 @@
 // Dart imports:
 import 'dart:convert';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter/foundation.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:notredame/ui/utils/app_theme.dart';
 import 'package:font_awesome_flutter/name_icon_mapping.dart';
@@ -74,13 +73,7 @@ class QuickLinkRepository {
         try {
           imageUrl = await _cacheManager.get(remotePathKey);
         } on Exception catch (_) {
-          if (kDebugMode) {
-            print(
-                "Image not in cache, fetching from cloud storage: $remotePathKey");
-          }
-
-          imageUrl =
-              await _storageService.getImageUrl(map['remotePath'] as String);
+          imageUrl = await _storageService.getImageUrl(remotePathKey);
           _cacheManager.update(remotePathKey, imageUrl);
         }
 

@@ -25,9 +25,9 @@ void main() {
       rootMock = ReferenceMock();
       childMock = ReferenceMock();
       firebaseStorageMock = FirebaseStorageMock();
-      when(firebaseStorageMock.ref("any-images")).thenReturn(rootMock);
+      when(firebaseStorageMock.ref("app-images")).thenReturn(rootMock);
 
-      when(firebaseStorageMock.ref("any-images")).thenReturn(rootMock);
+      when(firebaseStorageMock.ref("app-images")).thenReturn(rootMock);
       when(rootMock.child("test.png")).thenReturn(childMock);
       when(childMock.getDownloadURL())
           .thenAnswer((_) => Future.value("test-url"));
@@ -38,7 +38,7 @@ void main() {
     group("getImageUrl - ", () {
       test("get image url", () async {
         final url = await service.getImageUrl("test.png");
-        verify(firebaseStorageMock.ref("any-images"));
+        verify(firebaseStorageMock.ref("app-images"));
         verify(rootMock.child("test.png"));
         verify(childMock.getDownloadURL());
         expect(url, isNotNull);
