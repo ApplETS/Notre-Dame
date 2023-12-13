@@ -129,12 +129,15 @@ void main() {
 
       test("Trying to get quicklinks when remote config is inacessible.",
           () async {
-        when(remoteConfigServiceMock.quicklinksValues)
-            .thenAnswer((_) async => null);
+        // Arrange
+        // Stub the remote config to return null
+        RemoteConfigServiceMock.stubGetQuickLinks(remoteConfigServiceMock);
 
+        // Act
         final quickLinks =
             await quickLinkRepository.getDefaultQuickLinks(appIntl);
 
+        // Assert
         verify(remoteConfigServiceMock.quicklinksValues).called(1);
         verifyNoMoreInteractions(remoteConfigServiceMock);
         verifyNoMoreInteractions(cacheManager);
@@ -149,13 +152,14 @@ void main() {
       test(
           "Trying to get quicklinks from remote config with one icon attribute.",
           () async {
+        // Arrange
         // Stub the remote config to have values for quicklinks
-        when(remoteConfigServiceMock.quicklinksValues)
-            .thenAnswer((_) async => quicklinkRemoteConfigIconStub);
-
+        RemoteConfigServiceMock.stubGetQuickLinks(remoteConfigServiceMock,
+            toReturn: quicklinkRemoteConfigIconStub);
+        // Act
         final quickLinks =
             await quickLinkRepository.getDefaultQuickLinks(appIntl);
-
+        // Assert
         verify(remoteConfigServiceMock.quicklinksValues).called(1);
         verifyNoMoreInteractions(remoteConfigServiceMock);
         verifyNoMoreInteractions(cacheManager);
@@ -176,8 +180,8 @@ void main() {
           "Trying to get quicklinks from remote config with one remote_path attribute (cached).",
           () async {
         // Arrange
-        when(remoteConfigServiceMock.quicklinksValues)
-            .thenAnswer((_) async => quicklinkRemoteConfigRemoteImageStub);
+        RemoteConfigServiceMock.stubGetQuickLinks(remoteConfigServiceMock,
+            toReturn: quicklinkRemoteConfigRemoteImageStub);
         const String url = "https://url.com";
         CacheManagerMock.stubGet(
             cacheManager as CacheManagerMock, "ic_monets.png", url);
@@ -207,8 +211,8 @@ void main() {
           "Trying to get quicklinks from remote config with one remote_path attribute (not previously cached).",
           () async {
         // Arrange
-        when(remoteConfigServiceMock.quicklinksValues)
-            .thenAnswer((_) async => quicklinkRemoteConfigRemoteImageStub);
+        RemoteConfigServiceMock.stubGetQuickLinks(remoteConfigServiceMock,
+            toReturn: quicklinkRemoteConfigRemoteImageStub);
         const String url = "https://url.com";
         CacheManagerMock.stubGetException(
             cacheManager as CacheManagerMock, "ic_monets.png");
