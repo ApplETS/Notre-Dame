@@ -56,4 +56,9 @@ class RemoteConfigServiceMock extends Mock implements RemoteConfigService {
       {String toReturn = "https://clubapplets.ca/"}) {
     when(mock.dashboardMsgUrl).thenReturn(toReturn);
   }
+
+  static void stubGetQuickLinks(RemoteConfigServiceMock mock,
+      {dynamic toReturn}) {
+    when(mock.quicklinksValues).thenAnswer((_) async => toReturn);
+  }
 }

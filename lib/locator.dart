@@ -12,6 +12,7 @@ import 'package:notredame/core/managers/settings_manager.dart';
 import 'package:notredame/core/managers/user_repository.dart';
 import 'package:notredame/core/services/analytics_service.dart';
 import 'package:notredame/core/services/app_widget_service.dart';
+import 'package:notredame/core/services/firebase_storage_service.dart';
 import 'package:notredame/core/services/github_api.dart';
 import 'package:notredame/core/services/in_app_review_service.dart';
 import 'package:notredame/core/services/internal_info_service.dart';
@@ -35,6 +36,7 @@ void setupLocator() {
   locator.registerLazySingleton(() => const FlutterSecureStorage());
   locator.registerLazySingleton(() => PreferencesService());
   locator.registerLazySingleton(() => NetworkingService());
+  locator.registerLazySingleton(() => FirebaseStorageService());
   locator.registerLazySingleton(() => SirenFlutterService());
   locator.registerLazySingleton(() => AppWidgetService());
   locator.registerLazySingleton(() => InAppReviewService());
