@@ -10,7 +10,9 @@ class FirebaseStorageServiceMock extends Mock
     implements FirebaseStorageService {}
 
 /// Mock for the [FirebaseStorage]
+// ignore: avoid_implementing_value_types
 class FirebaseStorageMock extends Mock implements FirebaseStorage {}
 
 /// Mock for the [Reference]
+// ignore: avoid_implementing_value_types
 class ReferenceMock extends Mock implements Reference {}

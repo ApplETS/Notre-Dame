@@ -107,7 +107,7 @@ class RemoteConfigService {
     return _remoteConfig.getString(_dashboardMsgType);
   }
 
-  Future<dynamic> get quicklinks_values async {
+  Future<dynamic> get quicklinksValues async {
     await fetch();
     return jsonDecode(_remoteConfig.getString(_quicklinksValues));
   }

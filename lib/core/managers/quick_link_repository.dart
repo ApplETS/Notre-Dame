@@ -48,7 +48,7 @@ class QuickLinkRepository {
   }
 
   Future<List<QuickLink>> getDefaultQuickLinks(AppIntl intl) async {
-    final values = await _remoteConfigService.quicklinks_values;
+    final values = await _remoteConfigService.quicklinksValues;
 
     if (values == null || values as List == null || (values as List).isEmpty) {
       return quickLinks(intl);
@@ -58,7 +58,7 @@ class QuickLinkRepository {
 
     for (var i = 0; i < listValues.length; i++) {
       Widget imageWidget;
-      Map<String, dynamic> map = listValues[i] as Map<String, dynamic>;
+      final map = listValues[i] as Map<String, dynamic>;
       if (map['icon'] != null) {
         final String iconName = map['icon'] as String;
         imageWidget = FaIcon(
