@@ -1,6 +1,3 @@
-// Flutter imports:
-import 'package:flutter/material.dart';
-
 // Package imports:
 import 'package:ets_api_clients/models.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -36,7 +33,7 @@ class ProfileViewModel extends FutureViewModel<List<Program>> {
 
   /// Return the universal access code of the student
   String get universalAccessCode =>
-      _userRepository?.monETSUser?.universalCode ?? '';
+      _userRepository.monETSUser?.universalCode ?? '';
 
   ProfileViewModel({required AppIntl intl}) : _appIntl = intl;
 
@@ -83,11 +80,11 @@ class ProfileViewModel extends FutureViewModel<List<Program>> {
 
   /// Return the list of programs for the student
   List<Program> get programList {
-    if (_programList == null || _programList.isEmpty) {
+    if (_programList.isEmpty) {
       _programList = [];
     }
     if (_userRepository.programs != null) {
-      _programList = _userRepository.programs;
+      _programList = _userRepository.programs!;
     }
 
     _programList.sort((a, b) => b.status.compareTo(a.status));

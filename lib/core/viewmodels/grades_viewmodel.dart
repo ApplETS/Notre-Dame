@@ -39,9 +39,9 @@ class GradesViewModel extends FutureViewModel<Map<String, List<Course>>> {
         _buildCoursesBySession(coursesCached);
         // ignore: return_type_invalid_for_catch_error
         _courseRepository.getCourses().catchError(onError).then((value) {
-          if (value != null) {
+          if (_courseRepository.courses != null) {
             // Update the courses list
-            _buildCoursesBySession(_courseRepository.courses);
+            _buildCoursesBySession(_courseRepository.courses!);
           }
         }).whenComplete(() {
           setBusy(false);
@@ -61,7 +61,9 @@ class GradesViewModel extends FutureViewModel<Map<String, List<Course>>> {
     // ignore: return_type_invalid_for_catch_error
     try {
       await _courseRepository.getCourses();
-      _buildCoursesBySession(_courseRepository.courses);
+      if(_courseRepository.courses != null) {
+        _buildCoursesBySession(_courseRepository.courses!);
+      }
       notifyListeners();
     } on Exception catch (error) {
       onError(error);

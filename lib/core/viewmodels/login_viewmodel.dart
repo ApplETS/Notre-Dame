@@ -45,7 +45,7 @@ class LoginViewModel extends BaseViewModel {
   final PreferencesService _preferencesService = locator<PreferencesService>();
 
   /// Validate the format of the universal code
-  String validateUniversalCode(String value) {
+  String? validateUniversalCode(String value) {
     if (value.isEmpty) {
       _universalCode = "";
       return _appIntl.login_error_field_required;
@@ -58,7 +58,7 @@ class LoginViewModel extends BaseViewModel {
   }
 
   /// Validate there is a password typed
-  String validatePassword(String value) {
+  String? validatePassword(String value) {
     if (value.isEmpty) {
       _password = "";
       return _appIntl.login_error_field_required;

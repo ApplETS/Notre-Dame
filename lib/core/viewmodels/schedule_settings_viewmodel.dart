@@ -19,11 +19,11 @@ class ScheduleSettingsViewModel
   final CourseRepository _courseRepository = locator<CourseRepository>();
 
   /// Current calendar format
-  CalendarFormat _calendarFormat;
+  CalendarFormat? _calendarFormat;
 
-  CalendarFormat get calendarFormat => _calendarFormat;
+  CalendarFormat? get calendarFormat => _calendarFormat;
 
-  set calendarFormat(CalendarFormat format) {
+  set calendarFormat(CalendarFormat? format) {
     setBusy(true);
     _settingsManager.setString(PreferencesFlag.scheduleCalendarFormat,
         EnumToString.convertToString(format));
@@ -39,11 +39,11 @@ class ScheduleSettingsViewModel
   ];
 
   /// Current starting day of week
-  StartingDayOfWeek _startingDayOfWeek;
+  StartingDayOfWeek? _startingDayOfWeek;
 
-  StartingDayOfWeek get startingDayOfWeek => _startingDayOfWeek;
+  StartingDayOfWeek? get startingDayOfWeek => _startingDayOfWeek;
 
-  set startingDayOfWeek(StartingDayOfWeek day) {
+  set startingDayOfWeek(StartingDayOfWeek? day) {
     setBusy(true);
     _settingsManager.setString(PreferencesFlag.scheduleStartWeekday,
         EnumToString.convertToString(day));
@@ -59,11 +59,11 @@ class ScheduleSettingsViewModel
   ];
 
   /// Current weekend day shown
-  WeekDays _otherDayOfWeek;
+  WeekDays? _otherDayOfWeek;
 
-  WeekDays get otherDayOfWeek => _otherDayOfWeek;
+  WeekDays? get otherDayOfWeek => _otherDayOfWeek;
 
-  set otherDayOfWeek(WeekDays day) {
+  set otherDayOfWeek(WeekDays? day) {
     setBusy(true);
     _settingsManager.setString(PreferencesFlag.scheduleOtherWeekday,
         EnumToString.convertToString(day));
@@ -135,7 +135,7 @@ class ScheduleSettingsViewModel
   /// This function is used to save the state of the selected course settings
   /// for a given course that has different laboratory group
   Future selectScheduleActivity(
-      String courseAcronym, ScheduleActivity scheduleActivityToSave) async {
+      String courseAcronym, ScheduleActivity? scheduleActivityToSave) async {
     setBusy(true);
     if (scheduleActivityToSave == null) {
       await _settingsManager.setDynamicString(
@@ -145,8 +145,8 @@ class ScheduleSettingsViewModel
           PreferencesFlag.scheduleLaboratoryGroup,
           courseAcronym,
           scheduleActivityToSave.activityCode);
+          _selectedScheduleActivity[courseAcronym] = scheduleActivityToSave;
     }
-    _selectedScheduleActivity[courseAcronym] = scheduleActivityToSave;
     setBusy(false);
   }
 
@@ -173,9 +173,9 @@ class ScheduleSettingsViewModel
           _scheduleActivitiesByCourse[activity.courseAcronym] = [activity];
         } else {
           // Add the activity to the course.
-          if (!_scheduleActivitiesByCourse[activity.courseAcronym]
-              .contains(activity)) {
-            _scheduleActivitiesByCourse[activity.courseAcronym].add(activity);
+          final course = _scheduleActivitiesByCourse[activity.courseAcronym];
+          if (course != null && !course.contains(activity)) {
+            course.add(activity);
           }
         }
       }
@@ -188,8 +188,7 @@ class ScheduleSettingsViewModel
       final scheduleActivityCode = await _settingsManager.getDynamicString(
           PreferencesFlag.scheduleLaboratoryGroup, courseKey);
       final scheduleActivity = _scheduleActivitiesByCourse[courseKey]
-          .firstWhere((element) => element.activityCode == scheduleActivityCode,
-              orElse: () => null);
+          ?.firstWhere((element) => element.activityCode == scheduleActivityCode);
       if (scheduleActivity != null) {
         _selectedScheduleActivity[courseKey] = scheduleActivity;
       }
