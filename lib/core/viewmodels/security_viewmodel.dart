@@ -13,7 +13,7 @@ import 'package:notredame/core/constants/markers.dart';
 import 'package:notredame/core/models/emergency_procedure.dart';
 
 class SecurityViewModel extends BaseViewModel {
-  GoogleMapController controller;
+  GoogleMapController? controller;
 
   final List<EmergencyProcedure> emergencyProcedureList;
 
@@ -49,6 +49,6 @@ class SecurityViewModel extends BaseViewModel {
 
   /// Used to set the color of the map
   void setMapStyle(String mapStyle) {
-    controller.setMapStyle(mapStyle);
+    controller?.setMapStyle(mapStyle);
   }
 }

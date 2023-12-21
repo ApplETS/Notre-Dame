@@ -2,9 +2,6 @@
 import 'dart:io';
 import 'dart:typed_data';
 
-// Flutter imports:
-import 'package:flutter/material.dart';
-
 // Package imports:
 import 'package:feedback/feedback.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -55,21 +52,19 @@ class FeedbackViewModel extends FutureViewModel {
         feedbackText: feedback.text,
         fileName: fileName,
         feedbackType: reportType.name,
-        email: feedback.extra.containsKey('email')
-            ? feedback.extra['email'].toString()
+        email: feedback.extra != null && feedback.extra!.containsKey('email')
+            ? feedback.extra!['email'].toString()
             : null);
 
-    if (issue != null) {
-      setBusy(true);
-      _myIssues.add(FeedbackIssue(issue));
-      // Sort by state open first and by number descending
-      _myIssues.sort(
-          (a, b) => b.state.compareTo(a.state) * 100000 + b.number - a.number);
-      setBusy(false);
-      // Save the issue number in the preferences
-      _preferencesService.setString(
-          PreferencesFlag.ghIssues, _myIssues.map((e) => e.number).join(','));
-    }
+    setBusy(true);
+    _myIssues.add(FeedbackIssue(issue));
+    // Sort by state open first and by number descending
+    _myIssues.sort(
+        (a, b) => b.state.compareTo(a.state) * 100000 + b.number - a.number);
+    setBusy(false);
+    // Save the issue number in the preferences
+    _preferencesService.setString(
+        PreferencesFlag.ghIssues, _myIssues.map((e) => e.number).join(','));
 
     file.deleteSync();
 
@@ -80,7 +75,7 @@ class FeedbackViewModel extends FutureViewModel {
   }
 
   List<int> encodeScreenshotForGithub(Uint8List screenshot) {
-    return image.encodePng(image.copyResize(image.decodeImage(screenshot),
+    return image.encodePng(image.copyResize(image.decodeImage(screenshot) ?? image.Image(0, 0),
         width: _screenshotImageWidth));
   }
 
@@ -88,7 +83,7 @@ class FeedbackViewModel extends FutureViewModel {
   @override
   Future<int> futureToRun() async {
     // Get the issues number from the preferences
-    final String issuesString =
+    final String? issuesString =
         await _preferencesService.getString(PreferencesFlag.ghIssues);
 
     // If there is no issues, return 0
