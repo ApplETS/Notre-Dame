@@ -42,7 +42,7 @@ class _LoginViewState extends State<LoginView> {
   @override
   Widget build(BuildContext context) =>
       ViewModelBuilder<LoginViewModel>.reactive(
-        viewModelBuilder: () => LoginViewModel(intl: AppIntl.of(context)),
+        viewModelBuilder: () => LoginViewModel(intl: AppIntl.of(context)!),
         builder: (context, model, child) => Scaffold(
             backgroundColor: Utils.getColorByBrightness(
                 context, AppTheme.etsLightRed, AppTheme.primaryDark),
@@ -57,7 +57,7 @@ class _LoginViewState extends State<LoginView> {
                       key: formKey,
                       onChanged: () {
                         setState(() {
-                          formKey.currentState.validate();
+                          formKey.currentState?.validate();
                         });
                       },
                       child: AutofillGroup(
@@ -104,7 +104,7 @@ class _LoginViewState extends State<LoginView> {
                                           color: errorTextColor,
                                           width: borderRadiusOnFocus)),
                                   labelText: AppIntl.of(context)
-                                      .login_prompt_universal_code,
+                                      !.login_prompt_universal_code,
                                   labelStyle:
                                       const TextStyle(color: Colors.white54),
                                   errorStyle: TextStyle(color: errorTextColor),
@@ -112,7 +112,7 @@ class _LoginViewState extends State<LoginView> {
                                       key: tooltipkey,
                                       triggerMode: TooltipTriggerMode.manual,
                                       message: AppIntl.of(context)
-                                          .universal_code_example,
+                                          !.universal_code_example,
                                       preferBelow: true,
                                       child: IconButton(
                                         icon: const Icon(Icons.help,
@@ -144,7 +144,7 @@ class _LoginViewState extends State<LoginView> {
                                   padding: const EdgeInsets.only(top: 4),
                                   child: InkWell(
                                     child: Text(
-                                      AppIntl.of(context).forgot_password,
+                                      AppIntl.of(context)!.forgot_password,
                                       style: const TextStyle(
                                           decoration: TextDecoration.underline,
                                           color: Colors.white),
@@ -174,7 +174,7 @@ class _LoginViewState extends State<LoginView> {
                                               Fluttertoast.showToast(
                                                   msg: error);
                                             }
-                                            formKey.currentState.reset();
+                                            formKey.currentState?.reset();
                                           });
                                         },
                                   style: ButtonStyle(
@@ -187,7 +187,7 @@ class _LoginViewState extends State<LoginView> {
                                             vertical: 16)),
                                   ),
                                   child: Text(
-                                    AppIntl.of(context).login_action_sign_in,
+                                    AppIntl.of(context)!.login_action_sign_in,
                                     style: TextStyle(
                                         color: model.canSubmit
                                             ? submitTextColor
@@ -201,7 +201,7 @@ class _LoginViewState extends State<LoginView> {
                                   padding: const EdgeInsets.only(top: 24),
                                   child: InkWell(
                                     child: Text(
-                                      AppIntl.of(context).need_help,
+                                      AppIntl.of(context)!.need_help,
                                       style: const TextStyle(
                                           decoration: TextDecoration.underline,
                                           color: Colors.white),
@@ -228,7 +228,7 @@ class _LoginViewState extends State<LoginView> {
                       spacing: -20,
                       children: <Widget>[
                         Text(
-                          AppIntl.of(context).login_applets_logo,
+                          AppIntl.of(context)!.login_applets_logo,
                           style: const TextStyle(color: Colors.white),
                         ),
                         Image.asset(

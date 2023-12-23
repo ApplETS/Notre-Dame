@@ -1,15 +1,12 @@
 // Flutter imports:
 import 'package:flutter/material.dart';
 
-// Project imports:
-import 'package:notredame/ui/utils/app_theme.dart';
-
 class DismissibleCard extends StatelessWidget {
   final Widget child;
 
   final Function(DismissDirection) onDismissed;
 
-  final Color cardColor;
+  final Color? cardColor;
 
   final double elevation;
 
@@ -20,7 +17,7 @@ class DismissibleCard extends StatelessWidget {
       required this.onDismissed,
       required this.child,
       this.elevation = 1,
-      this.cardColor = AppTheme.appletsPurple,
+      this.cardColor,
       this.isBusy = false})
       : super(key: key);
 
