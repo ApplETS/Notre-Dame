@@ -34,7 +34,7 @@ class _BottomBarState extends State<BottomBar> {
 
   @override
   Widget build(BuildContext context) {
-    _currentView = _defineIndex(ModalRoute.of(context).settings.name);
+    _currentView = _defineIndex(ModalRoute.of(context)!.settings.name!);
     return BottomNavigationBar(
       type: BottomNavigationBarType.fixed,
       elevation: 0,
@@ -104,23 +104,23 @@ class _BottomBarState extends State<BottomBar> {
       BottomNavigationBarItem(
           icon: _buildDiscoveryFeatureDescriptionWidget(
               context, RouterPaths.dashboard, Icons.dashboard),
-          label: AppIntl.of(context).title_dashboard),
+          label: AppIntl.of(context)!.title_dashboard),
       BottomNavigationBarItem(
           icon: _buildDiscoveryFeatureDescriptionWidget(
               context, RouterPaths.schedule, Icons.schedule),
-          label: AppIntl.of(context).title_schedule),
+          label: AppIntl.of(context)!.title_schedule),
       BottomNavigationBarItem(
           icon: _buildDiscoveryFeatureDescriptionWidget(
               context, RouterPaths.student, Icons.school),
-          label: AppIntl.of(context).title_student),
+          label: AppIntl.of(context)!.title_student),
       BottomNavigationBarItem(
           icon: _buildDiscoveryFeatureDescriptionWidget(
               context, RouterPaths.ets, Icons.account_balance),
-          label: AppIntl.of(context).title_ets),
+          label: AppIntl.of(context)!.title_ets),
       BottomNavigationBarItem(
           icon: _buildDiscoveryFeatureDescriptionWidget(
               context, RouterPaths.more, Icons.dehaze),
-          label: AppIntl.of(context).title_more),
+          label: AppIntl.of(context)!.title_more),
     ];
   }
 
