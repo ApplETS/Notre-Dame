@@ -56,7 +56,8 @@ class _ScheduleDefaultState extends State<ScheduleDefault> {
           calendar_view.WeekDays.friday,
           calendar_view.WeekDays.saturday
         ],
-        scrollOffset: 475,
+        scrollOffset: 340,
+        heightPerMinute: 0.72,
         headerStyle: const calendar_view.HeaderStyle(
             headerTextStyle: TextStyle(fontSize: 0), // Minimize text size
             leftIconVisible: false,
@@ -85,7 +86,7 @@ class _ScheduleDefaultState extends State<ScheduleDefault> {
         start: events[0].startTime,
         end: events[0].endTime,
         titleStyle: TextStyle(
-          fontSize: 14,
+          fontSize: 8,
           color: events[0].color.accent,
         ),
         totalEvents: events.length,

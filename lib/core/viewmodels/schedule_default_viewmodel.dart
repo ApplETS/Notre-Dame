@@ -56,7 +56,6 @@ class ScheduleDefaultViewModel
 
     final DateTime now = DateTime.now();
     final int daysToAdd = eventData.dayOfTheWeek - now.weekday;
-
     final DateTime targetDate = now.add(Duration(days: daysToAdd));
     final DateTime newStartTime = DateTime(targetDate.year, targetDate.month,
         targetDate.day, eventData.startTime.hour, eventData.startTime.minute);
@@ -64,8 +63,14 @@ class ScheduleDefaultViewModel
             targetDate.day, eventData.endTime.hour, eventData.endTime.minute)
         .subtract(const Duration(minutes: 1));
 
+    final durationInHours = newEndTime.difference(newStartTime).inHours;
+
+    final String title = durationInHours == 0
+        ? eventData.courseAcronym
+        : "${eventData.courseAcronym}\n$courseLocation";
+
     return CalendarEventData(
-        title: "${eventData.courseAcronym}\n$courseLocation",
+        title: title,
         description:
             "${eventData.courseAcronym};$courseLocation;${eventData.courseTitle};Je suis un nom de prof",
         date: targetDate,
