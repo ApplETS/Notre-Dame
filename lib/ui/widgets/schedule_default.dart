@@ -58,11 +58,7 @@ class _ScheduleDefaultState extends State<ScheduleDefault> {
         ],
         scrollOffset: 340,
         heightPerMinute: 0.72,
-        headerStyle: const calendar_view.HeaderStyle(
-            headerTextStyle: TextStyle(fontSize: 0), // Minimize text size
-            leftIconVisible: false,
-            rightIconVisible: false,
-            decoration: BoxDecoration(color: Colors.transparent)),
+        weekPageHeaderBuilder: customHeaderBuilder,
         eventTileBuilder: (date, events, boundary, startDuration,
                 endDuration) =>
             _buildEventTile(
@@ -70,6 +66,11 @@ class _ScheduleDefaultState extends State<ScheduleDefault> {
         weekDayBuilder: (DateTime date) => _buildWeekDay(date),
       ),
     ));
+  }
+
+  Widget customHeaderBuilder(DateTime startDate, DateTime endDate) {
+    // Return an empty SizedBox, effectively creating no header space
+    return const SizedBox.shrink();
   }
 
   Widget _buildEventTile(
@@ -115,34 +116,4 @@ class _ScheduleDefaultState extends State<ScheduleDefault> {
       ),
     );
   }
-
-  final List<CalendarEventData<Event>> _events = [
-    CalendarEventData(
-      date: DateTime.now(),
-      title: "Project meeting",
-      description: "Today is project meeting.",
-      startTime: DateTime(DateTime.now().year, DateTime.now().month,
-          DateTime.now().day, 18, 30),
-      endTime: DateTime(
-          DateTime.now().year, DateTime.now().month, DateTime.now().day, 22),
-    ),
-    CalendarEventData(
-      date: DateTime.now().add(const Duration(days: 1)),
-      startTime: DateTime(
-          DateTime.now().year, DateTime.now().month, DateTime.now().day, 18),
-      endTime: DateTime(
-          DateTime.now().year, DateTime.now().month, DateTime.now().day, 19),
-      title: "Wedding anniversary",
-      description: "Attend uncle's wedding anniversary.",
-    ),
-    CalendarEventData(
-      date: DateTime.now(),
-      startTime: DateTime(
-          DateTime.now().year, DateTime.now().month, DateTime.now().day, 14),
-      endTime: DateTime(
-          DateTime.now().year, DateTime.now().month, DateTime.now().day, 17),
-      title: "Football Tournament",
-      description: "Go to football tournament.",
-    ),
-  ];
 }

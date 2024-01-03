@@ -54,11 +54,9 @@ class _ScheduleDefaultViewState extends State<ScheduleDefaultView> {
                       _sessionName(widget.sessionCode, AppIntl.of(context))),
                 )
               ],
-              body: SafeArea(
-                child: model.isBusy
-                    ? const Center(child: CircularProgressIndicator())
-                    : ScheduleDefault(calendarEvents: model.calendarEvents),
-              ),
+              body: model.isBusy
+                  ? const Center(child: CircularProgressIndicator())
+                  : ScheduleDefault(calendarEvents: model.calendarEvents),
             ),
           ),
         ),
