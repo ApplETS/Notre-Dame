@@ -2,7 +2,6 @@
 import 'package:flutter/material.dart';
 
 // Package imports:
-import 'package:calendar_view/calendar_view.dart' as calendar_view;
 import 'package:calendar_view/calendar_view.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -21,8 +20,7 @@ class ScheduleDefault extends StatefulWidget {
 
 class _ScheduleDefaultState extends State<ScheduleDefault> {
   static final List<String> weekTitles = ["L", "M", "M", "J", "V", "S", "D"];
-  final GlobalKey<calendar_view.WeekViewState> weekViewKey =
-      GlobalKey<calendar_view.WeekViewState>();
+  final GlobalKey<WeekViewState> weekViewKey = GlobalKey<WeekViewState>();
 
   final eventController = EventController();
 
@@ -43,19 +41,19 @@ class _ScheduleDefaultState extends State<ScheduleDefault> {
     // If there are events, display the calendar
     return Scaffold(
         body: AbsorbPointer(
-      child: calendar_view.WeekView(
+      child: WeekView(
         key: weekViewKey,
         controller: eventController..addAll(widget.calendarEvents),
         backgroundColor: Theme.of(context).brightness == Brightness.light
             ? AppTheme.lightThemeBackground
             : AppTheme.darkThemeBackground,
         weekDays: const [
-          calendar_view.WeekDays.monday,
-          calendar_view.WeekDays.tuesday,
-          calendar_view.WeekDays.wednesday,
-          calendar_view.WeekDays.thursday,
-          calendar_view.WeekDays.friday,
-          calendar_view.WeekDays.saturday
+          WeekDays.monday,
+          WeekDays.tuesday,
+          WeekDays.wednesday,
+          WeekDays.thursday,
+          WeekDays.friday,
+          WeekDays.saturday
         ],
         scrollOffset: 340,
         headerStyle: const calendar_view.HeaderStyle(
