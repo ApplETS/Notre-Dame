@@ -7,8 +7,10 @@ import 'package:logger/logger.dart';
 // Project imports:
 import 'package:notredame/core/managers/cache_manager.dart';
 import 'package:notredame/core/managers/course_repository.dart';
+import 'package:notredame/core/managers/grade_graph_repository.dart';
 import 'package:notredame/core/managers/quick_link_repository.dart';
 import 'package:notredame/core/managers/settings_manager.dart';
+import 'package:notredame/core/managers/storage_manager.dart';
 import 'package:notredame/core/managers/user_repository.dart';
 import 'package:notredame/core/services/analytics_service.dart';
 import 'package:notredame/core/services/app_widget_service.dart';
@@ -44,9 +46,11 @@ void setupLocator() {
   // Managers
   locator.registerLazySingleton(() => UserRepository());
   locator.registerLazySingleton(() => CourseRepository());
+  locator.registerLazySingleton(() => GradeGraphRepository());
   locator.registerLazySingleton(() => CacheManager());
   locator.registerLazySingleton(() => SettingsManager());
   locator.registerLazySingleton(() => QuickLinkRepository());
+  locator.registerLazySingleton(() => StorageManager());
 
   // Other
   locator.registerLazySingleton(() => SignetsAPIClient());
