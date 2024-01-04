@@ -13,7 +13,7 @@ import 'package:notredame/ui/widgets/grade_evaluation_tile.dart';
 import '../../helpers.dart';
 
 void main() {
-  AppIntl intl;
+  late AppIntl intl;
 
   final CourseSummary courseSummary = CourseSummary(
     currentMark: 5,
@@ -28,7 +28,7 @@ void main() {
         courseGroup: "02",
         title: "Laboratoire 1",
         weight: 10,
-        teacherMessage: null,
+        teacherMessage: '',
         ignore: false,
         mark: 24,
         correctedEvaluationOutOf: "35",
@@ -43,7 +43,7 @@ void main() {
         courseGroup: "02",
         title: "Laboratoire 2",
         weight: 15,
-        teacherMessage: null,
+        teacherMessage: '',
         ignore: false,
         correctedEvaluationOutOf: "30",
         published: true,
@@ -66,7 +66,7 @@ void main() {
         await tester.pumpWidget(localizedWidget(
             child: FeatureDiscovery(
                 child: GradeEvaluationTile(evaluation,
-                    completed: true, isFirstEvaluation: false))));
+                    completed: true))));
         await tester.pumpAndSettle();
 
         final circularPercentIndicator = find.byType(GradeCircularProgress);
@@ -86,7 +86,7 @@ void main() {
         final widget = localizedWidget(
             child: FeatureDiscovery(
                 child: GradeEvaluationTile(evaluation,
-                    completed: true, isFirstEvaluation: false)));
+                    completed: true)));
 
         await tester.pumpWidget(widget);
 

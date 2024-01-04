@@ -12,9 +12,10 @@ import '../mock/services/home_widget_mock.dart';
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
-  late AppWidgetService service;
   late HomeWidgetMock homeWidgetMock;
 
+  late AppWidgetService service;
+  
   group("AppWidgetServiceTest - ", () {
     setUp(() {
       setupAnalyticsServiceMock();
