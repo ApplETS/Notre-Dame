@@ -133,7 +133,7 @@ void main() {
       test("progress", () async {
         const WidgetType type = WidgetType.progress;
         homeWidgetMock.stubUpdateWidgetMock(
-            type.androidName, type.androidName, type.iOSname);
+            type.androidName!, type.androidName!, type.iOSname!);
         expect(
             await HomeWidget.updateWidget(
                 name: type.androidName,
@@ -145,7 +145,7 @@ void main() {
       test("grades", () async {
         const WidgetType type = WidgetType.grades;
         homeWidgetMock.stubUpdateWidgetMock(
-            type.androidName, type.androidName, type.iOSname);
+            type.androidName!, type.androidName!, type.iOSname!);
         expect(
             await HomeWidget.updateWidget(
                 name: type.androidName,
