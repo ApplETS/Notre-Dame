@@ -12,9 +12,9 @@ import 'package:notredame/core/models/faq_actions.dart';
 import 'package:notredame/core/viewmodels/faq_viewmodel.dart';
 
 class FaqView extends StatefulWidget {
-  final Color backgroundColor;
+  final Color? backgroundColor;
 
-  const FaqView({required this.backgroundColor});
+  const FaqView({this.backgroundColor});
 
   @override
   State<FaqView> createState() => _FaqViewState();
