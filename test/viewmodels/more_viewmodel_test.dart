@@ -25,13 +25,13 @@ void main() {
   // Needed to support FlutterToast.
   TestWidgetsFlutterBinding.ensureInitialized();
 
-  CacheManagerMock cacheManagerMock;
-  SettingsManagerMock settingsManagerMock;
-  CourseRepositoryMock courseRepositoryMock;
-  PreferencesService preferenceService;
-  RemoteConfigService remoteConfigService;
-  UserRepositoryMock userRepositoryMock;
-  NavigationService navigationService;
+  late CacheManagerMock cacheManagerMock;
+  late SettingsManagerMock settingsManagerMock;
+  late CourseRepositoryMock courseRepositoryMock;
+  late PreferencesService preferenceService;
+  late RemoteConfigService remoteConfigService;
+  late UserRepositoryMock userRepositoryMock;
+  late NavigationService navigationService;
 
   AppIntl appIntl;
   MoreViewModel viewModel;

@@ -13,10 +13,10 @@ import 'package:notredame/core/viewmodels/settings_viewmodel.dart';
 import '../helpers.dart';
 import '../mock/managers/settings_manager_mock.dart';
 
-SettingsViewModel viewModel;
+late SettingsViewModel viewModel;
 
 void main() {
-  SettingsManager settingsManager;
+  late SettingsManager settingsManager;
 
   group("SettingsViewModel - ", () {
     setUp(() async {

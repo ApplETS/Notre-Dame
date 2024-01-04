@@ -11,9 +11,9 @@ import 'package:notredame/core/viewmodels/profile_viewmodel.dart';
 import '../helpers.dart';
 import '../mock/managers/user_repository_mock.dart';
 
-UserRepository userRepository;
-SettingsManager settingsManager;
-ProfileViewModel viewModel;
+late UserRepository userRepository;
+late SettingsManager settingsManager;
+late ProfileViewModel viewModel;
 
 void main() {
   // Needed to support FlutterToast.

@@ -20,12 +20,12 @@ void main() {
   const String passwordCodeValid = "password";
   const String passwordCodeInvalid = "";
 
-  NavigationService navigationService;
-  UserRepositoryMock userRepositoryMock;
+  late NavigationService navigationService;
+  late UserRepositoryMock userRepositoryMock;
 
-  AppIntl appIntl;
+  late AppIntl appIntl;
 
-  LoginViewModel viewModel;
+  late LoginViewModel viewModel;
 
   group('LoginViewModel - ', () {
     setUp(() async {

@@ -21,13 +21,13 @@ import '../mock/managers/user_repository_mock.dart';
 import '../mock/services/networking_service_mock.dart';
 
 void main() {
-  AnalyticsService analyticsService;
-  NetworkingServiceMock networkingService;
-  UserRepository userRepository;
-  CacheManager cacheManager;
+  late AnalyticsService analyticsService;
+  late NetworkingServiceMock networkingService;
+  late UserRepository userRepository;
+  late CacheManager cacheManager;
 
-  CourseRepository manager;
-  SignetsAPIClient signetsApi;
+  late CourseRepository manager;
+  late SignetsAPIClient signetsApi;
 
   final Session session = Session(
       shortName: 'NOW',

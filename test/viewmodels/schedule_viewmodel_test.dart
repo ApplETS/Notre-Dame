@@ -14,9 +14,9 @@ import '../helpers.dart';
 import '../mock/managers/course_repository_mock.dart';
 import '../mock/managers/settings_manager_mock.dart';
 
-CourseRepository courseRepository;
-SettingsManager settingsManager;
-ScheduleViewModel viewModel;
+late CourseRepository courseRepository;
+late SettingsManager settingsManager;
+late ScheduleViewModel viewModel;
 
 void main() {
   // Needed to support FlutterToast.

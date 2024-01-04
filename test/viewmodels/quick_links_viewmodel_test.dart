@@ -12,13 +12,13 @@ import '../helpers.dart';
 import '../mock/managers/quick_links_repository_mock.dart';
 
 void main() {
-  AppIntl intl;
-  QuickLinksViewModel viewModel;
-  QuickLinkRepository quickLinkRepository;
+  late AppIntl intl;
+  late QuickLinksViewModel viewModel;
+  late QuickLinkRepository quickLinkRepository;
 
   // Sample data for tests
-  QuickLinkData quickLinkDataSample;
-  QuickLink quickLinkSample;
+  late QuickLinkData quickLinkDataSample;
+  late QuickLink quickLinkSample;
 
   group("QuickLinksViewModel - ", () {
     setUp(() async {

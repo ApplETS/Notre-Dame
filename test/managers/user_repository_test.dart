@@ -24,14 +24,14 @@ import '../mock/services/flutter_secure_storage_mock.dart';
 import '../mock/services/networking_service_mock.dart';
 
 void main() {
-  AnalyticsService analyticsService;
-  MonETSAPIClient monETSApi;
-  FlutterSecureStorageMock secureStorage;
-  CacheManager cacheManager;
-  SignetsAPIClient signetsApi;
-  NetworkingServiceMock networkingService;
+  late AnalyticsService analyticsService;
+  late MonETSAPIClient monETSApi;
+  late FlutterSecureStorageMock secureStorage;
+  late CacheManager cacheManager;
+  late SignetsAPIClient signetsApi;
+  late NetworkingServiceMock networkingService;
 
-  UserRepository manager;
+  late UserRepository manager;
 
   group('UserRepository - ', () {
     setUp(() {
