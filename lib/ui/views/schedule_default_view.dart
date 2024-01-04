@@ -7,7 +7,6 @@ import 'package:stacked/stacked.dart';
 
 // Project imports:
 import 'package:notredame/core/viewmodels/schedule_default_viewmodel.dart';
-import 'package:notredame/ui/utils/app_theme.dart';
 import 'package:notredame/ui/widgets/base_scaffold.dart';
 import 'package:notredame/ui/widgets/schedule_default.dart';
 
@@ -29,38 +28,28 @@ class _ScheduleDefaultViewState extends State<ScheduleDefaultView> {
   @override
   Widget build(BuildContext context) =>
       ViewModelBuilder<ScheduleDefaultViewModel>.reactive(
-        viewModelBuilder: () =>
-            ScheduleDefaultViewModel(sessionCode: widget.sessionCode),
-        builder: (context, model, child) => BaseScaffold(
-          showBottomBar: false,
-          body: Material(
-            child: NestedScrollView(
-              headerSliverBuilder: (context, innerBoxScrolled) => [
-                SliverAppBar(
-                  backgroundColor:
-                      Theme.of(context).brightness == Brightness.light
-                          ? AppTheme.etsLightRed
-                          : Theme.of(context).bottomAppBarColor,
-                  pinned: true,
-                  onStretchTrigger: () {
-                    return Future<void>.value();
-                  },
-                  titleSpacing: 0,
-                  leading: IconButton(
-                    icon: const Icon(Icons.arrow_back),
-                    onPressed: () => Navigator.of(context).pop(),
-                  ),
-                  title: Text(
-                      _sessionName(widget.sessionCode, AppIntl.of(context))),
-                )
-              ],
-              body: model.isBusy
-                  ? const Center(child: CircularProgressIndicator())
-                  : ScheduleDefault(calendarEvents: model.calendarEvents),
-            ),
-          ),
-        ),
-      );
+          viewModelBuilder: () =>
+              ScheduleDefaultViewModel(sessionCode: widget.sessionCode),
+          builder: (context, model, child) => BaseScaffold(
+              showBottomBar: false,
+              isLoading: model.busy(model.isLoadingEvents),
+              appBar: AppBar(
+                title:
+                    Text(_sessionName(widget.sessionCode, AppIntl.of(context))),
+                centerTitle: false,
+                automaticallyImplyLeading: false,
+                leading: IconButton(
+                  icon: const Icon(Icons.arrow_back),
+                  onPressed: () => Navigator.of(context).pop(),
+                ),
+                titleSpacing: 0,
+              ),
+              body: RefreshIndicator(
+                child: model.isBusy
+                    ? const Center(child: CircularProgressIndicator())
+                    : ScheduleDefault(calendarEvents: model.calendarEvents),
+                onRefresh: () => model.refresh(),
+              )));
 
   String _sessionName(String shortName, AppIntl intl) {
     switch (shortName[0]) {

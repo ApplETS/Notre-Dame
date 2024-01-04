@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:calendar_view/calendar_view.dart' as calendar_view;
 import 'package:calendar_view/calendar_view.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:github/github.dart';
 
 // Project imports:
 import 'package:notredame/ui/utils/app_theme.dart';
@@ -47,7 +46,9 @@ class _ScheduleDefaultState extends State<ScheduleDefault> {
       child: calendar_view.WeekView(
         key: weekViewKey,
         controller: eventController..addAll(widget.calendarEvents),
-        backgroundColor: AppTheme.darkThemeBackground,
+        backgroundColor: Theme.of(context).brightness == Brightness.light
+            ? AppTheme.lightThemeBackground
+            : AppTheme.darkThemeBackground,
         weekDays: const [
           calendar_view.WeekDays.monday,
           calendar_view.WeekDays.tuesday,

@@ -18,6 +18,8 @@ class ScheduleDefaultViewModel
 
   final String _sessionCode;
 
+  bool isLoadingEvents = false;
+
   /// List of currently loaded events
   List<CalendarEventData<Object>> calendarEvents = [];
 
@@ -32,20 +34,7 @@ class ScheduleDefaultViewModel
 
   @override
   Future<List<CalendarEventData<Object>>> futureToRun() async {
-    setBusy(true);
-
-    final defaultScheduleActivities = await _courseRepository
-        .getDefaultScheduleActivities(session: _sessionCode);
-    final filteredScheduleActivities = defaultScheduleActivities
-        .where((activity) => activity.activityCode.toLowerCase() != "exam")
-        .toList();
-
-    for (final activity in filteredScheduleActivities) {
-      final event = calendarEventData(activity);
-      calendarEvents.add(event);
-    }
-
-    setBusy(false);
+    refresh();
     return calendarEvents;
   }
 
@@ -84,5 +73,27 @@ class ScheduleDefaultViewModel
       courseColors[courseName] = schedulePaletteThemeLight.removeLast();
     }
     return courseColors[courseName];
+  }
+
+  Future<void> refresh() async {
+    try {
+      setBusyForObject(isLoadingEvents, true);
+
+      final defaultScheduleActivities = await _courseRepository
+          .getDefaultScheduleActivities(session: _sessionCode);
+      final filteredScheduleActivities = defaultScheduleActivities
+          .where((activity) => activity.activityCode.toLowerCase() != "exam")
+          .toList();
+
+      for (final activity in filteredScheduleActivities) {
+        final event = calendarEventData(activity);
+        calendarEvents.add(event);
+      }
+
+      setBusyForObject(isLoadingEvents, false);
+      notifyListeners();
+    } on Exception catch (error) {
+      onError(error);
+    }
   }
 }
