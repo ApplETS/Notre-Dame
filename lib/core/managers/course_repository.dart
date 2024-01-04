@@ -396,7 +396,6 @@ class CourseRepository {
     }
 
     try {
-      // Update cache
       _cacheManager.update(coursesCacheKey, jsonEncode(_courses));
     } on CacheException catch (_) {
       // Do nothing, the caching will retry later and the error has been logged by the [CacheManager]
@@ -453,7 +452,6 @@ class CourseRepository {
         _userRepository.monETSUser.universalCode, course);
 
     try {
-      // Update cache
       _cacheManager.update(coursesCacheKey, jsonEncode(_courses));
     } on CacheException catch (_) {
       // Do nothing, the caching will retry later and
