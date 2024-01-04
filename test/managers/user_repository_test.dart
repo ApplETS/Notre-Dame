@@ -26,10 +26,10 @@ import '../mock/services/networking_service_mock.dart';
 
 void main() {
   late AnalyticsServiceMock analyticsServiceMock;
-  late MonETSAPIClient monETSApi;
+  late MonETSAPIClientMock monETSApiMock;
   late FlutterSecureStorageMock secureStorageMock;
   late CacheManagerMock cacheManagerMock;
-  late SignetsAPIClient signetsApi;
+  late SignetsAPIClientMock signetsApiMock;
   late NetworkingServiceMock networkingServiceMock;
 
   late UserRepository manager;
@@ -38,16 +38,16 @@ void main() {
     setUp(() {
       // Setup needed service
       analyticsServiceMock = setupAnalyticsServiceMock();
-      monETSApi = setupMonETSApiMock();
+      monETSApiMock = setupMonETSApiMock();
       secureStorageMock =
           setupFlutterSecureStorageMock();
       cacheManagerMock = setupCacheManagerMock();
-      signetsApi = setupSignetsApiMock();
+      signetsApiMock = setupSignetsApiMock();
       networkingServiceMock = setupNetworkingServiceMock();
       setupLogger();
 
       manager = UserRepository();
-      SignetsAPIClientMock.stubAuthenticate(signetsApi as SignetsAPIClientMock);
+      SignetsAPIClientMock.stubAuthenticate(signetsApiMock);
     });
 
     tearDown(() {
@@ -56,7 +56,7 @@ void main() {
       unregister<FlutterSecureStorage>();
       clearInteractions(cacheManagerMock);
       unregister<CacheManager>();
-      clearInteractions(signetsApi);
+      clearInteractions(signetsApiMock);
       unregister<SignetsAPIClient>();
       unregister<NetworkingService>();
     });
@@ -67,7 +67,7 @@ void main() {
             domain: "ENS", typeUsagerId: 1, username: "right credentials");
 
         MonETSAPIClientMock.stubAuthenticate(
-            monETSApi as MonETSAPIClientMock, user);
+            monETSApiMock, user);
 
         // Result is true
         expect(
@@ -92,7 +92,7 @@ void main() {
       test('An exception is throw during the MonETSApi call', () async {
         const String username = "exceptionUser";
         MonETSAPIClientMock.stubException(
-            monETSApi as MonETSAPIClientMock, username);
+            monETSApiMock, username);
 
         expect(await manager.authenticate(username: username, password: ""),
             isFalse,
@@ -122,7 +122,7 @@ void main() {
             domain: "ENS", typeUsagerId: 1, username: "right credentials");
 
         MonETSAPIClientMock.stubAuthenticate(
-            monETSApi as MonETSAPIClientMock, user);
+            monETSApiMock, user);
         FlutterSecureStorageMock.stubWriteException(secureStorageMock,
             key: UserRepository.usernameSecureKey,
             exceptionToThrow: PlatformException(code: "bad key"));
@@ -153,14 +153,14 @@ void main() {
             MonETSUser(domain: "ENS", typeUsagerId: 1, username: "AAXXXXXX");
 
         MonETSAPIClientMock.stubException(
-            monETSApi as MonETSAPIClientMock, user.username,
+            monETSApiMock, user.username,
             exception: HttpException(
                 prefix: "MonETSAPI",
                 code: 415,
                 message:
                     "{ \"Message\": \"The request contains an entity body but no Content-Type header. The inferred media type 'application/octet-stream' is not supported for this resource.\"}"));
         SignetsAPIClientMock.stubAuthenticate(
-            signetsApi as SignetsAPIClientMock,
+            signetsApiMock,
             connected: true);
 
         // Result is true
@@ -184,14 +184,14 @@ void main() {
         const String username = "exceptionUser";
 
         MonETSAPIClientMock.stubException(
-            monETSApi as MonETSAPIClientMock, username,
+            monETSApiMock, username,
             exception: HttpException(
                 prefix: "MonETSAPI",
                 code: 415,
                 message:
                     "{ \"Message\": \"The request contains an entity body but no Content-Type header. The inferred media type 'application/octet-stream' is not supported for this resource.\"}"));
         SignetsAPIClientMock.stubAuthenticate(
-            signetsApi as SignetsAPIClientMock);
+            signetsApiMock);
 
         expect(await manager.authenticate(username: username, password: ""),
             isFalse,
@@ -231,7 +231,7 @@ void main() {
             key: UserRepository.passwordSecureKey, valueToReturn: password);
 
         MonETSAPIClientMock.stubAuthenticate(
-            monETSApi as MonETSAPIClientMock, user);
+            monETSApiMock, user);
 
         expect(await manager.silentAuthenticate(), isTrue,
             reason: "Result should be true");
@@ -239,7 +239,7 @@ void main() {
         verifyInOrder([
           secureStorageMock.read(key: UserRepository.usernameSecureKey),
           secureStorageMock.read(key: UserRepository.passwordSecureKey),
-          monETSApi.authenticate(username: username, password: password),
+          monETSApiMock.authenticate(username: username, password: password),
           analyticsServiceMock.setUserProperties(
               userId: username, domain: user.domain)
         ]);
@@ -258,7 +258,7 @@ void main() {
             key: UserRepository.passwordSecureKey, valueToReturn: password);
 
         MonETSAPIClientMock.stubAuthenticateException(
-            monETSApi as MonETSAPIClientMock, username);
+            monETSApiMock, username);
 
         expect(await manager.silentAuthenticate(), isFalse,
             reason: "Result should be false");
@@ -266,7 +266,7 @@ void main() {
         verifyInOrder([
           secureStorageMock.read(key: UserRepository.usernameSecureKey),
           secureStorageMock.read(key: UserRepository.passwordSecureKey),
-          monETSApi.authenticate(username: username, password: password),
+          monETSApiMock.authenticate(username: username, password: password),
           analyticsServiceMock.logError(UserRepository.tag, any, any, any)
         ]);
 
@@ -288,7 +288,7 @@ void main() {
             [secureStorageMock.read(key: UserRepository.usernameSecureKey)]);
 
         verifyNoMoreInteractions(secureStorageMock);
-        verifyZeroInteractions(monETSApi);
+        verifyZeroInteractions(monETSApiMock);
         verifyZeroInteractions(analyticsServiceMock);
 
         expect(manager.monETSUser, null,
@@ -302,7 +302,7 @@ void main() {
             domain: "ENS", typeUsagerId: 1, username: "right credentials");
 
         MonETSAPIClientMock.stubAuthenticate(
-            monETSApi as MonETSAPIClientMock, user);
+            monETSApiMock, user);
         FlutterSecureStorageMock.stubReadException(secureStorageMock,
             key: UserRepository.usernameSecureKey,
             exceptionToThrow: PlatformException(code: "bad key"));
@@ -364,7 +364,7 @@ void main() {
             MonETSUser(domain: "ENS", typeUsagerId: 1, username: username);
 
         MonETSAPIClientMock.stubAuthenticate(
-            monETSApi as MonETSAPIClientMock, user);
+            monETSApiMock, user);
         FlutterSecureStorageMock.stubRead(secureStorageMock,
             key: UserRepository.usernameSecureKey, valueToReturn: username);
         FlutterSecureStorageMock.stubRead(secureStorageMock,
@@ -378,7 +378,7 @@ void main() {
         verifyInOrder([
           secureStorageMock.read(key: UserRepository.usernameSecureKey),
           secureStorageMock.read(key: UserRepository.passwordSecureKey),
-          monETSApi.authenticate(username: username, password: password),
+          monETSApiMock.authenticate(username: username, password: password),
           analyticsServiceMock.setUserProperties(
               userId: username, domain: user.domain)
         ]);
@@ -394,7 +394,7 @@ void main() {
             MonETSUser(domain: "ENS", typeUsagerId: 1, username: username);
 
         MonETSAPIClientMock.stubAuthenticate(
-            monETSApi as MonETSAPIClientMock, user);
+            monETSApiMock, user);
         FlutterSecureStorageMock.stubRead(secureStorageMock,
             key: UserRepository.usernameSecureKey, valueToReturn: username);
         FlutterSecureStorageMock.stubRead(secureStorageMock,
@@ -407,7 +407,7 @@ void main() {
           analyticsServiceMock.logEvent(UserRepository.tag, any),
           secureStorageMock.read(key: UserRepository.usernameSecureKey),
           secureStorageMock.read(key: UserRepository.passwordSecureKey),
-          monETSApi.authenticate(username: username, password: password),
+          monETSApiMock.authenticate(username: username, password: password),
           analyticsServiceMock.setUserProperties(
               userId: username, domain: user.domain)
         ]);
@@ -420,7 +420,7 @@ void main() {
         const String password = "password";
 
         MonETSAPIClientMock.stubAuthenticateException(
-            monETSApi as MonETSAPIClientMock, username);
+            monETSApiMock, username);
         FlutterSecureStorageMock.stubRead(secureStorageMock,
             key: UserRepository.usernameSecureKey, valueToReturn: username);
         FlutterSecureStorageMock.stubRead(secureStorageMock,
@@ -448,7 +448,7 @@ void main() {
             MonETSUser(domain: "ENS", typeUsagerId: 1, username: username);
 
         MonETSAPIClientMock.stubAuthenticate(
-            monETSApi as MonETSAPIClientMock, user);
+            monETSApiMock, user);
         FlutterSecureStorageMock.stubReadException(secureStorageMock,
             key: UserRepository.passwordSecureKey,
             exceptionToThrow: PlatformException(code: "bad key"));
@@ -491,7 +491,7 @@ void main() {
             UserRepository.programsCacheKey, jsonEncode(programs));
 
         MonETSAPIClientMock.stubAuthenticate(
-            monETSApi as MonETSAPIClientMock, user);
+            monETSApiMock, user);
 
         // Result is true
         expect(
@@ -501,7 +501,7 @@ void main() {
 
         // Stub SignetsApi answer to test only the cache retrieving
         SignetsAPIClientMock.stubGetPrograms(
-            signetsApi as SignetsAPIClientMock, username, []);
+            signetsApiMock, username, []);
 
         // Stub to simulate that the user has an active internet connection
         NetworkingServiceMock.stubHasConnectivity(networkingServiceMock);
@@ -547,9 +547,9 @@ void main() {
             UserRepository.programsCacheKey, jsonEncode([]));
 
         // Stub SignetsApi answer to test only the cache retrieving
-        reset(signetsApi as SignetsAPIClientMock);
+        reset(signetsApiMock);
         SignetsAPIClientMock.stubGetPrograms(
-            signetsApi as SignetsAPIClientMock, username, programs);
+            signetsApiMock, username, programs);
 
         expect(manager.programs, isNull);
         final results = await manager.getPrograms();
@@ -573,7 +573,7 @@ void main() {
 
         // Stub SignetsApi answer to test only the cache retrieving
         SignetsAPIClientMock.stubGetProgramsException(
-            signetsApi as SignetsAPIClientMock, username);
+            signetsApiMock, username);
 
         expect(manager.programs, isNull);
         expect(manager.getPrograms(), throwsA(isInstanceOf<ApiException>()));
@@ -604,7 +604,7 @@ void main() {
 
         // Stub SignetsApi answer to test only the cache retrieving
         SignetsAPIClientMock.stubGetPrograms(
-            signetsApi as SignetsAPIClientMock, username, programs);
+            signetsApiMock, username, programs);
 
         expect(manager.programs, isNull);
         final results = await manager.getPrograms();
@@ -646,7 +646,7 @@ void main() {
             UserRepository.infoCacheKey, jsonEncode(info));
 
         MonETSAPIClientMock.stubAuthenticate(
-            monETSApi as MonETSAPIClientMock, user);
+            monETSApiMock, user);
 
         // Result is true
         expect(
@@ -657,7 +657,7 @@ void main() {
         // Stub SignetsApi answer to test only the cache retrieving
         SignetsAPIClientMock.stubGetInfo(
             // ignore: cast_nullable_to_non_nullable
-            signetsApi as SignetsAPIClientMock, username, any as ProfileStudent);
+            signetsApiMock, username, any as ProfileStudent);
 
         // Stub to simulate that the user has an active internet connection
         NetworkingServiceMock.stubHasConnectivity(networkingServiceMock);
@@ -673,7 +673,7 @@ void main() {
 
         verify(cacheManagerMock.get(UserRepository.infoCacheKey));
         verifyNoMoreInteractions(cacheManagerMock);
-        verifyNoMoreInteractions(signetsApi as SignetsAPIClientMock);
+        verifyNoMoreInteractions(signetsApiMock);
       });
 
       test("Trying to load info from cache but cache doesn't exist", () async {
@@ -706,9 +706,9 @@ void main() {
             firstName: 'Johnny',
             lastName: 'Doe',
             permanentCode: 'DOEJ00000000');
-        reset(signetsApi as SignetsAPIClientMock);
+        reset(signetsApiMock);
         SignetsAPIClientMock.stubGetInfo(
-            signetsApi as SignetsAPIClientMock, username, anotherInfo);
+            signetsApiMock, username, anotherInfo);
 
         expect(manager.info, isNull);
         final results = await manager.getInfo();
@@ -726,9 +726,9 @@ void main() {
 
       test("SignetsAPI return a info that already exists", () async {
         // Stub SignetsApi answer to test only the cache retrieving
-        reset(signetsApi as SignetsAPIClientMock);
+        reset(signetsApiMock);
         SignetsAPIClientMock.stubGetInfo(
-            signetsApi as SignetsAPIClientMock, username, info);
+            signetsApiMock, username, info);
 
         expect(manager.info, isNull);
         final results = await manager.getInfo();
@@ -752,7 +752,7 @@ void main() {
 
         // Stub SignetsApi answer to test only the cache retrieving
         SignetsAPIClientMock.stubGetInfoException(
-            signetsApi as SignetsAPIClientMock, username);
+            signetsApiMock, username);
 
         expect(manager.info, isNull);
         expect(manager.getInfo(), throwsA(isInstanceOf<ApiException>()));
@@ -780,7 +780,7 @@ void main() {
 
         // Stub SignetsApi answer to test only the cache retrieving
         SignetsAPIClientMock.stubGetInfo(
-            signetsApi as SignetsAPIClientMock, username, info);
+            signetsApiMock, username, info);
 
         expect(manager.info, isNull);
         final results = await manager.getInfo();
