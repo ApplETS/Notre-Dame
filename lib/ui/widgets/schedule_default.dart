@@ -57,7 +57,7 @@ class _ScheduleDefaultState extends State<ScheduleDefault> {
         ],
         scrollOffset: 340,
         headerStyle: const HeaderStyle(
-            headerTextStyle: TextStyle(fontSize: 0), // Minimize text size
+            headerTextStyle: TextStyle(fontSize: 0),
             leftIconVisible: false,
             rightIconVisible: false,
             decoration: BoxDecoration(color: Colors.transparent)),
@@ -101,7 +101,7 @@ class _ScheduleDefaultState extends State<ScheduleDefault> {
 
   Widget _buildWeekDay(DateTime date) {
     return Center(
-      child: Container(
+      child: SizedBox(
         width: 40,
         height: 80,
         child: Column(
