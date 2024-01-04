@@ -14,8 +14,10 @@ import '../mock/managers/course_repository_mock.dart';
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
   late AppIntl intl;
+  
+  late CourseRepositoryMock courseRepositoryMock;
+
   late GradesDetailsViewModel viewModel;
-  late CourseRepository courseRepository;
 
   final CourseSummary courseSummary = CourseSummary(
     currentMark: 5,
@@ -30,7 +32,7 @@ void main() {
         courseGroup: "02",
         title: "Laboratoire 1",
         weight: 10,
-        teacherMessage: null,
+        teacherMessage: '',
         ignore: false,
         mark: 24,
         correctedEvaluationOutOf: "35",
@@ -45,7 +47,7 @@ void main() {
         courseGroup: "02",
         title: "Laboratoire 2",
         weight: 10,
-        teacherMessage: null,
+        teacherMessage: '',
         ignore: false,
         mark: 24,
         correctedEvaluationOutOf: "30",
@@ -80,7 +82,7 @@ void main() {
   group("GradesDetailsViewModel - ", () {
     setUp(() async {
       // Setting up mocks
-      courseRepository = setupCourseRepositoryMock();
+      courseRepositoryMock = setupCourseRepositoryMock();
       intl = await setupAppIntl();
       setupSettingsManagerMock();
 
@@ -96,7 +98,7 @@ void main() {
     group('FutureToRun - -', () {
       test('SignetsAPI gets the summary', () async {
         CourseRepositoryMock.stubGetCourseSummary(
-            courseRepository as CourseRepositoryMock, courseWithoutSummary,
+            courseRepositoryMock, courseWithoutSummary,
             toReturn: courseWithSummary);
 
         await viewModel.futureToRun();
@@ -108,7 +110,7 @@ void main() {
           () async {
         setupFlutterToastMock();
         CourseRepositoryMock.stubGetCourseSummaryException(
-            courseRepository as CourseRepositoryMock, courseWithoutSummary);
+            courseRepositoryMock, courseWithoutSummary);
         await viewModel.futureToRun();
 
         expect(viewModel.course, courseWithoutSummary);
@@ -120,7 +122,7 @@ void main() {
           () async {
         setupFlutterToastMock();
         CourseRepositoryMock.stubGetCourseSummary(
-            courseRepository as CourseRepositoryMock, courseWithoutSummary,
+            courseRepositoryMock, courseWithoutSummary,
             toReturn: courseWithSummary);
 
         await viewModel.refresh();
@@ -130,15 +132,15 @@ void main() {
 
       test('Signets throw an error', () async {
         CourseRepositoryMock.stubGetCourseSummaryException(
-            courseRepository as CourseRepositoryMock, courseWithoutSummary);
+            courseRepositoryMock, courseWithoutSummary);
         setupFlutterToastMock();
         await viewModel.refresh();
 
         expect(viewModel.course, courseWithoutSummary);
 
-        verify(courseRepository.getCourseSummary(viewModel.course));
+        verify(courseRepositoryMock.getCourseSummary(viewModel.course));
 
-        verifyNoMoreInteractions(courseRepository);
+        verifyNoMoreInteractions(courseRepositoryMock);
       });
     });
   });

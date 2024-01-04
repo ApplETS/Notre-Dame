@@ -656,7 +656,8 @@ void main() {
 
         // Stub SignetsApi answer to test only the cache retrieving
         SignetsAPIClientMock.stubGetInfo(
-            signetsApi as SignetsAPIClientMock, username, null);
+            // ignore: cast_nullable_to_non_nullable
+            signetsApi as SignetsAPIClientMock, username, any as ProfileStudent);
 
         // Stub to simulate that the user has an active internet connection
         NetworkingServiceMock.stubHasConnectivity(networkingServiceMock);
