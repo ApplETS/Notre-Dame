@@ -54,9 +54,12 @@ void main() {
 
     testWidgets('ScheduleDefaultView has a title and shows schedule',
         (WidgetTester tester) async {
+      when(mockCourseRepository.getDefaultScheduleActivities(
+              session: anyNamed('session')))
+          .thenAnswer((_) async => []);
       await tester.pumpWidget(localizedWidget(
           child: const ScheduleDefaultView(sessionCode: "A2023")));
-      await tester.pumpAndSettle();
+      await tester.pumpAndSettle(const Duration(seconds: 1));
 
       final fallSessionText = find.text("${intl.session_fall} 2023");
       expect(fallSessionText, findsOneWidget);
@@ -66,7 +69,9 @@ void main() {
     group("golden - ", () {
       testWidgets("default view", (WidgetTester tester) async {
         tester.binding.window.physicalSizeTestValue = const Size(800, 1410);
-
+        when(mockCourseRepository.getDefaultScheduleActivities(
+                session: anyNamed('session')))
+            .thenAnswer((_) async => []);
         await tester.pumpWidget(localizedWidget(
             child: const ScheduleDefaultView(sessionCode: "A2023"),
             useScaffold: false));
