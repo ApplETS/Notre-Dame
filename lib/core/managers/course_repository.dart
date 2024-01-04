@@ -207,7 +207,7 @@ class CourseRepository {
             .map((e) => ScheduleActivity.fromJson(e as Map<String, dynamic>))
             .toList();
         _logger.d(
-            "$tag - getScheduleDefaultActivities: ${_scheduleActivities.length} activities loaded from cache");
+            "$tag - getScheduleDefaultActivities: ${_scheduleDefaultActivities.length} activities loaded from cache");
       } on CacheException catch (_) {
         _logger.e(
             "$tag - getDefaultScheduleActivities: exception raised will trying to load activities from cache.");
