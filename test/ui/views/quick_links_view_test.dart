@@ -23,9 +23,9 @@ import '../../mock/services/internal_info_service_mock.dart';
 import '../../mock/services/navigation_service_mock.dart';
 
 void main() {
-  AppIntl intl;
+  late AppIntl intl;
 
-  QuickLinkRepository quickLinkRepository;
+  QuickLinkRepositoryMock quickLinkRepositoryMock;
 
   group('QuickLinksView - ', () {
     setUp(() async {
@@ -35,13 +35,13 @@ void main() {
       setupInternalInfoServiceMock();
       setupNetworkingServiceMock();
       setupLaunchUrlServiceMock();
-      quickLinkRepository = setupQuickLinkRepositoryMock();
+      quickLinkRepositoryMock = setupQuickLinkRepositoryMock();
       QuickLinkRepositoryMock.stubGetDefaultQuickLinks(
-          quickLinkRepository as QuickLinkRepositoryMock,
+          quickLinkRepositoryMock,
           toReturn: quickLinks(intl));
 
       QuickLinkRepositoryMock.stubGetQuickLinkDataFromCacheException(
-          quickLinkRepository as QuickLinkRepositoryMock);
+          quickLinkRepositoryMock);
     });
 
     tearDown(() {
