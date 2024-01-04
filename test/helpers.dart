@@ -99,7 +99,7 @@ InAppReviewService setupInAppReviewServiceMock() {
 }
 
 /// Load a mock of the [MonETSAPIClient]
-MonETSAPIClient setupMonETSApiMock() {
+MonETSAPIClientMock setupMonETSApiMock() {
   unregister<MonETSAPIClient>();
   final service = MonETSAPIClientMock();
 
