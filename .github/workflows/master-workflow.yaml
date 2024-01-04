@@ -11,6 +11,8 @@ on:
       - 'README.fr.md'
       - 'android/fastlane/**'
       - 'ios/fastlane/**'
+      - '.github/**'
+
 concurrency:
   group: ${{ github.ref }}
   cancel-in-progress: true
@@ -29,7 +31,7 @@ jobs:
     outputs:
       version: ${{ steps.split.outputs._0 }}
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Get the version from the pubspec
         id: pubspecVersion
         uses: CumulusDS/get-yaml-paths-action@v1.0.2
@@ -42,7 +44,7 @@ jobs:
           msg: ${{ steps.pubspecVersion.outputs.version }}
           separator: '+'
       - name: Validate that version doesn't exists
-        uses: mukunku/tag-exists-action@v1.2.0
+        uses: mukunku/tag-exists-action@v1.4.0
         id: checkTag
         with:
           tag: ${{ steps.split.outputs._0 }}
@@ -61,10 +63,10 @@ jobs:
     outputs:
       coverage: ${{ steps.coverage.outputs.percentage }}
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           ref: ${{ github.head_ref }}
-      - uses: actions/setup-java@v3
+      - uses: actions/setup-java@v4
         with:
           distribution: 'adopt'
           java-version: '11'
@@ -118,7 +120,7 @@ jobs:
         with:
           name: lcov.info
       - name: Update badge coverage
-        uses: schneegans/dynamic-badges-action@v1.6.0
+        uses: schneegans/dynamic-badges-action@v1.7.0
         with:
           auth: ${{ secrets.GIST_COVERAGE_BADGE_TOKEN }}
           gistID: ${{ secrets.GIST_ID_COVERAGE_BADGE }}
@@ -157,7 +159,7 @@ jobs:
     needs:
       - testing
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: subosito/flutter-action@v2
         with:
           flutter-version: '3.3.x'
@@ -165,7 +167,7 @@ jobs:
           cache: true
       - name: Install Android dependencies
         if: matrix.target == 'Android'
-        uses: actions/setup-java@v3
+        uses: actions/setup-java@v4
         with:
           java-version: '11'
           distribution: 'adopt'
@@ -175,8 +177,7 @@ jobs:
         run: |
           flutter pub get
           cd ios
-          rm Podfile.lock
-          pod install --repo-update
+          pod install
           flutter clean
 
       # Get dependencies and decrypt needed files.

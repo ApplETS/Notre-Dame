@@ -154,6 +154,15 @@ class _MoreViewState extends State<MoreView> {
                         opaque: false,
                       ));
                     }),
+                if (model.privacyPolicyToggle)
+                  ListTile(
+                      title: Text(AppIntl.of(context).privacy_policy),
+                      leading: const Icon(Icons.privacy_tip),
+                      onTap: () {
+                        _analyticsService.logEvent(
+                            tag, "Confidentiality clicked");
+                        MoreViewModel.launchPrivacyPolicy();
+                      }),
                 ListTile(
                     title: Text(AppIntl.of(context).need_help),
                     leading: _buildDiscoveryFeatureDescriptionWidget(

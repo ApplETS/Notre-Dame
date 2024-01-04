@@ -5,11 +5,10 @@
 //  Created by Club Applets on 2022-02-03.
 //
 
-// Keychain related constants
 public let widgetGroupId = "group.ca.etsmtl.applets.ETSMobile"
-public let keychainServiceAttr = "flutter_secure_storage_service"
-public let usernameKey = "usernameKey"
-public let passwordKey = "passwordKey"
+public let keychainServiceAttr = "flutter_keychain"
+public let usernameKey = "WidgetSecureUser"
+public let passwordKey = "WidgetSecurePass"
 
 // Urls related to MonETS
 public let monEtsAPI = "https://portail.etsmtl.ca/api/"

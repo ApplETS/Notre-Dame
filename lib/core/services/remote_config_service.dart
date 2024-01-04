@@ -13,6 +13,9 @@ import 'package:notredame/locator.dart';
 class RemoteConfigService {
   static const String tag = "RemoteConfigService";
   static const _serviceIsDown = "service_is_down";
+  // Privacy policy
+  static const _privacyPolicyToggle = "privacy_policy_toggle";
+  static const _privacyPolicyURL = "privacy_policy_url";
 
   // dashboard message remote config keys
   static const _dashboardMsgToggle = "dashboard_message_toggle";
@@ -28,6 +31,7 @@ class RemoteConfigService {
   final FirebaseRemoteConfig _remoteConfig = FirebaseRemoteConfig.instance;
   final defaults = <String, dynamic>{
     _serviceIsDown: false,
+    _privacyPolicyURL: "",
     _dashboardMsgFr: "",
     _dashboardMsgEn: "",
     _dashboardMsgTitleFr: "",
@@ -35,6 +39,7 @@ class RemoteConfigService {
     _dashboardMsgColor: "",
     _dashboardMsgUrl: "",
     _dashboardMsgType: "",
+    _privacyPolicyToggle: true,
     _scheduleListViewDefault: true
   };
 
@@ -56,6 +61,16 @@ class RemoteConfigService {
   bool get scheduleListViewDefault {
     fetch();
     return _remoteConfig.getBool(_scheduleListViewDefault);
+  }
+
+  bool get privacyPolicyToggle {
+    fetch();
+    return _remoteConfig.getBool(_privacyPolicyToggle);
+  }
+
+  String get privacyPolicyUrl {
+    fetch();
+    return _remoteConfig.getString(_privacyPolicyURL);
   }
 
   String get dashboardMessageFr {

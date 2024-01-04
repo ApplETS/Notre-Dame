@@ -12,6 +12,9 @@ import '../helpers.dart';
 import '../mock/managers/user_repository_mock.dart';
 
 void main() {
+  // Needed to support FlutterToast.
+  TestWidgetsFlutterBinding.ensureInitialized();
+
   const String universalCodeValid = "AA11111";
   const String universalCodeInvalid = "A1111";
   const String passwordCodeValid = "password";
@@ -27,6 +30,7 @@ void main() {
   group('LoginViewModel - ', () {
     setUp(() async {
       navigationService = setupNavigationServiceMock();
+      setupFlutterSecureStorageMock();
       userRepositoryMock = setupUserRepositoryMock() as UserRepositoryMock;
       setupLogger();
       setupPreferencesServiceMock();

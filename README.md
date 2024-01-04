@@ -79,6 +79,17 @@ enter the following command:
 git config core.hooksPath .githooks
 ```
 
+## 📦 DevContainer
+
+You can run the project in a container that has all the good versions of the libraries ready to go.
+Steps tu run it:
+1. Install Docker, VSCode and the Dev Containers extention for vscode.
+2. Open the project with vscode a popup will suggest opening the project in a dev container.*
+4. Once the container is up and running you will have a prompt in the vscode terminal to accept licenses.
+5. Pair and connect your android phone using ADB wireless debugging to debug the app.
+
+\* if you cannot see the popup suggesting the dev container environment try you can run the vscode command: `Dev Containers: Rebuild and Reopen in Container`
+
 ## ⚖️ License
 
 This projet is licensed under the Apache License V2.0. See
