@@ -10,6 +10,7 @@ import 'package:notredame/core/services/navigation_service.dart';
 import 'package:notredame/core/viewmodels/login_viewmodel.dart';
 import '../helpers.dart';
 import '../mock/managers/user_repository_mock.dart';
+import '../mock/services/navigation_service_mock.dart';
 
 void main() {
   // Needed to support FlutterToast.
@@ -20,7 +21,7 @@ void main() {
   const String passwordCodeValid = "password";
   const String passwordCodeInvalid = "";
 
-  late NavigationService navigationService;
+  late NavigationServiceMock navigationServiceMock;
   late UserRepositoryMock userRepositoryMock;
 
   late AppIntl appIntl;
@@ -29,9 +30,9 @@ void main() {
 
   group('LoginViewModel - ', () {
     setUp(() async {
-      navigationService = setupNavigationServiceMock();
+      navigationServiceMock = setupNavigationServiceMock();
       setupFlutterSecureStorageMock();
-      userRepositoryMock = setupUserRepositoryMock() as UserRepositoryMock;
+      userRepositoryMock = setupUserRepositoryMock();
       setupLogger();
       setupPreferencesServiceMock();
       appIntl = await setupAppIntl();
@@ -110,7 +111,7 @@ void main() {
 
         await viewModel.authenticate();
         verify(
-            navigationService.pushNamedAndRemoveUntil(RouterPaths.dashboard));
+            navigationServiceMock.pushNamedAndRemoveUntil(RouterPaths.dashboard));
       });
 
       test(

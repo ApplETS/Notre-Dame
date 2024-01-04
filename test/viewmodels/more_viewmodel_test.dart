@@ -12,13 +12,14 @@ import 'package:notredame/core/managers/settings_manager.dart';
 import 'package:notredame/core/managers/user_repository.dart';
 import 'package:notredame/core/services/navigation_service.dart';
 import 'package:notredame/core/services/preferences_service.dart';
-import 'package:notredame/core/services/remote_config_service.dart';
 import 'package:notredame/core/viewmodels/more_viewmodel.dart';
 import '../helpers.dart';
 import '../mock/managers/cache_manager_mock.dart';
 import '../mock/managers/course_repository_mock.dart';
 import '../mock/managers/settings_manager_mock.dart';
 import '../mock/managers/user_repository_mock.dart';
+import '../mock/services/navigation_service_mock.dart';
+import '../mock/services/preferences_service_mock.dart';
 import '../mock/services/remote_config_service_mock.dart';
 
 void main() {
@@ -28,29 +29,31 @@ void main() {
   late CacheManagerMock cacheManagerMock;
   late SettingsManagerMock settingsManagerMock;
   late CourseRepositoryMock courseRepositoryMock;
-  late PreferencesService preferenceService;
-  late RemoteConfigService remoteConfigService;
+  late PreferencesServiceMock preferenceServiceMock;
+  late RemoteConfigServiceMock remoteConfigServiceMock;
   late UserRepositoryMock userRepositoryMock;
-  late NavigationService navigationService;
+  late NavigationServiceMock navigationServiceMock;
 
-  AppIntl appIntl;
-  MoreViewModel viewModel;
+  late AppIntl appIntl;
+  late MoreViewModel viewModel;
+
+  final DateTime now = DateTime.now();
 
   final List<Session> sessions = [
     Session(
         name: 'Hivers 2XXX',
         shortName: 'H1',
-        deadlineCancellationASEQ: null,
-        deadlineCancellationWithoutRefundNewStudent: null,
-        deadlineCancellationWithRefund: null,
-        deadlineCancellationWithRefundNewStudent: null,
-        deadlineRegistration: null,
-        startDate: null,
-        startDateCancellationWithoutRefundNewStudent: null,
-        startDateCancellationWithRefund: null,
-        startDateRegistration: null,
-        endDate: null,
-        endDateCourses: null),
+        deadlineCancellationASEQ: now,
+        deadlineCancellationWithoutRefundNewStudent: now,
+        deadlineCancellationWithRefund: now,
+        deadlineCancellationWithRefundNewStudent: now,
+        deadlineRegistration: now,
+        startDate: now,
+        startDateCancellationWithoutRefundNewStudent: now,
+        startDateCancellationWithRefund: now,
+        startDateRegistration: now,
+        endDate: now,
+        endDateCourses: now),
   ];
 
   final List<CourseActivity> coursesActivities = [
@@ -60,8 +63,8 @@ void main() {
         activityName: '',
         activityDescription: '',
         activityLocation: '',
-        startDateTime: null,
-        endDateTime: null),
+        startDateTime: now,
+        endDateTime: now.add(const Duration(hours: 1))),
   ];
 
   final List<Course> courses = [
@@ -80,44 +83,44 @@ void main() {
       // Check if the cacheManager has been emptied out
       cacheManagerMock.empty(),
       // Check if preference manager is clear
-      preferenceService.clearWithoutPersistentKey(),
+      preferenceServiceMock.clearWithoutPersistentKey(),
       // Check if user repository logOut is called
       userRepositoryMock.logOut(),
       // Check if the settings manager has reset lang and theme and notified his listener
       settingsManagerMock.resetLanguageAndThemeMode(),
     ]);
     verifyNoMoreInteractions(cacheManagerMock);
-    verifyNoMoreInteractions(preferenceService);
+    verifyNoMoreInteractions(preferenceServiceMock);
     verifyNoMoreInteractions(userRepositoryMock);
     verifyNoMoreInteractions(settingsManagerMock);
 
     // Make sure that the registered cache
-    expect(courseRepositoryMock.sessions.length, 0,
+    expect(courseRepositoryMock.sessions!.length, 0,
         reason: 'has emptied out the sessions list');
-    expect(courseRepositoryMock.coursesActivities.length, 0,
+    expect(courseRepositoryMock.coursesActivities!.length, 0,
         reason: 'has emptied out the courseActivities list');
-    expect(courseRepositoryMock.courses.length, 0,
+    expect(courseRepositoryMock.courses!.length, 0,
         reason: 'has emptied out the courses list');
 
     // Check if navigation has been rerouted to login page
     verifyInOrder([
-      navigationService.pushNamedAndRemoveUntil(
+      navigationServiceMock.pushNamedAndRemoveUntil(
           RouterPaths.login, RouterPaths.chooseLanguage)
     ]);
 
-    verifyNoMoreInteractions(navigationService);
+    verifyNoMoreInteractions(navigationServiceMock);
   }
 
   group('MoreViewModel - ', () {
     setUp(() async {
-      cacheManagerMock = setupCacheManagerMock() as CacheManagerMock;
-      settingsManagerMock = setupSettingsManagerMock() as SettingsManagerMock;
+      cacheManagerMock = setupCacheManagerMock();
+      settingsManagerMock = setupSettingsManagerMock();
       courseRepositoryMock =
-          setupCourseRepositoryMock() as CourseRepositoryMock;
-      remoteConfigService = setupRemoteConfigServiceMock();
-      preferenceService = setupPreferencesServiceMock();
-      userRepositoryMock = setupUserRepositoryMock() as UserRepositoryMock;
-      navigationService = setupNavigationServiceMock();
+          setupCourseRepositoryMock();
+      remoteConfigServiceMock = setupRemoteConfigServiceMock();
+      preferenceServiceMock = setupPreferencesServiceMock();
+      userRepositoryMock = setupUserRepositoryMock();
+      navigationServiceMock = setupNavigationServiceMock();
       appIntl = await setupAppIntl();
       setupLogger();
 
@@ -129,7 +132,7 @@ void main() {
       CourseRepositoryMock.stubCoursesActivities(courseRepositoryMock,
           toReturn: coursesActivities);
       RemoteConfigServiceMock.stubGetPrivacyPolicyEnabled(
-          remoteConfigService as RemoteConfigServiceMock);
+          remoteConfigServiceMock);
     });
 
     tearDown(() {
@@ -145,7 +148,7 @@ void main() {
       test('If the correct function have been called when logout occur',
           () async {
         RemoteConfigServiceMock.stubGetPrivacyPolicyEnabled(
-            remoteConfigService as RemoteConfigServiceMock,
+            remoteConfigServiceMock,
             toReturn: false);
         setupFlutterToastMock();
         UserRepositoryMock.stubLogOut(userRepositoryMock);
@@ -159,7 +162,7 @@ void main() {
           'If an error occur from the cache manager that the logout function finishes out',
           () async {
         RemoteConfigServiceMock.stubGetPrivacyPolicyEnabled(
-            remoteConfigService as RemoteConfigServiceMock,
+            remoteConfigServiceMock,
             toReturn: false);
         setupFlutterToastMock();
         CacheManagerMock.stubEmptyException(cacheManagerMock);
