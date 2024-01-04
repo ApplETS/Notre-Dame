@@ -119,7 +119,7 @@ AnalyticsServiceMock setupAnalyticsServiceMock() {
 }
 
 /// Load a mock of the [RiveAnimationService]
-RiveAnimationService setupRiveAnimationServiceMock() {
+RiveAnimationServiceMock setupRiveAnimationServiceMock() {
   unregister<RiveAnimationService>();
   final service = RiveAnimationServiceMock();
 
@@ -129,7 +129,7 @@ RiveAnimationService setupRiveAnimationServiceMock() {
 }
 
 /// Load a mock of the [InternalInfoService]
-InternalInfoService setupInternalInfoServiceMock() {
+InternalInfoServiceMock setupInternalInfoServiceMock() {
   unregister<InternalInfoService>();
   final service = InternalInfoServiceMock();
 
@@ -179,7 +179,7 @@ AppWidgetService setupAppWidgetServiceMock() {
 }
 
 /// Load a mock of the [NavigationService]
-NavigationService setupNavigationServiceMock() {
+NavigationServiceMock setupNavigationServiceMock() {
   unregister<NavigationService>();
   final service = NavigationServiceMock();
 
@@ -189,7 +189,7 @@ NavigationService setupNavigationServiceMock() {
 }
 
 /// Load a mock of the [GithubApi]
-GithubApi setupGithubApiMock() {
+GithubApiMock setupGithubApiMock() {
   unregister<GithubApi>();
   final service = GithubApiMock();
 
@@ -209,7 +209,7 @@ FlutterSecureStorageMock setupFlutterSecureStorageMock() {
 }
 
 /// Load a mock of the [UserRepository]
-UserRepository setupUserRepositoryMock() {
+UserRepositoryMock setupUserRepositoryMock() {
   unregister<UserRepository>();
   final service = UserRepositoryMock();
 
@@ -255,7 +255,7 @@ PreferencesServiceMock setupPreferencesServiceMock() {
 }
 
 /// Load a mock of the [SettingsManager]
-SettingsManager setupSettingsManagerMock() {
+SettingsManagerMock setupSettingsManagerMock() {
   unregister<SettingsManager>();
   final service = SettingsManagerMock();
 
@@ -265,7 +265,7 @@ SettingsManager setupSettingsManagerMock() {
 }
 
 /// Load a mock of the [CourseRepository]
-CourseRepository setupCourseRepositoryMock() {
+CourseRepositoryMock setupCourseRepositoryMock() {
   unregister<CourseRepository>();
   final service = CourseRepositoryMock();
 
@@ -309,7 +309,7 @@ void setupInAppReviewMock([WidgetTester? tester]) {
 }
 
 /// Load a mock of the [LaunchUrlService]
-LaunchUrlService setupLaunchUrlServiceMock() {
+LaunchUrlServiceMock setupLaunchUrlServiceMock() {
   unregister<LaunchUrlService>();
   final service = LaunchUrlServiceMock();
 
@@ -319,7 +319,7 @@ LaunchUrlService setupLaunchUrlServiceMock() {
 }
 
 /// Load a mock of the [RemoteConfigService]
-RemoteConfigService setupRemoteConfigServiceMock() {
+RemoteConfigServiceMock setupRemoteConfigServiceMock() {
   unregister<RemoteConfigService>();
   final service = RemoteConfigServiceMock();
 
@@ -329,7 +329,7 @@ RemoteConfigService setupRemoteConfigServiceMock() {
 }
 
 /// Load a mock of the [QuickLinkRepository]
-QuickLinkRepository setupQuickLinkRepositoryMock() {
+QuickLinkRepositoryMock setupQuickLinkRepositoryMock() {
   unregister<QuickLinkRepository>();
   final repository = QuickLinkRepositoryMock();
 

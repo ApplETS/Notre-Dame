@@ -12,18 +12,19 @@ import '../helpers.dart';
 import '../mock/managers/quick_links_repository_mock.dart';
 
 void main() {
-  late AppIntl intl;
+  late QuickLinkRepositoryMock quickLinkRepositoryMock;
+
   late QuickLinksViewModel viewModel;
-  late QuickLinkRepository quickLinkRepository;
 
   // Sample data for tests
+  late AppIntl intl;
   late QuickLinkData quickLinkDataSample;
   late QuickLink quickLinkSample;
 
   group("QuickLinksViewModel - ", () {
     setUp(() async {
       // Setting up mocks
-      quickLinkRepository = setupQuickLinkRepositoryMock();
+      quickLinkRepositoryMock = setupQuickLinkRepositoryMock();
       intl = await setupAppIntl();
 
       viewModel = QuickLinksViewModel(intl);
@@ -38,11 +39,11 @@ void main() {
     group('getQuickLinks -', () {
       test('Should get quick links from cache', () async {
         QuickLinkRepositoryMock.stubGetQuickLinkDataFromCache(
-            quickLinkRepository as QuickLinkRepositoryMock,
+            quickLinkRepositoryMock,
             toReturn: [quickLinkDataSample]);
 
         QuickLinkRepositoryMock.stubGetDefaultQuickLinks(
-            quickLinkRepository as QuickLinkRepositoryMock,
+            quickLinkRepositoryMock,
             toReturn: [quickLinkSample]);
 
         final result = await viewModel.getQuickLinks();
@@ -53,10 +54,10 @@ void main() {
       test('Should return default quick links if cache is not initialized',
           () async {
         QuickLinkRepositoryMock.stubGetQuickLinkDataFromCacheException(
-            quickLinkRepository as QuickLinkRepositoryMock);
+            quickLinkRepositoryMock);
 
         QuickLinkRepositoryMock.stubGetDefaultQuickLinks(
-            quickLinkRepository as QuickLinkRepositoryMock,
+            quickLinkRepositoryMock,
             toReturn: [quickLinkSample]);
 
         final result = await viewModel.getQuickLinks();
@@ -101,11 +102,11 @@ void main() {
     group('futureToRun -', () {
       test('Should fetch and set quick links', () async {
         QuickLinkRepositoryMock.stubGetQuickLinkDataFromCache(
-            quickLinkRepository as QuickLinkRepositoryMock,
+            quickLinkRepositoryMock,
             toReturn: [quickLinkDataSample]);
 
         QuickLinkRepositoryMock.stubGetDefaultQuickLinks(
-            quickLinkRepository as QuickLinkRepositoryMock,
+            quickLinkRepositoryMock,
             toReturn: [quickLinkSample]);
 
         final result = await viewModel.futureToRun();
