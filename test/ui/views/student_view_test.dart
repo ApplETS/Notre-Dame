@@ -19,23 +19,22 @@ import '../../mock/managers/course_repository_mock.dart';
 import '../../mock/services/analytics_service_mock.dart';
 
 void main() {
-  CourseRepository courseRepository;
+  CourseRepositoryMock courseRepositoryMock;
 
   group('StudentView - ', () {
     setUp(() async {
       setupNavigationServiceMock();
       setupNetworkingServiceMock();
-      courseRepository = setupCourseRepositoryMock();
+      courseRepositoryMock = setupCourseRepositoryMock();
       setupSettingsManagerMock();
       setupAnalyticsServiceMock();
 
       CourseRepositoryMock.stubCourses(
-          courseRepository as CourseRepositoryMock);
+          courseRepositoryMock);
       CourseRepositoryMock.stubGetCourses(
-          courseRepository as CourseRepositoryMock,
-          fromCacheOnly: false);
+          courseRepositoryMock);
       CourseRepositoryMock.stubGetCourses(
-          courseRepository as CourseRepositoryMock,
+          courseRepositoryMock,
           fromCacheOnly: true);
     });
 
