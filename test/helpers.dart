@@ -79,7 +79,7 @@ Widget localizedWidget(
     );
 
 /// Load a mock of the [SignetsAPIClient]
-SignetsAPIClient setupSignetsApiMock() {
+SignetsAPIClientMock setupSignetsApiMock() {
   unregister<SignetsAPIClient>();
   final service = SignetsAPIClientMock();
 
@@ -109,7 +109,7 @@ MonETSAPIClient setupMonETSApiMock() {
 }
 
 /// Load a mock of the [AnalyticsService]
-AnalyticsService setupAnalyticsServiceMock() {
+AnalyticsServiceMock setupAnalyticsServiceMock() {
   unregister<AnalyticsService>();
   final service = AnalyticsServiceMock();
 
@@ -199,7 +199,7 @@ GithubApi setupGithubApiMock() {
 }
 
 /// Load a mock of the [FlutterSecureStorage]
-FlutterSecureStorage setupFlutterSecureStorageMock() {
+FlutterSecureStorageMock setupFlutterSecureStorageMock() {
   unregister<FlutterSecureStorage>();
   final service = FlutterSecureStorageMock();
 
@@ -224,7 +224,7 @@ Future<AppIntl> setupAppIntl() async {
 }
 
 /// Load a mock of the [CacheManager]
-CacheManager setupCacheManagerMock() {
+CacheManagerMock setupCacheManagerMock() {
   unregister<CacheManager>();
   final service = CacheManagerMock();
 
@@ -245,7 +245,7 @@ Logger setupLogger() {
 }
 
 /// Load a mock of the [PreferencesService]
-PreferencesService setupPreferencesServiceMock() {
+PreferencesServiceMock setupPreferencesServiceMock() {
   unregister<PreferencesService>();
   final service = PreferencesServiceMock();
 
@@ -276,7 +276,7 @@ CourseRepository setupCourseRepositoryMock() {
 
 /// Load a mock of the [NetworkingService]
 /// Will also stub the first value of changeConnectivityStream
-NetworkingService setupNetworkingServiceMock() {
+NetworkingServiceMock setupNetworkingServiceMock() {
   unregister<NetworkingService>();
   final service = NetworkingServiceMock();
 
