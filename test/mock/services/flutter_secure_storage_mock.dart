@@ -1,12 +1,13 @@
-// Flutter imports:
-import 'package:flutter/material.dart';
-
 // Package imports:
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
+import 'flutter_secure_storage_mock.mocks.dart';
+
 /// Mock for the [FlutterSecureStorage]
-class FlutterSecureStorageMock extends Mock implements FlutterSecureStorage {
+@GenerateNiceMocks([MockSpec<FlutterSecureStorage>()])
+class FlutterSecureStorageMock extends MockFlutterSecureStorage {
   /// Stub the read function of [FlutterSecureStorage]
   static void stubRead(FlutterSecureStorageMock mock,
       {required String key, required String valueToReturn}) {

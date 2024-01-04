@@ -1,15 +1,16 @@
-// Flutter imports:
-import 'package:flutter/material.dart';
-
 // Package imports:
+import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:pub_semver/pub_semver.dart';
 
 // Project imports:
 import 'package:notredame/core/services/siren_flutter_service.dart';
 
+import 'siren_flutter_service_mock.mocks.dart';
+
 /// Mock for the [SirenFlutterService]
-class SirenFlutterServiceMock extends Mock implements SirenFlutterService {
+@GenerateNiceMocks([MockSpec<SirenFlutterService>()])
+class SirenFlutterServiceMock extends MockSirenFlutterService {
   /// Stub the updateIsAvailable function of [SirenFlutterService]
   static void stubUpdateIsAvailable(SirenFlutterServiceMock mock,
       {bool valueToReturn = false}) {
