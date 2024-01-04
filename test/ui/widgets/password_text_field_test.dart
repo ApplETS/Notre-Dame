@@ -10,17 +10,22 @@ import 'package:notredame/ui/widgets/password_text_field.dart';
 import '../../helpers.dart';
 
 void main() {
-  AppIntl intl;
+  late AppIntl intl;
+  late PasswordFormField passwordFormField;
 
   group('PasswordFormField - ', () {
     setUpAll(() async {
       intl = await setupAppIntl();
+      passwordFormField = PasswordFormField(
+        validator: (value) {},
+        onEditionComplete: () {},
+      );
     });
 
     testWidgets('has a label, the visibility icon and obscure text',
         (WidgetTester tester) async {
       await tester
-          .pumpWidget(localizedWidget(child: const PasswordFormField()));
+          .pumpWidget(localizedWidget(child: passwordFormField));
       await tester.pumpAndSettle();
 
       final icon = find.byIcon(Icons.visibility);
@@ -35,7 +40,7 @@ void main() {
           'toggling the visibility button should disable the obscureText property',
           (WidgetTester tester) async {
         await tester
-            .pumpWidget(localizedWidget(child: const PasswordFormField()));
+            .pumpWidget(localizedWidget(child: passwordFormField));
         await tester.pumpAndSettle();
 
         await tester.tap(find.byIcon(Icons.visibility));
@@ -54,7 +59,7 @@ void main() {
           'toggling the visibility button two times should enable the obscureText property',
           (WidgetTester tester) async {
         await tester
-            .pumpWidget(localizedWidget(child: const PasswordFormField()));
+            .pumpWidget(localizedWidget(child: passwordFormField));
         await tester.pumpAndSettle();
 
         await tester.tap(find.byIcon(Icons.visibility));
