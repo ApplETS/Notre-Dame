@@ -56,7 +56,7 @@ class _ScheduleDefaultState extends State<ScheduleDefault> {
           WeekDays.saturday
         ],
         scrollOffset: 340,
-        headerStyle: const calendar_view.HeaderStyle(
+        headerStyle: const HeaderStyle(
             headerTextStyle: TextStyle(fontSize: 0), // Minimize text size
             leftIconVisible: false,
             rightIconVisible: false,
