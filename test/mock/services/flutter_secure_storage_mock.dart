@@ -10,7 +10,7 @@ import 'flutter_secure_storage_mock.mocks.dart';
 class FlutterSecureStorageMock extends MockFlutterSecureStorage {
   /// Stub the read function of [FlutterSecureStorage]
   static void stubRead(FlutterSecureStorageMock mock,
-      {required String key, required String valueToReturn}) {
+      {required String key, required String? valueToReturn}) {
     when(mock.read(key: key)).thenAnswer((_) async => valueToReturn);
   }
 
