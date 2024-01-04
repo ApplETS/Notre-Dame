@@ -17,8 +17,8 @@ import '../helpers.dart';
 import '../mock/managers/cache_manager_mock.dart';
 
 void main() {
-  CacheManager cacheManager;
-  QuickLinkRepository quickLinkRepository;
+  late CacheManager cacheManager;
+  late QuickLinkRepository quickLinkRepository;
 
   group("QuickLinkRepository - ", () {
     setUp(() {

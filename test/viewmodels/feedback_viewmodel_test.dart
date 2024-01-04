@@ -27,12 +27,12 @@ void main() {
   // Needed to support FlutterToast.
   TestWidgetsFlutterBinding.ensureInitialized();
 
-  GithubApiMock githubApiMock;
+  late GithubApiMock githubApiMock;
 
-  PreferencesServiceMock preferencesServiceMock;
+  late PreferencesServiceMock preferencesServiceMock;
 
-  AppIntl appIntl;
-  FeedbackViewModel viewModel;
+  late AppIntl appIntl;
+  late FeedbackViewModel viewModel;
   const feedBackText = 'Notre-Dame bug report';
   final file = File('bugReportTest.png');
   final filePath = file.path.split('/').last;

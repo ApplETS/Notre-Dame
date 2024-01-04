@@ -20,10 +20,10 @@ import '../mock/services/preferences_service_mock.dart';
 import '../mock/services/remote_config_service_mock.dart';
 
 void main() {
-  AnalyticsService analyticsService;
-  RemoteConfigService remoteConfigService;
-  PreferencesService preferencesService;
-  SettingsManager manager;
+  late AnalyticsService analyticsService;
+  late RemoteConfigService remoteConfigService;
+  late PreferencesService preferencesService;
+  late SettingsManager manager;
 
   group("SettingsManager - ", () {
     setUp(() async {

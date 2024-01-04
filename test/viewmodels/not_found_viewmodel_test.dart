@@ -13,11 +13,11 @@ import '../helpers.dart';
 import '../mock/services/rive_animation_service_mock.dart';
 
 void main() {
-  NavigationService navigationService;
-  RiveAnimationService riveAnimationService;
-  AnalyticsService analyticsService;
+  late NavigationService navigationService;
+  late RiveAnimationService riveAnimationService;
+  late AnalyticsService analyticsService;
 
-  NotFoundViewModel viewModel;
+  late NotFoundViewModel viewModel;
 
   group('NotFoundViewModel - ', () {
     const String pageNotFoundPassed = "/test";

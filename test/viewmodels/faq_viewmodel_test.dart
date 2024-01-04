@@ -13,9 +13,9 @@ import '../helpers.dart';
 import '../mock/services/launch_url_service_mock.dart';
 
 void main() {
-  LaunchUrlServiceMock launchUrlService;
+  late LaunchUrlServiceMock launchUrlService;
 
-  FaqViewModel viewModel;
+  late FaqViewModel viewModel;
 
   group('FaqViewModel - ', () {
     setUp(() async {
