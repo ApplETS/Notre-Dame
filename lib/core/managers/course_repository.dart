@@ -12,6 +12,7 @@ import 'package:logger/logger.dart';
 
 // Project imports:
 import 'package:notredame/core/managers/cache_manager.dart';
+import 'package:notredame/core/managers/grade_graph_repository.dart';
 import 'package:notredame/core/managers/user_repository.dart';
 import 'package:notredame/core/services/analytics_service.dart';
 import 'package:notredame/core/services/networking_service.dart';
@@ -44,6 +45,10 @@ class CourseRepository {
 
   /// Cache manager to access and update the cache.
   final CacheManager _cacheManager = locator<CacheManager>();
+
+  // Storage manager to read or write files in storage.
+  final GradeGraphRepository _gradeGraphRepository =
+      locator<GradeGraphRepository>();
 
   /// Used to verify if the user has connectivity
   final NetworkingService _networkingService = locator<NetworkingService>();
@@ -443,6 +448,9 @@ class CourseRepository {
         course.acronym == element.acronym && course.session == element.session);
     course.summary = summary;
     _courses.add(course);
+
+    _gradeGraphRepository.updateGradeEntry(
+        _userRepository.monETSUser.universalCode, course);
 
     try {
       // Update cache
