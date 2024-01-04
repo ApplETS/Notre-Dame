@@ -29,11 +29,11 @@ jobs:
     outputs:
       coverage: ${{ steps.coverage.outputs.percentage }}
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           ref: ${{ github.head_ref }}
           token: ${{ secrets.PTA }}
-      - uses: actions/setup-java@v3
+      - uses: actions/setup-java@v4
         with:
           distribution: 'adopt'
           java-version: '11'
@@ -59,7 +59,7 @@ jobs:
         run: flutter format lib test
       - name: Commit formatted files
         id: commit_formatted
-        uses: stefanzweifel/git-auto-commit-action@v4
+        uses: stefanzweifel/git-auto-commit-action@v5
         with:
           file_pattern: "*.dart"
           commit_user_name: github-actions[bot]
@@ -85,7 +85,7 @@ jobs:
       # Commit and push the goldens files updated.
       - name: Commit golden files
         id: commit_golden
-        uses: stefanzweifel/git-auto-commit-action@v4
+        uses: stefanzweifel/git-auto-commit-action@v5
         with:
           file_pattern: test/*
           commit_user_name: github-actions[bot]
@@ -157,7 +157,7 @@ jobs:
     needs:
       - testing
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: subosito/flutter-action@v2
         with:
           flutter-version: '3.3.x'
@@ -165,7 +165,7 @@ jobs:
           cache: true
       - name: Install Android dependencies
         if: matrix.target == 'Android'
-        uses: actions/setup-java@v3
+        uses: actions/setup-java@v4
         with:
           java-version: '11'
           distribution: 'adopt'
@@ -181,7 +181,7 @@ jobs:
       - name: Commit pod updates
         if: matrix.target == 'iOS'
         id: commit_pod_versions
-        uses: stefanzweifel/git-auto-commit-action@v4
+        uses: stefanzweifel/git-auto-commit-action@v5
         with:
           file_pattern: "*.lock"
           commit_user_name: github-actions[bot]

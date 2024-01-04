@@ -54,7 +54,7 @@ jobs:
     runs-on: ubuntu-latest
     if: ${{ github.event_name == 'pull_request' }}
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           token: ${{ secrets.PTA }}
       - name: Bump version using labels
@@ -65,7 +65,7 @@ jobs:
           commit: 'false'
       - name: Commit versioned files
         id: commit_version
-        uses: stefanzweifel/git-auto-commit-action@v4
+        uses: stefanzweifel/git-auto-commit-action@v5
         with:
           file_pattern: "*.yaml"
           commit_user_name: github-actions[bot]
