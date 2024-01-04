@@ -12,11 +12,12 @@ import 'package:notredame/core/services/navigation_service.dart';
 import 'package:notredame/ui/widgets/grade_button.dart';
 import '../../helpers.dart';
 import '../../mock/managers/settings_manager_mock.dart';
+import '../../mock/services/navigation_service_mock.dart';
 
 void main() {
-  AppIntl intl;
-  NavigationService navigationService;
-  SettingsManager settingsManager;
+  late AppIntl intl;
+  late NavigationServiceMock navigationServiceMock;
+  late SettingsManagerMock settingsManagerMock;
 
   final Course courseWithGrade = Course(
       acronym: 'GEN101',
@@ -54,10 +55,10 @@ void main() {
 
   group("GradeButton -", () {
     setUp(() async {
-      settingsManager = setupSettingsManagerMock();
+      settingsManagerMock = setupSettingsManagerMock();
       intl = await setupAppIntl();
       setupNavigationServiceMock();
-      navigationService = setupNavigationServiceMock();
+      navigationServiceMock = setupNavigationServiceMock();
     });
 
     tearDown(() {
@@ -69,33 +70,33 @@ void main() {
       testWidgets("Display acronym of the course and the current grade",
           (WidgetTester tester) async {
         SettingsManagerMock.stubGetString(
-            settingsManager as SettingsManagerMock,
+            settingsManagerMock,
             PreferencesFlag.discoveryStudentGrade,
             toReturn: 'true');
 
         await tester.pumpWidget(localizedWidget(
-            child: GradeButton(courseWithGrade, showDiscovery: false)));
+            child: GradeButton(courseWithGrade)));
         await tester.pumpAndSettle();
 
         expect(find.text(courseWithGrade.acronym), findsOneWidget);
-        expect(find.text(courseWithGrade.grade), findsOneWidget);
+        expect(find.text(courseWithGrade.grade!), findsOneWidget);
       });
 
       testWidgets("Grade not available and summary is loaded.",
           (WidgetTester tester) async {
         SettingsManagerMock.stubGetString(
-            settingsManager as SettingsManagerMock,
+            settingsManagerMock,
             PreferencesFlag.discoveryStudentGrade,
             toReturn: 'true');
 
         await tester.pumpWidget(localizedWidget(
-            child: GradeButton(courseWithSummary, showDiscovery: false)));
+            child: GradeButton(courseWithSummary)));
         await tester.pumpAndSettle();
 
         expect(find.text(courseWithGrade.acronym), findsOneWidget);
         expect(
             find.text(intl.grades_grade_in_percentage(
-                courseWithSummary.summary.currentMarkInPercent.round())),
+                courseWithSummary.summary!.currentMarkInPercent.round())),
             findsOneWidget,
             reason:
                 'There is no grade available and the course summary exists so the '
@@ -105,12 +106,12 @@ void main() {
       testWidgets("Grade and summary not available.",
           (WidgetTester tester) async {
         SettingsManagerMock.stubGetString(
-            settingsManager as SettingsManagerMock,
+            settingsManagerMock,
             PreferencesFlag.discoveryStudentGrade,
             toReturn: 'true');
 
         await tester.pumpWidget(localizedWidget(
-            child: GradeButton(gradesNotAvailable, showDiscovery: false)));
+            child: GradeButton(gradesNotAvailable)));
         await tester.pumpAndSettle();
 
         expect(find.text(courseWithGrade.acronym), findsOneWidget);
@@ -124,16 +125,16 @@ void main() {
     group('Interactions - ', () {
       testWidgets('Grade button redirects to grades view when tapped ',
           (WidgetTester tester) async {
-        SettingsManagerMock.stubGetBool(settingsManager as SettingsManagerMock,
+        SettingsManagerMock.stubGetBool(settingsManagerMock,
             PreferencesFlag.discoveryStudentGrade,
             toReturn: true);
         await tester.pumpWidget(localizedWidget(
-            child: GradeButton(courseWithGrade, showDiscovery: false)));
+            child: GradeButton(courseWithGrade)));
         await tester.pumpAndSettle();
 
         await tester.tap(find.text(courseWithGrade.acronym));
 
-        verify(navigationService.pushNamed(RouterPaths.gradeDetails,
+        verify(navigationServiceMock.pushNamed(RouterPaths.gradeDetails,
             arguments: courseWithGrade));
       });
 
@@ -141,12 +142,12 @@ void main() {
           'Grade button does not redirect to grades view if the grades discovery did not already launch',
           (WidgetTester tester) async {
         await tester.pumpWidget(localizedWidget(
-            child: GradeButton(courseWithGrade, showDiscovery: false)));
+            child: GradeButton(courseWithGrade)));
         await tester.pumpAndSettle();
 
         await tester.tap(find.text(courseWithGrade.acronym));
 
-        verifyNever(navigationService.pushNamed(RouterPaths.gradeDetails,
+        verifyNever(navigationServiceMock.pushNamed(RouterPaths.gradeDetails,
             arguments: courseWithGrade));
       });
     });
