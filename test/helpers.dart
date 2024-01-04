@@ -148,7 +148,7 @@ SirenFlutterService setupSirenFlutterServiceMock() {
   return service;
 }
 
-void setupFlutterToastMock([WidgetTester tester]) {
+void setupFlutterToastMock([WidgetTester? tester]) {
   const MethodChannel channel = MethodChannel('PonnamKarthik/fluttertoast');
 
   TestDefaultBinaryMessenger messenger;
@@ -157,7 +157,7 @@ void setupFlutterToastMock([WidgetTester tester]) {
     messenger = tester.binding.defaultBinaryMessenger;
   } else {
     messenger =
-        TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger;
+        TestDefaultBinaryMessengerBinding.instance!.defaultBinaryMessenger;
   }
 
   messenger.setMockMethodCallHandler(channel, (MethodCall methodCall) async {
@@ -288,7 +288,7 @@ NetworkingService setupNetworkingServiceMock() {
   return service;
 }
 
-void setupInAppReviewMock([WidgetTester tester]) {
+void setupInAppReviewMock([WidgetTester? tester]) {
   const MethodChannel channel = MethodChannel('dev.britannio.in_app_review');
 
   TestDefaultBinaryMessenger messenger;
@@ -297,7 +297,7 @@ void setupInAppReviewMock([WidgetTester tester]) {
     messenger = tester.binding.defaultBinaryMessenger;
   } else {
     messenger =
-        TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger;
+        TestDefaultBinaryMessengerBinding.instance!.defaultBinaryMessenger;
   }
 
   messenger.setMockMethodCallHandler(channel, (MethodCall methodCall) async {
