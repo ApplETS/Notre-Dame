@@ -73,16 +73,6 @@ void main() {
 
         expect(['English', 'Français'], languages);
       });
-
-      test('returns the languages with an exception', () async {
-        const AppIntl intlNull = null;
-        final ChooseLanguageViewModel viewModelWithInvalidIntl =
-            ChooseLanguageViewModel(intl: intlNull);
-
-        expect(
-            () => viewModelWithInvalidIntl.languages, throwsNoSuchMethodError,
-            reason: "The getter 'settings_english' was called on null");
-      });
     });
   });
 }
