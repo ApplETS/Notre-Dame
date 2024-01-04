@@ -58,8 +58,12 @@ class _ScheduleDefaultState extends State<ScheduleDefault> {
           calendar_view.WeekDays.saturday
         ],
         scrollOffset: 340,
+        headerStyle: const calendar_view.HeaderStyle(
+            headerTextStyle: TextStyle(fontSize: 0), // Minimize text size
+            leftIconVisible: false,
+            rightIconVisible: false,
+            decoration: BoxDecoration(color: Colors.transparent)),
         heightPerMinute: 0.72,
-        weekPageHeaderBuilder: customHeaderBuilder,
         eventTileBuilder: (date, events, boundary, startDuration,
                 endDuration) =>
             _buildEventTile(
@@ -67,11 +71,6 @@ class _ScheduleDefaultState extends State<ScheduleDefault> {
         weekDayBuilder: (DateTime date) => _buildWeekDay(date),
       ),
     ));
-  }
-
-  Widget customHeaderBuilder(DateTime startDate, DateTime endDate) {
-    // Return an empty SizedBox, effectively creating no header space
-    return const SizedBox.shrink();
   }
 
   Widget _buildEventTile(
