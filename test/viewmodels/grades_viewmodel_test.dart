@@ -14,9 +14,9 @@ import '../mock/managers/course_repository_mock.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
-  CourseRepository courseRepository;
-  AppIntl intl;
-  GradesViewModel viewModel;
+  late CourseRepository courseRepository;
+  late AppIntl intl;
+  late GradesViewModel viewModel;
 
   final Course courseSummer = Course(
       acronym: 'GEN101',

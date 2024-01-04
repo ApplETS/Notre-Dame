@@ -19,12 +19,12 @@ import '../mock/services/internal_info_service_mock.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
-  NavigationService navigationService;
-  AnalyticsService analyticsService;
-  InternalInfoService internalInfoService;
-  LaunchUrlService launchUrlService;
+  late NavigationService navigationService;
+  late AnalyticsService analyticsService;
+  late InternalInfoService internalInfoService;
+  late LaunchUrlService launchUrlService;
 
-  WebLinkCardViewModel viewModel;
+  late WebLinkCardViewModel viewModel;
 
   final quickLink = QuickLink(
       id: 1, image: const Icon(Icons.ac_unit), name: 'test', link: 'testlink');

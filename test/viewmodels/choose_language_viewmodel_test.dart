@@ -12,11 +12,11 @@ import 'package:notredame/core/viewmodels/choose_language_viewmodel.dart';
 import '../helpers.dart';
 import '../mock/managers/settings_manager_mock.dart';
 
-ChooseLanguageViewModel viewModel;
+late ChooseLanguageViewModel viewModel;
 
 void main() {
-  NavigationService navigationService;
-  SettingsManager settingsManager;
+  late NavigationService navigationService;
+  late SettingsManager settingsManager;
 
   group("ChooseLanguageViewModel - ", () {
     setUp(() async {

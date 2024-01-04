@@ -53,7 +53,7 @@ import 'mock/services/siren_flutter_service_mock.dart';
 String goldenFilePath(String goldenName) => "./goldenFiles/$goldenName.png";
 
 /// Unregister the service [T] from GetIt
-void unregister<T>() {
+void unregister<T extends Object>() {
   if (locator.isRegistered<T>()) {
     locator.unregister<T>();
   }
