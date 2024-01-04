@@ -80,9 +80,10 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   lint: ^2.0.1
-  mockito: ^5.3.2
+  mockito: ^5.3.3
   flutter_config: ^2.0.0
   flutter_launcher_icons: ^0.11.0
+  build_runner: ^2.3.3
 
 flutter_icons:
   android: "launcher_icon"

@@ -1,11 +1,15 @@
 // Package imports:
+import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
 // Project imports:
 import 'package:notredame/core/constants/preferences_flags.dart';
 import 'package:notredame/core/services/preferences_service.dart';
 
-class PreferencesServiceMock extends Mock implements PreferencesService {
+import 'preferences_service_mock.mocks.dart';
+
+@GenerateNiceMocks([MockSpec<PreferencesService>()])
+class PreferencesServiceMock extends MockPreferencesService {
   /// Stub the answer of [setString] when the [flag] is used.
   static void stubSetString(PreferencesServiceMock mock, PreferencesFlag flag,
       {bool toReturn = true}) {
@@ -45,14 +49,14 @@ class PreferencesServiceMock extends Mock implements PreferencesService {
 
   /// Stub the answer of [getDateTime] when the [flag] is used.
   static void stubGetDateTime(PreferencesServiceMock mock, PreferencesFlag flag,
-      {DateTime toReturn}) {
+      {DateTime? toReturn}) {
     when(mock.getDateTime(flag)).thenAnswer((_) async => toReturn);
   }
 
   /// Stub the answer of [getPreferencesFlag] when the [flag] is used.
   static void stubGetPreferencesFlag(
       PreferencesServiceMock mock, PreferencesFlag flag,
-      {Object toReturn}) {
+      {Object? toReturn}) {
     when(mock.getPreferencesFlag(flag)).thenAnswer((_) async => toReturn);
   }
 

@@ -1,5 +1,6 @@
 // Flutter imports:
 import 'package:flutter/material.dart';
+import 'package:mockito/annotations.dart';
 
 // Package imports:
 import 'package:mockito/mockito.dart';
@@ -8,7 +9,10 @@ import 'package:mockito/mockito.dart';
 import 'package:notredame/core/constants/preferences_flags.dart';
 import 'package:notredame/core/managers/settings_manager.dart';
 
-class SettingsManagerMock extends Mock implements SettingsManager {
+import 'settings_manager_mock.mocks.dart';
+
+@GenerateNiceMocks([MockSpec<SettingsManager>()])
+class SettingsManagerMock extends MockSettingsManager {
   /// Stub the [getScheduleSettings] function of [mock], when called return [toReturn].
   static void stubGetScheduleSettings(SettingsManagerMock mock,
       {Map<PreferencesFlag, dynamic> toReturn = const {}}) {
@@ -71,7 +75,8 @@ class SettingsManagerMock extends Mock implements SettingsManager {
   }
 
   /// Stub the [dateTimeNow] function of [mock], when called return [toReturn].
-  static void stubDateTimeNow(SettingsManagerMock mock, {DateTime toReturn}) {
+  static void stubDateTimeNow(SettingsManagerMock mock, {required DateTime toReturn}) {
+    // ignore: cast_nullable_to_non_nullable
     when(mock.dateTimeNow).thenReturn(toReturn);
   }
 }
