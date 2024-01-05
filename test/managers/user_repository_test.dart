@@ -526,6 +526,8 @@ void main() {
         reset(cacheManagerMock);
         CacheManagerMock.stubGetException(
             cacheManagerMock, UserRepository.programsCacheKey);
+        FlutterSecureStorageMock.stubRead(secureStorageMock,
+            key: UserRepository.passwordSecureKey, valueToReturn: '');
 
         expect(manager.programs, isNull);
         final results = await manager.getPrograms();
@@ -535,7 +537,7 @@ void main() {
         expect(manager.programs, []);
 
         verify(cacheManagerMock.get(UserRepository.programsCacheKey));
-        verify(manager.getPassword());
+        verify(secureStorageMock.read(key: UserRepository.passwordSecureKey));
         verifyNever(cacheManagerMock.update(
             UserRepository.programsCacheKey, jsonEncode(programs)));
       });
@@ -545,6 +547,8 @@ void main() {
         reset(cacheManagerMock);
         CacheManagerMock.stubGet(cacheManagerMock,
             UserRepository.programsCacheKey, jsonEncode([]));
+        FlutterSecureStorageMock.stubRead(secureStorageMock,
+            key: UserRepository.passwordSecureKey, valueToReturn: '');
 
         // Stub SignetsApi answer to test only the cache retrieving
         reset(signetsApiMock);
@@ -560,7 +564,7 @@ void main() {
             reason: 'The programs list should now be loaded.');
 
         verify(cacheManagerMock.get(UserRepository.programsCacheKey));
-        verify(manager.getPassword());
+        verify(secureStorageMock.read(key: UserRepository.passwordSecureKey));
         verify(cacheManagerMock.update(
             UserRepository.programsCacheKey, jsonEncode(programs)));
       });
@@ -574,6 +578,8 @@ void main() {
         // Stub SignetsApi answer to test only the cache retrieving
         SignetsAPIClientMock.stubGetProgramsException(
             signetsApiMock, username);
+        FlutterSecureStorageMock.stubRead(secureStorageMock,
+            key: UserRepository.passwordSecureKey, valueToReturn: '');
 
         expect(manager.programs, isNull);
         expect(manager.getPrograms(), throwsA(isInstanceOf<ApiException>()));
@@ -586,7 +592,7 @@ void main() {
             analyticsServiceMock.logError(UserRepository.tag, any, any, any));
 
         verify(cacheManagerMock.get(UserRepository.programsCacheKey));
-        verify(manager.getPassword());
+        verify(secureStorageMock.read(key: UserRepository.passwordSecureKey));
         verify(analyticsServiceMock.logError(UserRepository.tag, any, any, any));
 
         verifyNever(cacheManagerMock.update(UserRepository.programsCacheKey, any));
@@ -601,6 +607,8 @@ void main() {
         // Stub to simulate exception when updating cache
         CacheManagerMock.stubUpdateException(
             cacheManagerMock, UserRepository.programsCacheKey);
+        FlutterSecureStorageMock.stubRead(secureStorageMock,
+            key: UserRepository.passwordSecureKey, valueToReturn: '');
 
         // Stub SignetsApi answer to test only the cache retrieving
         SignetsAPIClientMock.stubGetPrograms(
@@ -634,6 +642,11 @@ void main() {
           firstName: 'John',
           lastName: 'Doe',
           permanentCode: 'DOEJ00000000');
+      final ProfileStudent defaultInfo = ProfileStudent(
+          balance: '',
+          firstName: '',
+          lastName: '',
+          permanentCode: '');
 
       const String username = "username";
 
@@ -647,6 +660,9 @@ void main() {
 
         MonETSAPIClientMock.stubAuthenticate(
             monETSApiMock, user);
+        
+        FlutterSecureStorageMock.stubRead(secureStorageMock,
+            key: UserRepository.passwordSecureKey, valueToReturn: '');
 
         // Result is true
         expect(
@@ -656,8 +672,7 @@ void main() {
 
         // Stub SignetsApi answer to test only the cache retrieving
         SignetsAPIClientMock.stubGetInfo(
-            // ignore: cast_nullable_to_non_nullable
-            signetsApiMock, username, any as ProfileStudent);
+            signetsApiMock, username, defaultInfo);
 
         // Stub to simulate that the user has an active internet connection
         NetworkingServiceMock.stubHasConnectivity(networkingServiceMock);
@@ -685,11 +700,11 @@ void main() {
         expect(manager.info, isNull);
         final results = await manager.getInfo();
 
-        expect(results, isNull);
-        expect(manager.info, isNull);
+        expect(results, defaultInfo);
+        expect(manager.info, defaultInfo);
 
         verify(cacheManagerMock.get(UserRepository.infoCacheKey));
-        verify(manager.getPassword());
+        verify(secureStorageMock.read(key: UserRepository.passwordSecureKey));
         verifyNever(
             cacheManagerMock.update(UserRepository.infoCacheKey, jsonEncode(info)));
       });
@@ -719,7 +734,7 @@ void main() {
             reason: 'The new info should now be loaded.');
 
         verify(cacheManagerMock.get(UserRepository.infoCacheKey));
-        verify(manager.getPassword());
+        verify(secureStorageMock.read(key: UserRepository.passwordSecureKey));
         verify(cacheManagerMock.update(
             UserRepository.infoCacheKey, jsonEncode(anotherInfo)));
       });
@@ -739,7 +754,7 @@ void main() {
             reason: 'The info should not have any duplicata..');
 
         verify(cacheManagerMock.get(UserRepository.infoCacheKey));
-        verify(manager.getPassword());
+        verify(secureStorageMock.read(key: UserRepository.passwordSecureKey));
         verifyNever(
             cacheManagerMock.update(UserRepository.infoCacheKey, jsonEncode(info)));
       });
@@ -762,7 +777,7 @@ void main() {
             analyticsServiceMock.logError(UserRepository.tag, any, any, any));
 
         verify(cacheManagerMock.get(UserRepository.infoCacheKey));
-        verify(manager.getPassword());
+        verify(secureStorageMock.read(key: UserRepository.passwordSecureKey));
         verify(analyticsServiceMock.logError(UserRepository.tag, any, any, any));
 
         verifyNever(cacheManagerMock.update(UserRepository.infoCacheKey, any));
