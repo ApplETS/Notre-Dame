@@ -1,4 +1,6 @@
 // Flutter imports:
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 
 // Package imports:
@@ -94,6 +96,6 @@ void main() {
         await expectLater(find.byType(ScheduleDefaultView),
             matchesGoldenFile(goldenFilePath("scheduleDefaultView_2")));
       });
-    });
+    }, skip: !Platform.isLinux);
   });
 }
