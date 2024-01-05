@@ -268,6 +268,8 @@ void main() {
         reset(userRepositoryMock);
         UserRepositoryMock.stubGetPasswordException(
             userRepositoryMock);
+        UserRepositoryMock.stubMonETSUser(
+            userRepositoryMock, MonETSUser(domain: '', typeUsagerId: 0, username: username));
 
         expect(manager.getCoursesActivities(),
             throwsA(isInstanceOf<ApiException>()));
@@ -282,6 +284,7 @@ void main() {
 
         verifyInOrder([
           cacheManagerMock.get(CourseRepository.coursesActivitiesCacheKey),
+          userRepositoryMock.monETSUser,
           userRepositoryMock.getPassword(),
           analyticsServiceMock.logError(CourseRepository.tag, any, any, any)
         ]);
@@ -733,6 +736,8 @@ void main() {
         reset(userRepositoryMock);
         UserRepositoryMock.stubGetPasswordException(
             userRepositoryMock);
+        UserRepositoryMock.stubMonETSUser(
+            userRepositoryMock, MonETSUser(domain: '', typeUsagerId: 0, username: username));
 
         expect(manager.getScheduleActivities(),
             throwsA(isInstanceOf<ApiException>()));
@@ -747,6 +752,7 @@ void main() {
 
         verifyInOrder([
           cacheManagerMock.get(CourseRepository.scheduleActivitiesCacheKey),
+          userRepositoryMock.monETSUser,
           userRepositoryMock.getPassword(),
           analyticsServiceMock.logError(CourseRepository.tag, any, any, any)
         ]);
@@ -1431,6 +1437,7 @@ void main() {
 
         verifyInOrder([
           cacheManagerMock.get(CourseRepository.coursesCacheKey),
+          userRepositoryMock.monETSUser,
           userRepositoryMock.getPassword(),
           userRepositoryMock.monETSUser,
           signetsApiMock.getCourses(username: username, password: password),
@@ -1461,6 +1468,7 @@ void main() {
 
         verifyInOrder([
           cacheManagerMock.get(CourseRepository.coursesCacheKey),
+          userRepositoryMock.monETSUser,
           userRepositoryMock.getPassword(),
           userRepositoryMock.monETSUser,
           signetsApiMock.getCourses(username: username, password: password),
@@ -1906,6 +1914,7 @@ void main() {
             analyticsServiceMock.logError(CourseRepository.tag, any, any, any));
 
         verifyInOrder([
+          userRepositoryMock.monETSUser,
           userRepositoryMock.getPassword(),
           userRepositoryMock.monETSUser,
           signetsApiMock.getCourseSummary(
