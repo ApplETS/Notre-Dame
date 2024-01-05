@@ -175,6 +175,18 @@ void main() {
             isA<Switch>().having((source) => source.value, 'value', isTrue),
             reason:
                 "the settings says that the showTodayBtn is enabled, the UI should reflet that.");
+
+        const screenHeight = 600;
+
+        final draggableScrollableSheetFinder = find.byType(DraggableScrollableSheet);
+        expect(draggableScrollableSheetFinder, findsOneWidget);
+
+        final Size initialSize = tester.getSize(draggableScrollableSheetFinder);
+        expect(initialSize.height, 0.55 * screenHeight);
+
+        await tester.fling(find.byType(ListView), const Offset(0.0, -4000.0), 400.0);
+        final Size maxSize = tester.getSize(draggableScrollableSheetFinder);
+        expect(maxSize.height, 0.85 * screenHeight);
       });
 
       testWidgets("Without handle", (WidgetTester tester) async {
@@ -263,6 +275,18 @@ void main() {
             isA<Switch>().having((source) => source.value, 'value', isTrue),
             reason:
                 "the settings says that the showTodayBtn is enabled, the UI should reflet that.");
+
+        const screenHeight = 600;
+
+        final draggableScrollableSheetFinder = find.byType(DraggableScrollableSheet);
+        expect(draggableScrollableSheetFinder, findsOneWidget);
+
+        final Size initialSize = tester.getSize(draggableScrollableSheetFinder);
+        expect(initialSize.height, 0.55 * screenHeight);
+
+        await tester.fling(find.byType(ListView), const Offset(0.0, -4000.0), 400.0);
+        final Size maxSize = tester.getSize(draggableScrollableSheetFinder);
+        expect(maxSize.height, 0.85 * screenHeight);
       });
     });
 
