@@ -1,6 +1,3 @@
-// Flutter imports:
-import 'package:flutter/material.dart';
-
 class QuickLinkData {
   final int id;
   final int index;
