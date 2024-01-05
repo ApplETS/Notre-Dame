@@ -47,22 +47,28 @@ void main() {
         // Stubs the answer of the preferences services
         PreferencesServiceMock.stubGetString(
             preferencesServiceMock,
-            PreferencesFlag.scheduleStartWeekday);
+            PreferencesFlag.scheduleStartWeekday,
+            toReturn: null);
         PreferencesServiceMock.stubGetString(
             preferencesServiceMock,
-            PreferencesFlag.scheduleOtherWeekday);
+            PreferencesFlag.scheduleOtherWeekday,
+            toReturn: null);
         PreferencesServiceMock.stubGetString(
             preferencesServiceMock,
-            PreferencesFlag.scheduleCalendarFormat);
+            PreferencesFlag.scheduleCalendarFormat,
+            toReturn: null);
         PreferencesServiceMock.stubGetBool(
             preferencesServiceMock,
-            PreferencesFlag.scheduleShowTodayBtn);
+            PreferencesFlag.scheduleShowTodayBtn,
+            toReturn: null);
         PreferencesServiceMock.stubGetBool(
             preferencesServiceMock,
-            PreferencesFlag.scheduleListView);
+            PreferencesFlag.scheduleListView,
+            toReturn: null);
         PreferencesServiceMock.stubGetBool(
             preferencesServiceMock,
-            PreferencesFlag.scheduleShowWeekEvents);
+            PreferencesFlag.scheduleShowWeekEvents,
+            toReturn: null);
         RemoteConfigServiceMock.stubGetCalendarViewEnabled(
             remoteConfigServiceMock);
 
@@ -412,16 +418,20 @@ void main() {
       test("validate default behaviour", () async {
         PreferencesServiceMock.stubGetInt(
             preferencesServiceMock,
-            PreferencesFlag.aboutUsCard);
+            PreferencesFlag.aboutUsCard,
+            toReturn: null);
         PreferencesServiceMock.stubGetInt(
             preferencesServiceMock,
-            PreferencesFlag.scheduleCard);
+            PreferencesFlag.scheduleCard,
+            toReturn: null);
         PreferencesServiceMock.stubGetInt(
             preferencesServiceMock,
-            PreferencesFlag.progressBarCard);
+            PreferencesFlag.progressBarCard,
+            toReturn: null);
         PreferencesServiceMock.stubGetInt(
             preferencesServiceMock,
-            PreferencesFlag.gradesCard);
+            PreferencesFlag.gradesCard,
+            toReturn: null);
 
         // Cards
         final Map<PreferencesFlag, int> expected = {
