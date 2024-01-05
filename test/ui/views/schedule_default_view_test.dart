@@ -31,19 +31,18 @@ void main() {
       setupNavigationServiceMock();
       mockCourseRepository = setupCourseRepositoryMock();
       setupNetworkingServiceMock();
-
       lectureActivity = ScheduleActivity(
-          courseAcronym: 'COURSE101',
-          courseGroup: '01',
-          courseTitle: 'Intro to Dart',
-          dayOfTheWeek: 2, // Tuesday
-          day: 'Tuesday',
-          startTime: DateTime(2023, 1, 1, 10),
-          endTime: DateTime(2023, 1, 1, 11),
-          activityCode: 'Lecture',
+          activityCode: "C",
+          activityLocation: "B-3428",
+          courseAcronym: "GTI725",
+          courseGroup: "01",
+          courseTitle: "Interfaces utilisateurs avancées",
+          day: "Jeudi",
+          dayOfTheWeek: 4,
+          endTime: DateTime(2024, 1, 1, 12),
           isPrincipalActivity: true,
-          activityLocation: 'Room 202',
-          name: 'Lecture Session');
+          name: "Activité de cours",
+          startTime: DateTime(2024, 1, 1, 8, 30));
     });
 
     tearDown(() {
@@ -73,7 +72,7 @@ void main() {
                 session: anyNamed('session')))
             .thenAnswer((_) async => []);
         await tester.pumpWidget(localizedWidget(
-            child: const ScheduleDefaultView(sessionCode: "A2023"),
+            child: const ScheduleDefaultView(sessionCode: "A2024"),
             useScaffold: false));
         await tester.pumpAndSettle();
         await tester.pump(const Duration(milliseconds: 500));
@@ -86,18 +85,18 @@ void main() {
         tester.binding.window.physicalSizeTestValue = const Size(800, 1410);
 
         when(mockCourseRepository.getDefaultScheduleActivities(
-                session: anyNamed('session')))
+                session: "H2024"))
             .thenAnswer((_) async => [lectureActivity]);
 
         await tester.pumpWidget(localizedWidget(
-            child: const ScheduleDefaultView(sessionCode: "A2023"),
+            child: const ScheduleDefaultView(sessionCode: "H2024"),
             useScaffold: false));
         await tester.pumpAndSettle();
-        await tester.pump(const Duration(milliseconds: 500));
+        await tester.pump(const Duration(seconds: 2));
 
         await expectLater(find.byType(ScheduleDefaultView),
             matchesGoldenFile(goldenFilePath("scheduleDefaultView_2")));
       });
-    }, skip: !Platform.isLinux);
+    });
   });
 }
