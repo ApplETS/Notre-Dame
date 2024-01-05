@@ -186,9 +186,6 @@ class UserRepository {
     try {
       final password = await _secureStorage.read(key: passwordSecureKey);
       if(password == null) {
-        await _secureStorage.deleteAll();
-        _analyticsService.logError(tag,
-            "getPassword - $passwordSecureKey not found");
         throw const ApiException(prefix: tag, message: "Not authenticated");
       }
       return password;
@@ -207,7 +204,7 @@ class UserRepository {
     // Force fromCacheOnly mode when user has no connectivity
     if (!(await _networkingService.hasConnectivity())) {
       // ignore: parameter_assignments
-      fromCacheOnly = true;
+      fromCacheOnly = !await _networkingService.hasConnectivity();
     }
 
     // Load the programs from the cache if the list doesn't exist
