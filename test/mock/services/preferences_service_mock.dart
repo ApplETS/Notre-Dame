@@ -31,19 +31,19 @@ class PreferencesServiceMock extends MockPreferencesService {
 
   /// Stub the answer of [getString] when the [flag] is used.
   static void stubGetString(PreferencesServiceMock mock, PreferencesFlag flag,
-      {String toReturn = "test"}) {
+      {String? toReturn = "test"}) {
     when(mock.getString(flag)).thenAnswer((_) async => toReturn);
   }
 
   /// Stub the answer of [getString] when the [flag] is used.
   static void stubGetInt(PreferencesServiceMock mock, PreferencesFlag flag,
-      {int toReturn = 1}) {
+      {int? toReturn = 1}) {
     when(mock.getInt(flag)).thenAnswer((_) async => toReturn);
   }
 
   /// Stub the answer of [getBool] when the [flag] is used.
   static void stubGetBool(PreferencesServiceMock mock, PreferencesFlag flag,
-      {bool toReturn = true}) {
+      {bool? toReturn = true}) {
     when(mock.getBool(flag)).thenAnswer((_) async => toReturn);
   }
 
@@ -63,7 +63,7 @@ class PreferencesServiceMock extends MockPreferencesService {
   /// Stub to throw an [Exception] when the getInt
   /// will be called with this [flag]
   static void stubException(PreferencesServiceMock mock, PreferencesFlag flag,
-      {bool toReturn = true}) {
+      {bool? toReturn = true}) {
     when(mock.getInt(flag)).thenThrow(Exception());
   }
 }

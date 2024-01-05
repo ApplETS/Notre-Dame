@@ -166,7 +166,8 @@ class SettingsManager with ChangeNotifier {
         .getString(PreferencesFlag.scheduleCalendarFormat)
         .then((value) => value == null
             ? CalendarFormat.week
-            : EnumToString.fromString(CalendarFormat.values, value));
+            : EnumToString.fromString(CalendarFormat.values, value)
+            ?? CalendarFormat.week);
     settings.putIfAbsent(
         PreferencesFlag.scheduleCalendarFormat, () => calendarFormat);
 
