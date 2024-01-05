@@ -178,13 +178,15 @@ void main() {
 
         const screenHeight = 600;
 
-        final draggableScrollableSheetFinder = find.byType(DraggableScrollableSheet);
+        final draggableScrollableSheetFinder =
+            find.byType(DraggableScrollableSheet);
         expect(draggableScrollableSheetFinder, findsOneWidget);
 
         final Size initialSize = tester.getSize(draggableScrollableSheetFinder);
         expect(initialSize.height, 0.55 * screenHeight);
 
-        await tester.fling(find.byType(ListView), const Offset(0.0, -4000.0), 400.0);
+        await tester.fling(
+            find.byType(ListView), const Offset(0.0, -4000.0), 400.0);
         final Size maxSize = tester.getSize(draggableScrollableSheetFinder);
         expect(maxSize.height, 0.85 * screenHeight);
       });
@@ -278,13 +280,15 @@ void main() {
 
         const screenHeight = 600;
 
-        final draggableScrollableSheetFinder = find.byType(DraggableScrollableSheet);
+        final draggableScrollableSheetFinder =
+            find.byType(DraggableScrollableSheet);
         expect(draggableScrollableSheetFinder, findsOneWidget);
 
         final Size initialSize = tester.getSize(draggableScrollableSheetFinder);
         expect(initialSize.height, 0.55 * screenHeight);
 
-        await tester.fling(find.byType(ListView), const Offset(0.0, -4000.0), 400.0);
+        await tester.fling(
+            find.byType(ListView), const Offset(0.0, -4000.0), 400.0);
         final Size maxSize = tester.getSize(draggableScrollableSheetFinder);
         expect(maxSize.height, 0.85 * screenHeight);
       });
