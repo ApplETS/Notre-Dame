@@ -44,7 +44,7 @@ jobs:
           msg: ${{ steps.pubspecVersion.outputs.version }}
           separator: '+'
       - name: Validate that version doesn't exists
-        uses: mukunku/tag-exists-action@v1.4.0
+        uses: mukunku/tag-exists-action@v1.5.0
         id: checkTag
         with:
           tag: ${{ steps.split.outputs._0 }}
@@ -96,7 +96,7 @@ jobs:
         run: flutter test --coverage
 
       - name: Upload coverage file
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: lcov.info
           path: ${{ github.workspace }}/coverage/lcov.info
@@ -116,7 +116,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Download coverage file
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: lcov.info
       - name: Update badge coverage
@@ -210,7 +210,7 @@ jobs:
         working-directory: ${{ matrix.build_path }}
 
       - name: Upload build artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: ${{ matrix.target }}
           path: ${{ github.workspace }}/${{ env.APP_NAME }}_${{ matrix.target }}.${{ matrix.asset_extension }}
@@ -228,15 +228,15 @@ jobs:
       upload_url: ${{ steps.create_release.outputs.upload_url }}
     steps:
       - name: Download iOS build
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: iOS
       - name: Download Android build
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: Android
       - name: Download build of Android and iOS
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           path: build
       - name: Create pre-release
