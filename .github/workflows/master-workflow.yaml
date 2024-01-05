@@ -96,7 +96,7 @@ jobs:
         run: flutter test --coverage
 
       - name: Upload coverage file
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: lcov.info
           path: ${{ github.workspace }}/coverage/lcov.info
@@ -210,7 +210,7 @@ jobs:
         working-directory: ${{ matrix.build_path }}
 
       - name: Upload build artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: ${{ matrix.target }}
           path: ${{ github.workspace }}/${{ env.APP_NAME }}_${{ matrix.target }}.${{ matrix.asset_extension }}
