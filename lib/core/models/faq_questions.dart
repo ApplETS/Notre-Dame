@@ -1,6 +1,3 @@
-// Flutter imports:
-import 'package:flutter/material.dart';
-
 class QuestionItem {
   final Map<String, String> title;
   final Map<String, String> description;

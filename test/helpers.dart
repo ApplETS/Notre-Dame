@@ -139,7 +139,7 @@ InternalInfoServiceMock setupInternalInfoServiceMock() {
 }
 
 /// Load a mock of the [SirenFlutterService]
-SirenFlutterService setupSirenFlutterServiceMock() {
+SirenFlutterServiceMock setupSirenFlutterServiceMock() {
   unregister<SirenFlutterService>();
   final service = SirenFlutterServiceMock();
 

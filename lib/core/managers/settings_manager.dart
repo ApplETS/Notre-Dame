@@ -211,10 +211,10 @@ class SettingsManager with ChangeNotifier {
   }
 
   /// Add/update the value of [flag]
-  Future<bool> setString(PreferencesFlag flag, String value) async {
+  Future<bool> setString(PreferencesFlag flag, String? value) async {
     // Log the event
     _analyticsService.logEvent(
-        "${tag}_${EnumToString.convertToString(flag)}", value);
+        "${tag}_${EnumToString.convertToString(flag)}", value.toString());
 
     if (value == null) {
       return _preferencesService.removePreferencesFlag(flag);
