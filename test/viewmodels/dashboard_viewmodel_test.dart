@@ -412,7 +412,7 @@ void main() {
         verify(courseRepositoryMock.getCoursesActivities(fromCacheOnly: true))
             .called(1);
 
-        verify(courseRepositoryMock.coursesActivities).called(1);
+        verify(courseRepositoryMock.coursesActivities).called(2);
 
         verify(settingsManagerMock.getDashboard()).called(1);
       });
@@ -447,7 +447,7 @@ void main() {
         verify(courseRepositoryMock.getCoursesActivities(fromCacheOnly: true))
             .called(1);
 
-        verify(courseRepositoryMock.coursesActivities).called(1);
+        verify(courseRepositoryMock.coursesActivities).called(2);
 
         verify(settingsManagerMock.getDashboard()).called(1);
       });
@@ -483,7 +483,7 @@ void main() {
         verify(courseRepositoryMock.getCoursesActivities(fromCacheOnly: true))
             .called(1);
 
-        verify(courseRepositoryMock.coursesActivities).called(1);
+        verify(courseRepositoryMock.coursesActivities).called(2);
 
         verify(settingsManagerMock.getDashboard()).called(1);
       });
@@ -516,7 +516,7 @@ void main() {
         verify(courseRepositoryMock.getCoursesActivities(fromCacheOnly: true))
             .called(1);
 
-        verify(courseRepositoryMock.coursesActivities).called(1);
+        verify(courseRepositoryMock.coursesActivities).called(2);
 
         verify(settingsManagerMock.getDashboard()).called(1);
       });
