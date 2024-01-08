@@ -1,6 +1,3 @@
-// Flutter imports:
-import 'package:flutter/foundation.dart';
-
 class GradesWidgetData {
   static const String keyPrefix = "grade_";
 

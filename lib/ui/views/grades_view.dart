@@ -105,9 +105,7 @@ class _GradesViewState extends State<GradesView> {
             const SizedBox(height: 16.0),
             Wrap(
               children: courses
-                  .map((course) => index == 0
-                      ? GradeButton(course, showDiscovery: true)
-                      : GradeButton(course, showDiscovery: false))
+                  .map((course) => GradeButton(course, showDiscovery: index == 0))
                   .toList(),
             ),
           ],

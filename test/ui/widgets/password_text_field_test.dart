@@ -17,7 +17,9 @@ void main() {
     setUpAll(() async {
       intl = await setupAppIntl();
       passwordFormField = PasswordFormField(
-        validator: (value) {},
+        validator: (value) {
+          return null;
+        },
         onEditionComplete: () {},
       );
     });
