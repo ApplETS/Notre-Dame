@@ -43,9 +43,9 @@ void main() {
       userRepositoryMock = setupUserRepositoryMock();
       networkingServiceMock = setupNetworkingServiceMock();
       internalInfoServiceMock =
-          setupInternalInfoServiceMock() as InternalInfoServiceMock;
+          setupInternalInfoServiceMock();
       sirenFlutterServiceMock =
-          setupSirenFlutterServiceMock() as SirenFlutterServiceMock;
+          setupSirenFlutterServiceMock();
       setupLogger();
 
       viewModel = StartUpViewModel();
