@@ -271,7 +271,7 @@ class _GradeEvaluationTileState extends State<GradeEvaluationTile>
   double getGradeInDecimal(double grade, double maxGrade) => grade / maxGrade;
 
   String validateResult(BuildContext context, String? result) {
-    if (result != null) {
+    if (result != "null" && result != null) {
       return result;
     }
 
