@@ -1,4 +1,5 @@
 // Flutter imports:
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 
@@ -143,99 +144,119 @@ class _GradesDetailsViewState extends State<GradesDetailsView>
           padding: const EdgeInsets.all(5.0),
           children: <Widget>[
             Column(
-              children: <Widget>[
-                Card(
-                  child: Padding(
-                    padding: const EdgeInsets.all(20.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        Expanded(
-                          flex: 50,
-                          child: GradeCircularProgress(
-                            1.0,
-                            completed: _completed,
-                            key: const Key("GradeCircularProgress_summary"),
-                            finalGrade: model.course.grade,
-                            studentGrade: Utils.getGradeInPercentage(
-                              model.course.summary.currentMark,
-                              model.course.summary.markOutOf,
-                            ),
-                            averageGrade: Utils.getGradeInPercentage(
-                              model.course.summary.passMark,
-                              model.course.summary.markOutOf,
-                            ),
-                          ),
-                        ),
-                        Expanded(
-                          flex: 40,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              _buildGradesSummary(
-                                model.course.summary.currentMark,
-                                model.course.summary.markOutOf,
-                                AppIntl.of(context).grades_current_rating,
-                                Colors.green,
-                                context,
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.only(top: 15.0),
-                                child: _buildGradesSummary(
-                                  model.course.summary.passMark ?? 0.0,
-                                  model.course.summary.markOutOf,
-                                  AppIntl.of(context).grades_average,
-                                  Colors.red,
-                                  context,
+              children: <Widget>[            
+                SizedBox(
+                  child: CarouselSlider(                  
+                    options: CarouselOptions(),
+                    items: [
+                      Builder(
+                        builder: (BuildContext context) {
+                          return SizedBox(
+                            width: MediaQuery.of(context).size.width,
+                            child: Column(
+                              children: <Widget>[
+                                Card(
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(20.0),
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      children: <Widget>[
+                                        Expanded(
+                                          flex: 50,
+                                          child: GradeCircularProgress(
+                                            1.0,
+                                            completed: _completed,
+                                            key: const Key("GradeCircularProgress_summary"),
+                                            finalGrade: model.course.grade,
+                                            studentGrade: Utils.getGradeInPercentage(
+                                              model.course.summary.currentMark,
+                                              model.course.summary.markOutOf,
+                                            ),
+                                            averageGrade: Utils.getGradeInPercentage(
+                                              model.course.summary.passMark,
+                                              model.course.summary.markOutOf,
+                                            ),
+                                          ),
+                                        ),
+                                        Expanded(
+                                          flex: 40,
+                                          child: Column(
+                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            children: <Widget>[
+                                              _buildGradesSummary(
+                                                model.course.summary.currentMark,
+                                                model.course.summary.markOutOf,
+                                                AppIntl.of(context).grades_current_rating,
+                                                Colors.green,
+                                                context,
+                                              ),
+                                              Padding(
+                                                padding: const EdgeInsets.only(top: 15.0),
+                                                child: _buildGradesSummary(
+                                                  model.course.summary.passMark ?? 0.0,
+                                                  model.course.summary.markOutOf,
+                                                  AppIntl.of(context).grades_average,
+                                                  Colors.red,
+                                                  context,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
                                 ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                  children: <Widget>[
+                                    Expanded(
+                                      flex: 3,
+                                      child: _buildCourseGradeSummary(
+                                        AppIntl.of(context).grades_median,
+                                        validateGrade(
+                                          context,
+                                          model.course.summary.median.toString(),
+                                          AppIntl.of(context).grades_grade_in_percentage(
+                                              Utils.getGradeInPercentage(
+                                                  model.course.summary.median,
+                                                  model.course.summary.markOutOf)),
+                                        ),
+                                      ),
+                                    ),
+                                    Expanded(
+                                      flex: 3,
+                                      child: _buildCourseGradeSummary(
+                                        AppIntl.of(context).grades_standard_deviation,
+                                        validateGrade(
+                                          context,
+                                          model.course.summary.standardDeviation.toString(),
+                                          model.course.summary.standardDeviation.toString(),
+                                        ),
+                                      ),
+                                    ),
+                                    Expanded(
+                                      flex: 3,
+                                      child: _buildCourseGradeSummary(
+                                        AppIntl.of(context).grades_percentile_rank,
+                                        validateGrade(
+                                          context,
+                                          model.course.summary.percentileRank.toString(),
+                                          model.course.summary.percentileRank.toString(),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          );
+                        },
+                      ),
+                      // Add more items here for the carousel
+                    ],
                   ),
                 ),
-                Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: <Widget>[
-                      Expanded(
-                        flex: 3,
-                        child: _buildCourseGradeSummary(
-                          AppIntl.of(context).grades_median,
-                          validateGrade(
-                            context,
-                            model.course.summary.median.toString(),
-                            AppIntl.of(context).grades_grade_in_percentage(
-                                Utils.getGradeInPercentage(
-                                    model.course.summary.median,
-                                    model.course.summary.markOutOf)),
-                          ),
-                        ),
-                      ),
-                      Expanded(
-                        flex: 3,
-                        child: _buildCourseGradeSummary(
-                          AppIntl.of(context).grades_standard_deviation,
-                          validateGrade(
-                            context,
-                            model.course.summary.standardDeviation.toString(),
-                            model.course.summary.standardDeviation.toString(),
-                          ),
-                        ),
-                      ),
-                      Expanded(
-                        flex: 3,
-                        child: _buildCourseGradeSummary(
-                          AppIntl.of(context).grades_percentile_rank,
-                          validateGrade(
-                            context,
-                            model.course.summary.percentileRank.toString(),
-                            model.course.summary.percentileRank.toString(),
-                          ),
-                        ),
-                      ),
-                    ]),
                 Column(children: <Widget>[
                   for (var evaluation in model.course.summary.evaluations)
                     GradeEvaluationTile(
