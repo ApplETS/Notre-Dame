@@ -155,10 +155,10 @@ class _GradesDetailsViewState extends State<GradesDetailsView>
                           child: Column(
                             children: <Widget>[
                               Expanded(
-                                flex: 65,
+                                flex: 60,
                                 child: Card(
                                   child: Padding(
-                                    padding: const EdgeInsets.all(20.0),
+                                    padding: const EdgeInsets.all(10.0),
                                     child: Row(
                                       mainAxisAlignment:
                                           MainAxisAlignment.center,
@@ -184,7 +184,7 @@ class _GradesDetailsViewState extends State<GradesDetailsView>
                                           ),
                                         ),
                                         Expanded(
-                                          flex: 40,
+                                          flex: 50,
                                           child: Column(
                                             crossAxisAlignment:
                                                 CrossAxisAlignment.start,
@@ -222,7 +222,7 @@ class _GradesDetailsViewState extends State<GradesDetailsView>
                                 ),
                               ),
                               Expanded(
-                                flex: 35,
+                                flex: 40,
                                 child: Row(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceEvenly,
