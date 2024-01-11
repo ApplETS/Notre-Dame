@@ -17,6 +17,11 @@ class RemoteConfigServiceMock extends Mock implements RemoteConfigService {
     when(mock.dashboardMessageActive).thenReturn(toReturn);
   }
 
+  static void stubGetPrivacyPolicyEnabled(RemoteConfigServiceMock mock,
+      {bool toReturn = true}) {
+    when(mock.privacyPolicyToggle).thenReturn(toReturn);
+  }
+
   static void stubGetBroadcastColor(RemoteConfigServiceMock mock,
       {String toReturn = "0xffd48404"}) {
     when(mock.dashboardMsgColor).thenReturn(toReturn);

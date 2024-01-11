@@ -17,6 +17,7 @@ enum PreferencesFlag {
   scheduleShowWeekEvents,
   scheduleLaboratoryGroup,
   scheduleListView,
+  scheduleShowWeekendDays,
 
   // Locale flag
   locale,
