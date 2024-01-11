@@ -1,20 +1,16 @@
-// FLUTTER / DART / THIRD-PARTIES
+// Flutter imports:
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+
+// Package imports:
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:stacked/stacked.dart';
 
-// UTILS
-import 'package:notredame/core/utils/utils.dart';
-
-// VIEW MODEL
-import 'package:notredame/core/viewmodels/outage_viewmodel.dart';
-
-//UTILS
-import 'package:notredame/ui/utils/app_theme.dart';
-
-//CONSTANT
+// Project imports:
 import 'package:notredame/core/constants/urls.dart';
+import 'package:notredame/core/utils/utils.dart';
+import 'package:notredame/core/viewmodels/outage_viewmodel.dart';
+import 'package:notredame/ui/utils/app_theme.dart';
 
 class OutageView extends StatelessWidget {
   @override

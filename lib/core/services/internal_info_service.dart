@@ -1,13 +1,17 @@
-// FLUTTER / DART / THIRD-PARTIES
+// Dart imports:
 import 'dart:io';
+
+// Package imports:
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
-// UTILS
+// Project imports:
+import 'package:notredame/core/services/networking_service.dart';
 import 'package:notredame/locator.dart';
 
+// UTILS
+
 // SERVICES
-import 'package:notredame/core/services/networking_service.dart';
 
 class InternalInfoService {
   // Build the error message with the current device informations

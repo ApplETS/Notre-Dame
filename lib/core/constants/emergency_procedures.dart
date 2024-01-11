@@ -1,4 +1,7 @@
+// Package imports:
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
+// Project imports:
 import 'package:notredame/core/models/emergency_procedure.dart';
 
 List<EmergencyProcedure> emergencyProcedures(AppIntl intl) => [

@@ -1,9 +1,11 @@
-// FLUTTER / DART / THIRD-PARTIES
+// Flutter imports:
 import 'package:flutter/cupertino.dart';
+
+// Package imports:
 import 'package:flutter_siren/flutter_siren.dart';
+import 'package:pub_semver/pub_semver.dart';
 
 // SERVICES
-import 'package:pub_semver/pub_semver.dart';
 
 class SirenFlutterService {
   Siren _siren;

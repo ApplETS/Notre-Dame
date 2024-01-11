@@ -1,7 +1,9 @@
-// FLUTTER / DART / THIRD-PARTIES
+// Dart imports:
 import 'dart:convert';
-import 'package:mockito/mockito.dart';
+
+// Package imports:
 import 'package:http/http.dart' as http;
+import 'package:mockito/mockito.dart';
 
 /// Mock for the Http client
 class HttpClientMock extends Mock implements http.Client {

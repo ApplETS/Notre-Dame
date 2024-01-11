@@ -1,18 +1,14 @@
-// FLUTTER / DART / THIRD-PARTIES
+// Package imports:
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
-import 'package:notredame/core/services/analytics_service.dart';
 import 'package:rive/rive.dart';
 
-// SERVICES / MANAGERS
+// Project imports:
+import 'package:notredame/core/constants/router_paths.dart';
+import 'package:notredame/core/services/analytics_service.dart';
 import 'package:notredame/core/services/navigation_service.dart';
 import 'package:notredame/core/services/rive_animation_service.dart';
-
-// VIEW MODEL
 import 'package:notredame/core/viewmodels/not_found_viewmodel.dart';
-
-// OTHER
-import 'package:notredame/core/constants/router_paths.dart';
 import '../helpers.dart';
 import '../mock/services/rive_animation_service_mock.dart';
 

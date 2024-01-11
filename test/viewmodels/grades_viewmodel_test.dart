@@ -1,23 +1,15 @@
-// FLUTTER / DART / THIRD-PARTIES
-import 'package:flutter_test/flutter_test.dart';
+// Package imports:
+import 'package:ets_api_clients/models.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 
-// MANAGER
+// Project imports:
 import 'package:notredame/core/managers/course_repository.dart';
 import 'package:notredame/core/managers/settings_manager.dart';
-
-// SERVICES
 import 'package:notredame/core/services/navigation_service.dart';
-
-// MODEL
-import 'package:ets_api_clients/models.dart';
 import 'package:notredame/core/viewmodels/grades_viewmodel.dart';
-
-// OTHER
 import '../helpers.dart';
-
-// MOCKS
 import '../mock/managers/course_repository_mock.dart';
 
 void main() {

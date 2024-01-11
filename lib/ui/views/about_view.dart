@@ -1,13 +1,13 @@
-// FLUTTER / DART / THIRD-PARTIES
-import 'package:easter_egg_trigger/easter_egg_trigger.dart';
+// Flutter imports:
 import 'package:flutter/material.dart';
+
+// Package imports:
+import 'package:easter_egg_trigger/easter_egg_trigger.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-// CONSTANTS
+// Project imports:
 import 'package:notredame/core/constants/urls.dart';
-
-// OTHERS
 import 'package:notredame/core/utils/utils.dart';
 
 class AboutView extends StatefulWidget {

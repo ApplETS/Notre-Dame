@@ -1,20 +1,14 @@
-// FLUTTER / DART / THIRD-PARTIES
+// Package imports:
 import 'package:calendar_view/calendar_view.dart';
 import 'package:enum_to_string/enum_to_string.dart';
+import 'package:ets_api_clients/models.dart';
 import 'package:stacked/stacked.dart';
 import 'package:table_calendar/table_calendar.dart';
 
-// CONSTANTS
+// Project imports:
 import 'package:notredame/core/constants/preferences_flags.dart';
-
-// MANAGERS
-import 'package:notredame/core/managers/settings_manager.dart';
 import 'package:notredame/core/managers/course_repository.dart';
-
-// MODELS
-import 'package:ets_api_clients/models.dart';
-
-// OTHER
+import 'package:notredame/core/managers/settings_manager.dart';
 import 'package:notredame/locator.dart';
 
 class ScheduleSettingsViewModel

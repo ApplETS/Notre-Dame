@@ -1,24 +1,18 @@
-// FLUTTER / DART / THIRD-PARTIES
+// Package imports:
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 import 'package:pub_semver/pub_semver.dart';
 
-// CONSTANTS
+// Project imports:
 import 'package:notredame/core/constants/preferences_flags.dart';
 import 'package:notredame/core/constants/router_paths.dart';
 import 'package:notredame/core/constants/update_code.dart';
-
-// SERVICES / MANAGERS
+import 'package:notredame/core/managers/settings_manager.dart';
 import 'package:notredame/core/managers/user_repository.dart';
 import 'package:notredame/core/services/navigation_service.dart';
-import 'package:notredame/core/managers/settings_manager.dart';
 import 'package:notredame/core/services/preferences_service.dart';
 import 'package:notredame/core/services/siren_flutter_service.dart';
-
-// VIEW MODEL
 import 'package:notredame/core/viewmodels/startup_viewmodel.dart';
-
-// OTHER
 import '../helpers.dart';
 import '../mock/managers/settings_manager_mock.dart';
 import '../mock/managers/user_repository_mock.dart';

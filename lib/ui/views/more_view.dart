@@ -1,29 +1,23 @@
-// FLUTTER / DART / THIRD-PARTIES
-import 'package:feature_discovery/feature_discovery.dart';
+// Flutter imports:
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
-import 'package:stacked/stacked.dart';
-import 'package:flutter/gestures.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-// UTILS
+// Package imports:
+import 'package:feature_discovery/feature_discovery.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:stacked/stacked.dart';
+
+// Project imports:
+import 'package:notredame/core/constants/discovery_ids.dart';
+import 'package:notredame/core/constants/router_paths.dart';
+import 'package:notredame/core/services/analytics_service.dart';
+import 'package:notredame/core/utils/utils.dart';
+import 'package:notredame/core/viewmodels/more_viewmodel.dart';
+import 'package:notredame/locator.dart';
 import 'package:notredame/ui/utils/app_theme.dart';
 import 'package:notredame/ui/utils/discovery_components.dart';
-
-// CONSTANTS
-import 'package:notredame/core/constants/router_paths.dart';
-import 'package:notredame/core/constants/discovery_ids.dart';
-
-// VIEWMODELS
-import 'package:notredame/core/viewmodels/more_viewmodel.dart';
-
-// SERVICE
-import 'package:notredame/core/services/analytics_service.dart';
-
-// OTHERS
 import 'package:notredame/ui/widgets/base_scaffold.dart';
-import 'package:notredame/core/utils/utils.dart';
-import 'package:notredame/locator.dart';
 
 class MoreView extends StatefulWidget {
   @override
@@ -159,6 +153,19 @@ class _MoreViewState extends State<MoreView> {
                         ),
                         opaque: false,
                       ));
+                    }),
+                ListTile(
+                    title: Text(AppIntl.of(context).need_help),
+                    leading: _buildDiscoveryFeatureDescriptionWidget(
+                        context,
+                        getProperIconAccordingToTheme(Icons.question_answer),
+                        DiscoveryIds.detailsMoreFaq,
+                        model),
+                    onTap: () {
+                      _analyticsService.logEvent(tag, "FAQ clicked");
+                      model.navigationService.pushNamed(RouterPaths.faq,
+                          arguments: Utils.getColorByBrightness(
+                              context, Colors.white, AppTheme.primaryDark));
                     }),
                 ListTile(
                     title: Text(AppIntl.of(context).settings_title),

@@ -1,27 +1,23 @@
-// FLUTTER / DART / THIRD-PARTIES
+// Dart imports:
 import 'dart:math';
-import 'package:feature_discovery/feature_discovery.dart';
+
+// Flutter imports:
 import 'package:flutter/material.dart';
+
+// Package imports:
 import 'package:auto_size_text/auto_size_text.dart';
-import 'package:marquee/marquee.dart';
-import 'package:intl/intl.dart';
-
-// CONSTANTS
-import 'package:notredame/core/constants/discovery_ids.dart';
-
-// MODELS
 import 'package:ets_api_clients/models.dart';
-
-// UTILS
-import 'package:notredame/ui/utils/discovery_components.dart';
-
-// WIDGETS
-import 'package:notredame/ui/widgets/grade_circular_progress.dart';
-
-// OTHER
+import 'package:feature_discovery/feature_discovery.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:notredame/ui/utils/app_theme.dart';
+import 'package:intl/intl.dart';
+import 'package:marquee/marquee.dart';
+
+// Project imports:
+import 'package:notredame/core/constants/discovery_ids.dart';
 import 'package:notredame/core/utils/utils.dart';
+import 'package:notredame/ui/utils/app_theme.dart';
+import 'package:notredame/ui/utils/discovery_components.dart';
+import 'package:notredame/ui/widgets/grade_circular_progress.dart';
 
 class GradeEvaluationTile extends StatefulWidget {
   final bool completed;

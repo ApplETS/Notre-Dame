@@ -1,20 +1,23 @@
-// FLUTTER / DART / THIRD-PARTIES
+// Flutter imports:
 import 'package:flutter/material.dart';
 
-// MODELS
-import 'package:notredame/core/models/quick_link.dart';
-
-// ROUTES
-import 'package:notredame/core/constants/router_paths.dart';
-
-// MODELS
+// Package imports:
 import 'package:ets_api_clients/models.dart';
-import 'package:notredame/ui/views/feedback_view.dart';
 
-// VIEWS
+// Project imports:
+import 'package:notredame/core/constants/router_paths.dart';
+import 'package:notredame/core/constants/update_code.dart';
+import 'package:notredame/core/models/quick_link.dart';
+import 'package:notredame/ui/views/about_view.dart';
+import 'package:notredame/ui/views/choose_language_view.dart';
+import 'package:notredame/ui/views/contributors_view.dart';
+import 'package:notredame/ui/views/dashboard_view.dart';
+import 'package:notredame/ui/views/faq_view.dart';
+import 'package:notredame/ui/views/feedback_view.dart';
+import 'package:notredame/ui/views/grade_details_view.dart';
 import 'package:notredame/ui/views/login_view.dart';
-import 'package:notredame/ui/views/not_found_view.dart';
 import 'package:notredame/ui/views/more_view.dart';
+import 'package:notredame/ui/views/not_found_view.dart';
 import 'package:notredame/ui/views/outage_view.dart';
 import 'package:notredame/ui/views/quick_links_view.dart';
 import 'package:notredame/ui/views/schedule_view.dart';
@@ -22,17 +25,7 @@ import 'package:notredame/ui/views/security_view.dart';
 import 'package:notredame/ui/views/settings_view.dart';
 import 'package:notredame/ui/views/startup_view.dart';
 import 'package:notredame/ui/views/student_view.dart';
-import 'package:notredame/ui/views/about_view.dart';
-import 'package:notredame/ui/views/contributors_view.dart';
-import 'package:notredame/ui/views/choose_language_view.dart';
-import 'package:notredame/ui/views/dashboard_view.dart';
-import 'package:notredame/ui/views/grade_details_view.dart';
-
-// WIDGETS
 import 'package:notredame/ui/widgets/link_web_view.dart';
-
-// CONSTANTS
-import 'package:notredame/core/constants/update_code.dart';
 
 Route<dynamic> generateRoute(RouteSettings routeSettings) {
   switch (routeSettings.name) {
@@ -48,6 +41,11 @@ Route<dynamic> generateRoute(RouteSettings routeSettings) {
       return MaterialPageRoute(
           settings: RouteSettings(name: routeSettings.name),
           builder: (_) => LoginView());
+    case RouterPaths.faq:
+      return MaterialPageRoute(
+          settings: RouteSettings(name: routeSettings.name),
+          builder: (_) =>
+              FaqView(backgroundColor: routeSettings.arguments as Color));
     case RouterPaths.dashboard:
       final code = (routeSettings.arguments as UpdateCode) ?? UpdateCode.none;
       return PageRouteBuilder(

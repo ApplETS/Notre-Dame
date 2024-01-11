@@ -1,27 +1,19 @@
-// FLUTTER / DART / THIRD-PARTIES
+// Flutter imports:
 import 'package:flutter/material.dart';
+
+// Package imports:
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 
-// CONSTANTS
+// Project imports:
 import 'package:notredame/core/constants/router_paths.dart';
-
-// MANAGERS
 import 'package:notredame/core/managers/settings_manager.dart';
-
-// MODELS
 import 'package:notredame/core/models/quick_link.dart';
-
-// SERVICES
 import 'package:notredame/core/services/analytics_service.dart';
 import 'package:notredame/core/services/internal_info_service.dart';
 import 'package:notredame/core/services/launch_url_service.dart';
 import 'package:notredame/core/services/navigation_service.dart';
-
-// VIEWMODELS
 import 'package:notredame/core/viewmodels/web_link_card_viewmodel.dart';
-
-// OTHER
 import '../helpers.dart';
 import '../mock/services/internal_info_service_mock.dart';
 
@@ -35,9 +27,9 @@ void main() {
   WebLinkCardViewModel viewModel;
 
   final quickLink = QuickLink(
-      image: const Icon(Icons.ac_unit), name: 'test', link: 'testlink');
+      id: 1, image: const Icon(Icons.ac_unit), name: 'test', link: 'testlink');
   final securityQuickLink = QuickLink(
-      image: const Icon(Icons.ac_unit), name: 'test', link: 'security');
+      id: 1, image: const Icon(Icons.ac_unit), name: 'test', link: 'security');
 
   group('WebLinkCardViewModel - ', () {
     setUp(() async {

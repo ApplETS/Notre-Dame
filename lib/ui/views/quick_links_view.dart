@@ -1,12 +1,15 @@
-// FLUTTER / DART / THIRD-PARTIES
+// Flutter imports:
 import 'package:flutter/material.dart';
-import 'package:stacked/stacked.dart';
+
+// Package imports:
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:reorderable_grid_view/reorderable_grid_view.dart';
+import 'package:stacked/stacked.dart';
 
-// VIEW-MODEL
+// Project imports:
+import 'package:notredame/core/models/quick_link.dart';
 import 'package:notredame/core/viewmodels/quick_links_viewmodel.dart';
-
-// WIDGETS
+import 'package:notredame/ui/utils/app_theme.dart';
 import 'package:notredame/ui/widgets/base_scaffold.dart';
 import 'package:notredame/ui/widgets/web_link_card.dart';
 
@@ -15,32 +18,196 @@ class QuickLinksView extends StatefulWidget {
   _QuickLinksViewState createState() => _QuickLinksViewState();
 }
 
-class _QuickLinksViewState extends State<QuickLinksView> {
+class _QuickLinksViewState extends State<QuickLinksView>
+    with SingleTickerProviderStateMixin {
+  // Enable/Disable the edit state
+  bool _editMode = false;
+
+  // Animation Controller for Shake Animation
+  AnimationController _controller;
+  Animation<double> _animation;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _controller = AnimationController(
+      duration: const Duration(milliseconds: 250),
+      vsync: this,
+    );
+
+    _animation = Tween<double>(begin: -0.05, end: 0.05).animate(_controller);
+  }
+
   @override
   Widget build(BuildContext context) =>
       ViewModelBuilder<QuickLinksViewModel>.reactive(
         viewModelBuilder: () => QuickLinksViewModel(AppIntl.of(context)),
         builder: (context, model, child) => BaseScaffold(
           isLoading: model.isBusy,
-          appBar: AppBar(
-            title: Text(AppIntl.of(context).title_ets),
-            automaticallyImplyLeading: false,
-          ),
-          body: SafeArea(
-            child: Align(
-              alignment: Alignment.topCenter,
-              child: SingleChildScrollView(
-                padding: const EdgeInsets.only(top: 8.0),
-                child: Wrap(
-                  alignment: WrapAlignment.center,
-                  children: List.generate(
-                    model.quickLinkList.length,
-                    (index) => WebLinkCard(model.quickLinkList[index]),
-                  ),
-                ),
-              ),
-            ),
-          ),
+          appBar: _buildAppBar(context, model),
+          body: _buildBody(context, model),
         ),
       );
+
+  AppBar _buildAppBar(BuildContext context, QuickLinksViewModel model) {
+    return AppBar(
+      title: Text(AppIntl.of(context).title_ets),
+      automaticallyImplyLeading: false,
+      actions: const [],
+    );
+  }
+
+  Widget _buildBody(BuildContext context, QuickLinksViewModel model) {
+    return GestureDetector(
+      onTap: () {
+        if (_editMode) {
+          _controller.reset();
+          setState(() {
+            _editMode = false;
+          });
+        }
+      },
+      child: SafeArea(
+        child: Column(
+          children: [
+            Expanded(
+              flex: 2,
+              child: Padding(
+                padding: const EdgeInsets.only(top: 8.0, left: 8.0, right: 8.0),
+                child: _buildReorderableGridView(
+                    model, model.quickLinkList, _buildDeleteButton),
+              ),
+            ),
+            if (_editMode && model.deletedQuickLinks.isNotEmpty) ...[
+              const Divider(
+                thickness: 2,
+                indent: 10,
+                endIndent: 10,
+              ),
+              Expanded(
+                child: Padding(
+                  padding:
+                      const EdgeInsets.only(top: 8.0, left: 8.0, right: 8.0),
+                  child: _buildReorderableGridView(
+                      model, model.deletedQuickLinks, _buildAddButton),
+                ),
+              ),
+            ],
+          ],
+        ),
+      ),
+    );
+  }
+
+  ReorderableGridView _buildReorderableGridView(
+      QuickLinksViewModel model,
+      List<QuickLink> quickLinks,
+      Widget Function(QuickLinksViewModel, int) buildButtonFunction) {
+    return ReorderableGridView.count(
+      mainAxisSpacing: 2.0,
+      crossAxisSpacing: 2.0,
+      crossAxisCount: 3,
+      children: List.generate(
+        quickLinks.length,
+        (index) {
+          return KeyedSubtree(
+            key: ValueKey(quickLinks[index].id),
+            child:
+                _buildGridChild(model, index, quickLinks, buildButtonFunction),
+          );
+        },
+      ),
+      onReorder: (oldIndex, newIndex) {
+        setState(() {
+          model.reorderQuickLinks(oldIndex, newIndex);
+        });
+      },
+    );
+  }
+
+  Widget _buildGridChild(
+      QuickLinksViewModel model,
+      int index,
+      List<QuickLink> quickLinks,
+      Widget Function(QuickLinksViewModel, int) buildButtonFunction) {
+    return GestureDetector(
+      onLongPress: _editMode
+          ? null
+          : () {
+              _controller.repeat(reverse: true);
+              setState(() {
+                _editMode = true;
+              });
+            },
+      child: AnimatedBuilder(
+        animation: _animation,
+        builder: (BuildContext context, Widget child) {
+          return Transform.rotate(
+            angle: _editMode ? _animation.value : 0,
+            child: child,
+          );
+        },
+        child: Stack(
+          children: [
+            WebLinkCard(quickLinks[index]),
+            if (_editMode &&
+                quickLinks[index].id !=
+                    1) // Don't show delete button for Security QuickLink
+              Positioned(
+                top: 0,
+                left: 0,
+                child: buildButtonFunction(model, index),
+              ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Container _buildDeleteButton(QuickLinksViewModel model, int index) {
+    return Container(
+      width: 32,
+      height: 32,
+      decoration: const BoxDecoration(
+        color: AppTheme.etsDarkGrey,
+        shape: BoxShape.circle,
+      ),
+      child: IconButton(
+        padding: EdgeInsets.zero,
+        icon: const Icon(Icons.close, color: Colors.white, size: 16),
+        onPressed: () {
+          setState(() {
+            model.deleteQuickLink(index);
+          });
+        },
+      ),
+    );
+  }
+
+  Container _buildAddButton(QuickLinksViewModel model, int index) {
+    return Container(
+      width: 32,
+      height: 32,
+      decoration: const BoxDecoration(
+        color: Colors.green,
+        shape: BoxShape.circle,
+      ),
+      child: IconButton(
+        padding: EdgeInsets.zero,
+        icon: const Icon(Icons.add, color: Colors.white, size: 20),
+        onPressed: () {
+          setState(() {
+            model.restoreQuickLink(index);
+          });
+        },
+      ),
+    );
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
 }

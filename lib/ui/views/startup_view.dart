@@ -1,15 +1,13 @@
-// FLUTTER / DART / THIRD-PARTIES
+// Flutter imports:
 import 'package:flutter/material.dart';
+
+// Package imports:
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:stacked/stacked.dart';
 
-// UTILS
+// Project imports:
 import 'package:notredame/core/utils/utils.dart';
-
-// VIEW MODEL
 import 'package:notredame/core/viewmodels/startup_viewmodel.dart';
-
-// OTHER
 import 'package:notredame/ui/utils/app_theme.dart';
 
 class StartUpView extends StatelessWidget {

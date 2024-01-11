@@ -143,6 +143,8 @@
   "profile_first_name": "First Name",
   "profile_last_name": "Last Name",
   "profile_permanent_code": "Permanent Code",
+  "profile_permanent_code_copied_to_clipboard": "Permanent code copied to clipboard",
+  "profile_universal_code_copied_to_clipboard": "Universal code copied to clipboard",
   "profile_balance": "My balance",
   "profile_code_program": "Code",
   "profile_average_program": "Average",
@@ -263,6 +265,7 @@
   "discovery_navbar_more_title": "More",
   "discovery_navbar_more_details": "The More page gives you access to additional options of the application.",
   "discovery_page_more_contributors": "Here you will find the list of all the students who contributed and developed this application.",
+  "discovery_page_faq": "Here you will find the answers to the most frequently asked questions.",
   "discovery_page_more_report_bug": "The app is not perfect and we are always open to suggestions! If you see a problem or want us to be part of an idea, you can use this feature.",
   "discovery_page_more_settings": "Here you can change the general settings of the application.",
   
@@ -309,7 +312,9 @@
 
   "in_app_review_title": "Rate us!",
   "forgot_password": "Forgot your password?",
-  "need_help_contact_us": "Need help? Contact us!",
+  "need_help": "Need help?",
+  "actions": "Actions",
+  "questions_and_answers": "Questions and answers",
   "universal_code_example": "Ex: AB12345",
   "my_tickets": "My tickets",
   "no_ticket": "No ticket",

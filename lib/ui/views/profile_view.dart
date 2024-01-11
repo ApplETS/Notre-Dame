@@ -1,27 +1,20 @@
-// FLUTTER / DART / THIRD-PARTIES
+// Flutter imports:
 import 'package:flutter/material.dart';
-import 'package:stacked/stacked.dart';
+import 'package:flutter/services.dart';
+
+// Package imports:
+import 'package:ets_api_clients/models.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:percent_indicator/percent_indicator.dart';
+import 'package:stacked/stacked.dart';
 
-// VIEW-MODEL
-import 'package:notredame/core/viewmodels/profile_viewmodel.dart';
-
-// MODEL
-import 'package:ets_api_clients/models.dart';
-
-// SERVICES
+// Project imports:
 import 'package:notredame/core/services/analytics_service.dart';
-
-// WIDGETS
-import 'package:notredame/ui/widgets/student_program.dart';
-
-// UTILS
-import 'package:notredame/ui/utils/loading.dart';
-import 'package:notredame/ui/utils/app_theme.dart';
-
-// OTHER
+import 'package:notredame/core/viewmodels/profile_viewmodel.dart';
 import 'package:notredame/locator.dart';
+import 'package:notredame/ui/utils/app_theme.dart';
+import 'package:notredame/ui/utils/loading.dart';
+import 'package:notredame/ui/widgets/student_program.dart';
 
 class ProfileView extends StatefulWidget {
   @override
@@ -181,32 +174,61 @@ Card getMyInfosCard(ProfileViewModel model, BuildContext context) {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Padding(
-            padding: const EdgeInsets.only(bottom: 3.0),
-            child: Text(
-              AppIntl.of(context).profile_permanent_code,
-              style: const TextStyle(
-                fontSize: 16,
-              ),
+          GestureDetector(
+            onTap: () {
+              Clipboard.setData(
+                  ClipboardData(text: model.profileStudent.permanentCode));
+              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                content: Text(AppIntl.of(context)
+                    .profile_permanent_code_copied_to_clipboard),
+              ));
+            },
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 3.0),
+                  child: Text(
+                    AppIntl.of(context).profile_permanent_code,
+                    style: const TextStyle(
+                      fontSize: 16,
+                    ),
+                  ),
+                ),
+                Center(
+                  child: Text(
+                    model.profileStudent.permanentCode,
+                    style: const TextStyle(fontSize: 14),
+                  ),
+                ),
+              ],
             ),
           ),
-          Center(
-            child: Text(
-              model.profileStudent.permanentCode,
-              style: const TextStyle(fontSize: 14),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(top: 16.0, bottom: 3.0),
-            child: Text(
-              AppIntl.of(context).login_prompt_universal_code,
-              style: const TextStyle(fontSize: 16),
-            ),
-          ),
-          Center(
-            child: Text(
-              model.universalAccessCode,
-              style: const TextStyle(fontSize: 14),
+          GestureDetector(
+            onTap: () {
+              Clipboard.setData(ClipboardData(text: model.universalAccessCode));
+              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                content: Text(AppIntl.of(context)
+                    .profile_universal_code_copied_to_clipboard),
+              ));
+            },
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(top: 16.0, bottom: 3.0),
+                  child: Text(
+                    AppIntl.of(context).login_prompt_universal_code,
+                    style: const TextStyle(fontSize: 16),
+                  ),
+                ),
+                Center(
+                  child: Text(
+                    model.universalAccessCode,
+                    style: const TextStyle(fontSize: 14),
+                  ),
+                ),
+              ],
             ),
           ),
         ],

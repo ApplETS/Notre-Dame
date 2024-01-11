@@ -1,23 +1,21 @@
+// Flutter imports:
 import 'package:flutter/material.dart';
+
+// Package imports:
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 
-// MODELS
+// Project imports:
 import 'package:notredame/core/models/quick_link.dart';
-
-// SERVICES
-import 'package:notredame/core/services/navigation_service.dart';
 import 'package:notredame/core/services/analytics_service.dart';
 import 'package:notredame/core/services/internal_info_service.dart';
 import 'package:notredame/core/services/launch_url_service.dart';
-
-// WIDGETS
+import 'package:notredame/core/services/navigation_service.dart';
 import 'package:notredame/ui/widgets/web_link_card.dart';
-
 import '../../helpers.dart';
 
-final _quickLink =
-    QuickLink(image: const Icon(Icons.ac_unit), name: 'test', link: 'testlink');
+final _quickLink = QuickLink(
+    id: 1, image: const Icon(Icons.ac_unit), name: 'test', link: 'testlink');
 
 void main() {
   AnalyticsService analyticsService;

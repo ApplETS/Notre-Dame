@@ -1,7 +1,7 @@
-// FLUTTER / DART / THIRD-PARTIES
+// Flutter imports:
 import 'package:flutter/material.dart';
 
-// MODELS
+// Project imports:
 import 'package:notredame/core/models/discovery.dart';
 
 class GroupDiscovery {

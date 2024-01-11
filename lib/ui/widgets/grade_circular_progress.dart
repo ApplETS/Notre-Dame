@@ -1,12 +1,12 @@
-// FLUTTER / DART / THIRD-PARTIES
+// Flutter imports:
 import 'package:flutter/material.dart';
+
+// Package imports:
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 
-// UTILS
+// Project imports:
 import 'package:notredame/ui/utils/app_theme.dart';
-
-// OTHERS
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class GradeCircularProgress extends StatefulWidget {
   final bool completed;

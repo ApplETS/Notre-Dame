@@ -1,11 +1,11 @@
-// FLUTTER / DART / THIRD-PARTIES
+// Flutter imports:
 import 'package:flutter/material.dart';
+
+// Package imports:
 import 'package:webview_flutter/webview_flutter.dart';
 
-// MODELS
+// Project imports:
 import 'package:notredame/core/models/quick_link.dart';
-
-// WIDGETS
 import 'package:notredame/ui/widgets/base_scaffold.dart';
 
 class LinkWebView extends StatefulWidget {

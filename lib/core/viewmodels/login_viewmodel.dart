@@ -1,20 +1,17 @@
-// FLUTTER / DART / THIRD-PARTIES
+// Flutter imports:
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+
+// Package imports:
 import 'package:stacked/stacked.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-// MANAGER
-import 'package:notredame/core/managers/user_repository.dart';
-
-// SERVICE
-import 'package:notredame/core/services/navigation_service.dart';
-import 'package:notredame/core/services/preferences_service.dart';
-
-// CONSTANTS
+// Project imports:
 import 'package:notredame/core/constants/preferences_flags.dart';
 import 'package:notredame/core/constants/router_paths.dart';
-
-// OTHER
+import 'package:notredame/core/managers/user_repository.dart';
+import 'package:notredame/core/services/navigation_service.dart';
+import 'package:notredame/core/services/preferences_service.dart';
 import 'package:notredame/locator.dart';
 
 class LoginViewModel extends BaseViewModel {
@@ -23,6 +20,9 @@ class LoginViewModel extends BaseViewModel {
 
   /// Used to redirect on the dashboard.
   final NavigationService _navigationService = locator<NavigationService>();
+
+  final FlutterSecureStorage _flutterSecureStorage =
+      locator<FlutterSecureStorage>();
 
   /// Regex matcher to validate the Universal code pattern
   final RegExp _universalCodeMatcher = RegExp(r'[a-zA-Z]{2}\d{5}');
@@ -78,6 +78,10 @@ class LoginViewModel extends BaseViewModel {
         username: _universalCode.toUpperCase(), password: _password);
 
     if (response) {
+      await _flutterSecureStorage.write(
+          key: "WidgetSecureUser", value: _universalCode);
+      await _flutterSecureStorage.write(
+          key: "WidgetSecurePass", value: _password);
       _navigationService.pushNamedAndRemoveUntil(RouterPaths.dashboard);
       _preferencesService.setDateTime(PreferencesFlag.ratingTimer,
           DateTime.now().add(const Duration(days: 7)));
@@ -89,9 +93,5 @@ class LoginViewModel extends BaseViewModel {
     notifyListeners();
 
     return _appIntl.login_error_invalid_credentials;
-  }
-
-  String mailtoStr(String email, String subject) {
-    return 'mailto:$email?subject=$subject';
   }
 }

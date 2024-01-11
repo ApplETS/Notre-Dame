@@ -1,22 +1,18 @@
-// FLUTTER / DART / THIRD-PARTIES
+// Flutter imports:
 import 'package:flutter/material.dart';
+
+// Package imports:
+import 'package:feature_discovery/feature_discovery.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
-import 'package:feature_discovery/feature_discovery.dart';
 
-// SERVICE
+// Project imports:
+import 'package:notredame/core/constants/router_paths.dart';
 import 'package:notredame/core/services/navigation_service.dart';
 import 'package:notredame/core/services/networking_service.dart';
-import '../../mock/services/analytics_service_mock.dart';
-
-// WIDGET
 import 'package:notredame/ui/widgets/bottom_bar.dart';
-
-// OTHERS
-import 'package:notredame/core/constants/router_paths.dart';
-
-// HELPERS
 import '../../helpers.dart';
+import '../../mock/services/analytics_service_mock.dart';
 
 NavigationService navigationService;
 

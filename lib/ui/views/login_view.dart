@@ -1,31 +1,23 @@
-// FLUTTER / DART / THIRD-PARTIES
+// Flutter imports:
 import 'package:flutter/material.dart';
+
+// Package imports:
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:stacked/stacked.dart';
 
-// SERVICE
-import 'package:notredame/core/services/analytics_service.dart';
-import 'package:notredame/core/services/launch_url_service.dart';
-
-// UTILS
-import 'package:notredame/core/utils/utils.dart';
-import 'package:notredame/core/utils/login_mask.dart';
-
-// VIEW MODEL
-import 'package:notredame/core/viewmodels/login_viewmodel.dart';
-
-// WIDGETS
-import 'package:notredame/ui/widgets/password_text_field.dart';
-
-// CONSTANTS
-import 'package:notredame/core/constants/app_info.dart';
+// Project imports:
+import 'package:notredame/core/constants/router_paths.dart';
 import 'package:notredame/core/constants/urls.dart';
-
-// OTHER
-import 'package:notredame/ui/utils/app_theme.dart';
+import 'package:notredame/core/services/launch_url_service.dart';
+import 'package:notredame/core/services/navigation_service.dart';
+import 'package:notredame/core/utils/login_mask.dart';
+import 'package:notredame/core/utils/utils.dart';
+import 'package:notredame/core/viewmodels/login_viewmodel.dart';
 import 'package:notredame/locator.dart';
+import 'package:notredame/ui/utils/app_theme.dart';
+import 'package:notredame/ui/widgets/password_text_field.dart';
 
 class LoginView extends StatefulWidget {
   @override
@@ -36,6 +28,8 @@ class _LoginViewState extends State<LoginView> {
   final double borderRadiusOnFocus = 2.0;
 
   final FocusScopeNode _focusNode = FocusScopeNode();
+
+  final NavigationService _navigationService = locator<NavigationService>();
 
   final LaunchUrlService _launchUrlService = locator<LaunchUrlService>();
 
@@ -207,13 +201,18 @@ class _LoginViewState extends State<LoginView> {
                                   padding: const EdgeInsets.only(top: 24),
                                   child: InkWell(
                                     child: Text(
-                                      AppIntl.of(context).need_help_contact_us,
+                                      AppIntl.of(context).need_help,
                                       style: const TextStyle(
                                           decoration: TextDecoration.underline,
                                           color: Colors.white),
                                     ),
                                     onTap: () async {
-                                      sendEmail(model);
+                                      _navigationService.pushNamed(
+                                          RouterPaths.faq,
+                                          arguments: Utils.getColorByBrightness(
+                                              context,
+                                              AppTheme.etsLightRed,
+                                              AppTheme.primaryDark));
                                     },
                                   ),
                                 ),
@@ -260,16 +259,4 @@ class _LoginViewState extends State<LoginView> {
 
   Color get submitTextColor =>
       Utils.getColorByBrightness(context, AppTheme.etsLightRed, Colors.white);
-
-  Future<void> sendEmail(LoginViewModel model) async {
-    final clubEmail =
-        model.mailtoStr(AppInfo.email, AppIntl.of(context).email_subject);
-    final urlLaunchable = await _launchUrlService.canLaunch(clubEmail);
-
-    if (urlLaunchable) {
-      await _launchUrlService.launch(clubEmail);
-    } else {
-      locator<AnalyticsService>().logError("login_view", "Cannot send email.");
-    }
-  }
 }

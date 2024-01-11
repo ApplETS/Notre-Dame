@@ -1,25 +1,21 @@
-// FLUTTER / DART / THIRD-PARTIES
+// Dart imports:
 import 'dart:convert';
+
+// Package imports:
+import 'package:ets_api_clients/clients.dart';
+import 'package:ets_api_clients/exceptions.dart';
+import 'package:ets_api_clients/models.dart';
+import 'package:ets_api_clients/testing.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:intl/intl.dart';
 import 'package:mockito/mockito.dart';
 
-// SERVICES / MANAGER
-import 'package:notredame/core/services/analytics_service.dart';
-import 'package:notredame/core/managers/user_repository.dart';
+// Project imports:
 import 'package:notredame/core/managers/cache_manager.dart';
 import 'package:notredame/core/managers/course_repository.dart';
-import 'package:ets_api_clients/clients.dart';
-
-// MODELS
-import 'package:ets_api_clients/models.dart';
-import 'package:ets_api_clients/exceptions.dart';
-
-// UTILS
+import 'package:notredame/core/managers/user_repository.dart';
+import 'package:notredame/core/services/analytics_service.dart';
 import '../helpers.dart';
-
-// MOCKS
-import 'package:ets_api_clients/testing.dart';
 import '../mock/managers/cache_manager_mock.dart';
 import '../mock/managers/user_repository_mock.dart';
 import '../mock/services/networking_service_mock.dart';

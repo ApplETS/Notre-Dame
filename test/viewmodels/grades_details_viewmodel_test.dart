@@ -1,22 +1,15 @@
-// FLUTTER / DART / THIRD-PARTIES
-import 'package:flutter_test/flutter_test.dart';
+// Package imports:
+import 'package:ets_api_clients/models.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 
-// MODELS
-import 'package:ets_api_clients/models.dart';
-
-// VIEWMODEL
-import 'package:notredame/core/viewmodels/grades_details_viewmodel.dart';
-
-// MANAGER
-import 'package:notredame/core/managers/settings_manager.dart';
+// Project imports:
 import 'package:notredame/core/managers/course_repository.dart';
-import '../mock/managers/course_repository_mock.dart';
-
-// HELPERS
-// ignore: directives_ordering
+import 'package:notredame/core/managers/settings_manager.dart';
+import 'package:notredame/core/viewmodels/grades_details_viewmodel.dart';
 import '../helpers.dart';
+import '../mock/managers/course_repository_mock.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
