@@ -1,3 +1,6 @@
+// Dart imports:
+import 'package:collection/collection.dart';
+
 // Package imports:
 import 'package:calendar_view/calendar_view.dart';
 import 'package:enum_to_string/enum_to_string.dart';
@@ -188,7 +191,7 @@ class ScheduleSettingsViewModel
       final scheduleActivityCode = await _settingsManager.getDynamicString(
           PreferencesFlag.scheduleLaboratoryGroup, courseKey);
       final scheduleActivity = _scheduleActivitiesByCourse[courseKey]
-          ?.firstWhere((element) => element.activityCode == scheduleActivityCode);
+          ?.firstWhereOrNull((element) => element.activityCode == scheduleActivityCode);
       if (scheduleActivity != null) {
         _selectedScheduleActivity[courseKey] = scheduleActivity;
       }

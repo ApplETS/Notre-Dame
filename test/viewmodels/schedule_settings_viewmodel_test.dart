@@ -26,7 +26,9 @@ void main() {
     PreferencesFlag.scheduleCalendarFormat: CalendarFormat.week,
     PreferencesFlag.scheduleStartWeekday: StartingDayOfWeek.monday,
     PreferencesFlag.scheduleShowTodayBtn: true,
-    PreferencesFlag.scheduleShowWeekendDays: false
+    PreferencesFlag.scheduleShowWeekendDays: false,
+    PreferencesFlag.scheduleListView: false,
+    PreferencesFlag.scheduleShowWeekEvents: false
   };
 
   final List<ScheduleActivity> classOneWithLaboratoryABscheduleActivities = [
