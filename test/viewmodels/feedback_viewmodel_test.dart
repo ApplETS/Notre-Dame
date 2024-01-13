@@ -50,6 +50,7 @@ void main() {
           setupPreferencesServiceMock();
       appIntl = await setupAppIntl();
       setupLogger();
+      GithubApiMock.stubCreateGithubIssue(githubApiMock, Issue());
 
       viewModel = FeedbackViewModel(intl: appIntl);
     });
