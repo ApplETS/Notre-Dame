@@ -484,15 +484,24 @@ void main() {
     group('selectedWeekEvents', () {
       final Map<PreferencesFlag, dynamic> settingsStartingDayMonday = {
         PreferencesFlag.scheduleStartWeekday: StartingDayOfWeek.monday,
+        PreferencesFlag.scheduleCalendarFormat: CalendarFormat.month
       };
       final Map<PreferencesFlag, dynamic> settingsStartingDaySaturday = {
         PreferencesFlag.scheduleStartWeekday: StartingDayOfWeek.saturday,
+        PreferencesFlag.scheduleCalendarFormat: CalendarFormat.month
+      };
+      final Map<PreferencesFlag, dynamic> settingsStartingDaySunday = {
+        PreferencesFlag.scheduleStartWeekday: StartingDayOfWeek.sunday,
+        PreferencesFlag.scheduleCalendarFormat: CalendarFormat.month
       };
 
-      test('selectedWeekEvents for starting day sunday', () {
+      test('selectedWeekEvents for starting day sunday', () async {
         CourseRepositoryMock.stubCoursesActivities(
             courseRepositoryMock,
             toReturn: weekOfActivities);
+        SettingsManagerMock.stubGetScheduleSettings(
+            settingsManagerMock,
+            toReturn: settingsStartingDaySunday);
 
         final expected = {
           DateTime(2020, 1, 5): [gen104],
@@ -507,6 +516,7 @@ void main() {
         // Setting up the viewmodel
         viewModel.coursesActivities;
         viewModel.selectedDate = DateTime(2020, 1, 8);
+        await viewModel.loadSettings();
         clearInteractions(courseRepositoryMock);
 
         expect(viewModel.selectedWeekEvents(), expected);
