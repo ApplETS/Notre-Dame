@@ -3,6 +3,7 @@ import 'dart:io';
 
 // Package imports:
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:github/github.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
@@ -24,5 +25,12 @@ class GithubApiMock extends MockGithubApi {
       GithubApiMock client, List<FeedbackIssue> issuesToReturn, AppIntl intl) {
     when(client.fetchIssuesByNumbers(any, any))
         .thenAnswer((_) async => Future.value(issuesToReturn));
+  }
+
+  static void stubCreateGithubIssue(GithubApiMock client, Issue toReturn) {
+    when(client.createGithubIssue(feedbackText: anyNamed("feedbackText"),
+        fileName: anyNamed("fileName"), feedbackType: anyNamed("feedbackType"),
+        email: anyNamed("email")))
+        .thenAnswer((_) async => Future.value(toReturn));
   }
 }
