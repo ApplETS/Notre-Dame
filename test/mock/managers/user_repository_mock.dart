@@ -53,11 +53,11 @@ class UserRepositoryMock extends MockUserRepository {
 
   /// Stub the function [getInfo] of [mock] when called will return [toReturn].
   static void stubGetInfo(UserRepositoryMock mock,
-      {ProfileStudent? toReturn, bool? fromCacheOnly}) {
+      {required ProfileStudent toReturn, bool? fromCacheOnly}) {
     when(mock.getInfo(
             fromCacheOnly: fromCacheOnly ?? anyNamed("fromCacheOnly")))
         // ignore: cast_nullable_to_non_nullable
-        .thenAnswer((_) async => toReturn ?? anyNamed("profileStudent") as ProfileStudent);
+        .thenAnswer((_) async => toReturn);
   }
 
   /// Stub the function [getInfo] of [mock] when called will throw [toThrow].

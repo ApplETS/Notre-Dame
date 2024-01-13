@@ -75,7 +75,7 @@ void main() {
       test(
           "first load from cache then call SignetsAPI to get the latest events",
           () async {
-        UserRepositoryMock.stubGetInfo(userRepositoryMock);
+        UserRepositoryMock.stubGetInfo(userRepositoryMock, toReturn: info);
         UserRepositoryMock.stubGetPrograms(
             userRepositoryMock);
 
@@ -93,7 +93,8 @@ void main() {
       test("Signets throw an error while trying to get new events", () async {
         setupFlutterToastMock();
         UserRepositoryMock.stubGetInfo(userRepositoryMock,
-            fromCacheOnly: true);
+            fromCacheOnly: true,
+            toReturn: info);
         UserRepositoryMock.stubGetInfoException(
             userRepositoryMock,
             fromCacheOnly: false);
