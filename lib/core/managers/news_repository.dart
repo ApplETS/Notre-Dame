@@ -45,7 +45,6 @@ class NewsRepository {
         Tag(text: "tag1", color: Colors.blue),
         Tag(text: "tag2", color: Colors.green),
       ],
-      important: true,
     ),
     News(
       id: 2,
@@ -57,7 +56,6 @@ class NewsRepository {
         Tag(text: "tag1", color: Colors.blue),
         Tag(text: "tag2", color: Colors.green),
       ],
-      important: false,
     ),
     News(
       id: 3,
@@ -69,7 +67,6 @@ class NewsRepository {
         Tag(text: "tag1", color: Colors.blue),
         Tag(text: "tag2", color: Colors.green),
       ],
-      important: true,
     ),
   ];
 

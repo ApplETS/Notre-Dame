@@ -8,7 +8,6 @@ class News {
   final String image;
   final List<Tag> tags;
   final DateTime date;
-  final bool important;
 
   News({
     @required this.id,
@@ -17,7 +16,6 @@ class News {
     @required this.image,
     @required this.tags,
     @required this.date,
-    @required this.important,
   });
 
   /// Used to create [News] instance from a JSON file
@@ -30,7 +28,6 @@ class News {
       tags: List<Tag>.from(
           (map['tags'] as List).map((tagMap) => Tag.fromJson(tagMap))),
       date: DateTime.parse(map['date'] as String),
-      important: map['important'] as bool,
     );
   }
 
@@ -42,7 +39,6 @@ class News {
       'image': image,
       'tags': tags.map((tag) => tag.toJson()).toList(),
       'date': date.toString(),
-      'important': important,
     };
   }
 }

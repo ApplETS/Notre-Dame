@@ -21,7 +21,6 @@ void main() {
           {'text': 'Tag 2', 'color': Colors.red.value},
         ],
         'date': '2022-01-01T12:00:00Z',
-        'important': true,
       };
 
       final news = News.fromJson(json);
@@ -36,7 +35,6 @@ void main() {
       expect(news.tags[1].text, equals('Tag 2'));
       expect(news.tags[1].color, equals(Colors.red[500]));
       expect(news.date, equals(DateTime.parse('2022-01-01T12:00:00Z')));
-      expect(news.important, isTrue);
     });
 
     test('toJson() should convert News to JSON correctly', () {
@@ -50,7 +48,6 @@ void main() {
           Tag(text: 'Tag 2', color: Colors.red[500]),
         ],
         date: DateTime.parse('2022-01-01T12:00:00Z'),
-        important: true,
       );
 
       final json = news.toJson();
@@ -65,7 +62,6 @@ void main() {
       expect(json['tags'][1]['text'], equals('Tag 2'));
       expect(json['tags'][1]['color'], equals(Colors.red[500].value));
       expect(json['date'], equals('2022-01-01 12:00:00.000Z'));
-      expect(json['important'], isTrue);
     });
   });
 
