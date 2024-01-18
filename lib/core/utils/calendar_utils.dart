@@ -4,10 +4,31 @@ import 'package:device_calendar/device_calendar.dart';
 import 'package:ets_api_clients/models.dart';
 
 mixin CalendarUtils {
-  static Future<void> checkPermissions() async {
-    if (!(await deviceCalendarPlugin.hasPermissions()).isSuccess) {
-      await deviceCalendarPlugin.requestPermissions();
+  static Future<bool> checkPermissions() async {
+    final deviceCalendarPluginPermissionsResponse =
+        await deviceCalendarPlugin.hasPermissions();
+    // if we were able to check for permissions without error
+    if (deviceCalendarPluginPermissionsResponse.isSuccess) {
+      // if the user has not yet allowed permission
+      if (!deviceCalendarPluginPermissionsResponse.data) {
+        // request permission
+        final deviceCalendarPluginRequestPermissionsResponse =
+            await deviceCalendarPlugin.requestPermissions();
+        // if permission request was successfully executed
+        if (deviceCalendarPluginRequestPermissionsResponse.isSuccess) {
+          // return the result of the permission request (accepted or refused)
+          return deviceCalendarPluginRequestPermissionsResponse.data;
+        } else {
+          // Handle requesting permissions failure
+        }
+      } else {
+        // if user has allowed permission
+        return true;
+      }
+    } else {
+      // error requesting permissions
     }
+    return false;
   }
 
   static final DeviceCalendarPlugin deviceCalendarPlugin =
@@ -20,6 +41,7 @@ mixin CalendarUtils {
     return calendarFetchResult.data;
   }
 
+  /// Fetches a calendar by name from the native calendar app
   static Future<Calendar> fetchNativeCalendar(String calendarName) async {
     return (await nativeCalendars).firstWhere(
       (element) => element.name == calendarName,
@@ -27,6 +49,7 @@ mixin CalendarUtils {
     );
   }
 
+  /// Fetches events from a calendar by id from the native calendar app
   static Future<UnmodifiableListView<Event>> fetchNativeCalendarEvents(
       String calendarId, RetrieveEventsParams retrievalParams) async {
     final output =
@@ -39,17 +62,30 @@ mixin CalendarUtils {
   static Future<void> export(List<CourseActivity> courses) async {
     final DeviceCalendarPlugin localDeviceCalendarPlugin =
         DeviceCalendarPlugin();
+
+    // TODO make this cleaner
     const calendarName = "ÉTS";
 
-    await checkPermissions();
+    // Request permissions
+    final bool calendarPermission = await checkPermissions();
+
+    if (!calendarPermission) {
+      // TODO warn user
+      return;
+    }
+
+    // Fetch calendar
     Calendar calendar = await fetchNativeCalendar(calendarName);
 
+    // Create calendar if it doesn't exist
     if (calendar == null) {
       await deviceCalendarPlugin.createCalendar(
         calendarName,
       );
       calendar = await fetchNativeCalendar(calendarName);
     }
+
+    // Fetch events from calendar to avoid duplicates
     final events = await fetchNativeCalendarEvents(
         calendar.id,
         RetrieveEventsParams(
@@ -57,9 +93,12 @@ mixin CalendarUtils {
           endDate: DateTime.now().add(const Duration(days: 120)),
         ));
 
+    // Order by date
     courses.sort((a, b) => a.startDateTime.compareTo(b.startDateTime));
+
+    // Add events to calendar
     for (final course in courses) {
-      // add prof
+      // create event
       final event = Event(
         calendar.id,
         title: course.courseName,
@@ -69,8 +108,10 @@ mixin CalendarUtils {
             TZDateTime.from(course.endDateTime, getLocation('America/Toronto')),
         location: course.activityLocation,
         description:
-            "${course.hashCode} \n${course.courseGroup} \n${course.activityDescription}",
+            "${course.courseGroup} \n${course.activityDescription}\nN'EFFACEZ PAS CETTE LIGNE: ${course.hashCode}",
       );
+
+      // add event to calendar if it doesn't already exist
       if (events
           .where((element) =>
               element.description.contains(course.hashCode.toString()))
@@ -88,54 +129,4 @@ mixin CalendarUtils {
       }
     }
   }
-
-  // static Future<void> exportRaw(List<CourseActivity> courses) async {
-  //   const calendarName = "ÉTS";
-
-  //   final DeviceCalendarPlugin deviceCalendarPlugin = DeviceCalendarPlugin();
-
-  //   if (!(await deviceCalendarPlugin.hasPermissions()).isSuccess) {
-  //     await deviceCalendarPlugin.requestPermissions();
-  //   }
-
-  //   final Result<UnmodifiableListView<Calendar>> calendarFetchResult =
-  //       await DeviceCalendarPlugin().retrieveCalendars();
-  //   // TODO handle errors
-  //   Calendar calendar = calendarFetchResult.data.firstWhere(
-  //     (element) => element.name == calendarName,
-  //     orElse: () => null,
-  //   );
-
-  //   if (calendar == null) {
-  //     await deviceCalendarPlugin.createCalendar(
-  //       calendarName,
-  //     );
-  //     calendar = calendarFetchResult.data.firstWhere(
-  //       (element) => element.name == calendarName,
-  //       orElse: () => null,
-  //     );
-  //   }
-
-  //   final output = await deviceCalendarPlugin.retrieveEvents(
-  //     calendar.id,
-  //     RetrieveEventsParams(
-  //       startDate: DateTime.now().subtract(const Duration(days: 365)),
-  //       endDate: DateTime.now().add(const Duration(days: 365)),
-  //     ),
-  //   );
-
-  //   print(output.data.length);
-
-  //   for (final course in courses) {
-  //     final event = add2cal.Event(
-  //       title: course.courseName,
-  //       description: course.courseGroup,
-  //       location: course.activityLocation,
-  //       startDate: course.startDateTime,
-  //       endDate: course.endDateTime,
-  //     );
-  //     final result = await add2cal.Add2Calendar.addEvent2Cal(event);
-  //     await Future.delayed(const Duration(milliseconds: 1000));
-  //   }
-  // }
 }
