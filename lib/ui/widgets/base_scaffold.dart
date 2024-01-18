@@ -7,7 +7,6 @@ import 'package:notredame/core/services/networking_service.dart';
 
 // UTILS
 import 'package:notredame/core/utils/utils.dart';
-import 'package:notredame/ui/utils/loading.dart';
 import 'package:notredame/ui/utils/app_theme.dart';
 
 // WIDGETS
