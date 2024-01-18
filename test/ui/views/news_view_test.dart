@@ -2,11 +2,9 @@
 import 'dart:io';
 
 // Flutter imports:
-import 'package:feature_discovery/feature_discovery.dart';
 import 'package:flutter/material.dart';
 
 // Package imports:
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 // Project imports:
@@ -15,18 +13,14 @@ import 'package:notredame/core/managers/news_repository.dart';
 import 'package:notredame/core/managers/settings_manager.dart';
 import 'package:notredame/core/models/news.dart';
 import 'package:notredame/core/models/tags.dart';
-import 'package:notredame/core/services/analytics_service.dart';
 import 'package:notredame/core/services/navigation_service.dart';
 import 'package:notredame/core/services/networking_service.dart';
-import 'package:notredame/ui/views/ets_view.dart';
 import 'package:notredame/ui/views/news_view.dart';
-import 'package:notredame/ui/widgets/base_scaffold.dart';
 import 'package:notredame/ui/widgets/news_card.dart';
 import '../../helpers.dart';
 import '../../mock/managers/news_repository_mock.dart';
 
 void main() {
-  AppIntl intl;
   NewsRepositoryMock newsRepository;
 
   final List<News> news = <News>[
@@ -70,7 +64,7 @@ void main() {
 
   group('NewsView -', () {
     setUp(() async {
-      intl = await setupAppIntl();
+      await setupAppIntl();
       setupLogger();
 
       newsRepository = setupNewsRepositoryMock();

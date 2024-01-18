@@ -10,8 +10,6 @@ import 'package:notredame/ui/widgets/news_card.dart';
 import '../../helpers.dart';
 
 void main() {
-  AppIntl intl;
-
   final news = News(
     id: 3,
     title: "Test 3",
@@ -26,7 +24,7 @@ void main() {
 
   group('News card Tests', () {
     setUpAll(() async {
-      intl = await setupAppIntl();
+      await setupAppIntl();
     });
 
     testWidgets('Displays a news card without an image',

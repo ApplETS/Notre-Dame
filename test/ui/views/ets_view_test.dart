@@ -6,7 +6,6 @@ import 'package:feature_discovery/feature_discovery.dart';
 import 'package:flutter/material.dart';
 
 // Package imports:
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 // Project imports:
@@ -24,7 +23,6 @@ import '../../helpers.dart';
 import '../../mock/managers/news_repository_mock.dart';
 
 void main() {
-  AppIntl intl;
   NewsRepositoryMock newsRepository;
 
   final List<News> news = <News>[
@@ -66,7 +64,7 @@ void main() {
 
   group('ETSView -', () {
     setUp(() async {
-      intl = await setupAppIntl();
+      await setupAppIntl();
       setupLogger();
 
       newsRepository = setupNewsRepositoryMock();
