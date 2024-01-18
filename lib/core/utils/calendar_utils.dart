@@ -1,13 +1,9 @@
 import 'dart:collection';
 import 'package:device_calendar/device_calendar.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
 import 'package:ets_api_clients/models.dart';
 
 mixin CalendarUtils {
-
-  static MethodChannel _channel = MethodChannel('native_calendar');
   static Future<void> checkPermissions() async {
     if (!(await deviceCalendarPlugin.hasPermissions()).isSuccess) {
       await deviceCalendarPlugin.requestPermissions();
@@ -57,31 +53,39 @@ mixin CalendarUtils {
     final events = await fetchNativeCalendarEvents(
         calendar.id,
         RetrieveEventsParams(
-          startDate: DateTime.now().subtract(const Duration(days: 5)),
-          endDate: DateTime.now().add(const Duration(days: 365)),
+          startDate: DateTime.now().subtract(const Duration(days: 120)),
+          endDate: DateTime.now().add(const Duration(days: 120)),
         ));
 
-    print(events);
-
+    courses.sort((a, b) => a.startDateTime.compareTo(b.startDateTime));
     for (final course in courses) {
       // add prof
-      final result = await localDeviceCalendarPlugin.createOrUpdateEvent(
-        Event(
-          calendar.id,
-          eventId: course.hashCode.toString(),
-          start: TZDateTime.from(
-              course.startDateTime, getLocation('America/Toronto')),
-          end: TZDateTime.from(
-              course.endDateTime, getLocation('America/Toronto')),
-          location: course.activityLocation,
-          description: "${course.courseGroup} \n ${course.courseGroup}",
-          title: course.courseName,
-        ),
+      final event = Event(
+        calendar.id,
+        title: course.courseName,
+        start: TZDateTime.from(
+            course.startDateTime, getLocation('America/Toronto')),
+        end:
+            TZDateTime.from(course.endDateTime, getLocation('America/Toronto')),
+        location: course.activityLocation,
+        description:
+            "${course.hashCode} \n${course.courseGroup} \n${course.activityDescription}",
       );
-      // TODO handle errors
-      print(result);
-      print(result.isSuccess);
-      await Future.delayed(const Duration(milliseconds: 1000));
+      if (events
+          .where((element) =>
+              element.description.contains(course.hashCode.toString()))
+          .isEmpty) {
+        final result = await localDeviceCalendarPlugin.createOrUpdateEvent(
+          event,
+        );
+        // TODO handle errors
+        print("even created successfully:");
+        print(result.isSuccess);
+        print("event id:");
+        print(result.data);
+      } else {
+        print("already exist");
+      }
     }
   }
 
