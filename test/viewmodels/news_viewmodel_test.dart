@@ -27,7 +27,6 @@ class MockNewsRepository extends Mock implements NewsRepository {
           image: 'https://example.com/mock-image1.jpg',
           tags: [],
           date: DateTime.now(),
-          important: false,
         ),
         News(
           id: 2,
@@ -36,7 +35,6 @@ class MockNewsRepository extends Mock implements NewsRepository {
           image: 'https://example.com/mock-image2.jpg',
           tags: [],
           date: DateTime.now(),
-          important: true,
         ),
       ];
 

@@ -29,10 +29,12 @@ class _NewsViewState extends State<NewsView> {
               child: Theme(
                 data:
                     Theme.of(context).copyWith(canvasColor: Colors.transparent),
-                child: ListView(
-                    padding: const EdgeInsets.fromLTRB(0, 4, 0, 8),
-                    children:
-                        model.news.map((news) => NewsCard(news)).toList()),
+                child: model.isLoadingEvents
+                    ? const Center(child: CircularProgressIndicator())
+                    : ListView(
+                        padding: const EdgeInsets.fromLTRB(0, 4, 0, 8),
+                        children:
+                            model.news.map((news) => NewsCard(news)).toList()),
               ),
               onRefresh: () => model.refresh(),
             );

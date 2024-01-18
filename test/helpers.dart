@@ -6,6 +6,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:logger/logger.dart';
+import 'package:notredame/core/managers/news_repository.dart';
 
 // OTHER
 import 'package:notredame/locator.dart';
@@ -33,6 +34,7 @@ import 'package:notredame/core/services/remote_config_service.dart';
 import 'package:ets_api_clients/testing.dart';
 import 'mock/managers/cache_manager_mock.dart';
 import 'mock/managers/course_repository_mock.dart';
+import 'mock/managers/news_repository_mock.dart';
 import 'mock/managers/settings_manager_mock.dart';
 import 'mock/managers/user_repository_mock.dart';
 import 'mock/services/analytics_service_mock.dart';
@@ -270,6 +272,16 @@ CourseRepository setupCourseRepositoryMock() {
   final service = CourseRepositoryMock();
 
   locator.registerSingleton<CourseRepository>(service);
+
+  return service;
+}
+
+/// Load a mock of the [NewsRepository]
+NewsRepositoryMock setupNewsRepositoryMock() {
+  unregister<NewsRepository>();
+  final service = NewsRepositoryMock();
+
+  locator.registerSingleton<NewsRepository>(service);
 
   return service;
 }
