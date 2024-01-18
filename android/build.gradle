@@ -10,9 +10,6 @@ buildscript {
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         classpath 'com.google.gms:google-services:4.3.10'
         classpath 'com.google.firebase:firebase-crashlytics-gradle:2.7.1'
-        implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
-        implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0'
-        implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.2.0'
     }
 
 }
