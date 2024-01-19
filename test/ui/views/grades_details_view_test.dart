@@ -112,6 +112,7 @@ void main() {
           'has a RefreshIndicator, GradeCircularProgress, three cards and evaluation tiles when a course is valid',
           (WidgetTester tester) async {
         setupFlutterToastMock(tester);
+        CourseRepositoryMock.stubGetCourseSummary(courseRepositoryMock, course, toReturn: course);
         await tester.pumpWidget(localizedWidget(
             child: FeatureDiscovery(child: GradesDetailsView(course: course))));
         await tester.pumpAndSettle();
@@ -143,7 +144,7 @@ void main() {
             toReturn: course);
 
         await tester.pumpWidget(localizedWidget(
-            child: FeatureDiscovery(child: GradesDetailsView(course: course))));
+            child: FeatureDiscovery(child: GradesDetailsView(course: courseWithoutSummary))));
         await tester.pumpAndSettle();
 
         expect(find.byType(SliverAppBar), findsOneWidget);
@@ -164,7 +165,7 @@ void main() {
             toReturn: course);
 
         await tester.pumpWidget(localizedWidget(
-            child: FeatureDiscovery(child: GradesDetailsView(course: course))));
+            child: FeatureDiscovery(child: GradesDetailsView(course: courseWithoutSummary))));
         await tester.pumpAndSettle();
 
         final gesture = await tester
