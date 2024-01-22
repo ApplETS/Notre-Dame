@@ -175,43 +175,37 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
       settings[PreferencesFlag.scheduleListView] as bool;
 
   @override
-  Future<List<CourseActivity>> futureToRun() =>
-      _courseRepository.getCoursesActivities(fromCacheOnly: true).then((value) {
-        setBusyForObject(isLoadingEvents, true);
-        _courseRepository
-            .getCoursesActivities()
-            // ignore: return_type_invalid_for_catch_error
-            .catchError(onError)
-            .then((value1) async {
-          if (value1 != null) {
-            // Reload the list of activities
-            coursesActivities;
+  Future<List<CourseActivity>> futureToRun() async {
+    List<CourseActivity>? activities = await _courseRepository.getCoursesActivities(fromCacheOnly: true);
+    try {
+      setBusyForObject(isLoadingEvents, true);
 
-            await _courseRepository
-                .getCourses(fromCacheOnly: true)
-                .then((value2) {
-              courses = value2;
-            });
-            if (_coursesActivities.isNotEmpty) {
-              if (calendarFormat == CalendarFormat.week) {
-                calendarEvents = selectedWeekCalendarEvents();
-              } else {
-                calendarEvents = selectedMonthCalendarEvents();
-              }
-            }
+      final fetchedCourseActivities = await _courseRepository.getCoursesActivities();
+      if (fetchedCourseActivities != null) {
+        activities = fetchedCourseActivities;
+        // Reload the list of activities
+        coursesActivities;
+
+        courses = await _courseRepository.getCourses(fromCacheOnly: true);
+
+        if (_coursesActivities.isNotEmpty) {
+          if (calendarFormat == CalendarFormat.week) {
+            calendarEvents = selectedWeekCalendarEvents();
+          } else {
+            calendarEvents = selectedMonthCalendarEvents();
           }
-          _courseRepository
-              .getScheduleActivities()
-              // ignore: return_type_invalid_for_catch_error
-              .catchError(onError)
-              .then((value) async {
-            await assignScheduleActivities(value);
-          }).whenComplete(() {
-            setBusyForObject(isLoadingEvents, false);
-          });
-        });
-        return value ?? [];
-      });
+        }
+      }
+      final scheduleActivities = await _courseRepository.getScheduleActivities();
+      await assignScheduleActivities(scheduleActivities);
+    } catch(e) {
+      onError(e);
+    } finally {
+      setBusyForObject(isLoadingEvents, false);
+    }
+    return activities ?? [];
+  }
+
 
   Future assignScheduleActivities(
       List<ScheduleActivity> listOfSchedules) async {
@@ -351,10 +345,11 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
     try {
       setBusyForObject(isLoadingEvents, true);
       await _courseRepository.getCoursesActivities();
-      setBusyForObject(isLoadingEvents, false);
       notifyListeners();
     } on Exception catch (error) {
       onError(error);
+    } finally {
+      setBusyForObject(isLoadingEvents, false);
     }
   }
 
