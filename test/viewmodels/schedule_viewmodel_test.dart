@@ -274,7 +274,11 @@ void main() {
 
         verifyInOrder([
           courseRepositoryMock.getCoursesActivities(fromCacheOnly: true),
-          courseRepositoryMock.getCoursesActivities()
+          courseRepositoryMock.getCoursesActivities(),
+          courseRepositoryMock.coursesActivities,
+          courseRepositoryMock.coursesActivities,
+          courseRepositoryMock.getCourses(fromCacheOnly: true),
+          courseRepositoryMock.getScheduleActivities(),
         ]);
 
         verifyNoMoreInteractions(courseRepositoryMock);
