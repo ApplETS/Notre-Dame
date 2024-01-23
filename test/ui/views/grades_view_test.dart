@@ -1,27 +1,23 @@
-// FLUTTER / DART / THIRD-PARTIES
+// Dart imports:
 import 'dart:io';
-import 'package:feature_discovery/feature_discovery.dart';
+
+// Flutter imports:
 import 'package:flutter/material.dart';
+
+// Package imports:
+import 'package:ets_api_clients/models.dart';
+import 'package:feature_discovery/feature_discovery.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-// MANAGER
+// Project imports:
 import 'package:notredame/core/managers/course_repository.dart';
 import 'package:notredame/core/managers/settings_manager.dart';
-import '../../mock/managers/course_repository_mock.dart';
-
-// MODELS
-import 'package:ets_api_clients/models.dart';
-
-// SERVICES
 import 'package:notredame/core/services/networking_service.dart';
-
-// VIEW / WIDGETS
 import 'package:notredame/ui/views/grades_view.dart';
 import 'package:notredame/ui/widgets/grade_button.dart';
-
-// OTHERS
 import '../../helpers.dart';
+import '../../mock/managers/course_repository_mock.dart';
 
 void main() {
   CourseRepository courseRepository;

@@ -1,44 +1,47 @@
-// FLUTTER / DART / THIRD-PARTIES
+// Dart imports:
 import 'dart:collection';
-import 'package:feature_discovery/feature_discovery.dart';
-import 'package:fluttertoast/fluttertoast.dart';
-import 'package:stacked/stacked.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-// CONSTANTS
-import 'package:notredame/core/constants/preferences_flags.dart';
+// Flutter imports:
+import 'package:flutter/material.dart';
+
+// Package imports:
+import 'package:ets_api_clients/models.dart';
+import 'package:feature_discovery/feature_discovery.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:notredame/core/constants/router_paths.dart';
+import 'package:notredame/core/services/launch_url_service.dart';
+import 'package:notredame/core/services/navigation_service.dart';
+import 'package:stacked/stacked.dart';
+
+// Project imports:
 import 'package:notredame/core/constants/discovery_ids.dart';
+import 'package:notredame/core/constants/preferences_flags.dart';
 import 'package:notredame/core/constants/progress_bar_text_options.dart';
 import 'package:notredame/core/constants/update_code.dart';
 import 'package:notredame/core/constants/widget_helper.dart';
-
-// MANAGER / SERVICE
-import 'package:notredame/core/managers/settings_manager.dart';
 import 'package:notredame/core/managers/course_repository.dart';
-import 'package:notredame/core/services/in_app_review_service.dart';
-import 'package:notredame/core/services/siren_flutter_service.dart';
-import 'package:notredame/core/services/preferences_service.dart';
+import 'package:notredame/core/managers/settings_manager.dart';
+import 'package:notredame/core/models/widget_models.dart';
 import 'package:notredame/core/services/analytics_service.dart';
 import 'package:notredame/core/services/app_widget_service.dart';
-
-// MODEL
-import 'package:notredame/core/models/widget_models.dart';
-import 'package:ets_api_clients/models.dart';
-
-// UTILS
-import 'package:notredame/ui/utils/discovery_components.dart';
-
-// OTHER
+import 'package:notredame/core/services/in_app_review_service.dart';
+import 'package:notredame/core/services/preferences_service.dart';
+import 'package:notredame/core/services/remote_config_service.dart';
+import 'package:notredame/core/services/siren_flutter_service.dart';
 import 'package:notredame/locator.dart';
+import 'package:notredame/ui/utils/discovery_components.dart';
 
 class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
   static const String tag = "DashboardViewModel";
 
   final SettingsManager _settingsManager = locator<SettingsManager>();
+  final PreferencesService _preferencesService = locator<PreferencesService>();
   final CourseRepository _courseRepository = locator<CourseRepository>();
   final AnalyticsService _analyticsService = locator<AnalyticsService>();
   final AppWidgetService _appWidgetService = locator<AppWidgetService>();
+  final RemoteConfigService remoteConfigService =
+      locator<RemoteConfigService>();
 
   /// All dashboard displayable cards
   Map<PreferencesFlag, int> _cards;
@@ -57,6 +60,14 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
 
   /// Numbers of days elapsed and total number of days of the current session
   List<int> _sessionDays = [0, 0];
+
+  /// Message to display in case of urgent/important broadcast need (Firebase
+  /// remote config), and the associated card title
+  String broadcastMessage = "";
+  String broadcastTitle = "";
+  String broadcastColor = "";
+  String broadcastUrl = "";
+  String broadcastType = "";
 
   /// Get progress of the session
   double get progress => _progress;
@@ -132,6 +143,17 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
     return false;
   }
 
+  static Future<void> launchBroadcastUrl(String url) async {
+    final LaunchUrlService launchUrlService = locator<LaunchUrlService>();
+    final NavigationService navigationService = locator<NavigationService>();
+    try {
+      await launchUrlService.launchInBrowser(url, Brightness.light);
+    } catch (error) {
+      // An exception is thrown if browser app is not installed on Android device.
+      await navigationService.pushNamed(RouterPaths.webView, arguments: url);
+    }
+  }
+
   void changeProgressBarText() {
     if (currentProgressBarText.index <= 1) {
       _currentProgressBarText =
@@ -178,6 +200,8 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
 
     _cards = dashboard;
 
+    await checkForBroadcastChange();
+
     getCardsToDisplay();
 
     // load data for both grade cards & grades home screen widget
@@ -189,6 +213,7 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
 
   Future loadDataAndUpdateWidget() async {
     return Future.wait([
+      futureToRunBroadcast(),
       futureToRunGrades(),
       futureToRunSessionProgressBar(),
       futureToRunSchedule()
@@ -282,13 +307,13 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
   void setAllCardsVisible() {
     _cards.updateAll((key, value) {
       _settingsManager
-          .setInt(key, key.index - PreferencesFlag.aboutUsCard.index)
+          .setInt(key, key.index - PreferencesFlag.broadcastCard.index)
           .then((value) {
         if (!value) {
           Fluttertoast.showToast(msg: _appIntl.error);
         }
       });
-      return key.index - PreferencesFlag.aboutUsCard.index;
+      return key.index - PreferencesFlag.broadcastCard.index;
     });
 
     getCardsToDisplay();
@@ -314,6 +339,27 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
     }
 
     _analyticsService.logEvent(tag, "Restoring cards");
+  }
+
+  Future<void> checkForBroadcastChange() async {
+    final broadcastChange =
+        await _preferencesService.getString(PreferencesFlag.broadcastChange) ??
+            "";
+    if (broadcastChange != remoteConfigService.dashboardMessageEn) {
+      // Update pref
+      _preferencesService.setString(PreferencesFlag.broadcastChange,
+          remoteConfigService.dashboardMessageEn);
+      if (_cards[PreferencesFlag.broadcastCard] < 0) {
+        _cards.updateAll((key, value) {
+          if (value >= 0) {
+            return value + 1;
+          } else {
+            return value;
+          }
+        });
+        _cards[PreferencesFlag.broadcastCard] = 0;
+      }
+    }
   }
 
   Future<List<Session>> futureToRunSessionProgressBar() async {
@@ -534,5 +580,30 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
       prefService.setString(
           PreferencesFlag.updateAskedVersion, storeVersion.toString());
     }
+  }
+
+  Future<void> futureToRunBroadcast() async {
+    setBusyForObject(broadcastMessage, true);
+    setBusyForObject(broadcastTitle, true);
+    setBusyForObject(broadcastColor, true);
+    setBusyForObject(broadcastUrl, true);
+    setBusyForObject(broadcastType, true);
+
+    if (_appIntl.localeName == "fr") {
+      broadcastMessage = remoteConfigService.dashboardMessageFr;
+      broadcastTitle = remoteConfigService.dashboardMessageTitleFr;
+    } else {
+      broadcastMessage = remoteConfigService.dashboardMessageEn;
+      broadcastTitle = remoteConfigService.dashboardMessageTitleEn;
+    }
+    broadcastColor = remoteConfigService.dashboardMsgColor;
+    broadcastUrl = remoteConfigService.dashboardMsgUrl;
+    broadcastType = remoteConfigService.dashboardMsgType;
+
+    setBusyForObject(broadcastMessage, false);
+    setBusyForObject(broadcastTitle, false);
+    setBusyForObject(broadcastColor, false);
+    setBusyForObject(broadcastUrl, false);
+    setBusyForObject(broadcastType, false);
   }
 }

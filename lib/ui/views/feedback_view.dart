@@ -1,19 +1,17 @@
-// FLUTTER / DART / THIRD-PARTIES
-import 'package:feedback/feedback.dart';
+// Flutter imports:
 import 'package:flutter/material.dart';
-import 'package:notredame/core/utils/utils.dart';
-import 'package:notredame/ui/utils/app_theme.dart';
+
+// Package imports:
+import 'package:feedback/feedback.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:stacked/stacked.dart';
 
-// UTILS
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:notredame/ui/utils/loading.dart';
-
-// VIEWMODEL
-import 'package:notredame/core/viewmodels/feedback_viewmodel.dart';
-
-// CONSTANTS
+// Project imports:
 import 'package:notredame/core/constants/feedback_type.dart';
+import 'package:notredame/core/utils/utils.dart';
+import 'package:notredame/core/viewmodels/feedback_viewmodel.dart';
+import 'package:notredame/ui/utils/app_theme.dart';
+import 'package:notredame/ui/utils/loading.dart';
 
 class FeedbackView extends StatefulWidget {
   @override

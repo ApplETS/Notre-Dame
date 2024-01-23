@@ -1,32 +1,28 @@
-// FLUTTER / DART / THIRD-PARTIES
-import 'package:feature_discovery/feature_discovery.dart';
+// Flutter imports:
 import 'package:flutter/material.dart';
+
+// Package imports:
+import 'package:feature_discovery/feature_discovery.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:notredame/core/services/launch_url_service.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:stacked/stacked.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-// UTILS
-import 'package:notredame/ui/utils/discovery_components.dart';
-
-// CONSTANTS
-import 'package:notredame/core/constants/preferences_flags.dart';
+// Project imports:
 import 'package:notredame/core/constants/discovery_ids.dart';
-
-// MANAGER
+import 'package:notredame/core/constants/preferences_flags.dart';
+import 'package:notredame/core/constants/router_paths.dart';
 import 'package:notredame/core/managers/cache_manager.dart';
-import 'package:notredame/core/managers/user_repository.dart';
-import 'package:notredame/core/managers/settings_manager.dart';
 import 'package:notredame/core/managers/course_repository.dart';
-
-//SERVICE
+import 'package:notredame/core/managers/settings_manager.dart';
+import 'package:notredame/core/managers/user_repository.dart';
+import 'package:notredame/core/services/in_app_review_service.dart';
 import 'package:notredame/core/services/navigation_service.dart';
 import 'package:notredame/core/services/preferences_service.dart';
-import 'package:notredame/core/services/in_app_review_service.dart';
-
-// OTHERS
-import 'package:notredame/core/constants/router_paths.dart';
+import 'package:notredame/core/services/remote_config_service.dart';
 import 'package:notredame/locator.dart';
+import 'package:notredame/ui/utils/discovery_components.dart';
 
 class MoreViewModel extends FutureViewModel {
   /// Cache manager
@@ -40,6 +36,10 @@ class MoreViewModel extends FutureViewModel {
 
   /// Preferences service
   final PreferencesService _preferencesService = locator<PreferencesService>();
+
+  /// Remote config service
+  final RemoteConfigService _remoteConfigService =
+      locator<RemoteConfigService>();
 
   /// User repository needed to log out
   final UserRepository _userRepository = locator<UserRepository>();
@@ -137,4 +137,22 @@ class MoreViewModel extends FutureViewModel {
     }
     return false;
   }
+
+  static Future<void> launchPrivacyPolicy() async {
+    final LaunchUrlService launchUrlService = locator<LaunchUrlService>();
+    final RemoteConfigService remoteConfigService =
+        locator<RemoteConfigService>();
+    final NavigationService navigationService = locator<NavigationService>();
+    try {
+      await launchUrlService.launchInBrowser(
+          remoteConfigService.privacyPolicyUrl, Brightness.light);
+    } catch (error) {
+      // An exception is thrown if browser app is not installed on Android device.
+      await navigationService.pushNamed(RouterPaths.webView,
+          arguments: remoteConfigService.privacyPolicyUrl);
+    }
+  }
+
+  /// Get the privacy policy toggle
+  bool get privacyPolicyToggle => _remoteConfigService.privacyPolicyToggle;
 }

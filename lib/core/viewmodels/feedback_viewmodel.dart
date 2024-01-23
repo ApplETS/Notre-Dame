@@ -1,26 +1,24 @@
-// FLUTTER / DART / THIRD-PARTIES
+// Dart imports:
 import 'dart:io';
 import 'dart:typed_data';
-import 'package:feedback/feedback.dart';
+
+// Flutter imports:
 import 'package:flutter/material.dart';
+
+// Package imports:
+import 'package:feedback/feedback.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:github/github.dart';
-import 'package:stacked/stacked.dart';
 import 'package:image/image.dart' as image;
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:stacked/stacked.dart';
 
-//SERVICE
+// Project imports:
+import 'package:notredame/core/constants/feedback_type.dart';
+import 'package:notredame/core/constants/preferences_flags.dart';
+import 'package:notredame/core/models/feedback_issue.dart';
 import 'package:notredame/core/services/github_api.dart';
 import 'package:notredame/core/services/preferences_service.dart';
-
-// MODELS
-import 'package:notredame/core/models/feedback_issue.dart';
-
-// CONSTANTS
-import 'package:notredame/core/constants/preferences_flags.dart';
-import 'package:notredame/core/constants/feedback_type.dart';
-
-// OTHERS
 import 'package:notredame/locator.dart';
 
 class FeedbackViewModel extends FutureViewModel {

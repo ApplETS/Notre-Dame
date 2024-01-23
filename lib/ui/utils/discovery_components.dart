@@ -1,25 +1,19 @@
-// FLUTTER / DART / THIRD-PARTIES
-import 'package:feature_discovery/feature_discovery.dart';
+// Flutter imports:
 import 'package:flutter/material.dart';
+
+// Package imports:
+import 'package:feature_discovery/feature_discovery.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-// CONSTANTS
+// Project imports:
+import 'package:notredame/core/constants/discovery_ids.dart';
 import 'package:notredame/core/constants/preferences_flags.dart';
 import 'package:notredame/core/constants/router_paths.dart';
-import 'package:notredame/core/constants/discovery_ids.dart';
-
-// MANAGERS
 import 'package:notredame/core/managers/settings_manager.dart';
-
-// MODELS
 import 'package:notredame/core/models/discovery.dart';
 import 'package:notredame/core/models/group_discovery.dart';
-
-// UTILS
-import 'package:notredame/ui/utils/app_theme.dart';
-
-// OTHER
 import 'package:notredame/locator.dart';
+import 'package:notredame/ui/utils/app_theme.dart';
 
 List<GroupDiscovery> discoveryComponents(BuildContext context) {
   return [

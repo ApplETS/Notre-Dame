@@ -1,11 +1,11 @@
-// FLUTTER / DART / THIRD-PARTIES
-import 'package:feedback/feedback.dart';
+// Flutter imports:
 import 'package:flutter/material.dart';
 
-// CONSTANTS
-import 'package:notredame/core/constants/custom_feedback_localization.dart';
+// Package imports:
+import 'package:feedback/feedback.dart';
 
-// MODELS
+// Project imports:
+import 'package:notredame/core/constants/custom_feedback_localization.dart';
 import 'package:notredame/core/models/feedback.dart';
 
 /// A form that prompts the user for the type of feedback they want to give and a

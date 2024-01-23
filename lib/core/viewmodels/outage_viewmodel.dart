@@ -1,18 +1,15 @@
+// Flutter imports:
 import 'package:flutter/material.dart';
 
-//SERVICE
+// Package imports:
+import 'package:stacked/stacked.dart';
+
+// Project imports:
+import 'package:notredame/core/constants/router_paths.dart';
 import 'package:notredame/core/services/navigation_service.dart';
 import 'package:notredame/core/services/remote_config_service.dart';
-
-//VIEW
-import 'package:notredame/ui/views/startup_view.dart';
-
-//CONSTANT
-import 'package:notredame/core/constants/router_paths.dart';
-
-//OTHERS
 import 'package:notredame/locator.dart';
-import 'package:stacked/stacked.dart';
+import 'package:notredame/ui/views/startup_view.dart';
 
 class OutageViewModel extends BaseViewModel {
   int _lastTap = DateTime.now().millisecondsSinceEpoch;

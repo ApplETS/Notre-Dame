@@ -1,29 +1,30 @@
-// FLUTTER / DART / THIRD-PARTIES
+// Dart imports:
 import 'dart:io';
+
+// Flutter imports:
 import 'package:flutter/material.dart';
+
+// Package imports:
+import 'package:feature_discovery/feature_discovery.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:feature_discovery/feature_discovery.dart';
+
+// Project imports:
 import 'package:notredame/core/constants/preferences_flags.dart';
-
-// CONSTANTS
 import 'package:notredame/core/constants/router_paths.dart';
-
-// SERVICES
 import 'package:notredame/core/services/navigation_service.dart';
-
-// VIEW
+import 'package:notredame/core/services/remote_config_service.dart';
 import 'package:notredame/ui/views/more_view.dart';
-
-// HELPERS
 import '../../helpers.dart';
 import '../../mock/managers/settings_manager_mock.dart';
 import '../../mock/services/in_app_review_service_mock.dart';
+import '../../mock/services/remote_config_service_mock.dart';
 
 void main() {
   AppIntl intl;
   NavigationService navigation;
+  RemoteConfigService remoteConfigService;
   InAppReviewServiceMock inAppReviewServiceMock;
   SettingsManagerMock settingsManagerMock;
 
@@ -31,6 +32,7 @@ void main() {
     setUp(() async {
       intl = await setupAppIntl();
       navigation = setupNavigationServiceMock();
+      remoteConfigService = setupRemoteConfigServiceMock();
       setupCourseRepositoryMock();
       setupPreferencesServiceMock();
       setupUserRepositoryMock();
@@ -45,11 +47,17 @@ void main() {
       SettingsManagerMock.stubGetBool(
           settingsManagerMock, PreferencesFlag.discoveryMore,
           toReturn: true);
+
+      RemoteConfigServiceMock.stubGetPrivacyPolicyEnabled(
+          remoteConfigService as RemoteConfigServiceMock);
     });
 
     group('UI - ', () {
-      testWidgets('has 1 listView and 8 listTiles',
+      testWidgets('has 1 listView and 8 listTiles when privacy policy disabled',
           (WidgetTester tester) async {
+        RemoteConfigServiceMock.stubGetPrivacyPolicyEnabled(
+            remoteConfigService as RemoteConfigServiceMock,
+            toReturn: false);
         await tester.pumpWidget(
             localizedWidget(child: FeatureDiscovery(child: MoreView())));
         await tester.pumpAndSettle(const Duration(seconds: 1));
@@ -61,8 +69,24 @@ void main() {
         expect(listTile, findsNWidgets(8));
       });
 
+      testWidgets('has 1 listView and 9 listTiles when privacy policy enabled',
+          (WidgetTester tester) async {
+        await tester.pumpWidget(
+            localizedWidget(child: FeatureDiscovery(child: MoreView())));
+        await tester.pumpAndSettle(const Duration(seconds: 1));
+
+        final listview = find.byType(ListView);
+        expect(listview, findsOneWidget);
+
+        final listTile = find.byType(ListTile);
+        expect(listTile, findsNWidgets(9));
+      });
+
       group('navigation - ', () {
         testWidgets('about', (WidgetTester tester) async {
+          RemoteConfigServiceMock.stubGetPrivacyPolicyEnabled(
+              remoteConfigService as RemoteConfigServiceMock,
+              toReturn: false);
           await tester.pumpWidget(
               localizedWidget(child: FeatureDiscovery(child: MoreView())));
           await tester.pumpAndSettle(const Duration(seconds: 1));
@@ -78,6 +102,9 @@ void main() {
         });
 
         testWidgets('rate us is not available', (WidgetTester tester) async {
+          RemoteConfigServiceMock.stubGetPrivacyPolicyEnabled(
+              remoteConfigService as RemoteConfigServiceMock,
+              toReturn: false);
           InAppReviewServiceMock.stubIsAvailable(inAppReviewServiceMock,
               toReturn: false);
 
@@ -97,6 +124,9 @@ void main() {
         });
 
         testWidgets('rate us is available', (WidgetTester tester) async {
+          RemoteConfigServiceMock.stubGetPrivacyPolicyEnabled(
+              remoteConfigService as RemoteConfigServiceMock,
+              toReturn: false);
           InAppReviewServiceMock.stubIsAvailable(inAppReviewServiceMock);
 
           await tester.pumpWidget(
@@ -116,6 +146,9 @@ void main() {
         });
 
         testWidgets('contributors', (WidgetTester tester) async {
+          RemoteConfigServiceMock.stubGetPrivacyPolicyEnabled(
+              remoteConfigService as RemoteConfigServiceMock,
+              toReturn: false);
           await tester.pumpWidget(
               localizedWidget(child: FeatureDiscovery(child: MoreView())));
           await tester.pumpAndSettle(const Duration(seconds: 1));
@@ -131,6 +164,9 @@ void main() {
         });
 
         testWidgets('licenses', (WidgetTester tester) async {
+          RemoteConfigServiceMock.stubGetPrivacyPolicyEnabled(
+              remoteConfigService as RemoteConfigServiceMock,
+              toReturn: false);
           await tester.pumpWidget(
               localizedWidget(child: FeatureDiscovery(child: MoreView())));
           await tester.pumpAndSettle(const Duration(seconds: 1));
@@ -148,6 +184,9 @@ void main() {
         });
 
         testWidgets('need help', (WidgetTester tester) async {
+          RemoteConfigServiceMock.stubGetPrivacyPolicyEnabled(
+              remoteConfigService as RemoteConfigServiceMock,
+              toReturn: false);
           await tester.pumpWidget(
               localizedWidget(child: FeatureDiscovery(child: MoreView())));
           await tester.pumpAndSettle(const Duration(seconds: 1));
@@ -163,6 +202,9 @@ void main() {
         });
 
         testWidgets('settings', (WidgetTester tester) async {
+          RemoteConfigServiceMock.stubGetPrivacyPolicyEnabled(
+              remoteConfigService as RemoteConfigServiceMock,
+              toReturn: false);
           await tester.pumpWidget(
               localizedWidget(child: FeatureDiscovery(child: MoreView())));
           await tester.pumpAndSettle(const Duration(seconds: 1));
@@ -177,6 +219,9 @@ void main() {
         });
 
         testWidgets('logout', (WidgetTester tester) async {
+          RemoteConfigServiceMock.stubGetPrivacyPolicyEnabled(
+              remoteConfigService as RemoteConfigServiceMock,
+              toReturn: false);
           await tester.pumpWidget(
               localizedWidget(child: FeatureDiscovery(child: MoreView())));
           await tester.pumpAndSettle(const Duration(seconds: 1));
@@ -195,6 +240,9 @@ void main() {
 
       group("golden - ", () {
         testWidgets("default view", (WidgetTester tester) async {
+          RemoteConfigServiceMock.stubGetPrivacyPolicyEnabled(
+              remoteConfigService as RemoteConfigServiceMock,
+              toReturn: false);
           tester.binding.window.physicalSizeTestValue = const Size(800, 1410);
 
           await tester.runAsync(() async {

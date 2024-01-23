@@ -1,10 +1,10 @@
-// FLUTTER / DART / THIRD-PARTIES
+// Package imports:
 import 'package:flutter_test/flutter_test.dart';
-import 'package:notredame/core/services/preferences_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-// CONSTANTS
+// Project imports:
 import 'package:notredame/core/constants/preferences_flags.dart';
+import 'package:notredame/core/services/preferences_service.dart';
 
 void main() {
   SharedPreferences sharedPreferences;

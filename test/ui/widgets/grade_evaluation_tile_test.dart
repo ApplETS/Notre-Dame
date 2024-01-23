@@ -1,17 +1,15 @@
-// FLUTTER / DART / THIRD-PARTIES
-import 'package:feature_discovery/feature_discovery.dart';
+// Flutter imports:
 import 'package:flutter/material.dart';
-import 'package:flutter_test/flutter_test.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-// WIDGETS
-import 'package:notredame/ui/widgets/grade_evaluation_tile.dart';
-import 'package:notredame/ui/widgets/grade_circular_progress.dart';
-
-// MODELS
+// Package imports:
 import 'package:ets_api_clients/models.dart';
+import 'package:feature_discovery/feature_discovery.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_test/flutter_test.dart';
 
-// HELPERS
+// Project imports:
+import 'package:notredame/ui/widgets/grade_circular_progress.dart';
+import 'package:notredame/ui/widgets/grade_evaluation_tile.dart';
 import '../../helpers.dart';
 
 void main() {

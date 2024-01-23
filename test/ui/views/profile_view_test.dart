@@ -1,26 +1,21 @@
-// FLUTTER / DART / THIRD-PARTIES
+// Dart imports:
 import 'dart:io';
-import 'package:flutter/material.dart';
-import 'package:flutter_test/flutter_test.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-// MODELS
+// Flutter imports:
+import 'package:flutter/services.dart';
+
+// Package imports:
 import 'package:ets_api_clients/models.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_test/flutter_test.dart';
 
-// MANAGERS
+// Project imports:
 import 'package:notredame/core/managers/user_repository.dart';
-
-// SERVICES
 import 'package:notredame/core/services/networking_service.dart';
-import '../../mock/services/analytics_service_mock.dart';
-
-// VIEW
 import 'package:notredame/ui/views/profile_view.dart';
-
 import '../../helpers.dart';
-
-// MOCKS
 import '../../mock/managers/user_repository_mock.dart';
+import '../../mock/services/analytics_service_mock.dart';
 
 void main() {
   AppIntl intl;
@@ -91,6 +86,20 @@ void main() {
       expect(find.text(intl.profile_permanent_code), findsOneWidget);
 
       expect(find.text(intl.login_prompt_universal_code), findsOneWidget);
+    });
+
+    testWidgets('copies personnal info', (WidgetTester tester) async {
+      // Simulez un clic sur le texte du code permanent
+      await tester.pumpWidget(localizedWidget(child: ProfileView()));
+      await tester.pumpAndSettle();
+
+      await tester.tap(find.text(profileStudent.permanentCode));
+      await tester.pumpAndSettle();
+
+      expect(find.text(intl.profile_permanent_code_copied_to_clipboard),
+          findsOneWidget);
+
+      // Could not test clipboard content, could be due to https://github.com/flutter/flutter/issues/47448
     });
 
     testWidgets('contains balance info', (WidgetTester tester) async {

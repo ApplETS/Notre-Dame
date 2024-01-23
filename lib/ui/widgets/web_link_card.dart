@@ -1,14 +1,12 @@
-// FLUTTER / DART / THIRD-PARTIES
+// Flutter imports:
 import 'package:flutter/material.dart';
+
+// Package imports:
 import 'package:stacked/stacked.dart';
 
-// VIEWMODEL
-import 'package:notredame/core/viewmodels/web_link_card_viewmodel.dart';
-
-// MODEL
+// Project imports:
 import 'package:notredame/core/models/quick_link.dart';
-
-// UTILS
+import 'package:notredame/core/viewmodels/web_link_card_viewmodel.dart';
 import 'package:notredame/ui/utils/app_theme.dart';
 
 class WebLinkCard extends StatelessWidget {
@@ -21,9 +19,8 @@ class WebLinkCard extends StatelessWidget {
       ViewModelBuilder<WebLinkCardViewModel>.reactive(
           viewModelBuilder: () => WebLinkCardViewModel(),
           builder: (context, model, child) {
-            return SizedBox(
-              width: MediaQuery.of(context).size.width / 3.1,
-              height: 130,
+            return ConstrainedBox(
+              constraints: const BoxConstraints.expand(),
               child: Card(
                 elevation: 4.0,
                 child: InkWell(

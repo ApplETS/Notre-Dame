@@ -1,14 +1,10 @@
-// FLUTTER / DART / THIRD-PARTIES
+// Package imports:
+import 'package:ets_api_clients/exceptions.dart';
+import 'package:ets_api_clients/models.dart';
 import 'package:mockito/mockito.dart';
 
-// SERVICE
+// Project imports:
 import 'package:notredame/core/managers/user_repository.dart';
-
-// MODELS
-import 'package:ets_api_clients/models.dart';
-
-// UTILS
-import 'package:ets_api_clients/exceptions.dart';
 
 /// Mock for the [UserRepository]
 class UserRepositoryMock extends Mock implements UserRepository {

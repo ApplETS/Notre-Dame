@@ -1,27 +1,21 @@
-// FLUTTER / DART / THIRD-PARTIES
-import 'package:feature_discovery/feature_discovery.dart';
+// Flutter imports:
 import 'package:flutter/material.dart';
+
+// Package imports:
+import 'package:ets_api_clients/exceptions.dart';
+import 'package:ets_api_clients/models.dart';
+import 'package:feature_discovery/feature_discovery.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:stacked/stacked.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-// CONSTANTS
+// Project imports:
 import 'package:notredame/core/constants/discovery_ids.dart';
 import 'package:notredame/core/constants/preferences_flags.dart';
-
-// UTILS
-import 'package:notredame/ui/utils/discovery_components.dart';
-import 'package:ets_api_clients/exceptions.dart';
-
-// MANAGERS / SERVICES
 import 'package:notredame/core/managers/course_repository.dart';
 import 'package:notredame/core/managers/settings_manager.dart';
-
-// MODELS
-import 'package:ets_api_clients/models.dart';
-
-// OTHER
 import 'package:notredame/locator.dart';
+import 'package:notredame/ui/utils/discovery_components.dart';
 
 class GradesDetailsViewModel extends FutureViewModel<Course> {
   /// Used to get the courses of the student
@@ -61,8 +55,13 @@ class GradesDetailsViewModel extends FutureViewModel<Course> {
   @override
   // ignore: type_annotate_public_apis
   void onError(error) {
-    if (error is ApiException && error.errorCode != SignetsError.gradesEmpty) {
-      Fluttertoast.showToast(msg: _appIntl.error);
+    if (error is ApiException) {
+      if (error.message.startsWith(SignetsError.gradesNotAvailable) ||
+          error.errorCode == SignetsError.gradesEmpty) {
+        Fluttertoast.showToast(msg: _appIntl.grades_msg_no_grade);
+      } else {
+        Fluttertoast.showToast(msg: _appIntl.error);
+      }
     }
   }
 

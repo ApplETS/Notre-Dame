@@ -1,12 +1,10 @@
-// FLUTTER / DART / THIRD-PARTIES
+// Flutter imports:
 import 'package:flutter/material.dart';
 
-// MODELS
+// Project imports:
+import 'package:notredame/core/constants/app_info.dart';
 import 'package:notredame/core/models/faq_actions.dart';
 import 'package:notredame/core/models/faq_questions.dart';
-
-// CONSTANTS
-import 'package:notredame/core/constants/app_info.dart';
 
 class Faq {
   List<QuestionItem> questions = [

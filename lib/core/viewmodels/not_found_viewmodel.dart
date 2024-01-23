@@ -1,16 +1,16 @@
-// FLUTTER / DART / THIRD-PARTIES
+// Flutter imports:
 import 'package:flutter/material.dart';
+
+// Package imports:
 import 'package:rive/rive.dart';
 import 'package:stacked/stacked.dart';
 
-// SERVICE
+// Project imports:
+import 'package:notredame/core/constants/router_paths.dart';
 import 'package:notredame/core/services/analytics_service.dart';
 import 'package:notredame/core/services/navigation_service.dart';
 import 'package:notredame/core/services/rive_animation_service.dart';
-
-// OTHER
 import 'package:notredame/locator.dart';
-import 'package:notredame/core/constants/router_paths.dart';
 
 class NotFoundViewModel extends BaseViewModel {
   static const String tag = "NotFoundViewModel";

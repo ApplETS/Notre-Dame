@@ -1,31 +1,25 @@
-// FLUTTER / DART / THIRD-PARTIES
+// Package imports:
+import 'package:ets_api_clients/models.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-// SERVICES / MANAGERS
+// Project imports:
+import 'package:notredame/core/constants/router_paths.dart';
+import 'package:notredame/core/managers/cache_manager.dart';
+import 'package:notredame/core/managers/course_repository.dart';
+import 'package:notredame/core/managers/settings_manager.dart';
 import 'package:notredame/core/managers/user_repository.dart';
 import 'package:notredame/core/services/navigation_service.dart';
-import 'package:notredame/core/managers/cache_manager.dart';
-import 'package:notredame/core/managers/settings_manager.dart';
 import 'package:notredame/core/services/preferences_service.dart';
-import 'package:notredame/core/managers/course_repository.dart';
-
-// MODELS
-import 'package:ets_api_clients/models.dart';
-
-// VIEW MODEL
+import 'package:notredame/core/services/remote_config_service.dart';
 import 'package:notredame/core/viewmodels/more_viewmodel.dart';
-
-// CONSTANTS
-import 'package:notredame/core/constants/router_paths.dart';
-
-// OTHER
 import '../helpers.dart';
 import '../mock/managers/cache_manager_mock.dart';
 import '../mock/managers/course_repository_mock.dart';
 import '../mock/managers/settings_manager_mock.dart';
 import '../mock/managers/user_repository_mock.dart';
+import '../mock/services/remote_config_service_mock.dart';
 
 void main() {
   // Needed to support FlutterToast.
@@ -35,6 +29,7 @@ void main() {
   SettingsManagerMock settingsManagerMock;
   CourseRepositoryMock courseRepositoryMock;
   PreferencesService preferenceService;
+  RemoteConfigService remoteConfigService;
   UserRepositoryMock userRepositoryMock;
   NavigationService navigationService;
 
@@ -119,6 +114,7 @@ void main() {
       settingsManagerMock = setupSettingsManagerMock() as SettingsManagerMock;
       courseRepositoryMock =
           setupCourseRepositoryMock() as CourseRepositoryMock;
+      remoteConfigService = setupRemoteConfigServiceMock();
       preferenceService = setupPreferencesServiceMock();
       userRepositoryMock = setupUserRepositoryMock() as UserRepositoryMock;
       navigationService = setupNavigationServiceMock();
@@ -132,6 +128,8 @@ void main() {
           toReturn: sessions);
       CourseRepositoryMock.stubCoursesActivities(courseRepositoryMock,
           toReturn: coursesActivities);
+      RemoteConfigServiceMock.stubGetPrivacyPolicyEnabled(
+          remoteConfigService as RemoteConfigServiceMock);
     });
 
     tearDown(() {
@@ -146,6 +144,9 @@ void main() {
     group('logout - ', () {
       test('If the correct function have been called when logout occur',
           () async {
+        RemoteConfigServiceMock.stubGetPrivacyPolicyEnabled(
+            remoteConfigService as RemoteConfigServiceMock,
+            toReturn: false);
         setupFlutterToastMock();
         UserRepositoryMock.stubLogOut(userRepositoryMock);
 
@@ -157,6 +158,9 @@ void main() {
       test(
           'If an error occur from the cache manager that the logout function finishes out',
           () async {
+        RemoteConfigServiceMock.stubGetPrivacyPolicyEnabled(
+            remoteConfigService as RemoteConfigServiceMock,
+            toReturn: false);
         setupFlutterToastMock();
         CacheManagerMock.stubEmptyException(cacheManagerMock);
         UserRepositoryMock.stubLogOut(userRepositoryMock);

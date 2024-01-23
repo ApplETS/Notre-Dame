@@ -35,8 +35,11 @@ _Note: This guide is also available in: [Français](https://github.com/ApplETS/N
 
 - Flutter SDK v3.3.10
 ```sh
-# to downgrade flutter version to the required version, simply do:
-$ flutter downgrade 3.3.10
+# to downgrade flutter version to the required version, simply do theses steps:
+$ cd /path/to/flutter
+$ git checkout 3.3.10
+$ flutter doctor
+# Make sure the output of flutter doctor is alright
 ```
 - Openssl v1.1.1g or higher
 - Java sdk 11
@@ -75,6 +78,17 @@ enter the following command:
 ```bash
 git config core.hooksPath .githooks
 ```
+
+## 📦 DevContainer
+
+You can run the project in a container that has all the good versions of the libraries ready to go.
+Steps tu run it:
+1. Install Docker, VSCode and the Dev Containers extention for vscode.
+2. Open the project with vscode a popup will suggest opening the project in a dev container.*
+4. Once the container is up and running you will have a prompt in the vscode terminal to accept licenses.
+5. Pair and connect your android phone using ADB wireless debugging to debug the app.
+
+\* if you cannot see the popup suggesting the dev container environment try you can run the vscode command: `Dev Containers: Rebuild and Reopen in Container`
 
 ## ⚖️ License
 

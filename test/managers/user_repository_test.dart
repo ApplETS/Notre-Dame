@@ -1,33 +1,27 @@
-// FLUTTER / DART / THIRD-PARTIES
+// Dart imports:
 import 'dart:convert';
+
+// Flutter imports:
 import 'package:flutter/services.dart';
+
+// Package imports:
+import 'package:ets_api_clients/clients.dart';
+import 'package:ets_api_clients/exceptions.dart';
+import 'package:ets_api_clients/models.dart';
+import 'package:ets_api_clients/testing.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 
-// SERVICES / MANAGER
-import 'package:notredame/core/managers/user_repository.dart';
+// Project imports:
 import 'package:notredame/core/managers/cache_manager.dart';
+import 'package:notredame/core/managers/user_repository.dart';
 import 'package:notredame/core/services/analytics_service.dart';
 import 'package:notredame/core/services/networking_service.dart';
-
-// MODELS
-import 'package:ets_api_clients/models.dart';
-
-// UTILS
-import 'package:ets_api_clients/exceptions.dart';
-
-// HELPERS
 import '../helpers.dart';
-
-// MOCKS
-import 'package:ets_api_clients/testing.dart';
 import '../mock/managers/cache_manager_mock.dart';
 import '../mock/services/flutter_secure_storage_mock.dart';
 import '../mock/services/networking_service_mock.dart';
-
-// OTHER
-import 'package:ets_api_clients/clients.dart';
 
 void main() {
   AnalyticsService analyticsService;
@@ -82,13 +76,9 @@ void main() {
 
         // Verify the secureStorage is used
         verify(secureStorage.write(
-            key: UserRepository.usernameSecureKey,
-            value: user.username,
-            iOptions: const IOSOptions(groupId: UserRepository.groupOption)));
+            key: UserRepository.usernameSecureKey, value: user.username));
         verify(secureStorage.write(
-            key: UserRepository.passwordSecureKey,
-            value: "",
-            iOptions: const IOSOptions(groupId: UserRepository.groupOption)));
+            key: UserRepository.passwordSecureKey, value: ""));
 
         // Verify the user id is set in the analytics
         verify(analyticsService.setUserProperties(
@@ -144,9 +134,7 @@ void main() {
 
         // Verify the secureStorage is used
         verify(secureStorage.write(
-            key: UserRepository.usernameSecureKey,
-            value: user.username,
-            iOptions: const IOSOptions(groupId: UserRepository.groupOption)));
+            key: UserRepository.usernameSecureKey, value: user.username));
 
         // Verify the user id is set in the analytics
         verify(analyticsService.setUserProperties(
@@ -182,13 +170,9 @@ void main() {
 
         // Verify the secureStorage is used
         verify(secureStorage.write(
-            key: UserRepository.usernameSecureKey,
-            value: user.username,
-            iOptions: const IOSOptions(groupId: UserRepository.groupOption)));
+            key: UserRepository.usernameSecureKey, value: user.username));
         verify(secureStorage.write(
-            key: UserRepository.passwordSecureKey,
-            value: "",
-            iOptions: const IOSOptions(groupId: UserRepository.groupOption)));
+            key: UserRepository.passwordSecureKey, value: ""));
 
         // Verify the user id is set in the analytics
         verify(analyticsService.setUserProperties(
@@ -252,12 +236,8 @@ void main() {
             reason: "Result should be true");
 
         verifyInOrder([
-          secureStorage.read(
-              key: UserRepository.usernameSecureKey,
-              iOptions: const IOSOptions(groupId: UserRepository.groupOption)),
-          secureStorage.read(
-              key: UserRepository.passwordSecureKey,
-              iOptions: const IOSOptions(groupId: UserRepository.groupOption)),
+          secureStorage.read(key: UserRepository.usernameSecureKey),
+          secureStorage.read(key: UserRepository.passwordSecureKey),
           monETSApi.authenticate(username: username, password: password),
           analyticsService.setUserProperties(
               userId: username, domain: user.domain)
@@ -283,12 +263,8 @@ void main() {
             reason: "Result should be false");
 
         verifyInOrder([
-          secureStorage.read(
-              key: UserRepository.usernameSecureKey,
-              iOptions: const IOSOptions(groupId: UserRepository.groupOption)),
-          secureStorage.read(
-              key: UserRepository.passwordSecureKey,
-              iOptions: const IOSOptions(groupId: UserRepository.groupOption)),
+          secureStorage.read(key: UserRepository.usernameSecureKey),
+          secureStorage.read(key: UserRepository.passwordSecureKey),
           monETSApi.authenticate(username: username, password: password),
           analyticsService.logError(UserRepository.tag, any, any, any)
         ]);
@@ -307,11 +283,8 @@ void main() {
         expect(await manager.silentAuthenticate(), isFalse,
             reason: "Result should be false");
 
-        verifyInOrder([
-          secureStorage.read(
-              key: UserRepository.usernameSecureKey,
-              iOptions: const IOSOptions(groupId: UserRepository.groupOption))
-        ]);
+        verifyInOrder(
+            [secureStorage.read(key: UserRepository.usernameSecureKey)]);
 
         verifyNoMoreInteractions(secureStorage);
         verifyZeroInteractions(monETSApi);
@@ -338,9 +311,7 @@ void main() {
             reason: "Result should be false");
 
         verifyInOrder([
-          secureStorage.read(
-              key: UserRepository.usernameSecureKey,
-              iOptions: const IOSOptions(groupId: UserRepository.groupOption)),
+          secureStorage.read(key: UserRepository.usernameSecureKey),
           secureStorage.deleteAll(),
           analyticsService.logError(UserRepository.tag, any, any, any)
         ]);
@@ -354,12 +325,8 @@ void main() {
         expect(manager.monETSUser, null,
             reason: "The user shouldn't be available after a logout");
 
-        verify(secureStorage.delete(
-            key: UserRepository.usernameSecureKey,
-            iOptions: const IOSOptions(groupId: UserRepository.groupOption)));
-        verify(secureStorage.delete(
-            key: UserRepository.passwordSecureKey,
-            iOptions: const IOSOptions(groupId: UserRepository.groupOption)));
+        verify(secureStorage.delete(key: UserRepository.usernameSecureKey));
+        verify(secureStorage.delete(key: UserRepository.passwordSecureKey));
 
         verifyNever(
             analyticsService.logError(UserRepository.tag, any, any, any));
@@ -376,11 +343,8 @@ void main() {
         expect(manager.monETSUser, null,
             reason: "The user shouldn't be available after a logout");
 
-        verify(secureStorage.delete(
-            key: UserRepository.usernameSecureKey,
-            iOptions: const IOSOptions(groupId: UserRepository.groupOption)));
-        verify(secureStorage.deleteAll(
-            iOptions: const IOSOptions(groupId: UserRepository.groupOption)));
+        verify(secureStorage.delete(key: UserRepository.usernameSecureKey));
+        verify(secureStorage.deleteAll());
         verify(analyticsService.logError(UserRepository.tag, any, any, any));
       });
     });
@@ -411,12 +375,8 @@ void main() {
             reason: "Result should be 'password'");
 
         verifyInOrder([
-          secureStorage.read(
-              key: UserRepository.usernameSecureKey,
-              iOptions: const IOSOptions(groupId: UserRepository.groupOption)),
-          secureStorage.read(
-              key: UserRepository.passwordSecureKey,
-              iOptions: const IOSOptions(groupId: UserRepository.groupOption)),
+          secureStorage.read(key: UserRepository.usernameSecureKey),
+          secureStorage.read(key: UserRepository.passwordSecureKey),
           monETSApi.authenticate(username: username, password: password),
           analyticsService.setUserProperties(
               userId: username, domain: user.domain)
@@ -444,12 +404,8 @@ void main() {
 
         verifyInOrder([
           analyticsService.logEvent(UserRepository.tag, any),
-          secureStorage.read(
-              key: UserRepository.usernameSecureKey,
-              iOptions: const IOSOptions(groupId: UserRepository.groupOption)),
-          secureStorage.read(
-              key: UserRepository.passwordSecureKey,
-              iOptions: const IOSOptions(groupId: UserRepository.groupOption)),
+          secureStorage.read(key: UserRepository.usernameSecureKey),
+          secureStorage.read(key: UserRepository.passwordSecureKey),
           monETSApi.authenticate(username: username, password: password),
           analyticsService.setUserProperties(
               userId: username, domain: user.domain)

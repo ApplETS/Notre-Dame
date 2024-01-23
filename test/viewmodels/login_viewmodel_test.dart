@@ -1,23 +1,20 @@
-// FLUTTER / DART / THIRD-PARTIES
-import 'package:flutter_test/flutter_test.dart';
+// Package imports:
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 
-// SERVICES / MANAGERS
+// Project imports:
+import 'package:notredame/core/constants/router_paths.dart';
 import 'package:notredame/core/managers/user_repository.dart';
 import 'package:notredame/core/services/navigation_service.dart';
-
-// VIEW MODEL
 import 'package:notredame/core/viewmodels/login_viewmodel.dart';
-
-// CONSTANTS
-import 'package:notredame/core/constants/router_paths.dart';
-
-// OTHER
 import '../helpers.dart';
 import '../mock/managers/user_repository_mock.dart';
 
 void main() {
+  // Needed to support FlutterToast.
+  TestWidgetsFlutterBinding.ensureInitialized();
+
   const String universalCodeValid = "AA11111";
   const String universalCodeInvalid = "A1111";
   const String passwordCodeValid = "password";
@@ -33,6 +30,7 @@ void main() {
   group('LoginViewModel - ', () {
     setUp(() async {
       navigationService = setupNavigationServiceMock();
+      setupFlutterSecureStorageMock();
       userRepositoryMock = setupUserRepositoryMock() as UserRepositoryMock;
       setupLogger();
       setupPreferencesServiceMock();

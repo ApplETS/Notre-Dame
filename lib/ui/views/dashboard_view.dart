@@ -1,40 +1,35 @@
-// FLUTTER / DART / THIRD-PARTIES
-import 'package:feature_discovery/feature_discovery.dart';
+// Flutter imports:
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
+
+// Package imports:
+import 'package:auto_size_text/auto_size_text.dart';
+import 'package:ets_api_clients/models.dart';
+import 'package:feature_discovery/feature_discovery.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:stacked/stacked.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-// VIEWMODEL
-import 'package:notredame/core/viewmodels/dashboard_viewmodel.dart';
-
-// WIDGETS
-import 'package:notredame/ui/widgets/dismissible_card.dart';
-import 'package:notredame/ui/widgets/base_scaffold.dart';
-import 'package:notredame/ui/widgets/course_activity_tile.dart';
-import 'package:notredame/ui/widgets/grade_button.dart';
-import 'package:notredame/ui/widgets/haptics_container.dart';
-
-// MODELS / CONSTANTS
-import 'package:ets_api_clients/models.dart';
-import 'package:notredame/locator.dart';
-import 'package:notredame/core/constants/preferences_flags.dart';
-import 'package:notredame/core/constants/urls.dart';
+// Project imports:
 import 'package:notredame/core/constants/discovery_ids.dart';
+import 'package:notredame/core/constants/preferences_flags.dart';
 import 'package:notredame/core/constants/progress_bar_text_options.dart';
-import 'package:notredame/core/constants/update_code.dart';
 import 'package:notredame/core/constants/router_paths.dart';
-
-// UTILS
+import 'package:notredame/core/constants/update_code.dart';
+import 'package:notredame/core/constants/urls.dart';
+import 'package:notredame/core/services/analytics_service.dart';
+import 'package:notredame/core/services/navigation_service.dart';
 import 'package:notredame/core/utils/utils.dart';
-import 'package:notredame/ui/utils/loading.dart';
+import 'package:notredame/core/viewmodels/dashboard_viewmodel.dart';
+import 'package:notredame/locator.dart';
 import 'package:notredame/ui/utils/app_theme.dart';
 import 'package:notredame/ui/utils/discovery_components.dart';
-
-// SERVICES
-import 'package:notredame/core/services/navigation_service.dart';
-import 'package:notredame/core/services/analytics_service.dart';
+import 'package:notredame/ui/utils/loading.dart';
+import 'package:notredame/ui/widgets/base_scaffold.dart';
+import 'package:notredame/ui/widgets/course_activity_tile.dart';
+import 'package:notredame/ui/widgets/dismissible_card.dart';
+import 'package:notredame/ui/widgets/grade_button.dart';
+import 'package:notredame/ui/widgets/haptics_container.dart';
 
 class DashboardView extends StatefulWidget {
   final UpdateCode updateCode;
@@ -100,8 +95,16 @@ class _DashboardViewState extends State<DashboardView>
   List<Widget> _buildCards(DashboardViewModel model) {
     final List<Widget> cards = List.empty(growable: true);
 
+    // always try to build broadcast cart so the user doesn't miss out on
+    // important info if they dismissed it previously
+
     for (final PreferencesFlag element in model.cardsToDisplay) {
       switch (element) {
+        case PreferencesFlag.broadcastCard:
+          if (model.remoteConfigService.dashboardMessageActive) {
+            cards.add(_buildMessageBroadcastCard(model, element));
+          }
+          break;
         case PreferencesFlag.aboutUsCard:
           cards.add(_buildAboutUsCard(model, element));
           break;
@@ -159,6 +162,17 @@ class _DashboardViewState extends State<DashboardView>
                       },
                       icon: const FaIcon(
                         FontAwesomeIcons.facebook,
+                        color: Colors.white,
+                      ),
+                    ),
+                    IconButton(
+                      onPressed: () {
+                        _analyticsService.logEvent(tag, "Instagram clicked");
+                        Utils.launchURL(
+                            Urls.clubInstagram, AppIntl.of(context));
+                      },
+                      icon: const FaIcon(
+                        FontAwesomeIcons.instagram,
                         color: Colors.white,
                       ),
                     ),
@@ -393,6 +407,79 @@ class _DashboardViewState extends State<DashboardView>
                 )
             ]),
       );
+
+  Widget _buildMessageBroadcastCard(
+      DashboardViewModel model, PreferencesFlag flag) {
+    final broadcastMsgColor = Color(int.parse(model.broadcastColor));
+    final broadcastMsgType = model.broadcastType;
+    final broadcastMsgUrl = model.broadcastUrl;
+    return DismissibleCard(
+        key: UniqueKey(),
+        onDismissed: (DismissDirection direction) {
+          dismissCard(model, flag);
+        },
+        isBusy: model.busy(model.broadcastMessage),
+        cardColor: broadcastMsgColor,
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(17, 10, 15, 20),
+          child: Column(mainAxisSize: MainAxisSize.min, children: [
+            // title row
+            Row(
+              children: [
+                Expanded(
+                  child: Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text(model.broadcastTitle,
+                        style: Theme.of(context).primaryTextTheme.headline6),
+                  ),
+                ),
+                Align(
+                  alignment: Alignment.centerRight,
+                  child: InkWell(
+                    child: getBroadcastIcon(broadcastMsgType, broadcastMsgUrl),
+                  ),
+                ),
+              ],
+            ),
+            // main text
+            AutoSizeText(model.broadcastMessage ?? "",
+                style: Theme.of(context).primaryTextTheme.bodyText2)
+          ]),
+        ));
+  }
+
+  Widget getBroadcastIcon(String type, String url) {
+    switch (type) {
+      case "warning":
+        return const Icon(
+          Icons.warning_rounded,
+          color: AppTheme.lightThemeBackground,
+          size: 36.0,
+        );
+      case "alert":
+        return const Icon(
+          Icons.error,
+          color: AppTheme.lightThemeBackground,
+          size: 36.0,
+        );
+      case "link":
+        return IconButton(
+          onPressed: () {
+            DashboardViewModel.launchBroadcastUrl(url);
+          },
+          icon: const Icon(
+            Icons.open_in_new,
+            color: AppTheme.lightThemeBackground,
+            size: 30.0,
+          ),
+        );
+    }
+    return const Icon(
+      Icons.campaign,
+      color: AppTheme.lightThemeBackground,
+      size: 36.0,
+    );
+  }
 
   void dismissCard(DashboardViewModel model, PreferencesFlag flag) {
     model.hideCard(flag);

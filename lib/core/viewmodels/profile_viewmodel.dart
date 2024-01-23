@@ -1,22 +1,16 @@
-// FLUTTER / DART / THIRD-PARTIES
+// Flutter imports:
+import 'package:flutter/material.dart';
+
+// Package imports:
+import 'package:ets_api_clients/models.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:stacked/stacked.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-// SERVICES
-import 'package:notredame/core/services/analytics_service.dart';
-
-// MANAGERS
-import 'package:notredame/core/managers/user_repository.dart';
-
-// MODELS
-import 'package:ets_api_clients/models.dart';
-
-// CONSTANTS
+// Project imports:
 import 'package:notredame/core/constants/programs_credits.dart';
-
-// OTHERS
+import 'package:notredame/core/managers/user_repository.dart';
+import 'package:notredame/core/services/analytics_service.dart';
 import 'package:notredame/locator.dart';
 
 class ProfileViewModel extends FutureViewModel<List<Program>> {
