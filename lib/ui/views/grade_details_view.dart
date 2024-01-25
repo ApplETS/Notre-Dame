@@ -309,7 +309,7 @@ class _GradesDetailsViewState extends State<GradesDetailsView>
     return text;
   }
 
-  /// Build the card of the Medidian, Standart deviation or Percentile Rank
+  /// Build the card of the Medidian, Standard deviation or Percentile Rank
   SizedBox _buildCourseGradeSummary(String title, String number) {
     return SizedBox(
       height: 110,
