@@ -233,6 +233,15 @@ class _GradeEvaluationTileState extends State<GradeEvaluationTile>
               ),
             ),
             _buildSummary(
+              AppIntl.of(context).grades_weighted,
+              AppIntl.of(context).grades_grade_with_percentage(
+                getWeightedGrade(evaluation.markInPercent, evaluation.weight),
+                evaluation.weight ?? 0.0,
+                Utils.getGradeInPercentage(evaluation.mark,
+                    evaluation.correctedEvaluationOutOfFormatted),
+              ),
+            ),
+            _buildSummary(
                 AppIntl.of(context).grades_standard_deviation,
                 validateResult(
                     context, evaluation.standardDeviation.toString())),
@@ -253,6 +262,14 @@ class _GradeEvaluationTileState extends State<GradeEvaluationTile>
     }
 
     return AppIntl.of(context).grades_not_available;
+  }
+
+  double getWeightedGrade(double grade, double weight) {
+    if (grade == null || weight == null || grade == 0.0 || weight == 0.0) {
+      return 0.0;
+    }
+
+    return Utils.truncateDecimalPlaces(grade * weight, 1);
   }
 
   Padding _buildSummary(String title, String grade) {
