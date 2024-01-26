@@ -114,8 +114,8 @@ void main() {
         final label4 = find.text("0.0/30 (0.0%)");
         expect(label4, findsNWidgets(3));
 
-        // final label5 = find.text("0.0/15.0 (0.0%)");
-        // expect(label5, findsNWidgets(2));
+        final label5 = find.text("0.0/15.0 (0.0%)");
+        expect(label5, findsOneWidget);
       });
     });
   });
