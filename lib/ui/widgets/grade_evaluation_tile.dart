@@ -277,7 +277,7 @@ class _GradeEvaluationTileState extends State<GradeEvaluationTile>
       return 0.0;
     }
 
-    return Utils.truncateDecimalPlaces((grade / outOf) * weight, 1);
+    return double.parse(((grade / outOf) * weight).toStringAsFixed(2));
   }
 
   Padding _buildSummary(String title, String grade) {

@@ -30,10 +30,6 @@ mixin Utils {
     return double.parse(((grade / maxGrade) * 100).toStringAsFixed(1));
   }
 
-  static double truncateDecimalPlaces(double value, int decimalPlaces) {
-    return (value * pow(10, decimalPlaces)).truncate() / pow(10, decimalPlaces);
-  }
-
   static Color getColorByBrightness(
       BuildContext context, Color lightColor, Color darkColor) {
     return Theme.of(context).brightness == Brightness.light
