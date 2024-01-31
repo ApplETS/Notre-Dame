@@ -18,6 +18,7 @@ import 'package:notredame/core/services/internal_info_service.dart';
 import 'package:notredame/core/services/launch_url_service.dart';
 import 'package:notredame/core/services/navigation_service.dart';
 import 'package:notredame/core/services/networking_service.dart';
+import 'package:notredame/core/managers/news_repository.dart';
 import 'package:notredame/core/services/preferences_service.dart';
 import 'package:notredame/core/services/remote_config_service.dart';
 import 'package:notredame/core/services/rive_animation_service.dart';
@@ -47,6 +48,7 @@ void setupLocator() {
   locator.registerLazySingleton(() => CacheManager());
   locator.registerLazySingleton(() => SettingsManager());
   locator.registerLazySingleton(() => QuickLinkRepository());
+  locator.registerLazySingleton(() => NewsRepository());
 
   // Other
   locator.registerLazySingleton(() => SignetsAPIClient());

@@ -158,6 +158,7 @@
   "profile_program_completion_not_available": "ND",
   "profile_other_programs": "Autres Programmes",
   
+  "useful_link_title": "Liens utiles",
   "ets_security_title": "Sécurité",
   "ets_monets_title": "MonÉTS",
   "ets_bibliotech_title": "Bibliotech",
@@ -168,6 +169,8 @@
   "ets_schedule_generator": "HorairÉTS",
   "ets_gus": "GUS",
   "ets_papercut_title":"PaperCut",
+
+  "news_title" : "Annonces",
 
   "more_about_applets_title": "À propos d'ApplETS",
   "more_report_bug": "Rapporter un bogue ou une amélioration",

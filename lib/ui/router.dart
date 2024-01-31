@@ -13,6 +13,8 @@ import 'package:notredame/ui/views/choose_language_view.dart';
 import 'package:notredame/ui/views/contributors_view.dart';
 import 'package:notredame/ui/views/dashboard_view.dart';
 import 'package:notredame/ui/views/faq_view.dart';
+import 'package:notredame/ui/views/ets_view.dart';
+import 'package:notredame/ui/views/news_view.dart';
 import 'package:notredame/ui/views/feedback_view.dart';
 import 'package:notredame/ui/views/grade_details_view.dart';
 import 'package:notredame/ui/views/login_view.dart';
@@ -82,7 +84,15 @@ Route<dynamic> generateRoute(RouteSettings routeSettings) {
     case RouterPaths.ets:
       return PageRouteBuilder(
           settings: RouteSettings(name: routeSettings.name),
+          pageBuilder: (_, __, ___) => ETSView());
+    case RouterPaths.usefulLinks:
+      return PageRouteBuilder(
+          settings: RouteSettings(name: routeSettings.name),
           pageBuilder: (_, __, ___) => QuickLinksView());
+    case RouterPaths.news:
+      return PageRouteBuilder(
+          settings: RouteSettings(name: routeSettings.name),
+          pageBuilder: (_, __, ___) => NewsView());
     case RouterPaths.webView:
       return PageRouteBuilder(
           pageBuilder: (_, __, ___) =>

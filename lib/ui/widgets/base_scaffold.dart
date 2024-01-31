@@ -13,7 +13,7 @@ import 'package:notredame/core/services/networking_service.dart';
 import 'package:notredame/core/utils/utils.dart';
 import 'package:notredame/locator.dart';
 import 'package:notredame/ui/utils/app_theme.dart';
-import 'package:notredame/ui/utils/loading.dart';
+import 'package:notredame/ui/widgets/scaffold_safe_area.dart';
 import 'package:notredame/ui/widgets/bottom_bar.dart';
 
 /// Basic Scaffold to avoid boilerplate code in the application.
@@ -84,19 +84,11 @@ class _BaseScaffoldState extends State<BaseScaffold> {
   Widget build(BuildContext context) => Scaffold(
         body: Scaffold(
           appBar: widget.appBar,
-          body: SafeArea(
-            top: false,
-            child: Stack(
-              children: [
-                widget.body ?? const SizedBox(),
-                if (widget._isLoading)
-                  buildLoading(
-                      isInteractionLimitedWhileLoading:
-                          widget._isInteractionLimitedWhileLoading)
-                else
-                  const SizedBox()
-              ],
-            ),
+          body: ScaffoldSafeArea(
+            body: widget.body ?? const SizedBox(),
+            isInteractionLimitedWhileLoading:
+                widget._isInteractionLimitedWhileLoading,
+            isLoading: widget._isLoading,
           ),
           bottomNavigationBar: widget._showBottomBar ? BottomBar() : null,
           floatingActionButton: widget.fab,

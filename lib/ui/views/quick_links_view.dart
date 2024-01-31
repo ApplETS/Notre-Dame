@@ -10,7 +10,7 @@ import 'package:stacked/stacked.dart';
 import 'package:notredame/core/models/quick_link.dart';
 import 'package:notredame/core/viewmodels/quick_links_viewmodel.dart';
 import 'package:notredame/ui/utils/app_theme.dart';
-import 'package:notredame/ui/widgets/base_scaffold.dart';
+import 'package:notredame/ui/widgets/scaffold_safe_area.dart';
 import 'package:notredame/ui/widgets/web_link_card.dart';
 
 class QuickLinksView extends StatefulWidget {
@@ -43,9 +43,8 @@ class _QuickLinksViewState extends State<QuickLinksView>
   Widget build(BuildContext context) =>
       ViewModelBuilder<QuickLinksViewModel>.reactive(
         viewModelBuilder: () => QuickLinksViewModel(AppIntl.of(context)!),
-        builder: (context, model, child) => BaseScaffold(
+        builder: (context, model, child) => ScaffoldSafeArea(
           isLoading: model.isBusy,
-          appBar: _buildAppBar(context, model),
           body: _buildBody(context, model),
         ),
       );
