@@ -59,12 +59,10 @@ mixin CalendarUtils {
     return output.data;
   }
 
-  static Future<void> export(List<CourseActivity> courses) async {
+  static Future<void> export(
+      List<CourseActivity> courses, String calendarName) async {
     final DeviceCalendarPlugin localDeviceCalendarPlugin =
         DeviceCalendarPlugin();
-
-    // TODO make this cleaner
-    const calendarName = "ÉTS";
 
     // Request permissions
     final bool calendarPermission = await checkPermissions();
@@ -79,9 +77,7 @@ mixin CalendarUtils {
 
     // Create calendar if it doesn't exist
     if (calendar == null) {
-      await deviceCalendarPlugin.createCalendar(
-        calendarName,
-      );
+      await deviceCalendarPlugin.createCalendar(calendarName);
       calendar = await fetchNativeCalendar(calendarName);
     }
 
