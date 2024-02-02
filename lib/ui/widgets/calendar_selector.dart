@@ -3,6 +3,7 @@ import 'dart:collection';
 import 'package:device_calendar/device_calendar.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'package:notredame/ui/utils/app_theme.dart';
 import 'package:notredame/core/managers/course_repository.dart';
@@ -32,37 +33,32 @@ class CalendarSelectionWidget extends StatelessWidget {
             )
             .toList();
         items.add(
-          const DropdownMenuItem<String>(
+          DropdownMenuItem<String>(
             value: "new",
             // TODO TRANSLATION
-            child: Text("New calendar"),
+            // child: Text("New calendar"),
+            child: Text(AppIntl.of(context).calendar_new),
           ),
         );
         String selectedCalendarId = items[0].value;
         return StatefulBuilder(
-          builder: (context, void Function(void Function()) setState) {
+          builder: (context, setState) {
             return AlertDialog(
               // TODO TRANSLATION
-              title: const Text('Export to calendar'),
+              // title: const Text('Export to calendar'),
+              title: Text(AppIntl.of(context).calendar_export),
               content: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   // TODO TRANSLATION
-                  const Text('Which calendar do you want to export to?'),
+                  // const Text('Which calendar do you want to export to?'),
+                  Text(AppIntl.of(context).calendar_export_question),
                   DropdownButton<String>(
                     items: items,
                     value: selectedCalendarId,
-                    onTap: () {
-                      print('tapped');
-                    },
                     onChanged: (calendar) {
-                      print('changed');
-                      print(calendar);
                       setState(() {
-                        print('setting state');
                         selectedCalendarId = calendar;
-                        print('selected calendar');
-                        print(selectedCalendarId);
                       });
                     },
                   ),
@@ -74,8 +70,9 @@ class CalendarSelectionWidget extends StatelessWidget {
                                 selectedCalendarId = value;
                               },
                               // todo translation
-                              decoration: const InputDecoration(
-                                labelText: 'Calendar name',
+                              decoration: InputDecoration(
+                                // labelText: 'Calendar name',
+                                labelText: AppIntl.of(context).calendar_name,
                               ),
                             )
                           : const SizedBox(height: 10);
@@ -94,7 +91,8 @@ class CalendarSelectionWidget extends StatelessWidget {
                         selectedCalendarId.isEmpty) {
                       Fluttertoast.showToast(
                         // TODO TRANSLATION
-                        msg: 'Please select a calendar',
+                        // msg: 'Please select a calendar',
+                        msg: AppIntl.of(context).calendar_select,
                         backgroundColor: AppTheme.etsLightRed,
                         textColor: AppTheme.etsBlack,
                       );

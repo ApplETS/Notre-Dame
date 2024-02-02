@@ -107,22 +107,20 @@ mixin CalendarUtils {
             "${course.courseGroup} \n${course.activityDescription}\nN'EFFACEZ PAS CETTE LIGNE: ${course.hashCode}",
       );
 
-      // add event to calendar if it doesn't already exist
-      if (events
+      final existingEvent = events
           .where((element) =>
               element.description.contains(course.hashCode.toString()))
-          .isEmpty) {
-        final result = await localDeviceCalendarPlugin.createOrUpdateEvent(
-          event,
-        );
-        // TODO handle errors
-        print("even created successfully:");
-        print(result.isSuccess);
-        print("event id:");
-        print(result.data);
-      } else {
-        print("already exist");
+          .first;
+
+      // If already exists prepare for update
+      if (existingEvent != null) {
+        event.eventId = existingEvent.eventId;
       }
+
+      // Create or update event
+      await localDeviceCalendarPlugin.createOrUpdateEvent(
+        event,
+      );
     }
   }
 }

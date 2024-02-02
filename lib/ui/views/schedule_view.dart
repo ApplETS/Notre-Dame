@@ -1,5 +1,4 @@
 // Flutter imports:
-import 'package:device_calendar/device_calendar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
@@ -9,10 +8,7 @@ import 'package:calendar_view/calendar_view.dart' as calendar_view;
 import 'package:ets_api_clients/models.dart';
 import 'package:feature_discovery/feature_discovery.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
-import 'package:notredame/core/managers/course_repository.dart';
-import 'package:notredame/core/utils/calendar_utils.dart';
 import 'package:notredame/ui/widgets/calendar_selector.dart';
 import 'package:stacked/stacked.dart';
 import 'package:table_calendar/table_calendar.dart';
@@ -480,9 +476,7 @@ class _ScheduleViewState extends State<ScheduleView>
           onPressed: () {
             showDialog(
               context: context,
-              builder: (context) {
-                return const CalendarSelectionWidget();
-              },
+              builder: (_) => const CalendarSelectionWidget(),
             );
           },
         ),
