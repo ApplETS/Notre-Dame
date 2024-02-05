@@ -27,6 +27,15 @@ class GradesDetailsViewModel extends FutureViewModel<Course> {
   /// Used to get the current course selected of the student
   Course course;
 
+  int _currentCarouselPage = 0;
+
+  int get currentCarouselPage => _currentCarouselPage;
+
+  set currentCarouselPage(int value) {
+    _currentCarouselPage = value;
+    notifyListeners();
+  }
+
   GradesDetailsViewModel({this.course, @required AppIntl intl})
       : _appIntl = intl;
 
