@@ -16,6 +16,7 @@ import 'package:notredame/ui/widgets/base_scaffold.dart';
 import 'package:notredame/ui/widgets/grade_circular_progress.dart';
 import 'package:notredame/ui/widgets/grade_evaluation_tile.dart';
 import 'package:notredame/ui/widgets/grade_not_available.dart';
+import 'package:notredame/ui/widgets/line_chart.dart';
 
 class GradesDetailsView extends StatefulWidget {
   final Course course;
@@ -147,7 +148,8 @@ class _GradesDetailsViewState extends State<GradesDetailsView>
               children: <Widget>[
                 CarouselSlider(
                   options: CarouselOptions(
-                    viewportFraction: 1.0, // Each item takes up 100% of the screen
+                    viewportFraction:
+                        1.0, // Each item takes up 100% of the screen
                   ),
                   items: [
                     Builder(
@@ -283,7 +285,12 @@ class _GradesDetailsViewState extends State<GradesDetailsView>
                         );
                       },
                     ),
-                    // Add more items here for the carousel
+                    Builder(builder: (BuildContext context) {
+                      return SizedBox(
+                        width: MediaQuery.of(context).size.width,
+                        child: LineChartSample1(),
+                      );
+                    })
                   ],
                 ),
                 Column(children: <Widget>[
