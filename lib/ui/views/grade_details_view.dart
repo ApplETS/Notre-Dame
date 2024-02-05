@@ -146,7 +146,9 @@ class _GradesDetailsViewState extends State<GradesDetailsView>
             Column(
               children: <Widget>[
                 CarouselSlider(
-                  options: CarouselOptions(),
+                  options: CarouselOptions(
+                    viewportFraction: 1.0, // Each item takes up 100% of the screen
+                  ),
                   items: [
                     Builder(
                       builder: (BuildContext context) {
