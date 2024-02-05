@@ -28,12 +28,11 @@ class GradeGraphRepository {
         .exists();
 
     if (fileExists) {
-      List<GradeGraphEntry> oldGrades;
       final String gradesProgressionJSON =
           await _storageManager.readFile(fileName);
 
       if (gradesProgressionJSON.isNotEmpty) {
-        List<GradeGraphEntry> oldGrades =
+        final List<GradeGraphEntry> oldGrades =
             (jsonDecode(gradesProgressionJSON) as List)
                 .map((grade) =>
                     GradeGraphEntry.fromJson(grade as Map<String, dynamic>))
