@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:notredame/ui/utils/app_theme.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import 'package:notredame/core/models/news.dart';
@@ -33,7 +34,7 @@ class _NewsCardState extends State<NewsCard> {
               children: [
                 _buildImage(widget.news),
                 const SizedBox(height: 8),
-                _shimmerTextEffect(context),
+                _buildTitleAndTime(widget.news, context)
               ],
             ),
           ),
@@ -45,52 +46,26 @@ class _NewsCardState extends State<NewsCard> {
   Widget _buildImage(News news) {
     return ClipRRect(
       borderRadius: BorderRadius.circular(16.0),
-      child: _shimmerEffect(),
+      child: _isImageLoaded
+          ? Image.network(news.image, fit: BoxFit.cover)
+          : _shimmerEffect(),
     );
   }
 
   Widget _shimmerEffect() {
     return Shimmer.fromColors(
-      baseColor: Colors.grey.shade300,
-      highlightColor: Colors.grey.shade100,
-      enabled: true,
+      baseColor: Theme.of(context).brightness == Brightness.light
+          ? AppTheme.lightThemeBackground
+          : AppTheme.darkThemeBackground,
+      highlightColor: Theme.of(context).brightness == Brightness.light
+          ? AppTheme.lightThemeAccent
+          : AppTheme.darkThemeAccent,
       child: Container(
-        height: 200, // Specify a fixed height for the shimmer effect
-        color: Colors.grey,
-      ),
-    );
-  }
-
-  Widget _shimmerTextEffect(BuildContext context) {
-    return Shimmer.fromColors(
-      baseColor: Colors.grey.shade300,
-      highlightColor: Colors.grey.shade100,
-      enabled: true,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Container(
-            width: double.infinity,
-            height: 20.0,
-            color: Colors.white,
-          ),
-          const SizedBox(height: 8),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Container(
-                width: 100,
-                height: 20.0,
-                color: Colors.white,
-              ),
-              Container(
-                width: 60,
-                height: 20.0,
-                color: Colors.white,
-              ),
-            ],
-          ),
-        ],
+        height: 200,
+        decoration: BoxDecoration(
+          color: Colors.grey,
+          borderRadius: BorderRadius.circular(16),
+        ),
       ),
     );
   }
@@ -127,7 +102,8 @@ class _NewsCardState extends State<NewsCard> {
   void _preloadImage() {
     Image.network(widget.news.image)
         .image
-        .resolve(ImageConfiguration())
+        // ignore: use_named_constants
+        .resolve(const ImageConfiguration())
         .addListener(
           ImageStreamListener(
             (ImageInfo image, bool synchronousCall) {

@@ -1,10 +1,8 @@
-// FLUTTER / DART / THIRD-PARTIES
 import 'package:flutter/material.dart';
+import 'package:notredame/ui/widgets/news_card.dart';
 import 'package:stacked/stacked.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-
-// WIDGET
-import 'package:notredame/ui/widgets/news_card.dart';
+import 'package:notredame/ui/widgets/news_card_skeleton.dart';
 
 // VIEW-MODEL
 import 'package:notredame/core/viewmodels/news_viewmodel.dart';
@@ -30,7 +28,7 @@ class _NewsViewState extends State<NewsView> {
                 data:
                     Theme.of(context).copyWith(canvasColor: Colors.transparent),
                 child: model.isLoadingEvents
-                    ? const Center(child: CircularProgressIndicator())
+                    ? _buildSkeletonLoader()
                     : ListView(
                         padding: const EdgeInsets.fromLTRB(0, 4, 0, 8),
                         children:
@@ -39,4 +37,11 @@ class _NewsViewState extends State<NewsView> {
               onRefresh: () => model.refresh(),
             );
           });
+
+  Widget _buildSkeletonLoader() {
+    return ListView.builder(
+      itemCount: 3,
+      itemBuilder: (context, index) => const NewsCardSkeleton(),
+    );
+  }
 }
