@@ -10,23 +10,25 @@ import 'package:notredame/core/services/navigation_service.dart';
 import 'package:notredame/core/services/rive_animation_service.dart';
 import 'package:notredame/core/viewmodels/not_found_viewmodel.dart';
 import '../helpers.dart';
+import '../mock/services/analytics_service_mock.dart';
+import '../mock/services/navigation_service_mock.dart';
 import '../mock/services/rive_animation_service_mock.dart';
 
 void main() {
-  NavigationService navigationService;
-  RiveAnimationService riveAnimationService;
-  AnalyticsService analyticsService;
+  late NavigationServiceMock navigationServiceMock;
+  late RiveAnimationServiceMock riveAnimationServiceMock;
+  late AnalyticsServiceMock analyticsServiceMock;
 
-  NotFoundViewModel viewModel;
+  late NotFoundViewModel viewModel;
 
   group('NotFoundViewModel - ', () {
     const String pageNotFoundPassed = "/test";
     const String riveFileName = 'dot_jumping';
 
     setUp(() async {
-      navigationService = setupNavigationServiceMock();
-      riveAnimationService = setupRiveAnimationServiceMock();
-      analyticsService = setupAnalyticsServiceMock();
+      navigationServiceMock = setupNavigationServiceMock();
+      riveAnimationServiceMock = setupRiveAnimationServiceMock();
+      analyticsServiceMock = setupAnalyticsServiceMock();
       setupLogger();
 
       viewModel = NotFoundViewModel(pageName: pageNotFoundPassed);
@@ -43,7 +45,7 @@ void main() {
         const String pageTestCtor = "\testctor";
         NotFoundViewModel(pageName: pageTestCtor);
 
-        verify(analyticsService.logEvent(NotFoundViewModel.tag,
+        verify(analyticsServiceMock.logEvent(NotFoundViewModel.tag,
             "An unknown page ($pageTestCtor) has been access from the app."));
       });
     });
@@ -53,7 +55,7 @@ void main() {
         viewModel.navigateToDashboard();
 
         verify(
-            navigationService.pushNamedAndRemoveUntil(RouterPaths.dashboard));
+            navigationServiceMock.pushNamedAndRemoveUntil(RouterPaths.dashboard));
       });
     });
 
@@ -76,7 +78,7 @@ void main() {
         final expectedArtboard = Artboard();
 
         RiveAnimationServiceMock.stubLoadRiveFile(
-            riveAnimationService as RiveAnimationServiceMock,
+            riveAnimationServiceMock,
             'dot_jumping',
             expectedArtboard);
 
@@ -91,16 +93,16 @@ void main() {
       test('load the dot_jumping Rive animation successfuly', () async {
         await viewModel.loadRiveAnimation();
 
-        verify(riveAnimationService.loadRiveFile(riveFileName: riveFileName));
+        verify(riveAnimationServiceMock.loadRiveFile(riveFileName: riveFileName));
       });
 
       test('load file Rive animation with error', () async {
         RiveAnimationServiceMock.stubLoadRiveFileException(
-            riveAnimationService as RiveAnimationServiceMock);
+            riveAnimationServiceMock);
 
         await viewModel.loadRiveAnimation();
 
-        verify(analyticsService.logError(
+        verify(analyticsServiceMock.logError(
             NotFoundViewModel.tag,
             "An Error has occurred during rive animation $riveFileName loading.",
             RiveAnimationServiceMock.loadException,
@@ -113,17 +115,17 @@ void main() {
         final artboard = Artboard();
 
         RiveAnimationServiceMock.stubLoadRiveFile(
-            riveAnimationService as RiveAnimationServiceMock,
+            riveAnimationServiceMock,
             'dot_jumping',
             artboard);
 
         RiveAnimationServiceMock.stubAddControllerToAnimationException(
-            riveAnimationService as RiveAnimationServiceMock, artboard);
+            riveAnimationServiceMock, artboard);
 
         await viewModel.loadRiveAnimation();
         viewModel.startRiveAnimation();
 
-        verify(analyticsService.logError(
+        verify(analyticsServiceMock.logError(
             NotFoundViewModel.tag,
             "An Error has occured during rive animation start.",
             RiveAnimationServiceMock.startException,

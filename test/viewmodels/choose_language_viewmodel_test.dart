@@ -11,18 +11,19 @@ import 'package:notredame/core/services/navigation_service.dart';
 import 'package:notredame/core/viewmodels/choose_language_viewmodel.dart';
 import '../helpers.dart';
 import '../mock/managers/settings_manager_mock.dart';
+import '../mock/services/navigation_service_mock.dart';
 
-ChooseLanguageViewModel viewModel;
+late ChooseLanguageViewModel viewModel;
 
 void main() {
-  NavigationService navigationService;
-  SettingsManager settingsManager;
+  late NavigationServiceMock navigationServiceMock;
+  late SettingsManagerMock settingsManagerMock;
 
   group("ChooseLanguageViewModel - ", () {
     setUp(() async {
       // Setting up mocks
-      navigationService = setupNavigationServiceMock();
-      settingsManager = setupSettingsManagerMock();
+      navigationServiceMock = setupNavigationServiceMock();
+      settingsManagerMock = setupSettingsManagerMock();
       final AppIntl intl = await setupAppIntl();
 
       viewModel = ChooseLanguageViewModel(intl: intl);
@@ -36,31 +37,31 @@ void main() {
     group("changeLanguage - ", () {
       test('can set language english', () async {
         SettingsManagerMock.stubSetString(
-            settingsManager as SettingsManagerMock, PreferencesFlag.theme);
+            settingsManagerMock, PreferencesFlag.theme);
 
         viewModel.changeLanguage(0);
 
-        verify(settingsManager
+        verify(settingsManagerMock
             .setLocale(AppIntl.supportedLocales.first.languageCode));
-        verify(navigationService.pop());
-        verify(navigationService.pushNamedAndRemoveUntil(RouterPaths.login));
+        verify(navigationServiceMock.pop());
+        verify(navigationServiceMock.pushNamedAndRemoveUntil(RouterPaths.login));
       });
 
       test('can set language français', () async {
         SettingsManagerMock.stubSetString(
-            settingsManager as SettingsManagerMock, PreferencesFlag.theme);
+            settingsManagerMock, PreferencesFlag.theme);
 
         viewModel.changeLanguage(1);
 
-        verify(settingsManager
+        verify(settingsManagerMock
             .setLocale(AppIntl.supportedLocales.last.languageCode));
-        verify(navigationService.pop());
-        verify(navigationService.pushNamedAndRemoveUntil(RouterPaths.login));
+        verify(navigationServiceMock.pop());
+        verify(navigationServiceMock.pushNamedAndRemoveUntil(RouterPaths.login));
       });
 
       test('throws an error when index does not exist', () async {
         SettingsManagerMock.stubSetString(
-            settingsManager as SettingsManagerMock, PreferencesFlag.theme);
+            settingsManagerMock, PreferencesFlag.theme);
 
         expect(() => viewModel.changeLanguage(-1), throwsException,
             reason: "No valid language for the index -1 passed in parameters");
@@ -72,16 +73,6 @@ void main() {
         final languages = viewModel.languages;
 
         expect(['English', 'Français'], languages);
-      });
-
-      test('returns the languages with an exception', () async {
-        const AppIntl intlNull = null;
-        final ChooseLanguageViewModel viewModelWithInvalidIntl =
-            ChooseLanguageViewModel(intl: intlNull);
-
-        expect(
-            () => viewModelWithInvalidIntl.languages, throwsNoSuchMethodError,
-            reason: "The getter 'settings_english' was called on null");
       });
     });
   });

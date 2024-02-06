@@ -20,7 +20,7 @@ class ContributorsView extends StatelessWidget {
         builder: (context, model, child) {
           return BaseScaffold(
             appBar: AppBar(
-              title: Text(AppIntl.of(context).more_contributors),
+              title: Text(AppIntl.of(context)!.more_contributors),
             ),
             showBottomBar: false,
             body: FutureBuilder<List<Contributor>>(
@@ -30,14 +30,14 @@ class ContributorsView extends StatelessWidget {
                   return buildLoading();
                 }
                 return ListView.builder(
-                  itemCount: snapshot.data.length,
+                  itemCount: snapshot.data!.length,
                   itemBuilder: (context, index) => ListTile(
-                    title: Text(snapshot.data[index].login),
+                    title: Text(snapshot.data![index].login ?? ''),
                     leading: CircleAvatar(
                         backgroundImage:
-                            NetworkImage(snapshot.data[index].avatarUrl)),
+                            NetworkImage(snapshot.data![index].avatarUrl ?? '')),
                     onTap: () => Utils.launchURL(
-                        snapshot.data[index].htmlUrl, AppIntl.of(context)),
+                        snapshot.data![index].htmlUrl ?? '', AppIntl.of(context)!),
                   ),
                 );
               },

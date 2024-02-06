@@ -22,8 +22,10 @@ class NavigationService {
 
   /// Pop the last route of the navigator if possible
   bool pop() {
-    if (_navigatorKey.currentState.canPop()) {
-      _navigatorKey.currentState.pop();
+    final currentState = _navigatorKey.currentState;
+
+    if (currentState != null && currentState.canPop()) {
+      currentState.pop();
       return true;
     }
     return false;
@@ -31,11 +33,17 @@ class NavigationService {
 
   /// Push a named route ([routeName] onto the navigator.
   Future<dynamic> pushNamed(String routeName, {dynamic arguments}) {
+    final currentState = _navigatorKey.currentState;
+
+    if(currentState == null) {
+      return Future.error("Navigator state is null");
+    }
+
     if (remoteConfigService.outage) {
-      return _navigatorKey.currentState
+      return currentState
           .pushNamedAndRemoveUntil(RouterPaths.serviceOutage, (route) => false);
     }
-    return _navigatorKey.currentState
+    return currentState
         .pushNamed(routeName, arguments: arguments);
   }
 
@@ -43,12 +51,18 @@ class NavigationService {
   /// [routeName] and then delete the stack of previous routes
   Future<dynamic> pushNamedAndRemoveUntil(String routeName,
       [String removeUntilRouteNamed = RouterPaths.dashboard,
-      Object arguments]) {
+      Object? arguments]) {
+    
+    final currentState = _navigatorKey.currentState;
+    if(currentState == null) {
+      return Future.error("Navigator state is null");
+    }
+
     if (remoteConfigService.outage) {
-      return _navigatorKey.currentState
+      return currentState
           .pushNamedAndRemoveUntil(RouterPaths.serviceOutage, (route) => false);
     }
-    return _navigatorKey.currentState.pushNamedAndRemoveUntil(
+    return currentState.pushNamedAndRemoveUntil(
         routeName, ModalRoute.withName(removeUntilRouteNamed),
         arguments: arguments);
   }

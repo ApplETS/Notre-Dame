@@ -20,42 +20,43 @@ import 'package:notredame/core/services/analytics_service.dart';
 import 'package:notredame/core/services/networking_service.dart';
 import '../helpers.dart';
 import '../mock/managers/cache_manager_mock.dart';
+import '../mock/services/analytics_service_mock.dart';
 import '../mock/services/flutter_secure_storage_mock.dart';
 import '../mock/services/networking_service_mock.dart';
 
 void main() {
-  AnalyticsService analyticsService;
-  MonETSAPIClient monETSApi;
-  FlutterSecureStorageMock secureStorage;
-  CacheManager cacheManager;
-  SignetsAPIClient signetsApi;
-  NetworkingServiceMock networkingService;
+  late AnalyticsServiceMock analyticsServiceMock;
+  late MonETSAPIClientMock monETSApiMock;
+  late FlutterSecureStorageMock secureStorageMock;
+  late CacheManagerMock cacheManagerMock;
+  late SignetsAPIClientMock signetsApiMock;
+  late NetworkingServiceMock networkingServiceMock;
 
-  UserRepository manager;
+  late UserRepository manager;
 
   group('UserRepository - ', () {
     setUp(() {
       // Setup needed service
-      analyticsService = setupAnalyticsServiceMock();
-      monETSApi = setupMonETSApiMock();
-      secureStorage =
-          setupFlutterSecureStorageMock() as FlutterSecureStorageMock;
-      cacheManager = setupCacheManagerMock();
-      signetsApi = setupSignetsApiMock();
-      networkingService = setupNetworkingServiceMock() as NetworkingServiceMock;
+      analyticsServiceMock = setupAnalyticsServiceMock();
+      monETSApiMock = setupMonETSApiMock();
+      secureStorageMock =
+          setupFlutterSecureStorageMock();
+      cacheManagerMock = setupCacheManagerMock();
+      signetsApiMock = setupSignetsApiMock();
+      networkingServiceMock = setupNetworkingServiceMock();
       setupLogger();
 
       manager = UserRepository();
-      SignetsAPIClientMock.stubAuthenticate(signetsApi as SignetsAPIClientMock);
+      SignetsAPIClientMock.stubAuthenticate(signetsApiMock);
     });
 
     tearDown(() {
       unregister<AnalyticsService>();
       unregister<MonETSAPIClient>();
       unregister<FlutterSecureStorage>();
-      clearInteractions(cacheManager);
+      clearInteractions(cacheManagerMock);
       unregister<CacheManager>();
-      clearInteractions(signetsApi);
+      clearInteractions(signetsApiMock);
       unregister<SignetsAPIClient>();
       unregister<NetworkingService>();
     });
@@ -66,7 +67,7 @@ void main() {
             domain: "ENS", typeUsagerId: 1, username: "right credentials");
 
         MonETSAPIClientMock.stubAuthenticate(
-            monETSApi as MonETSAPIClientMock, user);
+            monETSApiMock, user);
 
         // Result is true
         expect(
@@ -75,13 +76,13 @@ void main() {
             reason: "Check the authentication is successful");
 
         // Verify the secureStorage is used
-        verify(secureStorage.write(
+        verify(secureStorageMock.write(
             key: UserRepository.usernameSecureKey, value: user.username));
-        verify(secureStorage.write(
+        verify(secureStorageMock.write(
             key: UserRepository.passwordSecureKey, value: ""));
 
         // Verify the user id is set in the analytics
-        verify(analyticsService.setUserProperties(
+        verify(analyticsServiceMock.setUserProperties(
             userId: user.username, domain: user.domain));
 
         expect(manager.monETSUser, user,
@@ -91,24 +92,24 @@ void main() {
       test('An exception is throw during the MonETSApi call', () async {
         const String username = "exceptionUser";
         MonETSAPIClientMock.stubException(
-            monETSApi as MonETSAPIClientMock, username);
+            monETSApiMock, username);
 
         expect(await manager.authenticate(username: username, password: ""),
             isFalse,
             reason: "The authentication failed so the result should be false");
 
         // Verify the user id isn't set in the analytics
-        verify(analyticsService.logError(UserRepository.tag, any, any, any))
+        verify(analyticsServiceMock.logError(UserRepository.tag, any, any, any))
             .called(1);
 
         // Verify the secureStorage isn't used
-        verifyNever(secureStorage.write(
+        verifyNever(secureStorageMock.write(
             key: UserRepository.usernameSecureKey, value: username));
-        verifyNever(secureStorage.write(
+        verifyNever(secureStorageMock.write(
             key: UserRepository.passwordSecureKey, value: ""));
 
         // Verify the user id is set in the analytics
-        verifyNever(analyticsService.setUserProperties(
+        verifyNever(analyticsServiceMock.setUserProperties(
             userId: username, domain: anyNamed("domain")));
 
         expect(manager.monETSUser, null,
@@ -121,8 +122,8 @@ void main() {
             domain: "ENS", typeUsagerId: 1, username: "right credentials");
 
         MonETSAPIClientMock.stubAuthenticate(
-            monETSApi as MonETSAPIClientMock, user);
-        FlutterSecureStorageMock.stubWriteException(secureStorage,
+            monETSApiMock, user);
+        FlutterSecureStorageMock.stubWriteException(secureStorageMock,
             key: UserRepository.usernameSecureKey,
             exceptionToThrow: PlatformException(code: "bad key"));
 
@@ -133,16 +134,16 @@ void main() {
             reason: "Check the authentication is successful");
 
         // Verify the secureStorage is used
-        verify(secureStorage.write(
+        verify(secureStorageMock.write(
             key: UserRepository.usernameSecureKey, value: user.username));
 
         // Verify the user id is set in the analytics
-        verify(analyticsService.setUserProperties(
+        verify(analyticsServiceMock.setUserProperties(
             userId: user.username, domain: anyNamed("domain")));
 
         expect(manager.monETSUser, user);
         // Verify the secureStorage is deleted
-        verify(secureStorage.deleteAll());
+        verify(secureStorageMock.deleteAll());
       });
     });
 
@@ -152,14 +153,14 @@ void main() {
             MonETSUser(domain: "ENS", typeUsagerId: 1, username: "AAXXXXXX");
 
         MonETSAPIClientMock.stubException(
-            monETSApi as MonETSAPIClientMock, user.username,
+            monETSApiMock, user.username,
             exception: HttpException(
                 prefix: "MonETSAPI",
                 code: 415,
                 message:
                     "{ \"Message\": \"The request contains an entity body but no Content-Type header. The inferred media type 'application/octet-stream' is not supported for this resource.\"}"));
         SignetsAPIClientMock.stubAuthenticate(
-            signetsApi as SignetsAPIClientMock,
+            signetsApiMock,
             connected: true);
 
         // Result is true
@@ -169,13 +170,13 @@ void main() {
             reason: "Check the authentication is successful");
 
         // Verify the secureStorage is used
-        verify(secureStorage.write(
+        verify(secureStorageMock.write(
             key: UserRepository.usernameSecureKey, value: user.username));
-        verify(secureStorage.write(
+        verify(secureStorageMock.write(
             key: UserRepository.passwordSecureKey, value: ""));
 
         // Verify the user id is set in the analytics
-        verify(analyticsService.setUserProperties(
+        verify(analyticsServiceMock.setUserProperties(
             userId: user.username, domain: user.domain));
       });
 
@@ -183,31 +184,31 @@ void main() {
         const String username = "exceptionUser";
 
         MonETSAPIClientMock.stubException(
-            monETSApi as MonETSAPIClientMock, username,
+            monETSApiMock, username,
             exception: HttpException(
                 prefix: "MonETSAPI",
                 code: 415,
                 message:
                     "{ \"Message\": \"The request contains an entity body but no Content-Type header. The inferred media type 'application/octet-stream' is not supported for this resource.\"}"));
         SignetsAPIClientMock.stubAuthenticate(
-            signetsApi as SignetsAPIClientMock);
+            signetsApiMock);
 
         expect(await manager.authenticate(username: username, password: ""),
             isFalse,
             reason: "The authentication failed so the result should be false");
 
         // Verify the user id isn't set in the analytics
-        verify(analyticsService.logError(UserRepository.tag, any, any, any))
+        verify(analyticsServiceMock.logError(UserRepository.tag, any, any, any))
             .called(1);
 
         // Verify the secureStorage isn't used
-        verifyNever(secureStorage.write(
+        verifyNever(secureStorageMock.write(
             key: UserRepository.usernameSecureKey, value: username));
-        verifyNever(secureStorage.write(
+        verifyNever(secureStorageMock.write(
             key: UserRepository.passwordSecureKey, value: ""));
 
         // Verify the user id is set in the analytics
-        verifyNever(analyticsService.setUserProperties(
+        verifyNever(analyticsServiceMock.setUserProperties(
             userId: username, domain: anyNamed("domain")));
 
         expect(manager.monETSUser, null,
@@ -224,22 +225,22 @@ void main() {
         final MonETSUser user =
             MonETSUser(domain: "ENS", typeUsagerId: 1, username: username);
 
-        FlutterSecureStorageMock.stubRead(secureStorage,
+        FlutterSecureStorageMock.stubRead(secureStorageMock,
             key: UserRepository.usernameSecureKey, valueToReturn: username);
-        FlutterSecureStorageMock.stubRead(secureStorage,
+        FlutterSecureStorageMock.stubRead(secureStorageMock,
             key: UserRepository.passwordSecureKey, valueToReturn: password);
 
         MonETSAPIClientMock.stubAuthenticate(
-            monETSApi as MonETSAPIClientMock, user);
+            monETSApiMock, user);
 
         expect(await manager.silentAuthenticate(), isTrue,
             reason: "Result should be true");
 
         verifyInOrder([
-          secureStorage.read(key: UserRepository.usernameSecureKey),
-          secureStorage.read(key: UserRepository.passwordSecureKey),
-          monETSApi.authenticate(username: username, password: password),
-          analyticsService.setUserProperties(
+          secureStorageMock.read(key: UserRepository.usernameSecureKey),
+          secureStorageMock.read(key: UserRepository.passwordSecureKey),
+          monETSApiMock.authenticate(username: username, password: password),
+          analyticsServiceMock.setUserProperties(
               userId: username, domain: user.domain)
         ]);
 
@@ -251,22 +252,22 @@ void main() {
         const String username = "username";
         const String password = "password";
 
-        FlutterSecureStorageMock.stubRead(secureStorage,
+        FlutterSecureStorageMock.stubRead(secureStorageMock,
             key: UserRepository.usernameSecureKey, valueToReturn: username);
-        FlutterSecureStorageMock.stubRead(secureStorage,
+        FlutterSecureStorageMock.stubRead(secureStorageMock,
             key: UserRepository.passwordSecureKey, valueToReturn: password);
 
         MonETSAPIClientMock.stubAuthenticateException(
-            monETSApi as MonETSAPIClientMock, username);
+            monETSApiMock, username);
 
         expect(await manager.silentAuthenticate(), isFalse,
             reason: "Result should be false");
 
         verifyInOrder([
-          secureStorage.read(key: UserRepository.usernameSecureKey),
-          secureStorage.read(key: UserRepository.passwordSecureKey),
-          monETSApi.authenticate(username: username, password: password),
-          analyticsService.logError(UserRepository.tag, any, any, any)
+          secureStorageMock.read(key: UserRepository.usernameSecureKey),
+          secureStorageMock.read(key: UserRepository.passwordSecureKey),
+          monETSApiMock.authenticate(username: username, password: password),
+          analyticsServiceMock.logError(UserRepository.tag, any, any, any)
         ]);
 
         expect(manager.monETSUser, null,
@@ -275,20 +276,20 @@ void main() {
 
       test('credentials are not saved so the authentication should not be done',
           () async {
-        FlutterSecureStorageMock.stubRead(secureStorage,
+        FlutterSecureStorageMock.stubRead(secureStorageMock,
             key: UserRepository.usernameSecureKey, valueToReturn: null);
-        FlutterSecureStorageMock.stubRead(secureStorage,
+        FlutterSecureStorageMock.stubRead(secureStorageMock,
             key: UserRepository.passwordSecureKey, valueToReturn: null);
 
         expect(await manager.silentAuthenticate(), isFalse,
             reason: "Result should be false");
 
         verifyInOrder(
-            [secureStorage.read(key: UserRepository.usernameSecureKey)]);
+            [secureStorageMock.read(key: UserRepository.usernameSecureKey)]);
 
-        verifyNoMoreInteractions(secureStorage);
-        verifyZeroInteractions(monETSApi);
-        verifyZeroInteractions(analyticsService);
+        verifyNoMoreInteractions(secureStorageMock);
+        verifyZeroInteractions(monETSApiMock);
+        verifyZeroInteractions(analyticsServiceMock);
 
         expect(manager.monETSUser, null,
             reason:
@@ -301,8 +302,8 @@ void main() {
             domain: "ENS", typeUsagerId: 1, username: "right credentials");
 
         MonETSAPIClientMock.stubAuthenticate(
-            monETSApi as MonETSAPIClientMock, user);
-        FlutterSecureStorageMock.stubReadException(secureStorage,
+            monETSApiMock, user);
+        FlutterSecureStorageMock.stubReadException(secureStorageMock,
             key: UserRepository.usernameSecureKey,
             exceptionToThrow: PlatformException(code: "bad key"));
 
@@ -311,9 +312,9 @@ void main() {
             reason: "Result should be false");
 
         verifyInOrder([
-          secureStorage.read(key: UserRepository.usernameSecureKey),
-          secureStorage.deleteAll(),
-          analyticsService.logError(UserRepository.tag, any, any, any)
+          secureStorageMock.read(key: UserRepository.usernameSecureKey),
+          secureStorageMock.deleteAll(),
+          analyticsServiceMock.logError(UserRepository.tag, any, any, any)
         ]);
       });
     });
@@ -325,16 +326,16 @@ void main() {
         expect(manager.monETSUser, null,
             reason: "The user shouldn't be available after a logout");
 
-        verify(secureStorage.delete(key: UserRepository.usernameSecureKey));
-        verify(secureStorage.delete(key: UserRepository.passwordSecureKey));
+        verify(secureStorageMock.delete(key: UserRepository.usernameSecureKey));
+        verify(secureStorageMock.delete(key: UserRepository.passwordSecureKey));
 
         verifyNever(
-            analyticsService.logError(UserRepository.tag, any, any, any));
+            analyticsServiceMock.logError(UserRepository.tag, any, any, any));
       });
 
       test('Verify that localstorage is safely deleted if an exception occurs',
           () async {
-        FlutterSecureStorageMock.stubDeleteException(secureStorage,
+        FlutterSecureStorageMock.stubDeleteException(secureStorageMock,
             key: UserRepository.usernameSecureKey,
             exceptionToThrow: PlatformException(code: "bad key"));
 
@@ -343,9 +344,9 @@ void main() {
         expect(manager.monETSUser, null,
             reason: "The user shouldn't be available after a logout");
 
-        verify(secureStorage.delete(key: UserRepository.usernameSecureKey));
-        verify(secureStorage.deleteAll());
-        verify(analyticsService.logError(UserRepository.tag, any, any, any));
+        verify(secureStorageMock.delete(key: UserRepository.usernameSecureKey));
+        verify(secureStorageMock.deleteAll());
+        verify(analyticsServiceMock.logError(UserRepository.tag, any, any, any));
       });
     });
 
@@ -363,10 +364,10 @@ void main() {
             MonETSUser(domain: "ENS", typeUsagerId: 1, username: username);
 
         MonETSAPIClientMock.stubAuthenticate(
-            monETSApi as MonETSAPIClientMock, user);
-        FlutterSecureStorageMock.stubRead(secureStorage,
+            monETSApiMock, user);
+        FlutterSecureStorageMock.stubRead(secureStorageMock,
             key: UserRepository.usernameSecureKey, valueToReturn: username);
-        FlutterSecureStorageMock.stubRead(secureStorage,
+        FlutterSecureStorageMock.stubRead(secureStorageMock,
             key: UserRepository.passwordSecureKey, valueToReturn: password);
 
         expect(await manager.silentAuthenticate(), isTrue);
@@ -375,10 +376,10 @@ void main() {
             reason: "Result should be 'password'");
 
         verifyInOrder([
-          secureStorage.read(key: UserRepository.usernameSecureKey),
-          secureStorage.read(key: UserRepository.passwordSecureKey),
-          monETSApi.authenticate(username: username, password: password),
-          analyticsService.setUserProperties(
+          secureStorageMock.read(key: UserRepository.usernameSecureKey),
+          secureStorageMock.read(key: UserRepository.passwordSecureKey),
+          monETSApiMock.authenticate(username: username, password: password),
+          analyticsServiceMock.setUserProperties(
               userId: username, domain: user.domain)
         ]);
       });
@@ -393,21 +394,21 @@ void main() {
             MonETSUser(domain: "ENS", typeUsagerId: 1, username: username);
 
         MonETSAPIClientMock.stubAuthenticate(
-            monETSApi as MonETSAPIClientMock, user);
-        FlutterSecureStorageMock.stubRead(secureStorage,
+            monETSApiMock, user);
+        FlutterSecureStorageMock.stubRead(secureStorageMock,
             key: UserRepository.usernameSecureKey, valueToReturn: username);
-        FlutterSecureStorageMock.stubRead(secureStorage,
+        FlutterSecureStorageMock.stubRead(secureStorageMock,
             key: UserRepository.passwordSecureKey, valueToReturn: password);
 
         expect(await manager.getPassword(), password,
             reason: "Result should be 'password'");
 
         verifyInOrder([
-          analyticsService.logEvent(UserRepository.tag, any),
-          secureStorage.read(key: UserRepository.usernameSecureKey),
-          secureStorage.read(key: UserRepository.passwordSecureKey),
-          monETSApi.authenticate(username: username, password: password),
-          analyticsService.setUserProperties(
+          analyticsServiceMock.logEvent(UserRepository.tag, any),
+          secureStorageMock.read(key: UserRepository.usernameSecureKey),
+          secureStorageMock.read(key: UserRepository.passwordSecureKey),
+          monETSApiMock.authenticate(username: username, password: password),
+          analyticsServiceMock.setUserProperties(
               userId: username, domain: user.domain)
         ]);
       });
@@ -419,10 +420,10 @@ void main() {
         const String password = "password";
 
         MonETSAPIClientMock.stubAuthenticateException(
-            monETSApi as MonETSAPIClientMock, username);
-        FlutterSecureStorageMock.stubRead(secureStorage,
+            monETSApiMock, username);
+        FlutterSecureStorageMock.stubRead(secureStorageMock,
             key: UserRepository.usernameSecureKey, valueToReturn: username);
-        FlutterSecureStorageMock.stubRead(secureStorage,
+        FlutterSecureStorageMock.stubRead(secureStorageMock,
             key: UserRepository.passwordSecureKey, valueToReturn: password);
 
         await manager.silentAuthenticate();
@@ -432,9 +433,9 @@ void main() {
                 'The authentication failed so an ApiException should be raised.');
 
         await untilCalled(
-            analyticsService.logError(UserRepository.tag, any, any, any));
+            analyticsServiceMock.logError(UserRepository.tag, any, any, any));
 
-        verify(analyticsService.logError(UserRepository.tag, any, any, any))
+        verify(analyticsServiceMock.logError(UserRepository.tag, any, any, any))
             .called(1);
       });
 
@@ -447,8 +448,8 @@ void main() {
             MonETSUser(domain: "ENS", typeUsagerId: 1, username: username);
 
         MonETSAPIClientMock.stubAuthenticate(
-            monETSApi as MonETSAPIClientMock, user);
-        FlutterSecureStorageMock.stubReadException(secureStorage,
+            monETSApiMock, user);
+        FlutterSecureStorageMock.stubReadException(secureStorageMock,
             key: UserRepository.passwordSecureKey,
             exceptionToThrow: PlatformException(code: "bad key"));
 
@@ -458,10 +459,10 @@ void main() {
             reason: "localStorage failed, should sent out a custom exception");
 
         await untilCalled(
-            analyticsService.logError(UserRepository.tag, any, any, any));
+            analyticsServiceMock.logError(UserRepository.tag, any, any, any));
 
-        verify(secureStorage.deleteAll());
-        verify(analyticsService.logError(UserRepository.tag, any, any, any));
+        verify(secureStorageMock.deleteAll());
+        verify(analyticsServiceMock.logError(UserRepository.tag, any, any, any));
       });
     });
 
@@ -486,11 +487,11 @@ void main() {
 
       setUp(() async {
         // Stub to simulate presence of programs cache
-        CacheManagerMock.stubGet(cacheManager as CacheManagerMock,
+        CacheManagerMock.stubGet(cacheManagerMock,
             UserRepository.programsCacheKey, jsonEncode(programs));
 
         MonETSAPIClientMock.stubAuthenticate(
-            monETSApi as MonETSAPIClientMock, user);
+            monETSApiMock, user);
 
         // Result is true
         expect(
@@ -500,10 +501,10 @@ void main() {
 
         // Stub SignetsApi answer to test only the cache retrieving
         SignetsAPIClientMock.stubGetPrograms(
-            signetsApi as SignetsAPIClientMock, username, []);
+            signetsApiMock, username, []);
 
         // Stub to simulate that the user has an active internet connection
-        NetworkingServiceMock.stubHasConnectivity(networkingService);
+        NetworkingServiceMock.stubHasConnectivity(networkingServiceMock);
       });
 
       test("Programs are loaded from cache", () async {
@@ -515,16 +516,18 @@ void main() {
         expect(manager.programs, programs,
             reason: 'The programs list should now be loaded.');
 
-        verify(cacheManager.get(UserRepository.programsCacheKey));
-        verifyNoMoreInteractions(cacheManager);
+        verify(cacheManagerMock.get(UserRepository.programsCacheKey));
+        verifyNoMoreInteractions(cacheManagerMock);
       });
 
       test("Trying to load programs from cache but cache doesn't exist",
           () async {
         // Stub to simulate an exception when trying to get the programs from the cache
-        reset(cacheManager as CacheManagerMock);
+        reset(cacheManagerMock);
         CacheManagerMock.stubGetException(
-            cacheManager as CacheManagerMock, UserRepository.programsCacheKey);
+            cacheManagerMock, UserRepository.programsCacheKey);
+        FlutterSecureStorageMock.stubRead(secureStorageMock,
+            key: UserRepository.passwordSecureKey, valueToReturn: '');
 
         expect(manager.programs, isNull);
         final results = await manager.getPrograms();
@@ -533,22 +536,24 @@ void main() {
         expect(results, []);
         expect(manager.programs, []);
 
-        verify(cacheManager.get(UserRepository.programsCacheKey));
-        verify(manager.getPassword());
-        verifyNever(cacheManager.update(
+        verify(cacheManagerMock.get(UserRepository.programsCacheKey));
+        verify(secureStorageMock.read(key: UserRepository.passwordSecureKey));
+        verifyNever(cacheManagerMock.update(
             UserRepository.programsCacheKey, jsonEncode(programs)));
       });
 
       test("SignetsAPI return another program", () async {
         // Stub to simulate presence of program cache
-        reset(cacheManager as CacheManagerMock);
-        CacheManagerMock.stubGet(cacheManager as CacheManagerMock,
+        reset(cacheManagerMock);
+        CacheManagerMock.stubGet(cacheManagerMock,
             UserRepository.programsCacheKey, jsonEncode([]));
+        FlutterSecureStorageMock.stubRead(secureStorageMock,
+            key: UserRepository.passwordSecureKey, valueToReturn: '');
 
         // Stub SignetsApi answer to test only the cache retrieving
-        reset(signetsApi as SignetsAPIClientMock);
+        reset(signetsApiMock);
         SignetsAPIClientMock.stubGetPrograms(
-            signetsApi as SignetsAPIClientMock, username, programs);
+            signetsApiMock, username, programs);
 
         expect(manager.programs, isNull);
         final results = await manager.getPrograms();
@@ -558,52 +563,56 @@ void main() {
         expect(manager.programs, programs,
             reason: 'The programs list should now be loaded.');
 
-        verify(cacheManager.get(UserRepository.programsCacheKey));
-        verify(manager.getPassword());
-        verify(cacheManager.update(
+        verify(cacheManagerMock.get(UserRepository.programsCacheKey));
+        verify(secureStorageMock.read(key: UserRepository.passwordSecureKey));
+        verify(cacheManagerMock.update(
             UserRepository.programsCacheKey, jsonEncode(programs)));
       });
 
       test("SignetsAPI return an exception", () async {
         // Stub to simulate presence of program cache
-        reset(cacheManager as CacheManagerMock);
-        CacheManagerMock.stubGet(cacheManager as CacheManagerMock,
+        reset(cacheManagerMock);
+        CacheManagerMock.stubGet(cacheManagerMock,
             UserRepository.programsCacheKey, jsonEncode([]));
 
         // Stub SignetsApi answer to test only the cache retrieving
         SignetsAPIClientMock.stubGetProgramsException(
-            signetsApi as SignetsAPIClientMock, username);
+            signetsApiMock, username);
+        FlutterSecureStorageMock.stubRead(secureStorageMock,
+            key: UserRepository.passwordSecureKey, valueToReturn: '');
 
         expect(manager.programs, isNull);
         expect(manager.getPrograms(), throwsA(isInstanceOf<ApiException>()));
 
-        await untilCalled(networkingService.hasConnectivity());
+        await untilCalled(networkingServiceMock.hasConnectivity());
         expect(manager.programs, [],
             reason: 'The programs list should be empty');
 
         await untilCalled(
-            analyticsService.logError(UserRepository.tag, any, any, any));
+            analyticsServiceMock.logError(UserRepository.tag, any, any, any));
 
-        verify(cacheManager.get(UserRepository.programsCacheKey));
-        verify(manager.getPassword());
-        verify(analyticsService.logError(UserRepository.tag, any, any, any));
+        verify(cacheManagerMock.get(UserRepository.programsCacheKey));
+        verify(secureStorageMock.read(key: UserRepository.passwordSecureKey));
+        verify(analyticsServiceMock.logError(UserRepository.tag, any, any, any));
 
-        verifyNever(cacheManager.update(UserRepository.programsCacheKey, any));
+        verifyNever(cacheManagerMock.update(UserRepository.programsCacheKey, any));
       });
 
       test("Cache update fail", () async {
         // Stub to simulate presence of program cache
-        reset(cacheManager as CacheManagerMock);
-        CacheManagerMock.stubGet(cacheManager as CacheManagerMock,
+        reset(cacheManagerMock);
+        CacheManagerMock.stubGet(cacheManagerMock,
             UserRepository.programsCacheKey, jsonEncode([]));
 
         // Stub to simulate exception when updating cache
         CacheManagerMock.stubUpdateException(
-            cacheManager as CacheManagerMock, UserRepository.programsCacheKey);
+            cacheManagerMock, UserRepository.programsCacheKey);
+        FlutterSecureStorageMock.stubRead(secureStorageMock,
+            key: UserRepository.passwordSecureKey, valueToReturn: '');
 
         // Stub SignetsApi answer to test only the cache retrieving
         SignetsAPIClientMock.stubGetPrograms(
-            signetsApi as SignetsAPIClientMock, username, programs);
+            signetsApiMock, username, programs);
 
         expect(manager.programs, isNull);
         final results = await manager.getPrograms();
@@ -618,8 +627,8 @@ void main() {
       test("Should force fromCacheOnly mode when user has no connectivity",
           () async {
         //Stub the networkingService to return no connectivity
-        reset(networkingService);
-        NetworkingServiceMock.stubHasConnectivity(networkingService,
+        reset(networkingServiceMock);
+        NetworkingServiceMock.stubHasConnectivity(networkingServiceMock,
             hasConnectivity: false);
 
         final programsCache = await manager.getPrograms();
@@ -633,6 +642,11 @@ void main() {
           firstName: 'John',
           lastName: 'Doe',
           permanentCode: 'DOEJ00000000');
+      final ProfileStudent defaultInfo = ProfileStudent(
+          balance: '',
+          firstName: '',
+          lastName: '',
+          permanentCode: '');
 
       const String username = "username";
 
@@ -641,11 +655,14 @@ void main() {
 
       setUp(() async {
         // Stub to simulate presence of info cache
-        CacheManagerMock.stubGet(cacheManager as CacheManagerMock,
+        CacheManagerMock.stubGet(cacheManagerMock,
             UserRepository.infoCacheKey, jsonEncode(info));
 
         MonETSAPIClientMock.stubAuthenticate(
-            monETSApi as MonETSAPIClientMock, user);
+            monETSApiMock, user);
+        
+        FlutterSecureStorageMock.stubRead(secureStorageMock,
+            key: UserRepository.passwordSecureKey, valueToReturn: '');
 
         // Result is true
         expect(
@@ -655,10 +672,10 @@ void main() {
 
         // Stub SignetsApi answer to test only the cache retrieving
         SignetsAPIClientMock.stubGetInfo(
-            signetsApi as SignetsAPIClientMock, username, null);
+            signetsApiMock, username, defaultInfo);
 
         // Stub to simulate that the user has an active internet connection
-        NetworkingServiceMock.stubHasConnectivity(networkingService);
+        NetworkingServiceMock.stubHasConnectivity(networkingServiceMock);
       });
 
       test("Info are loaded from cache", () async {
@@ -669,33 +686,33 @@ void main() {
         expect(results, info);
         expect(manager.info, info, reason: 'The info should now be loaded.');
 
-        verify(cacheManager.get(UserRepository.infoCacheKey));
-        verifyNoMoreInteractions(cacheManager as CacheManagerMock);
-        verifyNoMoreInteractions(signetsApi as SignetsAPIClientMock);
+        verify(cacheManagerMock.get(UserRepository.infoCacheKey));
+        verifyNoMoreInteractions(cacheManagerMock);
+        verifyNoMoreInteractions(signetsApiMock);
       });
 
       test("Trying to load info from cache but cache doesn't exist", () async {
         // Stub to simulate an exception when trying to get the info from the cache
-        reset(cacheManager as CacheManagerMock);
+        reset(cacheManagerMock);
         CacheManagerMock.stubGetException(
-            cacheManager as CacheManagerMock, UserRepository.infoCacheKey);
+            cacheManagerMock, UserRepository.infoCacheKey);
 
         expect(manager.info, isNull);
         final results = await manager.getInfo();
 
-        expect(results, isNull);
-        expect(manager.info, isNull);
+        expect(results, defaultInfo);
+        expect(manager.info, defaultInfo);
 
-        verify(cacheManager.get(UserRepository.infoCacheKey));
-        verify(manager.getPassword());
+        verify(cacheManagerMock.get(UserRepository.infoCacheKey));
+        verify(secureStorageMock.read(key: UserRepository.passwordSecureKey));
         verifyNever(
-            cacheManager.update(UserRepository.infoCacheKey, jsonEncode(info)));
+            cacheManagerMock.update(UserRepository.infoCacheKey, jsonEncode(info)));
       });
 
       test("SignetsAPI return another info", () async {
         // Stub to simulate presence of info cache
-        reset(cacheManager as CacheManagerMock);
-        CacheManagerMock.stubGet(cacheManager as CacheManagerMock,
+        reset(cacheManagerMock);
+        CacheManagerMock.stubGet(cacheManagerMock,
             UserRepository.infoCacheKey, jsonEncode(info));
 
         // Stub SignetsApi answer to test only the cache retrieving
@@ -704,9 +721,9 @@ void main() {
             firstName: 'Johnny',
             lastName: 'Doe',
             permanentCode: 'DOEJ00000000');
-        reset(signetsApi as SignetsAPIClientMock);
+        reset(signetsApiMock);
         SignetsAPIClientMock.stubGetInfo(
-            signetsApi as SignetsAPIClientMock, username, anotherInfo);
+            signetsApiMock, username, anotherInfo);
 
         expect(manager.info, isNull);
         final results = await manager.getInfo();
@@ -716,17 +733,17 @@ void main() {
         expect(manager.info, anotherInfo,
             reason: 'The new info should now be loaded.');
 
-        verify(cacheManager.get(UserRepository.infoCacheKey));
-        verify(manager.getPassword());
-        verify(cacheManager.update(
+        verify(cacheManagerMock.get(UserRepository.infoCacheKey));
+        verify(secureStorageMock.read(key: UserRepository.passwordSecureKey));
+        verify(cacheManagerMock.update(
             UserRepository.infoCacheKey, jsonEncode(anotherInfo)));
       });
 
       test("SignetsAPI return a info that already exists", () async {
         // Stub SignetsApi answer to test only the cache retrieving
-        reset(signetsApi as SignetsAPIClientMock);
+        reset(signetsApiMock);
         SignetsAPIClientMock.stubGetInfo(
-            signetsApi as SignetsAPIClientMock, username, info);
+            signetsApiMock, username, info);
 
         expect(manager.info, isNull);
         final results = await manager.getInfo();
@@ -736,49 +753,49 @@ void main() {
         expect(manager.info, info,
             reason: 'The info should not have any duplicata..');
 
-        verify(cacheManager.get(UserRepository.infoCacheKey));
-        verify(manager.getPassword());
+        verify(cacheManagerMock.get(UserRepository.infoCacheKey));
+        verify(secureStorageMock.read(key: UserRepository.passwordSecureKey));
         verifyNever(
-            cacheManager.update(UserRepository.infoCacheKey, jsonEncode(info)));
+            cacheManagerMock.update(UserRepository.infoCacheKey, jsonEncode(info)));
       });
 
       test("SignetsAPI return an exception", () async {
         // Stub to simulate presence of info cache
-        reset(cacheManager as CacheManagerMock);
-        CacheManagerMock.stubGet(cacheManager as CacheManagerMock,
+        reset(cacheManagerMock);
+        CacheManagerMock.stubGet(cacheManagerMock,
             UserRepository.infoCacheKey, jsonEncode(info));
 
         // Stub SignetsApi answer to test only the cache retrieving
         SignetsAPIClientMock.stubGetInfoException(
-            signetsApi as SignetsAPIClientMock, username);
+            signetsApiMock, username);
 
         expect(manager.info, isNull);
         expect(manager.getInfo(), throwsA(isInstanceOf<ApiException>()));
         expect(manager.info, null, reason: 'The info should be empty');
 
         await untilCalled(
-            analyticsService.logError(UserRepository.tag, any, any, any));
+            analyticsServiceMock.logError(UserRepository.tag, any, any, any));
 
-        verify(cacheManager.get(UserRepository.infoCacheKey));
-        verify(manager.getPassword());
-        verify(analyticsService.logError(UserRepository.tag, any, any, any));
+        verify(cacheManagerMock.get(UserRepository.infoCacheKey));
+        verify(secureStorageMock.read(key: UserRepository.passwordSecureKey));
+        verify(analyticsServiceMock.logError(UserRepository.tag, any, any, any));
 
-        verifyNever(cacheManager.update(UserRepository.infoCacheKey, any));
+        verifyNever(cacheManagerMock.update(UserRepository.infoCacheKey, any));
       });
 
       test("Cache update fail", () async {
         // Stub to simulate presence of session cache
-        reset(cacheManager as CacheManagerMock);
-        CacheManagerMock.stubGet(cacheManager as CacheManagerMock,
+        reset(cacheManagerMock);
+        CacheManagerMock.stubGet(cacheManagerMock,
             UserRepository.infoCacheKey, jsonEncode(info));
 
         // Stub to simulate exception when updating cache
         CacheManagerMock.stubUpdateException(
-            cacheManager as CacheManagerMock, UserRepository.infoCacheKey);
+            cacheManagerMock, UserRepository.infoCacheKey);
 
         // Stub SignetsApi answer to test only the cache retrieving
         SignetsAPIClientMock.stubGetInfo(
-            signetsApi as SignetsAPIClientMock, username, info);
+            signetsApiMock, username, info);
 
         expect(manager.info, isNull);
         final results = await manager.getInfo();
@@ -792,8 +809,8 @@ void main() {
       test("Should force fromCacheOnly mode when user has no connectivity",
           () async {
         //Stub the networkingService to return no connectivity
-        reset(networkingService);
-        NetworkingServiceMock.stubHasConnectivity(networkingService,
+        reset(networkingServiceMock);
+        NetworkingServiceMock.stubHasConnectivity(networkingServiceMock,
             hasConnectivity: false);
 
         final infoCache = await manager.getInfo();
@@ -807,9 +824,9 @@ void main() {
         const String username = "username";
         const String password = "password";
 
-        FlutterSecureStorageMock.stubRead(secureStorage,
+        FlutterSecureStorageMock.stubRead(secureStorageMock,
             key: UserRepository.usernameSecureKey, valueToReturn: username);
-        FlutterSecureStorageMock.stubRead(secureStorage,
+        FlutterSecureStorageMock.stubRead(secureStorageMock,
             key: UserRepository.passwordSecureKey, valueToReturn: password);
 
         expect(await manager.wasPreviouslyLoggedIn(), isTrue);
@@ -819,9 +836,9 @@ void main() {
         const String username = "username";
         const String password = "";
 
-        FlutterSecureStorageMock.stubRead(secureStorage,
+        FlutterSecureStorageMock.stubRead(secureStorageMock,
             key: UserRepository.usernameSecureKey, valueToReturn: username);
-        FlutterSecureStorageMock.stubRead(secureStorage,
+        FlutterSecureStorageMock.stubRead(secureStorageMock,
             key: UserRepository.passwordSecureKey, valueToReturn: password);
 
         expect(await manager.wasPreviouslyLoggedIn(), isFalse);
@@ -831,15 +848,15 @@ void main() {
           () async {
         const String username = "username";
 
-        FlutterSecureStorageMock.stubRead(secureStorage,
+        FlutterSecureStorageMock.stubRead(secureStorageMock,
             key: UserRepository.usernameSecureKey, valueToReturn: username);
-        FlutterSecureStorageMock.stubReadException(secureStorage,
+        FlutterSecureStorageMock.stubReadException(secureStorageMock,
             key: UserRepository.passwordSecureKey,
             exceptionToThrow: PlatformException(code: "bad key"));
 
         expect(await manager.wasPreviouslyLoggedIn(), isFalse);
-        verify(secureStorage.deleteAll());
-        verify(analyticsService.logError(UserRepository.tag, any, any, any));
+        verify(secureStorageMock.deleteAll());
+        verify(analyticsServiceMock.logError(UserRepository.tag, any, any, any));
       });
     });
   });

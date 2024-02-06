@@ -19,7 +19,7 @@ import '../../mock/managers/course_repository_mock.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
-  CourseRepository courseRepository;
+  late CourseRepositoryMock courseRepositoryMock;
 
   final CourseSummary courseSummary = CourseSummary(
     currentMark: 5,
@@ -34,7 +34,7 @@ void main() {
         courseGroup: "02",
         title: "Laboratoire 1",
         weight: 10,
-        teacherMessage: null,
+        teacherMessage: '',
         ignore: false,
         mark: 24,
         correctedEvaluationOutOf: "35",
@@ -96,7 +96,7 @@ void main() {
   group('GradesDetailsView - ', () {
     setUp(() async {
       setupNavigationServiceMock();
-      courseRepository = setupCourseRepositoryMock();
+      courseRepositoryMock = setupCourseRepositoryMock();
       setupSettingsManagerMock();
       setupNetworkingServiceMock();
     });
@@ -112,6 +112,7 @@ void main() {
           'has a RefreshIndicator, GradeCircularProgress, three cards and evaluation tiles when a course is valid',
           (WidgetTester tester) async {
         setupFlutterToastMock(tester);
+        CourseRepositoryMock.stubGetCourseSummary(courseRepositoryMock, course, toReturn: course);
         await tester.pumpWidget(localizedWidget(
             child: FeatureDiscovery(child: GradesDetailsView(course: course))));
         await tester.pumpAndSettle();
@@ -139,11 +140,11 @@ void main() {
           (WidgetTester tester) async {
         setupFlutterToastMock(tester);
         CourseRepositoryMock.stubGetCourseSummary(
-            courseRepository as CourseRepositoryMock, courseWithoutSummary,
+            courseRepositoryMock, courseWithoutSummary,
             toReturn: course);
 
         await tester.pumpWidget(localizedWidget(
-            child: FeatureDiscovery(child: GradesDetailsView(course: course))));
+            child: FeatureDiscovery(child: GradesDetailsView(course: courseWithoutSummary))));
         await tester.pumpAndSettle();
 
         expect(find.byType(SliverAppBar), findsOneWidget);
@@ -160,11 +161,11 @@ void main() {
           (WidgetTester tester) async {
         setupFlutterToastMock(tester);
         CourseRepositoryMock.stubGetCourseSummary(
-            courseRepository as CourseRepositoryMock, courseWithoutSummary,
+            courseRepositoryMock, courseWithoutSummary,
             toReturn: course);
 
         await tester.pumpWidget(localizedWidget(
-            child: FeatureDiscovery(child: GradesDetailsView(course: course))));
+            child: FeatureDiscovery(child: GradesDetailsView(course: courseWithoutSummary))));
         await tester.pumpAndSettle();
 
         final gesture = await tester
@@ -181,7 +182,7 @@ void main() {
           (WidgetTester tester) async {
         setupFlutterToastMock(tester);
         CourseRepositoryMock.stubGetCourseSummary(
-            courseRepository as CourseRepositoryMock, courseWithoutSummary,
+            courseRepositoryMock, courseWithoutSummary,
             toReturn: courseWithoutSummary);
 
         await tester.pumpWidget(localizedWidget(
@@ -197,7 +198,7 @@ void main() {
           (WidgetTester tester) async {
         setupFlutterToastMock(tester);
         CourseRepositoryMock.stubGetCourseSummary(
-            courseRepository as CourseRepositoryMock,
+            courseRepositoryMock,
             courseWithEvaluationNotCompleted,
             toReturn: courseWithEvaluationNotCompleted);
 
@@ -215,7 +216,7 @@ void main() {
       testWidgets("default view", (WidgetTester tester) async {
         setupFlutterToastMock(tester);
         CourseRepositoryMock.stubGetCourseSummary(
-            courseRepository as CourseRepositoryMock, courseWithoutSummary,
+            courseRepositoryMock, courseWithoutSummary,
             toReturn: course);
 
         tester.binding.window.physicalSizeTestValue = const Size(800, 1410);
@@ -232,7 +233,7 @@ void main() {
           (WidgetTester tester) async {
         setupFlutterToastMock(tester);
         CourseRepositoryMock.stubGetCourseSummary(
-            courseRepository as CourseRepositoryMock, courseWithoutSummary,
+            courseRepositoryMock, courseWithoutSummary,
             toReturn: courseWithoutSummary);
 
         tester.binding.window.physicalSizeTestValue = const Size(800, 1410);
@@ -249,7 +250,7 @@ void main() {
           (WidgetTester tester) async {
         setupFlutterToastMock(tester);
         CourseRepositoryMock.stubGetCourseSummary(
-            courseRepository as CourseRepositoryMock, courseWithoutSummary,
+            courseRepositoryMock, courseWithoutSummary,
             toReturn: courseWithEvaluationNotCompleted);
 
         tester.binding.window.physicalSizeTestValue = const Size(800, 1410);

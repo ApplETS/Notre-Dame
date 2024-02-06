@@ -62,7 +62,7 @@ class StartUpViewModel extends BaseViewModel {
       ];
 
       for (final PreferencesFlag flag in flagsToCheck) {
-        final Object object =
+        final Object? object =
             await _preferencesService.getPreferencesFlag(flag);
 
         if (object is String) {

@@ -11,20 +11,23 @@ import 'package:notredame/core/managers/settings_manager.dart';
 import 'package:notredame/core/models/quick_link.dart';
 import 'package:notredame/core/services/analytics_service.dart';
 import 'package:notredame/core/services/internal_info_service.dart';
-import 'package:notredame/core/services/launch_url_service.dart';
 import 'package:notredame/core/services/navigation_service.dart';
 import 'package:notredame/core/viewmodels/web_link_card_viewmodel.dart';
 import '../helpers.dart';
+import '../mock/services/analytics_service_mock.dart';
 import '../mock/services/internal_info_service_mock.dart';
+import '../mock/services/launch_url_service_mock.dart';
+import '../mock/services/navigation_service_mock.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
-  NavigationService navigationService;
-  AnalyticsService analyticsService;
-  InternalInfoService internalInfoService;
-  LaunchUrlService launchUrlService;
 
-  WebLinkCardViewModel viewModel;
+  late NavigationServiceMock navigationServiceMock;
+  late AnalyticsServiceMock analyticsServiceMock;
+  late InternalInfoServiceMock internalInfoServiceMock;
+  late LaunchUrlServiceMock launchUrlServiceMock;
+
+  late WebLinkCardViewModel viewModel;
 
   final quickLink = QuickLink(
       id: 1, image: const Icon(Icons.ac_unit), name: 'test', link: 'testlink');
@@ -33,10 +36,10 @@ void main() {
 
   group('WebLinkCardViewModel - ', () {
     setUp(() async {
-      navigationService = setupNavigationServiceMock();
-      analyticsService = setupAnalyticsServiceMock();
-      internalInfoService = setupInternalInfoServiceMock();
-      launchUrlService = setupLaunchUrlServiceMock();
+      navigationServiceMock = setupNavigationServiceMock();
+      analyticsServiceMock = setupAnalyticsServiceMock();
+      internalInfoServiceMock = setupInternalInfoServiceMock();
+      launchUrlServiceMock = setupLaunchUrlServiceMock();
       setupSettingsManagerMock();
 
       setupLogger();
@@ -46,8 +49,8 @@ void main() {
 
     tearDown(() {
       unregister<NavigationService>();
-      clearInteractions(analyticsService);
-      clearInteractions(launchUrlService);
+      clearInteractions(analyticsServiceMock);
+      clearInteractions(launchUrlServiceMock);
       unregister<AnalyticsService>();
       unregister<InternalInfoService>();
       unregister<SettingsManager>();
@@ -58,20 +61,20 @@ void main() {
         await viewModel.onLinkClicked(securityQuickLink, Brightness.light);
 
         verify(
-            analyticsService.logEvent("QuickLink", "QuickLink clicked: test"));
-        verify(navigationService.pushNamed(RouterPaths.security));
-        verifyNoMoreInteractions(navigationService);
+            analyticsServiceMock.logEvent("QuickLink", "QuickLink clicked: test"));
+        verify(navigationServiceMock.pushNamed(RouterPaths.security));
+        verifyNoMoreInteractions(navigationServiceMock);
       });
 
       test('navigate to web view if launchInBrowser throw', () async {
         InternalInfoServiceMock.stubGetDeviceInfoForErrorReporting(
-            internalInfoService as InternalInfoServiceMock);
+            internalInfoServiceMock);
 
         await viewModel.onLinkClicked(quickLink, Brightness.light);
 
         verify(
-            launchUrlService.launchInBrowser(quickLink.link, Brightness.light));
-        verifyNoMoreInteractions(navigationService);
+            launchUrlServiceMock.launchInBrowser(quickLink.link, Brightness.light));
+        verifyNoMoreInteractions(navigationServiceMock);
       });
     });
   });

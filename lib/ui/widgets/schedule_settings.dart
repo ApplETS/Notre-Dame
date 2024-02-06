@@ -16,7 +16,7 @@ import 'package:notredame/ui/utils/app_theme.dart';
 class ScheduleSettings extends StatefulWidget {
   final bool showHandle;
 
-  const ScheduleSettings({Key key, this.showHandle = true}) : super(key: key);
+  const ScheduleSettings({Key? key, this.showHandle = true}) : super(key: key);
 
   @override
   _ScheduleSettingsState createState() => _ScheduleSettingsState();
@@ -76,14 +76,14 @@ class _ScheduleSettingsState extends State<ScheduleSettings> {
                         child: Padding(
                             padding: const EdgeInsets.symmetric(vertical: 20),
                             child: Text(
-                                AppIntl.of(context).schedule_settings_title,
+                                AppIntl.of(context)!.schedule_settings_title,
                                 style: Theme.of(context).textTheme.headline6)),
                       ),
                     ),
                     Expanded(
                       child: ListTileTheme(
                         selectedColor:
-                            Theme.of(context).textTheme.bodyText1.color,
+                            Theme.of(context).textTheme.bodyText1!.color,
                         child: Card(
                           margin: EdgeInsets.zero,
                           elevation: 0,
@@ -134,7 +134,7 @@ class _ScheduleSettingsState extends State<ScheduleSettings> {
         padding: const EdgeInsets.only(
             left: 15.0, right: 15.0, top: 15.0, bottom: 2.0),
         child: Text(
-          AppIntl.of(context).schedule_select_course_activity,
+          AppIntl.of(context)!.schedule_select_course_activity,
           style: TextStyle(
             color: Theme.of(context).colorScheme.secondary,
             fontWeight: FontWeight.bold,
@@ -149,7 +149,7 @@ class _ScheduleSettingsState extends State<ScheduleSettings> {
       tiles.add(Padding(
         padding: const EdgeInsets.fromLTRB(15.0, 8.0, 15.0, 8.0),
         child: Text(
-          '${model.scheduleActivitiesByCourse[courseActivitiesAcronym].first.courseAcronym} - ${model.scheduleActivitiesByCourse[courseActivitiesAcronym].first.courseTitle}',
+          '${model.scheduleActivitiesByCourse[courseActivitiesAcronym]?.first.courseAcronym ?? AppIntl.of(context)!.grades_not_available} - ${model.scheduleActivitiesByCourse[courseActivitiesAcronym]?.first.courseTitle ?? AppIntl.of(context)!.grades_not_available}}',
           style: const TextStyle(
             fontWeight: FontWeight.bold,
           ),
@@ -161,20 +161,23 @@ class _ScheduleSettingsState extends State<ScheduleSettings> {
         selectedTileColor: selectedColor,
         onTap: () =>
             model.selectScheduleActivity(courseActivitiesAcronym, null),
-        title: Text(AppIntl.of(context).course_activity_group_both),
+        title: Text(AppIntl.of(context)!.course_activity_group_both),
       ));
 
-      for (final course
-          in model.scheduleActivitiesByCourse[courseActivitiesAcronym]) {
-        tiles.add(ListTile(
-          selected:
-              model.selectedScheduleActivity[course.courseAcronym] == course,
-          selectedTileColor: selectedColor,
-          onTap: () =>
-              model.selectScheduleActivity(course.courseAcronym, course),
-          title: Text(getActivityTitle(course.activityCode)),
-        ));
+      if(model.scheduleActivitiesByCourse[courseActivitiesAcronym] != null) {
+        for (final course
+            in model.scheduleActivitiesByCourse[courseActivitiesAcronym]!) {
+          tiles.add(ListTile(
+            selected:
+                model.selectedScheduleActivity[course.courseAcronym] == course,
+            selectedTileColor: selectedColor,
+            onTap: () =>
+                model.selectScheduleActivity(course.courseAcronym, course),
+            title: Text(getActivityTitle(course.activityCode)),
+          ));
+        }
       }
+      
 
       if (model.scheduleActivitiesByCourse.values.length > 1) {
         tiles.add(const Divider(endIndent: 50, thickness: 1.5));
@@ -186,9 +189,9 @@ class _ScheduleSettingsState extends State<ScheduleSettings> {
 
   String getActivityTitle(String activityCode) {
     if (activityCode == ActivityCode.labGroupA) {
-      return AppIntl.of(context).course_activity_group_a;
+      return AppIntl.of(context)!.course_activity_group_a;
     } else if (activityCode == ActivityCode.labGroupB) {
-      return AppIntl.of(context).course_activity_group_b;
+      return AppIntl.of(context)!.course_activity_group_b;
     }
 
     return "";
@@ -204,7 +207,7 @@ class _ScheduleSettingsState extends State<ScheduleSettings> {
             activeColor: AppTheme.etsLightRed,
           ),
           title: Text(
-              AppIntl.of(context).schedule_settings_show_week_events_btn_pref),
+              AppIntl.of(context)!.schedule_settings_show_week_events_btn_pref),
         ),
         const Divider(thickness: 1)
       ];
@@ -216,7 +219,7 @@ class _ScheduleSettingsState extends State<ScheduleSettings> {
         padding: const EdgeInsets.only(
             left: 15.0, right: 15.0, top: 15.0, bottom: 2.0),
         child: Text(
-          AppIntl.of(context).schedule_settings_show_weekend_day,
+          AppIntl.of(context)!.schedule_settings_show_weekend_day,
           style: TextStyle(
             color: Theme.of(context).colorScheme.secondary,
             fontWeight: FontWeight.bold,
@@ -230,7 +233,7 @@ class _ScheduleSettingsState extends State<ScheduleSettings> {
       selected: model.otherDayOfWeek == WeekDays.monday,
       selectedTileColor: selectedColor,
       onTap: () => setState(() => model.otherDayOfWeek = WeekDays.monday),
-      title: Text(AppIntl.of(context).schedule_settings_show_weekend_day_none),
+      title: Text(AppIntl.of(context)!.schedule_settings_show_weekend_day_none),
     ));
 
     for (final WeekDays day in model.otherDayPossible) {
@@ -257,7 +260,7 @@ class _ScheduleSettingsState extends State<ScheduleSettings> {
             activeColor: AppTheme.etsLightRed,
           ),
           title:
-              Text(AppIntl.of(context).schedule_settings_show_today_btn_pref),
+              Text(AppIntl.of(context)!.schedule_settings_show_today_btn_pref),
         ),
         const Divider(thickness: 1)
       ];
@@ -271,7 +274,7 @@ class _ScheduleSettingsState extends State<ScheduleSettings> {
             onChanged: (value) => model.toggleCalendarView = value,
             activeColor: AppTheme.etsLightRed,
           ),
-          title: Text(AppIntl.of(context).schedule_settings_list_view),
+          title: Text(AppIntl.of(context)!.schedule_settings_list_view),
         ),
         const Divider(thickness: 1)
       ];
@@ -282,7 +285,7 @@ class _ScheduleSettingsState extends State<ScheduleSettings> {
       Padding(
         padding: const EdgeInsets.only(left: 15.0, right: 15.0, bottom: 2.0),
         child: Text(
-          AppIntl.of(context).schedule_settings_calendar_format_pref,
+          AppIntl.of(context)!.schedule_settings_calendar_format_pref,
           style: TextStyle(
             color: Theme.of(context).colorScheme.secondary,
             fontWeight: FontWeight.bold,
@@ -313,7 +316,7 @@ class _ScheduleSettingsState extends State<ScheduleSettings> {
         padding: const EdgeInsets.only(
             left: 15.0, right: 15.0, top: 15.0, bottom: 2.0),
         child: Text(
-          AppIntl.of(context).schedule_settings_starting_weekday_pref,
+          AppIntl.of(context)!.schedule_settings_starting_weekday_pref,
           style: TextStyle(
             color: Theme.of(context).colorScheme.secondary,
             fontWeight: FontWeight.bold,
@@ -340,38 +343,39 @@ class _ScheduleSettingsState extends State<ScheduleSettings> {
   String getTextForFormat(BuildContext context, CalendarFormat format) {
     switch (format) {
       case CalendarFormat.month:
-        return AppIntl.of(context).schedule_settings_calendar_format_month;
+        return AppIntl.of(context)!.schedule_settings_calendar_format_month;
       case CalendarFormat.week:
-        return AppIntl.of(context).schedule_settings_calendar_format_week;
+        return AppIntl.of(context)!.schedule_settings_calendar_format_week;
       case CalendarFormat.twoWeeks:
-        return AppIntl.of(context).schedule_settings_calendar_format_2_weeks;
+        return AppIntl.of(context)!.schedule_settings_calendar_format_2_weeks;
+      default:
+        return AppIntl.of(context)!.schedule_settings_calendar_format_month;
     }
-    return AppIntl.of(context).schedule_settings_calendar_format_month;
   }
 
   String getTextForDay(BuildContext context, StartingDayOfWeek day) {
-    // ignore: missing_enum_constant_in_switch
     switch (day) {
       case StartingDayOfWeek.sunday:
-        return AppIntl.of(context).schedule_settings_starting_weekday_sunday;
+        return AppIntl.of(context)!.schedule_settings_starting_weekday_sunday;
       case StartingDayOfWeek.saturday:
-        return AppIntl.of(context).schedule_settings_starting_weekday_saturday;
+        return AppIntl.of(context)!.schedule_settings_starting_weekday_saturday;
       case StartingDayOfWeek.monday:
-        return AppIntl.of(context).schedule_settings_starting_weekday_monday;
+        return AppIntl.of(context)!.schedule_settings_starting_weekday_monday;
+      default:
+        return AppIntl.of(context)!.schedule_settings_starting_weekday_monday;
     }
-    return AppIntl.of(context).schedule_settings_starting_weekday_monday;
   }
 
   String getTextForWeekDay(BuildContext context, WeekDays day) {
-    // ignore: missing_enum_constant_in_switch
     switch (day) {
       case WeekDays.sunday:
-        return AppIntl.of(context).schedule_settings_starting_weekday_sunday;
+        return AppIntl.of(context)!.schedule_settings_starting_weekday_sunday;
       case WeekDays.saturday:
-        return AppIntl.of(context).schedule_settings_starting_weekday_saturday;
+        return AppIntl.of(context)!.schedule_settings_starting_weekday_saturday;
       case WeekDays.monday:
-        return AppIntl.of(context).schedule_settings_starting_weekday_monday;
+        return AppIntl.of(context)!.schedule_settings_starting_weekday_monday;
+      default:
+        return AppIntl.of(context)!.schedule_settings_starting_weekday_monday;
     }
-    return AppIntl.of(context).schedule_settings_starting_weekday_monday;
   }
 }

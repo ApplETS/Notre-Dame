@@ -22,13 +22,13 @@ class _FeedbackViewState extends State<FeedbackView> {
   @override
   Widget build(BuildContext context) =>
       ViewModelBuilder<FeedbackViewModel>.reactive(
-        viewModelBuilder: () => FeedbackViewModel(intl: AppIntl.of(context)),
+        viewModelBuilder: () => FeedbackViewModel(intl: AppIntl.of(context)!),
         builder: (context, model, child) {
           final bool isLightMode =
               Theme.of(context).brightness == Brightness.light;
           return Scaffold(
             appBar: AppBar(
-              title: Text(AppIntl.of(context).more_report_bug),
+              title: Text(AppIntl.of(context)!.more_report_bug),
             ),
             body: ListView(
               children: <Widget>[
@@ -52,8 +52,8 @@ class _FeedbackViewState extends State<FeedbackView> {
                     )),
                     child: getCardInfo(
                       context,
-                      AppIntl.of(context).more_report_bug_bug,
-                      AppIntl.of(context).more_report_bug_bug_subtitle,
+                      AppIntl.of(context)!.more_report_bug_bug,
+                      AppIntl.of(context)!.more_report_bug_bug_subtitle,
                       Icons.bug_report,
                       const Color.fromRGBO(252, 196, 238, 1),
                       const Color.fromRGBO(153, 78, 174, 1),
@@ -80,8 +80,8 @@ class _FeedbackViewState extends State<FeedbackView> {
                     )),
                     child: getCardInfo(
                       context,
-                      AppIntl.of(context).more_report_bug_feature,
-                      AppIntl.of(context).more_report_bug_feature_subtitle,
+                      AppIntl.of(context)!.more_report_bug_feature,
+                      AppIntl.of(context)!.more_report_bug_feature_subtitle,
                       Icons.design_services,
                       const Color.fromRGBO(63, 219, 251, 1),
                       const Color.fromRGBO(14, 127, 188, 1),
@@ -91,8 +91,8 @@ class _FeedbackViewState extends State<FeedbackView> {
                 const SizedBox(height: 25),
                 Padding(
                     padding: const EdgeInsets.only(left: 8.0, right: 8.0),
-                    child: Text(AppIntl.of(context).my_tickets,
-                        style: Theme.of(context).textTheme.headline5.copyWith(
+                    child: Text(AppIntl.of(context)!.my_tickets,
+                        style: Theme.of(context).textTheme.headline5!.copyWith(
                             color:
                                 isLightMode ? Colors.black87 : Colors.white))),
                 const Divider(
@@ -112,7 +112,7 @@ class _FeedbackViewState extends State<FeedbackView> {
                       return GestureDetector(
                         onTap: () => {
                           Utils.launchURL(model.myIssues[index].htmlUrl,
-                              AppIntl.of(context))
+                              AppIntl.of(context)!)
                         },
                         child: Container(
                           margin: const EdgeInsets.only(
@@ -156,9 +156,9 @@ class _FeedbackViewState extends State<FeedbackView> {
                                     createListTag(
                                         model.myIssues[index].isOpen
                                             ? AppIntl.of(context)
-                                                .ticket_status_open
+                                                !.ticket_status_open
                                             : AppIntl.of(context)
-                                                .ticket_status_closed,
+                                                !.ticket_status_closed,
                                         color: model.myIssues[index].state ==
                                                 'open'
                                             ? Colors.green
@@ -186,12 +186,12 @@ class _FeedbackViewState extends State<FeedbackView> {
                                   ? buildLoading(
                                       isInteractionLimitedWhileLoading: false)
                                   : Text(
-                                      AppIntl.of(context).no_ticket,
+                                      AppIntl.of(context)!.no_ticket,
                                       overflow: TextOverflow.ellipsis,
                                       style: Theme.of(context)
                                           .textTheme
                                           .headline6
-                                          .copyWith(
+                                          !.copyWith(
                                               color: isLightMode
                                                   ? const Color.fromARGB(
                                                       168, 0, 0, 0)
@@ -206,8 +206,8 @@ class _FeedbackViewState extends State<FeedbackView> {
                 const SizedBox(height: 25),
                 Padding(
                     padding: const EdgeInsets.only(left: 8.0, right: 8.0),
-                    child: Text(AppIntl.of(context).more_report_tips,
-                        style: Theme.of(context).textTheme.headline5.copyWith(
+                    child: Text(AppIntl.of(context)!.more_report_tips,
+                        style: Theme.of(context).textTheme.headline5!.copyWith(
                             color:
                                 isLightMode ? Colors.black87 : Colors.white))),
                 const Divider(
@@ -221,17 +221,17 @@ class _FeedbackViewState extends State<FeedbackView> {
                     text: TextSpan(
                       children: <TextSpan>[
                         TextSpan(
-                            text: AppIntl.of(context).more_report_bug_step1,
+                            text: AppIntl.of(context)!.more_report_bug_step1,
                             style: Theme.of(context)
                                 .textTheme
                                 .bodyText2
-                                .copyWith(fontSize: 18)),
+                                !.copyWith(fontSize: 18)),
                         TextSpan(
-                            text: AppIntl.of(context).more_report_bug_step2,
+                            text: AppIntl.of(context)!.more_report_bug_step2,
                             style: Theme.of(context)
                                 .textTheme
                                 .bodyText2
-                                .copyWith(
+                                !.copyWith(
                                     fontSize: 18,
                                     color: Theme.of(context).brightness ==
                                             Brightness.light
@@ -239,17 +239,17 @@ class _FeedbackViewState extends State<FeedbackView> {
                                         : const Color.fromRGBO(
                                             63, 219, 251, 1))),
                         TextSpan(
-                            text: AppIntl.of(context).more_report_bug_step3,
+                            text: AppIntl.of(context)!.more_report_bug_step3,
                             style: Theme.of(context)
                                 .textTheme
                                 .bodyText2
-                                .copyWith(fontSize: 18)),
+                                !.copyWith(fontSize: 18)),
                         TextSpan(
-                            text: AppIntl.of(context).more_report_bug_step4,
+                            text: AppIntl.of(context)!.more_report_bug_step4,
                             style: Theme.of(context)
                                 .textTheme
                                 .bodyText2
-                                .copyWith(
+                                !.copyWith(
                                     fontSize: 18,
                                     color: Theme.of(context).brightness ==
                                             Brightness.light
@@ -257,11 +257,11 @@ class _FeedbackViewState extends State<FeedbackView> {
                                         : const Color.fromRGBO(
                                             63, 219, 251, 1))),
                         TextSpan(
-                            text: AppIntl.of(context).more_report_bug_step5,
+                            text: AppIntl.of(context)!.more_report_bug_step5,
                             style: Theme.of(context)
                                 .textTheme
                                 .bodyText2
-                                .copyWith(fontSize: 18)),
+                                !.copyWith(fontSize: 18)),
                       ],
                     ),
                   ),
@@ -303,7 +303,7 @@ class _FeedbackViewState extends State<FeedbackView> {
                   style: Theme.of(context)
                       .textTheme
                       .bodyText2
-                      .copyWith(fontSize: 19),
+                      !.copyWith(fontSize: 19),
                   textAlign: TextAlign.left,
                 ),
                 Text(
@@ -311,7 +311,7 @@ class _FeedbackViewState extends State<FeedbackView> {
                   style: Theme.of(context)
                       .textTheme
                       .bodyText2
-                      .copyWith(fontSize: 16),
+                      !.copyWith(fontSize: 16),
                   textAlign: TextAlign.left,
                 )
               ],
@@ -322,7 +322,7 @@ class _FeedbackViewState extends State<FeedbackView> {
     );
   }
 
-  Widget createListTag(String text, {Color textColor, Color color}) {
+  Widget createListTag(String text, {Color? textColor, Color? color}) {
     return Container(
       decoration: BoxDecoration(
           // border radius

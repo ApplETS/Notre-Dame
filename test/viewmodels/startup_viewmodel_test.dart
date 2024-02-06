@@ -17,34 +17,35 @@ import '../helpers.dart';
 import '../mock/managers/settings_manager_mock.dart';
 import '../mock/managers/user_repository_mock.dart';
 import '../mock/services/internal_info_service_mock.dart';
+import '../mock/services/navigation_service_mock.dart';
 import '../mock/services/networking_service_mock.dart';
 import '../mock/services/preferences_service_mock.dart';
 import '../mock/services/siren_flutter_service_mock.dart';
 
 void main() {
-  NavigationService navigationService;
-  UserRepositoryMock userRepositoryMock;
-  SettingsManagerMock settingsManagerMock;
-  PreferencesServiceMock preferencesServiceMock;
-  NetworkingServiceMock networkingService;
-  InternalInfoServiceMock internalInfoServiceMock;
-  SirenFlutterServiceMock sirenFlutterServiceMock;
+  late NavigationServiceMock navigationServiceMock;
+  late UserRepositoryMock userRepositoryMock;
+  late SettingsManagerMock settingsManagerMock;
+  late PreferencesServiceMock preferencesServiceMock;
+  late NetworkingServiceMock networkingServiceMock;
+  late InternalInfoServiceMock internalInfoServiceMock;
+  late SirenFlutterServiceMock sirenFlutterServiceMock;
 
-  StartUpViewModel viewModel;
+  late StartUpViewModel viewModel;
 
   group('StartupViewModel - ', () {
     setUp(() async {
       setupAnalyticsServiceMock();
-      navigationService = setupNavigationServiceMock();
-      settingsManagerMock = setupSettingsManagerMock() as SettingsManagerMock;
+      navigationServiceMock = setupNavigationServiceMock();
+      settingsManagerMock = setupSettingsManagerMock();
       preferencesServiceMock =
-          setupPreferencesServiceMock() as PreferencesServiceMock;
-      userRepositoryMock = setupUserRepositoryMock() as UserRepositoryMock;
-      networkingService = setupNetworkingServiceMock() as NetworkingServiceMock;
+          setupPreferencesServiceMock();
+      userRepositoryMock = setupUserRepositoryMock();
+      networkingServiceMock = setupNetworkingServiceMock();
       internalInfoServiceMock =
-          setupInternalInfoServiceMock() as InternalInfoServiceMock;
+          setupInternalInfoServiceMock();
       sirenFlutterServiceMock =
-          setupSirenFlutterServiceMock() as SirenFlutterServiceMock;
+          setupSirenFlutterServiceMock();
       setupLogger();
 
       viewModel = StartUpViewModel();
@@ -64,7 +65,7 @@ void main() {
       test('sign in successful', () async {
         UserRepositoryMock.stubSilentAuthenticate(userRepositoryMock);
         UserRepositoryMock.stubWasPreviouslyLoggedIn(userRepositoryMock);
-        NetworkingServiceMock.stubHasConnectivity(networkingService);
+        NetworkingServiceMock.stubHasConnectivity(networkingServiceMock);
         InternalInfoServiceMock.stubGetPackageInfo(internalInfoServiceMock,
             version: "4.0.0");
         SettingsManagerMock.stubGetString(
@@ -73,7 +74,7 @@ void main() {
 
         await viewModel.handleStartUp();
 
-        verify(navigationService.pushNamedAndRemoveUntil(
+        verify(navigationServiceMock.pushNamedAndRemoveUntil(
             RouterPaths.dashboard, RouterPaths.dashboard, UpdateCode.none));
       });
 
@@ -83,7 +84,7 @@ void main() {
         UserRepositoryMock.stubSilentAuthenticate(userRepositoryMock,
             toReturn: false);
         UserRepositoryMock.stubWasPreviouslyLoggedIn(userRepositoryMock);
-        NetworkingServiceMock.stubHasConnectivity(networkingService);
+        NetworkingServiceMock.stubHasConnectivity(networkingServiceMock);
         InternalInfoServiceMock.stubGetPackageInfo(internalInfoServiceMock,
             version: "4.0.0");
         SettingsManagerMock.stubGetString(
@@ -98,11 +99,11 @@ void main() {
 
         verifyInOrder([
           settingsManagerMock.getBool(PreferencesFlag.languageChoice),
-          navigationService.pop(),
-          navigationService.pushNamed(RouterPaths.login)
+          navigationServiceMock.pop(),
+          navigationServiceMock.pushNamed(RouterPaths.login)
         ]);
 
-        verifyNoMoreInteractions(navigationService);
+        verifyNoMoreInteractions(navigationServiceMock);
       });
 
       test(
@@ -111,7 +112,7 @@ void main() {
         UserRepositoryMock.stubSilentAuthenticate(userRepositoryMock,
             toReturn: false);
         UserRepositoryMock.stubWasPreviouslyLoggedIn(userRepositoryMock);
-        NetworkingServiceMock.stubHasConnectivity(networkingService);
+        NetworkingServiceMock.stubHasConnectivity(networkingServiceMock);
         InternalInfoServiceMock.stubGetPackageInfo(internalInfoServiceMock,
             version: "4.0.0");
         SettingsManagerMock.stubGetString(
@@ -122,18 +123,18 @@ void main() {
 
         verifyInOrder([
           settingsManagerMock.getBool(PreferencesFlag.languageChoice),
-          navigationService.pushNamed(RouterPaths.chooseLanguage),
+          navigationServiceMock.pushNamed(RouterPaths.chooseLanguage),
           settingsManagerMock.setBool(PreferencesFlag.languageChoice, true)
         ]);
 
-        verifyNoMoreInteractions(navigationService);
+        verifyNoMoreInteractions(navigationServiceMock);
       });
 
       test('verify discovery flags are bool if version mismatch', () async {
         const String versionToSave = "4.1.0";
         UserRepositoryMock.stubSilentAuthenticate(userRepositoryMock);
         UserRepositoryMock.stubWasPreviouslyLoggedIn(userRepositoryMock);
-        NetworkingServiceMock.stubHasConnectivity(networkingService);
+        NetworkingServiceMock.stubHasConnectivity(networkingServiceMock);
         InternalInfoServiceMock.stubGetPackageInfo(internalInfoServiceMock,
             version: versionToSave);
         SettingsManagerMock.stubGetString(
@@ -186,7 +187,7 @@ void main() {
       test('verify discovery flags are not changed for same version', () async {
         UserRepositoryMock.stubSilentAuthenticate(userRepositoryMock);
         UserRepositoryMock.stubWasPreviouslyLoggedIn(userRepositoryMock);
-        NetworkingServiceMock.stubHasConnectivity(networkingService);
+        NetworkingServiceMock.stubHasConnectivity(networkingServiceMock);
         InternalInfoServiceMock.stubGetPackageInfo(internalInfoServiceMock,
             version: "4.0.0");
         SettingsManagerMock.stubGetString(
@@ -205,7 +206,7 @@ void main() {
           () async {
         UserRepositoryMock.stubSilentAuthenticate(userRepositoryMock);
         UserRepositoryMock.stubWasPreviouslyLoggedIn(userRepositoryMock);
-        NetworkingServiceMock.stubHasConnectivity(networkingService);
+        NetworkingServiceMock.stubHasConnectivity(networkingServiceMock);
         InternalInfoServiceMock.stubGetPackageInfo(internalInfoServiceMock,
             version: "4.0.0");
         SettingsManagerMock.stubSetString(

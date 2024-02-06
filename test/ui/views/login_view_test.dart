@@ -15,11 +15,9 @@ import 'package:notredame/core/services/preferences_service.dart';
 import 'package:notredame/ui/views/login_view.dart';
 import 'package:notredame/ui/widgets/password_text_field.dart';
 import '../../helpers.dart';
-import '../../mock/services/analytics_service_mock.dart';
-import '../../mock/services/launch_url_service_mock.dart';
 
 void main() {
-  AppIntl intl;
+  late AppIntl intl;
 
   group('LoginView - ', () {
     setUp(() async {
@@ -29,8 +27,8 @@ void main() {
       setupSettingsManagerMock();
       setupFlutterSecureStorageMock();
       setupPreferencesServiceMock();
-      setupLaunchUrlServiceMock() as LaunchUrlServiceMock;
-      setupAnalyticsServiceMock() as AnalyticsServiceMock;
+      setupLaunchUrlServiceMock();
+      setupAnalyticsServiceMock();
     });
 
     tearDown(() {

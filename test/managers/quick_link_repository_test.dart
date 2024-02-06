@@ -17,19 +17,20 @@ import '../helpers.dart';
 import '../mock/managers/cache_manager_mock.dart';
 
 void main() {
-  CacheManager cacheManager;
-  QuickLinkRepository quickLinkRepository;
+  late CacheManagerMock cacheManagerMock;
+
+  late QuickLinkRepository quickLinkRepository;
 
   group("QuickLinkRepository - ", () {
     setUp(() {
       // Setup needed services and managers
-      cacheManager = setupCacheManagerMock();
+      cacheManagerMock = setupCacheManagerMock();
 
       quickLinkRepository = QuickLinkRepository();
     });
 
     tearDown(() {
-      clearInteractions(cacheManager);
+      clearInteractions(cacheManagerMock);
       unregister<CacheManager>();
     });
 
@@ -38,7 +39,7 @@ void main() {
         // Stub the cache to return some QuickLinkData
         final quickLinkData = QuickLinkData(id: 1, index: 0);
         CacheManagerMock.stubGet(
-            cacheManager as CacheManagerMock,
+            cacheManagerMock,
             QuickLinkRepository.quickLinksCacheKey,
             jsonEncode([quickLinkData]));
 
@@ -49,7 +50,7 @@ void main() {
         expect(results[0].id, quickLinkData.id);
         expect(results[0].index, quickLinkData.index);
 
-        verify(cacheManager.get(QuickLinkRepository.quickLinksCacheKey))
+        verify(cacheManagerMock.get(QuickLinkRepository.quickLinksCacheKey))
             .called(1);
       });
 
@@ -57,7 +58,7 @@ void main() {
           "Trying to recover QuickLinkData from cache but an exception is raised.",
           () async {
         // Stub the cache to throw an exception
-        CacheManagerMock.stubGetException(cacheManager as CacheManagerMock,
+        CacheManagerMock.stubGetException(cacheManagerMock,
             QuickLinkRepository.quickLinksCacheKey);
 
         expect(quickLinkRepository.getQuickLinkDataFromCache(),
@@ -74,7 +75,7 @@ void main() {
 
         await quickLinkRepository.updateQuickLinkDataToCache([quickLink]);
 
-        verify(cacheManager.update(QuickLinkRepository.quickLinksCacheKey,
+        verify(cacheManagerMock.update(QuickLinkRepository.quickLinksCacheKey,
             jsonEncode([quickLinkData]))).called(1);
       });
 
@@ -82,7 +83,7 @@ void main() {
           "Trying to update QuickLinkData to cache but an exception is raised.",
           () async {
         // Stub the cache to throw an exception
-        CacheManagerMock.stubUpdateException(cacheManager as CacheManagerMock,
+        CacheManagerMock.stubUpdateException(cacheManagerMock,
             QuickLinkRepository.quickLinksCacheKey);
 
         final quickLink =

@@ -14,9 +14,12 @@ import '../mock/managers/course_repository_mock.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
-  CourseRepository courseRepository;
-  AppIntl intl;
-  GradesViewModel viewModel;
+  late AppIntl intl;
+  
+  late CourseRepositoryMock courseRepositoryMock;
+  
+
+  late GradesViewModel viewModel;
 
   final Course courseSummer = Course(
       acronym: 'GEN101',
@@ -83,7 +86,7 @@ void main() {
 
   group('GradesViewModel -', () {
     setUp(() async {
-      courseRepository = setupCourseRepositoryMock();
+      courseRepositoryMock = setupCourseRepositoryMock();
       intl = await setupAppIntl();
       setupSettingsManagerMock();
       setupNavigationServiceMock();
@@ -101,42 +104,42 @@ void main() {
       test('first load from cache than call SignetsAPI to get the courses',
           () async {
         CourseRepositoryMock.stubGetCourses(
-            courseRepository as CourseRepositoryMock,
+            courseRepositoryMock,
             toReturn: courses,
             fromCacheOnly: true);
         CourseRepositoryMock.stubGetCourses(
-            courseRepository as CourseRepositoryMock,
+            courseRepositoryMock,
             toReturn: courses);
         CourseRepositoryMock.stubCourses(
-            courseRepository as CourseRepositoryMock,
+            courseRepositoryMock,
             toReturn: courses);
 
         expect(await viewModel.futureToRun(), coursesBySession);
 
-        await untilCalled(courseRepository.courses);
+        await untilCalled(courseRepositoryMock.courses);
 
         expect(viewModel.coursesBySession, coursesBySession);
         expect(viewModel.sessionOrder, sessionOrder);
 
         verifyInOrder([
-          courseRepository.getCourses(fromCacheOnly: true),
-          courseRepository.getCourses(),
-          courseRepository.courses
+          courseRepositoryMock.getCourses(fromCacheOnly: true),
+          courseRepositoryMock.getCourses(),
+          courseRepositoryMock.courses,
+          courseRepositoryMock.courses
         ]);
 
-        verifyNoMoreInteractions(courseRepository);
+        verifyNoMoreInteractions(courseRepositoryMock);
       });
 
       test('Signets throw an error while trying to get courses', () async {
         CourseRepositoryMock.stubGetCourses(
-            courseRepository as CourseRepositoryMock,
+            courseRepositoryMock,
             toReturn: courses,
             fromCacheOnly: true);
         CourseRepositoryMock.stubGetCoursesException(
-            courseRepository as CourseRepositoryMock,
-            fromCacheOnly: false);
+            courseRepositoryMock);
         CourseRepositoryMock.stubCourses(
-            courseRepository as CourseRepositoryMock,
+            courseRepositoryMock,
             toReturn: courses);
         setupFlutterToastMock();
 
@@ -144,17 +147,17 @@ void main() {
             reason:
                 "Even if SignetsAPI call fails, should return the cache contents");
 
-        await untilCalled(courseRepository.getCourses());
+        await untilCalled(courseRepositoryMock.getCourses());
 
         expect(viewModel.coursesBySession, coursesBySession);
         expect(viewModel.sessionOrder, sessionOrder);
 
         verifyInOrder([
-          courseRepository.getCourses(fromCacheOnly: true),
-          courseRepository.getCourses()
+          courseRepositoryMock.getCourses(fromCacheOnly: true),
+          courseRepositoryMock.getCourses()
         ]);
 
-        verifyNoMoreInteractions(courseRepository);
+        verifyNoMoreInteractions(courseRepositoryMock);
       });
     });
 
@@ -163,10 +166,10 @@ void main() {
           'Call SignetsAPI to get the courses than reload the coursesBySession',
           () async {
         CourseRepositoryMock.stubGetCourses(
-            courseRepository as CourseRepositoryMock,
+            courseRepositoryMock,
             toReturn: courses);
         CourseRepositoryMock.stubCourses(
-            courseRepository as CourseRepositoryMock,
+            courseRepositoryMock,
             toReturn: courses);
 
         await viewModel.refresh();
@@ -174,22 +177,22 @@ void main() {
         expect(viewModel.coursesBySession, coursesBySession);
         expect(viewModel.sessionOrder, sessionOrder);
 
-        verifyInOrder(
-            [courseRepository.getCourses(), courseRepository.courses]);
+        verifyInOrder([courseRepositoryMock.getCourses(),
+              courseRepositoryMock.courses,
+              courseRepositoryMock.courses]);
 
-        verifyNoMoreInteractions(courseRepository);
+        verifyNoMoreInteractions(courseRepositoryMock);
       });
 
       test('Signets throw an error', () async {
         CourseRepositoryMock.stubGetCourses(
-            courseRepository as CourseRepositoryMock,
+            courseRepositoryMock,
             toReturn: courses,
             fromCacheOnly: true);
         CourseRepositoryMock.stubGetCourses(
-            courseRepository as CourseRepositoryMock,
-            fromCacheOnly: false);
+            courseRepositoryMock);
         CourseRepositoryMock.stubCourses(
-            courseRepository as CourseRepositoryMock,
+            courseRepositoryMock,
             toReturn: courses);
         setupFlutterToastMock();
 
@@ -198,13 +201,12 @@ void main() {
         expect(viewModel.coursesBySession, coursesBySession);
         expect(viewModel.sessionOrder, sessionOrder);
 
-        reset(courseRepository);
+        reset(courseRepositoryMock);
         CourseRepositoryMock.stubCourses(
-            courseRepository as CourseRepositoryMock,
+            courseRepositoryMock,
             toReturn: courses);
         CourseRepositoryMock.stubGetCoursesException(
-            courseRepository as CourseRepositoryMock,
-            fromCacheOnly: false);
+            courseRepositoryMock);
 
         await viewModel.refresh();
 
@@ -213,10 +215,9 @@ void main() {
                 "The list of courses should not change even when an error occurs");
         expect(viewModel.sessionOrder, sessionOrder);
 
-        verifyInOrder(
-            [courseRepository.getCourses(), courseRepository.courses]);
+        verifyInOrder([courseRepositoryMock.getCourses()]);
 
-        verifyNoMoreInteractions(courseRepository);
+        verifyNoMoreInteractions(courseRepositoryMock);
       });
     });
   });

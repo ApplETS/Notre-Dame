@@ -34,7 +34,7 @@ class _ProfileViewState extends State<ProfileView> {
   @override
   Widget build(BuildContext context) =>
       ViewModelBuilder<ProfileViewModel>.reactive(
-        viewModelBuilder: () => ProfileViewModel(intl: AppIntl.of(context)),
+        viewModelBuilder: () => ProfileViewModel(intl: AppIntl.of(context)!),
         builder: (context, model, child) {
           return RefreshIndicator(
             onRefresh: () => model.refresh(),
@@ -112,7 +112,7 @@ Widget buildPage(BuildContext context, ProfileViewModel model) => Column(
             Padding(
               padding: const EdgeInsets.only(left: 16.0, top: 8.0, bottom: 8.0),
               child: Text(
-                AppIntl.of(context).profile_other_programs,
+                AppIntl.of(context)!.profile_other_programs,
                 style: const TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
@@ -180,7 +180,7 @@ Card getMyInfosCard(ProfileViewModel model, BuildContext context) {
                   ClipboardData(text: model.profileStudent.permanentCode));
               ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                 content: Text(AppIntl.of(context)
-                    .profile_permanent_code_copied_to_clipboard),
+                    !.profile_permanent_code_copied_to_clipboard),
               ));
             },
             child: Column(
@@ -189,7 +189,7 @@ Card getMyInfosCard(ProfileViewModel model, BuildContext context) {
                 Padding(
                   padding: const EdgeInsets.only(bottom: 3.0),
                   child: Text(
-                    AppIntl.of(context).profile_permanent_code,
+                    AppIntl.of(context)!.profile_permanent_code,
                     style: const TextStyle(
                       fontSize: 16,
                     ),
@@ -209,7 +209,7 @@ Card getMyInfosCard(ProfileViewModel model, BuildContext context) {
               Clipboard.setData(ClipboardData(text: model.universalAccessCode));
               ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                 content: Text(AppIntl.of(context)
-                    .profile_universal_code_copied_to_clipboard),
+                    !.profile_universal_code_copied_to_clipboard),
               ));
             },
             child: Column(
@@ -218,7 +218,7 @@ Card getMyInfosCard(ProfileViewModel model, BuildContext context) {
                 Padding(
                   padding: const EdgeInsets.only(top: 16.0, bottom: 3.0),
                   child: Text(
-                    AppIntl.of(context).login_prompt_universal_code,
+                    AppIntl.of(context)!.login_prompt_universal_code,
                     style: const TextStyle(fontSize: 16),
                   ),
                 ),
@@ -255,7 +255,7 @@ Card getMyBalanceCard(ProfileViewModel model, BuildContext context) {
         Padding(
           padding: const EdgeInsets.only(top: 16.0, left: 16.0, bottom: 3.0),
           child: Text(
-            AppIntl.of(context).profile_balance,
+            AppIntl.of(context)!.profile_balance,
             style: const TextStyle(
               fontSize: 16,
             ),
@@ -284,7 +284,7 @@ Card getProgramCompletion(ProfileViewModel model, BuildContext context) {
           Padding(
             padding: const EdgeInsets.all(16.0),
             child: Text(
-              AppIntl.of(context).profile_program_completion,
+              AppIntl.of(context)!.profile_program_completion,
               style: const TextStyle(
                 fontSize: 16,
               ),
@@ -313,7 +313,7 @@ CircularPercentIndicator getLoadingIndicator(
     center: Text(
       percentage != 0
           ? '$percentage%'
-          : AppIntl.of(context).profile_program_completion_not_available,
+          : AppIntl.of(context)!.profile_program_completion_not_available,
       style: const TextStyle(fontSize: 20),
     ),
     progressColor: Colors.green,
@@ -325,14 +325,14 @@ Column getCurrentProgramTile(List<Program> programList, BuildContext context) {
     final program = programList.last;
 
     final List<String> dataTitles = [
-      AppIntl.of(context).profile_code_program,
-      AppIntl.of(context).profile_average_program,
-      AppIntl.of(context).profile_number_accumulated_credits_program,
-      AppIntl.of(context).profile_number_registered_credits_program,
-      AppIntl.of(context).profile_number_completed_courses_program,
-      AppIntl.of(context).profile_number_failed_courses_program,
-      AppIntl.of(context).profile_number_equivalent_courses_program,
-      AppIntl.of(context).profile_status_program
+      AppIntl.of(context)!.profile_code_program,
+      AppIntl.of(context)!.profile_average_program,
+      AppIntl.of(context)!.profile_number_accumulated_credits_program,
+      AppIntl.of(context)!.profile_number_registered_credits_program,
+      AppIntl.of(context)!.profile_number_completed_courses_program,
+      AppIntl.of(context)!.profile_number_failed_courses_program,
+      AppIntl.of(context)!.profile_number_equivalent_courses_program,
+      AppIntl.of(context)!.profile_status_program
     ];
 
     final List<String> dataFetched = [

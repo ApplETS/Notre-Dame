@@ -10,7 +10,7 @@ import 'package:notredame/ui/widgets/grade_not_available.dart';
 import '../../helpers.dart';
 
 void main() {
-  AppIntl intl;
+  late AppIntl intl;
 
   group("GradeNotAvailableTest -", () {
     setUp(() async {

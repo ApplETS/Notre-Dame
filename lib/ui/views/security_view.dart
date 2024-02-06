@@ -26,10 +26,10 @@ class _SecurityViewState extends State<SecurityView> {
   @override
   Widget build(BuildContext context) =>
       ViewModelBuilder<SecurityViewModel>.reactive(
-        viewModelBuilder: () => SecurityViewModel(intl: AppIntl.of(context)),
+        viewModelBuilder: () => SecurityViewModel(intl: AppIntl.of(context)!),
         builder: (context, model, child) => Scaffold(
           appBar: AppBar(
-            title: Text(AppIntl.of(context).ets_security_title),
+            title: Text(AppIntl.of(context)!.ets_security_title),
           ),
           body: SingleChildScrollView(
             child: Column(
@@ -55,7 +55,7 @@ class _SecurityViewState extends State<SecurityView> {
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Text(
-                    AppIntl.of(context).security_reach_security,
+                    AppIntl.of(context)!.security_reach_security,
                     style: const TextStyle(
                         color: AppTheme.etsLightRed, fontSize: 24),
                   ),
@@ -64,17 +64,17 @@ class _SecurityViewState extends State<SecurityView> {
                   child: InkWell(
                     splashColor: Colors.red.withAlpha(50),
                     onTap: () => Utils.launchURL(
-                            'tel:${AppIntl.of(context).security_emergency_number}',
-                            AppIntl.of(context))
+                            'tel:${AppIntl.of(context)!.security_emergency_number}',
+                            AppIntl.of(context)!)
                         .catchError((error) {
                       ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(content: Text(error.toString())));
                     }),
                     child: ListTile(
                       leading: const Icon(Icons.phone, size: 30),
-                      title: Text(AppIntl.of(context).security_emergency_call),
+                      title: Text(AppIntl.of(context)!.security_emergency_call),
                       subtitle:
-                          Text(AppIntl.of(context).security_emergency_number),
+                          Text(AppIntl.of(context)!.security_emergency_number),
                     ),
                   ),
                 ),
@@ -84,15 +84,15 @@ class _SecurityViewState extends State<SecurityView> {
                   child: ListTile(
                     leading: const Icon(Icons.phone, size: 30),
                     title: Text(
-                        AppIntl.of(context).security_emergency_intern_call),
+                        AppIntl.of(context)!.security_emergency_intern_call),
                     subtitle: Text(
-                        AppIntl.of(context).security_emergency_intern_number),
+                        AppIntl.of(context)!.security_emergency_intern_number),
                   ),
                 ),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Text(
-                    AppIntl.of(context).security_emergency_procedures,
+                    AppIntl.of(context)!.security_emergency_procedures,
                     style: const TextStyle(
                         color: AppTheme.etsLightRed, fontSize: 24),
                   ),
