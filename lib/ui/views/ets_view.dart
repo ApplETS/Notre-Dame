@@ -1,8 +1,10 @@
-// FLUTTER / DART / THIRD-PARTIES
+// Flutter imports:
 import 'package:flutter/material.dart';
+
+// Package imports:
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-// WIDGET
+// Project imports:
 import 'package:notredame/ui/views/news_view.dart';
 import 'package:notredame/ui/views/quick_links_view.dart';
 import 'package:notredame/ui/widgets/base_scaffold.dart';

@@ -1,11 +1,11 @@
-// FLUTTER / DART / THIRD-PARTIES
+// Package imports:
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:stacked/stacked.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+// Project imports:
 import 'package:notredame/core/managers/news_repository.dart';
 import 'package:notredame/core/models/news.dart';
-
 import 'package:notredame/locator.dart';
 
 class NewsViewModel extends FutureViewModel<List<News>> {

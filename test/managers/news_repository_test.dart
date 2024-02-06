@@ -1,13 +1,9 @@
-// FLUTTER / DART / THIRD-PARTIES
+// Package imports:
 import 'package:flutter_test/flutter_test.dart';
 
-// MANAGER
+// Project imports:
 import 'package:notredame/core/managers/news_repository.dart';
-
-// MODEL
 import 'package:notredame/core/models/news.dart';
-
-// UTILS
 import '../helpers.dart';
 
 void main() {

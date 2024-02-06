@@ -1,11 +1,10 @@
-// FLUTTER / DART / THIRD-PARTIES
-import 'package:mockito/mockito.dart';
-
+// Package imports:
 import 'package:ets_api_clients/exceptions.dart';
 import 'package:mockito/annotations.dart';
-import 'package:notredame/core/managers/news_repository.dart';
+import 'package:mockito/mockito.dart';
 
-// MODELS
+// Project imports:
+import 'package:notredame/core/managers/news_repository.dart';
 import 'package:notredame/core/models/news.dart';
 import 'news_repository_mock.mocks.dart';
 

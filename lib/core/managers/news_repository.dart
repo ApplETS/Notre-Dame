@@ -1,19 +1,17 @@
-// FLUTTER / DART / THIRD-PARTIES
+// Dart imports:
 import 'dart:convert';
+
+// Flutter imports:
 import 'package:flutter/material.dart';
+
+// Package imports:
 import 'package:logger/logger.dart';
 
-// SERVICES
-import 'package:notredame/core/services/networking_service.dart';
+// Project imports:
 import 'package:notredame/core/managers/cache_manager.dart';
-
-// MODELS
 import 'package:notredame/core/models/news.dart';
-
-// UTILS
+import 'package:notredame/core/services/networking_service.dart';
 import 'package:notredame/core/utils/cache_exception.dart';
-
-// OTHER
 import 'package:notredame/locator.dart';
 
 /// Repository to access all the news

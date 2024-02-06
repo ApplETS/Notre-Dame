@@ -1,14 +1,13 @@
 // Flutter imports:
 import 'package:flutter/material.dart';
-import 'package:mockito/annotations.dart';
 
 // Package imports:
+import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
 // Project imports:
 import 'package:notredame/core/constants/preferences_flags.dart';
 import 'package:notredame/core/managers/settings_manager.dart';
-
 import 'settings_manager_mock.mocks.dart';
 
 @GenerateNiceMocks([MockSpec<SettingsManager>()])

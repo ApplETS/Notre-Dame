@@ -1,7 +1,7 @@
-// FLUTTER / DART / THIRD-PARTIES
+// Flutter imports:
 import 'package:flutter/material.dart';
 
-// UTILS
+// Project imports:
 import 'package:notredame/ui/utils/loading.dart';
 
 /// ScaffoldSafeArea to avoid boilerplate code in the application.

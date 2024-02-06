@@ -1,5 +1,10 @@
+// Flutter imports:
 import 'package:flutter/material.dart';
+
+// Package imports:
 import 'package:shimmer/shimmer.dart';
+
+// Project imports:
 import 'package:notredame/ui/utils/app_theme.dart';
 
 class NewsCardSkeleton extends StatelessWidget {

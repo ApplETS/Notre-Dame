@@ -1,9 +1,9 @@
-// FLUTTER / DART / THIRD-PARTIES
 // ignore_for_file: avoid_dynamic_calls
 
+// Package imports:
 import 'package:flutter_test/flutter_test.dart';
 
-// MODELS
+// Project imports:
 import 'package:notredame/core/models/news.dart';
 
 void main() {

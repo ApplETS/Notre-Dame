@@ -1,20 +1,14 @@
-// FLUTTER / DART / THIRD-PARTIES
-import 'package:flutter_test/flutter_test.dart';
+// Package imports:
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-
-// MANAGERS
-import 'package:notredame/core/managers/settings_manager.dart';
-import 'package:notredame/core/managers/news_repository.dart';
-
-// MODEL
-import 'package:notredame/core/models/news.dart';
-
-// VIEWMODEL
-import 'package:notredame/core/viewmodels/news_viewmodel.dart';
-
-// UTILS
-import 'package:notredame/locator.dart';
+import 'package:flutter_test/flutter_test.dart';
 import 'package:logger/logger.dart';
+
+// Project imports:
+import 'package:notredame/core/managers/news_repository.dart';
+import 'package:notredame/core/managers/settings_manager.dart';
+import 'package:notredame/core/models/news.dart';
+import 'package:notredame/core/viewmodels/news_viewmodel.dart';
+import 'package:notredame/locator.dart';
 import '../helpers.dart';
 import '../mock/managers/news_repository_mock.dart';
 

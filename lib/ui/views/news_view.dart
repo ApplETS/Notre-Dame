@@ -1,11 +1,14 @@
+// Flutter imports:
 import 'package:flutter/material.dart';
-import 'package:notredame/ui/widgets/news_card.dart';
-import 'package:stacked/stacked.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:notredame/ui/widgets/news_card_skeleton.dart';
 
-// VIEW-MODEL
+// Package imports:
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:stacked/stacked.dart';
+
+// Project imports:
 import 'package:notredame/core/viewmodels/news_viewmodel.dart';
+import 'package:notredame/ui/widgets/news_card.dart';
+import 'package:notredame/ui/widgets/news_card_skeleton.dart';
 
 class NewsView extends StatefulWidget {
   @override
