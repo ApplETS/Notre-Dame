@@ -35,16 +35,15 @@ class NavigationService {
   Future<dynamic> pushNamed(String routeName, {dynamic arguments}) {
     final currentState = _navigatorKey.currentState;
 
-    if(currentState == null) {
+    if (currentState == null) {
       return Future.error("Navigator state is null");
     }
 
     if (remoteConfigService.outage) {
-      return currentState
-          .pushNamedAndRemoveUntil(RouterPaths.serviceOutage, (route) => false);
+      return currentState.pushNamedAndRemoveUntil(
+          RouterPaths.serviceOutage, (route) => false);
     }
-    return currentState
-        .pushNamed(routeName, arguments: arguments);
+    return currentState.pushNamed(routeName, arguments: arguments);
   }
 
   /// Replace the current route of the navigator by pushing the route named
@@ -52,15 +51,14 @@ class NavigationService {
   Future<dynamic> pushNamedAndRemoveUntil(String routeName,
       [String removeUntilRouteNamed = RouterPaths.dashboard,
       Object? arguments]) {
-    
     final currentState = _navigatorKey.currentState;
-    if(currentState == null) {
+    if (currentState == null) {
       return Future.error("Navigator state is null");
     }
 
     if (remoteConfigService.outage) {
-      return currentState
-          .pushNamedAndRemoveUntil(RouterPaths.serviceOutage, (route) => false);
+      return currentState.pushNamedAndRemoveUntil(
+          RouterPaths.serviceOutage, (route) => false);
     }
     return currentState.pushNamedAndRemoveUntil(
         routeName, ModalRoute.withName(removeUntilRouteNamed),

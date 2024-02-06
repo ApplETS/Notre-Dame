@@ -78,8 +78,8 @@ class _NotFoundState extends State<NotFoundView> {
                             bottom: 70,
                           ),
                           child: Text(
-                            AppIntl.of(context)
-                                !.not_found_message(model.notFoundPageName),
+                            AppIntl.of(context)!
+                                .not_found_message(model.notFoundPageName),
                             textAlign: TextAlign.center,
                             style: const TextStyle(
                               fontSize: 15,

@@ -89,8 +89,7 @@ void main() {
         // Stub a user
         UserRepositoryMock.stubMonETSUser(userRepositoryMock,
             MonETSUser(domain: '', typeUsagerId: 0, username: username));
-        UserRepositoryMock.stubGetPassword(
-            userRepositoryMock, "password");
+        UserRepositoryMock.stubGetPassword(userRepositoryMock, "password");
 
         // Stub some sessions
         CacheManagerMock.stubGet(cacheManagerMock,
@@ -150,8 +149,8 @@ void main() {
           "Trying to recover activities from cache but an exception is raised.",
           () async {
         // Stub the cache to throw an exception
-        CacheManagerMock.stubGetException(cacheManagerMock,
-            CourseRepository.coursesActivitiesCacheKey);
+        CacheManagerMock.stubGetException(
+            cacheManagerMock, CourseRepository.coursesActivitiesCacheKey);
 
         // Stub the SignetsAPI to return 0 activities
         SignetsAPIClientMock.stubGetCoursesActivities(
@@ -174,7 +173,8 @@ void main() {
               username: username,
               password: anyNamed("password"),
               session: session.shortName),
-          cacheManagerMock.update(CourseRepository.coursesActivitiesCacheKey, any)
+          cacheManagerMock.update(
+              CourseRepository.coursesActivitiesCacheKey, any)
         ]);
 
         verify(signetsApiMock.getSessions(
@@ -215,7 +215,8 @@ void main() {
               username: username,
               password: anyNamed("password"),
               session: session.shortName),
-          cacheManagerMock.update(CourseRepository.coursesActivitiesCacheKey, any)
+          cacheManagerMock.update(
+              CourseRepository.coursesActivitiesCacheKey, any)
         ]);
 
         verifyNoMoreInteractions(signetsApiMock);
@@ -224,8 +225,7 @@ void main() {
       test("getSessions fails", () async {
         // Stub SignetsApi to throw an exception
         reset(signetsApiMock);
-        SignetsAPIClientMock.stubGetSessionsException(
-            signetsApiMock, username);
+        SignetsAPIClientMock.stubGetSessionsException(signetsApiMock, username);
 
         // Stub the cache to return 1 activity
         CacheManagerMock.stubGet(cacheManagerMock,
@@ -266,10 +266,9 @@ void main() {
 
         // Stub an authentication error
         reset(userRepositoryMock);
-        UserRepositoryMock.stubGetPasswordException(
-            userRepositoryMock);
-        UserRepositoryMock.stubMonETSUser(
-            userRepositoryMock, MonETSUser(domain: '', typeUsagerId: 0, username: username));
+        UserRepositoryMock.stubGetPasswordException(userRepositoryMock);
+        UserRepositoryMock.stubMonETSUser(userRepositoryMock,
+            MonETSUser(domain: '', typeUsagerId: 0, username: username));
 
         expect(manager.getCoursesActivities(),
             throwsA(isInstanceOf<ApiException>()));
@@ -311,9 +310,7 @@ void main() {
 
         // Stub the SignetsAPI to return 2 activities
         SignetsAPIClientMock.stubGetCoursesActivities(
-            signetsApiMock,
-            session.shortName,
-            [activity, courseActivity]);
+            signetsApiMock, session.shortName, [activity, courseActivity]);
 
         expect(manager.coursesActivities, isNull);
         final List<CourseActivity>? results =
@@ -395,9 +392,7 @@ void main() {
 
         // Stub the SignetsAPI to return the same activity as the cache
         SignetsAPIClientMock.stubGetCoursesActivities(
-            signetsApiMock,
-            session.shortName,
-            [changedActivity]);
+            signetsApiMock, session.shortName, [changedActivity]);
 
         expect(manager.coursesActivities, isNull);
         final List<CourseActivity>? results =
@@ -465,8 +460,8 @@ void main() {
         SignetsAPIClientMock.stubGetCoursesActivities(
             signetsApiMock, session.shortName, activities);
 
-        CacheManagerMock.stubUpdateException(cacheManagerMock,
-            CourseRepository.coursesActivitiesCacheKey);
+        CacheManagerMock.stubUpdateException(
+            cacheManagerMock, CourseRepository.coursesActivitiesCacheKey);
 
         expect(manager.coursesActivities, isNull);
         final List<CourseActivity>? results =
@@ -541,8 +536,7 @@ void main() {
         // Stub a user
         UserRepositoryMock.stubMonETSUser(userRepositoryMock,
             MonETSUser(domain: '', typeUsagerId: 0, username: username));
-        UserRepositoryMock.stubGetPassword(
-            userRepositoryMock, "password");
+        UserRepositoryMock.stubGetPassword(userRepositoryMock, "password");
 
         // Stub some sessions
         CacheManagerMock.stubGet(cacheManagerMock,
@@ -582,7 +576,8 @@ void main() {
               username: username,
               password: anyNamed("password"),
               session: session.shortName),
-          cacheManagerMock.update(CourseRepository.scheduleActivitiesCacheKey, any)
+          cacheManagerMock.update(
+              CourseRepository.scheduleActivitiesCacheKey, any)
         ]);
       });
 
@@ -614,8 +609,8 @@ void main() {
           "Trying to recover activities from cache but an exception is raised.",
           () async {
         // Stub the cache to throw an exception
-        CacheManagerMock.stubGetException(cacheManagerMock,
-            CourseRepository.scheduleActivitiesCacheKey);
+        CacheManagerMock.stubGetException(
+            cacheManagerMock, CourseRepository.scheduleActivitiesCacheKey);
 
         // Stub the SignetsAPI to return 0 activities
         SignetsAPIClientMock.stubGetScheduleActivities(
@@ -638,7 +633,8 @@ void main() {
               username: username,
               password: anyNamed("password"),
               session: session.shortName),
-          cacheManagerMock.update(CourseRepository.scheduleActivitiesCacheKey, any)
+          cacheManagerMock.update(
+              CourseRepository.scheduleActivitiesCacheKey, any)
         ]);
 
         verify(signetsApiMock.getSessions(
@@ -681,7 +677,8 @@ void main() {
               username: username,
               password: anyNamed("password"),
               session: session.shortName),
-          cacheManagerMock.update(CourseRepository.scheduleActivitiesCacheKey, any)
+          cacheManagerMock.update(
+              CourseRepository.scheduleActivitiesCacheKey, any)
         ]);
 
         verifyNoMoreInteractions(signetsApiMock);
@@ -690,8 +687,7 @@ void main() {
       test("getSessions fails", () async {
         // Stub SignetsApi to throw an exception
         reset(signetsApiMock);
-        SignetsAPIClientMock.stubGetSessionsException(
-            signetsApiMock, username);
+        SignetsAPIClientMock.stubGetSessionsException(signetsApiMock, username);
 
         // Stub the cache to return 1 activity
         CacheManagerMock.stubGet(
@@ -734,10 +730,9 @@ void main() {
 
         // Stub an authentication error
         reset(userRepositoryMock);
-        UserRepositoryMock.stubGetPasswordException(
-            userRepositoryMock);
-        UserRepositoryMock.stubMonETSUser(
-            userRepositoryMock, MonETSUser(domain: '', typeUsagerId: 0, username: username));
+        UserRepositoryMock.stubGetPasswordException(userRepositoryMock);
+        UserRepositoryMock.stubMonETSUser(userRepositoryMock,
+            MonETSUser(domain: '', typeUsagerId: 0, username: username));
 
         expect(manager.getScheduleActivities(),
             throwsA(isInstanceOf<ApiException>()));
@@ -772,9 +767,7 @@ void main() {
 
         // Stub the SignetsAPI to return the same activity as the cache
         SignetsAPIClientMock.stubGetScheduleActivities(
-            signetsApiMock,
-            session.shortName,
-            scheduleActivities);
+            signetsApiMock, session.shortName, scheduleActivities);
 
         expect(manager.scheduleActivities, isNull);
         final List<ScheduleActivity> results =
@@ -861,12 +854,9 @@ void main() {
             CourseRepository.sessionsCacheKey, jsonEncode(sessions));
 
         // Stub SignetsApi answer to test only the cache retrieving
-        SignetsAPIClientMock.stubGetSessions(
-            signetsApiMock, username, []);
-        UserRepositoryMock.stubMonETSUser(
-            userRepositoryMock, user);
-        UserRepositoryMock.stubGetPassword(
-            userRepositoryMock, password);
+        SignetsAPIClientMock.stubGetSessions(signetsApiMock, username, []);
+        UserRepositoryMock.stubMonETSUser(userRepositoryMock, user);
+        UserRepositoryMock.stubGetPassword(userRepositoryMock, password);
 
         // Stub to simulate that the user has an active internet connection
         NetworkingServiceMock.stubHasConnectivity(networkingServiceMock);
@@ -895,8 +885,8 @@ void main() {
           () async {
         // Stub to simulate an exception when trying to get the sessions from the cache
         reset(cacheManagerMock);
-        CacheManagerMock.stubGetException(cacheManagerMock,
-            CourseRepository.sessionsCacheKey);
+        CacheManagerMock.stubGetException(
+            cacheManagerMock, CourseRepository.sessionsCacheKey);
 
         expect(manager.sessions, isNull);
         final results = await manager.getSessions();
@@ -910,7 +900,8 @@ void main() {
           userRepositoryMock.getPassword(),
           userRepositoryMock.monETSUser,
           signetsApiMock.getSessions(username: username, password: password),
-          cacheManagerMock.update(CourseRepository.sessionsCacheKey, jsonEncode([]))
+          cacheManagerMock.update(
+              CourseRepository.sessionsCacheKey, jsonEncode([]))
         ]);
       });
 
@@ -974,8 +965,7 @@ void main() {
             CourseRepository.sessionsCacheKey, jsonEncode([]));
 
         // Stub SignetsApi answer to test only the cache retrieving
-        SignetsAPIClientMock.stubGetSessionsException(
-            signetsApiMock, username);
+        SignetsAPIClientMock.stubGetSessionsException(signetsApiMock, username);
 
         expect(manager.sessions, isNull);
         expect(manager.getSessions(), throwsA(isInstanceOf<ApiException>()));
@@ -1004,8 +994,8 @@ void main() {
             CourseRepository.sessionsCacheKey, jsonEncode([]));
 
         // Stub to simulate exception when updating cache
-        CacheManagerMock.stubUpdateException(cacheManagerMock,
-            CourseRepository.sessionsCacheKey);
+        CacheManagerMock.stubUpdateException(
+            cacheManagerMock, CourseRepository.sessionsCacheKey);
 
         // Stub SignetsApi answer to test only the cache retrieving
         SignetsAPIClientMock.stubGetSessions(
@@ -1035,8 +1025,7 @@ void main() {
             CourseRepository.sessionsCacheKey, jsonEncode([]));
 
         // Stub UserRepository to throw a exception
-        UserRepositoryMock.stubGetPasswordException(
-            userRepositoryMock);
+        UserRepositoryMock.stubGetPasswordException(userRepositoryMock);
 
         expect(manager.sessions, isNull);
         expect(manager.getSessions(), throwsA(isInstanceOf<ApiException>()));
@@ -1117,8 +1106,7 @@ void main() {
             signetsApiMock, username, sessions);
         UserRepositoryMock.stubMonETSUser(userRepositoryMock,
             MonETSUser(domain: '', typeUsagerId: 0, username: username));
-        UserRepositoryMock.stubGetPassword(
-            userRepositoryMock, password);
+        UserRepositoryMock.stubGetPassword(userRepositoryMock, password);
         CacheManagerMock.stubGet(cacheManagerMock,
             CourseRepository.sessionsCacheKey, jsonEncode(sessions));
         NetworkingServiceMock.stubHasConnectivity(networkingServiceMock);
@@ -1151,8 +1139,7 @@ void main() {
             signetsApiMock, username, sessions);
         UserRepositoryMock.stubMonETSUser(userRepositoryMock,
             MonETSUser(domain: '', typeUsagerId: 0, username: username));
-        UserRepositoryMock.stubGetPassword(
-            userRepositoryMock, password);
+        UserRepositoryMock.stubGetPassword(userRepositoryMock, password);
         CacheManagerMock.stubGet(cacheManagerMock,
             CourseRepository.sessionsCacheKey, jsonEncode(sessions));
         NetworkingServiceMock.stubHasConnectivity(networkingServiceMock);
@@ -1185,8 +1172,7 @@ void main() {
             signetsApiMock, username, sessions);
         UserRepositoryMock.stubMonETSUser(userRepositoryMock,
             MonETSUser(domain: '', typeUsagerId: 0, username: username));
-        UserRepositoryMock.stubGetPassword(
-            userRepositoryMock, password);
+        UserRepositoryMock.stubGetPassword(userRepositoryMock, password);
         CacheManagerMock.stubGet(cacheManagerMock,
             CourseRepository.sessionsCacheKey, jsonEncode(sessions));
         NetworkingServiceMock.stubHasConnectivity(networkingServiceMock);
@@ -1197,12 +1183,10 @@ void main() {
       });
 
       test("there is no session", () async {
-        SignetsAPIClientMock.stubGetSessions(
-            signetsApiMock, username, []);
+        SignetsAPIClientMock.stubGetSessions(signetsApiMock, username, []);
         UserRepositoryMock.stubMonETSUser(userRepositoryMock,
             MonETSUser(domain: '', typeUsagerId: 0, username: username));
-        UserRepositoryMock.stubGetPassword(
-            userRepositoryMock, password);
+        UserRepositoryMock.stubGetPassword(userRepositoryMock, password);
         CacheManagerMock.stubGet(cacheManagerMock,
             CourseRepository.sessionsCacheKey, jsonEncode([]));
         NetworkingServiceMock.stubHasConnectivity(networkingServiceMock);
@@ -1283,8 +1267,7 @@ void main() {
         // Stub a user
         UserRepositoryMock.stubMonETSUser(userRepositoryMock,
             MonETSUser(domain: '', typeUsagerId: 0, username: username));
-        UserRepositoryMock.stubGetPassword(
-            userRepositoryMock, "password");
+        UserRepositoryMock.stubGetPassword(userRepositoryMock, "password");
 
         // Stub some sessions
         SignetsAPIClientMock.stubGetSessions(
@@ -1297,11 +1280,9 @@ void main() {
       });
 
       test("Courses are loaded from cache and cache is updated", () async {
-        SignetsAPIClientMock.stubGetCourses(
-            signetsApiMock, username,
+        SignetsAPIClientMock.stubGetCourses(signetsApiMock, username,
             coursesToReturn: [courseWithGrade]);
-        SignetsAPIClientMock.stubGetCourseReviews(
-            signetsApiMock, username);
+        SignetsAPIClientMock.stubGetCourseReviews(signetsApiMock, username);
         CacheManagerMock.stubGet(cacheManagerMock,
             CourseRepository.coursesCacheKey, jsonEncode([courseWithGrade]));
 
@@ -1371,11 +1352,9 @@ void main() {
             cacheManagerMock,
             CourseRepository.coursesCacheKey,
             jsonEncode([courseWithGrade, courseWithGradeDuplicate]));
-        SignetsAPIClientMock.stubGetCourses(
-            signetsApiMock, username,
+        SignetsAPIClientMock.stubGetCourses(signetsApiMock, username,
             coursesToReturn: [courseFetched, courseWithGradeDuplicate]);
-        SignetsAPIClientMock.stubGetCourseReviews(
-            signetsApiMock, username);
+        SignetsAPIClientMock.stubGetCourseReviews(signetsApiMock, username);
 
         expect(manager.courses, isNull);
         final results = await manager.getCourses();
@@ -1398,8 +1377,7 @@ void main() {
       test("Trying to recover courses from cache failed (exception raised)",
           () async {
         expect(manager.courses, isNull);
-        SignetsAPIClientMock.stubGetCourses(
-            signetsApiMock, username);
+        SignetsAPIClientMock.stubGetCourses(signetsApiMock, username);
         CacheManagerMock.stubGetException(
             cacheManagerMock, CourseRepository.coursesCacheKey);
 
@@ -1420,10 +1398,9 @@ void main() {
 
       test("Signets raised an exception while trying to recover courses",
           () async {
-        CacheManagerMock.stubGet(cacheManagerMock,
-            CourseRepository.coursesCacheKey, jsonEncode([]));
-        SignetsAPIClientMock.stubGetCoursesException(
-            signetsApiMock, username);
+        CacheManagerMock.stubGet(
+            cacheManagerMock, CourseRepository.coursesCacheKey, jsonEncode([]));
+        SignetsAPIClientMock.stubGetCoursesException(signetsApiMock, username);
 
         expect(manager.courses, isNull);
 
@@ -1453,8 +1430,7 @@ void main() {
           () async {
         CacheManagerMock.stubGet(cacheManagerMock,
             CourseRepository.coursesCacheKey, jsonEncode([courseWithoutGrade]));
-        SignetsAPIClientMock.stubGetCoursesException(
-            signetsApiMock, username);
+        SignetsAPIClientMock.stubGetCoursesException(signetsApiMock, username);
 
         expect(manager.courses, isNull);
 
@@ -1506,16 +1482,14 @@ void main() {
             title: 'Cours générique',
             summary: summary);
 
-        SignetsAPIClientMock.stubGetCourses(
-            signetsApiMock, username,
+        SignetsAPIClientMock.stubGetCourses(signetsApiMock, username,
             coursesToReturn: [courseFetched]);
-        SignetsAPIClientMock.stubGetCourseReviews(
-            signetsApiMock, username);
+        SignetsAPIClientMock.stubGetCourseReviews(signetsApiMock, username);
         SignetsAPIClientMock.stubGetCourseSummary(
             signetsApiMock, username, courseFetched,
             summaryToReturn: summary);
-        CacheManagerMock.stubGet(cacheManagerMock,
-            CourseRepository.coursesCacheKey, jsonEncode([]));
+        CacheManagerMock.stubGet(
+            cacheManagerMock, CourseRepository.coursesCacheKey, jsonEncode([]));
 
         expect(manager.courses, isNull);
         final results = await manager.getCourses();
@@ -1546,15 +1520,13 @@ void main() {
             numberOfCredits: 3,
             title: 'Cours générique');
 
-        SignetsAPIClientMock.stubGetCourses(
-            signetsApiMock, username,
+        SignetsAPIClientMock.stubGetCourses(signetsApiMock, username,
             coursesToReturn: [courseFetched]);
-        SignetsAPIClientMock.stubGetCourseReviews(
-            signetsApiMock, username);
+        SignetsAPIClientMock.stubGetCourseReviews(signetsApiMock, username);
         SignetsAPIClientMock.stubGetCourseSummaryException(
             signetsApiMock, username, courseFetched);
-        CacheManagerMock.stubGet(cacheManagerMock,
-            CourseRepository.coursesCacheKey, jsonEncode([]));
+        CacheManagerMock.stubGet(
+            cacheManagerMock, CourseRepository.coursesCacheKey, jsonEncode([]));
 
         expect(manager.courses, isNull);
         final results = await manager.getCourses();
@@ -1578,11 +1550,9 @@ void main() {
 
       test("Cache update fails, should still return the list of courses",
           () async {
-        SignetsAPIClientMock.stubGetCourses(
-            signetsApiMock, username,
+        SignetsAPIClientMock.stubGetCourses(signetsApiMock, username,
             coursesToReturn: [courseWithGrade]);
-        SignetsAPIClientMock.stubGetCourseReviews(
-            signetsApiMock, username);
+        SignetsAPIClientMock.stubGetCourseReviews(signetsApiMock, username);
         CacheManagerMock.stubGet(cacheManagerMock,
             CourseRepository.coursesCacheKey, jsonEncode([courseWithGrade]));
         CacheManagerMock.stubUpdateException(
@@ -1610,12 +1580,11 @@ void main() {
       test("UserRepository return an exception", () async {
         // Stub to simulate presence of session cache
         reset(cacheManagerMock);
-        CacheManagerMock.stubGet(cacheManagerMock,
-            CourseRepository.coursesCacheKey, jsonEncode([]));
+        CacheManagerMock.stubGet(
+            cacheManagerMock, CourseRepository.coursesCacheKey, jsonEncode([]));
 
         // Stub UserRepository to throw a exception
-        UserRepositoryMock.stubGetPasswordException(
-            userRepositoryMock);
+        UserRepositoryMock.stubGetPasswordException(userRepositoryMock);
 
         expect(manager.sessions, isNull);
         expect(manager.getCourses(), throwsA(isInstanceOf<ApiException>()));
@@ -1634,7 +1603,8 @@ void main() {
 
         verifyNever(signetsApiMock.getCourses(
             username: anyNamed("username"), password: anyNamed("password")));
-        verifyNever(cacheManagerMock.update(CourseRepository.coursesCacheKey, any));
+        verifyNever(
+            cacheManagerMock.update(CourseRepository.coursesCacheKey, any));
       });
 
       test("Should force fromCacheOnly mode when user has no connectivity",
@@ -1662,14 +1632,12 @@ void main() {
             numberOfCredits: 3,
             title: 'Cours générique');
 
-        SignetsAPIClientMock.stubGetCourses(
-            signetsApiMock, username,
+        SignetsAPIClientMock.stubGetCourses(signetsApiMock, username,
             coursesToReturn: [courseFetched]);
-        SignetsAPIClientMock.stubGetCourseReviews(
-            signetsApiMock, username,
+        SignetsAPIClientMock.stubGetCourseReviews(signetsApiMock, username,
             session: session);
-        CacheManagerMock.stubGet(cacheManagerMock,
-            CourseRepository.coursesCacheKey, jsonEncode([]));
+        CacheManagerMock.stubGet(
+            cacheManagerMock, CourseRepository.coursesCacheKey, jsonEncode([]));
 
         expect(manager.courses, isNull);
         final results = await manager.getCourses();
@@ -1721,14 +1689,12 @@ void main() {
             title: 'Cours générique',
             review: review);
 
-        SignetsAPIClientMock.stubGetCourses(
-            signetsApiMock, username,
+        SignetsAPIClientMock.stubGetCourses(signetsApiMock, username,
             coursesToReturn: [courseFetched]);
-        SignetsAPIClientMock.stubGetCourseReviews(
-            signetsApiMock, username,
+        SignetsAPIClientMock.stubGetCourseReviews(signetsApiMock, username,
             session: session, reviewsToReturn: [review]);
-        CacheManagerMock.stubGet(cacheManagerMock,
-            CourseRepository.coursesCacheKey, jsonEncode([]));
+        CacheManagerMock.stubGet(
+            cacheManagerMock, CourseRepository.coursesCacheKey, jsonEncode([]));
 
         expect(manager.courses, isNull);
         final results = await manager.getCourses();
@@ -1760,14 +1726,13 @@ void main() {
             numberOfCredits: 3,
             title: 'Cours générique');
 
-        SignetsAPIClientMock.stubGetCourses(
-            signetsApiMock, username,
+        SignetsAPIClientMock.stubGetCourses(signetsApiMock, username,
             coursesToReturn: [courseFetched]);
         SignetsAPIClientMock.stubGetCourseReviewsException(
             signetsApiMock, username,
             session: session);
-        CacheManagerMock.stubGet(cacheManagerMock,
-            CourseRepository.coursesCacheKey, jsonEncode([]));
+        CacheManagerMock.stubGet(
+            cacheManagerMock, CourseRepository.coursesCacheKey, jsonEncode([]));
 
         expect(manager.courses, isNull);
         final results = await manager.getCourses();
@@ -1802,8 +1767,7 @@ void main() {
         // Stub a user
         UserRepositoryMock.stubMonETSUser(userRepositoryMock,
             MonETSUser(domain: '', typeUsagerId: 0, username: username));
-        UserRepositoryMock.stubGetPassword(
-            userRepositoryMock, "password");
+        UserRepositoryMock.stubGetPassword(userRepositoryMock, "password");
 
         // Reset models
         course = Course(
@@ -1958,12 +1922,11 @@ void main() {
       test("UserRepository return an exception", () async {
         // Stub to simulate presence of session cache
         reset(cacheManagerMock);
-        CacheManagerMock.stubGet(cacheManagerMock,
-            CourseRepository.coursesCacheKey, jsonEncode([]));
+        CacheManagerMock.stubGet(
+            cacheManagerMock, CourseRepository.coursesCacheKey, jsonEncode([]));
 
         // Stub UserRepository to throw a exception
-        UserRepositoryMock.stubGetPasswordException(
-            userRepositoryMock);
+        UserRepositoryMock.stubGetPasswordException(userRepositoryMock);
 
         expect(manager.sessions, isNull);
         expect(manager.getCourseSummary(course),

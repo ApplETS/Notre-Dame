@@ -53,7 +53,7 @@ class NotFoundViewModel extends BaseViewModel {
 
   void startRiveAnimation() {
     try {
-      if(artboard != null) {
+      if (artboard != null) {
         _riveAnimationService.addControllerToAnimation(artboard: _artboard!);
       }
     } on Exception catch (e, stacktrace) {

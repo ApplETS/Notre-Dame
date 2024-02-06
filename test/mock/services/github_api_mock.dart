@@ -27,9 +27,11 @@ class GithubApiMock extends MockGithubApi {
   }
 
   static void stubCreateGithubIssue(GithubApiMock client, Issue toReturn) {
-    when(client.createGithubIssue(feedbackText: anyNamed("feedbackText"),
-        fileName: anyNamed("fileName"), feedbackType: anyNamed("feedbackType"),
-        email: anyNamed("email")))
+    when(client.createGithubIssue(
+            feedbackText: anyNamed("feedbackText"),
+            fileName: anyNamed("fileName"),
+            feedbackType: anyNamed("feedbackType"),
+            email: anyNamed("email")))
         .thenAnswer((_) async => Future.value(toReturn));
   }
 }

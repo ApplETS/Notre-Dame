@@ -74,7 +74,8 @@ class SettingsManagerMock extends MockSettingsManager {
   }
 
   /// Stub the [dateTimeNow] function of [mock], when called return [toReturn].
-  static void stubDateTimeNow(SettingsManagerMock mock, {required DateTime toReturn}) {
+  static void stubDateTimeNow(SettingsManagerMock mock,
+      {required DateTime toReturn}) {
     // ignore: cast_nullable_to_non_nullable
     when(mock.dateTimeNow).thenReturn(toReturn);
   }

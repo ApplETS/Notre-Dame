@@ -46,8 +46,7 @@ void main() {
     setUp(() async {
       setupNavigationServiceMock();
       githubApiMock = setupGithubApiMock();
-      preferencesServiceMock =
-          setupPreferencesServiceMock();
+      preferencesServiceMock = setupPreferencesServiceMock();
       appIntl = await setupAppIntl();
       setupLogger();
       GithubApiMock.stubCreateGithubIssue(githubApiMock, Issue());

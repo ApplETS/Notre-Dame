@@ -26,7 +26,7 @@ class SettingsViewModel extends FutureViewModel {
 
   /// Set theme
   set selectedTheme(ThemeMode? value) {
-    if(value != null) {
+    if (value != null) {
       _settingsManager.setThemeMode(value);
       _selectedTheme = value;
     }

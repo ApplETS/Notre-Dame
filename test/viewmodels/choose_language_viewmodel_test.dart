@@ -44,7 +44,8 @@ void main() {
         verify(settingsManagerMock
             .setLocale(AppIntl.supportedLocales.first.languageCode));
         verify(navigationServiceMock.pop());
-        verify(navigationServiceMock.pushNamedAndRemoveUntil(RouterPaths.login));
+        verify(
+            navigationServiceMock.pushNamedAndRemoveUntil(RouterPaths.login));
       });
 
       test('can set language français', () async {
@@ -56,7 +57,8 @@ void main() {
         verify(settingsManagerMock
             .setLocale(AppIntl.supportedLocales.last.languageCode));
         verify(navigationServiceMock.pop());
-        verify(navigationServiceMock.pushNamedAndRemoveUntil(RouterPaths.login));
+        verify(
+            navigationServiceMock.pushNamedAndRemoveUntil(RouterPaths.login));
       });
 
       test('throws an error when index does not exist', () async {
