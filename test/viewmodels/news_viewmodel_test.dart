@@ -23,7 +23,7 @@ void main() {
   late NewsRepositoryMock newsRepository;
   late AppIntl appIntl;
 
-  List<News> news = [
+  final List<News> news = [
     News(
       id: 1,
       title: 'Mock News 1',
@@ -64,8 +64,8 @@ void main() {
       await viewModel.futureToRun();
 
       expect(viewModel.news, hasLength(2));
-      expect(viewModel.news?[0].title, equals('Mock News 1'));
-      expect(viewModel.news?[1].title, equals('Mock News 2'));
+      expect(viewModel.news[0].title, equals('Mock News 1'));
+      expect(viewModel.news[1].title, equals('Mock News 2'));
       expect(viewModel.isBusy, isFalse);
     });
   });

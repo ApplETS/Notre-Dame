@@ -32,10 +32,8 @@ class _NewsViewState extends State<NewsView> {
                       ? _buildSkeletonLoader()
                       : ListView(
                           padding: const EdgeInsets.fromLTRB(0, 4, 0, 8),
-                          children: model.news
-                                  ?.map((news) => NewsCard(news))
-                                  .toList() ??
-                              [],
+                          children:
+                              model.news.map((news) => NewsCard(news)).toList(),
                         ),
                 ));
           });
@@ -43,7 +41,7 @@ class _NewsViewState extends State<NewsView> {
   Widget _buildSkeletonLoader() {
     return ListView.builder(
       itemCount: 3,
-      itemBuilder: (context, index) => const NewsCardSkeleton(),
+      itemBuilder: (context, index) => NewsCardSkeleton(),
     );
   }
 }

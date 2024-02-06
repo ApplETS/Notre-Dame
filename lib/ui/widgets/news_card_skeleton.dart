@@ -3,8 +3,6 @@ import 'package:shimmer/shimmer.dart';
 import 'package:notredame/ui/utils/app_theme.dart';
 
 class NewsCardSkeleton extends StatelessWidget {
-  const NewsCardSkeleton({Key? key}) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
     return Card(
