@@ -15,7 +15,7 @@ void main() {
   late HomeWidgetMock homeWidgetMock;
 
   late AppWidgetService service;
-  
+
   group("AppWidgetServiceTest - ", () {
     setUp(() {
       setupAnalyticsServiceMock();

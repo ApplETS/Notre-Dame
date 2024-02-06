@@ -20,7 +20,8 @@ void main() {
       setupNavigationServiceMock();
       setupAnalyticsServiceMock();
       final riveAnimationMock = setupRiveAnimationServiceMock();
-      RiveAnimationServiceMock.stubLoadRiveFile(riveAnimationMock, 'dot_jumping', RuntimeArtboard());
+      RiveAnimationServiceMock.stubLoadRiveFile(
+          riveAnimationMock, 'dot_jumping', RuntimeArtboard());
     });
 
     tearDown(() {});

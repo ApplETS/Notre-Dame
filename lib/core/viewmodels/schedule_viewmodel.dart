@@ -176,11 +176,13 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
 
   @override
   Future<List<CourseActivity>> futureToRun() async {
-    List<CourseActivity>? activities = await _courseRepository.getCoursesActivities(fromCacheOnly: true);
+    List<CourseActivity>? activities =
+        await _courseRepository.getCoursesActivities(fromCacheOnly: true);
     try {
       setBusyForObject(isLoadingEvents, true);
 
-      final fetchedCourseActivities = await _courseRepository.getCoursesActivities();
+      final fetchedCourseActivities =
+          await _courseRepository.getCoursesActivities();
       if (fetchedCourseActivities != null) {
         activities = fetchedCourseActivities;
         // Reload the list of activities
@@ -196,16 +198,16 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
           }
         }
       }
-      final scheduleActivities = await _courseRepository.getScheduleActivities();
+      final scheduleActivities =
+          await _courseRepository.getScheduleActivities();
       await assignScheduleActivities(scheduleActivities);
-    } catch(e) {
+    } catch (e) {
       onError(e);
     } finally {
       setBusyForObject(isLoadingEvents, false);
     }
     return activities ?? [];
   }
-
 
   Future assignScheduleActivities(
       List<ScheduleActivity> listOfSchedules) async {
@@ -273,7 +275,8 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
 
     // Build the map
     if (_courseRepository.coursesActivities != null) {
-      for (final CourseActivity course in _courseRepository.coursesActivities!) {
+      for (final CourseActivity course
+          in _courseRepository.coursesActivities!) {
         final DateTime dateOnly = course.startDateTime.subtract(Duration(
             hours: course.startDateTime.hour,
             minutes: course.startDateTime.minute));

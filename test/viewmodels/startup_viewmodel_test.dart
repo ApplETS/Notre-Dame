@@ -38,14 +38,11 @@ void main() {
       setupAnalyticsServiceMock();
       navigationServiceMock = setupNavigationServiceMock();
       settingsManagerMock = setupSettingsManagerMock();
-      preferencesServiceMock =
-          setupPreferencesServiceMock();
+      preferencesServiceMock = setupPreferencesServiceMock();
       userRepositoryMock = setupUserRepositoryMock();
       networkingServiceMock = setupNetworkingServiceMock();
-      internalInfoServiceMock =
-          setupInternalInfoServiceMock();
-      sirenFlutterServiceMock =
-          setupSirenFlutterServiceMock();
+      internalInfoServiceMock = setupInternalInfoServiceMock();
+      sirenFlutterServiceMock = setupSirenFlutterServiceMock();
       setupLogger();
 
       viewModel = StartUpViewModel();

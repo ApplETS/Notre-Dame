@@ -32,7 +32,8 @@ class GradeButton extends StatelessWidget {
   Widget build(BuildContext context) => Card(
         child: InkWell(
           onTap: () async {
-            if (ModalRoute.of(context)!.settings.name == RouterPaths.dashboard ||
+            if (ModalRoute.of(context)!.settings.name ==
+                    RouterPaths.dashboard ||
                 await _settingsManager
                         .getBool(PreferencesFlag.discoveryStudentGrade) ==
                     true) {
@@ -89,8 +90,8 @@ class GradeButton extends StatelessWidget {
                                 course.acronym,
                                 style: Theme.of(context)
                                     .textTheme
-                                    .bodyText1
-                                    !.copyWith(color: Colors.white),
+                                    .bodyText1!
+                                    .copyWith(color: Colors.white),
                               ),
                             ),
                           ),

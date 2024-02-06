@@ -128,7 +128,7 @@ class CourseRepository {
         await getSessions();
       }
 
-      if(_userRepository.monETSUser != null) {
+      if (_userRepository.monETSUser != null) {
         final String password = await _userRepository.getPassword();
         for (final Session session in activeSessions) {
           fetchedCoursesActivities.addAll(
@@ -159,7 +159,8 @@ class CourseRepository {
 
     // Update the list of activities to avoid duplicate activities
     for (final CourseActivity activity in fetchedCoursesActivities) {
-      if (_coursesActivities != null && !_coursesActivities!.contains(activity)) {
+      if (_coursesActivities != null &&
+          !_coursesActivities!.contains(activity)) {
         _coursesActivities!.add(activity);
       }
     }
@@ -220,7 +221,7 @@ class CourseRepository {
         await getSessions();
       }
 
-      if(_userRepository.monETSUser != null) {
+      if (_userRepository.monETSUser != null) {
         final String password = await _userRepository.getPassword();
 
         for (final Session session in activeSessions) {
@@ -243,7 +244,8 @@ class CourseRepository {
 
     // Update the list of activities to avoid duplicate activities
     for (final ScheduleActivity activity in fetchedScheduleActivities) {
-      if (_scheduleActivities != null && !_scheduleActivities!.contains(activity)) {
+      if (_scheduleActivities != null &&
+          !_scheduleActivities!.contains(activity)) {
         _scheduleActivities!.add(activity);
       }
     }
@@ -290,15 +292,16 @@ class CourseRepository {
     }
 
     try {
-      if(_userRepository.monETSUser != null) {
+      if (_userRepository.monETSUser != null) {
         // getPassword will try to authenticate the user if not authenticated.
         final String password = await _userRepository.getPassword();
 
-        final List<Session> fetchedSession = await _signetsApiClient.getSessions(
-            username: _userRepository.monETSUser!.universalCode,
-            password: password);
-        _logger
-            .d("$tag - getSessions: ${fetchedSession.length} sessions fetched.");
+        final List<Session> fetchedSession =
+            await _signetsApiClient.getSessions(
+                username: _userRepository.monETSUser!.universalCode,
+                password: password);
+        _logger.d(
+            "$tag - getSessions: ${fetchedSession.length} sessions fetched.");
         for (final Session session in fetchedSession) {
           if (!_sessions!.contains(session)) {
             _sessions!.add(session);
@@ -358,13 +361,14 @@ class CourseRepository {
     final Map<String, List<CourseReview>> fetchedCourseReviews = {};
 
     try {
-      if(_userRepository.monETSUser != null) {
+      if (_userRepository.monETSUser != null) {
         final String password = await _userRepository.getPassword();
 
         fetchedCourses.addAll(await _signetsApiClient.getCourses(
             username: _userRepository.monETSUser!.universalCode,
             password: password));
-        _logger.d("$tag - getCourses: fetched ${fetchedCourses.length} courses.");
+        _logger
+            .d("$tag - getCourses: fetched ${fetchedCourses.length} courses.");
       }
     } on Exception catch (e, stacktrace) {
       _analyticsService.logError(
@@ -423,14 +427,15 @@ class CourseRepository {
     }
 
     try {
-      if(_userRepository.monETSUser != null) {
+      if (_userRepository.monETSUser != null) {
         final String password = await _userRepository.getPassword();
 
         summary = await _signetsApiClient.getCourseSummary(
             username: _userRepository.monETSUser!.universalCode,
             password: password,
             course: course);
-        _logger.d("$tag - getCourseSummary: fetched ${course.acronym} summary.");
+        _logger
+            .d("$tag - getCourseSummary: fetched ${course.acronym} summary.");
       }
     } on Exception catch (e, stacktrace) {
       if (e is ApiException) {
@@ -481,7 +486,7 @@ class CourseRepository {
         await getSessions();
       }
 
-      if(_userRepository.monETSUser != null) {
+      if (_userRepository.monETSUser != null) {
         for (final Session session in _sessions!) {
           sessionReviews = await _signetsApiClient.getCourseReviews(
               username: _userRepository.monETSUser!.universalCode,
@@ -506,10 +511,8 @@ class CourseRepository {
   CourseReview? _getReviewForCourse(
       Course course, Map<String, List<CourseReview>> reviews) {
     if (reviews.containsKey(course.session)) {
-      return reviews[course.session]!.firstWhere(
-          (element) =>
-              element.acronym == course.acronym &&
-              element.group == course.group);
+      return reviews[course.session]!.firstWhere((element) =>
+          element.acronym == course.acronym && element.group == course.group);
     }
     return null;
   }

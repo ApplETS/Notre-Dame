@@ -49,8 +49,8 @@ class _EmergencyViewState extends State<EmergencyView> {
           ),
           body: WebView(
             onWebViewCreated: (WebViewController webViewController) async {
-              await model.loadHtmlFromAssets(
-                  widget.description, Theme.of(context).brightness, webViewController);
+              await model.loadHtmlFromAssets(widget.description,
+                  Theme.of(context).brightness, webViewController);
             },
           ),
         ),

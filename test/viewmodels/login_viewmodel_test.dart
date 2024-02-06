@@ -110,8 +110,8 @@ void main() {
         viewModel.validatePassword(passwordCodeValid);
 
         await viewModel.authenticate();
-        verify(
-            navigationServiceMock.pushNamedAndRemoveUntil(RouterPaths.dashboard));
+        verify(navigationServiceMock
+            .pushNamedAndRemoveUntil(RouterPaths.dashboard));
       });
 
       test(

@@ -9,7 +9,7 @@ class FeedbackIssue {
   late bool isOpen;
   late int number;
   late String createdAt;
-  
+
   // Constructor
   FeedbackIssue(Issue issue) {
     id = issue.id;

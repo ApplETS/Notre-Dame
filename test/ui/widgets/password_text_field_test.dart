@@ -26,8 +26,7 @@ void main() {
 
     testWidgets('has a label, the visibility icon and obscure text',
         (WidgetTester tester) async {
-      await tester
-          .pumpWidget(localizedWidget(child: passwordFormField));
+      await tester.pumpWidget(localizedWidget(child: passwordFormField));
       await tester.pumpAndSettle();
 
       final icon = find.byIcon(Icons.visibility);
@@ -41,8 +40,7 @@ void main() {
       testWidgets(
           'toggling the visibility button should disable the obscureText property',
           (WidgetTester tester) async {
-        await tester
-            .pumpWidget(localizedWidget(child: passwordFormField));
+        await tester.pumpWidget(localizedWidget(child: passwordFormField));
         await tester.pumpAndSettle();
 
         await tester.tap(find.byIcon(Icons.visibility));
@@ -60,8 +58,7 @@ void main() {
       testWidgets(
           'toggling the visibility button two times should enable the obscureText property',
           (WidgetTester tester) async {
-        await tester
-            .pumpWidget(localizedWidget(child: passwordFormField));
+        await tester.pumpWidget(localizedWidget(child: passwordFormField));
         await tester.pumpAndSettle();
 
         await tester.tap(find.byIcon(Icons.visibility));
