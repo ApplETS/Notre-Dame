@@ -1,6 +1,6 @@
 // FLUTTER / DART / THIRD-PARTIES
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mockito/mockito.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 // MANAGERS
 import 'package:notredame/core/managers/settings_manager.dart';
@@ -16,45 +16,41 @@ import 'package:notredame/core/viewmodels/news_viewmodel.dart';
 import 'package:notredame/locator.dart';
 import 'package:logger/logger.dart';
 import '../helpers.dart';
-
-class MockNewsRepository extends Mock implements NewsRepository {
-  @override
-  List<News> get news => [
-        News(
-          id: 1,
-          title: 'Mock News 1',
-          description: 'Mock Description 1',
-          image: 'https://example.com/mock-image1.jpg',
-          tags: [],
-          date: DateTime.now(),
-        ),
-        News(
-          id: 2,
-          title: 'Mock News 2',
-          description: 'Mock Description 2',
-          image: 'https://example.com/mock-image2.jpg',
-          tags: [],
-          date: DateTime.now(),
-        ),
-      ];
-
-  static void stubGetNews(MockNewsRepository mock, List<News> newsList) {
-    when(mock.getNews(fromCacheOnly: anyNamed('fromCacheOnly')))
-        .thenAnswer((_) async => newsList);
-  }
-}
+import '../mock/managers/news_repository_mock.dart';
+import '../mock/managers/news_repository_mock.mocks.dart';
 
 void main() {
-  NewsViewModel viewModel;
+  late NewsViewModel viewModel;
+  late NewsRepositoryMock newsRepository;
+  late AppIntl appIntl;
+
+  List<News> news = [
+    News(
+      id: 1,
+      title: 'Mock News 1',
+      description: 'Mock Description 1',
+      image: 'https://example.com/mock-image1.jpg',
+      tags: [],
+      date: DateTime.now(),
+    ),
+    News(
+      id: 2,
+      title: 'Mock News 2',
+      description: 'Mock Description 2',
+      image: 'https://example.com/mock-image2.jpg',
+      tags: [],
+      date: DateTime.now(),
+    ),
+  ];
 
   group('NewsViewModel tests', () {
-    setUp(() {
+    setUp(() async {
+      newsRepository = setupNewsRepositoryMock();
       setupLogger();
       setupSettingsManagerMock();
-      final mockNewsRepository = MockNewsRepository();
-      MockNewsRepository.stubGetNews(mockNewsRepository, []);
-      locator.registerSingleton<NewsRepository>(mockNewsRepository);
-      viewModel = NewsViewModel(intl: null); // Pass null for AppIntl
+      NewsRepositoryMock.stubNews(newsRepository, toReturn: news);
+      appIntl = await setupAppIntl();
+      viewModel = NewsViewModel(intl: appIntl);
     });
 
     tearDown(() {
@@ -69,8 +65,8 @@ void main() {
       await viewModel.futureToRun();
 
       expect(viewModel.news, hasLength(2));
-      expect(viewModel.news[0].title, equals('Mock News 1'));
-      expect(viewModel.news[1].title, equals('Mock News 2'));
+      expect(viewModel.news?[0].title, equals('Mock News 1'));
+      expect(viewModel.news?[1].title, equals('Mock News 2'));
       expect(viewModel.isBusy, isFalse);
     });
   });
