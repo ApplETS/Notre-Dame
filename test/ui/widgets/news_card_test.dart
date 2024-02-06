@@ -1,11 +1,12 @@
-// Package imports:
+// Flutter imports:
 import 'package:flutter/material.dart';
+
+// Package imports:
 import 'package:flutter_test/flutter_test.dart';
-import 'package:notredame/core/models/news.dart';
-import 'package:notredame/core/models/tags.dart';
-import 'package:notredame/ui/widgets/news_card.dart';
 
 // Project imports:
+import 'package:notredame/core/models/news.dart';
+import 'package:notredame/ui/widgets/news_card.dart';
 import '../../helpers.dart';
 
 void main() {
@@ -14,10 +15,10 @@ void main() {
     title: "Test 3",
     description: "Test 3 description",
     date: DateTime.now(),
-    image: null,
-    tags: <Tag>[
-      Tag(text: "tag1", color: Colors.blue),
-      Tag(text: "tag2", color: Colors.green),
+    image: "",
+    tags: [
+      "tag1",
+      "tag2",
     ],
   );
 

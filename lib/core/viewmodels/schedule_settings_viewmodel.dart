@@ -1,8 +1,6 @@
-// Dart imports:
-import 'package:collection/collection.dart';
-
 // Package imports:
 import 'package:calendar_view/calendar_view.dart';
+import 'package:collection/collection.dart';
 import 'package:enum_to_string/enum_to_string.dart';
 import 'package:ets_api_clients/models.dart';
 import 'package:stacked/stacked.dart';
@@ -148,7 +146,7 @@ class ScheduleSettingsViewModel
           PreferencesFlag.scheduleLaboratoryGroup,
           courseAcronym,
           scheduleActivityToSave.activityCode);
-          _selectedScheduleActivity[courseAcronym] = scheduleActivityToSave;
+      _selectedScheduleActivity[courseAcronym] = scheduleActivityToSave;
     }
     setBusy(false);
   }
@@ -191,7 +189,8 @@ class ScheduleSettingsViewModel
       final scheduleActivityCode = await _settingsManager.getDynamicString(
           PreferencesFlag.scheduleLaboratoryGroup, courseKey);
       final scheduleActivity = _scheduleActivitiesByCourse[courseKey]
-          ?.firstWhereOrNull((element) => element.activityCode == scheduleActivityCode);
+          ?.firstWhereOrNull(
+              (element) => element.activityCode == scheduleActivityCode);
       if (scheduleActivity != null) {
         _selectedScheduleActivity[courseKey] = scheduleActivity;
       }

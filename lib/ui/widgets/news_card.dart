@@ -1,24 +1,29 @@
-// FLUTTER / DART / THIRD-PARTIES
+// Flutter imports:
 import 'package:flutter/material.dart';
+
+// Package imports:
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:notredame/core/constants/router_paths.dart';
 import 'package:notredame/core/services/navigation_service.dart';
 import 'package:notredame/locator.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
-// MODEL
+// Project imports:
 import 'package:notredame/core/models/news.dart';
+import 'package:notredame/ui/utils/app_theme.dart';
 
 class NewsCard extends StatefulWidget {
   final News news;
 
-  const NewsCard(this.news);
+  const NewsCard(this.news, {Key? key}) : super(key: key);
 
   @override
-  State<NewsCard> createState() => _NewsCardState();
+  _NewsCardState createState() => _NewsCardState();
 }
 
 class _NewsCardState extends State<NewsCard> {
+  bool _isImageLoaded = false;
   final NavigationService _navigationService = locator<NavigationService>();
 
   @override
@@ -39,7 +44,7 @@ class _NewsCardState extends State<NewsCard> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  _buildImage(widget.news),
+                  _buildImage(widget.news.image),
                   const SizedBox(height: 8),
                   _buildTitleAndTime(widget.news, context),
                 ],
@@ -51,21 +56,39 @@ class _NewsCardState extends State<NewsCard> {
     );
   }
 
-  Widget _buildImage(News news) {
+  Widget _buildImage(String image) {
+    if (image == "") {
+      return const SizedBox();
+    }
     return ClipRRect(
       borderRadius: BorderRadius.circular(16.0),
-      child: Image.network(
-        news.image,
-        fit: BoxFit.cover,
+      child: _isImageLoaded
+          ? Image.network(image, fit: BoxFit.cover)
+          : _shimmerEffect(),
+    );
+  }
+
+  Widget _shimmerEffect() {
+    return Shimmer.fromColors(
+      baseColor: Theme.of(context).brightness == Brightness.light
+          ? AppTheme.lightThemeBackground
+          : AppTheme.darkThemeBackground,
+      highlightColor: Theme.of(context).brightness == Brightness.light
+          ? AppTheme.lightThemeAccent
+          : AppTheme.darkThemeAccent,
+      child: Container(
+        height: 200,
+        decoration: BoxDecoration(
+          color: Colors.grey,
+          borderRadius: BorderRadius.circular(16),
+        ),
       ),
     );
   }
 
   Widget _buildTitleAndTime(News news, BuildContext context) {
     final TextStyle textStyle =
-        Theme.of(context).textTheme.titleMedium!.copyWith(
-              fontSize: 16,
-            );
+        Theme.of(context).textTheme.titleMedium!.copyWith(fontSize: 16);
 
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -85,5 +108,32 @@ class _NewsCardState extends State<NewsCard> {
         ),
       ],
     );
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _preloadImage();
+  }
+
+  void _preloadImage() {
+    Image.network(widget.news.image)
+        .image
+        // ignore: use_named_constants
+        .resolve(const ImageConfiguration())
+        .addListener(
+          ImageStreamListener(
+            (ImageInfo image, bool synchronousCall) {
+              if (mounted) {
+                setState(() {
+                  _isImageLoaded = true;
+                });
+              }
+            },
+            onError: (exception, stackTrace) {
+              // Handle image load error
+            },
+          ),
+        );
   }
 }

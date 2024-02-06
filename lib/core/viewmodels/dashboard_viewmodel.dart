@@ -9,15 +9,13 @@ import 'package:ets_api_clients/models.dart';
 import 'package:feature_discovery/feature_discovery.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:notredame/core/constants/router_paths.dart';
-import 'package:notredame/core/services/launch_url_service.dart';
-import 'package:notredame/core/services/navigation_service.dart';
 import 'package:stacked/stacked.dart';
 
 // Project imports:
 import 'package:notredame/core/constants/discovery_ids.dart';
 import 'package:notredame/core/constants/preferences_flags.dart';
 import 'package:notredame/core/constants/progress_bar_text_options.dart';
+import 'package:notredame/core/constants/router_paths.dart';
 import 'package:notredame/core/constants/update_code.dart';
 import 'package:notredame/core/constants/widget_helper.dart';
 import 'package:notredame/core/managers/course_repository.dart';
@@ -26,6 +24,8 @@ import 'package:notredame/core/models/widget_models.dart';
 import 'package:notredame/core/services/analytics_service.dart';
 import 'package:notredame/core/services/app_widget_service.dart';
 import 'package:notredame/core/services/in_app_review_service.dart';
+import 'package:notredame/core/services/launch_url_service.dart';
+import 'package:notredame/core/services/navigation_service.dart';
 import 'package:notredame/core/services/preferences_service.dart';
 import 'package:notredame/core/services/remote_config_service.dart';
 import 'package:notredame/core/services/siren_flutter_service.dart';
@@ -254,9 +254,10 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
           return course.grade!;
         } else if (course.summary != null &&
             course.summary!.markOutOf > 0 &&
-            !(course.inReviewPeriod && (course.reviewCompleted != null && !course.reviewCompleted!))) {
+            !(course.inReviewPeriod &&
+                (course.reviewCompleted != null && !course.reviewCompleted!))) {
           return _appIntl.grades_grade_in_percentage(
-                course.summary!.currentMarkInPercent.round());
+              course.summary!.currentMarkInPercent.round());
         }
         return _appIntl.grades_not_available;
       }).toList();
@@ -351,9 +352,7 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
           remoteConfigService.dashboardMessageEn);
       if (_cards != null && _cards![PreferencesFlag.broadcastCard]! < 0) {
         _cards?.updateAll((key, value) {
-          return value >= 0
-            ? value + 1
-            : value;
+          return value >= 0 ? value + 1 : value;
         });
         _cards![PreferencesFlag.broadcastCard] = 0;
       }
@@ -362,8 +361,8 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
 
   Future<List<Session>> futureToRunSessionProgressBar() async {
     final progressBarText =
-        await _settingsManager.getString(PreferencesFlag.progressBarText)
-          ?? ProgressBarText.daysElapsedWithTotalDays.toString();
+        await _settingsManager.getString(PreferencesFlag.progressBarText) ??
+            ProgressBarText.daysElapsedWithTotalDays.toString();
 
     _currentProgressBarText = ProgressBarText.values
         .firstWhere((e) => e.toString() == progressBarText);
@@ -395,7 +394,8 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
           // ignore: return_type_invalid_for_catch_error
           .catchError(onError)
           .whenComplete(() async {
-        if (_todayDateEvents.isEmpty && _courseRepository.coursesActivities != null) {
+        if (_todayDateEvents.isEmpty &&
+            _courseRepository.coursesActivities != null) {
           final DateTime tomorrowDate = todayDate.add(const Duration(days: 1));
           // Build the list
           for (final CourseActivity course
@@ -451,7 +451,7 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
 
   /// Update cards order and display status in preferences
   void updatePreferences() {
-    if(_cards == null || _cardsToDisplay == null) {
+    if (_cards == null || _cardsToDisplay == null) {
       return;
     }
     for (final MapEntry<PreferencesFlag, int> element in _cards!.entries) {
@@ -520,13 +520,13 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
         notifyListeners();
         // ignore: return_type_invalid_for_catch_error
         _courseRepository.getCourses().catchError(onError).then((value) {
-            // Update the courses list
-            courses.clear();
-            for (final Course course in value) {
-              if (course.session == currentSession.shortName) {
-                courses.add(course);
-              }
+          // Update the courses list
+          courses.clear();
+          for (final Course course in value) {
+            if (course.session == currentSession.shortName) {
+              courses.add(course);
             }
+          }
         }).whenComplete(() {
           setBusyForObject(courses, false);
         });

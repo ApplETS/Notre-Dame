@@ -46,28 +46,22 @@ void main() {
       test("validate default behaviour", () async {
         // Stubs the answer of the preferences services
         PreferencesServiceMock.stubGetString(
-            preferencesServiceMock,
-            PreferencesFlag.scheduleStartWeekday,
+            preferencesServiceMock, PreferencesFlag.scheduleStartWeekday,
             toReturn: null);
         PreferencesServiceMock.stubGetString(
-            preferencesServiceMock,
-            PreferencesFlag.scheduleOtherWeekday,
+            preferencesServiceMock, PreferencesFlag.scheduleOtherWeekday,
             toReturn: null);
         PreferencesServiceMock.stubGetString(
-            preferencesServiceMock,
-            PreferencesFlag.scheduleCalendarFormat,
+            preferencesServiceMock, PreferencesFlag.scheduleCalendarFormat,
             toReturn: null);
         PreferencesServiceMock.stubGetBool(
-            preferencesServiceMock,
-            PreferencesFlag.scheduleShowTodayBtn,
+            preferencesServiceMock, PreferencesFlag.scheduleShowTodayBtn,
             toReturn: null);
         PreferencesServiceMock.stubGetBool(
-            preferencesServiceMock,
-            PreferencesFlag.scheduleListView,
+            preferencesServiceMock, PreferencesFlag.scheduleListView,
             toReturn: null);
         PreferencesServiceMock.stubGetBool(
-            preferencesServiceMock,
-            PreferencesFlag.scheduleShowWeekEvents,
+            preferencesServiceMock, PreferencesFlag.scheduleShowWeekEvents,
             toReturn: null);
         RemoteConfigServiceMock.stubGetCalendarViewEnabled(
             remoteConfigServiceMock);
@@ -94,7 +88,8 @@ void main() {
         verify(preferencesServiceMock
                 .getString(PreferencesFlag.scheduleCalendarFormat))
             .called(1);
-        verify(preferencesServiceMock.getBool(PreferencesFlag.scheduleShowTodayBtn))
+        verify(preferencesServiceMock
+                .getBool(PreferencesFlag.scheduleShowTodayBtn))
             .called(1);
         verify(preferencesServiceMock.getBool(PreferencesFlag.scheduleListView))
             .called(1);
@@ -109,28 +104,22 @@ void main() {
       test("validate the loading of the settings", () async {
         // Stubs the answer of the preferences services
         PreferencesServiceMock.stubGetString(
-            preferencesServiceMock,
-            PreferencesFlag.scheduleStartWeekday,
+            preferencesServiceMock, PreferencesFlag.scheduleStartWeekday,
             toReturn: EnumToString.convertToString(StartingDayOfWeek.sunday));
         PreferencesServiceMock.stubGetString(
-            preferencesServiceMock,
-            PreferencesFlag.scheduleOtherWeekday,
+            preferencesServiceMock, PreferencesFlag.scheduleOtherWeekday,
             toReturn: EnumToString.convertToString(WeekDays.monday));
         PreferencesServiceMock.stubGetString(
-            preferencesServiceMock,
-            PreferencesFlag.scheduleCalendarFormat,
+            preferencesServiceMock, PreferencesFlag.scheduleCalendarFormat,
             toReturn: EnumToString.convertToString(CalendarFormat.month));
         PreferencesServiceMock.stubGetBool(
-            preferencesServiceMock,
-            PreferencesFlag.scheduleShowTodayBtn,
+            preferencesServiceMock, PreferencesFlag.scheduleShowTodayBtn,
             toReturn: false);
         PreferencesServiceMock.stubGetBool(
-            preferencesServiceMock,
-            PreferencesFlag.scheduleListView,
+            preferencesServiceMock, PreferencesFlag.scheduleListView,
             toReturn: false);
         PreferencesServiceMock.stubGetBool(
-            preferencesServiceMock,
-            PreferencesFlag.scheduleShowWeekEvents,
+            preferencesServiceMock, PreferencesFlag.scheduleShowWeekEvents,
             toReturn: false);
 
         final expected = {
@@ -155,7 +144,8 @@ void main() {
         verify(preferencesServiceMock
                 .getString(PreferencesFlag.scheduleCalendarFormat))
             .called(1);
-        verify(preferencesServiceMock.getBool(PreferencesFlag.scheduleShowTodayBtn))
+        verify(preferencesServiceMock
+                .getBool(PreferencesFlag.scheduleShowTodayBtn))
             .called(1);
         verify(preferencesServiceMock.getBool(PreferencesFlag.scheduleListView))
             .called(1);
@@ -210,8 +200,7 @@ void main() {
 
       test("validate default behaviour", () async {
         const flag = PreferencesFlag.theme;
-        PreferencesServiceMock.stubGetString(
-            preferencesServiceMock, flag,
+        PreferencesServiceMock.stubGetString(preferencesServiceMock, flag,
             toReturn: ThemeMode.light.toString());
 
         manager.themeMode;
@@ -229,8 +218,7 @@ void main() {
       test("validate default behaviour", () async {
         const flag = PreferencesFlag.locale;
         PreferencesServiceMock.stubGetString(
-            preferencesServiceMock,
-            PreferencesFlag.locale,
+            preferencesServiceMock, PreferencesFlag.locale,
             toReturn: const Locale('fr').toString());
 
         manager.setLocale('fr');
@@ -238,7 +226,8 @@ void main() {
 
         verify(preferencesServiceMock.setString(PreferencesFlag.locale, 'fr'))
             .called(1);
-        verify(preferencesServiceMock.getString(PreferencesFlag.locale)).called(1);
+        verify(preferencesServiceMock.getString(PreferencesFlag.locale))
+            .called(1);
 
         verify(analyticsServiceMock.logEvent(
                 "${SettingsManager.tag}_${EnumToString.convertToString(flag)}",
@@ -290,7 +279,8 @@ void main() {
 
         expect(manager.locale, const Locale('en'));
 
-        verify(preferencesServiceMock.getString(PreferencesFlag.locale)).called(1);
+        verify(preferencesServiceMock.getString(PreferencesFlag.locale))
+            .called(1);
 
         verifyNoMoreInteractions(preferencesServiceMock);
         verifyNoMoreInteractions(analyticsServiceMock);
@@ -308,7 +298,8 @@ void main() {
       await manager.fetchLanguageAndThemeMode();
 
       verify(preferencesServiceMock.getString(PreferencesFlag.theme)).called(1);
-      verify(preferencesServiceMock.getString(PreferencesFlag.locale)).called(1);
+      verify(preferencesServiceMock.getString(PreferencesFlag.locale))
+          .called(1);
 
       verifyNoMoreInteractions(preferencesServiceMock);
       verifyNoMoreInteractions(analyticsServiceMock);
@@ -340,8 +331,7 @@ void main() {
 
     test("setString", () async {
       const flag = PreferencesFlag.scheduleCalendarFormat;
-      PreferencesServiceMock.stubSetString(
-          preferencesServiceMock, flag);
+      PreferencesServiceMock.stubSetString(preferencesServiceMock, flag);
 
       expect(await manager.setString(flag, "test"), true,
           reason:
@@ -359,8 +349,7 @@ void main() {
 
     test("setInt", () async {
       const flag = PreferencesFlag.aboutUsCard;
-      PreferencesServiceMock.stubSetInt(
-          preferencesServiceMock, flag);
+      PreferencesServiceMock.stubSetInt(preferencesServiceMock, flag);
 
       expect(await manager.setInt(flag, 0), true,
           reason:
@@ -378,8 +367,7 @@ void main() {
 
     test("getString", () async {
       const flag = PreferencesFlag.scheduleCalendarFormat;
-      PreferencesServiceMock.stubGetString(
-          preferencesServiceMock, flag);
+      PreferencesServiceMock.stubGetString(preferencesServiceMock, flag);
 
       expect(await manager.getString(flag), 'test',
           reason:
@@ -397,8 +385,7 @@ void main() {
 
     test("setBool", () async {
       const flag = PreferencesFlag.scheduleCalendarFormat;
-      PreferencesServiceMock.stubSetBool(
-          preferencesServiceMock, flag);
+      PreferencesServiceMock.stubSetBool(preferencesServiceMock, flag);
 
       expect(await manager.setBool(flag, true), true,
           reason:
@@ -417,20 +404,16 @@ void main() {
     group("Dashboard - ", () {
       test("validate default behaviour", () async {
         PreferencesServiceMock.stubGetInt(
-            preferencesServiceMock,
-            PreferencesFlag.aboutUsCard,
+            preferencesServiceMock, PreferencesFlag.aboutUsCard,
             toReturn: null);
         PreferencesServiceMock.stubGetInt(
-            preferencesServiceMock,
-            PreferencesFlag.scheduleCard,
+            preferencesServiceMock, PreferencesFlag.scheduleCard,
             toReturn: null);
         PreferencesServiceMock.stubGetInt(
-            preferencesServiceMock,
-            PreferencesFlag.progressBarCard,
+            preferencesServiceMock, PreferencesFlag.progressBarCard,
             toReturn: null);
         PreferencesServiceMock.stubGetInt(
-            preferencesServiceMock,
-            PreferencesFlag.gradesCard,
+            preferencesServiceMock, PreferencesFlag.gradesCard,
             toReturn: null);
 
         // Cards
@@ -455,7 +438,8 @@ void main() {
             .called(1);
         verify(preferencesServiceMock.getInt(PreferencesFlag.progressBarCard))
             .called(1);
-        verify(preferencesServiceMock.getInt(PreferencesFlag.gradesCard)).called(1);
+        verify(preferencesServiceMock.getInt(PreferencesFlag.gradesCard))
+            .called(1);
 
         verifyNoMoreInteractions(preferencesServiceMock);
         verifyNoMoreInteractions(analyticsServiceMock);
@@ -463,25 +447,20 @@ void main() {
 
       test("validate the loading of the cards", () async {
         PreferencesServiceMock.stubGetInt(
-            preferencesServiceMock,
-            PreferencesFlag.broadcastCard,
+            preferencesServiceMock, PreferencesFlag.broadcastCard,
             toReturn: 0);
         PreferencesServiceMock.stubGetInt(
-            preferencesServiceMock,
-            PreferencesFlag.aboutUsCard,
+            preferencesServiceMock, PreferencesFlag.aboutUsCard,
             toReturn: 2);
         PreferencesServiceMock.stubGetInt(
-            preferencesServiceMock,
-            PreferencesFlag.scheduleCard,
+            preferencesServiceMock, PreferencesFlag.scheduleCard,
             toReturn: 3);
         PreferencesServiceMock.stubGetInt(
-            preferencesServiceMock,
-            PreferencesFlag.progressBarCard,
+            preferencesServiceMock, PreferencesFlag.progressBarCard,
             // ignore: avoid_redundant_argument_values
             toReturn: 1);
         PreferencesServiceMock.stubGetInt(
-            preferencesServiceMock,
-            PreferencesFlag.gradesCard,
+            preferencesServiceMock, PreferencesFlag.gradesCard,
             toReturn: 4);
 
         // Cards
@@ -506,7 +485,8 @@ void main() {
             .called(1);
         verify(preferencesServiceMock.getInt(PreferencesFlag.progressBarCard))
             .called(1);
-        verify(preferencesServiceMock.getInt(PreferencesFlag.gradesCard)).called(1);
+        verify(preferencesServiceMock.getInt(PreferencesFlag.gradesCard))
+            .called(1);
 
         verifyNoMoreInteractions(preferencesServiceMock);
         verifyNoMoreInteractions(analyticsServiceMock);

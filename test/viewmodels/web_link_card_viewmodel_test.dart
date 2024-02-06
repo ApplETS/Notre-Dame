@@ -60,8 +60,8 @@ void main() {
       test('navigate to security', () async {
         await viewModel.onLinkClicked(securityQuickLink, Brightness.light);
 
-        verify(
-            analyticsServiceMock.logEvent("QuickLink", "QuickLink clicked: test"));
+        verify(analyticsServiceMock.logEvent(
+            "QuickLink", "QuickLink clicked: test"));
         verify(navigationServiceMock.pushNamed(RouterPaths.security));
         verifyNoMoreInteractions(navigationServiceMock);
       });
@@ -72,8 +72,8 @@ void main() {
 
         await viewModel.onLinkClicked(quickLink, Brightness.light);
 
-        verify(
-            launchUrlServiceMock.launchInBrowser(quickLink.link, Brightness.light));
+        verify(launchUrlServiceMock.launchInBrowser(
+            quickLink.link, Brightness.light));
         verifyNoMoreInteractions(navigationServiceMock);
       });
     });

@@ -1,11 +1,11 @@
-// FLUTTER / DART / THIRD-PARTIES
+// Package imports:
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:stacked/stacked.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+// Project imports:
 import 'package:notredame/core/managers/news_repository.dart';
 import 'package:notredame/core/models/news.dart';
-
 import 'package:notredame/locator.dart';
 
 class NewsViewModel extends FutureViewModel<List<News>> {
@@ -16,18 +16,16 @@ class NewsViewModel extends FutureViewModel<List<News>> {
   final AppIntl _appIntl;
 
   /// News list
-  List<News> _news = [];
+  List<News>? _news = [];
 
   /// Return the list of all the news.
   List<News> get news {
     _news = [];
 
     // Build the list of news
-    for (final n in _newsRepository.news) {
-      _news.add(n);
-    }
+    _news?.addAll(_newsRepository.news ?? []);
 
-    return _news;
+    return _news ?? [];
   }
 
   NewsViewModel({required AppIntl intl}) : _appIntl = intl;

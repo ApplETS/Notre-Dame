@@ -1,19 +1,17 @@
-// FLUTTER / DART / THIRD-PARTIES
+// Dart imports:
 import 'dart:convert';
+
+// Flutter imports:
 import 'package:flutter/material.dart';
+
+// Package imports:
 import 'package:logger/logger.dart';
 
-// SERVICES
-import 'package:notredame/core/services/networking_service.dart';
+// Project imports:
 import 'package:notredame/core/managers/cache_manager.dart';
-
-// MODELS
 import 'package:notredame/core/models/news.dart';
-
-// UTILS
+import 'package:notredame/core/services/networking_service.dart';
 import 'package:notredame/core/utils/cache_exception.dart';
-
-// OTHER
 import 'package:notredame/locator.dart';
 
 /// Repository to access all the news
@@ -32,7 +30,7 @@ class NewsRepository {
   final NetworkingService _networkingService = locator<NetworkingService>();
 
   /// List of the news with 3 test news.
-  List<News> _news = <News>[
+  List<News>? _news = <News>[
     News(
       id: 1,
       title: "Merci à McGill Robotics pour l’invitation au RoboHacks 2023!",
@@ -81,12 +79,12 @@ class NewsRepository {
     ),
   ];
 
-  List<News> get news => _news;
+  List<News>? get news => _news;
 
   /// Get and update the list of news.
   /// After fetching the news from the [?] the [CacheManager]
   /// is updated with the latest version of the news.
-  Future<List<News>> getNews({bool fromCacheOnly = false}) async {
+  Future<List<News>?> getNews({bool fromCacheOnly = false}) async {
     // Force fromCacheOnly mode when user has no connectivity
     if (!(await _networkingService.hasConnectivity())) {
       // ignore: parameter_assignments
@@ -104,10 +102,12 @@ class NewsRepository {
 
     final List<News> fetchedNews = fetchNewsFromAPI();
 
+    _news ??= [];
+
     // Update the list of news to avoid duplicate news
     for (final News news in fetchedNews) {
-      if (!_news.contains(news)) {
-        _news.add(news);
+      if (_news?.contains(news) ?? false) {
+        _news?.add(news);
       }
     }
 
@@ -134,8 +134,8 @@ class NewsRepository {
           .map((e) => News.fromJson(e as Map<String, dynamic>))
           .toList();
 
-      _logger
-          .d("$tag - getNewsFromCache: ${_news.length} news loaded from cache");
+      _logger.d(
+          "$tag - getNewsFromCache: ${_news?.length} news loaded from cache");
     } on CacheException catch (_) {
       _logger.e(
           "$tag - getNewsFromCache: exception raised will trying to load news from cache.");

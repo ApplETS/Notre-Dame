@@ -29,12 +29,9 @@ void main() {
       setupSettingsManagerMock();
       setupAnalyticsServiceMock();
 
-      CourseRepositoryMock.stubCourses(
-          courseRepositoryMock);
-      CourseRepositoryMock.stubGetCourses(
-          courseRepositoryMock);
-      CourseRepositoryMock.stubGetCourses(
-          courseRepositoryMock,
+      CourseRepositoryMock.stubCourses(courseRepositoryMock);
+      CourseRepositoryMock.stubGetCourses(courseRepositoryMock);
+      CourseRepositoryMock.stubGetCourses(courseRepositoryMock,
           fromCacheOnly: true);
     });
 
