@@ -102,7 +102,7 @@ void main() {
       NewsRepositoryMock.stubNews(newsRepository, toReturn: news);
 
       await tester.pumpWidget(localizedWidget(child: NewsView()));
-      await tester.pumpAndSettle(const Duration(seconds: 1));
+      await tester.pumpAndSettle(const Duration(seconds: 5));
 
       expect(find.byType(RefreshIndicator), findsOneWidget);
 

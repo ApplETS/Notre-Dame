@@ -3,16 +3,14 @@ import 'package:mockito/mockito.dart';
 
 import 'package:ets_api_clients/exceptions.dart';
 import 'package:mockito/annotations.dart';
-
-// MANAGER
 import 'package:notredame/core/managers/news_repository.dart';
 
 // MODELS
 import 'package:notredame/core/models/news.dart';
 import 'news_repository_mock.mocks.dart';
 
-@GenerateNiceMocks([MockSpec<NewsRepositoryMock>()])
-class NewsRepositoryMock extends Mock implements NewsRepository {
+@GenerateNiceMocks([MockSpec<NewsRepository>()])
+class NewsRepositoryMock extends MockNewsRepository {
   /// Stub the getter [news] of [mock] when called will return [toReturn].
   static void stubNews(NewsRepositoryMock mock,
       {List<News> toReturn = const []}) {

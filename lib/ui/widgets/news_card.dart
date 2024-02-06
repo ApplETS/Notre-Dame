@@ -32,7 +32,7 @@ class _NewsCardState extends State<NewsCard> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                _buildImage(widget.news),
+                _buildImage(widget.news.image),
                 const SizedBox(height: 8),
                 _buildTitleAndTime(widget.news, context)
               ],
@@ -43,11 +43,14 @@ class _NewsCardState extends State<NewsCard> {
     );
   }
 
-  Widget _buildImage(News news) {
+  Widget _buildImage(String image) {
+    if (image == "") {
+      return const SizedBox();
+    }
     return ClipRRect(
       borderRadius: BorderRadius.circular(16.0),
       child: _isImageLoaded
-          ? Image.network(news.image, fit: BoxFit.cover)
+          ? Image.network(image, fit: BoxFit.cover)
           : _shimmerEffect(),
     );
   }

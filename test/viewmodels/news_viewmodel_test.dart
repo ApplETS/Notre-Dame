@@ -17,7 +17,6 @@ import 'package:notredame/locator.dart';
 import 'package:logger/logger.dart';
 import '../helpers.dart';
 import '../mock/managers/news_repository_mock.dart';
-import '../mock/managers/news_repository_mock.mocks.dart';
 
 void main() {
   late NewsViewModel viewModel;

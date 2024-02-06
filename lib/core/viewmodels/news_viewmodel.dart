@@ -19,13 +19,13 @@ class NewsViewModel extends FutureViewModel<List<News>> {
   List<News>? _news = [];
 
   /// Return the list of all the news.
-  List<News>? get news {
+  List<News> get news {
     _news = [];
 
     // Build the list of news
-    _newsRepository.news?.map((news) => _news?.add(news));
+    _news?.addAll(_newsRepository.news ?? []);
 
-    return _news;
+    return _news ?? [];
   }
 
   NewsViewModel({required AppIntl intl}) : _appIntl = intl;
@@ -44,7 +44,7 @@ class NewsViewModel extends FutureViewModel<List<News>> {
       setBusyForObject(isLoadingEvents, false);
     }
 
-    return news ?? [];
+    return news;
   }
 
   @override
