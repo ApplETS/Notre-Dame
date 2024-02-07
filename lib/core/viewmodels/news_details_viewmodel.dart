@@ -1,9 +1,12 @@
-// FLUTTER / DART / THIRD-PARTIES
+// Dart imports:
 import 'dart:ui';
 
+// Package imports:
+import 'package:stacked/stacked.dart';
+
+// Project imports:
 import 'package:notredame/core/models/news.dart';
 import 'package:notredame/ui/utils/app_theme.dart';
-import 'package:stacked/stacked.dart';
 
 class NewsDetailsViewModel extends FutureViewModel<News> {
   News news;
@@ -12,7 +15,6 @@ class NewsDetailsViewModel extends FutureViewModel<News> {
 
   List<Color> tagsPalette = AppTheme.tagsPalette.toList();
 
-  /// A map that contains a color from the AppTheme.tagsPalette palette associated with each tags.
   final Map<String, Color> tagColors = {};
 
   @override

@@ -1,19 +1,19 @@
-// FLUTTER / DART / THIRD-PARTIES
-import 'package:intl/intl.dart';
+// Flutter imports:
 import 'package:flutter/material.dart';
+
+// Package imports:
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:intl/intl.dart';
+import 'package:stacked/stacked.dart';
+
+// Project imports:
 import 'package:notredame/core/models/news.dart';
+import 'package:notredame/core/services/analytics_service.dart';
 import 'package:notredame/core/viewmodels/news_details_viewmodel.dart';
+import 'package:notredame/locator.dart';
 import 'package:notredame/ui/utils/app_theme.dart';
 import 'package:notredame/ui/widgets/base_scaffold.dart';
 import 'package:notredame/ui/widgets/report_news.dart';
-import 'package:stacked/stacked.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-
-// SERVICES
-import 'package:notredame/core/services/analytics_service.dart';
-
-// OTHER
-import 'package:notredame/locator.dart';
 
 class NewsDetailsView extends StatefulWidget {
   final News news;
@@ -117,7 +117,7 @@ class _NewsDetailsViewState extends State<NewsDetailsView> {
   }
 
   Widget _buildImage(String image) {
-    if (image == null) {
+    if (image == "") {
       return const SizedBox.shrink();
     }
 
@@ -132,12 +132,14 @@ class _NewsDetailsViewState extends State<NewsDetailsView> {
       color: const Color(0xff1e1e1e),
       child: ListTile(
         leading: ClipOval(
-          child: Image.network(
-            avatar,
-            fit: BoxFit.cover,
-            width: 50.0,
-            height: 50.0,
-          ),
+          child: avatar == ""
+              ? const SizedBox()
+              : Image.network(
+                  avatar,
+                  fit: BoxFit.cover,
+                  width: 50.0,
+                  height: 50.0,
+                ),
         ),
         title: Text(
           author,
@@ -174,6 +176,7 @@ class _NewsDetailsViewState extends State<NewsDetailsView> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
                 formattedPublishedDate,
@@ -183,38 +186,36 @@ class _NewsDetailsViewState extends State<NewsDetailsView> {
             ],
           ),
           Expanded(
-            child: Align(
-              alignment: Alignment.centerRight,
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Container(
-                    padding: const EdgeInsets.all(8),
-                    decoration: const BoxDecoration(
-                      color: AppTheme.etsDarkGrey,
-                      shape: BoxShape.circle,
-                    ),
-                    child: const Icon(Icons.event,
-                        size: 20.0, color: Colors.white),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Container(
+                  padding: const EdgeInsets.all(8),
+                  decoration: const BoxDecoration(
+                    color: AppTheme.etsDarkGrey,
+                    shape: BoxShape.circle,
                   ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          AppIntl.of(context)!.news_event_date,
-                          style: const TextStyle(color: AppTheme.etsLightGrey),
-                        ),
-                        Text(
-                          formattedEventDate,
-                          style: const TextStyle(color: Colors.white),
-                        ),
-                      ],
-                    ),
+                  child:
+                      const Icon(Icons.event, size: 20.0, color: Colors.white),
+                ),
+                Flexible(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      Text(
+                        AppIntl.of(context)!.news_event_date,
+                        style: const TextStyle(color: AppTheme.etsLightGrey),
+                        textAlign: TextAlign.right,
+                      ),
+                      Text(
+                        formattedEventDate,
+                        style: const TextStyle(color: Colors.white),
+                        textAlign: TextAlign.right,
+                      ),
+                    ],
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
         ],

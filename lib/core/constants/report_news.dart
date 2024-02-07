@@ -1,5 +1,5 @@
-// MODELS
-import '../models/report_news.dart';
+// Project imports:
+import 'package:notredame/core/models/report_news.dart';
 
 // List<QuickLink> quickLinks(AppIntl intl) => [
 

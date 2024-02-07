@@ -1,17 +1,16 @@
+// Flutter imports:
 import 'package:flutter/material.dart';
+
+// Package imports:
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:stacked/stacked.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-// CONSTANTS
+// Project imports:
 import 'package:notredame/core/constants/report_news.dart';
-
-// VIEWMODELS
-import 'package:notredame/core/viewmodels/report_news_viewmodel.dart';
-
-// OTHER
-import 'package:notredame/ui/utils/app_theme.dart';
 import 'package:notredame/core/utils/utils.dart';
+import 'package:notredame/core/viewmodels/report_news_viewmodel.dart';
+import 'package:notredame/ui/utils/app_theme.dart';
 
 class ReportNews extends StatefulWidget {
   final bool showHandle;
