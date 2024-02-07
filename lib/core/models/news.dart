@@ -34,7 +34,7 @@ class News {
       activity: map['activity'] as String,
       image: map['image'] as String,
       tags: map['tags'] as List<String>,
-      publishedDate: DateTime.parse(map['date'] as String),
+      publishedDate: DateTime.parse(map['publishedDate'] as String),
       eventDate: DateTime.parse(map['eventDate'] as String),
     );
   }
