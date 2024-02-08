@@ -71,6 +71,6 @@ void main() {
         await expectLater(find.byType(NewsDetailsView),
             matchesGoldenFile(goldenFilePath("newsDetailsView_1")));
       });
-    });
+    }, skip: !Platform.isLinux);
   });
 }

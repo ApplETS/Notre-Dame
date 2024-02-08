@@ -41,69 +41,86 @@ class _NewsDetailsViewState extends State<NewsDetailsView> {
         builder: (context, model, child) => BaseScaffold(
           showBottomBar: false,
           body: Material(
-            child: NestedScrollView(
-              physics: const ClampingScrollPhysics(),
-              headerSliverBuilder: (context, innerBoxScrolled) => [
-                SliverAppBar(
-                  backgroundColor:
-                      Theme.of(context).brightness == Brightness.light
-                          ? AppTheme.etsLightRed
-                          : Theme.of(context).bottomAppBarColor,
-                  pinned: true,
-                  onStretchTrigger: () {
-                    return Future<void>.value();
-                  },
-                  titleSpacing: 0,
-                  leading: IconButton(
-                    icon: const Icon(Icons.arrow_back),
-                    onPressed: () => Navigator.of(context).pop(),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Expanded(
+                  child: CustomScrollView(
+                    slivers: <Widget>[
+                      SliverAppBar(
+                        backgroundColor:
+                            Theme.of(context).brightness == Brightness.light
+                                ? AppTheme.etsLightRed
+                                : Theme.of(context).bottomAppBarColor,
+                        pinned: true,
+                        titleSpacing: 0,
+                        leading: IconButton(
+                          icon: const Icon(Icons.arrow_back),
+                          onPressed: () => Navigator.of(context).pop(),
+                        ),
+                        title: Text(
+                          AppIntl.of(context)!.news_details_title,
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodyText1!
+                              .copyWith(
+                                  color: Colors.white,
+                                  fontSize: 25,
+                                  fontWeight: FontWeight.bold),
+                        ),
+                        actions: <Widget>[
+                          IconButton(
+                              icon: const Icon(Icons.warning_amber_sharp),
+                              color: AppTheme.etsLightRed,
+                              onPressed: () async {
+                                await showModalBottomSheet(
+                                    isDismissible: true,
+                                    enableDrag: true,
+                                    isScrollControlled: true,
+                                    context: context,
+                                    shape: const RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.only(
+                                            topLeft: Radius.circular(10),
+                                            topRight: Radius.circular(10))),
+                                    builder: (context) => const ReportNews());
+                              })
+                        ],
+                      ),
+                      SliverToBoxAdapter(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: <Widget>[
+                            _buildTitle(widget.news.title),
+                            _buildDate(context, widget.news.publishedDate,
+                                widget.news.eventDate),
+                            _buildImage(widget.news.image),
+                            _buildAuthor(widget.news.avatar, widget.news.author,
+                                widget.news.activity),
+                            _buildContent(widget.news.description),
+                          ],
+                        ),
+                      ),
+                    ],
                   ),
-                  title: Text(
-                    AppIntl.of(context)!.news_details_title,
-                    style: Theme.of(context).textTheme.bodyText1!.copyWith(
-                        color: Colors.white,
-                        fontSize: 25,
-                        fontWeight: FontWeight.bold),
-                  ),
-                  actions: <Widget>[
-                    IconButton(
-                        icon: const Icon(Icons.warning_amber_sharp),
-                        color: AppTheme.etsLightRed,
-                        onPressed: () async {
-                          await showModalBottomSheet(
-                              isDismissible: true,
-                              enableDrag: true,
-                              isScrollControlled: true,
-                              context: context,
-                              shape: const RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.only(
-                                      topLeft: Radius.circular(10),
-                                      topRight: Radius.circular(10))),
-                              builder: (context) => const ReportNews());
-                        })
-                  ],
                 ),
+                _buildTags(model),
               ],
-              body: SafeArea(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    _buildTitle(widget.news.title),
-                    _buildDate(context, widget.news.publishedDate,
-                        widget.news.eventDate),
-                    _buildImage(widget.news.image),
-                    _buildAuthor(widget.news.avatar, widget.news.author,
-                        widget.news.activity),
-                    _buildContent(widget.news.description),
-                    const Spacer(),
-                    _buildTags(model),
-                  ],
-                ),
-              ),
             ),
           ),
         ),
       );
+
+  Widget _buildContent(String content) {
+    return SingleChildScrollView(
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Text(
+          content,
+          textAlign: TextAlign.justify,
+        ),
+      ),
+    );
+  }
 
   Widget _buildTitle(String title) {
     return Padding(
@@ -219,16 +236,6 @@ class _NewsDetailsViewState extends State<NewsDetailsView> {
             ),
           ),
         ],
-      ),
-    );
-  }
-
-  Widget _buildContent(String content) {
-    return Padding(
-      padding: const EdgeInsets.all(16.0),
-      child: Text(
-        content,
-        textAlign: TextAlign.justify,
       ),
     );
   }
