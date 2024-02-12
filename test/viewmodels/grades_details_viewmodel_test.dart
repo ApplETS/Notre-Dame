@@ -14,7 +14,7 @@ import '../mock/managers/course_repository_mock.dart';
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
   late AppIntl intl;
-  
+
   late CourseRepositoryMock courseRepositoryMock;
 
   late GradesDetailsViewModel viewModel;

@@ -115,8 +115,7 @@ void main() {
     setUp(() async {
       cacheManagerMock = setupCacheManagerMock();
       settingsManagerMock = setupSettingsManagerMock();
-      courseRepositoryMock =
-          setupCourseRepositoryMock();
+      courseRepositoryMock = setupCourseRepositoryMock();
       remoteConfigServiceMock = setupRemoteConfigServiceMock();
       preferenceServiceMock = setupPreferencesServiceMock();
       userRepositoryMock = setupUserRepositoryMock();

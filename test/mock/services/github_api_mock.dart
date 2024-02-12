@@ -10,7 +10,6 @@ import 'package:mockito/mockito.dart';
 // Project imports:
 import 'package:notredame/core/models/feedback_issue.dart';
 import 'package:notredame/core/services/github_api.dart';
-
 import 'github_api_mock.mocks.dart';
 
 /// Mock for the [GithubApi]
@@ -28,9 +27,11 @@ class GithubApiMock extends MockGithubApi {
   }
 
   static void stubCreateGithubIssue(GithubApiMock client, Issue toReturn) {
-    when(client.createGithubIssue(feedbackText: anyNamed("feedbackText"),
-        fileName: anyNamed("fileName"), feedbackType: anyNamed("feedbackType"),
-        email: anyNamed("email")))
+    when(client.createGithubIssue(
+            feedbackText: anyNamed("feedbackText"),
+            fileName: anyNamed("fileName"),
+            feedbackType: anyNamed("feedbackType"),
+            email: anyNamed("email")))
         .thenAnswer((_) async => Future.value(toReturn));
   }
 }

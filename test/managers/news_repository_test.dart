@@ -1,18 +1,14 @@
-// FLUTTER / DART / THIRD-PARTIES
+// Package imports:
 import 'package:flutter_test/flutter_test.dart';
 
-// MANAGER
+// Project imports:
 import 'package:notredame/core/managers/news_repository.dart';
-
-// MODEL
 import 'package:notredame/core/models/news.dart';
-
-// UTILS
 import '../helpers.dart';
 
 void main() {
   group('NewsRepository tests', () {
-    NewsRepository repository;
+    late NewsRepository repository;
 
     setUp(() {
       setupLogger();
@@ -26,7 +22,7 @@ void main() {
       // TODO : remove when the news will be empty by default without test news
       //expect(repository.news, isEmpty);
 
-      final List<News> fetchedNews =
+      final List<News>? fetchedNews =
           await repository.getNews(fromCacheOnly: true);
 
       expect(repository.news, isNotEmpty);
@@ -39,7 +35,7 @@ void main() {
 
       await repository.getNews(fromCacheOnly: true);
 
-      final List<News> newsFromCache =
+      final List<News>? newsFromCache =
           await repository.getNews(fromCacheOnly: true);
 
       expect(newsFromCache, isNotEmpty);
@@ -50,7 +46,7 @@ void main() {
       // TODO : remove when the news will be empty by default without test news
       //expect(repository.news, isEmpty);
 
-      final List<News> fetchedNews = await repository.getNews();
+      final List<News>? fetchedNews = await repository.getNews();
 
       expect(repository.news, isNotEmpty);
       expect(repository.news, equals(fetchedNews));

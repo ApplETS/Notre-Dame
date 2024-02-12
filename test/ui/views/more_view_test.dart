@@ -159,7 +159,8 @@ void main() {
           // Rebuild the widget after the state has changed.
           await tester.pump();
 
-          verify(navigationServiceMock.pushNamed(RouterPaths.contributors)).called(1);
+          verify(navigationServiceMock.pushNamed(RouterPaths.contributors))
+              .called(1);
         });
 
         testWidgets('licenses', (WidgetTester tester) async {
@@ -196,7 +197,8 @@ void main() {
           // Rebuild the widget after the state has changed.
           await tester.pump();
 
-          verify(navigationServiceMock.pushNamed(RouterPaths.faq, arguments: Colors.white))
+          verify(navigationServiceMock.pushNamed(RouterPaths.faq,
+                  arguments: Colors.white))
               .called(1);
         });
 
@@ -214,7 +216,8 @@ void main() {
           // Rebuild the widget after the state has changed.
           await tester.pump();
 
-          verify(navigationServiceMock.pushNamed(RouterPaths.settings)).called(1);
+          verify(navigationServiceMock.pushNamed(RouterPaths.settings))
+              .called(1);
         });
 
         testWidgets('logout', (WidgetTester tester) async {

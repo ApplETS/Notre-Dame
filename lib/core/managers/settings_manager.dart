@@ -151,8 +151,9 @@ class SettingsManager with ChangeNotifier {
         "${tag}_${EnumToString.convertToString(PreferencesFlag.locale)}",
         _locale?.languageCode ?? 'Not found');
 
-    if(_locale != null) {
-      _preferencesService.setString(PreferencesFlag.locale, _locale!.languageCode);
+    if (_locale != null) {
+      _preferencesService.setString(
+          PreferencesFlag.locale, _locale!.languageCode);
       _locale = Locale(_locale!.languageCode);
       notifyListeners();
     }
@@ -166,8 +167,8 @@ class SettingsManager with ChangeNotifier {
         .getString(PreferencesFlag.scheduleCalendarFormat)
         .then((value) => value == null
             ? CalendarFormat.week
-            : EnumToString.fromString(CalendarFormat.values, value)
-            ?? CalendarFormat.week);
+            : EnumToString.fromString(CalendarFormat.values, value) ??
+                CalendarFormat.week);
     settings.putIfAbsent(
         PreferencesFlag.scheduleCalendarFormat, () => calendarFormat);
 

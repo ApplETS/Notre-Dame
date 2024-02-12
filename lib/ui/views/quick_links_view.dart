@@ -49,14 +49,6 @@ class _QuickLinksViewState extends State<QuickLinksView>
         ),
       );
 
-  AppBar _buildAppBar(BuildContext context, QuickLinksViewModel model) {
-    return AppBar(
-      title: Text(AppIntl.of(context)!.title_ets),
-      automaticallyImplyLeading: false,
-      actions: const [],
-    );
-  }
-
   Widget _buildBody(BuildContext context, QuickLinksViewModel model) {
     return GestureDetector(
       onTap: () {

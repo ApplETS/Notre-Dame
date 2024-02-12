@@ -12,7 +12,6 @@ import 'package:notredame/core/managers/course_repository.dart';
 import 'package:notredame/core/managers/news_repository.dart';
 import 'package:notredame/core/managers/settings_manager.dart';
 import 'package:notredame/core/models/news.dart';
-import 'package:notredame/core/models/tags.dart';
 import 'package:notredame/core/services/navigation_service.dart';
 import 'package:notredame/core/services/networking_service.dart';
 import 'package:notredame/ui/views/news_view.dart';
@@ -21,7 +20,7 @@ import '../../helpers.dart';
 import '../../mock/managers/news_repository_mock.dart';
 
 void main() {
-  NewsRepositoryMock newsRepository;
+  late NewsRepositoryMock newsRepository;
 
   final List<News> news = <News>[
     News(
@@ -30,10 +29,10 @@ void main() {
           "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec tempus arcu sed quam tincidunt, non venenatis orci mollis.",
       description: "Test 1 description",
       date: DateTime.now(),
-      image: null,
-      tags: <Tag>[
-        Tag(text: "tag1", color: Colors.blue),
-        Tag(text: "tag2", color: Colors.green),
+      image: "",
+      tags: [
+        "tag1",
+        "tag2",
       ],
     ),
     News(
@@ -41,10 +40,10 @@ void main() {
       title: "Test 2",
       description: "Test 2 description",
       date: DateTime.now(),
-      image: null,
-      tags: <Tag>[
-        Tag(text: "tag1", color: Colors.blue),
-        Tag(text: "tag2", color: Colors.green),
+      image: "",
+      tags: [
+        "tag1",
+        "tag2",
       ],
     ),
     News(
@@ -52,10 +51,10 @@ void main() {
       title: "Test 3",
       description: "Test 3 description",
       date: DateTime.now(),
-      image: null,
-      tags: <Tag>[
-        Tag(text: "tag1", color: Colors.blue),
-        Tag(text: "tag2", color: Colors.green),
+      image: "",
+      tags: [
+        "tag1",
+        "tag2",
       ],
     ),
   ];
@@ -103,7 +102,7 @@ void main() {
       NewsRepositoryMock.stubNews(newsRepository, toReturn: news);
 
       await tester.pumpWidget(localizedWidget(child: NewsView()));
-      await tester.pumpAndSettle(const Duration(seconds: 1));
+      await tester.pumpAndSettle(const Duration(seconds: 5));
 
       expect(find.byType(RefreshIndicator), findsOneWidget);
 

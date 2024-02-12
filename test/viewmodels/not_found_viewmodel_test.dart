@@ -54,8 +54,8 @@ void main() {
       test('navigating back worked', () async {
         viewModel.navigateToDashboard();
 
-        verify(
-            navigationServiceMock.pushNamedAndRemoveUntil(RouterPaths.dashboard));
+        verify(navigationServiceMock
+            .pushNamedAndRemoveUntil(RouterPaths.dashboard));
       });
     });
 
@@ -78,9 +78,7 @@ void main() {
         final expectedArtboard = Artboard();
 
         RiveAnimationServiceMock.stubLoadRiveFile(
-            riveAnimationServiceMock,
-            'dot_jumping',
-            expectedArtboard);
+            riveAnimationServiceMock, 'dot_jumping', expectedArtboard);
 
         await viewModel.loadRiveAnimation();
         final artboard = viewModel.artboard;
@@ -93,7 +91,8 @@ void main() {
       test('load the dot_jumping Rive animation successfuly', () async {
         await viewModel.loadRiveAnimation();
 
-        verify(riveAnimationServiceMock.loadRiveFile(riveFileName: riveFileName));
+        verify(
+            riveAnimationServiceMock.loadRiveFile(riveFileName: riveFileName));
       });
 
       test('load file Rive animation with error', () async {
@@ -115,9 +114,7 @@ void main() {
         final artboard = Artboard();
 
         RiveAnimationServiceMock.stubLoadRiveFile(
-            riveAnimationServiceMock,
-            'dot_jumping',
-            artboard);
+            riveAnimationServiceMock, 'dot_jumping', artboard);
 
         RiveAnimationServiceMock.stubAddControllerToAnimationException(
             riveAnimationServiceMock, artboard);

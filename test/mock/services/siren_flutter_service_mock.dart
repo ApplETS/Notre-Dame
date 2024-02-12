@@ -5,7 +5,6 @@ import 'package:pub_semver/pub_semver.dart';
 
 // Project imports:
 import 'package:notredame/core/services/siren_flutter_service.dart';
-
 import 'siren_flutter_service_mock.mocks.dart';
 
 /// Mock for the [SirenFlutterService]

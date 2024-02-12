@@ -35,8 +35,7 @@ void main() {
       test("The settings are correctly loaded and sets", () async {
         SettingsManagerMock.stubLocale(settingsManagerMock);
 
-        SettingsManagerMock.stubThemeMode(
-            settingsManagerMock);
+        SettingsManagerMock.stubThemeMode(settingsManagerMock);
 
         await viewModel.futureToRun();
         expect(viewModel.currentLocale, 'English');

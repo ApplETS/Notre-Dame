@@ -36,7 +36,7 @@ class GradesDetailsViewModel extends FutureViewModel<Course> {
       setBusyForObject(course, true);
       course = await _courseRepository.getCourseSummary(course);
       notifyListeners();
-    } catch(e) {
+    } catch (e) {
       onError(e);
     } finally {
       setBusyForObject(course, false);

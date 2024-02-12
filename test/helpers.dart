@@ -14,9 +14,9 @@ import 'package:logger/logger.dart';
 // Project imports:
 import 'package:notredame/core/managers/cache_manager.dart';
 import 'package:notredame/core/managers/course_repository.dart';
+import 'package:notredame/core/managers/news_repository.dart';
 import 'package:notredame/core/managers/quick_link_repository.dart';
 import 'package:notredame/core/managers/settings_manager.dart';
-import 'package:notredame/core/managers/news_repository.dart';
 import 'package:notredame/core/managers/user_repository.dart';
 import 'package:notredame/core/services/analytics_service.dart';
 import 'package:notredame/core/services/app_widget_service.dart';

@@ -61,7 +61,7 @@ class GradesViewModel extends FutureViewModel<Map<String, List<Course>>> {
     // ignore: return_type_invalid_for_catch_error
     try {
       await _courseRepository.getCourses();
-      if(_courseRepository.courses != null) {
+      if (_courseRepository.courses != null) {
         _buildCoursesBySession(_courseRepository.courses!);
       }
       notifyListeners();

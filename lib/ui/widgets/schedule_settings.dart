@@ -149,7 +149,7 @@ class _ScheduleSettingsState extends State<ScheduleSettings> {
         title: Text(AppIntl.of(context)!.course_activity_group_both),
       ));
 
-      if(model.scheduleActivitiesByCourse[courseActivitiesAcronym] != null) {
+      if (model.scheduleActivitiesByCourse[courseActivitiesAcronym] != null) {
         for (final course
             in model.scheduleActivitiesByCourse[courseActivitiesAcronym]!) {
           tiles.add(ListTile(
@@ -162,7 +162,6 @@ class _ScheduleSettingsState extends State<ScheduleSettings> {
           ));
         }
       }
-      
 
       if (model.scheduleActivitiesByCourse.values.length > 1) {
         tiles.add(const Divider(endIndent: 50, thickness: 1.5));

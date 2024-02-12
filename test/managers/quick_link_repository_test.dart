@@ -58,8 +58,8 @@ void main() {
           "Trying to recover QuickLinkData from cache but an exception is raised.",
           () async {
         // Stub the cache to throw an exception
-        CacheManagerMock.stubGetException(cacheManagerMock,
-            QuickLinkRepository.quickLinksCacheKey);
+        CacheManagerMock.stubGetException(
+            cacheManagerMock, QuickLinkRepository.quickLinksCacheKey);
 
         expect(quickLinkRepository.getQuickLinkDataFromCache(),
             throwsA(isInstanceOf<Exception>()));
@@ -83,8 +83,8 @@ void main() {
           "Trying to update QuickLinkData to cache but an exception is raised.",
           () async {
         // Stub the cache to throw an exception
-        CacheManagerMock.stubUpdateException(cacheManagerMock,
-            QuickLinkRepository.quickLinksCacheKey);
+        CacheManagerMock.stubUpdateException(
+            cacheManagerMock, QuickLinkRepository.quickLinksCacheKey);
 
         final quickLink =
             QuickLink(id: 1, image: const Text(""), name: 'name', link: 'url');

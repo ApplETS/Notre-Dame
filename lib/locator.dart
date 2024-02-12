@@ -7,6 +7,7 @@ import 'package:logger/logger.dart';
 // Project imports:
 import 'package:notredame/core/managers/cache_manager.dart';
 import 'package:notredame/core/managers/course_repository.dart';
+import 'package:notredame/core/managers/news_repository.dart';
 import 'package:notredame/core/managers/quick_link_repository.dart';
 import 'package:notredame/core/managers/settings_manager.dart';
 import 'package:notredame/core/managers/user_repository.dart';
@@ -18,7 +19,6 @@ import 'package:notredame/core/services/internal_info_service.dart';
 import 'package:notredame/core/services/launch_url_service.dart';
 import 'package:notredame/core/services/navigation_service.dart';
 import 'package:notredame/core/services/networking_service.dart';
-import 'package:notredame/core/managers/news_repository.dart';
 import 'package:notredame/core/services/preferences_service.dart';
 import 'package:notredame/core/services/remote_config_service.dart';
 import 'package:notredame/core/services/rive_animation_service.dart';

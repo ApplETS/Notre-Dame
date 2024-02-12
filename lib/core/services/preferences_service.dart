@@ -126,7 +126,7 @@ class PreferencesService {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     final flagPreference = prefs.getString(flag.toString());
 
-    if(flagPreference != null) {
+    if (flagPreference != null) {
       return DateTime.parse(flagPreference);
     }
 
