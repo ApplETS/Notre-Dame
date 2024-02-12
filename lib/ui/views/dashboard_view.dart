@@ -41,6 +41,7 @@ class DashboardView extends StatefulWidget {
 
 class _DashboardViewState extends State<DashboardView> with TickerProviderStateMixin {
   Text progressBarText;
+  bool tabletMode;
   final NavigationService _navigationService = locator<NavigationService>();
   final AnalyticsService _analyticsService = locator<AnalyticsService>();
   static const String tag = "DashboardView";
@@ -78,6 +79,7 @@ class _DashboardViewState extends State<DashboardView> with TickerProviderStateM
                           if (orientation == Orientation.landscape && MediaQuery.of(context).size.width > 1000) {
                             return _buildTabletLayout(model);
                           }
+                          tabletMode = false;
                           return ReorderableListView(
                             onReorder: (oldIndex, newIndex) => onReorder(model, oldIndex, newIndex),
                             padding: const EdgeInsets.fromLTRB(0, 4, 0, 8),
@@ -94,56 +96,27 @@ class _DashboardViewState extends State<DashboardView> with TickerProviderStateM
   }
 
   Widget _buildTabletLayout(DashboardViewModel model) {
+    tabletMode = true;
     return Row(children: <Widget>[
       Expanded(
-        flex: 4,
-        child: Padding(
-          padding: const EdgeInsets.all(16),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              ClipRRect(
-                borderRadius: BorderRadius.circular(8.0),
-                child: ColoredBox(
-                    color: AppTheme.appletsPurple,
-                    child: _buildAboutUsCard()),
-              ),
-              const SizedBox(height: 20),
-              ClipRRect(
-                borderRadius: BorderRadius.circular(8.0),
-                child: ColoredBox(
-                    color: Theme.of(context).cardColor,
-                    child: _buildProgressBarCard(model)),
-              ),
-              const SizedBox(height: 20),
-              ClipRRect(
-                borderRadius: BorderRadius.circular(8.0),
-                child: ColoredBox(
-                    color: Theme.of(context).cardColor,
-                    child: _buildGradesCards(model)),
-              ),
-            ],
-          ),
-        ),
-      ),
-      Expanded(
-        flex: 6,
-        child: ClipRRect(
-          borderRadius: BorderRadius.circular(8.0),
-          child: const SizedBox(
-            height: 500,
-            child: ColoredBox(
-              color: AppTheme.appletsDarkPurple,
-              child: Center(
-                child: Text(
-                  "Imagine que ici il y a un calendrier pasque jlai pas encore fait lol",
-                  textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: 32),
-                ),
+          flex: 4,
+          child: Padding(
+            padding: const EdgeInsets.all(16),
+            child: Center(
+              child: ReorderableListView(
+                shrinkWrap: true,
+                onReorder: (oldIndex, newIndex) => onReorder(model, oldIndex, newIndex),
+                padding: const EdgeInsets.fromLTRB(0, 4, 0, 8),
+                children: _buildCards(model),
+                proxyDecorator: (child, _, __) {
+                  return HapticsContainer(child: child);
+                },
               ),
             ),
-          ),
-        ),
+          )),
+      Expanded(
+        flex: 6,
+        child: _buildTabletModeCalendar()
       )
     ]);
   }
@@ -162,16 +135,18 @@ class _DashboardViewState extends State<DashboardView> with TickerProviderStateM
           }
           break;
         case PreferencesFlag.aboutUsCard:
-          cards.add(convertToCard(model, element, _buildAboutUsCard(), AppTheme.appletsPurple));
+          cards.add(_buildAboutUsCard(model, element));
           break;
         case PreferencesFlag.scheduleCard:
-          cards.add(_buildScheduleCard(model, element));
+          if (!tabletMode) {
+            cards.add(_buildScheduleCard(model, element));
+          }
           break;
         case PreferencesFlag.progressBarCard:
-          cards.add(convertToCard(model, element, _buildProgressBarCard(model), null));
+          cards.add(_buildProgressBarCard(model, element));
           break;
         case PreferencesFlag.gradesCard:
-          cards.add(convertToCard(model, element, _buildGradesCards(model), null));
+          cards.add(_buildGradesCards(model, element));
           break;
 
         default:
@@ -183,95 +158,97 @@ class _DashboardViewState extends State<DashboardView> with TickerProviderStateM
     return cards;
   }
 
-  Widget convertToCard(DashboardViewModel model, PreferencesFlag flag, Widget child2, Color cardColor) => DismissibleCard(
-    key: UniqueKey(),
-    onDismissed: (DismissDirection direction) {
-      dismissCard(model, flag);
-    },
-    cardColor: cardColor,
-    child: child2
-  );
+  Widget _buildAboutUsCard(DashboardViewModel model, PreferencesFlag flag) =>
+      DismissibleCard(
+          key: UniqueKey(),
+          onDismissed: (DismissDirection direction) {
+            dismissCard(model, flag);
+          },
+          cardColor: AppTheme.appletsPurple,
+          child: Column(mainAxisSize: MainAxisSize.min, children: [
+        Align(
+            alignment: Alignment.centerLeft,
+            child: Container(
+              padding: const EdgeInsets.fromLTRB(17, 15, 0, 0),
+              child: Text(AppIntl.of(context).card_applets_title, style: Theme.of(context).primaryTextTheme.headline6),
+            )),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Container(
+              padding: const EdgeInsets.fromLTRB(17, 10, 15, 10),
+              child: Text(AppIntl.of(context).card_applets_text, style: Theme.of(context).primaryTextTheme.bodyText2),
+            ),
+            Container(
+              padding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
+              child: Padding(
+                padding: const EdgeInsets.only(bottom: 8.0),
+                child: Wrap(spacing: 15.0, children: [
+                  IconButton(
+                    onPressed: () {
+                      _analyticsService.logEvent(tag, "Facebook clicked");
+                      Utils.launchURL(Urls.clubFacebook, AppIntl.of(context));
+                    },
+                    icon: const FaIcon(
+                      FontAwesomeIcons.facebook,
+                      color: Colors.white,
+                    ),
+                  ),
+                  IconButton(
+                    onPressed: () {
+                      _analyticsService.logEvent(tag, "Instagram clicked");
+                      Utils.launchURL(Urls.clubInstagram, AppIntl.of(context));
+                    },
+                    icon: const FaIcon(
+                      FontAwesomeIcons.instagram,
+                      color: Colors.white,
+                    ),
+                  ),
+                  IconButton(
+                    onPressed: () {
+                      _analyticsService.logEvent(tag, "Github clicked");
+                      Utils.launchURL(Urls.clubGithub, AppIntl.of(context));
+                    },
+                    icon: const FaIcon(
+                      FontAwesomeIcons.github,
+                      color: Colors.white,
+                    ),
+                  ),
+                  IconButton(
+                    onPressed: () {
+                      _analyticsService.logEvent(tag, "Email clicked");
+                      Utils.launchURL(Urls.clubEmail, AppIntl.of(context));
+                    },
+                    icon: const FaIcon(
+                      FontAwesomeIcons.envelope,
+                      color: Colors.white,
+                    ),
+                  ),
+                  IconButton(
+                    onPressed: () {
+                      _analyticsService.logEvent(tag, "Discord clicked");
+                      Utils.launchURL(Urls.clubDiscord, AppIntl.of(context));
+                    },
+                    icon: const FaIcon(
+                      FontAwesomeIcons.discord,
+                      color: Colors.white,
+                    ),
+                  ),
+                ]),
+              ),
+            ),
+          ],
+        ),
+      ]));
 
-  Widget _buildAboutUsCard() =>
+  Widget _buildProgressBarCard(DashboardViewModel model, PreferencesFlag flag) => DismissibleCard(
+      isBusy: model.busy(model.progress),
+      key: UniqueKey(),
+      onDismissed: (DismissDirection direction) {
+        dismissCard(model, flag);
+      },
+      child: Column(mainAxisSize: MainAxisSize.min, children: [
         Column(mainAxisSize: MainAxisSize.min, children: [
-          Align(
-              alignment: Alignment.centerLeft,
-              child: Container(
-                padding: const EdgeInsets.fromLTRB(17, 15, 0, 0),
-                child:
-                    Text(AppIntl.of(context).card_applets_title, style: Theme.of(context).primaryTextTheme.headline6),
-              )),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Container(
-                padding: const EdgeInsets.fromLTRB(17, 10, 15, 10),
-                child: Text(AppIntl.of(context).card_applets_text, style: Theme.of(context).primaryTextTheme.bodyText2),
-              ),
-              Container(
-                padding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
-                child: Padding(
-                  padding: const EdgeInsets.only(bottom: 8.0),
-                  child: Wrap(spacing: 15.0, children: [
-                    IconButton(
-                      onPressed: () {
-                        _analyticsService.logEvent(tag, "Facebook clicked");
-                        Utils.launchURL(Urls.clubFacebook, AppIntl.of(context));
-                      },
-                      icon: const FaIcon(
-                        FontAwesomeIcons.facebook,
-                        color: Colors.white,
-                      ),
-                    ),
-                    IconButton(
-                      onPressed: () {
-                        _analyticsService.logEvent(tag, "Instagram clicked");
-                        Utils.launchURL(Urls.clubInstagram, AppIntl.of(context));
-                      },
-                      icon: const FaIcon(
-                        FontAwesomeIcons.instagram,
-                        color: Colors.white,
-                      ),
-                    ),
-                    IconButton(
-                      onPressed: () {
-                        _analyticsService.logEvent(tag, "Github clicked");
-                        Utils.launchURL(Urls.clubGithub, AppIntl.of(context));
-                      },
-                      icon: const FaIcon(
-                        FontAwesomeIcons.github,
-                        color: Colors.white,
-                      ),
-                    ),
-                    IconButton(
-                      onPressed: () {
-                        _analyticsService.logEvent(tag, "Email clicked");
-                        Utils.launchURL(Urls.clubEmail, AppIntl.of(context));
-                      },
-                      icon: const FaIcon(
-                        FontAwesomeIcons.envelope,
-                        color: Colors.white,
-                      ),
-                    ),
-                    IconButton(
-                      onPressed: () {
-                        _analyticsService.logEvent(tag, "Discord clicked");
-                        Utils.launchURL(Urls.clubDiscord, AppIntl.of(context));
-                      },
-                      icon: const FaIcon(
-                        FontAwesomeIcons.discord,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ]),
-                ),
-              ),
-            ],
-          ),
-        ]);
-
-  Widget _buildProgressBarCard(DashboardViewModel model) =>
-      Column(mainAxisSize: MainAxisSize.min, children: [
           Align(
               alignment: Alignment.centerLeft,
               child: Container(
@@ -324,7 +301,8 @@ class _DashboardViewState extends State<DashboardView> with TickerProviderStateM
                 child: Text(AppIntl.of(context).session_without),
               ),
             ),
-        ]);
+        ])
+      ]));
 
   void setText(DashboardViewModel model) {
     if (model.sessionDays[0] == 0 || model.sessionDays[1] == 0) {
@@ -397,7 +375,13 @@ class _DashboardViewState extends State<DashboardView> with TickerProviderStateM
         itemCount: events.length);
   }
 
-  Widget _buildGradesCards(DashboardViewModel model) => Column(crossAxisAlignment: CrossAxisAlignment.start, mainAxisSize: MainAxisSize.min, children: [
+  Widget _buildGradesCards(DashboardViewModel model, PreferencesFlag flag) => DismissibleCard(
+        key: UniqueKey(),
+        onDismissed: (DismissDirection direction) {
+          dismissCard(model, flag);
+        },
+        isBusy: model.busy(model.courses),
+        child: Column(crossAxisAlignment: CrossAxisAlignment.start, mainAxisSize: MainAxisSize.min, children: [
           Align(
             alignment: Alignment.centerLeft,
             child: Container(
@@ -420,7 +404,8 @@ class _DashboardViewState extends State<DashboardView> with TickerProviderStateM
                 children: model.courses.map((course) => GradeButton(course, showDiscovery: false)).toList(),
               ),
             )
-        ]);
+        ]),
+      );
 
   Widget _buildMessageBroadcastCard(DashboardViewModel model, PreferencesFlag flag) {
     final broadcastMsgColor = Color(int.parse(model.broadcastColor));
@@ -528,4 +513,23 @@ class _DashboardViewState extends State<DashboardView> with TickerProviderStateM
       ),
     );
   }
+}
+
+Widget _buildTabletModeCalendar() {
+return ClipRRect(
+  borderRadius: BorderRadius.circular(8.0),
+  child: const SizedBox(
+    height: 500,
+    child: ColoredBox(
+      color: AppTheme.appletsDarkPurple,
+      child: Center(
+        child: Text(
+          "Imagine que ici il y a un calendrier pasque jlai pas encore fait lol",
+          textAlign: TextAlign.center,
+          style: TextStyle(fontSize: 32),
+        ),
+      ),
+    ),
+  ),
+);
 }
