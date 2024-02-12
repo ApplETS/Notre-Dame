@@ -16,6 +16,8 @@ class NewsView extends StatefulWidget {
 }
 
 class _NewsViewState extends State<NewsView> {
+  int nbSkeletons = 3;
+
   @override
   void initState() {
     super.initState();
@@ -43,7 +45,7 @@ class _NewsViewState extends State<NewsView> {
 
   Widget _buildSkeletonLoader() {
     return ListView.builder(
-      itemCount: 3,
+      itemCount: nbSkeletons,
       itemBuilder: (context, index) => NewsCardSkeleton(),
     );
   }
