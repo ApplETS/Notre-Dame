@@ -39,8 +39,7 @@ class DashboardView extends StatefulWidget {
   _DashboardViewState createState() => _DashboardViewState();
 }
 
-class _DashboardViewState extends State<DashboardView>
-    with TickerProviderStateMixin {
+class _DashboardViewState extends State<DashboardView> with TickerProviderStateMixin {
   Text progressBarText;
   final NavigationService _navigationService = locator<NavigationService>();
   final AnalyticsService _analyticsService = locator<AnalyticsService>();
@@ -68,28 +67,85 @@ class _DashboardViewState extends State<DashboardView>
                   centerTitle: false,
                   automaticallyImplyLeading: false,
                   actions: [
-                    _buildDiscoveryFeatureDescriptionWidget(
-                        context, Icons.restore, model),
+                    _buildDiscoveryFeatureDescriptionWidget(context, Icons.restore, model),
                   ]),
               body: model.cards == null
                   ? buildLoading()
                   : RefreshIndicator(
                       child: Theme(
-                        data: Theme.of(context)
-                            .copyWith(canvasColor: Colors.transparent),
-                        child: ReorderableListView(
-                          onReorder: (oldIndex, newIndex) =>
-                              onReorder(model, oldIndex, newIndex),
-                          padding: const EdgeInsets.fromLTRB(0, 4, 0, 8),
-                          children: _buildCards(model),
-                          proxyDecorator: (child, _, __) {
-                            return HapticsContainer(child: child);
-                          },
-                        ),
+                        data: Theme.of(context).copyWith(canvasColor: Colors.transparent),
+                        child: OrientationBuilder(builder: (context, orientation) {
+                          if (orientation == Orientation.landscape && MediaQuery.of(context).size.width > 1000) {
+                            return _buildTabletLayout(model);
+                          }
+                          return ReorderableListView(
+                            onReorder: (oldIndex, newIndex) => onReorder(model, oldIndex, newIndex),
+                            padding: const EdgeInsets.fromLTRB(0, 4, 0, 8),
+                            children: _buildCards(model),
+                            proxyDecorator: (child, _, __) {
+                              return HapticsContainer(child: child);
+                            },
+                          );
+                        }),
                       ),
                       onRefresh: () => model.loadDataAndUpdateWidget(),
                     ));
         });
+  }
+
+  Widget _buildTabletLayout(DashboardViewModel model) {
+    return Row(children: <Widget>[
+      Expanded(
+        flex: 4,
+        child: Padding(
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              ClipRRect(
+                borderRadius: BorderRadius.circular(8.0),
+                child: ColoredBox(
+                    color: AppTheme.appletsPurple,
+                    child: _buildAboutUsCard()),
+              ),
+              const SizedBox(height: 20),
+              ClipRRect(
+                borderRadius: BorderRadius.circular(8.0),
+                child: ColoredBox(
+                    color: Theme.of(context).cardColor,
+                    child: _buildProgressBarCard(model)),
+              ),
+              const SizedBox(height: 20),
+              ClipRRect(
+                borderRadius: BorderRadius.circular(8.0),
+                child: ColoredBox(
+                    color: Theme.of(context).cardColor,
+                    child: _buildGradesCards(model)),
+              ),
+            ],
+          ),
+        ),
+      ),
+      Expanded(
+        flex: 6,
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(8.0),
+          child: const SizedBox(
+            height: 500,
+            child: ColoredBox(
+              color: AppTheme.appletsDarkPurple,
+              child: Center(
+                child: Text(
+                  "Imagine que ici il y a un calendrier pasque jlai pas encore fait lol",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(fontSize: 32),
+                ),
+              ),
+            ),
+          ),
+        ),
+      )
+    ]);
   }
 
   List<Widget> _buildCards(DashboardViewModel model) {
@@ -106,16 +162,16 @@ class _DashboardViewState extends State<DashboardView>
           }
           break;
         case PreferencesFlag.aboutUsCard:
-          cards.add(_buildAboutUsCard(model, element));
+          cards.add(convertToCard(model, element, _buildAboutUsCard(), AppTheme.appletsPurple));
           break;
         case PreferencesFlag.scheduleCard:
           cards.add(_buildScheduleCard(model, element));
           break;
         case PreferencesFlag.progressBarCard:
-          cards.add(_buildProgressBarCard(model, element));
+          cards.add(convertToCard(model, element, _buildProgressBarCard(model), null));
           break;
         case PreferencesFlag.gradesCard:
-          cards.add(_buildGradesCards(model, element));
+          cards.add(convertToCard(model, element, _buildGradesCards(model), null));
           break;
 
         default:
@@ -127,28 +183,30 @@ class _DashboardViewState extends State<DashboardView>
     return cards;
   }
 
-  Widget _buildAboutUsCard(DashboardViewModel model, PreferencesFlag flag) =>
-      DismissibleCard(
-        key: UniqueKey(),
-        onDismissed: (DismissDirection direction) {
-          dismissCard(model, flag);
-        },
-        cardColor: AppTheme.appletsPurple,
-        child: Column(mainAxisSize: MainAxisSize.min, children: [
+  Widget convertToCard(DashboardViewModel model, PreferencesFlag flag, Widget child2, Color cardColor) => DismissibleCard(
+    key: UniqueKey(),
+    onDismissed: (DismissDirection direction) {
+      dismissCard(model, flag);
+    },
+    cardColor: cardColor,
+    child: child2
+  );
+
+  Widget _buildAboutUsCard() =>
+        Column(mainAxisSize: MainAxisSize.min, children: [
           Align(
               alignment: Alignment.centerLeft,
               child: Container(
                 padding: const EdgeInsets.fromLTRB(17, 15, 0, 0),
-                child: Text(AppIntl.of(context).card_applets_title,
-                    style: Theme.of(context).primaryTextTheme.headline6),
+                child:
+                    Text(AppIntl.of(context).card_applets_title, style: Theme.of(context).primaryTextTheme.headline6),
               )),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Container(
                 padding: const EdgeInsets.fromLTRB(17, 10, 15, 10),
-                child: Text(AppIntl.of(context).card_applets_text,
-                    style: Theme.of(context).primaryTextTheme.bodyText2),
+                child: Text(AppIntl.of(context).card_applets_text, style: Theme.of(context).primaryTextTheme.bodyText2),
               ),
               Container(
                 padding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
@@ -168,8 +226,7 @@ class _DashboardViewState extends State<DashboardView>
                     IconButton(
                       onPressed: () {
                         _analyticsService.logEvent(tag, "Instagram clicked");
-                        Utils.launchURL(
-                            Urls.clubInstagram, AppIntl.of(context));
+                        Utils.launchURL(Urls.clubInstagram, AppIntl.of(context));
                       },
                       icon: const FaIcon(
                         FontAwesomeIcons.instagram,
@@ -211,24 +268,15 @@ class _DashboardViewState extends State<DashboardView>
               ),
             ],
           ),
-        ]),
-      );
+        ]);
 
-  Widget _buildProgressBarCard(
-          DashboardViewModel model, PreferencesFlag flag) =>
-      DismissibleCard(
-        isBusy: model.busy(model.progress),
-        key: UniqueKey(),
-        onDismissed: (DismissDirection direction) {
-          dismissCard(model, flag);
-        },
-        child: Column(mainAxisSize: MainAxisSize.min, children: [
+  Widget _buildProgressBarCard(DashboardViewModel model) =>
+      Column(mainAxisSize: MainAxisSize.min, children: [
           Align(
               alignment: Alignment.centerLeft,
               child: Container(
                 padding: const EdgeInsets.fromLTRB(17, 15, 0, 0),
-                child: Text(AppIntl.of(context).progress_bar_title,
-                    style: Theme.of(context).textTheme.headline6),
+                child: Text(AppIntl.of(context).progress_bar_title, style: Theme.of(context).textTheme.headline6),
               )),
           if (model.progress >= 0.0)
             Stack(children: [
@@ -246,8 +294,7 @@ class _DashboardViewState extends State<DashboardView>
                     child: LinearProgressIndicator(
                       value: model.progress,
                       minHeight: 30,
-                      valueColor: const AlwaysStoppedAnimation<Color>(
-                          AppTheme.gradeGoodMax),
+                      valueColor: const AlwaysStoppedAnimation<Color>(AppTheme.gradeGoodMax),
                       backgroundColor: AppTheme.etsDarkGrey,
                     ),
                   ),
@@ -263,8 +310,7 @@ class _DashboardViewState extends State<DashboardView>
                   child: Center(
                     child: progressBarText ??
                         Text(
-                          AppIntl.of(context).progress_bar_message(
-                              model.sessionDays[0], model.sessionDays[1]),
+                          AppIntl.of(context).progress_bar_message(model.sessionDays[0], model.sessionDays[1]),
                           style: const TextStyle(color: Colors.white),
                         ),
                   ),
@@ -278,31 +324,27 @@ class _DashboardViewState extends State<DashboardView>
                 child: Text(AppIntl.of(context).session_without),
               ),
             ),
-        ]),
-      );
+        ]);
 
   void setText(DashboardViewModel model) {
     if (model.sessionDays[0] == 0 || model.sessionDays[1] == 0) {
       return;
     }
 
-    if (model.currentProgressBarText ==
-        ProgressBarText.daysElapsedWithTotalDays) {
+    if (model.currentProgressBarText == ProgressBarText.daysElapsedWithTotalDays) {
       progressBarText = Text(
-        AppIntl.of(context)
-            .progress_bar_message(model.sessionDays[0], model.sessionDays[1]),
+        AppIntl.of(context).progress_bar_message(model.sessionDays[0], model.sessionDays[1]),
         style: const TextStyle(color: Colors.white),
       );
     } else if (model.currentProgressBarText == ProgressBarText.percentage) {
       progressBarText = Text(
-        AppIntl.of(context).progress_bar_message_percentage(
-            ((model.sessionDays[0] / model.sessionDays[1]) * 100).round()),
+        AppIntl.of(context)
+            .progress_bar_message_percentage(((model.sessionDays[0] / model.sessionDays[1]) * 100).round()),
         style: const TextStyle(color: Colors.white),
       );
     } else {
       progressBarText = Text(
-        AppIntl.of(context).progress_bar_message_remaining_days(
-            model.sessionDays[1] - model.sessionDays[0]),
+        AppIntl.of(context).progress_bar_message_remaining_days(model.sessionDays[1] - model.sessionDays[0]),
         style: const TextStyle(color: Colors.white),
       );
     }
@@ -314,8 +356,7 @@ class _DashboardViewState extends State<DashboardView>
       title = title + AppIntl.of(context).card_schedule_tomorrow;
     }
     return DismissibleCard(
-      isBusy: model.busy(model.todayDateEvents) ||
-          model.busy(model.tomorrowDateEvents),
+      isBusy: model.busy(model.todayDateEvents) || model.busy(model.tomorrowDateEvents),
       onDismissed: (DismissDirection direction) {
         dismissCard(model, flag);
       },
@@ -328,18 +369,13 @@ class _DashboardViewState extends State<DashboardView>
               child: Container(
                 padding: const EdgeInsets.fromLTRB(17, 15, 0, 0),
                 child: GestureDetector(
-                  onTap: () => _navigationService
-                      .pushNamedAndRemoveUntil(RouterPaths.schedule),
-                  child:
-                      Text(title, style: Theme.of(context).textTheme.headline6),
+                  onTap: () => _navigationService.pushNamedAndRemoveUntil(RouterPaths.schedule),
+                  child: Text(title, style: Theme.of(context).textTheme.headline6),
                 ),
               )),
           if (model.todayDateEvents.isEmpty)
             if (model.tomorrowDateEvents.isEmpty)
-              SizedBox(
-                  height: 100,
-                  child: Center(
-                      child: Text(AppIntl.of(context).schedule_no_event)))
+              SizedBox(height: 100, child: Center(child: Text(AppIntl.of(context).schedule_no_event)))
             else
               _buildEventList(model.tomorrowDateEvents)
           else
@@ -355,61 +391,38 @@ class _DashboardViewState extends State<DashboardView>
         physics: const NeverScrollableScrollPhysics(),
         shrinkWrap: true,
         padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
-        itemBuilder: (_, index) =>
-            CourseActivityTile(events[index] as CourseActivity),
-        separatorBuilder: (_, index) => (index < events.length)
-            ? const Divider(thickness: 1, indent: 30, endIndent: 30)
-            : const SizedBox(),
+        itemBuilder: (_, index) => CourseActivityTile(events[index] as CourseActivity),
+        separatorBuilder: (_, index) =>
+            (index < events.length) ? const Divider(thickness: 1, indent: 30, endIndent: 30) : const SizedBox(),
         itemCount: events.length);
   }
 
-  Widget _buildGradesCards(DashboardViewModel model, PreferencesFlag flag) =>
-      DismissibleCard(
-        key: UniqueKey(),
-        onDismissed: (DismissDirection direction) {
-          dismissCard(model, flag);
-        },
-        isBusy: model.busy(model.courses),
-        child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Align(
-                alignment: Alignment.centerLeft,
-                child: Container(
-                  padding: const EdgeInsets.fromLTRB(17, 15, 0, 0),
-                  child: GestureDetector(
-                    onTap: () => _navigationService
-                        .pushNamedAndRemoveUntil(RouterPaths.student),
-                    child: Text(AppIntl.of(context).grades_title,
-                        style: Theme.of(context).textTheme.headline6),
-                  ),
-                ),
+  Widget _buildGradesCards(DashboardViewModel model) => Column(crossAxisAlignment: CrossAxisAlignment.start, mainAxisSize: MainAxisSize.min, children: [
+          Align(
+            alignment: Alignment.centerLeft,
+            child: Container(
+              padding: const EdgeInsets.fromLTRB(17, 15, 0, 0),
+              child: GestureDetector(
+                onTap: () => _navigationService.pushNamedAndRemoveUntil(RouterPaths.student),
+                child: Text(AppIntl.of(context).grades_title, style: Theme.of(context).textTheme.headline6),
               ),
-              if (model.courses.isEmpty)
-                SizedBox(
-                  height: 100,
-                  child: Center(
-                      child: Text(AppIntl.of(context)
-                          .grades_msg_no_grades
-                          .split("\n")
-                          .first)),
-                )
-              else
-                Container(
-                  padding: const EdgeInsets.fromLTRB(17, 10, 15, 10),
-                  child: Wrap(
-                    children: model.courses
-                        .map((course) =>
-                            GradeButton(course, showDiscovery: false))
-                        .toList(),
-                  ),
-                )
-            ]),
-      );
+            ),
+          ),
+          if (model.courses.isEmpty)
+            SizedBox(
+              height: 100,
+              child: Center(child: Text(AppIntl.of(context).grades_msg_no_grades.split("\n").first)),
+            )
+          else
+            Container(
+              padding: const EdgeInsets.fromLTRB(17, 10, 15, 10),
+              child: Wrap(
+                children: model.courses.map((course) => GradeButton(course, showDiscovery: false)).toList(),
+              ),
+            )
+        ]);
 
-  Widget _buildMessageBroadcastCard(
-      DashboardViewModel model, PreferencesFlag flag) {
+  Widget _buildMessageBroadcastCard(DashboardViewModel model, PreferencesFlag flag) {
     final broadcastMsgColor = Color(int.parse(model.broadcastColor));
     final broadcastMsgType = model.broadcastType;
     final broadcastMsgUrl = model.broadcastUrl;
@@ -429,8 +442,7 @@ class _DashboardViewState extends State<DashboardView>
                 Expanded(
                   child: Align(
                     alignment: Alignment.centerLeft,
-                    child: Text(model.broadcastTitle,
-                        style: Theme.of(context).primaryTextTheme.headline6),
+                    child: Text(model.broadcastTitle, style: Theme.of(context).primaryTextTheme.headline6),
                   ),
                 ),
                 Align(
@@ -442,8 +454,7 @@ class _DashboardViewState extends State<DashboardView>
               ],
             ),
             // main text
-            AutoSizeText(model.broadcastMessage ?? "",
-                style: Theme.of(context).primaryTextTheme.bodyText2)
+            AutoSizeText(model.broadcastMessage ?? "", style: Theme.of(context).primaryTextTheme.bodyText2)
           ]),
         ));
   }
@@ -491,16 +502,15 @@ class _DashboardViewState extends State<DashboardView>
       newIndex -= 1;
     }
 
-    final PreferencesFlag elementMoved = model.cards.keys
-        .firstWhere((element) => model.cards[element] == oldIndex);
+    final PreferencesFlag elementMoved = model.cards.keys.firstWhere((element) => model.cards[element] == oldIndex);
 
     model.setOrder(elementMoved, newIndex);
   }
 
   DescribedFeatureOverlay _buildDiscoveryFeatureDescriptionWidget(
       BuildContext context, IconData icon, DashboardViewModel model) {
-    final discovery = getDiscoveryByFeatureId(context,
-        DiscoveryGroupIds.bottomBar, DiscoveryIds.bottomBarDashboardRestore);
+    final discovery =
+        getDiscoveryByFeatureId(context, DiscoveryGroupIds.bottomBar, DiscoveryIds.bottomBarDashboardRestore);
 
     return DescribedFeatureOverlay(
       overflowMode: OverflowMode.wrapBackground,
