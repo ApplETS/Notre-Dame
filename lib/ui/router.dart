@@ -13,6 +13,7 @@ import 'package:notredame/ui/views/choose_language_view.dart';
 import 'package:notredame/ui/views/contributors_view.dart';
 import 'package:notredame/ui/views/dashboard_view.dart';
 import 'package:notredame/ui/views/ets_view.dart';
+import 'package:notredame/ui/views/ets_view.dart';
 import 'package:notredame/ui/views/faq_view.dart';
 import 'package:notredame/ui/views/feedback_view.dart';
 import 'package:notredame/ui/views/grade_details_view.dart';
