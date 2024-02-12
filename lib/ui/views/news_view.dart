@@ -41,18 +41,6 @@ class _NewsViewState extends State<NewsView> {
                               model.news.map((news) => NewsCard(news)).toList(),
                         ),
                 ));
-                onRefresh: model.refresh,
-                child: Theme(
-                  data: Theme.of(context)
-                      .copyWith(canvasColor: Colors.transparent),
-                  child: model.isLoadingEvents
-                      ? _buildSkeletonLoader()
-                      : ListView(
-                          padding: const EdgeInsets.fromLTRB(0, 4, 0, 8),
-                          children:
-                              model.news.map((news) => NewsCard(news)).toList(),
-                        ),
-                ));
           });
 
   Widget _buildSkeletonLoader() {
