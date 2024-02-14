@@ -361,68 +361,66 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
   }
 
   Future<List<Session>> futureToRunSessionProgressBar() async {
-    final progressBarText =
+    try {
+      final progressBarText =
         await _settingsManager.getString(PreferencesFlag.progressBarText)
           ?? ProgressBarText.daysElapsedWithTotalDays.toString();
 
-    _currentProgressBarText = ProgressBarText.values
-        .firstWhere((e) => e.toString() == progressBarText);
+      _currentProgressBarText = ProgressBarText.values
+          .firstWhere((e) => e.toString() == progressBarText);
 
-    setBusyForObject(progress, true);
-    return _courseRepository
-        .getSessions()
-        // ignore: invalid_return_type_for_catch_error
-        .catchError(onError)
-        .whenComplete(() {
+      setBusyForObject(progress, true);
+      final sessions = await _courseRepository.getSessions();
       _sessionDays = getSessionDays();
       _progress = getSessionProgress();
+      return sessions;
+    } catch(error) {
+      onError(error);
+    } finally {
       setBusyForObject(progress, false);
-    });
+    }
+    return [];
   }
 
   Future<List<CourseActivity>> futureToRunSchedule() async {
-    return _courseRepository
-        .getCoursesActivities(fromCacheOnly: true)
-        .then((value) {
+    try {
+      var courseActivities = await _courseRepository.getCoursesActivities(fromCacheOnly: true);
       setBusyForObject(_todayDateEvents, true);
       setBusyForObject(_tomorrowDateEvents, true);
       _todayDateEvents.clear();
       _tomorrowDateEvents.clear();
-
       final todayDate = _settingsManager.dateTimeNow;
-      _courseRepository
-          .getCoursesActivities()
-          // ignore: return_type_invalid_for_catch_error
-          .catchError(onError)
-          .whenComplete(() async {
-        if (_todayDateEvents.isEmpty && _courseRepository.coursesActivities != null) {
-          final DateTime tomorrowDate = todayDate.add(const Duration(days: 1));
-          // Build the list
-          for (final CourseActivity course
-              in _courseRepository.coursesActivities!) {
-            final DateTime dateOnly = course.startDateTime;
-            if (isSameDay(todayDate, dateOnly) &&
-                todayDate.compareTo(course.endDateTime) < 0) {
-              _todayDateEvents.add(course);
-            } else if (isSameDay(tomorrowDate, dateOnly)) {
-              _tomorrowDateEvents.add(course);
-            }
+      courseActivities = await _courseRepository.getCoursesActivities();
+
+      if (_todayDateEvents.isEmpty && _courseRepository.coursesActivities != null) {
+        final DateTime tomorrowDate = todayDate.add(const Duration(days: 1));
+        // Build the list
+        for (final CourseActivity course in _courseRepository.coursesActivities!) {
+          final DateTime dateOnly = course.startDateTime;
+          if (isSameDay(todayDate, dateOnly) &&
+              todayDate.compareTo(course.endDateTime) < 0) {
+            _todayDateEvents.add(course);
+          } else if (isSameDay(tomorrowDate, dateOnly)) {
+            _tomorrowDateEvents.add(course);
           }
         }
-        _todayDateEvents
-            .sort((a, b) => a.startDateTime.compareTo(b.startDateTime));
-        _tomorrowDateEvents
-            .sort((a, b) => a.startDateTime.compareTo(b.startDateTime));
+      }
 
-        _todayDateEvents = await removeLaboratoryGroup(_todayDateEvents);
-        _tomorrowDateEvents = await removeLaboratoryGroup(_tomorrowDateEvents);
+      _todayDateEvents
+        .sort((a, b) => a.startDateTime.compareTo(b.startDateTime));
+      _tomorrowDateEvents
+        .sort((a, b) => a.startDateTime.compareTo(b.startDateTime));
 
-        setBusyForObject(_todayDateEvents, false);
-        setBusyForObject(_tomorrowDateEvents, false);
-      });
-
-      return value ?? [];
-    });
+      _todayDateEvents = await removeLaboratoryGroup(_todayDateEvents);
+      _tomorrowDateEvents = await removeLaboratoryGroup(_tomorrowDateEvents);
+      return courseActivities ?? [];
+    } catch(error) {
+      onError(error);
+    } finally {
+      setBusyForObject(_todayDateEvents, false);
+      setBusyForObject(_tomorrowDateEvents, false);
+    }
+    return [];
   }
 
   Future<List<CourseActivity>> removeLaboratoryGroup(
@@ -492,25 +490,22 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
   }
 
   /// Get the list of courses for the Grades card.
-  // ignore: missing_return
   Future<List<Course>> futureToRunGrades() async {
     if (!busy(courses)) {
-      setBusyForObject(courses, true);
-      if (_courseRepository.sessions == null ||
-          _courseRepository.sessions!.isEmpty) {
-        // ignore: return_type_invalid_for_catch_error
-        await _courseRepository.getSessions().catchError(onError);
-      }
+      try {
+        setBusyForObject(courses, true);
+        if (_courseRepository.sessions == null ||
+            _courseRepository.sessions!.isEmpty) {
+          await _courseRepository.getSessions();
+        }
 
-      // Determine current sessions
-      if (_courseRepository.activeSessions.isEmpty) {
-        setBusyForObject(courses, false);
-        return [];
-      }
-      final currentSession = _courseRepository.activeSessions.first;
+        // Determine current sessions
+        if (_courseRepository.activeSessions.isEmpty) {
+          return [];
+        }
+        final currentSession = _courseRepository.activeSessions.first;
 
-      return _courseRepository.getCourses(fromCacheOnly: true).then(
-          (coursesCached) {
+        final coursesCached = await _courseRepository.getCourses(fromCacheOnly: true);
         courses.clear();
         for (final Course course in coursesCached) {
           if (course.session == currentSession.shortName) {
@@ -518,21 +513,20 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
           }
         }
         notifyListeners();
-        // ignore: return_type_invalid_for_catch_error
-        _courseRepository.getCourses().catchError(onError).then((value) {
-            // Update the courses list
-            courses.clear();
-            for (final Course course in value) {
-              if (course.session == currentSession.shortName) {
-                courses.add(course);
-              }
-            }
-        }).whenComplete(() {
-          setBusyForObject(courses, false);
-        });
 
-        return courses;
-      }, onError: onError);
+        final fetchedCourses = await _courseRepository.getCourses();
+        // Update the courses list
+        courses.clear();
+        for (final Course course in fetchedCourses) {
+          if (course.session == currentSession.shortName) {
+            courses.add(course);
+          }
+        }
+      } catch (error) {
+        onError(error);
+      } finally {
+        setBusyForObject(courses, false);
+      }
     }
     return courses;
   }

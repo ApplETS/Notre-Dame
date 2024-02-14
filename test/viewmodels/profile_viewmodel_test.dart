@@ -85,6 +85,7 @@ void main() {
           userRepositoryMock.getInfo(fromCacheOnly: true),
           userRepositoryMock.getPrograms(fromCacheOnly: true),
           userRepositoryMock.getInfo(),
+          userRepositoryMock.getPrograms()
         ]);
 
         verifyNoMoreInteractions(userRepositoryMock);
@@ -111,6 +112,7 @@ void main() {
           userRepositoryMock.getInfo(fromCacheOnly: true),
           userRepositoryMock.getPrograms(fromCacheOnly: true),
           userRepositoryMock.getInfo(),
+          userRepositoryMock.programs
         ]);
 
         verifyNoMoreInteractions(userRepositoryMock);
