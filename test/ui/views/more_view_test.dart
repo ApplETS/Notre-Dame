@@ -242,7 +242,7 @@ void main() {
           RemoteConfigServiceMock.stubGetPrivacyPolicyEnabled(
               remoteConfigServiceMock,
               toReturn: false);
-          tester.binding.window.physicalSizeTestValue = const Size(800, 1410);
+          tester.view.physicalSize = const Size(800, 1410);
 
           await tester.runAsync(() async {
             await tester.pumpWidget(

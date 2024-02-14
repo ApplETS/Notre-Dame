@@ -17,7 +17,6 @@ class OutageView extends StatelessWidget {
   Widget build(BuildContext context) => ViewModelBuilder<
           OutageViewModel>.nonReactive(
       viewModelBuilder: () => OutageViewModel(),
-      onModelReady: (OutageViewModel model) {},
       builder: (context, model, child) => Scaffold(
             backgroundColor: Utils.getColorByBrightness(
                 context, AppTheme.etsLightRed, AppTheme.primaryDark),

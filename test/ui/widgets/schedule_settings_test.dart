@@ -454,7 +454,7 @@ void main() {
         expect(laboB, findsOneWidget);
 
         // generate a golden file
-        tester.binding.window.physicalSizeTestValue = const Size(800, 1410);
+        tester.view.physicalSize = const Size(800, 1410);
 
         await tester.pumpAndSettle();
 

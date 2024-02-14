@@ -102,7 +102,7 @@ void main() {
     group("golden - ", () {
       testWidgets("default view (no events), showTodayButton enabled",
           (WidgetTester tester) async {
-        tester.binding.window.physicalSizeTestValue = const Size(800, 1410);
+        tester.view.physicalSize = const Size(800, 1410);
 
         CourseRepositoryMock.stubCoursesActivities(
             courseRepositoryMock);
@@ -133,7 +133,7 @@ void main() {
           (WidgetTester tester) async {
         SettingsManagerMock.stubGetBool(settingsManagerMock,
             PreferencesFlag.discoverySchedule);
-        tester.binding.window.physicalSizeTestValue = const Size(800, 1410);
+        tester.view.physicalSize = const Size(800, 1410);
 
         settings[PreferencesFlag.scheduleShowTodayBtn] = false;
 
@@ -164,7 +164,7 @@ void main() {
 
       testWidgets("view with events, day with events selected",
           (WidgetTester tester) async {
-        tester.binding.window.physicalSizeTestValue = const Size(800, 1410);
+        tester.view.physicalSize = const Size(800, 1410);
         CourseRepositoryMock.stubCoursesActivities(
             courseRepositoryMock,
             toReturn: [activityYesterday, activityToday, activityTomorrow]);
@@ -185,7 +185,7 @@ void main() {
         await tester.pumpWidget(localizedWidget(
             child: FeatureDiscovery(
                 child: MediaQuery(
-                    data: const MediaQueryData(textScaleFactor: 0.5),
+                    data: const MediaQueryData(textScaler: TextScaler.linear(0.5)),
                     child: ScheduleView(initialDay: DateTime(2020))))));
         await tester.pumpAndSettle(const Duration(seconds: 1));
 
@@ -195,7 +195,7 @@ void main() {
 
       testWidgets("view with events, day without events selected",
           (WidgetTester tester) async {
-        tester.binding.window.physicalSizeTestValue = const Size(800, 1410);
+        tester.view.physicalSize = const Size(800, 1410);
 
         CourseRepositoryMock.stubCoursesActivities(
             courseRepositoryMock,
@@ -225,7 +225,7 @@ void main() {
 
       testWidgets("other day is selected, current day still has a square.",
           (WidgetTester tester) async {
-        tester.binding.window.physicalSizeTestValue = const Size(800, 1410);
+        tester.view.physicalSize = const Size(800, 1410);
 
         CourseRepositoryMock.stubCoursesActivities(
             courseRepositoryMock,
@@ -249,7 +249,7 @@ void main() {
         await tester.pumpWidget(localizedWidget(
             child: FeatureDiscovery(
                 child: MediaQuery(
-                    data: const MediaQueryData(textScaleFactor: 0.5),
+                    data: const MediaQueryData(textScaler: TextScaler.linear(0.5)),
                     child: ScheduleView(initialDay: testingDate)))));
         await tester.pumpAndSettle(const Duration(seconds: 1));
 
@@ -280,7 +280,7 @@ void main() {
     group("interactions - ", () {
       testWidgets("tap on today button to return on today",
           (WidgetTester tester) async {
-        tester.binding.window.physicalSizeTestValue = const Size(800, 1410);
+        tester.view.physicalSize = const Size(800, 1410);
 
         CourseRepositoryMock.stubCoursesActivities(
             courseRepositoryMock,
@@ -333,7 +333,7 @@ void main() {
 
       testWidgets("tap on settings button to open the schedule settings",
           (WidgetTester tester) async {
-        tester.binding.window.physicalSizeTestValue = const Size(800, 1410);
+        tester.view.physicalSize = const Size(800, 1410);
 
         CourseRepositoryMock.stubCoursesActivities(
             courseRepositoryMock,

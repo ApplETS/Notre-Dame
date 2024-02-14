@@ -219,7 +219,7 @@ void main() {
             courseRepositoryMock, courseWithoutSummary,
             toReturn: course);
 
-        tester.binding.window.physicalSizeTestValue = const Size(800, 1410);
+        tester.view.physicalSize = const Size(800, 1410);
 
         await tester.pumpWidget(localizedWidget(
             child: FeatureDiscovery(child: GradesDetailsView(course: course))));
@@ -236,7 +236,7 @@ void main() {
             courseRepositoryMock, courseWithoutSummary,
             toReturn: courseWithoutSummary);
 
-        tester.binding.window.physicalSizeTestValue = const Size(800, 1410);
+        tester.view.physicalSize = const Size(800, 1410);
 
         await tester.pumpWidget(localizedWidget(
             child: FeatureDiscovery(child: GradesDetailsView(course: course))));
@@ -253,7 +253,7 @@ void main() {
             courseRepositoryMock, courseWithoutSummary,
             toReturn: courseWithEvaluationNotCompleted);
 
-        tester.binding.window.physicalSizeTestValue = const Size(800, 1410);
+        tester.view.physicalSize = const Size(800, 1410);
 
         await tester.pumpWidget(localizedWidget(
             child: FeatureDiscovery(child: GradesDetailsView(course: course))));

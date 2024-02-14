@@ -69,16 +69,16 @@ class _ScheduleSettingsState extends State<ScheduleSettings> {
                   child: Padding(
                       padding: const EdgeInsets.fromLTRB(15, 20, 20, 20),
                       child: Text(AppIntl.of(context)!.schedule_settings_title,
-                          style: Theme.of(context).textTheme.headline6)),
+                          style: Theme.of(context).textTheme.titleLarge)),
                 ),
               ),
               Expanded(
                 child: ListTileTheme(
-                  selectedColor: Theme.of(context).textTheme.bodyText1!.color,
+                  selectedColor: Theme.of(context).textTheme.bodyLarge !.color,
                   child: ListView(
                     key: const ValueKey("SettingsScrollingArea"),
                     children: _buildSettings(
-                        context, model as ScheduleSettingsViewModel),
+                        context, model! as ScheduleSettingsViewModel),
                   ),
                 ),
               ),

@@ -119,7 +119,7 @@ void main() {
 
     group("golden - ", () {
       testWidgets("default view (no events)", (WidgetTester tester) async {
-        tester.binding.window.physicalSizeTestValue = const Size(1080, 1920);
+        tester.view.physicalSize = const Size(1080, 1920);
 
         await tester.pumpWidget(localizedWidget(child: ProfileView()));
         await tester.pumpAndSettle();

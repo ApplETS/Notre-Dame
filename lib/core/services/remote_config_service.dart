@@ -116,7 +116,7 @@ class RemoteConfigService {
     } on Exception catch (exception) {
       analyticsService.logError(
           tag,
-          "Exception raised during fetching: ${exception.toString()}",
+          "Exception raised during fetching: $exception",
           exception);
     }
   }

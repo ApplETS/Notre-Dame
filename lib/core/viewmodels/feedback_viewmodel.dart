@@ -75,7 +75,7 @@ class FeedbackViewModel extends FutureViewModel {
   }
 
   List<int> encodeScreenshotForGithub(Uint8List screenshot) {
-    return image.encodePng(image.copyResize(image.decodeImage(screenshot) ?? image.Image(0, 0),
+    return image.encodePng(image.copyResize(image.decodeImage(screenshot) ?? image.Image(width: 0, height: 0),
         width: _screenshotImageWidth));
   }
 

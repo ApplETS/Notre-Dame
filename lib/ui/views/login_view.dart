@@ -75,10 +75,12 @@ class _LoginViewState extends State<LoginView> {
                                     excludeFromSemantics: true,
                                     width: 90,
                                     height: 90,
-                                    color: Theme.of(context).brightness ==
-                                            Brightness.light
-                                        ? Colors.white
-                                        : AppTheme.etsLightRed,
+                                    colorFilter: ColorFilter.mode(
+                                        Theme.of(context).brightness ==
+                                                Brightness.light
+                                            ? Colors.white
+                                            : AppTheme.etsLightRed,
+                                        BlendMode.color),
                                   )),
                               const SizedBox(
                                 height: 48,
@@ -103,16 +105,16 @@ class _LoginViewState extends State<LoginView> {
                                       borderSide: BorderSide(
                                           color: errorTextColor,
                                           width: borderRadiusOnFocus)),
-                                  labelText: AppIntl.of(context)
-                                      !.login_prompt_universal_code,
+                                  labelText: AppIntl.of(context)!
+                                      .login_prompt_universal_code,
                                   labelStyle:
                                       const TextStyle(color: Colors.white54),
                                   errorStyle: TextStyle(color: errorTextColor),
                                   suffixIcon: Tooltip(
                                       key: tooltipkey,
                                       triggerMode: TooltipTriggerMode.manual,
-                                      message: AppIntl.of(context)
-                                          !.universal_code_example,
+                                      message: AppIntl.of(context)!
+                                          .universal_code_example,
                                       preferBelow: true,
                                       child: IconButton(
                                         icon: const Icon(Icons.help,

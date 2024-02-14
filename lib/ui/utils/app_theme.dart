@@ -72,7 +72,6 @@ class AppTheme {
   static ThemeData lightTheme() {
     final ThemeData lightTheme = ThemeData.light();
     return lightTheme.copyWith(
-        useMaterial3: true,
         primaryColor: etsLightRed,
         bottomNavigationBarTheme: lightTheme.bottomNavigationBarTheme
             .copyWith(selectedItemColor: etsLightRed),
@@ -86,7 +85,6 @@ class AppTheme {
   static ThemeData darkTheme() {
     final ThemeData darkTheme = ThemeData.dark();
     return darkTheme.copyWith(
-        useMaterial3: true,
         // primaryColor: primaryDark,
         // appBarTheme: const AppBarTheme(color: Color(0xff121212)),
         scaffoldBackgroundColor: const Color(0xff121212),

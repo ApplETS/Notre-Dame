@@ -41,7 +41,7 @@ void main() {
       });
       group("golden - ", () {
         testWidgets("default view (no events)", (WidgetTester tester) async {
-          tester.binding.window.physicalSizeTestValue = const Size(800, 1410);
+          tester.view.physicalSize = const Size(800, 1410);
 
           await tester.pumpWidget(localizedWidget(
               child: const NotFoundView(pageName: pageNotFoundPassed)));

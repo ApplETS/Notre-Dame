@@ -68,7 +68,7 @@ void main() {
     group("golden - ", () {
       testWidgets("default view", (WidgetTester tester) async {
         SettingsManagerMock.stubLocale(settingsManagerMock);
-        tester.binding.window.physicalSizeTestValue = const Size(1800, 2410);
+        tester.view.physicalSize = const Size(1800, 2410);
 
         await tester.pumpWidget(localizedWidget(child: const FaqView()));
         await tester.pumpAndSettle();

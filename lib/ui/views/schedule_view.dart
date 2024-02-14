@@ -76,7 +76,7 @@ class _ScheduleViewState extends State<ScheduleView>
       ViewModelBuilder<ScheduleViewModel>.reactive(
         viewModelBuilder: () => ScheduleViewModel(
             intl: AppIntl.of(context)!, initialSelectedDate: widget.initialDay),
-        onModelReady: (model) {
+        onViewModelReady:  (model) {
           if (model.settings.isEmpty) {
             model.loadSettings();
           }
@@ -135,7 +135,7 @@ class _ScheduleViewState extends State<ScheduleView>
             const Divider(indent: 8.0, endIndent: 8.0, thickness: 1),
             const SizedBox(height: 6.0),
             if (model.showWeekEvents)
-              for (Widget widget in _buildWeekEvents(model, context)) widget
+              for (final Widget widget in _buildWeekEvents(model, context)) widget
             else
               _buildTitleForDate(model.selectedDate, model),
             const SizedBox(height: 2.0),
@@ -346,7 +346,7 @@ class _ScheduleViewState extends State<ScheduleView>
   Widget _buildTitleForDate(DateTime date, ScheduleViewModel model) => Center(
           child: Text(
         DateFormat.MMMMEEEEd(model.locale.toString()).format(date),
-        style: Theme.of(context).textTheme.headline5,
+        style: Theme.of(context).textTheme.headlineSmall,
       ));
 
   List<Widget> _buildWeekEvents(ScheduleViewModel model, BuildContext context) {

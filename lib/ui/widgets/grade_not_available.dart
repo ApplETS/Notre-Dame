@@ -36,8 +36,8 @@ class GradeNotAvailable extends StatelessWidget {
           textAlign: TextAlign.center,
           softWrap: true,
           style: isEvaluationPeriod
-              ? Theme.of(context).textTheme.bodyText1
-              : Theme.of(context).textTheme.headline6,
+              ? Theme.of(context).textTheme.bodyLarge 
+              : Theme.of(context).textTheme.titleLarge,
         ),
         const SizedBox(height: 25),
         ElevatedButton(

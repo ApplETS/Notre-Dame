@@ -89,17 +89,17 @@ class UserRepository {
                 username: username);
           } else {
             _analyticsService.logError(
-                tag, "Authenticate - ${e.toString()}", e, stacktrace);
+                tag, "Authenticate - $e", e, stacktrace);
             return false;
           }
         } on Exception catch (e, stacktrace) {
           _analyticsService.logError(
-              tag, "Authenticate - ${e.toString()}", e, stacktrace);
+              tag, "Authenticate - $e", e, stacktrace);
           return false;
         }
       } else {
         _analyticsService.logError(
-            tag, "Authenticate - ${e.toString()}", e, stacktrace);
+            tag, "Authenticate - $e", e, stacktrace);
         return false;
       }
     }
@@ -116,7 +116,7 @@ class UserRepository {
         await _secureStorage.deleteAll();
         _analyticsService.logError(
             tag,
-            "Authenticate - PlatformException - ${e.toString()}",
+            "Authenticate - PlatformException - $e",
             e,
             stacktrace);
         return false;
@@ -147,7 +147,7 @@ class UserRepository {
       await _secureStorage.deleteAll();
       _analyticsService.logError(
           tag,
-          "SilentAuthenticate - PlatformException(Handled) - ${e.toString()}",
+          "SilentAuthenticate - PlatformException(Handled) - $e",
           e,
           stacktrace);
     }
@@ -165,7 +165,7 @@ class UserRepository {
     } on PlatformException catch (e, stacktrace) {
       await _secureStorage.deleteAll();
       _analyticsService.logError(tag,
-          "Authenticate - PlatformException - ${e.toString()}", e, stacktrace);
+          "Authenticate - PlatformException - $e", e, stacktrace);
       return false;
     }
     return true;
@@ -192,7 +192,7 @@ class UserRepository {
     } on PlatformException catch (e, stacktrace) {
       await _secureStorage.deleteAll();
       _analyticsService.logError(tag,
-          "getPassword - PlatformException - ${e.toString()}", e, stacktrace);
+          "getPassword - PlatformException - $e", e, stacktrace);
       throw const ApiException(prefix: tag, message: "Not authenticated");
     }
   }
@@ -330,7 +330,7 @@ class UserRepository {
     } on PlatformException catch (e, stacktrace) {
       await _secureStorage.deleteAll();
       _analyticsService.logError(tag,
-          "getPassword - PlatformException - ${e.toString()}", e, stacktrace);
+          "getPassword - PlatformException - $e", e, stacktrace);
     }
     return false;
   }

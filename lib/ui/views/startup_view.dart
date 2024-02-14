@@ -15,7 +15,7 @@ class StartUpView extends StatelessWidget {
   Widget build(BuildContext context) =>
       ViewModelBuilder<StartUpViewModel>.nonReactive(
           viewModelBuilder: () => StartUpViewModel(),
-          onModelReady: (StartUpViewModel model) {
+          onViewModelReady: (StartUpViewModel model) {
             model.handleStartUp();
           },
           builder: (context, model, child) => Scaffold(
@@ -34,10 +34,12 @@ class StartUpView extends StatelessWidget {
                               excludeFromSemantics: true,
                               width: 90,
                               height: 90,
-                              color: Theme.of(context).brightness ==
-                                      Brightness.light
-                                  ? Colors.white
-                                  : AppTheme.etsLightRed,
+                              colorFilter: ColorFilter.mode(
+                                  Theme.of(context).brightness ==
+                                          Brightness.light
+                                      ? Colors.white
+                                      : AppTheme.etsLightRed,
+                                  BlendMode.color),
                             )),
                         const SizedBox(
                           height: 15,

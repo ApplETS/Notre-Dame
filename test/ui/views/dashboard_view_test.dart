@@ -814,7 +814,7 @@ void main() {
         RemoteConfigServiceMock.stubGetBroadcastEnabled(
             remoteConfigServiceMock,
             toReturn: false);
-        tester.binding.window.physicalSizeTestValue = const Size(800, 1410);
+        tester.view.physicalSize = const Size(800, 1410);
 
         final Map<PreferencesFlag, int> dashboard = {
           PreferencesFlag.broadcastCard: 0,
@@ -837,7 +837,7 @@ void main() {
         RemoteConfigServiceMock.stubGetBroadcastEnabled(
             remoteConfigServiceMock,
             toReturn: false);
-        tester.binding.window.physicalSizeTestValue = const Size(800, 1410);
+        tester.view.physicalSize = const Size(800, 1410);
 
         CourseRepositoryMock.stubCoursesActivities(
             courseRepositoryMock);
@@ -867,7 +867,7 @@ void main() {
         RemoteConfigServiceMock.stubGetBroadcastEnabled(
             remoteConfigServiceMock,
             toReturn: false);
-        tester.binding.window.physicalSizeTestValue = const Size(800, 1410);
+        tester.view.physicalSize = const Size(800, 1410);
 
         dashboard = {
           PreferencesFlag.broadcastCard: 0,

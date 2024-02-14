@@ -51,7 +51,7 @@ class _GradesViewState extends State<GradesView> {
                   Center(
                       child: Text(AppIntl.of(context)!.grades_msg_no_grades,
                           textAlign: TextAlign.center,
-                          style: Theme.of(context).textTheme.headline6))
+                          style: Theme.of(context).textTheme.titleLarge))
                 else
                   Padding(
                     padding: const EdgeInsets.only(top: 8.0),

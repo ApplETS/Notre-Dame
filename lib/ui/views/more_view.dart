@@ -48,7 +48,7 @@ class _MoreViewState extends State<MoreView> {
 
   /// License text box
   List<Widget> aboutBoxChildren(BuildContext context) {
-    final textStyle = Theme.of(context).textTheme.bodyText2!;
+    final textStyle = Theme.of(context).textTheme.bodyMedium!;
     return <Widget>[
       const SizedBox(height: 24),
       RichText(

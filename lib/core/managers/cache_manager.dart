@@ -48,7 +48,7 @@ class CacheManager {
     } on Exception catch (e, stacktrace) {
       _analyticsService.logError(
           tag,
-          "Exception raised during cache update of $key: ${e.toString()}",
+          "Exception raised during cache update of $key: $e",
           e,
           stacktrace);
       rethrow;
@@ -62,7 +62,7 @@ class CacheManager {
     } on Exception catch (e, stacktrace) {
       _analyticsService.logError(
           tag,
-          "Exception raised during cache delete of $key: ${e.toString()}",
+          "Exception raised during cache delete of $key: $e",
           e,
           stacktrace);
     }
