@@ -56,6 +56,14 @@ class NewsRepository {
       image: "https://picsum.photos/400/200",
       tags: ["tag1", "tag2"],
     ),
+    News(
+      id: 4,
+      title: "Test 4",
+      description: "Test 4 description",
+      date: DateTime.now(),
+      image: "https://picsum.photos/400/200",
+      tags: ["tag1", "tag2"],
+    ),
   ];
 
   List<News>? get news => _news;
@@ -63,7 +71,11 @@ class NewsRepository {
   /// Get and update the list of news.
   /// After fetching the news from the [?] the [CacheManager]
   /// is updated with the latest version of the news.
-  Future<List<News>?> getNews({bool fromCacheOnly = false}) async {
+  Future<List<News>?> getNews(
+      {int pageNumber = 1,
+      int pageSize = 20,
+      bool fromCacheOnly = false}) async {
+    await Future.delayed(const Duration(seconds: 1));
     // Force fromCacheOnly mode when user has no connectivity
     if (!(await _networkingService.hasConnectivity())) {
       // ignore: parameter_assignments
@@ -79,7 +91,7 @@ class NewsRepository {
       return _news;
     }
 
-    final List<News> fetchedNews = fetchNewsFromAPI();
+    final List<News> fetchedNews = fetchNewsFromAPI(pageNumber, pageSize);
 
     _news ??= [];
 
@@ -122,7 +134,7 @@ class NewsRepository {
   }
 
   // TODO : Fetch news from the API
-  List<News> fetchNewsFromAPI() {
+  List<News> fetchNewsFromAPI(int pageNumber, int pageSize) {
     final List<News> fetchedNews = [];
 
     _logger.d("$tag - getNews: fetched ${fetchedNews.length} news.");
