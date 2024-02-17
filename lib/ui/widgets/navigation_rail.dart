@@ -32,8 +32,6 @@ class _NavRailState extends State<NavRail> {
 
   int _currentView = NavRail.dashboardView;
 
-  // https://github.com/flutter/flutter/issues/89167
-  // https://github.com/flutter/flutter/issues/137415
   @override
   Widget build(BuildContext context) {
     _currentView = _defineIndex(ModalRoute.of(context).settings.name);
@@ -41,7 +39,7 @@ class _NavRailState extends State<NavRail> {
       destinations: _buildItems(context),
       selectedIndex: _currentView,
       onDestinationSelected: (value) => _onTap(value),
-      labelType: NavigationRailLabelType.all,
+      labelType: MediaQuery.of(context).size.height > 350 ? NavigationRailLabelType.all : NavigationRailLabelType.selected,
     );
   }
 
@@ -104,24 +102,19 @@ class _NavRailState extends State<NavRail> {
   List<NavigationRailDestination> _buildItems(BuildContext context) {
     return [
       NavigationRailDestination(
-          icon: _buildDiscoveryFeatureDescriptionWidget(
-              context, RouterPaths.dashboard, Icons.dashboard),
+          icon: _buildDiscoveryFeatureDescriptionWidget(context, RouterPaths.dashboard, Icons.dashboard),
           label: Text(AppIntl.of(context).title_dashboard)),
       NavigationRailDestination(
-          icon: _buildDiscoveryFeatureDescriptionWidget(
-              context, RouterPaths.schedule, Icons.schedule),
+          icon: _buildDiscoveryFeatureDescriptionWidget(context, RouterPaths.schedule, Icons.schedule),
           label: Text(AppIntl.of(context).title_schedule)),
       NavigationRailDestination(
-          icon: _buildDiscoveryFeatureDescriptionWidget(
-              context, RouterPaths.student, Icons.school),
+          icon: _buildDiscoveryFeatureDescriptionWidget(context, RouterPaths.student, Icons.school),
           label: Text(AppIntl.of(context).title_student)),
       NavigationRailDestination(
-          icon: _buildDiscoveryFeatureDescriptionWidget(
-              context, RouterPaths.ets, Icons.account_balance),
+          icon: _buildDiscoveryFeatureDescriptionWidget(context, RouterPaths.ets, Icons.account_balance),
           label: Text(AppIntl.of(context).title_ets)),
       NavigationRailDestination(
-          icon: _buildDiscoveryFeatureDescriptionWidget(
-              context, RouterPaths.more, Icons.dehaze),
+          icon: _buildDiscoveryFeatureDescriptionWidget(context, RouterPaths.more, Icons.dehaze),
           label: Text(AppIntl.of(context).title_more)),
     ];
   }

@@ -129,6 +129,7 @@ class _ScheduleViewState extends State<ScheduleView>
           }
         },
         child: ListView(
+          padding: EdgeInsets.zero,
           children: [
             _buildTableCalendar(model),
             const SizedBox(height: 8.0),

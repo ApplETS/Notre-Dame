@@ -30,6 +30,7 @@ class ContributorsView extends StatelessWidget {
                   return buildLoading();
                 }
                 return ListView.builder(
+                  padding: EdgeInsets.zero,
                   itemCount: snapshot.data.length,
                   itemBuilder: (context, index) => ListTile(
                     title: Text(snapshot.data[index].login),
