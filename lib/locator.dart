@@ -3,9 +3,9 @@ import 'package:ets_api_clients/clients.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get_it/get_it.dart';
 import 'package:logger/logger.dart';
-import 'package:notredame/core/managers/author_repository.dart';
 
 // Project imports:
+import 'package:notredame/core/managers/author_repository.dart';
 import 'package:notredame/core/managers/cache_manager.dart';
 import 'package:notredame/core/managers/course_repository.dart';
 import 'package:notredame/core/managers/news_repository.dart';

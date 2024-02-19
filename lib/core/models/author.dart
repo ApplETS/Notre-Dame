@@ -1,3 +1,4 @@
+// Project imports:
 import 'package:notredame/core/models/socialLink.dart';
 
 class Author {

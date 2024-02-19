@@ -2,12 +2,14 @@
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:logger/logger.dart';
+import 'package:stacked/stacked.dart';
+
+// Project imports:
 import 'package:notredame/core/managers/author_repository.dart';
 import 'package:notredame/core/managers/news_repository.dart';
 import 'package:notredame/core/models/author.dart';
 import 'package:notredame/core/models/news.dart';
 import 'package:notredame/locator.dart';
-import 'package:stacked/stacked.dart';
 
 class AuthorViewModel extends FutureViewModel<Author> {
   final AuthorRepository _authorRepository = locator<AuthorRepository>();

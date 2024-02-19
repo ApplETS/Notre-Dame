@@ -7,8 +7,10 @@ import 'package:ets_api_clients/models.dart';
 // Project imports:
 import 'package:notredame/core/constants/router_paths.dart';
 import 'package:notredame/core/constants/update_code.dart';
+import 'package:notredame/core/models/news.dart';
 import 'package:notredame/core/models/quick_link.dart';
 import 'package:notredame/ui/views/about_view.dart';
+import 'package:notredame/ui/views/author_view.dart';
 import 'package:notredame/ui/views/choose_language_view.dart';
 import 'package:notredame/ui/views/contributors_view.dart';
 import 'package:notredame/ui/views/dashboard_view.dart';
@@ -21,7 +23,6 @@ import 'package:notredame/ui/views/more_view.dart';
 import 'package:notredame/ui/views/news_details_view.dart';
 import 'package:notredame/ui/views/news_view.dart';
 import 'package:notredame/ui/views/not_found_view.dart';
-import 'package:notredame/ui/views/author_view.dart';
 import 'package:notredame/ui/views/outage_view.dart';
 import 'package:notredame/ui/views/quick_links_view.dart';
 import 'package:notredame/ui/views/schedule_view.dart';
@@ -30,7 +31,6 @@ import 'package:notredame/ui/views/settings_view.dart';
 import 'package:notredame/ui/views/startup_view.dart';
 import 'package:notredame/ui/views/student_view.dart';
 import 'package:notredame/ui/widgets/link_web_view.dart';
-import 'package:notredame/core/models/news.dart';
 
 Route<dynamic> generateRoute(RouteSettings routeSettings) {
   switch (routeSettings.name) {
