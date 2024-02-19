@@ -3,6 +3,7 @@ import 'package:ets_api_clients/clients.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get_it/get_it.dart';
 import 'package:logger/logger.dart';
+import 'package:notredame/core/managers/author_repository.dart';
 
 // Project imports:
 import 'package:notredame/core/managers/cache_manager.dart';
@@ -49,6 +50,7 @@ void setupLocator() {
   locator.registerLazySingleton(() => SettingsManager());
   locator.registerLazySingleton(() => QuickLinkRepository());
   locator.registerLazySingleton(() => NewsRepository());
+  locator.registerLazySingleton(() => AuthorRepository());
 
   // Other
   locator.registerLazySingleton(() => SignetsAPIClient());

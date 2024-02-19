@@ -4,11 +4,13 @@ import 'package:flutter/material.dart';
 // Package imports:
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:intl/intl.dart';
+import 'package:notredame/core/constants/router_paths.dart';
 import 'package:stacked/stacked.dart';
 
 // Project imports:
 import 'package:notredame/core/models/news.dart';
 import 'package:notredame/core/services/analytics_service.dart';
+import 'package:notredame/core/services/navigation_service.dart';
 import 'package:notredame/core/viewmodels/news_details_viewmodel.dart';
 import 'package:notredame/locator.dart';
 import 'package:notredame/ui/utils/app_theme.dart';
@@ -25,6 +27,7 @@ class NewsDetailsView extends StatefulWidget {
 }
 
 class _NewsDetailsViewState extends State<NewsDetailsView> {
+  final NavigationService _navigationService = locator<NavigationService>();
   final AnalyticsService _analyticsService = locator<AnalyticsService>();
 
   @override
@@ -93,9 +96,9 @@ class _NewsDetailsViewState extends State<NewsDetailsView> {
                             _buildTitle(widget.news.title),
                             _buildDate(context, widget.news.publishedDate,
                                 widget.news.eventDate),
-                            _buildImage(widget.news.image),
+                            _buildImage(widget.news),
                             _buildAuthor(widget.news.avatar, widget.news.author,
-                                widget.news.activity),
+                                widget.news.activity, widget.news.authorId),
                             _buildContent(widget.news.description),
                           ],
                         ),
@@ -133,31 +136,37 @@ class _NewsDetailsViewState extends State<NewsDetailsView> {
     );
   }
 
-  Widget _buildImage(String image) {
-    if (image == "") {
-      return const SizedBox.shrink();
-    }
-
-    return Image.network(
-      image,
-      fit: BoxFit.cover,
-    );
+  Widget _buildImage(News news) {
+    return Hero(
+        tag: 'news_image_id_${news.id}',
+        child: (news.image == "")
+            ? const SizedBox.shrink()
+            : Image.network(
+                news.image,
+                fit: BoxFit.cover,
+              ));
   }
 
-  Widget _buildAuthor(String avatar, String author, String activity) {
+  Widget _buildAuthor(
+      String avatar, String author, String activity, int authorId) {
     return Container(
       color: const Color(0xff1e1e1e),
       child: ListTile(
-        leading: ClipOval(
-          child: avatar == ""
-              ? const SizedBox()
-              : Image.network(
-                  avatar,
-                  fit: BoxFit.cover,
-                  width: 50.0,
-                  height: 50.0,
-                ),
-        ),
+        leading: GestureDetector(
+            onTap: () => _navigationService.pushNamed(RouterPaths.newsAuthor,
+                arguments: authorId),
+            child: Hero(
+                tag: 'news_author_avatar',
+                child: ClipOval(
+                  child: avatar == ""
+                      ? const SizedBox()
+                      : Image.network(
+                          avatar,
+                          fit: BoxFit.cover,
+                          width: 50.0,
+                          height: 50.0,
+                        ),
+                ))),
         title: Text(
           author,
           style: const TextStyle(

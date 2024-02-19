@@ -44,7 +44,9 @@ class _NewsCardState extends State<NewsCard> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  _buildImage(widget.news.image),
+                  Hero(
+                      tag: 'news_image_id_${widget.news.id}',
+                      child: _buildImage(widget.news.image)),
                   const SizedBox(height: 8),
                   _buildTitleAndTime(widget.news, context),
                 ],

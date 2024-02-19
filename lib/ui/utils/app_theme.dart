@@ -76,6 +76,11 @@ class AppTheme {
     Color.fromARGB(255, 161, 185, 41),
   ];
 
+  // News colors
+  static const Color newsAccentColorDark = Color(0xff00cdb7);
+  static const Color newsAccentColorLight = Color(0xff007c6f);
+  static const Color newsSecondaryColor = Color(0xffD1D1D1);
+
   /// Schedule calendar colors
   static const Color scheduleLineColorLight = Color(0xffe8e8e8);
   static const Color scheduleLineColorDark = Color(0xff3d3d3d);

@@ -21,6 +21,7 @@ import 'package:notredame/ui/views/more_view.dart';
 import 'package:notredame/ui/views/news_details_view.dart';
 import 'package:notredame/ui/views/news_view.dart';
 import 'package:notredame/ui/views/not_found_view.dart';
+import 'package:notredame/ui/views/author_view.dart';
 import 'package:notredame/ui/views/outage_view.dart';
 import 'package:notredame/ui/views/quick_links_view.dart';
 import 'package:notredame/ui/views/schedule_view.dart';
@@ -101,6 +102,13 @@ Route<dynamic> generateRoute(RouteSettings routeSettings) {
               name: routeSettings.name, arguments: routeSettings.arguments),
           pageBuilder: (_, __, ___) =>
               NewsDetailsView(news: routeSettings.arguments as News));
+    case RouterPaths.newsAuthor:
+      return PageRouteBuilder(
+          settings: RouteSettings(
+              name: routeSettings.name, arguments: routeSettings.arguments),
+          pageBuilder: (_, __, ___) => AuthorView(
+                authorId: routeSettings.arguments as int,
+              ));
     case RouterPaths.webView:
       return PageRouteBuilder(
           pageBuilder: (_, __, ___) =>

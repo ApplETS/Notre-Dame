@@ -179,6 +179,22 @@
   "report": "Report",
   "report_toast": "Thank you for your report !",
 
+  "news_author_notify_me": "Notify me",
+  "news_author_dont_notify_me": "No longer receive notifications",
+  "news_author_join_us": "Join us",
+  "news_author_notified_for": "You will receive a notification when {author} publishes an announcement.",
+  "@news_author_notified_for": {
+    "placeholders": {
+      "author": {}
+    }
+  },
+  "news_author_not_notified_for": "You will no longer receive a notification when {author} publishes an announcement.",
+  "@news_author_not_notified_for": {
+    "placeholders": {
+      "author": {}
+    }
+  },
+
   "more_about_applets_title": "About ApplETS",
   "more_report_bug": "Report a bug or request a feature",
   "more_report_bug_steps_title": "How does it work?\n\n",

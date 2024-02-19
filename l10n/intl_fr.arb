@@ -179,6 +179,22 @@
   "report": "Signaler",
   "report_toast": "Merci pour votre signalement ! ",
 
+  "news_author_notify_me": "Me notifier",
+  "news_author_dont_notify_me": "Ne plus recevoir de notifications",
+  "news_author_join_us": "Nous rejoindre",
+  "news_author_notified_for": "Vous recevrez une notification lorsque {author} publiera une annonce.",
+  "@news_author_notified_for": {
+    "placeholders": {
+      "author": {}
+    }
+  },
+  "news_author_not_notified_for": "Vous ne recevrez plus une notification lorsque {author} publiera une annonce.",
+  "@news_author_not_notified_for": {
+    "placeholders": {
+      "author": {}
+    }
+  },
+
   "more_about_applets_title": "À propos d'ApplETS",
   "more_report_bug": "Rapporter un bogue ou une amélioration",
   "more_report_bug_steps_title": "Comment faire?\n\n",
