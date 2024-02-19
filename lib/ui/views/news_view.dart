@@ -89,19 +89,15 @@ class _NewsViewState extends State<NewsView> {
                           _buildSkeletonLoader(),
                       newPageProgressIndicatorBuilder: (context) =>
                           NewsCardSkeleton(),
-                      noItemsFoundIndicatorBuilder: (_) =>
-                          NoItemsFoundIndicator(),
-                      noMoreItemsIndicatorBuilder: (_) =>
-                          NoMoreItemsIndicator(),
                     ),
                   ),
                 ));
           });
 
   Widget _buildSkeletonLoader() {
-    return ListView.builder(
-      itemCount: _nbSkeletons,
-      itemBuilder: (context, index) => NewsCardSkeleton(),
-    );
+    final Widget skeleton = NewsCardSkeleton();
+    return Column(children: [
+      for (var i = 0; i < _nbSkeletons; i++) skeleton,
+    ]);
   }
 }

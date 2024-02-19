@@ -9,9 +9,7 @@ import 'package:notredame/core/managers/news_repository.dart';
 import 'package:notredame/core/models/news.dart';
 import 'package:notredame/locator.dart';
 
-class NewsViewModel extends FutureViewModel<List<News>> {
-  static const _pageSize = 20;
-
+class NewsViewModel extends BaseViewModel {
   /// Load the events
   final NewsRepository _newsRepository = locator<NewsRepository>();
 
@@ -34,21 +32,6 @@ class NewsViewModel extends FutureViewModel<List<News>> {
   NewsViewModel({required AppIntl intl}) : _appIntl = intl;
 
   bool isLoadingEvents = false;
-
-  @override
-  Future<List<News>> futureToRun() async {
-    try {
-      setBusyForObject(isLoadingEvents, true);
-      _news = await _newsRepository.getNews(fromCacheOnly: true);
-      notifyListeners();
-    } catch (e) {
-      onError(e);
-    } finally {
-      setBusyForObject(isLoadingEvents, false);
-    }
-
-    return news;
-  }
 
   @override
   // ignore: type_annotate_public_apis
