@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:notredame/core/utils/utils.dart';
 import 'package:notredame/core/viewmodels/author_viewmodel.dart';
@@ -78,6 +77,8 @@ class _AuthorViewState extends State<AuthorView> {
       child: SizedBox(
         width: double.infinity,
         child: Card(
+          color: Utils.getColorByBrightnessNullable(
+              context, AppTheme.newsSecondaryColor, null),
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
           key: UniqueKey(),
@@ -94,8 +95,10 @@ class _AuthorViewState extends State<AuthorView> {
                 ),
                 Text(
                   author.description,
-                  style: const TextStyle(
-                      color: AppTheme.newsSecondaryColor, fontSize: 16),
+                  style: TextStyle(
+                      color: Utils.getColorByBrightness(context,
+                          AppTheme.etsDarkGrey, AppTheme.newsSecondaryColor),
+                      fontSize: 16),
                   textAlign: TextAlign.center,
                 ),
                 const SizedBox(
@@ -130,8 +133,11 @@ class _AuthorViewState extends State<AuthorView> {
                         child: Align(
                           child: Text(
                             notifyBtnText,
-                            style: const TextStyle(
-                              color: AppTheme.primaryDark,
+                            style: TextStyle(
+                              color: Utils.getColorByBrightness(
+                                  context,
+                                  const Color(0xFFFFFFFF),
+                                  AppTheme.primaryDark),
                               fontSize: 16,
                             ),
                           ),

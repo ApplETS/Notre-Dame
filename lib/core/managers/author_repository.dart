@@ -21,15 +21,15 @@ class AuthorRepository {
       activity: "Club scientifique",
       website: "capra.com",
       image: "https://picsum.photos/200/200",
-      socialLinks: <SocialLink>[
-        SocialLink(id: 1, name: "email", link: "facebook.com/capra"),
-        SocialLink(id: 2, name: "facebook", link: "facebook.com/capra"),
-        SocialLink(id: 3, name: "instagram", link: "facebook.com/capra"),
-        SocialLink(id: 4, name: "tiktok", link: "facebook.com/capra"),
-        SocialLink(id: 5, name: "x", link: "facebook.com/capra"),
-        SocialLink(id: 6, name: "reddit", link: "facebook.com/capra"),
-        SocialLink(id: 7, name: "discord", link: "facebook.com/capra"),
-        SocialLink(id: 8, name: "linkedin", link: "facebook.com/capra"),
+      socialLinks: [
+        SocialLink(id: 1, name: "discord", link: "facebook.com/capra"),
+        SocialLink(id: 2, name: "linkedin", link: "facebook.com/capra"),
+        SocialLink(id: 3, name: "email", link: "facebook.com/capra"),
+        SocialLink(id: 4, name: "x", link: "facebook.com/capra"),
+        SocialLink(id: 5, name: "tiktok", link: "facebook.com/capra"),
+        SocialLink(id: 6, name: "facebook", link: "facebook.com/capra"),
+        SocialLink(id: 7, name: "instagram", link: "facebook.com/capra"),
+        SocialLink(id: 8, name: "reddit", link: "facebook.com/capra"),
       ]);
 
   Author get author => _author;

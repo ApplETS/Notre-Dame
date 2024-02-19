@@ -96,6 +96,23 @@ class _SocialLinksState extends State<SocialLinks> {
 
   Widget _buildSocialButtons(
       List<SocialLink> socialLinks, WebLinkCardViewModel model) {
+    // Define the desired order of social links
+    final List<String> desiredOrder = [
+      'email',
+      'facebook',
+      'instagram',
+      'tiktok',
+      'x',
+      'reddit',
+      'discord',
+      'linkedin'
+    ];
+
+    // Sort the socialLinks list based on the desired order
+    socialLinks.sort((link, otherLink) => desiredOrder
+        .indexOf(link.name)
+        .compareTo(desiredOrder.indexOf(otherLink.name)));
+
     final List<Widget> socialButtons = [];
 
     // Map SocialLinks to corresponding icons and build buttons for existing links
@@ -118,10 +135,11 @@ class _SocialLinksState extends State<SocialLinks> {
     }
 
     return Padding(
-        padding: const EdgeInsets.fromLTRB(16, 0, 16, 0),
-        child: Column(
-          children: rows,
-        ));
+      padding: const EdgeInsets.fromLTRB(16, 0, 16, 0),
+      child: Column(
+        children: rows,
+      ),
+    );
   }
 
   Widget _buildSocialButton(SocialLink link, WebLinkCardViewModel model) {
