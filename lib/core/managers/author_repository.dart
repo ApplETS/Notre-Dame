@@ -34,7 +34,7 @@ class AuthorRepository {
 
   Author get author => _author;
 
-  // TODO : Fetch news from the API
+  // TODO : Fetch author from the API
   Future<Author> fetchAuthorFromAPI(int authorId) async {
     _logger.d("$tag - fetchAuthorFromAPI: fetched author.");
 

@@ -17,6 +17,8 @@ class AuthorViewModel extends FutureViewModel<Author> {
   /// Localization class of the application.
   final AppIntl appIntl;
 
+  final int authorId;
+
   /// Author
   late Author _author;
 
@@ -31,7 +33,6 @@ class AuthorViewModel extends FutureViewModel<Author> {
 
   AuthorViewModel({required this.authorId, required this.appIntl});
 
-  int authorId;
   bool isLoadingEvents = false;
   bool isNotified = false;
 
