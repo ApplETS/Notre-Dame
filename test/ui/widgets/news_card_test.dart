@@ -14,6 +14,7 @@ void main() {
     id: 1,
     title: "Test 3",
     description: "Test 3 description",
+    authorId: 1,
     author: "Author 3",
     avatar: "https://example.com/avatar3.jpg",
     activity: "Activity 3",

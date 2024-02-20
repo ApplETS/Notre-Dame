@@ -28,6 +28,7 @@ void main() {
       id: 1,
       title: 'Sample News Title',
       description: 'Sample News Description',
+      authorId: 1,
       author: 'Sample Author',
       avatar: '',
       activity: 'Sample Activity',
