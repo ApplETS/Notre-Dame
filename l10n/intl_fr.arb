@@ -82,6 +82,8 @@
 
   "calendar_new": "Nouveau calendrier",
   "calendar_export": "Exporter vers le calendrier",
+  "calendar_export_success": "Horaire exporté avec succès",
+  "calendar_export_error": "Un ou plusieurs événements n'ont pas pu être exportés correctement",
   "calendar_export_question": "Vers quel calendrier voulez-vous exporter cet événement?",
   "calendar_name": "Nom du calendrier",
   "calendar_select": "Veuillez sélectionner un calendrier",

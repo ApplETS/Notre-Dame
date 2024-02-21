@@ -2,6 +2,8 @@ import 'dart:collection';
 import 'package:device_calendar/device_calendar.dart';
 
 import 'package:ets_api_clients/models.dart';
+import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 mixin CalendarUtils {
   static Future<bool> checkPermissions() async {
@@ -37,7 +39,6 @@ mixin CalendarUtils {
   static Future<UnmodifiableListView<Calendar>> get nativeCalendars async {
     final Result<UnmodifiableListView<Calendar>> calendarFetchResult =
         await DeviceCalendarPlugin().retrieveCalendars();
-    // TODO handle errors
     return calendarFetchResult.data;
   }
 
@@ -54,13 +55,13 @@ mixin CalendarUtils {
       String calendarId, RetrieveEventsParams retrievalParams) async {
     final output =
         await deviceCalendarPlugin.retrieveEvents(calendarId, retrievalParams);
-
-    // TODO handle errors
     return output.data;
   }
 
-  static Future<void> export(
-      List<CourseActivity> courses, String calendarName) async {
+  static Future<bool> export(
+    List<CourseActivity> courses,
+    String calendarName,
+  ) async {
     final DeviceCalendarPlugin localDeviceCalendarPlugin =
         DeviceCalendarPlugin();
 
@@ -68,8 +69,7 @@ mixin CalendarUtils {
     final bool calendarPermission = await checkPermissions();
 
     if (!calendarPermission) {
-      // TODO warn user
-      return;
+      return false;
     }
 
     // Fetch calendar
@@ -92,6 +92,7 @@ mixin CalendarUtils {
     // Order by date
     courses.sort((a, b) => a.startDateTime.compareTo(b.startDateTime));
 
+    bool hasErrors = false;
     // Add events to calendar
     for (final course in courses) {
       // create event
@@ -119,9 +120,11 @@ mixin CalendarUtils {
         }
       }
       // Create or update event
-      await localDeviceCalendarPlugin.createOrUpdateEvent(
+      final result = await localDeviceCalendarPlugin.createOrUpdateEvent(
         event,
       );
+      hasErrors = !result.isSuccess;
     }
+    return !hasErrors;
   }
 }

@@ -36,8 +36,6 @@ class CalendarSelectionWidget extends StatelessWidget {
         items.add(
           DropdownMenuItem<String>(
             value: "new",
-            // TODO TRANSLATION
-            // child: Text("New calendar"),
             child: Text(translations.calendar_new),
           ),
         );
@@ -45,14 +43,10 @@ class CalendarSelectionWidget extends StatelessWidget {
         return StatefulBuilder(
           builder: (context, setState) {
             return AlertDialog(
-              // TODO TRANSLATION
-              // title: const Text('Export to calendar'),
               title: Text(translations.calendar_export),
               content: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  // TODO TRANSLATION
-                  // const Text('Which calendar do you want to export to?'),
                   Text(translations.calendar_export_question),
                   DropdownButton<String>(
                     items: items,
@@ -70,9 +64,7 @@ class CalendarSelectionWidget extends StatelessWidget {
                               onChanged: (value) {
                                 selectedCalendarId = value;
                               },
-                              // todo translation
                               decoration: InputDecoration(
-                                // labelText: 'Calendar name',
                                 labelText: translations.calendar_name,
                               ),
                             )
@@ -91,8 +83,6 @@ class CalendarSelectionWidget extends StatelessWidget {
                     if (selectedCalendarId == null ||
                         selectedCalendarId.isEmpty) {
                       Fluttertoast.showToast(
-                        // TODO TRANSLATION
-                        // msg: 'Please select a calendar',
                         msg: translations.calendar_select,
                         backgroundColor: AppTheme.etsLightRed,
                         textColor: AppTheme.etsBlack,
@@ -102,8 +92,23 @@ class CalendarSelectionWidget extends StatelessWidget {
                     Navigator.of(context).pop();
                     final CourseRepository courseRepository =
                         locator<CourseRepository>();
-                    CalendarUtils.export(
+                    final result = CalendarUtils.export(
                         courseRepository.coursesActivities, selectedCalendarId);
+                    result.then((value) {
+                      if (value) {
+                        Fluttertoast.showToast(
+                          msg: translations.calendar_export_success,
+                          backgroundColor: AppTheme.gradeGoodMax,
+                          textColor: AppTheme.etsBlack,
+                        );
+                      } else {
+                        Fluttertoast.showToast(
+                          msg: translations.calendar_export_error,
+                          backgroundColor: AppTheme.etsLightRed,
+                          textColor: AppTheme.etsBlack,
+                        );
+                      }
+                    });
                   },
                   child: const Text('Export'),
                 ),

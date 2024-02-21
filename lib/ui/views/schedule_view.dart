@@ -472,7 +472,7 @@ class _ScheduleViewState extends State<ScheduleView>
 
   List<Widget> _buildActionButtons(ScheduleViewModel model) => [
         IconButton(
-          icon: const Icon(Icons.today),
+          icon: const Icon(Icons.ios_share),
           onPressed: () {
             final translations = AppIntl.of(context);
             showDialog(
