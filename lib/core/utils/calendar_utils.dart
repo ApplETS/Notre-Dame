@@ -2,8 +2,6 @@ import 'dart:collection';
 import 'package:device_calendar/device_calendar.dart';
 
 import 'package:ets_api_clients/models.dart';
-import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 
 mixin CalendarUtils {
   static Future<bool> checkPermissions() async {
@@ -123,7 +121,10 @@ mixin CalendarUtils {
       final result = await localDeviceCalendarPlugin.createOrUpdateEvent(
         event,
       );
-      hasErrors = !result.isSuccess;
+
+      if (!result.isSuccess) {
+        hasErrors = true;
+      }
     }
     return !hasErrors;
   }
