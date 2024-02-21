@@ -155,11 +155,17 @@ class NewsRepository {
   }
 
   // TODO : Fetch news from the API
+  // TODO : Fetch news from the API
   Future<List<News>> fetchAuthorNewsFromAPI(int authorId) async {
     final List<News> fetchedNews = _news ?? [];
 
-    _logger.d("$tag - getNews: fetched ${fetchedNews.length} news.");
+    // Filter news based on authorId
+    final List<News> authorNews =
+        fetchedNews.where((news) => news.authorId == authorId).toList();
 
-    return fetchedNews;
+    _logger.d(
+        "$tag - fetchAuthorNewsFromAPI: fetched ${authorNews.length} news for author $authorId.");
+
+    return authorNews;
   }
 }

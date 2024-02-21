@@ -31,4 +31,11 @@ class NewsRepositoryMock extends MockNewsRepository {
         Future.delayed(const Duration(milliseconds: 50))
             .then((value) => throw toThrow));
   }
+
+  /// Stub the function [fetchAuthorNewsFromAPI] of [mock] when called will return [toReturn].
+  static void stubFetchAuthorNewsFromAPI(NewsRepositoryMock mock, int authorId,
+      {List<News> toReturn = const []}) {
+    when(mock.fetchAuthorNewsFromAPI(authorId))
+        .thenAnswer((_) async => Future.value(toReturn));
+  }
 }

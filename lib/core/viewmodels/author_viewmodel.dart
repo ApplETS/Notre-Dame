@@ -68,6 +68,8 @@ class AuthorViewModel extends FutureViewModel<Author> {
       notifyListeners();
     } on Exception catch (error) {
       onError(error);
+    } finally {
+      setBusyForObject(isLoadingEvents, false);
     }
   }
 
