@@ -107,16 +107,17 @@ mixin CalendarUtils {
             "${course.courseGroup} \n${course.activityDescription}\nN'EFFACEZ PAS CETTE LIGNE: ${course.hashCode}",
       );
 
-      final existingEvent = events
-          .where((element) =>
-              element.description.contains(course.hashCode.toString()))
-          .first;
+      final existingEvents = events.where(
+        (element) => element.description.contains(course.hashCode.toString()),
+      );
+      if (existingEvents.isNotEmpty) {
+        final existingEvent = existingEvents?.first;
 
-      // If already exists prepare for update
-      if (existingEvent != null) {
-        event.eventId = existingEvent.eventId;
+        // If already exists prepare for update
+        if (existingEvent != null) {
+          event.eventId = existingEvent.eventId;
+        }
       }
-
       // Create or update event
       await localDeviceCalendarPlugin.createOrUpdateEvent(
         event,

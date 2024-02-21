@@ -11,7 +11,8 @@ import 'package:notredame/core/utils/calendar_utils.dart';
 import 'package:notredame/locator.dart';
 
 class CalendarSelectionWidget extends StatelessWidget {
-  const CalendarSelectionWidget({Key key}) : super(key: key);
+  final AppIntl translations;
+  const CalendarSelectionWidget({Key key, this.translations}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +38,7 @@ class CalendarSelectionWidget extends StatelessWidget {
             value: "new",
             // TODO TRANSLATION
             // child: Text("New calendar"),
-            child: Text(AppIntl.of(context).calendar_new),
+            child: Text(translations.calendar_new),
           ),
         );
         String selectedCalendarId = items[0].value;
@@ -46,13 +47,13 @@ class CalendarSelectionWidget extends StatelessWidget {
             return AlertDialog(
               // TODO TRANSLATION
               // title: const Text('Export to calendar'),
-              title: Text(AppIntl.of(context).calendar_export),
+              title: Text(translations.calendar_export),
               content: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   // TODO TRANSLATION
                   // const Text('Which calendar do you want to export to?'),
-                  Text(AppIntl.of(context).calendar_export_question),
+                  Text(translations.calendar_export_question),
                   DropdownButton<String>(
                     items: items,
                     value: selectedCalendarId,
@@ -72,7 +73,7 @@ class CalendarSelectionWidget extends StatelessWidget {
                               // todo translation
                               decoration: InputDecoration(
                                 // labelText: 'Calendar name',
-                                labelText: AppIntl.of(context).calendar_name,
+                                labelText: translations.calendar_name,
                               ),
                             )
                           : const SizedBox(height: 10);
@@ -92,7 +93,7 @@ class CalendarSelectionWidget extends StatelessWidget {
                       Fluttertoast.showToast(
                         // TODO TRANSLATION
                         // msg: 'Please select a calendar',
-                        msg: AppIntl.of(context).calendar_select,
+                        msg: translations.calendar_select,
                         backgroundColor: AppTheme.etsLightRed,
                         textColor: AppTheme.etsBlack,
                       );

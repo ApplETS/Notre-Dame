@@ -474,9 +474,11 @@ class _ScheduleViewState extends State<ScheduleView>
         IconButton(
           icon: const Icon(Icons.today),
           onPressed: () {
+            final translations = AppIntl.of(context);
             showDialog(
               context: context,
-              builder: (_) => const CalendarSelectionWidget(),
+              builder: (_) =>
+                  CalendarSelectionWidget(translations: translations),
             );
           },
         ),
