@@ -10,14 +10,18 @@ import 'package:notredame/core/managers/course_repository.dart';
 import 'package:notredame/locator.dart';
 import 'package:notredame/ui/utils/app_theme.dart';
 
-class LineChartSample2 extends StatefulWidget {
-  const LineChartSample2();
+class LineChartGradeGraph extends StatefulWidget {
+  final String courseAcronym;
+  final String group;
+  final String session;
+
+  const LineChartGradeGraph(this.courseAcronym, this.group, this.session);
 
   @override
-  State<LineChartSample2> createState() => _LineChartSample2State();
+  State<LineChartGradeGraph> createState() => _LineChartGradeGraphState();
 }
 
-class _LineChartSample2State extends State<LineChartSample2> {
+class _LineChartGradeGraphState extends State<LineChartGradeGraph> {
   List<Color> gradientColors = [
     AppTheme.etsLightRed,
     AppTheme.etsDarkRed,
