@@ -20,43 +20,75 @@ class GradeGraphRepository {
 
   // Storage manager to read or write files in storage.
   final StorageManager _storageManager = locator<StorageManager>();
-  
+
   /// To access the user currently logged
   final UserRepository _userRepository = locator<UserRepository>();
 
-  Future<File> updateGradeEntry(String universalCode, Course course) async {
-    List<GradeGraphEntry> grades = <GradeGraphEntry>[];
-    final String fileName = '$universalCode-grades-progression-graph-data.json';
-    final bool fileExists = await File(
-            '${await _storageManager.getAppDocumentsDirectoryPath()}/$fileName')
-        .exists();
-
-    if (fileExists) {
-      final String gradesProgressionJSON =
-          await _storageManager.readFile(fileName);
-
-      if (gradesProgressionJSON.isNotEmpty) {
-        final List<GradeGraphEntry> oldGrades =
-            (jsonDecode(gradesProgressionJSON) as List)
-                .map((grade) =>
-                    GradeGraphEntry.fromJson(grade as Map<String, dynamic>))
-                .toList();
-        grades = _refreshGradeEntry(oldGrades, course);
-      } else {
-        grades.add(_generateNewEntry(course));
-      }
-    } else {
-      grades.add(_generateNewEntry(course));
-    }
   String _getFileName() {
     return '${_userRepository.monETSUser.universalCode}-grades-progression-graph-data.json';
   }
 
-    grades.sort((a, b) => _gradeSortAlgorithm(a, b));
+  Future<bool> _fileExists() async {
+    final File file = await _storageManager.getLocalFile(_getFileName());
+    return file.exists();
+  }
+
+  Future<bool> _gradesJsonNotEmpty() async {
+    final String gradesJSON = await _storageManager.readFile(_getFileName());
+    return gradesJSON.isNotEmpty;
+  }
+
+  Future<List<GradeGraphEntry>> getGradesForCourse(
+      String courseAcronym, String group, String session) async {
+    final String fileName = _getFileName();
+
+    if (!await _fileExists()) {
+      return <GradeGraphEntry>[];
+    }
+
+    final String gradesProgressionJSON =
+        await _storageManager.readFile(fileName);
+
+    final List<GradeGraphEntry> grades = (jsonDecode(gradesProgressionJSON)
+            as List)
+        .map((grade) => GradeGraphEntry.fromJson(grade as Map<String, dynamic>))
+        .toList();
+
+    return grades
+        .where((course) =>
+            course.acronym == courseAcronym &&
+            course.group == group &&
+            course.session == session)
+        .toList();
+  }
+
+  Future<List<GradeGraphEntry>> _getGrades() async {
+    List<GradeGraphEntry> grades = <GradeGraphEntry>[];
+
+    if (await _fileExists()) {
+      final String gradesProgressionJSON =
+          await _storageManager.readFile(_getFileName());
+
+      grades = (jsonDecode(gradesProgressionJSON) as List)
+          .map((grade) =>
+              GradeGraphEntry.fromJson(grade as Map<String, dynamic>))
+          .toList();
+    }
+
+    return grades;
+  }
+
+  Future<File> updateGradeEntry(Course course) async {
+    List<GradeGraphEntry> grades = await _getGrades();
+    final String fileName = _getFileName();
+
+    if (await _isGradeNew(course)) {
+      grades.add(_generateNewEntry(course));
+    }
 
     File result;
     try {
-      result = await _storageManager.writeToFile(fileName, jsonEncode(grades));
+      result = await _writeGradesToFile(fileName, grades);
     } catch (e) {
       _logger.e("- writeGradesToStorage: Failed to write file to storage: $e");
     }
@@ -67,103 +99,27 @@ class GradeGraphRepository {
     return result;
   }
 
-  List<GradeGraphEntry> _refreshGradeEntry(
-      List<GradeGraphEntry> grades, Course course) {
+  Future<bool> _isGradeNew(Course course) async {
+    bool isGradeNew = true;
+
     if (course.summary != null) {
-      bool courseFound = false;
+      final courseGrades = await getGradesForCourse(
+          course.acronym, course.group, course.session);
 
-      for (final entry in grades) {
-        final bool sameCourse = course.acronym == entry.acronym &&
-            course.group == entry.group &&
-            course.session == entry.session;
-
-        if (sameCourse) {
-          courseFound = true;
-
-          // Get all entries for this course
-          final courseEntries = grades
-              .where((courseEntry) =>
-                  course.acronym == courseEntry.acronym &&
-                  course.group == courseEntry.group &&
-                  course.session == courseEntry.session)
-              .toList();
-
-          courseEntries.sort((a, b) {
-            return a.timestamp.compareTo(b.timestamp);
-          });
-
-          final latestEntry = courseEntries.first;
-          if (course.summary != latestEntry.summary) {
-            _generateNewEntry(course);
-          }
+      if (courseGrades.isNotEmpty) {
+        for (final entry in courseGrades) {
+          isGradeNew = course.summary.currentMarkInPercent !=
+              entry.summary.currentMarkInPercent;
         }
       }
-
-      if (!courseFound) {
-        grades.add(_generateNewEntry(course));
-      }
     }
 
-    return grades;
-  }
-
-  Future<File> updateGradeEntries(
-      String universalCode, List<Course> courses) async {
-    List<GradeGraphEntry> grades;
-    final String fileName = '$universalCode-grades-progression-graph-data.json';
-    final bool fileExists = await File(
-            '${await _storageManager.getAppDocumentsDirectoryPath()}/$fileName')
-        .exists();
-
-    if (fileExists) {
-      List<GradeGraphEntry> oldGrades = <GradeGraphEntry>[];
-      final String gradesProgressionJSON =
-          await _storageManager.readFile(fileName);
-
-      if (gradesProgressionJSON.isNotEmpty) {
-        oldGrades = (jsonDecode(gradesProgressionJSON) as List<dynamic>)
-            .cast<GradeGraphEntry>();
-
-        for (final Course course in courses) {
-          _refreshGradeEntry(oldGrades, course);
-        }
-      } else {
-        grades = _generateGradesEntries(courses);
-      }
-    } else {
-      grades = _generateGradesEntries(courses);
-    }
-
-    grades.sort((a, b) => _gradeSortAlgorithm(a, b));
-
-    File result;
-    try {
-      result = await _storageManager.writeToFile(fileName, jsonEncode(grades));
-    } catch (e) {
-      _logger.e("- writeGradesToStorage: Failed to write file to storage $e");
-    }
-
-    _logger.d(
-        "- writeGradesToStorage: Grades Graph Entry written to file. Path: ${result.path}");
-
-    return result;
+    return isGradeNew;
   }
 
   GradeGraphEntry _generateNewEntry(Course course) {
     return GradeGraphEntry(
         course.acronym, course.group, course.session, course.summary);
-  }
-
-  List<GradeGraphEntry> _generateGradesEntries(List<Course> courses) {
-    final List<GradeGraphEntry> grades = <GradeGraphEntry>[];
-
-    for (final course in courses) {
-      if (course.summary != null) {
-        grades.add(_generateNewEntry(course));
-      }
-    }
-
-    return grades;
   }
 
   /// Sort grades by session > acronym > group > time
@@ -185,5 +141,11 @@ class GradeGraphRepository {
 
     final int timeComparison = a.timestamp.compareTo(b.timestamp);
     return timeComparison;
+  }
+
+  Future<File> _writeGradesToFile(
+      String fileName, List<GradeGraphEntry> grades) {
+    grades.sort((a, b) => _gradeSortAlgorithm(a, b));
+    return _storageManager.writeToFile(fileName, jsonEncode(grades));
   }
 }
