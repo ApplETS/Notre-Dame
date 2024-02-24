@@ -40,19 +40,7 @@ class GradeGraphRepository {
 
   Future<List<GradeGraphEntry>> getGradesForCourse(
       String courseAcronym, String group, String session) async {
-    final String fileName = _getFileName();
-
-    if (!await _fileExists()) {
-      return <GradeGraphEntry>[];
-    }
-
-    final String gradesProgressionJSON =
-        await _storageManager.readFile(fileName);
-
-    final List<GradeGraphEntry> grades = (jsonDecode(gradesProgressionJSON)
-            as List)
-        .map((grade) => GradeGraphEntry.fromJson(grade as Map<String, dynamic>))
-        .toList();
+    final List<GradeGraphEntry> grades = await _getGrades();
 
     return grades
         .where((course) =>
