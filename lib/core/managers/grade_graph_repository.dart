@@ -8,6 +8,7 @@ import 'package:logger/logger.dart';
 
 // Project imports:
 import 'package:notredame/core/managers/storage_manager.dart';
+import 'package:notredame/core/managers/user_repository.dart';
 import 'package:notredame/core/models/grade_graph_entry.dart';
 import 'package:notredame/locator.dart';
 
@@ -19,6 +20,9 @@ class GradeGraphRepository {
 
   // Storage manager to read or write files in storage.
   final StorageManager _storageManager = locator<StorageManager>();
+  
+  /// To access the user currently logged
+  final UserRepository _userRepository = locator<UserRepository>();
 
   Future<File> updateGradeEntry(String universalCode, Course course) async {
     List<GradeGraphEntry> grades = <GradeGraphEntry>[];
@@ -44,6 +48,9 @@ class GradeGraphRepository {
     } else {
       grades.add(_generateNewEntry(course));
     }
+  String _getFileName() {
+    return '${_userRepository.monETSUser.universalCode}-grades-progression-graph-data.json';
+  }
 
     grades.sort((a, b) => _gradeSortAlgorithm(a, b));
 

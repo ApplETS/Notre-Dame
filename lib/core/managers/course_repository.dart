@@ -448,8 +448,7 @@ class CourseRepository {
     course.summary = summary;
     _courses.add(course);
 
-    _gradeGraphRepository.updateGradeEntry(
-        _userRepository.monETSUser.universalCode, course);
+    _gradeGraphRepository.updateGradeEntry(course);
 
     try {
       _cacheManager.update(coursesCacheKey, jsonEncode(_courses));
