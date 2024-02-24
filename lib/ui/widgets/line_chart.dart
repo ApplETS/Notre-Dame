@@ -2,11 +2,13 @@
 import 'package:flutter/material.dart';
 
 // Package imports:
-import 'package:ets_api_clients/models.dart';
+import 'package:calendar_view/calendar_view.dart';
 import 'package:fl_chart/fl_chart.dart';
+import 'package:intl/intl.dart';
 
 // Project imports:
-import 'package:notredame/core/managers/course_repository.dart';
+import 'package:notredame/core/managers/grade_graph_repository.dart';
+import 'package:notredame/core/models/grade_graph_entry.dart';
 import 'package:notredame/locator.dart';
 import 'package:notredame/ui/utils/app_theme.dart';
 
@@ -30,7 +32,14 @@ class _LineChartGradeGraphState extends State<LineChartGradeGraph> {
   bool showAvg = false;
 
   double opacity = 0.3;
-  final CourseRepository _courseRepository = locator<CourseRepository>();
+
+  double maxX = -1;
+  double maxY = 100;
+  DateTime earliestGrade;
+  DateTime latestGrade;
+
+  final GradeGraphRepository _gradeGraphRepository =
+      locator<GradeGraphRepository>();
 
   @override
   Widget build(BuildContext context) {
@@ -45,27 +54,24 @@ class _LineChartGradeGraphState extends State<LineChartGradeGraph> {
               top: 24,
               bottom: 12,
             ),
-            child: LineChart(
-              showAvg ? avgData() : mainData(),
-            ),
-          ),
-        ),
-        SizedBox(
-          width: 60,
-          height: 34,
-          child: TextButton(
-            onPressed: () {
-              setState(() {
-                showAvg = !showAvg;
-              });
-            },
-            child: Text(
-              'avg',
-              style: TextStyle(
-                fontSize: 12,
-                color: showAvg ? Colors.white.withOpacity(0.5) : Colors.white,
-              ),
-            ),
+            child: FutureBuilder<List<GradeGraphEntry>>(
+                future: _gradeGraphRepository.getGradesForCourse(
+                    widget.courseAcronym, widget.group, widget.session),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Center(child: CircularProgressIndicator());
+                  } else {
+                    if (snapshot.hasData) {
+                      return LineChart(
+                        getLinechartData(snapshot.data),
+                        swapAnimationDuration:
+                            const Duration(milliseconds: 250),
+                      );
+                    } else {
+                      return const Center(child: Text('No data'));
+                    }
+                  }
+                }),
           ),
         ),
       ],
@@ -78,21 +84,13 @@ class _LineChartGradeGraphState extends State<LineChartGradeGraph> {
       fontSize: 16,
     );
 
-    Widget text;
-    switch (value.toInt()) {
-      case 2:
-        text = const Text('MAR', style: style);
-        break;
-      case 5:
-        text = const Text('JUN', style: style);
-        break;
-      case 8:
-        text = const Text('SEP', style: style);
-        break;
-      default:
-        text = const Text('', style: style);
-        break;
+    if (value % (maxX / 4) != 0) {
+      return Container();
     }
+
+    final DateFormat dateFormat = DateFormat('MMM d');
+    final Widget text = Text(dateFormat
+        .format(earliestGrade.add(Duration(days: value.toInt() * 7))));
 
     return SideTitleWidget(
       axisSide: meta.axisSide,
@@ -107,14 +105,14 @@ class _LineChartGradeGraphState extends State<LineChartGradeGraph> {
     );
     String text;
     switch (value.toInt()) {
-      case 1:
-        text = '10K';
+      case 0:
+        text = '0%';
         break;
-      case 3:
-        text = '30k';
+      case 50:
+        text = '50%';
         break;
-      case 5:
-        text = '50k';
+      case 100:
+        text = '100%';
         break;
       default:
         return Container();
@@ -123,13 +121,29 @@ class _LineChartGradeGraphState extends State<LineChartGradeGraph> {
     return Text(text, style: style, textAlign: TextAlign.left);
   }
 
-  LineChartData mainData() {
+  LineChartData getLinechartData(List<GradeGraphEntry> grades) {
+    if (grades.isNotEmpty) {
+      earliestGrade = grades.first.timestamp;
+      latestGrade = grades.last.timestamp;
+      maxX = earliestGrade.getWeekDifference(DateTime.now()).toDouble();
+    }
+
+    final List<FlSpot> spots = [];
+    for (final grade in grades) {
+      final FlSpot newSpot = FlSpot(
+          grade.timestamp.getWeekDifference(earliestGrade).toDouble(),
+          grade.summary.currentMarkInPercent);
+      spots.add(newSpot);
+    }
+
+    final double verticalInterval = maxX / 4;
+
     return LineChartData(
       gridData: FlGridData(
         show: true,
         drawVerticalLine: true,
-        horizontalInterval: 1,
-        verticalInterval: 1,
+        horizontalInterval: maxY / 10,
+        verticalInterval: verticalInterval,
         getDrawingHorizontalLine: (value) {
           return FlLine(
             color: AppTheme.etsLightGrey,
@@ -155,14 +169,14 @@ class _LineChartGradeGraphState extends State<LineChartGradeGraph> {
           sideTitles: SideTitles(
             showTitles: true,
             reservedSize: 30,
-            interval: 1,
+            interval: verticalInterval,
             getTitlesWidget: bottomTitleWidgets,
           ),
         ),
         leftTitles: AxisTitles(
           sideTitles: SideTitles(
             showTitles: true,
-            interval: 1,
+            interval: 25,
             getTitlesWidget: leftTitleWidgets,
             reservedSize: 42,
           ),
@@ -173,107 +187,18 @@ class _LineChartGradeGraphState extends State<LineChartGradeGraph> {
         border: Border.all(color: AppTheme.etsDarkGrey),
       ),
       minX: 0,
-      maxX: 11,
+      maxX: maxX,
       minY: 0,
-      maxY: 6,
+      maxY: maxY,
       lineBarsData: [
         LineChartBarData(
-          spots: const [
-            FlSpot(0, 3),
-            FlSpot(2.6, 2),
-            FlSpot(4.9, 5),
-            FlSpot(6.8, 3.1),
-            FlSpot(8, 4),
-            FlSpot(9.5, 3),
-            FlSpot(11, 4),
-          ],
+          spots: spots,
           isCurved: true,
           color: AppTheme.etsLightRed,
           barWidth: 5,
           isStrokeCapRound: true,
           dotData: FlDotData(
-            show: false,
-          ),
-          belowBarData: BarAreaData(
             show: true,
-            color: AppTheme.etsLightRed.withOpacity(0.3),
-          ),
-        ),
-      ],
-    );
-  }
-
-  LineChartData avgData() {
-    return LineChartData(
-      lineTouchData: LineTouchData(enabled: false),
-      gridData: FlGridData(
-        show: true,
-        drawHorizontalLine: true,
-        verticalInterval: 1,
-        horizontalInterval: 1,
-        getDrawingVerticalLine: (value) {
-          return FlLine(
-            color: AppTheme.etsLightGrey,
-            strokeWidth: 1,
-          );
-        },
-        getDrawingHorizontalLine: (value) {
-          return FlLine(
-            color: AppTheme.etsLightGrey,
-            strokeWidth: 1,
-          );
-        },
-      ),
-      titlesData: FlTitlesData(
-        show: true,
-        bottomTitles: AxisTitles(
-          sideTitles: SideTitles(
-            showTitles: true,
-            reservedSize: 30,
-            getTitlesWidget: bottomTitleWidgets,
-            interval: 1,
-          ),
-        ),
-        leftTitles: AxisTitles(
-          sideTitles: SideTitles(
-            showTitles: true,
-            getTitlesWidget: leftTitleWidgets,
-            reservedSize: 42,
-            interval: 1,
-          ),
-        ),
-        topTitles: AxisTitles(
-          sideTitles: SideTitles(showTitles: false),
-        ),
-        rightTitles: AxisTitles(
-          sideTitles: SideTitles(showTitles: false),
-        ),
-      ),
-      borderData: FlBorderData(
-        show: true,
-        border: Border.all(color: AppTheme.etsDarkGrey),
-      ),
-      minX: 0,
-      maxX: 11,
-      minY: 0,
-      maxY: 6,
-      lineBarsData: [
-        LineChartBarData(
-          spots: const [
-            FlSpot(0, 3.44),
-            FlSpot(2.6, 3.44),
-            FlSpot(4.9, 3.44),
-            FlSpot(6.8, 3.44),
-            FlSpot(8, 3.44),
-            FlSpot(9.5, 3.44),
-            FlSpot(11, 3.44),
-          ],
-          isCurved: true,
-          color: AppTheme.etsLightRed,
-          barWidth: 5,
-          isStrokeCapRound: true,
-          dotData: FlDotData(
-            show: false,
           ),
           belowBarData: BarAreaData(
             show: true,
