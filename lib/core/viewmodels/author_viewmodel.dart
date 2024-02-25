@@ -11,7 +11,7 @@ import 'package:notredame/core/models/author.dart';
 import 'package:notredame/core/models/news.dart';
 import 'package:notredame/locator.dart';
 
-class AuthorViewModel extends FutureViewModel<Author> {
+class AuthorViewModel extends FutureViewModel<Author?> {
   final AuthorRepository _authorRepository = locator<AuthorRepository>();
   final NewsRepository _newsRepository = locator<NewsRepository>();
   final Logger _logger = locator<Logger>();
@@ -22,13 +22,13 @@ class AuthorViewModel extends FutureViewModel<Author> {
   final int authorId;
 
   /// Author
-  late Author _author;
+  Author? _author;
 
   /// Return the author
-  Author get author => _author;
+  Author? get author => _author;
 
   /// News list
-  late List<News> _news;
+  List<News> _news = [];
 
   /// Return the list of all the news.
   List<News> get news => _news;
@@ -39,7 +39,7 @@ class AuthorViewModel extends FutureViewModel<Author> {
   bool isNotified = false;
 
   @override
-  Future<Author> futureToRun() async {
+  Future<Author?> futureToRun() async {
     try {
       setBusyForObject(isLoadingEvents, true);
       _author = await _authorRepository.fetchAuthorFromAPI(authorId);
@@ -78,11 +78,11 @@ class AuthorViewModel extends FutureViewModel<Author> {
     isNotified = !isNotified;
     if (isNotified) {
       Fluttertoast.showToast(
-          msg: appIntl.news_author_notified_for(author.organisation),
+          msg: appIntl.news_author_notified_for(author?.organisation ?? ""),
           toastLength: Toast.LENGTH_LONG);
     } else {
       Fluttertoast.showToast(
-          msg: appIntl.news_author_not_notified_for(author.organisation),
+          msg: appIntl.news_author_not_notified_for(author?.organisation ?? ""),
           toastLength: Toast.LENGTH_LONG);
     }
   }

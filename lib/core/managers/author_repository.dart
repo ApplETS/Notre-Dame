@@ -38,6 +38,6 @@ class AuthorRepository {
   Future<Author> fetchAuthorFromAPI(int authorId) async {
     _logger.d("$tag - fetchAuthorFromAPI: fetched author.");
 
-    return author;
+    return Future.value(author);
   }
 }

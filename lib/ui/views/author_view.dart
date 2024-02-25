@@ -87,12 +87,12 @@ class _AuthorViewState extends State<AuthorView> {
                   child: Column(
                     children: [
                       Text(
-                        author.organisation,
+                        author?.organisation ?? "",
                         style: const TextStyle(fontSize: 26),
                       ),
                       const SizedBox(height: 10),
                       Text(
-                        author.description,
+                        author?.description ?? "",
                         style: TextStyle(
                           color: Utils.getColorByBrightness(
                             context,
@@ -162,7 +162,7 @@ class _AuthorViewState extends State<AuthorView> {
                                   ),
                                 ),
                                 builder: (context) => SocialLinks(
-                                  socialLinks: model.author.socialLinks,
+                                  socialLinks: model.author?.socialLinks ?? [],
                                 ),
                               );
                             },
@@ -219,12 +219,13 @@ class _AuthorViewState extends State<AuthorView> {
                 child: Hero(
                   tag: 'news_author_avatar',
                   child: ClipOval(
-                    child: model.author.image.isEmpty
-                        ? const SizedBox()
-                        : Image.network(
-                            model.author.image,
-                            fit: BoxFit.cover,
-                          ),
+                    child:
+                        model.author?.image == "" || model.author?.image == null
+                            ? const SizedBox()
+                            : Image.network(
+                                model.author!.image,
+                                fit: BoxFit.cover,
+                              ),
                   ),
                 ),
               ),

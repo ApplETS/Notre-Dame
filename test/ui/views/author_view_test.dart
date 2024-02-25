@@ -1,11 +1,14 @@
 // Dart imports:
 import 'dart:io';
+import 'dart:math';
 
 // Flutter imports:
 import 'package:flutter/material.dart';
 
 // Package imports:
 import 'package:flutter_test/flutter_test.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 // Project imports:
 import 'package:notredame/core/managers/course_repository.dart';
@@ -15,11 +18,12 @@ import 'package:notredame/core/models/author.dart';
 import 'package:notredame/core/models/news.dart';
 import 'package:notredame/core/models/socialLink.dart';
 import 'package:notredame/core/services/analytics_service.dart';
+import 'package:notredame/core/services/launch_url_service.dart';
 import 'package:notredame/core/services/navigation_service.dart';
 import 'package:notredame/core/services/networking_service.dart';
 import 'package:notredame/ui/views/author_view.dart';
-import 'package:notredame/ui/views/news_view.dart';
 import 'package:notredame/ui/widgets/news_card.dart';
+import 'package:notredame/ui/widgets/social_links_card.dart';
 import '../../helpers.dart';
 import '../../mock/managers/author_repository_mock.dart';
 import '../../mock/managers/news_repository_mock.dart';
@@ -27,6 +31,7 @@ import '../../mock/managers/news_repository_mock.dart';
 void main() {
   late AuthorRepositoryMock authorRepository;
   late NewsRepositoryMock newsRepository;
+  late AppIntl intl;
 
   final List<News> news = <News>[
     News(
@@ -98,16 +103,19 @@ void main() {
       await setupAppIntl();
       setupLogger();
 
+      intl = await setupAppIntl();
       authorRepository = setupAuthorRepositoryMock();
       newsRepository = setupNewsRepositoryMock();
       setupNavigationServiceMock();
       setupNetworkingServiceMock();
       setupSettingsManagerMock();
       setupAnalyticsServiceMock();
+      setupLaunchUrlServiceMock();
 
       NewsRepositoryMock.stubFetchAuthorNewsFromAPI(newsRepository, author.id);
       AuthorRepositoryMock.stubFetchAuthorFromAPI(
           authorRepository, author.id, author);
+
       AuthorRepositoryMock.stubAuthor(authorRepository, author);
     });
 
@@ -118,59 +126,86 @@ void main() {
       unregister<CourseRepository>();
       unregister<NetworkingService>();
       unregister<AnalyticsService>();
+      unregister<LaunchUrlService>();
     });
 
-    testWidgets('Empty news', (WidgetTester tester) async {
-      NewsRepositoryMock.stubGetNews(newsRepository, toReturn: emptyNews);
-      NewsRepositoryMock.stubNews(newsRepository, toReturn: emptyNews);
-
+    testWidgets('Loaded with Author information', (WidgetTester tester) async {
       await tester
           .pumpWidget(localizedWidget(child: AuthorView(authorId: author.id)));
       await tester.pumpAndSettle(const Duration(seconds: 1));
 
-      expect(find.byType(ListView), findsOneWidget);
+      // Verify that the back button is present
+      expect(find.byIcon(Icons.arrow_back), findsOneWidget);
 
+      // Verify that the author information is displayed
+      expect(find.text(author.organisation), findsOneWidget);
+      expect(find.text(author.description), findsOneWidget);
+
+      // Verify that the notify button is present
+      expect(find.byType(TextButton), findsOneWidget);
+    });
+
+    testWidgets('Notify button toggles text correctly',
+        (WidgetTester tester) async {
+      await tester
+          .pumpWidget(localizedWidget(child: AuthorView(authorId: author.id)));
+      await tester.pumpAndSettle(const Duration(seconds: 1));
+
+      // Initially, the button should show "Notify Me"
+      expect(find.text(intl.news_author_notify_me), findsOneWidget);
+
+      // Tap the notify button
+      await tester.tap(find.byType(TextButton));
+      await tester.pump();
+
+      // After tapping, the button should show "Don't Notify Me"
+      expect(find.text(intl.news_author_dont_notify_me), findsOneWidget);
+    });
+
+    testWidgets('Social Links Modal', (WidgetTester tester) async {
+      await tester
+          .pumpWidget(localizedWidget(child: AuthorView(authorId: author.id)));
+      await tester.pumpAndSettle(const Duration(seconds: 1));
+
+      // Tap the social links button
+      await tester.tap(find.byType(FaIcon));
+      await tester.pumpAndSettle();
+
+      // Verify that the modal sheet is displayed
+      expect(find.byType(SocialLinks), findsOneWidget);
+
+      // Verify that the correct number of social links are displayed + 2 for the buttons already there
+      expect(find.byType(IconButton),
+          findsNWidgets(author.socialLinks.length + 2));
+    });
+
+    testWidgets('Empty News List', (WidgetTester tester) async {
+      NewsRepositoryMock.stubFetchAuthorNewsFromAPI(newsRepository, author.id,
+          toReturn: emptyNews);
+
+      await tester
+          .pumpWidget(localizedWidget(child: AuthorView(authorId: author.id)));
+      await tester.pumpAndSettle(const Duration(seconds: 2));
+
+      // Verify that the news list is empty
       expect(find.byType(NewsCard), findsNothing);
     });
 
-    testWidgets('List of news', (WidgetTester tester) async {
-      NewsRepositoryMock.stubGetNews(newsRepository, toReturn: news);
-      NewsRepositoryMock.stubNews(newsRepository, toReturn: news);
+    testWidgets('AuthorView - Loaded with News', (WidgetTester tester) async {
+      NewsRepositoryMock.stubFetchAuthorNewsFromAPI(newsRepository, author.id,
+          toReturn: news);
 
-      await tester.pumpWidget(localizedWidget(child: NewsView()));
-      await tester.pumpAndSettle(const Duration(seconds: 5));
+      await tester
+          .pumpWidget(localizedWidget(child: AuthorView(authorId: author.id)));
+      await tester.pumpAndSettle(const Duration(seconds: 2));
 
-      expect(find.byType(ListView), findsOneWidget);
+      // Verify that the news cards are displayed
+      expect(find.byType(NewsCard), findsNWidgets(news.length));
 
-      expect(find.byType(NewsCard), findsNWidgets(3));
+      // Verify that each news card displays the correct information
+      for (final newsItem in news) {
+        expect(find.text(newsItem.title), findsOneWidget);
+      }
     });
-
-    group("golden - ", () {
-      testWidgets("news view empty", (WidgetTester tester) async {
-        NewsRepositoryMock.stubGetNews(newsRepository, toReturn: emptyNews);
-        NewsRepositoryMock.stubNews(newsRepository, toReturn: emptyNews);
-
-        tester.binding.window.physicalSizeTestValue = const Size(800, 1410);
-
-        await tester.pumpWidget(localizedWidget(child: NewsView()));
-        await tester.pumpAndSettle(const Duration(seconds: 1));
-
-        await expectLater(find.byType(NewsView),
-            matchesGoldenFile(goldenFilePath("newsView_1")));
-      });
-
-      testWidgets("news view", (WidgetTester tester) async {
-        NewsRepositoryMock.stubGetNews(newsRepository, toReturn: news);
-        NewsRepositoryMock.stubNews(newsRepository, toReturn: news);
-
-        tester.binding.window.physicalSizeTestValue = const Size(800, 1410);
-
-        await tester.pumpWidget(localizedWidget(child: NewsView()));
-        await tester.pumpAndSettle(const Duration(seconds: 1));
-
-        await expectLater(find.byType(NewsView),
-            matchesGoldenFile(goldenFilePath("newsView_2")));
-      });
-    }, skip: !Platform.isLinux);
   });
 }
