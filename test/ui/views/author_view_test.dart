@@ -207,5 +207,33 @@ void main() {
         expect(find.text(newsItem.title), findsOneWidget);
       }
     });
+
+    group("golden - ", () {
+      testWidgets("author view news empty", (WidgetTester tester) async {
+        NewsRepositoryMock.stubFetchAuthorNewsFromAPI(newsRepository, author.id,
+            toReturn: emptyNews);
+        tester.binding.window.physicalSizeTestValue = const Size(800, 1410);
+
+        await tester.pumpWidget(
+            localizedWidget(child: AuthorView(authorId: author.id)));
+        await tester.pumpAndSettle(const Duration(seconds: 2));
+
+        await expectLater(find.byType(AuthorView),
+            matchesGoldenFile(goldenFilePath("authorView_1")));
+      });
+
+      testWidgets("author view", (WidgetTester tester) async {
+        NewsRepositoryMock.stubFetchAuthorNewsFromAPI(newsRepository, author.id,
+            toReturn: news);
+        tester.binding.window.physicalSizeTestValue = const Size(800, 1410);
+
+        await tester.pumpWidget(
+            localizedWidget(child: AuthorView(authorId: author.id)));
+        await tester.pumpAndSettle(const Duration(seconds: 2));
+
+        await expectLater(find.byType(AuthorView),
+            matchesGoldenFile(goldenFilePath("authorView_2")));
+      });
+    }, skip: !Platform.isLinux);
   });
 }
