@@ -3,14 +3,11 @@ import 'package:flutter/material.dart';
 
 // Package imports:
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:stacked/stacked.dart';
 
 // Project imports:
-import 'package:notredame/core/constants/report_news.dart';
 import 'package:notredame/core/models/socialLink.dart';
 import 'package:notredame/core/utils/utils.dart';
-import 'package:notredame/core/viewmodels/quick_links_viewmodel.dart';
 import 'package:notredame/core/viewmodels/web_link_card_viewmodel.dart';
 import 'package:notredame/ui/utils/app_theme.dart';
 
