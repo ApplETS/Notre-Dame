@@ -171,6 +171,13 @@
   "ets_papercut_title":"PaperCut",
 
   "news_title" : "Annonces",
+  "news_details_title" : "Annonce",
+  "news_event_date": "Date de l'événement",
+
+  "report_news": "Pourquoi reportez-vous cette annonce ?",
+  "report_as": "Signaler comme",
+  "report": "Signaler",
+  "report_toast": "Merci pour votre signalement ! ",
 
   "more_about_applets_title": "À propos d'ApplETS",
   "more_report_bug": "Rapporter un bogue ou une amélioration",

@@ -17,23 +17,31 @@ void main() {
   late NewsRepositoryMock newsRepository;
   late AppIntl appIntl;
 
-  final List<News> news = [
+  final List<News> news = <News>[
     News(
       id: 1,
-      title: 'Mock News 1',
-      description: 'Mock Description 1',
-      image: 'https://example.com/mock-image1.jpg',
-      tags: [],
-      date: DateTime.now(),
+      title: "Mock News 1",
+      description: "Test 1 description",
+      author: "Author 1",
+      avatar: "https://example.com/avatar1.jpg",
+      activity: "Activity 1",
+      image: "",
+      tags: ["tag1", "tag2"],
+      publishedDate: DateTime.parse('2022-01-01T12:00:00Z'),
+      eventDate: DateTime.parse('2022-01-02T12:00:00Z'),
     ),
     News(
       id: 2,
-      title: 'Mock News 2',
-      description: 'Mock Description 2',
-      image: 'https://example.com/mock-image2.jpg',
-      tags: [],
-      date: DateTime.now(),
-    ),
+      title: "Mock News 2",
+      description: "Test 2 description",
+      author: "Author 2",
+      avatar: "https://example.com/avatar2.jpg",
+      activity: "Activity 2",
+      image: "",
+      tags: ["tag3", "tag4"],
+      publishedDate: DateTime.parse('2022-02-01T12:00:00Z'),
+      eventDate: DateTime.parse('2022-02-02T12:00:00Z'),
+    )
   ];
 
   group('NewsViewModel tests', () {

@@ -170,7 +170,14 @@
   "ets_gus": "GUS",
   "ets_papercut_title":"PaperCut",
 
-  "news_title" : "News",
+  "news_title" : "Announcement",
+  "news_details_title" : "News",
+  "news_event_date": "Event date",
+
+  "report_news": "Why are you reporting this news?",
+  "report_as": "Report as",
+  "report": "Report",
+  "report_toast": "Thank you for your report !",
 
   "more_about_applets_title": "About ApplETS",
   "more_report_bug": "Report a bug or request a feature",

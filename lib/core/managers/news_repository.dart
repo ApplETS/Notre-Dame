@@ -33,28 +33,49 @@ class NewsRepository {
   List<News>? _news = <News>[
     News(
       id: 1,
-      title:
-          "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec tempus arcu sed quam tincidunt, non venenatis orci mollis.",
-      description: "Test 1 description",
-      date: DateTime.now(),
+      title: "Merci à McGill Robotics pour l’invitation au RoboHacks 2023!",
+      description:
+          "Le club scientifique qui conceptualise un robot de recherche et secourisme recrute pour ses nouveaux projets! Une rencontre d’information est prévue le mercredi 13 octobre 2021 à 17h au local D-5023.Viens nous rencontrer pour en savoir plus sur notre prochaine mission de secourisme et faire partie de l’équipe!Le club scientifique qui conceptualise un robot de recherche et secourisme recrute pour ses nouveaux projets! Une rencontre d’information est prévue le mercredi 13 octobre 2021 à 17h au local D-5023.Viens nous rencontrer pour en savoir plus sur notre prochaine mission de secourisme et faire partie de l’équipe!Le club scientifique qui conceptualise un robot de recherche et secourisme recrute pour ses nouveaux projets! Une rencontre d’information est prévue le mercredi 13 octobre 2021 à 17h au local D-5023.Viens nous rencontrer pour en savoir plus sur notre prochaine mission de secourisme et faire partie de l’équipe!Le club scientifique qui conceptualise un robot de recherche et secourisme recrute pour ses nouveaux projets! Une rencontre d’information est prévue le mercredi 13 octobre 2021 à 17h au local D-5023.Viens nous rencontrer pour en savoir plus sur notre prochaine mission de secourisme et faire partie de l’équipe!",
+      author: "Capra",
+      avatar: "https://picsum.photos/200/200",
+      activity: "Club scientifique",
+      publishedDate: DateTime.now(),
+      eventDate: DateTime.now().add(const Duration(days: 2)),
       image: "https://picsum.photos/400/200",
-      tags: ["tag1", "tag2"],
+      tags: [
+        "Robotique",
+        "Programmation",
+        "Intelligence artificielle",
+        "Compétition",
+      ],
     ),
     News(
       id: 2,
-      title: "Test 2",
-      description: "Test 2 description",
-      date: DateTime.now(),
+      title: "Compétition de développement mobile",
+      description:
+          "AMC est une compétition de développement mobile organisée par ApplETS, un club étudiant de l'ÉTS. La compétition à lieu du 27 au 28 janvier 2024. Que vous soyez un étudiant universitaire ou collégial, novice ou expérimenté en développement, cette compétition est l'occasion idéale de repousser vos limites, d'apprendre des autres et de montrer votre talent dans le monde de la technologie mobile.",
+      author: "App|ETS",
+      avatar: "https://picsum.photos/200/200",
+      activity: "Club scientifique",
+      publishedDate: DateTime.now(),
+      eventDate: DateTime.now().add(const Duration(days: 10)),
       image: "https://picsum.photos/400/200",
-      tags: ["tag1", "tag2"],
+      tags: [
+        "Compétition",
+        "Développement mobile",
+      ],
     ),
     News(
       id: 3,
       title: "Test 3",
       description: "Test 3 description",
-      date: DateTime.now(),
+      author: "Jean-Guy Tremblay",
+      avatar: "https://picsum.photos/200/200",
+      activity: "Service à la vie étudiante",
+      publishedDate: DateTime.now(),
+      eventDate: DateTime.now().add(const Duration(days: 3)),
       image: "https://picsum.photos/400/200",
-      tags: ["tag1", "tag2"],
+      tags: ["5 @ 7", "Vie étudiante", "Activité"],
     ),
   ];
 
