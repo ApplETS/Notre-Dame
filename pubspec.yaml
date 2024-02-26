@@ -45,7 +45,7 @@ dependencies:
     path: ../ETS-API-Clients/
     # git:
     #   url: https://github.com/ApplETS/ETS-API-Clients.git
-    #   ref: 0.5.0
+    #   ref: ftr/add-news
 
   # Other
   http: ^0.13.4

@@ -1,12 +1,11 @@
 // Package imports:
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:stacked/stacked.dart';
+import 'package:ets_api_clients/models.dart';
 
 // Project imports:
 import 'package:notredame/core/managers/news_repository.dart';
-import 'package:notredame/core/models/news.dart';
 import 'package:notredame/locator.dart';
 
 class NewsViewModel extends BaseViewModel {

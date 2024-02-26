@@ -1,13 +1,14 @@
 // Flutter imports:
 import 'package:flutter/material.dart';
+import 'dart:convert';
 
 // Package imports:
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:timeago/timeago.dart' as timeago;
+import 'package:ets_api_clients/models.dart';
 
 // Project imports:
-import 'package:notredame/core/models/news.dart';
 import 'package:notredame/ui/utils/app_theme.dart';
 
 class NewsCard extends StatefulWidget {
@@ -37,7 +38,7 @@ class _NewsCardState extends State<NewsCard> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                _buildImage(widget.news.image),
+                _buildImage(widget.news.imageThumbnail),
                 const SizedBox(height: 8),
                 _buildTitleAndTime(widget.news, context)
               ],
@@ -48,16 +49,18 @@ class _NewsCardState extends State<NewsCard> {
     );
   }
 
-  Widget _buildImage(String image) {
-    if (image == "") {
+  Widget _buildImage(String? image) {
+    if (image == null || image == "") {
       return const SizedBox();
     }
     return ClipRRect(
       borderRadius: BorderRadius.circular(16.0),
-      child: _isImageLoaded
-          ? Image.network(image, fit: BoxFit.cover)
-          : _shimmerEffect(),
+      child: _imageFromBase64String(image),
     );
+  }
+
+  Image _imageFromBase64String(String base64String) {
+    return Image.memory(base64Decode(base64String));
   }
 
   Widget _shimmerEffect() {
@@ -94,37 +97,11 @@ class _NewsCardState extends State<NewsCard> {
         ),
         const SizedBox(width: 10),
         Text(
-          timeago.format(news.date, locale: AppIntl.of(context)!.localeName),
+          timeago.format(news.createdAt,
+              locale: AppIntl.of(context)!.localeName),
           style: textStyle,
         ),
       ],
     );
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    _preloadImage();
-  }
-
-  void _preloadImage() {
-    Image.network(widget.news.image)
-        .image
-        // ignore: use_named_constants
-        .resolve(const ImageConfiguration())
-        .addListener(
-          ImageStreamListener(
-            (ImageInfo image, bool synchronousCall) {
-              if (mounted) {
-                setState(() {
-                  _isImageLoaded = true;
-                });
-              }
-            },
-            onError: (exception, stackTrace) {
-              // Handle image load error
-            },
-          ),
-        );
   }
 }

@@ -2,14 +2,15 @@
 import 'dart:convert';
 
 // Flutter imports:
+import 'package:ets_api_clients/clients.dart';
 import 'package:flutter/material.dart';
 
 // Package imports:
 import 'package:logger/logger.dart';
+import 'package:ets_api_clients/models.dart';
 
 // Project imports:
 import 'package:notredame/core/managers/cache_manager.dart';
-import 'package:notredame/core/models/news.dart';
 import 'package:notredame/core/services/networking_service.dart';
 import 'package:notredame/core/utils/cache_exception.dart';
 import 'package:notredame/locator.dart';
@@ -29,43 +30,31 @@ class NewsRepository {
   /// Used to verify if the user has connectivity
   final NetworkingService _networkingService = locator<NetworkingService>();
 
-  /// List of the news with 3 test news.
-  List<News>? _news = <News>[
-    News(
-      id: 1,
-      title:
-          "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec tempus arcu sed quam tincidunt, non venenatis orci mollis.",
-      description: "Test 1 description",
-      date: DateTime.now(),
-      image: "https://picsum.photos/400/200",
-      tags: ["tag1", "tag2"],
-    ),
-    News(
-      id: 2,
-      title: "Test 2",
-      description: "Test 2 description",
-      date: DateTime.now(),
-      image: "https://picsum.photos/400/200",
-      tags: ["tag1", "tag2"],
-    ),
-    News(
-      id: 3,
-      title: "Test 3",
-      description: "Test 3 description",
-      date: DateTime.now(),
-      image: "https://picsum.photos/400/200",
-      tags: ["tag1", "tag2"],
-    ),
-    News(
-      id: 4,
-      title: "Test 4",
-      description: "Test 4 description",
-      date: DateTime.now(),
-      image: "https://picsum.photos/400/200",
-      tags: ["tag1", "tag2"],
-    ),
-  ];
+  final HelloAPIClient _helloApiClient = locator<HelloAPIClient>();
 
+  /// List of the news
+  List<News>? _news = [
+    News(
+        id: "1",
+        title: "Annonce #1",
+        content: "Salut voici un super évènement qui pourrait vous intéressé!",
+        imageThumbnail: "",
+        state: 16,
+        publicationDate: DateTime.now().subtract(const Duration(days: 1)),
+        eventStartDate: DateTime.now().add(const Duration(days: 1, hours: 1)),
+        eventEndDate: DateTime.now().add(const Duration(days: 1, hours: 2)),
+        createdAt: DateTime.now().subtract(const Duration(days: 1)),
+        updatedAt: DateTime.now().subtract(const Duration(days: 1)),
+        moderator: NewsUser(
+          id: "1",
+          name: "John Doe",
+          email: "mont.samuel@outlook.com",
+          type: "moderator",
+          createdAt: DateTime.now().subtract(const Duration(days: 1)),
+          updatedAt: DateTime.now().subtract(const Duration(days: 1)),
+        ),
+        organizer: organizer)
+  ];
   List<News>? get news => _news;
 
   /// Get and update the list of news.
@@ -75,7 +64,6 @@ class NewsRepository {
       {int pageNumber = 1,
       int pageSize = 20,
       bool fromCacheOnly = false}) async {
-    await Future.delayed(const Duration(seconds: 1));
     // Force fromCacheOnly mode when user has no connectivity
     if (!(await _networkingService.hasConnectivity())) {
       // ignore: parameter_assignments
@@ -91,7 +79,8 @@ class NewsRepository {
       return _news;
     }
 
-    final List<News> fetchedNews = fetchNewsFromAPI(pageNumber, pageSize);
+    final List<News> fetchedNews = await _helloApiClient.getEvents(
+        pageNumber: pageNumber, pageSize: pageSize);
 
     _news ??= [];
 
