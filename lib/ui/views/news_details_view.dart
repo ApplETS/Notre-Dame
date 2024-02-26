@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
+import 'package:notredame/core/utils/utils.dart';
 import 'package:stacked/stacked.dart';
 
 // Project imports:
@@ -76,7 +77,10 @@ class _NewsDetailsViewState extends State<NewsDetailsView> {
                             position: PopupMenuPosition.under,
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(10)),
-                            color: AppTheme.darkThemeBackground,
+                            color: Utils.getColorByBrightness(
+                                context,
+                                AppTheme.lightThemeBackground,
+                                AppTheme.darkThemeBackground),
                             icon: const Icon(Icons.more_vert),
                             onSelected: (Menu item) {},
                             itemBuilder: (BuildContext context) =>
