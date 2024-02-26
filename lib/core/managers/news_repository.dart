@@ -50,8 +50,8 @@ class NewsRepository {
           name: "John Doe",
           email: "mont.samuel@outlook.com",
           type: "moderator",
-          createdAt: DateTime.now().subtract(const Duration(days: 1)),
-          updatedAt: DateTime.now().subtract(const Duration(days: 1)),
+          createdAt: DateTime.now().add(const Duration(days: 1)),
+          updatedAt: DateTime.now().add(const Duration(days: 1)),
         ),
         organizer: organizer)
   ];
