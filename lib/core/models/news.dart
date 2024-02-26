@@ -8,20 +8,21 @@ class News {
   final String image;
   final List<String> tags;
   final DateTime publishedDate;
-  final DateTime eventDate;
+  final DateTime eventStartDate;
+  final DateTime? eventEndDate;
 
-  News({
-    required this.id,
-    required this.title,
-    required this.description,
-    required this.author,
-    required this.avatar,
-    required this.activity,
-    required this.image,
-    required this.tags,
-    required this.publishedDate,
-    required this.eventDate,
-  });
+  News(
+      {required this.id,
+      required this.title,
+      required this.description,
+      required this.author,
+      required this.avatar,
+      required this.activity,
+      required this.image,
+      required this.tags,
+      required this.publishedDate,
+      required this.eventStartDate,
+      this.eventEndDate});
 
   /// Used to create [News] instance from a JSON file
   factory News.fromJson(Map<String, dynamic> map) {
@@ -35,7 +36,8 @@ class News {
       image: map['image'] as String,
       tags: map['tags'] as List<String>,
       publishedDate: DateTime.parse(map['publishedDate'] as String),
-      eventDate: DateTime.parse(map['eventDate'] as String),
+      eventStartDate: DateTime.parse(map['eventStartDate'] as String),
+      eventEndDate: DateTime.parse(map['eventEndDate'] as String),
     );
   }
 
@@ -50,7 +52,8 @@ class News {
       'image': image,
       'tags': tags.toList(),
       'publishedDate': publishedDate.toString(),
-      'eventDate': eventDate.toString(),
+      'eventStartDate': eventStartDate.toString(),
+      'eventEndDate': eventEndDate.toString(),
     };
   }
 }

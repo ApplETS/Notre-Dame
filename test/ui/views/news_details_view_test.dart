@@ -34,7 +34,8 @@ void main() {
       image: '',
       tags: ['sampleTag1', 'sampleTag2'],
       publishedDate: DateTime.parse('2022-01-01T12:00:00Z'),
-      eventDate: DateTime.parse('2022-01-02T12:00:00Z'),
+      eventStartDate: DateTime.parse('2022-02-02T12:00:00Z'),
+      eventEndDate: DateTime.parse('2022-02-02T12:00:00Z'),
     );
   });
 
@@ -71,6 +72,6 @@ void main() {
         await expectLater(find.byType(NewsDetailsView),
             matchesGoldenFile(goldenFilePath("newsDetailsView_1")));
       });
-    }, skip: !Platform.isLinux);
+    });
   });
 }

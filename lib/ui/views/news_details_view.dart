@@ -91,8 +91,11 @@ class _NewsDetailsViewState extends State<NewsDetailsView> {
                           crossAxisAlignment: CrossAxisAlignment.stretch,
                           children: <Widget>[
                             _buildTitle(widget.news.title),
-                            _buildDate(context, widget.news.publishedDate,
-                                widget.news.eventDate),
+                            _buildDate(
+                                context,
+                                widget.news.publishedDate,
+                                widget.news.eventStartDate,
+                                widget.news.eventEndDate),
                             _buildImage(widget.news.image),
                             _buildAuthor(widget.news.avatar, widget.news.author,
                                 widget.news.activity),
@@ -178,14 +181,26 @@ class _NewsDetailsViewState extends State<NewsDetailsView> {
     );
   }
 
-  Widget _buildDate(
-      BuildContext context, DateTime publishedDate, DateTime eventDate) {
+  Widget _buildDate(BuildContext context, DateTime publishedDate,
+      DateTime eventStartDate, DateTime? eventEndDate) {
+    final String locale = Localizations.localeOf(context).toString();
     final String formattedPublishedDate =
-        DateFormat('d MMMM yyyy', Localizations.localeOf(context).toString())
-            .format(publishedDate);
-    final String formattedEventDate =
-        DateFormat('d MMMM yyyy', Localizations.localeOf(context).toString())
-            .format(eventDate);
+        DateFormat('d MMMM yyyy', locale).format(publishedDate);
+
+    late String formattedEventDate;
+
+    if (eventEndDate == null) {
+      formattedEventDate =
+          DateFormat('d MMMM yyyy', locale).format(eventStartDate);
+    } else {
+      if (eventStartDate.month == eventEndDate.month) {
+        formattedEventDate =
+            '${DateFormat('d', locale).format(eventStartDate)} - ${DateFormat('d MMMM yyyy', locale).format(eventEndDate)}';
+      } else {
+        formattedEventDate =
+            '${DateFormat('d MMMM yyyy', locale).format(eventStartDate)} -\n${DateFormat('d MMMM yyyy', locale).format(eventEndDate)}';
+      }
+    }
 
     return Padding(
       padding: const EdgeInsets.fromLTRB(16.0, 5.0, 16.0, 8.0),
@@ -216,8 +231,10 @@ class _NewsDetailsViewState extends State<NewsDetailsView> {
                       const Icon(Icons.event, size: 20.0, color: Colors.white),
                 ),
                 Flexible(
+                    child: Padding(
+                  padding: const EdgeInsets.only(left: 8),
                   child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.end,
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
                         AppIntl.of(context)!.news_event_date,
@@ -227,11 +244,11 @@ class _NewsDetailsViewState extends State<NewsDetailsView> {
                       Text(
                         formattedEventDate,
                         style: const TextStyle(color: Colors.white),
-                        textAlign: TextAlign.right,
+                        textAlign: TextAlign.left,
                       ),
                     ],
                   ),
-                ),
+                )),
               ],
             ),
           ),

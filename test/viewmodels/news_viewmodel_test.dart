@@ -28,7 +28,8 @@ void main() {
       image: "",
       tags: ["tag1", "tag2"],
       publishedDate: DateTime.parse('2022-01-01T12:00:00Z'),
-      eventDate: DateTime.parse('2022-01-02T12:00:00Z'),
+      eventStartDate: DateTime.parse('2022-02-02T12:00:00Z'),
+      eventEndDate: DateTime.parse('2022-02-02T12:00:00Z'),
     ),
     News(
       id: 2,
@@ -40,7 +41,8 @@ void main() {
       image: "",
       tags: ["tag3", "tag4"],
       publishedDate: DateTime.parse('2022-02-01T12:00:00Z'),
-      eventDate: DateTime.parse('2022-02-02T12:00:00Z'),
+      eventStartDate: DateTime.parse('2022-02-02T12:00:00Z'),
+      eventEndDate: DateTime.parse('2022-02-02T12:00:00Z'),
     )
   ];
 
