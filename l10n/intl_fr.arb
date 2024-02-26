@@ -170,6 +170,9 @@
   "ets_gus": "GUS",
   "ets_papercut_title":"PaperCut",
 
+  "share": "Partager",
+  "export": "Exporter",
+
   "news_title" : "Annonces",
   "news_details_title" : "Annonce",
   "news_event_date": "Date de l'événement",

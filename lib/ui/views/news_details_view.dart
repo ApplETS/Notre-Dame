@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 // Package imports:
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
 import 'package:stacked/stacked.dart';
 
@@ -13,7 +14,6 @@ import 'package:notredame/core/viewmodels/news_details_viewmodel.dart';
 import 'package:notredame/locator.dart';
 import 'package:notredame/ui/utils/app_theme.dart';
 import 'package:notredame/ui/widgets/base_scaffold.dart';
-import 'package:notredame/ui/widgets/report_news.dart';
 
 class NewsDetailsView extends StatefulWidget {
   final News news;
@@ -23,6 +23,8 @@ class NewsDetailsView extends StatefulWidget {
   @override
   _NewsDetailsViewState createState() => _NewsDetailsViewState();
 }
+
+enum Menu { share, export, report }
 
 class _NewsDetailsViewState extends State<NewsDetailsView> {
   final AnalyticsService _analyticsService = locator<AnalyticsService>();
@@ -69,21 +71,47 @@ class _NewsDetailsViewState extends State<NewsDetailsView> {
                                   fontWeight: FontWeight.bold),
                         ),
                         actions: <Widget>[
-                          IconButton(
-                              icon: const Icon(Icons.warning_amber_sharp),
-                              color: AppTheme.etsLightRed,
-                              onPressed: () async {
-                                await showModalBottomSheet(
-                                    isDismissible: true,
-                                    enableDrag: true,
-                                    isScrollControlled: true,
-                                    context: context,
-                                    shape: const RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.only(
-                                            topLeft: Radius.circular(10),
-                                            topRight: Radius.circular(10))),
-                                    builder: (context) => const ReportNews());
-                              })
+                          PopupMenuButton<Menu>(
+                            padding: const EdgeInsets.fromLTRB(0, 8, 0, 8),
+                            position: PopupMenuPosition.under,
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10)),
+                            color: AppTheme.darkThemeBackground,
+                            icon: const Icon(Icons.more_vert),
+                            onSelected: (Menu item) {},
+                            itemBuilder: (BuildContext context) =>
+                                <PopupMenuEntry<Menu>>[
+                              PopupMenuItem<Menu>(
+                                value: Menu.share,
+                                child: ListTile(
+                                  leading: const Icon(Icons.share_outlined),
+                                  title: Text(AppIntl.of(context)!.share),
+                                ),
+                              ),
+                              PopupMenuItem<Menu>(
+                                value: Menu.export,
+                                child: ListTile(
+                                  leading: const Icon(Icons.ios_share),
+                                  title: Text(AppIntl.of(context)!.export),
+                                ),
+                              ),
+                              PopupMenuItem<Menu>(
+                                value: Menu.export,
+                                child: ListTile(
+                                  leading: SvgPicture.asset(
+                                    'assets/images/report.svg',
+                                    color: AppTheme.etsLightRed,
+                                    width: 26,
+                                  ),
+                                  title: Text(
+                                    AppIntl.of(context)!.report,
+                                    style: const TextStyle(
+                                        color: AppTheme.etsLightRed),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          )
                         ],
                       ),
                       SliverToBoxAdapter(
@@ -109,6 +137,15 @@ class _NewsDetailsViewState extends State<NewsDetailsView> {
           ),
         ),
       );
+
+  void handleClick(String value) {
+    switch (value) {
+      case 'Logout':
+        break;
+      case 'Settings':
+        break;
+    }
+  }
 
   Widget _buildContent(String content) {
     return SingleChildScrollView(
