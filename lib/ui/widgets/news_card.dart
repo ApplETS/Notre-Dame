@@ -8,10 +8,7 @@ import 'package:timeago/timeago.dart' as timeago;
 
 // Project imports:
 import 'package:notredame/core/constants/router_paths.dart';
-import 'package:notredame/core/constants/router_paths.dart';
 import 'package:notredame/core/models/news.dart';
-import 'package:notredame/core/services/navigation_service.dart';
-import 'package:notredame/locator.dart';
 import 'package:notredame/core/services/navigation_service.dart';
 import 'package:notredame/locator.dart';
 import 'package:notredame/ui/utils/app_theme.dart';
@@ -27,7 +24,6 @@ class NewsCard extends StatefulWidget {
 
 class _NewsCardState extends State<NewsCard> {
   bool _isImageLoaded = false;
-  final NavigationService _navigationService = locator<NavigationService>();
   final NavigationService _navigationService = locator<NavigationService>();
 
   @override

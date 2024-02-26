@@ -21,8 +21,6 @@ void main() {
         'tags': ['Tag 1', 'Tag 2'],
         'publishedDate': '2022-01-01T12:00:00Z',
         'eventDate': '2022-01-01T12:00:00Z',
-        'publishedDate': '2022-01-01T12:00:00Z',
-        'eventDate': '2022-01-01T12:00:00Z',
       };
 
       final news = News.fromJson(json);
@@ -37,9 +35,6 @@ void main() {
       expect(news.tags.length, equals(2));
       expect(news.tags[0], equals('Tag 1'));
       expect(news.tags[1], equals('Tag 2'));
-      expect(
-          news.publishedDate, equals(DateTime.parse('2022-01-01T12:00:00Z')));
-      expect(news.eventDate, equals(DateTime.parse('2022-01-01T12:00:00Z')));
       expect(
           news.publishedDate, equals(DateTime.parse('2022-01-01T12:00:00Z')));
       expect(news.eventDate, equals(DateTime.parse('2022-01-01T12:00:00Z')));
@@ -58,9 +53,6 @@ void main() {
         tags: ['Tag 1', 'Tag 2'],
         publishedDate: DateTime.parse('2022-01-01T12:00:00.000Z'),
         eventDate: DateTime.parse('2022-01-01T12:00:00.000Z'),
-        tags: ['Tag 1', 'Tag 2'],
-        publishedDate: DateTime.parse('2022-01-01T12:00:00.000Z'),
-        eventDate: DateTime.parse('2022-01-01T12:00:00.000Z'),
       );
 
       final json = news.toJson();
@@ -75,9 +67,6 @@ void main() {
       expect(json['image'], equals('https://example.com/image.jpg'));
       expect(json['tags'], hasLength(2));
       expect(json['tags'][0], equals('Tag 1'));
-      expect(json['tags'][1], equals('Tag 2'));
-      expect(json['publishedDate'], equals('2022-01-01 12:00:00.000Z'));
-      expect(json['eventDate'], equals('2022-01-01 12:00:00.000Z'));
       expect(json['publishedDate'], equals('2022-01-01 12:00:00.000Z'));
       expect(json['eventDate'], equals('2022-01-01 12:00:00.000Z'));
     });

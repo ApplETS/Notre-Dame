@@ -10,8 +10,6 @@ class News {
   final List<String> tags;
   final DateTime publishedDate;
   final DateTime eventDate;
-  final DateTime publishedDate;
-  final DateTime eventDate;
 
   News({
     required this.id,
@@ -23,8 +21,6 @@ class News {
     required this.activity,
     required this.image,
     required this.tags,
-    required this.publishedDate,
-    required this.eventDate,
     required this.publishedDate,
     required this.eventDate,
   });
@@ -43,8 +39,6 @@ class News {
       tags: map['tags'] as List<String>,
       publishedDate: DateTime.parse(map['publishedDate'] as String),
       eventDate: DateTime.parse(map['eventDate'] as String),
-      publishedDate: DateTime.parse(map['publishedDate'] as String),
-      eventDate: DateTime.parse(map['eventDate'] as String),
     );
   }
 
@@ -59,8 +53,6 @@ class News {
       'activity': activity,
       'image': image,
       'tags': tags.toList(),
-      'publishedDate': publishedDate.toString(),
-      'eventDate': eventDate.toString(),
       'publishedDate': publishedDate.toString(),
       'eventDate': eventDate.toString(),
     };

@@ -49,12 +49,6 @@ class NewsRepository {
         "Intelligence artificielle",
         "Compétition",
       ],
-      tags: [
-        "Robotique",
-        "Programmation",
-        "Intelligence artificielle",
-        "Compétition",
-      ],
     ),
     News(
       id: 2,
@@ -72,10 +66,6 @@ class NewsRepository {
         "Compétition",
         "Développement mobile",
       ],
-      tags: [
-        "Compétition",
-        "Développement mobile",
-      ],
     ),
     News(
       id: 3,
@@ -88,7 +78,6 @@ class NewsRepository {
       publishedDate: DateTime.now(),
       eventDate: DateTime.now().add(const Duration(days: 3)),
       image: "https://picsum.photos/400/200",
-      tags: ["5 @ 7", "Vie étudiante", "Activité"],
       tags: ["5 @ 7", "Vie étudiante", "Activité"],
     ),
   ];
