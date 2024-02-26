@@ -143,6 +143,6 @@ void main() {
         await expectLater(find.byType(NewsView),
             matchesGoldenFile(goldenFilePath("newsView_2")));
       });
-    });
+    }, skip: !Platform.isLinux);
   });
 }
