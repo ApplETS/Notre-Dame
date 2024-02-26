@@ -1,5 +1,3 @@
-// FLUTTER / DART / THIRD-PARTIES
-
 class ReportNews {
   String title;
   String description;

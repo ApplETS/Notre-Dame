@@ -1,8 +1,6 @@
 // Project imports:
 import 'package:notredame/core/models/report_news.dart';
 
-// List<QuickLink> quickLinks(AppIntl intl) => [
-
 List<ReportNews> reportNewsItems = [
   ReportNews(
     title: "Contenu inapproprié",
