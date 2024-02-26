@@ -1,0 +1,36 @@
+<rotate xmlns:android="http://schemas.android.com/apk/res/android"
+    android:fromDegrees="270"
+    android:toDegrees="270">
+
+    <!-- Background ring -->
+    <shape
+        android:innerRadiusRatio="2.5"
+        android:shape="ring"
+        android:thickness="8dp"
+        android:radius="2dp"
+        android:useLevel="true">
+        <corners android:radius="8dp" />
+        <gradient
+            android:angle="0"
+            android:endColor="@color/ets_dark_grey"
+            android:startColor="@color/ets_dark_grey"
+            android:type="sweep"
+            android:useLevel="false" />
+    </shape>
+
+    <!-- Progress ring with rounded corners -->
+    <shape
+        android:innerRadiusRatio="2.5"
+        android:shape="ring"
+        android:thickness="8dp"
+        android:radius="20dp"
+        android:useLevel="true">
+        <corners android:radius="8dp" />
+        <gradient
+            android:angle="0"
+            android:endColor="@color/grade_good_max"
+            android:startColor="@color/grade_good_max"
+            android:type="sweep"
+            android:useLevel="false" />
+    </shape>
+</rotate>

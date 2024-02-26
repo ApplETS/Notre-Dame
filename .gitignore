@@ -26,6 +26,8 @@ assets/certificates/
 # Android related
 **/android/**/gradle-wrapper.jar
 **/android/.gradle
+**/android/gradle/caches
+**/android/gradle/wrapper
 **/android/captures/
 **/android/gradlew
 **/android/gradlew.bat

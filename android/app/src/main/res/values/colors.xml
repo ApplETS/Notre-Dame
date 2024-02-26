@@ -2,4 +2,7 @@
 <resources>
     <color name="ic_launcher_background">#EF3F45</color>
     <color name="ic_dark_launcher_background">#121212</color>
+    <color name="grade_good_max">#FF43A047</color>
+    <color name="ets_dark_grey">#FF636467</color>
+    <color name="white">#FFFFFFFF</color>
 </resources>

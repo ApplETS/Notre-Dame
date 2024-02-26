@@ -1,0 +1,5 @@
+<resources>
+    <string name="semester_progress_title">Semester Progress</string>
+    <string name="default_progress_out_of_days">0 / 0</string>
+    <string name="default_progress_percentage">0 %</string>
+</resources>
