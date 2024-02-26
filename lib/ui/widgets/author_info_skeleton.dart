@@ -1,11 +1,11 @@
 // Flutter imports:
 import 'package:flutter/material.dart';
-import 'package:notredame/core/utils/utils.dart';
 
 // Package imports:
 import 'package:shimmer/shimmer.dart';
 
 // Project imports:
+import 'package:notredame/core/utils/utils.dart';
 import 'package:notredame/ui/utils/app_theme.dart';
 
 class AuthorInfoSkeleton extends StatelessWidget {
