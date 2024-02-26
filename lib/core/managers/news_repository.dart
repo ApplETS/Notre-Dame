@@ -35,25 +35,33 @@ class NewsRepository {
   /// List of the news
   List<News>? _news = [
     News(
+      id: "1",
+      title: "Annonce #1",
+      content: "Salut voici un super évènement qui pourrait vous intéressé!",
+      imageThumbnail: "",
+      state: 16,
+      publicationDate: DateTime.now().subtract(const Duration(days: 1)),
+      eventStartDate: DateTime.now().add(const Duration(days: 1, hours: 1)),
+      eventEndDate: DateTime.now().add(const Duration(days: 1, hours: 2)),
+      createdAt: DateTime.now().subtract(const Duration(days: 1)),
+      updatedAt: DateTime.now().subtract(const Duration(days: 1)),
+      moderator: NewsUser(
         id: "1",
-        title: "Annonce #1",
-        content: "Salut voici un super évènement qui pourrait vous intéressé!",
-        imageThumbnail: "",
-        state: 16,
-        publicationDate: DateTime.now().subtract(const Duration(days: 1)),
-        eventStartDate: DateTime.now().add(const Duration(days: 1, hours: 1)),
-        eventEndDate: DateTime.now().add(const Duration(days: 1, hours: 2)),
+        name: "John Doe",
+        email: "mont.samuel@outlook.com",
+        type: "moderator",
         createdAt: DateTime.now().subtract(const Duration(days: 1)),
         updatedAt: DateTime.now().subtract(const Duration(days: 1)),
-        moderator: NewsUser(
-          id: "1",
-          name: "John Doe",
-          email: "mont.samuel@outlook.com",
-          type: "moderator",
-          createdAt: DateTime.now().subtract(const Duration(days: 1)),
-          updatedAt: DateTime.now().subtract(const Duration(days: 1)),
-        ),
-        organizer: organizer)
+      ),
+      organizer: NewsUser(
+        id: "1",
+        name: "ApplETS",
+        email: "mont.samuel@outlook.com",
+        type: "organizer",
+        createdAt: DateTime.now().subtract(const Duration(days: 1)),
+        updatedAt: DateTime.now().subtract(const Duration(days: 1)),
+      ),
+    )
   ];
   List<News>? get news => _news;
 
