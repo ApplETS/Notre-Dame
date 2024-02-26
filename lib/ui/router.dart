@@ -31,6 +31,7 @@ import 'package:notredame/ui/views/settings_view.dart';
 import 'package:notredame/ui/views/startup_view.dart';
 import 'package:notredame/ui/views/student_view.dart';
 import 'package:notredame/ui/widgets/link_web_view.dart';
+import 'package:notredame/core/models/news.dart';
 
 Route<dynamic> generateRoute(RouteSettings routeSettings) {
   switch (routeSettings.name) {
