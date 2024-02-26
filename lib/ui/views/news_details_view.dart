@@ -189,11 +189,16 @@ class _NewsDetailsViewState extends State<NewsDetailsView> {
 
     late String formattedEventDate;
 
-    if (eventEndDate == null) {
+    final bool sameMonthAndYear = eventEndDate?.month == eventStartDate.month &&
+        eventEndDate?.year == eventStartDate.year;
+    final bool sameDayMonthAndYear =
+        eventEndDate?.day == eventStartDate.day && sameMonthAndYear;
+
+    if (eventEndDate == null || sameDayMonthAndYear) {
       formattedEventDate =
           DateFormat('d MMMM yyyy', locale).format(eventStartDate);
     } else {
-      if (eventStartDate.month == eventEndDate.month) {
+      if (sameMonthAndYear) {
         formattedEventDate =
             '${DateFormat('d', locale).format(eventStartDate)} - ${DateFormat('d MMMM yyyy', locale).format(eventEndDate)}';
       } else {
