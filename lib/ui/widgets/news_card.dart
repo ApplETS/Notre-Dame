@@ -38,7 +38,7 @@ class _NewsCardState extends State<NewsCard> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                _buildImage(widget.news.imageThumbnail),
+                _buildImage(widget.news.imageUrl, widget.news.imageThumbnail),
                 const SizedBox(height: 8),
                 _buildTitleAndTime(widget.news, context)
               ],
@@ -49,13 +49,21 @@ class _NewsCardState extends State<NewsCard> {
     );
   }
 
-  Widget _buildImage(String? image) {
-    if (image == null || image == "") {
+  Widget _buildImage(String? imageUrl, String? imageThumbnail) {
+    if (imageUrl != null && imageUrl != "") {
+      return ClipRRect(
+        borderRadius: BorderRadius.circular(16.0),
+        child: Image.network(imageUrl),
+      );
+    }
+
+    if (imageThumbnail == null || imageThumbnail == "") {
       return const SizedBox();
     }
+
     return ClipRRect(
       borderRadius: BorderRadius.circular(16.0),
-      child: _imageFromBase64String(image),
+      child: _imageFromBase64String(imageThumbnail),
     );
   }
 
