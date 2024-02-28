@@ -132,6 +132,13 @@ class _LineChartGradeGraphState extends State<LineChartGradeGraph> {
       spots.add(newSpot);
     }
 
+    if (spots.last.x != maxX) {
+      // Adding a spot to fill the graph up to current date.
+      final FlSpot lastSpot =
+          FlSpot(maxX, grades.last.summary.currentMarkInPercent);
+      spots.add(lastSpot);
+    }
+
     verticalInterval = maxX / 4;
 
     return LineChartData(
