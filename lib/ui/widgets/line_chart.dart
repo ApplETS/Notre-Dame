@@ -85,8 +85,9 @@ class _LineChartGradeGraphState extends State<LineChartGradeGraph> {
     }
 
     final DateFormat dateFormat = DateFormat('MMM d');
-    final Widget text = Text(dateFormat
-        .format(earliestGrade.add(Duration(days: value.toInt() * 7))));
+    final Duration durationInDays = Duration(days: value.toInt());
+    final DateTime date = earliestGradeDate.add(durationInDays);
+    final Widget titleText = Text(dateFormat.format(date), style: style);
 
     return SideTitleWidget(
       axisSide: meta.axisSide,
@@ -119,14 +120,14 @@ class _LineChartGradeGraphState extends State<LineChartGradeGraph> {
 
   LineChartData getLinechartData(List<GradeGraphEntry> grades) {
     if (grades.isNotEmpty) {
-      maxX = earliestGrade.getWeekDifference(DateTime.now()).toDouble();
       earliestGradeDate = grades.first.timestamp;
+      maxX = earliestGradeDate.getDayDifference(DateTime.now()).toDouble();
     }
 
     final List<FlSpot> spots = [];
     for (final grade in grades) {
       final FlSpot newSpot = FlSpot(
-          grade.timestamp.getWeekDifference(earliestGrade).toDouble(),
+          grade.timestamp.getDayDifference(earliestGradeDate).toDouble(),
           grade.summary.currentMarkInPercent);
       spots.add(newSpot);
     }
