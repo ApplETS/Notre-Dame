@@ -77,7 +77,7 @@ class _LineChartGradeGraphState extends State<LineChartGradeGraph> {
   Widget bottomTitleWidgets(double value, TitleMeta meta) {
     const style = TextStyle(
       fontWeight: FontWeight.bold,
-      fontSize: 16,
+      fontSize: 12,
     );
 
     if (value % verticalInterval != 0) {
@@ -91,15 +91,13 @@ class _LineChartGradeGraphState extends State<LineChartGradeGraph> {
 
     return SideTitleWidget(
       axisSide: meta.axisSide,
-      child: text,
+      child: titleText,
     );
   }
 
   Widget leftTitleWidgets(double value, TitleMeta meta) {
-    const style = TextStyle(
-      fontWeight: FontWeight.bold,
-      fontSize: 15,
-    );
+    const style = TextStyle(fontWeight: FontWeight.bold, fontSize: 15);
+
     String text;
     switch (value.toInt()) {
       case 0:
@@ -196,7 +194,7 @@ class _LineChartGradeGraphState extends State<LineChartGradeGraph> {
       lineBarsData: [
         LineChartBarData(
           spots: spots,
-          isCurved: true,
+          isCurved: false,
           color: AppTheme.etsLightRed,
           barWidth: 5,
           isStrokeCapRound: true,
