@@ -13,9 +13,9 @@ import 'package:notredame/locator.dart';
 import 'package:notredame/ui/utils/app_theme.dart';
 
 class LineChartGradeGraph extends StatefulWidget {
-  final String courseAcronym;
-  final String group;
-  final String session;
+  final String _courseAcronym;
+  final String _group;
+  final String _session;
 
   const LineChartGradeGraph(this.courseAcronym, this.group, this.session);
 
@@ -29,14 +29,10 @@ class _LineChartGradeGraphState extends State<LineChartGradeGraph> {
     AppTheme.etsDarkRed,
   ];
 
-  bool showAvg = false;
-
-  double opacity = 0.3;
-
   double maxX = -1;
   double maxY = 100;
-  DateTime earliestGrade;
-  DateTime latestGrade;
+  double verticalInterval;
+  DateTime earliestGradeDate;
 
   final GradeGraphRepository _gradeGraphRepository =
       locator<GradeGraphRepository>();
@@ -56,7 +52,7 @@ class _LineChartGradeGraphState extends State<LineChartGradeGraph> {
             ),
             child: FutureBuilder<List<GradeGraphEntry>>(
                 future: _gradeGraphRepository.getGradesForCourse(
-                    widget.courseAcronym, widget.group, widget.session),
+                    widget._courseAcronym, widget._group, widget._session),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return const Center(child: CircularProgressIndicator());
@@ -84,7 +80,7 @@ class _LineChartGradeGraphState extends State<LineChartGradeGraph> {
       fontSize: 16,
     );
 
-    if (value % (maxX / 4) != 0) {
+    if (value % verticalInterval != 0) {
       return Container();
     }
 
@@ -123,9 +119,8 @@ class _LineChartGradeGraphState extends State<LineChartGradeGraph> {
 
   LineChartData getLinechartData(List<GradeGraphEntry> grades) {
     if (grades.isNotEmpty) {
-      earliestGrade = grades.first.timestamp;
-      latestGrade = grades.last.timestamp;
       maxX = earliestGrade.getWeekDifference(DateTime.now()).toDouble();
+      earliestGradeDate = grades.first.timestamp;
     }
 
     final List<FlSpot> spots = [];
@@ -136,7 +131,7 @@ class _LineChartGradeGraphState extends State<LineChartGradeGraph> {
       spots.add(newSpot);
     }
 
-    final double verticalInterval = maxX / 4;
+    verticalInterval = maxX / 4;
 
     return LineChartData(
       gridData: FlGridData(
