@@ -17,7 +17,7 @@ class LineChartGradeGraph extends StatefulWidget {
   final String _group;
   final String _session;
 
-  const LineChartGradeGraph(this.courseAcronym, this.group, this.session);
+  const LineChartGradeGraph(this._courseAcronym, this._group, this._session);
 
   @override
   State<LineChartGradeGraph> createState() => _LineChartGradeGraphState();
