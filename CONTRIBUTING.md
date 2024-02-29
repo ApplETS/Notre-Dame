@@ -13,7 +13,7 @@ Please note we have a code of conduct, please follow it in all your interactions
 3. Test your changes using unit tests.
 4. Run `flutter analyze` before submitting a pull request and fix any issue discovered.
 
-### Versionning
+### Versioning
 
 The CI automatically updates the version in the `pubspec.yaml` file when opening a pull-request using the specified label: `version: Major`,`version: Minor` or `version: Patch`.
 
