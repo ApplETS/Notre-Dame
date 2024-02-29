@@ -15,7 +15,7 @@ Please note we have a code of conduct, please follow it in all your interactions
 
 ### Versionning
 
-The CI automatically update the version in the `pubspec.yaml` file when opening a pull-request using the specified label: `version: Major`,`version: Minor` or `version: Patch`.
+The CI automatically updates the version in the `pubspec.yaml` file when opening a pull-request using the specified label: `version: Major`,`version: Minor` or `version: Patch`.
 
   - `version: Major`: used when a complete UI redesign is done or when a complete rewrite is done in the project;
   - `version: Minor`: used when adding a feature in the application;
