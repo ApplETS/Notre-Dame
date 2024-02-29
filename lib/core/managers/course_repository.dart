@@ -448,7 +448,9 @@ class CourseRepository {
     course.summary = summary;
     _courses.add(course);
 
-    _gradeGraphRepository.updateGradeEntry(course);
+    if (await _gradeGraphRepository.isGradeNew(course)) {
+      _gradeGraphRepository.updateGradeEntry(course);
+    }
 
     try {
       _cacheManager.update(coursesCacheKey, jsonEncode(_courses));

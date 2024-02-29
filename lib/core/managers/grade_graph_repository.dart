@@ -67,13 +67,10 @@ class GradeGraphRepository {
   }
 
   Future<File> updateGradeEntry(Course course) async {
-    List<GradeGraphEntry> grades = await _getGrades();
     final String fileName = _getFileName();
-
-    if (await _isGradeNew(course)) {
-      grades.add(_generateNewEntry(course));
-    }
-
+    final List<GradeGraphEntry> grades = await _getGrades();
+    grades.add(_generateNewEntry(course));
+    
     File result;
     try {
       result = await _writeGradesToFile(fileName, grades);
@@ -87,7 +84,7 @@ class GradeGraphRepository {
     return result;
   }
 
-  Future<bool> _isGradeNew(Course course) async {
+  Future<bool> isGradeNew(Course course) async {
     bool isGradeNew = true;
 
     if (course.summary != null) {
