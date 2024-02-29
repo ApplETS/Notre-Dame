@@ -5,8 +5,7 @@ on:
     paths-ignore:
       - '.gitignore'
       - '.metadata'
-      - 'README.md'
-      - 'README.fr.md'
+      - '*.md'
       - 'android/fastlane/**'
       - 'ios/fastlane/**'
       - '.github/**'
