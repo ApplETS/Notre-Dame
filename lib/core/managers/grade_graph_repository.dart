@@ -67,13 +67,12 @@ class GradeGraphRepository {
   }
 
   Future<File> updateGradeEntry(Course course) async {
-    final String fileName = _getFileName();
     final List<GradeGraphEntry> grades = await _getGrades();
     grades.add(_generateNewEntry(course));
-    
+
     File result;
     try {
-      result = await _writeGradesToFile(fileName, grades);
+      result = await _writeGradesToFile(grades);
     } catch (e) {
       _logger.e("- writeGradesToStorage: Failed to write file to storage: $e");
     }
@@ -128,9 +127,8 @@ class GradeGraphRepository {
     return timeComparison;
   }
 
-  Future<File> _writeGradesToFile(
-      String fileName, List<GradeGraphEntry> grades) {
+  Future<File> _writeGradesToFile(List<GradeGraphEntry> grades) {
     grades.sort((a, b) => _gradeSortAlgorithm(a, b));
-    return _storageManager.writeToFile(fileName, jsonEncode(grades));
+    return _storageManager.writeToFile(_getFileName(), jsonEncode(grades));
   }
 }
