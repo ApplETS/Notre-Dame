@@ -33,11 +33,6 @@ class GradeGraphRepository {
     return file.exists();
   }
 
-  Future<bool> _gradesJsonNotEmpty() async {
-    final String gradesJSON = await _storageManager.readFile(_getFileName());
-    return gradesJSON.isNotEmpty;
-  }
-
   Future<List<GradeGraphEntry>> getGradesForCourse(
       String courseAcronym, String group, String session) async {
     final List<GradeGraphEntry> grades = await _getGrades();
