@@ -11,7 +11,7 @@ Please note we have a code of conduct, please follow it in all your interactions
  - Example: `feature/#68-migration-to-null-safety`
 2. Leave the code in a better state than before your changes. That does mean performing refactoring in the areas around the modified code.
 3. Test your changes using unit tests.
-4. Run `flutter analyze` before submitting a pull request and fix any issue discovered.
+4. Run `flutter analyze` before submitting a pull request and fix any discovered issues.
 
 ### Versioning
 
