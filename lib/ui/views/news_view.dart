@@ -4,8 +4,6 @@ import 'package:flutter/material.dart';
 
 // Package imports:
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:notredame/core/managers/news_repository.dart';
-import 'package:notredame/locator.dart';
 import 'package:stacked/stacked.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
@@ -21,67 +19,44 @@ class NewsView extends StatefulWidget {
 
 class _NewsViewState extends State<NewsView> {
   static const int _nbSkeletons = 3;
-  static const _pageSize = 3;
-
-  final NewsRepository _newsRepository = locator<NewsRepository>();
-
-  final PagingController<int, News> pagingController =
-      PagingController(firstPageKey: 1);
 
   @override
   void initState() {
-    pagingController.addPageRequestListener((pageKey) {
-      fetchPage(pageKey);
-    });
-    pagingController.addStatusListener((status) {
-      if (status == PagingStatus.subsequentPageError) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: const Text(
-              'Something went wrong while fetching a new page.',
-            ),
-            action: SnackBarAction(
-              label: 'Retry',
-              onPressed: () => pagingController.retryLastFailedRequest(),
-            ),
-          ),
-        );
-      }
-    });
     super.initState();
-  }
-
-  Future<void> fetchPage(int pageNumber) async {
-    try {
-      final newItems = await _newsRepository.getNews(
-              pageNumber: pageNumber, fromCacheOnly: true) ??
-          [];
-      final isLastPage = newItems.length < _pageSize;
-      if (isLastPage) {
-        pagingController.appendLastPage(newItems);
-      } else {
-        final nextPageKey = pageNumber + newItems.length;
-        pagingController.appendPage(newItems, nextPageKey);
-      }
-    } catch (error) {
-      pagingController.error = error;
-    }
   }
 
   @override
   Widget build(BuildContext context) =>
       ViewModelBuilder<NewsViewModel>.reactive(
           viewModelBuilder: () => NewsViewModel(intl: AppIntl.of(context)!),
+          onModelReady: (model) {
+            model.pagingController.addStatusListener((status) {
+              if (status == PagingStatus.subsequentPageError) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: const Text(
+                      'Something went wrong while fetching a new page.',
+                    ),
+                    action: SnackBarAction(
+                      label: 'Retry',
+                      onPressed: () =>
+                          model.pagingController.retryLastFailedRequest(),
+                    ),
+                  ),
+                );
+              }
+            });
+          },
           builder: (context, model, child) {
             return RefreshIndicator(
                 onRefresh: () => Future.sync(
-                      () => pagingController.refresh(),
+                      () => model.pagingController.refresh(),
                     ),
                 child: Theme(
                   data: Theme.of(context)
                       .copyWith(canvasColor: Colors.transparent),
                   child: PagedListView<int, News>(
-                    pagingController: pagingController,
+                    pagingController: model.pagingController,
                     padding: const EdgeInsets.fromLTRB(0, 4, 0, 8),
                     builderDelegate: PagedChildBuilderDelegate<News>(
                       itemBuilder: (context, item, index) => NewsCard(item),
@@ -89,6 +64,10 @@ class _NewsViewState extends State<NewsView> {
                           _buildSkeletonLoader(),
                       newPageProgressIndicatorBuilder: (context) =>
                           NewsCardSkeleton(),
+                      noMoreItemsIndicatorBuilder: (context) =>
+                          _buildNoMoreNewsCard(),
+                      firstPageErrorIndicatorBuilder: (context) =>
+                          _buildError(model.pagingController),
                     ),
                   ),
                 ));
@@ -99,5 +78,101 @@ class _NewsViewState extends State<NewsView> {
     return Column(children: [
       for (var i = 0; i < _nbSkeletons; i++) skeleton,
     ]);
+  }
+
+  Widget _buildNoMoreNewsCard() {
+    return Column(
+      children: [
+        const SizedBox(height: 16),
+        const Padding(
+          padding: EdgeInsets.symmetric(horizontal: 16),
+          child: Divider(),
+        ),
+        const SizedBox(height: 16),
+        Card(
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(16, 16, 16, 16),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Container(
+                  padding: const EdgeInsets.fromLTRB(0, 8, 8, 8),
+                  child: Expanded(
+                    child: Row(
+                      children: [
+                        const Icon(Icons.check, color: Colors.blue, size: 40),
+                        const SizedBox(width: 16),
+                        Flexible(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: const [
+                              Text("You're all set!",
+                                  style: TextStyle(fontSize: 24)),
+                              SizedBox(height: 16),
+                              Text(
+                                'You have reached the end of the news list. Come back another time for more news!',
+                                textAlign: TextAlign.justify,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildError(PagingController<int, News> pagingController) {
+    return Scaffold(
+      body: SafeArea(
+        minimum: const EdgeInsets.all(20),
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Padding(
+                padding: const EdgeInsets.only(
+                  bottom: 80,
+                ),
+                child: Text(
+                  AppIntl.of(context)!.news_error_not_found_title,
+                  style: const TextStyle(
+                      fontSize: 40, fontWeight: FontWeight.bold),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(
+                  bottom: 70,
+                ),
+                child: Text(
+                  AppIntl.of(context)!.news_error_not_found,
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(
+                    fontSize: 15,
+                  ),
+                ),
+              ),
+              Flexible(
+                child: ElevatedButton(
+                  onPressed: () {
+                    pagingController.retryLastFailedRequest();
+                  },
+                  child: Text(AppIntl.of(context)!.retry),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
   }
 }

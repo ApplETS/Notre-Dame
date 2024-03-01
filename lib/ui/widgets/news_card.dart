@@ -38,7 +38,7 @@ class _NewsCardState extends State<NewsCard> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                _buildImage(widget.news.imageUrl, widget.news.imageThumbnail),
+                _buildImage(widget.news.imageUrl),
                 const SizedBox(height: 8),
                 _buildTitleAndTime(widget.news, context)
               ],
@@ -49,26 +49,20 @@ class _NewsCardState extends State<NewsCard> {
     );
   }
 
-  Widget _buildImage(String? imageUrl, String? imageThumbnail) {
+  Widget _buildImage(String? imageUrl) {
     if (imageUrl != null && imageUrl != "") {
       return ClipRRect(
         borderRadius: BorderRadius.circular(16.0),
-        child: Image.network(imageUrl),
+        child: Image.network(
+          imageUrl == ""
+              ? "https://www.shutterstock.com/image-vector/no-photo-thumbnail-graphic-element-600nw-2311073121.jpg"
+              : imageUrl,
+          //loadingBuilder: (context, child, loadingProgress) => _shimmerEffect(),
+        ),
       );
     }
 
-    if (imageThumbnail == null || imageThumbnail == "") {
-      return const SizedBox();
-    }
-
-    return ClipRRect(
-      borderRadius: BorderRadius.circular(16.0),
-      child: _imageFromBase64String(imageThumbnail),
-    );
-  }
-
-  Image _imageFromBase64String(String base64String) {
-    return Image.memory(base64Decode(base64String));
+    return const SizedBox();
   }
 
   Widget _shimmerEffect() {

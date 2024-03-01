@@ -171,6 +171,9 @@
   "ets_papercut_title":"PaperCut",
 
   "news_title" : "Annonces",
+  "news_error_not_found_title" : "Oh oh!",
+  "news_error_not_found" : "Une erreur est survenue lors de la récupération des annonces. Veuillez réessayer plus tard.",
+
 
   "more_about_applets_title": "À propos d'ApplETS",
   "more_report_bug": "Rapporter un bogue ou une amélioration",

@@ -171,6 +171,8 @@
   "ets_papercut_title":"PaperCut",
 
   "news_title" : "News",
+  "news_error_not_found_title" : "Oh oh!",
+  "news_error_not_found" : "Something went wrong while trying to retrieve the news. Please try again later.",
 
   "more_about_applets_title": "About ApplETS",
   "more_report_bug": "Report a bug or request a feature",
