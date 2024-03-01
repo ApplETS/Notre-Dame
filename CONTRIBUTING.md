@@ -19,7 +19,7 @@ The CI automatically updates the version in the `pubspec.yaml` file when opening
 
   - `version: Major`: used when a complete UI redesign is done or when a complete rewrite is done in the project;
   - `version: Minor`: used when adding a feature in the application;
-  - `version: Patch`: used when no feature was added to the project. This includes refactoring, patchs, bugfix, etc.
+  - `version: Patch`: used when no feature was added to the project. This includes refactoring, patches, bug fixes, etc.
 
 ## Pull Request Process
 
