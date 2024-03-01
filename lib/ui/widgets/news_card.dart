@@ -57,7 +57,13 @@ class _NewsCardState extends State<NewsCard> {
           imageUrl == ""
               ? "https://www.shutterstock.com/image-vector/no-photo-thumbnail-graphic-element-600nw-2311073121.jpg"
               : imageUrl,
-          //loadingBuilder: (context, child, loadingProgress) => _shimmerEffect(),
+          loadingBuilder: (context, child, loadingProgress) {
+            if (loadingProgress == null) {
+              return child;
+            } else {
+              return _shimmerEffect();
+            }
+          },
         ),
       );
     }
