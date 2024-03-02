@@ -1,36 +1,45 @@
-<rotate xmlns:android="http://schemas.android.com/apk/res/android"
-    android:fromDegrees="270"
-    android:toDegrees="270">
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <!-- Background ring -->
-    <shape
-        android:innerRadiusRatio="2.5"
-        android:shape="ring"
-        android:thickness="8dp"
-        android:radius="2dp"
-        android:useLevel="true">
-        <corners android:radius="8dp" />
-        <gradient
-            android:angle="0"
-            android:endColor="@color/ets_dark_grey"
-            android:startColor="@color/ets_dark_grey"
-            android:type="sweep"
-            android:useLevel="false" />
-    </shape>
+    <!-- Green circle in the middle -->
+    <item android:gravity="center">
+        <shape android:shape="oval">
+            <size
+                android:width="55dp"
+                android:height="55dp" />
+            <solid android:color="@color/grade_good_max" />
+        </shape>
+    </item>
 
-    <!-- Progress ring with rounded corners -->
-    <shape
-        android:innerRadiusRatio="2.5"
-        android:shape="ring"
-        android:thickness="8dp"
-        android:radius="20dp"
-        android:useLevel="true">
-        <corners android:radius="8dp" />
-        <gradient
-            android:angle="0"
-            android:endColor="@color/grade_good_max"
-            android:startColor="@color/grade_good_max"
-            android:type="sweep"
-            android:useLevel="false" />
-    </shape>
-</rotate>
+    <!-- Grey ring surrounding the green circle -->
+    <item android:gravity="center">
+        <shape
+            android:innerRadiusRatio="2.5"
+            android:shape="ring"
+            android:thickness="8dp"
+            android:useLevel="false">
+            <solid android:color="@color/ets_dark_grey" />
+        </shape>
+    </item>
+
+    <!-- Progress ring with rounded ends -->
+    <item android:id="@android:id/progress">
+        <rotate
+            android:fromDegrees="270"
+            android:toDegrees="270">
+            <shape
+                android:innerRadiusRatio="2.5"
+                android:shape="ring"
+                android:thickness="8dp"
+                android:useLevel="true">
+                <corners android:radius="20dp" /> <!-- Adjust this radius to change the roundness -->
+                <gradient
+                    android:angle="0"
+                    android:endColor="@color/grade_good_max"
+                    android:startColor="@color/grade_good_max"
+                    android:type="sweep"
+                    android:useLevel="false" />
+            </shape>
+        </rotate>
+    </item>
+
+</layer-list>

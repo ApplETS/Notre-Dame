@@ -62,6 +62,6 @@
             <meta-data
                 android:name="android.appwidget.provider"
                 android:resource="@xml/widget_semester_progress_info"/>
-        </receiver>            
+        </receiver>
     </application>
 </manifest>
