@@ -2,15 +2,16 @@ import 'dart:collection';
 import 'package:device_calendar/device_calendar.dart';
 
 import 'package:ets_api_clients/models.dart';
+import 'package:notredame/core/models/news.dart';
 
 mixin CalendarUtils {
-  static Future<bool> checkPermissions() async {
+  static Future<bool?> checkPermissions() async {
     final deviceCalendarPluginPermissionsResponse =
         await deviceCalendarPlugin.hasPermissions();
     // if we were able to check for permissions without error
     if (deviceCalendarPluginPermissionsResponse.isSuccess) {
       // if the user has not yet allowed permission
-      if (!deviceCalendarPluginPermissionsResponse.data) {
+      if (deviceCalendarPluginPermissionsResponse.data == false) {
         // request permission
         final deviceCalendarPluginRequestPermissionsResponse =
             await deviceCalendarPlugin.requestPermissions();
@@ -34,22 +35,22 @@ mixin CalendarUtils {
   static final DeviceCalendarPlugin deviceCalendarPlugin =
       DeviceCalendarPlugin();
 
-  static Future<UnmodifiableListView<Calendar>> get nativeCalendars async {
+  static Future<UnmodifiableListView<Calendar>?> get nativeCalendars async {
     final Result<UnmodifiableListView<Calendar>> calendarFetchResult =
         await DeviceCalendarPlugin().retrieveCalendars();
     return calendarFetchResult.data;
   }
 
   /// Fetches a calendar by name from the native calendar app
-  static Future<Calendar> fetchNativeCalendar(String calendarName) async {
-    return (await nativeCalendars).firstWhere(
+  static Future<Calendar?> fetchNativeCalendar(String calendarName) async {
+    return (await nativeCalendars)?.firstWhere(
       (element) => element.name == calendarName,
-      orElse: () => null,
+      orElse: () => Calendar(),
     );
   }
 
   /// Fetches events from a calendar by id from the native calendar app
-  static Future<UnmodifiableListView<Event>> fetchNativeCalendarEvents(
+  static Future<UnmodifiableListView<Event>?> fetchNativeCalendarEvents(
       String calendarId, RetrieveEventsParams retrievalParams) async {
     final output =
         await deviceCalendarPlugin.retrieveEvents(calendarId, retrievalParams);
@@ -64,14 +65,14 @@ mixin CalendarUtils {
         DeviceCalendarPlugin();
 
     // Request permissions
-    final bool calendarPermission = await checkPermissions();
+    final bool? calendarPermission = await checkPermissions();
 
-    if (!calendarPermission) {
+    if (calendarPermission == false) {
       return false;
     }
 
     // Fetch calendar
-    Calendar calendar = await fetchNativeCalendar(calendarName);
+    Calendar? calendar = await fetchNativeCalendar(calendarName);
 
     // Create calendar if it doesn't exist
     if (calendar == null) {
@@ -81,7 +82,7 @@ mixin CalendarUtils {
 
     // Fetch events from calendar to avoid duplicates
     final events = await fetchNativeCalendarEvents(
-        calendar.id,
+        calendar!.id!,
         RetrieveEventsParams(
           startDate: DateTime.now().subtract(const Duration(days: 120)),
           endDate: DateTime.now().add(const Duration(days: 120)),
@@ -106,10 +107,11 @@ mixin CalendarUtils {
             "${course.courseGroup} \n${course.activityDescription}\nN'EFFACEZ PAS CETTE LIGNE: ${course.hashCode}",
       );
 
-      final existingEvents = events.where(
-        (element) => element.description.contains(course.hashCode.toString()),
+      final existingEvents = events?.where(
+        (element) =>
+            element.description?.contains(course.hashCode.toString()) ?? false,
       );
-      if (existingEvents.isNotEmpty) {
+      if (existingEvents?.isNotEmpty == true) {
         final existingEvent = existingEvents?.first;
 
         // If already exists prepare for update
@@ -122,9 +124,54 @@ mixin CalendarUtils {
         event,
       );
 
-      if (!result.isSuccess) {
+      if (result?.isSuccess == false) {
         hasErrors = true;
       }
+    }
+    return !hasErrors;
+  }
+
+  static Future<bool> exportNews(
+    News news,
+    String calendarName,
+  ) async {
+    final DeviceCalendarPlugin localDeviceCalendarPlugin =
+        DeviceCalendarPlugin();
+
+    // Request permissions
+    final bool? calendarPermission = await checkPermissions();
+
+    if (calendarPermission == false) {
+      return false;
+    }
+
+    // Fetch calendar
+    Calendar? calendar = await fetchNativeCalendar(calendarName);
+
+    // Create calendar if it doesn't exist
+    if (calendar == null) {
+      await deviceCalendarPlugin.createCalendar(calendarName);
+      calendar = await fetchNativeCalendar(calendarName);
+    }
+
+    bool hasErrors = false;
+    final event = Event(
+      calendar?.id,
+      title: news.title,
+      start:
+          TZDateTime.from(news.eventStartDate, getLocation('America/Toronto')),
+      end: TZDateTime.from(news.eventEndDate ?? news.eventStartDate,
+          getLocation('America/Toronto')),
+      description: news.description,
+    );
+
+    // Create or update event
+    final result = await localDeviceCalendarPlugin.createOrUpdateEvent(
+      event,
+    );
+
+    if (result?.isSuccess == false) {
+      hasErrors = true;
     }
     return !hasErrors;
   }

@@ -87,7 +87,8 @@
   "calendar_export_question": "Which calendar do you want to export to?",
   "calendar_name": "Calendar name",
   "calendar_select": "Please select a calendar",
-
+  "calendar_cancel": "Cancel",
+  "calendar_export": "Export",
 
   "grades_title": "Grades",
   "grades_msg_no_grades": "No grade available\nPull to refresh",

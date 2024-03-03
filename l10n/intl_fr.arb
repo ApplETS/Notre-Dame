@@ -87,6 +87,8 @@
   "calendar_export_question": "Vers quel calendrier voulez-vous exporter cet événement?",
   "calendar_name": "Nom du calendrier",
   "calendar_select": "Veuillez sélectionner un calendrier",
+  "calendar_cancel": "Annuler",
+  "calendar_export": "Exporter",
 
   "grades_title": "Notes",
   "grades_msg_no_grades": "Aucune note disponible.\nTirez pour rafraichir",

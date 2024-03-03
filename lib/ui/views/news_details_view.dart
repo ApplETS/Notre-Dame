@@ -5,8 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
-import 'package:notredame/core/utils/calendar_utils.dart';
 import 'package:notredame/core/utils/utils.dart';
+import 'package:notredame/core/viewmodels/calendar_selection_viewmodel.dart';
 import 'package:notredame/ui/widgets/calendar_selector.dart';
 import 'package:notredame/ui/widgets/report_news.dart';
 import 'package:stacked/stacked.dart';
@@ -156,10 +156,12 @@ class _NewsDetailsViewState extends State<NewsDetailsView> {
     switch (menu) {
       case Menu.export:
         final translations = AppIntl.of(context)!;
-        //final event = CalendarUtils.newsToEvent(news);
+        final viewModel =
+            CalendarSelectionViewModel(translations: translations);
+        viewModel.news = news;
         showDialog(
           context: context,
-          builder: (_) => CalendarSelectionWidget(translations: translations),
+          builder: (_) => CalendarSelectionWidget(viewModel: viewModel),
         );
         break;
       case Menu.report:

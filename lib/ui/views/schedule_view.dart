@@ -9,6 +9,7 @@ import 'package:ets_api_clients/models.dart';
 import 'package:feature_discovery/feature_discovery.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:intl/intl.dart';
+import 'package:notredame/core/viewmodels/calendar_selection_viewmodel.dart';
 import 'package:notredame/ui/widgets/calendar_selector.dart';
 import 'package:stacked/stacked.dart';
 import 'package:table_calendar/table_calendar.dart';
@@ -474,11 +475,12 @@ class _ScheduleViewState extends State<ScheduleView>
         IconButton(
           icon: const Icon(Icons.ios_share),
           onPressed: () {
-            final translations = AppIntl.of(context);
+            final translations = AppIntl.of(context)!;
+            final viewModel =
+                CalendarSelectionViewModel(translations: translations);
             showDialog(
               context: context,
-              builder: (_) =>
-                  CalendarSelectionWidget(translations: translations),
+              builder: (_) => CalendarSelectionWidget(viewModel: viewModel),
             );
           },
         ),
