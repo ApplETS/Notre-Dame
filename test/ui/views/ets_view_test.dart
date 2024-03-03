@@ -30,6 +30,7 @@ void main() {
       title:
           "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec tempus arcu sed quam tincidunt, non venenatis orci mollis.",
       description: "Test 1 description",
+      authorId: 1,
       author: "Author 1",
       avatar: "https://example.com/avatar1.jpg",
       activity: "Activity 1",
@@ -42,6 +43,7 @@ void main() {
       id: 2,
       title: "Test 2",
       description: "Test 2 description",
+      authorId: 2,
       author: "Author 2",
       avatar: "https://example.com/avatar2.jpg",
       activity: "Activity 2",
@@ -54,6 +56,7 @@ void main() {
       id: 3,
       title: "Test 3",
       description: "Test 3 description",
+      authorId: 3,
       author: "Author 3",
       avatar: "https://example.com/avatar3.jpg",
       activity: "Activity 3",

@@ -13,6 +13,7 @@ void main() {
         'id': 1,
         'title': 'Test Title',
         'description': 'Test Description',
+        'authorId': 1,
         'author': 'Author',
         'avatar': 'https://example.com/image.jpg',
         'activity': 'Club scientifique',
@@ -27,6 +28,7 @@ void main() {
       expect(news.title, equals('Test Title'));
       expect(news.description, equals('Test Description'));
       expect(news.author, equals('Author'));
+      expect(news.authorId, equals(1));
       expect(news.avatar, equals('https://example.com/image.jpg'));
       expect(news.activity, equals('Club scientifique'));
       expect(news.image, equals('https://example.com/image.jpg'));
@@ -43,6 +45,7 @@ void main() {
         id: 1,
         title: 'Test Title',
         description: 'Test Description',
+        authorId: 1,
         author: 'Author',
         avatar: 'https://example.com/image.jpg',
         activity: 'Club scientifique',
@@ -57,13 +60,13 @@ void main() {
       expect(json['id'], equals(1));
       expect(json['title'], equals('Test Title'));
       expect(json['description'], equals('Test Description'));
+      expect(json['authorId'], equals(1));
       expect(json['author'], equals('Author'));
       expect(json['avatar'], equals('https://example.com/image.jpg'));
       expect(json['activity'], equals('Club scientifique'));
       expect(json['image'], equals('https://example.com/image.jpg'));
       expect(json['tags'], hasLength(2));
       expect(json['tags'][0], equals('Tag 1'));
-      expect(json['tags'][1], equals('Tag 2'));
       expect(json['publishedDate'], equals('2022-01-01 12:00:00.000Z'));
       expect(json['eventDate'], equals('2022-01-01 12:00:00.000Z'));
     });

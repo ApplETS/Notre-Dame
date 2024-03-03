@@ -37,6 +37,7 @@ class NewsRepository {
       description:
           "Le club scientifique qui conceptualise un robot de recherche et secourisme recrute pour ses nouveaux projets! Une rencontre d’information est prévue le mercredi 13 octobre 2021 à 17h au local D-5023.Viens nous rencontrer pour en savoir plus sur notre prochaine mission de secourisme et faire partie de l’équipe!Le club scientifique qui conceptualise un robot de recherche et secourisme recrute pour ses nouveaux projets! Une rencontre d’information est prévue le mercredi 13 octobre 2021 à 17h au local D-5023.Viens nous rencontrer pour en savoir plus sur notre prochaine mission de secourisme et faire partie de l’équipe!Le club scientifique qui conceptualise un robot de recherche et secourisme recrute pour ses nouveaux projets! Une rencontre d’information est prévue le mercredi 13 octobre 2021 à 17h au local D-5023.Viens nous rencontrer pour en savoir plus sur notre prochaine mission de secourisme et faire partie de l’équipe!Le club scientifique qui conceptualise un robot de recherche et secourisme recrute pour ses nouveaux projets! Une rencontre d’information est prévue le mercredi 13 octobre 2021 à 17h au local D-5023.Viens nous rencontrer pour en savoir plus sur notre prochaine mission de secourisme et faire partie de l’équipe!",
       author: "Capra",
+      authorId: 1,
       avatar: "https://picsum.photos/200/200",
       activity: "Club scientifique",
       publishedDate: DateTime.now(),
@@ -55,6 +56,7 @@ class NewsRepository {
       description:
           "AMC est une compétition de développement mobile organisée par ApplETS, un club étudiant de l'ÉTS. La compétition à lieu du 27 au 28 janvier 2024. Que vous soyez un étudiant universitaire ou collégial, novice ou expérimenté en développement, cette compétition est l'occasion idéale de repousser vos limites, d'apprendre des autres et de montrer votre talent dans le monde de la technologie mobile.",
       author: "App|ETS",
+      authorId: 2,
       avatar: "https://picsum.photos/200/200",
       activity: "Club scientifique",
       publishedDate: DateTime.now(),
@@ -70,6 +72,7 @@ class NewsRepository {
       title: "Test 3",
       description: "Test 3 description",
       author: "Jean-Guy Tremblay",
+      authorId: 3,
       avatar: "https://picsum.photos/200/200",
       activity: "Service à la vie étudiante",
       publishedDate: DateTime.now(),
@@ -100,7 +103,7 @@ class NewsRepository {
       return _news;
     }
 
-    final List<News> fetchedNews = fetchNewsFromAPI();
+    final List<News> fetchedNews = await fetchNewsFromAPI();
 
     _news ??= [];
 
@@ -143,11 +146,26 @@ class NewsRepository {
   }
 
   // TODO : Fetch news from the API
-  List<News> fetchNewsFromAPI() {
+  Future<List<News>> fetchNewsFromAPI() async {
     final List<News> fetchedNews = [];
 
     _logger.d("$tag - getNews: fetched ${fetchedNews.length} news.");
 
     return fetchedNews;
+  }
+
+  // TODO : Fetch news from the API
+  // TODO : Fetch news from the API
+  Future<List<News>> fetchAuthorNewsFromAPI(int authorId) async {
+    final List<News> fetchedNews = _news ?? [];
+
+    // Filter news based on authorId
+    final List<News> authorNews =
+        fetchedNews.where((news) => news.authorId == authorId).toList();
+
+    _logger.d(
+        "$tag - fetchAuthorNewsFromAPI: fetched ${authorNews.length} news for author $authorId.");
+
+    return authorNews;
   }
 }

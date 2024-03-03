@@ -19,9 +19,6 @@ void main() {
     });
 
     test('Fetching news updates the news list', () async {
-      // TODO : remove when the news will be empty by default without test news
-      //expect(repository.news, isEmpty);
-
       final List<News>? fetchedNews =
           await repository.getNews(fromCacheOnly: true);
 
@@ -30,9 +27,6 @@ void main() {
     });
 
     test('Fetching news from cache returns the correct data', () async {
-      // TODO : remove when the news will be empty by default without test news
-      //expect(repository.news, isEmpty);
-
       await repository.getNews(fromCacheOnly: true);
 
       final List<News>? newsFromCache =
@@ -43,13 +37,20 @@ void main() {
     });
 
     test('Fetching news from API updates the news list', () async {
-      // TODO : remove when the news will be empty by default without test news
-      //expect(repository.news, isEmpty);
-
       final List<News>? fetchedNews = await repository.getNews();
 
       expect(repository.news, isNotEmpty);
       expect(repository.news, equals(fetchedNews));
+    });
+
+    test('Fetching news from API for a specific author', () async {
+      const int authorId = 1;
+      final List<News> fetchedNews =
+          await repository.fetchAuthorNewsFromAPI(authorId);
+
+      for (final news in fetchedNews) {
+        expect(news.authorId, equals(authorId));
+      }
     });
   });
 }
