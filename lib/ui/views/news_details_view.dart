@@ -131,7 +131,7 @@ class _NewsDetailsViewState extends State<NewsDetailsView> {
                                 widget.news.publishedDate,
                                 widget.news.eventStartDate,
                                 widget.news.eventEndDate),
-                            _buildImage(widget.news.image),
+                            _buildImage(widget.news),
                             _buildAuthor(widget.news.avatar, widget.news.author,
                                 widget.news.activity, widget.news.authorId),
                             _buildContent(widget.news.description),

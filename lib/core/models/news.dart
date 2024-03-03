@@ -17,6 +17,7 @@ class News {
       required this.title,
       required this.description,
       required this.author,
+      required this.authorId,
       required this.avatar,
       required this.activity,
       required this.image,
