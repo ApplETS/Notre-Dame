@@ -225,6 +225,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.7.1"
+  device_calendar:
+    dependency: "direct main"
+    description:
+      name: device_calendar
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "4.3.2"
   device_info_plus:
     dependency: "direct main"
     description:
@@ -1148,6 +1155,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.9.0"
+  sprintf:
+    dependency: transitive
+    description:
+      name: sprintf
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "7.0.0"
   sqflite:
     dependency: transitive
     description:
@@ -1239,6 +1253,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "3.3.0"
+  timezone:
+    dependency: transitive
+    description:
+      name: timezone
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.9.2"
   timing:
     dependency: transitive
     description:

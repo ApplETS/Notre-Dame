@@ -5,7 +5,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
+import 'package:notredame/core/utils/calendar_utils.dart';
 import 'package:notredame/core/utils/utils.dart';
+import 'package:notredame/ui/widgets/calendar_selector.dart';
+import 'package:notredame/ui/widgets/report_news.dart';
 import 'package:stacked/stacked.dart';
 
 // Project imports:
@@ -85,7 +88,8 @@ class _NewsDetailsViewState extends State<NewsDetailsView> {
                                 AppTheme.lightThemeBackground,
                                 AppTheme.darkThemeBackground),
                             icon: const Icon(Icons.more_vert),
-                            onSelected: (Menu item) {},
+                            onSelected: (Menu menu) =>
+                                handleClick(menu, model.news),
                             itemBuilder: (BuildContext context) =>
                                 <PopupMenuEntry<Menu>>[
                               PopupMenuItem<Menu>(
@@ -148,11 +152,29 @@ class _NewsDetailsViewState extends State<NewsDetailsView> {
         ),
       );
 
-  void handleClick(String value) {
-    switch (value) {
-      case 'Logout':
+  void handleClick(Menu menu, News news) {
+    switch (menu) {
+      case Menu.export:
+        final translations = AppIntl.of(context)!;
+        //final event = CalendarUtils.newsToEvent(news);
+        showDialog(
+          context: context,
+          builder: (_) => CalendarSelectionWidget(translations: translations),
+        );
         break;
-      case 'Settings':
+      case Menu.report:
+        showModalBottomSheet(
+            isDismissible: true,
+            enableDrag: true,
+            isScrollControlled: true,
+            context: context,
+            shape: const RoundedRectangleBorder(
+                borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(10),
+                    topRight: Radius.circular(10))),
+            builder: (context) => const ReportNews());
+        break;
+      case Menu.share:
         break;
     }
   }
