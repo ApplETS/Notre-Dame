@@ -88,6 +88,7 @@
   "calendar_name": "Calendar name",
   "calendar_select": "Please select a calendar",
 
+
   "grades_title": "Grades",
   "grades_msg_no_grades": "No grade available\nPull to refresh",
   "grades_msg_no_grade": "No grade available",

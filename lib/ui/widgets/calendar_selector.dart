@@ -2,36 +2,34 @@ import 'dart:collection';
 
 import 'package:device_calendar/device_calendar.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:logger/logger.dart';
 
+import 'package:notredame/ui/utils/app_theme.dart';
+import 'package:notredame/core/managers/course_repository.dart';
 import 'package:notredame/core/utils/calendar_utils.dart';
-import 'package:notredame/core/viewmodels/calendar_selection_viewmodel.dart';
 import 'package:notredame/locator.dart';
 
 class CalendarSelectionWidget extends StatelessWidget {
   final AppIntl translations;
-  final Event? event;
-  const CalendarSelectionWidget(
-      {Key? key, this.event, required this.translations})
-      : super(key: key);
+  const CalendarSelectionWidget({Key key, this.translations}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
       future: CalendarUtils.nativeCalendars,
       builder:
-          (context, AsyncSnapshot<UnmodifiableListView<Calendar>?> calendars) {
+          (context, AsyncSnapshot<UnmodifiableListView<Calendar>> calendars) {
         if (!calendars.hasData) {
           return const Center(
             child: CircularProgressIndicator(),
           );
         }
-        final items = calendars.data!
+        final items = calendars.data
             .map<DropdownMenuItem<String>>(
               (Calendar value) => DropdownMenuItem<String>(
                 value: value.name,
-                child: Text(value.name ?? ""),
+                child: Text(value.name),
               ),
             )
             .toList();
@@ -41,10 +39,7 @@ class CalendarSelectionWidget extends StatelessWidget {
             child: Text(translations.calendar_new),
           ),
         );
-
-        final viewModel =
-            CalendarSelectionViewModel(translations: translations);
-
+        String selectedCalendarId = items[0].value;
         return StatefulBuilder(
           builder: (context, setState) {
             return AlertDialog(
@@ -53,21 +48,21 @@ class CalendarSelectionWidget extends StatelessWidget {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Text(translations.calendar_export_question),
-                  /*DropdownButton<String>(
+                  DropdownButton<String>(
                     items: items,
-                    value: viewModel.selectedCalendarId,
+                    value: selectedCalendarId,
                     onChanged: (calendar) {
                       setState(() {
-                        viewModel.selectedCalendarId = calendar!;
+                        selectedCalendarId = calendar;
                       });
                     },
-                  ),*/
+                  ),
                   Builder(
                     builder: (context) {
-                      return viewModel.selectedCalendarId == "new"
+                      return selectedCalendarId == "new"
                           ? TextField(
                               onChanged: (value) {
-                                viewModel.selectedCalendarId = value;
+                                selectedCalendarId = value;
                               },
                               decoration: InputDecoration(
                                 labelText: translations.calendar_name,
@@ -84,7 +79,37 @@ class CalendarSelectionWidget extends StatelessWidget {
                   child: const Text('Cancel'),
                 ),
                 TextButton(
-                  onPressed: () => viewModel.exportEvent(context, event),
+                  onPressed: () {
+                    if (selectedCalendarId == null ||
+                        selectedCalendarId.isEmpty) {
+                      Fluttertoast.showToast(
+                        msg: translations.calendar_select,
+                        backgroundColor: AppTheme.etsLightRed,
+                        textColor: AppTheme.etsBlack,
+                      );
+                      return;
+                    }
+                    Navigator.of(context).pop();
+                    final CourseRepository courseRepository =
+                        locator<CourseRepository>();
+                    final result = CalendarUtils.export(
+                        courseRepository.coursesActivities, selectedCalendarId);
+                    result.then((value) {
+                      if (value) {
+                        Fluttertoast.showToast(
+                          msg: translations.calendar_export_success,
+                          backgroundColor: AppTheme.gradeGoodMax,
+                          textColor: AppTheme.etsBlack,
+                        );
+                      } else {
+                        Fluttertoast.showToast(
+                          msg: translations.calendar_export_error,
+                          backgroundColor: AppTheme.etsLightRed,
+                          textColor: AppTheme.etsBlack,
+                        );
+                      }
+                    });
+                  },
                   child: const Text('Export'),
                 ),
               ],
