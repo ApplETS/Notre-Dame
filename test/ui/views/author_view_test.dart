@@ -83,7 +83,7 @@ void main() {
       organisation: "Capra",
       email: "capra@ens.etsmtl.ca",
       description:
-          "Le club Capra fait la conception et la fabrication d’un robot de recherche et de sauvetage en milieux accidentés et participe à la compétition RoboCupRescue.",
+          "Le club Capra fait la conception et la fabrication d'un robot.",
       activity: "Club scientifique",
       website: "capra.com",
       image: "",
