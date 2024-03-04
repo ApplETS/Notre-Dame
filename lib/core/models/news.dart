@@ -11,6 +11,7 @@ class News {
   final DateTime publishedDate;
   final DateTime eventStartDate;
   final DateTime? eventEndDate;
+  final String shareLink;
 
   News(
       {required this.id,
@@ -24,7 +25,8 @@ class News {
       required this.tags,
       required this.publishedDate,
       required this.eventStartDate,
-      this.eventEndDate});
+      this.eventEndDate,
+      required this.shareLink});
 
   /// Used to create [News] instance from a JSON file
   factory News.fromJson(Map<String, dynamic> map) {
@@ -41,6 +43,7 @@ class News {
       publishedDate: DateTime.parse(map['publishedDate'] as String),
       eventStartDate: DateTime.parse(map['eventStartDate'] as String),
       eventEndDate: DateTime.parse(map['eventEndDate'] as String),
+      shareLink: map['shareLink'] as String,
     );
   }
 
@@ -58,6 +61,7 @@ class News {
       'publishedDate': publishedDate.toString(),
       'eventStartDate': eventStartDate.toString(),
       'eventEndDate': eventEndDate.toString(),
+      'shareLink': shareLink,
     };
   }
 }

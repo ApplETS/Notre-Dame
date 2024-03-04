@@ -78,6 +78,7 @@ dependencies:
   flutter_keychain: ^2.4.0
   shimmer: ^3.0.0
   device_calendar: ^4.3.2
+  share_plus: ^4.5.3
 
 dev_dependencies:
   flutter_test:

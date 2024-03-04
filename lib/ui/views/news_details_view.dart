@@ -20,6 +20,7 @@ import 'package:notredame/core/viewmodels/news_details_viewmodel.dart';
 import 'package:notredame/locator.dart';
 import 'package:notredame/ui/utils/app_theme.dart';
 import 'package:notredame/ui/widgets/base_scaffold.dart';
+import 'package:share_plus/share_plus.dart';
 
 class NewsDetailsView extends StatefulWidget {
   final News news;
@@ -107,7 +108,7 @@ class _NewsDetailsViewState extends State<NewsDetailsView> {
                                 ),
                               ),
                               PopupMenuItem<Menu>(
-                                value: Menu.export,
+                                value: Menu.report,
                                 child: ListTile(
                                   leading: SvgPicture.asset(
                                     'assets/images/report.svg',
@@ -154,6 +155,9 @@ class _NewsDetailsViewState extends State<NewsDetailsView> {
 
   void handleClick(Menu menu, News news) {
     switch (menu) {
+      case Menu.share:
+        Share.share(news.shareLink);
+        break;
       case Menu.export:
         final translations = AppIntl.of(context)!;
         final viewModel =
@@ -175,8 +179,6 @@ class _NewsDetailsViewState extends State<NewsDetailsView> {
                     topLeft: Radius.circular(10),
                     topRight: Radius.circular(10))),
             builder: (context) => const ReportNews());
-        break;
-      case Menu.share:
         break;
     }
   }

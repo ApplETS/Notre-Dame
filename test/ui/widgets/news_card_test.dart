@@ -11,19 +11,19 @@ import '../../helpers.dart';
 
 void main() {
   final news = News(
-    id: 1,
-    title: "Test 3",
-    description: "Test 3 description",
-    authorId: 1,
-    author: "Author 3",
-    avatar: "https://example.com/avatar3.jpg",
-    activity: "Activity 3",
-    image: "",
-    tags: ["tag5", "tag6"],
-    publishedDate: DateTime.parse('2022-02-01T12:00:00Z'),
-    eventStartDate: DateTime.parse('2022-02-02T12:00:00Z'),
-    eventEndDate: DateTime.parse('2022-02-02T12:00:00Z'),
-  );
+      id: 1,
+      title: "Test 3",
+      description: "Test 3 description",
+      authorId: 1,
+      author: "Author 3",
+      avatar: "https://example.com/avatar3.jpg",
+      activity: "Activity 3",
+      image: "",
+      tags: ["tag5", "tag6"],
+      publishedDate: DateTime.parse('2022-02-01T12:00:00Z'),
+      eventStartDate: DateTime.parse('2022-02-02T12:00:00Z'),
+      eventEndDate: DateTime.parse('2022-02-02T12:00:00Z'),
+      shareLink: "https://www.google.com");
 
   group('News card Tests', () {
     setUpAll(() async {

@@ -22,6 +22,7 @@ void main() {
         'publishedDate': '2022-01-01T12:00:00Z',
         'eventStartDate': '2022-01-01T12:00:00Z',
         'eventEndDate': '2022-01-01T12:00:00Z',
+        "shareLink": "https://www.google.com"
       };
 
       final news = News.fromJson(json);
@@ -41,23 +42,24 @@ void main() {
       expect(
           news.eventStartDate, equals(DateTime.parse('2022-01-01T12:00:00Z')));
       expect(news.eventEndDate, equals(DateTime.parse('2022-01-01T12:00:00Z')));
+      expect(news.shareLink, equals('https://www.google.com'));
     });
 
     test('toJson() should convert News to JSON correctly', () {
       final news = News(
-        id: 1,
-        title: 'Test Title',
-        description: 'Test Description',
-        authorId: 1,
-        author: 'Author',
-        avatar: 'https://example.com/image.jpg',
-        activity: 'Club scientifique',
-        image: 'https://example.com/image.jpg',
-        tags: ['Tag 1', 'Tag 2'],
-        publishedDate: DateTime.parse('2022-01-01T12:00:00.000Z'),
-        eventStartDate: DateTime.parse('2022-01-01T12:00:00.000Z'),
-        eventEndDate: DateTime.parse('2022-01-01T12:00:00.000Z'),
-      );
+          id: 1,
+          title: 'Test Title',
+          description: 'Test Description',
+          authorId: 1,
+          author: 'Author',
+          avatar: 'https://example.com/image.jpg',
+          activity: 'Club scientifique',
+          image: 'https://example.com/image.jpg',
+          tags: ['Tag 1', 'Tag 2'],
+          publishedDate: DateTime.parse('2022-01-01T12:00:00.000Z'),
+          eventStartDate: DateTime.parse('2022-01-01T12:00:00.000Z'),
+          eventEndDate: DateTime.parse('2022-01-01T12:00:00.000Z'),
+          shareLink: "https://www.google.com");
 
       final json = news.toJson();
 
@@ -74,6 +76,7 @@ void main() {
       expect(json['publishedDate'], equals('2022-01-01 12:00:00.000Z'));
       expect(json['eventStartDate'], equals('2022-01-01 12:00:00.000Z'));
       expect(json['eventEndDate'], equals('2022-01-01 12:00:00.000Z'));
+      expect(json['shareLink'], equals('https://www.google.com'));
     });
   });
 }

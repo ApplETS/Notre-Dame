@@ -25,19 +25,19 @@ void main() {
     setupNetworkingServiceMock();
 
     sampleNews = News(
-      id: 1,
-      title: 'Sample News Title',
-      description: 'Sample News Description',
-      authorId: 1,
-      author: 'Sample Author',
-      avatar: '',
-      activity: 'Sample Activity',
-      image: '',
-      tags: ['sampleTag1', 'sampleTag2'],
-      publishedDate: DateTime.parse('2022-01-01T12:00:00Z'),
-      eventStartDate: DateTime.parse('2022-02-02T12:00:00Z'),
-      eventEndDate: DateTime.parse('2022-02-02T12:00:00Z'),
-    );
+        id: 1,
+        title: 'Sample News Title',
+        description: 'Sample News Description',
+        authorId: 1,
+        author: 'Sample Author',
+        avatar: '',
+        activity: 'Sample Activity',
+        image: '',
+        tags: ['sampleTag1', 'sampleTag2'],
+        publishedDate: DateTime.parse('2022-01-01T12:00:00Z'),
+        eventStartDate: DateTime.parse('2022-02-02T12:00:00Z'),
+        eventEndDate: DateTime.parse('2022-02-02T12:00:00Z'),
+        shareLink: "https://www.google.com");
   });
 
   tearDown(() {
