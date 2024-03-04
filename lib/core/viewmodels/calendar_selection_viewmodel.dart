@@ -9,16 +9,18 @@ import 'package:notredame/core/managers/course_repository.dart';
 import 'package:notredame/core/models/news.dart';
 import 'package:notredame/core/utils/calendar_utils.dart';
 import 'package:notredame/locator.dart';
-import 'package:notredame/ui/utils/app_theme.dart';
 
 class CalendarSelectionViewModel {
   final AppIntl translations;
-  final CourseRepository courseRepository = locator<CourseRepository>();
   late UnmodifiableListView<Calendar>? _calendars;
+  final CourseRepository courseRepository = locator<CourseRepository>();
   String? selectedCalendarId;
   News? news;
 
-  CalendarSelectionViewModel({required this.translations});
+  CalendarSelectionViewModel({
+    required this.translations,
+    this.news,
+  });
 
   Future<void> fetchCalendars() async {
     _calendars = await CalendarUtils.nativeCalendars;
@@ -38,32 +40,43 @@ class CalendarSelectionViewModel {
 
   Future<void> exportCalendar(BuildContext context) async {
     if (selectedCalendarId == null || selectedCalendarId?.isEmpty == true) {
-      Fluttertoast.showToast(
-        msg: translations.calendar_select,
-        backgroundColor: AppTheme.etsLightRed,
-        textColor: AppTheme.etsBlack,
-      );
+      _showToast(translations.calendar_select);
       return;
     }
     Navigator.of(context).pop();
-    final result = news != null
-        ? CalendarUtils.exportNews(news!, selectedCalendarId!)
-        : CalendarUtils.export(
-            courseRepository.coursesActivities!, selectedCalendarId!);
-    result.then((value) {
+
+    if (news != null) {
+      _exportNews(news!, selectedCalendarId!);
+    } else {
+      _exportCourses(selectedCalendarId!);
+    }
+  }
+
+  void _exportNews(News news, String selectedCalendarId) {
+    CalendarUtils.exportNews(news, selectedCalendarId).then((value) {
       if (value) {
-        Fluttertoast.showToast(
-          msg: translations.calendar_export_success,
-          backgroundColor: AppTheme.gradeGoodMax,
-          textColor: AppTheme.etsBlack,
-        );
+        _showToast(translations.news_export_success);
       } else {
-        Fluttertoast.showToast(
-          msg: translations.calendar_export_error,
-          backgroundColor: AppTheme.etsLightRed,
-          textColor: AppTheme.etsBlack,
-        );
+        _showToast(translations.news_export_error);
       }
     });
+  }
+
+  void _exportCourses(String selectedCalendarId) {
+    CalendarUtils.export(
+            courseRepository.coursesActivities!, selectedCalendarId)
+        .then((value) {
+      if (value) {
+        _showToast(translations.calendar_export_success);
+      } else {
+        _showToast(translations.calendar_export_error);
+      }
+    });
+  }
+
+  void _showToast(String message) {
+    Fluttertoast.showToast(
+      msg: message,
+    );
   }
 }

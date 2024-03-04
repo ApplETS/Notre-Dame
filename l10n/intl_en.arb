@@ -184,6 +184,9 @@
   "news_details_title" : "News",
   "news_event_date": "Event date",
 
+  "news_export_success": "Event successfuly exported",
+  "news_export_error": "An error occured while exporting the event",
+
   "share": "Share",
   "export": "Export",
 

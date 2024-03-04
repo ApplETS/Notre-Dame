@@ -187,6 +187,9 @@
   "news_details_title" : "Annonce",
   "news_event_date": "Date de l'événement",
 
+  "news_export_success": "L'événement a été exporté avec succès",
+  "news_export_error": "Une erreur est survenue lors de l'exportation de l'événement",
+
   "report_news": "Pourquoi reportez-vous cette annonce ?",
   "report_as": "Signaler comme",
   "report": "Signaler",
