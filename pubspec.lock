@@ -284,9 +284,11 @@ packages:
   ets_api_clients:
     dependency: "direct main"
     description:
-      path: "../ETS-API-Clients"
-      relative: true
-    source: path
+      path: "."
+      ref: "ftr/add-news"
+      resolved-ref: cf61b19f41d01d367ea57fef78306e869930355e
+      url: "https://github.com/ApplETS/ETS-API-Clients.git"
+    source: git
     version: "0.5.0"
   fading_edge_scrollview:
     dependency: transitive

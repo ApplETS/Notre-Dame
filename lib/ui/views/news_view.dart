@@ -34,11 +34,11 @@ class _NewsViewState extends State<NewsView> {
               if (status == PagingStatus.subsequentPageError) {
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
-                    content: const Text(
-                      'Something went wrong while fetching a new page.',
+                    content: Text(
+                      AppIntl.of(context)!.news_error_not_found,
                     ),
                     action: SnackBarAction(
-                      label: 'Retry',
+                      label: AppIntl.of(context)!.retry,
                       onPressed: () =>
                           model.pagingController.retryLastFailedRequest(),
                     ),
@@ -108,12 +108,12 @@ class _NewsViewState extends State<NewsView> {
                       Flexible(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
-                          children: const [
-                            Text("You're all set!",
-                                style: TextStyle(fontSize: 24)),
-                            SizedBox(height: 16),
+                          children: [
+                            Text(AppIntl.of(context)!.news_no_more_card_title,
+                                style: const TextStyle(fontSize: 24)),
+                            const SizedBox(height: 16),
                             Text(
-                              'You have reached the end of the news list. Come back another time for more news!',
+                              AppIntl.of(context)!.news_no_more_card,
                               textAlign: TextAlign.justify,
                             ),
                           ],

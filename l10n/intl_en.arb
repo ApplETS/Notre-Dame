@@ -173,6 +173,8 @@
   "news_title" : "News",
   "news_error_not_found_title" : "Oh oh!",
   "news_error_not_found" : "Something went wrong while trying to retrieve the news. Please try again later.",
+  "news_no_more_card_title": "You're all set!",
+  "news_no_more_card": "You have reached the end of the news list. Come back another time for more news!",
 
   "more_about_applets_title": "About ApplETS",
   "more_report_bug": "Report a bug or request a feature",
