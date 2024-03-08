@@ -15,16 +15,18 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true">
+        android:layout_centerInParent="true"
+        android:background="@android:color/transparent">
 
         <ProgressBar
             android:id="@+id/progressBar"
-            android:layout_width="85dp"
-            android:layout_height="85dp"
+            android:layout_width="95dp"
+            android:layout_height="95dp"
             android:layout_gravity="center"
             android:indeterminate="false"
             android:progressDrawable="@drawable/circular_progress_bar"
             style="?android:attr/progressBarStyleHorizontal"
+            android:background="@android:color/transparent"
             android:progress="50"
             android:max="100" />
 
@@ -33,7 +35,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:orientation="vertical"
-            android:layout_marginTop="0dp">
+            android:layout_marginTop="0dp"
+            android:background="@android:color/transparent">
 
             <TextView
                 android:id="@+id/progress_text"

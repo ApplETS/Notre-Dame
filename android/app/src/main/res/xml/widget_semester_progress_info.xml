@@ -5,9 +5,11 @@
     android:minWidth="110dp"
     android:maxWidth="320dp"
     android:minHeight="40dp"
-    android:maxHeight="52dp"
-    android:resizeMode="horizontal|vertical"
+    android:maxHeight="40dp"
+    android:resizeMode="horizontal"
     android:updatePeriodMillis="1800000"
     android:previewLayout="@layout/widget_semester_progress_large"
-    android:initialLayout="@layout/widget_semester_progress_large">
+    android:initialLayout="@layout/widget_semester_progress_large"
+    android:configure="ca.etsmtl.applets.etsmobile.ProgressWidgetConfigureActivity"
+    android:widgetFeatures="reconfigurable|configuration_optional">
 </appwidget-provider>

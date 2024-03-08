@@ -3,4 +3,10 @@
     <string name="default_progress_out_of_days" translatable="false">0 / 0</string>
     <string name="default_progress_percentage" translatable="false">0 %</string>
     <string name="widget_background_card" translatable="false">widget_background_card</string>
+    <string name="widget_settings_title">Widget Settings</string>
+    <string name="theme_settings_title">Theme</string>
+    <string name="widget_config_save_text">Save</string>
+    <string name="widget_config_light_option_text">Light</string>
+    <string name="widget_config_dark_option_text">Dark</string>
+    <string name="widget_config_widget_previews_text">Widget Previews</string>
 </resources>

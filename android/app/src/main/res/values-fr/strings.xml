@@ -1,3 +1,9 @@
 <resources>
     <string name="semester_progress_title">Progression de la session</string>
+    <string name="widget_settings_title">Widget Settings</string>
+    <string name="theme_settings_title">Theme</string>
+    <string name="widget_config_save_text">Save</string>
+    <string name="widget_config_light_option_text">Light</string>
+    <string name="widget_config_dark_option_text">Dark</string>
+    <string name="widget_config_widget_previews_text">Widget Previews</string>
 </resources>

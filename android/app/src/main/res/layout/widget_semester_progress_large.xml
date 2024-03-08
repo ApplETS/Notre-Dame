@@ -1,6 +1,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/semester_progress_widget"
+    android:background="@android:color/transparent"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -9,6 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:src="@drawable/rounded_square"
+        android:background="@android:color/transparent"
         android:scaleType="fitXY"
         android:contentDescription="@string/widget_background_card" />
 
@@ -18,6 +20,7 @@
         android:layout_height="wrap_content"
         android:text="@string/semester_progress_title"
         android:textColor="@color/white"
+        android:background="@android:color/transparent"
         android:textSize="20sp"
         android:fontFamily="@font/roboto_medium"
         android:layout_alignParentTop="true"
@@ -31,11 +34,13 @@
         android:layout_height="match_parent"
         android:layout_below="@id/semester_progress_title"
         android:orientation="vertical"
+        android:background="@android:color/transparent"
         android:gravity="center">
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
             android:paddingLeft="12dp"
             android:paddingRight="12dp"
             tools:ignore="UselessParent">
@@ -44,6 +49,7 @@
                 android:id="@+id/progressBar"
                 android:layout_width="match_parent"
                 android:layout_height="30dp"
+                android:background="@android:color/transparent"
                 style="?android:attr/progressBarStyleHorizontal"
                 android:progressDrawable="@drawable/linear_progress_bar"
                 android:progress="0"
@@ -54,10 +60,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
+                android:fontFamily="@font/roboto_medium"
                 android:text="@string/default_progress_percentage"
                 android:textColor="@color/white"
-                android:fontFamily="@font/roboto_medium"
-                android:textSize="16sp"/>
+                android:background="@android:color/transparent"
+                android:textSize="16sp" />
 
         </RelativeLayout>
     </LinearLayout>
