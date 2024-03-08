@@ -16,11 +16,6 @@ class NewsViewModel extends BaseViewModel implements Initialisable {
   final PagingController<int, News> pagingController =
       PagingController(firstPageKey: 1);
 
-  /// Localization class of the application.
-  final AppIntl _appIntl;
-
-  NewsViewModel({required AppIntl intl}) : _appIntl = intl;
-
   bool isLoadingEvents = false;
 
   @override
@@ -44,11 +39,5 @@ class NewsViewModel extends BaseViewModel implements Initialisable {
     } catch (error) {
       pagingController.error = error;
     }
-  }
-
-  @override
-  // ignore: type_annotate_public_apis
-  void onError(error) {
-    Fluttertoast.showToast(msg: _appIntl.error);
   }
 }

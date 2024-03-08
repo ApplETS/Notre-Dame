@@ -28,7 +28,7 @@ class _NewsViewState extends State<NewsView> {
   @override
   Widget build(BuildContext context) =>
       ViewModelBuilder<NewsViewModel>.reactive(
-          viewModelBuilder: () => NewsViewModel(intl: AppIntl.of(context)!),
+          viewModelBuilder: () => NewsViewModel(),
           onModelReady: (model) {
             model.pagingController.addStatusListener((status) {
               if (status == PagingStatus.subsequentPageError) {
@@ -56,6 +56,7 @@ class _NewsViewState extends State<NewsView> {
                   data: Theme.of(context)
                       .copyWith(canvasColor: Colors.transparent),
                   child: PagedListView<int, News>(
+                    key: const Key("pagedListView"),
                     pagingController: model.pagingController,
                     padding: const EdgeInsets.fromLTRB(0, 4, 0, 8),
                     builderDelegate: PagedChildBuilderDelegate<News>(
@@ -100,27 +101,25 @@ class _NewsViewState extends State<NewsView> {
               children: [
                 Container(
                   padding: const EdgeInsets.fromLTRB(0, 8, 8, 8),
-                  child: Expanded(
-                    child: Row(
-                      children: [
-                        const Icon(Icons.check, color: Colors.blue, size: 40),
-                        const SizedBox(width: 16),
-                        Flexible(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: const [
-                              Text("You're all set!",
-                                  style: TextStyle(fontSize: 24)),
-                              SizedBox(height: 16),
-                              Text(
-                                'You have reached the end of the news list. Come back another time for more news!',
-                                textAlign: TextAlign.justify,
-                              ),
-                            ],
-                          ),
+                  child: Row(
+                    children: [
+                      const Icon(Icons.check, color: Colors.blue, size: 40),
+                      const SizedBox(width: 16),
+                      Flexible(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: const [
+                            Text("You're all set!",
+                                style: TextStyle(fontSize: 24)),
+                            SizedBox(height: 16),
+                            Text(
+                              'You have reached the end of the news list. Come back another time for more news!',
+                              textAlign: TextAlign.justify,
+                            ),
+                          ],
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
                 ),
               ],
