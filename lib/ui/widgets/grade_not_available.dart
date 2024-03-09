@@ -30,13 +30,13 @@ class GradeNotAvailable extends StatelessWidget {
         const SizedBox(height: 25),
         Text(
           isEvaluationPeriod
-              ? AppIntl.of(context)
+              ? AppIntl.of(context)!
                   !.grades_error_course_evaluations_not_completed
               : AppIntl.of(context)!.grades_msg_no_grade,
           textAlign: TextAlign.center,
           softWrap: true,
           style: isEvaluationPeriod
-              ? Theme.of(context).textTheme.bodyLarge 
+              ? Theme.of(context).textTheme.bodyLarge
               : Theme.of(context).textTheme.titleLarge,
         ),
         const SizedBox(height: 25),

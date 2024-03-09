@@ -8,9 +8,11 @@ import 'package:notredame/core/constants/programs_credits.dart';
 import 'package:notredame/core/managers/user_repository.dart';
 import 'package:notredame/core/viewmodels/profile_viewmodel.dart';
 import '../helpers.dart';
+import '../mock/managers/settings_manager_mock.dart';
 import '../mock/managers/user_repository_mock.dart';
 
 late UserRepositoryMock userRepositoryMock;
+late SettingsManagerMock settingsManagerMock;
 
 late ProfileViewModel viewModel;
 
@@ -74,8 +76,7 @@ void main() {
           "first load from cache then call SignetsAPI to get the latest events",
           () async {
         UserRepositoryMock.stubGetInfo(userRepositoryMock, toReturn: info);
-        UserRepositoryMock.stubGetPrograms(
-            userRepositoryMock);
+        UserRepositoryMock.stubGetPrograms(userRepositoryMock);
 
         expect(await viewModel.futureToRun(), []);
 
@@ -92,15 +93,12 @@ void main() {
       test("Signets throw an error while trying to get new events", () async {
         setupFlutterToastMock();
         UserRepositoryMock.stubGetInfo(userRepositoryMock,
-            fromCacheOnly: true,
-            toReturn: info);
-        UserRepositoryMock.stubGetInfoException(
-            userRepositoryMock,
+            fromCacheOnly: true, toReturn: info);
+        UserRepositoryMock.stubGetInfoException(userRepositoryMock,
             fromCacheOnly: false);
         UserRepositoryMock.stubGetPrograms(userRepositoryMock,
             fromCacheOnly: true);
-        UserRepositoryMock.stubGetProgramsException(
-            userRepositoryMock,
+        UserRepositoryMock.stubGetProgramsException(userRepositoryMock,
             fromCacheOnly: false);
 
         expect(await viewModel.futureToRun(), [],
@@ -119,8 +117,7 @@ void main() {
 
     group("info - ", () {
       test("build the info", () async {
-        UserRepositoryMock.stubProfileStudent(
-            userRepositoryMock,
+        UserRepositoryMock.stubProfileStudent(userRepositoryMock,
             toReturn: info);
 
         expect(viewModel.profileStudent, info);
@@ -133,8 +130,7 @@ void main() {
 
     group("programs - ", () {
       test("build the list of programs", () async {
-        UserRepositoryMock.stubPrograms(userRepositoryMock,
-            toReturn: programs);
+        UserRepositoryMock.stubPrograms(userRepositoryMock, toReturn: programs);
 
         expect(viewModel.programList, programs);
 
@@ -183,7 +179,8 @@ void main() {
 
         // Calculate the expected progression based on the defined ProgramCredits
         final double expectedProgression =
-            (45 / programCredits.programsCredits['7694']! * 100).roundToDouble();
+            (45 / programCredits.programsCredits['7694']! * 100)
+                .roundToDouble();
 
         // Verify that the calculated progression matches the expected value
         expect(progression, expectedProgression);
@@ -219,13 +216,10 @@ void main() {
 
     group('refresh -', () {
       test('Call SignetsAPI to get the user info and programs', () async {
-        UserRepositoryMock.stubProfileStudent(
-            userRepositoryMock,
+        UserRepositoryMock.stubProfileStudent(userRepositoryMock,
             toReturn: info);
-        UserRepositoryMock.stubGetInfo(userRepositoryMock,
-            toReturn: info);
-        UserRepositoryMock.stubGetPrograms(
-            userRepositoryMock);
+        UserRepositoryMock.stubGetInfo(userRepositoryMock, toReturn: info);
+        UserRepositoryMock.stubGetPrograms(userRepositoryMock);
 
         await viewModel.refresh();
 

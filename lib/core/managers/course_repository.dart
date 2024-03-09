@@ -297,8 +297,8 @@ class CourseRepository {
         final List<Session> fetchedSession = await _signetsApiClient.getSessions(
             username: _userRepository.monETSUser!.universalCode,
             password: password);
-        _logger
-            .d("$tag - getSessions: ${fetchedSession.length} sessions fetched.");
+        _logger.d(
+            "$tag - getSessions: ${fetchedSession.length} sessions fetched.");
         for (final Session session in fetchedSession) {
           if (!_sessions!.contains(session)) {
             _sessions!.add(session);
@@ -364,7 +364,8 @@ class CourseRepository {
         fetchedCourses.addAll(await _signetsApiClient.getCourses(
             username: _userRepository.monETSUser!.universalCode,
             password: password));
-        _logger.d("$tag - getCourses: fetched ${fetchedCourses.length} courses.");
+        _logger
+            .d("$tag - getCourses: fetched ${fetchedCourses.length} courses.");
       }
     } on Exception catch (e, stacktrace) {
       _analyticsService.logError(
@@ -430,7 +431,8 @@ class CourseRepository {
             username: _userRepository.monETSUser!.universalCode,
             password: password,
             course: course);
-        _logger.d("$tag - getCourseSummary: fetched ${course.acronym} summary.");
+        _logger
+            .d("$tag - getCourseSummary: fetched ${course.acronym} summary.");
       }
     } on Exception catch (e, stacktrace) {
       if (e is ApiException) {
@@ -505,12 +507,8 @@ class CourseRepository {
   /// Get the evaluation for a course or null if not found.
   CourseReview? _getReviewForCourse(
       Course course, Map<String, List<CourseReview>> reviews) {
-    if (reviews.containsKey(course.session)) {
-      return reviews[course.session]!.firstWhere(
-          (element) =>
-              element.acronym == course.acronym &&
-              element.group == course.group);
-    }
-    return null;
+    final review = reviews[course.session]?.where((element) =>
+        element.acronym == course.acronym && element.group == course.group);
+    return review?.length == 1 ? review?.first : null;
   }
 }

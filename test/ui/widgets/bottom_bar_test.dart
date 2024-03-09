@@ -71,8 +71,8 @@ void main() {
         await tester.tap(find.byIcon(Icons.schedule));
         await tester.tap(find.byIcon(Icons.dashboard));
 
-        verify(
-            navigationServiceMock.pushNamedAndRemoveUntil(RouterPaths.dashboard));
+        verify(navigationServiceMock
+            .pushNamedAndRemoveUntil(RouterPaths.dashboard));
       });
 
       testWidgets('schedule', (WidgetTester tester) async {
@@ -82,7 +82,8 @@ void main() {
 
         await tester.tap(find.byIcon(Icons.schedule));
 
-        verify(navigationServiceMock.pushNamedAndRemoveUntil(RouterPaths.schedule));
+        verify(navigationServiceMock
+            .pushNamedAndRemoveUntil(RouterPaths.schedule));
       });
 
       testWidgets('student', (WidgetTester tester) async {
@@ -92,7 +93,8 @@ void main() {
 
         await tester.tap(find.byIcon(Icons.school));
 
-        verify(navigationServiceMock.pushNamedAndRemoveUntil(RouterPaths.student));
+        verify(
+            navigationServiceMock.pushNamedAndRemoveUntil(RouterPaths.student));
       });
 
       testWidgets('ets', (WidgetTester tester) async {

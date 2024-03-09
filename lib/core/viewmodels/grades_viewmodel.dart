@@ -35,7 +35,8 @@ class GradesViewModel extends FutureViewModel<Map<String, List<Course>>> {
   @override
   Future<Map<String, List<Course>>> futureToRun() async {
     try {
-      final coursesCached = await _courseRepository.getCourses(fromCacheOnly: true);
+      final coursesCached =
+          await _courseRepository.getCourses(fromCacheOnly: true);
       setBusy(true);
       _buildCoursesBySession(coursesCached);
       await _courseRepository.getCourses();
@@ -43,14 +44,13 @@ class GradesViewModel extends FutureViewModel<Map<String, List<Course>>> {
         // Update the courses list
         _buildCoursesBySession(_courseRepository.courses!);
       }
-    } catch(error) {
+    } catch (error) {
       onError(error);
     } finally {
       setBusy(false);
     }
     return coursesBySession;
   }
-      
 
   @override
   // ignore: type_annotate_public_apis

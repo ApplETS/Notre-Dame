@@ -133,11 +133,10 @@ class UserRepository {
       final username = await _secureStorage.read(key: usernameSecureKey);
       if (username != null) {
         final password = await _secureStorage.read(key: passwordSecureKey);
-        if(password == null) {
+        if (password == null) {
           await _secureStorage.deleteAll();
-          _analyticsService.logError(
-          tag,
-          "SilentAuthenticate - PlatformException(Handled) - $passwordSecureKey not found");
+          _analyticsService.logError(tag,
+              "SilentAuthenticate - PlatformException(Handled) - $passwordSecureKey not found");
           return false;
         }
         return await authenticate(
@@ -185,7 +184,7 @@ class UserRepository {
     }
     try {
       final password = await _secureStorage.read(key: passwordSecureKey);
-      if(password == null) {
+      if (password == null) {
         throw const ApiException(prefix: tag, message: "Not authenticated");
       }
       return password;
@@ -239,7 +238,7 @@ class UserRepository {
       if(_monETSUser != null) {
         _programs = await _signetsApiClient.getPrograms(
           username: _monETSUser!.universalCode, password: password);
-        
+
         _logger.d("$tag - getPrograms: ${_programs!.length} programs fetched.");
 
         // Update cache
@@ -304,7 +303,7 @@ class UserRepository {
           _cacheManager.update(infoCacheKey, jsonEncode(_info));
         }
       }
-      
+
     } on CacheException catch (_) {
       _logger.e(
           "$tag - getInfo: exception raised while trying to update the cache.");
@@ -323,8 +322,7 @@ class UserRepository {
     try {
       final username = await _secureStorage.read(key: passwordSecureKey);
       if (username != null) {
-        final password =
-            await _secureStorage.read(key: passwordSecureKey);
+        final password = await _secureStorage.read(key: passwordSecureKey);
         return password != null && password.isNotEmpty;
       }
     } on PlatformException catch (e, stacktrace) {

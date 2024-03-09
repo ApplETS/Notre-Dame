@@ -158,7 +158,8 @@ class _DashboardViewState extends State<DashboardView>
                     IconButton(
                       onPressed: () {
                         _analyticsService.logEvent(tag, "Facebook clicked");
-                        Utils.launchURL(Urls.clubFacebook, AppIntl.of(context)!);
+                        Utils.launchURL(
+                            Urls.clubFacebook, AppIntl.of(context)!);
                       },
                       icon: const FaIcon(
                         FontAwesomeIcons.facebook,
@@ -289,7 +290,7 @@ class _DashboardViewState extends State<DashboardView>
     if (model.currentProgressBarText ==
         ProgressBarText.daysElapsedWithTotalDays) {
       progressBarText = Text(
-        AppIntl.of(context)
+        AppIntl.of(context)!
             !.progress_bar_message(model.sessionDays[0], model.sessionDays[1]),
         style: const TextStyle(color: Colors.white),
       );
@@ -390,7 +391,7 @@ class _DashboardViewState extends State<DashboardView>
                 SizedBox(
                   height: 100,
                   child: Center(
-                      child: Text(AppIntl.of(context)
+                      child: Text(AppIntl.of(context)!
                           !.grades_msg_no_grades
                           .split("\n")
                           .first)),
@@ -400,8 +401,7 @@ class _DashboardViewState extends State<DashboardView>
                   padding: const EdgeInsets.fromLTRB(17, 10, 15, 10),
                   child: Wrap(
                     children: model.courses
-                        .map((course) =>
-                            GradeButton(course))
+                        .map((course) => GradeButton(course))
                         .toList(),
                   ),
                 )

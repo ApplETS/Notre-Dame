@@ -44,7 +44,7 @@ jobs:
           msg: ${{ steps.pubspecVersion.outputs.version }}
           separator: '+'
       - name: Validate that version doesn't exists
-        uses: mukunku/tag-exists-action@v1.5.0
+        uses: mukunku/tag-exists-action@v1.6.0
         id: checkTag
         with:
           tag: ${{ steps.split.outputs._0 }}
@@ -85,7 +85,9 @@ jobs:
           ENCRYPTED_GOOGLE_SERVICE_PASSWORD: ${{ secrets.ENCRYPTED_GOOGLE_SERVICE_PASSWORD }}
 
       # Get flutter dependencies.
-      - run: flutter pub get
+      - run : |
+          flutter pub get
+          dart run build_runner build
 
       # Check if the code has any errors/warnings
       - name: Analyze code
@@ -176,12 +178,15 @@ jobs:
         if: matrix.target == 'iOS'
         run: |
           flutter pub get
+          dart run build_runner build
           cd ios
           pod install
           flutter clean
 
       # Get dependencies and decrypt needed files.
-      - run: flutter pub get
+      - run: |
+          flutter pub get
+          dart run build_runner build
 
       - name: Decrypt SignETS certificate and Google Services files
         run: |

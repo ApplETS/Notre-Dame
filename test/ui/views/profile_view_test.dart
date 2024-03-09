@@ -49,8 +49,7 @@ void main() {
 
       UserRepositoryMock.stubGetInfo(userRepositoryMock,
           toReturn: profileStudent);
-      UserRepositoryMock.stubProfileStudent(
-          userRepositoryMock,
+      UserRepositoryMock.stubProfileStudent(userRepositoryMock,
           toReturn: profileStudent);
 
       UserRepositoryMock.stubGetPrograms(userRepositoryMock,

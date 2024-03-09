@@ -254,7 +254,8 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
           return course.grade!;
         } else if (course.summary != null &&
             course.summary!.markOutOf > 0 &&
-            !(course.inReviewPeriod && (course.reviewCompleted != null && !course.reviewCompleted!))) {
+            !(course.inReviewPeriod &&
+                (course.reviewCompleted != null && !course.reviewCompleted!))) {
           return _appIntl.grades_grade_in_percentage(
                 course.summary!.currentMarkInPercent.round());
         }
@@ -363,8 +364,8 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
   Future<List<Session>> futureToRunSessionProgressBar() async {
     try {
       final progressBarText =
-        await _settingsManager.getString(PreferencesFlag.progressBarText)
-          ?? ProgressBarText.daysElapsedWithTotalDays.toString();
+          await _settingsManager.getString(PreferencesFlag.progressBarText) ??
+              ProgressBarText.daysElapsedWithTotalDays.toString();
 
       _currentProgressBarText = ProgressBarText.values
           .firstWhere((e) => e.toString() == progressBarText);
@@ -374,7 +375,7 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
       _sessionDays = getSessionDays();
       _progress = getSessionProgress();
       return sessions;
-    } catch(error) {
+    } catch (error) {
       onError(error);
     } finally {
       setBusyForObject(progress, false);
@@ -384,7 +385,8 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
 
   Future<List<CourseActivity>> futureToRunSchedule() async {
     try {
-      var courseActivities = await _courseRepository.getCoursesActivities(fromCacheOnly: true);
+      var courseActivities =
+          await _courseRepository.getCoursesActivities(fromCacheOnly: true);
       setBusyForObject(_todayDateEvents, true);
       setBusyForObject(_tomorrowDateEvents, true);
       _todayDateEvents.clear();
@@ -392,10 +394,12 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
       final todayDate = _settingsManager.dateTimeNow;
       courseActivities = await _courseRepository.getCoursesActivities();
 
-      if (_todayDateEvents.isEmpty && _courseRepository.coursesActivities != null) {
+      if (_todayDateEvents.isEmpty &&
+          _courseRepository.coursesActivities != null) {
         final DateTime tomorrowDate = todayDate.add(const Duration(days: 1));
         // Build the list
-        for (final CourseActivity course in _courseRepository.coursesActivities!) {
+        for (final CourseActivity course
+            in _courseRepository.coursesActivities!) {
           final DateTime dateOnly = course.startDateTime;
           if (isSameDay(todayDate, dateOnly) &&
               todayDate.compareTo(course.endDateTime) < 0) {
@@ -407,9 +411,9 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
       }
 
       _todayDateEvents
-        .sort((a, b) => a.startDateTime.compareTo(b.startDateTime));
+          .sort((a, b) => a.startDateTime.compareTo(b.startDateTime));
       _tomorrowDateEvents
-        .sort((a, b) => a.startDateTime.compareTo(b.startDateTime));
+          .sort((a, b) => a.startDateTime.compareTo(b.startDateTime));
 
       _todayDateEvents = await removeLaboratoryGroup(_todayDateEvents);
       _tomorrowDateEvents = await removeLaboratoryGroup(_tomorrowDateEvents);

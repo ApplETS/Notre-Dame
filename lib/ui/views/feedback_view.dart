@@ -155,9 +155,9 @@ class _FeedbackViewState extends State<FeedbackView> {
                                     const SizedBox(width: 4),
                                     createListTag(
                                         model.myIssues[index].isOpen
-                                            ? AppIntl.of(context)
+                                            ? AppIntl.of(context)!
                                                 !.ticket_status_open
-                                            : AppIntl.of(context)
+                                            : AppIntl.of(context)!
                                                 !.ticket_status_closed,
                                         color: model.myIssues[index].state ==
                                                 'open'

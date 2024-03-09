@@ -35,7 +35,8 @@ class AnalyticsService {
   }
 
   /// Set user properties to identify the user against firebase app.
-  Future setUserProperties({required String userId, required String domain}) async {
+  Future setUserProperties(
+      {required String userId, required String domain}) async {
     await _analytics.setUserId(id: userId);
     await _analytics.setUserProperty(
         name: _userPropertiesDomainKey, value: domain);

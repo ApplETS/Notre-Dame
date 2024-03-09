@@ -191,7 +191,8 @@ class ScheduleSettingsViewModel
       final scheduleActivityCode = await _settingsManager.getDynamicString(
           PreferencesFlag.scheduleLaboratoryGroup, courseKey);
       final scheduleActivity = _scheduleActivitiesByCourse[courseKey]
-          ?.firstWhereOrNull((element) => element.activityCode == scheduleActivityCode);
+          ?.firstWhereOrNull(
+              (element) => element.activityCode == scheduleActivityCode);
       if (scheduleActivity != null) {
         _selectedScheduleActivity[courseKey] = scheduleActivity;
       }

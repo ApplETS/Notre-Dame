@@ -27,14 +27,15 @@ List<GroupDiscovery> discoveryComponents(BuildContext context) {
               maxHeight: MediaQuery.of(context).size.height * 0.6),
           child: Column(
             children: [
-              _buildHeader(AppIntl.of(context)!.discovery_navbar_dashboard_title,
+              _buildHeader(
+                  AppIntl.of(context)!.discovery_navbar_dashboard_title,
                   context),
               Expanded(
                 child: ListView(
                   padding: EdgeInsets.zero,
                   children: <Widget>[
-                    Text(
-                        AppIntl.of(context)!.discovery_navbar_dashboard_details),
+                    Text(AppIntl.of(context)!
+                        .discovery_navbar_dashboard_details),
                     const Text('\n'),
                     if (AppIntl.of(context)!.localeName == "fr")
                       Image.asset(
@@ -89,8 +90,8 @@ List<GroupDiscovery> discoveryComponents(BuildContext context) {
               maxHeight: MediaQuery.of(context).size.height * 0.6),
           child: Column(
             children: [
-              _buildHeader(
-                  AppIntl.of(context)!.discovery_navbar_schedule_title, context),
+              _buildHeader(AppIntl.of(context)!.discovery_navbar_schedule_title,
+                  context),
               Expanded(
                 child: ListView(
                   padding: EdgeInsets.zero,
@@ -250,12 +251,12 @@ List<GroupDiscovery> discoveryComponents(BuildContext context) {
                   children: <Widget>[
                     _buildSkipDiscoveryButton(context),
                     Text(
-                        AppIntl.of(context)
+                        AppIntl.of(context)!
                             !.discovery_page_student_grades_session,
                         textAlign: TextAlign.justify),
                     const Text('\n'),
                     Text(
-                        AppIntl.of(context)
+                        AppIntl.of(context)!
                             !.discovery_page_student_grades_grade_button,
                         textAlign: TextAlign.justify),
                   ],

@@ -36,8 +36,7 @@ void main() {
       setupNetworkingServiceMock();
       setupLaunchUrlServiceMock();
       quickLinkRepositoryMock = setupQuickLinkRepositoryMock();
-      QuickLinkRepositoryMock.stubGetDefaultQuickLinks(
-          quickLinkRepositoryMock,
+      QuickLinkRepositoryMock.stubGetDefaultQuickLinks(quickLinkRepositoryMock,
           toReturn: quickLinks(intl));
 
       QuickLinkRepositoryMock.stubGetQuickLinkDataFromCacheException(

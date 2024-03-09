@@ -105,12 +105,12 @@ class _GradesDetailsViewState extends State<GradesDetailsView>
                           children: <Widget>[
                             _buildClassInfo(model.course.title),
                             if (model.course.teacherName != null)
-                              _buildClassInfo(AppIntl.of(context)
-                                  !.grades_teacher(model.course.teacherName!)),
-                            _buildClassInfo(AppIntl.of(context)
-                                !.grades_group_number(model.course.group)),
-                            _buildClassInfo(AppIntl.of(context)!.credits_number(
-                                model.course.numberOfCredits)),
+                              _buildClassInfo(AppIntl.of(context)!
+                                  .grades_teacher(model.course.teacherName!)),
+                            _buildClassInfo(AppIntl.of(context)!
+                                .grades_group_number(model.course.group)),
+                            _buildClassInfo(AppIntl.of(context)!
+                                .credits_number(model.course.numberOfCredits)),
                           ],
                         ),
                       ),
@@ -129,7 +129,8 @@ class _GradesDetailsViewState extends State<GradesDetailsView>
   Widget _buildGradeEvaluations(GradesDetailsViewModel model) {
     if (model.isBusy) {
       return const Center(child: CircularProgressIndicator());
-    } else if (model.course.inReviewPeriod && !(model.course.reviewCompleted ?? false)) {
+    } else if (model.course.inReviewPeriod &&
+        !(model.course.reviewCompleted ?? false)) {
       return Center(
         child: GradeNotAvailable(
             key: const Key("EvaluationNotCompleted"),
@@ -267,7 +268,7 @@ class _GradesDetailsViewState extends State<GradesDetailsView>
             info,
             style: Theme.of(context)
                 .textTheme
-                .bodyLarge 
+                .bodyLarge
                 !.copyWith(color: Colors.white, fontSize: 16),
             overflow: TextOverflow.ellipsis,
           ),
