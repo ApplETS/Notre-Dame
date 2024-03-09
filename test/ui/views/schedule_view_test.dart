@@ -301,7 +301,7 @@ void main() {
 
         await tester.pumpWidget(localizedWidget(
             child: FeatureDiscovery(child: const ScheduleView())));
-        await tester.pumpAndSettle(const Duration(seconds: 1));
+        await tester.pumpAndSettle();
 
         // DateFormat has to be after the pumpWidget to correctly load the locale
         final dateFormat = DateFormat.MMMMEEEEd();

@@ -171,11 +171,16 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
 
   bool isLoadingEvents = false;
 
-  bool get calendarViewSetting =>
-      settings[PreferencesFlag.scheduleListView] as bool;
+  bool get calendarViewSetting {
+    if (busy(settings)) {
+      return false;
+    }
+    return settings[PreferencesFlag.scheduleListView] as bool;
+  }
 
   @override
   Future<List<CourseActivity>> futureToRun() async {
+    loadSettings();
     List<CourseActivity>? activities = await _courseRepository.getCoursesActivities(fromCacheOnly: true);
     try {
       setBusyForObject(isLoadingEvents, true);
@@ -238,7 +243,7 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
   }
 
   Future loadSettings() async {
-    setBusy(true);
+    setBusyForObject(settings, true);
     settings.clear();
     settings.addAll(await _settingsManager.getScheduleSettings());
     calendarFormat =
@@ -246,7 +251,7 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
 
     await loadSettingsScheduleActivities();
 
-    setBusy(false);
+    setBusyForObject(settings, false);
   }
 
   Future loadSettingsScheduleActivities() async {
