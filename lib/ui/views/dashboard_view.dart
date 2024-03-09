@@ -290,7 +290,7 @@ class _DashboardViewState extends State<DashboardView>
     if (model.currentProgressBarText ==
         ProgressBarText.daysElapsedWithTotalDays) {
       progressBarText = Text(
-        AppIntl.of(context)!
+        AppIntl.of(context)
             !.progress_bar_message(model.sessionDays[0], model.sessionDays[1]),
         style: const TextStyle(color: Colors.white),
       );
@@ -391,7 +391,7 @@ class _DashboardViewState extends State<DashboardView>
                 SizedBox(
                   height: 100,
                   child: Center(
-                      child: Text(AppIntl.of(context)!
+                      child: Text(AppIntl.of(context)
                           !.grades_msg_no_grades
                           .split("\n")
                           .first)),

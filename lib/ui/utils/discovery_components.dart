@@ -252,12 +252,12 @@ List<GroupDiscovery> discoveryComponents(BuildContext context) {
                     _buildSkipDiscoveryButton(context),
                     Text(
                         AppIntl.of(context)!
-                            !.discovery_page_student_grades_session,
+                            .discovery_page_student_grades_session,
                         textAlign: TextAlign.justify),
                     const Text('\n'),
                     Text(
                         AppIntl.of(context)!
-                            !.discovery_page_student_grades_grade_button,
+                            .discovery_page_student_grades_grade_button,
                         textAlign: TextAlign.justify),
                   ],
                 ),
@@ -444,8 +444,8 @@ Padding _buildHeader(String title, BuildContext context) {
         Text(title,
             style: Theme.of(context)
                 .textTheme
-                .titleLarge
-                !.copyWith(color: Colors.white)),
+                .titleLarge!
+                .copyWith(color: Colors.white)),
         _buildSkipDiscoveryButton(context)
       ],
     ),

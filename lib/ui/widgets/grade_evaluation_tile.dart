@@ -159,7 +159,7 @@ class _GradeEvaluationTileState extends State<GradeEvaluationTile>
                   Padding(
                     padding: const EdgeInsets.only(top: 10.0, bottom: 20.0),
                     child: Text(
-                      AppIntl.of(context)!
+                      AppIntl.of(context)
                           !.grades_weight(widget.evaluation.weight),
                       style: TextStyle(
                         fontSize: 14,

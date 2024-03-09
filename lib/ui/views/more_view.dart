@@ -198,7 +198,7 @@ class _MoreViewState extends State<MoreView> {
                           style: const TextStyle(color: Colors.red),
                         ),
                         content: Text(AppIntl.of(context)!
-                            !.more_prompt_log_out_confirmation),
+                            .more_prompt_log_out_confirmation),
                         actions: [
                           TextButton(
                               onPressed: () async {

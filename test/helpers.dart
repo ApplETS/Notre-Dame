@@ -157,7 +157,7 @@ void setupFlutterToastMock([WidgetTester? tester]) {
     messenger = tester.binding.defaultBinaryMessenger;
   } else {
     messenger =
-        TestDefaultBinaryMessengerBinding.instance!.defaultBinaryMessenger;
+        TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger;
   }
 
   messenger.setMockMethodCallHandler(channel, (MethodCall methodCall) async {
@@ -297,7 +297,7 @@ void setupInAppReviewMock([WidgetTester? tester]) {
     messenger = tester.binding.defaultBinaryMessenger;
   } else {
     messenger =
-        TestDefaultBinaryMessengerBinding.instance!.defaultBinaryMessenger;
+        TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger;
   }
 
   messenger.setMockMethodCallHandler(channel, (MethodCall methodCall) async {
