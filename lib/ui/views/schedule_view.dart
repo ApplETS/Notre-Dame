@@ -395,6 +395,7 @@ class _ScheduleViewState extends State<ScheduleView>
         valueListenable: model.focusedDate,
         builder: (context, value, _) {
           return TableCalendar(
+            key: const Key("TableCalendar"),
             startingDayOfWeek:
                 model.settings[PreferencesFlag.scheduleStartWeekday]
                     as StartingDayOfWeek,
