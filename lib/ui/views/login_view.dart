@@ -80,7 +80,7 @@ class _LoginViewState extends State<LoginView> {
                                                 Brightness.light
                                             ? Colors.white
                                             : AppTheme.etsLightRed,
-                                        BlendMode.color),
+                                        BlendMode.srcIn),
                                   )),
                               const SizedBox(
                                 height: 48,

@@ -39,7 +39,7 @@ class StartUpView extends StatelessWidget {
                                           Brightness.light
                                       ? Colors.white
                                       : AppTheme.etsLightRed,
-                                  BlendMode.color),
+                                  BlendMode.srcIn),
                             )),
                         const SizedBox(
                           height: 15,
