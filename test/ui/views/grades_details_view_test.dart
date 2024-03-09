@@ -242,7 +242,7 @@ void main() {
 
         await tester.pumpWidget(localizedWidget(
             child: FeatureDiscovery(child: GradesDetailsView(course: courseWithoutSummary))));
-        await tester.pumpAndSettle();
+        await tester.pumpAndSettle(const Duration(seconds: 1));
 
         await expectLater(find.byType(GradesDetailsView),
             matchesGoldenFile(goldenFilePath("gradesDetailsView_2")));
@@ -259,7 +259,7 @@ void main() {
 
         await tester.pumpWidget(localizedWidget(
             child: FeatureDiscovery(child: GradesDetailsView(course: courseWithoutSummary))));
-        await tester.pumpAndSettle();
+        await tester.pumpAndSettle(const Duration(seconds: 1));
 
         await expectLater(
             find.byType(GradesDetailsView),
