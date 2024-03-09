@@ -15,7 +15,7 @@ class StartUpView extends StatelessWidget {
   Widget build(BuildContext context) =>
       ViewModelBuilder<StartUpViewModel>.nonReactive(
           viewModelBuilder: () => StartUpViewModel(),
-          onModelReady: (StartUpViewModel model) {
+          onViewModelReady: (StartUpViewModel model) {
             model.handleStartUp();
           },
           builder: (context, model, child) => Scaffold(

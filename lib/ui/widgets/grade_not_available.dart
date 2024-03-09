@@ -13,8 +13,7 @@ class GradeNotAvailable extends StatelessWidget {
   final bool isEvaluationPeriod;
 
   const GradeNotAvailable(
-      {Key? key, this.onPressed, this.isEvaluationPeriod = false})
-      : super(key: key);
+      {super.key, this.onPressed, this.isEvaluationPeriod = false});
 
   @override
   Widget build(BuildContext context) {

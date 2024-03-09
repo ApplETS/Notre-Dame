@@ -33,7 +33,7 @@ import 'package:notredame/ui/widgets/haptics_container.dart';
 
 class DashboardView extends StatefulWidget {
   final UpdateCode updateCode;
-  const DashboardView({Key? key, required this.updateCode}) : super(key: key);
+  const DashboardView({super.key, required this.updateCode});
 
   @override
   _DashboardViewState createState() => _DashboardViewState();
@@ -104,19 +104,14 @@ class _DashboardViewState extends State<DashboardView>
           if (model.remoteConfigService.dashboardMessageActive) {
             cards.add(_buildMessageBroadcastCard(model, element));
           }
-          break;
         case PreferencesFlag.aboutUsCard:
           cards.add(_buildAboutUsCard(model, element));
-          break;
         case PreferencesFlag.scheduleCard:
           cards.add(_buildScheduleCard(model, element));
-          break;
         case PreferencesFlag.progressBarCard:
           cards.add(_buildProgressBarCard(model, element));
-          break;
         case PreferencesFlag.gradesCard:
           cards.add(_buildGradesCards(model, element));
-          break;
 
         default:
       }

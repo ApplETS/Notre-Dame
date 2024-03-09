@@ -549,11 +549,9 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
         case UpdateCode.force:
           isAForcedUpdate = true;
           message = appIntl!.update_version_message_force;
-          break;
         case UpdateCode.ask:
           isAForcedUpdate = false;
           message = appIntl!.update_version_message;
-          break;
         case UpdateCode.none:
           return;
       }

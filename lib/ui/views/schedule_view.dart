@@ -29,7 +29,7 @@ class ScheduleView extends StatefulWidget {
   @visibleForTesting
   final DateTime? initialDay;
 
-  const ScheduleView({Key? key, this.initialDay}) : super(key: key);
+  const ScheduleView({super.key, this.initialDay});
 
   @override
   _ScheduleViewState createState() => _ScheduleViewState();
@@ -223,7 +223,7 @@ class _ScheduleViewState extends State<ScheduleView>
         hourIndicatorSettings: calendar_view.HourIndicatorSettings(
           color: scheduleLineColor,
         ),
-        liveTimeIndicatorSettings: calendar_view.HourIndicatorSettings(
+        liveTimeIndicatorSettings: calendar_view.LiveTimeIndicatorSettings(
           color: chevronColor,
         ),
         scrollOffset: 305,
