@@ -222,7 +222,8 @@ void main() {
                     child: ScheduleView(initialDay: testingDate)))));
         await tester.pumpAndSettle(const Duration(seconds: 1));
 
-        expect(find.byKey(tableCalendarKey, skipOffstage: false), findsOneWidget);
+        expect(
+            find.byKey(tableCalendarKey, skipOffstage: false), findsOneWidget);
         expect(
             find.descendant(
                 of: find.byKey(tableCalendarKey, skipOffstage: false),
