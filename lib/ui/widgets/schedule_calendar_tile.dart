@@ -41,7 +41,6 @@ class _ScheduleCalendarTileState extends State<ScheduleCalendarTile> {
     final courseName = courseInfos[0].split("-")[0];
     final courseLocation = courseInfos[1];
     final courseType = courseInfos[2];
-    final teacherName = courseInfos[3];
     final startTime =
         "${widget.start.hour}:${widget.start.minute.toString().padLeft(2, '0')}";
     final endTime =
@@ -72,6 +71,7 @@ class _ScheduleCalendarTileState extends State<ScheduleCalendarTile> {
                   fontWeight: FontWeight.w500,
                 ),
               ),
+              /* *******Section removed because we receive "null" from the API*******
               Text(
                 "${AppIntl.of(widget.buildContext).schedule_calendar_by} $teacherName",
                 style: const TextStyle(
@@ -79,6 +79,7 @@ class _ScheduleCalendarTileState extends State<ScheduleCalendarTile> {
                   fontWeight: FontWeight.w500,
                 ),
               ),
+              */
               Text(
                 "${AppIntl.of(widget.buildContext).schedule_calendar_from_time} $startTime ${AppIntl.of(widget.buildContext).schedule_calendar_to_time} $endTime",
                 style: const TextStyle(
