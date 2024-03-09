@@ -87,7 +87,7 @@ jobs:
       # Get flutter dependencies.
       - run : |
           flutter pub get
-          dart run build_runner build
+          dart run build_runner build --delete-conflicting-outputs
 
       # Check if the code has any errors/warnings
       - name: Analyze code
@@ -178,7 +178,7 @@ jobs:
         if: matrix.target == 'iOS'
         run: |
           flutter pub get
-          dart run build_runner build
+          dart run build_runner build --delete-conflicting-outputs
           cd ios
           pod install
           flutter clean
@@ -186,7 +186,7 @@ jobs:
       # Get dependencies and decrypt needed files.
       - run: |
           flutter pub get
-          dart run build_runner build
+          dart run build_runner build --delete-conflicting-outputs
 
       - name: Decrypt SignETS certificate and Google Services files
         run: |
