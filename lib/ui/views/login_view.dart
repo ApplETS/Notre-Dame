@@ -103,16 +103,16 @@ class _LoginViewState extends State<LoginView> {
                                       borderSide: BorderSide(
                                           color: errorTextColor,
                                           width: borderRadiusOnFocus)),
-                                  labelText: AppIntl.of(context)
-                                      !.login_prompt_universal_code,
+                                  labelText: AppIntl.of(context)!
+                                      .login_prompt_universal_code,
                                   labelStyle:
                                       const TextStyle(color: Colors.white54),
                                   errorStyle: TextStyle(color: errorTextColor),
                                   suffixIcon: Tooltip(
                                       key: tooltipkey,
                                       triggerMode: TooltipTriggerMode.manual,
-                                      message: AppIntl.of(context)
-                                          !.universal_code_example,
+                                      message: AppIntl.of(context)!
+                                          .universal_code_example,
                                       preferBelow: true,
                                       child: IconButton(
                                         icon: const Icon(Icons.help,

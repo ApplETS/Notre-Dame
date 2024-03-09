@@ -155,10 +155,10 @@ class _FeedbackViewState extends State<FeedbackView> {
                                     const SizedBox(width: 4),
                                     createListTag(
                                         model.myIssues[index].isOpen
-                                            ? AppIntl.of(context)
-                                                !.ticket_status_open
-                                            : AppIntl.of(context)
-                                                !.ticket_status_closed,
+                                            ? AppIntl.of(context)!
+                                                .ticket_status_open
+                                            : AppIntl.of(context)!
+                                                .ticket_status_closed,
                                         color: model.myIssues[index].state ==
                                                 'open'
                                             ? Colors.green
@@ -190,8 +190,8 @@ class _FeedbackViewState extends State<FeedbackView> {
                                       overflow: TextOverflow.ellipsis,
                                       style: Theme.of(context)
                                           .textTheme
-                                          .headline6
-                                          !.copyWith(
+                                          .headline6!
+                                          .copyWith(
                                               color: isLightMode
                                                   ? const Color.fromARGB(
                                                       168, 0, 0, 0)
@@ -224,14 +224,14 @@ class _FeedbackViewState extends State<FeedbackView> {
                             text: AppIntl.of(context)!.more_report_bug_step1,
                             style: Theme.of(context)
                                 .textTheme
-                                .bodyText2
-                                !.copyWith(fontSize: 18)),
+                                .bodyText2!
+                                .copyWith(fontSize: 18)),
                         TextSpan(
                             text: AppIntl.of(context)!.more_report_bug_step2,
                             style: Theme.of(context)
                                 .textTheme
-                                .bodyText2
-                                !.copyWith(
+                                .bodyText2!
+                                .copyWith(
                                     fontSize: 18,
                                     color: Theme.of(context).brightness ==
                                             Brightness.light
@@ -242,14 +242,14 @@ class _FeedbackViewState extends State<FeedbackView> {
                             text: AppIntl.of(context)!.more_report_bug_step3,
                             style: Theme.of(context)
                                 .textTheme
-                                .bodyText2
-                                !.copyWith(fontSize: 18)),
+                                .bodyText2!
+                                .copyWith(fontSize: 18)),
                         TextSpan(
                             text: AppIntl.of(context)!.more_report_bug_step4,
                             style: Theme.of(context)
                                 .textTheme
-                                .bodyText2
-                                !.copyWith(
+                                .bodyText2!
+                                .copyWith(
                                     fontSize: 18,
                                     color: Theme.of(context).brightness ==
                                             Brightness.light
@@ -260,8 +260,8 @@ class _FeedbackViewState extends State<FeedbackView> {
                             text: AppIntl.of(context)!.more_report_bug_step5,
                             style: Theme.of(context)
                                 .textTheme
-                                .bodyText2
-                                !.copyWith(fontSize: 18)),
+                                .bodyText2!
+                                .copyWith(fontSize: 18)),
                       ],
                     ),
                   ),
@@ -302,16 +302,16 @@ class _FeedbackViewState extends State<FeedbackView> {
                   title,
                   style: Theme.of(context)
                       .textTheme
-                      .bodyText2
-                      !.copyWith(fontSize: 19),
+                      .bodyText2!
+                      .copyWith(fontSize: 19),
                   textAlign: TextAlign.left,
                 ),
                 Text(
                   subtitle,
                   style: Theme.of(context)
                       .textTheme
-                      .bodyText2
-                      !.copyWith(fontSize: 16),
+                      .bodyText2!
+                      .copyWith(fontSize: 16),
                   textAlign: TextAlign.left,
                 )
               ],
