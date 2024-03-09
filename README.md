@@ -65,6 +65,11 @@ chmod +x ./env_variables.sh
 flutter pub get
 ```
 
+- To generate the mocks:
+```
+dart run build_runner build
+```
+
 ## Add environment variable for API_KEY
 
 - To add the Google Maps API TOKEN and the GitHub API TOKEN, you need to rename the file `.env.template` into `.env`. In
