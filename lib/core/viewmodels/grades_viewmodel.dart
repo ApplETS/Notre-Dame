@@ -33,22 +33,24 @@ class GradesViewModel extends FutureViewModel<Map<String, List<Course>>> {
   GradesViewModel({required AppIntl intl}) : _appIntl = intl;
 
   @override
-  Future<Map<String, List<Course>>> futureToRun() async =>
-      _courseRepository.getCourses(fromCacheOnly: true).then((coursesCached) {
-        setBusy(true);
-        _buildCoursesBySession(coursesCached);
-        // ignore: return_type_invalid_for_catch_error
-        _courseRepository.getCourses().catchError(onError).then((value) {
-          if (_courseRepository.courses != null) {
-            // Update the courses list
-            _buildCoursesBySession(_courseRepository.courses!);
-          }
-        }).whenComplete(() {
-          setBusy(false);
-        });
-
-        return coursesBySession;
-      });
+  Future<Map<String, List<Course>>> futureToRun() async {
+    try {
+      final coursesCached = await _courseRepository.getCourses(fromCacheOnly: true);
+      setBusy(true);
+      _buildCoursesBySession(coursesCached);
+      await _courseRepository.getCourses();
+      if (_courseRepository.courses != null) {
+        // Update the courses list
+        _buildCoursesBySession(_courseRepository.courses!);
+      }
+    } catch(error) {
+      onError(error);
+    } finally {
+      setBusy(false);
+    }
+    return coursesBySession;
+  }
+      
 
   @override
   // ignore: type_annotate_public_apis
@@ -58,7 +60,6 @@ class GradesViewModel extends FutureViewModel<Map<String, List<Course>>> {
 
   /// Reload the courses from Signets and rebuild the view.
   Future refresh() async {
-    // ignore: return_type_invalid_for_catch_error
     try {
       await _courseRepository.getCourses();
       if(_courseRepository.courses != null) {
