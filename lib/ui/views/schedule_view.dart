@@ -76,11 +76,6 @@ class _ScheduleViewState extends State<ScheduleView>
       ViewModelBuilder<ScheduleViewModel>.reactive(
         viewModelBuilder: () => ScheduleViewModel(
             intl: AppIntl.of(context)!, initialSelectedDate: widget.initialDay),
-        onViewModelReady:  (model) {
-          if (model.settings.isEmpty) {
-            model.loadSettings();
-          }
-        },
         builder: (context, model, child) => BaseScaffold(
             isLoading: model.busy(model.isLoadingEvents),
             isInteractionLimitedWhileLoading: false,
@@ -88,14 +83,17 @@ class _ScheduleViewState extends State<ScheduleView>
               title: Text(AppIntl.of(context)!.title_schedule),
               centerTitle: false,
               automaticallyImplyLeading: false,
-              actions: _buildActionButtons(model),
+              actions:
+                  model.busy(model.settings) ? [] : _buildActionButtons(model),
             ),
-            body: RefreshIndicator(
-              child: !model.calendarViewSetting
-                  ? _buildCalendarView(model, context)
-                  : _buildListView(model, context),
-              onRefresh: () => model.refresh(),
-            )),
+            body: model.busy(model.settings)
+                ? const SizedBox()
+                : RefreshIndicator(
+                    child: !model.calendarViewSetting
+                        ? _buildCalendarView(model, context)
+                        : _buildListView(model, context),
+                    onRefresh: () => model.refresh(),
+                  )),
       );
 
   Widget _buildListView(ScheduleViewModel model, BuildContext context) {

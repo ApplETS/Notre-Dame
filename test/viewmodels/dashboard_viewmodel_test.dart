@@ -926,7 +926,7 @@ void main() {
             preferencesServiceMock, PreferencesFlag.ratingTimer,
             toReturn: day);
         PreferencesServiceMock.stubGetBool(
-            preferencesServiceMock, PreferencesFlag.hasRatingBeenRequested);
+            preferencesServiceMock, PreferencesFlag.hasRatingBeenRequested, toReturn: false);
 
         expect(await DashboardViewModel.launchInAppReview(), true);
 
