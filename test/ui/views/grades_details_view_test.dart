@@ -235,15 +235,13 @@ void main() {
       testWidgets("if there is no grades available",
           (WidgetTester tester) async {
         setupFlutterToastMock(tester);
-        CourseRepositoryMock.stubGetCourseSummary(
-            courseRepositoryMock, course,
+        CourseRepositoryMock.stubGetCourseSummary(courseRepositoryMock, course,
             toReturn: courseWithoutSummary);
 
         tester.binding.window.physicalSizeTestValue = const Size(800, 1410);
 
         await tester.pumpWidget(localizedWidget(
-            child: FeatureDiscovery(
-                child: GradesDetailsView(course: course))));
+            child: FeatureDiscovery(child: GradesDetailsView(course: course))));
         await tester.pumpAndSettle(const Duration(seconds: 1));
 
         await expectLater(find.byType(GradesDetailsView),
@@ -253,15 +251,13 @@ void main() {
       testWidgets("if in the evaluation period and evaluation not completed",
           (WidgetTester tester) async {
         setupFlutterToastMock(tester);
-        CourseRepositoryMock.stubGetCourseSummary(
-            courseRepositoryMock, course,
+        CourseRepositoryMock.stubGetCourseSummary(courseRepositoryMock, course,
             toReturn: courseWithEvaluationNotCompleted);
 
         tester.binding.window.physicalSizeTestValue = const Size(800, 1410);
 
         await tester.pumpWidget(localizedWidget(
-            child: FeatureDiscovery(
-                child: GradesDetailsView(course: course))));
+            child: FeatureDiscovery(child: GradesDetailsView(course: course))));
         await tester.pumpAndSettle(const Duration(seconds: 1));
 
         await expectLater(
