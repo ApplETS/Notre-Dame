@@ -98,6 +98,7 @@ void main() {
     });
 
     group("golden - ", () {
+      const tableCalendarKey = Key("TableCalendar");
       testWidgets("default view (no events), showTodayButton enabled",
           (WidgetTester tester) async {
         tester.view.physicalSize = const Size(800, 1410);
@@ -221,10 +222,11 @@ void main() {
                     child: ScheduleView(initialDay: testingDate)))));
         await tester.pumpAndSettle(const Duration(seconds: 1));
 
-        expect(find.byType(TableCalendar, skipOffstage: false), findsOneWidget);
+        expect(
+            find.byKey(tableCalendarKey, skipOffstage: false), findsOneWidget);
         expect(
             find.descendant(
-                of: find.byType(TableCalendar, skipOffstage: false),
+                of: find.byKey(tableCalendarKey, skipOffstage: false),
                 matching: find.text(
                     "${testingDate.add(const Duration(days: 1)).day}",
                     skipOffstage: false)),
@@ -232,7 +234,7 @@ void main() {
 
         // Tap on the day after selected day
         await tester.tap(find.descendant(
-            of: find.byType(TableCalendar, skipOffstage: false),
+            of: find.byKey(tableCalendarKey, skipOffstage: false),
             matching: find.text(
                 "${testingDate.add(const Duration(days: 1)).day}",
                 skipOffstage: false)));
