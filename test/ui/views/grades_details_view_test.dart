@@ -236,14 +236,14 @@ void main() {
           (WidgetTester tester) async {
         setupFlutterToastMock(tester);
         CourseRepositoryMock.stubGetCourseSummary(
-            courseRepositoryMock, courseWithoutSummary,
+            courseRepositoryMock, course,
             toReturn: courseWithoutSummary);
 
         tester.binding.window.physicalSizeTestValue = const Size(800, 1410);
 
         await tester.pumpWidget(localizedWidget(
             child: FeatureDiscovery(
-                child: GradesDetailsView(course: courseWithoutSummary))));
+                child: GradesDetailsView(course: course))));
         await tester.pumpAndSettle(const Duration(seconds: 1));
 
         await expectLater(find.byType(GradesDetailsView),
@@ -254,14 +254,14 @@ void main() {
           (WidgetTester tester) async {
         setupFlutterToastMock(tester);
         CourseRepositoryMock.stubGetCourseSummary(
-            courseRepositoryMock, courseWithoutSummary,
+            courseRepositoryMock, course,
             toReturn: courseWithEvaluationNotCompleted);
 
         tester.binding.window.physicalSizeTestValue = const Size(800, 1410);
 
         await tester.pumpWidget(localizedWidget(
             child: FeatureDiscovery(
-                child: GradesDetailsView(course: courseWithoutSummary))));
+                child: GradesDetailsView(course: course))));
         await tester.pumpAndSettle(const Duration(seconds: 1));
 
         await expectLater(
