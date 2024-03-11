@@ -57,6 +57,7 @@ class _NewsDetailsViewState extends State<NewsDetailsView> {
                         titleSpacing: 0,
                         leading: IconButton(
                           icon: const Icon(Icons.arrow_back),
+                          color: Colors.white,
                           onPressed: () => Navigator.of(context).pop(),
                         ),
                         title: Text(
@@ -165,10 +166,9 @@ class _NewsDetailsViewState extends State<NewsDetailsView> {
         ),
         title: Text(
           author,
-          style: TextStyle(
+          style: const TextStyle(
             fontWeight: FontWeight.bold,
-            color:
-                Utils.getColorByBrightness(context, Colors.black, Colors.white),
+            color: Colors.white,
             fontSize: 20,
           ),
         ),
