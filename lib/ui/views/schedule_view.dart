@@ -76,11 +76,6 @@ class _ScheduleViewState extends State<ScheduleView>
       ViewModelBuilder<ScheduleViewModel>.reactive(
         viewModelBuilder: () => ScheduleViewModel(
             intl: AppIntl.of(context)!, initialSelectedDate: widget.initialDay),
-        onModelReady: (model) {
-          if (model.settings.isEmpty) {
-            model.loadSettings();
-          }
-        },
         builder: (context, model, child) => BaseScaffold(
             isLoading: model.busy(model.isLoadingEvents),
             isInteractionLimitedWhileLoading: false,
@@ -88,11 +83,11 @@ class _ScheduleViewState extends State<ScheduleView>
               title: Text(AppIntl.of(context)!.title_schedule),
               centerTitle: false,
               automaticallyImplyLeading: false,
-              actions: _buildActionButtons(model),
+              actions:
+                  model.busy(model.settings) ? [] : _buildActionButtons(model),
             ),
             body: RefreshIndicator(
-              child: model.calendarViewSetting == null ||
-                      !model.calendarViewSetting!
+              child: !model.calendarViewSetting
                   ? _buildCalendarView(model, context)
                   : _buildListView(model, context),
               onRefresh: () => model.refresh(),
@@ -398,6 +393,7 @@ class _ScheduleViewState extends State<ScheduleView>
         valueListenable: model.focusedDate,
         builder: (context, value, _) {
           return TableCalendar(
+            key: const Key("TableCalendar"),
             startingDayOfWeek:
                 model.settings[PreferencesFlag.scheduleStartWeekday]
                     as StartingDayOfWeek,

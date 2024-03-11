@@ -171,11 +171,16 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
 
   bool isLoadingEvents = false;
 
-  bool? get calendarViewSetting =>
-      settings[PreferencesFlag.scheduleListView] as bool?;
+  bool get calendarViewSetting {
+    if (busy(settings)) {
+      return false;
+    }
+    return settings[PreferencesFlag.scheduleListView] as bool;
+  }
 
   @override
   Future<List<CourseActivity>> futureToRun() async {
+    loadSettings();
     List<CourseActivity>? activities =
         await _courseRepository.getCoursesActivities(fromCacheOnly: true);
     try {
@@ -240,7 +245,7 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
   }
 
   Future loadSettings() async {
-    setBusy(true);
+    setBusyForObject(settings, true);
     settings.clear();
     settings.addAll(await _settingsManager.getScheduleSettings());
     calendarFormat =
@@ -248,7 +253,7 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
 
     await loadSettingsScheduleActivities();
 
-    setBusy(false);
+    setBusyForObject(settings, false);
   }
 
   Future loadSettingsScheduleActivities() async {
@@ -330,11 +335,22 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
       coursesActivities;
     }
 
-    List<CourseActivity> activities = [];
-    if (_coursesActivities.containsKey(date)) {
-      activities = _coursesActivities[date] ?? [];
+    // TODO: maybe use containsKey and put the _courseActivities key to a string...
+    DateTime? dateInArray;
+    final courseActivitiesContains = _coursesActivities.keys.any((element) {
+      dateInArray = element;
+      return isSameDay(element, date);
+    });
+    if (courseActivitiesContains) {
+      return _coursesActivities[dateInArray] ?? [];
     }
-    return activities;
+    return [];
+
+    // List<CourseActivity> activities = [];
+    // if (_coursesActivities.containsKey(date)) {
+    //   activities = _coursesActivities[date] ?? [];
+    // }
+    // return activities;
   }
 
   Future setCalendarFormat(CalendarFormat format) async {
