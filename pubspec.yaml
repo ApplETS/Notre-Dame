@@ -8,7 +8,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 version: 4.34.0+1
 
 environment:
-  sdk: ">=2.12.0 <3.0.0"
+  sdk: ">=3.0.0 <4.0.0"
 
 dependencies:
   flutter:
@@ -41,15 +41,13 @@ dependencies:
   flutter_siren: ^1.2.0
 
   # Customs
-  # TODO: Change to the latest version, once reviewed and accepted
   ets_api_clients:
     # path: ../ETS-API-Clients/
     git:
       url: https://github.com/ApplETS/ETS-API-Clients.git
-      ref: 1.1.0
+      ref: 1.1.1
 
   # Other
-  http: ^0.13.4
   flutter_cache_manager: ^3.0.1
   flutter_secure_storage: ^6.1.0
   shared_preferences: ^2.0.15
@@ -60,7 +58,7 @@ dependencies:
   package_info_plus: ^1.4.2
   feature_discovery: ^0.14.0
   path_provider: ^2.0.11
-  rive: ^0.9.1
+  rive: ^0.13.0
   connectivity_plus: ^4.0.2
   flutter_svg: ^1.0.3
   font_awesome_flutter: ^10.2.1
