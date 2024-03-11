@@ -285,8 +285,8 @@ packages:
     dependency: "direct main"
     description:
       path: "."
-      ref: "0.5.0"
-      resolved-ref: cefaa19955323ce4790b64aa45c598925df71109
+      ref: "ftr/add-news"
+      resolved-ref: cf61b19f41d01d367ea57fef78306e869930355e
       url: "https://github.com/ApplETS/ETS-API-Clients.git"
     source: git
     version: "0.5.0"
@@ -709,6 +709,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.0.4"
+  infinite_scroll_pagination:
+    dependency: "direct main"
+    description:
+      name: infinite_scroll_pagination
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "3.2.0"
   intl:
     dependency: transitive
     description:
@@ -1134,6 +1141,13 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.99"
+  sliver_tools:
+    dependency: transitive
+    description:
+      name: sliver_tools
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.2.12"
   source_gen:
     dependency: transitive
     description:

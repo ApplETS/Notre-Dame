@@ -91,7 +91,8 @@ class _ScheduleViewState extends State<ScheduleView>
               actions: _buildActionButtons(model),
             ),
             body: RefreshIndicator(
-              child: !model.calendarViewSetting
+              child: model.calendarViewSetting == null ||
+                      !model.calendarViewSetting!
                   ? _buildCalendarView(model, context)
                   : _buildListView(model, context),
               onRefresh: () => model.refresh(),
@@ -470,7 +471,7 @@ class _ScheduleViewState extends State<ScheduleView>
   }
 
   List<Widget> _buildActionButtons(ScheduleViewModel model) => [
-        if ((model.settings[PreferencesFlag.scheduleShowTodayBtn] as bool) ==
+        if ((model.settings[PreferencesFlag.scheduleShowTodayBtn] as bool?) ==
             true)
           IconButton(
               icon: const Icon(Icons.today),

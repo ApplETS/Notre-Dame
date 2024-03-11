@@ -1,12 +1,15 @@
 // Package imports:
+// ignore_for_file: avoid_redundant_argument_values
+
+import 'package:ets_api_clients/models.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:logger/logger.dart';
+import 'package:mockito/mockito.dart';
 
 // Project imports:
 import 'package:notredame/core/managers/news_repository.dart';
 import 'package:notredame/core/managers/settings_manager.dart';
-import 'package:notredame/core/models/news.dart';
 import 'package:notredame/core/viewmodels/news_viewmodel.dart';
 import 'package:notredame/locator.dart';
 import '../helpers.dart';
@@ -19,41 +22,62 @@ void main() {
 
   final List<News> news = <News>[
     News(
-      id: 1,
-      title: "Mock News 1",
-      description: "Test 1 description",
-      authorId: 1,
-      author: "Author 1",
-      avatar: "https://example.com/avatar1.jpg",
-      activity: "Activity 1",
-      image: "",
-      tags: ["tag1", "tag2"],
-      publishedDate: DateTime.parse('2022-01-01T12:00:00Z'),
-      eventDate: DateTime.parse('2022-01-02T12:00:00Z'),
+      id: "4627a622-f7c7-4ff9-9a01-50c69333ff42",
+      title: 'Mock News 1',
+      content: 'Mock Description 1',
+      imageUrl: 'https://example.com/mock-image1.jpg',
+      state: 1,
+      publicationDate: DateTime.now().subtract(const Duration(days: 5)),
+      eventStartDate: DateTime.now().add(const Duration(days: 2)),
+      eventEndDate: DateTime.now().add(const Duration(days: 2, hours: 2)),
+      organizer: NewsUser(
+        id: "e3e3e3e3-e3e3-e3e3-e3e3-e3e3e3e3e3e3",
+        type: "organizer",
+        organisation: "Mock Organizer",
+        email: "",
+        createdAt: DateTime.now().subtract(const Duration(days: 180)),
+        updatedAt: DateTime.now().subtract(const Duration(days: 180)),
+      ),
+      tags: [],
+      createdAt: DateTime.now().subtract(const Duration(days: 5)),
+      updatedAt: DateTime.now().subtract(const Duration(days: 5)),
     ),
     News(
-      id: 2,
-      title: "Mock News 2",
-      description: "Test 2 description",
-      authorId: 2,
-      author: "Author 2",
-      avatar: "https://example.com/avatar2.jpg",
-      activity: "Activity 2",
-      image: "",
-      tags: ["tag3", "tag4"],
-      publishedDate: DateTime.parse('2022-02-01T12:00:00Z'),
-      eventDate: DateTime.parse('2022-02-02T12:00:00Z'),
-    )
+      id: "5627a622-f7c7-4ff9-9a01-50c69333ff42",
+      title: 'Mock News 2',
+      content: 'Mock Description 2',
+      imageUrl: 'https://example.com/mock-image2.jpg',
+      state: 1,
+      publicationDate: DateTime.now().subtract(const Duration(days: 5)),
+      eventStartDate: DateTime.now().add(const Duration(days: 2)),
+      eventEndDate: DateTime.now().add(const Duration(days: 2, hours: 2)),
+      organizer: NewsUser(
+        id: "e3e3e3e3-e3e3-e3e3-e3e3-e3e3e3e3e3e3",
+        type: "organizer",
+        organisation: "Mock Organizer",
+        email: "",
+        createdAt: DateTime.now().subtract(const Duration(days: 180)),
+        updatedAt: DateTime.now().subtract(const Duration(days: 180)),
+      ),
+      tags: [],
+      createdAt: DateTime.now().subtract(const Duration(days: 5)),
+      updatedAt: DateTime.now().subtract(const Duration(days: 5)),
+    ),
   ];
+
+  final PaginatedNews paginatedNews = PaginatedNews(
+      news: news, totalRecords: 2, totalPages: 2, pageNumber: 1, pageSize: 3);
+
+  final PaginatedNews paginatedNews = PaginatedNews(
+      news: news, totalRecords: 2, totalPages: 2, pageNumber: 1, pageSize: 3);
 
   group('NewsViewModel tests', () {
     setUp(() async {
       newsRepository = setupNewsRepositoryMock();
       setupLogger();
       setupSettingsManagerMock();
-      NewsRepositoryMock.stubNews(newsRepository, toReturn: news);
-      appIntl = await setupAppIntl();
-      viewModel = NewsViewModel(intl: appIntl);
+      NewsRepositoryMock.stubGetNews(newsRepository, toReturn: paginatedNews);
+      viewModel = NewsViewModel();
     });
 
     tearDown(() {
@@ -62,15 +86,22 @@ void main() {
       locator.unregister<SettingsManager>();
     });
 
-    test('Fetching news updates the news list', () async {
+    test('NewsViewModel fetch first page', () async {
       expect(viewModel.isBusy, isFalse);
 
-      await viewModel.futureToRun();
+      await viewModel.fetchPage(1);
 
-      expect(viewModel.news, hasLength(2));
-      expect(viewModel.news[0].title, equals('Mock News 1'));
-      expect(viewModel.news[1].title, equals('Mock News 2'));
+      verify(newsRepository.getNews(pageNumber: 1)).called(1);
+      expect(viewModel.pagingController.nextPageKey, 2);
+    });
+
+    test('NewsViewModel fetch last page', () async {
       expect(viewModel.isBusy, isFalse);
+
+      await viewModel.fetchPage(2);
+
+      verify(newsRepository.getNews(pageNumber: 2)).called(1);
+      expect(viewModel.pagingController.nextPageKey, 3);
     });
   });
 }

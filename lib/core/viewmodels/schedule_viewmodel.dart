@@ -171,8 +171,8 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
 
   bool isLoadingEvents = false;
 
-  bool get calendarViewSetting =>
-      settings[PreferencesFlag.scheduleListView] as bool;
+  bool? get calendarViewSetting =>
+      settings[PreferencesFlag.scheduleListView] as bool?;
 
   @override
   Future<List<CourseActivity>> futureToRun() async {
