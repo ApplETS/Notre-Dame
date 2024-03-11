@@ -200,11 +200,7 @@ void main() {
                 "The list of courses should not change even when an error occurs");
         expect(viewModel.sessionOrder, sessionOrder);
 
-        verifyInOrder([
-          courseRepositoryMock.getCourses(),
-          courseRepositoryMock.courses,
-          courseRepositoryMock.courses
-        ]);
+        verifyInOrder([courseRepositoryMock.getCourses()]);
 
         verifyNoMoreInteractions(courseRepositoryMock);
       });

@@ -52,7 +52,9 @@ jobs:
           ENCRYPTED_GOOGLE_SERVICE_PASSWORD: ${{ secrets.ENCRYPTED_GOOGLE_SERVICE_PASSWORD }}
 
       # Get flutter dependencies.
-      - run: flutter pub get
+      - run: |
+          flutter pub get
+          dart run build_runner build --delete-conflicting-outputs
 
       # Check the format of the code and commit the formatted files.
       - name: Format files in lib and test directories
@@ -100,7 +102,7 @@ jobs:
           exit 1
 
       - name: Upload coverage file
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: lcov.info
           path: ${{ github.workspace }}/coverage/lcov.info
@@ -118,7 +120,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Download coverage file
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: lcov.info
       # Comment coverage report
@@ -174,6 +176,7 @@ jobs:
         if: matrix.target == 'iOS'
         run: |
           flutter pub get
+          dart run build_runner build --delete-conflicting-outputs
           cd ios
           pod update
           flutter clean
@@ -197,7 +200,9 @@ jobs:
           exit 1
 
       # Get dependencies and decrypt needed files.
-      - run: flutter pub get
+      - run: |
+          flutter pub get
+          dart run build_runner build --delete-conflicting-outputs
 
       - name: Decrypt SignETS certificate and Google Services files
         run: |
@@ -226,7 +231,7 @@ jobs:
         working-directory: ${{ matrix.build_path }}
 
       - name: Upload build artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: ${{ matrix.target }}
           path: ${{ github.workspace }}/${{ env.APP_NAME }}_${{ matrix.target }}.${{ matrix.asset_extension }}

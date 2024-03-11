@@ -97,22 +97,22 @@ class ProfileViewModel extends FutureViewModel<List<Program>> {
   bool isLoadingEvents = false;
 
   @override
-  Future<List<Program>> futureToRun() => _userRepository
-          .getInfo(fromCacheOnly: true)
-          .then((value) => _userRepository.getPrograms(fromCacheOnly: true))
-          .then((value) {
-        setBusyForObject(isLoadingEvents, true);
-        _userRepository
-            .getInfo()
-            // ignore: return_type_invalid_for_catch_error
-            .catchError(onError)
-            // ignore: return_type_invalid_for_catch_error
-            .then((value) => _userRepository.getPrograms().catchError(onError))
-            .whenComplete(() {
-          setBusyForObject(isLoadingEvents, false);
-        });
-        return value;
-      });
+  Future<List<Program>> futureToRun() async {
+    try {
+      await _userRepository.getInfo(fromCacheOnly: true);
+      await _userRepository.getPrograms(fromCacheOnly: true);
+
+      setBusyForObject(isLoadingEvents, true);
+
+      await _userRepository.getInfo();
+      return await _userRepository.getPrograms();
+    } catch (error) {
+      onError(error);
+    } finally {
+      setBusyForObject(isLoadingEvents, false);
+    }
+    return _userRepository.programs ?? [];
+  }
 
   Future refresh() async {
     try {
