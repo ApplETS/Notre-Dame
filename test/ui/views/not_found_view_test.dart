@@ -10,6 +10,7 @@ import 'package:rive/rive.dart';
 
 // Project imports:
 import 'package:notredame/ui/views/not_found_view.dart';
+import 'package:rive/rive.dart';
 import '../../helpers.dart';
 import '../../mock/services/rive_animation_service_mock.dart';
 

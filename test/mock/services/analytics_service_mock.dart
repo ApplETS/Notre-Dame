@@ -5,6 +5,8 @@ import 'package:mockito/annotations.dart';
 import 'package:notredame/core/services/analytics_service.dart';
 import 'analytics_service_mock.mocks.dart';
 
+import 'analytics_service_mock.mocks.dart';
+
 /// Mock for the [AnalyticsService]
 @GenerateNiceMocks([MockSpec<AnalyticsService>()])
 class AnalyticsServiceMock extends MockAnalyticsService {}
