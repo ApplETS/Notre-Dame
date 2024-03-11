@@ -12,6 +12,7 @@ class RouterPaths {
   static const String security = "/ets/security";
   static const String usefulLinks = "/ets/useful-links";
   static const String news = "/ets/news";
+  static const String newsDetails = "/ets/news/details";
   static const String more = "/more";
   static const String settings = "/more/settings";
   static const String contributors = "/more/contributors";

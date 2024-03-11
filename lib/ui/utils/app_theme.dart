@@ -64,6 +64,18 @@ class AppTheme {
     Color(0xffc0392b)
   ];
 
+  // News tags color palettes
+  static const List<Color> tagsPalette = [
+    Color(0xfff39c12),
+    Color(0xffef476f),
+    Color(0xffd35400),
+    Color(0xff16a085),
+    Color.fromARGB(255, 46, 151, 204),
+    Color(0xff8e44ad),
+    Color.fromARGB(255, 12, 168, 77),
+    Color.fromARGB(255, 161, 185, 41),
+  ];
+
   /// Schedule calendar colors
   static const Color scheduleLineColorLight = Color(0xffe8e8e8);
   static const Color scheduleLineColorDark = Color(0xff3d3d3d);

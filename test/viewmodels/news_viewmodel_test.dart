@@ -20,7 +20,7 @@ void main() {
   late NewsRepositoryMock newsRepository;
   late AppIntl appIntl;
 
-  final List<News> news = [
+  final List<News> news = <News>[
     News(
       id: "4627a622-f7c7-4ff9-9a01-50c69333ff42",
       title: 'Mock News 1',

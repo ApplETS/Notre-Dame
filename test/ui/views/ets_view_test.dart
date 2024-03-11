@@ -22,7 +22,7 @@ import '../../helpers.dart';
 import '../../mock/managers/news_repository_mock.dart';
 
 void main() {
-  NewsRepositoryMock newsRepository;
+  late NewsRepositoryMock newsRepository;
 
   final List<News> news = <News>[
     News(

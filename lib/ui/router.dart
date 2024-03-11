@@ -18,6 +18,7 @@ import 'package:notredame/ui/views/feedback_view.dart';
 import 'package:notredame/ui/views/grade_details_view.dart';
 import 'package:notredame/ui/views/login_view.dart';
 import 'package:notredame/ui/views/more_view.dart';
+import 'package:notredame/ui/views/news_details_view.dart';
 import 'package:notredame/ui/views/news_view.dart';
 import 'package:notredame/ui/views/not_found_view.dart';
 import 'package:notredame/ui/views/outage_view.dart';
@@ -28,6 +29,7 @@ import 'package:notredame/ui/views/settings_view.dart';
 import 'package:notredame/ui/views/startup_view.dart';
 import 'package:notredame/ui/views/student_view.dart';
 import 'package:notredame/ui/widgets/link_web_view.dart';
+import 'package:notredame/core/models/news.dart';
 
 Route<dynamic> generateRoute(RouteSettings routeSettings) {
   switch (routeSettings.name) {
@@ -93,6 +95,12 @@ Route<dynamic> generateRoute(RouteSettings routeSettings) {
       return PageRouteBuilder(
           settings: RouteSettings(name: routeSettings.name),
           pageBuilder: (_, __, ___) => NewsView());
+    case RouterPaths.newsDetails:
+      return PageRouteBuilder(
+          settings: RouteSettings(
+              name: routeSettings.name, arguments: routeSettings.arguments),
+          pageBuilder: (_, __, ___) =>
+              NewsDetailsView(news: routeSettings.arguments as News));
     case RouterPaths.webView:
       return PageRouteBuilder(
           pageBuilder: (_, __, ___) =>

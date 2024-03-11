@@ -9,6 +9,9 @@ import 'package:timeago/timeago.dart' as timeago;
 import 'package:ets_api_clients/models.dart';
 
 // Project imports:
+import 'package:notredame/core/constants/router_paths.dart';
+import 'package:notredame/core/services/navigation_service.dart';
+import 'package:notredame/locator.dart';
 import 'package:notredame/ui/utils/app_theme.dart';
 
 class NewsCard extends StatefulWidget {
@@ -22,29 +25,34 @@ class NewsCard extends StatefulWidget {
 
 class _NewsCardState extends State<NewsCard> {
   bool _isImageLoaded = false;
+  final NavigationService _navigationService = locator<NavigationService>();
 
   @override
   Widget build(BuildContext context) {
     timeago.setLocaleMessages('fr', timeago.FrShortMessages());
-    return Card(
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-      key: UniqueKey(),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Container(
-            padding: const EdgeInsets.fromLTRB(16, 16, 16, 16),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                _buildImage(widget.news.imageUrl),
-                const SizedBox(height: 8),
-                _buildTitleAndTime(widget.news, context)
-              ],
+    return GestureDetector(
+      onTap: () => _navigationService.pushNamed(RouterPaths.newsDetails,
+          arguments: widget.news),
+      child: Card(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+        key: UniqueKey(),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Container(
+              padding: const EdgeInsets.fromLTRB(16, 16, 16, 16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  _buildImage(widget.news.imageUrl),
+                  const SizedBox(height: 8),
+                  _buildTitleAndTime(widget.news, context),
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -105,7 +113,7 @@ class _NewsCardState extends State<NewsCard> {
         ),
         const SizedBox(width: 10),
         Text(
-          timeago.format(news.createdAt,
+          timeago.format(news.publishedDate,
               locale: AppIntl.of(context)!.localeName),
           style: textStyle,
         ),
