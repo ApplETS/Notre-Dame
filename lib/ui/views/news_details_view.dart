@@ -7,6 +7,7 @@ import 'package:intl/intl.dart';
 import 'package:stacked/stacked.dart';
 
 // Project imports:
+import 'package:notredame/core/utils/utils.dart';
 import 'package:notredame/core/models/news.dart';
 import 'package:notredame/core/services/analytics_service.dart';
 import 'package:notredame/core/viewmodels/news_details_viewmodel.dart';
@@ -128,7 +129,10 @@ class _NewsDetailsViewState extends State<NewsDetailsView> {
       child: Text(
         title,
         style: Theme.of(context).textTheme.bodyText1!.copyWith(
-            color: Colors.white, fontSize: 25, fontWeight: FontWeight.bold),
+            color:
+                Utils.getColorByBrightness(context, Colors.black, Colors.white),
+            fontSize: 25,
+            fontWeight: FontWeight.bold),
       ),
     );
   }
@@ -145,8 +149,9 @@ class _NewsDetailsViewState extends State<NewsDetailsView> {
   }
 
   Widget _buildAuthor(String avatar, String author, String activity) {
-    return Container(
-      color: const Color(0xff1e1e1e),
+    return ColoredBox(
+      color: Utils.getColorByBrightness(
+          context, AppTheme.etsLightRed, Theme.of(context).bottomAppBarColor),
       child: ListTile(
         leading: ClipOval(
           child: avatar == ""
@@ -160,8 +165,10 @@ class _NewsDetailsViewState extends State<NewsDetailsView> {
         ),
         title: Text(
           author,
-          style: const TextStyle(
+          style: TextStyle(
             fontWeight: FontWeight.bold,
+            color:
+                Utils.getColorByBrightness(context, Colors.black, Colors.white),
             fontSize: 20,
           ),
         ),
@@ -169,7 +176,9 @@ class _NewsDetailsViewState extends State<NewsDetailsView> {
           padding: const EdgeInsets.only(top: 8.0),
           child: Text(
             activity,
-            style: const TextStyle(
+            style: TextStyle(
+              color: Utils.getColorByBrightness(
+                  context, Colors.white, const Color(0xffbababa)),
               fontSize: 16,
             ),
           ),
@@ -197,7 +206,9 @@ class _NewsDetailsViewState extends State<NewsDetailsView> {
             children: [
               Text(
                 formattedPublishedDate,
-                style: const TextStyle(color: Colors.white),
+                style: TextStyle(
+                    color: Utils.getColorByBrightness(
+                        context, Colors.black, Colors.white)),
               ),
               const SizedBox(height: 12.0),
             ],
@@ -208,30 +219,37 @@ class _NewsDetailsViewState extends State<NewsDetailsView> {
               children: [
                 Container(
                   padding: const EdgeInsets.all(8),
-                  decoration: const BoxDecoration(
-                    color: AppTheme.etsDarkGrey,
+                  decoration: BoxDecoration(
+                    color: Utils.getColorByBrightness(context,
+                        AppTheme.darkThemeAccent, AppTheme.etsDarkGrey),
                     shape: BoxShape.circle,
                   ),
                   child:
                       const Icon(Icons.event, size: 20.0, color: Colors.white),
                 ),
                 Flexible(
+                    child: Padding(
+                  padding: const EdgeInsets.only(left: 4),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
                       Text(
                         AppIntl.of(context)!.news_event_date,
-                        style: const TextStyle(color: AppTheme.etsLightGrey),
+                        style: TextStyle(
+                            color: Utils.getColorByBrightness(
+                                context, Colors.black, AppTheme.etsLightGrey)),
                         textAlign: TextAlign.right,
                       ),
                       Text(
                         formattedEventDate,
-                        style: const TextStyle(color: Colors.white),
+                        style: TextStyle(
+                            color: Utils.getColorByBrightness(context,
+                                AppTheme.darkThemeAccent, Colors.white)),
                         textAlign: TextAlign.right,
                       ),
                     ],
                   ),
-                ),
+                )),
               ],
             ),
           ),
