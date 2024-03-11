@@ -72,7 +72,7 @@ jobs:
           java-version: '11'
       - uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.x.x'
+          flutter-version: '3.x'
           channel: 'stable'
           cache: true
       - run: flutter doctor
