@@ -512,9 +512,7 @@ class CourseRepository {
       Course course, Map<String, List<CourseReview>> reviews) {
     // Todo: changer pour firstWhereOrNull après update de Collection
     final review = reviews[course.session]?.where((element) =>
-    element.acronym == course.acronym && element.group == course.group);
-    return review?.isNotEmpty ?? false
-        ? review?.first
-        : null;
+        element.acronym == course.acronym && element.group == course.group);
+    return review?.isNotEmpty ?? false ? review?.first : null;
   }
 }
