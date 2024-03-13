@@ -168,7 +168,6 @@ class _FaqViewState extends State<FaqView> {
                   ),
               textAlign: TextAlign.justify,
             ),
-            const SizedBox(height: 20.0),
             Text(
               description,
               textScaler: TextScaler.noScaling,
