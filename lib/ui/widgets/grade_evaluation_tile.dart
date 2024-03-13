@@ -130,7 +130,6 @@ class _GradeEvaluationTileState extends State<GradeEvaluationTile>
                     )
                   else
                     SizedBox(
-                      height: 49,
                       child: Padding(
                         padding: const EdgeInsets.only(top: 30.0),
                         child: AutoSizeText(

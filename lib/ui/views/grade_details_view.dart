@@ -313,7 +313,7 @@ class _GradesDetailsViewState extends State<GradesDetailsView>
   /// Build the card of the Medidian, Standart deviation or Percentile Rank
   SizedBox _buildCourseGradeSummary(String? title, String number) {
     return SizedBox(
-      height: 110,
+      height: MediaQuery.of(context).size.height / 7.3,
       width: MediaQuery.of(context).size.width / 3.1,
       child: Card(
         child: Column(
