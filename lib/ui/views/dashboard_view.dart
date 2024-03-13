@@ -493,7 +493,7 @@ class _DashboardViewState extends State<DashboardView>
 
     // Should not happen becase dismiss card will not be called if the card is null.
     if (model.cards == null) {
-      _analyticsService.logError("Dashboard", "Cards list is null");
+      _analyticsService.logError(tag, "Cards list is null");
       throw Exception("Cards is null");
     }
 
