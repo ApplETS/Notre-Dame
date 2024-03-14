@@ -185,6 +185,8 @@ class UserRepository {
     try {
       final password = await _secureStorage.read(key: passwordSecureKey);
       if (password == null) {
+        _analyticsService.logEvent(
+            tag, "Trying to acquire password but not authenticated");
         throw const ApiException(prefix: tag, message: "Not authenticated");
       }
       return password;
