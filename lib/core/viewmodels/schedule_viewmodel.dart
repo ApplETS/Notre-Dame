@@ -1,5 +1,6 @@
 // Flutter imports:
 import 'package:flutter/material.dart';
+import 'package:collection/collection.dart';
 
 // Package imports:
 import 'package:calendar_view/calendar_view.dart';
@@ -261,7 +262,7 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
       final String? activityCodeToUse = await _settingsManager.getDynamicString(
           PreferencesFlag.scheduleLaboratoryGroup, courseAcronym);
       final scheduleActivityToSet = scheduleActivitiesByCourse[courseAcronym]
-          ?.firstWhere((element) => element.activityCode == activityCodeToUse);
+          ?.firstWhereOrNull((element) => element.activityCode == activityCodeToUse);
       if (scheduleActivityToSet != null) {
         settingsScheduleActivities[courseAcronym] = scheduleActivityToSet.name;
       } else {

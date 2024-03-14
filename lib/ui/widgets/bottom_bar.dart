@@ -39,6 +39,7 @@ class _BottomBarState extends State<BottomBar> {
       type: BottomNavigationBarType.fixed,
       elevation: 0,
       onTap: (value) => _onTap(value),
+
       items: _buildItems(context),
       currentIndex: _currentView,
     );

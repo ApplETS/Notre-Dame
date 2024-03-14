@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 // Package imports:
 import 'package:ets_api_clients/models.dart';
 import 'package:intl/intl.dart';
+import 'package:notredame/ui/utils/app_theme.dart';
 
 class CourseActivityTile extends StatelessWidget {
   /// Course to display
@@ -19,16 +20,18 @@ class CourseActivityTile extends StatelessWidget {
   Widget build(BuildContext context) => Padding(
         padding: const EdgeInsets.fromLTRB(8.0, 2.0, 8.0, 1.0),
         child: ListTile(
-          leading: _buildLeading(),
+          leading: _buildLeading(context),
           dense: false,
-          title: Text(activity.courseGroup),
+          title: Text(activity.courseGroup,
+              style: Theme.of(context).textTheme.titleSmall),
           subtitle:
               Text("${activity.courseName}\n${activity.activityDescription}"),
-          trailing: Text(activity.activityLocation),
+          trailing: Text(activity.activityLocation,
+              style: Theme.of(context).textTheme.bodySmall),
         ),
       );
 
-  Widget _buildLeading() => ConstrainedBox(
+  Widget _buildLeading(BuildContext context) => ConstrainedBox(
         constraints: const BoxConstraints(
           minWidth: 30,
           maxWidth: 86,
@@ -41,8 +44,10 @@ class CourseActivityTile extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.end,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(timeFormat.format(activity.startDateTime)),
-                Text(timeFormat.format(activity.endDateTime)),
+                Text(timeFormat.format(activity.startDateTime),
+                    style: Theme.of(context).textTheme.bodySmall),
+                Text(timeFormat.format(activity.endDateTime),
+                    style: Theme.of(context).textTheme.bodySmall),
               ],
             ),
             VerticalDivider(color: colorFor(activity.courseName), thickness: 2)
