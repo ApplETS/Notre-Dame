@@ -88,14 +88,17 @@ class _ScheduleViewState extends State<ScheduleView>
               title: Text(AppIntl.of(context)!.title_schedule),
               centerTitle: false,
               automaticallyImplyLeading: false,
-              actions: _buildActionButtons(model),
+              actions:
+                  model.busy(model.settings) ? [] : _buildActionButtons(model),
             ),
-            body: RefreshIndicator(
-              child: !model.calendarViewSetting
-                  ? _buildCalendarView(model, context)
-                  : _buildListView(model, context),
-              onRefresh: () => model.refresh(),
-            )),
+            body: model.busy(model.settings)
+                ? const SizedBox()
+                : RefreshIndicator(
+                    child: !model.calendarViewSetting
+                        ? _buildCalendarView(model, context)
+                        : _buildListView(model, context),
+                    onRefresh: () => model.refresh(),
+                  )),
       );
 
   Widget _buildListView(ScheduleViewModel model, BuildContext context) {
@@ -397,6 +400,7 @@ class _ScheduleViewState extends State<ScheduleView>
         valueListenable: model.focusedDate,
         builder: (context, value, _) {
           return TableCalendar(
+            key: const Key("TableCalendar"),
             startingDayOfWeek:
                 model.settings[PreferencesFlag.scheduleStartWeekday]
                     as StartingDayOfWeek,
