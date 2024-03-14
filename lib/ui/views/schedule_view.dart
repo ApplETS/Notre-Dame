@@ -473,7 +473,7 @@ class _ScheduleViewState extends State<ScheduleView>
         IconButton(
           icon: const Icon(Icons.ios_share),
           onPressed: () {
-            final translations = AppIntl.of(context);
+            final translations = AppIntl.of(context)!;
             showDialog(
               context: context,
               builder: (_) =>

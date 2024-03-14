@@ -10,14 +10,15 @@ mixin CalendarUtils {
     // if we were able to check for permissions without error
     if (deviceCalendarPluginPermissionsResponse.isSuccess) {
       // if the user has not yet allowed permission
-      if (!deviceCalendarPluginPermissionsResponse.data) {
+      if (deviceCalendarPluginPermissionsResponse.data != null &&
+          !deviceCalendarPluginPermissionsResponse.data!) {
         // request permission
         final deviceCalendarPluginRequestPermissionsResponse =
             await deviceCalendarPlugin.requestPermissions();
         // if permission request was successfully executed
         if (deviceCalendarPluginRequestPermissionsResponse.isSuccess) {
           // return the result of the permission request (accepted or refused)
-          return deviceCalendarPluginRequestPermissionsResponse.data;
+          return deviceCalendarPluginRequestPermissionsResponse.data!;
         } else {
           // Handle requesting permissions failure
         }
@@ -37,14 +38,13 @@ mixin CalendarUtils {
   static Future<UnmodifiableListView<Calendar>> get nativeCalendars async {
     final Result<UnmodifiableListView<Calendar>> calendarFetchResult =
         await DeviceCalendarPlugin().retrieveCalendars();
-    return calendarFetchResult.data;
+    return calendarFetchResult.data!;
   }
 
   /// Fetches a calendar by name from the native calendar app
-  static Future<Calendar> fetchNativeCalendar(String calendarName) async {
+  static Future<Calendar?> fetchNativeCalendar(String calendarName) async {
     return (await nativeCalendars).firstWhere(
       (element) => element.name == calendarName,
-      orElse: () => null,
     );
   }
 
@@ -53,7 +53,7 @@ mixin CalendarUtils {
       String calendarId, RetrieveEventsParams retrievalParams) async {
     final output =
         await deviceCalendarPlugin.retrieveEvents(calendarId, retrievalParams);
-    return output.data;
+    return output.data!;
   }
 
   static Future<bool> export(
@@ -71,7 +71,7 @@ mixin CalendarUtils {
     }
 
     // Fetch calendar
-    Calendar calendar = await fetchNativeCalendar(calendarName);
+    Calendar? calendar = await fetchNativeCalendar(calendarName);
 
     // Create calendar if it doesn't exist
     if (calendar == null) {
@@ -81,7 +81,7 @@ mixin CalendarUtils {
 
     // Fetch events from calendar to avoid duplicates
     final events = await fetchNativeCalendarEvents(
-        calendar.id,
+        calendar!.id!,
         RetrieveEventsParams(
           startDate: DateTime.now().subtract(const Duration(days: 120)),
           endDate: DateTime.now().add(const Duration(days: 120)),
@@ -107,10 +107,16 @@ mixin CalendarUtils {
       );
 
       final existingEvents = events.where(
-        (element) => element.description.contains(course.hashCode.toString()),
+        (element) {
+          if (element.description != null &&
+              element.description!.contains(course.hashCode.toString())) {
+            return true;
+          }
+          return false;
+        },
       );
       if (existingEvents.isNotEmpty) {
-        final existingEvent = existingEvents?.first;
+        final existingEvent = existingEvents.first;
 
         // If already exists prepare for update
         if (existingEvent != null) {
@@ -122,7 +128,7 @@ mixin CalendarUtils {
         event,
       );
 
-      if (!result.isSuccess) {
+      if (result != null && !result.isSuccess) {
         hasErrors = true;
       }
     }

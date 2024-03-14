@@ -12,7 +12,8 @@ import 'package:notredame/locator.dart';
 
 class CalendarSelectionWidget extends StatelessWidget {
   final AppIntl translations;
-  const CalendarSelectionWidget({Key key, this.translations}) : super(key: key);
+  const CalendarSelectionWidget({Key? key, required this.translations})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -25,11 +26,11 @@ class CalendarSelectionWidget extends StatelessWidget {
             child: CircularProgressIndicator(),
           );
         }
-        final items = calendars.data
+        final items = calendars.data!
             .map<DropdownMenuItem<String>>(
               (Calendar value) => DropdownMenuItem<String>(
                 value: value.name,
-                child: Text(value.name),
+                child: Text(value.name!),
               ),
             )
             .toList();
@@ -39,7 +40,7 @@ class CalendarSelectionWidget extends StatelessWidget {
             child: Text(translations.calendar_new),
           ),
         );
-        String selectedCalendarId = items[0].value;
+        String selectedCalendarId = items[0].value ?? '';
         return StatefulBuilder(
           builder: (context, setState) {
             return AlertDialog(
@@ -53,7 +54,7 @@ class CalendarSelectionWidget extends StatelessWidget {
                     value: selectedCalendarId,
                     onChanged: (calendar) {
                       setState(() {
-                        selectedCalendarId = calendar;
+                        selectedCalendarId = calendar!;
                       });
                     },
                   ),
@@ -93,7 +94,8 @@ class CalendarSelectionWidget extends StatelessWidget {
                     final CourseRepository courseRepository =
                         locator<CourseRepository>();
                     final result = CalendarUtils.export(
-                        courseRepository.coursesActivities, selectedCalendarId);
+                        courseRepository.coursesActivities!,
+                        selectedCalendarId);
                     result.then((value) {
                       if (value) {
                         Fluttertoast.showToast(
