@@ -119,9 +119,7 @@ mixin CalendarUtils {
         final existingEvent = existingEvents.first;
 
         // If already exists prepare for update
-        if (existingEvent != null) {
-          event.eventId = existingEvent.eventId;
-        }
+        event.eventId = existingEvent.eventId;
       }
       // Create or update event
       final result = await localDeviceCalendarPlugin.createOrUpdateEvent(
