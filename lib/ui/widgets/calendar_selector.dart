@@ -81,8 +81,7 @@ class CalendarSelectionWidget extends StatelessWidget {
                 ),
                 TextButton(
                   onPressed: () {
-                    if (selectedCalendarId == null ||
-                        selectedCalendarId.isEmpty) {
+                    if (selectedCalendarId.isEmpty) {
                       Fluttertoast.showToast(
                         msg: translations.calendar_select,
                         backgroundColor: AppTheme.etsLightRed,
