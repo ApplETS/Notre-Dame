@@ -4,21 +4,24 @@ import 'package:flutter/services.dart';
 // Package imports:
 import 'package:flutter_test/flutter_test.dart';
 import 'package:home_widget/home_widget.dart';
-import 'package:mockito/mockito.dart';
+import 'package:mockito/annotations.dart';
 
 // Project imports:
 import 'package:notredame/core/services/app_widget_service.dart';
 
+import 'home_widget_mock.mocks.dart';
+
 /// Pseudo-mock for the static [HomeWidget] class (mocks the channel instead)
-class HomeWidgetMock extends Mock {
-  MethodChannel _channel;
-  TestDefaultBinaryMessenger _messenger;
+@GenerateNiceMocks([MockSpec<HomeWidget>()])
+class HomeWidgetMock extends MockHomeWidget {
+  late MethodChannel _channel;
+  late TestDefaultBinaryMessenger _messenger;
 
   HomeWidgetMock() {
     _channel = const MethodChannel('home_widget');
 
     _messenger =
-        TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger;
+        TestDefaultBinaryMessengerBinding.instance!.defaultBinaryMessenger;
   }
 
   /// Overrides [HomeWidget]'s channel messenger behavior on [HomeWidget.setAppGroupId]

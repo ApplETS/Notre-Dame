@@ -27,9 +27,9 @@ import 'package:notredame/ui/widgets/schedule_settings.dart';
 
 class ScheduleView extends StatefulWidget {
   @visibleForTesting
-  final DateTime initialDay;
+  final DateTime? initialDay;
 
-  const ScheduleView({Key key, this.initialDay}) : super(key: key);
+  const ScheduleView({Key? key, this.initialDay}) : super(key: key);
 
   @override
   _ScheduleViewState createState() => _ScheduleViewState();
@@ -48,7 +48,7 @@ class _ScheduleViewState extends State<ScheduleView>
   static const Color _defaultColor = Color(0xff76859B);
   static final List<String> weekTitles = ["L", "M", "M", "J", "V", "S", "D"];
 
-  AnimationController _animationController;
+  late AnimationController _animationController;
 
   @override
   void initState() {
@@ -75,27 +75,25 @@ class _ScheduleViewState extends State<ScheduleView>
   Widget build(BuildContext context) =>
       ViewModelBuilder<ScheduleViewModel>.reactive(
         viewModelBuilder: () => ScheduleViewModel(
-            intl: AppIntl.of(context), initialSelectedDate: widget.initialDay),
-        onModelReady: (model) {
-          if (model.settings.isEmpty) {
-            model.loadSettings();
-          }
-        },
+            intl: AppIntl.of(context)!, initialSelectedDate: widget.initialDay),
         builder: (context, model, child) => BaseScaffold(
             isLoading: model.busy(model.isLoadingEvents),
             isInteractionLimitedWhileLoading: false,
             appBar: AppBar(
-              title: Text(AppIntl.of(context).title_schedule),
+              title: Text(AppIntl.of(context)!.title_schedule),
               centerTitle: false,
               automaticallyImplyLeading: false,
-              actions: _buildActionButtons(model),
+              actions:
+                  model.busy(model.settings) ? [] : _buildActionButtons(model),
             ),
-            body: RefreshIndicator(
-              child: !model.calendarViewSetting
-                  ? _buildCalendarView(model, context)
-                  : _buildListView(model, context),
-              onRefresh: () => model.refresh(),
-            )),
+            body: model.busy(model.settings)
+                ? const SizedBox()
+                : RefreshIndicator(
+                    child: !model.calendarViewSetting
+                        ? _buildCalendarView(model, context)
+                        : _buildListView(model, context),
+                    onRefresh: () => model.refresh(),
+                  )),
       );
 
   Widget _buildListView(ScheduleViewModel model, BuildContext context) {
@@ -144,7 +142,7 @@ class _ScheduleViewState extends State<ScheduleView>
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 64.0),
                 child:
-                    Center(child: Text(AppIntl.of(context).schedule_no_event)),
+                    Center(child: Text(AppIntl.of(context)!.schedule_no_event)),
               )
             else if (!model.showWeekEvents)
               _buildEventList(model.selectedDateEvents(model.selectedDate)),
@@ -236,10 +234,10 @@ class _ScheduleViewState extends State<ScheduleView>
           return weekTitles[p0];
         },
         headerStringBuilder: (date, {secondaryDate}) {
-          final from = AppIntl.of(context).schedule_calendar_from;
-          final to = AppIntl.of(context).schedule_calendar_to;
-          final locale = AppIntl.of(context).localeName;
-          return '$from ${date.day} ${DateFormat.MMMM(locale).format(date)} $to ${secondaryDate.day} ${DateFormat.MMMM(locale).format(secondaryDate)}';
+          final from = AppIntl.of(context)!.schedule_calendar_from;
+          final to = AppIntl.of(context)!.schedule_calendar_to;
+          final locale = AppIntl.of(context)!.localeName;
+          return '$from ${date.day} ${DateFormat.MMMM(locale).format(date)} $to ${secondaryDate?.day ?? '00'} ${DateFormat.MMMM(locale).format(secondaryDate ?? date)}';
         },
         eventTileBuilder: (date, events, boundary, startDuration,
                 endDuration) =>
@@ -282,7 +280,7 @@ class _ScheduleViewState extends State<ScheduleView>
         return weekTitles[p0];
       },
       headerStringBuilder: (date, {secondaryDate}) {
-        final locale = AppIntl.of(context).localeName;
+        final locale = AppIntl.of(context)!.localeName;
         return '${DateFormat.MMMM(locale).format(date).characters.first.toUpperCase()}${DateFormat.MMMM(locale).format(date).substring(1)} ${date.year}';
       },
       startDay: calendar_view.WeekDays.sunday,
@@ -361,7 +359,7 @@ class _ScheduleViewState extends State<ScheduleView>
   }
 
   /// Build the square with the number of [events] for the [date]
-  Widget _buildEventsMarker(
+  Widget? _buildEventsMarker(
       ScheduleViewModel model, DateTime date, List events) {
     if (events.isNotEmpty) {
       return Positioned(
@@ -397,10 +395,11 @@ class _ScheduleViewState extends State<ScheduleView>
         valueListenable: model.focusedDate,
         builder: (context, value, _) {
           return TableCalendar(
+            key: const Key("TableCalendar"),
             startingDayOfWeek:
                 model.settings[PreferencesFlag.scheduleStartWeekday]
                     as StartingDayOfWeek,
-            locale: model.locale.toLanguageTag(),
+            locale: model.locale?.toLanguageTag(),
             selectedDayPredicate: (day) {
               return isSameDay(model.selectedDate, day);
             },

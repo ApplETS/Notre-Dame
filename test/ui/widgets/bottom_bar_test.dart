@@ -13,13 +13,14 @@ import 'package:notredame/core/services/networking_service.dart';
 import 'package:notredame/ui/widgets/bottom_bar.dart';
 import '../../helpers.dart';
 import '../../mock/services/analytics_service_mock.dart';
+import '../../mock/services/navigation_service_mock.dart';
 
-NavigationService navigationService;
+late NavigationServiceMock navigationServiceMock;
 
 void main() {
   group('BottomBar - ', () {
     setUp(() {
-      navigationService = setupNavigationServiceMock();
+      navigationServiceMock = setupNavigationServiceMock();
       setupNetworkingServiceMock();
       setupAnalyticsServiceMock();
     });
@@ -57,7 +58,7 @@ void main() {
       await tester.tap(find.byIcon(Icons.school));
       await tester.tap(find.byIcon(Icons.school));
 
-      verify(navigationService.pushNamedAndRemoveUntil(RouterPaths.student))
+      verify(navigationServiceMock.pushNamedAndRemoveUntil(RouterPaths.student))
           .called(1);
     });
 
@@ -70,8 +71,8 @@ void main() {
         await tester.tap(find.byIcon(Icons.schedule));
         await tester.tap(find.byIcon(Icons.dashboard));
 
-        verify(
-            navigationService.pushNamedAndRemoveUntil(RouterPaths.dashboard));
+        verify(navigationServiceMock
+            .pushNamedAndRemoveUntil(RouterPaths.dashboard));
       });
 
       testWidgets('schedule', (WidgetTester tester) async {
@@ -81,7 +82,8 @@ void main() {
 
         await tester.tap(find.byIcon(Icons.schedule));
 
-        verify(navigationService.pushNamedAndRemoveUntil(RouterPaths.schedule));
+        verify(navigationServiceMock
+            .pushNamedAndRemoveUntil(RouterPaths.schedule));
       });
 
       testWidgets('student', (WidgetTester tester) async {
@@ -91,7 +93,8 @@ void main() {
 
         await tester.tap(find.byIcon(Icons.school));
 
-        verify(navigationService.pushNamedAndRemoveUntil(RouterPaths.student));
+        verify(
+            navigationServiceMock.pushNamedAndRemoveUntil(RouterPaths.student));
       });
 
       testWidgets('ets', (WidgetTester tester) async {
@@ -101,7 +104,7 @@ void main() {
 
         await tester.tap(find.byIcon(Icons.account_balance));
 
-        verify(navigationService.pushNamedAndRemoveUntil(RouterPaths.ets));
+        verify(navigationServiceMock.pushNamedAndRemoveUntil(RouterPaths.ets));
       });
 
       testWidgets('more', (WidgetTester tester) async {
@@ -111,7 +114,7 @@ void main() {
 
         await tester.tap(find.byIcon(Icons.dehaze));
 
-        verify(navigationService.pushNamedAndRemoveUntil(RouterPaths.more));
+        verify(navigationServiceMock.pushNamedAndRemoveUntil(RouterPaths.more));
       });
     });
   });
