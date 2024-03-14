@@ -71,6 +71,7 @@ class _FaqViewState extends State<FaqView> {
                 getSubtitle(AppIntl.of(context)!.actions),
                 Expanded(
                   child: ListView.builder(
+                    key: const Key("action_listview_key"),
                     padding: const EdgeInsets.only(top: 1.0),
                     itemCount: faq.actions.length,
                     itemBuilder: (context, index) {

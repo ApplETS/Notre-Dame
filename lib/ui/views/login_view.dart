@@ -50,7 +50,8 @@ class _LoginViewState extends State<LoginView> {
             body: Builder(
               builder: (BuildContext context) => SafeArea(
                 minimum: const EdgeInsets.all(20.0),
-                child: Column(
+                child: SingleChildScrollView(
+                  child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
                     Form(
@@ -245,6 +246,7 @@ class _LoginViewState extends State<LoginView> {
                 ),
               ),
             )),
+        ),
       );
 
   @override

@@ -178,8 +178,8 @@ void main() {
           // Rebuild the widget after the state has changed.
           await tester.pumpAndSettle(const Duration(seconds: 1));
 
-          expect(find.text('CLOSE'), findsOneWidget);
-          expect(find.text('VIEW LICENSES'), findsOneWidget);
+          expect(find.text('Close'), findsOneWidget);
+          expect(find.text('View licenses'), findsOneWidget);
           expect(find.byType(AboutDialog), findsOneWidget);
         });
 

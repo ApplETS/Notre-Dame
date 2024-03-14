@@ -78,16 +78,25 @@ class AppTheme {
         textTheme: lightTheme.textTheme.copyWith(
           bodySmall: const TextStyle(
             fontSize: 14,
+            color: Colors.black
           ),
           bodyMedium: const TextStyle(
             fontSize: 16,
+            color: Colors.black
           ),
           bodyLarge: const TextStyle(
             fontSize: 18,
+            color: Colors.black
           ),
           titleSmall: const TextStyle(
             fontSize: 20,
             fontWeight: FontWeight.w400,
+            color: Colors.black
+          ),
+          displaySmall: const TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.w400,
+              color: Colors.black
           ),
         ),
         colorScheme: lightTheme.colorScheme

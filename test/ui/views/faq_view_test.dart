@@ -31,13 +31,23 @@ void main() {
         SettingsManagerMock.stubLocale(settingsManagerMock);
 
         await tester.pumpWidget(localizedWidget(child: const FaqView()));
-        await tester.pumpAndSettle();
-
-        final elevatedButton = find.byType(ElevatedButton, skipOffstage: false);
+        await tester.pumpAndSettle(const Duration(milliseconds: 800));
 
         final Faq faq = Faq();
-        final numberOfButtons = faq.actions.length;
-        expect(elevatedButton, findsNWidgets(numberOfButtons));
+
+        final action1 = find.text(faq.actions[0].title["en"]!, skipOffstage: false);
+        final action2 = find.text(faq.actions[1].title["en"]!, skipOffstage: false);
+        final action3 = find.text(faq.actions[2].title["en"]!, skipOffstage: false);
+        final action4 = find.text(faq.actions[3].title["en"]!, skipOffstage: false);
+
+        await tester.pump();
+        await tester.drag(find.byType(ListView), const Offset(0.0, -300));
+        await tester.pump();
+
+        expect(action1, findsOneWidget);
+        expect(action2, findsOneWidget);
+        expect(action3, findsOneWidget);
+        expect(action4, findsOneWidget);
       });
 
       testWidgets('has 2 subtitles', (WidgetTester tester) async {
