@@ -12,7 +12,7 @@ import 'package:notredame/ui/views/security_view.dart';
 import '../../helpers.dart';
 
 void main() {
-  AppIntl intl;
+  late AppIntl intl;
 
   group('SecurityView - ', () {
     setUp(() async {

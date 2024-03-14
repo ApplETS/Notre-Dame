@@ -14,9 +14,10 @@ import '../helpers.dart';
 import '../mock/managers/course_repository_mock.dart';
 import '../mock/managers/settings_manager_mock.dart';
 
-CourseRepository courseRepository;
-SettingsManager settingsManager;
-ScheduleViewModel viewModel;
+late CourseRepositoryMock courseRepositoryMock;
+late SettingsManagerMock settingsManagerMock;
+
+late ScheduleViewModel viewModel;
 
 void main() {
   // Needed to support FlutterToast.
@@ -239,11 +240,18 @@ void main() {
     gen110
   ];
 
+  // Some settings
+  final Map<PreferencesFlag, dynamic> settings = {
+    PreferencesFlag.scheduleCalendarFormat: CalendarFormat.week,
+    PreferencesFlag.scheduleStartWeekday: StartingDayOfWeek.monday,
+    PreferencesFlag.scheduleShowTodayBtn: true
+  };
+
   group("ScheduleViewModel - ", () {
     setUp(() async {
       // Setting up mocks
-      courseRepository = setupCourseRepositoryMock();
-      settingsManager = setupSettingsManagerMock();
+      courseRepositoryMock = setupCourseRepositoryMock();
+      settingsManagerMock = setupSettingsManagerMock();
 
       viewModel = ScheduleViewModel(intl: await setupAppIntl());
     });
@@ -257,69 +265,65 @@ void main() {
       test(
           "first load from cache than call SignetsAPI to get the latest events",
           () async {
-        CourseRepositoryMock.stubGetCoursesActivities(
-            courseRepository as CourseRepositoryMock);
-        CourseRepositoryMock.stubCoursesActivities(
-            courseRepository as CourseRepositoryMock);
-        CourseRepositoryMock.stubGetCourses(
-            courseRepository as CourseRepositoryMock,
+        CourseRepositoryMock.stubGetCoursesActivities(courseRepositoryMock);
+        CourseRepositoryMock.stubCoursesActivities(courseRepositoryMock);
+        CourseRepositoryMock.stubGetCourses(courseRepositoryMock,
             fromCacheOnly: true);
-        CourseRepositoryMock.stubGetCourses(
-            courseRepository as CourseRepositoryMock,
-            fromCacheOnly: false);
-        CourseRepositoryMock.stubGetScheduleActivities(
-            courseRepository as CourseRepositoryMock);
+        CourseRepositoryMock.stubGetCourses(courseRepositoryMock);
+        CourseRepositoryMock.stubGetScheduleActivities(courseRepositoryMock);
+        SettingsManagerMock.stubGetScheduleSettings(settingsManagerMock,
+            toReturn: settings);
 
         expect(await viewModel.futureToRun(), []);
 
         verifyInOrder([
-          courseRepository.getCoursesActivities(fromCacheOnly: true),
-          courseRepository.getCoursesActivities()
+          settingsManagerMock.getScheduleSettings(),
+          courseRepositoryMock.getCoursesActivities(fromCacheOnly: true),
+          courseRepositoryMock.getCoursesActivities(),
+          courseRepositoryMock.coursesActivities,
+          courseRepositoryMock.coursesActivities,
+          courseRepositoryMock.getCourses(fromCacheOnly: true),
+          courseRepositoryMock.getScheduleActivities(),
         ]);
 
-        verifyNoMoreInteractions(courseRepository);
-        verifyNoMoreInteractions(settingsManager);
+        verifyNoMoreInteractions(courseRepositoryMock);
+        verifyNoMoreInteractions(settingsManagerMock);
       });
 
       test("Signets throw an error while trying to get new events", () async {
         setupFlutterToastMock();
-        CourseRepositoryMock.stubGetCoursesActivities(
-            courseRepository as CourseRepositoryMock,
+        CourseRepositoryMock.stubGetCoursesActivities(courseRepositoryMock,
             fromCacheOnly: true);
         CourseRepositoryMock.stubGetCoursesActivitiesException(
-            courseRepository as CourseRepositoryMock,
-            fromCacheOnly: false);
-        CourseRepositoryMock.stubGetCourses(
-            courseRepository as CourseRepositoryMock,
+            courseRepositoryMock);
+        CourseRepositoryMock.stubGetCourses(courseRepositoryMock,
             fromCacheOnly: true);
-        CourseRepositoryMock.stubGetCourses(
-            courseRepository as CourseRepositoryMock,
-            fromCacheOnly: false);
-        CourseRepositoryMock.stubCoursesActivities(
-            courseRepository as CourseRepositoryMock);
-        CourseRepositoryMock.stubGetScheduleActivities(
-            courseRepository as CourseRepositoryMock);
+        CourseRepositoryMock.stubGetCourses(courseRepositoryMock);
+        CourseRepositoryMock.stubCoursesActivities(courseRepositoryMock);
+        CourseRepositoryMock.stubGetScheduleActivities(courseRepositoryMock);
+        SettingsManagerMock.stubGetScheduleSettings(settingsManagerMock,
+            toReturn: settings);
 
         expect(await viewModel.futureToRun(), [],
             reason: "Even if SignetsAPI fails we should receives a list.");
 
         // Await until the call to get the activities from signets is sent
-        await untilCalled(courseRepository.getCoursesActivities());
+        await untilCalled(courseRepositoryMock.getCoursesActivities());
 
         verifyInOrder([
-          courseRepository.getCoursesActivities(fromCacheOnly: true),
-          courseRepository.getCoursesActivities()
+          settingsManagerMock.getScheduleSettings(),
+          courseRepositoryMock.getCoursesActivities(fromCacheOnly: true),
+          courseRepositoryMock.getCoursesActivities()
         ]);
 
-        verifyNoMoreInteractions(courseRepository);
-        verifyNoMoreInteractions(settingsManager);
+        verifyNoMoreInteractions(courseRepositoryMock);
+        verifyNoMoreInteractions(settingsManagerMock);
       });
     });
 
     group("coursesActivities - ", () {
       test("build the list of activities sort by date", () async {
-        CourseRepositoryMock.stubCoursesActivities(
-            courseRepository as CourseRepositoryMock,
+        CourseRepositoryMock.stubCoursesActivities(courseRepositoryMock,
             toReturn: activities);
 
         final expected = {
@@ -329,23 +333,20 @@ void main() {
 
         expect(viewModel.coursesActivities, expected);
 
-        verify(courseRepository.coursesActivities).called(2);
+        verify(courseRepositoryMock.coursesActivities).called(2);
 
-        verifyNoMoreInteractions(courseRepository);
-        verifyNoMoreInteractions(settingsManager);
+        verifyNoMoreInteractions(courseRepositoryMock);
+        verifyNoMoreInteractions(settingsManagerMock);
       });
 
       test(
           'scheduleActivityIsSelected returns true when activityDescription is not labA or labB',
           () async {
-        CourseRepositoryMock.stubCoursesActivities(
-            courseRepository as CourseRepositoryMock,
+        CourseRepositoryMock.stubCoursesActivities(courseRepositoryMock,
             toReturn: activitiesLabs);
 
-        SettingsManagerMock.stubGetDynamicString(
-            settingsManager as SettingsManagerMock,
-            PreferencesFlag.scheduleLaboratoryGroup,
-            "GEN103",
+        SettingsManagerMock.stubGetDynamicString(settingsManagerMock,
+            PreferencesFlag.scheduleLaboratoryGroup, "GEN103",
             toReturn: ActivityCode.labGroupA);
 
         await viewModel.assignScheduleActivities([
@@ -369,15 +370,13 @@ void main() {
       test(
           'scheduleActivityIsSelected returns true when the course does not have an activity',
           () async {
-        CourseRepositoryMock.stubCoursesActivities(
-            courseRepository as CourseRepositoryMock,
+        CourseRepositoryMock.stubCoursesActivities(courseRepositoryMock,
             toReturn: activitiesLabs);
 
         SettingsManagerMock.stubGetDynamicString(
-            settingsManager as SettingsManagerMock,
+            settingsManagerMock,
             PreferencesFlag.scheduleLaboratoryGroup,
-            classOneWithLaboratoryABscheduleActivities.first.courseAcronym,
-            toReturn: null);
+            classOneWithLaboratoryABscheduleActivities.first.courseAcronym);
 
         await viewModel.assignScheduleActivities([]);
 
@@ -388,7 +387,7 @@ void main() {
           'scheduleActivityIsSelected returns false when there is no activity selected',
           () async {
         SettingsManagerMock.stubGetDynamicString(
-            settingsManager as SettingsManagerMock,
+            settingsManagerMock,
             PreferencesFlag.scheduleLaboratoryGroup,
             classOneWithLaboratoryABscheduleActivities.first.courseAcronym,
             toReturn: ActivityCode.labGroupA);
@@ -403,7 +402,7 @@ void main() {
           'scheduleActivityIsSelected returns true when the courseGroup has an activity selected',
           () async {
         SettingsManagerMock.stubGetDynamicString(
-            settingsManager as SettingsManagerMock,
+            settingsManagerMock,
             PreferencesFlag.scheduleLaboratoryGroup,
             classOneWithLaboratoryABscheduleActivities.first.courseAcronym,
             toReturn: ActivityCode.labGroupA);
@@ -417,39 +416,36 @@ void main() {
 
     group("coursesActivitiesFor - ", () {
       test("Get the correct list of activities for the specified day", () {
-        CourseRepositoryMock.stubCoursesActivities(
-            courseRepository as CourseRepositoryMock,
+        CourseRepositoryMock.stubCoursesActivities(courseRepositoryMock,
             toReturn: activities);
 
         final expected = [gen102, gen103];
 
         expect(viewModel.coursesActivitiesFor(DateTime(2020, 1, 2)), expected);
 
-        verify(courseRepository.coursesActivities).called(2);
+        verify(courseRepositoryMock.coursesActivities).called(2);
 
-        verifyNoMoreInteractions(courseRepository);
-        verifyNoMoreInteractions(settingsManager);
+        verifyNoMoreInteractions(courseRepositoryMock);
+        verifyNoMoreInteractions(settingsManagerMock);
       });
 
       test("If the day doesn't have any events, return an empty list.", () {
-        CourseRepositoryMock.stubCoursesActivities(
-            courseRepository as CourseRepositoryMock,
+        CourseRepositoryMock.stubCoursesActivities(courseRepositoryMock,
             toReturn: activities);
 
         expect(viewModel.coursesActivitiesFor(DateTime(2020, 1, 3)), isEmpty,
             reason: "There is no events for the 3rd Jan on activities");
 
-        verify(courseRepository.coursesActivities).called(2);
+        verify(courseRepositoryMock.coursesActivities).called(2);
 
-        verifyNoMoreInteractions(courseRepository);
-        verifyNoMoreInteractions(settingsManager);
+        verifyNoMoreInteractions(courseRepositoryMock);
+        verifyNoMoreInteractions(settingsManagerMock);
       });
     });
 
     group("selectedDateEvents", () {
       test("The events of the date currently selected are return", () {
-        CourseRepositoryMock.stubCoursesActivities(
-            courseRepository as CourseRepositoryMock,
+        CourseRepositoryMock.stubCoursesActivities(courseRepositoryMock,
             toReturn: activities);
 
         final expected = [gen102, gen103];
@@ -457,17 +453,16 @@ void main() {
         // Setting up the viewmodel
         viewModel.coursesActivities;
         viewModel.selectedDate = DateTime(2020, 1, 2);
-        clearInteractions(courseRepository);
+        clearInteractions(courseRepositoryMock);
 
         expect(viewModel.selectedDateEvents(viewModel.selectedDate), expected);
 
-        verifyNoMoreInteractions(courseRepository);
-        verifyNoMoreInteractions(settingsManager);
+        verifyNoMoreInteractions(courseRepositoryMock);
+        verifyNoMoreInteractions(settingsManagerMock);
       });
 
       test("The events of the date currently selected are return", () {
-        CourseRepositoryMock.stubCoursesActivities(
-            courseRepository as CourseRepositoryMock,
+        CourseRepositoryMock.stubCoursesActivities(courseRepositoryMock,
             toReturn: activities);
 
         final expected = [];
@@ -475,27 +470,34 @@ void main() {
         // Setting up the viewmodel
         viewModel.coursesActivities;
         viewModel.selectedDate = DateTime(2020, 1, 3);
-        clearInteractions(courseRepository);
+        clearInteractions(courseRepositoryMock);
 
         expect(viewModel.selectedDateEvents(viewModel.selectedDate), expected);
 
-        verifyNoMoreInteractions(courseRepository);
-        verifyNoMoreInteractions(settingsManager);
+        verifyNoMoreInteractions(courseRepositoryMock);
+        verifyNoMoreInteractions(settingsManagerMock);
       });
     });
 
     group('selectedWeekEvents', () {
       final Map<PreferencesFlag, dynamic> settingsStartingDayMonday = {
         PreferencesFlag.scheduleStartWeekday: StartingDayOfWeek.monday,
+        PreferencesFlag.scheduleCalendarFormat: CalendarFormat.month
       };
       final Map<PreferencesFlag, dynamic> settingsStartingDaySaturday = {
         PreferencesFlag.scheduleStartWeekday: StartingDayOfWeek.saturday,
+        PreferencesFlag.scheduleCalendarFormat: CalendarFormat.month
+      };
+      final Map<PreferencesFlag, dynamic> settingsStartingDaySunday = {
+        PreferencesFlag.scheduleStartWeekday: StartingDayOfWeek.sunday,
+        PreferencesFlag.scheduleCalendarFormat: CalendarFormat.month
       };
 
-      test('selectedWeekEvents for starting day sunday', () {
-        CourseRepositoryMock.stubCoursesActivities(
-            courseRepository as CourseRepositoryMock,
+      test('selectedWeekEvents for starting day sunday', () async {
+        CourseRepositoryMock.stubCoursesActivities(courseRepositoryMock,
             toReturn: weekOfActivities);
+        SettingsManagerMock.stubGetScheduleSettings(settingsManagerMock,
+            toReturn: settingsStartingDaySunday);
 
         final expected = {
           DateTime(2020, 1, 5): [gen104],
@@ -510,17 +512,16 @@ void main() {
         // Setting up the viewmodel
         viewModel.coursesActivities;
         viewModel.selectedDate = DateTime(2020, 1, 8);
-        clearInteractions(courseRepository);
+        await viewModel.loadSettings();
+        clearInteractions(courseRepositoryMock);
 
         expect(viewModel.selectedWeekEvents(), expected);
       });
 
       test('selectedWeekEvents for starting day monday', () async {
-        SettingsManagerMock.stubGetScheduleSettings(
-            settingsManager as SettingsManagerMock,
+        SettingsManagerMock.stubGetScheduleSettings(settingsManagerMock,
             toReturn: settingsStartingDayMonday);
-        CourseRepositoryMock.stubCoursesActivities(
-            courseRepository as CourseRepositoryMock,
+        CourseRepositoryMock.stubCoursesActivities(courseRepositoryMock,
             toReturn: weekOfActivities);
 
         final expected = {
@@ -536,17 +537,15 @@ void main() {
         viewModel.coursesActivities;
         viewModel.selectedDate = DateTime(2020, 1, 7);
         await viewModel.loadSettings();
-        clearInteractions(courseRepository);
+        clearInteractions(courseRepositoryMock);
 
         expect(viewModel.selectedWeekEvents(), expected);
       });
 
       test('selectedWeekEvents for starting day saturday', () async {
-        SettingsManagerMock.stubGetScheduleSettings(
-            settingsManager as SettingsManagerMock,
+        SettingsManagerMock.stubGetScheduleSettings(settingsManagerMock,
             toReturn: settingsStartingDaySaturday);
-        CourseRepositoryMock.stubCoursesActivities(
-            courseRepository as CourseRepositoryMock,
+        CourseRepositoryMock.stubCoursesActivities(courseRepositoryMock,
             toReturn: weekOfActivities);
 
         final expected = {
@@ -562,7 +561,7 @@ void main() {
         viewModel.coursesActivities;
         viewModel.selectedDate = DateTime(2020, 1, 7);
         await viewModel.loadSettings();
-        clearInteractions(courseRepository);
+        clearInteractions(courseRepositoryMock);
 
         expect(viewModel.selectedWeekEvents(), expected);
       });
@@ -572,8 +571,7 @@ void main() {
       test(
           'Call SignetsAPI to get the coursesActivities than reload the coursesActivities',
           () async {
-        CourseRepositoryMock.stubCoursesActivities(
-            courseRepository as CourseRepositoryMock,
+        CourseRepositoryMock.stubCoursesActivities(courseRepositoryMock,
             toReturn: activities);
 
         await viewModel.refresh();
@@ -586,19 +584,18 @@ void main() {
         expect(viewModel.coursesActivities, expected);
 
         verifyInOrder([
-          courseRepository.getCoursesActivities(),
-          courseRepository.coursesActivities,
-          courseRepository.coursesActivities
+          courseRepositoryMock.getCoursesActivities(),
+          courseRepositoryMock.coursesActivities,
+          courseRepositoryMock.coursesActivities
         ]);
 
-        verifyNoMoreInteractions(courseRepository);
+        verifyNoMoreInteractions(courseRepositoryMock);
       });
     });
 
     group('loadSettings -', () {
       test('calendarFormat changing', () async {
-        SettingsManagerMock.stubGetScheduleSettings(
-            settingsManager as SettingsManagerMock,
+        SettingsManagerMock.stubGetScheduleSettings(settingsManagerMock,
             toReturn: {
               PreferencesFlag.scheduleCalendarFormat: CalendarFormat.month
             });
@@ -606,15 +603,11 @@ void main() {
 
         await viewModel.loadSettings();
         expect(viewModel.calendarFormat, CalendarFormat.month);
-        verify(settingsManager.getScheduleSettings()).called(1);
-        verifyNoMoreInteractions(settingsManager);
+        verify(settingsManagerMock.getScheduleSettings()).called(1);
+        verifyNoMoreInteractions(settingsManagerMock);
       });
       test('assignScheduleActivities - format the schedule activities in a map',
           () async {
-        // Test if null, return without doing any change to the schedule list
-        await viewModel.assignScheduleActivities(null);
-        expect(viewModel.scheduleActivitiesByCourse.entries.length, 0);
-
         // Test if empty list is passed, do nothing
         await viewModel.assignScheduleActivities([]);
         expect(viewModel.scheduleActivitiesByCourse.entries.length, 0);
@@ -640,7 +633,7 @@ void main() {
 
         // Test normal cases, with laboratory
         SettingsManagerMock.stubGetDynamicString(
-            settingsManager as SettingsManagerMock,
+            settingsManagerMock,
             PreferencesFlag.scheduleLaboratoryGroup,
             classOneWithLaboratoryABscheduleActivities.first.courseAcronym,
             toReturn: ActivityCode.labGroupA);
@@ -653,28 +646,20 @@ void main() {
       test(
           'loadSettingsScheduleActivities - test when one is selected from one group',
           () async {
-        CourseRepositoryMock.stubGetCoursesActivities(
-            courseRepository as CourseRepositoryMock,
+        CourseRepositoryMock.stubGetCoursesActivities(courseRepositoryMock,
             toReturn: activities);
-        CourseRepositoryMock.stubCoursesActivities(
-            courseRepository as CourseRepositoryMock);
-        CourseRepositoryMock.stubGetCourses(
-            courseRepository as CourseRepositoryMock,
-            fromCacheOnly: true,
-            toReturn: courses);
-        CourseRepositoryMock.stubGetCourses(
-            courseRepository as CourseRepositoryMock,
-            fromCacheOnly: false);
-        CourseRepositoryMock.stubGetScheduleActivities(
-            courseRepository as CourseRepositoryMock,
+        CourseRepositoryMock.stubCoursesActivities(courseRepositoryMock);
+        CourseRepositoryMock.stubGetCourses(courseRepositoryMock,
+            fromCacheOnly: true, toReturn: courses);
+        CourseRepositoryMock.stubGetCourses(courseRepositoryMock);
+        CourseRepositoryMock.stubGetScheduleActivities(courseRepositoryMock,
             toReturn: classOneWithLaboratoryABscheduleActivities);
-        SettingsManagerMock.stubGetScheduleSettings(
-            settingsManager as SettingsManagerMock,
+        SettingsManagerMock.stubGetScheduleSettings(settingsManagerMock,
             toReturn: {
               PreferencesFlag.scheduleCalendarFormat: CalendarFormat.month
             });
         SettingsManagerMock.stubGetDynamicString(
-            settingsManager as SettingsManagerMock,
+            settingsManagerMock,
             PreferencesFlag.scheduleLaboratoryGroup,
             classOneWithLaboratoryABscheduleActivities.first.courseAcronym,
             toReturn: ActivityCode.labGroupA);
@@ -682,19 +667,19 @@ void main() {
         expect(await viewModel.futureToRun(), activities,
             reason: "Even if SignetsAPI fails we should receives a list.");
 
-        List<ScheduleActivity> listScheduleActivities;
-        await courseRepository.getScheduleActivities().then((value) {
+        late List<ScheduleActivity> listScheduleActivities;
+        await courseRepositoryMock.getScheduleActivities().then((value) {
           listScheduleActivities = value;
         });
         await viewModel.assignScheduleActivities(listScheduleActivities);
 
-        await untilCalled(courseRepository.getCoursesActivities());
-        await untilCalled(courseRepository.getScheduleActivities());
+        await untilCalled(courseRepositoryMock.getCoursesActivities());
+        await untilCalled(courseRepositoryMock.getScheduleActivities());
 
         verifyInOrder([
-          courseRepository.getCoursesActivities(fromCacheOnly: true),
-          courseRepository.getCoursesActivities(),
-          courseRepository.getScheduleActivities(
+          courseRepositoryMock.getCoursesActivities(fromCacheOnly: true),
+          courseRepositoryMock.getCoursesActivities(),
+          courseRepositoryMock.getScheduleActivities(
               fromCacheOnly: anyNamed("fromCacheOnly"))
         ]);
 
@@ -707,20 +692,17 @@ void main() {
                 classOneWithLaboratoryABscheduleActivities.first.courseAcronym],
             "Laboratoire (Groupe A)");
 
-        verify(settingsManager.getDynamicString(any, any)).called(2);
+        verify(settingsManagerMock.getDynamicString(any, any)).called(2);
       });
 
       test(
           'coursesActivities - should fill coursesActivities with the activities',
           () async {
-        CourseRepositoryMock.stubCoursesActivities(
-            courseRepository as CourseRepositoryMock,
+        CourseRepositoryMock.stubCoursesActivities(courseRepositoryMock,
             toReturn: activitiesLabs);
 
-        SettingsManagerMock.stubGetDynamicString(
-            settingsManager as SettingsManagerMock,
-            PreferencesFlag.scheduleLaboratoryGroup,
-            "GEN103",
+        SettingsManagerMock.stubGetDynamicString(settingsManagerMock,
+            PreferencesFlag.scheduleLaboratoryGroup, "GEN103",
             toReturn: ActivityCode.labGroupA);
 
         await viewModel.assignScheduleActivities([
@@ -746,14 +728,11 @@ void main() {
       test(
           'coursesActivities - should fill coursesActivities with the activities with no LabB for GEN103',
           () async {
-        CourseRepositoryMock.stubCoursesActivities(
-            courseRepository as CourseRepositoryMock,
+        CourseRepositoryMock.stubCoursesActivities(courseRepositoryMock,
             toReturn: activitiesLabs);
 
-        SettingsManagerMock.stubGetDynamicString(
-            settingsManager as SettingsManagerMock,
-            PreferencesFlag.scheduleLaboratoryGroup,
-            "GEN103",
+        SettingsManagerMock.stubGetDynamicString(settingsManagerMock,
+            PreferencesFlag.scheduleLaboratoryGroup, "GEN103",
             toReturn: ActivityCode.labGroupA);
 
         await viewModel.assignScheduleActivities([
@@ -779,14 +758,11 @@ void main() {
       test(
           'coursesActivities - should fill coursesActivities with the activities with no LabA for GEN103',
           () async {
-        CourseRepositoryMock.stubCoursesActivities(
-            courseRepository as CourseRepositoryMock,
+        CourseRepositoryMock.stubCoursesActivities(courseRepositoryMock,
             toReturn: activitiesLabs);
 
-        SettingsManagerMock.stubGetDynamicString(
-            settingsManager as SettingsManagerMock,
-            PreferencesFlag.scheduleLaboratoryGroup,
-            "GEN103",
+        SettingsManagerMock.stubGetDynamicString(settingsManagerMock,
+            PreferencesFlag.scheduleLaboratoryGroup, "GEN103",
             toReturn: ActivityCode.labGroupB);
 
         await viewModel.assignScheduleActivities([
@@ -812,15 +788,11 @@ void main() {
       test(
           'coursesActivities - should fill coursesActivities with all the activities if none are selected',
           () async {
-        CourseRepositoryMock.stubCoursesActivities(
-            courseRepository as CourseRepositoryMock,
+        CourseRepositoryMock.stubCoursesActivities(courseRepositoryMock,
             toReturn: activitiesLabs);
 
-        SettingsManagerMock.stubGetDynamicString(
-            settingsManager as SettingsManagerMock,
-            PreferencesFlag.scheduleLaboratoryGroup,
-            "GEN103",
-            toReturn: null);
+        SettingsManagerMock.stubGetDynamicString(settingsManagerMock,
+            PreferencesFlag.scheduleLaboratoryGroup, "GEN103");
 
         await viewModel.assignScheduleActivities([]);
 

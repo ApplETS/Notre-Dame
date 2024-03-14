@@ -47,24 +47,26 @@ class MoreViewModel extends FutureViewModel {
   /// Used to redirect on the dashboard.
   final NavigationService navigationService = locator<NavigationService>();
 
-  String _appVersion;
+  String? _appVersion;
 
   final AppIntl _appIntl;
 
   /// Get the application version
-  String get appVersion => _appVersion;
+  String? get appVersion => _appVersion;
 
-  MoreViewModel({@required AppIntl intl}) : _appIntl = intl;
+  MoreViewModel({required AppIntl intl}) : _appIntl = intl;
 
   @override
   Future futureToRun() async {
-    setBusy(true);
-
-    await PackageInfo.fromPlatform()
-        .then((value) => _appVersion = value.version)
-        .onError((error, stackTrace) => null);
-
-    setBusy(false);
+    try {
+      setBusy(true);
+      final packageInfo = await PackageInfo.fromPlatform();
+      _appVersion = packageInfo.version;
+    } catch (error) {
+      onError(error);
+    } finally {
+      setBusy(false);
+    }
     return true;
   }
 

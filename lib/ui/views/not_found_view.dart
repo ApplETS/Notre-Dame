@@ -11,7 +11,7 @@ import 'package:notredame/core/viewmodels/not_found_viewmodel.dart';
 import 'package:notredame/ui/utils/app_theme.dart';
 
 class NotFoundView extends StatefulWidget {
-  final String pageName;
+  final String? pageName;
 
   const NotFoundView({this.pageName});
 
@@ -20,13 +20,13 @@ class NotFoundView extends StatefulWidget {
 }
 
 class _NotFoundState extends State<NotFoundView> {
-  NotFoundViewModel viewModel;
+  late NotFoundViewModel viewModel;
 
   _NotFoundState();
 
   @override
   void initState() {
-    viewModel = NotFoundViewModel(pageName: widget.pageName);
+    viewModel = NotFoundViewModel(pageName: widget.pageName ?? '');
     viewModel
         .loadRiveAnimation()
         .then((_) => setState(() => viewModel.startRiveAnimation()));
@@ -40,7 +40,7 @@ class _NotFoundState extends State<NotFoundView> {
             width: 100,
             height: 80,
             child: Rive(
-              artboard: viewModel.artboard,
+              artboard: viewModel.artboard!,
               fit: BoxFit.fitWidth,
             ))
         : Container();
@@ -68,7 +68,7 @@ class _NotFoundState extends State<NotFoundView> {
                             bottom: 80,
                           ),
                           child: Text(
-                            AppIntl.of(context).not_found_title,
+                            AppIntl.of(context)!.not_found_title,
                             style: const TextStyle(
                                 fontSize: 25, fontWeight: FontWeight.bold),
                           ),
@@ -78,7 +78,7 @@ class _NotFoundState extends State<NotFoundView> {
                             bottom: 70,
                           ),
                           child: Text(
-                            AppIntl.of(context)
+                            AppIntl.of(context)!
                                 .not_found_message(model.notFoundPageName),
                             textAlign: TextAlign.center,
                             style: const TextStyle(
@@ -94,7 +94,7 @@ class _NotFoundState extends State<NotFoundView> {
                             onPressed: () {
                               model.navigateToDashboard();
                             },
-                            child: Text(AppIntl.of(context).go_to_dashboard),
+                            child: Text(AppIntl.of(context)!.go_to_dashboard),
                           ),
                         ),
                       ],

@@ -14,7 +14,6 @@ import 'package:table_calendar/table_calendar.dart';
 
 // Project imports:
 import 'package:notredame/core/constants/preferences_flags.dart';
-import 'package:notredame/core/managers/settings_manager.dart';
 import 'package:notredame/ui/widgets/schedule_settings.dart';
 import '../../helpers.dart';
 import '../../mock/managers/course_repository_mock.dart';
@@ -22,17 +21,18 @@ import '../../mock/managers/settings_manager_mock.dart';
 import '../../mock/services/remote_config_service_mock.dart';
 
 void main() {
-  SettingsManager settingsManager;
-  RemoteConfigServiceMock remoteConfigService;
-  CourseRepositoryMock courseRepositoryMock;
-  AppIntl intl;
+  late SettingsManagerMock settingsManagerMock;
+  late RemoteConfigServiceMock remoteConfigServiceMock;
+  late CourseRepositoryMock courseRepositoryMock;
+  late AppIntl intl;
 
   // Some settings
   final Map<PreferencesFlag, dynamic> settings = {
     PreferencesFlag.scheduleCalendarFormat: CalendarFormat.week,
     PreferencesFlag.scheduleStartWeekday: StartingDayOfWeek.monday,
     PreferencesFlag.scheduleShowTodayBtn: true,
-    PreferencesFlag.scheduleListView: true
+    PreferencesFlag.scheduleListView: true,
+    PreferencesFlag.scheduleShowWeekEvents: true
   };
 
   final List<ScheduleActivity> classOneWithLaboratoryABscheduleActivities = [
@@ -76,21 +76,19 @@ void main() {
 
   group("ScheduleSettings - ", () {
     setUp(() async {
-      settingsManager = setupSettingsManagerMock();
-      courseRepositoryMock =
-          setupCourseRepositoryMock() as CourseRepositoryMock;
-      remoteConfigService =
-          setupRemoteConfigServiceMock() as RemoteConfigServiceMock;
+      settingsManagerMock = setupSettingsManagerMock();
+      courseRepositoryMock = setupCourseRepositoryMock();
+      remoteConfigServiceMock = setupRemoteConfigServiceMock();
       intl = await setupAppIntl();
 
       CourseRepositoryMock.stubGetScheduleActivities(courseRepositoryMock);
-      RemoteConfigServiceMock.stubGetCalendarViewEnabled(remoteConfigService);
+      RemoteConfigServiceMock.stubGetCalendarViewEnabled(
+          remoteConfigServiceMock);
     });
 
     group("ui - ", () {
       testWidgets("With handle", (WidgetTester tester) async {
-        SettingsManagerMock.stubGetScheduleSettings(
-            settingsManager as SettingsManagerMock,
+        SettingsManagerMock.stubGetScheduleSettings(settingsManagerMock,
             toReturn: settings);
         await tester
             .pumpWidget(localizedWidget(child: const ScheduleSettings()));
@@ -100,7 +98,7 @@ void main() {
         expect(
             find.byWidgetPredicate((widget) =>
                 widget is Container &&
-                (widget.decoration as BoxDecoration).color == Colors.grey),
+                (widget.decoration! as BoxDecoration).color == Colors.grey),
             findsOneWidget,
             reason: "The handle should be grey");
 
@@ -176,8 +174,7 @@ void main() {
       });
 
       testWidgets("Without handle", (WidgetTester tester) async {
-        SettingsManagerMock.stubGetScheduleSettings(
-            settingsManager as SettingsManagerMock,
+        SettingsManagerMock.stubGetScheduleSettings(settingsManagerMock,
             toReturn: settings);
 
         await tester.pumpWidget(
@@ -187,7 +184,7 @@ void main() {
         expect(
             find.byWidgetPredicate((widget) =>
                 widget is Container &&
-                (widget.decoration as BoxDecoration).color == Colors.grey),
+                (widget.decoration! as BoxDecoration).color == Colors.grey),
             findsNothing,
             reason: "There should not have a handle.");
 
@@ -266,8 +263,7 @@ void main() {
       testWidgets(
           "Should display activity selection section when a course has activities",
           (WidgetTester tester) async {
-        SettingsManagerMock.stubGetScheduleSettings(
-            settingsManager as SettingsManagerMock,
+        SettingsManagerMock.stubGetScheduleSettings(settingsManagerMock,
             toReturn: settings);
         CourseRepositoryMock.stubGetScheduleActivities(courseRepositoryMock,
             toReturn: classOneWithLaboratoryABscheduleActivities);
@@ -303,16 +299,13 @@ void main() {
       testWidgets(
           "When a settings laboratory is already selected, verify that it is in fact preselected",
           (WidgetTester tester) async {
-        SettingsManagerMock.stubGetScheduleSettings(
-            settingsManager as SettingsManagerMock,
+        SettingsManagerMock.stubGetScheduleSettings(settingsManagerMock,
             toReturn: settings);
         CourseRepositoryMock.stubGetScheduleActivities(courseRepositoryMock,
             toReturn: classOneWithLaboratoryABscheduleActivities);
         // preselect the laboB
-        SettingsManagerMock.stubGetDynamicString(
-            settingsManager as SettingsManagerMock,
-            PreferencesFlag.scheduleLaboratoryGroup,
-            "GEN101",
+        SettingsManagerMock.stubGetDynamicString(settingsManagerMock,
+            PreferencesFlag.scheduleLaboratoryGroup, "GEN101",
             toReturn: ActivityCode.labGroupB);
 
         const scheduleSettings = ScheduleSettings(showHandle: false);
@@ -340,8 +333,7 @@ void main() {
       testWidgets(
           "if there is only a laboA (no labo b) the options should not appear on screen",
           (WidgetTester tester) async {
-        SettingsManagerMock.stubGetScheduleSettings(
-            settingsManager as SettingsManagerMock,
+        SettingsManagerMock.stubGetScheduleSettings(settingsManagerMock,
             toReturn: settings);
         final courseWithOnlyLabA = List<ScheduleActivity>.from(
             classOneWithLaboratoryABscheduleActivities);
@@ -368,12 +360,10 @@ void main() {
 
     group("interactions - ", () {
       testWidgets("onChange calendarFormat", (WidgetTester tester) async {
-        SettingsManagerMock.stubGetScheduleSettings(
-            settingsManager as SettingsManagerMock,
+        SettingsManagerMock.stubGetScheduleSettings(settingsManagerMock,
             toReturn: settings);
         SettingsManagerMock.stubSetString(
-            settingsManager as SettingsManagerMock,
-            PreferencesFlag.scheduleCalendarFormat);
+            settingsManagerMock, PreferencesFlag.scheduleCalendarFormat);
 
         await tester.pumpWidget(
             localizedWidget(child: const ScheduleSettings(showHandle: false)));
@@ -383,7 +373,7 @@ void main() {
             ListTile, intl.schedule_settings_calendar_format_2_weeks));
         await tester.pump();
 
-        await untilCalled(settingsManager.setString(
+        await untilCalled(settingsManagerMock.setString(
             PreferencesFlag.scheduleCalendarFormat, any));
 
         final formatTile = find.widgetWithText(
@@ -397,11 +387,10 @@ void main() {
       });
 
       testWidgets("onChange showTodayBtn", (WidgetTester tester) async {
-        SettingsManagerMock.stubGetScheduleSettings(
-            settingsManager as SettingsManagerMock,
+        SettingsManagerMock.stubGetScheduleSettings(settingsManagerMock,
             toReturn: settings);
-        SettingsManagerMock.stubSetBool(settingsManager as SettingsManagerMock,
-            PreferencesFlag.scheduleShowTodayBtn);
+        SettingsManagerMock.stubSetBool(
+            settingsManagerMock, PreferencesFlag.scheduleShowTodayBtn);
 
         await tester.pumpWidget(
             localizedWidget(child: const ScheduleSettings(showHandle: false)));
@@ -415,12 +404,12 @@ void main() {
         // Currently the await tester.tap on a switch in a tile isn't working. Workaround:
         (find.byType(Switch, skipOffstage: false).evaluate().single.widget
                 as Switch)
-            .onChanged(false);
+            .onChanged!(false);
 
         await tester.pumpAndSettle();
 
-        await untilCalled(
-            settingsManager.setBool(PreferencesFlag.scheduleShowTodayBtn, any));
+        await untilCalled(settingsManagerMock.setBool(
+            PreferencesFlag.scheduleShowTodayBtn, any));
 
         expect(
             tester.widget(find.descendant(
@@ -436,8 +425,7 @@ void main() {
       testWidgets(
           "Should display activity selection section when a course has activities",
           (WidgetTester tester) async {
-        SettingsManagerMock.stubGetScheduleSettings(
-            settingsManager as SettingsManagerMock,
+        SettingsManagerMock.stubGetScheduleSettings(settingsManagerMock,
             toReturn: settings);
         CourseRepositoryMock.stubGetScheduleActivities(courseRepositoryMock,
             toReturn: classOneWithLaboratoryABscheduleActivities);

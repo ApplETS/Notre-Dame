@@ -6,28 +6,26 @@ import 'package:mockito/mockito.dart';
 // Project imports:
 import 'package:notredame/core/constants/preferences_flags.dart';
 import 'package:notredame/core/constants/progress_bar_text_options.dart';
-import 'package:notredame/core/managers/course_repository.dart';
 import 'package:notredame/core/managers/settings_manager.dart';
-import 'package:notredame/core/services/analytics_service.dart';
-import 'package:notredame/core/services/preferences_service.dart';
-import 'package:notredame/core/services/remote_config_service.dart';
 import 'package:notredame/core/viewmodels/dashboard_viewmodel.dart';
 import '../helpers.dart';
 import '../mock/managers/course_repository_mock.dart';
 import '../mock/managers/settings_manager_mock.dart';
+import '../mock/services/analytics_service_mock.dart';
 import '../mock/services/in_app_review_service_mock.dart';
 import '../mock/services/preferences_service_mock.dart';
 import '../mock/services/remote_config_service_mock.dart';
 
 void main() {
-  PreferencesService preferenceService;
-  SettingsManager settingsManager;
-  DashboardViewModel viewModel;
-  CourseRepository courseRepository;
-  RemoteConfigService remoteConfigService;
-  PreferencesServiceMock preferencesServiceMock;
-  InAppReviewServiceMock inAppReviewServiceMock;
-  AnalyticsService analyticsService;
+  late PreferencesServiceMock preferenceServiceMock;
+  late SettingsManagerMock settingsManagerMock;
+  late CourseRepositoryMock courseRepositoryMock;
+  late RemoteConfigServiceMock remoteConfigServiceMock;
+  late PreferencesServiceMock preferencesServiceMock;
+  late InAppReviewServiceMock inAppReviewServiceMock;
+  late AnalyticsServiceMock analyticsServiceMock;
+
+  late DashboardViewModel viewModel;
 
   final gen101 = CourseActivity(
       courseGroup: "GEN101",
@@ -195,39 +193,28 @@ void main() {
   group("DashboardViewModel - ", () {
     setUp(() async {
       // Setting up mocks
-      courseRepository = setupCourseRepositoryMock();
-      remoteConfigService = setupRemoteConfigServiceMock();
-      settingsManager = setupSettingsManagerMock();
-      preferenceService = setupPreferencesServiceMock();
-      analyticsService = setupAnalyticsServiceMock();
+      courseRepositoryMock = setupCourseRepositoryMock();
+      remoteConfigServiceMock = setupRemoteConfigServiceMock();
+      settingsManagerMock = setupSettingsManagerMock();
+      preferenceServiceMock = setupPreferencesServiceMock();
+      analyticsServiceMock = setupAnalyticsServiceMock();
       setupAppWidgetServiceMock();
-      courseRepository = setupCourseRepositoryMock();
-      preferencesServiceMock =
-          setupPreferencesServiceMock() as PreferencesServiceMock;
+      preferencesServiceMock = setupPreferencesServiceMock();
 
       viewModel = DashboardViewModel(intl: await setupAppIntl());
-      CourseRepositoryMock.stubGetSessions(
-          courseRepository as CourseRepositoryMock,
+      CourseRepositoryMock.stubGetSessions(courseRepositoryMock,
           toReturn: [session]);
-      CourseRepositoryMock.stubActiveSessions(
-          courseRepository as CourseRepositoryMock,
+      CourseRepositoryMock.stubActiveSessions(courseRepositoryMock,
           toReturn: [session]);
-      CourseRepositoryMock.stubCoursesActivities(
-          courseRepository as CourseRepositoryMock);
-      CourseRepositoryMock.stubGetCoursesActivities(
-          courseRepository as CourseRepositoryMock,
+      CourseRepositoryMock.stubCoursesActivities(courseRepositoryMock);
+      CourseRepositoryMock.stubGetCoursesActivities(courseRepositoryMock,
           fromCacheOnly: true);
-      CourseRepositoryMock.stubGetCoursesActivities(
-          courseRepository as CourseRepositoryMock,
-          fromCacheOnly: false);
-      SettingsManagerMock.stubDateTimeNow(
-          settingsManager as SettingsManagerMock,
+      CourseRepositoryMock.stubGetCoursesActivities(courseRepositoryMock);
+      SettingsManagerMock.stubDateTimeNow(settingsManagerMock,
           toReturn: DateTime(2020));
 
-      RemoteConfigServiceMock.stubGetBroadcastEnabled(
-          remoteConfigService as RemoteConfigServiceMock);
-      RemoteConfigServiceMock.stubGetBroadcastEn(
-          remoteConfigService as RemoteConfigServiceMock,
+      RemoteConfigServiceMock.stubGetBroadcastEnabled(remoteConfigServiceMock);
+      RemoteConfigServiceMock.stubGetBroadcastEn(remoteConfigServiceMock,
           toReturn: "");
 
       inAppReviewServiceMock =
@@ -241,137 +228,113 @@ void main() {
     group('futureToRunGrades -', () {
       test('first load from cache than call SignetsAPI to get the courses',
           () async {
-        CourseRepositoryMock.stubSessions(
-            courseRepository as CourseRepositoryMock,
+        CourseRepositoryMock.stubSessions(courseRepositoryMock,
             toReturn: [session]);
-        CourseRepositoryMock.stubGetSessions(
-            courseRepository as CourseRepositoryMock,
+        CourseRepositoryMock.stubGetSessions(courseRepositoryMock,
             toReturn: [session]);
-        CourseRepositoryMock.stubActiveSessions(
-            courseRepository as CourseRepositoryMock,
+        CourseRepositoryMock.stubActiveSessions(courseRepositoryMock,
             toReturn: [session]);
-        CourseRepositoryMock.stubGetCourses(
-            courseRepository as CourseRepositoryMock,
-            toReturn: courses,
-            fromCacheOnly: true);
+        CourseRepositoryMock.stubGetCourses(courseRepositoryMock,
+            toReturn: courses, fromCacheOnly: true);
 
-        CourseRepositoryMock.stubGetCourses(
-            courseRepository as CourseRepositoryMock,
+        CourseRepositoryMock.stubGetCourses(courseRepositoryMock,
             toReturn: courses);
 
         expect(await viewModel.futureToRunGrades(), courses);
 
-        await untilCalled(courseRepository.sessions);
-        await untilCalled(courseRepository.sessions);
+        await untilCalled(courseRepositoryMock.sessions);
+        await untilCalled(courseRepositoryMock.sessions);
 
         expect(viewModel.courses, courses);
 
         verifyInOrder([
-          courseRepository.sessions,
-          courseRepository.sessions,
-          courseRepository.activeSessions,
-          courseRepository.activeSessions,
-          courseRepository.getCourses(fromCacheOnly: true),
-          courseRepository.getCourses(),
+          courseRepositoryMock.sessions,
+          courseRepositoryMock.sessions,
+          courseRepositoryMock.activeSessions,
+          courseRepositoryMock.activeSessions,
+          courseRepositoryMock.getCourses(fromCacheOnly: true),
+          courseRepositoryMock.getCourses(),
         ]);
 
-        verifyNoMoreInteractions(courseRepository);
+        verifyNoMoreInteractions(courseRepositoryMock);
       });
 
       test('Signets throw an error while trying to get courses', () async {
         setupFlutterToastMock();
-        CourseRepositoryMock.stubSessions(
-            courseRepository as CourseRepositoryMock,
+        CourseRepositoryMock.stubSessions(courseRepositoryMock,
             toReturn: [session]);
-        CourseRepositoryMock.stubGetSessions(
-            courseRepository as CourseRepositoryMock,
+        CourseRepositoryMock.stubGetSessions(courseRepositoryMock,
             toReturn: [session]);
-        CourseRepositoryMock.stubActiveSessions(
-            courseRepository as CourseRepositoryMock,
+        CourseRepositoryMock.stubActiveSessions(courseRepositoryMock,
             toReturn: [session]);
 
-        CourseRepositoryMock.stubGetCourses(
-            courseRepository as CourseRepositoryMock,
-            toReturn: courses,
-            fromCacheOnly: true);
+        CourseRepositoryMock.stubGetCourses(courseRepositoryMock,
+            toReturn: courses, fromCacheOnly: true);
 
-        CourseRepositoryMock.stubGetCoursesException(
-            courseRepository as CourseRepositoryMock,
-            fromCacheOnly: false);
+        CourseRepositoryMock.stubGetCoursesException(courseRepositoryMock);
 
-        CourseRepositoryMock.stubGetCourses(
-            courseRepository as CourseRepositoryMock,
+        CourseRepositoryMock.stubGetCourses(courseRepositoryMock,
             toReturn: courses);
 
         expect(await viewModel.futureToRunGrades(), courses,
             reason:
                 "Even if SignetsAPI call fails, should return the cache contents");
 
-        await untilCalled(courseRepository.sessions);
-        await untilCalled(courseRepository.sessions);
+        await untilCalled(courseRepositoryMock.sessions);
+        await untilCalled(courseRepositoryMock.sessions);
 
         expect(viewModel.courses, courses);
 
         verifyInOrder([
-          courseRepository.sessions,
-          courseRepository.sessions,
-          courseRepository.activeSessions,
-          courseRepository.activeSessions,
-          courseRepository.getCourses(fromCacheOnly: true),
-          courseRepository.getCourses(),
+          courseRepositoryMock.sessions,
+          courseRepositoryMock.sessions,
+          courseRepositoryMock.activeSessions,
+          courseRepositoryMock.activeSessions,
+          courseRepositoryMock.getCourses(fromCacheOnly: true),
+          courseRepositoryMock.getCourses(),
         ]);
 
-        verifyNoMoreInteractions(courseRepository);
+        verifyNoMoreInteractions(courseRepositoryMock);
       });
 
       test('There is no session active', () async {
-        CourseRepositoryMock.stubSessions(
-            courseRepository as CourseRepositoryMock,
-            toReturn: []);
-        CourseRepositoryMock.stubActiveSessions(
-            courseRepository as CourseRepositoryMock,
+        CourseRepositoryMock.stubSessions(courseRepositoryMock, toReturn: []);
+        CourseRepositoryMock.stubActiveSessions(courseRepositoryMock,
             toReturn: []);
 
         expect(await viewModel.futureToRunGrades(), [],
             reason: "Should return empty if there is no session active.");
 
-        await untilCalled(courseRepository.sessions);
+        await untilCalled(courseRepositoryMock.sessions);
 
         expect(viewModel.courses, []);
 
         verifyInOrder([
-          courseRepository.sessions,
-          courseRepository.sessions,
-          courseRepository.getSessions(),
-          courseRepository.activeSessions,
+          courseRepositoryMock.sessions,
+          courseRepositoryMock.sessions,
+          courseRepositoryMock.getSessions(),
+          courseRepositoryMock.activeSessions,
         ]);
 
-        verifyNoMoreInteractions(courseRepository);
+        verifyNoMoreInteractions(courseRepositoryMock);
       });
     });
 
     group("futureToRun - ", () {
       test("The initial cards are correctly loaded", () async {
         setupFlutterToastMock();
-        CourseRepositoryMock.stubGetCoursesActivities(
-            courseRepository as CourseRepositoryMock,
+        CourseRepositoryMock.stubGetCoursesActivities(courseRepositoryMock,
             fromCacheOnly: true);
-        CourseRepositoryMock.stubGetCourses(
-            courseRepository as CourseRepositoryMock,
+        CourseRepositoryMock.stubGetCourses(courseRepositoryMock,
             fromCacheOnly: true);
-        CourseRepositoryMock.stubGetCoursesException(
-            courseRepository as CourseRepositoryMock,
+        CourseRepositoryMock.stubGetCoursesException(courseRepositoryMock,
             fromCacheOnly: true);
-        CourseRepositoryMock.stubGetSessions(
-            courseRepository as CourseRepositoryMock);
-        CourseRepositoryMock.stubActiveSessions(
-            courseRepository as CourseRepositoryMock,
+        CourseRepositoryMock.stubGetSessions(courseRepositoryMock);
+        CourseRepositoryMock.stubActiveSessions(courseRepositoryMock,
             toReturn: [session]);
-        CourseRepositoryMock.stubCoursesActivities(
-            courseRepository as CourseRepositoryMock);
+        CourseRepositoryMock.stubCoursesActivities(courseRepositoryMock);
 
-        SettingsManagerMock.stubGetDashboard(
-            settingsManager as SettingsManagerMock,
+        SettingsManagerMock.stubGetDashboard(settingsManagerMock,
             toReturn: dashboard);
 
         await viewModel.futureToRun();
@@ -383,175 +346,145 @@ void main() {
           PreferencesFlag.progressBarCard
         ]);
 
-        verify(settingsManager.getDashboard()).called(1);
-        verify(settingsManager.getString(PreferencesFlag.progressBarText))
+        verify(settingsManagerMock.getDashboard()).called(1);
+        verify(settingsManagerMock.getString(PreferencesFlag.progressBarText))
             .called(1);
-        verify(settingsManager.dateTimeNow).called(2);
-        verifyNoMoreInteractions(settingsManager);
+        verify(settingsManagerMock.dateTimeNow).called(2);
+        verifyNoMoreInteractions(settingsManagerMock);
       });
 
       test("build the list todays activities sorted by time", () async {
-        CourseRepositoryMock.stubGetCoursesActivities(
-            courseRepository as CourseRepositoryMock);
-        CourseRepositoryMock.stubCoursesActivities(
-            courseRepository as CourseRepositoryMock,
+        CourseRepositoryMock.stubGetCoursesActivities(courseRepositoryMock);
+        CourseRepositoryMock.stubCoursesActivities(courseRepositoryMock,
             toReturn: activities);
-        CourseRepositoryMock.stubGetCourses(
-            courseRepository as CourseRepositoryMock,
+        CourseRepositoryMock.stubGetCourses(courseRepositoryMock,
             toReturn: courses);
-        SettingsManagerMock.stubGetDashboard(
-            settingsManager as SettingsManagerMock,
+        SettingsManagerMock.stubGetDashboard(settingsManagerMock,
             toReturn: dashboard);
         final now = DateTime.now();
-        SettingsManagerMock.stubDateTimeNow(
-            settingsManager as SettingsManagerMock,
+        SettingsManagerMock.stubDateTimeNow(settingsManagerMock,
             toReturn: DateTime(now.year, now.month, now.day, 8));
 
         await viewModel.futureToRun();
 
-        await untilCalled(courseRepository.getCoursesActivities());
+        await untilCalled(courseRepositoryMock.getCoursesActivities());
 
         expect(viewModel.todayDateEvents, todayActivities);
 
-        verify(courseRepository.getCoursesActivities()).called(1);
+        verify(courseRepositoryMock.getCoursesActivities()).called(1);
 
-        verify(courseRepository.getCoursesActivities(fromCacheOnly: true))
+        verify(courseRepositoryMock.getCoursesActivities(fromCacheOnly: true))
             .called(1);
 
-        verify(courseRepository.coursesActivities).called(1);
+        verify(courseRepositoryMock.coursesActivities).called(2);
 
-        verify(settingsManager.getDashboard()).called(1);
+        verify(settingsManagerMock.getDashboard()).called(1);
       });
 
       test(
           "build the list todays activities (doesnt remove activity when pending completion)",
           () async {
-        CourseRepositoryMock.stubGetCoursesActivities(
-            courseRepository as CourseRepositoryMock);
-        CourseRepositoryMock.stubCoursesActivities(
-            courseRepository as CourseRepositoryMock,
+        CourseRepositoryMock.stubGetCoursesActivities(courseRepositoryMock);
+        CourseRepositoryMock.stubCoursesActivities(courseRepositoryMock,
             toReturn: activities);
-        CourseRepositoryMock.stubGetCourses(
-            courseRepository as CourseRepositoryMock,
+        CourseRepositoryMock.stubGetCourses(courseRepositoryMock,
             toReturn: courses);
-        SettingsManagerMock.stubGetDashboard(
-            settingsManager as SettingsManagerMock,
+        SettingsManagerMock.stubGetDashboard(settingsManagerMock,
             toReturn: dashboard);
         final now = DateTime.now();
-        SettingsManagerMock.stubDateTimeNow(
-            settingsManager as SettingsManagerMock,
+        SettingsManagerMock.stubDateTimeNow(settingsManagerMock,
             toReturn: DateTime(now.year, now.month, now.day, 11, 59));
 
         await viewModel.futureToRun();
 
-        await untilCalled(courseRepository.getCoursesActivities());
+        await untilCalled(courseRepositoryMock.getCoursesActivities());
 
         expect(viewModel.todayDateEvents, todayActivities);
 
-        verify(courseRepository.getCoursesActivities()).called(1);
+        verify(courseRepositoryMock.getCoursesActivities()).called(1);
 
-        verify(courseRepository.getCoursesActivities(fromCacheOnly: true))
+        verify(courseRepositoryMock.getCoursesActivities(fromCacheOnly: true))
             .called(1);
 
-        verify(courseRepository.coursesActivities).called(1);
+        verify(courseRepositoryMock.coursesActivities).called(2);
 
-        verify(settingsManager.getDashboard()).called(1);
+        verify(settingsManagerMock.getDashboard()).called(1);
       });
 
       test("build the list todays activities (remove activity when finished)",
           () async {
-        CourseRepositoryMock.stubGetCoursesActivities(
-            courseRepository as CourseRepositoryMock);
-        CourseRepositoryMock.stubCoursesActivities(
-            courseRepository as CourseRepositoryMock,
+        CourseRepositoryMock.stubGetCoursesActivities(courseRepositoryMock);
+        CourseRepositoryMock.stubCoursesActivities(courseRepositoryMock,
             toReturn: activities);
-        CourseRepositoryMock.stubGetCourses(
-            courseRepository as CourseRepositoryMock,
+        CourseRepositoryMock.stubGetCourses(courseRepositoryMock,
             toReturn: courses);
-        SettingsManagerMock.stubGetDashboard(
-            settingsManager as SettingsManagerMock,
+        SettingsManagerMock.stubGetDashboard(settingsManagerMock,
             toReturn: dashboard);
         final now = DateTime.now();
-        SettingsManagerMock.stubDateTimeNow(
-            settingsManager as SettingsManagerMock,
+        SettingsManagerMock.stubDateTimeNow(settingsManagerMock,
             toReturn: DateTime(now.year, now.month, now.day, 12, 01));
 
         await viewModel.futureToRun();
 
-        await untilCalled(courseRepository.getCoursesActivities());
+        await untilCalled(courseRepositoryMock.getCoursesActivities());
 
         final activitiesFinishedCourse =
             List<CourseActivity>.from(todayActivities)..remove(gen101);
         expect(viewModel.todayDateEvents, activitiesFinishedCourse);
 
-        verify(courseRepository.getCoursesActivities()).called(1);
+        verify(courseRepositoryMock.getCoursesActivities()).called(1);
 
-        verify(courseRepository.getCoursesActivities(fromCacheOnly: true))
+        verify(courseRepositoryMock.getCoursesActivities(fromCacheOnly: true))
             .called(1);
 
-        verify(courseRepository.coursesActivities).called(1);
+        verify(courseRepositoryMock.coursesActivities).called(2);
 
-        verify(settingsManager.getDashboard()).called(1);
+        verify(settingsManagerMock.getDashboard()).called(1);
       });
 
       test("build the list tomorrow activities sorted by time", () async {
-        CourseRepositoryMock.stubGetCoursesActivities(
-            courseRepository as CourseRepositoryMock);
-        CourseRepositoryMock.stubCoursesActivities(
-            courseRepository as CourseRepositoryMock,
+        CourseRepositoryMock.stubGetCoursesActivities(courseRepositoryMock);
+        CourseRepositoryMock.stubCoursesActivities(courseRepositoryMock,
             toReturn: activities);
-        CourseRepositoryMock.stubGetCourses(
-            courseRepository as CourseRepositoryMock,
+        CourseRepositoryMock.stubGetCourses(courseRepositoryMock,
             toReturn: courses);
-        SettingsManagerMock.stubGetDashboard(
-            settingsManager as SettingsManagerMock,
+        SettingsManagerMock.stubGetDashboard(settingsManagerMock,
             toReturn: dashboard);
         final now = DateTime.now();
-        SettingsManagerMock.stubDateTimeNow(
-            settingsManager as SettingsManagerMock,
+        SettingsManagerMock.stubDateTimeNow(settingsManagerMock,
             toReturn: DateTime(now.year, now.month, now.day, 8));
 
         await viewModel.futureToRun();
 
-        await untilCalled(courseRepository.getCoursesActivities());
+        await untilCalled(courseRepositoryMock.getCoursesActivities());
 
         expect(viewModel.tomorrowDateEvents, tomorrowActivities);
 
-        verify(courseRepository.getCoursesActivities()).called(1);
+        verify(courseRepositoryMock.getCoursesActivities()).called(1);
 
-        verify(courseRepository.getCoursesActivities(fromCacheOnly: true))
+        verify(courseRepositoryMock.getCoursesActivities(fromCacheOnly: true))
             .called(1);
 
-        verify(courseRepository.coursesActivities).called(1);
+        verify(courseRepositoryMock.coursesActivities).called(2);
 
-        verify(settingsManager.getDashboard()).called(1);
+        verify(settingsManagerMock.getDashboard()).called(1);
       });
 
       test(
           "build the list todays activities with the right course activities (should not have labo A)",
           () async {
-        CourseRepositoryMock.stubGetCoursesActivities(
-            courseRepository as CourseRepositoryMock);
-        CourseRepositoryMock.stubCoursesActivities(
-            courseRepository as CourseRepositoryMock,
+        CourseRepositoryMock.stubGetCoursesActivities(courseRepositoryMock);
+        CourseRepositoryMock.stubCoursesActivities(courseRepositoryMock,
             toReturn: activitiesWithLabs);
 
-        SettingsManagerMock.stubGetDynamicString(
-            settingsManager as SettingsManagerMock,
-            PreferencesFlag.scheduleLaboratoryGroup,
-            "GEN101",
-            toReturn: null);
+        SettingsManagerMock.stubGetDynamicString(settingsManagerMock,
+            PreferencesFlag.scheduleLaboratoryGroup, "GEN101");
 
-        SettingsManagerMock.stubGetDynamicString(
-            settingsManager as SettingsManagerMock,
-            PreferencesFlag.scheduleLaboratoryGroup,
-            "GEN102",
-            toReturn: null);
+        SettingsManagerMock.stubGetDynamicString(settingsManagerMock,
+            PreferencesFlag.scheduleLaboratoryGroup, "GEN102");
 
-        SettingsManagerMock.stubGetDynamicString(
-            settingsManager as SettingsManagerMock,
-            PreferencesFlag.scheduleLaboratoryGroup,
-            "GEN103",
+        SettingsManagerMock.stubGetDynamicString(settingsManagerMock,
+            PreferencesFlag.scheduleLaboratoryGroup, "GEN103",
             toReturn: ActivityCode.labGroupB);
 
         expect(await viewModel.removeLaboratoryGroup(activitiesWithLabs), [
@@ -565,28 +498,18 @@ void main() {
       test(
           "build the list todays activities with the right course activities (should not have labo B)",
           () async {
-        CourseRepositoryMock.stubGetCoursesActivities(
-            courseRepository as CourseRepositoryMock);
-        CourseRepositoryMock.stubCoursesActivities(
-            courseRepository as CourseRepositoryMock,
+        CourseRepositoryMock.stubGetCoursesActivities(courseRepositoryMock);
+        CourseRepositoryMock.stubCoursesActivities(courseRepositoryMock,
             toReturn: activitiesWithLabs);
 
-        SettingsManagerMock.stubGetDynamicString(
-            settingsManager as SettingsManagerMock,
-            PreferencesFlag.scheduleLaboratoryGroup,
-            "GEN101",
-            toReturn: null);
+        SettingsManagerMock.stubGetDynamicString(settingsManagerMock,
+            PreferencesFlag.scheduleLaboratoryGroup, "GEN101");
 
-        SettingsManagerMock.stubGetDynamicString(
-            settingsManager as SettingsManagerMock,
-            PreferencesFlag.scheduleLaboratoryGroup,
-            "GEN102",
-            toReturn: null);
+        SettingsManagerMock.stubGetDynamicString(settingsManagerMock,
+            PreferencesFlag.scheduleLaboratoryGroup, "GEN102");
 
-        SettingsManagerMock.stubGetDynamicString(
-            settingsManager as SettingsManagerMock,
-            PreferencesFlag.scheduleLaboratoryGroup,
-            "GEN103",
+        SettingsManagerMock.stubGetDynamicString(settingsManagerMock,
+            PreferencesFlag.scheduleLaboratoryGroup, "GEN103",
             toReturn: ActivityCode.labGroupA);
 
         expect(await viewModel.removeLaboratoryGroup(activitiesWithLabs), [
@@ -600,29 +523,18 @@ void main() {
       test(
           "build the list todays activities with the right course activities (should have both labs)",
           () async {
-        CourseRepositoryMock.stubGetCoursesActivities(
-            courseRepository as CourseRepositoryMock);
-        CourseRepositoryMock.stubCoursesActivities(
-            courseRepository as CourseRepositoryMock,
+        CourseRepositoryMock.stubGetCoursesActivities(courseRepositoryMock);
+        CourseRepositoryMock.stubCoursesActivities(courseRepositoryMock,
             toReturn: activitiesWithLabs);
 
-        SettingsManagerMock.stubGetDynamicString(
-            settingsManager as SettingsManagerMock,
-            PreferencesFlag.scheduleLaboratoryGroup,
-            "GEN101",
-            toReturn: null);
+        SettingsManagerMock.stubGetDynamicString(settingsManagerMock,
+            PreferencesFlag.scheduleLaboratoryGroup, "GEN101");
 
-        SettingsManagerMock.stubGetDynamicString(
-            settingsManager as SettingsManagerMock,
-            PreferencesFlag.scheduleLaboratoryGroup,
-            "GEN102",
-            toReturn: null);
+        SettingsManagerMock.stubGetDynamicString(settingsManagerMock,
+            PreferencesFlag.scheduleLaboratoryGroup, "GEN102");
 
-        SettingsManagerMock.stubGetDynamicString(
-            settingsManager as SettingsManagerMock,
-            PreferencesFlag.scheduleLaboratoryGroup,
-            "GEN103",
-            toReturn: null);
+        SettingsManagerMock.stubGetDynamicString(settingsManagerMock,
+            PreferencesFlag.scheduleLaboratoryGroup, "GEN103");
 
         expect(await viewModel.removeLaboratoryGroup(activitiesWithLabs),
             activitiesWithLabs);
@@ -631,43 +543,33 @@ void main() {
       test("An exception is thrown during the preferenceService call",
           () async {
         setupFlutterToastMock();
-        CourseRepositoryMock.stubGetCoursesActivities(
-            courseRepository as CourseRepositoryMock);
-        CourseRepositoryMock.stubCoursesActivities(
-            courseRepository as CourseRepositoryMock);
-        CourseRepositoryMock.stubGetCourses(
-            courseRepository as CourseRepositoryMock);
+        CourseRepositoryMock.stubGetCoursesActivities(courseRepositoryMock);
+        CourseRepositoryMock.stubCoursesActivities(courseRepositoryMock);
+        CourseRepositoryMock.stubGetCourses(courseRepositoryMock);
 
         PreferencesServiceMock.stubException(
-            preferenceService as PreferencesServiceMock,
-            PreferencesFlag.broadcastCard);
+            preferenceServiceMock, PreferencesFlag.broadcastCard);
         PreferencesServiceMock.stubException(
-            preferenceService as PreferencesServiceMock,
-            PreferencesFlag.aboutUsCard);
+            preferenceServiceMock, PreferencesFlag.aboutUsCard);
         PreferencesServiceMock.stubException(
-            preferenceService as PreferencesServiceMock,
-            PreferencesFlag.scheduleCard);
+            preferenceServiceMock, PreferencesFlag.scheduleCard);
         PreferencesServiceMock.stubException(
-            preferenceService as PreferencesServiceMock,
-            PreferencesFlag.progressBarCard);
+            preferenceServiceMock, PreferencesFlag.progressBarCard);
 
         await viewModel.futureToRun();
         expect(viewModel.cardsToDisplay, []);
 
-        verify(settingsManager.getDashboard()).called(1);
+        verify(settingsManagerMock.getDashboard()).called(1);
       });
     });
 
     group("futureToRunSessionProgressBar - ", () {
       test("There is an active session", () async {
-        CourseRepositoryMock.stubActiveSessions(
-            courseRepository as CourseRepositoryMock,
+        CourseRepositoryMock.stubActiveSessions(courseRepositoryMock,
             toReturn: [session]);
-        SettingsManagerMock.stubGetDashboard(
-            settingsManager as SettingsManagerMock,
+        SettingsManagerMock.stubGetDashboard(settingsManagerMock,
             toReturn: dashboard);
-        SettingsManagerMock.stubDateTimeNow(
-            settingsManager as SettingsManagerMock,
+        SettingsManagerMock.stubDateTimeNow(settingsManagerMock,
             toReturn: DateTime(2020));
         await viewModel.futureToRunSessionProgressBar();
         expect(viewModel.progress, 0.5);
@@ -675,14 +577,11 @@ void main() {
       });
 
       test("Invalid date (Superior limit)", () async {
-        CourseRepositoryMock.stubActiveSessions(
-            courseRepository as CourseRepositoryMock,
+        CourseRepositoryMock.stubActiveSessions(courseRepositoryMock,
             toReturn: [session]);
-        SettingsManagerMock.stubGetDashboard(
-            settingsManager as SettingsManagerMock,
+        SettingsManagerMock.stubGetDashboard(settingsManagerMock,
             toReturn: dashboard);
-        SettingsManagerMock.stubDateTimeNow(
-            settingsManager as SettingsManagerMock,
+        SettingsManagerMock.stubDateTimeNow(settingsManagerMock,
             toReturn: DateTime(2020, 1, 20));
         await viewModel.futureToRunSessionProgressBar();
         expect(viewModel.progress, 1);
@@ -690,14 +589,11 @@ void main() {
       });
 
       test("Invalid date (Lower limit)", () async {
-        CourseRepositoryMock.stubActiveSessions(
-            courseRepository as CourseRepositoryMock,
+        CourseRepositoryMock.stubActiveSessions(courseRepositoryMock,
             toReturn: [session]);
-        SettingsManagerMock.stubGetDashboard(
-            settingsManager as SettingsManagerMock,
+        SettingsManagerMock.stubGetDashboard(settingsManagerMock,
             toReturn: dashboard);
-        SettingsManagerMock.stubDateTimeNow(
-            settingsManager as SettingsManagerMock,
+        SettingsManagerMock.stubDateTimeNow(settingsManagerMock,
             toReturn: DateTime(2019, 12, 31));
         await viewModel.futureToRunSessionProgressBar();
         expect(viewModel.progress, 0);
@@ -705,8 +601,7 @@ void main() {
       });
 
       test("Active session is null", () async {
-        CourseRepositoryMock.stubActiveSessions(
-            courseRepository as CourseRepositoryMock);
+        CourseRepositoryMock.stubActiveSessions(courseRepositoryMock);
 
         await viewModel.futureToRunSessionProgressBar();
         expect(viewModel.progress, -1.0);
@@ -716,11 +611,10 @@ void main() {
       test(
           "currentProgressBarText should be set to ProgressBarText.percentage when it is the first time changeProgressBarText is called",
           () async {
-        CourseRepositoryMock.stubActiveSessions(
-            courseRepository as CourseRepositoryMock);
+        CourseRepositoryMock.stubActiveSessions(courseRepositoryMock);
 
         viewModel.changeProgressBarText();
-        verify(settingsManager.setString(PreferencesFlag.progressBarText,
+        verify(settingsManagerMock.setString(PreferencesFlag.progressBarText,
                 ProgressBarText.values[1].toString()))
             .called(1);
       });
@@ -728,12 +622,11 @@ void main() {
       test(
           "currentProgressBarText flag should be set to ProgressBarText.remainingDays when it is the second time changeProgressBarText is called",
           () async {
-        CourseRepositoryMock.stubActiveSessions(
-            courseRepository as CourseRepositoryMock);
+        CourseRepositoryMock.stubActiveSessions(courseRepositoryMock);
 
         viewModel.changeProgressBarText();
         viewModel.changeProgressBarText();
-        verify(settingsManager.setString(PreferencesFlag.progressBarText,
+        verify(settingsManagerMock.setString(PreferencesFlag.progressBarText,
                 ProgressBarText.values[2].toString()))
             .called(1);
       });
@@ -741,14 +634,13 @@ void main() {
       test(
           "currentProgressBarText flag should be set to ProgressBarText.daysElapsedWithTotalDays when it is the third time changeProgressBarText is called",
           () async {
-        CourseRepositoryMock.stubActiveSessions(
-            courseRepository as CourseRepositoryMock);
+        CourseRepositoryMock.stubActiveSessions(courseRepositoryMock);
 
         viewModel.changeProgressBarText();
         viewModel.changeProgressBarText();
         viewModel.changeProgressBarText();
 
-        verify(settingsManager.setString(PreferencesFlag.progressBarText,
+        verify(settingsManagerMock.setString(PreferencesFlag.progressBarText,
                 ProgressBarText.values[0].toString()))
             .called(1);
       });
@@ -756,20 +648,18 @@ void main() {
 
     group("interact with cards - ", () {
       test("can hide a card and reset cards to default layout", () async {
-        SettingsManagerMock.stubSetInt(settingsManager as SettingsManagerMock,
-            PreferencesFlag.broadcastCard);
-        SettingsManagerMock.stubSetInt(settingsManager as SettingsManagerMock,
-            PreferencesFlag.aboutUsCard);
-        SettingsManagerMock.stubSetInt(settingsManager as SettingsManagerMock,
-            PreferencesFlag.scheduleCard);
-        SettingsManagerMock.stubSetInt(settingsManager as SettingsManagerMock,
-            PreferencesFlag.progressBarCard);
-        SettingsManagerMock.stubGetDashboard(
-            settingsManager as SettingsManagerMock,
+        SettingsManagerMock.stubSetInt(
+            settingsManagerMock, PreferencesFlag.broadcastCard);
+        SettingsManagerMock.stubSetInt(
+            settingsManagerMock, PreferencesFlag.aboutUsCard);
+        SettingsManagerMock.stubSetInt(
+            settingsManagerMock, PreferencesFlag.scheduleCard);
+        SettingsManagerMock.stubSetInt(
+            settingsManagerMock, PreferencesFlag.progressBarCard);
+        SettingsManagerMock.stubGetDashboard(settingsManagerMock,
             toReturn: dashboard);
 
-        CourseRepositoryMock.stubGetCourses(
-            courseRepository as CourseRepositoryMock);
+        CourseRepositoryMock.stubGetCourses(courseRepositoryMock);
 
         await viewModel.futureToRun();
 
@@ -777,7 +667,7 @@ void main() {
         viewModel.hideCard(PreferencesFlag.scheduleCard);
 
         await untilCalled(
-            settingsManager.setInt(PreferencesFlag.scheduleCard, -1));
+            settingsManagerMock.setInt(PreferencesFlag.scheduleCard, -1));
 
         expect(viewModel.cards, hiddenCardDashboard);
         expect(viewModel.cardsToDisplay, [
@@ -786,22 +676,22 @@ void main() {
           PreferencesFlag.progressBarCard
         ]);
 
-        verify(analyticsService.logEvent(
+        verify(analyticsServiceMock.logEvent(
             "DashboardViewModel", "Deleting scheduleCard"));
-        verify(settingsManager.setInt(PreferencesFlag.scheduleCard, -1))
+        verify(settingsManagerMock.setInt(PreferencesFlag.scheduleCard, -1))
             .called(1);
-        verify(settingsManager.setInt(PreferencesFlag.broadcastCard, 0))
+        verify(settingsManagerMock.setInt(PreferencesFlag.broadcastCard, 0))
             .called(1);
-        verify(settingsManager.setInt(PreferencesFlag.aboutUsCard, 1))
+        verify(settingsManagerMock.setInt(PreferencesFlag.aboutUsCard, 1))
             .called(1);
-        verify(settingsManager.setInt(PreferencesFlag.progressBarCard, 2))
+        verify(settingsManagerMock.setInt(PreferencesFlag.progressBarCard, 2))
             .called(1);
 
         // Call the setter.
         viewModel.setAllCardsVisible();
 
         await untilCalled(
-            settingsManager.setInt(PreferencesFlag.progressBarCard, 3));
+            settingsManagerMock.setInt(PreferencesFlag.progressBarCard, 3));
 
         expect(viewModel.cards, dashboard);
         expect(viewModel.cardsToDisplay, [
@@ -811,43 +701,39 @@ void main() {
           PreferencesFlag.progressBarCard
         ]);
 
-        verify(
-            analyticsService.logEvent("DashboardViewModel", "Restoring cards"));
-        verify(settingsManager.getDashboard()).called(1);
-        verify(settingsManager.setInt(PreferencesFlag.broadcastCard, 0))
+        verify(analyticsServiceMock.logEvent(
+            "DashboardViewModel", "Restoring cards"));
+        verify(settingsManagerMock.getDashboard()).called(1);
+        verify(settingsManagerMock.setInt(PreferencesFlag.broadcastCard, 0))
             .called(1);
-        verify(settingsManager.setInt(PreferencesFlag.aboutUsCard, 1))
+        verify(settingsManagerMock.setInt(PreferencesFlag.aboutUsCard, 1))
             .called(1);
-        verify(settingsManager.setInt(PreferencesFlag.scheduleCard, 2))
+        verify(settingsManagerMock.setInt(PreferencesFlag.scheduleCard, 2))
             .called(1);
-        verify(settingsManager.setInt(PreferencesFlag.progressBarCard, 3))
+        verify(settingsManagerMock.setInt(PreferencesFlag.progressBarCard, 3))
             .called(1);
-        verify(settingsManager.getString(PreferencesFlag.progressBarText))
+        verify(settingsManagerMock.getString(PreferencesFlag.progressBarText))
             .called(2);
-        verify(settingsManager.dateTimeNow).called(3);
-        verifyNoMoreInteractions(settingsManager);
+        verify(settingsManagerMock.dateTimeNow).called(3);
+        verifyNoMoreInteractions(settingsManagerMock);
       });
 
       test("can set new order for cards", () async {
-        CourseRepositoryMock.stubGetCoursesActivities(
-            courseRepository as CourseRepositoryMock);
-        CourseRepositoryMock.stubCoursesActivities(
-            courseRepository as CourseRepositoryMock);
-        CourseRepositoryMock.stubGetCourses(
-            courseRepository as CourseRepositoryMock);
+        CourseRepositoryMock.stubGetCoursesActivities(courseRepositoryMock);
+        CourseRepositoryMock.stubCoursesActivities(courseRepositoryMock);
+        CourseRepositoryMock.stubGetCourses(courseRepositoryMock);
 
-        SettingsManagerMock.stubGetDashboard(
-            settingsManager as SettingsManagerMock,
+        SettingsManagerMock.stubGetDashboard(settingsManagerMock,
             toReturn: dashboard);
 
-        SettingsManagerMock.stubSetInt(settingsManager as SettingsManagerMock,
-            PreferencesFlag.broadcastCard);
-        SettingsManagerMock.stubSetInt(settingsManager as SettingsManagerMock,
-            PreferencesFlag.aboutUsCard);
-        SettingsManagerMock.stubSetInt(settingsManager as SettingsManagerMock,
-            PreferencesFlag.scheduleCard);
-        SettingsManagerMock.stubSetInt(settingsManager as SettingsManagerMock,
-            PreferencesFlag.progressBarCard);
+        SettingsManagerMock.stubSetInt(
+            settingsManagerMock, PreferencesFlag.broadcastCard);
+        SettingsManagerMock.stubSetInt(
+            settingsManagerMock, PreferencesFlag.aboutUsCard);
+        SettingsManagerMock.stubSetInt(
+            settingsManagerMock, PreferencesFlag.scheduleCard);
+        SettingsManagerMock.stubSetInt(
+            settingsManagerMock, PreferencesFlag.progressBarCard);
 
         await viewModel.futureToRun();
 
@@ -863,7 +749,7 @@ void main() {
         viewModel.setOrder(PreferencesFlag.progressBarCard, 0);
 
         await untilCalled(
-            settingsManager.setInt(PreferencesFlag.progressBarCard, 0));
+            settingsManagerMock.setInt(PreferencesFlag.progressBarCard, 0));
 
         expect(viewModel.cards, reorderedDashboard);
         expect(viewModel.cardsToDisplay, [
@@ -873,21 +759,21 @@ void main() {
           PreferencesFlag.scheduleCard
         ]);
 
-        verify(analyticsService.logEvent(
+        verify(analyticsServiceMock.logEvent(
             "DashboardViewModel", "Reordoring progressBarCard"));
-        verify(settingsManager.getDashboard()).called(1);
-        verify(settingsManager.setInt(PreferencesFlag.progressBarCard, 0))
+        verify(settingsManagerMock.getDashboard()).called(1);
+        verify(settingsManagerMock.setInt(PreferencesFlag.progressBarCard, 0))
             .called(1);
-        verify(settingsManager.setInt(PreferencesFlag.broadcastCard, 1))
+        verify(settingsManagerMock.setInt(PreferencesFlag.broadcastCard, 1))
             .called(1);
-        verify(settingsManager.setInt(PreferencesFlag.aboutUsCard, 2))
+        verify(settingsManagerMock.setInt(PreferencesFlag.aboutUsCard, 2))
             .called(1);
-        verify(settingsManager.setInt(PreferencesFlag.scheduleCard, 3))
+        verify(settingsManagerMock.setInt(PreferencesFlag.scheduleCard, 3))
             .called(1);
-        verify(settingsManager.getString(PreferencesFlag.progressBarText))
+        verify(settingsManagerMock.getString(PreferencesFlag.progressBarText))
             .called(1);
-        verify(settingsManager.dateTimeNow).called(2);
-        verifyNoMoreInteractions(settingsManager);
+        verify(settingsManagerMock.dateTimeNow).called(2);
+        verifyNoMoreInteractions(settingsManagerMock);
       });
     });
 
@@ -940,7 +826,7 @@ void main() {
             toReturn: day);
         PreferencesServiceMock.stubGetBool(
             preferencesServiceMock, PreferencesFlag.hasRatingBeenRequested,
-            toReturn: null);
+            toReturn: false);
 
         expect(await DashboardViewModel.launchInAppReview(), true);
 
