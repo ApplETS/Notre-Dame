@@ -93,7 +93,7 @@ class _ScheduleSettingsState extends State<ScheduleSettings> {
                             controller: scrollController,
                             key: const ValueKey("SettingsScrollingArea"),
                             children: _buildSettings(
-                                context, model as ScheduleSettingsViewModel),
+                                context, model! as ScheduleSettingsViewModel),
                           ),
                         ),
                       ),
