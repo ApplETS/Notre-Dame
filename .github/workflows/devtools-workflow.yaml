@@ -6,8 +6,7 @@ on:
       - '.gitignore'
       - '.metadata'
       - '.github/**'
-      - 'README.md'
-      - 'README.fr.md'
+      - '*.md'
       - 'android/fastlane/**'
       - 'ios/fastlane/**'
 env:
