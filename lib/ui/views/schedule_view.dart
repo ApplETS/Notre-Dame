@@ -1,4 +1,5 @@
 // Flutter imports:
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
@@ -344,7 +345,7 @@ class _ScheduleViewState extends State<ScheduleView>
   Widget _buildTitleForDate(DateTime date, ScheduleViewModel model) => Center(
           child: Text(
         DateFormat.MMMMEEEEd(model.locale.toString()).format(date),
-        style: Theme.of(context).textTheme.headlineSmall,
+        style: Theme.of(context).textTheme.headlineMedium,
       ));
 
   List<Widget> _buildWeekEvents(ScheduleViewModel model, BuildContext context) {
@@ -399,6 +400,8 @@ class _ScheduleViewState extends State<ScheduleView>
             startingDayOfWeek:
                 model.settings[PreferencesFlag.scheduleStartWeekday]
                     as StartingDayOfWeek,
+            daysOfWeekHeight: 20,
+            rowHeight: (MediaQuery.of(context).size.width - 10) / 7, // make sure the event tile are always squared
             locale: model.locale?.toLanguageTag(),
             selectedDayPredicate: (day) {
               return isSameDay(model.selectedDate, day);
