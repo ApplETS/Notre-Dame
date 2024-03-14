@@ -278,9 +278,9 @@ class UserRepository {
         // Build info loaded from the cache.
         _info = ProfileStudent.fromJson(infoCached);
         _logger.d("$tag - getInfo: $_info info loaded from cache.");
-      } on CacheException catch (_) {
+      } on CacheException catch (e) {
         _logger.e(
-            "$tag - getInfo: exception raised while trying to load the info from cache.");
+            "$tag - getInfo: exception raised while trying to load the info from cache.", error: e);
       }
     }
 

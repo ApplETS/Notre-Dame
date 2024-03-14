@@ -75,15 +75,19 @@ class AppTheme {
         primaryColor: etsLightRed,
         bottomNavigationBarTheme: lightTheme.bottomNavigationBarTheme
             .copyWith(selectedItemColor: etsLightRed),
-        textTheme: const TextTheme(
-            bodyMedium: TextStyle(
-              fontSize: 12,
-            ),
-          bodySmall: TextStyle(
-            fontSize: 12,
+        textTheme: lightTheme.textTheme.copyWith(
+          bodySmall: const TextStyle(
+            fontSize: 14,
           ),
-          bodyLarge: TextStyle(
-            fontSize: 12,
+          bodyMedium: const TextStyle(
+            fontSize: 16,
+          ),
+          bodyLarge: const TextStyle(
+            fontSize: 18,
+          ),
+          titleSmall: const TextStyle(
+            fontSize: 20,
+            fontWeight: FontWeight.w400,
           ),
         ),
         colorScheme: lightTheme.colorScheme
@@ -100,19 +104,19 @@ class AppTheme {
         // appBarTheme: const AppBarTheme(color: Color(0xff121212)),
         scaffoldBackgroundColor: const Color(0xff121212),
         cardColor: const Color(0xff1e1e1e),
-        textTheme: const TextTheme(
-          bodySmall: TextStyle(
+        textTheme: darkTheme.textTheme.copyWith(
+          titleSmall: const TextStyle(
+            fontSize: 20,
+            fontWeight: FontWeight.w400,
+          ),
+          bodySmall: const TextStyle(
             fontSize: 14,
           ),
-          bodyMedium: TextStyle(
+          bodyMedium: const TextStyle(
             fontSize: 16,
           ),
-          bodyLarge: TextStyle(
+          bodyLarge: const TextStyle(
             fontSize: 18,
-          ),
-          titleSmall:TextStyle(
-            fontSize: 20,
-            fontWeight: FontWeight.w700,
           ),
         ),
         bottomNavigationBarTheme: darkTheme.bottomNavigationBarTheme
