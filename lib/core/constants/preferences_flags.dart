@@ -1,6 +1,3 @@
-// Flutter imports:
-import 'package:flutter/cupertino.dart';
-
 // Package imports:
 import 'package:enum_to_string/enum_to_string.dart';
 
@@ -62,8 +59,8 @@ class DynamicPreferencesFlag {
   PreferencesFlag groupAssociationFlag;
 
   DynamicPreferencesFlag(
-      {@required this.groupAssociationFlag,
-      @required this.uniqueKey,
+      {required this.groupAssociationFlag,
+      required this.uniqueKey,
       this.separator = "_"});
 
   String get data => groupAssociationFlag.toString() + separator + uniqueKey;

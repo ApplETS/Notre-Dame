@@ -13,13 +13,13 @@ import 'package:notredame/core/models/feedback.dart';
 /// The submit button is disabled until the user provides the feedback type and a feedback text.
 class CustomFeedbackForm extends StatefulWidget {
   const CustomFeedbackForm({
-    Key key,
-    this.onSubmit,
+    Key? key,
+    required this.onSubmit,
     this.scrollController,
   }) : super(key: key);
 
   final OnSubmit onSubmit;
-  final ScrollController scrollController;
+  final ScrollController? scrollController;
 
   @override
   _CustomFeedbackFormState createState() => _CustomFeedbackFormState();
@@ -70,9 +70,9 @@ class _CustomFeedbackFormState extends State<CustomFeedbackForm> {
         TextButton(
           // disable this button until the user has specified a feedback
           onPressed: _customFeedback.feedbackText != null &&
-                  _customFeedback.feedbackText.isNotEmpty
+                  _customFeedback.feedbackText!.isNotEmpty
               ? () => widget.onSubmit(
-                    _customFeedback.feedbackText,
+                    _customFeedback.feedbackText!,
                     extras: {
                       'email': _customFeedback.feedbackEmail,
                     },

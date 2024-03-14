@@ -12,9 +12,7 @@ import 'package:flutter_test/flutter_test.dart';
 
 // Project imports:
 import 'package:notredame/core/constants/preferences_flags.dart';
-import 'package:notredame/core/managers/course_repository.dart';
-import 'package:notredame/core/managers/settings_manager.dart';
-import 'package:notredame/core/services/remote_config_service.dart';
+import 'package:notredame/core/constants/update_code.dart';
 import 'package:notredame/ui/views/dashboard_view.dart';
 import 'package:notredame/ui/widgets/course_activity_tile.dart';
 import 'package:notredame/ui/widgets/grade_button.dart';
@@ -25,11 +23,12 @@ import '../../mock/services/in_app_review_service_mock.dart';
 import '../../mock/services/remote_config_service_mock.dart';
 
 void main() {
-  SettingsManager settingsManager;
-  CourseRepository courseRepository;
-  RemoteConfigService remoteConfigService;
-  AppIntl intl;
-  InAppReviewServiceMock inAppReviewServiceMock;
+  late SettingsManagerMock settingsManagerMock;
+  late CourseRepositoryMock courseRepositoryMock;
+  late RemoteConfigServiceMock remoteConfigServiceMock;
+  late InAppReviewServiceMock inAppReviewServiceMock;
+
+  late AppIntl intl;
 
   // Activities for today
   final gen101 = CourseActivity(
@@ -143,25 +142,21 @@ void main() {
 
   Future<Widget> testDashboardSchedule(WidgetTester tester, DateTime now,
       List<CourseActivity> courses, int expected) async {
-    CourseRepositoryMock.stubCoursesActivities(
-        courseRepository as CourseRepositoryMock,
+    CourseRepositoryMock.stubCoursesActivities(courseRepositoryMock,
         toReturn: courses);
 
-    CourseRepositoryMock.stubGetCoursesActivities(
-        courseRepository as CourseRepositoryMock,
+    CourseRepositoryMock.stubGetCoursesActivities(courseRepositoryMock,
         fromCacheOnly: true);
-    CourseRepositoryMock.stubGetCoursesActivities(
-        courseRepository as CourseRepositoryMock,
-        fromCacheOnly: false);
+    CourseRepositoryMock.stubGetCoursesActivities(courseRepositoryMock);
 
-    SettingsManagerMock.stubGetDashboard(settingsManager as SettingsManagerMock,
+    SettingsManagerMock.stubGetDashboard(settingsManagerMock,
         toReturn: dashboard);
 
-    SettingsManagerMock.stubDateTimeNow(settingsManager as SettingsManagerMock,
-        toReturn: now);
+    SettingsManagerMock.stubDateTimeNow(settingsManagerMock, toReturn: now);
 
-    await tester.pumpWidget(
-        localizedWidget(child: FeatureDiscovery(child: const DashboardView())));
+    await tester.pumpWidget(localizedWidget(
+        child: FeatureDiscovery(
+            child: const DashboardView(updateCode: UpdateCode.none))));
     await tester.pumpAndSettle();
 
     // Find schedule card in second position by its title
@@ -174,11 +169,11 @@ void main() {
   group('DashboardView - ', () {
     setUp(() async {
       intl = await setupAppIntl();
-      settingsManager = setupSettingsManagerMock();
-      courseRepository = setupCourseRepositoryMock();
-      remoteConfigService = setupRemoteConfigServiceMock();
+      settingsManagerMock = setupSettingsManagerMock();
+      courseRepositoryMock = setupCourseRepositoryMock();
+      remoteConfigServiceMock = setupRemoteConfigServiceMock();
       setupNavigationServiceMock();
-      courseRepository = setupCourseRepositoryMock();
+      courseRepositoryMock = setupCourseRepositoryMock();
       setupNetworkingServiceMock();
       setupAnalyticsServiceMock();
       setupAppWidgetServiceMock();
@@ -189,70 +184,50 @@ void main() {
       InAppReviewServiceMock.stubIsAvailable(inAppReviewServiceMock,
           toReturn: false);
 
-      CourseRepositoryMock.stubSessions(
-          courseRepository as CourseRepositoryMock,
+      CourseRepositoryMock.stubSessions(courseRepositoryMock,
           toReturn: [session]);
-      CourseRepositoryMock.stubGetSessions(
-          courseRepository as CourseRepositoryMock,
+      CourseRepositoryMock.stubGetSessions(courseRepositoryMock,
           toReturn: [session]);
-      CourseRepositoryMock.stubActiveSessions(
-          courseRepository as CourseRepositoryMock,
+      CourseRepositoryMock.stubActiveSessions(courseRepositoryMock,
           toReturn: [session]);
-      CourseRepositoryMock.stubCourses(
-          courseRepository as CourseRepositoryMock);
-      CourseRepositoryMock.stubGetCourses(
-          courseRepository as CourseRepositoryMock,
+      CourseRepositoryMock.stubCourses(courseRepositoryMock);
+      CourseRepositoryMock.stubGetCourses(courseRepositoryMock,
           fromCacheOnly: true);
-      CourseRepositoryMock.stubGetCourses(
-          courseRepository as CourseRepositoryMock,
-          fromCacheOnly: false);
-      CourseRepositoryMock.stubCoursesActivities(
-          courseRepository as CourseRepositoryMock);
-      CourseRepositoryMock.stubGetCoursesActivities(
-          courseRepository as CourseRepositoryMock,
+      CourseRepositoryMock.stubGetCourses(courseRepositoryMock);
+      CourseRepositoryMock.stubCoursesActivities(courseRepositoryMock);
+      CourseRepositoryMock.stubGetCoursesActivities(courseRepositoryMock,
           fromCacheOnly: true);
-      CourseRepositoryMock.stubGetCoursesActivities(
-          courseRepository as CourseRepositoryMock,
-          fromCacheOnly: false);
+      CourseRepositoryMock.stubGetCoursesActivities(courseRepositoryMock);
 
-      RemoteConfigServiceMock.stubGetBroadcastEnabled(
-          remoteConfigService as RemoteConfigServiceMock);
-      RemoteConfigServiceMock.stubGetBroadcastColor(
-          remoteConfigService as RemoteConfigServiceMock);
-      RemoteConfigServiceMock.stubGetBroadcastEn(
-          remoteConfigService as RemoteConfigServiceMock);
-      RemoteConfigServiceMock.stubGetBroadcastFr(
-          remoteConfigService as RemoteConfigServiceMock);
-      RemoteConfigServiceMock.stubGetBroadcastTitleEn(
-          remoteConfigService as RemoteConfigServiceMock);
-      RemoteConfigServiceMock.stubGetBroadcastTitleFr(
-          remoteConfigService as RemoteConfigServiceMock);
-      RemoteConfigServiceMock.stubGetBroadcastType(
-          remoteConfigService as RemoteConfigServiceMock);
-      RemoteConfigServiceMock.stubGetBroadcastUrl(
-          remoteConfigService as RemoteConfigServiceMock);
+      RemoteConfigServiceMock.stubGetBroadcastEnabled(remoteConfigServiceMock);
+      RemoteConfigServiceMock.stubGetBroadcastColor(remoteConfigServiceMock);
+      RemoteConfigServiceMock.stubGetBroadcastEn(remoteConfigServiceMock);
+      RemoteConfigServiceMock.stubGetBroadcastFr(remoteConfigServiceMock);
+      RemoteConfigServiceMock.stubGetBroadcastTitleEn(remoteConfigServiceMock);
+      RemoteConfigServiceMock.stubGetBroadcastTitleFr(remoteConfigServiceMock);
+      RemoteConfigServiceMock.stubGetBroadcastType(remoteConfigServiceMock);
+      RemoteConfigServiceMock.stubGetBroadcastUrl(remoteConfigServiceMock);
 
-      SettingsManagerMock.stubGetBool(settingsManager as SettingsManagerMock,
-          PreferencesFlag.discoveryDashboard,
+      SettingsManagerMock.stubGetBool(
+          settingsManagerMock, PreferencesFlag.discoveryDashboard,
           toReturn: true);
 
-      SettingsManagerMock.stubSetInt(settingsManager as SettingsManagerMock,
-          PreferencesFlag.broadcastCard);
+      SettingsManagerMock.stubSetInt(
+          settingsManagerMock, PreferencesFlag.broadcastCard);
 
       SettingsManagerMock.stubSetInt(
-          settingsManager as SettingsManagerMock, PreferencesFlag.aboutUsCard);
+          settingsManagerMock, PreferencesFlag.aboutUsCard);
 
       SettingsManagerMock.stubSetInt(
-          settingsManager as SettingsManagerMock, PreferencesFlag.scheduleCard);
-
-      SettingsManagerMock.stubSetInt(settingsManager as SettingsManagerMock,
-          PreferencesFlag.progressBarCard);
+          settingsManagerMock, PreferencesFlag.scheduleCard);
 
       SettingsManagerMock.stubSetInt(
-          settingsManager as SettingsManagerMock, PreferencesFlag.gradesCard);
+          settingsManagerMock, PreferencesFlag.progressBarCard);
 
-      SettingsManagerMock.stubDateTimeNow(
-          settingsManager as SettingsManagerMock,
+      SettingsManagerMock.stubSetInt(
+          settingsManagerMock, PreferencesFlag.gradesCard);
+
+      SettingsManagerMock.stubDateTimeNow(settingsManagerMock,
           toReturn: DateTime.now());
     });
 
@@ -261,12 +236,12 @@ void main() {
     group('UI - ', () {
       testWidgets('Has view title restore button and cards, displayed',
           (WidgetTester tester) async {
-        SettingsManagerMock.stubGetDashboard(
-            settingsManager as SettingsManagerMock,
+        SettingsManagerMock.stubGetDashboard(settingsManagerMock,
             toReturn: dashboard);
 
         await tester.pumpWidget(localizedWidget(
-            child: FeatureDiscovery(child: const DashboardView())));
+            child: FeatureDiscovery(
+                child: const DashboardView(updateCode: UpdateCode.none))));
         await tester.pumpAndSettle();
 
         // Find Dashboard Title
@@ -287,23 +262,19 @@ void main() {
 
       testWidgets('Has card aboutUs displayed properly',
           (WidgetTester tester) async {
-        CourseRepositoryMock.stubCoursesActivities(
-            courseRepository as CourseRepositoryMock,
+        CourseRepositoryMock.stubCoursesActivities(courseRepositoryMock,
             toReturn: activities);
 
-        CourseRepositoryMock.stubGetCoursesActivities(
-            courseRepository as CourseRepositoryMock,
+        CourseRepositoryMock.stubGetCoursesActivities(courseRepositoryMock,
             fromCacheOnly: true);
-        CourseRepositoryMock.stubGetCoursesActivities(
-            courseRepository as CourseRepositoryMock,
-            fromCacheOnly: false);
+        CourseRepositoryMock.stubGetCoursesActivities(courseRepositoryMock);
 
-        SettingsManagerMock.stubGetDashboard(
-            settingsManager as SettingsManagerMock,
+        SettingsManagerMock.stubGetDashboard(settingsManagerMock,
             toReturn: dashboard);
 
         await tester.pumpWidget(localizedWidget(
-            child: FeatureDiscovery(child: const DashboardView())));
+            child: FeatureDiscovery(
+                child: const DashboardView(updateCode: UpdateCode.none))));
         await tester.pumpAndSettle();
 
         // Find aboutUs card
@@ -387,37 +358,33 @@ void main() {
     group('Interactions - ', () {
       testWidgets('AboutUsCard is dismissible and can be restored',
           (WidgetTester tester) async {
-        CourseRepositoryMock.stubCoursesActivities(
-            courseRepository as CourseRepositoryMock);
+        CourseRepositoryMock.stubCoursesActivities(courseRepositoryMock);
 
-        CourseRepositoryMock.stubGetCoursesActivities(
-            courseRepository as CourseRepositoryMock,
+        CourseRepositoryMock.stubGetCoursesActivities(courseRepositoryMock,
             fromCacheOnly: true);
-        CourseRepositoryMock.stubGetCoursesActivities(
-            courseRepository as CourseRepositoryMock,
-            fromCacheOnly: false);
+        CourseRepositoryMock.stubGetCoursesActivities(courseRepositoryMock);
 
-        SettingsManagerMock.stubGetDashboard(
-            settingsManager as SettingsManagerMock,
+        SettingsManagerMock.stubGetDashboard(settingsManagerMock,
             toReturn: dashboard);
 
-        SettingsManagerMock.stubSetInt(settingsManager as SettingsManagerMock,
-            PreferencesFlag.broadcastCard);
-
-        SettingsManagerMock.stubSetInt(settingsManager as SettingsManagerMock,
-            PreferencesFlag.aboutUsCard);
-
-        SettingsManagerMock.stubSetInt(settingsManager as SettingsManagerMock,
-            PreferencesFlag.scheduleCard);
+        SettingsManagerMock.stubSetInt(
+            settingsManagerMock, PreferencesFlag.broadcastCard);
 
         SettingsManagerMock.stubSetInt(
-            settingsManager as SettingsManagerMock, PreferencesFlag.gradesCard);
+            settingsManagerMock, PreferencesFlag.aboutUsCard);
 
-        SettingsManagerMock.stubSetInt(settingsManager as SettingsManagerMock,
-            PreferencesFlag.progressBarCard);
+        SettingsManagerMock.stubSetInt(
+            settingsManagerMock, PreferencesFlag.scheduleCard);
+
+        SettingsManagerMock.stubSetInt(
+            settingsManagerMock, PreferencesFlag.gradesCard);
+
+        SettingsManagerMock.stubSetInt(
+            settingsManagerMock, PreferencesFlag.progressBarCard);
 
         await tester.pumpWidget(localizedWidget(
-            child: FeatureDiscovery(child: const DashboardView())));
+            child: FeatureDiscovery(
+                child: const DashboardView(updateCode: UpdateCode.none))));
         await tester.pumpAndSettle();
 
         // Find Dismissible Cards
@@ -448,36 +415,32 @@ void main() {
 
       testWidgets('AboutUsCard is reorderable and can be restored',
           (WidgetTester tester) async {
-        SettingsManagerMock.stubGetDashboard(
-            settingsManager as SettingsManagerMock,
+        SettingsManagerMock.stubGetDashboard(settingsManagerMock,
             toReturn: dashboard);
 
-        CourseRepositoryMock.stubCoursesActivities(
-            courseRepository as CourseRepositoryMock);
-        CourseRepositoryMock.stubGetCoursesActivities(
-            courseRepository as CourseRepositoryMock,
+        CourseRepositoryMock.stubCoursesActivities(courseRepositoryMock);
+        CourseRepositoryMock.stubGetCoursesActivities(courseRepositoryMock,
             fromCacheOnly: true);
-        CourseRepositoryMock.stubGetCoursesActivities(
-            courseRepository as CourseRepositoryMock,
-            fromCacheOnly: false);
-
-        SettingsManagerMock.stubSetInt(settingsManager as SettingsManagerMock,
-            PreferencesFlag.broadcastCard);
-
-        SettingsManagerMock.stubSetInt(settingsManager as SettingsManagerMock,
-            PreferencesFlag.aboutUsCard);
-
-        SettingsManagerMock.stubSetInt(settingsManager as SettingsManagerMock,
-            PreferencesFlag.scheduleCard);
+        CourseRepositoryMock.stubGetCoursesActivities(courseRepositoryMock);
 
         SettingsManagerMock.stubSetInt(
-            settingsManager as SettingsManagerMock, PreferencesFlag.gradesCard);
+            settingsManagerMock, PreferencesFlag.broadcastCard);
 
-        SettingsManagerMock.stubSetInt(settingsManager as SettingsManagerMock,
-            PreferencesFlag.progressBarCard);
+        SettingsManagerMock.stubSetInt(
+            settingsManagerMock, PreferencesFlag.aboutUsCard);
+
+        SettingsManagerMock.stubSetInt(
+            settingsManagerMock, PreferencesFlag.scheduleCard);
+
+        SettingsManagerMock.stubSetInt(
+            settingsManagerMock, PreferencesFlag.gradesCard);
+
+        SettingsManagerMock.stubSetInt(
+            settingsManagerMock, PreferencesFlag.progressBarCard);
 
         await tester.pumpWidget(localizedWidget(
-            child: FeatureDiscovery(child: const DashboardView())));
+            child: FeatureDiscovery(
+                child: const DashboardView(updateCode: UpdateCode.none))));
         await tester.pumpAndSettle();
 
         // Find Dismissible Cards
@@ -512,7 +475,7 @@ void main() {
           of: find.byType(Dismissible, skipOffstage: false).last,
           matching: find.byType(Text),
         ));
-        expect((text as Text).data, intl.card_applets_title);
+        expect(text.data, intl.card_applets_title);
 
         // Tap the restoreCards button
         await tester.tap(find.byIcon(Icons.restore));
@@ -528,17 +491,17 @@ void main() {
             findsNWidgets(numberOfCards));
 
         // Check that the first card is now AboutUs
-        expect((text as Text).data, intl.card_applets_title);
+        expect(text.data, intl.card_applets_title);
       });
 
       testWidgets('ScheduleCard is dismissible and can be restored',
           (WidgetTester tester) async {
-        SettingsManagerMock.stubGetDashboard(
-            settingsManager as SettingsManagerMock,
+        SettingsManagerMock.stubGetDashboard(settingsManagerMock,
             toReturn: dashboard);
 
         await tester.pumpWidget(localizedWidget(
-            child: FeatureDiscovery(child: const DashboardView())));
+            child: FeatureDiscovery(
+                child: const DashboardView(updateCode: UpdateCode.none))));
         await tester.pumpAndSettle();
 
         // Find Dismissible Cards
@@ -574,12 +537,12 @@ void main() {
       group('UI - gradesCard', () {
         testWidgets('Has card grades displayed - with no courses',
             (WidgetTester tester) async {
-          SettingsManagerMock.stubGetDashboard(
-              settingsManager as SettingsManagerMock,
+          SettingsManagerMock.stubGetDashboard(settingsManagerMock,
               toReturn: dashboard);
 
           await tester.pumpWidget(localizedWidget(
-              child: FeatureDiscovery(child: const DashboardView())));
+              child: FeatureDiscovery(
+                  child: const DashboardView(updateCode: UpdateCode.none))));
           await tester.pumpAndSettle();
 
           // Find grades card
@@ -600,24 +563,19 @@ void main() {
 
         testWidgets('Has card grades displayed - with courses',
             (WidgetTester tester) async {
-          CourseRepositoryMock.stubCourses(
-              courseRepository as CourseRepositoryMock,
+          CourseRepositoryMock.stubCourses(courseRepositoryMock,
               toReturn: courses);
-          CourseRepositoryMock.stubGetCourses(
-              courseRepository as CourseRepositoryMock,
-              fromCacheOnly: true,
-              toReturn: courses);
-          CourseRepositoryMock.stubGetCourses(
-              courseRepository as CourseRepositoryMock,
-              fromCacheOnly: false,
+          CourseRepositoryMock.stubGetCourses(courseRepositoryMock,
+              fromCacheOnly: true, toReturn: courses);
+          CourseRepositoryMock.stubGetCourses(courseRepositoryMock,
               toReturn: courses);
 
-          SettingsManagerMock.stubGetDashboard(
-              settingsManager as SettingsManagerMock,
+          SettingsManagerMock.stubGetDashboard(settingsManagerMock,
               toReturn: dashboard);
 
           await tester.pumpWidget(localizedWidget(
-              child: FeatureDiscovery(child: const DashboardView())));
+              child: FeatureDiscovery(
+                  child: const DashboardView(updateCode: UpdateCode.none))));
           await tester.pumpAndSettle();
 
           // Find grades card
@@ -636,26 +594,26 @@ void main() {
 
         testWidgets('gradesCard is dismissible and can be restored',
             (WidgetTester tester) async {
-          SettingsManagerMock.stubSetInt(settingsManager as SettingsManagerMock,
-              PreferencesFlag.broadcastCard);
+          SettingsManagerMock.stubSetInt(
+              settingsManagerMock, PreferencesFlag.broadcastCard);
 
-          SettingsManagerMock.stubSetInt(settingsManager as SettingsManagerMock,
-              PreferencesFlag.aboutUsCard);
+          SettingsManagerMock.stubSetInt(
+              settingsManagerMock, PreferencesFlag.aboutUsCard);
 
-          SettingsManagerMock.stubSetInt(settingsManager as SettingsManagerMock,
-              PreferencesFlag.scheduleCard);
+          SettingsManagerMock.stubSetInt(
+              settingsManagerMock, PreferencesFlag.scheduleCard);
 
-          SettingsManagerMock.stubSetInt(settingsManager as SettingsManagerMock,
-              PreferencesFlag.progressBarCard);
+          SettingsManagerMock.stubSetInt(
+              settingsManagerMock, PreferencesFlag.progressBarCard);
 
-          SettingsManagerMock.stubSetInt(settingsManager as SettingsManagerMock,
-              PreferencesFlag.gradesCard);
-          SettingsManagerMock.stubGetDashboard(
-              settingsManager as SettingsManagerMock,
+          SettingsManagerMock.stubSetInt(
+              settingsManagerMock, PreferencesFlag.gradesCard);
+          SettingsManagerMock.stubGetDashboard(settingsManagerMock,
               toReturn: dashboard);
 
           await tester.pumpWidget(localizedWidget(
-              child: FeatureDiscovery(child: const DashboardView())));
+              child: FeatureDiscovery(
+                  child: const DashboardView(updateCode: UpdateCode.none))));
           await tester.pumpAndSettle();
 
           // Find Dismissible Cards
@@ -692,12 +650,12 @@ void main() {
     group("UI - progressBar", () {
       testWidgets('Has card progressBar displayed',
           (WidgetTester tester) async {
-        SettingsManagerMock.stubGetDashboard(
-            settingsManager as SettingsManagerMock,
+        SettingsManagerMock.stubGetDashboard(settingsManagerMock,
             toReturn: dashboard);
 
         await tester.pumpWidget(localizedWidget(
-            child: FeatureDiscovery(child: const DashboardView())));
+            child: FeatureDiscovery(
+                child: const DashboardView(updateCode: UpdateCode.none))));
         await tester.pumpAndSettle();
 
         // Find progress card
@@ -715,12 +673,12 @@ void main() {
 
       testWidgets('progressCard is dismissible and can be restored',
           (WidgetTester tester) async {
-        SettingsManagerMock.stubGetDashboard(
-            settingsManager as SettingsManagerMock,
+        SettingsManagerMock.stubGetDashboard(settingsManagerMock,
             toReturn: dashboard);
 
         await tester.pumpWidget(localizedWidget(
-            child: FeatureDiscovery(child: const DashboardView())));
+            child: FeatureDiscovery(
+                child: const DashboardView(updateCode: UpdateCode.none))));
         await tester.pumpAndSettle();
 
         // Find Dismissible Cards
@@ -753,12 +711,12 @@ void main() {
       testWidgets('progressBarCard is reorderable and can be restored',
           (WidgetTester tester) async {
         InAppReviewServiceMock.stubIsAvailable(inAppReviewServiceMock);
-        SettingsManagerMock.stubGetDashboard(
-            settingsManager as SettingsManagerMock,
+        SettingsManagerMock.stubGetDashboard(settingsManagerMock,
             toReturn: dashboard);
 
         await tester.pumpWidget(localizedWidget(
-            child: FeatureDiscovery(child: const DashboardView())));
+            child: FeatureDiscovery(
+                child: const DashboardView(updateCode: UpdateCode.none))));
         await tester.pumpAndSettle();
 
         // Find Dismissible Cards
@@ -793,7 +751,7 @@ void main() {
           of: find.widgetWithText(Dismissible, intl.progress_bar_title).last,
           matching: find.byType(Text),
         ));
-        expect((text as Text).data, intl.progress_bar_title);
+        expect(text.data, intl.progress_bar_title);
 
         // Tap the restoreCards button
         await tester.tap(find.byIcon(Icons.restore));
@@ -809,7 +767,7 @@ void main() {
             findsNWidgets(numberOfCards));
 
         // Check that the first card is now AboutUs
-        expect((text as Text).data, intl.progress_bar_title);
+        expect(text.data, intl.progress_bar_title);
       });
     });
 
@@ -819,8 +777,7 @@ void main() {
       });
 
       testWidgets("Applets Card", (WidgetTester tester) async {
-        RemoteConfigServiceMock.stubGetBroadcastEnabled(
-            remoteConfigService as RemoteConfigServiceMock,
+        RemoteConfigServiceMock.stubGetBroadcastEnabled(remoteConfigServiceMock,
             toReturn: false);
         tester.binding.window.physicalSizeTestValue = const Size(800, 1410);
 
@@ -829,12 +786,12 @@ void main() {
           PreferencesFlag.aboutUsCard: 1,
         };
 
-        SettingsManagerMock.stubGetDashboard(
-            settingsManager as SettingsManagerMock,
+        SettingsManagerMock.stubGetDashboard(settingsManagerMock,
             toReturn: dashboard);
 
         await tester.pumpWidget(localizedWidget(
-            child: FeatureDiscovery(child: const DashboardView())));
+            child: FeatureDiscovery(
+                child: const DashboardView(updateCode: UpdateCode.none))));
         await tester.pumpAndSettle();
 
         await expectLater(find.byType(DashboardView),
@@ -842,39 +799,33 @@ void main() {
       });
 
       testWidgets("Schedule card", (WidgetTester tester) async {
-        RemoteConfigServiceMock.stubGetBroadcastEnabled(
-            remoteConfigService as RemoteConfigServiceMock,
+        RemoteConfigServiceMock.stubGetBroadcastEnabled(remoteConfigServiceMock,
             toReturn: false);
         tester.binding.window.physicalSizeTestValue = const Size(800, 1410);
 
-        CourseRepositoryMock.stubCoursesActivities(
-            courseRepository as CourseRepositoryMock);
-        CourseRepositoryMock.stubGetCoursesActivities(
-            courseRepository as CourseRepositoryMock,
+        CourseRepositoryMock.stubCoursesActivities(courseRepositoryMock);
+        CourseRepositoryMock.stubGetCoursesActivities(courseRepositoryMock,
             fromCacheOnly: true);
-        CourseRepositoryMock.stubGetCoursesActivities(
-            courseRepository as CourseRepositoryMock,
-            fromCacheOnly: false);
+        CourseRepositoryMock.stubGetCoursesActivities(courseRepositoryMock);
 
         dashboard = {
           PreferencesFlag.broadcastCard: 0,
           PreferencesFlag.scheduleCard: 1,
         };
 
-        SettingsManagerMock.stubGetDashboard(
-            settingsManager as SettingsManagerMock,
+        SettingsManagerMock.stubGetDashboard(settingsManagerMock,
             toReturn: dashboard);
 
         await tester.pumpWidget(localizedWidget(
-            child: FeatureDiscovery(child: const DashboardView())));
+            child: FeatureDiscovery(
+                child: const DashboardView(updateCode: UpdateCode.none))));
         await tester.pumpAndSettle();
 
         await expectLater(find.byType(DashboardView),
             matchesGoldenFile(goldenFilePath("dashboardView_scheduleCard_1")));
       });
       testWidgets("progressBar Card", (WidgetTester tester) async {
-        RemoteConfigServiceMock.stubGetBroadcastEnabled(
-            remoteConfigService as RemoteConfigServiceMock,
+        RemoteConfigServiceMock.stubGetBroadcastEnabled(remoteConfigServiceMock,
             toReturn: false);
         tester.binding.window.physicalSizeTestValue = const Size(800, 1410);
 
@@ -883,12 +834,12 @@ void main() {
           PreferencesFlag.progressBarCard: 1,
         };
 
-        SettingsManagerMock.stubGetDashboard(
-            settingsManager as SettingsManagerMock,
+        SettingsManagerMock.stubGetDashboard(settingsManagerMock,
             toReturn: dashboard);
 
         await tester.pumpWidget(localizedWidget(
-            child: FeatureDiscovery(child: const DashboardView())));
+            child: FeatureDiscovery(
+                child: const DashboardView(updateCode: UpdateCode.none))));
         await tester.pumpAndSettle();
 
         await expectLater(

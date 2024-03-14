@@ -28,7 +28,7 @@ class CacheManager {
   /// Get from the cache the value associated with [key].
   /// Throw a [CacheException] if the [key] doesn't exist.
   Future<String> get(String key) async {
-    final lib.FileInfo fileInfo = await _cacheManager.getFileFromCache(key);
+    final lib.FileInfo? fileInfo = await _cacheManager.getFileFromCache(key);
 
     if (fileInfo == null) {
       _analyticsService.logEvent(

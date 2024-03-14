@@ -1,4 +1,5 @@
 // Package imports:
+import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:rive/rive.dart';
 
@@ -6,8 +7,11 @@ import 'package:rive/rive.dart';
 import 'package:notredame/core/services/rive_animation_service.dart';
 import 'package:notredame/core/utils/animation_exception.dart';
 
+import 'rive_animation_service_mock.mocks.dart';
+
 /// Mock for the [RiveAnimationService]
-class RiveAnimationServiceMock extends Mock implements RiveAnimationService {
+@GenerateNiceMocks([MockSpec<RiveAnimationService>()])
+class RiveAnimationServiceMock extends MockRiveAnimationService {
   static const startException = AnimationException(
       prefix: "addControllerToAnimation",
       message:

@@ -22,8 +22,8 @@ class StudentProgram extends StatefulWidget {
 class _StudentProgramState extends State<StudentProgram>
     with TickerProviderStateMixin<StudentProgram> {
   bool showProgramDetails = false;
-  AnimationController controller;
-  Animation<double> rotateAnimation;
+  late AnimationController controller;
+  late Animation<double> rotateAnimation;
 
   @override
   void initState() {
@@ -51,14 +51,14 @@ class _StudentProgramState extends State<StudentProgram>
     final bool isLightMode = Theme.of(context).brightness == Brightness.light;
 
     final List<String> dataTitles = [
-      AppIntl.of(context).profile_code_program,
-      AppIntl.of(context).profile_average_program,
-      AppIntl.of(context).profile_number_accumulated_credits_program,
-      AppIntl.of(context).profile_number_registered_credits_program,
-      AppIntl.of(context).profile_number_completed_courses_program,
-      AppIntl.of(context).profile_number_failed_courses_program,
-      AppIntl.of(context).profile_number_equivalent_courses_program,
-      AppIntl.of(context).profile_status_program
+      AppIntl.of(context)!.profile_code_program,
+      AppIntl.of(context)!.profile_average_program,
+      AppIntl.of(context)!.profile_number_accumulated_credits_program,
+      AppIntl.of(context)!.profile_number_registered_credits_program,
+      AppIntl.of(context)!.profile_number_completed_courses_program,
+      AppIntl.of(context)!.profile_number_failed_courses_program,
+      AppIntl.of(context)!.profile_number_equivalent_courses_program,
+      AppIntl.of(context)!.profile_status_program
     ];
 
     final List<String> dataFetched = [
@@ -102,7 +102,7 @@ class _StudentProgramState extends State<StudentProgram>
           padding: const EdgeInsets.only(top: 5.0),
           child: AnimatedBuilder(
             animation: rotateAnimation,
-            builder: (BuildContext context, Widget child) {
+            builder: (BuildContext context, Widget? child) {
               return Transform.rotate(
                 angle: rotateAnimation.value,
                 child: const Icon(

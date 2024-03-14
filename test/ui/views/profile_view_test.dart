@@ -10,7 +10,6 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 // Project imports:
-import 'package:notredame/core/managers/user_repository.dart';
 import 'package:notredame/core/services/networking_service.dart';
 import 'package:notredame/ui/views/profile_view.dart';
 import '../../helpers.dart';
@@ -18,8 +17,8 @@ import '../../mock/managers/user_repository_mock.dart';
 import '../../mock/services/analytics_service_mock.dart';
 
 void main() {
-  AppIntl intl;
-  UserRepository userRepository;
+  late AppIntl intl;
+  late UserRepositoryMock userRepositoryMock;
 
   final profileStudent = ProfileStudent(
       firstName: "John",
@@ -45,19 +44,18 @@ void main() {
     setUp(() async {
       intl = await setupAppIntl();
       setupNavigationServiceMock();
-      userRepository = setupUserRepositoryMock();
+      userRepositoryMock = setupUserRepositoryMock();
       setupAnalyticsServiceMock();
 
-      UserRepositoryMock.stubGetInfo(userRepository as UserRepositoryMock,
+      UserRepositoryMock.stubGetInfo(userRepositoryMock,
           toReturn: profileStudent);
-      UserRepositoryMock.stubProfileStudent(
-          userRepository as UserRepositoryMock,
+      UserRepositoryMock.stubProfileStudent(userRepositoryMock,
           toReturn: profileStudent);
 
-      UserRepositoryMock.stubGetPrograms(userRepository as UserRepositoryMock,
+      UserRepositoryMock.stubGetPrograms(userRepositoryMock,
           toReturn: programList);
 
-      UserRepositoryMock.stubPrograms(userRepository as UserRepositoryMock,
+      UserRepositoryMock.stubPrograms(userRepositoryMock,
           toReturn: programList);
     });
 
