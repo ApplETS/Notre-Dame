@@ -52,8 +52,8 @@ class _NotFoundState extends State<NotFoundView> {
           viewModelBuilder: () => viewModel,
           builder: (context, model, child) => Scaffold(
                 body: Center(
-                    child: SingleChildScrollView(
-                      child: Column(
+                  child: SingleChildScrollView(
+                    child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
                         Padding(
@@ -85,18 +85,18 @@ class _NotFoundState extends State<NotFoundView> {
                             ),
                           ),
                         ),
-                          ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: AppTheme.primary,
-                            ),
-                            onPressed: () {
-                              model.navigateToDashboard();
-                            },
-                            child: Text(AppIntl.of(context)!.go_to_dashboard),
+                        ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: AppTheme.primary,
                           ),
+                          onPressed: () {
+                            model.navigateToDashboard();
+                          },
+                          child: Text(AppIntl.of(context)!.go_to_dashboard),
+                        ),
                       ],
-                      ),
                     ),
                   ),
+                ),
               ));
 }
