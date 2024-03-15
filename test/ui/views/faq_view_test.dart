@@ -35,10 +35,14 @@ void main() {
 
         final Faq faq = Faq();
 
-        final action1 = find.text(faq.actions[0].title["en"]!, skipOffstage: false);
-        final action2 = find.text(faq.actions[1].title["en"]!, skipOffstage: false);
-        final action3 = find.text(faq.actions[2].title["en"]!, skipOffstage: false);
-        final action4 = find.text(faq.actions[3].title["en"]!, skipOffstage: false);
+        final action1 =
+            find.text(faq.actions[0].title["en"]!, skipOffstage: false);
+        final action2 =
+            find.text(faq.actions[1].title["en"]!, skipOffstage: false);
+        final action3 =
+            find.text(faq.actions[2].title["en"]!, skipOffstage: false);
+        final action4 =
+            find.text(faq.actions[3].title["en"]!, skipOffstage: false);
 
         await tester.pump();
         await tester.drag(find.byType(ListView), const Offset(0.0, -300));

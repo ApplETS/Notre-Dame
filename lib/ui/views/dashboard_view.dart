@@ -285,8 +285,8 @@ class _DashboardViewState extends State<DashboardView>
     if (model.currentProgressBarText ==
         ProgressBarText.daysElapsedWithTotalDays) {
       progressBarText = Text(
-        AppIntl.of(context)
-            !.progress_bar_message(model.sessionDays[0], model.sessionDays[1]),
+        AppIntl.of(context)!
+            .progress_bar_message(model.sessionDays[0], model.sessionDays[1]),
         style: const TextStyle(color: Colors.white),
       );
     } else if (model.currentProgressBarText == ProgressBarText.percentage) {
@@ -326,8 +326,8 @@ class _DashboardViewState extends State<DashboardView>
                 child: GestureDetector(
                   onTap: () => _navigationService
                       .pushNamedAndRemoveUntil(RouterPaths.schedule),
-                  child:
-                      Text(title, style: Theme.of(context).textTheme.titleLarge),
+                  child: Text(title,
+                      style: Theme.of(context).textTheme.titleLarge),
                 ),
               )),
           if (model.todayDateEvents.isEmpty)
@@ -386,8 +386,8 @@ class _DashboardViewState extends State<DashboardView>
                 SizedBox(
                   height: 100,
                   child: Center(
-                      child: Text(AppIntl.of(context)
-                          !.grades_msg_no_grades
+                      child: Text(AppIntl.of(context)!
+                          .grades_msg_no_grades
                           .split("\n")
                           .first)),
                 )

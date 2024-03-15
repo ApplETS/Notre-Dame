@@ -133,7 +133,8 @@ class _ScheduleViewState extends State<ScheduleView>
             const Divider(indent: 8.0, endIndent: 8.0, thickness: 1),
             const SizedBox(height: 6.0),
             if (model.showWeekEvents)
-              for (final Widget widget in _buildWeekEvents(model, context)) widget
+              for (final Widget widget in _buildWeekEvents(model, context))
+                widget
             else
               _buildTitleForDate(model.selectedDate, model),
             const SizedBox(height: 2.0),
@@ -400,7 +401,8 @@ class _ScheduleViewState extends State<ScheduleView>
                 model.settings[PreferencesFlag.scheduleStartWeekday]
                     as StartingDayOfWeek,
             daysOfWeekHeight: 20,
-            rowHeight: (MediaQuery.of(context).size.width - 10) / 7, // make sure the event tile are always squared
+            rowHeight: (MediaQuery.of(context).size.width - 10) /
+                7, // make sure the event tile are always squared
             locale: model.locale?.toLanguageTag(),
             selectedDayPredicate: (day) {
               return isSameDay(model.selectedDate, day);

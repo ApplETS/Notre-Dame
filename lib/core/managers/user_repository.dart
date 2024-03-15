@@ -88,18 +88,15 @@ class UserRepository {
                 typeUsagerId: MonETSUser.studentRoleId,
                 username: username);
           } else {
-            _analyticsService.logError(
-                tag, "Authenticate - $e", e, stacktrace);
+            _analyticsService.logError(tag, "Authenticate - $e", e, stacktrace);
             return false;
           }
         } on Exception catch (e, stacktrace) {
-          _analyticsService.logError(
-              tag, "Authenticate - $e", e, stacktrace);
+          _analyticsService.logError(tag, "Authenticate - $e", e, stacktrace);
           return false;
         }
       } else {
-        _analyticsService.logError(
-            tag, "Authenticate - $e", e, stacktrace);
+        _analyticsService.logError(tag, "Authenticate - $e", e, stacktrace);
         return false;
       }
     }
@@ -115,10 +112,7 @@ class UserRepository {
       } on PlatformException catch (e, stacktrace) {
         await _secureStorage.deleteAll();
         _analyticsService.logError(
-            tag,
-            "Authenticate - PlatformException - $e",
-            e,
-            stacktrace);
+            tag, "Authenticate - PlatformException - $e", e, stacktrace);
         return false;
       }
     }
@@ -163,8 +157,8 @@ class UserRepository {
       await _secureStorage.delete(key: passwordSecureKey);
     } on PlatformException catch (e, stacktrace) {
       await _secureStorage.deleteAll();
-      _analyticsService.logError(tag,
-          "Authenticate - PlatformException - $e", e, stacktrace);
+      _analyticsService.logError(
+          tag, "Authenticate - PlatformException - $e", e, stacktrace);
       return false;
     }
     return true;
@@ -192,8 +186,8 @@ class UserRepository {
       return password;
     } on PlatformException catch (e, stacktrace) {
       await _secureStorage.deleteAll();
-      _analyticsService.logError(tag,
-          "getPassword - PlatformException - $e", e, stacktrace);
+      _analyticsService.logError(
+          tag, "getPassword - PlatformException - $e", e, stacktrace);
       throw const ApiException(prefix: tag, message: "Not authenticated");
     }
   }
@@ -280,7 +274,8 @@ class UserRepository {
         _logger.d("$tag - getInfo: $_info info loaded from cache.");
       } on CacheException catch (e) {
         _logger.e(
-            "$tag - getInfo: exception raised while trying to load the info from cache.", error: e);
+            "$tag - getInfo: exception raised while trying to load the info from cache.",
+            error: e);
       }
     }
 
@@ -305,7 +300,6 @@ class UserRepository {
           _cacheManager.update(infoCacheKey, jsonEncode(_info));
         }
       }
-
     } on CacheException catch (_) {
       _logger.e(
           "$tag - getInfo: exception raised while trying to update the cache.");
@@ -329,8 +323,8 @@ class UserRepository {
       }
     } on PlatformException catch (e, stacktrace) {
       await _secureStorage.deleteAll();
-      _analyticsService.logError(tag,
-          "getPassword - PlatformException - $e", e, stacktrace);
+      _analyticsService.logError(
+          tag, "getPassword - PlatformException - $e", e, stacktrace);
     }
     return false;
   }

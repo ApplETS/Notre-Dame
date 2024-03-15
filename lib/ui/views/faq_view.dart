@@ -60,7 +60,8 @@ class _FaqViewState extends State<FaqView> {
                             child: getQuestionCard(
                               question.title[model.locale?.languageCode] ?? '',
                               question.description[
-                                      model.locale?.languageCode] ?? '',
+                                      model.locale?.languageCode] ??
+                                  '',
                             ),
                           );
                         },

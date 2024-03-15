@@ -39,8 +39,7 @@ void main() {
       // Setup needed service
       analyticsServiceMock = setupAnalyticsServiceMock();
       monETSApiMock = setupMonETSApiMock();
-      secureStorageMock =
-          setupFlutterSecureStorageMock();
+      secureStorageMock = setupFlutterSecureStorageMock();
       cacheManagerMock = setupCacheManagerMock();
       signetsApiMock = setupSignetsApiMock();
       networkingServiceMock = setupNetworkingServiceMock();

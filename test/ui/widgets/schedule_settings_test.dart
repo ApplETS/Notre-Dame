@@ -77,10 +77,8 @@ void main() {
   group("ScheduleSettings - ", () {
     setUp(() async {
       settingsManagerMock = setupSettingsManagerMock();
-      courseRepositoryMock =
-          setupCourseRepositoryMock();
-      remoteConfigServiceMock =
-          setupRemoteConfigServiceMock();
+      courseRepositoryMock = setupCourseRepositoryMock();
+      remoteConfigServiceMock = setupRemoteConfigServiceMock();
       intl = await setupAppIntl();
 
       CourseRepositoryMock.stubGetScheduleActivities(courseRepositoryMock);

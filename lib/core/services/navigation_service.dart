@@ -58,7 +58,6 @@ class NavigationService {
   Future<dynamic> pushNamedAndRemoveUntil(String routeName,
       [String removeUntilRouteNamed = RouterPaths.dashboard,
       Object? arguments]) {
-
     final currentState = _navigatorKey.currentState;
     if (currentState == null) {
       _analyticsService.logError(tag, "Navigator state is null");

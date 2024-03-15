@@ -115,9 +115,7 @@ class RemoteConfigService {
       await _remoteConfig.fetchAndActivate();
     } on Exception catch (exception) {
       analyticsService.logError(
-          tag,
-          "Exception raised during fetching: $exception",
-          exception);
+          tag, "Exception raised during fetching: $exception", exception);
     }
   }
 

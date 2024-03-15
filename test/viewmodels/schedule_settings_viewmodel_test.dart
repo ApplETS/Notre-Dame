@@ -204,8 +204,7 @@ void main() {
 
         SettingsManagerMock.stubGetDynamicString(settingsManagerMock,
             PreferencesFlag.scheduleLaboratoryGroup, firstCourseAcronymWithLab);
-        SettingsManagerMock.stubGetDynamicString(
-            settingsManagerMock,
+        SettingsManagerMock.stubGetDynamicString(settingsManagerMock,
             PreferencesFlag.scheduleLaboratoryGroup, secondCourseAcronymWithLab,
             toReturn: ActivityCode.labGroupA);
 

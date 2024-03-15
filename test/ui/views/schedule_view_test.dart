@@ -166,7 +166,8 @@ void main() {
         await tester.pumpWidget(localizedWidget(
             child: FeatureDiscovery(
                 child: MediaQuery(
-                    data: const MediaQueryData(textScaler: TextScaler.linear(0.5)),
+                    data: const MediaQueryData(
+                        textScaler: TextScaler.linear(0.5)),
                     child: ScheduleView(initialDay: DateTime(2020))))));
         await tester.pumpAndSettle(const Duration(seconds: 1));
 
@@ -218,7 +219,8 @@ void main() {
         await tester.pumpWidget(localizedWidget(
             child: FeatureDiscovery(
                 child: MediaQuery(
-                    data: const MediaQueryData(textScaler: TextScaler.linear(0.5)),
+                    data: const MediaQueryData(
+                        textScaler: TextScaler.linear(0.5)),
                     child: ScheduleView(initialDay: testingDate)))));
         await tester.pumpAndSettle(const Duration(seconds: 1));
 

@@ -10,7 +10,6 @@ import 'package:notredame/core/viewmodels/profile_viewmodel.dart';
 import '../helpers.dart';
 import '../mock/managers/user_repository_mock.dart';
 
-
 void main() {
   late UserRepositoryMock userRepositoryMock;
 

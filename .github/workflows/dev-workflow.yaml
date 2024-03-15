@@ -57,7 +57,7 @@ jobs:
 
       # Check the format of the code and commit the formatted files.
       - name: Format files in lib and test directories
-        run: flutter format lib test
+        run: dart format lib test
       - name: Commit formatted files
         id: commit_formatted
         uses: stefanzweifel/git-auto-commit-action@v5

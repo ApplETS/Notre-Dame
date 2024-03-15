@@ -60,15 +60,15 @@ class GithubApi {
                     CommitUser('clubapplets-server', 'clubapplets@gmail.com'),
                 branch: 'main'))
         .catchError((error) {
-            // ignore: avoid_dynamic_calls
-            _logger.e("uploadFileToGithub error: ${error.message}");
-            _analyticsService.logError(
-                tag,
-                // ignore: avoid_dynamic_calls
-                "uploadFileToGithub: ${error.message}",
-                error as GitHubError);
-            throw Error();
-        });
+      // ignore: avoid_dynamic_calls
+      _logger.e("uploadFileToGithub error: ${error.message}");
+      _analyticsService.logError(
+          tag,
+          // ignore: avoid_dynamic_calls
+          "uploadFileToGithub: ${error.message}",
+          error as GitHubError);
+      throw Error();
+    });
   }
 
   /// Create Github issue into the Notre-Dame repository with the labels bugs and the platform used.

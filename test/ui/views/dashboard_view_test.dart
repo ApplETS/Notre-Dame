@@ -688,12 +688,11 @@ void main() {
         expect(find.text(intl.progress_bar_title), findsOneWidget);
 
         // Swipe Dismissible progress Card horizontally
-        final discardCard = find.widgetWithText(DismissibleCard, intl.progress_bar_title);
+        final discardCard =
+            find.widgetWithText(DismissibleCard, intl.progress_bar_title);
         await tester.ensureVisible(discardCard);
         await tester.pumpAndSettle();
-        await tester.drag(
-            discardCard,
-            const Offset(-1000.0, 0.0));
+        await tester.drag(discardCard, const Offset(-1000.0, 0.0));
 
         // Check that the card is now absent from the view
         await tester.pumpAndSettle();
@@ -751,7 +750,9 @@ void main() {
             findsNWidgets(numberOfCards));
 
         // Check that the card is now in last position
-        final discardCard = find.widgetWithText(Dismissible, intl.progress_bar_title, skipOffstage: false);
+        final discardCard = find.widgetWithText(
+            Dismissible, intl.progress_bar_title,
+            skipOffstage: false);
         await tester.ensureVisible(discardCard);
         await tester.pumpAndSettle();
 

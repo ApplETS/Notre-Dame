@@ -262,7 +262,8 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
       final String? activityCodeToUse = await _settingsManager.getDynamicString(
           PreferencesFlag.scheduleLaboratoryGroup, courseAcronym);
       final scheduleActivityToSet = scheduleActivitiesByCourse[courseAcronym]
-          ?.firstWhereOrNull((element) => element.activityCode == activityCodeToUse);
+          ?.firstWhereOrNull(
+              (element) => element.activityCode == activityCodeToUse);
       if (scheduleActivityToSet != null) {
         settingsScheduleActivities[courseAcronym] = scheduleActivityToSet.name;
       } else {

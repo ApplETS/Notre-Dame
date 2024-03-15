@@ -352,9 +352,7 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
           remoteConfigService.dashboardMessageEn);
       if (_cards != null && _cards![PreferencesFlag.broadcastCard]! < 0) {
         _cards?.updateAll((key, value) {
-          return value >= 0
-            ? value + 1
-            : value;
+          return value >= 0 ? value + 1 : value;
         });
         _cards![PreferencesFlag.broadcastCard] = 0;
       }
@@ -418,7 +416,7 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
       _todayDateEvents = await removeLaboratoryGroup(_todayDateEvents);
       _tomorrowDateEvents = await removeLaboratoryGroup(_tomorrowDateEvents);
       return courseActivities ?? [];
-    } catch(error) {
+    } catch (error) {
       onError(error);
     } finally {
       setBusyForObject(_todayDateEvents, false);

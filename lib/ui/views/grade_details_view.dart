@@ -80,7 +80,7 @@ class _GradesDetailsViewState extends State<GradesDetailsView>
                       model.course.acronym,
                       softWrap: false,
                       overflow: TextOverflow.visible,
-                      style: Theme.of(context).textTheme.bodyLarge !.copyWith(
+                      style: Theme.of(context).textTheme.bodyLarge!.copyWith(
                           color: Colors.white,
                           fontSize: 25,
                           fontWeight: FontWeight.bold),
@@ -269,8 +269,8 @@ class _GradesDetailsViewState extends State<GradesDetailsView>
             info,
             style: Theme.of(context)
                 .textTheme
-                .bodyLarge
-                !.copyWith(color: Colors.white, fontSize: 16),
+                .bodyLarge!
+                .copyWith(color: Colors.white, fontSize: 16),
             overflow: TextOverflow.ellipsis,
           ),
         ),
@@ -293,12 +293,14 @@ class _GradesDetailsViewState extends State<GradesDetailsView>
                   maxGrade,
                 ),
               ),
-              style:
-                  Theme.of(context).textTheme.titleLarge!.copyWith(color: color)),
+              style: Theme.of(context)
+                  .textTheme
+                  .titleLarge!
+                  .copyWith(color: color)),
         ),
         Text(recipient,
             style:
-                Theme.of(context).textTheme.bodyLarge !.copyWith(color: color)),
+                Theme.of(context).textTheme.bodyLarge!.copyWith(color: color)),
       ],
     );
   }

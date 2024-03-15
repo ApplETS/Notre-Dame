@@ -159,7 +159,8 @@ class CourseRepository {
 
     // Update the list of activities to avoid duplicate activities
     for (final CourseActivity activity in fetchedCoursesActivities) {
-      if (_coursesActivities != null && !_coursesActivities!.contains(activity)) {
+      if (_coursesActivities != null &&
+          !_coursesActivities!.contains(activity)) {
         _coursesActivities!.add(activity);
       }
     }
@@ -243,7 +244,8 @@ class CourseRepository {
 
     // Update the list of activities to avoid duplicate activities
     for (final ScheduleActivity activity in fetchedScheduleActivities) {
-      if (_scheduleActivities != null && !_scheduleActivities!.contains(activity)) {
+      if (_scheduleActivities != null &&
+          !_scheduleActivities!.contains(activity)) {
         _scheduleActivities!.add(activity);
       }
     }
