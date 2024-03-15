@@ -342,7 +342,7 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
       dateInArray = element;
       return isSameDay(element, date);
     });
-    if(courseActivitiesContains) {
+    if (courseActivitiesContains) {
       return _coursesActivities[dateInArray] ?? [];
     }
     return [];

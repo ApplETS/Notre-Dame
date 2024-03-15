@@ -8,9 +8,12 @@ import 'package:notredame/core/constants/programs_credits.dart';
 import 'package:notredame/core/managers/user_repository.dart';
 import 'package:notredame/core/viewmodels/profile_viewmodel.dart';
 import '../helpers.dart';
+import '../mock/managers/settings_manager_mock.dart';
 import '../mock/managers/user_repository_mock.dart';
 
 late UserRepositoryMock userRepositoryMock;
+
+late SettingsManagerMock settingsManagerMock;
 
 late ProfileViewModel viewModel;
 

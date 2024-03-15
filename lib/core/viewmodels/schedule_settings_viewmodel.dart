@@ -148,7 +148,7 @@ class ScheduleSettingsViewModel
           PreferencesFlag.scheduleLaboratoryGroup,
           courseAcronym,
           scheduleActivityToSave.activityCode);
-          _selectedScheduleActivity[courseAcronym] = scheduleActivityToSave;
+      _selectedScheduleActivity[courseAcronym] = scheduleActivityToSave;
     }
     setBusy(false);
   }

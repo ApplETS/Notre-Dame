@@ -237,9 +237,9 @@ class UserRepository {
       // getPassword will try to authenticate the user if not authenticated.
       final String password = await getPassword();
 
-      if(_monETSUser != null) {
+      if (_monETSUser != null) {
         _programs = await _signetsApiClient.getPrograms(
-          username: _monETSUser!.universalCode, password: password);
+            username: _monETSUser!.universalCode, password: password);
 
         _logger.d("$tag - getPrograms: ${_programs!.length} programs fetched.");
 
@@ -292,7 +292,7 @@ class UserRepository {
       // getPassword will try to authenticate the user if not authenticated.
       final String password = await getPassword();
 
-      if(_monETSUser != null) {
+      if (_monETSUser != null) {
         final fetchedInfo = await _signetsApiClient.getStudentInfo(
             username: _monETSUser!.universalCode, password: password);
 

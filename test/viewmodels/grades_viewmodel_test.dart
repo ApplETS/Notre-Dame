@@ -18,7 +18,6 @@ void main() {
 
   late CourseRepositoryMock courseRepositoryMock;
 
-
   late GradesViewModel viewModel;
 
   final Course courseSummer = Course(

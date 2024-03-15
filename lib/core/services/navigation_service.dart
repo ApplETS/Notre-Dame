@@ -64,6 +64,7 @@ class NavigationService {
       _analyticsService.logError(tag, "Navigator state is null");
       return Future.error("Navigator state is null");
     }
+
     if (remoteConfigService.outage) {
       return currentState.pushNamedAndRemoveUntil(
           RouterPaths.serviceOutage, (route) => false);

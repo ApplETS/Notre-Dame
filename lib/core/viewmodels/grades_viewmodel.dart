@@ -62,7 +62,7 @@ class GradesViewModel extends FutureViewModel<Map<String, List<Course>>> {
   Future refresh() async {
     try {
       await _courseRepository.getCourses();
-      if(_courseRepository.courses != null) {
+      if (_courseRepository.courses != null) {
         _buildCoursesBySession(_courseRepository.courses!);
       }
       notifyListeners();

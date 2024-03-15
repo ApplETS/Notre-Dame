@@ -95,8 +95,8 @@ class _GradeCircularProgressState extends State<GradeCircularProgress>
     }
 
     if (widget.studentGrade != null) {
-      return AppIntl.of(context)
-          !.grades_grade_in_percentage(widget.studentGrade!.round());
+      return AppIntl.of(context)!
+          .grades_grade_in_percentage(widget.studentGrade!.round());
     }
 
     return AppIntl.of(context)!.grades_not_available;

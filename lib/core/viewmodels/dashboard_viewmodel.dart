@@ -257,7 +257,7 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
             !(course.inReviewPeriod &&
                 (course.reviewCompleted != null && !course.reviewCompleted!))) {
           return _appIntl.grades_grade_in_percentage(
-                course.summary!.currentMarkInPercent.round());
+              course.summary!.currentMarkInPercent.round());
         }
         return _appIntl.grades_not_available;
       }).toList();
@@ -453,7 +453,7 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
 
   /// Update cards order and display status in preferences
   void updatePreferences() {
-    if(_cards == null || _cardsToDisplay == null) {
+    if (_cards == null || _cardsToDisplay == null) {
       return;
     }
     for (final MapEntry<PreferencesFlag, int> element in _cards!.entries) {
@@ -509,7 +509,8 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
         }
         final currentSession = _courseRepository.activeSessions.first;
 
-        final coursesCached = await _courseRepository.getCourses(fromCacheOnly: true);
+        final coursesCached =
+            await _courseRepository.getCourses(fromCacheOnly: true);
         courses.clear();
         for (final Course course in coursesCached) {
           if (course.session == currentSession.shortName) {
@@ -549,9 +550,11 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
         case UpdateCode.force:
           isAForcedUpdate = true;
           message = appIntl!.update_version_message_force;
+          break;
         case UpdateCode.ask:
           isAForcedUpdate = false;
           message = appIntl!.update_version_message;
+          break;
         case UpdateCode.none:
           return;
       }
