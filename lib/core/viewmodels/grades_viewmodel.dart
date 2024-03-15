@@ -116,6 +116,7 @@ class GradesViewModel extends FutureViewModel<Map<String, List<Course>>> {
 
     if (await settingsManager.getBool(PreferencesFlag.discoveryStudentGrade) ==
         null) {
+      if (!context.mounted) return;
       final List<String> ids =
           findDiscoveriesByGroupName(context, DiscoveryGroupIds.pageStudent)
               .map((e) => e.featureId)

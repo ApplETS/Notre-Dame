@@ -418,6 +418,7 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
 
     if (await settingsManager.getBool(PreferencesFlag.discoverySchedule) ==
         null) {
+      if (!context.mounted) return;
       final List<String> ids =
           findDiscoveriesByGroupName(context, DiscoveryGroupIds.pageSchedule)
               .map((e) => e.featureId)

@@ -238,7 +238,7 @@ class _GradesDetailsViewState extends State<GradesDetailsView>
                       ),
                     ]),
                 Column(children: <Widget>[
-                  for (CourseEvaluation evaluation
+                  for (final CourseEvaluation evaluation
                       in model.course.summary?.evaluations ?? [])
                     GradeEvaluationTile(
                       evaluation,
