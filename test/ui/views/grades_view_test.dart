@@ -16,10 +16,12 @@ import 'package:notredame/core/managers/settings_manager.dart';
 import 'package:notredame/core/services/networking_service.dart';
 import 'package:notredame/ui/views/grades_view.dart';
 import 'package:notredame/ui/widgets/grade_button.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../helpers.dart';
 import '../../mock/managers/course_repository_mock.dart';
 
 void main() {
+  SharedPreferences.setMockInitialValues({});
   late CourseRepositoryMock courseRepositoryMock;
   late AppIntl intl;
 
