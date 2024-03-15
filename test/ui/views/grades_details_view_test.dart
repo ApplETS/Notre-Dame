@@ -19,8 +19,9 @@ import '../../helpers.dart';
 import '../../mock/managers/course_repository_mock.dart';
 
 void main() {
-  SharedPreferences.setMockInitialValues({});
   TestWidgetsFlutterBinding.ensureInitialized();
+
+  SharedPreferences.setMockInitialValues({});
   late CourseRepositoryMock courseRepositoryMock;
 
   final CourseSummary courseSummary = CourseSummary(
