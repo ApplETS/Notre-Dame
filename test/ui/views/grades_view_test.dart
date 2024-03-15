@@ -68,6 +68,7 @@ void main() {
       courseRepositoryMock = setupCourseRepositoryMock();
       setupSettingsManagerMock();
       setupAnalyticsServiceMock();
+      setupFlutterToastMock();
     });
 
     tearDown(() {

@@ -17,7 +17,8 @@ class GradeNotAvailable extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
+    return SingleChildScrollView(
+    child: Column(
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       mainAxisSize: MainAxisSize.min,
       children: [
@@ -46,6 +47,7 @@ class GradeNotAvailable extends StatelessWidget {
             onPressed: onPressed,
             child: Text(AppIntl.of(context)!.retry))
       ],
+    ),
     );
   }
 }

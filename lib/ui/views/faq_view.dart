@@ -155,7 +155,8 @@ class _FaqViewState extends State<FaqView> {
       padding: const EdgeInsets.only(top: 20.0, left: 20.0, right: 20.0),
       child: Align(
         alignment: Alignment.topLeft,
-        child: Column(
+        child: SingleChildScrollView(
+          child: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
@@ -183,6 +184,7 @@ class _FaqViewState extends State<FaqView> {
             ),
           ],
         ),
+      ),
       ),
     );
   }
