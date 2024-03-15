@@ -157,34 +157,34 @@ class _FaqViewState extends State<FaqView> {
         alignment: Alignment.topLeft,
         child: SingleChildScrollView(
           child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Text(
-              title,
-              textScaler: TextScaler.noScaling,
-              style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                    fontSize: 20,
-                    color: Theme.of(context).brightness == Brightness.light
-                        ? Colors.black
-                        : Colors.white,
-                  ),
-              textAlign: TextAlign.justify,
-            ),
-            Text(
-              description,
-              textScaler: TextScaler.noScaling,
-              style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                    fontSize: 16,
-                    color: Theme.of(context).brightness == Brightness.light
-                        ? Colors.black
-                        : Colors.white,
-                  ),
-              textAlign: TextAlign.justify,
-            ),
-          ],
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Text(
+                title,
+                textScaler: TextScaler.noScaling,
+                style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                      fontSize: 20,
+                      color: Theme.of(context).brightness == Brightness.light
+                          ? Colors.black
+                          : Colors.white,
+                    ),
+                textAlign: TextAlign.justify,
+              ),
+              Text(
+                description,
+                textScaler: TextScaler.noScaling,
+                style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                      fontSize: 16,
+                      color: Theme.of(context).brightness == Brightness.light
+                          ? Colors.black
+                          : Colors.white,
+                    ),
+                textAlign: TextAlign.justify,
+              ),
+            ],
+          ),
         ),
-      ),
       ),
     );
   }
