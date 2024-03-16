@@ -43,11 +43,19 @@ class _QuickLinksViewState extends State<QuickLinksView>
   Widget build(BuildContext context) =>
       ViewModelBuilder<QuickLinksViewModel>.reactive(
         viewModelBuilder: () => QuickLinksViewModel(AppIntl.of(context)!),
-        builder: (context, model, child) => ScaffoldSafeArea(
+        builder: (context, model, child) => BaseScaffold(
           isLoading: model.isBusy,
           body: _buildBody(context, model),
         ),
       );
+
+  AppBar _buildAppBar(BuildContext context, QuickLinksViewModel model) {
+    return AppBar(
+      title: Text(AppIntl.of(context)!.title_ets),
+      automaticallyImplyLeading: false,
+      actions: const [],
+    );
+  }
 
   Widget _buildBody(BuildContext context, QuickLinksViewModel model) {
     return GestureDetector(

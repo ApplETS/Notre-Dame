@@ -1,3 +1,6 @@
+// Dart imports:
+import 'package:collection/collection.dart';
+
 // Package imports:
 import 'package:calendar_view/calendar_view.dart';
 import 'package:collection/collection.dart';

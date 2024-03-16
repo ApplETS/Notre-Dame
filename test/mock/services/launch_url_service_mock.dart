@@ -6,6 +6,8 @@ import 'package:mockito/mockito.dart';
 import 'package:notredame/core/services/launch_url_service.dart';
 import 'launch_url_service_mock.mocks.dart';
 
+import 'launch_url_service_mock.mocks.dart';
+
 /// Mock for the [LaunchUrlService]
 @GenerateNiceMocks([MockSpec<LaunchUrlService>()])
 class LaunchUrlServiceMock extends MockLaunchUrlService {

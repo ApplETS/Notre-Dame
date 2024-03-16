@@ -78,7 +78,7 @@ class _ScheduleSettingsState extends State<ScheduleSettings> {
                   child: ListView(
                     key: const ValueKey("SettingsScrollingArea"),
                     children: _buildSettings(
-                        context, model as ScheduleSettingsViewModel),
+                        context, model! as ScheduleSettingsViewModel),
                   ),
                 ),
               ),
