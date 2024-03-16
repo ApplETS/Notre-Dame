@@ -18,7 +18,8 @@ void main() {
     image: "https://example.com/image.jpg",
     tags: ["tag1", "tag2"],
     publishedDate: DateTime.parse('2022-01-01T12:00:00Z'),
-    eventDate: DateTime.parse('2022-01-02T12:00:00Z'),
+    eventStartDate: DateTime.parse('2022-02-02T12:00:00Z'),
+    eventEndDate: DateTime.parse('2022-02-02T12:00:00Z'),
   );
 
   group('NewsDetailsViewModel Tests', () {

@@ -40,7 +40,8 @@ class NewsRepository {
       avatar: "https://picsum.photos/200/200",
       activity: "Club scientifique",
       publishedDate: DateTime.now(),
-      eventDate: DateTime.now().add(const Duration(days: 2)),
+      eventStartDate: DateTime.now().add(const Duration(days: 2)),
+      eventEndDate: DateTime.now().add(const Duration(days: 5)),
       image: "https://picsum.photos/400/200",
       tags: [
         "Robotique",
@@ -58,7 +59,8 @@ class NewsRepository {
       avatar: "https://picsum.photos/200/200",
       activity: "Club scientifique",
       publishedDate: DateTime.now(),
-      eventDate: DateTime.now().add(const Duration(days: 10)),
+      eventStartDate: DateTime.now().add(const Duration(days: 10)),
+      eventEndDate: DateTime.now().add(const Duration(days: 11)),
       image: "https://picsum.photos/400/200",
       tags: [
         "Compétition",
@@ -73,7 +75,7 @@ class NewsRepository {
       avatar: "https://picsum.photos/200/200",
       activity: "Service à la vie étudiante",
       publishedDate: DateTime.now(),
-      eventDate: DateTime.now().add(const Duration(days: 3)),
+      eventStartDate: DateTime.now().add(const Duration(days: 3)),
       image: "https://picsum.photos/400/200",
       tags: ["5 @ 7", "Vie étudiante", "Activité"],
     ),
