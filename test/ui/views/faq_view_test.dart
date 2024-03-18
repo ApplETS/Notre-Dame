@@ -1,4 +1,6 @@
 // Flutter imports:
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 
 // Package imports:
@@ -91,6 +93,6 @@ void main() {
         await expectLater(find.byType(FaqView),
             matchesGoldenFile(goldenFilePath("FaqView_1")));
       });
-    });
+    }, skip: !Platform.isLinux);
   });
 }

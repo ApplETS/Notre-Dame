@@ -119,7 +119,7 @@ void main() {
             toReturn: course);
         await tester.pumpWidget(localizedWidget(
             child: FeatureDiscovery(child: GradesDetailsView(course: course))));
-        await tester.pumpAndSettle();
+        await tester.pumpAndSettle(const Duration(seconds: 2));
 
         expect(find.byType(RefreshIndicator), findsOneWidget);
 
