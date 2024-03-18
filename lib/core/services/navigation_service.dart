@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 
 // Project imports:
+import 'package:notredame/core/services/analytics_service.dart';
 import 'package:notredame/core/constants/router_paths.dart';
 import 'package:notredame/core/services/remote_config_service.dart';
 import 'package:notredame/locator.dart';
@@ -14,9 +15,14 @@ import 'package:notredame/locator.dart';
 
 /// Navigation service who doesn't use the BuildContext which allow us to call it from anywhere.
 class NavigationService {
+  static const String tag = "NavigationService";
+
   final RemoteConfigService remoteConfigService =
       locator<RemoteConfigService>();
   final GlobalKey<NavigatorState> _navigatorKey = GlobalKey<NavigatorState>();
+
+  /// Will be used to report event and error.
+  final AnalyticsService _analyticsService = locator<AnalyticsService>();
 
   GlobalKey<NavigatorState> get navigatorKey => _navigatorKey;
 
@@ -36,6 +42,7 @@ class NavigationService {
     final currentState = _navigatorKey.currentState;
 
     if (currentState == null) {
+      _analyticsService.logError(tag, "Navigator state is null");
       return Future.error("Navigator state is null");
     }
 
@@ -53,6 +60,7 @@ class NavigationService {
       Object? arguments]) {
     final currentState = _navigatorKey.currentState;
     if (currentState == null) {
+      _analyticsService.logError(tag, "Navigator state is null");
       return Future.error("Navigator state is null");
     }
 

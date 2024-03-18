@@ -1,8 +1,4 @@
-// Package imports:
-// ignore_for_file: avoid_redundant_argument_values
-
 import 'package:ets_api_clients/models.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:logger/logger.dart';
 import 'package:mockito/mockito.dart';
@@ -18,7 +14,6 @@ import '../mock/managers/news_repository_mock.dart';
 void main() {
   late NewsViewModel viewModel;
   late NewsRepositoryMock newsRepository;
-  late AppIntl appIntl;
 
   final List<News> news = <News>[
     News(

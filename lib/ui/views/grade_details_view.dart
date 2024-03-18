@@ -63,14 +63,14 @@ class _GradesDetailsViewState extends State<GradesDetailsView>
                   backgroundColor:
                       Theme.of(context).brightness == Brightness.light
                           ? AppTheme.etsLightRed
-                          : Theme.of(context).bottomAppBarColor,
+                          : BottomAppBarTheme.of(context).color,
                   pinned: true,
                   onStretchTrigger: () {
                     return Future<void>.value();
                   },
                   titleSpacing: 0,
                   leading: IconButton(
-                    icon: const Icon(Icons.arrow_back),
+                    icon: const Icon(Icons.arrow_back, color: Colors.white),
                     onPressed: () => Navigator.of(context).pop(),
                   ),
                   title: Hero(
@@ -80,7 +80,7 @@ class _GradesDetailsViewState extends State<GradesDetailsView>
                       model.course.acronym,
                       softWrap: false,
                       overflow: TextOverflow.visible,
-                      style: Theme.of(context).textTheme.bodyText1!.copyWith(
+                      style: Theme.of(context).textTheme.bodyLarge!.copyWith(
                           color: Colors.white,
                           fontSize: 25,
                           fontWeight: FontWeight.bold),
@@ -96,7 +96,7 @@ class _GradesDetailsViewState extends State<GradesDetailsView>
                       decoration: BoxDecoration(
                         color: Theme.of(context).brightness == Brightness.light
                             ? AppTheme.etsLightRed
-                            : Theme.of(context).bottomAppBarColor,
+                            : BottomAppBarTheme.of(context).color,
                       ),
                       child: Padding(
                         padding: const EdgeInsets.only(bottom: 8.0),
@@ -238,7 +238,7 @@ class _GradesDetailsViewState extends State<GradesDetailsView>
                       ),
                     ]),
                 Column(children: <Widget>[
-                  for (CourseEvaluation evaluation
+                  for (final CourseEvaluation evaluation
                       in model.course.summary?.evaluations ?? [])
                     GradeEvaluationTile(
                       evaluation,
@@ -269,7 +269,7 @@ class _GradesDetailsViewState extends State<GradesDetailsView>
             info,
             style: Theme.of(context)
                 .textTheme
-                .bodyText1!
+                .bodyLarge!
                 .copyWith(color: Colors.white, fontSize: 16),
             overflow: TextOverflow.ellipsis,
           ),
@@ -295,12 +295,12 @@ class _GradesDetailsViewState extends State<GradesDetailsView>
               ),
               style: Theme.of(context)
                   .textTheme
-                  .headline6!
+                  .titleLarge!
                   .copyWith(color: color)),
         ),
         Text(recipient,
             style:
-                Theme.of(context).textTheme.bodyText1!.copyWith(color: color)),
+                Theme.of(context).textTheme.bodyLarge!.copyWith(color: color)),
       ],
     );
   }

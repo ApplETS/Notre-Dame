@@ -84,10 +84,18 @@ class AppTheme {
   static ThemeData lightTheme() {
     final ThemeData lightTheme = ThemeData.light();
     return lightTheme.copyWith(
-        useMaterial3: true,
         primaryColor: etsLightRed,
         bottomNavigationBarTheme: lightTheme.bottomNavigationBarTheme
             .copyWith(selectedItemColor: etsLightRed),
+        textTheme: lightTheme.textTheme.copyWith(
+          bodySmall: const TextStyle(fontSize: 14, color: Colors.black),
+          bodyMedium: const TextStyle(fontSize: 16, color: Colors.black),
+          bodyLarge: const TextStyle(fontSize: 18, color: Colors.black),
+          titleSmall: const TextStyle(
+              fontSize: 20, fontWeight: FontWeight.w400, color: Colors.black),
+          displaySmall: const TextStyle(
+              fontSize: 20, fontWeight: FontWeight.w400, color: Colors.black),
+        ),
         colorScheme: lightTheme.colorScheme
             .copyWith(primary: etsLightRed, secondary: etsLightRed)
             .copyWith(secondary: etsLightRed)
@@ -98,11 +106,25 @@ class AppTheme {
   static ThemeData darkTheme() {
     final ThemeData darkTheme = ThemeData.dark();
     return darkTheme.copyWith(
-        useMaterial3: true,
         // primaryColor: primaryDark,
         // appBarTheme: const AppBarTheme(color: Color(0xff121212)),
         scaffoldBackgroundColor: const Color(0xff121212),
         cardColor: const Color(0xff1e1e1e),
+        textTheme: darkTheme.textTheme.copyWith(
+          titleSmall: const TextStyle(
+            fontSize: 20,
+            fontWeight: FontWeight.w400,
+          ),
+          bodySmall: const TextStyle(
+            fontSize: 14,
+          ),
+          bodyMedium: const TextStyle(
+            fontSize: 16,
+          ),
+          bodyLarge: const TextStyle(
+            fontSize: 18,
+          ),
+        ),
         bottomNavigationBarTheme: darkTheme.bottomNavigationBarTheme
             .copyWith(selectedItemColor: etsLightRed),
         colorScheme: darkTheme.colorScheme

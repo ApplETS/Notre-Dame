@@ -444,7 +444,7 @@ Padding _buildHeader(String title, BuildContext context) {
         Text(title,
             style: Theme.of(context)
                 .textTheme
-                .headline6!
+                .titleLarge!
                 .copyWith(color: Colors.white)),
         _buildSkipDiscoveryButton(context)
       ],

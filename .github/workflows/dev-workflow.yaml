@@ -5,8 +5,7 @@ on:
     paths-ignore:
       - '.gitignore'
       - '.metadata'
-      - 'README.md'
-      - 'README.fr.md'
+      - '*.md'
       - 'android/fastlane/**'
       - 'ios/fastlane/**'
       - '.github/**'
@@ -35,11 +34,11 @@ jobs:
           token: ${{ secrets.PTA }}
       - uses: actions/setup-java@v4
         with:
-          distribution: 'adopt'
-          java-version: '11'
+          distribution: 'temurin'
+          java-version: '17'
       - uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.x'
+          flutter-version: '3.19.x'
           channel: 'stable'
           cache: true
       - run: flutter doctor
@@ -58,7 +57,7 @@ jobs:
 
       # Check the format of the code and commit the formatted files.
       - name: Format files in lib and test directories
-        run: flutter format lib test
+        run: dart format lib test
       - name: Commit formatted files
         id: commit_formatted
         uses: stefanzweifel/git-auto-commit-action@v5
@@ -162,15 +161,15 @@ jobs:
       - uses: actions/checkout@v4
       - uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.3.x'
+          flutter-version: '3.19.x'
           channel: 'stable'
           cache: true
       - name: Install Android dependencies
         if: matrix.target == 'Android'
         uses: actions/setup-java@v4
         with:
-          java-version: '11'
-          distribution: 'adopt'
+          java-version: '17'
+          distribution: 'temurin'
       - run: flutter doctor -v
       - name: Install iOS dependencies
         if: matrix.target == 'iOS'

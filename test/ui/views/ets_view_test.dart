@@ -1,6 +1,3 @@
-// Dart imports:
-import 'dart:io';
-
 // Flutter imports:
 import 'package:ets_api_clients/models.dart';
 import 'package:flutter/material.dart';
