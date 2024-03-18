@@ -285,11 +285,11 @@ packages:
     dependency: "direct main"
     description:
       path: "."
-      ref: "1.0.0"
-      resolved-ref: "3171eef062b1876a286a9224aff37db5316247f7"
+      ref: "1.1.2"
+      resolved-ref: "1f7906d5d2c69c8c0d3dadc223a45317038e1902"
       url: "https://github.com/ApplETS/ETS-API-Clients.git"
     source: git
-    version: "1.0.0"
+    version: "1.1.2"
   fading_edge_scrollview:
     dependency: transitive
     description:
@@ -727,7 +727,7 @@ packages:
     source: hosted
     version: "0.15.4"
   http:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: http
       sha256: a2bbf9d017fcced29139daa8ed2bba4ece450ab222871df93ca9eec6f80c34ba
@@ -782,6 +782,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.0.5"
+  infinite_scroll_pagination:
+    dependency: "direct main"
+    description:
+      name: infinite_scroll_pagination
+      sha256: "9517328f4e373f08f57dbb11c5aac5b05554142024d6b60c903f3b73476d52db"
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.2.0"
   intl:
     dependency: transitive
     description:
@@ -1227,6 +1235,14 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.99"
+  sliver_tools:
+    dependency: transitive
+    description:
+      name: sliver_tools
+      sha256: eae28220badfb9d0559207badcbbc9ad5331aac829a88cb0964d330d2a4636a6
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.2.12"
   source_gen:
     dependency: transitive
     description:

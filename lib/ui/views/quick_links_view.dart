@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 
 // Package imports:
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:notredame/ui/widgets/base_scaffold.dart';
 import 'package:reorderable_grid_view/reorderable_grid_view.dart';
 import 'package:stacked/stacked.dart';
 
@@ -43,19 +42,10 @@ class _QuickLinksViewState extends State<QuickLinksView>
   Widget build(BuildContext context) =>
       ViewModelBuilder<QuickLinksViewModel>.reactive(
         viewModelBuilder: () => QuickLinksViewModel(AppIntl.of(context)!),
-        builder: (context, model, child) => BaseScaffold(
-          isLoading: model.isBusy,
+        builder: (context, model, child) => Scaffold(
           body: _buildBody(context, model),
         ),
       );
-
-  AppBar _buildAppBar(BuildContext context, QuickLinksViewModel model) {
-    return AppBar(
-      title: Text(AppIntl.of(context)!.title_ets),
-      automaticallyImplyLeading: false,
-      actions: const [],
-    );
-  }
 
   Widget _buildBody(BuildContext context, QuickLinksViewModel model) {
     return GestureDetector(

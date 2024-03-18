@@ -5,10 +5,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:timeago/timeago.dart' as timeago;
+import 'package:ets_api_clients/models.dart';
 
 // Project imports:
 import 'package:notredame/core/constants/router_paths.dart';
-import 'package:notredame/core/models/news.dart';
 import 'package:notredame/core/services/navigation_service.dart';
 import 'package:notredame/locator.dart';
 import 'package:notredame/ui/utils/app_theme.dart';
@@ -23,7 +23,6 @@ class NewsCard extends StatefulWidget {
 }
 
 class _NewsCardState extends State<NewsCard> {
-  bool _isImageLoaded = false;
   final NavigationService _navigationService = locator<NavigationService>();
 
   @override
@@ -44,7 +43,7 @@ class _NewsCardState extends State<NewsCard> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  _buildImage(widget.news.image),
+                  _buildImage(widget.news.imageUrl),
                   const SizedBox(height: 8),
                   _buildTitleAndTime(widget.news, context),
                 ],
@@ -56,16 +55,26 @@ class _NewsCardState extends State<NewsCard> {
     );
   }
 
-  Widget _buildImage(String image) {
-    if (image == "") {
-      return const SizedBox();
+  Widget _buildImage(String? imageUrl) {
+    if (imageUrl != null && imageUrl != "") {
+      return ClipRRect(
+        borderRadius: BorderRadius.circular(16.0),
+        child: Image.network(
+          imageUrl == ""
+              ? "https://www.shutterstock.com/image-vector/no-photo-thumbnail-graphic-element-600nw-2311073121.jpg"
+              : imageUrl,
+          loadingBuilder: (context, child, loadingProgress) {
+            if (loadingProgress == null) {
+              return child;
+            } else {
+              return _shimmerEffect();
+            }
+          },
+        ),
+      );
     }
-    return ClipRRect(
-      borderRadius: BorderRadius.circular(16.0),
-      child: _isImageLoaded
-          ? Image.network(image, fit: BoxFit.cover)
-          : _shimmerEffect(),
-    );
+
+    return const SizedBox();
   }
 
   Widget _shimmerEffect() {
@@ -102,38 +111,11 @@ class _NewsCardState extends State<NewsCard> {
         ),
         const SizedBox(width: 10),
         Text(
-          timeago.format(news.publishedDate,
+          timeago.format(news.publicationDate,
               locale: AppIntl.of(context)!.localeName),
           style: textStyle,
         ),
       ],
     );
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    _preloadImage();
-  }
-
-  void _preloadImage() {
-    Image.network(widget.news.image)
-        .image
-        // ignore: use_named_constants
-        .resolve(const ImageConfiguration())
-        .addListener(
-          ImageStreamListener(
-            (ImageInfo image, bool synchronousCall) {
-              if (mounted) {
-                setState(() {
-                  _isImageLoaded = true;
-                });
-              }
-            },
-            onError: (exception, stackTrace) {
-              // Handle image load error
-            },
-          ),
-        );
   }
 }

@@ -53,5 +53,6 @@ void setupLocator() {
   // Other
   locator.registerLazySingleton(() => SignetsAPIClient());
   locator.registerLazySingleton(() => MonETSAPIClient());
+  locator.registerLazySingleton(() => HelloAPIClient());
   locator.registerLazySingleton(() => Logger());
 }

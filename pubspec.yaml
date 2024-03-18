@@ -42,13 +42,12 @@ dependencies:
 
   # Customs
   ets_api_clients:
-    #    path: ../ETS-API-Clients/
+    # path: ../ETS-API-Clients/
     git:
       url: https://github.com/ApplETS/ETS-API-Clients.git
-      ref: 1.0.0
+      ref: 1.1.2
 
   # Other
-  http: ^1.2.0
   flutter_cache_manager: ^3.0.1
   flutter_secure_storage: ^9.0.0
   shared_preferences: ^2.2.2
@@ -77,6 +76,7 @@ dependencies:
   import_sorter: ^4.6.0
   flutter_keychain: ^2.4.0
   shimmer: ^3.0.0
+  infinite_scroll_pagination: ^3.2.0
 
 dev_dependencies:
   flutter_test:

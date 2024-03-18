@@ -1,4 +1,5 @@
 // Flutter imports:
+import 'package:ets_api_clients/models.dart';
 import 'package:flutter/material.dart';
 
 // Package imports:
@@ -8,7 +9,6 @@ import 'package:stacked/stacked.dart';
 
 // Project imports:
 import 'package:notredame/core/utils/utils.dart';
-import 'package:notredame/core/models/news.dart';
 import 'package:notredame/core/services/analytics_service.dart';
 import 'package:notredame/core/viewmodels/news_details_viewmodel.dart';
 import 'package:notredame/locator.dart';
@@ -95,13 +95,15 @@ class _NewsDetailsViewState extends State<NewsDetailsView> {
                             _buildTitle(widget.news.title),
                             _buildDate(
                                 context,
-                                widget.news.publishedDate,
+                                widget.news.publicationDate,
                                 widget.news.eventStartDate,
                                 widget.news.eventEndDate),
-                            _buildImage(widget.news.image),
-                            _buildAuthor(widget.news.avatar, widget.news.author,
-                                widget.news.activity),
-                            _buildContent(widget.news.description),
+                            _buildImage(widget.news.imageUrl!),
+                            _buildAuthor(
+                                "https://cdn-icons-png.flaticon.com/512/147/147142.png",
+                                widget.news.organizer.organisation!,
+                                widget.news.organizer.activityArea!),
+                            _buildContent(widget.news.content),
                           ],
                         ),
                       ),
@@ -132,7 +134,7 @@ class _NewsDetailsViewState extends State<NewsDetailsView> {
       padding: const EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 0.0),
       child: Text(
         title,
-        style: Theme.of(context).textTheme.bodyText1!.copyWith(
+        style: Theme.of(context).textTheme.bodySmall!.copyWith(
             color:
                 Utils.getColorByBrightness(context, Colors.black, Colors.white),
             fontSize: 25,
@@ -154,8 +156,8 @@ class _NewsDetailsViewState extends State<NewsDetailsView> {
 
   Widget _buildAuthor(String avatar, String author, String activity) {
     return ColoredBox(
-      color: Utils.getColorByBrightness(
-          context, AppTheme.etsLightRed, Theme.of(context).bottomAppBarColor),
+      color: Utils.getColorByBrightness(context, AppTheme.etsLightRed,
+          Theme.of(context).bottomAppBarTheme.color ?? AppTheme.etsLightRed),
       child: ListTile(
         leading: ClipOval(
           child: avatar == ""
@@ -292,11 +294,11 @@ class _NewsDetailsViewState extends State<NewsDetailsView> {
               (index) => Container(
                 padding: const EdgeInsets.all(8),
                 decoration: BoxDecoration(
-                  color: model.getTagColor(widget.news.tags[index]),
+                  color: model.getTagColor(widget.news.tags[index].name),
                   borderRadius: BorderRadius.circular(8),
                 ),
                 child: Text(
-                  widget.news.tags[index],
+                  widget.news.tags[index].name,
                   style: const TextStyle(
                     color: Colors.white,
                     fontWeight: FontWeight.bold,

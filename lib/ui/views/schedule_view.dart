@@ -86,14 +86,12 @@ class _ScheduleViewState extends State<ScheduleView>
               actions:
                   model.busy(model.settings) ? [] : _buildActionButtons(model),
             ),
-            body: model.busy(model.settings)
-                ? const SizedBox()
-                : RefreshIndicator(
-                    child: !model.calendarViewSetting
-                        ? _buildCalendarView(model, context)
-                        : _buildListView(model, context),
-                    onRefresh: () => model.refresh(),
-                  )),
+            body: RefreshIndicator(
+              child: !model.calendarViewSetting
+                  ? _buildCalendarView(model, context)
+                  : _buildListView(model, context),
+              onRefresh: () => model.refresh(),
+            )),
       );
 
   Widget _buildListView(ScheduleViewModel model, BuildContext context) {
@@ -473,7 +471,7 @@ class _ScheduleViewState extends State<ScheduleView>
   }
 
   List<Widget> _buildActionButtons(ScheduleViewModel model) => [
-        if ((model.settings[PreferencesFlag.scheduleShowTodayBtn] as bool) ==
+        if ((model.settings[PreferencesFlag.scheduleShowTodayBtn] as bool?) ==
             true)
           IconButton(
               icon: const Icon(Icons.today),

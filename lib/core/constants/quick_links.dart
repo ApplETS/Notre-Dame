@@ -82,8 +82,7 @@ List<QuickLink> quickLinks(AppIntl intl) => [
           id: 8,
           name: intl.ets_gus,
           image: SvgPicture.asset('assets/images/ic_gus_red.svg',
-              colorFilter: const ColorFilter.mode(
-                  AppTheme.etsLightRed, BlendMode.srcIn)),
+              color: AppTheme.etsLightRed),
           link: 'https://gus.etsmtl.ca/c2atom/mobile/login'),
       QuickLink(
           id: 9,
