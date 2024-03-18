@@ -13,13 +13,12 @@ class DismissibleCard extends StatelessWidget {
   final bool isBusy;
 
   const DismissibleCard(
-      {Key? key,
+      {super.key,
       required this.onDismissed,
       required this.child,
       this.elevation = 1,
       this.cardColor,
-      this.isBusy = false})
-      : super(key: key);
+      this.isBusy = false});
 
   @override
   Widget build(BuildContext context) => Dismissible(

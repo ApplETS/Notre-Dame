@@ -60,11 +60,8 @@ class _ProfileViewState extends State<ProfileView> {
 Widget buildPage(BuildContext context, ProfileViewModel model) => Column(
       children: [
         Padding(
-          padding: const EdgeInsets.fromLTRB(5.0, 10.0, 5.0, 5.0),
-          child: SizedBox(
-            height: 90,
-            child: getMainInfoCard(model),
-          ),
+          padding: const EdgeInsets.fromLTRB(5.0, 10.0, 5.0, 10.0),
+          child: getMainInfoCard(model),
         ),
         Row(
           children: <Widget>[
@@ -374,6 +371,6 @@ Column getCurrentProgramTile(List<Program> programList, BuildContext context) {
       ],
     );
   } else {
-    return Column();
+    return const Column();
   }
 }

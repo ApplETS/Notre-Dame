@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:ets_api_clients/models.dart';
 import 'package:feature_discovery/feature_discovery.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 // Project imports:
@@ -20,6 +21,7 @@ import '../../mock/managers/settings_manager_mock.dart';
 import '../../mock/services/remote_config_service_mock.dart';
 
 void main() {
+  SharedPreferences.setMockInitialValues({});
   late SettingsManagerMock settingsManagerMock;
   late CourseRepositoryMock courseRepositoryMock;
   late RemoteConfigServiceMock remoteConfigServiceMock;
@@ -101,7 +103,7 @@ void main() {
       const tableCalendarKey = Key("TableCalendar");
       testWidgets("default view (no events), showTodayButton enabled",
           (WidgetTester tester) async {
-        tester.binding.window.physicalSizeTestValue = const Size(800, 1410);
+        tester.view.physicalSize = const Size(800, 1410);
 
         CourseRepositoryMock.stubCoursesActivities(courseRepositoryMock);
         CourseRepositoryMock.stubGetCoursesActivities(courseRepositoryMock,
@@ -126,7 +128,7 @@ void main() {
           (WidgetTester tester) async {
         SettingsManagerMock.stubGetBool(
             settingsManagerMock, PreferencesFlag.discoverySchedule);
-        tester.binding.window.physicalSizeTestValue = const Size(800, 1410);
+        tester.view.physicalSize = const Size(800, 1410);
 
         settings[PreferencesFlag.scheduleShowTodayBtn] = false;
 
@@ -151,7 +153,7 @@ void main() {
 
       testWidgets("view with events, day with events selected",
           (WidgetTester tester) async {
-        tester.binding.window.physicalSizeTestValue = const Size(800, 1410);
+        tester.view.physicalSize = const Size(800, 1410);
         CourseRepositoryMock.stubCoursesActivities(courseRepositoryMock,
             toReturn: [activityYesterday, activityToday, activityTomorrow]);
         CourseRepositoryMock.stubGetCoursesActivities(courseRepositoryMock,
@@ -166,7 +168,8 @@ void main() {
         await tester.pumpWidget(localizedWidget(
             child: FeatureDiscovery(
                 child: MediaQuery(
-                    data: const MediaQueryData(textScaleFactor: 0.5),
+                    data: const MediaQueryData(
+                        textScaler: TextScaler.linear(0.5)),
                     child: ScheduleView(initialDay: DateTime(2020))))));
         await tester.pumpAndSettle(const Duration(seconds: 1));
 
@@ -176,7 +179,7 @@ void main() {
 
       testWidgets("view with events, day without events selected",
           (WidgetTester tester) async {
-        tester.binding.window.physicalSizeTestValue = const Size(800, 1410);
+        tester.view.physicalSize = const Size(800, 1410);
 
         CourseRepositoryMock.stubCoursesActivities(courseRepositoryMock,
             toReturn: [activityYesterday, activityTomorrow]);
@@ -200,7 +203,7 @@ void main() {
 
       testWidgets("other day is selected, current day still has a square.",
           (WidgetTester tester) async {
-        tester.binding.window.physicalSizeTestValue = const Size(800, 1410);
+        tester.view.physicalSize = const Size(800, 1410);
 
         CourseRepositoryMock.stubCoursesActivities(courseRepositoryMock,
             toReturn: [activityYesterday, activityTomorrow]);
@@ -218,7 +221,8 @@ void main() {
         await tester.pumpWidget(localizedWidget(
             child: FeatureDiscovery(
                 child: MediaQuery(
-                    data: const MediaQueryData(textScaleFactor: 0.5),
+                    data: const MediaQueryData(
+                        textScaler: TextScaler.linear(0.5)),
                     child: ScheduleView(initialDay: testingDate)))));
         await tester.pumpAndSettle(const Duration(seconds: 1));
 
@@ -250,7 +254,7 @@ void main() {
     group("interactions - ", () {
       testWidgets("tap on settings button to open the schedule settings",
           (WidgetTester tester) async {
-        tester.binding.window.physicalSizeTestValue = const Size(800, 1410);
+        tester.view.physicalSize = const Size(800, 1410);
 
         CourseRepositoryMock.stubCoursesActivities(courseRepositoryMock,
             toReturn: [activityToday]);

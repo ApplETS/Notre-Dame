@@ -76,7 +76,11 @@ class FeedbackViewModel extends FutureViewModel {
 
   List<int> encodeScreenshotForGithub(Uint8List screenshot) {
     return image.encodePng(image.copyResize(
+<<<<<<< HEAD
         image.decodeImage(screenshot) ?? image.Image(0, 0),
+=======
+        image.decodeImage(screenshot) ?? image.Image.empty(),
+>>>>>>> feature/68-migration-to-null-safety-old-xavier
         width: _screenshotImageWidth));
   }
 

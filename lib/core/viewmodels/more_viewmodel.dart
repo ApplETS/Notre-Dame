@@ -60,7 +60,8 @@ class MoreViewModel extends FutureViewModel {
   Future futureToRun() async {
     try {
       setBusy(true);
-      await PackageInfo.fromPlatform();
+      final packageInfo = await PackageInfo.fromPlatform();
+      _appVersion = packageInfo.version;
     } catch (error) {
       onError(error);
     } finally {
@@ -106,6 +107,7 @@ class MoreViewModel extends FutureViewModel {
     final SettingsManager settingsManager = locator<SettingsManager>();
 
     if (await settingsManager.getBool(PreferencesFlag.discoveryMore) == null) {
+      if (!context.mounted) return;
       final List<String> ids =
           findDiscoveriesByGroupName(context, DiscoveryGroupIds.pageMore)
               .map((e) => e.featureId)
