@@ -1,6 +1,3 @@
-// Dart imports:
-import 'dart:io';
-
 // Flutter imports:
 import 'package:ets_api_clients/models.dart';
 import 'package:flutter/material.dart';
@@ -29,70 +26,6 @@ void main() {
       title: 'Mock News 1',
       content:
           'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec tempus arcu sed quam tincidunt, non venenatis orci mollis. 1',
-      state: 1,
-      publicationDate: DateTime.now().subtract(const Duration(days: 5)),
-      eventStartDate: DateTime.now().add(const Duration(days: 2)),
-      eventEndDate: DateTime.now().add(const Duration(days: 2, hours: 2)),
-      tags: <NewsTags>[
-        NewsTags(
-            id: 'e3e3e3e3-e3e3-e3e3-e3e3-e3e3e3e3e3e3',
-            name: "tag 1",
-            createdAt: DateTime.now().subtract(const Duration(days: 180)),
-            updatedAt: DateTime.now().subtract(const Duration(days: 180))),
-        NewsTags(
-            id: 'faaaaaaa-e3e3-e3e3-e3e3-e3e3e3e3e3e3',
-            name: "tag 2",
-            createdAt: DateTime.now().subtract(const Duration(days: 180)),
-            updatedAt: DateTime.now().subtract(const Duration(days: 180)))
-      ],
-      organizer: NewsUser(
-        id: "e3e3e3e3-e3e3-e3e3-e3e3-e3e3e3e3e3e3",
-        type: "organizer",
-        organisation: "Mock Organizer",
-        email: "",
-        createdAt: DateTime.now().subtract(const Duration(days: 180)),
-        updatedAt: DateTime.now().subtract(const Duration(days: 180)),
-      ),
-      createdAt: DateTime.now().subtract(const Duration(days: 5)),
-      updatedAt: DateTime.now().subtract(const Duration(days: 5)),
-    ),
-    News(
-      id: "4627a622-f7c7-4ff9-9a01-50c69333ff42",
-      title: 'Mock News 2',
-      content:
-          'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec tempus arcu sed quam tincidunt, non venenatis orci mollis. 2',
-      state: 1,
-      publicationDate: DateTime.now().subtract(const Duration(days: 5)),
-      eventStartDate: DateTime.now().add(const Duration(days: 2)),
-      eventEndDate: DateTime.now().add(const Duration(days: 2, hours: 2)),
-      tags: <NewsTags>[
-        NewsTags(
-            id: 'e3e3e3e3-e3e3-e3e3-e3e3-e3e3e3e3e3e3',
-            name: "tag 1",
-            createdAt: DateTime.now().subtract(const Duration(days: 180)),
-            updatedAt: DateTime.now().subtract(const Duration(days: 180))),
-        NewsTags(
-            id: 'faaaaaaa-e3e3-e3e3-e3e3-e3e3e3e3e3e3',
-            name: "tag 2",
-            createdAt: DateTime.now().subtract(const Duration(days: 180)),
-            updatedAt: DateTime.now().subtract(const Duration(days: 180)))
-      ],
-      organizer: NewsUser(
-        id: "e3e3e3e3-e3e3-e3e3-e3e3-e3e3e3e3e3e3",
-        type: "organizer",
-        organisation: "Mock Organizer",
-        email: "",
-        createdAt: DateTime.now().subtract(const Duration(days: 180)),
-        updatedAt: DateTime.now().subtract(const Duration(days: 180)),
-      ),
-      createdAt: DateTime.now().subtract(const Duration(days: 5)),
-      updatedAt: DateTime.now().subtract(const Duration(days: 5)),
-    ),
-    News(
-      id: "4627a622-f7c7-4ff9-9a01-50c69333ff42",
-      title: 'Mock News 3',
-      content:
-          'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec tempus arcu sed quam tincidunt, non venenatis orci mollis. 3',
       state: 1,
       publicationDate: DateTime.now().subtract(const Duration(days: 5)),
       eventStartDate: DateTime.now().add(const Duration(days: 2)),

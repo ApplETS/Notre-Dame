@@ -510,8 +510,9 @@ class CourseRepository {
   /// Get the evaluation for a course or null if not found.
   CourseReview? _getReviewForCourse(
       Course course, Map<String, List<CourseReview>> reviews) {
+    // Todo: changer pour firstWhereOrNull après update de Collection
     final review = reviews[course.session]?.where((element) =>
         element.acronym == course.acronym && element.group == course.group);
-    return review?.length == 1 ? review?.first : null;
+    return review?.isNotEmpty ?? false ? review?.first : null;
   }
 }

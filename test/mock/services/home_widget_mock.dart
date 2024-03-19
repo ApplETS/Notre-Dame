@@ -10,8 +10,6 @@ import 'package:mockito/annotations.dart';
 import 'package:notredame/core/services/app_widget_service.dart';
 import 'home_widget_mock.mocks.dart';
 
-import 'home_widget_mock.mocks.dart';
-
 /// Pseudo-mock for the static [HomeWidget] class (mocks the channel instead)
 @GenerateNiceMocks([MockSpec<HomeWidget>()])
 class HomeWidgetMock extends MockHomeWidget {
@@ -22,7 +20,7 @@ class HomeWidgetMock extends MockHomeWidget {
     _channel = const MethodChannel('home_widget');
 
     _messenger =
-        TestDefaultBinaryMessengerBinding.instance!.defaultBinaryMessenger;
+        TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger;
   }
 
   /// Overrides [HomeWidget]'s channel messenger behavior on [HomeWidget.setAppGroupId]

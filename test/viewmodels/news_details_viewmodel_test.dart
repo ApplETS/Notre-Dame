@@ -1,25 +1,44 @@
 // Package imports:
+import 'package:ets_api_clients/models.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 // Project imports:
-import 'package:notredame/core/models/news.dart';
 import 'package:notredame/core/viewmodels/news_details_viewmodel.dart';
 import 'package:notredame/ui/utils/app_theme.dart';
 
 void main() {
   late NewsDetailsViewModel viewModel;
   final News mockNews = News(
-    id: 1,
-    title: "Test News",
-    description: "Test Description",
-    authorId: 1,
-    author: "Test Author",
-    avatar: "https://example.com/avatar.jpg",
-    activity: "Test Activity",
-    image: "https://example.com/image.jpg",
-    tags: ["tag1", "tag2"],
-    publishedDate: DateTime.parse('2022-01-01T12:00:00Z'),
-    eventDate: DateTime.parse('2022-01-02T12:00:00Z'),
+    id: "4627a622-f7c7-4ff9-9a01-50c69333ff42",
+    title: 'Mock News 1',
+    content:
+        'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec tempus arcu sed quam tincidunt, non venenatis orci mollis. 1',
+    state: 1,
+    publicationDate: DateTime.now().subtract(const Duration(days: 5)),
+    eventStartDate: DateTime.now().add(const Duration(days: 2)),
+    eventEndDate: DateTime.now().add(const Duration(days: 2, hours: 2)),
+    tags: <NewsTags>[
+      NewsTags(
+          id: 'e3e3e3e3-e3e3-e3e3-e3e3-e3e3e3e3e3e3',
+          name: "tag 1",
+          createdAt: DateTime.now().subtract(const Duration(days: 180)),
+          updatedAt: DateTime.now().subtract(const Duration(days: 180))),
+      NewsTags(
+          id: 'faaaaaaa-e3e3-e3e3-e3e3-e3e3e3e3e3e3',
+          name: "tag 2",
+          createdAt: DateTime.now().subtract(const Duration(days: 180)),
+          updatedAt: DateTime.now().subtract(const Duration(days: 180)))
+    ],
+    organizer: NewsUser(
+      id: "e3e3e3e3-e3e3-e3e3-e3e3-e3e3e3e3e3e3",
+      type: "organizer",
+      organisation: "Mock Organizer",
+      email: "",
+      createdAt: DateTime.now().subtract(const Duration(days: 180)),
+      updatedAt: DateTime.now().subtract(const Duration(days: 180)),
+    ),
+    createdAt: DateTime.now().subtract(const Duration(days: 5)),
+    updatedAt: DateTime.now().subtract(const Duration(days: 5)),
   );
 
   group('NewsDetailsViewModel Tests', () {

@@ -7,8 +7,6 @@ import 'package:notredame/core/managers/cache_manager.dart';
 import 'package:notredame/core/utils/cache_exception.dart';
 import 'cache_manager_mock.mocks.dart';
 
-import 'cache_manager_mock.mocks.dart';
-
 /// Mock for the [CacheManager]
 @GenerateNiceMocks([MockSpec<CacheManager>()])
 class CacheManagerMock extends MockCacheManager {

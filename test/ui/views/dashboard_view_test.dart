@@ -15,6 +15,7 @@ import 'package:notredame/core/constants/preferences_flags.dart';
 import 'package:notredame/core/constants/update_code.dart';
 import 'package:notredame/ui/views/dashboard_view.dart';
 import 'package:notredame/ui/widgets/course_activity_tile.dart';
+import 'package:notredame/ui/widgets/dismissible_card.dart';
 import 'package:notredame/ui/widgets/grade_button.dart';
 import '../../helpers.dart';
 import '../../mock/managers/course_repository_mock.dart';
@@ -682,18 +683,20 @@ void main() {
         await tester.pumpAndSettle();
 
         // Find Dismissible Cards
-        expect(find.byType(Dismissible, skipOffstage: false),
+        expect(find.byType(DismissibleCard, skipOffstage: false),
             findsNWidgets(numberOfCards));
         expect(find.text(intl.progress_bar_title), findsOneWidget);
 
         // Swipe Dismissible progress Card horizontally
-        await tester.drag(
-            find.widgetWithText(Dismissible, intl.progress_bar_title),
-            const Offset(1000.0, 0.0));
+        final discardCard =
+            find.widgetWithText(DismissibleCard, intl.progress_bar_title);
+        await tester.ensureVisible(discardCard);
+        await tester.pumpAndSettle();
+        await tester.drag(discardCard, const Offset(-1000.0, 0.0));
 
         // Check that the card is now absent from the view
         await tester.pumpAndSettle();
-        expect(find.byType(Dismissible, skipOffstage: false),
+        expect(find.byType(DismissibleCard, skipOffstage: false),
             findsNWidgets(numberOfCards - 1));
         expect(find.text(intl.progress_bar_title), findsNothing);
 
@@ -703,7 +706,7 @@ void main() {
         await tester.pumpAndSettle();
 
         // Check that the card is now present in the view
-        expect(find.byType(Dismissible, skipOffstage: false),
+        expect(find.byType(DismissibleCard, skipOffstage: false),
             findsNWidgets(numberOfCards));
         expect(find.text(intl.progress_bar_title), findsOneWidget);
       });
@@ -747,8 +750,14 @@ void main() {
             findsNWidgets(numberOfCards));
 
         // Check that the card is now in last position
+        final discardCard = find.widgetWithText(
+            Dismissible, intl.progress_bar_title,
+            skipOffstage: false);
+        await tester.ensureVisible(discardCard);
+        await tester.pumpAndSettle();
+
         text = tester.firstWidget(find.descendant(
-          of: find.widgetWithText(Dismissible, intl.progress_bar_title).last,
+          of: discardCard,
           matching: find.byType(Text),
         ));
         expect(text.data, intl.progress_bar_title);
@@ -779,7 +788,7 @@ void main() {
       testWidgets("Applets Card", (WidgetTester tester) async {
         RemoteConfigServiceMock.stubGetBroadcastEnabled(remoteConfigServiceMock,
             toReturn: false);
-        tester.binding.window.physicalSizeTestValue = const Size(800, 1410);
+        tester.view.physicalSize = const Size(800, 1410);
 
         final Map<PreferencesFlag, int> dashboard = {
           PreferencesFlag.broadcastCard: 0,
@@ -801,7 +810,7 @@ void main() {
       testWidgets("Schedule card", (WidgetTester tester) async {
         RemoteConfigServiceMock.stubGetBroadcastEnabled(remoteConfigServiceMock,
             toReturn: false);
-        tester.binding.window.physicalSizeTestValue = const Size(800, 1410);
+        tester.view.physicalSize = const Size(800, 1410);
 
         CourseRepositoryMock.stubCoursesActivities(courseRepositoryMock);
         CourseRepositoryMock.stubGetCoursesActivities(courseRepositoryMock,
@@ -827,7 +836,7 @@ void main() {
       testWidgets("progressBar Card", (WidgetTester tester) async {
         RemoteConfigServiceMock.stubGetBroadcastEnabled(remoteConfigServiceMock,
             toReturn: false);
-        tester.binding.window.physicalSizeTestValue = const Size(800, 1410);
+        tester.view.physicalSize = const Size(800, 1410);
 
         dashboard = {
           PreferencesFlag.broadcastCard: 0,

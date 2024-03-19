@@ -24,7 +24,6 @@ class NewsCard extends StatefulWidget {
 }
 
 class _NewsCardState extends State<NewsCard> {
-  bool _isImageLoaded = false;
   final NavigationService _navigationService = locator<NavigationService>();
 
   @override
@@ -47,7 +46,7 @@ class _NewsCardState extends State<NewsCard> {
                 children: [
                   Hero(
                       tag: 'news_image_id_${widget.news.id}',
-                      child: _buildImage(widget.news.image)),
+                      child: _buildImage(widget.news.imageUrl)),
                   const SizedBox(height: 8),
                   _buildTitleAndTime(widget.news, context),
                 ],
@@ -115,7 +114,7 @@ class _NewsCardState extends State<NewsCard> {
         ),
         const SizedBox(width: 10),
         Text(
-          timeago.format(news.publishedDate,
+          timeago.format(news.publicationDate,
               locale: AppIntl.of(context)!.localeName),
           style: textStyle,
         ),

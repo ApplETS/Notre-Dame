@@ -6,8 +6,6 @@ import 'package:mockito/mockito.dart';
 import 'package:notredame/core/services/remote_config_service.dart';
 import 'remote_config_service_mock.mocks.dart';
 
-import 'remote_config_service_mock.mocks.dart';
-
 /// Mock for the [RemoteConfigService]
 @GenerateNiceMocks([MockSpec<RemoteConfigService>()])
 class RemoteConfigServiceMock extends MockRemoteConfigService {

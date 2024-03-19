@@ -8,8 +8,6 @@ import 'package:mockito/mockito.dart';
 import 'package:notredame/core/managers/user_repository.dart';
 import 'user_repository_mock.mocks.dart';
 
-import 'user_repository_mock.mocks.dart';
-
 /// Mock for the [UserRepository]
 @GenerateNiceMocks([MockSpec<UserRepository>()])
 class UserRepositoryMock extends MockUserRepository {

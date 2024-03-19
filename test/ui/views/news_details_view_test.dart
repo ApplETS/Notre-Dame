@@ -2,13 +2,13 @@
 import 'dart:io';
 
 // Flutter imports:
+import 'package:ets_api_clients/models.dart';
 import 'package:flutter/material.dart';
 
 // Package imports:
 import 'package:flutter_test/flutter_test.dart';
 
 // Project imports:
-import 'package:notredame/core/models/news.dart';
 import 'package:notredame/core/services/analytics_service.dart';
 import 'package:notredame/core/services/navigation_service.dart';
 import 'package:notredame/core/services/networking_service.dart';
@@ -25,17 +25,36 @@ void main() {
     setupNetworkingServiceMock();
 
     sampleNews = News(
-      id: 1,
-      title: 'Sample News Title',
-      description: 'Sample News Description',
-      authorId: 1,
-      author: 'Sample Author',
-      avatar: '',
-      activity: 'Sample Activity',
-      image: '',
-      tags: ['sampleTag1', 'sampleTag2'],
-      publishedDate: DateTime.parse('2022-01-01T12:00:00Z'),
-      eventDate: DateTime.parse('2022-01-02T12:00:00Z'),
+      id: "4627a622-f7c7-4ff9-9a01-50c69333ff42",
+      title: 'Mock News 1',
+      content:
+          'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec tempus arcu sed quam tincidunt, non venenatis orci mollis. 1',
+      state: 1,
+      publicationDate: DateTime.now().subtract(const Duration(days: 5)),
+      eventStartDate: DateTime.now().add(const Duration(days: 2)),
+      eventEndDate: DateTime.now().add(const Duration(days: 2, hours: 2)),
+      tags: <NewsTags>[
+        NewsTags(
+            id: 'e3e3e3e3-e3e3-e3e3-e3e3-e3e3e3e3e3e3',
+            name: "tag 1",
+            createdAt: DateTime.now().subtract(const Duration(days: 180)),
+            updatedAt: DateTime.now().subtract(const Duration(days: 180))),
+        NewsTags(
+            id: 'faaaaaaa-e3e3-e3e3-e3e3-e3e3e3e3e3e3',
+            name: "tag 2",
+            createdAt: DateTime.now().subtract(const Duration(days: 180)),
+            updatedAt: DateTime.now().subtract(const Duration(days: 180)))
+      ],
+      organizer: NewsUser(
+        id: "e3e3e3e3-e3e3-e3e3-e3e3-e3e3e3e3e3e3",
+        type: "organizer",
+        organisation: "Mock Organizer",
+        email: "",
+        createdAt: DateTime.now().subtract(const Duration(days: 180)),
+        updatedAt: DateTime.now().subtract(const Duration(days: 180)),
+      ),
+      createdAt: DateTime.now().subtract(const Duration(days: 5)),
+      updatedAt: DateTime.now().subtract(const Duration(days: 5)),
     );
   });
 
@@ -53,9 +72,8 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(find.text(sampleNews.title), findsOneWidget);
-      expect(find.text(sampleNews.description), findsOneWidget);
-      expect(find.text(sampleNews.author), findsOneWidget);
-      expect(find.textContaining(sampleNews.activity), findsOneWidget);
+      expect(find.text(sampleNews.content), findsOneWidget);
+      expect(find.text(sampleNews.organizer.organisation!), findsOneWidget);
       expect(find.byType(IconButton), findsWidgets);
     });
 

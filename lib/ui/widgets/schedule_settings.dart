@@ -16,7 +16,7 @@ import 'package:notredame/ui/utils/app_theme.dart';
 class ScheduleSettings extends StatefulWidget {
   final bool showHandle;
 
-  const ScheduleSettings({Key? key, this.showHandle = true}) : super(key: key);
+  const ScheduleSettings({super.key, this.showHandle = true});
 
   @override
   _ScheduleSettingsState createState() => _ScheduleSettingsState();
@@ -69,16 +69,15 @@ class _ScheduleSettingsState extends State<ScheduleSettings> {
                   child: Padding(
                       padding: const EdgeInsets.fromLTRB(15, 20, 20, 20),
                       child: Text(AppIntl.of(context)!.schedule_settings_title,
-                          style: Theme.of(context).textTheme.headline6)),
+                          style: Theme.of(context).textTheme.titleLarge)),
                 ),
               ),
               Expanded(
                 child: ListTileTheme(
-                  selectedColor: Theme.of(context).textTheme.bodyText1!.color,
+                  selectedColor: Theme.of(context).textTheme.bodyLarge!.color,
                   child: ListView(
                     key: const ValueKey("SettingsScrollingArea"),
-                    children: _buildSettings(
-                        context, model! as ScheduleSettingsViewModel),
+                    children: _buildSettings(context, model),
                   ),
                 ),
               ),

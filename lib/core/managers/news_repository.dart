@@ -1,9 +1,5 @@
-// Dart imports:
-import 'dart:convert';
-
 // Flutter imports:
 import 'package:ets_api_clients/clients.dart';
-import 'package:flutter/material.dart';
 
 // Package imports:
 import 'package:ets_api_clients/models.dart';
@@ -25,19 +21,5 @@ class NewsRepository {
     final PaginatedNews pagination = await _helloApiClient.getEvents(
         pageNumber: pageNumber, pageSize: pageSize);
     return pagination;
-  }
-
-  // TODO : Fetch news from the API
-  Future<List<News>> fetchAuthorNewsFromAPI(int authorId) async {
-    final List<News> fetchedNews = _news ?? [];
-
-    // Filter news based on authorId
-    final List<News> authorNews =
-        fetchedNews.where((news) => news.authorId == authorId).toList();
-
-    _logger.d(
-        "$tag - fetchAuthorNewsFromAPI: fetched ${authorNews.length} news for author $authorId.");
-
-    return authorNews;
   }
 }
