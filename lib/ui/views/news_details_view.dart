@@ -55,7 +55,7 @@ class _NewsDetailsViewState extends State<NewsDetailsView> {
                         backgroundColor:
                             Theme.of(context).brightness == Brightness.light
                                 ? AppTheme.etsLightRed
-                                : Theme.of(context).bottomAppBarColor,
+                                : AppTheme.darkThemeBackgroundAccent,
                         pinned: true,
                         titleSpacing: 0,
                         leading: IconButton(
@@ -153,7 +153,7 @@ class _NewsDetailsViewState extends State<NewsDetailsView> {
         child: (news.imageUrl == "")
             ? const SizedBox.shrink()
             : Image.network(
-                news.imageUrl!,
+                "https://picsum.photos/400/200",
                 fit: BoxFit.cover,
               ));
   }
@@ -161,8 +161,8 @@ class _NewsDetailsViewState extends State<NewsDetailsView> {
   Widget _buildAuthor(
       String avatar, String author, String activity, String authorId) {
     return ColoredBox(
-      color: Utils.getColorByBrightness(context, AppTheme.etsLightRed,
-          Theme.of(context).bottomAppBarTheme.color ?? AppTheme.etsLightRed),
+      color: Utils.getColorByBrightness(
+          context, AppTheme.etsLightRed, AppTheme.darkThemeBackgroundAccent),
       child: ListTile(
         leading: GestureDetector(
             onTap: () => _navigationService.pushNamed(RouterPaths.newsAuthor,

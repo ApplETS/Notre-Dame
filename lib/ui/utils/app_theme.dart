@@ -14,6 +14,7 @@ class AppTheme {
 
   // Backgrounds
   static const Color darkThemeBackground = Color(0xff303030);
+  static const Color darkThemeBackgroundAccent = Color(0xff201c1c);
   static const Color lightThemeBackground = Color(0xfffafafa);
 
   // App|ETS colors

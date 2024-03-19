@@ -59,7 +59,7 @@ class _AuthorViewState extends State<AuthorView> {
                             _buildAvatar(model, widget.authorId),
                           ],
                         ),
-                        PagedListView<int, News>(
+                        /*PagedListView<int, News>(
                           key: const Key("pagedListView"),
                           pagingController: model.pagingController,
                           padding: const EdgeInsets.fromLTRB(0, 4, 0, 8),
@@ -75,7 +75,7 @@ class _AuthorViewState extends State<AuthorView> {
                             firstPageErrorIndicatorBuilder: (context) =>
                                 _buildError(model.pagingController),
                           ),
-                        ),
+                        ),*/
                       ],
                     ),
                   )

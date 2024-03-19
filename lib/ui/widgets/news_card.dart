@@ -65,7 +65,7 @@ class _NewsCardState extends State<NewsCard> {
         child: Image.network(
           imageUrl == ""
               ? "https://www.shutterstock.com/image-vector/no-photo-thumbnail-graphic-element-600nw-2311073121.jpg"
-              : imageUrl,
+              : "https://picsum.photos/400/200",
           loadingBuilder: (context, child, loadingProgress) {
             if (loadingProgress == null) {
               return child;
