@@ -20,7 +20,7 @@ class AuthorRepository {
           "Le club Capra fait la conception et la fabrication d’un robot de recherche et de sauvetage en milieux accidentés et participe à la compétition RoboCupRescue.",
       activity: "Club scientifique",
       website: "capra.com",
-      image: "https://picsum.photos/200/200",
+      image: "https://cdn-icons-png.flaticon.com/512/147/147142.png",
       socialLinks: [
         SocialLink(id: 1, name: "discord", link: "facebook.com/capra"),
         SocialLink(id: 2, name: "linkedin", link: "facebook.com/capra"),

@@ -261,7 +261,7 @@ class _NewsDetailsViewState extends State<NewsDetailsView> {
                 ),
                 Flexible(
                     child: Padding(
-                  padding: const EdgeInsets.only(left: 4),
+                  padding: const EdgeInsets.only(left: 8),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [

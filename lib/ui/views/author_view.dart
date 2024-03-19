@@ -60,7 +60,7 @@ class _AuthorViewState extends State<AuthorView> {
                           ],
                         ),
                         /*PagedListView<int, News>(
-                          key: const Key("pagedListView"),
+                          key: const Key("pagedListView2"),
                           pagingController: model.pagingController,
                           padding: const EdgeInsets.fromLTRB(0, 4, 0, 8),
                           builderDelegate: PagedChildBuilderDelegate<News>(
