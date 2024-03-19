@@ -1,8 +1,8 @@
 // Dart imports:
 import 'dart:io';
-import 'dart:math';
 
 // Flutter imports:
+import 'package:ets_api_clients/models.dart';
 import 'package:flutter/material.dart';
 
 // Package imports:
@@ -15,7 +15,6 @@ import 'package:notredame/core/managers/course_repository.dart';
 import 'package:notredame/core/managers/news_repository.dart';
 import 'package:notredame/core/managers/settings_manager.dart';
 import 'package:notredame/core/models/author.dart';
-import 'package:notredame/core/models/news.dart';
 import 'package:notredame/core/models/socialLink.dart';
 import 'package:notredame/core/services/analytics_service.dart';
 import 'package:notredame/core/services/launch_url_service.dart';
@@ -35,51 +34,43 @@ void main() {
 
   final List<News> news = <News>[
     News(
-      id: 1,
-      title:
-          "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec tempus arcu sed quam tincidunt, non venenatis orci mollis.",
-      description: "Test 1 description",
-      authorId: 1,
-      author: "Author 1",
-      avatar: "https://example.com/avatar1.jpg",
-      activity: "Activity 1",
-      image: "",
-      tags: ["tag1", "tag2"],
-      publishedDate: DateTime.parse('2022-01-01T12:00:00Z'),
-      eventDate: DateTime.parse('2022-01-02T12:00:00Z'),
-    ),
-    News(
-      id: 2,
-      title: "Test 2",
-      description: "Test 2 description",
-      authorId: 2,
-      author: "Author 2",
-      avatar: "https://example.com/avatar2.jpg",
-      activity: "Activity 2",
-      image: "",
-      tags: ["tag3", "tag4"],
-      publishedDate: DateTime.parse('2022-02-01T12:00:00Z'),
-      eventDate: DateTime.parse('2022-02-02T12:00:00Z'),
-    ),
-    News(
-      id: 3,
-      title: "Test 3",
-      description: "Test 3 description",
-      authorId: 3,
-      author: "Author 3",
-      avatar: "https://example.com/avatar3.jpg",
-      activity: "Activity 3",
-      image: "",
-      tags: ["tag5", "tag6"],
-      publishedDate: DateTime.parse('2022-02-01T12:00:00Z'),
-      eventDate: DateTime.parse('2022-02-02T12:00:00Z'),
+      id: "4627a622-f7c7-4ff9-9a01-50c69333ff42",
+      title: 'Mock News 1',
+      content:
+          'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec tempus arcu sed quam tincidunt, non venenatis orci mollis. 1',
+      state: 1,
+      publicationDate: DateTime.now().subtract(const Duration(days: 5)),
+      eventStartDate: DateTime.now().add(const Duration(days: 2)),
+      eventEndDate: DateTime.now().add(const Duration(days: 2, hours: 2)),
+      tags: <NewsTags>[
+        NewsTags(
+            id: 'e3e3e3e3-e3e3-e3e3-e3e3-e3e3e3e3e3e3',
+            name: "tag 1",
+            createdAt: DateTime.now().subtract(const Duration(days: 180)),
+            updatedAt: DateTime.now().subtract(const Duration(days: 180))),
+        NewsTags(
+            id: 'faaaaaaa-e3e3-e3e3-e3e3-e3e3e3e3e3e3',
+            name: "tag 2",
+            createdAt: DateTime.now().subtract(const Duration(days: 180)),
+            updatedAt: DateTime.now().subtract(const Duration(days: 180)))
+      ],
+      organizer: NewsUser(
+        id: "e3e3e3e3-e3e3-e3e3-e3e3-e3e3e3e3e3e3",
+        type: "organizer",
+        organisation: "Mock Organizer",
+        email: "",
+        createdAt: DateTime.now().subtract(const Duration(days: 180)),
+        updatedAt: DateTime.now().subtract(const Duration(days: 180)),
+      ),
+      createdAt: DateTime.now().subtract(const Duration(days: 5)),
+      updatedAt: DateTime.now().subtract(const Duration(days: 5)),
     ),
   ];
 
   final List<News> emptyNews = List<News>.empty();
 
   final Author author = Author(
-      id: 1,
+      id: "1",
       organisation: "Capra",
       email: "capra@ens.etsmtl.ca",
       description:
@@ -98,6 +89,16 @@ void main() {
         SocialLink(id: 8, name: "reddit", link: "facebook.com/capra"),
       ]);
 
+  final PaginatedNews paginatedNews = PaginatedNews(
+      news: news, pageNumber: 1, pageSize: 3, totalRecords: 3, totalPages: 1);
+
+  final PaginatedNews paginatedNewsEmpty = PaginatedNews(
+      news: emptyNews,
+      pageNumber: 1,
+      pageSize: 3,
+      totalRecords: 0,
+      totalPages: 1);
+
   group('AuthorView -', () {
     setUp(() async {
       await setupAppIntl();
@@ -112,7 +113,7 @@ void main() {
       setupAnalyticsServiceMock();
       setupLaunchUrlServiceMock();
 
-      NewsRepositoryMock.stubFetchAuthorNewsFromAPI(newsRepository, author.id);
+      NewsRepositoryMock.stubGetNews(newsRepository, toReturn: paginatedNews);
       AuthorRepositoryMock.stubFetchAuthorFromAPI(
           authorRepository, author.id, author);
 
@@ -180,8 +181,8 @@ void main() {
     });
 
     testWidgets('Empty News List', (WidgetTester tester) async {
-      NewsRepositoryMock.stubFetchAuthorNewsFromAPI(newsRepository, author.id,
-          toReturn: emptyNews);
+      NewsRepositoryMock.stubGetNews(newsRepository,
+          toReturn: paginatedNewsEmpty);
 
       await tester
           .pumpWidget(localizedWidget(child: AuthorView(authorId: author.id)));
@@ -192,8 +193,7 @@ void main() {
     });
 
     testWidgets('AuthorView - Loaded with News', (WidgetTester tester) async {
-      NewsRepositoryMock.stubFetchAuthorNewsFromAPI(newsRepository, author.id,
-          toReturn: news);
+      NewsRepositoryMock.stubGetNews(newsRepository, toReturn: paginatedNews);
 
       await tester
           .pumpWidget(localizedWidget(child: AuthorView(authorId: author.id)));
@@ -210,8 +210,8 @@ void main() {
 
     group("golden - ", () {
       testWidgets("author view news empty", (WidgetTester tester) async {
-        NewsRepositoryMock.stubFetchAuthorNewsFromAPI(newsRepository, author.id,
-            toReturn: emptyNews);
+        NewsRepositoryMock.stubGetNews(newsRepository,
+            toReturn: paginatedNewsEmpty);
         tester.binding.window.physicalSizeTestValue = const Size(800, 1410);
 
         await tester.pumpWidget(
@@ -223,8 +223,7 @@ void main() {
       });
 
       testWidgets("author view", (WidgetTester tester) async {
-        NewsRepositoryMock.stubFetchAuthorNewsFromAPI(newsRepository, author.id,
-            toReturn: news);
+        NewsRepositoryMock.stubGetNews(newsRepository, toReturn: paginatedNews);
         tester.binding.window.physicalSizeTestValue = const Size(800, 1410);
 
         await tester.pumpWidget(

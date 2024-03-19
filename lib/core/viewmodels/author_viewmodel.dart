@@ -1,6 +1,8 @@
 // Package imports:
+import 'package:ets_api_clients/models.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:logger/logger.dart';
 import 'package:stacked/stacked.dart';
 
@@ -8,10 +10,9 @@ import 'package:stacked/stacked.dart';
 import 'package:notredame/core/managers/author_repository.dart';
 import 'package:notredame/core/managers/news_repository.dart';
 import 'package:notredame/core/models/author.dart';
-import 'package:notredame/core/models/news.dart';
 import 'package:notredame/locator.dart';
 
-class AuthorViewModel extends FutureViewModel<Author?> {
+class AuthorViewModel extends BaseViewModel implements Initialisable {
   final AuthorRepository _authorRepository = locator<AuthorRepository>();
   final NewsRepository _newsRepository = locator<NewsRepository>();
   final Logger _logger = locator<Logger>();
@@ -19,7 +20,7 @@ class AuthorViewModel extends FutureViewModel<Author?> {
   /// Localization class of the application.
   final AppIntl appIntl;
 
-  final int authorId;
+  final String authorId;
 
   /// Author
   Author? _author;
@@ -27,11 +28,8 @@ class AuthorViewModel extends FutureViewModel<Author?> {
   /// Return the author
   Author? get author => _author;
 
-  /// News list
-  List<News> _news = [];
-
-  /// Return the list of all the news.
-  List<News> get news => _news;
+  final PagingController<int, News> pagingController =
+      PagingController(firstPageKey: 1);
 
   AuthorViewModel({required this.authorId, required this.appIntl});
 
@@ -39,37 +37,26 @@ class AuthorViewModel extends FutureViewModel<Author?> {
   bool isNotified = false;
 
   @override
-  Future<Author?> futureToRun() async {
-    try {
-      setBusyForObject(isLoadingEvents, true);
-      _author = await _authorRepository.fetchAuthorFromAPI(authorId);
-      _news = await _newsRepository.fetchAuthorNewsFromAPI(authorId);
-      notifyListeners();
-    } catch (e) {
-      onError(e);
-    } finally {
-      setBusyForObject(isLoadingEvents, false);
-    }
-
-    return _author;
+  void initialise() {
+    // This will be called when init state cycle runs
+    pagingController.addPageRequestListener((pageKey) {
+      fetchPage(pageKey);
+    });
+    _author = _authorRepository.fetchAuthorFromAPI(authorId);
   }
 
-  @override
-  // ignore: type_annotate_public_apis
-  void onError(error) {
-    Fluttertoast.showToast(msg: appIntl.error);
-  }
-
-  Future refresh() async {
+  Future<void> fetchPage(int pageNumber) async {
     try {
-      setBusyForObject(isLoadingEvents, true);
-      _author = await _authorRepository.fetchAuthorFromAPI(authorId);
-      _news = await _newsRepository.fetchAuthorNewsFromAPI(authorId);
-      notifyListeners();
-    } on Exception catch (error) {
-      onError(error);
-    } finally {
-      setBusyForObject(isLoadingEvents, false);
+      final pagination = await _newsRepository.getNews(pageNumber: pageNumber);
+      final isLastPage = pagination?.totalPages == pageNumber;
+      if (isLastPage) {
+        pagingController.appendLastPage(pagination?.news ?? []);
+      } else {
+        final nextPageKey = pageNumber + 1;
+        pagingController.appendPage(pagination?.news ?? [], nextPageKey);
+      }
+    } catch (error) {
+      pagingController.error = error;
     }
   }
 

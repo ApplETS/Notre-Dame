@@ -13,7 +13,7 @@ class AuthorRepository {
   final Logger _logger = locator<Logger>();
 
   final Author _author = Author(
-      id: 1,
+      id: "1",
       organisation: "Capra",
       email: "capra@ens.etsmtl.ca",
       description:
@@ -35,9 +35,9 @@ class AuthorRepository {
   Author get author => _author;
 
   // TODO : Fetch author from the API
-  Future<Author> fetchAuthorFromAPI(int authorId) async {
+  Author fetchAuthorFromAPI(String authorId) {
     _logger.d("$tag - fetchAuthorFromAPI: fetched author.");
 
-    return Future.value(author);
+    return author;
   }
 }

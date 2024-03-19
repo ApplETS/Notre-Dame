@@ -2,7 +2,7 @@
 import 'package:notredame/core/models/socialLink.dart';
 
 class Author {
-  final int id;
+  final String id;
   final String organisation;
   final String email;
   final String description;

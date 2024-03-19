@@ -18,8 +18,7 @@ class AuthorRepositoryMock extends MockAuthorRepository {
 
   /// Stub the [fetchAuthorFromAPI] of [mock] when called will return [toReturn].
   static void stubFetchAuthorFromAPI(
-      AuthorRepositoryMock mock, int authorId, Author toReturn) {
-    when(mock.fetchAuthorFromAPI(authorId))
-        .thenAnswer((_) => Future.value(toReturn));
+      AuthorRepositoryMock mock, String authorId, Author toReturn) {
+    when(mock.fetchAuthorFromAPI(authorId)).thenAnswer((_) => toReturn);
   }
 }
