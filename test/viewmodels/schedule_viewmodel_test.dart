@@ -240,6 +240,13 @@ void main() {
     gen110
   ];
 
+  // Some settings
+  final Map<PreferencesFlag, dynamic> settings = {
+    PreferencesFlag.scheduleCalendarFormat: CalendarFormat.week,
+    PreferencesFlag.scheduleStartWeekday: StartingDayOfWeek.monday,
+    PreferencesFlag.scheduleShowTodayBtn: true
+  };
+
   group("ScheduleViewModel - ", () {
     setUp(() async {
       // Setting up mocks
@@ -264,10 +271,13 @@ void main() {
             fromCacheOnly: true);
         CourseRepositoryMock.stubGetCourses(courseRepositoryMock);
         CourseRepositoryMock.stubGetScheduleActivities(courseRepositoryMock);
+        SettingsManagerMock.stubGetScheduleSettings(settingsManagerMock,
+            toReturn: settings);
 
         expect(await viewModel.futureToRun(), []);
 
         verifyInOrder([
+          settingsManagerMock.getScheduleSettings(),
           courseRepositoryMock.getCoursesActivities(fromCacheOnly: true),
           courseRepositoryMock.getCoursesActivities(),
           courseRepositoryMock.coursesActivities,
@@ -291,6 +301,8 @@ void main() {
         CourseRepositoryMock.stubGetCourses(courseRepositoryMock);
         CourseRepositoryMock.stubCoursesActivities(courseRepositoryMock);
         CourseRepositoryMock.stubGetScheduleActivities(courseRepositoryMock);
+        SettingsManagerMock.stubGetScheduleSettings(settingsManagerMock,
+            toReturn: settings);
 
         expect(await viewModel.futureToRun(), [],
             reason: "Even if SignetsAPI fails we should receives a list.");
@@ -299,6 +311,7 @@ void main() {
         await untilCalled(courseRepositoryMock.getCoursesActivities());
 
         verifyInOrder([
+          settingsManagerMock.getScheduleSettings(),
           courseRepositoryMock.getCoursesActivities(fromCacheOnly: true),
           courseRepositoryMock.getCoursesActivities()
         ]);

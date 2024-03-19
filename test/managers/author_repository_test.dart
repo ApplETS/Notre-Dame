@@ -19,7 +19,7 @@ void main() {
     });
 
     test('Fetching author updates the author', () async {
-      final Author fetchedAuthor = await repository.fetchAuthorFromAPI(1);
+      final Author fetchedAuthor = repository.fetchAuthorFromAPI("");
 
       expect(repository.author, equals(fetchedAuthor));
     });

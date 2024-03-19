@@ -180,7 +180,11 @@
   "ets_gus": "GUS",
   "ets_papercut_title":"PaperCut",
 
-  "news_title" : "Announcement",
+  "news_title" : "News",
+  "news_error_not_found_title" : "Oh oh!",
+  "news_error_not_found" : "Something went wrong while trying to retrieve the news. Please try again later.",
+  "news_no_more_card_title": "You're all set!",
+  "news_no_more_card": "You have reached the end of the news list. Come back another time for more news!",
   "news_details_title" : "News",
   "news_event_date": "Event date",
 

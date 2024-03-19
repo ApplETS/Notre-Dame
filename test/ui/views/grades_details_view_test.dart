@@ -14,11 +14,14 @@ import 'package:notredame/core/managers/course_repository.dart';
 import 'package:notredame/core/managers/settings_manager.dart';
 import 'package:notredame/core/services/networking_service.dart';
 import 'package:notredame/ui/views/grade_details_view.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../helpers.dart';
 import '../../mock/managers/course_repository_mock.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
+
+  SharedPreferences.setMockInitialValues({});
   late CourseRepositoryMock courseRepositoryMock;
 
   final CourseSummary courseSummary = CourseSummary(
@@ -116,7 +119,7 @@ void main() {
             toReturn: course);
         await tester.pumpWidget(localizedWidget(
             child: FeatureDiscovery(child: GradesDetailsView(course: course))));
-        await tester.pumpAndSettle();
+        await tester.pumpAndSettle(const Duration(seconds: 2));
 
         expect(find.byType(RefreshIndicator), findsOneWidget);
 
@@ -221,10 +224,11 @@ void main() {
             courseRepositoryMock, courseWithoutSummary,
             toReturn: course);
 
-        tester.binding.window.physicalSizeTestValue = const Size(800, 1410);
+        tester.view.physicalSize = const Size(800, 1410);
 
         await tester.pumpWidget(localizedWidget(
-            child: FeatureDiscovery(child: GradesDetailsView(course: course))));
+            child: FeatureDiscovery(
+                child: GradesDetailsView(course: courseWithoutSummary))));
         await tester.pumpAndSettle();
 
         await expectLater(find.byType(GradesDetailsView),
@@ -234,15 +238,14 @@ void main() {
       testWidgets("if there is no grades available",
           (WidgetTester tester) async {
         setupFlutterToastMock(tester);
-        CourseRepositoryMock.stubGetCourseSummary(
-            courseRepositoryMock, courseWithoutSummary,
+        CourseRepositoryMock.stubGetCourseSummary(courseRepositoryMock, course,
             toReturn: courseWithoutSummary);
 
-        tester.binding.window.physicalSizeTestValue = const Size(800, 1410);
+        tester.view.physicalSize = const Size(800, 1410);
 
         await tester.pumpWidget(localizedWidget(
             child: FeatureDiscovery(child: GradesDetailsView(course: course))));
-        await tester.pumpAndSettle();
+        await tester.pumpAndSettle(const Duration(seconds: 1));
 
         await expectLater(find.byType(GradesDetailsView),
             matchesGoldenFile(goldenFilePath("gradesDetailsView_2")));
@@ -251,15 +254,14 @@ void main() {
       testWidgets("if in the evaluation period and evaluation not completed",
           (WidgetTester tester) async {
         setupFlutterToastMock(tester);
-        CourseRepositoryMock.stubGetCourseSummary(
-            courseRepositoryMock, courseWithoutSummary,
+        CourseRepositoryMock.stubGetCourseSummary(courseRepositoryMock, course,
             toReturn: courseWithEvaluationNotCompleted);
 
-        tester.binding.window.physicalSizeTestValue = const Size(800, 1410);
+        tester.view.physicalSize = const Size(800, 1410);
 
         await tester.pumpWidget(localizedWidget(
             child: FeatureDiscovery(child: GradesDetailsView(course: course))));
-        await tester.pumpAndSettle();
+        await tester.pumpAndSettle(const Duration(seconds: 1));
 
         await expectLater(
             find.byType(GradesDetailsView),

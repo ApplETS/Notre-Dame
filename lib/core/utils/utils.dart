@@ -54,14 +54,12 @@ mixin Utils {
         final tempDate =
             currentDate.subtract(Duration(days: currentDate.weekday - 1));
         firstDayOfWeek = DateTime(tempDate.year, tempDate.month, tempDate.day);
-        break;
       case StartingDayOfWeek.saturday:
         final tempDate = currentDate.subtract(Duration(
             days: currentDate.weekday == 6 || currentDate.weekday == 7
                 ? currentDate.weekday - 6
                 : currentDate.weekday + 1));
         firstDayOfWeek = DateTime(tempDate.year, tempDate.month, tempDate.day);
-        break;
       // Sunday as default
       default:
         final tempDate =

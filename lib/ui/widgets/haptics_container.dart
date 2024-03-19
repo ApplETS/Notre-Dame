@@ -11,7 +11,7 @@ import 'package:flutter/services.dart';
 class HapticsContainer extends StatefulWidget {
   final Widget child;
 
-  const HapticsContainer({Key? key, required this.child}) : super(key: key);
+  const HapticsContainer({super.key, required this.child});
 
   @override
   _HapticsContainerState createState() => _HapticsContainerState();

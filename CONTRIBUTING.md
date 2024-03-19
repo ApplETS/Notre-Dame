@@ -5,6 +5,22 @@ email, or any other method with the owners of this repository before making a ch
 
 Please note we have a code of conduct, please follow it in all your interactions with the project.
 
+## Coding Process
+
+1. Name your branch using the following format: `{feature/patch/bugfix}/#{issue number}-{issue description}`
+ - Example: `feature/#68-migration-to-null-safety`
+2. Leave the code in a better state than before your changes. That does mean performing refactoring in the areas around the modified code.
+3. Test your changes using unit tests.
+4. Run `flutter analyze` before submitting a pull request and fix any discovered issues.
+
+### Versioning
+
+The CI automatically updates the version in the `pubspec.yaml` file when opening a pull-request using the specified label: `version: Major`,`version: Minor` or `version: Patch`.
+
+  - `version: Major`: used when a complete UI redesign is done or when a complete rewrite is done in the project;
+  - `version: Minor`: used when adding a feature in the application;
+  - `version: Patch`: used when no feature was added to the project. This includes refactoring, patches, bug fixes, etc.
+
 ## Pull Request Process
 
 1. **Define a related Issue**

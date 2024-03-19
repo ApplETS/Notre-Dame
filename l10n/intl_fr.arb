@@ -186,6 +186,10 @@
   "news_title" : "Annonces",
   "news_details_title" : "Annonce",
   "news_event_date": "Date de l'événement",
+  "news_error_not_found_title" : "Oh oh!",
+  "news_error_not_found" : "Une erreur est survenue lors de la récupération des annonces. Veuillez réessayer plus tard.",
+  "news_no_more_card_title": "Vous êtes à jour!",
+  "news_no_more_card": "Vous avez atteint la fin des annonces. Revenez plus tard pour voir les prochaines annonces!",
 
   "news_export_success": "L'événement a été exporté avec succès",
   "news_export_error": "Une erreur est survenue lors de l'exportation de l'événement",

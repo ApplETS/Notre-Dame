@@ -1,4 +1,5 @@
 // Flutter imports:
+import 'package:ets_api_clients/models.dart';
 import 'package:flutter/material.dart';
 
 // Package imports:
@@ -13,7 +14,7 @@ import 'package:stacked/stacked.dart';
 
 // Project imports:
 import 'package:notredame/core/constants/router_paths.dart';
-import 'package:notredame/core/models/news.dart';
+import 'package:notredame/core/utils/utils.dart';
 import 'package:notredame/core/services/analytics_service.dart';
 import 'package:notredame/core/services/navigation_service.dart';
 import 'package:notredame/core/viewmodels/news_details_viewmodel.dart';
@@ -61,11 +62,12 @@ class _NewsDetailsViewState extends State<NewsDetailsView> {
                         backgroundColor:
                             Theme.of(context).brightness == Brightness.light
                                 ? AppTheme.etsLightRed
-                                : Theme.of(context).bottomAppBarColor,
+                                : AppTheme.darkThemeBackgroundAccent,
                         pinned: true,
                         titleSpacing: 0,
                         leading: IconButton(
                           icon: const Icon(Icons.arrow_back),
+                          color: Colors.white,
                           onPressed: () => Navigator.of(context).pop(),
                         ),
                         title: Text(
@@ -133,13 +135,16 @@ class _NewsDetailsViewState extends State<NewsDetailsView> {
                             _buildTitle(widget.news.title),
                             _buildDate(
                                 context,
-                                widget.news.publishedDate,
+                                widget.news.publicationDate,
                                 widget.news.eventStartDate,
                                 widget.news.eventEndDate),
                             _buildImage(widget.news),
-                            _buildAuthor(widget.news.avatar, widget.news.author,
-                                widget.news.activity, widget.news.authorId),
-                            _buildContent(widget.news.description),
+                            _buildAuthor(
+                                "https://cdn-icons-png.flaticon.com/512/147/147142.png",
+                                widget.news.organizer.organisation!,
+                                widget.news.organizer.activityArea!,
+                                widget.news.organizer.id),
+                            _buildContent(widget.news.content),
                           ],
                         ),
                       ),
@@ -200,8 +205,11 @@ class _NewsDetailsViewState extends State<NewsDetailsView> {
       padding: const EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 0.0),
       child: Text(
         title,
-        style: Theme.of(context).textTheme.bodyText1!.copyWith(
-            color: Colors.white, fontSize: 25, fontWeight: FontWeight.bold),
+        style: Theme.of(context).textTheme.bodySmall!.copyWith(
+            color:
+                Utils.getColorByBrightness(context, Colors.black, Colors.white),
+            fontSize: 25,
+            fontWeight: FontWeight.bold),
       ),
     );
   }
@@ -209,18 +217,19 @@ class _NewsDetailsViewState extends State<NewsDetailsView> {
   Widget _buildImage(News news) {
     return Hero(
         tag: 'news_image_id_${news.id}',
-        child: (news.image == "")
+        child: (news.imageUrl == "")
             ? const SizedBox.shrink()
             : Image.network(
-                news.image,
+                "https://picsum.photos/400/200",
                 fit: BoxFit.cover,
               ));
   }
 
   Widget _buildAuthor(
-      String avatar, String author, String activity, int authorId) {
-    return Container(
-      color: const Color(0xff1e1e1e),
+      String avatar, String author, String activity, String authorId) {
+    return ColoredBox(
+      color: Utils.getColorByBrightness(
+          context, AppTheme.etsLightRed, AppTheme.darkThemeBackgroundAccent),
       child: ListTile(
         leading: GestureDetector(
             onTap: () => _navigationService.pushNamed(RouterPaths.newsAuthor,
@@ -241,6 +250,7 @@ class _NewsDetailsViewState extends State<NewsDetailsView> {
           author,
           style: const TextStyle(
             fontWeight: FontWeight.bold,
+            color: Colors.white,
             fontSize: 20,
           ),
         ),
@@ -248,7 +258,9 @@ class _NewsDetailsViewState extends State<NewsDetailsView> {
           padding: const EdgeInsets.only(top: 8.0),
           child: Text(
             activity,
-            style: const TextStyle(
+            style: TextStyle(
+              color: Utils.getColorByBrightness(
+                  context, Colors.white, const Color(0xffbababa)),
               fontSize: 16,
             ),
           ),
@@ -293,7 +305,9 @@ class _NewsDetailsViewState extends State<NewsDetailsView> {
             children: [
               Text(
                 formattedPublishedDate,
-                style: const TextStyle(color: Colors.white),
+                style: TextStyle(
+                    color: Utils.getColorByBrightness(
+                        context, Colors.black, Colors.white)),
               ),
               const SizedBox(height: 12.0),
             ],
@@ -304,8 +318,9 @@ class _NewsDetailsViewState extends State<NewsDetailsView> {
               children: [
                 Container(
                   padding: const EdgeInsets.all(8),
-                  decoration: const BoxDecoration(
-                    color: AppTheme.etsDarkGrey,
+                  decoration: BoxDecoration(
+                    color: Utils.getColorByBrightness(context,
+                        AppTheme.darkThemeAccent, AppTheme.etsDarkGrey),
                     shape: BoxShape.circle,
                   ),
                   child:
@@ -319,13 +334,17 @@ class _NewsDetailsViewState extends State<NewsDetailsView> {
                     children: [
                       Text(
                         AppIntl.of(context)!.news_event_date,
-                        style: const TextStyle(color: AppTheme.etsLightGrey),
+                        style: TextStyle(
+                            color: Utils.getColorByBrightness(
+                                context, Colors.black, AppTheme.etsLightGrey)),
                         textAlign: TextAlign.right,
                       ),
                       Text(
                         formattedEventDate,
-                        style: const TextStyle(color: Colors.white),
-                        textAlign: TextAlign.left,
+                        style: TextStyle(
+                            color: Utils.getColorByBrightness(context,
+                                AppTheme.darkThemeAccent, Colors.white)),
+                        textAlign: TextAlign.right,
                       ),
                     ],
                   ),
@@ -352,11 +371,11 @@ class _NewsDetailsViewState extends State<NewsDetailsView> {
               (index) => Container(
                 padding: const EdgeInsets.all(8),
                 decoration: BoxDecoration(
-                  color: model.getTagColor(widget.news.tags[index]),
+                  color: model.getTagColor(widget.news.tags[index].name),
                   borderRadius: BorderRadius.circular(8),
                 ),
                 child: Text(
-                  widget.news.tags[index],
+                  widget.news.tags[index].name,
                   style: const TextStyle(
                     color: Colors.white,
                     fontWeight: FontWeight.bold,

@@ -29,15 +29,26 @@ class _SocialLinksState extends State<SocialLinks> {
       ViewModelBuilder<WebLinkCardViewModel>.reactive(
           viewModelBuilder: () => WebLinkCardViewModel(),
           builder: (context, model, child) {
-            return SizedBox(
-                height: MediaQuery.of(context).size.height * 0.30,
-                child: Column(
-                  children: [
-                    if (widget.showHandle) _buildHandle(context),
-                    _buildTitle(context),
-                    _buildSocialButtons(widget.socialLinks, model),
-                  ],
-                ));
+            return IntrinsicHeight(
+                child: Container(
+                    decoration: BoxDecoration(
+                      color: Utils.getColorByBrightness(
+                        context,
+                        AppTheme.lightThemeBackground,
+                        AppTheme.darkThemeBackground,
+                      ),
+                      borderRadius: const BorderRadius.only(
+                        topLeft: Radius.circular(40.0),
+                        topRight: Radius.circular(40.0),
+                      ),
+                    ),
+                    child: Column(
+                      children: [
+                        if (widget.showHandle) _buildHandle(context),
+                        _buildTitle(context),
+                        _buildSocialButtons(widget.socialLinks, model),
+                      ],
+                    )));
           });
 
   Widget _buildHandle(BuildContext context) {
@@ -132,7 +143,7 @@ class _SocialLinksState extends State<SocialLinks> {
     }
 
     return Padding(
-      padding: const EdgeInsets.fromLTRB(16, 0, 16, 0),
+      padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
       child: Column(
         children: rows,
       ),

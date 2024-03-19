@@ -20,7 +20,7 @@ class HomeWidgetMock extends MockHomeWidget {
     _channel = const MethodChannel('home_widget');
 
     _messenger =
-        TestDefaultBinaryMessengerBinding.instance!.defaultBinaryMessenger;
+        TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger;
   }
 
   /// Overrides [HomeWidget]'s channel messenger behavior on [HomeWidget.setAppGroupId]

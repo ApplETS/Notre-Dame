@@ -8,15 +8,13 @@ import 'package:notredame/core/constants/programs_credits.dart';
 import 'package:notredame/core/managers/user_repository.dart';
 import 'package:notredame/core/viewmodels/profile_viewmodel.dart';
 import '../helpers.dart';
-import '../mock/managers/settings_manager_mock.dart';
 import '../mock/managers/user_repository_mock.dart';
 
-late UserRepositoryMock userRepositoryMock;
-late SettingsManagerMock settingsManagerMock;
-
-late ProfileViewModel viewModel;
-
 void main() {
+  late UserRepositoryMock userRepositoryMock;
+
+  late ProfileViewModel viewModel;
+
   // Needed to support FlutterToast.
   TestWidgetsFlutterBinding.ensureInitialized();
   final Program program1 = Program(
@@ -84,6 +82,7 @@ void main() {
           userRepositoryMock.getInfo(fromCacheOnly: true),
           userRepositoryMock.getPrograms(fromCacheOnly: true),
           userRepositoryMock.getInfo(),
+          userRepositoryMock.getPrograms()
         ]);
 
         verifyNoMoreInteractions(userRepositoryMock);
@@ -107,6 +106,7 @@ void main() {
           userRepositoryMock.getInfo(fromCacheOnly: true),
           userRepositoryMock.getPrograms(fromCacheOnly: true),
           userRepositoryMock.getInfo(),
+          userRepositoryMock.programs
         ]);
 
         verifyNoMoreInteractions(userRepositoryMock);

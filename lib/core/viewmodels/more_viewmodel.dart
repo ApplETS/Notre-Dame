@@ -58,13 +58,15 @@ class MoreViewModel extends FutureViewModel {
 
   @override
   Future futureToRun() async {
-    setBusy(true);
-
-    await PackageInfo.fromPlatform()
-        .then((value) => _appVersion = value.version)
-        .onError((error, stackTrace) => 'Error: $error');
-
-    setBusy(false);
+    try {
+      setBusy(true);
+      final packageInfo = await PackageInfo.fromPlatform();
+      _appVersion = packageInfo.version;
+    } catch (error) {
+      onError(error);
+    } finally {
+      setBusy(false);
+    }
     return true;
   }
 
@@ -105,6 +107,7 @@ class MoreViewModel extends FutureViewModel {
     final SettingsManager settingsManager = locator<SettingsManager>();
 
     if (await settingsManager.getBool(PreferencesFlag.discoveryMore) == null) {
+      if (!context.mounted) return;
       final List<String> ids =
           findDiscoveriesByGroupName(context, DiscoveryGroupIds.pageMore)
               .map((e) => e.featureId)

@@ -31,7 +31,7 @@ class ScheduleView extends StatefulWidget {
   @visibleForTesting
   final DateTime? initialDay;
 
-  const ScheduleView({Key? key, this.initialDay}) : super(key: key);
+  const ScheduleView({super.key, this.initialDay});
 
   @override
   _ScheduleViewState createState() => _ScheduleViewState();
@@ -78,11 +78,6 @@ class _ScheduleViewState extends State<ScheduleView>
       ViewModelBuilder<ScheduleViewModel>.reactive(
         viewModelBuilder: () => ScheduleViewModel(
             intl: AppIntl.of(context)!, initialSelectedDate: widget.initialDay),
-        onModelReady: (model) {
-          if (model.settings.isEmpty) {
-            model.loadSettings();
-          }
-        },
         builder: (context, model, child) => BaseScaffold(
             isLoading: model.busy(model.isLoadingEvents),
             isInteractionLimitedWhileLoading: false,
@@ -90,7 +85,8 @@ class _ScheduleViewState extends State<ScheduleView>
               title: Text(AppIntl.of(context)!.title_schedule),
               centerTitle: false,
               automaticallyImplyLeading: false,
-              actions: _buildActionButtons(model),
+              actions:
+                  model.busy(model.settings) ? [] : _buildActionButtons(model),
             ),
             body: RefreshIndicator(
               child: !model.calendarViewSetting
@@ -137,7 +133,8 @@ class _ScheduleViewState extends State<ScheduleView>
             const Divider(indent: 8.0, endIndent: 8.0, thickness: 1),
             const SizedBox(height: 6.0),
             if (model.showWeekEvents)
-              for (Widget widget in _buildWeekEvents(model, context)) widget
+              for (final Widget widget in _buildWeekEvents(model, context))
+                widget
             else
               _buildTitleForDate(model.selectedDate, model),
             const SizedBox(height: 2.0),
@@ -227,7 +224,7 @@ class _ScheduleViewState extends State<ScheduleView>
         hourIndicatorSettings: calendar_view.HourIndicatorSettings(
           color: scheduleLineColor,
         ),
-        liveTimeIndicatorSettings: calendar_view.HourIndicatorSettings(
+        liveTimeIndicatorSettings: calendar_view.LiveTimeIndicatorSettings(
           color: chevronColor,
         ),
         scrollOffset: 305,
@@ -348,7 +345,7 @@ class _ScheduleViewState extends State<ScheduleView>
   Widget _buildTitleForDate(DateTime date, ScheduleViewModel model) => Center(
           child: Text(
         DateFormat.MMMMEEEEd(model.locale.toString()).format(date),
-        style: Theme.of(context).textTheme.headline5,
+        style: Theme.of(context).textTheme.headlineMedium,
       ));
 
   List<Widget> _buildWeekEvents(ScheduleViewModel model, BuildContext context) {
@@ -399,9 +396,13 @@ class _ScheduleViewState extends State<ScheduleView>
         valueListenable: model.focusedDate,
         builder: (context, value, _) {
           return TableCalendar(
+            key: const Key("TableCalendar"),
             startingDayOfWeek:
                 model.settings[PreferencesFlag.scheduleStartWeekday]
                     as StartingDayOfWeek,
+            daysOfWeekHeight: 20,
+            rowHeight: (MediaQuery.of(context).size.width - 10) /
+                7, // make sure the event tile are always squared
             locale: model.locale?.toLanguageTag(),
             selectedDayPredicate: (day) {
               return isSameDay(model.selectedDate, day);
@@ -472,19 +473,7 @@ class _ScheduleViewState extends State<ScheduleView>
   }
 
   List<Widget> _buildActionButtons(ScheduleViewModel model) => [
-        IconButton(
-          icon: const Icon(Icons.ios_share),
-          onPressed: () {
-            final translations = AppIntl.of(context)!;
-            final viewModel =
-                CalendarSelectionViewModel(translations: translations);
-            showDialog(
-              context: context,
-              builder: (_) => CalendarSelectionWidget(viewModel: viewModel),
-            );
-          },
-        ),
-        if ((model.settings[PreferencesFlag.scheduleShowTodayBtn] as bool) ==
+        if ((model.settings[PreferencesFlag.scheduleShowTodayBtn] as bool?) ==
             true)
           IconButton(
               icon: const Icon(Icons.today),
