@@ -63,9 +63,6 @@ void main() {
   final PaginatedNews paginatedNews = PaginatedNews(
       news: news, totalRecords: 2, totalPages: 2, pageNumber: 1, pageSize: 3);
 
-  final PaginatedNews paginatedNews = PaginatedNews(
-      news: news, totalRecords: 2, totalPages: 2, pageNumber: 1, pageSize: 3);
-
   group('NewsViewModel tests', () {
     setUp(() async {
       newsRepository = setupNewsRepositoryMock();

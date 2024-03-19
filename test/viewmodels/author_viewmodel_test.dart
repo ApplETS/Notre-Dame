@@ -69,9 +69,6 @@ void main() {
   final PaginatedNews paginatedNews = PaginatedNews(
       news: news, pageNumber: 1, pageSize: 3, totalRecords: 0, totalPages: 1);
 
-  final PaginatedNews paginatedNews = PaginatedNews(
-      news: news, pageNumber: 1, pageSize: 3, totalRecords: 0, totalPages: 1);
-
   group('AuthorViewModel tests', () {
     setUp(() async {
       authorRepository = setupAuthorRepositoryMock();

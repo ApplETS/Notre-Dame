@@ -14,7 +14,6 @@ import 'package:stacked/stacked.dart';
 
 // Project imports:
 import 'package:notredame/core/constants/router_paths.dart';
-import 'package:notredame/core/utils/utils.dart';
 import 'package:notredame/core/services/analytics_service.dart';
 import 'package:notredame/core/services/navigation_service.dart';
 import 'package:notredame/core/viewmodels/news_details_viewmodel.dart';
@@ -161,8 +160,7 @@ class _NewsDetailsViewState extends State<NewsDetailsView> {
   void handleClick(Menu menu, News news) {
     switch (menu) {
       case Menu.share:
-        Share.share(news.shareLink);
-        break;
+        Share.share("");
       case Menu.export:
         final translations = AppIntl.of(context)!;
         final viewModel =
@@ -172,7 +170,6 @@ class _NewsDetailsViewState extends State<NewsDetailsView> {
           context: context,
           builder: (_) => CalendarSelectionWidget(viewModel: viewModel),
         );
-        break;
       case Menu.report:
         showModalBottomSheet(
             isDismissible: true,
@@ -184,7 +181,6 @@ class _NewsDetailsViewState extends State<NewsDetailsView> {
                     topLeft: Radius.circular(10),
                     topRight: Radius.circular(10))),
             builder: (context) => const ReportNews());
-        break;
     }
   }
 

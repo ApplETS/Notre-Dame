@@ -2,7 +2,6 @@ import 'dart:collection';
 import 'package:device_calendar/device_calendar.dart';
 
 import 'package:ets_api_clients/models.dart';
-import 'package:notredame/core/models/news.dart';
 
 mixin CalendarUtils {
   static Future<bool?> checkPermissions() async {
@@ -160,9 +159,8 @@ mixin CalendarUtils {
       title: news.title,
       start:
           TZDateTime.from(news.eventStartDate, getLocation('America/Toronto')),
-      end: TZDateTime.from(news.eventEndDate ?? news.eventStartDate,
-          getLocation('America/Toronto')),
-      description: news.description,
+      end: TZDateTime.from(news.eventEndDate, getLocation('America/Toronto')),
+      description: news.content,
     );
 
     // Create or update event
