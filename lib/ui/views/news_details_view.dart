@@ -160,7 +160,7 @@ class _NewsDetailsViewState extends State<NewsDetailsView> {
   void handleClick(Menu menu, News news) {
     switch (menu) {
       case Menu.share:
-        Share.share("");
+        Share.share("test");
       case Menu.export:
         final translations = AppIntl.of(context)!;
         final viewModel =
