@@ -43,10 +43,10 @@ dependencies:
   # Customs
   # TODO: Change to the latest version, once reviewed and accepted
   ets_api_clients:
-    # path: ../ETS-API-Clients/
-    git:
-      url: https://github.com/ApplETS/ETS-API-Clients.git
-      ref: 1.1.2
+    path: ../ETS-API-Clients/
+    # git:
+    #   url: https://github.com/ApplETS/ETS-API-Clients.git
+    #   ref: 1.1.2
 
   # Other
   flutter_cache_manager: ^3.0.1
