@@ -90,11 +90,15 @@ class CalendarSelectionWidget extends StatelessWidget {
                       return;
                     }
                     Navigator.of(context).pop();
+
                     final CourseRepository courseRepository =
                         locator<CourseRepository>();
+
                     final result = CalendarUtils.export(
-                        courseRepository.coursesActivities!,
-                        selectedCalendarId);
+                      courseRepository.coursesActivities!,
+                      selectedCalendarId,
+                    );
+
                     result.then((value) {
                       if (value) {
                         Fluttertoast.showToast(

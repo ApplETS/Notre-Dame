@@ -43,9 +43,13 @@ mixin CalendarUtils {
 
   /// Fetches a calendar by name from the native calendar app
   static Future<Calendar?> fetchNativeCalendar(String calendarName) async {
-    return (await nativeCalendars).firstWhere(
-      (element) => element.name == calendarName,
-    );
+    final nativeCalendarList = await nativeCalendars;
+    for (final calendar in nativeCalendarList) {
+      if (calendar.name == calendarName) {
+        return calendar;
+      }
+    }
+    return null;
   }
 
   /// Fetches events from a calendar by id from the native calendar app
@@ -70,6 +74,11 @@ mixin CalendarUtils {
       return false;
     }
 
+    courses.sort((a, b) => a.startDateTime.compareTo(b.startDateTime));
+
+    final DateTime startDate = courses.first.startDateTime;
+    final DateTime endDate = courses.last.endDateTime;
+
     // Fetch calendar
     Calendar? calendar = await fetchNativeCalendar(calendarName);
 
@@ -83,8 +92,8 @@ mixin CalendarUtils {
     final events = await fetchNativeCalendarEvents(
         calendar!.id!,
         RetrieveEventsParams(
-          startDate: DateTime.now().subtract(const Duration(days: 120)),
-          endDate: DateTime.now().add(const Duration(days: 120)),
+          startDate: startDate,
+          endDate: endDate,
         ));
 
     // Order by date
@@ -103,7 +112,7 @@ mixin CalendarUtils {
             TZDateTime.from(course.endDateTime, getLocation('America/Toronto')),
         location: course.activityLocation,
         description:
-            "${course.courseGroup} \n${course.activityDescription}\nN'EFFACEZ PAS CETTE LIGNE: ${course.hashCode}",
+            "${course.courseGroup} \n${course.activityDescription}\n N'EFFACEZ PAS CETTE LIGNE: ${course.hashCode}",
       );
 
       final existingEvents = events.where(
