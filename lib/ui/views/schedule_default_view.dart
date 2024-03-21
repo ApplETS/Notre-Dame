@@ -1,6 +1,11 @@
+// Flutter imports:
 import 'package:flutter/material.dart';
+
+// Package imports:
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:stacked/stacked.dart';
+
+// Project imports:
 import 'package:notredame/core/viewmodels/schedule_default_viewmodel.dart';
 import 'package:notredame/ui/widgets/base_scaffold.dart';
 import 'package:notredame/ui/widgets/schedule_default.dart';
@@ -28,8 +33,7 @@ class _ScheduleDefaultViewState extends State<ScheduleDefaultView> {
         showBottomBar: false,
         isLoading: model.busy(model.isLoadingEvents),
         appBar: AppBar(
-          title: Text(
-              _sessionName(widget.sessionCode!, AppIntl.of(context)!)),
+          title: Text(_sessionName(widget.sessionCode!, AppIntl.of(context)!)),
           centerTitle: false,
           automaticallyImplyLeading: false,
           leading: IconButton(

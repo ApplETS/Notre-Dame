@@ -62,7 +62,7 @@ Route<dynamic> generateRoute(RouteSettings routeSettings) {
           settings: RouteSettings(
               name: routeSettings.name, arguments: routeSettings.arguments),
           pageBuilder: (_, __, ___) => ScheduleDefaultView(
-              sessionCode: routeSettings.arguments as String));
+              sessionCode: routeSettings.arguments as String?));
     case RouterPaths.student:
       return PageRouteBuilder(
           settings: RouteSettings(name: routeSettings.name),
