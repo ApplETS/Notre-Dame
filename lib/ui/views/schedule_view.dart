@@ -76,6 +76,11 @@ class _ScheduleViewState extends State<ScheduleView>
       ViewModelBuilder<ScheduleViewModel>.reactive(
         viewModelBuilder: () => ScheduleViewModel(
             intl: AppIntl.of(context)!, initialSelectedDate: widget.initialDay),
+        onModelReady: (model) {
+          if (model.settings.isEmpty) {
+            model.loadSettings();
+          }
+        },
         builder: (context, model, child) => BaseScaffold(
             isLoading: model.busy(model.isLoadingEvents),
             isInteractionLimitedWhileLoading: false,
@@ -515,14 +520,11 @@ class _ScheduleViewState extends State<ScheduleView>
             onPressed: () async {
               _analyticsService.logEvent(tag, "Settings clicked");
               await showModalBottomSheet(
-                  isDismissible: true,
-                  enableDrag: true,
-                  isScrollControlled: true,
-                  context: context,
                   shape: const RoundedRectangleBorder(
-                      borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(10),
-                          topRight: Radius.circular(10))),
+                      borderRadius:
+                          BorderRadius.vertical(top: Radius.circular(10))),
+                  context: context,
+                  isScrollControlled: true,
                   builder: (context) => const ScheduleSettings());
               model.loadSettings();
             }));
