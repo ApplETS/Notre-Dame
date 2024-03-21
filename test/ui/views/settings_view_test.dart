@@ -16,7 +16,7 @@ import '../../helpers.dart';
 import '../../mock/services/analytics_service_mock.dart';
 
 void main() {
-  AppIntl intl;
+  late AppIntl intl;
 
   group('SettingsView - ', () {
     setUp(() async {

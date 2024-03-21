@@ -30,7 +30,7 @@ class ScheduleDefaultViewModel
   List<Color> schedulePaletteThemeLight =
       AppTheme.schedulePaletteLight.toList();
 
-  ScheduleDefaultViewModel({String sessionCode}) : _sessionCode = sessionCode;
+  ScheduleDefaultViewModel({required String sessionCode}) : _sessionCode = sessionCode;
 
   @override
   Future<List<CalendarEventData<Object>>> futureToRun() async {
@@ -65,10 +65,10 @@ class ScheduleDefaultViewModel
         date: targetDate,
         startTime: newStartTime,
         endTime: newEndTime,
-        color: getCourseColor(eventData.courseAcronym.split('-')[0]));
+        color: getCourseColor(eventData.courseAcronym.split('-')[0]) ?? Colors.grey);
   }
 
-  Color getCourseColor(String courseName) {
+  Color? getCourseColor(String courseName) {
     if (!courseColors.containsKey(courseName)) {
       courseColors[courseName] = schedulePaletteThemeLight.removeLast();
     }

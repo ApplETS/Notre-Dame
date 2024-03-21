@@ -7,17 +7,15 @@ import 'package:notredame/ui/widgets/schedule_default.dart';
 import '../../helpers.dart';
 
 void main() {
-  AppIntl intl;
+  late AppIntl intl;
 
   group('ScheduleDefault Tests', () {
     setUpAll(() async {
       intl = await setupAppIntl();
     });
 
-    testWidgets('Displays no schedule message when there are no events',
-        (WidgetTester tester) async {
-      await tester.pumpWidget(
-          localizedWidget(child: const ScheduleDefault(calendarEvents: [])));
+    testWidgets('Displays no schedule message when there are no events', (WidgetTester tester) async {
+      await tester.pumpWidget(localizedWidget(child: const ScheduleDefault(calendarEvents: [])));
       await tester.pumpAndSettle();
       expect(find.text(intl.no_schedule_available), findsOneWidget);
     });

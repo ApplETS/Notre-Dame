@@ -13,7 +13,7 @@ import 'package:notredame/ui/widgets/schedule_default.dart';
 class ScheduleDefaultView extends StatefulWidget {
   final String sessionCode;
 
-  const ScheduleDefaultView({this.sessionCode});
+  const ScheduleDefaultView({required this.sessionCode});
 
   @override
   _ScheduleDefaultViewState createState() => _ScheduleDefaultViewState();
@@ -35,7 +35,7 @@ class _ScheduleDefaultViewState extends State<ScheduleDefaultView> {
               isLoading: model.busy(model.isLoadingEvents),
               appBar: AppBar(
                 title:
-                    Text(_sessionName(widget.sessionCode, AppIntl.of(context))),
+                    Text(_sessionName(widget.sessionCode, AppIntl.of(context)!)),
                 centerTitle: false,
                 automaticallyImplyLeading: false,
                 leading: IconButton(

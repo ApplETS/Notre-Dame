@@ -10,20 +10,19 @@ import 'package:flutter_test/flutter_test.dart';
 
 // Project imports:
 import 'package:notredame/core/constants/faq.dart';
-import 'package:notredame/core/managers/settings_manager.dart';
 import 'package:notredame/ui/views/faq_view.dart';
 import '../../helpers.dart';
 import '../../mock/managers/settings_manager_mock.dart';
 
 void main() {
   group('FaqView - ', () {
-    AppIntl appIntl;
+    late AppIntl appIntl;
 
-    SettingsManager settingsManager;
+    late SettingsManagerMock settingsManagerMock;
 
     setUp(() async {
       setupLaunchUrlServiceMock();
-      settingsManager = setupSettingsManagerMock();
+      settingsManagerMock = setupSettingsManagerMock();
       appIntl = await setupAppIntl();
     });
 
@@ -31,7 +30,7 @@ void main() {
 
     group('UI - ', () {
       testWidgets('has x ElevatedButton', (WidgetTester tester) async {
-        SettingsManagerMock.stubLocale(settingsManager as SettingsManagerMock);
+        SettingsManagerMock.stubLocale(settingsManagerMock);
 
         await tester.pumpWidget(localizedWidget(child: const FaqView()));
         await tester.pumpAndSettle();
@@ -44,7 +43,7 @@ void main() {
       });
 
       testWidgets('has 2 subtitles', (WidgetTester tester) async {
-        SettingsManagerMock.stubLocale(settingsManager as SettingsManagerMock);
+        SettingsManagerMock.stubLocale(settingsManagerMock);
 
         await tester.pumpWidget(localizedWidget(child: const FaqView()));
         await tester.pumpAndSettle();
@@ -57,7 +56,7 @@ void main() {
       });
 
       testWidgets('has 1 title', (WidgetTester tester) async {
-        SettingsManagerMock.stubLocale(settingsManager as SettingsManagerMock);
+        SettingsManagerMock.stubLocale(settingsManagerMock);
 
         await tester.pumpWidget(localizedWidget(child: const FaqView()));
         await tester.pumpAndSettle();
@@ -70,7 +69,7 @@ void main() {
 
     group("golden - ", () {
       testWidgets("default view", (WidgetTester tester) async {
-        SettingsManagerMock.stubLocale(settingsManager as SettingsManagerMock);
+        SettingsManagerMock.stubLocale(settingsManagerMock);
         tester.binding.window.physicalSizeTestValue = const Size(1800, 2410);
 
         await tester.pumpWidget(localizedWidget(child: const FaqView()));
