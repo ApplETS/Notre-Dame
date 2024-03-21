@@ -84,6 +84,21 @@ android {
             ext.alwaysUpdateBuildId = false
         }
     }
+
+    flavorDimensions "environment"
+
+    productFlavors {
+        dev {
+            dimension "environment"
+            applicationIdSuffix ".dev"
+            versionNameSuffix "-dev"
+        }
+        prod {
+            dimension "environment"
+            applicationIdSuffix ""
+            versionNameSuffix ""
+        }
+    }
 }
 
 flutter {

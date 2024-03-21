@@ -8,6 +8,7 @@ import 'package:ets_api_clients/models.dart';
 import 'package:notredame/core/constants/router_paths.dart';
 import 'package:notredame/core/constants/update_code.dart';
 import 'package:notredame/core/models/quick_link.dart';
+import 'package:notredame/main_dev.dart';
 import 'package:notredame/ui/views/about_view.dart';
 import 'package:notredame/ui/views/choose_language_view.dart';
 import 'package:notredame/ui/views/contributors_view.dart';
@@ -32,34 +33,36 @@ Route<dynamic> generateRoute(RouteSettings routeSettings) {
     case RouterPaths.startup:
       return PageRouteBuilder(
           settings: RouteSettings(name: routeSettings.name),
-          pageBuilder: (_, __, ___) => StartUpView());
+          pageBuilder: (_, __, ___) => ApplyGlobalOverlays(StartUpView()));
     case RouterPaths.serviceOutage:
       return MaterialPageRoute(
           settings: RouteSettings(name: routeSettings.name),
-          builder: (_) => OutageView());
+          builder: (_) => ApplyGlobalOverlays(OutageView()));
     case RouterPaths.login:
       return MaterialPageRoute(
           settings: RouteSettings(name: routeSettings.name),
-          builder: (_) => LoginView());
+          builder: (_) => ApplyGlobalOverlays(LoginView()));
     case RouterPaths.faq:
       return MaterialPageRoute(
           settings: RouteSettings(name: routeSettings.name),
-          builder: (_) =>
-              FaqView(backgroundColor: routeSettings.arguments! as Color));
+          builder: (_) => ApplyGlobalOverlays(
+              FaqView(backgroundColor: routeSettings.arguments! as Color)));
     case RouterPaths.dashboard:
       final code = (routeSettings.arguments as UpdateCode?) ?? UpdateCode.none;
       return PageRouteBuilder(
           settings: RouteSettings(
               name: routeSettings.name, arguments: routeSettings.arguments),
-          pageBuilder: (_, __, ___) => DashboardView(updateCode: code));
+          pageBuilder: (_, __, ___) =>
+              ApplyGlobalOverlays(DashboardView(updateCode: code)));
     case RouterPaths.schedule:
       return PageRouteBuilder(
           settings: RouteSettings(name: routeSettings.name),
-          pageBuilder: (_, __, ___) => const ScheduleView());
+          pageBuilder: (_, __, ___) =>
+              ApplyGlobalOverlays(const ScheduleView()));
     case RouterPaths.student:
       return PageRouteBuilder(
           settings: RouteSettings(name: routeSettings.name),
-          pageBuilder: (_, __, ___) => StudentView());
+          pageBuilder: (_, __, ___) => ApplyGlobalOverlays(StudentView()));
     case RouterPaths.gradeDetails:
       return PageRouteBuilder(
           transitionDuration: const Duration(milliseconds: 600),
@@ -77,49 +80,61 @@ Route<dynamic> generateRoute(RouteSettings routeSettings) {
             );
           },
           settings: RouteSettings(name: routeSettings.name),
-          pageBuilder: (_, __, ___) =>
-              GradesDetailsView(course: routeSettings.arguments! as Course));
+          pageBuilder: (_, __, ___) => ApplyGlobalOverlays(
+              GradesDetailsView(course: routeSettings.arguments! as Course)));
     case RouterPaths.ets:
       return PageRouteBuilder(
           settings: RouteSettings(name: routeSettings.name),
-          pageBuilder: (_, __, ___) => QuickLinksView());
+          pageBuilder: (_, __, ___) => ApplyGlobalOverlays(QuickLinksView()));
     case RouterPaths.webView:
       return PageRouteBuilder(
-          pageBuilder: (_, __, ___) =>
-              LinkWebView(routeSettings.arguments! as QuickLink));
+          pageBuilder: (_, __, ___) => ApplyGlobalOverlays(
+              LinkWebView(routeSettings.arguments! as QuickLink)));
     case RouterPaths.security:
       return PageRouteBuilder(
           settings: RouteSettings(name: routeSettings.name),
-          pageBuilder: (_, __, ___) => SecurityView());
+          pageBuilder: (_, __, ___) => ApplyGlobalOverlays(SecurityView()));
     case RouterPaths.more:
       return PageRouteBuilder(
           settings: RouteSettings(name: routeSettings.name),
-          pageBuilder: (_, __, ___) => MoreView());
+          pageBuilder: (_, __, ___) => ApplyGlobalOverlays(MoreView()));
     case RouterPaths.settings:
       return PageRouteBuilder(
           settings: RouteSettings(name: routeSettings.name),
-          pageBuilder: (_, __, ___) => SettingsView());
+          pageBuilder: (_, __, ___) => ApplyGlobalOverlays(SettingsView()));
     case RouterPaths.contributors:
       return PageRouteBuilder(
           settings: RouteSettings(name: routeSettings.name),
-          pageBuilder: (_, __, ___) => ContributorsView());
+          pageBuilder: (_, __, ___) => ApplyGlobalOverlays(ContributorsView()));
     case RouterPaths.feedback:
       return PageRouteBuilder(
           settings: RouteSettings(name: routeSettings.name),
-          pageBuilder: (_, __, ___) => FeedbackView());
+          pageBuilder: (_, __, ___) => ApplyGlobalOverlays(FeedbackView()));
     case RouterPaths.about:
       return PageRouteBuilder(
           transitionDuration: const Duration(seconds: 1),
           settings: RouteSettings(name: routeSettings.name),
-          pageBuilder: (_, __, ___) => AboutView());
+          pageBuilder: (_, __, ___) => ApplyGlobalOverlays(AboutView()));
     case RouterPaths.chooseLanguage:
       return MaterialPageRoute(
           settings: RouteSettings(name: routeSettings.name),
           builder: (_) => ChooseLanguageView());
     default:
       return PageRouteBuilder(
-          settings: RouteSettings(name: routeSettings.name),
-          pageBuilder: (_, __, ___) =>
-              NotFoundView(pageName: routeSettings.name));
+        settings: RouteSettings(name: routeSettings.name),
+        pageBuilder: (_, __, ___) =>
+            ApplyGlobalOverlays(NotFoundView(pageName: routeSettings.name)),
+      );
   }
+}
+
+Widget ApplyGlobalOverlays(Widget pageWidget) {
+  return ClipRect(
+    child: Banner(
+      message: AppFlavor.appFlavor,
+      location: BannerLocation.topStart,
+      color: Colors.red,
+      child: pageWidget,
+    ),
+  );
 }
