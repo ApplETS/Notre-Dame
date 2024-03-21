@@ -1,12 +1,7 @@
-// Flutter imports:
 import 'package:flutter/material.dart';
-
-// Package imports:
 import 'package:calendar_view/calendar_view.dart';
 import 'package:ets_api_clients/models.dart';
 import 'package:stacked/stacked.dart';
-
-// Project imports:
 import 'package:notredame/core/managers/course_repository.dart';
 import 'package:notredame/locator.dart';
 import 'package:notredame/ui/utils/app_theme.dart';
@@ -16,7 +11,7 @@ class ScheduleDefaultViewModel
   /// Load the events
   final CourseRepository _courseRepository = locator<CourseRepository>();
 
-  final String _sessionCode;
+  final String? _sessionCode;
 
   bool isLoadingEvents = false;
 
@@ -30,7 +25,7 @@ class ScheduleDefaultViewModel
   List<Color> schedulePaletteThemeLight =
       AppTheme.schedulePaletteLight.toList();
 
-  ScheduleDefaultViewModel({required String sessionCode})
+  ScheduleDefaultViewModel({String? sessionCode})
       : _sessionCode = sessionCode;
 
   @override
@@ -81,19 +76,21 @@ class ScheduleDefaultViewModel
     try {
       setBusyForObject(isLoadingEvents, true);
 
+    if (_sessionCode != null) {
       final defaultScheduleActivities = await _courseRepository
-          .getDefaultScheduleActivities(session: _sessionCode);
-      final filteredScheduleActivities = defaultScheduleActivities
-          .where((activity) => activity.activityCode.toLowerCase() != "exam")
-          .toList();
+              .getDefaultScheduleActivities(session: _sessionCode);
+          final filteredScheduleActivities = defaultScheduleActivities
+              .where((activity) => activity.activityCode.toLowerCase() != "exam")
+              .toList();
 
-      for (final activity in filteredScheduleActivities) {
-        final event = calendarEventData(activity);
-        calendarEvents.add(event);
-      }
+          for (final activity in filteredScheduleActivities) {
+            final event = calendarEventData(activity);
+            calendarEvents.add(event);
+          }
 
-      setBusyForObject(isLoadingEvents, false);
-      notifyListeners();
+          setBusyForObject(isLoadingEvents, false);
+          notifyListeners();
+    }
     } on Exception catch (error) {
       onError(error);
     }

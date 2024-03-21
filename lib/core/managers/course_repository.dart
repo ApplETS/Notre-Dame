@@ -190,12 +190,20 @@ class CourseRepository {
   /// Get and update the list of schedule activities for the active sessions.
   /// After fetching the new activities from the [SignetsApi] the [CacheManager]
   /// is updated with the latest version of the schedule activities.
-  Future<List<ScheduleActivity>> getDefaultScheduleActivities(
-      {required String session, bool fromCacheOnly = false}) async {
+  Future<List<ScheduleActivity>> getDefaultScheduleActivities({
+    String? session,
+    bool fromCacheOnly = false,
+  }) async {
     // Force fromCacheOnly mode when user has no connectivity
     if (!(await _networkingService.hasConnectivity())) {
       // ignore: parameter_assignments
       fromCacheOnly = true;
+    }
+
+    if (session == null) {
+      _logger.d(
+          "$tag - getScheduleDefaultActivities: Session is null, returning empty list.");
+      return [];
     }
 
     // Load the activities from the cache if the list doesn't exist or if another session is provided
