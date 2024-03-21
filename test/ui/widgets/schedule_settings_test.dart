@@ -98,6 +98,7 @@ void main() {
         expect(
             find.byWidgetPredicate((widget) =>
                 widget is Container &&
+                widget.decoration is BoxDecoration &&
                 (widget.decoration! as BoxDecoration).color == Colors.grey),
             findsOneWidget,
             reason: "The handle should be grey");
@@ -171,6 +172,20 @@ void main() {
             isA<Switch>().having((source) => source.value, 'value', isTrue),
             reason:
                 "the settings says that the showTodayBtn is enabled, the UI should reflet that.");
+
+        const screenHeight = 600;
+
+        final draggableScrollableSheetFinder =
+            find.byType(DraggableScrollableSheet);
+        expect(draggableScrollableSheetFinder, findsOneWidget);
+
+        final Size initialSize = tester.getSize(draggableScrollableSheetFinder);
+        expect(initialSize.height, 0.55 * screenHeight);
+
+        await tester.fling(
+            find.byType(ListView), const Offset(0.0, -4000.0), 400.0);
+        final Size maxSize = tester.getSize(draggableScrollableSheetFinder);
+        expect(maxSize.height, 0.85 * screenHeight);
       });
 
       testWidgets("Without handle", (WidgetTester tester) async {
@@ -184,6 +199,7 @@ void main() {
         expect(
             find.byWidgetPredicate((widget) =>
                 widget is Container &&
+                widget.decoration is BoxDecoration &&
                 (widget.decoration! as BoxDecoration).color == Colors.grey),
             findsNothing,
             reason: "There should not have a handle.");
@@ -256,6 +272,20 @@ void main() {
             isA<Switch>().having((source) => source.value, 'value', isTrue),
             reason:
                 "the settings says that the showTodayBtn is enabled, the UI should reflet that.");
+
+        const screenHeight = 600;
+
+        final draggableScrollableSheetFinder =
+            find.byType(DraggableScrollableSheet);
+        expect(draggableScrollableSheetFinder, findsOneWidget);
+
+        final Size initialSize = tester.getSize(draggableScrollableSheetFinder);
+        expect(initialSize.height, 0.55 * screenHeight);
+
+        await tester.fling(
+            find.byType(ListView), const Offset(0.0, -4000.0), 400.0);
+        final Size maxSize = tester.getSize(draggableScrollableSheetFinder);
+        expect(maxSize.height, 0.85 * screenHeight);
       });
     });
 
@@ -400,9 +430,8 @@ void main() {
             ListTile, intl.schedule_settings_show_today_btn_pref,
             skipOffstage: false);
 
-        expect(find.byType(Switch, skipOffstage: false), findsOneWidget);
-        // Currently the await tester.tap on a switch in a tile isn't working. Workaround:
-        (find.byType(Switch, skipOffstage: false).evaluate().single.widget
+        expect(find.byType(Switch, skipOffstage: false), findsNWidgets(2));
+        (find.byType(Switch, skipOffstage: false).evaluate().first.widget
                 as Switch)
             .onChanged!(false);
 
