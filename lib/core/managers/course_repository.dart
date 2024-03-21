@@ -245,7 +245,6 @@ class CourseRepository {
       rethrow;
     }
 
-    // Update the list of activities to avoid duplicate activities
     _scheduleDefaultActivities = fetchedScheduleActivities;
 
     try {
