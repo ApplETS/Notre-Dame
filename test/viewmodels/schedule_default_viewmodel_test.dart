@@ -62,18 +62,22 @@ void main() {
 
     group('futureToRun -', () {
       test('When called, sets busy state and fetches events', () async {
-        when(mockCourseRepository.getDefaultScheduleActivities(session: 'A2023'))
+        when(mockCourseRepository.getDefaultScheduleActivities(
+                session: 'A2023'))
             .thenAnswer((_) async => [lectureActivity]);
 
         await viewModel.futureToRun();
 
-        verify(mockCourseRepository.getDefaultScheduleActivities(session: 'A2023')).called(1);
+        verify(mockCourseRepository.getDefaultScheduleActivities(
+                session: 'A2023'))
+            .called(1);
         expect(viewModel.isBusy, false);
         expect(viewModel.calendarEvents.length, equals(1));
       });
 
       test('Filters out exam activities', () async {
-        when(mockCourseRepository.getDefaultScheduleActivities(session: 'A2023'))
+        when(mockCourseRepository.getDefaultScheduleActivities(
+                session: 'A2023'))
             .thenAnswer((_) async => [examActivity]);
 
         await viewModel.futureToRun();
@@ -84,7 +88,8 @@ void main() {
 
     group('ScheduleDefaultViewModel - Additional Methods', () {
       // Test pour la méthode 'calendarEventData'
-      test('calendarEventData returns correctly formatted CalendarEventData', () {
+      test('calendarEventData returns correctly formatted CalendarEventData',
+          () {
         final eventData = viewModel.calendarEventData(lectureActivity);
 
         expect(eventData.title, contains('COURSE101'));

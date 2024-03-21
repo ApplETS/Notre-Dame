@@ -34,8 +34,8 @@ class _ScheduleDefaultViewState extends State<ScheduleDefaultView> {
               showBottomBar: false,
               isLoading: model.busy(model.isLoadingEvents),
               appBar: AppBar(
-                title:
-                    Text(_sessionName(widget.sessionCode, AppIntl.of(context)!)),
+                title: Text(
+                    _sessionName(widget.sessionCode, AppIntl.of(context)!)),
                 centerTitle: false,
                 automaticallyImplyLeading: false,
                 leading: IconButton(
