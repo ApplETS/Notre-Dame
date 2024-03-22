@@ -405,9 +405,6 @@ class _ScheduleViewState extends State<ScheduleView>
             startingDayOfWeek:
                 model.settings[PreferencesFlag.scheduleStartWeekday]
                     as StartingDayOfWeek,
-            daysOfWeekHeight: 20,
-            rowHeight: (MediaQuery.of(context).size.width - 10) /
-                7, // make sure the event tile are always squared
             locale: model.locale?.toLanguageTag(),
             selectedDayPredicate: (day) {
               return isSameDay(model.selectedDate, day);
