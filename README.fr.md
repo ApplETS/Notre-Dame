@@ -68,16 +68,5 @@ Vous pouvez trouver dans le dossier `.githooks` l'ensemble des hooks pour git. P
 git config core.hooksPath .githooks
 ```
 
-## 📦 Dev Container
-
-Vous pouvez exécuter le projet dans un conteneur contenant toutes les bonnes versions des bibliothèques prêtes à l'emploi.
-Étapes pour l'exécuter :
-1. Installez Docker, VSCode et l'extension Dev Containers pour vscode.
-2. Ouvrez le projet avec vscode, une fenêtre contextuelle suggérera d'ouvrir le projet dans un conteneur de développement.*
-4. Une fois le conteneur opérationnel, vous serez invité dans le terminal vscode à accepter les licences.
-5. Associez et connectez votre téléphone Android à l'aide du débogage sans fil ADB pour déboguer l'application.
-
-\* si vous ne voyez pas la fenêtre contextuelle suggérant l'environnement du conteneur de développement, essayez d'exécuter la commande vscode : `Conteneurs de développement : reconstruire et rouvrir dans le conteneur`
-
 ## ⚖️ License
 Ce projet est licencié selon la licence Apache V2.0. Voir le fichier [LICENSE](https://github.com/ApplETS/Notre-Dame/blob/master/LICENSE) pour plus d'informations.

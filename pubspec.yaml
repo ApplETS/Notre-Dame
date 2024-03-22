@@ -5,10 +5,10 @@ description: The 4th generation of ÉTSMobile, the main gateway between the Éco
 # pub.dev using `pub publish`. This is preferred for private packages.
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 
-version: 4.33.1+1
+version: 4.36.0+1
 
 environment:
-  sdk: ">=2.10.0 <3.0.0"
+  sdk: ">=3.3.0 <4.0.0"
 
 dependencies:
   flutter:
@@ -17,62 +17,62 @@ dependencies:
     sdk: flutter
 
   # Architecture
-  get_it: ^7.2.0
-  provider: ^6.0.4
-  stacked: ^3.0.1
+  get_it: ^7.6.7
+  provider: ^6.1.2
+  stacked: ^3.4.2
 
   # Firebase
   firebase_core: ^2.3.0
   firebase_analytics: ^10.0.6
   firebase_crashlytics: ^3.0.6
-  firebase_remote_config: ^3.0.6
+  firebase_remote_config: ^4.3.13
 
   # Utils
-  logger: ^1.0.0
-  url_launcher: ^6.1.7
+  logger: ^2.0.2+1
+  url_launcher: ^6.2.5
   enum_to_string: ^2.0.1
-  fluttertoast: ^8.0.8
+  fluttertoast: ^8.2.4
 
   # Widgets
-  table_calendar: ^3.0.6
-  percent_indicator: ^4.2.2
-  feedback: ^2.5.0
+  table_calendar: ^3.0.9
+  percent_indicator: ^4.2.3
+  feedback: ^3.0.0
   flutter_staggered_animations: ^1.1.1
-  flutter_siren: ^1.2.0
+  flutter_siren_2: ^1.2.2
 
   # Customs
   ets_api_clients:
     #    path: ../ETS-API-Clients/
     git:
       url: https://github.com/ApplETS/ETS-API-Clients.git
-      ref: 0.5.0
+      ref: 1.0.0
 
   # Other
-  http: ^0.13.4
+  http: ^1.2.0
   flutter_cache_manager: ^3.0.1
-  flutter_secure_storage: ^6.1.0
-  shared_preferences: ^2.0.15
+  flutter_secure_storage: ^9.0.0
+  shared_preferences: ^2.2.2
   webview_flutter: ^3.0.4
-  flutter_custom_tabs: ^1.0.4
-  google_maps_flutter: ^2.3.0
+  flutter_custom_tabs: ^2.0.0+1
+  google_maps_flutter: ^2.5.3
   github: ^9.1.0
-  package_info_plus: ^1.4.2
+  package_info_plus: ^5.0.1
   feature_discovery: ^0.14.0
   path_provider: ^2.0.11
-  rive: ^0.9.1
-  connectivity_plus: ^4.0.2
-  flutter_svg: ^1.0.3
-  font_awesome_flutter: ^10.2.1
-  in_app_review: ^2.0.6
-  device_info_plus: ^4.0.0
+  rive: ^0.13.0
+  connectivity_plus: ^5.0.2
+  flutter_svg: ^2.0.9
+  font_awesome_flutter: ^10.7.0
+  in_app_review: ^2.0.8
+  device_info_plus: ^9.1.2
   pub_semver: ^2.1.4
-  home_widget: ^0.1.6
-  marquee: 2.2.1
+  home_widget: ^0.4.1
+  marquee: ^2.2.3
   auto_size_text: ^3.0.0
   easter_egg_trigger: ^1.0.1
-  calendar_view: ^1.0.1
+  calendar_view: ^1.1.0
   carousel_slider: ^4.2.1
-  reorderable_grid_view: ^2.2.6
+  reorderable_grid_view: ^2.2.8
   import_sorter: ^4.6.0
   flutter_keychain: ^2.4.0
   fl_chart: ^0.62.0
@@ -80,10 +80,11 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  lint: ^2.0.1
-  mockito: ^5.3.2
-  flutter_config: ^2.0.0
-  flutter_launcher_icons: ^0.11.0
+  lint: ^2.3.0
+  mockito: ^5.4.4
+  flutter_config: ^2.0.2
+  flutter_launcher_icons: ^0.13.1
+  build_runner: ^2.4.8
 
 flutter_icons:
   android: "launcher_icon"

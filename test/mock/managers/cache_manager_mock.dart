@@ -1,12 +1,16 @@
 // Package imports:
+import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
 // Project imports:
 import 'package:notredame/core/managers/cache_manager.dart';
 import 'package:notredame/core/utils/cache_exception.dart';
 
+import 'cache_manager_mock.mocks.dart';
+
 /// Mock for the [CacheManager]
-class CacheManagerMock extends Mock implements CacheManager {
+@GenerateNiceMocks([MockSpec<CacheManager>()])
+class CacheManagerMock extends MockCacheManager {
   /// Stub the get function of [mock], when [key] is used, [valueToReturn] is answered.
   static void stubGet(CacheManagerMock mock, String key, String valueToReturn) {
     when(mock.get(key)).thenAnswer((_) async => valueToReturn);

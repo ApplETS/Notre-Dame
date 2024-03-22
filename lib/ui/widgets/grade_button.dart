@@ -26,13 +26,14 @@ class GradeButton extends StatelessWidget {
   /// Settings manager
   final SettingsManager _settingsManager = locator<SettingsManager>();
 
-  GradeButton(this.course, {this.showDiscovery});
+  GradeButton(this.course, {this.showDiscovery = false});
 
   @override
   Widget build(BuildContext context) => Card(
         child: InkWell(
           onTap: () async {
-            if (ModalRoute.of(context).settings.name == RouterPaths.dashboard ||
+            if (ModalRoute.of(context)!.settings.name ==
+                    RouterPaths.dashboard ||
                 await _settingsManager
                         .getBool(PreferencesFlag.discoveryStudentGrade) ==
                     true) {
@@ -51,12 +52,12 @@ class GradeButton extends StatelessWidget {
   /// will return [grades_not_available].
   String gradeString(AppIntl intl) {
     if (course.grade != null) {
-      return course.grade;
+      return course.grade!;
     } else if (course.summary != null &&
-        course.summary.markOutOf > 0 &&
-        !(course.inReviewPeriod && !course.reviewCompleted)) {
+        course.summary!.markOutOf > 0 &&
+        !(course.inReviewPeriod && !(course.reviewCompleted ?? false))) {
       return intl.grades_grade_in_percentage(
-          course.summary.currentMarkInPercent.round());
+          course.summary!.currentMarkInPercent.round());
     }
 
     return intl.grades_not_available;
@@ -89,7 +90,7 @@ class GradeButton extends StatelessWidget {
                                 course.acronym,
                                 style: Theme.of(context)
                                     .textTheme
-                                    .bodyText1
+                                    .bodyLarge!
                                     .copyWith(color: Colors.white),
                               ),
                             ),
@@ -102,7 +103,7 @@ class GradeButton extends StatelessWidget {
           ),
           Expanded(
             child: Center(
-                child: Text(gradeString(AppIntl.of(context)),
+                child: Text(gradeString(AppIntl.of(context)!),
                     style: TextStyle(
                       fontSize: 22,
                       color: Theme.of(context).brightness == Brightness.light

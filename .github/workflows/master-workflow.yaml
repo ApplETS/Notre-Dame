@@ -7,8 +7,7 @@ on:
     paths-ignore:
       - '.gitignore'
       - '.metadata'
-      - 'README.md'
-      - 'README.fr.md'
+      - '*.md'
       - 'android/fastlane/**'
       - 'ios/fastlane/**'
       - '.github/**'
@@ -44,7 +43,7 @@ jobs:
           msg: ${{ steps.pubspecVersion.outputs.version }}
           separator: '+'
       - name: Validate that version doesn't exists
-        uses: mukunku/tag-exists-action@v1.4.0
+        uses: mukunku/tag-exists-action@v1.6.0
         id: checkTag
         with:
           tag: ${{ steps.split.outputs._0 }}
@@ -68,11 +67,11 @@ jobs:
           ref: ${{ github.head_ref }}
       - uses: actions/setup-java@v4
         with:
-          distribution: 'adopt'
-          java-version: '11'
+          distribution: 'temurin'
+          java-version: '17'
       - uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.3.x'
+          flutter-version: '3.19.x'
           channel: 'stable'
           cache: true
       - run: flutter doctor
@@ -85,7 +84,9 @@ jobs:
           ENCRYPTED_GOOGLE_SERVICE_PASSWORD: ${{ secrets.ENCRYPTED_GOOGLE_SERVICE_PASSWORD }}
 
       # Get flutter dependencies.
-      - run: flutter pub get
+      - run : |
+          flutter pub get
+          dart run build_runner build --delete-conflicting-outputs
 
       # Check if the code has any errors/warnings
       - name: Analyze code
@@ -96,7 +97,7 @@ jobs:
         run: flutter test --coverage
 
       - name: Upload coverage file
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: lcov.info
           path: ${{ github.workspace }}/coverage/lcov.info
@@ -116,7 +117,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Download coverage file
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: lcov.info
       - name: Update badge coverage
@@ -162,26 +163,29 @@ jobs:
       - uses: actions/checkout@v4
       - uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.3.x'
+          flutter-version: '3.19.x'
           channel: 'stable'
           cache: true
       - name: Install Android dependencies
         if: matrix.target == 'Android'
         uses: actions/setup-java@v4
         with:
-          java-version: '11'
-          distribution: 'adopt'
+          java-version: '17'
+          distribution: 'temurin'
       - run: flutter doctor -v
       - name: Install iOS dependencies
         if: matrix.target == 'iOS'
         run: |
           flutter pub get
+          dart run build_runner build --delete-conflicting-outputs
           cd ios
           pod install
           flutter clean
 
       # Get dependencies and decrypt needed files.
-      - run: flutter pub get
+      - run: |
+          flutter pub get
+          dart run build_runner build --delete-conflicting-outputs
 
       - name: Decrypt SignETS certificate and Google Services files
         run: |
@@ -210,7 +214,7 @@ jobs:
         working-directory: ${{ matrix.build_path }}
 
       - name: Upload build artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: ${{ matrix.target }}
           path: ${{ github.workspace }}/${{ env.APP_NAME }}_${{ matrix.target }}.${{ matrix.asset_extension }}
@@ -228,15 +232,15 @@ jobs:
       upload_url: ${{ steps.create_release.outputs.upload_url }}
     steps:
       - name: Download iOS build
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: iOS
       - name: Download Android build
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: Android
       - name: Download build of Android and iOS
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           path: build
       - name: Create pre-release

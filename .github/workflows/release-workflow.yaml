@@ -49,13 +49,16 @@ jobs:
         if: matrix.target == 'iOS'
         run: |
           flutter pub get
+          dart run build_runner build --delete-conflicting-outputs
           cd ios
           pod install
           flutter clean
       - run: flutter doctor -v
 
       # Get dependencies and decrypt needed files.
-      - run: flutter pub get
+      - run: |
+          flutter pub get
+          dart run build_runner build --delete-conflicting-outputs
 
       - name: Decrypt certificates files
         run: |
