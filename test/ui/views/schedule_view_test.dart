@@ -192,14 +192,15 @@ void main() {
         CourseRepositoryMock.stubGetCoursesActivities(courseRepositoryMock);
         SettingsManagerMock.stubGetScheduleSettings(settingsManagerMock,
             toReturn: settings);
-
-        await tester.pumpWidget(localizedWidget(
-            child: FeatureDiscovery(
-                child: ScheduleView(initialDay: DateTime(2020)))));
-        await tester.pumpAndSettle(const Duration(seconds: 1));
-
-        await expectLater(find.byType(ScheduleView),
-            matchesGoldenFile(goldenFilePath("scheduleView_4")));
+        await tester.runAsync(() async {
+          await tester.pumpWidget(localizedWidget(
+              child: FeatureDiscovery(
+                  child: ScheduleView(initialDay: DateTime(2020)))));
+          await tester.pumpAndSettle(const Duration(seconds: 1));
+        }).then((value) async {
+          await expectLater(find.byType(ScheduleView),
+              matchesGoldenFile(goldenFilePath("scheduleView_4")));
+        });
       });
 
       testWidgets("other day is selected, current day still has a square.",
@@ -218,37 +219,38 @@ void main() {
             toReturn: settings);
 
         final testingDate = DateTime(2020);
+        await tester.runAsync(() async {
+          await tester.pumpWidget(localizedWidget(
+              child: FeatureDiscovery(
+                  child: MediaQuery(
+                      data: const MediaQueryData(
+                          textScaler: TextScaler.linear(0.5)),
+                      child: ScheduleView(initialDay: testingDate)))));
+          await tester.pumpAndSettle(const Duration(seconds: 1));
+        }).then((value) async {
+          expect(find.byKey(tableCalendarKey, skipOffstage: false),
+              findsOneWidget);
+          expect(
+              find.descendant(
+                  of: find.byKey(tableCalendarKey, skipOffstage: false),
+                  matching: find.text(
+                      "${testingDate.add(const Duration(days: 1)).day}",
+                      skipOffstage: false)),
+              findsOneWidget);
 
-        await tester.pumpWidget(localizedWidget(
-            child: FeatureDiscovery(
-                child: MediaQuery(
-                    data: const MediaQueryData(
-                        textScaler: TextScaler.linear(0.5)),
-                    child: ScheduleView(initialDay: testingDate)))));
-        await tester.pumpAndSettle(const Duration(seconds: 1));
+          // Tap on the day after selected day
+          await tester.tap(find.descendant(
+              of: find.byKey(tableCalendarKey, skipOffstage: false),
+              matching: find.text(
+                  "${testingDate.add(const Duration(days: 1)).day}",
+                  skipOffstage: false)));
 
-        expect(
-            find.byKey(tableCalendarKey, skipOffstage: false), findsOneWidget);
-        expect(
-            find.descendant(
-                of: find.byKey(tableCalendarKey, skipOffstage: false),
-                matching: find.text(
-                    "${testingDate.add(const Duration(days: 1)).day}",
-                    skipOffstage: false)),
-            findsOneWidget);
+          // Reload the view
+          await tester.pump();
 
-        // Tap on the day after selected day
-        await tester.tap(find.descendant(
-            of: find.byKey(tableCalendarKey, skipOffstage: false),
-            matching: find.text(
-                "${testingDate.add(const Duration(days: 1)).day}",
-                skipOffstage: false)));
-
-        // Reload the view
-        await tester.pump();
-
-        await expectLater(find.byType(ScheduleView),
-            matchesGoldenFile(goldenFilePath("scheduleView_5")));
+          await expectLater(find.byType(ScheduleView),
+              matchesGoldenFile(goldenFilePath("scheduleView_5")));
+        });
       });
     }, skip: !Platform.isLinux);
 
