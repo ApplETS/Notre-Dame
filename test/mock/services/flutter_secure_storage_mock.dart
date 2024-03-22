@@ -3,6 +3,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
+// Project imports:
 import 'flutter_secure_storage_mock.mocks.dart';
 
 /// Mock for the [FlutterSecureStorage]

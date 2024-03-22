@@ -228,8 +228,10 @@ class _GradesDetailsViewState extends State<GradesDetailsView>
                             AppIntl.of(context)!.grades_standard_deviation,
                             validateGrade(
                               context,
-                              model.course.summary?.standardDeviation.toString(),
-                              model.course.summary?.standardDeviation.toString(),
+                              model.course.summary?.standardDeviation
+                                  .toString(),
+                              model.course.summary?.standardDeviation
+                                  .toString(),
                             ),
                           ),
                         ),
@@ -307,7 +309,7 @@ class _GradesDetailsViewState extends State<GradesDetailsView>
             ),
             Column(children: <Widget>[
               for (final CourseEvaluation evaluation
-                      in model.course.summary?.evaluations ?? [])
+                  in model.course.summary?.evaluations ?? [])
                 GradeEvaluationTile(
                   evaluation,
                   completed: _completed,

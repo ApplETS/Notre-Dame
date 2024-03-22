@@ -7,7 +7,6 @@ import 'package:mockito/mockito.dart';
 import 'package:notredame/core/managers/quick_link_repository.dart';
 import 'package:notredame/core/models/quick_link.dart';
 import 'package:notredame/core/models/quick_link_data.dart';
-
 import 'quick_links_repository_mock.mocks.dart';
 
 @GenerateNiceMocks([MockSpec<QuickLinkRepository>()])
