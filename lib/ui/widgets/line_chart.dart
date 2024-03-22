@@ -8,7 +8,7 @@ import 'package:intl/intl.dart';
 
 // Project imports:
 import 'package:notredame/core/managers/grade_graph_repository.dart';
-import 'package:notredame/core/models/grade_graph_entry.dart';
+import 'package:notredame/core/models/grade_progression_entry.dart';
 import 'package:notredame/locator.dart';
 import 'package:notredame/ui/utils/app_theme.dart';
 
@@ -50,7 +50,7 @@ class _LineChartGradeGraphState extends State<LineChartGradeGraph> {
               top: 24,
               bottom: 12,
             ),
-            child: FutureBuilder<List<GradeGraphEntry>>(
+            child: FutureBuilder<List<GradeProgressionEntry>>(
                 future: _gradeGraphRepository.getGradesForCourse(
                     widget._courseAcronym, widget._group, widget._session),
                 builder: (context, snapshot) {
@@ -116,7 +116,6 @@ class _LineChartGradeGraphState extends State<LineChartGradeGraph> {
     return Text(text, style: style, textAlign: TextAlign.left);
   }
 
-  LineChartData getLinechartData(List<GradeGraphEntry> grades) {
     if (grades.isNotEmpty) {
       earliestGradeDate = grades.first.timestamp;
       maxX = earliestGradeDate.getDayDifference(DateTime.now()).toDouble();
@@ -129,6 +128,7 @@ class _LineChartGradeGraphState extends State<LineChartGradeGraph> {
           grade.summary.currentMarkInPercent);
       spots.add(newSpot);
     }
+  LineChartData getLinechartData(List<GradeProgressionEntry> grades) {
 
     if (spots.last.x != maxX) {
       // Adding a spot to fill the graph up to current date.

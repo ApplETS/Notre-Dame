@@ -9,7 +9,7 @@ import 'package:logger/logger.dart';
 // Project imports:
 import 'package:notredame/core/managers/storage_manager.dart';
 import 'package:notredame/core/managers/user_repository.dart';
-import 'package:notredame/core/models/grade_graph_entry.dart';
+import 'package:notredame/core/models/grade_progression_entry.dart';
 import 'package:notredame/locator.dart';
 
 /// Repository to access all the data related to courses taken by the student
@@ -33,9 +33,9 @@ class GradeGraphRepository {
     return file.exists();
   }
 
-  Future<List<GradeGraphEntry>> getGradesForCourse(
+  Future<List<GradeProgressionEntry>> getGradesForCourse(
       String courseAcronym, String group, String session) async {
-    final List<GradeGraphEntry> grades = await _getGrades();
+    final List<GradeProgressionEntry> grades = await _getGrades();
 
     return grades
         .where((course) =>
@@ -45,8 +45,6 @@ class GradeGraphRepository {
         .toList();
   }
 
-  Future<List<GradeGraphEntry>> _getGrades() async {
-    List<GradeGraphEntry> grades = <GradeGraphEntry>[];
 
     if (await _fileExists()) {
       final String gradesProgressionJSON =
@@ -54,16 +52,15 @@ class GradeGraphRepository {
 
       grades = (jsonDecode(gradesProgressionJSON) as List)
           .map((grade) =>
-              GradeGraphEntry.fromJson(grade as Map<String, dynamic>))
+              GradeProgressionEntry.fromJson(grade as Map<String, dynamic>))
           .toList();
     }
 
     return grades;
   }
 
-  Future<File> updateGradeEntry(Course course) async {
-    final List<GradeGraphEntry> grades = await _getGrades();
-    grades.add(_generateNewEntry(course));
+    final List<GradeProgressionEntry> grades = await _getGrades();
+    final GradeProgressionEntry newEntry = GradeProgressionEntry(
 
     File result;
     try {
@@ -102,7 +99,7 @@ class GradeGraphRepository {
   }
 
   /// Sort grades by session > acronym > group > time
-  int _gradeSortAlgorithm(GradeGraphEntry a, GradeGraphEntry b) {
+  int gradeSortAlgorithm(GradeProgressionEntry a, GradeProgressionEntry b) {
     final int sessionComparison = a.session.compareTo(b.session);
     if (sessionComparison != 0) {
       return sessionComparison;
@@ -122,8 +119,9 @@ class GradeGraphRepository {
     return timeComparison;
   }
 
-  Future<File> _writeGradesToFile(List<GradeGraphEntry> grades) {
-    grades.sort((a, b) => _gradeSortAlgorithm(a, b));
+  Future<File> _writeGradesToFile(List<GradeProgressionEntry> grades) {
+    grades.sort((a, b) => gradeSortAlgorithm(a, b));
+
     return _storageManager.writeToFile(_getFileName(), jsonEncode(grades));
   }
 }
