@@ -33,12 +33,6 @@ class GradeGraphRepository {
     return '${_userRepository.monETSUser.universalCode}-grades-progression-graph-data.json';
   }
 
-  /// Check if the file exists in the storage.
-  Future<bool> _fileExists() async {
-    final File file = await _storageManager.getLocalFile(_getFileName());
-    return file.exists();
-  }
-
   /// Gets the grade for the course with the same [courseAcronym], [group] and [session].
   Future<List<GradeProgressionEntry>> getGradesForCourse(
       String courseAcronym, String group, String session) async {
@@ -56,7 +50,7 @@ class GradeGraphRepository {
   Future<List<GradeProgressionEntry>> _getGrades() async {
     List<GradeProgressionEntry> grades = <GradeProgressionEntry>[];
 
-    if (await _fileExists()) {
+    if (await _storageManager.fileExists(_getFileName())) {
       final String gradesProgressionJSON =
           await _storageManager.readFile(_getFileName());
 

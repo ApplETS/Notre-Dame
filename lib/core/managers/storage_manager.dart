@@ -51,4 +51,10 @@ class StorageManager {
 
     return result;
   }
+
+  /// Check if the file exists in the storage.
+  Future<bool> fileExists(String fileName) async {
+    final File file = await getLocalFile(fileName);
+    return file.exists();
+  }
 }
