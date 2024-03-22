@@ -165,17 +165,18 @@ void main() {
         CourseRepositoryMock.stubGetCoursesActivities(courseRepositoryMock);
         SettingsManagerMock.stubGetScheduleSettings(settingsManagerMock,
             toReturn: settings);
-
-        await tester.pumpWidget(localizedWidget(
-            child: FeatureDiscovery(
-                child: MediaQuery(
-                    data: const MediaQueryData(
-                        textScaler: TextScaler.linear(0.5)),
-                    child: ScheduleView(initialDay: DateTime(2020))))));
-        await tester.pumpAndSettle(const Duration(seconds: 1));
-
-        await expectLater(find.byType(ScheduleView),
-            matchesGoldenFile(goldenFilePath("scheduleView_3")));
+        await tester.runAsync(() async {
+          await tester.pumpWidget(localizedWidget(
+              child: FeatureDiscovery(
+                  child: MediaQuery(
+                      data: const MediaQueryData(
+                          textScaler: TextScaler.linear(0.5)),
+                      child: ScheduleView(initialDay: DateTime(2020))))));
+          await tester.pumpAndSettle(const Duration(seconds: 1));
+        }).then((value) async {
+          await expectLater(find.byType(ScheduleView),
+              matchesGoldenFile(goldenFilePath("scheduleView_3")));
+        });
       });
 
       testWidgets("view with events, day without events selected",
