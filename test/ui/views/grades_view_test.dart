@@ -110,7 +110,7 @@ void main() {
         await tester.runAsync(() async {
           await tester.pumpWidget(
               localizedWidget(child: FeatureDiscovery(child: GradesView())));
-          await tester.pumpAndSettle(const Duration(seconds: 1));
+          await tester.pumpAndSettle(const Duration(seconds: 2));
         }).then(
           (value) async {
             await expectLater(find.byType(GradesView),
