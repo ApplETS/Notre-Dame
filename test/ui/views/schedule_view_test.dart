@@ -267,20 +267,22 @@ void main() {
         SettingsManagerMock.stubGetScheduleSettings(settingsManagerMock,
             toReturn: settings);
 
-        await tester.pumpWidget(localizedWidget(
-            child: FeatureDiscovery(child: const ScheduleView())));
-        await tester.pumpAndSettle();
+        await tester.runAsync(() async {
+          await tester.pumpWidget(localizedWidget(
+              child: FeatureDiscovery(child: const ScheduleView())));
+          await tester.pumpAndSettle();
+        }).then((value) async {
+          expect(find.byType(ScheduleSettings), findsNothing,
+              reason: "The settings page should not be open");
 
-        expect(find.byType(ScheduleSettings), findsNothing,
-            reason: "The settings page should not be open");
+          // Tap on the settings button
+          await tester.tap(find.byIcon(Icons.settings));
+          // Reload view
+          await tester.pumpAndSettle();
 
-        // Tap on the settings button
-        await tester.tap(find.byIcon(Icons.settings));
-        // Reload view
-        await tester.pumpAndSettle();
-
-        expect(find.byType(ScheduleSettings), findsOneWidget,
-            reason: "The settings view should be open");
+          expect(find.byType(ScheduleSettings), findsOneWidget,
+              reason: "The settings view should be open");
+        });
       });
     });
   });
