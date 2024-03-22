@@ -107,13 +107,16 @@ void main() {
             toReturn: courses, fromCacheOnly: true);
 
         tester.view.physicalSize = const Size(800, 1410);
-
-        await tester.pumpWidget(
-            localizedWidget(child: FeatureDiscovery(child: GradesView())));
-        await tester.pumpAndSettle(const Duration(seconds: 1));
-
-        await expectLater(find.byType(GradesView),
-            matchesGoldenFile(goldenFilePath("gradesView_2")));
+        await tester.runAsync(() async {
+          await tester.pumpWidget(
+              localizedWidget(child: FeatureDiscovery(child: GradesView())));
+          await tester.pumpAndSettle(const Duration(seconds: 2));
+        }).then(
+          (value) async {
+            await expectLater(find.byType(GradesView),
+                matchesGoldenFile(goldenFilePath("gradesView_2")));
+          },
+        );
       });
     }, skip: !Platform.isLinux);
 

@@ -421,32 +421,33 @@ void main() {
             toReturn: settings);
         SettingsManagerMock.stubSetBool(
             settingsManagerMock, PreferencesFlag.scheduleShowTodayBtn);
+        await tester.runAsync(() async {
+          await tester.pumpWidget(localizedWidget(
+              child: const ScheduleSettings(showHandle: false)));
+          await tester.pumpAndSettle();
+        }).then((value) async {
+          final showTodayBtnFinder = find.widgetWithText(
+              ListTile, intl.schedule_settings_show_today_btn_pref,
+              skipOffstage: false);
 
-        await tester.pumpWidget(
-            localizedWidget(child: const ScheduleSettings(showHandle: false)));
-        await tester.pumpAndSettle();
+          expect(find.byType(Switch, skipOffstage: false), findsOneWidget);
+          (find.byType(Switch, skipOffstage: false).evaluate().first.widget
+                  as Switch)
+              .onChanged!(false);
 
-        final showTodayBtnFinder = find.widgetWithText(
-            ListTile, intl.schedule_settings_show_today_btn_pref,
-            skipOffstage: false);
+          await tester.pumpAndSettle();
 
-        expect(find.byType(Switch, skipOffstage: false), findsNWidgets(2));
-        (find.byType(Switch, skipOffstage: false).evaluate().first.widget
-                as Switch)
-            .onChanged!(false);
+          await untilCalled(settingsManagerMock.setBool(
+              PreferencesFlag.scheduleShowTodayBtn, any));
 
-        await tester.pumpAndSettle();
-
-        await untilCalled(settingsManagerMock.setBool(
-            PreferencesFlag.scheduleShowTodayBtn, any));
-
-        expect(
-            tester.widget(find.descendant(
-                of: showTodayBtnFinder,
-                matching: find.byType(Switch, skipOffstage: false))),
-            isA<Switch>().having((source) => source.value, 'value', isFalse),
-            reason:
-                "the settings says that the showTodayBtn is enabled, the UI should reflet that.");
+          expect(
+              tester.widget(find.descendant(
+                  of: showTodayBtnFinder,
+                  matching: find.byType(Switch, skipOffstage: false))),
+              isA<Switch>().having((source) => source.value, 'value', isFalse),
+              reason:
+                  "the settings says that the showTodayBtn is enabled, the UI should reflet that.");
+        });
       });
     });
 

@@ -233,14 +233,15 @@ void main() {
             toReturn: course);
 
         tester.view.physicalSize = const Size(800, 1410);
-
-        await tester.pumpWidget(localizedWidget(
-            child: FeatureDiscovery(
-                child: GradesDetailsView(course: courseWithoutSummary))));
-        await tester.pumpAndSettle();
-
-        await expectLater(find.byType(GradesDetailsView),
-            matchesGoldenFile(goldenFilePath("gradesDetailsView_1")));
+        await tester.runAsync(() async {
+          await tester.pumpWidget(localizedWidget(
+              child: FeatureDiscovery(
+                  child: GradesDetailsView(course: courseWithoutSummary))));
+          await tester.pumpAndSettle();
+        }).then((value) async {
+          await expectLater(find.byType(GradesDetailsView),
+              matchesGoldenFile(goldenFilePath("gradesDetailsView_1")));
+        });
       });
 
       testWidgets("if there is no grades available",
