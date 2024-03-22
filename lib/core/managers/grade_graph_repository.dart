@@ -45,6 +45,8 @@ class GradeGraphRepository {
         .toList();
   }
 
+  Future<List<GradeProgressionEntry>> _getGrades() async {
+    List<GradeProgressionEntry> grades = <GradeProgressionEntry>[];
 
     if (await _fileExists()) {
       final String gradesProgressionJSON =

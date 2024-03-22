@@ -108,4 +108,9 @@ class GradesDetailsViewModel extends FutureViewModel<Course> {
       settingsManager.setBool(PreferencesFlag.discoveryGradeDetails, true);
     }
   }
+  Session getSession(String sessionShortName) {
+    return _courseRepository.sessions.firstWhere(
+        (element) => element.shortName == sessionShortName,
+        orElse: () => null);
+  }
 }

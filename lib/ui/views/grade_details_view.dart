@@ -255,7 +255,10 @@ class _GradesDetailsViewState extends State<GradesDetailsView>
           return SizedBox(
             width: MediaQuery.of(context).size.width,
             child: LineChartGradeGraph(
-                model.course.acronym, model.course.group, model.course.session),
+              model.course.acronym,
+              model.course.group,
+              model.getSession(model.course.session),
+            ),
           );
         })
       ]; // carouselItems

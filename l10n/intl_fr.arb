@@ -105,6 +105,7 @@
       "weight": {}
     }
   },
+  "grades_no_graph_data": "Aucune donnée disponible",
   "grades_group": "Groupe",
   "grades_grade": "Note",
   "grades_median": "Médiane",
