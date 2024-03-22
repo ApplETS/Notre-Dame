@@ -76,7 +76,7 @@ class _ScheduleViewState extends State<ScheduleView>
       ViewModelBuilder<ScheduleViewModel>.reactive(
         viewModelBuilder: () => ScheduleViewModel(
             intl: AppIntl.of(context)!, initialSelectedDate: widget.initialDay),
-        onModelReady: (model) {
+        onViewModelReady: (model) {
           if (model.settings.isEmpty) {
             model.loadSettings();
           }
