@@ -1,6 +1,10 @@
 // Dart imports:
 import 'dart:convert';
 import 'dart:io';
+import 'dart:math';
+
+// Flutter imports:
+import 'package:flutter/cupertino.dart';
 
 // Package imports:
 import 'package:ets_api_clients/models.dart';
@@ -12,7 +16,7 @@ import 'package:notredame/core/managers/user_repository.dart';
 import 'package:notredame/core/models/grade_progression_entry.dart';
 import 'package:notredame/locator.dart';
 
-/// Repository to access all the data related to courses taken by the student
+/// Repository to access the grades progression graph data.
 class GradeGraphRepository {
   static const String tag = "GradeRepository";
 
@@ -24,15 +28,18 @@ class GradeGraphRepository {
   /// To access the user currently logged
   final UserRepository _userRepository = locator<UserRepository>();
 
+  /// Get the name of the grades progression graph data JSON file.
   String _getFileName() {
     return '${_userRepository.monETSUser.universalCode}-grades-progression-graph-data.json';
   }
 
+  /// Check if the file exists in the storage.
   Future<bool> _fileExists() async {
     final File file = await _storageManager.getLocalFile(_getFileName());
     return file.exists();
   }
 
+  /// Gets the grade for the course with the same [courseAcronym], [group] and [session].
   Future<List<GradeProgressionEntry>> getGradesForCourse(
       String courseAcronym, String group, String session) async {
     final List<GradeProgressionEntry> grades = await _getGrades();
@@ -45,6 +52,7 @@ class GradeGraphRepository {
         .toList();
   }
 
+  /// Get the grades progression graph data from the storage.
   Future<List<GradeProgressionEntry>> _getGrades() async {
     List<GradeProgressionEntry> grades = <GradeProgressionEntry>[];
 
@@ -61,6 +69,7 @@ class GradeGraphRepository {
     return grades;
   }
 
+  /// Update the grades progression graph data with the new [course].
   Future<File> updateGradesProgressionData(Course course) async {
     final List<GradeProgressionEntry> grades = await _getGrades();
     final GradeProgressionEntry newEntry = GradeProgressionEntry(
@@ -81,6 +90,7 @@ class GradeGraphRepository {
     return result;
   }
 
+  /// Check if the grade for the [course] is new.
   Future<bool> isGradeNew(Course course) async {
     bool isGradeNew = true;
 
@@ -122,6 +132,7 @@ class GradeGraphRepository {
     return timeComparison;
   }
 
+  /// Write the grades to the storage.
   Future<File> _writeGradesToFile(List<GradeProgressionEntry> grades) {
     grades.sort((a, b) => gradeSortAlgorithm(a, b));
 

@@ -15,6 +15,8 @@ class StorageManager {
 
   final Logger _logger = locator<Logger>();
 
+  /// Get the path of the application's documents directory. The path is platform specific.
+  /// This directory will be deleted when the application is uninstalled.
   Future<String> getAppDocumentsDirectoryPath() async {
     return Platform.isAndroid
         ? getExternalStorageDirectory()
@@ -23,15 +25,17 @@ class StorageManager {
             .then((directory) => directory.path); //FOR iOS
   }
 
+  /// Get the local file with the [filename].
   Future<File> getLocalFile(String filename) async {
     return File('${await getAppDocumentsDirectoryPath()}/$filename');
   }
 
+  /// Returns the contents of the file with [filename] as a string.
   Future<String> readFile(String filename) async {
     final file = await getLocalFile(filename);
 
     final contents = await file.readAsString();
-    _logger.d("$tag - readFile(): $filename - $contents");
+    _logger.d("$tag - readFile(): $filename");
 
     return contents;
   }

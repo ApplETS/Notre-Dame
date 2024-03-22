@@ -27,10 +27,12 @@ class GradesDetailsViewModel extends FutureViewModel<Course> {
   /// Used to get the current course selected of the student
   Course course;
 
+  /// The current page of the carousel
   int _currentCarouselPage = 0;
 
   int get currentCarouselPage => _currentCarouselPage;
 
+  /// Set the current page of the carousel to [value]
   set currentCarouselPage(int value) {
     _currentCarouselPage = value;
     notifyListeners();
@@ -108,6 +110,8 @@ class GradesDetailsViewModel extends FutureViewModel<Course> {
       settingsManager.setBool(PreferencesFlag.discoveryGradeDetails, true);
     }
   }
+
+  /// Get the session with [sessionShortName]
   Session getSession(String sessionShortName) {
     return _courseRepository.sessions.firstWhere(
         (element) => element.shortName == sessionShortName,

@@ -1,3 +1,6 @@
+// Dart imports:
+import 'dart:math';
+
 // Flutter imports:
 import 'package:flutter/material.dart';
 
@@ -15,6 +18,7 @@ import 'package:notredame/core/models/grade_progression_entry.dart';
 import 'package:notredame/locator.dart';
 import 'package:notredame/ui/utils/app_theme.dart';
 
+/// A line chart that displays the grade progression for a course.
 class LineChartGradeGraph extends StatefulWidget {
   final String _courseAcronym;
   final String _group;
@@ -26,6 +30,7 @@ class LineChartGradeGraph extends StatefulWidget {
   State<LineChartGradeGraph> createState() => _LineChartGradeGraphState();
 }
 
+/// The state of the LineChartGradeGraph.
 class _LineChartGradeGraphState extends State<LineChartGradeGraph> {
   List<Color> gradientColors = [
     AppTheme.etsLightRed,
@@ -125,6 +130,7 @@ class _LineChartGradeGraphState extends State<LineChartGradeGraph> {
         textAlign: TextAlign.left);
   }
 
+  /// Returns the data for the line chart using the specified [grades] list.
 
   LineChartData getLinechartData(List<GradeProgressionEntry> grades) {
     earliestGradeDate = grades.first.timestamp;
