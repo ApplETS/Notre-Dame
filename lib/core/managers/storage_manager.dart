@@ -36,10 +36,13 @@ class StorageManager {
     return contents;
   }
 
-  Future<File> writeToFile(String filename, String contents) async {
+  /// Write the [contents] to the file with the [filename].
+  /// Returns the file that was written to.
+  Future<File> writeToFile(String filename, String contents,
+      [FileMode fileMode = FileMode.write]) async {
     final file = await getLocalFile(filename);
 
-    final result = await file.writeAsString(contents);
+    final result = await file.writeAsString(contents, mode: fileMode);
     _logger.d("$tag - writeToFile: Written to file $filename - ${result.path}");
 
     return result;

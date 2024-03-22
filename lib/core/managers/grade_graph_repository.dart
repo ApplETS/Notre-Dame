@@ -59,8 +59,12 @@ class GradeGraphRepository {
     return grades;
   }
 
+  Future<File> updateGradesProgressionData(Course course) async {
     final List<GradeProgressionEntry> grades = await _getGrades();
     final GradeProgressionEntry newEntry = GradeProgressionEntry(
+        course.acronym, course.group, course.session, course.summary);
+
+    grades.add(newEntry);
 
     File result;
     try {
@@ -84,18 +88,15 @@ class GradeGraphRepository {
 
       if (courseGrades.isNotEmpty) {
         for (final entry in courseGrades) {
-          isGradeNew = course.summary.currentMarkInPercent !=
-              entry.summary.currentMarkInPercent;
+          if (course.summary.currentMarkInPercent ==
+              entry.summary.currentMarkInPercent) {
+            isGradeNew = false;
+          }
         }
       }
     }
 
     return isGradeNew;
-  }
-
-  GradeGraphEntry _generateNewEntry(Course course) {
-    return GradeGraphEntry(
-        course.acronym, course.group, course.session, course.summary);
   }
 
   /// Sort grades by session > acronym > group > time

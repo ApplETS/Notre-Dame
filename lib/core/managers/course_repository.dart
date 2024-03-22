@@ -448,8 +448,10 @@ class CourseRepository {
     course.summary = summary;
     _courses.add(course);
 
-    if (await _gradeGraphRepository.isGradeNew(course)) {
-      _gradeGraphRepository.updateGradeEntry(course);
+    if (await _gradeGraphRepository.isGradeNew(course) &&
+        course.summary != null &&
+        course.summary.median > 0.0) {
+      _gradeGraphRepository.updateGradesProgressionData(course);
     }
 
     try {
