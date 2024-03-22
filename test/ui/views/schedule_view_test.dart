@@ -114,14 +114,15 @@ void main() {
         CourseRepositoryMock.stubGetCoursesActivities(courseRepositoryMock);
         SettingsManagerMock.stubGetScheduleSettings(settingsManagerMock,
             toReturn: settings);
-
-        await tester.pumpWidget(localizedWidget(
-            child: FeatureDiscovery(
-                child: ScheduleView(initialDay: DateTime(2020)))));
-        await tester.pumpAndSettle(const Duration(seconds: 1));
-
-        await expectLater(find.byType(ScheduleView),
-            matchesGoldenFile(goldenFilePath("scheduleView_1")));
+        await tester.runAsync(() async {
+          await tester.pumpWidget(localizedWidget(
+              child: FeatureDiscovery(
+                  child: ScheduleView(initialDay: DateTime(2020)))));
+          await tester.pumpAndSettle(const Duration(seconds: 1));
+        }).then((value) async {
+          await expectLater(find.byType(ScheduleView),
+              matchesGoldenFile(goldenFilePath("scheduleView_1")));
+        });
       });
 
       testWidgets("default view (no events), showTodayButton disabled",
