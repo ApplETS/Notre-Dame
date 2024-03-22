@@ -118,7 +118,8 @@ class _GradesDetailsViewState extends State<GradesDetailsView>
                   ),
                 ),
               ],
-              body: SafeArea(
+              body: Padding(
+                padding: const EdgeInsets.all(5.0),
                 child: _buildGradeEvaluations(model),
               ),
             ),
