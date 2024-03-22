@@ -9,15 +9,13 @@ import 'package:ets_api_clients/models.dart';
 import 'package:feature_discovery/feature_discovery.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:notredame/core/constants/router_paths.dart';
-import 'package:notredame/core/services/launch_url_service.dart';
-import 'package:notredame/core/services/navigation_service.dart';
 import 'package:stacked/stacked.dart';
 
 // Project imports:
 import 'package:notredame/core/constants/discovery_ids.dart';
 import 'package:notredame/core/constants/preferences_flags.dart';
 import 'package:notredame/core/constants/progress_bar_text_options.dart';
+import 'package:notredame/core/constants/router_paths.dart';
 import 'package:notredame/core/constants/update_code.dart';
 import 'package:notredame/core/constants/widget_helper.dart';
 import 'package:notredame/core/managers/course_repository.dart';
@@ -26,6 +24,8 @@ import 'package:notredame/core/models/widget_models.dart';
 import 'package:notredame/core/services/analytics_service.dart';
 import 'package:notredame/core/services/app_widget_service.dart';
 import 'package:notredame/core/services/in_app_review_service.dart';
+import 'package:notredame/core/services/launch_url_service.dart';
+import 'package:notredame/core/services/navigation_service.dart';
 import 'package:notredame/core/services/preferences_service.dart';
 import 'package:notredame/core/services/remote_config_service.dart';
 import 'package:notredame/core/services/siren_flutter_service.dart';

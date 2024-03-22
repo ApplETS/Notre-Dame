@@ -13,6 +13,7 @@ import 'package:flutter_test/flutter_test.dart';
 // Project imports:
 import 'package:notredame/core/managers/course_repository.dart';
 import 'package:notredame/core/managers/settings_manager.dart';
+import 'package:notredame/core/services/navigation_service.dart';
 import 'package:notredame/core/services/networking_service.dart';
 import 'package:notredame/ui/views/grades_view.dart';
 import 'package:notredame/ui/widgets/grade_button.dart';
@@ -68,12 +69,14 @@ void main() {
       courseRepositoryMock = setupCourseRepositoryMock();
       setupSettingsManagerMock();
       setupAnalyticsServiceMock();
+      setupNavigationServiceMock();
     });
 
     tearDown(() {
       unregister<CourseRepository>();
       unregister<NetworkingService>();
       unregister<SettingsManager>();
+      unregister<NavigationService>();
     });
 
     group("golden -", () {

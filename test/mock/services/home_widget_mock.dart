@@ -8,7 +8,6 @@ import 'package:mockito/annotations.dart';
 
 // Project imports:
 import 'package:notredame/core/services/app_widget_service.dart';
-
 import 'home_widget_mock.mocks.dart';
 
 /// Pseudo-mock for the static [HomeWidget] class (mocks the channel instead)
