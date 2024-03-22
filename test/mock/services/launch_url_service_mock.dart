@@ -4,7 +4,6 @@ import 'package:mockito/mockito.dart';
 
 // Project imports:
 import 'package:notredame/core/services/launch_url_service.dart';
-
 import 'launch_url_service_mock.mocks.dart';
 
 /// Mock for the [LaunchUrlService]
