@@ -96,7 +96,7 @@ class _GradesDetailsViewState extends State<GradesDetailsView>
                       decoration: BoxDecoration(
                         color: Theme.of(context).brightness == Brightness.light
                             ? AppTheme.etsLightRed
-                            : BottomAppBarTheme.of(context).color,
+                            : AppTheme.darkTheme().cardColor,
                       ),
                       child: Padding(
                         padding: const EdgeInsets.only(bottom: 8.0),
