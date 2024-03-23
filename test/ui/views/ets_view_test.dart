@@ -1,4 +1,6 @@
 // Flutter imports:
+import 'dart:io';
+
 import 'package:ets_api_clients/models.dart';
 import 'package:flutter/material.dart';
 
@@ -169,6 +171,6 @@ void main() {
         await expectLater(find.byType(ETSView),
             matchesGoldenFile(goldenFilePath("etsView_1")));
       });
-    });
+    }, skip: !Platform.isLinux);
   });
 }

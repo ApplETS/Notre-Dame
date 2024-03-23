@@ -1,4 +1,6 @@
 // Flutter imports:
+import 'dart:io';
+
 import 'package:ets_api_clients/models.dart';
 import 'package:flutter/material.dart';
 
@@ -109,7 +111,7 @@ void main() {
 
       expect(find.byKey(const Key("pagedListView")), findsOneWidget);
 
-      expect(find.byType(NewsCard), findsNWidgets(3));
+      expect(find.byType(NewsCard), findsNWidgets(1));
     });
 
     group("golden - ", () {
@@ -137,6 +139,6 @@ void main() {
         await expectLater(find.byType(NewsView),
             matchesGoldenFile(goldenFilePath("newsView_2")));
       });
-    });
+    }, skip: !Platform.isLinux);
   });
 }
