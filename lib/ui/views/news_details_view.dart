@@ -139,9 +139,10 @@ class _NewsDetailsViewState extends State<NewsDetailsView> {
                                 widget.news.eventEndDate),
                             _buildImage(widget.news),
                             _buildAuthor(
-                                "https://cdn-icons-png.flaticon.com/512/147/147142.png",
-                                widget.news.organizer.organisation!,
-                                widget.news.organizer.activityArea!,
+                                // TODO : Change to author image
+                                widget.news.imageUrl ?? "",
+                                widget.news.organizer.organisation ?? "",
+                                widget.news.organizer.activityArea ?? "",
                                 widget.news.organizer.id),
                             _buildContent(widget.news.content),
                           ],
@@ -213,7 +214,7 @@ class _NewsDetailsViewState extends State<NewsDetailsView> {
   Widget _buildImage(News news) {
     return Hero(
         tag: 'news_image_id_${news.id}',
-        child: (news.imageUrl == "")
+        child: (news.imageUrl == null || news.imageUrl == "")
             ? const SizedBox.shrink()
             : Image.network(
                 "https://picsum.photos/400/200",
@@ -236,7 +237,7 @@ class _NewsDetailsViewState extends State<NewsDetailsView> {
                   child: avatar == ""
                       ? const SizedBox()
                       : Image.network(
-                          avatar,
+                          "https://cdn-icons-png.flaticon.com/512/147/147142.png",
                           fit: BoxFit.cover,
                           width: 50.0,
                           height: 50.0,

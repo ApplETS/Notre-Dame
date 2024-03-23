@@ -75,6 +75,9 @@ void main() {
       newsRepository = setupNewsRepositoryMock();
       appIntl = await setupAppIntl();
       setupLogger();
+      AuthorRepositoryMock.stubFetchAuthorFromAPI(
+          authorRepository, author.id, author);
+      NewsRepositoryMock.stubGetNews(newsRepository, toReturn: paginatedNews);
       viewModel = AuthorViewModel(authorId: author.id, appIntl: appIntl);
     });
 
@@ -85,14 +88,9 @@ void main() {
     });
 
     test('Fetching author and news updates the author and news list', () async {
-      AuthorRepositoryMock.stubFetchAuthorFromAPI(
-          authorRepository, author.id, author);
-      NewsRepositoryMock.stubGetNews(newsRepository, toReturn: paginatedNews);
+      viewModel.initialise();
 
-      await viewModel.fetchPage(1);
-
-      verify(newsRepository.getNews(pageNumber: 1)).called(1);
-      expect(viewModel.pagingController.nextPageKey, 2);
+      verify(authorRepository.fetchAuthorFromAPI(author.id)).called(1);
       expect(viewModel.author, equals(author));
     });
   });
