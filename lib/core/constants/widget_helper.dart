@@ -34,6 +34,6 @@ extension WidgetTypeExtension on WidgetType {
   }
 
   /// Task IDs used by the system's work manager (unused at the moment)
-  // static const String progressTaskId = "app_widget_progress";
+  static const String progressTaskId = "app_widget_progress";
   // static const String gradesTaskId = "app_widget_grades";
 }

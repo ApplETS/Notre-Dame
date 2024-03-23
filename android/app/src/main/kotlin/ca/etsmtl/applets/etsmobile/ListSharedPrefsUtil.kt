@@ -5,7 +5,7 @@ import androidx.annotation.LayoutRes
 
 class ListSharedPrefsUtil {
     companion object {
-        private const val WIDGET_PREFS = "widget_prefs"
+        private const val WIDGET_PREFS = "ca.etsmtl.applets.etsmobile.ProgressWidget"
         public const val WIDGET_BACKGROUND_COLOR = "widget_background_color"
         public const val WIDGET_TEXT_COLOR = "widget_text_color"
 
