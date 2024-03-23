@@ -34,57 +34,72 @@ class _AuthorViewState extends State<AuthorView> {
   @override
   Widget build(BuildContext context) =>
       ViewModelBuilder<AuthorViewModel>.reactive(
-        viewModelBuilder: () => AuthorViewModel(
-            authorId: widget.authorId, appIntl: AppIntl.of(context)!),
-        builder: (context, model, child) {
-          notifyBtnText = getNotifyMeBtnText(model);
-
-          return BaseScaffold(
-            showBottomBar: false,
-            body: RefreshIndicator(
-              onRefresh: () => Future.sync(
-                () => model.pagingController.refresh(),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Expanded(
-                    child: ListView(
-                      padding: const EdgeInsets.fromLTRB(0, 4, 0, 8),
-                      children: [
-                        Stack(
-                          children: [
-                            _buildBackButton(),
-                            _buildAuthorInfo(model),
-                            _buildAvatar(model, widget.authorId),
-                          ],
-                        ),
-                        /*PagedListView<int, News>(
-                          key: const Key("pagedListView2"),
-                          pagingController: model.pagingController,
-                          padding: const EdgeInsets.fromLTRB(0, 4, 0, 8),
-                          builderDelegate: PagedChildBuilderDelegate<News>(
-                            itemBuilder: (context, item, index) =>
-                                NewsCard(item),
-                            firstPageProgressIndicatorBuilder: (context) =>
-                                _buildSkeletonLoader(),
-                            newPageProgressIndicatorBuilder: (context) =>
-                                NewsCardSkeleton(),
-                            noMoreItemsIndicatorBuilder: (context) =>
-                                _buildNoMoreNewsCard(),
-                            firstPageErrorIndicatorBuilder: (context) =>
-                                _buildError(model.pagingController),
-                          ),
-                        ),*/
-                      ],
+          viewModelBuilder: () => AuthorViewModel(
+              authorId: widget.authorId, appIntl: AppIntl.of(context)!),
+          onModelReady: (model) {
+            model.pagingController.addStatusListener((status) {
+              if (status == PagingStatus.subsequentPageError) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text(
+                      AppIntl.of(context)!.news_error_not_found,
                     ),
-                  )
-                ],
-              ),
-            ),
-          );
-        },
-      );
+                    action: SnackBarAction(
+                      label: AppIntl.of(context)!.retry,
+                      onPressed: () =>
+                          model.pagingController.retryLastFailedRequest(),
+                    ),
+                  ),
+                );
+              }
+            });
+          },
+          builder: (context, model, child) => BaseScaffold(
+                showBottomBar: false,
+                body: RefreshIndicator(
+                    onRefresh: () => Future.sync(
+                          () => model.pagingController.refresh(),
+                        ),
+                    child: Theme(
+                      data: Theme.of(context)
+                          .copyWith(canvasColor: Colors.transparent),
+                      child: Padding(
+                          padding: const EdgeInsets.only(top: 32),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Stack(
+                                children: [
+                                  _buildBackButton(),
+                                  _buildAuthorInfo(model),
+                                  _buildAvatar(model, widget.authorId),
+                                ],
+                              ),
+                              Expanded(
+                                child: PagedListView<int, News>(
+                                  key: const Key("pagedListView"),
+                                  pagingController: model.pagingController,
+                                  padding:
+                                      const EdgeInsets.fromLTRB(0, 4, 0, 8),
+                                  builderDelegate:
+                                      PagedChildBuilderDelegate<News>(
+                                    itemBuilder: (context, item, index) =>
+                                        NewsCard(item),
+                                    firstPageProgressIndicatorBuilder:
+                                        (context) => _buildSkeletonLoader(),
+                                    newPageProgressIndicatorBuilder:
+                                        (context) => NewsCardSkeleton(),
+                                    noMoreItemsIndicatorBuilder: (context) =>
+                                        _buildNoMoreNewsCard(),
+                                    firstPageErrorIndicatorBuilder: (context) =>
+                                        _buildError(model.pagingController),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          )),
+                    )),
+              ));
 
   Widget _buildBackButton() {
     return IconButton(
@@ -95,6 +110,7 @@ class _AuthorViewState extends State<AuthorView> {
 
   Widget _buildAuthorInfo(AuthorViewModel model) {
     final author = model.author;
+    notifyBtnText = getNotifyMeBtnText(model);
 
     return Padding(
       padding: const EdgeInsets.only(top: 76),
