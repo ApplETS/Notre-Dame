@@ -16,7 +16,7 @@ class AboutView extends StatefulWidget {
 }
 
 class _AboutViewState extends State<AboutView> with TickerProviderStateMixin {
-  AnimationController _controller;
+  late AnimationController _controller;
   bool _completed = false;
   bool _easterEggTrigger = false;
 
@@ -54,7 +54,7 @@ class _AboutViewState extends State<AboutView> with TickerProviderStateMixin {
       appBar: AppBar(
         foregroundColor: Colors.white,
         title: Text(
-          AppIntl.of(context).more_about_applets_title,
+          AppIntl.of(context)!.more_about_applets_title,
         ),
         elevation: 0,
         backgroundColor: Colors.transparent,
@@ -112,7 +112,7 @@ class _AboutViewState extends State<AboutView> with TickerProviderStateMixin {
               Padding(
                 padding: const EdgeInsets.all(16.0),
                 child: Text(
-                  AppIntl.of(context).more_applets_about_details,
+                  AppIntl.of(context)!.more_applets_about_details,
                   style: const TextStyle(color: Colors.white),
                 ),
               ),
@@ -127,42 +127,42 @@ class _AboutViewState extends State<AboutView> with TickerProviderStateMixin {
                           color: Colors.white,
                         ),
                         onPressed: () => Utils.launchURL(
-                            Urls.clubWebsite, AppIntl.of(context))),
+                            Urls.clubWebsite, AppIntl.of(context)!)),
                     IconButton(
                         icon: const FaIcon(
                           FontAwesomeIcons.github,
                           color: Colors.white,
                         ),
                         onPressed: () => Utils.launchURL(
-                            Urls.clubGithub, AppIntl.of(context))),
+                            Urls.clubGithub, AppIntl.of(context)!)),
                     IconButton(
                         icon: const FaIcon(
                           FontAwesomeIcons.facebook,
                           color: Colors.white,
                         ),
                         onPressed: () => Utils.launchURL(
-                            Urls.clubFacebook, AppIntl.of(context))),
+                            Urls.clubFacebook, AppIntl.of(context)!)),
                     IconButton(
                         icon: const FaIcon(
                           FontAwesomeIcons.twitter,
                           color: Colors.white,
                         ),
                         onPressed: () => Utils.launchURL(
-                            Urls.clubTwitter, AppIntl.of(context))),
+                            Urls.clubTwitter, AppIntl.of(context)!)),
                     IconButton(
                         icon: const FaIcon(
                           FontAwesomeIcons.youtube,
                           color: Colors.white,
                         ),
                         onPressed: () => Utils.launchURL(
-                            Urls.clubYoutube, AppIntl.of(context))),
+                            Urls.clubYoutube, AppIntl.of(context)!)),
                     IconButton(
                         icon: const FaIcon(
                           FontAwesomeIcons.discord,
                           color: Colors.white,
                         ),
                         onPressed: () => Utils.launchURL(
-                            Urls.clubDiscord, AppIntl.of(context))),
+                            Urls.clubDiscord, AppIntl.of(context)!)),
                   ],
                 ),
               ),

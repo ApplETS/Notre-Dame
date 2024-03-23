@@ -322,5 +322,7 @@
   "no_ticket": "No ticket",
   "ticket_status_open": "Open",
   "ticket_status_closed": "Closed",
-  "loading": "Loading..."
+  "loading": "Loading...",
+
+  "no_schedule_available": "There are no events scheduled at the moment"
 }
