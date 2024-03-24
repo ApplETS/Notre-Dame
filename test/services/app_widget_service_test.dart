@@ -135,6 +135,7 @@ void main() {
         const WidgetType type = WidgetType.progress;
         homeWidgetMock.stubUpdateWidgetMock(
             type.androidName!, type.androidName!, type.iOSname!);
+
         expect(
             await HomeWidget.updateWidget(
                 name: type.androidName,

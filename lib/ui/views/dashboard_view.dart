@@ -33,7 +33,7 @@ import 'package:notredame/ui/widgets/haptics_container.dart';
 
 class DashboardView extends StatefulWidget {
   final UpdateCode updateCode;
-  const DashboardView({Key? key, required this.updateCode}) : super(key: key);
+  const DashboardView({super.key, required this.updateCode});
 
   @override
   _DashboardViewState createState() => _DashboardViewState();
@@ -104,19 +104,14 @@ class _DashboardViewState extends State<DashboardView>
           if (model.remoteConfigService.dashboardMessageActive) {
             cards.add(_buildMessageBroadcastCard(model, element));
           }
-          break;
         case PreferencesFlag.aboutUsCard:
           cards.add(_buildAboutUsCard(model, element));
-          break;
         case PreferencesFlag.scheduleCard:
           cards.add(_buildScheduleCard(model, element));
-          break;
         case PreferencesFlag.progressBarCard:
           cards.add(_buildProgressBarCard(model, element));
-          break;
         case PreferencesFlag.gradesCard:
           cards.add(_buildGradesCards(model, element));
-          break;
 
         default:
       }
@@ -140,7 +135,7 @@ class _DashboardViewState extends State<DashboardView>
               child: Container(
                 padding: const EdgeInsets.fromLTRB(17, 15, 0, 0),
                 child: Text(AppIntl.of(context)!.card_applets_title,
-                    style: Theme.of(context).primaryTextTheme.headline6),
+                    style: Theme.of(context).primaryTextTheme.titleLarge),
               )),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -148,7 +143,7 @@ class _DashboardViewState extends State<DashboardView>
               Container(
                 padding: const EdgeInsets.fromLTRB(17, 10, 15, 10),
                 child: Text(AppIntl.of(context)!.card_applets_text,
-                    style: Theme.of(context).primaryTextTheme.bodyText2),
+                    style: Theme.of(context).primaryTextTheme.bodyMedium),
               ),
               Container(
                 padding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
@@ -229,7 +224,7 @@ class _DashboardViewState extends State<DashboardView>
               child: Container(
                 padding: const EdgeInsets.fromLTRB(17, 15, 0, 0),
                 child: Text(AppIntl.of(context)!.progress_bar_title,
-                    style: Theme.of(context).textTheme.headline6),
+                    style: Theme.of(context).textTheme.titleLarge),
               )),
           if (model.progress >= 0.0)
             Stack(children: [
@@ -331,8 +326,8 @@ class _DashboardViewState extends State<DashboardView>
                 child: GestureDetector(
                   onTap: () => _navigationService
                       .pushNamedAndRemoveUntil(RouterPaths.schedule),
-                  child:
-                      Text(title, style: Theme.of(context).textTheme.headline6),
+                  child: Text(title,
+                      style: Theme.of(context).textTheme.titleLarge),
                 ),
               )),
           if (model.todayDateEvents.isEmpty)
@@ -383,7 +378,7 @@ class _DashboardViewState extends State<DashboardView>
                     onTap: () => _navigationService
                         .pushNamedAndRemoveUntil(RouterPaths.student),
                     child: Text(AppIntl.of(context)!.grades_title,
-                        style: Theme.of(context).textTheme.headline6),
+                        style: Theme.of(context).textTheme.titleLarge),
                   ),
                 ),
               ),
@@ -430,7 +425,7 @@ class _DashboardViewState extends State<DashboardView>
                   child: Align(
                     alignment: Alignment.centerLeft,
                     child: Text(model.broadcastTitle,
-                        style: Theme.of(context).primaryTextTheme.headline6),
+                        style: Theme.of(context).primaryTextTheme.titleLarge),
                   ),
                 ),
                 Align(
@@ -443,7 +438,7 @@ class _DashboardViewState extends State<DashboardView>
             ),
             // main text
             AutoSizeText(model.broadcastMessage,
-                style: Theme.of(context).primaryTextTheme.bodyText2)
+                style: Theme.of(context).primaryTextTheme.bodyMedium)
           ]),
         ));
   }

@@ -68,7 +68,8 @@ void main() {
 
     group("golden - ", () {
       testWidgets("default view", (WidgetTester tester) async {
-        tester.binding.window.physicalSizeTestValue = const Size(800, 1410);
+        tester.view.physicalSize = const Size(800, 1410);
+
         when(mockCourseRepository.getDefaultScheduleActivities(
                 session: "valid_session"))
             .thenAnswer((_) async => []);
@@ -83,7 +84,7 @@ void main() {
       });
 
       testWidgets("calendar view", (WidgetTester tester) async {
-        tester.binding.window.physicalSizeTestValue = const Size(800, 1410);
+        tester.view.physicalSize = const Size(800, 1410);
 
         when(mockCourseRepository.getDefaultScheduleActivities(
                 session: "H2024"))
