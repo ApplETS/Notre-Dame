@@ -12,8 +12,7 @@ import 'package:notredame/ui/widgets/schedule_calendar_tile.dart';
 class ScheduleDefault extends StatefulWidget {
   final List<CalendarEventData<Object>> calendarEvents;
 
-  const ScheduleDefault({Key? key, required this.calendarEvents})
-      : super(key: key);
+  const ScheduleDefault({super.key, required this.calendarEvents});
 
   @override
   _ScheduleDefaultState createState() => _ScheduleDefaultState();
