@@ -80,6 +80,15 @@
   "course_activity_group_b": "Group B",
   "course_activity_group_both": "Both groups",
 
+  "calendar_new": "New calendar",
+  "calendar_export": "Export to calendar",
+  "calendar_export_success": "Schedule export successful",
+  "calendar_export_error": "One or more events could not be exported properly",
+  "calendar_export_question": "Which calendar do you want to export to?",
+  "calendar_name": "Calendar name",
+  "calendar_select": "Please select a calendar",
+
+
   "grades_title": "Grades",
   "grades_msg_no_grades": "No grade available\nPull to refresh",
   "grades_msg_no_grade": "No grade available",
