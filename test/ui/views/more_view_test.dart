@@ -10,12 +10,12 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 // Project imports:
 import 'package:notredame/core/constants/preferences_flags.dart';
 import 'package:notredame/core/constants/router_paths.dart';
 import 'package:notredame/ui/views/more_view.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import '../../helpers.dart';
 import '../../mock/managers/settings_manager_mock.dart';
 import '../../mock/services/in_app_review_service_mock.dart';
