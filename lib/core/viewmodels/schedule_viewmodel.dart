@@ -1,5 +1,6 @@
 // Flutter imports:
 import 'package:flutter/material.dart';
+import 'package:collection/collection.dart';
 
 // Package imports:
 import 'package:calendar_view/calendar_view.dart';

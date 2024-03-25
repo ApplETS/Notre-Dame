@@ -150,7 +150,7 @@ Card getMainInfoCard(ProfileViewModel model) {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.all(5.0),
+            padding: const EdgeInsets.all(10.0),
             child: Text(
               programName,
               style: const TextStyle(

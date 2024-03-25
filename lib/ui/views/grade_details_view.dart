@@ -98,7 +98,7 @@ class _GradesDetailsViewState extends State<GradesDetailsView>
                       decoration: BoxDecoration(
                         color: Theme.of(context).brightness == Brightness.light
                             ? AppTheme.etsLightRed
-                            : BottomAppBarTheme.of(context).color,
+                            : AppTheme.darkTheme().cardColor,
                       ),
                       child: Padding(
                         padding: const EdgeInsets.only(bottom: 8.0),
@@ -120,7 +120,8 @@ class _GradesDetailsViewState extends State<GradesDetailsView>
                   ),
                 ),
               ],
-              body: SafeArea(
+              body: Padding(
+                padding: const EdgeInsets.all(5.0),
                 child: _buildGradeEvaluations(model),
               ),
             ),
@@ -308,7 +309,7 @@ class _GradesDetailsViewState extends State<GradesDetailsView>
               }).toList(),
             ),
             Column(children: <Widget>[
-              for (final CourseEvaluation evaluation
+              for (final final CourseEvaluation evaluation
                   in model.course.summary?.evaluations ?? [])
                 GradeEvaluationTile(
                   evaluation,

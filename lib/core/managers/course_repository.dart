@@ -30,6 +30,10 @@ class CourseRepository {
   static const String scheduleActivitiesCacheKey = "scheduleActivitiesCache";
 
   @visibleForTesting
+  static const String scheduleDefaultActivitiesCacheKey =
+      "scheduleDefaultActivitiesCache";
+
+  @visibleForTesting
   static const String sessionsCacheKey = "sessionsCache";
 
   @visibleForTesting
@@ -70,6 +74,11 @@ class CourseRepository {
   List<ScheduleActivity>? _scheduleActivities;
 
   List<ScheduleActivity>? get scheduleActivities => _scheduleActivities;
+
+  /// List of the default schedule activities for the student
+  late List<ScheduleActivity> _scheduleDefaultActivities;
+
+  List<ScheduleActivity>? get scheduleDefaultActivities => _scheduleActivities;
 
   /// List of session where the student has been registered.
   /// The sessions are organized from oldest to youngest
@@ -186,6 +195,79 @@ class CourseRepository {
   /// Get and update the list of schedule activities for the active sessions.
   /// After fetching the new activities from the [SignetsApi] the [CacheManager]
   /// is updated with the latest version of the schedule activities.
+  Future<List<ScheduleActivity>> getDefaultScheduleActivities({
+    String? session,
+    bool fromCacheOnly = false,
+  }) async {
+    // Force fromCacheOnly mode when user has no connectivity
+    if (!(await _networkingService.hasConnectivity())) {
+      // ignore: parameter_assignments
+      fromCacheOnly = true;
+    }
+
+    if (session == null) {
+      _logger.d(
+          "$tag - getScheduleDefaultActivities: Session is null, returning empty list.");
+      return [];
+    }
+
+    // Load the activities from the cache if the list doesn't exist or if another session is provided
+    _scheduleDefaultActivities = [];
+    try {
+      final List responseCache = jsonDecode(await _cacheManager
+          .get(scheduleDefaultActivitiesCacheKey + session)) as List<dynamic>;
+
+      // Build list of activities loaded from the cache.
+      _scheduleDefaultActivities = responseCache
+          .map((e) => ScheduleActivity.fromJson(e as Map<String, dynamic>))
+          .toList();
+      _logger.d(
+          "$tag - getScheduleDefaultActivities: ${_scheduleDefaultActivities.length} activities loaded from cache");
+    } on CacheException catch (_) {
+      _logger.e(
+          "$tag - getDefaultScheduleActivities: exception raised will trying to load activities from cache.");
+    }
+
+    if (fromCacheOnly) {
+      return _scheduleDefaultActivities;
+    }
+    final List<ScheduleActivity> fetchedScheduleActivities = [];
+
+    try {
+      final String password = await _userRepository.getPassword();
+
+      fetchedScheduleActivities.addAll(
+          await _signetsApiClient.getScheduleActivities(
+              username: _userRepository.monETSUser?.universalCode ?? '',
+              password: password,
+              session: session));
+      _logger.d(
+          "$tag - getDefaultScheduleActivities: fetched ${fetchedScheduleActivities.length} default activities.");
+    } on Exception catch (e, stacktrace) {
+      _analyticsService.logError(tag,
+          "Exception raised during getScheduleActivities: $e", e, stacktrace);
+      _logger.d("$tag - getScheduleActivities: Exception raised $e");
+      rethrow;
+    }
+
+    _scheduleDefaultActivities = fetchedScheduleActivities;
+
+    try {
+      // Update cache
+      _cacheManager.update(scheduleDefaultActivitiesCacheKey + session,
+          jsonEncode(_scheduleDefaultActivities));
+    } on CacheException catch (_) {
+      // Do nothing, the caching will retry later and the error has been logged by the [CacheManager]
+      _logger.e(
+          "$tag - getScheduleActivities: exception raised will trying to update the cache.");
+    }
+
+    return _scheduleDefaultActivities;
+  }
+
+  /// Get and update the list of schedule activities for the active sessions.
+  /// After fetching the new activities from the [SignetsApi] the [CacheManager]
+  /// is updated with the latest version of the schedule activities.
   Future<List<ScheduleActivity>> getScheduleActivities(
       {bool fromCacheOnly = false}) async {
     // Force fromCacheOnly mode when user has no connectivity
@@ -194,7 +276,7 @@ class CourseRepository {
       fromCacheOnly = true;
     }
 
-    // Load the activities from the cache if the list doesn't exist
+    // Load the activities from the cache if the list doesn't exist or if another session is provided
     if (_scheduleActivities == null) {
       _scheduleActivities = [];
       try {
@@ -229,13 +311,12 @@ class CourseRepository {
       if (_userRepository.monETSUser != null) {
         final String password = await _userRepository.getPassword();
 
-        for (final Session session in activeSessions) {
+        for (final Session oneSession in activeSessions) {
           fetchedScheduleActivities.addAll(
               await _signetsApiClient.getScheduleActivities(
-                  username: _userRepository.monETSUser!.universalCode,
+                  username: _userRepository.monETSUser?.universalCode ?? '',
                   password: password,
-                  session: session.shortName));
-
+                  session: oneSession.shortName));
           _logger.d(
               "$tag - getScheduleActivities: fetched ${fetchedScheduleActivities.length} activities.");
         }
