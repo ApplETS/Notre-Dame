@@ -34,6 +34,13 @@ mixin Utils {
         : darkColor;
   }
 
+  static Color? getColorByBrightnessNullable(
+      BuildContext context, Color? lightColor, Color? darkColor) {
+    return Theme.of(context).brightness == Brightness.light
+        ? lightColor
+        : darkColor;
+  }
+
   static bool isDarkTheme(BuildContext context) {
     return Theme.of(context).brightness == Brightness.dark;
   }

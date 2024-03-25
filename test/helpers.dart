@@ -12,6 +12,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:logger/logger.dart';
 
 // Project imports:
+import 'package:notredame/core/managers/author_repository.dart';
 import 'package:notredame/core/managers/cache_manager.dart';
 import 'package:notredame/core/managers/course_repository.dart';
 import 'package:notredame/core/managers/news_repository.dart';
@@ -31,6 +32,7 @@ import 'package:notredame/core/services/remote_config_service.dart';
 import 'package:notredame/core/services/rive_animation_service.dart';
 import 'package:notredame/core/services/siren_flutter_service.dart';
 import 'package:notredame/locator.dart';
+import 'mock/managers/author_repository_mock.dart';
 import 'mock/managers/cache_manager_mock.dart';
 import 'mock/managers/course_repository_mock.dart';
 import 'mock/managers/news_repository_mock.dart';
@@ -96,6 +98,16 @@ NewsRepositoryMock setupNewsRepositoryMock() {
   final service = NewsRepositoryMock();
 
   locator.registerSingleton<NewsRepository>(service);
+
+  return service;
+}
+
+/// Load a mock of the [AuthorRepository]
+AuthorRepositoryMock setupAuthorRepositoryMock() {
+  unregister<AuthorRepository>();
+  final service = AuthorRepositoryMock();
+
+  locator.registerSingleton<AuthorRepository>(service);
 
   return service;
 }

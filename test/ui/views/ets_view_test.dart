@@ -1,4 +1,6 @@
 // Flutter imports:
+import 'dart:io';
+
 import 'package:ets_api_clients/models.dart';
 import 'package:flutter/material.dart';
 
@@ -27,7 +29,7 @@ void main() {
       title: 'Mock News 1',
       content:
           'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec tempus arcu sed quam tincidunt, non venenatis orci mollis. 1',
-      state: 1,
+      state: "1",
       publicationDate: DateTime.now().subtract(const Duration(days: 5)),
       eventStartDate: DateTime.now().add(const Duration(days: 2)),
       eventEndDate: DateTime.now().add(const Duration(days: 2, hours: 2)),
@@ -59,7 +61,7 @@ void main() {
       title: 'Mock News 2',
       content:
           'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec tempus arcu sed quam tincidunt, non venenatis orci mollis. 2',
-      state: 1,
+      state: "1",
       publicationDate: DateTime.now().subtract(const Duration(days: 5)),
       eventStartDate: DateTime.now().add(const Duration(days: 2)),
       eventEndDate: DateTime.now().add(const Duration(days: 2, hours: 2)),
@@ -91,7 +93,7 @@ void main() {
       title: 'Mock News 3',
       content:
           'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec tempus arcu sed quam tincidunt, non venenatis orci mollis. 3',
-      state: 1,
+      state: "1",
       publicationDate: DateTime.now().subtract(const Duration(days: 5)),
       eventStartDate: DateTime.now().add(const Duration(days: 2)),
       eventEndDate: DateTime.now().add(const Duration(days: 2, hours: 2)),
@@ -169,6 +171,6 @@ void main() {
         await expectLater(find.byType(ETSView),
             matchesGoldenFile(goldenFilePath("etsView_1")));
       });
-    });
+    }, skip: !Platform.isLinux);
   });
 }

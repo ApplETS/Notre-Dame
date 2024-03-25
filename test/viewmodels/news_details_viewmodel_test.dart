@@ -13,7 +13,7 @@ void main() {
     title: 'Mock News 1',
     content:
         'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec tempus arcu sed quam tincidunt, non venenatis orci mollis. 1',
-    state: 1,
+    state: "1",
     publicationDate: DateTime.now().subtract(const Duration(days: 5)),
     eventStartDate: DateTime.now().add(const Duration(days: 2)),
     eventEndDate: DateTime.now().add(const Duration(days: 2, hours: 2)),

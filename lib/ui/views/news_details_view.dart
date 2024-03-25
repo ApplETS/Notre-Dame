@@ -8,8 +8,10 @@ import 'package:intl/intl.dart';
 import 'package:stacked/stacked.dart';
 
 // Project imports:
+import 'package:notredame/core/constants/router_paths.dart';
 import 'package:notredame/core/utils/utils.dart';
 import 'package:notredame/core/services/analytics_service.dart';
+import 'package:notredame/core/services/navigation_service.dart';
 import 'package:notredame/core/viewmodels/news_details_viewmodel.dart';
 import 'package:notredame/locator.dart';
 import 'package:notredame/ui/utils/app_theme.dart';
@@ -26,6 +28,7 @@ class NewsDetailsView extends StatefulWidget {
 }
 
 class _NewsDetailsViewState extends State<NewsDetailsView> {
+  final NavigationService _navigationService = locator<NavigationService>();
   final AnalyticsService _analyticsService = locator<AnalyticsService>();
 
   @override
@@ -52,7 +55,7 @@ class _NewsDetailsViewState extends State<NewsDetailsView> {
                         backgroundColor:
                             Theme.of(context).brightness == Brightness.light
                                 ? AppTheme.etsLightRed
-                                : Theme.of(context).bottomAppBarColor,
+                                : AppTheme.darkThemeBackgroundAccent,
                         pinned: true,
                         titleSpacing: 0,
                         leading: IconButton(
@@ -98,11 +101,13 @@ class _NewsDetailsViewState extends State<NewsDetailsView> {
                                 widget.news.publicationDate,
                                 widget.news.eventStartDate,
                                 widget.news.eventEndDate),
-                            _buildImage(widget.news.imageUrl!),
+                            _buildImage(widget.news),
                             _buildAuthor(
-                                "https://cdn-icons-png.flaticon.com/512/147/147142.png",
-                                widget.news.organizer.organisation!,
-                                widget.news.organizer.activityArea!),
+                                // TODO : Change to author image
+                                widget.news.imageUrl ?? "",
+                                widget.news.organizer.organisation ?? "",
+                                widget.news.organizer.activityArea ?? "",
+                                widget.news.organizer.id),
                             _buildContent(widget.news.content),
                           ],
                         ),
@@ -143,32 +148,38 @@ class _NewsDetailsViewState extends State<NewsDetailsView> {
     );
   }
 
-  Widget _buildImage(String image) {
-    if (image == "") {
-      return const SizedBox.shrink();
-    }
-
-    return Image.network(
-      image,
-      fit: BoxFit.cover,
-    );
+  Widget _buildImage(News news) {
+    return Hero(
+        tag: 'news_image_id_${news.id}',
+        child: (news.imageUrl == null || news.imageUrl == "")
+            ? const SizedBox.shrink()
+            : Image.network(
+                "https://picsum.photos/400/200",
+                fit: BoxFit.cover,
+              ));
   }
 
-  Widget _buildAuthor(String avatar, String author, String activity) {
+  Widget _buildAuthor(
+      String avatar, String author, String activity, String authorId) {
     return ColoredBox(
-      color: Utils.getColorByBrightness(context, AppTheme.etsLightRed,
-          Theme.of(context).bottomAppBarTheme.color ?? AppTheme.etsLightRed),
+      color: Utils.getColorByBrightness(
+          context, AppTheme.etsLightRed, AppTheme.darkThemeBackgroundAccent),
       child: ListTile(
-        leading: ClipOval(
-          child: avatar == ""
-              ? const SizedBox()
-              : Image.network(
-                  avatar,
-                  fit: BoxFit.cover,
-                  width: 50.0,
-                  height: 50.0,
-                ),
-        ),
+        leading: GestureDetector(
+            onTap: () => _navigationService.pushNamed(RouterPaths.newsAuthor,
+                arguments: authorId),
+            child: Hero(
+                tag: 'news_author_avatar',
+                child: ClipOval(
+                  child: avatar == ""
+                      ? const SizedBox()
+                      : Image.network(
+                          "https://cdn-icons-png.flaticon.com/512/147/147142.png",
+                          fit: BoxFit.cover,
+                          width: 50.0,
+                          height: 50.0,
+                        ),
+                ))),
         title: Text(
           author,
           style: const TextStyle(
@@ -251,7 +262,7 @@ class _NewsDetailsViewState extends State<NewsDetailsView> {
                 ),
                 Flexible(
                     child: Padding(
-                  padding: const EdgeInsets.only(left: 4),
+                  padding: const EdgeInsets.only(left: 8),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [

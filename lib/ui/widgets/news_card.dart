@@ -1,5 +1,6 @@
 // Flutter imports:
 import 'package:flutter/material.dart';
+import 'dart:convert';
 
 // Package imports:
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -43,7 +44,9 @@ class _NewsCardState extends State<NewsCard> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  _buildImage(widget.news.imageUrl),
+                  Hero(
+                      tag: 'news_image_id_${widget.news.id}',
+                      child: _buildImage(widget.news.imageUrl)),
                   const SizedBox(height: 8),
                   _buildTitleAndTime(widget.news, context),
                 ],
@@ -62,7 +65,7 @@ class _NewsCardState extends State<NewsCard> {
         child: Image.network(
           imageUrl == ""
               ? "https://www.shutterstock.com/image-vector/no-photo-thumbnail-graphic-element-600nw-2311073121.jpg"
-              : imageUrl,
+              : "https://picsum.photos/400/200",
           loadingBuilder: (context, child, loadingProgress) {
             if (loadingProgress == null) {
               return child;
