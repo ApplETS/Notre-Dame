@@ -1,5 +1,3 @@
 #!/usr/bin/env bash
 
-flutter pub run import_sorter:main
 dart run build_runner build
-dart format .
