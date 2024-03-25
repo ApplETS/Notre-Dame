@@ -30,14 +30,16 @@ class _LinkWebViewState extends State<LinkWebView> {
       ),
       body: Stack(
         children: <Widget>[
-          WebView(
-            initialUrl: widget._links.link,
-            javascriptMode: JavascriptMode.unrestricted,
-            onPageFinished: (finish) {
-              setState(() {
-                isLoading = false;
-              });
-            },
+          WebViewWidget(
+              controller: WebViewController()
+                ..setJavaScriptMode(JavaScriptMode.unrestricted)
+                ..setNavigationDelegate(
+                    NavigationDelegate(
+                        onPageFinished: (String url) {
+                          setState(() {
+                            isLoading = false;
+                          });
+                        }))
           ),
         ],
       ),

@@ -47,11 +47,9 @@ class _EmergencyViewState extends State<EmergencyView> {
             icon: const Icon(Icons.phone, size: 30, color: Colors.white),
             backgroundColor: AppTheme.etsLightRed,
           ),
-          body: WebView(
-            onWebViewCreated: (WebViewController webViewController) async {
-              await model.loadHtmlFromAssets(widget.description,
-                  Theme.of(context).brightness, webViewController);
-            },
+          body: WebViewWidget(
+            controller: WebViewController()
+              ..loadFlutterAsset(widget.description)
           ),
         ),
       );

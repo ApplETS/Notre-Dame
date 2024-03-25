@@ -23,7 +23,7 @@ class EmergencyViewModel extends SecurityViewModel {
             mimeType: 'text/html',
             encoding: Encoding.getByName('utf-8'))
         .toString();
-    await webViewController.loadUrl(data);
+    await webViewController.loadHtmlString(data);
   }
 
   /// used to add dark theme to emergency procedures html files
@@ -31,7 +31,7 @@ class EmergencyViewModel extends SecurityViewModel {
     String colorFileText = fileText;
     if (brightness == Brightness.dark) {
       colorFileText = colorFileText.replaceAll('<html>',
-          "<html><style> body { background-color: black; color: white;} </style>");
+          '<html lang="en"><style> body { background-color: black; color: white;} </style>');
     }
 
     return colorFileText;
