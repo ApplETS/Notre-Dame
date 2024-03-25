@@ -2,7 +2,7 @@
 import 'package:flutter/cupertino.dart';
 
 // Package imports:
-import 'package:flutter_siren/flutter_siren.dart';
+import 'package:flutter_siren_2/flutter_siren_2.dart';
 import 'package:pub_semver/pub_semver.dart';
 
 // SERVICES

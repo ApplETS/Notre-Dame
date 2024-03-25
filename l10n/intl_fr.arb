@@ -329,5 +329,7 @@
   "no_ticket": "Aucun billet",
   "ticket_status_open": "Ouvert",
   "ticket_status_closed": "Fermé",
-  "loading": "Chargement..."
+  "loading": "Chargement...",
+
+  "no_schedule_available": "Il n'y a aucun événement à l'horaire pour l'instant"
 }

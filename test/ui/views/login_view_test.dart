@@ -47,8 +47,8 @@ void main() {
         await tester.pumpAndSettle();
 
         expect(
-            find.widgetWithText(
-                TextFormField, intl.login_prompt_universal_code),
+            find.widgetWithText(TextFormField, intl.login_prompt_universal_code,
+                skipOffstage: false),
             findsOneWidget);
         expect(
             find.widgetWithText(PasswordFormField, intl.login_prompt_password),
