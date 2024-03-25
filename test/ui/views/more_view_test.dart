@@ -14,6 +14,7 @@ import 'package:mockito/mockito.dart';
 import 'package:notredame/core/constants/preferences_flags.dart';
 import 'package:notredame/core/constants/router_paths.dart';
 import 'package:notredame/ui/views/more_view.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../helpers.dart';
 import '../../mock/managers/settings_manager_mock.dart';
 import '../../mock/services/in_app_review_service_mock.dart';
@@ -21,6 +22,7 @@ import '../../mock/services/navigation_service_mock.dart';
 import '../../mock/services/remote_config_service_mock.dart';
 
 void main() {
+  SharedPreferences.setMockInitialValues({});
   late AppIntl intl;
   late NavigationServiceMock navigationServiceMock;
   late RemoteConfigServiceMock remoteConfigServiceMock;
@@ -40,6 +42,7 @@ void main() {
       setupGithubApiMock();
       setupNetworkingServiceMock();
       setupAnalyticsServiceMock();
+      setupFlutterToastMock();
       inAppReviewServiceMock =
           setupInAppReviewServiceMock() as InAppReviewServiceMock;
 
@@ -178,8 +181,8 @@ void main() {
           // Rebuild the widget after the state has changed.
           await tester.pumpAndSettle(const Duration(seconds: 1));
 
-          expect(find.text('CLOSE'), findsOneWidget);
-          expect(find.text('VIEW LICENSES'), findsOneWidget);
+          expect(find.text('Close'), findsOneWidget);
+          expect(find.text('View licenses'), findsOneWidget);
           expect(find.byType(AboutDialog), findsOneWidget);
         });
 
@@ -245,7 +248,7 @@ void main() {
           RemoteConfigServiceMock.stubGetPrivacyPolicyEnabled(
               remoteConfigServiceMock,
               toReturn: false);
-          tester.binding.window.physicalSizeTestValue = const Size(800, 1410);
+          tester.view.physicalSize = const Size(800, 1410);
 
           await tester.runAsync(() async {
             await tester.pumpWidget(

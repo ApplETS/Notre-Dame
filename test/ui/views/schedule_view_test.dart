@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:ets_api_clients/models.dart';
 import 'package:feature_discovery/feature_discovery.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 // Project imports:
@@ -20,6 +21,7 @@ import '../../mock/managers/settings_manager_mock.dart';
 import '../../mock/services/remote_config_service_mock.dart';
 
 void main() {
+  SharedPreferences.setMockInitialValues({});
   late SettingsManagerMock settingsManagerMock;
   late CourseRepositoryMock courseRepositoryMock;
   late RemoteConfigServiceMock remoteConfigServiceMock;
@@ -101,7 +103,7 @@ void main() {
       const tableCalendarKey = Key("TableCalendar");
       testWidgets("default view (no events), showTodayButton enabled",
           (WidgetTester tester) async {
-        tester.binding.window.physicalSizeTestValue = const Size(800, 1410);
+        tester.view.physicalSize = const Size(800, 1410);
 
         CourseRepositoryMock.stubCoursesActivities(courseRepositoryMock);
         CourseRepositoryMock.stubGetCoursesActivities(courseRepositoryMock,
@@ -112,21 +114,22 @@ void main() {
         CourseRepositoryMock.stubGetCoursesActivities(courseRepositoryMock);
         SettingsManagerMock.stubGetScheduleSettings(settingsManagerMock,
             toReturn: settings);
-
-        await tester.pumpWidget(localizedWidget(
-            child: FeatureDiscovery(
-                child: ScheduleView(initialDay: DateTime(2020)))));
-        await tester.pumpAndSettle(const Duration(seconds: 1));
-
-        await expectLater(find.byType(ScheduleView),
-            matchesGoldenFile(goldenFilePath("scheduleView_1")));
+        await tester.runAsync(() async {
+          await tester.pumpWidget(localizedWidget(
+              child: FeatureDiscovery(
+                  child: ScheduleView(initialDay: DateTime(2020)))));
+          await tester.pumpAndSettle(const Duration(seconds: 1));
+        }).then((value) async {
+          await expectLater(find.byType(ScheduleView),
+              matchesGoldenFile(goldenFilePath("scheduleView_1")));
+        });
       });
 
       testWidgets("default view (no events), showTodayButton disabled",
           (WidgetTester tester) async {
         SettingsManagerMock.stubGetBool(
             settingsManagerMock, PreferencesFlag.discoverySchedule);
-        tester.binding.window.physicalSizeTestValue = const Size(800, 1410);
+        tester.view.physicalSize = const Size(800, 1410);
 
         settings[PreferencesFlag.scheduleShowTodayBtn] = false;
 
@@ -151,7 +154,7 @@ void main() {
 
       testWidgets("view with events, day with events selected",
           (WidgetTester tester) async {
-        tester.binding.window.physicalSizeTestValue = const Size(800, 1410);
+        tester.view.physicalSize = const Size(800, 1410);
         CourseRepositoryMock.stubCoursesActivities(courseRepositoryMock,
             toReturn: [activityYesterday, activityToday, activityTomorrow]);
         CourseRepositoryMock.stubGetCoursesActivities(courseRepositoryMock,
@@ -162,21 +165,23 @@ void main() {
         CourseRepositoryMock.stubGetCoursesActivities(courseRepositoryMock);
         SettingsManagerMock.stubGetScheduleSettings(settingsManagerMock,
             toReturn: settings);
-
-        await tester.pumpWidget(localizedWidget(
-            child: FeatureDiscovery(
-                child: MediaQuery(
-                    data: const MediaQueryData(textScaleFactor: 0.5),
-                    child: ScheduleView(initialDay: DateTime(2020))))));
-        await tester.pumpAndSettle(const Duration(seconds: 1));
-
-        await expectLater(find.byType(ScheduleView),
-            matchesGoldenFile(goldenFilePath("scheduleView_3")));
+        await tester.runAsync(() async {
+          await tester.pumpWidget(localizedWidget(
+              child: FeatureDiscovery(
+                  child: MediaQuery(
+                      data: const MediaQueryData(
+                          textScaler: TextScaler.linear(0.5)),
+                      child: ScheduleView(initialDay: DateTime(2020))))));
+          await tester.pumpAndSettle(const Duration(seconds: 1));
+        }).then((value) async {
+          await expectLater(find.byType(ScheduleView),
+              matchesGoldenFile(goldenFilePath("scheduleView_3")));
+        });
       });
 
       testWidgets("view with events, day without events selected",
           (WidgetTester tester) async {
-        tester.binding.window.physicalSizeTestValue = const Size(800, 1410);
+        tester.view.physicalSize = const Size(800, 1410);
 
         CourseRepositoryMock.stubCoursesActivities(courseRepositoryMock,
             toReturn: [activityYesterday, activityTomorrow]);
@@ -188,19 +193,20 @@ void main() {
         CourseRepositoryMock.stubGetCoursesActivities(courseRepositoryMock);
         SettingsManagerMock.stubGetScheduleSettings(settingsManagerMock,
             toReturn: settings);
-
-        await tester.pumpWidget(localizedWidget(
-            child: FeatureDiscovery(
-                child: ScheduleView(initialDay: DateTime(2020)))));
-        await tester.pumpAndSettle(const Duration(seconds: 1));
-
-        await expectLater(find.byType(ScheduleView),
-            matchesGoldenFile(goldenFilePath("scheduleView_4")));
+        await tester.runAsync(() async {
+          await tester.pumpWidget(localizedWidget(
+              child: FeatureDiscovery(
+                  child: ScheduleView(initialDay: DateTime(2020)))));
+          await tester.pumpAndSettle(const Duration(seconds: 1));
+        }).then((value) async {
+          await expectLater(find.byType(ScheduleView),
+              matchesGoldenFile(goldenFilePath("scheduleView_4")));
+        });
       });
 
       testWidgets("other day is selected, current day still has a square.",
           (WidgetTester tester) async {
-        tester.binding.window.physicalSizeTestValue = const Size(800, 1410);
+        tester.view.physicalSize = const Size(800, 1410);
 
         CourseRepositoryMock.stubCoursesActivities(courseRepositoryMock,
             toReturn: [activityYesterday, activityTomorrow]);
@@ -214,43 +220,45 @@ void main() {
             toReturn: settings);
 
         final testingDate = DateTime(2020);
+        await tester.runAsync(() async {
+          await tester.pumpWidget(localizedWidget(
+              child: FeatureDiscovery(
+                  child: MediaQuery(
+                      data: const MediaQueryData(
+                          textScaler: TextScaler.linear(0.5)),
+                      child: ScheduleView(initialDay: testingDate)))));
+          await tester.pumpAndSettle(const Duration(seconds: 1));
+        }).then((value) async {
+          expect(find.byKey(tableCalendarKey, skipOffstage: false),
+              findsOneWidget);
+          expect(
+              find.descendant(
+                  of: find.byKey(tableCalendarKey, skipOffstage: false),
+                  matching: find.text(
+                      "${testingDate.add(const Duration(days: 1)).day}",
+                      skipOffstage: false)),
+              findsOneWidget);
 
-        await tester.pumpWidget(localizedWidget(
-            child: FeatureDiscovery(
-                child: MediaQuery(
-                    data: const MediaQueryData(textScaleFactor: 0.5),
-                    child: ScheduleView(initialDay: testingDate)))));
-        await tester.pumpAndSettle(const Duration(seconds: 1));
+          // Tap on the day after selected day
+          await tester.tap(find.descendant(
+              of: find.byKey(tableCalendarKey, skipOffstage: false),
+              matching: find.text(
+                  "${testingDate.add(const Duration(days: 1)).day}",
+                  skipOffstage: false)));
 
-        expect(
-            find.byKey(tableCalendarKey, skipOffstage: false), findsOneWidget);
-        expect(
-            find.descendant(
-                of: find.byKey(tableCalendarKey, skipOffstage: false),
-                matching: find.text(
-                    "${testingDate.add(const Duration(days: 1)).day}",
-                    skipOffstage: false)),
-            findsOneWidget);
+          // Reload the view
+          await tester.pump();
 
-        // Tap on the day after selected day
-        await tester.tap(find.descendant(
-            of: find.byKey(tableCalendarKey, skipOffstage: false),
-            matching: find.text(
-                "${testingDate.add(const Duration(days: 1)).day}",
-                skipOffstage: false)));
-
-        // Reload the view
-        await tester.pump();
-
-        await expectLater(find.byType(ScheduleView),
-            matchesGoldenFile(goldenFilePath("scheduleView_5")));
+          await expectLater(find.byType(ScheduleView),
+              matchesGoldenFile(goldenFilePath("scheduleView_5")));
+        });
       });
     }, skip: !Platform.isLinux);
 
     group("interactions - ", () {
       testWidgets("tap on settings button to open the schedule settings",
           (WidgetTester tester) async {
-        tester.binding.window.physicalSizeTestValue = const Size(800, 1410);
+        tester.view.physicalSize = const Size(800, 1410);
 
         CourseRepositoryMock.stubCoursesActivities(courseRepositoryMock,
             toReturn: [activityToday]);
@@ -263,20 +271,22 @@ void main() {
         SettingsManagerMock.stubGetScheduleSettings(settingsManagerMock,
             toReturn: settings);
 
-        await tester.pumpWidget(localizedWidget(
-            child: FeatureDiscovery(child: const ScheduleView())));
-        await tester.pumpAndSettle();
+        await tester.runAsync(() async {
+          await tester.pumpWidget(localizedWidget(
+              child: FeatureDiscovery(child: const ScheduleView())));
+          await tester.pumpAndSettle();
+        }).then((value) async {
+          expect(find.byType(ScheduleSettings), findsNothing,
+              reason: "The settings page should not be open");
 
-        expect(find.byType(ScheduleSettings), findsNothing,
-            reason: "The settings page should not be open");
+          // Tap on the settings button
+          await tester.tap(find.byIcon(Icons.settings));
+          // Reload view
+          await tester.pumpAndSettle();
 
-        // Tap on the settings button
-        await tester.tap(find.byIcon(Icons.settings));
-        // Reload view
-        await tester.pumpAndSettle();
-
-        expect(find.byType(ScheduleSettings), findsOneWidget,
-            reason: "The settings view should be open");
+          expect(find.byType(ScheduleSettings), findsOneWidget,
+              reason: "The settings view should be open");
+        });
       });
     });
   });

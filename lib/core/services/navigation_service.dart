@@ -2,8 +2,8 @@
 import 'package:flutter/material.dart';
 
 // Project imports:
-import 'package:notredame/core/services/analytics_service.dart';
 import 'package:notredame/core/constants/router_paths.dart';
+import 'package:notredame/core/services/analytics_service.dart';
 import 'package:notredame/core/services/remote_config_service.dart';
 import 'package:notredame/locator.dart';
 

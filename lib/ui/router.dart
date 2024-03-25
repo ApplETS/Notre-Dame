@@ -21,6 +21,7 @@ import 'package:notredame/ui/views/more_view.dart';
 import 'package:notredame/ui/views/not_found_view.dart';
 import 'package:notredame/ui/views/outage_view.dart';
 import 'package:notredame/ui/views/quick_links_view.dart';
+import 'package:notredame/ui/views/schedule_default_view.dart';
 import 'package:notredame/ui/views/schedule_view.dart';
 import 'package:notredame/ui/views/security_view.dart';
 import 'package:notredame/ui/views/settings_view.dart';
@@ -57,8 +58,13 @@ Route<dynamic> generateRoute(RouteSettings routeSettings) {
     case RouterPaths.schedule:
       return PageRouteBuilder(
           settings: RouteSettings(name: routeSettings.name),
-          pageBuilder: (_, __, ___) =>
-              ApplyGlobalOverlays(const ScheduleView()));
+          pageBuilder: (_, __, ___) => const ScheduleView());
+    case RouterPaths.defaultSchedule:
+      return PageRouteBuilder(
+          settings: RouteSettings(
+              name: routeSettings.name, arguments: routeSettings.arguments),
+          pageBuilder: (_, __, ___) => ScheduleDefaultView(
+              sessionCode: routeSettings.arguments as String?));
     case RouterPaths.student:
       return PageRouteBuilder(
           settings: RouteSettings(name: routeSettings.name),

@@ -1,8 +1,6 @@
-// Dart imports:
-import 'package:collection/collection.dart';
-
 // Package imports:
 import 'package:calendar_view/calendar_view.dart';
+import 'package:collection/collection.dart';
 import 'package:enum_to_string/enum_to_string.dart';
 import 'package:ets_api_clients/models.dart';
 import 'package:stacked/stacked.dart';

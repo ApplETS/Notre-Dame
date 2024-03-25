@@ -37,7 +37,7 @@ class PreferencesService {
       PreferencesFlag flag, String key, String value) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
 
-    return prefs.setString('${flag.toString()}_$key', value);
+    return prefs.setString('${flag}_$key', value);
   }
 
   Future<void> clear() async {
@@ -85,7 +85,7 @@ class PreferencesService {
   Future<bool> removeDynamicPreferencesFlag(
       PreferencesFlag flag, String key) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    return prefs.remove('${flag.toString()}_$key');
+    return prefs.remove('${flag}_$key');
   }
 
   Future<bool> setInt(PreferencesFlag flag, int value) async {
@@ -119,7 +119,7 @@ class PreferencesService {
   Future<String?> getDynamicString(PreferencesFlag flag, String key) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
 
-    return prefs.getString('${flag.toString()}_$key');
+    return prefs.getString('${flag}_$key');
   }
 
   Future<DateTime?> getDateTime(PreferencesFlag flag) async {

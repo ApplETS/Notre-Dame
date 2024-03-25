@@ -13,10 +13,10 @@ import 'package:notredame/core/models/feedback.dart';
 /// The submit button is disabled until the user provides the feedback type and a feedback text.
 class CustomFeedbackForm extends StatefulWidget {
   const CustomFeedbackForm({
-    Key? key,
+    super.key,
     required this.onSubmit,
     this.scrollController,
-  }) : super(key: key);
+  });
 
   final OnSubmit onSubmit;
   final ScrollController? scrollController;

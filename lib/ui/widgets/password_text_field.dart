@@ -9,8 +9,7 @@ class PasswordFormField extends StatefulWidget {
   final VoidCallback onEditionComplete;
 
   const PasswordFormField(
-      {Key? key, required this.validator, required this.onEditionComplete})
-      : super(key: key);
+      {super.key, required this.validator, required this.onEditionComplete});
 
   @override
   _PasswordFormFieldState createState() => _PasswordFormFieldState();

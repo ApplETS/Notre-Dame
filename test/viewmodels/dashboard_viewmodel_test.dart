@@ -816,7 +816,7 @@ void main() {
       });
 
       test(
-          "returns false when todays date is after the day set in cache and when the function is called twice",
+          "returns false when today's date is after the day set in cache and when the function is called twice",
           () async {
         InAppReviewServiceMock.stubIsAvailable(inAppReviewServiceMock);
         InAppReviewServiceMock.stubRequestReview(inAppReviewServiceMock);
@@ -836,7 +836,7 @@ void main() {
         expect(await DashboardViewModel.launchInAppReview(), false);
       });
 
-      test("returns false when todays date is the before the day set in cache",
+      test("returns false when today's date is the before the day set in cache",
           () async {
         InAppReviewServiceMock.stubIsAvailable(inAppReviewServiceMock);
         InAppReviewServiceMock.stubRequestReview(inAppReviewServiceMock);

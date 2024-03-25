@@ -6,7 +6,6 @@ import 'package:rive/rive.dart';
 // Project imports:
 import 'package:notredame/core/services/rive_animation_service.dart';
 import 'package:notredame/core/utils/animation_exception.dart';
-
 import 'rive_animation_service_mock.mocks.dart';
 
 /// Mock for the [RiveAnimationService]

@@ -67,6 +67,7 @@ class GithubApi {
           // ignore: avoid_dynamic_calls
           "uploadFileToGithub: ${error.message}",
           error as GitHubError);
+      throw Error();
     });
   }
 
@@ -102,6 +103,7 @@ class GithubApi {
           // ignore: avoid_dynamic_calls
           "createGithubIssue: ${error.message}",
           error as GitHubError);
+      throw Error();
     });
   }
 
@@ -119,6 +121,7 @@ class GithubApi {
             // ignore: avoid_dynamic_calls
             "fetchIssuesByNumbers: ${error.message}",
             error as GitHubError);
+        throw Error();
       })));
     }
     return issues;

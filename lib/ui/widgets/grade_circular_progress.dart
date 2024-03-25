@@ -16,12 +16,11 @@ class GradeCircularProgress extends StatefulWidget {
   final double ratio;
 
   const GradeCircularProgress(this.ratio,
-      {Key? key,
+      {super.key,
       this.completed = false,
       this.finalGrade,
       this.studentGrade,
-      this.averageGrade})
-      : super(key: key);
+      this.averageGrade});
 
   @override
   _GradeCircularProgressState createState() => _GradeCircularProgressState();

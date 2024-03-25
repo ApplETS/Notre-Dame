@@ -92,9 +92,13 @@ class _FeedbackViewState extends State<FeedbackView> {
                 Padding(
                     padding: const EdgeInsets.only(left: 8.0, right: 8.0),
                     child: Text(AppIntl.of(context)!.my_tickets,
-                        style: Theme.of(context).textTheme.headline5!.copyWith(
-                            color:
-                                isLightMode ? Colors.black87 : Colors.white))),
+                        style: Theme.of(context)
+                            .textTheme
+                            .headlineSmall!
+                            .copyWith(
+                                color: isLightMode
+                                    ? Colors.black87
+                                    : Colors.white))),
                 const Divider(
                   thickness: 1,
                   indent: 10,
@@ -190,7 +194,7 @@ class _FeedbackViewState extends State<FeedbackView> {
                                       overflow: TextOverflow.ellipsis,
                                       style: Theme.of(context)
                                           .textTheme
-                                          .headline6!
+                                          .titleLarge!
                                           .copyWith(
                                               color: isLightMode
                                                   ? const Color.fromARGB(
@@ -207,9 +211,13 @@ class _FeedbackViewState extends State<FeedbackView> {
                 Padding(
                     padding: const EdgeInsets.only(left: 8.0, right: 8.0),
                     child: Text(AppIntl.of(context)!.more_report_tips,
-                        style: Theme.of(context).textTheme.headline5!.copyWith(
-                            color:
-                                isLightMode ? Colors.black87 : Colors.white))),
+                        style: Theme.of(context)
+                            .textTheme
+                            .headlineSmall!
+                            .copyWith(
+                                color: isLightMode
+                                    ? Colors.black87
+                                    : Colors.white))),
                 const Divider(
                   thickness: 1,
                   indent: 10,
@@ -224,13 +232,13 @@ class _FeedbackViewState extends State<FeedbackView> {
                             text: AppIntl.of(context)!.more_report_bug_step1,
                             style: Theme.of(context)
                                 .textTheme
-                                .bodyText2!
+                                .bodyMedium!
                                 .copyWith(fontSize: 18)),
                         TextSpan(
                             text: AppIntl.of(context)!.more_report_bug_step2,
                             style: Theme.of(context)
                                 .textTheme
-                                .bodyText2!
+                                .bodyMedium!
                                 .copyWith(
                                     fontSize: 18,
                                     color: Theme.of(context).brightness ==
@@ -242,13 +250,13 @@ class _FeedbackViewState extends State<FeedbackView> {
                             text: AppIntl.of(context)!.more_report_bug_step3,
                             style: Theme.of(context)
                                 .textTheme
-                                .bodyText2!
+                                .bodyMedium!
                                 .copyWith(fontSize: 18)),
                         TextSpan(
                             text: AppIntl.of(context)!.more_report_bug_step4,
                             style: Theme.of(context)
                                 .textTheme
-                                .bodyText2!
+                                .bodyMedium!
                                 .copyWith(
                                     fontSize: 18,
                                     color: Theme.of(context).brightness ==
@@ -260,7 +268,7 @@ class _FeedbackViewState extends State<FeedbackView> {
                             text: AppIntl.of(context)!.more_report_bug_step5,
                             style: Theme.of(context)
                                 .textTheme
-                                .bodyText2!
+                                .bodyMedium!
                                 .copyWith(fontSize: 18)),
                       ],
                     ),
@@ -302,7 +310,7 @@ class _FeedbackViewState extends State<FeedbackView> {
                   title,
                   style: Theme.of(context)
                       .textTheme
-                      .bodyText2!
+                      .bodyMedium!
                       .copyWith(fontSize: 19),
                   textAlign: TextAlign.left,
                 ),
@@ -310,7 +318,7 @@ class _FeedbackViewState extends State<FeedbackView> {
                   subtitle,
                   style: Theme.of(context)
                       .textTheme
-                      .bodyText2!
+                      .bodyMedium!
                       .copyWith(fontSize: 16),
                   textAlign: TextAlign.left,
                 )

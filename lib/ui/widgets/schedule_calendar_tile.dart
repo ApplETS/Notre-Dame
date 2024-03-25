@@ -18,7 +18,7 @@ class ScheduleCalendarTile extends StatefulWidget {
   final BuildContext buildContext;
 
   const ScheduleCalendarTile(
-      {Key? key,
+      {super.key,
       this.title,
       this.description,
       this.titleStyle,
@@ -28,8 +28,7 @@ class ScheduleCalendarTile extends StatefulWidget {
       this.borderRadius,
       this.start,
       this.end,
-      required this.buildContext})
-      : super(key: key);
+      required this.buildContext});
 
   @override
   _ScheduleCalendarTileState createState() => _ScheduleCalendarTileState();

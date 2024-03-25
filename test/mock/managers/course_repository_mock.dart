@@ -6,7 +6,6 @@ import 'package:mockito/mockito.dart';
 
 // Project imports:
 import 'package:notredame/core/managers/course_repository.dart';
-
 import 'course_repository_mock.mocks.dart';
 
 @GenerateNiceMocks([MockSpec<CourseRepository>()])

@@ -6,7 +6,6 @@ import 'package:mockito/mockito.dart';
 
 // Project imports:
 import 'package:notredame/core/managers/user_repository.dart';
-
 import 'user_repository_mock.mocks.dart';
 
 /// Mock for the [UserRepository]

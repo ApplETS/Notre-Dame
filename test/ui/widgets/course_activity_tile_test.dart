@@ -26,7 +26,7 @@ void main() {
       // Set the textScaleFactor to 0.5 otherwise the row overflow, only happen in test.
       await tester.pumpWidget(localizedWidget(
           child: MediaQuery(
-              data: const MediaQueryData(textScaleFactor: 0.5),
+              data: const MediaQueryData(textScaler: TextScaler.linear(0.5)),
               child: CourseActivityTile(course))));
       await tester.pumpAndSettle();
 

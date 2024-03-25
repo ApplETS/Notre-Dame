@@ -5,6 +5,7 @@ class RouterPaths {
   static const String faq = "/faq";
   static const String dashboard = "/dashboard";
   static const String schedule = "/schedule";
+  static const String defaultSchedule = "/schedule/default";
   static const String student = "/student";
   static const String gradeDetails = "/student/grade/details";
   static const String ets = "/ets";

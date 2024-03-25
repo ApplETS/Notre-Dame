@@ -46,8 +46,8 @@ class _SecurityViewState extends State<SecurityView> {
                         model.controller = controller;
                         model.changeMapMode(context);
                       },
-                      gestureRecognizers: <
-                          Factory<OneSequenceGestureRecognizer>>{
+                      gestureRecognizers: <Factory<
+                          OneSequenceGestureRecognizer>>{
                         Factory<OneSequenceGestureRecognizer>(
                             () => EagerGestureRecognizer()),
                       }),

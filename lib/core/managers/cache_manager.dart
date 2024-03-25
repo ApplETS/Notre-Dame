@@ -46,11 +46,8 @@ class CacheManager {
       await _cacheManager.putFile(
           key, UriData.fromString(value, encoding: utf8).contentAsBytes());
     } on Exception catch (e, stacktrace) {
-      _analyticsService.logError(
-          tag,
-          "Exception raised during cache update of $key: ${e.toString()}",
-          e,
-          stacktrace);
+      _analyticsService.logError(tag,
+          "Exception raised during cache update of $key: $e", e, stacktrace);
       rethrow;
     }
   }
@@ -60,11 +57,8 @@ class CacheManager {
     try {
       await _cacheManager.removeFile(key);
     } on Exception catch (e, stacktrace) {
-      _analyticsService.logError(
-          tag,
-          "Exception raised during cache delete of $key: ${e.toString()}",
-          e,
-          stacktrace);
+      _analyticsService.logError(tag,
+          "Exception raised during cache delete of $key: $e", e, stacktrace);
     }
   }
 

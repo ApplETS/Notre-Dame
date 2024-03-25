@@ -1,9 +1,7 @@
-// Flutter imports:
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-
 // Package imports:
-import 'package:stacked/stacked.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:stacked/stacked.dart';
 
 // Project imports:
 import 'package:notredame/core/constants/preferences_flags.dart';
