@@ -15,7 +15,7 @@ import 'package:notredame/ui/utils/app_theme.dart';
 class ReportNews extends StatefulWidget {
   final bool showHandle;
 
-  const ReportNews({Key? key, this.showHandle = true}) : super(key: key);
+  const ReportNews({super.key, this.showHandle = true});
 
   @override
   _ReportNewsState createState() => _ReportNewsState();
@@ -30,24 +30,32 @@ class _ReportNewsState extends State<ReportNews> {
         viewModelBuilder: () => ReportNewsViewModel(),
         builder: (context, model, child) => SizedBox(
           height: MediaQuery.of(context).size.height * 0.50,
-          child: Column(
-            children: [
-              if (widget.showHandle) _buildHandle(context),
-              if (!clicked) _buildTitle(context),
-              Expanded(
-                child: clicked && clickedIndex != -1
-                    ? Center(
-                        child: _buildReportView(context, clickedIndex,
-                            model as ReportNewsViewModel))
-                    : ListView.builder(
-                        itemCount: reportNewsItems.length,
-                        itemBuilder: (context, index) {
-                          return _buildListTile(index);
-                        },
-                      ),
-              ),
-            ],
-          ),
+          child: Container(
+              decoration: BoxDecoration(
+                  color: Utils.getColorByBrightness(
+                    context,
+                    AppTheme.lightThemeBackground,
+                    AppTheme.darkThemeBackground,
+                  ),
+                  borderRadius: const BorderRadius.all(Radius.circular(8.0))),
+              child: Column(
+                children: [
+                  if (widget.showHandle) _buildHandle(context),
+                  if (!clicked) _buildTitle(context),
+                  Expanded(
+                    child: clicked && clickedIndex != -1
+                        ? Center(
+                            child:
+                                _buildReportView(context, clickedIndex, model))
+                        : ListView.builder(
+                            itemCount: reportNewsItems.length,
+                            itemBuilder: (context, index) {
+                              return _buildListTile(index);
+                            },
+                          ),
+                  ),
+                ],
+              )),
         ),
       );
 
@@ -104,29 +112,32 @@ class _ReportNewsState extends State<ReportNews> {
   Widget _buildListTile(int index) {
     final item = reportNewsItems[index];
     return Padding(
-      padding:
-          const EdgeInsets.only(left: 16.0, right: 16.0, top: 8.0, bottom: 8.0),
-      child: ListTile(
-        title: Text(
-          item.title,
-          style: const TextStyle(fontWeight: FontWeight.bold),
-        ),
-        subtitle: Text(item.description),
-        trailing: const Icon(Icons.navigate_next),
-        tileColor: Colors.grey[800],
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(5),
-        ),
-        contentPadding:
-            const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-        onTap: () {
-          setState(() {
-            clicked = true;
-            clickedIndex = index;
-          });
-        },
-      ),
-    );
+        padding: const EdgeInsets.only(left: 16.0, right: 16.0),
+        child: Card(
+          color: AppTheme.darkThemeAccent,
+          child: ListTile(
+            title: Text(
+              item.title,
+              style: const TextStyle(fontWeight: FontWeight.bold),
+            ),
+            subtitle: Text(item.description),
+            trailing: const Icon(
+              Icons.navigate_next,
+            ),
+            tileColor: AppTheme.darkThemeAccent,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(5),
+            ),
+            contentPadding:
+                const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+            onTap: () {
+              setState(() {
+                clicked = true;
+                clickedIndex = index;
+              });
+            },
+          ),
+        ));
   }
 
   Widget _buildReportView(
