@@ -63,7 +63,7 @@ dependencies:
   connectivity_plus: ^5.0.2
   flutter_svg: ^2.0.9
   font_awesome_flutter: ^10.7.0
-  in_app_review: ^2.0.8
+  in_app_review: ^2.0.9
   device_info_plus: ^9.1.2
   pub_semver: ^2.1.4
   home_widget: ^0.4.1
