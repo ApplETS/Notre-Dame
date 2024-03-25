@@ -26,7 +26,7 @@ void main() {
       await tester.pumpWidget(localizedWidget(child: LinkWebView(_quickLink)));
 
       final appBar = find.byType(AppBar);
-      final webview = find.byType(WebView);
+      final webview = find.byType(WebViewWidget);
 
       expect(appBar, findsNWidgets(1));
       expect(_quickLink.name, 'test');

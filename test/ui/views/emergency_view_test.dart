@@ -22,7 +22,7 @@ void main() {
                 'testEmergency', 'assets/html/armed_person_detail_en.html')));
         await tester.pumpAndSettle();
 
-        final webView = find.byType(WebView);
+        final webView = find.byType(WebViewWidget);
         expect(webView, findsOneWidget);
 
         final Finder phoneButton = find.byType(FloatingActionButton);
