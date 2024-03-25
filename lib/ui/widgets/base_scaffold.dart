@@ -56,7 +56,7 @@ class _BaseScaffoldState extends State<BaseScaffold> {
 
   final NetworkingService _networkingService = locator<NetworkingService>();
 
-  late StreamSubscription<ConnectivityResult> _subscription;
+  late StreamSubscription<List<ConnectivityResult>> _subscription;
 
   @override
   void initState() {
