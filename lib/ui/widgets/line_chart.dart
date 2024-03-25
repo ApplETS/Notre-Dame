@@ -12,7 +12,6 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:intl/intl.dart';
 
 // Project imports:
-import 'package:notredame/core/managers/course_repository.dart';
 import 'package:notredame/core/managers/grade_graph_repository.dart';
 import 'package:notredame/core/models/grade_progression_entry.dart';
 import 'package:notredame/locator.dart';
@@ -39,8 +38,8 @@ class _LineChartGradeGraphState extends State<LineChartGradeGraph> {
 
   double maxX = -1;
   double maxY = 100;
-  double verticalInterval;
-  DateTime earliestGradeDate;
+  double verticalInterval = 0;
+  DateTime earliestGradeDate = DateTime.now();
 
   final GradeGraphRepository _gradeGraphRepository =
       locator<GradeGraphRepository>();
@@ -67,16 +66,16 @@ class _LineChartGradeGraphState extends State<LineChartGradeGraph> {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return const Center(child: CircularProgressIndicator());
                   } else {
-                    if (snapshot.data.isNotEmpty) {
+                    if (snapshot.data!.length > 2) {
                       return LineChart(
-                        getLinechartData(snapshot.data),
+                        getLinechartData(snapshot.data!),
                         swapAnimationDuration:
                             const Duration(milliseconds: 250),
                       );
                     } else {
                       return Center(
                           child:
-                              Text(AppIntl.of(context).grades_no_graph_data));
+                              Text(AppIntl.of(context)!.grades_no_graph_data));
                     }
                   }
                 }),
@@ -94,12 +93,12 @@ class _LineChartGradeGraphState extends State<LineChartGradeGraph> {
     }
 
     final DateFormat dateFormat =
-        DateFormat('MMM d', AppIntl.of(context).localeName);
+        DateFormat('MMM d', AppIntl.of(context)!.localeName);
     final Duration durationInDays = Duration(days: value.toInt());
     final DateTime date = earliestGradeDate.add(durationInDays);
 
     final Widget titleText = Text(dateFormat.format(date),
-        style: Theme.of(context).textTheme.bodyText1);
+        style: Theme.of(context).textTheme.bodyLarge);
 
     return SideTitleWidget(
       axisSide: meta.axisSide,
@@ -114,31 +113,28 @@ class _LineChartGradeGraphState extends State<LineChartGradeGraph> {
     switch (value.toInt()) {
       case 0:
         text = '0%';
-        break;
       case 50:
         text = '50%';
-        break;
       case 100:
         text = '100%';
-        break;
       default:
         return Container();
     }
 
     return Text(text,
-        style: Theme.of(context).textTheme.bodyText1,
+        style: Theme.of(context).textTheme.bodyLarge,
         textAlign: TextAlign.left);
   }
 
   /// Returns the data for the line chart using the specified [grades] list.
 
   LineChartData getLinechartData(List<GradeProgressionEntry> grades) {
-    earliestGradeDate = grades.first.timestamp;
+    earliestGradeDate = grades.first.timestamp!;
 
     final DateTime theoreticalSessionEnd = widget._session.endDate.add(
         const Duration(
             days: 5 * 7)); // Add 5 weeks as grace period for grade submission.
-    final DateTime latestGradeDate = grades.last.timestamp;
+    final DateTime latestGradeDate = grades.last.timestamp!;
 
     DateTime maxXDate;
     if (theoreticalSessionEnd.isAfter(DateTime.now())) {
@@ -208,11 +204,39 @@ class _LineChartGradeGraphState extends State<LineChartGradeGraph> {
     );
   }
 
+  Future<List<GradeProgressionEntry>> getGradesForCourseMock(
+      int nbOfEntries) async {
+    final List<GradeProgressionEntry> result = <GradeProgressionEntry>[];
+    final Random gen = Random();
+    DateTime date = widget._session.endDate.add(const Duration(days: 5 * 7));
+
+    for (int i = 0; i < nbOfEntries; i++) {
+      final CourseSummary summary = CourseSummary(
+          currentMarkInPercent: (gen.nextDouble() * 100).floorToDouble(),
+          markOutOf: 100,
+          evaluations: <CourseEvaluation>[]);
+
+      final GradeProgressionEntry entry = GradeProgressionEntry.withTimeStamp(
+          timestamp: date,
+          acronym: "MAT350",
+          group: "02",
+          session: "H2024",
+          summary: summary);
+      result.add(entry);
+
+      date = date.subtract(Duration(days: gen.nextInt(50)));
+    }
+
+    result.sort((a, b) => _gradeGraphRepository.gradeSortAlgorithm(a, b));
+
+    return result;
+  }
+
   /// Returns the data for the line bars using the specified [grades] list.
   List<LineChartBarData> getLineBarsData(List<GradeProgressionEntry> grades) {
     final List<FlSpot> spots = getSpots(grades);
     final double latestGradeXValue =
-        earliestGradeDate.getDayDifference(grades.last.timestamp).toDouble();
+        earliestGradeDate.getDayDifference(grades.last.timestamp!).toDouble();
 
     return [
       LineChartBarData(
@@ -240,15 +264,15 @@ class _LineChartGradeGraphState extends State<LineChartGradeGraph> {
     final List<FlSpot> spots = [];
     for (final grade in grades) {
       final FlSpot newSpot = FlSpot(
-          grade.timestamp.getDayDifference(earliestGradeDate).toDouble(),
-          grade.summary.currentMarkInPercent);
+          grade.timestamp!.getDayDifference(earliestGradeDate).toDouble(),
+          grade.summary!.currentMarkInPercent);
       spots.add(newSpot);
     }
 
     if (spots.last.x < maxX) {
       // Adding a spot to fill the graph up to current date.
       final FlSpot lastSpot =
-          FlSpot(maxX, grades.last.summary.currentMarkInPercent);
+          FlSpot(maxX, grades.last.summary!.currentMarkInPercent);
       spots.add(lastSpot);
     }
 

@@ -102,8 +102,7 @@ class GradesDetailsViewModel extends FutureViewModel<Course> {
 
   /// Get the session with [sessionShortName]
   Session getSession(String sessionShortName) {
-    return _courseRepository.sessions.firstWhere(
-        (element) => element.shortName == sessionShortName,
-        orElse: () => null);
+    return _courseRepository.sessions!.firstWhere(
+        (element) => element.shortName == sessionShortName);
   }
 }

@@ -20,7 +20,7 @@ class StorageManager {
   Future<String> getAppDocumentsDirectoryPath() async {
     return Platform.isAndroid
         ? getExternalStorageDirectory()
-            .then((directory) => directory.path) //FOR ANDROID
+            .then((directory) => directory!.path) //FOR ANDROID
         : getApplicationSupportDirectory()
             .then((directory) => directory.path); //FOR iOS
   }

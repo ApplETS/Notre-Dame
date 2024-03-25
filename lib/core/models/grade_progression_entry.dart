@@ -3,11 +3,11 @@ import 'package:ets_api_clients/models.dart';
 import 'package:intl/intl.dart';
 
 class GradeProgressionEntry {
-  DateTime timestamp;
-  String acronym;
-  String group;
-  String session;
-  CourseSummary summary;
+  DateTime? timestamp;
+  String? acronym;
+  String? group;
+  String? session;
+  CourseSummary? summary;
 
   GradeProgressionEntry(this.acronym, this.group, this.session, this.summary) {
     final DateFormat dateFormat = DateFormat("yyyy-MM-dd HH:mm:ss");
@@ -35,7 +35,7 @@ class GradeProgressionEntry {
       'acronym': acronym,
       'group': group,
       'session': session,
-      'summary': summary.toJson(),
+      'summary': summary!.toJson(),
     };
   }
 }

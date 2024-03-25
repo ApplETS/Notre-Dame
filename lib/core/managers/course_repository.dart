@@ -466,7 +466,7 @@ class CourseRepository {
 
     if (await _gradeGraphRepository.isGradeNew(course) &&
         course.summary != null &&
-        course.summary.median > 0.0) {
+        course.summary!.median! > 0.0) {
       _gradeGraphRepository.updateGradesProgressionData(course);
     }
 

@@ -1,10 +1,6 @@
 // Dart imports:
 import 'dart:convert';
 import 'dart:io';
-import 'dart:math';
-
-// Flutter imports:
-import 'package:flutter/cupertino.dart';
 
 // Package imports:
 import 'package:ets_api_clients/models.dart';
@@ -30,7 +26,13 @@ class GradeGraphRepository {
 
   /// Get the name of the grades progression graph data JSON file.
   String _getFileName() {
-    return '${_userRepository.monETSUser.universalCode}-grades-progression-graph-data.json';
+    return '${_userRepository.monETSUser!.universalCode}-grades-progression-graph-data.json';
+  }
+
+  /// Check if the file exists in the storage.
+  Future<bool> _fileExists() async {
+    final File file = await _storageManager.getLocalFile(_getFileName());
+    return file.exists();
   }
 
   /// Gets the grade for the course with the same [courseAcronym], [group] and [session].
@@ -50,7 +52,7 @@ class GradeGraphRepository {
   Future<List<GradeProgressionEntry>> _getGrades() async {
     List<GradeProgressionEntry> grades = <GradeProgressionEntry>[];
 
-    if (await _storageManager.fileExists(_getFileName())) {
+    if (await _fileExists()) {
       final String gradesProgressionJSON =
           await _storageManager.readFile(_getFileName());
 
@@ -71,7 +73,7 @@ class GradeGraphRepository {
 
     grades.add(newEntry);
 
-    File result;
+    File result = File("");
     try {
       result = await _writeGradesToFile(grades);
     } catch (e) {
@@ -94,8 +96,8 @@ class GradeGraphRepository {
 
       if (courseGrades.isNotEmpty) {
         for (final entry in courseGrades) {
-          if (course.summary.currentMarkInPercent ==
-              entry.summary.currentMarkInPercent) {
+          if (course.summary!.currentMarkInPercent ==
+              entry.summary!.currentMarkInPercent) {
             isGradeNew = false;
           }
         }
@@ -107,22 +109,22 @@ class GradeGraphRepository {
 
   /// Sort grades by session > acronym > group > time
   int gradeSortAlgorithm(GradeProgressionEntry a, GradeProgressionEntry b) {
-    final int sessionComparison = a.session.compareTo(b.session);
+    final int sessionComparison = a.session!.compareTo(b.session!);
     if (sessionComparison != 0) {
       return sessionComparison;
     }
 
-    final int acronymComparison = a.acronym.compareTo(b.acronym);
+    final int acronymComparison = a.acronym!.compareTo(b.acronym!);
     if (acronymComparison != 0) {
       return acronymComparison;
     }
 
-    final int groupComparison = a.group.compareTo(b.group);
+    final int groupComparison = a.group!.compareTo(b.group!);
     if (groupComparison != 0) {
       return groupComparison;
     }
 
-    final int timeComparison = a.timestamp.compareTo(b.timestamp);
+    final int timeComparison = a.timestamp!.compareTo(b.timestamp!);
     return timeComparison;
   }
 
