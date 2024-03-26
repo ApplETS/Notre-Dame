@@ -107,6 +107,7 @@ class MoreViewModel extends FutureViewModel {
     final SettingsManager settingsManager = locator<SettingsManager>();
 
     if (await settingsManager.getBool(PreferencesFlag.discoveryMore) == null) {
+      if (!context.mounted) return;
       final List<String> ids =
           findDiscoveriesByGroupName(context, DiscoveryGroupIds.pageMore)
               .map((e) => e.featureId)

@@ -5,14 +5,13 @@ import 'dart:convert';
 import 'package:flutter/services.dart';
 
 // Package imports:
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 // Project imports:
 import 'package:notredame/core/viewmodels/security_viewmodel.dart';
 
 class EmergencyViewModel extends SecurityViewModel {
-  EmergencyViewModel({required AppIntl intl}) : super(intl: intl);
+  EmergencyViewModel({required super.intl});
 
   /// used to load the emergency procedures html files inside the webView
   Future loadHtmlFromAssets(String filename, Brightness brightness,

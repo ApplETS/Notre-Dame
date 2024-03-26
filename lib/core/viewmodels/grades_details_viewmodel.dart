@@ -76,6 +76,7 @@ class GradesDetailsViewModel extends FutureViewModel<Course> {
     final SettingsManager settingsManager = locator<SettingsManager>();
     if (await settingsManager.getBool(PreferencesFlag.discoveryGradeDetails) ==
         null) {
+      if (!context.mounted) return;
       final List<String> ids = findDiscoveriesByGroupName(
               context, DiscoveryGroupIds.pageGradeDetails)
           .map((e) => e.featureId)

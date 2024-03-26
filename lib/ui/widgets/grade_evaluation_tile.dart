@@ -25,8 +25,7 @@ class GradeEvaluationTile extends StatefulWidget {
   final bool isFirstEvaluation;
 
   const GradeEvaluationTile(this.evaluation,
-      {Key? key, this.completed = false, this.isFirstEvaluation = false})
-      : super(key: key);
+      {super.key, this.completed = false, this.isFirstEvaluation = false});
 
   @override
   _GradeEvaluationTileState createState() => _GradeEvaluationTileState();
@@ -131,7 +130,6 @@ class _GradeEvaluationTileState extends State<GradeEvaluationTile>
                     )
                   else
                     SizedBox(
-                      height: 49,
                       child: Padding(
                         padding: const EdgeInsets.only(top: 30.0),
                         child: AutoSizeText(

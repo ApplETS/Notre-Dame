@@ -37,7 +37,7 @@ jobs:
         with:
           file: pubspec.yaml
           version: version
-      - uses: jungwinter/split@v2
+      - uses: winterjung/split@v2.1.0
         id: split
         with:
           msg: ${{ steps.pubspecVersion.outputs.version }}
@@ -67,11 +67,11 @@ jobs:
           ref: ${{ github.head_ref }}
       - uses: actions/setup-java@v4
         with:
-          distribution: 'adopt'
-          java-version: '11'
+          distribution: 'temurin'
+          java-version: '17'
       - uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.3.x'
+          flutter-version: '3.19.x'
           channel: 'stable'
           cache: true
       - run: flutter doctor
@@ -163,15 +163,15 @@ jobs:
       - uses: actions/checkout@v4
       - uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.3.x'
+          flutter-version: '3.19.x'
           channel: 'stable'
           cache: true
       - name: Install Android dependencies
         if: matrix.target == 'Android'
         uses: actions/setup-java@v4
         with:
-          java-version: '11'
-          distribution: 'adopt'
+          java-version: '17'
+          distribution: 'temurin'
       - run: flutter doctor -v
       - name: Install iOS dependencies
         if: matrix.target == 'iOS'
