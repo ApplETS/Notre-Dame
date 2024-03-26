@@ -15,7 +15,7 @@ import 'package:notredame/ui/utils/app_theme.dart';
 class ReportNews extends StatefulWidget {
   final bool showHandle;
 
-  const ReportNews({Key? key, this.showHandle = true}) : super(key: key);
+  const ReportNews({super.key, this.showHandle = true});
 
   @override
   _ReportNewsState createState() => _ReportNewsState();
@@ -37,8 +37,7 @@ class _ReportNewsState extends State<ReportNews> {
               Expanded(
                 child: clicked && clickedIndex != -1
                     ? Center(
-                        child: _buildReportView(context, clickedIndex,
-                            model as ReportNewsViewModel))
+                        child: _buildReportView(context, clickedIndex, model))
                     : ListView.builder(
                         itemCount: reportNewsItems.length,
                         itemBuilder: (context, index) {
@@ -94,7 +93,7 @@ class _ReportNewsState extends State<ReportNews> {
           padding: const EdgeInsets.fromLTRB(15, 20, 20, 20),
           child: Text(
             AppIntl.of(context)!.report_news,
-            style: Theme.of(context).textTheme.headline6,
+            style: Theme.of(context).textTheme.titleLarge,
           ),
         ),
       ),

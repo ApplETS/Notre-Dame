@@ -6,7 +6,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:stacked/stacked.dart';
 
 // Project imports:
-import 'package:notredame/core/models/socialLink.dart';
+import 'package:notredame/core/models/social_link.dart';
 import 'package:notredame/core/utils/utils.dart';
 import 'package:notredame/core/viewmodels/web_link_card_viewmodel.dart';
 import 'package:notredame/ui/utils/app_theme.dart';
@@ -16,8 +16,7 @@ class SocialLinks extends StatefulWidget {
   final List<SocialLink> socialLinks;
 
   const SocialLinks(
-      {Key? key, required this.socialLinks, this.showHandle = true})
-      : super(key: key);
+      {super.key, required this.socialLinks, this.showHandle = true});
 
   @override
   _SocialLinksState createState() => _SocialLinksState();
@@ -94,7 +93,7 @@ class _SocialLinksState extends State<SocialLinks> {
           padding: const EdgeInsets.fromLTRB(15, 20, 20, 20),
           child: Text(
             AppIntl.of(context)!.news_author_join_us,
-            style: Theme.of(context).textTheme.headline5,
+            style: Theme.of(context).textTheme.headlineSmall,
             textAlign: TextAlign.center,
           ),
         ),

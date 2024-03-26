@@ -1,6 +1,5 @@
 // Flutter imports:
 import 'package:flutter/material.dart';
-import 'dart:convert';
 
 // Package imports:
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -17,7 +16,7 @@ import 'package:notredame/ui/utils/app_theme.dart';
 class NewsCard extends StatefulWidget {
   final News news;
 
-  const NewsCard(this.news, {Key? key}) : super(key: key);
+  const NewsCard(this.news, {super.key});
 
   @override
   _NewsCardState createState() => _NewsCardState();
@@ -59,15 +58,20 @@ class _NewsCardState extends State<NewsCard> {
   }
 
   Widget _buildImage(String? imageUrl) {
+    var isLoaded = false;
     if (imageUrl != null && imageUrl != "") {
       return ClipRRect(
         borderRadius: BorderRadius.circular(16.0),
         child: Image.network(
           imageUrl == ""
               ? "https://www.shutterstock.com/image-vector/no-photo-thumbnail-graphic-element-600nw-2311073121.jpg"
-              : "https://picsum.photos/400/200",
+              : imageUrl,
+          frameBuilder: (context, child, frame, wasSynchronouslyLoaded) {
+            isLoaded = frame != null;
+            return child;
+          },
           loadingBuilder: (context, child, loadingProgress) {
-            if (loadingProgress == null) {
+            if (isLoaded && loadingProgress == null) {
               return child;
             } else {
               return _shimmerEffect();

@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
+import 'package:notredame/core/models/social_link.dart';
 import 'package:stacked/stacked.dart';
 
 // Project imports:
@@ -36,7 +37,8 @@ class _AuthorViewState extends State<AuthorView> {
       ViewModelBuilder<AuthorViewModel>.reactive(
           viewModelBuilder: () => AuthorViewModel(
               authorId: widget.authorId, appIntl: AppIntl.of(context)!),
-          onModelReady: (model) {
+          onViewModelReady: (model) {
+            model.fetchAuthorData();
             model.pagingController.addStatusListener((status) {
               if (status == PagingStatus.subsequentPageError) {
                 ScaffoldMessenger.of(context).showSnackBar(
@@ -111,10 +113,28 @@ class _AuthorViewState extends State<AuthorView> {
   Widget _buildAuthorInfo(AuthorViewModel model) {
     final author = model.author;
     notifyBtnText = getNotifyMeBtnText(model);
+    final List<SocialLink> socialLinks = [
+      if (author?.email != null)
+        SocialLink(id: 0, name: 'Email', link: author!.email!),
+      if (author?.facebookLink != null)
+        SocialLink(id: 1, name: 'Facebook', link: author!.facebookLink!),
+      if (author?.instagramLink != null)
+        SocialLink(id: 2, name: 'Instagram', link: author!.instagramLink!),
+      if (author?.tikTokLink != null)
+        SocialLink(id: 3, name: 'TikTok', link: author!.tikTokLink!),
+      if (author?.xLink != null)
+        SocialLink(id: 4, name: 'X', link: author!.xLink!),
+      if (author?.redditLink != null)
+        SocialLink(id: 5, name: 'Reddit', link: author!.redditLink!),
+      if (author?.discordLink != null)
+        SocialLink(id: 6, name: 'Discord', link: author!.discordLink!),
+      if (author?.linkedInLink != null)
+        SocialLink(id: 7, name: 'LinkedIn', link: author!.linkedInLink!),
+    ];
 
     return Padding(
       padding: const EdgeInsets.only(top: 76),
-      child: model.busy(model.isLoadingEvents)
+      child: model.isBusy
           ? AuthorInfoSkeleton()
           : SizedBox(
               width: double.infinity,
@@ -129,12 +149,12 @@ class _AuthorViewState extends State<AuthorView> {
                   child: Column(
                     children: [
                       Text(
-                        author?.organisation ?? "",
+                        author?.organization ?? "",
                         style: const TextStyle(fontSize: 26),
                       ),
                       const SizedBox(height: 10),
                       Text(
-                        author?.description ?? "",
+                        author?.profileDescription ?? "",
                         style: TextStyle(
                           color: Utils.getColorByBrightness(
                             context,
@@ -204,7 +224,7 @@ class _AuthorViewState extends State<AuthorView> {
                                   ),
                                 ),
                                 builder: (context) => SocialLinks(
-                                  socialLinks: model.author?.socialLinks ?? [],
+                                  socialLinks: socialLinks,
                                 ),
                               );
                             },
@@ -249,7 +269,7 @@ class _AuthorViewState extends State<AuthorView> {
   }
 
   Widget _buildAvatar(AuthorViewModel model, String authorId) {
-    return model.busy(model.isLoadingEvents)
+    return model.isBusy
         ? AvatarSkeleton()
         : Align(
             alignment: Alignment.topCenter,
@@ -261,13 +281,13 @@ class _AuthorViewState extends State<AuthorView> {
                 child: Hero(
                   tag: 'news_author_avatar',
                   child: ClipOval(
-                    child:
-                        model.author?.image == "" || model.author?.image == null
-                            ? const SizedBox()
-                            : Image.network(
-                                model.author!.image,
-                                fit: BoxFit.cover,
-                              ),
+                    child: model.author?.avatarUrl == "" ||
+                            model.author?.avatarUrl == null
+                        ? const SizedBox()
+                        : Image.network(
+                            model.author!.avatarUrl!,
+                            fit: BoxFit.cover,
+                          ),
                   ),
                 ),
               ),

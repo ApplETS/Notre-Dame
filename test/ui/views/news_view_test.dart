@@ -119,7 +119,7 @@ void main() {
         NewsRepositoryMock.stubGetNews(newsRepository,
             toReturn: paginatedEmptyNews);
 
-        tester.binding.window.physicalSizeTestValue = const Size(800, 1410);
+        tester.view.physicalSize = const Size(800, 1410);
 
         await tester.pumpWidget(localizedWidget(child: NewsView()));
         await tester.pumpAndSettle(const Duration(seconds: 1));
@@ -131,7 +131,7 @@ void main() {
       testWidgets("news view", (WidgetTester tester) async {
         NewsRepositoryMock.stubGetNews(newsRepository, toReturn: paginatedNews);
 
-        tester.binding.window.physicalSizeTestValue = const Size(800, 1410);
+        tester.view.physicalSize = const Size(800, 1410);
 
         await tester.pumpWidget(localizedWidget(child: NewsView()));
         await tester.pumpAndSettle(const Duration(seconds: 1));

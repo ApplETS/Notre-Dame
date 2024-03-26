@@ -67,7 +67,7 @@ class _NewsDetailsViewState extends State<NewsDetailsView> {
                           AppIntl.of(context)!.news_details_title,
                           style: Theme.of(context)
                               .textTheme
-                              .bodyText1!
+                              .bodyLarge!
                               .copyWith(
                                   color: Colors.white,
                                   fontSize: 25,
@@ -105,7 +105,7 @@ class _NewsDetailsViewState extends State<NewsDetailsView> {
                             _buildAuthor(
                                 // TODO : Change to author image
                                 widget.news.imageUrl ?? "",
-                                widget.news.organizer.organisation ?? "",
+                                widget.news.organizer.organization ?? "",
                                 widget.news.organizer.activityArea ?? "",
                                 widget.news.organizer.id),
                             _buildContent(widget.news.content),
@@ -154,7 +154,7 @@ class _NewsDetailsViewState extends State<NewsDetailsView> {
         child: (news.imageUrl == null || news.imageUrl == "")
             ? const SizedBox.shrink()
             : Image.network(
-                "https://picsum.photos/400/200",
+                news.imageUrl!,
                 fit: BoxFit.cover,
               ));
   }

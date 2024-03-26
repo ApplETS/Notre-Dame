@@ -83,7 +83,7 @@ void main() {
 
       await viewModel.fetchPage(1);
 
-      verify(newsRepository.getNews(pageNumber: 1)).called(1);
+      verify(newsRepository.getNews()).called(1);
       expect(viewModel.pagingController.nextPageKey, 2);
     });
 

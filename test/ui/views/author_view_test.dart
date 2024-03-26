@@ -15,7 +15,7 @@ import 'package:notredame/core/managers/course_repository.dart';
 import 'package:notredame/core/managers/news_repository.dart';
 import 'package:notredame/core/managers/settings_manager.dart';
 import 'package:notredame/core/models/author.dart';
-import 'package:notredame/core/models/socialLink.dart';
+import 'package:notredame/core/models/social_link.dart';
 import 'package:notredame/core/services/analytics_service.dart';
 import 'package:notredame/core/services/launch_url_service.dart';
 import 'package:notredame/core/services/navigation_service.dart';
@@ -212,7 +212,7 @@ void main() {
       testWidgets("author view news empty", (WidgetTester tester) async {
         NewsRepositoryMock.stubGetNews(newsRepository,
             toReturn: paginatedNewsEmpty);
-        tester.binding.window.physicalSizeTestValue = const Size(800, 1410);
+        tester.view.physicalSize = const Size(800, 1410);
 
         await tester.pumpWidget(
             localizedWidget(child: AuthorView(authorId: author.id)));
@@ -224,7 +224,7 @@ void main() {
 
       testWidgets("author view", (WidgetTester tester) async {
         NewsRepositoryMock.stubGetNews(newsRepository, toReturn: paginatedNews);
-        tester.binding.window.physicalSizeTestValue = const Size(800, 1410);
+        tester.view.physicalSize = const Size(800, 1410);
 
         await tester.pumpWidget(
             localizedWidget(child: AuthorView(authorId: author.id)));
