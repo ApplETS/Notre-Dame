@@ -108,6 +108,7 @@
   "grades_group": "Group",
   "grades_grade": "Grade",
   "grades_median": "Median",
+  "grades_weighted": "Weighted",
   "grades_standard_deviation": "Standard Deviation",
   "grades_percentile_rank": "Percentile Rank",
   "grades_target_date": "Target Date",
