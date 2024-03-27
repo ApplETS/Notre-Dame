@@ -11,6 +11,7 @@ on:
       - 'android/fastlane/**'
       - 'ios/fastlane/**'
       - '.github/**'
+      - '.githooks/**'
 
 concurrency:
   group: ${{ github.ref }}
