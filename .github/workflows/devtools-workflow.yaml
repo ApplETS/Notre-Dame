@@ -9,6 +9,7 @@ on:
       - '*.md'
       - 'android/fastlane/**'
       - 'ios/fastlane/**'
+    types: [ labeled ]
 env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -51,7 +52,8 @@ jobs:
   bump_version:
     name: Bump app version using PR labels
     runs-on: ubuntu-latest
-    if: ${{ github.event_name == 'pull_request' }} && !${{ github.event.label.name == 'version: Unversioned' }}
+    # The version label can't contain a ":" because of the YAML specification
+    if: ${{ github.event_name == 'pull_request' && !contains(github.event.pull_request.labels.*.name, 'version - Unversioned') }}
     steps:
       - uses: actions/checkout@v4
         with:
