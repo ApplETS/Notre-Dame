@@ -56,6 +56,7 @@ class _ScheduleDefaultState extends State<ScheduleDefault> {
           WeekDays.saturday
         ],
         scrollOffset: 340,
+        liveTimeIndicatorSettings: LiveTimeIndicatorSettings.none(),
         headerStyle: const HeaderStyle(
             headerTextStyle: TextStyle(fontSize: 0),
             leftIconVisible: false,
