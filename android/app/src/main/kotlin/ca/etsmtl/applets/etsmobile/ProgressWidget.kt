@@ -12,12 +12,8 @@ import android.app.PendingIntent
 import es.antonborri.home_widget.HomeWidgetPlugin
 import android.content.ComponentName
 import android.os.Bundle
-import io.flutter.embedding.engine.FlutterEngine
-import io.flutter.plugin.common.MethodChannel
 
 class ProgressWidget : AppWidgetProvider() {
-    private var flutterEngine: FlutterEngine? = null
-
     companion object {
         const val WIDGET_BUTTON_CLICK = "ca.etsmtl.applets.etsmobile.WIDGET_BUTTON_CLICK"
         const val CHANNEL = "widget_method_channel"
@@ -152,11 +148,5 @@ class ProgressWidget : AppWidgetProvider() {
         suffix = widgetData.getString(SUFFIX_KEY, "days") ?: "days"
 
         progresses = arrayOf("$progress %", getElapsedDaysOverTotal(true), getRemainingDays())
-    }
-
-    private fun invokeFlutterMethod(context: Context){
-        flutterEngine = (context.applicationContext as MainActivity).flutterEngine // Replace YourApplication with your application class
-        val channel = MethodChannel(flutterEngine?.dartExecutor?.binaryMessenger, CHANNEL)
-        channel.invokeMethod("yourMethodInFlutter", null)
     }
 }
