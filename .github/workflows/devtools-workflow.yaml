@@ -5,6 +5,7 @@ on:
     paths-ignore:
       - '.gitignore'
       - '.metadata'
+      - '.github/**'
       - '.githooks/**'
       - '*.md'
       - 'android/fastlane/**'
