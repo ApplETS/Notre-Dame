@@ -80,7 +80,7 @@ class ETSMobile extends StatelessWidget {
           feedbackBuilder: (context, onSubmit, scrollController) =>
               CustomFeedbackForm(
             onSubmit: onSubmit,
-            scrollController: scrollController,
+            scrollController: scrollController ?? ScrollController(),
           ),
           localizationsDelegates: [
             GlobalMaterialLocalizations.delegate,

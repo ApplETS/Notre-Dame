@@ -24,12 +24,12 @@ class AppWidgetService {
 
   final AnalyticsService _analyticsService = locator<AnalyticsService>();
 
-  Future<bool> init() async {
+  Future<bool?> init() async {
     return HomeWidget.setAppGroupId('group.ca.etsmtl.applets.ETSMobile');
   }
 
   /// Update session progress widget with provided data
-  Future<bool> sendProgressData(ProgressWidgetData progressWidgetData) async {
+  Future<bool?> sendProgressData(ProgressWidgetData progressWidgetData) async {
     try {
       await HomeWidget.saveWidgetData<int>(
           '${ProgressWidgetData.keyPrefix}progressInt',
@@ -55,7 +55,7 @@ class AppWidgetService {
   }
 
   /// Update grades widget with provided data
-  Future<bool> sendGradesData(GradesWidgetData gradeWidgetData) async {
+  Future<bool?> sendGradesData(GradesWidgetData gradeWidgetData) async {
     try {
       await HomeWidget.saveWidgetData<List<String>>(
           '${GradesWidgetData.keyPrefix}courseAcronyms',
@@ -71,7 +71,7 @@ class AppWidgetService {
   }
 
   /// Tell the system to update the given widget type
-  Future<void> updateWidget(WidgetType type) async {
+  Future<bool?> updateWidget(WidgetType type) async {
     try {
       return HomeWidget.updateWidget(
           name: type.androidName,
@@ -79,6 +79,7 @@ class AppWidgetService {
           iOSName: type.iOSname);
     } on PlatformException {
       _analyticsService.logError(tag, 'Error updating widget ${type.iOSname}.');
+      return false;
     }
   }
 }

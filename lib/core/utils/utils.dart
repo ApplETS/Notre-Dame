@@ -19,7 +19,7 @@ mixin Utils {
     }
   }
 
-  static double getGradeInPercentage(double grade, double maxGrade) {
+  static double getGradeInPercentage(double? grade, double? maxGrade) {
     if (grade == null || maxGrade == null || grade == 0.0 || maxGrade == 0.0) {
       return 0.0;
     }
@@ -43,14 +43,12 @@ mixin Utils {
         final tempDate =
             currentDate.subtract(Duration(days: currentDate.weekday - 1));
         firstDayOfWeek = DateTime(tempDate.year, tempDate.month, tempDate.day);
-        break;
       case StartingDayOfWeek.saturday:
         final tempDate = currentDate.subtract(Duration(
             days: currentDate.weekday == 6 || currentDate.weekday == 7
                 ? currentDate.weekday - 6
                 : currentDate.weekday + 1));
         firstDayOfWeek = DateTime(tempDate.year, tempDate.month, tempDate.day);
-        break;
       // Sunday as default
       default:
         final tempDate =

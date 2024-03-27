@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 // Package imports:
 import 'package:calendar_view/calendar_view.dart';
+import 'package:collection/collection.dart';
 import 'package:enum_to_string/enum_to_string.dart';
 import 'package:ets_api_clients/models.dart';
 import 'package:feature_discovery/feature_discovery.dart';
@@ -41,7 +42,7 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
   Map<DateTime, List<CourseActivity>> _coursesActivities = {};
 
   /// Courses associated to the student
-  List<Course> courses;
+  List<Course>? courses;
 
   /// Day currently selected
   DateTime selectedDate;
@@ -71,9 +72,9 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
       AppTheme.schedulePaletteLight.toList();
 
   /// Get current locale
-  Locale get locale => _settingsManager.locale;
+  Locale? get locale => _settingsManager.locale;
 
-  ScheduleViewModel({@required AppIntl intl, DateTime initialSelectedDate})
+  ScheduleViewModel({required AppIntl intl, DateTime? initialSelectedDate})
       : _appIntl = intl,
         selectedDate = initialSelectedDate ?? DateTime.now(),
         focusedDate = ValueNotifier(initialSelectedDate ?? DateTime.now());
@@ -110,7 +111,7 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
   List<CalendarEventData> selectedDateCalendarEvents(DateTime date) {
     return _coursesActivities[DateTime(date.year, date.month, date.day)]
             ?.map((eventData) => calendarEventData(eventData))
-            ?.toList() ??
+            .toList() ??
         [];
   }
 
@@ -121,7 +122,7 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
     final associatedCourses = courses?.where(
         (element) => element.acronym == eventData.courseGroup.split('-')[0]);
     final associatedCourse =
-        associatedCourses?.isNotEmpty == true ? associatedCourses.first : null;
+        associatedCourses?.isNotEmpty == true ? associatedCourses?.first : null;
     return CalendarEventData(
         title:
             "${eventData.courseGroup.split('-')[0]}\n$courseLocation\n${eventData.activityName}",
@@ -137,7 +138,7 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
     if (!courseColors.containsKey(courseName)) {
       courseColors[courseName] = schedulePaletteThemeLight.removeLast();
     }
-    return courseColors[courseName];
+    return courseColors[courseName] ?? Colors.red;
   }
 
   List<CalendarEventData> selectedWeekCalendarEvents() {
@@ -167,56 +168,56 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
   }
 
   bool get showWeekEvents =>
-      settings[PreferencesFlag.scheduleShowWeekEvents] as bool ?? false;
+      settings[PreferencesFlag.scheduleShowWeekEvents] as bool;
 
   bool isLoadingEvents = false;
 
-  bool get calendarViewSetting =>
-      settings[PreferencesFlag.scheduleListView] as bool ?? true;
+  bool get calendarViewSetting {
+    if (busy(settings)) {
+      return false;
+    }
+    return settings[PreferencesFlag.scheduleListView] as bool;
+  }
 
   @override
-  Future<List<CourseActivity>> futureToRun() =>
-      _courseRepository.getCoursesActivities(fromCacheOnly: true).then((value) {
-        setBusyForObject(isLoadingEvents, true);
-        _courseRepository
-            .getCoursesActivities()
-            // ignore: return_type_invalid_for_catch_error
-            .catchError(onError)
-            .then((value1) async {
-          if (value1 != null) {
-            // Reload the list of activities
-            coursesActivities;
+  Future<List<CourseActivity>> futureToRun() async {
+    loadSettings();
+    List<CourseActivity>? activities =
+        await _courseRepository.getCoursesActivities(fromCacheOnly: true);
+    try {
+      setBusyForObject(isLoadingEvents, true);
 
-            await _courseRepository
-                .getCourses(fromCacheOnly: true)
-                .then((value2) {
-              courses = value2;
-            });
-            if (_coursesActivities.isNotEmpty) {
-              if (calendarFormat == CalendarFormat.week) {
-                calendarEvents = selectedWeekCalendarEvents();
-              } else {
-                calendarEvents = selectedMonthCalendarEvents();
-              }
-            }
+      final fetchedCourseActivities =
+          await _courseRepository.getCoursesActivities();
+      if (fetchedCourseActivities != null) {
+        activities = fetchedCourseActivities;
+        // Reload the list of activities
+        coursesActivities;
+
+        courses = await _courseRepository.getCourses(fromCacheOnly: true);
+
+        if (_coursesActivities.isNotEmpty) {
+          if (calendarFormat == CalendarFormat.week) {
+            calendarEvents = selectedWeekCalendarEvents();
+          } else {
+            calendarEvents = selectedMonthCalendarEvents();
           }
-          _courseRepository
-              .getScheduleActivities()
-              // ignore: return_type_invalid_for_catch_error
-              .catchError(onError)
-              .then((value) async {
-            await assignScheduleActivities(value);
-          }).whenComplete(() {
-            setBusyForObject(isLoadingEvents, false);
-          });
-        });
-        return value;
-      });
+        }
+      }
+      final scheduleActivities =
+          await _courseRepository.getScheduleActivities();
+      await assignScheduleActivities(scheduleActivities);
+    } catch (e) {
+      onError(e);
+    } finally {
+      setBusyForObject(isLoadingEvents, false);
+    }
+    return activities ?? [];
+  }
 
   Future assignScheduleActivities(
       List<ScheduleActivity> listOfSchedules) async {
-    if (listOfSchedules == null ||
-        listOfSchedules.isEmpty ||
+    if (listOfSchedules.isEmpty ||
         !listOfSchedules.any((element) =>
             element.activityCode == ActivityCode.labGroupA ||
             element.activityCode == ActivityCode.labGroupB)) return;
@@ -230,7 +231,7 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
         if (!scheduleActivitiesByCourse.containsKey(activity.courseAcronym)) {
           scheduleActivitiesByCourse[activity.courseAcronym] = [activity];
         } else {
-          scheduleActivitiesByCourse[activity.courseAcronym].add(activity);
+          scheduleActivitiesByCourse[activity.courseAcronym]?.add(activity);
         }
       }
     }
@@ -245,7 +246,7 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
   }
 
   Future loadSettings() async {
-    setBusy(true);
+    setBusyForObject(settings, true);
     settings.clear();
     settings.addAll(await _settingsManager.getScheduleSettings());
     calendarFormat =
@@ -253,16 +254,16 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
 
     await loadSettingsScheduleActivities();
 
-    setBusy(false);
+    setBusyForObject(settings, false);
   }
 
   Future loadSettingsScheduleActivities() async {
     for (final courseAcronym in scheduleActivitiesByCourse.keys) {
-      final String activityCodeToUse = await _settingsManager.getDynamicString(
+      final String? activityCodeToUse = await _settingsManager.getDynamicString(
           PreferencesFlag.scheduleLaboratoryGroup, courseAcronym);
       final scheduleActivityToSet = scheduleActivitiesByCourse[courseAcronym]
-          .firstWhere((element) => element.activityCode == activityCodeToUse,
-              orElse: () => null);
+          ?.firstWhereOrNull(
+              (element) => element.activityCode == activityCodeToUse);
       if (scheduleActivityToSet != null) {
         settingsScheduleActivities[courseAcronym] = scheduleActivityToSet.name;
       } else {
@@ -281,7 +282,8 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
 
     // Build the map
     if (_courseRepository.coursesActivities != null) {
-      for (final CourseActivity course in _courseRepository.coursesActivities) {
+      for (final CourseActivity course
+          in _courseRepository.coursesActivities!) {
         final DateTime dateOnly = course.startDateTime.subtract(Duration(
             hours: course.startDateTime.hour,
             minutes: course.startDateTime.minute));
@@ -335,15 +337,22 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
       coursesActivities;
     }
 
-    // Access the array using the same instance inside the map. This is only required
-    // since the version 3.0.0 of table_calendar with the eventLoaders argument.
-    DateTime dateInArray;
-    return _coursesActivities.keys.any((element) {
+    // TODO: maybe use containsKey and put the _courseActivities key to a string...
+    DateTime? dateInArray;
+    final courseActivitiesContains = _coursesActivities.keys.any((element) {
       dateInArray = element;
       return isSameDay(element, date);
-    })
-        ? _coursesActivities[dateInArray]
-        : [];
+    });
+    if (courseActivitiesContains) {
+      return _coursesActivities[dateInArray] ?? [];
+    }
+    return [];
+
+    // List<CourseActivity> activities = [];
+    // if (_coursesActivities.containsKey(date)) {
+    //   activities = _coursesActivities[date] ?? [];
+    // }
+    // return activities;
   }
 
   Future setCalendarFormat(CalendarFormat format) async {
@@ -357,10 +366,11 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
     try {
       setBusyForObject(isLoadingEvents, true);
       await _courseRepository.getCoursesActivities();
-      setBusyForObject(isLoadingEvents, false);
       notifyListeners();
     } on Exception catch (error) {
       onError(error);
+    } finally {
+      setBusyForObject(isLoadingEvents, false);
     }
   }
 
@@ -409,6 +419,7 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
 
     if (await settingsManager.getBool(PreferencesFlag.discoverySchedule) ==
         null) {
+      if (!context.mounted) return;
       final List<String> ids =
           findDiscoveriesByGroupName(context, DiscoveryGroupIds.pageSchedule)
               .map((e) => e.featureId)
