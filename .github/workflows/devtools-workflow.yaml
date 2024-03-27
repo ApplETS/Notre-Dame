@@ -51,7 +51,7 @@ jobs:
   bump_version:
     name: Bump app version using PR labels
     runs-on: ubuntu-latest
-    if: ${{ github.event_name == 'pull_request' }} && !${{ github.event.label.name == 'version: Unlabeled' }}
+    if: ${{ github.event_name == 'pull_request' }} && !${{ github.event.label.name == 'version: Unversioned' }}
     steps:
       - uses: actions/checkout@v4
         with:
