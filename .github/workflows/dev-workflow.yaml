@@ -9,6 +9,7 @@ on:
       - 'android/fastlane/**'
       - 'ios/fastlane/**'
       - '.github/**'
+      - '.githooks/**'
       - '!.github/workflows/dev-workflow.yaml'
 concurrency:
   group: ${{ github.ref }}

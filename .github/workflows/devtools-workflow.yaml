@@ -6,6 +6,7 @@ on:
       - '.gitignore'
       - '.metadata'
       - '.github/**'
+      - '.githooks/**'
       - '*.md'
       - 'android/fastlane/**'
       - 'ios/fastlane/**'
