@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 // Package imports:
 import 'package:flutter_test/flutter_test.dart';
 import 'package:webview_flutter/webview_flutter.dart';
-import 'package:webview_flutter_android/webview_flutter_android.dart';
 
 // Project imports:
 import 'package:notredame/ui/views/emergency_view.dart';
@@ -12,9 +11,7 @@ import '../../helpers.dart';
 
 void main() {
   group('EmergencyView - ', () {
-    setUp(() async {
-      WebViewPlatform.instance = AndroidWebViewPlatform();
-    });
+    setUp(() async {});
 
     tearDown(() {});
 

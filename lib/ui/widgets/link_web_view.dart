@@ -34,11 +34,13 @@ class _LinkWebViewState extends State<LinkWebView> {
               controller: WebViewController()
                 ..setJavaScriptMode(JavaScriptMode.unrestricted)
                 ..setNavigationDelegate(
-                    NavigationDelegate(onPageFinished: (String url) {
-                  setState(() {
-                    isLoading = false;
-                  });
-                }))),
+                    NavigationDelegate(
+                        onPageFinished: (String url) {
+                          setState(() {
+                            isLoading = false;
+                          });
+                        }))
+          ),
         ],
       ),
     );

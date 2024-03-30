@@ -1,17 +1,29 @@
+// Dart imports:
+import 'dart:convert';
+
 // Flutter imports:
 import 'package:flutter/services.dart';
 
 // Package imports:
 import 'package:webview_flutter/webview_flutter.dart';
 
-extension type WebViewControllerExtension(WebViewController controller)
-    implements WebViewController {
-  /// used to load the emergency procedures html files inside the webView
-  Future loadHtmlFromAssets(String filename, Brightness brightness) async {
-    final String fileText = await rootBundle.loadString(filename);
-    final String data = darkMode(scaleText(fileText), brightness);
+// Project imports:
+import 'package:notredame/core/viewmodels/security_viewmodel.dart';
 
-    await loadHtmlString(data);
+class EmergencyViewModel extends SecurityViewModel {
+  EmergencyViewModel({required super.intl});
+
+  /// used to load the emergency procedures html files inside the webView
+  Future loadHtmlFromAssets(String filename, Brightness brightness,
+      WebViewController webViewController) async {
+    final String fileText = await rootBundle.loadString(filename);
+
+    final String data = Uri.dataFromString(
+            darkMode(scaleText(fileText), brightness),
+            mimeType: 'text/html',
+            encoding: Encoding.getByName('utf-8'))
+        .toString();
+    await webViewController.loadHtmlString(data);
   }
 
   /// used to add dark theme to emergency procedures html files

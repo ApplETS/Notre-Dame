@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 // Package imports:
 import 'package:flutter_test/flutter_test.dart';
 import 'package:webview_flutter/webview_flutter.dart';
-import 'package:webview_flutter_android/webview_flutter_android.dart';
 
 // Project imports:
 import 'package:notredame/core/models/quick_link.dart';
@@ -21,7 +20,6 @@ void main() {
   group('LinkWebView - ', () {
     setUp(() {
       setupNetworkingServiceMock();
-      WebViewPlatform.instance = AndroidWebViewPlatform();
     });
 
     testWidgets('has an AppBar and a WebView', (WidgetTester tester) async {
