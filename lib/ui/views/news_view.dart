@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 
 // Package imports:
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:stacked/stacked.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
@@ -26,53 +27,101 @@ class _NewsViewState extends State<NewsView> {
   }
 
   @override
-  Widget build(BuildContext context) =>
-      ViewModelBuilder<NewsViewModel>.reactive(
-          viewModelBuilder: () => NewsViewModel(),
-          onViewModelReady: (model) {
-            model.pagingController.addStatusListener((status) {
-              if (status == PagingStatus.subsequentPageError) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: Text(
-                      AppIntl.of(context)!.news_error_not_found,
-                    ),
-                    action: SnackBarAction(
-                      label: AppIntl.of(context)!.retry,
-                      onPressed: () =>
-                          model.pagingController.retryLastFailedRequest(),
+  Widget build(BuildContext context) => ViewModelBuilder<
+          NewsViewModel>.reactive(
+      viewModelBuilder: () => NewsViewModel(),
+      onViewModelReady: (model) {
+        model.pagingController.addStatusListener((status) {
+          if (status == PagingStatus.subsequentPageError) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(
+                  AppIntl.of(context)!.news_error_not_found,
+                ),
+                action: SnackBarAction(
+                  label: AppIntl.of(context)!.retry,
+                  onPressed: () =>
+                      model.pagingController.retryLastFailedRequest(),
+                ),
+              ),
+            );
+          }
+        });
+      },
+      builder: (context, model, child) {
+        return RefreshIndicator(
+            onRefresh: () => Future.sync(
+                  () => model.pagingController.refresh(),
+                ),
+            child: Theme(
+              data: Theme.of(context).copyWith(canvasColor: Colors.transparent),
+              child: Column(
+                children: [
+                  Padding(
+                      padding: const EdgeInsets.only(top: 8, left: 4, right: 4),
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: SizedBox(
+                                height: 52,
+                                child: TextField(
+                                  decoration: InputDecoration(
+                                      hintText: AppIntl.of(context)!.search,
+                                      filled: true,
+                                      fillColor: Theme.of(context).cardColor,
+                                      border: OutlineInputBorder(
+                                        borderSide: BorderSide.none,
+                                        borderRadius:
+                                            BorderRadius.circular(8.0),
+                                      ),
+                                      contentPadding: const EdgeInsets.fromLTRB(
+                                          16, 8, 16, 0)),
+                                  style: const TextStyle(fontSize: 18),
+                                  onChanged: (query) {
+                                    // Perform search operation here
+                                  },
+                                )),
+                          ),
+                          const SizedBox(width: 8),
+                          IconButton(
+                            onPressed: () async {},
+                            icon: const FaIcon(FontAwesomeIcons.calendar),
+                            style: ButtonStyle(
+                              shape: MaterialStateProperty.all<
+                                  RoundedRectangleBorder>(
+                                RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
+                              ),
+                              backgroundColor: MaterialStateProperty.all<Color>(
+                                Theme.of(context).cardColor,
+                              ),
+                            ),
+                          ),
+                        ],
+                      )),
+                  Expanded(
+                    child: PagedListView<int, News>(
+                      key: const Key("pagedListView"),
+                      pagingController: model.pagingController,
+                      padding: const EdgeInsets.fromLTRB(0, 0, 0, 8),
+                      builderDelegate: PagedChildBuilderDelegate<News>(
+                        itemBuilder: (context, item, index) => NewsCard(item),
+                        firstPageProgressIndicatorBuilder: (context) =>
+                            _buildSkeletonLoader(),
+                        newPageProgressIndicatorBuilder: (context) =>
+                            NewsCardSkeleton(),
+                        noMoreItemsIndicatorBuilder: (context) =>
+                            _buildNoMoreNewsCard(),
+                        firstPageErrorIndicatorBuilder: (context) =>
+                            _buildError(model.pagingController),
+                      ),
                     ),
                   ),
-                );
-              }
-            });
-          },
-          builder: (context, model, child) {
-            return RefreshIndicator(
-                onRefresh: () => Future.sync(
-                      () => model.pagingController.refresh(),
-                    ),
-                child: Theme(
-                  data: Theme.of(context)
-                      .copyWith(canvasColor: Colors.transparent),
-                  child: PagedListView<int, News>(
-                    key: const Key("pagedListView"),
-                    pagingController: model.pagingController,
-                    padding: const EdgeInsets.fromLTRB(0, 4, 0, 8),
-                    builderDelegate: PagedChildBuilderDelegate<News>(
-                      itemBuilder: (context, item, index) => NewsCard(item),
-                      firstPageProgressIndicatorBuilder: (context) =>
-                          _buildSkeletonLoader(),
-                      newPageProgressIndicatorBuilder: (context) =>
-                          NewsCardSkeleton(),
-                      noMoreItemsIndicatorBuilder: (context) =>
-                          _buildNoMoreNewsCard(),
-                      firstPageErrorIndicatorBuilder: (context) =>
-                          _buildError(model.pagingController),
-                    ),
-                  ),
-                ));
-          });
+                ],
+              ),
+            ));
+      });
 
   Widget _buildSkeletonLoader() {
     final Widget skeleton = NewsCardSkeleton();

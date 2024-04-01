@@ -209,6 +209,8 @@
   "report_outdated_content": "Contenu obsolète",
   "report_outdated_content_description": "Annonce qui n’est plus d'actualité ou pertinente.",
 
+  "search": "Rechercher",
+
   "news_author_notify_me": "Me notifier",
   "news_author_dont_notify_me": "Ne plus recevoir de notifications",
   "news_author_join_us": "Nous rejoindre",
