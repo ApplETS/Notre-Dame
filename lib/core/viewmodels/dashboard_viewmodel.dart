@@ -3,7 +3,6 @@ import 'dart:collection';
 
 // Flutter imports:
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
 // Package imports:
 import 'package:ets_api_clients/models.dart';
@@ -35,7 +34,6 @@ import 'package:notredame/ui/utils/discovery_components.dart';
 
 class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
   static const String tag = "DashboardViewModel";
-  static const MethodChannel _channel = MethodChannel('widget_method_channel');
 
   final SettingsManager _settingsManager = locator<SettingsManager>();
   final PreferencesService _preferencesService = locator<PreferencesService>();
