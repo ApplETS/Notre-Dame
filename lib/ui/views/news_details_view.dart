@@ -182,7 +182,9 @@ class _NewsDetailsViewState extends State<NewsDetailsView> {
                 borderRadius: BorderRadius.only(
                     topLeft: Radius.circular(10),
                     topRight: Radius.circular(10))),
-            builder: (context) => const ReportNews());
+            builder: (context) => ReportNews(
+                  newsId: news.id,
+                ));
     }
   }
 
