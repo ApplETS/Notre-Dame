@@ -168,8 +168,8 @@ class _AuthorViewState extends State<AuthorView> {
                       const SizedBox(height: 10),
                       Row(
                         children: [
-                          Expanded(
-                            child: TextButton(
+                          const Expanded(
+                            child: /*TextButton(
                               style: ButtonStyle(
                                 shape: MaterialStateProperty.all<
                                     RoundedRectangleBorder>(
@@ -207,7 +207,8 @@ class _AuthorViewState extends State<AuthorView> {
                                   ),
                                 ),
                               ),
-                            ),
+                            ),*/
+                                SizedBox(width: 10),
                           ),
                           const SizedBox(width: 10),
                           IconButton(
