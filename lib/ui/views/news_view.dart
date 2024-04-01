@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 // Package imports:
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:notredame/core/utils/utils.dart';
+import 'package:notredame/ui/utils/app_theme.dart';
 import 'package:stacked/stacked.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
@@ -71,7 +73,10 @@ class _NewsViewState extends State<NewsView> {
                                   decoration: InputDecoration(
                                       hintText: AppIntl.of(context)!.search,
                                       filled: true,
-                                      fillColor: Theme.of(context).cardColor,
+                                      fillColor: Utils.getColorByBrightness(
+                                          context,
+                                          AppTheme.lightThemeAccent,
+                                          Theme.of(context).cardColor),
                                       border: OutlineInputBorder(
                                         borderSide: BorderSide.none,
                                         borderRadius:
@@ -114,7 +119,10 @@ class _NewsViewState extends State<NewsView> {
                                     ),
                                     backgroundColor:
                                         MaterialStateProperty.all<Color>(
-                                      Theme.of(context).cardColor,
+                                      Utils.getColorByBrightness(
+                                          context,
+                                          AppTheme.lightThemeAccent,
+                                          Theme.of(context).cardColor),
                                     ),
                                   ),
                                 ),
