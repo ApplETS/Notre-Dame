@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 // Package imports:
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:intl/intl.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:stacked/stacked.dart';
 
 // Project imports:
@@ -103,8 +104,7 @@ class _NewsDetailsViewState extends State<NewsDetailsView> {
                                 widget.news.eventEndDate),
                             _buildImage(widget.news),
                             _buildAuthor(
-                                // TODO : Change to author image
-                                widget.news.imageUrl ?? "",
+                                widget.news.organizer.avatarUrl ?? "",
                                 widget.news.organizer.organization ?? "",
                                 widget.news.organizer.activityArea ?? "",
                                 widget.news.organizer.id),
@@ -149,14 +149,27 @@ class _NewsDetailsViewState extends State<NewsDetailsView> {
   }
 
   Widget _buildImage(News news) {
+    var isLoaded = false;
     return Hero(
-        tag: 'news_image_id_${news.id}',
-        child: (news.imageUrl == null || news.imageUrl == "")
-            ? const SizedBox.shrink()
-            : Image.network(
-                news.imageUrl!,
-                fit: BoxFit.cover,
-              ));
+      tag: 'news_image_id_${news.id}',
+      child: (news.imageUrl == null || news.imageUrl == "")
+          ? const SizedBox.shrink()
+          : Image.network(
+              news.imageUrl!,
+              fit: BoxFit.cover,
+              frameBuilder: (context, child, frame, wasSynchronouslyLoaded) {
+                isLoaded = frame != null;
+                return child;
+              },
+              loadingBuilder: (context, child, loadingProgress) {
+                if (isLoaded && loadingProgress == null) {
+                  return child;
+                } else {
+                  return const ShimmerEffect();
+                }
+              },
+            ),
+    );
   }
 
   Widget _buildAuthor(
@@ -170,15 +183,41 @@ class _NewsDetailsViewState extends State<NewsDetailsView> {
                 arguments: authorId),
             child: Hero(
                 tag: 'news_author_avatar',
-                child: ClipOval(
-                  child: avatar == ""
-                      ? const SizedBox()
-                      : Image.network(
-                          "https://cdn-icons-png.flaticon.com/512/147/147142.png",
+                child: CircleAvatar(
+                  radius: 26,
+                  backgroundColor: Utils.getColorByBrightness(context,
+                      AppTheme.lightThemeAccent, AppTheme.darkThemeAccent),
+                  child: Stack(
+                    fit: StackFit.expand,
+                    children: [
+                      if (avatar != "")
+                        Image.network(
+                          avatar,
                           fit: BoxFit.cover,
-                          width: 50.0,
-                          height: 50.0,
+                          errorBuilder: (context, error, stackTrace) {
+                            return Center(
+                              child: Text(
+                                author.substring(0, 1),
+                                style: TextStyle(
+                                    fontSize: 24,
+                                    color: Utils.getColorByBrightness(
+                                        context, Colors.black, Colors.white)),
+                              ),
+                            );
+                          },
                         ),
+                      if (avatar == "")
+                        Center(
+                          child: Text(
+                            author.substring(0, 1),
+                            style: TextStyle(
+                                fontSize: 24,
+                                color: Utils.getColorByBrightness(
+                                    context, Colors.black, Colors.white)),
+                          ),
+                        ),
+                    ],
+                  ),
                 ))),
         title: Text(
           author,
@@ -319,6 +358,26 @@ class _NewsDetailsViewState extends State<NewsDetailsView> {
             ),
           ),
         ],
+      ),
+    );
+  }
+}
+
+class ShimmerEffect extends StatelessWidget {
+  const ShimmerEffect({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Shimmer.fromColors(
+      baseColor: Theme.of(context).brightness == Brightness.light
+          ? AppTheme.lightThemeBackground
+          : AppTheme.darkThemeBackground,
+      highlightColor: Theme.of(context).brightness == Brightness.light
+          ? AppTheme.lightThemeAccent
+          : AppTheme.darkThemeAccent,
+      child: Container(
+        height: 200,
+        color: Colors.grey,
       ),
     );
   }

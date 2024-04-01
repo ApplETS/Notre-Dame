@@ -45,13 +45,11 @@ void main() {
             createdAt: DateTime.now().subtract(const Duration(days: 180)),
             updatedAt: DateTime.now().subtract(const Duration(days: 180)))
       ],
-      organizer: NewsUser(
+      organizer: Organizer(
         id: "e3e3e3e3-e3e3-e3e3-e3e3-e3e3e3e3e3e3",
         type: "organizer",
-        organisation: "Mock Organizer",
+        organization: "Mock Organizer",
         email: "",
-        createdAt: DateTime.now().subtract(const Duration(days: 180)),
-        updatedAt: DateTime.now().subtract(const Duration(days: 180)),
       ),
       createdAt: DateTime.now().subtract(const Duration(days: 5)),
       updatedAt: DateTime.now().subtract(const Duration(days: 5)),
@@ -73,7 +71,7 @@ void main() {
 
       expect(find.text(sampleNews.title), findsOneWidget);
       expect(find.text(sampleNews.content), findsOneWidget);
-      expect(find.text(sampleNews.organizer.organisation!), findsOneWidget);
+      expect(find.text(sampleNews.organizer.organization!), findsOneWidget);
       expect(find.byType(IconButton), findsWidgets);
     });
 
