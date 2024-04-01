@@ -1,23 +1,27 @@
 // Project imports:
+import 'package:flutter/material.dart';
 import 'package:notredame/core/models/report_news.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-List<ReportNews> reportNewsItems = [
-  ReportNews(
-    title: "Contenu inapproprié",
-    description:
-        "Annonce contenant des discours haineux, des images choquantes, ou du contenu adulte.",
-  ),
-  ReportNews(
-    title: "Information fausse ou trompeuse",
-    description: "Annonce qui semble être fausse ou qui induise en erreur.",
-  ),
-  ReportNews(
-    title: "Harcèlement ou abus",
-    description:
-        "Annonce ciblant une personne ou un groupe de manière abusive.",
-  ),
-  ReportNews(
-    title: "Contenu obsolète",
-    description: "Annonce qui n’est plus d'actualité ou pertinentes.",
-  ),
-];
+List<ReportNews> getLocalizedReportNewsItems(BuildContext context) {
+  return [
+    ReportNews(
+        title: AppIntl.of(context)!.report_inappropriate_content,
+        description:
+            AppIntl.of(context)!.report_inappropriate_content_description,
+        category: "1"),
+    ReportNews(
+        title: AppIntl.of(context)!.report_false_information,
+        description: AppIntl.of(context)!.report_false_information_description,
+        category: "2"),
+    ReportNews(
+        title: AppIntl.of(context)!.report_harassment_or_abuse,
+        description:
+            AppIntl.of(context)!.report_harassment_or_abuse_description,
+        category: "3"),
+    ReportNews(
+        title: AppIntl.of(context)!.report_outdated_content,
+        description: AppIntl.of(context)!.report_outdated_content_description,
+        category: "4"),
+  ];
+}

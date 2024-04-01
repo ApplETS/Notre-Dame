@@ -14,14 +14,16 @@ import 'package:notredame/ui/utils/app_theme.dart';
 
 class ReportNews extends StatefulWidget {
   final bool showHandle;
+  final String newsId;
 
-  const ReportNews({super.key, this.showHandle = true});
+  const ReportNews({super.key, required this.newsId, this.showHandle = true});
 
   @override
   _ReportNewsState createState() => _ReportNewsState();
 }
 
 class _ReportNewsState extends State<ReportNews> {
+  String _reason = "";
   bool clicked = false;
   int clickedIndex = -1;
 
@@ -37,14 +39,20 @@ class _ReportNewsState extends State<ReportNews> {
               Expanded(
                 child: clicked && clickedIndex != -1
                     ? Center(
-                        child: _buildReportView(context, clickedIndex,
-                            model as ReportNewsViewModel))
-                    : ListView.builder(
-                        itemCount: reportNewsItems.length,
-                        itemBuilder: (context, index) {
-                          return _buildListTile(index);
-                        },
-                      ),
+                        child: _buildReportView(context, clickedIndex, model))
+                    : ColoredBox(
+                        color: Utils.getColorByBrightness(
+                          context,
+                          AppTheme.lightThemeBackground,
+                          AppTheme.darkThemeBackground,
+                        ),
+                        child: ListView.builder(
+                          itemCount:
+                              getLocalizedReportNewsItems(context).length,
+                          itemBuilder: (context, index) {
+                            return _buildListTile(index);
+                          },
+                        )),
               ),
             ],
           ),
@@ -102,7 +110,7 @@ class _ReportNewsState extends State<ReportNews> {
   }
 
   Widget _buildListTile(int index) {
-    final item = reportNewsItems[index];
+    final item = getLocalizedReportNewsItems(context)[index];
     return Padding(
         padding: const EdgeInsets.only(left: 16.0, right: 16.0),
         child: Card(
@@ -134,7 +142,10 @@ class _ReportNewsState extends State<ReportNews> {
 
   Widget _buildReportView(
       BuildContext context, int index, ReportNewsViewModel model) {
-    final String reportTitle = reportNewsItems[index].title;
+    final String reportTitle =
+        getLocalizedReportNewsItems(context)[index].title;
+    final String reportCategory =
+        getLocalizedReportNewsItems(context)[index].category;
 
     return Container(
       padding: const EdgeInsets.all(8.0),
@@ -168,6 +179,17 @@ class _ReportNewsState extends State<ReportNews> {
                     textAlign: TextAlign.center,
                   ),
                   const SizedBox(height: 24),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                    child: TextField(
+                      decoration: InputDecoration(
+                        hintText: AppIntl.of(context)!.report_reason_hint,
+                      ),
+                      minLines: 1,
+                      onChanged: (reason) => _reason = reason,
+                    ),
+                  ),
+                  const SizedBox(height: 24),
                   ElevatedButton(
                     style: ButtonStyle(
                       backgroundColor: MaterialStateProperty.all<Color>(
@@ -181,7 +203,7 @@ class _ReportNewsState extends State<ReportNews> {
                     child: Text(AppIntl.of(context)!.report,
                         style: const TextStyle(color: Colors.white)),
                     onPressed: () {
-                      model.reportNews(reportTitle);
+                      model.reportNews(widget.newsId, reportCategory, _reason);
                       Fluttertoast.showToast(
                           msg: AppIntl.of(context)!.report_toast);
                       Navigator.pop(context);
