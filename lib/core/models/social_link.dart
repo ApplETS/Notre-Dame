@@ -14,7 +14,5 @@ class SocialLink extends QuickLink {
           "assets/images/${name}_logo.svg",
           height: 55,
           width: 55,
-        )) {
-    ;
-  }
+        ));
 }

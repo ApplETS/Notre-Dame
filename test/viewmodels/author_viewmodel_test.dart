@@ -8,7 +8,6 @@ import 'package:mockito/mockito.dart';
 // Project imports:
 import 'package:notredame/core/managers/author_repository.dart';
 import 'package:notredame/core/managers/news_repository.dart';
-import 'package:notredame/core/models/author.dart';
 import 'package:notredame/core/viewmodels/author_viewmodel.dart';
 import '../helpers.dart';
 import '../mock/managers/author_repository_mock.dart';
@@ -20,15 +19,25 @@ void main() {
   late NewsRepositoryMock newsRepository;
   late AppIntl appIntl;
 
-  final Author author = Author(
-    id: "",
-    organisation: "Mock Author",
-    email: "author@example.com",
-    description: "Test author description",
-    activity: "Test author activity",
-    website: "example.com",
-    image: "https://example.com/author.jpg",
-    socialLinks: [],
+  const organizerId = '1234';
+  final organizer = Organizer(
+    id: organizerId,
+    name: 'Test Organizer',
+    email: 'test@example.com',
+    avatarUrl: 'https://example.com/avatar.png',
+    type: 'type',
+    organization: 'Test Organization',
+    activityArea: 'Test Area',
+    isActive: true,
+    profileDescription: 'Test Description',
+    facebookLink: 'https://facebook.com/test',
+    instagramLink: 'https://instagram.com/test',
+    tikTokLink: 'https://tiktok.com/test',
+    xLink: 'https://x.com/test',
+    discordLink: 'https://discord.com/test',
+    linkedInLink: 'https://linkedin.com/test',
+    redditLink: 'https://reddit.com/test',
+    webSiteLink: 'https://example.com',
   );
 
   final List<News> news = <News>[
@@ -53,13 +62,11 @@ void main() {
             createdAt: DateTime.now().subtract(const Duration(days: 180)),
             updatedAt: DateTime.now().subtract(const Duration(days: 180)))
       ],
-      organizer: NewsUser(
+      organizer: Organizer(
         id: "e3e3e3e3-e3e3-e3e3-e3e3-e3e3e3e3e3e3",
         type: "organizer",
-        organisation: "Mock Organizer",
+        organization: "Mock Organizer",
         email: "",
-        createdAt: DateTime.now().subtract(const Duration(days: 180)),
-        updatedAt: DateTime.now().subtract(const Duration(days: 180)),
       ),
       createdAt: DateTime.now().subtract(const Duration(days: 5)),
       updatedAt: DateTime.now().subtract(const Duration(days: 5)),
@@ -75,10 +82,10 @@ void main() {
       newsRepository = setupNewsRepositoryMock();
       appIntl = await setupAppIntl();
       setupLogger();
-      AuthorRepositoryMock.stubFetchAuthorFromAPI(
-          authorRepository, author.id, author);
+      AuthorRepositoryMock.stubGetOrganizer(
+          authorRepository, organizerId, organizer);
       NewsRepositoryMock.stubGetNews(newsRepository, toReturn: paginatedNews);
-      viewModel = AuthorViewModel(authorId: author.id, appIntl: appIntl);
+      viewModel = AuthorViewModel(authorId: organizerId, appIntl: appIntl);
     });
 
     tearDown(() {
@@ -88,10 +95,10 @@ void main() {
     });
 
     test('Fetching author and news updates the author and news list', () async {
-      viewModel.initialise();
+      await viewModel.fetchAuthorData();
 
-      verify(authorRepository.fetchAuthorFromAPI(author.id)).called(1);
-      expect(viewModel.author, equals(author));
+      verify(authorRepository.getOrganizer(organizerId)).called(1);
+      expect(viewModel.author, equals(organizer));
     });
   });
 }

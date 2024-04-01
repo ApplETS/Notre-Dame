@@ -30,32 +30,24 @@ class _ReportNewsState extends State<ReportNews> {
         viewModelBuilder: () => ReportNewsViewModel(),
         builder: (context, model, child) => SizedBox(
           height: MediaQuery.of(context).size.height * 0.50,
-          child: Container(
-              decoration: BoxDecoration(
-                  color: Utils.getColorByBrightness(
-                    context,
-                    AppTheme.lightThemeBackground,
-                    AppTheme.darkThemeBackground,
-                  ),
-                  borderRadius: const BorderRadius.all(Radius.circular(8.0))),
-              child: Column(
-                children: [
-                  if (widget.showHandle) _buildHandle(context),
-                  if (!clicked) _buildTitle(context),
-                  Expanded(
-                    child: clicked && clickedIndex != -1
-                        ? Center(
-                            child:
-                                _buildReportView(context, clickedIndex, model))
-                        : ListView.builder(
-                            itemCount: reportNewsItems.length,
-                            itemBuilder: (context, index) {
-                              return _buildListTile(index);
-                            },
-                          ),
-                  ),
-                ],
-              )),
+          child: Column(
+            children: [
+              if (widget.showHandle) _buildHandle(context),
+              if (!clicked) _buildTitle(context),
+              Expanded(
+                child: clicked && clickedIndex != -1
+                    ? Center(
+                        child: _buildReportView(context, clickedIndex,
+                            model as ReportNewsViewModel))
+                    : ListView.builder(
+                        itemCount: reportNewsItems.length,
+                        itemBuilder: (context, index) {
+                          return _buildListTile(index);
+                        },
+                      ),
+              ),
+            ],
+          ),
         ),
       );
 
@@ -102,7 +94,7 @@ class _ReportNewsState extends State<ReportNews> {
           padding: const EdgeInsets.fromLTRB(15, 20, 20, 20),
           child: Text(
             AppIntl.of(context)!.report_news,
-            style: Theme.of(context).textTheme.headline6,
+            style: Theme.of(context).textTheme.titleLarge,
           ),
         ),
       ),

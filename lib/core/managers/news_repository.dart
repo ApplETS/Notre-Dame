@@ -17,9 +17,10 @@ class NewsRepository {
   /// Get and update the list of news.
   /// After fetching the news from the [?] the [CacheManager]
   /// is updated with the latest version of the news.
-  Future<PaginatedNews?> getNews({int pageNumber = 1, int pageSize = 3}) async {
+  Future<PaginatedNews?> getNews(
+      {int pageNumber = 1, int pageSize = 3, String? organizerId}) async {
     final PaginatedNews pagination = await _helloApiClient.getEvents(
-        pageNumber: pageNumber, pageSize: pageSize);
+        pageNumber: pageNumber, pageSize: pageSize, organizerId: organizerId);
     return pagination;
   }
 }

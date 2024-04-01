@@ -3,19 +3,16 @@ import 'package:ets_api_clients/models.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
-import 'package:logger/logger.dart';
 import 'package:stacked/stacked.dart';
 
 // Project imports:
 import 'package:notredame/core/managers/author_repository.dart';
 import 'package:notredame/core/managers/news_repository.dart';
-import 'package:notredame/core/models/author.dart';
 import 'package:notredame/locator.dart';
 
 class AuthorViewModel extends BaseViewModel implements Initialisable {
   final AuthorRepository _authorRepository = locator<AuthorRepository>();
   final NewsRepository _newsRepository = locator<NewsRepository>();
-  final Logger _logger = locator<Logger>();
 
   /// Localization class of the application.
   final AppIntl appIntl;
@@ -23,10 +20,10 @@ class AuthorViewModel extends BaseViewModel implements Initialisable {
   final String authorId;
 
   /// Author
-  Author? _author;
+  Organizer? _author;
 
   /// Return the author
-  Author? get author => _author;
+  Organizer? get author => _author;
 
   final PagingController<int, News> pagingController =
       PagingController(firstPageKey: 1);
@@ -37,17 +34,17 @@ class AuthorViewModel extends BaseViewModel implements Initialisable {
   bool isNotified = false;
 
   @override
-  void initialise() {
+  Future<void> initialise() async {
     // This will be called when init state cycle runs
     pagingController.addPageRequestListener((pageKey) {
       fetchPage(pageKey);
     });
-    _author = _authorRepository.fetchAuthorFromAPI(authorId);
   }
 
   Future<void> fetchPage(int pageNumber) async {
     try {
-      final pagination = await _newsRepository.getNews(pageNumber: pageNumber);
+      final pagination = await _newsRepository.getNews(
+          pageNumber: pageNumber, organizerId: authorId);
       final isLastPage = pagination?.totalPages == pageNumber;
       if (isLastPage) {
         pagingController.appendLastPage(pagination?.news ?? []);
@@ -65,12 +62,24 @@ class AuthorViewModel extends BaseViewModel implements Initialisable {
     isNotified = !isNotified;
     if (isNotified) {
       Fluttertoast.showToast(
-          msg: appIntl.news_author_notified_for(author?.organisation ?? ""),
+          msg: appIntl.news_author_notified_for(author?.organization ?? ""),
           toastLength: Toast.LENGTH_LONG);
     } else {
       Fluttertoast.showToast(
-          msg: appIntl.news_author_not_notified_for(author?.organisation ?? ""),
+          msg: appIntl.news_author_not_notified_for(author?.organization ?? ""),
           toastLength: Toast.LENGTH_LONG);
+    }
+  }
+
+  Future<void> fetchAuthorData() async {
+    setBusy(true);
+    try {
+      _author = await _authorRepository.getOrganizer(authorId);
+      notifyListeners();
+    } catch (e) {
+      // Handle errors
+    } finally {
+      setBusy(false);
     }
   }
 }

@@ -43,13 +43,11 @@ void main() {
             createdAt: DateTime.now().subtract(const Duration(days: 180)),
             updatedAt: DateTime.now().subtract(const Duration(days: 180)))
       ],
-      organizer: NewsUser(
+      organizer: Organizer(
         id: "e3e3e3e3-e3e3-e3e3-e3e3-e3e3e3e3e3e3",
         type: "organizer",
-        organisation: "Mock Organizer",
+        organization: "Mock Organizer",
         email: "",
-        createdAt: DateTime.now().subtract(const Duration(days: 180)),
-        updatedAt: DateTime.now().subtract(const Duration(days: 180)),
       ),
       createdAt: DateTime.now().subtract(const Duration(days: 5)),
       updatedAt: DateTime.now().subtract(const Duration(days: 5)),
@@ -119,7 +117,7 @@ void main() {
         NewsRepositoryMock.stubGetNews(newsRepository,
             toReturn: paginatedEmptyNews);
 
-        tester.binding.window.physicalSizeTestValue = const Size(800, 1410);
+        tester.view.physicalSize = const Size(800, 1410);
 
         await tester.pumpWidget(localizedWidget(child: NewsView()));
         await tester.pumpAndSettle(const Duration(seconds: 1));
@@ -131,7 +129,7 @@ void main() {
       testWidgets("news view", (WidgetTester tester) async {
         NewsRepositoryMock.stubGetNews(newsRepository, toReturn: paginatedNews);
 
-        tester.binding.window.physicalSizeTestValue = const Size(800, 1410);
+        tester.view.physicalSize = const Size(800, 1410);
 
         await tester.pumpWidget(localizedWidget(child: NewsView()));
         await tester.pumpAndSettle(const Duration(seconds: 1));

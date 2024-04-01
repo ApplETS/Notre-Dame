@@ -29,7 +29,7 @@ class _NewsViewState extends State<NewsView> {
   Widget build(BuildContext context) =>
       ViewModelBuilder<NewsViewModel>.reactive(
           viewModelBuilder: () => NewsViewModel(),
-          onModelReady: (model) {
+          onViewModelReady: (model) {
             model.pagingController.addStatusListener((status) {
               if (status == PagingStatus.subsequentPageError) {
                 ScaffoldMessenger.of(context).showSnackBar(
