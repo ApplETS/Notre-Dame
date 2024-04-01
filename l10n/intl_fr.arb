@@ -203,11 +203,11 @@
   "report_inappropriate_content": "Contenu inapproprié",
   "report_inappropriate_content_description": "Annonce contenant des discours haineux, des images choquantes, ou du contenu adulte.",
   "report_false_information": "Information fausse ou trompeuse",
-  "report_false_information_description": "Annonce qui semble être fausse ou qui induise en erreur.",
+  "report_false_information_description": "Annonce qui semble être fausse ou qui induit en erreur.",
   "report_harassment_or_abuse": "Harcèlement ou abus",
   "report_harassment_or_abuse_description": "Annonce ciblant une personne ou un groupe de manière abusive.",
   "report_outdated_content": "Contenu obsolète",
-  "report_outdated_content_description": "Annonce qui n’est plus d'actualité ou pertinentes.",
+  "report_outdated_content_description": "Annonce qui n’est plus d'actualité ou pertinente.",
 
   "news_author_notify_me": "Me notifier",
   "news_author_dont_notify_me": "Ne plus recevoir de notifications",
