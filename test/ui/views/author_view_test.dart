@@ -14,8 +14,6 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:notredame/core/managers/course_repository.dart';
 import 'package:notredame/core/managers/news_repository.dart';
 import 'package:notredame/core/managers/settings_manager.dart';
-import 'package:notredame/core/models/author.dart';
-import 'package:notredame/core/models/social_link.dart';
 import 'package:notredame/core/services/analytics_service.dart';
 import 'package:notredame/core/services/launch_url_service.dart';
 import 'package:notredame/core/services/navigation_service.dart';
@@ -54,13 +52,11 @@ void main() {
             createdAt: DateTime.now().subtract(const Duration(days: 180)),
             updatedAt: DateTime.now().subtract(const Duration(days: 180)))
       ],
-      organizer: NewsUser(
+      organizer: Organizer(
         id: "e3e3e3e3-e3e3-e3e3-e3e3-e3e3e3e3e3e3",
         type: "organizer",
-        organisation: "Mock Organizer",
+        organization: "Mock Organizer",
         email: "",
-        createdAt: DateTime.now().subtract(const Duration(days: 180)),
-        updatedAt: DateTime.now().subtract(const Duration(days: 180)),
       ),
       createdAt: DateTime.now().subtract(const Duration(days: 5)),
       updatedAt: DateTime.now().subtract(const Duration(days: 5)),
@@ -69,25 +65,26 @@ void main() {
 
   final List<News> emptyNews = List<News>.empty();
 
-  final Author author = Author(
-      id: "1",
-      organisation: "Capra",
-      email: "capra@ens.etsmtl.ca",
-      description:
-          "Le club Capra fait la conception et la fabrication d'un robot.",
-      activity: "Club scientifique",
-      website: "capra.com",
-      image: "",
-      socialLinks: [
-        SocialLink(id: 1, name: "discord", link: "facebook.com/capra"),
-        SocialLink(id: 2, name: "linkedin", link: "facebook.com/capra"),
-        SocialLink(id: 3, name: "email", link: "facebook.com/capra"),
-        SocialLink(id: 4, name: "x", link: "facebook.com/capra"),
-        SocialLink(id: 5, name: "tiktok", link: "facebook.com/capra"),
-        SocialLink(id: 6, name: "facebook", link: "facebook.com/capra"),
-        SocialLink(id: 7, name: "instagram", link: "facebook.com/capra"),
-        SocialLink(id: 8, name: "reddit", link: "facebook.com/capra"),
-      ]);
+  const organizerId = '1234';
+  final organizer = Organizer(
+    id: organizerId,
+    name: 'Test Organizer',
+    email: 'test@example.com',
+    avatarUrl: 'https://example.com/avatar.png',
+    type: 'type',
+    organization: 'Test Organization',
+    activityArea: 'Test Area',
+    isActive: true,
+    profileDescription: 'Test Description',
+    facebookLink: 'https://facebook.com/test',
+    instagramLink: 'https://instagram.com/test',
+    tikTokLink: 'https://tiktok.com/test',
+    xLink: 'https://x.com/test',
+    discordLink: 'https://discord.com/test',
+    linkedInLink: 'https://linkedin.com/test',
+    redditLink: 'https://reddit.com/test',
+    webSiteLink: 'https://example.com',
+  );
 
   final PaginatedNews paginatedNews = PaginatedNews(
       news: news, pageNumber: 1, pageSize: 3, totalRecords: 3, totalPages: 1);
@@ -114,10 +111,8 @@ void main() {
       setupLaunchUrlServiceMock();
 
       NewsRepositoryMock.stubGetNews(newsRepository, toReturn: paginatedNews);
-      AuthorRepositoryMock.stubFetchAuthorFromAPI(
-          authorRepository, author.id, author);
-
-      AuthorRepositoryMock.stubAuthor(authorRepository, author);
+      AuthorRepositoryMock.stubGetOrganizer(
+          authorRepository, organizerId, organizer);
     });
 
     tearDown(() {
@@ -131,16 +126,16 @@ void main() {
     });
 
     testWidgets('Loaded with Author information', (WidgetTester tester) async {
-      await tester
-          .pumpWidget(localizedWidget(child: AuthorView(authorId: author.id)));
+      await tester.pumpWidget(
+          localizedWidget(child: const AuthorView(authorId: organizerId)));
       await tester.pumpAndSettle(const Duration(seconds: 1));
 
       // Verify that the back button is present
       expect(find.byIcon(Icons.arrow_back), findsOneWidget);
 
       // Verify that the author information is displayed
-      expect(find.text(author.organisation), findsOneWidget);
-      expect(find.text(author.description), findsOneWidget);
+      expect(find.text(organizer.organization ?? ""), findsOneWidget);
+      expect(find.text(organizer.profileDescription ?? ""), findsOneWidget);
 
       // Verify that the notify button is present
       expect(find.byType(TextButton), findsOneWidget);
@@ -148,8 +143,8 @@ void main() {
 
     testWidgets('Notify button toggles text correctly',
         (WidgetTester tester) async {
-      await tester
-          .pumpWidget(localizedWidget(child: AuthorView(authorId: author.id)));
+      await tester.pumpWidget(
+          localizedWidget(child: const AuthorView(authorId: organizerId)));
       await tester.pumpAndSettle(const Duration(seconds: 1));
 
       // Initially, the button should show "Notify Me"
@@ -164,8 +159,8 @@ void main() {
     });
 
     testWidgets('Social Links Modal', (WidgetTester tester) async {
-      await tester
-          .pumpWidget(localizedWidget(child: AuthorView(authorId: author.id)));
+      await tester.pumpWidget(
+          localizedWidget(child: const AuthorView(authorId: organizerId)));
       await tester.pumpAndSettle(const Duration(seconds: 1));
 
       // Tap the social links button
@@ -176,16 +171,15 @@ void main() {
       expect(find.byType(SocialLinks), findsOneWidget);
 
       // Verify that the correct number of social links are displayed + 2 for the buttons already there
-      expect(find.byType(IconButton),
-          findsNWidgets(author.socialLinks.length + 2));
+      expect(find.byType(IconButton), findsNWidgets(10));
     });
 
     testWidgets('Empty News List', (WidgetTester tester) async {
-      NewsRepositoryMock.stubGetNews(newsRepository,
+      NewsRepositoryMock.stubGetNewsOrganizer(newsRepository, organizerId,
           toReturn: paginatedNewsEmpty);
 
-      await tester
-          .pumpWidget(localizedWidget(child: AuthorView(authorId: author.id)));
+      await tester.pumpWidget(
+          localizedWidget(child: const AuthorView(authorId: organizerId)));
       await tester.pumpAndSettle(const Duration(seconds: 2));
 
       // Verify that the news list is empty
@@ -193,10 +187,11 @@ void main() {
     });
 
     testWidgets('AuthorView - Loaded with News', (WidgetTester tester) async {
-      NewsRepositoryMock.stubGetNews(newsRepository, toReturn: paginatedNews);
+      NewsRepositoryMock.stubGetNewsOrganizer(newsRepository, organizerId,
+          toReturn: paginatedNews);
 
-      await tester
-          .pumpWidget(localizedWidget(child: AuthorView(authorId: author.id)));
+      await tester.pumpWidget(
+          localizedWidget(child: const AuthorView(authorId: organizerId)));
       await tester.pumpAndSettle(const Duration(seconds: 2));
 
       // Verify that the news cards are displayed
@@ -210,12 +205,12 @@ void main() {
 
     group("golden - ", () {
       testWidgets("author view news empty", (WidgetTester tester) async {
-        NewsRepositoryMock.stubGetNews(newsRepository,
+        NewsRepositoryMock.stubGetNewsOrganizer(newsRepository, organizerId,
             toReturn: paginatedNewsEmpty);
         tester.view.physicalSize = const Size(800, 1410);
 
         await tester.pumpWidget(
-            localizedWidget(child: AuthorView(authorId: author.id)));
+            localizedWidget(child: const AuthorView(authorId: organizerId)));
         await tester.pumpAndSettle(const Duration(seconds: 2));
 
         await expectLater(find.byType(AuthorView),
@@ -223,11 +218,12 @@ void main() {
       });
 
       testWidgets("author view", (WidgetTester tester) async {
-        NewsRepositoryMock.stubGetNews(newsRepository, toReturn: paginatedNews);
+        NewsRepositoryMock.stubGetNewsOrganizer(newsRepository, organizerId,
+            toReturn: paginatedNews);
         tester.view.physicalSize = const Size(800, 1410);
 
         await tester.pumpWidget(
-            localizedWidget(child: AuthorView(authorId: author.id)));
+            localizedWidget(child: const AuthorView(authorId: organizerId)));
         await tester.pumpAndSettle(const Duration(seconds: 2));
 
         await expectLater(find.byType(AuthorView),

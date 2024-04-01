@@ -25,13 +25,11 @@ void main() {
       publicationDate: DateTime.now().subtract(const Duration(days: 5)),
       eventStartDate: DateTime.now().add(const Duration(days: 2)),
       eventEndDate: DateTime.now().add(const Duration(days: 2, hours: 2)),
-      organizer: NewsUser(
+      organizer: Organizer(
         id: "e3e3e3e3-e3e3-e3e3-e3e3-e3e3e3e3e3e3",
         type: "organizer",
-        organisation: "Mock Organizer",
+        organization: "Mock Organizer",
         email: "",
-        createdAt: DateTime.now().subtract(const Duration(days: 180)),
-        updatedAt: DateTime.now().subtract(const Duration(days: 180)),
       ),
       tags: [],
       createdAt: DateTime.now().subtract(const Duration(days: 5)),
@@ -46,13 +44,11 @@ void main() {
       publicationDate: DateTime.now().subtract(const Duration(days: 5)),
       eventStartDate: DateTime.now().add(const Duration(days: 2)),
       eventEndDate: DateTime.now().add(const Duration(days: 2, hours: 2)),
-      organizer: NewsUser(
+      organizer: Organizer(
         id: "e3e3e3e3-e3e3-e3e3-e3e3-e3e3e3e3e3e3",
         type: "organizer",
-        organisation: "Mock Organizer",
+        organization: "Mock Organizer",
         email: "",
-        createdAt: DateTime.now().subtract(const Duration(days: 180)),
-        updatedAt: DateTime.now().subtract(const Duration(days: 180)),
       ),
       tags: [],
       createdAt: DateTime.now().subtract(const Duration(days: 5)),

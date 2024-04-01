@@ -17,6 +17,16 @@ class NewsRepositoryMock extends MockNewsRepository {
         .thenAnswer((_) async => toReturn);
   }
 
+  /// Stub the function [getNews] of [mock] when called will return [toReturn].
+  static void stubGetNewsOrganizer(NewsRepositoryMock mock, String organizerId,
+      {PaginatedNews? toReturn, int pageNumber = 1, int pageSize = 3}) {
+    when(mock.getNews(
+            pageNumber: pageNumber,
+            pageSize: pageSize,
+            organizerId: organizerId))
+        .thenAnswer((_) async => toReturn);
+  }
+
   /// Stub the function [getNews] of [mock] when called will throw [toThrow].
   static void stubGetNewsException(NewsRepositoryMock mock,
       {Exception toThrow = const ApiException(prefix: 'ApiException'),

@@ -31,13 +31,11 @@ void main() {
           createdAt: DateTime.now().subtract(const Duration(days: 180)),
           updatedAt: DateTime.now().subtract(const Duration(days: 180)))
     ],
-    organizer: NewsUser(
+    organizer: Organizer(
       id: "e3e3e3e3-e3e3-e3e3-e3e3-e3e3e3e3e3e3",
       type: "organizer",
-      organisation: "Mock Organizer",
+      organization: "Mock Organizer",
       email: "",
-      createdAt: DateTime.now().subtract(const Duration(days: 180)),
-      updatedAt: DateTime.now().subtract(const Duration(days: 180)),
     ),
     createdAt: DateTime.now().subtract(const Duration(days: 5)),
     updatedAt: DateTime.now().subtract(const Duration(days: 5)),
