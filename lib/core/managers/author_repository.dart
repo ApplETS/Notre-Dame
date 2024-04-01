@@ -7,7 +7,7 @@ import 'package:ets_api_clients/models.dart';
 // Project imports:
 import 'package:notredame/locator.dart';
 
-/// Repository to access all the news
+/// Repository to access authors
 class AuthorRepository {
   static const String tag = "AuthorRepository";
 
