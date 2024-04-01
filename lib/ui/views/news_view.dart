@@ -20,6 +20,9 @@ class NewsView extends StatefulWidget {
 
 class _NewsViewState extends State<NewsView> {
   static const int _nbSkeletons = 3;
+  final ScrollController _scrollController = ScrollController();
+
+  String _query = "";
 
   @override
   void initState() {
@@ -77,33 +80,52 @@ class _NewsViewState extends State<NewsView> {
                                       contentPadding: const EdgeInsets.fromLTRB(
                                           16, 8, 16, 0)),
                                   style: const TextStyle(fontSize: 18),
+                                  onEditingComplete: () =>
+                                      {model.searchNews(_query)},
                                   onChanged: (query) {
-                                    // Perform search operation here
+                                    _query = query;
                                   },
                                 )),
                           ),
-                          const SizedBox(width: 8),
-                          IconButton(
-                            onPressed: () async {},
-                            icon: const FaIcon(FontAwesomeIcons.calendar),
-                            style: ButtonStyle(
-                              shape: MaterialStateProperty.all<
-                                  RoundedRectangleBorder>(
-                                RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(8),
+                          Padding(
+                              padding:
+                                  const EdgeInsets.only(bottom: 4, left: 8),
+                              child: SizedBox(
+                                height: 48,
+                                width: 48,
+                                child: IconButton(
+                                  onPressed: () async {
+                                    if (_scrollController.hasClients) {
+                                      _scrollController.animateTo(
+                                        0,
+                                        duration:
+                                            const Duration(milliseconds: 500),
+                                        curve: Curves.easeInOut,
+                                      );
+                                    }
+                                  },
+                                  icon: const FaIcon(FontAwesomeIcons.calendar),
+                                  style: ButtonStyle(
+                                    shape: MaterialStateProperty.all<
+                                        RoundedRectangleBorder>(
+                                      RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(8),
+                                      ),
+                                    ),
+                                    backgroundColor:
+                                        MaterialStateProperty.all<Color>(
+                                      Theme.of(context).cardColor,
+                                    ),
+                                  ),
                                 ),
-                              ),
-                              backgroundColor: MaterialStateProperty.all<Color>(
-                                Theme.of(context).cardColor,
-                              ),
-                            ),
-                          ),
+                              ))
                         ],
                       )),
                   Expanded(
                     child: PagedListView<int, News>(
                       key: const Key("pagedListView"),
                       pagingController: model.pagingController,
+                      scrollController: _scrollController,
                       padding: const EdgeInsets.fromLTRB(0, 0, 0, 8),
                       builderDelegate: PagedChildBuilderDelegate<News>(
                         itemBuilder: (context, item, index) => NewsCard(item),
