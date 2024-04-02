@@ -34,7 +34,7 @@ class _BottomBarState extends State<BottomBar> {
 
   @override
   Widget build(BuildContext context) {
-    _currentView = _defineIndex(ModalRoute.of(context).settings.name);
+    _currentView = _defineIndex(ModalRoute.of(context)!.settings.name!);
     return BottomNavigationBar(
       type: BottomNavigationBarType.fixed,
       elevation: 0,
@@ -48,22 +48,17 @@ class _BottomBarState extends State<BottomBar> {
     switch (routeName) {
       case RouterPaths.dashboard:
         _currentView = BottomBar.dashboardView;
-        break;
       case RouterPaths.schedule:
         _currentView = BottomBar.scheduleView;
-        break;
       case RouterPaths.student:
         _currentView = BottomBar.studentView;
-        break;
       case RouterPaths.ets:
       case RouterPaths.security:
         _currentView = BottomBar.etsView;
-        break;
       case RouterPaths.more:
       case RouterPaths.settings:
       case RouterPaths.about:
         _currentView = BottomBar.moreView;
-        break;
     }
 
     return _currentView;
@@ -78,23 +73,18 @@ class _BottomBarState extends State<BottomBar> {
       case BottomBar.dashboardView:
         _navigationService.pushNamedAndRemoveUntil(RouterPaths.dashboard);
         _analyticsService.logEvent("BottomBar", "DashboardView clicked");
-        break;
       case BottomBar.scheduleView:
         _navigationService.pushNamedAndRemoveUntil(RouterPaths.schedule);
         _analyticsService.logEvent("BottomBar", "ScheduleView clicked");
-        break;
       case BottomBar.studentView:
         _navigationService.pushNamedAndRemoveUntil(RouterPaths.student);
         _analyticsService.logEvent("BottomBar", "StudentView clicked");
-        break;
       case BottomBar.etsView:
         _navigationService.pushNamedAndRemoveUntil(RouterPaths.ets);
         _analyticsService.logEvent("BottomBar", "EtsView clicked");
-        break;
       case BottomBar.moreView:
         _navigationService.pushNamedAndRemoveUntil(RouterPaths.more);
         _analyticsService.logEvent("BottomBar", "MoreView clicked");
-        break;
     }
     _currentView = index;
   }
@@ -104,23 +94,23 @@ class _BottomBarState extends State<BottomBar> {
       BottomNavigationBarItem(
           icon: _buildDiscoveryFeatureDescriptionWidget(
               context, RouterPaths.dashboard, Icons.dashboard),
-          label: AppIntl.of(context).title_dashboard),
+          label: AppIntl.of(context)!.title_dashboard),
       BottomNavigationBarItem(
           icon: _buildDiscoveryFeatureDescriptionWidget(
               context, RouterPaths.schedule, Icons.schedule),
-          label: AppIntl.of(context).title_schedule),
+          label: AppIntl.of(context)!.title_schedule),
       BottomNavigationBarItem(
           icon: _buildDiscoveryFeatureDescriptionWidget(
               context, RouterPaths.student, Icons.school),
-          label: AppIntl.of(context).title_student),
+          label: AppIntl.of(context)!.title_student),
       BottomNavigationBarItem(
           icon: _buildDiscoveryFeatureDescriptionWidget(
               context, RouterPaths.ets, Icons.account_balance),
-          label: AppIntl.of(context).title_ets),
+          label: AppIntl.of(context)!.title_ets),
       BottomNavigationBarItem(
           icon: _buildDiscoveryFeatureDescriptionWidget(
               context, RouterPaths.more, Icons.dehaze),
-          label: AppIntl.of(context).title_more),
+          label: AppIntl.of(context)!.title_more),
     ];
   }
 

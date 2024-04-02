@@ -4,8 +4,8 @@ class CustomFeedback {
     this.feedbackText,
   });
 
-  String feedbackText;
-  String feedbackEmail;
+  String? feedbackText;
+  String? feedbackEmail;
 
   @override
   String toString() {
