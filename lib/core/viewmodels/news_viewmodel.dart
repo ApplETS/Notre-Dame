@@ -15,6 +15,7 @@ class NewsViewModel extends BaseViewModel implements Initialisable {
       PagingController(firstPageKey: 1);
 
   bool isLoadingEvents = false;
+  String title = "";
 
   @override
   void initialise() {
@@ -26,7 +27,10 @@ class NewsViewModel extends BaseViewModel implements Initialisable {
 
   Future<void> fetchPage(int pageNumber) async {
     try {
-      final pagination = await _newsRepository.getNews(pageNumber: pageNumber);
+      final pagination = await _newsRepository.getNews(
+        pageNumber: pageNumber,
+        title: title != "" ? title : null,
+      );
       final isLastPage = pagination?.totalPages == pageNumber;
       if (isLastPage) {
         pagingController.appendLastPage(pagination?.news ?? []);
@@ -37,5 +41,10 @@ class NewsViewModel extends BaseViewModel implements Initialisable {
     } catch (error) {
       pagingController.error = error;
     }
+  }
+
+  void searchNews(String title) {
+    this.title = title;
+    pagingController.refresh();
   }
 }

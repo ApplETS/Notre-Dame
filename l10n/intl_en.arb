@@ -208,6 +208,8 @@
   "report_harassment_or_abuse_description": "Ad targeting a person or group in an abusive manner.",
   "report_outdated_content": "Outdated Content",
   "report_outdated_content_description": "Ad that is no longer up-to-date or relevant.",
+  
+  "search": "Search",
 
   "news_author_notify_me": "Notify me",
   "news_author_dont_notify_me": "No longer receive notifications",
