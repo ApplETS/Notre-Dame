@@ -23,135 +23,139 @@ class NewsView extends StatefulWidget {
 class _NewsViewState extends State<NewsView> {
   static const int _nbSkeletons = 3;
   final ScrollController _scrollController = ScrollController();
-
+  bool _showBackToTopButton = false;
   String _query = "";
 
   @override
   void initState() {
     super.initState();
+    _scrollController.addListener(() {
+      if (_scrollController.offset >= 200) {
+        if (!_showBackToTopButton) {
+          setState(() {
+            _showBackToTopButton = true;
+          });
+        }
+      } else {
+        if (_showBackToTopButton) {
+          setState(() {
+            _showBackToTopButton = false;
+          });
+        }
+      }
+    });
   }
 
   @override
-  Widget build(BuildContext context) => ViewModelBuilder<
-          NewsViewModel>.reactive(
-      viewModelBuilder: () => NewsViewModel(),
-      onViewModelReady: (model) {
-        model.pagingController.addStatusListener((status) {
-          if (status == PagingStatus.subsequentPageError) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text(
-                  AppIntl.of(context)!.news_error_not_found,
-                ),
-                action: SnackBarAction(
-                  label: AppIntl.of(context)!.retry,
-                  onPressed: () =>
-                      model.pagingController.retryLastFailedRequest(),
-                ),
-              ),
-            );
-          }
-        });
-      },
-      builder: (context, model, child) {
-        return RefreshIndicator(
-            onRefresh: () => Future.sync(
-                  () => model.pagingController.refresh(),
-                ),
-            child: Theme(
-              data: Theme.of(context).copyWith(canvasColor: Colors.transparent),
-              child: Column(
-                children: [
-                  Padding(
-                      padding: const EdgeInsets.only(top: 8, left: 4, right: 4),
-                      child: Row(
-                        children: [
-                          Expanded(
-                            child: SizedBox(
-                                height: 52,
-                                child: TextField(
-                                  decoration: InputDecoration(
-                                      hintText: AppIntl.of(context)!.search,
-                                      filled: true,
-                                      fillColor: Utils.getColorByBrightness(
-                                          context,
-                                          AppTheme.lightThemeAccent,
-                                          Theme.of(context).cardColor),
-                                      border: OutlineInputBorder(
-                                        borderSide: BorderSide.none,
-                                        borderRadius:
-                                            BorderRadius.circular(8.0),
-                                      ),
-                                      contentPadding: const EdgeInsets.fromLTRB(
-                                          16, 8, 16, 0)),
-                                  style: const TextStyle(fontSize: 18),
-                                  onEditingComplete: () =>
-                                      {model.searchNews(_query)},
-                                  onChanged: (query) {
-                                    _query = query;
-                                  },
-                                )),
-                          ),
-                          Padding(
-                              padding:
-                                  const EdgeInsets.only(bottom: 4, left: 8),
-                              child: SizedBox(
-                                height: 48,
-                                width: 48,
-                                child: IconButton(
-                                  onPressed: () async {
-                                    if (_scrollController.hasClients) {
-                                      _scrollController.animateTo(
-                                        0,
-                                        duration:
-                                            const Duration(milliseconds: 500),
-                                        curve: Curves.easeInOut,
-                                      );
-                                    }
-                                  },
-                                  icon: const FaIcon(FontAwesomeIcons.calendar),
-                                  style: ButtonStyle(
-                                    shape: MaterialStateProperty.all<
-                                        RoundedRectangleBorder>(
-                                      RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(8),
-                                      ),
-                                    ),
-                                    backgroundColor:
-                                        MaterialStateProperty.all<Color>(
-                                      Utils.getColorByBrightness(
-                                          context,
-                                          AppTheme.lightThemeAccent,
-                                          Theme.of(context).cardColor),
-                                    ),
-                                  ),
-                                ),
-                              ))
-                        ],
-                      )),
-                  Expanded(
-                    child: PagedListView<int, News>(
-                      key: const Key("pagedListView"),
-                      pagingController: model.pagingController,
-                      scrollController: _scrollController,
-                      padding: const EdgeInsets.fromLTRB(0, 0, 0, 8),
-                      builderDelegate: PagedChildBuilderDelegate<News>(
-                        itemBuilder: (context, item, index) => NewsCard(item),
-                        firstPageProgressIndicatorBuilder: (context) =>
-                            _buildSkeletonLoader(),
-                        newPageProgressIndicatorBuilder: (context) =>
-                            NewsCardSkeleton(),
-                        noMoreItemsIndicatorBuilder: (context) =>
-                            _buildNoMoreNewsCard(),
-                        firstPageErrorIndicatorBuilder: (context) =>
-                            _buildError(model.pagingController),
-                      ),
-                    ),
+  Widget build(BuildContext context) =>
+      ViewModelBuilder<NewsViewModel>.reactive(
+        viewModelBuilder: () => NewsViewModel(),
+        onViewModelReady: (model) {
+          model.pagingController.addStatusListener((status) {
+            if (status == PagingStatus.subsequentPageError) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text(
+                    AppIntl.of(context)!.news_error_not_found,
                   ),
-                ],
-              ),
-            ));
-      });
+                  action: SnackBarAction(
+                    label: AppIntl.of(context)!.retry,
+                    onPressed: () =>
+                        model.pagingController.retryLastFailedRequest(),
+                  ),
+                ),
+              );
+            }
+          });
+        },
+        builder: (context, model, child) {
+          return Scaffold(
+              floatingActionButton: _showBackToTopButton
+                  ? FloatingActionButton(
+                      shape: const CircleBorder(),
+                      backgroundColor: AppTheme.appletsPurple,
+                      foregroundColor: Colors.white,
+                      onPressed: () {
+                        _scrollController.animateTo(
+                          0,
+                          duration: const Duration(milliseconds: 500),
+                          curve: Curves.easeInOut,
+                        );
+                      },
+                      child: const Icon(Icons.arrow_upward),
+                    )
+                  : null,
+              body: RefreshIndicator(
+                  onRefresh: () => Future.sync(
+                        () => model.pagingController.refresh(),
+                      ),
+                  child: Theme(
+                    data: Theme.of(context)
+                        .copyWith(canvasColor: Colors.transparent),
+                    child: Column(
+                      children: [
+                        Padding(
+                            padding: const EdgeInsets.only(
+                                top: 8, left: 4, right: 4),
+                            child: Row(
+                              children: [
+                                Expanded(
+                                  child: SizedBox(
+                                      height: 52,
+                                      child: TextField(
+                                        decoration: InputDecoration(
+                                            hintText:
+                                                AppIntl.of(context)!.search,
+                                            filled: true,
+                                            fillColor:
+                                                Utils.getColorByBrightness(
+                                                    context,
+                                                    AppTheme.lightThemeAccent,
+                                                    Theme.of(context)
+                                                        .cardColor),
+                                            border: OutlineInputBorder(
+                                              borderSide: BorderSide.none,
+                                              borderRadius:
+                                                  BorderRadius.circular(8.0),
+                                            ),
+                                            contentPadding:
+                                                const EdgeInsets.fromLTRB(
+                                                    16, 8, 16, 0)),
+                                        style: const TextStyle(fontSize: 18),
+                                        onEditingComplete: () =>
+                                            {model.searchNews(_query)},
+                                        onChanged: (query) {
+                                          _query = query;
+                                        },
+                                      )),
+                                ),
+                              ],
+                            )),
+                        Expanded(
+                          child: PagedListView<int, News>(
+                            key: const Key("pagedListView"),
+                            pagingController: model.pagingController,
+                            scrollController: _scrollController,
+                            padding: const EdgeInsets.fromLTRB(0, 0, 0, 8),
+                            builderDelegate: PagedChildBuilderDelegate<News>(
+                              itemBuilder: (context, item, index) =>
+                                  NewsCard(item),
+                              firstPageProgressIndicatorBuilder: (context) =>
+                                  _buildSkeletonLoader(),
+                              newPageProgressIndicatorBuilder: (context) =>
+                                  NewsCardSkeleton(),
+                              noMoreItemsIndicatorBuilder: (context) =>
+                                  _buildNoMoreNewsCard(),
+                              firstPageErrorIndicatorBuilder: (context) =>
+                                  _buildError(model.pagingController),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  )));
+        },
+      );
 
   Widget _buildSkeletonLoader() {
     final Widget skeleton = NewsCardSkeleton();
