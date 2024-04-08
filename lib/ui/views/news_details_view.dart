@@ -253,15 +253,28 @@ class _NewsDetailsViewState extends State<NewsDetailsView> {
                   radius: 26,
                   backgroundColor: Utils.getColorByBrightness(context,
                       AppTheme.lightThemeAccent, AppTheme.darkThemeAccent),
-                  child: Stack(
-                    fit: StackFit.expand,
-                    children: [
-                      if (avatar != "")
-                        Image.network(
-                          avatar,
-                          fit: BoxFit.cover,
-                          errorBuilder: (context, error, stackTrace) {
-                            return Center(
+                  child: (avatar != "")
+                      ? ClipRRect(
+                          borderRadius: BorderRadius.circular(26),
+                          child: Image.network(
+                            avatar,
+                            fit: BoxFit.cover,
+                            errorBuilder: (context, error, stackTrace) {
+                              return Center(
+                                child: Text(
+                                  author.substring(0, 1),
+                                  style: TextStyle(
+                                      fontSize: 24,
+                                      color: Utils.getColorByBrightness(
+                                          context, Colors.black, Colors.white)),
+                                ),
+                              );
+                            },
+                          ))
+                      : Stack(
+                          fit: StackFit.expand,
+                          children: [
+                            Center(
                               child: Text(
                                 author.substring(0, 1),
                                 style: TextStyle(
@@ -269,21 +282,9 @@ class _NewsDetailsViewState extends State<NewsDetailsView> {
                                     color: Utils.getColorByBrightness(
                                         context, Colors.black, Colors.white)),
                               ),
-                            );
-                          },
+                            ),
+                          ],
                         ),
-                      if (avatar == "")
-                        Center(
-                          child: Text(
-                            author.substring(0, 1),
-                            style: TextStyle(
-                                fontSize: 24,
-                                color: Utils.getColorByBrightness(
-                                    context, Colors.black, Colors.white)),
-                          ),
-                        ),
-                    ],
-                  ),
                 ))),
         title: Text(
           author,

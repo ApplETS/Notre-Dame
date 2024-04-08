@@ -289,22 +289,27 @@ class _AuthorViewState extends State<AuthorView> {
                       children: [
                         if (model.author?.avatarUrl != null &&
                             model.author!.avatarUrl != "")
-                          Image.network(
-                            model.author!.avatarUrl!,
-                            fit: BoxFit.cover,
-                            errorBuilder: (context, error, stackTrace) {
-                              return Center(
-                                child: Text(
-                                  model.author?.organization?.substring(0, 1) ??
-                                      '',
-                                  style: TextStyle(
-                                      fontSize: 56,
-                                      color: Utils.getColorByBrightness(
-                                          context, Colors.black, Colors.white)),
-                                ),
-                              );
-                            },
-                          ),
+                          ClipRRect(
+                              borderRadius: BorderRadius.circular(120),
+                              child: Image.network(
+                                model.author!.avatarUrl!,
+                                fit: BoxFit.cover,
+                                errorBuilder: (context, error, stackTrace) {
+                                  return Center(
+                                    child: Text(
+                                      model.author?.organization
+                                              ?.substring(0, 1) ??
+                                          '',
+                                      style: TextStyle(
+                                          fontSize: 56,
+                                          color: Utils.getColorByBrightness(
+                                              context,
+                                              Colors.black,
+                                              Colors.white)),
+                                    ),
+                                  );
+                                },
+                              )),
                         if (model.author?.avatarUrl == null ||
                             model.author!.avatarUrl == "")
                           Center(
