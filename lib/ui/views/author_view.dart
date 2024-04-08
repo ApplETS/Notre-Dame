@@ -148,112 +148,73 @@ class _AuthorViewState extends State<AuthorView> {
                   padding: const EdgeInsets.fromLTRB(32, 64, 32, 16),
                   child: Column(
                     children: [
-                      Text(
-                        author?.organization ?? "",
-                        style: const TextStyle(fontSize: 26),
-                      ),
-                      const SizedBox(height: 10),
-                      Text(
-                        author?.profileDescription ?? "",
-                        style: TextStyle(
+                      if (author?.organization != null ||
+                          author?.organization != "")
+                        Text(
+                          author?.organization ?? "",
+                          style: const TextStyle(fontSize: 26),
+                        ),
+                      if (author?.organization != null &&
+                          author?.organization != "")
+                        const SizedBox(height: 8),
+                      if (author?.profileDescription != null &&
+                          author?.profileDescription != "")
+                        Text(
+                          author?.profileDescription ?? "",
+                          style: TextStyle(
+                            color: Utils.getColorByBrightness(
+                              context,
+                              AppTheme.etsDarkGrey,
+                              AppTheme.newsSecondaryColor,
+                            ),
+                            fontSize: 16,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                      if (author?.profileDescription != null &&
+                          author?.profileDescription != "")
+                        const SizedBox(height: 8),
+                      IconButton(
+                        onPressed: () async {
+                          await showModalBottomSheet(
+                            isDismissible: true,
+                            enableDrag: true,
+                            isScrollControlled: true,
+                            context: context,
+                            shape: const RoundedRectangleBorder(
+                              borderRadius: BorderRadius.only(
+                                topLeft: Radius.circular(10),
+                                topRight: Radius.circular(10),
+                              ),
+                            ),
+                            builder: (context) => SocialLinks(
+                              socialLinks: socialLinks,
+                            ),
+                          );
+                        },
+                        icon: FaIcon(
+                          FontAwesomeIcons.link,
                           color: Utils.getColorByBrightness(
                             context,
-                            AppTheme.etsDarkGrey,
-                            AppTheme.newsSecondaryColor,
+                            AppTheme.newsAccentColorLight,
+                            AppTheme.newsAccentColorDark,
                           ),
-                          fontSize: 16,
                         ),
-                        textAlign: TextAlign.center,
-                      ),
-                      const SizedBox(height: 10),
-                      Row(
-                        children: [
-                          const Expanded(
-                            child: /*TextButton(
-                              style: ButtonStyle(
-                                shape: MaterialStateProperty.all<
-                                    RoundedRectangleBorder>(
-                                  RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(8),
-                                  ),
-                                ),
-                                backgroundColor:
-                                    MaterialStateProperty.resolveWith<Color>(
-                                  (Set<MaterialState> states) {
-                                    return Utils.getColorByBrightness(
-                                      context,
-                                      AppTheme.newsAccentColorLight,
-                                      AppTheme.newsAccentColorDark,
-                                    );
-                                  },
-                                ),
-                              ),
-                              onPressed: () {
-                                model.notifyMe();
-                                setState(() {
-                                  notifyBtnText = getNotifyMeBtnText(model);
-                                });
-                              },
-                              child: Align(
-                                child: Text(
-                                  notifyBtnText,
-                                  style: TextStyle(
-                                    color: Utils.getColorByBrightness(
-                                      context,
-                                      const Color(0xFFFFFFFF),
-                                      AppTheme.primaryDark,
-                                    ),
-                                    fontSize: 16,
-                                  ),
-                                ),
-                              ),
-                            ),*/
-                                SizedBox(width: 10),
-                          ),
-                          const SizedBox(width: 10),
-                          IconButton(
-                            onPressed: () async {
-                              await showModalBottomSheet(
-                                isDismissible: true,
-                                enableDrag: true,
-                                isScrollControlled: true,
-                                context: context,
-                                shape: const RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.only(
-                                    topLeft: Radius.circular(10),
-                                    topRight: Radius.circular(10),
-                                  ),
-                                ),
-                                builder: (context) => SocialLinks(
-                                  socialLinks: socialLinks,
-                                ),
-                              );
-                            },
-                            icon: FaIcon(
-                              FontAwesomeIcons.link,
-                              color: Utils.getColorByBrightness(
-                                context,
-                                AppTheme.newsAccentColorLight,
-                                AppTheme.newsAccentColorDark,
-                              ),
-                            ),
-                            style: ButtonStyle(
-                              shape: MaterialStateProperty.all<
-                                  RoundedRectangleBorder>(
-                                RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(8),
-                                ),
-                              ),
-                              backgroundColor: MaterialStateProperty.all<Color>(
-                                Utils.getColorByBrightness(
-                                  context,
-                                  AppTheme.lightThemeBackground,
-                                  AppTheme.darkThemeBackground,
-                                ),
-                              ),
+                        style: ButtonStyle(
+                          shape:
+                              MaterialStateProperty.all<RoundedRectangleBorder>(
+                            RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8),
                             ),
                           ),
-                        ],
+                          backgroundColor: MaterialStateProperty.all<Color>(
+                            Utils.getColorByBrightness(
+                              context,
+                              AppTheme.lightThemeBackground,
+                              AppTheme.darkThemeBackground,
+                            ),
+                          ),
+                        ),
                       ),
                     ],
                   ),
