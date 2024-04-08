@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 
 // Package imports:
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
 import 'package:notredame/core/utils/utils.dart';
@@ -189,13 +190,13 @@ class _NewsDetailsViewState extends State<NewsDetailsView> {
   }
 
   Widget _buildContent(String content) {
+    String modifiedContent = content.replaceAll('<u>', "");
+    modifiedContent = modifiedContent.replaceAll('</u>', "");
+
     return SingleChildScrollView(
       child: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: Text(
-          content,
-          textAlign: TextAlign.justify,
-        ),
+        child: MarkdownBody(data: modifiedContent),
       ),
     );
   }
