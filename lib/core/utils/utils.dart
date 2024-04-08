@@ -41,6 +41,10 @@ mixin Utils {
         : darkColor;
   }
 
+  static String getMessageByLocale(BuildContext context, String fr, String en) {
+    return Localizations.localeOf(context).toString() == "fr" ? fr : en;
+  }
+
   static bool isDarkTheme(BuildContext context) {
     return Theme.of(context).brightness == Brightness.dark;
   }

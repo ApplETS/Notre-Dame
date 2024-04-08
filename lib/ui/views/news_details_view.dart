@@ -142,7 +142,7 @@ class _NewsDetailsViewState extends State<NewsDetailsView> {
                             _buildAuthor(
                                 widget.news.organizer.avatarUrl ?? "",
                                 widget.news.organizer.organization ?? "",
-                                widget.news.organizer.activityArea ?? "",
+                                widget.news.organizer.activityArea,
                                 widget.news.organizer.id),
                             _buildContent(widget.news.content),
                           ],
@@ -239,7 +239,7 @@ class _NewsDetailsViewState extends State<NewsDetailsView> {
   }
 
   Widget _buildAuthor(
-      String avatar, String author, String activity, String authorId) {
+      String avatar, String author, ActivityArea? activity, String authorId) {
     return ColoredBox(
       color: Utils.getColorByBrightness(
           context, AppTheme.etsLightRed, AppTheme.darkThemeBackgroundAccent),
@@ -296,7 +296,10 @@ class _NewsDetailsViewState extends State<NewsDetailsView> {
         subtitle: Padding(
           padding: const EdgeInsets.only(top: 8.0),
           child: Text(
-            activity,
+            activity != null
+                ? Utils.getMessageByLocale(
+                    context, activity.nameFr, activity.nameEn)
+                : "",
             style: TextStyle(
               color: Utils.getColorByBrightness(
                   context, Colors.white, const Color(0xffbababa)),
