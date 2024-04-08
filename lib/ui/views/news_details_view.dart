@@ -190,6 +190,7 @@ class _NewsDetailsViewState extends State<NewsDetailsView> {
   }
 
   Widget _buildContent(String content) {
+    // TODO : Support underline
     String modifiedContent = content.replaceAll('<u>', "");
     modifiedContent = modifiedContent.replaceAll('</u>', "");
 
