@@ -162,8 +162,8 @@ class _NewsDetailsViewState extends State<NewsDetailsView> {
   void handleClick(Menu menu, News news) {
     switch (menu) {
       case Menu.share:
-        // TODO : Put the real share link
-        Share.share("test");
+        Share.share(
+            "https://hello.montydev.ca/fr/dashboard/news?id=${news.id}");
       case Menu.export:
         final translations = AppIntl.of(context)!;
         final viewModel =
