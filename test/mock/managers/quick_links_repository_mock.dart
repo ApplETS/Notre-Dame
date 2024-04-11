@@ -1,13 +1,16 @@
 // Package imports:
 import 'package:ets_api_clients/exceptions.dart';
+import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
 // Project imports:
 import 'package:notredame/core/managers/quick_link_repository.dart';
 import 'package:notredame/core/models/quick_link.dart';
 import 'package:notredame/core/models/quick_link_data.dart';
+import 'quick_links_repository_mock.mocks.dart';
 
-class QuickLinkRepositoryMock extends Mock implements QuickLinkRepository {
+@GenerateNiceMocks([MockSpec<QuickLinkRepository>()])
+class QuickLinkRepositoryMock extends MockQuickLinkRepository {
   /// Stub the function [getQuickLinkDataFromCache] of [mock] when called will return [toReturn].
   static void stubGetQuickLinkDataFromCache(QuickLinkRepositoryMock mock,
       {List<QuickLinkData> toReturn = const []}) {

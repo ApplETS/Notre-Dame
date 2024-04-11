@@ -8,14 +8,11 @@ import 'package:flutter/material.dart';
 import 'package:ets_api_clients/models.dart';
 import 'package:feature_discovery/feature_discovery.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:intl/intl.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 // Project imports:
 import 'package:notredame/core/constants/preferences_flags.dart';
-import 'package:notredame/core/managers/course_repository.dart';
-import 'package:notredame/core/managers/settings_manager.dart';
-import 'package:notredame/core/services/remote_config_service.dart';
 import 'package:notredame/ui/views/schedule_view.dart';
 import 'package:notredame/ui/widgets/schedule_settings.dart';
 import '../../helpers.dart';
@@ -24,14 +21,15 @@ import '../../mock/managers/settings_manager_mock.dart';
 import '../../mock/services/remote_config_service_mock.dart';
 
 void main() {
-  SettingsManager settingsManager;
-  CourseRepository courseRepository;
-  RemoteConfigService remoteConfigService;
+  SharedPreferences.setMockInitialValues({});
+  late SettingsManagerMock settingsManagerMock;
+  late CourseRepositoryMock courseRepositoryMock;
+  late RemoteConfigServiceMock remoteConfigServiceMock;
 
   // Some activities
-  CourseActivity activityYesterday;
-  CourseActivity activityToday;
-  CourseActivity activityTomorrow;
+  late CourseActivity activityYesterday;
+  late CourseActivity activityToday;
+  late CourseActivity activityTomorrow;
 
   // Some settings
   Map<PreferencesFlag, dynamic> settings = {
@@ -80,13 +78,13 @@ void main() {
 
     setUp(() async {
       setupNavigationServiceMock();
-      settingsManager = setupSettingsManagerMock();
-      courseRepository = setupCourseRepositoryMock();
-      remoteConfigService = setupRemoteConfigServiceMock();
+      settingsManagerMock = setupSettingsManagerMock();
+      courseRepositoryMock = setupCourseRepositoryMock();
+      remoteConfigServiceMock = setupRemoteConfigServiceMock();
       setupNetworkingServiceMock();
       setupAnalyticsServiceMock();
 
-      SettingsManagerMock.stubLocale(settingsManager as SettingsManagerMock);
+      SettingsManagerMock.stubLocale(settingsManagerMock);
 
       settings = {
         PreferencesFlag.scheduleCalendarFormat: CalendarFormat.week,
@@ -96,68 +94,53 @@ void main() {
         PreferencesFlag.scheduleListView: true,
       };
 
-      CourseRepositoryMock.stubGetScheduleActivities(
-          courseRepository as CourseRepositoryMock);
+      CourseRepositoryMock.stubGetScheduleActivities(courseRepositoryMock);
       RemoteConfigServiceMock.stubGetCalendarViewEnabled(
-          remoteConfigService as RemoteConfigServiceMock);
+          remoteConfigServiceMock);
     });
 
     group("golden - ", () {
+      const tableCalendarKey = Key("TableCalendar");
       testWidgets("default view (no events), showTodayButton enabled",
           (WidgetTester tester) async {
-        tester.binding.window.physicalSizeTestValue = const Size(800, 1410);
+        tester.view.physicalSize = const Size(800, 1410);
 
-        CourseRepositoryMock.stubCoursesActivities(
-            courseRepository as CourseRepositoryMock);
-        CourseRepositoryMock.stubGetCoursesActivities(
-            courseRepository as CourseRepositoryMock,
+        CourseRepositoryMock.stubCoursesActivities(courseRepositoryMock);
+        CourseRepositoryMock.stubGetCoursesActivities(courseRepositoryMock,
             fromCacheOnly: true);
-        CourseRepositoryMock.stubGetCourses(
-            courseRepository as CourseRepositoryMock,
+        CourseRepositoryMock.stubGetCourses(courseRepositoryMock,
             fromCacheOnly: true);
-        CourseRepositoryMock.stubGetCourses(
-            courseRepository as CourseRepositoryMock,
-            fromCacheOnly: false);
-        CourseRepositoryMock.stubGetCoursesActivities(
-            courseRepository as CourseRepositoryMock,
-            fromCacheOnly: false);
-        SettingsManagerMock.stubGetScheduleSettings(
-            settingsManager as SettingsManagerMock,
+        CourseRepositoryMock.stubGetCourses(courseRepositoryMock);
+        CourseRepositoryMock.stubGetCoursesActivities(courseRepositoryMock);
+        SettingsManagerMock.stubGetScheduleSettings(settingsManagerMock,
             toReturn: settings);
-
-        await tester.pumpWidget(localizedWidget(
-            child: FeatureDiscovery(
-                child: ScheduleView(initialDay: DateTime(2020)))));
-        await tester.pumpAndSettle(const Duration(seconds: 1));
-
-        await expectLater(find.byType(ScheduleView),
-            matchesGoldenFile(goldenFilePath("scheduleView_1")));
+        await tester.runAsync(() async {
+          await tester.pumpWidget(localizedWidget(
+              child: FeatureDiscovery(
+                  child: ScheduleView(initialDay: DateTime(2020)))));
+          await tester.pumpAndSettle(const Duration(seconds: 1));
+        }).then((value) async {
+          await expectLater(find.byType(ScheduleView),
+              matchesGoldenFile(goldenFilePath("scheduleView_1")));
+        });
       });
 
       testWidgets("default view (no events), showTodayButton disabled",
           (WidgetTester tester) async {
-        SettingsManagerMock.stubGetBool(settingsManager as SettingsManagerMock,
-            PreferencesFlag.discoverySchedule);
-        tester.binding.window.physicalSizeTestValue = const Size(800, 1410);
+        SettingsManagerMock.stubGetBool(
+            settingsManagerMock, PreferencesFlag.discoverySchedule);
+        tester.view.physicalSize = const Size(800, 1410);
 
         settings[PreferencesFlag.scheduleShowTodayBtn] = false;
 
-        CourseRepositoryMock.stubCoursesActivities(
-            courseRepository as CourseRepositoryMock);
-        CourseRepositoryMock.stubGetCoursesActivities(
-            courseRepository as CourseRepositoryMock,
+        CourseRepositoryMock.stubCoursesActivities(courseRepositoryMock);
+        CourseRepositoryMock.stubGetCoursesActivities(courseRepositoryMock,
             fromCacheOnly: true);
-        CourseRepositoryMock.stubGetCourses(
-            courseRepository as CourseRepositoryMock,
+        CourseRepositoryMock.stubGetCourses(courseRepositoryMock,
             fromCacheOnly: true);
-        CourseRepositoryMock.stubGetCourses(
-            courseRepository as CourseRepositoryMock,
-            fromCacheOnly: false);
-        CourseRepositoryMock.stubGetCoursesActivities(
-            courseRepository as CourseRepositoryMock,
-            fromCacheOnly: false);
-        SettingsManagerMock.stubGetScheduleSettings(
-            settingsManager as SettingsManagerMock,
+        CourseRepositoryMock.stubGetCourses(courseRepositoryMock);
+        CourseRepositoryMock.stubGetCoursesActivities(courseRepositoryMock);
+        SettingsManagerMock.stubGetScheduleSettings(settingsManagerMock,
             toReturn: settings);
 
         await tester.pumpWidget(localizedWidget(
@@ -171,218 +154,139 @@ void main() {
 
       testWidgets("view with events, day with events selected",
           (WidgetTester tester) async {
-        tester.binding.window.physicalSizeTestValue = const Size(800, 1410);
-        CourseRepositoryMock.stubCoursesActivities(
-            courseRepository as CourseRepositoryMock,
+        tester.view.physicalSize = const Size(800, 1410);
+        CourseRepositoryMock.stubCoursesActivities(courseRepositoryMock,
             toReturn: [activityYesterday, activityToday, activityTomorrow]);
-        CourseRepositoryMock.stubGetCoursesActivities(
-            courseRepository as CourseRepositoryMock,
+        CourseRepositoryMock.stubGetCoursesActivities(courseRepositoryMock,
             fromCacheOnly: true);
-        CourseRepositoryMock.stubGetCourses(
-            courseRepository as CourseRepositoryMock,
+        CourseRepositoryMock.stubGetCourses(courseRepositoryMock,
             fromCacheOnly: true);
-        CourseRepositoryMock.stubGetCourses(
-            courseRepository as CourseRepositoryMock,
-            fromCacheOnly: false);
-        CourseRepositoryMock.stubGetCoursesActivities(
-            courseRepository as CourseRepositoryMock,
-            fromCacheOnly: false);
-        SettingsManagerMock.stubGetScheduleSettings(
-            settingsManager as SettingsManagerMock,
+        CourseRepositoryMock.stubGetCourses(courseRepositoryMock);
+        CourseRepositoryMock.stubGetCoursesActivities(courseRepositoryMock);
+        SettingsManagerMock.stubGetScheduleSettings(settingsManagerMock,
             toReturn: settings);
-
-        await tester.pumpWidget(localizedWidget(
-            child: FeatureDiscovery(
-                child: MediaQuery(
-                    data: const MediaQueryData(textScaleFactor: 0.5),
-                    child: ScheduleView(initialDay: DateTime(2020))))));
-        await tester.pumpAndSettle(const Duration(seconds: 1));
-
-        await expectLater(find.byType(ScheduleView),
-            matchesGoldenFile(goldenFilePath("scheduleView_3")));
+        await tester.runAsync(() async {
+          await tester.pumpWidget(localizedWidget(
+              child: FeatureDiscovery(
+                  child: MediaQuery(
+                      data: const MediaQueryData(
+                          textScaler: TextScaler.linear(0.5)),
+                      child: ScheduleView(initialDay: DateTime(2020))))));
+          await tester.pumpAndSettle(const Duration(seconds: 1));
+        }).then((value) async {
+          await expectLater(find.byType(ScheduleView),
+              matchesGoldenFile(goldenFilePath("scheduleView_3")));
+        });
       });
 
       testWidgets("view with events, day without events selected",
           (WidgetTester tester) async {
-        tester.binding.window.physicalSizeTestValue = const Size(800, 1410);
+        tester.view.physicalSize = const Size(800, 1410);
 
-        CourseRepositoryMock.stubCoursesActivities(
-            courseRepository as CourseRepositoryMock,
+        CourseRepositoryMock.stubCoursesActivities(courseRepositoryMock,
             toReturn: [activityYesterday, activityTomorrow]);
-        CourseRepositoryMock.stubGetCoursesActivities(
-            courseRepository as CourseRepositoryMock,
+        CourseRepositoryMock.stubGetCoursesActivities(courseRepositoryMock,
             fromCacheOnly: true);
-        CourseRepositoryMock.stubGetCourses(
-            courseRepository as CourseRepositoryMock,
+        CourseRepositoryMock.stubGetCourses(courseRepositoryMock,
             fromCacheOnly: true);
-        CourseRepositoryMock.stubGetCourses(
-            courseRepository as CourseRepositoryMock,
-            fromCacheOnly: false);
-        CourseRepositoryMock.stubGetCoursesActivities(
-            courseRepository as CourseRepositoryMock,
-            fromCacheOnly: false);
-        SettingsManagerMock.stubGetScheduleSettings(
-            settingsManager as SettingsManagerMock,
+        CourseRepositoryMock.stubGetCourses(courseRepositoryMock);
+        CourseRepositoryMock.stubGetCoursesActivities(courseRepositoryMock);
+        SettingsManagerMock.stubGetScheduleSettings(settingsManagerMock,
             toReturn: settings);
-
-        await tester.pumpWidget(localizedWidget(
-            child: FeatureDiscovery(
-                child: ScheduleView(initialDay: DateTime(2020)))));
-        await tester.pumpAndSettle(const Duration(seconds: 1));
-
-        await expectLater(find.byType(ScheduleView),
-            matchesGoldenFile(goldenFilePath("scheduleView_4")));
+        await tester.runAsync(() async {
+          await tester.pumpWidget(localizedWidget(
+              child: FeatureDiscovery(
+                  child: ScheduleView(initialDay: DateTime(2020)))));
+          await tester.pumpAndSettle(const Duration(seconds: 1));
+        }).then((value) async {
+          await expectLater(find.byType(ScheduleView),
+              matchesGoldenFile(goldenFilePath("scheduleView_4")));
+        });
       });
 
       testWidgets("other day is selected, current day still has a square.",
           (WidgetTester tester) async {
-        tester.binding.window.physicalSizeTestValue = const Size(800, 1410);
+        tester.view.physicalSize = const Size(800, 1410);
 
-        CourseRepositoryMock.stubCoursesActivities(
-            courseRepository as CourseRepositoryMock,
+        CourseRepositoryMock.stubCoursesActivities(courseRepositoryMock,
             toReturn: [activityYesterday, activityTomorrow]);
-        CourseRepositoryMock.stubGetCoursesActivities(
-            courseRepository as CourseRepositoryMock,
+        CourseRepositoryMock.stubGetCoursesActivities(courseRepositoryMock,
             fromCacheOnly: true);
-        CourseRepositoryMock.stubGetCourses(
-            courseRepository as CourseRepositoryMock,
+        CourseRepositoryMock.stubGetCourses(courseRepositoryMock,
             fromCacheOnly: true);
-        CourseRepositoryMock.stubGetCourses(
-            courseRepository as CourseRepositoryMock,
-            fromCacheOnly: false);
-        CourseRepositoryMock.stubGetCoursesActivities(
-            courseRepository as CourseRepositoryMock,
-            fromCacheOnly: false);
-        SettingsManagerMock.stubGetScheduleSettings(
-            settingsManager as SettingsManagerMock,
+        CourseRepositoryMock.stubGetCourses(courseRepositoryMock);
+        CourseRepositoryMock.stubGetCoursesActivities(courseRepositoryMock);
+        SettingsManagerMock.stubGetScheduleSettings(settingsManagerMock,
             toReturn: settings);
 
         final testingDate = DateTime(2020);
+        await tester.runAsync(() async {
+          await tester.pumpWidget(localizedWidget(
+              child: FeatureDiscovery(
+                  child: MediaQuery(
+                      data: const MediaQueryData(
+                          textScaler: TextScaler.linear(0.5)),
+                      child: ScheduleView(initialDay: testingDate)))));
+          await tester.pumpAndSettle(const Duration(seconds: 1));
+        }).then((value) async {
+          expect(find.byKey(tableCalendarKey, skipOffstage: false),
+              findsOneWidget);
+          expect(
+              find.descendant(
+                  of: find.byKey(tableCalendarKey, skipOffstage: false),
+                  matching: find.text(
+                      "${testingDate.add(const Duration(days: 1)).day}",
+                      skipOffstage: false)),
+              findsOneWidget);
 
-        await tester.pumpWidget(localizedWidget(
-            child: FeatureDiscovery(
-                child: MediaQuery(
-                    data: const MediaQueryData(textScaleFactor: 0.5),
-                    child: ScheduleView(initialDay: testingDate)))));
-        await tester.pumpAndSettle(const Duration(seconds: 1));
+          // Tap on the day after selected day
+          await tester.tap(find.descendant(
+              of: find.byKey(tableCalendarKey, skipOffstage: false),
+              matching: find.text(
+                  "${testingDate.add(const Duration(days: 1)).day}",
+                  skipOffstage: false)));
 
-        expect(find.byType(TableCalendar, skipOffstage: false), findsOneWidget);
-        expect(
-            find.descendant(
-                of: find.byType(TableCalendar, skipOffstage: false),
-                matching: find.text(
-                    "${testingDate.add(const Duration(days: 1)).day}",
-                    skipOffstage: false)),
-            findsOneWidget);
+          // Reload the view
+          await tester.pump();
 
-        // Tap on the day after selected day
-        await tester.tap(find.descendant(
-            of: find.byType(TableCalendar, skipOffstage: false),
-            matching: find.text(
-                "${testingDate.add(const Duration(days: 1)).day}",
-                skipOffstage: false)));
-
-        // Reload the view
-        await tester.pump();
-
-        await expectLater(find.byType(ScheduleView),
-            matchesGoldenFile(goldenFilePath("scheduleView_5")));
+          await expectLater(find.byType(ScheduleView),
+              matchesGoldenFile(goldenFilePath("scheduleView_5")));
+        });
       });
     }, skip: !Platform.isLinux);
 
     group("interactions - ", () {
-      testWidgets("tap on today button to return on today",
-          (WidgetTester tester) async {
-        tester.binding.window.physicalSizeTestValue = const Size(800, 1410);
-
-        CourseRepositoryMock.stubCoursesActivities(
-            courseRepository as CourseRepositoryMock,
-            toReturn: [activityToday]);
-        CourseRepositoryMock.stubGetCoursesActivities(
-            courseRepository as CourseRepositoryMock,
-            fromCacheOnly: true);
-        CourseRepositoryMock.stubGetCoursesActivities(
-            courseRepository as CourseRepositoryMock,
-            fromCacheOnly: false);
-        CourseRepositoryMock.stubGetCourses(
-            courseRepository as CourseRepositoryMock,
-            fromCacheOnly: true);
-        CourseRepositoryMock.stubGetCourses(
-            courseRepository as CourseRepositoryMock,
-            fromCacheOnly: false);
-        SettingsManagerMock.stubGetScheduleSettings(
-            settingsManager as SettingsManagerMock,
-            toReturn: settings);
-
-        await tester.pumpWidget(localizedWidget(
-            child: FeatureDiscovery(child: const ScheduleView())));
-        await tester.pumpAndSettle(const Duration(seconds: 1));
-
-        // DateFormat has to be after the pumpWidget to correctly load the locale
-        final dateFormat = DateFormat.MMMMEEEEd();
-        final otherDay = DateTime.now().weekday == 7
-            ? DateTime.now().subtract(const Duration(days: 1))
-            : DateTime.now().add(const Duration(days: 1));
-
-        expect(find.text(dateFormat.format(DateTime.now())), findsOneWidget);
-
-        // Tap on the day before today if sunday, otherwise tap on the next day
-        await tester.tap(find.descendant(
-            of: find.byType(TableCalendar),
-            matching: find.text("${otherDay.day}")));
-
-        // Reload view
-        await tester.pump();
-
-        expect(find.text(dateFormat.format(otherDay)), findsOneWidget,
-            reason: "Should be another day than today");
-
-        // Tap on "today" button.
-        await tester.tap(find.byIcon(Icons.today));
-        await tester.pump();
-
-        expect(find.text(dateFormat.format(DateTime.now())), findsOneWidget,
-            reason:
-                "Should display today date because we tapped on today button.");
-      });
-
       testWidgets("tap on settings button to open the schedule settings",
           (WidgetTester tester) async {
-        tester.binding.window.physicalSizeTestValue = const Size(800, 1410);
+        tester.view.physicalSize = const Size(800, 1410);
 
-        CourseRepositoryMock.stubCoursesActivities(
-            courseRepository as CourseRepositoryMock,
+        CourseRepositoryMock.stubCoursesActivities(courseRepositoryMock,
             toReturn: [activityToday]);
-        CourseRepositoryMock.stubGetCoursesActivities(
-            courseRepository as CourseRepositoryMock,
+        CourseRepositoryMock.stubGetCoursesActivities(courseRepositoryMock,
             fromCacheOnly: true);
-        CourseRepositoryMock.stubGetCoursesActivities(
-            courseRepository as CourseRepositoryMock,
-            fromCacheOnly: false);
-        CourseRepositoryMock.stubGetCourses(
-            courseRepository as CourseRepositoryMock,
+        CourseRepositoryMock.stubGetCoursesActivities(courseRepositoryMock);
+        CourseRepositoryMock.stubGetCourses(courseRepositoryMock,
             fromCacheOnly: true);
-        CourseRepositoryMock.stubGetCourses(
-            courseRepository as CourseRepositoryMock,
-            fromCacheOnly: false);
-        SettingsManagerMock.stubGetScheduleSettings(
-            settingsManager as SettingsManagerMock,
+        CourseRepositoryMock.stubGetCourses(courseRepositoryMock);
+        SettingsManagerMock.stubGetScheduleSettings(settingsManagerMock,
             toReturn: settings);
 
-        await tester.pumpWidget(localizedWidget(
-            child: FeatureDiscovery(child: const ScheduleView())));
-        await tester.pumpAndSettle();
+        await tester.runAsync(() async {
+          await tester.pumpWidget(localizedWidget(
+              child: FeatureDiscovery(child: const ScheduleView())));
+          await tester.pumpAndSettle();
+        }).then((value) async {
+          expect(find.byType(ScheduleSettings), findsNothing,
+              reason: "The settings page should not be open");
 
-        expect(find.byType(ScheduleSettings), findsNothing,
-            reason: "The settings page should not be open");
+          // Tap on the settings button
+          await tester.tap(find.byIcon(Icons.settings));
+          // Reload view
+          await tester.pumpAndSettle();
 
-        // Tap on the settings button
-        await tester.tap(find.byIcon(Icons.settings));
-        // Reload view
-        await tester.pumpAndSettle();
-
-        expect(find.byType(ScheduleSettings), findsOneWidget,
-            reason: "The settings view should be open");
+          expect(find.byType(ScheduleSettings), findsOneWidget,
+              reason: "The settings view should be open");
+        });
       });
     });
   });

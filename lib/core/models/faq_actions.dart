@@ -11,13 +11,13 @@ class ActionItem {
   final Color circleColor;
 
   ActionItem({
-    @required this.title,
-    @required this.description,
-    @required this.type,
-    @required this.link,
-    @required this.iconName,
-    @required this.iconColor,
-    @required this.circleColor,
+    required this.title,
+    required this.description,
+    required this.type,
+    required this.link,
+    required this.iconName,
+    required this.iconColor,
+    required this.circleColor,
   });
 }
 

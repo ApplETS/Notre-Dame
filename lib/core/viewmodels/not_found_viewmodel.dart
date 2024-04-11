@@ -1,6 +1,3 @@
-// Flutter imports:
-import 'package:flutter/material.dart';
-
 // Package imports:
 import 'package:rive/rive.dart';
 import 'package:stacked/stacked.dart';
@@ -29,10 +26,10 @@ class NotFoundViewModel extends BaseViewModel {
 
   final String notFoundPageName;
 
-  Artboard _artboard;
-  Artboard get artboard => _artboard;
+  Artboard? _artboard;
+  Artboard? get artboard => _artboard;
 
-  NotFoundViewModel({@required String pageName}) : notFoundPageName = pageName {
+  NotFoundViewModel({required String pageName}) : notFoundPageName = pageName {
     _analyticsService.logEvent(
         tag, "An unknown page ($pageName) has been access from the app.");
   }
@@ -56,7 +53,9 @@ class NotFoundViewModel extends BaseViewModel {
 
   void startRiveAnimation() {
     try {
-      _riveAnimationService.addControllerToAnimation(artboard: _artboard);
+      if (artboard != null) {
+        _riveAnimationService.addControllerToAnimation(artboard: _artboard!);
+      }
     } on Exception catch (e, stacktrace) {
       _analyticsService.logError(tag,
           "An Error has occured during rive animation start.", e, stacktrace);
