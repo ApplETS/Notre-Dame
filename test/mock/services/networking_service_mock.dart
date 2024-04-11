@@ -17,7 +17,8 @@ class NetworkingServiceMock extends MockNetworkingService {
   }
 
   static void stubChangeConnectivityStream(NetworkingServiceMock service) {
-    when(service.onConnectivityChanged)
-        .thenAnswer((_) => Stream.fromIterable([ConnectivityResult.wifi]));
+    when(service.onConnectivityChanged).thenAnswer((_) => Stream.fromIterable([
+          [ConnectivityResult.wifi]
+        ]));
   }
 }
