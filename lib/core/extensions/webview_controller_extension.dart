@@ -19,7 +19,7 @@ extension type WebViewControllerExtension(WebViewController controller)
     String colorFileText = fileText;
     if (brightness == Brightness.dark) {
       colorFileText = colorFileText.replaceAll('<html>',
-          '<html lang="en"><style> body { background-color: black; color: white;} </style>');
+          '<html><style> body { background-color: black; color: white;} </style>');
     }
 
     return colorFileText;
