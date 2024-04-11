@@ -56,7 +56,7 @@ class _BaseScaffoldState extends State<BaseScaffold> {
 
   final NetworkingService _networkingService = locator<NetworkingService>();
 
-  late StreamSubscription<ConnectivityResult> _subscription;
+  late StreamSubscription<List<ConnectivityResult>> _subscription;
 
   @override
   void initState() {
@@ -75,7 +75,7 @@ class _BaseScaffoldState extends State<BaseScaffold> {
   void _listenToChangeInConnectivity() {
     _subscription = _networkingService.onConnectivityChanged.listen((event) {
       setState(() {
-        _isOffline = event == ConnectivityResult.none;
+        _isOffline = event.contains(ConnectivityResult.none);
       });
     });
   }

@@ -7,12 +7,12 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 class NetworkingService {
   final Connectivity _connectivity = Connectivity();
 
-  Stream<ConnectivityResult> get onConnectivityChanged =>
+  Stream<List<ConnectivityResult>> get onConnectivityChanged =>
       _connectivity.onConnectivityChanged;
 
   Future<bool> hasConnectivity() async {
     final connectionStatus = await _connectivity.checkConnectivity();
-    return connectionStatus != ConnectivityResult.none;
+    return !connectionStatus.contains(ConnectivityResult.none);
   }
 
   Future<String> getConnectionType() async {
