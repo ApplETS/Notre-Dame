@@ -48,9 +48,8 @@ class _EmergencyViewState extends State<EmergencyView> {
             backgroundColor: AppTheme.etsLightRed,
           ),
           body: WebViewWidget(
-            controller: WebViewController()
-              ..loadFlutterAsset(widget.description)
-          ),
+              controller: WebViewController()
+                ..loadFlutterAsset(widget.description)),
         ),
       );
 }
