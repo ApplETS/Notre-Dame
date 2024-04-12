@@ -27,6 +27,9 @@ class RemoteConfigService {
   static const _dashboardMsgUrl = "dashboard_message_url";
   static const _dashboardMsgType = "dashboard_message_type";
 
+  // links
+  static const _signetsPasswordResetUrl = "signets_password_reset_url";
+
   static const _scheduleListViewDefault = "schedule_list_view_default";
   final FirebaseRemoteConfig _remoteConfig = FirebaseRemoteConfig.instance;
   final defaults = <String, dynamic>{
@@ -39,6 +42,7 @@ class RemoteConfigService {
     _dashboardMsgColor: "",
     _dashboardMsgUrl: "",
     _dashboardMsgType: "",
+    _signetsPasswordResetUrl: "",
     _privacyPolicyToggle: true,
     _scheduleListViewDefault: true
   };
@@ -106,6 +110,11 @@ class RemoteConfigService {
   String get dashboardMsgType {
     fetch();
     return _remoteConfig.getString(_dashboardMsgType);
+  }
+
+  String get signetsPasswordResetUrl {
+    fetch();
+    return _remoteConfig.getString(_signetsPasswordResetUrl);
   }
 
   Future<void> fetch() async {
