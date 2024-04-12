@@ -199,7 +199,7 @@ class UserRepository {
     // Force fromCacheOnly mode when user has no connectivity
     if (!(await _networkingService.hasConnectivity())) {
       // ignore: parameter_assignments
-      fromCacheOnly = true;
+      fromCacheOnly = !await _networkingService.hasConnectivity();
     }
 
     // Load the programs from the cache if the list doesn't exist
