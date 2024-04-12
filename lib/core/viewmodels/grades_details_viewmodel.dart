@@ -27,28 +27,20 @@ class GradesDetailsViewModel extends FutureViewModel<Course> {
   /// Used to get the current course selected of the student
   Course course;
 
-  GradesDetailsViewModel({this.course, @required AppIntl intl})
+  GradesDetailsViewModel({required this.course, required AppIntl intl})
       : _appIntl = intl;
 
   @override
   Future<Course> futureToRun() async {
-    setBusyForObject(course, true);
-
-    // ignore: return_type_invalid_for_catch_error
-    await _courseRepository
-        .getCourseSummary(course)
-        // ignore: return_type_invalid_for_catch_error
-        .catchError(onError)
-        ?.then((value) {
-      if (value != null) {
-        course = value;
-      }
-    })?.whenComplete(() {
+    try {
+      setBusyForObject(course, true);
+      course = await _courseRepository.getCourseSummary(course);
+      notifyListeners();
+    } catch (e) {
+      onError(e);
+    } finally {
       setBusyForObject(course, false);
-    });
-
-    notifyListeners();
-
+    }
     return course;
   }
 
@@ -68,18 +60,14 @@ class GradesDetailsViewModel extends FutureViewModel<Course> {
   Future<bool> refresh() async {
     try {
       setBusyForObject(course, true);
-      await _courseRepository.getCourseSummary(course)?.then((value) {
-        if (value != null) {
-          course = value;
-        }
-      });
+      course = await _courseRepository.getCourseSummary(course);
       notifyListeners();
-      setBusyForObject(course, false);
       return true;
-    } on Exception catch (error) {
+    } catch (error) {
       onError(error);
-      setBusyForObject(course, false);
       return false;
+    } finally {
+      setBusyForObject(course, false);
     }
   }
 
@@ -88,6 +76,7 @@ class GradesDetailsViewModel extends FutureViewModel<Course> {
     final SettingsManager settingsManager = locator<SettingsManager>();
     if (await settingsManager.getBool(PreferencesFlag.discoveryGradeDetails) ==
         null) {
+      if (!context.mounted) return;
       final List<String> ids = findDiscoveriesByGroupName(
               context, DiscoveryGroupIds.pageGradeDetails)
           .map((e) => e.featureId)

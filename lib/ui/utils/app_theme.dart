@@ -41,27 +41,29 @@ class AppTheme {
   // Schedule color palettes
   static const List<Color> schedulePaletteLight = [
     Color(0xfff1c40f),
-    Color(0xff1abc9c),
-    Color(0xff2ecc71),
-    Color(0xff2ecc71),
+    Color(0xffe67e22),
+    Color(0xffe91e63),
+    Color(0xff16a085),
     Color(0xff2ecc71),
     Color(0xff3498db),
     Color(0xff9b59b6),
     Color(0xff34495e),
     Color(0xffe67e22),
-    Color(0xffe74c3c)
+    Color(0xffe74c3c),
   ];
+
+  // schedulePaletteDark, same colors than schedulePaletteLight but darker
   static const List<Color> schedulePaletteDark = [
-    Color(0xfff39c12),
-    Color(0xff16a085),
-    Color(0xff27ae60),
-    Color(0xff2ecc71),
-    Color(0xff2ecc71),
-    Color(0xff2980b9),
-    Color(0xff8e44ad),
+    Color(0xffb7950b),
+    Color(0xffa84300),
+    Color(0xffad1457),
+    Color(0xff0b5345),
+    Color(0xff1b5e20),
+    Color(0xff1e3a56),
+    Color(0xff6a1b9a),
     Color(0xff2c3e50),
-    Color(0xffd35400),
-    Color(0xffc0392b)
+    Color(0xffa84300),
+    Color(0xff992d22),
   ];
 
   /// Schedule calendar colors
@@ -72,10 +74,18 @@ class AppTheme {
   static ThemeData lightTheme() {
     final ThemeData lightTheme = ThemeData.light();
     return lightTheme.copyWith(
-        useMaterial3: true,
         primaryColor: etsLightRed,
         bottomNavigationBarTheme: lightTheme.bottomNavigationBarTheme
             .copyWith(selectedItemColor: etsLightRed),
+        textTheme: lightTheme.textTheme.copyWith(
+          bodySmall: const TextStyle(fontSize: 14, color: Colors.black),
+          bodyMedium: const TextStyle(fontSize: 16, color: Colors.black),
+          bodyLarge: const TextStyle(fontSize: 18, color: Colors.black),
+          titleSmall: const TextStyle(
+              fontSize: 20, fontWeight: FontWeight.w400, color: Colors.black),
+          displaySmall: const TextStyle(
+              fontSize: 20, fontWeight: FontWeight.w400, color: Colors.black),
+        ),
         colorScheme: lightTheme.colorScheme
             .copyWith(primary: etsLightRed, secondary: etsLightRed)
             .copyWith(secondary: etsLightRed)
@@ -86,11 +96,25 @@ class AppTheme {
   static ThemeData darkTheme() {
     final ThemeData darkTheme = ThemeData.dark();
     return darkTheme.copyWith(
-        useMaterial3: true,
         // primaryColor: primaryDark,
         // appBarTheme: const AppBarTheme(color: Color(0xff121212)),
         scaffoldBackgroundColor: const Color(0xff121212),
         cardColor: const Color(0xff1e1e1e),
+        textTheme: darkTheme.textTheme.copyWith(
+          titleSmall: const TextStyle(
+            fontSize: 20,
+            fontWeight: FontWeight.w400,
+          ),
+          bodySmall: const TextStyle(
+            fontSize: 14,
+          ),
+          bodyMedium: const TextStyle(
+            fontSize: 16,
+          ),
+          bodyLarge: const TextStyle(
+            fontSize: 18,
+          ),
+        ),
         bottomNavigationBarTheme: darkTheme.bottomNavigationBarTheme
             .copyWith(selectedItemColor: etsLightRed),
         colorScheme: darkTheme.colorScheme

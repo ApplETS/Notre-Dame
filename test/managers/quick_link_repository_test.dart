@@ -23,16 +23,16 @@ import '../mock/services/firebase_storage_mock.dart';
 import '../mock/services/remote_config_service_mock.dart';
 
 void main() {
-  AppIntl appIntl;
-  CacheManager cacheManager;
-  QuickLinkRepository quickLinkRepository;
-  RemoteConfigServiceMock remoteConfigServiceMock;
-  FirebaseStorageServiceMock storageServiceMock;
+  late AppIntl appIntl;
+  late CacheManagerMock cacheManagerMock;
+  late QuickLinkRepository quickLinkRepository;
+  late RemoteConfigServiceMock remoteConfigServiceMock;
+  late FirebaseStorageServiceMock storageServiceMock;
 
   group("QuickLinkRepository - ", () {
     setUp(() async {
       // Setup needed services and managers
-      cacheManager = setupCacheManagerMock();
+      cacheManagerMock = setupCacheManagerMock();
       setupAnalyticsServiceMock();
       appIntl = await setupAppIntl();
       remoteConfigServiceMock =
@@ -43,7 +43,7 @@ void main() {
     });
 
     tearDown(() {
-      clearInteractions(cacheManager);
+      clearInteractions(cacheManagerMock);
       unregister<CacheManager>();
       unregister<RemoteConfigService>();
     });
@@ -53,7 +53,7 @@ void main() {
         // Stub the cache to return some QuickLinkData
         final quickLinkData = QuickLinkData(id: 1, index: 0);
         CacheManagerMock.stubGet(
-            cacheManager as CacheManagerMock,
+            cacheManagerMock,
             QuickLinkRepository.quickLinksCacheKey,
             jsonEncode([quickLinkData]));
 
@@ -64,7 +64,7 @@ void main() {
         expect(results[0].id, quickLinkData.id);
         expect(results[0].index, quickLinkData.index);
 
-        verify(cacheManager.get(QuickLinkRepository.quickLinksCacheKey))
+        verify(cacheManagerMock.get(QuickLinkRepository.quickLinksCacheKey))
             .called(1);
       });
 
@@ -72,8 +72,8 @@ void main() {
           "Trying to recover QuickLinkData from cache but an exception is raised.",
           () async {
         // Stub the cache to throw an exception
-        CacheManagerMock.stubGetException(cacheManager as CacheManagerMock,
-            QuickLinkRepository.quickLinksCacheKey);
+        CacheManagerMock.stubGetException(
+            cacheManagerMock, QuickLinkRepository.quickLinksCacheKey);
 
         expect(quickLinkRepository.getQuickLinkDataFromCache(),
             throwsA(isInstanceOf<Exception>()));
@@ -89,7 +89,7 @@ void main() {
 
         await quickLinkRepository.updateQuickLinkDataToCache([quickLink]);
 
-        verify(cacheManager.update(QuickLinkRepository.quickLinksCacheKey,
+        verify(cacheManagerMock.update(QuickLinkRepository.quickLinksCacheKey,
             jsonEncode([quickLinkData]))).called(1);
       });
 
@@ -97,8 +97,8 @@ void main() {
           "Trying to update QuickLinkData to cache but an exception is raised.",
           () async {
         // Stub the cache to throw an exception
-        CacheManagerMock.stubUpdateException(cacheManager as CacheManagerMock,
-            QuickLinkRepository.quickLinksCacheKey);
+        CacheManagerMock.stubUpdateException(
+            cacheManagerMock, QuickLinkRepository.quickLinksCacheKey);
 
         final quickLink =
             QuickLink(id: 1, image: const Text(""), name: 'name', link: 'url');

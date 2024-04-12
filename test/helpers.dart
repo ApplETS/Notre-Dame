@@ -55,7 +55,7 @@ import 'mock/services/siren_flutter_service_mock.dart';
 String goldenFilePath(String goldenName) => "./goldenFiles/$goldenName.png";
 
 /// Unregister the service [T] from GetIt
-void unregister<T>() {
+void unregister<T extends Object>() {
   if (locator.isRegistered<T>()) {
     locator.unregister<T>();
   }
@@ -63,7 +63,7 @@ void unregister<T>() {
 
 /// Load the l10n classes. Take the [child] widget to test
 Widget localizedWidget(
-        {@required Widget child,
+        {required Widget child,
         bool useScaffold = true,
         String locale = 'en',
         double textScaleFactor = 0.9}) =>
@@ -81,7 +81,7 @@ Widget localizedWidget(
     );
 
 /// Load a mock of the [SignetsAPIClient]
-SignetsAPIClient setupSignetsApiMock() {
+SignetsAPIClientMock setupSignetsApiMock() {
   unregister<SignetsAPIClient>();
   final service = SignetsAPIClientMock();
 
@@ -101,7 +101,7 @@ InAppReviewService setupInAppReviewServiceMock() {
 }
 
 /// Load a mock of the [MonETSAPIClient]
-MonETSAPIClient setupMonETSApiMock() {
+MonETSAPIClientMock setupMonETSApiMock() {
   unregister<MonETSAPIClient>();
   final service = MonETSAPIClientMock();
 
@@ -111,7 +111,7 @@ MonETSAPIClient setupMonETSApiMock() {
 }
 
 /// Load a mock of the [AnalyticsService]
-AnalyticsService setupAnalyticsServiceMock() {
+AnalyticsServiceMock setupAnalyticsServiceMock() {
   unregister<AnalyticsService>();
   final service = AnalyticsServiceMock();
 
@@ -121,7 +121,7 @@ AnalyticsService setupAnalyticsServiceMock() {
 }
 
 /// Load a mock of the [RiveAnimationService]
-RiveAnimationService setupRiveAnimationServiceMock() {
+RiveAnimationServiceMock setupRiveAnimationServiceMock() {
   unregister<RiveAnimationService>();
   final service = RiveAnimationServiceMock();
 
@@ -131,7 +131,7 @@ RiveAnimationService setupRiveAnimationServiceMock() {
 }
 
 /// Load a mock of the [InternalInfoService]
-InternalInfoService setupInternalInfoServiceMock() {
+InternalInfoServiceMock setupInternalInfoServiceMock() {
   unregister<InternalInfoService>();
   final service = InternalInfoServiceMock();
 
@@ -141,7 +141,7 @@ InternalInfoService setupInternalInfoServiceMock() {
 }
 
 /// Load a mock of the [SirenFlutterService]
-SirenFlutterService setupSirenFlutterServiceMock() {
+SirenFlutterServiceMock setupSirenFlutterServiceMock() {
   unregister<SirenFlutterService>();
   final service = SirenFlutterServiceMock();
 
@@ -150,7 +150,7 @@ SirenFlutterService setupSirenFlutterServiceMock() {
   return service;
 }
 
-void setupFlutterToastMock([WidgetTester tester]) {
+void setupFlutterToastMock([WidgetTester? tester]) {
   const MethodChannel channel = MethodChannel('PonnamKarthik/fluttertoast');
 
   TestDefaultBinaryMessenger messenger;
@@ -181,7 +181,7 @@ AppWidgetService setupAppWidgetServiceMock() {
 }
 
 /// Load a mock of the [NavigationService]
-NavigationService setupNavigationServiceMock() {
+NavigationServiceMock setupNavigationServiceMock() {
   unregister<NavigationService>();
   final service = NavigationServiceMock();
 
@@ -191,7 +191,7 @@ NavigationService setupNavigationServiceMock() {
 }
 
 /// Load a mock of the [GithubApi]
-GithubApi setupGithubApiMock() {
+GithubApiMock setupGithubApiMock() {
   unregister<GithubApi>();
   final service = GithubApiMock();
 
@@ -201,7 +201,7 @@ GithubApi setupGithubApiMock() {
 }
 
 /// Load a mock of the [FlutterSecureStorage]
-FlutterSecureStorage setupFlutterSecureStorageMock() {
+FlutterSecureStorageMock setupFlutterSecureStorageMock() {
   unregister<FlutterSecureStorage>();
   final service = FlutterSecureStorageMock();
 
@@ -211,7 +211,7 @@ FlutterSecureStorage setupFlutterSecureStorageMock() {
 }
 
 /// Load a mock of the [UserRepository]
-UserRepository setupUserRepositoryMock() {
+UserRepositoryMock setupUserRepositoryMock() {
   unregister<UserRepository>();
   final service = UserRepositoryMock();
 
@@ -226,7 +226,7 @@ Future<AppIntl> setupAppIntl() async {
 }
 
 /// Load a mock of the [CacheManager]
-CacheManager setupCacheManagerMock() {
+CacheManagerMock setupCacheManagerMock() {
   unregister<CacheManager>();
   final service = CacheManagerMock();
 
@@ -247,7 +247,7 @@ Logger setupLogger() {
 }
 
 /// Load a mock of the [PreferencesService]
-PreferencesService setupPreferencesServiceMock() {
+PreferencesServiceMock setupPreferencesServiceMock() {
   unregister<PreferencesService>();
   final service = PreferencesServiceMock();
 
@@ -257,7 +257,7 @@ PreferencesService setupPreferencesServiceMock() {
 }
 
 /// Load a mock of the [SettingsManager]
-SettingsManager setupSettingsManagerMock() {
+SettingsManagerMock setupSettingsManagerMock() {
   unregister<SettingsManager>();
   final service = SettingsManagerMock();
 
@@ -267,7 +267,7 @@ SettingsManager setupSettingsManagerMock() {
 }
 
 /// Load a mock of the [CourseRepository]
-CourseRepository setupCourseRepositoryMock() {
+CourseRepositoryMock setupCourseRepositoryMock() {
   unregister<CourseRepository>();
   final service = CourseRepositoryMock();
 
@@ -278,7 +278,7 @@ CourseRepository setupCourseRepositoryMock() {
 
 /// Load a mock of the [NetworkingService]
 /// Will also stub the first value of changeConnectivityStream
-NetworkingService setupNetworkingServiceMock() {
+NetworkingServiceMock setupNetworkingServiceMock() {
   unregister<NetworkingService>();
   final service = NetworkingServiceMock();
 
@@ -290,7 +290,7 @@ NetworkingService setupNetworkingServiceMock() {
   return service;
 }
 
-void setupInAppReviewMock([WidgetTester tester]) {
+void setupInAppReviewMock([WidgetTester? tester]) {
   const MethodChannel channel = MethodChannel('dev.britannio.in_app_review');
 
   TestDefaultBinaryMessenger messenger;
@@ -311,7 +311,7 @@ void setupInAppReviewMock([WidgetTester tester]) {
 }
 
 /// Load a mock of the [LaunchUrlService]
-LaunchUrlService setupLaunchUrlServiceMock() {
+LaunchUrlServiceMock setupLaunchUrlServiceMock() {
   unregister<LaunchUrlService>();
   final service = LaunchUrlServiceMock();
 
@@ -321,7 +321,7 @@ LaunchUrlService setupLaunchUrlServiceMock() {
 }
 
 /// Load a mock of the [RemoteConfigService]
-RemoteConfigService setupRemoteConfigServiceMock() {
+RemoteConfigServiceMock setupRemoteConfigServiceMock() {
   unregister<RemoteConfigService>();
   final service = RemoteConfigServiceMock();
 
@@ -331,7 +331,7 @@ RemoteConfigService setupRemoteConfigServiceMock() {
 }
 
 /// Load a mock of the [QuickLinkRepository]
-QuickLinkRepository setupQuickLinkRepositoryMock() {
+QuickLinkRepositoryMock setupQuickLinkRepositoryMock() {
   unregister<QuickLinkRepository>();
   final repository = QuickLinkRepositoryMock();
 

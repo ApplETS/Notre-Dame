@@ -40,7 +40,7 @@ class WebLinkCard extends StatelessWidget {
                           child: Text(
                             _links.name,
                             style: const TextStyle(
-                                color: Colors.red, fontSize: 18.0),
+                                color: AppTheme.etsLightRed, fontSize: 18.0),
                           ),
                         ),
                       ],

@@ -30,11 +30,7 @@ _Note: Ce guide est aussi disponible en: [English](https://github.com/ApplETS/No
 
 ## Requis
 
-- Flutter SDK v3.3.10
-```sh
-# pour rétrograder la version de flutter à la version requise, il suffit de faire :
-$ flutter downgrade 3.3.10
-```
+- Flutter SDK v3.19.3 ou supérieure
 - Openssl v1.1.1g ou supérieure
 - Java sdk 11
 
@@ -56,6 +52,12 @@ chmod +x ./env_variables.sh
 flutter pub get
 ```
 
+- Pour généré les mocks:
+```bash
+dart run build_runner build
+```
+
+
 ## Ajouter une variable d'environnement pour une API_KEY
 - Pour ajouter le Google Maps API TOKEN et le GitHub API TOKEN, vous devez renommer le fichier `.env.template` en `.env`.
 Dans le fichier `.env` , vous devez ajouter le Google Maps API TOKEN et le GitHub API TOKEN.
@@ -67,17 +69,6 @@ Vous pouvez trouver dans le dossier `.githooks` l'ensemble des hooks pour git. P
 ```bash
 git config core.hooksPath .githooks
 ```
-
-## 📦 Dev Container
-
-Vous pouvez exécuter le projet dans un conteneur contenant toutes les bonnes versions des bibliothèques prêtes à l'emploi.
-Étapes pour l'exécuter :
-1. Installez Docker, VSCode et l'extension Dev Containers pour vscode.
-2. Ouvrez le projet avec vscode, une fenêtre contextuelle suggérera d'ouvrir le projet dans un conteneur de développement.*
-4. Une fois le conteneur opérationnel, vous serez invité dans le terminal vscode à accepter les licences.
-5. Associez et connectez votre téléphone Android à l'aide du débogage sans fil ADB pour déboguer l'application.
-
-\* si vous ne voyez pas la fenêtre contextuelle suggérant l'environnement du conteneur de développement, essayez d'exécuter la commande vscode : `Conteneurs de développement : reconstruire et rouvrir dans le conteneur`
 
 ## ⚖️ License
 Ce projet est licencié selon la licence Apache V2.0. Voir le fichier [LICENSE](https://github.com/ApplETS/Notre-Dame/blob/master/LICENSE) pour plus d'informations.

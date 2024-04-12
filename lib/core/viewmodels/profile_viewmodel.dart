@@ -1,6 +1,3 @@
-// Flutter imports:
-import 'package:flutter/material.dart';
-
 // Package imports:
 import 'package:ets_api_clients/models.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -36,9 +33,9 @@ class ProfileViewModel extends FutureViewModel<List<Program>> {
 
   /// Return the universal access code of the student
   String get universalAccessCode =>
-      _userRepository?.monETSUser?.universalCode ?? '';
+      _userRepository.monETSUser?.universalCode ?? '';
 
-  ProfileViewModel({@required AppIntl intl}) : _appIntl = intl;
+  ProfileViewModel({required AppIntl intl}) : _appIntl = intl;
 
   double get programProgression {
     final ProgramCredits programCredits = ProgramCredits();
@@ -83,11 +80,11 @@ class ProfileViewModel extends FutureViewModel<List<Program>> {
 
   /// Return the list of programs for the student
   List<Program> get programList {
-    if (_programList == null || _programList.isEmpty) {
+    if (_programList.isEmpty) {
       _programList = [];
     }
     if (_userRepository.programs != null) {
-      _programList = _userRepository.programs;
+      _programList = _userRepository.programs!;
     }
 
     _programList.sort((a, b) => b.status.compareTo(a.status));
@@ -100,22 +97,22 @@ class ProfileViewModel extends FutureViewModel<List<Program>> {
   bool isLoadingEvents = false;
 
   @override
-  Future<List<Program>> futureToRun() => _userRepository
-          .getInfo(fromCacheOnly: true)
-          .then((value) => _userRepository.getPrograms(fromCacheOnly: true))
-          .then((value) {
-        setBusyForObject(isLoadingEvents, true);
-        _userRepository
-            .getInfo()
-            // ignore: return_type_invalid_for_catch_error
-            .catchError(onError)
-            // ignore: return_type_invalid_for_catch_error
-            .then((value) => _userRepository.getPrograms().catchError(onError))
-            .whenComplete(() {
-          setBusyForObject(isLoadingEvents, false);
-        });
-        return value;
-      });
+  Future<List<Program>> futureToRun() async {
+    try {
+      await _userRepository.getInfo(fromCacheOnly: true);
+      await _userRepository.getPrograms(fromCacheOnly: true);
+
+      setBusyForObject(isLoadingEvents, true);
+
+      await _userRepository.getInfo();
+      return await _userRepository.getPrograms();
+    } catch (error) {
+      onError(error);
+    } finally {
+      setBusyForObject(isLoadingEvents, false);
+    }
+    return _userRepository.programs ?? [];
+  }
 
   Future refresh() async {
     try {

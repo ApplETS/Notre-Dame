@@ -11,12 +11,12 @@ class QuickLink {
 
   // If name is provided it will be used instead of nameFr and nameEn
   QuickLink(
-      {@required this.id,
+      {required this.id,
       this.image,
       this.name,
       this.nameFr,
       this.nameEn,
-      @required this.link});
+      required this.link});
 
   factory QuickLink.fromJson(Map<String, dynamic> json) {
     return QuickLink(
