@@ -196,11 +196,8 @@ class UserRepository {
   /// The list from the [CacheManager] is loaded than updated with the results
   /// from the [SignetsApi].
   Future<List<Program>> getPrograms({bool fromCacheOnly = false}) async {
-    bool encounteredMissingKey = false;
-
     // Force fromCacheOnly mode when user has no connectivity
-    final bool hasConnectivity = await _networkingService.hasConnectivity();
-    if (!hasConnectivity) {
+    if (!(await _networkingService.hasConnectivity())) {
       // ignore: parameter_assignments
       fromCacheOnly = true;
     }
@@ -220,19 +217,13 @@ class UserRepository {
             .toList();
         _logger.d(
             "$tag - getPrograms: ${_programs!.length} programs loaded from cache.");
-      } on CacheException catch (e) {
-        if (e
-            .toString()
-            .contains("$programsCacheKey doesn't exist in the cache")) {
-          encounteredMissingKey = true;
-        } else {
-          _logger.e(
-              "$tag - getPrograms: exception raised while trying to load the programs from cache.");
-        }
+      } on CacheException catch (_) {
+        _logger.e(
+            "$tag - getPrograms: exception raised while trying to load the programs from cache.");
       }
     }
 
-    if (fromCacheOnly && !encounteredMissingKey) {
+    if (fromCacheOnly) {
       return _programs!;
     }
 
@@ -265,12 +256,9 @@ class UserRepository {
   /// Get the profile information.
   /// The information from the [CacheManager] is loaded than updated with the results
   /// from the [SignetsApi].
-  Future<ProfileStudent> getInfo({bool fromCacheOnly = false}) async {
-    bool encounteredMissingKey = false;
-
+  Future<ProfileStudent?> getInfo({bool fromCacheOnly = false}) async {
     // Force fromCacheOnly mode when user has no connectivity
-    final bool hasConnectivity = await _networkingService.hasConnectivity();
-    if (!hasConnectivity) {
+    if (!(await _networkingService.hasConnectivity())) {
       // ignore: parameter_assignments
       fromCacheOnly = true;
     }
@@ -285,18 +273,14 @@ class UserRepository {
         _info = ProfileStudent.fromJson(infoCached);
         _logger.d("$tag - getInfo: $_info info loaded from cache.");
       } on CacheException catch (e) {
-        if (e.toString().contains("$infoCacheKey doesn't exist in the cache")) {
-          encounteredMissingKey = true;
-        } else {
-          _logger.e(
-              "$tag - getInfo: exception raised while trying to load the info from cache.",
-              error: e);
-        }
+        _logger.e(
+            "$tag - getInfo: exception raised while trying to load the info from cache.",
+            error: e);
       }
     }
 
-    if (fromCacheOnly && !encounteredMissingKey) {
-      return _info!;
+    if (fromCacheOnly) {
+      return _info;
     }
 
     try {
