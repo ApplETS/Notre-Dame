@@ -12,8 +12,7 @@ import 'package:notredame/locator.dart';
 
 class CalendarSelectionWidget extends StatelessWidget {
   final AppIntl translations;
-  const CalendarSelectionWidget({Key? key, required this.translations})
-      : super(key: key);
+  const CalendarSelectionWidget({super.key, required this.translations});
 
   @override
   Widget build(BuildContext context) {
