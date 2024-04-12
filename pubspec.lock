@@ -285,11 +285,11 @@ packages:
     dependency: "direct main"
     description:
       path: "."
-      ref: "1.0.0"
-      resolved-ref: "3171eef062b1876a286a9224aff37db5316247f7"
+      ref: "1.2.1"
+      resolved-ref: e2f28d39c8e3f2a5c4afdbf9cb587c596c0fb2ac
       url: "https://github.com/ApplETS/ETS-API-Clients.git"
     source: git
-    version: "1.0.0"
+    version: "1.2.1"
   fading_edge_scrollview:
     dependency: transitive
     description:

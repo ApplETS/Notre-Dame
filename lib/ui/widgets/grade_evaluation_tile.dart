@@ -231,17 +231,13 @@ class _GradeEvaluationTileState extends State<GradeEvaluationTile>
               ),
             ),
             _buildSummary(
-              AppIntl.of(context)!.grades_weighted,
-              AppIntl.of(context)!.grades_grade_with_percentage(
-                getWeightedGrade(
-                    evaluation.mark,
-                    evaluation.correctedEvaluationOutOfFormatted,
-                    evaluation.weight),
-                evaluation.weight,
-                Utils.getGradeInPercentage(evaluation.mark,
-                    evaluation.correctedEvaluationOutOfFormatted),
-              ),
-            ),
+                AppIntl.of(context)!.grades_weighted,
+                validateResultWithPercentage(
+                    context,
+                    evaluation.weightedGrade,
+                    evaluation.weight,
+                    Utils.getGradeInPercentage(evaluation.mark,
+                        evaluation.correctedEvaluationOutOfFormatted))),
             _buildSummary(
                 AppIntl.of(context)!.grades_standard_deviation,
                 validateResult(
@@ -265,14 +261,6 @@ class _GradeEvaluationTileState extends State<GradeEvaluationTile>
     return AppIntl.of(context)!.grades_not_available;
   }
 
-  double getWeightedGrade(double? grade, double outOf, double weight) {
-    if (grade == 0.0 || grade == null || outOf == 0.0 || weight == 0.0) {
-      return 0.0;
-    }
-
-    return double.parse(((grade / outOf) * weight).toStringAsFixed(2));
-  }
-
   Padding _buildSummary(String title, String grade) {
     return Padding(
       padding: const EdgeInsets.only(top: 12.0, right: 15.0),
@@ -294,6 +282,17 @@ class _GradeEvaluationTileState extends State<GradeEvaluationTile>
     }
 
     return AppIntl.of(context)!.grades_not_available;
+  }
+
+  String validateResultWithPercentage(BuildContext context, double? result,
+      double maxGrade, double percentage) {
+    if (result == null) {
+      return AppIntl.of(context)!.grades_not_available;
+    }
+
+    final String formattedResult = result.toStringAsFixed(2);
+    return AppIntl.of(context)!.grades_grade_with_percentage(
+        double.parse(formattedResult), maxGrade, percentage);
   }
 
   DescribedFeatureOverlay _buildDiscoveryFeatureDescriptionWidget(
