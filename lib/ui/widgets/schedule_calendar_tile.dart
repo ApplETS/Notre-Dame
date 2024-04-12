@@ -44,7 +44,7 @@ class _ScheduleCalendarTileState extends State<ScheduleCalendarTile> {
     final teacherName = courseInfos[3];
     final startTime = widget.start == null
         ? AppIntl.of(widget.buildContext)!.grades_not_available
-        : "${widget.start?.hour}:${widget.start?.minute.toString().padLeft(2, '0')}";
+        : "${widget.start!.hour}:${widget.start!.minute.toString().padLeft(2, '0')}";
     final endTime = widget.end == null
         ? AppIntl.of(widget.buildContext)!.grades_not_available
         : DateFormat.Hm().format(widget.end!.add(const Duration(minutes: 1)));
