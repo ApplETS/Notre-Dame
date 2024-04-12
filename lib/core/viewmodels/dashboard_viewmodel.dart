@@ -516,8 +516,6 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
             courses.add(course);
           }
         }
-        // Will remove duplicated courses in the list
-        courses = courses.toSet().toList();
         notifyListeners();
 
         final fetchedCourses = await _courseRepository.getCourses();
@@ -528,6 +526,8 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
             courses.add(course);
           }
         }
+        // Will remove duplicated courses in the list
+        courses = courses.toSet().toList();
       } catch (error) {
         onError(error);
       } finally {
