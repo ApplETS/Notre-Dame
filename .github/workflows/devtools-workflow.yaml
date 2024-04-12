@@ -6,8 +6,8 @@ on:
       - '.gitignore'
       - '.metadata'
       - '.github/**'
-      - 'README.md'
-      - 'README.fr.md'
+      - '.githooks/**'
+      - '*.md'
       - 'android/fastlane/**'
       - 'ios/fastlane/**'
 env:
@@ -49,33 +49,3 @@ jobs:
             'This PR exceeds the recommended size of 1000 lines.
             Please make sure you are NOT addressing multiple issues with one PR.
             Note this PR might be rejected due to its size.’
-  bump_version:
-    name: Bump app version using PR labels
-    runs-on: ubuntu-latest
-    if: ${{ github.event_name == 'pull_request' }}
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          token: ${{ secrets.PTA }}
-      - name: Bump version using labels
-        uses: apomalyn/bump-version-using-labels@v1.5.0
-        with:
-          file_path: 'pubspec.yaml'
-          reference_branch: 'master'
-          commit: 'false'
-      - name: Commit versioned files
-        id: commit_version
-        uses: stefanzweifel/git-auto-commit-action@v5
-        with:
-          file_pattern: "*.yaml"
-          commit_user_name: github-actions[bot]
-          commit_user_email: 41898282+github-actions[bot]@users.noreply.github.com
-          commit_message: "[BOT] Applying version."
-          add_options: '-u'
-
-      # Fail workflow, because new commit will execute workflow
-      - if: ${{ steps.commit_version.outputs.changes_detected == 'true' }}
-        name: Fail workflow if version commit
-        run: |
-          echo 'Version changed, running bot commit workflow'
-          exit 1

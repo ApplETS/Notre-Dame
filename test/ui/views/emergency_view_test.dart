@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 // Package imports:
 import 'package:flutter_test/flutter_test.dart';
 import 'package:webview_flutter/webview_flutter.dart';
+import 'package:webview_flutter_android/webview_flutter_android.dart';
 
 // Project imports:
 import 'package:notredame/ui/views/emergency_view.dart';
@@ -11,7 +12,9 @@ import '../../helpers.dart';
 
 void main() {
   group('EmergencyView - ', () {
-    setUp(() async {});
+    setUp(() async {
+      WebViewPlatform.instance = AndroidWebViewPlatform();
+    });
 
     tearDown(() {});
 
@@ -22,7 +25,7 @@ void main() {
                 'testEmergency', 'assets/html/armed_person_detail_en.html')));
         await tester.pumpAndSettle();
 
-        final webView = find.byType(WebView);
+        final webView = find.byType(WebViewWidget);
         expect(webView, findsOneWidget);
 
         final Finder phoneButton = find.byType(FloatingActionButton);
