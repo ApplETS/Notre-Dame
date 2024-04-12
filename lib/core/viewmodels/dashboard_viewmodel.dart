@@ -190,7 +190,7 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
   }
 
   /// List of courses for the current session
-  final List<Course> courses = [];
+  List<Course> courses = [];
 
   DashboardViewModel({required AppIntl intl}) : _appIntl = intl;
 
@@ -526,6 +526,8 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
             courses.add(course);
           }
         }
+        // Will remove duplicated courses in the list
+        courses = courses.toSet().toList();
       } catch (error) {
         onError(error);
       } finally {
