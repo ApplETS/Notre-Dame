@@ -5,14 +5,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:notredame/core/services/remote_config_service.dart';
 import 'package:stacked/stacked.dart';
 
 // Project imports:
 import 'package:notredame/core/constants/router_paths.dart';
-import 'package:notredame/core/constants/urls.dart';
 import 'package:notredame/core/services/launch_url_service.dart';
 import 'package:notredame/core/services/navigation_service.dart';
+import 'package:notredame/core/services/remote_config_service.dart';
 import 'package:notredame/core/utils/login_mask.dart';
 import 'package:notredame/core/utils/utils.dart';
 import 'package:notredame/core/viewmodels/login_viewmodel.dart';
@@ -34,7 +33,8 @@ class _LoginViewState extends State<LoginView> {
 
   final LaunchUrlService _launchUrlService = locator<LaunchUrlService>();
 
-  final RemoteConfigService _remoteConfigService = locator<RemoteConfigService>();
+  final RemoteConfigService _remoteConfigService =
+      locator<RemoteConfigService>();
 
   /// Unique key of the login form form
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
@@ -165,14 +165,18 @@ class _LoginViewState extends State<LoginView> {
                                                 color: Colors.white),
                                           ),
                                           onTap: () {
-                                            final signetsPasswordResetUrl = _remoteConfigService.signetsPasswordResetUrl;
-                                            if(signetsPasswordResetUrl != "") {
+                                            final signetsPasswordResetUrl =
+                                                _remoteConfigService
+                                                    .signetsPasswordResetUrl;
+                                            if (signetsPasswordResetUrl != "") {
                                               _launchUrlService.launchInBrowser(
-                                                  _remoteConfigService.signetsPasswordResetUrl,
+                                                  _remoteConfigService
+                                                      .signetsPasswordResetUrl,
                                                   Theme.of(context).brightness);
                                             } else {
                                               Fluttertoast.showToast(
-                                                  msg: AppIntl.of(context)!.error);
+                                                  msg: AppIntl.of(context)!
+                                                      .error);
                                             }
                                           },
                                         ),
