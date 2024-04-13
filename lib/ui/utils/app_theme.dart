@@ -107,13 +107,16 @@ class AppTheme {
             color: Colors.white,
           ),
           bodySmall: const TextStyle(
-            fontSize: 14, color: Colors.white,
+            fontSize: 14,
+            color: Colors.white,
           ),
           bodyMedium: const TextStyle(
-            fontSize: 16, color: Colors.white,
+            fontSize: 16,
+            color: Colors.white,
           ),
           bodyLarge: const TextStyle(
-            fontSize: 18, color: Colors.white,
+            fontSize: 18,
+            color: Colors.white,
           ),
         ),
         bottomNavigationBarTheme: darkTheme.bottomNavigationBarTheme
