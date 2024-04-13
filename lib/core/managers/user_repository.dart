@@ -256,7 +256,7 @@ class UserRepository {
   /// Get the profile information.
   /// The information from the [CacheManager] is loaded than updated with the results
   /// from the [SignetsApi].
-  Future<ProfileStudent> getInfo({bool fromCacheOnly = false}) async {
+  Future<ProfileStudent?> getInfo({bool fromCacheOnly = false}) async {
     // Force fromCacheOnly mode when user has no connectivity
     if (!(await _networkingService.hasConnectivity())) {
       // ignore: parameter_assignments
@@ -280,7 +280,7 @@ class UserRepository {
     }
 
     if (fromCacheOnly) {
-      return _info!;
+      return _info;
     }
 
     try {

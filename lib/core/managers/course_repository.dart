@@ -121,7 +121,7 @@ class CourseRepository {
             "$tag - getCoursesActivities: ${_coursesActivities?.length ?? 0} activities loaded from cache");
       } on CacheException catch (_) {
         _logger.e(
-            "$tag - getCoursesActivities: exception raised will trying to load activities from cache.");
+            "$tag - getCoursesActivities: exception raised while trying to load activities from cache.");
       }
     }
 
@@ -181,7 +181,7 @@ class CourseRepository {
     } on CacheException catch (_) {
       // Do nothing, the caching will retry later and the error has been logged by the [CacheManager]
       _logger.e(
-          "$tag - getCoursesActivities: exception raised will trying to update the cache.");
+          "$tag - getCoursesActivities: exception raised while trying to update the cache.");
     }
 
     return _coursesActivities;
@@ -220,7 +220,7 @@ class CourseRepository {
           "$tag - getScheduleDefaultActivities: ${_scheduleDefaultActivities.length} activities loaded from cache");
     } on CacheException catch (_) {
       _logger.e(
-          "$tag - getDefaultScheduleActivities: exception raised will trying to load activities from cache.");
+          "$tag - getDefaultScheduleActivities: exception raised while trying to load activities from cache.");
     }
 
     if (fromCacheOnly) {
@@ -254,7 +254,7 @@ class CourseRepository {
     } on CacheException catch (_) {
       // Do nothing, the caching will retry later and the error has been logged by the [CacheManager]
       _logger.e(
-          "$tag - getScheduleActivities: exception raised will trying to update the cache.");
+          "$tag - getScheduleActivities: exception raised while trying to update the cache.");
     }
 
     return _scheduleDefaultActivities;
@@ -287,7 +287,7 @@ class CourseRepository {
             "$tag - getScheduleActivities: ${_scheduleActivities!.length} activities loaded from cache");
       } on CacheException catch (_) {
         _logger.e(
-            "$tag - getScheduleActivities: exception raised will trying to load activities from cache.");
+            "$tag - getScheduleActivities: exception raised while trying to load activities from cache.");
       }
     }
 
@@ -338,7 +338,7 @@ class CourseRepository {
     } on CacheException catch (_) {
       // Do nothing, the caching will retry later and the error has been logged by the [CacheManager]
       _logger.e(
-          "$tag - getScheduleActivities: exception raised will trying to update the cache.");
+          "$tag - getScheduleActivities: exception raised while trying to update the cache.");
     }
 
     return _scheduleActivities!;
@@ -363,7 +363,7 @@ class CourseRepository {
             "$tag - getSessions: ${_sessions?.length ?? 0} sessions loaded from cache.");
       } on CacheException catch (_) {
         _logger.e(
-            "$tag - getSessions: exception raised will trying to load the sessions from cache.");
+            "$tag - getSessions: exception raised while trying to load the sessions from cache.");
       }
     }
 
@@ -394,7 +394,7 @@ class CourseRepository {
       }
     } on CacheException catch (_) {
       _logger.e(
-          "$tag - getSessions: exception raised will trying to update the cache.");
+          "$tag - getSessions: exception raised while trying to update the cache.");
       return _sessions!;
     } on Exception catch (e, stacktrace) {
       _analyticsService.logError(
@@ -430,7 +430,7 @@ class CourseRepository {
             "$tag - getCourses: ${_courses!.length} courses loaded from cache");
       } on CacheException catch (_) {
         _logger.e(
-            "$tag - getCourses: exception raised will trying to load courses from cache.");
+            "$tag - getCourses: exception raised while trying to load courses from cache.");
       }
     }
 
@@ -490,7 +490,7 @@ class CourseRepository {
     } on CacheException catch (_) {
       // Do nothing, the caching will retry later and the error has been logged by the [CacheManager]
       _logger.e(
-          "$tag - getCourses: exception raised will trying to update the cache.");
+          "$tag - getCourses: exception raised while trying to update the cache.");
     }
 
     return _courses!;
@@ -548,7 +548,7 @@ class CourseRepository {
       // Do nothing, the caching will retry later and
       // the error has been logged by the [CacheManager]
       _logger.e(
-          "$tag - getCourseSummary: exception raised will trying to update the cache.");
+          "$tag - getCourseSummary: exception raised while trying to update the cache.");
     }
 
     return course;
