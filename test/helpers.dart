@@ -19,6 +19,7 @@ import 'package:notredame/core/managers/settings_manager.dart';
 import 'package:notredame/core/managers/user_repository.dart';
 import 'package:notredame/core/services/analytics_service.dart';
 import 'package:notredame/core/services/app_widget_service.dart';
+import 'package:notredame/core/services/firebase_storage_service.dart';
 import 'package:notredame/core/services/github_api.dart';
 import 'package:notredame/core/services/in_app_review_service.dart';
 import 'package:notredame/core/services/internal_info_service.dart';
@@ -37,6 +38,7 @@ import 'mock/managers/settings_manager_mock.dart';
 import 'mock/managers/user_repository_mock.dart';
 import 'mock/services/analytics_service_mock.dart';
 import 'mock/services/app_widget_service_mock.dart';
+import 'mock/services/firebase_storage_mock.dart';
 import 'mock/services/flutter_secure_storage_mock.dart';
 import 'mock/services/github_api_mock.dart';
 import 'mock/services/in_app_review_service_mock.dart';
@@ -336,6 +338,16 @@ QuickLinkRepositoryMock setupQuickLinkRepositoryMock() {
   locator.registerSingleton<QuickLinkRepository>(repository);
 
   return repository;
+}
+
+/// Load a mock of the [FirebaseStorageService]
+FirebaseStorageService setupFirebaseStorageServiceMock() {
+  unregister<FirebaseStorageService>();
+  final storage = FirebaseStorageServiceMock();
+
+  locator.registerSingleton<FirebaseStorageService>(storage);
+
+  return storage;
 }
 
 bool getCalendarViewEnabled() {

@@ -1,7 +1,12 @@
 // Dart imports:
 import 'dart:convert';
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:notredame/ui/utils/app_theme.dart';
+import 'package:font_awesome_flutter/name_icon_mapping.dart';
 
 // Package imports:
+import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 // Project imports:
@@ -9,10 +14,16 @@ import 'package:notredame/core/constants/quick_links.dart';
 import 'package:notredame/core/managers/cache_manager.dart';
 import 'package:notredame/core/models/quick_link.dart';
 import 'package:notredame/core/models/quick_link_data.dart';
+import 'package:notredame/core/services/firebase_storage_service.dart';
 import 'package:notredame/locator.dart';
+import 'package:notredame/core/services/remote_config_service.dart';
 
 class QuickLinkRepository {
   final CacheManager _cacheManager = locator<CacheManager>();
+  final RemoteConfigService _remoteConfigService =
+      locator<RemoteConfigService>();
+  final FirebaseStorageService _storageService =
+      locator<FirebaseStorageService>();
 
   static const String quickLinksCacheKey = "quickLinksCache";
 
@@ -36,7 +47,49 @@ class QuickLinkRepository {
         quickLinksCacheKey, jsonEncode(quickLinkDataList));
   }
 
-  List<QuickLink> getDefaultQuickLinks(AppIntl intl) {
-    return quickLinks(intl);
+  Future<List<QuickLink>> getDefaultQuickLinks(AppIntl intl) async {
+    final values = await _remoteConfigService.quicklinksValues;
+
+    if (values == null || values as List == null || (values as List).isEmpty) {
+      return quickLinks(intl);
+    }
+    final listValues = values as List<dynamic>;
+    final List<QuickLink> listQuicklink = [];
+
+    for (var i = 0; i < listValues.length; i++) {
+      Widget imageWidget;
+      final map = listValues[i] as Map<String, dynamic>;
+      if (map['icon'] != null) {
+        final String iconName = map['icon'] as String;
+        imageWidget = FaIcon(
+          faIconNameMapping['solid $iconName'],
+          color: AppTheme.etsLightRed,
+          size: 64,
+        );
+      } else if (map['remotePath'] != null) {
+        // from cache
+        final String remotePathKey = map['remotePath'] as String;
+        String imageUrl;
+        try {
+          imageUrl = await _cacheManager.get(remotePathKey);
+        } on Exception catch (_) {
+          imageUrl = await _storageService.getImageUrl(remotePathKey);
+          _cacheManager.update(remotePathKey, imageUrl);
+        }
+
+        imageWidget = CachedNetworkImage(
+          imageUrl: imageUrl,
+          color: AppTheme.etsLightRed,
+        );
+      }
+      final QuickLink quickLink =
+          QuickLink.fromJson(listValues[i] as Map<String, dynamic>);
+      quickLink.name =
+          intl.localeName == "fr" ? quickLink.nameFr : quickLink.nameEn;
+      quickLink.image = imageWidget;
+      listQuicklink.add(quickLink);
+    }
+
+    return listQuicklink;
   }
 }
