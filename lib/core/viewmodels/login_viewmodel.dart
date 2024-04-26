@@ -4,18 +4,18 @@ import 'package:flutter/material.dart';
 
 // Package imports:
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:notredame/core/services/analytics_service.dart';
-import 'package:notredame/core/services/remote_config_service.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:stacked/stacked.dart';
 import 'package:kommunicate_flutter/kommunicate_flutter.dart';
+import 'package:stacked/stacked.dart';
 
 // Project imports:
 import 'package:notredame/core/constants/preferences_flags.dart';
 import 'package:notredame/core/constants/router_paths.dart';
 import 'package:notredame/core/managers/user_repository.dart';
+import 'package:notredame/core/services/analytics_service.dart';
 import 'package:notredame/core/services/navigation_service.dart';
 import 'package:notredame/core/services/preferences_service.dart';
+import 'package:notredame/core/services/remote_config_service.dart';
 import 'package:notredame/locator.dart';
 
 class LoginViewModel extends BaseViewModel {
