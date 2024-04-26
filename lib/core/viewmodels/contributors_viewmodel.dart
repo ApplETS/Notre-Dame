@@ -6,10 +6,10 @@ class ContributorsViewModel extends FutureViewModel {
   /// Create a GitHub Client, with anonymous authentication by default
   GitHub github = GitHub();
 
-  Future<List<Contributor>> get contributors => _contributors;
+  Future<List<Contributor>>? get contributors => _contributors;
 
   /// List of contributors
-  Future<List<Contributor>> _contributors;
+  Future<List<Contributor>>? _contributors;
 
   @override
   Future futureToRun() {

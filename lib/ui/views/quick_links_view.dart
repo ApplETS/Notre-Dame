@@ -24,8 +24,8 @@ class _QuickLinksViewState extends State<QuickLinksView>
   bool _editMode = false;
 
   // Animation Controller for Shake Animation
-  AnimationController _controller;
-  Animation<double> _animation;
+  late AnimationController _controller;
+  late Animation<double> _animation;
 
   @override
   void initState() {
@@ -42,7 +42,7 @@ class _QuickLinksViewState extends State<QuickLinksView>
   @override
   Widget build(BuildContext context) =>
       ViewModelBuilder<QuickLinksViewModel>.reactive(
-        viewModelBuilder: () => QuickLinksViewModel(AppIntl.of(context)),
+        viewModelBuilder: () => QuickLinksViewModel(AppIntl.of(context)!),
         builder: (context, model, child) => BaseScaffold(
           isLoading: model.isBusy,
           appBar: _buildAppBar(context, model),
@@ -52,7 +52,7 @@ class _QuickLinksViewState extends State<QuickLinksView>
 
   AppBar _buildAppBar(BuildContext context, QuickLinksViewModel model) {
     return AppBar(
-      title: Text(AppIntl.of(context).title_ets),
+      title: Text(AppIntl.of(context)!.title_ets),
       automaticallyImplyLeading: false,
       actions: const [],
     );
@@ -104,10 +104,20 @@ class _QuickLinksViewState extends State<QuickLinksView>
       QuickLinksViewModel model,
       List<QuickLink> quickLinks,
       Widget Function(QuickLinksViewModel, int) buildButtonFunction) {
+    final double screenWidth = MediaQuery.of(context).size.width;
+    int crossAxisCount;
+
+    if (screenWidth > 310 && screenWidth < 440) {
+      crossAxisCount = 3;
+    } else {
+      crossAxisCount =
+          (screenWidth / 110).floor().clamp(1, double.infinity).toInt();
+    }
+
     return ReorderableGridView.count(
       mainAxisSpacing: 2.0,
       crossAxisSpacing: 2.0,
-      crossAxisCount: 3,
+      crossAxisCount: crossAxisCount,
       children: List.generate(
         quickLinks.length,
         (index) {
@@ -142,7 +152,7 @@ class _QuickLinksViewState extends State<QuickLinksView>
             },
       child: AnimatedBuilder(
         animation: _animation,
-        builder: (BuildContext context, Widget child) {
+        builder: (BuildContext context, Widget? child) {
           return Transform.rotate(
             angle: _editMode ? _animation.value : 0,
             child: child,

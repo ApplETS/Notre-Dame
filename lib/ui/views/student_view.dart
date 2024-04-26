@@ -24,8 +24,8 @@ class _StudentViewState extends State<StudentView> {
   @override
   Widget build(BuildContext context) {
     final List<String> tabs = [
-      AppIntl.of(context).grades_title,
-      AppIntl.of(context).profile_title
+      AppIntl.of(context)!.grades_title,
+      AppIntl.of(context)!.profile_title
     ];
 
     return BaseScaffold(
@@ -41,7 +41,7 @@ class _StudentViewState extends State<StudentView> {
                 automaticallyImplyLeading: false,
                 pinned: true,
                 floating: true,
-                title: Text(AppIntl.of(context).title_student),
+                title: Text(AppIntl.of(context)!.title_student),
                 forceElevated: innerBoxIsScrolled,
                 bottom: TabBar(
                   indicatorColor:

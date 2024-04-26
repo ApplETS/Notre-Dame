@@ -15,7 +15,7 @@ class InternalInfoService {
     final PackageInfo packageInfo = await PackageInfo.fromPlatform();
     final NetworkingService networkingService = locator<NetworkingService>();
     final DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
-    String deviceName;
+    String? deviceName;
 
     if (Platform.isAndroid) {
       final AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
@@ -26,7 +26,7 @@ class InternalInfoService {
     }
 
     return "**Device Infos** \n"
-        "- **Device:** $deviceName \n"
+        "- **Device:** ${deviceName ?? 'Not Provided'} \n"
         "- **Version:** ${packageInfo.version} \n"
         "- **Connectivity:** ${await networkingService.getConnectionType()} \n"
         "- **Build number:** ${packageInfo.buildNumber} \n"

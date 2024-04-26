@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:notredame/core/services/analytics_service.dart';
 import 'package:notredame/core/services/remote_config_service.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:stacked/stacked.dart';
 import 'package:kommunicate_flutter/kommunicate_flutter.dart';
 
@@ -23,6 +24,9 @@ class LoginViewModel extends BaseViewModel {
 
   /// Used to redirect on the dashboard.
   final NavigationService _navigationService = locator<NavigationService>();
+
+  final FlutterSecureStorage _flutterSecureStorage =
+      locator<FlutterSecureStorage>();
 
   /// Analytics service used to log events
   final AnalyticsService _analyticsService = locator<AnalyticsService>();
@@ -42,7 +46,7 @@ class LoginViewModel extends BaseViewModel {
   /// Used to enable/disable the "log in" button
   bool get canSubmit => _universalCode.isNotEmpty && _password.isNotEmpty;
 
-  LoginViewModel({@required AppIntl intl}) : _appIntl = intl;
+  LoginViewModel({required AppIntl intl}) : _appIntl = intl;
 
   /// Use to get the value associated to each settings key
   final PreferencesService _preferencesService = locator<PreferencesService>();
@@ -82,8 +86,8 @@ class LoginViewModel extends BaseViewModel {
   }
 
   /// Validate the format of the universal code
-  String validateUniversalCode(String value) {
-    if (value.isEmpty) {
+  String? validateUniversalCode(String? value) {
+    if (value == null || value.isEmpty) {
       _universalCode = "";
       return _appIntl.login_error_field_required;
     } else if (!_universalCodeMatcher.hasMatch(value)) {
@@ -95,8 +99,8 @@ class LoginViewModel extends BaseViewModel {
   }
 
   /// Validate there is a password typed
-  String validatePassword(String value) {
-    if (value.isEmpty) {
+  String? validatePassword(String? value) {
+    if (value == null || value.isEmpty) {
       _password = "";
       return _appIntl.login_error_field_required;
     }
@@ -115,6 +119,10 @@ class LoginViewModel extends BaseViewModel {
         username: _universalCode.toUpperCase(), password: _password);
 
     if (response) {
+      await _flutterSecureStorage.write(
+          key: "WidgetSecureUser", value: _universalCode);
+      await _flutterSecureStorage.write(
+          key: "WidgetSecurePass", value: _password);
       _navigationService.pushNamedAndRemoveUntil(RouterPaths.dashboard);
       _preferencesService.setDateTime(PreferencesFlag.ratingTimer,
           DateTime.now().add(const Duration(days: 7)));

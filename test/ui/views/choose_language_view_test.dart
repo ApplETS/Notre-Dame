@@ -15,7 +15,7 @@ import 'package:notredame/ui/views/choose_language_view.dart';
 import '../../helpers.dart';
 
 void main() {
-  AppIntl intl;
+  late AppIntl intl;
   group('SettingsView - ', () {
     setUp(() async {
       intl = await setupAppIntl();
@@ -50,7 +50,7 @@ void main() {
 
     group("golden - ", () {
       testWidgets("default view", (WidgetTester tester) async {
-        tester.binding.window.physicalSizeTestValue = const Size(800, 1410);
+        tester.view.physicalSize = const Size(800, 1410);
 
         await tester.pumpWidget(localizedWidget(child: ChooseLanguageView()));
         await tester.pumpAndSettle();

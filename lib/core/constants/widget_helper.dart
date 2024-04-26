@@ -4,7 +4,7 @@ enum WidgetType { progress, grades }
 /// The extension corresponding to WidgetType to get associated constants
 extension WidgetTypeExtension on WidgetType {
   /// ID used by iOS systems to update the corresponding widget
-  String get iOSname {
+  String? get iOSname {
     switch (this) {
       case WidgetType.progress:
         return 'ETSMobile_ProgressWidget';
@@ -22,7 +22,7 @@ extension WidgetTypeExtension on WidgetType {
   ///
   /// Another option would be to use qualifiedAndroidName instead of androidName
   /// (see home_widget's updateWidget method for more info)
-  String get androidName {
+  String? get androidName {
     switch (this) {
       case WidgetType.progress:
         return 'ProgressWidgetProvider';

@@ -16,7 +16,7 @@ import '../../helpers.dart';
 import '../../mock/services/analytics_service_mock.dart';
 
 void main() {
-  AppIntl intl;
+  late AppIntl intl;
 
   group('SettingsView - ', () {
     setUp(() async {
@@ -171,7 +171,7 @@ void main() {
 
       group("golden - ", () {
         testWidgets("default view", (WidgetTester tester) async {
-          tester.binding.window.physicalSizeTestValue = const Size(800, 1410);
+          tester.view.physicalSize = const Size(800, 1410);
 
           await tester.pumpWidget(
               localizedWidget(child: FeatureDiscovery(child: SettingsView())));

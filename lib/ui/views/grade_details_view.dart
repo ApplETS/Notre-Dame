@@ -19,7 +19,7 @@ import 'package:notredame/ui/widgets/grade_not_available.dart';
 class GradesDetailsView extends StatefulWidget {
   final Course course;
 
-  const GradesDetailsView({this.course});
+  const GradesDetailsView({required this.course});
 
   @override
   _GradesDetailsViewState createState() => _GradesDetailsViewState();
@@ -27,7 +27,7 @@ class GradesDetailsView extends StatefulWidget {
 
 class _GradesDetailsViewState extends State<GradesDetailsView>
     with TickerProviderStateMixin {
-  AnimationController _controller;
+  late AnimationController _controller;
   bool _completed = false;
 
   @override
@@ -53,7 +53,7 @@ class _GradesDetailsViewState extends State<GradesDetailsView>
   Widget build(BuildContext context) =>
       ViewModelBuilder<GradesDetailsViewModel>.reactive(
         viewModelBuilder: () => GradesDetailsViewModel(
-            course: widget.course, intl: AppIntl.of(context)),
+            course: widget.course, intl: AppIntl.of(context)!),
         builder: (context, model, child) => BaseScaffold(
           showBottomBar: false,
           body: Material(
@@ -63,24 +63,24 @@ class _GradesDetailsViewState extends State<GradesDetailsView>
                   backgroundColor:
                       Theme.of(context).brightness == Brightness.light
                           ? AppTheme.etsLightRed
-                          : Theme.of(context).bottomAppBarColor,
+                          : BottomAppBarTheme.of(context).color,
                   pinned: true,
                   onStretchTrigger: () {
                     return Future<void>.value();
                   },
                   titleSpacing: 0,
                   leading: IconButton(
-                    icon: const Icon(Icons.arrow_back),
+                    icon: const Icon(Icons.arrow_back, color: Colors.white),
                     onPressed: () => Navigator.of(context).pop(),
                   ),
                   title: Hero(
                     tag:
                         'course_acronym_${model.course.acronym}_${model.course.session}',
                     child: Text(
-                      model.course.acronym ?? "",
+                      model.course.acronym,
                       softWrap: false,
                       overflow: TextOverflow.visible,
-                      style: Theme.of(context).textTheme.bodyText1.copyWith(
+                      style: Theme.of(context).textTheme.bodyLarge!.copyWith(
                           color: Colors.white,
                           fontSize: 25,
                           fontWeight: FontWeight.bold),
@@ -96,21 +96,21 @@ class _GradesDetailsViewState extends State<GradesDetailsView>
                       decoration: BoxDecoration(
                         color: Theme.of(context).brightness == Brightness.light
                             ? AppTheme.etsLightRed
-                            : Theme.of(context).bottomAppBarColor,
+                            : AppTheme.darkTheme().cardColor,
                       ),
                       child: Padding(
                         padding: const EdgeInsets.only(bottom: 8.0),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
-                            _buildClassInfo(model.course.title ?? ""),
+                            _buildClassInfo(model.course.title),
                             if (model.course.teacherName != null)
-                              _buildClassInfo(AppIntl.of(context)
-                                  .grades_teacher(model.course.teacherName)),
-                            _buildClassInfo(AppIntl.of(context)
-                                .grades_group_number(model.course.group ?? "")),
-                            _buildClassInfo(AppIntl.of(context).credits_number(
-                                model.course.numberOfCredits ?? "")),
+                              _buildClassInfo(AppIntl.of(context)!
+                                  .grades_teacher(model.course.teacherName!)),
+                            _buildClassInfo(AppIntl.of(context)!
+                                .grades_group_number(model.course.group)),
+                            _buildClassInfo(AppIntl.of(context)!
+                                .credits_number(model.course.numberOfCredits)),
                           ],
                         ),
                       ),
@@ -118,7 +118,8 @@ class _GradesDetailsViewState extends State<GradesDetailsView>
                   ),
                 ),
               ],
-              body: SafeArea(
+              body: Padding(
+                padding: const EdgeInsets.all(5.0),
                 child: _buildGradeEvaluations(model),
               ),
             ),
@@ -129,7 +130,8 @@ class _GradesDetailsViewState extends State<GradesDetailsView>
   Widget _buildGradeEvaluations(GradesDetailsViewModel model) {
     if (model.isBusy) {
       return const Center(child: CircularProgressIndicator());
-    } else if (model.course.inReviewPeriod && !model.course.reviewCompleted) {
+    } else if (model.course.inReviewPeriod &&
+        !(model.course.reviewCompleted ?? true)) {
       return Center(
         child: GradeNotAvailable(
             key: const Key("EvaluationNotCompleted"),
@@ -158,12 +160,12 @@ class _GradesDetailsViewState extends State<GradesDetailsView>
                             key: const Key("GradeCircularProgress_summary"),
                             finalGrade: model.course.grade,
                             studentGrade: Utils.getGradeInPercentage(
-                              model.course.summary.currentMark,
-                              model.course.summary.markOutOf,
+                              model.course.summary?.currentMark,
+                              model.course.summary?.markOutOf,
                             ),
                             averageGrade: Utils.getGradeInPercentage(
-                              model.course.summary.passMark,
-                              model.course.summary.markOutOf,
+                              model.course.summary?.passMark,
+                              model.course.summary?.markOutOf,
                             ),
                           ),
                         ),
@@ -173,18 +175,18 @@ class _GradesDetailsViewState extends State<GradesDetailsView>
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
                               _buildGradesSummary(
-                                model.course.summary.currentMark,
-                                model.course.summary.markOutOf,
-                                AppIntl.of(context).grades_current_rating,
+                                model.course.summary?.currentMark,
+                                model.course.summary?.markOutOf,
+                                AppIntl.of(context)!.grades_current_rating,
                                 Colors.green,
                                 context,
                               ),
                               Padding(
                                 padding: const EdgeInsets.only(top: 15.0),
                                 child: _buildGradesSummary(
-                                  model.course.summary.passMark ?? 0.0,
-                                  model.course.summary.markOutOf,
-                                  AppIntl.of(context).grades_average,
+                                  model.course.summary?.passMark,
+                                  model.course.summary?.markOutOf,
+                                  AppIntl.of(context)!.grades_average,
                                   Colors.red,
                                   context,
                                 ),
@@ -202,48 +204,49 @@ class _GradesDetailsViewState extends State<GradesDetailsView>
                       Expanded(
                         flex: 3,
                         child: _buildCourseGradeSummary(
-                          AppIntl.of(context).grades_median,
+                          AppIntl.of(context)!.grades_median,
                           validateGrade(
                             context,
-                            model.course.summary.median.toString(),
-                            AppIntl.of(context).grades_grade_in_percentage(
+                            model.course.summary?.median.toString(),
+                            AppIntl.of(context)!.grades_grade_in_percentage(
                                 Utils.getGradeInPercentage(
-                                    model.course.summary.median,
-                                    model.course.summary.markOutOf)),
+                                    model.course.summary?.median,
+                                    model.course.summary?.markOutOf)),
                           ),
                         ),
                       ),
                       Expanded(
                         flex: 3,
                         child: _buildCourseGradeSummary(
-                          AppIntl.of(context).grades_standard_deviation,
+                          AppIntl.of(context)!.grades_standard_deviation,
                           validateGrade(
                             context,
-                            model.course.summary.standardDeviation.toString(),
-                            model.course.summary.standardDeviation.toString(),
+                            model.course.summary?.standardDeviation.toString(),
+                            model.course.summary?.standardDeviation.toString(),
                           ),
                         ),
                       ),
                       Expanded(
                         flex: 3,
                         child: _buildCourseGradeSummary(
-                          AppIntl.of(context).grades_percentile_rank,
+                          AppIntl.of(context)!.grades_percentile_rank,
                           validateGrade(
                             context,
-                            model.course.summary.percentileRank.toString(),
-                            model.course.summary.percentileRank.toString(),
+                            model.course.summary?.percentileRank.toString(),
+                            model.course.summary?.percentileRank.toString(),
                           ),
                         ),
                       ),
                     ]),
                 Column(children: <Widget>[
-                  for (var evaluation in model.course.summary.evaluations)
+                  for (final CourseEvaluation evaluation
+                      in model.course.summary?.evaluations ?? [])
                     GradeEvaluationTile(
                       evaluation,
                       completed: _completed,
                       key: Key("GradeEvaluationTile_${evaluation.title}"),
                       isFirstEvaluation:
-                          evaluation == model.course.summary.evaluations.first,
+                          evaluation == model.course.summary?.evaluations.first,
                     ),
                 ]),
               ],
@@ -267,7 +270,7 @@ class _GradesDetailsViewState extends State<GradesDetailsView>
             info,
             style: Theme.of(context)
                 .textTheme
-                .bodyText1
+                .bodyLarge!
                 .copyWith(color: Colors.white, fontSize: 16),
             overflow: TextOverflow.ellipsis,
           ),
@@ -275,7 +278,7 @@ class _GradesDetailsViewState extends State<GradesDetailsView>
       );
 
   /// Build the student grade or the average grade with their title
-  Column _buildGradesSummary(double currentGrade, double maxGrade,
+  Column _buildGradesSummary(double? currentGrade, double? maxGrade,
       String recipient, Color color, BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -283,34 +286,36 @@ class _GradesDetailsViewState extends State<GradesDetailsView>
         FittedBox(
           fit: BoxFit.fitWidth,
           child: Text(
-              AppIntl.of(context).grades_grade_with_percentage(
-                currentGrade,
-                maxGrade,
+              AppIntl.of(context)!.grades_grade_with_percentage(
+                currentGrade ?? 0.0,
+                maxGrade ?? 0.0,
                 Utils.getGradeInPercentage(
                   currentGrade,
                   maxGrade,
                 ),
               ),
-              style:
-                  Theme.of(context).textTheme.headline6.copyWith(color: color)),
+              style: Theme.of(context)
+                  .textTheme
+                  .titleLarge!
+                  .copyWith(color: color)),
         ),
         Text(recipient,
             style:
-                Theme.of(context).textTheme.bodyText1.copyWith(color: color)),
+                Theme.of(context).textTheme.bodyLarge!.copyWith(color: color)),
       ],
     );
   }
 
-  String validateGrade(BuildContext context, String grade, String text) {
-    if (grade == "null" || grade == null) {
-      return AppIntl.of(context).grades_not_available;
+  String validateGrade(BuildContext context, String? grade, String? text) {
+    if (grade == "null" || grade == null || text == "null" || text == null) {
+      return AppIntl.of(context)!.grades_not_available;
     }
 
     return text;
   }
 
   /// Build the card of the Medidian, Standart deviation or Percentile Rank
-  SizedBox _buildCourseGradeSummary(String title, String number) {
+  SizedBox _buildCourseGradeSummary(String? title, String number) {
     return SizedBox(
       height: 110,
       width: MediaQuery.of(context).size.width / 3.1,

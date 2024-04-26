@@ -25,7 +25,7 @@ class _ChooseLanguageViewState extends State<ChooseLanguageView> {
       itemBuilder: (BuildContext context, int index) {
         return Card(
             color: Utils.getColorByBrightness(
-                context, Colors.white, Colors.grey[900]),
+                context, Colors.white, Colors.grey[900]!),
             child: Column(mainAxisSize: MainAxisSize.min, children: <Widget>[
               ListTile(
                 title: Text(model.languages[index]),
@@ -44,7 +44,7 @@ class _ChooseLanguageViewState extends State<ChooseLanguageView> {
   Widget build(BuildContext context) {
     return ViewModelBuilder<ChooseLanguageViewModel>.reactive(
         viewModelBuilder: () =>
-            ChooseLanguageViewModel(intl: AppIntl.of(context)),
+            ChooseLanguageViewModel(intl: AppIntl.of(context)!),
         builder: (context, model, child) => Scaffold(
               backgroundColor: Utils.getColorByBrightness(
                   context, AppTheme.etsLightRed, AppTheme.primaryDark),
@@ -63,7 +63,7 @@ class _ChooseLanguageViewState extends State<ChooseLanguageView> {
                       child: Align(
                         alignment: Alignment.centerLeft,
                         child: Text(
-                          AppIntl.of(context).choose_language_title,
+                          AppIntl.of(context)!.choose_language_title,
                           style: const TextStyle(
                               fontSize: 20,
                               fontWeight: FontWeight.bold,
@@ -77,7 +77,7 @@ class _ChooseLanguageViewState extends State<ChooseLanguageView> {
                       child: Align(
                         alignment: Alignment.centerLeft,
                         child: Text(
-                          AppIntl.of(context).choose_language_subtitle,
+                          AppIntl.of(context)!.choose_language_subtitle,
                           style: const TextStyle(
                               fontSize: 16, color: Colors.white),
                         ),

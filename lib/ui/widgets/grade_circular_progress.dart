@@ -10,18 +10,17 @@ import 'package:notredame/ui/utils/app_theme.dart';
 
 class GradeCircularProgress extends StatefulWidget {
   final bool completed;
-  final String finalGrade;
-  final double studentGrade;
-  final double averageGrade;
+  final String? finalGrade;
+  final double? studentGrade;
+  final double? averageGrade;
   final double ratio;
 
   const GradeCircularProgress(this.ratio,
-      {Key key,
-      this.completed,
+      {super.key,
+      this.completed = false,
       this.finalGrade,
       this.studentGrade,
-      this.averageGrade})
-      : super(key: key);
+      this.averageGrade});
 
   @override
   _GradeCircularProgressState createState() => _GradeCircularProgressState();
@@ -29,8 +28,8 @@ class GradeCircularProgress extends StatefulWidget {
 
 class _GradeCircularProgressState extends State<GradeCircularProgress>
     with TickerProviderStateMixin {
-  AnimationController _controller;
-  Animation<Color> animation;
+  late AnimationController _controller;
+  late Animation<Color?> animation;
 
   @override
   void initState() {
@@ -92,15 +91,15 @@ class _GradeCircularProgressState extends State<GradeCircularProgress>
 
   String getGrade(BuildContext context) {
     if (widget.finalGrade != null) {
-      return widget.finalGrade;
+      return widget.finalGrade!;
     }
 
     if (widget.studentGrade != null) {
-      return AppIntl.of(context)
-          .grades_grade_in_percentage(widget.studentGrade.round());
+      return AppIntl.of(context)!
+          .grades_grade_in_percentage(widget.studentGrade!.round());
     }
 
-    return AppIntl.of(context).grades_not_available;
+    return AppIntl.of(context)!.grades_not_available;
   }
 
   Color gradePercentageColor(double gradePercentage) {
@@ -134,6 +133,6 @@ class _GradeCircularProgressState extends State<GradeCircularProgress>
       }
     }
 
-    return Color.lerp(startColor, endColor, colorProportion);
+    return Color.lerp(startColor, endColor, colorProportion)!;
   }
 }

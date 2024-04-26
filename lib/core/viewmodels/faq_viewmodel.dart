@@ -17,7 +17,7 @@ class FaqViewModel extends BaseViewModel {
 
   final LaunchUrlService _launchUrlService = locator<LaunchUrlService>();
 
-  Locale get locale => _settingsManager.locale;
+  Locale? get locale => _settingsManager.locale;
 
   String mailtoStr(String email, String subject) {
     return 'mailto:$email?subject=$subject';
@@ -30,7 +30,7 @@ class FaqViewModel extends BaseViewModel {
   Future<void> openMail(String addressEmail, BuildContext context) async {
     var email = "";
     if (addressEmail == AppInfo.email) {
-      email = mailtoStr(addressEmail, AppIntl.of(context).email_subject);
+      email = mailtoStr(addressEmail, AppIntl.of(context)!.email_subject);
     } else {
       email = mailtoStr(addressEmail, "");
     }

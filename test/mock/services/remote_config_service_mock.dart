@@ -1,11 +1,14 @@
 // Package imports:
+import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
 // Project imports:
 import 'package:notredame/core/services/remote_config_service.dart';
+import 'remote_config_service_mock.mocks.dart';
 
 /// Mock for the [RemoteConfigService]
-class RemoteConfigServiceMock extends Mock implements RemoteConfigService {
+@GenerateNiceMocks([MockSpec<RemoteConfigService>()])
+class RemoteConfigServiceMock extends MockRemoteConfigService {
   /// Stub the getter [coursesActivities] of [mock] when called will return [toReturn].
   static void stubGetCalendarViewEnabled(RemoteConfigServiceMock mock,
       {bool toReturn = true}) {
@@ -15,6 +18,11 @@ class RemoteConfigServiceMock extends Mock implements RemoteConfigService {
   static void stubGetBroadcastEnabled(RemoteConfigServiceMock mock,
       {bool toReturn = true}) {
     when(mock.dashboardMessageActive).thenReturn(toReturn);
+  }
+
+  static void stubGetPrivacyPolicyEnabled(RemoteConfigServiceMock mock,
+      {bool toReturn = true}) {
+    when(mock.privacyPolicyToggle).thenReturn(toReturn);
   }
 
   static void stubGetBroadcastColor(RemoteConfigServiceMock mock,

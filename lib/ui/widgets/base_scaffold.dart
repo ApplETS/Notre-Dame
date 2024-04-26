@@ -19,13 +19,13 @@ import 'package:notredame/ui/widgets/bottom_bar.dart';
 /// Basic Scaffold to avoid boilerplate code in the application.
 /// Contains a loader controlled by [_isLoading]
 class BaseScaffold extends StatefulWidget {
-  final AppBar appBar;
+  final AppBar? appBar;
 
-  final Widget body;
+  final Widget? body;
 
-  final FloatingActionButton fab;
+  final FloatingActionButton? fab;
 
-  final FloatingActionButtonLocation fabPosition;
+  final FloatingActionButtonLocation? fabPosition;
 
   final bool _showBottomBar;
 
@@ -56,7 +56,7 @@ class _BaseScaffoldState extends State<BaseScaffold> {
 
   final NetworkingService _networkingService = locator<NetworkingService>();
 
-  StreamSubscription<ConnectivityResult> _subscription;
+  late StreamSubscription<List<ConnectivityResult>> _subscription;
 
   @override
   void initState() {
@@ -75,7 +75,7 @@ class _BaseScaffoldState extends State<BaseScaffold> {
   void _listenToChangeInConnectivity() {
     _subscription = _networkingService.onConnectivityChanged.listen((event) {
       setState(() {
-        _isOffline = event == ConnectivityResult.none;
+        _isOffline = event.contains(ConnectivityResult.none);
       });
     });
   }
@@ -88,7 +88,7 @@ class _BaseScaffoldState extends State<BaseScaffold> {
             top: false,
             child: Stack(
               children: [
-                widget.body,
+                widget.body ?? const SizedBox(),
                 if (widget._isLoading)
                   buildLoading(
                       isInteractionLimitedWhileLoading:
@@ -116,7 +116,7 @@ class _BaseScaffoldState extends State<BaseScaffold> {
           height: MediaQuery.of(context).size.height / 30,
         ),
         Text(
-          AppIntl.of(context).no_connectivity,
+          AppIntl.of(context)!.no_connectivity,
           textAlign: TextAlign.center,
         ),
       ],

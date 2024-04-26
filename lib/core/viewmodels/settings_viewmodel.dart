@@ -17,17 +17,19 @@ class SettingsViewModel extends FutureViewModel {
   final AppIntl _appIntl;
 
   /// Current locale
-  String _currentLocale;
+  String? _currentLocale;
 
   /// Current theme
-  ThemeMode _selectedTheme;
+  ThemeMode? _selectedTheme;
 
-  ThemeMode get selectedTheme => _selectedTheme;
+  ThemeMode? get selectedTheme => _selectedTheme;
 
   /// Set theme
-  set selectedTheme(ThemeMode value) {
-    _settingsManager.setThemeMode(value);
-    _selectedTheme = value;
+  set selectedTheme(ThemeMode? value) {
+    if (value != null) {
+      _settingsManager.setThemeMode(value);
+      _selectedTheme = value;
+    }
   }
 
   String get currentLocale {
@@ -46,13 +48,13 @@ class SettingsViewModel extends FutureViewModel {
     _currentLocale = value;
   }
 
-  SettingsViewModel({@required AppIntl intl}) : _appIntl = intl;
+  SettingsViewModel({required AppIntl intl}) : _appIntl = intl;
 
   @override
   Future futureToRun() async {
     setBusy(true);
     await _settingsManager.fetchLanguageAndThemeMode();
-    _currentLocale = _settingsManager.locale.languageCode;
+    _currentLocale = _settingsManager.locale?.languageCode;
     _selectedTheme = _settingsManager.themeMode;
     setBusy(false);
     return true;

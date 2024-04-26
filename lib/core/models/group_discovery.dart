@@ -1,6 +1,3 @@
-// Flutter imports:
-import 'package:flutter/material.dart';
-
 // Project imports:
 import 'package:notredame/core/models/discovery.dart';
 
@@ -9,7 +6,7 @@ class GroupDiscovery {
   final List<Discovery> discoveries;
 
   GroupDiscovery({
-    @required this.name,
-    @required this.discoveries,
+    required this.name,
+    required this.discoveries,
   });
 }

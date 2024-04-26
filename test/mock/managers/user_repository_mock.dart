@@ -1,13 +1,16 @@
 // Package imports:
 import 'package:ets_api_clients/exceptions.dart';
 import 'package:ets_api_clients/models.dart';
+import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
 // Project imports:
 import 'package:notredame/core/managers/user_repository.dart';
+import 'user_repository_mock.mocks.dart';
 
 /// Mock for the [UserRepository]
-class UserRepositoryMock extends Mock implements UserRepository {
+@GenerateNiceMocks([MockSpec<UserRepository>()])
+class UserRepositoryMock extends MockUserRepository {
   /// When [monETSUser] is called will return [userToReturn]
   static void stubMonETSUser(UserRepositoryMock mock, MonETSUser userToReturn) {
     when(mock.monETSUser).thenAnswer((_) => userToReturn);
@@ -43,22 +46,23 @@ class UserRepositoryMock extends Mock implements UserRepository {
 
   /// Stub the getter [ProfileStudent] of [mock] when called will return [toReturn].
   static void stubProfileStudent(UserRepositoryMock mock,
-      {ProfileStudent toReturn}) {
+      {ProfileStudent? toReturn}) {
     when(mock.info).thenReturn(toReturn);
   }
 
   /// Stub the function [getInfo] of [mock] when called will return [toReturn].
   static void stubGetInfo(UserRepositoryMock mock,
-      {ProfileStudent toReturn, bool fromCacheOnly}) {
+      {required ProfileStudent toReturn, bool? fromCacheOnly}) {
     when(mock.getInfo(
             fromCacheOnly: fromCacheOnly ?? anyNamed("fromCacheOnly")))
+        // ignore: cast_nullable_to_non_nullable
         .thenAnswer((_) async => toReturn);
   }
 
   /// Stub the function [getInfo] of [mock] when called will throw [toThrow].
   static void stubGetInfoException(UserRepositoryMock mock,
       {Exception toThrow = const ApiException(prefix: 'ApiException'),
-      bool fromCacheOnly}) {
+      bool? fromCacheOnly}) {
     when(mock.getInfo(
             fromCacheOnly: fromCacheOnly ?? anyNamed("fromCacheOnly")))
         .thenAnswer((_) => Future.delayed(const Duration(milliseconds: 50))
@@ -73,7 +77,7 @@ class UserRepositoryMock extends Mock implements UserRepository {
 
   /// Stub the function [getPrograms] of [mock] when called will return [toReturn].
   static void stubGetPrograms(UserRepositoryMock mock,
-      {List<Program> toReturn = const [], bool fromCacheOnly}) {
+      {List<Program> toReturn = const [], bool? fromCacheOnly}) {
     when(mock.getPrograms(
             fromCacheOnly: fromCacheOnly ?? anyNamed("fromCacheOnly")))
         .thenAnswer((_) async => toReturn);
@@ -82,7 +86,7 @@ class UserRepositoryMock extends Mock implements UserRepository {
   /// Stub the function [getPrograms] of [mock] when called will throw [toThrow].
   static void stubGetProgramsException(UserRepositoryMock mock,
       {Exception toThrow = const ApiException(prefix: 'ApiException'),
-      bool fromCacheOnly}) {
+      bool? fromCacheOnly}) {
     when(mock.getPrograms(
             fromCacheOnly: fromCacheOnly ?? anyNamed("fromCacheOnly")))
         .thenAnswer((_) => Future.delayed(const Duration(milliseconds: 50))

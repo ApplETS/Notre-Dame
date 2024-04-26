@@ -2,7 +2,7 @@
 import 'dart:io';
 
 // Flutter imports:
-import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 // Package imports:
 import 'package:ets_api_clients/models.dart';
@@ -10,7 +10,6 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 // Project imports:
-import 'package:notredame/core/managers/user_repository.dart';
 import 'package:notredame/core/services/networking_service.dart';
 import 'package:notredame/ui/views/profile_view.dart';
 import '../../helpers.dart';
@@ -18,8 +17,8 @@ import '../../mock/managers/user_repository_mock.dart';
 import '../../mock/services/analytics_service_mock.dart';
 
 void main() {
-  AppIntl intl;
-  UserRepository userRepository;
+  late AppIntl intl;
+  late UserRepositoryMock userRepositoryMock;
 
   final profileStudent = ProfileStudent(
       firstName: "John",
@@ -45,19 +44,18 @@ void main() {
     setUp(() async {
       intl = await setupAppIntl();
       setupNavigationServiceMock();
-      userRepository = setupUserRepositoryMock();
+      userRepositoryMock = setupUserRepositoryMock();
       setupAnalyticsServiceMock();
 
-      UserRepositoryMock.stubGetInfo(userRepository as UserRepositoryMock,
+      UserRepositoryMock.stubGetInfo(userRepositoryMock,
           toReturn: profileStudent);
-      UserRepositoryMock.stubProfileStudent(
-          userRepository as UserRepositoryMock,
+      UserRepositoryMock.stubProfileStudent(userRepositoryMock,
           toReturn: profileStudent);
 
-      UserRepositoryMock.stubGetPrograms(userRepository as UserRepositoryMock,
+      UserRepositoryMock.stubGetPrograms(userRepositoryMock,
           toReturn: programList);
 
-      UserRepositoryMock.stubPrograms(userRepository as UserRepositoryMock,
+      UserRepositoryMock.stubPrograms(userRepositoryMock,
           toReturn: programList);
     });
 
@@ -88,6 +86,20 @@ void main() {
       expect(find.text(intl.login_prompt_universal_code), findsOneWidget);
     });
 
+    testWidgets('copies personnal info', (WidgetTester tester) async {
+      // Simulez un clic sur le texte du code permanent
+      await tester.pumpWidget(localizedWidget(child: ProfileView()));
+      await tester.pumpAndSettle();
+
+      await tester.tap(find.text(profileStudent.permanentCode));
+      await tester.pumpAndSettle();
+
+      expect(find.text(intl.profile_permanent_code_copied_to_clipboard),
+          findsOneWidget);
+
+      // Could not test clipboard content, could be due to https://github.com/flutter/flutter/issues/47448
+    });
+
     testWidgets('contains balance info', (WidgetTester tester) async {
       await tester.pumpWidget(localizedWidget(child: ProfileView()));
       await tester.pumpAndSettle();
@@ -106,7 +118,7 @@ void main() {
 
     group("golden - ", () {
       testWidgets("default view (no events)", (WidgetTester tester) async {
-        tester.binding.window.physicalSizeTestValue = const Size(1080, 1920);
+        tester.view.physicalSize = const Size(1080, 1920);
 
         await tester.pumpWidget(localizedWidget(child: ProfileView()));
         await tester.pumpAndSettle();

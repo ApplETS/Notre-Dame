@@ -13,13 +13,13 @@ import '../helpers.dart';
 import '../mock/services/launch_url_service_mock.dart';
 
 void main() {
-  LaunchUrlServiceMock launchUrlService;
+  late LaunchUrlServiceMock launchUrlServiceMock;
 
-  FaqViewModel viewModel;
+  late FaqViewModel viewModel;
 
   group('FaqViewModel - ', () {
     setUp(() async {
-      launchUrlService = setupLaunchUrlServiceMock() as LaunchUrlServiceMock;
+      launchUrlServiceMock = setupLaunchUrlServiceMock();
       setupSettingsManagerMock();
 
       viewModel = FaqViewModel();
@@ -42,7 +42,7 @@ void main() {
       test('Calls launchInBrowser', () {
         viewModel.launchWebsite("https://clubapplets.ca/", Brightness.light);
 
-        verify(launchUrlService.launchInBrowser(
+        verify(launchUrlServiceMock.launchInBrowser(
                 "https://clubapplets.ca/", Brightness.light))
             .called(1);
       });

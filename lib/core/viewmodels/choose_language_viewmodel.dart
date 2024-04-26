@@ -1,6 +1,3 @@
-// Flutter imports:
-import 'package:flutter/material.dart';
-
 // Package imports:
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:stacked/stacked.dart';
@@ -25,7 +22,7 @@ class ChooseLanguageViewModel extends BaseViewModel {
   /// Localization class of the application.
   final AppIntl _appIntl;
 
-  ChooseLanguageViewModel({@required AppIntl intl}) : _appIntl = intl;
+  ChooseLanguageViewModel({required AppIntl intl}) : _appIntl = intl;
 
   List<String> get languages {
     return [_appIntl.settings_english, _appIntl.settings_french];
@@ -36,15 +33,12 @@ class ChooseLanguageViewModel extends BaseViewModel {
       case english:
         _settingsManager.setLocale('en');
         languageSelectedIndex = english;
-        break;
       case french:
         _settingsManager.setLocale('fr');
         languageSelectedIndex = french;
-        break;
       default:
         throw Exception(
             'No valid language for the index $index passed in parameters');
-        break;
     }
 
     _navigationService.pop();

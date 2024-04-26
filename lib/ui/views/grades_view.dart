@@ -9,7 +9,9 @@ import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:stacked/stacked.dart';
 
 // Project imports:
+import 'package:notredame/core/constants/router_paths.dart';
 import 'package:notredame/core/services/analytics_service.dart';
+import 'package:notredame/core/services/navigation_service.dart';
 import 'package:notredame/core/viewmodels/grades_viewmodel.dart';
 import 'package:notredame/locator.dart';
 import 'package:notredame/ui/utils/app_theme.dart';
@@ -23,6 +25,9 @@ class GradesView extends StatefulWidget {
 
 class _GradesViewState extends State<GradesView> {
   final AnalyticsService _analyticsService = locator<AnalyticsService>();
+
+  /// Used to redirect on the dashboard.
+  final NavigationService _navigationService = locator<NavigationService>();
 
   @override
   void initState() {
@@ -38,7 +43,7 @@ class _GradesViewState extends State<GradesView> {
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<GradesViewModel>.reactive(
-        viewModelBuilder: () => GradesViewModel(intl: AppIntl.of(context)),
+        viewModelBuilder: () => GradesViewModel(intl: AppIntl.of(context)!),
         builder: (context, model, child) {
           return RefreshIndicator(
             onRefresh: () => model.refresh(),
@@ -49,9 +54,9 @@ class _GradesViewState extends State<GradesView> {
                 ListView(),
                 if (model.coursesBySession.isEmpty)
                   Center(
-                      child: Text(AppIntl.of(context).grades_msg_no_grades,
+                      child: Text(AppIntl.of(context)!.grades_msg_no_grades,
                           textAlign: TextAlign.center,
-                          style: Theme.of(context).textTheme.headline6))
+                          style: Theme.of(context).textTheme.titleLarge))
                 else
                   Padding(
                     padding: const EdgeInsets.only(top: 8.0),
@@ -69,9 +74,9 @@ class _GradesViewState extends State<GradesView> {
                                     child: _buildSessionCourses(
                                         index,
                                         _sessionName(model.sessionOrder[index],
-                                            AppIntl.of(context)),
+                                            AppIntl.of(context)!),
                                         model.coursesBySession[
-                                            model.sessionOrder[index]],
+                                            model.sessionOrder[index]]!,
                                         model),
                                   ),
                                 ),
@@ -97,17 +102,29 @@ class _GradesViewState extends State<GradesView> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            Text(sessionName,
-                style: const TextStyle(
-                  fontSize: 25,
-                  color: AppTheme.etsLightRed,
-                )),
+            Wrap(
+              crossAxisAlignment: WrapCrossAlignment.center,
+              children: [
+                Text(
+                  sessionName,
+                  style: const TextStyle(
+                    fontSize: 25,
+                    color: AppTheme.etsLightRed,
+                  ),
+                ),
+                IconButton(
+                  icon: const Icon(Icons.today, color: AppTheme.etsDarkGrey),
+                  onPressed: () => _navigationService.pushNamed(
+                      RouterPaths.defaultSchedule,
+                      arguments: model.sessionOrder[index]),
+                ),
+              ],
+            ),
             const SizedBox(height: 16.0),
             Wrap(
               children: courses
-                  .map((course) => index == 0
-                      ? GradeButton(course, showDiscovery: true)
-                      : GradeButton(course, showDiscovery: false))
+                  .map((course) =>
+                      GradeButton(course, showDiscovery: index == 0))
                   .toList(),
             ),
           ],

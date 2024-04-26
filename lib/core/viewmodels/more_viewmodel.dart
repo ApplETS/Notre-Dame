@@ -17,8 +17,10 @@ import 'package:notredame/core/managers/course_repository.dart';
 import 'package:notredame/core/managers/settings_manager.dart';
 import 'package:notredame/core/managers/user_repository.dart';
 import 'package:notredame/core/services/in_app_review_service.dart';
+import 'package:notredame/core/services/launch_url_service.dart';
 import 'package:notredame/core/services/navigation_service.dart';
 import 'package:notredame/core/services/preferences_service.dart';
+import 'package:notredame/core/services/remote_config_service.dart';
 import 'package:notredame/locator.dart';
 import 'package:notredame/ui/utils/discovery_components.dart';
 
@@ -35,30 +37,36 @@ class MoreViewModel extends FutureViewModel {
   /// Preferences service
   final PreferencesService _preferencesService = locator<PreferencesService>();
 
+  /// Remote config service
+  final RemoteConfigService _remoteConfigService =
+      locator<RemoteConfigService>();
+
   /// User repository needed to log out
   final UserRepository _userRepository = locator<UserRepository>();
 
   /// Used to redirect on the dashboard.
   final NavigationService navigationService = locator<NavigationService>();
 
-  String _appVersion;
+  String? _appVersion;
 
   final AppIntl _appIntl;
 
   /// Get the application version
-  String get appVersion => _appVersion;
+  String? get appVersion => _appVersion;
 
-  MoreViewModel({@required AppIntl intl}) : _appIntl = intl;
+  MoreViewModel({required AppIntl intl}) : _appIntl = intl;
 
   @override
   Future futureToRun() async {
-    setBusy(true);
-
-    await PackageInfo.fromPlatform()
-        .then((value) => _appVersion = value.version)
-        .onError((error, stackTrace) => null);
-
-    setBusy(false);
+    try {
+      setBusy(true);
+      final packageInfo = await PackageInfo.fromPlatform();
+      _appVersion = packageInfo.version;
+    } catch (error) {
+      onError(error);
+    } finally {
+      setBusy(false);
+    }
     return true;
   }
 
@@ -99,6 +107,7 @@ class MoreViewModel extends FutureViewModel {
     final SettingsManager settingsManager = locator<SettingsManager>();
 
     if (await settingsManager.getBool(PreferencesFlag.discoveryMore) == null) {
+      if (!context.mounted) return;
       final List<String> ids =
           findDiscoveriesByGroupName(context, DiscoveryGroupIds.pageMore)
               .map((e) => e.featureId)
@@ -131,4 +140,22 @@ class MoreViewModel extends FutureViewModel {
     }
     return false;
   }
+
+  static Future<void> launchPrivacyPolicy() async {
+    final LaunchUrlService launchUrlService = locator<LaunchUrlService>();
+    final RemoteConfigService remoteConfigService =
+        locator<RemoteConfigService>();
+    final NavigationService navigationService = locator<NavigationService>();
+    try {
+      await launchUrlService.launchInBrowser(
+          remoteConfigService.privacyPolicyUrl, Brightness.light);
+    } catch (error) {
+      // An exception is thrown if browser app is not installed on Android device.
+      await navigationService.pushNamed(RouterPaths.webView,
+          arguments: remoteConfigService.privacyPolicyUrl);
+    }
+  }
+
+  /// Get the privacy policy toggle
+  bool get privacyPolicyToggle => _remoteConfigService.privacyPolicyToggle;
 }

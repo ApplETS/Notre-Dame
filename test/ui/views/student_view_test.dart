@@ -19,23 +19,19 @@ import '../../mock/managers/course_repository_mock.dart';
 import '../../mock/services/analytics_service_mock.dart';
 
 void main() {
-  CourseRepository courseRepository;
+  CourseRepositoryMock courseRepositoryMock;
 
   group('StudentView - ', () {
     setUp(() async {
       setupNavigationServiceMock();
       setupNetworkingServiceMock();
-      courseRepository = setupCourseRepositoryMock();
+      courseRepositoryMock = setupCourseRepositoryMock();
       setupSettingsManagerMock();
       setupAnalyticsServiceMock();
 
-      CourseRepositoryMock.stubCourses(
-          courseRepository as CourseRepositoryMock);
-      CourseRepositoryMock.stubGetCourses(
-          courseRepository as CourseRepositoryMock,
-          fromCacheOnly: false);
-      CourseRepositoryMock.stubGetCourses(
-          courseRepository as CourseRepositoryMock,
+      CourseRepositoryMock.stubCourses(courseRepositoryMock);
+      CourseRepositoryMock.stubGetCourses(courseRepositoryMock);
+      CourseRepositoryMock.stubGetCourses(courseRepositoryMock,
           fromCacheOnly: true);
     });
 
@@ -62,7 +58,7 @@ void main() {
 
       group("golden - ", () {
         testWidgets("default view (no events)", (WidgetTester tester) async {
-          tester.binding.window.physicalSizeTestValue = const Size(800, 1410);
+          tester.view.physicalSize = const Size(800, 1410);
 
           await tester.pumpWidget(
               localizedWidget(child: FeatureDiscovery(child: StudentView())));

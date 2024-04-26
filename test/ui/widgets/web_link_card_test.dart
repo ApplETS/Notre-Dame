@@ -9,30 +9,31 @@ import 'package:mockito/mockito.dart';
 import 'package:notredame/core/models/quick_link.dart';
 import 'package:notredame/core/services/analytics_service.dart';
 import 'package:notredame/core/services/internal_info_service.dart';
-import 'package:notredame/core/services/launch_url_service.dart';
 import 'package:notredame/core/services/navigation_service.dart';
 import 'package:notredame/ui/widgets/web_link_card.dart';
 import '../../helpers.dart';
+import '../../mock/services/analytics_service_mock.dart';
+import '../../mock/services/launch_url_service_mock.dart';
 
 final _quickLink = QuickLink(
     id: 1, image: const Icon(Icons.ac_unit), name: 'test', link: 'testlink');
 
 void main() {
-  AnalyticsService analyticsService;
-  LaunchUrlService launchUrlService;
+  late AnalyticsServiceMock analyticsServiceMock;
+  late LaunchUrlServiceMock launchUrlServiceMock;
 
   group('WebLinkCard - ', () {
     setUp(() {
-      analyticsService = setupAnalyticsServiceMock();
-      launchUrlService = setupLaunchUrlServiceMock();
+      analyticsServiceMock = setupAnalyticsServiceMock();
+      launchUrlServiceMock = setupLaunchUrlServiceMock();
       setupInternalInfoServiceMock();
       setupNavigationServiceMock();
     });
 
     tearDown(() {
       unregister<NavigationService>();
-      clearInteractions(analyticsService);
-      clearInteractions(launchUrlService);
+      clearInteractions(analyticsServiceMock);
+      clearInteractions(launchUrlServiceMock);
       unregister<AnalyticsService>();
       unregister<InternalInfoService>();
     });

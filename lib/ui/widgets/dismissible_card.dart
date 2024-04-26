@@ -6,20 +6,19 @@ class DismissibleCard extends StatelessWidget {
 
   final Function(DismissDirection) onDismissed;
 
-  final Color cardColor;
+  final Color? cardColor;
 
   final double elevation;
 
   final bool isBusy;
 
   const DismissibleCard(
-      {Key key,
-      @required this.onDismissed,
-      @required this.child,
+      {super.key,
+      required this.onDismissed,
+      required this.child,
       this.elevation = 1,
       this.cardColor,
-      this.isBusy = false})
-      : super(key: key);
+      this.isBusy = false});
 
   @override
   Widget build(BuildContext context) => Dismissible(

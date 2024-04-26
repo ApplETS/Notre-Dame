@@ -22,7 +22,7 @@ class InAppReviewService {
   /// Opens the Play Store on Android, the App Store with a review
   Future<void> openStoreListing({
     String appStoreId = AppInfo.appStoreId,
-    String microsoftStoreId,
+    String? microsoftStoreId,
   }) =>
       _inAppReview.openStoreListing(
         appStoreId: appStoreId,

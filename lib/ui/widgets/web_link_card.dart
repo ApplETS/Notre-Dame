@@ -19,9 +19,8 @@ class WebLinkCard extends StatelessWidget {
       ViewModelBuilder<WebLinkCardViewModel>.reactive(
           viewModelBuilder: () => WebLinkCardViewModel(),
           builder: (context, model, child) {
-            return SizedBox(
-              width: MediaQuery.of(context).size.width / 3.1,
-              height: 130,
+            return ConstrainedBox(
+              constraints: const BoxConstraints.expand(),
               child: Card(
                 elevation: 4.0,
                 child: InkWell(
@@ -41,7 +40,7 @@ class WebLinkCard extends StatelessWidget {
                           child: Text(
                             _links.name,
                             style: const TextStyle(
-                                color: Colors.red, fontSize: 18.0),
+                                color: AppTheme.etsLightRed, fontSize: 18.0),
                           ),
                         ),
                       ],

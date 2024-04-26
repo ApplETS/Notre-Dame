@@ -27,7 +27,7 @@ class GithubApi {
   static const String _repositorySlug = "ApplETS/Notre-Dame";
   static const String _repositoryReportSlug = "ApplETS/Notre-Dame-Bug-report";
 
-  GitHub _github;
+  late GitHub _github;
 
   final Logger _logger = locator<Logger>();
 
@@ -48,7 +48,7 @@ class GithubApi {
   }
 
   /// Upload a file to the ApplETS/Notre-Dame-Bug-report repository
-  void uploadFileToGithub({@required String filePath, @required File file}) {
+  void uploadFileToGithub({required String filePath, required File file}) {
     _github.repositories
         .createFile(
             RepositorySlug.full(_repositoryReportSlug),
@@ -67,6 +67,7 @@ class GithubApi {
           // ignore: avoid_dynamic_calls
           "uploadFileToGithub: ${error.message}",
           error as GitHubError);
+      throw Error();
     });
   }
 
@@ -74,10 +75,10 @@ class GithubApi {
   /// The bug report will contain a file, a description [feedbackText] and also some information about the
   /// application/device.
   Future<Issue> createGithubIssue(
-      {@required String feedbackText,
-      @required String fileName,
-      @required String feedbackType,
-      String email}) async {
+      {required String feedbackText,
+      required String fileName,
+      required String feedbackType,
+      String? email}) async {
     final PackageInfo packageInfo = await PackageInfo.fromPlatform();
     return _github.issues
         .create(
@@ -102,6 +103,7 @@ class GithubApi {
           // ignore: avoid_dynamic_calls
           "createGithubIssue: ${error.message}",
           error as GitHubError);
+      throw Error();
     });
   }
 
@@ -119,6 +121,7 @@ class GithubApi {
             // ignore: avoid_dynamic_calls
             "fetchIssuesByNumbers: ${error.message}",
             error as GitHubError);
+        throw Error();
       })));
     }
     return issues;
