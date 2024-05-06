@@ -11,13 +11,13 @@ import 'package:ets_api_clients/models.dart';
 import 'package:logger/logger.dart';
 
 // Project imports:
+import 'package:notredame/core/constants/semester_codes.dart';
 import 'package:notredame/core/managers/cache_manager.dart';
 import 'package:notredame/core/managers/user_repository.dart';
 import 'package:notredame/core/services/analytics_service.dart';
 import 'package:notredame/core/services/networking_service.dart';
 import 'package:notredame/core/utils/cache_exception.dart';
 import 'package:notredame/locator.dart';
-import 'package:notredame/core/constants/semester_codes.dart';
 
 /// Repository to access all the data related to courses taken by the student
 class CourseRepository {

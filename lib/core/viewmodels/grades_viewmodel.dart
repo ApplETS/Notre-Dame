@@ -11,11 +11,11 @@ import 'package:stacked/stacked.dart';
 // Project imports:
 import 'package:notredame/core/constants/discovery_ids.dart';
 import 'package:notredame/core/constants/preferences_flags.dart';
+import 'package:notredame/core/constants/semester_codes.dart';
 import 'package:notredame/core/managers/course_repository.dart';
 import 'package:notredame/core/managers/settings_manager.dart';
 import 'package:notredame/locator.dart';
 import 'package:notredame/ui/utils/discovery_components.dart';
-import 'package:notredame/core/constants/semester_codes.dart';
 
 class GradesViewModel extends FutureViewModel<Map<String, List<Course>>> {
   /// Used to get the courses of the student
