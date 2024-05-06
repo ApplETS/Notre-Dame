@@ -133,7 +133,7 @@ class CourseRepository {
 
     try {
       // If there is no sessions loaded, load them.
-      if (_sessions == null) {
+      if (_sessions == null || _sessions!.isEmpty) {
         await getSessions();
       }
 
