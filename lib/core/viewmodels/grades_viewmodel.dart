@@ -15,6 +15,7 @@ import 'package:notredame/core/managers/course_repository.dart';
 import 'package:notredame/core/managers/settings_manager.dart';
 import 'package:notredame/locator.dart';
 import 'package:notredame/ui/utils/discovery_components.dart';
+import 'package:notredame/core/constants/semester_codes.dart';
 
 class GradesViewModel extends FutureViewModel<Map<String, List<Course>>> {
   /// Used to get the courses of the student
@@ -90,10 +91,10 @@ class GradesViewModel extends FutureViewModel<Map<String, List<Course>>> {
     sessionOrder.sort((a, b) {
       if (a == b) return 0;
 
-      // When the session is 's.o.' we put the course at the end of the list
-      if (a == "s.o.") {
+      // When the session is 's.o.' (noActiveSemester) we put the course at the end of the list
+      if (a == SemesterCodes.noActiveSemester) {
         return 1;
-      } else if (b == "s.o.") {
+      } else if (b == SemesterCodes.noActiveSemester) {
         return -1;
       }
 

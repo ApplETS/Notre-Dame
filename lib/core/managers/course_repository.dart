@@ -17,6 +17,7 @@ import 'package:notredame/core/services/analytics_service.dart';
 import 'package:notredame/core/services/networking_service.dart';
 import 'package:notredame/core/utils/cache_exception.dart';
 import 'package:notredame/locator.dart';
+import 'package:notredame/core/constants/semester_codes.dart';
 
 /// Repository to access all the data related to courses taken by the student
 class CourseRepository {
@@ -200,7 +201,7 @@ class CourseRepository {
       fromCacheOnly = true;
     }
 
-    if (session == null) {
+    if (session == null || session == SemesterCodes.noActiveSemester) {
       _logger.d(
           "$tag - getScheduleDefaultActivities: Session is null, returning empty list.");
       return [];
