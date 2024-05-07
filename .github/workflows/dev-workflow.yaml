@@ -3,21 +3,21 @@ on:
   workflow_dispatch:
   pull_request:
     paths-ignore:
-      - '.gitignore'
-      - '.metadata'
-      - '*.md'
-      - 'android/fastlane/**'
-      - 'ios/fastlane/**'
-      - '.github/**'
-      - '.githooks/**'
-      - '!.github/workflows/dev-workflow.yaml'
+      - ".gitignore"
+      - ".metadata"
+      - "*.md"
+      - "android/fastlane/**"
+      - "ios/fastlane/**"
+      - ".github/**"
+      - ".githooks/**"
+      - "!.github/workflows/dev-workflow.yaml"
 concurrency:
   group: ${{ github.ref }}
   cancel-in-progress: true
 env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   MAPS_API_KEY: ${{ secrets.MAPS_API_KEY }}
-  APP_NAME: 'notre_dame'
+  APP_NAME: "notre_dame"
 
 jobs:
   ##############################################################
@@ -35,12 +35,12 @@ jobs:
           token: ${{ secrets.PTA }}
       - uses: actions/setup-java@v4
         with:
-          distribution: 'temurin'
-          java-version: '17'
+          distribution: "temurin"
+          java-version: "17"
       - uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.19.x'
-          channel: 'stable'
+          flutter-version: "3.19.x"
+          channel: "stable"
           cache: true
       - run: flutter doctor
       - name: Decrypt SignETS certificate and Google Services files
@@ -67,7 +67,7 @@ jobs:
           commit_user_name: github-actions[bot]
           commit_user_email: 41898282+github-actions[bot]@users.noreply.github.com
           commit_message: "[BOT] Applying format."
-          add_options: '-u'
+          add_options: "-u"
 
       # Fail workflow, because new commit will execute workflow
       - if: ${{ steps.commit_formatted.outputs.changes_detected == 'true' }}
@@ -92,7 +92,7 @@ jobs:
           file_pattern: test/*
           commit_user_name: github-actions[bot]
           commit_user_email: 41898282+github-actions[bot]@users.noreply.github.com
-          commit_message: '[BOT] Update golden files'
+          commit_message: "[BOT] Update golden files"
 
       # Fail workflow, because new commit will execute workflow
       - if: ${{ steps.commit_golden.outputs.changes_detected == 'true' }}
@@ -138,7 +138,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        target: [ iOS, Android ]
+        target: [iOS, Android]
         include:
           - os: macos-latest
             target: iOS
@@ -150,7 +150,7 @@ jobs:
           - os: ubuntu-latest
             target: Android
             build_target: apk
-            build_args: ''
+            build_args: ""
             build_path: build/app/outputs/apk/release
             asset_extension: apk
             asset_content_type: application/zip
@@ -162,15 +162,15 @@ jobs:
       - uses: actions/checkout@v4
       - uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.19.x'
-          channel: 'stable'
+          flutter-version: "3.19.x"
+          channel: "stable"
           cache: true
       - name: Install Android dependencies
         if: matrix.target == 'Android'
         uses: actions/setup-java@v4
         with:
-          java-version: '17'
-          distribution: 'temurin'
+          java-version: "17"
+          distribution: "temurin"
       - run: flutter doctor -v
       - name: Install iOS dependencies
         if: matrix.target == 'iOS'
@@ -180,7 +180,7 @@ jobs:
           cd ios
           pod update
           flutter clean
- 
+
       - name: Commit pod updates
         if: matrix.target == 'iOS'
         id: commit_pod_versions
@@ -190,7 +190,7 @@ jobs:
           commit_user_name: github-actions[bot]
           commit_user_email: 41898282+github-actions[bot]@users.noreply.github.com
           commit_message: "[BOT] Applying pod update."
-          add_options: '-u'
+          add_options: "-u"
 
       # Fail workflow, because new commit will execute workflow
       - if: ${{ matrix.target == 'iOS' && steps.commit_pod_versions.outputs.changes_detected == 'true' }}
@@ -222,6 +222,14 @@ jobs:
         if: matrix.target == 'Android'
         run: mv app-release.${{ matrix.asset_extension }} ${{ github.workspace }}/${{ env.APP_NAME }}_${{ matrix.target }}.${{ matrix.asset_extension }}
         working-directory: ${{ matrix.build_path }}
+
+      - name: Firebase App Distribution
+        uses: wzieba/Firebase-Distribution-Github-Action@v1.7.0
+        with:
+          appId: ${{secrets.FIREBASE_APP_ANDROID_ID}}
+          serviceCredentialsFileContent: ${{ secrets.CREDENTIAL_FILE_CONTENT }}
+          file: ${{ github.workspace }}/${{ env.APP_NAME }}_${{ matrix.target }}.${{ matrix.asset_extension }}
+          groups: pr-request
 
       - name: Compress iOS build
         if: matrix.target == 'iOS'
