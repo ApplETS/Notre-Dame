@@ -27,7 +27,7 @@ class GradeButton extends StatelessWidget {
   /// Settings manager
   final SettingsManager _settingsManager = locator<SettingsManager>();
 
-  GradeButton(this.course, {this.color ,this.showDiscovery = false});
+  GradeButton(this.course, {this.color, this.showDiscovery = false});
 
   @override
   Widget build(BuildContext context) => Card(

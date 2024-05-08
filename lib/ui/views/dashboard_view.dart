@@ -396,9 +396,11 @@ class _DashboardViewState extends State<DashboardView>
                   padding: const EdgeInsets.fromLTRB(17, 10, 15, 10),
                   child: Wrap(
                     children: model.courses
-                        .map((course) => GradeButton(course, color: Theme.of(context).brightness == Brightness.light
-                        ? AppTheme.lightThemeBackground
-                        : AppTheme.darkThemeBackground))
+                        .map((course) => GradeButton(course,
+                            color:
+                                Theme.of(context).brightness == Brightness.light
+                                    ? AppTheme.lightThemeBackground
+                                    : AppTheme.darkThemeBackground))
                         .toList(),
                   ),
                 )
