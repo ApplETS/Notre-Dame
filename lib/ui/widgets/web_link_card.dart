@@ -24,6 +24,7 @@ class WebLinkCard extends StatelessWidget {
               child: Card(
                 elevation: 4.0,
                 child: InkWell(
+                  borderRadius: const BorderRadius.all(Radius.circular(10)),
                   onTap: () =>
                       model.onLinkClicked(_links, Theme.of(context).brightness),
                   splashColor: AppTheme.etsLightRed.withAlpha(50),
