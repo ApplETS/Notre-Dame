@@ -1,4 +1,5 @@
 // Flutter imports:
+
 import 'package:flutter/material.dart';
 
 // Package imports:
@@ -105,8 +106,8 @@ void main() {
         expect(label2, findsOneWidget);
 
         final label3 = find.text(intl.grades_not_available);
-        //grades_standard_deviation, grades_percentile_rank
-        expect(label3, findsNWidgets(2));
+        //grades_weighted_grade, grades_standard_deviation, grades_percentile_rank
+        expect(label3, findsNWidgets(3));
 
         final label4 = find.text("0.0/30 (0.0%)");
         expect(label4, findsNWidgets(3));

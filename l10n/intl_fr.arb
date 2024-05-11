@@ -116,6 +116,7 @@
   "grades_group": "Groupe",
   "grades_grade": "Note",
   "grades_median": "Médiane",
+  "grades_weighted": "Pondérée",
   "grades_standard_deviation": "Écart-type",
   "grades_percentile_rank": "Rang centile",
   "grades_target_date": "Date cible",
