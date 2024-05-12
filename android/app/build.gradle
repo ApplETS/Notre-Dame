@@ -36,6 +36,7 @@ apply plugin: 'com.google.firebase.crashlytics'
 
 android {
     compileSdkVersion 34
+    ndkVersion "26.3.11579264"
 
     sourceSets {
         main.java.srcDirs += 'src/main/kotlin'
