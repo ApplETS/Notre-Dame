@@ -12,6 +12,7 @@ import 'package:notredame/core/services/analytics_service.dart';
 import 'package:notredame/core/services/launch_url_service.dart';
 import 'package:notredame/core/services/navigation_service.dart';
 import 'package:notredame/core/services/preferences_service.dart';
+import 'package:notredame/core/services/remote_config_service.dart';
 import 'package:notredame/ui/views/login_view.dart';
 import 'package:notredame/ui/widgets/password_text_field.dart';
 import '../../helpers.dart';
@@ -29,6 +30,7 @@ void main() {
       setupPreferencesServiceMock();
       setupLaunchUrlServiceMock();
       setupAnalyticsServiceMock();
+      setupRemoteConfigServiceMock();
     });
 
     tearDown(() {
@@ -38,6 +40,7 @@ void main() {
       unregister<PreferencesService>();
       unregister<LaunchUrlService>();
       unregister<AnalyticsService>();
+      unregister<RemoteConfigService>();
     });
 
     group('UI - ', () {
