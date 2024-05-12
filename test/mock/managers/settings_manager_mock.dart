@@ -1,8 +1,8 @@
 // Flutter imports:
 import 'package:flutter/material.dart';
-import 'package:mockito/annotations.dart';
 
 // Package imports:
+import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
 // Project imports:

@@ -4,20 +4,21 @@ import 'package:device_calendar/device_calendar.dart';
 import 'package:ets_api_clients/models.dart';
 
 mixin CalendarUtils {
-  static Future<bool?> checkPermissions() async {
+  static Future<bool> checkPermissions() async {
     final deviceCalendarPluginPermissionsResponse =
         await deviceCalendarPlugin.hasPermissions();
     // if we were able to check for permissions without error
     if (deviceCalendarPluginPermissionsResponse.isSuccess) {
       // if the user has not yet allowed permission
-      if (deviceCalendarPluginPermissionsResponse.data == false) {
+      if (deviceCalendarPluginPermissionsResponse.data != null &&
+          !deviceCalendarPluginPermissionsResponse.data!) {
         // request permission
         final deviceCalendarPluginRequestPermissionsResponse =
             await deviceCalendarPlugin.requestPermissions();
         // if permission request was successfully executed
         if (deviceCalendarPluginRequestPermissionsResponse.isSuccess) {
           // return the result of the permission request (accepted or refused)
-          return deviceCalendarPluginRequestPermissionsResponse.data;
+          return deviceCalendarPluginRequestPermissionsResponse.data!;
         } else {
           // Handle requesting permissions failure
         }
@@ -34,26 +35,29 @@ mixin CalendarUtils {
   static final DeviceCalendarPlugin deviceCalendarPlugin =
       DeviceCalendarPlugin();
 
-  static Future<UnmodifiableListView<Calendar>?> get nativeCalendars async {
+  static Future<UnmodifiableListView<Calendar>> get nativeCalendars async {
     final Result<UnmodifiableListView<Calendar>> calendarFetchResult =
         await DeviceCalendarPlugin().retrieveCalendars();
-    return calendarFetchResult.data;
+    return calendarFetchResult.data!;
   }
 
   /// Fetches a calendar by name from the native calendar app
   static Future<Calendar?> fetchNativeCalendar(String calendarName) async {
-    return (await nativeCalendars)?.firstWhere(
-      (element) => element.name == calendarName,
-      orElse: () => Calendar(),
-    );
+    final nativeCalendarList = await nativeCalendars;
+    for (final calendar in nativeCalendarList) {
+      if (calendar.name == calendarName) {
+        return calendar;
+      }
+    }
+    return null;
   }
 
   /// Fetches events from a calendar by id from the native calendar app
-  static Future<UnmodifiableListView<Event>?> fetchNativeCalendarEvents(
+  static Future<UnmodifiableListView<Event>> fetchNativeCalendarEvents(
       String calendarId, RetrieveEventsParams retrievalParams) async {
     final output =
         await deviceCalendarPlugin.retrieveEvents(calendarId, retrievalParams);
-    return output.data;
+    return output.data!;
   }
 
   static Future<bool> export(
@@ -64,11 +68,16 @@ mixin CalendarUtils {
         DeviceCalendarPlugin();
 
     // Request permissions
-    final bool? calendarPermission = await checkPermissions();
+    final bool calendarPermission = await checkPermissions();
 
-    if (calendarPermission == false) {
+    if (!calendarPermission) {
       return false;
     }
+
+    courses.sort((a, b) => a.startDateTime.compareTo(b.startDateTime));
+
+    final DateTime startDate = courses.first.startDateTime;
+    final DateTime endDate = courses.last.endDateTime;
 
     // Fetch calendar
     Calendar? calendar = await fetchNativeCalendar(calendarName);
@@ -83,8 +92,8 @@ mixin CalendarUtils {
     final events = await fetchNativeCalendarEvents(
         calendar!.id!,
         RetrieveEventsParams(
-          startDate: DateTime.now().subtract(const Duration(days: 120)),
-          endDate: DateTime.now().add(const Duration(days: 120)),
+          startDate: startDate,
+          endDate: endDate,
         ));
 
     // Order by date
@@ -103,27 +112,30 @@ mixin CalendarUtils {
             TZDateTime.from(course.endDateTime, getLocation('America/Toronto')),
         location: course.activityLocation,
         description:
-            "${course.courseGroup} \n${course.activityDescription}\nN'EFFACEZ PAS CETTE LIGNE: ${course.hashCode}",
+            "${course.courseGroup} \n${course.activityDescription}\n N'EFFACEZ PAS CETTE LIGNE: ${course.hashCode}",
       );
 
-      final existingEvents = events?.where(
-        (element) =>
-            element.description?.contains(course.hashCode.toString()) ?? false,
+      final existingEvents = events.where(
+        (element) {
+          if (element.description != null &&
+              element.description!.contains(course.hashCode.toString())) {
+            return true;
+          }
+          return false;
+        },
       );
-      if (existingEvents?.isNotEmpty == true) {
-        final existingEvent = existingEvents?.first;
+      if (existingEvents.isNotEmpty) {
+        final existingEvent = existingEvents.first;
 
         // If already exists prepare for update
-        if (existingEvent != null) {
-          event.eventId = existingEvent.eventId;
-        }
+        event.eventId = existingEvent.eventId;
       }
       // Create or update event
       final result = await localDeviceCalendarPlugin.createOrUpdateEvent(
         event,
       );
 
-      if (result?.isSuccess == false) {
+      if (result != null && !result.isSuccess) {
         hasErrors = true;
       }
     }
@@ -138,7 +150,7 @@ mixin CalendarUtils {
         DeviceCalendarPlugin();
 
     // Request permissions
-    final bool? calendarPermission = await checkPermissions();
+    final bool calendarPermission = await checkPermissions();
 
     if (calendarPermission == false) {
       return false;

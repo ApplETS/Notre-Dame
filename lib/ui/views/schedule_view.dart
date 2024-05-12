@@ -9,7 +9,6 @@ import 'package:ets_api_clients/models.dart';
 import 'package:feature_discovery/feature_discovery.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:intl/intl.dart';
-import 'package:notredame/core/viewmodels/calendar_selection_viewmodel.dart';
 import 'package:notredame/ui/widgets/calendar_selector.dart';
 import 'package:stacked/stacked.dart';
 import 'package:table_calendar/table_calendar.dart';
@@ -78,6 +77,11 @@ class _ScheduleViewState extends State<ScheduleView>
       ViewModelBuilder<ScheduleViewModel>.reactive(
         viewModelBuilder: () => ScheduleViewModel(
             intl: AppIntl.of(context)!, initialSelectedDate: widget.initialDay),
+        onViewModelReady: (model) {
+          if (model.settings.isEmpty) {
+            model.loadSettings();
+          }
+        },
         builder: (context, model, child) => BaseScaffold(
             isLoading: model.busy(model.isLoadingEvents),
             isInteractionLimitedWhileLoading: false,
@@ -88,12 +92,14 @@ class _ScheduleViewState extends State<ScheduleView>
               actions:
                   model.busy(model.settings) ? [] : _buildActionButtons(model),
             ),
-            body: RefreshIndicator(
-              child: !model.calendarViewSetting
-                  ? _buildCalendarView(model, context)
-                  : _buildListView(model, context),
-              onRefresh: () => model.refresh(),
-            )),
+            body: model.busy(model.settings)
+                ? const SizedBox()
+                : RefreshIndicator(
+                    child: !model.calendarViewSetting
+                        ? _buildCalendarView(model, context)
+                        : _buildListView(model, context),
+                    onRefresh: () => model.refresh(),
+                  )),
       );
 
   Widget _buildListView(ScheduleViewModel model, BuildContext context) {
@@ -167,15 +173,20 @@ class _ScheduleViewState extends State<ScheduleView>
     final chevronColor = Theme.of(context).brightness == Brightness.light
         ? AppTheme.primaryDark
         : AppTheme.lightThemeBackground;
+    final scheduleCardsPalette =
+        Theme.of(context).brightness == Brightness.light
+            ? AppTheme.schedulePaletteLight.toList()
+            : AppTheme.schedulePaletteDark.toList();
 
-    model.handleViewChanged(DateTime.now(), eventController);
+    model.handleViewChanged(
+        DateTime.now(), eventController, scheduleCardsPalette);
 
     if (model.calendarFormat == CalendarFormat.month) {
-      return _buildCalendarViewMonthly(
-          model, context, eventController, backgroundColor, chevronColor);
+      return _buildCalendarViewMonthly(model, context, eventController,
+          backgroundColor, chevronColor, scheduleCardsPalette);
     }
     return _buildCalendarViewWeekly(model, context, eventController,
-        backgroundColor, chevronColor, scheduleLineColor);
+        backgroundColor, chevronColor, scheduleLineColor, scheduleCardsPalette);
   }
 
   Widget _buildCalendarViewWeekly(
@@ -184,13 +195,15 @@ class _ScheduleViewState extends State<ScheduleView>
       calendar_view.EventController eventController,
       Color backgroundColor,
       Color chevronColor,
-      Color scheduleLineColor) {
+      Color scheduleLineColor,
+      List<Color> scheduleCardsPalette) {
     return Scaffold(
       body: calendar_view.WeekView(
         key: weekViewKey,
-        controller: eventController..addAll(model.selectedWeekCalendarEvents()),
-        onPageChange: (date, page) =>
-            model.handleViewChanged(date, eventController),
+        controller: eventController
+          ..addAll(model.selectedWeekCalendarEvents(scheduleCardsPalette)),
+        onPageChange: (date, page) => model.handleViewChanged(
+            date, eventController, scheduleCardsPalette),
         backgroundColor: backgroundColor,
         headerStyle: calendar_view.HeaderStyle(
             decoration: BoxDecoration(
@@ -254,15 +267,17 @@ class _ScheduleViewState extends State<ScheduleView>
       BuildContext context,
       calendar_view.EventController eventController,
       Color backgroundColor,
-      Color chevronColor) {
+      Color chevronColor,
+      List<Color> scheduleCardsPalette) {
     return Scaffold(
         body: calendar_view.MonthView(
       key: monthViewKey,
-      controller: eventController..addAll(model.selectedMonthCalendarEvents()),
+      controller: eventController
+        ..addAll(model.selectedMonthCalendarEvents(scheduleCardsPalette)),
       // to provide custom UI for month cells.
       cellAspectRatio: 0.78,
       onPageChange: (date, page) =>
-          model.handleViewChanged(date, eventController),
+          model.handleViewChanged(date, eventController, []),
       headerStyle: calendar_view.HeaderStyle(
           decoration: BoxDecoration(
             color: backgroundColor,
@@ -400,9 +415,6 @@ class _ScheduleViewState extends State<ScheduleView>
             startingDayOfWeek:
                 model.settings[PreferencesFlag.scheduleStartWeekday]
                     as StartingDayOfWeek,
-            daysOfWeekHeight: 20,
-            rowHeight: (MediaQuery.of(context).size.width - 10) /
-                7, // make sure the event tile are always squared
             locale: model.locale?.toLanguageTag(),
             selectedDayPredicate: (day) {
               return isSameDay(model.selectedDate, day);
@@ -473,7 +485,18 @@ class _ScheduleViewState extends State<ScheduleView>
   }
 
   List<Widget> _buildActionButtons(ScheduleViewModel model) => [
-        if ((model.settings[PreferencesFlag.scheduleShowTodayBtn] as bool?) ==
+        IconButton(
+          icon: const Icon(Icons.ios_share),
+          onPressed: () {
+            final translations = AppIntl.of(context)!;
+            showDialog(
+              context: context,
+              builder: (_) =>
+                  CalendarSelectionWidget(translations: translations),
+            );
+          },
+        ),
+        if ((model.settings[PreferencesFlag.scheduleShowTodayBtn] as bool) ==
             true)
           IconButton(
               icon: const Icon(Icons.today),
@@ -522,14 +545,13 @@ class _ScheduleViewState extends State<ScheduleView>
         onPressed: () async {
           _analyticsService.logEvent(tag, "Settings clicked");
           await showModalBottomSheet(
-              isDismissible: true,
-              enableDrag: true,
-              isScrollControlled: true,
-              context: context,
               shape: const RoundedRectangleBorder(
-                  borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(10),
-                      topRight: Radius.circular(10))),
+                borderRadius: BorderRadius.vertical(
+                  top: Radius.circular(10),
+                ),
+              ),
+              context: context,
+              isScrollControlled: true,
               builder: (context) => const ScheduleSettings());
           model.loadSettings();
         },

@@ -73,7 +73,7 @@ void main() {
     avatarUrl: 'https://example.com/avatar.png',
     type: 'type',
     organization: 'Test Organization',
-    activityArea: 'Test Area',
+    activityArea: ActivityArea(id: 'Test Area', nameEn: 'Test Area', nameFr: 'Test Area', createdAt: DateTime.now(), updatedAt: DateTime.now()),
     isActive: true,
     profileDescription: 'Test Description',
     facebookLink: 'https://facebook.com/test',

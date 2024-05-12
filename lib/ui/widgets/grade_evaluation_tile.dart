@@ -231,6 +231,14 @@ class _GradeEvaluationTileState extends State<GradeEvaluationTile>
               ),
             ),
             _buildSummary(
+                AppIntl.of(context)!.grades_weighted,
+                validateResultWithPercentage(
+                    context,
+                    evaluation.weightedGrade,
+                    evaluation.weight,
+                    Utils.getGradeInPercentage(evaluation.mark,
+                        evaluation.correctedEvaluationOutOfFormatted))),
+            _buildSummary(
                 AppIntl.of(context)!.grades_standard_deviation,
                 validateResult(
                     context, evaluation.standardDeviation.toString())),
@@ -274,6 +282,17 @@ class _GradeEvaluationTileState extends State<GradeEvaluationTile>
     }
 
     return AppIntl.of(context)!.grades_not_available;
+  }
+
+  String validateResultWithPercentage(BuildContext context, double? result,
+      double maxGrade, double percentage) {
+    if (result == null) {
+      return AppIntl.of(context)!.grades_not_available;
+    }
+
+    final String formattedResult = result.toStringAsFixed(2);
+    return AppIntl.of(context)!.grades_grade_with_percentage(
+        double.parse(formattedResult), maxGrade, percentage);
   }
 
   DescribedFeatureOverlay _buildDiscoveryFeatureDescriptionWidget(

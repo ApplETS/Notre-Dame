@@ -118,6 +118,7 @@
   "grades_group": "Group",
   "grades_grade": "Grade",
   "grades_median": "Median",
+  "grades_weighted": "Weighted",
   "grades_standard_deviation": "Standard Deviation",
   "grades_percentile_rank": "Percentile Rank",
   "grades_target_date": "Target Date",
@@ -379,5 +380,7 @@
   "no_ticket": "No ticket",
   "ticket_status_open": "Open",
   "ticket_status_closed": "Closed",
-  "loading": "Loading..."
+  "loading": "Loading...",
+
+  "no_schedule_available": "There are no events scheduled at the moment"
 }

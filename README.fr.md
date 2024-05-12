@@ -30,13 +30,9 @@ _Note: Ce guide est aussi disponible en: [English](https://github.com/ApplETS/No
 
 ## Requis
 
-- Flutter SDK v3.3.10
-```sh
-# pour rétrograder la version de flutter à la version requise, il suffit de faire :
-$ flutter downgrade 3.3.10
-```
+- Flutter SDK v3.19.3 ou supérieure
 - Openssl v1.1.1g ou supérieure
-- Java sdk 11
+- Java sdk 17
 
 ## Avant de démarrer le code
 
@@ -55,6 +51,12 @@ chmod +x ./env_variables.sh
 ```bash
 flutter pub get
 ```
+
+- Pour généré les mocks:
+```bash
+dart run build_runner build
+```
+
 
 ## Ajouter une variable d'environnement pour une API_KEY
 - Pour ajouter le Google Maps API TOKEN et le GitHub API TOKEN, vous devez renommer le fichier `.env.template` en `.env`.

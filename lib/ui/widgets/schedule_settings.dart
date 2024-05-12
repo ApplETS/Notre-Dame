@@ -27,64 +27,79 @@ class _ScheduleSettingsState extends State<ScheduleSettings> {
 
   @override
   Widget build(BuildContext context) => ViewModelBuilder.reactive(
-        viewModelBuilder: () => ScheduleSettingsViewModel(),
-        builder: (context, model, child) => SizedBox(
-          height: MediaQuery.of(context).size.height * 0.50,
-          child: Column(
-            children: [
-              if (widget.showHandle)
-                Container(
-                  decoration: BoxDecoration(
-                      color: Utils.getColorByBrightness(
-                          context,
-                          AppTheme.lightThemeBackground,
-                          AppTheme.darkThemeBackground),
-                      borderRadius: const BorderRadius.only(
-                        topLeft: Radius.circular(40.0),
-                        topRight: Radius.circular(40.0),
-                      )),
-                  child: Center(
-                    child: Padding(
-                      padding: const EdgeInsets.only(top: 8.0),
-                      child: Container(
-                        height: 5,
-                        width: 50,
-                        decoration: const BoxDecoration(
-                            color: Colors.grey,
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(8.0))),
+      viewModelBuilder: () => ScheduleSettingsViewModel(),
+      builder: (context, model, child) => ClipRRect(
+            borderRadius: const BorderRadius.vertical(top: Radius.circular(10)),
+            child: DraggableScrollableSheet(
+                maxChildSize: 0.85,
+                minChildSize: 0.5,
+                initialChildSize: 0.55,
+                expand: false,
+                snap: true,
+                snapSizes: const [
+                  0.55,
+                  0.85,
+                ],
+                builder: (context, ScrollController scrollController) {
+                  return Column(children: [
+                    if (widget.showHandle)
+                      Container(
+                        decoration: BoxDecoration(
+                          color: Utils.getColorByBrightness(
+                              context,
+                              AppTheme.lightThemeBackground,
+                              AppTheme.darkThemeBackground),
+                        ),
+                        child: Center(
+                          child: Padding(
+                            padding: const EdgeInsets.only(top: 8.0),
+                            child: Container(
+                              height: 5,
+                              width: 50,
+                              decoration: const BoxDecoration(
+                                  color: Colors.grey,
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(8.0))),
+                            ),
+                          ),
+                        ),
+                      ),
+                    Container(
+                      width: MediaQuery.of(context).size.width,
+                      decoration: BoxDecoration(
+                        color: Utils.getColorByBrightness(
+                            context,
+                            AppTheme.lightThemeBackground,
+                            AppTheme.darkThemeBackground),
+                      ),
+                      child: Center(
+                        child: Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 20),
+                            child: Text(
+                                AppIntl.of(context)!.schedule_settings_title,
+                                style: Theme.of(context).textTheme.titleLarge)),
                       ),
                     ),
-                  ),
-                ),
-              Container(
-                width: MediaQuery.of(context).size.width,
-                decoration: BoxDecoration(
-                  color: Utils.getColorByBrightness(
-                      context,
-                      AppTheme.lightThemeBackground,
-                      AppTheme.darkThemeBackground),
-                ),
-                child: Center(
-                  child: Padding(
-                      padding: const EdgeInsets.fromLTRB(15, 20, 20, 20),
-                      child: Text(AppIntl.of(context)!.schedule_settings_title,
-                          style: Theme.of(context).textTheme.titleLarge)),
-                ),
-              ),
-              Expanded(
-                child: ListTileTheme(
-                  selectedColor: Theme.of(context).textTheme.bodyLarge!.color,
-                  child: ListView(
-                    key: const ValueKey("SettingsScrollingArea"),
-                    children: _buildSettings(context, model),
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-      );
+                    Expanded(
+                      child: ListTileTheme(
+                        selectedColor:
+                            Theme.of(context).textTheme.bodyLarge!.color,
+                        child: Card(
+                          margin: EdgeInsets.zero,
+                          elevation: 0,
+                          shape: const RoundedRectangleBorder(),
+                          color: Colors.transparent,
+                          child: ListView(
+                            controller: scrollController,
+                            key: const ValueKey("SettingsScrollingArea"),
+                            children: _buildSettings(context, model),
+                          ),
+                        ),
+                      ),
+                    )
+                  ]);
+                }),
+          ));
 
   List<Widget> _buildSettings(
       BuildContext context, ScheduleSettingsViewModel model) {

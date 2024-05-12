@@ -5,7 +5,7 @@ description: The 4th generation of ÉTSMobile, the main gateway between the Éco
 # pub.dev using `pub publish`. This is preferred for private packages.
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 
-version: 4.38.0+1
+version: 4.39.4+1
 
 environment:
   sdk: ">=3.3.0 <4.0.0"
@@ -28,7 +28,7 @@ dependencies:
   firebase_remote_config: ^4.3.13
 
   # Utils
-  logger: ^2.0.2+1
+  logger: ^2.2.0
   url_launcher: ^6.2.5
   enum_to_string: ^2.0.1
   fluttertoast: ^8.2.4
@@ -46,24 +46,25 @@ dependencies:
     #path: ../ETS-API-Clients/
     git:
       url: https://github.com/ApplETS/ETS-API-Clients.git
-      ref: 1.1.2
+      ref: 1.2.2
 
   # Other
+  http: ^1.2.0
   flutter_cache_manager: ^3.0.1
   flutter_secure_storage: ^9.0.0
   shared_preferences: ^2.2.2
-  webview_flutter: ^3.0.4
+  webview_flutter: ^4.7.0
   flutter_custom_tabs: ^2.0.0+1
   google_maps_flutter: ^2.5.3
   github: ^9.1.0
   package_info_plus: ^5.0.1
   feature_discovery: ^0.14.0
   path_provider: ^2.0.11
-  rive: ^0.13.0
-  connectivity_plus: ^5.0.2
+  rive: ^0.13.1
+  connectivity_plus: ^6.0.1
   flutter_svg: ^2.0.9
   font_awesome_flutter: ^10.7.0
-  in_app_review: ^2.0.8
+  in_app_review: ^2.0.9
   device_info_plus: ^9.1.2
   pub_semver: ^2.1.4
   home_widget: ^0.4.1
@@ -74,12 +75,12 @@ dependencies:
   calendar_view: ^1.1.0
   carousel_slider: ^4.2.1
   reorderable_grid_view: ^2.2.8
-  import_sorter: ^4.6.0
   flutter_keychain: ^2.4.0
   shimmer: ^3.0.0
   infinite_scroll_pagination: ^3.2.0
-  device_calendar: ^4.3.2
+  device_calendar: ^4.3.1
   share_plus: ^4.5.3
+  flutter_markdown: ^0.7.1
 
 dev_dependencies:
   flutter_test:
@@ -89,6 +90,7 @@ dev_dependencies:
   flutter_config: ^2.0.2
   flutter_launcher_icons: ^0.13.1
   build_runner: ^2.4.8
+  import_sorter: ^4.6.0
 
 flutter_icons:
   android: "launcher_icon"

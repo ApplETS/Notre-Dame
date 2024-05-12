@@ -1,56 +1,71 @@
+import 'dart:collection';
+
+import 'package:device_calendar/device_calendar.dart';
 import 'package:flutter/material.dart';
-import 'package:notredame/core/viewmodels/calendar_selection_viewmodel.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
+import 'package:notredame/ui/utils/app_theme.dart';
+import 'package:notredame/core/managers/course_repository.dart';
+import 'package:notredame/core/utils/calendar_utils.dart';
+import 'package:notredame/locator.dart';
 
 class CalendarSelectionWidget extends StatelessWidget {
-  final CalendarSelectionViewModel viewModel;
-
-  const CalendarSelectionWidget({Key? key, required this.viewModel})
-      : super(key: key);
+  final AppIntl translations;
+  const CalendarSelectionWidget({super.key, required this.translations});
 
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-      future: viewModel.fetchCalendars(),
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
+      future: CalendarUtils.nativeCalendars,
+      builder:
+          (context, AsyncSnapshot<UnmodifiableListView<Calendar>> calendars) {
+        if (!calendars.hasData) {
           return const Center(
             child: CircularProgressIndicator(),
           );
         }
-        final items = viewModel.getDropdownItems();
+        final items = calendars.data!
+            .map<DropdownMenuItem<String>>(
+              (Calendar value) => DropdownMenuItem<String>(
+                value: value.name,
+                child: Text(value.name!),
+              ),
+            )
+            .toList();
         items.add(
           DropdownMenuItem<String>(
             value: "new",
-            child: Text(viewModel.translations.calendar_new),
+            child: Text(translations.calendar_new),
           ),
         );
-        viewModel.selectedCalendarId ??= items[0].value;
+        String selectedCalendarId = items[0].value ?? '';
         return StatefulBuilder(
           builder: (context, setState) {
             return AlertDialog(
-              title: Text(viewModel.translations.calendar_export),
+              title: Text(translations.calendar_export),
               content: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Text(viewModel.translations.calendar_export_question),
+                  Text(translations.calendar_export_question),
                   DropdownButton<String>(
                     items: items,
-                    value: viewModel.selectedCalendarId,
+                    value: selectedCalendarId,
                     onChanged: (calendar) {
                       setState(() {
-                        viewModel.selectedCalendarId = calendar;
+                        selectedCalendarId = calendar!;
                       });
                     },
                   ),
                   Builder(
                     builder: (context) {
-                      return viewModel.selectedCalendarId == "new"
+                      return selectedCalendarId == "new"
                           ? TextField(
                               onChanged: (value) {
-                                viewModel.selectedCalendarId = value;
+                                selectedCalendarId = value;
                               },
                               decoration: InputDecoration(
-                                labelText: viewModel.translations.calendar_name,
+                                labelText: translations.calendar_name,
                               ),
                             )
                           : const SizedBox(height: 10);
@@ -61,11 +76,45 @@ class CalendarSelectionWidget extends StatelessWidget {
               actions: <Widget>[
                 TextButton(
                   onPressed: () => Navigator.of(context).pop(),
-                  child: Text(viewModel.translations.calendar_cancel),
+                  child: const Text('Cancel'),
                 ),
                 TextButton(
-                  onPressed: () => viewModel.exportCalendar(context),
-                  child: Text(viewModel.translations.calendar_export),
+                  onPressed: () {
+                    if (selectedCalendarId.isEmpty) {
+                      Fluttertoast.showToast(
+                        msg: translations.calendar_select,
+                        backgroundColor: AppTheme.etsLightRed,
+                        textColor: AppTheme.etsBlack,
+                      );
+                      return;
+                    }
+                    Navigator.of(context).pop();
+
+                    final CourseRepository courseRepository =
+                        locator<CourseRepository>();
+
+                    final result = CalendarUtils.export(
+                      courseRepository.coursesActivities!,
+                      selectedCalendarId,
+                    );
+
+                    result.then((value) {
+                      if (value) {
+                        Fluttertoast.showToast(
+                          msg: translations.calendar_export_success,
+                          backgroundColor: AppTheme.gradeGoodMax,
+                          textColor: AppTheme.etsBlack,
+                        );
+                      } else {
+                        Fluttertoast.showToast(
+                          msg: translations.calendar_export_error,
+                          backgroundColor: AppTheme.etsLightRed,
+                          textColor: AppTheme.etsBlack,
+                        );
+                      }
+                    });
+                  },
+                  child: const Text('Export'),
                 ),
               ],
             );

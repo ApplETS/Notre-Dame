@@ -33,16 +33,9 @@ _Note: This guide is also available in: [Français](https://github.com/ApplETS/N
 
 ## Requirements
 
-- Flutter SDK v3.3.10
-```sh
-# to downgrade flutter version to the required version, simply do theses steps:
-$ cd /path/to/flutter
-$ git checkout 3.3.10
-$ flutter doctor
-# Make sure the output of flutter doctor is alright
-```
+- Flutter SDK v3.19.3 or higher
 - Openssl v1.1.1g or higher
-- Java sdk 11
+- Java sdk 17
 
 ## Before running the code
 
@@ -60,7 +53,6 @@ chmod +x ./env_variables.sh
 
 - After cloning the repo, you will have to get the packages and generate the l10n classes. To do that run the following
   command:
-
 ```
 flutter pub get
 ```

@@ -171,7 +171,7 @@ class _NewsDetailsViewState extends State<NewsDetailsView> {
         viewModel.news = news;
         showDialog(
           context: context,
-          builder: (_) => CalendarSelectionWidget(viewModel: viewModel),
+          builder: (_) => CalendarSelectionWidget(translations: translations),
         );
       case Menu.report:
         showModalBottomSheet(

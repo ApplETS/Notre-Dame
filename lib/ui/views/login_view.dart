@@ -9,9 +9,9 @@ import 'package:stacked/stacked.dart';
 
 // Project imports:
 import 'package:notredame/core/constants/router_paths.dart';
-import 'package:notredame/core/constants/urls.dart';
 import 'package:notredame/core/services/launch_url_service.dart';
 import 'package:notredame/core/services/navigation_service.dart';
+import 'package:notredame/core/services/remote_config_service.dart';
 import 'package:notredame/core/utils/login_mask.dart';
 import 'package:notredame/core/utils/utils.dart';
 import 'package:notredame/core/viewmodels/login_viewmodel.dart';
@@ -32,6 +32,9 @@ class _LoginViewState extends State<LoginView> {
   final NavigationService _navigationService = locator<NavigationService>();
 
   final LaunchUrlService _launchUrlService = locator<LaunchUrlService>();
+
+  final RemoteConfigService _remoteConfigService =
+      locator<RemoteConfigService>();
 
   /// Unique key of the login form form
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
@@ -162,9 +165,19 @@ class _LoginViewState extends State<LoginView> {
                                                 color: Colors.white),
                                           ),
                                           onTap: () {
-                                            _launchUrlService.launchInBrowser(
-                                                Urls.signetsForgottenPassword,
-                                                Theme.of(context).brightness);
+                                            final signetsPasswordResetUrl =
+                                                _remoteConfigService
+                                                    .signetsPasswordResetUrl;
+                                            if (signetsPasswordResetUrl != "") {
+                                              _launchUrlService.launchInBrowser(
+                                                  _remoteConfigService
+                                                      .signetsPasswordResetUrl,
+                                                  Theme.of(context).brightness);
+                                            } else {
+                                              Fluttertoast.showToast(
+                                                  msg: AppIntl.of(context)!
+                                                      .error);
+                                            }
                                           },
                                         ),
                                       ),

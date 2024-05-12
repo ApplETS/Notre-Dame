@@ -90,7 +90,7 @@ class GradeButton extends StatelessWidget {
                                 course.acronym,
                                 style: Theme.of(context)
                                     .textTheme
-                                    .bodyLarge!
+                                    .bodyMedium!
                                     .copyWith(color: Colors.white),
                               ),
                             ),

@@ -96,7 +96,7 @@ class _GradesDetailsViewState extends State<GradesDetailsView>
                       decoration: BoxDecoration(
                         color: Theme.of(context).brightness == Brightness.light
                             ? AppTheme.etsLightRed
-                            : BottomAppBarTheme.of(context).color,
+                            : AppTheme.darkTheme().cardColor,
                       ),
                       child: Padding(
                         padding: const EdgeInsets.only(bottom: 8.0),
@@ -118,7 +118,8 @@ class _GradesDetailsViewState extends State<GradesDetailsView>
                   ),
                 ),
               ],
-              body: SafeArea(
+              body: Padding(
+                padding: const EdgeInsets.all(5.0),
                 child: _buildGradeEvaluations(model),
               ),
             ),
@@ -313,7 +314,7 @@ class _GradesDetailsViewState extends State<GradesDetailsView>
     return text;
   }
 
-  /// Build the card of the Medidian, Standart deviation or Percentile Rank
+  /// Build the card of the Medidian, Standard deviation or Percentile Rank
   SizedBox _buildCourseGradeSummary(String? title, String number) {
     return SizedBox(
       height: 110,

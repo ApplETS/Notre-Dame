@@ -98,6 +98,7 @@ void main() {
         expect(
             find.byWidgetPredicate((widget) =>
                 widget is Container &&
+                widget.decoration is BoxDecoration &&
                 (widget.decoration! as BoxDecoration).color == Colors.grey),
             findsOneWidget,
             reason: "The handle should be grey");
@@ -171,6 +172,20 @@ void main() {
             isA<Switch>().having((source) => source.value, 'value', isTrue),
             reason:
                 "the settings says that the showTodayBtn is enabled, the UI should reflet that.");
+
+        const screenHeight = 600;
+
+        final draggableScrollableSheetFinder =
+            find.byType(DraggableScrollableSheet);
+        expect(draggableScrollableSheetFinder, findsOneWidget);
+
+        final Size initialSize = tester.getSize(draggableScrollableSheetFinder);
+        expect(initialSize.height, 0.55 * screenHeight);
+
+        await tester.fling(
+            find.byType(ListView), const Offset(0.0, -4000.0), 400.0);
+        final Size maxSize = tester.getSize(draggableScrollableSheetFinder);
+        expect(maxSize.height, 0.85 * screenHeight);
       });
 
       testWidgets("Without handle", (WidgetTester tester) async {
@@ -184,6 +199,7 @@ void main() {
         expect(
             find.byWidgetPredicate((widget) =>
                 widget is Container &&
+                widget.decoration is BoxDecoration &&
                 (widget.decoration! as BoxDecoration).color == Colors.grey),
             findsNothing,
             reason: "There should not have a handle.");
@@ -256,6 +272,20 @@ void main() {
             isA<Switch>().having((source) => source.value, 'value', isTrue),
             reason:
                 "the settings says that the showTodayBtn is enabled, the UI should reflet that.");
+
+        const screenHeight = 600;
+
+        final draggableScrollableSheetFinder =
+            find.byType(DraggableScrollableSheet);
+        expect(draggableScrollableSheetFinder, findsOneWidget);
+
+        final Size initialSize = tester.getSize(draggableScrollableSheetFinder);
+        expect(initialSize.height, 0.55 * screenHeight);
+
+        await tester.fling(
+            find.byType(ListView), const Offset(0.0, -4000.0), 400.0);
+        final Size maxSize = tester.getSize(draggableScrollableSheetFinder);
+        expect(maxSize.height, 0.85 * screenHeight);
       });
     });
 
@@ -391,33 +421,33 @@ void main() {
             toReturn: settings);
         SettingsManagerMock.stubSetBool(
             settingsManagerMock, PreferencesFlag.scheduleShowTodayBtn);
+        await tester.runAsync(() async {
+          await tester.pumpWidget(localizedWidget(
+              child: const ScheduleSettings(showHandle: false)));
+          await tester.pumpAndSettle();
+        }).then((value) async {
+          final showTodayBtnFinder = find.widgetWithText(
+              ListTile, intl.schedule_settings_show_today_btn_pref,
+              skipOffstage: false);
 
-        await tester.pumpWidget(
-            localizedWidget(child: const ScheduleSettings(showHandle: false)));
-        await tester.pumpAndSettle();
+          expect(find.byType(Switch, skipOffstage: false), findsOneWidget);
+          (find.byType(Switch, skipOffstage: false).evaluate().first.widget
+                  as Switch)
+              .onChanged!(false);
 
-        final showTodayBtnFinder = find.widgetWithText(
-            ListTile, intl.schedule_settings_show_today_btn_pref,
-            skipOffstage: false);
+          await tester.pumpAndSettle();
 
-        expect(find.byType(Switch, skipOffstage: false), findsOneWidget);
-        // Currently the await tester.tap on a switch in a tile isn't working. Workaround:
-        (find.byType(Switch, skipOffstage: false).evaluate().single.widget
-                as Switch)
-            .onChanged!(false);
+          await untilCalled(settingsManagerMock.setBool(
+              PreferencesFlag.scheduleShowTodayBtn, any));
 
-        await tester.pumpAndSettle();
-
-        await untilCalled(settingsManagerMock.setBool(
-            PreferencesFlag.scheduleShowTodayBtn, any));
-
-        expect(
-            tester.widget(find.descendant(
-                of: showTodayBtnFinder,
-                matching: find.byType(Switch, skipOffstage: false))),
-            isA<Switch>().having((source) => source.value, 'value', isFalse),
-            reason:
-                "the settings says that the showTodayBtn is enabled, the UI should reflet that.");
+          expect(
+              tester.widget(find.descendant(
+                  of: showTodayBtnFinder,
+                  matching: find.byType(Switch, skipOffstage: false))),
+              isA<Switch>().having((source) => source.value, 'value', isFalse),
+              reason:
+                  "the settings says that the showTodayBtn is enabled, the UI should reflet that.");
+        });
       });
     });
 
