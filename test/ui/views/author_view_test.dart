@@ -6,7 +6,6 @@ import 'package:ets_api_clients/models.dart';
 import 'package:flutter/material.dart';
 
 // Package imports:
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
@@ -28,7 +27,6 @@ import '../../mock/managers/news_repository_mock.dart';
 void main() {
   late AuthorRepositoryMock authorRepository;
   late NewsRepositoryMock newsRepository;
-  late AppIntl intl;
 
   final List<News> news = <News>[
     News(
@@ -106,7 +104,6 @@ void main() {
       await setupAppIntl();
       setupLogger();
 
-      intl = await setupAppIntl();
       authorRepository = setupAuthorRepositoryMock();
       newsRepository = setupNewsRepositoryMock();
       setupNavigationServiceMock();
