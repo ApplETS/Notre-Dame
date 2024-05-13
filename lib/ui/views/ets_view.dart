@@ -17,16 +17,17 @@ class ETSView extends StatefulWidget {
 }
 
 class _ETSViewState extends State<ETSView> {
-  final RemoteConfigService _remoteConfigService = locator<RemoteConfigService>();
+  final RemoteConfigService _remoteConfigService =
+      locator<RemoteConfigService>();
   List<Widget> tabsView = [NewsView(), QuickLinksView()];
 
   @override
   Widget build(BuildContext context) {
-    if(!_remoteConfigService.helloFeatureToggle) {
+    if (!_remoteConfigService.helloFeatureToggle) {
       return BaseScaffold(
-          appBar: _buildAppBar(context),
-          body: QuickLinksView(),
-        );
+        appBar: _buildAppBar(context),
+        body: QuickLinksView(),
+      );
     }
 
     final List<String> tabs = [
