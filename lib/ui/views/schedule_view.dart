@@ -205,6 +205,7 @@ class _ScheduleViewState extends State<ScheduleView>
       onPageChange: (date, page) =>
           model.handleViewChanged(date, eventController, []),
       backgroundColor: backgroundColor,
+      weekTitleHeight: (MediaQuery.of(context).orientation == Orientation.portrait) ? 60 : 35,
       safeAreaOption: const calendar_view.SafeAreaOption(top: false),
       headerStyle: calendar_view.HeaderStyle(
           decoration: BoxDecoration(
@@ -345,23 +346,27 @@ class _ScheduleViewState extends State<ScheduleView>
     final indicatorColorOpacity =
         Theme.of(context).brightness == Brightness.light ? 0.2 : 0.8;
     return Center(
-      child: Container(
-        width: 40,
-        height: 80,
-        decoration: BoxDecoration(
+      child: Wrap(
+        children: <Widget>[
+          Container(
+            padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+            decoration: BoxDecoration(
             color: model.compareDates(date, DateTime.now())
-                ? AppTheme.etsLightRed.withOpacity(indicatorColorOpacity)
-                : Colors.transparent,
+              ? AppTheme.etsLightRed.withOpacity(indicatorColorOpacity)
+              : Colors.transparent,
             borderRadius: BorderRadius.circular(6.0)),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(weekTitles[date.weekday - 1]),
-            Text(date.day.toString()),
-          ],
-        ),
-      ),
+            child: Flex(
+              direction: (MediaQuery.of(context).orientation == Orientation.portrait) ? Axis.vertical : Axis.horizontal,
+              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(weekTitles[date.weekday - 1]),
+                if (MediaQuery.of(context).orientation == Orientation.landscape) const SizedBox(width: 4),
+                Text(date.day.toString()),
+              ]
+            ),
+          ),
+      ]),
     );
   }
 
