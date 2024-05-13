@@ -115,7 +115,8 @@ class _NewsDetailsViewState extends State<NewsDetailsView> {
                                 child: ListTile(
                                   leading: SvgPicture.asset(
                                     'assets/images/report.svg',
-                                    colorFilter: const ColorFilter.mode(AppTheme.etsLightRed, BlendMode.srcIn),
+                                    colorFilter: const ColorFilter.mode(
+                                        AppTheme.etsLightRed, BlendMode.srcIn),
                                     width: 26,
                                   ),
                                   title: Text(
