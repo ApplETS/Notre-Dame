@@ -197,76 +197,74 @@ class _ScheduleViewState extends State<ScheduleView>
       Color backgroundColor,
       Color chevronColor,
       Color scheduleLineColor, List<Color> scheduleCardsPalette) {
-    return Scaffold(body: LayoutBuilder(builder: (BuildContext ctx, BoxConstraints constraints) {
-      return calendar_view.WeekView(
-        key: weekViewKey,
-        controller: eventController..addAll(model.selectedWeekCalendarEvents(scheduleCardsPalette)),
-        onPageChange: (date, page) => model.handleViewChanged(date, eventController, []),
-        backgroundColor: backgroundColor,
-        headerStyle: calendar_view.HeaderStyle(
-            decoration: BoxDecoration(
-              color: backgroundColor,
-            ),
-            leftIcon: Icon(
-              Icons.chevron_left,
-              size: 30,
-              color: chevronColor,
-            ),
-            rightIcon: Icon(
-              Icons.chevron_right,
-              size: 30,
-              color: chevronColor,
-            )),
-        width: constraints.maxWidth,
-        weekDays: [
-          calendar_view.WeekDays.monday,
-          calendar_view.WeekDays.tuesday,
-          calendar_view.WeekDays.wednesday,
-          calendar_view.WeekDays.thursday,
-          calendar_view.WeekDays.friday,
-          if (model.settings[PreferencesFlag.scheduleOtherWeekday] == calendar_view.WeekDays.saturday)
-            calendar_view.WeekDays.saturday,
-          if (model.settings[PreferencesFlag.scheduleOtherWeekday] == calendar_view.WeekDays.sunday)
-            calendar_view.WeekDays.sunday,
-        ],
-        initialDay: DateTime.now(),
-        heightPerMinute: (MediaQuery.of(context).orientation == Orientation.portrait) ? 0.65 : 0.45,
-        // height occupied by 1 minute time span.
-        hourIndicatorSettings: calendar_view.HourIndicatorSettings(
-          color: scheduleLineColor,
-        ),
-        liveTimeIndicatorSettings: calendar_view.LiveTimeIndicatorSettings(
-          color: chevronColor,
-        ),
-        scrollOffset: (MediaQuery.of(context).orientation == Orientation.portrait) ? 305 : 220,
-        timeLineStringBuilder: (date, {secondaryDate}) {
-          return DateFormat('HH:mm').format(date);
-        },
-        weekDayStringBuilder: (p0) {
-          return weekTitles[p0];
-        },
-        headerStringBuilder: (date, {secondaryDate}) {
-          final from = AppIntl.of(context)!.schedule_calendar_from;
-          final to = AppIntl.of(context)!.schedule_calendar_to;
-          final locale = AppIntl.of(context)!.localeName;
-          return '$from ${date.day} ${DateFormat.MMMM(locale).format(date)} $to ${secondaryDate?.day ?? '00'} ${DateFormat.MMMM(locale).format(secondaryDate ?? date)}';
-        },
-        eventTileBuilder: (date, events, boundary, startDuration, endDuration) =>
-            _buildEventTile(date, events, boundary, startDuration, endDuration, context),
-        weekDayBuilder: (DateTime date) => _buildWeekDay(date, model),
-      );
-    }));
+    return calendar_view.WeekView(
+      key: weekViewKey,
+      controller: eventController..addAll(model.selectedWeekCalendarEvents(scheduleCardsPalette)),
+      onPageChange: (date, page) => model.handleViewChanged(date, eventController, []),
+      backgroundColor: backgroundColor,
+      safeAreaOption: const calendar_view.SafeAreaOption(top: false),
+      headerStyle: calendar_view.HeaderStyle(
+          decoration: BoxDecoration(
+            color: backgroundColor,
+          ),
+          leftIcon: Icon(
+            Icons.chevron_left,
+            size: 30,
+            color: chevronColor,
+          ),
+          rightIcon: Icon(
+            Icons.chevron_right,
+            size: 30,
+            color: chevronColor,
+          )),
+      weekDays: [
+        calendar_view.WeekDays.monday,
+        calendar_view.WeekDays.tuesday,
+        calendar_view.WeekDays.wednesday,
+        calendar_view.WeekDays.thursday,
+        calendar_view.WeekDays.friday,
+        if (model.settings[PreferencesFlag.scheduleOtherWeekday] == calendar_view.WeekDays.saturday)
+          calendar_view.WeekDays.saturday,
+        if (model.settings[PreferencesFlag.scheduleOtherWeekday] == calendar_view.WeekDays.sunday)
+          calendar_view.WeekDays.sunday,
+      ],
+      initialDay: DateTime.now(),
+      heightPerMinute: (MediaQuery.of(context).orientation == Orientation.portrait) ? 0.65 : 0.45,
+      // height occupied by 1 minute time span.
+      hourIndicatorSettings: calendar_view.HourIndicatorSettings(
+        color: scheduleLineColor,
+      ),
+      liveTimeIndicatorSettings: calendar_view.LiveTimeIndicatorSettings(
+        color: chevronColor,
+      ),
+      scrollOffset: (MediaQuery.of(context).orientation == Orientation.portrait) ? 305 : 220,
+      timeLineStringBuilder: (date, {secondaryDate}) {
+        return DateFormat('HH:mm').format(date);
+      },
+      weekDayStringBuilder: (p0) {
+        return weekTitles[p0];
+      },
+      headerStringBuilder: (date, {secondaryDate}) {
+        final from = AppIntl.of(context)!.schedule_calendar_from;
+        final to = AppIntl.of(context)!.schedule_calendar_to;
+        final locale = AppIntl.of(context)!.localeName;
+        return '$from ${date.day} ${DateFormat.MMMM(locale).format(date)} $to ${secondaryDate?.day ?? '00'} ${DateFormat.MMMM(locale).format(secondaryDate ?? date)}';
+      },
+      eventTileBuilder: (date, events, boundary, startDuration, endDuration) =>
+          _buildEventTile(date, events, boundary, startDuration, endDuration, context),
+      weekDayBuilder: (DateTime date) => _buildWeekDay(date, model),
+    );
   }
 
   Widget _buildCalendarViewMonthly(ScheduleViewModel model, BuildContext context,
       calendar_view.EventController eventController, Color backgroundColor, Color chevronColor, List<Color> scheduleCardsPalette) {
-    return Scaffold(
-        body: calendar_view.MonthView(
+    return calendar_view.MonthView(
       key: monthViewKey,
       controller: eventController
         ..addAll(model.selectedMonthCalendarEvents(scheduleCardsPalette)),
       // to provide custom UI for month cells.
-      cellAspectRatio: 0.78,
+      cellAspectRatio: (MediaQuery.of(context).orientation == Orientation.portrait) ? 0.78 : 1.2,
+      safeAreaOption: const calendar_view.SafeAreaOption(top: false),
       onPageChange: (date, page) =>
           model.handleViewChanged(date, eventController, []),
       headerStyle: calendar_view.HeaderStyle(
@@ -292,7 +290,7 @@ class _ScheduleViewState extends State<ScheduleView>
       },
       startDay: calendar_view.WeekDays.sunday,
       initialMonth: DateTime(DateTime.now().year, DateTime.now().month),
-    ));
+    );
   }
 
   Widget _buildEventTile(
