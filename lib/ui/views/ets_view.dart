@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 
 // Package imports:
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:notredame/core/services/remote_config_service.dart';
+import 'package:notredame/locator.dart';
 
 // Project imports:
 import 'package:notredame/ui/views/news_view.dart';
@@ -15,10 +17,18 @@ class ETSView extends StatefulWidget {
 }
 
 class _ETSViewState extends State<ETSView> {
+  final RemoteConfigService _remoteConfigService = locator<RemoteConfigService>();
   List<Widget> tabsView = [NewsView(), QuickLinksView()];
 
   @override
   Widget build(BuildContext context) {
+    if(!_remoteConfigService.helloFeatureToggle) {
+      return BaseScaffold(
+          appBar: _buildAppBar(context),
+          body: QuickLinksView(),
+        );
+    }
+
     final List<String> tabs = [
       AppIntl.of(context)!.news_title,
       AppIntl.of(context)!.useful_link_title
@@ -62,6 +72,14 @@ class _ETSViewState extends State<ETSView> {
           ),
         ),
       ),
+    );
+  }
+
+  AppBar _buildAppBar(BuildContext context) {
+    return AppBar(
+      title: Text(AppIntl.of(context)!.title_ets),
+      automaticallyImplyLeading: false,
+      actions: const [],
     );
   }
 }
