@@ -77,23 +77,21 @@ class _QuickLinksViewState extends State<QuickLinksView>
                   model, model.quickLinkList, _buildDeleteButton),
             ),
           ),
-            if (_editMode && model.deletedQuickLinks.isNotEmpty) ...[
-              const Divider(
-                thickness: 2,
-                indent: 10,
-                endIndent: 10,
+          if (_editMode && model.deletedQuickLinks.isNotEmpty) ...[
+            const Divider(
+              thickness: 2,
+              indent: 10,
+              endIndent: 10,
+            ),
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.only(top: 8.0, left: 8.0, right: 8.0),
+                child: _buildReorderableGridView(
+                    model, model.deletedQuickLinks, _buildAddButton),
               ),
-              Expanded(
-                child: Padding(
-                  padding:
-                      const EdgeInsets.only(top: 8.0, left: 8.0, right: 8.0),
-                  child: _buildReorderableGridView(
-                      model, model.deletedQuickLinks, _buildAddButton),
-                ),
-              ),
-            ],
+            ),
           ],
-
+        ],
       ),
     );
   }

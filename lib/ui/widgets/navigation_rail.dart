@@ -39,7 +39,9 @@ class _NavRailState extends State<NavRail> {
       destinations: _buildItems(context),
       selectedIndex: _currentView,
       onDestinationSelected: (value) => _onTap(value),
-      labelType: MediaQuery.of(context).size.height > 350 ? NavigationRailLabelType.all : NavigationRailLabelType.selected,
+      labelType: MediaQuery.of(context).size.height > 350
+          ? NavigationRailLabelType.all
+          : NavigationRailLabelType.selected,
     );
   }
 
@@ -102,19 +104,24 @@ class _NavRailState extends State<NavRail> {
   List<NavigationRailDestination> _buildItems(BuildContext context) {
     return [
       NavigationRailDestination(
-          icon: _buildDiscoveryFeatureDescriptionWidget(context, RouterPaths.dashboard, Icons.dashboard),
+          icon: _buildDiscoveryFeatureDescriptionWidget(
+              context, RouterPaths.dashboard, Icons.dashboard),
           label: Text(AppIntl.of(context)!.title_dashboard)),
       NavigationRailDestination(
-          icon: _buildDiscoveryFeatureDescriptionWidget(context, RouterPaths.schedule, Icons.schedule),
+          icon: _buildDiscoveryFeatureDescriptionWidget(
+              context, RouterPaths.schedule, Icons.schedule),
           label: Text(AppIntl.of(context)!.title_schedule)),
       NavigationRailDestination(
-          icon: _buildDiscoveryFeatureDescriptionWidget(context, RouterPaths.student, Icons.school),
+          icon: _buildDiscoveryFeatureDescriptionWidget(
+              context, RouterPaths.student, Icons.school),
           label: Text(AppIntl.of(context)!.title_student)),
       NavigationRailDestination(
-          icon: _buildDiscoveryFeatureDescriptionWidget(context, RouterPaths.ets, Icons.account_balance),
+          icon: _buildDiscoveryFeatureDescriptionWidget(
+              context, RouterPaths.ets, Icons.account_balance),
           label: Text(AppIntl.of(context)!.title_ets)),
       NavigationRailDestination(
-          icon: _buildDiscoveryFeatureDescriptionWidget(context, RouterPaths.more, Icons.dehaze),
+          icon: _buildDiscoveryFeatureDescriptionWidget(
+              context, RouterPaths.more, Icons.dehaze),
           label: Text(AppIntl.of(context)!.title_more)),
     ];
   }
@@ -122,7 +129,7 @@ class _NavRailState extends State<NavRail> {
   DescribedFeatureOverlay _buildDiscoveryFeatureDescriptionWidget(
       BuildContext context, String routerPath, IconData icon) {
     final discovery =
-    getDiscoveryByPath(context, DiscoveryGroupIds.bottomBar, routerPath);
+        getDiscoveryByPath(context, DiscoveryGroupIds.bottomBar, routerPath);
 
     return DescribedFeatureOverlay(
       overflowMode: OverflowMode.wrapBackground,

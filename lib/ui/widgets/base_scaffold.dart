@@ -84,11 +84,17 @@ class _BaseScaffoldState extends State<BaseScaffold> {
   @override
   Widget build(BuildContext context) => Scaffold(
         body: Scaffold(
-          appBar: (MediaQuery.of(context).orientation == Orientation.portrait) ?  widget.appBar : null,
-          body: (MediaQuery.of(context).orientation == Orientation.portrait) ? bodyPortraitMode() : bodyLandscapeMode(),
-          bottomNavigationBar: (MediaQuery.of(context).orientation == Orientation.portrait && widget._showBottomBar)
-              ? BottomBar()
+          appBar: (MediaQuery.of(context).orientation == Orientation.portrait)
+              ? widget.appBar
               : null,
+          body: (MediaQuery.of(context).orientation == Orientation.portrait)
+              ? bodyPortraitMode()
+              : bodyLandscapeMode(),
+          bottomNavigationBar:
+              (MediaQuery.of(context).orientation == Orientation.portrait &&
+                      widget._showBottomBar)
+                  ? BottomBar()
+                  : null,
           floatingActionButton: widget.fab,
           floatingActionButtonLocation: widget.fabPosition,
         ),
@@ -102,7 +108,9 @@ class _BaseScaffoldState extends State<BaseScaffold> {
         children: [
           widget.body!,
           if (widget._isLoading)
-            buildLoading(isInteractionLimitedWhileLoading: widget._isInteractionLimitedWhileLoading)
+            buildLoading(
+                isInteractionLimitedWhileLoading:
+                    widget._isInteractionLimitedWhileLoading)
           else
             const SizedBox()
         ],
@@ -113,37 +121,31 @@ class _BaseScaffoldState extends State<BaseScaffold> {
   Widget bodyLandscapeMode() {
     return Stack(
       children: [
-          Row(
-            children: [
-              ColoredBox(
-                color: Theme.of(context).brightness == Brightness.light
-                    ? AppTheme.lightTheme().navigationRailTheme.backgroundColor!
-                    : AppTheme.darkTheme().navigationRailTheme.backgroundColor!,
-                child: SafeArea(
-                    top: false,
-                    bottom: false,
-                    right: false,
-                    child: NavRail()
-                ),
+        Row(
+          children: [
+            ColoredBox(
+              color: Theme.of(context).brightness == Brightness.light
+                  ? AppTheme.lightTheme().navigationRailTheme.backgroundColor!
+                  : AppTheme.darkTheme().navigationRailTheme.backgroundColor!,
+              child: SafeArea(
+                  top: false, bottom: false, right: false, child: NavRail()),
+            ),
+            Expanded(
+              child: Column(
+                children: [
+                  if (widget.appBar != null) widget.appBar!,
+                  Expanded(
+                      child: SafeArea(
+                          bottom: false, top: false, child: widget.body!)),
+                ],
               ),
-              Expanded(
-                child: Column(
-                  children: [
-                    if (widget.appBar != null) widget.appBar!,
-                    Expanded(
-                        child: SafeArea(
-                            bottom: false,
-                            top: false,
-                            child: widget.body!
-                        )
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
+            ),
+          ],
+        ),
         if (widget._isLoading)
-          buildLoading(isInteractionLimitedWhileLoading: widget._isInteractionLimitedWhileLoading)
+          buildLoading(
+              isInteractionLimitedWhileLoading:
+                  widget._isInteractionLimitedWhileLoading)
         else
           const SizedBox()
       ],
@@ -155,7 +157,8 @@ class _BaseScaffoldState extends State<BaseScaffold> {
       alignment: Alignment.center,
       children: [
         Container(
-          color: Utils.getColorByBrightness(context, AppTheme.lightThemeBackground, AppTheme.darkThemeBackground),
+          color: Utils.getColorByBrightness(context,
+              AppTheme.lightThemeBackground, AppTheme.darkThemeBackground),
           width: MediaQuery.of(context).size.width,
           height: MediaQuery.of(context).size.height / 30,
         ),

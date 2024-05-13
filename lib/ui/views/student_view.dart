@@ -14,7 +14,8 @@ class StudentView extends StatefulWidget {
   _StudentViewState createState() => _StudentViewState();
 }
 
-class _StudentViewState extends State<StudentView> with TickerProviderStateMixin {
+class _StudentViewState extends State<StudentView>
+    with TickerProviderStateMixin {
   List<Widget> tabsView = [GradesView(), ProfileView()];
 
   @override
@@ -22,8 +23,12 @@ class _StudentViewState extends State<StudentView> with TickerProviderStateMixin
     final TabController tabController = TabController(length: 2, vsync: this);
 
     final List<Tab> tabs = [
-      Tab(text: AppIntl.of(context)!.grades_title,),
-      Tab(text: AppIntl.of(context)!.profile_title,),
+      Tab(
+        text: AppIntl.of(context)!.grades_title,
+      ),
+      Tab(
+        text: AppIntl.of(context)!.profile_title,
+      ),
     ];
 
     return Expanded(
@@ -35,33 +40,30 @@ class _StudentViewState extends State<StudentView> with TickerProviderStateMixin
             centerTitle: false,
             automaticallyImplyLeading: false,
           ),
-          body:
-          Column(
-              children: [
-                // give the tab bar a height [can change hheight to preferred height]
-                Container(
-                  decoration: BoxDecoration(
-                    color: Theme.of(context).colorScheme.surfaceTint,
-                  ),
-                  child: TabBar(
-                    indicatorColor:
+          body: Column(children: [
+            // give the tab bar a height [can change hheight to preferred height]
+            Container(
+              decoration: BoxDecoration(
+                color: Theme.of(context).colorScheme.surfaceTint,
+              ),
+              child: TabBar(
+                indicatorColor:
                     (Theme.of(context).brightness == Brightness.dark)
                         ? Colors.white
                         : Colors.black26,
-                    controller: tabController,
-                    tabs: tabs,
-                  ),
-                ),
-                Expanded(
-                  child: TabBarView(
-                    controller: tabController,
-                    children: tabsView,
-                  ),
-                ),
-              ]),
+                controller: tabController,
+                tabs: tabs,
+              ),
+            ),
+            Expanded(
+              child: TabBarView(
+                controller: tabController,
+                children: tabsView,
+              ),
+            ),
+          ]),
         ),
       ),
     );
   }
-
 }
