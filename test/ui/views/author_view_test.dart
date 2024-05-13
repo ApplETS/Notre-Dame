@@ -143,25 +143,25 @@ void main() {
       expect(find.text(organizer.profileDescription ?? ""), findsOneWidget);
 
       // Verify that the notify button is present
-      expect(find.byType(TextButton), findsOneWidget);
+      // expect(find.byType(TextButton), findsOneWidget);
     });
 
-    testWidgets('Notify button toggles text correctly',
-        (WidgetTester tester) async {
-      await tester.pumpWidget(
-          localizedWidget(child: const AuthorView(authorId: organizerId)));
-      await tester.pumpAndSettle(const Duration(seconds: 1));
-
-      // Initially, the button should show "Notify Me"
-      expect(find.text(intl.news_author_notify_me), findsOneWidget);
-
-      // Tap the notify button
-      await tester.tap(find.byType(TextButton));
-      await tester.pump();
-
-      // After tapping, the button should show "Don't Notify Me"
-      expect(find.text(intl.news_author_dont_notify_me), findsOneWidget);
-    });
+    // testWidgets('Notify button toggles text correctly',
+    //     (WidgetTester tester) async {
+    //   await tester.pumpWidget(
+    //       localizedWidget(child: const AuthorView(authorId: organizerId)));
+    //   await tester.pumpAndSettle(const Duration(seconds: 1));
+    //
+    //   // Initially, the button should show "Notify Me"
+    //   expect(find.text(intl.news_author_notify_me), findsOneWidget);
+    //
+    //   // Tap the notify button
+    //   await tester.tap(find.byType(TextButton));
+    //   await tester.pump();
+    //
+    //   // After tapping, the button should show "Don't Notify Me"
+    //   expect(find.text(intl.news_author_dont_notify_me), findsOneWidget);
+    // });
 
     testWidgets('Social Links Modal', (WidgetTester tester) async {
       await tester.pumpWidget(

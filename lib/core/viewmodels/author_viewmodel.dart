@@ -76,8 +76,6 @@ class AuthorViewModel extends BaseViewModel implements Initialisable {
     try {
       _author = await _authorRepository.getOrganizer(authorId);
       notifyListeners();
-    } catch (e) {
-      // Handle errors
     } finally {
       setBusy(false);
     }

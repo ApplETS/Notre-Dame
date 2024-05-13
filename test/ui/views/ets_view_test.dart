@@ -15,10 +15,12 @@ import 'package:notredame/core/managers/settings_manager.dart';
 import 'package:notredame/core/services/analytics_service.dart';
 import 'package:notredame/core/services/navigation_service.dart';
 import 'package:notredame/core/services/networking_service.dart';
+import 'package:notredame/core/services/remote_config_service.dart';
 import 'package:notredame/ui/views/ets_view.dart';
 import 'package:notredame/ui/widgets/base_scaffold.dart';
 import '../../helpers.dart';
 import '../../mock/managers/news_repository_mock.dart';
+import '../../mock/services/remote_config_service_mock.dart';
 
 void main() {
   late NewsRepositoryMock newsRepository;
@@ -128,8 +130,10 @@ void main() {
       setupNetworkingServiceMock();
       setupAnalyticsServiceMock();
       setupSettingsManagerMock();
+      final remoteConfigService = setupRemoteConfigServiceMock();
 
       NewsRepositoryMock.stubGetNews(newsRepository, toReturn: paginatedNews);
+      RemoteConfigServiceMock.stubGetHelloFeatureToggle(remoteConfigService);
     });
 
     tearDown(() {
@@ -139,6 +143,7 @@ void main() {
       unregister<CourseRepository>();
       unregister<NetworkingService>();
       unregister<AnalyticsService>();
+      unregister<RemoteConfigService>();
     });
 
     testWidgets('has Tab bar and sliverAppBar and BaseScaffold',
