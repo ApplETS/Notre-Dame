@@ -22,8 +22,8 @@ class _StudentViewState extends State<StudentView> with TickerProviderStateMixin
     final TabController tabController = TabController(length: 2, vsync: this);
 
     final List<Tab> tabs = [
-      Tab(text: AppIntl.of(context).grades_title,),
-      Tab(text: AppIntl.of(context).profile_title,),
+      Tab(text: AppIntl.of(context)!.grades_title,),
+      Tab(text: AppIntl.of(context)!.profile_title,),
     ];
 
     return Expanded(
@@ -31,7 +31,7 @@ class _StudentViewState extends State<StudentView> with TickerProviderStateMixin
         length: 2,
         child: BaseScaffold(
           appBar: AppBar(
-            title: Text(AppIntl.of(context).title_student),
+            title: Text(AppIntl.of(context)!.title_student),
             centerTitle: false,
             automaticallyImplyLeading: false,
           ),

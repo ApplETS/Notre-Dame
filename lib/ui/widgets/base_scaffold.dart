@@ -20,13 +20,13 @@ import 'package:notredame/ui/widgets/navigation_rail.dart';
 /// Basic Scaffold to avoid boilerplate code in the application.
 /// Contains a loader controlled by [_isLoading]
 class BaseScaffold extends StatefulWidget {
-  final AppBar appBar;
+  final AppBar? appBar;
 
-  final Widget body;
+  final Widget? body;
 
-  final FloatingActionButton fab;
+  final FloatingActionButton? fab;
 
-  final FloatingActionButtonLocation fabPosition;
+  final FloatingActionButtonLocation? fabPosition;
 
   final bool _showBottomBar;
 
@@ -57,7 +57,7 @@ class _BaseScaffoldState extends State<BaseScaffold> {
 
   final NetworkingService _networkingService = locator<NetworkingService>();
 
-  StreamSubscription<ConnectivityResult> _subscription;
+  late StreamSubscription<List<ConnectivityResult>> _subscription;
 
   @override
   void initState() {
@@ -76,7 +76,7 @@ class _BaseScaffoldState extends State<BaseScaffold> {
   void _listenToChangeInConnectivity() {
     _subscription = _networkingService.onConnectivityChanged.listen((event) {
       setState(() {
-        _isOffline = event == ConnectivityResult.none;
+        _isOffline = event.contains(ConnectivityResult.none);
       });
     });
   }
@@ -100,7 +100,7 @@ class _BaseScaffoldState extends State<BaseScaffold> {
       top: false,
       child: Stack(
         children: [
-          widget.body,
+          widget.body!,
           if (widget._isLoading)
             buildLoading(isInteractionLimitedWhileLoading: widget._isInteractionLimitedWhileLoading)
           else
@@ -117,8 +117,8 @@ class _BaseScaffoldState extends State<BaseScaffold> {
             children: [
               ColoredBox(
                 color: Theme.of(context).brightness == Brightness.light
-                    ? AppTheme.lightTheme().navigationRailTheme.backgroundColor
-                    : AppTheme.darkTheme().navigationRailTheme.backgroundColor,
+                    ? AppTheme.lightTheme().navigationRailTheme.backgroundColor!
+                    : AppTheme.darkTheme().navigationRailTheme.backgroundColor!,
                 child: SafeArea(
                     top: false,
                     bottom: false,
@@ -129,12 +129,12 @@ class _BaseScaffoldState extends State<BaseScaffold> {
               Expanded(
                 child: Column(
                   children: [
-                    if (widget.appBar != null) widget.appBar,
+                    if (widget.appBar != null) widget.appBar!,
                     Expanded(
                         child: SafeArea(
                             bottom: false,
                             top: false,
-                            child: widget.body
+                            child: widget.body!
                         )
                     ),
                   ],
@@ -160,7 +160,7 @@ class _BaseScaffoldState extends State<BaseScaffold> {
           height: MediaQuery.of(context).size.height / 30,
         ),
         Text(
-          AppIntl.of(context).no_connectivity,
+          AppIntl.of(context)!.no_connectivity,
           textAlign: TextAlign.center,
         ),
       ],

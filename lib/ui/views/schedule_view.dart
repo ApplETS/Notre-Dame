@@ -9,6 +9,7 @@ import 'package:ets_api_clients/models.dart';
 import 'package:feature_discovery/feature_discovery.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:intl/intl.dart';
+import 'package:notredame/ui/widgets/calendar_selector.dart';
 import 'package:stacked/stacked.dart';
 import 'package:table_calendar/table_calendar.dart';
 
@@ -27,9 +28,9 @@ import 'package:notredame/ui/widgets/schedule_settings.dart';
 
 class ScheduleView extends StatefulWidget {
   @visibleForTesting
-  final DateTime initialDay;
+  final DateTime? initialDay;
 
-  const ScheduleView({Key key, this.initialDay}) : super(key: key);
+  const ScheduleView({super.key, this.initialDay});
 
   @override
   _ScheduleViewState createState() => _ScheduleViewState();
@@ -48,7 +49,7 @@ class _ScheduleViewState extends State<ScheduleView>
   static const Color _defaultColor = Color(0xff76859B);
   static final List<String> weekTitles = ["L", "M", "M", "J", "V", "S", "D"];
 
-  AnimationController _animationController;
+  late AnimationController _animationController;
 
   @override
   void initState() {
@@ -75,8 +76,8 @@ class _ScheduleViewState extends State<ScheduleView>
   Widget build(BuildContext context) =>
       ViewModelBuilder<ScheduleViewModel>.reactive(
         viewModelBuilder: () => ScheduleViewModel(
-            intl: AppIntl.of(context), initialSelectedDate: widget.initialDay),
-        onModelReady: (model) {
+            intl: AppIntl.of(context)!, initialSelectedDate: widget.initialDay),
+        onViewModelReady: (model) {
           if (model.settings.isEmpty) {
             model.loadSettings();
           }
@@ -85,17 +86,20 @@ class _ScheduleViewState extends State<ScheduleView>
             isLoading: model.busy(model.isLoadingEvents),
             isInteractionLimitedWhileLoading: false,
             appBar: AppBar(
-              title: Text(AppIntl.of(context).title_schedule),
+              title: Text(AppIntl.of(context)!.title_schedule),
               centerTitle: false,
               automaticallyImplyLeading: false,
-              actions: _buildActionButtons(model),
+              actions:
+                  model.busy(model.settings) ? [] : _buildActionButtons(model),
             ),
-            body: RefreshIndicator(
-              child: !model.calendarViewSetting
-                  ? _buildCalendarView(model, context)
-                  : _buildListView(model, context),
-              onRefresh: () => model.refresh(),
-            )),
+            body: model.busy(model.settings)
+                ? const SizedBox()
+                : RefreshIndicator(
+                    child: !model.calendarViewSetting
+                        ? _buildCalendarView(model, context)
+                        : _buildListView(model, context),
+                    onRefresh: () => model.refresh(),
+                  )),
       );
 
   Widget _buildListView(ScheduleViewModel model, BuildContext context) {
@@ -136,7 +140,8 @@ class _ScheduleViewState extends State<ScheduleView>
             const Divider(indent: 8.0, endIndent: 8.0, thickness: 1),
             const SizedBox(height: 6.0),
             if (model.showWeekEvents)
-              for (Widget widget in _buildWeekEvents(model, context)) widget
+              for (final Widget widget in _buildWeekEvents(model, context))
+                widget
             else
               _buildTitleForDate(model.selectedDate, model),
             const SizedBox(height: 2.0),
@@ -145,7 +150,7 @@ class _ScheduleViewState extends State<ScheduleView>
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 64.0),
                 child:
-                    Center(child: Text(AppIntl.of(context).schedule_no_event)),
+                    Center(child: Text(AppIntl.of(context)!.schedule_no_event)),
               )
             else if (!model.showWeekEvents)
               _buildEventList(model.selectedDateEvents(model.selectedDate)),
@@ -169,15 +174,20 @@ class _ScheduleViewState extends State<ScheduleView>
     final chevronColor = Theme.of(context).brightness == Brightness.light
         ? AppTheme.primaryDark
         : AppTheme.lightThemeBackground;
+    final scheduleCardsPalette =
+        Theme.of(context).brightness == Brightness.light
+            ? AppTheme.schedulePaletteLight.toList()
+            : AppTheme.schedulePaletteDark.toList();
 
-    model.handleViewChanged(DateTime.now(), eventController);
+    model.handleViewChanged(
+        DateTime.now(), eventController, scheduleCardsPalette);
 
     if (model.calendarFormat == CalendarFormat.month) {
-      return _buildCalendarViewMonthly(
-          model, context, eventController, backgroundColor, chevronColor);
+      return _buildCalendarViewMonthly(model, context, eventController,
+          backgroundColor, chevronColor, scheduleCardsPalette);
     }
     return _buildCalendarViewWeekly(model, context, eventController,
-        backgroundColor, chevronColor, scheduleLineColor);
+        backgroundColor, chevronColor, scheduleLineColor, scheduleCardsPalette);
   }
 
   Widget _buildCalendarViewWeekly(
@@ -186,12 +196,12 @@ class _ScheduleViewState extends State<ScheduleView>
       calendar_view.EventController eventController,
       Color backgroundColor,
       Color chevronColor,
-      Color scheduleLineColor) {
+      Color scheduleLineColor, List<Color> scheduleCardsPalette) {
     return Scaffold(body: LayoutBuilder(builder: (BuildContext ctx, BoxConstraints constraints) {
       return calendar_view.WeekView(
         key: weekViewKey,
-        controller: eventController..addAll(model.selectedWeekCalendarEvents()),
-        onPageChange: (date, page) => model.handleViewChanged(date, eventController),
+        controller: eventController..addAll(model.selectedWeekCalendarEvents(scheduleCardsPalette)),
+        onPageChange: (date, page) => model.handleViewChanged(date, eventController, []),
         backgroundColor: backgroundColor,
         headerStyle: calendar_view.HeaderStyle(
             decoration: BoxDecoration(
@@ -225,7 +235,7 @@ class _ScheduleViewState extends State<ScheduleView>
         hourIndicatorSettings: calendar_view.HourIndicatorSettings(
           color: scheduleLineColor,
         ),
-        liveTimeIndicatorSettings: calendar_view.HourIndicatorSettings(
+        liveTimeIndicatorSettings: calendar_view.LiveTimeIndicatorSettings(
           color: chevronColor,
         ),
         scrollOffset: (MediaQuery.of(context).orientation == Orientation.portrait) ? 305 : 220,
@@ -236,10 +246,10 @@ class _ScheduleViewState extends State<ScheduleView>
           return weekTitles[p0];
         },
         headerStringBuilder: (date, {secondaryDate}) {
-          final from = AppIntl.of(context).schedule_calendar_from;
-          final to = AppIntl.of(context).schedule_calendar_to;
-          final locale = AppIntl.of(context).localeName;
-          return '$from ${date.day} ${DateFormat.MMMM(locale).format(date)} $to ${secondaryDate.day} ${DateFormat.MMMM(locale).format(secondaryDate)}';
+          final from = AppIntl.of(context)!.schedule_calendar_from;
+          final to = AppIntl.of(context)!.schedule_calendar_to;
+          final locale = AppIntl.of(context)!.localeName;
+          return '$from ${date.day} ${DateFormat.MMMM(locale).format(date)} $to ${secondaryDate?.day ?? '00'} ${DateFormat.MMMM(locale).format(secondaryDate ?? date)}';
         },
         eventTileBuilder: (date, events, boundary, startDuration, endDuration) =>
             _buildEventTile(date, events, boundary, startDuration, endDuration, context),
@@ -249,15 +259,16 @@ class _ScheduleViewState extends State<ScheduleView>
   }
 
   Widget _buildCalendarViewMonthly(ScheduleViewModel model, BuildContext context,
-      calendar_view.EventController eventController, Color backgroundColor, Color chevronColor) {
+      calendar_view.EventController eventController, Color backgroundColor, Color chevronColor, List<Color> scheduleCardsPalette) {
     return Scaffold(
         body: calendar_view.MonthView(
       key: monthViewKey,
-      controller: eventController..addAll(model.selectedMonthCalendarEvents()),
+      controller: eventController
+        ..addAll(model.selectedMonthCalendarEvents(scheduleCardsPalette)),
       // to provide custom UI for month cells.
       cellAspectRatio: 0.78,
       onPageChange: (date, page) =>
-          model.handleViewChanged(date, eventController),
+          model.handleViewChanged(date, eventController, []),
       headerStyle: calendar_view.HeaderStyle(
           decoration: BoxDecoration(
             color: backgroundColor,
@@ -276,7 +287,7 @@ class _ScheduleViewState extends State<ScheduleView>
         return weekTitles[p0];
       },
       headerStringBuilder: (date, {secondaryDate}) {
-        final locale = AppIntl.of(context).localeName;
+        final locale = AppIntl.of(context)!.localeName;
         return '${DateFormat.MMMM(locale).format(date).characters.first.toUpperCase()}${DateFormat.MMMM(locale).format(date).substring(1)} ${date.year}';
       },
       startDay: calendar_view.WeekDays.sunday,
@@ -340,7 +351,7 @@ class _ScheduleViewState extends State<ScheduleView>
   Widget _buildTitleForDate(DateTime date, ScheduleViewModel model) => Center(
           child: Text(
         DateFormat.MMMMEEEEd(model.locale.toString()).format(date),
-        style: Theme.of(context).textTheme.headline5,
+        style: Theme.of(context).textTheme.headlineMedium,
       ));
 
   List<Widget> _buildWeekEvents(ScheduleViewModel model, BuildContext context) {
@@ -355,7 +366,7 @@ class _ScheduleViewState extends State<ScheduleView>
   }
 
   /// Build the square with the number of [events] for the [date]
-  Widget _buildEventsMarker(
+  Widget? _buildEventsMarker(
       ScheduleViewModel model, DateTime date, List events) {
     if (events.isNotEmpty) {
       return Positioned(
@@ -391,10 +402,11 @@ class _ScheduleViewState extends State<ScheduleView>
         valueListenable: model.focusedDate,
         builder: (context, value, _) {
           return TableCalendar(
+            key: const Key("TableCalendar"),
             startingDayOfWeek:
                 model.settings[PreferencesFlag.scheduleStartWeekday]
                     as StartingDayOfWeek,
-            locale: model.locale.toLanguageTag(),
+            locale: model.locale?.toLanguageTag(),
             selectedDayPredicate: (day) {
               return isSameDay(model.selectedDate, day);
             },
@@ -464,6 +476,17 @@ class _ScheduleViewState extends State<ScheduleView>
   }
 
   List<Widget> _buildActionButtons(ScheduleViewModel model) => [
+        IconButton(
+          icon: const Icon(Icons.ios_share),
+          onPressed: () {
+            final translations = AppIntl.of(context)!;
+            showDialog(
+              context: context,
+              builder: (_) =>
+                  CalendarSelectionWidget(translations: translations),
+            );
+          },
+        ),
         if ((model.settings[PreferencesFlag.scheduleShowTodayBtn] as bool) ==
             true)
           IconButton(
@@ -483,39 +506,47 @@ class _ScheduleViewState extends State<ScheduleView>
                     }
                     _analyticsService.logEvent(tag, "Select today clicked");
                   })),
-        _buildDiscoveryFeatureDescriptionWidget(context, Icons.settings, model),
+        _buildDiscoveryFeatureDescriptionWidget(
+          context,
+          Icons.settings,
+          model,
+        ),
       ];
 
   DescribedFeatureOverlay _buildDiscoveryFeatureDescriptionWidget(
       BuildContext context, IconData icon, ScheduleViewModel model) {
-    final discovery = getDiscoveryByFeatureId(context,
-        DiscoveryGroupIds.pageSchedule, DiscoveryIds.detailsScheduleSettings);
+    final discovery = getDiscoveryByFeatureId(
+      context,
+      DiscoveryGroupIds.pageSchedule,
+      DiscoveryIds.detailsScheduleSettings,
+    );
 
     return DescribedFeatureOverlay(
-        overflowMode: OverflowMode.wrapBackground,
-        contentLocation: ContentLocation.below,
-        featureId: discovery.featureId,
-        title: Text(discovery.title, textAlign: TextAlign.justify),
-        description: discovery.details,
-        backgroundColor: AppTheme.appletsDarkPurple,
-        tapTarget: Icon(icon, color: AppTheme.etsBlack),
-        pulseDuration: const Duration(seconds: 5),
-        onComplete: () => model.discoveryCompleted(),
-        child: IconButton(
-            icon: const Icon(Icons.settings),
-            onPressed: () async {
-              _analyticsService.logEvent(tag, "Settings clicked");
-              await showModalBottomSheet(
-                  isDismissible: true,
-                  enableDrag: true,
-                  isScrollControlled: true,
-                  context: context,
-                  shape: const RoundedRectangleBorder(
-                      borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(10),
-                          topRight: Radius.circular(10))),
-                  builder: (context) => const ScheduleSettings());
-              model.loadSettings();
-            }));
+      overflowMode: OverflowMode.wrapBackground,
+      contentLocation: ContentLocation.below,
+      featureId: discovery.featureId,
+      title: Text(discovery.title, textAlign: TextAlign.justify),
+      description: discovery.details,
+      backgroundColor: AppTheme.appletsDarkPurple,
+      tapTarget: Icon(icon, color: AppTheme.etsBlack),
+      pulseDuration: const Duration(seconds: 5),
+      onComplete: () => model.discoveryCompleted(),
+      child: IconButton(
+        icon: const Icon(Icons.settings),
+        onPressed: () async {
+          _analyticsService.logEvent(tag, "Settings clicked");
+          await showModalBottomSheet(
+              shape: const RoundedRectangleBorder(
+                borderRadius: BorderRadius.vertical(
+                  top: Radius.circular(10),
+                ),
+              ),
+              context: context,
+              isScrollControlled: true,
+              builder: (context) => const ScheduleSettings());
+          model.loadSettings();
+        },
+      ),
+    );
   }
 }

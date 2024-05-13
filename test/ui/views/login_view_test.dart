@@ -12,14 +12,13 @@ import 'package:notredame/core/services/analytics_service.dart';
 import 'package:notredame/core/services/launch_url_service.dart';
 import 'package:notredame/core/services/navigation_service.dart';
 import 'package:notredame/core/services/preferences_service.dart';
+import 'package:notredame/core/services/remote_config_service.dart';
 import 'package:notredame/ui/views/login_view.dart';
 import 'package:notredame/ui/widgets/password_text_field.dart';
 import '../../helpers.dart';
-import '../../mock/services/analytics_service_mock.dart';
-import '../../mock/services/launch_url_service_mock.dart';
 
 void main() {
-  AppIntl intl;
+  late AppIntl intl;
 
   group('LoginView - ', () {
     setUp(() async {
@@ -29,8 +28,9 @@ void main() {
       setupSettingsManagerMock();
       setupFlutterSecureStorageMock();
       setupPreferencesServiceMock();
-      setupLaunchUrlServiceMock() as LaunchUrlServiceMock;
-      setupAnalyticsServiceMock() as AnalyticsServiceMock;
+      setupLaunchUrlServiceMock();
+      setupAnalyticsServiceMock();
+      setupRemoteConfigServiceMock();
     });
 
     tearDown(() {
@@ -40,6 +40,7 @@ void main() {
       unregister<PreferencesService>();
       unregister<LaunchUrlService>();
       unregister<AnalyticsService>();
+      unregister<RemoteConfigService>();
     });
 
     group('UI - ', () {
@@ -49,8 +50,8 @@ void main() {
         await tester.pumpAndSettle();
 
         expect(
-            find.widgetWithText(
-                TextFormField, intl.login_prompt_universal_code),
+            find.widgetWithText(TextFormField, intl.login_prompt_universal_code,
+                skipOffstage: false),
             findsOneWidget);
         expect(
             find.widgetWithText(PasswordFormField, intl.login_prompt_password),

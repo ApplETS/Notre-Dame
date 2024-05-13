@@ -48,21 +48,21 @@ class _MoreViewState extends State<MoreView> {
 
   /// License text box
   List<Widget> aboutBoxChildren(BuildContext context) {
-    final textStyle = Theme.of(context).textTheme.bodyText2;
+    final textStyle = Theme.of(context).textTheme.bodyMedium!;
     return <Widget>[
       const SizedBox(height: 24),
       RichText(
         text: TextSpan(
           children: <TextSpan>[
             TextSpan(
-                style: textStyle, text: AppIntl.of(context).flutter_license),
+                style: textStyle, text: AppIntl.of(context)!.flutter_license),
             TextSpan(
                 style: textStyle.copyWith(color: Colors.blue),
-                text: AppIntl.of(context).flutter_website,
+                text: AppIntl.of(context)!.flutter_website,
                 recognizer: TapGestureRecognizer()
                   ..onTap = () => Utils.launchURL(
-                      AppIntl.of(context).flutter_website,
-                      AppIntl.of(context))),
+                      AppIntl.of(context)!.flutter_website,
+                      AppIntl.of(context)!)),
             TextSpan(style: textStyle, text: '.'),
           ],
         ),
@@ -73,18 +73,18 @@ class _MoreViewState extends State<MoreView> {
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<MoreViewModel>.reactive(
-        viewModelBuilder: () => MoreViewModel(intl: AppIntl.of(context)),
+        viewModelBuilder: () => MoreViewModel(intl: AppIntl.of(context)!),
         builder: (context, model, child) {
           return BaseScaffold(
             appBar: AppBar(
-              title: Text(AppIntl.of(context).title_more),
+              title: Text(AppIntl.of(context)!.title_more),
               automaticallyImplyLeading: false,
             ),
             body: ListView(
               padding: EdgeInsets.zero,
               children: [
                 ListTile(
-                    title: Text(AppIntl.of(context).more_about_applets_title),
+                    title: Text(AppIntl.of(context)!.more_about_applets_title),
                     leading: _buildDiscoveryFeatureDescriptionWidget(
                         context,
                         Hero(
@@ -102,7 +102,7 @@ class _MoreViewState extends State<MoreView> {
                       model.navigationService.pushNamed(RouterPaths.about);
                     }),
                 ListTile(
-                    title: Text(AppIntl.of(context).more_report_bug),
+                    title: Text(AppIntl.of(context)!.more_report_bug),
                     leading: _buildDiscoveryFeatureDescriptionWidget(
                         context,
                         getProperIconAccordingToTheme(Icons.bug_report),
@@ -113,14 +113,14 @@ class _MoreViewState extends State<MoreView> {
                       model.navigationService.pushNamed(RouterPaths.feedback);
                     }),
                 ListTile(
-                    title: Text(AppIntl.of(context).in_app_review_title),
+                    title: Text(AppIntl.of(context)!.in_app_review_title),
                     leading: const Icon(Icons.rate_review),
                     onTap: () {
                       _analyticsService.logEvent(tag, "Rate us clicked");
                       MoreViewModel.launchInAppReview();
                     }),
                 ListTile(
-                    title: Text(AppIntl.of(context).more_contributors),
+                    title: Text(AppIntl.of(context)!.more_contributors),
                     leading: _buildDiscoveryFeatureDescriptionWidget(
                         context,
                         getProperIconAccordingToTheme(Icons.people_outline),
@@ -132,7 +132,7 @@ class _MoreViewState extends State<MoreView> {
                           .pushNamed(RouterPaths.contributors);
                     }),
                 ListTile(
-                    title: Text(AppIntl.of(context).more_open_source_licenses),
+                    title: Text(AppIntl.of(context)!.more_open_source_licenses),
                     leading: const Icon(Icons.code),
                     onTap: () {
                       _analyticsService.logEvent(tag, "Rate us clicked");
@@ -146,7 +146,7 @@ class _MoreViewState extends State<MoreView> {
                                     'assets/images/favicon_applets.png')),
                           ),
                           applicationName:
-                              AppIntl.of(context).more_open_source_licenses,
+                              AppIntl.of(context)!.more_open_source_licenses,
                           applicationVersion: model.appVersion,
                           applicationLegalese:
                               '\u{a9} ${DateTime.now().year} App|ETS',
@@ -157,7 +157,7 @@ class _MoreViewState extends State<MoreView> {
                     }),
                 if (model.privacyPolicyToggle)
                   ListTile(
-                      title: Text(AppIntl.of(context).privacy_policy),
+                      title: Text(AppIntl.of(context)!.privacy_policy),
                       leading: const Icon(Icons.privacy_tip),
                       onTap: () {
                         _analyticsService.logEvent(
@@ -165,7 +165,7 @@ class _MoreViewState extends State<MoreView> {
                         MoreViewModel.launchPrivacyPolicy();
                       }),
                 ListTile(
-                    title: Text(AppIntl.of(context).need_help),
+                    title: Text(AppIntl.of(context)!.need_help),
                     leading: _buildDiscoveryFeatureDescriptionWidget(
                         context,
                         getProperIconAccordingToTheme(Icons.question_answer),
@@ -178,7 +178,7 @@ class _MoreViewState extends State<MoreView> {
                               context, Colors.white, AppTheme.primaryDark));
                     }),
                 ListTile(
-                    title: Text(AppIntl.of(context).settings_title),
+                    title: Text(AppIntl.of(context)!.settings_title),
                     leading: _buildDiscoveryFeatureDescriptionWidget(
                         context,
                         getProperIconAccordingToTheme(Icons.settings),
@@ -189,16 +189,16 @@ class _MoreViewState extends State<MoreView> {
                       model.navigationService.pushNamed(RouterPaths.settings);
                     }),
                 ListTile(
-                  title: Text(AppIntl.of(context).more_log_out),
+                  title: Text(AppIntl.of(context)!.more_log_out),
                   leading: const Icon(Icons.logout),
                   onTap: () => Navigator.of(context).push(
                     PageRouteBuilder(
                       pageBuilder: (context, _, __) => AlertDialog(
                         title: Text(
-                          AppIntl.of(context).more_log_out,
+                          AppIntl.of(context)!.more_log_out,
                           style: const TextStyle(color: Colors.red),
                         ),
-                        content: Text(AppIntl.of(context)
+                        content: Text(AppIntl.of(context)!
                             .more_prompt_log_out_confirmation),
                         actions: [
                           TextButton(
@@ -207,10 +207,10 @@ class _MoreViewState extends State<MoreView> {
                                     tag, "Log out clicked");
                                 model.logout();
                               },
-                              child: Text(AppIntl.of(context).yes)),
+                              child: Text(AppIntl.of(context)!.yes)),
                           TextButton(
                               onPressed: () => Navigator.of(context).pop(),
-                              child: Text(AppIntl.of(context).no))
+                              child: Text(AppIntl.of(context)!.no))
                         ],
                       ),
                       opaque: false,

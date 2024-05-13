@@ -1,27 +1,30 @@
-// Flutter imports:
+// Dart imports:
 import 'dart:io';
+
+// Flutter imports:
 import 'package:flutter/material.dart';
 
 // Package imports:
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 // Project imports:
 import 'package:notredame/core/constants/faq.dart';
-import 'package:notredame/core/managers/settings_manager.dart';
 import 'package:notredame/ui/views/faq_view.dart';
 import '../../helpers.dart';
 import '../../mock/managers/settings_manager_mock.dart';
 
 void main() {
+  SharedPreferences.setMockInitialValues({});
   group('FaqView - ', () {
-    AppIntl appIntl;
+    late AppIntl appIntl;
 
-    SettingsManager settingsManager;
+    late SettingsManagerMock settingsManagerMock;
 
     setUp(() async {
       setupLaunchUrlServiceMock();
-      settingsManager = setupSettingsManagerMock();
+      settingsManagerMock = setupSettingsManagerMock();
       appIntl = await setupAppIntl();
     });
 
@@ -29,20 +32,34 @@ void main() {
 
     group('UI - ', () {
       testWidgets('has x ElevatedButton', (WidgetTester tester) async {
-        SettingsManagerMock.stubLocale(settingsManager as SettingsManagerMock);
+        SettingsManagerMock.stubLocale(settingsManagerMock);
 
         await tester.pumpWidget(localizedWidget(child: const FaqView()));
-        await tester.pumpAndSettle();
-
-        final elevatedButton = find.byType(ElevatedButton, skipOffstage: false);
+        await tester.pumpAndSettle(const Duration(milliseconds: 800));
 
         final Faq faq = Faq();
-        final numberOfButtons = faq.actions.length;
-        expect(elevatedButton, findsNWidgets(numberOfButtons));
+
+        final action1 =
+            find.text(faq.actions[0].title["en"]!, skipOffstage: false);
+        final action2 =
+            find.text(faq.actions[1].title["en"]!, skipOffstage: false);
+        final action3 =
+            find.text(faq.actions[2].title["en"]!, skipOffstage: false);
+        final action4 =
+            find.text(faq.actions[3].title["en"]!, skipOffstage: false);
+
+        await tester.pump();
+        await tester.drag(find.byType(ListView), const Offset(0.0, -300));
+        await tester.pump();
+
+        expect(action1, findsOneWidget);
+        expect(action2, findsOneWidget);
+        expect(action3, findsOneWidget);
+        expect(action4, findsOneWidget);
       });
 
       testWidgets('has 2 subtitles', (WidgetTester tester) async {
-        SettingsManagerMock.stubLocale(settingsManager as SettingsManagerMock);
+        SettingsManagerMock.stubLocale(settingsManagerMock);
 
         await tester.pumpWidget(localizedWidget(child: const FaqView()));
         await tester.pumpAndSettle();
@@ -55,7 +72,7 @@ void main() {
       });
 
       testWidgets('has 1 title', (WidgetTester tester) async {
-        SettingsManagerMock.stubLocale(settingsManager as SettingsManagerMock);
+        SettingsManagerMock.stubLocale(settingsManagerMock);
 
         await tester.pumpWidget(localizedWidget(child: const FaqView()));
         await tester.pumpAndSettle();
@@ -68,8 +85,8 @@ void main() {
 
     group("golden - ", () {
       testWidgets("default view", (WidgetTester tester) async {
-        SettingsManagerMock.stubLocale(settingsManager as SettingsManagerMock);
-        tester.binding.window.physicalSizeTestValue = const Size(1800, 2410);
+        SettingsManagerMock.stubLocale(settingsManagerMock);
+        tester.view.physicalSize = const Size(1800, 2410);
 
         await tester.pumpWidget(localizedWidget(child: const FaqView()));
         await tester.pumpAndSettle();

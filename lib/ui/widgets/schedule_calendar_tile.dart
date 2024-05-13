@@ -4,21 +4,22 @@ import 'package:flutter/material.dart';
 // Package imports:
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:intl/intl.dart';
 
 class ScheduleCalendarTile extends StatefulWidget {
-  final String title;
-  final String description;
-  final TextStyle titleStyle;
-  final int totalEvents;
-  final EdgeInsets padding;
-  final Color backgroundColor;
-  final BorderRadius borderRadius;
-  final DateTime start;
-  final DateTime end;
+  final String? title;
+  final String? description;
+  final TextStyle? titleStyle;
+  final int? totalEvents;
+  final EdgeInsets? padding;
+  final Color? backgroundColor;
+  final BorderRadius? borderRadius;
+  final DateTime? start;
+  final DateTime? end;
   final BuildContext buildContext;
 
   const ScheduleCalendarTile(
-      {Key key,
+      {super.key,
       this.title,
       this.description,
       this.titleStyle,
@@ -28,8 +29,7 @@ class ScheduleCalendarTile extends StatefulWidget {
       this.borderRadius,
       this.start,
       this.end,
-      this.buildContext})
-      : super(key: key);
+      required this.buildContext});
 
   @override
   _ScheduleCalendarTileState createState() => _ScheduleCalendarTileState();
@@ -37,15 +37,17 @@ class ScheduleCalendarTile extends StatefulWidget {
 
 class _ScheduleCalendarTileState extends State<ScheduleCalendarTile> {
   void _showTileInfo() {
-    final courseInfos = widget.description.split(";");
+    final courseInfos = widget.description?.split(";") ?? [];
     final courseName = courseInfos[0].split("-")[0];
     final courseLocation = courseInfos[1];
     final courseType = courseInfos[2];
     final teacherName = courseInfos[3];
-    final startTime =
-        "${widget.start.hour}:${widget.start.minute.toString().padLeft(2, '0')}";
-    final endTime =
-        "${widget.end.hour}:${widget.end.add(const Duration(minutes: 1)).minute.toString().padLeft(2, '0')}";
+    final startTime = widget.start == null
+        ? AppIntl.of(widget.buildContext)!.grades_not_available
+        : "${widget.start!.hour}:${widget.start!.minute.toString().padLeft(2, '0')}";
+    final endTime = widget.end == null
+        ? AppIntl.of(widget.buildContext)!.grades_not_available
+        : DateFormat.Hm().format(widget.end!.add(const Duration(minutes: 1)));
 
     showDialog(
       context: context,
@@ -73,14 +75,14 @@ class _ScheduleCalendarTileState extends State<ScheduleCalendarTile> {
                 ),
               ),
               Text(
-                "${AppIntl.of(widget.buildContext).schedule_calendar_by} $teacherName",
+                "${AppIntl.of(widget.buildContext)!.schedule_calendar_by} $teacherName",
                 style: const TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.w500,
                 ),
               ),
               Text(
-                "${AppIntl.of(widget.buildContext).schedule_calendar_from_time} $startTime ${AppIntl.of(widget.buildContext).schedule_calendar_to_time} $endTime",
+                "${AppIntl.of(widget.buildContext)!.schedule_calendar_from_time} $startTime ${AppIntl.of(widget.buildContext)!.schedule_calendar_to_time} $endTime",
                 style: const TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.w500,
@@ -120,7 +122,7 @@ class _ScheduleCalendarTileState extends State<ScheduleCalendarTile> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             AutoSizeText(
-              widget.title,
+              widget.title ?? "",
               style: widget.titleStyle,
               maxLines: 3,
             )

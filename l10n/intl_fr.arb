@@ -80,6 +80,14 @@
   "course_activity_group_b": "Groupe B",
   "course_activity_group_both": "Les deux groupes",
 
+  "calendar_new": "Nouveau calendrier",
+  "calendar_export": "Exporter vers le calendrier",
+  "calendar_export_success": "Horaire exporté avec succès",
+  "calendar_export_error": "Un ou plusieurs événements n'ont pas pu être exportés correctement",
+  "calendar_export_question": "Vers quel calendrier voulez-vous exporter cet événement?",
+  "calendar_name": "Nom du calendrier",
+  "calendar_select": "Veuillez sélectionner un calendrier",
+
   "grades_title": "Notes",
   "grades_msg_no_grades": "Aucune note disponible.\nTirez pour rafraichir",
   "grades_msg_no_grade": "Aucune note disponible",
@@ -108,6 +116,7 @@
   "grades_group": "Groupe",
   "grades_grade": "Note",
   "grades_median": "Médiane",
+  "grades_weighted": "Pondérée",
   "grades_standard_deviation": "Écart-type",
   "grades_percentile_rank": "Rang centile",
   "grades_target_date": "Date cible",
@@ -321,5 +330,7 @@
   "no_ticket": "Aucun billet",
   "ticket_status_open": "Ouvert",
   "ticket_status_closed": "Fermé",
-  "loading": "Chargement..."
+  "loading": "Chargement...",
+
+  "no_schedule_available": "Il n'y a aucun événement à l'horaire pour l'instant"
 }

@@ -34,7 +34,7 @@ class _NavRailState extends State<NavRail> {
 
   @override
   Widget build(BuildContext context) {
-    _currentView = _defineIndex(ModalRoute.of(context).settings.name);
+    _currentView = _defineIndex(ModalRoute.of(context)!.settings.name!);
     return NavigationRail(
       destinations: _buildItems(context),
       selectedIndex: _currentView,
@@ -103,19 +103,19 @@ class _NavRailState extends State<NavRail> {
     return [
       NavigationRailDestination(
           icon: _buildDiscoveryFeatureDescriptionWidget(context, RouterPaths.dashboard, Icons.dashboard),
-          label: Text(AppIntl.of(context).title_dashboard)),
+          label: Text(AppIntl.of(context)!.title_dashboard)),
       NavigationRailDestination(
           icon: _buildDiscoveryFeatureDescriptionWidget(context, RouterPaths.schedule, Icons.schedule),
-          label: Text(AppIntl.of(context).title_schedule)),
+          label: Text(AppIntl.of(context)!.title_schedule)),
       NavigationRailDestination(
           icon: _buildDiscoveryFeatureDescriptionWidget(context, RouterPaths.student, Icons.school),
-          label: Text(AppIntl.of(context).title_student)),
+          label: Text(AppIntl.of(context)!.title_student)),
       NavigationRailDestination(
           icon: _buildDiscoveryFeatureDescriptionWidget(context, RouterPaths.ets, Icons.account_balance),
-          label: Text(AppIntl.of(context).title_ets)),
+          label: Text(AppIntl.of(context)!.title_ets)),
       NavigationRailDestination(
           icon: _buildDiscoveryFeatureDescriptionWidget(context, RouterPaths.more, Icons.dehaze),
-          label: Text(AppIntl.of(context).title_more)),
+          label: Text(AppIntl.of(context)!.title_more)),
     ];
   }
 

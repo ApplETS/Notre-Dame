@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 // Package imports:
 import 'package:flutter_test/flutter_test.dart';
 import 'package:webview_flutter/webview_flutter.dart';
+import 'package:webview_flutter_android/webview_flutter_android.dart';
 
 // Project imports:
 import 'package:notredame/core/models/quick_link.dart';
@@ -19,6 +20,7 @@ final _quickLink = QuickLink(
 void main() {
   group('LinkWebView - ', () {
     setUp(() {
+      WebViewPlatform.instance = AndroidWebViewPlatform();
       setupNetworkingServiceMock();
     });
 
@@ -26,7 +28,7 @@ void main() {
       await tester.pumpWidget(localizedWidget(child: LinkWebView(_quickLink)));
 
       final appBar = find.byType(AppBar);
-      final webview = find.byType(WebView);
+      final webview = find.byType(WebViewWidget);
 
       expect(appBar, findsNWidgets(1));
       expect(_quickLink.name, 'test');
