@@ -68,17 +68,15 @@ class _QuickLinksViewState extends State<QuickLinksView>
           });
         }
       },
-      child: SafeArea(
-        child: Column(
-          children: [
-            Expanded(
-              flex: 2,
-              child: Padding(
-                padding: const EdgeInsets.only(top: 8.0, left: 8.0, right: 8.0),
-                child: _buildReorderableGridView(
-                    model, model.quickLinkList, _buildDeleteButton),
-              ),
+      child: Column(
+        children: [
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.only(top: 8.0, left: 8.0, right: 8.0),
+              child: _buildReorderableGridView(
+                  model, model.quickLinkList, _buildDeleteButton),
             ),
+          ),
             if (_editMode && model.deletedQuickLinks.isNotEmpty) ...[
               const Divider(
                 thickness: 2,
@@ -95,7 +93,7 @@ class _QuickLinksViewState extends State<QuickLinksView>
               ),
             ],
           ],
-        ),
+
       ),
     );
   }
@@ -115,6 +113,7 @@ class _QuickLinksViewState extends State<QuickLinksView>
     }
 
     return ReorderableGridView.count(
+      padding: EdgeInsets.zero,
       mainAxisSpacing: 2.0,
       crossAxisSpacing: 2.0,
       crossAxisCount: crossAxisCount,
