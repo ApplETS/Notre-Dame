@@ -59,7 +59,7 @@ dependencies:
   package_info_plus: ^5.0.1
   feature_discovery: ^0.14.0
   path_provider: ^2.0.11
-  rive: ^0.13.1
+  rive: ^0.13.4
   connectivity_plus: ^6.0.1
   flutter_svg: ^2.0.9
   font_awesome_flutter: ^10.7.0
