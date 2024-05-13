@@ -196,11 +196,14 @@ class _ScheduleViewState extends State<ScheduleView>
       calendar_view.EventController eventController,
       Color backgroundColor,
       Color chevronColor,
-      Color scheduleLineColor, List<Color> scheduleCardsPalette) {
+      Color scheduleLineColor,
+      List<Color> scheduleCardsPalette) {
     return calendar_view.WeekView(
       key: weekViewKey,
-      controller: eventController..addAll(model.selectedWeekCalendarEvents(scheduleCardsPalette)),
-      onPageChange: (date, page) => model.handleViewChanged(date, eventController, []),
+      controller: eventController
+        ..addAll(model.selectedWeekCalendarEvents(scheduleCardsPalette)),
+      onPageChange: (date, page) =>
+          model.handleViewChanged(date, eventController, []),
       backgroundColor: backgroundColor,
       safeAreaOption: const calendar_view.SafeAreaOption(top: false),
       headerStyle: calendar_view.HeaderStyle(
@@ -223,13 +226,18 @@ class _ScheduleViewState extends State<ScheduleView>
         calendar_view.WeekDays.wednesday,
         calendar_view.WeekDays.thursday,
         calendar_view.WeekDays.friday,
-        if (model.settings[PreferencesFlag.scheduleOtherWeekday] == calendar_view.WeekDays.saturday)
+        if (model.settings[PreferencesFlag.scheduleOtherWeekday] ==
+            calendar_view.WeekDays.saturday)
           calendar_view.WeekDays.saturday,
-        if (model.settings[PreferencesFlag.scheduleOtherWeekday] == calendar_view.WeekDays.sunday)
+        if (model.settings[PreferencesFlag.scheduleOtherWeekday] ==
+            calendar_view.WeekDays.sunday)
           calendar_view.WeekDays.sunday,
       ],
       initialDay: DateTime.now(),
-      heightPerMinute: (MediaQuery.of(context).orientation == Orientation.portrait) ? 0.65 : 0.45,
+      heightPerMinute:
+          (MediaQuery.of(context).orientation == Orientation.portrait)
+              ? 0.65
+              : 0.45,
       // height occupied by 1 minute time span.
       hourIndicatorSettings: calendar_view.HourIndicatorSettings(
         color: scheduleLineColor,
@@ -237,7 +245,9 @@ class _ScheduleViewState extends State<ScheduleView>
       liveTimeIndicatorSettings: calendar_view.LiveTimeIndicatorSettings(
         color: chevronColor,
       ),
-      scrollOffset: (MediaQuery.of(context).orientation == Orientation.portrait) ? 305 : 220,
+      scrollOffset: (MediaQuery.of(context).orientation == Orientation.portrait)
+          ? 305
+          : 220,
       timeLineStringBuilder: (date, {secondaryDate}) {
         return DateFormat('HH:mm').format(date);
       },
@@ -251,19 +261,28 @@ class _ScheduleViewState extends State<ScheduleView>
         return '$from ${date.day} ${DateFormat.MMMM(locale).format(date)} $to ${secondaryDate?.day ?? '00'} ${DateFormat.MMMM(locale).format(secondaryDate ?? date)}';
       },
       eventTileBuilder: (date, events, boundary, startDuration, endDuration) =>
-          _buildEventTile(date, events, boundary, startDuration, endDuration, context),
+          _buildEventTile(
+              date, events, boundary, startDuration, endDuration, context),
       weekDayBuilder: (DateTime date) => _buildWeekDay(date, model),
     );
   }
 
-  Widget _buildCalendarViewMonthly(ScheduleViewModel model, BuildContext context,
-      calendar_view.EventController eventController, Color backgroundColor, Color chevronColor, List<Color> scheduleCardsPalette) {
+  Widget _buildCalendarViewMonthly(
+      ScheduleViewModel model,
+      BuildContext context,
+      calendar_view.EventController eventController,
+      Color backgroundColor,
+      Color chevronColor,
+      List<Color> scheduleCardsPalette) {
     return calendar_view.MonthView(
       key: monthViewKey,
       controller: eventController
         ..addAll(model.selectedMonthCalendarEvents(scheduleCardsPalette)),
       // to provide custom UI for month cells.
-      cellAspectRatio: (MediaQuery.of(context).orientation == Orientation.portrait) ? 0.78 : 1.2,
+      cellAspectRatio:
+          (MediaQuery.of(context).orientation == Orientation.portrait)
+              ? 0.78
+              : 1.2,
       safeAreaOption: const calendar_view.SafeAreaOption(top: false),
       onPageChange: (date, page) =>
           model.handleViewChanged(date, eventController, []),
