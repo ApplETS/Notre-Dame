@@ -74,27 +74,21 @@ class _NavRailState extends State<NavRail> {
     }
 
     switch (index) {
-      // TODO Faut-il changer les analytics puisqu'il ne s'agit pas de la barre du bas
       case NavRail.dashboardView:
         _navigationService.pushNamedAndRemoveUntil(RouterPaths.dashboard);
         _analyticsService.logEvent("BottomBar", "DashboardView clicked");
-        break;
       case NavRail.scheduleView:
         _navigationService.pushNamedAndRemoveUntil(RouterPaths.schedule);
         _analyticsService.logEvent("BottomBar", "ScheduleView clicked");
-        break;
       case NavRail.studentView:
         _navigationService.pushNamedAndRemoveUntil(RouterPaths.student);
         _analyticsService.logEvent("BottomBar", "StudentView clicked");
-        break;
       case NavRail.etsView:
         _navigationService.pushNamedAndRemoveUntil(RouterPaths.ets);
         _analyticsService.logEvent("BottomBar", "EtsView clicked");
-        break;
       case NavRail.moreView:
         _navigationService.pushNamedAndRemoveUntil(RouterPaths.more);
         _analyticsService.logEvent("BottomBar", "MoreView clicked");
-        break;
     }
     _currentView = index;
   }
