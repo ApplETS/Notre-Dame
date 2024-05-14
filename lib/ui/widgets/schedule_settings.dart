@@ -30,7 +30,10 @@ class _ScheduleSettingsState extends State<ScheduleSettings> {
       viewModelBuilder: () => ScheduleSettingsViewModel(),
       builder: (context, model, child) {
         if (model.isBusy) {
-          return Center(child: CircularProgressIndicator());
+          return SizedBox(
+            height: MediaQuery.of(context).size.height * 0.55, // 55% of screen height
+            child: const Center(child: CircularProgressIndicator()),
+          );
         } else {
           return ClipRRect(
             borderRadius: const BorderRadius.vertical(top: Radius.circular(10)),
