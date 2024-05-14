@@ -32,7 +32,7 @@ _Note: Ce guide est aussi disponible en: [English](https://github.com/ApplETS/No
 
 - Flutter SDK v3.19.3 ou supérieure
 - Openssl v1.1.1g ou supérieure
-- Java sdk 11
+- Java sdk 17
 
 ## Avant de démarrer le code
 
