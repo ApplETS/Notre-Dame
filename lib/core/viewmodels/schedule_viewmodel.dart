@@ -155,6 +155,10 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
     return events;
   }
 
+  List<CalendarEventData> selectedDayCalendarEvents() {
+    return selectedDateCalendarEvents(DateTime.now());
+  }
+
   List<CalendarEventData> selectedMonthCalendarEvents() {
     final List<CalendarEventData> events = [];
     final date = selectedDate.datesOfMonths();

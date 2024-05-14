@@ -28,7 +28,11 @@ class _ScheduleSettingsState extends State<ScheduleSettings> {
   @override
   Widget build(BuildContext context) => ViewModelBuilder.reactive(
       viewModelBuilder: () => ScheduleSettingsViewModel(),
-      builder: (context, model, child) => ClipRRect(
+      builder: (context, model, child) {
+        if (model.isBusy) {
+          return Center(child: CircularProgressIndicator());
+        } else {
+          return ClipRRect(
             borderRadius: const BorderRadius.vertical(top: Radius.circular(10)),
             child: DraggableScrollableSheet(
                 maxChildSize: 0.85,
@@ -99,7 +103,9 @@ class _ScheduleSettingsState extends State<ScheduleSettings> {
                     )
                   ]);
                 }),
-          ));
+          );
+        }
+      });
 
   List<Widget> _buildSettings(
       BuildContext context, ScheduleSettingsViewModel model) {
@@ -293,14 +299,26 @@ class _ScheduleSettingsState extends State<ScheduleSettings> {
       const Divider(endIndent: 50, thickness: 1.5)
     ];
 
-    for (final CalendarFormat format in model.calendarFormatPossibles) {
-      tiles.add(ListTile(
-        selected: model.calendarFormat == format,
-        selectedTileColor: selectedColor,
-        onTap: () => setState(() => model.calendarFormat = format),
-        title: Text(getTextForFormat(context, format)),
-      ));
-    }
+    final formatList = model.toggleCalendarView
+        ? model.formatPossibleListView
+        : model.formatPossibleCalendarView;
+
+    tiles.add(
+      ListView.builder(
+        shrinkWrap: true,
+        physics: NeverScrollableScrollPhysics(),
+        itemCount: formatList.length,
+        itemBuilder: (context, index) {
+          final format = formatList[index];
+          return ListTile(
+            selected: model.calendarFormat == format,
+            selectedTileColor: selectedColor,
+            onTap: () => setState(() => model.calendarFormat = format),
+            title: Text(getTextForFormat(context, format)),
+          );
+        },
+      ),
+    );
 
     tiles.add(const Divider(thickness: 1));
 
@@ -346,8 +364,10 @@ class _ScheduleSettingsState extends State<ScheduleSettings> {
         return AppIntl.of(context)!.schedule_settings_calendar_format_week;
       case CalendarFormat.twoWeeks:
         return AppIntl.of(context)!.schedule_settings_calendar_format_2_weeks;
+      case CalendarFormat.day:
+        return AppIntl.of(context)!.schedule_settings_calendar_format_day;
       default:
-        return AppIntl.of(context)!.schedule_settings_calendar_format_month;
+        return AppIntl.of(context)!.schedule_settings_calendar_format_day;
     }
   }
 

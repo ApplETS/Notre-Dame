@@ -16,6 +16,7 @@ class ScheduleSettingsViewModel
     extends FutureViewModel<Map<PreferencesFlag, dynamic>> {
   /// Manage the settings
   final SettingsManager _settingsManager = locator<SettingsManager>();
+
   // Access the course repository
   final CourseRepository _courseRepository = locator<CourseRepository>();
 
@@ -32,11 +33,18 @@ class ScheduleSettingsViewModel
     setBusy(false);
   }
 
-  /// List of possible calendar format.
-  List<CalendarFormat> calendarFormatPossibles = [
+  /// List of possible calendar format for the list view.
+  List<CalendarFormat> formatPossibleListView = [
     CalendarFormat.month,
     CalendarFormat.twoWeeks,
     CalendarFormat.week
+  ];
+
+  /// List of possible calendar format for the list view.
+  List<CalendarFormat> formatPossibleCalendarView = [
+    CalendarFormat.month,
+    CalendarFormat.week,
+    CalendarFormat.day
   ];
 
   /// Current starting day of week
