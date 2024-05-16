@@ -11,7 +11,7 @@ class SocialLink extends QuickLink {
     required super.link,
   }) : super(
             image: SvgPicture.asset(
-          "assets/images/${name}_logo.svg",
+          "assets/images/${name.toLowerCase()}_logo.svg",
           height: 55,
           width: 55,
         ));
