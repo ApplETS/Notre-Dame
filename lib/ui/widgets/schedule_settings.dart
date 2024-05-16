@@ -173,17 +173,15 @@ class _ScheduleSettingsState extends State<ScheduleSettings> {
     }
 
     return Card(
-      elevation: 4,
-      color: Theme.of(context).brightness == Brightness.light
-          ? AppTheme.lightThemeBackground
-          : AppTheme.darkThemeBackground,
-      child: Padding(
-        padding: const EdgeInsets.only(top: 16.0, bottom: 8),
-        child: Column(
-          children: cardContent,
-        )
-      )
-    );
+        elevation: 4,
+        color: Theme.of(context).brightness == Brightness.light
+            ? AppTheme.lightThemeBackground
+            : AppTheme.darkThemeBackground,
+        child: Padding(
+            padding: const EdgeInsets.only(top: 16.0, bottom: 8),
+            child: Column(
+              children: cardContent,
+            )));
   }
 
   String getActivityTitle(String activityCode) {
@@ -198,17 +196,16 @@ class _ScheduleSettingsState extends State<ScheduleSettings> {
 
   Widget _buildShowWeekSection(
           BuildContext context, ScheduleSettingsViewModel model) =>
-
-        ListTile(
-          trailing: Switch(
-            value: model.showWeekEvents,
-            onChanged: (value) => model.showWeekEvents = value,
-            activeColor: AppTheme.etsLightRed,
-          ),
-          title: Text(
-              style: Theme.of(context).textTheme.bodySmall,
-              AppIntl.of(context)!.schedule_settings_show_week_events_btn_pref),
-        );
+      ListTile(
+        trailing: Switch(
+          value: model.showWeekEvents,
+          onChanged: (value) => model.showWeekEvents = value,
+          activeColor: AppTheme.etsLightRed,
+        ),
+        title: Text(
+            style: Theme.of(context).textTheme.bodySmall,
+            AppIntl.of(context)!.schedule_settings_show_week_events_btn_pref),
+      );
 
   Widget _buildShowWeekendDaySection(
       BuildContext context, ScheduleSettingsViewModel model) {
@@ -249,17 +246,15 @@ class _ScheduleSettingsState extends State<ScheduleSettings> {
     ];
 
     return Card(
-      elevation: 4,
-      color: Theme.of(context).brightness == Brightness.light
-          ? AppTheme.lightThemeBackground
-          : AppTheme.darkThemeBackground,
-      child: Padding(
-        padding: const EdgeInsets.only(top: 16.0, bottom: 8),
-        child: Column(
-          children: cardContent,
-        )
-      )
-    );
+        elevation: 4,
+        color: Theme.of(context).brightness == Brightness.light
+            ? AppTheme.lightThemeBackground
+            : AppTheme.darkThemeBackground,
+        child: Padding(
+            padding: const EdgeInsets.only(top: 16.0, bottom: 8),
+            child: Column(
+              children: cardContent,
+            )));
   }
 
   List<Widget> _buildShowTodayButtonSection(
@@ -271,17 +266,15 @@ class _ScheduleSettingsState extends State<ScheduleSettings> {
             onChanged: (value) => model.showTodayBtn = value,
             activeColor: AppTheme.etsLightRed,
           ),
-          title:
-              Text(
-                  style: Theme.of(context).textTheme.bodySmall,
-                  AppIntl.of(context)!.schedule_settings_show_today_btn_pref),
+          title: Text(
+              style: Theme.of(context).textTheme.bodySmall,
+              AppIntl.of(context)!.schedule_settings_show_today_btn_pref),
         )
       ];
 
   Widget _buildToggleCalendarView(
           BuildContext context, ScheduleSettingsViewModel model) =>
-
-    ListTile(
+      ListTile(
         trailing: Switch(
           value: model.toggleCalendarView,
           onChanged: (value) => model.toggleCalendarView = value,
@@ -294,16 +287,14 @@ class _ScheduleSettingsState extends State<ScheduleSettings> {
 
   Widget _buildCalendarFormatSection(
       BuildContext context, ScheduleSettingsViewModel model) {
-
     final chips = <Widget>[];
 
     for (final CalendarFormat format in model.calendarFormatPossibles) {
       chips.add(InputChip(
-        label: Text(getTextForFormat(context, format)),
-        selected: model.calendarFormat == format,
-        selectedColor: selectedColor,
-        onPressed: () => setState(() => model.calendarFormat = format)
-      ));
+          label: Text(getTextForFormat(context, format)),
+          selected: model.calendarFormat == format,
+          selectedColor: selectedColor,
+          onPressed: () => setState(() => model.calendarFormat = format)));
     }
 
     final chipsWrapper = Wrap(
@@ -326,17 +317,13 @@ class _ScheduleSettingsState extends State<ScheduleSettings> {
     ];
 
     return Card(
-      elevation: 4,
-      color: Theme.of(context).brightness == Brightness.light
-          ? AppTheme.lightThemeBackground
-          : AppTheme.darkThemeBackground,
-      child: Padding(
-        padding: const EdgeInsets.only(top: 16.0, bottom: 8),
-        child: Column(
-          children: cardContent
-        )
-      )
-    );
+        elevation: 4,
+        color: Theme.of(context).brightness == Brightness.light
+            ? AppTheme.lightThemeBackground
+            : AppTheme.darkThemeBackground,
+        child: Padding(
+            padding: const EdgeInsets.only(top: 16.0, bottom: 8),
+            child: Column(children: cardContent)));
   }
 
   Widget _buildStartingDaySection(
@@ -371,17 +358,13 @@ class _ScheduleSettingsState extends State<ScheduleSettings> {
     ];
 
     return Card(
-      elevation: 4,
-      color: Theme.of(context).brightness == Brightness.light
-          ? AppTheme.lightThemeBackground
-          : AppTheme.darkThemeBackground,
-      child: Padding(
-        padding: const EdgeInsets.only(top: 16.0, bottom: 8),
-        child: Column(
-          children: cardContent
-        )
-      )
-    );
+        elevation: 4,
+        color: Theme.of(context).brightness == Brightness.light
+            ? AppTheme.lightThemeBackground
+            : AppTheme.darkThemeBackground,
+        child: Padding(
+            padding: const EdgeInsets.only(top: 16.0, bottom: 8),
+            child: Column(children: cardContent)));
   }
 
   String getTextForFormat(BuildContext context, CalendarFormat format) {
