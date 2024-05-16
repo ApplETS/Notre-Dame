@@ -85,7 +85,7 @@ class _ScheduleSettingsState extends State<ScheduleSettings> {
                         selectedColor:
                             Theme.of(context).textTheme.bodyLarge!.color,
                         child: Card(
-                          margin: EdgeInsets.zero,
+                          margin: const EdgeInsets.symmetric(horizontal: 8),
                           elevation: 0,
                           shape: const RoundedRectangleBorder(),
                           color: Colors.transparent,
@@ -103,49 +103,43 @@ class _ScheduleSettingsState extends State<ScheduleSettings> {
 
   List<Widget> _buildSettings(
       BuildContext context, ScheduleSettingsViewModel model) {
-    final list = _buildCalendarFormatSection(context, model);
+    final list = _buildShowTodayButtonSection(context, model);
 
-    list.addAll(_buildShowTodayButtonSection(context, model));
+    list.add(_buildCalendarFormatSection(context, model));
 
     if (model.toggleCalendarView) {
-      list.addAll(_buildStartingDaySection(context, model));
-      list.addAll(_buildShowWeekSection(context, model));
+      list.add(_buildStartingDaySection(context, model));
+      list.add(_buildShowWeekSection(context, model));
     } else if (model.calendarFormat == CalendarFormat.week) {
       model.showWeekendDays = true;
-      list.addAll(_buildShowWeekendDaySection(context, model));
+      list.add(_buildShowWeekendDaySection(context, model));
     } else {
-      list.addAll(_buildShowWeekendDaySection(context, model));
+      list.add(_buildShowWeekendDaySection(context, model));
     }
 
-    list.addAll(_buildToggleCalendarView(context, model));
-
     if (model.scheduleActivitiesByCourse.isNotEmpty) {
-      list.addAll(_buildSelectCoursesActivitiesSection(context, model));
+      list.add(_buildSelectCoursesActivitiesSection(context, model));
     }
 
     return list;
   }
 
-  List<Widget> _buildSelectCoursesActivitiesSection(
+  Widget _buildSelectCoursesActivitiesSection(
       BuildContext context, ScheduleSettingsViewModel model) {
-    final tiles = [
-      Padding(
-        padding: const EdgeInsets.only(
-            left: 15.0, right: 15.0, top: 15.0, bottom: 2.0),
-        child: Text(
-          AppIntl.of(context)!.schedule_select_course_activity,
-          style: TextStyle(
-            color: Theme.of(context).colorScheme.secondary,
-            fontWeight: FontWeight.bold,
-          ),
+    final cardContent = <Widget>[
+      Text(
+        AppIntl.of(context)!.schedule_select_course_activity,
+        style: TextStyle(
+          color: Theme.of(context).colorScheme.secondary,
+          fontWeight: FontWeight.bold,
         ),
       ),
-      const Divider(endIndent: 50, thickness: 1.5),
+      const Divider(thickness: 0.5)
     ];
 
     for (final courseActivitiesAcronym
         in model.scheduleActivitiesByCourse.keys) {
-      tiles.add(Padding(
+      cardContent.add(Padding(
         padding: const EdgeInsets.fromLTRB(15.0, 8.0, 15.0, 8.0),
         child: Text(
           '${model.scheduleActivitiesByCourse[courseActivitiesAcronym]?.first.courseAcronym ?? AppIntl.of(context)!.grades_not_available} - ${model.scheduleActivitiesByCourse[courseActivitiesAcronym]?.first.courseTitle ?? AppIntl.of(context)!.grades_not_available}}',
@@ -154,7 +148,7 @@ class _ScheduleSettingsState extends State<ScheduleSettings> {
           ),
         ),
       ));
-      tiles.add(ListTile(
+      cardContent.add(ListTile(
         selected:
             model.selectedScheduleActivity[courseActivitiesAcronym] == null,
         selectedTileColor: selectedColor,
@@ -166,7 +160,7 @@ class _ScheduleSettingsState extends State<ScheduleSettings> {
       if (model.scheduleActivitiesByCourse[courseActivitiesAcronym] != null) {
         for (final course
             in model.scheduleActivitiesByCourse[courseActivitiesAcronym]!) {
-          tiles.add(ListTile(
+          cardContent.add(ListTile(
             selected:
                 model.selectedScheduleActivity[course.courseAcronym] == course,
             selectedTileColor: selectedColor,
@@ -176,13 +170,20 @@ class _ScheduleSettingsState extends State<ScheduleSettings> {
           ));
         }
       }
-
-      if (model.scheduleActivitiesByCourse.values.length > 1) {
-        tiles.add(const Divider(endIndent: 50, thickness: 1.5));
-      }
     }
-    tiles.add(const Divider(thickness: 1));
-    return tiles;
+
+    return Card(
+      elevation: 4,
+      color: Theme.of(context).brightness == Brightness.light
+          ? AppTheme.lightThemeBackground
+          : AppTheme.darkThemeBackground,
+      child: Padding(
+        padding: const EdgeInsets.only(top: 16.0, bottom: 8),
+        child: Column(
+          children: cardContent,
+        )
+      )
+    );
   }
 
   String getActivityTitle(String activityCode) {
@@ -195,9 +196,9 @@ class _ScheduleSettingsState extends State<ScheduleSettings> {
     return "";
   }
 
-  Iterable<Widget> _buildShowWeekSection(
+  Widget _buildShowWeekSection(
           BuildContext context, ScheduleSettingsViewModel model) =>
-      [
+
         ListTile(
           trailing: Switch(
             value: model.showWeekEvents,
@@ -205,47 +206,60 @@ class _ScheduleSettingsState extends State<ScheduleSettings> {
             activeColor: AppTheme.etsLightRed,
           ),
           title: Text(
+              style: Theme.of(context).textTheme.bodySmall,
               AppIntl.of(context)!.schedule_settings_show_week_events_btn_pref),
-        ),
-        const Divider(thickness: 1)
-      ];
+        );
 
-  List<Widget> _buildShowWeekendDaySection(
+  Widget _buildShowWeekendDaySection(
       BuildContext context, ScheduleSettingsViewModel model) {
-    final list = [
-      Padding(
-        padding: const EdgeInsets.only(
-            left: 15.0, right: 15.0, top: 15.0, bottom: 2.0),
-        child: Text(
-          AppIntl.of(context)!.schedule_settings_show_weekend_day,
-          style: TextStyle(
-            color: Theme.of(context).colorScheme.secondary,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-      ),
-      const Divider(endIndent: 50, thickness: 1.5),
-    ];
+    final chips = <Widget>[];
 
-    list.add(ListTile(
+    chips.add(InputChip(
       selected: model.otherDayOfWeek == WeekDays.monday,
-      selectedTileColor: selectedColor,
-      onTap: () => setState(() => model.otherDayOfWeek = WeekDays.monday),
-      title: Text(AppIntl.of(context)!.schedule_settings_show_weekend_day_none),
+      selectedColor: selectedColor,
+      onPressed: () => setState(() => model.otherDayOfWeek = WeekDays.monday),
+      label: Text(AppIntl.of(context)!.schedule_settings_show_weekend_day_none),
     ));
 
     for (final WeekDays day in model.otherDayPossible) {
-      list.add(ListTile(
+      chips.add(InputChip(
         selected: model.otherDayOfWeek == day,
-        selectedTileColor: selectedColor,
-        onTap: () => setState(() => model.otherDayOfWeek = day),
-        title: Text(getTextForWeekDay(context, day)),
+        selectedColor: selectedColor,
+        onPressed: () => setState(() => model.otherDayOfWeek = day),
+        label: Text(getTextForWeekDay(context, day)),
       ));
     }
 
-    list.add(const Divider(thickness: 1));
+    final chipsWrapper = Wrap(
+      spacing: 10,
+      alignment: WrapAlignment.center,
+      children: chips,
+    );
 
-    return list;
+    final cardContent = [
+      Text(
+        AppIntl.of(context)!.schedule_settings_show_weekend_day,
+        style: TextStyle(
+          color: Theme.of(context).colorScheme.secondary,
+          fontWeight: FontWeight.bold,
+        ),
+      ),
+      const Divider(thickness: 0.5),
+      chipsWrapper
+    ];
+
+    return Card(
+      elevation: 4,
+      color: Theme.of(context).brightness == Brightness.light
+          ? AppTheme.lightThemeBackground
+          : AppTheme.darkThemeBackground,
+      child: Padding(
+        padding: const EdgeInsets.only(top: 16.0, bottom: 8),
+        child: Column(
+          children: cardContent,
+        )
+      )
+    );
   }
 
   List<Widget> _buildShowTodayButtonSection(
@@ -258,84 +272,116 @@ class _ScheduleSettingsState extends State<ScheduleSettings> {
             activeColor: AppTheme.etsLightRed,
           ),
           title:
-              Text(AppIntl.of(context)!.schedule_settings_show_today_btn_pref),
-        ),
-        const Divider(thickness: 1)
+              Text(
+                  style: Theme.of(context).textTheme.bodySmall,
+                  AppIntl.of(context)!.schedule_settings_show_today_btn_pref),
+        )
       ];
 
-  List<Widget> _buildToggleCalendarView(
+  Widget _buildToggleCalendarView(
           BuildContext context, ScheduleSettingsViewModel model) =>
-      [
-        ListTile(
-          trailing: Switch(
-            value: model.toggleCalendarView,
-            onChanged: (value) => model.toggleCalendarView = value,
-            activeColor: AppTheme.etsLightRed,
-          ),
-          title: Text(AppIntl.of(context)!.schedule_settings_list_view),
-        ),
-        const Divider(thickness: 1)
-      ];
 
-  List<Widget> _buildCalendarFormatSection(
-      BuildContext context, ScheduleSettingsViewModel model) {
-    final tiles = [
-      Padding(
-        padding: const EdgeInsets.only(left: 15.0, right: 15.0, bottom: 2.0),
-        child: Text(
-          AppIntl.of(context)!.schedule_settings_calendar_format_pref,
-          style: TextStyle(
-            color: Theme.of(context).colorScheme.secondary,
-            fontWeight: FontWeight.bold,
-          ),
+    ListTile(
+        trailing: Switch(
+          value: model.toggleCalendarView,
+          onChanged: (value) => model.toggleCalendarView = value,
+          activeColor: AppTheme.etsLightRed,
         ),
-      ),
-      const Divider(endIndent: 50, thickness: 1.5)
-    ];
+        title: Text(
+            style: Theme.of(context).textTheme.bodySmall,
+            AppIntl.of(context)!.schedule_settings_list_view),
+      );
+
+  Widget _buildCalendarFormatSection(
+      BuildContext context, ScheduleSettingsViewModel model) {
+
+    final chips = <Widget>[];
 
     for (final CalendarFormat format in model.calendarFormatPossibles) {
-      tiles.add(ListTile(
+      chips.add(InputChip(
+        label: Text(getTextForFormat(context, format)),
         selected: model.calendarFormat == format,
-        selectedTileColor: selectedColor,
-        onTap: () => setState(() => model.calendarFormat = format),
-        title: Text(getTextForFormat(context, format)),
+        selectedColor: selectedColor,
+        onPressed: () => setState(() => model.calendarFormat = format)
       ));
     }
 
-    tiles.add(const Divider(thickness: 1));
+    final chipsWrapper = Wrap(
+      spacing: 10,
+      alignment: WrapAlignment.center,
+      children: chips,
+    );
 
-    return tiles;
-  }
-
-  List<Widget> _buildStartingDaySection(
-      BuildContext context, ScheduleSettingsViewModel model) {
-    final list = [
-      Padding(
-        padding: const EdgeInsets.only(
-            left: 15.0, right: 15.0, top: 15.0, bottom: 2.0),
-        child: Text(
-          AppIntl.of(context)!.schedule_settings_starting_weekday_pref,
-          style: TextStyle(
-            color: Theme.of(context).colorScheme.secondary,
-            fontWeight: FontWeight.bold,
-          ),
+    final cardContent = <Widget>[
+      Text(
+        AppIntl.of(context)!.schedule_settings_calendar_format_pref,
+        style: TextStyle(
+          color: Theme.of(context).colorScheme.secondary,
+          fontWeight: FontWeight.bold,
         ),
       ),
-      const Divider(endIndent: 50, thickness: 1.5),
+      const Divider(thickness: 0.5),
+      _buildToggleCalendarView(context, model),
+      chipsWrapper
     ];
 
+    return Card(
+      elevation: 4,
+      color: Theme.of(context).brightness == Brightness.light
+          ? AppTheme.lightThemeBackground
+          : AppTheme.darkThemeBackground,
+      child: Padding(
+        padding: const EdgeInsets.only(top: 16.0, bottom: 8),
+        child: Column(
+          children: cardContent
+        )
+      )
+    );
+  }
+
+  Widget _buildStartingDaySection(
+      BuildContext context, ScheduleSettingsViewModel model) {
+    final chips = <Widget>[];
+
     for (final StartingDayOfWeek day in model.startingDayPossible) {
-      list.add(ListTile(
+      chips.add(InputChip(
         selected: model.startingDayOfWeek == day,
-        selectedTileColor: selectedColor,
-        onTap: () => setState(() => model.startingDayOfWeek = day),
-        title: Text(getTextForDay(context, day)),
+        selectedColor: selectedColor,
+        onPressed: () => setState(() => model.startingDayOfWeek = day),
+        label: Text(getTextForDay(context, day)),
       ));
     }
 
-    list.add(const Divider(thickness: 1));
+    final chipsWrapper = Wrap(
+      spacing: 10,
+      alignment: WrapAlignment.center,
+      children: chips,
+    );
 
-    return list;
+    final cardContent = [
+      Text(
+        AppIntl.of(context)!.schedule_settings_starting_weekday_pref,
+        style: TextStyle(
+          color: Theme.of(context).colorScheme.secondary,
+          fontWeight: FontWeight.bold,
+        ),
+      ),
+      const Divider(thickness: 0.5),
+      chipsWrapper
+    ];
+
+    return Card(
+      elevation: 4,
+      color: Theme.of(context).brightness == Brightness.light
+          ? AppTheme.lightThemeBackground
+          : AppTheme.darkThemeBackground,
+      child: Padding(
+        padding: const EdgeInsets.only(top: 16.0, bottom: 8),
+        child: Column(
+          children: cardContent
+        )
+      )
+    );
   }
 
   String getTextForFormat(BuildContext context, CalendarFormat format) {
