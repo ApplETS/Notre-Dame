@@ -111,26 +111,31 @@ class _AuthorViewState extends State<AuthorView> {
   }
 
   Widget _buildAuthorInfo(AuthorViewModel model) {
-    final author = model.author;
     notifyBtnText = getNotifyMeBtnText(model);
-    final List<SocialLink> socialLinks = [
-      if (author?.email != null)
-        SocialLink(id: 0, name: 'Email', link: author!.email!),
-      if (author?.facebookLink != null)
-        SocialLink(id: 1, name: 'Facebook', link: author!.facebookLink!),
-      if (author?.instagramLink != null)
-        SocialLink(id: 2, name: 'Instagram', link: author!.instagramLink!),
-      if (author?.tikTokLink != null)
-        SocialLink(id: 3, name: 'TikTok', link: author!.tikTokLink!),
-      if (author?.xLink != null)
-        SocialLink(id: 4, name: 'X', link: author!.xLink!),
-      if (author?.redditLink != null)
-        SocialLink(id: 5, name: 'Reddit', link: author!.redditLink!),
-      if (author?.discordLink != null)
-        SocialLink(id: 6, name: 'Discord', link: author!.discordLink!),
-      if (author?.linkedInLink != null)
-        SocialLink(id: 7, name: 'LinkedIn', link: author!.linkedInLink!),
-    ];
+    
+    final author = model.author;
+
+    List<SocialLink> socialLinks = [];
+    if(author != null) {
+      socialLinks = [
+        if (author.email != null)
+          SocialLink(id: 0, name: 'Email', link: author.email!),
+        if (author.facebookLink != null)
+          SocialLink(id: 1, name: 'Facebook', link: author.facebookLink!),
+        if (author.instagramLink != null)
+          SocialLink(id: 2, name: 'Instagram', link: author.instagramLink!),
+        if (author.tikTokLink != null)
+          SocialLink(id: 3, name: 'TikTok', link: author.tikTokLink!),
+        if (author.xLink != null)
+          SocialLink(id: 4, name: 'X', link: author.xLink!),
+        if (author.redditLink != null)
+          SocialLink(id: 5, name: 'Reddit', link: author.redditLink!),
+        if (author.discordLink != null)
+          SocialLink(id: 6, name: 'Discord', link: author.discordLink!),
+        if (author.linkedInLink != null)
+          SocialLink(id: 7, name: 'LinkedIn', link: author.linkedInLink!),
+      ];
+    }
 
     return Padding(
       padding: const EdgeInsets.only(top: 76),

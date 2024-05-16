@@ -7,6 +7,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
+import 'package:notredame/core/constants/urls.dart';
 import 'package:notredame/core/utils/utils.dart';
 import 'package:notredame/core/viewmodels/calendar_selection_viewmodel.dart';
 import 'package:notredame/ui/widgets/calendar_selector.dart';
@@ -164,7 +165,7 @@ class _NewsDetailsViewState extends State<NewsDetailsView> {
     switch (menu) {
       case Menu.share:
         Share.share(
-            "https://hello.montydev.ca/fr/dashboard/news?id=${news.id}");
+            "${Urls.helloNewsWebsite}/fr/dashboard/news?id=${news.id}");
       case Menu.export:
         final translations = AppIntl.of(context)!;
         final viewModel =
