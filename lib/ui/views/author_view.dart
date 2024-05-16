@@ -112,11 +112,11 @@ class _AuthorViewState extends State<AuthorView> {
 
   Widget _buildAuthorInfo(AuthorViewModel model) {
     notifyBtnText = getNotifyMeBtnText(model);
-    
+
     final author = model.author;
 
     List<SocialLink> socialLinks = [];
-    if(author != null) {
+    if (author != null) {
       socialLinks = [
         if (author.email != null)
           SocialLink(id: 0, name: 'Email', link: author.email!),
