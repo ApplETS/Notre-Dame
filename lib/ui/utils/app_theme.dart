@@ -90,8 +90,7 @@ class AppTheme {
             .copyWith(primary: etsLightRed, secondary: etsLightRed)
             .copyWith(secondary: etsLightRed)
             .copyWith(
-                surface: const Color(0xfff1f1f1),
-                surfaceTint: Colors.white));
+                surface: const Color(0xfff1f1f1), surfaceTint: Colors.white));
   }
 
   /// Dark theme
