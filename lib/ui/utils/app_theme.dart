@@ -13,7 +13,7 @@ class AppTheme {
   static const Color etsBlack = Color(0xff2e2a25);
 
   // Backgrounds
-  static const Color darkThemeBackground = Color(0xff303030);
+  static const Color darkThemeBackground = Color(0xff2c2c2c);
   static const Color darkThemeBackgroundAccent =
       Color.fromARGB(255, 50, 48, 48);
   static const Color lightThemeBackground = Color(0xfffafafa);
@@ -108,7 +108,8 @@ class AppTheme {
         colorScheme: lightTheme.colorScheme
             .copyWith(primary: etsLightRed, secondary: etsLightRed)
             .copyWith(secondary: etsLightRed)
-            .copyWith(surfaceTint: Colors.white));
+            .copyWith(
+                surface: const Color(0xfff1f1f1), surfaceTint: Colors.white));
   }
 
   /// Dark theme
