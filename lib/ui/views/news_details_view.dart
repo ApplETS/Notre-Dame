@@ -39,7 +39,8 @@ enum Menu { share, export, report }
 class _NewsDetailsViewState extends State<NewsDetailsView> {
   final NavigationService _navigationService = locator<NavigationService>();
   final AnalyticsService _analyticsService = locator<AnalyticsService>();
-  final RemoteConfigService _remoteConfigService = locator<RemoteConfigService>();
+  final RemoteConfigService _remoteConfigService =
+      locator<RemoteConfigService>();
 
   @override
   void initState() {
@@ -165,7 +166,8 @@ class _NewsDetailsViewState extends State<NewsDetailsView> {
   void handleClick(Menu menu, News news) {
     switch (menu) {
       case Menu.share:
-        Share.share("${_remoteConfigService.helloWebsiteUrl}/fr/dashboard/news?id=${news.id}");
+        Share.share(
+            "${_remoteConfigService.helloWebsiteUrl}/fr/dashboard/news?id=${news.id}");
       case Menu.export:
         final translations = AppIntl.of(context)!;
         final viewModel =

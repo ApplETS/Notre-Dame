@@ -106,13 +106,13 @@ void main() {
     });
 
     tearDown(() => {
-      unregister<NavigationService>(),
-      unregister<SettingsManager>(),
-      unregister<CourseRepository>(),
-      unregister<RemoteConfigService>(),
-      unregister<NetworkingService>(),
-      unregister<AnalyticsService>(),
-    });
+          unregister<NavigationService>(),
+          unregister<SettingsManager>(),
+          unregister<CourseRepository>(),
+          unregister<RemoteConfigService>(),
+          unregister<NetworkingService>(),
+          unregister<AnalyticsService>(),
+        });
 
     group("golden - ", () {
       const tableCalendarKey = Key("TableCalendar");
