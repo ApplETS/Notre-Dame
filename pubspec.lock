@@ -300,12 +300,10 @@ packages:
   ets_api_clients:
     dependency: "direct main"
     description:
-      path: "."
-      ref: "1.2.2"
-      resolved-ref: d45abc6b03bdf4fc81d0b1ddecec2c8f374bad67
-      url: "https://github.com/ApplETS/ETS-API-Clients.git"
-    source: git
-    version: "1.2.2"
+      path: "../ETS-API-Clients"
+      relative: true
+    source: path
+    version: "1.2.3"
   fading_edge_scrollview:
     dependency: transitive
     description:

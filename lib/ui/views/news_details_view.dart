@@ -7,7 +7,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
-import 'package:notredame/core/constants/urls.dart';
+import 'package:notredame/core/services/remote_config_service.dart';
 import 'package:notredame/core/utils/utils.dart';
 import 'package:notredame/core/viewmodels/calendar_selection_viewmodel.dart';
 import 'package:notredame/ui/widgets/calendar_selector.dart';
@@ -39,6 +39,7 @@ enum Menu { share, export, report }
 class _NewsDetailsViewState extends State<NewsDetailsView> {
   final NavigationService _navigationService = locator<NavigationService>();
   final AnalyticsService _analyticsService = locator<AnalyticsService>();
+  final RemoteConfigService _remoteConfigService = locator<RemoteConfigService>();
 
   @override
   void initState() {
@@ -164,7 +165,7 @@ class _NewsDetailsViewState extends State<NewsDetailsView> {
   void handleClick(Menu menu, News news) {
     switch (menu) {
       case Menu.share:
-        Share.share("${Urls.helloNewsWebsite}/fr/dashboard/news?id=${news.id}");
+        Share.share("${_remoteConfigService.helloWebsiteUrl}/fr/dashboard/news?id=${news.id}");
       case Menu.export:
         final translations = AppIntl.of(context)!;
         final viewModel =
