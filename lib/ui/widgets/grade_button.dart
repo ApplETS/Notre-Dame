@@ -58,7 +58,7 @@ class GradeButton extends StatelessWidget {
       return course.grade!;
     } else if (course.summary != null &&
         course.summary!.markOutOf > 0 &&
-        !(course.inReviewPeriod && !(course.reviewCompleted ?? false))) {
+        !(course.inReviewPeriod && !(course.allReviewsCompleted ?? false))) {
       return intl.grades_grade_in_percentage(
           course.summary!.currentMarkInPercent.round());
     }
