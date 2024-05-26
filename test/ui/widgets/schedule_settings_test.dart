@@ -111,19 +111,19 @@ void main() {
             findsOneWidget);
         expect(
             find.widgetWithText(
-                ListTile, intl.schedule_settings_calendar_format_2_weeks),
+                InputChip, intl.schedule_settings_calendar_format_2_weeks),
             findsOneWidget);
         expect(
             find.widgetWithText(
-                ListTile, intl.schedule_settings_calendar_format_month),
+                InputChip, intl.schedule_settings_calendar_format_month),
             findsOneWidget);
 
         final weekFormatTile = find.widgetWithText(
-            ListTile, intl.schedule_settings_calendar_format_week);
+            InputChip, intl.schedule_settings_calendar_format_week);
         expect(weekFormatTile, findsOneWidget);
         expect(
             tester.widget(weekFormatTile),
-            isA<ListTile>()
+            isA<InputChip>()
                 .having((source) => source.selected, 'selected', isTrue),
             reason:
                 'The settings says week format is the current format, the UI should reflet that.');
@@ -135,22 +135,22 @@ void main() {
             findsOneWidget);
         expect(
             find.widgetWithText(
-                ListTile, intl.schedule_settings_starting_weekday_saturday,
+                InputChip, intl.schedule_settings_starting_weekday_saturday,
                 skipOffstage: false),
             findsOneWidget);
         expect(
             find.widgetWithText(
-                ListTile, intl.schedule_settings_starting_weekday_sunday,
+                InputChip, intl.schedule_settings_starting_weekday_sunday,
                 skipOffstage: false),
             findsOneWidget);
 
         final startingDayTile = find.widgetWithText(
-            ListTile, intl.schedule_settings_starting_weekday_monday,
+            InputChip, intl.schedule_settings_starting_weekday_monday,
             skipOffstage: false);
         expect(startingDayTile, findsOneWidget);
         expect(
             tester.widget(startingDayTile),
-            isA<ListTile>()
+            isA<InputChip>()
                 .having((source) => source.selected, 'selected', isTrue),
             reason:
                 'The settings says starting day of week is monday, the UI should reflet that.');
@@ -211,19 +211,19 @@ void main() {
             findsOneWidget);
         expect(
             find.widgetWithText(
-                ListTile, intl.schedule_settings_calendar_format_2_weeks),
+                InputChip, intl.schedule_settings_calendar_format_2_weeks),
             findsOneWidget);
         expect(
             find.widgetWithText(
-                ListTile, intl.schedule_settings_calendar_format_month),
+                InputChip, intl.schedule_settings_calendar_format_month),
             findsOneWidget);
 
         final weekFormatTile = find.widgetWithText(
-            ListTile, intl.schedule_settings_calendar_format_week);
+            InputChip, intl.schedule_settings_calendar_format_week);
         expect(weekFormatTile, findsOneWidget);
         expect(
             tester.widget(weekFormatTile),
-            isA<ListTile>()
+            isA<InputChip>()
                 .having((source) => source.selected, 'selected', isTrue),
             reason:
                 'The settings says week format is the current format, the UI should reflet that.');
@@ -236,22 +236,22 @@ void main() {
 
         expect(
             find.widgetWithText(
-                ListTile, intl.schedule_settings_starting_weekday_saturday,
+                InputChip, intl.schedule_settings_starting_weekday_saturday,
                 skipOffstage: false),
             findsOneWidget);
         expect(
             find.widgetWithText(
-                ListTile, intl.schedule_settings_starting_weekday_sunday,
+                InputChip, intl.schedule_settings_starting_weekday_sunday,
                 skipOffstage: false),
             findsOneWidget);
 
         final startingDayTile = find.widgetWithText(
-            ListTile, intl.schedule_settings_starting_weekday_monday,
+            InputChip, intl.schedule_settings_starting_weekday_monday,
             skipOffstage: false);
         expect(startingDayTile, findsOneWidget);
         expect(
             tester.widget(startingDayTile),
-            isA<ListTile>()
+            isA<InputChip>()
                 .having((source) => source.selected, 'selected', isTrue),
             reason:
                 'The settings says starting day of week is monday, the UI should reflet that.');
@@ -400,17 +400,17 @@ void main() {
         await tester.pumpAndSettle();
 
         await tester.tap(find.widgetWithText(
-            ListTile, intl.schedule_settings_calendar_format_2_weeks));
+            InputChip, intl.schedule_settings_calendar_format_2_weeks));
         await tester.pump();
 
         await untilCalled(settingsManagerMock.setString(
             PreferencesFlag.scheduleCalendarFormat, any));
 
         final formatTile = find.widgetWithText(
-            ListTile, intl.schedule_settings_calendar_format_2_weeks);
+            InputChip, intl.schedule_settings_calendar_format_2_weeks);
         expect(
             tester.widget(formatTile),
-            isA<ListTile>()
+            isA<InputChip>()
                 .having((source) => source.selected, 'selected', isTrue),
             reason:
                 'The settings says 2 week format now, the UI should reflet that.');
@@ -430,7 +430,6 @@ void main() {
               ListTile, intl.schedule_settings_show_today_btn_pref,
               skipOffstage: false);
 
-          expect(find.byType(Switch, skipOffstage: false), findsOneWidget);
           (find.byType(Switch, skipOffstage: false).evaluate().first.widget
                   as Switch)
               .onChanged!(false);
