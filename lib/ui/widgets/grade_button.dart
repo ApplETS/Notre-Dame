@@ -19,6 +19,7 @@ import 'package:notredame/ui/utils/discovery_components.dart';
 class GradeButton extends StatelessWidget {
   final Course course;
   final bool showDiscovery;
+  final Color? color;
 
   /// Used to redirect on the dashboard.
   final NavigationService _navigationService = locator<NavigationService>();
@@ -26,11 +27,13 @@ class GradeButton extends StatelessWidget {
   /// Settings manager
   final SettingsManager _settingsManager = locator<SettingsManager>();
 
-  GradeButton(this.course, {this.showDiscovery = false});
+  GradeButton(this.course, {this.color, this.showDiscovery = false});
 
   @override
   Widget build(BuildContext context) => Card(
+        color: color,
         child: InkWell(
+          borderRadius: BorderRadius.circular(10),
           onTap: () async {
             if (ModalRoute.of(context)!.settings.name ==
                     RouterPaths.dashboard ||
