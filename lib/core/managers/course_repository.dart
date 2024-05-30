@@ -469,7 +469,7 @@ class CourseRepository {
     // If there isn't the grade yet, will fetch the summary.
     // We don't do this for every course to avoid losing time.
     for (final course in fetchedCourses) {
-      course.reviews = _getReviewForCourse(course, fetchedCourseReviews);
+      course.reviews = _getReviewsForCourse(course, fetchedCourseReviews);
       if (course.grade == null) {
         try {
           await getCourseSummary(course);
@@ -589,7 +589,7 @@ class CourseRepository {
   }
 
   /// Get the evaluation for a course or null if not found.
-  List<CourseReview>? _getReviewForCourse(
+  List<CourseReview>? _getReviewsForCourse(
       Course course, Map<String, List<CourseReview>> reviews) {
     final reviewsList = reviews[course.session]
         ?.where((element) =>
