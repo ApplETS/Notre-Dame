@@ -12,6 +12,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:notredame/core/services/analytics_service.dart';
 import 'package:notredame/core/services/navigation_service.dart';
 import 'package:notredame/core/services/networking_service.dart';
+import 'package:notredame/core/services/remote_config_service.dart';
 import 'package:notredame/ui/views/news_details_view.dart';
 import '../../helpers.dart';
 
@@ -23,6 +24,7 @@ void main() {
     setupAppIntl();
     setupAnalyticsServiceMock();
     setupNetworkingServiceMock();
+    setupRemoteConfigServiceMock();
 
     sampleNews = News(
       id: "4627a622-f7c7-4ff9-9a01-50c69333ff42",
@@ -60,6 +62,7 @@ void main() {
     unregister<NavigationService>();
     unregister<AnalyticsService>();
     unregister<NetworkingService>();
+    unregister<RemoteConfigService>();
   });
 
   group('NewsDetailsView Tests', () {
