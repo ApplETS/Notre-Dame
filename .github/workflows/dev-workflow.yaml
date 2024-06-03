@@ -125,7 +125,7 @@ jobs:
           name: lcov.info
       # Comment coverage report
       - name: Comment the coverage of the PR
-        uses: romeovs/lcov-reporter-action@v0.3.1
+        uses: romeovs/lcov-reporter-action@v0.4.0
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           lcov-file: ./lcov.info
