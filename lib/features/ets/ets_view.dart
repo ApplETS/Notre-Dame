@@ -23,12 +23,12 @@ class _ETSViewState extends State<ETSView> {
 
   @override
   Widget build(BuildContext context) {
-    if (!_remoteConfigService.helloFeatureToggle) {
-      return BaseScaffold(
-        appBar: _buildAppBar(context),
-        body: QuickLinksView(),
-      );
-    }
+    // if (!_remoteConfigService.helloFeatureToggle) {
+    //   return BaseScaffold(
+    //     appBar: _buildAppBar(context),
+    //     body: QuickLinksView(),
+    //   );
+    // }
 
     final List<String> tabs = [
       AppIntl.of(context)!.news_title,
