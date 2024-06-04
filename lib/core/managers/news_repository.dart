@@ -21,12 +21,14 @@ class NewsRepository {
       {int pageNumber = 1,
       int pageSize = 3,
       String? organizerId,
-      String? title}) async {
+      String? title,
+      DateTime? startDate}) async {
     final PaginatedNews pagination = await _helloApiClient.getEvents(
         pageNumber: pageNumber,
         pageSize: pageSize,
         organizerId: organizerId,
-        title: title);
+        title: title,
+        startDate: startDate);
     return pagination;
   }
 }

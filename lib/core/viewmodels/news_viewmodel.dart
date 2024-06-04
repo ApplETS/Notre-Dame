@@ -30,6 +30,7 @@ class NewsViewModel extends BaseViewModel implements Initialisable {
       final pagination = await _newsRepository.getNews(
         pageNumber: pageNumber,
         title: title != "" ? title : null,
+        // startDate: DateTime.now(),
       );
       final isLastPage = pagination?.totalPages == pageNumber;
       if (isLastPage) {
