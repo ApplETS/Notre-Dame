@@ -35,7 +35,7 @@ void main() {
           useScaffold: false));
       await tester.pumpAndSettle();
 
-      expect(find.byType(BottomBar), findsOneWidget);
+      expect(find.byType(NavigationRail), findsOneWidget);
       expect(find.byType(CircularProgressIndicator), findsNothing);
     });
 
