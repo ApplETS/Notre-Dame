@@ -49,22 +49,17 @@ class _NavRailState extends State<NavRail> {
     switch (routeName) {
       case RouterPaths.dashboard:
         _currentView = NavRail.dashboardView;
-        break;
       case RouterPaths.schedule:
         _currentView = NavRail.scheduleView;
-        break;
       case RouterPaths.student:
         _currentView = NavRail.studentView;
-        break;
       case RouterPaths.ets:
       case RouterPaths.security:
         _currentView = NavRail.etsView;
-        break;
       case RouterPaths.more:
       case RouterPaths.settings:
       case RouterPaths.about:
         _currentView = NavRail.moreView;
-        break;
     }
 
     return _currentView;
