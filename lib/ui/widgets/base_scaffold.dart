@@ -123,12 +123,13 @@ class _BaseScaffoldState extends State<BaseScaffold> {
       children: [
         Row(
           children: [
-            ColoredBox(
-              color: Theme.of(context).brightness == Brightness.light
-                  ? AppTheme.lightTheme().navigationRailTheme.backgroundColor!
-                  : AppTheme.darkTheme().navigationRailTheme.backgroundColor!,
-              child: SafeArea(
-                  top: false, bottom: false, right: false, child: NavRail()),
+            if (widget._showBottomBar)
+              ColoredBox(
+                color: Theme.of(context).brightness == Brightness.light
+                    ? AppTheme.lightTheme().navigationRailTheme.backgroundColor!
+                    : AppTheme.darkTheme().navigationRailTheme.backgroundColor!,
+                child: SafeArea(
+                    top: false, bottom: false, right: false, child: NavRail()),
             ),
             Expanded(
               child: Column(
