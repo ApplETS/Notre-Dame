@@ -55,6 +55,7 @@ class _GradesDetailsViewState extends State<GradesDetailsView>
         viewModelBuilder: () => GradesDetailsViewModel(
             course: widget.course, intl: AppIntl.of(context)!),
         builder: (context, model, child) => BaseScaffold(
+          safeArea: false,
           showBottomBar: false,
           body: Material(
             child: NestedScrollView(
@@ -100,27 +101,31 @@ class _GradesDetailsViewState extends State<GradesDetailsView>
                       ),
                       child: Padding(
                         padding: const EdgeInsets.only(bottom: 8.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            _buildClassInfo(model.course.title),
-                            if (model.course.teacherName != null)
+                        child: SafeArea(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              _buildClassInfo(model.course.title),
+                              if (model.course.teacherName != null)
+                                _buildClassInfo(AppIntl.of(context)!
+                                    .grades_teacher(model.course.teacherName!)),
                               _buildClassInfo(AppIntl.of(context)!
-                                  .grades_teacher(model.course.teacherName!)),
-                            _buildClassInfo(AppIntl.of(context)!
-                                .grades_group_number(model.course.group)),
-                            _buildClassInfo(AppIntl.of(context)!
-                                .credits_number(model.course.numberOfCredits)),
-                          ],
+                                  .grades_group_number(model.course.group)),
+                              _buildClassInfo(AppIntl.of(context)!
+                                  .credits_number(model.course.numberOfCredits)),
+                            ],
+                          ),
                         ),
                       ),
                     ),
                   ),
                 ),
               ],
-              body: Padding(
-                padding: const EdgeInsets.all(5.0),
-                child: _buildGradeEvaluations(model),
+              body: SafeArea(
+                child: Padding(
+                  padding: const EdgeInsets.all(5.0),
+                  child: _buildGradeEvaluations(model),
+                ),
               ),
             ),
           ),

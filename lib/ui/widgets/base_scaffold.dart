@@ -30,6 +30,8 @@ class BaseScaffold extends StatefulWidget {
 
   final bool _showBottomBar;
 
+  final bool _safeArea;
+
   final bool _isLoading;
 
   /// If true, interactions with the UI is limited while loading.
@@ -41,10 +43,12 @@ class BaseScaffold extends StatefulWidget {
       this.fab,
       this.fabPosition,
       bool isLoading = false,
+        bool safeArea = true,
       bool isInteractionLimitedWhileLoading = true,
       bool showBottomBar = true})
       : _showBottomBar = showBottomBar,
         _isLoading = isLoading,
+  _safeArea = safeArea,
         _isInteractionLimitedWhileLoading = isInteractionLimitedWhileLoading;
 
   @override
@@ -135,9 +139,11 @@ class _BaseScaffoldState extends State<BaseScaffold> {
               child: Column(
                 children: [
                   if (widget.appBar != null) widget.appBar!,
-                  Expanded(
-                      child: SafeArea(
-                          bottom: false, top: false, child: widget.body!)),
+                    Expanded(
+                      child: widget._safeArea
+                          ? SafeArea(bottom: false, top: false, child: widget.body!)
+                          : widget.body!,
+                    )
                 ],
               ),
             ),
