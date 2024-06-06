@@ -2,6 +2,7 @@
 import 'dart:async';
 
 // Flutter imports:
+import 'package:ets_api_clients/clients.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
@@ -44,6 +45,10 @@ Future<void> main() async {
   // Manage the settings
   final SettingsManager settingsManager = locator<SettingsManager>();
   await settingsManager.fetchLanguageAndThemeMode();
+
+  // Initialize hello
+  final HelloAPIClient helloApiClient = locator<HelloAPIClient>();
+  helloApiClient.apiLink = remoteConfigService.helloApiUrl;
 
   // init home widget
   final AppWidgetService appWidgetService = locator<AppWidgetService>();

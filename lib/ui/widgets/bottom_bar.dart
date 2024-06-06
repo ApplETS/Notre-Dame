@@ -54,6 +54,8 @@ class _BottomBarState extends State<BottomBar> {
         _currentView = BottomBar.studentView;
       case RouterPaths.ets:
       case RouterPaths.security:
+      case RouterPaths.news:
+      case RouterPaths.usefulLinks:
         _currentView = BottomBar.etsView;
       case RouterPaths.more:
       case RouterPaths.settings:
