@@ -43,12 +43,12 @@ class BaseScaffold extends StatefulWidget {
       this.fab,
       this.fabPosition,
       bool isLoading = false,
-        bool safeArea = true,
+      bool safeArea = true,
       bool isInteractionLimitedWhileLoading = true,
       bool showBottomBar = true})
       : _showBottomBar = showBottomBar,
         _isLoading = isLoading,
-  _safeArea = safeArea,
+        _safeArea = safeArea,
         _isInteractionLimitedWhileLoading = isInteractionLimitedWhileLoading;
 
   @override
@@ -134,16 +134,17 @@ class _BaseScaffoldState extends State<BaseScaffold> {
                     : AppTheme.darkTheme().navigationRailTheme.backgroundColor!,
                 child: SafeArea(
                     top: false, bottom: false, right: false, child: NavRail()),
-            ),
+              ),
             Expanded(
               child: Column(
                 children: [
                   if (widget.appBar != null) widget.appBar!,
-                    Expanded(
-                      child: widget._safeArea
-                          ? SafeArea(bottom: false, top: false, child: widget.body!)
-                          : widget.body!,
-                    )
+                  Expanded(
+                    child: widget._safeArea
+                        ? SafeArea(
+                            bottom: false, top: false, child: widget.body!)
+                        : widget.body!,
+                  )
                 ],
               ),
             ),

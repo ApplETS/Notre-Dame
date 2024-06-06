@@ -46,20 +46,20 @@ class _StudentViewState extends State<StudentView> {
                 forceElevated: innerBoxIsScrolled,
                 bottom: TabBar(
                   indicatorColor:
-                  (Theme.of(context).brightness == Brightness.dark)
-                      ? Colors.white
-                      : Colors.black26,
+                      (Theme.of(context).brightness == Brightness.dark)
+                          ? Colors.white
+                          : Colors.black26,
                   labelColor: (Theme.of(context).brightness == Brightness.dark)
                       ? Colors.white
                       : Colors.black,
                   tabs: List.generate(
                     tabs.length,
-                        (index) => index == 1
+                    (index) => index == 1
                         ? _buildDiscoveryFeatureDescriptionWidget(
-                        context, tabs, index)
+                            context, tabs, index)
                         : Tab(
-                      text: tabs[index],
-                    ),
+                            text: tabs[index],
+                          ),
                   ),
                 ),
               ),
