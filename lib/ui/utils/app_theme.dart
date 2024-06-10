@@ -17,6 +17,8 @@ class AppTheme {
   static const Color darkThemeBackgroundAccent =
       Color.fromARGB(255, 50, 48, 48);
   static const Color lightThemeBackground = Color(0xfffafafa);
+  static const Color lightMenuBackground = Color(0xffcccccc);
+  static const Color darkMenuBackground = Color(0xff2a2a2a);
 
   // App|ETS colors
   static const Color appletsPurple = Color(0xff19375f);
@@ -100,7 +102,7 @@ class AppTheme {
         bottomNavigationBarTheme: lightTheme.bottomNavigationBarTheme
             .copyWith(selectedItemColor: etsLightRed),
         navigationRailTheme: const NavigationRailThemeData(
-          backgroundColor: Color(0xffcccccc),
+          backgroundColor: lightMenuBackground,
           groupAlignment: 0,
           indicatorColor: Colors.transparent,
           selectedLabelTextStyle: TextStyle(color: etsLightRed),
@@ -127,7 +129,7 @@ class AppTheme {
         bottomNavigationBarTheme: darkTheme.bottomNavigationBarTheme
             .copyWith(selectedItemColor: etsLightRed),
         navigationRailTheme: const NavigationRailThemeData(
-          backgroundColor: Color(0xff2a2a2a),
+          backgroundColor: darkMenuBackground,
           groupAlignment: 0,
           indicatorColor: Colors.transparent,
           selectedLabelTextStyle: TextStyle(color: etsLightRed),
