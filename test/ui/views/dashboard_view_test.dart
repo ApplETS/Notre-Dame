@@ -13,10 +13,10 @@ import 'package:flutter_test/flutter_test.dart';
 // Project imports:
 import 'package:notredame/core/constants/preferences_flags.dart';
 import 'package:notredame/core/constants/update_code.dart';
-import 'package:notredame/ui/views/dashboard_view.dart';
-import 'package:notredame/ui/widgets/course_activity_tile.dart';
+import 'package:notredame/features/courses/dashboard_view.dart';
+import 'package:notredame/features/courses/widgets/course_activity_tile.dart';
 import 'package:notredame/ui/widgets/dismissible_card.dart';
-import 'package:notredame/ui/widgets/grade_button.dart';
+import 'package:notredame/features/grades/widgets/grade_button.dart';
 import '../../helpers.dart';
 import '../../mock/managers/course_repository_mock.dart';
 import '../../mock/managers/settings_manager_mock.dart';

@@ -4,7 +4,7 @@ import 'package:home_widget/home_widget.dart';
 
 // Project imports:
 import 'package:notredame/core/constants/widget_helper.dart';
-import 'package:notredame/core/models/widget_models.dart';
+import 'package:notredame/features/grades/widget_models.dart';
 import 'package:notredame/core/services/app_widget_service.dart';
 import '../helpers.dart';
 import '../mock/services/home_widget_mock.dart';

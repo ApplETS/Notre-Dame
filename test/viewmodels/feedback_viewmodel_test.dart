@@ -15,10 +15,10 @@ import 'package:mockito/mockito.dart';
 // Project imports:
 import 'package:notredame/core/constants/feedback_type.dart';
 import 'package:notredame/core/constants/preferences_flags.dart';
-import 'package:notredame/core/models/feedback_issue.dart';
+import 'package:notredame/features/feedback/feedback_issue.dart';
 import 'package:notredame/core/services/github_api.dart';
-import 'package:notredame/core/services/navigation_service.dart';
-import 'package:notredame/core/viewmodels/feedback_viewmodel.dart';
+import 'package:notredame/features/navigation/navigation_service.dart';
+import 'package:notredame/features/feedback/feedback_viewmodel.dart';
 import '../helpers.dart';
 import '../mock/services/github_api_mock.dart';
 import '../mock/services/preferences_service_mock.dart';

@@ -11,10 +11,10 @@ import 'package:flutter_test/flutter_test.dart';
 
 // Project imports:
 import 'package:notredame/core/constants/quick_links.dart';
-import 'package:notredame/core/managers/quick_link_repository.dart';
+import 'package:notredame/features/quick-link/quick_link_repository.dart';
 import 'package:notredame/core/services/launch_url_service.dart';
 import 'package:notredame/core/services/networking_service.dart';
-import 'package:notredame/ui/views/quick_links_view.dart';
+import 'package:notredame/features/quick-link/quick_links_view.dart';
 import 'package:notredame/ui/widgets/web_link_card.dart';
 import '../../helpers.dart';
 import '../../mock/managers/quick_links_repository_mock.dart';

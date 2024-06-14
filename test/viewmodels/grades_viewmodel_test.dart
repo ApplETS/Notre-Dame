@@ -5,10 +5,10 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 
 // Project imports:
-import 'package:notredame/core/managers/course_repository.dart';
-import 'package:notredame/core/managers/settings_manager.dart';
-import 'package:notredame/core/services/navigation_service.dart';
-import 'package:notredame/core/viewmodels/grades_viewmodel.dart';
+import 'package:notredame/features/courses/course_repository.dart';
+import 'package:notredame/features/settings/settings_manager.dart';
+import 'package:notredame/features/navigation/navigation_service.dart';
+import 'package:notredame/features/grades/grades_viewmodel.dart';
 import '../helpers.dart';
 import '../mock/managers/course_repository_mock.dart';
 

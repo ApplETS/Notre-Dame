@@ -6,13 +6,13 @@ import 'package:mockito/mockito.dart';
 
 // Project imports:
 import 'package:notredame/core/constants/router_paths.dart';
-import 'package:notredame/core/managers/cache_manager.dart';
-import 'package:notredame/core/managers/course_repository.dart';
-import 'package:notredame/core/managers/settings_manager.dart';
-import 'package:notredame/core/managers/user_repository.dart';
-import 'package:notredame/core/services/navigation_service.dart';
+import 'package:notredame/features/app/update/cache_manager.dart';
+import 'package:notredame/features/courses/course_repository.dart';
+import 'package:notredame/features/settings/settings_manager.dart';
+import 'package:notredame/features/login/user_repository.dart';
+import 'package:notredame/features/navigation/navigation_service.dart';
 import 'package:notredame/core/services/preferences_service.dart';
-import 'package:notredame/core/viewmodels/more_viewmodel.dart';
+import 'package:notredame/features/more/more_viewmodel.dart';
 import '../helpers.dart';
 import '../mock/managers/cache_manager_mock.dart';
 import '../mock/managers/course_repository_mock.dart';

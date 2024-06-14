@@ -11,7 +11,7 @@ import 'package:table_calendar/table_calendar.dart';
 
 // Project imports:
 import 'package:notredame/core/constants/preferences_flags.dart';
-import 'package:notredame/core/managers/settings_manager.dart';
+import 'package:notredame/features/settings/settings_manager.dart';
 import 'package:notredame/core/services/preferences_service.dart';
 import '../helpers.dart';
 import '../mock/services/analytics_service_mock.dart';

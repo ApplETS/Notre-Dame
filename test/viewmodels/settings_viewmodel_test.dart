@@ -8,8 +8,8 @@ import 'package:mockito/mockito.dart';
 
 // Project imports:
 import 'package:notredame/core/constants/preferences_flags.dart';
-import 'package:notredame/core/managers/settings_manager.dart';
-import 'package:notredame/core/viewmodels/settings_viewmodel.dart';
+import 'package:notredame/features/settings/settings_manager.dart';
+import 'package:notredame/features/settings/settings_viewmodel.dart';
 import '../helpers.dart';
 import '../mock/managers/settings_manager_mock.dart';
 

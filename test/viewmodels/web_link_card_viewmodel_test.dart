@@ -7,12 +7,12 @@ import 'package:mockito/mockito.dart';
 
 // Project imports:
 import 'package:notredame/core/constants/router_paths.dart';
-import 'package:notredame/core/managers/settings_manager.dart';
-import 'package:notredame/core/models/quick_link.dart';
+import 'package:notredame/features/settings/settings_manager.dart';
+import 'package:notredame/features/quick-link/quick_link.dart';
 import 'package:notredame/core/services/analytics_service.dart';
 import 'package:notredame/core/services/internal_info_service.dart';
-import 'package:notredame/core/services/navigation_service.dart';
-import 'package:notredame/core/viewmodels/web_link_card_viewmodel.dart';
+import 'package:notredame/features/navigation/navigation_service.dart';
+import 'package:notredame/features/navigation/web_link_card_viewmodel.dart';
 import '../helpers.dart';
 import '../mock/services/analytics_service_mock.dart';
 import '../mock/services/internal_info_service_mock.dart';

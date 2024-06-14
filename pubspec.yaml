@@ -108,3 +108,12 @@ flutter:
 
 flutter_intl:
   enabled: true
+
+dependency_overrides:
+  intl: any
+
+dependency_overrides:
+  intl: any
+
+dependency_overrides:
+  intl: any

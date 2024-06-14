@@ -6,9 +6,9 @@ import 'package:rive/rive.dart';
 // Project imports:
 import 'package:notredame/core/constants/router_paths.dart';
 import 'package:notredame/core/services/analytics_service.dart';
-import 'package:notredame/core/services/navigation_service.dart';
+import 'package:notredame/features/navigation/navigation_service.dart';
 import 'package:notredame/core/services/rive_animation_service.dart';
-import 'package:notredame/core/viewmodels/not_found_viewmodel.dart';
+import 'package:notredame/features/error/not_found_viewmodel.dart';
 import '../helpers.dart';
 import '../mock/services/analytics_service_mock.dart';
 import '../mock/services/navigation_service_mock.dart';

@@ -3,7 +3,7 @@ import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
 // Project imports:
-import 'package:notredame/core/services/in_app_review_service.dart';
+import 'package:notredame/features/feedback/in_app_review_service.dart';
 import 'in_app_review_service_mock.mocks.dart';
 
 /// Mock for the [AnalyticsService]

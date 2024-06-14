@@ -4,9 +4,9 @@ import 'package:flutter_test/flutter_test.dart';
 
 // Project imports:
 import 'package:notredame/core/constants/quick_links.dart';
-import 'package:notredame/core/managers/quick_link_repository.dart';
-import 'package:notredame/core/models/quick_link.dart';
-import 'package:notredame/core/models/quick_link_data.dart';
+import 'package:notredame/features/quick-link/quick_link_repository.dart';
+import 'package:notredame/features/quick-link/quick_link.dart';
+import 'package:notredame/features/quick-link/quick_link_data.dart';
 import 'package:notredame/core/viewmodels/quick_links_viewmodel.dart';
 import '../helpers.dart';
 import '../mock/managers/quick_links_repository_mock.dart';

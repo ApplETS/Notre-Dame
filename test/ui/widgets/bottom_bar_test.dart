@@ -8,7 +8,7 @@ import 'package:mockito/mockito.dart';
 
 // Project imports:
 import 'package:notredame/core/constants/router_paths.dart';
-import 'package:notredame/core/services/navigation_service.dart';
+import 'package:notredame/features/navigation/navigation_service.dart';
 import 'package:notredame/core/services/networking_service.dart';
 import 'package:notredame/ui/widgets/bottom_bar.dart';
 import '../../helpers.dart';
