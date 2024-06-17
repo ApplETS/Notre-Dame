@@ -25,6 +25,7 @@ class _SettingsViewState extends State<SettingsView> {
             title: Text(AppIntl.of(context)!.settings_title),
           ),
           body: ListView(
+            padding: EdgeInsets.zero,
             children: [
               ListTile(
                 title: Text(
