@@ -4,7 +4,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 
 // Project imports:
-import 'package:notredame/core/constants/programs_credits.dart';
+import 'package:notredame/features/student/profile/programs_credits.dart';
 import 'package:notredame/features/app/repository/user_repository.dart';
 import 'package:notredame/features/student/profile/profile_viewmodel.dart';
 import '../helpers.dart';

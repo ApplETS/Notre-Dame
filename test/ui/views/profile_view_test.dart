@@ -10,7 +10,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 // Project imports:
-import 'package:notredame/core/services/networking_service.dart';
+import 'package:notredame/features/app/integration/networking_service.dart';
 import 'package:notredame/features/student/profile/profile_view.dart';
 import '../../helpers.dart';
 import '../../mock/managers/user_repository_mock.dart';

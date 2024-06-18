@@ -5,7 +5,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 
 // Project imports:
-import 'package:notredame/features/courses/course_repository.dart';
+import 'package:notredame/features/app/repository/course_repository.dart';
 import 'package:notredame/features/more/settings/settings_manager.dart';
 import 'package:notredame/features/student/grades/grade_details/grades_details_viewmodel.dart';
 import '../helpers.dart';

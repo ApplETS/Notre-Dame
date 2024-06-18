@@ -5,7 +5,7 @@ import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
 // Project imports:
-import 'package:notredame/features/courses/course_repository.dart';
+import 'package:notredame/features/app/repository/course_repository.dart';
 import 'course_repository_mock.mocks.dart';
 
 @GenerateNiceMocks([MockSpec<CourseRepository>()])

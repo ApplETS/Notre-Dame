@@ -8,7 +8,7 @@ import 'package:webview_flutter_android/webview_flutter_android.dart';
 
 // Project imports:
 import 'package:notredame/features/ets/quick-link/models/quick_link.dart';
-import 'package:notredame/ui/widgets/link_web_view.dart';
+import 'package:notredame/features/app/widgets/link_web_view.dart';
 import '../../helpers.dart';
 
 final _quickLink = QuickLink(

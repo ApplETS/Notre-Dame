@@ -7,7 +7,7 @@ import 'package:mockito/mockito.dart';
 
 // Project imports:
 import 'package:notredame/features/more/settings/settings_manager.dart';
-import 'package:notredame/core/services/launch_url_service.dart';
+import 'package:notredame/features/app/integration/launch_url_service.dart';
 import 'package:notredame/features/more/faq/faq_viewmodel.dart';
 import '../helpers.dart';
 import '../mock/services/launch_url_service_mock.dart';

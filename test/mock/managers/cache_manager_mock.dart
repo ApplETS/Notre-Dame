@@ -4,7 +4,7 @@ import 'package:mockito/mockito.dart';
 
 // Project imports:
 import 'package:notredame/features/app/storage/cache_manager.dart';
-import 'package:notredame/core/utils/cache_exception.dart';
+import 'package:notredame/utils/cache_exception.dart';
 import 'cache_manager_mock.mocks.dart';
 
 /// Mock for the [CacheManager]

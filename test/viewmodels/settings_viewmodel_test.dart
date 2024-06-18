@@ -7,7 +7,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 
 // Project imports:
-import 'package:notredame/core/constants/preferences_flags.dart';
+import 'package:notredame/constants/preferences_flags.dart';
 import 'package:notredame/features/more/settings/settings_manager.dart';
 import 'package:notredame/features/more/settings/settings_viewmodel.dart';
 import '../helpers.dart';

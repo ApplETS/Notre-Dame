@@ -12,7 +12,7 @@ import 'package:mockito/mockito.dart';
 
 // Project imports:
 import 'package:notredame/features/app/storage/cache_manager.dart';
-import 'package:notredame/features/courses/course_repository.dart';
+import 'package:notredame/features/app/repository/course_repository.dart';
 import 'package:notredame/features/app/repository/user_repository.dart';
 import 'package:notredame/features/app/analytics/analytics_service.dart';
 import '../helpers.dart';
