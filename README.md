@@ -35,7 +35,7 @@ _Note: This guide is also available in: [Français](https://github.com/ApplETS/N
 
 - Flutter SDK v3.19.3 or higher
 - Openssl v1.1.1g or higher
-- Java sdk 11
+- Java sdk 17
 
 ## Before running the code
 

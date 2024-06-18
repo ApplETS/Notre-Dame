@@ -5,7 +5,7 @@ description: The 4th generation of ÉTSMobile, the main gateway between the Éco
 # pub.dev using `pub publish`. This is preferred for private packages.
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 
-version: 4.39.2+1
+version: 4.43.0+1
 
 environment:
   sdk: ">=3.3.0 <4.0.0"
@@ -41,11 +41,12 @@ dependencies:
   flutter_siren_2: ^1.2.2
 
   # Customs
+  # TODO: Change to the latest version, once reviewed and accepted
   ets_api_clients:
-    #    path: ../ETS-API-Clients/
+    #path: ../ETS-API-Clients/
     git:
       url: https://github.com/ApplETS/ETS-API-Clients.git
-      ref: 1.0.0
+      ref: 1.2.5
 
   # Other
   http: ^1.2.0
@@ -70,12 +71,16 @@ dependencies:
   marquee: ^2.2.3
   auto_size_text: ^3.0.0
   easter_egg_trigger: ^1.0.1
+  timeago: ^3.3.0
   calendar_view: ^1.1.0
   carousel_slider: ^4.2.1
   reorderable_grid_view: ^2.2.8
-  import_sorter: ^4.6.0
   flutter_keychain: ^2.4.0
+  shimmer: ^3.0.0
+  infinite_scroll_pagination: ^3.2.0
   device_calendar: ^4.3.1
+  share_plus: ^4.5.3
+  flutter_markdown: ^0.7.1
 
 dev_dependencies:
   flutter_test:
@@ -85,6 +90,7 @@ dev_dependencies:
   flutter_config: ^2.0.2
   flutter_launcher_icons: ^0.13.1
   build_runner: ^2.4.8
+  import_sorter: ^4.6.0
 
 flutter_icons:
   android: "launcher_icon"

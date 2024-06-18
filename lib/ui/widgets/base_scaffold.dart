@@ -13,8 +13,9 @@ import 'package:notredame/core/services/networking_service.dart';
 import 'package:notredame/core/utils/utils.dart';
 import 'package:notredame/locator.dart';
 import 'package:notredame/ui/utils/app_theme.dart';
-import 'package:notredame/ui/utils/loading.dart';
 import 'package:notredame/ui/widgets/bottom_bar.dart';
+import 'package:notredame/ui/widgets/navigation_rail.dart';
+import 'package:notredame/ui/utils/loading.dart';
 
 /// Basic Scaffold to avoid boilerplate code in the application.
 /// Contains a loader controlled by [_isLoading]
@@ -29,6 +30,8 @@ class BaseScaffold extends StatefulWidget {
 
   final bool _showBottomBar;
 
+  final bool _safeArea;
+
   final bool _isLoading;
 
   /// If true, interactions with the UI is limited while loading.
@@ -40,10 +43,12 @@ class BaseScaffold extends StatefulWidget {
       this.fab,
       this.fabPosition,
       bool isLoading = false,
+      bool safeArea = true,
       bool isInteractionLimitedWhileLoading = true,
       bool showBottomBar = true})
       : _showBottomBar = showBottomBar,
         _isLoading = isLoading,
+        _safeArea = safeArea,
         _isInteractionLimitedWhileLoading = isInteractionLimitedWhileLoading;
 
   @override
@@ -83,27 +88,77 @@ class _BaseScaffoldState extends State<BaseScaffold> {
   @override
   Widget build(BuildContext context) => Scaffold(
         body: Scaffold(
-          appBar: widget.appBar,
-          body: SafeArea(
-            top: false,
-            child: Stack(
-              children: [
-                widget.body ?? const SizedBox(),
-                if (widget._isLoading)
-                  buildLoading(
-                      isInteractionLimitedWhileLoading:
-                          widget._isInteractionLimitedWhileLoading)
-                else
-                  const SizedBox()
-              ],
-            ),
-          ),
-          bottomNavigationBar: widget._showBottomBar ? BottomBar() : null,
+          appBar: (MediaQuery.of(context).orientation == Orientation.portrait)
+              ? widget.appBar
+              : null,
+          body: (MediaQuery.of(context).orientation == Orientation.portrait)
+              ? bodyPortraitMode()
+              : bodyLandscapeMode(),
+          bottomNavigationBar:
+              (MediaQuery.of(context).orientation == Orientation.portrait &&
+                      widget._showBottomBar)
+                  ? BottomBar()
+                  : null,
           floatingActionButton: widget.fab,
           floatingActionButtonLocation: widget.fabPosition,
         ),
         bottomNavigationBar: _isOffline ? buildOfflineBar(context) : null,
       );
+
+  Widget bodyPortraitMode() {
+    return SafeArea(
+      top: false,
+      child: Stack(
+        children: [
+          widget.body!,
+          if (widget._isLoading)
+            buildLoading(
+                isInteractionLimitedWhileLoading:
+                    widget._isInteractionLimitedWhileLoading)
+          else
+            const SizedBox()
+        ],
+      ),
+    );
+  }
+
+  Widget bodyLandscapeMode() {
+    return Stack(
+      children: [
+        Row(
+          children: [
+            if (widget._showBottomBar)
+              ColoredBox(
+                color: Theme.of(context).brightness == Brightness.light
+                    ? AppTheme.lightTheme().navigationRailTheme.backgroundColor!
+                    : AppTheme.darkTheme().navigationRailTheme.backgroundColor!,
+                child: SafeArea(
+                    top: false, bottom: false, right: false, child: NavRail()),
+              ),
+            Expanded(
+              child: Column(
+                children: [
+                  if (widget.appBar != null) widget.appBar!,
+                  Expanded(
+                    child: widget._safeArea
+                        ? SafeArea(
+                            bottom: false, top: false, child: widget.body!)
+                        : widget.body!,
+                  )
+                ],
+              ),
+            ),
+          ],
+        ),
+        if (widget._isLoading)
+          buildLoading(
+              isInteractionLimitedWhileLoading:
+                  widget._isInteractionLimitedWhileLoading)
+        else
+          const SizedBox()
+      ],
+    );
+  }
 
   Widget buildOfflineBar(BuildContext context) {
     return Stack(

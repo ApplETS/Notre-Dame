@@ -87,6 +87,8 @@
   "calendar_export_question": "Vers quel calendrier voulez-vous exporter cet événement?",
   "calendar_name": "Nom du calendrier",
   "calendar_select": "Veuillez sélectionner un calendrier",
+  "calendar_cancel": "Annuler",
+  "calendar_export": "Exporter",
 
   "grades_title": "Notes",
   "grades_msg_no_grades": "Aucune note disponible.\nTirez pour rafraichir",
@@ -116,6 +118,7 @@
   "grades_group": "Groupe",
   "grades_grade": "Note",
   "grades_median": "Médiane",
+  "grades_weighted": "Pondérée",
   "grades_standard_deviation": "Écart-type",
   "grades_percentile_rank": "Rang centile",
   "grades_target_date": "Date cible",
@@ -166,6 +169,7 @@
   "profile_program_completion_not_available": "ND",
   "profile_other_programs": "Autres Programmes",
   
+  "useful_link_title": "Liens utiles",
   "ets_security_title": "Sécurité",
   "ets_monets_title": "MonÉTS",
   "ets_bibliotech_title": "Bibliotech",
@@ -176,6 +180,53 @@
   "ets_schedule_generator": "HorairÉTS",
   "ets_gus": "GUS",
   "ets_papercut_title":"PaperCut",
+
+  "share": "Partager",
+  "export": "Exporter",
+
+  "news_title" : "Annonces",
+  "news_details_title" : "Annonce",
+  "news_event_date": "Date de l'événement",
+  "news_error_not_found_title" : "Oh oh!",
+  "news_error_not_found" : "Une erreur est survenue lors de la récupération des annonces. Veuillez réessayer plus tard.",
+  "news_no_more_card_title": "Vous êtes à jour!",
+  "news_no_more_card": "Vous avez atteint la fin des annonces. Revenez plus tard pour voir les prochaines annonces!",
+
+  "news_export_success": "L'annonce a été exporté avec succès",
+  "news_export_error": "Une erreur est survenue lors de l'exportation de l'événement",
+
+  "report_news": "Pourquoi signalez-vous cette annonce ?",
+  "report_as": "Signaler comme",
+  "report": "Signaler",
+  "report_toast": "Merci pour votre signalement ! ",
+  "report_reason_hint": "Commentaire",
+
+  "report_inappropriate_content": "Contenu inapproprié",
+  "report_inappropriate_content_description": "Annonce contenant des discours haineux, des images choquantes, ou du contenu adulte.",
+  "report_false_information": "Information fausse ou trompeuse",
+  "report_false_information_description": "Annonce qui semble être fausse ou qui induit en erreur.",
+  "report_harassment_or_abuse": "Harcèlement ou abus",
+  "report_harassment_or_abuse_description": "Annonce ciblant une personne ou un groupe de manière abusive.",
+  "report_outdated_content": "Contenu obsolète",
+  "report_outdated_content_description": "Annonce qui n’est plus d'actualité ou pertinente.",
+
+  "search": "Rechercher",
+
+  "news_author_notify_me": "Me notifier",
+  "news_author_dont_notify_me": "Ne plus recevoir de notifications",
+  "news_author_join_us": "Nous rejoindre",
+  "news_author_notified_for": "Vous recevrez une notification lorsque {author} publiera une annonce.",
+  "@news_author_notified_for": {
+    "placeholders": {
+      "author": {}
+    }
+  },
+  "news_author_not_notified_for": "Vous ne recevrez plus une notification lorsque {author} publiera une annonce.",
+  "@news_author_not_notified_for": {
+    "placeholders": {
+      "author": {}
+    }
+  },
 
   "more_about_applets_title": "À propos d'ApplETS",
   "more_report_bug": "Rapporter un bogue ou une amélioration",

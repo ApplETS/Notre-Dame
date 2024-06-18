@@ -69,7 +69,7 @@
   "schedule_settings_starting_weekday_friday": "Friday",
   "schedule_settings_starting_weekday_saturday": "Saturday",
   "schedule_settings_starting_weekday_sunday": "Sunday",
-  "schedule_select_course_activity": "Select the group of the labo",
+  "schedule_select_course_activity": "Select lab group",
   "schedule_already_today_toast": "Already showing today's schedule",
   "schedule_calendar_from": "From",
   "schedule_calendar_to": "To",
@@ -87,7 +87,8 @@
   "calendar_export_question": "Which calendar do you want to export to?",
   "calendar_name": "Calendar name",
   "calendar_select": "Please select a calendar",
-
+  "calendar_cancel": "Cancel",
+  "calendar_export": "Export",
 
   "grades_title": "Grades",
   "grades_msg_no_grades": "No grade available\nPull to refresh",
@@ -117,6 +118,7 @@
   "grades_group": "Group",
   "grades_grade": "Grade",
   "grades_median": "Median",
+  "grades_weighted": "Weighted",
   "grades_standard_deviation": "Standard Deviation",
   "grades_percentile_rank": "Percentile Rank",
   "grades_target_date": "Target Date",
@@ -167,6 +169,7 @@
   "profile_program_completion_not_available": "N/A",
   "profile_other_programs": "Other Programs",
 
+  "useful_link_title": "Useful links",
   "ets_security_title": "Security",
   "ets_monets_title": "MonÉTS",
   "ets_bibliotech_title": "Bibliotech",
@@ -177,6 +180,53 @@
   "ets_schedule_generator": "HorairÉTS",
   "ets_gus": "GUS",
   "ets_papercut_title":"PaperCut",
+
+  "news_title" : "News",
+  "news_error_not_found_title" : "Oh oh!",
+  "news_error_not_found" : "Something went wrong while trying to retrieve the news. Please try again later.",
+  "news_no_more_card_title": "You're all set!",
+  "news_no_more_card": "You have reached the end of the news list. Come back another time for more news!",
+  "news_details_title" : "News",
+  "news_event_date": "Event date",
+
+  "news_export_success": "Event successfuly exported",
+  "news_export_error": "An error occured while exporting the event",
+
+  "share": "Share",
+  "export": "Export",
+
+  "report_news": "Why are you reporting this news?",
+  "report_as": "Report as",
+  "report": "Report",
+  "report_toast": "Thank you for your report !",
+  "report_reason_hint": "Comment",
+
+  "report_inappropriate_content": "Inappropriate Content",
+  "report_inappropriate_content_description": "News containing hate speech, shocking images, or adult content.",
+  "report_false_information": "False or Misleading Information",
+  "report_false_information_description": "Ad that appears to be false or misleading.",
+  "report_harassment_or_abuse": "Harassment or Abuse",
+  "report_harassment_or_abuse_description": "News targeting a person or group in an abusive manner.",
+  "report_outdated_content": "Outdated Content",
+  "report_outdated_content_description": "Ad that is no longer up-to-date or relevant.",
+  
+  "search": "Search",
+
+  "news_author_notify_me": "Notify me",
+  "news_author_dont_notify_me": "No longer receive notifications",
+  "news_author_join_us": "Join us",
+  "news_author_notified_for": "You will receive a notification when {author} publishes an announcement.",
+  "@news_author_notified_for": {
+    "placeholders": {
+      "author": {}
+    }
+  },
+  "news_author_not_notified_for": "You will no longer receive a notification when {author} publishes an announcement.",
+  "@news_author_not_notified_for": {
+    "placeholders": {
+      "author": {}
+    }
+  },
 
   "more_about_applets_title": "About ApplETS",
   "more_report_bug": "Report a bug or request a feature",
