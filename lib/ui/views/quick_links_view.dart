@@ -10,7 +10,6 @@ import 'package:stacked/stacked.dart';
 import 'package:notredame/core/models/quick_link.dart';
 import 'package:notredame/core/viewmodels/quick_links_viewmodel.dart';
 import 'package:notredame/ui/utils/app_theme.dart';
-import 'package:notredame/ui/widgets/base_scaffold.dart';
 import 'package:notredame/ui/widgets/web_link_card.dart';
 
 class QuickLinksView extends StatefulWidget {
@@ -43,20 +42,10 @@ class _QuickLinksViewState extends State<QuickLinksView>
   Widget build(BuildContext context) =>
       ViewModelBuilder<QuickLinksViewModel>.reactive(
         viewModelBuilder: () => QuickLinksViewModel(AppIntl.of(context)!),
-        builder: (context, model, child) => BaseScaffold(
-          isLoading: model.isBusy,
-          appBar: _buildAppBar(context, model),
+        builder: (context, model, child) => Scaffold(
           body: _buildBody(context, model),
         ),
       );
-
-  AppBar _buildAppBar(BuildContext context, QuickLinksViewModel model) {
-    return AppBar(
-      title: Text(AppIntl.of(context)!.title_ets),
-      automaticallyImplyLeading: false,
-      actions: const [],
-    );
-  }
 
   Widget _buildBody(BuildContext context, QuickLinksViewModel model) {
     return GestureDetector(
@@ -68,34 +57,30 @@ class _QuickLinksViewState extends State<QuickLinksView>
           });
         }
       },
-      child: SafeArea(
-        child: Column(
-          children: [
+      child: Column(
+        children: [
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.only(top: 8.0, left: 8.0, right: 8.0),
+              child: _buildReorderableGridView(
+                  model, model.quickLinkList, _buildDeleteButton),
+            ),
+          ),
+          if (_editMode && model.deletedQuickLinks.isNotEmpty) ...[
+            const Divider(
+              thickness: 2,
+              indent: 10,
+              endIndent: 10,
+            ),
             Expanded(
-              flex: 2,
               child: Padding(
                 padding: const EdgeInsets.only(top: 8.0, left: 8.0, right: 8.0),
                 child: _buildReorderableGridView(
-                    model, model.quickLinkList, _buildDeleteButton),
+                    model, model.deletedQuickLinks, _buildAddButton),
               ),
             ),
-            if (_editMode && model.deletedQuickLinks.isNotEmpty) ...[
-              const Divider(
-                thickness: 2,
-                indent: 10,
-                endIndent: 10,
-              ),
-              Expanded(
-                child: Padding(
-                  padding:
-                      const EdgeInsets.only(top: 8.0, left: 8.0, right: 8.0),
-                  child: _buildReorderableGridView(
-                      model, model.deletedQuickLinks, _buildAddButton),
-                ),
-              ),
-            ],
           ],
-        ),
+        ],
       ),
     );
   }
@@ -115,6 +100,7 @@ class _QuickLinksViewState extends State<QuickLinksView>
     }
 
     return ReorderableGridView.count(
+      padding: EdgeInsets.zero,
       mainAxisSpacing: 2.0,
       crossAxisSpacing: 2.0,
       crossAxisCount: crossAxisCount,

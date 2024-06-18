@@ -30,6 +30,11 @@ class RemoteConfigService {
   // links
   static const _signetsPasswordResetUrl = "signets_password_reset_url";
 
+  // Hello
+  static const _helloFeatureToggle = "hello_feature_toggle";
+  static const _helloApiUrl = "hello_api_url";
+  static const _helloWebsiteUrl = "hello_website_url";
+
   static const _scheduleListViewDefault = "schedule_list_view_default";
   final FirebaseRemoteConfig _remoteConfig = FirebaseRemoteConfig.instance;
   final defaults = <String, dynamic>{
@@ -44,7 +49,10 @@ class RemoteConfigService {
     _dashboardMsgType: "",
     _signetsPasswordResetUrl: "",
     _privacyPolicyToggle: true,
-    _scheduleListViewDefault: true
+    _scheduleListViewDefault: true,
+    _helloFeatureToggle: false,
+    _helloApiUrl: "",
+    _helloWebsiteUrl: "",
   };
 
   Future initialize() async {
@@ -115,6 +123,21 @@ class RemoteConfigService {
   String get signetsPasswordResetUrl {
     fetch();
     return _remoteConfig.getString(_signetsPasswordResetUrl);
+  }
+
+  bool get helloFeatureToggle {
+    fetch();
+    return _remoteConfig.getBool(_helloFeatureToggle);
+  }
+
+  String get helloApiUrl {
+    fetch();
+    return _remoteConfig.getString(_helloApiUrl);
+  }
+
+  String get helloWebsiteUrl {
+    fetch();
+    return _remoteConfig.getString(_helloWebsiteUrl);
   }
 
   Future<void> fetch() async {

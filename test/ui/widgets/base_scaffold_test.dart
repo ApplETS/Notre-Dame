@@ -9,7 +9,6 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:notredame/core/services/navigation_service.dart';
 import 'package:notredame/core/services/networking_service.dart';
 import 'package:notredame/ui/widgets/base_scaffold.dart';
-import 'package:notredame/ui/widgets/bottom_bar.dart';
 import '../../helpers.dart';
 import '../../mock/services/analytics_service_mock.dart';
 
@@ -35,7 +34,7 @@ void main() {
           useScaffold: false));
       await tester.pumpAndSettle();
 
-      expect(find.byType(BottomBar), findsOneWidget);
+      expect(find.byType(NavigationRail), findsOneWidget);
       expect(find.byType(CircularProgressIndicator), findsNothing);
     });
 
