@@ -11,6 +11,7 @@ import 'package:ets_api_clients/models.dart';
 import 'package:logger/logger.dart';
 
 // Project imports:
+import 'package:notredame/core/constants/semester_codes.dart';
 import 'package:notredame/core/managers/cache_manager.dart';
 import 'package:notredame/core/managers/user_repository.dart';
 import 'package:notredame/core/services/analytics_service.dart';
@@ -200,7 +201,7 @@ class CourseRepository {
       fromCacheOnly = true;
     }
 
-    if (session == null) {
+    if (session == null || session == SemesterCodes.noActiveSemester) {
       _logger.d(
           "$tag - getScheduleDefaultActivities: Session is null, returning empty list.");
       return [];
