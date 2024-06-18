@@ -9,8 +9,8 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 // Project imports:
-import 'package:notredame/features/grades/widgets/grade_circular_progress.dart';
-import 'package:notredame/features/grades/widgets/grade_evaluation_tile.dart';
+import 'package:notredame/features/student/grades/widgets/grade_circular_progress.dart';
+import 'package:notredame/features/student/grades/widgets/grade_evaluation_tile.dart';
 import '../../helpers.dart';
 
 void main() {

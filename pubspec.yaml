@@ -8,7 +8,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 version: 4.42.0+1
 
 environment:
-  sdk: ">=3.3.0 <4.0.0"
+  sdk: '>=3.3.0 <4.0.0'
 
 dependencies:
   flutter:
@@ -87,11 +87,11 @@ dev_dependencies:
   import_sorter: ^4.6.0
 
 flutter_icons:
-  android: "launcher_icon"
-  ios: "LaunchImage"
-  image_path: "assets/icons/launcher_icon.png"
-  adaptive_icon_background: "#EF3F45"
-  adaptive_icon_foreground: "assets/icons/ic_launcher_foreground.png"
+  android: 'launcher_icon'
+  ios: 'LaunchImage'
+  image_path: 'assets/icons/launcher_icon.png'
+  adaptive_icon_background: '#EF3F45'
+  adaptive_icon_foreground: 'assets/icons/ic_launcher_foreground.png'
 
 flutter:
   uses-material-design: true
@@ -108,12 +108,3 @@ flutter:
 
 flutter_intl:
   enabled: true
-
-dependency_overrides:
-  intl: any
-
-dependency_overrides:
-  intl: any
-
-dependency_overrides:
-  intl: any

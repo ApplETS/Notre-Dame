@@ -8,7 +8,7 @@ import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
 // Project imports:
-import 'package:notredame/features/feedback/feedback_issue.dart';
+import 'package:notredame/features/more/feedback/models/feedback_issue.dart';
 import 'package:notredame/core/services/github_api.dart';
 import 'github_api_mock.mocks.dart';
 

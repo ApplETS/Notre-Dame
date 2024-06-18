@@ -5,9 +5,9 @@ import 'package:mockito/mockito.dart';
 
 // Project imports:
 import 'package:notredame/core/constants/router_paths.dart';
-import 'package:notredame/features/login/user_repository.dart';
-import 'package:notredame/features/navigation/navigation_service.dart';
-import 'package:notredame/features/login/login_viewmodel.dart';
+import 'package:notredame/features/app/repository/user_repository.dart';
+import 'package:notredame/features/app/navigation/navigation_service.dart';
+import 'package:notredame/features/welcome/login/login_viewmodel.dart';
 import '../helpers.dart';
 import '../mock/managers/user_repository_mock.dart';
 import '../mock/services/navigation_service_mock.dart';

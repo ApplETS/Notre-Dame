@@ -12,9 +12,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 // Project imports:
 import 'package:notredame/features/courses/course_repository.dart';
-import 'package:notredame/features/settings/settings_manager.dart';
+import 'package:notredame/features/more/settings/settings_manager.dart';
 import 'package:notredame/core/services/networking_service.dart';
-import 'package:notredame/features/grades/grade_details_view.dart';
+import 'package:notredame/features/student/grades/grade_details/grade_details_view.dart';
 import '../../helpers.dart';
 import '../../mock/managers/course_repository_mock.dart';
 

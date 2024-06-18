@@ -6,9 +6,9 @@ import 'package:home_widget/home_widget.dart';
 
 // Project imports:
 import 'package:notredame/constants/widget_helper.dart';
-import 'package:notredame/features/grades/widget_models.dart';
+import 'package:notredame/features/student/grades/widget_models.dart';
 import 'package:notredame/features/app/analytics/analytics_service.dart';
-import 'package:notredame/features/navigation/locator.dart';
+import 'package:notredame/utils/locator.dart';
 
 // MODEL
 

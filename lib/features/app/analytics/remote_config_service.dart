@@ -5,7 +5,7 @@ import 'package:firebase_remote_config/firebase_remote_config.dart';
 
 // Project imports:
 import 'package:notredame/features/app/analytics/analytics_service.dart';
-import 'package:notredame/features/navigation/locator.dart';
+import 'package:notredame/utils/locator.dart';
 
 //OTHERS
 

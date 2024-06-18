@@ -5,8 +5,8 @@ import 'package:mockito/mockito.dart';
 
 // Project imports:
 import 'package:notredame/core/constants/programs_credits.dart';
-import 'package:notredame/features/login/user_repository.dart';
-import 'package:notredame/features/student/profile_viewmodel.dart';
+import 'package:notredame/features/app/repository/user_repository.dart';
+import 'package:notredame/features/student/profile/profile_viewmodel.dart';
 import '../helpers.dart';
 import '../mock/managers/user_repository_mock.dart';
 

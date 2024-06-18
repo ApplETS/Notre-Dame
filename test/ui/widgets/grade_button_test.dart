@@ -7,9 +7,9 @@ import 'package:mockito/mockito.dart';
 // Project imports:
 import 'package:notredame/core/constants/preferences_flags.dart';
 import 'package:notredame/core/constants/router_paths.dart';
-import 'package:notredame/features/settings/settings_manager.dart';
-import 'package:notredame/features/navigation/navigation_service.dart';
-import 'package:notredame/features/grades/widgets/grade_button.dart';
+import 'package:notredame/features/more/settings/settings_manager.dart';
+import 'package:notredame/features/app/navigation/navigation_service.dart';
+import 'package:notredame/features/student/grades/widgets/grade_button.dart';
 import '../../helpers.dart';
 import '../../mock/managers/settings_manager_mock.dart';
 import '../../mock/services/navigation_service_mock.dart';

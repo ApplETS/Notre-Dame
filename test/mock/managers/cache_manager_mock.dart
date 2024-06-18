@@ -3,7 +3,7 @@ import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
 // Project imports:
-import 'package:notredame/features/app/update/cache_manager.dart';
+import 'package:notredame/features/app/storage/cache_manager.dart';
 import 'package:notredame/core/utils/cache_exception.dart';
 import 'cache_manager_mock.mocks.dart';
 

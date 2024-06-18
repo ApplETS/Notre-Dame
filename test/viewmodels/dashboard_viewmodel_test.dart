@@ -6,7 +6,7 @@ import 'package:mockito/mockito.dart';
 // Project imports:
 import 'package:notredame/core/constants/preferences_flags.dart';
 import 'package:notredame/core/constants/progress_bar_text_options.dart';
-import 'package:notredame/features/settings/settings_manager.dart';
+import 'package:notredame/features/more/settings/settings_manager.dart';
 import 'package:notredame/features/courses/dashboard_viewmodel.dart';
 import '../helpers.dart';
 import '../mock/managers/course_repository_mock.dart';

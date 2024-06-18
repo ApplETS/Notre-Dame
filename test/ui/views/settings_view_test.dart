@@ -11,7 +11,7 @@ import 'package:flutter_test/flutter_test.dart';
 
 // Project imports:
 import 'package:notredame/core/services/networking_service.dart';
-import 'package:notredame/features/settings/settings_view.dart';
+import 'package:notredame/features/more/settings/settings_view.dart';
 import '../../helpers.dart';
 import '../../mock/services/analytics_service_mock.dart';
 

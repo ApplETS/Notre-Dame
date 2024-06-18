@@ -16,7 +16,7 @@ import 'package:notredame/core/constants/update_code.dart';
 import 'package:notredame/features/courses/dashboard_view.dart';
 import 'package:notredame/features/courses/widgets/course_activity_tile.dart';
 import 'package:notredame/ui/widgets/dismissible_card.dart';
-import 'package:notredame/features/grades/widgets/grade_button.dart';
+import 'package:notredame/features/student/grades/widgets/grade_button.dart';
 import '../../helpers.dart';
 import '../../mock/managers/course_repository_mock.dart';
 import '../../mock/managers/settings_manager_mock.dart';

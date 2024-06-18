@@ -8,9 +8,9 @@ import 'package:table_calendar/table_calendar.dart';
 
 // Project imports:
 import 'package:notredame/constants/preferences_flags.dart';
-import 'package:notredame/features/dashboard/course_repository.dart';
-import 'package:notredame/features/settings/settings_manager.dart';
-import 'package:notredame/features/navigation/locator.dart';
+import 'package:notredame/features/app/repository/course_repository.dart';
+import 'package:notredame/features/more/settings/settings_manager.dart';
+import 'package:notredame/utils/locator.dart';
 
 class ScheduleSettingsViewModel
     extends FutureViewModel<Map<PreferencesFlag, dynamic>> {

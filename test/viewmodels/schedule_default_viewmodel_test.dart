@@ -8,7 +8,7 @@ import 'package:mockito/mockito.dart';
 
 // Project imports:
 import 'package:notredame/features/courses/course_repository.dart';
-import 'package:notredame/features/schedule/schedule_default_viewmodel.dart';
+import 'package:notredame/features/student/grades/schedule_default/schedule_default_viewmodel.dart';
 import '../helpers.dart';
 
 void main() {

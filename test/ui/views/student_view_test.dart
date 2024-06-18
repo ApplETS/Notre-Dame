@@ -10,7 +10,7 @@ import 'package:flutter_test/flutter_test.dart';
 
 // Project imports:
 import 'package:notredame/features/courses/course_repository.dart';
-import 'package:notredame/features/settings/settings_manager.dart';
+import 'package:notredame/features/more/settings/settings_manager.dart';
 import 'package:notredame/core/services/networking_service.dart';
 import 'package:notredame/features/courses/student_view.dart';
 import 'package:notredame/features/app/widgets/base_scaffold.dart';

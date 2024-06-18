@@ -11,9 +11,9 @@ import 'package:intl/intl.dart';
 import 'package:mockito/mockito.dart';
 
 // Project imports:
-import 'package:notredame/features/app/update/cache_manager.dart';
+import 'package:notredame/features/app/storage/cache_manager.dart';
 import 'package:notredame/features/courses/course_repository.dart';
-import 'package:notredame/features/login/user_repository.dart';
+import 'package:notredame/features/app/repository/user_repository.dart';
 import 'package:notredame/features/app/analytics/analytics_service.dart';
 import '../helpers.dart';
 import '../mock/managers/cache_manager_mock.dart';

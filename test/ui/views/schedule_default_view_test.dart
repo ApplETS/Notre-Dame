@@ -11,10 +11,10 @@ import 'package:mockito/mockito.dart';
 
 // Project imports:
 import 'package:notredame/features/courses/course_repository.dart';
-import 'package:notredame/features/navigation/navigation_service.dart';
+import 'package:notredame/features/app/navigation/navigation_service.dart';
 import 'package:notredame/core/services/networking_service.dart';
-import 'package:notredame/features/schedule/schedule_default_view.dart';
-import 'package:notredame/features/schedule/widgets/schedule_default.dart';
+import 'package:notredame/features/student/grades/schedule_default/schedule_default_view.dart';
+import 'package:notredame/features/student/grades/schedule_default/schedule_default.dart';
 import '../../helpers.dart';
 import '../../mock/managers/course_repository_mock.mocks.dart';
 
