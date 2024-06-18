@@ -8,6 +8,12 @@ import 'package:flutter/material.dart';
 import 'package:ets_api_clients/models.dart';
 import 'package:feature_discovery/feature_discovery.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:notredame/features/app/repository/course_repository.dart';
+import 'package:notredame/features/more/settings/settings_manager.dart';
+import 'package:notredame/features/app/analytics/analytics_service.dart';
+import 'package:notredame/features/app/navigation/navigation_service.dart';
+import 'package:notredame/features/app/integration/networking_service.dart';
+import 'package:notredame/features/app/analytics/remote_config_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:table_calendar/table_calendar.dart';
 
@@ -98,6 +104,15 @@ void main() {
       RemoteConfigServiceMock.stubGetCalendarViewEnabled(
           remoteConfigServiceMock);
     });
+
+    tearDown(() => {
+          unregister<NavigationService>(),
+          unregister<SettingsManager>(),
+          unregister<CourseRepository>(),
+          unregister<RemoteConfigService>(),
+          unregister<NetworkingService>(),
+          unregister<AnalyticsService>(),
+        });
 
     group("golden - ", () {
       const tableCalendarKey = Key("TableCalendar");

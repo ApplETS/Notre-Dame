@@ -59,4 +59,9 @@ class RemoteConfigServiceMock extends MockRemoteConfigService {
       {String toReturn = "https://clubapplets.ca/"}) {
     when(mock.dashboardMsgUrl).thenReturn(toReturn);
   }
+
+  static void stubGetHelloFeatureToggle(RemoteConfigServiceMock mock,
+      {bool toReturn = true}) {
+    when(mock.helloFeatureToggle).thenReturn(toReturn);
+  }
 }

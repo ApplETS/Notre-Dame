@@ -141,4 +141,48 @@ mixin CalendarUtils {
     }
     return !hasErrors;
   }
+
+  static Future<bool> exportNews(
+    News news,
+    String calendarName,
+  ) async {
+    final DeviceCalendarPlugin localDeviceCalendarPlugin =
+        DeviceCalendarPlugin();
+
+    // Request permissions
+    final bool calendarPermission = await checkPermissions();
+
+    if (calendarPermission == false) {
+      return false;
+    }
+
+    // Fetch calendar
+    Calendar? calendar = await fetchNativeCalendar(calendarName);
+
+    // Create calendar if it doesn't exist
+    if (calendar == null) {
+      await deviceCalendarPlugin.createCalendar(calendarName);
+      calendar = await fetchNativeCalendar(calendarName);
+    }
+
+    bool hasErrors = false;
+    final event = Event(
+      calendar?.id,
+      title: news.title,
+      start:
+          TZDateTime.from(news.eventStartDate, getLocation('America/Toronto')),
+      end: TZDateTime.from(news.eventEndDate, getLocation('America/Toronto')),
+      description: news.content,
+    );
+
+    // Create or update event
+    final result = await localDeviceCalendarPlugin.createOrUpdateEvent(
+      event,
+    );
+
+    if (result?.isSuccess == false) {
+      hasErrors = true;
+    }
+    return !hasErrors;
+  }
 }

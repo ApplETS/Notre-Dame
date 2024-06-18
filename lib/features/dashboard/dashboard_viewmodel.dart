@@ -255,7 +255,8 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
         } else if (course.summary != null &&
             course.summary!.markOutOf > 0 &&
             !(course.inReviewPeriod &&
-                (course.reviewCompleted != null && !course.reviewCompleted!))) {
+                (course.allReviewsCompleted != null &&
+                    !course.allReviewsCompleted!))) {
           return _appIntl.grades_grade_in_percentage(
               course.summary!.currentMarkInPercent.round());
         }

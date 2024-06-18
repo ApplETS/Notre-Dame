@@ -10,6 +10,8 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:logger/logger.dart';
+import 'package:notredame/features/app/repository/author_repository.dart';
+import 'package:notredame/features/app/repository/news_repository.dart';
 
 // Project imports:
 import 'package:notredame/features/app/storage/cache_manager.dart';
@@ -30,8 +32,10 @@ import 'package:notredame/features/app/analytics/remote_config_service.dart';
 import 'package:notredame/features/app/presentation/rive_animation_service.dart';
 import 'package:notredame/features/app/storage/siren_flutter_service.dart';
 import 'package:notredame/utils/locator.dart';
+import 'mock/managers/author_repository_mock.dart';
 import 'mock/managers/cache_manager_mock.dart';
 import 'mock/managers/course_repository_mock.dart';
+import 'mock/managers/news_repository_mock.dart';
 import 'mock/managers/quick_links_repository_mock.dart';
 import 'mock/managers/settings_manager_mock.dart';
 import 'mock/managers/user_repository_mock.dart';
@@ -84,6 +88,26 @@ SignetsAPIClientMock setupSignetsApiMock() {
   final service = SignetsAPIClientMock();
 
   locator.registerSingleton<SignetsAPIClient>(service);
+
+  return service;
+}
+
+/// Load a mock of the [NewsRepository]
+NewsRepositoryMock setupNewsRepositoryMock() {
+  unregister<NewsRepository>();
+  final service = NewsRepositoryMock();
+
+  locator.registerSingleton<NewsRepository>(service);
+
+  return service;
+}
+
+/// Load a mock of the [AuthorRepository]
+AuthorRepositoryMock setupAuthorRepositoryMock() {
+  unregister<AuthorRepository>();
+  final service = AuthorRepositoryMock();
+
+  locator.registerSingleton<AuthorRepository>(service);
 
   return service;
 }

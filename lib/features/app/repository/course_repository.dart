@@ -15,6 +15,7 @@ import 'package:notredame/features/app/storage/cache_manager.dart';
 import 'package:notredame/features/app/repository/user_repository.dart';
 import 'package:notredame/features/app/analytics/analytics_service.dart';
 import 'package:notredame/features/app/integration/networking_service.dart';
+import 'package:notredame/features/student/semester_codes.dart';
 import 'package:notredame/utils/cache_exception.dart';
 import 'package:notredame/utils/locator.dart';
 
@@ -133,7 +134,7 @@ class CourseRepository {
 
     try {
       // If there is no sessions loaded, load them.
-      if (_sessions == null) {
+      if (_sessions == null || _sessions!.isEmpty) {
         await getSessions();
       }
 
@@ -200,7 +201,7 @@ class CourseRepository {
       fromCacheOnly = true;
     }
 
-    if (session == null) {
+    if (session == null || session == SemesterCodes.noActiveSemester) {
       _logger.d(
           "$tag - getScheduleDefaultActivities: Session is null, returning empty list.");
       return [];
@@ -469,7 +470,7 @@ class CourseRepository {
     // If there isn't the grade yet, will fetch the summary.
     // We don't do this for every course to avoid losing time.
     for (final course in fetchedCourses) {
-      course.review = _getReviewForCourse(course, fetchedCourseReviews);
+      course.reviews = _getReviewsForCourse(course, fetchedCourseReviews);
       if (course.grade == null) {
         try {
           await getCourseSummary(course);
@@ -589,11 +590,13 @@ class CourseRepository {
   }
 
   /// Get the evaluation for a course or null if not found.
-  CourseReview? _getReviewForCourse(
+  List<CourseReview>? _getReviewsForCourse(
       Course course, Map<String, List<CourseReview>> reviews) {
-    // Todo: changer pour firstWhereOrNull après update de Collection
-    final review = reviews[course.session]?.where((element) =>
-        element.acronym == course.acronym && element.group == course.group);
-    return review?.isNotEmpty ?? false ? review?.first : null;
+    final reviewsList = reviews[course.session]
+        ?.where((element) =>
+            element.acronym == course.acronym && element.group == course.group)
+        .toList();
+
+    return reviewsList == null || reviewsList.isEmpty ? null : reviewsList;
   }
 }

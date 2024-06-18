@@ -81,6 +81,7 @@ class _MoreViewState extends State<MoreView> {
               automaticallyImplyLeading: false,
             ),
             body: ListView(
+              padding: EdgeInsets.zero,
               children: [
                 ListTile(
                     title: Text(AppIntl.of(context)!.more_about_applets_title),

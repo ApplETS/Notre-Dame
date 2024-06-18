@@ -10,12 +10,6 @@ import 'package:notredame/features/more/settings/settings_manager.dart';
 import 'package:notredame/utils/locator.dart';
 import 'package:notredame/utils/app_theme.dart';
 
-// Managers
-
-// UTILS
-
-// OTHER
-
 class LaunchUrlService {
   final SettingsManager settingsManager = locator<SettingsManager>();
 

@@ -6,9 +6,9 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:stacked/stacked.dart';
 
 // Project imports:
-import 'package:notredame/features/student/grades/schedule_default/schedule_default_viewmodel.dart';
+import 'package:notredame/features/schedule/schedule_default/schedule_default_viewmodel.dart';
 import 'package:notredame/features/app/widgets/base_scaffold.dart';
-import 'package:notredame/features/student/grades/schedule_default/schedule_default.dart';
+import 'package:notredame/features/schedule/schedule_default/schedule_default.dart';
 
 class ScheduleDefaultView extends StatefulWidget {
   final String? sessionCode;

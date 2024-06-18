@@ -7,6 +7,10 @@ import 'package:ets_api_clients/models.dart';
 // Project imports:
 import 'package:notredame/features/app/navigation/router_paths.dart';
 import 'package:notredame/constants/update_code.dart';
+import 'package:notredame/features/ets/author/author_view.dart';
+import 'package:notredame/features/ets/ets_view.dart';
+import 'package:notredame/features/ets/news/news-details/news_details_view.dart';
+import 'package:notredame/features/ets/news/news_view.dart';
 import 'package:notredame/features/ets/quick-link/models/quick_link.dart';
 import 'package:notredame/features/more/about/about_view.dart';
 import 'package:notredame/features/more/settings/choose_language_view.dart';
@@ -20,7 +24,7 @@ import 'package:notredame/features/more/more_view.dart';
 import 'package:notredame/features/app/error/not_found/not_found_view.dart';
 import 'package:notredame/features/app/error/outage/outage_view.dart';
 import 'package:notredame/features/ets/quick-link/quick_links_view.dart';
-import 'package:notredame/features/student/grades/schedule_default/schedule_default_view.dart';
+import 'package:notredame/features/schedule/schedule_default/schedule_default_view.dart';
 import 'package:notredame/features/schedule/schedule_view.dart';
 import 'package:notredame/features/ets/security-info/security_view.dart';
 import 'package:notredame/features/more/settings/settings_view.dart';
@@ -89,7 +93,28 @@ Route<dynamic> generateRoute(RouteSettings routeSettings) {
     case RouterPaths.ets:
       return PageRouteBuilder(
           settings: RouteSettings(name: routeSettings.name),
+          pageBuilder: (_, __, ___) => ETSView());
+    case RouterPaths.usefulLinks:
+      return PageRouteBuilder(
+          settings: RouteSettings(name: routeSettings.name),
           pageBuilder: (_, __, ___) => QuickLinksView());
+    case RouterPaths.news:
+      return PageRouteBuilder(
+          settings: RouteSettings(name: routeSettings.name),
+          pageBuilder: (_, __, ___) => NewsView());
+    case RouterPaths.newsDetails:
+      return PageRouteBuilder(
+          settings: RouteSettings(
+              name: routeSettings.name, arguments: routeSettings.arguments),
+          pageBuilder: (_, __, ___) =>
+              NewsDetailsView(news: routeSettings.arguments! as News));
+    case RouterPaths.newsAuthor:
+      return PageRouteBuilder(
+          settings: RouteSettings(
+              name: routeSettings.name, arguments: routeSettings.arguments),
+          pageBuilder: (_, __, ___) => AuthorView(
+                authorId: routeSettings.arguments! as String,
+              ));
     case RouterPaths.webView:
       return PageRouteBuilder(
           pageBuilder: (_, __, ___) =>

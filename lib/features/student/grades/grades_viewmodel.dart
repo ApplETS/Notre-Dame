@@ -6,6 +6,7 @@ import 'package:ets_api_clients/models.dart';
 import 'package:feature_discovery/feature_discovery.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:notredame/features/student/semester_codes.dart';
 import 'package:stacked/stacked.dart';
 
 // Project imports:
@@ -90,10 +91,10 @@ class GradesViewModel extends FutureViewModel<Map<String, List<Course>>> {
     sessionOrder.sort((a, b) {
       if (a == b) return 0;
 
-      // When the session is 's.o.' we put the course at the end of the list
-      if (a == "s.o.") {
+      // When the session is 's.o.' (noActiveSemester) we put the course at the end of the list
+      if (a == SemesterCodes.noActiveSemester) {
         return 1;
-      } else if (b == "s.o.") {
+      } else if (b == SemesterCodes.noActiveSemester) {
         return -1;
       }
 

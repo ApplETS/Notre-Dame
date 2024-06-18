@@ -29,6 +29,7 @@ class _StudentViewState extends State<StudentView> {
     ];
 
     return BaseScaffold(
+      safeArea: false,
       isInteractionLimitedWhileLoading: false,
       body: DefaultTabController(
         length: tabs.length,
@@ -64,8 +65,10 @@ class _StudentViewState extends State<StudentView> {
               ),
             ];
           },
-          body: TabBarView(
-            children: tabsView,
+          body: SafeArea(
+            child: TabBarView(
+              children: tabsView,
+            ),
           ),
         ),
       ),

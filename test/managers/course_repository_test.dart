@@ -1210,14 +1210,16 @@ void main() {
           grade: 'C+',
           numberOfCredits: 3,
           title: 'Cours générique',
-          review: CourseReview(
-              acronym: 'GEN101',
-              group: '02',
-              teacherName: 'April, Alain',
-              startAt: DateTime(2020),
-              endAt: DateTime(2020, 1, 1, 23, 59),
-              isCompleted: true,
-              type: 'Cours'));
+          reviews: <CourseReview>[
+            CourseReview(
+                acronym: 'GEN101',
+                group: '02',
+                teacherName: 'April, Alain',
+                startAt: DateTime(2020),
+                endAt: DateTime(2020, 1, 1, 23, 59),
+                isCompleted: true,
+                type: 'Cours')
+          ]);
       final Course courseWithGradeDuplicate = Course(
           acronym: 'GEN101',
           group: '02',
@@ -1670,14 +1672,16 @@ void main() {
             numberOfCredits: 3,
             title: 'Cours générique');
 
-        final CourseReview review = CourseReview(
-            acronym: 'GEN101',
-            group: '02',
-            teacherName: 'April, Alain',
-            startAt: DateTime(2021, 03, 19),
-            endAt: DateTime(2021, 03, 28, 23, 59),
-            type: 'Cours',
-            isCompleted: true);
+        final courseReviews = <CourseReview>[
+          CourseReview(
+              acronym: 'GEN101',
+              group: '02',
+              teacherName: 'April, Alain',
+              startAt: DateTime(2021, 03, 19),
+              endAt: DateTime(2021, 03, 28, 23, 59),
+              type: 'Cours',
+              isCompleted: true)
+        ];
 
         final Course updated = Course(
             acronym: 'GEN101',
@@ -1687,12 +1691,12 @@ void main() {
             programCode: '999',
             numberOfCredits: 3,
             title: 'Cours générique',
-            review: review);
+            reviews: courseReviews);
 
         SignetsAPIClientMock.stubGetCourses(signetsApiMock, username,
             coursesToReturn: [courseFetched]);
         SignetsAPIClientMock.stubGetCourseReviews(signetsApiMock, username,
-            session: session, reviewsToReturn: [review]);
+            session: session, reviewsToReturn: [courseReviews[0]]);
         CacheManagerMock.stubGet(
             cacheManagerMock, CourseRepository.coursesCacheKey, jsonEncode([]));
 

@@ -13,8 +13,8 @@ import 'package:mockito/mockito.dart';
 import 'package:notredame/features/app/repository/course_repository.dart';
 import 'package:notredame/features/app/navigation/navigation_service.dart';
 import 'package:notredame/features/app/integration/networking_service.dart';
-import 'package:notredame/features/student/grades/schedule_default/schedule_default_view.dart';
-import 'package:notredame/features/student/grades/schedule_default/schedule_default.dart';
+import 'package:notredame/features/schedule/schedule_default/schedule_default_view.dart';
+import 'package:notredame/features/schedule/schedule_default/schedule_default.dart';
 import '../../helpers.dart';
 import '../../mock/managers/course_repository_mock.mocks.dart';
 
