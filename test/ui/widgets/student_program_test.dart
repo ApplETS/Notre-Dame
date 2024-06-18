@@ -7,7 +7,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 // Project imports:
-import 'package:notredame/ui/widgets/student_program.dart';
+import 'package:notredame/features/student/widgets/student_program.dart';
 import '../../helpers.dart';
 
 final _program = Program(

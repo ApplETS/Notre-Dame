@@ -4,7 +4,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 
 // Project imports:
-import 'package:notredame/ui/widgets/grade_circular_progress.dart';
+import 'package:notredame/features/student/grades/widgets/grade_circular_progress.dart';
 import '../../helpers.dart';
 
 void main() {

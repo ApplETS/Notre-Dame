@@ -9,10 +9,10 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 
 // Project imports:
-import 'package:notredame/core/managers/cache_manager.dart';
-import 'package:notredame/core/managers/quick_link_repository.dart';
-import 'package:notredame/core/models/quick_link.dart';
-import 'package:notredame/core/models/quick_link_data.dart';
+import 'package:notredame/features/app/storage/cache_manager.dart';
+import 'package:notredame/features/app/repository/quick_link_repository.dart';
+import 'package:notredame/features/ets/quick-link/models/quick_link.dart';
+import 'package:notredame/features/ets/quick-link/models/quick_link_data.dart';
 import '../helpers.dart';
 import '../mock/managers/cache_manager_mock.dart';
 

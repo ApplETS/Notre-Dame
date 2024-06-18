@@ -6,10 +6,10 @@ import 'package:feature_discovery/feature_discovery.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 // Project imports:
-import 'package:notredame/core/services/navigation_service.dart';
-import 'package:notredame/core/services/networking_service.dart';
-import 'package:notredame/ui/widgets/base_scaffold.dart';
-import 'package:notredame/ui/widgets/bottom_bar.dart';
+import 'package:notredame/features/app/navigation/navigation_service.dart';
+import 'package:notredame/features/app/integration/networking_service.dart';
+import 'package:notredame/features/app/widgets/base_scaffold.dart';
+import 'package:notredame/features/app/widgets/bottom_bar.dart';
 import '../../helpers.dart';
 import '../../mock/services/analytics_service_mock.dart';
 

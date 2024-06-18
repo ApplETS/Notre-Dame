@@ -13,8 +13,8 @@ import 'package:mockito/mockito.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 // Project imports:
-import 'package:notredame/core/constants/preferences_flags.dart';
-import 'package:notredame/ui/widgets/schedule_settings.dart';
+import 'package:notredame/constants/preferences_flags.dart';
+import 'package:notredame/features/schedule/widgets/schedule_settings.dart';
 import '../../helpers.dart';
 import '../../mock/managers/course_repository_mock.dart';
 import '../../mock/managers/settings_manager_mock.dart';

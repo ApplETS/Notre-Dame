@@ -3,7 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:github/github.dart';
 
 // Project imports:
-import 'package:notredame/core/models/feedback_issue.dart';
+import 'package:notredame/features/more/feedback/models/feedback_issue.dart';
 
 void main() {
   group('FeedBackIssue - ', () {

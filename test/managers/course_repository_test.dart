@@ -11,10 +11,10 @@ import 'package:intl/intl.dart';
 import 'package:mockito/mockito.dart';
 
 // Project imports:
-import 'package:notredame/core/managers/cache_manager.dart';
-import 'package:notredame/core/managers/course_repository.dart';
-import 'package:notredame/core/managers/user_repository.dart';
-import 'package:notredame/core/services/analytics_service.dart';
+import 'package:notredame/features/app/storage/cache_manager.dart';
+import 'package:notredame/features/app/repository/course_repository.dart';
+import 'package:notredame/features/app/repository/user_repository.dart';
+import 'package:notredame/features/app/analytics/analytics_service.dart';
 import '../helpers.dart';
 import '../mock/managers/cache_manager_mock.dart';
 import '../mock/managers/user_repository_mock.dart';

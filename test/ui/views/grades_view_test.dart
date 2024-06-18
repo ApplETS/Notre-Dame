@@ -12,12 +12,12 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 // Project imports:
-import 'package:notredame/core/managers/course_repository.dart';
-import 'package:notredame/core/managers/settings_manager.dart';
-import 'package:notredame/core/services/navigation_service.dart';
-import 'package:notredame/core/services/networking_service.dart';
-import 'package:notredame/ui/views/grades_view.dart';
-import 'package:notredame/ui/widgets/grade_button.dart';
+import 'package:notredame/features/app/repository/course_repository.dart';
+import 'package:notredame/features/more/settings/settings_manager.dart';
+import 'package:notredame/features/app/navigation/navigation_service.dart';
+import 'package:notredame/features/app/integration/networking_service.dart';
+import 'package:notredame/features/student/grades/grades_view.dart';
+import 'package:notredame/features/student/grades/widgets/grade_button.dart';
 import '../../helpers.dart';
 import '../../mock/managers/course_repository_mock.dart';
 
