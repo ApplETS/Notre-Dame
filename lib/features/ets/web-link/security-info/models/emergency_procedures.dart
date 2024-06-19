@@ -2,7 +2,7 @@
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 // Project imports:
-import 'package:notredame/features/ets/security-info/models/emergency_procedure.dart';
+import 'package:notredame/features/ets/web-link/security-info/models/emergency_procedure.dart';
 
 List<EmergencyProcedure> emergencyProcedures(AppIntl intl) => [
       EmergencyProcedure(

@@ -15,7 +15,7 @@ import 'package:notredame/features/app/repository/quick_link_repository.dart';
 import 'package:notredame/features/app/integration/launch_url_service.dart';
 import 'package:notredame/features/app/integration/networking_service.dart';
 import 'package:notredame/features/ets/quick-link/quick_links_view.dart';
-import 'package:notredame/features/ets/web_link_card.dart';
+import 'package:notredame/features/ets/web-link/web_link_card.dart';
 import '../../helpers.dart';
 import '../../mock/managers/quick_links_repository_mock.dart';
 import '../../mock/services/analytics_service_mock.dart';

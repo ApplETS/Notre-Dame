@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 // Package imports:
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:notredame/features/ets/web_link_card.dart';
+import 'package:notredame/features/ets/web-link/web_link_card.dart';
 import 'package:reorderable_grid_view/reorderable_grid_view.dart';
 import 'package:stacked/stacked.dart';
 
@@ -11,8 +11,6 @@ import 'package:stacked/stacked.dart';
 import 'package:notredame/features/ets/quick-link/models/quick_link.dart';
 import 'package:notredame/features/ets/quick-link/quick_links_viewmodel.dart';
 import 'package:notredame/utils/app_theme.dart';
-import 'package:notredame/features/app/widgets/base_scaffold.dart';
-import 'package:notredame/features/ets/web_link_card.dart';
 
 class QuickLinksView extends StatefulWidget {
   @override

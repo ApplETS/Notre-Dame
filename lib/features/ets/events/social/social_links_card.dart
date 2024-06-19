@@ -6,9 +6,9 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:stacked/stacked.dart';
 
 // Project imports:
-import 'package:notredame/features/ets/social/models/social_link.dart';
+import 'package:notredame/features/ets/events/social/models/social_link.dart';
 import 'package:notredame/utils/utils.dart';
-import 'package:notredame/features/ets/web_link_card_viewmodel.dart';
+import 'package:notredame/features/ets/web-link/web_link_card_viewmodel.dart';
 import 'package:notredame/utils/app_theme.dart';
 
 class SocialLinks extends StatefulWidget {

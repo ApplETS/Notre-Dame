@@ -8,7 +8,7 @@ import 'package:mockito/mockito.dart';
 // Project imports:
 import 'package:notredame/features/app/repository/author_repository.dart';
 import 'package:notredame/features/app/repository/news_repository.dart';
-import 'package:notredame/features/ets/author/author_viewmodel.dart';
+import 'package:notredame/features/ets/events/author/author_viewmodel.dart';
 import '../helpers.dart';
 import '../mock/managers/author_repository_mock.dart';
 import '../mock/managers/news_repository_mock.dart';

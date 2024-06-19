@@ -2,7 +2,7 @@
 import 'package:flutter_test/flutter_test.dart';
 
 // Project imports:
-import 'package:notredame/features/ets/report-news/models/report_news.dart';
+import 'package:notredame/features/ets/events/report-news/models/report_news.dart';
 
 void main() {
   group('ReportNews class tests', () {

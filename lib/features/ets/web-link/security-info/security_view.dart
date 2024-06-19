@@ -10,9 +10,9 @@ import 'package:stacked/stacked.dart';
 
 // Project imports:
 import 'package:notredame/utils/utils.dart';
-import 'package:notredame/features/ets/security-info/security_viewmodel.dart';
+import 'package:notredame/features/ets/web-link/security-info/security_viewmodel.dart';
 import 'package:notredame/utils/app_theme.dart';
-import 'package:notredame/features/ets/security-info/emergency_view.dart';
+import 'package:notredame/features/ets/web-link/security-info/emergency_view.dart';
 
 class SecurityView extends StatefulWidget {
   @override

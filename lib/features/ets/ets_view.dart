@@ -7,7 +7,7 @@ import 'package:notredame/features/app/analytics/remote_config_service.dart';
 import 'package:notredame/utils/locator.dart';
 
 // Project imports:
-import 'package:notredame/features/ets/news/news_view.dart';
+import 'package:notredame/features/ets/events/news/news_view.dart';
 import 'package:notredame/features/ets/quick-link//quick_links_view.dart';
 import 'package:notredame/features/app/widgets/base_scaffold.dart';
 

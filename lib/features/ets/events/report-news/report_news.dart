@@ -1,6 +1,6 @@
 // Project imports:
 import 'package:flutter/material.dart';
-import 'package:notredame/features/ets/report-news/models/report_news.dart';
+import 'package:notredame/features/ets/events/report-news/models/report_news.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 List<ReportNews> getLocalizedReportNewsItems(BuildContext context) {

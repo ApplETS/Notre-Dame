@@ -7,7 +7,7 @@ import 'package:webview_flutter/webview_flutter.dart';
 import 'package:webview_flutter_android/webview_flutter_android.dart';
 
 // Project imports:
-import 'package:notredame/features/ets/security-info/emergency_view.dart';
+import 'package:notredame/features/ets/web-link/security-info/emergency_view.dart';
 import '../../helpers.dart';
 
 void main() {
