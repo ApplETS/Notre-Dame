@@ -18,7 +18,7 @@ import 'package:notredame/features/app/integration/launch_url_service.dart';
 import 'package:notredame/features/app/navigation/navigation_service.dart';
 import 'package:notredame/features/app/integration/networking_service.dart';
 import 'package:notredame/features/ets/events/author/author_view.dart';
-import 'package:notredame/features/ets/events/news/news_card.dart';
+import 'package:notredame/features/ets/events/news/widgets/news_card.dart';
 import 'package:notredame/features/ets/events/social/social_links_card.dart';
 import '../../helpers.dart';
 import '../../mock/managers/author_repository_mock.dart';

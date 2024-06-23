@@ -26,7 +26,7 @@ import 'package:notredame/features/app/error/outage/outage_view.dart';
 import 'package:notredame/features/ets/quick-link/quick_links_view.dart';
 import 'package:notredame/features/schedule/schedule_default/schedule_default_view.dart';
 import 'package:notredame/features/schedule/schedule_view.dart';
-import 'package:notredame/features/ets/web-link/security-info/security_view.dart';
+import 'package:notredame/features/ets/quick-link/widgets/security-info/security_view.dart';
 import 'package:notredame/features/more/settings/settings_view.dart';
 import 'package:notredame/features/app/startup/startup_view.dart';
 import 'package:notredame/features/student/student_view.dart';

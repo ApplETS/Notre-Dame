@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 // Package imports:
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:notredame/features/ets/web-link/web_link_card.dart';
+import 'package:notredame/features/ets/quick-link/widgets/web_link_card.dart';
 import 'package:reorderable_grid_view/reorderable_grid_view.dart';
 import 'package:stacked/stacked.dart';
 

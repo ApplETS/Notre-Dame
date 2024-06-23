@@ -11,8 +11,8 @@ import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
 // Project imports:
 import 'package:notredame/features/ets/events/news/news_viewmodel.dart';
-import 'package:notredame/features/ets/events/news/news_card.dart';
-import 'package:notredame/features/ets/events/news/news_card_skeleton.dart';
+import 'package:notredame/features/ets/events/news/widgets/news_card.dart';
+import 'package:notredame/features/ets/events/news/widgets/news_card_skeleton.dart';
 
 class NewsView extends StatefulWidget {
   @override

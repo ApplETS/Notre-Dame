@@ -14,7 +14,7 @@ import 'package:notredame/features/more/settings/settings_manager.dart';
 import 'package:notredame/features/app/navigation/navigation_service.dart';
 import 'package:notredame/features/app/integration/networking_service.dart';
 import 'package:notredame/features/ets/events/news/news_view.dart';
-import 'package:notredame/features/ets/events/news/news_card.dart';
+import 'package:notredame/features/ets/events/news/widgets/news_card.dart';
 import '../../helpers.dart';
 import '../../mock/managers/news_repository_mock.dart';
 

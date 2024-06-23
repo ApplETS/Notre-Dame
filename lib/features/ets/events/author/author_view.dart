@@ -15,8 +15,8 @@ import 'package:notredame/features/ets/events/author/author_viewmodel.dart';
 import 'package:notredame/utils/app_theme.dart';
 import 'package:notredame/features/ets/events/author/author_info_skeleton.dart';
 import 'package:notredame/features/app/widgets/base_scaffold.dart';
-import 'package:notredame/features/ets/events/news/news_card.dart';
-import 'package:notredame/features/ets/events/news/news_card_skeleton.dart';
+import 'package:notredame/features/ets/events/news/widgets/news_card.dart';
+import 'package:notredame/features/ets/events/news/widgets/news_card_skeleton.dart';
 import 'package:notredame/features/ets/events/social/social_links_card.dart';
 
 class AuthorView extends StatefulWidget {

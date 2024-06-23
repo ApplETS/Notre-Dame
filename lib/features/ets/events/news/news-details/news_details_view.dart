@@ -8,7 +8,7 @@ import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
 import 'package:notredame/features/app/analytics/remote_config_service.dart';
-import 'package:notredame/features/ets/events/report_news.dart';
+import 'package:notredame/features/ets/events/report-news/report_news_widget.dart';
 import 'package:notredame/utils/utils.dart';
 import 'package:notredame/features/schedule/calendar_selection_viewmodel.dart';
 import 'package:notredame/features/schedule/widgets/calendar_selector.dart';
