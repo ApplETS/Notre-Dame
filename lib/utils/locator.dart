@@ -1,15 +1,17 @@
 // Package imports:
-import 'package:ets_api_clients/clients.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get_it/get_it.dart';
 import 'package:logger/logger.dart';
+import 'package:notredame/features/app/monets_api/monets_api_client.dart';
 import 'package:notredame/features/app/repository/author_repository.dart';
 import 'package:notredame/features/app/repository/news_repository.dart';
+import 'package:notredame/features/app/signets-api/signets_api_client.dart';
 
 // Project imports:
 import 'package:notredame/features/app/storage/cache_manager.dart';
 import 'package:notredame/features/app/repository/course_repository.dart';
 import 'package:notredame/features/app/repository/quick_link_repository.dart';
+import 'package:notredame/features/ets/events/api-client/hello_api_client.dart';
 import 'package:notredame/features/more/settings/settings_manager.dart';
 import 'package:notredame/features/app/repository/user_repository.dart';
 import 'package:notredame/features/app/analytics/analytics_service.dart';

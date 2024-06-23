@@ -4,10 +4,10 @@ import 'package:flutter/scheduler.dart';
 
 // Package imports:
 import 'package:auto_size_text/auto_size_text.dart';
-import 'package:ets_api_clients/models.dart';
 import 'package:feature_discovery/feature_discovery.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:notredame/features/app/signets-api/models/course_activity.dart';
 import 'package:stacked/stacked.dart';
 
 // Project imports:

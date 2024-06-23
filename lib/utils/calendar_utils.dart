@@ -1,7 +1,8 @@
 import 'dart:collection';
 import 'package:device_calendar/device_calendar.dart';
+import 'package:notredame/features/app/signets-api/models/course_activity.dart';
+import 'package:notredame/features/ets/events/api-client/models/news.dart';
 
-import 'package:ets_api_clients/models.dart';
 
 mixin CalendarUtils {
   static Future<bool> checkPermissions() async {

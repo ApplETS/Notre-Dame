@@ -1,9 +1,9 @@
 // Flutter imports:
-import 'package:ets_api_clients/models.dart';
 import 'package:flutter/material.dart';
 
 // Package imports:
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:notredame/features/ets/events/api-client/models/news.dart';
 import 'package:notredame/utils/utils.dart';
 import 'package:notredame/utils/app_theme.dart';
 import 'package:stacked/stacked.dart';

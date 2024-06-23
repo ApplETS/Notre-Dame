@@ -1,4 +1,5 @@
-import 'package:ets_api_clients/src/models/activity_area.dart';
+
+import 'package:notredame/features/ets/events/api-client/models/activity_area.dart';
 
 /// Data-class that represents an organizer
 class Organizer {
