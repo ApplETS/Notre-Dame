@@ -5,7 +5,7 @@ import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
 // Project imports:
-import 'package:notredame/core/managers/news_repository.dart';
+import 'package:notredame/features/app/repository/news_repository.dart';
 import 'news_repository_mock.mocks.dart';
 
 @GenerateNiceMocks([MockSpec<NewsRepository>()])

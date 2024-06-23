@@ -4,7 +4,7 @@ import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
 // Project imports:
-import 'package:notredame/core/services/networking_service.dart';
+import 'package:notredame/features/app/integration/networking_service.dart';
 import 'networking_service_mock.mocks.dart';
 
 /// Mock for the [NetworkingService]

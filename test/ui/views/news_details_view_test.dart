@@ -9,11 +9,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 // Project imports:
-import 'package:notredame/core/services/analytics_service.dart';
-import 'package:notredame/core/services/navigation_service.dart';
-import 'package:notredame/core/services/networking_service.dart';
-import 'package:notredame/core/services/remote_config_service.dart';
-import 'package:notredame/ui/views/news_details_view.dart';
+import 'package:notredame/features/app/analytics/analytics_service.dart';
+import 'package:notredame/features/app/navigation/navigation_service.dart';
+import 'package:notredame/features/app/integration/networking_service.dart';
+import 'package:notredame/features/app/analytics/remote_config_service.dart';
+import 'package:notredame/features/ets/events/news/news-details/news_details_view.dart';
 import '../../helpers.dart';
 
 void main() {

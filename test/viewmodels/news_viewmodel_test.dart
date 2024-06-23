@@ -4,10 +4,10 @@ import 'package:logger/logger.dart';
 import 'package:mockito/mockito.dart';
 
 // Project imports:
-import 'package:notredame/core/managers/news_repository.dart';
-import 'package:notredame/core/managers/settings_manager.dart';
-import 'package:notredame/core/viewmodels/news_viewmodel.dart';
-import 'package:notredame/locator.dart';
+import 'package:notredame/features/app/repository/news_repository.dart';
+import 'package:notredame/features/more/settings/settings_manager.dart';
+import 'package:notredame/features/ets/events/news/news_viewmodel.dart';
+import 'package:notredame/utils/locator.dart';
 import '../helpers.dart';
 import '../mock/managers/news_repository_mock.dart';
 

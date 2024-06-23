@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 // Project imports:
-import 'package:notredame/ui/widgets/news_card.dart';
+import 'package:notredame/features/ets/events/news/widgets/news_card.dart';
 import '../../helpers.dart';
 
 void main() {

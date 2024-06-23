@@ -4,10 +4,10 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 
 // Project imports:
-import 'package:notredame/core/constants/preferences_flags.dart';
-import 'package:notredame/core/constants/progress_bar_text_options.dart';
-import 'package:notredame/core/managers/settings_manager.dart';
-import 'package:notredame/core/viewmodels/dashboard_viewmodel.dart';
+import 'package:notredame/constants/preferences_flags.dart';
+import 'package:notredame/features/dashboard/progress_bar_text_options.dart';
+import 'package:notredame/features/more/settings/settings_manager.dart';
+import 'package:notredame/features/dashboard/dashboard_viewmodel.dart';
 import '../helpers.dart';
 import '../mock/managers/course_repository_mock.dart';
 import '../mock/managers/settings_manager_mock.dart';

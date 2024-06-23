@@ -6,7 +6,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 // Project imports:
-import 'package:notredame/ui/widgets/password_text_field.dart';
+import 'package:notredame/features/welcome/widgets/password_text_field.dart';
 import '../../helpers.dart';
 
 void main() {

@@ -9,15 +9,15 @@ import 'package:feature_discovery/feature_discovery.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 // Project imports:
-import 'package:notredame/core/managers/course_repository.dart';
-import 'package:notredame/core/managers/news_repository.dart';
-import 'package:notredame/core/managers/settings_manager.dart';
-import 'package:notredame/core/services/analytics_service.dart';
-import 'package:notredame/core/services/navigation_service.dart';
-import 'package:notredame/core/services/networking_service.dart';
-import 'package:notredame/core/services/remote_config_service.dart';
-import 'package:notredame/ui/views/ets_view.dart';
-import 'package:notredame/ui/widgets/base_scaffold.dart';
+import 'package:notredame/features/app/repository/course_repository.dart';
+import 'package:notredame/features/app/repository/news_repository.dart';
+import 'package:notredame/features/more/settings/settings_manager.dart';
+import 'package:notredame/features/app/analytics/analytics_service.dart';
+import 'package:notredame/features/app/navigation/navigation_service.dart';
+import 'package:notredame/features/app/integration/networking_service.dart';
+import 'package:notredame/features/app/analytics/remote_config_service.dart';
+import 'package:notredame/features/ets/ets_view.dart';
+import 'package:notredame/features/app/widgets/base_scaffold.dart';
 import '../../helpers.dart';
 import '../../mock/managers/news_repository_mock.dart';
 import '../../mock/services/remote_config_service_mock.dart';

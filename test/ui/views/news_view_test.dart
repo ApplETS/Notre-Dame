@@ -8,13 +8,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 // Project imports:
-import 'package:notredame/core/managers/course_repository.dart';
-import 'package:notredame/core/managers/news_repository.dart';
-import 'package:notredame/core/managers/settings_manager.dart';
-import 'package:notredame/core/services/navigation_service.dart';
-import 'package:notredame/core/services/networking_service.dart';
-import 'package:notredame/ui/views/news_view.dart';
-import 'package:notredame/ui/widgets/news_card.dart';
+import 'package:notredame/features/app/repository/course_repository.dart';
+import 'package:notredame/features/app/repository/news_repository.dart';
+import 'package:notredame/features/more/settings/settings_manager.dart';
+import 'package:notredame/features/app/navigation/navigation_service.dart';
+import 'package:notredame/features/app/integration/networking_service.dart';
+import 'package:notredame/features/ets/events/news/news_view.dart';
+import 'package:notredame/features/ets/events/news/widgets/news_card.dart';
 import '../../helpers.dart';
 import '../../mock/managers/news_repository_mock.dart';
 
