@@ -1,5 +1,5 @@
-// FLUTTER / DART / THIRD-PARTIES
-import 'package:ets_api_clients/models.dart';
+import 'package:notredame/features/ets/events/api-client/models/news_tags.dart';
+import 'package:notredame/features/ets/events/api-client/models/organizer.dart';
 
 /// Data-class that represent an hello-based news
 class News {

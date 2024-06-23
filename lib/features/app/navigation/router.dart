@@ -1,12 +1,11 @@
 // Flutter imports:
 import 'package:flutter/material.dart';
 
-// Package imports:
-import 'package:ets_api_clients/models.dart';
-
 // Project imports:
 import 'package:notredame/features/app/navigation/router_paths.dart';
 import 'package:notredame/constants/update_code.dart';
+import 'package:notredame/features/app/signets-api/models/course.dart';
+import 'package:notredame/features/ets/events/api-client/models/news.dart';
 import 'package:notredame/features/ets/events/author/author_view.dart';
 import 'package:notredame/features/ets/ets_view.dart';
 import 'package:notredame/features/ets/events/news/news-details/news_details_view.dart';

@@ -2,7 +2,8 @@
 import 'package:calendar_view/calendar_view.dart';
 import 'package:collection/collection.dart';
 import 'package:enum_to_string/enum_to_string.dart';
-import 'package:ets_api_clients/models.dart';
+import 'package:notredame/features/app/signets-api/models/schedule_activity.dart';
+import 'package:notredame/utils/activity_code.dart';
 import 'package:stacked/stacked.dart';
 import 'package:table_calendar/table_calendar.dart';
 

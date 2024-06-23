@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 // Package imports:
-import 'package:ets_api_clients/models.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:notredame/features/app/signets-api/models/program.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 import 'package:stacked/stacked.dart';
 

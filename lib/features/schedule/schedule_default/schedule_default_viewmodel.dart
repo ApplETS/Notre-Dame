@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 // Package imports:
 import 'package:calendar_view/calendar_view.dart';
-import 'package:ets_api_clients/models.dart';
+import 'package:notredame/features/app/signets-api/models/schedule_activity.dart';
 import 'package:stacked/stacked.dart';
 
 // Project imports:

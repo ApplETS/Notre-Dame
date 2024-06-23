@@ -2,7 +2,7 @@
 import 'dart:ui';
 
 // Package imports:
-import 'package:ets_api_clients/models.dart';
+import 'package:notredame/features/ets/events/api-client/models/news.dart';
 import 'package:stacked/stacked.dart';
 
 // Project imports:

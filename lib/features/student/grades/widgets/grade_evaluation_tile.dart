@@ -6,11 +6,11 @@ import 'package:flutter/material.dart';
 
 // Package imports:
 import 'package:auto_size_text/auto_size_text.dart';
-import 'package:ets_api_clients/models.dart';
 import 'package:feature_discovery/feature_discovery.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:intl/intl.dart';
 import 'package:marquee/marquee.dart';
+import 'package:notredame/features/app/signets-api/models/course_evaluation.dart';
 
 // Project imports:
 import 'package:notredame/features/welcome/discovery/models/discovery_ids.dart';
