@@ -40,14 +40,6 @@ dependencies:
   flutter_staggered_animations: ^1.1.1
   flutter_siren_2: ^1.2.2
 
-  # Customs
-  # TODO: Change to the latest version, once reviewed and accepted
-  ets_api_clients:
-    #path: ../ETS-API-Clients/
-    git:
-      url: https://github.com/ApplETS/ETS-API-Clients.git
-      ref: 1.2.5
-
   # Other
   http: ^1.2.0
   flutter_cache_manager: ^3.0.1
@@ -80,6 +72,7 @@ dependencies:
   device_calendar: ^4.3.1
   share_plus: ^4.5.3
   flutter_markdown: ^0.7.1
+  xml: ^6.5.0
 
 dev_dependencies:
   flutter_test:
