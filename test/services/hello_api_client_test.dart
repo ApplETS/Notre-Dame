@@ -177,7 +177,7 @@ void main() {
     test('successful report', () async {
       const newsId = '123';
       final uri = Uri.https(helloNewsAPI, '/api/reports/$newsId');
-      mockClient = HttpClientMockHelper.stubJsonPost(uri.toString(), {}, 200);
+      mockClient = HttpClientMockHelper.stubJsonPost(uri.toString(), {});
       service = buildService(mockClient);
 
       final result = await service.reportNews(newsId, report);

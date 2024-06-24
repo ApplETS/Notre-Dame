@@ -41,8 +41,7 @@ class SignetsAPIClient {
   final RegExp _courseGroupRegExp = RegExp("^([A-Z]{3}[0-9]{3}-[0-9]{2})");
 
   /// Returns whether the user is logged in or not throught the SignetsAPI.
-  @Deprecated(
-      'This function is deprecated in favor of `MonETSAPIClient.authenticate()`')
+  /// Deprecated('This function is deprecated in favor of `MonETSAPIClient.authenticate()`')
   Future<bool> authenticate(
       {required String username, required String password}) {
     final command = AuthenticateCommand(this, _httpClient,
