@@ -5,13 +5,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:timeago/timeago.dart' as timeago;
-import 'package:ets_api_clients/models.dart';
 
 // Project imports:
-import 'package:notredame/features/app/navigation/router_paths.dart';
 import 'package:notredame/features/app/navigation/navigation_service.dart';
-import 'package:notredame/utils/locator.dart';
+import 'package:notredame/features/app/navigation/router_paths.dart';
+import 'package:notredame/features/ets/events/api-client/models/news.dart';
 import 'package:notredame/utils/app_theme.dart';
+import 'package:notredame/utils/locator.dart';
 
 class NewsCard extends StatefulWidget {
   final News news;

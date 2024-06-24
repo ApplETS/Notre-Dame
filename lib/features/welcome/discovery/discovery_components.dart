@@ -6,14 +6,14 @@ import 'package:feature_discovery/feature_discovery.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 // Project imports:
-import 'package:notredame/features/welcome/discovery/models/discovery_ids.dart';
 import 'package:notredame/constants/preferences_flags.dart';
 import 'package:notredame/features/app/navigation/router_paths.dart';
 import 'package:notredame/features/more/settings/settings_manager.dart';
 import 'package:notredame/features/welcome/discovery/models/discovery.dart';
+import 'package:notredame/features/welcome/discovery/models/discovery_ids.dart';
 import 'package:notredame/features/welcome/discovery/models/group_discovery.dart';
-import 'package:notredame/utils/locator.dart';
 import 'package:notredame/utils/app_theme.dart';
+import 'package:notredame/utils/locator.dart';
 
 List<GroupDiscovery> discoveryComponents(BuildContext context) {
   return [

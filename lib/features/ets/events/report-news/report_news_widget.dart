@@ -4,13 +4,13 @@ import 'package:flutter/material.dart';
 // Package imports:
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:notredame/utils/app_theme.dart';
 import 'package:stacked/stacked.dart';
 
 // Project imports:
 import 'package:notredame/features/ets/events/report-news/report_news.dart';
-import 'package:notredame/utils/utils.dart';
 import 'package:notredame/features/ets/events/report-news/report_news_viewmodel.dart';
+import 'package:notredame/utils/app_theme.dart';
+import 'package:notredame/utils/utils.dart';
 
 class ReportNews extends StatefulWidget {
   final bool showHandle;

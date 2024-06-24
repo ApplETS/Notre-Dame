@@ -14,9 +14,9 @@ import 'package:package_info_plus/package_info_plus.dart';
 import 'package:path_provider/path_provider.dart';
 
 // Project imports:
-import 'package:notredame/features/more/feedback/models/feedback_issue.dart';
 import 'package:notredame/features/app/analytics/analytics_service.dart';
 import 'package:notredame/features/app/error/internal_info_service.dart';
+import 'package:notredame/features/more/feedback/models/feedback_issue.dart';
 import 'package:notredame/utils/locator.dart';
 
 class GithubApi {

@@ -5,17 +5,23 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 
 // Package imports:
-import 'package:ets_api_clients/clients.dart';
-import 'package:ets_api_clients/exceptions.dart';
-import 'package:ets_api_clients/models.dart';
 import 'package:logger/logger.dart';
 
 // Project imports:
-import 'package:notredame/features/app/storage/cache_manager.dart';
-import 'package:notredame/features/app/repository/user_repository.dart';
 import 'package:notredame/features/app/analytics/analytics_service.dart';
 import 'package:notredame/features/app/integration/networking_service.dart';
+import 'package:notredame/features/app/repository/user_repository.dart';
+import 'package:notredame/features/app/signets-api/models/course.dart';
+import 'package:notredame/features/app/signets-api/models/course_activity.dart';
+import 'package:notredame/features/app/signets-api/models/course_review.dart';
+import 'package:notredame/features/app/signets-api/models/course_summary.dart';
+import 'package:notredame/features/app/signets-api/models/schedule_activity.dart';
+import 'package:notredame/features/app/signets-api/models/session.dart';
+import 'package:notredame/features/app/signets-api/models/signets_errors.dart';
+import 'package:notredame/features/app/signets-api/signets_api_client.dart';
+import 'package:notredame/features/app/storage/cache_manager.dart';
 import 'package:notredame/features/student/semester_codes.dart';
+import 'package:notredame/utils/api_exception.dart';
 import 'package:notredame/utils/cache_exception.dart';
 import 'package:notredame/utils/locator.dart';
 

@@ -2,10 +2,10 @@
 import 'package:flutter/material.dart';
 
 // Package imports:
-import 'package:ets_api_clients/models.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 // Project imports:
+import 'package:notredame/features/app/signets-api/models/course_activity.dart';
 import 'package:notredame/features/dashboard/widgets/course_activity_tile.dart';
 import '../../helpers.dart';
 

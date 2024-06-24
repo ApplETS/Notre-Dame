@@ -6,9 +6,9 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:stacked/stacked.dart';
 
 // Project imports:
-import 'package:notredame/utils/utils.dart';
 import 'package:notredame/features/app/startup/startup_viewmodel.dart';
 import 'package:notredame/utils/app_theme.dart';
+import 'package:notredame/utils/utils.dart';
 
 class StartUpView extends StatelessWidget {
   @override

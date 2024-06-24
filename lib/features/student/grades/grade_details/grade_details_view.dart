@@ -3,18 +3,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 
 // Package imports:
-import 'package:ets_api_clients/models.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:stacked/stacked.dart';
 
 // Project imports:
-import 'package:notredame/utils/utils.dart';
-import 'package:notredame/features/student/grades/grade_details/grades_details_viewmodel.dart';
-import 'package:notredame/utils/app_theme.dart';
+import 'package:notredame/features/app/signets-api/models/course.dart';
+import 'package:notredame/features/app/signets-api/models/course_evaluation.dart';
 import 'package:notredame/features/app/widgets/base_scaffold.dart';
+import 'package:notredame/features/student/grades/grade_details/grades_details_viewmodel.dart';
 import 'package:notredame/features/student/grades/widgets/grade_circular_progress.dart';
 import 'package:notredame/features/student/grades/widgets/grade_evaluation_tile.dart';
 import 'package:notredame/features/student/grades/widgets/grade_not_available.dart';
+import 'package:notredame/utils/app_theme.dart';
+import 'package:notredame/utils/utils.dart';
 
 class GradesDetailsView extends StatefulWidget {
   final Course course;

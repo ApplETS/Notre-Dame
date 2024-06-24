@@ -3,15 +3,15 @@ import 'package:flutter/material.dart';
 
 // Package imports:
 import 'package:calendar_view/calendar_view.dart';
-import 'package:ets_api_clients/models.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:stacked/stacked.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 // Project imports:
-import 'package:notredame/utils/utils.dart';
 import 'package:notredame/features/schedule/schedule_settings_viewmodel.dart';
+import 'package:notredame/utils/activity_code.dart';
 import 'package:notredame/utils/app_theme.dart';
+import 'package:notredame/utils/utils.dart';
 
 class ScheduleSettings extends StatefulWidget {
   final bool showHandle;

@@ -3,9 +3,9 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:stacked/stacked.dart';
 
 // Project imports:
+import 'package:notredame/features/app/navigation/navigation_service.dart';
 import 'package:notredame/features/app/navigation/router_paths.dart';
 import 'package:notredame/features/more/settings/settings_manager.dart';
-import 'package:notredame/features/app/navigation/navigation_service.dart';
 import 'package:notredame/utils/locator.dart';
 
 class ChooseLanguageViewModel extends BaseViewModel {

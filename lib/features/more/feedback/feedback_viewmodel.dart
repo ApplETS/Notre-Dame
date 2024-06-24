@@ -1,4 +1,5 @@
 // Dart imports:
+
 // Dart imports:
 import 'dart:io';
 import 'dart:typed_data';
@@ -12,11 +13,11 @@ import 'package:image/image.dart' as image;
 import 'package:stacked/stacked.dart';
 
 // Project imports:
-import 'package:notredame/features/more/feedback/feedback_type.dart';
 import 'package:notredame/constants/preferences_flags.dart';
-import 'package:notredame/features/more/feedback/models/feedback_issue.dart';
 import 'package:notredame/features/app/integration/github_api.dart';
 import 'package:notredame/features/app/storage/preferences_service.dart';
+import 'package:notredame/features/more/feedback/feedback_type.dart';
+import 'package:notredame/features/more/feedback/models/feedback_issue.dart';
 import 'package:notredame/utils/locator.dart';
 
 class FeedbackViewModel extends FutureViewModel {

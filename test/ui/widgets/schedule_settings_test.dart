@@ -5,7 +5,6 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 
 // Package imports:
-import 'package:ets_api_clients/models.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:intl/intl.dart';
@@ -14,7 +13,9 @@ import 'package:table_calendar/table_calendar.dart';
 
 // Project imports:
 import 'package:notredame/constants/preferences_flags.dart';
+import 'package:notredame/features/app/signets-api/models/schedule_activity.dart';
 import 'package:notredame/features/schedule/widgets/schedule_settings.dart';
+import 'package:notredame/utils/activity_code.dart';
 import '../../helpers.dart';
 import '../../mock/managers/course_repository_mock.dart';
 import '../../mock/managers/settings_manager_mock.dart';
