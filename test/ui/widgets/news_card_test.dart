@@ -1,9 +1,11 @@
 // Flutter imports:
-import 'package:ets_api_clients/models.dart';
 import 'package:flutter/material.dart';
 
 // Package imports:
 import 'package:flutter_test/flutter_test.dart';
+import 'package:notredame/features/ets/events/api-client/models/news.dart';
+import 'package:notredame/features/ets/events/api-client/models/news_tags.dart';
+import 'package:notredame/features/ets/events/api-client/models/organizer.dart';
 
 // Project imports:
 import 'package:notredame/features/ets/events/news/widgets/news_card.dart';

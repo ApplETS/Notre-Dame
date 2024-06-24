@@ -5,24 +5,29 @@ import 'dart:convert';
 import 'package:flutter/services.dart';
 
 // Package imports:
-import 'package:ets_api_clients/clients.dart';
-import 'package:ets_api_clients/exceptions.dart';
-import 'package:ets_api_clients/models.dart';
-import 'package:ets_api_clients/testing.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
+import 'package:notredame/features/app/monets_api/models/mon_ets_user.dart';
+import 'package:notredame/features/app/monets_api/monets_api_client.dart';
+import 'package:notredame/features/app/signets-api/models/profile_student.dart';
+import 'package:notredame/features/app/signets-api/models/program.dart';
+import 'package:notredame/features/app/signets-api/signets_api_client.dart';
 
 // Project imports:
 import 'package:notredame/features/app/storage/cache_manager.dart';
 import 'package:notredame/features/app/repository/user_repository.dart';
 import 'package:notredame/features/app/analytics/analytics_service.dart';
 import 'package:notredame/features/app/integration/networking_service.dart';
+import 'package:notredame/utils/api_exception.dart';
+import 'package:notredame/utils/http_exception.dart';
 import '../helpers.dart';
 import '../mock/managers/cache_manager_mock.dart';
 import '../mock/services/analytics_service_mock.dart';
 import '../mock/services/flutter_secure_storage_mock.dart';
 import '../mock/services/networking_service_mock.dart';
+import '../mock/signets-api-client/mon_ets_api_mock.dart';
+import '../mock/signets-api-client/signets_api_mock.dart';
 
 void main() {
   late AnalyticsServiceMock analyticsServiceMock;

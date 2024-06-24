@@ -3,15 +3,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 // Package imports:
-import 'package:ets_api_clients/clients.dart';
-import 'package:ets_api_clients/testing.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:logger/logger.dart';
+import 'package:notredame/features/app/monets_api/monets_api_client.dart';
 import 'package:notredame/features/app/repository/author_repository.dart';
 import 'package:notredame/features/app/repository/news_repository.dart';
+import 'package:notredame/features/app/signets-api/signets_api_client.dart';
 
 // Project imports:
 import 'package:notredame/features/app/storage/cache_manager.dart';
@@ -52,6 +52,8 @@ import 'mock/services/preferences_service_mock.dart';
 import 'mock/services/remote_config_service_mock.dart';
 import 'mock/services/rive_animation_service_mock.dart';
 import 'mock/services/siren_flutter_service_mock.dart';
+import 'mock/signets-api-client/mon_ets_api_mock.dart';
+import 'mock/signets-api-client/signets_api_mock.dart';
 
 /// Return the path of the [goldenName] file.
 String goldenFilePath(String goldenName) => "./goldenFiles/$goldenName.png";

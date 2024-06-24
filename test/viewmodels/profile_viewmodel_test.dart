@@ -1,7 +1,8 @@
 // Package imports:
-import 'package:ets_api_clients/models.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
+import 'package:notredame/features/app/signets-api/models/profile_student.dart';
+import 'package:notredame/features/app/signets-api/models/program.dart';
 
 // Project imports:
 import 'package:notredame/features/student/profile/programs_credits.dart';
