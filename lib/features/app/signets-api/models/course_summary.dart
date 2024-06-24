@@ -1,7 +1,11 @@
 // FLUTTER / DART / THIRD-PARTIES
+
+// Package imports:
 import 'package:collection/collection.dart';
-import 'package:notredame/features/app/signets-api/models/course_evaluation.dart';
 import 'package:xml/xml.dart';
+
+// Project imports:
+import 'package:notredame/features/app/signets-api/models/course_evaluation.dart';
 
 /// Data class that represent the current mark, score, ... of a course
 class CourseSummary {

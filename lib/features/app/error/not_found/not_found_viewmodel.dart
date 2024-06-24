@@ -3,9 +3,9 @@ import 'package:rive/rive.dart';
 import 'package:stacked/stacked.dart';
 
 // Project imports:
-import 'package:notredame/features/app/navigation/router_paths.dart';
 import 'package:notredame/features/app/analytics/analytics_service.dart';
 import 'package:notredame/features/app/navigation/navigation_service.dart';
+import 'package:notredame/features/app/navigation/router_paths.dart';
 import 'package:notredame/features/app/presentation/rive_animation_service.dart';
 import 'package:notredame/utils/locator.dart';
 

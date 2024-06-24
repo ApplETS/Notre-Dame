@@ -1,15 +1,17 @@
+// Dart imports:
 import 'dart:io';
 
+// Package imports:
+import 'package:http/http.dart' as http;
 import 'package:http/io_client.dart';
 
-import 'package:http/http.dart' as http;
+// Project imports:
+import 'package:notredame/features/ets/events/api-client/commands/get_events_command.dart';
 import 'package:notredame/features/ets/events/api-client/commands/get_organizer_command.dart';
 import 'package:notredame/features/ets/events/api-client/commands/report_news_command.dart';
 import 'package:notredame/features/ets/events/api-client/models/organizer.dart';
-import 'package:notredame/features/ets/events/api-client/models/report.dart';
-
-import 'package:notredame/features/ets/events/api-client/commands/get_events_command.dart';
 import 'package:notredame/features/ets/events/api-client/models/paginated_news.dart';
+import 'package:notredame/features/ets/events/api-client/models/report.dart';
 
 /// A Wrapper for all calls to Hello API.
 class HelloAPIClient {

@@ -502,14 +502,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.0.0"
-  flutter_keychain:
-    dependency: "direct main"
-    description:
-      name: flutter_keychain
-      sha256: de6f2d09ce2a006013db799ad37d6ae49b10530d6841de1c0c0525c4d3ec22a4
-      url: "https://pub.dev"
-    source: hosted
-    version: "2.4.0"
   flutter_launcher_icons:
     dependency: "direct dev"
     description:
@@ -742,7 +734,7 @@ packages:
     source: hosted
     version: "0.15.4"
   http:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: http
       sha256: a2bbf9d017fcced29139daa8ed2bba4ece450ab222871df93ca9eec6f80c34ba
@@ -1006,7 +998,7 @@ packages:
     source: hosted
     version: "1.0.1"
   path_provider:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: path_provider
       sha256: c9e7d3a4cd1410877472158bee69963a4579f78b68c65a2b7d40d1a7a88bb161
@@ -1675,7 +1667,7 @@ packages:
     source: hosted
     version: "1.0.4"
   xml:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: xml
       sha256: b015a8ad1c488f66851d762d3090a21c600e479dc75e68328c52774040cf9226

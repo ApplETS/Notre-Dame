@@ -6,13 +6,13 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 // Project imports:
-import 'package:notredame/features/more/settings/settings_manager.dart';
-import 'package:notredame/features/app/repository/user_repository.dart';
 import 'package:notredame/features/app/analytics/analytics_service.dart';
+import 'package:notredame/features/app/analytics/remote_config_service.dart';
 import 'package:notredame/features/app/integration/launch_url_service.dart';
 import 'package:notredame/features/app/navigation/navigation_service.dart';
+import 'package:notredame/features/app/repository/user_repository.dart';
 import 'package:notredame/features/app/storage/preferences_service.dart';
-import 'package:notredame/features/app/analytics/remote_config_service.dart';
+import 'package:notredame/features/more/settings/settings_manager.dart';
 import 'package:notredame/features/welcome/login/login_view.dart';
 import 'package:notredame/features/welcome/widgets/password_text_field.dart';
 import '../../helpers.dart';

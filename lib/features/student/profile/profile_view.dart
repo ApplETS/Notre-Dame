@@ -4,17 +4,17 @@ import 'package:flutter/services.dart';
 
 // Package imports:
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:notredame/features/app/signets-api/models/program.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 import 'package:stacked/stacked.dart';
 
 // Project imports:
 import 'package:notredame/features/app/analytics/analytics_service.dart';
+import 'package:notredame/features/app/signets-api/models/program.dart';
 import 'package:notredame/features/student/profile/profile_viewmodel.dart';
-import 'package:notredame/utils/locator.dart';
+import 'package:notredame/features/student/widgets/student_program.dart';
 import 'package:notredame/utils/app_theme.dart';
 import 'package:notredame/utils/loading.dart';
-import 'package:notredame/features/student/widgets/student_program.dart';
+import 'package:notredame/utils/locator.dart';
 
 class ProfileView extends StatefulWidget {
   @override

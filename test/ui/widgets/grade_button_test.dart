@@ -5,11 +5,11 @@ import 'package:mockito/mockito.dart';
 
 // Project imports:
 import 'package:notredame/constants/preferences_flags.dart';
+import 'package:notredame/features/app/navigation/navigation_service.dart';
 import 'package:notredame/features/app/navigation/router_paths.dart';
 import 'package:notredame/features/app/signets-api/models/course.dart';
 import 'package:notredame/features/app/signets-api/models/course_summary.dart';
 import 'package:notredame/features/more/settings/settings_manager.dart';
-import 'package:notredame/features/app/navigation/navigation_service.dart';
 import 'package:notredame/features/student/grades/widgets/grade_button.dart';
 import '../../helpers.dart';
 import '../../mock/managers/settings_manager_mock.dart';

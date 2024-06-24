@@ -9,11 +9,11 @@ import 'package:feature_discovery/feature_discovery.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 // Project imports:
-import 'package:notredame/features/app/repository/course_repository.dart';
-import 'package:notredame/features/more/settings/settings_manager.dart';
 import 'package:notredame/features/app/integration/networking_service.dart';
-import 'package:notredame/features/student/student_view.dart';
+import 'package:notredame/features/app/repository/course_repository.dart';
 import 'package:notredame/features/app/widgets/base_scaffold.dart';
+import 'package:notredame/features/more/settings/settings_manager.dart';
+import 'package:notredame/features/student/student_view.dart';
 import '../../helpers.dart';
 import '../../mock/managers/course_repository_mock.dart';
 import '../../mock/services/analytics_service_mock.dart';

@@ -2,10 +2,10 @@
 import 'dart:ui';
 
 // Package imports:
-import 'package:notredame/features/ets/events/api-client/models/news.dart';
 import 'package:stacked/stacked.dart';
 
 // Project imports:
+import 'package:notredame/features/ets/events/api-client/models/news.dart';
 import 'package:notredame/utils/app_theme.dart';
 
 class NewsDetailsViewModel extends FutureViewModel<News> {

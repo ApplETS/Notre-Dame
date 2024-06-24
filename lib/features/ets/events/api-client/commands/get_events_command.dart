@@ -1,6 +1,10 @@
+// Dart imports:
 import 'dart:convert';
+
+// Package imports:
 import 'package:http/http.dart' as http;
 
+// Project imports:
 import 'package:notredame/features/ets/events/api-client/hello_api_client.dart';
 import 'package:notredame/features/ets/events/api-client/models/paginated_news.dart';
 import 'package:notredame/utils/command.dart';

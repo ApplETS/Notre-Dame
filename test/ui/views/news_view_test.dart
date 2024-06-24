@@ -1,23 +1,24 @@
-// Flutter imports:
+// Dart imports:
 import 'dart:io';
 
+// Flutter imports:
 import 'package:flutter/material.dart';
 
 // Package imports:
 import 'package:flutter_test/flutter_test.dart';
 
 // Project imports:
+import 'package:notredame/features/app/integration/networking_service.dart';
+import 'package:notredame/features/app/navigation/navigation_service.dart';
 import 'package:notredame/features/app/repository/course_repository.dart';
 import 'package:notredame/features/app/repository/news_repository.dart';
 import 'package:notredame/features/ets/events/api-client/models/news.dart';
 import 'package:notredame/features/ets/events/api-client/models/news_tags.dart';
 import 'package:notredame/features/ets/events/api-client/models/organizer.dart';
 import 'package:notredame/features/ets/events/api-client/models/paginated_news.dart';
-import 'package:notredame/features/more/settings/settings_manager.dart';
-import 'package:notredame/features/app/navigation/navigation_service.dart';
-import 'package:notredame/features/app/integration/networking_service.dart';
 import 'package:notredame/features/ets/events/news/news_view.dart';
 import 'package:notredame/features/ets/events/news/widgets/news_card.dart';
+import 'package:notredame/features/more/settings/settings_manager.dart';
 import '../../helpers.dart';
 import '../../mock/managers/news_repository_mock.dart';
 

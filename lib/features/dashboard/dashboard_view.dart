@@ -7,29 +7,29 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:feature_discovery/feature_discovery.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:notredame/features/app/signets-api/models/course_activity.dart';
 import 'package:stacked/stacked.dart';
 
 // Project imports:
-import 'package:notredame/features/welcome/discovery/models/discovery_ids.dart';
 import 'package:notredame/constants/preferences_flags.dart';
-import 'package:notredame/features/dashboard/progress_bar_text_options.dart';
-import 'package:notredame/features/app/navigation/router_paths.dart';
 import 'package:notredame/constants/update_code.dart';
 import 'package:notredame/constants/urls.dart';
 import 'package:notredame/features/app/analytics/analytics_service.dart';
 import 'package:notredame/features/app/navigation/navigation_service.dart';
-import 'package:notredame/utils/utils.dart';
-import 'package:notredame/features/dashboard/dashboard_viewmodel.dart';
-import 'package:notredame/utils/locator.dart';
-import 'package:notredame/utils/app_theme.dart';
-import 'package:notredame/features/welcome/discovery/discovery_components.dart';
-import 'package:notredame/utils/loading.dart';
+import 'package:notredame/features/app/navigation/router_paths.dart';
+import 'package:notredame/features/app/signets-api/models/course_activity.dart';
 import 'package:notredame/features/app/widgets/base_scaffold.dart';
-import 'package:notredame/features/dashboard/widgets/course_activity_tile.dart';
 import 'package:notredame/features/app/widgets/dismissible_card.dart';
-import 'package:notredame/features/student/grades/widgets/grade_button.dart';
+import 'package:notredame/features/dashboard/dashboard_viewmodel.dart';
+import 'package:notredame/features/dashboard/progress_bar_text_options.dart';
+import 'package:notredame/features/dashboard/widgets/course_activity_tile.dart';
 import 'package:notredame/features/dashboard/widgets/haptics_container.dart';
+import 'package:notredame/features/student/grades/widgets/grade_button.dart';
+import 'package:notredame/features/welcome/discovery/discovery_components.dart';
+import 'package:notredame/features/welcome/discovery/models/discovery_ids.dart';
+import 'package:notredame/utils/app_theme.dart';
+import 'package:notredame/utils/loading.dart';
+import 'package:notredame/utils/locator.dart';
+import 'package:notredame/utils/utils.dart';
 
 class DashboardView extends StatefulWidget {
   final UpdateCode updateCode;

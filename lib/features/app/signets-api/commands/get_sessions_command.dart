@@ -1,10 +1,13 @@
+// Package imports:
 import 'package:http/http.dart' as http;
+import 'package:xml/xml.dart';
+
+// Project imports:
 import 'package:notredame/constants/urls.dart';
 import 'package:notredame/features/app/signets-api/models/session.dart';
 import 'package:notredame/features/app/signets-api/signets_api_client.dart';
 import 'package:notredame/features/app/signets-api/soap_service.dart';
 import 'package:notredame/utils/command.dart';
-import 'package:xml/xml.dart';
 
 /// Call the SignetsAPI to get the list of all the [Session] for the student ([username]).
 class GetSessionsCommand implements Command<List<Session>> {
