@@ -27,7 +27,7 @@ import '../mock/managers/cache_manager_mock.dart';
 import '../mock/managers/user_repository_mock.dart';
 import '../mock/services/analytics_service_mock.dart';
 import '../mock/services/networking_service_mock.dart';
-import '../mock/signets-api-client/signets_api_mock.dart';
+import '../mock/services/signets_api_mock.dart';
 
 void main() {
   late AnalyticsServiceMock analyticsServiceMock;
