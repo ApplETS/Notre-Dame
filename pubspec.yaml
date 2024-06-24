@@ -68,7 +68,6 @@ dependencies:
   device_info_plus: ^9.1.2
   pub_semver: ^2.1.4
   home_widget: ^0.4.1
-  marquee: ^2.2.3
   auto_size_text: ^3.0.0
   easter_egg_trigger: ^1.0.1
   timeago: ^3.3.0
