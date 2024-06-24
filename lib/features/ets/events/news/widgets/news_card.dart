@@ -118,7 +118,7 @@ class _NewsCardState extends State<NewsCard> {
         ),
         const SizedBox(width: 10),
         Text(
-          timeago.format(news.publicationDate,
+          timeago.format(news.eventStartDate,
               locale: AppIntl.of(context)!.localeName),
           style: textStyle,
         ),
