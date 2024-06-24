@@ -10,7 +10,7 @@ class Urls {
   static const String clubYoutube =
       "https://youtube.com/channel/UCiSzzfW1bVbE_0KcEZO52ew";
   static const String clubDiscord = "https://discord.gg/adMkWptn6Y";
-  
+
   // Urls related to MonETS
   static const String monEtsAPI = "https://portail.etsmtl.ca/api/";
   static const String authenticationMonETS = "${monEtsAPI}authentification";
