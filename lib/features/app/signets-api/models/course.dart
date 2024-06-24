@@ -5,8 +5,8 @@ import 'package:collection/collection.dart';
 import 'package:xml/xml.dart';
 
 // Project imports:
-import 'course_review.dart';
-import 'course_summary.dart';
+import 'package:notredame/features/app/signets-api/models/course_review.dart';
+import 'package:notredame/features/app/signets-api/models/course_summary.dart';
 
 // MODELS
 
