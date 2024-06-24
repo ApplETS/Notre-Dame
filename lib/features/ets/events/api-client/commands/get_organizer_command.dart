@@ -38,6 +38,8 @@ class GetOrganizerCommand implements Command<Organizer?> {
     }
 
     final json = jsonDecode(response.body);
-    return ApiResponse<Organizer>.fromJson(json as Map<String, dynamic>, Organizer.fromJson).data;
+    return ApiResponse<Organizer>.fromJson(
+            json as Map<String, dynamic>, Organizer.fromJson)
+        .data;
   }
 }

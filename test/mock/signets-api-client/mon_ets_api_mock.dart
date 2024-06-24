@@ -12,15 +12,15 @@ import 'mon_ets_api_mock.mocks.dart';
 
 // UTILS
 
-
 /// Mock of the [MonETSApiClient]
 @GenerateNiceMocks([MockSpec<MonETSAPIClient>()])
 class MonETSAPIClientMock extends MockMonETSAPIClient {
   /// Stub the user to return when a authenticate is called using the username
   /// of [userToReturn]
-  static void stubAuthenticate(MonETSAPIClientMock mock, MonETSUser userToReturn) {
+  static void stubAuthenticate(
+      MonETSAPIClientMock mock, MonETSUser userToReturn) {
     when(mock.authenticate(
-        username: userToReturn.username, password: anyNamed('password')))
+            username: userToReturn.username, password: anyNamed('password')))
         .thenAnswer((_) async => userToReturn);
   }
 

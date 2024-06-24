@@ -7,7 +7,9 @@ class ApiResponse<T> {
   factory ApiResponse.fromJson(
       Map<String, dynamic> json, T Function(Map<String, dynamic>) fromJsonT) {
     return ApiResponse<T>(
-      data: json['data'] != null ? fromJsonT(json['data'] as Map<String, dynamic>) : null,
+      data: json['data'] != null
+          ? fromJsonT(json['data'] as Map<String, dynamic>)
+          : null,
       error: json['error'] as String?,
     );
   }
