@@ -5,11 +5,12 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 
 // Package imports:
-import 'package:ets_api_clients/models.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:intl/intl.dart';
 import 'package:mockito/mockito.dart';
+import 'package:notredame/features/app/signets-api/models/schedule_activity.dart';
+import 'package:notredame/utils/activity_code.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 // Project imports:

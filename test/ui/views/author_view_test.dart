@@ -2,7 +2,6 @@
 import 'dart:io';
 
 // Flutter imports:
-import 'package:ets_api_clients/models.dart';
 import 'package:flutter/material.dart';
 
 // Package imports:
@@ -12,6 +11,11 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 // Project imports:
 import 'package:notredame/features/app/repository/course_repository.dart';
 import 'package:notredame/features/app/repository/news_repository.dart';
+import 'package:notredame/features/ets/events/api-client/models/activity_area.dart';
+import 'package:notredame/features/ets/events/api-client/models/news.dart';
+import 'package:notredame/features/ets/events/api-client/models/news_tags.dart';
+import 'package:notredame/features/ets/events/api-client/models/organizer.dart';
+import 'package:notredame/features/ets/events/api-client/models/paginated_news.dart';
 import 'package:notredame/features/more/settings/settings_manager.dart';
 import 'package:notredame/features/app/analytics/analytics_service.dart';
 import 'package:notredame/features/app/integration/launch_url_service.dart';

@@ -5,10 +5,10 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 
 // Package imports:
-import 'package:ets_api_clients/models.dart';
 import 'package:feature_discovery/feature_discovery.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:notredame/features/app/repository/course_repository.dart';
+import 'package:notredame/features/app/signets-api/models/course_activity.dart';
 import 'package:notredame/features/more/settings/settings_manager.dart';
 import 'package:notredame/features/app/analytics/analytics_service.dart';
 import 'package:notredame/features/app/navigation/navigation_service.dart';
