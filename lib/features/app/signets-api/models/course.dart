@@ -1,7 +1,10 @@
 // FLUTTER / DART / THIRD-PARTIES
+
+// Package imports:
 import 'package:collection/collection.dart';
 import 'package:xml/xml.dart';
 
+// Project imports:
 import 'course_review.dart';
 import 'course_summary.dart';
 

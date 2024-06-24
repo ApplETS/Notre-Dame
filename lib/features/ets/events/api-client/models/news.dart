@@ -1,3 +1,4 @@
+// Project imports:
 import 'package:notredame/features/ets/events/api-client/models/news_tags.dart';
 import 'package:notredame/features/ets/events/api-client/models/organizer.dart';
 

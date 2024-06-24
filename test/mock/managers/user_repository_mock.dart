@@ -1,9 +1,9 @@
 // Package imports:
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
-import 'package:notredame/features/app/monets_api/models/mon_ets_user.dart';
 
 // Project imports:
+import 'package:notredame/features/app/monets_api/models/mon_ets_user.dart';
 import 'package:notredame/features/app/repository/user_repository.dart';
 import 'package:notredame/features/app/signets-api/models/profile_student.dart';
 import 'package:notredame/features/app/signets-api/models/program.dart';

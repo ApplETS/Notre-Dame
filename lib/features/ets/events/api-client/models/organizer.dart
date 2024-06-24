@@ -1,4 +1,4 @@
-
+// Project imports:
 import 'package:notredame/features/ets/events/api-client/models/activity_area.dart';
 
 /// Data-class that represents an organizer

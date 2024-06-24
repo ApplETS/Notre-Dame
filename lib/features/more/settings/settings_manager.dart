@@ -12,8 +12,8 @@ import 'package:table_calendar/table_calendar.dart';
 // Project imports:
 import 'package:notredame/constants/preferences_flags.dart';
 import 'package:notredame/features/app/analytics/analytics_service.dart';
-import 'package:notredame/features/app/storage/preferences_service.dart';
 import 'package:notredame/features/app/analytics/remote_config_service.dart';
+import 'package:notredame/features/app/storage/preferences_service.dart';
 import 'package:notredame/utils/locator.dart';
 
 class SettingsManager with ChangeNotifier {

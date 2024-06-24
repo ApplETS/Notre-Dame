@@ -8,17 +8,17 @@ import 'package:flutter/services.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
+
+// Project imports:
+import 'package:notredame/features/app/analytics/analytics_service.dart';
+import 'package:notredame/features/app/integration/networking_service.dart';
 import 'package:notredame/features/app/monets_api/models/mon_ets_user.dart';
 import 'package:notredame/features/app/monets_api/monets_api_client.dart';
+import 'package:notredame/features/app/repository/user_repository.dart';
 import 'package:notredame/features/app/signets-api/models/profile_student.dart';
 import 'package:notredame/features/app/signets-api/models/program.dart';
 import 'package:notredame/features/app/signets-api/signets_api_client.dart';
-
-// Project imports:
 import 'package:notredame/features/app/storage/cache_manager.dart';
-import 'package:notredame/features/app/repository/user_repository.dart';
-import 'package:notredame/features/app/analytics/analytics_service.dart';
-import 'package:notredame/features/app/integration/networking_service.dart';
 import 'package:notredame/utils/api_exception.dart';
 import 'package:notredame/utils/http_exception.dart';
 import '../helpers.dart';

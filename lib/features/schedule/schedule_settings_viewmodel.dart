@@ -2,15 +2,15 @@
 import 'package:calendar_view/calendar_view.dart';
 import 'package:collection/collection.dart';
 import 'package:enum_to_string/enum_to_string.dart';
-import 'package:notredame/features/app/signets-api/models/schedule_activity.dart';
-import 'package:notredame/utils/activity_code.dart';
 import 'package:stacked/stacked.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 // Project imports:
 import 'package:notredame/constants/preferences_flags.dart';
 import 'package:notredame/features/app/repository/course_repository.dart';
+import 'package:notredame/features/app/signets-api/models/schedule_activity.dart';
 import 'package:notredame/features/more/settings/settings_manager.dart';
+import 'package:notredame/utils/activity_code.dart';
 import 'package:notredame/utils/locator.dart';
 
 class ScheduleSettingsViewModel

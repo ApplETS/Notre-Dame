@@ -1,10 +1,10 @@
 // Package imports:
 import 'package:flutter_test/flutter_test.dart';
+
+// Project imports:
 import 'package:notredame/features/ets/events/api-client/models/news.dart';
 import 'package:notredame/features/ets/events/api-client/models/news_tags.dart';
 import 'package:notredame/features/ets/events/api-client/models/organizer.dart';
-
-// Project imports:
 import 'package:notredame/features/ets/events/news/news-details/news_details_viewmodel.dart';
 import 'package:notredame/utils/app_theme.dart';
 

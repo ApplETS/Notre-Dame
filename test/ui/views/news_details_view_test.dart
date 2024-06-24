@@ -9,9 +9,9 @@ import 'package:flutter_test/flutter_test.dart';
 
 // Project imports:
 import 'package:notredame/features/app/analytics/analytics_service.dart';
-import 'package:notredame/features/app/navigation/navigation_service.dart';
-import 'package:notredame/features/app/integration/networking_service.dart';
 import 'package:notredame/features/app/analytics/remote_config_service.dart';
+import 'package:notredame/features/app/integration/networking_service.dart';
+import 'package:notredame/features/app/navigation/navigation_service.dart';
 import 'package:notredame/features/ets/events/api-client/models/news.dart';
 import 'package:notredame/features/ets/events/api-client/models/news_tags.dart';
 import 'package:notredame/features/ets/events/api-client/models/organizer.dart';

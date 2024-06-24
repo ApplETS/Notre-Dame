@@ -4,9 +4,9 @@ import 'package:flutter/material.dart';
 // Package imports:
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:notredame/features/app/signets-api/models/program.dart';
 
 // Project imports:
+import 'package:notredame/features/app/signets-api/models/program.dart';
 import 'package:notredame/features/student/widgets/student_program.dart';
 import '../../helpers.dart';
 

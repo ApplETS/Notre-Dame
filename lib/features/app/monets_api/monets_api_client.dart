@@ -1,10 +1,14 @@
+// Dart imports:
 import 'dart:convert';
 import 'dart:io';
+
+// Package imports:
 import 'package:http/http.dart' as http;
 import 'package:http/io_client.dart';
 
-import 'package:notredame/features/app/monets_api/models/mon_ets_user.dart';
+// Project imports:
 import 'package:notredame/constants/urls.dart';
+import 'package:notredame/features/app/monets_api/models/mon_ets_user.dart';
 import 'package:notredame/utils/http_exception.dart';
 
 /// A Wrapper for all calls to MonETS API.

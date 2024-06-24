@@ -1,7 +1,11 @@
+// Dart imports:
 import 'dart:io';
 
-import 'package:http/io_client.dart';
+// Package imports:
 import 'package:http/http.dart' as http;
+import 'package:http/io_client.dart';
+
+// Project imports:
 import 'package:notredame/features/app/signets-api/commands/authentificate_command.dart';
 import 'package:notredame/features/app/signets-api/commands/get_course_reviews_command.dart';
 import 'package:notredame/features/app/signets-api/commands/get_course_summary_command.dart';

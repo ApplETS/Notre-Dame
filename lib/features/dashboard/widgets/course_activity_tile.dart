@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 
 // Package imports:
 import 'package:intl/intl.dart';
+
+// Project imports:
 import 'package:notredame/features/app/signets-api/models/course_activity.dart';
 
 class CourseActivityTile extends StatelessWidget {

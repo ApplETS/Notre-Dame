@@ -6,12 +6,12 @@ import 'package:feature_discovery/feature_discovery.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 // Project imports:
-import 'package:notredame/features/welcome/discovery/models/discovery_ids.dart';
-import 'package:notredame/utils/app_theme.dart';
-import 'package:notredame/features/welcome/discovery/discovery_components.dart';
+import 'package:notredame/features/app/widgets/base_scaffold.dart';
 import 'package:notredame/features/student/grades/grades_view.dart';
 import 'package:notredame/features/student/profile/profile_view.dart';
-import 'package:notredame/features/app/widgets/base_scaffold.dart';
+import 'package:notredame/features/welcome/discovery/discovery_components.dart';
+import 'package:notredame/features/welcome/discovery/models/discovery_ids.dart';
+import 'package:notredame/utils/app_theme.dart';
 
 class StudentView extends StatefulWidget {
   @override

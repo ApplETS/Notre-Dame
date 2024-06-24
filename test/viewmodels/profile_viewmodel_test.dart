@@ -1,13 +1,13 @@
 // Package imports:
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
-import 'package:notredame/features/app/signets-api/models/profile_student.dart';
-import 'package:notredame/features/app/signets-api/models/program.dart';
 
 // Project imports:
-import 'package:notredame/features/student/profile/programs_credits.dart';
 import 'package:notredame/features/app/repository/user_repository.dart';
+import 'package:notredame/features/app/signets-api/models/profile_student.dart';
+import 'package:notredame/features/app/signets-api/models/program.dart';
 import 'package:notredame/features/student/profile/profile_viewmodel.dart';
+import 'package:notredame/features/student/profile/programs_credits.dart';
 import '../helpers.dart';
 import '../mock/managers/user_repository_mock.dart';
 
