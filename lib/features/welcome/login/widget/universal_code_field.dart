@@ -28,8 +28,8 @@ class UniversalCodeField extends StatelessWidget {
         enabledBorder: const OutlineInputBorder(
             borderSide: BorderSide(color: Colors.white70)),
         focusedBorder: OutlineInputBorder(
-            borderSide: BorderSide(
-                color: Colors.white, width: borderRadiusOnFocus)),
+            borderSide:
+                BorderSide(color: Colors.white, width: borderRadiusOnFocus)),
         focusedErrorBorder: OutlineInputBorder(
             borderSide: BorderSide(
                 color: errorTextColor(context), width: borderRadiusOnFocus)),

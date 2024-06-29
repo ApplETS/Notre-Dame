@@ -9,7 +9,8 @@ import 'package:notredame/utils/locator.dart';
 
 class ForgotPasswordLink extends StatelessWidget {
   final LaunchUrlService _launchUrlService = locator<LaunchUrlService>();
-  final RemoteConfigService _remoteConfigService = locator<RemoteConfigService>();
+  final RemoteConfigService _remoteConfigService =
+      locator<RemoteConfigService>();
 
   ForgotPasswordLink({super.key});
 
@@ -26,7 +27,8 @@ class ForgotPasswordLink extends StatelessWidget {
                 decoration: TextDecoration.underline, color: Colors.white),
           ),
           onTap: () {
-            final signetsPasswordResetUrl = _remoteConfigService.signetsPasswordResetUrl;
+            final signetsPasswordResetUrl =
+                _remoteConfigService.signetsPasswordResetUrl;
             if (signetsPasswordResetUrl != "") {
               _launchUrlService.launchInBrowser(
                   _remoteConfigService.signetsPasswordResetUrl,

@@ -9,7 +9,6 @@ import 'package:notredame/features/student/grades/widgets/grade_not_available.da
 import 'package:notredame/utils/utils.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-
 class GradeEvaluations extends StatelessWidget {
   final GradesDetailsViewModel model;
   final bool completed;
@@ -100,8 +99,7 @@ class GradeEvaluations extends StatelessWidget {
                   GradesSummary(
                     currentGrade: model.course.summary?.currentMark,
                     maxGrade: model.course.summary?.markOutOf,
-                    recipient:
-                        AppIntl.of(context)!.grades_current_rating,
+                    recipient: AppIntl.of(context)!.grades_current_rating,
                     color: Colors.green,
                   ),
                   Padding(
@@ -109,8 +107,7 @@ class GradeEvaluations extends StatelessWidget {
                     child: GradesSummary(
                       currentGrade: model.course.summary?.passMark,
                       maxGrade: model.course.summary?.markOutOf,
-                      recipient:
-                          AppIntl.of(context)!.grades_average,
+                      recipient: AppIntl.of(context)!.grades_average,
                       color: Colors.red,
                     ),
                   ),

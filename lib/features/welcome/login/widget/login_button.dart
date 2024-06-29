@@ -7,7 +7,6 @@ import 'package:notredame/features/welcome/login/login_viewmodel.dart';
 import 'package:notredame/utils/utils.dart';
 import 'package:notredame/utils/app_theme.dart';
 
-
 class LoginButton extends StatelessWidget {
   final GlobalKey<FormState> formKey;
   final LoginViewModel model;
@@ -38,18 +37,17 @@ class LoginButton extends StatelessWidget {
         child: Text(
           AppIntl.of(context)!.login_action_sign_in,
           style: TextStyle(
-              color: model.canSubmit
-                  ? submitTextColor(context)
-                  : Colors.white60,
+              color:
+                  model.canSubmit ? submitTextColor(context) : Colors.white60,
               fontSize: 18),
         ),
       ),
     );
   }
 
-  Color colorButton(BuildContext context) => Utils.getColorByBrightness(
-      context, Colors.white, AppTheme.etsLightRed);
+  Color colorButton(BuildContext context) =>
+      Utils.getColorByBrightness(context, Colors.white, AppTheme.etsLightRed);
 
-  Color submitTextColor(BuildContext context) => Utils.getColorByBrightness(
-      context, AppTheme.etsLightRed, Colors.white);
+  Color submitTextColor(BuildContext context) =>
+      Utils.getColorByBrightness(context, AppTheme.etsLightRed, Colors.white);
 }

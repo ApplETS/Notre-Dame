@@ -8,7 +8,8 @@ import 'package:notredame/features/app/widgets/base_scaffold.dart';
 
 class ContributorsView extends StatelessWidget {
   @override
-  Widget build(BuildContext context) => ViewModelBuilder<ContributorsViewModel>.reactive(
+  Widget build(BuildContext context) =>
+      ViewModelBuilder<ContributorsViewModel>.reactive(
         viewModelBuilder: () => ContributorsViewModel(),
         builder: (context, model, child) {
           return BaseScaffold(

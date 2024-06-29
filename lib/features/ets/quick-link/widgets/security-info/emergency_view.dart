@@ -21,7 +21,8 @@ class _EmergencyViewState extends State<EmergencyView> {
         floatingActionButton: const EmergencyFloatingButton(),
         body: WebViewWidget(
           controller: WebViewControllerExtension(WebViewController())
-            ..loadHtmlFromAssets(widget.description, Theme.of(context).brightness),
+            ..loadHtmlFromAssets(
+                widget.description, Theme.of(context).brightness),
         ),
       );
 }

@@ -10,8 +10,7 @@ class EmergencyFloatingButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return FloatingActionButton.extended(
       onPressed: () {
-        Utils.launchURL(
-                'tel:${AppIntl.of(context)!.security_emergency_number}',
+        Utils.launchURL('tel:${AppIntl.of(context)!.security_emergency_number}',
                 AppIntl.of(context)!)
             .catchError((error) {
           ScaffoldMessenger.of(context)

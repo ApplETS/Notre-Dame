@@ -22,7 +22,8 @@ class AuthorView extends StatelessWidget {
 
   const AuthorView({required this.authorId, super.key});
 
-  Widget _buildErrorWidget(PagingController<int, News> pagingController, BuildContext context) {
+  Widget _buildErrorWidget(
+      PagingController<int, News> pagingController, BuildContext context) {
     return Scaffold(
       body: SafeArea(
         minimum: const EdgeInsets.all(20),
@@ -83,7 +84,8 @@ class AuthorView extends StatelessWidget {
                 content: Text(AppIntl.of(context)!.news_error_not_found),
                 action: SnackBarAction(
                   label: AppIntl.of(context)!.retry,
-                  onPressed: () => model.pagingController.retryLastFailedRequest(),
+                  onPressed: () =>
+                      model.pagingController.retryLastFailedRequest(),
                 ),
               ),
             );
@@ -94,7 +96,8 @@ class AuthorView extends StatelessWidget {
         return BaseScaffold(
           showBottomBar: false,
           body: RefreshIndicator(
-            onRefresh: () => Future.sync(() => model.pagingController.refresh()),
+            onRefresh: () =>
+                Future.sync(() => model.pagingController.refresh()),
             child: Theme(
               data: Theme.of(context).copyWith(canvasColor: Colors.transparent),
               child: Padding(
@@ -116,10 +119,15 @@ class AuthorView extends StatelessWidget {
                         padding: const EdgeInsets.fromLTRB(0, 4, 0, 8),
                         builderDelegate: PagedChildBuilderDelegate<News>(
                           itemBuilder: (context, item, index) => NewsCard(item),
-                          firstPageProgressIndicatorBuilder: (context) => NewsCardSkeleton(),
-                          newPageProgressIndicatorBuilder: (context) => NewsCardSkeleton(),
-                          noMoreItemsIndicatorBuilder: (context) => const NoMoreNewsCardWidget(),
-                          firstPageErrorIndicatorBuilder: (context) => _buildErrorWidget(model.pagingController, context),
+                          firstPageProgressIndicatorBuilder: (context) =>
+                              NewsCardSkeleton(),
+                          newPageProgressIndicatorBuilder: (context) =>
+                              NewsCardSkeleton(),
+                          noMoreItemsIndicatorBuilder: (context) =>
+                              const NoMoreNewsCardWidget(),
+                          firstPageErrorIndicatorBuilder: (context) =>
+                              _buildErrorWidget(
+                                  model.pagingController, context),
                         ),
                       ),
                     ),

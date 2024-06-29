@@ -22,8 +22,8 @@ class LogoutListTile extends ViewModelWidget<MoreViewModel> {
               AppIntl.of(context)!.more_log_out,
               style: const TextStyle(color: Colors.red),
             ),
-            content: Text(AppIntl.of(context)!
-                .more_prompt_log_out_confirmation),
+            content:
+                Text(AppIntl.of(context)!.more_prompt_log_out_confirmation),
             actions: [
               TextButton(
                   onPressed: () async {

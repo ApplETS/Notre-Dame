@@ -54,7 +54,8 @@ class _FeedbackViewState extends State<FeedbackView> {
                     )),
                     child: CardInfo(
                       title: AppIntl.of(context)!.more_report_bug_bug,
-                      subtitle: AppIntl.of(context)!.more_report_bug_bug_subtitle,
+                      subtitle:
+                          AppIntl.of(context)!.more_report_bug_bug_subtitle,
                       icon: Icons.bug_report,
                       iconColor: const Color.fromRGBO(252, 196, 238, 1),
                       circleColor: const Color.fromRGBO(153, 78, 174, 1),
@@ -81,7 +82,8 @@ class _FeedbackViewState extends State<FeedbackView> {
                     )),
                     child: CardInfo(
                       title: AppIntl.of(context)!.more_report_bug_feature,
-                      subtitle: AppIntl.of(context)!.more_report_bug_feature_subtitle,
+                      subtitle:
+                          AppIntl.of(context)!.more_report_bug_feature_subtitle,
                       icon: Icons.design_services,
                       iconColor: const Color.fromRGBO(63, 219, 251, 1),
                       circleColor: const Color.fromRGBO(14, 127, 188, 1),

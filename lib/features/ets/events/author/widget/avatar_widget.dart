@@ -22,12 +22,13 @@ class AvatarWidget extends ViewModelWidget<AuthorViewModel> {
                 child: Hero(
                   tag: 'news_author_avatar',
                   child: CircleAvatar(
-                    backgroundColor: Utils.getColorByBrightness(
-                        context, AppTheme.lightThemeAccent, AppTheme.darkThemeAccent),
+                    backgroundColor: Utils.getColorByBrightness(context,
+                        AppTheme.lightThemeAccent, AppTheme.darkThemeAccent),
                     child: Stack(
                       fit: StackFit.expand,
                       children: [
-                        if (model.author?.avatarUrl != null && model.author!.avatarUrl != "")
+                        if (model.author?.avatarUrl != null &&
+                            model.author!.avatarUrl != "")
                           ClipRRect(
                             borderRadius: BorderRadius.circular(120),
                             child: Image.network(
@@ -36,22 +37,29 @@ class AvatarWidget extends ViewModelWidget<AuthorViewModel> {
                               errorBuilder: (context, error, stackTrace) {
                                 return Center(
                                   child: Text(
-                                    model.author?.organization?.substring(0, 1) ?? '',
+                                    model.author?.organization
+                                            ?.substring(0, 1) ??
+                                        '',
                                     style: TextStyle(
                                         fontSize: 56,
-                                        color: Utils.getColorByBrightness(context, Colors.black, Colors.white)),
+                                        color: Utils.getColorByBrightness(
+                                            context,
+                                            Colors.black,
+                                            Colors.white)),
                                   ),
                                 );
                               },
                             ),
                           ),
-                        if (model.author?.avatarUrl == null || model.author!.avatarUrl == "")
+                        if (model.author?.avatarUrl == null ||
+                            model.author!.avatarUrl == "")
                           Center(
                             child: Text(
                               model.author?.organization?.substring(0, 1) ?? '',
                               style: TextStyle(
                                   fontSize: 56,
-                                  color: Utils.getColorByBrightness(context, Colors.black, Colors.white)),
+                                  color: Utils.getColorByBrightness(
+                                      context, Colors.black, Colors.white)),
                             ),
                           ),
                       ],

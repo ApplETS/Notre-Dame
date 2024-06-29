@@ -105,12 +105,11 @@ class _GradesDetailsViewState extends State<GradesDetailsView>
                               ClassInfo(info: model.course.title),
                               if (model.course.teacherName != null)
                                 ClassInfo(
-                                    info: AppIntl.of(context)!
-                                        .grades_teacher(
-                                            model.course.teacherName!)),
+                                    info: AppIntl.of(context)!.grades_teacher(
+                                        model.course.teacherName!)),
                               ClassInfo(
-                                  info: AppIntl.of(context)!.grades_group_number(
-                                      model.course.group)),
+                                  info: AppIntl.of(context)!
+                                      .grades_group_number(model.course.group)),
                               ClassInfo(
                                   info: AppIntl.of(context)!.credits_number(
                                       model.course.numberOfCredits)),

@@ -28,10 +28,10 @@ class GradeList extends StatelessWidget {
                     child: FadeInAnimation(
                       child: GradeSessionCourses(
                         index: index,
-                        sessionName: _sessionName(model.sessionOrder[index],
-                            AppIntl.of(context)!),
-                        courses: model.coursesBySession[
-                            model.sessionOrder[index]]!,
+                        sessionName: _sessionName(
+                            model.sessionOrder[index], AppIntl.of(context)!),
+                        courses:
+                            model.coursesBySession[model.sessionOrder[index]]!,
                         sessionOrder: model.sessionOrder,
                       ),
                     ),
