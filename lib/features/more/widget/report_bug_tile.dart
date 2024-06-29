@@ -6,9 +6,7 @@ import 'package:stacked/stacked.dart';
 import 'package:notredame/features/app/navigation/router_paths.dart';
 import 'package:notredame/features/more/more_viewmodel.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:notredame/features/welcome/discovery/models/discovery_ids.dart';
 import 'package:notredame/utils/locator.dart';
-import 'package:notredame/utils/app_theme.dart';
 
 class ReportBugTile extends ViewModelWidget<MoreViewModel> {
   final AnalyticsService _analyticsService = locator<AnalyticsService>();

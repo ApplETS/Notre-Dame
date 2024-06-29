@@ -6,7 +6,7 @@ import 'package:notredame/features/more/more_viewmodel.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class InAppReviewTile extends ViewModelWidget<MoreViewModel> {
-  InAppReviewTile({Key? key}) : super(key: key);
+  const InAppReviewTile({super.key});
 
   @override
   Widget build(BuildContext context, MoreViewModel model) {

@@ -1,12 +1,10 @@
 // more_view.dart
 
 // Flutter imports:
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 
 // Package imports:
-import 'package:feature_discovery/feature_discovery.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:notredame/features/more/widget/about_applets_tile.dart';
 import 'package:notredame/features/more/widget/contributors_list_tile.dart';
@@ -58,7 +56,7 @@ class _MoreViewState extends State<MoreView> {
               children: [
                 AboutAppletsTile(),
                 ReportBugTile(isDiscoveryOverlayActive: isDiscoveryOverlayActive),
-                InAppReviewTile(),
+                const InAppReviewTile(),
                 ContributorsTile(isDiscoveryOverlayActive: isDiscoveryOverlayActive),
                 const OpenSourceLicensesTile(),
                 if (model.privacyPolicyToggle)

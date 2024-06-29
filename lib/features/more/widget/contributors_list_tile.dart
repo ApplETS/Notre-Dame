@@ -13,7 +13,7 @@ class ContributorsTile extends ViewModelWidget<MoreViewModel> {
   static const String tag = "MoreView";
   final bool isDiscoveryOverlayActive;
 
-  ContributorsTile({Key? key, required this.isDiscoveryOverlayActive}) : super(key: key);
+  ContributorsTile({super.key, required this.isDiscoveryOverlayActive});
 
   @override
   Widget build(BuildContext context, MoreViewModel model) {
