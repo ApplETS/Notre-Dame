@@ -20,6 +20,7 @@ import 'package:notredame/features/more/feedback/in_app_review_service.dart';
 import 'package:notredame/features/app/integration/launch_url_service.dart';
 import 'package:notredame/features/app/navigation/navigation_service.dart';
 import 'package:notredame/features/app/storage/preferences_service.dart';
+import 'package:notredame/features/app/analytics/analytics_service.dart'; // Ajoutez cette ligne
 import 'package:notredame/features/app/analytics/remote_config_service.dart';
 import 'package:notredame/utils/locator.dart';
 import 'package:notredame/features/welcome/discovery/discovery_components.dart';
@@ -36,16 +37,18 @@ class MoreViewModel extends FutureViewModel {
 
   /// Preferences service
   final PreferencesService _preferencesService = locator<PreferencesService>();
-
+  
   /// Remote config service
-  final RemoteConfigService _remoteConfigService =
-      locator<RemoteConfigService>();
+  final RemoteConfigService _remoteConfigService = locator<RemoteConfigService>();
 
   /// User repository needed to log out
   final UserRepository _userRepository = locator<UserRepository>();
 
   /// Used to redirect on the dashboard.
   final NavigationService navigationService = locator<NavigationService>();
+
+  /// Analytics service
+  final AnalyticsService _analyticsService = locator<AnalyticsService>(); // Ajoutez cette ligne
 
   String? _appVersion;
 
@@ -158,4 +161,7 @@ class MoreViewModel extends FutureViewModel {
 
   /// Get the privacy policy toggle
   bool get privacyPolicyToggle => _remoteConfigService.privacyPolicyToggle;
+
+  /// Getter for analyticsService
+  AnalyticsService get analyticsService => _analyticsService; // Ajoutez cette ligne
 }

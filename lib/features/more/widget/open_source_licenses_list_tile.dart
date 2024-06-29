@@ -1,14 +1,14 @@
+// widgets/open_source_licenses_tile.dart
+
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:notredame/utils/utils.dart';
 import 'package:stacked/stacked.dart';
 import 'package:notredame/features/more/more_viewmodel.dart';
-import 'package:notredame/utils/locator.dart';
-import 'package:notredame/features/app/analytics/analytics_service.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-class OpenSourceLicensesListTile extends ViewModelWidget<MoreViewModel> {
-  final AnalyticsService _analyticsService = locator<AnalyticsService>();
+class OpenSourceLicensesTile extends ViewModelWidget<MoreViewModel> {
+  const OpenSourceLicensesTile({super.key});
 
   @override
   Widget build(BuildContext context, MoreViewModel model) {
@@ -16,7 +16,7 @@ class OpenSourceLicensesListTile extends ViewModelWidget<MoreViewModel> {
       title: Text(AppIntl.of(context)!.more_open_source_licenses),
       leading: const Icon(Icons.code),
       onTap: () {
-        _analyticsService.logEvent("MoreView", "Rate us clicked");
+        model.analyticsService.logEvent("MoreView", "Rate us clicked");
         Navigator.of(context).push(PageRouteBuilder(
           pageBuilder: (context, _, __) => AboutDialog(
             applicationIcon: Padding(
@@ -28,7 +28,7 @@ class OpenSourceLicensesListTile extends ViewModelWidget<MoreViewModel> {
             applicationName: AppIntl.of(context)!.more_open_source_licenses,
             applicationVersion: model.appVersion,
             applicationLegalese: '\u{a9} ${DateTime.now().year} App|ETS',
-            children: aboutBoxChildren(context),
+            children: aboutBoxChildren(context, model),
           ),
           opaque: false,
         ));
@@ -36,7 +36,7 @@ class OpenSourceLicensesListTile extends ViewModelWidget<MoreViewModel> {
     );
   }
 
-  List<Widget> aboutBoxChildren(BuildContext context) {
+  List<Widget> aboutBoxChildren(BuildContext context, MoreViewModel model) {
     final textStyle = Theme.of(context).textTheme.bodyMedium!;
     return <Widget>[
       const SizedBox(height: 24),
