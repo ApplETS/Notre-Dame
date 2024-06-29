@@ -55,9 +55,11 @@ class _MoreViewState extends State<MoreView> {
               padding: EdgeInsets.zero,
               children: [
                 AboutAppletsTile(),
-                ReportBugTile(isDiscoveryOverlayActive: isDiscoveryOverlayActive),
+                ReportBugTile(
+                    isDiscoveryOverlayActive: isDiscoveryOverlayActive),
                 const InAppReviewTile(),
-                ContributorsTile(isDiscoveryOverlayActive: isDiscoveryOverlayActive),
+                ContributorsTile(
+                    isDiscoveryOverlayActive: isDiscoveryOverlayActive),
                 const OpenSourceLicensesTile(),
                 if (model.privacyPolicyToggle)
                   ListTile(
