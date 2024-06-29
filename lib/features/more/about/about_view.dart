@@ -2,13 +2,9 @@
 import 'package:flutter/material.dart';
 
 // Package imports:
-import 'package:easter_egg_trigger/easter_egg_trigger.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-
-// Project imports:
-import 'package:notredame/constants/urls.dart';
-import 'package:notredame/utils/utils.dart';
+import 'package:notredame/features/more/about/widget/easter_egg_icon.dart'; // Importez le widget extrait
+import 'package:notredame/features/more/about/widget/social_icons_row.dart'; // Importez le widget extrait
 
 class AboutView extends StatefulWidget {
   @override
@@ -49,6 +45,10 @@ class _AboutViewState extends State<AboutView> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
+    return newMethod(context);
+  }
+
+  Scaffold newMethod(BuildContext context) {
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
@@ -88,26 +88,9 @@ class _AboutViewState extends State<AboutView> with TickerProviderStateMixin {
           left: 0,
           child: Column(
             children: [
-              EasterEggTrigger(
-                action: () => toggleTrigger(),
-                codes: const [
-                  EasterEggTriggers.SwipeUp,
-                  EasterEggTriggers.SwipeRight,
-                  EasterEggTriggers.SwipeDown,
-                  EasterEggTriggers.SwipeLeft,
-                  EasterEggTriggers.Tap
-                ],
-                child: SizedBox(
-                  width: 100,
-                  height: 100,
-                  child: Hero(
-                    tag: 'about',
-                    child: Image.asset(
-                      "assets/images/favicon_applets.png",
-                      scale: 2.0,
-                    ),
-                  ),
-                ),
+              EasterEggIcon(
+                toggleTrigger: toggleTrigger,
+                easterEggTrigger: _easterEggTrigger,
               ),
               Padding(
                 padding: const EdgeInsets.all(16.0),
@@ -116,68 +99,7 @@ class _AboutViewState extends State<AboutView> with TickerProviderStateMixin {
                   style: const TextStyle(color: Colors.white),
                 ),
               ),
-              SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    IconButton(
-                        icon: const FaIcon(
-                          FontAwesomeIcons.earthAmericas,
-                          color: Colors.white,
-                        ),
-                        onPressed: () => Utils.launchURL(
-                            Urls.clubWebsite, AppIntl.of(context)!)),
-                    IconButton(
-                        icon: const FaIcon(
-                          FontAwesomeIcons.github,
-                          color: Colors.white,
-                        ),
-                        onPressed: () => Utils.launchURL(
-                            Urls.clubGithub, AppIntl.of(context)!)),
-                    IconButton(
-                        icon: const FaIcon(
-                          FontAwesomeIcons.facebook,
-                          color: Colors.white,
-                        ),
-                        onPressed: () => Utils.launchURL(
-                            Urls.clubFacebook, AppIntl.of(context)!)),
-                    IconButton(
-                        icon: const FaIcon(
-                          FontAwesomeIcons.twitter,
-                          color: Colors.white,
-                        ),
-                        onPressed: () => Utils.launchURL(
-                            Urls.clubTwitter, AppIntl.of(context)!)),
-                    IconButton(
-                        icon: const FaIcon(
-                          FontAwesomeIcons.youtube,
-                          color: Colors.white,
-                        ),
-                        onPressed: () => Utils.launchURL(
-                            Urls.clubYoutube, AppIntl.of(context)!)),
-                    IconButton(
-                        icon: const FaIcon(
-                          FontAwesomeIcons.discord,
-                          color: Colors.white,
-                        ),
-                        onPressed: () => Utils.launchURL(
-                            Urls.clubDiscord, AppIntl.of(context)!)),
-                  ],
-                ),
-              ),
-              if (_easterEggTrigger)
-                SizedBox(
-                  width: 200,
-                  height: 200,
-                  child: Hero(
-                    tag: 'capra',
-                    child: Image.asset(
-                      "assets/images/capra_long.png",
-                      scale: 1.0,
-                    ),
-                  ),
-                ),
+              const SocialIconsRow(),
             ],
           ),
         ),

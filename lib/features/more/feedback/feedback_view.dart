@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 // Package imports:
 import 'package:feedback/feedback.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:notredame/features/more/feedback/widgets-feedback/card_info.dart';
+import 'package:notredame/features/more/feedback/widgets-feedback/list_tag.dart';
 import 'package:stacked/stacked.dart';
 
 // Project imports:
@@ -50,13 +52,13 @@ class _FeedbackViewState extends State<FeedbackView> {
                         borderRadius: BorderRadius.circular(8.0),
                       ),
                     )),
-                    child: getCardInfo(
-                      context,
-                      AppIntl.of(context)!.more_report_bug_bug,
-                      AppIntl.of(context)!.more_report_bug_bug_subtitle,
-                      Icons.bug_report,
-                      const Color.fromRGBO(252, 196, 238, 1),
-                      const Color.fromRGBO(153, 78, 174, 1),
+                    child: CardInfo(
+                      title: AppIntl.of(context)!.more_report_bug_bug,
+                      subtitle:
+                          AppIntl.of(context)!.more_report_bug_bug_subtitle,
+                      icon: Icons.bug_report,
+                      iconColor: const Color.fromRGBO(252, 196, 238, 1),
+                      circleColor: const Color.fromRGBO(153, 78, 174, 1),
                     ),
                   ),
                 ),
@@ -78,13 +80,13 @@ class _FeedbackViewState extends State<FeedbackView> {
                         borderRadius: BorderRadius.circular(8.0),
                       ),
                     )),
-                    child: getCardInfo(
-                      context,
-                      AppIntl.of(context)!.more_report_bug_feature,
-                      AppIntl.of(context)!.more_report_bug_feature_subtitle,
-                      Icons.design_services,
-                      const Color.fromRGBO(63, 219, 251, 1),
-                      const Color.fromRGBO(14, 127, 188, 1),
+                    child: CardInfo(
+                      title: AppIntl.of(context)!.more_report_bug_feature,
+                      subtitle:
+                          AppIntl.of(context)!.more_report_bug_feature_subtitle,
+                      icon: Icons.design_services,
+                      iconColor: const Color.fromRGBO(63, 219, 251, 1),
+                      circleColor: const Color.fromRGBO(14, 127, 188, 1),
                     ),
                   ),
                 ),
@@ -149,16 +151,16 @@ class _FeedbackViewState extends State<FeedbackView> {
                                     ),
                                   ),
                                   Row(children: [
-                                    createListTag(
-                                      model.myIssues[index].createdAt,
+                                    ListTag(
+                                      text: model.myIssues[index].createdAt,
                                       color: Colors.transparent,
                                       textColor: isLightMode
                                           ? const Color.fromARGB(168, 0, 0, 0)
                                           : Colors.white,
                                     ),
                                     const SizedBox(width: 4),
-                                    createListTag(
-                                        model.myIssues[index].isOpen
+                                    ListTag(
+                                        text: model.myIssues[index].isOpen
                                             ? AppIntl.of(context)!
                                                 .ticket_status_open
                                             : AppIntl.of(context)!
@@ -284,65 +286,5 @@ class _FeedbackViewState extends State<FeedbackView> {
     return Theme.of(context).brightness == Brightness.light
         ? AppTheme.lightThemeBackground
         : AppTheme.darkThemeAccent;
-  }
-
-  Row getCardInfo(BuildContext context, String title, String subtitle,
-      IconData icon, Color iconColor, Color circleColor) {
-    return Row(
-      children: <Widget>[
-        Column(
-          children: <Widget>[
-            CircleAvatar(
-              backgroundColor: circleColor,
-              radius: 25,
-              child: Icon(icon, color: iconColor),
-            ),
-          ],
-        ),
-        Expanded(
-          child: Padding(
-            padding: const EdgeInsets.fromLTRB(15, 15, 0, 15),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Text(
-                  title,
-                  style: Theme.of(context)
-                      .textTheme
-                      .bodyMedium!
-                      .copyWith(fontSize: 19),
-                  textAlign: TextAlign.left,
-                ),
-                Text(
-                  subtitle,
-                  style: Theme.of(context)
-                      .textTheme
-                      .bodyMedium!
-                      .copyWith(fontSize: 16),
-                  textAlign: TextAlign.left,
-                )
-              ],
-            ),
-          ),
-        )
-      ],
-    );
-  }
-
-  Widget createListTag(String text, {Color? textColor, Color? color}) {
-    return Container(
-      decoration: BoxDecoration(
-          // border radius
-          borderRadius: BorderRadius.circular(6),
-          color: color),
-      child: Padding(
-        padding: const EdgeInsets.all(6.0),
-        child: Text(
-          text,
-          style: TextStyle(color: textColor),
-        ),
-      ),
-    );
   }
 }
