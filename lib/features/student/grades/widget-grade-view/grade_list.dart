@@ -3,7 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:notredame/features/student/grades/grades_viewmodel.dart';
-import 'package:notredame/features/student/grades/widget-grade-view/grade-session-courses.dart';
+import 'package:notredame/features/student/grades/widget-grade-view/grade_session_courses.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class GradeList extends StatelessWidget {
