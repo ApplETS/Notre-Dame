@@ -50,7 +50,7 @@ class MoreViewModel extends FutureViewModel {
 
   /// Analytics service
   final AnalyticsService _analyticsService =
-      locator<AnalyticsService>(); // Ajoutez cette ligne
+      locator<AnalyticsService>();
 
   String? _appVersion;
 
@@ -166,5 +166,5 @@ class MoreViewModel extends FutureViewModel {
 
   /// Getter for analyticsService
   AnalyticsService get analyticsService =>
-      _analyticsService; // Ajoutez cette ligne
+      _analyticsService;
 }
