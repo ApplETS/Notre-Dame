@@ -1,14 +1,13 @@
-// Flutter imports:
 import 'package:flutter/material.dart';
-
-// Package imports:
-import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:notredame/features/more/faq/widget/action_card.dart';
+import 'package:notredame/features/more/faq/widget/faq_subtitle.dart';
+import 'package:notredame/features/more/faq/widget/faq_title.dart';
+import 'package:notredame/features/more/faq/widget/question_card.dart';
 import 'package:stacked/stacked.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 
-// Project imports:
 import 'package:notredame/features/more/faq/models/faq.dart';
-import 'package:notredame/features/more/faq/models/faq_actions.dart';
 import 'package:notredame/features/more/faq/faq_viewmodel.dart';
 
 class FaqView extends StatefulWidget {
@@ -32,8 +31,11 @@ class _FaqViewState extends State<FaqView> {
             body: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                getTitle(),
-                getSubtitle(AppIntl.of(context)!.questions_and_answers),
+                FaqTitle(backgroundColor: widget.backgroundColor),
+                FaqSubtitle(
+                  subtitle: AppIntl.of(context)!.questions_and_answers,
+                  backgroundColor: widget.backgroundColor,
+                ),
                 Padding(
                   padding: const EdgeInsets.only(left: 15.0, right: 15.0),
                   child: CarouselSlider(
@@ -57,9 +59,9 @@ class _FaqViewState extends State<FaqView> {
                               borderRadius:
                                   const BorderRadius.all(Radius.circular(8.0)),
                             ),
-                            child: getQuestionCard(
-                              question.title[model.locale?.languageCode] ?? '',
-                              question.description[
+                            child: QuestionCard(
+                              title: question.title[model.locale?.languageCode] ?? '',
+                              description: question.description[
                                       model.locale?.languageCode] ??
                                   '',
                             ),
@@ -69,7 +71,10 @@ class _FaqViewState extends State<FaqView> {
                     }).toList(),
                   ),
                 ),
-                getSubtitle(AppIntl.of(context)!.actions),
+                FaqSubtitle(
+                  subtitle: AppIntl.of(context)!.actions,
+                  backgroundColor: widget.backgroundColor,
+                ),
                 Expanded(
                   child: ListView.builder(
                     key: const Key("action_listview_key"),
@@ -78,16 +83,17 @@ class _FaqViewState extends State<FaqView> {
                     itemBuilder: (context, index) {
                       final action = faq.actions[index];
 
-                      return getActionCard(
-                          action.title[model.locale?.languageCode] ?? '',
-                          action.description[model.locale?.languageCode] ?? '',
-                          action.type,
-                          action.link,
-                          action.iconName,
-                          action.iconColor,
-                          action.circleColor,
-                          context,
-                          model);
+                      return ActionCard(
+                        title: action.title[model.locale?.languageCode] ?? '',
+                        description: action.description[model.locale?.languageCode] ?? '',
+                        type: action.type,
+                        link: action.link,
+                        iconName: action.iconName,
+                        iconColor: action.iconColor,
+                        circleColor: action.circleColor,
+                        context: context,
+                        model: model,
+                      );
                     },
                   ),
                 )
@@ -96,193 +102,4 @@ class _FaqViewState extends State<FaqView> {
           );
         },
       );
-
-  Padding getTitle() {
-    return Padding(
-      padding: const EdgeInsets.only(top: 60.0),
-      child: Row(
-        children: [
-          Padding(
-            padding: const EdgeInsets.only(left: 5.0),
-            child: GestureDetector(
-              onTap: () {
-                Navigator.of(context).pop();
-              },
-              child: Padding(
-                padding: const EdgeInsets.only(left: 10.0),
-                child: Icon(
-                  Icons.arrow_back,
-                  color: widget.backgroundColor == Colors.white
-                      ? Colors.black
-                      : Colors.white,
-                ),
-              ),
-            ),
-          ),
-          const SizedBox(width: 8.0),
-          Expanded(
-            child: Text(
-              AppIntl.of(context)!.need_help,
-              textAlign: TextAlign.center,
-              style: Theme.of(context).textTheme.headlineSmall!.copyWith(
-                    color: widget.backgroundColor == Colors.white
-                        ? Colors.black
-                        : Colors.white,
-                  ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Padding getSubtitle(String subtitle) {
-    return Padding(
-      padding: const EdgeInsets.only(left: 18.0, top: 18.0, bottom: 10.0),
-      child: Text(
-        subtitle,
-        style: Theme.of(context).textTheme.headlineSmall!.copyWith(
-              color: widget.backgroundColor == Colors.white
-                  ? Colors.black
-                  : Colors.white,
-            ),
-      ),
-    );
-  }
-
-  Padding getQuestionCard(String title, String description) {
-    return Padding(
-      padding: const EdgeInsets.only(top: 20.0, left: 20.0, right: 20.0),
-      child: Align(
-        alignment: Alignment.topLeft,
-        child: SingleChildScrollView(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Text(
-                title,
-                textScaler: TextScaler.noScaling,
-                style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                      fontSize: 20,
-                      color: Theme.of(context).brightness == Brightness.light
-                          ? Colors.black
-                          : Colors.white,
-                    ),
-                textAlign: TextAlign.justify,
-              ),
-              Text(
-                description,
-                textScaler: TextScaler.noScaling,
-                style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                      fontSize: 16,
-                      color: Theme.of(context).brightness == Brightness.light
-                          ? Colors.black
-                          : Colors.white,
-                    ),
-                textAlign: TextAlign.justify,
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  Padding getActionCard(
-      String title,
-      String description,
-      ActionType type,
-      String link,
-      IconData iconName,
-      Color iconColor,
-      Color circleColor,
-      BuildContext context,
-      FaqViewModel model) {
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(15.0, 0.0, 15.0, 15.0),
-      child: ElevatedButton(
-        onPressed: () {
-          if (type.name == ActionType.webview.name) {
-            openWebview(model, link);
-          } else if (type.name == ActionType.email.name) {
-            openMail(model, context, link);
-          }
-        },
-        style: ButtonStyle(
-            elevation: MaterialStateProperty.all<double>(8.0),
-            shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-              RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8.0),
-              ),
-            )),
-        child: getActionCardInfo(
-          context,
-          title,
-          description,
-          iconName,
-          iconColor,
-          circleColor,
-        ),
-      ),
-    );
-  }
-
-  Row getActionCardInfo(BuildContext context, String title, String description,
-      IconData iconName, Color iconColor, Color circleColor) {
-    return Row(
-      children: <Widget>[
-        Column(
-          children: <Widget>[
-            CircleAvatar(
-              backgroundColor: circleColor,
-              radius: 25,
-              child: Icon(iconName, color: iconColor),
-            ),
-          ],
-        ),
-        Expanded(
-          child: Padding(
-            padding: const EdgeInsets.fromLTRB(15, 15, 0, 15),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Text(
-                  title,
-                  style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                        fontSize: 18,
-                        color: Theme.of(context).brightness == Brightness.light
-                            ? Colors.black
-                            : Colors.white,
-                      ),
-                  textAlign: TextAlign.left,
-                ),
-                const SizedBox(height: 10.0),
-                Text(
-                  description,
-                  style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                        fontSize: 16,
-                        color: Theme.of(context).brightness == Brightness.light
-                            ? Colors.black
-                            : Colors.white,
-                      ),
-                  textAlign: TextAlign.justify,
-                )
-              ],
-            ),
-          ),
-        )
-      ],
-    );
-  }
-
-  Future<void> openWebview(FaqViewModel model, String link) async {
-    model.launchWebsite(link, Theme.of(context).brightness);
-  }
-
-  Future<void> openMail(
-      FaqViewModel model, BuildContext context, String addressEmail) async {
-    model.openMail(addressEmail, context);
-  }
 }
