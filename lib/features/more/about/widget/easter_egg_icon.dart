@@ -12,6 +12,7 @@ class EasterEggIcon extends StatelessWidget {
     return Column(
       children: [
         EasterEggTrigger(
+          // ignore: avoid_dynamic_calls
           action: () => toggleTrigger(),
           codes: const [
             EasterEggTriggers.SwipeUp,

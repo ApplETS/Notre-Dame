@@ -6,11 +6,11 @@ class ListTag extends StatelessWidget {
   final Color? color;
 
   const ListTag({
-    Key? key,
+    super.key,
     required this.text,
     this.textColor,
     this.color,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

@@ -9,7 +9,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 class GradeList extends StatelessWidget {
   final GradesViewModel model;
 
-  GradeList({required this.model});
+  const GradeList({required this.model});
 
   @override
   Widget build(BuildContext context) {

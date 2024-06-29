@@ -8,13 +8,13 @@ class CardInfo extends StatelessWidget {
   final Color circleColor;
 
   const CardInfo({
-    Key? key,
+    super.key,
     required this.title,
     required this.subtitle,
     required this.icon,
     required this.iconColor,
     required this.circleColor,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
