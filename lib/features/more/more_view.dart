@@ -57,9 +57,11 @@ class _MoreViewState extends State<MoreView> {
               padding: EdgeInsets.zero,
               children: [
                 AboutAppletsTile(),
-                ReportBugTile(isDiscoveryOverlayActive: isDiscoveryOverlayActive),
+                ReportBugTile(
+                    isDiscoveryOverlayActive: isDiscoveryOverlayActive),
                 InAppReviewTile(),
-                ContributorsTile(isDiscoveryOverlayActive: isDiscoveryOverlayActive),
+                ContributorsTile(
+                    isDiscoveryOverlayActive: isDiscoveryOverlayActive),
                 const OpenSourceLicensesTile(),
                 if (model.privacyPolicyToggle)
                   ListTile(
@@ -72,7 +74,8 @@ class _MoreViewState extends State<MoreView> {
                       }),
                 ListTile(
                     title: Text(AppIntl.of(context)!.need_help),
-                    leading: getProperIconAccordingToTheme(Icons.question_answer),
+                    leading:
+                        getProperIconAccordingToTheme(Icons.question_answer),
                     onTap: () {
                       _analyticsService.logEvent(tag, "FAQ clicked");
                       model.navigationService.pushNamed(RouterPaths.faq,

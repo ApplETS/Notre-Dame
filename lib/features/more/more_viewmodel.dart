@@ -37,9 +37,10 @@ class MoreViewModel extends FutureViewModel {
 
   /// Preferences service
   final PreferencesService _preferencesService = locator<PreferencesService>();
-  
+
   /// Remote config service
-  final RemoteConfigService _remoteConfigService = locator<RemoteConfigService>();
+  final RemoteConfigService _remoteConfigService =
+      locator<RemoteConfigService>();
 
   /// User repository needed to log out
   final UserRepository _userRepository = locator<UserRepository>();
@@ -48,7 +49,8 @@ class MoreViewModel extends FutureViewModel {
   final NavigationService navigationService = locator<NavigationService>();
 
   /// Analytics service
-  final AnalyticsService _analyticsService = locator<AnalyticsService>(); // Ajoutez cette ligne
+  final AnalyticsService _analyticsService =
+      locator<AnalyticsService>(); // Ajoutez cette ligne
 
   String? _appVersion;
 
@@ -163,5 +165,6 @@ class MoreViewModel extends FutureViewModel {
   bool get privacyPolicyToggle => _remoteConfigService.privacyPolicyToggle;
 
   /// Getter for analyticsService
-  AnalyticsService get analyticsService => _analyticsService; // Ajoutez cette ligne
+  AnalyticsService get analyticsService =>
+      _analyticsService; // Ajoutez cette ligne
 }
