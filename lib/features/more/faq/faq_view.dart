@@ -60,7 +60,9 @@ class _FaqViewState extends State<FaqView> {
                                   const BorderRadius.all(Radius.circular(8.0)),
                             ),
                             child: QuestionCard(
-                              title: question.title[model.locale?.languageCode] ?? '',
+                              title:
+                                  question.title[model.locale?.languageCode] ??
+                                      '',
                               description: question.description[
                                       model.locale?.languageCode] ??
                                   '',
@@ -85,7 +87,9 @@ class _FaqViewState extends State<FaqView> {
 
                       return ActionCard(
                         title: action.title[model.locale?.languageCode] ?? '',
-                        description: action.description[model.locale?.languageCode] ?? '',
+                        description:
+                            action.description[model.locale?.languageCode] ??
+                                '',
                         type: action.type,
                         link: action.link,
                         iconName: action.iconName,

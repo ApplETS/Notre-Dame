@@ -5,7 +5,8 @@ class EasterEggIcon extends StatelessWidget {
   final Function toggleTrigger;
   final bool easterEggTrigger;
 
-  const EasterEggIcon({required this.toggleTrigger, required this.easterEggTrigger});
+  const EasterEggIcon(
+      {required this.toggleTrigger, required this.easterEggTrigger});
 
   @override
   Widget build(BuildContext context) {

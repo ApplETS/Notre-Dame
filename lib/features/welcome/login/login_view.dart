@@ -15,7 +15,6 @@ import 'package:notredame/utils/app_theme.dart';
 import 'package:notredame/utils/utils.dart';
 import 'package:notredame/features/welcome/widgets/password_text_field.dart';
 
-
 class LoginView extends StatefulWidget {
   @override
   _LoginViewState createState() => _LoginViewState();
@@ -33,7 +32,8 @@ class _LoginViewState extends State<LoginView> {
   final GlobalKey<TooltipState> tooltipkey = GlobalKey<TooltipState>();
 
   @override
-  Widget build(BuildContext context) => ViewModelBuilder<LoginViewModel>.reactive(
+  Widget build(BuildContext context) =>
+      ViewModelBuilder<LoginViewModel>.reactive(
         viewModelBuilder: () => LoginViewModel(intl: AppIntl.of(context)!),
         builder: (context, model, child) => Scaffold(
           backgroundColor: Utils.getColorByBrightness(

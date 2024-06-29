@@ -15,9 +15,11 @@ class _ChooseLanguageViewState extends State<ChooseLanguageView> {
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<ChooseLanguageViewModel>.reactive(
-      viewModelBuilder: () => ChooseLanguageViewModel(intl: AppIntl.of(context)!),
+      viewModelBuilder: () =>
+          ChooseLanguageViewModel(intl: AppIntl.of(context)!),
       builder: (context, model, child) => Scaffold(
-        backgroundColor: Utils.getColorByBrightness(context, AppTheme.etsLightRed, AppTheme.primaryDark),
+        backgroundColor: Utils.getColorByBrightness(
+            context, AppTheme.etsLightRed, AppTheme.primaryDark),
         body: Center(
           child: ListView(
             shrinkWrap: true,
@@ -25,7 +27,8 @@ class _ChooseLanguageViewState extends State<ChooseLanguageView> {
               Icon(
                 Icons.language,
                 size: 80,
-                color: Utils.getColorByBrightness(context, Colors.white, AppTheme.etsLightRed),
+                color: Utils.getColorByBrightness(
+                    context, Colors.white, AppTheme.etsLightRed),
               ),
               Padding(
                 padding: const EdgeInsets.only(left: 20, top: 60),

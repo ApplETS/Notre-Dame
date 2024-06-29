@@ -17,7 +17,8 @@ class AuthorViewModel extends BaseViewModel implements Initialisable {
   Organizer? _author;
   Organizer? get author => _author;
 
-  final PagingController<int, News> pagingController = PagingController(firstPageKey: 1);
+  final PagingController<int, News> pagingController =
+      PagingController(firstPageKey: 1);
 
   AuthorViewModel({required this.authorId, required this.appIntl});
 
@@ -33,7 +34,8 @@ class AuthorViewModel extends BaseViewModel implements Initialisable {
 
   Future<void> fetchPage(int pageNumber) async {
     try {
-      final pagination = await _newsRepository.getNews(pageNumber: pageNumber, organizerId: authorId);
+      final pagination = await _newsRepository.getNews(
+          pageNumber: pageNumber, organizerId: authorId);
       final isLastPage = pagination?.totalPages == pageNumber;
       if (isLastPage) {
         pagingController.appendLastPage(pagination?.news ?? []);

@@ -13,9 +13,8 @@ class FaqSubtitle extends StatelessWidget {
       child: Text(
         subtitle,
         style: Theme.of(context).textTheme.headlineSmall!.copyWith(
-              color: backgroundColor == Colors.white
-                  ? Colors.black
-                  : Colors.white,
+              color:
+                  backgroundColor == Colors.white ? Colors.black : Colors.white,
             ),
       ),
     );

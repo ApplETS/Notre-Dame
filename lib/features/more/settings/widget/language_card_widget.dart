@@ -16,7 +16,8 @@ class LanguageCardWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      color: Utils.getColorByBrightness(context, Colors.white, Colors.grey[900]!),
+      color:
+          Utils.getColorByBrightness(context, Colors.white, Colors.grey[900]!),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[

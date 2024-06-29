@@ -16,7 +16,6 @@ import 'package:stacked/stacked.dart';
 import 'package:notredame/features/more/more_viewmodel.dart';
 import 'package:notredame/features/app/widgets/base_scaffold.dart';
 
-
 class MoreView extends StatefulWidget {
   @override
   _MoreViewState createState() => _MoreViewState();

@@ -25,11 +25,9 @@ class OpenSourceLicensesListTile extends ViewModelWidget<MoreViewModel> {
                   width: 75,
                   child: Image.asset('assets/images/favicon_applets.png')),
             ),
-            applicationName:
-                AppIntl.of(context)!.more_open_source_licenses,
+            applicationName: AppIntl.of(context)!.more_open_source_licenses,
             applicationVersion: model.appVersion,
-            applicationLegalese:
-                '\u{a9} ${DateTime.now().year} App|ETS',
+            applicationLegalese: '\u{a9} ${DateTime.now().year} App|ETS',
             children: aboutBoxChildren(context),
           ),
           opaque: false,

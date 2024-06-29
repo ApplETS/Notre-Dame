@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-
 class NoMoreNewsCardWidget extends StatelessWidget {
   const NoMoreNewsCardWidget({super.key});
 
@@ -16,7 +15,8 @@ class NoMoreNewsCardWidget extends StatelessWidget {
         ),
         const SizedBox(height: 16),
         Card(
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
           child: Padding(
             padding: const EdgeInsets.fromLTRB(16, 16, 16, 16),
             child: Column(
@@ -33,7 +33,8 @@ class NoMoreNewsCardWidget extends StatelessWidget {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(AppIntl.of(context)!.news_no_more_card_title, style: const TextStyle(fontSize: 24)),
+                            Text(AppIntl.of(context)!.news_no_more_card_title,
+                                style: const TextStyle(fontSize: 24)),
                             const SizedBox(height: 16),
                             Text(
                               AppIntl.of(context)!.news_no_more_card,
