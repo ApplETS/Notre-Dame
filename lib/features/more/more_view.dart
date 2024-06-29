@@ -70,7 +70,8 @@ class _MoreViewState extends State<MoreView> {
                       }),
                 ListTile(
                     title: Text(AppIntl.of(context)!.need_help),
-                    leading: getProperIconAccordingToTheme(Icons.question_answer),
+                    leading:
+                        getProperIconAccordingToTheme(Icons.question_answer),
                     onTap: () {
                       _analyticsService.logEvent(tag, "FAQ clicked");
                       model.navigationService.pushNamed(RouterPaths.faq,
