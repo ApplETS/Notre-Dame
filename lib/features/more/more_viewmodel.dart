@@ -49,8 +49,7 @@ class MoreViewModel extends FutureViewModel {
   final NavigationService navigationService = locator<NavigationService>();
 
   /// Analytics service
-  final AnalyticsService _analyticsService =
-      locator<AnalyticsService>();
+  final AnalyticsService _analyticsService = locator<AnalyticsService>();
 
   String? _appVersion;
 
@@ -165,6 +164,5 @@ class MoreViewModel extends FutureViewModel {
   bool get privacyPolicyToggle => _remoteConfigService.privacyPolicyToggle;
 
   /// Getter for analyticsService
-  AnalyticsService get analyticsService =>
-      _analyticsService;
+  AnalyticsService get analyticsService => _analyticsService;
 }

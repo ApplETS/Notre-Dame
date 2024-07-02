@@ -9,13 +9,11 @@ import 'package:notredame/features/app/widgets/dismissible_card.dart';
 import 'package:notredame/constants/preferences_flags.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-
 class AboutUsCard extends StatelessWidget {
   final DashboardViewModel model;
   final PreferencesFlag flag;
   final AnalyticsService analyticsService;
   static const String tag = "DashboardView";
-
 
   const AboutUsCard({
     super.key,

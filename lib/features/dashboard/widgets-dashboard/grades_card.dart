@@ -61,9 +61,10 @@ class GradesCard extends StatelessWidget {
                 child: Wrap(
                   children: model.courses
                       .map((course) => GradeButton(course,
-                          color: Theme.of(context).brightness == Brightness.light
-                              ? AppTheme.lightThemeBackground
-                              : AppTheme.darkThemeBackground))
+                          color:
+                              Theme.of(context).brightness == Brightness.light
+                                  ? AppTheme.lightThemeBackground
+                                  : AppTheme.darkThemeBackground))
                       .toList(),
                 ),
               )

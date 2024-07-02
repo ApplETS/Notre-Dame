@@ -76,7 +76,8 @@ class _ProgressBarCardState extends State<ProgressBarCard> {
                   child: widget.progressBarText ??
                       Text(
                         AppIntl.of(context)!.progress_bar_message(
-                            widget.model.sessionDays[0], widget.model.sessionDays[1]),
+                            widget.model.sessionDays[0],
+                            widget.model.sessionDays[1]),
                         style: const TextStyle(color: Colors.white),
                       ),
                 ),
