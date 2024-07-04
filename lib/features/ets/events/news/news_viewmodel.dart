@@ -16,6 +16,7 @@ class NewsViewModel extends BaseViewModel implements Initialisable {
 
   bool isLoadingEvents = false;
   String title = "";
+  String query = "";
 
   @override
   void initialise() {
