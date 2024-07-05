@@ -10,6 +10,7 @@ import 'package:stacked/stacked.dart';
 import 'package:notredame/features/more/faq/models/faq.dart';
 import 'package:notredame/features/more/faq/models/faq_actions.dart';
 import 'package:notredame/features/more/faq/faq_viewmodel.dart';
+import 'package:notredame/features/app/widgets/base_scaffold.dart';
 
 class FaqView extends StatefulWidget {
   final Color? backgroundColor;
@@ -27,12 +28,14 @@ class _FaqViewState extends State<FaqView> {
   Widget build(BuildContext context) => ViewModelBuilder<FaqViewModel>.reactive(
         viewModelBuilder: () => FaqViewModel(),
         builder: (context, model, child) {
-          return Scaffold(
-            backgroundColor: widget.backgroundColor,
+          return BaseScaffold(
+            appBar: AppBar(
+              title: Text(AppIntl.of(context)!.need_help),
+            ),
+            showBottomBar: false,
             body: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                getTitle(),
                 getSubtitle(AppIntl.of(context)!.questions_and_answers),
                 getCaroussel(model),
                 getSubtitle(AppIntl.of(context)!.actions),
@@ -95,45 +98,6 @@ class _FaqViewState extends State<FaqView> {
           },
         );
       }).toList(),
-    );
-  }
-  
-  Padding getTitle() {
-    return Padding(
-      padding: const EdgeInsets.only(top: 60.0),
-      child: Row(
-        children: [
-          Padding(
-            padding: const EdgeInsets.only(left: 5.0),
-            child: GestureDetector(
-              onTap: () {
-                Navigator.of(context).pop();
-              },
-              child: Padding(
-                padding: const EdgeInsets.only(left: 10.0),
-                child: Icon(
-                  Icons.arrow_back,
-                  color: widget.backgroundColor == Colors.white
-                      ? Colors.black
-                      : Colors.white,
-                ),
-              ),
-            ),
-          ),
-          const SizedBox(width: 8.0),
-          Expanded(
-            child: Text(
-              AppIntl.of(context)!.need_help,
-              textAlign: TextAlign.center,
-              style: Theme.of(context).textTheme.headlineSmall!.copyWith(
-                    color: widget.backgroundColor == Colors.white
-                        ? Colors.black
-                        : Colors.white,
-                  ),
-            ),
-          ),
-        ],
-      ),
     );
   }
 
