@@ -33,31 +33,35 @@ class _FaqViewState extends State<FaqView> {
               title: Text(AppIntl.of(context)!.need_help),
             ),
             showBottomBar: false,
-            body: Column(
+            body: (MediaQuery.of(context).orientation == Orientation.portrait) ?
+            Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 getSubtitle(AppIntl.of(context)!.questions_and_answers),
                 getCaroussel(model),
                 getSubtitle(AppIntl.of(context)!.actions),
-                Expanded(
-                  child: ListView.builder(
-                    key: const Key("action_listview_key"),
-                    padding: const EdgeInsets.only(top: 1.0),
-                    itemCount: faq.actions.length,
-                    itemBuilder: (context, index) {
-                      final action = faq.actions[index];
-
-                      return getActionCard(
-                          action.title[model.locale?.languageCode] ?? '',
-                          action.description[model.locale?.languageCode] ?? '',
-                          action.type,
-                          action.link,
-                          action.iconName,
-                          action.iconColor,
-                          action.circleColor,
-                          context,
-                          model);
-                    },
+                getActions(model)
+              ],
+            ):
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Flexible(
+                  child: Column(
+                    children: [
+                      getSubtitle(AppIntl.of(context)!.questions_and_answers),
+                      Expanded(
+                          child: getCaroussel(model)
+                      ),
+                    ],
+                  ),
+                ),
+                Flexible(
+                  child: Column(
+                    children: [
+                      getSubtitle(AppIntl.of(context)!.actions),
+                      Container(child: getActions(model)),
+                    ],
                   ),
                 )
               ],
@@ -65,6 +69,20 @@ class _FaqViewState extends State<FaqView> {
           );
         },
       );
+  
+  Padding getSubtitle(String subtitle) {
+    return Padding(
+      padding: const EdgeInsets.only(left: 18.0, top: 18.0, bottom: 10.0),
+      child: Text(
+        subtitle,
+        style: Theme.of(context).textTheme.headlineSmall!.copyWith(
+              color: widget.backgroundColor == Colors.white
+                  ? Colors.black
+                  : Colors.white,
+            ),
+      ),
+    );
+  }
 
   CarouselSlider getCaroussel(FaqViewModel model) {
     return CarouselSlider(
@@ -101,20 +119,6 @@ class _FaqViewState extends State<FaqView> {
     );
   }
 
-  Padding getSubtitle(String subtitle) {
-    return Padding(
-      padding: const EdgeInsets.only(left: 18.0, top: 18.0, bottom: 10.0),
-      child: Text(
-        subtitle,
-        style: Theme.of(context).textTheme.headlineSmall!.copyWith(
-              color: widget.backgroundColor == Colors.white
-                  ? Colors.black
-                  : Colors.white,
-            ),
-      ),
-    );
-  }
-
   Padding getQuestionCard(String title, String description) {
     return Padding(
       padding: const EdgeInsets.only(top: 20.0, left: 20.0, right: 20.0),
@@ -146,6 +150,30 @@ class _FaqViewState extends State<FaqView> {
     );
   }
 
+  Expanded getActions(FaqViewModel model) {
+    return Expanded(
+      child: ListView.builder(
+        key: const Key("action_listview_key"),
+        padding: const EdgeInsets.only(top: 1.0),
+        itemCount: faq.actions.length,
+        itemBuilder: (context, index) {
+          final action = faq.actions[index];
+
+          return getActionCard(
+              action.title[model.locale?.languageCode] ?? '',
+              action.description[model.locale?.languageCode] ?? '',
+              action.type,
+              action.link,
+              action.iconName,
+              action.iconColor,
+              action.circleColor,
+              context,
+              model);
+        },
+      ),
+    );
+  }
+  
   Padding getActionCard(
       String title,
       String description,
