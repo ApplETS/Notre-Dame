@@ -33,43 +33,42 @@ class _FaqViewState extends State<FaqView> {
               title: Text(AppIntl.of(context)!.need_help),
             ),
             showBottomBar: false,
-            body: (MediaQuery.of(context).orientation == Orientation.portrait) ?
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                getSubtitle(AppIntl.of(context)!.questions_and_answers),
-                getCaroussel(model),
-                getSubtitle(AppIntl.of(context)!.actions),
-                getActions(model)
-              ],
-            ):
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Flexible(
-                  child: Column(
-                    children: [
+            body: (MediaQuery.of(context).orientation == Orientation.portrait)
+                ? Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
                       getSubtitle(AppIntl.of(context)!.questions_and_answers),
-                      Expanded(
-                          child: getCaroussel(model)
-                      ),
-                    ],
-                  ),
-                ),
-                Flexible(
-                  child: Column(
-                    children: [
+                      getCaroussel(model),
                       getSubtitle(AppIntl.of(context)!.actions),
-                      Container(child: getActions(model)),
+                      getActions(model)
+                    ],
+                  )
+                : Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Flexible(
+                        child: Column(
+                          children: [
+                            getSubtitle(
+                                AppIntl.of(context)!.questions_and_answers),
+                            Expanded(child: getCaroussel(model)),
+                          ],
+                        ),
+                      ),
+                      Flexible(
+                        child: Column(
+                          children: [
+                            getSubtitle(AppIntl.of(context)!.actions),
+                            Container(child: getActions(model)),
+                          ],
+                        ),
+                      )
                     ],
                   ),
-                )
-              ],
-            ),
           );
         },
       );
-  
+
   Padding getSubtitle(String subtitle) {
     return Padding(
       padding: const EdgeInsets.only(left: 18.0, top: 18.0, bottom: 10.0),
@@ -99,18 +98,14 @@ class _FaqViewState extends State<FaqView> {
               width: MediaQuery.of(context).size.width,
               margin: const EdgeInsets.symmetric(horizontal: 5.0),
               decoration: BoxDecoration(
-                color: Theme.of(context).brightness ==
-                    Brightness.light
+                color: Theme.of(context).brightness == Brightness.light
                     ? const Color.fromARGB(255, 240, 238, 238)
                     : const Color.fromARGB(255, 40, 40, 40),
-                borderRadius:
-                const BorderRadius.all(Radius.circular(8.0)),
+                borderRadius: const BorderRadius.all(Radius.circular(8.0)),
               ),
               child: getQuestionCard(
                 question.title[model.locale?.languageCode] ?? '',
-                question.description[
-                model.locale?.languageCode] ??
-                    '',
+                question.description[model.locale?.languageCode] ?? '',
               ),
             );
           },
@@ -173,7 +168,7 @@ class _FaqViewState extends State<FaqView> {
       ),
     );
   }
-  
+
   Padding getActionCard(
       String title,
       String description,
@@ -213,8 +208,13 @@ class _FaqViewState extends State<FaqView> {
     );
   }
 
-  Padding getActionCardInfo(BuildContext context, String title, String description,
-      IconData iconName, Color iconColor, Color circleColor) {
+  Padding getActionCardInfo(
+      BuildContext context,
+      String title,
+      String description,
+      IconData iconName,
+      Color iconColor,
+      Color circleColor) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 12.0),
       child: Column(
@@ -226,11 +226,11 @@ class _FaqViewState extends State<FaqView> {
                 child: Text(
                   title,
                   style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                    fontSize: 18,
-                    color: Theme.of(context).brightness == Brightness.light
-                        ? Colors.black
-                        : Colors.white,
-                  ),
+                        fontSize: 18,
+                        color: Theme.of(context).brightness == Brightness.light
+                            ? Colors.black
+                            : Colors.white,
+                      ),
                 ),
               ),
               const SizedBox(width: 16),
@@ -242,15 +242,13 @@ class _FaqViewState extends State<FaqView> {
             ],
           ),
           const SizedBox(height: 12.0),
-          Text(
-            description,
-            style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                  fontSize: 16,
-                  color: Theme.of(context).brightness == Brightness.light
-                      ? Colors.black
-                      : Colors.white,
-                )
-          )
+          Text(description,
+              style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                    fontSize: 16,
+                    color: Theme.of(context).brightness == Brightness.light
+                        ? Colors.black
+                        : Colors.white,
+                  ))
         ],
       ),
     );
