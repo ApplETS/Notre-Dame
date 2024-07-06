@@ -6,8 +6,8 @@ import 'package:calendar_view/calendar_view.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 // Project imports:
-import 'package:notredame/utils/app_theme.dart';
 import 'package:notredame/features/schedule/widgets/schedule_calendar_tile.dart';
+import 'package:notredame/utils/app_theme.dart';
 
 class ScheduleDefault extends StatefulWidget {
   final List<CalendarEventData<Object>> calendarEvents;

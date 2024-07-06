@@ -97,8 +97,6 @@ PODS:
     - Flutter
   - flutter_custom_tabs_ios (2.0.0):
     - Flutter
-  - flutter_keychain (0.0.1):
-    - Flutter
   - flutter_secure_storage (6.0.0):
     - Flutter
   - fluttertoast (0.0.2):
@@ -209,7 +207,6 @@ DEPENDENCIES:
   - Flutter (from `Flutter`)
   - flutter_config (from `.symlinks/plugins/flutter_config/ios`)
   - flutter_custom_tabs_ios (from `.symlinks/plugins/flutter_custom_tabs_ios/ios`)
-  - flutter_keychain (from `.symlinks/plugins/flutter_keychain/ios`)
   - flutter_secure_storage (from `.symlinks/plugins/flutter_secure_storage/ios`)
   - fluttertoast (from `.symlinks/plugins/fluttertoast/ios`)
   - google_maps_flutter_ios (from `.symlinks/plugins/google_maps_flutter_ios/ios`)
@@ -268,8 +265,6 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/flutter_config/ios"
   flutter_custom_tabs_ios:
     :path: ".symlinks/plugins/flutter_custom_tabs_ios/ios"
-  flutter_keychain:
-    :path: ".symlinks/plugins/flutter_keychain/ios"
   flutter_secure_storage:
     :path: ".symlinks/plugins/flutter_secure_storage/ios"
   fluttertoast:
@@ -326,7 +321,6 @@ SPEC CHECKSUMS:
   Flutter: e0871f40cf51350855a761d2e70bf5af5b9b5de7
   flutter_config: f48f0d47a284f1791aacce2687eabb3309ba7a41
   flutter_custom_tabs_ios: 62439c843b2691aae516fd50119a01eb9755fff7
-  flutter_keychain: 01aabf894ffe8b01adfda1d9df21c210c1b4b452
   flutter_secure_storage: d33dac7ae2ea08509be337e775f6b59f1ff45f12
   fluttertoast: 9f2f8e81bb5ce18facb9748d7855bf5a756fe3db
   google_maps_flutter_ios: c454f18e0e22df6ac0e9f2a4df340858f5a3680c

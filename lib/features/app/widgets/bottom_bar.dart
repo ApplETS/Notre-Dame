@@ -6,13 +6,13 @@ import 'package:feature_discovery/feature_discovery.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 // Project imports:
-import 'package:notredame/features/welcome/discovery/models/discovery_ids.dart';
-import 'package:notredame/features/app/navigation/router_paths.dart';
 import 'package:notredame/features/app/analytics/analytics_service.dart';
 import 'package:notredame/features/app/navigation/navigation_service.dart';
-import 'package:notredame/utils/locator.dart';
-import 'package:notredame/utils/app_theme.dart';
+import 'package:notredame/features/app/navigation/router_paths.dart';
 import 'package:notredame/features/welcome/discovery/discovery_components.dart';
+import 'package:notredame/features/welcome/discovery/models/discovery_ids.dart';
+import 'package:notredame/utils/app_theme.dart';
+import 'package:notredame/utils/locator.dart';
 
 /// Bottom navigation bar for the application.
 class BottomBar extends StatefulWidget {

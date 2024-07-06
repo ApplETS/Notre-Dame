@@ -7,9 +7,9 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 
 // Project imports:
-import 'package:notredame/features/app/navigation/router_paths.dart';
-import 'package:notredame/features/app/navigation/navigation_service.dart';
 import 'package:notredame/features/app/integration/networking_service.dart';
+import 'package:notredame/features/app/navigation/navigation_service.dart';
+import 'package:notredame/features/app/navigation/router_paths.dart';
 import 'package:notredame/features/app/widgets/bottom_bar.dart';
 import '../../helpers.dart';
 import '../../mock/services/analytics_service_mock.dart';

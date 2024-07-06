@@ -8,9 +8,9 @@ import 'package:stacked/stacked.dart';
 
 // Project imports:
 import 'package:notredame/constants/urls.dart';
-import 'package:notredame/utils/utils.dart';
 import 'package:notredame/features/app/error/outage/outage_viewmodel.dart';
 import 'package:notredame/utils/app_theme.dart';
+import 'package:notredame/utils/utils.dart';
 
 class OutageView extends StatelessWidget {
   @override
