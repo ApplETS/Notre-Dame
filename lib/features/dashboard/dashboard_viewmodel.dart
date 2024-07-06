@@ -13,7 +13,6 @@ import 'package:stacked/stacked.dart';
 // Project imports:
 import 'package:notredame/constants/preferences_flags.dart';
 import 'package:notredame/constants/update_code.dart';
-import 'package:notredame/constants/widget_helper.dart';
 import 'package:notredame/features/app/analytics/analytics_service.dart';
 import 'package:notredame/features/app/analytics/remote_config_service.dart';
 import 'package:notredame/features/app/integration/launch_url_service.dart';
@@ -25,11 +24,9 @@ import 'package:notredame/features/app/signets-api/models/course_activity.dart';
 import 'package:notredame/features/app/signets-api/models/session.dart';
 import 'package:notredame/features/app/storage/preferences_service.dart';
 import 'package:notredame/features/app/storage/siren_flutter_service.dart';
-import 'package:notredame/features/app/widgets/app_widget_service.dart';
 import 'package:notredame/features/dashboard/progress_bar_text_options.dart';
 import 'package:notredame/features/more/feedback/in_app_review_service.dart';
 import 'package:notredame/features/more/settings/settings_manager.dart';
-import 'package:notredame/features/student/grades/widget_models.dart';
 import 'package:notredame/features/welcome/discovery/discovery_components.dart';
 import 'package:notredame/features/welcome/discovery/models/discovery_ids.dart';
 import 'package:notredame/utils/activity_code.dart';
@@ -42,7 +39,6 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
   final PreferencesService _preferencesService = locator<PreferencesService>();
   final CourseRepository _courseRepository = locator<CourseRepository>();
   final AnalyticsService _analyticsService = locator<AnalyticsService>();
-  final AppWidgetService _appWidgetService = locator<AppWidgetService>();
   final RemoteConfigService remoteConfigService =
       locator<RemoteConfigService>();
 
@@ -220,61 +216,7 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
       futureToRunGrades(),
       futureToRunSessionProgressBar(),
       futureToRunSchedule()
-    ]).then((_) {
-      updateGradesWidget();
-      updateProgressWidget();
-    });
-  }
-
-  Future updateProgressWidget() async {
-    try {
-      final progress = _progress;
-      final sessionDays = _sessionDays;
-      final elapsedDays = sessionDays[0];
-      final totalDays = sessionDays[1];
-
-      await _appWidgetService.sendProgressData(ProgressWidgetData(
-          title: _appIntl.progress_bar_title,
-          progress: progress,
-          elapsedDays: elapsedDays,
-          totalDays: totalDays,
-          suffix: _appIntl.progress_bar_suffix));
-      await _appWidgetService.updateWidget(WidgetType.progress);
-    } on Exception catch (e) {
-      _analyticsService.logError(tag, e.toString());
-    }
-  }
-
-  /// Update grades widget with current courses data
-  /// MUST be called after futureToRunGrades() completed (uses courses object)
-  Future updateGradesWidget() async {
-    try {
-      final List<String> acronyms =
-          courses.map((course) => course.acronym).toList();
-      final List<String> grades = courses.map((course) {
-        // Code copied from GradeButton.gradeString
-        if (course.grade != null) {
-          return course.grade!;
-        } else if (course.summary != null &&
-            course.summary!.markOutOf > 0 &&
-            !(course.inReviewPeriod &&
-                (course.allReviewsCompleted != null &&
-                    !course.allReviewsCompleted!))) {
-          return _appIntl.grades_grade_in_percentage(
-              course.summary!.currentMarkInPercent.round());
-        }
-        return _appIntl.grades_not_available;
-      }).toList();
-
-      await _appWidgetService.sendGradesData(GradesWidgetData(
-          title:
-              "${_appIntl.grades_title} - ${_courseRepository.activeSessions.first.shortName.isEmpty ? _appIntl.session_without : ''}",
-          courseAcronyms: acronyms,
-          grades: grades));
-      await _appWidgetService.updateWidget(WidgetType.grades);
-    } on Exception catch (e) {
-      _analyticsService.logError(tag, e.toString());
-    }
+    ]);
   }
 
   @override

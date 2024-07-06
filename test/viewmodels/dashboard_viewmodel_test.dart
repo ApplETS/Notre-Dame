@@ -201,7 +201,6 @@ void main() {
       settingsManagerMock = setupSettingsManagerMock();
       preferenceServiceMock = setupPreferencesServiceMock();
       analyticsServiceMock = setupAnalyticsServiceMock();
-      setupAppWidgetServiceMock();
       preferencesServiceMock = setupPreferencesServiceMock();
 
       viewModel = DashboardViewModel(intl: await setupAppIntl());
