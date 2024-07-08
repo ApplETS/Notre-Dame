@@ -45,7 +45,7 @@ class _LoginViewState extends State<LoginView> {
   @override
   Widget build(BuildContext context) =>
       ViewModelBuilder<LoginViewModel>.reactive(
-        viewModelBuilder: () => LoginViewModel(intl: AppIntl.of(context)!),
+        viewModelBuilder: () => LoginViewModel(intl: AppIntl.of(context)),
         builder: (context, model, child) => Scaffold(
           backgroundColor: Utils.getColorByBrightness(
               context, AppTheme.etsLightRed, AppTheme.primaryDark),
@@ -204,11 +204,11 @@ class _LoginViewState extends State<LoginView> {
                                               },
                                         style: ButtonStyle(
                                           backgroundColor:
-                                              MaterialStateProperty.all(
+                                              WidgetStateProperty.all(
                                                   model.canSubmit
                                                       ? colorButton
                                                       : Colors.white38),
-                                          padding: MaterialStateProperty.all(
+                                          padding: WidgetStateProperty.all(
                                               const EdgeInsets.symmetric(
                                                   vertical: 16)),
                                         ),

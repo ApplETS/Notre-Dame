@@ -62,7 +62,7 @@ class _MoreViewState extends State<MoreView> {
                 recognizer: TapGestureRecognizer()
                   ..onTap = () => Utils.launchURL(
                       AppIntl.of(context)!.flutter_website,
-                      AppIntl.of(context)!)),
+                      AppIntl.of(context))),
             TextSpan(style: textStyle, text: '.'),
           ],
         ),
@@ -73,7 +73,7 @@ class _MoreViewState extends State<MoreView> {
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<MoreViewModel>.reactive(
-        viewModelBuilder: () => MoreViewModel(intl: AppIntl.of(context)!),
+        viewModelBuilder: () => MoreViewModel(intl: AppIntl.of(context)),
         builder: (context, model, child) {
           return BaseScaffold(
             appBar: AppBar(

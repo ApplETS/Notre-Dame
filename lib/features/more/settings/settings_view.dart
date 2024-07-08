@@ -19,7 +19,7 @@ class _SettingsViewState extends State<SettingsView> {
   @override
   Widget build(BuildContext context) =>
       ViewModelBuilder<SettingsViewModel>.reactive(
-        viewModelBuilder: () => SettingsViewModel(intl: AppIntl.of(context)!),
+        viewModelBuilder: () => SettingsViewModel(intl: AppIntl.of(context)),
         builder: (context, model, child) => BaseScaffold(
           appBar: AppBar(
             title: Text(AppIntl.of(context)!.settings_title),

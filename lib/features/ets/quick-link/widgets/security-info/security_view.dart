@@ -26,7 +26,7 @@ class _SecurityViewState extends State<SecurityView> {
   @override
   Widget build(BuildContext context) =>
       ViewModelBuilder<SecurityViewModel>.reactive(
-        viewModelBuilder: () => SecurityViewModel(intl: AppIntl.of(context)!),
+        viewModelBuilder: () => SecurityViewModel(intl: AppIntl.of(context)),
         builder: (context, model, child) => Scaffold(
           appBar: AppBar(
             title: Text(AppIntl.of(context)!.ets_security_title),
@@ -65,7 +65,7 @@ class _SecurityViewState extends State<SecurityView> {
                     splashColor: Colors.red.withAlpha(50),
                     onTap: () => Utils.launchURL(
                             'tel:${AppIntl.of(context)!.security_emergency_number}',
-                            AppIntl.of(context)!)
+                            AppIntl.of(context))
                         .catchError((error) {
                       ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(content: Text(error.toString())));

@@ -83,21 +83,21 @@ class OutageView extends StatelessWidget {
                                     ),
                                     onPressed: () => Utils.launchURL(
                                         Urls.clubWebsite,
-                                        AppIntl.of(context)!)),
+                                        AppIntl.of(context))),
                                 IconButton(
                                     icon: const FaIcon(
                                       FontAwesomeIcons.github,
                                       color: Colors.white,
                                     ),
                                     onPressed: () => Utils.launchURL(
-                                        Urls.clubGithub, AppIntl.of(context)!)),
+                                        Urls.clubGithub, AppIntl.of(context))),
                                 IconButton(
                                     icon: const FaIcon(
                                       Icons.mail_outline,
                                       color: Colors.white,
                                     ),
                                     onPressed: () => Utils.launchURL(
-                                        Urls.clubEmail, AppIntl.of(context)!)),
+                                        Urls.clubEmail, AppIntl.of(context))),
                                 IconButton(
                                     icon: const FaIcon(
                                       FontAwesomeIcons.discord,
@@ -105,7 +105,7 @@ class OutageView extends StatelessWidget {
                                     ),
                                     onPressed: () => Utils.launchURL(
                                         Urls.clubDiscord,
-                                        AppIntl.of(context)!)),
+                                        AppIntl.of(context))),
                               ],
                             ),
                           ],

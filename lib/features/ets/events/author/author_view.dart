@@ -36,7 +36,7 @@ class _AuthorViewState extends State<AuthorView> {
   Widget build(BuildContext context) =>
       ViewModelBuilder<AuthorViewModel>.reactive(
           viewModelBuilder: () => AuthorViewModel(
-              authorId: widget.authorId, appIntl: AppIntl.of(context)!),
+              authorId: widget.authorId, appIntl: AppIntl.of(context)),
           onViewModelReady: (model) {
             model.fetchAuthorData();
             model.pagingController.addStatusListener((status) {
@@ -182,8 +182,6 @@ class _AuthorViewState extends State<AuthorView> {
                       IconButton(
                         onPressed: () async {
                           await showModalBottomSheet(
-                            isDismissible: true,
-                            enableDrag: true,
                             isScrollControlled: true,
                             context: context,
                             shape: const RoundedRectangleBorder(
@@ -207,12 +205,12 @@ class _AuthorViewState extends State<AuthorView> {
                         ),
                         style: ButtonStyle(
                           shape:
-                              MaterialStateProperty.all<RoundedRectangleBorder>(
+                              WidgetStateProperty.all<RoundedRectangleBorder>(
                             RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(8),
                             ),
                           ),
-                          backgroundColor: MaterialStateProperty.all<Color>(
+                          backgroundColor: WidgetStateProperty.all<Color>(
                             Utils.getColorByBrightness(
                               context,
                               AppTheme.lightThemeBackground,

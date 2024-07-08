@@ -22,7 +22,7 @@ class _FeedbackViewState extends State<FeedbackView> {
   @override
   Widget build(BuildContext context) =>
       ViewModelBuilder<FeedbackViewModel>.reactive(
-        viewModelBuilder: () => FeedbackViewModel(intl: AppIntl.of(context)!),
+        viewModelBuilder: () => FeedbackViewModel(intl: AppIntl.of(context)),
         builder: (context, model, child) {
           final bool isLightMode =
               Theme.of(context).brightness == Brightness.light;
@@ -45,7 +45,7 @@ class _FeedbackViewState extends State<FeedbackView> {
                     },
                     style: ButtonStyle(
                         shape:
-                            MaterialStateProperty.all<RoundedRectangleBorder>(
+                            WidgetStateProperty.all<RoundedRectangleBorder>(
                       RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(8.0),
                       ),
@@ -73,7 +73,7 @@ class _FeedbackViewState extends State<FeedbackView> {
                     },
                     style: ButtonStyle(
                         shape:
-                            MaterialStateProperty.all<RoundedRectangleBorder>(
+                            WidgetStateProperty.all<RoundedRectangleBorder>(
                       RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(8.0),
                       ),
@@ -116,7 +116,7 @@ class _FeedbackViewState extends State<FeedbackView> {
                       return GestureDetector(
                         onTap: () => {
                           Utils.launchURL(model.myIssues[index].htmlUrl,
-                              AppIntl.of(context)!)
+                              AppIntl.of(context))
                         },
                         child: Container(
                           margin: const EdgeInsets.only(

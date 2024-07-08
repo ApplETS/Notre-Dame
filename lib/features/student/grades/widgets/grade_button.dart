@@ -106,7 +106,7 @@ class GradeButton extends StatelessWidget {
           ),
           Expanded(
             child: Center(
-                child: Text(gradeString(AppIntl.of(context)!),
+                child: Text(gradeString(AppIntl.of(context)),
                     style: TextStyle(
                       fontSize: 22,
                       color: Theme.of(context).brightness == Brightness.light

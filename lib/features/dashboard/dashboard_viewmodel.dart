@@ -251,7 +251,7 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
       final List<String> grades = courses.map((course) {
         // Code copied from GradeButton.gradeString
         if (course.grade != null) {
-          return course.grade!;
+          return course.grade;
         } else if (course.summary != null &&
             course.summary!.markOutOf > 0 &&
             !(course.inReviewPeriod &&

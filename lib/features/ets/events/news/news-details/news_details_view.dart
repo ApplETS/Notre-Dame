@@ -169,7 +169,7 @@ class _NewsDetailsViewState extends State<NewsDetailsView> {
         Share.share(
             "${_remoteConfigService.helloWebsiteUrl}/fr/dashboard/news?id=${news.id}");
       case Menu.export:
-        final translations = AppIntl.of(context)!;
+        final translations = AppIntl.of(context);
         final viewModel =
             CalendarSelectionViewModel(translations: translations);
         viewModel.news = news;
@@ -179,8 +179,6 @@ class _NewsDetailsViewState extends State<NewsDetailsView> {
         );
       case Menu.report:
         showModalBottomSheet(
-            isDismissible: true,
-            enableDrag: true,
             isScrollControlled: true,
             context: context,
             shape: const RoundedRectangleBorder(

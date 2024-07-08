@@ -76,7 +76,7 @@ class _ScheduleViewState extends State<ScheduleView>
   Widget build(BuildContext context) =>
       ViewModelBuilder<ScheduleViewModel>.reactive(
         viewModelBuilder: () => ScheduleViewModel(
-            intl: AppIntl.of(context)!, initialSelectedDate: widget.initialDay),
+            intl: AppIntl.of(context), initialSelectedDate: widget.initialDay),
         onViewModelReady: (model) {
           if (model.settings.isEmpty) {
             model.loadSettings();
@@ -506,7 +506,7 @@ class _ScheduleViewState extends State<ScheduleView>
         IconButton(
           icon: const Icon(Icons.ios_share),
           onPressed: () {
-            final translations = AppIntl.of(context)!;
+            final translations = AppIntl.of(context);
             showDialog(
               context: context,
               builder: (_) =>

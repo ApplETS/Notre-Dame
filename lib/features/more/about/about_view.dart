@@ -127,42 +127,42 @@ class _AboutViewState extends State<AboutView> with TickerProviderStateMixin {
                           color: Colors.white,
                         ),
                         onPressed: () => Utils.launchURL(
-                            Urls.clubWebsite, AppIntl.of(context)!)),
+                            Urls.clubWebsite, AppIntl.of(context))),
                     IconButton(
                         icon: const FaIcon(
                           FontAwesomeIcons.github,
                           color: Colors.white,
                         ),
                         onPressed: () => Utils.launchURL(
-                            Urls.clubGithub, AppIntl.of(context)!)),
+                            Urls.clubGithub, AppIntl.of(context))),
                     IconButton(
                         icon: const FaIcon(
                           FontAwesomeIcons.facebook,
                           color: Colors.white,
                         ),
                         onPressed: () => Utils.launchURL(
-                            Urls.clubFacebook, AppIntl.of(context)!)),
+                            Urls.clubFacebook, AppIntl.of(context))),
                     IconButton(
                         icon: const FaIcon(
                           FontAwesomeIcons.twitter,
                           color: Colors.white,
                         ),
                         onPressed: () => Utils.launchURL(
-                            Urls.clubTwitter, AppIntl.of(context)!)),
+                            Urls.clubTwitter, AppIntl.of(context))),
                     IconButton(
                         icon: const FaIcon(
                           FontAwesomeIcons.youtube,
                           color: Colors.white,
                         ),
                         onPressed: () => Utils.launchURL(
-                            Urls.clubYoutube, AppIntl.of(context)!)),
+                            Urls.clubYoutube, AppIntl.of(context))),
                     IconButton(
                         icon: const FaIcon(
                           FontAwesomeIcons.discord,
                           color: Colors.white,
                         ),
                         onPressed: () => Utils.launchURL(
-                            Urls.clubDiscord, AppIntl.of(context)!)),
+                            Urls.clubDiscord, AppIntl.of(context))),
                   ],
                 ),
               ),

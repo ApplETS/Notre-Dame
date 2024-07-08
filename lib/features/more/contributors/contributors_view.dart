@@ -39,7 +39,7 @@ class ContributorsView extends StatelessWidget {
                             snapshot.data![index].avatarUrl ?? '')),
                     onTap: () => Utils.launchURL(
                         snapshot.data![index].htmlUrl ?? '',
-                        AppIntl.of(context)!),
+                        AppIntl.of(context)),
                   ),
                 );
               },
