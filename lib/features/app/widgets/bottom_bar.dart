@@ -95,23 +95,23 @@ class _BottomBarState extends State<BottomBar> {
     return [
       BottomNavigationBarItem(
           icon: _buildDiscoveryFeatureDescriptionWidget(
-              context, RouterPaths.dashboard, Icons.dashboard),
+              context, RouterPaths.dashboard, Icons.dashboard_outlined),
           label: AppIntl.of(context)!.title_dashboard),
       BottomNavigationBarItem(
           icon: _buildDiscoveryFeatureDescriptionWidget(
-              context, RouterPaths.schedule, Icons.schedule),
+              context, RouterPaths.schedule, Icons.schedule_outlined),
           label: AppIntl.of(context)!.title_schedule),
       BottomNavigationBarItem(
           icon: _buildDiscoveryFeatureDescriptionWidget(
-              context, RouterPaths.student, Icons.school),
+              context, RouterPaths.student, Icons.school_outlined),
           label: AppIntl.of(context)!.title_student),
       BottomNavigationBarItem(
           icon: _buildDiscoveryFeatureDescriptionWidget(
-              context, RouterPaths.ets, Icons.account_balance),
+              context, RouterPaths.ets, Icons.account_balance_outlined),
           label: AppIntl.of(context)!.title_ets),
       BottomNavigationBarItem(
           icon: _buildDiscoveryFeatureDescriptionWidget(
-              context, RouterPaths.more, Icons.dehaze),
+              context, RouterPaths.more, Icons.menu_outlined),
           label: AppIntl.of(context)!.title_more),
     ];
   }

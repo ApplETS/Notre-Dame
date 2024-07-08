@@ -10,7 +10,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 // Project imports:
 import 'package:notredame/features/app/integration/networking_service.dart';
-import 'package:notredame/features/app/navigation/navigation_rail.dart';
+import 'package:notredame/features/app/widgets/navigation_rail.dart';
 import 'package:notredame/features/app/widgets/bottom_bar.dart';
 import 'package:notredame/utils/app_theme.dart';
 import 'package:notredame/utils/loading.dart';
