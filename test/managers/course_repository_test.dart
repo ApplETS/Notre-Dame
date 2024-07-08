@@ -2,24 +2,32 @@
 import 'dart:convert';
 
 // Package imports:
-import 'package:ets_api_clients/clients.dart';
-import 'package:ets_api_clients/exceptions.dart';
-import 'package:ets_api_clients/models.dart';
-import 'package:ets_api_clients/testing.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:intl/intl.dart';
 import 'package:mockito/mockito.dart';
 
 // Project imports:
-import 'package:notredame/core/managers/cache_manager.dart';
-import 'package:notredame/core/managers/course_repository.dart';
-import 'package:notredame/core/managers/user_repository.dart';
-import 'package:notredame/core/services/analytics_service.dart';
+import 'package:notredame/features/app/analytics/analytics_service.dart';
+import 'package:notredame/features/app/monets_api/models/mon_ets_user.dart';
+import 'package:notredame/features/app/repository/course_repository.dart';
+import 'package:notredame/features/app/repository/user_repository.dart';
+import 'package:notredame/features/app/signets-api/models/course.dart';
+import 'package:notredame/features/app/signets-api/models/course_activity.dart';
+import 'package:notredame/features/app/signets-api/models/course_evaluation.dart';
+import 'package:notredame/features/app/signets-api/models/course_review.dart';
+import 'package:notredame/features/app/signets-api/models/course_summary.dart';
+import 'package:notredame/features/app/signets-api/models/schedule_activity.dart';
+import 'package:notredame/features/app/signets-api/models/session.dart';
+import 'package:notredame/features/app/signets-api/signets_api_client.dart';
+import 'package:notredame/features/app/storage/cache_manager.dart';
+import 'package:notredame/utils/activity_code.dart';
+import 'package:notredame/utils/api_exception.dart';
 import '../helpers.dart';
 import '../mock/managers/cache_manager_mock.dart';
 import '../mock/managers/user_repository_mock.dart';
 import '../mock/services/analytics_service_mock.dart';
 import '../mock/services/networking_service_mock.dart';
+import '../mock/services/signets_api_mock.dart';
 
 void main() {
   late AnalyticsServiceMock analyticsServiceMock;
@@ -1210,14 +1218,16 @@ void main() {
           grade: 'C+',
           numberOfCredits: 3,
           title: 'Cours générique',
-          review: CourseReview(
-              acronym: 'GEN101',
-              group: '02',
-              teacherName: 'April, Alain',
-              startAt: DateTime(2020),
-              endAt: DateTime(2020, 1, 1, 23, 59),
-              isCompleted: true,
-              type: 'Cours'));
+          reviews: <CourseReview>[
+            CourseReview(
+                acronym: 'GEN101',
+                group: '02',
+                teacherName: 'April, Alain',
+                startAt: DateTime(2020),
+                endAt: DateTime(2020, 1, 1, 23, 59),
+                isCompleted: true,
+                type: 'Cours')
+          ]);
       final Course courseWithGradeDuplicate = Course(
           acronym: 'GEN101',
           group: '02',
@@ -1670,14 +1680,16 @@ void main() {
             numberOfCredits: 3,
             title: 'Cours générique');
 
-        final CourseReview review = CourseReview(
-            acronym: 'GEN101',
-            group: '02',
-            teacherName: 'April, Alain',
-            startAt: DateTime(2021, 03, 19),
-            endAt: DateTime(2021, 03, 28, 23, 59),
-            type: 'Cours',
-            isCompleted: true);
+        final courseReviews = <CourseReview>[
+          CourseReview(
+              acronym: 'GEN101',
+              group: '02',
+              teacherName: 'April, Alain',
+              startAt: DateTime(2021, 03, 19),
+              endAt: DateTime(2021, 03, 28, 23, 59),
+              type: 'Cours',
+              isCompleted: true)
+        ];
 
         final Course updated = Course(
             acronym: 'GEN101',
@@ -1687,12 +1699,12 @@ void main() {
             programCode: '999',
             numberOfCredits: 3,
             title: 'Cours générique',
-            review: review);
+            reviews: courseReviews);
 
         SignetsAPIClientMock.stubGetCourses(signetsApiMock, username,
             coursesToReturn: [courseFetched]);
         SignetsAPIClientMock.stubGetCourseReviews(signetsApiMock, username,
-            session: session, reviewsToReturn: [review]);
+            session: session, reviewsToReturn: [courseReviews[0]]);
         CacheManagerMock.stubGet(
             cacheManagerMock, CourseRepository.coursesCacheKey, jsonEncode([]));
 

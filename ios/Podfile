@@ -1,6 +1,6 @@
 # Uncomment this line to define a global platform for your project
-# platform :ios, '11.0'
-app_ios_deployment_target = Gem::Version.new('12.0') # Change to your current deployment target
+# platform :ios, '14.0'
+app_ios_deployment_target = Gem::Version.new('14.0') # Change to your current deployment target
 
 # CocoaPods analytics sends network stats synchronously affecting flutter build latency.
 ENV['COCOAPODS_DISABLE_STATS'] = 'true'

@@ -3,7 +3,7 @@ import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
 // Project imports:
-import 'package:notredame/core/services/remote_config_service.dart';
+import 'package:notredame/features/app/analytics/remote_config_service.dart';
 import 'remote_config_service_mock.mocks.dart';
 
 /// Mock for the [RemoteConfigService]
@@ -58,5 +58,10 @@ class RemoteConfigServiceMock extends MockRemoteConfigService {
   static void stubGetBroadcastUrl(RemoteConfigServiceMock mock,
       {String toReturn = "https://clubapplets.ca/"}) {
     when(mock.dashboardMsgUrl).thenReturn(toReturn);
+  }
+
+  static void stubGetHelloFeatureToggle(RemoteConfigServiceMock mock,
+      {bool toReturn = true}) {
+    when(mock.helloFeatureToggle).thenReturn(toReturn);
   }
 }

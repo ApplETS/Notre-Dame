@@ -6,11 +6,11 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 
 // Project imports:
-import 'package:notredame/core/models/quick_link.dart';
-import 'package:notredame/core/services/analytics_service.dart';
-import 'package:notredame/core/services/internal_info_service.dart';
-import 'package:notredame/core/services/navigation_service.dart';
-import 'package:notredame/ui/widgets/web_link_card.dart';
+import 'package:notredame/features/app/analytics/analytics_service.dart';
+import 'package:notredame/features/app/error/internal_info_service.dart';
+import 'package:notredame/features/app/navigation/navigation_service.dart';
+import 'package:notredame/features/ets/quick-link/models/quick_link.dart';
+import 'package:notredame/features/ets/quick-link/widgets/web_link_card.dart';
 import '../../helpers.dart';
 import '../../mock/services/analytics_service_mock.dart';
 import '../../mock/services/launch_url_service_mock.dart';

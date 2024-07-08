@@ -5,16 +5,22 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 
 // Package imports:
-import 'package:ets_api_clients/models.dart';
 import 'package:feature_discovery/feature_discovery.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 // Project imports:
-import 'package:notredame/core/constants/preferences_flags.dart';
-import 'package:notredame/ui/views/schedule_view.dart';
-import 'package:notredame/ui/widgets/schedule_settings.dart';
+import 'package:notredame/constants/preferences_flags.dart';
+import 'package:notredame/features/app/analytics/analytics_service.dart';
+import 'package:notredame/features/app/analytics/remote_config_service.dart';
+import 'package:notredame/features/app/integration/networking_service.dart';
+import 'package:notredame/features/app/navigation/navigation_service.dart';
+import 'package:notredame/features/app/repository/course_repository.dart';
+import 'package:notredame/features/app/signets-api/models/course_activity.dart';
+import 'package:notredame/features/more/settings/settings_manager.dart';
+import 'package:notredame/features/schedule/schedule_view.dart';
+import 'package:notredame/features/schedule/widgets/schedule_settings.dart';
 import '../../helpers.dart';
 import '../../mock/managers/course_repository_mock.dart';
 import '../../mock/managers/settings_manager_mock.dart';
@@ -98,6 +104,15 @@ void main() {
       RemoteConfigServiceMock.stubGetCalendarViewEnabled(
           remoteConfigServiceMock);
     });
+
+    tearDown(() => {
+          unregister<NavigationService>(),
+          unregister<SettingsManager>(),
+          unregister<CourseRepository>(),
+          unregister<RemoteConfigService>(),
+          unregister<NetworkingService>(),
+          unregister<AnalyticsService>(),
+        });
 
     group("golden - ", () {
       const tableCalendarKey = Key("TableCalendar");
