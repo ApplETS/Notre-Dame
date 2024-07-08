@@ -105,7 +105,8 @@ class _MoreViewState extends State<MoreView> {
                     title: Text(AppIntl.of(context)!.more_report_bug),
                     leading: _buildDiscoveryFeatureDescriptionWidget(
                         context,
-                        getProperIconAccordingToTheme(Icons.bug_report_outlined),
+                        getProperIconAccordingToTheme(
+                            Icons.bug_report_outlined),
                         DiscoveryIds.detailsMoreBugReport,
                         model),
                     onTap: () {
@@ -168,7 +169,8 @@ class _MoreViewState extends State<MoreView> {
                     title: Text(AppIntl.of(context)!.need_help),
                     leading: _buildDiscoveryFeatureDescriptionWidget(
                         context,
-                        getProperIconAccordingToTheme(Icons.question_answer_outlined),
+                        getProperIconAccordingToTheme(
+                            Icons.question_answer_outlined),
                         DiscoveryIds.detailsMoreFaq,
                         model),
                     onTap: () {
