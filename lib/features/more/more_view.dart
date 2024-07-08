@@ -105,7 +105,7 @@ class _MoreViewState extends State<MoreView> {
                     title: Text(AppIntl.of(context)!.more_report_bug),
                     leading: _buildDiscoveryFeatureDescriptionWidget(
                         context,
-                        getProperIconAccordingToTheme(Icons.bug_report),
+                        getProperIconAccordingToTheme(Icons.bug_report_outlined),
                         DiscoveryIds.detailsMoreBugReport,
                         model),
                     onTap: () {
@@ -114,7 +114,7 @@ class _MoreViewState extends State<MoreView> {
                     }),
                 ListTile(
                     title: Text(AppIntl.of(context)!.in_app_review_title),
-                    leading: const Icon(Icons.rate_review),
+                    leading: const Icon(Icons.rate_review_outlined),
                     onTap: () {
                       _analyticsService.logEvent(tag, "Rate us clicked");
                       MoreViewModel.launchInAppReview();
@@ -133,7 +133,7 @@ class _MoreViewState extends State<MoreView> {
                     }),
                 ListTile(
                     title: Text(AppIntl.of(context)!.more_open_source_licenses),
-                    leading: const Icon(Icons.code),
+                    leading: const Icon(Icons.code_outlined),
                     onTap: () {
                       _analyticsService.logEvent(tag, "Rate us clicked");
                       Navigator.of(context).push(PageRouteBuilder(
@@ -158,7 +158,7 @@ class _MoreViewState extends State<MoreView> {
                 if (model.privacyPolicyToggle)
                   ListTile(
                       title: Text(AppIntl.of(context)!.privacy_policy),
-                      leading: const Icon(Icons.privacy_tip),
+                      leading: const Icon(Icons.privacy_tip_outlined),
                       onTap: () {
                         _analyticsService.logEvent(
                             tag, "Confidentiality clicked");
@@ -168,7 +168,7 @@ class _MoreViewState extends State<MoreView> {
                     title: Text(AppIntl.of(context)!.need_help),
                     leading: _buildDiscoveryFeatureDescriptionWidget(
                         context,
-                        getProperIconAccordingToTheme(Icons.question_answer),
+                        getProperIconAccordingToTheme(Icons.question_answer_outlined),
                         DiscoveryIds.detailsMoreFaq,
                         model),
                     onTap: () {
@@ -181,7 +181,7 @@ class _MoreViewState extends State<MoreView> {
                     title: Text(AppIntl.of(context)!.settings_title),
                     leading: _buildDiscoveryFeatureDescriptionWidget(
                         context,
-                        getProperIconAccordingToTheme(Icons.settings),
+                        getProperIconAccordingToTheme(Icons.settings_outlined),
                         DiscoveryIds.detailsMoreSettings,
                         model),
                     onTap: () {
@@ -190,7 +190,7 @@ class _MoreViewState extends State<MoreView> {
                     }),
                 ListTile(
                   title: Text(AppIntl.of(context)!.more_log_out),
-                  leading: const Icon(Icons.logout),
+                  leading: const Icon(Icons.logout_outlined),
                   onTap: () => Navigator.of(context).push(
                     PageRouteBuilder(
                       pageBuilder: (context, _, __) => AlertDialog(

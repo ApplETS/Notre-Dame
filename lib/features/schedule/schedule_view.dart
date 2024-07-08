@@ -517,7 +517,7 @@ class _ScheduleViewState extends State<ScheduleView>
         if ((model.settings[PreferencesFlag.scheduleShowTodayBtn] as bool) ==
             true)
           IconButton(
-              icon: const Icon(Icons.today),
+              icon: const Icon(Icons.today_outlined),
               onPressed: () => setState(() {
                     if (!(model.settings[PreferencesFlag.scheduleListView]
                         as bool)) {
@@ -535,7 +535,7 @@ class _ScheduleViewState extends State<ScheduleView>
                   })),
         _buildDiscoveryFeatureDescriptionWidget(
           context,
-          Icons.settings,
+          Icons.settings_outlined,
           model,
         ),
       ];
@@ -559,7 +559,7 @@ class _ScheduleViewState extends State<ScheduleView>
       pulseDuration: const Duration(seconds: 5),
       onComplete: () => model.discoveryCompleted(),
       child: IconButton(
-        icon: const Icon(Icons.settings),
+        icon: const Icon(Icons.settings_outlined),
         onPressed: () async {
           _analyticsService.logEvent(tag, "Settings clicked");
           await showModalBottomSheet(

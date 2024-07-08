@@ -295,7 +295,7 @@ void main() {
               reason: "The settings page should not be open");
 
           // Tap on the settings button
-          await tester.tap(find.byIcon(Icons.settings));
+          await tester.tap(find.byIcon(Icons.settings_outlined));
           // Reload view
           await tester.pumpAndSettle();
 
