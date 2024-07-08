@@ -10,10 +10,10 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 // Project imports:
-import 'package:notredame/features/ets/quick-link/models/quick_links.dart';
-import 'package:notredame/features/app/repository/quick_link_repository.dart';
 import 'package:notredame/features/app/integration/launch_url_service.dart';
 import 'package:notredame/features/app/integration/networking_service.dart';
+import 'package:notredame/features/app/repository/quick_link_repository.dart';
+import 'package:notredame/features/ets/quick-link/models/quick_links.dart';
 import 'package:notredame/features/ets/quick-link/quick_links_view.dart';
 import 'package:notredame/features/ets/quick-link/widgets/web_link_card.dart';
 import '../../helpers.dart';

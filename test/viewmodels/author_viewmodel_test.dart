@@ -1,5 +1,4 @@
 // Package imports:
-import 'package:ets_api_clients/models.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:logger/logger.dart';
@@ -8,6 +7,11 @@ import 'package:mockito/mockito.dart';
 // Project imports:
 import 'package:notredame/features/app/repository/author_repository.dart';
 import 'package:notredame/features/app/repository/news_repository.dart';
+import 'package:notredame/features/ets/events/api-client/models/activity_area.dart';
+import 'package:notredame/features/ets/events/api-client/models/news.dart';
+import 'package:notredame/features/ets/events/api-client/models/news_tags.dart';
+import 'package:notredame/features/ets/events/api-client/models/organizer.dart';
+import 'package:notredame/features/ets/events/api-client/models/paginated_news.dart';
 import 'package:notredame/features/ets/events/author/author_viewmodel.dart';
 import '../helpers.dart';
 import '../mock/managers/author_repository_mock.dart';

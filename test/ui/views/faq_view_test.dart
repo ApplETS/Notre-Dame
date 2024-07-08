@@ -10,8 +10,8 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 // Project imports:
-import 'package:notredame/features/more/faq/models/faq.dart';
 import 'package:notredame/features/more/faq/faq_view.dart';
+import 'package:notredame/features/more/faq/models/faq.dart';
 import '../../helpers.dart';
 import '../../mock/managers/settings_manager_mock.dart';
 

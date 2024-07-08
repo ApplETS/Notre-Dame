@@ -4,8 +4,8 @@ import 'package:home_widget/home_widget.dart';
 
 // Project imports:
 import 'package:notredame/constants/widget_helper.dart';
-import 'package:notredame/features/student/grades/widget_models.dart';
 import 'package:notredame/features/app/widgets/app_widget_service.dart';
+import 'package:notredame/features/student/grades/widget_models.dart';
 import '../helpers.dart';
 import '../mock/services/home_widget_mock.dart';
 

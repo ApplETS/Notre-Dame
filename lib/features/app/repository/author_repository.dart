@@ -1,10 +1,6 @@
-// Flutter imports:
-import 'package:ets_api_clients/clients.dart';
-
-// Package imports:
-import 'package:ets_api_clients/models.dart';
-
 // Project imports:
+import 'package:notredame/features/ets/events/api-client/hello_api_client.dart';
+import 'package:notredame/features/ets/events/api-client/models/organizer.dart';
 import 'package:notredame/utils/locator.dart';
 
 /// Repository to access authors

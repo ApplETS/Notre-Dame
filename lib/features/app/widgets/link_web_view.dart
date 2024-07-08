@@ -5,8 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 // Project imports:
-import 'package:notredame/features/ets/quick-link/models/quick_link.dart';
 import 'package:notredame/features/app/widgets/base_scaffold.dart';
+import 'package:notredame/features/ets/quick-link/models/quick_link.dart';
 
 class LinkWebView extends StatefulWidget {
   final QuickLink _links;

@@ -7,9 +7,9 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:stacked/stacked.dart';
 
 // Project imports:
+import 'package:notredame/features/more/faq/faq_viewmodel.dart';
 import 'package:notredame/features/more/faq/models/faq.dart';
 import 'package:notredame/features/more/faq/models/faq_actions.dart';
-import 'package:notredame/features/more/faq/faq_viewmodel.dart';
 import 'package:notredame/features/app/widgets/base_scaffold.dart';
 
 class FaqView extends StatefulWidget {
