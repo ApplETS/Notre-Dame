@@ -1,5 +1,7 @@
 package ca.etsmtl.applets.etsmobile.services
 
+import android.util.Log
+import ca.etsmtl.applets.etsmobile.Constants
 import ca.etsmtl.applets.etsmobile.services.models.MonETSUser
 import ca.etsmtl.applets.etsmobile.services.models.ApiError
 import ca.etsmtl.applets.etsmobile.services.models.Session
@@ -20,7 +22,7 @@ class SignetsService private constructor(): SignetsServiceProtocol {
         val shared = SignetsService()
     }
 
-    private val baseURL = "https://signetsAPI"
+    private val baseURL = Constants.SIGNETS_API
     private val client = OkHttpClient.Builder()
         .connectTimeout(60, TimeUnit.SECONDS)
         .writeTimeout(60, TimeUnit.SECONDS)
@@ -38,7 +40,7 @@ class SignetsService private constructor(): SignetsServiceProtocol {
     }
 
     override fun getSessions(user: MonETSUser, completion: (Result<List<Session>>) -> Unit) {
-        val request = createRequest("listeSessions", user, emptyMap())
+        val request = createRequest(Constants.LIST_SESSIONS_OPERATION, user, emptyMap())
 
         client.newCall(request).enqueue(object : Callback {
             override fun onFailure(call: Call, e: IOException) {
@@ -47,16 +49,19 @@ class SignetsService private constructor(): SignetsServiceProtocol {
 
             override fun onResponse(call: Call, response: Response) {
                 val data = response.body?.string()
-                println(data)
+                Log.d("SignetsService", "getSessions onResponse data: $data")
                 if (data != null) {
                     val xml = parseXml(data)
+                    Log.d("SignetsService", "parsed data: $data")
                     val error = xml[sessionErrorPath]
                     if (error != null) {
+                        Log.d("SignetsService", "error: $error")
                         completion(Result.failure(ApiError(error)))
                     } else {
                         val sessionsXml = xml[sessionPath]
                         if (sessionsXml != null){
                             val sessions = sessionsXml.map { Session.fromXml(it.toString()) }
+                            Log.d("SignetsService", "sessions: $sessions")
                             completion(Result.success(sessions))
                         }else{
                             println("sessionsXml is null")
