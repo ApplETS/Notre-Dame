@@ -21,10 +21,31 @@ class CalendarSelectionWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    bool error = false;
+
+    const snackBar = SnackBar(
+      content: Text("Pour cette fonctionnalité, tu dois autoriser l'acces complet au calendrier"),
+    );
+
     return FutureBuilder(
-      future: CalendarUtils.nativeCalendars,
+      future: CalendarUtils.nativeCalendars.catchError((e) {error = true;}),
       builder:
           (context, AsyncSnapshot<UnmodifiableListView<Calendar>> calendars) {
+        if (error == true) {
+          return AlertDialog(
+          title: const Text('Permission Refusée'),
+          content: const Text("Vous n'avez pas accordé la permission d'accéder à votre calendrier. Veuillez l'activer dans les paramètres système de l'application."),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('Annuler'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+        }
+
         if (!calendars.hasData) {
           return const Center(
             child: CircularProgressIndicator(),
