@@ -23,27 +23,15 @@ class CalendarSelectionWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     bool error = false;
 
-    const snackBar = SnackBar(
-      content: Text("Pour cette fonctionnalité, tu dois autoriser l'acces complet au calendrier"),
-    );
-
     return FutureBuilder(
-      future: CalendarUtils.nativeCalendars.catchError((e) {error = true;}),
+      future: CalendarUtils.nativeCalendars.catchError((e) {
+        error = true;
+        return UnmodifiableListView<Calendar>([]);
+      }),
       builder:
           (context, AsyncSnapshot<UnmodifiableListView<Calendar>> calendars) {
         if (error == true) {
-          return AlertDialog(
-          title: const Text('Permission Refusée'),
-          content: const Text("Vous n'avez pas accordé la permission d'accéder à votre calendrier. Veuillez l'activer dans les paramètres système de l'application."),
-          actions: <Widget>[
-            TextButton(
-              child: const Text('Annuler'),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
-        );
+          return lackingPermissionsDialog(context);
         }
 
         if (!calendars.hasData) {
@@ -147,6 +135,21 @@ class CalendarSelectionWidget extends StatelessWidget {
           },
         );
       },
+    );
+  }
+
+  AlertDialog lackingPermissionsDialog(BuildContext context) {
+    return AlertDialog(
+      title: const Text('Permission Refusée'),
+      content: const Text("Vous n'avez pas accordé la permission d'accéder à votre calendrier. Veuillez l'activer dans les paramètres système de l'application."),
+      actions: <Widget>[
+        TextButton(
+          child: const Text('Annuler'),
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+        ),
+      ],
     );
   }
 }
