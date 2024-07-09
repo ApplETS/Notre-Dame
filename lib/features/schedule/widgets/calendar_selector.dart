@@ -90,7 +90,7 @@ class CalendarSelectionWidget extends StatelessWidget {
               actions: <Widget>[
                 TextButton(
                   onPressed: () => Navigator.of(context).pop(),
-                  child: const Text('Cancel'),
+                  child: Text(translations.calendar_cancel_button),
                 ),
                 TextButton(
                   onPressed: () {
@@ -128,7 +128,7 @@ class CalendarSelectionWidget extends StatelessWidget {
                       }
                     });
                   },
-                  child: const Text('Export'),
+                  child: Text(translations.calendar_export_button),
                 ),
               ],
             );
@@ -140,11 +140,11 @@ class CalendarSelectionWidget extends StatelessWidget {
 
   AlertDialog lackingPermissionsDialog(BuildContext context) {
     return AlertDialog(
-      title: const Text('Permission Refusée'),
-      content: const Text("Vous n'avez pas accordé la permission d'accéder à votre calendrier. Veuillez l'activer dans les paramètres système de l'application."),
+      title: Text(translations.calendar_permission_denied_modal_title),
+      content: Text(translations.calendar_permission_denied),
       actions: <Widget>[
         TextButton(
-          child: const Text('Annuler'),
+          child: Text(translations.calendar_cancel_button),
           onPressed: () {
             Navigator.of(context).pop();
           },
