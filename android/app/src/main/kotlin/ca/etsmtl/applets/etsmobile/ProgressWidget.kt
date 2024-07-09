@@ -9,9 +9,11 @@ import android.widget.RemoteViews
 import androidx.annotation.RequiresApi
 import android.content.Intent
 import android.app.PendingIntent
-import es.antonborri.home_widget.HomeWidgetPlugin
 import android.content.ComponentName
 import android.os.Bundle
+import android.util.Log
+import ca.etsmtl.applets.etsmobile.services.SignetsService
+import ca.etsmtl.applets.etsmobile.services.models.MonETSUser
 
 class ProgressWidget : AppWidgetProvider() {
     companion object {
@@ -139,13 +141,19 @@ class ProgressWidget : AppWidgetProvider() {
     }
 
     private fun getProgressInfo(context: Context){
-        val widgetData = HomeWidgetPlugin.getData(context)
+//        val widgetData = HomeWidgetPlugin.getData(context)
 
-        title = widgetData.getString(TITLE_KEY, "Semester Progress") ?: "Semester Progress"
-        progress = widgetData.getInt(PROGRESS_KEY, 0)
-        elapsedDays = widgetData.getInt(ELAPSED_DAYS_KEY, 0)
-        totalDays = widgetData.getInt(TOTAL_DAYS_KEY, 0)
-        suffix = widgetData.getString(SUFFIX_KEY, "days") ?: "days"
+//        title = widgetData.getString(TITLE_KEY, "Semester Progress") ?: "Semester Progress"
+//        progress = widgetData.getInt(PROGRESS_KEY, 0)
+//        elapsedDays = widgetData.getInt(ELAPSED_DAYS_KEY, 0)
+//        totalDays = widgetData.getInt(TOTAL_DAYS_KEY, 0)
+//        suffix = widgetData.getString(SUFFIX_KEY, "days") ?: "days"
+
+        title = "Semester Progress"
+        progress = 0
+        elapsedDays = 0
+        totalDays = 0
+        suffix = "days"
 
         progresses = arrayOf("$progress %", getElapsedDaysOverTotal(true), getRemainingDays())
     }

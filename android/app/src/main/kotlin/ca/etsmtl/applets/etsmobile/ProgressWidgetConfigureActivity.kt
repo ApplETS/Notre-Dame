@@ -1,5 +1,6 @@
 package ca.etsmtl.applets.etsmobile
 
+import ca.etsmtl.applets.etsmobile.services.models.MonETSUser
 import android.annotation.SuppressLint
 import android.appwidget.AppWidgetManager
 import android.content.Intent
@@ -7,6 +8,7 @@ import android.graphics.Color
 import android.graphics.drawable.GradientDrawable
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.ProgressBar
@@ -15,6 +17,7 @@ import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import ca.etsmtl.applets.etsmobile.databinding.SemesterProgressConfigurationActivityBinding
+import ca.etsmtl.applets.etsmobile.services.SignetsService
 
 class ProgressWidgetConfigureActivity : AppCompatActivity() {
 
@@ -23,6 +26,19 @@ class ProgressWidgetConfigureActivity : AppCompatActivity() {
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     public override fun onCreate(icicle: Bundle?) {
         super.onCreate(icicle)
+
+        Log.d("CONF", "onCreate")
+
+        val user = MonETSUser("username", "password")
+
+        SignetsService.shared.getSessions(user) { result ->
+            Log.d("SIGNETS_CONF", "Result: $result")
+            if (result.isSuccess) {
+                val sessions = result.getOrNull()
+            } else {
+                val error = result.exceptionOrNull()
+            }
+        }
 
         // If the user presses the back button, the activity cancels
         setResult(RESULT_CANCELED)
