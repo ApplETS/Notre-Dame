@@ -1,5 +1,6 @@
 package ca.etsmtl.applets.etsmobile.services
 
+import ca.etsmtl.applets.etsmobile.Constants
 import okhttp3.*
 import java.io.IOException
 import com.google.gson.Gson
@@ -9,11 +10,7 @@ import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.RequestBody.Companion.toRequestBody
 
 class MonETSClient private constructor() {
-//    enum class MonETSError : Exception() {
-//        MALFORMED_JSON
-//    }
-
-    private val baseURL = "https://monEtsAPI/authentification"
+    private val baseURL = Constants.AUTHENTICATION_MON_ETS
     private val client = OkHttpClient.Builder()
         .connectTimeout(60, TimeUnit.SECONDS)
         .writeTimeout(60, TimeUnit.SECONDS)
