@@ -87,8 +87,10 @@
   "calendar_export_question": "Vers quel calendrier voulez-vous exporter cet événement?",
   "calendar_name": "Nom du calendrier",
   "calendar_select": "Veuillez sélectionner un calendrier",
-  "calendar_cancel": "Annuler",
-  "calendar_export": "Exporter",
+  "calendar_cancel_button": "Annuler",
+  "calendar_export_button": "Exporter",
+  "calendar_permission_denied_modal_title": "Permission Refusée",
+  "calendar_permission_denied": "Vous n'avez pas accordé la permission d'accéder à votre calendrier. Veuillez l'activer dans les paramètres système de l'application.",
 
   "grades_title": "Notes",
   "grades_msg_no_grades": "Aucune note disponible.\nTirez pour rafraichir",
