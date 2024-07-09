@@ -21,19 +21,14 @@ class CalendarSelectionWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    bool error = false;
 
     return FutureBuilder(
-      future: CalendarUtils.nativeCalendars.catchError((e) {
-        error = true;
-        return UnmodifiableListView<Calendar>([]);
-      }),
+      future: CalendarUtils.nativeCalendars,
       builder:
           (context, AsyncSnapshot<UnmodifiableListView<Calendar>> calendars) {
-        if (error == true) {
+        if (calendars.error != null) {
           return lackingPermissionsDialog(context);
         }
-
         if (!calendars.hasData) {
           return const Center(
             child: CircularProgressIndicator(),
