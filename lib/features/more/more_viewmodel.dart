@@ -20,6 +20,7 @@ import 'package:notredame/features/more/feedback/in_app_review_service.dart';
 import 'package:notredame/features/app/integration/launch_url_service.dart';
 import 'package:notredame/features/app/navigation/navigation_service.dart';
 import 'package:notredame/features/app/storage/preferences_service.dart';
+import 'package:notredame/features/app/analytics/analytics_service.dart';
 import 'package:notredame/features/app/analytics/remote_config_service.dart';
 import 'package:notredame/utils/locator.dart';
 import 'package:notredame/features/welcome/discovery/discovery_components.dart';
@@ -46,6 +47,9 @@ class MoreViewModel extends FutureViewModel {
 
   /// Used to redirect on the dashboard.
   final NavigationService navigationService = locator<NavigationService>();
+
+  /// Analytics service
+  final AnalyticsService _analyticsService = locator<AnalyticsService>();
 
   String? _appVersion;
 
@@ -158,4 +162,7 @@ class MoreViewModel extends FutureViewModel {
 
   /// Get the privacy policy toggle
   bool get privacyPolicyToggle => _remoteConfigService.privacyPolicyToggle;
+
+  /// Getter for analyticsService
+  AnalyticsService get analyticsService => _analyticsService;
 }
