@@ -21,7 +21,6 @@ class CalendarSelectionWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     return FutureBuilder(
       future: CalendarUtils.nativeCalendars,
       builder:
