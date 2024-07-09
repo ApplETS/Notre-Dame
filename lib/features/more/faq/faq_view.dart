@@ -10,6 +10,7 @@ import 'package:stacked/stacked.dart';
 import 'package:notredame/features/more/faq/faq_viewmodel.dart';
 import 'package:notredame/features/more/faq/models/faq.dart';
 import 'package:notredame/features/more/faq/models/faq_actions.dart';
+import 'package:notredame/features/app/widgets/base_scaffold.dart';
 
 class FaqView extends StatefulWidget {
   final Color? backgroundColor;
@@ -27,114 +28,46 @@ class _FaqViewState extends State<FaqView> {
   Widget build(BuildContext context) => ViewModelBuilder<FaqViewModel>.reactive(
         viewModelBuilder: () => FaqViewModel(),
         builder: (context, model, child) {
-          return Scaffold(
-            backgroundColor: widget.backgroundColor,
-            body: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                getTitle(),
-                getSubtitle(AppIntl.of(context)!.questions_and_answers),
-                Padding(
-                  padding: const EdgeInsets.only(left: 15.0, right: 15.0),
-                  child: CarouselSlider(
-                    options: CarouselOptions(
-                      height: 250.0,
-                    ),
-                    items: faq.questions.asMap().entries.map((entry) {
-                      final int index = entry.key;
-                      final question = faq.questions[index];
-
-                      return Builder(
-                        builder: (BuildContext context) {
-                          return Container(
-                            width: MediaQuery.of(context).size.width,
-                            margin: const EdgeInsets.symmetric(horizontal: 5.0),
-                            decoration: BoxDecoration(
-                              color: Theme.of(context).brightness ==
-                                      Brightness.light
-                                  ? const Color.fromARGB(255, 240, 238, 238)
-                                  : const Color.fromARGB(255, 40, 40, 40),
-                              borderRadius:
-                                  const BorderRadius.all(Radius.circular(8.0)),
-                            ),
-                            child: getQuestionCard(
-                              question.title[model.locale?.languageCode] ?? '',
-                              question.description[
-                                      model.locale?.languageCode] ??
-                                  '',
-                            ),
-                          );
-                        },
-                      );
-                    }).toList(),
-                  ),
-                ),
-                getSubtitle(AppIntl.of(context)!.actions),
-                Expanded(
-                  child: ListView.builder(
-                    key: const Key("action_listview_key"),
-                    padding: const EdgeInsets.only(top: 1.0),
-                    itemCount: faq.actions.length,
-                    itemBuilder: (context, index) {
-                      final action = faq.actions[index];
-
-                      return getActionCard(
-                          action.title[model.locale?.languageCode] ?? '',
-                          action.description[model.locale?.languageCode] ?? '',
-                          action.type,
-                          action.link,
-                          action.iconName,
-                          action.iconColor,
-                          action.circleColor,
-                          context,
-                          model);
-                    },
-                  ),
-                )
-              ],
+          return BaseScaffold(
+            appBar: AppBar(
+              title: Text(AppIntl.of(context)!.need_help),
             ),
+            showBottomBar: false,
+            body: (MediaQuery.of(context).orientation == Orientation.portrait)
+                ? Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      getSubtitle(AppIntl.of(context)!.questions_and_answers),
+                      getCaroussel(model),
+                      getSubtitle(AppIntl.of(context)!.actions),
+                      getActions(model)
+                    ],
+                  )
+                : Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Flexible(
+                        child: Column(
+                          children: [
+                            getSubtitle(
+                                AppIntl.of(context)!.questions_and_answers),
+                            Expanded(child: getCaroussel(model)),
+                          ],
+                        ),
+                      ),
+                      Flexible(
+                        child: Column(
+                          children: [
+                            getSubtitle(AppIntl.of(context)!.actions),
+                            Container(child: getActions(model)),
+                          ],
+                        ),
+                      )
+                    ],
+                  ),
           );
         },
       );
-
-  Padding getTitle() {
-    return Padding(
-      padding: const EdgeInsets.only(top: 60.0),
-      child: Row(
-        children: [
-          Padding(
-            padding: const EdgeInsets.only(left: 5.0),
-            child: GestureDetector(
-              onTap: () {
-                Navigator.of(context).pop();
-              },
-              child: Padding(
-                padding: const EdgeInsets.only(left: 10.0),
-                child: Icon(
-                  Icons.arrow_back,
-                  color: widget.backgroundColor == Colors.white
-                      ? Colors.black
-                      : Colors.white,
-                ),
-              ),
-            ),
-          ),
-          const SizedBox(width: 8.0),
-          Expanded(
-            child: Text(
-              AppIntl.of(context)!.need_help,
-              textAlign: TextAlign.center,
-              style: Theme.of(context).textTheme.headlineSmall!.copyWith(
-                    color: widget.backgroundColor == Colors.white
-                        ? Colors.black
-                        : Colors.white,
-                  ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
 
   Padding getSubtitle(String subtitle) {
     return Padding(
@@ -150,41 +83,88 @@ class _FaqViewState extends State<FaqView> {
     );
   }
 
+  CarouselSlider getCaroussel(FaqViewModel model) {
+    return CarouselSlider(
+      options: CarouselOptions(
+        height: 260.0,
+      ),
+      items: faq.questions.asMap().entries.map((entry) {
+        final int index = entry.key;
+        final question = faq.questions[index];
+
+        return Builder(
+          builder: (BuildContext context) {
+            return Container(
+              width: MediaQuery.of(context).size.width,
+              margin: const EdgeInsets.symmetric(horizontal: 5.0),
+              decoration: BoxDecoration(
+                color: Theme.of(context).brightness == Brightness.light
+                    ? const Color.fromARGB(255, 240, 238, 238)
+                    : const Color.fromARGB(255, 40, 40, 40),
+                borderRadius: const BorderRadius.all(Radius.circular(8.0)),
+              ),
+              child: getQuestionCard(
+                question.title[model.locale?.languageCode] ?? '',
+                question.description[model.locale?.languageCode] ?? '',
+              ),
+            );
+          },
+        );
+      }).toList(),
+    );
+  }
+
   Padding getQuestionCard(String title, String description) {
     return Padding(
       padding: const EdgeInsets.only(top: 20.0, left: 20.0, right: 20.0),
-      child: Align(
-        alignment: Alignment.topLeft,
-        child: SingleChildScrollView(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Text(
-                title,
-                textScaler: TextScaler.noScaling,
-                style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                      fontSize: 20,
-                      color: Theme.of(context).brightness == Brightness.light
-                          ? Colors.black
-                          : Colors.white,
-                    ),
-                textAlign: TextAlign.justify,
-              ),
-              Text(
-                description,
-                textScaler: TextScaler.noScaling,
-                style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                      fontSize: 16,
-                      color: Theme.of(context).brightness == Brightness.light
-                          ? Colors.black
-                          : Colors.white,
-                    ),
-                textAlign: TextAlign.justify,
-              ),
-            ],
-          ),
+      child: SingleChildScrollView(
+        child: Column(
+          children: <Widget>[
+            Text(
+              title,
+              style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                    fontSize: 20,
+                    color: Theme.of(context).brightness == Brightness.light
+                        ? Colors.black
+                        : Colors.white,
+                  ),
+            ),
+            const SizedBox(height: 12),
+            Text(
+              description,
+              style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                    fontSize: 16,
+                    color: Theme.of(context).brightness == Brightness.light
+                        ? Colors.black
+                        : Colors.white,
+                  ),
+            ),
+          ],
         ),
+      ),
+    );
+  }
+
+  Expanded getActions(FaqViewModel model) {
+    return Expanded(
+      child: ListView.builder(
+        key: const Key("action_listview_key"),
+        padding: const EdgeInsets.only(top: 1.0),
+        itemCount: faq.actions.length,
+        itemBuilder: (context, index) {
+          final action = faq.actions[index];
+
+          return getActionCard(
+              action.title[model.locale?.languageCode] ?? '',
+              action.description[model.locale?.languageCode] ?? '',
+              action.type,
+              action.link,
+              action.iconName,
+              action.iconColor,
+              action.circleColor,
+              context,
+              model);
+        },
       ),
     );
   }
@@ -228,27 +208,22 @@ class _FaqViewState extends State<FaqView> {
     );
   }
 
-  Row getActionCardInfo(BuildContext context, String title, String description,
-      IconData iconName, Color iconColor, Color circleColor) {
-    return Row(
-      children: <Widget>[
-        Column(
-          children: <Widget>[
-            CircleAvatar(
-              backgroundColor: circleColor,
-              radius: 25,
-              child: Icon(iconName, color: iconColor),
-            ),
-          ],
-        ),
-        Expanded(
-          child: Padding(
-            padding: const EdgeInsets.fromLTRB(15, 15, 0, 15),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Text(
+  Padding getActionCardInfo(
+      BuildContext context,
+      String title,
+      String description,
+      IconData iconName,
+      Color iconColor,
+      Color circleColor) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 12.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Row(
+            children: <Widget>[
+              Expanded(
+                child: Text(
                   title,
                   style: Theme.of(context).textTheme.bodyMedium!.copyWith(
                         fontSize: 18,
@@ -256,24 +231,26 @@ class _FaqViewState extends State<FaqView> {
                             ? Colors.black
                             : Colors.white,
                       ),
-                  textAlign: TextAlign.left,
                 ),
-                const SizedBox(height: 10.0),
-                Text(
-                  description,
-                  style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                        fontSize: 16,
-                        color: Theme.of(context).brightness == Brightness.light
-                            ? Colors.black
-                            : Colors.white,
-                      ),
-                  textAlign: TextAlign.justify,
-                )
-              ],
-            ),
+              ),
+              const SizedBox(width: 16),
+              CircleAvatar(
+                backgroundColor: circleColor,
+                radius: 25,
+                child: Icon(iconName, color: iconColor),
+              ),
+            ],
           ),
-        )
-      ],
+          const SizedBox(height: 12.0),
+          Text(description,
+              style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                    fontSize: 16,
+                    color: Theme.of(context).brightness == Brightness.light
+                        ? Colors.black
+                        : Colors.white,
+                  ))
+        ],
+      ),
     );
   }
 
