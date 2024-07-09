@@ -43,7 +43,7 @@ mixin CalendarUtils {
   static Future<UnmodifiableListView<Calendar>> get nativeCalendars async {
     if (await checkPermissions()) {
       final Result<UnmodifiableListView<Calendar>> calendarFetchResult =
-        await DeviceCalendarPlugin().retrieveCalendars();
+          await DeviceCalendarPlugin().retrieveCalendars();
       return calendarFetchResult.data!;
     }
     // User denied calendar access
