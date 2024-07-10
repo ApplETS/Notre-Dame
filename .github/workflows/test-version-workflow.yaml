@@ -7,19 +7,28 @@ jobs:
   check-version:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions-ecosystem/action-release-label@v1.2.0
+      - name: Release Label
         id: release-label
+        uses: actions-ecosystem/action-release-label@v1.2.0
         with:
           label_prefix: "version: "
-      - uses: actions-ecosystem/action-get-latest-tag@v1.6.0
+
+      - name: Get Latest Tag
+        needs: release-label
         id: get-latest-tag
         if: ${{ steps.release-label.outputs.level != null }}
-      - uses: actions-ecosystem/action-bump-semver@v1.0.0
+        uses: actions-ecosystem/action-get-latest-tag@v1.6.0
+
+      - name: Bump Semver
         id: bump-semver
+        needs: get-latest-tag
         if: ${{ steps.get-latest-tag.outputs.level != null }}
+        uses: actions-ecosystem/action-bump-semver@v1.0.0
         with:
           current_version: ${{ steps.get-latest-tag.outputs.tag }}
           level: ${{ steps.release-label.outputs.level }}
+
       - name: Set pubspec version
+        needs: bump-semver
         if: ${{ steps.bump-semver.outputs.level != null }}
         run: echo ${{ steps.bump-semver.outputs.new_version }}
