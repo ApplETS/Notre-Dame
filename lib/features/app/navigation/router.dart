@@ -73,9 +73,7 @@ Route<dynamic> generateRoute(RouteSettings routeSettings) {
     case RouterPaths.gradeDetails:
       return MaterialPageRoute(
         settings: RouteSettings(name: routeSettings.name),
-        builder: (context) {
-          return GradesDetailsView(course: routeSettings.arguments! as Course);
-        },
+        builder: (context) => GradesDetailsView(course: routeSettings.arguments! as Course);
       );
     case RouterPaths.ets:
       return PageRouteBuilder(
@@ -105,7 +103,7 @@ Route<dynamic> generateRoute(RouteSettings routeSettings) {
     case RouterPaths.webView:
       return MaterialPageRoute(
           settings: RouteSettings(name: routeSettings.name),
-          builder: (_) =>  LinkWebView(routeSettings.arguments! as QuickLink));
+          builder: (_) => LinkWebView(routeSettings.arguments! as QuickLink));
     case RouterPaths.security:
       return MaterialPageRoute(
           settings: RouteSettings(name: routeSettings.name),
