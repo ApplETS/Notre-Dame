@@ -7,6 +7,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:feature_discovery/feature_discovery.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 import 'package:stacked/stacked.dart';
 
 // Project imports:
@@ -309,9 +310,9 @@ class _DashboardViewState extends State<DashboardView>
     if (model.todayDateEvents.isEmpty && model.tomorrowDateEvents.isNotEmpty) {
       title = title + AppIntl.of(context)!.card_schedule_tomorrow;
     }
+    bool isLoading = model.busy(model.todayDateEvents) || model.busy(model.tomorrowDateEvents);
     return DismissibleCard(
-      isBusy: model.busy(model.todayDateEvents) ||
-          model.busy(model.tomorrowDateEvents),
+      isBusy: isLoading,
       onDismissed: (DismissDirection direction) {
         dismissCard(model, flag);
       },
@@ -330,8 +331,20 @@ class _DashboardViewState extends State<DashboardView>
                       style: Theme.of(context).textTheme.titleLarge),
                 ),
               )),
-          if (model.todayDateEvents.isEmpty)
-            if (model.tomorrowDateEvents.isEmpty)
+          if (isLoading)
+            Skeletonizer(
+                child: _buildEventList([
+                  CourseActivity(
+                      courseGroup: "APP375-99",
+                      courseName: "Développement d'ÉTSMobile",
+                      activityName: '',
+                      activityDescription: '5 à 7',
+                      activityLocation: '100 Génies',
+                      startDateTime: DateTime.now(),
+                      endDateTime:  DateTime.now()
+                  )]))
+          else if (model.todayDateEvents.isEmpty)
+             if (model.tomorrowDateEvents.isEmpty)
               SizedBox(
                   height: 100,
                   child: Center(
