@@ -135,21 +135,21 @@ jobs:
           flutter-version: '3.19.x'
           channel: 'stable'
           cache: true
-      - uses: actions-ecosystem/action-release-label@v1.2.0
-        id: release-label
-        if: ${{ github.event.pull_request.merged == true }}
-      - uses: actions-ecosystem/action-get-latest-tag@v1.6.0
-        id: get-latest-tag
-        if: ${{ steps.release-label.outputs.level != null }}
-      - uses: actions-ecosystem/action-bump-semver@v1.0.0
-        id: bump-semver
-        if: ${{ steps.release-label.outputs.level != null }}
-        with:
-          current_version: ${{ steps.get-latest-tag.outputs.tag }}
-          level: ${{ steps.release-label.outputs.level }}
-      - name: Set pubspec version
-        if: ${{ steps.bump-semver.outputs.level != null }}
-        run: sed -i "s/version: .*/version: ${{ steps.bump-semver.outputs.new_version }}/g" pubspec.yaml
+      # - uses: actions-ecosystem/action-release-label@v1.2.0
+      #   id: release-label
+      #   if: ${{ github.event.pull_request.merged == true }}
+      # - uses: actions-ecosystem/action-get-latest-tag@v1.6.0
+      #   id: get-latest-tag
+      #   if: ${{ steps.release-label.outputs.level != null }}
+      # - uses: actions-ecosystem/action-bump-semver@v1.0.0
+      #   id: bump-semver
+      #   if: ${{ steps.release-label.outputs.level != null }}
+      #   with:
+      #     current_version: ${{ steps.get-latest-tag.outputs.tag }}
+      #     level: ${{ steps.release-label.outputs.level }}
+      # - name: Set pubspec version
+      #   if: ${{ steps.bump-semver.outputs.level != null }}
+      #   run: sed -i "s/version: .*/version: ${{ steps.bump-semver.outputs.new_version }}/g" pubspec.yaml
       - name: Install Android dependencies
         if: matrix.target == 'Android'
         uses: actions/setup-java@v4
