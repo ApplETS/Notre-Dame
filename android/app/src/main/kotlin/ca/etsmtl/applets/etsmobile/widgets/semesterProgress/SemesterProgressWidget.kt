@@ -14,7 +14,7 @@ import android.os.Bundle
 import ca.etsmtl.applets.etsmobile.ListSharedPrefsUtil
 import ca.etsmtl.applets.etsmobile.R
 
-class ProgressWidget : AppWidgetProvider() {
+class SemesterProgressWidget : AppWidgetProvider() {
     companion object {
         const val WIDGET_BUTTON_CLICK = "ca.etsmtl.applets.etsmobile.WIDGET_BUTTON_CLICK"
         const val CHANNEL = "widget_method_channel"
@@ -38,7 +38,7 @@ class ProgressWidget : AppWidgetProvider() {
         @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
         internal fun updateAppWidget(context: Context, appWidgetManager: AppWidgetManager, appWidgetId: Int) {
             // Handle clicks on the widget
-            val intent = Intent(context, ProgressWidget::class.java)
+            val intent = Intent(context, SemesterProgressWidget::class.java)
             intent.action = WIDGET_BUTTON_CLICK
             val pendingIntent = PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
 
@@ -140,7 +140,7 @@ class ProgressWidget : AppWidgetProvider() {
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     private fun updateAllAppWidgets(context: Context) {
         val appWidgetManager = AppWidgetManager.getInstance(context)
-        val appWidgetIds = appWidgetManager.getAppWidgetIds(ComponentName(context, ProgressWidget::class.java))
+        val appWidgetIds = appWidgetManager.getAppWidgetIds(ComponentName(context, SemesterProgressWidget::class.java))
         for (appWidgetId in appWidgetIds) {
             updateAppWidget(context, appWidgetManager, appWidgetId)
         }

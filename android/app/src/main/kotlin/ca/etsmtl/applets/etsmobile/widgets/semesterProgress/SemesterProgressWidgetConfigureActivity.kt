@@ -14,10 +14,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import ca.etsmtl.applets.etsmobile.ListSharedPrefsUtil
 import ca.etsmtl.applets.etsmobile.R
-import ca.etsmtl.applets.etsmobile.Utils
 import ca.etsmtl.applets.etsmobile.databinding.SemesterProgressConfigurationActivityBinding
 
-class ProgressWidgetConfigureActivity : AppCompatActivity() {
+class SemesterProgressWidgetConfigureActivity : AppCompatActivity() {
 
     private var appWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID
 
@@ -50,7 +49,7 @@ class ProgressWidgetConfigureActivity : AppCompatActivity() {
         binding.saveButton.setOnClickListener {
             // It is the responsibility of the configuration activity to update the app widget
             val appWidgetManager = AppWidgetManager.getInstance(this)
-            ProgressWidget.updateAppWidget(this, appWidgetManager, appWidgetId)
+            SemesterProgressWidget.updateAppWidget(this, appWidgetManager, appWidgetId)
 
             // Make sure we pass back the original appWidgetId
             val resultValue = Intent()
