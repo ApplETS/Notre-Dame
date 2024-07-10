@@ -4,8 +4,8 @@ import org.xmlpull.v1.XmlPullParser
 import org.xmlpull.v1.XmlPullParserFactory
 import java.io.StringReader
 
-val sessionPath = listOf("soap:Envelope", "soap:Body", "listeSessionsResponse", "listeSessionsResult", "liste", "Trimestre")
-val sessionErrorPath = listOf("soap:Envelope", "soap:Body", "listeSessionsResponse", "listeSessionsResult", "erreur")
+const val sessionPath = "/soap:Envelope/soap:Body/listeSessionsResponse/listeSessionsResult/liste/Trimestre"
+const val sessionErrorPath = "/soap:Envelope/soap:Body/listeSessionsResponse/listeSessionsResult/erreur"
 
 data class Session(
     val shortName: String?,
