@@ -1,4 +1,4 @@
-package ca.etsmtl.applets.etsmobile
+package ca.etsmtl.applets.etsmobile.widgets.semesterProgress
 
 import android.appwidget.AppWidgetManager
 import android.appwidget.AppWidgetProvider
@@ -11,9 +11,8 @@ import android.content.Intent
 import android.app.PendingIntent
 import android.content.ComponentName
 import android.os.Bundle
-import android.util.Log
-import ca.etsmtl.applets.etsmobile.services.SignetsService
-import ca.etsmtl.applets.etsmobile.services.models.MonETSUser
+import ca.etsmtl.applets.etsmobile.ListSharedPrefsUtil
+import ca.etsmtl.applets.etsmobile.R
 
 class ProgressWidget : AppWidgetProvider() {
     companion object {
@@ -43,8 +42,12 @@ class ProgressWidget : AppWidgetProvider() {
             intent.action = WIDGET_BUTTON_CLICK
             val pendingIntent = PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
 
-            val semesterProgressLarge = RemoteViews(context.packageName, R.layout.widget_semester_progress_large)
-            val semesterProgressSmall = RemoteViews(context.packageName, R.layout.widget_semester_progress_small)
+            val semesterProgressLarge = RemoteViews(context.packageName,
+                R.layout.widget_semester_progress_large
+            )
+            val semesterProgressSmall = RemoteViews(context.packageName,
+                R.layout.widget_semester_progress_small
+            )
 
             val widgetSize = getWidgetSize(appWidgetManager, appWidgetId)
             val views = if (widgetSize.width <= 140) {
@@ -55,7 +58,10 @@ class ProgressWidget : AppWidgetProvider() {
 
             views.apply {
                 // Get theme values
-                val (backgroundColor, textColor) = ListSharedPrefsUtil.getSemesterProgressWidgetTheme(context, appWidgetId)
+                val (backgroundColor, textColor) = ListSharedPrefsUtil.getSemesterProgressWidgetTheme(
+                    context,
+                    appWidgetId
+                )
                 setInt(R.id.widget_background, "setColorFilter", backgroundColor)
 
                 // Set the progression for both small and large widget sizes

@@ -60,7 +60,7 @@
             android:name="flutterEmbedding"
             android:value="2" />
         <receiver
-            android:name=".ProgressWidget"
+            android:name=".widgets.semesterProgress.ProgressWidget"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
@@ -70,7 +70,7 @@
                 android:resource="@xml/widget_semester_progress_info"/>
         </receiver>
         <activity 
-            android:name=".ProgressWidgetConfigureActivity"
+            android:name=".widgets.semesterProgress.ProgressWidgetConfigureActivity"
             android:exported="true"
             android:theme="@style/AppTheme">
             <intent-filter>

@@ -1,13 +1,12 @@
 package ca.etsmtl.applets.etsmobile
 
 import android.content.Context
-import androidx.annotation.LayoutRes
 
 class ListSharedPrefsUtil {
     companion object {
-        private const val WIDGET_PREFS = "ca.etsmtl.applets.etsmobile.ProgressWidget"
-        public const val WIDGET_BACKGROUND_COLOR = "widget_background_color"
-        public const val WIDGET_TEXT_COLOR = "widget_text_color"
+        private const val WIDGET_PREFS = "ca.etsmtl.applets.etsmobile.widgets.semesterProgress.ProgressWidget"
+        private const val WIDGET_BACKGROUND_COLOR = "widget_background_color"
+        private const val WIDGET_TEXT_COLOR = "widget_text_color"
 
         fun saveSemesterProgressWidgetTheme(context: Context, appWidgetId: Int, backgroundColor: Int, textColor: Int) {
             val prefs = context.getSharedPreferences(WIDGET_PREFS, Context.MODE_PRIVATE)

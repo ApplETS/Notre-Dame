@@ -1,21 +1,21 @@
-package ca.etsmtl.applets.etsmobile
+package ca.etsmtl.applets.etsmobile.widgets.semesterProgress
 
-import ca.etsmtl.applets.etsmobile.services.models.MonETSUser
 import android.annotation.SuppressLint
 import android.appwidget.AppWidgetManager
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
-import android.util.Log
 import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import ca.etsmtl.applets.etsmobile.ListSharedPrefsUtil
+import ca.etsmtl.applets.etsmobile.R
+import ca.etsmtl.applets.etsmobile.Utils
 import ca.etsmtl.applets.etsmobile.databinding.SemesterProgressConfigurationActivityBinding
-import ca.etsmtl.applets.etsmobile.services.SignetsService
 
 class ProgressWidgetConfigureActivity : AppCompatActivity() {
 
@@ -24,16 +24,7 @@ class ProgressWidgetConfigureActivity : AppCompatActivity() {
     public override fun onCreate(icicle: Bundle?) {
         super.onCreate(icicle)
 
-        val user = MonETSUser(username = "username", password = "password")
-
-        SignetsService.shared.getSessions(user) { result ->
-            Log.d("SIGNETS_CONF", "Result: $result")
-            if (result.isSuccess) {
-                val sessions = result.getOrNull()
-            } else {
-                val error = result.exceptionOrNull()
-            }
-        }
+        Utils.getSessionProgress()
 
         // If the user presses the back button, the activity cancels
         setResult(RESULT_CANCELED)
@@ -104,15 +95,21 @@ class ProgressWidgetConfigureActivity : AppCompatActivity() {
                 R.id.radio_button_dark -> {
                     val backgroundColor = ContextCompat.getColor(this, R.color.dark_mode_card)
                     val titleTextColor = Color.WHITE
-                    ListSharedPrefsUtil.saveSemesterProgressWidgetTheme(this, appWidgetId,
-                        backgroundColor, titleTextColor)
+                    ListSharedPrefsUtil.saveSemesterProgressWidgetTheme(
+                        this, appWidgetId,
+                        backgroundColor, titleTextColor
+                    )
                     toggleWidgetPreviewTheme(binding, backgroundColor, titleTextColor)
                 }
                 R.id.radio_button_light -> {
-                    val backgroundColor = ContextCompat.getColor(this, R.color.light_mode_background)
+                    val backgroundColor = ContextCompat.getColor(this,
+                        R.color.light_mode_background
+                    )
                     val titleTextColor = Color.BLACK
-                    ListSharedPrefsUtil.saveSemesterProgressWidgetTheme(this, appWidgetId,
-                        backgroundColor, titleTextColor)
+                    ListSharedPrefsUtil.saveSemesterProgressWidgetTheme(
+                        this, appWidgetId,
+                        backgroundColor, titleTextColor
+                    )
                     toggleWidgetPreviewTheme(binding, backgroundColor, titleTextColor)
                 }
             }
