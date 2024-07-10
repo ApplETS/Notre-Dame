@@ -214,7 +214,6 @@ class _DashboardViewState extends State<DashboardView>
   Widget _buildProgressBarCard(
           DashboardViewModel model, PreferencesFlag flag) =>
       DismissibleCard(
-        isBusy: model.busy(model.progress),
         key: UniqueKey(),
         onDismissed: (DismissDirection direction) {
           dismissCard(model, flag);
@@ -227,47 +226,52 @@ class _DashboardViewState extends State<DashboardView>
                 child: Text(AppIntl.of(context)!.progress_bar_title,
                     style: Theme.of(context).textTheme.titleLarge),
               )),
-          if (model.progress >= 0.0)
-            Stack(children: [
-              Container(
-                padding: const EdgeInsets.fromLTRB(17, 10, 15, 20),
-                child: ClipRRect(
-                  borderRadius: const BorderRadius.all(Radius.circular(10)),
-                  child: GestureDetector(
-                    onTap: () => setState(
-                      () => setState(() {
-                        model.changeProgressBarText();
-                        setText(model);
-                      }),
-                    ),
-                    child: LinearProgressIndicator(
-                      value: model.progress,
-                      minHeight: 30,
-                      valueColor: const AlwaysStoppedAnimation<Color>(
-                          AppTheme.gradeGoodMax),
-                      backgroundColor: AppTheme.etsDarkGrey,
+          if (model.busy(model.progress) || model.progress >= 0.0)
+            Skeletonizer(
+              enabled: model.busy(model.progress),
+              ignoreContainers: true,
+              effect: const ShimmerEffect(),
+              child: Stack(children: [
+                Container(
+                  padding: const EdgeInsets.fromLTRB(17, 10, 15, 20),
+                  child: ClipRRect(
+                    borderRadius: const BorderRadius.all(Radius.circular(10)),
+                    child: GestureDetector(
+                      onTap: () => setState(
+                        () => setState(() {
+                          model.changeProgressBarText();
+                          setText(model);
+                        }),
+                      ),
+                      child: LinearProgressIndicator(
+                        value: model.progress,
+                        minHeight: 30,
+                        valueColor: const AlwaysStoppedAnimation<Color>(
+                            AppTheme.gradeGoodMax),
+                        backgroundColor: AppTheme.etsDarkGrey,
+                      ),
                     ),
                   ),
                 ),
-              ),
-              GestureDetector(
-                onTap: () => setState(() {
-                  model.changeProgressBarText();
-                  setText(model);
-                }),
-                child: Container(
-                  padding: const EdgeInsets.only(top: 16),
-                  child: Center(
-                    child: progressBarText ??
-                        Text(
-                          AppIntl.of(context)!.progress_bar_message(
-                              model.sessionDays[0], model.sessionDays[1]),
-                          style: const TextStyle(color: Colors.white),
-                        ),
+                GestureDetector(
+                  onTap: () => setState(() {
+                    model.changeProgressBarText();
+                    setText(model);
+                  }),
+                  child: Container(
+                    padding: const EdgeInsets.only(top: 16),
+                    child: Center(
+                      child: progressBarText ??
+                          Text(
+                            AppIntl.of(context)!.progress_bar_message(
+                                model.sessionDays[0], model.sessionDays[1]),
+                            style: const TextStyle(color: Colors.white),
+                          ),
+                    ),
                   ),
                 ),
-              ),
-            ])
+              ]),
+            )
           else
             Container(
               padding: const EdgeInsets.all(16),
@@ -310,9 +314,8 @@ class _DashboardViewState extends State<DashboardView>
     if (model.todayDateEvents.isEmpty && model.tomorrowDateEvents.isNotEmpty) {
       title = title + AppIntl.of(context)!.card_schedule_tomorrow;
     }
-    bool isLoading = model.busy(model.todayDateEvents) || model.busy(model.tomorrowDateEvents);
+    final bool isLoading = model.busy(model.todayDateEvents) || model.busy(model.tomorrowDateEvents);
     return DismissibleCard(
-      isBusy: isLoading,
       onDismissed: (DismissDirection direction) {
         dismissCard(model, flag);
       },
@@ -336,7 +339,7 @@ class _DashboardViewState extends State<DashboardView>
                 child: _buildEventList([
                   CourseActivity(
                       courseGroup: "APP375-99",
-                      courseName: "Développement d'ÉTSMobile",
+                      courseName: "Développement mobile (ÉTSMobile)",
                       activityName: '',
                       activityDescription: '5 à 7',
                       activityLocation: '100 Génies',
