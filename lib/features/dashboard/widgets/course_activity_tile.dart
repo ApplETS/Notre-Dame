@@ -52,7 +52,9 @@ class CourseActivityTile extends StatelessWidget {
                     style: Theme.of(context).textTheme.bodySmall),
               ],
             ),
-            Skeleton.shade(child: VerticalDivider(color: colorFor(activity.courseName), thickness: 2))
+            Skeleton.shade(
+                child: VerticalDivider(
+                    color: colorFor(activity.courseName), thickness: 2))
           ],
         ),
       );

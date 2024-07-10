@@ -314,7 +314,8 @@ class _DashboardViewState extends State<DashboardView>
     if (model.todayDateEvents.isEmpty && model.tomorrowDateEvents.isNotEmpty) {
       title = title + AppIntl.of(context)!.card_schedule_tomorrow;
     }
-    final bool isLoading = model.busy(model.todayDateEvents) || model.busy(model.tomorrowDateEvents);
+    final bool isLoading = model.busy(model.todayDateEvents) ||
+        model.busy(model.tomorrowDateEvents);
     return DismissibleCard(
       onDismissed: (DismissDirection direction) {
         dismissCard(model, flag);
@@ -337,17 +338,17 @@ class _DashboardViewState extends State<DashboardView>
           if (isLoading)
             Skeletonizer(
                 child: _buildEventList([
-                  CourseActivity(
-                      courseGroup: "APP375-99",
-                      courseName: "Développement mobile (ÉTSMobile)",
-                      activityName: '',
-                      activityDescription: '5 à 7',
-                      activityLocation: '100 Génies',
-                      startDateTime: DateTime.now(),
-                      endDateTime:  DateTime.now()
-                  )]))
+              CourseActivity(
+                  courseGroup: "APP375-99",
+                  courseName: "Développement mobile (ÉTSMobile)",
+                  activityName: '',
+                  activityDescription: '5 à 7',
+                  activityLocation: '100 Génies',
+                  startDateTime: DateTime.now(),
+                  endDateTime: DateTime.now())
+            ]))
           else if (model.todayDateEvents.isEmpty)
-             if (model.tomorrowDateEvents.isEmpty)
+            if (model.tomorrowDateEvents.isEmpty)
               SizedBox(
                   height: 100,
                   child: Center(
@@ -414,10 +415,10 @@ class _DashboardViewState extends State<DashboardView>
                     child: Wrap(
                       children: model.courses
                           .map((course) => GradeButton(course,
-                              color:
-                                  Theme.of(context).brightness == Brightness.light
-                                      ? AppTheme.lightThemeBackground
-                                      : AppTheme.darkThemeBackground))
+                              color: Theme.of(context).brightness ==
+                                      Brightness.light
+                                  ? AppTheme.lightThemeBackground
+                                  : AppTheme.darkThemeBackground))
                           .toList(),
                     ),
                   ),
