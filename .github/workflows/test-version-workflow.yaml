@@ -16,7 +16,7 @@ jobs:
         if: ${{ steps.release-label.outputs.level != null }}
       - uses: actions-ecosystem/action-bump-semver@v1.0.0
         id: bump-semver
-        if: ${{ steps.release-label.outputs.level != null }}
+        if: ${{ steps.get-latest-tag.outputs.level != null }}
         with:
           current_version: ${{ steps.get-latest-tag.outputs.tag }}
           level: ${{ steps.release-label.outputs.level }}
