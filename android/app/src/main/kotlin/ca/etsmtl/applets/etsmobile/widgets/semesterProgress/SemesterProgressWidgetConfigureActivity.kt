@@ -23,7 +23,7 @@ class SemesterProgressWidgetConfigureActivity : AppCompatActivity() {
     public override fun onCreate(icicle: Bundle?) {
         super.onCreate(icicle)
 
-        Utils.getSessionProgress()
+        Utils.getSemesterProgress()
 
         // If the user presses the back button, the activity cancels
         setResult(RESULT_CANCELED)
