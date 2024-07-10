@@ -24,22 +24,6 @@ jobs:
   # Testing
   ##############################################################
   testing:
-    - uses: actions-ecosystem/action-release-label@v1.2.0
-      id: release-label
-      with:
-        label_prefix: "version: "
-    - uses: actions-ecosystem/action-get-latest-tag@v1.6.0
-      id: get-latest-tag
-      if: ${{ steps.release-label.outputs.level != null }}
-    - uses: actions-ecosystem/action-bump-semver@v1.0.0
-      id: bump-semver
-      if: ${{ steps.release-label.outputs.level != null }}
-      with:
-        current_version: ${{ steps.get-latest-tag.outputs.tag }}
-        level: ${{ steps.release-label.outputs.level }}
-    - name: Set pubspec version
-      if: ${{ steps.bump-semver.outputs.level != null }}
-      run: echo ${{ steps.bump-semver.outputs.new_version }}
     name: Tests and checks
     runs-on: ubuntu-latest
     outputs:
