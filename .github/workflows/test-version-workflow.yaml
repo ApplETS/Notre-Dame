@@ -14,14 +14,16 @@ jobs:
           label_prefix: "version: "
 
       - name: Get Latest Tag
-        needs: release-label
+        needs:
+          - release-label
         id: get-latest-tag
         if: ${{ steps.release-label.outputs.level != null }}
         uses: actions-ecosystem/action-get-latest-tag@v1.6.0
 
       - name: Bump Semver
         id: bump-semver
-        needs: get-latest-tag
+        needs:
+          - get-latest-tag
         if: ${{ steps.get-latest-tag.outputs.level != null }}
         uses: actions-ecosystem/action-bump-semver@v1.0.0
         with:
@@ -29,6 +31,7 @@ jobs:
           level: ${{ steps.release-label.outputs.level }}
 
       - name: Set pubspec version
-        needs: bump-semver
+        needs:
+          - bump-semver
         if: ${{ steps.bump-semver.outputs.level != null }}
         run: echo ${{ steps.bump-semver.outputs.new_version }}
