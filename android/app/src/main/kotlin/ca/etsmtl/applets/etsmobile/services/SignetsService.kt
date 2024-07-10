@@ -5,28 +5,23 @@ import ca.etsmtl.applets.etsmobile.Constants
 import ca.etsmtl.applets.etsmobile.services.models.MonETSUser
 import ca.etsmtl.applets.etsmobile.services.models.ApiError
 import ca.etsmtl.applets.etsmobile.services.models.Session
-import ca.etsmtl.applets.etsmobile.services.models.sessionErrorPath
-import ca.etsmtl.applets.etsmobile.services.models.sessionPath
 import okhttp3.*
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.RequestBody.Companion.toRequestBody
 import org.w3c.dom.Document
 import org.w3c.dom.Element
-import org.w3c.dom.Node
-import org.w3c.dom.NodeList
+import org.xml.sax.InputSource
 import java.io.ByteArrayInputStream
 import java.io.IOException
+import java.io.StringReader
 import java.io.StringWriter
 import java.util.concurrent.TimeUnit
-import javax.xml.namespace.NamespaceContext
 import javax.xml.parsers.DocumentBuilderFactory
 import javax.xml.transform.OutputKeys
 import javax.xml.transform.TransformerFactory
 import javax.xml.transform.dom.DOMSource
 import javax.xml.transform.stream.StreamResult
-import javax.xml.xpath.XPath
 import javax.xml.xpath.XPathConstants
-import javax.xml.xpath.XPathExpressionException
 import javax.xml.xpath.XPathFactory
 
 class SignetsService private constructor(): SignetsServiceProtocol {
@@ -65,18 +60,13 @@ class SignetsService private constructor(): SignetsServiceProtocol {
                 if (data != null) {
                     val xml = parseXML(data)
 
-                    val errorNode = getNodeAsString(xml, sessionErrorPath)
-                    val trimesterNodes = getNodesByPath(xml, sessionPath)
+//                    val errorNode = getNodeAsString(xml, sessionErrorPath)
+                    val trimesterNodes = getTrimestersFromXml(data)
 
-                    Log.d("SignetsService", "errorNode: $errorNode")
-                    Log.d("SignetsService", "trimesterNodes length: ${trimesterNodes.length}")
-
-                    for (i in 0 until trimesterNodes.length){
-                        val trimesterNode = trimesterNodes.item(i)
-                        val shortName = getNodeByPath(trimesterNode as Document, "abrege")?.textContent
-                        Log.d("SignetsService", "shortName: $shortName")
+                    if (trimesterNodes.isNotEmpty()){
+                        val sessions = trimesterNodes.map { Session.fromXml(it) }
+                        completion(Result.success(sessions))
                     }
-                    completion(Result.success(emptyList()))
 
 //                    if (sessionsXml != null) {
 //                        val sessions = sessionsXml.map { Session.fromXml(it) }
@@ -98,76 +88,37 @@ class SignetsService private constructor(): SignetsServiceProtocol {
         return builder.parse(ByteArrayInputStream(xml.toByteArray()))
     }
 
-    fun getNodeAsString(document: Document, path: String): String? {
-        val node = getNodeByPath(document, path)
-        return node?.let { nodeToString(it) }
-    }
+    fun getTrimestersFromXml(xmlString: String): List<String> {
+        val trimesters = mutableListOf<String>()
 
-    fun getNodeByPath(node: Node, path: String): Node? {
-        val xPath = createXPath()
-        return try {
-            xPath.evaluate(path, node, XPathConstants.NODE) as Node?
-        } catch (e: XPathExpressionException) {
+        try {
+            val documentBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder()
+            val inputSource = InputSource(StringReader(xmlString)).apply { encoding = "UTF-8" }
+            val document: Document = documentBuilder.parse(inputSource)
+            document.documentElement.normalize()
+
+            val xpath = XPathFactory.newInstance().newXPath()
+            val expression = "//Trimestre"
+            val nodeList = xpath.evaluate(expression, document, XPathConstants.NODESET) as org.w3c.dom.NodeList
+
+            for (i in 0 until nodeList.length) {
+                val node = nodeList.item(i) as Element
+                trimesters.add(nodeToString(node))
+            }
+        } catch (e: Exception) {
             e.printStackTrace()
-            null
         }
+
+        return trimesters
     }
 
-    fun getNodesByPath(node: Node, path: String): NodeList {
-        val xPath = createXPath()
-        return try {
-            xPath.evaluate(path, node, XPathConstants.NODESET) as NodeList
-        } catch (e: XPathExpressionException) {
-            e.printStackTrace()
-            createEmptyNodeList()
-        }
-    }
-
-    fun createXPath(): XPath {
-        val xPath = XPathFactory.newInstance().newXPath()
-        xPath.namespaceContext = object : NamespaceContext {
-            override fun getNamespaceURI(prefix: String): String {
-                return when (prefix) {
-                    "soap" -> "http://schemas.xmlsoap.org/soap/envelope/"
-                    "xsi" -> "http://www.w3.org/2001/XMLSchema-instance"
-                    "xsd" -> "http://www.w3.org/2001/XMLSchema"
-                    "" -> "http://etsmtl.ca/"  // default namespace
-                    else -> ""
-                }
-            }
-
-            override fun getPrefix(namespaceURI: String): String? {
-                return null
-            }
-
-            override fun getPrefixes(namespaceURI: String): Iterator<String>? {
-                return null
-            }
-        }
-        return xPath
-    }
-
-    fun nodeToString(node: Node): String {
-        val transformerFactory = TransformerFactory.newInstance()
-        val transformer = transformerFactory.newTransformer()
+    private fun nodeToString(node: Element): String {
+        val transformer = TransformerFactory.newInstance().newTransformer()
         transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes")
         transformer.setOutputProperty(OutputKeys.INDENT, "yes")
-        val source = DOMSource(node)
+        transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8")
         val writer = StringWriter()
-        val result = StreamResult(writer)
-        transformer.transform(source, result)
-        return writer.toString()
-    }
-
-    fun createEmptyNodeList(): NodeList {
-        return object : NodeList {
-            override fun getLength(): Int {
-                return 0
-            }
-
-            override fun item(index: Int): Node? {
-                return null
-            }
-        }
+        transformer.transform(DOMSource(node), StreamResult(writer))
+        return writer.toString().trim()
     }
 }
