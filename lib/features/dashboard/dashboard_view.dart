@@ -81,7 +81,7 @@ class _DashboardViewState extends State<DashboardView>
                         child: ReorderableListView(
                           onReorder: (oldIndex, newIndex) =>
                               onReorder(model, oldIndex, newIndex),
-                          padding: const EdgeInsets.fromLTRB(0, 4, 0, 8),
+                          padding: const EdgeInsets.fromLTRB(0, 4, 0, 24),
                           children: _buildCards(model),
                           proxyDecorator: (child, _, __) {
                             return HapticsContainer(child: child);
@@ -381,7 +381,6 @@ class _DashboardViewState extends State<DashboardView>
         onDismissed: (DismissDirection direction) {
           dismissCard(model, flag);
         },
-        isBusy: model.busy(model.courses),
         child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
@@ -408,16 +407,19 @@ class _DashboardViewState extends State<DashboardView>
                           .first)),
                 )
               else
-                Container(
-                  padding: const EdgeInsets.fromLTRB(17, 10, 15, 10),
-                  child: Wrap(
-                    children: model.courses
-                        .map((course) => GradeButton(course,
-                            color:
-                                Theme.of(context).brightness == Brightness.light
-                                    ? AppTheme.lightThemeBackground
-                                    : AppTheme.darkThemeBackground))
-                        .toList(),
+                Skeletonizer(
+                  enabled: model.busy(model.courses),
+                  child: Container(
+                    padding: const EdgeInsets.fromLTRB(17, 10, 15, 10),
+                    child: Wrap(
+                      children: model.courses
+                          .map((course) => GradeButton(course,
+                              color:
+                                  Theme.of(context).brightness == Brightness.light
+                                      ? AppTheme.lightThemeBackground
+                                      : AppTheme.darkThemeBackground))
+                          .toList(),
+                    ),
                   ),
                 )
             ]),

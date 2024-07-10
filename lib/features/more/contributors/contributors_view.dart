@@ -19,6 +19,7 @@ class ContributorsView extends StatelessWidget {
         viewModelBuilder: () => ContributorsViewModel(),
         builder: (context, model, child) {
           return BaseScaffold(
+            safeArea: false,
             appBar: AppBar(
               title: Text(AppIntl.of(context)!.more_contributors),
             ),
@@ -44,7 +45,7 @@ class ContributorsView extends StatelessWidget {
 
   Widget contributorsList(List<Contributor> contributors) {
     return ListView.builder(
-      padding: EdgeInsets.zero,
+      padding: const EdgeInsets.only(bottom: 24),
       itemCount: contributors.length,
       itemBuilder: (context, index) => ListTile(
         title: Text(contributors[index].login ?? ''),
