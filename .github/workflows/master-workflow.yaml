@@ -23,38 +23,6 @@ env:
 
 jobs:
   ##############################################################
-  # Setup
-  ##############################################################
-  tag_validation:
-    name: Tag validation
-    runs-on: ubuntu-latest
-    outputs:
-      version: ${{ steps.split.outputs._0 }}
-    steps:
-      - uses: actions/checkout@v4
-      - name: Get the version from the pubspec
-        id: pubspecVersion
-        uses: CumulusDS/get-yaml-paths-action@v1.0.2
-        with:
-          file: pubspec.yaml
-          version: version
-      - uses: winterjung/split@v2.1.0
-        id: split
-        with:
-          msg: ${{ steps.pubspecVersion.outputs.version }}
-          separator: '+'
-      - name: Validate that version doesn't exists
-        uses: mukunku/tag-exists-action@v1.6.0
-        id: checkTag
-        with:
-          tag: ${{ steps.split.outputs._0 }}
-      - if: ${{ steps.checkTag.outputs.exists == 'true' }}
-        name: Post comment on PR and fail.
-        run: |
-          echo '${{ steps.split.outputs._0 }} already exists, please update the pubspec version.'
-          exit 1
-
-  ##############################################################
   # Tests
   ##############################################################
   testing:
@@ -167,6 +135,21 @@ jobs:
           flutter-version: '3.19.x'
           channel: 'stable'
           cache: true
+      - uses: actions-ecosystem/action-release-label@v1.2.0
+        id: release-label
+        if: ${{ github.event.pull_request.merged == true }}
+      - uses: actions-ecosystem/action-get-latest-tag@v1.6.0
+        id: get-latest-tag
+        if: ${{ steps.release-label.outputs.level != null }}
+      - uses: actions-ecosystem/action-bump-semver@v1.0.0
+        id: bump-semver
+        if: ${{ steps.release-label.outputs.level != null }}
+        with:
+          current_version: ${{ steps.get-latest-tag.outputs.tag }}
+          level: ${{ steps.release-label.outputs.level }}
+      - name: Set pubspec version
+        if: ${{ steps.bump-semver.outputs.level != null }}
+        run: sed -i "s/version: .*/version: ${{ steps.bump-semver.outputs.new_version }}/g" pubspec.yaml
       - name: Install Android dependencies
         if: matrix.target == 'Android'
         uses: actions/setup-java@v4
@@ -178,7 +161,6 @@ jobs:
         if: matrix.target == 'iOS'
         run: |
           flutter pub get
-          dart run build_runner build --delete-conflicting-outputs
           cd ios
           pod install
           flutter clean
@@ -186,7 +168,6 @@ jobs:
       # Get dependencies and decrypt needed files.
       - run: |
           flutter pub get
-          dart run build_runner build --delete-conflicting-outputs
 
       - name: Decrypt SignETS certificate and Google Services files
         run: |
@@ -226,7 +207,6 @@ jobs:
   create_pre_release:
     name: Create Github release
     needs:
-      - tag_validation
       - build
     runs-on: ubuntu-latest
     outputs:
@@ -245,6 +225,7 @@ jobs:
         with:
           path: build
       - name: Create pre-release
+        if: ${{ github.event.pull_request.merged == true }}
         run: |
           gh release create ${{ needs.tag_validation.outputs.version }} */** --title v${{ needs.tag_validation.outputs.version }} -R '${{ github.repository }}' --prerelease --generate-notes
         working-directory: build
