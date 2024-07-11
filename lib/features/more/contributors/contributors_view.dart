@@ -28,9 +28,8 @@ class ContributorsView extends StatelessWidget {
               future: model.contributors,
               builder: (context, snapshot) {
                 if (!snapshot.hasData) {
-                  final fakeContributors = List.filled(30, Contributor(
-                      login: "Username"
-                  ));
+                  final fakeContributors =
+                      List.filled(30, Contributor(login: "Username"));
                   return Skeletonizer(
                     child: contributorsList(fakeContributors),
                   );
@@ -51,11 +50,9 @@ class ContributorsView extends StatelessWidget {
         title: Text(contributors[index].login ?? ''),
         leading: CircleAvatar(
             backgroundColor: Colors.grey,
-            backgroundImage: NetworkImage(contributors[index].avatarUrl ?? '')
-        ),
+            backgroundImage: NetworkImage(contributors[index].avatarUrl ?? '')),
         onTap: () => Utils.launchURL(
-            contributors[index].htmlUrl ?? '',
-            AppIntl.of(context)!),
+            contributors[index].htmlUrl ?? '', AppIntl.of(context)!),
       ),
     );
   }

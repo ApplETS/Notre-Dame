@@ -436,10 +436,10 @@ class _DashboardViewState extends State<DashboardView>
                     child: Wrap(
                       children: courses
                           .map((course) => GradeButton(course,
-                              color:
-                                  Theme.of(context).brightness == Brightness.light
-                                      ? AppTheme.lightThemeBackground
-                                      : AppTheme.darkThemeBackground))
+                              color: Theme.of(context).brightness ==
+                                      Brightness.light
+                                  ? AppTheme.lightThemeBackground
+                                  : AppTheme.darkThemeBackground))
                           .toList(),
                     ),
                   ),
