@@ -328,11 +328,11 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
   }
 
   Future<List<CourseActivity>> futureToRunSchedule() async {
+    setBusyForObject(_todayDateEvents, true);
+    setBusyForObject(_tomorrowDateEvents, true);
     try {
       var courseActivities =
           await _courseRepository.getCoursesActivities(fromCacheOnly: true);
-      setBusyForObject(_todayDateEvents, true);
-      setBusyForObject(_tomorrowDateEvents, true);
       _todayDateEvents.clear();
       _tomorrowDateEvents.clear();
       final todayDate = _settingsManager.dateTimeNow;
