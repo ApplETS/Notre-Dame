@@ -1,31 +1,39 @@
 package ca.etsmtl.applets.etsmobile.widgets.semesterProgress
 
 import android.os.Build
-import android.util.Log
 import androidx.annotation.RequiresApi
 import ca.etsmtl.applets.etsmobile.services.SignetsService
 import ca.etsmtl.applets.etsmobile.services.models.MonETSUser
 import ca.etsmtl.applets.etsmobile.services.models.Session
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.suspendCancellableCoroutine
+import kotlinx.coroutines.withContext
+import kotlin.coroutines.resume
 
-class Utils {
+class SemesterProgressWidgetUtils {
 
     companion object{
         @RequiresApi(Build.VERSION_CODES.O)
-        fun getSemesterProgress() {
-            val user = MonETSUser(username = "username", password = "password")
-
-            SignetsService.shared.getSessions(user) { result ->
-                if (result.isSuccess) {
-                    val sessions = result.getOrNull()
-                    val currentSession = getCurrentSemester(sessions)
-                    val startDate = parseStringAsLocalDate(currentSession?.startDate!!)
-                    val endDate = parseStringAsLocalDate(currentSession.endDate!!)
-                    val semesterProgress = SemesterProgress(startDate, endDate)
-                    Log.d("Progress", "${semesterProgress.totalDays} ${semesterProgress.elapsedDays} ${semesterProgress.remainingDays} ${semesterProgress.completedPercentage}")
-                } else {
-                    val error = result.exceptionOrNull()
+        suspend fun getSemesterProgress(): SemesterProgress?{
+            return withContext(Dispatchers.IO) {
+                val user = MonETSUser(username = "username", password = "password")
+                suspendCancellableCoroutine<SemesterProgress?> { continuation ->
+                    SignetsService.shared.getSessions(user) { result ->
+                        if (result.isSuccess) {
+                            val sessions = result.getOrNull()
+                            val currentSession = getCurrentSemester(sessions)
+                            if (currentSession != null) {
+                                continuation.resume(SemesterProgress(currentSession))
+                            } else {
+                                continuation.resume(null)
+                            }
+                        } else {
+                            val error = result.exceptionOrNull()
+                            continuation.resume(null)
+                        }
+                    }
                 }
             }
         }
@@ -38,12 +46,10 @@ class Utils {
                     val endDate = parseStringAsLocalDate(session.endDate!!)
 
                     if (isTodayBetweenSemesterStartAndEnd(startDate, endDate)){
-                        Log.d("Current Session", session.name.toString())
                         return session
                     }
                 }
             }
-
             return null
         }
 
@@ -54,7 +60,7 @@ class Utils {
         }
 
         @RequiresApi(Build.VERSION_CODES.O)
-        private fun parseStringAsLocalDate(date: String): LocalDate{
+        fun parseStringAsLocalDate(date: String): LocalDate{
             val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
             return LocalDate.parse(date, formatter)
         }

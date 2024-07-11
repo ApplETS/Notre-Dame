@@ -5,11 +5,13 @@ import android.appwidget.AppWidgetManager
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.GradientDrawable
+import android.os.Build
 import android.os.Bundle
 import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import ca.etsmtl.applets.etsmobile.ListSharedPrefsUtil
@@ -20,10 +22,9 @@ class SemesterProgressWidgetConfigureActivity : AppCompatActivity() {
 
     private var appWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID
 
+    @RequiresApi(Build.VERSION_CODES.O)
     public override fun onCreate(icicle: Bundle?) {
         super.onCreate(icicle)
-
-        Utils.getSemesterProgress()
 
         // If the user presses the back button, the activity cancels
         setResult(RESULT_CANCELED)

@@ -1,10 +1,14 @@
 package ca.etsmtl.applets.etsmobile
 
 object Constants {
-    const val WIDGET_GROUP_ID = "group.ca.etsmtl.applets.ETSMobile"
-    const val KEYCHAIN_SERVICE_ATTR = "flutter_keychain"
-    const val USERNAME_KEY = "WidgetSecureUser"
-    const val PASSWORD_KEY = "WidgetSecurePass"
+    const val SEMESTER_PROGRESS_PREFS_KEY = "SemesterProgressWidgetPrefs"
+    const val SEMESTER_PROGRESS_VARIANT_KEY = "progress_variant"
+    const val SEMESTER_PROGRESS_DAYS_EN = "days"
+    const val SEMESTER_PROGRESS_DAYS_FR = "jours"
+    const val SEMESTER_PROGRESS_ELAPSED_EN = "Elapsed"
+    const val SEMESTER_PROGRESS_ELAPSED_FR = "Écoulés"
+    const val SEMESTER_PROGRESS_REMAINING_EN = "Remaining"
+    const val SEMESTER_PROGRESS_REMAINING_FR = "Restants"
 
     // URLs related to MonETS
     const val MON_ETS_API = "https://portail.etsmtl.ca/api/"
