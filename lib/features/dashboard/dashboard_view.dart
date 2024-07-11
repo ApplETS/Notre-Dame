@@ -315,7 +315,8 @@ class _DashboardViewState extends State<DashboardView>
     if (model.todayDateEvents.isEmpty && model.tomorrowDateEvents.isNotEmpty) {
       title += AppIntl.of(context)!.card_schedule_tomorrow;
     }
-    final bool isLoading = model.busy(model.todayDateEvents) || model.busy(model.tomorrowDateEvents);
+    final bool isLoading = model.busy(model.todayDateEvents) ||
+        model.busy(model.tomorrowDateEvents);
 
     late List<CourseActivity>? courseActivities;
     if (isLoading) {
@@ -327,18 +328,15 @@ class _DashboardViewState extends State<DashboardView>
             activityDescription: '5 à 7',
             activityLocation: '100 Génies',
             startDateTime: DateTime.now(),
-            endDateTime: DateTime.now()
-        )
+            endDateTime: DateTime.now())
       ];
-    }
-    else if (model.todayDateEvents.isEmpty) {
+    } else if (model.todayDateEvents.isEmpty) {
       if (model.tomorrowDateEvents.isEmpty) {
         courseActivities = null;
       } else {
         courseActivities = model.tomorrowDateEvents;
       }
-    }
-    else {
+    } else {
       courseActivities = model.todayDateEvents;
     }
 
@@ -363,13 +361,12 @@ class _DashboardViewState extends State<DashboardView>
               )),
           if (courseActivities != null)
             Skeletonizer(
-                enabled: isLoading,
-                child: _buildEventList(courseActivities))
+                enabled: isLoading, child: _buildEventList(courseActivities))
           else
             SizedBox(
                 height: 100,
-                child: Center(
-                    child: Text(AppIntl.of(context)!.schedule_no_event)))
+                child:
+                    Center(child: Text(AppIntl.of(context)!.schedule_no_event)))
         ]),
       ),
     );
@@ -394,58 +391,69 @@ class _DashboardViewState extends State<DashboardView>
     late List<Course> courses = model.courses;
 
     if (courses.isEmpty && !loaded) {
-      final Course skeletonCourse = Course(acronym: " ", title: "", group: "", session: "", programCode: "", numberOfCredits: 0);
-      courses = [skeletonCourse, skeletonCourse, skeletonCourse, skeletonCourse];
+      final Course skeletonCourse = Course(
+          acronym: " ",
+          title: "",
+          group: "",
+          session: "",
+          programCode: "",
+          numberOfCredits: 0);
+      courses = [
+        skeletonCourse,
+        skeletonCourse,
+        skeletonCourse,
+        skeletonCourse
+      ];
     }
 
     return DismissibleCard(
-        key: UniqueKey(),
-        onDismissed: (DismissDirection direction) {
-          dismissCard(model, flag);
-        },
-        child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Align(
-                alignment: Alignment.centerLeft,
-                child: Container(
-                  padding: const EdgeInsets.fromLTRB(17, 15, 0, 0),
-                  child: GestureDetector(
-                    onTap: () => _navigationService
-                        .pushNamedAndRemoveUntil(RouterPaths.student),
-                    child: Text(AppIntl.of(context)!.grades_title,
-                        style: Theme.of(context).textTheme.titleLarge),
-                  ),
+      key: UniqueKey(),
+      onDismissed: (DismissDirection direction) {
+        dismissCard(model, flag);
+      },
+      child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Align(
+              alignment: Alignment.centerLeft,
+              child: Container(
+                padding: const EdgeInsets.fromLTRB(17, 15, 0, 0),
+                child: GestureDetector(
+                  onTap: () => _navigationService
+                      .pushNamedAndRemoveUntil(RouterPaths.student),
+                  child: Text(AppIntl.of(context)!.grades_title,
+                      style: Theme.of(context).textTheme.titleLarge),
                 ),
               ),
-              if (model.courses.isEmpty && loaded)
-                SizedBox(
-                  height: 100,
-                  child: Center(
-                      child: Text(AppIntl.of(context)!
-                          .grades_msg_no_grades
-                          .split("\n")
-                          .first)),
-                )
-              else
-                Skeletonizer(
-                  enabled: !loaded,
-                  child: Container(
-                    padding: const EdgeInsets.fromLTRB(17, 10, 15, 10),
-                    child: Wrap(
-                      children: courses
-                          .map((course) => GradeButton(course,
-                              color: Theme.of(context).brightness ==
-                                      Brightness.light
-                                  ? AppTheme.lightThemeBackground
-                                  : AppTheme.darkThemeBackground))
-                          .toList(),
-                    ),
+            ),
+            if (model.courses.isEmpty && loaded)
+              SizedBox(
+                height: 100,
+                child: Center(
+                    child: Text(AppIntl.of(context)!
+                        .grades_msg_no_grades
+                        .split("\n")
+                        .first)),
+              )
+            else
+              Skeletonizer(
+                enabled: !loaded,
+                child: Container(
+                  padding: const EdgeInsets.fromLTRB(17, 10, 15, 10),
+                  child: Wrap(
+                    children: courses
+                        .map((course) => GradeButton(course,
+                            color:
+                                Theme.of(context).brightness == Brightness.light
+                                    ? AppTheme.lightThemeBackground
+                                    : AppTheme.darkThemeBackground))
+                        .toList(),
                   ),
-                )
-            ]),
-      );
+                ),
+              )
+          ]),
+    );
   }
 
   Widget _buildMessageBroadcastCard(
