@@ -37,7 +37,6 @@ jobs:
 
       - uses: actions-ecosystem/action-release-label@v1.2.0
         id: release-label
-        if: ${{ github.event.pull_request.merged == true }}
       - run: echo "action-release-label ${{ steps.release-label.outputs.level }}"
 
       - uses: actions-ecosystem/action-get-latest-tag@v1.6.0
