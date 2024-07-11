@@ -215,7 +215,6 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
   }
 
   Future loadDataAndUpdateWidget() async {
-    print("loadDataAndUpdateWidget HAS RUN");
     return Future.wait([
       futureToRunBroadcast(),
       futureToRunGrades(),

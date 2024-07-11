@@ -31,9 +31,6 @@ class AppWidgetService {
   /// Update session progress widget with provided data
   Future<bool?> sendProgressData(ProgressWidgetData progressWidgetData) async {
     try {
-      await HomeWidget.saveWidgetData<int>(
-          '${ProgressWidgetData.keyPrefix}progressInt',
-          (progressWidgetData.progress * 100).round());
       await HomeWidget.saveWidgetData<double>(
           '${ProgressWidgetData.keyPrefix}progress',
           progressWidgetData.progress);
