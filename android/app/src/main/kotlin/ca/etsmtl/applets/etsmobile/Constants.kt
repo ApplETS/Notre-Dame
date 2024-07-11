@@ -3,12 +3,13 @@ package ca.etsmtl.applets.etsmobile
 object Constants {
     const val SEMESTER_PROGRESS_PREFS_KEY = "SemesterProgressWidgetPrefs"
     const val SEMESTER_PROGRESS_VARIANT_KEY = "progress_variant"
+    const val SEMESTER_PROGRESS_CURRENT_VARIANT_KEY = "current_variant_index"
     const val SEMESTER_PROGRESS_DAYS_EN = "days"
     const val SEMESTER_PROGRESS_DAYS_FR = "jours"
-    const val SEMESTER_PROGRESS_ELAPSED_EN = "Elapsed"
-    const val SEMESTER_PROGRESS_ELAPSED_FR = "Écoulés"
-    const val SEMESTER_PROGRESS_REMAINING_EN = "Remaining"
-    const val SEMESTER_PROGRESS_REMAINING_FR = "Restants"
+    const val SEMESTER_PROGRESS_ELAPSED_EN = "elapsed"
+    const val SEMESTER_PROGRESS_ELAPSED_FR = "écoulés"
+    const val SEMESTER_PROGRESS_REMAINING_EN = "remaining"
+    const val SEMESTER_PROGRESS_REMAINING_FR = "restants"
 
     // URLs related to MonETS
     const val MON_ETS_API = "https://portail.etsmtl.ca/api/"

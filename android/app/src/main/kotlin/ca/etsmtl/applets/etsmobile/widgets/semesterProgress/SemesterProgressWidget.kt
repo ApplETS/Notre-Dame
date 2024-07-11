@@ -25,7 +25,7 @@ class SemesterProgressWidget : AppWidgetProvider() {
         private const val MAX_PROGRESS_VARIANT_INDEX = 2
         private var semesterProgress: SemesterProgress? = null
 
-        private var daysText = "days"
+        private var daysText = Constants.SEMESTER_PROGRESS_DAYS_EN
         private var title = "Semester Progress"
 
         @RequiresApi(Build.VERSION_CODES.O)
@@ -37,7 +37,7 @@ class SemesterProgressWidget : AppWidgetProvider() {
                 action = WIDGET_BUTTON_CLICK
                 putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId)
             }
-            val pendingIntent = PendingIntent.getBroadcast(context, appWidgetId, intent, PendingIntent.FLAG_UPDATE_CURRENT)
+            val pendingIntent = PendingIntent.getBroadcast(context, appWidgetId, intent, PendingIntent.FLAG_IMMUTABLE)
 
             val semesterProgressLarge = RemoteViews(context.packageName,
                 R.layout.widget_semester_progress_large
@@ -47,7 +47,7 @@ class SemesterProgressWidget : AppWidgetProvider() {
             )
 
             val widgetSize = getWidgetSize(appWidgetManager, appWidgetId)
-            val views = if (widgetSize.width <= 140) {
+            val views = if (widgetSize.width <= 170) {
                 semesterProgressSmall
             } else {
                 semesterProgressLarge
@@ -66,10 +66,12 @@ class SemesterProgressWidget : AppWidgetProvider() {
                 setInt(R.id.widget_background, "setColorFilter", backgroundColor)
 
                 // Set the progression for both small and large widget sizes
-                semesterProgress?.completedPercentage?.let { setProgressBar(R.id.progressBar, 100, it.toInt(), false) }
-
+                semesterProgress?.completedPercentageAsInt?.let {
+                    setProgressBar(R.id.progressBar, 100,
+                        it, false)
+                }
                 // Set the progress percentage text for the small widget
-                setTextViewText(R.id.progress_text, "${semesterProgress?.completedPercentage} %")
+                setTextViewText(R.id.progress_text, "${semesterProgress?.completedPercentageAsInt} %")
                 setTextViewText(R.id.elapsed_days_text, getElapsedDaysOverTotalText(false))
 
                 // Set the title and progress text for the large widget size
@@ -95,10 +97,10 @@ class SemesterProgressWidget : AppWidgetProvider() {
         @RequiresApi(Build.VERSION_CODES.O)
         private fun cycleText(context: Context, appWidgetManager: AppWidgetManager, appWidgetId: Int) {
             val sharedPreferences = context.getSharedPreferences(Constants.SEMESTER_PROGRESS_PREFS_KEY, Context.MODE_PRIVATE)
-            val currentVariantIndex = sharedPreferences.getInt("current_variant_index_$appWidgetId", 0)
+            val currentVariantIndex = sharedPreferences.getInt("${Constants.SEMESTER_PROGRESS_CURRENT_VARIANT_KEY}_$appWidgetId", 0)
             val newVariantIndex = (currentVariantIndex + 1) % (MAX_PROGRESS_VARIANT_INDEX + 1)
 
-            sharedPreferences.edit().putInt("current_variant_index_$appWidgetId", newVariantIndex).apply()
+            sharedPreferences.edit().putInt("${Constants.SEMESTER_PROGRESS_CURRENT_VARIANT_KEY}_$appWidgetId", newVariantIndex).apply()
             updateAppWidget(context, appWidgetManager, appWidgetId)
         }
 
@@ -122,6 +124,8 @@ class SemesterProgressWidget : AppWidgetProvider() {
         private fun getProgressInfo(context: Context){
             if (semesterProgress == null || semesterProgress?.isPastEndDate() == true) {
                 CoroutineScope(Dispatchers.IO).launch {
+                    // TODO add timeout if nulls are returned
+                    // TODO add error handling
                     Log.d("SemesterProgressWidget", "Fetching semester progress")
                     semesterProgress = SemesterProgressWidgetUtils.getSemesterProgress()
                 }
@@ -131,7 +135,7 @@ class SemesterProgressWidget : AppWidgetProvider() {
             }
 
             context.getSharedPreferences(Constants.SEMESTER_PROGRESS_PREFS_KEY, Context.MODE_PRIVATE).edit().apply {
-                putString("${Constants.SEMESTER_PROGRESS_VARIANT_KEY}_0", "${semesterProgress?.completedPercentage?.toInt()} %")
+                putString("${Constants.SEMESTER_PROGRESS_VARIANT_KEY}_0", "${semesterProgress?.completedPercentageAsInt} %")
                 putString("${Constants.SEMESTER_PROGRESS_VARIANT_KEY}_1", getElapsedDaysOverTotalText(true))
                 putString("${Constants.SEMESTER_PROGRESS_VARIANT_KEY}_2", getRemainingDays())
                 apply()

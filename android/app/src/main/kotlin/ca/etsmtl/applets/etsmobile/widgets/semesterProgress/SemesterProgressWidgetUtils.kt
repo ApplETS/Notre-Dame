@@ -19,7 +19,7 @@ class SemesterProgressWidgetUtils {
         suspend fun getSemesterProgress(): SemesterProgress?{
             return withContext(Dispatchers.IO) {
                 val user = MonETSUser(username = "username", password = "password")
-                suspendCancellableCoroutine<SemesterProgress?> { continuation ->
+                suspendCancellableCoroutine { continuation ->
                     SignetsService.shared.getSessions(user) { result ->
                         if (result.isSuccess) {
                             val sessions = result.getOrNull()

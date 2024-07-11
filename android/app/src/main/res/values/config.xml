@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="minWidth" translatable="false">110dp</string>
+    <string name="minHeight" translatable="false">40dp</string>
+    <string name="maxWidth" translatable="false">320dp</string>
+    <string name="maxHeight" translatable="false">40dp</string>
+</resources>

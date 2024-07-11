@@ -26,6 +26,9 @@ class SemesterProgress (session: Session){
     var completedPercentage: Double = (elapsedDays.toDouble() / totalDays.toDouble()) * 100
 
     @RequiresApi(Build.VERSION_CODES.O)
+    var completedPercentageAsInt: Int = completedPercentage.toInt()
+
+    @RequiresApi(Build.VERSION_CODES.O)
     fun isPastEndDate(): Boolean {
         return LocalDate.now().isAfter(endDate)
     }
