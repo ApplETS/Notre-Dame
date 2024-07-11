@@ -7,6 +7,7 @@ jobs:
   check-version:
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v4
       - uses: actions-ecosystem/action-release-label@v1.2.0
         id: release-label
       - run: echo "Output level ${{ steps.release-label.outputs.level }}"
