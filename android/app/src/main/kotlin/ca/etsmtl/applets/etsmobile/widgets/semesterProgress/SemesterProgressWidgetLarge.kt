@@ -19,7 +19,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class SemesterProgressWidget : AppWidgetProvider() {
+class SemesterProgressWidgetLarge : AppWidgetProvider() {
     companion object {
         const val WIDGET_BUTTON_CLICK = "ca.etsmtl.applets.etsmobile.WIDGET_BUTTON_CLICK"
         private const val MAX_PROGRESS_VARIANT_INDEX = 2
@@ -33,25 +33,12 @@ class SemesterProgressWidget : AppWidgetProvider() {
             getProgressInfo(context)
 
             // Handle clicks on the widget
-            val intent = Intent(context, SemesterProgressWidget::class.java).apply {
+            val intent = Intent(context, SemesterProgressWidgetLarge::class.java).apply {
                 action = WIDGET_BUTTON_CLICK
                 putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId)
             }
             val pendingIntent = PendingIntent.getBroadcast(context, appWidgetId, intent, PendingIntent.FLAG_IMMUTABLE)
-
-            val semesterProgressLarge = RemoteViews(context.packageName,
-                R.layout.widget_semester_progress_large
-            )
-            val semesterProgressSmall = RemoteViews(context.packageName,
-                R.layout.widget_semester_progress_small
-            )
-
-            val widgetSize = getWidgetSize(appWidgetManager, appWidgetId)
-            val views = if (widgetSize.width <= 170) {
-                semesterProgressSmall
-            } else {
-                semesterProgressLarge
-            }
+            val views = RemoteViews(context.packageName, R.layout.widget_semester_progress_large)
 
             val sharedPreferences = context.getSharedPreferences(Constants.SEMESTER_PROGRESS_PREFS_KEY, Context.MODE_PRIVATE)
             val currentVariantIndex = sharedPreferences.getInt("current_variant_index_$appWidgetId", 0)
@@ -85,13 +72,6 @@ class SemesterProgressWidget : AppWidgetProvider() {
             views.let {
                 appWidgetManager.updateAppWidget(appWidgetId, views)
             }
-        }
-
-        private fun getWidgetSize(appWidgetManager: AppWidgetManager, appWidgetId: Int): SizeF {
-            val options = appWidgetManager.getAppWidgetOptions(appWidgetId)
-            val minWidth = options.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_WIDTH)
-            val minHeight = options.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_HEIGHT)
-            return SizeF(minWidth.toFloat(), minHeight.toFloat())
         }
 
         @RequiresApi(Build.VERSION_CODES.O)
@@ -180,7 +160,7 @@ class SemesterProgressWidget : AppWidgetProvider() {
     @RequiresApi(Build.VERSION_CODES.O)
     private fun updateAllAppWidgets(context: Context) {
         val appWidgetManager = AppWidgetManager.getInstance(context)
-        val appWidgetIds = appWidgetManager.getAppWidgetIds(ComponentName(context, SemesterProgressWidget::class.java))
+        val appWidgetIds = appWidgetManager.getAppWidgetIds(ComponentName(context, SemesterProgressWidgetLarge::class.java))
         for (appWidgetId in appWidgetIds) {
             updateAppWidget(context, appWidgetManager, appWidgetId)
         }
