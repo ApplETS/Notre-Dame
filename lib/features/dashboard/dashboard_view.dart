@@ -7,6 +7,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:feature_discovery/feature_discovery.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:notredame/features/app/signets-api/models/course.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 import 'package:stacked/stacked.dart';
 
@@ -312,9 +313,35 @@ class _DashboardViewState extends State<DashboardView>
   Widget _buildScheduleCard(DashboardViewModel model, PreferencesFlag flag) {
     var title = AppIntl.of(context)!.title_schedule;
     if (model.todayDateEvents.isEmpty && model.tomorrowDateEvents.isNotEmpty) {
-      title = title + AppIntl.of(context)!.card_schedule_tomorrow;
+      title += AppIntl.of(context)!.card_schedule_tomorrow;
     }
     final bool isLoading = model.busy(model.todayDateEvents) || model.busy(model.tomorrowDateEvents);
+
+    late List<CourseActivity>? courseActivities;
+    if (isLoading) {
+      courseActivities = [
+        CourseActivity(
+            courseGroup: "APP375-99",
+            courseName: "Développement mobile (ÉTSMobile)",
+            activityName: '',
+            activityDescription: '5 à 7',
+            activityLocation: '100 Génies',
+            startDateTime: DateTime.now(),
+            endDateTime: DateTime.now()
+        )
+      ];
+    }
+    else if (model.todayDateEvents.isEmpty) {
+      if (model.tomorrowDateEvents.isEmpty) {
+        courseActivities = null;
+      } else {
+        courseActivities = model.tomorrowDateEvents;
+      }
+    }
+    else {
+      courseActivities = model.todayDateEvents;
+    }
+
     return DismissibleCard(
       onDismissed: (DismissDirection direction) {
         dismissCard(model, flag);
@@ -334,28 +361,15 @@ class _DashboardViewState extends State<DashboardView>
                       style: Theme.of(context).textTheme.titleLarge),
                 ),
               )),
-          if (isLoading)
+          if (courseActivities != null)
             Skeletonizer(
-                child: _buildEventList([
-                  CourseActivity(
-                      courseGroup: "APP375-99",
-                      courseName: "Développement mobile (ÉTSMobile)",
-                      activityName: '',
-                      activityDescription: '5 à 7',
-                      activityLocation: '100 Génies',
-                      startDateTime: DateTime.now(),
-                      endDateTime:  DateTime.now()
-                  )]))
-          else if (model.todayDateEvents.isEmpty)
-             if (model.tomorrowDateEvents.isEmpty)
-              SizedBox(
-                  height: 100,
-                  child: Center(
-                      child: Text(AppIntl.of(context)!.schedule_no_event)))
-            else
-              _buildEventList(model.tomorrowDateEvents)
+                enabled: isLoading,
+                child: _buildEventList(courseActivities))
           else
-            _buildEventList(model.todayDateEvents)
+            SizedBox(
+                height: 100,
+                child: Center(
+                    child: Text(AppIntl.of(context)!.schedule_no_event)))
         ]),
       ),
     );
@@ -375,8 +389,16 @@ class _DashboardViewState extends State<DashboardView>
         itemCount: events.length);
   }
 
-  Widget _buildGradesCards(DashboardViewModel model, PreferencesFlag flag) =>
-      DismissibleCard(
+  Widget _buildGradesCards(DashboardViewModel model, PreferencesFlag flag) {
+    final bool loaded = !model.busy(model.courses);
+    late List<Course> courses = model.courses;
+
+    if (courses.isEmpty && !loaded) {
+      final Course skeletonCourse = Course(acronym: " ", title: "", group: "", session: "", programCode: "", numberOfCredits: 0);
+      courses = [skeletonCourse, skeletonCourse, skeletonCourse, skeletonCourse];
+    }
+
+    return DismissibleCard(
         key: UniqueKey(),
         onDismissed: (DismissDirection direction) {
           dismissCard(model, flag);
@@ -397,7 +419,7 @@ class _DashboardViewState extends State<DashboardView>
                   ),
                 ),
               ),
-              if (model.courses.isEmpty)
+              if (model.courses.isEmpty && loaded)
                 SizedBox(
                   height: 100,
                   child: Center(
@@ -408,11 +430,11 @@ class _DashboardViewState extends State<DashboardView>
                 )
               else
                 Skeletonizer(
-                  enabled: model.busy(model.courses),
+                  enabled: !loaded,
                   child: Container(
                     padding: const EdgeInsets.fromLTRB(17, 10, 15, 10),
                     child: Wrap(
-                      children: model.courses
+                      children: courses
                           .map((course) => GradeButton(course,
                               color:
                                   Theme.of(context).brightness == Brightness.light
@@ -424,6 +446,7 @@ class _DashboardViewState extends State<DashboardView>
                 )
             ]),
       );
+  }
 
   Widget _buildMessageBroadcastCard(
       DashboardViewModel model, PreferencesFlag flag) {
