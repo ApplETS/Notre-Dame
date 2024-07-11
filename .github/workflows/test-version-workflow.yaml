@@ -3,25 +3,49 @@ on:
   workflow_dispatch:
   pull_request:
 
+# jobs:
+#   check-version:
+#     runs-on: ubuntu-latest
+#     steps:
+#       - uses: actions/checkout@v4
+#       - uses: actions-ecosystem/action-release-label@v1.2.0
+#         id: release-label
+#       - run: echo "Output level ${{ steps.release-label.outputs.level }}"
+#       - uses: actions-ecosystem/action-get-latest-tag@v1.6.0
+#         id: get-latest-tag
+#         if: ${{ steps.release-label.outputs.level != null }}
+#       - run: echo "Output level ${{ steps.get-latest-tag.outputs.level }}"
+#       - uses: actions-ecosystem/action-bump-semver@v1.0.0
+#         id: bump-semver
+#         if: ${{ steps.get-latest-tag.outputs.level != null }}
+#         with:
+#           current_version: ${{ steps.get-latest-tag.outputs.tag }}
+#           level: ${{ steps.release-label.outputs.level }}
+#       - run: echo "Output level ${{ steps.bump-semver.outputs.level }}"
+#       - name: Set pubspec version
+#         if: ${{ steps.bump-semver.outputs.level != null }}
+#         run: echo "${{ steps.bump-semver.outputs.new_version }}"
+
 jobs:
-  check-version:
+  release:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+
       - uses: actions-ecosystem/action-release-label@v1.2.0
         id: release-label
-      - run: echo "Output level ${{ steps.release-label.outputs.level }}"
+        if: ${{ github.event.pull_request.merged == true }}
+      - run: echo "action-release-label ${{ steps.release-label.outputs.level }}"
+
       - uses: actions-ecosystem/action-get-latest-tag@v1.6.0
         id: get-latest-tag
         if: ${{ steps.release-label.outputs.level != null }}
-      - run: echo "Output level ${{ steps.get-latest-tag.outputs.level }}"
-      - uses: actions-ecosystem/action-bump-semver@v1.0.0
+      - run: echo "get-latest-tag ${{ steps.get-latest-tag.outputs.tag }}"
+
+      - uses: actions-ecosystem/action-bump-semver@v1
         id: bump-semver
-        if: ${{ steps.get-latest-tag.outputs.level != null }}
+        if: ${{ steps.release-label.outputs.level != null }}
         with:
           current_version: ${{ steps.get-latest-tag.outputs.tag }}
           level: ${{ steps.release-label.outputs.level }}
-      - run: echo "Output level ${{ steps.bump-semver.outputs.level }}"
-      - name: Set pubspec version
-        if: ${{ steps.bump-semver.outputs.level != null }}
-        run: echo "${{ steps.bump-semver.outputs.new_version }}"
+      - run: echo "bump-semver ${{ steps.bump-semver.outputs.new_version }}"
