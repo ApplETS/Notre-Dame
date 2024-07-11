@@ -28,6 +28,7 @@ class ContributorsView extends StatelessWidget {
               future: model.contributors,
               builder: (context, snapshot) {
                 if (!snapshot.hasData) {
+                  // Populate the skeleton
                   final fakeContributors =
                       List.filled(30, Contributor(login: "Username"));
                   return Skeletonizer(

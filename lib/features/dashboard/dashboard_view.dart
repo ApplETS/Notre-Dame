@@ -231,7 +231,6 @@ class _DashboardViewState extends State<DashboardView>
             Skeletonizer(
               enabled: model.busy(model.progress),
               ignoreContainers: true,
-              effect: const ShimmerEffect(),
               child: Stack(children: [
                 Container(
                   padding: const EdgeInsets.fromLTRB(17, 10, 15, 20),
@@ -320,6 +319,8 @@ class _DashboardViewState extends State<DashboardView>
 
     late List<CourseActivity>? courseActivities;
     if (isLoading) {
+      // User will not see this.
+      // It serves the purpuse of creating text in the skeleton and make it look closer to the real schedule.
       courseActivities = [
         CourseActivity(
             courseGroup: "APP375-99",
@@ -390,6 +391,8 @@ class _DashboardViewState extends State<DashboardView>
     final bool loaded = !model.busy(model.courses);
     late List<Course> courses = model.courses;
 
+    // When loading courses, there are 2 stages. First, the courses of user are fetched, then, grades are fetched.
+    // During that first stage, putting empty courses with no title allows for a smoother transition.
     if (courses.isEmpty && !loaded) {
       final Course skeletonCourse = Course(
           acronym: " ",
