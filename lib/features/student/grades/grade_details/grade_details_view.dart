@@ -53,7 +53,7 @@ class _GradesDetailsViewState extends State<GradesDetailsView>
   Widget build(BuildContext context) =>
       ViewModelBuilder<GradesDetailsViewModel>.reactive(
         viewModelBuilder: () => GradesDetailsViewModel(
-            course: widget.course, intl: AppIntl.of(context)),
+            course: widget.course, intl: AppIntl.of(context)!),
         builder: (context, model, child) => BaseScaffold(
           safeArea: false,
           showBottomBar: false,

@@ -29,7 +29,7 @@ class _EmergencyViewState extends State<EmergencyView> {
           onPressed: () {
             Utils.launchURL(
                     'tel:${AppIntl.of(context)!.security_emergency_number}',
-                    AppIntl.of(context))
+                    AppIntl.of(context)!)
                 .catchError((error) {
               ScaffoldMessenger.of(context)
                   .showSnackBar(SnackBar(content: Text(error.toString())));

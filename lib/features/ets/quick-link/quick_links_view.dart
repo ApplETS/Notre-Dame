@@ -41,7 +41,7 @@ class _QuickLinksViewState extends State<QuickLinksView>
   @override
   Widget build(BuildContext context) =>
       ViewModelBuilder<QuickLinksViewModel>.reactive(
-        viewModelBuilder: () => QuickLinksViewModel(AppIntl.of(context)),
+        viewModelBuilder: () => QuickLinksViewModel(AppIntl.of(context)!),
         builder: (context, model, child) => Scaffold(
           body: _buildBody(context, model),
         ),

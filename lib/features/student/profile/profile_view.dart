@@ -34,7 +34,7 @@ class _ProfileViewState extends State<ProfileView> {
   @override
   Widget build(BuildContext context) =>
       ViewModelBuilder<ProfileViewModel>.reactive(
-        viewModelBuilder: () => ProfileViewModel(intl: AppIntl.of(context)),
+        viewModelBuilder: () => ProfileViewModel(intl: AppIntl.of(context)!),
         builder: (context, model, child) {
           return RefreshIndicator(
             onRefresh: () => model.refresh(),

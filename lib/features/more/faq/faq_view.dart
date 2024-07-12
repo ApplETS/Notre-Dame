@@ -210,8 +210,8 @@ class _FaqViewState extends State<FaqView> {
           }
         },
         style: ButtonStyle(
-            elevation: WidgetStateProperty.all<double>(8.0),
-            shape: WidgetStateProperty.all<RoundedRectangleBorder>(
+            elevation: MaterialStateProperty.all<double>(8.0),
+            shape: MaterialStateProperty.all<RoundedRectangleBorder>(
               RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(8.0),
               ),

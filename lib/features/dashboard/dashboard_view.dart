@@ -59,7 +59,7 @@ class _DashboardViewState extends State<DashboardView>
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<DashboardViewModel>.reactive(
-        viewModelBuilder: () => DashboardViewModel(intl: AppIntl.of(context)),
+        viewModelBuilder: () => DashboardViewModel(intl: AppIntl.of(context)!),
         builder: (context, model, child) {
           return BaseScaffold(
               isInteractionLimitedWhileLoading: false,
@@ -154,7 +154,7 @@ class _DashboardViewState extends State<DashboardView>
                       onPressed: () {
                         _analyticsService.logEvent(tag, "Facebook clicked");
                         Utils.launchURL(
-                            Urls.clubFacebook, AppIntl.of(context));
+                            Urls.clubFacebook, AppIntl.of(context)!);
                       },
                       icon: const FaIcon(
                         FontAwesomeIcons.facebook,
@@ -165,7 +165,7 @@ class _DashboardViewState extends State<DashboardView>
                       onPressed: () {
                         _analyticsService.logEvent(tag, "Instagram clicked");
                         Utils.launchURL(
-                            Urls.clubInstagram, AppIntl.of(context));
+                            Urls.clubInstagram, AppIntl.of(context)!);
                       },
                       icon: const FaIcon(
                         FontAwesomeIcons.instagram,
@@ -175,7 +175,7 @@ class _DashboardViewState extends State<DashboardView>
                     IconButton(
                       onPressed: () {
                         _analyticsService.logEvent(tag, "Github clicked");
-                        Utils.launchURL(Urls.clubGithub, AppIntl.of(context));
+                        Utils.launchURL(Urls.clubGithub, AppIntl.of(context)!);
                       },
                       icon: const FaIcon(
                         FontAwesomeIcons.github,
@@ -185,7 +185,7 @@ class _DashboardViewState extends State<DashboardView>
                     IconButton(
                       onPressed: () {
                         _analyticsService.logEvent(tag, "Email clicked");
-                        Utils.launchURL(Urls.clubEmail, AppIntl.of(context));
+                        Utils.launchURL(Urls.clubEmail, AppIntl.of(context)!);
                       },
                       icon: const FaIcon(
                         FontAwesomeIcons.envelope,
@@ -195,7 +195,7 @@ class _DashboardViewState extends State<DashboardView>
                     IconButton(
                       onPressed: () {
                         _analyticsService.logEvent(tag, "Discord clicked");
-                        Utils.launchURL(Urls.clubDiscord, AppIntl.of(context));
+                        Utils.launchURL(Urls.clubDiscord, AppIntl.of(context)!);
                       },
                       icon: const FaIcon(
                         FontAwesomeIcons.discord,

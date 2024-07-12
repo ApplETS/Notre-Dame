@@ -82,21 +82,15 @@ dependencies:
   share_plus: ^4.5.3
   flutter_markdown: ^0.7.1
 
-  flutter_gen: any
-  flutter_config: any
-  intl: any
-  image: any
-  collection: any
 dev_dependencies:
   flutter_test:
     sdk: flutter
   lint: ^2.3.0
   mockito: ^5.4.4
+  flutter_config: ^2.0.2
   flutter_launcher_icons: ^0.13.1
   build_runner: ^2.4.8
   import_sorter: ^4.6.0
-
-  webview_flutter_android: any
 
 flutter_icons:
   android: 'launcher_icon'

@@ -36,7 +36,7 @@ class _AuthorViewState extends State<AuthorView> {
   Widget build(BuildContext context) =>
       ViewModelBuilder<AuthorViewModel>.reactive(
           viewModelBuilder: () => AuthorViewModel(
-              authorId: widget.authorId, appIntl: AppIntl.of(context)),
+              authorId: widget.authorId, appIntl: AppIntl.of(context)!),
           onViewModelReady: (model) {
             model.fetchAuthorData();
             model.pagingController.addStatusListener((status) {
@@ -205,12 +205,12 @@ class _AuthorViewState extends State<AuthorView> {
                         ),
                         style: ButtonStyle(
                           shape:
-                              WidgetStateProperty.all<RoundedRectangleBorder>(
+                              MaterialStateProperty.all<RoundedRectangleBorder>(
                             RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(8),
                             ),
                           ),
-                          backgroundColor: WidgetStateProperty.all<Color>(
+                          backgroundColor: MaterialStateProperty.all<Color>(
                             Utils.getColorByBrightness(
                               context,
                               AppTheme.lightThemeBackground,
