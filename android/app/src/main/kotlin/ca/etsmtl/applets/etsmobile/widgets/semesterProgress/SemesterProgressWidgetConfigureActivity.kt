@@ -50,7 +50,7 @@ class SemesterProgressWidgetConfigureActivity : AppCompatActivity() {
         binding.saveButton.setOnClickListener {
             // It is the responsibility of the configuration activity to update the app widget
             val appWidgetManager = AppWidgetManager.getInstance(this)
-            SemesterProgressWidgetLarge.updateAppWidget(this, appWidgetManager, appWidgetId)
+//            SemesterProgressWidgetLarge.updateAppWidget(this, appWidgetManager, appWidgetId)
 
             // Make sure we pass back the original appWidgetId
             val resultValue = Intent()
