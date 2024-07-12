@@ -7,8 +7,8 @@ import 'package:webview_flutter/webview_flutter.dart';
 
 // Project imports:
 import 'package:notredame/features/app/presentation/webview_controller_extension.dart';
-import 'package:notredame/utils/utils.dart';
 import 'package:notredame/utils/app_theme.dart';
+import 'package:notredame/utils/utils.dart';
 
 class EmergencyView extends StatefulWidget {
   final String title;

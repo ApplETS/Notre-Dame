@@ -1,6 +1,8 @@
+// Dart imports:
 import 'dart:collection';
-import 'package:device_calendar/device_calendar.dart';
 
+// Package imports:
+import 'package:device_calendar/device_calendar.dart';
 import 'package:ets_api_clients/models.dart';
 
 mixin CalendarUtils {

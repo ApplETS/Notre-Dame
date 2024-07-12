@@ -8,9 +8,9 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:stacked/stacked.dart';
 
 // Project imports:
-import 'package:notredame/features/ets/quick-link/widgets/security-info/models/emergency_procedures.dart';
 import 'package:notredame/constants/markers.dart';
 import 'package:notredame/features/ets/quick-link/widgets/security-info/models/emergency_procedure.dart';
+import 'package:notredame/features/ets/quick-link/widgets/security-info/models/emergency_procedures.dart';
 
 class SecurityViewModel extends BaseViewModel {
   GoogleMapController? controller;

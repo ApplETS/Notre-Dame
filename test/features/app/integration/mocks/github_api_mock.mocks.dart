@@ -3,12 +3,18 @@
 // Do not manually edit this file.
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
+
+// Dart imports:
 import 'dart:async' as _i5;
 import 'dart:io' as _i2;
 
+// Package imports:
 import 'package:github/github.dart' as _i3;
 import 'package:mockito/mockito.dart' as _i1;
+
+// Project imports:
 import 'package:notredame/features/app/integration/github_api.dart' as _i4;
+
 import 'package:notredame/features/more/feedback/models/feedback_issue.dart'
     as _i6;
 

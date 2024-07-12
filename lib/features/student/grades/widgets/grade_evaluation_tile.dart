@@ -13,11 +13,11 @@ import 'package:intl/intl.dart';
 import 'package:marquee/marquee.dart';
 
 // Project imports:
-import 'package:notredame/features/welcome/discovery/models/discovery_ids.dart';
-import 'package:notredame/utils/utils.dart';
-import 'package:notredame/utils/app_theme.dart';
-import 'package:notredame/features/welcome/discovery/discovery_components.dart';
 import 'package:notredame/features/student/grades/widgets/grade_circular_progress.dart';
+import 'package:notredame/features/welcome/discovery/discovery_components.dart';
+import 'package:notredame/features/welcome/discovery/models/discovery_ids.dart';
+import 'package:notredame/utils/app_theme.dart';
+import 'package:notredame/utils/utils.dart';
 
 class GradeEvaluationTile extends StatefulWidget {
   final bool completed;

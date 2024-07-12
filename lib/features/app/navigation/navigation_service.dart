@@ -2,9 +2,9 @@
 import 'package:flutter/material.dart';
 
 // Project imports:
-import 'package:notredame/features/app/navigation/router_paths.dart';
 import 'package:notredame/features/app/analytics/analytics_service.dart';
 import 'package:notredame/features/app/analytics/remote_config_service.dart';
+import 'package:notredame/features/app/navigation/router_paths.dart';
 import 'package:notredame/utils/locator.dart';
 
 //SERVICE

@@ -14,15 +14,15 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 
 // Project imports:
-import 'package:notredame/features/app/storage/cache_manager.dart';
-import 'package:notredame/features/app/repository/user_repository.dart';
 import 'package:notredame/features/app/analytics/analytics_service.dart';
 import 'package:notredame/features/app/integration/networking_service.dart';
+import 'package:notredame/features/app/repository/user_repository.dart';
+import 'package:notredame/features/app/storage/cache_manager.dart';
 import '../../../common/helpers.dart';
-import '../storage/mocks/cache_manager_mock.dart';
 import '../analytics/analytics_service_mock.dart';
-import '../storage/mocks/flutter_secure_storage_mock.dart';
 import '../integration/mocks/networking_service_mock.dart';
+import '../storage/mocks/cache_manager_mock.dart';
+import '../storage/mocks/flutter_secure_storage_mock.dart';
 
 void main() {
   late AnalyticsServiceMock analyticsServiceMock;

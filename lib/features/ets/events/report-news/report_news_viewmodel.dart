@@ -1,8 +1,10 @@
 // Package imports:
 import 'package:ets_api_clients/clients.dart';
 import 'package:ets_api_clients/models.dart';
-import 'package:notredame/utils/locator.dart';
 import 'package:stacked/stacked.dart';
+
+// Project imports:
+import 'package:notredame/utils/locator.dart';
 
 class ReportNewsViewModel extends BaseViewModel {
   final HelloAPIClient _helloApiClient = locator<HelloAPIClient>();

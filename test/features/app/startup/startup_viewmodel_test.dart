@@ -5,20 +5,20 @@ import 'package:pub_semver/pub_semver.dart';
 
 // Project imports:
 import 'package:notredame/constants/preferences_flags.dart';
-import 'package:notredame/features/app/navigation/router_paths.dart';
 import 'package:notredame/constants/update_code.dart';
-import 'package:notredame/features/more/settings/settings_manager.dart';
-import 'package:notredame/features/app/repository/user_repository.dart';
 import 'package:notredame/features/app/navigation/navigation_service.dart';
+import 'package:notredame/features/app/navigation/router_paths.dart';
+import 'package:notredame/features/app/repository/user_repository.dart';
+import 'package:notredame/features/app/startup/startup_viewmodel.dart';
 import 'package:notredame/features/app/storage/preferences_service.dart';
 import 'package:notredame/features/app/storage/siren_flutter_service.dart';
-import 'package:notredame/features/app/startup/startup_viewmodel.dart';
+import 'package:notredame/features/more/settings/settings_manager.dart';
 import '../../../common/helpers.dart';
 import '../../more/settings/mocks/settings_manager_mock.dart';
-import '../repository/mocks/user_repository_mock.dart';
 import '../error/internal_info_service_mock.dart';
-import '../navigation/navigation_service_mock.dart';
 import '../integration/mocks/networking_service_mock.dart';
+import '../navigation/navigation_service_mock.dart';
+import '../repository/mocks/user_repository_mock.dart';
 import '../storage/mocks/preferences_service_mock.dart';
 import '../storage/mocks/siren_flutter_service_mock.dart';
 

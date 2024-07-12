@@ -2,17 +2,17 @@
 import 'dart:io';
 
 // Flutter imports:
-import 'package:ets_api_clients/models.dart';
 import 'package:flutter/material.dart';
 
 // Package imports:
+import 'package:ets_api_clients/models.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 // Project imports:
 import 'package:notredame/features/app/analytics/analytics_service.dart';
-import 'package:notredame/features/app/navigation/navigation_service.dart';
-import 'package:notredame/features/app/integration/networking_service.dart';
 import 'package:notredame/features/app/analytics/remote_config_service.dart';
+import 'package:notredame/features/app/integration/networking_service.dart';
+import 'package:notredame/features/app/navigation/navigation_service.dart';
 import 'package:notredame/features/ets/events/news/news-details/news_details_view.dart';
 import '../../../../../common/helpers.dart';
 

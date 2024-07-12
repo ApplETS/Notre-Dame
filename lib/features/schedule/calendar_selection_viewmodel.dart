@@ -1,11 +1,16 @@
+// Dart imports:
 import 'dart:collection';
 
+// Flutter imports:
+import 'package:flutter/material.dart';
+
+// Package imports:
 import 'package:device_calendar/device_calendar.dart';
 import 'package:ets_api_clients/models.dart';
-import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
+// Project imports:
 import 'package:notredame/features/app/repository/course_repository.dart';
 import 'package:notredame/utils/calendar_utils.dart';
 import 'package:notredame/utils/locator.dart';

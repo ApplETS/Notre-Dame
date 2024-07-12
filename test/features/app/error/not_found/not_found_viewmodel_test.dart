@@ -4,11 +4,11 @@ import 'package:mockito/mockito.dart';
 import 'package:rive/rive.dart';
 
 // Project imports:
-import 'package:notredame/features/app/navigation/router_paths.dart';
 import 'package:notredame/features/app/analytics/analytics_service.dart';
-import 'package:notredame/features/app/navigation/navigation_service.dart';
-import 'package:notredame/features/app/presentation/rive_animation_service.dart';
 import 'package:notredame/features/app/error/not_found/not_found_viewmodel.dart';
+import 'package:notredame/features/app/navigation/navigation_service.dart';
+import 'package:notredame/features/app/navigation/router_paths.dart';
+import 'package:notredame/features/app/presentation/rive_animation_service.dart';
 import '../../../../common/helpers.dart';
 import '../../analytics/analytics_service_mock.dart';
 import '../../navigation/navigation_service_mock.dart';

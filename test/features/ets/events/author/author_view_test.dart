@@ -2,24 +2,24 @@
 import 'dart:io';
 
 // Flutter imports:
-import 'package:ets_api_clients/models.dart';
 import 'package:flutter/material.dart';
 
 // Package imports:
+import 'package:ets_api_clients/models.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 // Project imports:
-import 'package:notredame/features/app/repository/course_repository.dart';
-import 'package:notredame/features/app/repository/news_repository.dart';
-import 'package:notredame/features/more/settings/settings_manager.dart';
 import 'package:notredame/features/app/analytics/analytics_service.dart';
 import 'package:notredame/features/app/integration/launch_url_service.dart';
-import 'package:notredame/features/app/navigation/navigation_service.dart';
 import 'package:notredame/features/app/integration/networking_service.dart';
+import 'package:notredame/features/app/navigation/navigation_service.dart';
+import 'package:notredame/features/app/repository/course_repository.dart';
+import 'package:notredame/features/app/repository/news_repository.dart';
 import 'package:notredame/features/ets/events/author/author_view.dart';
 import 'package:notredame/features/ets/events/news/widgets/news_card.dart';
 import 'package:notredame/features/ets/events/social/social_links_card.dart';
+import 'package:notredame/features/more/settings/settings_manager.dart';
 import '../../../../common/helpers.dart';
 import '../../../app/repository/mocks/author_repository_mock.dart';
 import '../../../app/repository/mocks/news_repository_mock.dart';

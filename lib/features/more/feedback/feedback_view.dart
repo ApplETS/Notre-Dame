@@ -8,10 +8,10 @@ import 'package:stacked/stacked.dart';
 
 // Project imports:
 import 'package:notredame/features/more/feedback/feedback_type.dart';
-import 'package:notredame/utils/utils.dart';
 import 'package:notredame/features/more/feedback/feedback_viewmodel.dart';
 import 'package:notredame/utils/app_theme.dart';
 import 'package:notredame/utils/loading.dart';
+import 'package:notredame/utils/utils.dart';
 
 class FeedbackView extends StatefulWidget {
   @override
@@ -44,8 +44,7 @@ class _FeedbackViewState extends State<FeedbackView> {
                       });
                     },
                     style: ButtonStyle(
-                        shape:
-                            WidgetStateProperty.all<RoundedRectangleBorder>(
+                        shape: WidgetStateProperty.all<RoundedRectangleBorder>(
                       RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(8.0),
                       ),
@@ -72,8 +71,7 @@ class _FeedbackViewState extends State<FeedbackView> {
                       });
                     },
                     style: ButtonStyle(
-                        shape:
-                            WidgetStateProperty.all<RoundedRectangleBorder>(
+                        shape: WidgetStateProperty.all<RoundedRectangleBorder>(
                       RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(8.0),
                       ),

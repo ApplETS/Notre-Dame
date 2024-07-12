@@ -3,9 +3,14 @@
 // Do not manually edit this file.
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
+
+// Dart imports:
 import 'dart:async' as _i4;
 
+// Package imports:
 import 'package:mockito/mockito.dart' as _i1;
+
+// Project imports:
 import 'package:notredame/constants/preferences_flags.dart' as _i3;
 import 'package:notredame/features/app/storage/preferences_service.dart' as _i2;
 

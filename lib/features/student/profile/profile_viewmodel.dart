@@ -5,9 +5,9 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:stacked/stacked.dart';
 
 // Project imports:
-import 'package:notredame/features/student/profile/programs_credits.dart';
-import 'package:notredame/features/app/repository/user_repository.dart';
 import 'package:notredame/features/app/analytics/analytics_service.dart';
+import 'package:notredame/features/app/repository/user_repository.dart';
+import 'package:notredame/features/student/profile/programs_credits.dart';
 import 'package:notredame/utils/locator.dart';
 
 class ProfileViewModel extends FutureViewModel<List<Program>> {

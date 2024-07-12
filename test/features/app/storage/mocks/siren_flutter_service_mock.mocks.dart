@@ -3,13 +3,19 @@
 // Do not manually edit this file.
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
+
+// Dart imports:
 import 'dart:async' as _i4;
 
+// Flutter imports:
 import 'package:flutter/cupertino.dart' as _i5;
+
+// Package imports:
 import 'package:mockito/mockito.dart' as _i1;
+import 'package:pub_semver/pub_semver.dart' as _i2;
+
 import 'package:notredame/features/app/storage/siren_flutter_service.dart'
     as _i3;
-import 'package:pub_semver/pub_semver.dart' as _i2;
 
 // ignore_for_file: type=lint
 // ignore_for_file: avoid_redundant_argument_values

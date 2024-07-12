@@ -3,11 +3,18 @@
 // Do not manually edit this file.
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
+
+// Dart imports:
 import 'dart:async' as _i3;
 import 'dart:ui' as _i6;
 
+// Flutter imports:
 import 'package:flutter/material.dart' as _i5;
+
+// Package imports:
 import 'package:mockito/mockito.dart' as _i1;
+
+// Project imports:
 import 'package:notredame/constants/preferences_flags.dart' as _i4;
 import 'package:notredame/features/more/settings/settings_manager.dart' as _i2;
 

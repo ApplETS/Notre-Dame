@@ -3,10 +3,16 @@
 // Do not manually edit this file.
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
+
+// Dart imports:
 import 'dart:async' as _i5;
 
+// Flutter imports:
 import 'package:flutter/material.dart' as _i3;
+
+// Package imports:
 import 'package:mockito/mockito.dart' as _i1;
+
 import 'package:notredame/features/app/analytics/remote_config_service.dart'
     as _i2;
 import 'package:notredame/features/app/navigation/navigation_service.dart'

@@ -9,10 +9,10 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:stacked/stacked.dart';
 
 // Project imports:
-import 'package:notredame/utils/utils.dart';
+import 'package:notredame/features/ets/quick-link/widgets/security-info/emergency_view.dart';
 import 'package:notredame/features/ets/quick-link/widgets/security-info/security_viewmodel.dart';
 import 'package:notredame/utils/app_theme.dart';
-import 'package:notredame/features/ets/quick-link/widgets/security-info/emergency_view.dart';
+import 'package:notredame/utils/utils.dart';
 
 class SecurityView extends StatefulWidget {
   @override

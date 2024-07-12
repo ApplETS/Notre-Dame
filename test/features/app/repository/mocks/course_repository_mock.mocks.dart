@@ -3,10 +3,14 @@
 // Do not manually edit this file.
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
+
+// Dart imports:
 import 'dart:async' as _i4;
 
+// Package imports:
 import 'package:ets_api_clients/models.dart' as _i2;
 import 'package:mockito/mockito.dart' as _i1;
+
 import 'package:notredame/features/app/repository/course_repository.dart'
     as _i3;
 
