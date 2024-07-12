@@ -52,88 +52,99 @@ class _SecurityViewState extends State<SecurityView> {
                             () => EagerGestureRecognizer()),
                       }),
                 ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Text(
-                    AppIntl.of(context)!.security_reach_security,
-                    style: const TextStyle(
-                        color: AppTheme.etsLightRed, fontSize: 24),
-                  ),
-                ),
-                Card(
-                  child: InkWell(
-                    splashColor: Colors.red.withAlpha(50),
-                    onTap: () => Utils.launchURL(
-                            'tel:${AppIntl.of(context)!.security_emergency_number}',
-                            AppIntl.of(context)!)
-                        .catchError((error) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text(error.toString())));
-                    }),
-                    child: ListTile(
-                      leading: const Icon(Icons.phone, size: 30),
-                      title: Text(AppIntl.of(context)!.security_emergency_call),
-                      subtitle:
-                          Text(AppIntl.of(context)!.security_emergency_number),
-                    ),
-                  ),
-                ),
-                Card(
-                  elevation: 0,
-                  color: Colors.transparent,
-                  child: ListTile(
-                    leading: const Icon(Icons.phone, size: 30),
-                    title: Text(
-                        AppIntl.of(context)!.security_emergency_intern_call),
-                    subtitle: Text(
-                        AppIntl.of(context)!.security_emergency_intern_number),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Text(
-                    AppIntl.of(context)!.security_emergency_procedures,
-                    style: const TextStyle(
-                        color: AppTheme.etsLightRed, fontSize: 24),
-                  ),
-                ),
-                SingleChildScrollView(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: List.generate(
-                      model.emergencyProcedureList.length,
-                      (index) => Card(
-                        child: InkWell(
-                          splashColor: Colors.red.withAlpha(50),
-                          onTap: () => Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => EmergencyView(
-                                      model.emergencyProcedureList[index].title,
-                                      model.emergencyProcedureList[index]
-                                          .detail))),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.only(
-                                    top: 16.0, bottom: 16.0, left: 16.0),
-                                child: Text(
-                                  model.emergencyProcedureList[index].title,
-                                  style: const TextStyle(fontSize: 18),
-                                ),
-                              ),
-                              const Icon(Icons.arrow_forward_ios),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
+                joinSecurity(),
+                emergencyProcedures(model),
               ],
             ),
           ),
         ),
       );
+
+  Widget joinSecurity() => Padding(
+    padding: const EdgeInsets.only(top: 8.0, left: 8.0, right: 8.0),
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          AppIntl.of(context)!.security_reach_security,
+          style: const TextStyle(
+              color: AppTheme.etsLightRed, fontSize: 24),
+        ),
+        Card(
+          child: InkWell(
+            borderRadius: const BorderRadius.all(Radius.circular(10)),
+            splashColor: Colors.red.withAlpha(50),
+            onTap: () => Utils.launchURL(
+                'tel:${AppIntl.of(context)!.security_emergency_number}',
+                AppIntl.of(context)!)
+                .catchError((error) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text(error.toString())));
+            }),
+            child: ListTile(
+              leading: const Icon(Icons.phone, size: 30),
+              title: Text(AppIntl.of(context)!.security_emergency_call),
+              subtitle:
+              Text(AppIntl.of(context)!.security_emergency_number),
+            ),
+          ),
+        ),
+        Card(
+          elevation: 0,
+          color: Colors.transparent,
+          child: ListTile(
+            leading: const Icon(Icons.phone, size: 30),
+            title: Text(
+                AppIntl.of(context)!.security_emergency_intern_call),
+            subtitle: Text(
+                AppIntl.of(context)!.security_emergency_intern_number),
+          ),
+        ),
+      ],
+    ),
+  );
+
+  Widget emergencyProcedures(SecurityViewModel model) => SingleChildScrollView(
+    padding: const EdgeInsets.only(left: 8.0, right: 8.0, bottom: 24.0),
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          AppIntl.of(context)!.security_emergency_procedures,
+          style: const TextStyle(
+              color: AppTheme.etsLightRed, fontSize: 24),
+        ),
+        for (int i = 0; i < model.emergencyProcedureList.length; i++)
+          Card(
+            child: InkWell(
+              borderRadius: const BorderRadius.all(Radius.circular(10)),
+              splashColor: Colors.red.withAlpha(50),
+              onTap: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => EmergencyView(
+                          model.emergencyProcedureList[i].title,
+                          model.emergencyProcedureList[i].detail))),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(
+                        top: 16.0, bottom: 16.0, left: 16.0),
+                    child: Text(
+                      model.emergencyProcedureList[i].title,
+                      style: const TextStyle(fontSize: 18),
+                    ),
+                  ),
+                  const Padding(
+                    padding: EdgeInsets.only(right: 16.0),
+                    child: Icon(Icons.arrow_forward_ios),
+                  ),
+                ],
+              ),
+            ),
+          ),
+      ]
+    ),
+  );
 }

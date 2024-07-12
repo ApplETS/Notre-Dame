@@ -60,11 +60,8 @@ class _QuickLinksViewState extends State<QuickLinksView>
       child: Column(
         children: [
           Expanded(
-            child: Padding(
-              padding: const EdgeInsets.only(top: 8.0, left: 8.0, right: 8.0),
-              child: _buildReorderableGridView(
-                  model, model.quickLinkList, _buildDeleteButton),
-            ),
+            child: _buildReorderableGridView(
+                model, model.quickLinkList, _buildDeleteButton),
           ),
           if (_editMode && model.deletedQuickLinks.isNotEmpty) ...[
             const Divider(
@@ -73,11 +70,8 @@ class _QuickLinksViewState extends State<QuickLinksView>
               endIndent: 10,
             ),
             Expanded(
-              child: Padding(
-                padding: const EdgeInsets.only(top: 8.0, left: 8.0, right: 8.0),
-                child: _buildReorderableGridView(
-                    model, model.deletedQuickLinks, _buildAddButton),
-              ),
+              child: _buildReorderableGridView(
+                  model, model.deletedQuickLinks, _buildAddButton),
             ),
           ],
         ],
@@ -100,7 +94,7 @@ class _QuickLinksViewState extends State<QuickLinksView>
     }
 
     return ReorderableGridView.count(
-      padding: EdgeInsets.zero,
+      padding: const EdgeInsets.all(8.0),
       mainAxisSpacing: 2.0,
       crossAxisSpacing: 2.0,
       crossAxisCount: crossAxisCount,
