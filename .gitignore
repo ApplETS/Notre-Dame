@@ -18,7 +18,6 @@ app_untranslated_messages.yaml
 
 # Flutter test
 test/**/failures/
-**/mock.dart
 *.mocks.dart
 
 # Certificates and secrets
