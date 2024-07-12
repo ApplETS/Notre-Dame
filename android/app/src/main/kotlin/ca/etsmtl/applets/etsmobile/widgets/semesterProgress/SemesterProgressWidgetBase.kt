@@ -25,7 +25,7 @@ import kotlin.coroutines.resume
 
 abstract class SemesterProgressWidgetBase : AppWidgetProvider() {
     companion object {
-        var semesterProgress: SemesterProgress? = null
+        var semesterProgress = SemesterProgress()
         const val MAX_PROGRESS_VARIANT_INDEX = 2
         const val WIDGET_BUTTON_CLICK = "ca.etsmtl.applets.etsmobile.WIDGET_BUTTON_CLICK"
     }
@@ -40,18 +40,16 @@ abstract class SemesterProgressWidgetBase : AppWidgetProvider() {
     }
 
     private fun getProgressInfo(context: Context) {
-        if (semesterProgress == null || semesterProgress?.isPastEndDate() == true) {
+        if (semesterProgress.isPastEndDate()) {
             CoroutineScope(Dispatchers.IO).launch {
-                Log.d("SemesterProgressWidget", "Fetching semester progress")
                 semesterProgress = getSemesterProgress()
             }
-        } else if (semesterProgress?.isOngoing() == true) {
-            Log.d("SemesterProgressWidget", "Calculating progress")
-            semesterProgress?.calculateProgress()
+        } else if (semesterProgress.isOngoing()) {
+            semesterProgress.calculateProgress()
         }
 
         context.getSharedPreferences(Constants.SEMESTER_PROGRESS_PREFS_KEY, Context.MODE_PRIVATE).edit().apply {
-            putString("${Constants.SEMESTER_PROGRESS_VARIANT_KEY}_0", "${semesterProgress?.completedPercentageAsInt} %")
+            putString("${Constants.SEMESTER_PROGRESS_VARIANT_KEY}_0", "${semesterProgress.completedPercentageAsInt} %")
             putString("${Constants.SEMESTER_PROGRESS_VARIANT_KEY}_1", getElapsedDaysOverTotalText(true))
             putString("${Constants.SEMESTER_PROGRESS_VARIANT_KEY}_2", getRemainingDaysText())
             apply()
@@ -74,16 +72,16 @@ abstract class SemesterProgressWidgetBase : AppWidgetProvider() {
 
     private fun getRemainingDaysText(): String {
         val remainingText = if (Constants.SEMESTER_PROGRESS_DAYS_EN == Constants.SEMESTER_PROGRESS_DAYS_FR) Constants.SEMESTER_PROGRESS_REMAINING_FR else Constants.SEMESTER_PROGRESS_REMAINING_EN
-        return "${semesterProgress?.remainingDays} ${Constants.SEMESTER_PROGRESS_DAYS_EN} $remainingText"
+        return "${semesterProgress.remainingDays} ${Constants.SEMESTER_PROGRESS_DAYS_EN} $remainingText"
     }
 
     fun getElapsedDaysOverTotalText(addSuffix: Boolean): String {
         if (!addSuffix) {
-            return "${semesterProgress?.elapsedDays} / ${semesterProgress?.totalDays}"
+            return "${semesterProgress.elapsedDays} / ${semesterProgress.totalDays}"
         }
 
         val elapsedText = if (Constants.SEMESTER_PROGRESS_DAYS_EN == Constants.SEMESTER_PROGRESS_DAYS_FR) Constants.SEMESTER_PROGRESS_ELAPSED_FR else Constants.SEMESTER_PROGRESS_ELAPSED_EN
-        return "${semesterProgress?.elapsedDays} ${Constants.SEMESTER_PROGRESS_DAYS_EN} $elapsedText / ${semesterProgress?.totalDays} ${Constants.SEMESTER_PROGRESS_DAYS_EN}"
+        return "${semesterProgress.elapsedDays} ${Constants.SEMESTER_PROGRESS_DAYS_EN} $elapsedText / ${semesterProgress.totalDays} ${Constants.SEMESTER_PROGRESS_DAYS_EN}"
     }
 
     abstract val layoutId: Int
@@ -114,7 +112,8 @@ abstract class SemesterProgressWidgetBase : AppWidgetProvider() {
         }
     }
 
-    private suspend fun getSemesterProgress(): SemesterProgress?{
+    private suspend fun getSemesterProgress(): SemesterProgress{
+        Log.d("SemesterProgressWidget", "Fetching semester progress")
         val user = MonETSUser("username", "password")
         return withContext(Dispatchers.IO) {
             suspendCancellableCoroutine { continuation ->
@@ -125,7 +124,7 @@ abstract class SemesterProgressWidgetBase : AppWidgetProvider() {
                         if (currentSession != null) {
                             continuation.resume(SemesterProgress(currentSession))
                         } else {
-                            continuation.resume(null)
+                            continuation.resume(SemesterProgress())
                         }
                     } else {
                         continuation.resume(SemesterProgress())

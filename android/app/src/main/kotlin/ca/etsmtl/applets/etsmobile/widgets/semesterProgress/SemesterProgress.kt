@@ -1,5 +1,6 @@
 package ca.etsmtl.applets.etsmobile.widgets.semesterProgress
 
+import android.util.Log
 import ca.etsmtl.applets.etsmobile.Utils
 import ca.etsmtl.applets.etsmobile.services.models.Session
 import java.util.Date
@@ -36,6 +37,7 @@ class SemesterProgress {
     }
 
     fun calculateProgress() {
+        Log.d("SemesterProgress", "Calculating progress")
         val currentDate = Date()
         elapsedDays = daysBetween(startDate, currentDate)
         remainingDays = daysBetween(currentDate, endDate)
