@@ -269,7 +269,7 @@ class SettingsManager with ChangeNotifier {
   }
 
   /// Get the default index of each card
-  int getDefaultCardIndex(PreferencesFlag flag) => flag.index;
+  int getDefaultCardIndex(PreferencesFlag flag) => flag.index - PreferencesFlag.aboutUsCard.index;
 
   bool get calendarViewSetting => _remoteConfigService.scheduleListViewDefault;
 }

@@ -71,11 +71,10 @@ void main() {
 
   // Cards
   Map<PreferencesFlag, int> dashboard = {
-    PreferencesFlag.broadcastCard: 0,
-    PreferencesFlag.aboutUsCard: 1,
-    PreferencesFlag.scheduleCard: 2,
-    PreferencesFlag.progressBarCard: 3,
-    PreferencesFlag.gradesCard: 4
+    PreferencesFlag.aboutUsCard: 0,
+    PreferencesFlag.scheduleCard: 1,
+    PreferencesFlag.progressBarCard: 2,
+    PreferencesFlag.gradesCard: 3
   };
 
   final numberOfCards = dashboard.entries.length;
@@ -200,9 +199,9 @@ void main() {
       CourseRepositoryMock.stubCoursesActivities(courseRepositoryMock);
       CourseRepositoryMock.stubGetCoursesActivities(courseRepositoryMock,
           fromCacheOnly: true);
-      CourseRepositoryMock.stubGetCoursesActivities(courseRepositoryMock);
 
-      RemoteConfigServiceMock.stubGetBroadcastEnabled(remoteConfigServiceMock);
+      RemoteConfigServiceMock.stubGetBroadcastEnabled(remoteConfigServiceMock,
+          toReturn: false);
       RemoteConfigServiceMock.stubGetBroadcastColor(remoteConfigServiceMock);
       RemoteConfigServiceMock.stubGetBroadcastEn(remoteConfigServiceMock);
       RemoteConfigServiceMock.stubGetBroadcastFr(remoteConfigServiceMock);
@@ -214,9 +213,6 @@ void main() {
       SettingsManagerMock.stubGetBool(
           settingsManagerMock, PreferencesFlag.discoveryDashboard,
           toReturn: true);
-
-      SettingsManagerMock.stubSetInt(
-          settingsManagerMock, PreferencesFlag.broadcastCard);
 
       SettingsManagerMock.stubSetInt(
           settingsManagerMock, PreferencesFlag.aboutUsCard);
@@ -371,9 +367,6 @@ void main() {
             toReturn: dashboard);
 
         SettingsManagerMock.stubSetInt(
-            settingsManagerMock, PreferencesFlag.broadcastCard);
-
-        SettingsManagerMock.stubSetInt(
             settingsManagerMock, PreferencesFlag.aboutUsCard);
 
         SettingsManagerMock.stubSetInt(
@@ -425,9 +418,6 @@ void main() {
         CourseRepositoryMock.stubGetCoursesActivities(courseRepositoryMock,
             fromCacheOnly: true);
         CourseRepositoryMock.stubGetCoursesActivities(courseRepositoryMock);
-
-        SettingsManagerMock.stubSetInt(
-            settingsManagerMock, PreferencesFlag.broadcastCard);
 
         SettingsManagerMock.stubSetInt(
             settingsManagerMock, PreferencesFlag.aboutUsCard);
@@ -597,9 +587,6 @@ void main() {
 
         testWidgets('gradesCard is dismissible and can be restored',
             (WidgetTester tester) async {
-          SettingsManagerMock.stubSetInt(
-              settingsManagerMock, PreferencesFlag.broadcastCard);
-
           SettingsManagerMock.stubSetInt(
               settingsManagerMock, PreferencesFlag.aboutUsCard);
 
@@ -793,7 +780,7 @@ void main() {
         tester.view.physicalSize = const Size(800, 1410);
 
         final Map<PreferencesFlag, int> dashboard = {
-          PreferencesFlag.broadcastCard: 0,
+          PreferencesFlag.gradesCard: 0,
           PreferencesFlag.aboutUsCard: 1,
         };
 
@@ -820,7 +807,7 @@ void main() {
         CourseRepositoryMock.stubGetCoursesActivities(courseRepositoryMock);
 
         dashboard = {
-          PreferencesFlag.broadcastCard: 0,
+          PreferencesFlag.gradesCard: 0,
           PreferencesFlag.scheduleCard: 1,
         };
 
@@ -841,7 +828,7 @@ void main() {
         tester.view.physicalSize = const Size(800, 1410);
 
         dashboard = {
-          PreferencesFlag.broadcastCard: 0,
+          PreferencesFlag.gradesCard: 0,
           PreferencesFlag.progressBarCard: 1,
         };
 
