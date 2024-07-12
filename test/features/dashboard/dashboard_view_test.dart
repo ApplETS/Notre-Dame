@@ -13,15 +13,15 @@ import 'package:flutter_test/flutter_test.dart';
 // Project imports:
 import 'package:notredame/constants/preferences_flags.dart';
 import 'package:notredame/constants/update_code.dart';
+import 'package:notredame/features/app/widgets/dismissible_card.dart';
 import 'package:notredame/features/dashboard/dashboard_view.dart';
 import 'package:notredame/features/dashboard/widgets/course_activity_tile.dart';
-import 'package:notredame/features/app/widgets/dismissible_card.dart';
 import 'package:notredame/features/student/grades/widgets/grade_button.dart';
 import '../../common/helpers.dart';
-import '../app/repository/mocks/course_repository_mock.dart';
-import '../more/settings/mocks/settings_manager_mock.dart';
-import '../more/feedback/mocks/in_app_review_service_mock.dart';
 import '../app/analytics/remote_config_service_mock.dart';
+import '../app/repository/mocks/course_repository_mock.dart';
+import '../more/feedback/mocks/in_app_review_service_mock.dart';
+import '../more/settings/mocks/settings_manager_mock.dart';
 
 void main() {
   late SettingsManagerMock settingsManagerMock;

@@ -5,22 +5,22 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 
 // Project imports:
-import 'package:notredame/features/app/navigation/router_paths.dart';
-import 'package:notredame/features/app/storage/cache_manager.dart';
-import 'package:notredame/features/app/repository/course_repository.dart';
-import 'package:notredame/features/more/settings/settings_manager.dart';
-import 'package:notredame/features/app/repository/user_repository.dart';
 import 'package:notredame/features/app/navigation/navigation_service.dart';
+import 'package:notredame/features/app/navigation/router_paths.dart';
+import 'package:notredame/features/app/repository/course_repository.dart';
+import 'package:notredame/features/app/repository/user_repository.dart';
+import 'package:notredame/features/app/storage/cache_manager.dart';
 import 'package:notredame/features/app/storage/preferences_service.dart';
 import 'package:notredame/features/more/more_viewmodel.dart';
+import 'package:notredame/features/more/settings/settings_manager.dart';
 import '../../common/helpers.dart';
-import '../app/storage/mocks/cache_manager_mock.dart';
-import '../app/repository/mocks/course_repository_mock.dart';
-import 'settings/mocks/settings_manager_mock.dart';
-import '../app/repository/mocks/user_repository_mock.dart';
-import '../app/navigation/navigation_service_mock.dart';
-import '../app/storage/mocks/preferences_service_mock.dart';
 import '../app/analytics/remote_config_service_mock.dart';
+import '../app/navigation/navigation_service_mock.dart';
+import '../app/repository/mocks/course_repository_mock.dart';
+import '../app/repository/mocks/user_repository_mock.dart';
+import '../app/storage/mocks/cache_manager_mock.dart';
+import '../app/storage/mocks/preferences_service_mock.dart';
+import 'settings/mocks/settings_manager_mock.dart';
 
 void main() {
   // Needed to support FlutterToast.

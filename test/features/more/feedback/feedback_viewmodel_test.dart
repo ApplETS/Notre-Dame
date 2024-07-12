@@ -13,12 +13,12 @@ import 'package:image/image.dart' as image;
 import 'package:mockito/mockito.dart';
 
 // Project imports:
-import 'package:notredame/features/more/feedback/feedback_type.dart';
 import 'package:notredame/constants/preferences_flags.dart';
-import 'package:notredame/features/more/feedback/models/feedback_issue.dart';
 import 'package:notredame/features/app/integration/github_api.dart';
 import 'package:notredame/features/app/navigation/navigation_service.dart';
+import 'package:notredame/features/more/feedback/feedback_type.dart';
 import 'package:notredame/features/more/feedback/feedback_viewmodel.dart';
+import 'package:notredame/features/more/feedback/models/feedback_issue.dart';
 import '../../../common/helpers.dart';
 import '../../app/integration/mocks/github_api_mock.dart';
 import '../../app/storage/mocks/preferences_service_mock.dart';

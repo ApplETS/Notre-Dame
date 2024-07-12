@@ -1,7 +1,5 @@
-// Flutter imports:
-import 'package:ets_api_clients/clients.dart';
-
 // Package imports:
+import 'package:ets_api_clients/clients.dart';
 import 'package:ets_api_clients/models.dart';
 
 // Project imports:

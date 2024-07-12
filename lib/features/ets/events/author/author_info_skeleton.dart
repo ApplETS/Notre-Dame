@@ -5,8 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart';
 
 // Project imports:
-import 'package:notredame/utils/utils.dart';
 import 'package:notredame/utils/app_theme.dart';
+import 'package:notredame/utils/utils.dart';
 
 class AuthorInfoSkeleton extends StatelessWidget {
   @override

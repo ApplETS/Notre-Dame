@@ -1,8 +1,8 @@
 // Flutter imports:
-import 'package:ets_api_clients/models.dart';
 import 'package:flutter/material.dart';
 
 // Package imports:
+import 'package:ets_api_clients/models.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 // Project imports:

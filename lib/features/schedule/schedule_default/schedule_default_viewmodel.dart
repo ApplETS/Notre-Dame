@@ -8,8 +8,8 @@ import 'package:stacked/stacked.dart';
 
 // Project imports:
 import 'package:notredame/features/app/repository/course_repository.dart';
-import 'package:notredame/utils/locator.dart';
 import 'package:notredame/utils/app_theme.dart';
+import 'package:notredame/utils/locator.dart';
 
 class ScheduleDefaultViewModel
     extends FutureViewModel<List<CalendarEventData<Object>>> {

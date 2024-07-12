@@ -10,12 +10,12 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:stacked/stacked.dart';
 
 // Project imports:
-import 'package:notredame/features/welcome/discovery/models/discovery_ids.dart';
 import 'package:notredame/constants/preferences_flags.dart';
 import 'package:notredame/features/app/repository/course_repository.dart';
 import 'package:notredame/features/more/settings/settings_manager.dart';
-import 'package:notredame/utils/locator.dart';
 import 'package:notredame/features/welcome/discovery/discovery_components.dart';
+import 'package:notredame/features/welcome/discovery/models/discovery_ids.dart';
+import 'package:notredame/utils/locator.dart';
 
 class GradesDetailsViewModel extends FutureViewModel<Course> {
   /// Used to get the courses of the student

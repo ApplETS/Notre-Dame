@@ -1,9 +1,9 @@
 // Flutter imports:
 import 'package:flutter/material.dart';
-import 'package:collection/collection.dart';
 
 // Package imports:
 import 'package:calendar_view/calendar_view.dart';
+import 'package:collection/collection.dart';
 import 'package:enum_to_string/enum_to_string.dart';
 import 'package:ets_api_clients/models.dart';
 import 'package:feature_discovery/feature_discovery.dart';
@@ -13,14 +13,14 @@ import 'package:stacked/stacked.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 // Project imports:
-import 'package:notredame/features/welcome/discovery/models/discovery_ids.dart';
 import 'package:notredame/constants/preferences_flags.dart';
 import 'package:notredame/features/app/repository/course_repository.dart';
 import 'package:notredame/features/more/settings/settings_manager.dart';
-import 'package:notredame/utils/utils.dart';
-import 'package:notredame/utils/locator.dart';
-import 'package:notredame/utils/app_theme.dart';
 import 'package:notredame/features/welcome/discovery/discovery_components.dart';
+import 'package:notredame/features/welcome/discovery/models/discovery_ids.dart';
+import 'package:notredame/utils/app_theme.dart';
+import 'package:notredame/utils/locator.dart';
+import 'package:notredame/utils/utils.dart';
 
 class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
   /// Load the events

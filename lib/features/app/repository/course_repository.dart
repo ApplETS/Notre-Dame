@@ -11,10 +11,10 @@ import 'package:ets_api_clients/models.dart';
 import 'package:logger/logger.dart';
 
 // Project imports:
-import 'package:notredame/features/app/storage/cache_manager.dart';
-import 'package:notredame/features/app/repository/user_repository.dart';
 import 'package:notredame/features/app/analytics/analytics_service.dart';
 import 'package:notredame/features/app/integration/networking_service.dart';
+import 'package:notredame/features/app/repository/user_repository.dart';
+import 'package:notredame/features/app/storage/cache_manager.dart';
 import 'package:notredame/features/student/semester_codes.dart';
 import 'package:notredame/utils/cache_exception.dart';
 import 'package:notredame/utils/locator.dart';

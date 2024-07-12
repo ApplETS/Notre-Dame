@@ -9,14 +9,14 @@ import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:stacked/stacked.dart';
 
 // Project imports:
-import 'package:notredame/features/app/navigation/router_paths.dart';
 import 'package:notredame/features/app/analytics/analytics_service.dart';
 import 'package:notredame/features/app/navigation/navigation_service.dart';
+import 'package:notredame/features/app/navigation/router_paths.dart';
 import 'package:notredame/features/student/grades/grades_viewmodel.dart';
-import 'package:notredame/utils/locator.dart';
+import 'package:notredame/features/student/grades/widgets/grade_button.dart';
 import 'package:notredame/utils/app_theme.dart';
 import 'package:notredame/utils/loading.dart';
-import 'package:notredame/features/student/grades/widgets/grade_button.dart';
+import 'package:notredame/utils/locator.dart';
 
 class GradesView extends StatefulWidget {
   @override

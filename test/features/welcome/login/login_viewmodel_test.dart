@@ -4,13 +4,13 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 
 // Project imports:
+import 'package:notredame/features/app/navigation/navigation_service.dart';
 import 'package:notredame/features/app/navigation/router_paths.dart';
 import 'package:notredame/features/app/repository/user_repository.dart';
-import 'package:notredame/features/app/navigation/navigation_service.dart';
 import 'package:notredame/features/welcome/login/login_viewmodel.dart';
 import '../../../common/helpers.dart';
-import '../../app/repository/mocks/user_repository_mock.dart';
 import '../../app/navigation/navigation_service_mock.dart';
+import '../../app/repository/mocks/user_repository_mock.dart';
 
 void main() {
   // Needed to support FlutterToast.

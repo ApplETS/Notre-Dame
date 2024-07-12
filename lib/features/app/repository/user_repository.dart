@@ -13,9 +13,9 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:logger/logger.dart';
 
 // Project imports:
-import 'package:notredame/features/app/storage/cache_manager.dart';
 import 'package:notredame/features/app/analytics/analytics_service.dart';
 import 'package:notredame/features/app/integration/networking_service.dart';
+import 'package:notredame/features/app/storage/cache_manager.dart';
 import 'package:notredame/utils/cache_exception.dart';
 import 'package:notredame/utils/locator.dart';
 
