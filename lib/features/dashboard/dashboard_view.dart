@@ -74,36 +74,33 @@ class _DashboardViewState extends State<DashboardView>
               body: model.cards == null
                   ? buildLoading()
                   : RefreshIndicator(
-                      child: Theme(
-                        data: Theme.of(context)
-                            .copyWith(canvasColor: Colors.transparent),
-                        child: ReorderableListView(
-                          onReorder: (oldIndex, newIndex) =>
-                              onReorder(model, oldIndex, newIndex),
-                          padding: const EdgeInsets.fromLTRB(0, 4, 0, 8),
-                          children: _buildCards(model),
-                          proxyDecorator: (child, _, __) {
-                            return HapticsContainer(child: child);
-                          },
-                        ),
-                      ),
-                      onRefresh: () => model.loadDataAndUpdateWidget(),
-                    ));
+                child: Theme(
+                  data: Theme.of(context)
+                      .copyWith(canvasColor: Colors.transparent),
+                  child: ReorderableListView(
+                    header: model.remoteConfigService.dashboardMessageActive
+                        ? _buildMessageBroadcastCard(model) : null,
+                    onReorder: (oldIndex, newIndex) =>
+                        onReorder(model, oldIndex, newIndex),
+                    padding: const EdgeInsets.fromLTRB(0, 4, 0, 8),
+                    children: _buildCards(model),
+                    proxyDecorator: (child, _, __) {
+                      return HapticsContainer(child: child);
+                    },
+                  ),
+                ),
+                onRefresh: () => model.loadDataAndUpdateWidget(),
+              ));
         });
   }
 
   List<Widget> _buildCards(DashboardViewModel model) {
     final List<Widget> cards = List.empty(growable: true);
-
     // always try to build broadcast cart so the user doesn't miss out on
     // important info if they dismissed it previously
 
     for (final PreferencesFlag element in model.cardsToDisplay ?? []) {
       switch (element) {
-        case PreferencesFlag.broadcastCard:
-          if (model.remoteConfigService.dashboardMessageActive) {
-            cards.add(_buildMessageBroadcastCard(model, element));
-          }
         case PreferencesFlag.aboutUsCard:
           cards.add(_buildAboutUsCard(model, element));
         case PreferencesFlag.scheduleCard:
@@ -112,7 +109,6 @@ class _DashboardViewState extends State<DashboardView>
           cards.add(_buildProgressBarCard(model, element));
         case PreferencesFlag.gradesCard:
           cards.add(_buildGradesCards(model, element));
-
         default:
       }
 
@@ -211,7 +207,7 @@ class _DashboardViewState extends State<DashboardView>
       );
 
   Widget _buildProgressBarCard(
-          DashboardViewModel model, PreferencesFlag flag) =>
+      DashboardViewModel model, PreferencesFlag flag) =>
       DismissibleCard(
         isBusy: model.busy(model.progress),
         key: UniqueKey(),
@@ -234,7 +230,7 @@ class _DashboardViewState extends State<DashboardView>
                   borderRadius: const BorderRadius.all(Radius.circular(10)),
                   child: GestureDetector(
                     onTap: () => setState(
-                      () => setState(() {
+                          () => setState(() {
                         model.changeProgressBarText();
                         setText(model);
                       }),
@@ -397,31 +393,31 @@ class _DashboardViewState extends State<DashboardView>
                   child: Wrap(
                     children: model.courses
                         .map((course) => GradeButton(course,
-                            color:
-                                Theme.of(context).brightness == Brightness.light
-                                    ? AppTheme.lightThemeBackground
-                                    : AppTheme.darkThemeBackground))
+                        color:
+                        Theme.of(context).brightness == Brightness.light
+                            ? AppTheme.lightThemeBackground
+                            : AppTheme.darkThemeBackground))
                         .toList(),
                   ),
                 )
             ]),
       );
 
-  Widget _buildMessageBroadcastCard(
-      DashboardViewModel model, PreferencesFlag flag) {
+  Widget _buildMessageBroadcastCard(DashboardViewModel model) {
+    if(model.broadcastMessage == "" || model.broadcastColor == "" || model.broadcastTitle == "") {
+      return const SizedBox.shrink();
+    }
     final broadcastMsgColor = Color(int.parse(model.broadcastColor));
     final broadcastMsgType = model.broadcastType;
     final broadcastMsgUrl = model.broadcastUrl;
-    return DismissibleCard(
+    return Card(
         key: UniqueKey(),
-        onDismissed: (DismissDirection direction) {
-          dismissCard(model, flag);
-        },
-        isBusy: model.busy(model.broadcastMessage),
-        cardColor: broadcastMsgColor,
+        color: broadcastMsgColor,
         child: Padding(
           padding: const EdgeInsets.fromLTRB(17, 10, 15, 20),
-          child: Column(mainAxisSize: MainAxisSize.min, children: [
+          child: model.busy(model.broadcastMessage)
+              ? const Center(child: CircularProgressIndicator())
+              : Column(mainAxisSize: MainAxisSize.min, children: [
             // title row
             Row(
               children: [

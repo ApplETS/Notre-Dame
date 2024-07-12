@@ -39,7 +39,6 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
   static const String tag = "DashboardViewModel";
 
   final SettingsManager _settingsManager = locator<SettingsManager>();
-  final PreferencesService _preferencesService = locator<PreferencesService>();
   final CourseRepository _courseRepository = locator<CourseRepository>();
   final AnalyticsService _analyticsService = locator<AnalyticsService>();
   final AppWidgetService _appWidgetService = locator<AppWidgetService>();
@@ -203,8 +202,6 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
 
     _cards = dashboard;
 
-    await checkForBroadcastChange();
-
     getCardsToDisplay();
 
     // load data for both grade cards & grades home screen widget
@@ -312,13 +309,13 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
   void setAllCardsVisible() {
     _cards?.updateAll((key, value) {
       _settingsManager
-          .setInt(key, key.index - PreferencesFlag.broadcastCard.index)
+          .setInt(key, key.index - PreferencesFlag.aboutUsCard.index)
           .then((value) {
         if (!value) {
           Fluttertoast.showToast(msg: _appIntl.error);
         }
       });
-      return key.index - PreferencesFlag.broadcastCard.index;
+      return key.index - PreferencesFlag.aboutUsCard.index;
     });
 
     getCardsToDisplay();
@@ -344,23 +341,6 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
     }
 
     _analyticsService.logEvent(tag, "Restoring cards");
-  }
-
-  Future<void> checkForBroadcastChange() async {
-    final broadcastChange =
-        await _preferencesService.getString(PreferencesFlag.broadcastChange) ??
-            "";
-    if (broadcastChange != remoteConfigService.dashboardMessageEn) {
-      // Update pref
-      _preferencesService.setString(PreferencesFlag.broadcastChange,
-          remoteConfigService.dashboardMessageEn);
-      if (_cards != null && _cards![PreferencesFlag.broadcastCard]! < 0) {
-        _cards?.updateAll((key, value) {
-          return value >= 0 ? value + 1 : value;
-        });
-        _cards![PreferencesFlag.broadcastCard] = 0;
-      }
-    }
   }
 
   Future<List<Session>> futureToRunSessionProgressBar() async {
