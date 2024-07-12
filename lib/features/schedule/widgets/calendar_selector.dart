@@ -25,6 +25,9 @@ class CalendarSelectionWidget extends StatelessWidget {
       future: CalendarUtils.nativeCalendars,
       builder:
           (context, AsyncSnapshot<UnmodifiableListView<Calendar>> calendars) {
+        if (calendars.error != null) {
+          return lackingPermissionsDialog(context);
+        }
         if (!calendars.hasData) {
           return const Center(
             child: CircularProgressIndicator(),
@@ -81,7 +84,7 @@ class CalendarSelectionWidget extends StatelessWidget {
               actions: <Widget>[
                 TextButton(
                   onPressed: () => Navigator.of(context).pop(),
-                  child: const Text('Cancel'),
+                  child: Text(translations.calendar_cancel_button),
                 ),
                 TextButton(
                   onPressed: () {
@@ -119,13 +122,28 @@ class CalendarSelectionWidget extends StatelessWidget {
                       }
                     });
                   },
-                  child: const Text('Export'),
+                  child: Text(translations.calendar_export_button),
                 ),
               ],
             );
           },
         );
       },
+    );
+  }
+
+  AlertDialog lackingPermissionsDialog(BuildContext context) {
+    return AlertDialog(
+      title: Text(translations.calendar_permission_denied_modal_title),
+      content: Text(translations.calendar_permission_denied),
+      actions: <Widget>[
+        TextButton(
+          child: Text(translations.calendar_cancel_button),
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+        ),
+      ],
     );
   }
 }
