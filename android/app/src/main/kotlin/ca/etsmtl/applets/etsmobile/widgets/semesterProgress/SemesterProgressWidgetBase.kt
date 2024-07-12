@@ -40,19 +40,24 @@ abstract class SemesterProgressWidgetBase : AppWidgetProvider() {
     }
 
     private fun getProgressInfo(context: Context) {
-        if (semesterProgress.isPastEndDate()) {
-            CoroutineScope(Dispatchers.IO).launch {
+        CoroutineScope(Dispatchers.IO).launch {
+            // TODO : Check what to do when before a semester
+            // TODO : Handle case when there's an error fetching the data
+            if (semesterProgress.isPastEndDate()) {
                 semesterProgress = getSemesterProgress()
+            } else if (semesterProgress.isOngoing()) {
+                semesterProgress.calculateProgress()
             }
-        } else if (semesterProgress.isOngoing()) {
-            semesterProgress.calculateProgress()
-        }
 
-        context.getSharedPreferences(Constants.SEMESTER_PROGRESS_PREFS_KEY, Context.MODE_PRIVATE).edit().apply {
-            putString("${Constants.SEMESTER_PROGRESS_VARIANT_KEY}_0", "${semesterProgress.completedPercentageAsInt} %")
-            putString("${Constants.SEMESTER_PROGRESS_VARIANT_KEY}_1", getElapsedDaysOverTotalText(true))
-            putString("${Constants.SEMESTER_PROGRESS_VARIANT_KEY}_2", getRemainingDaysText())
-            apply()
+            context.getSharedPreferences(Constants.SEMESTER_PROGRESS_PREFS_KEY, Context.MODE_PRIVATE).edit().apply {
+                putString("${Constants.SEMESTER_PROGRESS_VARIANT_KEY}_0", "${semesterProgress.completedPercentageAsInt} %")
+                putString("${Constants.SEMESTER_PROGRESS_VARIANT_KEY}_1", getElapsedDaysOverTotalText(true))
+                putString("${Constants.SEMESTER_PROGRESS_VARIANT_KEY}_2", getRemainingDaysText())
+                apply()
+            }
+
+            // Update all widgets after data is fetched
+            updateAllAppWidgets(context)
         }
     }
 
