@@ -1,6 +1,9 @@
 package ca.etsmtl.applets.etsmobile
 
 object Constants {
+    const val USERNAME_KEY = "usernameKey"
+    const val PASSWORD_KEY = "passwordKey"
+
     const val SEMESTER_PROGRESS_PREFS_KEY = "SemesterProgressWidgetPrefs"
     const val SEMESTER_PROGRESS_VARIANT_KEY = "progress_variant"
     const val SEMESTER_PROGRESS_CURRENT_VARIANT_KEY = "current_variant_index"
