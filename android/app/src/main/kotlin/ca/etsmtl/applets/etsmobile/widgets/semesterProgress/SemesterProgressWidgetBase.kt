@@ -21,8 +21,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlinx.coroutines.withContext
-import java.time.LocalDate
-import java.time.format.DateTimeFormatter
+import java.util.Calendar
+import java.util.Date
 import kotlin.coroutines.resume
 
 abstract class SemesterProgressWidgetBase : AppWidgetProvider() {
@@ -140,32 +140,44 @@ abstract class SemesterProgressWidgetBase : AppWidgetProvider() {
                             continuation.resume(null)
                         }
                     } else {
-                        val error = result.exceptionOrNull()
-                        continuation.resume(null)
+                        continuation.resume(SemesterProgress())
                     }
                 }
             }
         }
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
-    fun getCurrentSemester(sessions: List<Session>?): Session?{
-        if (sessions != null) {
-            for (session in sessions) {
-                val startDate = Utils.parseStringAsLocalDate(session.startDate!!)
-                val endDate = Utils.parseStringAsLocalDate(session.endDate!!)
+    private fun getCurrentSemester(sessions: List<Session>?): Session?{
+        if (sessions.isNullOrEmpty()){
+            return null
+        }
 
-                if (isTodayBetweenSemesterStartAndEnd(startDate, endDate)){
-                    return session
-                }
+        for (session in sessions) {
+            val startDate = Utils.parseStringAsDate(session.startDate!!)
+            val endDate = Utils.parseStringAsDate(session.endDate!!)
+
+            if (isTodayBetweenSemesterStartAndEnd(startDate, endDate)){
+                return session
             }
         }
+
+        // Check for upcoming semester that hasn't started yet
+        val lastSession = sessions.last()
+        if (doesUpcomingSemesterExist(lastSession)){
+            return lastSession
+        }
+
         return null
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
-    private fun isTodayBetweenSemesterStartAndEnd(startDate: LocalDate, endDate: LocalDate): Boolean{
-        val today = LocalDate.now()
-        return (today.isEqual(startDate) || today.isAfter(startDate)) && (today.isEqual(endDate) || today.isBefore(endDate))
+    private fun doesUpcomingSemesterExist(session: Session): Boolean {
+        val today = Calendar.getInstance().time
+        val startDate = Utils.parseStringAsDate(session.startDate!!)
+        return today.before(startDate)
+    }
+
+    private fun isTodayBetweenSemesterStartAndEnd(startDate: Date, endDate: Date): Boolean {
+        val today = Calendar.getInstance().time
+        return (today.equals(startDate) || today.after(startDate)) && (today.equals(endDate) || today.before(endDate))
     }
 }

@@ -58,24 +58,19 @@ class SignetsService private constructor(): SignetsServiceProtocol {
             override fun onResponse(call: Call, response: Response) {
                 val data = response.body?.string()
                 if (data != null) {
-                    val xml = parseXML(data)
+                    val errorTextContent = getTextContentOfXmlTag(data, "erreur")
 
-//                    val errorNode = getNodeAsString(xml, sessionErrorPath)
+                    if (!errorTextContent.isNullOrEmpty()){
+                        completion(Result.failure(ApiError(errorTextContent)))
+                    }
+
                     val trimesterNodes = getTrimestersFromXml(data)
-
                     if (trimesterNodes.isNotEmpty()){
                         val sessions = trimesterNodes.map { Session.fromXml(it) }
                         completion(Result.success(sessions))
+                    } else {
+                        completion(Result.failure(ApiError("No sessions found")))
                     }
-
-//                    if (sessionsXml != null) {
-//                        val sessions = sessionsXml.map { Session.fromXml(it) }
-//                        for (session in sessions) {
-//                            Log.d("SignetsService", "session: " + session.shortName)
-//                        }
-//                        Log.d("SignetsService", "sessions: $sessions")
-//                        completion(Result.success(sessions))
-//                    }
                 }
             }
         })
@@ -98,8 +93,8 @@ class SignetsService private constructor(): SignetsServiceProtocol {
             document.documentElement.normalize()
 
             val xpath = XPathFactory.newInstance().newXPath()
-            val expression = "//Trimestre"
-            val nodeList = xpath.evaluate(expression, document, XPathConstants.NODESET) as org.w3c.dom.NodeList
+            val trimesterExpression = "//Trimestre"
+            val nodeList = xpath.evaluate(trimesterExpression, document, XPathConstants.NODESET) as org.w3c.dom.NodeList
 
             for (i in 0 until nodeList.length) {
                 val node = nodeList.item(i) as Element
@@ -120,5 +115,16 @@ class SignetsService private constructor(): SignetsServiceProtocol {
         val writer = StringWriter()
         transformer.transform(DOMSource(node), StreamResult(writer))
         return writer.toString().trim()
+    }
+
+    private fun getTextContentOfXmlTag(xmlContent: String, tagName: String): String? {
+        val factory = DocumentBuilderFactory.newInstance()
+        val builder = factory.newDocumentBuilder()
+        val inputStream = xmlContent.byteInputStream()
+        val document: Document = builder.parse(inputStream)
+        document.documentElement.normalize()
+
+        val node = document.getElementsByTagName(tagName).item(0)
+        return node?.textContent
     }
 }

@@ -1,49 +1,46 @@
 package ca.etsmtl.applets.etsmobile.widgets.semesterProgress
 
-import android.os.Build
-import androidx.annotation.RequiresApi
 import ca.etsmtl.applets.etsmobile.Utils
 import ca.etsmtl.applets.etsmobile.services.models.Session
-import java.time.LocalDate
-import java.time.temporal.ChronoUnit
+import java.util.Date
 
-class SemesterProgress (session: Session){
-    @RequiresApi(Build.VERSION_CODES.O)
-    private val startDate = Utils.parseStringAsLocalDate(session.startDate!!)
+class SemesterProgress {
+    private var startDate: Date = Date()
+    private var endDate: Date = Date()
+    var totalDays: Long = 0
+    var elapsedDays: Long = 0
+    var remainingDays: Long = 0
+    private var completedPercentage: Double = 0.0
+    var completedPercentageAsInt: Int = 0
 
-    @RequiresApi(Build.VERSION_CODES.O)
-    val endDate = Utils.parseStringAsLocalDate(session.endDate!!)
+    constructor()
 
-    @RequiresApi(Build.VERSION_CODES.O)
-    val totalDays = ChronoUnit.DAYS.between(startDate, endDate)
+    constructor(session: Session) : this() {
+        startDate = Utils.parseStringAsDate(session.startDate!!)
+        endDate = Utils.parseStringAsDate(session.endDate!!)
+        calculateProgress()
+    }
 
-    @RequiresApi(Build.VERSION_CODES.O)
-    var elapsedDays = ChronoUnit.DAYS.between(startDate, LocalDate.now())
+    private fun daysBetween(startDate: Date, endDate: Date): Long {
+        val diff = endDate.time - startDate.time
+        return diff / (1000 * 60 * 60 * 24)
+    }
 
-    @RequiresApi(Build.VERSION_CODES.O)
-    var remainingDays = ChronoUnit.DAYS.between(LocalDate.now(), endDate)
-
-    @RequiresApi(Build.VERSION_CODES.O)
-    var completedPercentage: Double = (elapsedDays.toDouble() / totalDays.toDouble()) * 100
-
-    @RequiresApi(Build.VERSION_CODES.O)
-    var completedPercentageAsInt: Int = completedPercentage.toInt()
-
-    @RequiresApi(Build.VERSION_CODES.O)
     fun isPastEndDate(): Boolean {
-        return LocalDate.now().isAfter(endDate)
+        return Date().after(endDate)
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
     fun isOngoing(): Boolean {
-        val currentDate = LocalDate.now()
-        return (currentDate.isAfter(startDate) || currentDate.isEqual(startDate)) && (currentDate.isBefore(endDate) || currentDate.isEqual(endDate))
+        val currentDate = Date()
+        return (currentDate.after(startDate) || currentDate == startDate) && (currentDate.before(endDate) || currentDate == endDate)
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
     fun calculateProgress() {
-        elapsedDays = ChronoUnit.DAYS.between(startDate, LocalDate.now())
-        remainingDays = ChronoUnit.DAYS.between(LocalDate.now(), endDate)
+        val currentDate = Date()
+        elapsedDays = daysBetween(startDate, currentDate)
+        remainingDays = daysBetween(currentDate, endDate)
+        totalDays = daysBetween(startDate, endDate)
         completedPercentage = (elapsedDays.toDouble() / totalDays.toDouble()) * 100
+        completedPercentageAsInt = completedPercentage.toInt()
     }
 }
