@@ -57,7 +57,6 @@ dependencies:
   in_app_review: ^2.0.9
   device_info_plus: ^9.1.2
   pub_semver: ^2.1.4
-  home_widget: ^0.4.1
   auto_size_text: ^3.0.0
   easter_egg_trigger: ^1.0.1
   timeago: ^3.3.0
