@@ -2,16 +2,17 @@ package ca.etsmtl.applets.etsmobile.widgets.semesterProgress
 
 import android.os.Build
 import androidx.annotation.RequiresApi
+import ca.etsmtl.applets.etsmobile.Utils
 import ca.etsmtl.applets.etsmobile.services.models.Session
 import java.time.LocalDate
 import java.time.temporal.ChronoUnit
 
 class SemesterProgress (session: Session){
     @RequiresApi(Build.VERSION_CODES.O)
-    private val startDate = SemesterProgressWidgetUtils.parseStringAsLocalDate(session.startDate!!)
+    private val startDate = Utils.parseStringAsLocalDate(session.startDate!!)
 
     @RequiresApi(Build.VERSION_CODES.O)
-    val endDate = SemesterProgressWidgetUtils.parseStringAsLocalDate(session.endDate!!)
+    val endDate = Utils.parseStringAsLocalDate(session.endDate!!)
 
     @RequiresApi(Build.VERSION_CODES.O)
     val totalDays = ChronoUnit.DAYS.between(startDate, endDate)
