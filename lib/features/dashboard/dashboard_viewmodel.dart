@@ -200,6 +200,14 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
   Future<Map<PreferencesFlag, int>> futureToRun() async {
     final dashboard = await _settingsManager.getDashboard();
 
+    //TODO: remove when all users are on 4.48.0 or more
+    final sortedList = dashboard.entries.toList()
+        ..sort((a, b) => a.value.compareTo(b.value));
+    final sortedMap = LinkedHashMap.fromEntries(sortedList);
+    for (int i = 0; i < sortedMap.length; i++) {
+      sortedMap.update(sortedMap.keys.elementAt(i), (value) => i);
+    }
+
     _cards = dashboard;
 
     getCardsToDisplay();
