@@ -203,12 +203,16 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
     //TODO: remove when all users are on 4.48.0 or more
     final sortedList = dashboard.entries.toList()
         ..sort((a, b) => a.value.compareTo(b.value));
-    final sortedMap = LinkedHashMap.fromEntries(sortedList);
-    for (int i = 0; i < sortedMap.length; i++) {
-      sortedMap.update(sortedMap.keys.elementAt(i), (value) => i);
+    final sortedDashboard = LinkedHashMap.fromEntries(sortedList);
+    int index = 0;
+    for (final element in sortedDashboard.entries) {
+      if(element.value >= 0) {
+        sortedDashboard.update(element.key, (value) => index);
+        index++;
+      }
     }
 
-    _cards = dashboard;
+    _cards = sortedDashboard;
 
     getCardsToDisplay();
 
@@ -216,7 +220,7 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
     // (moved from getCardsToDisplay())
     await loadDataAndUpdateWidget();
 
-    return dashboard;
+    return sortedDashboard;
   }
 
   Future loadDataAndUpdateWidget() async {

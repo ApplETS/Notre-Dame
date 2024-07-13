@@ -67,9 +67,7 @@ class RemoteConfigService {
 
   bool get dashboardMessageActive {
     fetch();
-    // return _remoteConfig.getBool(_dashboardMsgToggle);
-    return true;
-    // return true;
+    return _remoteConfig.getBool(_dashboardMsgToggle);
   }
 
   bool get scheduleListViewDefault {
