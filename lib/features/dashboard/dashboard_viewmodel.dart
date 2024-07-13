@@ -206,6 +206,9 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
     if(sharedPreferences.containsKey("broadcastCard")) {
       sharedPreferences.remove("broadcastCard");
     }
+    if(sharedPreferences.containsKey("broadcastChange")) {
+      sharedPreferences.remove("broadcastChange");
+    }
     final sortedList = dashboard.entries.toList()
         ..sort((a, b) => a.value.compareTo(b.value));
     final sortedDashboard = LinkedHashMap.fromEntries(sortedList);
@@ -216,6 +219,7 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
         index++;
       }
     }
+    //TODO: end remove when all users are on 4.48.0 or more
 
     _cards = sortedDashboard;
 
