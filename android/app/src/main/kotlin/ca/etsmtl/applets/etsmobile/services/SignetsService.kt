@@ -1,10 +1,9 @@
 package ca.etsmtl.applets.etsmobile.services
 
-import android.util.Log
 import ca.etsmtl.applets.etsmobile.Constants
 import ca.etsmtl.applets.etsmobile.services.models.MonETSUser
 import ca.etsmtl.applets.etsmobile.services.models.ApiError
-import ca.etsmtl.applets.etsmobile.services.models.Session
+import ca.etsmtl.applets.etsmobile.services.models.Semester
 import okhttp3.*
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.RequestBody.Companion.toRequestBody
@@ -47,7 +46,7 @@ class SignetsService private constructor(): SignetsServiceProtocol {
             .build()
     }
 
-    override fun getSessions(user: MonETSUser, completion: (Result<List<Session>>) -> Unit) {
+    override fun getSessions(user: MonETSUser, completion: (Result<List<Semester>>) -> Unit) {
         val request = createRequest(Constants.LIST_SESSIONS_OPERATION, user, emptyMap())
 
         client.newCall(request).enqueue(object : Callback {
@@ -66,8 +65,8 @@ class SignetsService private constructor(): SignetsServiceProtocol {
 
                     val trimesterNodes = getTrimestersFromXml(data)
                     if (trimesterNodes.isNotEmpty()){
-                        val sessions = trimesterNodes.map { Session.fromXml(it) }
-                        completion(Result.success(sessions))
+                        val semesters = trimesterNodes.map { Semester.fromXml(it) }
+                        completion(Result.success(semesters))
                     } else {
                         completion(Result.failure(ApiError("No sessions found")))
                     }

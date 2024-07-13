@@ -7,7 +7,7 @@ import java.io.StringReader
 const val sessionPath = "/soap:Envelope/soap:Body/listeSessionsResponse/listeSessionsResult/liste/Trimestre"
 const val sessionErrorPath = "/soap:Envelope/soap:Body/listeSessionsResponse/listeSessionsResult/erreur"
 
-data class Session(
+data class Semester(
     val shortName: String?,
     val name: String?,
     val startDate: String?,
@@ -23,7 +23,7 @@ data class Session(
     val deadlineCancellationASEQ: String?
 ) {
     companion object {
-        fun fromXml(xml: String): Session {
+        fun fromXml(xml: String): Semester {
             val factory = XmlPullParserFactory.newInstance()
             factory.isNamespaceAware = true
             val parser = factory.newPullParser()
@@ -74,7 +74,7 @@ data class Session(
                 eventType = parser.next()
             }
 
-            return Session(
+            return Semester(
                 shortName,
                 name,
                 startDate,
