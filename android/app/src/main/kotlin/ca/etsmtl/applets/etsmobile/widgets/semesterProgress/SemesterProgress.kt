@@ -2,7 +2,7 @@ package ca.etsmtl.applets.etsmobile.widgets.semesterProgress
 
 import android.util.Log
 import ca.etsmtl.applets.etsmobile.Utils
-import ca.etsmtl.applets.etsmobile.services.models.Session
+import ca.etsmtl.applets.etsmobile.services.models.Semester
 import java.util.Date
 
 class SemesterProgress {
@@ -16,9 +16,9 @@ class SemesterProgress {
 
     constructor()
 
-    constructor(session: Session) : this() {
-        startDate = Utils.parseStringAsDate(session.startDate!!)
-        endDate = Utils.parseStringAsDate(session.endDate!!)
+    constructor(semester: Semester) : this() {
+        startDate = Utils.parseStringAsDate(semester.startDate!!)
+        endDate = Utils.parseStringAsDate(semester.endDate!!)
         calculateProgress()
     }
 

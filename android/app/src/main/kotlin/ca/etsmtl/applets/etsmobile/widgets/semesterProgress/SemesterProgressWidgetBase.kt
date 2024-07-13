@@ -13,7 +13,7 @@ import ca.etsmtl.applets.etsmobile.Constants
 import ca.etsmtl.applets.etsmobile.Utils
 import ca.etsmtl.applets.etsmobile.services.SignetsService
 import ca.etsmtl.applets.etsmobile.services.models.MonETSUser
-import ca.etsmtl.applets.etsmobile.services.models.Session
+import ca.etsmtl.applets.etsmobile.services.models.Semester
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -26,8 +26,6 @@ import kotlin.coroutines.resume
 abstract class SemesterProgressWidgetBase : AppWidgetProvider() {
     companion object {
         var semesterProgress = SemesterProgress()
-        const val MAX_PROGRESS_VARIANT_INDEX = 2
-        const val WIDGET_BUTTON_CLICK = "ca.etsmtl.applets.etsmobile.WIDGET_BUTTON_CLICK"
     }
 
     fun updateAppWidget(context: Context, appWidgetManager: AppWidgetManager, appWidgetId: Int, layoutId: Int, setViews: (RemoteViews, Context, Int) -> Unit) {
@@ -39,7 +37,7 @@ abstract class SemesterProgressWidgetBase : AppWidgetProvider() {
         }
     }
 
-    private fun getProgressInfo(context: Context) {
+    fun getProgressInfo(context: Context) {
         CoroutineScope(Dispatchers.IO).launch {
             // TODO : Check what to do when before a semester
             // TODO : Handle case when there's an error fetching the data
@@ -61,15 +59,9 @@ abstract class SemesterProgressWidgetBase : AppWidgetProvider() {
         }
     }
 
-    fun getCurrentText(context: Context, appWidgetId: Int): String {
-        val sharedPreferences = context.getSharedPreferences(Constants.SEMESTER_PROGRESS_PREFS_KEY, Context.MODE_PRIVATE)
-        val currentVariantIndex = sharedPreferences.getInt("${Constants.SEMESTER_PROGRESS_CURRENT_VARIANT_KEY}_$appWidgetId", 0)
-        return sharedPreferences.getString("${Constants.SEMESTER_PROGRESS_VARIANT_KEY}_$currentVariantIndex", "N/A") ?: "N/A"
-    }
-
     fun getPendingIntent(context: Context, appWidgetId: Int): PendingIntent {
         val intent = Intent(context, this::class.java).apply {
-            action = WIDGET_BUTTON_CLICK
+            action = Constants.WIDGET_BUTTON_CLICK
             putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId)
         }
         return PendingIntent.getBroadcast(context, appWidgetId, intent, PendingIntent.FLAG_IMMUTABLE)
@@ -119,7 +111,7 @@ abstract class SemesterProgressWidgetBase : AppWidgetProvider() {
 
     private suspend fun getSemesterProgress(): SemesterProgress{
         Log.d("SemesterProgressWidget", "Fetching semester progress")
-        val user = MonETSUser("username", "password")
+        val user = MonETSUser("username  ", "password")
         return withContext(Dispatchers.IO) {
             suspendCancellableCoroutine { continuation ->
                 SignetsService.shared.getSessions(user) { result ->
@@ -139,12 +131,12 @@ abstract class SemesterProgressWidgetBase : AppWidgetProvider() {
         }
     }
 
-    private fun getCurrentSemester(sessions: List<Session>?): Session?{
-        if (sessions.isNullOrEmpty()){
+    private fun getCurrentSemester(semesters: List<Semester>?): Semester?{
+        if (semesters.isNullOrEmpty()){
             return null
         }
 
-        for (session in sessions) {
+        for (session in semesters) {
             val startDate = Utils.parseStringAsDate(session.startDate!!)
             val endDate = Utils.parseStringAsDate(session.endDate!!)
 
@@ -154,7 +146,7 @@ abstract class SemesterProgressWidgetBase : AppWidgetProvider() {
         }
 
         // Check for upcoming semester that hasn't started yet
-        val lastSession = sessions.last()
+        val lastSession = semesters.last()
         if (doesUpcomingSemesterExist(lastSession)){
             return lastSession
         }
@@ -162,9 +154,9 @@ abstract class SemesterProgressWidgetBase : AppWidgetProvider() {
         return null
     }
 
-    private fun doesUpcomingSemesterExist(session: Session): Boolean {
+    private fun doesUpcomingSemesterExist(semester: Semester): Boolean {
         val today = Calendar.getInstance().time
-        val startDate = Utils.parseStringAsDate(session.startDate!!)
+        val startDate = Utils.parseStringAsDate(semester.startDate!!)
         return today.before(startDate)
     }
 

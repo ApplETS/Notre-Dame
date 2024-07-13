@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android"
-    android:minWidth="70dp"
-    android:maxWidth="100dp"
+    android:minWidth="80dp"
+    android:maxWidth="80dp"
     android:minHeight="40dp"
-    android:maxHeight="40dp"
-    android:resizeMode="horizontal"
+    android:maxHeight="100dp"
+    android:resizeMode="horizontal|vertical"
     android:updatePeriodMillis="1800000"
     android:initialLayout="@layout/widget_semester_progress_small"
     android:configure="ca.etsmtl.applets.etsmobile.widgets.semesterProgress.SemesterProgressWidgetConfigureActivity">

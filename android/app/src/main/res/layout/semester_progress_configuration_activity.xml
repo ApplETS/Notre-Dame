@@ -117,6 +117,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/widget_config_save_text"
+            android:textColor="@color/white"
             android:layout_below="@id/radio_group"
             android:background="@color/ets_dark_red"
             android:layout_marginTop="20dp"

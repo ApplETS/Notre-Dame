@@ -12,7 +12,10 @@ object Constants {
     const val SEMESTER_PROGRESS_ELAPSED_EN = "elapsed"
     const val SEMESTER_PROGRESS_ELAPSED_FR = "écoulés"
     const val SEMESTER_PROGRESS_REMAINING_EN = "remaining"
-    const val SEMESTER_PROGRESS_REMAINING_FR = "restants"
+    const val SEMESTER_PROGRESS_REMAINING_FR = "restant"
+
+    const val MAX_PROGRESS_VARIANT_INDEX = 2
+    const val WIDGET_BUTTON_CLICK = "ca.etsmtl.applets.etsmobile.WIDGET_BUTTON_CLICK"
 
     // URLs related to MonETS
     const val MON_ETS_API = "https://portail.etsmtl.ca/api/"
