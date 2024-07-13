@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:feature_discovery/feature_discovery.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stacked/stacked.dart';
 
 // Project imports:
@@ -201,6 +202,10 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
     final dashboard = await _settingsManager.getDashboard();
 
     //TODO: remove when all users are on 4.48.0 or more
+    final sharedPreferences = await SharedPreferences.getInstance();
+    if(sharedPreferences.containsKey("broadcastCard")) {
+      sharedPreferences.remove("broadcastCard");
+    }
     final sortedList = dashboard.entries.toList()
         ..sort((a, b) => a.value.compareTo(b.value));
     final sortedDashboard = LinkedHashMap.fromEntries(sortedList);
