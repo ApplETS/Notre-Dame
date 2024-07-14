@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android"
-    android:minWidth="80dp"
-    android:maxWidth="80dp"
-    android:minHeight="40dp"
-    android:maxHeight="100dp"
-    android:resizeMode="horizontal|vertical"
+    android:minWidth="130dp"
+    android:maxWidth="130dp"
+    android:minHeight="51dp"
+    android:maxHeight="51dp"
+    android:resizeMode="none"
     android:updatePeriodMillis="1800000"
+    android:previewLayout="@layout/widget_semester_progress_small"
     android:initialLayout="@layout/widget_semester_progress_small"
-    android:configure="ca.etsmtl.applets.etsmobile.widgets.semesterProgress.SemesterProgressWidgetConfigureActivity">
+    android:configure="ca.etsmtl.applets.etsmobile.widgets.semesterProgress.SemesterProgressWidgetConfigureActivity"
+    android:widgetFeatures="reconfigurable|configuration_optional">
 </appwidget-provider>
