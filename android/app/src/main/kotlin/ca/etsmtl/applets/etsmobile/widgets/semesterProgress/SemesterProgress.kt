@@ -43,6 +43,6 @@ class SemesterProgress {
         remainingDays = daysBetween(currentDate, endDate)
         totalDays = daysBetween(startDate, endDate)
         completedPercentage = (elapsedDays.toDouble() / totalDays.toDouble()) * 100
-        completedPercentageAsInt = completedPercentage.toInt()
+        completedPercentageAsInt = Math.round(completedPercentage).toInt()
     }
 }
