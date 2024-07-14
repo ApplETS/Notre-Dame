@@ -6,6 +6,7 @@ import 'package:ets_api_clients/models.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:notredame/features/app/analytics/remote_config_service.dart';
+import 'package:notredame/features/app/widgets/base_scaffold.dart';
 import 'package:notredame/features/ets/events/news/news-details/widgets/news_details_build_author.dart';
 import 'package:notredame/features/ets/events/news/news-details/widgets/news_details_build_content.dart';
 import 'package:notredame/features/ets/events/news/news-details/widgets/news_details_build_date.dart';
@@ -16,17 +17,15 @@ import 'package:notredame/features/ets/events/report-news/report_news_widget.dar
 import 'package:notredame/utils/utils.dart';
 import 'package:notredame/features/schedule/calendar_selection_viewmodel.dart';
 import 'package:notredame/features/schedule/widgets/calendar_selector.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:stacked/stacked.dart';
 
 // Project imports:
 import 'package:notredame/features/app/analytics/analytics_service.dart';
 import 'package:notredame/features/ets/events/news/news-details/news_details_viewmodel.dart';
-import 'package:notredame/features/ets/events/report-news/report_news_widget.dart';
-import 'package:notredame/features/schedule/calendar_selection_viewmodel.dart';
-import 'package:notredame/features/schedule/widgets/calendar_selector.dart';
+
 import 'package:notredame/utils/app_theme.dart';
 import 'package:notredame/utils/locator.dart';
-import 'package:notredame/utils/utils.dart';
 
 class NewsDetailsView extends StatefulWidget {
   final News news;

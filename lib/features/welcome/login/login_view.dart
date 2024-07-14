@@ -14,9 +14,6 @@ import 'package:notredame/features/welcome/login/login_viewmodel.dart';
 import 'package:notredame/utils/app_theme.dart';
 import 'package:notredame/utils/utils.dart';
 import 'package:notredame/features/welcome/widgets/password_text_field.dart';
-import 'package:notredame/utils/app_theme.dart';
-import 'package:notredame/utils/locator.dart';
-import 'package:notredame/utils/utils.dart';
 
 class LoginView extends StatefulWidget {
   @override

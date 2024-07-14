@@ -10,7 +10,6 @@ import 'package:stacked/stacked.dart';
 // Project imports:
 import 'package:notredame/features/app/widgets/base_scaffold.dart';
 import 'package:notredame/features/more/settings/settings_viewmodel.dart';
-import 'package:notredame/features/app/widgets/base_scaffold.dart';
 
 class SettingsView extends StatefulWidget {
   @override
