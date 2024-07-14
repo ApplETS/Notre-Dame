@@ -12,6 +12,9 @@ class QuickLinksViewModel extends FutureViewModel<List<QuickLink>> {
   /// Localization class of the application.
   final AppIntl _appIntl;
 
+  // Enable/Disable the edit state
+  bool editMode = false;
+
   /// used to get all links for ETS page
   List<QuickLink> quickLinkList = [];
 

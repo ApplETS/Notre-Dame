@@ -2,11 +2,10 @@
 import 'package:flutter/material.dart';
 
 // Package imports:
-import 'package:feature_discovery/feature_discovery.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:notredame/features/student/widgets/student_tutorial.dart';
 
 // Project imports:
-import 'package:notredame/features/app/widgets/base_scaffold.dart';
 import 'package:notredame/features/student/grades/grades_view.dart';
 import 'package:notredame/features/student/profile/profile_view.dart';
 import 'package:notredame/features/welcome/discovery/discovery_components.dart';
@@ -55,7 +54,7 @@ class _StudentViewState extends State<StudentView> {
                   tabs: List.generate(
                     tabs.length,
                     (index) => index == 1
-                        ? _buildDiscoveryFeatureDescriptionWidget(
+                        ? studentDiscoveryFeatureDescriptionWidget(
                             context, tabs, index)
                         : Tab(
                             text: tabs[index],
@@ -71,33 +70,6 @@ class _StudentViewState extends State<StudentView> {
             ),
           ),
         ),
-      ),
-    );
-  }
-
-  DescribedFeatureOverlay _buildDiscoveryFeatureDescriptionWidget(
-      BuildContext context, List<String> tabs, int index) {
-    final discovery = getDiscoveryByFeatureId(context,
-        DiscoveryGroupIds.pageStudent, DiscoveryIds.detailsStudentProfile);
-
-    return DescribedFeatureOverlay(
-      overflowMode: OverflowMode.wrapBackground,
-      contentLocation: ContentLocation.below,
-      featureId: discovery.featureId,
-      title: Text(discovery.title, textAlign: TextAlign.justify),
-      description: discovery.details,
-      backgroundColor: AppTheme.appletsDarkPurple,
-      tapTarget: Tab(
-        child: Text(
-          tabs[index],
-          style: (Theme.of(context).brightness == Brightness.dark)
-              ? const TextStyle(color: Colors.black)
-              : null,
-        ),
-      ),
-      pulseDuration: const Duration(seconds: 5),
-      child: Tab(
-        text: tabs[index],
       ),
     );
   }
