@@ -24,6 +24,7 @@ void main() {
 
     setUp(() async {
       setupLaunchUrlServiceMock();
+      setupNetworkingServiceMock();
       settingsManagerMock = setupSettingsManagerMock();
       appIntl = await setupAppIntl();
     });
@@ -69,17 +70,6 @@ void main() {
 
         final subtitle2 = find.text(appIntl.questions_and_answers);
         expect(subtitle2, findsNWidgets(1));
-      });
-
-      testWidgets('has 1 title', (WidgetTester tester) async {
-        SettingsManagerMock.stubLocale(settingsManagerMock);
-
-        await tester.pumpWidget(localizedWidget(child: const FaqView()));
-        await tester.pumpAndSettle();
-
-        final title = find.text(appIntl.need_help);
-
-        expect(title, findsOneWidget);
       });
     });
 

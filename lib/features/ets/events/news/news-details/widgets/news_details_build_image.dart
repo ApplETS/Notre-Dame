@@ -1,10 +1,10 @@
 // Flutter imports:
 import 'package:flutter/material.dart';
+import 'package:notredame/features/ets/events/api-client/models/news.dart';
 
 // Package imports:
 import 'package:shimmer/shimmer.dart';
 import 'package:notredame/utils/app_theme.dart';
-import 'package:ets_api_clients/models.dart';
 
 // Project imports:
 

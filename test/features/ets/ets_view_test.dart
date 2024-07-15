@@ -1,11 +1,12 @@
 // Dart imports:
+// Dart imports:
 import 'dart:io';
 
+// Flutter imports:
 // Flutter imports:
 import 'package:flutter/material.dart';
 
 // Package imports:
-import 'package:ets_api_clients/models.dart';
 import 'package:feature_discovery/feature_discovery.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -18,6 +19,10 @@ import 'package:notredame/features/app/repository/course_repository.dart';
 import 'package:notredame/features/app/repository/news_repository.dart';
 import 'package:notredame/features/app/widgets/base_scaffold.dart';
 import 'package:notredame/features/ets/ets_view.dart';
+import 'package:notredame/features/ets/events/api-client/models/news.dart';
+import 'package:notredame/features/ets/events/api-client/models/news_tags.dart';
+import 'package:notredame/features/ets/events/api-client/models/organizer.dart';
+import 'package:notredame/features/ets/events/api-client/models/paginated_news.dart';
 import 'package:notredame/features/more/settings/settings_manager.dart';
 import '../../common/helpers.dart';
 import '../app/analytics/remote_config_service_mock.dart';

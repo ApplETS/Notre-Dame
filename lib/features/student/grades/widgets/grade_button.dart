@@ -2,14 +2,15 @@
 import 'package:flutter/material.dart';
 
 // Package imports:
-import 'package:ets_api_clients/models.dart';
 import 'package:feature_discovery/feature_discovery.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 
 // Project imports:
 import 'package:notredame/constants/preferences_flags.dart';
 import 'package:notredame/features/app/navigation/navigation_service.dart';
 import 'package:notredame/features/app/navigation/router_paths.dart';
+import 'package:notredame/features/app/signets-api/models/course.dart';
 import 'package:notredame/features/more/settings/settings_manager.dart';
 import 'package:notredame/features/welcome/discovery/discovery_components.dart';
 import 'package:notredame/features/welcome/discovery/models/discovery_ids.dart';
@@ -89,12 +90,14 @@ class GradeButton extends StatelessWidget {
                             padding: const EdgeInsets.all(4.0),
                             child: FittedBox(
                               fit: BoxFit.fitWidth,
-                              child: Text(
-                                course.acronym,
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .bodyMedium!
-                                    .copyWith(color: Colors.white),
+                              child: Skeleton.keep(
+                                child: Text(
+                                  course.acronym,
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .bodyMedium!
+                                      .copyWith(color: Colors.white),
+                                ),
                               ),
                             ),
                           ),

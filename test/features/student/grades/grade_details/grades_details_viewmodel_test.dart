@@ -1,11 +1,13 @@
 // Package imports:
-import 'package:ets_api_clients/models.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 
 // Project imports:
 import 'package:notredame/features/app/repository/course_repository.dart';
+import 'package:notredame/features/app/signets-api/models/course.dart';
+import 'package:notredame/features/app/signets-api/models/course_evaluation.dart';
+import 'package:notredame/features/app/signets-api/models/course_summary.dart';
 import 'package:notredame/features/more/settings/settings_manager.dart';
 import 'package:notredame/features/student/grades/grade_details/grades_details_viewmodel.dart';
 import '../../../../common/helpers.dart';

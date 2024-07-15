@@ -1,6 +1,7 @@
 // Package imports:
-import 'package:ets_api_clients/clients.dart';
-import 'package:ets_api_clients/models.dart';
+
+import 'package:notredame/features/ets/events/api-client/hello_api_client.dart';
+import 'package:notredame/features/ets/events/api-client/models/report.dart';
 import 'package:stacked/stacked.dart';
 
 // Project imports:

@@ -5,9 +5,9 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 
 // Package imports:
-import 'package:ets_api_clients/models.dart';
 import 'package:feature_discovery/feature_discovery.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:notredame/features/app/signets-api/models/course_activity.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:table_calendar/table_calendar.dart';
 
@@ -295,7 +295,7 @@ void main() {
               reason: "The settings page should not be open");
 
           // Tap on the settings button
-          await tester.tap(find.byIcon(Icons.settings));
+          await tester.tap(find.byIcon(Icons.settings_outlined));
           // Reload view
           await tester.pumpAndSettle();
 

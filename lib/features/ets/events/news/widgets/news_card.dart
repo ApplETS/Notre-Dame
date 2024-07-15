@@ -2,8 +2,9 @@
 import 'package:flutter/material.dart';
 
 // Package imports:
-import 'package:ets_api_clients/models.dart';
+
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:notredame/features/ets/events/api-client/models/news.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:timeago/timeago.dart' as timeago;
 

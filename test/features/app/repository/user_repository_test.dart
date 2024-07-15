@@ -5,10 +5,6 @@ import 'dart:convert';
 import 'package:flutter/services.dart';
 
 // Package imports:
-import 'package:ets_api_clients/clients.dart';
-import 'package:ets_api_clients/exceptions.dart';
-import 'package:ets_api_clients/models.dart';
-import 'package:ets_api_clients/testing.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
@@ -16,9 +12,18 @@ import 'package:mockito/mockito.dart';
 // Project imports:
 import 'package:notredame/features/app/analytics/analytics_service.dart';
 import 'package:notredame/features/app/integration/networking_service.dart';
+import 'package:notredame/features/app/monets_api/models/mon_ets_user.dart';
+import 'package:notredame/features/app/monets_api/monets_api_client.dart';
 import 'package:notredame/features/app/repository/user_repository.dart';
+import 'package:notredame/features/app/signets-api/models/profile_student.dart';
+import 'package:notredame/features/app/signets-api/models/program.dart';
+import 'package:notredame/features/app/signets-api/signets_api_client.dart';
 import 'package:notredame/features/app/storage/cache_manager.dart';
+import 'package:notredame/utils/api_exception.dart';
+import 'package:notredame/utils/http_exception.dart';
 import '../../../common/helpers.dart';
+import '../../../mock/services/mon_ets_api_mock.dart';
+import '../../../mock/services/signets_api_mock.dart';
 import '../analytics/analytics_service_mock.dart';
 import '../integration/mocks/networking_service_mock.dart';
 import '../storage/mocks/cache_manager_mock.dart';

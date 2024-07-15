@@ -5,10 +5,10 @@ import 'package:flutter/services.dart';
 
 // Package imports:
 import 'package:calendar_view/calendar_view.dart' as calendar_view;
-import 'package:ets_api_clients/models.dart';
 import 'package:feature_discovery/feature_discovery.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:intl/intl.dart';
+import 'package:notredame/features/app/signets-api/models/course_activity.dart';
 import 'package:stacked/stacked.dart';
 import 'package:table_calendar/table_calendar.dart';
 
@@ -517,7 +517,7 @@ class _ScheduleViewState extends State<ScheduleView>
         if ((model.settings[PreferencesFlag.scheduleShowTodayBtn] as bool) ==
             true)
           IconButton(
-              icon: const Icon(Icons.today),
+              icon: const Icon(Icons.today_outlined),
               onPressed: () => setState(() {
                     if (!(model.settings[PreferencesFlag.scheduleListView]
                         as bool)) {
@@ -535,7 +535,7 @@ class _ScheduleViewState extends State<ScheduleView>
                   })),
         _buildDiscoveryFeatureDescriptionWidget(
           context,
-          Icons.settings,
+          Icons.settings_outlined,
           model,
         ),
       ];
@@ -559,7 +559,7 @@ class _ScheduleViewState extends State<ScheduleView>
       pulseDuration: const Duration(seconds: 5),
       onComplete: () => model.discoveryCompleted(),
       child: IconButton(
-        icon: const Icon(Icons.settings),
+        icon: const Icon(Icons.settings_outlined),
         onPressed: () async {
           _analyticsService.logEvent(tag, "Settings clicked");
           await showModalBottomSheet(

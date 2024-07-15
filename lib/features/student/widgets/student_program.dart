@@ -5,10 +5,10 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 
 // Package imports:
-import 'package:ets_api_clients/models.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 // Project imports:
+import 'package:notredame/features/app/signets-api/models/program.dart';
 import 'package:notredame/utils/app_theme.dart';
 
 class StudentProgram extends StatefulWidget {

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:notredame/features/more/contributors/widgets/contributor_title_widget.dart';
+import 'package:notredame/utils/utils.dart';
 import 'package:stacked/stacked.dart';
 import 'package:github/github.dart';
 import 'package:notredame/features/more/contributors/contributors_viewmodel.dart';
@@ -13,6 +14,7 @@ class ContributorsView extends StatelessWidget {
         viewModelBuilder: () => ContributorsViewModel(),
         builder: (context, model, child) {
           return BaseScaffold(
+            safeArea: false,
             appBar: AppBar(
               title: Text(AppIntl.of(context)!.more_contributors),
             ),
@@ -35,4 +37,19 @@ class ContributorsView extends StatelessWidget {
           );
         },
       );
+
+  Widget contributorsList(List<Contributor> contributors) {
+    return ListView.builder(
+      padding: const EdgeInsets.only(bottom: 24),
+      itemCount: contributors.length,
+      itemBuilder: (context, index) => ListTile(
+        title: Text(contributors[index].login ?? ''),
+        leading: CircleAvatar(
+            backgroundColor: Colors.grey,
+            backgroundImage: NetworkImage(contributors[index].avatarUrl ?? '')),
+        onTap: () => Utils.launchURL(
+            contributors[index].htmlUrl ?? '', AppIntl.of(context)!),
+      ),
+    );
+  }
 }

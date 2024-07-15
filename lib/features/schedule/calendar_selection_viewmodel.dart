@@ -6,12 +6,12 @@ import 'package:flutter/material.dart';
 
 // Package imports:
 import 'package:device_calendar/device_calendar.dart';
-import 'package:ets_api_clients/models.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 // Project imports:
 import 'package:notredame/features/app/repository/course_repository.dart';
+import 'package:notredame/features/ets/events/api-client/models/news.dart';
 import 'package:notredame/utils/calendar_utils.dart';
 import 'package:notredame/utils/locator.dart';
 

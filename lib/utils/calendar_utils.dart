@@ -1,9 +1,13 @@
 // Dart imports:
+// Dart imports:
 import 'dart:collection';
 
 // Package imports:
+
+// Package imports:
 import 'package:device_calendar/device_calendar.dart';
-import 'package:ets_api_clients/models.dart';
+import 'package:notredame/features/app/signets-api/models/course_activity.dart';
+import 'package:notredame/features/ets/events/api-client/models/news.dart';
 
 mixin CalendarUtils {
   static Future<bool> checkPermissions() async {
@@ -38,9 +42,13 @@ mixin CalendarUtils {
       DeviceCalendarPlugin();
 
   static Future<UnmodifiableListView<Calendar>> get nativeCalendars async {
-    final Result<UnmodifiableListView<Calendar>> calendarFetchResult =
-        await DeviceCalendarPlugin().retrieveCalendars();
-    return calendarFetchResult.data!;
+    if (await checkPermissions()) {
+      final Result<UnmodifiableListView<Calendar>> calendarFetchResult =
+          await DeviceCalendarPlugin().retrieveCalendars();
+      return calendarFetchResult.data!;
+    }
+    // User denied calendar access
+    throw Error();
   }
 
   /// Fetches a calendar by name from the native calendar app

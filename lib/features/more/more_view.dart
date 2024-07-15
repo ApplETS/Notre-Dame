@@ -64,7 +64,7 @@ class _MoreViewState extends State<MoreView> {
                 if (model.privacyPolicyToggle)
                   ListTile(
                       title: Text(AppIntl.of(context)!.privacy_policy),
-                      leading: const Icon(Icons.privacy_tip),
+                      leading: const Icon(Icons.privacy_tip_outlined),
                       onTap: () {
                         _analyticsService.logEvent(
                             tag, "Confidentiality clicked");
@@ -89,7 +89,7 @@ class _MoreViewState extends State<MoreView> {
                     }),
                 ListTile(
                   title: Text(AppIntl.of(context)!.more_log_out),
-                  leading: const Icon(Icons.logout),
+                  leading: const Icon(Icons.logout_outlined),
                   onTap: () => Navigator.of(context).push(
                     PageRouteBuilder(
                       pageBuilder: (context, _, __) => AlertDialog(

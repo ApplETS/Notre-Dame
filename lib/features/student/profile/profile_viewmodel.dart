@@ -1,7 +1,8 @@
 // Package imports:
-import 'package:ets_api_clients/models.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:notredame/features/app/signets-api/models/profile_student.dart';
+import 'package:notredame/features/app/signets-api/models/program.dart';
 import 'package:stacked/stacked.dart';
 
 // Project imports:

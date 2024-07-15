@@ -1,5 +1,4 @@
 // Package imports:
-import 'package:ets_api_clients/models.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:logger/logger.dart';
@@ -12,6 +11,9 @@ import 'package:notredame/features/app/navigation/navigation_service.dart';
 import 'package:notredame/features/app/navigation/router_paths.dart';
 import 'package:notredame/features/app/repository/course_repository.dart';
 import 'package:notredame/features/app/repository/user_repository.dart';
+import 'package:notredame/features/app/signets-api/models/course.dart';
+import 'package:notredame/features/app/signets-api/models/course_activity.dart';
+import 'package:notredame/features/app/signets-api/models/session.dart';
 import 'package:notredame/features/app/storage/cache_manager.dart';
 import 'package:notredame/features/app/storage/preferences_service.dart';
 import 'package:notredame/features/more/more_viewmodel.dart';

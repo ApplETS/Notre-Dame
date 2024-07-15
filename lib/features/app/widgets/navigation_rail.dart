@@ -94,23 +94,23 @@ class _NavRailState extends State<NavRail> {
     return [
       NavigationRailDestination(
           icon: _buildDiscoveryFeatureDescriptionWidget(
-              context, RouterPaths.dashboard, Icons.dashboard),
+              context, RouterPaths.dashboard, Icons.dashboard_outlined),
           label: Text(AppIntl.of(context)!.title_dashboard)),
       NavigationRailDestination(
           icon: _buildDiscoveryFeatureDescriptionWidget(
-              context, RouterPaths.schedule, Icons.schedule),
+              context, RouterPaths.schedule, Icons.schedule_outlined),
           label: Text(AppIntl.of(context)!.title_schedule)),
       NavigationRailDestination(
           icon: _buildDiscoveryFeatureDescriptionWidget(
-              context, RouterPaths.student, Icons.school),
+              context, RouterPaths.student, Icons.school_outlined),
           label: Text(AppIntl.of(context)!.title_student)),
       NavigationRailDestination(
           icon: _buildDiscoveryFeatureDescriptionWidget(
-              context, RouterPaths.ets, Icons.account_balance),
+              context, RouterPaths.ets, Icons.account_balance_outlined),
           label: Text(AppIntl.of(context)!.title_ets)),
       NavigationRailDestination(
           icon: _buildDiscoveryFeatureDescriptionWidget(
-              context, RouterPaths.more, Icons.dehaze),
+              context, RouterPaths.more, Icons.menu_outlined),
           label: Text(AppIntl.of(context)!.title_more)),
     ];
   }

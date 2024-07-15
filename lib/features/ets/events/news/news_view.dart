@@ -2,13 +2,13 @@
 import 'package:flutter/material.dart';
 
 // Package imports:
-import 'package:ets_api_clients/models.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:notredame/utils/app_theme.dart';
 import 'package:stacked/stacked.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
 // Project imports:
+import 'package:notredame/features/ets/events/api-client/models/news.dart';
 import 'package:notredame/features/ets/events/news/news_viewmodel.dart';
 import 'package:notredame/features/ets/events/news/widgets/news_card.dart';
 import 'package:notredame/features/ets/events/news/widgets/news_card_skeleton.dart';

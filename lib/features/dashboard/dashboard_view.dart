@@ -4,32 +4,34 @@ import 'package:flutter/scheduler.dart';
 
 // Package imports:
 import 'package:auto_size_text/auto_size_text.dart';
-import 'package:ets_api_clients/models.dart';
 import 'package:feature_discovery/feature_discovery.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:notredame/features/app/signets-api/models/course.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 import 'package:stacked/stacked.dart';
 
 // Project imports:
-import 'package:notredame/features/welcome/discovery/models/discovery_ids.dart';
 import 'package:notredame/constants/preferences_flags.dart';
-import 'package:notredame/features/dashboard/progress_bar_text_options.dart';
-import 'package:notredame/features/app/navigation/router_paths.dart';
 import 'package:notredame/constants/update_code.dart';
 import 'package:notredame/constants/urls.dart';
 import 'package:notredame/features/app/analytics/analytics_service.dart';
 import 'package:notredame/features/app/navigation/navigation_service.dart';
-import 'package:notredame/utils/utils.dart';
-import 'package:notredame/features/dashboard/dashboard_viewmodel.dart';
-import 'package:notredame/utils/locator.dart';
-import 'package:notredame/utils/app_theme.dart';
-import 'package:notredame/features/welcome/discovery/discovery_components.dart';
-import 'package:notredame/utils/loading.dart';
+import 'package:notredame/features/app/navigation/router_paths.dart';
+import 'package:notredame/features/app/signets-api/models/course_activity.dart';
 import 'package:notredame/features/app/widgets/base_scaffold.dart';
-import 'package:notredame/features/dashboard/widgets/course_activity_tile.dart';
 import 'package:notredame/features/app/widgets/dismissible_card.dart';
-import 'package:notredame/features/student/grades/widgets/grade_button.dart';
+import 'package:notredame/features/dashboard/dashboard_viewmodel.dart';
+import 'package:notredame/features/dashboard/progress_bar_text_options.dart';
+import 'package:notredame/features/dashboard/widgets/course_activity_tile.dart';
 import 'package:notredame/features/dashboard/widgets/haptics_container.dart';
+import 'package:notredame/features/student/grades/widgets/grade_button.dart';
+import 'package:notredame/features/welcome/discovery/discovery_components.dart';
+import 'package:notredame/features/welcome/discovery/models/discovery_ids.dart';
+import 'package:notredame/utils/app_theme.dart';
+import 'package:notredame/utils/loading.dart';
+import 'package:notredame/utils/locator.dart';
+import 'package:notredame/utils/utils.dart';
 
 class DashboardView extends StatefulWidget {
   final UpdateCode updateCode;
@@ -80,7 +82,7 @@ class _DashboardViewState extends State<DashboardView>
                         child: ReorderableListView(
                           onReorder: (oldIndex, newIndex) =>
                               onReorder(model, oldIndex, newIndex),
-                          padding: const EdgeInsets.fromLTRB(0, 4, 0, 8),
+                          padding: const EdgeInsets.fromLTRB(0, 4, 0, 24),
                           children: _buildCards(model),
                           proxyDecorator: (child, _, __) {
                             return HapticsContainer(child: child);
@@ -213,7 +215,6 @@ class _DashboardViewState extends State<DashboardView>
   Widget _buildProgressBarCard(
           DashboardViewModel model, PreferencesFlag flag) =>
       DismissibleCard(
-        isBusy: model.busy(model.progress),
         key: UniqueKey(),
         onDismissed: (DismissDirection direction) {
           dismissCard(model, flag);
@@ -226,47 +227,51 @@ class _DashboardViewState extends State<DashboardView>
                 child: Text(AppIntl.of(context)!.progress_bar_title,
                     style: Theme.of(context).textTheme.titleLarge),
               )),
-          if (model.progress >= 0.0)
-            Stack(children: [
-              Container(
-                padding: const EdgeInsets.fromLTRB(17, 10, 15, 20),
-                child: ClipRRect(
-                  borderRadius: const BorderRadius.all(Radius.circular(10)),
-                  child: GestureDetector(
-                    onTap: () => setState(
-                      () => setState(() {
-                        model.changeProgressBarText();
-                        setText(model);
-                      }),
-                    ),
-                    child: LinearProgressIndicator(
-                      value: model.progress,
-                      minHeight: 30,
-                      valueColor: const AlwaysStoppedAnimation<Color>(
-                          AppTheme.gradeGoodMax),
-                      backgroundColor: AppTheme.etsDarkGrey,
+          if (model.busy(model.progress) || model.progress >= 0.0)
+            Skeletonizer(
+              enabled: model.busy(model.progress),
+              ignoreContainers: true,
+              child: Stack(children: [
+                Container(
+                  padding: const EdgeInsets.fromLTRB(17, 10, 15, 20),
+                  child: ClipRRect(
+                    borderRadius: const BorderRadius.all(Radius.circular(10)),
+                    child: GestureDetector(
+                      onTap: () => setState(
+                        () => setState(() {
+                          model.changeProgressBarText();
+                          setText(model);
+                        }),
+                      ),
+                      child: LinearProgressIndicator(
+                        value: model.progress,
+                        minHeight: 30,
+                        valueColor: const AlwaysStoppedAnimation<Color>(
+                            AppTheme.gradeGoodMax),
+                        backgroundColor: AppTheme.etsDarkGrey,
+                      ),
                     ),
                   ),
                 ),
-              ),
-              GestureDetector(
-                onTap: () => setState(() {
-                  model.changeProgressBarText();
-                  setText(model);
-                }),
-                child: Container(
-                  padding: const EdgeInsets.only(top: 16),
-                  child: Center(
-                    child: progressBarText ??
-                        Text(
-                          AppIntl.of(context)!.progress_bar_message(
-                              model.sessionDays[0], model.sessionDays[1]),
-                          style: const TextStyle(color: Colors.white),
-                        ),
+                GestureDetector(
+                  onTap: () => setState(() {
+                    model.changeProgressBarText();
+                    setText(model);
+                  }),
+                  child: Container(
+                    padding: const EdgeInsets.only(top: 16),
+                    child: Center(
+                      child: progressBarText ??
+                          Text(
+                            AppIntl.of(context)!.progress_bar_message(
+                                model.sessionDays[0], model.sessionDays[1]),
+                            style: const TextStyle(color: Colors.white),
+                          ),
+                    ),
                   ),
                 ),
-              ),
-            ])
+              ]),
+            )
           else
             Container(
               padding: const EdgeInsets.all(16),
@@ -307,11 +312,36 @@ class _DashboardViewState extends State<DashboardView>
   Widget _buildScheduleCard(DashboardViewModel model, PreferencesFlag flag) {
     var title = AppIntl.of(context)!.title_schedule;
     if (model.todayDateEvents.isEmpty && model.tomorrowDateEvents.isNotEmpty) {
-      title = title + AppIntl.of(context)!.card_schedule_tomorrow;
+      title += AppIntl.of(context)!.card_schedule_tomorrow;
     }
+    final bool isLoading = model.busy(model.todayDateEvents) ||
+        model.busy(model.tomorrowDateEvents);
+
+    late List<CourseActivity>? courseActivities;
+    if (isLoading) {
+      // User will not see this.
+      // It serves the purpuse of creating text in the skeleton and make it look closer to the real schedule.
+      courseActivities = [
+        CourseActivity(
+            courseGroup: "APP375-99",
+            courseName: "Développement mobile (ÉTSMobile)",
+            activityName: '',
+            activityDescription: '5 à 7',
+            activityLocation: '100 Génies',
+            startDateTime: DateTime.now(),
+            endDateTime: DateTime.now())
+      ];
+    } else if (model.todayDateEvents.isEmpty) {
+      if (model.tomorrowDateEvents.isEmpty) {
+        courseActivities = null;
+      } else {
+        courseActivities = model.tomorrowDateEvents;
+      }
+    } else {
+      courseActivities = model.todayDateEvents;
+    }
+
     return DismissibleCard(
-      isBusy: model.busy(model.todayDateEvents) ||
-          model.busy(model.tomorrowDateEvents),
       onDismissed: (DismissDirection direction) {
         dismissCard(model, flag);
       },
@@ -330,16 +360,14 @@ class _DashboardViewState extends State<DashboardView>
                       style: Theme.of(context).textTheme.titleLarge),
                 ),
               )),
-          if (model.todayDateEvents.isEmpty)
-            if (model.tomorrowDateEvents.isEmpty)
-              SizedBox(
-                  height: 100,
-                  child: Center(
-                      child: Text(AppIntl.of(context)!.schedule_no_event)))
-            else
-              _buildEventList(model.tomorrowDateEvents)
+          if (courseActivities != null)
+            Skeletonizer(
+                enabled: isLoading, child: _buildEventList(courseActivities))
           else
-            _buildEventList(model.todayDateEvents)
+            SizedBox(
+                height: 100,
+                child:
+                    Center(child: Text(AppIntl.of(context)!.schedule_no_event)))
         ]),
       ),
     );
@@ -359,43 +387,65 @@ class _DashboardViewState extends State<DashboardView>
         itemCount: events.length);
   }
 
-  Widget _buildGradesCards(DashboardViewModel model, PreferencesFlag flag) =>
-      DismissibleCard(
-        key: UniqueKey(),
-        onDismissed: (DismissDirection direction) {
-          dismissCard(model, flag);
-        },
-        isBusy: model.busy(model.courses),
-        child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Align(
-                alignment: Alignment.centerLeft,
-                child: Container(
-                  padding: const EdgeInsets.fromLTRB(17, 15, 0, 0),
-                  child: GestureDetector(
-                    onTap: () => _navigationService
-                        .pushNamedAndRemoveUntil(RouterPaths.student),
-                    child: Text(AppIntl.of(context)!.grades_title,
-                        style: Theme.of(context).textTheme.titleLarge),
-                  ),
+  Widget _buildGradesCards(DashboardViewModel model, PreferencesFlag flag) {
+    final bool loaded = !model.busy(model.courses);
+    late List<Course> courses = model.courses;
+
+    // When loading courses, there are 2 stages. First, the courses of user are fetched, then, grades are fetched.
+    // During that first stage, putting empty courses with no title allows for a smoother transition.
+    if (courses.isEmpty && !loaded) {
+      final Course skeletonCourse = Course(
+          acronym: " ",
+          title: "",
+          group: "",
+          session: "",
+          programCode: "",
+          numberOfCredits: 0);
+      courses = [
+        skeletonCourse,
+        skeletonCourse,
+        skeletonCourse,
+        skeletonCourse
+      ];
+    }
+
+    return DismissibleCard(
+      key: UniqueKey(),
+      onDismissed: (DismissDirection direction) {
+        dismissCard(model, flag);
+      },
+      child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Align(
+              alignment: Alignment.centerLeft,
+              child: Container(
+                padding: const EdgeInsets.fromLTRB(17, 15, 0, 0),
+                child: GestureDetector(
+                  onTap: () => _navigationService
+                      .pushNamedAndRemoveUntil(RouterPaths.student),
+                  child: Text(AppIntl.of(context)!.grades_title,
+                      style: Theme.of(context).textTheme.titleLarge),
                 ),
               ),
-              if (model.courses.isEmpty)
-                SizedBox(
-                  height: 100,
-                  child: Center(
-                      child: Text(AppIntl.of(context)!
-                          .grades_msg_no_grades
-                          .split("\n")
-                          .first)),
-                )
-              else
-                Container(
+            ),
+            if (model.courses.isEmpty && loaded)
+              SizedBox(
+                height: 100,
+                child: Center(
+                    child: Text(AppIntl.of(context)!
+                        .grades_msg_no_grades
+                        .split("\n")
+                        .first)),
+              )
+            else
+              Skeletonizer(
+                enabled: !loaded,
+                child: Container(
                   padding: const EdgeInsets.fromLTRB(17, 10, 15, 10),
                   child: Wrap(
-                    children: model.courses
+                    children: courses
                         .map((course) => GradeButton(course,
                             color:
                                 Theme.of(context).brightness == Brightness.light
@@ -403,9 +453,11 @@ class _DashboardViewState extends State<DashboardView>
                                     : AppTheme.darkThemeBackground))
                         .toList(),
                   ),
-                )
-            ]),
-      );
+                ),
+              )
+          ]),
+    );
+  }
 
   Widget _buildMessageBroadcastCard(
       DashboardViewModel model, PreferencesFlag flag) {

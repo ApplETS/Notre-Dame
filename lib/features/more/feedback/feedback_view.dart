@@ -10,10 +10,10 @@ import 'package:stacked/stacked.dart';
 
 // Project imports:
 import 'package:notredame/features/more/feedback/feedback_type.dart';
-import 'package:notredame/utils/utils.dart';
 import 'package:notredame/features/more/feedback/feedback_viewmodel.dart';
 import 'package:notredame/utils/app_theme.dart';
 import 'package:notredame/utils/loading.dart';
+import 'package:notredame/utils/utils.dart';
 
 class FeedbackView extends StatefulWidget {
   @override

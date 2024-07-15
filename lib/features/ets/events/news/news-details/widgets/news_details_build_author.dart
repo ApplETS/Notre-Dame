@@ -4,12 +4,12 @@ import 'package:flutter/material.dart';
 // Package imports:
 import 'package:notredame/features/app/navigation/navigation_service.dart';
 import 'package:notredame/features/app/navigation/router_paths.dart';
+import 'package:notredame/features/ets/events/api-client/models/activity_area.dart';
 
 // Project imports:
 import 'package:notredame/utils/app_theme.dart';
 import 'package:notredame/utils/locator.dart';
 import 'package:notredame/utils/utils.dart';
-import 'package:ets_api_clients/models.dart';
 
 Widget newsAuthorSection(String avatar, String author, ActivityArea? activity,
     String authorId, BuildContext context) {

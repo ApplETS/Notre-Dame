@@ -2,11 +2,11 @@
 import 'package:flutter/material.dart';
 
 // Package imports:
-import 'package:ets_api_clients/models.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:notredame/features/app/analytics/remote_config_service.dart';
 import 'package:notredame/features/app/widgets/base_scaffold.dart';
+import 'package:notredame/features/ets/events/api-client/models/news.dart';
 import 'package:notredame/features/ets/events/news/news-details/widgets/news_details_build_author.dart';
 import 'package:notredame/features/ets/events/news/news-details/widgets/news_details_build_content.dart';
 import 'package:notredame/features/ets/events/news/news-details/widgets/news_details_build_date.dart';

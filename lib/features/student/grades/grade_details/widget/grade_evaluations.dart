@@ -1,5 +1,5 @@
-import 'package:ets_api_clients/models.dart';
 import 'package:flutter/material.dart';
+import 'package:notredame/features/app/signets-api/models/course_evaluation.dart';
 import 'package:notredame/features/student/grades/grade_details/grades_details_viewmodel.dart';
 import 'package:notredame/features/student/grades/grade_details/widget/course_grade_summary.dart';
 import 'package:notredame/features/student/grades/grade_details/widget/grade_summary.dart';

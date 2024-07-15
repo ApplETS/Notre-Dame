@@ -51,12 +51,12 @@ void main() {
           localizedWidget(child: FeatureDiscovery(child: BottomBar())));
       await tester.pumpAndSettle();
 
-      await tester.tap(find.byIcon(Icons.school));
-      await tester.tap(find.byIcon(Icons.school));
-      await tester.tap(find.byIcon(Icons.school));
-      await tester.tap(find.byIcon(Icons.school));
-      await tester.tap(find.byIcon(Icons.school));
-      await tester.tap(find.byIcon(Icons.school));
+      await tester.tap(find.byIcon(Icons.school_outlined));
+      await tester.tap(find.byIcon(Icons.school_outlined));
+      await tester.tap(find.byIcon(Icons.school_outlined));
+      await tester.tap(find.byIcon(Icons.school_outlined));
+      await tester.tap(find.byIcon(Icons.school_outlined));
+      await tester.tap(find.byIcon(Icons.school_outlined));
 
       verify(navigationServiceMock.pushNamedAndRemoveUntil(RouterPaths.student))
           .called(1);
@@ -68,8 +68,8 @@ void main() {
             localizedWidget(child: FeatureDiscovery(child: BottomBar())));
         await tester.pumpAndSettle();
 
-        await tester.tap(find.byIcon(Icons.schedule));
-        await tester.tap(find.byIcon(Icons.dashboard));
+        await tester.tap(find.byIcon(Icons.schedule_outlined));
+        await tester.tap(find.byIcon(Icons.dashboard_outlined));
 
         verify(navigationServiceMock
             .pushNamedAndRemoveUntil(RouterPaths.dashboard));
@@ -80,7 +80,7 @@ void main() {
             localizedWidget(child: FeatureDiscovery(child: BottomBar())));
         await tester.pumpAndSettle();
 
-        await tester.tap(find.byIcon(Icons.schedule));
+        await tester.tap(find.byIcon(Icons.schedule_outlined));
 
         verify(navigationServiceMock
             .pushNamedAndRemoveUntil(RouterPaths.schedule));
@@ -91,7 +91,7 @@ void main() {
             localizedWidget(child: FeatureDiscovery(child: BottomBar())));
         await tester.pumpAndSettle();
 
-        await tester.tap(find.byIcon(Icons.school));
+        await tester.tap(find.byIcon(Icons.school_outlined));
 
         verify(
             navigationServiceMock.pushNamedAndRemoveUntil(RouterPaths.student));
@@ -102,7 +102,7 @@ void main() {
             localizedWidget(child: FeatureDiscovery(child: BottomBar())));
         await tester.pumpAndSettle();
 
-        await tester.tap(find.byIcon(Icons.account_balance));
+        await tester.tap(find.byIcon(Icons.account_balance_outlined));
 
         verify(navigationServiceMock.pushNamedAndRemoveUntil(RouterPaths.ets));
       });
@@ -112,7 +112,7 @@ void main() {
             localizedWidget(child: FeatureDiscovery(child: BottomBar())));
         await tester.pumpAndSettle();
 
-        await tester.tap(find.byIcon(Icons.dehaze));
+        await tester.tap(find.byIcon(Icons.menu_outlined));
 
         verify(navigationServiceMock.pushNamedAndRemoveUntil(RouterPaths.more));
       });

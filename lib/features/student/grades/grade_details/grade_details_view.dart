@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 
 // Package imports:
-import 'package:ets_api_clients/models.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:notredame/features/app/signets-api/models/course.dart';
 import 'package:notredame/features/student/grades/grade_details/widget/class_info.dart';
 import 'package:notredame/features/student/grades/grade_details/widget/grade_evaluations.dart';
 import 'package:stacked/stacked.dart';
