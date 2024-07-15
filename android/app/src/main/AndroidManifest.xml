@@ -61,6 +61,7 @@
             android:value="2" />
         <receiver
             android:name=".widgets.semesterProgress.SemesterProgressWidgetLarge"
+            android:label="Semester Progress - Large"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
@@ -71,6 +72,7 @@
         </receiver>
         <receiver
             android:name=".widgets.semesterProgress.SemesterProgressWidgetSmall"
+            android:label="Semester Progress - Small"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
