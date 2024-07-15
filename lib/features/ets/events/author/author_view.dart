@@ -4,16 +4,16 @@ import 'package:flutter/material.dart';
 // Package imports:
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
+import 'package:stacked/stacked.dart';
+
+// Project imports:
+import 'package:notredame/features/app/widgets/base_scaffold.dart';
 import 'package:notredame/features/ets/events/api-client/models/news.dart';
+import 'package:notredame/features/ets/events/author/author_viewmodel.dart';
 import 'package:notredame/features/ets/events/author/widget/author_info_widget.dart';
 import 'package:notredame/features/ets/events/author/widget/avatar_widget.dart';
 import 'package:notredame/features/ets/events/author/widget/back_button_widget.dart';
 import 'package:notredame/features/ets/events/author/widget/no_more_news_card_widget.dart';
-import 'package:stacked/stacked.dart';
-
-// Project imports:
-import 'package:notredame/features/ets/events/author/author_viewmodel.dart';
-import 'package:notredame/features/app/widgets/base_scaffold.dart';
 import 'package:notredame/features/ets/events/news/widgets/news_card.dart';
 import 'package:notredame/features/ets/events/news/widgets/news_card_skeleton.dart';
 

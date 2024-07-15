@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 // Package imports:
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 import 'package:notredame/features/more/about/widget/easter_egg_icon.dart'; // Importez le widget extrait
 import 'package:notredame/features/more/about/widget/social_icons_row.dart'; // Importez le widget extrait
 

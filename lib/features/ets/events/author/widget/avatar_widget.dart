@@ -1,9 +1,14 @@
+// Flutter imports:
 import 'package:flutter/material.dart';
+
+// Package imports:
+import 'package:stacked/stacked.dart';
+
+// Project imports:
 import 'package:notredame/features/ets/events/author/author_info_skeleton.dart';
 import 'package:notredame/features/ets/events/author/author_viewmodel.dart';
-import 'package:notredame/utils/utils.dart';
 import 'package:notredame/utils/app_theme.dart';
-import 'package:stacked/stacked.dart';
+import 'package:notredame/utils/utils.dart';
 
 class AvatarWidget extends ViewModelWidget<AuthorViewModel> {
   const AvatarWidget({super.key});

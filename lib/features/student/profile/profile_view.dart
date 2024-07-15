@@ -3,16 +3,16 @@ import 'package:flutter/material.dart';
 
 // Package imports:
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:notredame/features/student/profile/widgets/profile_balance_card.dart';
-import 'package:notredame/features/student/profile/widgets/profile_infos_card.dart';
-import 'package:notredame/features/student/profile/widgets/profile_main_infos_card.dart';
-import 'package:notredame/features/student/profile/widgets/profile_current_program_tile.dart';
-import 'package:notredame/features/student/profile/widgets/profile_program_completion_card.dart';
 import 'package:stacked/stacked.dart';
 
 // Project imports:
 import 'package:notredame/features/app/analytics/analytics_service.dart';
 import 'package:notredame/features/student/profile/profile_viewmodel.dart';
+import 'package:notredame/features/student/profile/widgets/profile_balance_card.dart';
+import 'package:notredame/features/student/profile/widgets/profile_current_program_tile.dart';
+import 'package:notredame/features/student/profile/widgets/profile_infos_card.dart';
+import 'package:notredame/features/student/profile/widgets/profile_main_infos_card.dart';
+import 'package:notredame/features/student/profile/widgets/profile_program_completion_card.dart';
 import 'package:notredame/features/student/widgets/student_program.dart';
 import 'package:notredame/utils/app_theme.dart';
 import 'package:notredame/utils/loading.dart';

@@ -1,14 +1,18 @@
+// Flutter imports:
 import 'package:flutter/material.dart';
+
+// Package imports:
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:stacked/stacked.dart';
+
+// Project imports:
+import 'package:notredame/features/more/faq/faq_viewmodel.dart';
+import 'package:notredame/features/more/faq/models/faq.dart';
 import 'package:notredame/features/more/faq/widget/action_card.dart';
 import 'package:notredame/features/more/faq/widget/faq_subtitle.dart';
 import 'package:notredame/features/more/faq/widget/faq_title.dart';
 import 'package:notredame/features/more/faq/widget/question_card.dart';
-import 'package:stacked/stacked.dart';
-import 'package:carousel_slider/carousel_slider.dart';
-
-import 'package:notredame/features/more/faq/models/faq.dart';
-import 'package:notredame/features/more/faq/faq_viewmodel.dart';
 
 class FaqView extends StatefulWidget {
   final Color? backgroundColor;

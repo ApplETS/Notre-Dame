@@ -8,7 +8,6 @@ import 'package:enum_to_string/enum_to_string.dart';
 import 'package:feature_discovery/feature_discovery.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:notredame/utils/activity_code.dart';
 import 'package:stacked/stacked.dart';
 import 'package:table_calendar/table_calendar.dart';
 
@@ -21,6 +20,7 @@ import 'package:notredame/features/app/signets-api/models/schedule_activity.dart
 import 'package:notredame/features/more/settings/settings_manager.dart';
 import 'package:notredame/features/welcome/discovery/discovery_components.dart';
 import 'package:notredame/features/welcome/discovery/models/discovery_ids.dart';
+import 'package:notredame/utils/activity_code.dart';
 import 'package:notredame/utils/app_theme.dart';
 import 'package:notredame/utils/locator.dart';
 import 'package:notredame/utils/utils.dart';

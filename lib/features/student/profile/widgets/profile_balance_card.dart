@@ -1,6 +1,11 @@
+// Flutter imports:
 import 'package:flutter/material.dart';
-import 'package:notredame/features/student/profile/profile_viewmodel.dart';
+
+// Package imports:
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
+// Project imports:
+import 'package:notredame/features/student/profile/profile_viewmodel.dart';
 
 Card getMyBalanceCard(ProfileViewModel model, BuildContext context) {
   final stringBalance = model.profileStudent.balance;

@@ -1,6 +1,9 @@
+// Flutter imports:
 import 'package:flutter/material.dart';
-import 'package:notredame/features/more/faq/models/faq_actions.dart';
+
+// Project imports:
 import 'package:notredame/features/more/faq/faq_viewmodel.dart';
+import 'package:notredame/features/more/faq/models/faq_actions.dart';
 
 class ActionCard extends StatelessWidget {
   final String title;

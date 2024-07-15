@@ -1,8 +1,8 @@
 // Dart imports:
+
 // Dart imports:
 import 'dart:io';
 
-// Flutter imports:
 // Flutter imports:
 import 'package:flutter/material.dart';
 
@@ -23,6 +23,8 @@ import 'package:notredame/features/ets/events/news/widgets/news_card.dart';
 import 'package:notredame/features/more/settings/settings_manager.dart';
 import '../../../../common/helpers.dart';
 import '../../../app/repository/mocks/news_repository_mock.dart';
+
+// Flutter imports:
 
 void main() {
   late NewsRepositoryMock newsRepository;

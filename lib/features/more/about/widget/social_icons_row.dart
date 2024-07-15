@@ -1,8 +1,13 @@
+// Flutter imports:
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:notredame/utils/utils.dart';
-import 'package:notredame/constants/urls.dart';
+
+// Package imports:
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+
+// Project imports:
+import 'package:notredame/constants/urls.dart';
+import 'package:notredame/utils/utils.dart';
 
 class SocialIconsRow extends StatelessWidget {
   const SocialIconsRow();

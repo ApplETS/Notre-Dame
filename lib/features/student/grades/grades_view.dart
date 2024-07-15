@@ -1,16 +1,20 @@
 // GradesView.dart
 
+// Flutter imports:
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
+
+// Package imports:
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:notredame/features/student/grades/widget-grade-view/empty_grades_message.dart';
-import 'package:notredame/features/student/grades/widget-grade-view/grade_list.dart';
 import 'package:stacked/stacked.dart';
 
+// Project imports:
 import 'package:notredame/features/app/analytics/analytics_service.dart';
 import 'package:notredame/features/student/grades/grades_viewmodel.dart';
-import 'package:notredame/utils/locator.dart';
+import 'package:notredame/features/student/grades/widget-grade-view/empty_grades_message.dart';
+import 'package:notredame/features/student/grades/widget-grade-view/grade_list.dart';
 import 'package:notredame/utils/loading.dart';
+import 'package:notredame/utils/locator.dart';
 
 class GradesView extends StatefulWidget {
   @override

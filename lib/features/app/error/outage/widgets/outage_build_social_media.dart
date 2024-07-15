@@ -1,9 +1,14 @@
+// Flutter imports:
 import 'package:flutter/material.dart';
+
+// Package imports:
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+
+// Project imports:
 import 'package:notredame/constants/urls.dart';
 import 'package:notredame/features/app/error/outage/outage_viewmodel.dart';
 import 'package:notredame/utils/utils.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 Widget outageSocialSection(OutageViewModel model, BuildContext context) {
   return Column(

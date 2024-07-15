@@ -3,10 +3,10 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:logger/logger.dart';
 import 'package:mockito/mockito.dart';
-import 'package:notredame/features/app/analytics/analytics_service.dart';
-import 'package:notredame/features/app/analytics/remote_config_service.dart';
 
 // Project imports:
+import 'package:notredame/features/app/analytics/analytics_service.dart';
+import 'package:notredame/features/app/analytics/remote_config_service.dart';
 import 'package:notredame/features/app/navigation/navigation_service.dart';
 import 'package:notredame/features/app/navigation/router_paths.dart';
 import 'package:notredame/features/app/repository/course_repository.dart';

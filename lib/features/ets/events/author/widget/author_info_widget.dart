@@ -1,12 +1,17 @@
+// Flutter imports:
 import 'package:flutter/material.dart';
+
+// Package imports:
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:stacked/stacked.dart';
+
+// Project imports:
 import 'package:notredame/features/ets/events/author/author_info_skeleton.dart';
+import 'package:notredame/features/ets/events/author/author_viewmodel.dart';
 import 'package:notredame/features/ets/events/social/models/social_link.dart';
 import 'package:notredame/features/ets/events/social/social_links_card.dart';
-import 'package:notredame/features/ets/events/author/author_viewmodel.dart';
-import 'package:notredame/utils/utils.dart';
 import 'package:notredame/utils/app_theme.dart';
-import 'package:stacked/stacked.dart';
+import 'package:notredame/utils/utils.dart';
 
 class AuthorInfoWidget extends ViewModelWidget<AuthorViewModel> {
   const AuthorInfoWidget({super.key});

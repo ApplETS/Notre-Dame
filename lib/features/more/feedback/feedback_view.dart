@@ -4,13 +4,13 @@ import 'package:flutter/material.dart';
 // Package imports:
 import 'package:feedback/feedback.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:notredame/features/more/feedback/widgets-feedback/card_info.dart';
-import 'package:notredame/features/more/feedback/widgets-feedback/list_tag.dart';
 import 'package:stacked/stacked.dart';
 
 // Project imports:
 import 'package:notredame/features/more/feedback/feedback_type.dart';
 import 'package:notredame/features/more/feedback/feedback_viewmodel.dart';
+import 'package:notredame/features/more/feedback/widgets-feedback/card_info.dart';
+import 'package:notredame/features/more/feedback/widgets-feedback/list_tag.dart';
 import 'package:notredame/utils/app_theme.dart';
 import 'package:notredame/utils/loading.dart';
 import 'package:notredame/utils/utils.dart';

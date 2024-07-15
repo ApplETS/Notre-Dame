@@ -3,13 +3,13 @@ import 'package:flutter/material.dart';
 
 // Package imports:
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:notredame/features/ets/quick-link/widgets/security-info/widgets/security_emergency_procedures.dart';
-import 'package:notredame/features/ets/quick-link/widgets/security-info/widgets/security_map.dart';
-import 'package:notredame/features/ets/quick-link/widgets/security-info/widgets/security_phone_card.dart';
 import 'package:stacked/stacked.dart';
 
 // Project imports:
 import 'package:notredame/features/ets/quick-link/widgets/security-info/security_viewmodel.dart';
+import 'package:notredame/features/ets/quick-link/widgets/security-info/widgets/security_emergency_procedures.dart';
+import 'package:notredame/features/ets/quick-link/widgets/security-info/widgets/security_map.dart';
+import 'package:notredame/features/ets/quick-link/widgets/security-info/widgets/security_phone_card.dart';
 import 'package:notredame/utils/app_theme.dart';
 
 class SecurityView extends StatefulWidget {

@@ -1,4 +1,7 @@
+// Flutter imports:
 import 'package:flutter/material.dart';
+
+// Package imports:
 import 'package:easter_egg_trigger/easter_egg_trigger.dart';
 
 class EasterEggIcon extends StatelessWidget {

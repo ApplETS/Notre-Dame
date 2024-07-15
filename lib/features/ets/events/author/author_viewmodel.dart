@@ -1,7 +1,10 @@
+// Package imports:
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:stacked/stacked.dart';
+
+// Project imports:
 import 'package:notredame/features/app/repository/author_repository.dart';
 import 'package:notredame/features/app/repository/news_repository.dart';
 import 'package:notredame/features/ets/events/api-client/models/news.dart';

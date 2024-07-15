@@ -6,21 +6,21 @@ import 'package:flutter/scheduler.dart';
 
 // Package imports:
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:stacked/stacked.dart';
+
+// Project imports:
+import 'package:notredame/features/app/analytics/analytics_service.dart';
+import 'package:notredame/features/app/navigation/router_paths.dart';
+import 'package:notredame/features/app/widgets/base_scaffold.dart';
+import 'package:notredame/features/more/more_viewmodel.dart';
 import 'package:notredame/features/more/widget/about_applets_tile.dart';
 import 'package:notredame/features/more/widget/contributors_list_tile.dart';
 import 'package:notredame/features/more/widget/in_app_review_tile.dart';
 import 'package:notredame/features/more/widget/open_source_licenses_list_tile.dart';
 import 'package:notredame/features/more/widget/report_bug_tile.dart';
-import 'package:notredame/utils/utils.dart';
-import 'package:stacked/stacked.dart';
-
-// Project imports:
-import 'package:notredame/features/app/navigation/router_paths.dart';
-import 'package:notredame/features/app/analytics/analytics_service.dart';
-import 'package:notredame/features/app/widgets/base_scaffold.dart';
-import 'package:notredame/features/more/more_viewmodel.dart';
-import 'package:notredame/utils/locator.dart';
 import 'package:notredame/utils/app_theme.dart';
+import 'package:notredame/utils/locator.dart';
+import 'package:notredame/utils/utils.dart';
 
 class MoreView extends StatefulWidget {
   @override

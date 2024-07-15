@@ -1,9 +1,14 @@
 // widgets/ContributorTileWidget.dart
 
+// Flutter imports:
 import 'package:flutter/material.dart';
-import 'package:github/github.dart';
-import 'package:notredame/utils/utils.dart';
+
+// Package imports:
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:github/github.dart';
+
+// Project imports:
+import 'package:notredame/utils/utils.dart';
 
 class ContributorTileWidget extends StatelessWidget {
   final Contributor contributor;

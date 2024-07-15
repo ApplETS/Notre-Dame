@@ -1,11 +1,16 @@
 // widgets/open_source_licenses_tile.dart
 
+// Flutter imports:
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:notredame/utils/utils.dart';
-import 'package:stacked/stacked.dart';
-import 'package:notredame/features/more/more_viewmodel.dart';
+
+// Package imports:
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:stacked/stacked.dart';
+
+// Project imports:
+import 'package:notredame/features/more/more_viewmodel.dart';
+import 'package:notredame/utils/utils.dart';
 
 class OpenSourceLicensesTile extends ViewModelWidget<MoreViewModel> {
   const OpenSourceLicensesTile({super.key});

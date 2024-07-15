@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 
 // Package imports:
 import 'package:intl/intl.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 
 // Project imports:
 import 'package:notredame/features/app/signets-api/models/course_activity.dart';
-import 'package:skeletonizer/skeletonizer.dart';
 
 class CourseActivityTile extends StatelessWidget {
   /// Course to display

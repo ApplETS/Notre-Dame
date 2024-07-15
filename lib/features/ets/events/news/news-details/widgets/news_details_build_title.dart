@@ -1,8 +1,9 @@
 // Flutter imports:
 import 'package:flutter/material.dart';
 
-// Package imports:
+// Project imports:
 import 'package:notredame/utils/utils.dart';
+
 // Project imports:
 
 Widget newsTitleSection(String title, BuildContext context) {

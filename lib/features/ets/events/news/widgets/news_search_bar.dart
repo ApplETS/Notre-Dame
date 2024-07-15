@@ -1,13 +1,13 @@
 // Flutter imports:
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 // Package imports:
-import 'package:notredame/utils/app_theme.dart';
-import 'package:notredame/utils/utils.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 // Project imports:
 import 'package:notredame/features/ets/events/news/news_viewmodel.dart';
+import 'package:notredame/utils/app_theme.dart';
+import 'package:notredame/utils/utils.dart';
 
 class NewsSearchBar extends StatelessWidget {
   const NewsSearchBar({

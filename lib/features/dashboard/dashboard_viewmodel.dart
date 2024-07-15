@@ -8,10 +8,6 @@ import 'package:flutter/material.dart';
 import 'package:feature_discovery/feature_discovery.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:notredame/features/app/signets-api/models/course.dart';
-import 'package:notredame/features/app/signets-api/models/course_activity.dart';
-import 'package:notredame/features/app/signets-api/models/session.dart';
-import 'package:notredame/utils/activity_code.dart';
 import 'package:stacked/stacked.dart';
 
 // Project imports:
@@ -23,6 +19,9 @@ import 'package:notredame/features/app/integration/launch_url_service.dart';
 import 'package:notredame/features/app/navigation/navigation_service.dart';
 import 'package:notredame/features/app/navigation/router_paths.dart';
 import 'package:notredame/features/app/repository/course_repository.dart';
+import 'package:notredame/features/app/signets-api/models/course.dart';
+import 'package:notredame/features/app/signets-api/models/course_activity.dart';
+import 'package:notredame/features/app/signets-api/models/session.dart';
 import 'package:notredame/features/app/storage/preferences_service.dart';
 import 'package:notredame/features/app/storage/siren_flutter_service.dart';
 import 'package:notredame/features/dashboard/progress_bar_text_options.dart';
@@ -30,6 +29,7 @@ import 'package:notredame/features/more/feedback/in_app_review_service.dart';
 import 'package:notredame/features/more/settings/settings_manager.dart';
 import 'package:notredame/features/welcome/discovery/discovery_components.dart';
 import 'package:notredame/features/welcome/discovery/models/discovery_ids.dart';
+import 'package:notredame/utils/activity_code.dart';
 import 'package:notredame/utils/locator.dart';
 
 class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {

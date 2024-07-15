@@ -1,4 +1,7 @@
+// Flutter imports:
 import 'package:flutter/material.dart';
+
+// Project imports:
 import 'package:notredame/features/student/profile/profile_viewmodel.dart';
 
 Card getMainInfoCard(ProfileViewModel model) {

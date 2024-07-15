@@ -1,9 +1,14 @@
+// Flutter imports:
 import 'package:flutter/material.dart';
+
+// Package imports:
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
+// Project imports:
 import 'package:notredame/constants/preferences_flags.dart';
 import 'package:notredame/features/app/widgets/dismissible_card.dart';
-import 'package:notredame/utils/app_theme.dart';
 import 'package:notredame/features/dashboard/dashboard_viewmodel.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:notredame/utils/app_theme.dart';
 
 class ProgressBarCard extends StatefulWidget {
   final DashboardViewModel model;

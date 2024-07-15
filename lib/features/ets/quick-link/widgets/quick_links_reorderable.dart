@@ -1,9 +1,14 @@
+// Flutter imports:
 import 'package:flutter/material.dart';
+
+// Package imports:
+import 'package:reorderable_grid_view/reorderable_grid_view.dart';
+
+// Project imports:
 import 'package:notredame/features/ets/quick-link/models/quick_link.dart';
 import 'package:notredame/features/ets/quick-link/quick_links_viewmodel.dart';
 import 'package:notredame/features/ets/quick-link/widgets/web_link_card.dart';
 import 'package:notredame/utils/app_theme.dart';
-import 'package:reorderable_grid_view/reorderable_grid_view.dart';
 
 ReorderableGridView quickLinksReorderableGridView(
     QuickLinksViewModel model,

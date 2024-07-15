@@ -1,19 +1,23 @@
 // LoginView.dart
 
+// Flutter imports:
 import 'package:flutter/material.dart';
+
+// Package imports:
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:stacked/stacked.dart';
+
+// Project imports:
+import 'package:notredame/features/welcome/login/login_viewmodel.dart';
 import 'package:notredame/features/welcome/login/widget/app_ets_logo.dart';
 import 'package:notredame/features/welcome/login/widget/forgot_password_link.dart';
 import 'package:notredame/features/welcome/login/widget/login_button.dart';
 import 'package:notredame/features/welcome/login/widget/login_widget.dart';
 import 'package:notredame/features/welcome/login/widget/need_help_link.dart';
 import 'package:notredame/features/welcome/login/widget/universal_code_field.dart';
-import 'package:stacked/stacked.dart';
-
-import 'package:notredame/features/welcome/login/login_viewmodel.dart';
+import 'package:notredame/features/welcome/widgets/password_text_field.dart';
 import 'package:notredame/utils/app_theme.dart';
 import 'package:notredame/utils/utils.dart';
-import 'package:notredame/features/welcome/widgets/password_text_field.dart';
 
 class LoginView extends StatefulWidget {
   @override

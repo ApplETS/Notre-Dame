@@ -1,10 +1,11 @@
 // Flutter imports:
 import 'package:flutter/material.dart';
+
+// Project imports:
 import 'package:notredame/features/ets/events/api-client/models/news.dart';
+import 'package:notredame/features/ets/events/news/news-details/news_details_viewmodel.dart';
 
 // Package imports:
-
-import 'package:notredame/features/ets/events/news/news-details/news_details_viewmodel.dart';
 
 // Project imports:
 

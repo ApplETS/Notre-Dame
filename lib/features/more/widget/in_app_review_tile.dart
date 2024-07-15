@@ -1,9 +1,14 @@
 // widgets/in_app_review_tile.dart
 
+// Flutter imports:
 import 'package:flutter/material.dart';
-import 'package:stacked/stacked.dart';
-import 'package:notredame/features/more/more_viewmodel.dart';
+
+// Package imports:
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:stacked/stacked.dart';
+
+// Project imports:
+import 'package:notredame/features/more/more_viewmodel.dart';
 
 class InAppReviewTile extends ViewModelWidget<MoreViewModel> {
   const InAppReviewTile({super.key});

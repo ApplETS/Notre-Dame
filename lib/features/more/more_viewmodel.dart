@@ -5,12 +5,12 @@ import 'package:flutter/material.dart';
 import 'package:feature_discovery/feature_discovery.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:notredame/features/more/settings/settings_manager.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:stacked/stacked.dart';
 
 // Project imports:
 import 'package:notredame/constants/preferences_flags.dart';
+import 'package:notredame/features/app/analytics/analytics_service.dart';
 import 'package:notredame/features/app/analytics/remote_config_service.dart';
 import 'package:notredame/features/app/integration/launch_url_service.dart';
 import 'package:notredame/features/app/navigation/navigation_service.dart';
@@ -20,11 +20,10 @@ import 'package:notredame/features/app/repository/user_repository.dart';
 import 'package:notredame/features/app/storage/cache_manager.dart';
 import 'package:notredame/features/app/storage/preferences_service.dart';
 import 'package:notredame/features/more/feedback/in_app_review_service.dart';
-
-import 'package:notredame/features/app/analytics/analytics_service.dart';
-import 'package:notredame/utils/locator.dart';
+import 'package:notredame/features/more/settings/settings_manager.dart';
 import 'package:notredame/features/welcome/discovery/discovery_components.dart';
 import 'package:notredame/features/welcome/discovery/models/discovery_ids.dart';
+import 'package:notredame/utils/locator.dart';
 
 class MoreViewModel extends FutureViewModel {
   /// Cache manager

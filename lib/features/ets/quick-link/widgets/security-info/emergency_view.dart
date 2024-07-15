@@ -1,7 +1,12 @@
+// Flutter imports:
 import 'package:flutter/material.dart';
-import 'package:notredame/features/ets/quick-link/widgets/security-info/widget/emergency_floating_button.dart';
+
+// Package imports:
 import 'package:webview_flutter/webview_flutter.dart';
+
+// Project imports:
 import 'package:notredame/features/app/presentation/webview_controller_extension.dart';
+import 'package:notredame/features/ets/quick-link/widgets/security-info/widget/emergency_floating_button.dart';
 
 class EmergencyView extends StatefulWidget {
   final String title;
