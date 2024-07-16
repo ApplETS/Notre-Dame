@@ -153,13 +153,13 @@ Route<dynamic> generateRoute(RouteSettings routeSettings) {
 Widget rootPagesAnimation(Animation<double> animation, Widget child) {
   return Align(
       child: FadeTransition(
-        opacity: animation,
-        child: SizeTransition(
-          sizeFactor: CurvedAnimation(
-            curve: Curves.easeIn,
-            parent: animation,
-          ),
-          child: child,
-        ),
-      ));
+    opacity: animation,
+    child: SizeTransition(
+      sizeFactor: CurvedAnimation(
+        curve: Curves.easeIn,
+        parent: animation,
+      ),
+      child: child,
+    ),
+  ));
 }
