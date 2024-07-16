@@ -50,8 +50,8 @@ import '../features/app/storage/mocks/preferences_service_mock.dart';
 import '../features/app/storage/mocks/siren_flutter_service_mock.dart';
 import '../features/more/feedback/mocks/in_app_review_service_mock.dart';
 import '../features/more/settings/mocks/settings_manager_mock.dart';
-import '../mock/services/mon_ets_api_mock.dart';
-import '../mock/services/signets_api_mock.dart';
+import '../features/app/monets_api/mocks/mon_ets_api_mock.dart';
+import '../features/app/signets_api/mocks/signets_api_mock.dart';
 
 /// Return the path of the [goldenName] file.
 String goldenFilePath(String goldenName) => "./goldenFiles/$goldenName.png";

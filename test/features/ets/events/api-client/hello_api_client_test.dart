@@ -12,7 +12,7 @@ import 'package:notredame/features/ets/events/api-client/models/paginated_news.d
 import 'package:notredame/features/ets/events/api-client/models/report.dart';
 import 'package:notredame/utils/api_response.dart';
 import 'package:notredame/utils/http_exception.dart';
-import '../mock/signets-api-client/http_client_mock_helper.dart';
+import '../../../app/signets_api/http_client_mock_helper.dart';
 
 void main() {
   const String helloNewsAPI = "api.hello.ca";

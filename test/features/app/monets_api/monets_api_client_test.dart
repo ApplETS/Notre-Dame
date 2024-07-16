@@ -11,7 +11,7 @@ import 'package:notredame/constants/urls.dart';
 import 'package:notredame/features/app/monets_api/models/mon_ets_user.dart';
 import 'package:notredame/features/app/monets_api/monets_api_client.dart';
 import 'package:notredame/utils/http_exception.dart';
-import '../mock/signets-api-client/http_client_mock_helper.dart';
+import '../signets_api/http_client_mock_helper.dart';
 
 void main() {
   late MonETSAPIClient service;
