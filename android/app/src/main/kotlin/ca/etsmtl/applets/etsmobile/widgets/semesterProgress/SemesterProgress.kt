@@ -44,5 +44,11 @@ class SemesterProgress {
         totalDays = daysBetween(startDate, endDate)
         completedPercentage = (elapsedDays.toDouble() / totalDays.toDouble()) * 100
         completedPercentageAsInt = Math.round(completedPercentage).toInt()
+        Log.d("SemesterProgress", "Progress: ${toString()}")
     }
+
+    override fun toString(): String {
+        return "{ \"startDate\": \"$startDate\", \"endDate\": \"$endDate\", \"totalDays\": $totalDays, \"elapsedDays\": $elapsedDays, \"remainingDays\": $remainingDays, \"completedPercentage\": $completedPercentage, \"completedPercentageAsInt\": $completedPercentageAsInt }"
+    }
+
 }

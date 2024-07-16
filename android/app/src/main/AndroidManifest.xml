@@ -82,7 +82,7 @@
                 android:resource="@xml/widget_semester_progress_small_info"/>
         </receiver>
         <activity 
-            android:name=".widgets.semesterProgress.SemesterProgressWidgetConfigureActivity"
+            android:name=".widgets.semesterProgress.SemesterProgressWidgetLargeConfigureActivity"
             android:exported="true"
             android:theme="@style/AppTheme">
             <intent-filter>
