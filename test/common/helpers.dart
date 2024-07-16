@@ -37,6 +37,7 @@ import '../features/app/error/internal_info_service_mock.dart';
 import '../features/app/integration/mocks/github_api_mock.dart';
 import '../features/app/integration/mocks/launch_url_service_mock.dart';
 import '../features/app/integration/mocks/networking_service_mock.dart';
+import '../features/app/monets_api/mocks/mon_ets_api_mock.dart';
 import '../features/app/navigation/navigation_service_mock.dart';
 import '../features/app/presentation/rive_animation_service_mock.dart';
 import '../features/app/repository/mocks/author_repository_mock.dart';
@@ -44,14 +45,13 @@ import '../features/app/repository/mocks/course_repository_mock.dart';
 import '../features/app/repository/mocks/news_repository_mock.dart';
 import '../features/app/repository/mocks/quick_links_repository_mock.dart';
 import '../features/app/repository/mocks/user_repository_mock.dart';
+import '../features/app/signets_api/mocks/signets_api_mock.dart';
 import '../features/app/storage/mocks/cache_manager_mock.dart';
 import '../features/app/storage/mocks/flutter_secure_storage_mock.dart';
 import '../features/app/storage/mocks/preferences_service_mock.dart';
 import '../features/app/storage/mocks/siren_flutter_service_mock.dart';
 import '../features/more/feedback/mocks/in_app_review_service_mock.dart';
 import '../features/more/settings/mocks/settings_manager_mock.dart';
-import '../features/app/monets_api/mocks/mon_ets_api_mock.dart';
-import '../features/app/signets_api/mocks/signets_api_mock.dart';
 
 /// Return the path of the [goldenName] file.
 String goldenFilePath(String goldenName) => "./goldenFiles/$goldenName.png";
