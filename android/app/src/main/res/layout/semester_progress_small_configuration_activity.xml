@@ -38,19 +38,6 @@
             android:layout_width="100dp"
             android:layout_height="100dp">
         </FrameLayout>
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:text="Large Widget"
-            android:textColor="@color/white"
-            android:fontFamily="@font/roboto_regular"
-            android:gravity="center_vertical|start">
-        </TextView>
-        <FrameLayout
-            android:id="@+id/widget_preview_large"
-            android:layout_width="match_parent"
-            android:layout_height="100dp">
-        </FrameLayout>
 
     </LinearLayout>
 
