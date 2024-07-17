@@ -296,6 +296,10 @@ class _ScheduleViewState extends State<ScheduleView>
           backgroundColor: backgroundColor,
           weekDayStringBuilder: (p0) => weekTitles[p0]
         ),
+      headerStringBuilder: (date, {secondaryDate}) {
+        final locale = AppIntl.of(context)!.localeName;
+        return '${DateFormat.MMMM(locale).format(date).characters.first.toUpperCase()}${DateFormat.MMMM(locale).format(date).substring(1)} ${date.year}';
+      },
       headerStyle: calendar_view.HeaderStyle(
           decoration: BoxDecoration(
             color: backgroundColor,
