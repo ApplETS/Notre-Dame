@@ -41,6 +41,8 @@ abstract class SemesterProgressWidgetBase : AppWidgetProvider() {
         CoroutineScope(Dispatchers.IO).launch {
             // TODO : Check what to do when before a semester
             // TODO : Handle case when there's an error fetching the data
+            // TODO : Handle case when there's no semester
+            // TODO : Handle case when semesterProgress is initialized with default values. Need to fetch data again
             if (semesterProgress.isPastEndDate()) {
                 semesterProgress = getSemesterProgress()
             } else if (semesterProgress.isOngoing()) {
@@ -72,7 +74,7 @@ abstract class SemesterProgressWidgetBase : AppWidgetProvider() {
         return "${semesterProgress.remainingDays} ${Constants.SEMESTER_PROGRESS_DAYS_EN} $remainingText"
     }
 
-    fun getElapsedDaysOverTotalText(addSuffix: Boolean): String {
+    private fun getElapsedDaysOverTotalText(addSuffix: Boolean): String {
         if (!addSuffix) {
             return "${semesterProgress.elapsedDays} / ${semesterProgress.totalDays}"
         }
@@ -111,7 +113,7 @@ abstract class SemesterProgressWidgetBase : AppWidgetProvider() {
 
     private suspend fun getSemesterProgress(): SemesterProgress{
         Log.d("SemesterProgressWidget", "Fetching semester progress")
-        val user = MonETSUser("username  ", "password")
+        val user = MonETSUser("username", "password")
         return withContext(Dispatchers.IO) {
             suspendCancellableCoroutine { continuation ->
                 SignetsService.shared.getSessions(user) { result ->
