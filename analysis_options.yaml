@@ -9,4 +9,4 @@ linter:
 analyzer:
   exclude:
     - "lib/generated"
-    - "test/mock/services/*.mocks.dart"
+    - "*.mocks.dart"

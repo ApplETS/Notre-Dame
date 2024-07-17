@@ -4,18 +4,19 @@ import 'package:flutter/scheduler.dart';
 
 // Package imports:
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:notredame/features/app/signets-api/models/course_evaluation.dart';
+import 'package:notredame/features/student/grades/widgets/grade_circular_progress.dart';
+import 'package:notredame/features/student/grades/widgets/grade_evaluation_tile.dart';
+import 'package:notredame/features/student/grades/widgets/grade_not_available.dart';
+import 'package:notredame/utils/utils.dart';
 import 'package:stacked/stacked.dart';
 
 // Project imports:
 import 'package:notredame/features/app/signets-api/models/course.dart';
-import 'package:notredame/features/app/signets-api/models/course_evaluation.dart';
 import 'package:notredame/features/app/widgets/base_scaffold.dart';
 import 'package:notredame/features/student/grades/grade_details/grades_details_viewmodel.dart';
-import 'package:notredame/features/student/grades/widgets/grade_circular_progress.dart';
-import 'package:notredame/features/student/grades/widgets/grade_evaluation_tile.dart';
-import 'package:notredame/features/student/grades/widgets/grade_not_available.dart';
+import 'package:notredame/features/student/grades/grade_details/widget/class_info.dart';
 import 'package:notredame/utils/app_theme.dart';
-import 'package:notredame/utils/utils.dart';
 
 class GradesDetailsView extends StatefulWidget {
   final Course course;
@@ -70,7 +71,6 @@ class _GradesDetailsViewState extends State<GradesDetailsView>
                   onStretchTrigger: () {
                     return Future<void>.value();
                   },
-                  titleSpacing: 0,
                   leading: IconButton(
                     icon: const Icon(Icons.arrow_back, color: Colors.white),
                     onPressed: () => Navigator.of(context).pop(),
@@ -108,14 +108,16 @@ class _GradesDetailsViewState extends State<GradesDetailsView>
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
-                              _buildClassInfo(model.course.title),
+                              ClassInfo(info: model.course.title),
                               if (model.course.teacherName != null)
-                                _buildClassInfo(AppIntl.of(context)!
-                                    .grades_teacher(model.course.teacherName!)),
-                              _buildClassInfo(AppIntl.of(context)!
-                                  .grades_group_number(model.course.group)),
-                              _buildClassInfo(AppIntl.of(context)!
-                                  .credits_number(
+                                ClassInfo(
+                                    info: AppIntl.of(context)!.grades_teacher(
+                                        model.course.teacherName!)),
+                              ClassInfo(
+                                  info: AppIntl.of(context)!
+                                      .grades_group_number(model.course.group)),
+                              ClassInfo(
+                                  info: AppIntl.of(context)!.credits_number(
                                       model.course.numberOfCredits)),
                             ],
                           ),

@@ -1,14 +1,14 @@
 // Flutter imports:
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 // Package imports:
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:reorderable_grid_view/reorderable_grid_view.dart';
 import 'package:stacked/stacked.dart';
 
 // Project imports:
-import 'package:notredame/features/ets/quick-link/models/quick_link.dart';
 import 'package:notredame/features/ets/quick-link/quick_links_viewmodel.dart';
+import 'package:notredame/features/ets/quick-link/models/quick_link.dart';
 import 'package:notredame/features/ets/quick-link/widgets/web_link_card.dart';
 import 'package:notredame/utils/app_theme.dart';
 
@@ -19,12 +19,15 @@ class QuickLinksView extends StatefulWidget {
 
 class _QuickLinksViewState extends State<QuickLinksView>
     with SingleTickerProviderStateMixin {
-  // Enable/Disable the edit state
-  bool _editMode = false;
-
   // Animation Controller for Shake Animation
   late AnimationController _controller;
   late Animation<double> _animation;
+
+  void refresh(Function() function) {
+    setState(() {
+      function();
+    });
+  }
 
   @override
   void initState() {
@@ -50,10 +53,10 @@ class _QuickLinksViewState extends State<QuickLinksView>
   Widget _buildBody(BuildContext context, QuickLinksViewModel model) {
     return GestureDetector(
       onTap: () {
-        if (_editMode) {
+        if (model.editMode) {
           _controller.reset();
           setState(() {
-            _editMode = false;
+            model.editMode = false;
           });
         }
       },
@@ -63,7 +66,7 @@ class _QuickLinksViewState extends State<QuickLinksView>
             child: _buildReorderableGridView(
                 model, model.quickLinkList, _buildDeleteButton),
           ),
-          if (_editMode && model.deletedQuickLinks.isNotEmpty) ...[
+          if (model.editMode && model.deletedQuickLinks.isNotEmpty) ...[
             const Divider(
               thickness: 2,
               indent: 10,

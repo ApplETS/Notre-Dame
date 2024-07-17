@@ -20,7 +20,7 @@ class OutageViewModel extends BaseViewModel {
   }
 
   double getTextPlacement(BuildContext context) {
-    return MediaQuery.of(context).size.height * 0.20;
+    return MediaQuery.of(context).size.height * 0.15;
   }
 
   double getButtonPlacement(BuildContext context) {
@@ -28,7 +28,7 @@ class OutageViewModel extends BaseViewModel {
   }
 
   double getContactTextPlacement(BuildContext context) {
-    return MediaQuery.of(context).size.height * 0.04;
+    return MediaQuery.of(context).size.height * 0.10;
   }
 
   void tapRefreshButton(BuildContext context) {

@@ -15,15 +15,10 @@ class AuthorViewModel extends BaseViewModel implements Initialisable {
   final AuthorRepository _authorRepository = locator<AuthorRepository>();
   final NewsRepository _newsRepository = locator<NewsRepository>();
 
-  /// Localization class of the application.
   final AppIntl appIntl;
-
   final String authorId;
 
-  /// Author
   Organizer? _author;
-
-  /// Return the author
   Organizer? get author => _author;
 
   final PagingController<int, News> pagingController =
@@ -36,7 +31,6 @@ class AuthorViewModel extends BaseViewModel implements Initialisable {
 
   @override
   Future<void> initialise() async {
-    // This will be called when init state cycle runs
     pagingController.addPageRequestListener((pageKey) {
       fetchPage(pageKey);
     });
@@ -59,16 +53,17 @@ class AuthorViewModel extends BaseViewModel implements Initialisable {
   }
 
   void notifyMe() {
-    // TODO activate/deactivate notifications
     isNotified = !isNotified;
     if (isNotified) {
       Fluttertoast.showToast(
-          msg: appIntl.news_author_notified_for(author?.organization ?? ""),
-          toastLength: Toast.LENGTH_LONG);
+        msg: appIntl.news_author_notified_for(author?.organization ?? ""),
+        toastLength: Toast.LENGTH_LONG,
+      );
     } else {
       Fluttertoast.showToast(
-          msg: appIntl.news_author_not_notified_for(author?.organization ?? ""),
-          toastLength: Toast.LENGTH_LONG);
+        msg: appIntl.news_author_not_notified_for(author?.organization ?? ""),
+        toastLength: Toast.LENGTH_LONG,
+      );
     }
   }
 
