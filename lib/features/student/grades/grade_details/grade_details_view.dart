@@ -206,46 +206,48 @@ class _GradesDetailsViewState extends State<GradesDetailsView>
                     ),
                   ),
                 ),
-                Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: <Widget>[
-                      Expanded(
-                        flex: 3,
-                        child: _buildCourseGradeSummary(
-                          AppIntl.of(context)!.grades_median,
-                          validateGrade(
-                            context,
-                            model.course.summary?.median.toString(),
-                            AppIntl.of(context)!.grades_grade_in_percentage(
-                                Utils.getGradeInPercentage(
-                                    model.course.summary?.median,
-                                    model.course.summary?.markOutOf)),
+                IntrinsicHeight(
+                  child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: <Widget>[
+                        Expanded(
+                          flex: 3,
+                          child: _buildCourseGradeSummary(
+                            AppIntl.of(context)!.grades_median,
+                            validateGrade(
+                              context,
+                              model.course.summary?.median.toString(),
+                              AppIntl.of(context)!.grades_grade_in_percentage(
+                                  Utils.getGradeInPercentage(
+                                      model.course.summary?.median,
+                                      model.course.summary?.markOutOf)),
+                            ),
                           ),
                         ),
-                      ),
-                      Expanded(
-                        flex: 3,
-                        child: _buildCourseGradeSummary(
-                          AppIntl.of(context)!.grades_standard_deviation,
-                          validateGrade(
-                            context,
-                            model.course.summary?.standardDeviation.toString(),
-                            model.course.summary?.standardDeviation.toString(),
+                        Expanded(
+                          flex: 3,
+                          child: _buildCourseGradeSummary(
+                            AppIntl.of(context)!.grades_standard_deviation,
+                            validateGrade(
+                              context,
+                              model.course.summary?.standardDeviation.toString(),
+                              model.course.summary?.standardDeviation.toString(),
+                            ),
                           ),
                         ),
-                      ),
-                      Expanded(
-                        flex: 3,
-                        child: _buildCourseGradeSummary(
-                          AppIntl.of(context)!.grades_percentile_rank,
-                          validateGrade(
-                            context,
-                            model.course.summary?.percentileRank.toString(),
-                            model.course.summary?.percentileRank.toString(),
+                        Expanded(
+                          flex: 3,
+                          child: _buildCourseGradeSummary(
+                            AppIntl.of(context)!.grades_percentile_rank,
+                            validateGrade(
+                              context,
+                              model.course.summary?.percentileRank.toString(),
+                              model.course.summary?.percentileRank.toString(),
+                            ),
                           ),
                         ),
-                      ),
-                    ]),
+                      ]),
+                ),
                 Column(children: <Widget>[
                   for (final CourseEvaluation evaluation
                       in model.course.summary?.evaluations ?? [])
@@ -324,36 +326,24 @@ class _GradesDetailsViewState extends State<GradesDetailsView>
   }
 
   /// Build the card of the Medidian, Standard deviation or Percentile Rank
-  SizedBox _buildCourseGradeSummary(String? title, String number) {
-    return SizedBox(
-      height: 110,
-      width: MediaQuery.of(context).size.width / 3.1,
-      child: Card(
+  Widget _buildCourseGradeSummary(String? title, String number) {
+    return Card(
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Expanded(
-              flex: 5,
-              child: Padding(
-                padding: const EdgeInsets.only(top: 14.0),
-                child: Text(
-                  title ?? "",
-                  textAlign: TextAlign.center,
-                  style: const TextStyle(
-                    fontSize: 16,
-                  ),
-                ),
+            Text(
+              title ?? "",
+              textAlign: TextAlign.center,
+              style: const TextStyle(
+                fontSize: 16,
               ),
             ),
-            Expanded(
-              flex: 5,
-              child: Padding(
-                padding: const EdgeInsets.only(top: 2.0),
-                child: Text(
-                  number,
-                  style: const TextStyle(fontSize: 19),
-                ),
-              ),
+            const SizedBox(height: 4),
+            Text(
+              number,
+              style: const TextStyle(fontSize: 19),
             ),
           ],
         ),
