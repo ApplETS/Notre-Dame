@@ -179,7 +179,6 @@ void main() {
       courseRepositoryMock = setupCourseRepositoryMock();
       setupNetworkingServiceMock();
       setupAnalyticsServiceMock();
-      setupAppWidgetServiceMock();
       setupPreferencesServiceMock();
 
       inAppReviewServiceMock =

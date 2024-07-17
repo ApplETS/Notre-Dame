@@ -103,6 +103,8 @@ class _GradesDetailsViewState extends State<GradesDetailsView>
                       child: Padding(
                         padding: const EdgeInsets.only(bottom: 8.0),
                         child: SafeArea(
+                          top: false,
+                          bottom: false,
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
@@ -124,10 +126,9 @@ class _GradesDetailsViewState extends State<GradesDetailsView>
                 ),
               ],
               body: SafeArea(
-                child: Padding(
-                  padding: const EdgeInsets.all(5.0),
-                  child: _buildGradeEvaluations(model),
-                ),
+                top: false,
+                bottom: false,
+                child: _buildGradeEvaluations(model),
               ),
             ),
           ),
@@ -255,6 +256,7 @@ class _GradesDetailsViewState extends State<GradesDetailsView>
                       isFirstEvaluation:
                           evaluation == model.course.summary?.evaluations.first,
                     ),
+                  const SizedBox(height: 24)
                 ]),
               ],
             ),
