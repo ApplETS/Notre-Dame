@@ -186,8 +186,15 @@ class _ScheduleViewState extends State<ScheduleView>
         DateTime.now(), eventController, scheduleCardsPalette);
 
     if (model.calendarFormat == CalendarFormat.month) {
-      return _buildCalendarViewMonthly(model, context, eventController,
-          backgroundColor, chevronColor, scheduleLineColor, textColor, scheduleCardsPalette);
+      return _buildCalendarViewMonthly(
+          model,
+          context,
+          eventController,
+          backgroundColor,
+          chevronColor,
+          scheduleLineColor,
+          textColor,
+          scheduleCardsPalette);
     }
     return _buildCalendarViewWeekly(model, context, eventController,
         backgroundColor, chevronColor, scheduleLineColor, scheduleCardsPalette);
@@ -201,7 +208,8 @@ class _ScheduleViewState extends State<ScheduleView>
       Color chevronColor,
       Color scheduleLineColor,
       List<Color> scheduleCardsPalette) {
-    final double heightPerMinute = (MediaQuery.of(context).size.height / 1200).clamp(0.45, 1.0);
+    final double heightPerMinute =
+        (MediaQuery.of(context).size.height / 1200).clamp(0.45, 1.0);
     return calendar_view.WeekView(
       key: weekViewKey,
       controller: eventController
@@ -213,7 +221,8 @@ class _ScheduleViewState extends State<ScheduleView>
           (MediaQuery.of(context).orientation == Orientation.portrait)
               ? 60
               : 35,
-      safeAreaOption: const calendar_view.SafeAreaOption(top: false, bottom: false),
+      safeAreaOption:
+          const calendar_view.SafeAreaOption(top: false, bottom: false),
       headerStyle: calendar_view.HeaderStyle(
           decoration: BoxDecoration(
             color: backgroundColor,
@@ -285,7 +294,8 @@ class _ScheduleViewState extends State<ScheduleView>
       controller: eventController
         ..addAll(model.selectedMonthCalendarEvents(scheduleCardsPalette)),
       cellAspectRatio: 0.8,
-      safeAreaOption: const calendar_view.SafeAreaOption(top: false, bottom: false),
+      safeAreaOption:
+          const calendar_view.SafeAreaOption(top: false, bottom: false),
       useAvailableVerticalSpace: MediaQuery.of(context).size.height >= 500,
       onPageChange: (date, page) =>
           model.handleViewChanged(date, eventController, []),
@@ -294,8 +304,7 @@ class _ScheduleViewState extends State<ScheduleView>
           displayBorder: false,
           textStyle: TextStyle(color: textColor),
           backgroundColor: backgroundColor,
-          weekDayStringBuilder: (p0) => weekTitles[p0]
-        ),
+          weekDayStringBuilder: (p0) => weekTitles[p0]),
       headerStringBuilder: (date, {secondaryDate}) {
         final locale = AppIntl.of(context)!.localeName;
         return '${DateFormat.MMMM(locale).format(date).characters.first.toUpperCase()}${DateFormat.MMMM(locale).format(date).substring(1)} ${date.year}';
@@ -391,7 +400,7 @@ class _ScheduleViewState extends State<ScheduleView>
   }
 
   Widget _buildTitleForDate(DateTime date, ScheduleViewModel model) => Center(
-      child: Text(
+          child: Text(
         DateFormat.MMMMEEEEd(model.locale.toString()).format(date),
         style: Theme.of(context).textTheme.headlineMedium,
       ));
