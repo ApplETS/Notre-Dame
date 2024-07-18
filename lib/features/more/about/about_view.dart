@@ -173,7 +173,7 @@ class _AboutViewState extends State<AboutView> with TickerProviderStateMixin {
                   child: Hero(
                     tag: 'capra',
                     child: Image.asset(
-                      "assets/images/capra_long.png",
+                      "assets/images/capra.png",
                       scale: 1.0,
                     ),
                   ),
