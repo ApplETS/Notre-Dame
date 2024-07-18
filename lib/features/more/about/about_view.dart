@@ -167,17 +167,21 @@ class _AboutViewState extends State<AboutView> with TickerProviderStateMixin {
                 ),
               ),
               if (_easterEggTrigger)
-                SizedBox(
-                  width: 200,
-                  height: 200,
-                  child: Hero(
-                    tag: 'capra',
-                    child: Image.asset(
-                      "assets/images/capra.png",
-                      scale: 1.0,
+                Padding(
+                  padding: const EdgeInsets.only(top: 32),
+                  child:
+                  SizedBox(
+                    width: 128,
+                    height: 128,
+                    child: Hero(
+                      tag: 'capra',
+                      child: Image.asset(
+                        "assets/images/capra.png",
+                        scale: 1.0,
+                      ),
                     ),
                   ),
-                ),
+              ),
             ],
           ),
         ),
