@@ -180,7 +180,7 @@ class _AboutViewState extends State<AboutView> with TickerProviderStateMixin {
                       ),
                     ),
                   ),
-              ),
+                ),
             ],
           ),
         ),
