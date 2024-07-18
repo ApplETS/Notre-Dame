@@ -169,8 +169,7 @@ class _AboutViewState extends State<AboutView> with TickerProviderStateMixin {
               if (_easterEggTrigger)
                 Padding(
                   padding: const EdgeInsets.only(top: 32),
-                  child:
-                  SizedBox(
+                  child: SizedBox(
                     width: 128,
                     height: 128,
                     child: Hero(
@@ -181,7 +180,7 @@ class _AboutViewState extends State<AboutView> with TickerProviderStateMixin {
                       ),
                     ),
                   ),
-              ),
+                ),
             ],
           ),
         ),
