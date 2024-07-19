@@ -444,8 +444,7 @@ void main() {
 
       test("validate the loading of the cards", () async {
         PreferencesServiceMock.stubGetInt(
-            preferencesServiceMock, PreferencesFlag.aboutUsCard,
-            toReturn: 1);
+            preferencesServiceMock, PreferencesFlag.aboutUsCard);
         PreferencesServiceMock.stubGetInt(
             preferencesServiceMock, PreferencesFlag.scheduleCard,
             toReturn: 2);
