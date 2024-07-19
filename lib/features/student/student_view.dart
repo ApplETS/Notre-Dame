@@ -66,6 +66,8 @@ class _StudentViewState extends State<StudentView> {
             ];
           },
           body: SafeArea(
+            top: false,
+            bottom: false,
             child: TabBarView(
               children: tabsView,
             ),

@@ -199,7 +199,6 @@ void main() {
       settingsManagerMock = setupSettingsManagerMock();
       preferenceServiceMock = setupPreferencesServiceMock();
       analyticsServiceMock = setupAnalyticsServiceMock();
-      setupAppWidgetServiceMock();
       preferencesServiceMock = setupPreferencesServiceMock();
       // TODO: Remove when 4.51.0 is released
       SharedPreferences.setMockInitialValues({});

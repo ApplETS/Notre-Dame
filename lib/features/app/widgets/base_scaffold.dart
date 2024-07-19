@@ -108,6 +108,7 @@ class _BaseScaffoldState extends State<BaseScaffold> {
   Widget bodyPortraitMode() {
     return SafeArea(
       top: false,
+      bottom: widget._safeArea,
       child: Stack(
         children: [
           widget.body!,

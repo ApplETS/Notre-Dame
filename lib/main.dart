@@ -24,7 +24,6 @@ import 'package:notredame/features/app/integration/firebase_options.dart';
 import 'package:notredame/features/app/navigation/navigation_service.dart';
 import 'package:notredame/features/app/navigation/router.dart';
 import 'package:notredame/features/app/startup/startup_view.dart';
-import 'package:notredame/features/app/widgets/app_widget_service.dart';
 import 'package:notredame/features/ets/events/api-client/hello_api_client.dart';
 import 'package:notredame/features/more/feedback/models/custom_feedback_localization.dart';
 import 'package:notredame/features/more/feedback/widgets/custom_feedback.dart';
@@ -49,10 +48,6 @@ Future<void> main() async {
   // Initialize hello
   final HelloAPIClient helloApiClient = locator<HelloAPIClient>();
   helloApiClient.apiLink = remoteConfigService.helloApiUrl;
-
-  // init home widget
-  final AppWidgetService appWidgetService = locator<AppWidgetService>();
-  await appWidgetService.init();
 
   if (kDebugMode) {
     FlutterConfig.loadEnvVariables();

@@ -6,6 +6,7 @@ import 'package:intl/intl.dart';
 
 // Project imports:
 import 'package:notredame/features/app/signets-api/models/course_activity.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 
 class CourseActivityTile extends StatelessWidget {
   /// Course to display
@@ -51,7 +52,9 @@ class CourseActivityTile extends StatelessWidget {
                     style: Theme.of(context).textTheme.bodySmall),
               ],
             ),
-            VerticalDivider(color: colorFor(activity.courseName), thickness: 2)
+            Skeleton.shade(
+                child: VerticalDivider(
+                    color: colorFor(activity.courseName), thickness: 2))
           ],
         ),
       );
