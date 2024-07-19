@@ -80,8 +80,10 @@ class _DashboardViewState extends State<DashboardView>
                         data: Theme.of(context)
                             .copyWith(canvasColor: Colors.transparent),
                         child: ReorderableListView(
-                          header: model.remoteConfigService.dashboardMessageActive
-                              ? _buildMessageBroadcastCard(model) : null,
+                          header:
+                              model.remoteConfigService.dashboardMessageActive
+                                  ? _buildMessageBroadcastCard(model)
+                                  : null,
                           onReorder: (oldIndex, newIndex) =>
                               onReorder(model, oldIndex, newIndex),
                           padding: const EdgeInsets.fromLTRB(0, 4, 0, 24),
@@ -456,7 +458,9 @@ class _DashboardViewState extends State<DashboardView>
   }
 
   Widget _buildMessageBroadcastCard(DashboardViewModel model) {
-    if(model.broadcastMessage == "" || model.broadcastColor == "" || model.broadcastTitle == "") {
+    if (model.broadcastMessage == "" ||
+        model.broadcastColor == "" ||
+        model.broadcastTitle == "") {
       return const SizedBox.shrink();
     }
     final broadcastMsgColor = Color(int.parse(model.broadcastColor));
@@ -470,28 +474,31 @@ class _DashboardViewState extends State<DashboardView>
           child: model.busy(model.broadcastMessage)
               ? const Center(child: CircularProgressIndicator())
               : Column(mainAxisSize: MainAxisSize.min, children: [
-            // title row
-            Row(
-              children: [
-                Expanded(
-                  child: Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text(model.broadcastTitle,
-                        style: Theme.of(context).primaryTextTheme.titleLarge),
+                  // title row
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Align(
+                          alignment: Alignment.centerLeft,
+                          child: Text(model.broadcastTitle,
+                              style: Theme.of(context)
+                                  .primaryTextTheme
+                                  .titleLarge),
+                        ),
+                      ),
+                      Align(
+                        alignment: Alignment.centerRight,
+                        child: InkWell(
+                          child: getBroadcastIcon(
+                              broadcastMsgType, broadcastMsgUrl),
+                        ),
+                      ),
+                    ],
                   ),
-                ),
-                Align(
-                  alignment: Alignment.centerRight,
-                  child: InkWell(
-                    child: getBroadcastIcon(broadcastMsgType, broadcastMsgUrl),
-                  ),
-                ),
-              ],
-            ),
-            // main text
-            AutoSizeText(model.broadcastMessage,
-                style: Theme.of(context).primaryTextTheme.bodyMedium)
-          ]),
+                  // main text
+                  AutoSizeText(model.broadcastMessage,
+                      style: Theme.of(context).primaryTextTheme.bodyMedium)
+                ]),
         ));
   }
 

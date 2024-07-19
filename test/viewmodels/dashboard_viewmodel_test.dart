@@ -668,10 +668,8 @@ void main() {
             settingsManagerMock.setInt(PreferencesFlag.scheduleCard, -1));
 
         expect(viewModel.cards, hiddenCardDashboard);
-        expect(viewModel.cardsToDisplay, [
-          PreferencesFlag.aboutUsCard,
-          PreferencesFlag.progressBarCard
-        ]);
+        expect(viewModel.cardsToDisplay,
+            [PreferencesFlag.aboutUsCard, PreferencesFlag.progressBarCard]);
 
         verify(analyticsServiceMock.logEvent(
             "DashboardViewModel", "Deleting scheduleCard"));
