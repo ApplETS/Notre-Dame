@@ -197,13 +197,13 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
   Future<Map<PreferencesFlag, int>> futureToRun() async {
     final dashboard = await _settingsManager.getDashboard();
 
-    //TODO: remove when all users are on 4.48.0 or more
+    //TODO: remove when all users are on 4.51.0 or more
     final sharedPreferences = await SharedPreferences.getInstance();
-    if(sharedPreferences.containsKey("broadcastCard")) {
-      sharedPreferences.remove("broadcastCard");
+    if(sharedPreferences.containsKey("PreferencesFlag.broadcastChange")) {
+      sharedPreferences.remove("PreferencesFlag.broadcastChange");
     }
-    if(sharedPreferences.containsKey("broadcastChange")) {
-      sharedPreferences.remove("broadcastChange");
+    if(sharedPreferences.containsKey("PreferencesFlag.broadcastCard")) {
+      sharedPreferences.remove("PreferencesFlag.broadcastCard");
     }
     final sortedList = dashboard.entries.toList()
         ..sort((a, b) => a.value.compareTo(b.value));
@@ -215,7 +215,7 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
         index++;
       }
     }
-    //TODO: end remove when all users are on 4.48.0 or more
+    //TODO: end remove when all users are on 4.51.0 or more
 
     _cards = sortedDashboard;
 
