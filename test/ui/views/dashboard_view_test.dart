@@ -180,9 +180,9 @@ void main() {
       setupNetworkingServiceMock();
       setupAnalyticsServiceMock();
       setupPreferencesServiceMock();
-      // TODO: Remove when 4.51.0 is released
+      // TODO: Remove when 4.50.1 is released
       SharedPreferences.setMockInitialValues({});
-      // End TODO: Remove when 4.51.0 is released
+      // End TODO: Remove when 4.50.1 is released
 
       inAppReviewServiceMock =
           setupInAppReviewServiceMock() as InAppReviewServiceMock;

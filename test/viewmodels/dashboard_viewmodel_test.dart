@@ -200,9 +200,9 @@ void main() {
       preferenceServiceMock = setupPreferencesServiceMock();
       analyticsServiceMock = setupAnalyticsServiceMock();
       preferencesServiceMock = setupPreferencesServiceMock();
-      // TODO: Remove when 4.51.0 is released
+      // TODO: Remove when 4.50.1 is released
       SharedPreferences.setMockInitialValues({});
-      // End TODO: Remove when 4.51.0 is released
+      // TODO: End remove when 4.50.1 is released
 
       viewModel = DashboardViewModel(intl: await setupAppIntl());
       CourseRepositoryMock.stubGetSessions(courseRepositoryMock,
