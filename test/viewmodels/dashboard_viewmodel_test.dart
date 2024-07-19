@@ -11,6 +11,7 @@ import 'package:notredame/features/dashboard/dashboard_viewmodel.dart';
 import 'package:notredame/features/dashboard/progress_bar_text_options.dart';
 import 'package:notredame/features/more/settings/settings_manager.dart';
 import 'package:notredame/utils/activity_code.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../helpers.dart';
 import '../mock/managers/course_repository_mock.dart';
 import '../mock/managers/settings_manager_mock.dart';
@@ -200,6 +201,9 @@ void main() {
       analyticsServiceMock = setupAnalyticsServiceMock();
       setupAppWidgetServiceMock();
       preferencesServiceMock = setupPreferencesServiceMock();
+      // TODO: Remove when 4.51.0 is released
+      SharedPreferences.setMockInitialValues({});
+      // End TODO: Remove when 4.51.0 is released
 
       viewModel = DashboardViewModel(intl: await setupAppIntl());
       CourseRepositoryMock.stubGetSessions(courseRepositoryMock,
@@ -683,7 +687,7 @@ void main() {
         viewModel.setAllCardsVisible();
 
         await untilCalled(
-            settingsManagerMock.setInt(PreferencesFlag.progressBarCard, 3));
+            settingsManagerMock.setInt(PreferencesFlag.progressBarCard, 2));
 
         expect(viewModel.cards, dashboard);
         expect(viewModel.cardsToDisplay, [

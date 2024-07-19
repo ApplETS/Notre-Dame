@@ -19,6 +19,7 @@ import 'package:notredame/features/app/widgets/dismissible_card.dart';
 import 'package:notredame/features/dashboard/dashboard_view.dart';
 import 'package:notredame/features/dashboard/widgets/course_activity_tile.dart';
 import 'package:notredame/features/student/grades/widgets/grade_button.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../helpers.dart';
 import '../../mock/managers/course_repository_mock.dart';
 import '../../mock/managers/settings_manager_mock.dart';
@@ -163,7 +164,7 @@ void main() {
 
     // Find schedule card in second position by its title
     return tester.firstWidget(find.descendant(
-      of: find.byType(Dismissible, skipOffstage: false).at(2),
+      of: find.byType(Dismissible, skipOffstage: false).at(1),
       matching: find.byType(Text),
     ));
   }
@@ -180,6 +181,9 @@ void main() {
       setupAnalyticsServiceMock();
       setupAppWidgetServiceMock();
       setupPreferencesServiceMock();
+      // TODO: Remove when 4.51.0 is released
+      SharedPreferences.setMockInitialValues({});
+      // End TODO: Remove when 4.51.0 is released
 
       inAppReviewServiceMock =
           setupInAppReviewServiceMock() as InAppReviewServiceMock;
@@ -202,13 +206,6 @@ void main() {
 
       RemoteConfigServiceMock.stubGetBroadcastEnabled(remoteConfigServiceMock,
           toReturn: false);
-      RemoteConfigServiceMock.stubGetBroadcastColor(remoteConfigServiceMock);
-      RemoteConfigServiceMock.stubGetBroadcastEn(remoteConfigServiceMock);
-      RemoteConfigServiceMock.stubGetBroadcastFr(remoteConfigServiceMock);
-      RemoteConfigServiceMock.stubGetBroadcastTitleEn(remoteConfigServiceMock);
-      RemoteConfigServiceMock.stubGetBroadcastTitleFr(remoteConfigServiceMock);
-      RemoteConfigServiceMock.stubGetBroadcastType(remoteConfigServiceMock);
-      RemoteConfigServiceMock.stubGetBroadcastUrl(remoteConfigServiceMock);
 
       SettingsManagerMock.stubGetBool(
           settingsManagerMock, PreferencesFlag.discoveryDashboard,
@@ -350,7 +347,7 @@ void main() {
               of: find.byType(SizedBox, skipOffstage: false),
               matching: find.byType(Text),
             ),
-            findsNWidgets(1));
+            findsNWidgets(2));
       });
     });
 
@@ -389,7 +386,7 @@ void main() {
         expect(find.text(intl.card_applets_title), findsOneWidget);
 
         // Swipe Dismissible aboutUs Card horizontally
-        await tester.drag(find.byType(Dismissible, skipOffstage: false).at(1),
+        await tester.drag(find.byType(Dismissible, skipOffstage: false).at(0),
             const Offset(1000.0, 0.0));
 
         // Check that the card is now absent from the view
@@ -445,7 +442,7 @@ void main() {
 
         // Check that the aboutUs card is in the first position
         var text = tester.firstWidget(find.descendant(
-          of: find.byType(Dismissible, skipOffstage: false).at(1),
+          of: find.byType(Dismissible, skipOffstage: false).at(0),
           matching: find.byType(Text),
         ));
 
@@ -476,7 +473,7 @@ void main() {
         await tester.pumpAndSettle();
 
         text = tester.firstWidget(find.descendant(
-          of: find.byType(Dismissible, skipOffstage: false).at(1),
+          of: find.byType(Dismissible, skipOffstage: false).at(0),
           matching: find.byType(Text),
         ));
 
@@ -504,7 +501,7 @@ void main() {
             findsOneWidget);
 
         // Swipe Dismissible schedule Card horizontally
-        await tester.drag(find.byType(Dismissible, skipOffstage: false).at(2),
+        await tester.drag(find.byType(Dismissible, skipOffstage: false).at(1),
             const Offset(1000.0, 0.0));
 
         // Check that the card is now absent from the view
@@ -613,10 +610,11 @@ void main() {
               findsOneWidget);
 
           // Swipe Dismissible grades Card horizontally
-          await tester.drag(
-              find.widgetWithText(Dismissible, intl.grades_title,
-                  skipOffstage: false),
-              const Offset(1000.0, 0.0));
+          final finder = find.widgetWithText(Dismissible, intl.grades_title,
+              skipOffstage: false);
+          await tester.scrollUntilVisible(finder, 100);
+          await tester.pumpAndSettle();
+          await tester.drag(finder, const Offset(1000.0, 0.0));
 
           // Check that the card is now absent from the view
           await tester.pumpAndSettle();
