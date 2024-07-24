@@ -82,7 +82,12 @@ void main() {
 
       await viewModel.fetchPage(1);
 
-      verify(newsRepository.getNews()).called(1);
+      verify(newsRepository.getNews(
+        pageNumber: 1,
+        pageSize: 3,
+        organizerId: anyNamed('organizerId'),
+        title: anyNamed('title'),
+        startDate: anyNamed('startDate'))).called(1);
       expect(viewModel.pagingController.nextPageKey, 2);
     });
 
@@ -91,7 +96,12 @@ void main() {
 
       await viewModel.fetchPage(2);
 
-      verify(newsRepository.getNews(pageNumber: 2)).called(1);
+      verify(newsRepository.getNews(
+        pageNumber: 2,
+        pageSize: 3,
+        organizerId: anyNamed('organizerId'),
+        title: anyNamed('title'),
+        startDate: anyNamed('startDate'))).called(1);
       expect(viewModel.pagingController.nextPageKey, 3);
     });
   });
