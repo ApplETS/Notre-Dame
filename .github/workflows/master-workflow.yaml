@@ -26,36 +26,17 @@ jobs:
   # Setup
   ##############################################################
   tag_validation:
-    name: Tag validation
     runs-on: ubuntu-latest
     outputs:
-      version: ${{ steps.split.outputs._0 }}
+      description: "The version in the pubspec.yaml file."
+      version: ${{ steps.tag_validation.outputs.version }}
     steps:
       - uses: actions/checkout@v4
-      - name: Get the version from the pubspec
-        id: pubspecVersion
-        uses: CumulusDS/get-yaml-paths-action@v1.0.2
-        with:
-          file: pubspec.yaml
-          version: version
-      - uses: winterjung/split@v2.1.0
-        id: split
-        with:
-          msg: ${{ steps.pubspecVersion.outputs.version }}
-          separator: '+'
-      - name: Validate that version doesn't exists
-        uses: mukunku/tag-exists-action@v1.6.0
-        id: checkTag
-        with:
-          tag: ${{ steps.split.outputs._0 }}
-      - if: ${{ steps.checkTag.outputs.exists == 'true' }}
-        name: Post comment on PR and fail.
-        run: |
-          echo '${{ steps.split.outputs._0 }} already exists, please update the pubspec version.'
-          exit 1
+      - uses: ./.github/composite/tag-validation.yaml
+        id: tag_validation
 
   ##############################################################
-  # Tests
+  # Testing
   ##############################################################
   testing:
     name: Tests and checks
@@ -66,6 +47,7 @@ jobs:
       - uses: actions/checkout@v4
         with:
           ref: ${{ github.head_ref }}
+          token: ${{ secrets.PTA }}
       - uses: actions/setup-java@v4
         with:
           distribution: 'temurin'
@@ -85,7 +67,7 @@ jobs:
           ENCRYPTED_GOOGLE_SERVICE_PASSWORD: ${{ secrets.ENCRYPTED_GOOGLE_SERVICE_PASSWORD }}
 
       # Get flutter dependencies.
-      - run : |
+      - run: |
           flutter pub get
           dart run build_runner build --delete-conflicting-outputs
 
@@ -102,7 +84,6 @@ jobs:
         with:
           name: lcov.info
           path: ${{ github.workspace }}/coverage/lcov.info
-
       - name: Get code coverage
         id: coverage
         run: |
@@ -110,7 +91,6 @@ jobs:
           export COV="$(./scripts/determine_code_coverage.sh coverage/lcov.info)"
           echo "Coverage detected is: $COV"
           echo "percentage=$COV" >> $GITHUB_OUTPUT
-
   coverage:
     name: Update coverage
     needs:

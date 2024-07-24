@@ -1,0 +1,30 @@
+name: "Tag validation"
+description: "Check if the tag already exists."
+outputs:
+  description: "The version in the pubspec.yaml file."
+  version: ${{ steps.split.outputs._0 }}
+
+runs:
+  using: "composite"
+  steps:
+    - name: Get the version from the pubspec
+      id: pubspecVersion
+      uses: CumulusDS/get-yaml-paths-action@v1.0.2
+      with:
+        file: pubspec.yaml
+        version: version
+    - uses: winterjung/split@v2.1.0
+      id: split
+      with:
+        msg: ${{ steps.pubspecVersion.outputs.version }}
+        separator: '+'
+    - name: Validate that version doesn't exists
+      uses: mukunku/tag-exists-action@v1.6.0
+      id: checkTag
+      with:
+        tag: ${{ steps.split.outputs._0 }}
+    - if: ${{ steps.checkTag.outputs.exists == 'true' }}
+      name: Post comment on PR and fail.
+      run: |
+        echo '${{ steps.split.outputs._0 }} already exists, please update the pubspec version.'
+        exit 1
