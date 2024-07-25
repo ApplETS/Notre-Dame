@@ -114,8 +114,7 @@ class _GradesDetailsViewState extends State<GradesDetailsView>
                             _buildClassInfo(AppIntl.of(context)!
                                 .grades_group_number(model.course.group)),
                             _buildClassInfo(AppIntl.of(context)!
-                                .credits_number(
-                                    model.course.numberOfCredits)),
+                                .credits_number(model.course.numberOfCredits)),
                           ],
                         ),
                       ),

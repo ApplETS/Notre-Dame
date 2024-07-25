@@ -66,8 +66,8 @@ class _GradeEvaluationTileState extends State<GradeEvaluationTile>
             ),
             child: Card(
               color: Theme.of(context).brightness == Brightness.light
-                   ? AppTheme.lightTheme().cardColor
-                   : AppTheme.darkTheme().cardColor,
+                  ? AppTheme.lightTheme().cardColor
+                  : AppTheme.darkTheme().cardColor,
               clipBehavior: Clip.antiAlias,
               child: ExpansionTile(
                 onExpansionChanged: (value) {
@@ -203,10 +203,8 @@ class _GradeEvaluationTileState extends State<GradeEvaluationTile>
                   evaluation.weight,
                   Utils.getGradeInPercentage(evaluation.mark,
                       evaluation.correctedEvaluationOutOfFormatted))),
-          _buildSummary(
-              AppIntl.of(context)!.grades_standard_deviation,
-              validateResult(
-                  context, evaluation.standardDeviation.toString())),
+          _buildSummary(AppIntl.of(context)!.grades_standard_deviation,
+              validateResult(context, evaluation.standardDeviation.toString())),
           _buildSummary(AppIntl.of(context)!.grades_percentile_rank,
               validateResult(context, evaluation.percentileRank.toString())),
           _buildSummary(AppIntl.of(context)!.grades_target_date,
