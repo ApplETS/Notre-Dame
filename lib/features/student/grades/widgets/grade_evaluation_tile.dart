@@ -66,7 +66,7 @@ class _GradeEvaluationTileState extends State<GradeEvaluationTile>
             ),
             child: Card(
               color: Theme.of(context).brightness == Brightness.light
-                  ? AppTheme.lightTheme().cardColor
+                  ? AppTheme.lightTheme().cardTheme.color
                   : AppTheme.darkTheme().cardColor,
               clipBehavior: Clip.antiAlias,
               child: ExpansionTile(
