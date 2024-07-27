@@ -3,8 +3,8 @@ import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
 // Project imports:
-import 'package:notredame/core/constants/preferences_flags.dart';
-import 'package:notredame/core/services/preferences_service.dart';
+import 'package:notredame/constants/preferences_flags.dart';
+import 'package:notredame/features/app/storage/preferences_service.dart';
 import 'preferences_service_mock.mocks.dart';
 
 @GenerateNiceMocks([MockSpec<PreferencesService>()])

@@ -4,7 +4,7 @@ import 'package:mockito/mockito.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
 // Project imports:
-import 'package:notredame/core/services/internal_info_service.dart';
+import 'package:notredame/features/app/error/internal_info_service.dart';
 import 'internal_info_service_mock.mocks.dart';
 
 @GenerateNiceMocks([MockSpec<InternalInfoService>()])

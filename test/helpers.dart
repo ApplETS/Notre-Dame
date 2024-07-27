@@ -3,8 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 // Package imports:
-import 'package:ets_api_clients/clients.dart';
-import 'package:ets_api_clients/testing.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -12,41 +10,47 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:logger/logger.dart';
 
 // Project imports:
-import 'package:notredame/core/managers/cache_manager.dart';
-import 'package:notredame/core/managers/course_repository.dart';
-import 'package:notredame/core/managers/quick_link_repository.dart';
-import 'package:notredame/core/managers/settings_manager.dart';
-import 'package:notredame/core/managers/user_repository.dart';
-import 'package:notredame/core/services/analytics_service.dart';
-import 'package:notredame/core/services/app_widget_service.dart';
-import 'package:notredame/core/services/github_api.dart';
-import 'package:notredame/core/services/in_app_review_service.dart';
-import 'package:notredame/core/services/internal_info_service.dart';
-import 'package:notredame/core/services/launch_url_service.dart';
-import 'package:notredame/core/services/navigation_service.dart';
-import 'package:notredame/core/services/networking_service.dart';
-import 'package:notredame/core/services/preferences_service.dart';
-import 'package:notredame/core/services/remote_config_service.dart';
-import 'package:notredame/core/services/rive_animation_service.dart';
-import 'package:notredame/core/services/siren_flutter_service.dart';
-import 'package:notredame/locator.dart';
+import 'package:notredame/features/app/analytics/analytics_service.dart';
+import 'package:notredame/features/app/analytics/remote_config_service.dart';
+import 'package:notredame/features/app/error/internal_info_service.dart';
+import 'package:notredame/features/app/integration/github_api.dart';
+import 'package:notredame/features/app/integration/launch_url_service.dart';
+import 'package:notredame/features/app/integration/networking_service.dart';
+import 'package:notredame/features/app/monets_api/monets_api_client.dart';
+import 'package:notredame/features/app/navigation/navigation_service.dart';
+import 'package:notredame/features/app/presentation/rive_animation_service.dart';
+import 'package:notredame/features/app/repository/author_repository.dart';
+import 'package:notredame/features/app/repository/course_repository.dart';
+import 'package:notredame/features/app/repository/news_repository.dart';
+import 'package:notredame/features/app/repository/quick_link_repository.dart';
+import 'package:notredame/features/app/repository/user_repository.dart';
+import 'package:notredame/features/app/signets-api/signets_api_client.dart';
+import 'package:notredame/features/app/storage/cache_manager.dart';
+import 'package:notredame/features/app/storage/preferences_service.dart';
+import 'package:notredame/features/app/storage/siren_flutter_service.dart';
+import 'package:notredame/features/more/feedback/in_app_review_service.dart';
+import 'package:notredame/features/more/settings/settings_manager.dart';
+import 'package:notredame/utils/locator.dart';
+import 'mock/managers/author_repository_mock.dart';
 import 'mock/managers/cache_manager_mock.dart';
 import 'mock/managers/course_repository_mock.dart';
+import 'mock/managers/news_repository_mock.dart';
 import 'mock/managers/quick_links_repository_mock.dart';
 import 'mock/managers/settings_manager_mock.dart';
 import 'mock/managers/user_repository_mock.dart';
 import 'mock/services/analytics_service_mock.dart';
-import 'mock/services/app_widget_service_mock.dart';
 import 'mock/services/flutter_secure_storage_mock.dart';
 import 'mock/services/github_api_mock.dart';
 import 'mock/services/in_app_review_service_mock.dart';
 import 'mock/services/internal_info_service_mock.dart';
 import 'mock/services/launch_url_service_mock.dart';
+import 'mock/services/mon_ets_api_mock.dart';
 import 'mock/services/navigation_service_mock.dart';
 import 'mock/services/networking_service_mock.dart';
 import 'mock/services/preferences_service_mock.dart';
 import 'mock/services/remote_config_service_mock.dart';
 import 'mock/services/rive_animation_service_mock.dart';
+import 'mock/services/signets_api_mock.dart';
 import 'mock/services/siren_flutter_service_mock.dart';
 
 /// Return the path of the [goldenName] file.
@@ -84,6 +88,26 @@ SignetsAPIClientMock setupSignetsApiMock() {
   final service = SignetsAPIClientMock();
 
   locator.registerSingleton<SignetsAPIClient>(service);
+
+  return service;
+}
+
+/// Load a mock of the [NewsRepository]
+NewsRepositoryMock setupNewsRepositoryMock() {
+  unregister<NewsRepository>();
+  final service = NewsRepositoryMock();
+
+  locator.registerSingleton<NewsRepository>(service);
+
+  return service;
+}
+
+/// Load a mock of the [AuthorRepository]
+AuthorRepositoryMock setupAuthorRepositoryMock() {
+  unregister<AuthorRepository>();
+  final service = AuthorRepositoryMock();
+
+  locator.registerSingleton<AuthorRepository>(service);
 
   return service;
 }
@@ -166,16 +190,6 @@ void setupFlutterToastMock([WidgetTester? tester]) {
     }
     return false;
   });
-}
-
-/// Load a mock of the [AppWidgetService]
-AppWidgetService setupAppWidgetServiceMock() {
-  unregister<AppWidgetService>();
-  final service = AppWidgetServiceMock();
-
-  locator.registerSingleton<AppWidgetService>(service);
-
-  return service;
 }
 
 /// Load a mock of the [NavigationService]

@@ -1,12 +1,12 @@
 // Package imports:
-import 'package:ets_api_clients/exceptions.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
 // Project imports:
-import 'package:notredame/core/managers/quick_link_repository.dart';
-import 'package:notredame/core/models/quick_link.dart';
-import 'package:notredame/core/models/quick_link_data.dart';
+import 'package:notredame/features/app/repository/quick_link_repository.dart';
+import 'package:notredame/features/ets/quick-link/models/quick_link.dart';
+import 'package:notredame/features/ets/quick-link/models/quick_link_data.dart';
+import 'package:notredame/utils/api_exception.dart';
 import 'quick_links_repository_mock.mocks.dart';
 
 @GenerateNiceMocks([MockSpec<QuickLinkRepository>()])

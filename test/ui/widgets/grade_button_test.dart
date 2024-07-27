@@ -1,15 +1,16 @@
 // Package imports:
-import 'package:ets_api_clients/models.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 
 // Project imports:
-import 'package:notredame/core/constants/preferences_flags.dart';
-import 'package:notredame/core/constants/router_paths.dart';
-import 'package:notredame/core/managers/settings_manager.dart';
-import 'package:notredame/core/services/navigation_service.dart';
-import 'package:notredame/ui/widgets/grade_button.dart';
+import 'package:notredame/constants/preferences_flags.dart';
+import 'package:notredame/features/app/navigation/navigation_service.dart';
+import 'package:notredame/features/app/navigation/router_paths.dart';
+import 'package:notredame/features/app/signets-api/models/course.dart';
+import 'package:notredame/features/app/signets-api/models/course_summary.dart';
+import 'package:notredame/features/more/settings/settings_manager.dart';
+import 'package:notredame/features/student/grades/widgets/grade_button.dart';
 import '../../helpers.dart';
 import '../../mock/managers/settings_manager_mock.dart';
 import '../../mock/services/navigation_service_mock.dart';

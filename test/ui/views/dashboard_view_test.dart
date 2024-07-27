@@ -5,18 +5,21 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 
 // Package imports:
-import 'package:ets_api_clients/models.dart';
 import 'package:feature_discovery/feature_discovery.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 // Project imports:
-import 'package:notredame/core/constants/preferences_flags.dart';
-import 'package:notredame/core/constants/update_code.dart';
-import 'package:notredame/ui/views/dashboard_view.dart';
-import 'package:notredame/ui/widgets/course_activity_tile.dart';
-import 'package:notredame/ui/widgets/dismissible_card.dart';
-import 'package:notredame/ui/widgets/grade_button.dart';
+import 'package:notredame/constants/preferences_flags.dart';
+import 'package:notredame/constants/update_code.dart';
+import 'package:notredame/features/app/signets-api/models/course.dart';
+import 'package:notredame/features/app/signets-api/models/course_activity.dart';
+import 'package:notredame/features/app/signets-api/models/session.dart';
+import 'package:notredame/features/app/widgets/dismissible_card.dart';
+import 'package:notredame/features/dashboard/dashboard_view.dart';
+import 'package:notredame/features/dashboard/widgets/course_activity_tile.dart';
+import 'package:notredame/features/student/grades/widgets/grade_button.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../helpers.dart';
 import '../../mock/managers/course_repository_mock.dart';
 import '../../mock/managers/settings_manager_mock.dart';
@@ -69,11 +72,10 @@ void main() {
 
   // Cards
   Map<PreferencesFlag, int> dashboard = {
-    PreferencesFlag.broadcastCard: 0,
-    PreferencesFlag.aboutUsCard: 1,
-    PreferencesFlag.scheduleCard: 2,
-    PreferencesFlag.progressBarCard: 3,
-    PreferencesFlag.gradesCard: 4
+    PreferencesFlag.aboutUsCard: 0,
+    PreferencesFlag.scheduleCard: 1,
+    PreferencesFlag.progressBarCard: 2,
+    PreferencesFlag.gradesCard: 3
   };
 
   final numberOfCards = dashboard.entries.length;
@@ -162,7 +164,7 @@ void main() {
 
     // Find schedule card in second position by its title
     return tester.firstWidget(find.descendant(
-      of: find.byType(Dismissible, skipOffstage: false).at(2),
+      of: find.byType(Dismissible, skipOffstage: false).at(1),
       matching: find.byType(Text),
     ));
   }
@@ -177,8 +179,10 @@ void main() {
       courseRepositoryMock = setupCourseRepositoryMock();
       setupNetworkingServiceMock();
       setupAnalyticsServiceMock();
-      setupAppWidgetServiceMock();
       setupPreferencesServiceMock();
+      // TODO: Remove when 4.50.1 is released
+      SharedPreferences.setMockInitialValues({});
+      // End TODO: Remove when 4.50.1 is released
 
       inAppReviewServiceMock =
           setupInAppReviewServiceMock() as InAppReviewServiceMock;
@@ -198,23 +202,13 @@ void main() {
       CourseRepositoryMock.stubCoursesActivities(courseRepositoryMock);
       CourseRepositoryMock.stubGetCoursesActivities(courseRepositoryMock,
           fromCacheOnly: true);
-      CourseRepositoryMock.stubGetCoursesActivities(courseRepositoryMock);
 
-      RemoteConfigServiceMock.stubGetBroadcastEnabled(remoteConfigServiceMock);
-      RemoteConfigServiceMock.stubGetBroadcastColor(remoteConfigServiceMock);
-      RemoteConfigServiceMock.stubGetBroadcastEn(remoteConfigServiceMock);
-      RemoteConfigServiceMock.stubGetBroadcastFr(remoteConfigServiceMock);
-      RemoteConfigServiceMock.stubGetBroadcastTitleEn(remoteConfigServiceMock);
-      RemoteConfigServiceMock.stubGetBroadcastTitleFr(remoteConfigServiceMock);
-      RemoteConfigServiceMock.stubGetBroadcastType(remoteConfigServiceMock);
-      RemoteConfigServiceMock.stubGetBroadcastUrl(remoteConfigServiceMock);
+      RemoteConfigServiceMock.stubGetBroadcastEnabled(remoteConfigServiceMock,
+          toReturn: false);
 
       SettingsManagerMock.stubGetBool(
           settingsManagerMock, PreferencesFlag.discoveryDashboard,
           toReturn: true);
-
-      SettingsManagerMock.stubSetInt(
-          settingsManagerMock, PreferencesFlag.broadcastCard);
 
       SettingsManagerMock.stubSetInt(
           settingsManagerMock, PreferencesFlag.aboutUsCard);
@@ -352,7 +346,7 @@ void main() {
               of: find.byType(SizedBox, skipOffstage: false),
               matching: find.byType(Text),
             ),
-            findsNWidgets(1));
+            findsNWidgets(2));
       });
     });
 
@@ -367,9 +361,6 @@ void main() {
 
         SettingsManagerMock.stubGetDashboard(settingsManagerMock,
             toReturn: dashboard);
-
-        SettingsManagerMock.stubSetInt(
-            settingsManagerMock, PreferencesFlag.broadcastCard);
 
         SettingsManagerMock.stubSetInt(
             settingsManagerMock, PreferencesFlag.aboutUsCard);
@@ -394,7 +385,7 @@ void main() {
         expect(find.text(intl.card_applets_title), findsOneWidget);
 
         // Swipe Dismissible aboutUs Card horizontally
-        await tester.drag(find.byType(Dismissible, skipOffstage: false).at(1),
+        await tester.drag(find.byType(Dismissible, skipOffstage: false).at(0),
             const Offset(1000.0, 0.0));
 
         // Check that the card is now absent from the view
@@ -425,9 +416,6 @@ void main() {
         CourseRepositoryMock.stubGetCoursesActivities(courseRepositoryMock);
 
         SettingsManagerMock.stubSetInt(
-            settingsManagerMock, PreferencesFlag.broadcastCard);
-
-        SettingsManagerMock.stubSetInt(
             settingsManagerMock, PreferencesFlag.aboutUsCard);
 
         SettingsManagerMock.stubSetInt(
@@ -453,7 +441,7 @@ void main() {
 
         // Check that the aboutUs card is in the first position
         var text = tester.firstWidget(find.descendant(
-          of: find.byType(Dismissible, skipOffstage: false).at(1),
+          of: find.byType(Dismissible, skipOffstage: false).at(0),
           matching: find.byType(Text),
         ));
 
@@ -484,7 +472,7 @@ void main() {
         await tester.pumpAndSettle();
 
         text = tester.firstWidget(find.descendant(
-          of: find.byType(Dismissible, skipOffstage: false).at(1),
+          of: find.byType(Dismissible, skipOffstage: false).at(0),
           matching: find.byType(Text),
         ));
 
@@ -512,7 +500,7 @@ void main() {
             findsOneWidget);
 
         // Swipe Dismissible schedule Card horizontally
-        await tester.drag(find.byType(Dismissible, skipOffstage: false).at(2),
+        await tester.drag(find.byType(Dismissible, skipOffstage: false).at(1),
             const Offset(1000.0, 0.0));
 
         // Check that the card is now absent from the view
@@ -596,9 +584,6 @@ void main() {
         testWidgets('gradesCard is dismissible and can be restored',
             (WidgetTester tester) async {
           SettingsManagerMock.stubSetInt(
-              settingsManagerMock, PreferencesFlag.broadcastCard);
-
-          SettingsManagerMock.stubSetInt(
               settingsManagerMock, PreferencesFlag.aboutUsCard);
 
           SettingsManagerMock.stubSetInt(
@@ -624,10 +609,11 @@ void main() {
               findsOneWidget);
 
           // Swipe Dismissible grades Card horizontally
-          await tester.drag(
-              find.widgetWithText(Dismissible, intl.grades_title,
-                  skipOffstage: false),
-              const Offset(1000.0, 0.0));
+          final finder = find.widgetWithText(Dismissible, intl.grades_title,
+              skipOffstage: false);
+          await tester.scrollUntilVisible(finder, 100);
+          await tester.pumpAndSettle();
+          await tester.drag(finder, const Offset(1000.0, 0.0));
 
           // Check that the card is now absent from the view
           await tester.pumpAndSettle();
@@ -791,7 +777,7 @@ void main() {
         tester.view.physicalSize = const Size(800, 1410);
 
         final Map<PreferencesFlag, int> dashboard = {
-          PreferencesFlag.broadcastCard: 0,
+          PreferencesFlag.gradesCard: 0,
           PreferencesFlag.aboutUsCard: 1,
         };
 
@@ -818,7 +804,7 @@ void main() {
         CourseRepositoryMock.stubGetCoursesActivities(courseRepositoryMock);
 
         dashboard = {
-          PreferencesFlag.broadcastCard: 0,
+          PreferencesFlag.gradesCard: 0,
           PreferencesFlag.scheduleCard: 1,
         };
 
@@ -839,7 +825,7 @@ void main() {
         tester.view.physicalSize = const Size(800, 1410);
 
         dashboard = {
-          PreferencesFlag.broadcastCard: 0,
+          PreferencesFlag.gradesCard: 0,
           PreferencesFlag.progressBarCard: 1,
         };
 

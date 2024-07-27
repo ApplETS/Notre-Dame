@@ -10,8 +10,8 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 // Project imports:
-import 'package:notredame/core/constants/faq.dart';
-import 'package:notredame/ui/views/faq_view.dart';
+import 'package:notredame/features/more/faq/faq_view.dart';
+import 'package:notredame/features/more/faq/models/faq.dart';
 import '../../helpers.dart';
 import '../../mock/managers/settings_manager_mock.dart';
 
@@ -24,6 +24,7 @@ void main() {
 
     setUp(() async {
       setupLaunchUrlServiceMock();
+      setupNetworkingServiceMock();
       settingsManagerMock = setupSettingsManagerMock();
       appIntl = await setupAppIntl();
     });
@@ -69,17 +70,6 @@ void main() {
 
         final subtitle2 = find.text(appIntl.questions_and_answers);
         expect(subtitle2, findsNWidgets(1));
-      });
-
-      testWidgets('has 1 title', (WidgetTester tester) async {
-        SettingsManagerMock.stubLocale(settingsManagerMock);
-
-        await tester.pumpWidget(localizedWidget(child: const FaqView()));
-        await tester.pumpAndSettle();
-
-        final title = find.text(appIntl.need_help);
-
-        expect(title, findsOneWidget);
       });
     });
 

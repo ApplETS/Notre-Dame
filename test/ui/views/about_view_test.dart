@@ -8,7 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 // Project imports:
-import 'package:notredame/ui/views/about_view.dart';
+import 'package:notredame/features/more/about/about_view.dart';
 import '../../helpers.dart';
 
 void main() {

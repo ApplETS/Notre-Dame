@@ -10,9 +10,9 @@ import 'package:mockito/mockito.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 // Project imports:
-import 'package:notredame/core/constants/preferences_flags.dart';
-import 'package:notredame/core/managers/settings_manager.dart';
-import 'package:notredame/core/services/preferences_service.dart';
+import 'package:notredame/constants/preferences_flags.dart';
+import 'package:notredame/features/app/storage/preferences_service.dart';
+import 'package:notredame/features/more/settings/settings_manager.dart';
 import '../helpers.dart';
 import '../mock/services/analytics_service_mock.dart';
 import '../mock/services/preferences_service_mock.dart';
@@ -418,11 +418,10 @@ void main() {
 
         // Cards
         final Map<PreferencesFlag, int> expected = {
-          PreferencesFlag.broadcastCard: 0,
-          PreferencesFlag.aboutUsCard: 1,
-          PreferencesFlag.scheduleCard: 2,
-          PreferencesFlag.progressBarCard: 3,
-          PreferencesFlag.gradesCard: 4
+          PreferencesFlag.aboutUsCard: 0,
+          PreferencesFlag.scheduleCard: 1,
+          PreferencesFlag.progressBarCard: 2,
+          PreferencesFlag.gradesCard: 3
         };
 
         expect(
@@ -430,8 +429,6 @@ void main() {
           expected,
         );
 
-        verify(preferencesServiceMock.getInt(PreferencesFlag.broadcastCard))
-            .called(1);
         verify(preferencesServiceMock.getInt(PreferencesFlag.aboutUsCard))
             .called(1);
         verify(preferencesServiceMock.getInt(PreferencesFlag.scheduleCard))
@@ -447,29 +444,24 @@ void main() {
 
       test("validate the loading of the cards", () async {
         PreferencesServiceMock.stubGetInt(
-            preferencesServiceMock, PreferencesFlag.broadcastCard,
-            toReturn: 0);
-        PreferencesServiceMock.stubGetInt(
-            preferencesServiceMock, PreferencesFlag.aboutUsCard,
-            toReturn: 2);
+            preferencesServiceMock, PreferencesFlag.aboutUsCard);
         PreferencesServiceMock.stubGetInt(
             preferencesServiceMock, PreferencesFlag.scheduleCard,
-            toReturn: 3);
+            toReturn: 2);
         PreferencesServiceMock.stubGetInt(
             preferencesServiceMock, PreferencesFlag.progressBarCard,
             // ignore: avoid_redundant_argument_values
-            toReturn: 1);
+            toReturn: 0);
         PreferencesServiceMock.stubGetInt(
             preferencesServiceMock, PreferencesFlag.gradesCard,
-            toReturn: 4);
+            toReturn: 3);
 
         // Cards
         final Map<PreferencesFlag, int> expected = {
-          PreferencesFlag.broadcastCard: 0,
-          PreferencesFlag.aboutUsCard: 2,
-          PreferencesFlag.scheduleCard: 3,
-          PreferencesFlag.progressBarCard: 1,
-          PreferencesFlag.gradesCard: 4
+          PreferencesFlag.aboutUsCard: 1,
+          PreferencesFlag.scheduleCard: 2,
+          PreferencesFlag.progressBarCard: 0,
+          PreferencesFlag.gradesCard: 3
         };
 
         expect(
@@ -477,8 +469,6 @@ void main() {
           expected,
         );
 
-        verify(preferencesServiceMock.getInt(PreferencesFlag.broadcastCard))
-            .called(1);
         verify(preferencesServiceMock.getInt(PreferencesFlag.aboutUsCard))
             .called(1);
         verify(preferencesServiceMock.getInt(PreferencesFlag.scheduleCard))

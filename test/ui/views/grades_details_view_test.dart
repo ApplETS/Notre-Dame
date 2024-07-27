@@ -5,16 +5,19 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 
 // Package imports:
-import 'package:ets_api_clients/models.dart';
 import 'package:feature_discovery/feature_discovery.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 // Project imports:
-import 'package:notredame/core/managers/course_repository.dart';
-import 'package:notredame/core/managers/settings_manager.dart';
-import 'package:notredame/core/services/networking_service.dart';
-import 'package:notredame/ui/views/grade_details_view.dart';
+import 'package:notredame/features/app/integration/networking_service.dart';
+import 'package:notredame/features/app/repository/course_repository.dart';
+import 'package:notredame/features/app/signets-api/models/course.dart';
+import 'package:notredame/features/app/signets-api/models/course_evaluation.dart';
+import 'package:notredame/features/app/signets-api/models/course_review.dart';
+import 'package:notredame/features/app/signets-api/models/course_summary.dart';
+import 'package:notredame/features/more/settings/settings_manager.dart';
+import 'package:notredame/features/student/grades/grade_details/grade_details_view.dart';
 import '../../helpers.dart';
 import '../../mock/managers/course_repository_mock.dart';
 
@@ -51,14 +54,42 @@ void main() {
     ],
   );
 
-  final CourseReview reviewCompleted = CourseReview(
-      acronym: 'GEN101',
-      group: '02',
-      teacherName: 'TEST',
-      startAt: DateTime.now().subtract(const Duration(days: 1)),
-      endAt: DateTime.now().add(const Duration(days: 1)),
-      type: 'Cours',
-      isCompleted: true);
+  final completedCourseReview = CourseReview(
+    acronym: 'GEN101',
+    group: '02',
+    teacherName: 'TEST',
+    startAt: DateTime.now().subtract(const Duration(days: 1)),
+    endAt: DateTime.now().add(const Duration(days: 1)),
+    type: 'Cours',
+    isCompleted: true,
+  );
+
+  final nonCompletedCourseReview = CourseReview(
+    acronym: 'GEN101',
+    group: '02',
+    teacherName: 'TEST',
+    startAt: DateTime.now().subtract(const Duration(days: 1)),
+    endAt: DateTime.now().add(const Duration(days: 1)),
+    type: 'Cours',
+    isCompleted: false,
+  );
+
+  final altNonCompletedCourseReview = CourseReview(
+    acronym: 'GEN101',
+    group: '02',
+    teacherName: 'TEST ALT',
+    startAt: DateTime.now().subtract(const Duration(days: 1)),
+    endAt: DateTime.now().add(const Duration(days: 1)),
+    type: 'Cours',
+    isCompleted: false,
+  );
+
+  final completedReviewList = <CourseReview>[completedCourseReview];
+  final nonCompletedReviewList = <CourseReview>[nonCompletedCourseReview];
+  final partiallyCompletedReviewList = <CourseReview>[
+    completedCourseReview,
+    altNonCompletedCourseReview
+  ];
 
   final Course course = Course(
       acronym: 'GEN101',
@@ -68,7 +99,7 @@ void main() {
       numberOfCredits: 3,
       title: 'Cours générique',
       summary: courseSummary,
-      review: reviewCompleted);
+      reviews: completedReviewList);
 
   final Course courseWithoutSummary = Course(
     acronym: 'GEN101',
@@ -87,14 +118,17 @@ void main() {
       numberOfCredits: 3,
       title: 'Cours générique',
       summary: courseSummary,
-      review: CourseReview(
-          acronym: 'GEN101',
-          group: '02',
-          teacherName: 'TEST',
-          startAt: DateTime.now().subtract(const Duration(days: 1)),
-          endAt: DateTime.now().add(const Duration(days: 1)),
-          type: 'Cours',
-          isCompleted: false));
+      reviews: nonCompletedReviewList);
+
+  final Course courseWithPartialEvaluationCompleted = Course(
+      acronym: 'GEN101',
+      group: '02',
+      session: 'H2020',
+      programCode: '999',
+      numberOfCredits: 3,
+      title: 'Cours générique',
+      summary: courseSummary,
+      reviews: partiallyCompletedReviewList);
 
   group('GradesDetailsView - ', () {
     setUp(() async {
@@ -134,7 +168,7 @@ void main() {
                   findsOneWidget);
             }
 
-            expect(find.byType(Card), findsNWidgets(4));
+            expect(find.byType(Card), findsNWidgets(5));
 
             for (final eval in courseSummary.evaluations) {
               expect(find.byKey(Key("GradeEvaluationTile_${eval.title}")),
@@ -265,6 +299,25 @@ void main() {
         setupFlutterToastMock(tester);
         CourseRepositoryMock.stubGetCourseSummary(courseRepositoryMock, course,
             toReturn: courseWithEvaluationNotCompleted);
+
+        tester.view.physicalSize = const Size(800, 1410);
+
+        await tester.pumpWidget(localizedWidget(
+            child: FeatureDiscovery(child: GradesDetailsView(course: course))));
+        await tester.pumpAndSettle(const Duration(seconds: 1));
+
+        await expectLater(
+            find.byType(GradesDetailsView),
+            matchesGoldenFile(
+                goldenFilePath("gradesDetailsView_evaluation_not_completed")));
+      });
+
+      testWidgets(
+          "if in the evaluation period and partially completed evaluation",
+          (WidgetTester tester) async {
+        setupFlutterToastMock(tester);
+        CourseRepositoryMock.stubGetCourseSummary(courseRepositoryMock, course,
+            toReturn: courseWithPartialEvaluationCompleted);
 
         tester.view.physicalSize = const Size(800, 1410);
 

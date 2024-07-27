@@ -7,10 +7,10 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 
 // Project imports:
-import 'package:notredame/core/constants/router_paths.dart';
-import 'package:notredame/core/services/navigation_service.dart';
-import 'package:notredame/core/services/networking_service.dart';
-import 'package:notredame/ui/widgets/bottom_bar.dart';
+import 'package:notredame/features/app/integration/networking_service.dart';
+import 'package:notredame/features/app/navigation/navigation_service.dart';
+import 'package:notredame/features/app/navigation/router_paths.dart';
+import 'package:notredame/features/app/widgets/bottom_bar.dart';
 import '../../helpers.dart';
 import '../../mock/services/analytics_service_mock.dart';
 import '../../mock/services/navigation_service_mock.dart';
@@ -51,12 +51,12 @@ void main() {
           localizedWidget(child: FeatureDiscovery(child: BottomBar())));
       await tester.pumpAndSettle();
 
-      await tester.tap(find.byIcon(Icons.school));
-      await tester.tap(find.byIcon(Icons.school));
-      await tester.tap(find.byIcon(Icons.school));
-      await tester.tap(find.byIcon(Icons.school));
-      await tester.tap(find.byIcon(Icons.school));
-      await tester.tap(find.byIcon(Icons.school));
+      await tester.tap(find.byIcon(Icons.school_outlined));
+      await tester.tap(find.byIcon(Icons.school_outlined));
+      await tester.tap(find.byIcon(Icons.school_outlined));
+      await tester.tap(find.byIcon(Icons.school_outlined));
+      await tester.tap(find.byIcon(Icons.school_outlined));
+      await tester.tap(find.byIcon(Icons.school_outlined));
 
       verify(navigationServiceMock.pushNamedAndRemoveUntil(RouterPaths.student))
           .called(1);
@@ -68,8 +68,8 @@ void main() {
             localizedWidget(child: FeatureDiscovery(child: BottomBar())));
         await tester.pumpAndSettle();
 
-        await tester.tap(find.byIcon(Icons.schedule));
-        await tester.tap(find.byIcon(Icons.dashboard));
+        await tester.tap(find.byIcon(Icons.schedule_outlined));
+        await tester.tap(find.byIcon(Icons.dashboard_outlined));
 
         verify(navigationServiceMock
             .pushNamedAndRemoveUntil(RouterPaths.dashboard));
@@ -80,7 +80,7 @@ void main() {
             localizedWidget(child: FeatureDiscovery(child: BottomBar())));
         await tester.pumpAndSettle();
 
-        await tester.tap(find.byIcon(Icons.schedule));
+        await tester.tap(find.byIcon(Icons.schedule_outlined));
 
         verify(navigationServiceMock
             .pushNamedAndRemoveUntil(RouterPaths.schedule));
@@ -91,7 +91,7 @@ void main() {
             localizedWidget(child: FeatureDiscovery(child: BottomBar())));
         await tester.pumpAndSettle();
 
-        await tester.tap(find.byIcon(Icons.school));
+        await tester.tap(find.byIcon(Icons.school_outlined));
 
         verify(
             navigationServiceMock.pushNamedAndRemoveUntil(RouterPaths.student));
@@ -102,7 +102,7 @@ void main() {
             localizedWidget(child: FeatureDiscovery(child: BottomBar())));
         await tester.pumpAndSettle();
 
-        await tester.tap(find.byIcon(Icons.account_balance));
+        await tester.tap(find.byIcon(Icons.account_balance_outlined));
 
         verify(navigationServiceMock.pushNamedAndRemoveUntil(RouterPaths.ets));
       });
@@ -112,7 +112,7 @@ void main() {
             localizedWidget(child: FeatureDiscovery(child: BottomBar())));
         await tester.pumpAndSettle();
 
-        await tester.tap(find.byIcon(Icons.dehaze));
+        await tester.tap(find.byIcon(Icons.menu_outlined));
 
         verify(navigationServiceMock.pushNamedAndRemoveUntil(RouterPaths.more));
       });
