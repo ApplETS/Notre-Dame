@@ -31,7 +31,8 @@ class _ScheduleSettingsState extends State<ScheduleSettings> {
       builder: (context, model, child) {
         if (model.isBusy) {
           return SizedBox(
-            height: MediaQuery.of(context).size.height * 0.55, // 55% of screen height
+            height: MediaQuery.of(context).size.height *
+                0.55, // 55% of screen height
             child: const Center(child: CircularProgressIndicator()),
           );
         } else {
@@ -286,7 +287,10 @@ class _ScheduleSettingsState extends State<ScheduleSettings> {
       ListTile(
         trailing: Switch(
           value: model.toggleCalendarView,
-          onChanged: (value) => model.toggleCalendarView = value,
+          onChanged: (value) => {
+            model.toggleCalendarView = value,
+            model.calendarFormat = CalendarFormat.week
+          },
           activeColor: AppTheme.etsLightRed,
         ),
         title: Text(
