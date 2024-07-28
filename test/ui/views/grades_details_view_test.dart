@@ -168,7 +168,7 @@ void main() {
                   findsOneWidget);
             }
 
-            expect(find.byType(Card), findsNWidgets(4));
+            expect(find.byType(Card), findsNWidgets(5));
 
             for (final eval in courseSummary.evaluations) {
               expect(find.byKey(Key("GradeEvaluationTile_${eval.title}")),

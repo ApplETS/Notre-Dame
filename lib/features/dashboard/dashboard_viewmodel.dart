@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:feature_discovery/feature_discovery.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stacked/stacked.dart';
 
 // Project imports:
@@ -36,7 +37,6 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
   static const String tag = "DashboardViewModel";
 
   final SettingsManager _settingsManager = locator<SettingsManager>();
-  final PreferencesService _preferencesService = locator<PreferencesService>();
   final CourseRepository _courseRepository = locator<CourseRepository>();
   final AnalyticsService _analyticsService = locator<AnalyticsService>();
   final RemoteConfigService remoteConfigService =
@@ -197,9 +197,27 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
   Future<Map<PreferencesFlag, int>> futureToRun() async {
     final dashboard = await _settingsManager.getDashboard();
 
-    _cards = dashboard;
+    //TODO: remove when all users are on 4.50.1 or more
+    final sharedPreferences = await SharedPreferences.getInstance();
+    if (sharedPreferences.containsKey("PreferencesFlag.broadcastChange")) {
+      sharedPreferences.remove("PreferencesFlag.broadcastChange");
+    }
+    if (sharedPreferences.containsKey("PreferencesFlag.broadcastCard")) {
+      sharedPreferences.remove("PreferencesFlag.broadcastCard");
+    }
+    final sortedList = dashboard.entries.toList()
+      ..sort((a, b) => a.value.compareTo(b.value));
+    final sortedDashboard = LinkedHashMap.fromEntries(sortedList);
+    int index = 0;
+    for (final element in sortedDashboard.entries) {
+      if (element.value >= 0) {
+        sortedDashboard.update(element.key, (value) => index);
+        index++;
+      }
+    }
+    //TODO: end remove when all users are on 4.50.1 or more
 
-    await checkForBroadcastChange();
+    _cards = sortedDashboard;
 
     getCardsToDisplay();
 
@@ -207,7 +225,7 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
     // (moved from getCardsToDisplay())
     await loadDataAndUpdateWidget();
 
-    return dashboard;
+    return sortedDashboard;
   }
 
   Future loadDataAndUpdateWidget() async {
@@ -254,13 +272,13 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
   void setAllCardsVisible() {
     _cards?.updateAll((key, value) {
       _settingsManager
-          .setInt(key, key.index - PreferencesFlag.broadcastCard.index)
+          .setInt(key, key.index - PreferencesFlag.aboutUsCard.index)
           .then((value) {
         if (!value) {
           Fluttertoast.showToast(msg: _appIntl.error);
         }
       });
-      return key.index - PreferencesFlag.broadcastCard.index;
+      return key.index - PreferencesFlag.aboutUsCard.index;
     });
 
     getCardsToDisplay();
@@ -286,23 +304,6 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
     }
 
     _analyticsService.logEvent(tag, "Restoring cards");
-  }
-
-  Future<void> checkForBroadcastChange() async {
-    final broadcastChange =
-        await _preferencesService.getString(PreferencesFlag.broadcastChange) ??
-            "";
-    if (broadcastChange != remoteConfigService.dashboardMessageEn) {
-      // Update pref
-      _preferencesService.setString(PreferencesFlag.broadcastChange,
-          remoteConfigService.dashboardMessageEn);
-      if (_cards != null && _cards![PreferencesFlag.broadcastCard]! < 0) {
-        _cards?.updateAll((key, value) {
-          return value >= 0 ? value + 1 : value;
-        });
-        _cards![PreferencesFlag.broadcastCard] = 0;
-      }
-    }
   }
 
   Future<List<Session>> futureToRunSessionProgressBar() async {

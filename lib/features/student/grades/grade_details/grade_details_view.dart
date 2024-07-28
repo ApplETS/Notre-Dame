@@ -58,78 +58,75 @@ class _GradesDetailsViewState extends State<GradesDetailsView>
         builder: (context, model, child) => BaseScaffold(
           safeArea: false,
           showBottomBar: false,
-          body: Material(
-            child: NestedScrollView(
-              headerSliverBuilder: (context, innerBoxScrolled) => [
-                SliverAppBar(
-                  backgroundColor:
-                      Theme.of(context).brightness == Brightness.light
-                          ? AppTheme.etsLightRed
-                          : BottomAppBarTheme.of(context).color,
-                  pinned: true,
-                  onStretchTrigger: () {
-                    return Future<void>.value();
-                  },
-                  titleSpacing: 0,
-                  leading: IconButton(
-                    icon: const Icon(Icons.arrow_back, color: Colors.white),
-                    onPressed: () => Navigator.of(context).pop(),
-                  ),
-                  title: Hero(
-                    tag:
-                        'course_acronym_${model.course.acronym}_${model.course.session}',
-                    child: Text(
-                      model.course.acronym,
-                      softWrap: false,
-                      overflow: TextOverflow.visible,
-                      style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                          color: Colors.white,
-                          fontSize: 25,
-                          fontWeight: FontWeight.bold),
-                    ),
+          body: NestedScrollView(
+            headerSliverBuilder: (context, innerBoxScrolled) => [
+              SliverAppBar(
+                backgroundColor:
+                    Theme.of(context).brightness == Brightness.light
+                        ? AppTheme.etsLightRed
+                        : BottomAppBarTheme.of(context).color,
+                pinned: true,
+                onStretchTrigger: () {
+                  return Future<void>.value();
+                },
+                titleSpacing: 0,
+                leading: IconButton(
+                  icon: const Icon(Icons.arrow_back, color: Colors.white),
+                  onPressed: () => Navigator.of(context).pop(),
+                ),
+                title: Hero(
+                  tag:
+                      'course_acronym_${model.course.acronym}_${model.course.session}',
+                  child: Text(
+                    model.course.acronym,
+                    softWrap: false,
+                    overflow: TextOverflow.visible,
+                    style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                        color: Colors.white,
+                        fontSize: 25,
+                        fontWeight: FontWeight.bold),
                   ),
                 ),
-                SliverToBoxAdapter(
-                  child: Center(
-                    child: Container(
-                      constraints: BoxConstraints(
-                        minWidth: MediaQuery.of(context).size.width,
-                      ),
-                      decoration: BoxDecoration(
-                        color: Theme.of(context).brightness == Brightness.light
-                            ? AppTheme.etsLightRed
-                            : AppTheme.darkTheme().cardColor,
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.only(bottom: 8.0),
-                        child: SafeArea(
-                          top: false,
-                          bottom: false,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              _buildClassInfo(model.course.title),
-                              if (model.course.teacherName != null)
-                                _buildClassInfo(AppIntl.of(context)!
-                                    .grades_teacher(model.course.teacherName!)),
+              ),
+              SliverToBoxAdapter(
+                child: Center(
+                  child: Container(
+                    constraints: BoxConstraints(
+                      minWidth: MediaQuery.of(context).size.width,
+                    ),
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).brightness == Brightness.light
+                          ? AppTheme.etsLightRed
+                          : AppTheme.darkTheme().cardColor,
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.only(bottom: 8.0),
+                      child: SafeArea(
+                        top: false,
+                        bottom: false,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            _buildClassInfo(model.course.title),
+                            if (model.course.teacherName != null)
                               _buildClassInfo(AppIntl.of(context)!
-                                  .grades_group_number(model.course.group)),
-                              _buildClassInfo(AppIntl.of(context)!
-                                  .credits_number(
-                                      model.course.numberOfCredits)),
-                            ],
-                          ),
+                                  .grades_teacher(model.course.teacherName!)),
+                            _buildClassInfo(AppIntl.of(context)!
+                                .grades_group_number(model.course.group)),
+                            _buildClassInfo(AppIntl.of(context)!
+                                .credits_number(model.course.numberOfCredits)),
+                          ],
                         ),
                       ),
                     ),
                   ),
                 ),
-              ],
-              body: SafeArea(
-                top: false,
-                bottom: false,
-                child: _buildGradeEvaluations(model),
               ),
+            ],
+            body: SafeArea(
+              top: false,
+              bottom: false,
+              child: _buildGradeEvaluations(model),
             ),
           ),
         ),
@@ -249,6 +246,9 @@ class _GradesDetailsViewState extends State<GradesDetailsView>
                           ),
                         ),
                       ]),
+                ),
+                const SizedBox(
+                  height: 8.0,
                 ),
                 Column(children: <Widget>[
                   for (final CourseEvaluation evaluation
