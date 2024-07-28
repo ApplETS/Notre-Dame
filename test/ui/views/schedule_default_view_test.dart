@@ -82,8 +82,7 @@ void main() {
             matchesGoldenFile(goldenFilePath("scheduleDefaultView_1")));
       });
 
-      /// TODO: add when https://github.com/SimformSolutionsPvtLtd/flutter_calendar_view/pull/343
-      /// is merged
+      /// TODO: add when flutter_calendar_view is at version 1.2.0
       // testWidgets("calendar view", (WidgetTester tester) async {
       //   tester.view.physicalSize = const Size(800, 1410);
       //
