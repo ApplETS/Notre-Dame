@@ -1,14 +1,15 @@
 package ca.etsmtl.applets.etsmobile.widgets.semesterProgress
 
+import android.app.PendingIntent
 import android.appwidget.AppWidgetManager
 import android.appwidget.AppWidgetProvider
-import android.content.Context
-import android.widget.RemoteViews
-import android.content.Intent
-import android.app.PendingIntent
 import android.content.ComponentName
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.widget.RemoteViews
+import android.widget.Toast
 import ca.etsmtl.applets.etsmobile.Constants
 import ca.etsmtl.applets.etsmobile.Utils
 import ca.etsmtl.applets.etsmobile.services.SignetsService
@@ -19,6 +20,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlinx.coroutines.withContext
+import java.security.KeyStore
 import java.util.Calendar
 import java.util.Date
 import kotlin.coroutines.resume
@@ -39,14 +41,21 @@ abstract class SemesterProgressWidgetBase : AppWidgetProvider() {
 
     fun getProgressInfo(context: Context) {
         CoroutineScope(Dispatchers.IO).launch {
-            // TODO : Check what to do when before a semester
             // TODO : Handle case when there's an error fetching the data
-            // TODO : Handle case when there's no semester
-            // TODO : Handle case when semesterProgress is initialized with default values. Need to fetch data again
-            if (semesterProgress.isPastEndDate()) {
-                semesterProgress = getSemesterProgress()
-            } else if (semesterProgress.isOngoing()) {
+            if (semesterProgress.isOngoing()){
                 semesterProgress.calculateProgress()
+            }
+            else{
+                val progress = getSemesterProgress()
+                if (progress == null) {
+                    withContext(Dispatchers.Main){
+                        Toast.makeText(context, "Error fetching semester progress", Toast.LENGTH_SHORT).show()
+                    }
+                    semesterProgress = SemesterProgress()
+                }
+                else{
+                    semesterProgress = progress
+                }
             }
 
             context.getSharedPreferences(Constants.SEMESTER_PROGRESS_PREFS_KEY, Context.MODE_PRIVATE).edit().apply {
@@ -111,29 +120,38 @@ abstract class SemesterProgressWidgetBase : AppWidgetProvider() {
         }
     }
 
-    private suspend fun getSemesterProgress(): SemesterProgress{
+    private suspend fun getSemesterProgress(): SemesterProgress? {
         Log.d("SemesterProgressWidget", "Fetching semester progress")
         val user = MonETSUser("username", "password")
+
         return withContext(Dispatchers.IO) {
             suspendCancellableCoroutine { continuation ->
+                var isResumed = false
                 SignetsService.shared.getSessions(user) { result ->
-                    if (result.isSuccess) {
-                        val sessions = result.getOrNull()
-                        val currentSession = getCurrentSemester(sessions)
-                        if (currentSession != null) {
-                            continuation.resume(SemesterProgress(currentSession))
-                        } else {
-                            continuation.resume(SemesterProgress())
-                        }
+                    if (isResumed) {
+                        return@getSessions
+                    }
+
+                    isResumed = true
+
+                    if (result.isFailure) {
+                        continuation.resume(null)
+                        return@getSessions
+                    }
+
+                    val sessions = result.getOrNull()
+                    val currentSemester = findSemester(sessions)
+                    if (currentSemester == null) {
+                        continuation.resume(null)
                     } else {
-                        continuation.resume(SemesterProgress())
+                        continuation.resume(SemesterProgress(currentSemester))
                     }
                 }
             }
         }
     }
 
-    private fun getCurrentSemester(semesters: List<Semester>?): Semester?{
+    private fun findSemester(semesters: List<Semester>?): Semester?{
         if (semesters.isNullOrEmpty()){
             return null
         }
@@ -148,18 +166,23 @@ abstract class SemesterProgressWidgetBase : AppWidgetProvider() {
         }
 
         // Check for upcoming semester that hasn't started yet
-        val lastSession = semesters.last()
-        if (doesUpcomingSemesterExist(lastSession)){
-            return lastSession
+        return getUpcomingSemester(semesters)
+    }
+
+    private fun getUpcomingSemester(semesters: List<Semester>?): Semester? {
+        if (semesters.isNullOrEmpty()) {
+            return null
+        }
+
+        val upcomingSemester = semesters.last()
+        val today = Calendar.getInstance().time
+        val startDate = Utils.parseStringAsDate(upcomingSemester.startDate!!)
+
+        if (today.before(startDate)) {
+            return upcomingSemester
         }
 
         return null
-    }
-
-    private fun doesUpcomingSemesterExist(semester: Semester): Boolean {
-        val today = Calendar.getInstance().time
-        val startDate = Utils.parseStringAsDate(semester.startDate!!)
-        return today.before(startDate)
     }
 
     private fun isTodayBetweenSemesterStartAndEnd(startDate: Date, endDate: Date): Boolean {
