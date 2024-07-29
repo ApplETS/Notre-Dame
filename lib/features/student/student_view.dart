@@ -3,12 +3,12 @@ import 'package:flutter/material.dart';
 
 // Package imports:
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:notredame/features/student/widgets/student_tutorial.dart';
 
 // Project imports:
-import 'package:notredame/features/app/widgets/base_scaffold.dart';
 import 'package:notredame/features/student/grades/grades_view.dart';
 import 'package:notredame/features/student/profile/profile_view.dart';
-import 'package:notredame/features/student/widgets/student_tutorial.dart';
+import 'package:notredame/features/app/widgets/base_scaffold.dart';
 
 class StudentView extends StatefulWidget {
   @override
@@ -63,8 +63,6 @@ class _StudentViewState extends State<StudentView> {
             ];
           },
           body: SafeArea(
-            top: false,
-            bottom: false,
             child: TabBarView(
               children: tabsView,
             ),
