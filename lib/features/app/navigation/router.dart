@@ -65,10 +65,10 @@ Route<dynamic> generateRoute(RouteSettings routeSettings) {
               rootPagesAnimation(animation, child),
           pageBuilder: (_, __, ___) => const ScheduleView());
     case RouterPaths.defaultSchedule:
-      return PageRouteBuilder(
+      return MaterialPageRoute(
           settings: RouteSettings(
               name: routeSettings.name, arguments: routeSettings.arguments),
-          pageBuilder: (_, __, ___) => ScheduleDefaultView(
+          builder: (_) => ScheduleDefaultView(
               sessionCode: routeSettings.arguments as String?));
     case RouterPaths.student:
       return PageRouteBuilder(
