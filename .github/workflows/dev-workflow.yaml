@@ -82,7 +82,7 @@ jobs:
           token: ${{ secrets.PTA }}
       - uses: ./.github/composite/flutter-setup
         with:
-          TARGET: matrix.target
+          TARGET: ${{ matrix.target }}
 
       # Build the application.
       - name: Build the application

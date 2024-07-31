@@ -24,14 +24,14 @@ runs:
         cache: true
 
     - name: Install Android dependencies
-      if: inputs.target == 'Android'
+      if: ${{ inputs.target == 'Android' }}
       uses: actions/setup-java@v4
       with:
         distribution: 'temurin'
         java-version: '17'
 
     - name: Install iOS dependencies
-      if: inputs.target == 'iOS'
+      if: ${{ inputs.target == 'iOS' }}
       shell: bash
       run: |
         flutter pub get
@@ -40,7 +40,7 @@ runs:
         flutter clean
  
     - name: Commit pod updates
-      if: inputs.target == 'iOS'
+      if: ${{ inputs.target == 'iOS' }}
       id: commit_pod_versions
       uses: stefanzweifel/git-auto-commit-action@v5
       with:
