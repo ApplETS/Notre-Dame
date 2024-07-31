@@ -6,7 +6,6 @@ outputs:
 runs:
   using: "composite"
   steps:
-    run: 
     # Check the format of the code and commit the formatted files.
     - name: Format files in lib and test directories
       shell: bash
