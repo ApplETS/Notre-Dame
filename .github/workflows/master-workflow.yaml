@@ -17,8 +17,6 @@ concurrency:
   group: ${{ github.ref }}
   cancel-in-progress: true
 env:
-  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-  MAPS_API_KEY: ${{ secrets.MAPS_API_KEY }}
   APP_NAME: 'notre_dame'
 
 jobs:
@@ -35,9 +33,6 @@ jobs:
       - uses: ./.github/composite/tag-validation
         id: tag_validation
 
-  ##############################################################
-  # Testing
-  ##############################################################
   testing:
     name: Tests and checks
     runs-on: ubuntu-latest

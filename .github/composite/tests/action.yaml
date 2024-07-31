@@ -8,13 +8,15 @@ inputs:
 runs:
   using: "composite"
   steps:
+    - name: Generate mocking files
+      shell: bash
+      run: dart run build_runner build
+
     # Check the format of the code and commit the formatted files.
     - name: Format files in lib and test directories
       if: ${{ inputs.FORMAT == true }}
       shell: bash
-      run: |
-        dart run build_runner build
-        dart format lib test
+      run: dart format lib test
 
     - name: Commit formatted files
       if: ${{ inputs.FORMAT == true }}
