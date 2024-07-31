@@ -1,5 +1,14 @@
 name: "Flutter setup"
 description: "Setup flutter"
+inputs:
+  ENCRYPTED_SIGNETS_API_CERT_PASSWORD:
+    required: true
+  ENCRYPTED_GOOGLE_SERVICE_PASSWORD:
+    required: true
+  ENCRYPTED_ETSMOBILE_KEYSTORE_PASSWORD:
+    required: true
+  ENCRYPTED_KEYSTORE_PROPERTIES_PASSWORD:
+    required: true
 
 runs:
   using: "composite"
@@ -13,16 +22,21 @@ runs:
         flutter-version: '3.19.x'
         channel: 'stable'
         cache: true
-    - run: flutter doctor
+    - name: Run flutter doctor
+      shell: bash
+      run: flutter doctor
     - name: Decrypt SignETS certificate and Google Services files
+      shell: bash
       run: |
         chmod +x ./scripts/decrypt.sh
         ./scripts/decrypt.sh
       env:
-        ENCRYPTED_SIGNETS_API_CERT_PASSWORD: ${{ secrets.ENCRYPTED_SIGNETS_API_CERT_PASSWORD }}
-        ENCRYPTED_GOOGLE_SERVICE_PASSWORD: ${{ secrets.ENCRYPTED_GOOGLE_SERVICE_PASSWORD }}
-        ENCRYPTED_ETSMOBILE_KEYSTORE_PASSWORD: ${{ secrets.ENCRYPTED_ETSMOBILE_KEYSTORE_PASSWORD }}
-        ENCRYPTED_KEYSTORE_PROPERTIES_PASSWORD: ${{ secrets.ENCRYPTED_KEYSTORE_PROPERTIES_PASSWORD }}
+        ENCRYPTED_SIGNETS_API_CERT_PASSWORD: ${{ inputs.ENCRYPTED_SIGNETS_API_CERT_PASSWORD }}
+        ENCRYPTED_GOOGLE_SERVICE_PASSWORD: ${{ inputs.ENCRYPTED_GOOGLE_SERVICE_PASSWORD }}
+        ENCRYPTED_ETSMOBILE_KEYSTORE_PASSWORD: ${{ inputs.ENCRYPTED_ETSMOBILE_KEYSTORE_PASSWORD }}
+        ENCRYPTED_KEYSTORE_PROPERTIES_PASSWORD: ${{ inputs.ENCRYPTED_KEYSTORE_PROPERTIES_PASSWORD }}
 
     # Get flutter dependencies.
-    - run: flutter pub get
+    - name: Get flutter dependencies
+      shell: bash
+      run: flutter pub get
