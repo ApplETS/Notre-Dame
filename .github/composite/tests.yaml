@@ -1,0 +1,59 @@
+name: "Tests and checks"
+
+runs:
+  using: "composite"
+  steps:
+    run: dart run build_runner build
+    # Check the format of the code and commit the formatted files.
+    - name: Format files in lib and test directories
+      run: dart format lib test
+    - name: Commit formatted files
+      id: commit_formatted
+      uses: stefanzweifel/git-auto-commit-action@v5
+      with:
+        file_pattern: "*.dart"
+        commit_user_name: github-actions[bot]
+        commit_user_email: 41898282+github-actions[bot]@users.noreply.github.com
+        commit_message: "[BOT] Applying format."
+        add_options: '-u'
+    # Fail workflow, because new commit will execute workflow
+    - if: ${{ steps.commit_formatted.outputs.changes_detected == 'true' }}
+      name: Fail workflow if linting commit
+      run: |
+        echo 'Linting applied, running bot commit workflow'
+        exit 1
+    # Check if the code has any errors/warnings
+    - name: Analyze code
+      run: flutter analyze
+    # Run the tests with --update-goldens.
+    - name: Run tests
+      run: flutter test --coverage --update-goldens
+
+    # Commit and push the goldens files updated.
+    - name: Commit golden files
+      id: commit_golden
+      uses: stefanzweifel/git-auto-commit-action@v5
+      with:
+        file_pattern: test/*
+        commit_user_name: github-actions[bot]
+        commit_user_email: 41898282+github-actions[bot]@users.noreply.github.com
+        commit_message: '[BOT] Update golden files'
+
+    # Fail workflow, because new commit will execute workflow
+    - if: ${{ steps.commit_golden.outputs.changes_detected == 'true' }}
+      name: Fail workflow if golden commit
+      run: |
+        echo 'Golden files changes commit, running bot commit workflow'
+        exit 1
+    - name: Upload coverage file
+        uses: actions/upload-artifact@v4
+        with:
+          name: lcov.info
+          path: ${{ github.workspace }}/coverage/lcov.info
+      - name: Get code coverage
+        id: coverage
+        run: |
+          chmod +x ./scripts/determine_code_coverage.sh
+          export COV="$(./scripts/determine_code_coverage.sh coverage/lcov.info)"
+          echo "Coverage detected is: $COV"
+          echo "percentage=$COV" >> $GITHUB_OUTPUT
