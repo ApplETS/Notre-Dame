@@ -1,7 +1,4 @@
 name: "Tests and checks"
-outputs:
-  coverage:
-    value: 
 
 runs:
   using: "composite"
