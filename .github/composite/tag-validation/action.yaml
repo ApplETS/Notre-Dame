@@ -25,6 +25,7 @@ runs:
         tag: ${{ steps.split.outputs._0 }}
     - if: ${{ steps.checkTag.outputs.exists == 'true' }}
       name: Post comment on PR and fail.
+      shell: bash
       run: |
         echo '${{ steps.split.outputs._0 }} already exists, please update the pubspec version.'
         exit 1

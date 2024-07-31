@@ -26,8 +26,6 @@ jobs:
   testing:
     name: Tests and checks
     runs-on: ubuntu-latest
-    outputs:
-      coverage: ${{ steps.coverage.outputs.percentage }}
     steps:
       - uses: actions/checkout@v4
         with:

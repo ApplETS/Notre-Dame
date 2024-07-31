@@ -1,12 +1,18 @@
 name: "Tests and checks"
+outputs:
+  coverage:
+    value: 
 
 runs:
   using: "composite"
   steps:
-    run: dart run build_runner build
+    run: 
     # Check the format of the code and commit the formatted files.
     - name: Format files in lib and test directories
-      run: dart format lib test
+      shell: bash
+      run: |
+        dart run build_runner build
+        dart format lib test
     - name: Commit formatted files
       id: commit_formatted
       uses: stefanzweifel/git-auto-commit-action@v5
@@ -19,14 +25,17 @@ runs:
     # Fail workflow, because new commit will execute workflow
     - if: ${{ steps.commit_formatted.outputs.changes_detected == 'true' }}
       name: Fail workflow if linting commit
+      shell: bash
       run: |
         echo 'Linting applied, running bot commit workflow'
         exit 1
     # Check if the code has any errors/warnings
     - name: Analyze code
+      shell: bash
       run: flutter analyze
     # Run the tests with --update-goldens.
     - name: Run tests
+      shell: bash
       run: flutter test --coverage --update-goldens
 
     # Commit and push the goldens files updated.
@@ -42,6 +51,7 @@ runs:
     # Fail workflow, because new commit will execute workflow
     - if: ${{ steps.commit_golden.outputs.changes_detected == 'true' }}
       name: Fail workflow if golden commit
+      shell: bash
       run: |
         echo 'Golden files changes commit, running bot commit workflow'
         exit 1
@@ -52,6 +62,7 @@ runs:
           path: ${{ github.workspace }}/coverage/lcov.info
       - name: Get code coverage
         id: coverage
+        shell: bash
         run: |
           chmod +x ./scripts/determine_code_coverage.sh
           export COV="$(./scripts/determine_code_coverage.sh coverage/lcov.info)"
