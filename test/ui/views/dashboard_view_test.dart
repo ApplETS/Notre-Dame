@@ -68,7 +68,7 @@ void main() {
   final List<CourseActivity> activities = [gen101, gen102, gen103];
 
   // Cards
-  Map<PreferencesFlag, int> dashboard = {
+  final Map<PreferencesFlag, int> dashboard = {
     PreferencesFlag.aboutUsCard: 0,
     PreferencesFlag.scheduleCard: 1,
     PreferencesFlag.progressBarCard: 2,
