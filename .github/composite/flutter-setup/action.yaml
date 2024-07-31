@@ -24,14 +24,14 @@ runs:
         cache: true
 
     - name: Install Android dependencies
-      if: matrix.target == 'Android'
+      if: inputs.target == 'Android'
       uses: actions/setup-java@v4
       with:
         distribution: 'temurin'
         java-version: '17'
 
     - name: Install iOS dependencies
-      if: matrix.target == 'iOS'
+      if: inputs.target == 'iOS'
       shell: bash
       run: |
         flutter pub get
@@ -40,7 +40,7 @@ runs:
         flutter clean
  
     - name: Commit pod updates
-      if: matrix.target == 'iOS'
+      if: inputs.target == 'iOS'
       id: commit_pod_versions
       uses: stefanzweifel/git-auto-commit-action@v5
       with:
@@ -51,7 +51,7 @@ runs:
         add_options: '-u'
 
     # Fail workflow, because new commit will execute workflow
-    - if: ${{ matrix.target == 'iOS' && steps.commit_pod_versions.outputs.changes_detected == 'true' }}
+    - if: ${{ inputs.target == 'iOS' && steps.commit_pod_versions.outputs.changes_detected == 'true' }}
       name: Fail workflow if pod version change
       shell: bash
       run: |

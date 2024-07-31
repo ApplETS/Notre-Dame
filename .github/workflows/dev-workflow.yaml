@@ -33,6 +33,7 @@ jobs:
           ENCRYPTED_ETSMOBILE_KEYSTORE_PASSWORD: ${{ secrets.ENCRYPTED_ETSMOBILE_KEYSTORE_PASSWORD }}
           ENCRYPTED_KEYSTORE_PROPERTIES_PASSWORD: ${{ secrets.ENCRYPTED_KEYSTORE_PROPERTIES_PASSWORD }}
       - uses: ./.github/composite/tests
+
   coverage:
     name: Update coverage
     needs:
@@ -43,16 +44,12 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: lcov.info
-      # Comment coverage report
       - name: Comment the coverage of the PR
         uses: romeovs/lcov-reporter-action@v0.4.0
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           lcov-file: ./lcov.info
 
-  ##############################################################
-  # Build
-  ##############################################################
   build:
     name: Create ${{ matrix.target }} build
     runs-on: ${{ matrix.os }}
@@ -83,11 +80,6 @@ jobs:
         with:
           ref: ${{ github.head_ref }}
           token: ${{ secrets.PTA }}
-      - uses: subosito/flutter-action@v2
-        with:
-          flutter-version: '3.19.x'
-          channel: 'stable'
-          cache: true
       - uses: ./.github/composite/flutter-setup
         with:
           TARGET: matrix.target

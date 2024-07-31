@@ -1,15 +1,23 @@
 name: "Tests and checks"
+inputs:
+  FORMAT:
+    description: "If the project needs formatting"
+    required: false
+    default: true
 
 runs:
   using: "composite"
   steps:
     # Check the format of the code and commit the formatted files.
     - name: Format files in lib and test directories
+      if: ${{ inputs.FORMAT == true }}
       shell: bash
       run: |
         dart run build_runner build
         dart format lib test
+
     - name: Commit formatted files
+      if: ${{ inputs.FORMAT == true }}
       id: commit_formatted
       uses: stefanzweifel/git-auto-commit-action@v5
       with:
@@ -18,44 +26,30 @@ runs:
         commit_user_email: 41898282+github-actions[bot]@users.noreply.github.com
         commit_message: "[BOT] Applying format."
         add_options: '-u'
+
     # Fail workflow, because new commit will execute workflow
-    - if: ${{ steps.commit_formatted.outputs.changes_detected == 'true' }}
+    - if: ${{ inputs.FORMAT == true && steps.commit_formatted.outputs.changes_detected == 'true' }}
       name: Fail workflow if linting commit
       shell: bash
       run: |
         echo 'Linting applied, running bot commit workflow'
         exit 1
+
     # Check if the code has any errors/warnings
     - name: Analyze code
       shell: bash
       run: flutter analyze
-    # Run the tests with --update-goldens.
+
     - name: Run tests
       shell: bash
-      run: flutter test --coverage --update-goldens
+      run: flutter test --coverage
 
-    # Commit and push the goldens files updated.
-    - name: Commit golden files
-      id: commit_golden
-      uses: stefanzweifel/git-auto-commit-action@v5
-      with:
-        file_pattern: test/*
-        commit_user_name: github-actions[bot]
-        commit_user_email: 41898282+github-actions[bot]@users.noreply.github.com
-        commit_message: '[BOT] Update golden files'
-
-    # Fail workflow, because new commit will execute workflow
-    - if: ${{ steps.commit_golden.outputs.changes_detected == 'true' }}
-      name: Fail workflow if golden commit
-      shell: bash
-      run: |
-        echo 'Golden files changes commit, running bot commit workflow'
-        exit 1
     - name: Upload coverage file
       uses: actions/upload-artifact@v4
       with:
         name: lcov.info
         path: ${{ github.workspace }}/coverage/lcov.info
+
     - name: Get code coverage
       shell: bash
       run: |

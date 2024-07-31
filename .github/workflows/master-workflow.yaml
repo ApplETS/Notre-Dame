@@ -45,52 +45,15 @@ jobs:
       coverage: ${{ steps.coverage.outputs.percentage }}
     steps:
       - uses: actions/checkout@v4
+      - uses: ./.github/composite/flutter-setup
         with:
-          ref: ${{ github.head_ref }}
-          token: ${{ secrets.PTA }}
-      - uses: actions/setup-java@v4
-        with:
-          distribution: 'temurin'
-          java-version: '17'
-      - uses: subosito/flutter-action@v2
-        with:
-          flutter-version: '3.19.x'
-          channel: 'stable'
-          cache: true
-      - run: flutter doctor
-      - name: Decrypt SignETS certificate and Google Services files
-        run: |
-          chmod +x ./scripts/decrypt.sh
-          ./scripts/decrypt.sh
-        env:
           ENCRYPTED_SIGNETS_API_CERT_PASSWORD: ${{ secrets.ENCRYPTED_SIGNETS_API_CERT_PASSWORD }}
           ENCRYPTED_GOOGLE_SERVICE_PASSWORD: ${{ secrets.ENCRYPTED_GOOGLE_SERVICE_PASSWORD }}
-
-      # Get flutter dependencies.
-      - run: |
-          flutter pub get
-          dart run build_runner build --delete-conflicting-outputs
-
-      # Check if the code has any errors/warnings
-      - name: Analyze code
-        run: flutter analyze
-
-      # Run the tests.
-      - name: Run tests
-        run: flutter test --coverage
-
-      - name: Upload coverage file
-        uses: actions/upload-artifact@v4
+          ENCRYPTED_ETSMOBILE_KEYSTORE_PASSWORD: ${{ secrets.ENCRYPTED_ETSMOBILE_KEYSTORE_PASSWORD }}
+          ENCRYPTED_KEYSTORE_PROPERTIES_PASSWORD: ${{ secrets.ENCRYPTED_KEYSTORE_PROPERTIES_PASSWORD }}
+      - uses: ./.github/composite/tests
         with:
-          name: lcov.info
-          path: ${{ github.workspace }}/coverage/lcov.info
-      - name: Get code coverage
-        id: coverage
-        run: |
-          chmod +x ./scripts/determine_code_coverage.sh
-          export COV="$(./scripts/determine_code_coverage.sh coverage/lcov.info)"
-          echo "Coverage detected is: $COV"
-          echo "percentage=$COV" >> $GITHUB_OUTPUT
+          FORMAT: false
   coverage:
     name: Update coverage
     needs:
@@ -142,41 +105,9 @@ jobs:
       - testing
     steps:
       - uses: actions/checkout@v4
-      - uses: subosito/flutter-action@v2
+      - uses: ./.github/composite/flutter-setup
         with:
-          flutter-version: '3.19.x'
-          channel: 'stable'
-          cache: true
-      - name: Install Android dependencies
-        if: matrix.target == 'Android'
-        uses: actions/setup-java@v4
-        with:
-          java-version: '17'
-          distribution: 'temurin'
-      - run: flutter doctor -v
-      - name: Install iOS dependencies
-        if: matrix.target == 'iOS'
-        run: |
-          flutter pub get
-          dart run build_runner build --delete-conflicting-outputs
-          cd ios
-          pod install
-          flutter clean
-
-      # Get dependencies and decrypt needed files.
-      - run: |
-          flutter pub get
-          dart run build_runner build --delete-conflicting-outputs
-
-      - name: Decrypt SignETS certificate and Google Services files
-        run: |
-          chmod +x ./scripts/decrypt.sh
-          ./scripts/decrypt.sh
-        env:
-          ENCRYPTED_SIGNETS_API_CERT_PASSWORD: ${{ secrets.ENCRYPTED_SIGNETS_API_CERT_PASSWORD }}
-          ENCRYPTED_GOOGLE_SERVICE_PASSWORD: ${{ secrets.ENCRYPTED_GOOGLE_SERVICE_PASSWORD }}
-          ENCRYPTED_ETSMOBILE_KEYSTORE_PASSWORD: ${{ secrets.ENCRYPTED_ETSMOBILE_KEYSTORE_PASSWORD }}
-          ENCRYPTED_KEYSTORE_PROPERTIES_PASSWORD: ${{ secrets.ENCRYPTED_KEYSTORE_PROPERTIES_PASSWORD }}
+          TARGET: matrix.target
 
       # Build the application.
       - name: Build the application
