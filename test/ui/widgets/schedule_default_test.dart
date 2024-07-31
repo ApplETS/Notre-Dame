@@ -16,10 +16,18 @@ void main() {
 
     testWidgets('Displays no schedule message when there are no events',
         (WidgetTester tester) async {
-      await tester.pumpWidget(
-          localizedWidget(child: const ScheduleDefault(calendarEvents: [])));
+      await tester.pumpWidget(localizedWidget(
+          child: const ScheduleDefault(calendarEvents: [], loaded: true)));
       await tester.pumpAndSettle();
       expect(find.text(intl.no_schedule_available), findsOneWidget);
+    });
+
+    testWidgets('Displays no empty schedule message when loading',
+        (WidgetTester tester) async {
+      await tester.pumpWidget(localizedWidget(
+          child: const ScheduleDefault(calendarEvents: [], loaded: false)));
+      await tester.pumpAndSettle();
+      expect(find.text(intl.no_schedule_available), findsNothing);
     });
   });
 }
