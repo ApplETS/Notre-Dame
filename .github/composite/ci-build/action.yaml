@@ -1,0 +1,53 @@
+name: "CI Build"
+description: "Build the application on the CI"
+inputs:
+  target:
+    description: The target OS {iOS, Android}
+    required: true
+  build-target:
+    description: The build target {ios or apk}
+    required: true
+  build-args:
+    description: The arguments for flutter build
+    required: false
+  build-path:
+    required: true
+  asset-extension:
+    required: true
+    default: zip
+  asset-content-type:
+    required: true
+    default: application/zip
+  github-api-token:
+    description: the Github API token
+    required: true
+  app-name:
+    required: true
+  
+runs:
+  using: "composite"
+  steps:
+    - name: Build the application
+      run: flutter build -v ${{ inputs.build-target }} ${{ inputs.build-args }} --release --dart-define=GH_API_TOKEN=${{ inputs.github-api-token }}
+
+    - name: Set environment
+      echo "APP_PATH=${{ github.workspace }}/${{ inputs.app-name }}_${{ inputs.target }}.${{ inputs.asset-extension }}" >> $GITHUB_ENV
+      echo $APP_PATH
+    
+    - name: Rename Android build
+      if: inputs.target == 'Android'
+      run: mv app-release.${{ inputs.asset-extension }} $APP_PATH
+      working-directory: ${{ inputs.build-path }}
+
+    - name: Compress iOS build
+      if: inputs.target == 'iOS'
+      run: |
+        mv Runner.app ${{ inputs.app-name }}.app
+        ditto -c -k --sequesterRsrc --keepParent ${{ inputs.app-name }}.app $APP_PATH
+      working-directory: ${{ inputs.build-path }}
+
+    - name: Upload build artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: ${{ inputs.target }}
+        path: $APP_PATH

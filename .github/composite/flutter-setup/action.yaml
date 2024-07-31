@@ -9,6 +9,12 @@ inputs:
     required: true
   ENCRYPTED_KEYSTORE_PROPERTIES_PASSWORD:
     required: true
+  ENCRYPTED_ANDROID_SERVICE_ACCOUNT_CREDENTIALS_PASSWORD:
+    required: false
+  ENCRYPTED_IOS_SERVICE_ACCOUNT_CREDENTIALS_PASSWORD:
+    required: false
+  ENCRYPTED_IOS_MATCHFILE_PASSWORD:
+    required: false
   TARGET:
     description: "Build target: {Android, iOS}"
     required: false
@@ -23,6 +29,11 @@ runs:
         channel: 'stable'
         cache: true
 
+    # Get flutter dependencies.
+    - name: Get flutter dependencies
+      shell: bash
+      run: flutter pub get
+
     - name: Install Android dependencies
       if: ${{ inputs.target == 'Android' }}
       uses: actions/setup-java@v4
@@ -34,11 +45,9 @@ runs:
       if: ${{ inputs.target == 'iOS' }}
       shell: bash
       run: |
-        flutter pub get
         cd ios
         pod update
-        flutter clean
- 
+
     - name: Commit pod updates
       if: ${{ inputs.target == 'iOS' }}
       id: commit_pod_versions
@@ -72,8 +81,6 @@ runs:
         ENCRYPTED_GOOGLE_SERVICE_PASSWORD: ${{ inputs.ENCRYPTED_GOOGLE_SERVICE_PASSWORD }}
         ENCRYPTED_ETSMOBILE_KEYSTORE_PASSWORD: ${{ inputs.ENCRYPTED_ETSMOBILE_KEYSTORE_PASSWORD }}
         ENCRYPTED_KEYSTORE_PROPERTIES_PASSWORD: ${{ inputs.ENCRYPTED_KEYSTORE_PROPERTIES_PASSWORD }}
-
-    # Get flutter dependencies.
-    - name: Get flutter dependencies
-      shell: bash
-      run: flutter pub get
+        ENCRYPTED_ANDROID_SERVICE_ACCOUNT_CREDENTIALS_PASSWORD: ${{ inputs.ENCRYPTED_ANDROID_SERVICE_ACCOUNT_CREDENTIALS_PASSWORD }}
+        ENCRYPTED_IOS_SERVICE_ACCOUNT_CREDENTIALS_PASSWORD: ${{ inputs.ENCRYPTED_IOS_SERVICE_ACCOUNT_CREDENTIALS_PASSWORD }}
+        ENCRYPTED_IOS_MATCHFILE_PASSWORD: ${{ inputs.ENCRYPTED_IOS_MATCHFILE_PASSWORD }}

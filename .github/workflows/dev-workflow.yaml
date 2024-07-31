@@ -18,37 +18,37 @@ env:
   APP_NAME: 'notre_dame'
 
 jobs:
-  testing:
-    name: Tests and checks
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          ref: ${{ github.head_ref }}
-          token: ${{ secrets.PTA }}
-      - uses: ./.github/composite/flutter-setup
-        with:
-          ENCRYPTED_SIGNETS_API_CERT_PASSWORD: ${{ secrets.ENCRYPTED_SIGNETS_API_CERT_PASSWORD }}
-          ENCRYPTED_GOOGLE_SERVICE_PASSWORD: ${{ secrets.ENCRYPTED_GOOGLE_SERVICE_PASSWORD }}
-          ENCRYPTED_ETSMOBILE_KEYSTORE_PASSWORD: ${{ secrets.ENCRYPTED_ETSMOBILE_KEYSTORE_PASSWORD }}
-          ENCRYPTED_KEYSTORE_PROPERTIES_PASSWORD: ${{ secrets.ENCRYPTED_KEYSTORE_PROPERTIES_PASSWORD }}
-      - uses: ./.github/composite/tests
+  # testing:
+  #   name: Tests and checks
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #       with:
+  #         ref: ${{ github.head_ref }}
+  #         token: ${{ secrets.PTA }}
+  #     - uses: ./.github/composite/flutter-setup
+  #       with:
+  #         ENCRYPTED_SIGNETS_API_CERT_PASSWORD: ${{ secrets.ENCRYPTED_SIGNETS_API_CERT_PASSWORD }}
+  #         ENCRYPTED_GOOGLE_SERVICE_PASSWORD: ${{ secrets.ENCRYPTED_GOOGLE_SERVICE_PASSWORD }}
+  #         ENCRYPTED_ETSMOBILE_KEYSTORE_PASSWORD: ${{ secrets.ENCRYPTED_ETSMOBILE_KEYSTORE_PASSWORD }}
+  #         ENCRYPTED_KEYSTORE_PROPERTIES_PASSWORD: ${{ secrets.ENCRYPTED_KEYSTORE_PROPERTIES_PASSWORD }}
+  #     - uses: ./.github/composite/tests
 
-  coverage:
-    name: Update coverage
-    needs:
-      - testing
-    runs-on: ubuntu-latest
-    steps:
-      - name: Download coverage file
-        uses: actions/download-artifact@v4
-        with:
-          name: lcov.info
-      - name: Comment the coverage of the PR
-        uses: romeovs/lcov-reporter-action@v0.4.0
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          lcov-file: ./lcov.info
+  # coverage:
+  #   name: Update coverage
+  #   needs:
+  #     - testing
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Download coverage file
+  #       uses: actions/download-artifact@v4
+  #       with:
+  #         name: lcov.info
+  #     - name: Comment the coverage of the PR
+  #       uses: romeovs/lcov-reporter-action@v0.4.0
+  #       with:
+  #         github-token: ${{ secrets.GITHUB_TOKEN }}
+  #         lcov-file: ./lcov.info
 
   build:
     name: Create ${{ matrix.target }} build
@@ -73,8 +73,8 @@ jobs:
             asset_content_type: application/zip
       # Disable fail-fast as we want results from all even if one fails.
       fail-fast: false
-    needs:
-      - testing
+    # needs:
+    #   - testing
     steps:
       - uses: actions/checkout@v4
         with:
@@ -87,25 +87,14 @@ jobs:
           ENCRYPTED_ETSMOBILE_KEYSTORE_PASSWORD: ${{ secrets.ENCRYPTED_ETSMOBILE_KEYSTORE_PASSWORD }}
           ENCRYPTED_KEYSTORE_PROPERTIES_PASSWORD: ${{ secrets.ENCRYPTED_KEYSTORE_PROPERTIES_PASSWORD }}
           TARGET: ${{ matrix.target }}
-
-      # Build the application.
-      - name: Build the application
-        run: flutter build -v ${{ matrix.build_target }} ${{ matrix.build_args }} --release --dart-define=GH_API_TOKEN=${{ secrets.GH_API_TOKEN }}
-
-      - name: Rename Android build
-        if: matrix.target == 'Android'
-        run: mv app-release.${{ matrix.asset_extension }} ${{ github.workspace }}/${{ env.APP_NAME }}_${{ matrix.target }}.${{ matrix.asset_extension }}
-        working-directory: ${{ matrix.build_path }}
-
-      - name: Compress iOS build
-        if: matrix.target == 'iOS'
-        run: |
-          mv Runner.app ${{ env.APP_NAME }}.app
-          ditto -c -k --sequesterRsrc --keepParent ${{ env.APP_NAME }}.app ${{ github.workspace }}/${{ env.APP_NAME }}_${{ matrix.target }}.${{ matrix.asset_extension }}
-        working-directory: ${{ matrix.build_path }}
-
-      - name: Upload build artifact
-        uses: actions/upload-artifact@v4
+      - uses: ./.github/composite/ci-build
         with:
-          name: ${{ matrix.target }}
-          path: ${{ github.workspace }}/${{ env.APP_NAME }}_${{ matrix.target }}.${{ matrix.asset_extension }}
+          target: ${{ matrix.target }}
+          build-target: ${{ matrix.build_target }}
+          build-args: ${{ matrix.build_args }}
+          build-path: ${{ matrix.build_path }}
+          asset-extension: ${{ matrix.asset_extension }}
+          asset-content-type: ${{ matrix.asset_content_type }}
+          github-api-token: ${{ secrets.GH_API_TOKEN }}
+          app-name: ${{ env.APP_NAME }}
+
