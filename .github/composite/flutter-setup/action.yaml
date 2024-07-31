@@ -9,22 +9,59 @@ inputs:
     required: true
   ENCRYPTED_KEYSTORE_PROPERTIES_PASSWORD:
     required: true
+  TARGET:
+    description: "Build target: {Android, iOS}"
+    required: false
+    default: 'Android'
 
 runs:
   using: "composite"
   steps:
-    - uses: actions/setup-java@v4
-      with:
-        distribution: 'temurin'
-        java-version: '17'
     - uses: subosito/flutter-action@v2
       with:
         flutter-version: '3.19.x'
         channel: 'stable'
         cache: true
+
+    - name: Install Android dependencies
+      if: matrix.target == 'Android'
+      uses: actions/setup-java@v4
+      with:
+        distribution: 'temurin'
+        java-version: '17'
+
+    - name: Install iOS dependencies
+      if: matrix.target == 'iOS'
+      shell: bash
+      run: |
+        flutter pub get
+        cd ios
+        pod update
+        flutter clean
+ 
+    - name: Commit pod updates
+      if: matrix.target == 'iOS'
+      id: commit_pod_versions
+      uses: stefanzweifel/git-auto-commit-action@v5
+      with:
+        file_pattern: "ios/*"
+        commit_user_name: github-actions[bot]
+        commit_user_email: 41898282+github-actions[bot]@users.noreply.github.com
+        commit_message: "[BOT] Applying pod update."
+        add_options: '-u'
+
+    # Fail workflow, because new commit will execute workflow
+    - if: ${{ matrix.target == 'iOS' && steps.commit_pod_versions.outputs.changes_detected == 'true' }}
+      name: Fail workflow if pod version change
+      shell: bash
+      run: |
+        echo 'Pod update applied, running bot commit workflow'
+        exit 1
+
     - name: Run flutter doctor
       shell: bash
       run: flutter doctor
+
     - name: Decrypt SignETS certificate and Google Services files
       shell: bash
       run: |
