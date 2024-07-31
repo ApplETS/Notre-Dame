@@ -52,12 +52,11 @@ runs:
         echo 'Golden files changes commit, running bot commit workflow'
         exit 1
     - name: Upload coverage file
-        uses: actions/upload-artifact@v4
-        with:
-          name: lcov.info
-          path: ${{ github.workspace }}/coverage/lcov.info
+      uses: actions/upload-artifact@v4
+      with:
+        name: lcov.info
+        path: ${{ github.workspace }}/coverage/lcov.info
     - name: Get code coverage
-      id: coverage
       shell: bash
       run: |
         chmod +x ./scripts/determine_code_coverage.sh
