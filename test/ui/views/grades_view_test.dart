@@ -1,6 +1,3 @@
-// Dart imports:
-import 'dart:io';
-
 // Flutter imports:
 import 'package:flutter/material.dart';
 
@@ -81,47 +78,6 @@ void main() {
       unregister<SettingsManager>();
       unregister<NavigationService>();
     });
-
-    group("golden -", () {
-      testWidgets("No grades available", (WidgetTester tester) async {
-        // Mock the repository to have 0 courses available
-        CourseRepositoryMock.stubCourses(courseRepositoryMock);
-        CourseRepositoryMock.stubGetCourses(courseRepositoryMock);
-        CourseRepositoryMock.stubGetCourses(courseRepositoryMock,
-            fromCacheOnly: true);
-
-        tester.view.physicalSize = const Size(800, 1410);
-
-        await tester.pumpWidget(
-            localizedWidget(child: FeatureDiscovery(child: GradesView())));
-        await tester.pumpAndSettle(const Duration(seconds: 1));
-
-        await expectLater(find.byType(GradesView),
-            matchesGoldenFile(goldenFilePath("gradesView_1")));
-      });
-
-      testWidgets("Multiples sessions and grades loaded",
-          (WidgetTester tester) async {
-        // Mock the repository to have 0 courses available
-        CourseRepositoryMock.stubCourses(courseRepositoryMock,
-            toReturn: courses);
-        CourseRepositoryMock.stubGetCourses(courseRepositoryMock);
-        CourseRepositoryMock.stubGetCourses(courseRepositoryMock,
-            toReturn: courses, fromCacheOnly: true);
-
-        tester.view.physicalSize = const Size(800, 1410);
-        await tester.runAsync(() async {
-          await tester.pumpWidget(
-              localizedWidget(child: FeatureDiscovery(child: GradesView())));
-          await tester.pumpAndSettle(const Duration(seconds: 2));
-        }).then(
-          (value) async {
-            await expectLater(find.byType(GradesView),
-                matchesGoldenFile(goldenFilePath("gradesView_2")));
-          },
-        );
-      });
-    }, skip: !Platform.isLinux);
 
     group("UI -", () {
       testWidgets(

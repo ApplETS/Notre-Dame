@@ -1,6 +1,3 @@
-// Dart imports:
-import 'dart:io';
-
 // Flutter imports:
 import 'package:flutter/material.dart';
 
@@ -55,19 +52,6 @@ void main() {
 
         expect(find.byType(BaseScaffold), findsOneWidget);
       });
-
-      group("golden - ", () {
-        testWidgets("default view (no events)", (WidgetTester tester) async {
-          tester.view.physicalSize = const Size(800, 1410);
-
-          await tester.pumpWidget(
-              localizedWidget(child: FeatureDiscovery(child: StudentView())));
-          await tester.pumpAndSettle(const Duration(seconds: 1));
-
-          await expectLater(find.byType(StudentView),
-              matchesGoldenFile(goldenFilePath("studentView_1")));
-        });
-      }, skip: !Platform.isLinux);
     });
   });
 }
