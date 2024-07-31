@@ -56,11 +56,11 @@ runs:
         with:
           name: lcov.info
           path: ${{ github.workspace }}/coverage/lcov.info
-      - name: Get code coverage
-        id: coverage
-        shell: bash
-        run: |
-          chmod +x ./scripts/determine_code_coverage.sh
-          export COV="$(./scripts/determine_code_coverage.sh coverage/lcov.info)"
-          echo "Coverage detected is: $COV"
-          echo "percentage=$COV" >> $GITHUB_OUTPUT
+    - name: Get code coverage
+      id: coverage
+      shell: bash
+      run: |
+        chmod +x ./scripts/determine_code_coverage.sh
+        export COV="$(./scripts/determine_code_coverage.sh coverage/lcov.info)"
+        echo "Coverage detected is: $COV"
+        echo "percentage=$COV" >> $GITHUB_OUTPUT
