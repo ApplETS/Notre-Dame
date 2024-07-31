@@ -32,7 +32,7 @@ jobs:
       version: ${{ steps.tag_validation.outputs.version }}
     steps:
       - uses: actions/checkout@v4
-      - uses: ./.github/composite/tag-validation.yaml
+      - uses: ./.github/composite/tag-validation
         id: tag_validation
 
   ##############################################################
