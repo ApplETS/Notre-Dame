@@ -824,6 +824,18 @@ void main() {
         expect(res, true, reason: "Today was not selected before");
       });
 
+      test('today selected, but focused date different', () async {
+        final today = DateTime.now();
+        final oldSelectedDate = DateTime(2022, 1, 2);
+
+        viewModel.selectedDate = today;
+        viewModel.focusedDate.value = oldSelectedDate;
+
+        final res = viewModel.selectToday();
+
+        expect(res, true, reason: "Today was not focused before");
+      });
+
       test('show toast if today already selected', () async {
         final today = DateTime.now();
 
