@@ -45,44 +45,43 @@ class _ScheduleDefaultState extends State<ScheduleDefault> {
     // If there are events, display the calendar
     return Scaffold(
         body: WeekView(
-          maxDay: DateTime.now(),
-          minDay: DateTime.now(),
-          key: weekViewKey,
-          safeAreaOption: const SafeAreaOption(bottom: false),
-          controller: eventController..addAll(widget.calendarEvents),
-          backgroundColor: Theme.of(context).brightness == Brightness.light
-              ? AppTheme.lightThemeBackground
-              : AppTheme.primaryDark,
-          weekDays: const [
-            WeekDays.monday,
-            WeekDays.tuesday,
-            WeekDays.wednesday,
-            WeekDays.thursday,
-            WeekDays.friday,
-            WeekDays.saturday
-          ],
-          hourIndicatorSettings: HourIndicatorSettings(
-              color: Theme.of(context).brightness == Brightness.light
-                  ? AppTheme.scheduleLineColorLight
-                  : AppTheme.scheduleLineColorDark),
-          scrollOffset: heightPerMinute * 60 * 7.5,
-          timeLineStringBuilder: (date, {secondaryDate}) {
-            return DateFormat('H:mm').format(date);
-          },
-          liveTimeIndicatorSettings: LiveTimeIndicatorSettings.none(),
-          weekNumberBuilder: (date) => null,
-          headerStyle: const HeaderStyle(
-              headerTextStyle: TextStyle(fontSize: 0),
-              leftIconVisible: false,
-              rightIconVisible: false,
-              decoration: BoxDecoration(color: Colors.transparent)),
-          heightPerMinute: heightPerMinute,
-          eventTileBuilder: (date, events, boundary, startDuration, endDuration) =>
-              _buildEventTile(
-                  date, events, boundary, startDuration, endDuration, context),
-          weekDayBuilder: (DateTime date) => _buildWeekDay(date),
-        )
-    );
+      maxDay: DateTime.now(),
+      minDay: DateTime.now(),
+      key: weekViewKey,
+      safeAreaOption: const SafeAreaOption(bottom: false),
+      controller: eventController..addAll(widget.calendarEvents),
+      backgroundColor: Theme.of(context).brightness == Brightness.light
+          ? AppTheme.lightThemeBackground
+          : AppTheme.primaryDark,
+      weekDays: const [
+        WeekDays.monday,
+        WeekDays.tuesday,
+        WeekDays.wednesday,
+        WeekDays.thursday,
+        WeekDays.friday,
+        WeekDays.saturday
+      ],
+      hourIndicatorSettings: HourIndicatorSettings(
+          color: Theme.of(context).brightness == Brightness.light
+              ? AppTheme.scheduleLineColorLight
+              : AppTheme.scheduleLineColorDark),
+      scrollOffset: heightPerMinute * 60 * 7.5,
+      timeLineStringBuilder: (date, {secondaryDate}) {
+        return DateFormat('H:mm').format(date);
+      },
+      liveTimeIndicatorSettings: LiveTimeIndicatorSettings.none(),
+      weekNumberBuilder: (date) => null,
+      headerStyle: const HeaderStyle(
+          headerTextStyle: TextStyle(fontSize: 0),
+          leftIconVisible: false,
+          rightIconVisible: false,
+          decoration: BoxDecoration(color: Colors.transparent)),
+      heightPerMinute: heightPerMinute,
+      eventTileBuilder: (date, events, boundary, startDuration, endDuration) =>
+          _buildEventTile(
+              date, events, boundary, startDuration, endDuration, context),
+      weekDayBuilder: (DateTime date) => _buildWeekDay(date),
+    ));
   }
 
   Widget _buildEventTile(

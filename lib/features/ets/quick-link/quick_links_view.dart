@@ -104,11 +104,11 @@ class _QuickLinksViewState extends State<QuickLinksView>
           _buildGridChild(model, index, quickLinks, buildButtonFunction),
       children: List.generate(
         quickLinks.length,
-            (index) {
+        (index) {
           return KeyedSubtree(
             key: ValueKey(quickLinks[index].id),
             child:
-            _buildGridChild(model, index, quickLinks, buildButtonFunction),
+                _buildGridChild(model, index, quickLinks, buildButtonFunction),
           );
         },
       ),
