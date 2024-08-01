@@ -32,30 +32,35 @@ class _SecurityViewState extends State<SecurityView> {
           appBar: AppBar(
             title: Text(AppIntl.of(context)!.ets_security_title),
           ),
-          body: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                SizedBox(
-                  height: 250,
-                  child: GoogleMap(
-                      initialCameraPosition: _etsLocation,
-                      zoomControlsEnabled: false,
-                      markers:
-                          model.getSecurityMarkersForMaps(model.markersList),
-                      onMapCreated: (GoogleMapController controller) {
-                        model.controller = controller;
-                        model.changeMapMode(context);
-                      },
-                      gestureRecognizers: <Factory<
-                          OneSequenceGestureRecognizer>>{
-                        Factory<OneSequenceGestureRecognizer>(
-                            () => EagerGestureRecognizer()),
-                      }),
-                ),
-                joinSecurity(),
-                emergencyProcedures(model),
-              ],
+          showBottomBar: false,
+          body: SafeArea(
+            top: false,
+            bottom: false,
+            child: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SizedBox(
+                    height: 250,
+                    child: GoogleMap(
+                        initialCameraPosition: _etsLocation,
+                        zoomControlsEnabled: false,
+                        markers:
+                            model.getSecurityMarkersForMaps(model.markersList),
+                        onMapCreated: (GoogleMapController controller) {
+                          model.controller = controller;
+                          model.changeMapMode(context);
+                        },
+                        gestureRecognizers: <Factory<
+                            OneSequenceGestureRecognizer>>{
+                          Factory<OneSequenceGestureRecognizer>(
+                              () => EagerGestureRecognizer()),
+                        }),
+                  ),
+                  joinSecurity(),
+                  emergencyProcedures(model),
+                ],
+              ),
             ),
           ),
         ),
