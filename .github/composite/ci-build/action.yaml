@@ -28,19 +28,24 @@ runs:
   using: "composite"
   steps:
     - name: Build the application
+      shell: bash
       run: flutter build -v ${{ inputs.build-target }} ${{ inputs.build-args }} --release --dart-define=GH_API_TOKEN=${{ inputs.github-api-token }}
 
     - name: Set environment
-      echo "APP_PATH=${{ github.workspace }}/${{ inputs.app-name }}_${{ inputs.target }}.${{ inputs.asset-extension }}" >> $GITHUB_ENV
-      echo $APP_PATH
+      shell: bash
+      run: |
+        echo "APP_PATH=${{ github.workspace }}/${{ inputs.app-name }}_${{ inputs.target }}.${{ inputs.asset-extension }}" >> $GITHUB_ENV
+        echo $APP_PATH
     
     - name: Rename Android build
       if: inputs.target == 'Android'
+      shell: bash
       run: mv app-release.${{ inputs.asset-extension }} $APP_PATH
       working-directory: ${{ inputs.build-path }}
 
     - name: Compress iOS build
       if: inputs.target == 'iOS'
+      shell: bash
       run: |
         mv Runner.app ${{ inputs.app-name }}.app
         ditto -c -k --sequesterRsrc --keepParent ${{ inputs.app-name }}.app $APP_PATH
