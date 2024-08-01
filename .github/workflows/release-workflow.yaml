@@ -30,21 +30,14 @@ jobs:
       - uses: actions/checkout@v4
       - uses: ./.github/composite/flutter-setup
         env:
-          ENCRYPTED_SIGNETS_API_CERT_PASSWORD: ${{ secrets.ENCRYPTED_SIGNETS_API_CERT_PASSWORD }}
-          ENCRYPTED_GOOGLE_SERVICE_PASSWORD: ${{ secrets.ENCRYPTED_GOOGLE_SERVICE_PASSWORD }}
-          ENCRYPTED_ETSMOBILE_KEYSTORE_PASSWORD: ${{ secrets.ENCRYPTED_ETSMOBILE_KEYSTORE_PASSWORD }}
-          ENCRYPTED_KEYSTORE_PROPERTIES_PASSWORD: ${{ secrets.ENCRYPTED_KEYSTORE_PROPERTIES_PASSWORD }}
-          ENCRYPTED_ANDROID_SERVICE_ACCOUNT_CREDENTIALS_PASSWORD: ${{ secrets.ENCRYPTED_ANDROID_SERVICE_ACCOUNT_CREDENTIALS_PASSWORD }}
-          ENCRYPTED_IOS_SERVICE_ACCOUNT_CREDENTIALS_PASSWORD: ${{ secrets.ENCRYPTED_IOS_SERVICE_ACCOUNT_CREDENTIALS_PASSWORD }}
-          ENCRYPTED_IOS_MATCHFILE_PASSWORD: ${{ secrets.ENCRYPTED_IOS_MATCHFILE_PASSWORD }}
-          TARGET: ${{ matrix.target }}
-
-      - name: Setup Fastlane
-        uses: ruby/setup-ruby@v1
-        with:
-          ruby-version: '2.7'
-          bundler-cache: true
-          working-directory: ${{ matrix.working_directory }}
+          encrypted-signets-api-cert-password: ${{ secrets.ENCRYPTED_SIGNETS_API_CERT_PASSWORD }}
+          encrypted-google-service-password: ${{ secrets.ENCRYPTED_GOOGLE_SERVICE_PASSWORD }}
+          encrypted-etsmobile-keystore-password: ${{ secrets.ENCRYPTED_ETSMOBILE_KEYSTORE_PASSWORD }}
+          encrypted-keystore-properties-password: ${{ secrets.ENCRYPTED_KEYSTORE_PROPERTIES_PASSWORD }}
+          encrypted-android-service-account-credentials-password: ${{ secrets.ENCRYPTED_ANDROID_SERVICE_ACCOUNT_CREDENTIALS_PASSWORD }}
+          encrypted-ios-service-account-credentials-password: ${{ secrets.ENCRYPTED_IOS_SERVICE_ACCOUNT_CREDENTIALS_PASSWORD }}
+          encrypted-ios-matchfile-password: ${{ secrets.ENCRYPTED_IOS_MATCHFILE_PASSWORD }}
+          target: ${{ matrix.target }}
 
       - name: Build the application
         run: flutter build -v ${{ matrix.build_target }} ${{ matrix.build_args }} --build-number=$(date '+%s') --release --dart-define=GH_API_TOKEN=${{ secrets.GH_API_TOKEN }}
@@ -91,6 +84,13 @@ jobs:
           ssh-add "$SSH_PATH/id_rsa"
         env:
           PRIVATE_KEY: ${{ secrets.MATCH_GIT_SSH_KEY }}
+
+      - name: Setup Fastlane
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '2.7'
+          bundler-cache: true
+          working-directory: ${{ matrix.working_directory }}
 
       - name: Deploy to store
         run: bundle exec fastlane deploy

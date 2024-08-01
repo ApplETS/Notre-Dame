@@ -1,6 +1,6 @@
 name: "Tests and checks"
 inputs:
-  FORMAT:
+  format:
     description: "If the project needs formatting"
     required: false
     default: true
@@ -14,12 +14,12 @@ runs:
 
     # Check the format of the code and commit the formatted files.
     - name: Format files in lib and test directories
-      if: ${{ inputs.FORMAT == true }}
+      if: ${{ inputs.format == true }}
       shell: bash
       run: dart format lib test
 
     - name: Commit formatted files
-      if: ${{ inputs.FORMAT == true }}
+      if: ${{ inputs.format == true }}
       id: commit_formatted
       uses: stefanzweifel/git-auto-commit-action@v5
       with:
@@ -30,7 +30,7 @@ runs:
         add_options: '-u'
 
     # Fail workflow, because new commit will execute workflow
-    - if: ${{ inputs.FORMAT == true && steps.commit_formatted.outputs.changes_detected == 'true' }}
+    - if: ${{ inputs.format == true && steps.commit_formatted.outputs.changes_detected == 'true' }}
       name: Fail workflow if linting commit
       shell: bash
       run: |

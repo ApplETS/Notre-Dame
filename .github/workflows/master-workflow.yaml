@@ -48,7 +48,7 @@ jobs:
           ENCRYPTED_KEYSTORE_PROPERTIES_PASSWORD: ${{ secrets.ENCRYPTED_KEYSTORE_PROPERTIES_PASSWORD }}
       - uses: ./.github/composite/tests
         with:
-          FORMAT: false
+          format: false
   coverage:
     name: Update coverage
     needs:
@@ -102,11 +102,11 @@ jobs:
       - uses: actions/checkout@v4
       - uses: ./.github/composite/flutter-setup
         with:
-          ENCRYPTED_SIGNETS_API_CERT_PASSWORD: ${{ secrets.ENCRYPTED_SIGNETS_API_CERT_PASSWORD }}
-          ENCRYPTED_GOOGLE_SERVICE_PASSWORD: ${{ secrets.ENCRYPTED_GOOGLE_SERVICE_PASSWORD }}
-          ENCRYPTED_ETSMOBILE_KEYSTORE_PASSWORD: ${{ secrets.ENCRYPTED_ETSMOBILE_KEYSTORE_PASSWORD }}
-          ENCRYPTED_KEYSTORE_PROPERTIES_PASSWORD: ${{ secrets.ENCRYPTED_KEYSTORE_PROPERTIES_PASSWORD }}
-          TARGET: ${{ matrix.target }}
+          encrypted-signets-api-cert-password: ${{ secrets.ENCRYPTED_SIGNETS_API_CERT_PASSWORD }}
+          encrypted-google-service-password: ${{ secrets.ENCRYPTED_GOOGLE_SERVICE_PASSWORD }}
+          encrypted-etsmobile-keystore-password: ${{ secrets.ENCRYPTED_ETSMOBILE_KEYSTORE_PASSWORD }}
+          encrypted-keystore-properties-password: ${{ secrets.ENCRYPTED_KEYSTORE_PROPERTIES_PASSWORD }}
+          target: ${{ matrix.target }}
 
       - uses: ./.github/composite/ci-build
         with:

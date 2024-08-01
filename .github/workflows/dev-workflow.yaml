@@ -18,37 +18,37 @@ env:
   APP_NAME: 'notre_dame'
 
 jobs:
-  # testing:
-  #   name: Tests and checks
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - uses: actions/checkout@v4
-  #       with:
-  #         ref: ${{ github.head_ref }}
-  #         token: ${{ secrets.PTA }}
-  #     - uses: ./.github/composite/flutter-setup
-  #       with:
-  #         ENCRYPTED_SIGNETS_API_CERT_PASSWORD: ${{ secrets.ENCRYPTED_SIGNETS_API_CERT_PASSWORD }}
-  #         ENCRYPTED_GOOGLE_SERVICE_PASSWORD: ${{ secrets.ENCRYPTED_GOOGLE_SERVICE_PASSWORD }}
-  #         ENCRYPTED_ETSMOBILE_KEYSTORE_PASSWORD: ${{ secrets.ENCRYPTED_ETSMOBILE_KEYSTORE_PASSWORD }}
-  #         ENCRYPTED_KEYSTORE_PROPERTIES_PASSWORD: ${{ secrets.ENCRYPTED_KEYSTORE_PROPERTIES_PASSWORD }}
-  #     - uses: ./.github/composite/tests
+  testing:
+    name: Tests and checks
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.head_ref }}
+          token: ${{ secrets.PTA }}
+      - uses: ./.github/composite/flutter-setup
+        with:
+          ENCRYPTED_SIGNETS_API_CERT_PASSWORD: ${{ secrets.ENCRYPTED_SIGNETS_API_CERT_PASSWORD }}
+          ENCRYPTED_GOOGLE_SERVICE_PASSWORD: ${{ secrets.ENCRYPTED_GOOGLE_SERVICE_PASSWORD }}
+          ENCRYPTED_ETSMOBILE_KEYSTORE_PASSWORD: ${{ secrets.ENCRYPTED_ETSMOBILE_KEYSTORE_PASSWORD }}
+          ENCRYPTED_KEYSTORE_PROPERTIES_PASSWORD: ${{ secrets.ENCRYPTED_KEYSTORE_PROPERTIES_PASSWORD }}
+      - uses: ./.github/composite/tests
 
-  # coverage:
-  #   name: Update coverage
-  #   needs:
-  #     - testing
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - name: Download coverage file
-  #       uses: actions/download-artifact@v4
-  #       with:
-  #         name: lcov.info
-  #     - name: Comment the coverage of the PR
-  #       uses: romeovs/lcov-reporter-action@v0.4.0
-  #       with:
-  #         github-token: ${{ secrets.GITHUB_TOKEN }}
-  #         lcov-file: ./lcov.info
+  coverage:
+    name: Update coverage
+    needs:
+      - testing
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download coverage file
+        uses: actions/download-artifact@v4
+        with:
+          name: lcov.info
+      - name: Comment the coverage of the PR
+        uses: romeovs/lcov-reporter-action@v0.4.0
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          lcov-file: ./lcov.info
 
   build:
     name: Create ${{ matrix.target }} build
@@ -73,8 +73,8 @@ jobs:
             asset_content_type: application/zip
       # Disable fail-fast as we want results from all even if one fails.
       fail-fast: false
-    # needs:
-    #   - testing
+    needs:
+      - testing
     steps:
       - uses: actions/checkout@v4
         with:
@@ -82,11 +82,12 @@ jobs:
           token: ${{ secrets.PTA }}
       - uses: ./.github/composite/flutter-setup
         with:
-          ENCRYPTED_SIGNETS_API_CERT_PASSWORD: ${{ secrets.ENCRYPTED_SIGNETS_API_CERT_PASSWORD }}
-          ENCRYPTED_GOOGLE_SERVICE_PASSWORD: ${{ secrets.ENCRYPTED_GOOGLE_SERVICE_PASSWORD }}
-          ENCRYPTED_ETSMOBILE_KEYSTORE_PASSWORD: ${{ secrets.ENCRYPTED_ETSMOBILE_KEYSTORE_PASSWORD }}
-          ENCRYPTED_KEYSTORE_PROPERTIES_PASSWORD: ${{ secrets.ENCRYPTED_KEYSTORE_PROPERTIES_PASSWORD }}
-          TARGET: ${{ matrix.target }}
+          encrypted-signets-api-cert-password: ${{ secrets.ENCRYPTED_SIGNETS_API_CERT_PASSWORD }}
+          encrypted-google-service-password: ${{ secrets.ENCRYPTED_GOOGLE_SERVICE_PASSWORD }}
+          encrypted-etsmobile-keystore-password: ${{ secrets.ENCRYPTED_ETSMOBILE_KEYSTORE_PASSWORD }}
+          encrypted-keystore-properties-password: ${{ secrets.ENCRYPTED_KEYSTORE_PROPERTIES_PASSWORD }}
+          target: ${{ matrix.target }}
+
       - uses: ./.github/composite/ci-build
         with:
           target: ${{ matrix.target }}
