@@ -17,8 +17,6 @@ concurrency:
   group: ${{ github.ref }}
   cancel-in-progress: true
 env:
-  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-  MAPS_API_KEY: ${{ secrets.MAPS_API_KEY }}
   APP_NAME: 'notre_dame'
 
 jobs:
@@ -26,37 +24,15 @@ jobs:
   # Setup
   ##############################################################
   tag_validation:
-    name: Tag validation
     runs-on: ubuntu-latest
     outputs:
-      version: ${{ steps.split.outputs._0 }}
+      description: "The version in the pubspec.yaml file."
+      version: ${{ steps.tag_validation.outputs.version }}
     steps:
       - uses: actions/checkout@v4
-      - name: Get the version from the pubspec
-        id: pubspecVersion
-        uses: CumulusDS/get-yaml-paths-action@v1.0.2
-        with:
-          file: pubspec.yaml
-          version: version
-      - uses: winterjung/split@v2.1.0
-        id: split
-        with:
-          msg: ${{ steps.pubspecVersion.outputs.version }}
-          separator: '+'
-      - name: Validate that version doesn't exists
-        uses: mukunku/tag-exists-action@v1.6.0
-        id: checkTag
-        with:
-          tag: ${{ steps.split.outputs._0 }}
-      - if: ${{ steps.checkTag.outputs.exists == 'true' }}
-        name: Post comment on PR and fail.
-        run: |
-          echo '${{ steps.split.outputs._0 }} already exists, please update the pubspec version.'
-          exit 1
+      - uses: ./.github/composite/tag-validation
+        id: tag_validation
 
-  ##############################################################
-  # Tests
-  ##############################################################
   testing:
     name: Tests and checks
     runs-on: ubuntu-latest
@@ -64,53 +40,15 @@ jobs:
       coverage: ${{ steps.coverage.outputs.percentage }}
     steps:
       - uses: actions/checkout@v4
+      - uses: ./.github/composite/flutter-setup
         with:
-          ref: ${{ github.head_ref }}
-      - uses: actions/setup-java@v4
+          encrypted-signets-api-cert-password: ${{ secrets.ENCRYPTED_SIGNETS_API_CERT_PASSWORD }}
+          encrypted-google-service-password: ${{ secrets.ENCRYPTED_GOOGLE_SERVICE_PASSWORD }}
+          encrypted-etsmobile-keystore-password: ${{ secrets.ENCRYPTED_ETSMOBILE_KEYSTORE_PASSWORD }}
+          encrypted-keystore-properties-password: ${{ secrets.ENCRYPTED_KEYSTORE_PROPERTIES_PASSWORD }}
+      - uses: ./.github/composite/tests
         with:
-          distribution: 'temurin'
-          java-version: '17'
-      - uses: subosito/flutter-action@v2
-        with:
-          flutter-version: '3.19.x'
-          channel: 'stable'
-          cache: true
-      - run: flutter doctor
-      - name: Decrypt SignETS certificate and Google Services files
-        run: |
-          chmod +x ./scripts/decrypt.sh
-          ./scripts/decrypt.sh
-        env:
-          ENCRYPTED_SIGNETS_API_CERT_PASSWORD: ${{ secrets.ENCRYPTED_SIGNETS_API_CERT_PASSWORD }}
-          ENCRYPTED_GOOGLE_SERVICE_PASSWORD: ${{ secrets.ENCRYPTED_GOOGLE_SERVICE_PASSWORD }}
-
-      # Get flutter dependencies.
-      - run : |
-          flutter pub get
-          dart run build_runner build --delete-conflicting-outputs
-
-      # Check if the code has any errors/warnings
-      - name: Analyze code
-        run: flutter analyze
-
-      # Run the tests.
-      - name: Run tests
-        run: flutter test --coverage
-
-      - name: Upload coverage file
-        uses: actions/upload-artifact@v4
-        with:
-          name: lcov.info
-          path: ${{ github.workspace }}/coverage/lcov.info
-
-      - name: Get code coverage
-        id: coverage
-        run: |
-          chmod +x ./scripts/determine_code_coverage.sh
-          export COV="$(./scripts/determine_code_coverage.sh coverage/lcov.info)"
-          echo "Coverage detected is: $COV"
-          echo "percentage=$COV" >> $GITHUB_OUTPUT
-
+          format: false
   coverage:
     name: Update coverage
     needs:
@@ -162,63 +100,24 @@ jobs:
       - testing
     steps:
       - uses: actions/checkout@v4
-      - uses: subosito/flutter-action@v2
+      - uses: ./.github/composite/flutter-setup
         with:
-          flutter-version: '3.19.x'
-          channel: 'stable'
-          cache: true
-      - name: Install Android dependencies
-        if: matrix.target == 'Android'
-        uses: actions/setup-java@v4
+          encrypted-signets-api-cert-password: ${{ secrets.ENCRYPTED_SIGNETS_API_CERT_PASSWORD }}
+          encrypted-google-service-password: ${{ secrets.ENCRYPTED_GOOGLE_SERVICE_PASSWORD }}
+          encrypted-etsmobile-keystore-password: ${{ secrets.ENCRYPTED_ETSMOBILE_KEYSTORE_PASSWORD }}
+          encrypted-keystore-properties-password: ${{ secrets.ENCRYPTED_KEYSTORE_PROPERTIES_PASSWORD }}
+          target: ${{ matrix.target }}
+
+      - uses: ./.github/composite/ci-build
         with:
-          java-version: '17'
-          distribution: 'temurin'
-      - run: flutter doctor -v
-      - name: Install iOS dependencies
-        if: matrix.target == 'iOS'
-        run: |
-          flutter pub get
-          dart run build_runner build --delete-conflicting-outputs
-          cd ios
-          pod install
-          flutter clean
-
-      # Get dependencies and decrypt needed files.
-      - run: |
-          flutter pub get
-          dart run build_runner build --delete-conflicting-outputs
-
-      - name: Decrypt SignETS certificate and Google Services files
-        run: |
-          chmod +x ./scripts/decrypt.sh
-          ./scripts/decrypt.sh
-        env:
-          ENCRYPTED_SIGNETS_API_CERT_PASSWORD: ${{ secrets.ENCRYPTED_SIGNETS_API_CERT_PASSWORD }}
-          ENCRYPTED_GOOGLE_SERVICE_PASSWORD: ${{ secrets.ENCRYPTED_GOOGLE_SERVICE_PASSWORD }}
-          ENCRYPTED_ETSMOBILE_KEYSTORE_PASSWORD: ${{ secrets.ENCRYPTED_ETSMOBILE_KEYSTORE_PASSWORD }}
-          ENCRYPTED_KEYSTORE_PROPERTIES_PASSWORD: ${{ secrets.ENCRYPTED_KEYSTORE_PROPERTIES_PASSWORD }}
-
-      # Build the application.
-      - name: Build the application
-        run: flutter build -v ${{ matrix.build_target }} ${{ matrix.build_args }} --release --dart-define=GH_API_TOKEN=${{ secrets.GH_API_TOKEN }}
-
-      - name: Rename Android build
-        if: matrix.target == 'Android'
-        run: mv app-release.${{ matrix.asset_extension }} ${{ github.workspace }}/${{ env.APP_NAME }}_${{ matrix.target }}.${{ matrix.asset_extension }}
-        working-directory: ${{ matrix.build_path }}
-
-      - name: Compress iOS build
-        if: matrix.target == 'iOS'
-        run: |
-          mv Runner.app ${{ env.APP_NAME }}.app
-          ditto -c -k --sequesterRsrc --keepParent ${{ env.APP_NAME }}.app ${{ github.workspace }}/${{ env.APP_NAME }}_${{ matrix.target }}.${{ matrix.asset_extension }}
-        working-directory: ${{ matrix.build_path }}
-
-      - name: Upload build artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: ${{ matrix.target }}
-          path: ${{ github.workspace }}/${{ env.APP_NAME }}_${{ matrix.target }}.${{ matrix.asset_extension }}
+          target: ${{ matrix.target }}
+          build-target: ${{ matrix.build_target }}
+          build-args: ${{ matrix.build_args }}
+          build-path: ${{ matrix.build_path }}
+          asset-extension: ${{ matrix.asset_extension }}
+          asset-content-type: ${{ matrix.asset_content_type }}
+          github-api-token: ${{ secrets.GH_API_TOKEN }}
+          app-name: ${{ env.APP_NAME }}
 
   ##############################################################
   # Post-build

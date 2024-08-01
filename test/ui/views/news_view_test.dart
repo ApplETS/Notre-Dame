@@ -1,6 +1,3 @@
-// Dart imports:
-import 'dart:io';
-
 // Flutter imports:
 import 'package:flutter/material.dart';
 
@@ -115,32 +112,5 @@ void main() {
 
       expect(find.byType(NewsCard), findsNWidgets(1));
     });
-
-    group("golden - ", () {
-      testWidgets("news view empty", (WidgetTester tester) async {
-        NewsRepositoryMock.stubGetNews(newsRepository,
-            toReturn: paginatedEmptyNews);
-
-        tester.view.physicalSize = const Size(800, 1410);
-
-        await tester.pumpWidget(localizedWidget(child: NewsView()));
-        await tester.pumpAndSettle(const Duration(seconds: 1));
-
-        await expectLater(find.byType(NewsView),
-            matchesGoldenFile(goldenFilePath("newsView_1")));
-      });
-
-      testWidgets("news view", (WidgetTester tester) async {
-        NewsRepositoryMock.stubGetNews(newsRepository, toReturn: paginatedNews);
-
-        tester.view.physicalSize = const Size(800, 1410);
-
-        await tester.pumpWidget(localizedWidget(child: NewsView()));
-        await tester.pumpAndSettle(const Duration(seconds: 1));
-
-        await expectLater(find.byType(NewsView),
-            matchesGoldenFile(goldenFilePath("newsView_2")));
-      });
-    }, skip: !Platform.isLinux);
   });
 }

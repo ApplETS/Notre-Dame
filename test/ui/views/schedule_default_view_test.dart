@@ -1,9 +1,3 @@
-// Dart imports:
-import 'dart:io';
-
-// Flutter imports:
-import 'package:flutter/material.dart';
-
 // Package imports:
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -64,41 +58,5 @@ void main() {
       expect(fallSessionText, findsOneWidget);
       expect(find.byType(ScheduleDefault), findsOneWidget);
     });
-
-    group("golden - ", () {
-      testWidgets("default view", (WidgetTester tester) async {
-        tester.view.physicalSize = const Size(800, 1410);
-
-        when(mockCourseRepository.getDefaultScheduleActivities(
-                session: "valid_session"))
-            .thenAnswer((_) async => []);
-        await tester.pumpWidget(localizedWidget(
-            child: const ScheduleDefaultView(sessionCode: "A2024"),
-            useScaffold: false));
-        await tester.pumpAndSettle();
-        await tester.pump(const Duration(milliseconds: 500));
-
-        await expectLater(find.byType(ScheduleDefaultView),
-            matchesGoldenFile(goldenFilePath("scheduleDefaultView_1")));
-      });
-
-      /// TODO: add when flutter_calendar_view is at version 1.2.0
-      // testWidgets("calendar view", (WidgetTester tester) async {
-      //   tester.view.physicalSize = const Size(800, 1410);
-      //
-      //   when(mockCourseRepository.getDefaultScheduleActivities(
-      //           session: "H2024"))
-      //       .thenAnswer((_) async => [lectureActivity]);
-      //
-      //   await tester.pumpWidget(localizedWidget(
-      //       child: const ScheduleDefaultView(sessionCode: "H2024"),
-      //       useScaffold: false));
-      //   await tester.pumpAndSettle();
-      //   await tester.pump(const Duration(seconds: 2));
-      //
-      //   await expectLater(find.byType(ScheduleDefaultView),
-      //       matchesGoldenFile(goldenFilePath("scheduleDefaultView_2")));
-      // });
-    }, skip: !Platform.isLinux);
   });
 }

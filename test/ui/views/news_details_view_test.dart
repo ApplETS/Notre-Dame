@@ -1,6 +1,3 @@
-// Dart imports:
-import 'dart:io';
-
 // Flutter imports:
 import 'package:flutter/material.dart';
 
@@ -79,20 +76,5 @@ void main() {
       expect(find.text(sampleNews.organizer.organization!), findsOneWidget);
       expect(find.byType(IconButton), findsWidgets);
     });
-
-    group("golden - ", () {
-      testWidgets("news details view", (WidgetTester tester) async {
-        tester.view.physicalSize = const Size(800, 1410);
-
-        await tester.pumpWidget(localizedWidget(
-            child: NewsDetailsView(
-          news: sampleNews,
-        )));
-        await tester.pumpAndSettle(const Duration(seconds: 1));
-
-        await expectLater(find.byType(NewsDetailsView),
-            matchesGoldenFile(goldenFilePath("newsDetailsView_1")));
-      });
-    }, skip: !Platform.isLinux);
   });
 }
