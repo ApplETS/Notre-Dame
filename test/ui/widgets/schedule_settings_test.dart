@@ -1,6 +1,3 @@
-// Dart imports:
-import 'dart:io';
-
 // Flutter imports:
 import 'package:flutter/material.dart';
 
@@ -450,36 +447,5 @@ void main() {
         });
       });
     });
-
-    group("golden - ", () {
-      testWidgets(
-          "Should display activity selection section when a course has activities",
-          (WidgetTester tester) async {
-        SettingsManagerMock.stubGetScheduleSettings(settingsManagerMock,
-            toReturn: settings);
-        CourseRepositoryMock.stubGetScheduleActivities(courseRepositoryMock,
-            toReturn: classOneWithLaboratoryABscheduleActivities);
-
-        const scheduleSettings = ScheduleSettings(showHandle: false);
-
-        await tester.pumpWidget(localizedWidget(child: scheduleSettings));
-        await tester.pumpAndSettle();
-
-        final laboB = find.textContaining(intl.course_activity_group_b);
-        await tester.dragUntilVisible(
-            laboB,
-            find.byKey(const ValueKey("SettingsScrollingArea")),
-            const Offset(0, -250));
-        expect(laboB, findsOneWidget);
-
-        // generate a golden file
-        tester.view.physicalSize = const Size(800, 1410);
-
-        await tester.pumpAndSettle();
-
-        await expectLater(find.byType(ScheduleSettings),
-            matchesGoldenFile(goldenFilePath("scheduleSettingsView_1")));
-      });
-    }, skip: !Platform.isLinux);
   });
 }

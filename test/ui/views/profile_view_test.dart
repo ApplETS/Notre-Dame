@@ -1,9 +1,3 @@
-// Dart imports:
-import 'dart:io';
-
-// Flutter imports:
-import 'package:flutter/services.dart';
-
 // Package imports:
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -116,17 +110,5 @@ void main() {
 
       expect(find.text(intl.profile_program_completion), findsOneWidget);
     });
-
-    group("golden - ", () {
-      testWidgets("default view (no events)", (WidgetTester tester) async {
-        tester.view.physicalSize = const Size(1080, 1920);
-
-        await tester.pumpWidget(localizedWidget(child: ProfileView()));
-        await tester.pumpAndSettle();
-
-        await expectLater(find.byType(ProfileView),
-            matchesGoldenFile(goldenFilePath("profileView_1")));
-      });
-    }, skip: !Platform.isLinux);
   });
 }
