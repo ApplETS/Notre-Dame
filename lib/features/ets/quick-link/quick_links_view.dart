@@ -71,7 +71,7 @@ class _QuickLinksViewState extends State<QuickLinksView>
             ),
             Expanded(
               child: _buildReorderableGridView(
-                  model, model.deletedQuickLinks, _buildAddButton, true),
+                  model, model.deletedQuickLinks, _buildAddButton, blockReorder: true),
             ),
           ],
         ],
