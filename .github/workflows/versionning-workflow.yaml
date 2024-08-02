@@ -24,7 +24,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: ${{ GITHUB_HEAD_REF }}
+          ref: $GITHUB_HEAD_REF
       - name: Get latest tag
         id: get_latest_tag
         run: |
