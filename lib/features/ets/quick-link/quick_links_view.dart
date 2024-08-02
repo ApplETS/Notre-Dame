@@ -83,7 +83,7 @@ class _QuickLinksViewState extends State<QuickLinksView>
       QuickLinksViewModel model,
       List<QuickLink> quickLinks,
       Widget Function(QuickLinksViewModel, int) buildButtonFunction,
-      bool blockReorder) {
+      {required bool blockReorder}) {
     final double screenWidth = MediaQuery.of(context).size.width;
     int crossAxisCount;
 
