@@ -61,7 +61,7 @@ class _QuickLinksViewState extends State<QuickLinksView>
         children: [
           Expanded(
             child: _buildReorderableGridView(
-                model, model.quickLinkList, _buildDeleteButton, false),
+                model, model.quickLinkList, _buildDeleteButton, blockReorder: false),
           ),
           if (_editMode && model.deletedQuickLinks.isNotEmpty) ...[
             const Divider(
