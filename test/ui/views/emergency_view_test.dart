@@ -1,5 +1,6 @@
 // Flutter imports:
 import 'package:flutter/material.dart';
+import 'package:flutter_markdown/flutter_markdown.dart';
 
 // Package imports:
 import 'package:flutter_test/flutter_test.dart';
@@ -14,19 +15,20 @@ void main() {
   group('EmergencyView - ', () {
     setUp(() async {
       WebViewPlatform.instance = AndroidWebViewPlatform();
+      setupNetworkingServiceMock();
     });
 
     tearDown(() {});
 
     group('UI - ', () {
-      testWidgets('has call button and webview', (WidgetTester tester) async {
+      testWidgets('has call button and markdown view', (WidgetTester tester) async {
         await tester.pumpWidget(localizedWidget(
             child: const EmergencyView(
-                'testEmergency', 'assets/html/armed_person_detail_en.html')));
+                'testEmergency', 'assets/markdown/armed_person_en.txt')));
         await tester.pumpAndSettle();
 
-        final webView = find.byType(WebViewWidget);
-        expect(webView, findsOneWidget);
+        final markdown = find.byType(Markdown);
+        expect(markdown, findsOneWidget);
 
         final Finder phoneButton = find.byType(FloatingActionButton);
         expect(phoneButton, findsOneWidget);

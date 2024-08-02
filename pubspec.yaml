@@ -93,7 +93,7 @@ flutter:
 
   assets:
     - assets/images/
-    - assets/html/
+    - assets/markdown/
     - assets/icons/
     - assets/animations/
     - assets/animations/discovery/en/
