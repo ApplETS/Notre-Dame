@@ -24,7 +24,8 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: $GITHUB_HEAD_REF
+          ref: ${{ github.head_ref }}
+          token: ${{ secrets.PTA }}
       - name: Get latest tag
         id: get_latest_tag
         run: |
