@@ -29,8 +29,10 @@ jobs:
       - name: Get latest tag
         id: get_latest_tag
         run: |
-          latest_tag="$(git describe --tags `git rev-list --tags --max-count=1`)"
-          echo "Latest tag: $latest_tag"
+          git fetch --tags
+          git fetch --prune --unshallow || true
+          latest_tag=$(git describe --abbrev=0 --tags || true)
+          echo "Latest tag: ${latest_tag}"
 
     # name: Bump app version using PR labels
     # runs-on: ubuntu-latest
