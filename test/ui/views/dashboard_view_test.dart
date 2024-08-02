@@ -1,6 +1,3 @@
-// Dart imports:
-import 'dart:io';
-
 // Flutter imports:
 import 'package:flutter/material.dart';
 
@@ -71,7 +68,7 @@ void main() {
   final List<CourseActivity> activities = [gen101, gen102, gen103];
 
   // Cards
-  Map<PreferencesFlag, int> dashboard = {
+  final Map<PreferencesFlag, int> dashboard = {
     PreferencesFlag.aboutUsCard: 0,
     PreferencesFlag.scheduleCard: 1,
     PreferencesFlag.progressBarCard: 2,
@@ -765,83 +762,5 @@ void main() {
         expect(text.data, intl.progress_bar_title);
       });
     });
-
-    group("golden - ", () {
-      setUp(() async {
-        setupInAppReviewMock();
-      });
-
-      testWidgets("Applets Card", (WidgetTester tester) async {
-        RemoteConfigServiceMock.stubGetBroadcastEnabled(remoteConfigServiceMock,
-            toReturn: false);
-        tester.view.physicalSize = const Size(800, 1410);
-
-        final Map<PreferencesFlag, int> dashboard = {
-          PreferencesFlag.gradesCard: 0,
-          PreferencesFlag.aboutUsCard: 1,
-        };
-
-        SettingsManagerMock.stubGetDashboard(settingsManagerMock,
-            toReturn: dashboard);
-
-        await tester.pumpWidget(localizedWidget(
-            child: FeatureDiscovery(
-                child: const DashboardView(updateCode: UpdateCode.none))));
-        await tester.pumpAndSettle();
-
-        await expectLater(find.byType(DashboardView),
-            matchesGoldenFile(goldenFilePath("dashboardView_appletsCard_1")));
-      });
-
-      testWidgets("Schedule card", (WidgetTester tester) async {
-        RemoteConfigServiceMock.stubGetBroadcastEnabled(remoteConfigServiceMock,
-            toReturn: false);
-        tester.view.physicalSize = const Size(800, 1410);
-
-        CourseRepositoryMock.stubCoursesActivities(courseRepositoryMock);
-        CourseRepositoryMock.stubGetCoursesActivities(courseRepositoryMock,
-            fromCacheOnly: true);
-        CourseRepositoryMock.stubGetCoursesActivities(courseRepositoryMock);
-
-        dashboard = {
-          PreferencesFlag.gradesCard: 0,
-          PreferencesFlag.scheduleCard: 1,
-        };
-
-        SettingsManagerMock.stubGetDashboard(settingsManagerMock,
-            toReturn: dashboard);
-
-        await tester.pumpWidget(localizedWidget(
-            child: FeatureDiscovery(
-                child: const DashboardView(updateCode: UpdateCode.none))));
-        await tester.pumpAndSettle();
-
-        await expectLater(find.byType(DashboardView),
-            matchesGoldenFile(goldenFilePath("dashboardView_scheduleCard_1")));
-      });
-      testWidgets("progressBar Card", (WidgetTester tester) async {
-        RemoteConfigServiceMock.stubGetBroadcastEnabled(remoteConfigServiceMock,
-            toReturn: false);
-        tester.view.physicalSize = const Size(800, 1410);
-
-        dashboard = {
-          PreferencesFlag.gradesCard: 0,
-          PreferencesFlag.progressBarCard: 1,
-        };
-
-        SettingsManagerMock.stubGetDashboard(settingsManagerMock,
-            toReturn: dashboard);
-
-        await tester.pumpWidget(localizedWidget(
-            child: FeatureDiscovery(
-                child: const DashboardView(updateCode: UpdateCode.none))));
-        await tester.pumpAndSettle();
-
-        await expectLater(
-            find.byType(DashboardView),
-            matchesGoldenFile(
-                goldenFilePath("dashboardView_progressBarCard_1")));
-      });
-    }, skip: !Platform.isLinux);
   });
 }

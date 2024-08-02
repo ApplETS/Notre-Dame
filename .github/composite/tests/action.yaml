@@ -1,0 +1,61 @@
+name: "Tests and checks"
+inputs:
+  format:
+    description: "If the project needs formatting"
+    required: false
+    default: true
+
+runs:
+  using: "composite"
+  steps:
+    - name: Generate mocking files
+      shell: bash
+      run: dart run build_runner build
+
+    # Check the format of the code and commit the formatted files.
+    - name: Format files in lib and test directories
+      if: ${{ inputs.format == true }}
+      shell: bash
+      run: dart format lib test
+
+    - name: Commit formatted files
+      if: ${{ inputs.format == true }}
+      id: commit_formatted
+      uses: stefanzweifel/git-auto-commit-action@v5
+      with:
+        file_pattern: "*.dart"
+        commit_user_name: github-actions[bot]
+        commit_user_email: 41898282+github-actions[bot]@users.noreply.github.com
+        commit_message: "[BOT] Applying format."
+        add_options: '-u'
+
+    # Fail workflow, because new commit will execute workflow
+    - if: ${{ inputs.format == true && steps.commit_formatted.outputs.changes_detected == 'true' }}
+      name: Fail workflow if linting commit
+      shell: bash
+      run: |
+        echo 'Linting applied, running bot commit workflow'
+        exit 1
+
+    # Check if the code has any errors/warnings
+    - name: Analyze code
+      shell: bash
+      run: flutter analyze
+
+    - name: Run tests
+      shell: bash
+      run: flutter test --coverage
+
+    - name: Upload coverage file
+      uses: actions/upload-artifact@v4
+      with:
+        name: lcov.info
+        path: ${{ github.workspace }}/coverage/lcov.info
+
+    - name: Get code coverage
+      shell: bash
+      run: |
+        chmod +x ./scripts/determine_code_coverage.sh
+        export COV="$(./scripts/determine_code_coverage.sh coverage/lcov.info)"
+        echo "Coverage detected is: $COV"
+        echo "percentage=$COV" >> $GITHUB_OUTPUT

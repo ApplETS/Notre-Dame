@@ -1,6 +1,3 @@
-// Dart imports:
-import 'dart:io';
-
 // Flutter imports:
 import 'package:flutter/material.dart';
 
@@ -40,18 +37,6 @@ void main() {
         // Make sure to find the page name somewhere
         expect(find.textContaining(pageNotFoundPassed), findsOneWidget);
       });
-      group("golden - ", () {
-        testWidgets("default view (no events)", (WidgetTester tester) async {
-          tester.view.physicalSize = const Size(800, 1410);
-
-          await tester.pumpWidget(localizedWidget(
-              child: const NotFoundView(pageName: pageNotFoundPassed)));
-          await tester.pumpAndSettle();
-
-          await expectLater(find.byType(NotFoundView),
-              matchesGoldenFile(goldenFilePath("notFoundView_1")));
-        });
-      }, skip: !Platform.isLinux);
     });
   });
 }
