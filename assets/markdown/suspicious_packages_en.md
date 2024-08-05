@@ -10,7 +10,7 @@ A package is considered suspicious if it presents the following characteristics:
 - Unexpected delivery
 - Labelled “private” or “only to be opened by”
 
-#### Note
+**Note**
 
 A package may contain nuclear, radiological, biological, or chemical material if it presents one of the following characteristics:
 
@@ -23,14 +23,14 @@ A package may contain nuclear, radiological, biological, or chemical material if
 - It contains aerosols
 - It shows signs of corrosion
 
-### What to do
+## What to do
 
 - Keep a safe distance from the package.
 - Don’t use your cell phone near the package. Turn it off to prevent any interference with the package.
 - Contact Security at extension 55 (internal telephone system).
 - Don’t hang up until the dispatcher tells you to do so.
 
-### Evacuation
+## Evacuation
 
 - Wait until Security orders evacuation. Security officers must inspect evacuation routes to ensure that there is no danger (suspicious packages).
 - Stay calm.
@@ -40,7 +40,7 @@ A package may contain nuclear, radiological, biological, or chemical material if
 - Go to the meeting point.
 - Do not go back inside for any reason.
 
-### Returning to the building
+## Returning to the building
 
 - You can return to the building as soon as Security announces that it is safe to do so.
 - This authorization will be announced over a megaphone at the meeting point.

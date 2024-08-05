@@ -1,4 +1,4 @@
-## If people are stuck inside
+### If people are stuck inside
 
 - Don’t try to save them by opening the door.
 - Reassure them. Let them know that help is on the way.
@@ -6,5 +6,5 @@
 - Contact Security at extension 55 (internal phone system).
 - Stay on site until help arrives. Continue to reassure people.
 
-**If a person's condition worsens, inform Security.
+**If a person’s condition worsens, inform Security.
 If you can’t reach Security, dial 911.**
