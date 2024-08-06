@@ -61,7 +61,7 @@ class _QuickLinksViewState extends State<QuickLinksView>
         children: [
           Expanded(
             child: _buildReorderableGridView(
-                model, model.quickLinkList, _buildDeleteButton),
+                model, model.quickLinkList, _buildDeleteButton, blockReorder: false),
           ),
           if (_editMode && model.deletedQuickLinks.isNotEmpty) ...[
             const Divider(
@@ -71,7 +71,7 @@ class _QuickLinksViewState extends State<QuickLinksView>
             ),
             Expanded(
               child: _buildReorderableGridView(
-                  model, model.deletedQuickLinks, _buildAddButton),
+                  model, model.deletedQuickLinks, _buildAddButton, blockReorder: true),
             ),
           ],
         ],
@@ -82,7 +82,8 @@ class _QuickLinksViewState extends State<QuickLinksView>
   ReorderableGridView _buildReorderableGridView(
       QuickLinksViewModel model,
       List<QuickLink> quickLinks,
-      Widget Function(QuickLinksViewModel, int) buildButtonFunction) {
+      Widget Function(QuickLinksViewModel, int) buildButtonFunction,
+      {required bool blockReorder}) {
     final double screenWidth = MediaQuery.of(context).size.width;
     int crossAxisCount;
 
@@ -94,10 +95,13 @@ class _QuickLinksViewState extends State<QuickLinksView>
     }
 
     return ReorderableGridView.count(
+      dragEnabled: !blockReorder,
       padding: const EdgeInsets.all(8.0),
       mainAxisSpacing: 2.0,
       crossAxisSpacing: 2.0,
       crossAxisCount: crossAxisCount,
+      dragWidgetBuilder: (index, widget) =>
+          _buildGridChild(model, index, quickLinks, buildButtonFunction),
       children: List.generate(
         quickLinks.length,
         (index) {

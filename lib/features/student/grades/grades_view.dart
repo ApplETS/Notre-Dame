@@ -58,30 +58,27 @@ class _GradesViewState extends State<GradesView> {
                           textAlign: TextAlign.center,
                           style: Theme.of(context).textTheme.titleLarge))
                 else
-                  Padding(
-                    padding: const EdgeInsets.only(top: 8.0),
-                    child: AnimationLimiter(
-                      child: ListView.builder(
-                          padding: EdgeInsets.zero,
-                          itemCount: model.coursesBySession.length,
-                          itemBuilder: (BuildContext context, int index) =>
-                              AnimationConfiguration.staggeredList(
-                                position: index,
-                                duration: const Duration(milliseconds: 750),
-                                child: SlideAnimation(
-                                  verticalOffset: 50.0,
-                                  child: FadeInAnimation(
-                                    child: _buildSessionCourses(
-                                        index,
-                                        _sessionName(model.sessionOrder[index],
-                                            AppIntl.of(context)!),
-                                        model.coursesBySession[
-                                            model.sessionOrder[index]]!,
-                                        model),
-                                  ),
+                  AnimationLimiter(
+                    child: ListView.builder(
+                        padding: const EdgeInsets.only(top: 8.0),
+                        itemCount: model.coursesBySession.length,
+                        itemBuilder: (BuildContext context, int index) =>
+                            AnimationConfiguration.staggeredList(
+                              position: index,
+                              duration: const Duration(milliseconds: 750),
+                              child: SlideAnimation(
+                                verticalOffset: 50.0,
+                                child: FadeInAnimation(
+                                  child: _buildSessionCourses(
+                                      index,
+                                      _sessionName(model.sessionOrder[index],
+                                          AppIntl.of(context)!),
+                                      model.coursesBySession[
+                                          model.sessionOrder[index]]!,
+                                      model),
                                 ),
-                              )),
-                    ),
+                              ),
+                            )),
                   ),
                 if (model.isBusy)
                   buildLoading(isInteractionLimitedWhileLoading: false)
