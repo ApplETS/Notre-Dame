@@ -10,7 +10,7 @@ import 'package:notredame/features/app/integration/networking_service.dart';
 import 'package:notredame/features/app/navigation/navigation_service.dart';
 import 'package:notredame/features/app/widgets/base_scaffold.dart';
 import '../../../common/helpers.dart';
-import '../analytics/analytics_service_mock.dart';
+import '../analytics/mocks/analytics_service_mock.dart';
 
 void main() {
   group('BaseScaffold - ', () {

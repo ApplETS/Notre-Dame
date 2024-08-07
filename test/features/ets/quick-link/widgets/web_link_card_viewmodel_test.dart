@@ -14,10 +14,10 @@ import 'package:notredame/features/ets/quick-link/models/quick_link.dart';
 import 'package:notredame/features/ets/quick-link/widgets/web_link_card_viewmodel.dart';
 import 'package:notredame/features/more/settings/settings_manager.dart';
 import '../../../../common/helpers.dart';
-import '../../../app/analytics/analytics_service_mock.dart';
-import '../../../app/error/internal_info_service_mock.dart';
+import '../../../app/analytics/mocks/analytics_service_mock.dart';
+import '../../../app/error/internal_info/mocks/internal_info_service_mock.dart';
 import '../../../app/integration/mocks/launch_url_service_mock.dart';
-import '../../../app/navigation/navigation_service_mock.dart';
+import '../../../app/navigation/mocks/navigation_service_mock.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();

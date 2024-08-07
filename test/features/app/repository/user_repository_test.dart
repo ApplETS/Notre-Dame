@@ -22,7 +22,7 @@ import 'package:notredame/features/app/storage/cache_manager.dart';
 import 'package:notredame/utils/api_exception.dart';
 import 'package:notredame/utils/http_exception.dart';
 import '../../../common/helpers.dart';
-import '../analytics/analytics_service_mock.dart';
+import '../analytics/mocks/analytics_service_mock.dart';
 import '../integration/mocks/networking_service_mock.dart';
 import '../monets_api/mocks/mon_ets_api_mock.dart';
 import '../signets_api/mocks/signets_api_mock.dart';

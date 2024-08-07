@@ -13,7 +13,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:notredame/features/app/integration/networking_service.dart';
 import 'package:notredame/features/more/settings/settings_view.dart';
 import '../../../common/helpers.dart';
-import '../../app/analytics/analytics_service_mock.dart';
+import '../../app/analytics/mocks/analytics_service_mock.dart';
 
 void main() {
   late AppIntl intl;

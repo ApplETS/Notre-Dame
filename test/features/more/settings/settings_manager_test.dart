@@ -14,8 +14,8 @@ import 'package:notredame/constants/preferences_flags.dart';
 import 'package:notredame/features/app/storage/preferences_service.dart';
 import 'package:notredame/features/more/settings/settings_manager.dart';
 import '../../../common/helpers.dart';
-import '../../app/analytics/analytics_service_mock.dart';
-import '../../app/analytics/remote_config_service_mock.dart';
+import '../../app/analytics/mocks/analytics_service_mock.dart';
+import '../../app/analytics/mocks/remote_config_service_mock.dart';
 import '../../app/storage/mocks/preferences_service_mock.dart';
 
 void main() {

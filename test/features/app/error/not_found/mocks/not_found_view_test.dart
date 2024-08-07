@@ -10,8 +10,8 @@ import 'package:rive/rive.dart';
 
 // Project imports:
 import 'package:notredame/features/app/error/not_found/not_found_view.dart';
-import '../../../../common/helpers.dart';
-import '../../presentation/rive_animation_service_mock.dart';
+import '../../../../../common/helpers.dart';
+import '../../../presentation/mocks/rive_animation_service_mock.dart';
 
 void main() {
   group('NotFoundView - ', () {

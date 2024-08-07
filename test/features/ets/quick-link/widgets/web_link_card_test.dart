@@ -12,7 +12,7 @@ import 'package:notredame/features/app/navigation/navigation_service.dart';
 import 'package:notredame/features/ets/quick-link/models/quick_link.dart';
 import 'package:notredame/features/ets/quick-link/widgets/web_link_card.dart';
 import '../../../../common/helpers.dart';
-import '../../../app/analytics/analytics_service_mock.dart';
+import '../../../app/analytics/mocks/analytics_service_mock.dart';
 import '../../../app/integration/mocks/launch_url_service_mock.dart';
 
 final _quickLink = QuickLink(

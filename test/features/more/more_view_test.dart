@@ -16,8 +16,8 @@ import 'package:notredame/constants/preferences_flags.dart';
 import 'package:notredame/features/app/navigation/router_paths.dart';
 import 'package:notredame/features/more/more_view.dart';
 import '../../common/helpers.dart';
-import '../app/analytics/remote_config_service_mock.dart';
-import '../app/navigation/navigation_service_mock.dart';
+import '../app/analytics/mocks/remote_config_service_mock.dart';
+import '../app/navigation/mocks/navigation_service_mock.dart';
 import 'feedback/mocks/in_app_review_service_mock.dart';
 import 'settings/mocks/settings_manager_mock.dart';
 

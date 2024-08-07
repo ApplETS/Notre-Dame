@@ -15,7 +15,7 @@ import 'package:notredame/features/app/widgets/base_scaffold.dart';
 import 'package:notredame/features/more/settings/settings_manager.dart';
 import 'package:notredame/features/student/student_view.dart';
 import '../../common/helpers.dart';
-import '../app/analytics/analytics_service_mock.dart';
+import '../app/analytics/mocks/analytics_service_mock.dart';
 import '../app/repository/mocks/course_repository_mock.dart';
 
 void main() {

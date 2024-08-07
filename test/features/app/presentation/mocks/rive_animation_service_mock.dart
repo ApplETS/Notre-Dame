@@ -6,7 +6,7 @@ import 'package:rive/rive.dart';
 // Project imports:
 import 'package:notredame/features/app/presentation/rive_animation_service.dart';
 import 'package:notredame/utils/animation_exception.dart';
-import '../../../features/app/presentation/rive_animation_service_mock.mocks.dart';
+import 'rive_animation_service_mock.mocks.dart';
 
 /// Mock for the [RiveAnimationService]
 @GenerateNiceMocks([MockSpec<RiveAnimationService>()])

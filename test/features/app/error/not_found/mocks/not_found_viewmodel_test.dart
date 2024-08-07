@@ -9,10 +9,10 @@ import 'package:notredame/features/app/error/not_found/not_found_viewmodel.dart'
 import 'package:notredame/features/app/navigation/navigation_service.dart';
 import 'package:notredame/features/app/navigation/router_paths.dart';
 import 'package:notredame/features/app/presentation/rive_animation_service.dart';
-import '../../../../common/helpers.dart';
-import '../../analytics/analytics_service_mock.dart';
-import '../../navigation/navigation_service_mock.dart';
-import '../../presentation/rive_animation_service_mock.dart';
+import '../../../../../common/helpers.dart';
+import '../../../analytics/mocks/analytics_service_mock.dart';
+import '../../../navigation/mocks/navigation_service_mock.dart';
+import '../../../presentation/mocks/rive_animation_service_mock.dart';
 
 void main() {
   late NavigationServiceMock navigationServiceMock;

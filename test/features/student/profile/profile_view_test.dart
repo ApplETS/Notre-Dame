@@ -14,7 +14,7 @@ import 'package:notredame/features/app/signets-api/models/profile_student.dart';
 import 'package:notredame/features/app/signets-api/models/program.dart';
 import 'package:notredame/features/student/profile/profile_view.dart';
 import '../../../common/helpers.dart';
-import '../../app/analytics/analytics_service_mock.dart';
+import '../../app/analytics/mocks/analytics_service_mock.dart';
 import '../../app/repository/mocks/user_repository_mock.dart';
 
 void main() {

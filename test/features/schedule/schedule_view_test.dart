@@ -22,7 +22,7 @@ import 'package:notredame/features/more/settings/settings_manager.dart';
 import 'package:notredame/features/schedule/schedule_view.dart';
 import 'package:notredame/features/schedule/widgets/schedule_settings.dart';
 import '../../common/helpers.dart';
-import '../app/analytics/remote_config_service_mock.dart';
+import '../app/analytics/mocks/remote_config_service_mock.dart';
 import '../app/repository/mocks/course_repository_mock.dart';
 import '../more/settings/mocks/settings_manager_mock.dart';
 

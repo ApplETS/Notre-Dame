@@ -25,7 +25,7 @@ import 'package:notredame/features/ets/events/api-client/models/organizer.dart';
 import 'package:notredame/features/ets/events/api-client/models/paginated_news.dart';
 import 'package:notredame/features/more/settings/settings_manager.dart';
 import '../../common/helpers.dart';
-import '../app/analytics/remote_config_service_mock.dart';
+import '../app/analytics/mocks/remote_config_service_mock.dart';
 import '../app/repository/mocks/news_repository_mock.dart';
 
 // Flutter imports:
