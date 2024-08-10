@@ -12,7 +12,7 @@ import 'package:notredame/features/app/signets-api/models/course_summary.dart';
 import 'package:notredame/features/more/settings/settings_manager.dart';
 import 'package:notredame/features/student/grades/widgets/grade_button.dart';
 import '../../../../common/helpers.dart';
-import '../../../app/navigation/navigation_service_mock.dart';
+import '../../../app/navigation/mocks/navigation_service_mock.dart';
 import '../../../more/settings/mocks/settings_manager_mock.dart';
 
 void main() {
