@@ -22,7 +22,7 @@ class GradeList extends StatelessWidget {
       padding: const EdgeInsets.only(top: 8.0),
       child: AnimationLimiter(
         child: ListView.builder(
-            padding: EdgeInsets.zero,
+            padding: const EdgeInsets.only(top: 8.0),
             itemCount: model.coursesBySession.length,
             itemBuilder: (BuildContext context, int index) =>
                 AnimationConfiguration.staggeredList(

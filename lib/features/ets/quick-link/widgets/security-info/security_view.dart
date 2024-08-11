@@ -10,7 +10,8 @@ import 'package:stacked/stacked.dart';
 
 // Project imports:
 import 'package:notredame/features/ets/quick-link/widgets/security-info/security_viewmodel.dart';
-import 'package:notredame/utils/app_theme.dart';
+
+import 'package:notredame/features/app/widgets/base_scaffold.dart';
 
 class SecurityView extends StatefulWidget {
   @override
@@ -22,26 +23,23 @@ class _SecurityViewState extends State<SecurityView> {
   Widget build(BuildContext context) =>
       ViewModelBuilder<SecurityViewModel>.reactive(
         viewModelBuilder: () => SecurityViewModel(intl: AppIntl.of(context)!),
-        builder: (context, model, child) => Scaffold(
+        builder: (context, model, child) => BaseScaffold(
           appBar: AppBar(
             title: Text(AppIntl.of(context)!.ets_security_title),
           ),
-          body: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                securityMap(context, model),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Text(
-                    AppIntl.of(context)!.security_reach_security,
-                    style: const TextStyle(
-                        color: AppTheme.etsLightRed, fontSize: 24),
-                  ),
-                ),
-                securityPhoneCard(context),
-                securityEmergencyProcedures(context, model),
-              ],
+          showBottomBar: false,
+          body: SafeArea(
+            top: false,
+            bottom: false,
+            child: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  securityMap(context, model),
+                  securityPhoneCard(context),
+                  securityEmergencyProcedures(context, model),
+                ],
+              ),
             ),
           ),
         ),

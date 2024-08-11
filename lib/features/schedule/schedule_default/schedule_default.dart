@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 // Package imports:
 import 'package:calendar_view/calendar_view.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:intl/intl.dart';
 
 // Project imports:
 import 'package:notredame/features/schedule/widgets/schedule_calendar_tile.dart';
@@ -11,8 +12,10 @@ import 'package:notredame/utils/app_theme.dart';
 
 class ScheduleDefault extends StatefulWidget {
   final List<CalendarEventData<Object>> calendarEvents;
+  final bool loaded;
 
-  const ScheduleDefault({super.key, required this.calendarEvents});
+  const ScheduleDefault(
+      {super.key, required this.calendarEvents, required this.loaded});
 
   @override
   _ScheduleDefaultState createState() => _ScheduleDefaultState();
@@ -27,7 +30,7 @@ class _ScheduleDefaultState extends State<ScheduleDefault> {
   @override
   Widget build(BuildContext context) {
     // Check if there are no events
-    if (widget.calendarEvents.isEmpty) {
+    if (widget.calendarEvents.isEmpty && widget.loaded) {
       return Scaffold(
         backgroundColor: Colors.transparent,
         body: Center(
@@ -37,38 +40,47 @@ class _ScheduleDefaultState extends State<ScheduleDefault> {
         ),
       );
     }
-
+    final double heightPerMinute =
+        (MediaQuery.of(context).size.height / 1200).clamp(0.45, 1.0);
     // If there are events, display the calendar
     return Scaffold(
-        body: AbsorbPointer(
-      child: WeekView(
-        key: weekViewKey,
-        controller: eventController..addAll(widget.calendarEvents),
-        backgroundColor: Theme.of(context).brightness == Brightness.light
-            ? AppTheme.lightThemeBackground
-            : AppTheme.darkThemeBackground,
-        weekDays: const [
-          WeekDays.monday,
-          WeekDays.tuesday,
-          WeekDays.wednesday,
-          WeekDays.thursday,
-          WeekDays.friday,
-          WeekDays.saturday
-        ],
-        scrollOffset: 340,
-        liveTimeIndicatorSettings: LiveTimeIndicatorSettings.none(),
-        headerStyle: const HeaderStyle(
-            headerTextStyle: TextStyle(fontSize: 0),
-            leftIconVisible: false,
-            rightIconVisible: false,
-            decoration: BoxDecoration(color: Colors.transparent)),
-        heightPerMinute: 0.72,
-        eventTileBuilder: (date, events, boundary, startDuration,
-                endDuration) =>
-            _buildEventTile(
-                date, events, boundary, startDuration, endDuration, context),
-        weekDayBuilder: (DateTime date) => _buildWeekDay(date),
-      ),
+        body: WeekView(
+      maxDay: DateTime.now(),
+      minDay: DateTime.now(),
+      key: weekViewKey,
+      safeAreaOption: const SafeAreaOption(bottom: false),
+      controller: eventController..addAll(widget.calendarEvents),
+      backgroundColor: Theme.of(context).brightness == Brightness.light
+          ? AppTheme.lightThemeBackground
+          : AppTheme.primaryDark,
+      weekDays: const [
+        WeekDays.monday,
+        WeekDays.tuesday,
+        WeekDays.wednesday,
+        WeekDays.thursday,
+        WeekDays.friday,
+        WeekDays.saturday
+      ],
+      hourIndicatorSettings: HourIndicatorSettings(
+          color: Theme.of(context).brightness == Brightness.light
+              ? AppTheme.scheduleLineColorLight
+              : AppTheme.scheduleLineColorDark),
+      scrollOffset: heightPerMinute * 60 * 7.5,
+      timeLineStringBuilder: (date, {secondaryDate}) {
+        return DateFormat('H:mm').format(date);
+      },
+      liveTimeIndicatorSettings: LiveTimeIndicatorSettings.none(),
+      weekNumberBuilder: (date) => null,
+      headerStyle: const HeaderStyle(
+          headerTextStyle: TextStyle(fontSize: 0),
+          leftIconVisible: false,
+          rightIconVisible: false,
+          decoration: BoxDecoration(color: Colors.transparent)),
+      heightPerMinute: heightPerMinute,
+      eventTileBuilder: (date, events, boundary, startDuration, endDuration) =>
+          _buildEventTile(
+              date, events, boundary, startDuration, endDuration, context),
+      weekDayBuilder: (DateTime date) => _buildWeekDay(date),
     ));
   }
 

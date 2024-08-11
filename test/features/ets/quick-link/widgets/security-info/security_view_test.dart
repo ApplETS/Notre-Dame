@@ -17,6 +17,7 @@ void main() {
   group('SecurityView - ', () {
     setUp(() async {
       intl = await setupAppIntl();
+      setupNetworkingServiceMock();
     });
 
     tearDown(() {});

@@ -39,12 +39,12 @@ class EasterEggIcon extends StatelessWidget {
         ),
         if (easterEggTrigger)
           SizedBox(
-            width: 200,
-            height: 200,
+            width: 128,
+            height: 128,
             child: Hero(
               tag: 'capra',
               child: Image.asset(
-                "assets/images/capra_long.png",
+                "assets/images/capra.png",
                 scale: 1.0,
               ),
             ),

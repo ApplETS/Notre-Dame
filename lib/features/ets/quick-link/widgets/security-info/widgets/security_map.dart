@@ -17,13 +17,16 @@ Widget securityMap(BuildContext context, SecurityViewModel model) {
     child: GoogleMap(
         initialCameraPosition: etsLocation,
         zoomControlsEnabled: false,
-        markers: model.getSecurityMarkersForMaps(model.markersList),
+        markers:
+            model.getSecurityMarkersForMaps(model.markersList),
         onMapCreated: (GoogleMapController controller) {
           model.controller = controller;
           model.changeMapMode(context);
         },
-        gestureRecognizers: <Factory<OneSequenceGestureRecognizer>>{
-          Factory<OneSequenceGestureRecognizer>(() => EagerGestureRecognizer()),
-        }),
+        gestureRecognizers: <Factory<
+            OneSequenceGestureRecognizer>>{
+          Factory<OneSequenceGestureRecognizer>(
+              () => EagerGestureRecognizer()),
+        })
   );
 }

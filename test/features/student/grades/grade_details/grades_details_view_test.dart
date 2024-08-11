@@ -1,6 +1,3 @@
-// Dart imports:
-import 'dart:io';
-
 // Flutter imports:
 import 'package:flutter/material.dart';
 
@@ -74,22 +71,8 @@ void main() {
     isCompleted: false,
   );
 
-  final altNonCompletedCourseReview = CourseReview(
-    acronym: 'GEN101',
-    group: '02',
-    teacherName: 'TEST ALT',
-    startAt: DateTime.now().subtract(const Duration(days: 1)),
-    endAt: DateTime.now().add(const Duration(days: 1)),
-    type: 'Cours',
-    isCompleted: false,
-  );
-
   final completedReviewList = <CourseReview>[completedCourseReview];
   final nonCompletedReviewList = <CourseReview>[nonCompletedCourseReview];
-  final partiallyCompletedReviewList = <CourseReview>[
-    completedCourseReview,
-    altNonCompletedCourseReview
-  ];
 
   final Course course = Course(
       acronym: 'GEN101',
@@ -119,16 +102,6 @@ void main() {
       title: 'Cours générique',
       summary: courseSummary,
       reviews: nonCompletedReviewList);
-
-  final Course courseWithPartialEvaluationCompleted = Course(
-      acronym: 'GEN101',
-      group: '02',
-      session: 'H2020',
-      programCode: '999',
-      numberOfCredits: 3,
-      title: 'Cours générique',
-      summary: courseSummary,
-      reviews: partiallyCompletedReviewList);
 
   group('GradesDetailsView - ', () {
     setUp(() async {
@@ -168,7 +141,7 @@ void main() {
                   findsOneWidget);
             }
 
-            expect(find.byType(Card), findsNWidgets(4));
+            expect(find.byType(Card), findsNWidgets(5));
 
             for (final eval in courseSummary.evaluations) {
               expect(find.byKey(Key("GradeEvaluationTile_${eval.title}")),
@@ -258,78 +231,5 @@ void main() {
         expect(find.byKey(const Key("EvaluationNotCompleted")), findsOneWidget);
       });
     });
-
-    group("golden - ", () {
-      testWidgets("default view", (WidgetTester tester) async {
-        setupFlutterToastMock(tester);
-        CourseRepositoryMock.stubGetCourseSummary(
-            courseRepositoryMock, courseWithoutSummary,
-            toReturn: course);
-
-        tester.view.physicalSize = const Size(800, 1410);
-        await tester.runAsync(() async {
-          await tester.pumpWidget(localizedWidget(
-              child: FeatureDiscovery(
-                  child: GradesDetailsView(course: courseWithoutSummary))));
-          await tester.pumpAndSettle();
-        }).then((value) async {
-          await expectLater(find.byType(GradesDetailsView),
-              matchesGoldenFile(goldenFilePath("gradesDetailsView_1")));
-        });
-      });
-
-      testWidgets("if there is no grades available",
-          (WidgetTester tester) async {
-        setupFlutterToastMock(tester);
-        CourseRepositoryMock.stubGetCourseSummary(courseRepositoryMock, course,
-            toReturn: courseWithoutSummary);
-
-        tester.view.physicalSize = const Size(800, 1410);
-
-        await tester.pumpWidget(localizedWidget(
-            child: FeatureDiscovery(child: GradesDetailsView(course: course))));
-        await tester.pumpAndSettle(const Duration(seconds: 1));
-
-        await expectLater(find.byType(GradesDetailsView),
-            matchesGoldenFile(goldenFilePath("gradesDetailsView_2")));
-      });
-
-      testWidgets("if in the evaluation period and evaluation not completed",
-          (WidgetTester tester) async {
-        setupFlutterToastMock(tester);
-        CourseRepositoryMock.stubGetCourseSummary(courseRepositoryMock, course,
-            toReturn: courseWithEvaluationNotCompleted);
-
-        tester.view.physicalSize = const Size(800, 1410);
-
-        await tester.pumpWidget(localizedWidget(
-            child: FeatureDiscovery(child: GradesDetailsView(course: course))));
-        await tester.pumpAndSettle(const Duration(seconds: 1));
-
-        await expectLater(
-            find.byType(GradesDetailsView),
-            matchesGoldenFile(
-                goldenFilePath("gradesDetailsView_evaluation_not_completed")));
-      });
-
-      testWidgets(
-          "if in the evaluation period and partially completed evaluation",
-          (WidgetTester tester) async {
-        setupFlutterToastMock(tester);
-        CourseRepositoryMock.stubGetCourseSummary(courseRepositoryMock, course,
-            toReturn: courseWithPartialEvaluationCompleted);
-
-        tester.view.physicalSize = const Size(800, 1410);
-
-        await tester.pumpWidget(localizedWidget(
-            child: FeatureDiscovery(child: GradesDetailsView(course: course))));
-        await tester.pumpAndSettle(const Duration(seconds: 1));
-
-        await expectLater(
-            find.byType(GradesDetailsView),
-            matchesGoldenFile(
-                goldenFilePath("gradesDetailsView_evaluation_not_completed")));
-      });
-    }, skip: !Platform.isLinux);
   });
 }

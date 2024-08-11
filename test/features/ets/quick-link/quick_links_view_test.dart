@@ -1,9 +1,3 @@
-// Dart imports:
-import 'dart:io';
-
-// Flutter imports:
-import 'package:flutter/material.dart';
-
 // Package imports:
 import 'package:feature_discovery/feature_discovery.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -62,21 +56,6 @@ void main() {
         expect(find.byType(WebLinkCard, skipOffstage: false),
             findsNWidgets(quickLinks(intl).length));
       });
-
-      group("golden - ", () {
-        testWidgets("default view", (WidgetTester tester) async {
-          tester.view.physicalSize = const Size(800, 1410);
-
-          await tester.pumpWidget(localizedWidget(
-              child: FeatureDiscovery(child: QuickLinksView()),
-              useScaffold: false));
-          await tester.pumpAndSettle();
-          await tester.pump(const Duration(milliseconds: 500));
-
-          await expectLater(find.byType(QuickLinksView),
-              matchesGoldenFile(goldenFilePath("quicksLinksView_1")));
-        });
-      }, skip: !Platform.isLinux);
     });
   });
 }

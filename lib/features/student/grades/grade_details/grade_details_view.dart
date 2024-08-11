@@ -15,7 +15,6 @@ import 'package:stacked/stacked.dart';
 import 'package:notredame/features/app/signets-api/models/course.dart';
 import 'package:notredame/features/app/widgets/base_scaffold.dart';
 import 'package:notredame/features/student/grades/grade_details/grades_details_viewmodel.dart';
-import 'package:notredame/features/student/grades/grade_details/widget/class_info.dart';
 import 'package:notredame/utils/app_theme.dart';
 
 class GradesDetailsView extends StatefulWidget {
@@ -59,79 +58,75 @@ class _GradesDetailsViewState extends State<GradesDetailsView>
         builder: (context, model, child) => BaseScaffold(
           safeArea: false,
           showBottomBar: false,
-          body: Material(
-            child: NestedScrollView(
-              headerSliverBuilder: (context, innerBoxScrolled) => [
-                SliverAppBar(
-                  backgroundColor:
-                      Theme.of(context).brightness == Brightness.light
-                          ? AppTheme.etsLightRed
-                          : BottomAppBarTheme.of(context).color,
-                  pinned: true,
-                  onStretchTrigger: () {
-                    return Future<void>.value();
-                  },
-                  leading: IconButton(
-                    icon: const Icon(Icons.arrow_back, color: Colors.white),
-                    onPressed: () => Navigator.of(context).pop(),
-                  ),
-                  title: Hero(
-                    tag:
-                        'course_acronym_${model.course.acronym}_${model.course.session}',
-                    child: Text(
-                      model.course.acronym,
-                      softWrap: false,
-                      overflow: TextOverflow.visible,
-                      style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                          color: Colors.white,
-                          fontSize: 25,
-                          fontWeight: FontWeight.bold),
-                    ),
+          body: NestedScrollView(
+            headerSliverBuilder: (context, innerBoxScrolled) => [
+              SliverAppBar(
+                backgroundColor:
+                    Theme.of(context).brightness == Brightness.light
+                        ? AppTheme.etsLightRed
+                        : BottomAppBarTheme.of(context).color,
+                pinned: true,
+                onStretchTrigger: () {
+                  return Future<void>.value();
+                },
+                titleSpacing: 0,
+                leading: IconButton(
+                  icon: const Icon(Icons.arrow_back, color: Colors.white),
+                  onPressed: () => Navigator.of(context).pop(),
+                ),
+                title: Hero(
+                  tag:
+                      'course_acronym_${model.course.acronym}_${model.course.session}',
+                  child: Text(
+                    model.course.acronym,
+                    softWrap: false,
+                    overflow: TextOverflow.visible,
+                    style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                        color: Colors.white,
+                        fontSize: 25,
+                        fontWeight: FontWeight.bold),
                   ),
                 ),
-                SliverToBoxAdapter(
-                  child: Center(
-                    child: Container(
-                      constraints: BoxConstraints(
-                        minWidth: MediaQuery.of(context).size.width,
-                      ),
-                      decoration: BoxDecoration(
-                        color: Theme.of(context).brightness == Brightness.light
-                            ? AppTheme.etsLightRed
-                            : AppTheme.darkTheme().cardColor,
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.only(bottom: 8.0),
-                        child: SafeArea(
-                          top: false,
-                          bottom: false,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              ClassInfo(info: model.course.title),
-                              if (model.course.teacherName != null)
-                                ClassInfo(
-                                    info: AppIntl.of(context)!.grades_teacher(
-                                        model.course.teacherName!)),
-                              ClassInfo(
-                                  info: AppIntl.of(context)!
-                                      .grades_group_number(model.course.group)),
-                              ClassInfo(
-                                  info: AppIntl.of(context)!.credits_number(
-                                      model.course.numberOfCredits)),
-                            ],
-                          ),
+              ),
+              SliverToBoxAdapter(
+                child: Center(
+                  child: Container(
+                    constraints: BoxConstraints(
+                      minWidth: MediaQuery.of(context).size.width,
+                    ),
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).brightness == Brightness.light
+                          ? AppTheme.etsLightRed
+                          : AppTheme.darkTheme().cardColor,
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.only(bottom: 8.0),
+                      child: SafeArea(
+                        top: false,
+                        bottom: false,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            _buildClassInfo(model.course.title),
+                            if (model.course.teacherName != null)
+                              _buildClassInfo(AppIntl.of(context)!
+                                  .grades_teacher(model.course.teacherName!)),
+                            _buildClassInfo(AppIntl.of(context)!
+                                .grades_group_number(model.course.group)),
+                            _buildClassInfo(AppIntl.of(context)!
+                                .credits_number(model.course.numberOfCredits)),
+                          ],
                         ),
                       ),
                     ),
                   ),
                 ),
-              ],
-              body: SafeArea(
-                top: false,
-                bottom: false,
-                child: _buildGradeEvaluations(model),
               ),
+            ],
+            body: SafeArea(
+              top: false,
+              bottom: false,
+              child: _buildGradeEvaluations(model),
             ),
           ),
         ),
@@ -208,46 +203,53 @@ class _GradesDetailsViewState extends State<GradesDetailsView>
                     ),
                   ),
                 ),
-                Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: <Widget>[
-                      Expanded(
-                        flex: 3,
-                        child: _buildCourseGradeSummary(
-                          AppIntl.of(context)!.grades_median,
-                          validateGrade(
-                            context,
-                            model.course.summary?.median.toString(),
-                            AppIntl.of(context)!.grades_grade_in_percentage(
-                                Utils.getGradeInPercentage(
-                                    model.course.summary?.median,
-                                    model.course.summary?.markOutOf)),
+                IntrinsicHeight(
+                  child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: <Widget>[
+                        Expanded(
+                          flex: 3,
+                          child: _buildCourseGradeSummary(
+                            AppIntl.of(context)!.grades_median,
+                            validateGrade(
+                              context,
+                              model.course.summary?.median.toString(),
+                              AppIntl.of(context)!.grades_grade_in_percentage(
+                                  Utils.getGradeInPercentage(
+                                      model.course.summary?.median,
+                                      model.course.summary?.markOutOf)),
+                            ),
                           ),
                         ),
-                      ),
-                      Expanded(
-                        flex: 3,
-                        child: _buildCourseGradeSummary(
-                          AppIntl.of(context)!.grades_standard_deviation,
-                          validateGrade(
-                            context,
-                            model.course.summary?.standardDeviation.toString(),
-                            model.course.summary?.standardDeviation.toString(),
+                        Expanded(
+                          flex: 3,
+                          child: _buildCourseGradeSummary(
+                            AppIntl.of(context)!.grades_standard_deviation,
+                            validateGrade(
+                              context,
+                              model.course.summary?.standardDeviation
+                                  .toString(),
+                              model.course.summary?.standardDeviation
+                                  .toString(),
+                            ),
                           ),
                         ),
-                      ),
-                      Expanded(
-                        flex: 3,
-                        child: _buildCourseGradeSummary(
-                          AppIntl.of(context)!.grades_percentile_rank,
-                          validateGrade(
-                            context,
-                            model.course.summary?.percentileRank.toString(),
-                            model.course.summary?.percentileRank.toString(),
+                        Expanded(
+                          flex: 3,
+                          child: _buildCourseGradeSummary(
+                            AppIntl.of(context)!.grades_percentile_rank,
+                            validateGrade(
+                              context,
+                              model.course.summary?.percentileRank.toString(),
+                              model.course.summary?.percentileRank.toString(),
+                            ),
                           ),
                         ),
-                      ),
-                    ]),
+                      ]),
+                ),
+                const SizedBox(
+                  height: 8.0,
+                ),
                 Column(children: <Widget>[
                   for (final CourseEvaluation evaluation
                       in model.course.summary?.evaluations ?? [])
@@ -326,36 +328,24 @@ class _GradesDetailsViewState extends State<GradesDetailsView>
   }
 
   /// Build the card of the Medidian, Standard deviation or Percentile Rank
-  SizedBox _buildCourseGradeSummary(String? title, String number) {
-    return SizedBox(
-      height: 110,
-      width: MediaQuery.of(context).size.width / 3.1,
-      child: Card(
+  Widget _buildCourseGradeSummary(String? title, String number) {
+    return Card(
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Expanded(
-              flex: 5,
-              child: Padding(
-                padding: const EdgeInsets.only(top: 14.0),
-                child: Text(
-                  title ?? "",
-                  textAlign: TextAlign.center,
-                  style: const TextStyle(
-                    fontSize: 16,
-                  ),
-                ),
+            Text(
+              title ?? "",
+              textAlign: TextAlign.center,
+              style: const TextStyle(
+                fontSize: 16,
               ),
             ),
-            Expanded(
-              flex: 5,
-              child: Padding(
-                padding: const EdgeInsets.only(top: 2.0),
-                child: Text(
-                  number,
-                  style: const TextStyle(fontSize: 19),
-                ),
-              ),
+            const SizedBox(height: 4),
+            Text(
+              number,
+              style: const TextStyle(fontSize: 19),
             ),
           ],
         ),

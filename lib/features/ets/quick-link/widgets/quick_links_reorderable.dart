@@ -17,7 +17,7 @@ ReorderableGridView quickLinksReorderableGridView(
     Function(Function()) setState,
     AnimationController controller,
     Animation<double> animation,
-    bool deleteButton) {
+    {required bool deleteButton, required bool blockReorder}) {
   final double screenWidth = MediaQuery.of(context).size.width;
   int crossAxisCount;
 
@@ -29,10 +29,13 @@ ReorderableGridView quickLinksReorderableGridView(
   }
 
   return ReorderableGridView.count(
-    padding: EdgeInsets.zero,
+    dragEnabled: !blockReorder,
+    padding: const EdgeInsets.all(8.0),
     mainAxisSpacing: 2.0,
     crossAxisSpacing: 2.0,
     crossAxisCount: crossAxisCount,
+    dragWidgetBuilder: (index, widget) =>
+      _buildGridChild(model, index, quickLinks, controller, animation, setState, deleteButton ? _buildDeleteButton : _buildAddButton),
     children: List.generate(
       quickLinks.length,
       (index) {

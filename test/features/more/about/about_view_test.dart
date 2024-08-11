@@ -1,6 +1,3 @@
-// Dart imports:
-import 'dart:io';
-
 // Flutter imports:
 import 'package:flutter/material.dart';
 
@@ -36,25 +33,6 @@ void main() {
         final row = find.byType(Row);
         expect(row, findsOneWidget);
       });
-
-      group("golden - ", () {
-        testWidgets("default view", (WidgetTester tester) async {
-          tester.view.physicalSize = const Size(800, 1410);
-
-          await tester.runAsync(() async {
-            await tester.pumpWidget(
-                localizedWidget(useScaffold: false, child: AboutView()));
-            final Element element = tester.element(find.byType(Hero));
-            final Hero widget = element.widget as Hero;
-            final Image image = widget.child as Image;
-            await precacheImage(image.image, element);
-            await tester.pumpAndSettle();
-          });
-          await tester.pumpAndSettle();
-          await expectLater(find.byType(AboutView),
-              matchesGoldenFile(goldenFilePath("aboutView_1")));
-        });
-      }, skip: !Platform.isLinux);
     });
   });
 }

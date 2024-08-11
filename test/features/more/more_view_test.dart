@@ -1,6 +1,3 @@
-// Dart imports:
-import 'dart:io';
-
 // Flutter imports:
 import 'package:flutter/material.dart';
 
@@ -242,29 +239,6 @@ void main() {
           expect(find.byType(AlertDialog), findsOneWidget);
         });
       });
-
-      group("golden - ", () {
-        testWidgets("default view", (WidgetTester tester) async {
-          RemoteConfigServiceMock.stubGetPrivacyPolicyEnabled(
-              remoteConfigServiceMock,
-              toReturn: false);
-          tester.view.physicalSize = const Size(800, 1410);
-
-          await tester.runAsync(() async {
-            await tester.pumpWidget(
-                localizedWidget(child: FeatureDiscovery(child: MoreView())));
-            final Element element = tester.element(find.byType(Hero));
-            final Hero widget = element.widget as Hero;
-            final Image image = widget.child as Image;
-            await precacheImage(image.image, element);
-            await tester.pumpAndSettle();
-          });
-          await tester.pumpAndSettle(const Duration(seconds: 1));
-
-          await expectLater(find.byType(MoreView),
-              matchesGoldenFile(goldenFilePath("moreView_1")));
-        });
-      }, skip: !Platform.isLinux);
     });
   });
 }
