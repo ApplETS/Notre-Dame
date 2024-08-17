@@ -12,16 +12,19 @@ class SemesterProgressWidgetSmall : SemesterProgressWidgetBase() {
         get() = R.layout.widget_semester_progress_small
 
     private fun getPercentageText(): String {
-        return "${semesterProgress.completedPercentageAsInt} %"
+        return "${semesterProgress?.completedPercentageAsInt} %"
     }
 
     private fun getElapsedDaysText(): String {
-        return "${semesterProgress.elapsedDays} / ${semesterProgress.totalDays}"
+        return "${semesterProgress?.elapsedDays} / ${semesterProgress?.totalDays}"
     }
 
     override val setViews: (RemoteViews, Context, Int) -> Unit
         get() = { views, context, appWidgetId ->
-            views.setProgressBar(R.id.progressBar, 100, semesterProgress.completedPercentageAsInt, false)
+            semesterProgress?.completedPercentageAsInt?.let {
+                views.setProgressBar(R.id.progressBar, 100,
+                    it, false)
+            }
             views.setTextViewText(R.id.progress_text, getPercentageText())
             views.setTextViewText(R.id.elapsed_days_text, getElapsedDaysText())
             views.setOnClickPendingIntent(R.id.semester_progress_widget, getPendingIntent(context, appWidgetId))

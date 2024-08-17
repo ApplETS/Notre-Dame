@@ -9,23 +9,19 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.RemoteViews
-import android.widget.Toast
 import ca.etsmtl.applets.etsmobile.Constants
 import ca.etsmtl.applets.etsmobile.services.SignetsService
 import ca.etsmtl.applets.etsmobile.services.models.MonETSUser
-import ca.etsmtl.applets.etsmobile.services.models.Semester
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlinx.coroutines.withContext
-import java.util.Calendar
-import java.util.Date
 import kotlin.coroutines.resume
 
 abstract class SemesterProgressWidgetBase : AppWidgetProvider() {
     companion object {
-        var semesterProgress = SemesterProgress()
+        var semesterProgress: SemesterProgress? = null
     }
 
     fun updateAppWidget(context: Context, appWidgetManager: AppWidgetManager, appWidgetId: Int, layoutId: Int, setViews: (RemoteViews, Context, Int) -> Unit) {
@@ -39,25 +35,20 @@ abstract class SemesterProgressWidgetBase : AppWidgetProvider() {
 
     fun getProgressInfo(context: Context) {
         CoroutineScope(Dispatchers.IO).launch {
-            // TODO : Handle case when there's an error fetching the data
-            if (semesterProgress.isOngoing()){
-                semesterProgress.calculateProgress()
+            if (semesterProgress == null) {
+                semesterProgress = getSemesterProgress(context)
             }
-            else{
-                val progress = getSemesterProgress(context)
-                if (progress == null) {
-                    withContext(Dispatchers.Main){
-                        Toast.makeText(context, "Error fetching semester progress", Toast.LENGTH_SHORT).show()
-                    }
-                    semesterProgress = SemesterProgress()
-                }
-                else{
-                    semesterProgress = progress
-                }
+            else if (semesterProgress!!.isOngoing()){
+                semesterProgress!!.calculateProgress()
+            }
+            else if (semesterProgress!!.isPastEndDate()){
+                semesterProgress = getSemesterProgress(context)
             }
 
+            // TODO : Handle case when there's an error fetching the data
+
             context.getSharedPreferences(Constants.SEMESTER_PROGRESS_PREFS_KEY, Context.MODE_PRIVATE).edit().apply {
-                putString("${Constants.SEMESTER_PROGRESS_VARIANT_KEY}_0", "${semesterProgress.completedPercentageAsInt} %")
+                putString("${Constants.SEMESTER_PROGRESS_VARIANT_KEY}_0", "${semesterProgress?.completedPercentageAsInt} %")
                 putString("${Constants.SEMESTER_PROGRESS_VARIANT_KEY}_1", getElapsedDaysOverTotalText(true))
                 putString("${Constants.SEMESTER_PROGRESS_VARIANT_KEY}_2", getRemainingDaysText())
                 apply()
@@ -78,16 +69,16 @@ abstract class SemesterProgressWidgetBase : AppWidgetProvider() {
 
     private fun getRemainingDaysText(): String {
         val remainingText = if (Constants.SEMESTER_PROGRESS_DAYS_EN == Constants.SEMESTER_PROGRESS_DAYS_FR) Constants.SEMESTER_PROGRESS_REMAINING_FR else Constants.SEMESTER_PROGRESS_REMAINING_EN
-        return "${semesterProgress.remainingDays} ${Constants.SEMESTER_PROGRESS_DAYS_EN} $remainingText"
+        return "${semesterProgress?.remainingDays} ${Constants.SEMESTER_PROGRESS_DAYS_EN} $remainingText"
     }
 
     private fun getElapsedDaysOverTotalText(addSuffix: Boolean): String {
         if (!addSuffix) {
-            return "${semesterProgress.elapsedDays} / ${semesterProgress.totalDays}"
+            return "${semesterProgress?.elapsedDays} / ${semesterProgress?.totalDays}"
         }
 
         val elapsedText = if (Constants.SEMESTER_PROGRESS_DAYS_EN == Constants.SEMESTER_PROGRESS_DAYS_FR) Constants.SEMESTER_PROGRESS_ELAPSED_FR else Constants.SEMESTER_PROGRESS_ELAPSED_EN
-        return "${semesterProgress.elapsedDays} ${Constants.SEMESTER_PROGRESS_DAYS_EN} $elapsedText / ${semesterProgress.totalDays} ${Constants.SEMESTER_PROGRESS_DAYS_EN}"
+        return "${semesterProgress?.elapsedDays} ${Constants.SEMESTER_PROGRESS_DAYS_EN} $elapsedText / ${semesterProgress?.totalDays} ${Constants.SEMESTER_PROGRESS_DAYS_EN}"
     }
 
     abstract val layoutId: Int
@@ -138,7 +129,7 @@ abstract class SemesterProgressWidgetBase : AppWidgetProvider() {
                     }
 
                     val sessions = result.getOrNull()
-                    val currentSemester = findSemester(sessions)
+                    val currentSemester = SemesterProgressUtils.findSemester(sessions)
                     if (currentSemester == null) {
                         continuation.resume(null)
                     } else {
@@ -149,42 +140,5 @@ abstract class SemesterProgressWidgetBase : AppWidgetProvider() {
         }
     }
 
-    private fun findSemester(semesters: List<Semester>?): Semester?{
-        if (semesters.isNullOrEmpty()){
-            return null
-        }
 
-        for (session in semesters) {
-            val startDate = SemesterProgressUtils.parseStringAsDate(session.startDate!!)
-            val endDate = SemesterProgressUtils.parseStringAsDate(session.endDate!!)
-
-            if (isTodayBetweenSemesterStartAndEnd(startDate, endDate)){
-                return session
-            }
-        }
-
-        // Check for upcoming semester that hasn't started yet
-        return getUpcomingSemester(semesters)
-    }
-
-    private fun getUpcomingSemester(semesters: List<Semester>?): Semester? {
-        if (semesters.isNullOrEmpty()) {
-            return null
-        }
-
-        val upcomingSemester = semesters.last()
-        val today = Calendar.getInstance().time
-        val startDate = SemesterProgressUtils.parseStringAsDate(upcomingSemester.startDate!!)
-
-        if (today.before(startDate)) {
-            return upcomingSemester
-        }
-
-        return null
-    }
-
-    private fun isTodayBetweenSemesterStartAndEnd(startDate: Date, endDate: Date): Boolean {
-        val today = Calendar.getInstance().time
-        return (today.equals(startDate) || today.after(startDate)) && (today.equals(endDate) || today.before(endDate))
-    }
 }
