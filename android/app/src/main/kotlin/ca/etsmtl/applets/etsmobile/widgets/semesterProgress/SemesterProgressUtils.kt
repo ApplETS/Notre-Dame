@@ -24,10 +24,7 @@ class SemesterProgressUtils {
                 val startDate = parseStringAsDate(session.startDate!!)
                 val endDate = parseStringAsDate(session.endDate!!)
 
-                Log.d("SemesterProgressWidget", "Checking semester: $session")
-
                 if (isTodayBetweenSemesterStartAndEnd(startDate, endDate)){
-                    Log.d("SemesterProgressWidget", "Found current semester: $session")
                     return session
                 }
             }
