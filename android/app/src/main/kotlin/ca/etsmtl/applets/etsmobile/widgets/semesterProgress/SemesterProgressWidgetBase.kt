@@ -33,16 +33,16 @@ abstract class SemesterProgressWidgetBase : AppWidgetProvider() {
         }
     }
 
-    fun getProgressInfo(context: Context) {
+    fun getSemesterProgress(context: Context) {
         CoroutineScope(Dispatchers.IO).launch {
             if (semesterProgress == null) {
-                semesterProgress = getSemesterProgress(context)
+                semesterProgress = getProgressData(context)
             }
             else if (semesterProgress!!.isOngoing()){
                 semesterProgress!!.calculateProgress()
             }
             else if (semesterProgress!!.isPastEndDate()){
-                semesterProgress = getSemesterProgress(context)
+                semesterProgress = getProgressData(context)
             }
 
             // TODO : Handle case when there's an error fetching the data
@@ -85,7 +85,7 @@ abstract class SemesterProgressWidgetBase : AppWidgetProvider() {
     abstract val setViews: (RemoteViews, Context, Int) -> Unit
 
     override fun onUpdate(context: Context, appWidgetManager: AppWidgetManager, appWidgetIds: IntArray) {
-        getProgressInfo(context)
+        getSemesterProgress(context)
         for (appWidgetId in appWidgetIds) {
             updateAppWidget(context, appWidgetManager, appWidgetId, layoutId, setViews)
         }
@@ -109,7 +109,7 @@ abstract class SemesterProgressWidgetBase : AppWidgetProvider() {
         }
     }
 
-    private suspend fun getSemesterProgress(context: Context): SemesterProgress? {
+    private suspend fun getProgressData(context: Context): SemesterProgress? {
         Log.d("SemesterProgressWidget", "Fetching semester progress")
         val user = MonETSUser("username", "password")
 

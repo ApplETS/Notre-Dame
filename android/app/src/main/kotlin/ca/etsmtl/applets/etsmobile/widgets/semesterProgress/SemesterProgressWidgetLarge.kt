@@ -35,7 +35,7 @@ class SemesterProgressWidgetLarge : SemesterProgressWidgetBase() {
                 AppWidgetManager.INVALID_APPWIDGET_ID
             )
             if (appWidgetId != AppWidgetManager.INVALID_APPWIDGET_ID) {
-                getProgressInfo(context)
+                getSemesterProgress(context)
                 cycleText(context, AppWidgetManager.getInstance(context), appWidgetId)
             }
         }

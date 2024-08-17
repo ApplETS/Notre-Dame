@@ -38,7 +38,7 @@ class SemesterProgressWidgetSmall : SemesterProgressWidgetBase() {
                 AppWidgetManager.INVALID_APPWIDGET_ID
             )
             if (appWidgetId != AppWidgetManager.INVALID_APPWIDGET_ID) {
-                getProgressInfo(context)
+                getSemesterProgress(context)
             }
         }
     }
