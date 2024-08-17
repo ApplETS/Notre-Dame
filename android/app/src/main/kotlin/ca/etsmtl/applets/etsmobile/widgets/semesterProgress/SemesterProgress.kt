@@ -1,9 +1,9 @@
 package ca.etsmtl.applets.etsmobile.widgets.semesterProgress
 
 import android.util.Log
-import ca.etsmtl.applets.etsmobile.Utils
 import ca.etsmtl.applets.etsmobile.services.models.Semester
 import java.util.Date
+import java.util.concurrent.TimeUnit
 
 class SemesterProgress {
     private var startDate: Date = Date()
@@ -17,14 +17,15 @@ class SemesterProgress {
     constructor()
 
     constructor(semester: Semester) : this() {
-        startDate = Utils.parseStringAsDate(semester.startDate!!)
-        endDate = Utils.parseStringAsDate(semester.endDate!!)
+        startDate = SemesterProgressUtils.parseStringAsDate(semester.startDate!!)
+        endDate = SemesterProgressUtils.parseStringAsDate(semester.endDate!!)
         calculateProgress()
     }
 
     private fun daysBetween(startDate: Date, endDate: Date): Long {
-        val diff = endDate.time - startDate.time
-        return diff / (1000 * 60 * 60 * 24)
+        val diffInMillis = endDate.time - startDate.time
+        val diffInDays = TimeUnit.DAYS.convert(diffInMillis, TimeUnit.MILLISECONDS)
+        return diffInDays
     }
 
     fun isPastEndDate(): Boolean {
@@ -39,9 +40,10 @@ class SemesterProgress {
     fun calculateProgress() {
         Log.d("SemesterProgress", "Calculating progress")
         val currentDate = Date()
-        elapsedDays = daysBetween(startDate, currentDate)
-        remainingDays = daysBetween(currentDate, endDate)
         totalDays = daysBetween(startDate, endDate)
+        elapsedDays = daysBetween(startDate, currentDate)
+        remainingDays = totalDays - elapsedDays
+
         completedPercentage = (elapsedDays.toDouble() / totalDays.toDouble()) * 100
         completedPercentageAsInt = Math.round(completedPercentage).toInt()
         Log.d("SemesterProgress", "Progress: ${toString()}")

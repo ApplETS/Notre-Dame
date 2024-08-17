@@ -11,7 +11,6 @@ import android.util.Log
 import android.widget.RemoteViews
 import android.widget.Toast
 import ca.etsmtl.applets.etsmobile.Constants
-import ca.etsmtl.applets.etsmobile.Utils
 import ca.etsmtl.applets.etsmobile.services.SignetsService
 import ca.etsmtl.applets.etsmobile.services.models.MonETSUser
 import ca.etsmtl.applets.etsmobile.services.models.Semester
@@ -20,7 +19,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlinx.coroutines.withContext
-import java.security.KeyStore
 import java.util.Calendar
 import java.util.Date
 import kotlin.coroutines.resume
@@ -46,7 +44,7 @@ abstract class SemesterProgressWidgetBase : AppWidgetProvider() {
                 semesterProgress.calculateProgress()
             }
             else{
-                val progress = getSemesterProgress()
+                val progress = getSemesterProgress(context)
                 if (progress == null) {
                     withContext(Dispatchers.Main){
                         Toast.makeText(context, "Error fetching semester progress", Toast.LENGTH_SHORT).show()
@@ -120,7 +118,7 @@ abstract class SemesterProgressWidgetBase : AppWidgetProvider() {
         }
     }
 
-    private suspend fun getSemesterProgress(): SemesterProgress? {
+    private suspend fun getSemesterProgress(context: Context): SemesterProgress? {
         Log.d("SemesterProgressWidget", "Fetching semester progress")
         val user = MonETSUser("username", "password")
 
@@ -157,8 +155,8 @@ abstract class SemesterProgressWidgetBase : AppWidgetProvider() {
         }
 
         for (session in semesters) {
-            val startDate = Utils.parseStringAsDate(session.startDate!!)
-            val endDate = Utils.parseStringAsDate(session.endDate!!)
+            val startDate = SemesterProgressUtils.parseStringAsDate(session.startDate!!)
+            val endDate = SemesterProgressUtils.parseStringAsDate(session.endDate!!)
 
             if (isTodayBetweenSemesterStartAndEnd(startDate, endDate)){
                 return session
@@ -176,7 +174,7 @@ abstract class SemesterProgressWidgetBase : AppWidgetProvider() {
 
         val upcomingSemester = semesters.last()
         val today = Calendar.getInstance().time
-        val startDate = Utils.parseStringAsDate(upcomingSemester.startDate!!)
+        val startDate = SemesterProgressUtils.parseStringAsDate(upcomingSemester.startDate!!)
 
         if (today.before(startDate)) {
             return upcomingSemester
