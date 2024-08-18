@@ -43,22 +43,26 @@ class SemesterProgress {
 
         // Semester hasn't started yet
         if (currentDate.before(startDate)) {
+            initializeProgress()
+        }
+        // Semester has started
+        else{
             totalDays = daysBetween(startDate, endDate)
-            elapsedDays = 0
-            remainingDays = totalDays
-            completedPercentage = 0.0
-            completedPercentageAsInt = 0
-            Log.d("SemesterProgress", "Progress: ${toString()}")
-            return
+            elapsedDays = daysBetween(startDate, currentDate)
+            remainingDays = totalDays - elapsedDays
+            completedPercentage = (elapsedDays.toDouble() / totalDays.toDouble()) * 100
+            completedPercentageAsInt = Math.round(completedPercentage).toInt()
         }
 
-        // Semester has started
-        totalDays = daysBetween(startDate, endDate)
-        elapsedDays = daysBetween(startDate, currentDate)
-        remainingDays = totalDays - elapsedDays
-        completedPercentage = (elapsedDays.toDouble() / totalDays.toDouble()) * 100
-        completedPercentageAsInt = Math.round(completedPercentage).toInt()
         Log.d("SemesterProgress", "Progress: ${toString()}")
+    }
+
+    private fun initializeProgress() {
+        totalDays = daysBetween(startDate, endDate)
+        elapsedDays = 0
+        remainingDays = totalDays
+        completedPercentage = 0.0
+        completedPercentageAsInt = 0
     }
 
     override fun toString(): String {
