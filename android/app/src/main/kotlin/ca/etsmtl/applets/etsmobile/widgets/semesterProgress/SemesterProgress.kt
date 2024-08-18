@@ -40,10 +40,22 @@ class SemesterProgress {
     fun calculateProgress() {
         Log.d("SemesterProgress", "Calculating progress")
         val currentDate = Date()
+
+        // Semester hasn't started yet
+        if (currentDate.before(startDate)) {
+            totalDays = daysBetween(startDate, endDate)
+            elapsedDays = 0
+            remainingDays = totalDays
+            completedPercentage = 0.0
+            completedPercentageAsInt = 0
+            Log.d("SemesterProgress", "Progress: ${toString()}")
+            return
+        }
+
+        // Semester has started
         totalDays = daysBetween(startDate, endDate)
         elapsedDays = daysBetween(startDate, currentDate)
         remainingDays = totalDays - elapsedDays
-
         completedPercentage = (elapsedDays.toDouble() / totalDays.toDouble()) * 100
         completedPercentageAsInt = Math.round(completedPercentage).toInt()
         Log.d("SemesterProgress", "Progress: ${toString()}")
