@@ -19,8 +19,6 @@ import 'package:notredame/features/more/settings/settings_manager.dart';
 import '../../../../common/helpers.dart';
 import '../../../app/repository/mocks/news_repository_mock.dart';
 
-// Flutter imports:
-
 void main() {
   late NewsRepositoryMock newsRepository;
 

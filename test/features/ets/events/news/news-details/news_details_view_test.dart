@@ -15,8 +15,6 @@ import 'package:notredame/features/ets/events/api-client/models/organizer.dart';
 import 'package:notredame/features/ets/events/news/news-details/news_details_view.dart';
 import '../../../../../common/helpers.dart';
 
-// Package imports:
-
 void main() {
   late News sampleNews;
 

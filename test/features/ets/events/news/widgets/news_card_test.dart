@@ -11,8 +11,6 @@ import 'package:notredame/features/ets/events/api-client/models/organizer.dart';
 import 'package:notredame/features/ets/events/news/widgets/news_card.dart';
 import '../../../../../common/helpers.dart';
 
-// Package imports:
-
 void main() {
   final news = News(
     id: "4627a622-f7c7-4ff9-9a01-50c69333ff42",

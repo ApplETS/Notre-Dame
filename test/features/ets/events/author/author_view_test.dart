@@ -25,8 +25,6 @@ import '../../../../common/helpers.dart';
 import '../../../app/repository/mocks/author_repository_mock.dart';
 import '../../../app/repository/mocks/news_repository_mock.dart';
 
-// Package imports:
-
 void main() {
   late AuthorRepositoryMock authorRepository;
   late NewsRepositoryMock newsRepository;
