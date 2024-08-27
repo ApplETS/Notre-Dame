@@ -346,7 +346,7 @@
 
   "no_connectivity": "Aucune connexion internet",
   "service_outage": "Désolé, nous éprouvons actuellement des problèmes de connexion. Veuillez réessayer plus tard.",
-  "service_outage_contact": "Si le problème persiste, vous pouvez nous contacter: ",
+  "service_outage_contact": "Nous sommes au courant de la situation. Nous faisons notre possible pour la régler dans les plus courts délais.",
   "service_outage_refresh": "Rafraichir",
 
   "progress_bar_title": "Progression de la session",

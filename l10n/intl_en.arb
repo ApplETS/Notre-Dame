@@ -346,7 +346,7 @@
 
   "no_connectivity": "No internet connection",
   "service_outage": "Sorry, we are currently experiencing connection problems. Please try again later.",
-  "service_outage_contact": "If the problem persists you can contact us: ",
+  "service_outage_contact": "We are aware of the situation. We are doing our best to resolve it as soon as possible.",
   "service_outage_refresh": "Refresh",
 
   "progress_bar_title": "Semester progress",
