@@ -65,11 +65,6 @@ class RemoteConfigService {
     return _remoteConfig.getBool(_serviceIsDown);
   }
 
-  bool get dashboardMessageActive {
-    fetch();
-    return _remoteConfig.getBool(_dashboardMsgToggle);
-  }
-
   bool get scheduleListViewDefault {
     fetch();
     return _remoteConfig.getBool(_scheduleListViewDefault);
@@ -85,38 +80,43 @@ class RemoteConfigService {
     return _remoteConfig.getString(_privacyPolicyURL);
   }
 
-  String get dashboardMessageFr {
+  bool get dashboardMessageActive {
     fetch();
+    return _remoteConfig.getBool(_dashboardMsgToggle);
+  }
+
+  Future<String> get dashboardMessageFr async {
+    await fetch();
     return _remoteConfig.getString(_dashboardMsgFr);
   }
 
-  String get dashboardMessageEn {
-    fetch();
+  Future<String> get dashboardMessageEn async {
+    await fetch();
     return _remoteConfig.getString(_dashboardMsgEn);
   }
 
-  String get dashboardMessageTitleFr {
-    fetch();
+  Future<String> get dashboardMessageTitleFr async {
+    await fetch();
     return _remoteConfig.getString(_dashboardMsgTitleFr);
   }
 
-  String get dashboardMessageTitleEn {
-    fetch();
+  Future<String> get dashboardMessageTitleEn async {
+    await fetch();
     return _remoteConfig.getString(_dashboardMsgTitleEn);
   }
 
-  String get dashboardMsgColor {
-    fetch();
+  Future<String> get dashboardMsgColor async {
+    await fetch();
     return _remoteConfig.getString(_dashboardMsgColor);
   }
 
-  String get dashboardMsgUrl {
-    fetch();
+  Future<String> get dashboardMsgUrl async {
+    await fetch();
     return _remoteConfig.getString(_dashboardMsgUrl);
   }
 
-  String get dashboardMsgType {
-    fetch();
+  Future<String> get dashboardMsgType async {
+    await fetch();
     return _remoteConfig.getString(_dashboardMsgType);
   }
 

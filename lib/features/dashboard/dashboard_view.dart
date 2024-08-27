@@ -3,39 +3,30 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 
 // Package imports:
-import 'package:auto_size_text/auto_size_text.dart';
 import 'package:feature_discovery/feature_discovery.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:notredame/features/app/analytics/remote_config_service.dart';
 import 'package:notredame/features/dashboard/widgets/about_us_card.dart';
 import 'package:notredame/features/dashboard/widgets/grades_card.dart';
 import 'package:notredame/features/dashboard/widgets/progress_bar_card.dart';
 import 'package:notredame/features/dashboard/widgets/schedule_card.dart';
-import 'package:skeletonizer/skeletonizer.dart';
 import 'package:stacked/stacked.dart';
 
 // Project imports:
 import 'package:notredame/constants/preferences_flags.dart';
 import 'package:notredame/constants/update_code.dart';
-import 'package:notredame/constants/urls.dart';
 import 'package:notredame/features/app/analytics/analytics_service.dart';
-import 'package:notredame/features/app/navigation/navigation_service.dart';
-import 'package:notredame/features/app/navigation/router_paths.dart';
-import 'package:notredame/features/app/signets-api/models/course.dart';
-import 'package:notredame/features/app/signets-api/models/course_activity.dart';
 import 'package:notredame/features/app/widgets/base_scaffold.dart';
-import 'package:notredame/features/app/widgets/dismissible_card.dart';
 import 'package:notredame/features/dashboard/dashboard_viewmodel.dart';
 import 'package:notredame/features/dashboard/progress_bar_text_options.dart';
-import 'package:notredame/features/dashboard/widgets/course_activity_tile.dart';
 import 'package:notredame/features/dashboard/widgets/haptics_container.dart';
-import 'package:notredame/features/student/grades/widgets/grade_button.dart';
 import 'package:notredame/features/welcome/discovery/discovery_components.dart';
 import 'package:notredame/features/welcome/discovery/models/discovery_ids.dart';
 import 'package:notredame/utils/app_theme.dart';
 import 'package:notredame/utils/loading.dart';
 import 'package:notredame/utils/locator.dart';
-import 'package:notredame/utils/utils.dart';
+
+import 'package:notredame/features/app/widgets/broadcast_card/message_broadcast_card.dart';
 
 class DashboardView extends StatefulWidget {
   final UpdateCode updateCode;
@@ -85,7 +76,7 @@ class _DashboardViewState extends State<DashboardView>
                         child: ReorderableListView(
                           header:
                               model.remoteConfigService.dashboardMessageActive
-                                  ? _buildMessageBroadcastCard(model)
+                                  ? const MessageBroadcastCard()
                                   : null,
                           onReorder: (oldIndex, newIndex) =>
                               onReorder(model, oldIndex, newIndex),
@@ -111,20 +102,20 @@ class _DashboardViewState extends State<DashboardView>
         case PreferencesFlag.aboutUsCard:
           cards.add(AboutUsCard(model, element, key: UniqueKey()));
         case PreferencesFlag.scheduleCard:
-          cards.add(ScheduleCard(model, element, dismissCard: () =>
-              dismissCard(model, element),
+          cards.add(ScheduleCard(model, element,
+              dismissCard: () => model.hideCard(element),
               key: UniqueKey(),
           ));
         case PreferencesFlag.progressBarCard:
           cards.add(ProgressBarCard(model, element, progressBarText: progressBarText,
-              dismissCard: () => dismissCard(model, element),
+              dismissCard: () => model.hideCard(element),
               changeProgressBarText: () => model.changeProgressBarText(),
               setText: () => setText(model),
               key: UniqueKey(),
           ));
         case PreferencesFlag.gradesCard:
           cards.add(GradesCard(model, element, dismissCard: () =>
-              dismissCard(model, element),
+              model.hideCard(element),
               key: UniqueKey(),
           ));
         default:
@@ -163,95 +154,13 @@ class _DashboardViewState extends State<DashboardView>
     }
   }
 
-  Widget _buildMessageBroadcastCard(DashboardViewModel model) {
-    if (model.broadcastMessage == "" ||
-        model.broadcastColor == "" ||
-        model.broadcastTitle == "") {
-      return const SizedBox.shrink();
-    }
-    final broadcastMsgColor = Color(int.parse(model.broadcastColor));
-    final broadcastMsgType = model.broadcastType;
-    final broadcastMsgUrl = model.broadcastUrl;
-    return Card(
-        key: UniqueKey(),
-        color: broadcastMsgColor,
-        child: Padding(
-          padding: const EdgeInsets.fromLTRB(17, 10, 15, 20),
-          child: model.busy(model.broadcastMessage)
-              ? const Center(child: CircularProgressIndicator())
-              : Column(mainAxisSize: MainAxisSize.min, children: [
-                  // title row
-                  Row(
-                    children: [
-                      Expanded(
-                        child: Align(
-                          alignment: Alignment.centerLeft,
-                          child: Text(model.broadcastTitle,
-                              style: Theme.of(context)
-                                  .primaryTextTheme
-                                  .titleLarge),
-                        ),
-                      ),
-                      Align(
-                        alignment: Alignment.centerRight,
-                        child: InkWell(
-                          child: getBroadcastIcon(
-                              broadcastMsgType, broadcastMsgUrl),
-                        ),
-                      ),
-                    ],
-                  ),
-                  // main text
-                  AutoSizeText(model.broadcastMessage,
-                      style: Theme.of(context).primaryTextTheme.bodyMedium)
-                ]),
-        ));
-  }
-
-  Widget getBroadcastIcon(String type, String url) {
-    switch (type) {
-      case "warning":
-        return const Icon(
-          Icons.warning_rounded,
-          color: AppTheme.lightThemeBackground,
-          size: 36.0,
-        );
-      case "alert":
-        return const Icon(
-          Icons.error,
-          color: AppTheme.lightThemeBackground,
-          size: 36.0,
-        );
-      case "link":
-        return IconButton(
-          onPressed: () {
-            DashboardViewModel.launchBroadcastUrl(url);
-          },
-          icon: const Icon(
-            Icons.open_in_new,
-            color: AppTheme.lightThemeBackground,
-            size: 30.0,
-          ),
-        );
-    }
-    return const Icon(
-      Icons.campaign,
-      color: AppTheme.lightThemeBackground,
-      size: 36.0,
-    );
-  }
-
-  void dismissCard(DashboardViewModel model, PreferencesFlag flag) {
-    model.hideCard(flag);
-  }
-
   void onReorder(DashboardViewModel model, int oldIndex, int newIndex) {
     if (newIndex > oldIndex) {
       // ignore: parameter_assignments
       newIndex -= 1;
     }
 
-    // Should not happen becase dismiss card will not be called if the card is null.
+    // Should not happen because dismiss card will not be called if the card is null.
     if (model.cards == null) {
       _analyticsService.logError(tag, "Cards list is null");
       throw Exception("Cards is null");

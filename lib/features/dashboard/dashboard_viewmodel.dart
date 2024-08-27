@@ -16,9 +16,6 @@ import 'package:notredame/constants/preferences_flags.dart';
 import 'package:notredame/constants/update_code.dart';
 import 'package:notredame/features/app/analytics/analytics_service.dart';
 import 'package:notredame/features/app/analytics/remote_config_service.dart';
-import 'package:notredame/features/app/integration/launch_url_service.dart';
-import 'package:notredame/features/app/navigation/navigation_service.dart';
-import 'package:notredame/features/app/navigation/router_paths.dart';
 import 'package:notredame/features/app/repository/course_repository.dart';
 import 'package:notredame/features/app/signets-api/models/course.dart';
 import 'package:notredame/features/app/signets-api/models/course_activity.dart';
@@ -42,6 +39,8 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
   final RemoteConfigService remoteConfigService =
       locator<RemoteConfigService>();
 
+  bool dashboardMessageToggle = false;
+
   /// All dashboard displayable cards
   Map<PreferencesFlag, int>? _cards;
 
@@ -59,14 +58,6 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
 
   /// Numbers of days elapsed and total number of days of the current session
   List<int> _sessionDays = [0, 0];
-
-  /// Message to display in case of urgent/important broadcast need (Firebase
-  /// remote config), and the associated card title
-  String broadcastMessage = "";
-  String broadcastTitle = "";
-  String broadcastColor = "";
-  String broadcastUrl = "";
-  String broadcastType = "";
 
   /// Get progress of the session
   double get progress => _progress;
@@ -140,17 +131,6 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
       return true;
     }
     return false;
-  }
-
-  static Future<void> launchBroadcastUrl(String url) async {
-    final LaunchUrlService launchUrlService = locator<LaunchUrlService>();
-    final NavigationService navigationService = locator<NavigationService>();
-    try {
-      await launchUrlService.launchInBrowser(url, Brightness.light);
-    } catch (error) {
-      // An exception is thrown if browser app is not installed on Android device.
-      await navigationService.pushNamed(RouterPaths.webView, arguments: url);
-    }
   }
 
   void changeProgressBarText() {
@@ -230,7 +210,6 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
 
   Future loadDataAndUpdateWidget() async {
     return Future.wait([
-      futureToRunBroadcast(),
       futureToRunGrades(),
       futureToRunSessionProgressBar(),
       futureToRunSchedule()
@@ -524,30 +503,5 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
       prefService.setString(
           PreferencesFlag.updateAskedVersion, storeVersion.toString());
     }
-  }
-
-  Future<void> futureToRunBroadcast() async {
-    setBusyForObject(broadcastMessage, true);
-    setBusyForObject(broadcastTitle, true);
-    setBusyForObject(broadcastColor, true);
-    setBusyForObject(broadcastUrl, true);
-    setBusyForObject(broadcastType, true);
-
-    if (_appIntl.localeName == "fr") {
-      broadcastMessage = remoteConfigService.dashboardMessageFr;
-      broadcastTitle = remoteConfigService.dashboardMessageTitleFr;
-    } else {
-      broadcastMessage = remoteConfigService.dashboardMessageEn;
-      broadcastTitle = remoteConfigService.dashboardMessageTitleEn;
-    }
-    broadcastColor = remoteConfigService.dashboardMsgColor;
-    broadcastUrl = remoteConfigService.dashboardMsgUrl;
-    broadcastType = remoteConfigService.dashboardMsgType;
-
-    setBusyForObject(broadcastMessage, false);
-    setBusyForObject(broadcastTitle, false);
-    setBusyForObject(broadcastColor, false);
-    setBusyForObject(broadcastUrl, false);
-    setBusyForObject(broadcastType, false);
   }
 }
