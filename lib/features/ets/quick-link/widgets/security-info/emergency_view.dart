@@ -24,28 +24,28 @@ class EmergencyView extends StatefulWidget {
 class _EmergencyViewState extends State<EmergencyView> {
   @override
   Widget build(BuildContext context) => BaseScaffold(
-        appBar: AppBar(title: Text(widget.title)),
-        showBottomBar: false,
-        safeArea: false,
-        fabPosition: FloatingActionButtonLocation.centerFloat,
-        fab: FloatingActionButton.extended(
-          onPressed: () {
-            Utils.launchURL(
-                    'tel:${AppIntl.of(context)!.security_emergency_number}',
-                    AppIntl.of(context)!)
-                .catchError((error) {
-              ScaffoldMessenger.of(context)
-                  .showSnackBar(SnackBar(content: Text(error.toString())));
-            });
-          },
-          label: Text(
-            AppIntl.of(context)!.security_reach_security,
-            style: const TextStyle(color: Colors.white, fontSize: 20),
-          ),
-          icon: const Icon(Icons.phone, size: 30, color: Colors.white),
-          backgroundColor: AppTheme.etsLightRed,
+      appBar: AppBar(title: Text(widget.title)),
+      showBottomBar: false,
+      safeArea: false,
+      fabPosition: FloatingActionButtonLocation.centerFloat,
+      fab: FloatingActionButton.extended(
+        onPressed: () {
+          Utils.launchURL(
+                  'tel:${AppIntl.of(context)!.security_emergency_number}',
+                  AppIntl.of(context)!)
+              .catchError((error) {
+            ScaffoldMessenger.of(context)
+                .showSnackBar(SnackBar(content: Text(error.toString())));
+          });
+        },
+        label: Text(
+          AppIntl.of(context)!.security_reach_security,
+          style: const TextStyle(color: Colors.white, fontSize: 20),
         ),
-        body: FutureBuilder<String>(
+        icon: const Icon(Icons.phone, size: 30, color: Colors.white),
+        backgroundColor: AppTheme.etsLightRed,
+      ),
+      body: FutureBuilder<String>(
           future: rootBundle.loadString(widget.description),
           builder: (context, AsyncSnapshot<String> fileContent) {
             if (fileContent.hasData) {
@@ -54,13 +54,12 @@ class _EmergencyViewState extends State<EmergencyView> {
                   bottom: false,
                   child: Scrollbar(
                     child: Markdown(
-                        padding: const EdgeInsets.only(bottom: 120, top: 12, left: 12, right: 12),
+                        padding: const EdgeInsets.only(
+                            bottom: 120, top: 12, left: 12, right: 12),
                         data: fileContent.data!),
-                  )
-              );
+                  ));
             }
             // Loading a file is so fast showing a spinner would make the user experience worse
             return const SizedBox.shrink();
-          }
-      ));
+          }));
 }
