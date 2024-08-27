@@ -2,9 +2,9 @@
 import 'package:flutter/material.dart';
 
 // Package imports:
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:notredame/features/app/error/outage/widgets/outage_image_section.dart';
 import 'package:notredame/features/app/error/outage/widgets/outage_social_section.dart';
+import 'package:notredame/features/app/error/outage/widgets/outage_text_section.dart';
 import 'package:stacked/stacked.dart';
 
 // Project imports:
@@ -31,28 +31,7 @@ class OutageView extends StatelessWidget {
                           ),
                           OutageImageSection(),
                           SizedBox(height: model.getTextPlacement()),
-                          Text(
-                            AppIntl.of(context)!.service_outage,
-                            textAlign: TextAlign.center,
-                            style: const TextStyle(
-                                fontSize: 18, color: Colors.white),
-                          ),
-                          const SizedBox(height: 3),
-                          Text(
-                            AppIntl.of(context)!.service_outage_contact,
-                            textAlign: TextAlign.center,
-                            style: const TextStyle(color: Colors.white),
-                          ),
-                          SizedBox(height: model.getButtonPlacement()),
-                          ElevatedButton(
-                            onPressed: () {
-                              model.refreshOutageConfig();
-                            },
-                            child: Text(
-                              AppIntl.of(context)!.service_outage_refresh,
-                              style: const TextStyle(fontSize: 17),
-                            ),
-                          ),
+                          OutageTextSection(model),
                           Expanded(child: OutageSocialSection()),
                         ],
                       ),
