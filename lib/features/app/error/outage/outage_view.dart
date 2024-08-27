@@ -30,8 +30,10 @@ class OutageView extends StatelessWidget {
                             height: model.getImagePlacement(),
                           ),
                           OutageImageSection(),
-                          SizedBox(height: model.getTextPlacement()),
-                          OutageTextSection(model),
+                          OutageTextSection(
+                              textPlacement: model.getTextPlacement(),
+                              buttonPlacement: model.getButtonPlacement(),
+                              refreshOutageConfig: model.refreshOutageConfig),
                           Expanded(child: OutageSocialSection()),
                         ],
                       ),
