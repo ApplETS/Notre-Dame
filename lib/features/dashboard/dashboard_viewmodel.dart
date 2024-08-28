@@ -19,10 +19,8 @@ import 'package:notredame/features/app/analytics/remote_config_service.dart';
 import 'package:notredame/features/app/repository/course_repository.dart';
 import 'package:notredame/features/app/signets-api/models/course.dart';
 import 'package:notredame/features/app/signets-api/models/course_activity.dart';
-import 'package:notredame/features/app/signets-api/models/session.dart';
 import 'package:notredame/features/app/storage/preferences_service.dart';
 import 'package:notredame/features/app/storage/siren_flutter_service.dart';
-import 'package:notredame/features/dashboard/progress_bar_text_options.dart';
 import 'package:notredame/features/more/feedback/in_app_review_service.dart';
 import 'package:notredame/features/more/settings/settings_manager.dart';
 import 'package:notredame/features/welcome/discovery/discovery_components.dart';
@@ -39,8 +37,6 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
   final RemoteConfigService remoteConfigService =
       locator<RemoteConfigService>();
 
-  bool dashboardMessageToggle = false;
-
   /// All dashboard displayable cards
   Map<PreferencesFlag, int>? _cards;
 
@@ -52,17 +48,6 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
 
   /// Cards to display on dashboard
   List<PreferencesFlag>? _cardsToDisplay;
-
-  /// Percentage of completed days for the session
-  double _progress = 0.0;
-
-  /// Numbers of days elapsed and total number of days of the current session
-  List<int> _sessionDays = [0, 0];
-
-  /// Get progress of the session
-  double get progress => _progress;
-
-  List<int> get sessionDays => _sessionDays;
 
   /// Activities for today
   List<CourseActivity> _todayDateEvents = [];
@@ -85,20 +70,6 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
 
   /// Get cards to display
   List<PreferencesFlag>? get cardsToDisplay => _cardsToDisplay;
-
-  ProgressBarText _currentProgressBarText =
-      ProgressBarText.daysElapsedWithTotalDays;
-
-  ProgressBarText get currentProgressBarText => _currentProgressBarText;
-
-  /// Return session progress based on today's [date]
-  double getSessionProgress() {
-    if (_courseRepository.activeSessions.isEmpty) {
-      return -1.0;
-    } else {
-      return sessionDays[0] / sessionDays[1];
-    }
-  }
 
   static Future<bool> launchInAppReview() async {
     final PreferencesService preferencesService = locator<PreferencesService>();
@@ -131,41 +102,6 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
       return true;
     }
     return false;
-  }
-
-  void changeProgressBarText() {
-    if (currentProgressBarText.index <= 1) {
-      _currentProgressBarText =
-          ProgressBarText.values[currentProgressBarText.index + 1];
-    } else {
-      _currentProgressBarText = ProgressBarText.values[0];
-    }
-
-    _settingsManager.setString(
-        PreferencesFlag.progressBarText, _currentProgressBarText.toString());
-  }
-
-  /// Returns a list containing the number of elapsed days in the active session
-  /// and the total number of days in the session
-  List<int> getSessionDays() {
-    if (_courseRepository.activeSessions.isEmpty) {
-      return [0, 0];
-    } else {
-      int dayCompleted = _settingsManager.dateTimeNow
-          .difference(_courseRepository.activeSessions.first.startDate)
-          .inDays;
-      final dayInTheSession = _courseRepository.activeSessions.first.endDate
-          .difference(_courseRepository.activeSessions.first.startDate)
-          .inDays;
-
-      if (dayCompleted > dayInTheSession) {
-        dayCompleted = dayInTheSession;
-      } else if (dayCompleted < 0) {
-        dayCompleted = 0;
-      }
-
-      return [dayCompleted, dayInTheSession];
-    }
   }
 
   /// List of courses for the current session
@@ -211,7 +147,6 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
   Future loadDataAndUpdateWidget() async {
     return Future.wait([
       futureToRunGrades(),
-      futureToRunSessionProgressBar(),
       futureToRunSchedule()
     ]);
   }
@@ -283,28 +218,6 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
     }
 
     _analyticsService.logEvent(tag, "Restoring cards");
-  }
-
-  Future<List<Session>> futureToRunSessionProgressBar() async {
-    try {
-      final progressBarText =
-          await _settingsManager.getString(PreferencesFlag.progressBarText) ??
-              ProgressBarText.daysElapsedWithTotalDays.toString();
-
-      _currentProgressBarText = ProgressBarText.values
-          .firstWhere((e) => e.toString() == progressBarText);
-
-      setBusyForObject(progress, true);
-      final sessions = await _courseRepository.getSessions();
-      _sessionDays = getSessionDays();
-      _progress = getSessionProgress();
-      return sessions;
-    } catch (error) {
-      onError(error);
-    } finally {
-      setBusyForObject(progress, false);
-    }
-    return [];
   }
 
   Future<List<CourseActivity>> futureToRunSchedule() async {

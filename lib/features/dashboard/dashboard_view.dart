@@ -5,11 +5,10 @@ import 'package:flutter/scheduler.dart';
 // Package imports:
 import 'package:feature_discovery/feature_discovery.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:notredame/features/app/analytics/remote_config_service.dart';
 import 'package:notredame/features/dashboard/widgets/about_us_card.dart';
 import 'package:notredame/features/dashboard/widgets/grades_card.dart';
-import 'package:notredame/features/dashboard/widgets/progress_bar_card.dart';
 import 'package:notredame/features/dashboard/widgets/schedule_card.dart';
+import 'package:notredame/features/dashboard/widgets/session_progress_card/session_progress_card.dart';
 import 'package:stacked/stacked.dart';
 
 // Project imports:
@@ -18,7 +17,6 @@ import 'package:notredame/constants/update_code.dart';
 import 'package:notredame/features/app/analytics/analytics_service.dart';
 import 'package:notredame/features/app/widgets/base_scaffold.dart';
 import 'package:notredame/features/dashboard/dashboard_viewmodel.dart';
-import 'package:notredame/features/dashboard/progress_bar_text_options.dart';
 import 'package:notredame/features/dashboard/widgets/haptics_container.dart';
 import 'package:notredame/features/welcome/discovery/discovery_components.dart';
 import 'package:notredame/features/welcome/discovery/models/discovery_ids.dart';
@@ -107,11 +105,8 @@ class _DashboardViewState extends State<DashboardView>
               key: UniqueKey(),
           ));
         case PreferencesFlag.progressBarCard:
-          cards.add(ProgressBarCard(model, element, progressBarText: progressBarText,
+          cards.add(SessionProgressCard(element, key: UniqueKey(),
               dismissCard: () => model.hideCard(element),
-              changeProgressBarText: () => model.changeProgressBarText(),
-              setText: () => setText(model),
-              key: UniqueKey(),
           ));
         case PreferencesFlag.gradesCard:
           cards.add(GradesCard(model, element, dismissCard: () =>
@@ -120,38 +115,9 @@ class _DashboardViewState extends State<DashboardView>
           ));
         default:
       }
-
-      setText(model);
     }
 
     return cards;
-  }
-
-  void setText(DashboardViewModel model) {
-    if (model.sessionDays[0] == 0 || model.sessionDays[1] == 0) {
-      return;
-    }
-
-    if (model.currentProgressBarText ==
-        ProgressBarText.daysElapsedWithTotalDays) {
-      progressBarText = Text(
-        AppIntl.of(context)!
-            .progress_bar_message(model.sessionDays[0], model.sessionDays[1]),
-        style: const TextStyle(color: Colors.white),
-      );
-    } else if (model.currentProgressBarText == ProgressBarText.percentage) {
-      progressBarText = Text(
-        AppIntl.of(context)!.progress_bar_message_percentage(
-            ((model.sessionDays[0] / model.sessionDays[1]) * 100).round()),
-        style: const TextStyle(color: Colors.white),
-      );
-    } else {
-      progressBarText = Text(
-        AppIntl.of(context)!.progress_bar_message_remaining_days(
-            model.sessionDays[1] - model.sessionDays[0]),
-        style: const TextStyle(color: Colors.white),
-      );
-    }
   }
 
   void onReorder(DashboardViewModel model, int oldIndex, int newIndex) {
