@@ -31,6 +31,7 @@ class _ScheduleDefaultViewState extends State<ScheduleDefaultView> {
           ScheduleDefaultViewModel(sessionCode: widget.sessionCode),
       builder: (context, model, child) => BaseScaffold(
         showBottomBar: false,
+        safeArea: false,
         isLoading: model.busy(model.isLoadingEvents),
         appBar: AppBar(
           title: Text(_sessionName(widget.sessionCode!, AppIntl.of(context)!)),
@@ -45,7 +46,9 @@ class _ScheduleDefaultViewState extends State<ScheduleDefaultView> {
         body: RefreshIndicator(
           child: model.isBusy
               ? const Center(child: CircularProgressIndicator())
-              : ScheduleDefault(calendarEvents: model.calendarEvents),
+              : ScheduleDefault(
+                  calendarEvents: model.calendarEvents,
+                  loaded: !model.busy(model.isLoadingEvents)),
           onRefresh: () => model.refresh(),
         ),
       ),

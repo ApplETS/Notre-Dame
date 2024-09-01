@@ -16,7 +16,6 @@
 - [ ] If it is a core feature, I have added thorough tests.
 - [ ] If needed, I added analytics.
 - [ ] Make sure to add either one of the following labels: `version: Major`,`version: Minor` or `version: Patch`. 
-- [ ] Make sure golden files changes were reviewed and approved.
 
 ### 🖼️ Screenshots (if useful):
 <!--- If it's a visual change, please provide a screenshot -->
