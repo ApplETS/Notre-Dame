@@ -1,0 +1,14 @@
+name: "Tag validation"
+description: "Check if the tag already exists."
+outputs:
+  description: "The version in the pubspec.yaml file."
+  version: ${{ steps.split.outputs._0 }}
+
+runs:
+  using: "composite"
+  steps:
+    - name: Get the version from the pubspec
+      shell: bash
+      run: |
+        VERSION=${GITHUB_REF#refs/tags/}
+        echo "${VERSION}"

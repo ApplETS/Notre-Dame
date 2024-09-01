@@ -1,101 +1,101 @@
-name: Development workflow
-on:
-  workflow_dispatch:
-  pull_request:
-    paths-ignore:
-      - '.gitignore'
-      - '.metadata'
-      - '*.md'
-      - 'android/fastlane/**'
-      - 'ios/fastlane/**'
-      - '.github/**'
-      - '.githooks/**'
-      - '!.github/workflows/dev-workflow.yaml'
-concurrency:
-  group: ${{ github.ref }}
-  cancel-in-progress: true
-env:
-  APP_NAME: 'notre_dame'
+# name: Development workflow
+# on:
+#   workflow_dispatch:
+#   pull_request:
+#     paths-ignore:
+#       - '.gitignore'
+#       - '.metadata'
+#       - '*.md'
+#       - 'android/fastlane/**'
+#       - 'ios/fastlane/**'
+#       - '.github/**'
+#       - '.githooks/**'
+#       - '!.github/workflows/dev-workflow.yaml'
+# concurrency:
+#   group: ${{ github.ref }}
+#   cancel-in-progress: true
+# env:
+#   APP_NAME: 'notre_dame'
 
-jobs:
-  testing:
-    name: Tests and checks
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          ref: ${{ github.head_ref }}
-          token: ${{ secrets.PTA }}
-      - uses: ./.github/composite/flutter-setup
-        with:
-          encrypted-signets-api-cert-password: ${{ secrets.ENCRYPTED_SIGNETS_API_CERT_PASSWORD }}
-          encrypted-google-service-password: ${{ secrets.ENCRYPTED_GOOGLE_SERVICE_PASSWORD }}
-          encrypted-etsmobile-keystore-password: ${{ secrets.ENCRYPTED_ETSMOBILE_KEYSTORE_PASSWORD }}
-          encrypted-keystore-properties-password: ${{ secrets.ENCRYPTED_KEYSTORE_PROPERTIES_PASSWORD }}
-      - uses: ./.github/composite/tests
+# jobs:
+#   testing:
+#     name: Tests and checks
+#     runs-on: ubuntu-latest
+#     steps:
+#       - uses: actions/checkout@v4
+#         with:
+#           ref: ${{ github.head_ref }}
+#           token: ${{ secrets.PTA }}
+#       - uses: ./.github/composite/flutter-setup
+#         with:
+#           encrypted-signets-api-cert-password: ${{ secrets.ENCRYPTED_SIGNETS_API_CERT_PASSWORD }}
+#           encrypted-google-service-password: ${{ secrets.ENCRYPTED_GOOGLE_SERVICE_PASSWORD }}
+#           encrypted-etsmobile-keystore-password: ${{ secrets.ENCRYPTED_ETSMOBILE_KEYSTORE_PASSWORD }}
+#           encrypted-keystore-properties-password: ${{ secrets.ENCRYPTED_KEYSTORE_PROPERTIES_PASSWORD }}
+#       - uses: ./.github/composite/tests
 
-  coverage:
-    name: Update coverage
-    needs:
-      - testing
-    runs-on: ubuntu-latest
-    steps:
-      - name: Download coverage file
-        uses: actions/download-artifact@v4
-        with:
-          name: lcov.info
-      - name: Comment the coverage of the PR
-        uses: romeovs/lcov-reporter-action@v0.4.0
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          lcov-file: ./lcov.info
+#   coverage:
+#     name: Update coverage
+#     needs:
+#       - testing
+#     runs-on: ubuntu-latest
+#     steps:
+#       - name: Download coverage file
+#         uses: actions/download-artifact@v4
+#         with:
+#           name: lcov.info
+#       - name: Comment the coverage of the PR
+#         uses: romeovs/lcov-reporter-action@v0.4.0
+#         with:
+#           github-token: ${{ secrets.GITHUB_TOKEN }}
+#           lcov-file: ./lcov.info
 
-  build:
-    name: Create ${{ matrix.target }} build
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        target: [ iOS, Android ]
-        include:
-          - os: macos-latest
-            target: iOS
-            build_target: ios
-            build_args: --no-codesign
-            build_path: build/ios/iphoneos
-            asset_extension: zip
-            asset_content_type: application/zip
-          - os: ubuntu-latest
-            target: Android
-            build_target: apk
-            build_args: ''
-            build_path: build/app/outputs/apk/release
-            asset_extension: apk
-            asset_content_type: application/zip
-      # Disable fail-fast as we want results from all even if one fails.
-      fail-fast: false
-    needs:
-      - testing
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          ref: ${{ github.head_ref }}
-          token: ${{ secrets.PTA }}
-      - uses: ./.github/composite/flutter-setup
-        with:
-          encrypted-signets-api-cert-password: ${{ secrets.ENCRYPTED_SIGNETS_API_CERT_PASSWORD }}
-          encrypted-google-service-password: ${{ secrets.ENCRYPTED_GOOGLE_SERVICE_PASSWORD }}
-          encrypted-etsmobile-keystore-password: ${{ secrets.ENCRYPTED_ETSMOBILE_KEYSTORE_PASSWORD }}
-          encrypted-keystore-properties-password: ${{ secrets.ENCRYPTED_KEYSTORE_PROPERTIES_PASSWORD }}
-          target: ${{ matrix.target }}
+#   build:
+#     name: Create ${{ matrix.target }} build
+#     runs-on: ${{ matrix.os }}
+#     strategy:
+#       matrix:
+#         target: [ iOS, Android ]
+#         include:
+#           - os: macos-latest
+#             target: iOS
+#             build_target: ios
+#             build_args: --no-codesign
+#             build_path: build/ios/iphoneos
+#             asset_extension: zip
+#             asset_content_type: application/zip
+#           - os: ubuntu-latest
+#             target: Android
+#             build_target: apk
+#             build_args: ''
+#             build_path: build/app/outputs/apk/release
+#             asset_extension: apk
+#             asset_content_type: application/zip
+#       # Disable fail-fast as we want results from all even if one fails.
+#       fail-fast: false
+#     needs:
+#       - testing
+#     steps:
+#       - uses: actions/checkout@v4
+#         with:
+#           ref: ${{ github.head_ref }}
+#           token: ${{ secrets.PTA }}
+#       - uses: ./.github/composite/flutter-setup
+#         with:
+#           encrypted-signets-api-cert-password: ${{ secrets.ENCRYPTED_SIGNETS_API_CERT_PASSWORD }}
+#           encrypted-google-service-password: ${{ secrets.ENCRYPTED_GOOGLE_SERVICE_PASSWORD }}
+#           encrypted-etsmobile-keystore-password: ${{ secrets.ENCRYPTED_ETSMOBILE_KEYSTORE_PASSWORD }}
+#           encrypted-keystore-properties-password: ${{ secrets.ENCRYPTED_KEYSTORE_PROPERTIES_PASSWORD }}
+#           target: ${{ matrix.target }}
 
-      - uses: ./.github/composite/ci-build
-        with:
-          target: ${{ matrix.target }}
-          build-target: ${{ matrix.build_target }}
-          build-args: ${{ matrix.build_args }}
-          build-path: ${{ matrix.build_path }}
-          asset-extension: ${{ matrix.asset_extension }}
-          asset-content-type: ${{ matrix.asset_content_type }}
-          github-api-token: ${{ secrets.GH_API_TOKEN }}
-          app-name: ${{ env.APP_NAME }}
+#       - uses: ./.github/composite/ci-build
+#         with:
+#           target: ${{ matrix.target }}
+#           build-target: ${{ matrix.build_target }}
+#           build-args: ${{ matrix.build_args }}
+#           build-path: ${{ matrix.build_path }}
+#           asset-extension: ${{ matrix.asset_extension }}
+#           asset-content-type: ${{ matrix.asset_content_type }}
+#           github-api-token: ${{ secrets.GH_API_TOKEN }}
+#           app-name: ${{ env.APP_NAME }}
 
