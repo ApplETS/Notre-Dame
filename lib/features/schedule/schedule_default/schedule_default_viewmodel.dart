@@ -61,7 +61,7 @@ class ScheduleDefaultViewModel
     return CalendarEventData(
         title: title,
         description:
-            "${eventData.courseAcronym};$courseLocation;${eventData.courseTitle};Je suis un nom de prof",
+            "${eventData.courseAcronym};$courseLocation;${eventData.courseTitle};null",
         date: targetDate,
         startTime: newStartTime,
         endTime: newEndTime,

@@ -1,0 +1,86 @@
+name: "Flutter setup"
+description: "Setup flutter"
+inputs:
+  encrypted-signets-api-cert-password:
+    required: true
+  encrypted-google-service-password:
+    required: true
+  encrypted-etsmobile-keystore-password:
+    required: true
+  encrypted-keystore-properties-password:
+    required: true
+  encrypted-android-service-account-credentials-password:
+    required: false
+  encrypted-ios-service-account-credentials-password:
+    required: false
+  encrypted-ios-matchfile-password:
+    required: false
+  target:
+    description: "Build target: {Android, iOS}"
+    required: false
+    default: 'Android'
+
+runs:
+  using: "composite"
+  steps:
+    - uses: subosito/flutter-action@v2
+      with:
+        flutter-version: '3.19.x'
+        channel: 'stable'
+        cache: true
+
+    # Get flutter dependencies.
+    - name: Get flutter dependencies
+      shell: bash
+      run: flutter pub get
+
+    - name: Install Android dependencies
+      if: ${{ inputs.target == 'Android' }}
+      uses: actions/setup-java@v4
+      with:
+        distribution: 'temurin'
+        java-version: '17'
+
+    - name: Install iOS dependencies
+      if: ${{ inputs.target == 'iOS' }}
+      shell: bash
+      run: |
+        cd ios
+        pod update
+
+    - name: Commit pod updates
+      if: ${{ inputs.target == 'iOS' }}
+      id: commit_pod_versions
+      uses: stefanzweifel/git-auto-commit-action@v5
+      with:
+        file_pattern: "ios/*"
+        commit_user_name: github-actions[bot]
+        commit_user_email: 41898282+github-actions[bot]@users.noreply.github.com
+        commit_message: "[BOT] Applying pod update."
+        add_options: '-u'
+
+    # Fail workflow, because new commit will execute workflow
+    - if: ${{ inputs.target == 'iOS' && steps.commit_pod_versions.outputs.changes_detected == 'true' }}
+      name: Fail workflow if pod version change
+      shell: bash
+      run: |
+        echo 'Pod update applied, running bot commit workflow'
+        exit 1
+
+    - name: Run flutter doctor
+      shell: bash
+      run: flutter doctor
+
+    - name: Decrypt SignETS certificate and Google Services files
+      shell: bash
+      run: |
+        chmod +x ./scripts/decrypt.sh
+        ./scripts/decrypt.sh
+      env:
+        ENCRYPTED_SIGNETS_API_CERT_PASSWORD: ${{ inputs.encrypted-signets-api-cert-password }}
+        ENCRYPTED_GOOGLE_SERVICE_PASSWORD: ${{ inputs.encrypted-google-service-password }}
+        ENCRYPTED_ETSMOBILE_KEYSTORE_PASSWORD: ${{ inputs.encrypted-etsmobile-keystore-password }}
+        ENCRYPTED_KEYSTORE_PROPERTIES_PASSWORD: ${{ inputs.encrypted-keystore-properties-password }}
+        ENCRYPTED_ANDROID_SERVICE_ACCOUNT_CREDENTIALS_PASSWORD: ${{ inputs.encrypted-android-service-account-credentials-password }}
+        ENCRYPTED_IOS_SERVICE_ACCOUNT_CREDENTIALS_PASSWORD: ${{ inputs.encrypted-ios-service-account-credentials-password }}
+        ENCRYPTED_IOS_MATCHFILE_PASSWORD: ${{ inputs.encrypted-ios-matchfile-password }}

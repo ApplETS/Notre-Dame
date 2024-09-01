@@ -19,8 +19,8 @@
 Ce projet concrétise la quatrième version de l'application mobile ÉTSMobile pour Android et iOS. Il s'agit de portail principal entre l'utilisateur et l'École de technologie supérieure (ÉTS) sur appareils mobiles. ÉTSMobile est un projet open-source développé par les membres du club étudiant ApplETS. L'application offre notamment :
 
 * L'accès aux notes d'évaluations
-*  L'accès aux horaires de cours
-*  Et bien plus...
+* L'accès aux horaires de cours
+* Et bien plus...
 
 _Note: Ce guide est aussi disponible en: [English](https://github.com/ApplETS/Notre-Dame/blob/master/README.md)_
 
@@ -52,7 +52,7 @@ chmod +x ./env_variables.sh
 flutter pub get
 ```
 
-- Pour généré les mocks:
+- Pour générer les mocks:
 ```bash
 dart run build_runner build
 ```
