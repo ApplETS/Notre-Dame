@@ -10,6 +10,7 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.RemoteViews
 import ca.etsmtl.applets.etsmobile.Constants
+import ca.etsmtl.applets.etsmobile.SecureStorageHelper
 import ca.etsmtl.applets.etsmobile.services.SignetsService
 import ca.etsmtl.applets.etsmobile.services.models.MonETSUser
 import kotlinx.coroutines.CoroutineScope
@@ -35,13 +36,13 @@ abstract class SemesterProgressWidgetBase : AppWidgetProvider() {
 
     fun getSemesterProgress(context: Context) {
         CoroutineScope(Dispatchers.IO).launch {
-            if (semesterProgress == null) {
-                semesterProgress = getProgressData(context)
-            }
-            else if (semesterProgress!!.isOngoing()){
+            if (semesterProgress != null && semesterProgress!!.isOngoing()) {
                 semesterProgress!!.calculateProgress()
             }
-            else if (semesterProgress!!.isPastEndDate()){
+            // The semester progress is null or the current semester has ended.
+            // In any case, we try to fetch the data.
+            // There's either an active semester or an upcoming one.
+            else{
                 semesterProgress = getProgressData(context)
             }
 
@@ -111,7 +112,16 @@ abstract class SemesterProgressWidgetBase : AppWidgetProvider() {
 
     private suspend fun getProgressData(context: Context): SemesterProgress? {
         Log.d("SemesterProgressWidget", "Fetching semester progress")
-        val user = MonETSUser("username", "password")
+
+        val secureStorageHelper = SecureStorageHelper()
+        val username = secureStorageHelper.getValue(context, Constants.USERNAME_KEY)
+        val password = secureStorageHelper.getValue(context, Constants.PASSWORD_KEY)
+
+        if (username == null || password == null) {
+            return null
+        }
+
+        val user = MonETSUser(username, password)
 
         return withContext(Dispatchers.IO) {
             suspendCancellableCoroutine { continuation ->
