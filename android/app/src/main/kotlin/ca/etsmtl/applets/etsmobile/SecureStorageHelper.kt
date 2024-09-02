@@ -57,12 +57,10 @@ class SecureStorageHelper {
             // Check if the key starts with the known prefix
             if (plainKey.startsWith(prefix)) {
                 val actualKey = plainKey.substringAfter(prefix)
-                Log.d("SecureStorageHelper", "Decoded Key (after prefix): $actualKey")
 
                 if (actualKey == inputKey) {
                     val encodedValue = entry.value as? String
                     if (encodedValue != null) {
-                        Log.d("SecureStorageHelper", "Attempting to decode value: $encodedValue")
                         val encryptedData = try {
                             Base64.decode(encodedValue, Base64.DEFAULT)
                         } catch (e: IllegalArgumentException) {
