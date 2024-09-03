@@ -1,5 +1,6 @@
 <resources>
-    <string name="semester_progress_title">Semester Progress</string>
+    <string name="semester_progress_title_en">Semester Progress</string>
+    <string name="semester_progress_title_fr">Progression de la session</string>
     <string name="default_progress_out_of_days" translatable="false">50 / 100</string>
     <string name="default_progress_percentage" translatable="false">50 %</string>
     <string name="widget_background_card" translatable="false">widget_background_card</string>
@@ -10,7 +11,8 @@
     <string name="widget_config_dark_option_text">Dark</string>
     <string name="widget_config_english_option_text">English</string>
     <string name="widget_config_french_option_text">Français</string>
-    <string name="widget_config_widget_previews_text">Widget Previews</string>
-    <string name="semester_progress_config_widget_preview_title">Large Widget</string>
+    <string name="widget_config_widget_previews_text">Widget Preview</string>
+    <string name="semester_progress_config_small_widget_preview_title">Small Widget</string>
+    <string name="semester_progress_config_large_widget_preview_title">Large Widget</string>
     <string name="semester_progress_widget_language_settings_title">Language</string>
 </resources>

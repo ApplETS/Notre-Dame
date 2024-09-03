@@ -10,4 +10,5 @@
     <color name="dark_mode_background">#FF121212</color>
     <color name="light_mode_background">#FFFAFAFA</color>
     <color name="dark_mode_card">#FF1E1E1E</color>
+    <color name="configure_activity_background">#FF010101</color>
 </resources>

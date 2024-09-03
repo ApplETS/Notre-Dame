@@ -7,12 +7,20 @@ object Constants {
     const val SEMESTER_PROGRESS_PREFS_KEY = "SemesterProgressWidgetPrefs"
     const val SEMESTER_PROGRESS_VARIANT_KEY = "progress_variant"
     const val SEMESTER_PROGRESS_CURRENT_VARIANT_KEY = "current_variant_index"
+    const val SEMESTER_PROGRESS_THEME_KEY = "theme"
+    const val SEMESTER_PROGRESS_LANG_KEY = "lang"
+
+    const val SEMESTER_PROGRESS_THEME_DARK = "DARK"
+    const val SEMESTER_PROGRESS_THEME_LIGHT = "LIGHT"
+    const val SEMESTER_PROGRESS_LANG_EN = "EN"
+    const val SEMESTER_PROGRESS_LANG_FR = "FR"
     const val SEMESTER_PROGRESS_DAYS_EN = "days"
     const val SEMESTER_PROGRESS_DAYS_FR = "jours"
     const val SEMESTER_PROGRESS_ELAPSED_EN = "elapsed"
     const val SEMESTER_PROGRESS_ELAPSED_FR = "écoulés"
     const val SEMESTER_PROGRESS_REMAINING_EN = "remaining"
     const val SEMESTER_PROGRESS_REMAINING_FR = "restant"
+
 
     const val MAX_PROGRESS_VARIANT_INDEX = 2
     const val WIDGET_BUTTON_CLICK = "ca.etsmtl.applets.etsmobile.WIDGET_BUTTON_CLICK"

@@ -8,6 +8,6 @@
     android:updatePeriodMillis="1800000"
     android:previewLayout="@layout/widget_semester_progress_small"
     android:initialLayout="@layout/widget_semester_progress_small"
-    android:configure="ca.etsmtl.applets.etsmobile.widgets.semesterProgress.SemesterProgressWidgetSmallConfigureActivity"
+    android:configure="ca.etsmtl.applets.etsmobile.widgets.semesterProgress.SemesterProgressWidgetConfigureActivity"
     android:widgetFeatures="reconfigurable|configuration_optional">
 </appwidget-provider>

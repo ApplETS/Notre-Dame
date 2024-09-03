@@ -18,12 +18,12 @@ class SemesterProgressWidgetLarge : SemesterProgressWidgetBase() {
         get() = { views, context, appWidgetId ->
             views.setTextViewText(R.id.semester_progress_title, "Semester Progress")
             semesterProgress?.completedPercentageAsInt?.let {
-                views.setProgressBar(R.id.progressBar, 100,
+                views.setProgressBar(R.id.linear_progress, 100,
                     it, false)
             }
             views.setTextViewText(R.id.progressText, getCurrentText(context, appWidgetId))
             views.setTextColor(R.id.semester_progress_title, context.getColor(R.color.white)) // TODO : Try to remove context.getColor to remove RequiresApi
-            views.setOnClickPendingIntent(R.id.semester_progress_widget, getPendingIntent(context, appWidgetId))
+            views.setOnClickPendingIntent(R.id.semester_progress_small_widget, getPendingIntent(context, appWidgetId))
         }
 
     @RequiresApi(Build.VERSION_CODES.M)

@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/dark_mode_background">
+    android:background="@color/configure_activity_background">
 
     <LinearLayout
         android:id="@+id/widget_preview_container"
@@ -25,17 +25,32 @@
             android:layout_width="match_parent"
             android:layout_height="2dp"
             android:background="@drawable/divider"/>
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="40dp"
-            android:text="Small Widget"
+            android:text="@string/semester_progress_config_small_widget_preview_title"
             android:textColor="@color/white"
             android:fontFamily="@font/roboto_regular"
             android:gravity="center_vertical|start">
         </TextView>
         <FrameLayout
-            android:id="@+id/widget_preview_small"
+            android:id="@+id/small_widget_preview"
             android:layout_width="100dp"
+            android:layout_height="100dp">
+        </FrameLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:text="@string/semester_progress_config_large_widget_preview_title"
+            android:textColor="@color/white"
+            android:fontFamily="@font/roboto_regular"
+            android:gravity="center_vertical|start">
+        </TextView>
+        <FrameLayout
+            android:id="@+id/large_widget_preview"
+            android:layout_width="match_parent"
             android:layout_height="100dp">
         </FrameLayout>
 
@@ -84,19 +99,58 @@
 
             <RadioButton
                 android:id="@+id/radio_button_dark"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:buttonTint="@color/white"
+                android:minHeight="48dp"
                 android:text="@string/widget_config_dark_option_text"
-                android:textColor="@color/white"
-                android:buttonTint="@color/white" />
+                android:textColor="@color/white" />
 
             <RadioButton
                 android:id="@+id/radio_button_light"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:buttonTint="@color/white"
+                android:minHeight="48dp"
                 android:text="@string/widget_config_light_option_text"
-                android:textColor="@color/white"
-                android:buttonTint="@color/white" />
+                android:textColor="@color/white" />
+        </RadioGroup>
+
+        <TextView
+            android:id="@+id/lang_settings"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_below="@id/radio_group"
+            android:text="@string/semester_progress_widget_language_settings_title"
+            android:textColor="@color/white"
+            android:fontFamily="@font/roboto_regular"
+            android:gravity="center_vertical|start">
+        </TextView>
+
+        <RadioGroup
+            android:id="@+id/radio_group_lang"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_below="@id/lang_settings">
+
+            <RadioButton
+                android:id="@+id/radio_button_french"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:buttonTint="@color/white"
+                android:minHeight="48dp"
+                android:text="@string/widget_config_french_option_text"
+                android:textColor="@color/white" />
+
+            <RadioButton
+                android:id="@+id/radio_button_english"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:buttonTint="@color/white"
+                android:minHeight="48dp"
+                android:text="@string/widget_config_english_option_text"
+                android:textColor="@color/white" />
         </RadioGroup>
 
         <Button
@@ -105,9 +159,8 @@
             android:layout_height="wrap_content"
             android:text="@string/widget_config_save_text"
             android:textColor="@color/white"
-            android:layout_below="@id/radio_group"
+            android:layout_below="@id/radio_group_lang"
             android:background="@color/ets_dark_red"
-            android:layout_marginTop="20dp"
             android:layout_centerHorizontal="true"/>
     </RelativeLayout>
 

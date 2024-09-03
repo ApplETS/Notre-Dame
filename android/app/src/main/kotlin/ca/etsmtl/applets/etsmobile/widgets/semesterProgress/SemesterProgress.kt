@@ -8,10 +8,10 @@ import java.util.concurrent.TimeUnit
 class SemesterProgress {
     private var startDate: Date = Date()
     private var endDate: Date = Date()
+    private var completedPercentage: Double = 0.0
     var totalDays: Long = 0
     var elapsedDays: Long = 0
     var remainingDays: Long = 0
-    private var completedPercentage: Double = 0.0
     var completedPercentageAsInt: Int = 0
 
     constructor()

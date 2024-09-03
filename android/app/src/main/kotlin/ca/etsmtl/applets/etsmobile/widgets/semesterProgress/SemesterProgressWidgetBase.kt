@@ -39,6 +39,7 @@ abstract class SemesterProgressWidgetBase : AppWidgetProvider() {
             if (semesterProgress != null && semesterProgress!!.isOngoing()) {
                 semesterProgress!!.calculateProgress()
             }
+
             // The semester progress is null or the current semester has ended.
             // In any case, we try to fetch the data.
             // There's either an active semester or an upcoming one.
@@ -50,8 +51,8 @@ abstract class SemesterProgressWidgetBase : AppWidgetProvider() {
 
             context.getSharedPreferences(Constants.SEMESTER_PROGRESS_PREFS_KEY, Context.MODE_PRIVATE).edit().apply {
                 putString("${Constants.SEMESTER_PROGRESS_VARIANT_KEY}_0", "${semesterProgress?.completedPercentageAsInt} %")
-                putString("${Constants.SEMESTER_PROGRESS_VARIANT_KEY}_1", getElapsedDaysOverTotalText(true))
-                putString("${Constants.SEMESTER_PROGRESS_VARIANT_KEY}_2", getRemainingDaysText())
+                putString("${Constants.SEMESTER_PROGRESS_VARIANT_KEY}_1", getElapsedDaysOverTotalText(context))
+                putString("${Constants.SEMESTER_PROGRESS_VARIANT_KEY}_2", getRemainingDaysText(context))
                 apply()
             }
 
@@ -68,18 +69,39 @@ abstract class SemesterProgressWidgetBase : AppWidgetProvider() {
         return PendingIntent.getBroadcast(context, appWidgetId, intent, PendingIntent.FLAG_IMMUTABLE)
     }
 
-    private fun getRemainingDaysText(): String {
-        val remainingText = if (Constants.SEMESTER_PROGRESS_DAYS_EN == Constants.SEMESTER_PROGRESS_DAYS_FR) Constants.SEMESTER_PROGRESS_REMAINING_FR else Constants.SEMESTER_PROGRESS_REMAINING_EN
-        return "${semesterProgress?.remainingDays} ${Constants.SEMESTER_PROGRESS_DAYS_EN} $remainingText"
+    private fun getRemainingDaysText(context: Context): String {
+        val language = getLanguagePreference(context)
+        val remainingDays = semesterProgress?.remainingDays ?: 0
+
+        return when (language) {
+            "FR" -> {
+                "$remainingDays jours restants"
+            }
+            "EN" -> {
+                "$remainingDays days remaining"
+            }
+            else -> {
+                "$remainingDays jours restants"
+            }
+        }
     }
 
-    private fun getElapsedDaysOverTotalText(addSuffix: Boolean): String {
-        if (!addSuffix) {
-            return "${semesterProgress?.elapsedDays} / ${semesterProgress?.totalDays}"
-        }
+    private fun getElapsedDaysOverTotalText(context: Context): String {
+        val language = getLanguagePreference(context)
+        val elapsedDays = semesterProgress?.elapsedDays ?: 0
+        val totalDays = semesterProgress?.totalDays ?: 0
 
-        val elapsedText = if (Constants.SEMESTER_PROGRESS_DAYS_EN == Constants.SEMESTER_PROGRESS_DAYS_FR) Constants.SEMESTER_PROGRESS_ELAPSED_FR else Constants.SEMESTER_PROGRESS_ELAPSED_EN
-        return "${semesterProgress?.elapsedDays} ${Constants.SEMESTER_PROGRESS_DAYS_EN} $elapsedText / ${semesterProgress?.totalDays} ${Constants.SEMESTER_PROGRESS_DAYS_EN}"
+        return when (language) {
+            "FR" -> {
+                "$elapsedDays jours écoulés / $totalDays jours"
+            }
+            "EN" -> {
+                "$elapsedDays days elapsed / $totalDays days"
+            }
+            else -> {
+                "$elapsedDays jours écoulés / $totalDays jours"
+            }
+        }
     }
 
     abstract val layoutId: Int
@@ -100,6 +122,11 @@ abstract class SemesterProgressWidgetBase : AppWidgetProvider() {
     ) {
         super.onAppWidgetOptionsChanged(context, appWidgetManager, appWidgetId, newOptions)
         updateAllAppWidgets(context)
+    }
+
+    private fun getLanguagePreference(context: Context): String {
+        return context.getSharedPreferences(Constants.SEMESTER_PROGRESS_PREFS_KEY, Context.MODE_PRIVATE)
+            .getString(Constants.SEMESTER_PROGRESS_LANG_KEY, "FR") ?: "FR"
     }
 
     private fun updateAllAppWidgets(context: Context) {

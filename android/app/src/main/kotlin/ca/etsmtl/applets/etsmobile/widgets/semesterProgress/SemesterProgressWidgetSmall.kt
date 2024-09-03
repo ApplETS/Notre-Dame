@@ -22,12 +22,12 @@ class SemesterProgressWidgetSmall : SemesterProgressWidgetBase() {
     override val setViews: (RemoteViews, Context, Int) -> Unit
         get() = { views, context, appWidgetId ->
             semesterProgress?.completedPercentageAsInt?.let {
-                views.setProgressBar(R.id.progressBar, 100,
+                views.setProgressBar(R.id.circular_progress, 100,
                     it, false)
             }
             views.setTextViewText(R.id.progress_text, getPercentageText())
             views.setTextViewText(R.id.elapsed_days_text, getElapsedDaysText())
-            views.setOnClickPendingIntent(R.id.semester_progress_widget, getPendingIntent(context, appWidgetId))
+            views.setOnClickPendingIntent(R.id.semester_progress_small_widget, getPendingIntent(context, appWidgetId))
         }
 
     override fun onReceive(context: Context, intent: Intent) {
