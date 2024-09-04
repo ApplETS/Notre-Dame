@@ -91,14 +91,7 @@ class SemesterProgressWidget : AppWidgetProvider() {
         }
         val pendingClickIntent = PendingIntent.getBroadcast(context, appWidgetId, clickIntent, PendingIntent.FLAG_IMMUTABLE)
 
-        val configureIntent = Intent(context, SemesterProgressWidgetConfigureActivity::class.java).apply {
-            action = AppWidgetManager.ACTION_APPWIDGET_CONFIGURE
-            putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId)
-        }
-        val pendingConfigureIntent = PendingIntent.getBroadcast(context, appWidgetId, configureIntent, PendingIntent.FLAG_IMMUTABLE)
-
         views.setOnClickPendingIntent(R.id.widget_background, pendingClickIntent)
-        views.setOnClickPendingIntent(R.id.widget_background, pendingConfigureIntent)
 
         // Apply the updated views to the widget
         appWidgetManager.updateAppWidget(appWidgetId, views)
@@ -113,23 +106,24 @@ class SemesterProgressWidget : AppWidgetProvider() {
     private fun getAndUpdateProgress(context: Context) {
         if (semesterProgress != null && semesterProgress!!.isOngoing()) {
             semesterProgress!!.calculateProgress()
+            updateAllWidgets(context)
         } else {
             // Fetch new data and calculate progress if the semester is not ongoing
             CoroutineScope(Dispatchers.IO).launch {
                 semesterProgress = fetchSemesterProgress(context)
                 semesterProgress?.calculateProgress()
 
-                context.getSharedPreferences(Constants.SEMESTER_PROGRESS_PREFS_KEY, Context.MODE_PRIVATE).edit().apply {
-                    putString("${Constants.SEMESTER_PROGRESS_VARIANT_KEY}_0", "${semesterProgress?.completedPercentageAsInt} %")
-                    putString("${Constants.SEMESTER_PROGRESS_VARIANT_KEY}_1", getElapsedDaysOverTotalText(context))
-                    putString("${Constants.SEMESTER_PROGRESS_VARIANT_KEY}_2", getRemainingDaysText(context))
-                    apply()
-                }
-
                 withContext(Dispatchers.Main) {
                     updateAllWidgets(context)
                 }
             }
+        }
+
+        context.getSharedPreferences(Constants.SEMESTER_PROGRESS_PREFS_KEY, Context.MODE_PRIVATE).edit().apply {
+            putString("${Constants.SEMESTER_PROGRESS_VARIANT_KEY}_0", "${semesterProgress?.completedPercentageAsInt} %")
+            putString("${Constants.SEMESTER_PROGRESS_VARIANT_KEY}_1", getElapsedDaysOverTotalText(context))
+            putString("${Constants.SEMESTER_PROGRESS_VARIANT_KEY}_2", getRemainingDaysText(context))
+            apply()
         }
     }
 
@@ -156,12 +150,6 @@ class SemesterProgressWidget : AppWidgetProvider() {
                 }
             }
         }
-    }
-
-    private fun getCurrentText(context: Context, appWidgetId: Int): String {
-        val sharedPreferences = context.getSharedPreferences(Constants.SEMESTER_PROGRESS_PREFS_KEY, Context.MODE_PRIVATE)
-        val currentVariantIndex = sharedPreferences.getInt("${Constants.SEMESTER_PROGRESS_CURRENT_VARIANT_KEY}_$appWidgetId", 0)
-        return sharedPreferences.getString("${Constants.SEMESTER_PROGRESS_VARIANT_KEY}_$currentVariantIndex", "N/A") ?: "N/A"
     }
 
     private fun cycleText(context: Context, appWidgetManager: AppWidgetManager, appWidgetId: Int) {

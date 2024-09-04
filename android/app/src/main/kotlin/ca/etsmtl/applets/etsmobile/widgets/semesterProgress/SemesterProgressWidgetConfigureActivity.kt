@@ -27,8 +27,6 @@ class SemesterProgressWidgetConfigureActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        Log.d("ConfigActivity", "onCreate started")
-
         setResult(RESULT_CANCELED)
 
         try {

@@ -73,9 +73,11 @@
         <activity 
             android:name=".widgets.semesterProgress.SemesterProgressWidgetConfigureActivity"
             android:exported="true"
+            android:launchMode="singleTop"
             android:theme="@style/AppTheme">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE"/>
+                <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
         </activity>
     </application>
