@@ -60,26 +60,15 @@
             android:name="flutterEmbedding"
             android:value="2" />
         <receiver
-            android:name=".widgets.semesterProgress.SemesterProgressWidgetLarge"
-            android:label="Semester Progress - Large"
+            android:name=".widgets.semesterProgress.SemesterProgressWidget"
+            android:label="Semester Progress"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
             </intent-filter>
             <meta-data
                 android:name="android.appwidget.provider"
-                android:resource="@xml/widget_semester_progress_large_info"/>
-        </receiver>
-        <receiver
-            android:name=".widgets.semesterProgress.SemesterProgressWidgetSmall"
-            android:label="Semester Progress - Small"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
-            </intent-filter>
-            <meta-data
-                android:name="android.appwidget.provider"
-                android:resource="@xml/widget_semester_progress_small_info"/>
+                android:resource="@xml/semester_progress_widget_info"/>
         </receiver>
         <activity 
             android:name=".widgets.semesterProgress.SemesterProgressWidgetConfigureActivity"

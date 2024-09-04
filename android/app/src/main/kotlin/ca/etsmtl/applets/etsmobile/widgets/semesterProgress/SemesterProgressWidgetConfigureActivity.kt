@@ -2,9 +2,9 @@ package ca.etsmtl.applets.etsmobile.widgets.semesterProgress
 
 import android.annotation.SuppressLint
 import android.appwidget.AppWidgetManager
+import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
-import android.content.res.Resources
 import android.graphics.Color
 import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
@@ -24,75 +24,89 @@ class SemesterProgressWidgetConfigureActivity : AppCompatActivity() {
 
     private var appWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID
 
-    public override fun onCreate(icicle: Bundle?) {
-        super.onCreate(icicle)
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        Log.d("ConfigActivity", "onCreate started")
 
         setResult(RESULT_CANCELED)
 
-        val binding = SemesterProgressWidgetConfigurationActivityBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+        try {
+            val binding = SemesterProgressWidgetConfigurationActivityBinding.inflate(layoutInflater)
+            setContentView(binding.root)
 
-        appWidgetId = intent?.extras?.getInt(
-            AppWidgetManager.EXTRA_APPWIDGET_ID,
-            AppWidgetManager.INVALID_APPWIDGET_ID
-        ) ?: AppWidgetManager.INVALID_APPWIDGET_ID
+            appWidgetId = intent?.extras?.getInt(
+                AppWidgetManager.EXTRA_APPWIDGET_ID,
+                AppWidgetManager.INVALID_APPWIDGET_ID
+            ) ?: AppWidgetManager.INVALID_APPWIDGET_ID
 
-        if (appWidgetId == AppWidgetManager.INVALID_APPWIDGET_ID) {
-            finish()
-            return
-        }
+            if (appWidgetId == AppWidgetManager.INVALID_APPWIDGET_ID) {
+                finish()
+                return
+            }
 
-        addWidgetPreviews()
-        setupThemeRadioGroup(binding)
+            addWidgetPreviews()
+            setupRadioGroup(binding)
 
-        binding.saveButton.setOnClickListener {
-            savePreferences(binding)
-            updateWidget()
+            binding.saveButton.setOnClickListener {
+                savePreferences(binding)
+                updateAllWidgets()
 
-            val resultValue = Intent()
-            resultValue.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId)
-            setResult(RESULT_OK, resultValue)
+                val resultValue = Intent()
+                resultValue.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId)
+                setResult(RESULT_OK, resultValue)
+                finish()
+            }
+        } catch (e: Exception) {
+            Log.e("ConfigActivity", "Exception in onCreate: ${e.message}", e)
             finish()
         }
     }
-
-    private fun updateWidget() {
-        val appWidgetManager = AppWidgetManager.getInstance(this)
-        val remoteViews = RemoteViews(this.packageName, R.layout.widget_semester_progress_large)
-
-        // Check if the widget can be updated, if not log an error or handle gracefully
-        if (appWidgetManager != null && appWidgetId != AppWidgetManager.INVALID_APPWIDGET_ID) {
-            // Perform widget update
-            appWidgetManager.updateAppWidget(appWidgetId, remoteViews)
-        } else {
-            Log.e("SemesterProgressConf", "Failed to update widget: AppWidgetManager or appWidgetId is invalid")
-        }
-    }
-
 
     @SuppressLint("SetTextI18n")
     private fun addWidgetPreviews() {
-        val smallWidget = R.layout.widget_semester_progress_small
-        val largeWidget = R.layout.widget_semester_progress_large
+        val smallWidgetLayout = R.layout.semester_progress_widget_small
+        val largeWidgetLayout = R.layout.semester_progress_widget_large
 
+        // Small widget preview
         val smallWidgetFrameLayout = findViewById<FrameLayout>(R.id.small_widget_preview)
-        val smallWidgetPreview = layoutInflater.inflate(smallWidget, smallWidgetFrameLayout, false)
+
+        // Set dimensions for the small widget preview
+        val smallWidgetLayoutParams = FrameLayout.LayoutParams(
+            resources.getDimensionPixelSize(R.dimen.semester_progress_widget_small_width),
+            resources.getDimensionPixelSize(R.dimen.semester_progress_widget_small_height)
+        )
+        smallWidgetFrameLayout.layoutParams = smallWidgetLayoutParams
+
+        val smallWidgetPreview = layoutInflater.inflate(smallWidgetLayout, smallWidgetFrameLayout, false)
         smallWidgetFrameLayout.addView(smallWidgetPreview)
 
-        val smallWidgetProgressBar = smallWidgetPreview.findViewById<ProgressBar>(R.id.circular_progress)
+        val smallWidgetProgressBar = smallWidgetPreview.findViewById<ProgressBar>(R.id.progression)
         val smallWidgetProgressText = smallWidgetPreview.findViewById<TextView>(R.id.progress_text)
-        val smallWidgetSecondaryText = smallWidgetPreview.findViewById<TextView>(R.id.elapsed_days_text)
+        val smallWidgetSecondaryText = smallWidgetPreview.findViewById<TextView>(R.id.secondary_progress_text)
 
+        // Set up small widget preview content
         smallWidgetProgressBar.progress = 50
         smallWidgetProgressText.text = "50 %"
         smallWidgetSecondaryText.text = "50 / 100"
 
+        // Large widget preview
         val largeWidgetFrameLayout = findViewById<FrameLayout>(R.id.large_widget_preview)
-        val largeWidgetPreview = layoutInflater.inflate(largeWidget, largeWidgetFrameLayout, false)
+
+        // Set dimensions for the large widget preview
+        val largeWidgetLayoutParams = FrameLayout.LayoutParams(
+            resources.getDimensionPixelSize(R.dimen.semester_progress_widget_large_width),
+            resources.getDimensionPixelSize(R.dimen.semester_progress_widget_large_height)
+        )
+        largeWidgetFrameLayout.layoutParams = largeWidgetLayoutParams
+
+        val largeWidgetPreview = layoutInflater.inflate(largeWidgetLayout, largeWidgetFrameLayout, false)
         largeWidgetFrameLayout.addView(largeWidgetPreview)
 
-        val largeWidgetProgressBar = largeWidgetPreview.findViewById<ProgressBar>(R.id.linear_progress)
-        val largeWidgetProgressText = largeWidgetPreview.findViewById<TextView>(R.id.progressText)
+        val largeWidgetProgressBar = largeWidgetPreview.findViewById<ProgressBar>(R.id.progression)
+        val largeWidgetProgressText = largeWidgetPreview.findViewById<TextView>(R.id.progress_text)
+
+        // Set up large widget preview content
         largeWidgetProgressBar.progress = 50
         largeWidgetProgressText.text = "50 %"
     }
@@ -105,27 +119,37 @@ class SemesterProgressWidgetConfigureActivity : AppCompatActivity() {
         }
     }
 
-    private fun getThemeValueForSave(binding: SemesterProgressWidgetConfigurationActivityBinding): String{
-        val themeValue = when (binding.radioGroup.checkedRadioButtonId) {
+    private fun updateAllWidgets() {
+        val appWidgetManager = AppWidgetManager.getInstance(this)
+        val componentName = ComponentName(this, SemesterProgressWidget::class.java)
+        val appWidgetIds = appWidgetManager.getAppWidgetIds(componentName)
+
+        for (appWidgetId in appWidgetIds) {
+            val smallRemoteViews = RemoteViews(this.packageName, R.layout.semester_progress_widget_small)
+            val largeRemoteViews = RemoteViews(this.packageName, R.layout.semester_progress_widget_large)
+
+            appWidgetManager.updateAppWidget(appWidgetId, smallRemoteViews)
+            appWidgetManager.updateAppWidget(appWidgetId, largeRemoteViews)
+        }
+    }
+
+    private fun getThemeValueForSave(binding: SemesterProgressWidgetConfigurationActivityBinding): String {
+        return when (binding.radioGroup.checkedRadioButtonId) {
             R.id.radio_button_dark -> Constants.SEMESTER_PROGRESS_THEME_DARK
             R.id.radio_button_light -> Constants.SEMESTER_PROGRESS_THEME_LIGHT
             else -> Constants.SEMESTER_PROGRESS_THEME_DARK
         }
-
-        return themeValue
     }
 
     private fun getLangValueForSave(binding: SemesterProgressWidgetConfigurationActivityBinding): String {
-        val langValue = when (binding.radioGroupLang.checkedRadioButtonId) {
+        return when (binding.radioGroupLang.checkedRadioButtonId) {
             R.id.radio_button_english -> Constants.SEMESTER_PROGRESS_LANG_EN
             R.id.radio_button_french -> Constants.SEMESTER_PROGRESS_LANG_FR
             else -> Constants.SEMESTER_PROGRESS_LANG_FR
         }
-
-        return langValue
     }
 
-    private fun setupThemeRadioGroup(binding: SemesterProgressWidgetConfigurationActivityBinding) {
+    private fun setupRadioGroup(binding: SemesterProgressWidgetConfigurationActivityBinding) {
         val radioGroup = binding.radioGroup
 
         radioGroup.setOnCheckedChangeListener { _, checkedId ->

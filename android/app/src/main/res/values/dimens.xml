@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Dimensions for small widget preview -->
+    <dimen name="semester_progress_widget_small_width">130dp</dimen>
+    <dimen name="semester_progress_widget_small_height">51dp</dimen>
+
+    <!-- Dimensions for large widget preview -->
+    <dimen name="semester_progress_widget_large_width">203dp</dimen>
+    <dimen name="semester_progress_widget_large_height">110dp</dimen>
+</resources>

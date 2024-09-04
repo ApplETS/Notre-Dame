@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
@@ -20,7 +21,7 @@
         android:background="@android:color/transparent">
 
         <ProgressBar
-            android:id="@+id/circular_progress"
+            android:id="@+id/progression"
             android:layout_width="95dp"
             android:layout_height="95dp"
             android:layout_gravity="center"
@@ -52,7 +53,7 @@
                 android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/elapsed_days_text"
+                android:id="@+id/secondary_progress_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -64,5 +65,4 @@
                 android:textStyle="bold" />
         </LinearLayout>
     </FrameLayout>
-
 </RelativeLayout>
