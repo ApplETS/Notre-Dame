@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:stacked/stacked.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -13,9 +12,9 @@ import 'package:notredame/features/dashboard/progress_bar_text_options.dart';
 class SessionProgressCardViewmodel extends FutureViewModel<double> {
   final CourseRepository _courseRepository = locator<CourseRepository>();
   final SettingsManager _settingsManager = locator<SettingsManager>();
-  final BuildContext _context;
+  final AppIntl _appIntl;
 
-  SessionProgressCardViewmodel(this._context);
+  SessionProgressCardViewmodel(this._appIntl);
 
   String? _progressBarText;
   String? get progressBarText => _progressBarText;
@@ -103,12 +102,12 @@ class SessionProgressCardViewmodel extends FutureViewModel<double> {
 
   String _getProgressBarText(int daysElapsed, int daysInSession) {
     if (_progressBarTextSetting == ProgressBarText.daysElapsedWithTotalDays) {
-      return AppIntl.of(_context)!.progress_bar_message(daysElapsed, daysInSession);
+      return _appIntl.progress_bar_message(daysElapsed, daysInSession);
     } else if (_progressBarTextSetting == ProgressBarText.percentage) {
-      return AppIntl.of(_context)!.progress_bar_message_percentage(
+      return _appIntl.progress_bar_message_percentage(
             ((daysElapsed / daysInSession) * 100).round());
     } else {
-      return AppIntl.of(_context)!.progress_bar_message_remaining_days(daysInSession - daysElapsed);
+      return _appIntl.progress_bar_message_remaining_days(daysInSession - daysElapsed);
     }
   }
 }

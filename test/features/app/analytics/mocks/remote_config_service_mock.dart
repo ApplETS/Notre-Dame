@@ -27,37 +27,37 @@ class RemoteConfigServiceMock extends MockRemoteConfigService {
 
   static void stubGetBroadcastColor(RemoteConfigServiceMock mock,
       {String toReturn = "0xffd48404"}) {
-    when(mock.dashboardMsgColor).thenReturn(toReturn);
+    when(mock.dashboardMsgColor).thenReturn(Future.value(toReturn));
   }
 
   static void stubGetBroadcastTitleEn(RemoteConfigServiceMock mock,
       {String toReturn = "TitleEn"}) {
-    when(mock.dashboardMessageTitleEn).thenReturn(toReturn);
+    when(mock.dashboardMessageTitleEn).thenReturn(Future.value(toReturn));
   }
 
   static void stubGetBroadcastTitleFr(RemoteConfigServiceMock mock,
       {String toReturn = "TitleFr"}) {
-    when(mock.dashboardMessageTitleFr).thenReturn(toReturn);
+    when(mock.dashboardMessageTitleFr).thenReturn(Future.value(toReturn));
   }
 
   static void stubGetBroadcastEn(RemoteConfigServiceMock mock,
       {String toReturn = "En"}) {
-    when(mock.dashboardMessageEn).thenReturn(toReturn);
+    when(mock.dashboardMessageEn).thenReturn(Future.value(toReturn));
   }
 
   static void stubGetBroadcastFr(RemoteConfigServiceMock mock,
       {String toReturn = "Fr"}) {
-    when(mock.dashboardMessageFr).thenReturn(toReturn);
+    when(mock.dashboardMessageFr).thenReturn(Future.value(toReturn));
   }
 
   static void stubGetBroadcastType(RemoteConfigServiceMock mock,
       {String toReturn = "info"}) {
-    when(mock.dashboardMsgType).thenReturn(toReturn);
+    when(mock.dashboardMsgType).thenReturn(Future.value(toReturn));
   }
 
   static void stubGetBroadcastUrl(RemoteConfigServiceMock mock,
       {String toReturn = "https://clubapplets.ca/"}) {
-    when(mock.dashboardMsgUrl).thenReturn(toReturn);
+    when(mock.dashboardMsgUrl).thenReturn(Future.value(toReturn));
   }
 
   static void stubGetHelloFeatureToggle(RemoteConfigServiceMock mock,
