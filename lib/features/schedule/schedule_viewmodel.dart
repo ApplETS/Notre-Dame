@@ -175,15 +175,13 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
     // The reason why previous month is last is to avoid event colors to start from previous session
     final List<DateTime> months = [DateTime(selectedDate.year, selectedDate.month), DateTime(selectedDate.year, selectedDate.month + 1), DateTime(selectedDate.year, selectedDate.month - 1)];
 
-    final List<DateTime> eventDates = [];
+    // For each day in each month, add events
     for (final DateTime month in months) {
-      eventDates.addAll(month.datesOfMonths());
-    }
-
-    for (int i = 0; i < eventDates.length; i++) {
-      final eventsForDay = selectedDateCalendarEvents(eventDates.elementAt(i));
-      if (eventsForDay.isNotEmpty) {
-        events.addAll(eventsForDay);
+      for (final DateTime day in month.datesOfMonths()) {
+        final eventsForDay = selectedDateCalendarEvents(day);
+        if (eventsForDay.isNotEmpty) {
+          events.addAll(eventsForDay);
+        }
       }
     }
     return events;
