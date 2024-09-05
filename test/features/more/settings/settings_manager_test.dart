@@ -2,7 +2,6 @@
 import 'package:flutter/material.dart';
 
 // Package imports:
-import 'package:calendar_view/calendar_view.dart';
 import 'package:enum_to_string/enum_to_string.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:intl/intl.dart';
@@ -123,7 +122,7 @@ void main() {
         final result = await manager.getScheduleSettings();
 
         expect(result, expected);
-        
+
         verify(preferencesServiceMock
                 .getString(PreferencesFlag.scheduleStartWeekday))
             .called(1);
