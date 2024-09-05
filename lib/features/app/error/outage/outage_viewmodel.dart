@@ -1,4 +1,6 @@
 // Flutter imports:
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 
 // Package imports:
@@ -8,51 +10,46 @@ import 'package:stacked/stacked.dart';
 import 'package:notredame/features/app/analytics/remote_config_service.dart';
 import 'package:notredame/features/app/navigation/navigation_service.dart';
 import 'package:notredame/features/app/navigation/router_paths.dart';
-import 'package:notredame/features/app/startup/startup_view.dart';
 import 'package:notredame/utils/locator.dart';
 
 class OutageViewModel extends BaseViewModel {
-  int _lastTap = DateTime.now().millisecondsSinceEpoch;
-  int _consecutiveTaps = 0;
+  final BuildContext _context;
+  Timer? _timer;
 
-  double getImagePlacement(BuildContext context) {
-    return MediaQuery.of(context).size.height * 0.10;
+  OutageViewModel(this._context) {
+    setupPeriodicTimer();
   }
 
-  double getTextPlacement(BuildContext context) {
-    return MediaQuery.of(context).size.height * 0.20;
+  void setupPeriodicTimer() {
+    _timer?.cancel();
+    _timer = Timer.periodic(const Duration(seconds: 5), (Timer t) {
+      refreshOutageConfig();
+    });
   }
 
-  double getButtonPlacement(BuildContext context) {
-    return MediaQuery.of(context).size.height * 0.08;
+  double getImagePlacement() {
+    return MediaQuery.of(_context).size.height * 0.10;
   }
 
-  double getContactTextPlacement(BuildContext context) {
-    return MediaQuery.of(context).size.height * 0.04;
+  double getTextPlacement() {
+    return MediaQuery.of(_context).size.height * 0.15;
   }
 
-  void tapRefreshButton(BuildContext context) {
+  double getButtonPlacement() {
+    return MediaQuery.of(_context).size.height * 0.08;
+  }
+
+  double getContactTextHeight() {
+    return MediaQuery.of(_context).size.height * 0.06;
+  }
+
+  void refreshOutageConfig() {
     final RemoteConfigService remoteConfigService =
         locator<RemoteConfigService>();
     if (!remoteConfigService.outage) {
+      _timer?.cancel();
       final NavigationService navigationService = locator<NavigationService>();
       navigationService.pushNamedAndRemoveUntil(RouterPaths.startup);
     }
-  }
-
-  void triggerTap(BuildContext context) {
-    final int now = DateTime.now().millisecondsSinceEpoch;
-    if (now - _lastTap < 1000) {
-      _consecutiveTaps++;
-      if (_consecutiveTaps > 4) {
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => StartUpView()),
-        );
-      }
-    } else {
-      _consecutiveTaps = 1;
-    }
-    _lastTap = now;
   }
 }
