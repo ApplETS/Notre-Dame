@@ -174,12 +174,11 @@ void main() {
         final ProgramCredits programCredits = ProgramCredits();
 
         // Calculate the program progression
-        final double progression = viewModel.programProgression;
+        final int progression = viewModel.programProgression;
 
         // Calculate the expected progression based on the defined ProgramCredits
-        final double expectedProgression =
-            (45 / programCredits.programsCredits['7694']! * 100)
-                .roundToDouble();
+        final int expectedProgression =
+            (45 / programCredits.programsCredits['7694']! * 100).round();
 
         // Verify that the calculated progression matches the expected value
         expect(progression, expectedProgression);
@@ -206,7 +205,7 @@ void main() {
             toReturn: testPrograms);
 
         // Calculate the program progression
-        final double progression = viewModel.programProgression;
+        final int progression = viewModel.programProgression;
 
         // The expected progression should be 0 when there is no matching program code
         expect(progression, 0.0);
