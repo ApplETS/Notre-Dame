@@ -298,7 +298,7 @@ Card getProgramCompletion(ProfileViewModel model, BuildContext context) {
 
 CircularPercentIndicator getLoadingIndicator(
     ProfileViewModel model, BuildContext context) {
-  final double percentage = model.programProgression;
+  final int percentage = model.programProgression;
 
   return CircularPercentIndicator(
     animation: true,
