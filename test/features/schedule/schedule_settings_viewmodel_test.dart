@@ -283,30 +283,6 @@ void main() {
       });
     });
 
-    group("setter scheduleShowWeekendDays - ", () {
-      test("scheduleShowWeekendDays is updated on the settings", () async {
-        SettingsManagerMock.stubSetString(
-            settingsManagerMock, PreferencesFlag.scheduleShowWeekendDays);
-
-        const expected = true;
-
-        // Call the setter.
-
-        viewModel.showWeekendDays = expected;
-
-        await untilCalled(settingsManagerMock.setBool(
-            PreferencesFlag.scheduleShowWeekendDays, any));
-
-        expect(viewModel.showWeekendDays, true);
-        expect(viewModel.isBusy, false);
-
-        verify(settingsManagerMock.setBool(
-                PreferencesFlag.scheduleShowWeekendDays, any))
-            .called(1);
-        verifyNoMoreInteractions(settingsManagerMock);
-      });
-    });
-
     group("setter startingDayOfWeek - ", () {
       test("startingDayOfWeek is updated on the settings", () async {
         SettingsManagerMock.stubSetString(

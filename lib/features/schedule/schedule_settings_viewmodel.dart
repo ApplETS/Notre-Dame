@@ -65,14 +65,6 @@ class ScheduleSettingsViewModel
 
   WeekDays? get otherDayOfWeek => _otherDayOfWeek;
 
-  set otherDayOfWeek(WeekDays? day) {
-    setBusy(true);
-    _settingsManager.setString(PreferencesFlag.scheduleOtherWeekday,
-        EnumToString.convertToString(day));
-    _otherDayOfWeek = day;
-    setBusy(false);
-  }
-
   /// List of possible days to show in the calendar view
   List<WeekDays> otherDayPossible = [
     WeekDays.saturday,
