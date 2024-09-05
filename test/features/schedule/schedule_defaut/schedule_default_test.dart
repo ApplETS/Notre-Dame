@@ -1,4 +1,5 @@
 // Package imports:
+import 'package:calendar_view/calendar_view.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -20,6 +21,22 @@ void main() {
           child: const ScheduleDefault(calendarEvents: [], loaded: true, displaySaturday: true)));
       await tester.pumpAndSettle();
       expect(find.text(intl.no_schedule_available), findsOneWidget);
+    });
+
+    testWidgets('Displays saturday',
+            (WidgetTester tester) async {
+      await tester.pumpWidget(localizedWidget(
+          child: ScheduleDefault(calendarEvents: [CalendarEventData(title: "My Event", date: DateTime(2024))], loaded: true, displaySaturday: true)));
+      await tester.pumpAndSettle();
+      expect(find.text("S"), findsOneWidget);
+    });
+
+    testWidgets('Displays saturday',
+            (WidgetTester tester) async {
+      await tester.pumpWidget(localizedWidget(
+          child: ScheduleDefault(calendarEvents: [CalendarEventData(title: "My Event", date: DateTime(2024))], loaded: true, displaySaturday: false)));
+      await tester.pumpAndSettle();
+      expect(find.text("S"), findsNothing);
     });
 
     testWidgets('Displays no empty schedule message when loading',
