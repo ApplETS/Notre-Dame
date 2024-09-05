@@ -1,13 +1,13 @@
-import 'package:stacked/stacked.dart';
+// Package imports:
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:stacked/stacked.dart';
 
-import 'package:notredame/utils/locator.dart';
-import 'package:notredame/features/app/repository/course_repository.dart';
-import 'package:notredame/features/more/settings/settings_manager.dart';
-
+// Project imports:
 import 'package:notredame/constants/preferences_flags.dart';
-
+import 'package:notredame/features/app/repository/course_repository.dart';
 import 'package:notredame/features/dashboard/progress_bar_text_options.dart';
+import 'package:notredame/features/more/settings/settings_manager.dart';
+import 'package:notredame/utils/locator.dart';
 
 class SessionProgressCardViewmodel extends FutureViewModel<double> {
   final CourseRepository _courseRepository = locator<CourseRepository>();
@@ -19,24 +19,19 @@ class SessionProgressCardViewmodel extends FutureViewModel<double> {
   String? _progressBarText;
   String? get progressBarText => _progressBarText;
 
-
   ProgressBarText _progressBarTextSetting =
       ProgressBarText.daysElapsedWithTotalDays;
 
   @override
-  Future<double> futureToRun() {
-    return futureToRunSessionProgressBar();
-  }
-
-  Future<double> futureToRunSessionProgressBar() async {
+  Future<double> futureToRun() async {
     try {
       _progressBarTextSetting = await _getProgressBarTextSetting();
 
       await _courseRepository.getSessions();
 
-      final sessionDays = getSessionDays();
+      final sessionDays = _getSessionDays();
       _progressBarText = _getProgressBarText(sessionDays.$1, sessionDays.$2);
-      return getSessionProgress(sessionDays.$1, sessionDays.$2);
+      return _getSessionProgress(sessionDays.$1, sessionDays.$2);
     } catch (error) {
       onError(error);
     }
@@ -44,52 +39,45 @@ class SessionProgressCardViewmodel extends FutureViewModel<double> {
     return 0.0;
   }
 
-  /// Returns the number of elapsed days in the active session
-  /// and the total number of days in the session
-  (int, int) getSessionDays() {
-    if (_courseRepository.activeSessions.isEmpty) {
-      return (0, 0);
-    } else {
-      int dayCompleted = _settingsManager.dateTimeNow
-          .difference(_courseRepository.activeSessions.first.startDate)
-          .inDays;
-      final dayInTheSession = _courseRepository.activeSessions.first.endDate
-          .difference(_courseRepository.activeSessions.first.startDate)
-          .inDays;
-
-      if (dayCompleted > dayInTheSession) {
-        dayCompleted = dayInTheSession;
-      } else if (dayCompleted < 0) {
-        dayCompleted = 0;
-      }
-
-      return (dayCompleted, dayInTheSession);
-    }
-  }
-
-  /// Return session progress based on today's [date]
-  double getSessionProgress(int daysElapsed, int daysInSession) {
-    if (_courseRepository.activeSessions.isEmpty) {
-      return -1.0;
-    } else {
-      return daysElapsed / daysInSession;
-    }
-  }
-
   void updateProgressBarTextSetting() {
-    if (_progressBarTextSetting.index <= 1) {
-      _progressBarTextSetting =
-        ProgressBarText.values[_progressBarTextSetting.index + 1];
-    } else {
-      _progressBarTextSetting = ProgressBarText.values[0];
-    }
+    _progressBarTextSetting = _progressBarTextSetting.index <= 1
+        ? ProgressBarText.values[_progressBarTextSetting.index + 1]
+        : ProgressBarText.values[0];
 
     _settingsManager.setString(
         PreferencesFlag.progressBarText, _progressBarTextSetting.toString());
-    final sessionDays = getSessionDays();
+
+    final sessionDays = _getSessionDays();
     _progressBarText = _getProgressBarText(sessionDays.$1, sessionDays.$2);
     notifyListeners();
   }
+
+  /// Returns the number of elapsed days in the active session
+  /// and the total number of days in the session
+  (int, int) _getSessionDays() {
+    if (_courseRepository.activeSessions.isEmpty) {
+      return (0, 0);
+    }
+
+    final session = _courseRepository.activeSessions.first;
+
+    final dayInTheSession = session.endDate
+        .difference(session.startDate)
+        .inDays;
+
+    final dayCompleted = _settingsManager.dateTimeNow
+        .difference(session.startDate)
+        .inDays
+        .clamp(0, dayInTheSession);
+
+    return (dayCompleted, dayInTheSession);
+  }
+
+  /// Return session progress based on today's [date]
+  double _getSessionProgress(int daysElapsed, int daysInSession) =>
+      _courseRepository.activeSessions.isEmpty
+          ? -1.0
+          : daysElapsed / daysInSession;
 
   Future<ProgressBarText> _getProgressBarTextSetting() async {
     final progressBarText =
@@ -101,13 +89,17 @@ class SessionProgressCardViewmodel extends FutureViewModel<double> {
   }
 
   String _getProgressBarText(int daysElapsed, int daysInSession) {
-    if (_progressBarTextSetting == ProgressBarText.daysElapsedWithTotalDays) {
-      return _appIntl.progress_bar_message(daysElapsed, daysInSession);
-    } else if (_progressBarTextSetting == ProgressBarText.percentage) {
-      return _appIntl.progress_bar_message_percentage(
-            ((daysElapsed / daysInSession) * 100).round());
-    } else {
-      return _appIntl.progress_bar_message_remaining_days(daysInSession - daysElapsed);
+    switch (_progressBarTextSetting) {
+      case ProgressBarText.daysElapsedWithTotalDays:
+        return _appIntl.progress_bar_message(daysElapsed, daysInSession);
+      case ProgressBarText.percentage:
+        return daysInSession == 0
+            ? _appIntl.progress_bar_message_percentage(0)
+            : _appIntl.progress_bar_message_percentage(
+                ((daysElapsed / daysInSession) * 100).round());
+      case ProgressBarText.remainingDays:
+        return _appIntl.progress_bar_message_remaining_days(
+            daysInSession - daysElapsed);
     }
   }
 }

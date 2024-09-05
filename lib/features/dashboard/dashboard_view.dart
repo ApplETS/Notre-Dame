@@ -5,10 +5,6 @@ import 'package:flutter/scheduler.dart';
 // Package imports:
 import 'package:feature_discovery/feature_discovery.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:notredame/features/dashboard/widgets/about_us_card.dart';
-import 'package:notredame/features/dashboard/widgets/grades_card.dart';
-import 'package:notredame/features/dashboard/widgets/schedule_card.dart';
-import 'package:notredame/features/dashboard/widgets/session_progress_card/session_progress_card.dart';
 import 'package:stacked/stacked.dart';
 
 // Project imports:
@@ -16,15 +12,18 @@ import 'package:notredame/constants/preferences_flags.dart';
 import 'package:notredame/constants/update_code.dart';
 import 'package:notredame/features/app/analytics/analytics_service.dart';
 import 'package:notredame/features/app/widgets/base_scaffold.dart';
+import 'package:notredame/features/app/widgets/broadcast_card/message_broadcast_card.dart';
 import 'package:notredame/features/dashboard/dashboard_viewmodel.dart';
+import 'package:notredame/features/dashboard/widgets/about_us_card.dart';
+import 'package:notredame/features/dashboard/widgets/grades_card.dart';
 import 'package:notredame/features/dashboard/widgets/haptics_container.dart';
+import 'package:notredame/features/dashboard/widgets/schedule_card.dart';
+import 'package:notredame/features/dashboard/widgets/session_progress_card/session_progress_card.dart';
 import 'package:notredame/features/welcome/discovery/discovery_components.dart';
 import 'package:notredame/features/welcome/discovery/models/discovery_ids.dart';
 import 'package:notredame/utils/app_theme.dart';
 import 'package:notredame/utils/loading.dart';
 import 'package:notredame/utils/locator.dart';
-
-import 'package:notredame/features/app/widgets/broadcast_card/message_broadcast_card.dart';
 
 class DashboardView extends StatefulWidget {
   final UpdateCode updateCode;

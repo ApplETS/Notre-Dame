@@ -1,14 +1,14 @@
 // Flutter imports:
-import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 
-// Project imports:
-import 'package:stacked/stacked.dart';
+// Package imports:
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:stacked/stacked.dart';
 
-import 'package:notredame/utils/app_theme.dart';
-
+// Project imports:
 import 'package:notredame/features/app/widgets/broadcast_card/broadcast_card_viewmodel.dart';
+import 'package:notredame/utils/app_theme.dart';
 
 class MessageBroadcastCard extends StatelessWidget {
   const MessageBroadcastCard({

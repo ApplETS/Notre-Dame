@@ -12,8 +12,7 @@ import 'package:notredame/features/app/signets-api/models/course_activity.dart';
 import 'package:notredame/features/app/widgets/dismissible_card.dart';
 import 'package:notredame/features/dashboard/dashboard_viewmodel.dart';
 import 'package:notredame/features/dashboard/widgets/course_activity_tile.dart';
-
-import '../../../utils/locator.dart';
+import 'package:notredame/utils/locator.dart';
 
 class ScheduleCard extends StatelessWidget {
   final DashboardViewModel model;

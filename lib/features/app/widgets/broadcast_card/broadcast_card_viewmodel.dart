@@ -1,13 +1,16 @@
+// Dart imports:
 import 'dart:ui';
 
-import 'package:notredame/features/app/widgets/broadcast_card/broadcast_card.dart';
-import 'package:stacked/stacked.dart';
+// Package imports:
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:stacked/stacked.dart';
 
+// Project imports:
 import 'package:notredame/features/app/analytics/remote_config_service.dart';
 import 'package:notredame/features/app/integration/launch_url_service.dart';
 import 'package:notredame/features/app/navigation/navigation_service.dart';
 import 'package:notredame/features/app/navigation/router_paths.dart';
+import 'package:notredame/features/app/widgets/broadcast_card/broadcast_card.dart';
 import 'package:notredame/utils/locator.dart';
 
 class BroadcastCardViewmodel extends FutureViewModel<BroadcastCard> {

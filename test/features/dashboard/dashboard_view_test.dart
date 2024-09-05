@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:feature_discovery/feature_discovery.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 // Project imports:
 import 'package:notredame/constants/preferences_flags.dart';
@@ -12,11 +13,9 @@ import 'package:notredame/constants/update_code.dart';
 import 'package:notredame/features/app/signets-api/models/course.dart';
 import 'package:notredame/features/app/signets-api/models/course_activity.dart';
 import 'package:notredame/features/app/signets-api/models/session.dart';
-import 'package:notredame/features/app/widgets/dismissible_card.dart';
 import 'package:notredame/features/dashboard/dashboard_view.dart';
 import 'package:notredame/features/dashboard/widgets/course_activity_tile.dart';
 import 'package:notredame/features/student/grades/widgets/grade_button.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import '../../common/helpers.dart';
 import '../app/analytics/mocks/remote_config_service_mock.dart';
 import '../app/repository/mocks/course_repository_mock.dart';
@@ -628,138 +627,6 @@ void main() {
           expect(find.text(intl.grades_title, skipOffstage: false),
               findsOneWidget);
         });
-      });
-    });
-
-    group("UI - progressBar", () {
-      testWidgets('Has card progressBar displayed',
-          (WidgetTester tester) async {
-        SettingsManagerMock.stubGetDashboard(settingsManagerMock,
-            toReturn: dashboard);
-
-        await tester.pumpWidget(localizedWidget(
-            child: FeatureDiscovery(
-                child: const DashboardView(updateCode: UpdateCode.none))));
-        await tester.pumpAndSettle();
-
-        // Find progress card
-        final progressCard = find.widgetWithText(Card, intl.progress_bar_title);
-        expect(progressCard, findsOneWidget);
-
-        // Find progress card Title
-        final progressTitle = find.text(intl.progress_bar_title);
-        expect(progressTitle, findsOneWidget);
-
-        // Find progress card linearProgressBar
-        final linearProgressBar = find.byType(LinearProgressIndicator);
-        expect(linearProgressBar, findsOneWidget);
-      });
-
-      testWidgets('progressCard is dismissible and can be restored',
-          (WidgetTester tester) async {
-        SettingsManagerMock.stubGetDashboard(settingsManagerMock,
-            toReturn: dashboard);
-
-        await tester.pumpWidget(localizedWidget(
-            child: FeatureDiscovery(
-                child: const DashboardView(updateCode: UpdateCode.none))));
-        await tester.pumpAndSettle();
-
-        // Find Dismissible Cards
-        expect(find.byType(DismissibleCard, skipOffstage: false),
-            findsNWidgets(numberOfCards));
-        expect(find.text(intl.progress_bar_title), findsOneWidget);
-
-        // Swipe Dismissible progress Card horizontally
-        final discardCard =
-            find.widgetWithText(DismissibleCard, intl.progress_bar_title);
-        await tester.ensureVisible(discardCard);
-        await tester.pumpAndSettle();
-        await tester.drag(discardCard, const Offset(-1000.0, 0.0));
-
-        // Check that the card is now absent from the view
-        await tester.pumpAndSettle();
-        expect(find.byType(DismissibleCard, skipOffstage: false),
-            findsNWidgets(numberOfCards - 1));
-        expect(find.text(intl.progress_bar_title), findsNothing);
-
-        // Tap the restoreCards button
-        await tester.tap(find.byIcon(Icons.restore));
-
-        await tester.pumpAndSettle();
-
-        // Check that the card is now present in the view
-        expect(find.byType(DismissibleCard, skipOffstage: false),
-            findsNWidgets(numberOfCards));
-        expect(find.text(intl.progress_bar_title), findsOneWidget);
-      });
-
-      testWidgets('progressBarCard is reorderable and can be restored',
-          (WidgetTester tester) async {
-        InAppReviewServiceMock.stubIsAvailable(inAppReviewServiceMock);
-        SettingsManagerMock.stubGetDashboard(settingsManagerMock,
-            toReturn: dashboard);
-
-        await tester.pumpWidget(localizedWidget(
-            child: FeatureDiscovery(
-                child: const DashboardView(updateCode: UpdateCode.none))));
-        await tester.pumpAndSettle();
-
-        // Find Dismissible Cards
-        expect(find.byType(Dismissible, skipOffstage: false),
-            findsNWidgets(numberOfCards));
-
-        // Find progressBar card
-        expect(find.text(intl.progress_bar_title), findsOneWidget);
-
-        // Check that the progressBar card is in the first position
-        var text = tester.firstWidget(find.descendant(
-          of: find.widgetWithText(Dismissible, intl.progress_bar_title).first,
-          matching: find.byType(Text),
-        ));
-
-        expect((text as Text).data, intl.progress_bar_title);
-
-        // Long press then drag and drop card at the end of the list
-        await longPressDrag(
-            tester,
-            tester.getCenter(find.text(intl.progress_bar_title)),
-            tester.getCenter(find.text(intl.card_applets_title)) +
-                const Offset(0.0, 1000));
-
-        await tester.pumpAndSettle();
-
-        expect(find.byType(Dismissible, skipOffstage: false),
-            findsNWidgets(numberOfCards));
-
-        // Check that the card is now in last position
-        final discardCard = find.widgetWithText(
-            Dismissible, intl.progress_bar_title,
-            skipOffstage: false);
-        await tester.ensureVisible(discardCard);
-        await tester.pumpAndSettle();
-
-        text = tester.firstWidget(find.descendant(
-          of: discardCard,
-          matching: find.byType(Text),
-        ));
-        expect(text.data, intl.progress_bar_title);
-
-        // Tap the restoreCards button
-        await tester.tap(find.byIcon(Icons.restore));
-
-        await tester.pumpAndSettle();
-
-        text = tester.firstWidget(find.descendant(
-          of: find.widgetWithText(Dismissible, intl.progress_bar_title).first,
-          matching: find.byType(Text),
-        ));
-
-        expect(find.byType(Dismissible, skipOffstage: false),
-            findsNWidgets(numberOfCards));
-
-        // Check that the first card is now AboutUs
-        expect(text.data, intl.progress_bar_title);
       });
     });
   });

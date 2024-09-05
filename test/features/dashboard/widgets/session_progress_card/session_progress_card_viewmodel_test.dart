@@ -1,12 +1,15 @@
+// Package imports:
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
+
+// Project imports:
+import 'package:notredame/constants/preferences_flags.dart';
 import 'package:notredame/features/app/repository/course_repository.dart';
 import 'package:notredame/features/app/signets-api/models/session.dart';
+import 'package:notredame/features/dashboard/progress_bar_text_options.dart';
 import 'package:notredame/features/dashboard/widgets/session_progress_card/session_progress_card_viewmodel.dart';
 import 'package:notredame/features/more/settings/settings_manager.dart';
-
 import '../../../../common/helpers.dart';
-import '../../../../common/mocks/appintl_mock.dart';
 import '../../../../common/mocks/appintl_mock.mocks.dart';
 import '../../../app/repository/mocks/course_repository_mock.dart';
 import '../../../more/settings/mocks/settings_manager_mock.dart';
@@ -14,7 +17,7 @@ import '../../../more/settings/mocks/settings_manager_mock.dart';
 void main() {
   late CourseRepositoryMock courseRepository;
   late SettingsManagerMock settingsManager;
-  late MockAppIntlMock appIntl;
+  late MockAppIntlImpl appIntl;
 
   late SessionProgressCardViewmodel viewmodel;
 
@@ -37,7 +40,7 @@ void main() {
     setUp(() {
       courseRepository = setupCourseRepositoryMock();
       settingsManager = setupSettingsManagerMock();
-      appIntl = MockAppIntlMock();
+      appIntl = MockAppIntlImpl();
 
       viewmodel = SessionProgressCardViewmodel(appIntl);
     });
@@ -60,74 +63,83 @@ void main() {
         expect(viewmodel.progressBarText, "1/2");
       });
 
-      // test("Invalid date (Superior limit)", () async {
-      //   CourseRepositoryMock.stubActiveSessions(courseRepositoryMock,
-      //       toReturn: [session]);
-      //   SettingsManagerMock.stubGetDashboard(settingsManagerMock,
-      //       toReturn: dashboard);
-      //   SettingsManagerMock.stubDateTimeNow(settingsManagerMock,
-      //       toReturn: DateTime(2020, 1, 20));
-      //   await viewModel.futureToRunSessionProgressBar();
-      //   expect(viewModel.progress, 1);
-      //   expect(viewModel.sessionDays, [2, 2]);
-      // });
-      //
-      // test("Invalid date (Lower limit)", () async {
-      //   CourseRepositoryMock.stubActiveSessions(courseRepositoryMock,
-      //       toReturn: [session]);
-      //   SettingsManagerMock.stubGetDashboard(settingsManagerMock,
-      //       toReturn: dashboard);
-      //   SettingsManagerMock.stubDateTimeNow(settingsManagerMock,
-      //       toReturn: DateTime(2019, 12, 31));
-      //   await viewModel.futureToRunSessionProgressBar();
-      //   expect(viewModel.progress, 0);
-      //   expect(viewModel.sessionDays, [0, 2]);
-      // });
-      //
-      // test("Active session is null", () async {
-      //   CourseRepositoryMock.stubActiveSessions(courseRepositoryMock);
-      //
-      //   await viewModel.futureToRunSessionProgressBar();
-      //   expect(viewModel.progress, -1.0);
-      //   expect(viewModel.sessionDays, [0, 0]);
-      // });
-      //
-      // test(
-      //     "currentProgressBarText should be set to ProgressBarText.percentage when it is the first time changeProgressBarText is called",
-      //         () async {
-      //       CourseRepositoryMock.stubActiveSessions(courseRepositoryMock);
-      //
-      //       viewModel.changeProgressBarText();
-      //       verify(settingsManagerMock.setString(PreferencesFlag.progressBarText,
-      //           ProgressBarText.values[1].toString()))
-      //           .called(1);
-      //     });
-      //
-      // test(
-      //     "currentProgressBarText flag should be set to ProgressBarText.remainingDays when it is the second time changeProgressBarText is called",
-      //         () async {
-      //       CourseRepositoryMock.stubActiveSessions(courseRepositoryMock);
-      //
-      //       viewModel.changeProgressBarText();
-      //       viewModel.changeProgressBarText();
-      //       verify(settingsManagerMock.setString(PreferencesFlag.progressBarText,
-      //           ProgressBarText.values[2].toString()))
-      //           .called(1);
-      //     });
-      //
-      // test(
-      //     "currentProgressBarText flag should be set to ProgressBarText.daysElapsedWithTotalDays when it is the third time changeProgressBarText is called",
-      //         () async {
-      //       CourseRepositoryMock.stubActiveSessions(courseRepositoryMock);
-      //
-      //       viewModel.changeProgressBarText();
-      //       viewModel.changeProgressBarText();
-      //       viewModel.changeProgressBarText();
-      //
-      //       verify(settingsManagerMock.setString(PreferencesFlag.progressBarText,
-      //           ProgressBarText.values[0].toString()))
-      //           .called(1);
-      //     });
+      test("Invalid date (Superior limit)", () async {
+        CourseRepositoryMock.stubActiveSessions(courseRepository,
+            toReturn: [session]);
+        SettingsManagerMock.stubDateTimeNow(settingsManager,
+            toReturn: DateTime(2020, 1, 20));
+        when(appIntl.progress_bar_message(2, 2)).thenReturn("2/2");
+
+        final progress = await viewmodel.futureToRun();
+
+        expect(progress, 1);
+        expect(viewmodel.progressBarText, "2/2");
+      });
+
+      test("Invalid date (Lower limit)", () async {
+        CourseRepositoryMock.stubActiveSessions(courseRepository,
+            toReturn: [session]);
+        SettingsManagerMock.stubDateTimeNow(settingsManager,
+            toReturn: DateTime(2019, 12, 31));
+        when(appIntl.progress_bar_message(0, 2)).thenReturn("0/2");
+
+        final progress = await viewmodel.futureToRun();
+
+        expect(progress, 0);
+        expect(viewmodel.progressBarText, "0/2");
+      });
+
+      test("Active session is null", () async {
+        CourseRepositoryMock.stubActiveSessions(courseRepository);
+        when(appIntl.progress_bar_message(0, 0)).thenReturn("0/0");
+
+        final progress = await viewmodel.futureToRun();
+
+        expect(progress, -1.0);
+        expect(viewmodel.progressBarText, "0/0");
+      });
+
+      test(
+          "currentProgressBarText should be set to ProgressBarText.percentage when it is the first time changeProgressBarText is called",
+              () async {
+            CourseRepositoryMock.stubActiveSessions(courseRepository);
+
+            viewmodel.updateProgressBarTextSetting();
+
+            verify(settingsManager.setString(PreferencesFlag.progressBarText,
+                ProgressBarText.values[1].toString()))
+                .called(1);
+            verify(appIntl.progress_bar_message_percentage(0)).called(1);
+          });
+
+      test(
+          "currentProgressBarText flag should be set to ProgressBarText.remainingDays when it is the second time changeProgressBarText is called",
+              () async {
+            CourseRepositoryMock.stubActiveSessions(courseRepository);
+
+            viewmodel.updateProgressBarTextSetting();
+            viewmodel.updateProgressBarTextSetting();
+
+            verify(settingsManager.setString(PreferencesFlag.progressBarText,
+                ProgressBarText.values[2].toString()))
+                .called(1);
+            verify(appIntl.progress_bar_message_remaining_days(0)).called(1);
+          });
+
+      test(
+          "currentProgressBarText flag should be set to ProgressBarText.daysElapsedWithTotalDays when it is the third time changeProgressBarText is called",
+              () async {
+            CourseRepositoryMock.stubActiveSessions(courseRepository);
+
+            viewmodel.updateProgressBarTextSetting();
+            viewmodel.updateProgressBarTextSetting();
+            viewmodel.updateProgressBarTextSetting();
+
+            verify(settingsManager.setString(PreferencesFlag.progressBarText,
+                ProgressBarText.values[0].toString()))
+                .called(1);
+            verify(appIntl.progress_bar_message(0, 0)).called(1);
+          });
     });
   });
 }

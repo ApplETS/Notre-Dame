@@ -3,13 +3,13 @@ import 'package:flutter/material.dart';
 
 // Package imports:
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:stacked/stacked.dart';
 
 // Project imports:
 import 'package:notredame/constants/preferences_flags.dart';
 import 'package:notredame/features/app/widgets/dismissible_card.dart';
 import 'package:notredame/features/dashboard/widgets/session_progress_card/session_progress_card_viewmodel.dart';
 import 'package:notredame/utils/app_theme.dart';
-import 'package:stacked/stacked.dart';
 
 class SessionProgressCard extends StatelessWidget {
   final PreferencesFlag flag;

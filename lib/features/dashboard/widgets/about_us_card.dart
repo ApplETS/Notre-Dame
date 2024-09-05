@@ -13,8 +13,7 @@ import 'package:notredame/features/app/widgets/dismissible_card.dart';
 import 'package:notredame/features/dashboard/dashboard_viewmodel.dart';
 import 'package:notredame/utils/app_theme.dart';
 import 'package:notredame/utils/utils.dart';
-
-import '../../../utils/locator.dart';
+import 'package:notredame/utils/locator.dart';
 
 class AboutUsCard extends StatelessWidget {
   final DashboardViewModel model;
