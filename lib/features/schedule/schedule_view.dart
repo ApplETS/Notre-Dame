@@ -182,9 +182,6 @@ class _ScheduleViewState extends State<ScheduleView>
             ? AppTheme.schedulePaletteLight.toList()
             : AppTheme.schedulePaletteDark.toList();
 
-    model.handleViewChanged(
-        DateTime.now(), eventController, scheduleCardsPalette);
-
     if (model.calendarFormat == CalendarFormat.month) {
       return _buildCalendarViewMonthly(
           model,
@@ -215,8 +212,10 @@ class _ScheduleViewState extends State<ScheduleView>
       weekNumberBuilder: (date) => null,
       controller: eventController
         ..addAll(model.selectedWeekCalendarEvents(scheduleCardsPalette)),
-      onPageChange: (date, page) =>
-          model.handleViewChanged(date, eventController, []),
+      onPageChange: (date, page) => setState(() {
+        model.handleViewChanged(date, eventController, []);
+        model.displaySaturday = model.selectedDateEvents(model.selectedDate.add(const Duration(days: 5))).isNotEmpty;
+      }),
       backgroundColor: backgroundColor,
       weekTitleHeight:
           (MediaQuery.of(context).orientation == Orientation.portrait)
@@ -244,12 +243,8 @@ class _ScheduleViewState extends State<ScheduleView>
         calendar_view.WeekDays.wednesday,
         calendar_view.WeekDays.thursday,
         calendar_view.WeekDays.friday,
-        if (model.settings[PreferencesFlag.scheduleOtherWeekday] ==
-            calendar_view.WeekDays.saturday)
-          calendar_view.WeekDays.saturday,
-        if (model.settings[PreferencesFlag.scheduleOtherWeekday] ==
-            calendar_view.WeekDays.sunday)
-          calendar_view.WeekDays.sunday,
+        if (model.displaySaturday)
+          calendar_view.WeekDays.saturday
       ],
       initialDay: DateTime.now(),
       heightPerMinute: heightPerMinute,

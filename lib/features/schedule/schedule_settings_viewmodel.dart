@@ -79,17 +79,6 @@ class ScheduleSettingsViewModel
     WeekDays.sunday,
   ];
 
-  bool _showWeekendDays = false;
-
-  bool get showWeekendDays => _showWeekendDays;
-
-  set showWeekendDays(bool newValue) {
-    setBusy(true);
-    _settingsManager.setBool(PreferencesFlag.scheduleShowWeekendDays, newValue);
-    _showWeekendDays = newValue;
-    setBusy(false);
-  }
-
   bool _showTodayBtn = true;
 
   bool get showTodayBtn => _showTodayBtn;

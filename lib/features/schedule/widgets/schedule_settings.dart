@@ -110,11 +110,6 @@ class _ScheduleSettingsState extends State<ScheduleSettings> {
     if (model.toggleCalendarView) {
       list.add(_buildStartingDaySection(context, model));
       list.add(_buildShowWeekSection(context, model));
-    } else if (model.calendarFormat == CalendarFormat.week) {
-      model.showWeekendDays = true;
-      list.add(_buildShowWeekendDaySection(context, model));
-    } else {
-      list.add(_buildShowWeekendDaySection(context, model));
     }
 
     if (model.scheduleActivitiesByCourse.isNotEmpty) {
@@ -142,7 +137,7 @@ class _ScheduleSettingsState extends State<ScheduleSettings> {
       cardContent.add(Padding(
         padding: const EdgeInsets.fromLTRB(15.0, 8.0, 15.0, 8.0),
         child: Text(
-          '${model.scheduleActivitiesByCourse[courseActivitiesAcronym]?.first.courseAcronym ?? AppIntl.of(context)!.grades_not_available} - ${model.scheduleActivitiesByCourse[courseActivitiesAcronym]?.first.courseTitle ?? AppIntl.of(context)!.grades_not_available}}',
+          '${model.scheduleActivitiesByCourse[courseActivitiesAcronym]?.first.courseAcronym ?? AppIntl.of(context)!.grades_not_available} - ${model.scheduleActivitiesByCourse[courseActivitiesAcronym]?.first.courseTitle ?? AppIntl.of(context)!.grades_not_available}',
           style: const TextStyle(
             fontWeight: FontWeight.bold,
           ),
@@ -206,56 +201,6 @@ class _ScheduleSettingsState extends State<ScheduleSettings> {
             style: Theme.of(context).textTheme.bodySmall,
             AppIntl.of(context)!.schedule_settings_show_week_events_btn_pref),
       );
-
-  Widget _buildShowWeekendDaySection(
-      BuildContext context, ScheduleSettingsViewModel model) {
-    final chips = <Widget>[];
-
-    chips.add(InputChip(
-      selected: model.otherDayOfWeek == WeekDays.monday,
-      selectedColor: selectedColor,
-      onPressed: () => setState(() => model.otherDayOfWeek = WeekDays.monday),
-      label: Text(AppIntl.of(context)!.schedule_settings_show_weekend_day_none),
-    ));
-
-    for (final WeekDays day in model.otherDayPossible) {
-      chips.add(InputChip(
-        selected: model.otherDayOfWeek == day,
-        selectedColor: selectedColor,
-        onPressed: () => setState(() => model.otherDayOfWeek = day),
-        label: Text(getTextForWeekDay(context, day)),
-      ));
-    }
-
-    final chipsWrapper = Wrap(
-      spacing: 10,
-      alignment: WrapAlignment.center,
-      children: chips,
-    );
-
-    final cardContent = [
-      Text(
-        AppIntl.of(context)!.schedule_settings_show_weekend_day,
-        style: TextStyle(
-          color: Theme.of(context).colorScheme.secondary,
-          fontWeight: FontWeight.bold,
-        ),
-      ),
-      const Divider(thickness: 0.5),
-      chipsWrapper
-    ];
-
-    return Card(
-        elevation: 4,
-        color: Theme.of(context).brightness == Brightness.light
-            ? AppTheme.lightThemeBackground
-            : AppTheme.darkThemeBackground,
-        child: Padding(
-            padding: const EdgeInsets.only(top: 16.0, bottom: 8),
-            child: Column(
-              children: cardContent,
-            )));
-  }
 
   List<Widget> _buildShowTodayButtonSection(
           BuildContext context, ScheduleSettingsViewModel model) =>

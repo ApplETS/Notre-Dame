@@ -35,9 +35,6 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
   /// Localization class of the application.
   final AppIntl _appIntl;
 
-  /// Number of days in a month (6 weeks)
-  final int daysInMonth = 42;
-
   /// Settings of the user for the schedule
   final Map<PreferencesFlag, dynamic> settings = {};
 
@@ -75,6 +72,8 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
 
   /// Get current locale
   Locale? get locale => _settingsManager.locale;
+
+  bool displaySaturday = false;
 
   ScheduleViewModel({required AppIntl intl, DateTime? initialSelectedDate})
       : _appIntl = intl,
@@ -154,7 +153,8 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
     final List<CalendarEventData> events = [];
     final firstDayOfWeek = Utils.getFirstDayOfCurrentWeek(selectedDate,
         settings[PreferencesFlag.scheduleStartWeekday] as StartingDayOfWeek);
-    for (int i = 0; i < 7; i++) {
+    // We want to put events of previous week and next week in memory to make transitions smoother
+    for (int i = -7; i < 14; i++) {
       final date = firstDayOfWeek.add(Duration(days: i));
       final eventsForDay = selectedDateCalendarEvents(date);
       if (eventsForDay.isNotEmpty) {
@@ -172,9 +172,17 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
       schedulePaletteTheme = AppTheme.schedulePaletteLight.toList();
     }
     final List<CalendarEventData> events = [];
-    final date = selectedDate.datesOfMonths();
-    for (int i = 0; i < daysInMonth; i++) {
-      final eventsForDay = selectedDateCalendarEvents(date.elementAt(i));
+
+    // The reason why previous month is last is to avoid event colors to start from previous session
+    final List<DateTime> months = [DateTime(selectedDate.year, selectedDate.month), DateTime(selectedDate.year, selectedDate.month + 1), DateTime(selectedDate.year, selectedDate.month - 1)];
+
+    final List<DateTime> eventDates = [];
+    for (final DateTime month in months) {
+      eventDates.addAll(month.datesOfMonths());
+    }
+
+    for (int i = 0; i < eventDates.length; i++) {
+      final eventsForDay = selectedDateCalendarEvents(eventDates.elementAt(i));
       if (eventsForDay.isNotEmpty) {
         events.addAll(eventsForDay);
       }

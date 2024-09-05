@@ -20,6 +20,8 @@ class ScheduleDefaultViewModel
 
   bool isLoadingEvents = false;
 
+  bool displaySaturday = false;
+
   /// List of currently loaded events
   List<CalendarEventData<Object>> calendarEvents = [];
 
@@ -89,6 +91,10 @@ class ScheduleDefaultViewModel
 
         for (final activity in filteredScheduleActivities) {
           final event = calendarEventData(activity);
+          // TODO test unitaire
+          if (event.date.weekday == 6) {
+            displaySaturday = true;
+          }
           calendarEvents.add(event);
         }
 
