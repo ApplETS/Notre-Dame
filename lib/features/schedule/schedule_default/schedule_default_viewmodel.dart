@@ -91,7 +91,6 @@ class ScheduleDefaultViewModel
 
         for (final activity in filteredScheduleActivities) {
           final event = calendarEventData(activity);
-          // TODO test unitaire
           if (event.date.weekday == 6) {
             displaySaturday = true;
           }
