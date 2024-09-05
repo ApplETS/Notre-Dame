@@ -38,7 +38,7 @@ class ProfileViewModel extends FutureViewModel<List<Program>> {
 
   ProfileViewModel({required AppIntl intl}) : _appIntl = intl;
 
-  double get programProgression {
+  int get programProgression {
     final ProgramCredits programCredits = ProgramCredits();
     int percentage = 0;
 
@@ -70,7 +70,7 @@ class ProfileViewModel extends FutureViewModel<List<Program>> {
       }
     }
 
-    return percentage.toDouble();
+    return percentage;
   }
 
   @override
