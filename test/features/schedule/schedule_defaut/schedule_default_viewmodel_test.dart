@@ -17,6 +17,7 @@ void main() {
   late ScheduleActivity lectureActivity;
   late ScheduleActivity examActivity;
   late ScheduleActivity saturdayActivity;
+  late ScheduleActivity sundayActivity;
 
   group('ScheduleDefaultViewModel -', () {
     setUp(() {
@@ -55,6 +56,19 @@ void main() {
           courseTitle: 'Intro to Dart',
           dayOfTheWeek: 6, // Tuesday
           day: 'Saturday',
+          startTime: DateTime(2023, 1, 5, 10),
+          endTime: DateTime(2023, 1, 5, 11),
+          activityCode: 'Lecture',
+          isPrincipalActivity: true,
+          activityLocation: 'Room 202',
+          name: 'Lecture Session');
+
+      sundayActivity = ScheduleActivity(
+          courseAcronym: 'COURSE101',
+          courseGroup: '01',
+          courseTitle: 'Intro to Dart',
+          dayOfTheWeek: 7, // Tuesday
+          day: 'Sunday',
           startTime: DateTime(2023, 1, 5, 10),
           endTime: DateTime(2023, 1, 5, 11),
           activityCode: 'Lecture',
@@ -107,6 +121,15 @@ void main() {
 
         await viewModel.futureToRun();
         expect(viewModel.displaySaturday, true);
+      });
+
+      test('Sets displaySaturday to true', () async {
+        when(mockCourseRepository.getDefaultScheduleActivities(
+            session: 'A2023'))
+            .thenAnswer((_) async => [sundayActivity]);
+
+        await viewModel.futureToRun();
+        expect(viewModel.displaySunday, true);
       });
     });
 

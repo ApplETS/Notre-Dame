@@ -73,11 +73,10 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
   /// Get current locale
   Locale? get locale => _settingsManager.locale;
 
-  bool displaySaturday = false;
-
   ScheduleViewModel({required AppIntl intl, DateTime? initialSelectedDate})
       : _appIntl = intl,
-        selectedDate = initialSelectedDate ?? DateTime.now(),
+        // Selected date should always be a monday (start of the week)
+        selectedDate = initialSelectedDate ?? DateTime.now().subtract(Duration(days: DateTime.now().weekday - 1)),
         focusedDate = ValueNotifier(initialSelectedDate ?? DateTime.now());
 
   /// Activities for the day currently selected

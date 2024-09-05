@@ -207,6 +207,11 @@ class _ScheduleViewState extends State<ScheduleView>
       List<Color> scheduleCardsPalette) {
     final double heightPerMinute =
         (MediaQuery.of(context).size.height / 1200).clamp(0.45, 1.0);
+
+    // This can't be modified in the model otherwise changes in UI will not apply on page change
+    final bool displaySaturday = model.selectedDateEvents(model.selectedDate.add(const Duration(days: 5))).isNotEmpty;
+    final bool displaySunday = model.selectedDateEvents(model.selectedDate.add(const Duration(days: 6))).isNotEmpty;
+
     return calendar_view.WeekView(
       key: weekViewKey,
       weekNumberBuilder: (date) => null,
@@ -214,7 +219,6 @@ class _ScheduleViewState extends State<ScheduleView>
         ..addAll(model.selectedWeekCalendarEvents(scheduleCardsPalette)),
       onPageChange: (date, page) => setState(() {
         model.handleViewChanged(date, eventController, []);
-        model.displaySaturday = model.selectedDateEvents(model.selectedDate.add(const Duration(days: 5))).isNotEmpty;
       }),
       backgroundColor: backgroundColor,
       weekTitleHeight:
@@ -243,8 +247,10 @@ class _ScheduleViewState extends State<ScheduleView>
         calendar_view.WeekDays.wednesday,
         calendar_view.WeekDays.thursday,
         calendar_view.WeekDays.friday,
-        if (model.displaySaturday)
-          calendar_view.WeekDays.saturday
+        if (displaySaturday)
+          calendar_view.WeekDays.saturday,
+        if (displaySunday)
+          calendar_view.WeekDays.sunday
       ],
       initialDay: DateTime.now(),
       heightPerMinute: heightPerMinute,

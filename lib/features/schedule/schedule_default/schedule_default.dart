@@ -14,9 +14,10 @@ class ScheduleDefault extends StatefulWidget {
   final List<CalendarEventData<Object>> calendarEvents;
   final bool loaded;
   final bool displaySaturday;
+  final bool displaySunday;
 
   const ScheduleDefault(
-      {super.key, required this.calendarEvents, required this.loaded, required this.displaySaturday});
+      {super.key, required this.calendarEvents, required this.loaded, required this.displaySaturday, required this.displaySunday});
 
   @override
   _ScheduleDefaultState createState() => _ScheduleDefaultState();
@@ -62,6 +63,8 @@ class _ScheduleDefaultState extends State<ScheduleDefault> {
         WeekDays.friday,
         if (widget.displaySaturday)
           WeekDays.saturday,
+        if (widget.displaySunday)
+          WeekDays.sunday,
       ],
       hourIndicatorSettings: HourIndicatorSettings(
           color: Theme.of(context).brightness == Brightness.light
