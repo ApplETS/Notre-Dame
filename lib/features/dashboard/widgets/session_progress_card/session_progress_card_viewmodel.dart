@@ -29,9 +29,9 @@ class SessionProgressCardViewmodel extends FutureViewModel<double> {
 
       await _courseRepository.getSessions();
 
-      final sessionDays = _getSessionDays();
-      _progressBarText = _getProgressBarText(sessionDays.$1, sessionDays.$2);
-      return _getSessionProgress(sessionDays.$1, sessionDays.$2);
+      final (dayCompleted, dayInTheSession) = _getSessionDays();
+      _progressBarText = _getProgressBarText(dayCompleted, dayInTheSession);
+      return _getSessionProgress(dayCompleted, dayInTheSession);
     } catch (error) {
       onError(error);
     }

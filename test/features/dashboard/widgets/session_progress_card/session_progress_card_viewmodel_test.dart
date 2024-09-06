@@ -50,7 +50,7 @@ void main() {
       unregister<SettingsManager>();
     });
 
-    group("futureToRunSessionProgressBar - ", () {
+    group("futureToRun - ", () {
       test("There is an active session", () async {
         CourseRepositoryMock.stubActiveSessions(courseRepository,
             toReturn: [session]);
@@ -95,9 +95,11 @@ void main() {
         expect(progress, -1.0);
         expect(viewmodel.progressBarText, "0 days elapsed / 0 days");
       });
+    });
 
+    group("updateProgressBarTextSetting - ", () {
       test(
-          "currentProgressBarText should be set to ProgressBarText.percentage when it is the first time changeProgressBarText is called",
+          "progressBarText flag should be set to percentage when called once",
               () async {
             CourseRepositoryMock.stubActiveSessions(courseRepository);
 
@@ -110,7 +112,7 @@ void main() {
           });
 
       test(
-          "currentProgressBarText flag should be set to ProgressBarText.remainingDays when it is the second time changeProgressBarText is called",
+          "progressBarText flag should be set to remainingDays when called twice",
               () async {
             CourseRepositoryMock.stubActiveSessions(courseRepository);
 
@@ -124,7 +126,7 @@ void main() {
           });
 
       test(
-          "currentProgressBarText flag should be set to ProgressBarText.daysElapsedWithTotalDays when it is the third time changeProgressBarText is called",
+          "progressBarText flag should be set to daysElapsedWithTotalDays when called three times",
               () async {
             CourseRepositoryMock.stubActiveSessions(courseRepository);
 
