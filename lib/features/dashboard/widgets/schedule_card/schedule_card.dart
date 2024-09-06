@@ -38,24 +38,24 @@ class ScheduleCard extends StatelessWidget {
               model.busy(model.tomorrowDateEvents),
           onDismissed: (DismissDirection direction) => dismissCard(),
           key: UniqueKey(),
-          child: Padding(
-            padding: const EdgeInsets.only(bottom: 5),
-            child: Column(mainAxisSize: MainAxisSize.min, children: [
-              Align(
-                alignment: Alignment.centerLeft,
-                child: Container(
-                  padding: const EdgeInsets.fromLTRB(17, 15, 0, 0),
-                  child: GestureDetector(
-                    onTap: () =>
-                        navigationService
-                            .pushNamedAndRemoveUntil(RouterPaths.schedule),
+          child: GestureDetector(
+            onTap: () =>
+                navigationService
+                    .pushNamedAndRemoveUntil(RouterPaths.schedule),
+            child: Padding(
+              padding: const EdgeInsets.only(bottom: 5),
+              child: Column(mainAxisSize: MainAxisSize.min, children: [
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: Container(
+                    padding: const EdgeInsets.fromLTRB(17, 15, 0, 0),
                     child: Text(title,
                                 style: Theme.of(context).textTheme.titleLarge),
-                  ),
-                )),
-              if (events.isEmpty) _buildNoEventText(context)
-              else _buildEventList(events)
-            ]),
+                  )),
+                if (events.isEmpty) _buildNoEventText(context)
+                else _buildEventList(events)
+              ]),
+            ),
           ),
         );
       });
