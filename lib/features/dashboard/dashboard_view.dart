@@ -17,7 +17,7 @@ import 'package:notredame/features/dashboard/dashboard_viewmodel.dart';
 import 'package:notredame/features/dashboard/widgets/about_us_card.dart';
 import 'package:notredame/features/dashboard/widgets/grades_card.dart';
 import 'package:notredame/features/dashboard/widgets/haptics_container.dart';
-import 'package:notredame/features/dashboard/widgets/schedule_card.dart';
+import 'package:notredame/features/dashboard/widgets/schedule_card/schedule_card.dart';
 import 'package:notredame/features/dashboard/widgets/session_progress_card/session_progress_card.dart';
 import 'package:notredame/features/welcome/discovery/discovery_components.dart';
 import 'package:notredame/features/welcome/discovery/models/discovery_ids.dart';
@@ -99,7 +99,7 @@ class _DashboardViewState extends State<DashboardView>
         case PreferencesFlag.aboutUsCard:
           cards.add(AboutUsCard(model, element, key: UniqueKey()));
         case PreferencesFlag.scheduleCard:
-          cards.add(ScheduleCard(model, element,
+          cards.add(ScheduleCard(element,
               dismissCard: () => model.hideCard(element),
               key: UniqueKey(),
           ));
