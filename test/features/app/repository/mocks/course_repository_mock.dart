@@ -15,7 +15,7 @@ import 'course_repository_mock.mocks.dart';
 class CourseRepositoryMock extends MockCourseRepository {
   /// Stub the getter [coursesActivities] of [mock] when called will return [toReturn].
   static void stubCoursesActivities(CourseRepositoryMock mock,
-      {List<CourseActivity> toReturn = const []}) {
+      {List<CourseActivity>? toReturn = const []}) {
     when(mock.coursesActivities).thenReturn(toReturn);
   }
 
@@ -33,7 +33,7 @@ class CourseRepositoryMock extends MockCourseRepository {
 
   /// Stub the function [getCoursesActivities] of [mock] when called will return [toReturn].
   static void stubGetCoursesActivities(CourseRepositoryMock mock,
-      {List<CourseActivity> toReturn = const [], bool fromCacheOnly = false}) {
+      {List<CourseActivity>? toReturn = const [], bool fromCacheOnly = false}) {
     when(mock.getCoursesActivities(fromCacheOnly: fromCacheOnly))
         .thenAnswer((_) async => toReturn);
   }

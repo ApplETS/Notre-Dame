@@ -1,3 +1,4 @@
+import 'package:calendar_view/calendar_view.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 import 'package:notredame/constants/preferences_flags.dart';
@@ -41,46 +42,17 @@ void main() {
         SettingsManagerMock.stubDateTimeNow(settingsManager,
             toReturn: DateTime(now.year, now.month, now.day, 8));
 
-        await viewModel.futureToRun();
+        final (type, events) = await viewModel.futureToRun();
 
-        await untilCalled(courseRepository.getCoursesActivities());
-
-        expect(viewModel.todayDateEvents, models.todayActivities);
+        expect(type, ScheduleCardType.today);
+        expect(events, models.todayActivities);
 
         verify(courseRepository.getCoursesActivities()).called(1);
 
-        verify(courseRepository.getCoursesActivities(fromCacheOnly: true))
-            .called(1);
-
-        verify(courseRepository.coursesActivities).called(2);
+        verify(courseRepository.coursesActivities).called(1);
       });
 
-      test(
-          "shouldn't remove activity when pending completion",
-              () async {
-            CourseRepositoryMock.stubGetCoursesActivities(courseRepository);
-            CourseRepositoryMock.stubCoursesActivities(courseRepository,
-                toReturn: models.activities);
-            final now = DateTime.now();
-            SettingsManagerMock.stubDateTimeNow(settingsManager,
-                toReturn: DateTime(now.year, now.month, now.day, 11, 59));
-
-            await viewModel.futureToRun();
-
-            await untilCalled(courseRepository.getCoursesActivities());
-
-            expect(viewModel.todayDateEvents, models.todayActivities);
-
-            verify(courseRepository.getCoursesActivities()).called(1);
-
-            verify(courseRepository.getCoursesActivities(fromCacheOnly: true))
-                .called(1);
-
-            verify(courseRepository.coursesActivities).called(2);
-          });
-
-      test("should remove activity when finished",
-              () async {
+      test("should remove lab activity when lab group is set", () async {
             CourseRepositoryMock.stubGetCoursesActivities(courseRepository);
             CourseRepositoryMock.stubCoursesActivities(courseRepository,
                 toReturn: models.activities);
@@ -88,20 +60,16 @@ void main() {
             SettingsManagerMock.stubDateTimeNow(settingsManager,
                 toReturn: DateTime(now.year, now.month, now.day, 12, 01));
 
-            await viewModel.futureToRun();
-
-            await untilCalled(courseRepository.getCoursesActivities());
+            final (type, events) = await viewModel.futureToRun();
 
             final activitiesFinishedCourse =
             List<CourseActivity>.from(models.todayActivities)..remove(models.gen101);
-            expect(viewModel.todayDateEvents, activitiesFinishedCourse);
+
+            expect(type, ScheduleCardType.today);
+            expect(events, activitiesFinishedCourse);
 
             verify(courseRepository.getCoursesActivities()).called(1);
-
-            verify(courseRepository.getCoursesActivities(fromCacheOnly: true))
-                .called(1);
-
-            verify(courseRepository.coursesActivities).called(2);
+            verify(courseRepository.coursesActivities).called(1);
           });
 
       test("should build the list tomorrow activities sorted by increasing start time", () async {
@@ -110,93 +78,136 @@ void main() {
             toReturn: models.activities);
         final now = DateTime.now();
         SettingsManagerMock.stubDateTimeNow(settingsManager,
-            toReturn: DateTime(now.year, now.month, now.day, 8));
+            toReturn: DateTime(now.year, now.month, now.day, 22));
 
-        await viewModel.futureToRun();
+        final (type, events) = await viewModel.futureToRun();
 
-        await untilCalled(courseRepository.getCoursesActivities());
-
-        expect(viewModel.tomorrowDateEvents, models.tomorrowActivities);
+        expect(type, ScheduleCardType.tomorrow);
+        expect(events, models.tomorrowActivities);
 
         verify(courseRepository.getCoursesActivities()).called(1);
+        verify(courseRepository.coursesActivities).called(1);
+      });
 
-        verify(courseRepository.getCoursesActivities(fromCacheOnly: true))
-            .called(1);
+      test("should return none when events is null", () async {
+        CourseRepositoryMock.stubCoursesActivities(courseRepository);
+        CourseRepositoryMock.stubGetCoursesActivities(courseRepository, toReturn: null);
 
-        verify(courseRepository.coursesActivities).called(2);
+        final (type, events) = await viewModel.futureToRun();
+
+        expect(type, ScheduleCardType.none);
+        expect(events.isEmpty, true);
+
+        verify(courseRepository.getCoursesActivities()).called(1);
+        verify(courseRepository.coursesActivities).called(1);
+      });
+
+      test("should return none when no events", () async {
+        CourseRepositoryMock.stubCoursesActivities(courseRepository);
+        CourseRepositoryMock.stubGetCoursesActivities(courseRepository, toReturn: []);
+
+        final (type, events) = await viewModel.futureToRun();
+
+        expect(type, ScheduleCardType.none);
+        expect(events.isEmpty, true);
+
+        verify(courseRepository.getCoursesActivities()).called(1);
+        verify(courseRepository.coursesActivities).called(1);
+      });
+
+      test("should return none when exception occurs", () async {
+        CourseRepositoryMock.stubGetCoursesActivitiesException(courseRepository);
+
+        final (type, events) = await viewModel.futureToRun();
+
+        expect(type, ScheduleCardType.none);
+        expect(events.isEmpty, true);
+
+        verify(courseRepository.getCoursesActivities()).called(1);
       });
     });
 
-    group("removeLaboratoryGroup - ", () {
-      test(
-          "activities should not include labo A when removing labo A",
-              () async {
-            CourseRepositoryMock.stubGetCoursesActivities(courseRepository);
-            CourseRepositoryMock.stubCoursesActivities(courseRepository,
-                toReturn: models.activitiesWithLabs);
+    group("isLaboratoryGroupToAdd - ", () {
+      test("activities should not include labo A when removing labo A",
+          () async {
+        CourseRepositoryMock.stubGetCoursesActivities(courseRepository);
+        CourseRepositoryMock.stubCoursesActivities(courseRepository,
+            toReturn: models.activitiesWithLabs);
+        SettingsManagerMock.stubDateTimeNow(settingsManager,
+            toReturn: DateTime.now().withoutTime);
 
-            SettingsManagerMock.stubGetDynamicString(settingsManager,
-                PreferencesFlag.scheduleLaboratoryGroup, "GEN101");
+        SettingsManagerMock.stubGetDynamicString(settingsManager,
+            PreferencesFlag.scheduleLaboratoryGroup, "GEN101");
 
-            SettingsManagerMock.stubGetDynamicString(settingsManager,
-                PreferencesFlag.scheduleLaboratoryGroup, "GEN102");
+        SettingsManagerMock.stubGetDynamicString(settingsManager,
+            PreferencesFlag.scheduleLaboratoryGroup, "GEN102");
 
-            SettingsManagerMock.stubGetDynamicString(settingsManager,
-                PreferencesFlag.scheduleLaboratoryGroup, "GEN103",
-                toReturn: ActivityCode.labGroupB);
+        SettingsManagerMock.stubGetDynamicString(settingsManager,
+            PreferencesFlag.scheduleLaboratoryGroup, "GEN103",
+            toReturn: ActivityCode.labGroupB);
 
-            expect(await viewModel.removeLaboratoryGroup(models.activitiesWithLabs), [
-              models.activitiesWithLabs[0],
-              models.activitiesWithLabs[1],
-              models.activitiesWithLabs[2],
-              models.activitiesWithLabs[4]
-            ]);
-          });
+        final (type, events) = await viewModel.futureToRun();
 
-      test(
-          "should not have labo B when removing labo B",
-              () async {
-            CourseRepositoryMock.stubGetCoursesActivities(courseRepository);
-            CourseRepositoryMock.stubCoursesActivities(courseRepository,
-                toReturn: models.activitiesWithLabs);
+        expect(type, ScheduleCardType.today);
+        expect(events, [
+          models.activitiesWithLabs[0],
+          models.activitiesWithLabs[1],
+          models.activitiesWithLabs[2],
+          models.activitiesWithLabs[4]
+        ]);
+      });
 
-            SettingsManagerMock.stubGetDynamicString(settingsManager,
-                PreferencesFlag.scheduleLaboratoryGroup, "GEN101");
+      test("should not have labo B when removing labo B",
+          () async {
+        CourseRepositoryMock.stubGetCoursesActivities(courseRepository);
+        CourseRepositoryMock.stubCoursesActivities(courseRepository,
+            toReturn: models.activitiesWithLabs);
+        SettingsManagerMock.stubDateTimeNow(settingsManager,
+            toReturn: DateTime.now().withoutTime);
 
-            SettingsManagerMock.stubGetDynamicString(settingsManager,
-                PreferencesFlag.scheduleLaboratoryGroup, "GEN102");
+        SettingsManagerMock.stubGetDynamicString(settingsManager,
+            PreferencesFlag.scheduleLaboratoryGroup, "GEN101");
 
-            SettingsManagerMock.stubGetDynamicString(settingsManager,
-                PreferencesFlag.scheduleLaboratoryGroup, "GEN103",
-                toReturn: ActivityCode.labGroupA);
+        SettingsManagerMock.stubGetDynamicString(settingsManager,
+            PreferencesFlag.scheduleLaboratoryGroup, "GEN102");
 
-            expect(await viewModel.removeLaboratoryGroup(models.activitiesWithLabs), [
-              models.activitiesWithLabs[0],
-              models.activitiesWithLabs[1],
-              models.activitiesWithLabs[2],
-              models.activitiesWithLabs[3]
-            ]);
-          });
+        SettingsManagerMock.stubGetDynamicString(settingsManager,
+            PreferencesFlag.scheduleLaboratoryGroup, "GEN103",
+            toReturn: ActivityCode.labGroupA);
 
-      test(
-          "should have both labs if no activity code to use",
-              () async {
-            CourseRepositoryMock.stubGetCoursesActivities(courseRepository);
-            CourseRepositoryMock.stubCoursesActivities(courseRepository,
-                toReturn: models.activitiesWithLabs);
+        final (type, events) = await viewModel.futureToRun();
 
-            SettingsManagerMock.stubGetDynamicString(settingsManager,
-                PreferencesFlag.scheduleLaboratoryGroup, "GEN101");
+        expect(type, ScheduleCardType.today);
+        expect(events, [
+          models.activitiesWithLabs[0],
+          models.activitiesWithLabs[1],
+          models.activitiesWithLabs[2],
+          models.activitiesWithLabs[3]
+        ]);
+      });
 
-            SettingsManagerMock.stubGetDynamicString(settingsManager,
-                PreferencesFlag.scheduleLaboratoryGroup, "GEN102");
+      test("should have both labs if no activity code to use",
+          () async {
+        CourseRepositoryMock.stubGetCoursesActivities(courseRepository);
+        CourseRepositoryMock.stubCoursesActivities(courseRepository,
+            toReturn: models.activitiesWithLabs);
+        SettingsManagerMock.stubDateTimeNow(settingsManager,
+            toReturn: DateTime.now().withoutTime);
 
-            SettingsManagerMock.stubGetDynamicString(settingsManager,
-                PreferencesFlag.scheduleLaboratoryGroup, "GEN103");
+        SettingsManagerMock.stubGetDynamicString(settingsManager,
+            PreferencesFlag.scheduleLaboratoryGroup, "GEN101");
 
-            expect(await viewModel.removeLaboratoryGroup(models.activitiesWithLabs),
-                models.activitiesWithLabs);
-          });
+        SettingsManagerMock.stubGetDynamicString(settingsManager,
+            PreferencesFlag.scheduleLaboratoryGroup, "GEN102");
+
+        SettingsManagerMock.stubGetDynamicString(settingsManager,
+            PreferencesFlag.scheduleLaboratoryGroup, "GEN103");
+
+        final (type, events) = await viewModel.futureToRun();
+
+        expect(type, ScheduleCardType.today);
+        expect(events, models.activitiesWithLabs);
+      });
     });
   });
 }

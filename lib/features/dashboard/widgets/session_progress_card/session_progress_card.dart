@@ -24,7 +24,7 @@ class SessionProgressCard extends StatelessWidget {
   Widget build(BuildContext context) => ViewModelBuilder<SessionProgressCardViewmodel>.reactive(
       viewModelBuilder: () => SessionProgressCardViewmodel(AppIntl.of(context)!),
       builder: (context, model, child) => DismissibleCard(
-        isBusy: model.busy(model.data),
+        isBusy: model.isBusy,
         key: UniqueKey(),
         onDismissed: (DismissDirection direction) => dismissCard(),
         child: Column(mainAxisSize: MainAxisSize.min, children: [

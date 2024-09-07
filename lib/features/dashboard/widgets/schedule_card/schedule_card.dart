@@ -29,13 +29,12 @@ class ScheduleCard extends StatelessWidget {
   Widget build(BuildContext context) => ViewModelBuilder<ScheduleCardViewmodel>.reactive(
       viewModelBuilder: () => ScheduleCardViewmodel(),
       builder: (context, model, child) {
-        final title = model.todayDateEvents.isEmpty && model.tomorrowDateEvents.isNotEmpty
+        final (cardType, events) = model.data ?? (ScheduleCardType.none, <CourseActivity>[]);
+        final title = cardType == ScheduleCardType.tomorrow
             ? AppIntl.of(context)!.title_schedule + AppIntl.of(context)!.card_schedule_tomorrow
             : AppIntl.of(context)!.title_schedule;
-        final events = model.todayDateEvents.isEmpty ? model.tomorrowDateEvents : model.todayDateEvents;
         return DismissibleCard(
-          isBusy: model.busy(model.todayDateEvents) ||
-              model.busy(model.tomorrowDateEvents),
+          isBusy: model.isBusy,
           onDismissed: (DismissDirection direction) => dismissCard(),
           key: UniqueKey(),
           child: GestureDetector(
@@ -52,7 +51,7 @@ class ScheduleCard extends StatelessWidget {
                     child: Text(title,
                                 style: Theme.of(context).textTheme.titleLarge),
                   )),
-                if (events.isEmpty) _buildNoEventText(context)
+                if (cardType == ScheduleCardType.none) _buildNoEventText(context)
                 else _buildEventList(events)
               ]),
             ),

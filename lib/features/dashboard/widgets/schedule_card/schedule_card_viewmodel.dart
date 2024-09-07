@@ -1,3 +1,4 @@
+import 'package:calendar_view/calendar_view.dart';
 import 'package:stacked/stacked.dart';
 
 import 'package:notredame/features/app/signets-api/models/course_activity.dart';
@@ -7,99 +8,76 @@ import 'package:notredame/utils/locator.dart';
 import 'package:notredame/constants/preferences_flags.dart';
 import 'package:notredame/utils/activity_code.dart';
 
-class ScheduleCardViewmodel extends FutureViewModel {
+enum ScheduleCardType { none, today, tomorrow }
+
+class ScheduleCardViewmodel extends FutureViewModel<(ScheduleCardType, List<CourseActivity>)> {
   final SettingsManager _settingsManager = locator<SettingsManager>();
   final CourseRepository _courseRepository = locator<CourseRepository>();
 
-  /// Activities for today
-  List<CourseActivity> _todayDateEvents = [];
-
-  /// Get the list of activities for today
-  List<CourseActivity> get todayDateEvents {
-    return _todayDateEvents;
-  }
-
-  // Activities for tomorrow
-  List<CourseActivity> _tomorrowDateEvents = [];
-
-  /// Get the list of activities for tomorrow
-  List<CourseActivity> get tomorrowDateEvents {
-    return _tomorrowDateEvents;
-  }
-
   @override
-  Future futureToRun() async {
-    await futureToRunSchedule();
-  }
-
-  Future<List<CourseActivity>> futureToRunSchedule() async {
-    setBusyForObject(_todayDateEvents, true);
-    setBusyForObject(_tomorrowDateEvents, true);
+  Future<(ScheduleCardType, List<CourseActivity>)> futureToRun() async {
     try {
-      var courseActivities =
-      await _courseRepository.getCoursesActivities(fromCacheOnly: true);
-      _todayDateEvents.clear();
-      _tomorrowDateEvents.clear();
-      final todayDate = _settingsManager.dateTimeNow;
-      courseActivities = await _courseRepository.getCoursesActivities();
+      await _courseRepository.getCoursesActivities();
 
-      if (_todayDateEvents.isEmpty &&
-          _courseRepository.coursesActivities != null) {
-        final DateTime tomorrowDate = todayDate.add(const Duration(days: 1));
-        // Build the list
-        for (final CourseActivity course in _courseRepository.coursesActivities!) {
-          final DateTime dateOnly = course.startDateTime;
-          if (isSameDay(todayDate, dateOnly) &&
-              todayDate.compareTo(course.endDateTime) < 0) {
-            _todayDateEvents.add(course);
-          } else if (isSameDay(tomorrowDate, dateOnly)) {
-            _tomorrowDateEvents.add(course);
+      final courseActivities = _courseRepository.coursesActivities?.toList();
+
+      if (courseActivities == null || courseActivities.isEmpty) {
+        return (ScheduleCardType.none, <CourseActivity>[]);
+      }
+
+      final todayDate = _settingsManager.dateTimeNow;
+      final tomorrowDate = todayDate
+          .add(const Duration(days: 1))
+          .withoutTime;
+      final twoDaysFromToday = todayDate
+          .add(const Duration(days: 2))
+          .withoutTime;
+
+      courseActivities.sort((a, b) =>
+          a.startDateTime.compareTo(b.startDateTime));
+
+
+      var cardType = ScheduleCardType.none;
+      final events = <CourseActivity>[];
+
+      for (final courseActivity in courseActivities) {
+        if (courseActivity.startDateTime.isBefore(todayDate)) continue;
+        if (twoDaysFromToday.isBefore(courseActivity.endDateTime.withoutTime)) {
+          return (cardType, events);
+        }
+
+        if (todayDate.withoutTime == courseActivity.startDateTime.withoutTime &&
+            await isLaboratoryGroupToAdd(courseActivity)) {
+          cardType = ScheduleCardType.today;
+          events.add(courseActivity);
+        } else if (tomorrowDate == courseActivity.startDateTime.withoutTime) {
+          if (cardType == ScheduleCardType.today) {
+            return (cardType, events);
+          }
+          if (await isLaboratoryGroupToAdd(courseActivity)) {
+            cardType = ScheduleCardType.tomorrow;
+            events.add(courseActivity);
           }
         }
       }
-
-      _todayDateEvents
-          .sort((a, b) => a.startDateTime.compareTo(b.startDateTime));
-      _tomorrowDateEvents
-          .sort((a, b) => a.startDateTime.compareTo(b.startDateTime));
-
-      _todayDateEvents = await removeLaboratoryGroup(_todayDateEvents);
-      _tomorrowDateEvents = await removeLaboratoryGroup(_tomorrowDateEvents);
-      return courseActivities ?? [];
+      return (cardType, events);
     } catch (error) {
       onError(error);
-    } finally {
-      setBusyForObject(_todayDateEvents, false);
-      setBusyForObject(_tomorrowDateEvents, false);
     }
-    return [];
+    return (ScheduleCardType.none, <CourseActivity>[]);
   }
 
-  Future<List<CourseActivity>> removeLaboratoryGroup(
-      List<CourseActivity> todayDateEvents) async {
-    final List<CourseActivity> todayDateEventsCopy = List.from(todayDateEvents);
+  Future<bool> isLaboratoryGroupToAdd(CourseActivity courseActivity) async {
+    final courseKey = courseActivity.courseGroup.split('-')[0];
 
-    for (final courseAcronym in todayDateEvents) {
-      final courseKey = courseAcronym.courseGroup.split('-')[0];
+    final activityCodeToUse = await _settingsManager.getDynamicString(
+        PreferencesFlag.scheduleLaboratoryGroup, courseKey);
 
-      final String? activityCodeToUse = await _settingsManager.getDynamicString(
-          PreferencesFlag.scheduleLaboratoryGroup, courseKey);
-
-      if (activityCodeToUse == ActivityCode.labGroupA) {
-        todayDateEventsCopy.removeWhere((element) =>
-        element.activityDescription == ActivityDescriptionName.labB &&
-            element.courseGroup == courseAcronym.courseGroup);
-      } else if (activityCodeToUse == ActivityCode.labGroupB) {
-        todayDateEventsCopy.removeWhere((element) =>
-        element.activityDescription == ActivityDescriptionName.labA &&
-            element.courseGroup == courseAcronym.courseGroup);
-      }
+    if (activityCodeToUse == ActivityCode.labGroupA) {
+      return courseActivity.activityDescription != ActivityDescriptionName.labB;
+    } else if (activityCodeToUse == ActivityCode.labGroupB) {
+      return courseActivity.activityDescription != ActivityDescriptionName.labA;
     }
-
-    return todayDateEventsCopy;
+    return true;
   }
-
-  /// Returns true if dates [a] and [b] are on the same day
-  bool isSameDay(DateTime a, DateTime b) =>
-      a.year == b.year && a.month == b.month && a.day == b.day;
 }
