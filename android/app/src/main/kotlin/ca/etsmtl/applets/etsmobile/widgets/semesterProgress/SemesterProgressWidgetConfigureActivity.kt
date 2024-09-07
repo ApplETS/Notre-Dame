@@ -90,7 +90,7 @@ class SemesterProgressWidgetConfigureActivity : AppCompatActivity() {
         val radioGroup = binding.radioGroup
 
         this.getSharedPreferences(Constants.SEMESTER_PROGRESS_PREFS_KEY, Context.MODE_PRIVATE).apply {
-            val theme = getString(Constants.SEMESTER_PROGRESS_THEME_KEY, Constants.SEMESTER_PROGRESS_THEME_DARK)
+            val theme = getString(Constants.SEMESTER_PROGRESS_THEME_KEY, Constants.SEMESTER_PROGRESS_THEME_LIGHT)
             val lang = getString(Constants.SEMESTER_PROGRESS_LANG_KEY, Constants.SEMESTER_PROGRESS_LANG_FR)
 
             when (theme) {

@@ -52,22 +52,22 @@
             android:background="@color/configure_activity_background">
 
             <RadioButton
-                android:id="@+id/radio_button_dark"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:buttonTint="@color/white"
-                android:minHeight="48dp"
-                android:text="@string/widget_config_dark_option_text"
-                android:textColor="@color/white"
-                />
-
-            <RadioButton
                 android:id="@+id/radio_button_light"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:buttonTint="@color/white"
                 android:minHeight="48dp"
                 android:text="@string/widget_config_light_option_text"
+                android:textColor="@color/white"
+                />
+
+            <RadioButton
+                android:id="@+id/radio_button_dark"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:buttonTint="@color/white"
+                android:minHeight="48dp"
+                android:text="@string/widget_config_dark_option_text"
                 android:textColor="@color/white"
                 />
         </RadioGroup>
