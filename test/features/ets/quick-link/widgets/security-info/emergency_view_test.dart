@@ -21,7 +21,8 @@ void main() {
     tearDown(() {});
 
     group('UI - ', () {
-      testWidgets('has call button and markdown view', (WidgetTester tester) async {
+      testWidgets('has call button and markdown view',
+          (WidgetTester tester) async {
         await tester.pumpWidget(localizedWidget(
             child: const EmergencyView(
                 'testEmergency', 'assets/markdown/armed_person_en.md')));
