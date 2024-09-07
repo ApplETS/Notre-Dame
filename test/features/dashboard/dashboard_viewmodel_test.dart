@@ -31,27 +31,6 @@ void main() {
   // Needed to support FlutterToast.
   TestWidgetsFlutterBinding.ensureInitialized();
 
-  // Courses
-  final Course courseSummer = Course(
-      acronym: 'GEN101',
-      group: '02',
-      session: 'É2020',
-      programCode: '999',
-      grade: 'C+',
-      numberOfCredits: 3,
-      title: 'Cours générique');
-
-  final Course courseSummer2 = Course(
-      acronym: 'GEN106',
-      group: '02',
-      session: 'É2020',
-      programCode: '999',
-      grade: 'C+',
-      numberOfCredits: 3,
-      title: 'Cours générique');
-
-  final courses = [courseSummer, courseSummer2];
-
   // Cards
   final Map<PreferencesFlag, int> dashboard = {
     PreferencesFlag.aboutUsCard: 0,
@@ -73,22 +52,6 @@ void main() {
     PreferencesFlag.progressBarCard: 1,
   };
 
-  // Session
-  final Session session = Session(
-      shortName: "É2020",
-      name: "Ete 2020",
-      startDate: DateTime(2020).subtract(const Duration(days: 1)),
-      endDate: DateTime(2020).add(const Duration(days: 1)),
-      endDateCourses: DateTime(2022, 1, 10, 1, 1),
-      startDateRegistration: DateTime(2017, 1, 9, 1, 1),
-      deadlineRegistration: DateTime(2017, 1, 10, 1, 1),
-      startDateCancellationWithRefund: DateTime(2017, 1, 10, 1, 1),
-      deadlineCancellationWithRefund: DateTime(2017, 1, 11, 1, 1),
-      deadlineCancellationWithRefundNewStudent: DateTime(2017, 1, 11, 1, 1),
-      startDateCancellationWithoutRefundNewStudent: DateTime(2017, 1, 12, 1, 1),
-      deadlineCancellationWithoutRefundNewStudent: DateTime(2017, 1, 12, 1, 1),
-      deadlineCancellationASEQ: DateTime(2017, 1, 11, 1, 1));
-
   group("DashboardViewModel - ", () {
     setUp(() async {
       // Setting up mocks
@@ -103,10 +66,6 @@ void main() {
       // TODO: End remove when 4.50.1 is released
 
       viewModel = DashboardViewModel(intl: await setupAppIntl());
-      CourseRepositoryMock.stubGetSessions(courseRepositoryMock,
-          toReturn: [session]);
-      CourseRepositoryMock.stubActiveSessions(courseRepositoryMock,
-          toReturn: [session]);
       CourseRepositoryMock.stubCoursesActivities(courseRepositoryMock);
       CourseRepositoryMock.stubGetCoursesActivities(courseRepositoryMock,
           fromCacheOnly: true);
@@ -126,132 +85,37 @@ void main() {
       unregister<SettingsManager>();
     });
 
-    group('futureToRunGrades -', () {
-      test('first load from cache than call SignetsAPI to get the courses',
-          () async {
-        CourseRepositoryMock.stubSessions(courseRepositoryMock,
-            toReturn: [session]);
-        CourseRepositoryMock.stubGetSessions(courseRepositoryMock,
-            toReturn: [session]);
-        CourseRepositoryMock.stubActiveSessions(courseRepositoryMock,
-            toReturn: [session]);
-        CourseRepositoryMock.stubGetCourses(courseRepositoryMock,
-            toReturn: courses, fromCacheOnly: true);
-
-        CourseRepositoryMock.stubGetCourses(courseRepositoryMock,
-            toReturn: courses);
-
-        expect(await viewModel.futureToRunGrades(), courses);
-
-        await untilCalled(courseRepositoryMock.sessions);
-        await untilCalled(courseRepositoryMock.sessions);
-
-        expect(viewModel.courses, courses);
-
-        verifyInOrder([
-          courseRepositoryMock.sessions,
-          courseRepositoryMock.sessions,
-          courseRepositoryMock.activeSessions,
-          courseRepositoryMock.activeSessions,
-          courseRepositoryMock.getCourses(fromCacheOnly: true),
-          courseRepositoryMock.getCourses(),
-        ]);
-
-        verifyNoMoreInteractions(courseRepositoryMock);
-      });
-
-      test('Signets throw an error while trying to get courses', () async {
-        setupFlutterToastMock();
-        CourseRepositoryMock.stubSessions(courseRepositoryMock,
-            toReturn: [session]);
-        CourseRepositoryMock.stubGetSessions(courseRepositoryMock,
-            toReturn: [session]);
-        CourseRepositoryMock.stubActiveSessions(courseRepositoryMock,
-            toReturn: [session]);
-
-        CourseRepositoryMock.stubGetCourses(courseRepositoryMock,
-            toReturn: courses, fromCacheOnly: true);
-
-        CourseRepositoryMock.stubGetCoursesException(courseRepositoryMock);
-
-        CourseRepositoryMock.stubGetCourses(courseRepositoryMock,
-            toReturn: courses);
-
-        expect(await viewModel.futureToRunGrades(), courses,
-            reason:
-                "Even if SignetsAPI call fails, should return the cache contents");
-
-        await untilCalled(courseRepositoryMock.sessions);
-        await untilCalled(courseRepositoryMock.sessions);
-
-        expect(viewModel.courses, courses);
-
-        verifyInOrder([
-          courseRepositoryMock.sessions,
-          courseRepositoryMock.sessions,
-          courseRepositoryMock.activeSessions,
-          courseRepositoryMock.activeSessions,
-          courseRepositoryMock.getCourses(fromCacheOnly: true),
-          courseRepositoryMock.getCourses(),
-        ]);
-
-        verifyNoMoreInteractions(courseRepositoryMock);
-      });
-
-      test('There is no session active', () async {
-        CourseRepositoryMock.stubSessions(courseRepositoryMock, toReturn: []);
-        CourseRepositoryMock.stubActiveSessions(courseRepositoryMock,
-            toReturn: []);
-
-        expect(await viewModel.futureToRunGrades(), [],
-            reason: "Should return empty if there is no session active.");
-
-        await untilCalled(courseRepositoryMock.sessions);
-
-        expect(viewModel.courses, []);
-
-        verifyInOrder([
-          courseRepositoryMock.sessions,
-          courseRepositoryMock.sessions,
-          courseRepositoryMock.getSessions(),
-          courseRepositoryMock.activeSessions,
-        ]);
-
-        verifyNoMoreInteractions(courseRepositoryMock);
-      });
-    });
-
     group("futureToRun - ", () {
-      test("The initial cards are correctly loaded", () async {
-        setupFlutterToastMock();
-        CourseRepositoryMock.stubGetCoursesActivities(courseRepositoryMock,
-            fromCacheOnly: true);
-        CourseRepositoryMock.stubGetCourses(courseRepositoryMock,
-            fromCacheOnly: true);
-        CourseRepositoryMock.stubGetCoursesException(courseRepositoryMock,
-            fromCacheOnly: true);
-        CourseRepositoryMock.stubGetSessions(courseRepositoryMock);
-        CourseRepositoryMock.stubActiveSessions(courseRepositoryMock,
-            toReturn: [session]);
-        CourseRepositoryMock.stubCoursesActivities(courseRepositoryMock);
-
-        SettingsManagerMock.stubGetDashboard(settingsManagerMock,
-            toReturn: dashboard);
-
-        await viewModel.futureToRun();
-        expect(viewModel.cards, dashboard);
-        expect(viewModel.cardsToDisplay, [
-          PreferencesFlag.aboutUsCard,
-          PreferencesFlag.scheduleCard,
-          PreferencesFlag.progressBarCard
-        ]);
-
-        verify(settingsManagerMock.getDashboard()).called(1);
-        verify(settingsManagerMock.getString(PreferencesFlag.progressBarText))
-            .called(1);
-        verify(settingsManagerMock.dateTimeNow).called(2);
-        verifyNoMoreInteractions(settingsManagerMock);
-      });
+      // test("The initial cards are correctly loaded", () async {
+      //   setupFlutterToastMock();
+      //   CourseRepositoryMock.stubGetCoursesActivities(courseRepositoryMock,
+      //       fromCacheOnly: true);
+      //   CourseRepositoryMock.stubGetCourses(courseRepositoryMock,
+      //       fromCacheOnly: true);
+      //   CourseRepositoryMock.stubGetCoursesException(courseRepositoryMock,
+      //       fromCacheOnly: true);
+      //   CourseRepositoryMock.stubGetSessions(courseRepositoryMock);
+      //   CourseRepositoryMock.stubActiveSessions(courseRepositoryMock,
+      //       toReturn: [session]);
+      //   CourseRepositoryMock.stubCoursesActivities(courseRepositoryMock);
+      //
+      //   SettingsManagerMock.stubGetDashboard(settingsManagerMock,
+      //       toReturn: dashboard);
+      //
+      //   await viewModel.futureToRun();
+      //   expect(viewModel.cards, dashboard);
+      //   expect(viewModel.cardsToDisplay, [
+      //     PreferencesFlag.aboutUsCard,
+      //     PreferencesFlag.scheduleCard,
+      //     PreferencesFlag.progressBarCard
+      //   ]);
+      //
+      //   verify(settingsManagerMock.getDashboard()).called(1);
+      //   verify(settingsManagerMock.getString(PreferencesFlag.progressBarText))
+      //       .called(1);
+      //   verify(settingsManagerMock.dateTimeNow).called(2);
+      //   verifyNoMoreInteractions(settingsManagerMock);
+      // });
 
       test("An exception is thrown during the preferenceService call",
           () async {

@@ -10,11 +10,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 // Project imports:
 import 'package:notredame/constants/preferences_flags.dart';
 import 'package:notredame/constants/update_code.dart';
-import 'package:notredame/features/app/signets-api/models/course.dart';
 import 'package:notredame/features/app/signets-api/models/course_activity.dart';
 import 'package:notredame/features/app/signets-api/models/session.dart';
 import 'package:notredame/features/dashboard/dashboard_view.dart';
-import 'package:notredame/features/student/grades/widgets/grade_button.dart';
 import '../../common/helpers.dart';
 import '../app/analytics/mocks/remote_config_service_mock.dart';
 import '../app/repository/mocks/course_repository_mock.dart';
@@ -91,44 +89,6 @@ void main() {
       deadlineCancellationWithoutRefundNewStudent: DateTime(2017, 1, 12, 1, 1),
       deadlineCancellationASEQ: DateTime(2017, 1, 11, 1, 1));
 
-  final Course courseSummer = Course(
-      acronym: 'GEN101',
-      group: '02',
-      session: 'É2020',
-      programCode: '999',
-      grade: 'C+',
-      numberOfCredits: 3,
-      title: 'Cours générique');
-
-  final Course courseSummer2 = Course(
-      acronym: 'GEN102',
-      group: '02',
-      session: 'É2020',
-      programCode: '999',
-      grade: 'C+',
-      numberOfCredits: 3,
-      title: 'Cours générique');
-
-  final Course courseWinter = Course(
-      acronym: 'GEN101',
-      group: '02',
-      session: 'H2020',
-      programCode: '999',
-      grade: 'C+',
-      numberOfCredits: 3,
-      title: 'Cours générique');
-
-  final Course courseFall = Course(
-      acronym: 'GEN101',
-      group: '02',
-      session: 'A2020',
-      programCode: '999',
-      grade: 'C+',
-      numberOfCredits: 3,
-      title: 'Cours générique');
-
-  final courses = [courseSummer, courseSummer2, courseWinter, courseFall];
-
   Future<void> longPressDrag(
       WidgetTester tester, Offset start, Offset end) async {
     final TestGesture drag = await tester.startGesture(start);
@@ -145,7 +105,6 @@ void main() {
       courseRepositoryMock = setupCourseRepositoryMock();
       remoteConfigServiceMock = setupRemoteConfigServiceMock();
       setupNavigationServiceMock();
-      courseRepositoryMock = setupCourseRepositoryMock();
       setupNetworkingServiceMock();
       setupAnalyticsServiceMock();
       setupPreferencesServiceMock();
@@ -162,15 +121,7 @@ void main() {
           toReturn: [session]);
       CourseRepositoryMock.stubGetSessions(courseRepositoryMock,
           toReturn: [session]);
-      CourseRepositoryMock.stubActiveSessions(courseRepositoryMock,
-          toReturn: [session]);
-      CourseRepositoryMock.stubCourses(courseRepositoryMock);
-      CourseRepositoryMock.stubGetCourses(courseRepositoryMock,
-          fromCacheOnly: true);
-      CourseRepositoryMock.stubGetCourses(courseRepositoryMock);
       CourseRepositoryMock.stubCoursesActivities(courseRepositoryMock);
-      CourseRepositoryMock.stubGetCoursesActivities(courseRepositoryMock,
-          fromCacheOnly: true);
 
       RemoteConfigServiceMock.stubGetBroadcastEnabled(remoteConfigServiceMock,
           toReturn: false);
@@ -426,116 +377,6 @@ void main() {
             findsNWidgets(numberOfCards));
         expect(find.widgetWithText(Dismissible, intl.title_schedule),
             findsOneWidget);
-      });
-
-      group('UI - gradesCard', () {
-        testWidgets('Has card grades displayed - with no courses',
-            (WidgetTester tester) async {
-          SettingsManagerMock.stubGetDashboard(settingsManagerMock,
-              toReturn: dashboard);
-
-          await tester.pumpWidget(localizedWidget(
-              child: FeatureDiscovery(
-                  child: const DashboardView(updateCode: UpdateCode.none))));
-          await tester.pumpAndSettle();
-
-          // Find grades card
-          final gradesCard =
-              find.widgetWithText(Card, intl.grades_title, skipOffstage: false);
-          expect(gradesCard, findsOneWidget);
-
-          // Find grades card Title
-          final gradesTitle = find.text(intl.grades_title, skipOffstage: false);
-          expect(gradesTitle, findsOneWidget);
-
-          // Find empty grades card
-          final gradesEmptyTitle = find.text(
-              intl.grades_msg_no_grades.split("\n").first,
-              skipOffstage: false);
-          expect(gradesEmptyTitle, findsOneWidget);
-        });
-
-        testWidgets('Has card grades displayed - with courses',
-            (WidgetTester tester) async {
-          CourseRepositoryMock.stubCourses(courseRepositoryMock,
-              toReturn: courses);
-          CourseRepositoryMock.stubGetCourses(courseRepositoryMock,
-              fromCacheOnly: true, toReturn: courses);
-          CourseRepositoryMock.stubGetCourses(courseRepositoryMock,
-              toReturn: courses);
-
-          SettingsManagerMock.stubGetDashboard(settingsManagerMock,
-              toReturn: dashboard);
-
-          await tester.pumpWidget(localizedWidget(
-              child: FeatureDiscovery(
-                  child: const DashboardView(updateCode: UpdateCode.none))));
-          await tester.pumpAndSettle();
-
-          // Find grades card
-          final gradesCard =
-              find.widgetWithText(Card, intl.grades_title, skipOffstage: false);
-          expect(gradesCard, findsOneWidget);
-
-          // Find grades card Title
-          final gradesTitle = find.text(intl.grades_title, skipOffstage: false);
-          expect(gradesTitle, findsOneWidget);
-
-          // Find grades buttons in the card
-          final gradesButtons = find.byType(GradeButton, skipOffstage: false);
-          expect(gradesButtons, findsNWidgets(2));
-        });
-
-        testWidgets('gradesCard is dismissible and can be restored',
-            (WidgetTester tester) async {
-          SettingsManagerMock.stubSetInt(
-              settingsManagerMock, PreferencesFlag.aboutUsCard);
-
-          SettingsManagerMock.stubSetInt(
-              settingsManagerMock, PreferencesFlag.scheduleCard);
-
-          SettingsManagerMock.stubSetInt(
-              settingsManagerMock, PreferencesFlag.progressBarCard);
-
-          SettingsManagerMock.stubSetInt(
-              settingsManagerMock, PreferencesFlag.gradesCard);
-          SettingsManagerMock.stubGetDashboard(settingsManagerMock,
-              toReturn: dashboard);
-
-          await tester.pumpWidget(localizedWidget(
-              child: FeatureDiscovery(
-                  child: const DashboardView(updateCode: UpdateCode.none))));
-          await tester.pumpAndSettle();
-
-          // Find Dismissible Cards
-          expect(find.byType(Dismissible, skipOffstage: false),
-              findsNWidgets(numberOfCards));
-          expect(find.text(intl.grades_title, skipOffstage: false),
-              findsOneWidget);
-
-          // Swipe Dismissible grades Card horizontally
-          final finder = find.widgetWithText(Dismissible, intl.grades_title,
-              skipOffstage: false);
-          await tester.scrollUntilVisible(finder, 100);
-          await tester.pumpAndSettle();
-          await tester.drag(finder, const Offset(1000.0, 0.0));
-
-          // Check that the card is now absent from the view
-          await tester.pumpAndSettle();
-          expect(find.byType(Dismissible), findsNWidgets(numberOfCards - 1));
-          expect(find.text(intl.grades_title), findsNothing);
-
-          // Tap the restoreCards button
-          await tester.tap(find.byIcon(Icons.restore));
-
-          await tester.pumpAndSettle();
-
-          // Check that the card is now present in the view
-          expect(find.byType(Dismissible, skipOffstage: false),
-              findsNWidgets(numberOfCards));
-          expect(find.text(intl.grades_title, skipOffstage: false),
-              findsOneWidget);
-        });
       });
     });
   });

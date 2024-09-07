@@ -6,7 +6,6 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 // Project imports:
-import 'package:notredame/constants/preferences_flags.dart';
 import 'package:notredame/features/app/repository/course_repository.dart';
 import 'package:notredame/features/app/signets-api/models/session.dart';
 import 'package:notredame/features/app/widgets/dismissible_card.dart';
@@ -58,7 +57,6 @@ void main() {
     testWidgets('Has card progressBar displayed', (WidgetTester tester) async {
         await tester.pumpWidget(localizedWidget(
             child: SessionProgressCard(
-                PreferencesFlag.progressBarCard,
                 onDismissed: () => {},
                 key: UniqueKey())));
         await tester.pumpAndSettle();
@@ -78,7 +76,6 @@ void main() {
 
           await tester.pumpWidget(localizedWidget(
               child: SessionProgressCard(
-                  PreferencesFlag.progressBarCard,
                   onDismissed: () => isDismissed = true,
                   key: UniqueKey())));
           await tester.pumpAndSettle();

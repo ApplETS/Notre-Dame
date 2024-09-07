@@ -3,7 +3,6 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:mockito/mockito.dart';
 
-import 'package:notredame/constants/preferences_flags.dart';
 import 'package:notredame/features/app/navigation/navigation_service.dart';
 import 'package:notredame/features/app/navigation/router_paths.dart';
 import 'package:notredame/features/app/repository/course_repository.dart';
@@ -49,7 +48,7 @@ void main() {
     SettingsManagerMock.stubDateTimeNow(settingsManager, toReturn: now);
 
     await tester.pumpWidget(localizedWidget(
-        child: ScheduleCard(PreferencesFlag.scheduleCard, onDismissed: dismissCard, key: UniqueKey())));
+        child: ScheduleCard(onDismissed: dismissCard, key: UniqueKey())));
     await tester.pumpAndSettle();
   }
 

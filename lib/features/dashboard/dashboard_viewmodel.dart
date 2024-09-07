@@ -30,7 +30,6 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
   static const String tag = "DashboardViewModel";
 
   final SettingsManager _settingsManager = locator<SettingsManager>();
-  final CourseRepository _courseRepository = locator<CourseRepository>();
   final AnalyticsService _analyticsService = locator<AnalyticsService>();
   final RemoteConfigService remoteConfigService =
       locator<RemoteConfigService>();
@@ -85,10 +84,6 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
     }
     return false;
   }
-
-  /// List of courses for the current session
-  List<Course> courses = [];
-
   DashboardViewModel({required AppIntl intl}) : _appIntl = intl;
 
   @override
@@ -127,9 +122,7 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
   }
 
   Future loadDataAndUpdateWidget() async {
-    return Future.wait([
-      futureToRunGrades(),
-    ]);
+    return Future.wait([]);
   }
 
   @override
@@ -238,51 +231,6 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
     await _settingsManager.setBool(PreferencesFlag.discoveryDashboard, true);
 
     return true;
-  }
-
-  /// Get the list of courses for the Grades card.
-  Future<List<Course>> futureToRunGrades() async {
-    if (!busy(courses)) {
-      try {
-        setBusyForObject(courses, true);
-        if (_courseRepository.sessions == null ||
-            _courseRepository.sessions!.isEmpty) {
-          await _courseRepository.getSessions();
-        }
-
-        // Determine current sessions
-        if (_courseRepository.activeSessions.isEmpty) {
-          return [];
-        }
-        final currentSession = _courseRepository.activeSessions.first;
-
-        final coursesCached =
-            await _courseRepository.getCourses(fromCacheOnly: true);
-        courses.clear();
-        for (final Course course in coursesCached) {
-          if (course.session == currentSession.shortName) {
-            courses.add(course);
-          }
-        }
-        notifyListeners();
-
-        final fetchedCourses = await _courseRepository.getCourses();
-        // Update the courses list
-        courses.clear();
-        for (final Course course in fetchedCourses) {
-          if (course.session == currentSession.shortName) {
-            courses.add(course);
-          }
-        }
-        // Will remove duplicated courses in the list
-        courses = courses.toSet().toList();
-      } catch (error) {
-        onError(error);
-      } finally {
-        setBusyForObject(courses, false);
-      }
-    }
-    return courses;
   }
 
   /// Prompt the update for the app if the navigation service arguments passed

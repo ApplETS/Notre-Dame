@@ -6,7 +6,6 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:stacked/stacked.dart';
 
 // Project imports:
-import 'package:notredame/constants/preferences_flags.dart';
 import 'package:notredame/features/app/navigation/navigation_service.dart';
 import 'package:notredame/features/app/navigation/router_paths.dart';
 import 'package:notredame/features/app/signets-api/models/course_activity.dart';
@@ -16,11 +15,10 @@ import 'package:notredame/features/dashboard/widgets/schedule_card/schedule_card
 import 'package:notredame/utils/locator.dart';
 
 class ScheduleCard extends StatelessWidget {
-  final PreferencesFlag flag;
   final VoidCallback onDismissed;
   final NavigationService navigationService = locator<NavigationService>();
 
-  ScheduleCard(this.flag, {
+  ScheduleCard({
     required this.onDismissed,
     required super.key,
   });

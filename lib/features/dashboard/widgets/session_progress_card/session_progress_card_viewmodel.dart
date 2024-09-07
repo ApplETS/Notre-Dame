@@ -5,7 +5,7 @@ import 'package:stacked/stacked.dart';
 // Project imports:
 import 'package:notredame/constants/preferences_flags.dart';
 import 'package:notredame/features/app/repository/course_repository.dart';
-import 'package:notredame/features/dashboard/progress_bar_text_options.dart';
+import 'package:notredame/features/dashboard/widgets/session_progress_card/progress_bar_text_options.dart';
 import 'package:notredame/features/more/settings/settings_manager.dart';
 import 'package:notredame/utils/locator.dart';
 

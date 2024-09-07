@@ -15,7 +15,7 @@ import 'package:notredame/features/app/widgets/base_scaffold.dart';
 import 'package:notredame/features/app/widgets/broadcast_card/message_broadcast_card.dart';
 import 'package:notredame/features/dashboard/dashboard_viewmodel.dart';
 import 'package:notredame/features/dashboard/widgets/about_us_card.dart';
-import 'package:notredame/features/dashboard/widgets/grades_card.dart';
+import 'package:notredame/features/dashboard/widgets/grades_card/grades_card.dart';
 import 'package:notredame/features/dashboard/widgets/haptics_container.dart';
 import 'package:notredame/features/dashboard/widgets/schedule_card/schedule_card.dart';
 import 'package:notredame/features/dashboard/widgets/session_progress_card/session_progress_card.dart';
@@ -99,23 +99,22 @@ class _DashboardViewState extends State<DashboardView>
         case PreferencesFlag.aboutUsCard:
           cards.add(AboutUsCard(model, element, key: UniqueKey()));
         case PreferencesFlag.scheduleCard:
-          cards.add(ScheduleCard(element,
+          cards.add(ScheduleCard(
               onDismissed: () => model.hideCard(element),
               key: UniqueKey(),
           ));
         case PreferencesFlag.progressBarCard:
-          cards.add(SessionProgressCard(element, key: UniqueKey(),
+          cards.add(SessionProgressCard(key: UniqueKey(),
               onDismissed: () => model.hideCard(element),
           ));
         case PreferencesFlag.gradesCard:
-          cards.add(GradesCard(model, element, dismissCard: () =>
+          cards.add(GradesCard(onDismissed: () =>
               model.hideCard(element),
               key: UniqueKey(),
           ));
         default:
       }
     }
-
     return cards;
   }
 
