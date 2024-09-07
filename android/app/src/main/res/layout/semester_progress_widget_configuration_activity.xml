@@ -1,66 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/configure_activity_background">
-
-    <LinearLayout
-        android:id="@+id/widget_preview_container"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_marginHorizontal="20dp"
-        android:layout_marginVertical="20dp">
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:text="@string/widget_config_widget_previews_text"
-            android:textColor="@color/white"
-            android:fontFamily="@font/roboto_medium"
-            android:gravity="center_vertical|start">
-        </TextView>
-        <View
-            android:id="@+id/previews_divider"
-            android:layout_width="match_parent"
-            android:layout_height="2dp"
-            android:background="@drawable/divider"/>
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:text="@string/semester_progress_config_small_widget_preview_title"
-            android:textColor="@color/white"
-            android:fontFamily="@font/roboto_regular"
-            android:gravity="center_vertical|start">
-        </TextView>
-        <FrameLayout
-            android:id="@+id/small_widget_preview"
-            android:layout_width="100dp"
-            android:layout_height="100dp">
-        </FrameLayout>
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:text="@string/semester_progress_config_large_widget_preview_title"
-            android:textColor="@color/white"
-            android:fontFamily="@font/roboto_regular"
-            android:gravity="center_vertical|start">
-        </TextView>
-        <FrameLayout
-            android:id="@+id/large_widget_preview"
-            android:layout_width="match_parent"
-            android:layout_height="100dp">
-        </FrameLayout>
-
-    </LinearLayout>
+    android:background="@color/configure_activity_background"
+    android:theme="@style/WidgetTheme">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/widget_preview_container"
-        android:layout_marginHorizontal="20dp">
+        android:layout_marginHorizontal="20dp"
+        android:background="@color/configure_activity_background">
 
         <TextView
             android:id="@+id/widget_settings_title"
@@ -69,7 +19,8 @@
             android:text="@string/widget_settings_title"
             android:textColor="@color/white"
             android:fontFamily="@font/roboto_medium"
-            android:gravity="center_vertical|start">
+            android:gravity="center_vertical|start"
+            android:background="@color/configure_activity_background">
         </TextView>
 
         <View
@@ -77,7 +28,8 @@
             android:layout_width="match_parent"
             android:layout_below="@id/widget_settings_title"
             android:layout_height="2dp"
-            android:background="@drawable/divider"/>
+            android:background="@drawable/divider">
+        </View>
 
         <TextView
             android:id="@+id/theme_settings"
@@ -87,7 +39,8 @@
             android:text="@string/theme_settings_title"
             android:textColor="@color/white"
             android:fontFamily="@font/roboto_regular"
-            android:gravity="center_vertical|start">
+            android:gravity="center_vertical|start"
+            android:background="@color/configure_activity_background">
         </TextView>
 
         <RadioGroup
@@ -95,7 +48,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:layout_below="@id/theme_settings">
+            android:layout_below="@id/theme_settings"
+            android:background="@color/configure_activity_background">
 
             <RadioButton
                 android:id="@+id/radio_button_dark"
@@ -104,7 +58,8 @@
                 android:buttonTint="@color/white"
                 android:minHeight="48dp"
                 android:text="@string/widget_config_dark_option_text"
-                android:textColor="@color/white" />
+                android:textColor="@color/white"
+                />
 
             <RadioButton
                 android:id="@+id/radio_button_light"
@@ -113,7 +68,8 @@
                 android:buttonTint="@color/white"
                 android:minHeight="48dp"
                 android:text="@string/widget_config_light_option_text"
-                android:textColor="@color/white" />
+                android:textColor="@color/white"
+                />
         </RadioGroup>
 
         <TextView
@@ -124,7 +80,8 @@
             android:text="@string/semester_progress_widget_language_settings_title"
             android:textColor="@color/white"
             android:fontFamily="@font/roboto_regular"
-            android:gravity="center_vertical|start">
+            android:gravity="center_vertical|start"
+            android:background="@color/configure_activity_background">
         </TextView>
 
         <RadioGroup
@@ -132,7 +89,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:layout_below="@id/lang_settings">
+            android:layout_below="@id/lang_settings"
+            android:background="@color/configure_activity_background">
 
             <RadioButton
                 android:id="@+id/radio_button_french"

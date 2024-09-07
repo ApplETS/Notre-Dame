@@ -1,41 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/transparent">
-
-    <ImageView
-        android:id="@+id/widget_background"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:src="@drawable/rounded_square"
-        android:scaleType="fitXY"
-        android:contentDescription="@string/widget_background_card" />
+    android:background="@drawable/rounded_rec_light"
+    android:id="@+id/widget_root"
+    android:theme="@style/WidgetTheme">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:orientation="vertical"
-        android:gravity="center_horizontal">
+        android:gravity="center_horizontal"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp">
 
         <TextView
-            android:id="@+id/semester_progress_title"
+            android:id="@+id/large_semester_progress_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/semester_progress_title_en"
-            android:textColor="@color/white"
+            android:text="@string/semester_progress_title_fr"
+            android:textColor="?attr/titleTextColor"
             android:textSize="20sp"
-            android:paddingLeft="12dp"
-            android:paddingRight="12dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
             android:layout_gravity="center_horizontal"/>
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="14dp"
-            android:paddingLeft="12dp"
-            android:paddingRight="12dp"
+            android:layout_marginTop="10dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
             android:background="@android:color/transparent">
 
             <ProgressBar
@@ -56,6 +53,7 @@
                 android:fontFamily="@font/roboto_medium"
                 android:text="50 %"
                 android:textColor="@color/white"
+                android:background="@android:color/transparent"
                 android:textSize="16sp"
                 android:layout_marginTop="8dp"/>
         </RelativeLayout>
