@@ -7,6 +7,7 @@ import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.RemoteViews
 import ca.etsmtl.applets.etsmobile.Constants
 import ca.etsmtl.applets.etsmobile.R
@@ -69,19 +70,20 @@ class SemesterProgressWidget : AppWidgetProvider() {
             views = RemoteViews(context.packageName, R.layout.semester_progress_widget_small)
             semesterProgress?.let {
                 views.setTextViewText(R.id.secondary_progress_text, "${it.elapsedDays} / ${it.totalDays}")
+                views.setTextViewText(R.id.progress_text, "${it.completedPercentageAsInt} %")
             }
 
         } else {
             views = RemoteViews(context.packageName, R.layout.semester_progress_widget_large)
+            val progressText = getCurrentProgressTextFromSharedPreferences(context, appWidgetId)
+            views.setTextViewText(R.id.progress_text, getCurrentProgressTextFromSharedPreferences(context, appWidgetId))
             semesterProgress?.let {
-                // TODO do lang
-                views.setTextViewText(R.id.semester_progress_title, "Semester Progress")
+                views.setTextViewText(R.id.semester_progress_title, getTitleText(context))
             }
         }
 
         semesterProgress?.let {
             views.setProgressBar(R.id.progression, 100, it.completedPercentageAsInt, false)
-            views.setTextViewText(R.id.progress_text, "${it.completedPercentageAsInt} %")
         }
 
         // Set up the click listener
@@ -95,6 +97,7 @@ class SemesterProgressWidget : AppWidgetProvider() {
 
         // Apply the updated views to the widget
         appWidgetManager.updateAppWidget(appWidgetId, views)
+//        getAndUpdateProgress(context)
     }
 
     private fun updateAllWidgets(context: Context) {
@@ -106,19 +109,23 @@ class SemesterProgressWidget : AppWidgetProvider() {
     private fun getAndUpdateProgress(context: Context) {
         if (semesterProgress != null && semesterProgress!!.isOngoing()) {
             semesterProgress!!.calculateProgress()
+            updatesProgressesInSharedPrefs(context)
             updateAllWidgets(context)
         } else {
             // Fetch new data and calculate progress if the semester is not ongoing
             CoroutineScope(Dispatchers.IO).launch {
                 semesterProgress = fetchSemesterProgress(context)
                 semesterProgress?.calculateProgress()
+                updatesProgressesInSharedPrefs(context)
 
                 withContext(Dispatchers.Main) {
                     updateAllWidgets(context)
                 }
             }
         }
+    }
 
+    private fun updatesProgressesInSharedPrefs(context: Context) {
         context.getSharedPreferences(Constants.SEMESTER_PROGRESS_PREFS_KEY, Context.MODE_PRIVATE).edit().apply {
             putString("${Constants.SEMESTER_PROGRESS_VARIANT_KEY}_0", "${semesterProgress?.completedPercentageAsInt} %")
             putString("${Constants.SEMESTER_PROGRESS_VARIANT_KEY}_1", getElapsedDaysOverTotalText(context))
@@ -128,6 +135,8 @@ class SemesterProgressWidget : AppWidgetProvider() {
     }
 
     private suspend fun fetchSemesterProgress(context: Context): SemesterProgress? {
+        Log.d("SemesterProgressWidget", "Fetching semester progress")
+
         val secureStorageHelper = SecureStorageHelper()
         val username = secureStorageHelper.getValue(context, Constants.USERNAME_KEY)
         val password = secureStorageHelper.getValue(context, Constants.PASSWORD_KEY)
@@ -167,6 +176,16 @@ class SemesterProgressWidget : AppWidgetProvider() {
         appWidgetManager.updateAppWidget(appWidgetId, views)
     }
 
+    private fun getCurrentProgressTextFromSharedPreferences(context: Context, appWidgetId: Int): String {
+        val sharedPreferences = context.getSharedPreferences(Constants.SEMESTER_PROGRESS_PREFS_KEY, Context.MODE_PRIVATE)
+        val currentVariantIndex = sharedPreferences.getInt("${Constants.SEMESTER_PROGRESS_CURRENT_VARIANT_KEY}_$appWidgetId", 0)
+        val progressText = sharedPreferences.getString("${Constants.SEMESTER_PROGRESS_VARIANT_KEY}_$currentVariantIndex", "N/A") ?: "N/A"
+
+
+
+        return progressText
+    }
+
     private fun getRemainingDaysText(context: Context): String {
         val language = getLanguagePreference(context)
         val remainingDays = semesterProgress?.remainingDays ?: 0
@@ -198,6 +217,21 @@ class SemesterProgressWidget : AppWidgetProvider() {
             }
             else -> {
                 "$elapsedDays jours écoulés / $totalDays jours"
+            }
+        }
+    }
+
+    private fun getTitleText(context: Context): String {
+        val language = getLanguagePreference(context)
+        return when (language) {
+            "FR" -> {
+                "Progression de la session"
+            }
+            "EN" -> {
+                "Semester Progress"
+            }
+            else -> {
+                "Progression de la session"
             }
         }
     }
