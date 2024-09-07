@@ -13,10 +13,10 @@ import 'package:notredame/utils/app_theme.dart';
 
 class SessionProgressCard extends StatelessWidget {
   final PreferencesFlag flag;
-  final VoidCallback dismissCard;
+  final VoidCallback onDismissed;
 
   const SessionProgressCard(this.flag,{
-    required this.dismissCard,
+    required this.onDismissed,
     required super.key,
   });
 
@@ -26,7 +26,7 @@ class SessionProgressCard extends StatelessWidget {
       builder: (context, model, child) => DismissibleCard(
         isBusy: model.isBusy,
         key: UniqueKey(),
-        onDismissed: (DismissDirection direction) => dismissCard(),
+        onDismissed: (DismissDirection direction) => onDismissed(),
         child: Column(mainAxisSize: MainAxisSize.min, children: [
           Align(
               alignment: Alignment.centerLeft,

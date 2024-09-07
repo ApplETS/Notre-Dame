@@ -100,12 +100,12 @@ class _DashboardViewState extends State<DashboardView>
           cards.add(AboutUsCard(model, element, key: UniqueKey()));
         case PreferencesFlag.scheduleCard:
           cards.add(ScheduleCard(element,
-              dismissCard: () => model.hideCard(element),
+              onDismissed: () => model.hideCard(element),
               key: UniqueKey(),
           ));
         case PreferencesFlag.progressBarCard:
           cards.add(SessionProgressCard(element, key: UniqueKey(),
-              dismissCard: () => model.hideCard(element),
+              onDismissed: () => model.hideCard(element),
           ));
         case PreferencesFlag.gradesCard:
           cards.add(GradesCard(model, element, dismissCard: () =>

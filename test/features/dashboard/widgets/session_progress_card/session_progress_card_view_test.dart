@@ -59,7 +59,7 @@ void main() {
         await tester.pumpWidget(localizedWidget(
             child: SessionProgressCard(
                 PreferencesFlag.progressBarCard,
-                dismissCard: () => {},
+                onDismissed: () => {},
                 key: UniqueKey())));
         await tester.pumpAndSettle();
 
@@ -79,7 +79,7 @@ void main() {
           await tester.pumpWidget(localizedWidget(
               child: SessionProgressCard(
                   PreferencesFlag.progressBarCard,
-                  dismissCard: () => isDismissed = true,
+                  onDismissed: () => isDismissed = true,
                   key: UniqueKey())));
           await tester.pumpAndSettle();
 

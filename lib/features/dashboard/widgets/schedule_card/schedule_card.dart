@@ -17,11 +17,11 @@ import 'package:notredame/utils/locator.dart';
 
 class ScheduleCard extends StatelessWidget {
   final PreferencesFlag flag;
-  final VoidCallback dismissCard;
+  final VoidCallback onDismissed;
   final NavigationService navigationService = locator<NavigationService>();
 
   ScheduleCard(this.flag, {
-    required this.dismissCard,
+    required this.onDismissed,
     required super.key,
   });
 
@@ -35,7 +35,7 @@ class ScheduleCard extends StatelessWidget {
             : AppIntl.of(context)!.title_schedule;
         return DismissibleCard(
           isBusy: model.isBusy,
-          onDismissed: (DismissDirection direction) => dismissCard(),
+          onDismissed: (DismissDirection direction) => onDismissed(),
           key: UniqueKey(),
           child: GestureDetector(
             onTap: () =>
