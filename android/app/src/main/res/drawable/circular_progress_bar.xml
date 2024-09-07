@@ -10,7 +10,6 @@
         </shape>
     </item>
 
-    <!-- Grey ring surrounding the green circle -->
     <item android:gravity="center">
         <shape
             android:innerRadiusRatio="2.5"
@@ -21,7 +20,6 @@
         </shape>
     </item>
 
-    <!-- Progress ring with rounded ends -->
     <item android:id="@android:id/progress">
         <rotate
             android:fromDegrees="270"
@@ -31,7 +29,7 @@
                 android:shape="ring"
                 android:thickness="8dp"
                 android:useLevel="true">
-                <corners android:radius="20dp" /> <!-- Adjust this radius to change the roundness -->
+                <corners android:radius="20dp" />
                 <gradient
                     android:angle="0"
                     android:endColor="@color/grade_good_max"
