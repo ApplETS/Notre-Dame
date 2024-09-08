@@ -25,6 +25,14 @@ class _ScheduleDefaultState extends State<ScheduleDefault> {
   static final List<String> weekTitles = ["L", "M", "M", "J", "V", "S", "D"];
   final GlobalKey<WeekViewState> weekViewKey = GlobalKey<WeekViewState>();
 
+  List<WeekDays> weekDays = [
+    WeekDays.monday,
+    WeekDays.tuesday,
+    WeekDays.wednesday,
+    WeekDays.thursday,
+    WeekDays.friday
+  ];
+
   final eventController = EventController();
 
   @override
@@ -40,6 +48,10 @@ class _ScheduleDefaultState extends State<ScheduleDefault> {
         ),
       );
     }
+
+    addWeekDayIfEventExists(WeekDays.saturday);
+    addWeekDayIfEventExists(WeekDays.sunday);
+
     final double heightPerMinute =
         (MediaQuery.of(context).size.height / 1200).clamp(0.45, 1.0);
     // If there are events, display the calendar
@@ -53,14 +65,7 @@ class _ScheduleDefaultState extends State<ScheduleDefault> {
       backgroundColor: Theme.of(context).brightness == Brightness.light
           ? AppTheme.lightThemeBackground
           : AppTheme.primaryDark,
-      weekDays: const [
-        WeekDays.monday,
-        WeekDays.tuesday,
-        WeekDays.wednesday,
-        WeekDays.thursday,
-        WeekDays.friday,
-        WeekDays.saturday
-      ],
+      weekDays: weekDays,
       hourIndicatorSettings: HourIndicatorSettings(
           color: Theme.of(context).brightness == Brightness.light
               ? AppTheme.scheduleLineColorLight
@@ -126,5 +131,14 @@ class _ScheduleDefaultState extends State<ScheduleDefault> {
         ),
       ),
     );
+  }
+
+  void addWeekDayIfEventExists(WeekDays day) {
+    if (widget.calendarEvents
+            .where((event) => event.startTime?.weekday == day.index + 1)
+            .isNotEmpty &&
+        !weekDays.contains(day)) {
+      weekDays.add(day);
+    }
   }
 }
