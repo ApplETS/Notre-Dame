@@ -1,19 +1,11 @@
 package ca.etsmtl.applets.etsmobile
 
 object Constants {
-    const val USERNAME_KEY = "usernameKey"
-    const val PASSWORD_KEY = "passwordKey"
-
+    // Semester Progress Widget
     const val SEMESTER_PROGRESS_PREFS_KEY = "SemesterProgressWidgetPrefs"
     const val SEMESTER_PROGRESS_VARIANT_KEY = "progress_variant"
     const val SEMESTER_PROGRESS_CURRENT_VARIANT_KEY = "semester_progress_text_current_variant_index"
-    const val SEMESTER_PROGRESS_THEME_KEY = "theme"
-    const val SEMESTER_PROGRESS_LANG_KEY = "lang"
 
-    const val SEMESTER_PROGRESS_THEME_DARK = "DARK"
-    const val SEMESTER_PROGRESS_THEME_LIGHT = "LIGHT"
-    const val SEMESTER_PROGRESS_LANG_EN = "EN"
-    const val SEMESTER_PROGRESS_LANG_FR = "FR"
     const val SEMESTER_PROGRESS_TITLE_EN = "Semester Progress"
     const val SEMESTER_PROGRESS_TITLE_FR = "Progression de la session"
     const val SEMESTER_PROGRESS_DAYS_EN = "days"
@@ -25,6 +17,19 @@ object Constants {
 
     const val MAX_PROGRESS_VARIANT_INDEX = 2
     const val WIDGET_BUTTON_CLICK = "ca.etsmtl.applets.etsmobile.WIDGET_BUTTON_CLICK"
+
+    // FlutterSecureStorage
+    const val USERNAME_KEY = "usernameKey"
+    const val PASSWORD_KEY = "passwordKey"
+
+    // FlutterSharedPreferences
+    const val SHARED_PREFERENCES_FILE = "FlutterSharedPreferences"
+    const val SHARED_PREFERENCES_THEME_KEY = "flutter.PreferencesFlag.theme"
+    const val SHARED_PREFERENCES_THEME_DARK = "ThemeMode.dark"
+    const val SHARED_PREFERENCES_THEME_LIGHT = "ThemeMode.light"
+    const val SHARED_PREFERENCES_LANG_KEY = "flutter.PreferencesFlag.locale"
+    const val SHARED_PREFERENCES_LANG_EN = "en"
+    const val SHARED_PREFERENCES_LANG_FR = "fr"
 
     // URLs related to MonETS
     const val MON_ETS_API = "https://portail.etsmtl.ca/api/"

@@ -164,10 +164,10 @@ class SemesterProgressWidget : AppWidgetProvider() {
 
     private fun cycleText(context: Context, appWidgetManager: AppWidgetManager, appWidgetId: Int) {
         val sharedPreferences = context.getSharedPreferences(Constants.SEMESTER_PROGRESS_PREFS_KEY, Context.MODE_PRIVATE)
-        val currentVariantIndex = sharedPreferences.getInt("${Constants.SEMESTER_PROGRESS_CURRENT_VARIANT_KEY}", 0)
+        val currentVariantIndex = sharedPreferences.getInt(Constants.SEMESTER_PROGRESS_CURRENT_VARIANT_KEY, 0)
         val newVariantIndex = (currentVariantIndex + 1) % (Constants.MAX_PROGRESS_VARIANT_INDEX + 1)
 
-        sharedPreferences.edit().putInt("${Constants.SEMESTER_PROGRESS_CURRENT_VARIANT_KEY}", newVariantIndex).apply()
+        sharedPreferences.edit().putInt(Constants.SEMESTER_PROGRESS_CURRENT_VARIANT_KEY, newVariantIndex).apply()
 
         val newText = sharedPreferences.getString("${Constants.SEMESTER_PROGRESS_VARIANT_KEY}_$newVariantIndex", "N/A") ?: "N/A"
 
@@ -179,7 +179,7 @@ class SemesterProgressWidget : AppWidgetProvider() {
 
     private fun getCurrentProgressTextFromSharedPreferences(context: Context): String {
         val sharedPreferences = context.getSharedPreferences(Constants.SEMESTER_PROGRESS_PREFS_KEY, Context.MODE_PRIVATE)
-        val currentVariantIndex = sharedPreferences.getInt("${Constants.SEMESTER_PROGRESS_CURRENT_VARIANT_KEY}", 0)
+        val currentVariantIndex = sharedPreferences.getInt(Constants.SEMESTER_PROGRESS_CURRENT_VARIANT_KEY, 0)
         val progressText = sharedPreferences.getString("${Constants.SEMESTER_PROGRESS_VARIANT_KEY}_$currentVariantIndex", "N/A") ?: "N/A"
 
         return progressText
@@ -190,10 +190,10 @@ class SemesterProgressWidget : AppWidgetProvider() {
         val remainingDays = semesterProgress?.remainingDays ?: 0
 
         return when (language) {
-            Constants.SEMESTER_PROGRESS_LANG_FR -> {
+            Constants.SHARED_PREFERENCES_LANG_FR -> {
                 "$remainingDays ${Constants.SEMESTER_PROGRESS_REMAINING_FR}"
             }
-            Constants.SEMESTER_PROGRESS_LANG_EN -> {
+            Constants.SHARED_PREFERENCES_LANG_EN -> {
                 "$remainingDays ${Constants.SEMESTER_PROGRESS_REMAINING_EN}"
             }
             else -> {
@@ -208,10 +208,10 @@ class SemesterProgressWidget : AppWidgetProvider() {
         val totalDays = semesterProgress?.totalDays ?: 0
 
         return when (language) {
-            Constants.SEMESTER_PROGRESS_LANG_FR -> {
+            Constants.SHARED_PREFERENCES_LANG_FR -> {
                 "$elapsedDays ${Constants.SEMESTER_PROGRESS_ELAPSED_FR} / $totalDays ${Constants.SEMESTER_PROGRESS_DAYS_FR}"
             }
-            Constants.SEMESTER_PROGRESS_LANG_EN -> {
+            Constants.SHARED_PREFERENCES_LANG_EN -> {
                 "$elapsedDays ${Constants.SEMESTER_PROGRESS_ELAPSED_EN} / $totalDays ${Constants.SEMESTER_PROGRESS_DAYS_EN}"
             }
             else -> {
@@ -223,10 +223,10 @@ class SemesterProgressWidget : AppWidgetProvider() {
     private fun getBackgroundResource(context: Context): Int {
         val theme = getThemePref(context)
         return when (theme) {
-            Constants.SEMESTER_PROGRESS_THEME_LIGHT -> {
+            Constants.SHARED_PREFERENCES_THEME_LIGHT -> {
                 R.drawable.rounded_rec_light
             }
-            Constants.SEMESTER_PROGRESS_THEME_DARK -> {
+            Constants.SHARED_PREFERENCES_THEME_DARK -> {
                 R.drawable.rounded_rec_dark
             }
             else -> {
@@ -238,10 +238,10 @@ class SemesterProgressWidget : AppWidgetProvider() {
     private fun getTextColorFromSharedPreferences(context: Context): Int {
         val theme = getThemePref(context)
         return when (theme) {
-            Constants.SEMESTER_PROGRESS_THEME_LIGHT -> {
+            Constants.SHARED_PREFERENCES_THEME_LIGHT -> {
                 Color.BLACK
             }
-            Constants.SEMESTER_PROGRESS_THEME_DARK -> {
+            Constants.SHARED_PREFERENCES_THEME_DARK -> {
                 Color.WHITE
             }
             else -> {
@@ -253,10 +253,10 @@ class SemesterProgressWidget : AppWidgetProvider() {
     private fun getTitleText(context: Context): String {
         val language = getLanguagePreference(context)
         return when (language) {
-            Constants.SEMESTER_PROGRESS_LANG_FR -> {
+            Constants.SHARED_PREFERENCES_LANG_FR -> {
                 Constants.SEMESTER_PROGRESS_TITLE_FR
             }
-            Constants.SEMESTER_PROGRESS_LANG_EN -> {
+            Constants.SHARED_PREFERENCES_LANG_EN -> {
                 Constants.SEMESTER_PROGRESS_TITLE_EN
             }
             else -> {
@@ -266,12 +266,12 @@ class SemesterProgressWidget : AppWidgetProvider() {
     }
 
     private fun getLanguagePreference(context: Context): String {
-        return context.getSharedPreferences(Constants.SEMESTER_PROGRESS_PREFS_KEY, Context.MODE_PRIVATE)
-            .getString(Constants.SEMESTER_PROGRESS_LANG_KEY, Constants.SEMESTER_PROGRESS_LANG_FR) ?: Constants.SEMESTER_PROGRESS_LANG_FR
+        return context.getSharedPreferences(Constants.SHARED_PREFERENCES_FILE, Context.MODE_PRIVATE)
+            .getString(Constants.SHARED_PREFERENCES_LANG_KEY, Constants.SHARED_PREFERENCES_LANG_FR) ?: Constants.SHARED_PREFERENCES_LANG_FR
     }
 
     private fun getThemePref(context: Context): String {
-        return context.getSharedPreferences(Constants.SEMESTER_PROGRESS_PREFS_KEY, Context.MODE_PRIVATE)
-            .getString(Constants.SEMESTER_PROGRESS_THEME_KEY, Constants.SEMESTER_PROGRESS_THEME_LIGHT) ?: Constants.SEMESTER_PROGRESS_THEME_LIGHT
+        return context.getSharedPreferences(Constants.SHARED_PREFERENCES_FILE, Context.MODE_PRIVATE)
+            .getString(Constants.SHARED_PREFERENCES_THEME_KEY, Constants.SHARED_PREFERENCES_THEME_LIGHT) ?: Constants.SHARED_PREFERENCES_THEME_LIGHT
     }
 }
