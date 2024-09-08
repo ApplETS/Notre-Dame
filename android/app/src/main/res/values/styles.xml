@@ -19,16 +19,4 @@
     <style name="AppTheme" parent="Theme.AppCompat.DayNight.DarkActionBar">
         <item name="android:background">@color/dark_mode_background</item>
     </style>
-
-    <style name="WidgetTheme">
-        <!--   Light theme   -->
-        <item name="backgroundColor">@color/light_mode_background</item>
-        <item name="titleTextColor">@android:color/black</item>
-    </style>
-
-    <style name="WidgetTheme.Dark">
-        <!--   Dark theme   -->
-        <item name="backgroundColor">@color/dark_mode_background</item>
-        <item name="titleTextColor">@android:color/white</item>
-    </style>
 </resources>

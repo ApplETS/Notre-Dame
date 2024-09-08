@@ -3,8 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/rounded_rec_light"
-    android:id="@+id/widget_root"
-    android:theme="@style/WidgetTheme">
+    android:id="@+id/widget_root">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -20,7 +19,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/semester_progress_title_fr"
-            android:textColor="?attr/titleTextColor"
+            android:textColor="@android:color/black"
             android:textSize="20sp"
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
@@ -52,7 +51,7 @@
                 android:layout_centerInParent="true"
                 android:fontFamily="@font/roboto_medium"
                 android:text="50 %"
-                android:textColor="@color/white"
+                android:textColor="@android:color/white"
                 android:background="@android:color/transparent"
                 android:textSize="16sp"
                 android:layout_marginTop="8dp"/>
