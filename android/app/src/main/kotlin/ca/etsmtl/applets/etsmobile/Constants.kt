@@ -27,6 +27,7 @@ object Constants {
     const val SHARED_PREFERENCES_THEME_KEY = "flutter.PreferencesFlag.theme"
     const val SHARED_PREFERENCES_THEME_DARK = "ThemeMode.dark"
     const val SHARED_PREFERENCES_THEME_LIGHT = "ThemeMode.light"
+    const val SHARED_PREFERENCES_THEME_SYSTEM = "ThemeMode.system"
     const val SHARED_PREFERENCES_LANG_KEY = "flutter.PreferencesFlag.locale"
     const val SHARED_PREFERENCES_LANG_EN = "en"
     const val SHARED_PREFERENCES_LANG_FR = "fr"

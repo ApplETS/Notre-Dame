@@ -6,6 +6,7 @@ import android.appwidget.AppWidgetProvider
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
+import android.content.res.Configuration
 import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
@@ -186,7 +187,7 @@ class SemesterProgressWidget : AppWidgetProvider() {
     }
 
     private fun getRemainingDaysText(context: Context): String {
-        val language = getLanguagePreference(context)
+        val language = getAppLang(context)
         val remainingDays = semesterProgress?.remainingDays ?: 0
 
         return when (language) {
@@ -203,7 +204,7 @@ class SemesterProgressWidget : AppWidgetProvider() {
     }
 
     private fun getElapsedDaysOverTotalText(context: Context): String {
-        val language = getLanguagePreference(context)
+        val language = getAppLang(context)
         val elapsedDays = semesterProgress?.elapsedDays ?: 0
         val totalDays = semesterProgress?.totalDays ?: 0
 
@@ -221,7 +222,7 @@ class SemesterProgressWidget : AppWidgetProvider() {
     }
 
     private fun getBackgroundResource(context: Context): Int {
-        val theme = getThemePref(context)
+        val theme = getAppTheme(context)
         return when (theme) {
             Constants.SHARED_PREFERENCES_THEME_LIGHT -> {
                 R.drawable.rounded_rec_light
@@ -236,7 +237,7 @@ class SemesterProgressWidget : AppWidgetProvider() {
     }
 
     private fun getTextColorFromSharedPreferences(context: Context): Int {
-        val theme = getThemePref(context)
+        val theme = getAppTheme(context)
         return when (theme) {
             Constants.SHARED_PREFERENCES_THEME_LIGHT -> {
                 Color.BLACK
@@ -251,7 +252,7 @@ class SemesterProgressWidget : AppWidgetProvider() {
     }
 
     private fun getTitleText(context: Context): String {
-        val language = getLanguagePreference(context)
+        val language = getAppLang(context)
         return when (language) {
             Constants.SHARED_PREFERENCES_LANG_FR -> {
                 Constants.SEMESTER_PROGRESS_TITLE_FR
@@ -265,13 +266,25 @@ class SemesterProgressWidget : AppWidgetProvider() {
         }
     }
 
-    private fun getLanguagePreference(context: Context): String {
+    private fun getAppLang(context: Context): String {
         return context.getSharedPreferences(Constants.SHARED_PREFERENCES_FILE, Context.MODE_PRIVATE)
             .getString(Constants.SHARED_PREFERENCES_LANG_KEY, Constants.SHARED_PREFERENCES_LANG_FR) ?: Constants.SHARED_PREFERENCES_LANG_FR
     }
 
-    private fun getThemePref(context: Context): String {
-        return context.getSharedPreferences(Constants.SHARED_PREFERENCES_FILE, Context.MODE_PRIVATE)
-            .getString(Constants.SHARED_PREFERENCES_THEME_KEY, Constants.SHARED_PREFERENCES_THEME_LIGHT) ?: Constants.SHARED_PREFERENCES_THEME_LIGHT
+    private fun getAppTheme(context: Context): String {
+        val sharedPreferences = context.getSharedPreferences(Constants.SHARED_PREFERENCES_FILE, Context.MODE_PRIVATE)
+        val theme = sharedPreferences.getString(Constants.SHARED_PREFERENCES_THEME_KEY, null)
+
+        return if (theme == null || theme == Constants.SHARED_PREFERENCES_THEME_SYSTEM) {
+            val currentNightMode = context.resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
+
+            when (currentNightMode) {
+                Configuration.UI_MODE_NIGHT_YES -> Constants.SHARED_PREFERENCES_THEME_DARK
+                Configuration.UI_MODE_NIGHT_NO -> Constants.SHARED_PREFERENCES_THEME_LIGHT
+                else -> Constants.SHARED_PREFERENCES_THEME_DARK
+            }
+        } else {
+            theme
+        }
     }
 }
