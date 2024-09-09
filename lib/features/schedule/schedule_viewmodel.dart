@@ -76,7 +76,7 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
   ScheduleViewModel({required AppIntl intl, DateTime? initialSelectedDate})
       : _appIntl = intl,
         // Selected date should always be a monday (start of the week)
-        selectedDate = initialSelectedDate ?? DateTime.now().subtract(Duration(days: DateTime.now().weekday - 1)),
+        selectedDate = initialSelectedDate ?? DateTime.now().withoutTime,
         focusedDate = ValueNotifier(initialSelectedDate ?? DateTime.now());
 
   /// Activities for the day currently selected
@@ -401,8 +401,8 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
   /// return false otherwise (today was already selected, show toast for
   /// visual feedback).
   bool selectToday() {
-    if (compareDates(selectedDate, DateTime.now()) &&
-        compareDates(focusedDate.value, DateTime.now())) {
+    if (selectedDate.withoutTime == DateTime.now().withoutTime &&
+        DateTime.now().withoutTime == focusedDate.value.withoutTime) {
       Fluttertoast.showToast(msg: _appIntl.schedule_already_today_toast);
       return false;
     } else {
@@ -413,8 +413,7 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
   }
 
   bool selectTodayMonth() {
-    if (compareDates(
-        selectedDate, DateTime(DateTime.now().year, DateTime.now().month))) {
+    if (selectedDate.withoutTime == DateTime(DateTime.now().year, DateTime.now().month)) {
       Fluttertoast.showToast(msg: _appIntl.schedule_already_today_toast);
       return false;
     } else {
@@ -422,16 +421,6 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
       focusedDate.value = DateTime(DateTime.now().year, DateTime.now().month);
       return true;
     }
-  }
-
-  /// This function is used to compare two dates without taking
-  /// into account the time.
-  ///
-  /// Return true if the dates are the same, false otherwise.
-  bool compareDates(DateTime date1, DateTime date2) {
-    return date1.year == date2.year &&
-        date1.month == date2.month &&
-        date1.day == date2.day;
   }
 
   /// Start Discovery if needed.
