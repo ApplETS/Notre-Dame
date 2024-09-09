@@ -123,7 +123,7 @@ void main() {
         expect(viewModel.displaySaturday, true);
       });
 
-      test('Sets displaySaturday to true', () async {
+      test('Sets displaySunday to true', () async {
         when(mockCourseRepository.getDefaultScheduleActivities(
             session: 'A2023'))
             .thenAnswer((_) async => [sundayActivity]);
