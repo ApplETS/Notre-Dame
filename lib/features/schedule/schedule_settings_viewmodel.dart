@@ -1,5 +1,4 @@
 // Package imports:
-import 'package:calendar_view/calendar_view.dart';
 import 'package:collection/collection.dart';
 import 'package:enum_to_string/enum_to_string.dart';
 import 'package:stacked/stacked.dart';
@@ -58,17 +57,6 @@ class ScheduleSettingsViewModel
     StartingDayOfWeek.saturday,
     StartingDayOfWeek.sunday,
     StartingDayOfWeek.monday,
-  ];
-
-  /// Current weekend day shown
-  WeekDays? _otherDayOfWeek;
-
-  WeekDays? get otherDayOfWeek => _otherDayOfWeek;
-
-  /// List of possible days to show in the calendar view
-  List<WeekDays> otherDayPossible = [
-    WeekDays.saturday,
-    WeekDays.sunday,
   ];
 
   bool _showTodayBtn = true;
