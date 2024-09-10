@@ -109,7 +109,6 @@ class _ScheduleSettingsState extends State<ScheduleSettings> {
 
     if (model.toggleCalendarView) {
       list.add(_buildStartingDaySection(context, model));
-      list.add(_buildShowWeekSection(context, model));
     }
 
     if (model.scheduleActivitiesByCourse.isNotEmpty) {
@@ -198,7 +197,7 @@ class _ScheduleSettingsState extends State<ScheduleSettings> {
           activeColor: AppTheme.etsLightRed,
         ),
         title: Text(
-            style: Theme.of(context).textTheme.bodySmall,
+            style: Theme.of(context).textTheme.bodyMedium,
             AppIntl.of(context)!.schedule_settings_show_week_events_btn_pref),
       );
 
@@ -212,7 +211,7 @@ class _ScheduleSettingsState extends State<ScheduleSettings> {
             activeColor: AppTheme.etsLightRed,
           ),
           title: Text(
-              style: Theme.of(context).textTheme.bodySmall,
+              style: Theme.of(context).textTheme.bodyMedium,
               AppIntl.of(context)!.schedule_settings_show_today_btn_pref),
         )
       ];
@@ -226,7 +225,7 @@ class _ScheduleSettingsState extends State<ScheduleSettings> {
           activeColor: AppTheme.etsLightRed,
         ),
         title: Text(
-            style: Theme.of(context).textTheme.bodySmall,
+            style: Theme.of(context).textTheme.bodyMedium,
             AppIntl.of(context)!.schedule_settings_list_view),
       );
 
@@ -235,11 +234,17 @@ class _ScheduleSettingsState extends State<ScheduleSettings> {
     final chips = <Widget>[];
 
     for (final CalendarFormat format in model.calendarFormatPossibles) {
-      chips.add(InputChip(
+      final bool isTwoWeeksView = model.calendarFormat == CalendarFormat.twoWeeks;
+      final bool isCalendarView = model.toggleCalendarView;
+      // Two weeks view does not exist in calendar view, therefore the chip should not be displayed
+      if (isCalendarView || format != CalendarFormat.twoWeeks) {
+        chips.add(InputChip(
           label: Text(getTextForFormat(context, format)),
-          selected: model.calendarFormat == format,
+          // If user selected two weeks view but is in calendar view, then select week view chip (since two weeks chip is not displayed)
+          selected: (!isCalendarView && isTwoWeeksView) ? format == CalendarFormat.week : model.calendarFormat == format,
           selectedColor: selectedColor,
           onPressed: () => setState(() => model.calendarFormat = format)));
+      }
     }
 
     final chipsWrapper = Wrap(
@@ -257,8 +262,10 @@ class _ScheduleSettingsState extends State<ScheduleSettings> {
         ),
       ),
       const Divider(thickness: 0.5),
+      chipsWrapper,
       _buildToggleCalendarView(context, model),
-      chipsWrapper
+      if (model.toggleCalendarView)
+        _buildShowWeekSection(context, model)
     ];
 
     return Card(

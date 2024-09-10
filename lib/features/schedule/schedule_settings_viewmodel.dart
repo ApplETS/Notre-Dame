@@ -70,7 +70,7 @@ class ScheduleSettingsViewModel
     setBusy(false);
   }
 
-  bool _toggleCalendarView = true;
+  bool _toggleCalendarView = false;
 
   bool get toggleCalendarView => _toggleCalendarView;
 
