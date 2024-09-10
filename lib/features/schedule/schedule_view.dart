@@ -212,7 +212,8 @@ class _ScheduleViewState extends State<ScheduleView>
     final DateTime mondayOfSelectedWeek = model.selectedDate.subtract(Duration(days: model.selectedDate.weekday - 1));
     final bool displaySaturday = model.selectedDateEvents(mondayOfSelectedWeek.add(const Duration(days: 5))).isNotEmpty;
     final bool displaySunday = model.selectedDateEvents(mondayOfSelectedWeek.add(const Duration(days: 6))).isNotEmpty;
-
+    final int numberOfWeekendDays = (displaySaturday ? 0 : 1) + (displaySunday ? 0 : 1);
+    
     return calendar_view.WeekView(
       key: weekViewKey,
       weekNumberBuilder: (date) => null,
@@ -253,7 +254,8 @@ class _ScheduleViewState extends State<ScheduleView>
         if (displaySunday)
           calendar_view.WeekDays.sunday
       ],
-      initialDay: DateTime.now(),
+      // If the user consults the schedule during weekend next week is shown
+      initialDay: DateTime.now().add(Duration(days: numberOfWeekendDays)),
       heightPerMinute: heightPerMinute,
       scrollOffset: heightPerMinute * 60 * 7.5,
       hourIndicatorSettings: calendar_view.HourIndicatorSettings(

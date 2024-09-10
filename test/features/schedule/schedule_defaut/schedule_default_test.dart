@@ -41,12 +41,13 @@ void main() {
       expect(find.text("D"), findsOneWidget);
     });
 
-    testWidgets('Displays saturday',
+    testWidgets('Displays no weekend day',
             (WidgetTester tester) async {
       await tester.pumpWidget(localizedWidget(
           child: ScheduleDefault(calendarEvents: [CalendarEventData(title: "My Event", date: DateTime(2024))], loaded: true, displaySaturday: false, displaySunday: false)));
       await tester.pumpAndSettle();
       expect(find.text("S"), findsNothing);
+      expect(find.text("D"), findsNothing);
     });
 
     testWidgets('Displays no empty schedule message when loading',
