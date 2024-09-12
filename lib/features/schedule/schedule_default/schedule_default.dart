@@ -55,16 +55,17 @@ class _ScheduleDefaultState extends State<ScheduleDefault> {
       backgroundColor: Theme.of(context).brightness == Brightness.light
           ? AppTheme.lightThemeBackground
           : AppTheme.primaryDark,
+      startDay: WeekDays.sunday,
       weekDays: [
+        if (widget.displaySunday)
+          WeekDays.sunday,
         WeekDays.monday,
         WeekDays.tuesday,
         WeekDays.wednesday,
         WeekDays.thursday,
         WeekDays.friday,
         if (widget.displaySaturday)
-          WeekDays.saturday,
-        if (widget.displaySunday)
-          WeekDays.sunday,
+          WeekDays.saturday
       ],
       hourIndicatorSettings: HourIndicatorSettings(
           color: Theme.of(context).brightness == Brightness.light

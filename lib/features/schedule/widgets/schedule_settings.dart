@@ -232,10 +232,10 @@ class _ScheduleSettingsState extends State<ScheduleSettings> {
   Widget _buildCalendarFormatSection(
       BuildContext context, ScheduleSettingsViewModel model) {
     final chips = <Widget>[];
+    final bool isTwoWeeksView = model.calendarFormat == CalendarFormat.twoWeeks;
+    final bool isCalendarView = model.toggleCalendarView;
 
     for (final CalendarFormat format in model.calendarFormatPossibles) {
-      final bool isTwoWeeksView = model.calendarFormat == CalendarFormat.twoWeeks;
-      final bool isCalendarView = model.toggleCalendarView;
       // Two weeks view does not exist in calendar view, therefore the chip should not be displayed
       if (isCalendarView || format != CalendarFormat.twoWeeks) {
         chips.add(InputChip(
