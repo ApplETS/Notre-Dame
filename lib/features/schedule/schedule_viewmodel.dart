@@ -153,7 +153,7 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
     final firstDayOfWeek = Utils.getFirstDayOfCurrentWeek(selectedDate,
         settings[PreferencesFlag.scheduleStartWeekday] as StartingDayOfWeek);
     // We want to put events of previous week and next week in memory to make transitions smoother
-    for (int i = -7; i < 14; i++) {
+    for (int i = 0; i < 21; i++) {
       final date = firstDayOfWeek.add(Duration(days: i));
       final eventsForDay = selectedDateCalendarEvents(date);
       if (eventsForDay.isNotEmpty) {
