@@ -209,9 +209,9 @@ class _ScheduleViewState extends State<ScheduleView>
         (MediaQuery.of(context).size.height / 1200).clamp(0.45, 1.0);
 
     // This can't be modified in the model otherwise changes in UI will not apply on page change
-    final DateTime mondayOfSelectedWeek = model.selectedDate.subtract(Duration(days: model.selectedDate.weekday - 1));
-    final bool displaySaturday = model.selectedDateEvents(mondayOfSelectedWeek.add(const Duration(days: 5))).isNotEmpty;
-    final bool displaySunday = model.selectedDateEvents(mondayOfSelectedWeek.add(const Duration(days: 6))).isNotEmpty;
+    final DateTime sundayOfSelectedWeek = model.selectedDate;//.subtract(Duration(days: model.selectedDate.weekday));
+    final bool displaySaturday = model.selectedDateEvents(sundayOfSelectedWeek.add(const Duration(days: 6))).isNotEmpty;
+    final bool displaySunday = model.selectedDateEvents(sundayOfSelectedWeek.add(const Duration(days: 7))).isNotEmpty;
 
     return calendar_view.WeekView(
       key: weekViewKey,
