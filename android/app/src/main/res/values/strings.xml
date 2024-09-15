@@ -1,7 +1,9 @@
 <resources>
-    <string name="semester_progress_title_en">Semester Progress</string>
-    <string name="semester_progress_title_fr">Progression de la session</string>
+    <string name="semester_progress_title">Semester Progress</string>
     <string name="default_progress_out_of_days" translatable="false">50 / 100</string>
     <string name="default_progress_percentage" translatable="false">50 %</string>
     <string name="widget_background_card" translatable="false">widget_background_card</string>
+    <string name="semester_progress_days">days</string>
+    <string name="semester_progress_days_elapsed">days elapsed</string>
+    <string name="semester_progress_days_remaining">days remaining</string>
 </resources>

@@ -39,8 +39,6 @@ class MonETSClient private constructor() {
             override fun onResponse(call: Call, response: Response) {
                 response.use {
                     if (!it.isSuccessful) throw IOException("Unexpected code $response")
-
-                    println(it.body?.string())
                 }
             }
         })

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="semester_progress_title">Progression de la session</string>
+    <string name="semester_progress_days">jours</string>
+    <string name="semester_progress_days_elapsed">jours écoulés</string>
+    <string name="semester_progress_days_remaining">jours restants</string>
+</resources>

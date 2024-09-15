@@ -1,12 +1,10 @@
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
-
-    <!-- Green circle in the middle -->
     <item android:gravity="center">
         <shape android:shape="oval">
             <size
                 android:width="60dp"
                 android:height="60dp" />
-            <solid android:color="@color/grade_good_max" />
+            <solid android:color="@color/green" />
         </shape>
     </item>
 
@@ -32,8 +30,8 @@
                 <corners android:radius="20dp" />
                 <gradient
                     android:angle="0"
-                    android:endColor="@color/grade_good_max"
-                    android:startColor="@color/grade_good_max"
+                    android:endColor="@color/green"
+                    android:startColor="@color/green"
                     android:type="sweep"
                     android:useLevel="false" />
             </shape>
