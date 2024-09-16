@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 // Package imports:
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:notredame/features/app/widgets/base_scaffold.dart';
 import 'package:stacked/stacked.dart';
 
 // Project imports:
@@ -27,34 +28,39 @@ class _SecurityViewState extends State<SecurityView> {
   Widget build(BuildContext context) =>
       ViewModelBuilder<SecurityViewModel>.reactive(
         viewModelBuilder: () => SecurityViewModel(intl: AppIntl.of(context)!),
-        builder: (context, model, child) => Scaffold(
+        builder: (context, model, child) => BaseScaffold(
           appBar: AppBar(
             title: Text(AppIntl.of(context)!.ets_security_title),
           ),
-          body: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                SizedBox(
-                  height: 250,
-                  child: GoogleMap(
-                      initialCameraPosition: _etsLocation,
-                      zoomControlsEnabled: false,
-                      markers:
-                          model.getSecurityMarkersForMaps(model.markersList),
-                      onMapCreated: (GoogleMapController controller) {
-                        model.controller = controller;
-                        model.changeMapMode(context);
-                      },
-                      gestureRecognizers: <Factory<
-                          OneSequenceGestureRecognizer>>{
-                        Factory<OneSequenceGestureRecognizer>(
-                            () => EagerGestureRecognizer()),
-                      }),
-                ),
-                joinSecurity(),
-                emergencyProcedures(model),
-              ],
+          showBottomBar: false,
+          body: SafeArea(
+            top: false,
+            bottom: false,
+            child: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SizedBox(
+                    height: 250,
+                    child: GoogleMap(
+                        initialCameraPosition: _etsLocation,
+                        zoomControlsEnabled: false,
+                        markers:
+                            model.getSecurityMarkersForMaps(model.markersList),
+                        onMapCreated: (GoogleMapController controller) {
+                          model.controller = controller;
+                          model.changeMapMode(context);
+                        },
+                        gestureRecognizers: <Factory<
+                            OneSequenceGestureRecognizer>>{
+                          Factory<OneSequenceGestureRecognizer>(
+                              () => EagerGestureRecognizer()),
+                        }),
+                  ),
+                  joinSecurity(),
+                  emergencyProcedures(model),
+                ],
+              ),
             ),
           ),
         ),

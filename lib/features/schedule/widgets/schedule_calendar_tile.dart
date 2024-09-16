@@ -74,13 +74,14 @@ class _ScheduleCalendarTileState extends State<ScheduleCalendarTile> {
                   fontWeight: FontWeight.w500,
                 ),
               ),
-              Text(
-                "${AppIntl.of(widget.buildContext)!.schedule_calendar_by} $teacherName",
-                style: const TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.w500,
+              if (teacherName != "null")
+                Text(
+                  "${AppIntl.of(widget.buildContext)!.schedule_calendar_by} $teacherName",
+                  style: const TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w500,
+                  ),
                 ),
-              ),
               Text(
                 "${AppIntl.of(widget.buildContext)!.schedule_calendar_from_time} $startTime ${AppIntl.of(widget.buildContext)!.schedule_calendar_to_time} $endTime",
                 style: const TextStyle(

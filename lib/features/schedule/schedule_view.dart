@@ -271,72 +271,73 @@ class _ScheduleViewState extends State<ScheduleView>
     final double heightPerMinute =
         (MediaQuery.of(context).size.height / 1200).clamp(0.45, 1.0);
     return calendar_view.WeekView(
-        key: weekViewKey,
-        controller: eventController
-          ..addAll(model.selectedWeekCalendarEvents(scheduleCardsPalette)),
-        onPageChange: (date, page) =>
-            model.handleViewChanged(date, eventController, []),
-        backgroundColor: backgroundColor,
-        weekTitleHeight:
-            (MediaQuery.of(context).orientation == Orientation.portrait)
-                ? 60
-                : 35,
-        safeAreaOption:
-            const calendar_view.SafeAreaOption(top: false, bottom: false),
-        headerStyle: calendar_view.HeaderStyle(
-            decoration: BoxDecoration(
-              color: backgroundColor,
-            ),
-            leftIcon: Icon(
-              Icons.chevron_left,
-              size: 30,
-              color: chevronColor,
-            ),
-            rightIcon: Icon(
-              Icons.chevron_right,
-              size: 30,
-              color: chevronColor,
-            )),
-        weekDays: [
-          calendar_view.WeekDays.monday,
-          calendar_view.WeekDays.tuesday,
-          calendar_view.WeekDays.wednesday,
-          calendar_view.WeekDays.thursday,
-          calendar_view.WeekDays.friday,
-          if (model.settings[PreferencesFlag.scheduleOtherWeekday] ==
-              calendar_view.WeekDays.saturday)
-            calendar_view.WeekDays.saturday,
-          if (model.settings[PreferencesFlag.scheduleOtherWeekday] ==
-              calendar_view.WeekDays.sunday)
-            calendar_view.WeekDays.sunday,
-        ],
-        initialDay: DateTime.now(),
-        heightPerMinute: heightPerMinute,
-        scrollOffset: heightPerMinute * 60 * 7.5,
-        hourIndicatorSettings: calendar_view.HourIndicatorSettings(
-          color: scheduleLineColor,
-        ),
-        liveTimeIndicatorSettings: calendar_view.LiveTimeIndicatorSettings(
-          color: chevronColor,
-        ),
-        keepScrollOffset: true,
-        timeLineStringBuilder: (date, {secondaryDate}) {
-          return DateFormat('HH:mm').format(date);
-        },
-        weekDayStringBuilder: (p0) {
-          return weekTitles[p0];
-        },
-        headerStringBuilder: (date, {secondaryDate}) {
-          final from = AppIntl.of(context)!.schedule_calendar_from;
-          final to = AppIntl.of(context)!.schedule_calendar_to;
-          final locale = AppIntl.of(context)!.localeName;
-          return '$from ${date.day} ${DateFormat.MMMM(locale).format(date)} $to ${secondaryDate?.day ?? '00'} ${DateFormat.MMMM(locale).format(secondaryDate ?? date)}';
-        },
-        eventTileBuilder:
-            (date, events, boundary, startDuration, endDuration) =>
-                _buildEventTile(events, context),
-        weekDayBuilder: (DateTime date) => _buildWeekDay(date, model),
-        startHour: 7);
+      key: weekViewKey,
+      weekNumberBuilder: (date) => null,
+      controller: eventController
+        ..addAll(model.selectedWeekCalendarEvents(scheduleCardsPalette)),
+      onPageChange: (date, page) =>
+          model.handleViewChanged(date, eventController, []),
+      backgroundColor: backgroundColor,
+      weekTitleHeight:
+          (MediaQuery.of(context).orientation == Orientation.portrait)
+              ? 60
+              : 35,
+      safeAreaOption:
+          const calendar_view.SafeAreaOption(top: false, bottom: false),
+      headerStyle: calendar_view.HeaderStyle(
+          decoration: BoxDecoration(
+            color: backgroundColor,
+          ),
+          leftIcon: Icon(
+            Icons.chevron_left,
+            size: 30,
+            color: chevronColor,
+          ),
+          rightIcon: Icon(
+            Icons.chevron_right,
+            size: 30,
+            color: chevronColor,
+          )),
+      weekDays: [
+        calendar_view.WeekDays.monday,
+        calendar_view.WeekDays.tuesday,
+        calendar_view.WeekDays.wednesday,
+        calendar_view.WeekDays.thursday,
+        calendar_view.WeekDays.friday,
+        if (model.settings[PreferencesFlag.scheduleOtherWeekday] ==
+            calendar_view.WeekDays.saturday)
+          calendar_view.WeekDays.saturday,
+        if (model.settings[PreferencesFlag.scheduleOtherWeekday] ==
+            calendar_view.WeekDays.sunday)
+          calendar_view.WeekDays.sunday,
+      ],
+      initialDay: DateTime.now(),
+      heightPerMinute: heightPerMinute,
+      scrollOffset: heightPerMinute * 60 * 7.5,
+      hourIndicatorSettings: calendar_view.HourIndicatorSettings(
+        color: scheduleLineColor,
+      ),
+      liveTimeIndicatorSettings: calendar_view.LiveTimeIndicatorSettings(
+        color: chevronColor,
+      ),
+      keepScrollOffset: true,
+      timeLineStringBuilder: (date, {secondaryDate}) {
+        return DateFormat('H:mm').format(date);
+      },
+      weekDayStringBuilder: (p0) {
+        return weekTitles[p0];
+      },
+      headerStringBuilder: (date, {secondaryDate}) {
+        final from = AppIntl.of(context)!.schedule_calendar_from;
+        final to = AppIntl.of(context)!.schedule_calendar_to;
+        final locale = AppIntl.of(context)!.localeName;
+        return '$from ${date.day} ${DateFormat.MMMM(locale).format(date)} $to ${secondaryDate?.day ?? '00'} ${DateFormat.MMMM(locale).format(secondaryDate ?? date)}';
+      },
+      eventTileBuilder: (date, events, boundary, startDuration, endDuration) =>
+          _buildEventTile(events, context),
+      weekDayBuilder: (DateTime date) => _buildWeekDay(date, model),
+      startHour: 7
+    );
   }
 
   Widget _buildCalendarViewMonthly(

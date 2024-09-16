@@ -28,50 +28,16 @@ jobs:
       fail-fast: false
     steps:
       - uses: actions/checkout@v4
-      - uses: subosito/flutter-action@v2
-        with:
-          flutter-version: '3.19.x'
-          channel: 'stable'
-          cache: true
-      - name: Setup Fastlane
-        uses: ruby/setup-ruby@v1
-        with:
-          ruby-version: '2.7'
-          bundler-cache: true
-          working-directory: ${{ matrix.working_directory }}
-      - name: Install Android dependencies
-        if: matrix.target == 'Android'
-        uses: actions/setup-java@v4
-        with:
-          java-version: '17'
-          distribution: 'adopt'
-      - name: Install iOS dependencies
-        if: matrix.target == 'iOS'
-        run: |
-          flutter pub get
-          dart run build_runner build --delete-conflicting-outputs
-          cd ios
-          pod install
-          flutter clean
-      - run: flutter doctor -v
-
-      # Get dependencies and decrypt needed files.
-      - run: |
-          flutter pub get
-          dart run build_runner build --delete-conflicting-outputs
-
-      - name: Decrypt certificates files
-        run: |
-          chmod +x ./scripts/decrypt.sh
-          ./scripts/decrypt.sh
+      - uses: ./.github/composite/flutter-setup
         env:
-          ENCRYPTED_SIGNETS_API_CERT_PASSWORD: ${{ secrets.ENCRYPTED_SIGNETS_API_CERT_PASSWORD }}
-          ENCRYPTED_GOOGLE_SERVICE_PASSWORD: ${{ secrets.ENCRYPTED_GOOGLE_SERVICE_PASSWORD }}
-          ENCRYPTED_ETSMOBILE_KEYSTORE_PASSWORD: ${{ secrets.ENCRYPTED_ETSMOBILE_KEYSTORE_PASSWORD }}
-          ENCRYPTED_KEYSTORE_PROPERTIES_PASSWORD: ${{ secrets.ENCRYPTED_KEYSTORE_PROPERTIES_PASSWORD }}
-          ENCRYPTED_ANDROID_SERVICE_ACCOUNT_CREDENTIALS_PASSWORD: ${{ secrets.ENCRYPTED_ANDROID_SERVICE_ACCOUNT_CREDENTIALS_PASSWORD }}
-          ENCRYPTED_IOS_SERVICE_ACCOUNT_CREDENTIALS_PASSWORD: ${{ secrets.ENCRYPTED_IOS_SERVICE_ACCOUNT_CREDENTIALS_PASSWORD }}
-          ENCRYPTED_IOS_MATCHFILE_PASSWORD: ${{ secrets.ENCRYPTED_IOS_MATCHFILE_PASSWORD }}
+          encrypted-signets-api-cert-password: ${{ secrets.ENCRYPTED_SIGNETS_API_CERT_PASSWORD }}
+          encrypted-google-service-password: ${{ secrets.ENCRYPTED_GOOGLE_SERVICE_PASSWORD }}
+          encrypted-etsmobile-keystore-password: ${{ secrets.ENCRYPTED_ETSMOBILE_KEYSTORE_PASSWORD }}
+          encrypted-keystore-properties-password: ${{ secrets.ENCRYPTED_KEYSTORE_PROPERTIES_PASSWORD }}
+          encrypted-android-service-account-credentials-password: ${{ secrets.ENCRYPTED_ANDROID_SERVICE_ACCOUNT_CREDENTIALS_PASSWORD }}
+          encrypted-ios-service-account-credentials-password: ${{ secrets.ENCRYPTED_IOS_SERVICE_ACCOUNT_CREDENTIALS_PASSWORD }}
+          encrypted-ios-matchfile-password: ${{ secrets.ENCRYPTED_IOS_MATCHFILE_PASSWORD }}
+          target: ${{ matrix.target }}
 
       - name: Build the application
         run: flutter build -v ${{ matrix.build_target }} ${{ matrix.build_args }} --build-number=$(date '+%s') --release --dart-define=GH_API_TOKEN=${{ secrets.GH_API_TOKEN }}
@@ -81,22 +47,20 @@ jobs:
       - name: Set changelog for each platform
         run: |
           echo "${{ github.event.release.body }}" > releaseBody.txt
-          enChangelog=$(cat releaseBody.txt | sed -n '/## English version$/,/## End english version/p' | sed '1d;$d');
-          frChangelog=$(cat releaseBody.txt | sed -n '/## French version$/,/## End french version/p' | sed '1d;$d');
+          enChangelog=$(sed -n '/## English version$/,/## End english version/p' releaseBody.txt | sed '1d;$d')
+          frChangelog=$(sed -n '/## French version$/,/## End french version/p' releaseBody.txt | sed '1d;$d')
 
-          if [[ ! -z "$enChangelog" ]]; then
+          if [[ -n "$enChangelog" ]]; then
             echo "Changing english changelog"
-            echo $enChangelog > ${{ matrix.metadata_path }}/en-CA/${{ matrix.changelog_path }}
+            echo "$enChangelog" > ${{ matrix.metadata_path }}/en-CA/${{ matrix.changelog_path }}
             echo "en-CA Changelog file cat:"
             cat ${{ matrix.metadata_path }}/en-CA/${{ matrix.changelog_path }}
-            echo ${{ matrix.metadata_path }}/en-CA/${{ matrix.changelog_path }}
           fi
-          if [[ ! -z "$frChangelog" ]]; then
+          if [[ -n "$frChangelog" ]]; then
             echo "Changing english changelog"
-            echo $frChangelog > ${{ matrix.metadata_path }}/fr-CA/${{ matrix.changelog_path }}
+            echo "$frChangelog" > ${{ matrix.metadata_path }}/fr-CA/${{ matrix.changelog_path }}
             echo "fr-CA Changelog file cat:"
             cat ${{ matrix.metadata_path }}/fr-CA/${{ matrix.changelog_path }}
-            echo ${{ matrix.metadata_path }}/en-CA/${{ matrix.changelog_path }}
           fi
         working-directory: ${{ matrix.working_directory }}
 
@@ -120,6 +84,13 @@ jobs:
           ssh-add "$SSH_PATH/id_rsa"
         env:
           PRIVATE_KEY: ${{ secrets.MATCH_GIT_SSH_KEY }}
+
+      - name: Setup Fastlane
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '2.7'
+          bundler-cache: true
+          working-directory: ${{ matrix.working_directory }}
 
       - name: Deploy to store
         run: bundle exec fastlane deploy
