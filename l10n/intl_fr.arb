@@ -14,6 +14,12 @@
   "email": "Courriel",
   "email_subject": "Problème ÉTSMobile",
   
+  "faq_questions_about_app_alert_title": "Attention",
+  "faq_questions_about_app_alert_confirmation": "Veuillez noter que si votre question concerne l'accès à votre compte, nous ne pouvons vous aider. \n\nAppuyez sur le bouton \"Assistance mot de passe\" pour de l'aide",
+  "faq_questions_about_app_alert_password_assistance": "Assistance mot de passe",
+  "continue_to_mail_app": "Continuer vers l'application courriel",
+  "cancel_button_text": "Annuler",
+  
   "close_button_text": "Fermer",
 
   "update_version_title": "Nouvelle version disponible",
