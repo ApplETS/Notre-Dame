@@ -4,6 +4,7 @@ import 'package:collection/collection.dart';
 import 'package:enum_to_string/enum_to_string.dart';
 import 'package:stacked/stacked.dart';
 import 'package:table_calendar/table_calendar.dart';
+import 'package:flutter/widgets.dart';
 
 // Project imports:
 import 'package:notredame/constants/preferences_flags.dart';
@@ -92,10 +93,17 @@ class ScheduleSettingsViewModel
   bool get showWeekendDays => _showWeekendDays;
 
   set showWeekendDays(bool newValue) {
-    setBusy(true);
-    _settingsManager.setBool(PreferencesFlag.scheduleShowWeekendDays, newValue);
-    _showWeekendDays = newValue;
-    setBusy(false);
+    if (_showWeekendDays != newValue) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        setBusy(true);
+      });
+      _settingsManager.setBool(
+          PreferencesFlag.scheduleShowWeekendDays, newValue);
+      _showWeekendDays = newValue;
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        setBusy(false);
+      });
+    }
   }
 
   bool _showTodayBtn = true;

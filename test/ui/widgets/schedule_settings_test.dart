@@ -35,7 +35,7 @@ void main() {
     PreferencesFlag.scheduleListView: true,
     PreferencesFlag.scheduleShowWeekEvents: true
   };
-
+  
   final List<ScheduleActivity> classOneWithLaboratoryABscheduleActivities = [
     ScheduleActivity(
         courseAcronym: "GEN101",
@@ -184,7 +184,7 @@ void main() {
         expect(initialSize.height, 0.55 * screenHeight);
 
         await tester.fling(
-            find.byType(ListView), const Offset(0.0, -4000.0), 400.0);
+            find.byType(ListView).first, const Offset(0.0, -4000.0), 400.0);
         final Size maxSize = tester.getSize(draggableScrollableSheetFinder);
         expect(maxSize.height, 0.85 * screenHeight);
       });
@@ -284,7 +284,7 @@ void main() {
         expect(initialSize.height, 0.55 * screenHeight);
 
         await tester.fling(
-            find.byType(ListView), const Offset(0.0, -4000.0), 400.0);
+            find.byType(ListView).first, const Offset(0.0, -4000.0), 400.0);
         final Size maxSize = tester.getSize(draggableScrollableSheetFinder);
         expect(maxSize.height, 0.85 * screenHeight);
       });
@@ -415,6 +415,60 @@ void main() {
                 .having((source) => source.selected, 'selected', isTrue),
             reason:
                 'The settings says 2 week format now, the UI should reflet that.');
+      });
+
+      testWidgets("onChange scheduleListView", (WidgetTester tester) async {
+        SettingsManagerMock.stubGetScheduleSettings(settingsManagerMock,
+            toReturn: settings);
+        SettingsManagerMock.stubSetBool(
+            settingsManagerMock, PreferencesFlag.scheduleListView);
+        await tester.runAsync(() async {
+          await tester.pumpWidget(localizedWidget(
+              child: const ScheduleSettings(showHandle: false)));
+          await tester.pumpAndSettle();
+        }).then((value) async {
+          final scheduleListViewFinder = find.widgetWithText(
+              ListTile, intl.schedule_settings_list_view,
+              skipOffstage: false);
+
+          (find.byType(Switch, skipOffstage: false).evaluate().elementAt(1).widget
+          as Switch)
+              .onChanged!(false);
+
+          await tester.pumpAndSettle();
+
+          await untilCalled(settingsManagerMock.setBool(
+              PreferencesFlag.scheduleListView, any));
+
+          expect(
+              tester.widget(find.descendant(
+                  of: scheduleListViewFinder,
+                  matching: find.byType(Switch, skipOffstage: false))),
+              isA<Switch>().having((source) => source.value, 'value', isFalse),
+              reason:
+              "the settings says calendar view format now, the UI should reflet that.");
+
+          await tester
+              .pumpWidget(localizedWidget(child: const ScheduleSettings()));
+          await tester.pumpAndSettle();
+
+          expect(
+              find.widgetWithText(
+                  InputChip, intl.schedule_settings_calendar_format_month),
+              findsOneWidget);
+          expect(
+              find.widgetWithText(
+                  InputChip, intl.schedule_settings_calendar_format_week),
+              findsOneWidget);
+          expect(
+              find.widgetWithText(
+                  InputChip, intl.schedule_settings_calendar_format_day),
+              findsOneWidget);
+          expect(
+            find.widgetWithText(InputChip, intl.schedule_settings_calendar_format_2_weeks),
+            findsNothing,
+          );
+        });
       });
 
       testWidgets("onChange showTodayBtn", (WidgetTester tester) async {
