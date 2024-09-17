@@ -1,8 +1,9 @@
 name: "Tag validation"
 description: "Check if the tag already exists."
 outputs:
-  description: "The version in the pubspec.yaml file."
-  version: ${{ steps.split.outputs._0 }}
+  version:
+    description: "The version in the pubspec.yaml file."
+    value: ${{ steps.split.outputs._0 }}
 
 runs:
   using: "composite"

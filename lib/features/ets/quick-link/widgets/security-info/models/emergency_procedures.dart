@@ -10,7 +10,8 @@ List<EmergencyProcedure> emergencyProcedures(AppIntl intl) => [
           detail: 'assets/markdown/${intl.security_bomb_threat_detail}'),
       EmergencyProcedure(
           title: intl.security_suspicious_packages_title,
-          detail: 'assets/markdown/${intl.security_suspicious_packages_detail}'),
+          detail:
+              'assets/markdown/${intl.security_suspicious_packages_detail}'),
       EmergencyProcedure(
           title: intl.security_evacuation_title,
           detail: 'assets/markdown/${intl.security_evacuation_detail}'),
