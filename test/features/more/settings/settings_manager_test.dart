@@ -7,6 +7,7 @@ import 'package:enum_to_string/enum_to_string.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:intl/intl.dart';
 import 'package:mockito/mockito.dart';
+import 'package:notredame/utils/calendar_utils.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 // Project imports:
@@ -69,7 +70,7 @@ void main() {
         final expected = {
           PreferencesFlag.scheduleOtherWeekday: WeekDays.monday,
           PreferencesFlag.scheduleStartWeekday: StartingDayOfWeek.monday,
-          PreferencesFlag.scheduleCalendarFormat: CalendarFormat.week,
+          PreferencesFlag.scheduleCalendarFormat: CalendarTimeFormat.week,
           PreferencesFlag.scheduleShowTodayBtn: true,
           PreferencesFlag.scheduleListView: getCalendarViewEnabled(),
           PreferencesFlag.scheduleShowWeekEvents: true,
@@ -111,7 +112,7 @@ void main() {
             toReturn: EnumToString.convertToString(WeekDays.monday));
         PreferencesServiceMock.stubGetString(
             preferencesServiceMock, PreferencesFlag.scheduleCalendarFormat,
-            toReturn: EnumToString.convertToString(CalendarFormat.month));
+            toReturn: EnumToString.convertToString(CalendarTimeFormat.month));
         PreferencesServiceMock.stubGetBool(
             preferencesServiceMock, PreferencesFlag.scheduleShowTodayBtn,
             toReturn: false);
@@ -125,7 +126,7 @@ void main() {
         final expected = {
           PreferencesFlag.scheduleOtherWeekday: WeekDays.monday,
           PreferencesFlag.scheduleStartWeekday: StartingDayOfWeek.sunday,
-          PreferencesFlag.scheduleCalendarFormat: CalendarFormat.month,
+          PreferencesFlag.scheduleCalendarFormat: CalendarTimeFormat.month,
           PreferencesFlag.scheduleShowTodayBtn: false,
           PreferencesFlag.scheduleListView: false,
           PreferencesFlag.scheduleShowWeekEvents: false,

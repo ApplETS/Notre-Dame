@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 // Package imports:
 import 'package:feature_discovery/feature_discovery.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:notredame/utils/calendar_utils.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:table_calendar/table_calendar.dart';
 
@@ -34,7 +35,7 @@ void main() {
 
   // Some settings
   Map<PreferencesFlag, dynamic> settings = {
-    PreferencesFlag.scheduleCalendarFormat: CalendarFormat.week,
+    PreferencesFlag.scheduleCalendarFormat: CalendarTimeFormat.week,
     PreferencesFlag.scheduleStartWeekday: StartingDayOfWeek.monday,
     PreferencesFlag.scheduleShowTodayBtn: true
   };
@@ -70,7 +71,7 @@ void main() {
       SettingsManagerMock.stubLocale(settingsManagerMock);
 
       settings = {
-        PreferencesFlag.scheduleCalendarFormat: CalendarFormat.week,
+        PreferencesFlag.scheduleCalendarFormat: CalendarTimeFormat.week,
         PreferencesFlag.scheduleStartWeekday: StartingDayOfWeek.monday,
         PreferencesFlag.scheduleShowTodayBtn: true,
         PreferencesFlag.scheduleShowWeekEvents: false,

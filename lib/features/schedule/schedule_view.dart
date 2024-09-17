@@ -8,6 +8,7 @@ import 'package:calendar_view/calendar_view.dart' as calendar_view;
 import 'package:feature_discovery/feature_discovery.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:intl/intl.dart';
+import 'package:notredame/utils/calendar_utils.dart';
 import 'package:stacked/stacked.dart';
 import 'package:table_calendar/table_calendar.dart';
 
@@ -188,7 +189,7 @@ class _ScheduleViewState extends State<ScheduleView>
     model.handleViewChanged(
         DateTime.now(), eventController, scheduleCardsPalette);
 
-    if (model.calendarFormat == CalendarFormat.month) {
+    if (model.calendarFormat == CalendarTimeFormat.month) {
       return _buildCalendarViewMonthly(
           model,
           context,
@@ -198,7 +199,7 @@ class _ScheduleViewState extends State<ScheduleView>
           scheduleLineColor,
           textColor,
           scheduleCardsPalette);
-    } else if (model.calendarFormat == CalendarFormat.week) {
+    } else if (model.calendarFormat == CalendarTimeFormat.week) {
       return _buildCalendarViewWeekly(model, context, eventController,
           backgroundColor, chevronColor, scheduleLineColor, scheduleCardsPalette);
     } else {
@@ -253,7 +254,6 @@ class _ScheduleViewState extends State<ScheduleView>
           timeStringBuilder: (date, {secondaryDate}) {
             return DateFormat('HH:mm').format(date);
           },
-          showVerticalLine: true,
           eventTileBuilder:
               (date, events, boundary, startDuration, endDuration) =>
                   _buildEventTile(events, context)),
@@ -430,65 +430,6 @@ class _ScheduleViewState extends State<ScheduleView>
     }
   }
 
-  Widget _weekDayBuilder(int day, Color backgroundColor, Color basicColor) {
-    return Container(
-      alignment: Alignment.center,
-      margin: EdgeInsets.zero,
-      padding: EdgeInsets.symmetric(vertical: 10.0),
-      decoration: BoxDecoration(
-        color: backgroundColor,
-        border: Border.all(
-          color: basicColor.withOpacity(0.5),
-          width: 0.5,
-        ),
-      ),
-      child: Text(
-        weekTitles[day],
-        style: TextStyle(
-          fontSize: 17,
-          color: basicColor,
-        ),
-      ),
-    );
-  }
-
-  Widget _buildMonthDay(
-      DateTime date,
-      ScheduleViewModel model,
-      Color backgroundColor,
-      bool isInMonth,
-      Color basicColor,
-      List<calendar_view.CalendarEventData<dynamic>> events) {
-    final indicatorColorOpacity =
-        Theme.of(context).brightness == Brightness.light ? 0.4 : 0.8;
-    return Container(
-      color: backgroundColor,
-      child: Column(
-        children: [
-          SizedBox(
-            height: 5.0,
-          ),
-          CircleAvatar(
-            radius: highlightRadius,
-            backgroundColor: model.compareDates(date, DateTime.now())
-                ? AppTheme.etsLightRed.withOpacity(indicatorColorOpacity)
-                : Colors.transparent,
-            child: Text(
-              "${date.day}",
-              style: TextStyle(
-                color: isInMonth
-                    ? basicColor
-                    : basicColor.withOpacity(indicatorColorOpacity),
-                fontSize: 12,
-              ),
-            ),
-          ),
-          _buildEventTile(events, context)
-        ],
-      ),
-    );
-  }
-
   Widget _buildWeekDay(DateTime date, ScheduleViewModel model) {
     final indicatorColorOpacity =
         Theme.of(context).brightness == Brightness.light ? 0.2 : 0.8;
@@ -591,10 +532,10 @@ class _ScheduleViewState extends State<ScheduleView>
                 model.focusedDate.value = focusedDay;
               });
             },
-            calendarFormat: model.calendarFormat,
+            calendarFormat: _getTableCalendarFormat(model.calendarFormat),
             onFormatChanged: (format) {
               setState(() {
-                model.setCalendarFormat(format);
+                model.setCalendarFormat(format as CalendarTimeFormat);
               });
             },
             focusedDay: model.focusedDate.value,
@@ -665,17 +606,17 @@ class _ScheduleViewState extends State<ScheduleView>
               onPressed: () => setState(() {
                     if (!(model.settings[PreferencesFlag.scheduleListView]
                         as bool)) {
-                      if (model.calendarFormat == CalendarFormat.day) {
+                      if (model.calendarFormat == CalendarTimeFormat.day) {
                         dayViewKey.currentState?.animateToDate(DateTime.now());
-                      } else if (model.calendarFormat == CalendarFormat.week) {
+                      } else if (model.calendarFormat == CalendarTimeFormat.week) {
                         weekViewKey.currentState?.animateToWeek(DateTime.now());
-                      } else if (model.calendarFormat == CalendarFormat.month) {
+                      } else if (model.calendarFormat == CalendarTimeFormat.month) {
                         monthViewKey.currentState?.animateToMonth(DateTime(
                             DateTime.now().year, DateTime.now().month));
                       }
                     }
                     model.selectToday();
-                    if (model.calendarFormat == CalendarFormat.month) {
+                    if (model.calendarFormat == CalendarTimeFormat.month) {
                       model.selectTodayMonth();
                     }
                     _analyticsService.logEvent(tag, "Select today clicked");
@@ -686,6 +627,19 @@ class _ScheduleViewState extends State<ScheduleView>
           model,
         ),
       ];
+
+  CalendarFormat _getTableCalendarFormat(CalendarTimeFormat format) {
+    switch (format) {
+      case CalendarTimeFormat.month:
+        return CalendarFormat.month;
+      case CalendarTimeFormat.twoWeeks:
+        return CalendarFormat.twoWeeks;
+      case CalendarTimeFormat.week:
+        return CalendarFormat.week;
+      default:
+        return CalendarFormat.month; // Valeur par défaut
+    }
+  }
 
   DescribedFeatureOverlay _buildDiscoveryFeatureDescriptionWidget(
       BuildContext context, IconData icon, ScheduleViewModel model) {

@@ -25,6 +25,8 @@ import 'package:notredame/utils/app_theme.dart';
 import 'package:notredame/utils/locator.dart';
 import 'package:notredame/utils/utils.dart';
 
+import '../../utils/calendar_utils.dart';
+
 class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
   /// Load the events
   final CourseRepository _courseRepository = locator<CourseRepository>();
@@ -56,9 +58,9 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
   /// List of currently loaded events
   List<CalendarEventData> calendarEvents = [];
 
-  /// The currently selected CalendarFormat, A default value is set for test purposes.
+  /// The currently selected CalendarTimeFormat, A default value is set for test purposes.
   /// This value is then change to the cache value on load.
-  CalendarFormat calendarFormat = CalendarFormat.week;
+  CalendarTimeFormat calendarFormat = CalendarTimeFormat.week;
 
   /// This map contains the courses that has the group A or group B mark
   final Map<String, List<ScheduleActivity>> scheduleActivitiesByCourse = {};
@@ -105,7 +107,7 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
     controller.removeWhere((event) => true);
     selectedDate = date;
     var eventsToAdd = selectedMonthCalendarEvents(scheduleCardsPalette);
-    if (calendarFormat == CalendarFormat.week) {
+    if (calendarFormat == CalendarTimeFormat.week) {
       eventsToAdd = selectedWeekCalendarEvents(scheduleCardsPalette);
     }
     controller.addAll(eventsToAdd);
@@ -216,7 +218,7 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
         courses = await _courseRepository.getCourses(fromCacheOnly: true);
 
         if (_coursesActivities.isNotEmpty) {
-          if (calendarFormat == CalendarFormat.week) {
+          if (calendarFormat == CalendarTimeFormat.week) {
             calendarEvents = selectedWeekCalendarEvents([]);
           } else {
             calendarEvents = selectedMonthCalendarEvents([]);
@@ -269,7 +271,7 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
     settings.clear();
     settings.addAll(await _settingsManager.getScheduleSettings());
     calendarFormat =
-        settings[PreferencesFlag.scheduleCalendarFormat] as CalendarFormat;
+        settings[PreferencesFlag.scheduleCalendarFormat] as CalendarTimeFormat;
 
     await loadSettingsScheduleActivities();
 
@@ -374,7 +376,7 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
     // return activities;
   }
 
-  Future setCalendarFormat(CalendarFormat format) async {
+  Future setCalendarFormat(CalendarTimeFormat format) async {
     calendarFormat = format;
     settings[PreferencesFlag.scheduleCalendarFormat] = calendarFormat;
     _settingsManager.setString(PreferencesFlag.scheduleCalendarFormat,

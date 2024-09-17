@@ -13,6 +13,8 @@ import 'package:notredame/utils/activity_code.dart';
 import 'package:notredame/utils/app_theme.dart';
 import 'package:notredame/utils/utils.dart';
 
+import '../../../utils/calendar_utils.dart';
+
 class ScheduleSettings extends StatefulWidget {
   final bool showHandle;
 
@@ -120,7 +122,7 @@ class _ScheduleSettingsState extends State<ScheduleSettings> {
     if (model.toggleCalendarView) {
       list.add(_buildStartingDaySection(context, model));
       list.add(_buildShowWeekSection(context, model));
-    } else if (model.calendarFormat == CalendarFormat.week) {
+    } else if (model.calendarFormat == CalendarTimeFormat.week) {
       model.showWeekendDays = true;
       list.add(_buildShowWeekendDaySection(context, model));
     } else {
@@ -289,7 +291,7 @@ class _ScheduleSettingsState extends State<ScheduleSettings> {
           value: model.toggleCalendarView,
           onChanged: (value) => {
             model.toggleCalendarView = value,
-            model.calendarFormat = CalendarFormat.week
+            model.calendarFormat = CalendarTimeFormat.week
           },
           activeColor: AppTheme.etsLightRed,
         ),
@@ -304,7 +306,7 @@ class _ScheduleSettingsState extends State<ScheduleSettings> {
     final formatList = model.toggleCalendarView
         ? model.formatPossibleListView
         : model.formatPossibleCalendarView;
-    for (final CalendarFormat format in formatList) {
+    for (final CalendarTimeFormat format in formatList) {
       chips.add(InputChip(
           label: Text(getTextForFormat(context, format)),
           selected: model.calendarFormat == format,
@@ -382,15 +384,15 @@ class _ScheduleSettingsState extends State<ScheduleSettings> {
             child: Column(children: cardContent)));
   }
 
-  String getTextForFormat(BuildContext context, CalendarFormat format) {
+  String getTextForFormat(BuildContext context, CalendarTimeFormat format) {
     switch (format) {
-      case CalendarFormat.month:
+      case CalendarTimeFormat.month:
         return AppIntl.of(context)!.schedule_settings_calendar_format_month;
-      case CalendarFormat.week:
+      case CalendarTimeFormat.week:
         return AppIntl.of(context)!.schedule_settings_calendar_format_week;
-      case CalendarFormat.twoWeeks:
+      case CalendarTimeFormat.twoWeeks:
         return AppIntl.of(context)!.schedule_settings_calendar_format_2_weeks;
-      case CalendarFormat.day:
+      case CalendarTimeFormat.day:
         return AppIntl.of(context)!.schedule_settings_calendar_format_day;
       default:
         return AppIntl.of(context)!.schedule_settings_calendar_format_day;

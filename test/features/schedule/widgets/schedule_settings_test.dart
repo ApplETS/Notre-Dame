@@ -6,6 +6,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:intl/intl.dart';
 import 'package:mockito/mockito.dart';
+import 'package:notredame/utils/calendar_utils.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 // Project imports:
@@ -26,7 +27,7 @@ void main() {
 
   // Some settings
   final Map<PreferencesFlag, dynamic> settings = {
-    PreferencesFlag.scheduleCalendarFormat: CalendarFormat.week,
+    PreferencesFlag.scheduleCalendarFormat: CalendarTimeFormat.week,
     PreferencesFlag.scheduleStartWeekday: StartingDayOfWeek.monday,
     PreferencesFlag.scheduleShowTodayBtn: true,
     PreferencesFlag.scheduleListView: true,

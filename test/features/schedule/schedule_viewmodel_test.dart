@@ -2,6 +2,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:intl/intl.dart';
 import 'package:mockito/mockito.dart';
+import 'package:notredame/utils/calendar_utils.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 // Project imports:
@@ -245,7 +246,7 @@ void main() {
 
   // Some settings
   final Map<PreferencesFlag, dynamic> settings = {
-    PreferencesFlag.scheduleCalendarFormat: CalendarFormat.week,
+    PreferencesFlag.scheduleCalendarFormat: CalendarTimeFormat.week,
     PreferencesFlag.scheduleStartWeekday: StartingDayOfWeek.monday,
     PreferencesFlag.scheduleShowTodayBtn: true
   };
@@ -485,15 +486,15 @@ void main() {
     group('selectedWeekEvents', () {
       final Map<PreferencesFlag, dynamic> settingsStartingDayMonday = {
         PreferencesFlag.scheduleStartWeekday: StartingDayOfWeek.monday,
-        PreferencesFlag.scheduleCalendarFormat: CalendarFormat.month
+        PreferencesFlag.scheduleCalendarFormat: CalendarTimeFormat.month
       };
       final Map<PreferencesFlag, dynamic> settingsStartingDaySaturday = {
         PreferencesFlag.scheduleStartWeekday: StartingDayOfWeek.saturday,
-        PreferencesFlag.scheduleCalendarFormat: CalendarFormat.month
+        PreferencesFlag.scheduleCalendarFormat: CalendarTimeFormat.month
       };
       final Map<PreferencesFlag, dynamic> settingsStartingDaySunday = {
         PreferencesFlag.scheduleStartWeekday: StartingDayOfWeek.sunday,
-        PreferencesFlag.scheduleCalendarFormat: CalendarFormat.month
+        PreferencesFlag.scheduleCalendarFormat: CalendarTimeFormat.month
       };
 
       test('selectedWeekEvents for starting day sunday', () async {
@@ -600,12 +601,12 @@ void main() {
       test('calendarFormat changing', () async {
         SettingsManagerMock.stubGetScheduleSettings(settingsManagerMock,
             toReturn: {
-              PreferencesFlag.scheduleCalendarFormat: CalendarFormat.month
+              PreferencesFlag.scheduleCalendarFormat: CalendarTimeFormat.month
             });
-        expect(viewModel.calendarFormat, CalendarFormat.week);
+        expect(viewModel.calendarFormat, CalendarTimeFormat.week);
 
         await viewModel.loadSettings();
-        expect(viewModel.calendarFormat, CalendarFormat.month);
+        expect(viewModel.calendarFormat, CalendarTimeFormat.month);
         verify(settingsManagerMock.getScheduleSettings()).called(1);
         verifyNoMoreInteractions(settingsManagerMock);
       });
@@ -659,7 +660,7 @@ void main() {
             toReturn: classOneWithLaboratoryABscheduleActivities);
         SettingsManagerMock.stubGetScheduleSettings(settingsManagerMock,
             toReturn: {
-              PreferencesFlag.scheduleCalendarFormat: CalendarFormat.month
+              PreferencesFlag.scheduleCalendarFormat: CalendarTimeFormat.month
             });
         SettingsManagerMock.stubGetDynamicString(
             settingsManagerMock,

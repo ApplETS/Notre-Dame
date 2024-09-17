@@ -14,6 +14,8 @@ import 'package:notredame/features/more/settings/settings_manager.dart';
 import 'package:notredame/utils/activity_code.dart';
 import 'package:notredame/utils/locator.dart';
 
+import '../../utils/calendar_utils.dart';
+
 class ScheduleSettingsViewModel
     extends FutureViewModel<Map<PreferencesFlag, dynamic>> {
   /// Manage the settings
@@ -23,11 +25,11 @@ class ScheduleSettingsViewModel
   final CourseRepository _courseRepository = locator<CourseRepository>();
 
   /// Current calendar format
-  CalendarFormat? _calendarFormat;
+  CalendarTimeFormat? _calendarFormat;
 
-  CalendarFormat? get calendarFormat => _calendarFormat;
+  CalendarTimeFormat? get calendarFormat => _calendarFormat;
 
-  set calendarFormat(CalendarFormat? format) {
+  set calendarFormat(CalendarTimeFormat? format) {
     setBusy(true);
     _settingsManager.setString(PreferencesFlag.scheduleCalendarFormat,
         EnumToString.convertToString(format));
@@ -36,17 +38,17 @@ class ScheduleSettingsViewModel
   }
 
   /// List of possible calendar format for the list view.
-  List<CalendarFormat> formatPossibleListView = [
-    CalendarFormat.month,
-    CalendarFormat.twoWeeks,
-    CalendarFormat.week
+  List<CalendarTimeFormat> formatPossibleListView = [
+    CalendarTimeFormat.month,
+    CalendarTimeFormat.twoWeeks,
+    CalendarTimeFormat.week
   ];
 
-  /// List of possible calendar format for the list view.
-  List<CalendarFormat> formatPossibleCalendarView = [
-    CalendarFormat.month,
-    CalendarFormat.week,
-    CalendarFormat.day
+  /// List of possible calendar format for the calendar view.
+  List<CalendarTimeFormat> formatPossibleCalendarView = [
+    CalendarTimeFormat.month,
+    CalendarTimeFormat.week,
+    CalendarTimeFormat.day
   ];
 
   /// Current starting day of week
@@ -174,7 +176,7 @@ class ScheduleSettingsViewModel
     final settings = await _settingsManager.getScheduleSettings();
 
     _calendarFormat =
-        settings[PreferencesFlag.scheduleCalendarFormat] as CalendarFormat;
+        settings[PreferencesFlag.scheduleCalendarFormat] as CalendarTimeFormat;
     _startingDayOfWeek =
         settings[PreferencesFlag.scheduleStartWeekday] as StartingDayOfWeek;
     _showTodayBtn = settings[PreferencesFlag.scheduleShowTodayBtn] as bool;

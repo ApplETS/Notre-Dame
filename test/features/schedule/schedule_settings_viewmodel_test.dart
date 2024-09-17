@@ -2,6 +2,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:intl/intl.dart';
 import 'package:mockito/mockito.dart';
+import 'package:notredame/utils/calendar_utils.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 // Project imports:
@@ -24,7 +25,7 @@ void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
   final Map<PreferencesFlag, dynamic> settings = {
-    PreferencesFlag.scheduleCalendarFormat: CalendarFormat.week,
+    PreferencesFlag.scheduleCalendarFormat: CalendarTimeFormat.week,
     PreferencesFlag.scheduleStartWeekday: StartingDayOfWeek.monday,
     PreferencesFlag.scheduleShowTodayBtn: true,
     PreferencesFlag.scheduleShowWeekendDays: false,
@@ -245,12 +246,12 @@ void main() {
             settingsManagerMock, PreferencesFlag.scheduleCalendarFormat);
 
         // Call the setter.
-        viewModel.calendarFormat = CalendarFormat.twoWeeks;
+        viewModel.calendarFormat = CalendarTimeFormat.twoWeeks;
 
         await untilCalled(settingsManagerMock.setString(
             PreferencesFlag.scheduleCalendarFormat, any));
 
-        expect(viewModel.calendarFormat, CalendarFormat.twoWeeks);
+        expect(viewModel.calendarFormat, CalendarTimeFormat.twoWeeks);
         expect(viewModel.isBusy, false);
 
         verify(settingsManagerMock.setString(
