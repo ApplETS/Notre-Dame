@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 // Package imports:
 import 'package:calendar_view/calendar_view.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:intl/intl.dart';
 
 // Project imports:
 import 'package:notredame/features/schedule/widgets/schedule_calendar_tile.dart';
@@ -65,7 +66,11 @@ class _ScheduleDefaultState extends State<ScheduleDefault> {
               ? AppTheme.scheduleLineColorLight
               : AppTheme.scheduleLineColorDark),
       scrollOffset: heightPerMinute * 60 * 7.5,
+      timeLineStringBuilder: (date, {secondaryDate}) {
+        return DateFormat('H:mm').format(date);
+      },
       liveTimeIndicatorSettings: LiveTimeIndicatorSettings.none(),
+      weekNumberBuilder: (date) => null,
       headerStyle: const HeaderStyle(
           headerTextStyle: TextStyle(fontSize: 0),
           leftIconVisible: false,

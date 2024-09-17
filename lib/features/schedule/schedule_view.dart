@@ -212,6 +212,7 @@ class _ScheduleViewState extends State<ScheduleView>
         (MediaQuery.of(context).size.height / 1200).clamp(0.45, 1.0);
     return calendar_view.WeekView(
       key: weekViewKey,
+      weekNumberBuilder: (date) => null,
       controller: eventController
         ..addAll(model.selectedWeekCalendarEvents(scheduleCardsPalette)),
       onPageChange: (date, page) =>
@@ -261,7 +262,7 @@ class _ScheduleViewState extends State<ScheduleView>
       ),
       keepScrollOffset: true,
       timeLineStringBuilder: (date, {secondaryDate}) {
-        return DateFormat('HH:mm').format(date);
+        return DateFormat('H:mm').format(date);
       },
       weekDayStringBuilder: (p0) {
         return weekTitles[p0];

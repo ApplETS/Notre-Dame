@@ -21,6 +21,7 @@ class _SettingsViewState extends State<SettingsView> {
       ViewModelBuilder<SettingsViewModel>.reactive(
         viewModelBuilder: () => SettingsViewModel(intl: AppIntl.of(context)!),
         builder: (context, model, child) => BaseScaffold(
+          showBottomBar: false,
           appBar: AppBar(
             title: Text(AppIntl.of(context)!.settings_title),
           ),
