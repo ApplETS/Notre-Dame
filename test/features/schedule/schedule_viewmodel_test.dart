@@ -482,12 +482,6 @@ void main() {
     });
 
     group('selectedWeekEvents', () {
-      final Map<PreferencesFlag, dynamic> settingsStartingDayMonday = {
-        PreferencesFlag.scheduleCalendarFormat: CalendarFormat.month
-      };
-      final Map<PreferencesFlag, dynamic> settingsStartingDaySaturday = {
-        PreferencesFlag.scheduleCalendarFormat: CalendarFormat.month
-      };
       final Map<PreferencesFlag, dynamic> settingsStartingDaySunday = {
         PreferencesFlag.scheduleCalendarFormat: CalendarFormat.month
       };

@@ -26,8 +26,6 @@ import 'package:notredame/features/welcome/discovery/models/discovery_ids.dart';
 import 'package:notredame/utils/app_theme.dart';
 import 'package:notredame/utils/locator.dart';
 
-import '../../utils/utils.dart';
-
 class ScheduleView extends StatefulWidget {
   @visibleForTesting
   final DateTime? initialDay;
