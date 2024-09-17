@@ -15,8 +15,7 @@ import 'package:notredame/features/app/analytics/analytics_service.dart';
 import 'package:notredame/features/app/analytics/remote_config_service.dart';
 import 'package:notredame/features/app/storage/preferences_service.dart';
 import 'package:notredame/utils/locator.dart';
-
-import '../../../utils/calendar_utils.dart';
+import 'package:notredame/utils/calendar_utils.dart';
 
 class SettingsManager with ChangeNotifier {
   static const String tag = "SettingsManager";

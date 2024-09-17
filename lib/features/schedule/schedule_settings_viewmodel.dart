@@ -13,8 +13,7 @@ import 'package:notredame/features/app/signets-api/models/schedule_activity.dart
 import 'package:notredame/features/more/settings/settings_manager.dart';
 import 'package:notredame/utils/activity_code.dart';
 import 'package:notredame/utils/locator.dart';
-
-import '../../utils/calendar_utils.dart';
+import 'package:notredame/utils/calendar_utils.dart';
 
 class ScheduleSettingsViewModel
     extends FutureViewModel<Map<PreferencesFlag, dynamic>> {

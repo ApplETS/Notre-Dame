@@ -50,7 +50,6 @@ class _ScheduleViewState extends State<ScheduleView>
   static const String tag = "ScheduleView";
   static const Color _selectedColor = AppTheme.etsLightRed;
   static const Color _defaultColor = Color(0xff76859B);
-  static const double highlightRadius = 11;
   static final List<String> weekTitles = ["L", "M", "M", "J", "V", "S", "D"];
 
   late AnimationController _animationController;

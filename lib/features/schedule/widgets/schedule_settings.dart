@@ -12,8 +12,7 @@ import 'package:notredame/features/schedule/schedule_settings_viewmodel.dart';
 import 'package:notredame/utils/activity_code.dart';
 import 'package:notredame/utils/app_theme.dart';
 import 'package:notredame/utils/utils.dart';
-
-import '../../../utils/calendar_utils.dart';
+import 'package:notredame/utils/calendar_utils.dart';
 
 class ScheduleSettings extends StatefulWidget {
   final bool showHandle;

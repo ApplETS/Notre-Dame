@@ -24,8 +24,7 @@ import 'package:notredame/utils/activity_code.dart';
 import 'package:notredame/utils/app_theme.dart';
 import 'package:notredame/utils/locator.dart';
 import 'package:notredame/utils/utils.dart';
-
-import '../../utils/calendar_utils.dart';
+import 'package:notredame/utils/calendar_utils.dart';
 
 class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
   /// Load the events
