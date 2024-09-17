@@ -26,6 +26,8 @@ import 'package:notredame/features/welcome/discovery/models/discovery_ids.dart';
 import 'package:notredame/utils/app_theme.dart';
 import 'package:notredame/utils/locator.dart';
 
+import '../../utils/utils.dart';
+
 class ScheduleView extends StatefulWidget {
   @visibleForTesting
   final DateTime? initialDay;
@@ -76,7 +78,7 @@ class _ScheduleViewState extends State<ScheduleView>
   Widget build(BuildContext context) =>
       ViewModelBuilder<ScheduleViewModel>.reactive(
         viewModelBuilder: () => ScheduleViewModel(
-            intl: AppIntl.of(context)!, initialSelectedDate: widget.initialDay),
+            intl: AppIntl.of(context)!),
         onViewModelReady: (model) {
           if (model.settings.isEmpty) {
             model.loadSettings();
@@ -182,6 +184,8 @@ class _ScheduleViewState extends State<ScheduleView>
             ? AppTheme.schedulePaletteLight.toList()
             : AppTheme.schedulePaletteDark.toList();
 
+    model.handleViewChanged(model.selectedDate, eventController, scheduleCardsPalette);
+
     if (model.calendarFormat == CalendarFormat.month) {
       return _buildCalendarViewMonthly(
           model,
@@ -207,11 +211,6 @@ class _ScheduleViewState extends State<ScheduleView>
       List<Color> scheduleCardsPalette) {
     final double heightPerMinute =
         (MediaQuery.of(context).size.height / 1200).clamp(0.45, 1.0);
-
-    // This can't be modified in the model otherwise changes in UI will not apply on page change
-    final DateTime sundayOfSelectedWeek = model.selectedDate.add(Duration(days: 7 - model.selectedDate.weekday));
-    final bool displaySaturday = model.selectedDateEvents(sundayOfSelectedWeek.add(const Duration(days: 6))).isNotEmpty;
-    final bool displaySunday = model.selectedDateEvents(sundayOfSelectedWeek.add(const Duration(days: 7))).isNotEmpty;
 
     return calendar_view.WeekView(
       key: weekViewKey,
@@ -244,18 +243,18 @@ class _ScheduleViewState extends State<ScheduleView>
           )),
       startDay: calendar_view.WeekDays.sunday,
       weekDays: [
-        if (displaySunday)
+        if (model.displaySunday)
           calendar_view.WeekDays.sunday,
         calendar_view.WeekDays.monday,
         calendar_view.WeekDays.tuesday,
         calendar_view.WeekDays.wednesday,
         calendar_view.WeekDays.thursday,
         calendar_view.WeekDays.friday,
-        if (displaySaturday)
+        if (model.displaySaturday)
           calendar_view.WeekDays.saturday
       ],
       // If the user consults the schedule during weekend next week is shown
-      initialDay: DateTime.now().add(Duration(days: (displaySaturday ? 0 : 1))),
+      initialDay: model.selectedDate,
       heightPerMinute: heightPerMinute,
       scrollOffset: heightPerMinute * 60 * 7.5,
       hourIndicatorSettings: calendar_view.HourIndicatorSettings(
@@ -459,9 +458,6 @@ class _ScheduleViewState extends State<ScheduleView>
         builder: (context, value, _) {
           return TableCalendar(
             key: const Key("TableCalendar"),
-            startingDayOfWeek:
-                model.settings[PreferencesFlag.scheduleStartWeekday]
-                    as StartingDayOfWeek,
             locale: model.locale?.toLanguageTag(),
             selectedDayPredicate: (day) {
               return isSameDay(model.selectedDate, day);

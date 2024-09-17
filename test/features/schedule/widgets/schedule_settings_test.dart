@@ -27,7 +27,6 @@ void main() {
   // Some settings
   final Map<PreferencesFlag, dynamic> settings = {
     PreferencesFlag.scheduleCalendarFormat: CalendarFormat.week,
-    PreferencesFlag.scheduleStartWeekday: StartingDayOfWeek.monday,
     PreferencesFlag.scheduleShowTodayBtn: true,
     PreferencesFlag.scheduleListView: true,
     PreferencesFlag.scheduleShowWeekEvents: true
@@ -126,33 +125,6 @@ void main() {
             reason:
                 'The settings says week format is the current format, the UI should reflet that.');
 
-        // Check starting day of week section
-        expect(
-            find.text(intl.schedule_settings_starting_weekday_pref,
-                skipOffstage: false),
-            findsOneWidget);
-        expect(
-            find.widgetWithText(
-                InputChip, intl.schedule_settings_starting_weekday_saturday,
-                skipOffstage: false),
-            findsOneWidget);
-        expect(
-            find.widgetWithText(
-                InputChip, intl.schedule_settings_starting_weekday_sunday,
-                skipOffstage: false),
-            findsOneWidget);
-
-        final startingDayTile = find.widgetWithText(
-            InputChip, intl.schedule_settings_starting_weekday_monday,
-            skipOffstage: false);
-        expect(startingDayTile, findsOneWidget);
-        expect(
-            tester.widget(startingDayTile),
-            isA<InputChip>()
-                .having((source) => source.selected, 'selected', isTrue),
-            reason:
-                'The settings says starting day of week is monday, the UI should reflet that.');
-
         // Check showTodayButton section
         final showTodayBtnFinder = find.widgetWithText(
             ListTile, intl.schedule_settings_show_today_btn_pref,
@@ -225,34 +197,6 @@ void main() {
                 .having((source) => source.selected, 'selected', isTrue),
             reason:
                 'The settings says week format is the current format, the UI should reflet that.');
-
-        // Check starting day of week section
-        expect(
-            find.text(intl.schedule_settings_starting_weekday_pref,
-                skipOffstage: false),
-            findsOneWidget);
-
-        expect(
-            find.widgetWithText(
-                InputChip, intl.schedule_settings_starting_weekday_saturday,
-                skipOffstage: false),
-            findsOneWidget);
-        expect(
-            find.widgetWithText(
-                InputChip, intl.schedule_settings_starting_weekday_sunday,
-                skipOffstage: false),
-            findsOneWidget);
-
-        final startingDayTile = find.widgetWithText(
-            InputChip, intl.schedule_settings_starting_weekday_monday,
-            skipOffstage: false);
-        expect(startingDayTile, findsOneWidget);
-        expect(
-            tester.widget(startingDayTile),
-            isA<InputChip>()
-                .having((source) => source.selected, 'selected', isTrue),
-            reason:
-                'The settings says starting day of week is monday, the UI should reflet that.');
 
         // Check showTodayButton section
         final showTodayBtnFinder = find.widgetWithText(

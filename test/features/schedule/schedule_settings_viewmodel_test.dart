@@ -25,7 +25,6 @@ void main() {
 
   final Map<PreferencesFlag, dynamic> settings = {
     PreferencesFlag.scheduleCalendarFormat: CalendarFormat.week,
-    PreferencesFlag.scheduleStartWeekday: StartingDayOfWeek.monday,
     PreferencesFlag.scheduleShowTodayBtn: true,
     PreferencesFlag.scheduleShowWeekendDays: false,
     PreferencesFlag.scheduleListView: false,
@@ -140,8 +139,6 @@ void main() {
         expect(await viewModel.futureToRun(), settings);
         expect(viewModel.calendarFormat,
             settings[PreferencesFlag.scheduleCalendarFormat]);
-        expect(viewModel.startingDayOfWeek,
-            settings[PreferencesFlag.scheduleStartWeekday]);
         expect(viewModel.showTodayBtn,
             settings[PreferencesFlag.scheduleShowTodayBtn]);
 
@@ -283,32 +280,8 @@ void main() {
       });
     });
 
-    group("setter startingDayOfWeek - ", () {
-      test("startingDayOfWeek is updated on the settings", () async {
-        SettingsManagerMock.stubSetString(
-            settingsManagerMock, PreferencesFlag.scheduleStartWeekday);
-
-        // Call the setter.
-        viewModel.startingDayOfWeek = StartingDayOfWeek.friday;
-
-        await untilCalled(settingsManagerMock.setString(
-            PreferencesFlag.scheduleStartWeekday, any));
-
-        expect(viewModel.startingDayOfWeek, StartingDayOfWeek.friday);
-        expect(viewModel.isBusy, false);
-
-        verify(settingsManagerMock.setString(
-                PreferencesFlag.scheduleStartWeekday, any))
-            .called(1);
-        verifyNoMoreInteractions(settingsManagerMock);
-      });
-    });
-
     group("setter showTodayBtn - ", () {
       test("showTodayBtn is updated on the settings", () async {
-        SettingsManagerMock.stubSetString(
-            settingsManagerMock, PreferencesFlag.scheduleStartWeekday);
-
         const expected = false;
 
         // Call the setter.

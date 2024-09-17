@@ -35,7 +35,6 @@ void main() {
   // Some settings
   Map<PreferencesFlag, dynamic> settings = {
     PreferencesFlag.scheduleCalendarFormat: CalendarFormat.week,
-    PreferencesFlag.scheduleStartWeekday: StartingDayOfWeek.monday,
     PreferencesFlag.scheduleShowTodayBtn: true
   };
 
@@ -71,7 +70,6 @@ void main() {
 
       settings = {
         PreferencesFlag.scheduleCalendarFormat: CalendarFormat.week,
-        PreferencesFlag.scheduleStartWeekday: StartingDayOfWeek.monday,
         PreferencesFlag.scheduleShowTodayBtn: true,
         PreferencesFlag.scheduleShowWeekEvents: false,
         PreferencesFlag.scheduleListView: true,

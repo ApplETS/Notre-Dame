@@ -45,7 +45,7 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
   List<Course>? courses;
 
   /// Day currently selected
-  DateTime selectedDate;
+  DateTime selectedDate = Utils.getFirstDayOfCurrentWeek(DateTime.now());
 
   /// Day currently focused on
   ValueNotifier<DateTime> focusedDate;
@@ -70,14 +70,17 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
   /// The color palette corresponding to the schedule courses.
   List<Color> schedulePaletteTheme = [];
 
+  /// In calendar view (week), display
+  bool displaySunday = false;
+  bool displaySaturday = false;
+
   /// Get current locale
   Locale? get locale => _settingsManager.locale;
 
-  ScheduleViewModel({required AppIntl intl, DateTime? initialSelectedDate})
+  ScheduleViewModel({required AppIntl intl})
       : _appIntl = intl,
         // Selected date should always be a monday (start of the week)
-        selectedDate = initialSelectedDate ?? DateTime.now().withoutTime,
-        focusedDate = ValueNotifier(initialSelectedDate ?? DateTime.now());
+        focusedDate = ValueNotifier(DateTime.now());
 
   /// Activities for the day currently selected
   List<dynamic> selectedDateEvents(DateTime date) =>
@@ -85,8 +88,7 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
 
   Map<DateTime, List<dynamic>> selectedWeekEvents() {
     final Map<DateTime, List<dynamic>> events = {};
-    final firstDayOfWeek = Utils.getFirstDayOfCurrentWeek(selectedDate,
-        settings[PreferencesFlag.scheduleStartWeekday] as StartingDayOfWeek);
+    final firstDayOfWeek = Utils.getFirstDayOfCurrentWeek(selectedDate);
     for (int i = 0; i < 7; i++) {
       final date = firstDayOfWeek.add(Duration(days: i));
       final eventsForDay = selectedDateEvents(date);
@@ -107,6 +109,14 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
       eventsToAdd = selectedWeekCalendarEvents(scheduleCardsPalette);
     }
     controller.addAll(eventsToAdd);
+
+    final DateTime temp = selectedDate;
+    final DateTime sundayOfSelectedWeek = Utils.getFirstDayOfCurrentWeek(selectedDate);
+    if (temp.weekday == DateTime.saturday && selectedDateEvents(temp).isEmpty) {
+      selectedDate = sundayOfSelectedWeek.add(const Duration(days: 7));
+    }
+    displaySunday = selectedDateEvents(sundayOfSelectedWeek).isNotEmpty;
+    displaySaturday = selectedDateEvents(sundayOfSelectedWeek.add(const Duration(days: 6))).isNotEmpty;
   }
 
   List<CalendarEventData> selectedDateCalendarEvents(DateTime date) {
@@ -150,10 +160,10 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
       schedulePaletteTheme = AppTheme.schedulePaletteLight.toList();
     }
     final List<CalendarEventData> events = [];
-    final firstDayOfWeek = Utils.getFirstDayOfCurrentWeek(selectedDate,
-        settings[PreferencesFlag.scheduleStartWeekday] as StartingDayOfWeek);
+
+    final firstDayOfWeek = Utils.getFirstDayOfCurrentWeek(selectedDate);
     // We want to put events of previous week and next week in memory to make transitions smoother
-    for (int i = 0; i < 21; i++) {
+    for (int i = -7; i < 14; i++) {
       final date = firstDayOfWeek.add(Duration(days: i));
       final eventsForDay = selectedDateCalendarEvents(date);
       if (eventsForDay.isNotEmpty) {

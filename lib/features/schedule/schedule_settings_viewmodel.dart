@@ -39,26 +39,6 @@ class ScheduleSettingsViewModel
     CalendarFormat.week
   ];
 
-  /// Current starting day of week
-  StartingDayOfWeek? _startingDayOfWeek;
-
-  StartingDayOfWeek? get startingDayOfWeek => _startingDayOfWeek;
-
-  set startingDayOfWeek(StartingDayOfWeek? day) {
-    setBusy(true);
-    _settingsManager.setString(PreferencesFlag.scheduleStartWeekday,
-        EnumToString.convertToString(day));
-    _startingDayOfWeek = day;
-    setBusy(false);
-  }
-
-  /// List of possible days to set as start of the week
-  List<StartingDayOfWeek> startingDayPossible = [
-    StartingDayOfWeek.saturday,
-    StartingDayOfWeek.sunday,
-    StartingDayOfWeek.monday,
-  ];
-
   bool _showTodayBtn = true;
 
   bool get showTodayBtn => _showTodayBtn;
@@ -128,8 +108,6 @@ class ScheduleSettingsViewModel
 
     _calendarFormat =
         settings[PreferencesFlag.scheduleCalendarFormat] as CalendarFormat;
-    _startingDayOfWeek =
-        settings[PreferencesFlag.scheduleStartWeekday] as StartingDayOfWeek;
     _showTodayBtn = settings[PreferencesFlag.scheduleShowTodayBtn] as bool;
     _toggleCalendarView = settings[PreferencesFlag.scheduleListView] as bool;
     _showWeekEvents = settings[PreferencesFlag.scheduleShowWeekEvents] as bool;

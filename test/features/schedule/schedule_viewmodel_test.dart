@@ -246,7 +246,6 @@ void main() {
   // Some settings
   final Map<PreferencesFlag, dynamic> settings = {
     PreferencesFlag.scheduleCalendarFormat: CalendarFormat.week,
-    PreferencesFlag.scheduleStartWeekday: StartingDayOfWeek.monday,
     PreferencesFlag.scheduleShowTodayBtn: true
   };
 
@@ -484,19 +483,16 @@ void main() {
 
     group('selectedWeekEvents', () {
       final Map<PreferencesFlag, dynamic> settingsStartingDayMonday = {
-        PreferencesFlag.scheduleStartWeekday: StartingDayOfWeek.monday,
         PreferencesFlag.scheduleCalendarFormat: CalendarFormat.month
       };
       final Map<PreferencesFlag, dynamic> settingsStartingDaySaturday = {
-        PreferencesFlag.scheduleStartWeekday: StartingDayOfWeek.saturday,
         PreferencesFlag.scheduleCalendarFormat: CalendarFormat.month
       };
       final Map<PreferencesFlag, dynamic> settingsStartingDaySunday = {
-        PreferencesFlag.scheduleStartWeekday: StartingDayOfWeek.sunday,
         PreferencesFlag.scheduleCalendarFormat: CalendarFormat.month
       };
 
-      test('selectedWeekEvents for starting day sunday', () async {
+      test('selectedWeekEvents for starting day', () async {
         CourseRepositoryMock.stubCoursesActivities(courseRepositoryMock,
             toReturn: weekOfActivities);
         SettingsManagerMock.stubGetScheduleSettings(settingsManagerMock,
@@ -515,54 +511,6 @@ void main() {
         // Setting up the viewmodel
         viewModel.coursesActivities;
         viewModel.selectedDate = DateTime(2020, 1, 8);
-        await viewModel.loadSettings();
-        clearInteractions(courseRepositoryMock);
-
-        expect(viewModel.selectedWeekEvents(), expected);
-      });
-
-      test('selectedWeekEvents for starting day monday', () async {
-        SettingsManagerMock.stubGetScheduleSettings(settingsManagerMock,
-            toReturn: settingsStartingDayMonday);
-        CourseRepositoryMock.stubCoursesActivities(courseRepositoryMock,
-            toReturn: weekOfActivities);
-
-        final expected = {
-          DateTime(2020, 1, 6): [gen105],
-          DateTime(2020, 1, 7): [gen106],
-          DateTime(2020, 1, 8): [gen107],
-          DateTime(2020, 1, 9): [gen108],
-          DateTime(2020, 1, 10): [gen109],
-          DateTime(2020, 1, 11): [gen110],
-        };
-
-        // Setting up the viewmodel
-        viewModel.coursesActivities;
-        viewModel.selectedDate = DateTime(2020, 1, 7);
-        await viewModel.loadSettings();
-        clearInteractions(courseRepositoryMock);
-
-        expect(viewModel.selectedWeekEvents(), expected);
-      });
-
-      test('selectedWeekEvents for starting day saturday', () async {
-        SettingsManagerMock.stubGetScheduleSettings(settingsManagerMock,
-            toReturn: settingsStartingDaySaturday);
-        CourseRepositoryMock.stubCoursesActivities(courseRepositoryMock,
-            toReturn: weekOfActivities);
-
-        final expected = {
-          DateTime(2020, 1, 5): [gen104],
-          DateTime(2020, 1, 6): [gen105],
-          DateTime(2020, 1, 7): [gen106],
-          DateTime(2020, 1, 8): [gen107],
-          DateTime(2020, 1, 9): [gen108],
-          DateTime(2020, 1, 10): [gen109],
-        };
-
-        // Setting up the viewmodel
-        viewModel.coursesActivities;
-        viewModel.selectedDate = DateTime(2020, 1, 7);
         await viewModel.loadSettings();
         clearInteractions(courseRepositoryMock);
 

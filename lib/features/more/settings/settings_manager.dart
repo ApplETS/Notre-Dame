@@ -163,14 +163,6 @@ class SettingsManager with ChangeNotifier {
     settings.putIfAbsent(
         PreferencesFlag.scheduleCalendarFormat, () => calendarFormat);
 
-    final startingWeekDay = await _preferencesService
-        .getString(PreferencesFlag.scheduleStartWeekday)
-        .then((value) => value == null
-            ? StartingDayOfWeek.monday
-            : EnumToString.fromString(StartingDayOfWeek.values, value));
-    settings.putIfAbsent(
-        PreferencesFlag.scheduleStartWeekday, () => startingWeekDay);
-
     final showTodayBtn = await _preferencesService
             .getBool(PreferencesFlag.scheduleShowTodayBtn) ??
         true;

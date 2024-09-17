@@ -51,25 +51,8 @@ mixin Utils {
 
   /// Get first day of the week depending on startingDay which corresponds to weekday
   static DateTime getFirstDayOfCurrentWeek(
-      DateTime currentDate, StartingDayOfWeek startingDay) {
-    var firstDayOfWeek = DateTime.now();
-    switch (startingDay) {
-      case StartingDayOfWeek.monday:
-        final tempDate =
-            currentDate.subtract(Duration(days: currentDate.weekday - 1));
-        firstDayOfWeek = DateTime(tempDate.year, tempDate.month, tempDate.day);
-      case StartingDayOfWeek.saturday:
-        final tempDate = currentDate.subtract(Duration(
-            days: currentDate.weekday == 6 || currentDate.weekday == 7
-                ? currentDate.weekday - 6
-                : currentDate.weekday + 1));
-        firstDayOfWeek = DateTime(tempDate.year, tempDate.month, tempDate.day);
-      // Sunday as default
-      default:
-        final tempDate =
-            currentDate.subtract(Duration(days: currentDate.weekday % 7));
-        firstDayOfWeek = DateTime(tempDate.year, tempDate.month, tempDate.day);
-    }
-    return firstDayOfWeek;
+      DateTime currentDate) {
+    final tempDate = currentDate.subtract(Duration(days: currentDate.weekday % 7));
+    return DateTime(tempDate.year, tempDate.month, tempDate.day);
   }
 }

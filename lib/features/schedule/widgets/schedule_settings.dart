@@ -107,10 +107,6 @@ class _ScheduleSettingsState extends State<ScheduleSettings> {
 
     list.add(_buildCalendarFormatSection(context, model));
 
-    if (model.toggleCalendarView) {
-      list.add(_buildStartingDaySection(context, model));
-    }
-
     if (model.scheduleActivitiesByCourse.isNotEmpty) {
       list.add(_buildSelectCoursesActivitiesSection(context, model));
     }
@@ -266,47 +262,6 @@ class _ScheduleSettingsState extends State<ScheduleSettings> {
       _buildToggleCalendarView(context, model),
       if (model.toggleCalendarView)
         _buildShowWeekSection(context, model)
-    ];
-
-    return Card(
-        elevation: 4,
-        color: Theme.of(context).brightness == Brightness.light
-            ? AppTheme.lightThemeBackground
-            : AppTheme.darkThemeBackground,
-        child: Padding(
-            padding: const EdgeInsets.only(top: 16.0, bottom: 8),
-            child: Column(children: cardContent)));
-  }
-
-  Widget _buildStartingDaySection(
-      BuildContext context, ScheduleSettingsViewModel model) {
-    final chips = <Widget>[];
-
-    for (final StartingDayOfWeek day in model.startingDayPossible) {
-      chips.add(InputChip(
-        selected: model.startingDayOfWeek == day,
-        selectedColor: selectedColor,
-        onPressed: () => setState(() => model.startingDayOfWeek = day),
-        label: Text(getTextForDay(context, day)),
-      ));
-    }
-
-    final chipsWrapper = Wrap(
-      spacing: 10,
-      alignment: WrapAlignment.center,
-      children: chips,
-    );
-
-    final cardContent = [
-      Text(
-        AppIntl.of(context)!.schedule_settings_starting_weekday_pref,
-        style: TextStyle(
-          color: Theme.of(context).colorScheme.secondary,
-          fontWeight: FontWeight.bold,
-        ),
-      ),
-      const Divider(thickness: 0.5),
-      chipsWrapper
     ];
 
     return Card(
