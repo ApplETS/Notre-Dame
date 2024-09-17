@@ -251,7 +251,6 @@ class _ScheduleViewState extends State<ScheduleView>
         if (model.displaySaturday)
           calendar_view.WeekDays.saturday
       ],
-      // If the user consults the schedule during weekend next week is shown
       initialDay: model.selectedDate,
       heightPerMinute: heightPerMinute,
       scrollOffset: heightPerMinute * 60 * 7.5,

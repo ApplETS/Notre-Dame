@@ -70,7 +70,7 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
   /// The color palette corresponding to the schedule courses.
   List<Color> schedulePaletteTheme = [];
 
-  /// In calendar view (week), display
+  /// In calendar view (week), display weekend days if there are events in them
   bool displaySunday = false;
   bool displaySaturday = false;
 
