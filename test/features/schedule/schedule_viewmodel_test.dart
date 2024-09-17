@@ -454,10 +454,10 @@ void main() {
 
         // Setting up the viewmodel
         viewModel.coursesActivities;
-        viewModel.selectedDate = DateTime(2020, 1, 2);
+        viewModel.weekSelected = DateTime(2020, 1, 2);
         clearInteractions(courseRepositoryMock);
 
-        expect(viewModel.selectedDateEvents(viewModel.selectedDate), expected);
+        expect(viewModel.selectedDateEvents(viewModel.weekSelected), expected);
 
         verifyNoMoreInteractions(courseRepositoryMock);
         verifyNoMoreInteractions(settingsManagerMock);
@@ -471,10 +471,10 @@ void main() {
 
         // Setting up the viewmodel
         viewModel.coursesActivities;
-        viewModel.selectedDate = DateTime(2020, 1, 3);
+        viewModel.weekSelected = DateTime(2020, 1, 3);
         clearInteractions(courseRepositoryMock);
 
-        expect(viewModel.selectedDateEvents(viewModel.selectedDate), expected);
+        expect(viewModel.selectedDateEvents(viewModel.weekSelected), expected);
 
         verifyNoMoreInteractions(courseRepositoryMock);
         verifyNoMoreInteractions(settingsManagerMock);
@@ -504,7 +504,7 @@ void main() {
 
         // Setting up the viewmodel
         viewModel.coursesActivities;
-        viewModel.selectedDate = DateTime(2020, 1, 8);
+        viewModel.weekSelected = DateTime(2020, 1, 8);
         await viewModel.loadSettings();
         clearInteractions(courseRepositoryMock);
 
@@ -756,13 +756,13 @@ void main() {
         final oldSelectedDate = DateTime(2022, 1, 2);
         final currentDate = DateTime.now();
 
-        viewModel.selectedDate = oldSelectedDate;
-        viewModel.focusedDate.value = oldSelectedDate;
+        viewModel.weekSelected = oldSelectedDate;
+        viewModel.daySelected.value = oldSelectedDate;
 
         final res = viewModel.selectToday();
 
-        expect(viewModel.selectedDate.day, currentDate.day);
-        expect(viewModel.focusedDate.value.day, currentDate.day);
+        expect(viewModel.weekSelected.day, currentDate.day);
+        expect(viewModel.daySelected.value.day, currentDate.day);
         expect(res, true, reason: "Today was not selected before");
       });
 
@@ -770,8 +770,8 @@ void main() {
         final today = DateTime.now();
         final oldSelectedDate = DateTime(2022, 1, 2);
 
-        viewModel.selectedDate = today;
-        viewModel.focusedDate.value = oldSelectedDate;
+        viewModel.weekSelected = today;
+        viewModel.daySelected.value = oldSelectedDate;
 
         final res = viewModel.selectToday();
 
@@ -781,8 +781,8 @@ void main() {
       test('show toast if today already selected', () async {
         final today = DateTime.now();
 
-        viewModel.selectedDate = today;
-        viewModel.focusedDate.value = today;
+        viewModel.weekSelected = today;
+        viewModel.daySelected.value = today;
 
         final res = viewModel.selectToday();
 

@@ -45,10 +45,11 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
   List<Course>? courses;
 
   /// Day currently selected
-  DateTime selectedDate = Utils.getFirstDayOfCurrentWeek(DateTime.now());
+  DateTime weekSelected = Utils.getFirstDayOfCurrentWeek(DateTime.now());
 
-  /// Day currently focused on
-  ValueNotifier<DateTime> focusedDate;
+  /// Day currently focused on (ListView only)
+  ValueNotifier<DateTime> daySelected = ValueNotifier(DateTime.now().withoutTime);
+  DateTime listViewCalendarSelectedDate = DateTime.now().withoutTime;
 
   /// List of currently loaded events
   List<CalendarEventData> calendarEvents = [];
@@ -78,9 +79,7 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
   Locale? get locale => _settingsManager.locale;
 
   ScheduleViewModel({required AppIntl intl})
-      : _appIntl = intl,
-        // Selected date should always be a monday (start of the week)
-        focusedDate = ValueNotifier(DateTime.now());
+      : _appIntl = intl;
 
   /// Activities for the day currently selected
   List<dynamic> selectedDateEvents(DateTime date) =>
@@ -88,7 +87,7 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
 
   Map<DateTime, List<dynamic>> selectedWeekEvents() {
     final Map<DateTime, List<dynamic>> events = {};
-    final firstDayOfWeek = Utils.getFirstDayOfCurrentWeek(selectedDate);
+    final firstDayOfWeek = Utils.getFirstDayOfCurrentWeek(weekSelected);
     for (int i = 0; i < 7; i++) {
       final date = firstDayOfWeek.add(Duration(days: i));
       final eventsForDay = selectedDateEvents(date);
@@ -103,20 +102,25 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
   void handleViewChanged(DateTime date, EventController controller,
       List<Color> scheduleCardsPalette) {
     controller.removeWhere((event) => true);
-    selectedDate = date;
+    weekSelected = date;
     var eventsToAdd = selectedMonthCalendarEvents(scheduleCardsPalette);
     if (calendarFormat == CalendarFormat.week) {
       eventsToAdd = selectedWeekCalendarEvents(scheduleCardsPalette);
     }
     controller.addAll(eventsToAdd);
 
-    final DateTime temp = selectedDate;
-    final DateTime sundayOfSelectedWeek = Utils.getFirstDayOfCurrentWeek(selectedDate);
-    if (temp.weekday == DateTime.saturday && selectedDateEvents(temp).isEmpty) {
-      selectedDate = sundayOfSelectedWeek.add(const Duration(days: 7));
+    if (!calendarViewSetting) {
+      final DateTime temp = weekSelected;
+      final DateTime sundayOfSelectedWeek = Utils.getFirstDayOfCurrentWeek(weekSelected);
+      if (temp.weekday == DateTime.saturday && selectedDateEvents(temp).isEmpty) {
+        weekSelected = sundayOfSelectedWeek.add(const Duration(days: 7));
+      }
+      displaySunday = selectedDateEvents(sundayOfSelectedWeek).isNotEmpty;
+      displaySaturday = selectedDateEvents(sundayOfSelectedWeek.add(const Duration(days: 6))).isNotEmpty;
     }
-    displaySunday = selectedDateEvents(sundayOfSelectedWeek).isNotEmpty;
-    displaySaturday = selectedDateEvents(sundayOfSelectedWeek.add(const Duration(days: 6))).isNotEmpty;
+    else {
+      daySelected = ValueNotifier(date);
+    }
   }
 
   List<CalendarEventData> selectedDateCalendarEvents(DateTime date) {
@@ -161,7 +165,7 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
     }
     final List<CalendarEventData> events = [];
 
-    final firstDayOfWeek = Utils.getFirstDayOfCurrentWeek(selectedDate);
+    final firstDayOfWeek = Utils.getFirstDayOfCurrentWeek(weekSelected);
     // We want to put events of previous week and next week in memory to make transitions smoother
     for (int i = -7; i < 14; i++) {
       final date = firstDayOfWeek.add(Duration(days: i));
@@ -183,7 +187,7 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
     final List<CalendarEventData> events = [];
 
     // The reason why previous month is last is to avoid event colors to start from previous session
-    final List<DateTime> months = [DateTime(selectedDate.year, selectedDate.month), DateTime(selectedDate.year, selectedDate.month + 1), DateTime(selectedDate.year, selectedDate.month - 1)];
+    final List<DateTime> months = [DateTime(weekSelected.year, weekSelected.month), DateTime(weekSelected.year, weekSelected.month + 1), DateTime(weekSelected.year, weekSelected.month - 1)];
 
     // For each day in each month, add events
     for (final DateTime month in months) {
@@ -411,26 +415,45 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
   /// return false otherwise (today was already selected, show toast for
   /// visual feedback).
   bool selectToday() {
-    if (selectedDate.withoutTime == DateTime.now().withoutTime &&
-        DateTime.now().withoutTime == focusedDate.value.withoutTime) {
-      Fluttertoast.showToast(msg: _appIntl.schedule_already_today_toast);
-      return false;
-    } else {
-      selectedDate = DateTime.now();
-      focusedDate.value = DateTime.now();
-      return true;
+    if (calendarViewSetting) {
+      return selectTodayListView();
     }
+    if (calendarFormat == CalendarFormat.month) {
+      return selectTodayCalendarMonthView();
+    }
+    return selectTodayCalendarWeekView();
   }
 
-  bool selectTodayMonth() {
-    if (selectedDate.withoutTime == DateTime(DateTime.now().year, DateTime.now().month)) {
-      Fluttertoast.showToast(msg: _appIntl.schedule_already_today_toast);
-      return false;
-    } else {
-      selectedDate = DateTime(DateTime.now().year, DateTime.now().month);
-      focusedDate.value = DateTime(DateTime.now().year, DateTime.now().month);
-      return true;
-    }
+  bool selectTodayListView() {
+    final bool isTodaySelected = listViewCalendarSelectedDate.withoutTime == DateTime.now().withoutTime &&
+        DateTime.now().withoutTime == daySelected.value.withoutTime;
+
+    isTodaySelected
+        ? Fluttertoast.showToast(msg: _appIntl.schedule_already_today_toast)
+        : daySelected.value = listViewCalendarSelectedDate = DateTime.now().withoutTime;
+
+    return isTodaySelected;
+  }
+
+  bool selectTodayCalendarMonthView() {
+    final DateTime currentMonth = DateTime(DateTime.now().year, DateTime.now().month);
+    final bool isThisMonthSelected = weekSelected == currentMonth;
+
+    isThisMonthSelected
+        ? Fluttertoast.showToast(msg: _appIntl.schedule_already_today_toast)
+        : weekSelected = daySelected.value = currentMonth;
+
+    return isThisMonthSelected;
+  }
+
+  bool selectTodayCalendarWeekView() {
+    final bool isThisWeekSelected = weekSelected == Utils.getFirstDayOfCurrentWeek(DateTime.now());
+
+    isThisWeekSelected
+        ?  Fluttertoast.showToast(msg: _appIntl.schedule_already_today_toast)
+        : weekSelected = Utils.getFirstDayOfCurrentWeek(DateTime.now());
+
+    return isThisWeekSelected;
   }
 
   /// Start Discovery if needed.

@@ -103,31 +103,17 @@ class _ScheduleViewState extends State<ScheduleView>
       );
 
   Widget _buildListView(ScheduleViewModel model, BuildContext context) {
+    final calendar_view.EventController eventController = calendar_view.EventController();
+    int numberOfDays = model.showWeekEvents ? 7 : 1;
+
     return Stack(children: [
       GestureDetector(
         onPanEnd: (details) {
-          if (details.velocity.pixelsPerSecond.dx > 0) {
+          if (details.velocity.pixelsPerSecond.dx.abs() > 5) {
             setState(() {
-              if (!model.showWeekEvents) {
-                model.focusedDate.value =
-                    model.focusedDate.value.subtract(const Duration(days: 1));
-              } else {
-                model.focusedDate.value =
-                    model.focusedDate.value.subtract(const Duration(days: 7));
-              }
-              model.selectedDate = model.focusedDate.value;
-              HapticFeedback.lightImpact();
-            });
-          } else if (details.velocity.pixelsPerSecond.dx < -5) {
-            setState(() {
-              if (!model.showWeekEvents) {
-                model.focusedDate.value =
-                    model.focusedDate.value.add(const Duration(days: 1));
-              } else {
-                model.focusedDate.value =
-                    model.focusedDate.value.add(const Duration(days: 7));
-              }
-              model.selectedDate = model.focusedDate.value;
+              numberOfDays = details.velocity.pixelsPerSecond.dx.sign.toInt() * numberOfDays;
+              final DateTime newFocusedDate = model.daySelected.value.subtract(Duration(days: numberOfDays));
+              model.handleViewChanged(newFocusedDate, eventController, []);
               HapticFeedback.lightImpact();
             });
           }
@@ -143,17 +129,17 @@ class _ScheduleViewState extends State<ScheduleView>
               for (final Widget widget in _buildWeekEvents(model, context))
                 widget
             else
-              _buildTitleForDate(model.selectedDate, model),
+              _buildTitleForDate(model.daySelected.value, model),
             const SizedBox(height: 2.0),
             if (!model.showWeekEvents &&
-                model.selectedDateEvents(model.selectedDate).isEmpty)
+                model.selectedDateEvents(model.daySelected.value).isEmpty && !model.isBusy)
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 64.0),
                 child:
                     Center(child: Text(AppIntl.of(context)!.schedule_no_event)),
               )
             else if (!model.showWeekEvents)
-              _buildEventList(model.selectedDateEvents(model.selectedDate)),
+              _buildEventList(model.selectedDateEvents(model.daySelected.value)),
             const SizedBox(height: 16.0),
           ],
         ),
@@ -182,7 +168,7 @@ class _ScheduleViewState extends State<ScheduleView>
             ? AppTheme.schedulePaletteLight.toList()
             : AppTheme.schedulePaletteDark.toList();
 
-    model.handleViewChanged(model.selectedDate, eventController, scheduleCardsPalette);
+    model.handleViewChanged(model.weekSelected, eventController, scheduleCardsPalette);
 
     if (model.calendarFormat == CalendarFormat.month) {
       return _buildCalendarViewMonthly(
@@ -251,7 +237,7 @@ class _ScheduleViewState extends State<ScheduleView>
         if (model.displaySaturday)
           calendar_view.WeekDays.saturday
       ],
-      initialDay: model.selectedDate,
+      initialDay: model.weekSelected,
       heightPerMinute: heightPerMinute,
       scrollOffset: heightPerMinute * 60 * 7.5,
       hourIndicatorSettings: calendar_view.HourIndicatorSettings(
@@ -427,7 +413,7 @@ class _ScheduleViewState extends State<ScheduleView>
         child: AnimatedContainer(
           duration: const Duration(milliseconds: 200),
           decoration: BoxDecoration(
-            color: isSameDay(date, model.selectedDate)
+            color: isSameDay(date, model.daySelected.value)
                 ? _selectedColor
                 : _defaultColor,
           ),
@@ -451,13 +437,13 @@ class _ScheduleViewState extends State<ScheduleView>
   /// Build the calendar
   Widget _buildTableCalendar(ScheduleViewModel model) {
     return ValueListenableBuilder<DateTime>(
-        valueListenable: model.focusedDate,
+        valueListenable: model.daySelected,
         builder: (context, value, _) {
           return TableCalendar(
             key: const Key("TableCalendar"),
             locale: model.locale?.toLanguageTag(),
             selectedDayPredicate: (day) {
-              return isSameDay(model.selectedDate, day);
+              return isSameDay(model.daySelected.value, day);
             },
             weekendDays: const [],
             headerStyle: const HeaderStyle(
@@ -465,8 +451,7 @@ class _ScheduleViewState extends State<ScheduleView>
             eventLoader: model.coursesActivitiesFor,
             onDaySelected: (selectedDay, focusedDay) {
               setState(() {
-                model.selectedDate = selectedDay;
-                model.focusedDate.value = focusedDay;
+                model.daySelected.value = focusedDay;
               });
             },
             calendarFormat: model.calendarFormat,
@@ -475,9 +460,9 @@ class _ScheduleViewState extends State<ScheduleView>
                 model.setCalendarFormat(format);
               });
             },
-            focusedDay: model.focusedDate.value,
+            focusedDay: model.daySelected.value,
             onPageChanged: (focusedDay) {
-              model.focusedDate.value = focusedDay;
+              model.listViewCalendarSelectedDate = focusedDay;
             },
             calendarBuilders: CalendarBuilders(
                 todayBuilder: (context, date, _) =>
@@ -550,9 +535,6 @@ class _ScheduleViewState extends State<ScheduleView>
                       }
                     }
                     model.selectToday();
-                    if (model.calendarFormat == CalendarFormat.month) {
-                      model.selectTodayMonth();
-                    }
                     _analyticsService.logEvent(tag, "Select today clicked");
                   })),
         _buildDiscoveryFeatureDescriptionWidget(
