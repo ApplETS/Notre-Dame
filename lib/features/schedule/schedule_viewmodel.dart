@@ -102,7 +102,6 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
   void handleViewChanged(DateTime date, EventController controller,
       List<Color> scheduleCardsPalette) {
     controller.removeWhere((event) => true);
-    weekSelected = date;
     var eventsToAdd = selectedMonthCalendarEvents(scheduleCardsPalette);
     if (calendarFormat == CalendarFormat.week) {
       eventsToAdd = selectedWeekCalendarEvents(scheduleCardsPalette);
@@ -110,13 +109,13 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
     controller.addAll(eventsToAdd);
 
     if (!calendarViewSetting) {
-      final DateTime temp = weekSelected;
-      final DateTime sundayOfSelectedWeek = Utils.getFirstDayOfCurrentWeek(weekSelected);
-      if (temp.weekday == DateTime.saturday && selectedDateEvents(temp).isEmpty) {
-        weekSelected = sundayOfSelectedWeek.add(const Duration(days: 7));
+      weekSelected = Utils.getFirstDayOfCurrentWeek(date);
+      // As a student, if I open my schedule a saturday (and I have no course today), I want to see next week's shedule
+      if (date.weekday == DateTime.saturday && selectedDateEvents(date).isEmpty) {
+        weekSelected = weekSelected.add(const Duration(days: 7));
       }
-      displaySunday = selectedDateEvents(sundayOfSelectedWeek).isNotEmpty;
-      displaySaturday = selectedDateEvents(sundayOfSelectedWeek.add(const Duration(days: 6))).isNotEmpty;
+      displaySunday = selectedDateEvents(weekSelected).isNotEmpty;
+      displaySaturday = selectedDateEvents(weekSelected.add(const Duration(days: 6))).isNotEmpty;
     }
     else {
       daySelected = ValueNotifier(date);
