@@ -437,7 +437,7 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
 
   bool selectTodayCalendarMonthView() {
     final DateTime currentMonth = DateTime(DateTime.now().year, DateTime.now().month);
-    final bool isThisMonthSelected = weekSelected == currentMonth;
+    final bool isThisMonthSelected = weekSelected.month == currentMonth.month && weekSelected.year == currentMonth.year;
 
     isThisMonthSelected
         ? Fluttertoast.showToast(msg: _appIntl.schedule_already_today_toast)

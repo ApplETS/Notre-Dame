@@ -2,6 +2,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:intl/intl.dart';
 import 'package:mockito/mockito.dart';
+import 'package:notredame/utils/utils.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 // Project imports:
@@ -752,7 +753,7 @@ void main() {
         setupFlutterToastMock();
       });
 
-      test('go back to todays schedule listview', () async {
+      test('listview go back to todays schedule', () async {
         final oldSelectedDate = DateTime(2022, 1, 2);
         final currentDate = DateTime.now();
 
@@ -767,18 +768,20 @@ void main() {
         expect(res, true, reason: "Today was not selected before");
       });
 
-      test('go back to todays listview but calendar date different', () async {
-        final today = DateTime.now();
+      test('listview go back to todays but calendar date different', () async {
+        final currentDate = DateTime.now();
         final oldSelectedDate = DateTime(2022, 1, 2);
 
         viewModel.settings[PreferencesFlag.scheduleListView] = true;
-        viewModel.weekSelected = today;
-        viewModel.daySelected.value = today;
+        viewModel.weekSelected = currentDate;
+        viewModel.daySelected.value = currentDate;
         viewModel.listViewCalendarSelectedDate = oldSelectedDate;
 
         final res = viewModel.selectToday();
 
-        expect(res, true, reason: "Today was not focused before");
+        expect(viewModel.daySelected.value.day, currentDate.day);
+        expect(viewModel.listViewCalendarSelectedDate.day, currentDate.day);
+        expect(res, true, reason: "Today was not selected before");
       });
 
       test('listview show toast if today already selected', () async {
@@ -791,6 +794,60 @@ void main() {
         final res = viewModel.selectToday();
 
         expect(res, false, reason: "Today is already selected");
+      });
+
+      test('week view show toast if today already selected', () async {
+        final currentWeek = Utils.getFirstDayOfCurrentWeek(DateTime.now());
+
+        viewModel.settings[PreferencesFlag.scheduleListView] = false;
+        viewModel.calendarFormat = CalendarFormat.week;
+        viewModel.weekSelected = currentWeek;
+
+        final res = viewModel.selectToday();
+
+        expect(res, false, reason: "Today is already selected");
+      });
+
+      test('week view go back to current week', () async {
+        final currentWeek = Utils.getFirstDayOfCurrentWeek(DateTime.now());
+        final oldSelectedDate = DateTime(2022, 1, 2);
+
+
+        viewModel.settings[PreferencesFlag.scheduleListView] = false;
+        viewModel.calendarFormat = CalendarFormat.week;
+        viewModel.weekSelected = oldSelectedDate;
+
+        final res = viewModel.selectToday();
+
+        expect(viewModel.weekSelected.day, currentWeek.day);
+        expect(res, true, reason: "Today was not focused before");
+      });
+
+      test('month view show toast if today already selected', () async {
+        final currentMonth = Utils.getFirstDayOfCurrentWeek(DateTime.now());
+
+        viewModel.settings[PreferencesFlag.scheduleListView] = false;
+        viewModel.calendarFormat = CalendarFormat.month;
+        viewModel.weekSelected = currentMonth;
+
+        final res = viewModel.selectToday();
+
+        expect(res, false, reason: "Today is already selected");
+      });
+
+      test('month view go back to current week', () async {
+        final currentMonth = Utils.getFirstDayOfCurrentWeek(DateTime.now());
+        final oldSelectedDate = DateTime(2022, 1, 2);
+
+
+        viewModel.settings[PreferencesFlag.scheduleListView] = false;
+        viewModel.calendarFormat = CalendarFormat.month;
+        viewModel.weekSelected = oldSelectedDate;
+
+        final res = viewModel.selectToday();
+
+        expect(viewModel.weekSelected.month, currentMonth.month);
+        expect(res, true, reason: "Today was not focused before");
       });
     });
   });
