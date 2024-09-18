@@ -101,25 +101,27 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
 
   void handleViewChanged(DateTime date, EventController controller,
       List<Color> scheduleCardsPalette) {
+    if (!calendarViewSetting) {
+      // As a student, if I open my schedule a saturday (and I have no course today), I want to see next week's shedule
+      if (date.weekday == DateTime.saturday && selectedDateEvents(date).isEmpty) {
+        // Add extra hour to fix a bug related to daylight saving time changes
+        weekSelected = weekSelected.add(const Duration(days: 7, hours: 1));
+      } else {
+        weekSelected = Utils.getFirstDayOfCurrentWeek(date);
+      }
+      displaySunday = selectedDateEvents(weekSelected).isNotEmpty;
+      displaySaturday = selectedDateEvents(weekSelected.add(const Duration(days: 6, hours: 1))).isNotEmpty;
+    }
+    else {
+      daySelected = ValueNotifier(date);
+    }
+
     controller.removeWhere((event) => true);
     var eventsToAdd = selectedMonthCalendarEvents(scheduleCardsPalette);
     if (calendarFormat == CalendarFormat.week) {
       eventsToAdd = selectedWeekCalendarEvents(scheduleCardsPalette);
     }
     controller.addAll(eventsToAdd);
-
-    if (!calendarViewSetting) {
-      weekSelected = Utils.getFirstDayOfCurrentWeek(date);
-      // As a student, if I open my schedule a saturday (and I have no course today), I want to see next week's shedule
-      if (date.weekday == DateTime.saturday && selectedDateEvents(date).isEmpty) {
-        weekSelected = weekSelected.add(const Duration(days: 7));
-      }
-      displaySunday = selectedDateEvents(weekSelected).isNotEmpty;
-      displaySaturday = selectedDateEvents(weekSelected.add(const Duration(days: 6))).isNotEmpty;
-    }
-    else {
-      daySelected = ValueNotifier(date);
-    }
   }
 
   List<CalendarEventData> selectedDateCalendarEvents(DateTime date) {
@@ -185,8 +187,12 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
     }
     final List<CalendarEventData> events = [];
 
+    // Month view displays last week of last month, this accounts for that (additionnal hour is for the edge case of time changes)
+    final dateInSelectedMonth = weekSelected.add(const Duration(days: 7, hours: 1));
+    final selectedMonth = DateTime(dateInSelectedMonth.year, dateInSelectedMonth.month);
+
     // The reason why previous month is last is to avoid event colors to start from previous session
-    final List<DateTime> months = [DateTime(weekSelected.year, weekSelected.month), DateTime(weekSelected.year, weekSelected.month + 1), DateTime(weekSelected.year, weekSelected.month - 1)];
+    final List<DateTime> months = [selectedMonth, DateTime(selectedMonth.year, selectedMonth.month + 1), DateTime(selectedMonth.year, selectedMonth.month - 1)];
 
     // For each day in each month, add events
     for (final DateTime month in months) {
