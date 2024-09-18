@@ -432,7 +432,7 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
         ? Fluttertoast.showToast(msg: _appIntl.schedule_already_today_toast)
         : daySelected.value = listViewCalendarSelectedDate = DateTime.now().withoutTime;
 
-    return isTodaySelected;
+    return !isTodaySelected;
   }
 
   bool selectTodayCalendarMonthView() {
@@ -443,7 +443,7 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
         ? Fluttertoast.showToast(msg: _appIntl.schedule_already_today_toast)
         : weekSelected = daySelected.value = currentMonth;
 
-    return isThisMonthSelected;
+    return !isThisMonthSelected;
   }
 
   bool selectTodayCalendarWeekView() {
@@ -453,7 +453,7 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
         ?  Fluttertoast.showToast(msg: _appIntl.schedule_already_today_toast)
         : weekSelected = Utils.getFirstDayOfCurrentWeek(DateTime.now());
 
-    return isThisWeekSelected;
+    return !isThisWeekSelected;
   }
 
   /// Start Discovery if needed.

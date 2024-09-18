@@ -752,37 +752,41 @@ void main() {
         setupFlutterToastMock();
       });
 
-      test('go back to todays schedule', () async {
+      test('go back to todays schedule listview', () async {
         final oldSelectedDate = DateTime(2022, 1, 2);
         final currentDate = DateTime.now();
 
-        viewModel.weekSelected = oldSelectedDate;
+        viewModel.settings[PreferencesFlag.scheduleListView] = true;
         viewModel.daySelected.value = oldSelectedDate;
+        viewModel.listViewCalendarSelectedDate = oldSelectedDate;
 
         final res = viewModel.selectToday();
 
-        expect(viewModel.weekSelected.day, currentDate.day);
         expect(viewModel.daySelected.value.day, currentDate.day);
+        expect(viewModel.listViewCalendarSelectedDate.day, currentDate.day);
         expect(res, true, reason: "Today was not selected before");
       });
 
-      test('today selected, but focused date different', () async {
+      test('go back to todays listview but calendar date different', () async {
         final today = DateTime.now();
         final oldSelectedDate = DateTime(2022, 1, 2);
 
+        viewModel.settings[PreferencesFlag.scheduleListView] = true;
         viewModel.weekSelected = today;
-        viewModel.daySelected.value = oldSelectedDate;
+        viewModel.daySelected.value = today;
+        viewModel.listViewCalendarSelectedDate = oldSelectedDate;
 
         final res = viewModel.selectToday();
 
         expect(res, true, reason: "Today was not focused before");
       });
 
-      test('show toast if today already selected', () async {
+      test('listview show toast if today already selected', () async {
         final today = DateTime.now();
 
-        viewModel.weekSelected = today;
+        viewModel.settings[PreferencesFlag.scheduleListView] = true;
         viewModel.daySelected.value = today;
+        viewModel.listViewCalendarSelectedDate = today;
 
         final res = viewModel.selectToday();
 
