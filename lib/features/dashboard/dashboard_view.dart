@@ -10,7 +10,6 @@ import 'package:stacked/stacked.dart';
 // Project imports:
 import 'package:notredame/constants/preferences_flags.dart';
 import 'package:notredame/constants/update_code.dart';
-import 'package:notredame/features/app/analytics/analytics_service.dart';
 import 'package:notredame/features/app/widgets/base_scaffold.dart';
 import 'package:notredame/features/app/widgets/broadcast_card/message_broadcast_card.dart';
 import 'package:notredame/features/dashboard/dashboard_viewmodel.dart';
@@ -23,7 +22,6 @@ import 'package:notredame/features/welcome/discovery/discovery_components.dart';
 import 'package:notredame/features/welcome/discovery/models/discovery_ids.dart';
 import 'package:notredame/utils/app_theme.dart';
 import 'package:notredame/utils/loading.dart';
-import 'package:notredame/utils/locator.dart';
 
 class DashboardView extends StatefulWidget {
   final UpdateCode updateCode;
@@ -36,8 +34,6 @@ class DashboardView extends StatefulWidget {
 class _DashboardViewState extends State<DashboardView>
     with TickerProviderStateMixin {
   Text? progressBarText;
-  final AnalyticsService _analyticsService = locator<AnalyticsService>();
-  static const String tag = "DashboardView";
 
   @override
   void initState() {
@@ -76,7 +72,7 @@ class _DashboardViewState extends State<DashboardView>
                                   ? const MessageBroadcastCard()
                                   : null,
                           onReorder: (oldIndex, newIndex) =>
-                              onReorder(model, oldIndex, newIndex),
+                              model.onReorder(oldIndex, newIndex),
                           padding: const EdgeInsets.fromLTRB(0, 4, 0, 24),
                           children: _buildCards(model),
                           proxyDecorator: (child, _, __) {
@@ -84,56 +80,40 @@ class _DashboardViewState extends State<DashboardView>
                           },
                         ),
                       ),
-                      onRefresh: () => model.loadDataAndUpdateWidget(),
+                      onRefresh: () => model.futureToRun(),
                     ));
         });
   }
 
   List<Widget> _buildCards(DashboardViewModel model) {
     final List<Widget> cards = List.empty(growable: true);
-    // always try to build broadcast cart so the user doesn't miss out on
-    // important info if they dismissed it previously
 
     for (final PreferencesFlag element in model.cardsToDisplay ?? []) {
       switch (element) {
         case PreferencesFlag.aboutUsCard:
-          cards.add(AboutUsCard(model, element, key: UniqueKey()));
+          cards.add(AboutUsCard(
+            onDismissed: () => model.hideCard(element),
+            key: UniqueKey()
+          ));
         case PreferencesFlag.scheduleCard:
           cards.add(ScheduleCard(
               onDismissed: () => model.hideCard(element),
               key: UniqueKey(),
           ));
         case PreferencesFlag.progressBarCard:
-          cards.add(SessionProgressCard(key: UniqueKey(),
+          cards.add(SessionProgressCard(
               onDismissed: () => model.hideCard(element),
+              key: UniqueKey(),
           ));
         case PreferencesFlag.gradesCard:
-          cards.add(GradesCard(onDismissed: () =>
-              model.hideCard(element),
-              key: UniqueKey(),
+          cards.add(GradesCard(
+            onDismissed: () => model.hideCard(element),
+            key: UniqueKey(),
           ));
         default:
       }
     }
     return cards;
-  }
-
-  void onReorder(DashboardViewModel model, int oldIndex, int newIndex) {
-    if (newIndex > oldIndex) {
-      // ignore: parameter_assignments
-      newIndex -= 1;
-    }
-
-    // Should not happen because dismiss card will not be called if the card is null.
-    if (model.cards == null) {
-      _analyticsService.logError(tag, "Cards list is null");
-      throw Exception("Cards is null");
-    }
-
-    final PreferencesFlag elementMoved = model.cards!.keys
-        .firstWhere((element) => model.cards![element] == oldIndex);
-
-    model.setOrder(elementMoved, newIndex);
   }
 
   DescribedFeatureOverlay _buildDiscoveryFeatureDescriptionWidget(

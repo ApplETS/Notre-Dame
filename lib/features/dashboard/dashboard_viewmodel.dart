@@ -8,7 +8,6 @@ import 'package:flutter/material.dart';
 import 'package:feature_discovery/feature_discovery.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stacked/stacked.dart';
 
 // Project imports:
@@ -16,8 +15,6 @@ import 'package:notredame/constants/preferences_flags.dart';
 import 'package:notredame/constants/update_code.dart';
 import 'package:notredame/features/app/analytics/analytics_service.dart';
 import 'package:notredame/features/app/analytics/remote_config_service.dart';
-import 'package:notredame/features/app/repository/course_repository.dart';
-import 'package:notredame/features/app/signets-api/models/course.dart';
 import 'package:notredame/features/app/storage/preferences_service.dart';
 import 'package:notredame/features/app/storage/siren_flutter_service.dart';
 import 'package:notredame/features/more/feedback/in_app_review_service.dart';
@@ -90,39 +87,11 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
   Future<Map<PreferencesFlag, int>> futureToRun() async {
     final dashboard = await _settingsManager.getDashboard();
 
-    //TODO: remove when all users are on 4.50.1 or more
-    final sharedPreferences = await SharedPreferences.getInstance();
-    if (sharedPreferences.containsKey("PreferencesFlag.broadcastChange")) {
-      sharedPreferences.remove("PreferencesFlag.broadcastChange");
-    }
-    if (sharedPreferences.containsKey("PreferencesFlag.broadcastCard")) {
-      sharedPreferences.remove("PreferencesFlag.broadcastCard");
-    }
-    final sortedList = dashboard.entries.toList()
-      ..sort((a, b) => a.value.compareTo(b.value));
-    final sortedDashboard = LinkedHashMap.fromEntries(sortedList);
-    int index = 0;
-    for (final element in sortedDashboard.entries) {
-      if (element.value >= 0) {
-        sortedDashboard.update(element.key, (value) => index);
-        index++;
-      }
-    }
-    //TODO: end remove when all users are on 4.50.1 or more
-
-    _cards = sortedDashboard;
+    _cards = dashboard;
 
     getCardsToDisplay();
 
-    // load data for both grade cards & grades home screen widget
-    // (moved from getCardsToDisplay())
-    await loadDataAndUpdateWidget();
-
-    return sortedDashboard;
-  }
-
-  Future loadDataAndUpdateWidget() async {
-    return Future.wait([]);
+    return dashboard;
   }
 
   @override
@@ -131,16 +100,16 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
     Fluttertoast.showToast(msg: _appIntl.error);
   }
 
-  /// Change the order of [flag] card from [oldIndex] to [newIndex].
-  void setOrder(PreferencesFlag flag, int newIndex) {
-    _cardsToDisplay?.remove(flag);
-    _cardsToDisplay?.insert(newIndex, flag);
+  void onReorder(int oldIndex, int newIndex) {
+    final card = _cardsToDisplay!.removeAt(oldIndex);
+    if (newIndex > oldIndex) {
+      // ignore: parameter_assignments
+      newIndex -= 1;
+    }
+    _cardsToDisplay!.insert(newIndex, card);
 
     updatePreferences();
-
     notifyListeners();
-
-    _analyticsService.logEvent(tag, "Reordoring ${flag.name}");
   }
 
   /// Hide [flag] card from dashboard by setting int value -1
@@ -170,8 +139,6 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
     });
 
     getCardsToDisplay();
-
-    loadDataAndUpdateWidget();
 
     notifyListeners();
   }

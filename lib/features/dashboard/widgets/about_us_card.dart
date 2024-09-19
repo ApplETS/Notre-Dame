@@ -6,32 +6,28 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 // Project imports:
-import 'package:notredame/constants/preferences_flags.dart';
 import 'package:notredame/constants/urls.dart';
 import 'package:notredame/features/app/analytics/analytics_service.dart';
 import 'package:notredame/features/app/widgets/dismissible_card.dart';
-import 'package:notredame/features/dashboard/dashboard_viewmodel.dart';
 import 'package:notredame/utils/app_theme.dart';
 import 'package:notredame/utils/utils.dart';
 import 'package:notredame/utils/locator.dart';
 
 class AboutUsCard extends StatelessWidget {
-  final DashboardViewModel model;
-  final PreferencesFlag flag;
+  final VoidCallback onDismissed;
   final AnalyticsService analyticsService = locator<AnalyticsService>();
   static const String tag = "DashboardView";
 
-  AboutUsCard(this.model, this.flag,{
-    required super.key
+  AboutUsCard({
+    required super.key,
+    required this.onDismissed,
   });
 
   @override
   Widget build(BuildContext context) {
     return DismissibleCard(
       key: UniqueKey(),
-      onDismissed: (DismissDirection direction) {
-        model.hideCard(flag);
-      },
+      onDismissed: (DismissDirection direction) => onDismissed(),
       cardColor: AppTheme.appletsPurple,
       child: Column(mainAxisSize: MainAxisSize.min, children: [
         Align(
