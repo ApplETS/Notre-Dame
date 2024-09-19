@@ -1,4 +1,5 @@
 // Package imports:
+import 'package:calendar_view/calendar_view.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:intl/intl.dart';
 import 'package:mockito/mockito.dart';
@@ -745,6 +746,63 @@ void main() {
         final activities = viewModel.coursesActivities;
 
         expect(activities.entries.toList()[0].value.length, 5);
+      });
+    });
+
+    group('ScheduleViewModel - handleViewChanged', () {
+      test('should update weekSelected to next week if date is Saturday and no events', () {
+        final DateTime saturday = DateTime(2024, 9, 21);  // Date d'un samedi
+
+        viewModel.settings[PreferencesFlag.scheduleListView] = false;
+        viewModel.weekSelected = DateTime(2024, 9, 15);
+        viewModel.handleViewChanged(saturday, EventController(), []);
+
+        final nextWeekSunday = Utils.getFirstDayOfCurrentWeek(saturday.add(const Duration(days: 7, hours: 1)));
+        expect(viewModel.weekSelected, nextWeekSunday);
+        expect(viewModel.displaySaturday, false);
+      });
+
+      test('displays saturday on view changed', () async {
+        final DateTime saturday = DateTime(2024, 9, 21);
+        // Add Saturday course activity
+        viewModel.coursesActivities.addAll({
+          saturday:
+          [CourseActivity(
+              courseGroup: "courseGroup",
+              courseName: "courseName",
+              activityName: "activityName",
+              activityDescription: "activityDescription",
+              activityLocation: "activityLocation",
+              startDateTime: DateTime.now(),
+              endDateTime: DateTime.now())]
+        });
+
+        viewModel.settings[PreferencesFlag.scheduleListView] = false;
+        viewModel.weekSelected = DateTime(2024, 9, 15);
+        viewModel.handleViewChanged(saturday, EventController(), []);
+
+        expect(viewModel.weekSelected, Utils.getFirstDayOfCurrentWeek(saturday));
+        expect(viewModel.displaySaturday, true);
+      });
+
+      test('does not display saturday on view changed', () {
+        viewModel.weekSelected = DateTime(2024, 8, 19);
+        viewModel.settings[PreferencesFlag.scheduleListView] = false;
+        final DateTime wednesday = DateTime(2023, 9, 13);  // Date d'un mercredi
+
+        viewModel.handleViewChanged(wednesday, EventController(), []);
+
+        final currentWeekSunday = Utils.getFirstDayOfCurrentWeek(wednesday);
+        expect(viewModel.weekSelected, currentWeekSunday);
+      });
+
+      test('should update daySelected if calendarViewSetting is true', () {
+        viewModel.settings[PreferencesFlag.scheduleListView] = true;
+
+        final DateTime newDate = DateTime(2023, 9, 14);  // Date d'un jeudi
+        viewModel.handleViewChanged(newDate, EventController(), []);
+
+        expect(viewModel.daySelected.value, newDate);
       });
     });
 

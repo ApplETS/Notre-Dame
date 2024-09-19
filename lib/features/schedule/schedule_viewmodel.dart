@@ -105,7 +105,7 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
       // As a student, if I open my schedule a saturday (and I have no course today), I want to see next week's shedule
       if (date.weekday == DateTime.saturday && selectedDateEvents(date).isEmpty) {
         // Add extra hour to fix a bug related to daylight saving time changes
-        weekSelected = weekSelected.add(const Duration(days: 7, hours: 1));
+        weekSelected = weekSelected.add(const Duration(days: 7, hours: 1)).withoutTime;
       } else {
         weekSelected = Utils.getFirstDayOfCurrentWeek(date);
       }
