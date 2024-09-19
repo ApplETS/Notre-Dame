@@ -145,6 +145,8 @@ jobs:
         with:
           path: build
       - name: Create pre-release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           gh release create ${{ needs.tag_validation.outputs.version }} */** --title v${{ needs.tag_validation.outputs.version }} -R '${{ github.repository }}' --prerelease --generate-notes
         working-directory: build
