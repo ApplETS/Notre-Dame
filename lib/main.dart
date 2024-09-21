@@ -23,6 +23,7 @@ import 'package:notredame/features/app/error/outage/outage_view.dart';
 import 'package:notredame/features/app/integration/firebase_options.dart';
 import 'package:notredame/features/app/navigation/navigation_service.dart';
 import 'package:notredame/features/app/navigation/router.dart';
+import 'package:notredame/features/app/navigation/navigation_history_observer.dart';
 import 'package:notredame/features/app/startup/startup_view.dart';
 import 'package:notredame/features/ets/events/api-client/hello_api_client.dart';
 import 'package:notredame/features/more/feedback/models/custom_feedback_localization.dart';
@@ -108,6 +109,7 @@ class ETSMobile extends StatelessWidget {
                 navigatorKey: locator<NavigationService>().navigatorKey,
                 navigatorObservers: [
                   locator<AnalyticsService>().getAnalyticsObserver(),
+                  NavigationHistoryObserver(),
                 ],
                 home: outage ? OutageView() : StartUpView(),
                 onGenerateRoute: generateRoute,
