@@ -48,8 +48,6 @@ class _ScheduleViewState extends State<ScheduleView>
   final AnalyticsService _analyticsService = locator<AnalyticsService>();
 
   static const String tag = "ScheduleView";
-  static const Color _selectedColor = AppTheme.etsLightRed;
-  static const Color _defaultColor = AppTheme.etsLightGrey;
   static final List<String> weekTitles = ["L", "M", "M", "J", "V", "S", "D"];
   static bool _isDayViewAnimating = false;
 
@@ -458,7 +456,7 @@ class _ScheduleViewState extends State<ScheduleView>
 
   /// Build the square with the number of [events] for the [date]
   Widget? _buildEventsMarker(
-      ScheduleViewModel model, DateTime date, List events) {
+      ScheduleViewModel model, DateTime date, List events, Color color) {
     if (events.isNotEmpty) {
       return Positioned(
         right: 1,
@@ -467,9 +465,7 @@ class _ScheduleViewState extends State<ScheduleView>
           duration: const Duration(milliseconds: 200),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(5),
-            color: isSameDay(date, model.daySelected)
-                ? _selectedColor
-                : _defaultColor,
+            color: color
           ),
           width: 16.0,
           height: 16.0,
@@ -477,7 +473,6 @@ class _ScheduleViewState extends State<ScheduleView>
             child: Text(
               '${events.length}',
               style: const TextStyle().copyWith(
-                color: Colors.white,
                 fontSize: 12.0,
               ),
             ),
@@ -490,6 +485,10 @@ class _ScheduleViewState extends State<ScheduleView>
 
   /// Build the calendar
   Widget _buildTableCalendar(ScheduleViewModel model, calendar_view.EventController eventController) {
+    const Color selectedColor = AppTheme.etsLightRed;
+    final Color todayColor = Theme.of(context).brightness == Brightness.light ? AppTheme.etsLightGrey : AppTheme.etsDarkGrey;
+    final Color defaultColor = Theme.of(context).brightness == Brightness.light ? AppTheme.scheduleLineColorLight : AppTheme.scheduleLineColorDark;
+
     return TableCalendar(
       key: const Key("TableCalendar"),
       locale: model.locale?.toLanguageTag(),
@@ -501,35 +500,30 @@ class _ScheduleViewState extends State<ScheduleView>
           titleTextFormatter: (date, locale) => DateFormat.MMMMEEEEd(locale).format(model.daySelected),
           titleCentered: true, formatButtonVisible: false),
       eventLoader: model.coursesActivitiesFor,
-      onDaySelected: (selectedDay, focusedDay) {
-        _isDayViewAnimating = true;
-        setState(() =>
-          model.handleViewChanged(selectedDay, eventController, [])
-        );
-        dayViewKey.currentState?.animateToDate(model.daySelected).then((value) =>
-        {
-          _isDayViewAnimating = false,
-        });
-      },
       calendarFormat: CalendarFormat.week,
       focusedDay: model.daySelected,
       onPageChanged: (focusedDay) {
         // Used to compare
         model.listViewCalendarSelectedDate = focusedDay;
       },
-      // TODO Make it look good in light mode
       calendarBuilders: CalendarBuilders(
           defaultBuilder: (context, date, _) =>
-              _buildSelectedDate(date, AppTheme.darkThemeBackground, model, eventController),
+              _buildSelectedDate(date, defaultColor, model, eventController),
+          outsideBuilder: (context, date, _) =>
+              _buildSelectedDate(date, defaultColor, model, eventController),
           todayBuilder: (context, date, _) =>
-              _buildSelectedDate(date, _defaultColor, model, eventController),
+              _buildSelectedDate(date, todayColor, model, eventController),
           selectedBuilder: (context, date, _) => FadeTransition(
                 opacity: Tween(begin: 0.0, end: 1.0)
                     .animate(_animationController),
-                child: _buildSelectedDate(date, _selectedColor, model, eventController),
+                child: _buildSelectedDate(date, selectedColor, model, eventController),
               ),
-          markerBuilder: (context, date, events) =>
-              _buildEventsMarker(model, date, events)),
+          markerBuilder: (context, date, events) {
+            final bool isSelected = isSameDay(date, model.daySelected);
+            final bool isToday = isSameDay(date, DateTime.now());
+            final Color color = isSelected ? selectedColor : isToday ? todayColor : defaultColor;
+            return _buildEventsMarker(model, date, events, color);
+          }),
       // Those are now required by the package table_calendar ^3.0.0. In the doc,
       // it is suggest to set them to values that won't affect user experience.
       // Outside the range, the date are set to disable so no event can be loaded.
@@ -545,18 +539,27 @@ class _ScheduleViewState extends State<ScheduleView>
         borderRadius: BorderRadius.circular(10),
         border: Border.all(color: color)
     ),
-    // TODO inkwell
     child: InkWell(
       borderRadius: BorderRadius.circular(10),
+      onTap: () {
+        _isDayViewAnimating = true;
+        setState(() =>
+            model.handleViewChanged(date, eventController, [])
+        );
+        dayViewKey.currentState?.animateToDate(model.daySelected).then((value) =>
+        {
+          _isDayViewAnimating = false,
+        });
+      },
       child: Container(
-            padding: const EdgeInsets.only(top: 5.0, left: 6.0),
-            width: 100,
-            height: 100,
-            child: Text(
-              '${date.day}',
-              style: const TextStyle().copyWith(fontSize: 16.0),
-            ),
-          ),
+        padding: const EdgeInsets.only(top: 5.0, left: 6.0),
+        width: 100,
+        height: 100,
+        child: Text(
+          '${date.day}',
+          style: const TextStyle().copyWith(fontSize: 16.0),
+        ),
+      ),
     ),
   );
 
