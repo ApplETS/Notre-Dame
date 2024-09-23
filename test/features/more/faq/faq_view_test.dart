@@ -115,6 +115,40 @@ void main() {
         expect(dialog, findsNothing);
       });
 
+      testWidgets('tapping outside dialog closes it',
+          (WidgetTester tester) async {
+        SettingsManagerMock.stubLocale(settingsManagerMock);
+
+        await tester.pumpWidget(localizedWidget(child: const FaqView()));
+        await tester.pumpAndSettle(const Duration(milliseconds: 800));
+
+        final Faq faq = Faq();
+
+        await tester.drag(find.byType(ListView), const Offset(0.0, -500));
+        await tester.pump(const Duration(milliseconds: 500));
+
+        final questionsAbtETSMobileBtn =
+            find.widgetWithText(ElevatedButton, faq.actions[3].title["en"]!);
+        expect(questionsAbtETSMobileBtn, findsOneWidget);
+
+        await tester.pump(const Duration(milliseconds: 500));
+        await tester.tap(questionsAbtETSMobileBtn);
+        await tester.pump(const Duration(milliseconds: 500));
+
+        Finder dialog = find.byType(AlertDialog);
+        expect(dialog, findsOne);
+
+        final cancelButton = find.byIcon(Icons.cancel);
+        expect(cancelButton, findsAny);
+        
+        
+        await tester.tapAt(Offset.zero);
+        await tester.pump(const Duration(milliseconds: 500));
+
+        dialog = find.byType(AlertDialog);
+        expect(dialog, findsNothing);
+      });
+
       testWidgets('has 2 subtitles', (WidgetTester tester) async {
         SettingsManagerMock.stubLocale(settingsManagerMock);
 
