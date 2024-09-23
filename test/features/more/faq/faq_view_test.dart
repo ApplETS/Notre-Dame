@@ -56,6 +56,31 @@ void main() {
         expect(action4, findsOneWidget);
       });
 
+      testWidgets('tapping "Questions About ETS Button" shows dialog',
+          (WidgetTester tester) async {
+        SettingsManagerMock.stubLocale(settingsManagerMock);
+
+        await tester.pumpWidget(localizedWidget(child: const FaqView()));
+        await tester.pumpAndSettle(const Duration(milliseconds: 800));
+
+        final Faq faq = Faq();
+
+        await tester.drag(find.byType(ListView), const Offset(0.0, -500));
+        await tester.pump(const Duration(milliseconds: 500));
+
+        final action =
+            find.widgetWithText(ElevatedButton, faq.actions[3].title["en"]!);
+        expect(action, findsOneWidget);
+
+        await tester.pump(const Duration(milliseconds: 500));
+        await tester.tap(action);
+        await tester.pump(const Duration(milliseconds: 500));
+
+        final dialog = find.byType(AlertDialog);
+
+        expect(dialog, findsOne);
+      });
+
       testWidgets('has 2 subtitles', (WidgetTester tester) async {
         SettingsManagerMock.stubLocale(settingsManagerMock);
 
