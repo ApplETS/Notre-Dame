@@ -13,6 +13,9 @@ import 'package:notredame/features/more/settings/settings_manager.dart';
 import 'package:notredame/utils/locator.dart';
 
 class FaqViewModel extends BaseViewModel {
+  static const String tag = "FaqViewModel";
+  final AnalyticsService _analyticsService = locator<AnalyticsService>();
+
   final SettingsManager _settingsManager = locator<SettingsManager>();
 
   final LaunchUrlService _launchUrlService = locator<LaunchUrlService>();
@@ -40,7 +43,11 @@ class FaqViewModel extends BaseViewModel {
     if (urlLaunchable) {
       await _launchUrlService.launch(email);
     } else {
-      locator<AnalyticsService>().logError("login_view", "Cannot send email.");
+      logEvent("Email not launchable");
     }
+  }
+
+  void logEvent(String eventDescription) {
+    _analyticsService.logEvent(tag, eventDescription);
   }
 }
