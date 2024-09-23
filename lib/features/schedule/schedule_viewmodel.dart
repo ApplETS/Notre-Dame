@@ -127,7 +127,7 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
   }
 
   List<CalendarEventData> selectedDateCalendarEvents(DateTime date) {
-    return _coursesActivities[DateTime(date.year, date.month, date.day)]
+    return _coursesActivities[date.withoutTime]
             ?.map((eventData) => calendarEventData(eventData))
             .toList() ??
         [];
@@ -181,7 +181,11 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
   }
 
   List<CalendarEventData> selectedDayCalendarEvents() {
-    return selectedDateCalendarEvents(daySelected);
+    final List<CalendarEventData> events = [];
+    for (int i = -1; i < 3; i++) {
+      events.addAll(selectedDateCalendarEvents(daySelected.add(Duration(days: i))));
+    }
+    return events;
   }
 
   List<CalendarEventData> selectedMonthCalendarEvents(
