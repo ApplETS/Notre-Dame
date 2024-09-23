@@ -3,6 +3,7 @@ import 'package:collection/collection.dart';
 import 'package:enum_to_string/enum_to_string.dart';
 import 'package:stacked/stacked.dart';
 import 'package:table_calendar/table_calendar.dart';
+import 'package:flutter/widgets.dart';
 
 // Project imports:
 import 'package:notredame/constants/preferences_flags.dart';
@@ -11,20 +12,22 @@ import 'package:notredame/features/app/signets-api/models/schedule_activity.dart
 import 'package:notredame/features/more/settings/settings_manager.dart';
 import 'package:notredame/utils/activity_code.dart';
 import 'package:notredame/utils/locator.dart';
+import 'package:notredame/utils/calendar_utils.dart';
 
 class ScheduleSettingsViewModel
     extends FutureViewModel<Map<PreferencesFlag, dynamic>> {
   /// Manage the settings
   final SettingsManager _settingsManager = locator<SettingsManager>();
+
   // Access the course repository
   final CourseRepository _courseRepository = locator<CourseRepository>();
 
   /// Current calendar format
-  CalendarFormat? _calendarFormat;
+  CalendarTimeFormat? _calendarFormat;
 
-  CalendarFormat? get calendarFormat => _calendarFormat;
+  CalendarTimeFormat? get calendarFormat => _calendarFormat;
 
-  set calendarFormat(CalendarFormat? format) {
+  set calendarFormat(CalendarTimeFormat? format) {
     setBusy(true);
     _settingsManager.setString(PreferencesFlag.scheduleCalendarFormat,
         EnumToString.convertToString(format));
@@ -32,16 +35,18 @@ class ScheduleSettingsViewModel
     setBusy(false);
   }
 
-  /// List of possible calendar format.
-  List<CalendarFormat> calendarFormatPossibles = [
-    CalendarFormat.month,
-    CalendarFormat.twoWeeks,
-    CalendarFormat.week
-  ];
 
+  /// List of possible calendar format for the calendar view.
   bool _showTodayBtn = true;
 
   bool get showTodayBtn => _showTodayBtn;
+
+  /// List of possible calendar format for the calendar view.
+  List<CalendarTimeFormat> formatPossibleCalendarView = [
+    CalendarTimeFormat.month,
+    CalendarTimeFormat.week,
+    CalendarTimeFormat.day
+  ];
 
   set showTodayBtn(bool newValue) {
     setBusy(true);
@@ -107,7 +112,7 @@ class ScheduleSettingsViewModel
     final settings = await _settingsManager.getScheduleSettings();
 
     _calendarFormat =
-        settings[PreferencesFlag.scheduleCalendarFormat] as CalendarFormat;
+        settings[PreferencesFlag.scheduleCalendarFormat] as CalendarTimeFormat;
     _showTodayBtn = settings[PreferencesFlag.scheduleShowTodayBtn] as bool;
     _toggleCalendarView = settings[PreferencesFlag.scheduleListView] as bool;
     _showWeekEvents = settings[PreferencesFlag.scheduleShowWeekEvents] as bool;

@@ -8,6 +8,9 @@ import 'package:device_calendar/device_calendar.dart';
 import 'package:notredame/features/app/signets-api/models/course_activity.dart';
 import 'package:notredame/features/ets/events/api-client/models/news.dart';
 
+/// Formats that the calendar can display.
+enum CalendarTimeFormat { month, twoWeeks, week, day }
+
 mixin CalendarUtils {
   static Future<bool> checkPermissions() async {
     final deviceCalendarPluginPermissionsResponse =

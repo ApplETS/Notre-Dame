@@ -6,6 +6,7 @@ import 'package:enum_to_string/enum_to_string.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:intl/intl.dart';
 import 'package:mockito/mockito.dart';
+import 'package:notredame/utils/calendar_utils.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 // Project imports:
@@ -60,7 +61,7 @@ void main() {
             remoteConfigServiceMock);
 
         final expected = {
-          PreferencesFlag.scheduleCalendarFormat: CalendarFormat.week,
+          PreferencesFlag.scheduleCalendarFormat: CalendarTimeFormat.week,
           PreferencesFlag.scheduleShowTodayBtn: true,
           PreferencesFlag.scheduleListView: getCalendarViewEnabled(),
           PreferencesFlag.scheduleShowWeekEvents: true,
@@ -90,7 +91,7 @@ void main() {
         // Stubs the answer of the preferences services
         PreferencesServiceMock.stubGetString(
             preferencesServiceMock, PreferencesFlag.scheduleCalendarFormat,
-            toReturn: EnumToString.convertToString(CalendarFormat.month));
+            toReturn: EnumToString.convertToString(CalendarTimeFormat.month));
         PreferencesServiceMock.stubGetBool(
             preferencesServiceMock, PreferencesFlag.scheduleShowTodayBtn,
             toReturn: false);

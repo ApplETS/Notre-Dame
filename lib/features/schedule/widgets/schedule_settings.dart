@@ -12,6 +12,7 @@ import 'package:notredame/features/schedule/schedule_settings_viewmodel.dart';
 import 'package:notredame/utils/activity_code.dart';
 import 'package:notredame/utils/app_theme.dart';
 import 'package:notredame/utils/utils.dart';
+import 'package:notredame/utils/calendar_utils.dart';
 
 class ScheduleSettings extends StatefulWidget {
   final bool showHandle;
@@ -28,7 +29,8 @@ class _ScheduleSettingsState extends State<ScheduleSettings> {
   @override
   Widget build(BuildContext context) => ViewModelBuilder.reactive(
       viewModelBuilder: () => ScheduleSettingsViewModel(),
-      builder: (context, model, child) => ClipRRect(
+      builder: (context, model, child) {
+          return ClipRRect(
             borderRadius: const BorderRadius.vertical(top: Radius.circular(10)),
             child: DraggableScrollableSheet(
                 maxChildSize: 0.85,
@@ -99,7 +101,8 @@ class _ScheduleSettingsState extends State<ScheduleSettings> {
                     )
                   ]);
                 }),
-          ));
+          );
+      });
 
   List<Widget> _buildSettings(
       BuildContext context, ScheduleSettingsViewModel model) {
@@ -184,19 +187,6 @@ class _ScheduleSettingsState extends State<ScheduleSettings> {
     return "";
   }
 
-  Widget _buildShowWeekSection(
-          BuildContext context, ScheduleSettingsViewModel model) =>
-      ListTile(
-        trailing: Switch(
-          value: model.showWeekEvents,
-          onChanged: (value) => model.showWeekEvents = value,
-          activeColor: AppTheme.etsLightRed,
-        ),
-        title: Text(
-            style: Theme.of(context).textTheme.bodyMedium,
-            AppIntl.of(context)!.schedule_settings_show_week_events_btn_pref),
-      );
-
   List<Widget> _buildShowTodayButtonSection(
           BuildContext context, ScheduleSettingsViewModel model) =>
       [
@@ -217,7 +207,9 @@ class _ScheduleSettingsState extends State<ScheduleSettings> {
       ListTile(
         trailing: Switch(
           value: model.toggleCalendarView,
-          onChanged: (value) => model.toggleCalendarView = value,
+          onChanged: (value) => {
+            model.toggleCalendarView = value,
+          },
           activeColor: AppTheme.etsLightRed,
         ),
         title: Text(
@@ -228,19 +220,15 @@ class _ScheduleSettingsState extends State<ScheduleSettings> {
   Widget _buildCalendarFormatSection(
       BuildContext context, ScheduleSettingsViewModel model) {
     final chips = <Widget>[];
-    final bool isTwoWeeksView = model.calendarFormat == CalendarFormat.twoWeeks;
-    final bool isCalendarView = model.toggleCalendarView;
 
-    for (final CalendarFormat format in model.calendarFormatPossibles) {
+    for (final CalendarTimeFormat format in model.formatPossibleCalendarView) {
       // Two weeks view does not exist in calendar view, therefore the chip should not be displayed
-      if (isCalendarView || format != CalendarFormat.twoWeeks) {
         chips.add(InputChip(
           label: Text(getTextForFormat(context, format)),
           // If user selected two weeks view but is in calendar view, then select week view chip (since two weeks chip is not displayed)
-          selected: (!isCalendarView && isTwoWeeksView) ? format == CalendarFormat.week : model.calendarFormat == format,
+          selected: model.calendarFormat == format,
           selectedColor: selectedColor,
           onPressed: () => setState(() => model.calendarFormat = format)));
-      }
     }
 
     final chipsWrapper = Wrap(
@@ -259,9 +247,8 @@ class _ScheduleSettingsState extends State<ScheduleSettings> {
       ),
       const Divider(thickness: 0.5),
       chipsWrapper,
-      _buildToggleCalendarView(context, model),
-      if (model.toggleCalendarView)
-        _buildShowWeekSection(context, model)
+      if (model.calendarFormat == CalendarTimeFormat.day)
+        _buildToggleCalendarView(context, model)
     ];
 
     return Card(
@@ -274,16 +261,18 @@ class _ScheduleSettingsState extends State<ScheduleSettings> {
             child: Column(children: cardContent)));
   }
 
-  String getTextForFormat(BuildContext context, CalendarFormat format) {
+  String getTextForFormat(BuildContext context, CalendarTimeFormat format) {
     switch (format) {
-      case CalendarFormat.month:
+      case CalendarTimeFormat.month:
         return AppIntl.of(context)!.schedule_settings_calendar_format_month;
-      case CalendarFormat.week:
+      case CalendarTimeFormat.week:
         return AppIntl.of(context)!.schedule_settings_calendar_format_week;
-      case CalendarFormat.twoWeeks:
+      case CalendarTimeFormat.twoWeeks:
         return AppIntl.of(context)!.schedule_settings_calendar_format_2_weeks;
+      case CalendarTimeFormat.day:
+        return AppIntl.of(context)!.schedule_settings_calendar_format_day;
       default:
-        return AppIntl.of(context)!.schedule_settings_calendar_format_month;
+        return AppIntl.of(context)!.schedule_settings_calendar_format_day;
     }
   }
 

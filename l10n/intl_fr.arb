@@ -53,6 +53,7 @@
   "schedule_settings_title": "Paramètres de l'horaire",
   "schedule_settings_show_today_btn_pref": "Afficher le bouton Aujourd'hui",
   "schedule_settings_calendar_format_pref": "Format du calendrier",
+  "schedule_settings_calendar_format_day": "Jour",
   "schedule_settings_calendar_format_month": "Mois",
   "schedule_settings_calendar_format_2_weeks": "2 semaines",
   "schedule_settings_calendar_format_week": "Semaine",
