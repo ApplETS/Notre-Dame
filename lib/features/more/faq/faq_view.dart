@@ -1,14 +1,9 @@
 // Flutter imports:
 import 'package:flutter/material.dart';
-import 'package:flutter/painting.dart';
-import 'package:flutter/rendering.dart';
-import 'package:flutter/widgets.dart';
 
 // Package imports:
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:fluttertoast/fluttertoast.dart';
-import 'package:rive/rive.dart';
 import 'package:stacked/stacked.dart';
 
 // Project imports:
