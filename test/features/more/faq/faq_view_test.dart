@@ -140,8 +140,7 @@ void main() {
 
         final cancelButton = find.byIcon(Icons.cancel);
         expect(cancelButton, findsAny);
-        
-        
+
         await tester.tapAt(Offset.zero);
         await tester.pump(const Duration(milliseconds: 500));
 
