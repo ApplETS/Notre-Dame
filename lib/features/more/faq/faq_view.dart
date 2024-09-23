@@ -229,12 +229,12 @@ class _FaqViewState extends State<FaqView> {
                               onPressed: () {
                                 if (AppIntl.of(context)!.localeName == 'fr') {
                                   model.launchWebsite(
-                                      Urls.monETSConnectionAidPageFr,
+                                      Urls.monETSConnectionHelpPageFr,
                                       Theme.of(context).brightness);
                                 } else if (AppIntl.of(context)!.localeName ==
                                     'en') {
                                   model.launchWebsite(
-                                      Urls.monETSConnectionAidPageEn,
+                                      Urls.monETSConnectionHelpPageEn,
                                       Theme.of(context).brightness);
                                 }
                               },
