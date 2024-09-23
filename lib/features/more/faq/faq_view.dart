@@ -263,7 +263,7 @@ class _FaqViewState extends State<FaqView> {
                               ))                          
                             ),              
                             icon: const Icon(Icons.cancel),
-                            label: Text(AppIntl.of(context)!.close_button_text)
+                            label: Text(AppIntl.of(context)!.cancel_button_text)
                           ),
                         ),
                       ],
