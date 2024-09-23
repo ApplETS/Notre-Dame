@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 // Package imports:
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:mockito/mockito.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 // Project imports:
@@ -68,17 +69,50 @@ void main() {
         await tester.drag(find.byType(ListView), const Offset(0.0, -500));
         await tester.pump(const Duration(milliseconds: 500));
 
-        final action =
+        final questionsAbtETSMobileBtn =
             find.widgetWithText(ElevatedButton, faq.actions[3].title["en"]!);
-        expect(action, findsOneWidget);
+        expect(questionsAbtETSMobileBtn, findsOneWidget);
 
         await tester.pump(const Duration(milliseconds: 500));
-        await tester.tap(action);
+        await tester.tap(questionsAbtETSMobileBtn);
         await tester.pump(const Duration(milliseconds: 500));
 
         final dialog = find.byType(AlertDialog);
 
         expect(dialog, findsOne);
+      });
+
+      testWidgets('tapping "Cancel" closes dialog',
+          (WidgetTester tester) async {
+        SettingsManagerMock.stubLocale(settingsManagerMock);
+
+        await tester.pumpWidget(localizedWidget(child: const FaqView()));
+        await tester.pumpAndSettle(const Duration(milliseconds: 800));
+
+        final Faq faq = Faq();
+
+        await tester.drag(find.byType(ListView), const Offset(0.0, -500));
+        await tester.pump(const Duration(milliseconds: 500));
+
+        final questionsAbtETSMobileBtn =
+            find.widgetWithText(ElevatedButton, faq.actions[3].title["en"]!);
+        expect(questionsAbtETSMobileBtn, findsOneWidget);
+
+        await tester.pump(const Duration(milliseconds: 500));
+        await tester.tap(questionsAbtETSMobileBtn);
+        await tester.pump(const Duration(milliseconds: 500));
+
+        Finder dialog = find.byType(AlertDialog);
+        expect(dialog, findsOne);
+
+        final cancelButton = find.byIcon(Icons.cancel);
+        expect(cancelButton, findsAny);
+
+        await tester.tap(cancelButton);
+        await tester.pump(const Duration(milliseconds: 500));
+
+        dialog = find.byType(AlertDialog);
+        expect(dialog, findsNothing);
       });
 
       testWidgets('has 2 subtitles', (WidgetTester tester) async {
