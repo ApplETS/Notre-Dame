@@ -7,7 +7,6 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:intl/intl.dart';
 import 'package:mockito/mockito.dart';
 import 'package:notredame/utils/calendar_utils.dart';
-import 'package:table_calendar/table_calendar.dart';
 
 // Project imports:
 import 'package:notredame/constants/preferences_flags.dart';
@@ -109,7 +108,7 @@ void main() {
             findsOneWidget);
         expect(
             find.widgetWithText(
-                InputChip, intl.schedule_settings_calendar_format_2_weeks),
+                InputChip, intl.schedule_settings_calendar_format_day),
             findsOneWidget);
         expect(
             find.widgetWithText(
@@ -182,7 +181,7 @@ void main() {
             findsOneWidget);
         expect(
             find.widgetWithText(
-                InputChip, intl.schedule_settings_calendar_format_2_weeks),
+                InputChip, intl.schedule_settings_calendar_format_day),
             findsOneWidget);
         expect(
             find.widgetWithText(
@@ -343,14 +342,14 @@ void main() {
         await tester.pumpAndSettle();
 
         await tester.tap(find.widgetWithText(
-            InputChip, intl.schedule_settings_calendar_format_2_weeks));
+            InputChip, intl.schedule_settings_calendar_format_day));
         await tester.pump();
 
         await untilCalled(settingsManagerMock.setString(
             PreferencesFlag.scheduleCalendarFormat, any));
 
         final formatTile = find.widgetWithText(
-            InputChip, intl.schedule_settings_calendar_format_2_weeks);
+            InputChip, intl.schedule_settings_calendar_format_day);
         expect(
             tester.widget(formatTile),
             isA<InputChip>()
@@ -360,6 +359,13 @@ void main() {
       });
 
       testWidgets("onChange scheduleListView", (WidgetTester tester) async {
+        final Map<PreferencesFlag, dynamic> settings = {
+          PreferencesFlag.scheduleCalendarFormat: CalendarTimeFormat.day,
+          PreferencesFlag.scheduleShowTodayBtn: true,
+          PreferencesFlag.scheduleListView: true,
+          PreferencesFlag.scheduleShowWeekEvents: true
+        };
+
         SettingsManagerMock.stubGetScheduleSettings(settingsManagerMock,
             toReturn: settings);
         SettingsManagerMock.stubSetBool(
@@ -406,10 +412,6 @@ void main() {
               find.widgetWithText(
                   InputChip, intl.schedule_settings_calendar_format_day),
               findsOneWidget);
-          expect(
-            find.widgetWithText(InputChip, intl.schedule_settings_calendar_format_2_weeks),
-            findsNothing,
-          );
         });
       });
 

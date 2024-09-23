@@ -267,8 +267,6 @@ class _ScheduleSettingsState extends State<ScheduleSettings> {
         return AppIntl.of(context)!.schedule_settings_calendar_format_month;
       case CalendarTimeFormat.week:
         return AppIntl.of(context)!.schedule_settings_calendar_format_week;
-      case CalendarTimeFormat.twoWeeks:
-        return AppIntl.of(context)!.schedule_settings_calendar_format_2_weeks;
       case CalendarTimeFormat.day:
         return AppIntl.of(context)!.schedule_settings_calendar_format_day;
       default:

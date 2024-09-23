@@ -7,7 +7,6 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:intl/intl.dart';
 import 'package:mockito/mockito.dart';
 import 'package:notredame/utils/calendar_utils.dart';
-import 'package:table_calendar/table_calendar.dart';
 
 // Project imports:
 import 'package:notredame/constants/preferences_flags.dart';
@@ -103,7 +102,7 @@ void main() {
             toReturn: false);
 
         final expected = {
-          PreferencesFlag.scheduleCalendarFormat: CalendarFormat.month,
+          PreferencesFlag.scheduleCalendarFormat: CalendarTimeFormat.month,
           PreferencesFlag.scheduleShowTodayBtn: false,
           PreferencesFlag.scheduleListView: false,
           PreferencesFlag.scheduleShowWeekEvents: false,

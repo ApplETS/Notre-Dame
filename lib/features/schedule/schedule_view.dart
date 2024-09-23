@@ -53,7 +53,6 @@ class _ScheduleViewState extends State<ScheduleView>
   static final List<String> weekTitles = ["L", "M", "M", "J", "V", "S", "D"];
   static bool _isDayViewAnimating = false;
 
-
   late AnimationController _animationController;
 
   @override
