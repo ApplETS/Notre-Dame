@@ -2,8 +2,6 @@
 import 'package:collection/collection.dart';
 import 'package:enum_to_string/enum_to_string.dart';
 import 'package:stacked/stacked.dart';
-import 'package:table_calendar/table_calendar.dart';
-import 'package:flutter/widgets.dart';
 
 // Project imports:
 import 'package:notredame/constants/preferences_flags.dart';
