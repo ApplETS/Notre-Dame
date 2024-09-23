@@ -227,7 +227,8 @@ class _FaqViewState extends State<FaqView> {
                                           borderRadius:
                                               BorderRadius.circular(radius)))),
                               onPressed: () {
-                                model.logEvent("Password assistance button tapped");
+                                model.logEvent(
+                                    "Password assistance button tapped");
                                 if (AppIntl.of(context)!.localeName == 'fr') {
                                   model.launchWebsite(
                                       Urls.monETSConnectionHelpPageFr,
