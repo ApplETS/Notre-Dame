@@ -1,28 +1,28 @@
 // Flutter imports:
 import 'package:flutter/material.dart';
-
-// Package imports:
-import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/painting.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
+
+// Package imports:
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:notredame/utils/app_theme.dart';
 import 'package:rive/rive.dart';
 import 'package:stacked/stacked.dart';
 
 // Project imports:
+import 'package:notredame/constants/urls.dart';
+import 'package:notredame/features/app/widgets/base_scaffold.dart';
 import 'package:notredame/features/more/faq/faq_viewmodel.dart';
 import 'package:notredame/features/more/faq/models/faq.dart';
 import 'package:notredame/features/more/faq/models/faq_actions.dart';
-import 'package:notredame/features/app/widgets/base_scaffold.dart';
-import 'package:notredame/constants/urls.dart';
+import 'package:notredame/utils/app_theme.dart';
 
 class FaqView extends StatefulWidget {
   final Color? backgroundColor;
 
-  const FaqView({this.backgroundColor});  
+  const FaqView({this.backgroundColor});
 
   @override
   State<FaqView> createState() => _FaqViewState();
@@ -194,83 +194,102 @@ class _FaqViewState extends State<FaqView> {
             model.launchWebsite(link, Theme.of(context).brightness);
           } else if (type.name == ActionType.email.name) {
             showDialog(
-              context: context,
-              builder: (BuildContext context) {                
-                const radius = 5.0;            
-                return AlertDialog(
-                  title: Text(
-                    AppIntl.of(context)!.faq_questions_about_app_alert_title,
-                    style: const TextStyle(color: AppTheme.primary, fontWeight: FontWeight.bold),
-                  ),
-                  content:
-                    Text(
-                      AppIntl.of(context)!.faq_questions_about_app_alert_confirmation,
-                      style: const TextStyle(fontWeight: FontWeight.bold)
+                context: context,
+                builder: (BuildContext context) {
+                  const radius = 5.0;
+                  return AlertDialog(
+                    title: Text(
+                      AppIntl.of(context)!.faq_questions_about_app_alert_title,
+                      style: const TextStyle(
+                          color: AppTheme.primary, fontWeight: FontWeight.bold),
                     ),
-                  actions: [
-                    Column(
-                      children: [
-                        SizedBox(                      
-                          width: double.infinity,
-                          child: TextButton.icon(                        
-                            style: ButtonStyle(
-                              backgroundColor: MaterialStateProperty.all<Color>(AppTheme.primary),
-                              foregroundColor: MaterialStateProperty.all<Color>(AppTheme.lightThemeBackground),
-                              textStyle: MaterialStateProperty.all<TextStyle>(const TextStyle(fontWeight: FontWeight.bold)),
-                              shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                                RoundedRectangleBorder(borderRadius: BorderRadius.circular(radius))
-                              )                              
-                            ),                        
-                            onPressed: () {
-                              if(AppIntl.of(context)!.localeName == 'fr') {
-                                model.launchWebsite(Urls.monETSConnectionAidPageFr, Theme.of(context).brightness);
-                              } else if(AppIntl.of(context)!.localeName == 'en') {
-                                model.launchWebsite(Urls.monETSConnectionAidPageEn, Theme.of(context).brightness);
-                              }                 
-                            },
-                            icon: const Icon(Icons.help_center),
-                            label: Text(AppIntl.of(context)!.faq_questions_about_app_alert_password_assistance),
-                          ),
-                        ),
-                        SizedBox(
-                          width: double.infinity,
-                          child: TextButton.icon(
+                    content: Text(
+                        AppIntl.of(context)!
+                            .faq_questions_about_app_alert_confirmation,
+                        style: const TextStyle(fontWeight: FontWeight.bold)),
+                    actions: [
+                      Column(
+                        children: [
+                          SizedBox(
+                            width: double.infinity,
+                            child: TextButton.icon(
                               style: ButtonStyle(
-                              backgroundColor: MaterialStateProperty.all<Color>(AppTheme.primary),  
-                              foregroundColor: MaterialStateProperty.all<Color>(AppTheme.lightThemeBackground),
-                              textStyle: MaterialStateProperty.all<TextStyle>(const TextStyle(fontWeight: FontWeight.bold)),
-                              shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                                RoundedRectangleBorder(borderRadius: BorderRadius.circular(radius))
-                              )                              
-                            ),                
-                            onPressed: () => model.openMail(link, context),
-                            icon: const Icon(Icons.mail),
-                            label: Text(AppIntl.of(context)!.continue_to_mail_app),
+                                  backgroundColor: MaterialStateProperty.all<Color>(
+                                      AppTheme.primary),
+                                  foregroundColor: MaterialStateProperty.all<Color>(
+                                      AppTheme.lightThemeBackground),
+                                  textStyle: MaterialStateProperty.all<TextStyle>(
+                                      const TextStyle(
+                                          fontWeight: FontWeight.bold)),
+                                  shape: MaterialStateProperty.all<
+                                          RoundedRectangleBorder>(
+                                      RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(radius)))),
+                              onPressed: () {
+                                if (AppIntl.of(context)!.localeName == 'fr') {
+                                  model.launchWebsite(
+                                      Urls.monETSConnectionAidPageFr,
+                                      Theme.of(context).brightness);
+                                } else if (AppIntl.of(context)!.localeName ==
+                                    'en') {
+                                  model.launchWebsite(
+                                      Urls.monETSConnectionAidPageEn,
+                                      Theme.of(context).brightness);
+                                }
+                              },
+                              icon: const Icon(Icons.help_center),
+                              label: Text(AppIntl.of(context)!
+                                  .faq_questions_about_app_alert_password_assistance),
+                            ),
                           ),
-                        ),                        
-                        SizedBox(
-                          width: double.infinity,
-                          child: TextButton.icon(
-                            onPressed: () => Navigator.of(context).pop(),
-                            style: ButtonStyle(                              
-                              textStyle: MaterialStateProperty.all<TextStyle>(const TextStyle(fontWeight: FontWeight.bold)),
-                              shape: MaterialStateProperty.all(RoundedRectangleBorder(
-                                side: const BorderSide(
-                                  color: AppTheme.primary,
-                                  width: 2.0
-                                ), 
-                                borderRadius: BorderRadius.circular(radius)                                                  
-                              ))                          
-                            ),              
-                            icon: const Icon(Icons.cancel),
-                            label: Text(AppIntl.of(context)!.cancel_button_text)
+                          SizedBox(
+                            width: double.infinity,
+                            child: TextButton.icon(
+                              style: ButtonStyle(
+                                  backgroundColor: MaterialStateProperty.all<Color>(
+                                      AppTheme.primary),
+                                  foregroundColor: MaterialStateProperty.all<Color>(
+                                      AppTheme.lightThemeBackground),
+                                  textStyle: MaterialStateProperty.all<TextStyle>(
+                                      const TextStyle(
+                                          fontWeight: FontWeight.bold)),
+                                  shape: MaterialStateProperty.all<
+                                          RoundedRectangleBorder>(
+                                      RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(radius)))),
+                              onPressed: () => model.openMail(link, context),
+                              icon: const Icon(Icons.mail),
+                              label: Text(
+                                  AppIntl.of(context)!.continue_to_mail_app),
+                            ),
                           ),
-                        ),
-                      ],
-                    ),
-                  ],
-                );
-              });                           
+                          SizedBox(
+                            width: double.infinity,
+                            child: TextButton.icon(
+                                onPressed: () => Navigator.of(context).pop(),
+                                style: ButtonStyle(
+                                    textStyle:
+                                        MaterialStateProperty.all<TextStyle>(
+                                            const TextStyle(
+                                                fontWeight: FontWeight.bold)),
+                                    shape: MaterialStateProperty.all(
+                                        RoundedRectangleBorder(
+                                            side: const BorderSide(
+                                                color: AppTheme.primary,
+                                                width: 2.0),
+                                            borderRadius: BorderRadius.circular(
+                                                radius)))),
+                                icon: const Icon(Icons.cancel),
+                                label:
+                                    Text(AppIntl.of(context)!.cancel_button_text)),
+                          ),
+                        ],
+                      ),
+                    ],
+                  );
+                });
           }
         },
         style: ButtonStyle(

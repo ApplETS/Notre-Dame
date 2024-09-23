@@ -14,8 +14,10 @@ class Urls {
   // Urls related to MonETS
   static const String monEtsAPI = "https://portail.etsmtl.ca/api/";
   static const String authenticationMonETS = "${monEtsAPI}authentification";
-  static const String monETSConnectionAidPageEn = "https://partage.etsmtl.ca/fs/en.html";
-  static const String monETSConnectionAidPageFr = "https://partage.etsmtl.ca/fs/fr.html";
+  static const String monETSConnectionAidPageEn =
+      "https://partage.etsmtl.ca/fs/en.html";
+  static const String monETSConnectionAidPageFr =
+      "https://partage.etsmtl.ca/fs/fr.html";
 
   /// Urls related to SignetsMobile API
   /// For more information about the operations supported see:
