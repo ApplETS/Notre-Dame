@@ -22,6 +22,8 @@ inputs:
     required: true
   app-path:
     required: true
+  maps-api-key:
+    required: false
   
 runs:
   using: "composite"
@@ -29,6 +31,8 @@ runs:
     - name: Build the application
       shell: bash
       run: flutter build -v ${{ inputs.build-target }} ${{ inputs.build-args }} --release --dart-define=GH_API_TOKEN=${{ inputs.github-api-token }}
+      env:
+        MAPS_API_KEY: ${{ inputs.maps-api-key }}
     
     - name: Rename Android build
       if: inputs.target == 'Android'

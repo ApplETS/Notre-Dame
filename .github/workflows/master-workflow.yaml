@@ -119,6 +119,7 @@ jobs:
           github-api-token: ${{ secrets.GH_API_TOKEN }}
           app-name: ${{ env.APP_NAME }}
           app-path: ${{ github.workspace }}/${{ env.APP_NAME }}_${{ matrix.target }}.${{ matrix.asset_extension }}
+          maps-api-key: ${{ secrets.MAPS_API_KEY }}
 
   ##############################################################
   # Post-build
