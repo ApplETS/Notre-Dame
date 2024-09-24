@@ -119,8 +119,12 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
     }
 
     controller.removeWhere((event) => true);
-    var eventsToAdd = selectedMonthCalendarEvents(scheduleCardsPalette);
-    if (calendarFormat == CalendarTimeFormat.week) {
+
+    List<CalendarEventData> eventsToAdd = [];
+    if (calendarFormat == CalendarTimeFormat.month) {
+      eventsToAdd = selectedMonthCalendarEvents(scheduleCardsPalette);
+    }
+    else {
       eventsToAdd = selectedWeekCalendarEvents(scheduleCardsPalette);
     }
     controller.addAll(eventsToAdd);
