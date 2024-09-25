@@ -470,7 +470,7 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
 
     isThisMonthSelected
         ? Fluttertoast.showToast(msg: _appIntl.schedule_already_today_toast)
-        : weekSelected = daySelected = currentMonth;
+        : weekSelected = currentMonth;
 
     return !isThisMonthSelected;
   }

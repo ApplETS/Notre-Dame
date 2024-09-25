@@ -91,28 +91,52 @@ class _ScheduleViewState extends State<ScheduleView>
               title: Text(AppIntl.of(context)!.title_schedule),
               centerTitle: false,
               automaticallyImplyLeading: false,
-              actions:
-                  model.busy(model.settings) ? [] : _buildActionButtons(model),
+              actions: model.busy(model.settings) ? [] : _buildActionButtons(model),
             ),
             body: model.busy(model.settings)
                 ? const SizedBox()
-                : RefreshIndicator(
-                    child: !model.calendarViewSetting
-                        ? _buildCalendarView(model, context)
-                        : _buildListView(model, context),
-                    onRefresh: () => model.refresh(),
-                  )),
+                : displaySchedule(model)),
       );
 
-  Widget _buildListView(ScheduleViewModel model, BuildContext context) {
+  Widget displaySchedule(ScheduleViewModel model) {
     final calendar_view.EventController eventController = calendar_view.EventController();
 
+    final backgroundColor = Theme.of(context).brightness == Brightness.light
+        ? AppTheme.lightThemeBackground
+        : AppTheme.primaryDark;
+    final scheduleLineColor = Theme.of(context).brightness == Brightness.light
+        ? AppTheme.scheduleLineColorLight
+        : AppTheme.scheduleLineColorDark;
+    final chevronColor = Theme.of(context).brightness == Brightness.light
+        ? AppTheme.primaryDark
+        : AppTheme.lightThemeBackground;
+    final textColor = Theme.of(context).brightness == Brightness.light
+        ? AppTheme.primaryDark
+        : AppTheme.lightThemeAccent;
+    final scheduleCardsPalette = Theme.of(context).brightness == Brightness.light
+        ? AppTheme.schedulePaletteLight.toList()
+        : AppTheme.schedulePaletteDark.toList();
+
+    if (model.calendarFormat == CalendarTimeFormat.month) {
+      return _buildCalendarViewMonthly(model, context, eventController, backgroundColor, chevronColor, scheduleLineColor, textColor, scheduleCardsPalette);
+    }
+    if (model.calendarFormat == CalendarTimeFormat.week) {
+      return _buildCalendarViewWeekly(model, context, eventController, backgroundColor, chevronColor, scheduleLineColor, scheduleCardsPalette);
+    }
+    if (!model.calendarViewSetting) {
+      return _buildCalendarViewDaily(model, context, eventController, backgroundColor, chevronColor, scheduleLineColor);
+    }
+
+    return _buildListView(model, context, eventController);
+  }
+
+  Widget _buildListView(ScheduleViewModel model, BuildContext context, calendar_view.EventController eventController) {
     return Stack(children: [
       GestureDetector(
         onPanEnd: (details) {
           if (details.velocity.pixelsPerSecond.dx.abs() > 5) {
             setState(() {
-              final int numberOfDays = 1 * details.velocity.pixelsPerSecond.dx.sign.toInt();
+              final int numberOfDays = details.velocity.pixelsPerSecond.dx.sign.toInt();
               final DateTime newFocusedDate = model.daySelected.subtract(Duration(days: numberOfDays));
               model.handleViewChanged(newFocusedDate, eventController, []);
               HapticFeedback.lightImpact();
@@ -146,46 +170,6 @@ class _ScheduleViewState extends State<ScheduleView>
         ),
       ),
     ]);
-  }
-
-  Widget _buildCalendarView(ScheduleViewModel model, BuildContext context) {
-    final calendar_view.EventController eventController =
-        calendar_view.EventController();
-
-    final backgroundColor = Theme.of(context).brightness == Brightness.light
-        ? AppTheme.lightThemeBackground
-        : AppTheme.primaryDark;
-    final scheduleLineColor = Theme.of(context).brightness == Brightness.light
-        ? AppTheme.scheduleLineColorLight
-        : AppTheme.scheduleLineColorDark;
-    final chevronColor = Theme.of(context).brightness == Brightness.light
-        ? AppTheme.primaryDark
-        : AppTheme.lightThemeBackground;
-    final textColor = Theme.of(context).brightness == Brightness.light
-        ? AppTheme.primaryDark
-        : AppTheme.lightThemeAccent;
-    final scheduleCardsPalette =
-        Theme.of(context).brightness == Brightness.light
-            ? AppTheme.schedulePaletteLight.toList()
-            : AppTheme.schedulePaletteDark.toList();
-
-    if (model.calendarFormat == CalendarTimeFormat.month) {
-      return _buildCalendarViewMonthly(
-          model,
-          context,
-          eventController,
-          backgroundColor,
-          chevronColor,
-          scheduleLineColor,
-          textColor,
-          scheduleCardsPalette);
-    } else if (model.calendarFormat == CalendarTimeFormat.week) {
-      return _buildCalendarViewWeekly(model, context, eventController,
-          backgroundColor, chevronColor, scheduleLineColor, scheduleCardsPalette);
-    } else {
-      return _buildCalendarViewDaily(model, context, eventController,
-          backgroundColor, chevronColor, scheduleLineColor);
-    }
   }
 
   Widget _buildCalendarViewDaily(
