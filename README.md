@@ -75,6 +75,11 @@ enter the following command:
 ```bash
 git config core.hooksPath .githooks
 ```
+
+## How to renew apple certificates:
+
+Follow the procedure in this [repo](https://github.com/ApplETS/fastlane-ios-certificates/blob/master/README.md) available only by admin group and devops group:
+
 ## ⚖️ License
 
 This projet is licensed under the Apache License V2.0. See
