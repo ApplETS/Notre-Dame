@@ -28,7 +28,7 @@ void main() {
           courseAcronym: 'COURSE101',
           courseGroup: '01',
           courseTitle: 'Intro to Dart',
-          dayOfTheWeek: 2, // Tuesday
+          dayOfTheWeek: 2,
           day: 'Tuesday',
           startTime: DateTime(2023, 1, 1, 10),
           endTime: DateTime(2023, 1, 1, 11),
@@ -41,7 +41,7 @@ void main() {
           courseAcronym: 'COURSE101',
           courseGroup: '01',
           courseTitle: 'Intro to Dart',
-          dayOfTheWeek: 2, // Tuesday
+          dayOfTheWeek: 2,
           day: 'Tuesday',
           startTime: DateTime(2023, 1, 1, 10),
           endTime: DateTime(2023, 1, 1, 11),
@@ -54,7 +54,7 @@ void main() {
           courseAcronym: 'COURSE101',
           courseGroup: '01',
           courseTitle: 'Intro to Dart',
-          dayOfTheWeek: 6, // Saturday
+          dayOfTheWeek: 6,
           day: 'Saturday',
           startTime: DateTime(2023, 1, 5, 10),
           endTime: DateTime(2023, 1, 5, 11),
@@ -67,7 +67,7 @@ void main() {
           courseAcronym: 'COURSE101',
           courseGroup: '01',
           courseTitle: 'Intro to Dart',
-          dayOfTheWeek: 7, // Sunday
+          dayOfTheWeek: 7,
           day: 'Sunday',
           startTime: DateTime(2023, 1, 5, 10),
           endTime: DateTime(2023, 1, 5, 11),
