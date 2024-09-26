@@ -34,7 +34,7 @@ class ScheduleSettingsViewModel
   }
 
 
-  /// List of possible calendar format for the calendar view.
+  /// Display the button to return to today
   bool _showTodayBtn = true;
 
   bool get showTodayBtn => _showTodayBtn;
