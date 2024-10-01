@@ -6,17 +6,16 @@ import android.appwidget.AppWidgetProvider
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
-import android.content.res.Configuration
 import android.graphics.Color
-import android.net.ConnectivityManager
-import android.net.NetworkCapabilities
-import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.widget.RemoteViews
 import ca.etsmtl.applets.etsmobile.Constants
 import ca.etsmtl.applets.etsmobile.R
 import ca.etsmtl.applets.etsmobile.SecureStorageHelper
+import ca.etsmtl.applets.etsmobile.Utilities.Companion.getAppTheme
+import ca.etsmtl.applets.etsmobile.Utilities.Companion.getLocalizedString
+import ca.etsmtl.applets.etsmobile.Utilities.Companion.isInternetAvailable
 import ca.etsmtl.applets.etsmobile.services.SignetsService
 import ca.etsmtl.applets.etsmobile.services.models.MonETSUser
 import kotlinx.coroutines.CoroutineScope
@@ -24,7 +23,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlinx.coroutines.withContext
-import java.util.Locale
 import kotlin.coroutines.resume
 
 class SemesterProgressWidget : AppWidgetProvider() {
@@ -71,26 +69,30 @@ class SemesterProgressWidget : AppWidgetProvider() {
         val views: RemoteViews
 
         // Choose the layout based on the widget's size
+        val progress = semesterProgress?.completedPercentageAsInt ?: 0
         if (minWidth < 200) {
             views = RemoteViews(context.packageName, R.layout.semester_progress_widget_small)
-            semesterProgress?.let {
-                views.setTextViewText(R.id.secondary_progress_text, "${it.elapsedDays} / ${it.totalDays}")
-                views.setTextViewText(R.id.progress_text, "${it.completedPercentageAsInt} %")
-            }
+            val percentageText = semesterProgress?.completedPercentageAsInt?.let { "$it %" } ?: "N/A"
+            val secondaryText = semesterProgress?.let {
+                it.elapsedDays.let { elapsed ->
+                    it.totalDays.let { total -> "$elapsed / $total" }
+                }
+            } ?: "N/A"
+
+            views.setTextViewText(R.id.progress_text, percentageText)
+            views.setTextViewText(R.id.secondary_progress_text, secondaryText)
 
         } else {
             views = RemoteViews(context.packageName, R.layout.semester_progress_widget_large)
             views.setTextViewText(R.id.progress_text, getCurrentProgressTextFromSharedPreferences(context))
-            views.setTextColor(R.id.large_semester_progress_title, getTextColorFromSharedPreferences(context))
         }
 
-        semesterProgress?.let {
-            views.setProgressBar(R.id.progression, 100, it.completedPercentageAsInt, false)
-        }
+        views.setProgressBar(R.id.progression, 100, progress, false)
 
-        // Set background color
+        // Set colors
+        views.setTextColor(R.id.large_semester_progress_title, getTextColorFromSharedPreferences(context))
         views.setInt(R.id.widget_root, "setBackgroundResource", getBackgroundResource(context))
-        views.setTextViewText(R.id.large_semester_progress_title, getWidgetTitle(context))
+        views.setTextViewText(R.id.large_semester_progress_title, getLocalizedString(context, R.string.semester_progress_title))
 
         // Set up the click listener
         val clickIntent = Intent(context, SemesterProgressWidget::class.java).apply {
@@ -129,25 +131,18 @@ class SemesterProgressWidget : AppWidgetProvider() {
         }
         else{
             // Semester is null or not ongoing and no internet connection to call the API
-            setPlaceholderProgressesInSharedPrefs(context)
+            semesterProgress = null
             updateAllWidgets(context)
         }
     }
 
     private fun updateProgressesInSharedPrefs(context: Context) {
+        val percentageText = semesterProgress?.completedPercentageAsInt?.let { "$it %" } ?: "N/A"
+
         context.getSharedPreferences(Constants.SEMESTER_PROGRESS_PREFS_KEY, Context.MODE_PRIVATE).edit().apply {
-            putString("${Constants.SEMESTER_PROGRESS_VARIANT_KEY}_0", "${semesterProgress?.completedPercentageAsInt} %")
+            putString("${Constants.SEMESTER_PROGRESS_VARIANT_KEY}_0", percentageText)
             putString("${Constants.SEMESTER_PROGRESS_VARIANT_KEY}_1", getElapsedDaysOverTotalText(context))
             putString("${Constants.SEMESTER_PROGRESS_VARIANT_KEY}_2", getRemainingDaysText(context))
-            apply()
-        }
-    }
-
-    private fun setPlaceholderProgressesInSharedPrefs(context: Context) {
-        context.getSharedPreferences(Constants.SEMESTER_PROGRESS_PREFS_KEY, Context.MODE_PRIVATE).edit().apply {
-            putString("${Constants.SEMESTER_PROGRESS_VARIANT_KEY}_0", "N/A")
-            putString("${Constants.SEMESTER_PROGRESS_VARIANT_KEY}_1", "N/A")
-            putString("${Constants.SEMESTER_PROGRESS_VARIANT_KEY}_2", "N/A")
             apply()
         }
     }
@@ -203,66 +198,17 @@ class SemesterProgressWidget : AppWidgetProvider() {
     }
 
     private fun getRemainingDaysText(context: Context): String {
-        val remainingDays = semesterProgress?.remainingDays ?: 0
-
-        return when (getLangFromSharedPreferences(context)) {
-            Constants.SHARED_PREFERENCES_LANG_EN -> {
-                val remainingText = getStringFromLocale(context, R.string.semester_progress_days_remaining, Locale.ENGLISH)
-                return "$remainingDays $remainingText"
-            }
-            Constants.SHARED_PREFERENCES_LANG_FR -> {
-                val remainingText = getStringFromLocale(context, R.string.semester_progress_days_remaining, Locale.FRENCH)
-                return "$remainingDays $remainingText"
-            }
-            else -> {
-                val remainingText = getStringFromLocale(context, R.string.semester_progress_days_remaining, Locale.FRENCH)
-                return "$remainingDays $remainingText"
-            }
-        }
+        val remainingDays = semesterProgress?.remainingDays ?: return "N/A"
+        val remainingText = getLocalizedString(context, R.string.semester_progress_days_remaining)
+        return "$remainingDays $remainingText"
     }
 
     private fun getElapsedDaysOverTotalText(context: Context): String {
-        val elapsedDays = semesterProgress?.elapsedDays ?: 0
-        val totalDays = semesterProgress?.totalDays ?: 0
-
-        return when (getLangFromSharedPreferences(context)) {
-            Constants.SHARED_PREFERENCES_LANG_EN -> {
-                val elapsedText = getStringFromLocale(context, R.string.semester_progress_days_elapsed, Locale.ENGLISH)
-                val daysText = getStringFromLocale(context, R.string.semester_progress_days, Locale.ENGLISH)
-                return "$elapsedDays $elapsedText / $totalDays $daysText"
-            }
-            Constants.SHARED_PREFERENCES_LANG_FR -> {
-                val elapsedText = getStringFromLocale(context, R.string.semester_progress_days_elapsed, Locale.FRENCH)
-                val daysText = getStringFromLocale(context, R.string.semester_progress_days, Locale.FRENCH)
-                return "$elapsedDays $elapsedText / $totalDays $daysText"
-            }
-            else -> {
-                val elapsedText = getStringFromLocale(context, R.string.semester_progress_days_elapsed, Locale.FRENCH)
-                val daysText = getStringFromLocale(context, R.string.semester_progress_days, Locale.FRENCH)
-                return "$elapsedDays $elapsedText / $totalDays $daysText"
-            }
-        }
-    }
-
-    private fun getWidgetTitle(context: Context): String {
-        return when (getLangFromSharedPreferences(context)) {
-            Constants.SHARED_PREFERENCES_LANG_EN -> {
-                getStringFromLocale(context, R.string.semester_progress_title, Locale.ENGLISH)
-            }
-            Constants.SHARED_PREFERENCES_LANG_FR -> {
-                getStringFromLocale(context, R.string.semester_progress_title, Locale.FRENCH)
-            }
-            else -> {
-                getStringFromLocale(context, R.string.semester_progress_title, Locale.FRENCH)
-            }
-        }
-    }
-
-    private fun getStringFromLocale(context: Context, resourceId: Int, locale: Locale): String {
-        val config = Configuration(context.resources.configuration)
-        config.setLocale(locale)
-        val localizedContext = context.createConfigurationContext(config)
-        return localizedContext.resources.getString(resourceId)
+        val elapsedDays = semesterProgress?.elapsedDays ?: return "N/A"
+        val totalDays = semesterProgress?.totalDays ?: return "N/A"
+        val elapsedText = getLocalizedString(context, R.string.semester_progress_days_elapsed)
+        val daysText = getLocalizedString(context, R.string.semester_progress_days)
+        return "$elapsedDays $elapsedText / $totalDays $daysText"
     }
 
     private fun getBackgroundResource(context: Context): Int {
@@ -292,46 +238,6 @@ class SemesterProgressWidget : AppWidgetProvider() {
             else -> {
                 Color.BLACK
             }
-        }
-    }
-
-    private fun getAppTheme(context: Context): String {
-        val sharedPreferences = context.getSharedPreferences(Constants.SHARED_PREFERENCES_FILE, Context.MODE_PRIVATE)
-        val theme = sharedPreferences.getString(Constants.SHARED_PREFERENCES_THEME_KEY, null)
-
-        return if (theme == null || theme == Constants.SHARED_PREFERENCES_THEME_SYSTEM) {
-            val currentNightMode = context.resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
-
-            when (currentNightMode) {
-                Configuration.UI_MODE_NIGHT_YES -> Constants.SHARED_PREFERENCES_THEME_DARK
-                Configuration.UI_MODE_NIGHT_NO -> Constants.SHARED_PREFERENCES_THEME_LIGHT
-                else -> Constants.SHARED_PREFERENCES_THEME_DARK
-            }
-        } else {
-            theme
-        }
-    }
-
-    private fun getLangFromSharedPreferences(context: Context): String {
-        val sharedPreferences = context.getSharedPreferences(Constants.SHARED_PREFERENCES_FILE, Context.MODE_PRIVATE)
-        return sharedPreferences.getString(Constants.SHARED_PREFERENCES_LANG_KEY, Constants.SHARED_PREFERENCES_LANG_FR).toString()
-    }
-
-    private fun isInternetAvailable(context: Context): Boolean {
-        val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            val network = connectivityManager.activeNetwork ?: return false
-            val activeNetwork = connectivityManager.getNetworkCapabilities(network) ?: return false
-            return when {
-                activeNetwork.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) -> true
-                activeNetwork.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) -> true
-                else -> false
-            }
-        } else {
-            @Suppress("DEPRECATION")
-            val networkInfo = connectivityManager.activeNetworkInfo ?: return false
-            @Suppress("DEPRECATION")
-            return networkInfo.isConnected
         }
     }
 }

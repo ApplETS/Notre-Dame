@@ -1,9 +1,17 @@
 package ca.etsmtl.applets.etsmobile.services
 
 import ca.etsmtl.applets.etsmobile.services.models.MonETSUser
+import org.w3c.dom.Document
+import org.w3c.dom.Element
 import org.xmlpull.v1.XmlPullParserFactory
 import org.xmlpull.v1.XmlSerializer
+import java.io.ByteArrayInputStream
 import java.io.StringWriter
+import javax.xml.parsers.DocumentBuilderFactory
+import javax.xml.transform.OutputKeys
+import javax.xml.transform.TransformerFactory
+import javax.xml.transform.dom.DOMSource
+import javax.xml.transform.stream.StreamResult
 
 object SoapRequestHelper {
     fun getParameters(requestAction: String, user: MonETSUser, extraParams: Map<String, String>): String {
@@ -40,5 +48,22 @@ object SoapRequestHelper {
             xmlSerializer.text(nodeValue)
             xmlSerializer.endTag("", nodeName)
         }
+    }
+
+    fun nodeToString(node: Element): String {
+        val transformer = TransformerFactory.newInstance().newTransformer()
+        transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes")
+        transformer.setOutputProperty(OutputKeys.INDENT, "yes")
+        transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8")
+        val writer = StringWriter()
+        transformer.transform(DOMSource(node), StreamResult(writer))
+        return writer.toString().trim()
+    }
+
+    fun parseXML(xml: String): Document {
+        val factory = DocumentBuilderFactory.newInstance()
+        factory.isNamespaceAware = false
+        val builder = factory.newDocumentBuilder()
+        return builder.parse(ByteArrayInputStream(xml.toByteArray()))
     }
 }
