@@ -72,19 +72,19 @@ class _NavRailState extends State<NavRail> {
 
     switch (index) {
       case NavRail.dashboardView:
-        _navigationService.pushNamedAndRemoveUntil(RouterPaths.dashboard);
+        _navigationService.pushNamedAndRemoveDuplicates(RouterPaths.dashboard);
         _analyticsService.logEvent("BottomBar", "DashboardView clicked");
       case NavRail.scheduleView:
-        _navigationService.pushNamedAndRemoveUntil(RouterPaths.schedule);
+        _navigationService.pushNamedAndRemoveDuplicates(RouterPaths.schedule);
         _analyticsService.logEvent("BottomBar", "ScheduleView clicked");
       case NavRail.studentView:
-        _navigationService.pushNamedAndRemoveUntil(RouterPaths.student);
+        _navigationService.pushNamedAndRemoveDuplicates(RouterPaths.student);
         _analyticsService.logEvent("BottomBar", "StudentView clicked");
       case NavRail.etsView:
-        _navigationService.pushNamedAndRemoveUntil(RouterPaths.ets);
+        _navigationService.pushNamedAndRemoveDuplicates(RouterPaths.ets);
         _analyticsService.logEvent("BottomBar", "EtsView clicked");
       case NavRail.moreView:
-        _navigationService.pushNamedAndRemoveUntil(RouterPaths.more);
+        _navigationService.pushNamedAndRemoveDuplicates(RouterPaths.more);
         _analyticsService.logEvent("BottomBar", "MoreView clicked");
     }
     _currentView = index;

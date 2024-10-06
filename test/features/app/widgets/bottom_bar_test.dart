@@ -58,7 +58,7 @@ void main() {
       await tester.tap(find.byIcon(Icons.school_outlined));
       await tester.tap(find.byIcon(Icons.school_outlined));
 
-      verify(navigationServiceMock.pushNamedAndRemoveUntil(RouterPaths.student))
+      verify(navigationServiceMock.pushNamedAndRemoveDuplicates(RouterPaths.student))
           .called(1);
     });
 
@@ -71,8 +71,7 @@ void main() {
         await tester.tap(find.byIcon(Icons.schedule_outlined));
         await tester.tap(find.byIcon(Icons.dashboard_outlined));
 
-        verify(navigationServiceMock
-            .pushNamedAndRemoveUntil(RouterPaths.dashboard));
+        verify(navigationServiceMock.pushNamedAndRemoveDuplicates(RouterPaths.dashboard));
       });
 
       testWidgets('schedule', (WidgetTester tester) async {
@@ -82,8 +81,7 @@ void main() {
 
         await tester.tap(find.byIcon(Icons.schedule_outlined));
 
-        verify(navigationServiceMock
-            .pushNamedAndRemoveUntil(RouterPaths.schedule));
+        verify(navigationServiceMock.pushNamedAndRemoveDuplicates(RouterPaths.schedule));
       });
 
       testWidgets('student', (WidgetTester tester) async {
@@ -93,8 +91,7 @@ void main() {
 
         await tester.tap(find.byIcon(Icons.school_outlined));
 
-        verify(
-            navigationServiceMock.pushNamedAndRemoveUntil(RouterPaths.student));
+        verify(navigationServiceMock.pushNamedAndRemoveDuplicates(RouterPaths.student));
       });
 
       testWidgets('ets', (WidgetTester tester) async {
@@ -104,7 +101,7 @@ void main() {
 
         await tester.tap(find.byIcon(Icons.account_balance_outlined));
 
-        verify(navigationServiceMock.pushNamedAndRemoveUntil(RouterPaths.ets));
+        verify(navigationServiceMock.pushNamedAndRemoveDuplicates(RouterPaths.ets));
       });
 
       testWidgets('more', (WidgetTester tester) async {
@@ -114,7 +111,7 @@ void main() {
 
         await tester.tap(find.byIcon(Icons.menu_outlined));
 
-        verify(navigationServiceMock.pushNamedAndRemoveUntil(RouterPaths.more));
+        verify(navigationServiceMock.pushNamedAndRemoveDuplicates(RouterPaths.more));
       });
     });
   });
