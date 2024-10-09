@@ -1114,22 +1114,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.2.8"
-  rive:
-    dependency: "direct main"
-    description:
-      name: rive
-      sha256: "255ab7892a77494458846cecee1376a017e64fd6b4130b51ec21424d12ffa6fe"
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.13.4"
-  rive_common:
-    dependency: transitive
-    description:
-      name: rive_common
-      sha256: "3a0d95f529d52caef535d8ff32d75629ca37f7ab4707b13c83e9552a322557bc"
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.4.8"
   rxdart:
     dependency: transitive
     description:

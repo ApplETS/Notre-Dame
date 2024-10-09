@@ -51,7 +51,6 @@ dependencies:
   github: ^9.1.0
   package_info_plus: ^5.0.1
   feature_discovery_fork: ^0.14.2
-  rive: ^0.13.1
   connectivity_plus: ^6.0.1
   flutter_svg: ^2.0.9
   font_awesome_flutter: ^10.7.0
