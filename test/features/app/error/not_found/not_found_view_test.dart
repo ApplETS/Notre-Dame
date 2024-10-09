@@ -3,12 +3,10 @@ import 'package:flutter/material.dart';
 
 // Package imports:
 import 'package:flutter_test/flutter_test.dart';
-import 'package:rive/rive.dart';
 
 // Project imports:
 import 'package:notredame/features/app/error/not_found/not_found_view.dart';
 import '../../../../common/helpers.dart';
-import '../../presentation/mocks/rive_animation_service_mock.dart';
 
 void main() {
   group('NotFoundView - ', () {
@@ -16,9 +14,6 @@ void main() {
     setUp(() async {
       setupNavigationServiceMock();
       setupAnalyticsServiceMock();
-      final riveAnimationMock = setupRiveAnimationServiceMock();
-      RiveAnimationServiceMock.stubLoadRiveFile(
-          riveAnimationMock, 'dot_jumping', RuntimeArtboard());
     });
 
     tearDown(() {});

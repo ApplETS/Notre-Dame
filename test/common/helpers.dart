@@ -18,7 +18,6 @@ import 'package:notredame/features/app/integration/launch_url_service.dart';
 import 'package:notredame/features/app/integration/networking_service.dart';
 import 'package:notredame/features/app/monets_api/monets_api_client.dart';
 import 'package:notredame/features/app/navigation/navigation_service.dart';
-import 'package:notredame/features/app/presentation/rive_animation_service.dart';
 import 'package:notredame/features/app/repository/author_repository.dart';
 import 'package:notredame/features/app/repository/course_repository.dart';
 import 'package:notredame/features/app/repository/news_repository.dart';
@@ -39,7 +38,6 @@ import '../features/app/integration/mocks/launch_url_service_mock.dart';
 import '../features/app/integration/mocks/networking_service_mock.dart';
 import '../features/app/monets_api/mocks/mon_ets_api_mock.dart';
 import '../features/app/navigation/mocks/navigation_service_mock.dart';
-import '../features/app/presentation/mocks/rive_animation_service_mock.dart';
 import '../features/app/repository/mocks/author_repository_mock.dart';
 import '../features/app/repository/mocks/course_repository_mock.dart';
 import '../features/app/repository/mocks/news_repository_mock.dart';
@@ -135,16 +133,6 @@ AnalyticsServiceMock setupAnalyticsServiceMock() {
   final service = AnalyticsServiceMock();
 
   locator.registerSingleton<AnalyticsService>(service);
-
-  return service;
-}
-
-/// Load a mock of the [RiveAnimationService]
-RiveAnimationServiceMock setupRiveAnimationServiceMock() {
-  unregister<RiveAnimationService>();
-  final service = RiveAnimationServiceMock();
-
-  locator.registerSingleton<RiveAnimationService>(service);
 
   return service;
 }

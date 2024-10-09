@@ -5,7 +5,7 @@ import 'package:flutter/services.dart';
 
 // Package imports:
 import 'package:calendar_view/calendar_view.dart' as calendar_view;
-import 'package:feature_discovery/feature_discovery.dart';
+import 'package:feature_discovery_fork/feature_discovery.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:intl/intl.dart';
 import 'package:stacked/stacked.dart';
