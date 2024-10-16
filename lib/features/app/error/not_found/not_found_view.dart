@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 
 // Package imports:
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:rive/rive.dart';
 import 'package:stacked/stacked.dart';
 
 // Project imports:
@@ -27,23 +26,7 @@ class _NotFoundState extends State<NotFoundView> {
   @override
   void initState() {
     viewModel = NotFoundViewModel(pageName: widget.pageName ?? '');
-    viewModel
-        .loadRiveAnimation()
-        .then((_) => setState(() => viewModel.startRiveAnimation()));
-
     super.initState();
-  }
-
-  Widget _buildAnimatedWidget() {
-    return viewModel.artboard != null
-        ? SizedBox(
-            width: 100,
-            height: 80,
-            child: Rive(
-              artboard: viewModel.artboard!,
-              fit: BoxFit.fitWidth,
-            ))
-        : Container();
   }
 
   @override
@@ -56,12 +39,6 @@ class _NotFoundState extends State<NotFoundView> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
-                        Padding(
-                          padding: const EdgeInsets.only(
-                            bottom: 60,
-                          ),
-                          child: _buildAnimatedWidget(),
-                        ),
                         Padding(
                           padding: const EdgeInsets.only(
                             bottom: 80,
