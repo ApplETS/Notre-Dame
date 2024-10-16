@@ -526,13 +526,16 @@ class _ScheduleViewState extends State<ScheduleView>
     child: InkWell(
       borderRadius: BorderRadius.circular(10),
       onTap: () {
-        _isDayViewAnimating = true;
+        if (dayViewKey.currentState != null) {
+          _isDayViewAnimating = true;
+        }
+
         setState(() =>
             model.handleViewChanged(date, eventController, [])
         );
         dayViewKey.currentState?.animateToDate(model.daySelected).then((value) =>
         {
-          _isDayViewAnimating = false,
+          _isDayViewAnimating = false
         });
       },
       child: Container(
