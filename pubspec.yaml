@@ -29,8 +29,7 @@ dependencies:
 
   # Utils
   logger: ^2.2.0
-  url_launcher: ^6.3.0
-  url_launcher_ios: ^6.3.1
+  url_launcher: ^6.3.1
   enum_to_string: ^2.0.1
   fluttertoast: ^8.2.4
 
