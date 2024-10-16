@@ -33,7 +33,7 @@ _Note: This guide is also available in: [Français](https://github.com/ApplETS/N
 
 ## Requirements
 
-- Flutter SDK v3.19.3 or higher
+- Flutter SDK v3.24.3 or higher
 - Openssl v1.1.1g or higher
 - Java sdk 17
 
