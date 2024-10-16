@@ -60,11 +60,9 @@ class _QuickLinksViewState extends State<QuickLinksView>
       child: Column(
         children: [
           Expanded(
-            child: Padding(
-              padding: const EdgeInsets.only(top: 8.0, left: 8.0, right: 8.0),
-              child: _buildReorderableGridView(
-                  model, model.quickLinkList, _buildDeleteButton),
-            ),
+            child: _buildReorderableGridView(
+                model, model.quickLinkList, _buildDeleteButton,
+                blockReorder: false),
           ),
           if (_editMode && model.deletedQuickLinks.isNotEmpty) ...[
             const Divider(
@@ -73,11 +71,9 @@ class _QuickLinksViewState extends State<QuickLinksView>
               endIndent: 10,
             ),
             Expanded(
-              child: Padding(
-                padding: const EdgeInsets.only(top: 8.0, left: 8.0, right: 8.0),
-                child: _buildReorderableGridView(
-                    model, model.deletedQuickLinks, _buildAddButton),
-              ),
+              child: _buildReorderableGridView(
+                  model, model.deletedQuickLinks, _buildAddButton,
+                  blockReorder: true),
             ),
           ],
         ],
@@ -88,7 +84,8 @@ class _QuickLinksViewState extends State<QuickLinksView>
   ReorderableGridView _buildReorderableGridView(
       QuickLinksViewModel model,
       List<QuickLink> quickLinks,
-      Widget Function(QuickLinksViewModel, int) buildButtonFunction) {
+      Widget Function(QuickLinksViewModel, int) buildButtonFunction,
+      {required bool blockReorder}) {
     final double screenWidth = MediaQuery.of(context).size.width;
     int crossAxisCount;
 
@@ -100,10 +97,13 @@ class _QuickLinksViewState extends State<QuickLinksView>
     }
 
     return ReorderableGridView.count(
-      padding: EdgeInsets.zero,
+      dragEnabled: !blockReorder,
+      padding: const EdgeInsets.all(8.0),
       mainAxisSpacing: 2.0,
       crossAxisSpacing: 2.0,
       crossAxisCount: crossAxisCount,
+      dragWidgetBuilder: (index, widget) =>
+          _buildGridChild(model, index, quickLinks, buildButtonFunction),
       children: List.generate(
         quickLinks.length,
         (index) {

@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:calendar_view/calendar_view.dart';
 import 'package:collection/collection.dart';
 import 'package:enum_to_string/enum_to_string.dart';
-import 'package:feature_discovery/feature_discovery.dart';
+import 'package:feature_discovery_fork/feature_discovery.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:stacked/stacked.dart';
@@ -396,7 +396,8 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
   /// return false otherwise (today was already selected, show toast for
   /// visual feedback).
   bool selectToday() {
-    if (compareDates(selectedDate, DateTime.now())) {
+    if (compareDates(selectedDate, DateTime.now()) &&
+        compareDates(focusedDate.value, DateTime.now())) {
       Fluttertoast.showToast(msg: _appIntl.schedule_already_today_toast);
       return false;
     } else {

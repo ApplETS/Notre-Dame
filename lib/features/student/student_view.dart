@@ -2,7 +2,7 @@
 import 'package:flutter/material.dart';
 
 // Package imports:
-import 'package:feature_discovery/feature_discovery.dart';
+import 'package:feature_discovery_fork/feature_discovery.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 // Project imports:
@@ -66,6 +66,8 @@ class _StudentViewState extends State<StudentView> {
             ];
           },
           body: SafeArea(
+            top: false,
+            bottom: false,
             child: TabBarView(
               children: tabsView,
             ),

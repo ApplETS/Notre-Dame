@@ -55,20 +55,26 @@ Route<dynamic> generateRoute(RouteSettings routeSettings) {
       return PageRouteBuilder(
           settings: RouteSettings(
               name: routeSettings.name, arguments: routeSettings.arguments),
+          transitionsBuilder: (_, animation, ___, child) =>
+              rootPagesAnimation(animation, child),
           pageBuilder: (_, __, ___) => DashboardView(updateCode: code));
     case RouterPaths.schedule:
       return PageRouteBuilder(
           settings: RouteSettings(name: routeSettings.name),
+          transitionsBuilder: (_, animation, ___, child) =>
+              rootPagesAnimation(animation, child),
           pageBuilder: (_, __, ___) => const ScheduleView());
     case RouterPaths.defaultSchedule:
-      return PageRouteBuilder(
+      return MaterialPageRoute(
           settings: RouteSettings(
               name: routeSettings.name, arguments: routeSettings.arguments),
-          pageBuilder: (_, __, ___) => ScheduleDefaultView(
+          builder: (_) => ScheduleDefaultView(
               sessionCode: routeSettings.arguments as String?));
     case RouterPaths.student:
       return PageRouteBuilder(
           settings: RouteSettings(name: routeSettings.name),
+          transitionsBuilder: (_, animation, ___, child) =>
+              rootPagesAnimation(animation, child),
           pageBuilder: (_, __, ___) => StudentView());
     case RouterPaths.gradeDetails:
       return MaterialPageRoute(
@@ -78,6 +84,8 @@ Route<dynamic> generateRoute(RouteSettings routeSettings) {
     case RouterPaths.ets:
       return PageRouteBuilder(
           settings: RouteSettings(name: routeSettings.name),
+          transitionsBuilder: (_, animation, ___, child) =>
+              rootPagesAnimation(animation, child),
           pageBuilder: (_, __, ___) => ETSView());
     case RouterPaths.usefulLinks:
       return PageRouteBuilder(
@@ -111,6 +119,8 @@ Route<dynamic> generateRoute(RouteSettings routeSettings) {
     case RouterPaths.more:
       return PageRouteBuilder(
           settings: RouteSettings(name: routeSettings.name),
+          transitionsBuilder: (_, animation, ___, child) =>
+              rootPagesAnimation(animation, child),
           pageBuilder: (_, __, ___) => MoreView());
     case RouterPaths.settings:
       return MaterialPageRoute(
@@ -138,4 +148,18 @@ Route<dynamic> generateRoute(RouteSettings routeSettings) {
           pageBuilder: (_, __, ___) =>
               NotFoundView(pageName: routeSettings.name));
   }
+}
+
+Widget rootPagesAnimation(Animation<double> animation, Widget child) {
+  return Align(
+      child: FadeTransition(
+    opacity: animation,
+    child: SizeTransition(
+      sizeFactor: CurvedAnimation(
+        curve: Curves.easeIn,
+        parent: animation,
+      ),
+      child: child,
+    ),
+  ));
 }
