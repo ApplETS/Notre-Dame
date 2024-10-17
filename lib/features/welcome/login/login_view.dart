@@ -204,11 +204,11 @@ class _LoginViewState extends State<LoginView> {
                                               },
                                         style: ButtonStyle(
                                           backgroundColor:
-                                              MaterialStateProperty.all(
+                                              WidgetStateProperty.all(
                                                   model.canSubmit
                                                       ? colorButton
                                                       : Colors.white38),
-                                          padding: MaterialStateProperty.all(
+                                          padding: WidgetStateProperty.all(
                                               const EdgeInsets.symmetric(
                                                   vertical: 16)),
                                         ),

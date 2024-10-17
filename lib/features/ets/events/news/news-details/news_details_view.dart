@@ -180,9 +180,6 @@ class _NewsDetailsViewState extends State<NewsDetailsView> {
         );
       case Menu.report:
         showModalBottomSheet(
-            isDismissible: true,
-            enableDrag: true,
-            isScrollControlled: true,
             context: context,
             shape: const RoundedRectangleBorder(
                 borderRadius: BorderRadius.only(
