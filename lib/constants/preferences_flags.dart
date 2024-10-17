@@ -8,8 +8,6 @@ enum PreferencesFlag {
 
   // Schedule flags
   scheduleCalendarFormat,
-  scheduleStartWeekday,
-  scheduleOtherWeekday,
   scheduleShowTodayBtn,
   scheduleShowWeekEvents,
   scheduleLaboratoryGroup,
