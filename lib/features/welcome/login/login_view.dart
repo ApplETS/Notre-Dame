@@ -158,7 +158,7 @@ class _LoginViewState extends State<LoginView> {
                                         child: InkWell(
                                           child: Text(
                                             AppIntl.of(context)!
-                                                .forgot_password,
+                                                .login_password_forgotten,
                                             style: const TextStyle(
                                                 decoration:
                                                     TextDecoration.underline,
