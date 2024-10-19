@@ -6,10 +6,10 @@ import 'package:flutter/material.dart';
 // Package imports:
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:notredame/features/app/widgets/base_scaffold.dart';
 import 'package:stacked/stacked.dart';
 
 // Project imports:
+import 'package:notredame/features/app/widgets/base_scaffold.dart';
 import 'package:notredame/features/ets/quick-link/widgets/security-info/emergency_view.dart';
 import 'package:notredame/features/ets/quick-link/widgets/security-info/security_viewmodel.dart';
 import 'package:notredame/utils/app_theme.dart';
@@ -79,13 +79,16 @@ class _SecurityViewState extends State<SecurityView> {
               child: InkWell(
                 borderRadius: const BorderRadius.all(Radius.circular(10)),
                 splashColor: Colors.red.withAlpha(50),
-                onTap: () => Utils.launchURL(
+                onTap: () {
+                  try {
+                    Utils.launchURL(
                         'tel:${AppIntl.of(context)!.security_emergency_number}',
-                        AppIntl.of(context)!)
-                    .catchError((error) {
-                  ScaffoldMessenger.of(context)
-                      .showSnackBar(SnackBar(content: Text(error.toString())));
-                }),
+                        AppIntl.of(context)!);
+                  } catch (e) {
+                    ScaffoldMessenger.of(context)
+                        .showSnackBar(SnackBar(content: Text(e.toString())));
+                  }
+                },
                 child: ListTile(
                   leading: const Icon(Icons.phone, size: 30),
                   title: Text(AppIntl.of(context)!.security_emergency_call),

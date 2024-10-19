@@ -192,8 +192,8 @@ class _ReportNewsState extends State<ReportNews> {
                   const SizedBox(height: 24),
                   ElevatedButton(
                     style: ButtonStyle(
-                      backgroundColor: WidgetStateProperty.all<Color>(
-                          AppTheme.etsLightRed),
+                      backgroundColor:
+                          WidgetStateProperty.all<Color>(AppTheme.etsLightRed),
                       shape: WidgetStateProperty.all<RoundedRectangleBorder>(
                         RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(8.0),
