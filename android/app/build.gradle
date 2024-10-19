@@ -42,10 +42,6 @@ android {
         main.java.srcDirs += 'src/main/kotlin'
     }
 
-    lintOptions {
-        disable 'InvalidPackage'
-        checkDependencies true
-    }
 
     defaultConfig {
         applicationId "ca.etsmtl.applets.etsmobile"
@@ -84,6 +80,11 @@ android {
             ext.enableCrashlytics = false
             ext.alwaysUpdateBuildId = false
         }
+    }
+    namespace 'ca.etsmtl.applets.etsmobile'
+    lint {
+        checkDependencies true
+        disable 'InvalidPackage'
     }
 }
 
