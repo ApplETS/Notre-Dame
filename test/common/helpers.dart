@@ -26,7 +26,6 @@ import 'package:notredame/features/app/repository/user_repository.dart';
 import 'package:notredame/features/app/signets-api/signets_api_client.dart';
 import 'package:notredame/features/app/storage/cache_manager.dart';
 import 'package:notredame/features/app/storage/preferences_service.dart';
-import 'package:notredame/features/app/storage/siren_flutter_service.dart';
 import 'package:notredame/features/more/feedback/in_app_review_service.dart';
 import 'package:notredame/features/more/settings/settings_manager.dart';
 import 'package:notredame/utils/locator.dart';
@@ -47,7 +46,6 @@ import '../features/app/signets_api/mocks/signets_api_mock.dart';
 import '../features/app/storage/mocks/cache_manager_mock.dart';
 import '../features/app/storage/mocks/flutter_secure_storage_mock.dart';
 import '../features/app/storage/mocks/preferences_service_mock.dart';
-import '../features/app/storage/mocks/siren_flutter_service_mock.dart';
 import '../features/more/feedback/mocks/in_app_review_service_mock.dart';
 import '../features/more/settings/mocks/settings_manager_mock.dart';
 
@@ -143,16 +141,6 @@ InternalInfoServiceMock setupInternalInfoServiceMock() {
   final service = InternalInfoServiceMock();
 
   locator.registerSingleton<InternalInfoService>(service);
-
-  return service;
-}
-
-/// Load a mock of the [SirenFlutterService]
-SirenFlutterServiceMock setupSirenFlutterServiceMock() {
-  unregister<SirenFlutterService>();
-  final service = SirenFlutterServiceMock();
-
-  locator.registerSingleton<SirenFlutterService>(service);
 
   return service;
 }

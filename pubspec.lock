@@ -310,14 +310,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.3.1"
-  feature_discovery_fork:
-    dependency: "direct main"
-    description:
-      name: feature_discovery_fork
-      sha256: "01eaf9d5be20f4b438a1c9bca8b24595fed449a7ed36ab5e3cb9fd23797643ce"
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.14.2"
   feedback:
     dependency: "direct main"
     description:
@@ -576,14 +568,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.1.2"
-  flutter_siren_2:
-    dependency: "direct main"
-    description:
-      name: flutter_siren_2
-      sha256: f61cd52b8b24f37160226997d8abb620bb2fb82b78ae293014260fa12a0d33c3
-      url: "https://pub.dev"
-    source: hosted
-    version: "1.2.2"
   flutter_staggered_animations:
     dependency: "direct main"
     description:
@@ -1551,14 +1535,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.1.4"
-  version:
-    dependency: transitive
-    description:
-      name: version
-      sha256: "3d4140128e6ea10d83da32fef2fa4003fccbf6852217bb854845802f04191f94"
-      url: "https://pub.dev"
-    source: hosted
-    version: "3.0.2"
   vm_service:
     dependency: transitive
     description:

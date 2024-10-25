@@ -1,6 +1,5 @@
 // Flutter imports:
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
 
 // Package imports:
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -43,10 +42,6 @@ class _GradesDetailsViewState extends State<GradesDetailsView>
           _completed = true;
         });
       }
-    });
-
-    SchedulerBinding.instance.addPostFrameCallback((Duration duration) {
-      GradesDetailsViewModel.startDiscovery(context);
     });
   }
 
@@ -257,8 +252,6 @@ class _GradesDetailsViewState extends State<GradesDetailsView>
                       evaluation,
                       completed: _completed,
                       key: Key("GradeEvaluationTile_${evaluation.title}"),
-                      isFirstEvaluation:
-                          evaluation == model.course.summary?.evaluations.first,
                     ),
                   const SizedBox(height: 24)
                 ]),

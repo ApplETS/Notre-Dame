@@ -9,7 +9,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 // Project imports:
 import 'package:notredame/constants/preferences_flags.dart';
-import 'package:notredame/constants/update_code.dart';
 import 'package:notredame/features/app/signets-api/models/course.dart';
 import 'package:notredame/features/app/signets-api/models/course_activity.dart';
 import 'package:notredame/features/app/signets-api/models/session.dart';
@@ -156,7 +155,7 @@ void main() {
 
     await tester.pumpWidget(localizedWidget(
         child: FeatureDiscovery(
-            child: const DashboardView(updateCode: UpdateCode.none))));
+            child: const DashboardView())));
     await tester.pumpAndSettle();
 
     // Find schedule card in second position by its title
@@ -233,7 +232,7 @@ void main() {
 
         await tester.pumpWidget(localizedWidget(
             child: FeatureDiscovery(
-                child: const DashboardView(updateCode: UpdateCode.none))));
+                child: const DashboardView())));
         await tester.pumpAndSettle();
 
         // Find Dashboard Title
@@ -266,7 +265,7 @@ void main() {
 
         await tester.pumpWidget(localizedWidget(
             child: FeatureDiscovery(
-                child: const DashboardView(updateCode: UpdateCode.none))));
+                child: const DashboardView())));
         await tester.pumpAndSettle();
 
         // Find aboutUs card
@@ -373,7 +372,7 @@ void main() {
 
         await tester.pumpWidget(localizedWidget(
             child: FeatureDiscovery(
-                child: const DashboardView(updateCode: UpdateCode.none))));
+                child: const DashboardView())));
         await tester.pumpAndSettle();
 
         // Find Dismissible Cards
@@ -426,7 +425,7 @@ void main() {
 
         await tester.pumpWidget(localizedWidget(
             child: FeatureDiscovery(
-                child: const DashboardView(updateCode: UpdateCode.none))));
+                child: const DashboardView())));
         await tester.pumpAndSettle();
 
         // Find Dismissible Cards
@@ -487,7 +486,7 @@ void main() {
 
         await tester.pumpWidget(localizedWidget(
             child: FeatureDiscovery(
-                child: const DashboardView(updateCode: UpdateCode.none))));
+                child: const DashboardView())));
         await tester.pumpAndSettle();
 
         // Find Dismissible Cards
@@ -528,7 +527,7 @@ void main() {
 
           await tester.pumpWidget(localizedWidget(
               child: FeatureDiscovery(
-                  child: const DashboardView(updateCode: UpdateCode.none))));
+                  child: const DashboardView())));
           await tester.pumpAndSettle();
 
           // Find grades card
@@ -561,7 +560,7 @@ void main() {
 
           await tester.pumpWidget(localizedWidget(
               child: FeatureDiscovery(
-                  child: const DashboardView(updateCode: UpdateCode.none))));
+                  child: const DashboardView())));
           await tester.pumpAndSettle();
 
           // Find grades card
@@ -596,7 +595,7 @@ void main() {
 
           await tester.pumpWidget(localizedWidget(
               child: FeatureDiscovery(
-                  child: const DashboardView(updateCode: UpdateCode.none))));
+                  child: const DashboardView())));
           await tester.pumpAndSettle();
 
           // Find Dismissible Cards
@@ -639,7 +638,7 @@ void main() {
 
         await tester.pumpWidget(localizedWidget(
             child: FeatureDiscovery(
-                child: const DashboardView(updateCode: UpdateCode.none))));
+                child: const DashboardView())));
         await tester.pumpAndSettle();
 
         // Find progress card
@@ -662,7 +661,7 @@ void main() {
 
         await tester.pumpWidget(localizedWidget(
             child: FeatureDiscovery(
-                child: const DashboardView(updateCode: UpdateCode.none))));
+                child: const DashboardView())));
         await tester.pumpAndSettle();
 
         // Find Dismissible Cards
@@ -702,7 +701,7 @@ void main() {
 
         await tester.pumpWidget(localizedWidget(
             child: FeatureDiscovery(
-                child: const DashboardView(updateCode: UpdateCode.none))));
+                child: const DashboardView())));
         await tester.pumpAndSettle();
 
         // Find Dismissible Cards
