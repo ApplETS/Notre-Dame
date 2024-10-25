@@ -83,8 +83,10 @@ class GradesDetailsViewModel extends FutureViewModel<Course> {
           .map((e) => e.featureId)
           .toList();
 
-      Future.delayed(const Duration(seconds: 1),
-          () => FeatureDiscovery.discoverFeatures(context, ids));
+      Future.delayed(const Duration(seconds: 1), () {
+        if (!context.mounted) return;
+        FeatureDiscovery.discoverFeatures(context, ids);
+      });
 
       settingsManager.setBool(PreferencesFlag.discoveryGradeDetails, true);
     }
