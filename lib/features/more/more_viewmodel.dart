@@ -2,7 +2,6 @@
 import 'package:flutter/material.dart';
 
 // Package imports:
-import 'package:feature_discovery_fork/feature_discovery.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:package_info_plus/package_info_plus.dart';
@@ -20,8 +19,6 @@ import 'package:notredame/features/app/storage/cache_manager.dart';
 import 'package:notredame/features/app/storage/preferences_service.dart';
 import 'package:notredame/features/more/feedback/in_app_review_service.dart';
 import 'package:notredame/features/more/settings/settings_manager.dart';
-import 'package:notredame/features/welcome/discovery/discovery_components.dart';
-import 'package:notredame/features/welcome/discovery/models/discovery_ids.dart';
 import 'package:notredame/utils/locator.dart';
 
 class MoreViewModel extends FutureViewModel {
@@ -100,35 +97,6 @@ class MoreViewModel extends FutureViewModel {
     _courseRepository.coursesActivities?.clear();
 
     setBusy(false);
-  }
-
-  /// Start the discovery of this page if needed
-  static Future<void> startDiscovery(BuildContext context) async {
-    final SettingsManager settingsManager = locator<SettingsManager>();
-
-    if (await settingsManager.getBool(PreferencesFlag.discoveryMore) == null) {
-      if (!context.mounted) return;
-      final List<String> ids =
-          findDiscoveriesByGroupName(context, DiscoveryGroupIds.pageMore)
-              .map((e) => e.featureId)
-              .toList();
-
-      Future.delayed(
-          const Duration(milliseconds: 700),
-          () => {
-                if (context.mounted)
-                  {FeatureDiscovery.discoverFeatures(context, ids)}
-              });
-
-      settingsManager.setBool(PreferencesFlag.discoveryMore, true);
-    }
-  }
-
-  /// Mark the discovery of this page completed
-  Future<bool> discoveryCompleted() async {
-    await _settingsManager.setBool(PreferencesFlag.discoveryMore, true);
-
-    return true;
   }
 
   static Future<bool> launchInAppReview() async {

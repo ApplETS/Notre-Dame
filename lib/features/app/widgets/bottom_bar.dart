@@ -2,16 +2,12 @@
 import 'package:flutter/material.dart';
 
 // Package imports:
-import 'package:feature_discovery_fork/feature_discovery.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 // Project imports:
 import 'package:notredame/features/app/analytics/analytics_service.dart';
 import 'package:notredame/features/app/navigation/navigation_service.dart';
 import 'package:notredame/features/app/navigation/router_paths.dart';
-import 'package:notredame/features/welcome/discovery/discovery_components.dart';
-import 'package:notredame/features/welcome/discovery/models/discovery_ids.dart';
-import 'package:notredame/utils/app_theme.dart';
 import 'package:notredame/utils/locator.dart';
 
 /// Bottom navigation bar for the application.
@@ -94,42 +90,21 @@ class _BottomBarState extends State<BottomBar> {
   List<BottomNavigationBarItem> _buildItems(BuildContext context) {
     return [
       BottomNavigationBarItem(
-          icon: _buildDiscoveryFeatureDescriptionWidget(
-              context, RouterPaths.dashboard, Icons.dashboard_outlined),
+          icon: const Icon(Icons.dashboard_outlined),
           label: AppIntl.of(context)!.title_dashboard),
       BottomNavigationBarItem(
-          icon: _buildDiscoveryFeatureDescriptionWidget(
-              context, RouterPaths.schedule, Icons.schedule_outlined),
+          icon: const Icon(Icons.schedule_outlined),
           label: AppIntl.of(context)!.title_schedule),
       BottomNavigationBarItem(
-          icon: _buildDiscoveryFeatureDescriptionWidget(
-              context, RouterPaths.student, Icons.school_outlined),
+          icon: const Icon(Icons.school_outlined),
           label: AppIntl.of(context)!.title_student),
       BottomNavigationBarItem(
-          icon: _buildDiscoveryFeatureDescriptionWidget(
-              context, RouterPaths.ets, Icons.account_balance_outlined),
+          icon: const Icon(Icons.account_balance_outlined),
           label: AppIntl.of(context)!.title_ets),
       BottomNavigationBarItem(
-          icon: _buildDiscoveryFeatureDescriptionWidget(
-              context, RouterPaths.more, Icons.menu_outlined),
+          icon: const Icon(Icons.menu_outlined),
           label: AppIntl.of(context)!.title_more),
     ];
   }
 
-  DescribedFeatureOverlay _buildDiscoveryFeatureDescriptionWidget(
-      BuildContext context, String routerPath, IconData icon) {
-    final discovery =
-        getDiscoveryByPath(context, DiscoveryGroupIds.bottomBar, routerPath);
-
-    return DescribedFeatureOverlay(
-      overflowMode: OverflowMode.wrapBackground,
-      featureId: discovery.featureId,
-      title: Text(discovery.title, textAlign: TextAlign.justify),
-      description: discovery.details,
-      backgroundColor: AppTheme.appletsDarkPurple,
-      tapTarget: Icon(icon, color: AppTheme.etsBlack),
-      pulseDuration: const Duration(seconds: 5),
-      child: Icon(icon),
-    );
-  }
 }

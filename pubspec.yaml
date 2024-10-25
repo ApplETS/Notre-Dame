@@ -38,7 +38,6 @@ dependencies:
   percent_indicator: ^4.2.3
   feedback: ^3.0.0
   flutter_staggered_animations: ^1.1.1
-  flutter_siren_2: ^1.2.2
 
   # Other
   flutter_cache_manager: ^3.0.1
@@ -49,7 +48,6 @@ dependencies:
   google_maps_flutter: ^2.5.3
   github: ^9.1.0
   package_info_plus: ^5.0.1
-  feature_discovery_fork: ^0.14.2
   connectivity_plus: ^6.0.1
   flutter_svg: ^2.0.9
   font_awesome_flutter: ^10.7.0
