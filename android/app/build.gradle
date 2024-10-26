@@ -35,7 +35,7 @@ apply plugin: 'com.google.gms.google-services'
 apply plugin: 'com.google.firebase.crashlytics'
 
 android {
-    compileSdkVersion 34
+    compileSdkVersion flutter.targetSdkVersion
     ndkVersion "26.3.11579264"
 
     sourceSets {
