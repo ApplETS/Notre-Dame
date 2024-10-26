@@ -50,7 +50,6 @@ dependencies:
   # Google
   google_maps_flutter: ^2.9.0
   shared_preferences: ^2.3.2
-  pub_semver: ^2.1.4
   flutter_markdown: ^0.7.4+1
 
   # flutter community
