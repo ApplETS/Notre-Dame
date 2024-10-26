@@ -2,7 +2,6 @@
 import 'package:flutter/material.dart';
 
 // Package imports:
-import 'package:feature_discovery_fork/feature_discovery.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 // Project imports:
@@ -43,7 +42,7 @@ void main() {
       testWidgets('has Tab bar and sliverAppBar and BaseScaffold',
           (WidgetTester tester) async {
         await tester.pumpWidget(
-            localizedWidget(child: FeatureDiscovery(child: StudentView())));
+            localizedWidget(child: StudentView()));
         await tester.pumpAndSettle(const Duration(seconds: 1));
 
         expect(find.byType(TabBar), findsOneWidget);
