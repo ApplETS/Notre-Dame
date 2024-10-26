@@ -14,6 +14,7 @@ import 'package:notredame/features/ets/quick-link/widgets/security-info/models/e
 
 class SecurityViewModel extends BaseViewModel {
   GoogleMapController? controller;
+  String? mapStyle;
 
   final List<EmergencyProcedure> emergencyProcedureList;
 
@@ -39,16 +40,12 @@ class SecurityViewModel extends BaseViewModel {
   }
 
   /// Used to change the color of the map based on the brightness
-  void changeMapMode(BuildContext context) {
+  Future changeMapMode(BuildContext context) async {
     if (Theme.of(context).brightness == Brightness.dark) {
-      getJsonFile("assets/dark_map_style.json").then(setMapStyle);
+      mapStyle = await getJsonFile("assets/dark_map_style.json");
     } else {
-      getJsonFile("assets/normal_map_style.json").then(setMapStyle);
+      mapStyle = await getJsonFile("assets/normal_map_style.json");
     }
-  }
-
-  /// Used to set the color of the map
-  void setMapStyle(String mapStyle) {
-    controller?.setMapStyle(mapStyle);
+    notifyListeners();
   }
 }
