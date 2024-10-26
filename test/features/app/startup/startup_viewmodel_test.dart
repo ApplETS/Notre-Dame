@@ -53,9 +53,6 @@ void main() {
         NetworkingServiceMock.stubHasConnectivity(networkingServiceMock);
         InternalInfoServiceMock.stubGetPackageInfo(internalInfoServiceMock,
             version: "4.0.0");
-        SettingsManagerMock.stubGetString(
-            settingsManagerMock, PreferencesFlag.appVersion,
-            toReturn: "4.0.0");
 
         await viewModel.handleStartUp();
 
@@ -63,7 +60,7 @@ void main() {
       });
 
       test(
-          'sign in failed redirect to login if Discovery already been completed',
+          'sign in failed redirect to login',
           () async {
         UserRepositoryMock.stubSilentAuthenticate(userRepositoryMock,
             toReturn: false);
@@ -80,25 +77,6 @@ void main() {
           settingsManagerMock.getBool(PreferencesFlag.languageChoice),
           navigationServiceMock.pop(),
           navigationServiceMock.pushNamed(RouterPaths.login)
-        ]);
-
-        verifyNoMoreInteractions(navigationServiceMock);
-      });
-
-      test(
-          'sign in failed redirect to Choose Language page if Discovery has not been completed',
-          () async {
-        UserRepositoryMock.stubSilentAuthenticate(userRepositoryMock,
-            toReturn: false);
-        UserRepositoryMock.stubWasPreviouslyLoggedIn(userRepositoryMock);
-        NetworkingServiceMock.stubHasConnectivity(networkingServiceMock);
-
-        await viewModel.handleStartUp();
-
-        verifyInOrder([
-          settingsManagerMock.getBool(PreferencesFlag.languageChoice),
-          navigationServiceMock.pushNamed(RouterPaths.chooseLanguage),
-          settingsManagerMock.setBool(PreferencesFlag.languageChoice, true)
         ]);
 
         verifyNoMoreInteractions(navigationServiceMock);

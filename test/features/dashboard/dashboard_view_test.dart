@@ -200,10 +200,6 @@ void main() {
       RemoteConfigServiceMock.stubGetBroadcastEnabled(remoteConfigServiceMock,
           toReturn: false);
 
-      SettingsManagerMock.stubGetBool(
-          settingsManagerMock, PreferencesFlag.discoveryDashboard,
-          toReturn: true);
-
       SettingsManagerMock.stubSetInt(
           settingsManagerMock, PreferencesFlag.aboutUsCard);
 

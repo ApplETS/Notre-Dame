@@ -2,10 +2,6 @@
 import 'package:enum_to_string/enum_to_string.dart';
 
 enum PreferencesFlag {
-  // Meta flag concerning the app versioning
-  appVersion,
-  updateAskedVersion,
-
   // Schedule flags
   scheduleCalendarFormat,
   scheduleStartWeekday,
@@ -24,15 +20,6 @@ enum PreferencesFlag {
 
   // Choose language flag
   languageChoice,
-
-  // Discovery flag
-  discoveryDashboard,
-  discoverySchedule,
-  discoveryStudentGrade,
-  discoveryGradeDetails,
-  discoveryStudentProfile,
-  discoveryETS,
-  discoveryMore,
 
   // Dashboard flags
   aboutUsCard,
