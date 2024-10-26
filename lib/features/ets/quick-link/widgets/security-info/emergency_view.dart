@@ -5,9 +5,9 @@ import 'package:flutter/services.dart';
 // Package imports:
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
-import 'package:notredame/features/app/widgets/base_scaffold.dart';
 
 // Project imports:
+import 'package:notredame/features/app/widgets/base_scaffold.dart';
 import 'package:notredame/utils/app_theme.dart';
 import 'package:notredame/utils/utils.dart';
 
@@ -30,13 +30,14 @@ class _EmergencyViewState extends State<EmergencyView> {
       fabPosition: FloatingActionButtonLocation.centerFloat,
       fab: FloatingActionButton.extended(
         onPressed: () {
-          Utils.launchURL(
-                  'tel:${AppIntl.of(context)!.security_emergency_number}',
-                  AppIntl.of(context)!)
-              .catchError((error) {
+          try {
+            Utils.launchURL(
+                'tel:${AppIntl.of(context)!.security_emergency_number}',
+                AppIntl.of(context)!);
+          } catch (e) {
             ScaffoldMessenger.of(context)
-                .showSnackBar(SnackBar(content: Text(error.toString())));
-          });
+                .showSnackBar(SnackBar(content: Text(e.toString())));
+          }
         },
         label: Text(
           AppIntl.of(context)!.security_reach_security,

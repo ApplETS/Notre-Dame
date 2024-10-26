@@ -37,15 +37,14 @@ class _FeedbackViewState extends State<FeedbackView> {
                   padding: const EdgeInsets.all(8.0),
                   child: ElevatedButton(
                     onPressed: () {
-                      BetterFeedback.of(context).show((feedback) {
-                        model
-                            .sendFeedback(feedback, FeedbackType.bug)
-                            .then((value) => BetterFeedback.of(context).hide());
+                      BetterFeedback.of(context).show((feedback) async {
+                        await model.sendFeedback(feedback, FeedbackType.bug);
+                        if (!context.mounted) return;
+                        BetterFeedback.of(context).hide();
                       });
                     },
                     style: ButtonStyle(
-                        shape:
-                            MaterialStateProperty.all<RoundedRectangleBorder>(
+                        shape: WidgetStateProperty.all<RoundedRectangleBorder>(
                       RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(8.0),
                       ),
@@ -65,15 +64,15 @@ class _FeedbackViewState extends State<FeedbackView> {
                   padding: const EdgeInsets.only(left: 8.0, right: 8.0),
                   child: ElevatedButton(
                     onPressed: () {
-                      BetterFeedback.of(context).show((feedback) {
-                        model
-                            .sendFeedback(feedback, FeedbackType.enhancement)
-                            .then((value) => BetterFeedback.of(context).hide());
+                      BetterFeedback.of(context).show((feedback) async {
+                        await model.sendFeedback(
+                            feedback, FeedbackType.enhancement);
+                        if (!context.mounted) return;
+                        BetterFeedback.of(context).hide();
                       });
                     },
                     style: ButtonStyle(
-                        shape:
-                            MaterialStateProperty.all<RoundedRectangleBorder>(
+                        shape: WidgetStateProperty.all<RoundedRectangleBorder>(
                       RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(8.0),
                       ),
