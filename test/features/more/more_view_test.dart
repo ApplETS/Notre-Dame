@@ -8,14 +8,12 @@ import 'package:mockito/mockito.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 // Project imports:
-import 'package:notredame/constants/preferences_flags.dart';
 import 'package:notredame/features/app/navigation/router_paths.dart';
 import 'package:notredame/features/more/more_view.dart';
 import '../../common/helpers.dart';
 import '../app/analytics/mocks/remote_config_service_mock.dart';
 import '../app/navigation/mocks/navigation_service_mock.dart';
 import 'feedback/mocks/in_app_review_service_mock.dart';
-import 'settings/mocks/settings_manager_mock.dart';
 
 void main() {
   SharedPreferences.setMockInitialValues({});
@@ -23,28 +21,23 @@ void main() {
   late NavigationServiceMock navigationServiceMock;
   late RemoteConfigServiceMock remoteConfigServiceMock;
   late InAppReviewServiceMock inAppReviewServiceMock;
-  late SettingsManagerMock settingsManagerMock;
 
   group('MoreView - ', () {
     setUp(() async {
       intl = await setupAppIntl();
       navigationServiceMock = setupNavigationServiceMock();
       remoteConfigServiceMock = setupRemoteConfigServiceMock();
+      setupSettingsManagerMock();
       setupCourseRepositoryMock();
       setupPreferencesServiceMock();
       setupUserRepositoryMock();
       setupCacheManagerMock();
-      settingsManagerMock = setupSettingsManagerMock();
       setupGithubApiMock();
       setupNetworkingServiceMock();
       setupAnalyticsServiceMock();
       setupFlutterToastMock();
       inAppReviewServiceMock =
           setupInAppReviewServiceMock() as InAppReviewServiceMock;
-
-      SettingsManagerMock.stubGetBool(
-          settingsManagerMock, PreferencesFlag.discoveryMore,
-          toReturn: true);
 
       RemoteConfigServiceMock.stubGetPrivacyPolicyEnabled(
           remoteConfigServiceMock);

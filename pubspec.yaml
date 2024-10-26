@@ -101,8 +101,6 @@ flutter:
     - assets/markdown/
     - assets/icons/
     - assets/animations/
-    - assets/animations/discovery/en/
-    - assets/animations/discovery/fr/
     - assets/
 
 flutter_intl:

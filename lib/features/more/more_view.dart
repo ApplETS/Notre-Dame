@@ -23,14 +23,12 @@ class MoreView extends StatefulWidget {
 class _MoreViewState extends State<MoreView> {
   final AnalyticsService _analyticsService = locator<AnalyticsService>();
   static const String tag = "MoreView";
-  bool isDiscoveryOverlayActive = false;
 
   /// Returns right icon color for discovery depending on theme.
   Widget getProperIconAccordingToTheme(IconData icon) {
-    return (Theme.of(context).brightness == Brightness.dark &&
-            isDiscoveryOverlayActive)
-        ? Icon(icon, color: Colors.black)
-        : Icon(icon);
+    return (Theme.of(context).brightness == Brightness.dark)
+        ? Icon(icon)
+        : Icon(icon, color: Colors.black);
   }
 
   /// License text box

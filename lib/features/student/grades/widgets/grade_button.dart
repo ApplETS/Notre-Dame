@@ -6,11 +6,9 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
 // Project imports:
-import 'package:notredame/constants/preferences_flags.dart';
 import 'package:notredame/features/app/navigation/navigation_service.dart';
 import 'package:notredame/features/app/navigation/router_paths.dart';
 import 'package:notredame/features/app/signets-api/models/course.dart';
-import 'package:notredame/features/more/settings/settings_manager.dart';
 import 'package:notredame/utils/app_theme.dart';
 import 'package:notredame/utils/locator.dart';
 
@@ -21,9 +19,6 @@ class GradeButton extends StatelessWidget {
   /// Used to redirect on the dashboard.
   final NavigationService _navigationService = locator<NavigationService>();
 
-  /// Settings manager
-  final SettingsManager _settingsManager = locator<SettingsManager>();
-
   GradeButton(this.course, {this.color});
 
   @override
@@ -31,16 +26,8 @@ class GradeButton extends StatelessWidget {
         color: color,
         child: InkWell(
           borderRadius: BorderRadius.circular(10),
-          onTap: () async {
-            if (ModalRoute.of(context)!.settings.name ==
-                    RouterPaths.dashboard ||
-                await _settingsManager
-                        .getBool(PreferencesFlag.discoveryStudentGrade) ==
-                    true) {
-              _navigationService.pushNamed(RouterPaths.gradeDetails,
-                  arguments: course);
-            }
-          },
+          onTap: () => _navigationService.pushNamed(RouterPaths.gradeDetails,
+                  arguments: course),
           child: _buildGradeButton(context),
         ),
       );
