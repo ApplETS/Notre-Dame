@@ -58,6 +58,12 @@ class _DashboardViewState extends State<DashboardView>
               appBar: AppBar(
                   title: Text(AppIntl.of(context)!.title_dashboard),
                   centerTitle: false,
+                  actions: [
+                    IconButton(
+                      icon: const Icon(Icons.restore),
+                      onPressed: () => model.setAllCardsVisible(),
+                    )
+                  ],
                   automaticallyImplyLeading: false),
               body: model.cards == null
                   ? buildLoading()
