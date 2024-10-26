@@ -2,7 +2,6 @@
 import 'package:flutter/material.dart';
 
 // Package imports:
-import 'package:feature_discovery_fork/feature_discovery.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
@@ -58,7 +57,7 @@ void main() {
             remoteConfigServiceMock,
             toReturn: false);
         await tester.pumpWidget(
-            localizedWidget(child: FeatureDiscovery(child: MoreView())));
+            localizedWidget(child: MoreView()));
         await tester.pumpAndSettle(const Duration(seconds: 1));
 
         final listview = find.byType(ListView);
@@ -71,7 +70,7 @@ void main() {
       testWidgets('has 1 listView and 9 listTiles when privacy policy enabled',
           (WidgetTester tester) async {
         await tester.pumpWidget(
-            localizedWidget(child: FeatureDiscovery(child: MoreView())));
+            localizedWidget(child: MoreView()));
         await tester.pumpAndSettle(const Duration(seconds: 1));
 
         final listview = find.byType(ListView);
@@ -87,7 +86,7 @@ void main() {
               remoteConfigServiceMock,
               toReturn: false);
           await tester.pumpWidget(
-              localizedWidget(child: FeatureDiscovery(child: MoreView())));
+              localizedWidget(child: MoreView()));
           await tester.pumpAndSettle(const Duration(seconds: 1));
 
           // Tap the button.
@@ -108,7 +107,7 @@ void main() {
               toReturn: false);
 
           await tester.pumpWidget(
-              localizedWidget(child: FeatureDiscovery(child: MoreView())));
+              localizedWidget(child: MoreView()));
           await tester.pumpAndSettle();
 
           // Tap the button.
@@ -129,7 +128,7 @@ void main() {
           InAppReviewServiceMock.stubIsAvailable(inAppReviewServiceMock);
 
           await tester.pumpWidget(
-              localizedWidget(child: FeatureDiscovery(child: MoreView())));
+              localizedWidget(child: MoreView()));
           await tester.pumpAndSettle();
 
           // Tap the button.
@@ -149,7 +148,7 @@ void main() {
               remoteConfigServiceMock,
               toReturn: false);
           await tester.pumpWidget(
-              localizedWidget(child: FeatureDiscovery(child: MoreView())));
+              localizedWidget(child: MoreView()));
           await tester.pumpAndSettle(const Duration(seconds: 1));
 
           // Tap the button.
@@ -168,7 +167,7 @@ void main() {
               remoteConfigServiceMock,
               toReturn: false);
           await tester.pumpWidget(
-              localizedWidget(child: FeatureDiscovery(child: MoreView())));
+              localizedWidget(child: MoreView()));
           await tester.pumpAndSettle(const Duration(seconds: 1));
 
           // Tap the button.
@@ -188,7 +187,7 @@ void main() {
               remoteConfigServiceMock,
               toReturn: false);
           await tester.pumpWidget(
-              localizedWidget(child: FeatureDiscovery(child: MoreView())));
+              localizedWidget(child: MoreView()));
           await tester.pumpAndSettle(const Duration(seconds: 1));
 
           // Tap the button.
@@ -207,7 +206,7 @@ void main() {
               remoteConfigServiceMock,
               toReturn: false);
           await tester.pumpWidget(
-              localizedWidget(child: FeatureDiscovery(child: MoreView())));
+              localizedWidget(child: MoreView()));
           await tester.pumpAndSettle(const Duration(seconds: 1));
 
           // Tap the button.
@@ -225,7 +224,7 @@ void main() {
               remoteConfigServiceMock,
               toReturn: false);
           await tester.pumpWidget(
-              localizedWidget(child: FeatureDiscovery(child: MoreView())));
+              localizedWidget(child: MoreView()));
           await tester.pumpAndSettle(const Duration(seconds: 1));
 
           // Tap the button.

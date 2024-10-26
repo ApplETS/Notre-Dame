@@ -2,7 +2,6 @@
 import 'package:flutter/material.dart';
 
 // Package imports:
-import 'package:feature_discovery_fork/feature_discovery.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -92,7 +91,7 @@ void main() {
         tester.view.physicalSize = const Size(800, 1410);
 
         await tester.pumpWidget(
-            localizedWidget(child: FeatureDiscovery(child: GradesView())));
+            localizedWidget(child: GradesView()));
         await tester.pumpAndSettle(const Duration(seconds: 1));
 
         expect(find.text(intl.grades_msg_no_grades), findsOneWidget);
@@ -111,9 +110,8 @@ void main() {
         tester.view.physicalSize = const Size(800, 1410);
         await tester.runAsync(() async {
           await tester.pumpWidget(localizedWidget(
-              child: FeatureDiscovery(
-            child: GradesView(),
-          )));
+              child: GradesView(),
+          ));
           await tester.pumpAndSettle(const Duration(seconds: 10));
         }).then((value) {
           // Check the summer session list of grades.
