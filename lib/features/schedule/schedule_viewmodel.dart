@@ -441,8 +441,10 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
               .map((e) => e.featureId)
               .toList();
 
-      Future.delayed(const Duration(milliseconds: 700),
-          () => FeatureDiscovery.discoverFeatures(context, ids));
+      Future.delayed(const Duration(milliseconds: 700), () {
+        if (!context.mounted) return;
+        FeatureDiscovery.discoverFeatures(context, ids);
+      });
     }
   }
 

@@ -42,10 +42,6 @@ android {
         main.java.srcDirs += 'src/main/kotlin'
     }
 
-    lintOptions {
-        disable 'InvalidPackage'
-        checkDependencies true
-    }
 
     viewBinding {
         enabled = true
@@ -53,8 +49,8 @@ android {
 
     defaultConfig {
         applicationId "ca.etsmtl.applets.etsmobile"
-        minSdkVersion 21
-        targetSdkVersion 34
+        minSdkVersion flutter.minSdkVersion
+        targetSdkVersion flutter.targetSdkVersion
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
         multiDexEnabled true
@@ -88,6 +84,11 @@ android {
             ext.enableCrashlytics = false
             ext.alwaysUpdateBuildId = false
         }
+    }
+    namespace 'ca.etsmtl.applets.etsmobile'
+    lint {
+        checkDependencies true
+        disable 'InvalidPackage'
     }
 }
 
