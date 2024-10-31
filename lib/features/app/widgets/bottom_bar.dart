@@ -69,19 +69,19 @@ class _BottomBarState extends State<BottomBar> {
 
     switch (index) {
       case BottomBar.dashboardView:
-        _navigationService.pushNamedAndRemoveUntil(RouterPaths.dashboard);
+        _navigationService.pushNamedAndRemoveDuplicates(RouterPaths.dashboard);
         _analyticsService.logEvent("BottomBar", "DashboardView clicked");
       case BottomBar.scheduleView:
-        _navigationService.pushNamedAndRemoveUntil(RouterPaths.schedule);
+        _navigationService.pushNamedAndRemoveDuplicates(RouterPaths.schedule);
         _analyticsService.logEvent("BottomBar", "ScheduleView clicked");
       case BottomBar.studentView:
-        _navigationService.pushNamedAndRemoveUntil(RouterPaths.student);
+        _navigationService.pushNamedAndRemoveDuplicates(RouterPaths.student);
         _analyticsService.logEvent("BottomBar", "StudentView clicked");
       case BottomBar.etsView:
-        _navigationService.pushNamedAndRemoveUntil(RouterPaths.ets);
+        _navigationService.pushNamedAndRemoveDuplicates(RouterPaths.ets);
         _analyticsService.logEvent("BottomBar", "EtsView clicked");
       case BottomBar.moreView:
-        _navigationService.pushNamedAndRemoveUntil(RouterPaths.more);
+        _navigationService.pushNamedAndRemoveDuplicates(RouterPaths.more);
         _analyticsService.logEvent("BottomBar", "MoreView clicked");
     }
     _currentView = index;
