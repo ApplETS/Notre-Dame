@@ -349,5 +349,10 @@
   "ticket_status_closed": "Closed",
   "loading": "Loading...",
 
-  "no_schedule_available": "There are no events scheduled at the moment"
+  "no_schedule_available": "There are no events scheduled at the moment",
+
+  "upcoming_events": "Upcoming events",
+  "semester_start_date": "Semester start date",
+  "semester_end_date": "Semester end date",
+  "registration_start_date": "Registration start date"
 }

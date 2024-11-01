@@ -45,7 +45,7 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
   double _progress = 0.0;
 
   /// Session important days
-  List<DateTime> _importantDates = [];
+  List<MapEntry<int, DateTime>> _upcomingEvents = [];
 
   /// Numbers of days elapsed and total number of days of the current session
   List<int> _sessionDays = [0, 0];
@@ -63,7 +63,7 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
 
   List<int> get sessionDays => _sessionDays;
 
-  List<DateTime> get importantDates => _importantDates;
+  List<MapEntry<int, DateTime>> get upcomingEvents => _upcomingEvents;
 
   /// Activities for today
   List<CourseActivity> _todayDateEvents = [];
@@ -303,9 +303,15 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
 
       setBusyForObject(progress, true);
       final sessions = await _courseRepository.getSessions();
+      final List<DateTime> importantDates = [sessions[1].startDate, sessions[1].endDate, sessions[1].startDateRegistration];
       _sessionDays = getSessionDays();
       _progress = getSessionProgress();
-      _importantDates = [sessions[1].startDate, sessions[1].endDate, sessions[1].startDateRegistration];
+
+      _upcomingEvents = importantDates.asMap().entries.where((entry) {
+        DateTime date = entry.value;
+        DateTime now = DateTime.now();
+        return now.isAfter(date.subtract(const Duration(days: 3))) && now.isBefore(date.add(const Duration(days: 1)));
+      }).toList();
       return sessions;
     } catch (error) {
       onError(error);

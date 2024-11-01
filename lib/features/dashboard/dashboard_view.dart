@@ -202,7 +202,7 @@ class _DashboardViewState extends State<DashboardView>
       );
 
   Widget _buildProgressBarCard(
-          DashboardViewModel model, PreferencesFlag flag) =>
+      DashboardViewModel model, PreferencesFlag flag) =>
       DismissibleCard(
         key: UniqueKey(),
         onDismissed: (DismissDirection direction) {
@@ -227,7 +227,7 @@ class _DashboardViewState extends State<DashboardView>
                     borderRadius: const BorderRadius.all(Radius.circular(10)),
                     child: GestureDetector(
                       onTap: () => setState(
-                        () => setState(() {
+                            () => setState(() {
                           model.changeProgressBarText();
                           setText(model);
                         }),
@@ -268,26 +268,18 @@ class _DashboardViewState extends State<DashboardView>
                 child: Text(AppIntl.of(context)!.session_without),
               ),
             ),
-          // TODO: ICI
           Padding(
             padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
             child: Builder(
               builder: (context) {
-                final upcomingEvents = model.importantDates.asMap().entries.where((entry) {
-                  DateTime date = entry.value;
-                  DateTime now = DateTime.now();
-
-                  return now.isAfter(date.subtract(const Duration(days: 3))) &&
-                      now.isBefore(date.add(const Duration(days: 1)));
-                }).toList();
-
-                if (upcomingEvents.isEmpty) return const SizedBox.shrink();
+                if (model.upcomingEvents.isEmpty) return const SizedBox.shrink();
+                final currentLocale = AppIntl.of(context)!.localeName;
 
                 return Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      "Évènements à venir",
+                      AppIntl.of(context)!.upcoming_events,
                       style: Theme.of(context).textTheme.titleLarge?.copyWith(
                         fontWeight: FontWeight.bold,
                       ),
@@ -297,13 +289,17 @@ class _DashboardViewState extends State<DashboardView>
                       alignment: Alignment.centerLeft,
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
-                        children: upcomingEvents.map((entry) {
+                        children: model.upcomingEvents.map((entry) {
                           int index = entry.key;
                           DateTime date = entry.value;
 
-                          List<String> labels = ["Début de la session", "Fin de la session", "Début des inscriptions"];
+                          List<String> labels = [
+                            AppIntl.of(context)!.semester_start_date,
+                            AppIntl.of(context)!.semester_end_date,
+                            AppIntl.of(context)!.registration_start_date
+                          ];
 
-                          String formattedDate = DateFormat('dd MMMM yyyy', 'fr').format(date);
+                          String formattedDate = DateFormat('dd MMMM yyyy', currentLocale).format(date);
 
                           return Text(
                             "${labels[index]}: $formattedDate",
@@ -317,9 +313,6 @@ class _DashboardViewState extends State<DashboardView>
               },
             ),
           )
-
-
-
         ]),
       );
 
