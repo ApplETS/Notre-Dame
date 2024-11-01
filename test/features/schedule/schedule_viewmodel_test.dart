@@ -880,7 +880,7 @@ void main() {
       });
 
       test('month view show toast if today already selected', () async {
-        final currentMonth = Utils.getFirstDayOfCurrentWeek(DateTime.now());
+        final currentMonth = DateTime.now();
 
         viewModel.settings[PreferencesFlag.scheduleListView] = false;
         viewModel.calendarFormat = CalendarTimeFormat.month;
@@ -892,17 +892,16 @@ void main() {
       });
 
       test('month view go back to current week', () async {
-        final currentMonth = Utils.getFirstDayOfCurrentWeek(DateTime.now());
+        final currentWeek = Utils.getFirstDayOfCurrentWeek(DateTime.now());
         final oldSelectedDate = DateTime(2022, 1, 2);
 
-
         viewModel.settings[PreferencesFlag.scheduleListView] = false;
-        viewModel.calendarFormat = CalendarTimeFormat.month;
+        viewModel.calendarFormat = CalendarTimeFormat.week;
         viewModel.weekSelected = oldSelectedDate;
 
         final res = viewModel.selectToday();
 
-        expect(viewModel.weekSelected.month, currentMonth.month);
+        expect(viewModel.weekSelected, currentWeek);
         expect(res, true, reason: "Today was not focused before");
       });
     });

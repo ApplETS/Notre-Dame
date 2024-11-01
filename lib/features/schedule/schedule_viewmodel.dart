@@ -220,9 +220,6 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
     return events;
   }
 
-  bool get showWeekEvents =>
-      settings[PreferencesFlag.scheduleShowWeekEvents] as bool;
-
   bool isLoadingEvents = false;
 
   bool get calendarViewSetting {
@@ -458,7 +455,7 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
     final bool isThisWeekSelected = weekSelected == Utils.getFirstDayOfCurrentWeek(DateTime.now());
 
     isThisWeekSelected
-        ?  Fluttertoast.showToast(msg: _appIntl.schedule_already_today_toast)
+        ? Fluttertoast.showToast(msg: _appIntl.schedule_already_today_toast)
         : weekSelected = Utils.getFirstDayOfCurrentWeek(DateTime.now());
 
     return !isThisWeekSelected;

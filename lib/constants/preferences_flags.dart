@@ -9,10 +9,8 @@ enum PreferencesFlag {
   // Schedule flags
   scheduleCalendarFormat,
   scheduleShowTodayBtn,
-  scheduleShowWeekEvents,
   scheduleLaboratoryGroup,
   scheduleListView,
-  scheduleShowWeekendDays,
 
   // Locale flag
   locale,

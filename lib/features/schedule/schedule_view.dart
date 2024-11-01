@@ -150,20 +150,15 @@ class _ScheduleViewState extends State<ScheduleView>
             const SizedBox(height: 8.0),
             const Divider(indent: 8.0, endIndent: 8.0, thickness: 1),
             const SizedBox(height: 6.0),
-            if (model.showWeekEvents)
-              for (final Widget widget in _buildWeekEvents(model, context))
-                widget
-            else
               _buildTitleForDate(model.daySelected, model),
             const SizedBox(height: 2.0),
-            if (!model.showWeekEvents &&
-                model.selectedDateEvents(model.daySelected).isEmpty && !model.isBusy)
+            if (model.selectedDateEvents(model.daySelected).isEmpty && !model.isBusy)
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 64.0),
                 child:
                     Center(child: Text(AppIntl.of(context)!.schedule_no_event)),
               )
-            else if (!model.showWeekEvents)
+            else
               _buildEventList(model.selectedDateEvents(model.daySelected)),
             const SizedBox(height: 16.0),
           ],
@@ -427,17 +422,6 @@ class _ScheduleViewState extends State<ScheduleView>
         style: Theme.of(context).textTheme.headlineMedium,
       ));
 
-  List<Widget> _buildWeekEvents(ScheduleViewModel model, BuildContext context) {
-    final List<Widget> widgets = [];
-    final eventsByDate = model.selectedWeekEvents();
-    for (final events in eventsByDate.entries) {
-      widgets.add(_buildTitleForDate(events.key, model));
-      widgets.add(_buildEventList(events.value));
-      widgets.add(const SizedBox(height: 20.0));
-    }
-    return widgets;
-  }
-
   /// Build the square with the number of [events] for the [date]
   Widget? _buildEventsMarker(
       ScheduleViewModel model, DateTime date, List events, Color color) {
@@ -480,7 +464,7 @@ class _ScheduleViewState extends State<ScheduleView>
         return isSameDay(model.daySelected, day);
       },
       weekendDays: const [],
-      headerStyle:  HeaderStyle(
+      headerStyle: HeaderStyle(
           titleTextFormatter: (date, locale) => DateFormat.MMMMEEEEd(locale).format(model.daySelected),
           titleCentered: true, formatButtonVisible: false),
       eventLoader: model.coursesActivitiesFor,
@@ -580,20 +564,16 @@ class _ScheduleViewState extends State<ScheduleView>
           IconButton(
               icon: const Icon(Icons.today_outlined),
               onPressed: () => setState(() {
-                    model.selectToday();
-                    _analyticsService.logEvent(tag, "Select today clicked");
-                if (!(model.settings[PreferencesFlag.scheduleListView]
-                    as bool)) {
-                  if (model.calendarFormat == CalendarTimeFormat.day) {
-                    dayViewKey.currentState?.animateToDate(DateTime.now());
-                  } else if (model.calendarFormat == CalendarTimeFormat.week) {
-                    weekViewKey.currentState?.animateToWeek(DateTime.now());
-                  } else if (model.calendarFormat == CalendarTimeFormat.month) {
-                    monthViewKey.currentState?.animateToMonth(DateTime(
-                        DateTime.now().year, DateTime.now().month));
-                  }
+                model.selectToday();
+                _analyticsService.logEvent(tag, "Select today clicked");
+                if (model.calendarFormat == CalendarTimeFormat.day && !(model.settings[PreferencesFlag.scheduleListView] as bool)) {
+                  dayViewKey.currentState?.animateToDate(DateTime.now());
+                } else if (model.calendarFormat == CalendarTimeFormat.week) {
+                  weekViewKey.currentState?.animateToWeek(DateTime.now());
+                } else if (model.calendarFormat == CalendarTimeFormat.month) {
+                  monthViewKey.currentState?.animateToMonth(DateTime(DateTime.now().year, DateTime.now().month));
                 }
-                  })),
+              })),
         _buildDiscoveryFeatureDescriptionWidget(
           context,
           Icons.settings_outlined,

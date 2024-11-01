@@ -53,9 +53,6 @@ void main() {
         PreferencesServiceMock.stubGetBool(
             preferencesServiceMock, PreferencesFlag.scheduleListView,
             toReturn: null);
-        PreferencesServiceMock.stubGetBool(
-            preferencesServiceMock, PreferencesFlag.scheduleShowWeekEvents,
-            toReturn: null);
         RemoteConfigServiceMock.stubGetCalendarViewEnabled(
             remoteConfigServiceMock);
 
@@ -63,7 +60,6 @@ void main() {
           PreferencesFlag.scheduleCalendarFormat: CalendarTimeFormat.week,
           PreferencesFlag.scheduleShowTodayBtn: true,
           PreferencesFlag.scheduleListView: getCalendarViewEnabled(),
-          PreferencesFlag.scheduleShowWeekEvents: true,
         };
 
         final result = await manager.getScheduleSettings();
@@ -77,9 +73,6 @@ void main() {
                 .getBool(PreferencesFlag.scheduleShowTodayBtn))
             .called(1);
         verify(preferencesServiceMock.getBool(PreferencesFlag.scheduleListView))
-            .called(1);
-        verify(preferencesServiceMock
-                .getBool(PreferencesFlag.scheduleShowWeekEvents))
             .called(1);
 
         verifyNoMoreInteractions(preferencesServiceMock);
@@ -97,15 +90,11 @@ void main() {
         PreferencesServiceMock.stubGetBool(
             preferencesServiceMock, PreferencesFlag.scheduleListView,
             toReturn: false);
-        PreferencesServiceMock.stubGetBool(
-            preferencesServiceMock, PreferencesFlag.scheduleShowWeekEvents,
-            toReturn: false);
 
         final expected = {
           PreferencesFlag.scheduleCalendarFormat: CalendarTimeFormat.month,
           PreferencesFlag.scheduleShowTodayBtn: false,
           PreferencesFlag.scheduleListView: false,
-          PreferencesFlag.scheduleShowWeekEvents: false,
         };
 
         final result = await manager.getScheduleSettings();
@@ -119,9 +108,6 @@ void main() {
                 .getBool(PreferencesFlag.scheduleShowTodayBtn))
             .called(1);
         verify(preferencesServiceMock.getBool(PreferencesFlag.scheduleListView))
-            .called(1);
-        verify(preferencesServiceMock
-                .getBool(PreferencesFlag.scheduleShowWeekEvents))
             .called(1);
 
         verifyNoMoreInteractions(preferencesServiceMock);

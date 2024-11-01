@@ -29,7 +29,6 @@ void main() {
     PreferencesFlag.scheduleCalendarFormat: CalendarTimeFormat.week,
     PreferencesFlag.scheduleShowTodayBtn: true,
     PreferencesFlag.scheduleListView: true,
-    PreferencesFlag.scheduleShowWeekEvents: true
   };
   
   final List<ScheduleActivity> classOneWithLaboratoryABscheduleActivities = [
@@ -363,7 +362,6 @@ void main() {
           PreferencesFlag.scheduleCalendarFormat: CalendarTimeFormat.day,
           PreferencesFlag.scheduleShowTodayBtn: true,
           PreferencesFlag.scheduleListView: true,
-          PreferencesFlag.scheduleShowWeekEvents: true
         };
 
         SettingsManagerMock.stubGetScheduleSettings(settingsManagerMock,

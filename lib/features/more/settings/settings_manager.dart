@@ -175,12 +175,6 @@ class SettingsManager with ChangeNotifier {
     settings.putIfAbsent(
         PreferencesFlag.scheduleListView, () => scheduleListView);
 
-    final showWeekEventsBtn = await _preferencesService
-            .getBool(PreferencesFlag.scheduleShowWeekEvents) ??
-        true;
-    settings.putIfAbsent(
-        PreferencesFlag.scheduleShowWeekEvents, () => showWeekEventsBtn);
-
     _logger.i("$tag - getScheduleSettings - Settings loaded: $settings");
 
     return settings;

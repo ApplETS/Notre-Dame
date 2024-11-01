@@ -71,7 +71,6 @@ void main() {
       settings = {
         PreferencesFlag.scheduleCalendarFormat: CalendarTimeFormat.week,
         PreferencesFlag.scheduleShowTodayBtn: true,
-        PreferencesFlag.scheduleShowWeekEvents: false,
         PreferencesFlag.scheduleListView: true,
       };
 
