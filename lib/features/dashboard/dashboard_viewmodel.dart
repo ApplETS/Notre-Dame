@@ -44,6 +44,9 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
   /// Percentage of completed days for the session
   double _progress = 0.0;
 
+  /// Session important days
+  List<DateTime> _importantDates = [];
+
   /// Numbers of days elapsed and total number of days of the current session
   List<int> _sessionDays = [0, 0];
 
@@ -59,6 +62,8 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
   double get progress => _progress;
 
   List<int> get sessionDays => _sessionDays;
+
+  List<DateTime> get importantDates => _importantDates;
 
   /// Activities for today
   List<CourseActivity> _todayDateEvents = [];
@@ -300,6 +305,7 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
       final sessions = await _courseRepository.getSessions();
       _sessionDays = getSessionDays();
       _progress = getSessionProgress();
+      _importantDates = [sessions[1].startDate, sessions[1].endDate, sessions[1].startDateRegistration];
       return sessions;
     } catch (error) {
       onError(error);

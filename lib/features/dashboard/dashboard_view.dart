@@ -6,6 +6,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 import 'package:stacked/stacked.dart';
+import 'package:intl/intl.dart';
 
 // Project imports:
 import 'package:notredame/constants/preferences_flags.dart';
@@ -267,6 +268,25 @@ class _DashboardViewState extends State<DashboardView>
                 child: Text(AppIntl.of(context)!.session_without),
               ),
             ),
+          // TODO: ICI
+          Column(
+            children: model.importantDates.asMap().entries.map((entry) {
+              int index = entry.key;
+              var date = entry.value;
+
+              // Define labels for each date
+              List<String> labels = ["Start date", "End date", "Registration"];
+
+              // Format the date to remove the time part
+              String formattedDate = DateFormat('dd MMMM yyyy', 'fr').format(date);
+
+              // Return a Text widget with the label and the formatted date
+              return Text(
+                "${labels[index]}: $formattedDate",
+                style: const TextStyle(color: Colors.black),
+              );
+            }).toList(),
+          ),
         ]),
       );
 
