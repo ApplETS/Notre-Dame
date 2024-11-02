@@ -305,7 +305,7 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
       final sessions = await _courseRepository.getSessions();
       _sessionDays = getSessionDays();
       _progress = getSessionProgress();
-      _importantDates = [sessions[1].startDate, sessions[1].endDate, sessions[1].startDateRegistration];
+      _importantDates = [sessions[1].startDate, sessions[1].endDate, sessions[1].startDateRegistration, sessions[0].startDateCancellationWithRefund, sessions[0].deadlineCancellationWithRefund, sessions[0].deadlineCancellationWithRefundNewStudent, sessions[0].deadlineCancellationASEQ];
       return sessions;
     } catch (error) {
       onError(error);
