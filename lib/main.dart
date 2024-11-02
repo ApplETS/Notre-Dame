@@ -2,7 +2,6 @@
 import 'dart:async';
 
 // Flutter imports:
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 // Package imports:
@@ -10,7 +9,6 @@ import 'package:calendar_view/calendar_view.dart';
 import 'package:feedback/feedback.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
-import 'package:flutter_config/flutter_config.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
@@ -49,9 +47,6 @@ Future<void> main() async {
   final HelloAPIClient helloApiClient = locator<HelloAPIClient>();
   helloApiClient.apiLink = remoteConfigService.helloApiUrl;
 
-  if (kDebugMode) {
-    FlutterConfig.loadEnvVariables();
-  }
   runZonedGuarded(() {
     runApp(
       ETSMobile(settingsManager),

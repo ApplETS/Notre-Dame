@@ -2,11 +2,7 @@
 import 'dart:convert';
 import 'dart:io';
 
-// Flutter imports:
-import 'package:flutter/foundation.dart';
-
 // Package imports:
-import 'package:flutter_config/flutter_config.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:github/github.dart';
 import 'package:logger/logger.dart';
@@ -37,13 +33,7 @@ class GithubApi {
       locator<InternalInfoService>();
 
   GithubApi() {
-    String githubApiToken;
-    if (kDebugMode &&
-        FlutterConfig.variables.containsKey(_envVariableGithubAPIKey)) {
-      githubApiToken = FlutterConfig.get(_envVariableGithubAPIKey).toString();
-    } else {
-      githubApiToken = const String.fromEnvironment(_envVariableGithubAPIKey);
-    }
+    final githubApiToken = const String.fromEnvironment(_envVariableGithubAPIKey);
     _github = GitHub(auth: Authentication.withToken(githubApiToken));
   }
 

@@ -78,7 +78,6 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   mockito: ^5.4.4
-  flutter_config: ^2.0.2
   flutter_launcher_icons: ^0.14.1
   build_runner: ^2.4.13
   import_sorter: ^4.6.0
