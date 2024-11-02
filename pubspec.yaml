@@ -34,7 +34,7 @@ dependencies:
 
   # Utils
   logger: ^2.4.0
-  enum_to_string: ^2.0.1
+  url_launcher: ^6.3.1
   fluttertoast: ^8.2.8
 
   # Widgets
