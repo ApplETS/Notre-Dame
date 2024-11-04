@@ -221,13 +221,12 @@ class _ScheduleSettingsState extends State<ScheduleSettings> {
       BuildContext context, ScheduleSettingsViewModel model) {
     final chips = <Widget>[];
 
-    for (final CalendarTimeFormat format in model.formatPossibleCalendarView) {
-      // Two weeks view does not exist in calendar view, therefore the chip should not be displayed
+    for (final CalendarTimeFormat format in CalendarTimeFormat.values) {
         chips.add(InputChip(
           label: Text(getTextForFormat(context, format)),
-          // If user selected two weeks view but is in calendar view, then select week view chip (since two weeks chip is not displayed)
           selected: model.calendarFormat == format,
           selectedColor: selectedColor,
+          showCheckmark: false,
           onPressed: () => setState(() => model.calendarFormat = format)));
     }
 

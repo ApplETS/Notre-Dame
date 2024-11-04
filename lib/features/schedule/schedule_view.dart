@@ -517,18 +517,29 @@ class _ScheduleViewState extends State<ScheduleView>
         setState(() =>
             model.handleViewChanged(date, eventController, [])
         );
-        dayViewKey.currentState?.animateToDate(model.daySelected).then((value) =>
-        {
-          _isDayViewAnimating = false
-        });
+
+        dayViewKey.currentState?.animateToDate(model.daySelected).then((value) => _isDayViewAnimating = false);
       },
       child: Container(
         padding: const EdgeInsets.only(top: 5.0, left: 6.0),
         width: 100,
         height: 100,
-        child: Text(
-          '${date.day}',
-          style: const TextStyle().copyWith(fontSize: 16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              '${date.day}',
+              style: const TextStyle().copyWith(
+                  fontSize: 16.0,
+                  height: 1.2,
+              ),
+            ),
+            if (date.month != DateTime.now().month || date.year != DateTime.now().year)
+              Text(
+                DateFormat.MMM(model.locale.toString()).format(date),
+                style: const TextStyle(fontSize: 10.0)
+              ),
+          ],
         ),
       ),
     ),

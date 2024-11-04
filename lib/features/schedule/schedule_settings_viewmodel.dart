@@ -39,13 +39,6 @@ class ScheduleSettingsViewModel
 
   bool get showTodayBtn => _showTodayBtn;
 
-  /// List of possible calendar format for the calendar view.
-  List<CalendarTimeFormat> formatPossibleCalendarView = [
-    CalendarTimeFormat.month,
-    CalendarTimeFormat.week,
-    CalendarTimeFormat.day
-  ];
-
   set showTodayBtn(bool newValue) {
     setBusy(true);
     _settingsManager.setBool(PreferencesFlag.scheduleShowTodayBtn, newValue);

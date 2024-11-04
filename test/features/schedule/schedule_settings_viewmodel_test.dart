@@ -240,12 +240,12 @@ void main() {
             settingsManagerMock, PreferencesFlag.scheduleCalendarFormat);
 
         // Call the setter.
-        viewModel.calendarFormat = CalendarTimeFormat.twoWeeks;
+        viewModel.calendarFormat = CalendarTimeFormat.day;
 
         await untilCalled(settingsManagerMock.setString(
             PreferencesFlag.scheduleCalendarFormat, any));
 
-        expect(viewModel.calendarFormat, CalendarTimeFormat.twoWeeks);
+        expect(viewModel.calendarFormat, CalendarTimeFormat.day);
         expect(viewModel.isBusy, false);
 
         verify(settingsManagerMock.setString(
