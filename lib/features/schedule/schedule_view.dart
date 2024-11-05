@@ -8,6 +8,7 @@ import 'package:calendar_view/calendar_view.dart' as calendar_view;
 import 'package:feature_discovery_fork/feature_discovery.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:intl/intl.dart';
+import 'package:notredame/utils/calendar_utils.dart';
 import 'package:stacked/stacked.dart';
 import 'package:table_calendar/table_calendar.dart';
 
@@ -42,12 +43,13 @@ class _ScheduleViewState extends State<ScheduleView>
       GlobalKey<calendar_view.WeekViewState>();
   final GlobalKey<calendar_view.MonthViewState> monthViewKey =
       GlobalKey<calendar_view.MonthViewState>();
+  final GlobalKey<calendar_view.DayViewState> dayViewKey =
+      GlobalKey<calendar_view.DayViewState>();
   final AnalyticsService _analyticsService = locator<AnalyticsService>();
 
   static const String tag = "ScheduleView";
-  static const Color _selectedColor = AppTheme.etsLightRed;
-  static const Color _defaultColor = Color(0xff76859B);
   static final List<String> weekTitles = ["L", "M", "M", "J", "V", "S", "D"];
+  static bool _isDayViewAnimating = false;
 
   late AnimationController _animationController;
 
@@ -76,7 +78,7 @@ class _ScheduleViewState extends State<ScheduleView>
   Widget build(BuildContext context) =>
       ViewModelBuilder<ScheduleViewModel>.reactive(
         viewModelBuilder: () => ScheduleViewModel(
-            intl: AppIntl.of(context)!, initialSelectedDate: widget.initialDay),
+            intl: AppIntl.of(context)!),
         onViewModelReady: (model) {
           if (model.settings.isEmpty) {
             model.loadSettings();
@@ -89,81 +91,15 @@ class _ScheduleViewState extends State<ScheduleView>
               title: Text(AppIntl.of(context)!.title_schedule),
               centerTitle: false,
               automaticallyImplyLeading: false,
-              actions:
-                  model.busy(model.settings) ? [] : _buildActionButtons(model),
+              actions: model.busy(model.settings) ? [] : _buildActionButtons(model),
             ),
             body: model.busy(model.settings)
                 ? const SizedBox()
-                : RefreshIndicator(
-                    child: !model.calendarViewSetting
-                        ? _buildCalendarView(model, context)
-                        : _buildListView(model, context),
-                    onRefresh: () => model.refresh(),
-                  )),
+                : displaySchedule(model)),
       );
 
-  Widget _buildListView(ScheduleViewModel model, BuildContext context) {
-    return Stack(children: [
-      GestureDetector(
-        onPanEnd: (details) {
-          if (details.velocity.pixelsPerSecond.dx > 0) {
-            setState(() {
-              if (!model.showWeekEvents) {
-                model.focusedDate.value =
-                    model.focusedDate.value.subtract(const Duration(days: 1));
-              } else {
-                model.focusedDate.value =
-                    model.focusedDate.value.subtract(const Duration(days: 7));
-              }
-              model.selectedDate = model.focusedDate.value;
-              HapticFeedback.lightImpact();
-            });
-          } else if (details.velocity.pixelsPerSecond.dx < -5) {
-            setState(() {
-              if (!model.showWeekEvents) {
-                model.focusedDate.value =
-                    model.focusedDate.value.add(const Duration(days: 1));
-              } else {
-                model.focusedDate.value =
-                    model.focusedDate.value.add(const Duration(days: 7));
-              }
-              model.selectedDate = model.focusedDate.value;
-              HapticFeedback.lightImpact();
-            });
-          }
-        },
-        child: ListView(
-          padding: EdgeInsets.zero,
-          children: [
-            _buildTableCalendar(model),
-            const SizedBox(height: 8.0),
-            const Divider(indent: 8.0, endIndent: 8.0, thickness: 1),
-            const SizedBox(height: 6.0),
-            if (model.showWeekEvents)
-              for (final Widget widget in _buildWeekEvents(model, context))
-                widget
-            else
-              _buildTitleForDate(model.selectedDate, model),
-            const SizedBox(height: 2.0),
-            if (!model.showWeekEvents &&
-                model.selectedDateEvents(model.selectedDate).isEmpty)
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 64.0),
-                child:
-                    Center(child: Text(AppIntl.of(context)!.schedule_no_event)),
-              )
-            else if (!model.showWeekEvents)
-              _buildEventList(model.selectedDateEvents(model.selectedDate)),
-            const SizedBox(height: 16.0),
-          ],
-        ),
-      ),
-    ]);
-  }
-
-  Widget _buildCalendarView(ScheduleViewModel model, BuildContext context) {
-    final calendar_view.EventController eventController =
-        calendar_view.EventController();
+  Widget displaySchedule(ScheduleViewModel model) {
+    final calendar_view.EventController eventController = calendar_view.EventController();
 
     final backgroundColor = Theme.of(context).brightness == Brightness.light
         ? AppTheme.lightThemeBackground
@@ -177,27 +113,107 @@ class _ScheduleViewState extends State<ScheduleView>
     final textColor = Theme.of(context).brightness == Brightness.light
         ? AppTheme.primaryDark
         : AppTheme.lightThemeAccent;
-    final scheduleCardsPalette =
-        Theme.of(context).brightness == Brightness.light
-            ? AppTheme.schedulePaletteLight.toList()
-            : AppTheme.schedulePaletteDark.toList();
+    final scheduleCardsPalette = Theme.of(context).brightness == Brightness.light
+        ? AppTheme.schedulePaletteLight.toList()
+        : AppTheme.schedulePaletteDark.toList();
 
-    model.handleViewChanged(
-        DateTime.now(), eventController, scheduleCardsPalette);
-
-    if (model.calendarFormat == CalendarFormat.month) {
-      return _buildCalendarViewMonthly(
-          model,
-          context,
-          eventController,
-          backgroundColor,
-          chevronColor,
-          scheduleLineColor,
-          textColor,
-          scheduleCardsPalette);
+    if (model.calendarFormat == CalendarTimeFormat.month) {
+      return _buildCalendarViewMonthly(model, context, eventController, backgroundColor, chevronColor, scheduleLineColor, textColor, scheduleCardsPalette);
     }
-    return _buildCalendarViewWeekly(model, context, eventController,
-        backgroundColor, chevronColor, scheduleLineColor, scheduleCardsPalette);
+    if (model.calendarFormat == CalendarTimeFormat.week) {
+      return _buildCalendarViewWeekly(model, context, eventController, backgroundColor, chevronColor, scheduleLineColor, scheduleCardsPalette);
+    }
+    if (!model.calendarViewSetting) {
+      return _buildCalendarViewDaily(model, context, eventController, backgroundColor, chevronColor, scheduleLineColor);
+    }
+
+    return _buildListView(model, context, eventController);
+  }
+
+  Widget _buildListView(ScheduleViewModel model, BuildContext context, calendar_view.EventController eventController) {
+    return Stack(children: [
+      GestureDetector(
+        onPanEnd: (details) {
+          if (details.velocity.pixelsPerSecond.dx.abs() > 5) {
+            setState(() {
+              final int numberOfDays = details.velocity.pixelsPerSecond.dx.sign.toInt();
+              final DateTime newFocusedDate = model.daySelected.subtract(Duration(days: numberOfDays));
+              model.handleViewChanged(newFocusedDate, eventController, []);
+              HapticFeedback.lightImpact();
+            });
+          }
+        },
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: [
+            _buildTableCalendar(model, eventController),
+            const SizedBox(height: 8.0),
+            const Divider(indent: 8.0, endIndent: 8.0, thickness: 1),
+            const SizedBox(height: 6.0),
+              _buildTitleForDate(model.daySelected, model),
+            const SizedBox(height: 2.0),
+            if (model.selectedDateEvents(model.daySelected).isEmpty && !model.isBusy)
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 64.0),
+                child:
+                    Center(child: Text(AppIntl.of(context)!.schedule_no_event)),
+              )
+            else
+              _buildEventList(model.selectedDateEvents(model.daySelected)),
+            const SizedBox(height: 16.0),
+          ],
+        ),
+      ),
+    ]);
+  }
+
+  Widget _buildCalendarViewDaily(
+      ScheduleViewModel model,
+      BuildContext context,
+      calendar_view.EventController eventController,
+      Color backgroundColor,
+      Color chevronColor,
+      Color scheduleLineColor) {
+    final double heightPerMinute = (MediaQuery.of(context).size.height / 1200).clamp(0.45, 1.0);
+    return Column(
+      children: [
+        _buildTableCalendar(model, eventController),
+        Expanded(
+            child: calendar_view.DayView(
+                showVerticalLine: false,
+                dayTitleBuilder: calendar_view.DayHeader.hidden,
+                key: dayViewKey,
+                controller: eventController
+                  ..addAll(model.selectedDayCalendarEvents()),
+                onPageChange: (date, page) => setState(() {
+                  if (!_isDayViewAnimating) {
+                    model.handleViewChanged(date, eventController, []);
+                  }
+                }),
+                backgroundColor: backgroundColor,
+                initialDay: model.daySelected,
+                // height occupied by 1 minute time span.
+                hourIndicatorSettings: calendar_view.HourIndicatorSettings(
+                  color: scheduleLineColor,
+                ),
+                liveTimeIndicatorSettings: calendar_view.LiveTimeIndicatorSettings(
+                  color: chevronColor,
+                ),
+                heightPerMinute: heightPerMinute,
+                scrollOffset: heightPerMinute * 60 * 7.5,
+                keepScrollOffset: true,
+                dateStringBuilder: (date, {secondaryDate}) {
+                  final locale = AppIntl.of(context)!.localeName;
+                  return '${date.day} ${DateFormat.MMMM(locale).format(date)} ${date.year}';
+                },
+                timeStringBuilder: (date, {secondaryDate}) {
+                  return DateFormat('H:mm').format(date);
+                },
+                eventTileBuilder:
+                    (date, events, boundary, startDuration, endDuration) =>
+                    _buildEventTile(events, context))
+        ),
+      ]);
   }
 
   Widget _buildCalendarViewWeekly(
@@ -210,13 +226,15 @@ class _ScheduleViewState extends State<ScheduleView>
       List<Color> scheduleCardsPalette) {
     final double heightPerMinute =
         (MediaQuery.of(context).size.height / 1200).clamp(0.45, 1.0);
+
     return calendar_view.WeekView(
       key: weekViewKey,
       weekNumberBuilder: (date) => null,
       controller: eventController
         ..addAll(model.selectedWeekCalendarEvents(scheduleCardsPalette)),
-      onPageChange: (date, page) =>
-          model.handleViewChanged(date, eventController, []),
+      onPageChange: (date, page) => setState(() {
+        model.handleViewChanged(date, eventController, []);
+      }),
       backgroundColor: backgroundColor,
       weekTitleHeight:
           (MediaQuery.of(context).orientation == Orientation.portrait)
@@ -238,20 +256,19 @@ class _ScheduleViewState extends State<ScheduleView>
             size: 30,
             color: chevronColor,
           )),
+      startDay: calendar_view.WeekDays.sunday,
       weekDays: [
+        if (model.displaySunday)
+          calendar_view.WeekDays.sunday,
         calendar_view.WeekDays.monday,
         calendar_view.WeekDays.tuesday,
         calendar_view.WeekDays.wednesday,
         calendar_view.WeekDays.thursday,
         calendar_view.WeekDays.friday,
-        if (model.settings[PreferencesFlag.scheduleOtherWeekday] ==
-            calendar_view.WeekDays.saturday)
-          calendar_view.WeekDays.saturday,
-        if (model.settings[PreferencesFlag.scheduleOtherWeekday] ==
-            calendar_view.WeekDays.sunday)
-          calendar_view.WeekDays.sunday,
+        if (model.displaySaturday)
+          calendar_view.WeekDays.saturday
       ],
-      initialDay: DateTime.now(),
+      initialDay: model.weekSelected,
       heightPerMinute: heightPerMinute,
       scrollOffset: heightPerMinute * 60 * 7.5,
       hourIndicatorSettings: calendar_view.HourIndicatorSettings(
@@ -274,9 +291,8 @@ class _ScheduleViewState extends State<ScheduleView>
         return '$from ${date.day} ${DateFormat.MMMM(locale).format(date)} $to ${secondaryDate?.day ?? '00'} ${DateFormat.MMMM(locale).format(secondaryDate ?? date)}';
       },
       eventTileBuilder: (date, events, boundary, startDuration, endDuration) =>
-          _buildEventTile(
-              date, events, boundary, startDuration, endDuration, context),
-      weekDayBuilder: (DateTime date) => _buildWeekDay(date, model),
+          _buildEventTile(events, context),
+      weekDayBuilder: (DateTime date) => _buildWeekDay(date, model)
     );
   }
 
@@ -291,10 +307,11 @@ class _ScheduleViewState extends State<ScheduleView>
       List<Color> scheduleCardsPalette) {
     return calendar_view.MonthView(
       key: monthViewKey,
+      // to provide custom UI for month cells.
+      cellAspectRatio: 0.8,
       borderColor: scheduleLineColor,
       controller: eventController
         ..addAll(model.selectedMonthCalendarEvents(scheduleCardsPalette)),
-      cellAspectRatio: 0.8,
       safeAreaOption:
           const calendar_view.SafeAreaOption(top: false, bottom: false),
       useAvailableVerticalSpace: MediaQuery.of(context).size.height >= 500,
@@ -324,6 +341,9 @@ class _ScheduleViewState extends State<ScheduleView>
             size: 30,
             color: chevronColor,
           )),
+      weekDayStringBuilder: (p0) {
+        return weekTitles[p0];
+      },
       startDay: calendar_view.WeekDays.sunday,
       initialMonth: DateTime(DateTime.now().year, DateTime.now().month),
       cellBuilder: (date, events, _, __, ___) => calendar_view.FilledCell(
@@ -342,11 +362,7 @@ class _ScheduleViewState extends State<ScheduleView>
   }
 
   Widget _buildEventTile(
-    DateTime date,
     List<calendar_view.CalendarEventData<dynamic>> events,
-    Rect boundary,
-    DateTime startDuration,
-    DateTime endDuration,
     BuildContext context,
   ) {
     if (events.isNotEmpty) {
@@ -378,7 +394,7 @@ class _ScheduleViewState extends State<ScheduleView>
         Container(
           padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
           decoration: BoxDecoration(
-              color: model.compareDates(date, DateTime.now())
+              color: date.withoutTime == DateTime.now().withoutTime
                   ? AppTheme.etsLightRed.withOpacity(indicatorColorOpacity)
                   : Colors.transparent,
               borderRadius: BorderRadius.circular(6.0)),
@@ -406,20 +422,9 @@ class _ScheduleViewState extends State<ScheduleView>
         style: Theme.of(context).textTheme.headlineMedium,
       ));
 
-  List<Widget> _buildWeekEvents(ScheduleViewModel model, BuildContext context) {
-    final List<Widget> widgets = [];
-    final eventsByDate = model.selectedWeekEvents();
-    for (final events in eventsByDate.entries) {
-      widgets.add(_buildTitleForDate(events.key, model));
-      widgets.add(_buildEventList(events.value));
-      widgets.add(const SizedBox(height: 20.0));
-    }
-    return widgets;
-  }
-
   /// Build the square with the number of [events] for the [date]
   Widget? _buildEventsMarker(
-      ScheduleViewModel model, DateTime date, List events) {
+      ScheduleViewModel model, DateTime date, List events, Color color) {
     if (events.isNotEmpty) {
       return Positioned(
         right: 1,
@@ -427,9 +432,8 @@ class _ScheduleViewState extends State<ScheduleView>
         child: AnimatedContainer(
           duration: const Duration(milliseconds: 200),
           decoration: BoxDecoration(
-            color: isSameDay(date, model.selectedDate)
-                ? _selectedColor
-                : _defaultColor,
+            borderRadius: BorderRadius.circular(5),
+            color: color
           ),
           width: 16.0,
           height: 16.0,
@@ -437,7 +441,6 @@ class _ScheduleViewState extends State<ScheduleView>
             child: Text(
               '${events.length}',
               style: const TextStyle().copyWith(
-                color: Colors.white,
                 fontSize: 12.0,
               ),
             ),
@@ -449,70 +452,98 @@ class _ScheduleViewState extends State<ScheduleView>
   }
 
   /// Build the calendar
-  Widget _buildTableCalendar(ScheduleViewModel model) {
-    return ValueListenableBuilder<DateTime>(
-        valueListenable: model.focusedDate,
-        builder: (context, value, _) {
-          return TableCalendar(
-            key: const Key("TableCalendar"),
-            startingDayOfWeek:
-                model.settings[PreferencesFlag.scheduleStartWeekday]
-                    as StartingDayOfWeek,
-            locale: model.locale?.toLanguageTag(),
-            selectedDayPredicate: (day) {
-              return isSameDay(model.selectedDate, day);
-            },
-            weekendDays: const [],
-            headerStyle: const HeaderStyle(
-                titleCentered: true, formatButtonVisible: false),
-            eventLoader: model.coursesActivitiesFor,
-            onDaySelected: (selectedDay, focusedDay) {
-              setState(() {
-                model.selectedDate = selectedDay;
-                model.focusedDate.value = focusedDay;
-              });
-            },
-            calendarFormat: model.calendarFormat,
-            onFormatChanged: (format) {
-              setState(() {
-                model.setCalendarFormat(format);
-              });
-            },
-            focusedDay: model.focusedDate.value,
-            onPageChanged: (focusedDay) {
-              model.focusedDate.value = focusedDay;
-            },
-            calendarBuilders: CalendarBuilders(
-                todayBuilder: (context, date, _) =>
-                    _buildSelectedDate(date, _defaultColor),
-                selectedBuilder: (context, date, _) => FadeTransition(
-                      opacity: Tween(begin: 0.0, end: 1.0)
-                          .animate(_animationController),
-                      child: _buildSelectedDate(date, _selectedColor),
-                    ),
-                markerBuilder: (context, date, events) =>
-                    _buildEventsMarker(model, date, events)),
-            // Those are now required by the package table_calendar ^3.0.0. In the doc,
-            // it is suggest to set them to values that won't affect user experience.
-            // Outside the range, the date are set to disable so no event can be loaded.
-            firstDay: DateTime.utc(2010, 12, 31),
-            lastDay: DateTime.utc(2100, 12, 31),
-          );
-        });
+  Widget _buildTableCalendar(ScheduleViewModel model, calendar_view.EventController eventController) {
+    const Color selectedColor = AppTheme.etsLightRed;
+    final Color todayColor = Theme.of(context).brightness == Brightness.light ? AppTheme.etsLightGrey : AppTheme.etsDarkGrey;
+    final Color defaultColor = Theme.of(context).brightness == Brightness.light ? AppTheme.scheduleLineColorLight : AppTheme.scheduleLineColorDark;
+
+    return TableCalendar(
+      key: const Key("TableCalendar"),
+      locale: model.locale?.toLanguageTag(),
+      selectedDayPredicate: (day) {
+        return isSameDay(model.daySelected, day);
+      },
+      weekendDays: const [],
+      headerStyle: HeaderStyle(
+          titleTextFormatter: (date, locale) => DateFormat.MMMMEEEEd(locale).format(model.daySelected),
+          titleCentered: true, formatButtonVisible: false),
+      eventLoader: model.coursesActivitiesFor,
+      calendarFormat: CalendarFormat.week,
+      focusedDay: model.daySelected,
+      onPageChanged: (focusedDay) {
+        // Used to compare
+        model.listViewCalendarSelectedDate = focusedDay;
+      },
+      calendarBuilders: CalendarBuilders(
+          defaultBuilder: (context, date, _) =>
+              _buildSelectedDate(date, defaultColor, model, eventController),
+          outsideBuilder: (context, date, _) =>
+              _buildSelectedDate(date, defaultColor, model, eventController),
+          todayBuilder: (context, date, _) =>
+              _buildSelectedDate(date, todayColor, model, eventController),
+          selectedBuilder: (context, date, _) => FadeTransition(
+                opacity: Tween(begin: 0.0, end: 1.0)
+                    .animate(_animationController),
+                child: _buildSelectedDate(date, selectedColor, model, eventController),
+              ),
+          markerBuilder: (context, date, events) {
+            final bool isSelected = isSameDay(date, model.daySelected);
+            final bool isToday = isSameDay(date, DateTime.now());
+            final Color color = isSelected ? selectedColor : isToday ? todayColor : defaultColor;
+            return _buildEventsMarker(model, date, events, color);
+          }),
+      // Those are now required by the package table_calendar ^3.0.0. In the doc,
+      // it is suggest to set them to values that won't affect user experience.
+      // Outside the range, the date are set to disable so no event can be loaded.
+      firstDay: DateTime.utc(2010, 12, 31),
+      lastDay: DateTime.utc(2100, 12, 31),
+    );
   }
 
   /// Build the visual for the selected [date]. The [color] parameter set the color for the tile.
-  Widget _buildSelectedDate(DateTime date, Color color) => Container(
-        margin: const EdgeInsets.all(4.0),
+  Widget _buildSelectedDate(DateTime date, Color color, ScheduleViewModel model, calendar_view.EventController eventController) => Container(
+    margin: const EdgeInsets.all(4.0),
+    decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(10),
+        border: Border.all(color: color)
+    ),
+    child: InkWell(
+      borderRadius: BorderRadius.circular(10),
+      onTap: () {
+        if (dayViewKey.currentState != null) {
+          _isDayViewAnimating = true;
+        }
+
+        setState(() =>
+            model.handleViewChanged(date, eventController, [])
+        );
+
+        dayViewKey.currentState?.animateToDate(model.daySelected).then((value) => _isDayViewAnimating = false);
+      },
+      child: Container(
         padding: const EdgeInsets.only(top: 5.0, left: 6.0),
-        decoration: BoxDecoration(border: Border.all(color: color)),
         width: 100,
         height: 100,
-        child: Text(
-          '${date.day}',
-          style: const TextStyle().copyWith(fontSize: 16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              '${date.day}',
+              style: const TextStyle().copyWith(
+                  fontSize: 16.0,
+                  height: 1.2,
+              ),
+            ),
+            if (date.month != DateTime.now().month || date.year != DateTime.now().year)
+              Text(
+                DateFormat.MMM(model.locale.toString()).format(date),
+                style: const TextStyle(fontSize: 10.0)
+              ),
+          ],
         ),
-      );
+      ),
+    ),
+  );
 
   /// Build the list of the events for the selected day.
   Widget _buildEventList(List<dynamic> events) {
@@ -544,20 +575,16 @@ class _ScheduleViewState extends State<ScheduleView>
           IconButton(
               icon: const Icon(Icons.today_outlined),
               onPressed: () => setState(() {
-                    if (!(model.settings[PreferencesFlag.scheduleListView]
-                        as bool)) {
-                      weekViewKey.currentState?.animateToWeek(DateTime.now());
-                      if (model.calendarFormat == CalendarFormat.month) {
-                        monthViewKey.currentState?.animateToMonth(DateTime(
-                            DateTime.now().year, DateTime.now().month));
-                      }
-                    }
-                    model.selectToday();
-                    if (model.calendarFormat == CalendarFormat.month) {
-                      model.selectTodayMonth();
-                    }
-                    _analyticsService.logEvent(tag, "Select today clicked");
-                  })),
+                model.selectToday();
+                _analyticsService.logEvent(tag, "Select today clicked");
+                if (model.calendarFormat == CalendarTimeFormat.day && !(model.settings[PreferencesFlag.scheduleListView] as bool)) {
+                  dayViewKey.currentState?.animateToDate(DateTime.now());
+                } else if (model.calendarFormat == CalendarTimeFormat.week) {
+                  weekViewKey.currentState?.animateToWeek(DateTime.now());
+                } else if (model.calendarFormat == CalendarTimeFormat.month) {
+                  monthViewKey.currentState?.animateToMonth(DateTime(DateTime.now().year, DateTime.now().month));
+                }
+              })),
         _buildDiscoveryFeatureDescriptionWidget(
           context,
           Icons.settings_outlined,

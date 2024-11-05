@@ -13,9 +13,11 @@ import 'package:notredame/utils/app_theme.dart';
 class ScheduleDefault extends StatefulWidget {
   final List<CalendarEventData<Object>> calendarEvents;
   final bool loaded;
+  final bool displaySaturday;
+  final bool displaySunday;
 
   const ScheduleDefault(
-      {super.key, required this.calendarEvents, required this.loaded});
+      {super.key, required this.calendarEvents, required this.loaded, required this.displaySaturday, required this.displaySunday});
 
   @override
   _ScheduleDefaultState createState() => _ScheduleDefaultState();
@@ -53,13 +55,17 @@ class _ScheduleDefaultState extends State<ScheduleDefault> {
       backgroundColor: Theme.of(context).brightness == Brightness.light
           ? AppTheme.lightThemeBackground
           : AppTheme.primaryDark,
-      weekDays: const [
+      startDay: WeekDays.sunday,
+      weekDays: [
+        if (widget.displaySunday)
+          WeekDays.sunday,
         WeekDays.monday,
         WeekDays.tuesday,
         WeekDays.wednesday,
         WeekDays.thursday,
         WeekDays.friday,
-        WeekDays.saturday
+        if (widget.displaySaturday)
+          WeekDays.saturday
       ],
       hourIndicatorSettings: HourIndicatorSettings(
           color: Theme.of(context).brightness == Brightness.light

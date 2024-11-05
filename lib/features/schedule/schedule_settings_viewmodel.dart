@@ -1,9 +1,7 @@
 // Package imports:
-import 'package:calendar_view/calendar_view.dart';
 import 'package:collection/collection.dart';
 import 'package:enum_to_string/enum_to_string.dart';
 import 'package:stacked/stacked.dart';
-import 'package:table_calendar/table_calendar.dart';
 
 // Project imports:
 import 'package:notredame/constants/preferences_flags.dart';
@@ -12,20 +10,22 @@ import 'package:notredame/features/app/signets-api/models/schedule_activity.dart
 import 'package:notredame/features/more/settings/settings_manager.dart';
 import 'package:notredame/utils/activity_code.dart';
 import 'package:notredame/utils/locator.dart';
+import 'package:notredame/utils/calendar_utils.dart';
 
 class ScheduleSettingsViewModel
     extends FutureViewModel<Map<PreferencesFlag, dynamic>> {
   /// Manage the settings
   final SettingsManager _settingsManager = locator<SettingsManager>();
+
   // Access the course repository
   final CourseRepository _courseRepository = locator<CourseRepository>();
 
   /// Current calendar format
-  CalendarFormat? _calendarFormat;
+  CalendarTimeFormat? _calendarFormat;
 
-  CalendarFormat? get calendarFormat => _calendarFormat;
+  CalendarTimeFormat? get calendarFormat => _calendarFormat;
 
-  set calendarFormat(CalendarFormat? format) {
+  set calendarFormat(CalendarTimeFormat? format) {
     setBusy(true);
     _settingsManager.setString(PreferencesFlag.scheduleCalendarFormat,
         EnumToString.convertToString(format));
@@ -33,63 +33,8 @@ class ScheduleSettingsViewModel
     setBusy(false);
   }
 
-  /// List of possible calendar format.
-  List<CalendarFormat> calendarFormatPossibles = [
-    CalendarFormat.month,
-    CalendarFormat.twoWeeks,
-    CalendarFormat.week
-  ];
 
-  /// Current starting day of week
-  StartingDayOfWeek? _startingDayOfWeek;
-
-  StartingDayOfWeek? get startingDayOfWeek => _startingDayOfWeek;
-
-  set startingDayOfWeek(StartingDayOfWeek? day) {
-    setBusy(true);
-    _settingsManager.setString(PreferencesFlag.scheduleStartWeekday,
-        EnumToString.convertToString(day));
-    _startingDayOfWeek = day;
-    setBusy(false);
-  }
-
-  /// List of possible days to set as start of the week
-  List<StartingDayOfWeek> startingDayPossible = [
-    StartingDayOfWeek.saturday,
-    StartingDayOfWeek.sunday,
-    StartingDayOfWeek.monday,
-  ];
-
-  /// Current weekend day shown
-  WeekDays? _otherDayOfWeek;
-
-  WeekDays? get otherDayOfWeek => _otherDayOfWeek;
-
-  set otherDayOfWeek(WeekDays? day) {
-    setBusy(true);
-    _settingsManager.setString(PreferencesFlag.scheduleOtherWeekday,
-        EnumToString.convertToString(day));
-    _otherDayOfWeek = day;
-    setBusy(false);
-  }
-
-  /// List of possible days to show in the calendar view
-  List<WeekDays> otherDayPossible = [
-    WeekDays.saturday,
-    WeekDays.sunday,
-  ];
-
-  bool _showWeekendDays = false;
-
-  bool get showWeekendDays => _showWeekendDays;
-
-  set showWeekendDays(bool newValue) {
-    setBusy(true);
-    _settingsManager.setBool(PreferencesFlag.scheduleShowWeekendDays, newValue);
-    _showWeekendDays = newValue;
-    setBusy(false);
-  }
-
+  /// Display the button to return to today
   bool _showTodayBtn = true;
 
   bool get showTodayBtn => _showTodayBtn;
@@ -101,7 +46,7 @@ class ScheduleSettingsViewModel
     setBusy(false);
   }
 
-  bool _toggleCalendarView = true;
+  bool _toggleCalendarView = false;
 
   bool get toggleCalendarView => _toggleCalendarView;
 
@@ -112,16 +57,6 @@ class ScheduleSettingsViewModel
     setBusy(false);
   }
 
-  bool _showWeekEvents = false;
-
-  bool get showWeekEvents => _showWeekEvents;
-
-  set showWeekEvents(bool newValue) {
-    setBusy(true);
-    _settingsManager.setBool(PreferencesFlag.scheduleShowWeekEvents, newValue);
-    _showWeekEvents = newValue;
-    setBusy(false);
-  }
 
   /// The schedule activities which needs to be shown (group A or B) grouped as courses
   final Map<String, List<ScheduleActivity>> _scheduleActivitiesByCourse = {};
@@ -158,12 +93,9 @@ class ScheduleSettingsViewModel
     final settings = await _settingsManager.getScheduleSettings();
 
     _calendarFormat =
-        settings[PreferencesFlag.scheduleCalendarFormat] as CalendarFormat;
-    _startingDayOfWeek =
-        settings[PreferencesFlag.scheduleStartWeekday] as StartingDayOfWeek;
+        settings[PreferencesFlag.scheduleCalendarFormat] as CalendarTimeFormat;
     _showTodayBtn = settings[PreferencesFlag.scheduleShowTodayBtn] as bool;
     _toggleCalendarView = settings[PreferencesFlag.scheduleListView] as bool;
-    _showWeekEvents = settings[PreferencesFlag.scheduleShowWeekEvents] as bool;
 
     _scheduleActivitiesByCourse.clear();
     final schedulesActivities = await _courseRepository.getScheduleActivities();

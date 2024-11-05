@@ -48,7 +48,10 @@ class _ScheduleDefaultViewState extends State<ScheduleDefaultView> {
               ? const Center(child: CircularProgressIndicator())
               : ScheduleDefault(
                   calendarEvents: model.calendarEvents,
-                  loaded: !model.busy(model.isLoadingEvents)),
+                  loaded: !model.busy(model.isLoadingEvents),
+                  displaySaturday: model.displaySaturday,
+                  displaySunday: model.displaySunday
+          ),
           onRefresh: () => model.refresh(),
         ),
       ),
