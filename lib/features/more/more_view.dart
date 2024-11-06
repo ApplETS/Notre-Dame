@@ -14,6 +14,7 @@ import 'package:notredame/features/more/more_viewmodel.dart';
 import 'package:notredame/utils/app_theme.dart';
 import 'package:notredame/utils/locator.dart';
 import 'package:notredame/utils/utils.dart';
+import 'package:notredame/features/app/integration/launch_url_service.dart';
 
 class MoreView extends StatefulWidget {
   @override
@@ -21,6 +22,7 @@ class MoreView extends StatefulWidget {
 }
 
 class _MoreViewState extends State<MoreView> {
+  final LaunchUrlService _launchUrlService = locator<LaunchUrlService>();
   final AnalyticsService _analyticsService = locator<AnalyticsService>();
   static const String tag = "MoreView";
 
@@ -45,9 +47,8 @@ class _MoreViewState extends State<MoreView> {
                 style: textStyle.copyWith(color: Colors.blue),
                 text: AppIntl.of(context)!.flutter_website,
                 recognizer: TapGestureRecognizer()
-                  ..onTap = () => Utils.launchURL(
-                      AppIntl.of(context)!.flutter_website,
-                      AppIntl.of(context)!)),
+                  ..onTap = () =>
+                      _launchUrlService.launchInBrowser(AppIntl.of(context)!.flutter_website)),
             TextSpan(style: textStyle, text: '.'),
           ],
         ),

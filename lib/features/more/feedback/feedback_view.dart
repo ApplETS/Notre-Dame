@@ -11,7 +11,8 @@ import 'package:notredame/features/more/feedback/feedback_type.dart';
 import 'package:notredame/features/more/feedback/feedback_viewmodel.dart';
 import 'package:notredame/utils/app_theme.dart';
 import 'package:notredame/utils/loading.dart';
-import 'package:notredame/utils/utils.dart';
+import 'package:notredame/utils/locator.dart';
+import 'package:notredame/features/app/integration/launch_url_service.dart';
 
 class FeedbackView extends StatefulWidget {
   @override
@@ -19,6 +20,8 @@ class FeedbackView extends StatefulWidget {
 }
 
 class _FeedbackViewState extends State<FeedbackView> {
+  final LaunchUrlService _launchUrlService = locator<LaunchUrlService>();
+
   @override
   Widget build(BuildContext context) =>
       ViewModelBuilder<FeedbackViewModel>.reactive(
@@ -114,8 +117,7 @@ class _FeedbackViewState extends State<FeedbackView> {
                           Theme.of(context).brightness == Brightness.light;
                       return GestureDetector(
                         onTap: () => {
-                          Utils.launchURL(model.myIssues[index].htmlUrl,
-                              AppIntl.of(context)!)
+                          _launchUrlService.launchInBrowser(model.myIssues[index].htmlUrl)
                         },
                         child: Container(
                           margin: const EdgeInsets.only(

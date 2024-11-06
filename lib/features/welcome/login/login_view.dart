@@ -171,8 +171,7 @@ class _LoginViewState extends State<LoginView> {
                                             if (signetsPasswordResetUrl != "") {
                                               _launchUrlService.launchInBrowser(
                                                   _remoteConfigService
-                                                      .signetsPasswordResetUrl,
-                                                  Theme.of(context).brightness);
+                                                      .signetsPasswordResetUrl);
                                             } else {
                                               Fluttertoast.showToast(
                                                   msg: AppIntl.of(context)!

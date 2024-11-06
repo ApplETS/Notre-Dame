@@ -1,6 +1,3 @@
-// Flutter imports:
-import 'package:flutter/material.dart';
-
 // Package imports:
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -115,17 +112,8 @@ class MoreViewModel extends FutureViewModel {
 
   static Future<void> launchPrivacyPolicy() async {
     final LaunchUrlService launchUrlService = locator<LaunchUrlService>();
-    final RemoteConfigService remoteConfigService =
-        locator<RemoteConfigService>();
-    final NavigationService navigationService = locator<NavigationService>();
-    try {
-      await launchUrlService.launchInBrowser(
-          remoteConfigService.privacyPolicyUrl, Brightness.light);
-    } catch (error) {
-      // An exception is thrown if browser app is not installed on Android device.
-      await navigationService.pushNamed(RouterPaths.webView,
-          arguments: remoteConfigService.privacyPolicyUrl);
-    }
+    final RemoteConfigService remoteConfigService = locator<RemoteConfigService>();
+    launchUrlService.launchInBrowser(remoteConfigService.privacyPolicyUrl);
   }
 
   /// Get the privacy policy toggle
