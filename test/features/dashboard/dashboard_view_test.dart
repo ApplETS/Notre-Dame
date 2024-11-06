@@ -2,14 +2,12 @@
 import 'package:flutter/material.dart';
 
 // Package imports:
-import 'package:feature_discovery_fork/feature_discovery.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 // Project imports:
 import 'package:notredame/constants/preferences_flags.dart';
-import 'package:notredame/constants/update_code.dart';
 import 'package:notredame/features/app/signets-api/models/course.dart';
 import 'package:notredame/features/app/signets-api/models/course_activity.dart';
 import 'package:notredame/features/app/signets-api/models/session.dart';
@@ -155,8 +153,7 @@ void main() {
     SettingsManagerMock.stubDateTimeNow(settingsManagerMock, toReturn: now);
 
     await tester.pumpWidget(localizedWidget(
-        child: FeatureDiscovery(
-            child: const DashboardView(updateCode: UpdateCode.none))));
+        child: const DashboardView()));
     await tester.pumpAndSettle();
 
     // Find schedule card in second position by its title
@@ -203,10 +200,6 @@ void main() {
       RemoteConfigServiceMock.stubGetBroadcastEnabled(remoteConfigServiceMock,
           toReturn: false);
 
-      SettingsManagerMock.stubGetBool(
-          settingsManagerMock, PreferencesFlag.discoveryDashboard,
-          toReturn: true);
-
       SettingsManagerMock.stubSetInt(
           settingsManagerMock, PreferencesFlag.aboutUsCard);
 
@@ -232,8 +225,7 @@ void main() {
             toReturn: dashboard);
 
         await tester.pumpWidget(localizedWidget(
-            child: FeatureDiscovery(
-                child: const DashboardView(updateCode: UpdateCode.none))));
+            child: const DashboardView()));
         await tester.pumpAndSettle();
 
         // Find Dashboard Title
@@ -265,8 +257,7 @@ void main() {
             toReturn: dashboard);
 
         await tester.pumpWidget(localizedWidget(
-            child: FeatureDiscovery(
-                child: const DashboardView(updateCode: UpdateCode.none))));
+            child: const DashboardView()));
         await tester.pumpAndSettle();
 
         // Find aboutUs card
@@ -372,8 +363,7 @@ void main() {
             settingsManagerMock, PreferencesFlag.progressBarCard);
 
         await tester.pumpWidget(localizedWidget(
-            child: FeatureDiscovery(
-                child: const DashboardView(updateCode: UpdateCode.none))));
+            child: const DashboardView()));
         await tester.pumpAndSettle();
 
         // Find Dismissible Cards
@@ -425,8 +415,7 @@ void main() {
             settingsManagerMock, PreferencesFlag.progressBarCard);
 
         await tester.pumpWidget(localizedWidget(
-            child: FeatureDiscovery(
-                child: const DashboardView(updateCode: UpdateCode.none))));
+            child: const DashboardView()));
         await tester.pumpAndSettle();
 
         // Find Dismissible Cards
@@ -486,8 +475,7 @@ void main() {
             toReturn: dashboard);
 
         await tester.pumpWidget(localizedWidget(
-            child: FeatureDiscovery(
-                child: const DashboardView(updateCode: UpdateCode.none))));
+            child: const DashboardView()));
         await tester.pumpAndSettle();
 
         // Find Dismissible Cards
@@ -527,8 +515,7 @@ void main() {
               toReturn: dashboard);
 
           await tester.pumpWidget(localizedWidget(
-              child: FeatureDiscovery(
-                  child: const DashboardView(updateCode: UpdateCode.none))));
+              child: const DashboardView()));
           await tester.pumpAndSettle();
 
           // Find grades card
@@ -560,8 +547,7 @@ void main() {
               toReturn: dashboard);
 
           await tester.pumpWidget(localizedWidget(
-              child: FeatureDiscovery(
-                  child: const DashboardView(updateCode: UpdateCode.none))));
+              child: const DashboardView()));
           await tester.pumpAndSettle();
 
           // Find grades card
@@ -595,8 +581,7 @@ void main() {
               toReturn: dashboard);
 
           await tester.pumpWidget(localizedWidget(
-              child: FeatureDiscovery(
-                  child: const DashboardView(updateCode: UpdateCode.none))));
+              child: const DashboardView()));
           await tester.pumpAndSettle();
 
           // Find Dismissible Cards
@@ -638,8 +623,7 @@ void main() {
             toReturn: dashboard);
 
         await tester.pumpWidget(localizedWidget(
-            child: FeatureDiscovery(
-                child: const DashboardView(updateCode: UpdateCode.none))));
+            child: const DashboardView()));
         await tester.pumpAndSettle();
 
         // Find progress card
@@ -661,8 +645,7 @@ void main() {
             toReturn: dashboard);
 
         await tester.pumpWidget(localizedWidget(
-            child: FeatureDiscovery(
-                child: const DashboardView(updateCode: UpdateCode.none))));
+            child: const DashboardView()));
         await tester.pumpAndSettle();
 
         // Find Dismissible Cards
@@ -701,8 +684,7 @@ void main() {
             toReturn: dashboard);
 
         await tester.pumpWidget(localizedWidget(
-            child: FeatureDiscovery(
-                child: const DashboardView(updateCode: UpdateCode.none))));
+            child: const DashboardView()));
         await tester.pumpAndSettle();
 
         // Find Dismissible Cards

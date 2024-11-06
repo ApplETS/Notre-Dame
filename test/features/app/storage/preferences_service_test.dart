@@ -80,20 +80,16 @@ void main() {
 
     test("clearWithoutPersistentKey", () async {
       SharedPreferences.setMockInitialValues({
-        PreferencesFlag.scheduleCalendarFormat.toString(): true,
-        PreferencesFlag.discoveryDashboard.toString(): true
+        PreferencesFlag.scheduleCalendarFormat.toString(): true
       });
 
       expect(await service.getBool(PreferencesFlag.scheduleCalendarFormat),
           isTrue);
-      expect(await service.getBool(PreferencesFlag.discoveryDashboard), isTrue);
 
       service.clearWithoutPersistentKey();
 
       expect(
           await service.getBool(PreferencesFlag.scheduleCalendarFormat), null);
-
-      expect(await service.getBool(PreferencesFlag.discoveryDashboard), isTrue);
     });
 
     group("getters - ", () {

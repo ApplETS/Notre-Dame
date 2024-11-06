@@ -20,7 +20,6 @@ import 'package:notredame/features/app/repository/user_repository.dart';
 import 'package:notredame/features/app/signets-api/signets_api_client.dart';
 import 'package:notredame/features/app/storage/cache_manager.dart';
 import 'package:notredame/features/app/storage/preferences_service.dart';
-import 'package:notredame/features/app/storage/siren_flutter_service.dart';
 import 'package:notredame/features/ets/events/api-client/hello_api_client.dart';
 import 'package:notredame/features/more/feedback/in_app_review_service.dart';
 import 'package:notredame/features/more/settings/settings_manager.dart';
@@ -36,7 +35,6 @@ void setupLocator() {
   locator.registerLazySingleton(() => const FlutterSecureStorage());
   locator.registerLazySingleton(() => PreferencesService());
   locator.registerLazySingleton(() => NetworkingService());
-  locator.registerLazySingleton(() => SirenFlutterService());
   locator.registerLazySingleton(() => InAppReviewService());
   locator.registerLazySingleton(() => RemoteConfigService());
   locator.registerLazySingleton(() => LaunchUrlService());

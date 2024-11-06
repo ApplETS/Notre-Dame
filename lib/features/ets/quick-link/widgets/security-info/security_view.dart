@@ -44,6 +44,7 @@ class _SecurityViewState extends State<SecurityView> {
                     height: 250,
                     child: GoogleMap(
                         initialCameraPosition: _etsLocation,
+                        style: model.mapStyle,
                         zoomControlsEnabled: false,
                         markers:
                             model.getSecurityMarkersForMaps(model.markersList),
