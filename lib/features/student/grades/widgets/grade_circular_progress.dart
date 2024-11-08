@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 
 // Package imports:
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:percent_indicator/percent_indicator.dart';
 
 // Project imports:
 import 'package:notredame/utils/app_theme.dart';
@@ -59,30 +58,38 @@ class _GradeCircularProgressState extends State<GradeCircularProgress>
 
   @override
   Widget build(BuildContext context) {
-    return CircularPercentIndicator(
-      animation: true,
-      animationDuration: 1100,
-      radius: (100 * widget.ratio) / 2,
-      lineWidth: 8.0 * widget.ratio,
-      percent:
-          widget.completed ? getGradeInDecimals(widget.studentGrade ?? 0.0) : 0,
-      circularStrokeCap: CircularStrokeCap.round,
-      center: CircularPercentIndicator(
-        animation: true,
-        animationDuration: 700,
-        radius: (80 * widget.ratio) / 2,
-        lineWidth: 8.0 * widget.ratio,
-        percent: widget.completed
-            ? getGradeInDecimals(widget.averageGrade ?? 0.0)
-            : 0,
-        circularStrokeCap: CircularStrokeCap.round,
-        center: Text(
+    Widget buildProgressIndicator(
+        double? grade, Color color, double size, int duration) {
+      return SizedBox(
+        width: size * widget.ratio,
+        height: size * widget.ratio,
+        child: TweenAnimationBuilder<double>(
+          tween: Tween<double>(
+            begin: 0.0,
+            end: widget.completed ? getGradeInDecimals(grade ?? 0.0) : 0.0,
+          ),
+          duration: Duration(milliseconds: duration),
+          builder: (_, value, __) => CircularProgressIndicator(
+            value: value,
+            strokeWidth: 8.0 * widget.ratio,
+            backgroundColor: Colors.grey[300],
+            valueColor: AlwaysStoppedAnimation<Color>(color),
+          ),
+        ),
+      );
+    }
+
+    return Stack(
+      alignment: Alignment.center,
+      children: [
+        buildProgressIndicator(
+            widget.studentGrade, animation.value ?? Colors.blue, 100, 1100),
+        buildProgressIndicator(widget.averageGrade, Colors.red, 80, 700),
+        Text(
           getGrade(context),
           style: TextStyle(fontSize: 22 * widget.ratio),
         ),
-        progressColor: Colors.red,
-      ),
-      progressColor: animation.value,
+      ],
     );
   }
 
