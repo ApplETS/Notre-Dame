@@ -35,10 +35,17 @@ class LaunchUrlService {
     browser.open(
         url: WebUri(url),
         settings: ChromeSafariBrowserSettings(
-            dismissButtonStyle: DismissButtonStyle.CLOSE,
-            enableUrlBarHiding: true,
-            toolbarBackgroundColor: AppTheme.accent,
-            navigationBarColor: AppTheme.primaryDark)
+          // Android
+          dismissButtonStyle: DismissButtonStyle.CLOSE,
+          enableUrlBarHiding: true,
+          toolbarBackgroundColor: AppTheme.accent,
+          navigationBarColor: AppTheme.primaryDark,
+
+          // iOS
+          barCollapsingEnabled: true,
+          preferredControlTintColor: AppTheme.lightThemeBackground,
+          preferredBarTintColor: AppTheme.accent,
+        )
     );
   }
 }
