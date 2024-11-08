@@ -577,39 +577,7 @@ class _ScheduleViewState extends State<ScheduleView>
                   monthViewKey.currentState?.animateToMonth(DateTime(DateTime.now().year, DateTime.now().month));
                 }
               })),
-<<<<<<< HEAD
         IconButton(icon: const Icon(Icons.settings_outlined), onPressed: () async {
-=======
-        _buildDiscoveryFeatureDescriptionWidget(
-          context,
-          Icons.settings_outlined,
-          model,
-        ),
-      ];
-
-  DescribedFeatureOverlay _buildDiscoveryFeatureDescriptionWidget(
-      BuildContext context, IconData icon, ScheduleViewModel model) {
-    final discovery = getDiscoveryByFeatureId(
-      context,
-      DiscoveryGroupIds.pageSchedule,
-      DiscoveryIds.detailsScheduleSettings,
-    );
-
-    return DescribedFeatureOverlay(
-      overflowMode: OverflowMode.wrapBackground,
-      contentLocation: ContentLocation.below,
-      featureId: discovery.featureId,
-      title: Text(discovery.title, textAlign: TextAlign.justify),
-      description: discovery.details,
-      backgroundColor: AppTheme.appletsDarkPurple,
-      tapTarget: Icon(icon, color: AppTheme.etsBlack),
-      pulseDuration: const Duration(seconds: 5),
-      onComplete: () => model.discoveryCompleted(),
-      child: IconButton(
-        icon: const Icon(Icons.settings_outlined),
-        onPressed: () async {
-          _analyticsService.logEvent(tag, "Settings clicked");
->>>>>>> e32cba05 (Squashed commit of the following:)
           await showModalBottomSheet(
               shape: const RoundedRectangleBorder(
                 borderRadius: BorderRadius.vertical(
