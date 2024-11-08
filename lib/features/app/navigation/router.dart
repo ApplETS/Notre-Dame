@@ -2,7 +2,6 @@
 import 'package:flutter/material.dart';
 
 // Project imports:
-import 'package:notredame/constants/update_code.dart';
 import 'package:notredame/features/app/error/not_found/not_found_view.dart';
 import 'package:notredame/features/app/error/outage/outage_view.dart';
 import 'package:notredame/features/app/navigation/router_paths.dart';
@@ -51,13 +50,12 @@ Route<dynamic> generateRoute(RouteSettings routeSettings) {
           builder: (_) =>
               FaqView(backgroundColor: routeSettings.arguments! as Color));
     case RouterPaths.dashboard:
-      final code = (routeSettings.arguments as UpdateCode?) ?? UpdateCode.none;
       return PageRouteBuilder(
           settings: RouteSettings(
               name: routeSettings.name, arguments: routeSettings.arguments),
           transitionsBuilder: (_, animation, ___, child) =>
               rootPagesAnimation(animation, child),
-          pageBuilder: (_, __, ___) => DashboardView(updateCode: code));
+          pageBuilder: (_, __, ___) => const DashboardView());
     case RouterPaths.schedule:
       return PageRouteBuilder(
           settings: RouteSettings(name: routeSettings.name),
