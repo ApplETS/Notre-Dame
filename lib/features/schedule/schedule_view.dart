@@ -551,44 +551,43 @@ class _ScheduleViewState extends State<ScheduleView>
   }
 
   List<Widget> _buildActionButtons(ScheduleViewModel model) => [
-        IconButton(
-          icon: const Icon(Icons.ios_share),
-          onPressed: () {
-            final translations = AppIntl.of(context)!;
-            showDialog(
-              context: context,
-              builder: (_) =>
-                  CalendarSelectionWidget(translations: translations),
-            );
-          },
+    IconButton(
+      icon: const Icon(Icons.ios_share),
+      onPressed: () {
+        final translations = AppIntl.of(context)!;
+        showDialog(
+          context: context,
+          builder: (_) =>
+              CalendarSelectionWidget(translations: translations),
+        );
+      },
+    ),
+    if ((model.settings[PreferencesFlag.scheduleShowTodayBtn] as bool) ==
+        true)
+      IconButton(
+          icon: const Icon(Icons.today_outlined),
+          onPressed: () => setState(() {
+            model.selectToday();
+            _analyticsService.logEvent(tag, "Select today clicked");
+            if (model.calendarFormat == CalendarTimeFormat.day && !(model.settings[PreferencesFlag.scheduleListView] as bool)) {
+              dayViewKey.currentState?.animateToDate(DateTime.now());
+            } else if (model.calendarFormat == CalendarTimeFormat.week) {
+              weekViewKey.currentState?.animateToWeek(DateTime.now());
+            } else if (model.calendarFormat == CalendarTimeFormat.month) {
+              monthViewKey.currentState?.animateToMonth(DateTime(DateTime.now().year, DateTime.now().month));
+            }
+          })),
+    IconButton(icon: const Icon(Icons.settings_outlined), onPressed: () async {
+      await showModalBottomSheet(
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(
+          top: Radius.circular(10),
         ),
-        if ((model.settings[PreferencesFlag.scheduleShowTodayBtn] as bool) ==
-            true)
-          IconButton(
-              icon: const Icon(Icons.today_outlined),
-              onPressed: () => setState(() {
-                model.selectToday();
-                _analyticsService.logEvent(tag, "Select today clicked");
-                if (model.calendarFormat == CalendarTimeFormat.day && !(model.settings[PreferencesFlag.scheduleListView] as bool)) {
-                  dayViewKey.currentState?.animateToDate(DateTime.now());
-                } else if (model.calendarFormat == CalendarTimeFormat.week) {
-                  weekViewKey.currentState?.animateToWeek(DateTime.now());
-                } else if (model.calendarFormat == CalendarTimeFormat.month) {
-                  monthViewKey.currentState?.animateToMonth(DateTime(DateTime.now().year, DateTime.now().month));
-                }
-              })),
-        IconButton(icon: const Icon(Icons.settings_outlined), onPressed: () async {
-          await showModalBottomSheet(
-              shape: const RoundedRectangleBorder(
-                borderRadius: BorderRadius.vertical(
-                  top: Radius.circular(10),
-                ),
-              ),
-              context: context,
-              isScrollControlled: true,
-              builder: (context) => const ScheduleSettings());
-          model.loadSettings();
-        }),
-      ];
-
+      ),
+      context: context,
+      isScrollControlled: true,
+      builder: (context) => const ScheduleSettings());
+      model.loadSettings();
+    })
+  ];
 }
