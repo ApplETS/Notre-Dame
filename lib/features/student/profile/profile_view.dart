@@ -4,7 +4,6 @@ import 'package:flutter/services.dart';
 
 // Package imports:
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:percent_indicator/percent_indicator.dart';
 import 'package:stacked/stacked.dart';
 
 // Project imports:
@@ -296,26 +295,32 @@ Card getProgramCompletion(ProfileViewModel model, BuildContext context) {
   );
 }
 
-CircularPercentIndicator getLoadingIndicator(
-    ProfileViewModel model, BuildContext context) {
-  final int percentage = model.programProgression;
-
-  return CircularPercentIndicator(
-    animation: true,
-    animationDuration: 1100,
-    radius: 40,
-    lineWidth: 10,
-    percent: percentage / 100,
-    circularStrokeCap: CircularStrokeCap.round,
-    center: Text(
-      percentage != 0
-          ? '$percentage%'
-          : AppIntl.of(context)!.profile_program_completion_not_available,
-      style: const TextStyle(fontSize: 20),
-    ),
-    progressColor: Colors.green,
-  );
-}
+Widget getLoadingIndicator(ProfileViewModel model, BuildContext context) =>
+    Stack(
+      alignment: Alignment.center,
+      children: [
+        SizedBox.square(
+          dimension: 75,
+          child: TweenAnimationBuilder<double>(
+            tween: Tween<double>(
+              begin: 0.0,
+              end: model.programProgression / 100,
+            ),
+            duration: const Duration(milliseconds: 1100),
+            builder: (_, value, __) => CircularProgressIndicator(
+              value: value,
+              strokeWidth: 10,
+              backgroundColor: const Color.fromARGB(255, 184, 200, 203),
+              valueColor: const AlwaysStoppedAnimation(Colors.green),
+            ),
+          ),
+        ),
+        Text(
+          '${model.programProgression > 0 ? model.programProgression : AppIntl.of(context)!.profile_program_completion_not_available}%',
+          style: const TextStyle(fontSize: 20),
+        ),
+      ],
+    );
 
 Column getCurrentProgramTile(List<Program> programList, BuildContext context) {
   if (programList.isNotEmpty) {
