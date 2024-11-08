@@ -307,6 +307,7 @@ Widget getLoadingIndicator(ProfileViewModel model, BuildContext context) =>
               end: model.programProgression / 100,
             ),
             duration: const Duration(milliseconds: 1100),
+            curve: Curves.easeOut,
             builder: (_, value, __) => CircularProgressIndicator(
               value: value,
               strokeWidth: 10,

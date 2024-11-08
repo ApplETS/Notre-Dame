@@ -69,6 +69,7 @@ class _GradeCircularProgressState extends State<GradeCircularProgress>
             end: widget.completed ? getGradeInDecimals(grade ?? 0.0) : 0.0,
           ),
           duration: Duration(milliseconds: duration),
+          curve: Curves.easeOut,
           builder: (_, value, __) => CircularProgressIndicator(
             value: value,
             strokeWidth: 8.0 * widget.ratio,
@@ -84,7 +85,7 @@ class _GradeCircularProgressState extends State<GradeCircularProgress>
       children: [
         buildProgressIndicator(
             widget.studentGrade, animation.value ?? Colors.blue, 100, 1100),
-        buildProgressIndicator(widget.averageGrade, Colors.red, 80, 700),
+        buildProgressIndicator(widget.averageGrade, Colors.red, 80, 1100),
         Text(
           getGrade(context),
           style: TextStyle(fontSize: 22 * widget.ratio),
