@@ -6,6 +6,7 @@ import 'dart:io';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:github/github.dart';
 import 'package:logger/logger.dart';
+import 'package:notredame/features/app/analytics/remote_config_service.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:path_provider/path_provider.dart';
 
@@ -19,7 +20,6 @@ class GithubApi {
   static const String tag = "GithubApi";
   static const String tagError = "$tag - Error";
 
-  static const String _envVariableGithubAPIKey = "GH_API_TOKEN";
   static const String _repositorySlug = "ApplETS/Notre-Dame";
   static const String _repositoryReportSlug = "ApplETS/Notre-Dame-Bug-report";
 
@@ -28,12 +28,13 @@ class GithubApi {
   final Logger _logger = locator<Logger>();
 
   final AnalyticsService _analyticsService = locator<AnalyticsService>();
+  final RemoteConfigService _remoteConfigService = locator<RemoteConfigService>();
 
   final InternalInfoService _internalInfoService =
       locator<InternalInfoService>();
 
   GithubApi() {
-    final githubApiToken = const String.fromEnvironment(_envVariableGithubAPIKey);
+    final githubApiToken = _remoteConfigService.ghApiToken;
     _github = GitHub(auth: Authentication.withToken(githubApiToken));
   }
 
