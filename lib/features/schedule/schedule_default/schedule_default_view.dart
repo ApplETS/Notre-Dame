@@ -16,7 +16,7 @@ class ScheduleDefaultView extends StatefulWidget {
   const ScheduleDefaultView({this.sessionCode});
 
   @override
-  _ScheduleDefaultViewState createState() => _ScheduleDefaultViewState();
+  State<ScheduleDefaultView> createState() => _ScheduleDefaultViewState();
 }
 
 class _ScheduleDefaultViewState extends State<ScheduleDefaultView> {

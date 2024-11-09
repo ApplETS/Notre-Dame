@@ -14,7 +14,7 @@ class HapticsContainer extends StatefulWidget {
   const HapticsContainer({super.key, required this.child});
 
   @override
-  _HapticsContainerState createState() => _HapticsContainerState();
+  State<HapticsContainer> createState() => _HapticsContainerState();
 }
 
 class _HapticsContainerState extends State<HapticsContainer> {

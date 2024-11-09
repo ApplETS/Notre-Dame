@@ -17,7 +17,7 @@ import 'package:notredame/utils/utils.dart';
 
 class SecurityView extends StatefulWidget {
   @override
-  _SecurityViewState createState() => _SecurityViewState();
+  State<SecurityView> createState() => _SecurityViewState();
 }
 
 class _SecurityViewState extends State<SecurityView> {

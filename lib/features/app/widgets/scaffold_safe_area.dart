@@ -22,7 +22,7 @@ class ScaffoldSafeArea extends StatefulWidget {
         _isInteractionLimitedWhileLoading = isInteractionLimitedWhileLoading;
 
   @override
-  _ScaffoldSafeAreaState createState() => _ScaffoldSafeAreaState();
+  State<ScaffoldSafeArea> createState() => _ScaffoldSafeAreaState();
 }
 
 class _ScaffoldSafeAreaState extends State<ScaffoldSafeArea> {

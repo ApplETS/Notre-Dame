@@ -52,7 +52,7 @@ class BaseScaffold extends StatefulWidget {
         _isInteractionLimitedWhileLoading = isInteractionLimitedWhileLoading;
 
   @override
-  _BaseScaffoldState createState() => _BaseScaffoldState();
+  State<BaseScaffold> createState() => _BaseScaffoldState();
 }
 
 class _BaseScaffoldState extends State<BaseScaffold> {

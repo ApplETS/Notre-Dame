@@ -21,7 +21,7 @@ import 'package:notredame/utils/utils.dart';
 
 class LoginView extends StatefulWidget {
   @override
-  _LoginViewState createState() => _LoginViewState();
+  State<LoginView> createState() => _LoginViewState();
 }
 
 class _LoginViewState extends State<LoginView> {

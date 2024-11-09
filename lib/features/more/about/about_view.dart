@@ -12,7 +12,7 @@ import 'package:notredame/utils/utils.dart';
 
 class AboutView extends StatefulWidget {
   @override
-  _AboutViewState createState() => _AboutViewState();
+  State<AboutView> createState() => _AboutViewState();
 }
 
 class _AboutViewState extends State<AboutView> with TickerProviderStateMixin {

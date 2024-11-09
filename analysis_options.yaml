@@ -2,7 +2,6 @@ include: package:flutter_lints/flutter.yaml
 
 linter:
   rules:
-    library_private_types_in_public_api: false
     use_key_in_widget_constructors: false
 analyzer:
   exclude:

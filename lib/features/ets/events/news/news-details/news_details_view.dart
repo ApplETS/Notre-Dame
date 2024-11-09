@@ -32,7 +32,7 @@ class NewsDetailsView extends StatefulWidget {
   const NewsDetailsView({required this.news});
 
   @override
-  _NewsDetailsViewState createState() => _NewsDetailsViewState();
+  State<NewsDetailsView> createState() => _NewsDetailsViewState();
 }
 
 enum Menu { share, export, report }

@@ -14,7 +14,7 @@ import 'package:notredame/utils/app_theme.dart';
 
 class QuickLinksView extends StatefulWidget {
   @override
-  _QuickLinksViewState createState() => _QuickLinksViewState();
+  State<QuickLinksView> createState() => _QuickLinksViewState();
 }
 
 class _QuickLinksViewState extends State<QuickLinksView>

@@ -12,7 +12,7 @@ import 'package:notredame/utils/app_theme.dart';
 
 class SettingsView extends StatefulWidget {
   @override
-  _SettingsViewState createState() => _SettingsViewState();
+  State<SettingsView> createState() => _SettingsViewState();
 }
 
 class _SettingsViewState extends State<SettingsView> {

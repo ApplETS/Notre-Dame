@@ -22,7 +22,7 @@ class CustomFeedbackForm extends StatefulWidget {
   final ScrollController? scrollController;
 
   @override
-  _CustomFeedbackFormState createState() => _CustomFeedbackFormState();
+  State<CustomFeedbackForm> createState() => _CustomFeedbackFormState();
 }
 
 class _CustomFeedbackFormState extends State<CustomFeedbackForm> {

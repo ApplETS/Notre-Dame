@@ -17,7 +17,7 @@ import 'package:notredame/utils/utils.dart';
 
 class MoreView extends StatefulWidget {
   @override
-  _MoreViewState createState() => _MoreViewState();
+  State<MoreView> createState() => _MoreViewState();
 }
 
 class _MoreViewState extends State<MoreView> {

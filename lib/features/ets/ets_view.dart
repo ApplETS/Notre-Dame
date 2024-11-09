@@ -13,7 +13,7 @@ import 'package:notredame/utils/locator.dart';
 
 class ETSView extends StatefulWidget {
   @override
-  _ETSViewState createState() => _ETSViewState();
+  State<ETSView> createState() => _ETSViewState();
 }
 
 class _ETSViewState extends State<ETSView> {

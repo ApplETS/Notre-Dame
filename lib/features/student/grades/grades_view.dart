@@ -18,7 +18,7 @@ import 'package:notredame/utils/locator.dart';
 
 class GradesView extends StatefulWidget {
   @override
-  _GradesViewState createState() => _GradesViewState();
+  State<GradesView> createState() => _GradesViewState();
 }
 
 class _GradesViewState extends State<GradesView> {

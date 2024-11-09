@@ -14,7 +14,7 @@ class LinkWebView extends StatefulWidget {
   const LinkWebView(this._links);
 
   @override
-  _LinkWebViewState createState() => _LinkWebViewState();
+  State<LinkWebView> createState() => _LinkWebViewState();
 }
 
 class _LinkWebViewState extends State<LinkWebView> {

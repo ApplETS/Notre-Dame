@@ -22,7 +22,7 @@ class GradesDetailsView extends StatefulWidget {
   const GradesDetailsView({required this.course});
 
   @override
-  _GradesDetailsViewState createState() => _GradesDetailsViewState();
+  State<GradesDetailsView> createState() => _GradesDetailsViewState();
 }
 
 class _GradesDetailsViewState extends State<GradesDetailsView>

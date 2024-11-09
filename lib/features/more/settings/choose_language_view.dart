@@ -12,7 +12,7 @@ import 'package:notredame/utils/utils.dart';
 
 class ChooseLanguageView extends StatefulWidget {
   @override
-  _ChooseLanguageViewState createState() => _ChooseLanguageViewState();
+  State<ChooseLanguageView> createState() => _ChooseLanguageViewState();
 }
 
 class _ChooseLanguageViewState extends State<ChooseLanguageView> {

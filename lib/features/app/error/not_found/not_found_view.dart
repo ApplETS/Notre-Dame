@@ -15,7 +15,7 @@ class NotFoundView extends StatefulWidget {
   const NotFoundView({this.pageName});
 
   @override
-  _NotFoundState createState() => _NotFoundState();
+  State<NotFoundView> createState() => _NotFoundState();
 }
 
 class _NotFoundState extends State<NotFoundView> {

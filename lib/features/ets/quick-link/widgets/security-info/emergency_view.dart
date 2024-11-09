@@ -18,7 +18,7 @@ class EmergencyView extends StatefulWidget {
   const EmergencyView(this.title, this.description);
 
   @override
-  _EmergencyViewState createState() => _EmergencyViewState();
+  State<EmergencyView> createState() => _EmergencyViewState();
 }
 
 class _EmergencyViewState extends State<EmergencyView> {
