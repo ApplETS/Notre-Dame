@@ -11,6 +11,8 @@ import 'package:notredame/constants/urls.dart';
 import 'package:notredame/utils/utils.dart';
 
 class AboutView extends StatefulWidget {
+  const AboutView({super.key});
+
   @override
   State<AboutView> createState() => _AboutViewState();
 }

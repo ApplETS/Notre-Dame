@@ -15,6 +15,8 @@ import 'package:notredame/utils/app_theme.dart';
 import 'package:notredame/utils/utils.dart';
 
 class NewsView extends StatefulWidget {
+  const NewsView({super.key});
+
   @override
   State<NewsView> createState() => _NewsViewState();
 }

@@ -10,6 +10,8 @@ import 'package:notredame/features/student/grades/grades_view.dart';
 import 'package:notredame/features/student/profile/profile_view.dart';
 
 class StudentView extends StatefulWidget {
+  const StudentView({super.key});
+
   @override
   State<StudentView> createState() => _StudentViewState();
 }

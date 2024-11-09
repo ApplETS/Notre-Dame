@@ -19,7 +19,7 @@ import 'package:notredame/utils/utils.dart';
 class GradesDetailsView extends StatefulWidget {
   final Course course;
 
-  const GradesDetailsView({required this.course});
+  const GradesDetailsView({super.key, required this.course});
 
   @override
   State<GradesDetailsView> createState() => _GradesDetailsViewState();

@@ -12,7 +12,7 @@ import 'package:notredame/utils/app_theme.dart';
 class NotFoundView extends StatefulWidget {
   final String? pageName;
 
-  const NotFoundView({this.pageName});
+  const NotFoundView({super.key, this.pageName});
 
   @override
   State<NotFoundView> createState() => _NotFoundState();

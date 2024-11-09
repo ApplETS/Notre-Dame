@@ -2,7 +2,6 @@ include: package:flutter_lints/flutter.yaml
 
 linter:
   rules:
-    use_key_in_widget_constructors: false
 analyzer:
   exclude:
     - "lib/generated"

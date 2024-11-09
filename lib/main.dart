@@ -60,7 +60,7 @@ class ETSMobile extends StatelessWidget {
   /// Manage the settings
   final SettingsManager settingsManager;
 
-  const ETSMobile(this.settingsManager);
+  const ETSMobile(this.settingsManager, {super.key});
 
   @override
   Widget build(BuildContext context) {

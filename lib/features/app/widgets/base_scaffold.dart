@@ -38,7 +38,7 @@ class BaseScaffold extends StatefulWidget {
   final bool _isInteractionLimitedWhileLoading;
 
   const BaseScaffold(
-      {this.appBar,
+      {super.key, this.appBar,
       this.body,
       this.fab,
       this.fabPosition,

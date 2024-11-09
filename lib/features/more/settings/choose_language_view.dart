@@ -11,6 +11,8 @@ import 'package:notredame/utils/app_theme.dart';
 import 'package:notredame/utils/utils.dart';
 
 class ChooseLanguageView extends StatefulWidget {
+  const ChooseLanguageView({super.key});
+
   @override
   State<ChooseLanguageView> createState() => _ChooseLanguageViewState();
 }

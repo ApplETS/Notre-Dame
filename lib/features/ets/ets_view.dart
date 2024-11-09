@@ -12,6 +12,8 @@ import 'package:notredame/features/ets/quick-link//quick_links_view.dart';
 import 'package:notredame/utils/locator.dart';
 
 class ETSView extends StatefulWidget {
+  const ETSView({super.key});
+
   @override
   State<ETSView> createState() => _ETSViewState();
 }

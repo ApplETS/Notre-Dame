@@ -29,7 +29,7 @@ import 'package:notredame/utils/utils.dart';
 class NewsDetailsView extends StatefulWidget {
   final News news;
 
-  const NewsDetailsView({required this.news});
+  const NewsDetailsView({super.key, required this.news});
 
   @override
   State<NewsDetailsView> createState() => _NewsDetailsViewState();
