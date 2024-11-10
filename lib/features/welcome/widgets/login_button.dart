@@ -19,7 +19,7 @@ class LoginButton extends StatefulWidget{
     required this.authenticate});
 
   @override
-  _LoginButtonState createState() => _LoginButtonState();
+  State<LoginButton> createState() => _LoginButtonState();
 }
 
 class _LoginButtonState extends State<LoginButton>{

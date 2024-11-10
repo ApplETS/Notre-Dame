@@ -9,7 +9,7 @@ class LoginHero extends StatefulWidget{
       {super.key});
 
   @override
-  _LoginHeroState createState() => _LoginHeroState();
+  State<LoginHero> createState() => _LoginHeroState();
 }
 
 class _LoginHeroState extends State<LoginHero>{

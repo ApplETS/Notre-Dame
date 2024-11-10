@@ -15,7 +15,7 @@ class LoginFooter extends StatefulWidget{
       {super.key});
 
   @override
-  _LoginFooterState createState() => _LoginFooterState();
+  State<LoginFooter> createState() => _LoginFooterState();
 }
 
 class _LoginFooterState extends State<LoginFooter>{

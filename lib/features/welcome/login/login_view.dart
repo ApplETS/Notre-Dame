@@ -120,13 +120,4 @@ class _LoginViewState extends State<LoginView> {
     _focusNode.dispose();
     super.dispose();
   }
-
-  Color get errorTextColor =>
-      Utils.getColorByBrightness(context, Colors.amberAccent, Colors.redAccent);
-
-  Color get colorButton =>
-      Utils.getColorByBrightness(context, Colors.white, AppTheme.etsLightRed);
-
-  Color get submitTextColor =>
-      Utils.getColorByBrightness(context, AppTheme.etsLightRed, Colors.white);
 }

@@ -15,7 +15,7 @@ class UniversalCodeFormField extends StatefulWidget {
         required this.universalCode});
 
   @override
-  _UniversalCodeFormFieldState createState() => _UniversalCodeFormFieldState();
+  State<UniversalCodeFormField> createState() => _UniversalCodeFormFieldState();
 }
 
 class _UniversalCodeFormFieldState extends State<UniversalCodeFormField> {
