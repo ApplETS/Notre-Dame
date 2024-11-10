@@ -3,21 +3,18 @@ import 'package:flutter/material.dart';
 
 // Package imports:
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:fluttertoast/fluttertoast.dart';
+import 'package:notredame/features/welcome/widgets/forgot_password.dart';
 import 'package:stacked/stacked.dart';
 
 // Project imports:
-import 'package:notredame/features/app/analytics/remote_config_service.dart';
-import 'package:notredame/features/app/integration/launch_url_service.dart';
-import 'package:notredame/features/app/navigation/navigation_service.dart';
-import 'package:notredame/features/app/navigation/router_paths.dart';
-import 'package:notredame/features/welcome/login/login_mask.dart';
 import 'package:notredame/features/welcome/login/login_viewmodel.dart';
 import 'package:notredame/features/welcome/widgets/password_text_field.dart';
 import 'package:notredame/utils/app_theme.dart';
-import 'package:notredame/utils/locator.dart';
 import 'package:notredame/utils/utils.dart';
+import 'package:notredame/features/welcome/widgets/login_hero.dart';
+import 'package:notredame/features/welcome/widgets/universal_code_text_field.dart';
+import 'package:notredame/features/welcome/widgets/login_button.dart';
+import 'package:notredame/features/welcome/widgets/login_footer.dart';
 
 class LoginView extends StatefulWidget {
   const LoginView({super.key});
@@ -31,18 +28,8 @@ class _LoginViewState extends State<LoginView> {
 
   final FocusScopeNode _focusNode = FocusScopeNode();
 
-  final NavigationService _navigationService = locator<NavigationService>();
-
-  final LaunchUrlService _launchUrlService = locator<LaunchUrlService>();
-
-  final RemoteConfigService _remoteConfigService =
-      locator<RemoteConfigService>();
-
   /// Unique key of the login form form
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
-
-  /// Unique key of the tooltip
-  final GlobalKey<TooltipState> tooltipkey = GlobalKey<TooltipState>();
 
   @override
   Widget build(BuildContext context) =>
@@ -74,77 +61,15 @@ class _LoginViewState extends State<LoginView> {
                                     const SizedBox(
                                       height: 48,
                                     ),
-                                    Hero(
-                                        tag: 'ets_logo',
-                                        child: SvgPicture.asset(
-                                          "assets/images/ets_white_logo.svg",
-                                          excludeFromSemantics: true,
-                                          width: 90,
-                                          height: 90,
-                                          colorFilter: ColorFilter.mode(
-                                              Theme.of(context).brightness ==
-                                                      Brightness.light
-                                                  ? Colors.white
-                                                  : AppTheme.etsLightRed,
-                                              BlendMode.srcIn),
-                                        )),
+                                    const LoginHero(),
                                     const SizedBox(
                                       height: 48,
                                     ),
-                                    TextFormField(
-                                      autofillHints: const [
-                                        AutofillHints.username
-                                      ],
-                                      cursorColor: Colors.white,
-                                      keyboardType:
-                                          TextInputType.visiblePassword,
-                                      decoration: InputDecoration(
-                                        enabledBorder: const OutlineInputBorder(
-                                            borderSide: BorderSide(
-                                                color: Colors.white70)),
-                                        focusedBorder: OutlineInputBorder(
-                                            borderSide: BorderSide(
-                                                color: Colors.white,
-                                                width: borderRadiusOnFocus)),
-                                        focusedErrorBorder: OutlineInputBorder(
-                                            borderSide: BorderSide(
-                                                color: errorTextColor,
-                                                width: borderRadiusOnFocus)),
-                                        errorBorder: OutlineInputBorder(
-                                            borderSide: BorderSide(
-                                                color: errorTextColor,
-                                                width: borderRadiusOnFocus)),
-                                        labelText: AppIntl.of(context)!
-                                            .login_prompt_universal_code,
-                                        labelStyle: const TextStyle(
-                                            color: Colors.white54),
-                                        errorStyle:
-                                            TextStyle(color: errorTextColor),
-                                        suffixIcon: Tooltip(
-                                            key: tooltipkey,
-                                            triggerMode:
-                                                TooltipTriggerMode.manual,
-                                            message: AppIntl.of(context)!
-                                                .universal_code_example,
-                                            preferBelow: true,
-                                            child: IconButton(
-                                              icon: const Icon(Icons.help,
-                                                  color: Colors.white),
-                                              onPressed: () {
-                                                tooltipkey.currentState
-                                                    ?.ensureTooltipVisible();
-                                              },
-                                            )),
-                                      ),
-                                      autofocus: true,
-                                      style:
-                                          const TextStyle(color: Colors.white),
-                                      onEditingComplete: _focusNode.nextFocus,
+                                    UniversalCodeFormField(
                                       validator: model.validateUniversalCode,
-                                      initialValue: model.universalCode,
-                                      inputFormatters: [
-                                        LoginMask(),
-                                      ],
+                                      onEditionComplete:
+                                        _focusNode.nextFocus,
+                                      universalCode: model.universalCode
                                     ),
                                     const SizedBox(
                                       height: 16,
@@ -153,101 +78,16 @@ class _LoginViewState extends State<LoginView> {
                                         validator: model.validatePassword,
                                         onEditionComplete:
                                             _focusNode.nextFocus),
-                                    Align(
-                                      alignment: Alignment.topRight,
-                                      child: Padding(
-                                        padding: const EdgeInsets.only(top: 4),
-                                        child: InkWell(
-                                          child: Text(
-                                            AppIntl.of(context)!
-                                                .forgot_password,
-                                            style: const TextStyle(
-                                                decoration:
-                                                    TextDecoration.underline,
-                                                color: Colors.white),
-                                          ),
-                                          onTap: () {
-                                            final signetsPasswordResetUrl =
-                                                _remoteConfigService
-                                                    .signetsPasswordResetUrl;
-                                            if (signetsPasswordResetUrl != "") {
-                                              _launchUrlService.launchInBrowser(
-                                                  _remoteConfigService
-                                                      .signetsPasswordResetUrl,
-                                                  Theme.of(context).brightness);
-                                            } else {
-                                              Fluttertoast.showToast(
-                                                  msg: AppIntl.of(context)!
-                                                      .error);
-                                            }
-                                          },
-                                        ),
-                                      ),
-                                    ),
+                                    const ForgotPassword(),
                                     const SizedBox(
                                       height: 24,
                                     ),
-                                    SizedBox(
-                                      width: double.infinity,
-                                      child: ElevatedButton(
-                                        onPressed: !model.canSubmit
-                                            ? null
-                                            : () async {
-                                                final String error =
-                                                    await model.authenticate();
-
-                                                setState(() {
-                                                  if (error.isNotEmpty) {
-                                                    Fluttertoast.showToast(
-                                                        msg: error);
-                                                  }
-                                                  formKey.currentState?.reset();
-                                                });
-                                              },
-                                        style: ButtonStyle(
-                                          backgroundColor:
-                                              WidgetStateProperty.all(
-                                                  model.canSubmit
-                                                      ? colorButton
-                                                      : Colors.white38),
-                                          padding: WidgetStateProperty.all(
-                                              const EdgeInsets.symmetric(
-                                                  vertical: 16)),
-                                        ),
-                                        child: Text(
-                                          AppIntl.of(context)!
-                                              .login_action_sign_in,
-                                          style: TextStyle(
-                                              color: model.canSubmit
-                                                  ? submitTextColor
-                                                  : Colors.white60,
-                                              fontSize: 18),
-                                        ),
-                                      ),
+                                    LoginButton(
+                                      formKey: formKey,
+                                      canSubmit: model.canSubmit,
+                                      authenticate: model.authenticate,
                                     ),
-                                    Center(
-                                      child: Padding(
-                                        padding: const EdgeInsets.only(top: 24),
-                                        child: InkWell(
-                                          child: Text(
-                                            AppIntl.of(context)!.need_help,
-                                            style: const TextStyle(
-                                                decoration:
-                                                    TextDecoration.underline,
-                                                color: Colors.white),
-                                          ),
-                                          onTap: () async {
-                                            _navigationService.pushNamed(
-                                                RouterPaths.faq,
-                                                arguments:
-                                                    Utils.getColorByBrightness(
-                                                        context,
-                                                        AppTheme.etsLightRed,
-                                                        AppTheme.primaryDark));
-                                          },
-                                        ),
-                                      ),
-                                    ),
+                                    const LoginFooter()
                                   ],
                                 ),
                               ),
@@ -282,13 +122,4 @@ class _LoginViewState extends State<LoginView> {
     _focusNode.dispose();
     super.dispose();
   }
-
-  Color get errorTextColor =>
-      Utils.getColorByBrightness(context, Colors.amberAccent, Colors.redAccent);
-
-  Color get colorButton =>
-      Utils.getColorByBrightness(context, Colors.white, AppTheme.etsLightRed);
-
-  Color get submitTextColor =>
-      Utils.getColorByBrightness(context, AppTheme.etsLightRed, Colors.white);
 }
