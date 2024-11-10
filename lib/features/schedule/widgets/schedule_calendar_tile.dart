@@ -2,7 +2,6 @@
 import 'package:flutter/material.dart';
 
 // Package imports:
-//import 'package:auto_size_text/auto_size_text.dart'; TODO: autoSize here
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:intl/intl.dart';
 
@@ -125,14 +124,6 @@ class _ScheduleCalendarTileState extends State<ScheduleCalendarTile> {
             Text(widget.title ?? "",
               style: widget.titleStyle,
               maxLines: 3,)
-            //TODO: removed autoSize here
-            /*
-            AutoSizeText(
-              widget.title ?? "",
-              style: widget.titleStyle,
-              maxLines: 3,
-            )
-            */
           ],
         ),
       ),

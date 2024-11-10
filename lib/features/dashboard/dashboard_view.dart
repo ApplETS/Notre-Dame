@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 
 // Package imports:
-//import 'package:auto_size_text/auto_size_text.dart'; TODO : autosizeText here
 import 'package:feature_discovery_fork/feature_discovery.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -498,9 +497,6 @@ class _DashboardViewState extends State<DashboardView>
                   // main text
                   Text(model.broadcastMessage,
                   style: Theme.of(context).primaryTextTheme.bodyMedium)
-                  // TODO: removed auto size here
-                  //AutoSizeText(model.broadcastMessage,
-                  //    style: Theme.of(context).primaryTextTheme.bodyMedium)
                 ]),
         ));
   }
