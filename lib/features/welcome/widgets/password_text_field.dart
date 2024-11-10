@@ -12,7 +12,7 @@ class PasswordFormField extends StatefulWidget {
       {super.key, required this.validator, required this.onEditionComplete});
 
   @override
-  _PasswordFormFieldState createState() => _PasswordFormFieldState();
+  State<PasswordFormField> createState() => _PasswordFormFieldState();
 }
 
 class _PasswordFormFieldState extends State<PasswordFormField> {

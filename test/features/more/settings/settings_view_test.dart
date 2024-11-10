@@ -2,7 +2,6 @@
 import 'package:flutter/material.dart';
 
 // Package imports:
-import 'package:feature_discovery_fork/feature_discovery.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -34,7 +33,7 @@ void main() {
       testWidgets('has 1 listView and 4 listTiles and 1 divider',
           (WidgetTester tester) async {
         await tester.pumpWidget(
-            localizedWidget(child: FeatureDiscovery(child: SettingsView())));
+            localizedWidget(child: SettingsView()));
         await tester.pumpAndSettle();
 
         final listview = find.byType(ListView);
@@ -50,7 +49,7 @@ void main() {
       group('Theme button - ', () {
         testWidgets('light theme', (WidgetTester tester) async {
           await tester.pumpWidget(
-              localizedWidget(child: FeatureDiscovery(child: SettingsView())));
+              localizedWidget(child: SettingsView()));
           await tester.pumpAndSettle();
 
           // Tap the button.
@@ -73,7 +72,7 @@ void main() {
 
         testWidgets('dark theme', (WidgetTester tester) async {
           await tester.pumpWidget(
-              localizedWidget(child: FeatureDiscovery(child: SettingsView())));
+              localizedWidget(child: SettingsView()));
           await tester.pumpAndSettle();
 
           // Tap the button.
@@ -96,7 +95,7 @@ void main() {
 
         testWidgets('system theme', (WidgetTester tester) async {
           await tester.pumpWidget(
-              localizedWidget(child: FeatureDiscovery(child: SettingsView())));
+              localizedWidget(child: SettingsView()));
           await tester.pumpAndSettle();
 
           // Tap the button.
@@ -121,7 +120,7 @@ void main() {
       group('Language button - ', () {
         testWidgets('french', (WidgetTester tester) async {
           await tester.pumpWidget(
-              localizedWidget(child: FeatureDiscovery(child: SettingsView())));
+              localizedWidget(child: SettingsView()));
           await tester.pumpAndSettle();
 
           // Tap the button.
@@ -144,7 +143,7 @@ void main() {
 
         testWidgets('english', (WidgetTester tester) async {
           await tester.pumpWidget(
-              localizedWidget(child: FeatureDiscovery(child: SettingsView())));
+              localizedWidget(child: SettingsView()));
           await tester.pumpAndSettle();
 
           // Tap the button.

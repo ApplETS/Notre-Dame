@@ -5,7 +5,7 @@ description: The 4th generation of ÉTSMobile, the main gateway between the Éco
 # pub.dev using `pub publish`. This is preferred for private packages.
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 
-version: 4.53.1+1
+version: 4.54.0
 
 environment:
   sdk: '>=3.3.0 <4.0.0'
@@ -17,55 +17,62 @@ dependencies:
     sdk: flutter
 
   # Architecture
-  get_it: ^7.6.7
+  get_it: ^7.7.0
   provider: ^6.1.2
-  stacked: ^3.4.2
+  stacked: ^3.4.3
 
   # Firebase
-  firebase_core: ^2.3.0
-  firebase_analytics: ^10.0.6
-  firebase_crashlytics: ^3.0.6
-  firebase_remote_config: ^4.3.13
+  firebase_core: ^3.6.0
+  firebase_analytics: ^11.3.3
+  firebase_crashlytics: ^4.1.3
+  firebase_remote_config: ^5.1.3
+
+  # Web
+  url_launcher: ^6.3.1
+  webview_flutter: ^4.10.0
+  flutter_custom_tabs: ^2.1.0
 
   # Utils
-  logger: ^2.3.0
-  url_launcher: ^6.3.1
+  logger: ^2.4.0
   enum_to_string: ^2.0.1
-  fluttertoast: ^8.2.4
+  fluttertoast: ^8.2.8
 
   # Widgets
-  table_calendar: ^3.0.9
+  table_calendar: ^3.1.2
   percent_indicator: ^4.2.3
-  feedback: ^3.0.0
+  feedback: ^3.1.0
+
+  # Animations
   flutter_staggered_animations: ^1.1.1
-  flutter_siren_2: ^1.2.2
+  shimmer: ^3.0.0
+  skeletonizer: ^1.4.2
+
+  # Google
+  google_maps_flutter: ^2.9.0
+  shared_preferences: ^2.3.2
+  flutter_markdown: ^0.7.4+1
+
+  # flutter community
+  package_info_plus: ^8.1.0
+  connectivity_plus: ^6.1.0
+  flutter_svg: ^2.0.11
+  font_awesome_flutter: ^10.8.0
+  device_info_plus: ^11.1.0
+  share_plus: ^10.1.1
 
   # Other
-  flutter_cache_manager: ^3.0.1
-  flutter_secure_storage: ^9.0.0
-  shared_preferences: ^2.2.2
-  webview_flutter: ^4.7.0
-  flutter_custom_tabs: ^2.0.0+1
-  google_maps_flutter: ^2.5.3
-  github: ^9.1.0
-  package_info_plus: ^5.0.1
-  feature_discovery_fork: ^0.14.2
-  connectivity_plus: ^6.0.1
-  flutter_svg: ^2.0.9
-  font_awesome_flutter: ^10.7.0
+  flutter_cache_manager: ^3.4.1
+  flutter_secure_storage: ^9.2.2
+  github: ^9.24.0
   in_app_review: ^2.0.9
   pub_semver: ^2.1.4
   easter_egg_trigger: ^1.0.1
-  timeago: ^3.3.0
-  calendar_view: ^1.1.0
+  timeago: ^3.7.0
+  calendar_view: ^1.2.0
   carousel_slider: ^5.0.0
   reorderable_grid_view: ^2.2.8
-  shimmer: ^3.0.0
   infinite_scroll_pagination: ^4.0.0
-  device_calendar: ^4.3.1
-  share_plus: ^7.2.2
-  flutter_markdown: ^0.7.1
-  skeletonizer: ^1.3.0
+  device_calendar: ^4.3.3
 
 dev_dependencies:
   flutter_test:
@@ -74,7 +81,7 @@ dev_dependencies:
   mockito: ^5.4.4
   flutter_config: ^2.0.2
   flutter_launcher_icons: ^0.14.1
-  build_runner: ^2.4.8
+  build_runner: ^2.4.13
   import_sorter: ^4.6.0
 
 flutter_icons:
@@ -93,8 +100,6 @@ flutter:
     - assets/markdown/
     - assets/icons/
     - assets/animations/
-    - assets/animations/discovery/en/
-    - assets/animations/discovery/fr/
     - assets/
 
 flutter_intl:

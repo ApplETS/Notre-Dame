@@ -2,53 +2,33 @@
 import 'package:flutter/material.dart';
 
 // Package imports:
-import 'package:feature_discovery_fork/feature_discovery.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
 // Project imports:
-import 'package:notredame/constants/preferences_flags.dart';
 import 'package:notredame/features/app/navigation/navigation_service.dart';
 import 'package:notredame/features/app/navigation/router_paths.dart';
 import 'package:notredame/features/app/signets-api/models/course.dart';
-import 'package:notredame/features/more/settings/settings_manager.dart';
-import 'package:notredame/features/welcome/discovery/discovery_components.dart';
-import 'package:notredame/features/welcome/discovery/models/discovery_ids.dart';
 import 'package:notredame/utils/app_theme.dart';
 import 'package:notredame/utils/locator.dart';
 
 class GradeButton extends StatelessWidget {
   final Course course;
-  final bool showDiscovery;
   final Color? color;
 
   /// Used to redirect on the dashboard.
   final NavigationService _navigationService = locator<NavigationService>();
 
-  /// Settings manager
-  final SettingsManager _settingsManager = locator<SettingsManager>();
-
-  GradeButton(this.course, {this.color, this.showDiscovery = false});
+  GradeButton(this.course, {this.color});
 
   @override
   Widget build(BuildContext context) => Card(
         color: color,
         child: InkWell(
           borderRadius: BorderRadius.circular(10),
-          onTap: () async {
-            if (ModalRoute.of(context)!.settings.name ==
-                    RouterPaths.dashboard ||
-                await _settingsManager
-                        .getBool(PreferencesFlag.discoveryStudentGrade) ==
-                    true) {
-              _navigationService.pushNamed(RouterPaths.gradeDetails,
-                  arguments: course);
-            }
-          },
-          child: showDiscovery
-              ? _buildDiscoveryFeatureDescriptionWidget(
-                  context, _buildGradeButton(context))
-              : _buildGradeButton(context),
+          onTap: () => _navigationService.pushNamed(RouterPaths.gradeDetails,
+                  arguments: course),
+          child: _buildGradeButton(context),
         ),
       );
 
@@ -120,22 +100,5 @@ class GradeButton extends StatelessWidget {
         ],
       ),
     );
-  }
-
-  DescribedFeatureOverlay _buildDiscoveryFeatureDescriptionWidget(
-      BuildContext context, Widget gradeButton) {
-    final discovery = getDiscoveryByFeatureId(context,
-        DiscoveryGroupIds.pageStudent, DiscoveryIds.detailsStudentGradeButton);
-
-    return DescribedFeatureOverlay(
-        overflowMode: OverflowMode.wrapBackground,
-        contentLocation: ContentLocation.below,
-        featureId: discovery.featureId,
-        title: Text(discovery.title, textAlign: TextAlign.justify),
-        description: discovery.details,
-        backgroundColor: AppTheme.appletsDarkPurple,
-        tapTarget: gradeButton,
-        pulseDuration: const Duration(seconds: 5),
-        child: gradeButton);
   }
 }

@@ -2,7 +2,6 @@
 import 'package:flutter/material.dart';
 
 // Package imports:
-import 'package:feature_discovery_fork/feature_discovery.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -126,8 +125,7 @@ void main() {
             toReturn: course);
         await tester.runAsync(() async {
           await tester.pumpWidget(localizedWidget(
-              child:
-                  FeatureDiscovery(child: GradesDetailsView(course: course))));
+              child: GradesDetailsView(course: course)));
           await tester.pumpAndSettle(const Duration(seconds: 2));
         }).then(
           (value) {
@@ -160,8 +158,7 @@ void main() {
             toReturn: course);
         await tester.runAsync(() async {
           await tester.pumpWidget(localizedWidget(
-              child: FeatureDiscovery(
-                  child: GradesDetailsView(course: courseWithoutSummary))));
+              child: GradesDetailsView(course: courseWithoutSummary)));
           await tester.pumpAndSettle();
         }).then((value) {
           expect(find.byType(SliverAppBar), findsOneWidget);
@@ -184,8 +181,7 @@ void main() {
 
         await tester.runAsync(() async {
           await tester.pumpWidget(localizedWidget(
-              child: FeatureDiscovery(
-                  child: GradesDetailsView(course: courseWithoutSummary))));
+              child: GradesDetailsView(course: courseWithoutSummary)));
           await tester.pumpAndSettle();
         }).then((value) async {
           final gesture = await tester
@@ -207,8 +203,7 @@ void main() {
             toReturn: courseWithoutSummary);
 
         await tester.pumpWidget(localizedWidget(
-            child: FeatureDiscovery(
-                child: GradesDetailsView(course: courseWithoutSummary))));
+            child: GradesDetailsView(course: courseWithoutSummary)));
         await tester.pumpAndSettle(const Duration(seconds: 1));
 
         expect(find.byKey(const Key("GradeNotAvailable")), findsOneWidget);
@@ -223,9 +218,8 @@ void main() {
             toReturn: courseWithEvaluationNotCompleted);
 
         await tester.pumpWidget(localizedWidget(
-            child: FeatureDiscovery(
-                child: GradesDetailsView(
-                    course: courseWithEvaluationNotCompleted))));
+            child: GradesDetailsView(
+                    course: courseWithEvaluationNotCompleted)));
         await tester.pumpAndSettle(const Duration(seconds: 1));
 
         expect(find.byKey(const Key("EvaluationNotCompleted")), findsOneWidget);

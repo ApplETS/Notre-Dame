@@ -1,13 +1,12 @@
 // Flutter imports:
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
 
 // Package imports:
 import 'package:calendar_view/calendar_view.dart' as calendar_view;
-import 'package:feature_discovery_fork/feature_discovery.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:intl/intl.dart';
+import 'package:notredame/features/schedule/widgets/schedule_settings.dart';
 import 'package:notredame/utils/calendar_utils.dart';
 import 'package:stacked/stacked.dart';
 import 'package:table_calendar/table_calendar.dart';
@@ -21,9 +20,6 @@ import 'package:notredame/features/dashboard/widgets/course_activity_tile.dart';
 import 'package:notredame/features/schedule/schedule_viewmodel.dart';
 import 'package:notredame/features/schedule/widgets/calendar_selector.dart';
 import 'package:notredame/features/schedule/widgets/schedule_calendar_tile.dart';
-import 'package:notredame/features/schedule/widgets/schedule_settings.dart';
-import 'package:notredame/features/welcome/discovery/discovery_components.dart';
-import 'package:notredame/features/welcome/discovery/models/discovery_ids.dart';
 import 'package:notredame/utils/app_theme.dart';
 import 'package:notredame/utils/locator.dart';
 
@@ -62,10 +58,6 @@ class _ScheduleViewState extends State<ScheduleView>
     );
 
     _animationController.forward();
-
-    SchedulerBinding.instance.addPostFrameCallback((Duration duration) {
-      ScheduleViewModel.startDiscovery(context);
-    });
   }
 
   @override
@@ -559,73 +551,43 @@ class _ScheduleViewState extends State<ScheduleView>
   }
 
   List<Widget> _buildActionButtons(ScheduleViewModel model) => [
-        IconButton(
-          icon: const Icon(Icons.ios_share),
-          onPressed: () {
-            final translations = AppIntl.of(context)!;
-            showDialog(
-              context: context,
-              builder: (_) =>
-                  CalendarSelectionWidget(translations: translations),
-            );
-          },
+    IconButton(
+      icon: const Icon(Icons.ios_share),
+      onPressed: () {
+        final translations = AppIntl.of(context)!;
+        showDialog(
+          context: context,
+          builder: (_) =>
+              CalendarSelectionWidget(translations: translations),
+        );
+      },
+    ),
+    if ((model.settings[PreferencesFlag.scheduleShowTodayBtn] as bool) ==
+        true)
+      IconButton(
+          icon: const Icon(Icons.today_outlined),
+          onPressed: () => setState(() {
+            model.selectToday();
+            _analyticsService.logEvent(tag, "Select today clicked");
+            if (model.calendarFormat == CalendarTimeFormat.day && !(model.settings[PreferencesFlag.scheduleListView] as bool)) {
+              dayViewKey.currentState?.animateToDate(DateTime.now());
+            } else if (model.calendarFormat == CalendarTimeFormat.week) {
+              weekViewKey.currentState?.animateToWeek(DateTime.now());
+            } else if (model.calendarFormat == CalendarTimeFormat.month) {
+              monthViewKey.currentState?.animateToMonth(DateTime(DateTime.now().year, DateTime.now().month));
+            }
+          })),
+    IconButton(icon: const Icon(Icons.settings_outlined), onPressed: () async {
+      await showModalBottomSheet(
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(
+          top: Radius.circular(10),
         ),
-        if ((model.settings[PreferencesFlag.scheduleShowTodayBtn] as bool) ==
-            true)
-          IconButton(
-              icon: const Icon(Icons.today_outlined),
-              onPressed: () => setState(() {
-                model.selectToday();
-                _analyticsService.logEvent(tag, "Select today clicked");
-                if (model.calendarFormat == CalendarTimeFormat.day && !(model.settings[PreferencesFlag.scheduleListView] as bool)) {
-                  dayViewKey.currentState?.animateToDate(DateTime.now());
-                } else if (model.calendarFormat == CalendarTimeFormat.week) {
-                  weekViewKey.currentState?.animateToWeek(DateTime.now());
-                } else if (model.calendarFormat == CalendarTimeFormat.month) {
-                  monthViewKey.currentState?.animateToMonth(DateTime(DateTime.now().year, DateTime.now().month));
-                }
-              })),
-        _buildDiscoveryFeatureDescriptionWidget(
-          context,
-          Icons.settings_outlined,
-          model,
-        ),
-      ];
-
-  DescribedFeatureOverlay _buildDiscoveryFeatureDescriptionWidget(
-      BuildContext context, IconData icon, ScheduleViewModel model) {
-    final discovery = getDiscoveryByFeatureId(
-      context,
-      DiscoveryGroupIds.pageSchedule,
-      DiscoveryIds.detailsScheduleSettings,
-    );
-
-    return DescribedFeatureOverlay(
-      overflowMode: OverflowMode.wrapBackground,
-      contentLocation: ContentLocation.below,
-      featureId: discovery.featureId,
-      title: Text(discovery.title, textAlign: TextAlign.justify),
-      description: discovery.details,
-      backgroundColor: AppTheme.appletsDarkPurple,
-      tapTarget: Icon(icon, color: AppTheme.etsBlack),
-      pulseDuration: const Duration(seconds: 5),
-      onComplete: () => model.discoveryCompleted(),
-      child: IconButton(
-        icon: const Icon(Icons.settings_outlined),
-        onPressed: () async {
-          _analyticsService.logEvent(tag, "Settings clicked");
-          await showModalBottomSheet(
-              shape: const RoundedRectangleBorder(
-                borderRadius: BorderRadius.vertical(
-                  top: Radius.circular(10),
-                ),
-              ),
-              context: context,
-              isScrollControlled: true,
-              builder: (context) => const ScheduleSettings());
-          model.loadSettings();
-        },
       ),
-    );
-  }
+      context: context,
+      isScrollControlled: true,
+      builder: (context) => const ScheduleSettings());
+      model.loadSettings();
+    })
+  ];
 }
