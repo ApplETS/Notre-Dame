@@ -28,7 +28,7 @@ class _LoginButtonState extends State<LoginButton>{
   Widget build(BuildContext context) => SizedBox(
         width: double.infinity,
         child: ElevatedButton(
-          onPressed: widget.canSubmit
+          onPressed: !widget.canSubmit
               ? null
               : () async {
             final String error = await widget.authenticate();
