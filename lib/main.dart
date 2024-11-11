@@ -58,17 +58,6 @@ Future<void> main() async {
 }
 
 class ETSMobile extends StatelessWidget {
-  void addEdgeToEdgeEffect() {
-    SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
-      systemNavigationBarColor: Colors.transparent,
-      systemNavigationBarContrastEnforced: false,
-      systemNavigationBarIconBrightness: Brightness.dark,
-      statusBarColor: Colors.transparent,
-      statusBarBrightness: Brightness.light,
-      statusBarIconBrightness: Brightness.dark,
-    ));
-  }
-
   /// Manage the settings
   final SettingsManager settingsManager;
 
@@ -123,5 +112,16 @@ class ETSMobile extends StatelessWidget {
         );
       }),
     );
+  }
+
+  void addEdgeToEdgeEffect() {
+    SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
+      systemNavigationBarColor: Colors.transparent,
+      systemNavigationBarContrastEnforced: false,
+      systemNavigationBarIconBrightness: Brightness.dark,
+      statusBarColor: Colors.transparent,
+      statusBarBrightness: Brightness.light,
+      statusBarIconBrightness: Brightness.dark,
+    ));
   }
 }
