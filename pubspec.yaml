@@ -70,7 +70,7 @@ dependencies:
   calendar_view: ^1.2.0
   carousel_slider: ^5.0.0
   reorderable_grid_view: ^2.2.8
-  infinite_scroll_pagination: ^4.0.0
+  infinite_scroll_pagination: ^4.1.0
   device_calendar: ^4.3.3
   path_provider: ^2.1.5
   http: ^1.2.2
