@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 
 // Package imports:
 import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 // Project imports:
@@ -85,6 +86,17 @@ class _BaseScaffoldState extends State<BaseScaffold> {
     });
   }
 
+  Future<void> redoSystemStyle() async {
+    SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
+      systemNavigationBarColor: Colors.transparent,
+      systemNavigationBarContrastEnforced: false,
+      systemNavigationBarIconBrightness: Brightness.dark,
+      statusBarColor: Colors.transparent,
+      statusBarBrightness: Brightness.light,
+      statusBarIconBrightness: Brightness.dark,
+    ));
+  }
+  
   @override
   Widget build(BuildContext context) => Scaffold(
         body: Scaffold(
@@ -106,6 +118,8 @@ class _BaseScaffoldState extends State<BaseScaffold> {
       );
 
   Widget bodyPortraitMode() {
+    SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
+
     return SafeArea(
       top: false,
       bottom: widget._safeArea,
@@ -124,6 +138,8 @@ class _BaseScaffoldState extends State<BaseScaffold> {
   }
 
   Widget bodyLandscapeMode() {
+    SystemChrome.setEnabledSystemUIMode(SystemUiMode.leanBack);
+
     return Stack(
       children: [
         Row(
