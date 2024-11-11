@@ -9,6 +9,7 @@ import 'package:calendar_view/calendar_view.dart';
 import 'package:feedback/feedback.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
@@ -57,6 +58,17 @@ Future<void> main() async {
 }
 
 class ETSMobile extends StatelessWidget {
+  void addEdgeToEdgeEffect() {
+    SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
+      systemNavigationBarColor: Colors.transparent,
+      systemNavigationBarContrastEnforced: false,
+      systemNavigationBarIconBrightness: Brightness.dark,
+      statusBarColor: Colors.transparent,
+      statusBarBrightness: Brightness.light,
+      statusBarIconBrightness: Brightness.dark,
+    ));
+  }
+
   /// Manage the settings
   final SettingsManager settingsManager;
 
@@ -64,6 +76,7 @@ class ETSMobile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    addEdgeToEdgeEffect();
     final RemoteConfigService remoteConfigService =
         locator<RemoteConfigService>();
     final bool outage = remoteConfigService.outage;

@@ -85,17 +85,6 @@ class _BaseScaffoldState extends State<BaseScaffold> {
       });
     });
   }
-
-  Future<void> redoSystemStyle() async {
-    SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
-      systemNavigationBarColor: Colors.transparent,
-      systemNavigationBarContrastEnforced: false,
-      systemNavigationBarIconBrightness: Brightness.dark,
-      statusBarColor: Colors.transparent,
-      statusBarBrightness: Brightness.light,
-      statusBarIconBrightness: Brightness.dark,
-    ));
-  }
   
   @override
   Widget build(BuildContext context) => Scaffold(
