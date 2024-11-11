@@ -96,8 +96,6 @@ PODS:
     - PromisesSwift (~> 2.1)
   - FirebaseSharedSwift (11.4.0)
   - Flutter (1.0.0)
-  - flutter_config (0.0.1):
-    - Flutter
   - flutter_custom_tabs_ios (2.0.0):
     - Flutter
   - flutter_secure_storage (6.0.0):
@@ -206,7 +204,6 @@ DEPENDENCIES:
   - firebase_crashlytics (from `.symlinks/plugins/firebase_crashlytics/ios`)
   - firebase_remote_config (from `.symlinks/plugins/firebase_remote_config/ios`)
   - Flutter (from `Flutter`)
-  - flutter_config (from `.symlinks/plugins/flutter_config/ios`)
   - flutter_custom_tabs_ios (from `.symlinks/plugins/flutter_custom_tabs_ios/ios`)
   - flutter_secure_storage (from `.symlinks/plugins/flutter_secure_storage/ios`)
   - fluttertoast (from `.symlinks/plugins/fluttertoast/ios`)
@@ -262,8 +259,6 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/firebase_remote_config/ios"
   Flutter:
     :path: Flutter
-  flutter_config:
-    :path: ".symlinks/plugins/flutter_config/ios"
   flutter_custom_tabs_ios:
     :path: ".symlinks/plugins/flutter_custom_tabs_ios/ios"
   flutter_secure_storage:
@@ -317,7 +312,6 @@ SPEC CHECKSUMS:
   FirebaseSessions: 3f56f177d9e53a85021d16b31f9a111849d1dd8b
   FirebaseSharedSwift: 505dae2d05969dbf6d43749a642bb1bf230f0252
   Flutter: e0871f40cf51350855a761d2e70bf5af5b9b5de7
-  flutter_config: f48f0d47a284f1791aacce2687eabb3309ba7a41
   flutter_custom_tabs_ios: a651b18786388923b62de8c0537607de87c2eccf
   flutter_secure_storage: d33dac7ae2ea08509be337e775f6b59f1ff45f12
   fluttertoast: e9a18c7be5413da53898f660530c56f35edfba9c

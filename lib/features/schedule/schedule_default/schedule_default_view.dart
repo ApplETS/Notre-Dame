@@ -13,10 +13,10 @@ import 'package:notredame/features/schedule/schedule_default/schedule_default_vi
 class ScheduleDefaultView extends StatefulWidget {
   final String? sessionCode;
 
-  const ScheduleDefaultView({this.sessionCode});
+  const ScheduleDefaultView({super.key, this.sessionCode});
 
   @override
-  _ScheduleDefaultViewState createState() => _ScheduleDefaultViewState();
+  State<ScheduleDefaultView> createState() => _ScheduleDefaultViewState();
 }
 
 class _ScheduleDefaultViewState extends State<ScheduleDefaultView> {

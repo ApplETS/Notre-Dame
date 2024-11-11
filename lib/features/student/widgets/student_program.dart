@@ -13,7 +13,7 @@ import 'package:notredame/utils/app_theme.dart';
 
 class StudentProgram extends StatefulWidget {
   final Program _program;
-  const StudentProgram(this._program);
+  const StudentProgram(this._program, {super.key});
 
   @override
   State<StudentProgram> createState() => _StudentProgramState();

@@ -11,8 +11,10 @@ import 'package:notredame/constants/urls.dart';
 import 'package:notredame/utils/utils.dart';
 
 class AboutView extends StatefulWidget {
+  const AboutView({super.key});
+
   @override
-  _AboutViewState createState() => _AboutViewState();
+  State<AboutView> createState() => _AboutViewState();
 }
 
 class _AboutViewState extends State<AboutView> with TickerProviderStateMixin {

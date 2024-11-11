@@ -38,7 +38,7 @@ class BaseScaffold extends StatefulWidget {
   final bool _isInteractionLimitedWhileLoading;
 
   const BaseScaffold(
-      {this.appBar,
+      {super.key, this.appBar,
       this.body,
       this.fab,
       this.fabPosition,
@@ -52,7 +52,7 @@ class BaseScaffold extends StatefulWidget {
         _isInteractionLimitedWhileLoading = isInteractionLimitedWhileLoading;
 
   @override
-  _BaseScaffoldState createState() => _BaseScaffoldState();
+  State<BaseScaffold> createState() => _BaseScaffoldState();
 }
 
 class _BaseScaffoldState extends State<BaseScaffold> {

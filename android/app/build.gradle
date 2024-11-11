@@ -30,7 +30,6 @@ if (keystorePropertiesFile.exists()) {
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
-apply from: project(':flutter_config').projectDir.getPath() + "/dotenv.gradle"
 apply plugin: 'com.google.gms.google-services'
 apply plugin: 'com.google.firebase.crashlytics'
 
@@ -50,7 +49,7 @@ android {
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
         multiDexEnabled true
-        manifestPlaceholders += [mapsApiKey: project.env.get("MAPS_API_KEY") ?:"$System.env.MAPS_API_KEY"]
+        manifestPlaceholders += [mapsApiKey: "$System.env.MAPS_API_KEY"]
     }
 
     signingConfigs {

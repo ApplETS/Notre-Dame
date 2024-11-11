@@ -1,6 +1,3 @@
-// Package imports:
-import 'package:enum_to_string/enum_to_string.dart';
-
 enum PreferencesFlag {
   // Schedule flags
   scheduleCalendarFormat,
@@ -48,7 +45,7 @@ class DynamicPreferencesFlag {
 
   @override
   String toString() {
-    return EnumToString.convertToString(groupAssociationFlag) +
+    return groupAssociationFlag.name +
         separator +
         uniqueKey;
   }
