@@ -2,7 +2,6 @@
 import 'package:flutter/material.dart';
 
 // Package imports:
-import 'package:enum_to_string/enum_to_string.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:intl/intl.dart';
 import 'package:logger/logger.dart';
@@ -129,8 +128,8 @@ class SettingsManager with ChangeNotifier {
     _preferencesService.setString(PreferencesFlag.theme, value.toString());
 
     _analyticsService.logEvent(
-        "${tag}_${EnumToString.convertToString(PreferencesFlag.theme)}",
-        EnumToString.convertToString(value));
+        "${tag}_${PreferencesFlag.theme.name}",
+        value.name);
     _themeMode = value;
     notifyListeners();
   }
@@ -139,7 +138,7 @@ class SettingsManager with ChangeNotifier {
     _locale = AppIntl.supportedLocales.firstWhere((e) => e.toString() == value);
 
     _analyticsService.logEvent(
-        "${tag}_${EnumToString.convertToString(PreferencesFlag.locale)}",
+        "${tag}_${PreferencesFlag.locale.name}",
         _locale?.languageCode ?? 'Not found');
 
     if (_locale != null) {
@@ -155,11 +154,13 @@ class SettingsManager with ChangeNotifier {
     final Map<PreferencesFlag, dynamic> settings = {};
 
     final calendarFormat = await _preferencesService
-        .getString(PreferencesFlag.scheduleCalendarFormat)
-        .then((value) => value == null
-            ? CalendarTimeFormat.week
-            : EnumToString.fromString(CalendarTimeFormat.values, value) ??
-        CalendarTimeFormat.week);
+      .getString(PreferencesFlag.scheduleCalendarFormat)
+      .then((value) => value == null
+        ? CalendarTimeFormat.week
+        : CalendarTimeFormat.values.byName(value))
+      .catchError((error) {
+        return CalendarTimeFormat.week;
+      });
     settings.putIfAbsent(
         PreferencesFlag.scheduleCalendarFormat, () => calendarFormat);
 
@@ -184,7 +185,7 @@ class SettingsManager with ChangeNotifier {
   Future<bool> setString(PreferencesFlag flag, String? value) async {
     // Log the event
     _analyticsService.logEvent(
-        "${tag}_${EnumToString.convertToString(flag)}", value.toString());
+        "${tag}_${flag.name}", value.toString());
 
     if (value == null) {
       return _preferencesService.removePreferencesFlag(flag);
@@ -209,7 +210,7 @@ class SettingsManager with ChangeNotifier {
   Future<bool> setInt(PreferencesFlag flag, int value) async {
     // Log the event
     _analyticsService.logEvent(
-        "${tag}_${EnumToString.convertToString(flag)}", value.toString());
+        "${tag}_${flag.name}", value.toString());
     return _preferencesService.setInt(flag, value);
   }
 
@@ -217,7 +218,7 @@ class SettingsManager with ChangeNotifier {
   Future<String?> getString(PreferencesFlag flag) async {
     // Log the event
     _analyticsService.logEvent(
-        "${tag}_${EnumToString.convertToString(flag)}", 'getString');
+        "${tag}_${flag.name}", 'getString');
     return _preferencesService.getString(flag);
   }
 
@@ -233,7 +234,7 @@ class SettingsManager with ChangeNotifier {
   Future<bool> setBool(PreferencesFlag flag, bool value) async {
     // Log the event
     _analyticsService.logEvent(
-        "${tag}_${EnumToString.convertToString(flag)}", value.toString());
+        "${tag}_${flag.name}", value.toString());
     return _preferencesService.setBool(flag, value: value);
   }
 
@@ -241,7 +242,7 @@ class SettingsManager with ChangeNotifier {
   Future<bool?> getBool(PreferencesFlag flag) async {
     // Log the event
     _analyticsService.logEvent(
-        "${tag}_${EnumToString.convertToString(flag)}", 'getBool');
+        "${tag}_${flag.name}", 'getBool');
     return _preferencesService.getBool(flag);
   }
 

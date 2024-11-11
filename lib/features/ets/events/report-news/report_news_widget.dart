@@ -19,7 +19,7 @@ class ReportNews extends StatefulWidget {
   const ReportNews({super.key, required this.newsId, this.showHandle = true});
 
   @override
-  _ReportNewsState createState() => _ReportNewsState();
+  State<ReportNews> createState() => _ReportNewsState();
 }
 
 class _ReportNewsState extends State<ReportNews> {

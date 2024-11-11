@@ -19,7 +19,7 @@ class NewsCard extends StatefulWidget {
   const NewsCard(this.news, {super.key});
 
   @override
-  _NewsCardState createState() => _NewsCardState();
+  State<NewsCard> createState() => _NewsCardState();
 }
 
 class _NewsCardState extends State<NewsCard> {

@@ -13,8 +13,10 @@ import 'package:notredame/features/ets/quick-link/widgets/web_link_card.dart';
 import 'package:notredame/utils/app_theme.dart';
 
 class QuickLinksView extends StatefulWidget {
+  const QuickLinksView({super.key});
+
   @override
-  _QuickLinksViewState createState() => _QuickLinksViewState();
+  State<QuickLinksView> createState() => _QuickLinksViewState();
 }
 
 class _QuickLinksViewState extends State<QuickLinksView>

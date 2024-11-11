@@ -11,6 +11,8 @@ import 'package:notredame/utils/app_theme.dart';
 import 'package:notredame/utils/utils.dart';
 
 class StartUpView extends StatelessWidget {
+  const StartUpView({super.key});
+
   @override
   Widget build(BuildContext context) =>
       ViewModelBuilder<StartUpViewModel>.nonReactive(

@@ -111,7 +111,7 @@ packages:
     source: hosted
     version: "7.3.2"
   built_collection:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: built_collection
       sha256: "376e3dd27b51ea877c28d525560790aee2e6fbb5f20e2f85d5081027d94e2100"
@@ -183,7 +183,7 @@ packages:
     source: hosted
     version: "4.10.1"
   collection:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: collection
       sha256: ee67cb0715911d28db6bf4af1026078bd6f0128b07a5f66fb2ed94ec6783c09a
@@ -286,14 +286,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.1"
-  enum_to_string:
-    dependency: "direct main"
-    description:
-      name: enum_to_string
-      sha256: bd9e83a33b754cb43a75b36a9af2a0b92a757bfd9847d2621ca0b1bed45f8e7a
-      url: "https://pub.dev"
-    source: hosted
-    version: "2.0.1"
   fake_async:
     dependency: transitive
     description:
@@ -435,14 +427,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.4.1"
-  flutter_config:
-    dependency: "direct dev"
-    description:
-      name: flutter_config
-      sha256: a07e6156bb6e776e29c6357be433155acda87d1dab1a3f787a72091a1b71ffbf
-      url: "https://pub.dev"
-    source: hosted
-    version: "2.0.2"
   flutter_custom_tabs:
     dependency: "direct main"
     description:
@@ -491,6 +475,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.14.1"
+  flutter_lints:
+    dependency: "direct dev"
+    description:
+      name: flutter_lints
+      sha256: "5398f14efa795ffb7a33e9b6a08798b26a180edac4ad7db3f231e40f82ce11e1"
+      url: "https://pub.dev"
+    source: hosted
+    version: "5.0.0"
   flutter_localizations:
     dependency: "direct main"
     description: flutter
@@ -707,7 +699,7 @@ packages:
     source: hosted
     version: "0.15.5"
   http:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: http
       sha256: b9c29a161230ee03d3ccf545097fccd9b87a5264228c5d348202e0f0c28f9010
@@ -731,7 +723,7 @@ packages:
     source: hosted
     version: "4.0.2"
   image:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: image
       sha256: f31d52537dc417fdcde36088fdf11d191026fd5e4fae742491ebd40e5a8bea7d
@@ -771,7 +763,7 @@ packages:
     source: hosted
     version: "4.1.0"
   intl:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: intl
       sha256: d6f56758b7d3014a48af9701c085700aac781a92a87a62b1333b46d8879661cf
@@ -826,14 +818,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.0.1"
-  lint:
-    dependency: "direct dev"
+  lints:
+    dependency: transitive
     description:
-      name: lint
-      sha256: d758a5211fce7fd3f5e316f804daefecdc34c7e53559716125e6da7388ae8565
+      name: lints
+      sha256: "3315600f3fb3b135be672bf4a178c55f274bebe368325ae18462c89ac1e3b413"
       url: "https://pub.dev"
     source: hosted
-    version: "2.3.0"
+    version: "5.0.0"
   logger:
     dependency: "direct main"
     description:
@@ -963,7 +955,7 @@ packages:
     source: hosted
     version: "1.1.0"
   path_provider:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: path_provider
       sha256: "50c5dd5b6e1aaf6fb3a78b33f6aa3afca52bf903a8a5298f53101fdaee55bbcd"
@@ -1507,10 +1499,10 @@ packages:
     dependency: transitive
     description:
       name: vector_graphics_compiler
-      sha256: "26d520739b7c6b5d2a2b3274427874a8390831fd4cd5bb8cfbd7d913477d3a2e"
+      sha256: ab9ff38fc771e9ee1139320adbe3d18a60327370c218c60752068ebee4b49ab1
       url: "https://pub.dev"
     source: hosted
-    version: "1.1.14"
+    version: "1.1.15"
   vector_math:
     dependency: transitive
     description:
@@ -1568,7 +1560,7 @@ packages:
     source: hosted
     version: "4.10.0"
   webview_flutter_android:
-    dependency: transitive
+    dependency: "direct dev"
     description:
       name: webview_flutter_android
       sha256: dec83a8da0a2dcd8a25418534cc59348dbc2855fa1dd0cc929c62b6029fde392
@@ -1616,7 +1608,7 @@ packages:
     source: hosted
     version: "1.1.0"
   xml:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: xml
       sha256: b015a8ad1c488f66851d762d3090a21c600e479dc75e68328c52774040cf9226

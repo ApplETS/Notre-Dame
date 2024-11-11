@@ -22,7 +22,7 @@ class GradeEvaluationTile extends StatefulWidget {
       {super.key, this.completed = false});
 
   @override
-  _GradeEvaluationTileState createState() => _GradeEvaluationTileState();
+  State<GradeEvaluationTile> createState() => _GradeEvaluationTileState();
 }
 
 class _GradeEvaluationTileState extends State<GradeEvaluationTile>

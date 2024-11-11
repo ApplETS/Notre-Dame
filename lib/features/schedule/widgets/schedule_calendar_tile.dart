@@ -31,7 +31,7 @@ class ScheduleCalendarTile extends StatefulWidget {
       required this.buildContext});
 
   @override
-  _ScheduleCalendarTileState createState() => _ScheduleCalendarTileState();
+  State<ScheduleCalendarTile> createState() => _ScheduleCalendarTileState();
 }
 
 class _ScheduleCalendarTileState extends State<ScheduleCalendarTile> {

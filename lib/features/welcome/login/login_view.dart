@@ -17,8 +17,10 @@ import 'package:notredame/features/welcome/widgets/login_button.dart';
 import 'package:notredame/features/welcome/widgets/login_footer.dart';
 
 class LoginView extends StatefulWidget {
+  const LoginView({super.key});
+
   @override
-  _LoginViewState createState() => _LoginViewState();
+  State<LoginView> createState() => _LoginViewState();
 }
 
 class _LoginViewState extends State<LoginView> {
