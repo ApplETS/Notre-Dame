@@ -58,5 +58,16 @@
         <meta-data
             android:name="flutterEmbedding"
             android:value="2" />
+        <receiver
+            android:name=".widgets.semesterProgress.SemesterProgressWidget"
+            android:label="@string/semester_progress_title"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/semester_progress_widget_info"/>
+        </receiver>
     </application>
 </manifest>

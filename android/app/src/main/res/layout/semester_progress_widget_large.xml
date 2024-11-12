@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/rounded_rec_light"
+    android:id="@+id/widget_root">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:orientation="vertical"
+        android:gravity="center_horizontal"
+        android:paddingTop="5dp"
+        android:paddingBottom="10dp">
+
+        <TextView
+            android:id="@+id/large_semester_progress_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/semester_progress_title"
+            android:textColor="@android:color/black"
+            android:textSize="20sp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:layout_gravity="center_horizontal"/>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="10dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:background="@android:color/transparent">
+
+            <ProgressBar
+                android:id="@+id/progression"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:background="@android:color/transparent"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:progressDrawable="@drawable/linear_progress_bar"
+                android:progress="50"
+                android:max="100" />
+
+            <TextView
+                android:id="@+id/progress_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:fontFamily="@font/roboto_medium"
+                android:text="50 %"
+                android:textColor="@android:color/white"
+                android:background="@android:color/transparent"
+                android:textSize="16sp"
+                android:layout_marginTop="8dp"/>
+        </RelativeLayout>
+
+    </LinearLayout>
+
+</RelativeLayout>
