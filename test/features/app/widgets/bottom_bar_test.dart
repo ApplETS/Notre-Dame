@@ -68,7 +68,7 @@ void main() {
         await tester.pumpAndSettle();
 
         await tester.tap(find.byIcon(Icons.schedule_outlined));
-        await tester.tap(find.byIcon(Icons.dashboard_outlined));
+        await tester.tap(find.byIcon(Icons.dashboard));
 
         verify(navigationServiceMock.pushNamedAndRemoveDuplicates(RouterPaths.dashboard));
       });
