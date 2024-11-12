@@ -58,39 +58,51 @@ class _GradeCircularProgressState extends State<GradeCircularProgress>
 
   @override
   Widget build(BuildContext context) {
-    Widget buildProgressIndicator(
-        double? grade, Color color, double size, int duration) {
-      return SizedBox(
-        width: size * widget.ratio,
-        height: size * widget.ratio,
-        child: TweenAnimationBuilder<double>(
-          tween: Tween<double>(
-            begin: 0.0,
-            end: widget.completed ? getGradeInDecimals(grade ?? 0.0) : 0.0,
-          ),
-          duration: Duration(milliseconds: duration),
-          curve: Curves.easeOut,
-          builder: (_, value, __) => CircularProgressIndicator(
-            value: value,
-            strokeWidth: 8.0 * widget.ratio,
-            backgroundColor: Colors.grey[300],
-            valueColor: AlwaysStoppedAnimation<Color>(color),
-          ),
-        ),
-      );
-    }
-
     return Stack(
       alignment: Alignment.center,
       children: [
-        buildProgressIndicator(
-            widget.studentGrade, animation.value ?? Colors.blue, 100, 1100),
-        buildProgressIndicator(widget.averageGrade, Colors.red, 80, 1100),
+        _buildProgressIndicator(
+          grade: widget.studentGrade,
+          color: animation.value ?? AppTheme.gradePassing,
+          size: 100,
+        ),
+        _buildProgressIndicator(
+          grade: widget.averageGrade,
+          color: Colors.red,
+          size: 80,
+        ),
         Text(
           getGrade(context),
           style: TextStyle(fontSize: 22 * widget.ratio),
         ),
       ],
+    );
+  }
+
+  Widget _buildProgressIndicator({
+    required double? grade,
+    required Color color,
+    required double size,
+    int duration = 1100,
+  }) {
+    return SizedBox(
+      width: size * widget.ratio,
+      height: size * widget.ratio,
+      child: TweenAnimationBuilder<double>(
+        tween: Tween<double>(
+          begin: 0.0,
+          end: widget.completed ? getGradeInDecimals(grade ?? 0.0) : 0.0,
+        ),
+        duration: Duration(milliseconds: duration),
+        curve: Curves.easeOut,
+        builder: (_, value, __) => CircularProgressIndicator(
+          value: value,
+          strokeWidth: 8.0 * widget.ratio,
+          strokeCap: StrokeCap.round,
+          backgroundColor: Colors.grey[300],
+          valueColor: AlwaysStoppedAnimation<Color>(color),
+        ),
+      ),
     );
   }
 
