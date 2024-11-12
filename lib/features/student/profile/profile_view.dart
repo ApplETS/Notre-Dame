@@ -273,55 +273,50 @@ Card getMyBalanceCard(ProfileViewModel model, BuildContext context) {
 
 Card getProgramCompletion(ProfileViewModel model, BuildContext context) {
   return Card(
-    child: SizedBox(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Text(
-              AppIntl.of(context)!.profile_program_completion,
-              style: const TextStyle(
-                fontSize: 16,
-              ),
+    child: Column(
+      children: [
+        Padding(
+          padding: const EdgeInsets.all(16),
+          child: Text(
+            AppIntl.of(context)!.profile_program_completion,
+            style: const TextStyle(fontSize: 16),
+          ),
+        ),
+        Center(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 30),
+            child: Stack(
+              alignment: Alignment.center,
+              children: [
+                TweenAnimationBuilder<double>(
+                  tween: Tween(begin: 0, end: model.programProgression / 100),
+                  duration: const Duration(milliseconds: 1100),
+                  builder: (_, value, __) => SizedBox.square(
+                    dimension: 75,
+                    child: CircularProgressIndicator(
+                      value: value,
+                      strokeWidth: 10,
+                      strokeCap: StrokeCap.round,
+                      backgroundColor: const Color.fromARGB(255, 184, 200, 203),
+                      valueColor: const AlwaysStoppedAnimation(Colors.green),
+                    ),
+                  ),
+                ),
+                Text(
+                  model.programProgression > 0
+                      ? '${model.programProgression}%'
+                      : AppIntl.of(context)!
+                          .profile_program_completion_not_available,
+                  style: const TextStyle(fontSize: 20),
+                ),
+              ],
             ),
           ),
-          Padding(
-              padding: const EdgeInsets.only(top: 30.0, bottom: 37.0),
-              child: Center(child: getLoadingIndicator(model, context))),
-        ],
-      ),
+        ),
+      ],
     ),
   );
 }
-
-Widget getLoadingIndicator(ProfileViewModel model, BuildContext context) =>
-    Stack(
-      alignment: Alignment.center,
-      children: [
-        SizedBox.square(
-          dimension: 75,
-          child: TweenAnimationBuilder<double>(
-            tween: Tween<double>(
-              begin: 0.0,
-              end: model.programProgression / 100,
-            ),
-            duration: const Duration(milliseconds: 1100),
-            curve: Curves.easeOut,
-            builder: (_, value, __) => CircularProgressIndicator(
-              value: value,
-              strokeWidth: 10,
-              backgroundColor: const Color.fromARGB(255, 184, 200, 203),
-              valueColor: const AlwaysStoppedAnimation(Colors.green),
-            ),
-          ),
-        ),
-        Text(
-          '${model.programProgression > 0 ? model.programProgression : AppIntl.of(context)!.profile_program_completion_not_available}%',
-          style: const TextStyle(fontSize: 20),
-        ),
-      ],
-    );
 
 Column getCurrentProgramTile(List<Program> programList, BuildContext context) {
   if (programList.isNotEmpty) {
