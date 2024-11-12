@@ -290,7 +290,7 @@ Card getProgramCompletion(ProfileViewModel model, BuildContext context) {
               children: [
                 TweenAnimationBuilder<double>(
                   tween: Tween(begin: 0, end: model.programProgression / 100),
-                  duration: const Duration(milliseconds: 1100),
+                  duration: const Duration(milliseconds: 900),
                   builder: (_, value, __) => SizedBox.square(
                     dimension: 75,
                     child: CircularProgressIndicator(
