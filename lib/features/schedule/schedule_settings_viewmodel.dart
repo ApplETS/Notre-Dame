@@ -1,6 +1,5 @@
 // Package imports:
 import 'package:collection/collection.dart';
-import 'package:enum_to_string/enum_to_string.dart';
 import 'package:stacked/stacked.dart';
 
 // Project imports:
@@ -28,7 +27,7 @@ class ScheduleSettingsViewModel
   set calendarFormat(CalendarTimeFormat? format) {
     setBusy(true);
     _settingsManager.setString(PreferencesFlag.scheduleCalendarFormat,
-        EnumToString.convertToString(format));
+        format?.name);
     _calendarFormat = format;
     setBusy(false);
   }

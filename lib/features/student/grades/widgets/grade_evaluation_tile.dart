@@ -5,28 +5,24 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 
 // Package imports:
-import 'package:feature_discovery_fork/feature_discovery.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:intl/intl.dart';
 
 // Project imports:
 import 'package:notredame/features/app/signets-api/models/course_evaluation.dart';
 import 'package:notredame/features/student/grades/widgets/grade_circular_progress.dart';
-import 'package:notredame/features/welcome/discovery/discovery_components.dart';
-import 'package:notredame/features/welcome/discovery/models/discovery_ids.dart';
 import 'package:notredame/utils/app_theme.dart';
 import 'package:notredame/utils/utils.dart';
 
 class GradeEvaluationTile extends StatefulWidget {
   final bool completed;
   final CourseEvaluation evaluation;
-  final bool isFirstEvaluation;
 
   const GradeEvaluationTile(this.evaluation,
-      {super.key, this.completed = false, this.isFirstEvaluation = false});
+      {super.key, this.completed = false});
 
   @override
-  _GradeEvaluationTileState createState() => _GradeEvaluationTileState();
+  State<GradeEvaluationTile> createState() => _GradeEvaluationTileState();
 }
 
 class _GradeEvaluationTileState extends State<GradeEvaluationTile>
@@ -84,9 +80,7 @@ class _GradeEvaluationTileState extends State<GradeEvaluationTile>
                 leading: FractionallySizedBox(
                   heightFactor: 1.3,
                   child: LayoutBuilder(
-                    builder: (context, constraints) {
-                      final GradeCircularProgress circularProgress =
-                          GradeCircularProgress(
+                    builder: (context, constraints) => GradeCircularProgress(
                         constraints.maxHeight / 100,
                         completed: widget.completed,
                         key: Key(
@@ -99,17 +93,7 @@ class _GradeEvaluationTileState extends State<GradeEvaluationTile>
                           widget.evaluation.passMark,
                           widget.evaluation.correctedEvaluationOutOfFormatted,
                         ),
-                      );
-
-                      if (widget.isFirstEvaluation) {
-                        return _buildDiscoveryFeatureDescriptionWidget(
-                            context,
-                            circularProgress,
-                            DiscoveryIds.detailsGradeDetailsEvaluations);
-                      }
-
-                      return circularProgress;
-                    },
+                      ),
                   ),
                 ),
                 title: Padding(
@@ -255,22 +239,5 @@ class _GradeEvaluationTileState extends State<GradeEvaluationTile>
     final String formattedResult = result.toStringAsFixed(2);
     return AppIntl.of(context)!.grades_grade_with_percentage(
         double.parse(formattedResult), maxGrade, percentage);
-  }
-
-  DescribedFeatureOverlay _buildDiscoveryFeatureDescriptionWidget(
-      BuildContext context, Widget circularProgressBar, String featuredId) {
-    final discovery = getDiscoveryByFeatureId(
-        context, DiscoveryGroupIds.pageGradeDetails, featuredId);
-
-    return DescribedFeatureOverlay(
-        overflowMode: OverflowMode.wrapBackground,
-        contentLocation: ContentLocation.below,
-        featureId: discovery.featureId,
-        title: Text(discovery.title, textAlign: TextAlign.justify),
-        description: discovery.details,
-        backgroundColor: AppTheme.appletsDarkPurple,
-        tapTarget: circularProgressBar,
-        pulseDuration: const Duration(seconds: 5),
-        child: circularProgressBar);
   }
 }

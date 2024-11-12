@@ -22,7 +22,7 @@ class GradeCircularProgress extends StatefulWidget {
       this.averageGrade});
 
   @override
-  _GradeCircularProgressState createState() => _GradeCircularProgressState();
+  State<GradeCircularProgress> createState() => _GradeCircularProgressState();
 }
 
 class _GradeCircularProgressState extends State<GradeCircularProgress>

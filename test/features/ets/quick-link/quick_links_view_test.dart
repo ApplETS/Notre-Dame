@@ -1,5 +1,4 @@
 // Package imports:
-import 'package:feature_discovery_fork/feature_discovery.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -49,7 +48,7 @@ void main() {
     group('UI - ', () {
       testWidgets('has X cards', (WidgetTester tester) async {
         await tester.pumpWidget(localizedWidget(
-            child: FeatureDiscovery(child: QuickLinksView()),
+            child: QuickLinksView(),
             useScaffold: false));
         await tester.pumpAndSettle();
 

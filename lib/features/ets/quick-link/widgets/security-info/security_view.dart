@@ -16,8 +16,10 @@ import 'package:notredame/utils/app_theme.dart';
 import 'package:notredame/utils/utils.dart';
 
 class SecurityView extends StatefulWidget {
+  const SecurityView({super.key});
+
   @override
-  _SecurityViewState createState() => _SecurityViewState();
+  State<SecurityView> createState() => _SecurityViewState();
 }
 
 class _SecurityViewState extends State<SecurityView> {
@@ -44,6 +46,7 @@ class _SecurityViewState extends State<SecurityView> {
                     height: 250,
                     child: GoogleMap(
                         initialCameraPosition: _etsLocation,
+                        style: model.mapStyle,
                         zoomControlsEnabled: false,
                         markers:
                             model.getSecurityMarkersForMaps(model.markersList),

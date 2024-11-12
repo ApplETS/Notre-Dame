@@ -11,10 +11,10 @@ import 'package:notredame/features/ets/quick-link/models/quick_link.dart';
 class LinkWebView extends StatefulWidget {
   final QuickLink _links;
 
-  const LinkWebView(this._links);
+  const LinkWebView(this._links, {super.key});
 
   @override
-  _LinkWebViewState createState() => _LinkWebViewState();
+  State<LinkWebView> createState() => _LinkWebViewState();
 }
 
 class _LinkWebViewState extends State<LinkWebView> {

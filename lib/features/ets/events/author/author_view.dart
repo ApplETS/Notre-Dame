@@ -22,7 +22,7 @@ import 'package:notredame/utils/utils.dart';
 class AuthorView extends StatefulWidget {
   final String authorId;
 
-  const AuthorView({required this.authorId});
+  const AuthorView({super.key, required this.authorId});
 
   @override
   State<AuthorView> createState() => _AuthorViewState();

@@ -4,8 +4,6 @@ import 'package:flutter/material.dart';
 // Package imports:
 import 'package:calendar_view/calendar_view.dart';
 import 'package:collection/collection.dart';
-import 'package:enum_to_string/enum_to_string.dart';
-import 'package:feature_discovery_fork/feature_discovery.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:stacked/stacked.dart';
@@ -18,8 +16,6 @@ import 'package:notredame/features/app/signets-api/models/course.dart';
 import 'package:notredame/features/app/signets-api/models/course_activity.dart';
 import 'package:notredame/features/app/signets-api/models/schedule_activity.dart';
 import 'package:notredame/features/more/settings/settings_manager.dart';
-import 'package:notredame/features/welcome/discovery/discovery_components.dart';
-import 'package:notredame/features/welcome/discovery/models/discovery_ids.dart';
 import 'package:notredame/utils/activity_code.dart';
 import 'package:notredame/utils/app_theme.dart';
 import 'package:notredame/utils/locator.dart';
@@ -409,7 +405,7 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
     calendarFormat = format;
     settings[PreferencesFlag.scheduleCalendarFormat] = calendarFormat;
     _settingsManager.setString(PreferencesFlag.scheduleCalendarFormat,
-        EnumToString.convertToString(calendarFormat));
+        calendarFormat.name);
   }
 
   Future<void> refresh() async {
@@ -470,31 +466,5 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
         : weekSelected = currentMonth;
 
     return !isThisMonthSelected;
-  }
-
-  /// Start Discovery if needed.
-  static Future<void> startDiscovery(BuildContext context) async {
-    final SettingsManager settingsManager = locator<SettingsManager>();
-
-    if (await settingsManager.getBool(PreferencesFlag.discoverySchedule) ==
-        null) {
-      if (!context.mounted) return;
-      final List<String> ids =
-          findDiscoveriesByGroupName(context, DiscoveryGroupIds.pageSchedule)
-              .map((e) => e.featureId)
-              .toList();
-
-      Future.delayed(const Duration(milliseconds: 700), () {
-        if (!context.mounted) return;
-        FeatureDiscovery.discoverFeatures(context, ids);
-      });
-    }
-  }
-
-  /// Mark the discovery of this view completed
-  Future<bool> discoveryCompleted() async {
-    await _settingsManager.setBool(PreferencesFlag.discoverySchedule, true);
-
-    return true;
   }
 }

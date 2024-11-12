@@ -1,6 +1,5 @@
 // Flutter imports:
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
 
 // Package imports:
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -8,7 +7,6 @@ import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:stacked/stacked.dart';
 
 // Project imports:
-import 'package:notredame/features/app/analytics/analytics_service.dart';
 import 'package:notredame/features/app/navigation/navigation_service.dart';
 import 'package:notredame/features/app/navigation/router_paths.dart';
 import 'package:notredame/features/app/signets-api/models/course.dart';
@@ -19,26 +17,15 @@ import 'package:notredame/utils/loading.dart';
 import 'package:notredame/utils/locator.dart';
 
 class GradesView extends StatefulWidget {
+  const GradesView({super.key});
+
   @override
-  _GradesViewState createState() => _GradesViewState();
+  State<GradesView> createState() => _GradesViewState();
 }
 
 class _GradesViewState extends State<GradesView> {
-  final AnalyticsService _analyticsService = locator<AnalyticsService>();
-
   /// Used to redirect on the dashboard.
   final NavigationService _navigationService = locator<NavigationService>();
-
-  @override
-  void initState() {
-    super.initState();
-
-    SchedulerBinding.instance.addPostFrameCallback((Duration duration) {
-      GradesViewModel.startDiscovery(context);
-    });
-
-    _analyticsService.logEvent("GradesView", "Opened");
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -120,8 +107,7 @@ class _GradesViewState extends State<GradesView> {
             const SizedBox(height: 16.0),
             Wrap(
               children: courses
-                  .map((course) =>
-                      GradeButton(course, showDiscovery: index == 0))
+                  .map((course) => GradeButton(course))
                   .toList(),
             ),
           ],

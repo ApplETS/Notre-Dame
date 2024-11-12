@@ -13,6 +13,8 @@ import 'package:notredame/features/more/contributors/contributors_viewmodel.dart
 import 'package:notredame/utils/utils.dart';
 
 class ContributorsView extends StatelessWidget {
+  const ContributorsView({super.key});
+
   @override
   Widget build(BuildContext context) =>
       ViewModelBuilder<ContributorsViewModel>.reactive(

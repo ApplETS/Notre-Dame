@@ -2,16 +2,14 @@
 import 'dart:async';
 
 // Flutter imports:
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 // Package imports:
 import 'package:calendar_view/calendar_view.dart';
-import 'package:feature_discovery_fork/feature_discovery.dart';
 import 'package:feedback/feedback.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
-import 'package:flutter_config/flutter_config.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
@@ -50,9 +48,6 @@ Future<void> main() async {
   final HelloAPIClient helloApiClient = locator<HelloAPIClient>();
   helloApiClient.apiLink = remoteConfigService.helloApiUrl;
 
-  if (kDebugMode) {
-    FlutterConfig.loadEnvVariables();
-  }
   runZonedGuarded(() {
     runApp(
       ETSMobile(settingsManager),
@@ -66,10 +61,11 @@ class ETSMobile extends StatelessWidget {
   /// Manage the settings
   final SettingsManager settingsManager;
 
-  const ETSMobile(this.settingsManager);
+  const ETSMobile(this.settingsManager, {super.key});
 
   @override
   Widget build(BuildContext context) {
+    addEdgeToEdgeEffect();
     final RemoteConfigService remoteConfigService =
         locator<RemoteConfigService>();
     final bool outage = remoteConfigService.outage;
@@ -89,9 +85,7 @@ class ETSMobile extends StatelessWidget {
             CustomFeedbackLocalizationsDelegate(),
           ],
           localeOverride: model.locale,
-          child: FeatureDiscovery(
-            recordStepsInSharedPreferences: false,
-            child: CalendarControllerProvider(
+          child: CalendarControllerProvider(
               controller: EventController(),
               child: MaterialApp(
                 title: 'ÉTS Mobile',
@@ -115,9 +109,19 @@ class ETSMobile extends StatelessWidget {
                 onGenerateRoute: generateRoute,
               ),
             ),
-          ),
         );
       }),
     );
+  }
+
+  void addEdgeToEdgeEffect() {
+    SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
+      systemNavigationBarColor: Colors.transparent,
+      systemNavigationBarContrastEnforced: false,
+      systemNavigationBarIconBrightness: Brightness.dark,
+      statusBarColor: Colors.transparent,
+      statusBarBrightness: Brightness.light,
+      statusBarIconBrightness: Brightness.dark,
+    ));
   }
 }
