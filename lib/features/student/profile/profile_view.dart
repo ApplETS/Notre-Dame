@@ -297,7 +297,7 @@ Card getProgramCompletion(ProfileViewModel model, BuildContext context) {
                       value: value,
                       strokeWidth: 10,
                       strokeCap: StrokeCap.round,
-                      backgroundColor: const Color.fromARGB(255, 184, 200, 203),
+                      backgroundColor: Colors.grey[300],
                       valueColor: const AlwaysStoppedAnimation(Colors.green),
                     ),
                   ),
