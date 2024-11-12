@@ -64,12 +64,12 @@ class _GradeCircularProgressState extends State<GradeCircularProgress>
         _buildProgressIndicator(
           grade: widget.studentGrade,
           color: animation.value ?? AppTheme.gradePassing,
-          size: 100,
+          size: 95,
         ),
         _buildProgressIndicator(
           grade: widget.averageGrade,
           color: Colors.red,
-          size: 80,
+          size: 75,
         ),
         Text(
           getGrade(context),
