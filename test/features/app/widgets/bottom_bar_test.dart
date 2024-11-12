@@ -9,7 +9,7 @@ import 'package:mockito/mockito.dart';
 import 'package:notredame/features/app/integration/networking_service.dart';
 import 'package:notredame/features/app/navigation/navigation_service.dart';
 import 'package:notredame/features/app/navigation/router_paths.dart';
-import 'package:notredame/features/app/widgets/bottom_bar.dart';
+import 'package:notredame/features/app/widgets/navigation/bottom_bar.dart';
 import '../../../common/helpers.dart';
 import '../analytics/mocks/analytics_service_mock.dart';
 import '../navigation/mocks/navigation_service_mock.dart';
