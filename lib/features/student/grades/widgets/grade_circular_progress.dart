@@ -62,14 +62,16 @@ class _GradeCircularProgressState extends State<GradeCircularProgress>
       alignment: Alignment.center,
       children: [
         _buildProgressIndicator(
-          grade: widget.studentGrade,
-          color: animation.value ?? AppTheme.gradePassing,
-          size: 95,
-        ),
-        _buildProgressIndicator(
           grade: widget.averageGrade,
           color: Colors.red,
           size: 75,
+          duration: 800,
+        ),
+        _buildProgressIndicator(
+          grade: widget.studentGrade,
+          color: animation.value ?? AppTheme.gradePassing,
+          size: 95,
+          duration: 1200,
         ),
         Text(
           getGrade(context),
@@ -83,7 +85,7 @@ class _GradeCircularProgressState extends State<GradeCircularProgress>
     required double? grade,
     required Color color,
     required double size,
-    int duration = 1100,
+    required int duration,
   }) {
     return SizedBox(
       width: size * widget.ratio,
