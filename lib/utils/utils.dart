@@ -1,9 +1,6 @@
 // Flutter imports:
 import 'package:flutter/material.dart';
 
-// Package imports:
-import 'package:table_calendar/table_calendar.dart';
-
 mixin Utils {
   static double getGradeInPercentage(double? grade, double? maxGrade) {
     if (grade == null || maxGrade == null || grade == 0.0 || maxGrade == 0.0) {
