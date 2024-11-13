@@ -32,7 +32,6 @@ dependencies:
 
   # Utils
   logger: ^2.4.0
-  enum_to_string: ^2.0.1
   fluttertoast: ^8.2.8
 
   # Widgets
