@@ -204,8 +204,8 @@ class _ScheduleViewState extends State<ScheduleView>
                 eventTileBuilder:
                     (date, events, boundary, startDuration, endDuration) =>
                     _buildEventTile(events, context))
-          ),
-        ]);
+        ),
+      ]);
   }
 
   Widget _buildCalendarViewWeekly(
@@ -229,11 +229,11 @@ class _ScheduleViewState extends State<ScheduleView>
       }),
       backgroundColor: backgroundColor,
       weekTitleHeight:
-      (MediaQuery.of(context).orientation == Orientation.portrait)
-          ? 60
-          : 35,
+          (MediaQuery.of(context).orientation == Orientation.portrait)
+              ? 60
+              : 35,
       safeAreaOption:
-      const calendar_view.SafeAreaOption(top: false, bottom: false),
+          const calendar_view.SafeAreaOption(top: false, bottom: false),
       headerStyle: calendar_view.HeaderStyle(
           decoration: BoxDecoration(
             color: backgroundColor,
