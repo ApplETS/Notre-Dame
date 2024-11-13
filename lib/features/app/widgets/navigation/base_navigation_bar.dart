@@ -6,31 +6,31 @@ import '../../navigation/navigation_service.dart';
 import '../../navigation/router_paths.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-abstract class BaseNavigationBar extends StatefulWidget {
-  final List<int> viewIndices = const [
-    0, // Dashboard
-    1, // Schedule
-    2, // Student
-    3, // ETS
-    4  // More
-  ];
+enum NavigationView {
+  dashboard,
+  schedule,
+  student,
+  ets,
+  more,
+}
 
+abstract class BaseNavigationBar extends StatefulWidget {
   const BaseNavigationBar({super.key});
 
   @override
   BaseNavigationBarState createState();
 
   Widget buildNavigationBar(
-      BuildContext context, int currentIndex, Function(int) onTap);
+      BuildContext context, NavigationView currentView, Function(NavigationView) onTap);
 
-  List<NavigationRailDestination> buildRailItems(BuildContext context) => _buildItems(
-    context, (icon, selectedIcon, label) =>
-      NavigationRailDestination(
-        icon: Icon(icon),
-        selectedIcon: Icon(selectedIcon),
-        label: Text(label),
-    ),
-  );
+  List<NavigationRailDestination> buildRailItems(BuildContext context) =>
+      _buildItems(context, (icon, selectedIcon, label) =>
+          NavigationRailDestination(
+            icon: Icon(icon),
+            selectedIcon: Icon(selectedIcon),
+            label: Text(label),
+          ),
+      );
 
   List<BottomNavigationBarItem> buildBottomBarItems(BuildContext context) =>
       _buildItems(context, (icon, selectedIcon, label) =>
@@ -38,8 +38,8 @@ abstract class BaseNavigationBar extends StatefulWidget {
             icon: Icon(icon),
             activeIcon: Icon(selectedIcon),
             label: label,
-    ),
-  );
+          ),
+      );
 
   List<T> _buildItems<T>(
       BuildContext context,
@@ -62,54 +62,54 @@ abstract class BaseNavigationBarState<T extends BaseNavigationBar>
   final NavigationService _navigationService = locator<NavigationService>();
   final AnalyticsService _analyticsService = locator<AnalyticsService>();
 
-  int _currentView = 0;
+  NavigationView _currentView = NavigationView.dashboard;
 
   @override
   Widget build(BuildContext context) {
-    _currentView = _defineIndex(ModalRoute.of(context)!.settings.name!);
+    _currentView = _defineView(ModalRoute.of(context)!.settings.name!);
     return widget.buildNavigationBar(context, _currentView, _onTap);
   }
 
-  int _defineIndex(String routeName) {
+  NavigationView _defineView(String routeName) {
     switch (routeName) {
       case RouterPaths.dashboard:
-        return widget.viewIndices[0];
+        return NavigationView.dashboard;
       case RouterPaths.schedule:
-        return widget.viewIndices[1];
+        return NavigationView.schedule;
       case RouterPaths.student:
-        return widget.viewIndices[2];
+        return NavigationView.student;
       case RouterPaths.ets:
       case RouterPaths.security:
-        return widget.viewIndices[3];
+        return NavigationView.ets;
       case RouterPaths.more:
       case RouterPaths.settings:
       case RouterPaths.about:
-        return widget.viewIndices[4];
+        return NavigationView.more;
       default:
         return _currentView;
     }
   }
 
-  void _onTap(int index) {
-    if (_currentView == index) return;
+  void _onTap(NavigationView view) {
+    if (_currentView == view) return;
 
-    final routeNames = [
-      RouterPaths.dashboard,
-      RouterPaths.schedule,
-      RouterPaths.student,
-      RouterPaths.ets,
-      RouterPaths.more
-    ];
-    final events = [
-      "DashboardView clicked",
-      "ScheduleView clicked",
-      "StudentView clicked",
-      "EtsView clicked",
-      "MoreView clicked"
-    ];
+    final routeNames = {
+      NavigationView.dashboard: RouterPaths.dashboard,
+      NavigationView.schedule: RouterPaths.schedule,
+      NavigationView.student: RouterPaths.student,
+      NavigationView.ets: RouterPaths.ets,
+      NavigationView.more: RouterPaths.more
+    };
+    final events = {
+      NavigationView.dashboard: "DashboardView clicked",
+      NavigationView.schedule: "ScheduleView clicked",
+      NavigationView.student: "StudentView clicked",
+      NavigationView.ets: "EtsView clicked",
+      NavigationView.more: "MoreView clicked"
+    };
 
-    _navigationService.pushNamedAndRemoveDuplicates(routeNames[index]);
-    _analyticsService.logEvent("NavigationBar", events[index]);
-    setState(() => _currentView = index);
+    _navigationService.pushNamedAndRemoveDuplicates(routeNames[view]!);
+    _analyticsService.logEvent("NavigationBar", events[view]!);
+    setState(() => _currentView = view);
   }
 }

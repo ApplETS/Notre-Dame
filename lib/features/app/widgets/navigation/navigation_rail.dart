@@ -8,11 +8,11 @@ class NavRail extends BaseNavigationBar {
   const NavRail({super.key});
 
   @override
-  Widget buildNavigationBar(BuildContext context, int currentIndex, Function(int) onTap) {
+  Widget buildNavigationBar(BuildContext context, NavigationView currentView, Function(NavigationView) onTap) {
     return NavigationRail(
       destinations: buildRailItems(context),
-      selectedIndex: currentIndex,
-      onDestinationSelected: (value) => onTap(value),
+      selectedIndex: currentView.index,
+      onDestinationSelected: (value) => onTap(NavigationView.values[value]),
       labelType: MediaQuery.of(context).size.height > 350
           ? NavigationRailLabelType.all
           : NavigationRailLabelType.selected,
