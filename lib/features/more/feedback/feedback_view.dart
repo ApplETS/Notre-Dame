@@ -15,6 +15,8 @@ import 'package:notredame/utils/locator.dart';
 import 'package:notredame/features/app/integration/launch_url_service.dart';
 
 class FeedbackView extends StatefulWidget {
+  const FeedbackView({super.key});
+
   @override
   State<FeedbackView> createState() => _FeedbackViewState();
 }

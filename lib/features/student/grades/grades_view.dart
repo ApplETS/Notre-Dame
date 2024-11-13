@@ -17,8 +17,10 @@ import 'package:notredame/utils/loading.dart';
 import 'package:notredame/utils/locator.dart';
 
 class GradesView extends StatefulWidget {
+  const GradesView({super.key});
+
   @override
-  _GradesViewState createState() => _GradesViewState();
+  State<GradesView> createState() => _GradesViewState();
 }
 
 class _GradesViewState extends State<GradesView> {

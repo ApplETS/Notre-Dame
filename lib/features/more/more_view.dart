@@ -17,8 +17,10 @@ import 'package:notredame/utils/utils.dart';
 import 'package:notredame/features/app/integration/launch_url_service.dart';
 
 class MoreView extends StatefulWidget {
+  const MoreView({super.key});
+
   @override
-  _MoreViewState createState() => _MoreViewState();
+  State<MoreView> createState() => _MoreViewState();
 }
 
 class _MoreViewState extends State<MoreView> {

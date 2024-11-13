@@ -10,6 +10,7 @@ import 'package:notredame/utils/locator.dart';
 import 'package:notredame/features/app/integration/launch_url_service.dart';
 
 class OutageSocialSection extends StatelessWidget {
+  OutageSocialSection({super.key});
   final LaunchUrlService _launchUrlService = locator<LaunchUrlService>();
 
   @override

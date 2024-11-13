@@ -17,8 +17,10 @@ import 'package:notredame/utils/locator.dart';
 import 'package:notredame/features/app/integration/launch_url_service.dart';
 
 class SecurityView extends StatefulWidget {
+  const SecurityView({super.key});
+
   @override
-  _SecurityViewState createState() => _SecurityViewState();
+  State<SecurityView> createState() => _SecurityViewState();
 }
 
 class _SecurityViewState extends State<SecurityView> {

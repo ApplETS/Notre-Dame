@@ -14,6 +14,7 @@ import 'package:notredame/utils/locator.dart';
 import 'package:notredame/features/app/integration/launch_url_service.dart';
 
 class ContributorsView extends StatelessWidget {
+  ContributorsView({super.key});
   final LaunchUrlService _launchUrlService = locator<LaunchUrlService>();
 
   @override

@@ -12,8 +12,10 @@ import 'package:notredame/utils/locator.dart';
 import 'package:notredame/features/app/integration/launch_url_service.dart';
 
 class AboutView extends StatefulWidget {
+  const AboutView({super.key});
+
   @override
-  _AboutViewState createState() => _AboutViewState();
+  State<AboutView> createState() => _AboutViewState();
 }
 
 class _AboutViewState extends State<AboutView> with TickerProviderStateMixin {

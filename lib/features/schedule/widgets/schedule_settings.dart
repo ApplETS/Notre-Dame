@@ -20,7 +20,7 @@ class ScheduleSettings extends StatefulWidget {
   const ScheduleSettings({super.key, this.showHandle = true});
 
   @override
-  _ScheduleSettingsState createState() => _ScheduleSettingsState();
+  State<ScheduleSettings> createState() => _ScheduleSettingsState();
 }
 
 class _ScheduleSettingsState extends State<ScheduleSettings> {

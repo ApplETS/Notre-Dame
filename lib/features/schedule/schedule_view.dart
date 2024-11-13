@@ -30,7 +30,7 @@ class ScheduleView extends StatefulWidget {
   const ScheduleView({super.key, this.initialDay});
 
   @override
-  _ScheduleViewState createState() => _ScheduleViewState();
+  State<ScheduleView> createState() => _ScheduleViewState();
 }
 
 class _ScheduleViewState extends State<ScheduleView>
@@ -577,20 +577,17 @@ class _ScheduleViewState extends State<ScheduleView>
               monthViewKey.currentState?.animateToMonth(DateTime(DateTime.now().year, DateTime.now().month));
             }
           })),
-    IconButton(icon: const Icon(Icons.settings_outlined),
-      onPressed: () async {
-        _analyticsService.logEvent(tag, "Settings clicked");
-        await showModalBottomSheet(
-            shape: const RoundedRectangleBorder(
-              borderRadius: BorderRadius.vertical(
-                top: Radius.circular(10),
-              ),
-            ),
-            context: context,
-            isScrollControlled: true,
-            builder: (context) => const ScheduleSettings());
-        model.loadSettings();
-      },
-    )
+    IconButton(icon: const Icon(Icons.settings_outlined), onPressed: () async {
+      await showModalBottomSheet(
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(
+          top: Radius.circular(10),
+        ),
+      ),
+      context: context,
+      isScrollControlled: true,
+      builder: (context) => const ScheduleSettings());
+      model.loadSettings();
+    })
   ];
 }

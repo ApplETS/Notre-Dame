@@ -19,7 +19,7 @@ class SocialLinks extends StatefulWidget {
       {super.key, required this.socialLinks, this.showHandle = true});
 
   @override
-  _SocialLinksState createState() => _SocialLinksState();
+  State<SocialLinks> createState() => _SocialLinksState();
 }
 
 class _SocialLinksState extends State<SocialLinks> {
