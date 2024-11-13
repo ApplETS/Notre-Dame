@@ -79,8 +79,8 @@ class _ScheduleDefaultState extends State<ScheduleDefault> {
       weekNumberBuilder: (date) => null,
       headerStyle: const HeaderStyle(
           headerTextStyle: TextStyle(fontSize: 0),
-          leftIconVisible: false,
-          rightIconVisible: false,
+          leftIconConfig: null,
+          rightIconConfig: null,
           decoration: BoxDecoration(color: Colors.transparent)),
       heightPerMinute: heightPerMinute,
       eventTileBuilder: (date, events, boundary, startDuration, endDuration) =>
