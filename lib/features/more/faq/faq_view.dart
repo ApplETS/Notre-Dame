@@ -184,9 +184,9 @@ class _FaqViewState extends State<FaqView> {
       child: ElevatedButton(
         onPressed: () {
           if (type.name == ActionType.webview.name) {
-            openWebview(model, link);
+            model.launchWebsite(link);
           } else if (type.name == ActionType.email.name) {
-            openMail(model, context, link);
+            model.openMail(link, context);
           }
         },
         style: ButtonStyle(
@@ -252,14 +252,5 @@ class _FaqViewState extends State<FaqView> {
         ],
       ),
     );
-  }
-
-  Future<void> openWebview(FaqViewModel model, String link) async {
-    model.launchWebsite(link, Theme.of(context).brightness);
-  }
-
-  Future<void> openMail(
-      FaqViewModel model, BuildContext context, String addressEmail) async {
-    model.openMail(addressEmail, context);
   }
 }

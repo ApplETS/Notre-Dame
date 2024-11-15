@@ -13,6 +13,7 @@ void main() {
     setUp(() async {
       await setupAppIntl();
       setupNavigationServiceMock();
+      setupLaunchUrlServiceMock();
       setupPreferencesServiceMock();
       setupGithubApiMock();
     });

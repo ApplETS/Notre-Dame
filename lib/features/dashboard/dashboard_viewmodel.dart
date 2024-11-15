@@ -1,9 +1,6 @@
 // Dart imports:
 import 'dart:collection';
 
-// Flutter imports:
-import 'package:flutter/material.dart';
-
 // Package imports:
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -15,8 +12,6 @@ import 'package:notredame/constants/preferences_flags.dart';
 import 'package:notredame/features/app/analytics/analytics_service.dart';
 import 'package:notredame/features/app/analytics/remote_config_service.dart';
 import 'package:notredame/features/app/integration/launch_url_service.dart';
-import 'package:notredame/features/app/navigation/navigation_service.dart';
-import 'package:notredame/features/app/navigation/router_paths.dart';
 import 'package:notredame/features/app/repository/course_repository.dart';
 import 'package:notredame/features/app/signets-api/models/course.dart';
 import 'package:notredame/features/app/signets-api/models/course_activity.dart';
@@ -136,13 +131,7 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
 
   static Future<void> launchBroadcastUrl(String url) async {
     final LaunchUrlService launchUrlService = locator<LaunchUrlService>();
-    final NavigationService navigationService = locator<NavigationService>();
-    try {
-      await launchUrlService.launchInBrowser(url, Brightness.light);
-    } catch (error) {
-      // An exception is thrown if browser app is not installed on Android device.
-      await navigationService.pushNamed(RouterPaths.webView, arguments: url);
-    }
+    launchUrlService.launchInBrowser(url);
   }
 
   void changeProgressBarText() {

@@ -58,7 +58,7 @@ void main() {
 
     group('onLinkClicked -', () {
       test('navigate to security', () async {
-        await viewModel.onLinkClicked(securityQuickLink, Brightness.light);
+        await viewModel.onLinkClicked(securityQuickLink);
 
         verify(analyticsServiceMock.logEvent(
             "QuickLink", "QuickLink clicked: test"));
@@ -70,10 +70,9 @@ void main() {
         InternalInfoServiceMock.stubGetDeviceInfoForErrorReporting(
             internalInfoServiceMock);
 
-        await viewModel.onLinkClicked(quickLink, Brightness.light);
+        await viewModel.onLinkClicked(quickLink);
 
-        verify(launchUrlServiceMock.launchInBrowser(
-            quickLink.link, Brightness.light));
+        verify(launchUrlServiceMock.launchInBrowser(quickLink.link));
         verifyNoMoreInteractions(navigationServiceMock);
       });
     });
