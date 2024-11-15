@@ -33,6 +33,7 @@ void main() {
       setupUserRepositoryMock();
       setupCacheManagerMock();
       setupGithubApiMock();
+      setupLaunchUrlServiceMock();
       setupNetworkingServiceMock();
       setupAnalyticsServiceMock();
       setupFlutterToastMock();

@@ -19,18 +19,18 @@ PODS:
   - Firebase/RemoteConfig (11.4.0):
     - Firebase/CoreOnly
     - FirebaseRemoteConfig (~> 11.4.0)
-  - firebase_analytics (11.3.4):
+  - firebase_analytics (11.3.5):
     - Firebase/Analytics (= 11.4.0)
     - firebase_core
     - Flutter
-  - firebase_core (3.7.0):
+  - firebase_core (3.8.0):
     - Firebase/CoreOnly (= 11.4.0)
     - Flutter
-  - firebase_crashlytics (4.1.4):
+  - firebase_crashlytics (4.1.5):
     - Firebase/Crashlytics (= 11.4.0)
     - firebase_core
     - Flutter
-  - firebase_remote_config (5.1.4):
+  - firebase_remote_config (5.1.5):
     - Firebase/RemoteConfig (= 11.4.0)
     - firebase_core
     - Flutter
@@ -96,8 +96,13 @@ PODS:
     - PromisesSwift (~> 2.1)
   - FirebaseSharedSwift (11.5.0)
   - Flutter (1.0.0)
-  - flutter_custom_tabs_ios (2.0.0):
+  - flutter_inappwebview_ios (0.0.1):
     - Flutter
+    - flutter_inappwebview_ios/Core (= 0.0.1)
+    - OrderedSet (~> 6.0.3)
+  - flutter_inappwebview_ios/Core (0.0.1):
+    - Flutter
+    - OrderedSet (~> 6.0.3)
   - flutter_secure_storage (6.0.0):
     - Flutter
   - fluttertoast (0.0.2):
@@ -171,6 +176,7 @@ PODS:
     - nanopb/encode (= 3.30910.0)
   - nanopb/decode (3.30910.0)
   - nanopb/encode (3.30910.0)
+  - OrderedSet (6.0.3)
   - package_info_plus (0.4.5):
     - Flutter
   - path_provider_foundation (0.0.1):
@@ -191,9 +197,6 @@ PODS:
   - Toast (4.1.1)
   - url_launcher_ios (0.0.1):
     - Flutter
-  - webview_flutter_wkwebview (0.0.1):
-    - Flutter
-    - FlutterMacOS
 
 DEPENDENCIES:
   - connectivity_plus (from `.symlinks/plugins/connectivity_plus/darwin`)
@@ -204,7 +207,7 @@ DEPENDENCIES:
   - firebase_crashlytics (from `.symlinks/plugins/firebase_crashlytics/ios`)
   - firebase_remote_config (from `.symlinks/plugins/firebase_remote_config/ios`)
   - Flutter (from `Flutter`)
-  - flutter_custom_tabs_ios (from `.symlinks/plugins/flutter_custom_tabs_ios/ios`)
+  - flutter_inappwebview_ios (from `.symlinks/plugins/flutter_inappwebview_ios/ios`)
   - flutter_secure_storage (from `.symlinks/plugins/flutter_secure_storage/ios`)
   - fluttertoast (from `.symlinks/plugins/fluttertoast/ios`)
   - google_maps_flutter_ios (from `.symlinks/plugins/google_maps_flutter_ios/ios`)
@@ -216,7 +219,6 @@ DEPENDENCIES:
   - sqflite_darwin (from `.symlinks/plugins/sqflite_darwin/darwin`)
   - SwiftyXMLParser (from `https://github.com/yahoojapan/SwiftyXMLParser.git`)
   - url_launcher_ios (from `.symlinks/plugins/url_launcher_ios/ios`)
-  - webview_flutter_wkwebview (from `.symlinks/plugins/webview_flutter_wkwebview/darwin`)
 
 SPEC REPOS:
   trunk:
@@ -238,6 +240,7 @@ SPEC REPOS:
     - GoogleMaps
     - GoogleUtilities
     - nanopb
+    - OrderedSet
     - PromisesObjC
     - PromisesSwift
     - Toast
@@ -259,8 +262,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/firebase_remote_config/ios"
   Flutter:
     :path: Flutter
-  flutter_custom_tabs_ios:
-    :path: ".symlinks/plugins/flutter_custom_tabs_ios/ios"
+  flutter_inappwebview_ios:
+    :path: ".symlinks/plugins/flutter_inappwebview_ios/ios"
   flutter_secure_storage:
     :path: ".symlinks/plugins/flutter_secure_storage/ios"
   fluttertoast:
@@ -283,8 +286,6 @@ EXTERNAL SOURCES:
     :git: https://github.com/yahoojapan/SwiftyXMLParser.git
   url_launcher_ios:
     :path: ".symlinks/plugins/url_launcher_ios/ios"
-  webview_flutter_wkwebview:
-    :path: ".symlinks/plugins/webview_flutter_wkwebview/darwin"
 
 CHECKOUT OPTIONS:
   SwiftyXMLParser:
@@ -296,10 +297,10 @@ SPEC CHECKSUMS:
   device_calendar: 9cb33f88a02e19652ec7b8b122ca778f751b1f7b
   device_info_plus: bf2e3232933866d73fe290f2942f2156cdd10342
   Firebase: cf1b19f21410b029b6786a54e9764a0cacad3c99
-  firebase_analytics: 69a0f3e2ca2722c0758544eafcdcfa906b0f5227
-  firebase_core: f8c5b220a8f9c436fdbd075ae321cef3d96ef181
-  firebase_crashlytics: 4b31ac507cf01d25151cc34cbb0fec66d21c7138
-  firebase_remote_config: 1b2da0c0a4f781a970ccf84597b8092e3ec69142
+  firebase_analytics: fa7e5b20c2b58042e3301f5112a473d365bd490c
+  firebase_core: 9efc3ecf689cdbc90f13f4dc58108c83ea46b266
+  firebase_crashlytics: 72a8b504422ba8bb435a7a0c0a9341320cbcbe29
+  firebase_remote_config: 96a9b7e79624c5d9d16befdef60791966bb83919
   FirebaseABTesting: aef1719704fade00b200827e7973f352efc4caee
   FirebaseAnalytics: 3feef9ae8733c567866342a1000691baaa7cad49
   FirebaseCore: e0510f1523bc0eb21653cac00792e1e2bd6f1771
@@ -312,7 +313,7 @@ SPEC CHECKSUMS:
   FirebaseSessions: 3f56f177d9e53a85021d16b31f9a111849d1dd8b
   FirebaseSharedSwift: 302ac5967857ad7e7388b15382d705b8c8d892aa
   Flutter: e0871f40cf51350855a761d2e70bf5af5b9b5de7
-  flutter_custom_tabs_ios: a651b18786388923b62de8c0537607de87c2eccf
+  flutter_inappwebview_ios: 6f63631e2c62a7c350263b13fa5427aedefe81d4
   flutter_secure_storage: d33dac7ae2ea08509be337e775f6b59f1ff45f12
   fluttertoast: e9a18c7be5413da53898f660530c56f35edfba9c
   Google-Maps-iOS-Utils: 66d6de12be1ce6d3742a54661e7a79cb317a9321
@@ -323,6 +324,7 @@ SPEC CHECKSUMS:
   GoogleUtilities: 26a3abef001b6533cf678d3eb38fd3f614b7872d
   in_app_review: 318597b3a06c22bb46dc454d56828c85f444f99d
   nanopb: fad817b59e0457d11a5dfbde799381cd727c1275
+  OrderedSet: e539b66b644ff081c73a262d24ad552a69be3a94
   package_info_plus: c0502532a26c7662a62a356cebe2692ec5fe4ec4
   path_provider_foundation: 2b6b4c569c0fb62ec74538f866245ac84301af46
   PromisesObjC: f5707f49cb48b9636751c5b2e7d227e43fba9f47
@@ -333,8 +335,7 @@ SPEC CHECKSUMS:
   SwiftyXMLParser: 027d9e6fb54a38d95dccec025bcea9693f699c47
   Toast: 1f5ea13423a1e6674c4abdac5be53587ae481c4e
   url_launcher_ios: 5334b05cef931de560670eeae103fd3e431ac3fe
-  webview_flutter_wkwebview: 0982481e3d9c78fd5c6f62a002fcd24fc791f1e4
 
 PODFILE CHECKSUM: 18f1615a0bcd417392c9107b3e8dc59c76a68dac
 
-COCOAPODS: 1.15.2
+COCOAPODS: 1.16.2

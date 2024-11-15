@@ -1,7 +1,3 @@
-// Flutter imports:
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-
 // Package imports:
 import 'package:stacked/stacked.dart';
 
@@ -22,22 +18,13 @@ class WebLinkCardViewModel extends BaseViewModel {
   final LaunchUrlService _launchUrlService = locator<LaunchUrlService>();
 
   /// used to open a website or the security view
-  Future<void> onLinkClicked(QuickLink link, Brightness brightness) async {
+  Future<void> onLinkClicked(QuickLink link) async {
     _analyticsService.logEvent("QuickLink", "QuickLink clicked: ${link.name}");
 
     if (link.link == 'security') {
       _navigationService.pushNamed(RouterPaths.security);
     } else {
-      try {
-        await _launchUrlService.launchInBrowser(link.link, brightness);
-      } catch (error) {
-        // An exception is thrown if browser app is not installed on Android device.
-        await launchWebView(link);
-      }
+      _launchUrlService.launchInBrowser(link.link);
     }
-  }
-
-  Future<void> launchWebView(QuickLink link) async {
-    _navigationService.pushNamed(RouterPaths.webView, arguments: link);
   }
 }

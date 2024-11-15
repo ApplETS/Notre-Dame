@@ -142,7 +142,7 @@ class _ScheduleViewState extends State<ScheduleView>
             const SizedBox(height: 8.0),
             const Divider(indent: 8.0, endIndent: 8.0, thickness: 1),
             const SizedBox(height: 6.0),
-              _buildTitleForDate(model.daySelected, model),
+            _buildTitleForDate(model.daySelected, model),
             const SizedBox(height: 2.0),
             if (model.selectedDateEvents(model.daySelected).isEmpty && !model.isBusy)
               Padding(
@@ -327,12 +327,12 @@ class _ScheduleViewState extends State<ScheduleView>
             Icons.chevron_left,
             size: 30,
             color: chevronColor,
-          ),
+        ),
           rightIcon: Icon(
             Icons.chevron_right,
             size: 30,
             color: chevronColor,
-          )),
+        )),
       weekDayStringBuilder: (p0) {
         return weekTitles[p0];
       },

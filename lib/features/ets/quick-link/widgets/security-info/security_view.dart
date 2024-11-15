@@ -13,7 +13,8 @@ import 'package:notredame/features/app/widgets/base_scaffold.dart';
 import 'package:notredame/features/ets/quick-link/widgets/security-info/emergency_view.dart';
 import 'package:notredame/features/ets/quick-link/widgets/security-info/security_viewmodel.dart';
 import 'package:notredame/utils/app_theme.dart';
-import 'package:notredame/utils/utils.dart';
+import 'package:notredame/utils/locator.dart';
+import 'package:notredame/features/app/integration/launch_url_service.dart';
 
 class SecurityView extends StatefulWidget {
   const SecurityView({super.key});
@@ -23,6 +24,7 @@ class SecurityView extends StatefulWidget {
 }
 
 class _SecurityViewState extends State<SecurityView> {
+  final LaunchUrlService _launchUrlService = locator<LaunchUrlService>();
   static const CameraPosition _etsLocation = CameraPosition(
       target: LatLng(45.49449875, -73.56246144109338), zoom: 17.0);
 
@@ -84,9 +86,7 @@ class _SecurityViewState extends State<SecurityView> {
                 splashColor: Colors.red.withAlpha(50),
                 onTap: () {
                   try {
-                    Utils.launchURL(
-                        'tel:${AppIntl.of(context)!.security_emergency_number}',
-                        AppIntl.of(context)!);
+                    _launchUrlService.call(AppIntl.of(context)!.security_emergency_number);
                   } catch (e) {
                     ScaffoldMessenger.of(context)
                         .showSnackBar(SnackBar(content: Text(e.toString())));
