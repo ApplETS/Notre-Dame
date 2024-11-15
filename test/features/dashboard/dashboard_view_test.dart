@@ -173,6 +173,7 @@ void main() {
       courseRepositoryMock = setupCourseRepositoryMock();
       setupNetworkingServiceMock();
       setupAnalyticsServiceMock();
+      setupLaunchUrlServiceMock();
       setupPreferencesServiceMock();
       // TODO: Remove when 4.50.1 is released
       SharedPreferences.setMockInitialValues({});

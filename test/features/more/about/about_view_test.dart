@@ -11,7 +11,9 @@ import '../../../common/helpers.dart';
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
   group('AboutView - ', () {
-    setUp(() async {});
+    setUp(() async {
+      setupLaunchUrlServiceMock();
+    });
 
     tearDown(() {});
 

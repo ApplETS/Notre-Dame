@@ -18,6 +18,7 @@ void main() {
     setUp(() async {
       intl = await setupAppIntl();
       setupNetworkingServiceMock();
+      setupLaunchUrlServiceMock();
     });
 
     tearDown(() {});
