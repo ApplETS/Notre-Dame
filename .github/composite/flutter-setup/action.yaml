@@ -39,7 +39,7 @@ runs:
       uses: actions/setup-java@v4
       with:
         distribution: 'temurin'
-        java-version: '17'
+        java-version: '21'
 
     - name: Install iOS dependencies
       if: ${{ inputs.target == 'iOS' }}
