@@ -271,42 +271,55 @@ class _DashboardViewState extends State<DashboardView>
           // TODO: ICI
           Padding(
             padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  "Évènements à venir",
-                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                const SizedBox(height: 8),
+            child: Builder(
+              builder: (context) {
+                final upcomingEvents = model.importantDates.asMap().entries.where((entry) {
+                  DateTime date = entry.value;
+                  DateTime now = DateTime.now();
 
-                Align(
-                  alignment: Alignment.centerLeft,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: model.importantDates.asMap().entries.where((entry) {
-                      // Only include dates that are in the future
-                      return entry.value.isAfter(DateTime.now());
-                    }).map((entry) {
-                      int index = entry.key;
-                      var date = entry.value;
+                  return now.isAfter(date.subtract(const Duration(days: 3))) &&
+                      now.isBefore(date.add(const Duration(days: 1)));
+                }).toList();
 
-                      List<String> labels = ["Début de la session", "Fin de la session", "Début des inscriptions", "Début de la période d'annulation avec remboursement", "Date limite d'annulation avec remboursement", "Date limite d'annulation avec remboursement pour les nouveaux étudiants", "Date limite pour annuler l'ASEQ"];
+                if (upcomingEvents.isEmpty) return const SizedBox.shrink();
 
-                      String formattedDate = DateFormat('dd MMMM yyyy', 'fr').format(date);
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "Évènements à venir",
+                      style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: upcomingEvents.map((entry) {
+                          int index = entry.key;
+                          DateTime date = entry.value;
 
-                      return Text(
-                        "${labels[index]}: $formattedDate",
-                        style: const TextStyle(color: Colors.black),
-                      );
-                    }).toList(),
-                  ),
-                ),
-              ],
+                          List<String> labels = ["Début de la session", "Fin de la session", "Début des inscriptions"];
+
+                          String formattedDate = DateFormat('dd MMMM yyyy', 'fr').format(date);
+
+                          return Text(
+                            "${labels[index]}: $formattedDate",
+                            style: const TextStyle(color: Colors.black),
+                          );
+                        }).toList(),
+                      ),
+                    ),
+                  ],
+                );
+              },
             ),
-          ),
+          )
+
+
+
         ]),
       );
 
