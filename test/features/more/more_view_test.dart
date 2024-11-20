@@ -32,7 +32,6 @@ void main() {
       setupPreferencesServiceMock();
       setupUserRepositoryMock();
       setupCacheManagerMock();
-      setupGithubApiMock();
       setupLaunchUrlServiceMock();
       setupNetworkingServiceMock();
       setupAnalyticsServiceMock();

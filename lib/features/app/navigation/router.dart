@@ -18,7 +18,6 @@ import 'package:notredame/features/ets/quick-link/widgets/security-info/security
 import 'package:notredame/features/more/about/about_view.dart';
 import 'package:notredame/features/more/contributors/contributors_view.dart';
 import 'package:notredame/features/more/faq/faq_view.dart';
-import 'package:notredame/features/more/feedback/feedback_view.dart';
 import 'package:notredame/features/more/more_view.dart';
 import 'package:notredame/features/more/settings/choose_language_view.dart';
 import 'package:notredame/features/more/settings/settings_view.dart';
@@ -122,10 +121,6 @@ Route<dynamic> generateRoute(RouteSettings routeSettings) {
       return MaterialPageRoute(
           settings: RouteSettings(name: routeSettings.name),
           builder: (_) => ContributorsView());
-    case RouterPaths.feedback:
-      return MaterialPageRoute(
-          settings: RouteSettings(name: routeSettings.name),
-          builder: (_) => FeedbackView());
     case RouterPaths.about:
       return MaterialPageRoute(
           settings: RouteSettings(name: routeSettings.name),

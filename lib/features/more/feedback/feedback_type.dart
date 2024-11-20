@@ -1,1 +1,0 @@
-enum FeedbackType { bug, enhancement }
