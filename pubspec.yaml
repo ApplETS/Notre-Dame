@@ -62,7 +62,6 @@ dependencies:
   flutter_secure_storage: ^9.2.2
   github: ^9.24.0
   in_app_review: ^2.0.9
-  auto_size_text: ^3.0.0
   easter_egg_trigger: ^1.0.1
   timeago: ^3.7.0
   calendar_view: 1.2.0
