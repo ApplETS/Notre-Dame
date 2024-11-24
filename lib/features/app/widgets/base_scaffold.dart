@@ -6,12 +6,13 @@ import 'package:flutter/material.dart';
 
 // Package imports:
 import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 // Project imports:
 import 'package:notredame/features/app/integration/networking_service.dart';
-import 'package:notredame/features/app/widgets/bottom_bar.dart';
-import 'package:notredame/features/app/widgets/navigation_rail.dart';
+import 'package:notredame/features/app/widgets/navigation/bottom_bar.dart';
+import 'package:notredame/features/app/widgets/navigation/navigation_rail.dart';
 import 'package:notredame/utils/app_theme.dart';
 import 'package:notredame/utils/loading.dart';
 import 'package:notredame/utils/locator.dart';
@@ -84,7 +85,7 @@ class _BaseScaffoldState extends State<BaseScaffold> {
       });
     });
   }
-
+  
   @override
   Widget build(BuildContext context) => Scaffold(
         body: Scaffold(
@@ -106,6 +107,8 @@ class _BaseScaffoldState extends State<BaseScaffold> {
       );
 
   Widget bodyPortraitMode() {
+    SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
+
     return SafeArea(
       top: false,
       bottom: widget._safeArea,
@@ -124,6 +127,8 @@ class _BaseScaffoldState extends State<BaseScaffold> {
   }
 
   Widget bodyLandscapeMode() {
+    SystemChrome.setEnabledSystemUIMode(SystemUiMode.leanBack);
+
     return Stack(
       children: [
         Row(
