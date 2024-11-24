@@ -18,6 +18,8 @@ class BottomBar extends StatefulWidget {
   static const int etsView = 3;
   static const int moreView = 4;
 
+  const BottomBar({super.key});
+
   @override
   State<BottomBar> createState() => _BottomBarState();
 }

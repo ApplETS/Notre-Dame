@@ -11,8 +11,10 @@ import 'package:notredame/features/more/settings/settings_viewmodel.dart';
 import 'package:notredame/utils/app_theme.dart';
 
 class SettingsView extends StatefulWidget {
+  const SettingsView({super.key});
+
   @override
-  _SettingsViewState createState() => _SettingsViewState();
+  State<SettingsView> createState() => _SettingsViewState();
 }
 
 class _SettingsViewState extends State<SettingsView> {

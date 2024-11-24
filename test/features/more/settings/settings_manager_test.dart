@@ -2,7 +2,6 @@
 import 'package:flutter/material.dart';
 
 // Package imports:
-import 'package:enum_to_string/enum_to_string.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:intl/intl.dart';
 import 'package:mockito/mockito.dart';
@@ -83,7 +82,7 @@ void main() {
         // Stubs the answer of the preferences services
         PreferencesServiceMock.stubGetString(
             preferencesServiceMock, PreferencesFlag.scheduleCalendarFormat,
-            toReturn: EnumToString.convertToString(CalendarTimeFormat.month));
+            toReturn: CalendarTimeFormat.month.name);
         PreferencesServiceMock.stubGetBool(
             preferencesServiceMock, PreferencesFlag.scheduleShowTodayBtn,
             toReturn: false);
@@ -125,7 +124,7 @@ void main() {
             .called(1);
 
         verify(analyticsServiceMock.logEvent(
-                "${SettingsManager.tag}_${EnumToString.convertToString(flag)}",
+                "${SettingsManager.tag}_${flag.name}",
                 any))
             .called(1);
 
@@ -136,7 +135,7 @@ void main() {
             .called(1);
 
         verify(analyticsServiceMock.logEvent(
-                "${SettingsManager.tag}_${EnumToString.convertToString(flag)}",
+                "${SettingsManager.tag}_${flag.name}",
                 any))
             .called(1);
 
@@ -147,7 +146,7 @@ void main() {
             .called(1);
 
         verify(analyticsServiceMock.logEvent(
-                "${SettingsManager.tag}_${EnumToString.convertToString(flag)}",
+                "${SettingsManager.tag}_${flag.name}",
                 any))
             .called(1);
 
@@ -187,7 +186,7 @@ void main() {
             .called(1);
 
         verify(analyticsServiceMock.logEvent(
-                "${SettingsManager.tag}_${EnumToString.convertToString(flag)}",
+                "${SettingsManager.tag}_${flag.name}",
                 any))
             .called(1);
 
@@ -203,11 +202,11 @@ void main() {
             .called(1);
 
         untilCalled(analyticsServiceMock.logEvent(
-            "${SettingsManager.tag}_${EnumToString.convertToString(flag)}",
+            "${SettingsManager.tag}_${flag.name}",
             any));
 
         verify(analyticsServiceMock.logEvent(
-                "${SettingsManager.tag}_${EnumToString.convertToString(flag)}",
+                "${SettingsManager.tag}_${flag.name}",
                 any))
             .called(1);
 
@@ -217,11 +216,11 @@ void main() {
             .called(1);
 
         untilCalled(analyticsServiceMock.logEvent(
-            "${SettingsManager.tag}_${EnumToString.convertToString(flag)}",
+            "${SettingsManager.tag}_${flag.name}",
             any));
 
         verify(analyticsServiceMock.logEvent(
-                "${SettingsManager.tag}_${EnumToString.convertToString(flag)}",
+                "${SettingsManager.tag}_${flag.name}",
                 any))
             .called(1);
 
@@ -295,10 +294,10 @@ void main() {
               "setString should return true if the PreferenceService return true");
 
       untilCalled(analyticsServiceMock.logEvent(
-          "${SettingsManager.tag}_${EnumToString.convertToString(flag)}", any));
+          "${SettingsManager.tag}_${flag.name}", any));
 
       verify(analyticsServiceMock.logEvent(
-              "${SettingsManager.tag}_${EnumToString.convertToString(flag)}",
+              "${SettingsManager.tag}_${flag.name}",
               any))
           .called(1);
       verify(preferencesServiceMock.setString(flag, any));
@@ -313,10 +312,10 @@ void main() {
               "setInt should return true if the PreferenceService return true");
 
       untilCalled(analyticsServiceMock.logEvent(
-          "${SettingsManager.tag}_${EnumToString.convertToString(flag)}", any));
+          "${SettingsManager.tag}_${flag.name}", any));
 
       verify(analyticsServiceMock.logEvent(
-              "${SettingsManager.tag}_${EnumToString.convertToString(flag)}",
+              "${SettingsManager.tag}_${flag.name}",
               any))
           .called(1);
       verify(preferencesServiceMock.setInt(flag, any));
@@ -331,10 +330,10 @@ void main() {
               "setString should return true if the PreferenceService return true");
 
       untilCalled(analyticsServiceMock.logEvent(
-          "${SettingsManager.tag}_${EnumToString.convertToString(flag)}", any));
+          "${SettingsManager.tag}_${flag.name}", any));
 
       verify(analyticsServiceMock.logEvent(
-              "${SettingsManager.tag}_${EnumToString.convertToString(flag)}",
+              "${SettingsManager.tag}_${flag.name}",
               any))
           .called(1);
       verify(preferencesServiceMock.getString(flag));
@@ -349,10 +348,10 @@ void main() {
               "setString should return true if the PreferenceService return true");
 
       untilCalled(analyticsServiceMock.logEvent(
-          "${SettingsManager.tag}_${EnumToString.convertToString(flag)}", any));
+          "${SettingsManager.tag}_${flag.name}", any));
 
       verify(analyticsServiceMock.logEvent(
-              "${SettingsManager.tag}_${EnumToString.convertToString(flag)}",
+              "${SettingsManager.tag}_${flag.name}",
               any))
           .called(1);
       verify(preferencesServiceMock.setBool(flag, value: anyNamed("value")));

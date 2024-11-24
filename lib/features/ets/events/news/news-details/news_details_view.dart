@@ -29,10 +29,10 @@ import 'package:notredame/utils/utils.dart';
 class NewsDetailsView extends StatefulWidget {
   final News news;
 
-  const NewsDetailsView({required this.news});
+  const NewsDetailsView({super.key, required this.news});
 
   @override
-  _NewsDetailsViewState createState() => _NewsDetailsViewState();
+  State<NewsDetailsView> createState() => _NewsDetailsViewState();
 }
 
 enum Menu { share, export, report }

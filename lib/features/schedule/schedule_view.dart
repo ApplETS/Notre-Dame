@@ -30,7 +30,7 @@ class ScheduleView extends StatefulWidget {
   const ScheduleView({super.key, this.initialDay});
 
   @override
-  _ScheduleViewState createState() => _ScheduleViewState();
+  State<ScheduleView> createState() => _ScheduleViewState();
 }
 
 class _ScheduleViewState extends State<ScheduleView>

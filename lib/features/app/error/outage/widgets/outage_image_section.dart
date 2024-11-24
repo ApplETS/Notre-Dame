@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:notredame/utils/app_theme.dart';
 
 class OutageImageSection extends StatelessWidget {
+  const OutageImageSection({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Hero(

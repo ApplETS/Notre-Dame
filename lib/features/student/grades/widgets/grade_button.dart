@@ -19,7 +19,7 @@ class GradeButton extends StatelessWidget {
   /// Used to redirect on the dashboard.
   final NavigationService _navigationService = locator<NavigationService>();
 
-  GradeButton(this.course, {this.color});
+  GradeButton(this.course, {super.key, this.color});
 
   @override
   Widget build(BuildContext context) => Card(

@@ -18,6 +18,8 @@ class NavRail extends StatefulWidget {
   static const int etsView = 3;
   static const int moreView = 4;
 
+  const NavRail({super.key});
+
   @override
   State<NavRail> createState() => _NavRailState();
 }

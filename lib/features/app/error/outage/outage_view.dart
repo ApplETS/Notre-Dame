@@ -13,6 +13,8 @@ import 'package:notredame/utils/app_theme.dart';
 import 'package:notredame/utils/utils.dart';
 
 class OutageView extends StatelessWidget {
+  const OutageView({super.key});
+
   @override
   Widget build(BuildContext context) =>
       ViewModelBuilder<OutageViewModel>.nonReactive(

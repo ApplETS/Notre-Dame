@@ -17,6 +17,8 @@ import 'package:notredame/utils/loading.dart';
 import 'package:notredame/utils/locator.dart';
 
 class ProfileView extends StatefulWidget {
+  const ProfileView({super.key});
+
   @override
   State<ProfileView> createState() => _ProfileViewState();
 }

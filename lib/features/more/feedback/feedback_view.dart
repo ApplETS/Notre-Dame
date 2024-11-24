@@ -14,6 +14,8 @@ import 'package:notredame/utils/loading.dart';
 import 'package:notredame/utils/utils.dart';
 
 class FeedbackView extends StatefulWidget {
+  const FeedbackView({super.key});
+
   @override
   State<FeedbackView> createState() => _FeedbackViewState();
 }

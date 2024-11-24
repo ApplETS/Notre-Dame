@@ -16,8 +16,10 @@ import 'package:notredame/utils/locator.dart';
 import 'package:notredame/utils/utils.dart';
 
 class MoreView extends StatefulWidget {
+  const MoreView({super.key});
+
   @override
-  _MoreViewState createState() => _MoreViewState();
+  State<MoreView> createState() => _MoreViewState();
 }
 
 class _MoreViewState extends State<MoreView> {

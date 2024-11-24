@@ -10,6 +10,8 @@ import 'package:notredame/constants/urls.dart';
 import 'package:notredame/utils/utils.dart';
 
 class OutageSocialSection extends StatelessWidget {
+  const OutageSocialSection({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Column(

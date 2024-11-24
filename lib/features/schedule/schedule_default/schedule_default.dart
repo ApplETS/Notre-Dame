@@ -20,7 +20,7 @@ class ScheduleDefault extends StatefulWidget {
       {super.key, required this.calendarEvents, required this.loaded, required this.displaySaturday, required this.displaySunday});
 
   @override
-  _ScheduleDefaultState createState() => _ScheduleDefaultState();
+  State<ScheduleDefault> createState() => _ScheduleDefaultState();
 }
 
 class _ScheduleDefaultState extends State<ScheduleDefault> {
