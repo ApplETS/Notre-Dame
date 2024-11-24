@@ -13,7 +13,6 @@ import 'package:logger/logger.dart';
 import 'package:notredame/features/app/analytics/analytics_service.dart';
 import 'package:notredame/features/app/analytics/remote_config_service.dart';
 import 'package:notredame/features/app/error/internal_info_service.dart';
-import 'package:notredame/features/app/integration/github_api.dart';
 import 'package:notredame/features/app/integration/launch_url_service.dart';
 import 'package:notredame/features/app/integration/networking_service.dart';
 import 'package:notredame/features/app/monets_api/monets_api_client.dart';
@@ -32,7 +31,6 @@ import 'package:notredame/utils/locator.dart';
 import '../features/app/analytics/mocks/analytics_service_mock.dart';
 import '../features/app/analytics/mocks/remote_config_service_mock.dart';
 import '../features/app/error/mocks/internal_info_service_mock.dart';
-import '../features/app/integration/mocks/github_api_mock.dart';
 import '../features/app/integration/mocks/launch_url_service_mock.dart';
 import '../features/app/integration/mocks/networking_service_mock.dart';
 import '../features/app/monets_api/mocks/mon_ets_api_mock.dart';
@@ -171,16 +169,6 @@ NavigationServiceMock setupNavigationServiceMock() {
   final service = NavigationServiceMock();
 
   locator.registerSingleton<NavigationService>(service);
-
-  return service;
-}
-
-/// Load a mock of the [GithubApi]
-GithubApiMock setupGithubApiMock() {
-  unregister<GithubApi>();
-  final service = GithubApiMock();
-
-  locator.registerSingleton<GithubApi>(service);
 
   return service;
 }

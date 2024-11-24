@@ -13,7 +13,6 @@ import 'package:notredame/utils/locator.dart';
 class RemoteConfigService {
   static const String tag = "RemoteConfigService";
   static const _serviceIsDown = "service_is_down";
-  static const _ghApiToken = "GH_API_TOKEN";
 
   // Privacy policy
   static const _privacyPolicyToggle = "privacy_policy_toggle";
@@ -41,7 +40,6 @@ class RemoteConfigService {
   final FirebaseRemoteConfig _remoteConfig = FirebaseRemoteConfig.instance;
   final defaults = <String, dynamic>{
     _serviceIsDown: false,
-    _ghApiToken: "",
     _privacyPolicyURL: "",
     _dashboardMsgFr: "",
     _dashboardMsgEn: "",
@@ -66,11 +64,6 @@ class RemoteConfigService {
   bool get outage {
     fetch();
     return _remoteConfig.getBool(_serviceIsDown);
-  }
-
-  String get ghApiToken {
-    fetch();
-    return _remoteConfig.getString(_ghApiToken);
   }
 
   bool get dashboardMessageActive {

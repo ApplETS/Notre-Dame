@@ -86,13 +86,6 @@ class _MoreViewState extends State<MoreView> {
                       model.navigationService.pushNamed(RouterPaths.about);
                     }),
                 ListTile(
-                    title: Text(AppIntl.of(context)!.more_report_bug),
-                    leading: getProperIconAccordingToTheme(Icons.bug_report_outlined),
-                    onTap: () {
-                      _analyticsService.logEvent(tag, "Report a bug clicked");
-                      model.navigationService.pushNamed(RouterPaths.feedback);
-                    }),
-                ListTile(
                     title: Text(AppIntl.of(context)!.in_app_review_title),
                     leading: const Icon(Icons.rate_review_outlined),
                     onTap: () {

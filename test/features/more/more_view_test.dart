@@ -32,7 +32,6 @@ void main() {
       setupPreferencesServiceMock();
       setupUserRepositoryMock();
       setupCacheManagerMock();
-      setupGithubApiMock();
       setupLaunchUrlServiceMock();
       setupNetworkingServiceMock();
       setupAnalyticsServiceMock();
@@ -58,7 +57,7 @@ void main() {
         expect(listview, findsOneWidget);
 
         final listTile = find.byType(ListTile);
-        expect(listTile, findsNWidgets(8));
+        expect(listTile, findsNWidgets(7));
       });
 
       testWidgets('has 1 listView and 9 listTiles when privacy policy enabled',
@@ -71,7 +70,7 @@ void main() {
         expect(listview, findsOneWidget);
 
         final listTile = find.byType(ListTile);
-        expect(listTile, findsNWidgets(9));
+        expect(listTile, findsNWidgets(8));
       });
 
       group('navigation - ', () {
