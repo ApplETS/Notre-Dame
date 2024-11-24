@@ -488,7 +488,7 @@ class _DashboardViewState extends State<DashboardView>
                   ),
                   // main text
                   Text(model.broadcastMessage,
-                  style: Theme.of(context).primaryTextTheme.bodyMedium)
+                    style: Theme.of(context).primaryTextTheme.bodyMedium)
                 ]),
         ));
   }
