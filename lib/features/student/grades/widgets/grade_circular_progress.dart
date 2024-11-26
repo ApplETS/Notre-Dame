@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 // Package imports:
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:notredame/features/student/grades/widgets/grade_circular_indicator.dart';
 
 // Project imports:
 import 'package:notredame/utils/app_theme.dart';
@@ -61,17 +62,21 @@ class _GradeCircularProgressState extends State<GradeCircularProgress>
     return Stack(
       alignment: Alignment.center,
       children: [
-        _buildProgressIndicator(
+        GradeCircularIndicator(
           grade: widget.averageGrade,
           color: Colors.red,
           size: 75,
           duration: 800,
+          ratio: widget.ratio,
+          completed: widget.completed,
         ),
-        _buildProgressIndicator(
+        GradeCircularIndicator(
           grade: widget.studentGrade,
           color: animation.value ?? AppTheme.gradePassing,
           size: 95,
           duration: 1200,
+          ratio: widget.ratio,
+          completed: widget.completed,
         ),
         Text(
           getGrade(context),
@@ -80,36 +85,6 @@ class _GradeCircularProgressState extends State<GradeCircularProgress>
       ],
     );
   }
-
-  Widget _buildProgressIndicator({
-    required double? grade,
-    required Color color,
-    required double size,
-    required int duration,
-  }) {
-    return SizedBox(
-      width: size * widget.ratio,
-      height: size * widget.ratio,
-      child: TweenAnimationBuilder<double>(
-        tween: Tween<double>(
-          begin: 0.0,
-          end: widget.completed ? getGradeInDecimals(grade ?? 0.0) : 0.0,
-        ),
-        duration: Duration(milliseconds: duration),
-        curve: Curves.easeOut,
-        builder: (_, value, __) => CircularProgressIndicator(
-          value: value,
-          strokeWidth: 8.0 * widget.ratio,
-          strokeCap: StrokeCap.round,
-          backgroundColor: Colors.grey[300],
-          valueColor: AlwaysStoppedAnimation<Color>(color),
-        ),
-      ),
-    );
-  }
-
-  double getGradeInDecimals(double grade) =>
-      (grade / 100) > 1.0 ? 1.0 : (grade / 100);
 
   String getGrade(BuildContext context) {
     if (widget.finalGrade != null) {
