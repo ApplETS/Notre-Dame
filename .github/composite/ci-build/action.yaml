@@ -15,9 +15,6 @@ inputs:
   asset-extension:
     required: true
     default: zip
-  github-api-token:
-    description: the Github API token
-    required: true
   app-name:
     required: true
   app-path:
@@ -30,7 +27,7 @@ runs:
   steps:
     - name: Build the application
       shell: bash
-      run: flutter build -v ${{ inputs.build-target }} ${{ inputs.build-args }} --release --dart-define=GH_API_TOKEN=${{ inputs.github-api-token }}
+      run: flutter build -v ${{ inputs.build-target }} ${{ inputs.build-args }} --release
       env:
         MAPS_API_KEY: ${{ inputs.maps-api-key }}
     

@@ -14,6 +14,7 @@ import 'package:notredame/features/more/more_viewmodel.dart';
 import 'package:notredame/utils/app_theme.dart';
 import 'package:notredame/utils/locator.dart';
 import 'package:notredame/utils/utils.dart';
+import 'package:notredame/features/app/integration/launch_url_service.dart';
 
 class MoreView extends StatefulWidget {
   const MoreView({super.key});
@@ -23,6 +24,7 @@ class MoreView extends StatefulWidget {
 }
 
 class _MoreViewState extends State<MoreView> {
+  final LaunchUrlService _launchUrlService = locator<LaunchUrlService>();
   final AnalyticsService _analyticsService = locator<AnalyticsService>();
   static const String tag = "MoreView";
 
@@ -47,9 +49,8 @@ class _MoreViewState extends State<MoreView> {
                 style: textStyle.copyWith(color: Colors.blue),
                 text: AppIntl.of(context)!.flutter_website,
                 recognizer: TapGestureRecognizer()
-                  ..onTap = () => Utils.launchURL(
-                      AppIntl.of(context)!.flutter_website,
-                      AppIntl.of(context)!)),
+                  ..onTap = () =>
+                      _launchUrlService.launchInBrowser(AppIntl.of(context)!.flutter_website)),
             TextSpan(style: textStyle, text: '.'),
           ],
         ),
@@ -83,13 +84,6 @@ class _MoreViewState extends State<MoreView> {
                     onTap: () {
                       _analyticsService.logEvent(tag, "About App|ETS clicked");
                       model.navigationService.pushNamed(RouterPaths.about);
-                    }),
-                ListTile(
-                    title: Text(AppIntl.of(context)!.more_report_bug),
-                    leading: getProperIconAccordingToTheme(Icons.bug_report_outlined),
-                    onTap: () {
-                      _analyticsService.logEvent(tag, "Report a bug clicked");
-                      model.navigationService.pushNamed(RouterPaths.feedback);
                     }),
                 ListTile(
                     title: Text(AppIntl.of(context)!.in_app_review_title),

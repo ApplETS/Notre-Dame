@@ -44,9 +44,7 @@ class _ForgotPasswordState extends State<ForgotPassword>{
                       .signetsPasswordResetUrl;
               if (signetsPasswordResetUrl != "") {
                 _launchUrlService.launchInBrowser(
-                    _remoteConfigService
-                        .signetsPasswordResetUrl,
-                    Theme.of(context).brightness);
+                    _remoteConfigService.signetsPasswordResetUrl);
               } else {
                 Fluttertoast.showToast(
                     msg: AppIntl.of(context)!

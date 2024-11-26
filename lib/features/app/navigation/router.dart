@@ -7,20 +7,17 @@ import 'package:notredame/features/app/error/outage/outage_view.dart';
 import 'package:notredame/features/app/navigation/router_paths.dart';
 import 'package:notredame/features/app/signets-api/models/course.dart';
 import 'package:notredame/features/app/startup/startup_view.dart';
-import 'package:notredame/features/app/widgets/link_web_view.dart';
 import 'package:notredame/features/dashboard/dashboard_view.dart';
 import 'package:notredame/features/ets/ets_view.dart';
 import 'package:notredame/features/ets/events/api-client/models/news.dart';
 import 'package:notredame/features/ets/events/author/author_view.dart';
 import 'package:notredame/features/ets/events/news/news-details/news_details_view.dart';
 import 'package:notredame/features/ets/events/news/news_view.dart';
-import 'package:notredame/features/ets/quick-link/models/quick_link.dart';
 import 'package:notredame/features/ets/quick-link/quick_links_view.dart';
 import 'package:notredame/features/ets/quick-link/widgets/security-info/security_view.dart';
 import 'package:notredame/features/more/about/about_view.dart';
 import 'package:notredame/features/more/contributors/contributors_view.dart';
 import 'package:notredame/features/more/faq/faq_view.dart';
-import 'package:notredame/features/more/feedback/feedback_view.dart';
 import 'package:notredame/features/more/more_view.dart';
 import 'package:notredame/features/more/settings/choose_language_view.dart';
 import 'package:notredame/features/more/settings/settings_view.dart';
@@ -106,10 +103,6 @@ Route<dynamic> generateRoute(RouteSettings routeSettings) {
           pageBuilder: (_, __, ___) => AuthorView(
                 authorId: routeSettings.arguments! as String,
               ));
-    case RouterPaths.webView:
-      return MaterialPageRoute(
-          settings: RouteSettings(name: routeSettings.name),
-          builder: (_) => LinkWebView(routeSettings.arguments! as QuickLink));
     case RouterPaths.security:
       return MaterialPageRoute(
           settings: RouteSettings(name: routeSettings.name),
@@ -128,10 +121,6 @@ Route<dynamic> generateRoute(RouteSettings routeSettings) {
       return MaterialPageRoute(
           settings: RouteSettings(name: routeSettings.name),
           builder: (_) => ContributorsView());
-    case RouterPaths.feedback:
-      return MaterialPageRoute(
-          settings: RouteSettings(name: routeSettings.name),
-          builder: (_) => FeedbackView());
     case RouterPaths.about:
       return MaterialPageRoute(
           settings: RouteSettings(name: routeSettings.name),

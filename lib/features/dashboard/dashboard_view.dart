@@ -2,7 +2,6 @@
 import 'package:flutter/material.dart';
 
 // Package imports:
-import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:skeletonizer/skeletonizer.dart';
@@ -26,7 +25,7 @@ import 'package:notredame/features/student/grades/widgets/grade_button.dart';
 import 'package:notredame/utils/app_theme.dart';
 import 'package:notredame/utils/loading.dart';
 import 'package:notredame/utils/locator.dart';
-import 'package:notredame/utils/utils.dart';
+import 'package:notredame/features/app/integration/launch_url_service.dart';
 
 class DashboardView extends StatefulWidget {
   const DashboardView({super.key});
@@ -38,6 +37,7 @@ class DashboardView extends StatefulWidget {
 class _DashboardViewState extends State<DashboardView>
     with TickerProviderStateMixin {
   Text? progressBarText;
+  final LaunchUrlService _launchUrlService = locator<LaunchUrlService>();
   final NavigationService _navigationService = locator<NavigationService>();
   final AnalyticsService _analyticsService = locator<AnalyticsService>();
   static const String tag = "DashboardView";
@@ -145,8 +145,7 @@ class _DashboardViewState extends State<DashboardView>
                     IconButton(
                       onPressed: () {
                         _analyticsService.logEvent(tag, "Facebook clicked");
-                        Utils.launchURL(
-                            Urls.clubFacebook, AppIntl.of(context)!);
+                        _launchUrlService.launchInBrowser(Urls.clubFacebook);
                       },
                       icon: const FaIcon(
                         FontAwesomeIcons.facebook,
@@ -156,8 +155,7 @@ class _DashboardViewState extends State<DashboardView>
                     IconButton(
                       onPressed: () {
                         _analyticsService.logEvent(tag, "Instagram clicked");
-                        Utils.launchURL(
-                            Urls.clubInstagram, AppIntl.of(context)!);
+                        _launchUrlService.launchInBrowser(Urls.clubInstagram);
                       },
                       icon: const FaIcon(
                         FontAwesomeIcons.instagram,
@@ -167,8 +165,8 @@ class _DashboardViewState extends State<DashboardView>
                     IconButton(
                       onPressed: () {
                         _analyticsService.logEvent(tag, "Github clicked");
-                        Utils.launchURL(Urls.clubGithub, AppIntl.of(context)!);
-                      },
+                        _launchUrlService.launchInBrowser(Urls.clubGithub);
+                        },
                       icon: const FaIcon(
                         FontAwesomeIcons.github,
                         color: Colors.white,
@@ -177,7 +175,7 @@ class _DashboardViewState extends State<DashboardView>
                     IconButton(
                       onPressed: () {
                         _analyticsService.logEvent(tag, "Email clicked");
-                        Utils.launchURL(Urls.clubEmail, AppIntl.of(context)!);
+                        _launchUrlService.writeEmail(Urls.clubEmail, "");
                       },
                       icon: const FaIcon(
                         FontAwesomeIcons.envelope,
@@ -187,8 +185,8 @@ class _DashboardViewState extends State<DashboardView>
                     IconButton(
                       onPressed: () {
                         _analyticsService.logEvent(tag, "Discord clicked");
-                        Utils.launchURL(Urls.clubDiscord, AppIntl.of(context)!);
-                      },
+                        _launchUrlService.launchInBrowser(Urls.clubDiscord);
+                        },
                       icon: const FaIcon(
                         FontAwesomeIcons.discord,
                         color: Colors.white,
@@ -488,8 +486,8 @@ class _DashboardViewState extends State<DashboardView>
                     ],
                   ),
                   // main text
-                  AutoSizeText(model.broadcastMessage,
-                      style: Theme.of(context).primaryTextTheme.bodyMedium)
+                  Text(model.broadcastMessage,
+                    style: Theme.of(context).primaryTextTheme.bodyMedium)
                 ]),
         ));
   }

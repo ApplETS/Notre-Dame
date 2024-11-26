@@ -7,7 +7,6 @@ import 'package:logger/logger.dart';
 import 'package:notredame/features/app/analytics/analytics_service.dart';
 import 'package:notredame/features/app/analytics/remote_config_service.dart';
 import 'package:notredame/features/app/error/internal_info_service.dart';
-import 'package:notredame/features/app/integration/github_api.dart';
 import 'package:notredame/features/app/integration/launch_url_service.dart';
 import 'package:notredame/features/app/integration/networking_service.dart';
 import 'package:notredame/features/app/monets_api/monets_api_client.dart';
@@ -31,7 +30,6 @@ void setupLocator() {
   locator.registerLazySingleton(() => NavigationService());
   locator.registerLazySingleton(() => AnalyticsService());
   locator.registerLazySingleton(() => InternalInfoService());
-  locator.registerLazySingleton(() => GithubApi());
   locator.registerLazySingleton(() => const FlutterSecureStorage());
   locator.registerLazySingleton(() => PreferencesService());
   locator.registerLazySingleton(() => NetworkingService());

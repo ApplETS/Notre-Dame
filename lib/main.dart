@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 
 // Package imports:
 import 'package:calendar_view/calendar_view.dart';
-import 'package:feedback/feedback.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/services.dart';
@@ -24,8 +23,6 @@ import 'package:notredame/features/app/navigation/router.dart';
 import 'package:notredame/features/app/navigation/navigation_history_observer.dart';
 import 'package:notredame/features/app/startup/startup_view.dart';
 import 'package:notredame/features/ets/events/api-client/hello_api_client.dart';
-import 'package:notredame/features/more/feedback/models/custom_feedback_localization.dart';
-import 'package:notredame/features/more/feedback/widgets/custom_feedback.dart';
 import 'package:notredame/features/more/settings/settings_manager.dart';
 import 'package:notredame/utils/app_theme.dart';
 import 'package:notredame/utils/locator.dart';
@@ -66,49 +63,34 @@ class ETSMobile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     addEdgeToEdgeEffect();
-    final RemoteConfigService remoteConfigService =
-        locator<RemoteConfigService>();
+    final RemoteConfigService remoteConfigService = locator<RemoteConfigService>();
     final bool outage = remoteConfigService.outage;
     return ChangeNotifierProvider<SettingsManager>(
       create: (_) => settingsManager,
       child: Consumer<SettingsManager>(builder: (context, model, child) {
-        return BetterFeedback(
-          mode: FeedbackMode.navigate,
-          feedbackBuilder: (context, onSubmit, scrollController) =>
-              CustomFeedbackForm(
-            onSubmit: onSubmit,
-            scrollController: scrollController ?? ScrollController(),
+        return CalendarControllerProvider(
+          controller: EventController(),
+          child: MaterialApp(
+            title: 'ÉTS Mobile',
+            theme: AppTheme.lightTheme(),
+            darkTheme: AppTheme.darkTheme(),
+            themeMode: model.themeMode,
+            localizationsDelegates: const [
+              AppIntl.delegate,
+              GlobalMaterialLocalizations.delegate,
+              GlobalWidgetsLocalizations.delegate,
+              GlobalCupertinoLocalizations.delegate,
+            ],
+            locale: model.locale,
+            supportedLocales: AppIntl.supportedLocales,
+            navigatorKey: locator<NavigationService>().navigatorKey,
+            navigatorObservers: [
+              locator<AnalyticsService>().getAnalyticsObserver(),
+              NavigationHistoryObserver(),
+            ],
+            home: outage ? OutageView() : StartUpView(),
+            onGenerateRoute: generateRoute,
           ),
-          localizationsDelegates: [
-            GlobalMaterialLocalizations.delegate,
-            GlobalWidgetsLocalizations.delegate,
-            CustomFeedbackLocalizationsDelegate(),
-          ],
-          localeOverride: model.locale,
-          child: CalendarControllerProvider(
-              controller: EventController(),
-              child: MaterialApp(
-                title: 'ÉTS Mobile',
-                theme: AppTheme.lightTheme(),
-                darkTheme: AppTheme.darkTheme(),
-                themeMode: model.themeMode,
-                localizationsDelegates: const [
-                  AppIntl.delegate,
-                  GlobalMaterialLocalizations.delegate,
-                  GlobalWidgetsLocalizations.delegate,
-                  GlobalCupertinoLocalizations.delegate,
-                ],
-                locale: model.locale,
-                supportedLocales: AppIntl.supportedLocales,
-                navigatorKey: locator<NavigationService>().navigatorKey,
-                navigatorObservers: [
-                  locator<AnalyticsService>().getAnalyticsObserver(),
-                  NavigationHistoryObserver(),
-                ],
-                home: outage ? OutageView() : StartUpView(),
-                onGenerateRoute: generateRoute,
-              ),
-            ),
         );
       }),
     );
