@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 // Package imports:
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:percent_indicator/percent_indicator.dart';
+import 'package:notredame/features/student/grades/widgets/grade_circular_indicator.dart';
 
 // Project imports:
 import 'package:notredame/utils/app_theme.dart';
@@ -59,35 +59,32 @@ class _GradeCircularProgressState extends State<GradeCircularProgress>
 
   @override
   Widget build(BuildContext context) {
-    return CircularPercentIndicator(
-      animation: true,
-      animationDuration: 1100,
-      radius: (100 * widget.ratio) / 2,
-      lineWidth: 8.0 * widget.ratio,
-      percent:
-          widget.completed ? getGradeInDecimals(widget.studentGrade ?? 0.0) : 0,
-      circularStrokeCap: CircularStrokeCap.round,
-      center: CircularPercentIndicator(
-        animation: true,
-        animationDuration: 700,
-        radius: (80 * widget.ratio) / 2,
-        lineWidth: 8.0 * widget.ratio,
-        percent: widget.completed
-            ? getGradeInDecimals(widget.averageGrade ?? 0.0)
-            : 0,
-        circularStrokeCap: CircularStrokeCap.round,
-        center: Text(
+    return Stack(
+      alignment: Alignment.center,
+      children: [
+        GradeCircularIndicator(
+          grade: widget.averageGrade,
+          color: Colors.red,
+          size: 75,
+          duration: 800,
+          ratio: widget.ratio,
+          completed: widget.completed,
+        ),
+        GradeCircularIndicator(
+          grade: widget.studentGrade,
+          color: animation.value ?? AppTheme.gradePassing,
+          size: 95,
+          duration: 1200,
+          ratio: widget.ratio,
+          completed: widget.completed,
+        ),
+        Text(
           getGrade(context),
           style: TextStyle(fontSize: 22 * widget.ratio),
         ),
-        progressColor: Colors.red,
-      ),
-      progressColor: animation.value,
+      ],
     );
   }
-
-  double getGradeInDecimals(double grade) =>
-      (grade / 100) > 1.0 ? 1.0 : (grade / 100);
 
   String getGrade(BuildContext context) {
     if (widget.finalGrade != null) {
