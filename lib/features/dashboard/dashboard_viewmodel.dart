@@ -310,6 +310,13 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
       _upcomingEvents = importantDates.asMap().entries.where((entry) {
         DateTime date = entry.value;
         DateTime now = DateTime.now();
+
+        return now.isAfter(date.subtract(const Duration(days: 3))) && now.isBefore(date.add(const Duration(days: 1)));
+      }).toList();
+
+      _upcomingEvents = importantDates.asMap().entries.where((entry) {
+        DateTime date = entry.value;
+        DateTime now = DateTime.now();
         return now.isAfter(date.subtract(const Duration(days: 3))) && now.isBefore(date.add(const Duration(days: 1)));
       }).toList();
       return sessions;
