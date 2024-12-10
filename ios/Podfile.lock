@@ -30,7 +30,7 @@ PODS:
     - Firebase/Crashlytics (= 11.4.0)
     - firebase_core
     - Flutter
-  - firebase_remote_config (5.1.5):
+  - firebase_remote_config (5.2.0):
     - Firebase/RemoteConfig (= 11.4.0)
     - firebase_core
     - Flutter
@@ -300,7 +300,7 @@ SPEC CHECKSUMS:
   firebase_analytics: fa7e5b20c2b58042e3301f5112a473d365bd490c
   firebase_core: 418aed674e9a0b8b6088aec16cde82a811f6261f
   firebase_crashlytics: 72a8b504422ba8bb435a7a0c0a9341320cbcbe29
-  firebase_remote_config: 96a9b7e79624c5d9d16befdef60791966bb83919
+  firebase_remote_config: 015a36be218a38943c2273d63b33bc983b3d7bb6
   FirebaseABTesting: aef1719704fade00b200827e7973f352efc4caee
   FirebaseAnalytics: 3feef9ae8733c567866342a1000691baaa7cad49
   FirebaseCore: e0510f1523bc0eb21653cac00792e1e2bd6f1771
