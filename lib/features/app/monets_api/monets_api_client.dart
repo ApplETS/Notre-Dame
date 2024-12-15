@@ -7,7 +7,7 @@ import 'package:http/http.dart' as http;
 import 'package:http/io_client.dart';
 
 // Project imports:
-import 'package:notredame/constants/urls.dart';
+import 'package:notredame/domain/constants/urls.dart';
 import 'package:notredame/features/app/monets_api/models/mon_ets_user.dart';
 import 'package:notredame/utils/http_exception.dart';
 

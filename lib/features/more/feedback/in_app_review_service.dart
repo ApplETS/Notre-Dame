@@ -2,7 +2,7 @@
 import 'package:in_app_review/in_app_review.dart';
 
 // Project imports:
-import 'package:notredame/constants/app_info.dart';
+import 'package:notredame/domain/constants/app_info.dart';
 
 // CONSTANTS
 

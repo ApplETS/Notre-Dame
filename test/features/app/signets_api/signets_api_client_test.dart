@@ -7,7 +7,7 @@ import 'package:http/testing.dart';
 import 'package:intl/intl.dart';
 
 // Project imports:
-import 'package:notredame/constants/urls.dart';
+import 'package:notredame/domain/constants/urls.dart';
 import 'package:notredame/features/app/signets-api/models/course.dart';
 import 'package:notredame/features/app/signets-api/models/course_activity.dart';
 import 'package:notredame/features/app/signets-api/models/course_evaluation.dart';

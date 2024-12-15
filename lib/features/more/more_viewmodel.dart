@@ -5,7 +5,7 @@ import 'package:package_info_plus/package_info_plus.dart';
 import 'package:stacked/stacked.dart';
 
 // Project imports:
-import 'package:notredame/constants/preferences_flags.dart';
+import 'package:notredame/domain/constants/preferences_flags.dart';
 import 'package:notredame/features/app/analytics/remote_config_service.dart';
 import 'package:notredame/features/app/integration/launch_url_service.dart';
 import 'package:notredame/features/app/navigation/navigation_service.dart';

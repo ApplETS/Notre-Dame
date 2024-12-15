@@ -3,7 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 // Project imports:
-import 'package:notredame/constants/preferences_flags.dart';
+import 'package:notredame/domain/constants/preferences_flags.dart';
 import 'package:notredame/features/app/storage/preferences_service.dart';
 
 void main() {

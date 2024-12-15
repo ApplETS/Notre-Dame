@@ -7,7 +7,7 @@ import 'package:notredame/utils/calendar_utils.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 // Project imports:
-import 'package:notredame/constants/preferences_flags.dart';
+import 'package:notredame/domain/constants/preferences_flags.dart';
 import 'package:notredame/features/app/analytics/analytics_service.dart';
 import 'package:notredame/features/app/analytics/remote_config_service.dart';
 import 'package:notredame/features/app/integration/networking_service.dart';

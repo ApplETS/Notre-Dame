@@ -9,7 +9,7 @@ import 'package:mockito/mockito.dart';
 import 'package:notredame/utils/calendar_utils.dart';
 
 // Project imports:
-import 'package:notredame/constants/preferences_flags.dart';
+import 'package:notredame/domain/constants/preferences_flags.dart';
 import 'package:notredame/features/app/signets-api/models/schedule_activity.dart';
 import 'package:notredame/features/schedule/widgets/schedule_settings.dart';
 import 'package:notredame/utils/activity_code.dart';

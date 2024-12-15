@@ -4,7 +4,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:stacked/stacked.dart';
 
 // Project imports:
-import 'package:notredame/constants/preferences_flags.dart';
+import 'package:notredame/domain/constants/preferences_flags.dart';
 import 'package:notredame/features/app/navigation/navigation_service.dart';
 import 'package:notredame/features/app/navigation/router_paths.dart';
 import 'package:notredame/features/app/repository/user_repository.dart';

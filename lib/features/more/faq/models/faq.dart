@@ -2,7 +2,7 @@
 import 'package:flutter/material.dart';
 
 // Project imports:
-import 'package:notredame/constants/app_info.dart';
+import 'package:notredame/domain/constants/app_info.dart';
 import 'package:notredame/features/more/faq/models/faq_actions.dart';
 import 'package:notredame/features/more/faq/models/faq_questions.dart';
 

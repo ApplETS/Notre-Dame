@@ -3,7 +3,7 @@ import 'package:http/http.dart' as http;
 import 'package:xml/xml.dart';
 
 // Project imports:
-import 'package:notredame/constants/urls.dart';
+import 'package:notredame/domain/constants/urls.dart';
 import 'package:notredame/features/app/signets-api/models/course_activity.dart';
 import 'package:notredame/features/app/signets-api/signets_api_client.dart';
 import 'package:notredame/features/app/signets-api/soap_service.dart';

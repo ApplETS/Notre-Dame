@@ -3,7 +3,7 @@ import 'package:collection/collection.dart';
 import 'package:stacked/stacked.dart';
 
 // Project imports:
-import 'package:notredame/constants/preferences_flags.dart';
+import 'package:notredame/domain/constants/preferences_flags.dart';
 import 'package:notredame/features/app/repository/course_repository.dart';
 import 'package:notredame/features/app/signets-api/models/schedule_activity.dart';
 import 'package:notredame/features/more/settings/settings_manager.dart';

@@ -8,7 +8,7 @@ import 'package:mockito/mockito.dart';
 import 'package:notredame/utils/calendar_utils.dart';
 
 // Project imports:
-import 'package:notredame/constants/preferences_flags.dart';
+import 'package:notredame/domain/constants/preferences_flags.dart';
 import 'package:notredame/features/app/storage/preferences_service.dart';
 import 'package:notredame/features/more/settings/settings_manager.dart';
 import '../../../common/helpers.dart';

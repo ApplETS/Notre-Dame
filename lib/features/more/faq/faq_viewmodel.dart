@@ -6,7 +6,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:stacked/stacked.dart';
 
 // Project imports:
-import 'package:notredame/constants/app_info.dart';
+import 'package:notredame/domain/constants/app_info.dart';
 import 'package:notredame/features/app/analytics/analytics_service.dart';
 import 'package:notredame/features/app/integration/launch_url_service.dart';
 import 'package:notredame/features/more/settings/settings_manager.dart';

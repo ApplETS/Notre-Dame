@@ -7,7 +7,7 @@ import 'package:notredame/utils/calendar_utils.dart';
 import 'package:notredame/utils/utils.dart';
 
 // Project imports:
-import 'package:notredame/constants/preferences_flags.dart';
+import 'package:notredame/domain/constants/preferences_flags.dart';
 import 'package:notredame/features/app/repository/course_repository.dart';
 import 'package:notredame/features/app/signets-api/models/course.dart';
 import 'package:notredame/features/app/signets-api/models/course_activity.dart';

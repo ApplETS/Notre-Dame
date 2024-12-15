@@ -12,7 +12,7 @@ import 'package:stacked/stacked.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 // Project imports:
-import 'package:notredame/constants/preferences_flags.dart';
+import 'package:notredame/domain/constants/preferences_flags.dart';
 import 'package:notredame/features/app/analytics/analytics_service.dart';
 import 'package:notredame/features/app/signets-api/models/course_activity.dart';
 import 'package:notredame/features/app/widgets/base_scaffold.dart';
