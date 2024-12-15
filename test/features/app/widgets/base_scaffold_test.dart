@@ -5,8 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 // Project imports:
-import 'package:notredame/features/app/integration/networking_service.dart';
-import 'package:notredame/features/app/navigation/navigation_service.dart';
+import 'package:notredame/data/services/networking_service.dart';
+import 'package:notredame/data/services/navigation_service.dart';
 import 'package:notredame/features/app/widgets/base_scaffold.dart';
 import '../../../common/helpers.dart';
 import '../analytics/mocks/analytics_service_mock.dart';

@@ -5,11 +5,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:intl/intl.dart';
 import 'package:mockito/mockito.dart';
-import 'package:notredame/utils/calendar_utils.dart';
+import 'package:notredame/data/services/calendar_service.dart';
 
 // Project imports:
 import 'package:notredame/domain/constants/preferences_flags.dart';
-import 'package:notredame/features/app/storage/preferences_service.dart';
+import 'package:notredame/data/services/preferences_service.dart';
 import 'package:notredame/features/more/settings/settings_manager.dart';
 import '../../../common/helpers.dart';
 import '../../app/analytics/mocks/analytics_service_mock.dart';

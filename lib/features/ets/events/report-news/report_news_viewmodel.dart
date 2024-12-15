@@ -2,12 +2,12 @@
 import 'package:stacked/stacked.dart';
 
 // Project imports:
-import 'package:notredame/features/ets/events/api-client/hello_api_client.dart';
-import 'package:notredame/features/ets/events/api-client/models/report.dart';
-import 'package:notredame/utils/locator.dart';
+import 'package:notredame/data/services/hello/hello_service.dart';
+import 'package:notredame/data/models/hello/report.dart';
+import 'package:notredame/locator.dart';
 
 class ReportNewsViewModel extends BaseViewModel {
-  final HelloAPIClient _helloApiClient = locator<HelloAPIClient>();
+  final HelloService _helloApiClient = locator<HelloService>();
 
   void reportNews(String newsId, String category, String reason) {
     final Report report = Report(category: category, reason: reason);

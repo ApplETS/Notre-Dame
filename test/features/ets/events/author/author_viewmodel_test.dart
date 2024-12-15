@@ -5,13 +5,13 @@ import 'package:logger/logger.dart';
 import 'package:mockito/mockito.dart';
 
 // Project imports:
-import 'package:notredame/features/app/repository/author_repository.dart';
-import 'package:notredame/features/app/repository/news_repository.dart';
-import 'package:notredame/features/ets/events/api-client/models/activity_area.dart';
-import 'package:notredame/features/ets/events/api-client/models/news.dart';
-import 'package:notredame/features/ets/events/api-client/models/news_tags.dart';
-import 'package:notredame/features/ets/events/api-client/models/organizer.dart';
-import 'package:notredame/features/ets/events/api-client/models/paginated_news.dart';
+import 'package:notredame/data/repositories/author_repository.dart';
+import 'package:notredame/data/repositories/news_repository.dart';
+import 'package:notredame/data/models/hello/activity_area.dart';
+import 'package:notredame/data/models/hello/news.dart';
+import 'package:notredame/data/models/hello/news_tags.dart';
+import 'package:notredame/data/models/hello/organizer.dart';
+import 'package:notredame/data/models/hello/paginated_news.dart';
 import 'package:notredame/features/ets/events/author/author_viewmodel.dart';
 import '../../../../common/helpers.dart';
 import '../../../app/repository/mocks/author_repository_mock.dart';

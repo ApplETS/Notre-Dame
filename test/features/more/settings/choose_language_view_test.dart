@@ -6,7 +6,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 // Project imports:
-import 'package:notredame/features/app/navigation/navigation_service.dart';
+import 'package:notredame/data/services/navigation_service.dart';
 import 'package:notredame/features/more/settings/choose_language_view.dart';
 import 'package:notredame/features/more/settings/settings_manager.dart';
 import '../../../common/helpers.dart';

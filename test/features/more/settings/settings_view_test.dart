@@ -6,7 +6,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 // Project imports:
-import 'package:notredame/features/app/integration/networking_service.dart';
+import 'package:notredame/data/services/networking_service.dart';
 import 'package:notredame/features/more/settings/settings_view.dart';
 import '../../../common/helpers.dart';
 import '../../app/analytics/mocks/analytics_service_mock.dart';

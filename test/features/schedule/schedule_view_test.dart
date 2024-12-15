@@ -3,17 +3,17 @@ import 'package:flutter/material.dart';
 
 // Package imports:
 import 'package:flutter_test/flutter_test.dart';
-import 'package:notredame/utils/calendar_utils.dart';
+import 'package:notredame/data/services/calendar_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 // Project imports:
 import 'package:notredame/domain/constants/preferences_flags.dart';
-import 'package:notredame/features/app/analytics/analytics_service.dart';
-import 'package:notredame/features/app/analytics/remote_config_service.dart';
-import 'package:notredame/features/app/integration/networking_service.dart';
-import 'package:notredame/features/app/navigation/navigation_service.dart';
-import 'package:notredame/features/app/repository/course_repository.dart';
-import 'package:notredame/features/app/signets-api/models/course_activity.dart';
+import 'package:notredame/data/services/analytics_service.dart';
+import 'package:notredame/data/services/remote_config_service.dart';
+import 'package:notredame/data/services/networking_service.dart';
+import 'package:notredame/data/services/navigation_service.dart';
+import 'package:notredame/data/repositories/course_repository.dart';
+import 'package:notredame/data/services/signets-api/models/course_activity.dart';
 import 'package:notredame/features/more/settings/settings_manager.dart';
 import 'package:notredame/features/schedule/schedule_view.dart';
 import 'package:notredame/features/schedule/widgets/schedule_settings.dart';

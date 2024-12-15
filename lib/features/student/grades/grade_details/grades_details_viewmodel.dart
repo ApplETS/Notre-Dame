@@ -4,11 +4,11 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:stacked/stacked.dart';
 
 // Project imports:
-import 'package:notredame/features/app/repository/course_repository.dart';
-import 'package:notredame/features/app/signets-api/models/course.dart';
-import 'package:notredame/features/app/signets-api/models/signets_errors.dart';
+import 'package:notredame/data/repositories/course_repository.dart';
+import 'package:notredame/data/services/signets-api/models/course.dart';
+import 'package:notredame/data/services/signets-api/models/signets_errors.dart';
 import 'package:notredame/utils/api_exception.dart';
-import 'package:notredame/utils/locator.dart';
+import 'package:notredame/locator.dart';
 
 class GradesDetailsViewModel extends FutureViewModel<Course> {
   /// Used to get the courses of the student

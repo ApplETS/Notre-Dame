@@ -9,10 +9,10 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 
 // Project imports:
-import 'package:notredame/features/app/repository/quick_link_repository.dart';
-import 'package:notredame/features/app/storage/cache_manager.dart';
-import 'package:notredame/features/ets/quick-link/models/quick_link.dart';
-import 'package:notredame/features/ets/quick-link/models/quick_link_data.dart';
+import 'package:notredame/data/repositories/quick_link_repository.dart';
+import 'package:notredame/data/services/cache_service.dart';
+import 'package:notredame/data/models/quick_link.dart';
+import 'package:notredame/data/models/quick_link_data.dart';
 import '../../../common/helpers.dart';
 import '../storage/mocks/cache_manager_mock.dart';
 
@@ -31,7 +31,7 @@ void main() {
 
     tearDown(() {
       clearInteractions(cacheManagerMock);
-      unregister<CacheManager>();
+      unregister<CacheService>();
     });
 
     group("getQuickLinkDataFromCache - ", () {

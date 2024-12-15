@@ -6,13 +6,13 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:intl/intl.dart';
 import 'package:mockito/mockito.dart';
-import 'package:notredame/utils/calendar_utils.dart';
+import 'package:notredame/data/services/calendar_service.dart';
 
 // Project imports:
 import 'package:notredame/domain/constants/preferences_flags.dart';
-import 'package:notredame/features/app/signets-api/models/schedule_activity.dart';
+import 'package:notredame/data/services/signets-api/models/schedule_activity.dart';
 import 'package:notredame/features/schedule/widgets/schedule_settings.dart';
-import 'package:notredame/utils/activity_code.dart';
+import 'package:notredame/data/models/activity_code.dart';
 import '../../../common/helpers.dart';
 import '../../app/analytics/mocks/remote_config_service_mock.dart';
 import '../../app/repository/mocks/course_repository_mock.dart';

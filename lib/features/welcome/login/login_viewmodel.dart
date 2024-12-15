@@ -5,11 +5,11 @@ import 'package:stacked/stacked.dart';
 
 // Project imports:
 import 'package:notredame/domain/constants/preferences_flags.dart';
-import 'package:notredame/features/app/navigation/navigation_service.dart';
-import 'package:notredame/features/app/navigation/router_paths.dart';
-import 'package:notredame/features/app/repository/user_repository.dart';
-import 'package:notredame/features/app/storage/preferences_service.dart';
-import 'package:notredame/utils/locator.dart';
+import 'package:notredame/data/services/navigation_service.dart';
+import 'package:notredame/domain/constants/router_paths.dart';
+import 'package:notredame/data/repositories/user_repository.dart';
+import 'package:notredame/data/services/preferences_service.dart';
+import 'package:notredame/locator.dart';
 
 class LoginViewModel extends BaseViewModel {
   /// Used to authenticate the user

@@ -7,7 +7,7 @@ import 'package:reorderable_grid_view/reorderable_grid_view.dart';
 import 'package:stacked/stacked.dart';
 
 // Project imports:
-import 'package:notredame/features/ets/quick-link/models/quick_link.dart';
+import 'package:notredame/data/models/quick_link.dart';
 import 'package:notredame/features/ets/quick-link/quick_links_viewmodel.dart';
 import 'package:notredame/features/ets/quick-link/widgets/web_link_card.dart';
 import 'package:notredame/utils/app_theme.dart';

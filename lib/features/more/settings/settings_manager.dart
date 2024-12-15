@@ -8,11 +8,11 @@ import 'package:logger/logger.dart';
 
 // Project imports:
 import 'package:notredame/domain/constants/preferences_flags.dart';
-import 'package:notredame/features/app/analytics/analytics_service.dart';
-import 'package:notredame/features/app/analytics/remote_config_service.dart';
-import 'package:notredame/features/app/storage/preferences_service.dart';
-import 'package:notredame/utils/locator.dart';
-import 'package:notredame/utils/calendar_utils.dart';
+import 'package:notredame/data/services/analytics_service.dart';
+import 'package:notredame/data/services/remote_config_service.dart';
+import 'package:notredame/data/services/preferences_service.dart';
+import 'package:notredame/locator.dart';
+import 'package:notredame/data/services/calendar_service.dart';
 
 class SettingsManager with ChangeNotifier {
   static const String tag = "SettingsManager";

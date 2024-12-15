@@ -1,0 +1,54 @@
+// Package imports:
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:get_it/get_it.dart';
+import 'package:logger/logger.dart';
+
+// Project imports:
+import 'package:notredame/data/services/analytics_service.dart';
+import 'package:notredame/data/services/remote_config_service.dart';
+import 'package:notredame/data/services/internal_info_service.dart';
+import 'package:notredame/data/services/launch_url_service.dart';
+import 'package:notredame/data/services/networking_service.dart';
+import 'package:notredame/data/services/monets/monets_api_client.dart';
+import 'package:notredame/data/services/navigation_service.dart';
+import 'package:notredame/data/repositories/author_repository.dart';
+import 'package:notredame/data/repositories/course_repository.dart';
+import 'package:notredame/data/repositories/news_repository.dart';
+import 'package:notredame/data/repositories/quick_link_repository.dart';
+import 'package:notredame/data/repositories/user_repository.dart';
+import 'package:notredame/data/services/signets-api/signets_api_client.dart';
+import 'package:notredame/data/services/cache_service.dart';
+import 'package:notredame/data/services/preferences_service.dart';
+import 'package:notredame/data/services/hello/hello_service.dart';
+import 'package:notredame/features/more/feedback/in_app_review_service.dart';
+import 'package:notredame/features/more/settings/settings_manager.dart';
+
+GetIt locator = GetIt.instance;
+
+void setupLocator() {
+  // Services
+  locator.registerLazySingleton(() => NavigationService());
+  locator.registerLazySingleton(() => AnalyticsService());
+  locator.registerLazySingleton(() => InternalInfoService());
+  locator.registerLazySingleton(() => const FlutterSecureStorage());
+  locator.registerLazySingleton(() => PreferencesService());
+  locator.registerLazySingleton(() => NetworkingService());
+  locator.registerLazySingleton(() => InAppReviewService());
+  locator.registerLazySingleton(() => RemoteConfigService());
+  locator.registerLazySingleton(() => LaunchUrlService());
+
+  // Managers
+  locator.registerLazySingleton(() => UserRepository());
+  locator.registerLazySingleton(() => CourseRepository());
+  locator.registerLazySingleton(() => CacheService());
+  locator.registerLazySingleton(() => SettingsManager());
+  locator.registerLazySingleton(() => QuickLinkRepository());
+  locator.registerLazySingleton(() => NewsRepository());
+  locator.registerLazySingleton(() => AuthorRepository());
+
+  // Other
+  locator.registerLazySingleton(() => SignetsAPIClient());
+  locator.registerLazySingleton(() => MonETSAPIClient());
+  locator.registerLazySingleton(() => HelloService());
+  locator.registerLazySingleton(() => Logger());
+}

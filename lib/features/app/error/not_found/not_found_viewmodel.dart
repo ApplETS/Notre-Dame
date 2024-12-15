@@ -2,10 +2,10 @@
 import 'package:stacked/stacked.dart';
 
 // Project imports:
-import 'package:notredame/features/app/analytics/analytics_service.dart';
-import 'package:notredame/features/app/navigation/navigation_service.dart';
-import 'package:notredame/features/app/navigation/router_paths.dart';
-import 'package:notredame/utils/locator.dart';
+import 'package:notredame/data/services/analytics_service.dart';
+import 'package:notredame/data/services/navigation_service.dart';
+import 'package:notredame/domain/constants/router_paths.dart';
+import 'package:notredame/locator.dart';
 
 class NotFoundViewModel extends BaseViewModel {
   static const String tag = "NotFoundViewModel";

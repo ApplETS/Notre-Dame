@@ -10,10 +10,10 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 // Project imports:
-import 'package:notredame/features/app/repository/course_repository.dart';
+import 'package:notredame/data/repositories/course_repository.dart';
 import 'package:notredame/utils/app_theme.dart';
-import 'package:notredame/utils/calendar_utils.dart';
-import 'package:notredame/utils/locator.dart';
+import 'package:notredame/data/services/calendar_service.dart';
+import 'package:notredame/locator.dart';
 
 class CalendarSelectionWidget extends StatelessWidget {
   final AppIntl translations;
@@ -22,7 +22,7 @@ class CalendarSelectionWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-      future: CalendarUtils.nativeCalendars,
+      future: CalendarService.nativeCalendars,
       builder:
           (context, AsyncSnapshot<UnmodifiableListView<Calendar>> calendars) {
         if (calendars.error != null) {
@@ -101,7 +101,7 @@ class CalendarSelectionWidget extends StatelessWidget {
                     final CourseRepository courseRepository =
                         locator<CourseRepository>();
 
-                    final result = CalendarUtils.export(
+                    final result = CalendarService.export(
                       courseRepository.coursesActivities!,
                       selectedCalendarId,
                     );

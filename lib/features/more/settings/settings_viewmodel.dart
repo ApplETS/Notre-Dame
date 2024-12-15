@@ -7,7 +7,7 @@ import 'package:stacked/stacked.dart';
 
 // Project imports:
 import 'package:notredame/features/more/settings/settings_manager.dart';
-import 'package:notredame/utils/locator.dart';
+import 'package:notredame/locator.dart';
 
 class SettingsViewModel extends FutureViewModel {
   /// Manage the settings

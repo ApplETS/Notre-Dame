@@ -10,10 +10,10 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 // Project imports:
-import 'package:notredame/features/app/repository/course_repository.dart';
-import 'package:notredame/features/ets/events/api-client/models/news.dart';
-import 'package:notredame/utils/calendar_utils.dart';
-import 'package:notredame/utils/locator.dart';
+import 'package:notredame/data/repositories/course_repository.dart';
+import 'package:notredame/data/models/hello/news.dart';
+import 'package:notredame/data/services/calendar_service.dart';
+import 'package:notredame/locator.dart';
 
 class CalendarSelectionViewModel {
   final AppIntl translations;
@@ -28,7 +28,7 @@ class CalendarSelectionViewModel {
   });
 
   Future<void> fetchCalendars() async {
-    _calendars = await CalendarUtils.nativeCalendars;
+    _calendars = await CalendarService.nativeCalendars;
   }
 
   List<DropdownMenuItem<String>> getDropdownItems() {
@@ -58,7 +58,7 @@ class CalendarSelectionViewModel {
   }
 
   void _exportNews(News news, String selectedCalendarId) {
-    CalendarUtils.exportNews(news, selectedCalendarId).then((value) {
+    CalendarService.exportNews(news, selectedCalendarId).then((value) {
       if (value) {
         _showToast(translations.news_export_success);
       } else {
@@ -68,7 +68,7 @@ class CalendarSelectionViewModel {
   }
 
   void _exportCourses(String selectedCalendarId) {
-    CalendarUtils.export(
+    CalendarService.export(
             courseRepository.coursesActivities!, selectedCalendarId)
         .then((value) {
       if (value) {

@@ -5,17 +5,17 @@ import 'package:logger/logger.dart';
 import 'package:mockito/mockito.dart';
 
 // Project imports:
-import 'package:notredame/features/app/analytics/analytics_service.dart';
-import 'package:notredame/features/app/analytics/remote_config_service.dart';
-import 'package:notredame/features/app/navigation/navigation_service.dart';
-import 'package:notredame/features/app/navigation/router_paths.dart';
-import 'package:notredame/features/app/repository/course_repository.dart';
-import 'package:notredame/features/app/repository/user_repository.dart';
-import 'package:notredame/features/app/signets-api/models/course.dart';
-import 'package:notredame/features/app/signets-api/models/course_activity.dart';
-import 'package:notredame/features/app/signets-api/models/session.dart';
-import 'package:notredame/features/app/storage/cache_manager.dart';
-import 'package:notredame/features/app/storage/preferences_service.dart';
+import 'package:notredame/data/services/analytics_service.dart';
+import 'package:notredame/data/services/remote_config_service.dart';
+import 'package:notredame/data/services/navigation_service.dart';
+import 'package:notredame/domain/constants/router_paths.dart';
+import 'package:notredame/data/repositories/course_repository.dart';
+import 'package:notredame/data/repositories/user_repository.dart';
+import 'package:notredame/data/services/signets-api/models/course.dart';
+import 'package:notredame/data/services/signets-api/models/course_activity.dart';
+import 'package:notredame/data/services/signets-api/models/session.dart';
+import 'package:notredame/data/services/cache_service.dart';
+import 'package:notredame/data/services/preferences_service.dart';
 import 'package:notredame/features/more/more_viewmodel.dart';
 import 'package:notredame/features/more/settings/settings_manager.dart';
 import '../../common/helpers.dart';
@@ -142,7 +142,7 @@ void main() {
 
     tearDown(() {
       unregister<AnalyticsService>();
-      unregister<CacheManager>();
+      unregister<CacheService>();
       unregister<SettingsManager>();
       unregister<CourseRepository>();
       unregister<RemoteConfigService>();

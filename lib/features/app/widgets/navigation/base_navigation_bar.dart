@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
-import '../../../../utils/locator.dart';
-import '../../analytics/analytics_service.dart';
-import '../../navigation/navigation_service.dart';
-import '../../navigation/router_paths.dart';
+import '../../../../locator.dart';
+import '../../../../data/services/analytics_service.dart';
+import '../../../../data/services/navigation_service.dart';
+import '../../../../domain/constants/router_paths.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 enum NavigationView {

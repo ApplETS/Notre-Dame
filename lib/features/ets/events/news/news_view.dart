@@ -7,7 +7,7 @@ import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:stacked/stacked.dart';
 
 // Project imports:
-import 'package:notredame/features/ets/events/api-client/models/news.dart';
+import 'package:notredame/data/models/hello/news.dart';
 import 'package:notredame/features/ets/events/news/news_viewmodel.dart';
 import 'package:notredame/features/ets/events/news/widgets/news_card.dart';
 import 'package:notredame/features/ets/events/news/widgets/news_card_skeleton.dart';

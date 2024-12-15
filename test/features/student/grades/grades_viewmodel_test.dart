@@ -4,9 +4,9 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 
 // Project imports:
-import 'package:notredame/features/app/navigation/navigation_service.dart';
-import 'package:notredame/features/app/repository/course_repository.dart';
-import 'package:notredame/features/app/signets-api/models/course.dart';
+import 'package:notredame/data/services/navigation_service.dart';
+import 'package:notredame/data/repositories/course_repository.dart';
+import 'package:notredame/data/services/signets-api/models/course.dart';
 import 'package:notredame/features/more/settings/settings_manager.dart';
 import 'package:notredame/features/student/grades/grades_viewmodel.dart';
 import '../../../common/helpers.dart';

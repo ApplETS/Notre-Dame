@@ -5,18 +5,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 // Project imports:
-import 'package:notredame/features/app/analytics/analytics_service.dart';
-import 'package:notredame/features/app/analytics/remote_config_service.dart';
-import 'package:notredame/features/app/integration/networking_service.dart';
-import 'package:notredame/features/app/navigation/navigation_service.dart';
-import 'package:notredame/features/app/repository/course_repository.dart';
-import 'package:notredame/features/app/repository/news_repository.dart';
+import 'package:notredame/data/services/analytics_service.dart';
+import 'package:notredame/data/services/remote_config_service.dart';
+import 'package:notredame/data/services/networking_service.dart';
+import 'package:notredame/data/services/navigation_service.dart';
+import 'package:notredame/data/repositories/course_repository.dart';
+import 'package:notredame/data/repositories/news_repository.dart';
 import 'package:notredame/features/app/widgets/base_scaffold.dart';
 import 'package:notredame/features/ets/ets_view.dart';
-import 'package:notredame/features/ets/events/api-client/models/news.dart';
-import 'package:notredame/features/ets/events/api-client/models/news_tags.dart';
-import 'package:notredame/features/ets/events/api-client/models/organizer.dart';
-import 'package:notredame/features/ets/events/api-client/models/paginated_news.dart';
+import 'package:notredame/data/models/hello/news.dart';
+import 'package:notredame/data/models/hello/news_tags.dart';
+import 'package:notredame/data/models/hello/organizer.dart';
+import 'package:notredame/data/models/hello/paginated_news.dart';
 import 'package:notredame/features/more/settings/settings_manager.dart';
 import '../../common/helpers.dart';
 import '../app/analytics/mocks/remote_config_service_mock.dart';

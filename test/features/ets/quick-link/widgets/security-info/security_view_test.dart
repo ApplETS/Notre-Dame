@@ -7,7 +7,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 // Project imports:
-import 'package:notredame/features/ets/quick-link/widgets/security-info/models/emergency_procedures.dart';
+import 'package:notredame/data/models/emergency_procedures.dart';
 import 'package:notredame/features/ets/quick-link/widgets/security-info/security_view.dart';
 import '../../../../../common/helpers.dart';
 

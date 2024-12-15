@@ -3,7 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 
 // Project imports:
-import 'package:notredame/features/app/integration/launch_url_service.dart';
+import 'package:notredame/data/services/launch_url_service.dart';
 import 'package:notredame/features/more/faq/faq_viewmodel.dart';
 import 'package:notredame/features/more/settings/settings_manager.dart';
 import '../../../common/helpers.dart';

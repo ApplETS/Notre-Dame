@@ -3,8 +3,8 @@ import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
 // Project imports:
-import 'package:notredame/features/app/repository/news_repository.dart';
-import 'package:notredame/features/ets/events/api-client/models/paginated_news.dart';
+import 'package:notredame/data/repositories/news_repository.dart';
+import 'package:notredame/data/models/hello/paginated_news.dart';
 import 'package:notredame/utils/api_exception.dart';
 import 'news_repository_mock.mocks.dart';
 

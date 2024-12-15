@@ -3,9 +3,9 @@ import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:stacked/stacked.dart';
 
 // Project imports:
-import 'package:notredame/features/app/repository/news_repository.dart';
-import 'package:notredame/features/ets/events/api-client/models/news.dart';
-import 'package:notredame/utils/locator.dart';
+import 'package:notredame/data/repositories/news_repository.dart';
+import 'package:notredame/data/models/hello/news.dart';
+import 'package:notredame/locator.dart';
 
 class NewsViewModel extends BaseViewModel implements Initialisable {
   /// Load the events

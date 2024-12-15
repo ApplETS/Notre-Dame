@@ -9,19 +9,19 @@ import 'package:stacked/stacked.dart';
 
 // Project imports:
 import 'package:notredame/domain/constants/preferences_flags.dart';
-import 'package:notredame/features/app/analytics/analytics_service.dart';
-import 'package:notredame/features/app/analytics/remote_config_service.dart';
-import 'package:notredame/features/app/integration/launch_url_service.dart';
-import 'package:notredame/features/app/repository/course_repository.dart';
-import 'package:notredame/features/app/signets-api/models/course.dart';
-import 'package:notredame/features/app/signets-api/models/course_activity.dart';
-import 'package:notredame/features/app/signets-api/models/session.dart';
-import 'package:notredame/features/app/storage/preferences_service.dart';
+import 'package:notredame/data/services/analytics_service.dart';
+import 'package:notredame/data/services/remote_config_service.dart';
+import 'package:notredame/data/services/launch_url_service.dart';
+import 'package:notredame/data/repositories/course_repository.dart';
+import 'package:notredame/data/services/signets-api/models/course.dart';
+import 'package:notredame/data/services/signets-api/models/course_activity.dart';
+import 'package:notredame/data/services/signets-api/models/session.dart';
+import 'package:notredame/data/services/preferences_service.dart';
 import 'package:notredame/features/dashboard/progress_bar_text_options.dart';
 import 'package:notredame/features/more/feedback/in_app_review_service.dart';
 import 'package:notredame/features/more/settings/settings_manager.dart';
-import 'package:notredame/utils/activity_code.dart';
-import 'package:notredame/utils/locator.dart';
+import 'package:notredame/data/models/activity_code.dart';
+import 'package:notredame/locator.dart';
 
 class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
   static const String tag = "DashboardViewModel";

@@ -3,11 +3,11 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 
 // Project imports:
-import 'package:notredame/features/app/repository/user_repository.dart';
-import 'package:notredame/features/app/signets-api/models/profile_student.dart';
-import 'package:notredame/features/app/signets-api/models/program.dart';
+import 'package:notredame/data/repositories/user_repository.dart';
+import 'package:notredame/data/services/signets-api/models/profile_student.dart';
+import 'package:notredame/data/services/signets-api/models/program.dart';
 import 'package:notredame/features/student/profile/profile_viewmodel.dart';
-import 'package:notredame/features/student/profile/programs_credits.dart';
+import 'package:notredame/data/models/programs_credits.dart';
 import '../../../common/helpers.dart';
 import '../../app/repository/mocks/user_repository_mock.dart';
 

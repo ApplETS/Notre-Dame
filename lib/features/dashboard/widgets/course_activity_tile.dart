@@ -6,7 +6,7 @@ import 'package:intl/intl.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
 // Project imports:
-import 'package:notredame/features/app/signets-api/models/course_activity.dart';
+import 'package:notredame/data/services/signets-api/models/course_activity.dart';
 
 class CourseActivityTile extends StatelessWidget {
   /// Course to display

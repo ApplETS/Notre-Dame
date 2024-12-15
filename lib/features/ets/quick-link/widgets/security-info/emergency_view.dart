@@ -9,8 +9,8 @@ import 'package:flutter_markdown/flutter_markdown.dart';
 // Project imports:
 import 'package:notredame/features/app/widgets/base_scaffold.dart';
 import 'package:notredame/utils/app_theme.dart';
-import 'package:notredame/utils/locator.dart';
-import 'package:notredame/features/app/integration/launch_url_service.dart';
+import 'package:notredame/locator.dart';
+import 'package:notredame/data/services/launch_url_service.dart';
 
 class EmergencyView extends StatefulWidget {
   final String title;

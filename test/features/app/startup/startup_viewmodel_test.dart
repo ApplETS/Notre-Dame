@@ -4,11 +4,11 @@ import 'package:mockito/mockito.dart';
 
 // Project imports:
 import 'package:notredame/domain/constants/preferences_flags.dart';
-import 'package:notredame/features/app/navigation/navigation_service.dart';
-import 'package:notredame/features/app/navigation/router_paths.dart';
-import 'package:notredame/features/app/repository/user_repository.dart';
+import 'package:notredame/data/services/navigation_service.dart';
+import 'package:notredame/domain/constants/router_paths.dart';
+import 'package:notredame/data/repositories/user_repository.dart';
 import 'package:notredame/features/app/startup/startup_viewmodel.dart';
-import 'package:notredame/features/app/storage/preferences_service.dart';
+import 'package:notredame/data/services/preferences_service.dart';
 import 'package:notredame/features/more/settings/settings_manager.dart';
 import '../../../common/helpers.dart';
 import '../../more/settings/mocks/settings_manager_mock.dart';

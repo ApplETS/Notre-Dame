@@ -3,10 +3,10 @@ import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
 // Project imports:
-import 'package:notredame/features/app/monets_api/models/mon_ets_user.dart';
-import 'package:notredame/features/app/repository/user_repository.dart';
-import 'package:notredame/features/app/signets-api/models/profile_student.dart';
-import 'package:notredame/features/app/signets-api/models/program.dart';
+import 'package:notredame/data/models/mon_ets_user.dart';
+import 'package:notredame/data/repositories/user_repository.dart';
+import 'package:notredame/data/services/signets-api/models/profile_student.dart';
+import 'package:notredame/data/services/signets-api/models/program.dart';
 import 'package:notredame/utils/api_exception.dart';
 import 'user_repository_mock.mocks.dart';
 

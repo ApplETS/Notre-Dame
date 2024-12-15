@@ -8,18 +8,18 @@ import 'package:intl/intl.dart';
 
 // Project imports:
 import 'package:notredame/domain/constants/urls.dart';
-import 'package:notredame/features/app/signets-api/models/course.dart';
-import 'package:notredame/features/app/signets-api/models/course_activity.dart';
-import 'package:notredame/features/app/signets-api/models/course_evaluation.dart';
-import 'package:notredame/features/app/signets-api/models/course_review.dart';
-import 'package:notredame/features/app/signets-api/models/course_summary.dart';
-import 'package:notredame/features/app/signets-api/models/profile_student.dart';
-import 'package:notredame/features/app/signets-api/models/program.dart';
-import 'package:notredame/features/app/signets-api/models/schedule_activity.dart';
-import 'package:notredame/features/app/signets-api/models/session.dart';
-import 'package:notredame/features/app/signets-api/models/signets_errors.dart';
-import 'package:notredame/features/app/signets-api/signets_api_client.dart';
-import 'package:notredame/utils/activity_code.dart';
+import 'package:notredame/data/services/signets-api/models/course.dart';
+import 'package:notredame/data/services/signets-api/models/course_activity.dart';
+import 'package:notredame/data/services/signets-api/models/course_evaluation.dart';
+import 'package:notredame/data/services/signets-api/models/course_review.dart';
+import 'package:notredame/data/services/signets-api/models/course_summary.dart';
+import 'package:notredame/data/services/signets-api/models/profile_student.dart';
+import 'package:notredame/data/services/signets-api/models/program.dart';
+import 'package:notredame/data/services/signets-api/models/schedule_activity.dart';
+import 'package:notredame/data/services/signets-api/models/session.dart';
+import 'package:notredame/data/services/signets-api/models/signets_errors.dart';
+import 'package:notredame/data/services/signets-api/signets_api_client.dart';
+import 'package:notredame/data/models/activity_code.dart';
 import 'package:notredame/utils/api_exception.dart';
 import 'http_client_mock_helper.dart';
 

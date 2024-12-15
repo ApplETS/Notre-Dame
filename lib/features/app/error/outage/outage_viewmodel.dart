@@ -8,10 +8,10 @@ import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 
 // Project imports:
-import 'package:notredame/features/app/analytics/remote_config_service.dart';
-import 'package:notredame/features/app/navigation/navigation_service.dart';
-import 'package:notredame/features/app/navigation/router_paths.dart';
-import 'package:notredame/utils/locator.dart';
+import 'package:notredame/data/services/remote_config_service.dart';
+import 'package:notredame/data/services/navigation_service.dart';
+import 'package:notredame/domain/constants/router_paths.dart';
+import 'package:notredame/locator.dart';
 
 class OutageViewModel extends BaseViewModel {
   final BuildContext _context;

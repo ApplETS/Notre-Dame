@@ -4,19 +4,19 @@ import 'package:http/http.dart';
 import 'package:http/testing.dart';
 
 // Project imports:
-import 'package:notredame/features/ets/events/api-client/hello_api_client.dart';
-import 'package:notredame/features/ets/events/api-client/models/activity_area.dart';
-import 'package:notredame/features/ets/events/api-client/models/news.dart';
-import 'package:notredame/features/ets/events/api-client/models/organizer.dart';
-import 'package:notredame/features/ets/events/api-client/models/paginated_news.dart';
-import 'package:notredame/features/ets/events/api-client/models/report.dart';
+import 'package:notredame/data/services/hello/hello_service.dart';
+import 'package:notredame/data/models/hello/activity_area.dart';
+import 'package:notredame/data/models/hello/news.dart';
+import 'package:notredame/data/models/hello/organizer.dart';
+import 'package:notredame/data/models/hello/paginated_news.dart';
+import 'package:notredame/data/models/hello/report.dart';
 import 'package:notredame/utils/api_response.dart';
 import 'package:notredame/utils/http_exception.dart';
 import '../../../app/signets_api/http_client_mock_helper.dart';
 
 void main() {
   const String helloNewsAPI = "api.hello.ca";
-  late HelloAPIClient service;
+  late HelloService service;
   late MockClient mockClient;
 
   group('HelloApi - ', () {
@@ -24,7 +24,7 @@ void main() {
       // default response stub
       mockClient = MockClient((request) => Future.value(Response("", 200)));
 
-      service = HelloAPIClient(client: mockClient);
+      service = HelloService(client: mockClient);
       service.apiLink = helloNewsAPI;
     });
 
@@ -200,8 +200,8 @@ void main() {
   });
 }
 
-HelloAPIClient buildService(MockClient client) {
-  final apiClient = HelloAPIClient(client: client);
+HelloService buildService(MockClient client) {
+  final apiClient = HelloService(client: client);
   apiClient.apiLink = "api.hello.ca";
   return apiClient;
 }

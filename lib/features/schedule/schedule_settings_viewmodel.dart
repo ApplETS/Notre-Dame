@@ -4,12 +4,12 @@ import 'package:stacked/stacked.dart';
 
 // Project imports:
 import 'package:notredame/domain/constants/preferences_flags.dart';
-import 'package:notredame/features/app/repository/course_repository.dart';
-import 'package:notredame/features/app/signets-api/models/schedule_activity.dart';
+import 'package:notredame/data/repositories/course_repository.dart';
+import 'package:notredame/data/services/signets-api/models/schedule_activity.dart';
 import 'package:notredame/features/more/settings/settings_manager.dart';
-import 'package:notredame/utils/activity_code.dart';
-import 'package:notredame/utils/locator.dart';
-import 'package:notredame/utils/calendar_utils.dart';
+import 'package:notredame/data/models/activity_code.dart';
+import 'package:notredame/locator.dart';
+import 'package:notredame/data/services/calendar_service.dart';
 
 class ScheduleSettingsViewModel
     extends FutureViewModel<Map<PreferencesFlag, dynamic>> {

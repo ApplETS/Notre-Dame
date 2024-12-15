@@ -3,10 +3,10 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:stacked/stacked.dart';
 
 // Project imports:
-import 'package:notredame/features/app/repository/quick_link_repository.dart';
-import 'package:notredame/features/ets/quick-link/models/quick_link.dart';
-import 'package:notredame/features/ets/quick-link/models/quick_link_data.dart';
-import 'package:notredame/utils/locator.dart';
+import 'package:notredame/data/repositories/quick_link_repository.dart';
+import 'package:notredame/data/models/quick_link.dart';
+import 'package:notredame/data/models/quick_link_data.dart';
+import 'package:notredame/locator.dart';
 
 class QuickLinksViewModel extends FutureViewModel<List<QuickLink>> {
   /// Localization class of the application.

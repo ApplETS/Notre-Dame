@@ -11,19 +11,19 @@ import 'package:shimmer/shimmer.dart';
 import 'package:stacked/stacked.dart';
 
 // Project imports:
-import 'package:notredame/features/app/analytics/analytics_service.dart';
-import 'package:notredame/features/app/analytics/remote_config_service.dart';
-import 'package:notredame/features/app/navigation/navigation_service.dart';
-import 'package:notredame/features/app/navigation/router_paths.dart';
+import 'package:notredame/data/services/analytics_service.dart';
+import 'package:notredame/data/services/remote_config_service.dart';
+import 'package:notredame/data/services/navigation_service.dart';
+import 'package:notredame/domain/constants/router_paths.dart';
 import 'package:notredame/features/app/widgets/base_scaffold.dart';
-import 'package:notredame/features/ets/events/api-client/models/activity_area.dart';
-import 'package:notredame/features/ets/events/api-client/models/news.dart';
+import 'package:notredame/data/models/hello/activity_area.dart';
+import 'package:notredame/data/models/hello/news.dart';
 import 'package:notredame/features/ets/events/news/news-details/news_details_viewmodel.dart';
 import 'package:notredame/features/ets/events/report-news/report_news_widget.dart';
 import 'package:notredame/features/schedule/calendar_selection_viewmodel.dart';
 import 'package:notredame/features/schedule/widgets/calendar_selector.dart';
 import 'package:notredame/utils/app_theme.dart';
-import 'package:notredame/utils/locator.dart';
+import 'package:notredame/locator.dart';
 import 'package:notredame/utils/utils.dart';
 
 class NewsDetailsView extends StatefulWidget {

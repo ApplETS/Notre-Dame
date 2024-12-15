@@ -9,7 +9,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:intl/intl.dart';
 
 // Project imports:
-import 'package:notredame/features/app/signets-api/models/course_evaluation.dart';
+import 'package:notredame/data/services/signets-api/models/course_evaluation.dart';
 import 'package:notredame/features/student/grades/widgets/grade_circular_progress.dart';
 import 'package:notredame/utils/app_theme.dart';
 import 'package:notredame/utils/utils.dart';

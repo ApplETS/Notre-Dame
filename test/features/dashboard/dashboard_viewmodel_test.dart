@@ -5,13 +5,13 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 // Project imports:
 import 'package:notredame/domain/constants/preferences_flags.dart';
-import 'package:notredame/features/app/signets-api/models/course.dart';
-import 'package:notredame/features/app/signets-api/models/course_activity.dart';
-import 'package:notredame/features/app/signets-api/models/session.dart';
+import 'package:notredame/data/services/signets-api/models/course.dart';
+import 'package:notredame/data/services/signets-api/models/course_activity.dart';
+import 'package:notredame/data/services/signets-api/models/session.dart';
 import 'package:notredame/features/dashboard/dashboard_viewmodel.dart';
 import 'package:notredame/features/dashboard/progress_bar_text_options.dart';
 import 'package:notredame/features/more/settings/settings_manager.dart';
-import 'package:notredame/utils/activity_code.dart';
+import 'package:notredame/data/models/activity_code.dart';
 import '../../common/helpers.dart';
 import '../app/analytics/mocks/analytics_service_mock.dart';
 import '../app/analytics/mocks/remote_config_service_mock.dart';

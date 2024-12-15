@@ -7,10 +7,10 @@ import 'package:stacked/stacked.dart';
 
 // Project imports:
 import 'package:notredame/domain/constants/app_info.dart';
-import 'package:notredame/features/app/analytics/analytics_service.dart';
-import 'package:notredame/features/app/integration/launch_url_service.dart';
+import 'package:notredame/data/services/analytics_service.dart';
+import 'package:notredame/data/services/launch_url_service.dart';
 import 'package:notredame/features/more/settings/settings_manager.dart';
-import 'package:notredame/utils/locator.dart';
+import 'package:notredame/locator.dart';
 
 class FaqViewModel extends BaseViewModel {
   final SettingsManager _settingsManager = locator<SettingsManager>();

@@ -6,8 +6,8 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 
 // Project imports:
-import 'package:notredame/features/app/repository/course_repository.dart';
-import 'package:notredame/features/app/signets-api/models/schedule_activity.dart';
+import 'package:notredame/data/repositories/course_repository.dart';
+import 'package:notredame/data/services/signets-api/models/schedule_activity.dart';
 import 'package:notredame/features/schedule/schedule_default/schedule_default_viewmodel.dart';
 import '../../../common/helpers.dart';
 

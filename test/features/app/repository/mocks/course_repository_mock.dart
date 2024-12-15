@@ -3,11 +3,11 @@ import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
 // Project imports:
-import 'package:notredame/features/app/repository/course_repository.dart';
-import 'package:notredame/features/app/signets-api/models/course.dart';
-import 'package:notredame/features/app/signets-api/models/course_activity.dart';
-import 'package:notredame/features/app/signets-api/models/schedule_activity.dart';
-import 'package:notredame/features/app/signets-api/models/session.dart';
+import 'package:notredame/data/repositories/course_repository.dart';
+import 'package:notredame/data/services/signets-api/models/course.dart';
+import 'package:notredame/data/services/signets-api/models/course_activity.dart';
+import 'package:notredame/data/services/signets-api/models/schedule_activity.dart';
+import 'package:notredame/data/services/signets-api/models/session.dart';
 import 'package:notredame/utils/api_exception.dart';
 import 'course_repository_mock.mocks.dart';
 

@@ -2,7 +2,7 @@
 import 'package:flutter_svg/flutter_svg.dart';
 
 // Project imports:
-import 'package:notredame/features/ets/quick-link/models/quick_link.dart';
+import 'package:notredame/data/models/quick_link.dart';
 
 class SocialLink extends QuickLink {
   SocialLink({

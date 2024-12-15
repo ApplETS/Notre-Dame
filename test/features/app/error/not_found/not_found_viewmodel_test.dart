@@ -3,10 +3,10 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 
 // Project imports:
-import 'package:notredame/features/app/analytics/analytics_service.dart';
+import 'package:notredame/data/services/analytics_service.dart';
 import 'package:notredame/features/app/error/not_found/not_found_viewmodel.dart';
-import 'package:notredame/features/app/navigation/navigation_service.dart';
-import 'package:notredame/features/app/navigation/router_paths.dart';
+import 'package:notredame/data/services/navigation_service.dart';
+import 'package:notredame/domain/constants/router_paths.dart';
 import '../../../../common/helpers.dart';
 import '../../analytics/mocks/analytics_service_mock.dart';
 import '../../navigation/mocks/navigation_service_mock.dart';

@@ -2,7 +2,7 @@
 import 'package:flutter_test/flutter_test.dart';
 
 // Project imports:
-import 'package:notredame/features/app/signets-api/soap_service.dart';
+import 'package:notredame/data/services/signets-api/soap_service.dart';
 
 void main() {
   group('SoapService - ', () {
