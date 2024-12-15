@@ -12,7 +12,7 @@ import 'package:notredame/data/models/hello/news.dart';
 import 'package:notredame/data/models/hello/news_tags.dart';
 import 'package:notredame/data/models/hello/organizer.dart';
 import 'package:notredame/data/models/hello/paginated_news.dart';
-import 'package:notredame/features/ets/events/author/author_viewmodel.dart';
+import 'package:notredame/ui/ets/events/author/view_model/author_viewmodel.dart';
 import '../../../../common/helpers.dart';
 import '../../../app/repository/mocks/author_repository_mock.dart';
 import '../../../app/repository/mocks/news_repository_mock.dart';

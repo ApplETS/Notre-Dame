@@ -7,8 +7,8 @@ import 'package:flutter_test/flutter_test.dart';
 
 // Project imports:
 import 'package:notredame/data/services/navigation_service.dart';
-import 'package:notredame/features/more/settings/choose_language_view.dart';
-import 'package:notredame/features/more/settings/settings_manager.dart';
+import 'package:notredame/ui/more/settings/choose_language/widgets/choose_language_view.dart';
+import 'package:notredame/data/repositories/settings_repository.dart';
 import '../../../common/helpers.dart';
 
 void main() {
@@ -22,7 +22,7 @@ void main() {
 
     tearDown(() {
       unregister<NavigationService>();
-      unregister<SettingsManager>();
+      unregister<SettingsRepository>();
     });
 
     group('UI - ', () {

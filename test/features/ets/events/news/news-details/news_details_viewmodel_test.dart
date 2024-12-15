@@ -5,8 +5,8 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:notredame/data/models/hello/news.dart';
 import 'package:notredame/data/models/hello/news_tags.dart';
 import 'package:notredame/data/models/hello/organizer.dart';
-import 'package:notredame/features/ets/events/news/news-details/news_details_viewmodel.dart';
-import 'package:notredame/utils/app_theme.dart';
+import 'package:notredame/ui/ets/events/news_details/view_model/news_details_viewmodel.dart';
+import 'package:notredame/ui/core/themes/app_theme.dart';
 
 void main() {
   late NewsDetailsViewModel viewModel;

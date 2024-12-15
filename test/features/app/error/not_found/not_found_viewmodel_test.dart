@@ -4,7 +4,7 @@ import 'package:mockito/mockito.dart';
 
 // Project imports:
 import 'package:notredame/data/services/analytics_service.dart';
-import 'package:notredame/features/app/error/not_found/not_found_viewmodel.dart';
+import 'package:notredame/ui/not_found/view_model/not_found_viewmodel.dart';
 import 'package:notredame/data/services/navigation_service.dart';
 import 'package:notredame/domain/constants/router_paths.dart';
 import '../../../../common/helpers.dart';

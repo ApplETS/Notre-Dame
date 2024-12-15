@@ -7,7 +7,7 @@ import 'package:flutter_test/flutter_test.dart';
 
 // Project imports:
 import 'package:notredame/data/services/signets-api/models/program.dart';
-import 'package:notredame/features/student/widgets/student_program.dart';
+import 'package:notredame/ui/student/widgets/student_program.dart';
 import '../../../common/helpers.dart';
 
 final _program = Program(

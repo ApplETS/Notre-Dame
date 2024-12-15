@@ -6,7 +6,7 @@ import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 // Project imports:
-import 'package:notredame/features/ets/quick-link/widgets/security-info/emergency_view.dart';
+import 'package:notredame/ui/ets/quick_link/security_info/widgets/emergency_view.dart';
 import '../../../../../common/helpers.dart';
 
 void main() {

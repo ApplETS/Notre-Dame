@@ -25,8 +25,8 @@ import 'package:notredame/data/repositories/user_repository.dart';
 import 'package:notredame/data/services/signets-api/signets_api_client.dart';
 import 'package:notredame/data/services/cache_service.dart';
 import 'package:notredame/data/services/preferences_service.dart';
-import 'package:notredame/features/more/feedback/in_app_review_service.dart';
-import 'package:notredame/features/more/settings/settings_manager.dart';
+import 'package:notredame/data/services/in_app_review_service.dart';
+import 'package:notredame/data/repositories/settings_repository.dart';
 import 'package:notredame/locator.dart';
 import '../features/app/analytics/mocks/analytics_service_mock.dart';
 import '../features/app/analytics/mocks/remote_config_service_mock.dart';
@@ -229,12 +229,12 @@ PreferencesServiceMock setupPreferencesServiceMock() {
   return service;
 }
 
-/// Load a mock of the [SettingsManager]
+/// Load a mock of the [SettingsRepository]
 SettingsManagerMock setupSettingsManagerMock() {
-  unregister<SettingsManager>();
+  unregister<SettingsRepository>();
   final service = SettingsManagerMock();
 
-  locator.registerSingleton<SettingsManager>(service);
+  locator.registerSingleton<SettingsRepository>(service);
 
   return service;
 }

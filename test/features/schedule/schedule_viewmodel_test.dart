@@ -12,8 +12,8 @@ import 'package:notredame/data/repositories/course_repository.dart';
 import 'package:notredame/data/services/signets-api/models/course.dart';
 import 'package:notredame/data/services/signets-api/models/course_activity.dart';
 import 'package:notredame/data/services/signets-api/models/schedule_activity.dart';
-import 'package:notredame/features/more/settings/settings_manager.dart';
-import 'package:notredame/features/schedule/schedule_viewmodel.dart';
+import 'package:notredame/data/repositories/settings_repository.dart';
+import 'package:notredame/ui/schedule/view_model/schedule_viewmodel.dart';
 import 'package:notredame/data/models/activity_code.dart';
 import 'package:table_calendar/table_calendar.dart';
 import '../../common/helpers.dart';
@@ -263,7 +263,7 @@ void main() {
 
     tearDown(() {
       unregister<CourseRepository>();
-      unregister<SettingsManager>();
+      unregister<SettingsRepository>();
     });
 
     group("futureToRun - ", () {

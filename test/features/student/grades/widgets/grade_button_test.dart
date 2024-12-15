@@ -8,8 +8,8 @@ import 'package:notredame/data/services/navigation_service.dart';
 import 'package:notredame/domain/constants/router_paths.dart';
 import 'package:notredame/data/services/signets-api/models/course.dart';
 import 'package:notredame/data/services/signets-api/models/course_summary.dart';
-import 'package:notredame/features/more/settings/settings_manager.dart';
-import 'package:notredame/features/student/grades/widgets/grade_button.dart';
+import 'package:notredame/data/repositories/settings_repository.dart';
+import 'package:notredame/ui/student/grades/widgets/grade_button.dart';
 import '../../../../common/helpers.dart';
 import '../../../app/navigation/mocks/navigation_service_mock.dart';
 
@@ -59,7 +59,7 @@ void main() {
     });
 
     tearDown(() {
-      unregister<SettingsManager>();
+      unregister<SettingsRepository>();
       unregister<NavigationService>();
     });
 

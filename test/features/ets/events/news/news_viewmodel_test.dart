@@ -8,8 +8,8 @@ import 'package:notredame/data/repositories/news_repository.dart';
 import 'package:notredame/data/models/hello/news.dart';
 import 'package:notredame/data/models/hello/organizer.dart';
 import 'package:notredame/data/models/hello/paginated_news.dart';
-import 'package:notredame/features/ets/events/news/news_viewmodel.dart';
-import 'package:notredame/features/more/settings/settings_manager.dart';
+import 'package:notredame/ui/ets/events/news/view_model/news_viewmodel.dart';
+import 'package:notredame/data/repositories/settings_repository.dart';
 import 'package:notredame/locator.dart';
 import '../../../../common/helpers.dart';
 import '../../../app/repository/mocks/news_repository_mock.dart';
@@ -74,7 +74,7 @@ void main() {
     tearDown(() {
       locator.unregister<Logger>();
       locator.unregister<NewsRepository>();
-      locator.unregister<SettingsManager>();
+      locator.unregister<SettingsRepository>();
     });
 
     test('NewsViewModel fetch first page', () async {

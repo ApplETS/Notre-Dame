@@ -7,9 +7,9 @@ import 'package:notredame/domain/constants/preferences_flags.dart';
 import 'package:notredame/data/services/navigation_service.dart';
 import 'package:notredame/domain/constants/router_paths.dart';
 import 'package:notredame/data/repositories/user_repository.dart';
-import 'package:notredame/features/app/startup/startup_viewmodel.dart';
+import 'package:notredame/ui/startup/view_model/startup_viewmodel.dart';
 import 'package:notredame/data/services/preferences_service.dart';
-import 'package:notredame/features/more/settings/settings_manager.dart';
+import 'package:notredame/data/repositories/settings_repository.dart';
 import '../../../common/helpers.dart';
 import '../../more/settings/mocks/settings_manager_mock.dart';
 import '../error/mocks/internal_info_service_mock.dart';
@@ -42,7 +42,7 @@ void main() {
     tearDown(() {
       unregister<NavigationService>();
       unregister<UserRepository>();
-      unregister<SettingsManager>();
+      unregister<SettingsRepository>();
       unregister<PreferencesService>();
     });
 

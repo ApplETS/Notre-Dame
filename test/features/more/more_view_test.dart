@@ -9,7 +9,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 // Project imports:
 import 'package:notredame/domain/constants/router_paths.dart';
-import 'package:notredame/features/more/more_view.dart';
+import 'package:notredame/ui/more/widgets/more_view.dart';
 import '../../common/helpers.dart';
 import '../app/analytics/mocks/remote_config_service_mock.dart';
 import '../app/navigation/mocks/navigation_service_mock.dart';

@@ -17,10 +17,10 @@ import 'package:notredame/data/models/hello/news.dart';
 import 'package:notredame/data/models/hello/news_tags.dart';
 import 'package:notredame/data/models/hello/organizer.dart';
 import 'package:notredame/data/models/hello/paginated_news.dart';
-import 'package:notredame/features/ets/events/author/author_view.dart';
-import 'package:notredame/features/ets/events/news/widgets/news_card.dart';
-import 'package:notredame/features/ets/events/social/social_links_card.dart';
-import 'package:notredame/features/more/settings/settings_manager.dart';
+import 'package:notredame/ui/ets/events/author/widgets/author_view.dart';
+import 'package:notredame/ui/ets/events/news/widgets/news_card.dart';
+import 'package:notredame/ui/ets/events/social/widgets/social_links_card.dart';
+import 'package:notredame/data/repositories/settings_repository.dart';
 import '../../../../common/helpers.dart';
 import '../../../app/repository/mocks/author_repository_mock.dart';
 import '../../../app/repository/mocks/news_repository_mock.dart';
@@ -119,7 +119,7 @@ void main() {
     });
 
     tearDown(() {
-      unregister<SettingsManager>();
+      unregister<SettingsRepository>();
       unregister<NewsRepository>();
       unregister<NavigationService>();
       unregister<CourseRepository>();

@@ -11,7 +11,7 @@ import 'package:notredame/data/services/calendar_service.dart';
 // Project imports:
 import 'package:notredame/domain/constants/preferences_flags.dart';
 import 'package:notredame/data/services/signets-api/models/schedule_activity.dart';
-import 'package:notredame/features/schedule/widgets/schedule_settings.dart';
+import 'package:notredame/ui/schedule/widgets/schedule_settings.dart';
 import 'package:notredame/data/models/activity_code.dart';
 import '../../../common/helpers.dart';
 import '../../app/analytics/mocks/remote_config_service_mock.dart';

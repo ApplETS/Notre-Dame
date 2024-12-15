@@ -4,7 +4,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 // Project imports:
-import 'package:notredame/features/student/grades/widgets/grade_circular_progress.dart';
+import 'package:notredame/ui/student/grades/widgets/grade_circular_progress.dart';
 import '../../../../common/helpers.dart';
 
 void main() {

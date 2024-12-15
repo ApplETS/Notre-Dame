@@ -16,8 +16,8 @@ import 'package:notredame/data/services/signets-api/models/course_activity.dart'
 import 'package:notredame/data/services/signets-api/models/session.dart';
 import 'package:notredame/data/services/cache_service.dart';
 import 'package:notredame/data/services/preferences_service.dart';
-import 'package:notredame/features/more/more_viewmodel.dart';
-import 'package:notredame/features/more/settings/settings_manager.dart';
+import 'package:notredame/ui/more/view_model/more_viewmodel.dart';
+import 'package:notredame/data/repositories/settings_repository.dart';
 import '../../common/helpers.dart';
 import '../app/analytics/mocks/remote_config_service_mock.dart';
 import '../app/navigation/mocks/navigation_service_mock.dart';
@@ -143,7 +143,7 @@ void main() {
     tearDown(() {
       unregister<AnalyticsService>();
       unregister<CacheService>();
-      unregister<SettingsManager>();
+      unregister<SettingsRepository>();
       unregister<CourseRepository>();
       unregister<RemoteConfigService>();
       unregister<PreferencesService>();

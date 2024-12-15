@@ -7,10 +7,10 @@ import 'package:mockito/mockito.dart';
 
 // Project imports:
 import 'package:notredame/domain/constants/preferences_flags.dart';
-import 'package:notredame/features/more/settings/settings_manager.dart';
+import 'package:notredame/data/repositories/settings_repository.dart';
 import 'settings_manager_mock.mocks.dart';
 
-@GenerateNiceMocks([MockSpec<SettingsManager>()])
+@GenerateNiceMocks([MockSpec<SettingsRepository>()])
 class SettingsManagerMock extends MockSettingsManager {
   /// Stub the [getScheduleSettings] function of [mock], when called return [toReturn].
   static void stubGetScheduleSettings(SettingsManagerMock mock,

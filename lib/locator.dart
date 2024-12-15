@@ -20,8 +20,8 @@ import 'package:notredame/data/services/signets-api/signets_api_client.dart';
 import 'package:notredame/data/services/cache_service.dart';
 import 'package:notredame/data/services/preferences_service.dart';
 import 'package:notredame/data/services/hello/hello_service.dart';
-import 'package:notredame/features/more/feedback/in_app_review_service.dart';
-import 'package:notredame/features/more/settings/settings_manager.dart';
+import 'package:notredame/data/services/in_app_review_service.dart';
+import 'package:notredame/data/repositories/settings_repository.dart';
 
 GetIt locator = GetIt.instance;
 
@@ -41,7 +41,7 @@ void setupLocator() {
   locator.registerLazySingleton(() => UserRepository());
   locator.registerLazySingleton(() => CourseRepository());
   locator.registerLazySingleton(() => CacheService());
-  locator.registerLazySingleton(() => SettingsManager());
+  locator.registerLazySingleton(() => SettingsRepository());
   locator.registerLazySingleton(() => QuickLinkRepository());
   locator.registerLazySingleton(() => NewsRepository());
   locator.registerLazySingleton(() => AuthorRepository());

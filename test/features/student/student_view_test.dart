@@ -7,9 +7,9 @@ import 'package:flutter_test/flutter_test.dart';
 // Project imports:
 import 'package:notredame/data/services/networking_service.dart';
 import 'package:notredame/data/repositories/course_repository.dart';
-import 'package:notredame/features/app/widgets/base_scaffold.dart';
-import 'package:notredame/features/more/settings/settings_manager.dart';
-import 'package:notredame/features/student/student_view.dart';
+import 'package:notredame/ui/core/ui/base_scaffold.dart';
+import 'package:notredame/data/repositories/settings_repository.dart';
+import 'package:notredame/ui/student/widgets/student_view.dart';
 import '../../common/helpers.dart';
 import '../app/analytics/mocks/analytics_service_mock.dart';
 import '../app/repository/mocks/course_repository_mock.dart';
@@ -34,7 +34,7 @@ void main() {
     tearDown(() {
       unregister<CourseRepository>();
       unregister<NetworkingService>();
-      unregister<SettingsManager>();
+      unregister<SettingsRepository>();
       unregister<AnalyticsServiceMock>();
     });
 

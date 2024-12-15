@@ -11,9 +11,9 @@ import 'package:notredame/data/services/networking_service.dart';
 import 'package:notredame/data/services/navigation_service.dart';
 import 'package:notredame/data/repositories/course_repository.dart';
 import 'package:notredame/data/services/signets-api/models/course.dart';
-import 'package:notredame/features/more/settings/settings_manager.dart';
-import 'package:notredame/features/student/grades/grades_view.dart';
-import 'package:notredame/features/student/grades/widgets/grade_button.dart';
+import 'package:notredame/data/repositories/settings_repository.dart';
+import 'package:notredame/ui/student/grades/widgets/grades_view.dart';
+import 'package:notredame/ui/student/grades/widgets/grade_button.dart';
 import '../../../common/helpers.dart';
 import '../../app/repository/mocks/course_repository_mock.dart';
 
@@ -74,7 +74,7 @@ void main() {
     tearDown(() {
       unregister<CourseRepository>();
       unregister<NetworkingService>();
-      unregister<SettingsManager>();
+      unregister<SettingsRepository>();
       unregister<NavigationService>();
     });
 

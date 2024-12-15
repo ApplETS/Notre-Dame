@@ -8,8 +8,8 @@ import 'package:mockito/mockito.dart';
 
 // Project imports:
 import 'package:notredame/domain/constants/preferences_flags.dart';
-import 'package:notredame/features/more/settings/settings_manager.dart';
-import 'package:notredame/features/more/settings/settings_viewmodel.dart';
+import 'package:notredame/data/repositories/settings_repository.dart';
+import 'package:notredame/ui/more/settings/view_model/settings_viewmodel.dart';
 import '../../../common/helpers.dart';
 import 'mocks/settings_manager_mock.dart';
 
@@ -28,7 +28,7 @@ void main() {
     });
 
     tearDown(() {
-      unregister<SettingsManager>();
+      unregister<SettingsRepository>();
     });
 
     group("futureToRun - ", () {

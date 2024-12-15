@@ -12,9 +12,9 @@ import 'package:notredame/data/services/launch_url_service.dart';
 import 'package:notredame/data/services/navigation_service.dart';
 import 'package:notredame/data/repositories/user_repository.dart';
 import 'package:notredame/data/services/preferences_service.dart';
-import 'package:notredame/features/more/settings/settings_manager.dart';
-import 'package:notredame/features/welcome/login/login_view.dart';
-import 'package:notredame/features/welcome/widgets/password_text_field.dart';
+import 'package:notredame/data/repositories/settings_repository.dart';
+import 'package:notredame/ui/welcome/widgets/login_view.dart';
+import 'package:notredame/ui/welcome/widgets/password_text_field.dart';
 import '../../../common/helpers.dart';
 
 void main() {
@@ -36,7 +36,7 @@ void main() {
     tearDown(() {
       unregister<UserRepository>();
       unregister<NavigationService>();
-      unregister<SettingsManager>();
+      unregister<SettingsRepository>();
       unregister<PreferencesService>();
       unregister<LaunchUrlService>();
       unregister<AnalyticsService>();

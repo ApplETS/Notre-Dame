@@ -7,8 +7,8 @@ import 'package:notredame/data/services/calendar_service.dart';
 // Project imports:
 import 'package:notredame/domain/constants/preferences_flags.dart';
 import 'package:notredame/data/services/signets-api/models/schedule_activity.dart';
-import 'package:notredame/features/more/settings/settings_manager.dart';
-import 'package:notredame/features/schedule/schedule_settings_viewmodel.dart';
+import 'package:notredame/data/repositories/settings_repository.dart';
+import 'package:notredame/ui/schedule/view_model/schedule_settings_viewmodel.dart';
 import 'package:notredame/data/models/activity_code.dart';
 import '../../common/helpers.dart';
 import '../app/repository/mocks/course_repository_mock.dart';
@@ -121,7 +121,7 @@ void main() {
     });
 
     tearDown(() {
-      unregister<SettingsManager>();
+      unregister<SettingsRepository>();
     });
 
     group("futureToRun - ", () {

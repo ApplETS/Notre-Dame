@@ -8,7 +8,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 // Project imports:
 import 'package:notredame/data/models/emergency_procedures.dart';
-import 'package:notredame/features/ets/quick-link/widgets/security-info/security_view.dart';
+import 'package:notredame/ui/ets/quick_link/security_info/widgets/security_view.dart';
 import '../../../../../common/helpers.dart';
 
 void main() {

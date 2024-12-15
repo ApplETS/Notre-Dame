@@ -3,7 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:shimmer/shimmer.dart';
 
 // Project imports:
-import 'package:notredame/features/ets/events/author/author_info_skeleton.dart';
+import 'package:notredame/ui/ets/events/author/widgets/author_info_skeleton.dart';
 import '../../../../common/helpers.dart';
 
 void main() {

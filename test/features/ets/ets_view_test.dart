@@ -11,13 +11,13 @@ import 'package:notredame/data/services/networking_service.dart';
 import 'package:notredame/data/services/navigation_service.dart';
 import 'package:notredame/data/repositories/course_repository.dart';
 import 'package:notredame/data/repositories/news_repository.dart';
-import 'package:notredame/features/app/widgets/base_scaffold.dart';
-import 'package:notredame/features/ets/ets_view.dart';
+import 'package:notredame/ui/core/ui/base_scaffold.dart';
+import 'package:notredame/ui/ets/widgets/ets_view.dart';
 import 'package:notredame/data/models/hello/news.dart';
 import 'package:notredame/data/models/hello/news_tags.dart';
 import 'package:notredame/data/models/hello/organizer.dart';
 import 'package:notredame/data/models/hello/paginated_news.dart';
-import 'package:notredame/features/more/settings/settings_manager.dart';
+import 'package:notredame/data/repositories/settings_repository.dart';
 import '../../common/helpers.dart';
 import '../app/analytics/mocks/remote_config_service_mock.dart';
 import '../app/repository/mocks/news_repository_mock.dart';
@@ -137,7 +137,7 @@ void main() {
     });
 
     tearDown(() {
-      unregister<SettingsManager>();
+      unregister<SettingsRepository>();
       unregister<NewsRepository>();
       unregister<NavigationService>();
       unregister<CourseRepository>();

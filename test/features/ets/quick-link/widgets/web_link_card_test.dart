@@ -10,7 +10,7 @@ import 'package:notredame/data/services/analytics_service.dart';
 import 'package:notredame/data/services/internal_info_service.dart';
 import 'package:notredame/data/services/navigation_service.dart';
 import 'package:notredame/data/models/quick_link.dart';
-import 'package:notredame/features/ets/quick-link/widgets/web_link_card.dart';
+import 'package:notredame/ui/ets/quick_link/widgets/web_link_card.dart';
 import '../../../../common/helpers.dart';
 import '../../../app/analytics/mocks/analytics_service_mock.dart';
 import '../../../app/integration/mocks/launch_url_service_mock.dart';

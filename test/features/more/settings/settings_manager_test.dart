@@ -10,7 +10,7 @@ import 'package:notredame/data/services/calendar_service.dart';
 // Project imports:
 import 'package:notredame/domain/constants/preferences_flags.dart';
 import 'package:notredame/data/services/preferences_service.dart';
-import 'package:notredame/features/more/settings/settings_manager.dart';
+import 'package:notredame/data/repositories/settings_repository.dart';
 import '../../../common/helpers.dart';
 import '../../app/analytics/mocks/analytics_service_mock.dart';
 import '../../app/analytics/mocks/remote_config_service_mock.dart';
@@ -21,7 +21,7 @@ void main() {
   late RemoteConfigServiceMock remoteConfigServiceMock;
   late PreferencesServiceMock preferencesServiceMock;
 
-  late SettingsManager manager;
+  late SettingsRepository manager;
 
   group("SettingsManager - ", () {
     setUp(() async {
@@ -33,7 +33,7 @@ void main() {
 
       await setupAppIntl();
 
-      manager = SettingsManager();
+      manager = SettingsRepository();
     });
 
     tearDown(() {
@@ -124,7 +124,7 @@ void main() {
             .called(1);
 
         verify(analyticsServiceMock.logEvent(
-                "${SettingsManager.tag}_${flag.name}",
+                "${SettingsRepository.tag}_${flag.name}",
                 any))
             .called(1);
 
@@ -135,7 +135,7 @@ void main() {
             .called(1);
 
         verify(analyticsServiceMock.logEvent(
-                "${SettingsManager.tag}_${flag.name}",
+                "${SettingsRepository.tag}_${flag.name}",
                 any))
             .called(1);
 
@@ -146,7 +146,7 @@ void main() {
             .called(1);
 
         verify(analyticsServiceMock.logEvent(
-                "${SettingsManager.tag}_${flag.name}",
+                "${SettingsRepository.tag}_${flag.name}",
                 any))
             .called(1);
 
@@ -186,7 +186,7 @@ void main() {
             .called(1);
 
         verify(analyticsServiceMock.logEvent(
-                "${SettingsManager.tag}_${flag.name}",
+                "${SettingsRepository.tag}_${flag.name}",
                 any))
             .called(1);
 
@@ -202,11 +202,11 @@ void main() {
             .called(1);
 
         untilCalled(analyticsServiceMock.logEvent(
-            "${SettingsManager.tag}_${flag.name}",
+            "${SettingsRepository.tag}_${flag.name}",
             any));
 
         verify(analyticsServiceMock.logEvent(
-                "${SettingsManager.tag}_${flag.name}",
+                "${SettingsRepository.tag}_${flag.name}",
                 any))
             .called(1);
 
@@ -216,11 +216,11 @@ void main() {
             .called(1);
 
         untilCalled(analyticsServiceMock.logEvent(
-            "${SettingsManager.tag}_${flag.name}",
+            "${SettingsRepository.tag}_${flag.name}",
             any));
 
         verify(analyticsServiceMock.logEvent(
-                "${SettingsManager.tag}_${flag.name}",
+                "${SettingsRepository.tag}_${flag.name}",
                 any))
             .called(1);
 
@@ -294,10 +294,10 @@ void main() {
               "setString should return true if the PreferenceService return true");
 
       untilCalled(analyticsServiceMock.logEvent(
-          "${SettingsManager.tag}_${flag.name}", any));
+          "${SettingsRepository.tag}_${flag.name}", any));
 
       verify(analyticsServiceMock.logEvent(
-              "${SettingsManager.tag}_${flag.name}",
+              "${SettingsRepository.tag}_${flag.name}",
               any))
           .called(1);
       verify(preferencesServiceMock.setString(flag, any));
@@ -312,10 +312,10 @@ void main() {
               "setInt should return true if the PreferenceService return true");
 
       untilCalled(analyticsServiceMock.logEvent(
-          "${SettingsManager.tag}_${flag.name}", any));
+          "${SettingsRepository.tag}_${flag.name}", any));
 
       verify(analyticsServiceMock.logEvent(
-              "${SettingsManager.tag}_${flag.name}",
+              "${SettingsRepository.tag}_${flag.name}",
               any))
           .called(1);
       verify(preferencesServiceMock.setInt(flag, any));
@@ -330,10 +330,10 @@ void main() {
               "setString should return true if the PreferenceService return true");
 
       untilCalled(analyticsServiceMock.logEvent(
-          "${SettingsManager.tag}_${flag.name}", any));
+          "${SettingsRepository.tag}_${flag.name}", any));
 
       verify(analyticsServiceMock.logEvent(
-              "${SettingsManager.tag}_${flag.name}",
+              "${SettingsRepository.tag}_${flag.name}",
               any))
           .called(1);
       verify(preferencesServiceMock.getString(flag));
@@ -348,10 +348,10 @@ void main() {
               "setString should return true if the PreferenceService return true");
 
       untilCalled(analyticsServiceMock.logEvent(
-          "${SettingsManager.tag}_${flag.name}", any));
+          "${SettingsRepository.tag}_${flag.name}", any));
 
       verify(analyticsServiceMock.logEvent(
-              "${SettingsManager.tag}_${flag.name}",
+              "${SettingsRepository.tag}_${flag.name}",
               any))
           .called(1);
       verify(preferencesServiceMock.setBool(flag, value: anyNamed("value")));

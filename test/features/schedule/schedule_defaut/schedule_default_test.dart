@@ -4,7 +4,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 // Project imports:
-import 'package:notredame/features/schedule/schedule_default/schedule_default.dart';
+import 'package:notredame/ui/schedule/schedule_default/widgets/schedule_default.dart';
 import '../../../common/helpers.dart';
 
 void main() {

@@ -8,8 +8,8 @@ import 'package:notredame/data/repositories/course_repository.dart';
 import 'package:notredame/data/services/signets-api/models/course.dart';
 import 'package:notredame/data/services/signets-api/models/course_evaluation.dart';
 import 'package:notredame/data/services/signets-api/models/course_summary.dart';
-import 'package:notredame/features/more/settings/settings_manager.dart';
-import 'package:notredame/features/student/grades/grade_details/grades_details_viewmodel.dart';
+import 'package:notredame/data/repositories/settings_repository.dart';
+import 'package:notredame/ui/student/grades/grade_details/view_model/grades_details_viewmodel.dart';
 import '../../../../common/helpers.dart';
 import '../../../app/repository/mocks/course_repository_mock.dart';
 
@@ -94,7 +94,7 @@ void main() {
 
     tearDown(() {
       unregister<CourseRepository>();
-      unregister<SettingsManager>();
+      unregister<SettingsRepository>();
     });
 
     group('FutureToRun - -', () {

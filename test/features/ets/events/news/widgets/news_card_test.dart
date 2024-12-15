@@ -8,7 +8,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:notredame/data/models/hello/news.dart';
 import 'package:notredame/data/models/hello/news_tags.dart';
 import 'package:notredame/data/models/hello/organizer.dart';
-import 'package:notredame/features/ets/events/news/widgets/news_card.dart';
+import 'package:notredame/ui/ets/events/news/widgets/news_card.dart';
 import '../../../../../common/helpers.dart';
 
 void main() {

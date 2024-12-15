@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 // Project imports:
-import 'package:notredame/features/app/widgets/dismissible_card.dart';
+import 'package:notredame/ui/core/ui/dismissible_card.dart';
 import '../../../common/helpers.dart';
 
 void main() {

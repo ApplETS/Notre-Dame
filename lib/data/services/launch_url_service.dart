@@ -5,12 +5,12 @@ import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:url_launcher/url_launcher.dart' as url_launch;
 
 // Project imports:
-import 'package:notredame/features/more/settings/settings_manager.dart';
-import 'package:notredame/utils/app_theme.dart';
+import 'package:notredame/data/repositories/settings_repository.dart';
+import 'package:notredame/ui/core/themes/app_theme.dart';
 import 'package:notredame/locator.dart';
 
 class LaunchUrlService {
-  final SettingsManager settingsManager = locator<SettingsManager>();
+  final SettingsRepository settingsManager = locator<SettingsRepository>();
   final browser = ChromeSafariBrowser();
 
   Future<void> writeEmail(String emailAddress, String subject) async {

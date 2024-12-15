@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 // Project imports:
-import 'package:notredame/features/app/error/not_found/not_found_view.dart';
+import 'package:notredame/ui/not_found/widgets/not_found_view.dart';
 import '../../../../common/helpers.dart';
 
 void main() {

@@ -8,9 +8,9 @@ import 'package:notredame/domain/constants/preferences_flags.dart';
 import 'package:notredame/data/services/signets-api/models/course.dart';
 import 'package:notredame/data/services/signets-api/models/course_activity.dart';
 import 'package:notredame/data/services/signets-api/models/session.dart';
-import 'package:notredame/features/dashboard/dashboard_viewmodel.dart';
-import 'package:notredame/features/dashboard/progress_bar_text_options.dart';
-import 'package:notredame/features/more/settings/settings_manager.dart';
+import 'package:notredame/ui/dashboard/view_model/dashboard_viewmodel.dart';
+import 'package:notredame/ui/dashboard/view_model/progress_bar_text_options.dart';
+import 'package:notredame/data/repositories/settings_repository.dart';
 import 'package:notredame/data/models/activity_code.dart';
 import '../../common/helpers.dart';
 import '../app/analytics/mocks/analytics_service_mock.dart';
@@ -225,7 +225,7 @@ void main() {
     });
 
     tearDown(() {
-      unregister<SettingsManager>();
+      unregister<SettingsRepository>();
     });
 
     group('futureToRunGrades -', () {
