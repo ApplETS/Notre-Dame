@@ -9,7 +9,7 @@ import 'package:notredame/data/repositories/quick_link_repository.dart';
 import 'package:notredame/data/models/quick_links.dart';
 import 'package:notredame/ui/ets/quick_link/widgets/quick_links_view.dart';
 import 'package:notredame/ui/ets/quick_link/widgets/web_link_card.dart';
-import '../../../common/helpers.dart';
+import '../../../helpers.dart';
 import '../../app/analytics/mocks/analytics_service_mock.dart';
 import '../../app/error/mocks/internal_info_service_mock.dart';
 import '../../app/navigation/mocks/navigation_service_mock.dart';

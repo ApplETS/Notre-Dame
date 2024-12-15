@@ -16,7 +16,7 @@ import 'package:notredame/data/repositories/settings_repository.dart';
 import 'package:notredame/ui/schedule/view_model/schedule_viewmodel.dart';
 import 'package:notredame/data/models/activity_code.dart';
 import 'package:table_calendar/table_calendar.dart';
-import '../../common/helpers.dart';
+import '../../helpers.dart';
 import '../app/repository/mocks/course_repository_mock.dart';
 import '../more/settings/mocks/settings_manager_mock.dart';
 

@@ -4,7 +4,7 @@ import 'package:shimmer/shimmer.dart';
 
 // Project imports:
 import 'package:notredame/ui/ets/events/news/widgets/news_card_skeleton.dart';
-import '../../../../../common/helpers.dart';
+import '../../../../../helpers.dart';
 
 void main() {
   group('News card skeleton Tests', () {

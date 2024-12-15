@@ -13,7 +13,7 @@ import 'package:notredame/domain/constants/router_paths.dart';
 import 'package:notredame/data/models/quick_link.dart';
 import 'package:notredame/data/repositories/settings_repository.dart';
 import 'package:notredame/ui/ets/quick_link/widgets/web_link_card_viewmodel.dart';
-import '../../../../common/helpers.dart';
+import '../../../../helpers.dart';
 import '../../../app/analytics/mocks/analytics_service_mock.dart';
 import '../../../app/error/mocks/internal_info_service_mock.dart';
 import '../../../app/integration/mocks/launch_url_service_mock.dart';

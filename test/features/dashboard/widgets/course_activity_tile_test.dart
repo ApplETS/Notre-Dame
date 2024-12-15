@@ -7,7 +7,7 @@ import 'package:flutter_test/flutter_test.dart';
 // Project imports:
 import 'package:notredame/data/services/signets-api/models/course_activity.dart';
 import 'package:notredame/ui/dashboard/widgets/course_activity_tile.dart';
-import '../../../common/helpers.dart';
+import '../../../helpers.dart';
 
 final CourseActivity course = CourseActivity(
     courseGroup: 'GEN101-01',

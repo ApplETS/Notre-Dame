@@ -13,7 +13,7 @@ import 'package:notredame/domain/constants/preferences_flags.dart';
 import 'package:notredame/data/services/signets-api/models/schedule_activity.dart';
 import 'package:notredame/ui/schedule/widgets/schedule_settings.dart';
 import 'package:notredame/data/models/activity_code.dart';
-import '../../../common/helpers.dart';
+import '../../../helpers.dart';
 import '../../app/analytics/mocks/remote_config_service_mock.dart';
 import '../../app/repository/mocks/course_repository_mock.dart';
 import '../../more/settings/mocks/settings_manager_mock.dart';

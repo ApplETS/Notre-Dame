@@ -13,7 +13,7 @@ import 'package:notredame/data/repositories/quick_link_repository.dart';
 import 'package:notredame/data/services/cache_service.dart';
 import 'package:notredame/data/models/quick_link.dart';
 import 'package:notredame/data/models/quick_link_data.dart';
-import '../../../common/helpers.dart';
+import '../../../helpers.dart';
 import '../storage/mocks/cache_manager_mock.dart';
 
 void main() {

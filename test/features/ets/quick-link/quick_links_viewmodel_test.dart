@@ -8,7 +8,7 @@ import 'package:notredame/data/models/quick_link.dart';
 import 'package:notredame/data/models/quick_link_data.dart';
 import 'package:notredame/data/models/quick_links.dart';
 import 'package:notredame/ui/ets/quick_link/view_model/quick_links_viewmodel.dart';
-import '../../../common/helpers.dart';
+import '../../../helpers.dart';
 import '../../app/repository/mocks/quick_links_repository_mock.dart';
 
 void main() {

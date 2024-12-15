@@ -18,7 +18,7 @@ import 'package:notredame/data/models/hello/news_tags.dart';
 import 'package:notredame/data/models/hello/organizer.dart';
 import 'package:notredame/data/models/hello/paginated_news.dart';
 import 'package:notredame/data/repositories/settings_repository.dart';
-import '../../common/helpers.dart';
+import '../../helpers.dart';
 import '../app/analytics/mocks/remote_config_service_mock.dart';
 import '../app/repository/mocks/news_repository_mock.dart';
 

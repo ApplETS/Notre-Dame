@@ -5,7 +5,7 @@ import 'package:flutter_test/flutter_test.dart';
 
 // Project imports:
 import 'package:notredame/ui/schedule/schedule_default/widgets/schedule_default.dart';
-import '../../../common/helpers.dart';
+import '../../../helpers.dart';
 
 void main() {
   late AppIntl intl;

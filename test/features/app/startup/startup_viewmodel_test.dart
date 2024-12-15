@@ -10,7 +10,7 @@ import 'package:notredame/data/repositories/user_repository.dart';
 import 'package:notredame/ui/startup/view_model/startup_viewmodel.dart';
 import 'package:notredame/data/services/preferences_service.dart';
 import 'package:notredame/data/repositories/settings_repository.dart';
-import '../../../common/helpers.dart';
+import '../../../helpers.dart';
 import '../../more/settings/mocks/settings_manager_mock.dart';
 import '../error/mocks/internal_info_service_mock.dart';
 import '../integration/mocks/networking_service_mock.dart';

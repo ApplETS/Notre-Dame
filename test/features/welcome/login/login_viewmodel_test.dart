@@ -8,7 +8,7 @@ import 'package:notredame/data/services/navigation_service.dart';
 import 'package:notredame/domain/constants/router_paths.dart';
 import 'package:notredame/data/repositories/user_repository.dart';
 import 'package:notredame/ui/welcome/view_model/login_viewmodel.dart';
-import '../../../common/helpers.dart';
+import '../../../helpers.dart';
 import '../../app/navigation/mocks/navigation_service_mock.dart';
 import '../../app/repository/mocks/user_repository_mock.dart';
 

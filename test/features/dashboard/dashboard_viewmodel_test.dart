@@ -12,7 +12,7 @@ import 'package:notredame/ui/dashboard/view_model/dashboard_viewmodel.dart';
 import 'package:notredame/ui/dashboard/view_model/progress_bar_text_options.dart';
 import 'package:notredame/data/repositories/settings_repository.dart';
 import 'package:notredame/data/models/activity_code.dart';
-import '../../common/helpers.dart';
+import '../../helpers.dart';
 import '../app/analytics/mocks/analytics_service_mock.dart';
 import '../app/analytics/mocks/remote_config_service_mock.dart';
 import '../app/repository/mocks/course_repository_mock.dart';

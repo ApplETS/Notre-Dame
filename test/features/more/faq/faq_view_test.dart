@@ -9,7 +9,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 // Project imports:
 import 'package:notredame/ui/more/faq/widgets/faq_view.dart';
 import 'package:notredame/ui/more/faq/models/faq.dart';
-import '../../../common/helpers.dart';
+import '../../../helpers.dart';
 import '../settings/mocks/settings_manager_mock.dart';
 
 void main() {

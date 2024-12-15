@@ -5,7 +5,7 @@ import 'package:flutter_test/flutter_test.dart';
 
 // Project imports:
 import 'package:notredame/ui/student/grades/widgets/grade_circular_progress.dart';
-import '../../../../common/helpers.dart';
+import '../../../../helpers.dart';
 
 void main() {
   late AppIntl intl;

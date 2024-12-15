@@ -14,7 +14,7 @@ import 'package:notredame/data/services/signets-api/models/course_review.dart';
 import 'package:notredame/data/services/signets-api/models/course_summary.dart';
 import 'package:notredame/data/repositories/settings_repository.dart';
 import 'package:notredame/ui/student/grades/grade_details/widgets/grade_details_view.dart';
-import '../../../../common/helpers.dart';
+import '../../../../helpers.dart';
 import '../../../app/repository/mocks/course_repository_mock.dart';
 
 void main() {

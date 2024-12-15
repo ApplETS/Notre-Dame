@@ -17,7 +17,7 @@ import 'package:notredame/data/services/signets-api/models/course_activity.dart'
 import 'package:notredame/data/repositories/settings_repository.dart';
 import 'package:notredame/ui/schedule/widgets/schedule_view.dart';
 import 'package:notredame/ui/schedule/widgets/schedule_settings.dart';
-import '../../common/helpers.dart';
+import '../../helpers.dart';
 import '../app/analytics/mocks/remote_config_service_mock.dart';
 import '../app/repository/mocks/course_repository_mock.dart';
 import '../more/settings/mocks/settings_manager_mock.dart';

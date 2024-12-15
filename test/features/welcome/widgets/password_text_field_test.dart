@@ -7,7 +7,7 @@ import 'package:flutter_test/flutter_test.dart';
 
 // Project imports:
 import 'package:notredame/ui/welcome/widgets/password_text_field.dart';
-import '../../../common/helpers.dart';
+import '../../../helpers.dart';
 
 void main() {
   late AppIntl intl;

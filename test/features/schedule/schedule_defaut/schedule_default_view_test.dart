@@ -9,7 +9,7 @@ import 'package:notredame/data/services/navigation_service.dart';
 import 'package:notredame/data/repositories/course_repository.dart';
 import 'package:notredame/ui/schedule/schedule_default/widgets/schedule_default.dart';
 import 'package:notredame/ui/schedule/schedule_default/widgets/schedule_default_view.dart';
-import '../../../common/helpers.dart';
+import '../../../helpers.dart';
 import '../../app/repository/mocks/course_repository_mock.mocks.dart';
 
 void main() {

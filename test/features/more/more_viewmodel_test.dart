@@ -18,7 +18,7 @@ import 'package:notredame/data/services/cache_service.dart';
 import 'package:notredame/data/services/preferences_service.dart';
 import 'package:notredame/ui/more/view_model/more_viewmodel.dart';
 import 'package:notredame/data/repositories/settings_repository.dart';
-import '../../common/helpers.dart';
+import '../../helpers.dart';
 import '../app/analytics/mocks/remote_config_service_mock.dart';
 import '../app/navigation/mocks/navigation_service_mock.dart';
 import '../app/repository/mocks/course_repository_mock.dart';

@@ -13,7 +13,7 @@ import 'package:notredame/data/models/hello/news.dart';
 import 'package:notredame/data/models/hello/news_tags.dart';
 import 'package:notredame/data/models/hello/organizer.dart';
 import 'package:notredame/ui/ets/events/news_details/widgets/news_details_view.dart';
-import '../../../../../common/helpers.dart';
+import '../../../../../helpers.dart';
 
 void main() {
   late News sampleNews;

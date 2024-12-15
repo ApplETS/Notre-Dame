@@ -11,7 +11,7 @@ import 'package:notredame/data/services/calendar_service.dart';
 import 'package:notredame/domain/constants/preferences_flags.dart';
 import 'package:notredame/data/services/preferences_service.dart';
 import 'package:notredame/data/repositories/settings_repository.dart';
-import '../../../common/helpers.dart';
+import '../../../helpers.dart';
 import '../../app/analytics/mocks/analytics_service_mock.dart';
 import '../../app/analytics/mocks/remote_config_service_mock.dart';
 import '../../app/storage/mocks/preferences_service_mock.dart';

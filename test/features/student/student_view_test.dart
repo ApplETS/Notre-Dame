@@ -10,7 +10,7 @@ import 'package:notredame/data/repositories/course_repository.dart';
 import 'package:notredame/ui/core/ui/base_scaffold.dart';
 import 'package:notredame/data/repositories/settings_repository.dart';
 import 'package:notredame/ui/student/widgets/student_view.dart';
-import '../../common/helpers.dart';
+import '../../helpers.dart';
 import '../app/analytics/mocks/analytics_service_mock.dart';
 import '../app/repository/mocks/course_repository_mock.dart';
 

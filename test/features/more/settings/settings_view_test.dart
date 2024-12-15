@@ -8,7 +8,7 @@ import 'package:flutter_test/flutter_test.dart';
 // Project imports:
 import 'package:notredame/data/services/networking_service.dart';
 import 'package:notredame/ui/more/settings/widgets/settings_view.dart';
-import '../../../common/helpers.dart';
+import '../../../helpers.dart';
 import '../../app/analytics/mocks/analytics_service_mock.dart';
 
 void main() {

@@ -9,7 +9,7 @@ import 'package:mockito/mockito.dart';
 import 'package:notredame/data/repositories/course_repository.dart';
 import 'package:notredame/data/services/signets-api/models/schedule_activity.dart';
 import 'package:notredame/ui/schedule/schedule_default/view_model/schedule_default_viewmodel.dart';
-import '../../../common/helpers.dart';
+import '../../../helpers.dart';
 
 void main() {
   late CourseRepository mockCourseRepository;

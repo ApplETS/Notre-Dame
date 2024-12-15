@@ -6,7 +6,7 @@ import 'package:flutter_test/flutter_test.dart';
 
 // Project imports:
 import 'package:notredame/ui/not_found/widgets/not_found_view.dart';
-import '../../../../common/helpers.dart';
+import '../../../../helpers.dart';
 
 void main() {
   group('NotFoundView - ', () {

@@ -16,7 +16,7 @@ import 'package:notredame/data/models/hello/paginated_news.dart';
 import 'package:notredame/ui/ets/events/news/widgets/news_view.dart';
 import 'package:notredame/ui/ets/events/news/widgets/news_card.dart';
 import 'package:notredame/data/repositories/settings_repository.dart';
-import '../../../../common/helpers.dart';
+import '../../../../helpers.dart';
 import '../../../app/repository/mocks/news_repository_mock.dart';
 
 void main() {

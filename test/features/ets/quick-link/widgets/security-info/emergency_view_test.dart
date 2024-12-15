@@ -7,7 +7,7 @@ import 'package:flutter_test/flutter_test.dart';
 
 // Project imports:
 import 'package:notredame/ui/ets/quick_link/security_info/widgets/emergency_view.dart';
-import '../../../../../common/helpers.dart';
+import '../../../../../helpers.dart';
 
 void main() {
   group('EmergencyView - ', () {

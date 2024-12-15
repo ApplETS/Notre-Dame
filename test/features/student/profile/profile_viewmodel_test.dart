@@ -8,7 +8,7 @@ import 'package:notredame/data/services/signets-api/models/profile_student.dart'
 import 'package:notredame/data/services/signets-api/models/program.dart';
 import 'package:notredame/ui/student/profile/view_model/profile_viewmodel.dart';
 import 'package:notredame/data/models/programs_credits.dart';
-import '../../../common/helpers.dart';
+import '../../../helpers.dart';
 import '../../app/repository/mocks/user_repository_mock.dart';
 
 void main() {

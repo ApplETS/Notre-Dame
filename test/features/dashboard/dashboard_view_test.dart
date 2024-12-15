@@ -15,7 +15,7 @@ import 'package:notredame/ui/core/ui/dismissible_card.dart';
 import 'package:notredame/ui/dashboard/widgets/dashboard_view.dart';
 import 'package:notredame/ui/dashboard/widgets/course_activity_tile.dart';
 import 'package:notredame/ui/student/grades/widgets/grade_button.dart';
-import '../../common/helpers.dart';
+import '../../helpers.dart';
 import '../app/analytics/mocks/remote_config_service_mock.dart';
 import '../app/repository/mocks/course_repository_mock.dart';
 import '../more/feedback/mocks/in_app_review_service_mock.dart';

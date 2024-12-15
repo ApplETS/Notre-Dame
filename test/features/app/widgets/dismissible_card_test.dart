@@ -6,7 +6,7 @@ import 'package:flutter_test/flutter_test.dart';
 
 // Project imports:
 import 'package:notredame/ui/core/ui/dismissible_card.dart';
-import '../../../common/helpers.dart';
+import '../../../helpers.dart';
 
 void main() {
   const String cardText = "I'm a dismissible card !";
