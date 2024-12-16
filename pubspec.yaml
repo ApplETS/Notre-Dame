@@ -49,8 +49,8 @@ dependencies:
   flutter_markdown: ^0.7.4+1
 
   # flutter community
-  package_info_plus: ^8.1.0
-  connectivity_plus: ^6.1.0
+  package_info_plus: ^8.1.2
+  connectivity_plus: ^6.1.1
   flutter_svg: ^2.0.16
   font_awesome_flutter: ^10.8.0
   device_info_plus: ^11.2.0
