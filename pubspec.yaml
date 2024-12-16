@@ -53,7 +53,7 @@ dependencies:
   connectivity_plus: ^6.1.0
   flutter_svg: ^2.0.16
   font_awesome_flutter: ^10.8.0
-  device_info_plus: ^11.1.0
+  device_info_plus: ^11.2.0
   share_plus: ^10.1.1
 
   # Other
