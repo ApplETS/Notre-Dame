@@ -1,6 +1,6 @@
 // Flutter imports:
 import 'package:flutter/material.dart';
-import 'package:notredame/ui/ets/quick_link/widgets/web_link_card_viewmodel.dart';
+import 'package:notredame/ui/ets/quick_link/view_model/web_link_card_viewmodel.dart';
 
 // Package imports:
 import 'package:stacked/stacked.dart';

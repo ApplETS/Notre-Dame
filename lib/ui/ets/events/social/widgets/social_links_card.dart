@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 // Package imports:
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:notredame/ui/ets/quick_link/widgets/web_link_card_viewmodel.dart';
+import 'package:notredame/ui/ets/quick_link/view_model/web_link_card_viewmodel.dart';
 import 'package:stacked/stacked.dart';
 
 // Project imports:

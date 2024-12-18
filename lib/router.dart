@@ -1,6 +1,6 @@
 // Flutter imports:
 import 'package:flutter/material.dart';
-import 'package:notredame/ui/more/settings/choose_language_view.dart';
+import 'package:notredame/ui/more/settings/choose_language/widgets/choose_language_view.dart';
 
 // Project imports:
 import 'package:notredame/ui/not_found/widgets/not_found_view.dart';

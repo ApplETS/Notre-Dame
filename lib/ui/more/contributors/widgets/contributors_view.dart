@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 // Package imports:
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:github/github.dart';
-import 'package:notredame/ui/more/contributors/contributors_viewmodel.dart';
+import 'package:notredame/ui/more/contributors/view_model/contributors_viewmodel.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 import 'package:stacked/stacked.dart';
 
