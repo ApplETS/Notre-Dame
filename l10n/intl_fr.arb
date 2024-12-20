@@ -349,5 +349,10 @@
   "ticket_status_closed": "Fermé",
   "loading": "Chargement...",
 
-  "no_schedule_available": "Il n'y a aucun événement à l'horaire pour l'instant"
+  "no_schedule_available": "Il n'y a aucun événement à l'horaire pour l'instant",
+
+  "upcoming_events": "Évènements à venir",
+  "semester_start_date": "Début de la session",
+  "semester_end_date": "Fin de la session",
+  "registration_start_date": "Début des inscriptions"
 }

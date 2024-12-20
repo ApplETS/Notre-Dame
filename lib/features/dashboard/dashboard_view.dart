@@ -6,6 +6,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 import 'package:stacked/stacked.dart';
+import 'package:intl/intl.dart';
 
 // Project imports:
 import 'package:notredame/constants/preferences_flags.dart';
@@ -201,7 +202,7 @@ class _DashboardViewState extends State<DashboardView>
       );
 
   Widget _buildProgressBarCard(
-          DashboardViewModel model, PreferencesFlag flag) =>
+      DashboardViewModel model, PreferencesFlag flag) =>
       DismissibleCard(
         key: UniqueKey(),
         onDismissed: (DismissDirection direction) {
@@ -226,7 +227,7 @@ class _DashboardViewState extends State<DashboardView>
                     borderRadius: const BorderRadius.all(Radius.circular(10)),
                     child: GestureDetector(
                       onTap: () => setState(
-                        () => setState(() {
+                            () => setState(() {
                           model.changeProgressBarText();
                           setText(model);
                         }),
@@ -267,6 +268,51 @@ class _DashboardViewState extends State<DashboardView>
                 child: Text(AppIntl.of(context)!.session_without),
               ),
             ),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
+            child: Builder(
+              builder: (context) {
+                if (model.upcomingEvents.isEmpty) return const SizedBox.shrink();
+                final currentLocale = AppIntl.of(context)!.localeName;
+
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      AppIntl.of(context)!.upcoming_events,
+                      style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: model.upcomingEvents.map((entry) {
+                          int index = entry.key;
+                          DateTime date = entry.value;
+
+                          List<String> labels = [
+                            AppIntl.of(context)!.semester_start_date,
+                            AppIntl.of(context)!.semester_end_date,
+                            AppIntl.of(context)!.registration_start_date
+                          ];
+
+                          String formattedDate = DateFormat('dd MMMM yyyy', currentLocale).format(date);
+
+                          return Text(
+                            "${labels[index]}: $formattedDate",
+                            style: const TextStyle(color: Colors.black),
+                          );
+                        }).toList(),
+                      ),
+                    ),
+                  ],
+                );
+              },
+            ),
+          )
         ]),
       );
 
