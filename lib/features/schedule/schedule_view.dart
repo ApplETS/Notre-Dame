@@ -455,7 +455,6 @@ class _ScheduleViewState extends State<ScheduleView>
       selectedDayPredicate: (day) {
         return isSameDay(model.daySelected, day);
       },
-      weekendDays: const [],
       headerStyle: HeaderStyle(
           titleTextFormatter: (date, locale) => DateFormat.MMMMEEEEd(locale).format(model.daySelected),
           titleCentered: true, formatButtonVisible: false),
