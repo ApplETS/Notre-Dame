@@ -10,14 +10,14 @@ import 'package:notredame/domain/constants/router_paths.dart';
 import 'package:notredame/ui/more/settings/choose_language/view_model/choose_language_viewmodel.dart';
 import 'package:notredame/data/repositories/settings_repository.dart';
 import '../../../helpers.dart';
-import '../../../../testing/mocks/services/navigation_service_mock.dart';
-import '../../../../testing/mocks/repositories/settings_manager_mock.dart';
+import '../../../data/mocks/services/navigation_service_mock.dart';
+import '../../../data/mocks/repositories/settings_repository_mock.dart';
 
 late ChooseLanguageViewModel viewModel;
 
 void main() {
   late NavigationServiceMock navigationServiceMock;
-  late SettingsManagerMock settingsManagerMock;
+  late SettingsRepositoryMock settingsManagerMock;
 
   group("ChooseLanguageViewModel - ", () {
     setUp(() async {
@@ -36,7 +36,7 @@ void main() {
 
     group("changeLanguage - ", () {
       test('can set language english', () async {
-        SettingsManagerMock.stubSetString(
+        SettingsRepositoryMock.stubSetString(
             settingsManagerMock, PreferencesFlag.theme);
 
         viewModel.changeLanguage(0);
@@ -49,7 +49,7 @@ void main() {
       });
 
       test('can set language français', () async {
-        SettingsManagerMock.stubSetString(
+        SettingsRepositoryMock.stubSetString(
             settingsManagerMock, PreferencesFlag.theme);
 
         viewModel.changeLanguage(1);
@@ -62,7 +62,7 @@ void main() {
       });
 
       test('throws an error when index does not exist', () async {
-        SettingsManagerMock.stubSetString(
+        SettingsRepositoryMock.stubSetString(
             settingsManagerMock, PreferencesFlag.theme);
 
         expect(() => viewModel.changeLanguage(-1), throwsException,

@@ -7,7 +7,8 @@ import 'package:notredame/data/repositories/quick_link_repository.dart';
 import 'package:notredame/data/models/quick_link.dart';
 import 'package:notredame/data/models/quick_link_data.dart';
 import 'package:notredame/utils/api_exception.dart';
-import '../../../test/features/app/repository/mocks/quick_links_repository_mock.mocks.dart';
+
+import 'quick_links_repository_mock.mocks.dart';
 
 @GenerateNiceMocks([MockSpec<QuickLinkRepository>()])
 class QuickLinkRepositoryMock extends MockQuickLinkRepository {

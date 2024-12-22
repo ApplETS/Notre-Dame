@@ -5,7 +5,8 @@ import 'package:mockito/mockito.dart';
 // Project imports:
 import 'package:notredame/data/services/cache_service.dart';
 import 'package:notredame/utils/cache_exception.dart';
-import '../../../test/features/app/storage/mocks/cache_service_mock.mocks.dart';
+
+import 'cache_service_mock.mocks.dart';
 
 /// Mock for the [CacheService]
 @GenerateNiceMocks([MockSpec<CacheService>()])

@@ -8,7 +8,8 @@ import 'package:notredame/data/repositories/user_repository.dart';
 import 'package:notredame/data/services/signets-api/models/profile_student.dart';
 import 'package:notredame/data/services/signets-api/models/program.dart';
 import 'package:notredame/utils/api_exception.dart';
-import '../../../test/features/app/repository/mocks/user_repository_mock.mocks.dart';
+
+import 'user_repository_mock.mocks.dart';
 
 /// Mock for the [UserRepository]
 @GenerateNiceMocks([MockSpec<UserRepository>()])

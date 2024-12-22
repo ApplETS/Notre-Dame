@@ -11,10 +11,10 @@ import 'package:notredame/data/repositories/settings_repository.dart';
 import 'package:notredame/ui/schedule/view_model/schedule_settings_viewmodel.dart';
 import 'package:notredame/data/models/activity_code.dart';
 import '../../helpers.dart';
-import '../../../testing/mocks/repositories/course_repository_mock.dart';
-import '../../../testing/mocks/repositories/settings_manager_mock.dart';
+import '../../data/mocks/repositories/course_repository_mock.dart';
+import '../../data/mocks/repositories/settings_repository_mock.dart';
 
-late SettingsManagerMock settingsManagerMock;
+late SettingsRepositoryMock settingsManagerMock;
 late CourseRepositoryMock courseRepositoryMock;
 
 late ScheduleSettingsViewModel viewModel;
@@ -128,7 +128,7 @@ void main() {
       test(
           "The settings are correctly loaded and sets (if no schedule activities present to use)",
           () async {
-        SettingsManagerMock.stubGetScheduleSettings(settingsManagerMock,
+        SettingsRepositoryMock.stubGetScheduleSettings(settingsManagerMock,
             toReturn: settings);
 
         CourseRepositoryMock.stubGetScheduleActivities(courseRepositoryMock,
@@ -150,7 +150,7 @@ void main() {
       test(
           "If there is one valid class which has grouped laboratory, we parse it and store it (None selected)",
           () async {
-        SettingsManagerMock.stubGetScheduleSettings(settingsManagerMock,
+        SettingsRepositoryMock.stubGetScheduleSettings(settingsManagerMock,
             toReturn: settings);
 
         CourseRepositoryMock.stubGetScheduleActivities(courseRepositoryMock,
@@ -159,7 +159,7 @@ void main() {
         final courseAcronymWithLaboratory =
             classOneWithLaboratoryABscheduleActivities.first.courseAcronym;
 
-        SettingsManagerMock.stubGetDynamicString(
+        SettingsRepositoryMock.stubGetDynamicString(
             settingsManagerMock,
             PreferencesFlag.scheduleLaboratoryGroup,
             courseAcronymWithLaboratory);
@@ -186,7 +186,7 @@ void main() {
       test(
           "If there is two valid class which has grouped laboratory, we store both (First => none selected, Second => group A selected)",
           () async {
-        SettingsManagerMock.stubGetScheduleSettings(settingsManagerMock,
+        SettingsRepositoryMock.stubGetScheduleSettings(settingsManagerMock,
             toReturn: settings);
 
         CourseRepositoryMock.stubGetScheduleActivities(courseRepositoryMock,
@@ -198,9 +198,9 @@ void main() {
         final secondCourseAcronymWithLab =
             classTwoWithLaboratoryABscheduleActivities.first.courseAcronym;
 
-        SettingsManagerMock.stubGetDynamicString(settingsManagerMock,
+        SettingsRepositoryMock.stubGetDynamicString(settingsManagerMock,
             PreferencesFlag.scheduleLaboratoryGroup, firstCourseAcronymWithLab);
-        SettingsManagerMock.stubGetDynamicString(settingsManagerMock,
+        SettingsRepositoryMock.stubGetDynamicString(settingsManagerMock,
             PreferencesFlag.scheduleLaboratoryGroup, secondCourseAcronymWithLab,
             toReturn: ActivityCode.labGroupA);
 
@@ -236,7 +236,7 @@ void main() {
 
     group("setter calendarFormat - ", () {
       test("calendarFormat is updated on the settings", () async {
-        SettingsManagerMock.stubSetString(
+        SettingsRepositoryMock.stubSetString(
             settingsManagerMock, PreferencesFlag.scheduleCalendarFormat);
 
         // Call the setter.
@@ -257,7 +257,7 @@ void main() {
 
     group("setter calendarView - ", () {
       test("calendarView is updated on the settings", () async {
-        SettingsManagerMock.stubSetString(
+        SettingsRepositoryMock.stubSetString(
             settingsManagerMock, PreferencesFlag.scheduleListView);
 
         const expected = true;

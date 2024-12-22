@@ -10,14 +10,14 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:notredame/ui/more/faq/widgets/faq_view.dart';
 import 'package:notredame/ui/more/faq/models/faq.dart';
 import '../../../helpers.dart';
-import '../../../../testing/mocks/repositories/settings_manager_mock.dart';
+import '../../../data/mocks/repositories/settings_repository_mock.dart';
 
 void main() {
   SharedPreferences.setMockInitialValues({});
   group('FaqView - ', () {
     late AppIntl appIntl;
 
-    late SettingsManagerMock settingsManagerMock;
+    late SettingsRepositoryMock settingsManagerMock;
 
     setUp(() async {
       setupLaunchUrlServiceMock();
@@ -30,7 +30,7 @@ void main() {
 
     group('UI - ', () {
       testWidgets('has x ElevatedButton', (WidgetTester tester) async {
-        SettingsManagerMock.stubLocale(settingsManagerMock);
+        SettingsRepositoryMock.stubLocale(settingsManagerMock);
 
         await tester.pumpWidget(localizedWidget(child: const FaqView()));
         await tester.pumpAndSettle(const Duration(milliseconds: 800));
@@ -57,7 +57,7 @@ void main() {
       });
 
       testWidgets('has 2 subtitles', (WidgetTester tester) async {
-        SettingsManagerMock.stubLocale(settingsManagerMock);
+        SettingsRepositoryMock.stubLocale(settingsManagerMock);
 
         await tester.pumpWidget(localizedWidget(child: const FaqView()));
         await tester.pumpAndSettle();

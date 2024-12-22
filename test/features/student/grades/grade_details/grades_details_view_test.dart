@@ -15,7 +15,7 @@ import 'package:notredame/data/services/signets-api/models/course_summary.dart';
 import 'package:notredame/data/repositories/settings_repository.dart';
 import 'package:notredame/ui/student/grades/grade_details/widgets/grade_details_view.dart';
 import '../../../../helpers.dart';
-import '../../../../../testing/mocks/repositories/course_repository_mock.dart';
+import '../../../../data/mocks/repositories/course_repository_mock.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();

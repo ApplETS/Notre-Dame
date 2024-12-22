@@ -10,7 +10,7 @@ import 'package:notredame/data/services/signets-api/models/course.dart';
 import 'package:notredame/data/repositories/settings_repository.dart';
 import 'package:notredame/ui/student/grades/view_model/grades_viewmodel.dart';
 import '../../../helpers.dart';
-import '../../../../testing/mocks/repositories/course_repository_mock.dart';
+import '../../../data/mocks/repositories/course_repository_mock.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();

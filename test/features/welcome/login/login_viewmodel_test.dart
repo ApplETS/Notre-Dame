@@ -9,8 +9,8 @@ import 'package:notredame/domain/constants/router_paths.dart';
 import 'package:notredame/data/repositories/user_repository.dart';
 import 'package:notredame/ui/welcome/view_model/login_viewmodel.dart';
 import '../../../helpers.dart';
-import '../../../../testing/mocks/services/navigation_service_mock.dart';
-import '../../../../testing/mocks/repositories/user_repository_mock.dart';
+import '../../../data/mocks/services/navigation_service_mock.dart';
+import '../../../data/mocks/repositories/user_repository_mock.dart';
 
 void main() {
   // Needed to support FlutterToast.

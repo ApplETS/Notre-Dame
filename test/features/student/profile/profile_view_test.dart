@@ -9,8 +9,8 @@ import 'package:notredame/data/services/signets-api/models/profile_student.dart'
 import 'package:notredame/data/services/signets-api/models/program.dart';
 import 'package:notredame/ui/student/profile/widgets/profile_view.dart';
 import '../../../helpers.dart';
-import '../../../../testing/mocks/services/analytics_service_mock.dart';
-import '../../../../testing/mocks/repositories/user_repository_mock.dart';
+import '../../../data/mocks/services/analytics_service_mock.dart';
+import '../../../data/mocks/repositories/user_repository_mock.dart';
 
 void main() {
   late AppIntl intl;

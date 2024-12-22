@@ -14,8 +14,8 @@ import 'package:notredame/data/models/hello/organizer.dart';
 import 'package:notredame/data/models/hello/paginated_news.dart';
 import 'package:notredame/ui/ets/events/author/view_model/author_viewmodel.dart';
 import '../../../../helpers.dart';
-import '../../../../../testing/mocks/repositories/author_repository_mock.dart';
-import '../../../../../testing/mocks/repositories/news_repository_mock.dart';
+import '../../../../data/mocks/repositories/author_repository_mock.dart';
+import '../../../../data/mocks/repositories/news_repository_mock.dart';
 
 void main() {
   late AuthorViewModel viewModel;

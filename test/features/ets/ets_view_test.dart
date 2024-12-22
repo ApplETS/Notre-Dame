@@ -19,8 +19,8 @@ import 'package:notredame/data/models/hello/organizer.dart';
 import 'package:notredame/data/models/hello/paginated_news.dart';
 import 'package:notredame/data/repositories/settings_repository.dart';
 import '../../helpers.dart';
-import '../../../testing/mocks/services/remote_config_service_mock.dart';
-import '../../../testing/mocks/repositories/news_repository_mock.dart';
+import '../../data/mocks/services/remote_config_service_mock.dart';
+import '../../data/mocks/repositories/news_repository_mock.dart';
 
 void main() {
   late NewsRepositoryMock newsRepository;

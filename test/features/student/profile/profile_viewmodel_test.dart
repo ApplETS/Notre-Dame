@@ -9,7 +9,7 @@ import 'package:notredame/data/services/signets-api/models/program.dart';
 import 'package:notredame/ui/student/profile/view_model/profile_viewmodel.dart';
 import 'package:notredame/data/models/programs_credits.dart';
 import '../../../helpers.dart';
-import '../../../../testing/mocks/repositories/user_repository_mock.dart';
+import '../../../data/mocks/repositories/user_repository_mock.dart';
 
 void main() {
   late UserRepositoryMock userRepositoryMock;

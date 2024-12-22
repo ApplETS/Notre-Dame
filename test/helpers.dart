@@ -28,24 +28,24 @@ import 'package:notredame/data/services/preferences_service.dart';
 import 'package:notredame/data/services/in_app_review_service.dart';
 import 'package:notredame/data/repositories/settings_repository.dart';
 import 'package:notredame/locator.dart';
-import '../testing/mocks/services/analytics_service_mock.dart';
-import '../testing/mocks/services/remote_config_service_mock.dart';
-import '../testing/mocks/services/internal_info_service_mock.dart';
-import '../testing/mocks/services/launch_url_service_mock.dart';
-import '../testing/mocks/services/networking_service_mock.dart';
-import '../testing/mocks/services/mon_ets_api_mock.dart';
-import '../testing/mocks/services/navigation_service_mock.dart';
-import '../testing/mocks/repositories/author_repository_mock.dart';
-import '../testing/mocks/repositories/course_repository_mock.dart';
-import '../testing/mocks/repositories/news_repository_mock.dart';
-import '../testing/mocks/repositories/quick_links_repository_mock.dart';
-import '../testing/mocks/repositories/user_repository_mock.dart';
-import '../testing/mocks/services/signets_api_mock.dart';
-import '../testing/mocks/services/cache_service_mock.dart';
-import '../testing/mocks/services/flutter_secure_storage_mock.dart';
-import '../testing/mocks/services/preferences_service_mock.dart';
-import '../testing/mocks/services/in_app_review_service_mock.dart';
-import '../testing/mocks/repositories/settings_manager_mock.dart';
+import 'data/mocks/services/analytics_service_mock.dart';
+import 'data/mocks/services/remote_config_service_mock.dart';
+import 'data/mocks/services/internal_info_service_mock.dart';
+import 'data/mocks/services/launch_url_service_mock.dart';
+import 'data/mocks/services/networking_service_mock.dart';
+import 'data/mocks/services/mon_ets_api_mock.dart';
+import 'data/mocks/services/navigation_service_mock.dart';
+import 'data/mocks/repositories/author_repository_mock.dart';
+import 'data/mocks/repositories/course_repository_mock.dart';
+import 'data/mocks/repositories/news_repository_mock.dart';
+import 'data/mocks/repositories/quick_links_repository_mock.dart';
+import 'data/mocks/repositories/user_repository_mock.dart';
+import 'data/mocks/services/signets_api_mock.dart';
+import 'data/mocks/services/cache_service_mock.dart';
+import 'data/mocks/services/flutter_secure_storage_mock.dart';
+import 'data/mocks/services/preferences_service_mock.dart';
+import 'data/mocks/services/in_app_review_service_mock.dart';
+import 'data/mocks/repositories/settings_repository_mock.dart';
 
 /// Unregister the service [T] from GetIt
 void unregister<T extends Object>() {
@@ -230,9 +230,9 @@ PreferencesServiceMock setupPreferencesServiceMock() {
 }
 
 /// Load a mock of the [SettingsRepository]
-SettingsManagerMock setupSettingsManagerMock() {
+SettingsRepositoryMock setupSettingsManagerMock() {
   unregister<SettingsRepository>();
-  final service = SettingsManagerMock();
+  final service = SettingsRepositoryMock();
 
   locator.registerSingleton<SettingsRepository>(service);
 

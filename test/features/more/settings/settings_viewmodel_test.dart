@@ -11,12 +11,12 @@ import 'package:notredame/domain/constants/preferences_flags.dart';
 import 'package:notredame/data/repositories/settings_repository.dart';
 import 'package:notredame/ui/more/settings/view_model/settings_viewmodel.dart';
 import '../../../helpers.dart';
-import '../../../../testing/mocks/repositories/settings_manager_mock.dart';
+import '../../../data/mocks/repositories/settings_repository_mock.dart';
 
 late SettingsViewModel viewModel;
 
 void main() {
-  late SettingsManagerMock settingsManagerMock;
+  late SettingsRepositoryMock settingsManagerMock;
 
   group("SettingsViewModel - ", () {
     setUp(() async {
@@ -33,9 +33,9 @@ void main() {
 
     group("futureToRun - ", () {
       test("The settings are correctly loaded and sets", () async {
-        SettingsManagerMock.stubLocale(settingsManagerMock);
+        SettingsRepositoryMock.stubLocale(settingsManagerMock);
 
-        SettingsManagerMock.stubThemeMode(settingsManagerMock);
+        SettingsRepositoryMock.stubThemeMode(settingsManagerMock);
 
         await viewModel.futureToRun();
         expect(viewModel.currentLocale, 'English');
@@ -52,7 +52,7 @@ void main() {
 
     group("setter theme - ", () {
       test("can set system theme option", () async {
-        SettingsManagerMock.stubSetString(
+        SettingsRepositoryMock.stubSetString(
             settingsManagerMock, PreferencesFlag.theme);
 
         // Call the setter.
@@ -68,7 +68,7 @@ void main() {
       });
 
       test("can set dark theme option", () async {
-        SettingsManagerMock.stubSetString(
+        SettingsRepositoryMock.stubSetString(
             settingsManagerMock, PreferencesFlag.theme);
 
         // Call the setter.
@@ -84,7 +84,7 @@ void main() {
       });
 
       test("can set light theme option", () async {
-        SettingsManagerMock.stubSetString(
+        SettingsRepositoryMock.stubSetString(
             settingsManagerMock, PreferencesFlag.theme);
 
         // Call the setter.

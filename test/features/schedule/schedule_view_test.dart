@@ -18,13 +18,13 @@ import 'package:notredame/data/repositories/settings_repository.dart';
 import 'package:notredame/ui/schedule/widgets/schedule_view.dart';
 import 'package:notredame/ui/schedule/widgets/schedule_settings.dart';
 import '../../helpers.dart';
-import '../../../testing/mocks/services/remote_config_service_mock.dart';
-import '../../../testing/mocks/repositories/course_repository_mock.dart';
-import '../../../testing/mocks/repositories/settings_manager_mock.dart';
+import '../../data/mocks/services/remote_config_service_mock.dart';
+import '../../data/mocks/repositories/course_repository_mock.dart';
+import '../../data/mocks/repositories/settings_repository_mock.dart';
 
 void main() {
   SharedPreferences.setMockInitialValues({});
-  late SettingsManagerMock settingsManagerMock;
+  late SettingsRepositoryMock settingsManagerMock;
   late CourseRepositoryMock courseRepositoryMock;
   late RemoteConfigServiceMock remoteConfigServiceMock;
 
@@ -65,7 +65,7 @@ void main() {
       setupNetworkingServiceMock();
       setupAnalyticsServiceMock();
 
-      SettingsManagerMock.stubLocale(settingsManagerMock);
+      SettingsRepositoryMock.stubLocale(settingsManagerMock);
 
       settings = {
         PreferencesFlag.scheduleCalendarFormat: CalendarTimeFormat.week,
@@ -99,7 +99,7 @@ void main() {
         CourseRepositoryMock.stubGetCourses(courseRepositoryMock,
             fromCacheOnly: true);
         CourseRepositoryMock.stubGetCourses(courseRepositoryMock);
-        SettingsManagerMock.stubGetScheduleSettings(settingsManagerMock,
+        SettingsRepositoryMock.stubGetScheduleSettings(settingsManagerMock,
             toReturn: settings);
 
         await tester.runAsync(() async {

@@ -22,12 +22,12 @@ import 'package:notredame/data/services/cache_service.dart';
 import 'package:notredame/utils/api_exception.dart';
 import 'package:notredame/utils/http_exception.dart';
 import '../../../helpers.dart';
-import '../../../../testing/mocks/services/analytics_service_mock.dart';
-import '../../../../testing/mocks/services/networking_service_mock.dart';
-import '../../../../testing/mocks/services/mon_ets_api_mock.dart';
-import '../../../../testing/mocks/services/signets_api_mock.dart';
-import '../../../../testing/mocks/services/cache_service_mock.dart';
-import '../../../../testing/mocks/services/flutter_secure_storage_mock.dart';
+import '../../../data/mocks/services/analytics_service_mock.dart';
+import '../../../data/mocks/services/networking_service_mock.dart';
+import '../../../data/mocks/services/mon_ets_api_mock.dart';
+import '../../../data/mocks/services/signets_api_mock.dart';
+import '../../../data/mocks/services/cache_service_mock.dart';
+import '../../../data/mocks/services/flutter_secure_storage_mock.dart';
 
 void main() {
   late AnalyticsServiceMock analyticsServiceMock;

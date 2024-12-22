@@ -9,7 +9,7 @@ import 'package:notredame/data/models/quick_link_data.dart';
 import 'package:notredame/data/models/quick_links.dart';
 import 'package:notredame/ui/ets/quick_link/view_model/quick_links_viewmodel.dart';
 import '../../../helpers.dart';
-import '../../../../testing/mocks/repositories/quick_links_repository_mock.dart';
+import '../../../data/mocks/repositories/quick_links_repository_mock.dart';
 
 void main() {
   late QuickLinkRepositoryMock quickLinkRepositoryMock;

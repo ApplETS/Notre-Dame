@@ -5,7 +5,8 @@ import 'package:mockito/mockito.dart';
 
 // Project imports:
 import 'package:notredame/data/services/networking_service.dart';
-import '../../../test/features/app/integration/mocks/networking_service_mock.mocks.dart';
+
+import 'networking_service_mock.mocks.dart';
 
 /// Mock for the [NetworkingService]
 @GenerateNiceMocks([MockSpec<NetworkingService>()])

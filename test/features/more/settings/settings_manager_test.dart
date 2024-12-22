@@ -12,9 +12,9 @@ import 'package:notredame/domain/constants/preferences_flags.dart';
 import 'package:notredame/data/services/preferences_service.dart';
 import 'package:notredame/data/repositories/settings_repository.dart';
 import '../../../helpers.dart';
-import '../../../../testing/mocks/services/analytics_service_mock.dart';
-import '../../../../testing/mocks/services/remote_config_service_mock.dart';
-import '../../../../testing/mocks/services/preferences_service_mock.dart';
+import '../../../data/mocks/services/analytics_service_mock.dart';
+import '../../../data/mocks/services/remote_config_service_mock.dart';
+import '../../../data/mocks/services/preferences_service_mock.dart';
 
 void main() {
   late AnalyticsServiceMock analyticsServiceMock;

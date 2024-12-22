@@ -11,8 +11,8 @@ import 'package:notredame/ui/core/ui/base_scaffold.dart';
 import 'package:notredame/data/repositories/settings_repository.dart';
 import 'package:notredame/ui/student/widgets/student_view.dart';
 import '../../helpers.dart';
-import '../../../testing/mocks/services/analytics_service_mock.dart';
-import '../../../testing/mocks/repositories/course_repository_mock.dart';
+import '../../data/mocks/services/analytics_service_mock.dart';
+import '../../data/mocks/repositories/course_repository_mock.dart';
 
 void main() {
   CourseRepositoryMock courseRepositoryMock;

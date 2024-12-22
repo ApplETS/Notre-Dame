@@ -22,8 +22,8 @@ import 'package:notredame/ui/ets/events/news/widgets/news_card.dart';
 import 'package:notredame/ui/ets/events/social/widgets/social_links_card.dart';
 import 'package:notredame/data/repositories/settings_repository.dart';
 import '../../../../helpers.dart';
-import '../../../../../testing/mocks/repositories/author_repository_mock.dart';
-import '../../../../../testing/mocks/repositories/news_repository_mock.dart';
+import '../../../../data/mocks/repositories/author_repository_mock.dart';
+import '../../../../data/mocks/repositories/news_repository_mock.dart';
 
 void main() {
   late AuthorRepositoryMock authorRepository;

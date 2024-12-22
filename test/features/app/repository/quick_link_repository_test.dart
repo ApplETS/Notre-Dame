@@ -14,7 +14,7 @@ import 'package:notredame/data/services/cache_service.dart';
 import 'package:notredame/data/models/quick_link.dart';
 import 'package:notredame/data/models/quick_link_data.dart';
 import '../../../helpers.dart';
-import '../../../../testing/mocks/services/cache_service_mock.dart';
+import '../../../data/mocks/services/cache_service_mock.dart';
 
 void main() {
   late CacheServiceMock cacheManagerMock;

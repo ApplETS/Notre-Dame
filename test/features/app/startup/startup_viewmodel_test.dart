@@ -11,16 +11,16 @@ import 'package:notredame/ui/startup/view_model/startup_viewmodel.dart';
 import 'package:notredame/data/services/preferences_service.dart';
 import 'package:notredame/data/repositories/settings_repository.dart';
 import '../../../helpers.dart';
-import '../../../../testing/mocks/repositories/settings_manager_mock.dart';
-import '../../../../testing/mocks/services/internal_info_service_mock.dart';
-import '../../../../testing/mocks/services/networking_service_mock.dart';
-import '../../../../testing/mocks/services/navigation_service_mock.dart';
-import '../../../../testing/mocks/repositories/user_repository_mock.dart';
+import '../../../data/mocks/repositories/settings_repository_mock.dart';
+import '../../../data/mocks/services/internal_info_service_mock.dart';
+import '../../../data/mocks/services/networking_service_mock.dart';
+import '../../../data/mocks/services/navigation_service_mock.dart';
+import '../../../data/mocks/repositories/user_repository_mock.dart';
 
 void main() {
   late NavigationServiceMock navigationServiceMock;
   late UserRepositoryMock userRepositoryMock;
-  late SettingsManagerMock settingsManagerMock;
+  late SettingsRepositoryMock settingsManagerMock;
   late NetworkingServiceMock networkingServiceMock;
   late InternalInfoServiceMock internalInfoServiceMock;
 
@@ -67,7 +67,7 @@ void main() {
         UserRepositoryMock.stubWasPreviouslyLoggedIn(userRepositoryMock);
         NetworkingServiceMock.stubHasConnectivity(networkingServiceMock);
 
-        SettingsManagerMock.stubGetBool(
+        SettingsRepositoryMock.stubGetBool(
             settingsManagerMock, PreferencesFlag.languageChoice,
             toReturn: true);
 

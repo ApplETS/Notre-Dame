@@ -13,16 +13,16 @@ import 'package:notredame/ui/dashboard/view_model/progress_bar_text_options.dart
 import 'package:notredame/data/repositories/settings_repository.dart';
 import 'package:notredame/data/models/activity_code.dart';
 import '../../helpers.dart';
-import '../../../testing/mocks/services/analytics_service_mock.dart';
-import '../../../testing/mocks/services/remote_config_service_mock.dart';
-import '../../../testing/mocks/repositories/course_repository_mock.dart';
-import '../../../testing/mocks/services/preferences_service_mock.dart';
-import '../../../testing/mocks/services/in_app_review_service_mock.dart';
-import '../../../testing/mocks/repositories/settings_manager_mock.dart';
+import '../../data/mocks/services/analytics_service_mock.dart';
+import '../../data/mocks/services/remote_config_service_mock.dart';
+import '../../data/mocks/repositories/course_repository_mock.dart';
+import '../../data/mocks/services/preferences_service_mock.dart';
+import '../../data/mocks/services/in_app_review_service_mock.dart';
+import '../../data/mocks/repositories/settings_repository_mock.dart';
 
 void main() {
   late PreferencesServiceMock preferenceServiceMock;
-  late SettingsManagerMock settingsManagerMock;
+  late SettingsRepositoryMock settingsManagerMock;
   late CourseRepositoryMock courseRepositoryMock;
   late RemoteConfigServiceMock remoteConfigServiceMock;
   late PreferencesServiceMock preferencesServiceMock;
@@ -213,7 +213,7 @@ void main() {
       CourseRepositoryMock.stubGetCoursesActivities(courseRepositoryMock,
           fromCacheOnly: true);
       CourseRepositoryMock.stubGetCoursesActivities(courseRepositoryMock);
-      SettingsManagerMock.stubDateTimeNow(settingsManagerMock,
+      SettingsRepositoryMock.stubDateTimeNow(settingsManagerMock,
           toReturn: DateTime(2020));
 
       RemoteConfigServiceMock.stubGetBroadcastEnabled(remoteConfigServiceMock);
@@ -337,7 +337,7 @@ void main() {
             toReturn: [session]);
         CourseRepositoryMock.stubCoursesActivities(courseRepositoryMock);
 
-        SettingsManagerMock.stubGetDashboard(settingsManagerMock,
+        SettingsRepositoryMock.stubGetDashboard(settingsManagerMock,
             toReturn: dashboard);
 
         await viewModel.futureToRun();
@@ -361,10 +361,10 @@ void main() {
             toReturn: activities);
         CourseRepositoryMock.stubGetCourses(courseRepositoryMock,
             toReturn: courses);
-        SettingsManagerMock.stubGetDashboard(settingsManagerMock,
+        SettingsRepositoryMock.stubGetDashboard(settingsManagerMock,
             toReturn: dashboard);
         final now = DateTime.now();
-        SettingsManagerMock.stubDateTimeNow(settingsManagerMock,
+        SettingsRepositoryMock.stubDateTimeNow(settingsManagerMock,
             toReturn: DateTime(now.year, now.month, now.day, 8));
 
         await viewModel.futureToRun();
@@ -391,10 +391,10 @@ void main() {
             toReturn: activities);
         CourseRepositoryMock.stubGetCourses(courseRepositoryMock,
             toReturn: courses);
-        SettingsManagerMock.stubGetDashboard(settingsManagerMock,
+        SettingsRepositoryMock.stubGetDashboard(settingsManagerMock,
             toReturn: dashboard);
         final now = DateTime.now();
-        SettingsManagerMock.stubDateTimeNow(settingsManagerMock,
+        SettingsRepositoryMock.stubDateTimeNow(settingsManagerMock,
             toReturn: DateTime(now.year, now.month, now.day, 11, 59));
 
         await viewModel.futureToRun();
@@ -420,10 +420,10 @@ void main() {
             toReturn: activities);
         CourseRepositoryMock.stubGetCourses(courseRepositoryMock,
             toReturn: courses);
-        SettingsManagerMock.stubGetDashboard(settingsManagerMock,
+        SettingsRepositoryMock.stubGetDashboard(settingsManagerMock,
             toReturn: dashboard);
         final now = DateTime.now();
-        SettingsManagerMock.stubDateTimeNow(settingsManagerMock,
+        SettingsRepositoryMock.stubDateTimeNow(settingsManagerMock,
             toReturn: DateTime(now.year, now.month, now.day, 12, 01));
 
         await viewModel.futureToRun();
@@ -450,10 +450,10 @@ void main() {
             toReturn: activities);
         CourseRepositoryMock.stubGetCourses(courseRepositoryMock,
             toReturn: courses);
-        SettingsManagerMock.stubGetDashboard(settingsManagerMock,
+        SettingsRepositoryMock.stubGetDashboard(settingsManagerMock,
             toReturn: dashboard);
         final now = DateTime.now();
-        SettingsManagerMock.stubDateTimeNow(settingsManagerMock,
+        SettingsRepositoryMock.stubDateTimeNow(settingsManagerMock,
             toReturn: DateTime(now.year, now.month, now.day, 8));
 
         await viewModel.futureToRun();
@@ -479,13 +479,13 @@ void main() {
         CourseRepositoryMock.stubCoursesActivities(courseRepositoryMock,
             toReturn: activitiesWithLabs);
 
-        SettingsManagerMock.stubGetDynamicString(settingsManagerMock,
+        SettingsRepositoryMock.stubGetDynamicString(settingsManagerMock,
             PreferencesFlag.scheduleLaboratoryGroup, "GEN101");
 
-        SettingsManagerMock.stubGetDynamicString(settingsManagerMock,
+        SettingsRepositoryMock.stubGetDynamicString(settingsManagerMock,
             PreferencesFlag.scheduleLaboratoryGroup, "GEN102");
 
-        SettingsManagerMock.stubGetDynamicString(settingsManagerMock,
+        SettingsRepositoryMock.stubGetDynamicString(settingsManagerMock,
             PreferencesFlag.scheduleLaboratoryGroup, "GEN103",
             toReturn: ActivityCode.labGroupB);
 
@@ -504,13 +504,13 @@ void main() {
         CourseRepositoryMock.stubCoursesActivities(courseRepositoryMock,
             toReturn: activitiesWithLabs);
 
-        SettingsManagerMock.stubGetDynamicString(settingsManagerMock,
+        SettingsRepositoryMock.stubGetDynamicString(settingsManagerMock,
             PreferencesFlag.scheduleLaboratoryGroup, "GEN101");
 
-        SettingsManagerMock.stubGetDynamicString(settingsManagerMock,
+        SettingsRepositoryMock.stubGetDynamicString(settingsManagerMock,
             PreferencesFlag.scheduleLaboratoryGroup, "GEN102");
 
-        SettingsManagerMock.stubGetDynamicString(settingsManagerMock,
+        SettingsRepositoryMock.stubGetDynamicString(settingsManagerMock,
             PreferencesFlag.scheduleLaboratoryGroup, "GEN103",
             toReturn: ActivityCode.labGroupA);
 
@@ -529,13 +529,13 @@ void main() {
         CourseRepositoryMock.stubCoursesActivities(courseRepositoryMock,
             toReturn: activitiesWithLabs);
 
-        SettingsManagerMock.stubGetDynamicString(settingsManagerMock,
+        SettingsRepositoryMock.stubGetDynamicString(settingsManagerMock,
             PreferencesFlag.scheduleLaboratoryGroup, "GEN101");
 
-        SettingsManagerMock.stubGetDynamicString(settingsManagerMock,
+        SettingsRepositoryMock.stubGetDynamicString(settingsManagerMock,
             PreferencesFlag.scheduleLaboratoryGroup, "GEN102");
 
-        SettingsManagerMock.stubGetDynamicString(settingsManagerMock,
+        SettingsRepositoryMock.stubGetDynamicString(settingsManagerMock,
             PreferencesFlag.scheduleLaboratoryGroup, "GEN103");
 
         expect(await viewModel.removeLaboratoryGroup(activitiesWithLabs),
@@ -567,9 +567,9 @@ void main() {
       test("There is an active session", () async {
         CourseRepositoryMock.stubActiveSessions(courseRepositoryMock,
             toReturn: [session]);
-        SettingsManagerMock.stubGetDashboard(settingsManagerMock,
+        SettingsRepositoryMock.stubGetDashboard(settingsManagerMock,
             toReturn: dashboard);
-        SettingsManagerMock.stubDateTimeNow(settingsManagerMock,
+        SettingsRepositoryMock.stubDateTimeNow(settingsManagerMock,
             toReturn: DateTime(2020));
         await viewModel.futureToRunSessionProgressBar();
         expect(viewModel.progress, 0.5);
@@ -579,9 +579,9 @@ void main() {
       test("Invalid date (Superior limit)", () async {
         CourseRepositoryMock.stubActiveSessions(courseRepositoryMock,
             toReturn: [session]);
-        SettingsManagerMock.stubGetDashboard(settingsManagerMock,
+        SettingsRepositoryMock.stubGetDashboard(settingsManagerMock,
             toReturn: dashboard);
-        SettingsManagerMock.stubDateTimeNow(settingsManagerMock,
+        SettingsRepositoryMock.stubDateTimeNow(settingsManagerMock,
             toReturn: DateTime(2020, 1, 20));
         await viewModel.futureToRunSessionProgressBar();
         expect(viewModel.progress, 1);
@@ -591,9 +591,9 @@ void main() {
       test("Invalid date (Lower limit)", () async {
         CourseRepositoryMock.stubActiveSessions(courseRepositoryMock,
             toReturn: [session]);
-        SettingsManagerMock.stubGetDashboard(settingsManagerMock,
+        SettingsRepositoryMock.stubGetDashboard(settingsManagerMock,
             toReturn: dashboard);
-        SettingsManagerMock.stubDateTimeNow(settingsManagerMock,
+        SettingsRepositoryMock.stubDateTimeNow(settingsManagerMock,
             toReturn: DateTime(2019, 12, 31));
         await viewModel.futureToRunSessionProgressBar();
         expect(viewModel.progress, 0);
@@ -648,13 +648,13 @@ void main() {
 
     group("interact with cards - ", () {
       test("can hide a card and reset cards to default layout", () async {
-        SettingsManagerMock.stubSetInt(
+        SettingsRepositoryMock.stubSetInt(
             settingsManagerMock, PreferencesFlag.aboutUsCard);
-        SettingsManagerMock.stubSetInt(
+        SettingsRepositoryMock.stubSetInt(
             settingsManagerMock, PreferencesFlag.scheduleCard);
-        SettingsManagerMock.stubSetInt(
+        SettingsRepositoryMock.stubSetInt(
             settingsManagerMock, PreferencesFlag.progressBarCard);
-        SettingsManagerMock.stubGetDashboard(settingsManagerMock,
+        SettingsRepositoryMock.stubGetDashboard(settingsManagerMock,
             toReturn: dashboard);
 
         CourseRepositoryMock.stubGetCourses(courseRepositoryMock);
@@ -713,13 +713,13 @@ void main() {
         CourseRepositoryMock.stubCoursesActivities(courseRepositoryMock);
         CourseRepositoryMock.stubGetCourses(courseRepositoryMock);
 
-        SettingsManagerMock.stubGetDashboard(settingsManagerMock,
+        SettingsRepositoryMock.stubGetDashboard(settingsManagerMock,
             toReturn: dashboard);
-        SettingsManagerMock.stubSetInt(
+        SettingsRepositoryMock.stubSetInt(
             settingsManagerMock, PreferencesFlag.aboutUsCard);
-        SettingsManagerMock.stubSetInt(
+        SettingsRepositoryMock.stubSetInt(
             settingsManagerMock, PreferencesFlag.scheduleCard);
-        SettingsManagerMock.stubSetInt(
+        SettingsRepositoryMock.stubSetInt(
             settingsManagerMock, PreferencesFlag.progressBarCard);
 
         await viewModel.futureToRun();
