@@ -24,7 +24,7 @@ class ScheduleSettings extends StatefulWidget {
 }
 
 class _ScheduleSettingsState extends State<ScheduleSettings> {
-  final Color selectedColor = AppTheme.etsLightRed.withOpacity(0.5);
+  final Color selectedColor = AppTheme.etsLightRed.withValues(alpha: .5);
 
   @override
   Widget build(BuildContext context) => ViewModelBuilder.reactive(
@@ -267,8 +267,6 @@ class _ScheduleSettingsState extends State<ScheduleSettings> {
       case CalendarTimeFormat.week:
         return AppIntl.of(context)!.schedule_settings_calendar_format_week;
       case CalendarTimeFormat.day:
-        return AppIntl.of(context)!.schedule_settings_calendar_format_day;
-      default:
         return AppIntl.of(context)!.schedule_settings_calendar_format_day;
     }
   }
