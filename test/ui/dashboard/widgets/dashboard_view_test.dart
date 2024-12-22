@@ -15,11 +15,11 @@ import 'package:notredame/ui/core/ui/dismissible_card.dart';
 import 'package:notredame/ui/dashboard/widgets/dashboard_view.dart';
 import 'package:notredame/ui/dashboard/widgets/course_activity_tile.dart';
 import 'package:notredame/ui/student/grades/widgets/grade_button.dart';
-import '../../helpers.dart';
-import '../../data/mocks/services/remote_config_service_mock.dart';
-import '../../data/mocks/repositories/course_repository_mock.dart';
-import '../../data/mocks/services/in_app_review_service_mock.dart';
-import '../../data/mocks/repositories/settings_repository_mock.dart';
+import '../../../helpers.dart';
+import '../../../data/mocks/services/remote_config_service_mock.dart';
+import '../../../data/mocks/repositories/course_repository_mock.dart';
+import '../../../data/mocks/services/in_app_review_service_mock.dart';
+import '../../../data/mocks/repositories/settings_repository_mock.dart';
 
 void main() {
   late SettingsRepositoryMock settingsManagerMock;

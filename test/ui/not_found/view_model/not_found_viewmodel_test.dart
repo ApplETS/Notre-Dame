@@ -7,9 +7,9 @@ import 'package:notredame/data/services/analytics_service.dart';
 import 'package:notredame/ui/not_found/view_model/not_found_viewmodel.dart';
 import 'package:notredame/data/services/navigation_service.dart';
 import 'package:notredame/domain/constants/router_paths.dart';
-import '../../../../helpers.dart';
-import '../../../../data/mocks/services/analytics_service_mock.dart';
-import '../../../../data/mocks/services/navigation_service_mock.dart';
+import '../../../helpers.dart';
+import '../../../data/mocks/services/analytics_service_mock.dart';
+import '../../../data/mocks/services/navigation_service_mock.dart';
 
 void main() {
   late NavigationServiceMock navigationServiceMock;

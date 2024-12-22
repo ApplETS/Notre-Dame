@@ -12,14 +12,14 @@ import 'package:notredame/data/models/hello/paginated_news.dart';
 import 'package:notredame/data/models/hello/report.dart';
 import 'package:notredame/utils/api_response.dart';
 import 'package:notredame/utils/http_exception.dart';
-import '../../../app/signets_api/http_client_mock_helper.dart';
+import '../../http_client_mock_helper.dart';
 
 void main() {
   const String helloNewsAPI = "api.hello.ca";
   late HelloService service;
   late MockClient mockClient;
 
-  group('HelloApi - ', () {
+  group('HelloService - ', () {
     setUp(() {
       // default response stub
       mockClient = MockClient((request) => Future.value(Response("", 200)));

@@ -4,7 +4,7 @@ import 'package:shimmer/shimmer.dart';
 
 // Project imports:
 import 'package:notredame/ui/ets/events/author/widgets/author_info_skeleton.dart';
-import '../../../../helpers.dart';
+import '../../../../../helpers.dart';
 
 void main() {
   group('AuthorInfoSkeleton Tests', () {

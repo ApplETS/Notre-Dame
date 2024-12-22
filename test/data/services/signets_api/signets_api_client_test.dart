@@ -21,7 +21,7 @@ import 'package:notredame/data/services/signets-api/models/signets_errors.dart';
 import 'package:notredame/data/services/signets-api/signets_api_client.dart';
 import 'package:notredame/data/models/activity_code.dart';
 import 'package:notredame/utils/api_exception.dart';
-import 'http_client_mock_helper.dart';
+import '../../http_client_mock_helper.dart';
 
 void main() {
   late MockClient clientMock;
