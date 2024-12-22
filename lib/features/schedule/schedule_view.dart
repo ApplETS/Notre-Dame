@@ -348,7 +348,7 @@ class _ScheduleViewState extends State<ScheduleView>
         events: events,
         backgroundColor: (date.month == DateTime.now().month)
             ? backgroundColor.withAlpha(128)
-            : Colors.grey.withOpacity(0.1),
+            : Colors.grey.withValues(alpha: .1),
       ),
     );
   }
@@ -387,7 +387,7 @@ class _ScheduleViewState extends State<ScheduleView>
           padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
           decoration: BoxDecoration(
               color: date.withoutTime == DateTime.now().withoutTime
-                  ? AppTheme.etsLightRed.withOpacity(indicatorColorOpacity)
+                  ? AppTheme.etsLightRed.withValues(alpha: indicatorColorOpacity)
                   : Colors.transparent,
               borderRadius: BorderRadius.circular(6.0)),
           child: Flex(
@@ -455,7 +455,6 @@ class _ScheduleViewState extends State<ScheduleView>
       selectedDayPredicate: (day) {
         return isSameDay(model.daySelected, day);
       },
-      weekendDays: const [],
       headerStyle: HeaderStyle(
           titleTextFormatter: (date, locale) => DateFormat.MMMMEEEEd(locale).format(model.daySelected),
           titleCentered: true, formatButtonVisible: false),
