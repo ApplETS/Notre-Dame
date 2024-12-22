@@ -14,10 +14,10 @@ import 'package:notredame/data/services/cache_service.dart';
 import 'package:notredame/data/models/quick_link.dart';
 import 'package:notredame/data/models/quick_link_data.dart';
 import '../../../helpers.dart';
-import '../storage/mocks/cache_manager_mock.dart';
+import '../../../../testing/mocks/services/cache_service_mock.dart';
 
 void main() {
-  late CacheManagerMock cacheManagerMock;
+  late CacheServiceMock cacheManagerMock;
 
   late QuickLinkRepository quickLinkRepository;
 
@@ -38,7 +38,7 @@ void main() {
       test("QuickLinkData is loaded from cache.", () async {
         // Stub the cache to return some QuickLinkData
         final quickLinkData = QuickLinkData(id: 1, index: 0);
-        CacheManagerMock.stubGet(
+        CacheServiceMock.stubGet(
             cacheManagerMock,
             QuickLinkRepository.quickLinksCacheKey,
             jsonEncode([quickLinkData]));
@@ -58,7 +58,7 @@ void main() {
           "Trying to recover QuickLinkData from cache but an exception is raised.",
           () async {
         // Stub the cache to throw an exception
-        CacheManagerMock.stubGetException(
+        CacheServiceMock.stubGetException(
             cacheManagerMock, QuickLinkRepository.quickLinksCacheKey);
 
         expect(quickLinkRepository.getQuickLinkDataFromCache(),
@@ -83,7 +83,7 @@ void main() {
           "Trying to update QuickLinkData to cache but an exception is raised.",
           () async {
         // Stub the cache to throw an exception
-        CacheManagerMock.stubUpdateException(
+        CacheServiceMock.stubUpdateException(
             cacheManagerMock, QuickLinkRepository.quickLinksCacheKey);
 
         final quickLink =

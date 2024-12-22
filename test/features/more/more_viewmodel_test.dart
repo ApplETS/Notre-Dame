@@ -19,19 +19,19 @@ import 'package:notredame/data/services/preferences_service.dart';
 import 'package:notredame/ui/more/view_model/more_viewmodel.dart';
 import 'package:notredame/data/repositories/settings_repository.dart';
 import '../../helpers.dart';
-import '../app/analytics/mocks/remote_config_service_mock.dart';
-import '../app/navigation/mocks/navigation_service_mock.dart';
-import '../app/repository/mocks/course_repository_mock.dart';
-import '../app/repository/mocks/user_repository_mock.dart';
-import '../app/storage/mocks/cache_manager_mock.dart';
-import '../app/storage/mocks/preferences_service_mock.dart';
-import 'settings/mocks/settings_manager_mock.dart';
+import '../../../testing/mocks/services/remote_config_service_mock.dart';
+import '../../../testing/mocks/services/navigation_service_mock.dart';
+import '../../../testing/mocks/repositories/course_repository_mock.dart';
+import '../../../testing/mocks/repositories/user_repository_mock.dart';
+import '../../../testing/mocks/services/cache_service_mock.dart';
+import '../../../testing/mocks/services/preferences_service_mock.dart';
+import '../../../testing/mocks/repositories/settings_manager_mock.dart';
 
 void main() {
   // Needed to support FlutterToast.
   TestWidgetsFlutterBinding.ensureInitialized();
 
-  late CacheManagerMock cacheManagerMock;
+  late CacheServiceMock cacheManagerMock;
   late SettingsManagerMock settingsManagerMock;
   late CourseRepositoryMock courseRepositoryMock;
   late PreferencesServiceMock preferenceServiceMock;
@@ -174,7 +174,7 @@ void main() {
             remoteConfigServiceMock,
             toReturn: false);
         setupFlutterToastMock();
-        CacheManagerMock.stubEmptyException(cacheManagerMock);
+        CacheServiceMock.stubEmptyException(cacheManagerMock);
         UserRepositoryMock.stubLogOut(userRepositoryMock);
 
         await viewModel.logout();

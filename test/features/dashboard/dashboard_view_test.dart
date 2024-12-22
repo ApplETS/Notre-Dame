@@ -16,10 +16,10 @@ import 'package:notredame/ui/dashboard/widgets/dashboard_view.dart';
 import 'package:notredame/ui/dashboard/widgets/course_activity_tile.dart';
 import 'package:notredame/ui/student/grades/widgets/grade_button.dart';
 import '../../helpers.dart';
-import '../app/analytics/mocks/remote_config_service_mock.dart';
-import '../app/repository/mocks/course_repository_mock.dart';
-import '../more/feedback/mocks/in_app_review_service_mock.dart';
-import '../more/settings/mocks/settings_manager_mock.dart';
+import '../../../testing/mocks/services/remote_config_service_mock.dart';
+import '../../../testing/mocks/repositories/course_repository_mock.dart';
+import '../../../testing/mocks/services/in_app_review_service_mock.dart';
+import '../../../testing/mocks/repositories/settings_manager_mock.dart';
 
 void main() {
   late SettingsManagerMock settingsManagerMock;

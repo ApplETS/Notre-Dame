@@ -13,12 +13,12 @@ import 'package:notredame/ui/dashboard/view_model/progress_bar_text_options.dart
 import 'package:notredame/data/repositories/settings_repository.dart';
 import 'package:notredame/data/models/activity_code.dart';
 import '../../helpers.dart';
-import '../app/analytics/mocks/analytics_service_mock.dart';
-import '../app/analytics/mocks/remote_config_service_mock.dart';
-import '../app/repository/mocks/course_repository_mock.dart';
-import '../app/storage/mocks/preferences_service_mock.dart';
-import '../more/feedback/mocks/in_app_review_service_mock.dart';
-import '../more/settings/mocks/settings_manager_mock.dart';
+import '../../../testing/mocks/services/analytics_service_mock.dart';
+import '../../../testing/mocks/services/remote_config_service_mock.dart';
+import '../../../testing/mocks/repositories/course_repository_mock.dart';
+import '../../../testing/mocks/services/preferences_service_mock.dart';
+import '../../../testing/mocks/services/in_app_review_service_mock.dart';
+import '../../../testing/mocks/repositories/settings_manager_mock.dart';
 
 void main() {
   late PreferencesServiceMock preferenceServiceMock;

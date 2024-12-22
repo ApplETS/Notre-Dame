@@ -4,7 +4,7 @@ import 'package:mockito/mockito.dart';
 
 // Project imports:
 import 'package:notredame/data/services/in_app_review_service.dart';
-import '../../../../features/more/feedback/mocks/in_app_review_service_mock.mocks.dart';
+import '../../../test/features/more/feedback/mocks/in_app_review_service_mock.mocks.dart';
 
 /// Mock for the [AnalyticsService]
 @GenerateNiceMocks([MockSpec<InAppReviewService>()])

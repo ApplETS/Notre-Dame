@@ -17,7 +17,7 @@ import 'package:notredame/ui/ets/events/news/widgets/news_view.dart';
 import 'package:notredame/ui/ets/events/news/widgets/news_card.dart';
 import 'package:notredame/data/repositories/settings_repository.dart';
 import '../../../../helpers.dart';
-import '../../../app/repository/mocks/news_repository_mock.dart';
+import '../../../../../testing/mocks/repositories/news_repository_mock.dart';
 
 void main() {
   late NewsRepositoryMock newsRepository;

@@ -11,11 +11,11 @@ import 'package:notredame/ui/startup/view_model/startup_viewmodel.dart';
 import 'package:notredame/data/services/preferences_service.dart';
 import 'package:notredame/data/repositories/settings_repository.dart';
 import '../../../helpers.dart';
-import '../../more/settings/mocks/settings_manager_mock.dart';
-import '../error/mocks/internal_info_service_mock.dart';
-import '../integration/mocks/networking_service_mock.dart';
-import '../navigation/mocks/navigation_service_mock.dart';
-import '../repository/mocks/user_repository_mock.dart';
+import '../../../../testing/mocks/repositories/settings_manager_mock.dart';
+import '../../../../testing/mocks/services/internal_info_service_mock.dart';
+import '../../../../testing/mocks/services/networking_service_mock.dart';
+import '../../../../testing/mocks/services/navigation_service_mock.dart';
+import '../../../../testing/mocks/repositories/user_repository_mock.dart';
 
 void main() {
   late NavigationServiceMock navigationServiceMock;

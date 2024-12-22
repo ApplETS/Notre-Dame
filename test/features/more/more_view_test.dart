@@ -11,9 +11,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:notredame/domain/constants/router_paths.dart';
 import 'package:notredame/ui/more/widgets/more_view.dart';
 import '../../helpers.dart';
-import '../app/analytics/mocks/remote_config_service_mock.dart';
-import '../app/navigation/mocks/navigation_service_mock.dart';
-import 'feedback/mocks/in_app_review_service_mock.dart';
+import '../../../testing/mocks/services/remote_config_service_mock.dart';
+import '../../../testing/mocks/services/navigation_service_mock.dart';
+import '../../../testing/mocks/services/in_app_review_service_mock.dart';
 
 void main() {
   SharedPreferences.setMockInitialValues({});

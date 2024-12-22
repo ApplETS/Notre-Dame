@@ -10,7 +10,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:notredame/ui/more/faq/widgets/faq_view.dart';
 import 'package:notredame/ui/more/faq/models/faq.dart';
 import '../../../helpers.dart';
-import '../settings/mocks/settings_manager_mock.dart';
+import '../../../../testing/mocks/repositories/settings_manager_mock.dart';
 
 void main() {
   SharedPreferences.setMockInitialValues({});

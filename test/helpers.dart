@@ -28,24 +28,24 @@ import 'package:notredame/data/services/preferences_service.dart';
 import 'package:notredame/data/services/in_app_review_service.dart';
 import 'package:notredame/data/repositories/settings_repository.dart';
 import 'package:notredame/locator.dart';
-import 'features/app/analytics/mocks/analytics_service_mock.dart';
-import 'features/app/analytics/mocks/remote_config_service_mock.dart';
-import 'features/app/error/mocks/internal_info_service_mock.dart';
-import 'features/app/integration/mocks/launch_url_service_mock.dart';
-import 'features/app/integration/mocks/networking_service_mock.dart';
-import 'features/app/monets_api/mocks/mon_ets_api_mock.dart';
-import 'features/app/navigation/mocks/navigation_service_mock.dart';
-import 'features/app/repository/mocks/author_repository_mock.dart';
-import 'features/app/repository/mocks/course_repository_mock.dart';
-import 'features/app/repository/mocks/news_repository_mock.dart';
-import 'features/app/repository/mocks/quick_links_repository_mock.dart';
-import 'features/app/repository/mocks/user_repository_mock.dart';
-import 'features/app/signets_api/mocks/signets_api_mock.dart';
-import 'features/app/storage/mocks/cache_manager_mock.dart';
-import 'features/app/storage/mocks/flutter_secure_storage_mock.dart';
-import 'features/app/storage/mocks/preferences_service_mock.dart';
-import 'features/more/feedback/mocks/in_app_review_service_mock.dart';
-import 'features/more/settings/mocks/settings_manager_mock.dart';
+import '../testing/mocks/services/analytics_service_mock.dart';
+import '../testing/mocks/services/remote_config_service_mock.dart';
+import '../testing/mocks/services/internal_info_service_mock.dart';
+import '../testing/mocks/services/launch_url_service_mock.dart';
+import '../testing/mocks/services/networking_service_mock.dart';
+import '../testing/mocks/services/mon_ets_api_mock.dart';
+import '../testing/mocks/services/navigation_service_mock.dart';
+import '../testing/mocks/repositories/author_repository_mock.dart';
+import '../testing/mocks/repositories/course_repository_mock.dart';
+import '../testing/mocks/repositories/news_repository_mock.dart';
+import '../testing/mocks/repositories/quick_links_repository_mock.dart';
+import '../testing/mocks/repositories/user_repository_mock.dart';
+import '../testing/mocks/services/signets_api_mock.dart';
+import '../testing/mocks/services/cache_service_mock.dart';
+import '../testing/mocks/services/flutter_secure_storage_mock.dart';
+import '../testing/mocks/services/preferences_service_mock.dart';
+import '../testing/mocks/services/in_app_review_service_mock.dart';
+import '../testing/mocks/repositories/settings_manager_mock.dart';
 
 /// Unregister the service [T] from GetIt
 void unregister<T extends Object>() {
@@ -199,9 +199,9 @@ Future<AppIntl> setupAppIntl() async {
 }
 
 /// Load a mock of the [CacheService]
-CacheManagerMock setupCacheManagerMock() {
+CacheServiceMock setupCacheManagerMock() {
   unregister<CacheService>();
-  final service = CacheManagerMock();
+  final service = CacheServiceMock();
 
   locator.registerSingleton<CacheService>(service);
 

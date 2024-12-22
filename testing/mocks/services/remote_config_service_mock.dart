@@ -4,7 +4,7 @@ import 'package:mockito/mockito.dart';
 
 // Project imports:
 import 'package:notredame/data/services/remote_config_service.dart';
-import 'remote_config_service_mock.mocks.dart';
+import '../../../test/features/app/analytics/mocks/remote_config_service_mock.mocks.dart';
 
 /// Mock for the [RemoteConfigService]
 @GenerateNiceMocks([MockSpec<RemoteConfigService>()])

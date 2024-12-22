@@ -5,7 +5,7 @@ import 'package:package_info_plus/package_info_plus.dart';
 
 // Project imports:
 import 'package:notredame/data/services/internal_info_service.dart';
-import 'internal_info_service_mock.mocks.dart';
+import '../../../test/features/app/error/mocks/internal_info_service_mock.mocks.dart';
 
 @GenerateNiceMocks([MockSpec<InternalInfoService>()])
 class InternalInfoServiceMock extends MockInternalInfoService {

@@ -22,18 +22,18 @@ import 'package:notredame/data/services/cache_service.dart';
 import 'package:notredame/utils/api_exception.dart';
 import 'package:notredame/utils/http_exception.dart';
 import '../../../helpers.dart';
-import '../analytics/mocks/analytics_service_mock.dart';
-import '../integration/mocks/networking_service_mock.dart';
-import '../monets_api/mocks/mon_ets_api_mock.dart';
-import '../signets_api/mocks/signets_api_mock.dart';
-import '../storage/mocks/cache_manager_mock.dart';
-import '../storage/mocks/flutter_secure_storage_mock.dart';
+import '../../../../testing/mocks/services/analytics_service_mock.dart';
+import '../../../../testing/mocks/services/networking_service_mock.dart';
+import '../../../../testing/mocks/services/mon_ets_api_mock.dart';
+import '../../../../testing/mocks/services/signets_api_mock.dart';
+import '../../../../testing/mocks/services/cache_service_mock.dart';
+import '../../../../testing/mocks/services/flutter_secure_storage_mock.dart';
 
 void main() {
   late AnalyticsServiceMock analyticsServiceMock;
   late MonETSAPIClientMock monETSApiMock;
   late FlutterSecureStorageMock secureStorageMock;
-  late CacheManagerMock cacheManagerMock;
+  late CacheServiceMock cacheManagerMock;
   late SignetsAPIClientMock signetsApiMock;
   late NetworkingServiceMock networkingServiceMock;
 
@@ -478,7 +478,7 @@ void main() {
 
       setUp(() async {
         // Stub to simulate presence of programs cache
-        CacheManagerMock.stubGet(cacheManagerMock,
+        CacheServiceMock.stubGet(cacheManagerMock,
             UserRepository.programsCacheKey, jsonEncode(programs));
 
         MonETSAPIClientMock.stubAuthenticate(monETSApiMock, user);
@@ -513,7 +513,7 @@ void main() {
           () async {
         // Stub to simulate an exception when trying to get the programs from the cache
         reset(cacheManagerMock);
-        CacheManagerMock.stubGetException(
+        CacheServiceMock.stubGetException(
             cacheManagerMock, UserRepository.programsCacheKey);
         FlutterSecureStorageMock.stubRead(secureStorageMock,
             key: UserRepository.passwordSecureKey, valueToReturn: '');
@@ -534,7 +534,7 @@ void main() {
       test("SignetsAPI return another program", () async {
         // Stub to simulate presence of program cache
         reset(cacheManagerMock);
-        CacheManagerMock.stubGet(
+        CacheServiceMock.stubGet(
             cacheManagerMock, UserRepository.programsCacheKey, jsonEncode([]));
         FlutterSecureStorageMock.stubRead(secureStorageMock,
             key: UserRepository.passwordSecureKey, valueToReturn: '');
@@ -561,7 +561,7 @@ void main() {
       test("SignetsAPI return an exception", () async {
         // Stub to simulate presence of program cache
         reset(cacheManagerMock);
-        CacheManagerMock.stubGet(
+        CacheServiceMock.stubGet(
             cacheManagerMock, UserRepository.programsCacheKey, jsonEncode([]));
 
         // Stub SignetsApi answer to test only the cache retrieving
@@ -591,11 +591,11 @@ void main() {
       test("Cache update fail", () async {
         // Stub to simulate presence of program cache
         reset(cacheManagerMock);
-        CacheManagerMock.stubGet(
+        CacheServiceMock.stubGet(
             cacheManagerMock, UserRepository.programsCacheKey, jsonEncode([]));
 
         // Stub to simulate exception when updating cache
-        CacheManagerMock.stubUpdateException(
+        CacheServiceMock.stubUpdateException(
             cacheManagerMock, UserRepository.programsCacheKey);
         FlutterSecureStorageMock.stubRead(secureStorageMock,
             key: UserRepository.passwordSecureKey, valueToReturn: '');
@@ -642,7 +642,7 @@ void main() {
 
       setUp(() async {
         // Stub to simulate presence of info cache
-        CacheManagerMock.stubGet(
+        CacheServiceMock.stubGet(
             cacheManagerMock, UserRepository.infoCacheKey, jsonEncode(info));
 
         MonETSAPIClientMock.stubAuthenticate(monETSApiMock, user);
@@ -679,7 +679,7 @@ void main() {
       test("Trying to load info from cache but cache doesn't exist", () async {
         // Stub to simulate an exception when trying to get the info from the cache
         reset(cacheManagerMock);
-        CacheManagerMock.stubGetException(
+        CacheServiceMock.stubGetException(
             cacheManagerMock, UserRepository.infoCacheKey);
 
         expect(manager.info, isNull);
@@ -697,7 +697,7 @@ void main() {
       test("SignetsAPI return another info", () async {
         // Stub to simulate presence of info cache
         reset(cacheManagerMock);
-        CacheManagerMock.stubGet(
+        CacheServiceMock.stubGet(
             cacheManagerMock, UserRepository.infoCacheKey, jsonEncode(info));
 
         // Stub SignetsApi answer to test only the cache retrieving
@@ -745,7 +745,7 @@ void main() {
       test("SignetsAPI return an exception", () async {
         // Stub to simulate presence of info cache
         reset(cacheManagerMock);
-        CacheManagerMock.stubGet(
+        CacheServiceMock.stubGet(
             cacheManagerMock, UserRepository.infoCacheKey, jsonEncode(info));
 
         // Stub SignetsApi answer to test only the cache retrieving
@@ -769,11 +769,11 @@ void main() {
       test("Cache update fail", () async {
         // Stub to simulate presence of session cache
         reset(cacheManagerMock);
-        CacheManagerMock.stubGet(
+        CacheServiceMock.stubGet(
             cacheManagerMock, UserRepository.infoCacheKey, jsonEncode(info));
 
         // Stub to simulate exception when updating cache
-        CacheManagerMock.stubUpdateException(
+        CacheServiceMock.stubUpdateException(
             cacheManagerMock, UserRepository.infoCacheKey);
 
         // Stub SignetsApi answer to test only the cache retrieving

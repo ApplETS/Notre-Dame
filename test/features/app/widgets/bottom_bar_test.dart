@@ -11,8 +11,8 @@ import 'package:notredame/data/services/navigation_service.dart';
 import 'package:notredame/domain/constants/router_paths.dart';
 import 'package:notredame/ui/core/ui/bottom_bar.dart';
 import '../../../helpers.dart';
-import '../analytics/mocks/analytics_service_mock.dart';
-import '../navigation/mocks/navigation_service_mock.dart';
+import '../../../../testing/mocks/services/analytics_service_mock.dart';
+import '../../../../testing/mocks/services/navigation_service_mock.dart';
 
 late NavigationServiceMock navigationServiceMock;
 

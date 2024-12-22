@@ -11,7 +11,7 @@ import 'package:notredame/data/services/signets-api/models/course_summary.dart';
 import 'package:notredame/data/repositories/settings_repository.dart';
 import 'package:notredame/ui/student/grades/widgets/grade_button.dart';
 import '../../../../helpers.dart';
-import '../../../app/navigation/mocks/navigation_service_mock.dart';
+import '../../../../../testing/mocks/services/navigation_service_mock.dart';
 
 void main() {
   late AppIntl intl;

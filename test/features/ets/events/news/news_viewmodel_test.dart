@@ -12,7 +12,7 @@ import 'package:notredame/ui/ets/events/news/view_model/news_viewmodel.dart';
 import 'package:notredame/data/repositories/settings_repository.dart';
 import 'package:notredame/locator.dart';
 import '../../../../helpers.dart';
-import '../../../app/repository/mocks/news_repository_mock.dart';
+import '../../../../../testing/mocks/repositories/news_repository_mock.dart';
 
 void main() {
   late NewsViewModel viewModel;

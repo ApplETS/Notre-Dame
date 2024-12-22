@@ -10,10 +10,10 @@ import 'package:notredame/data/models/quick_links.dart';
 import 'package:notredame/ui/ets/quick_link/widgets/quick_links_view.dart';
 import 'package:notredame/ui/ets/quick_link/widgets/web_link_card.dart';
 import '../../../helpers.dart';
-import '../../app/analytics/mocks/analytics_service_mock.dart';
-import '../../app/error/mocks/internal_info_service_mock.dart';
-import '../../app/navigation/mocks/navigation_service_mock.dart';
-import '../../app/repository/mocks/quick_links_repository_mock.dart';
+import '../../../../testing/mocks/services/analytics_service_mock.dart';
+import '../../../../testing/mocks/services/internal_info_service_mock.dart';
+import '../../../../testing/mocks/services/navigation_service_mock.dart';
+import '../../../../testing/mocks/repositories/quick_links_repository_mock.dart';
 
 void main() {
   late AppIntl intl;

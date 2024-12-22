@@ -4,7 +4,7 @@ import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
 // Project imports:
-import '../../../../features/app/storage/mocks/flutter_secure_storage_mock.mocks.dart';
+import '../../../test/features/app/storage/mocks/flutter_secure_storage_mock.mocks.dart';
 
 /// Mock for the [FlutterSecureStorage]
 @GenerateNiceMocks([MockSpec<FlutterSecureStorage>()])

@@ -11,7 +11,7 @@ import 'package:notredame/domain/constants/preferences_flags.dart';
 import 'package:notredame/data/repositories/settings_repository.dart';
 import 'package:notredame/ui/more/settings/view_model/settings_viewmodel.dart';
 import '../../../helpers.dart';
-import 'mocks/settings_manager_mock.dart';
+import '../../../../testing/mocks/repositories/settings_manager_mock.dart';
 
 late SettingsViewModel viewModel;
 

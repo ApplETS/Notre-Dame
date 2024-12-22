@@ -8,7 +8,7 @@ import 'package:mockito/mockito.dart';
 // Project imports:
 import 'package:notredame/domain/constants/preferences_flags.dart';
 import 'package:notredame/data/repositories/settings_repository.dart';
-import 'settings_manager_mock.mocks.dart';
+import '../../../test/features/more/settings/mocks/settings_manager_mock.mocks.dart';
 
 @GenerateNiceMocks([MockSpec<SettingsRepository>()])
 class SettingsManagerMock extends MockSettingsManager {

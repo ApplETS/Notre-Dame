@@ -5,7 +5,7 @@ import 'package:mockito/mockito.dart';
 // Project imports:
 import 'package:notredame/domain/constants/preferences_flags.dart';
 import 'package:notredame/data/services/preferences_service.dart';
-import 'preferences_service_mock.mocks.dart';
+import '../../../test/features/app/storage/mocks/preferences_service_mock.mocks.dart';
 
 @GenerateNiceMocks([MockSpec<PreferencesService>()])
 class PreferencesServiceMock extends MockPreferencesService {

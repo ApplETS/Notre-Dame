@@ -11,8 +11,8 @@ import 'package:notredame/data/repositories/settings_repository.dart';
 import 'package:notredame/ui/schedule/view_model/schedule_settings_viewmodel.dart';
 import 'package:notredame/data/models/activity_code.dart';
 import '../../helpers.dart';
-import '../app/repository/mocks/course_repository_mock.dart';
-import '../more/settings/mocks/settings_manager_mock.dart';
+import '../../../testing/mocks/repositories/course_repository_mock.dart';
+import '../../../testing/mocks/repositories/settings_manager_mock.dart';
 
 late SettingsManagerMock settingsManagerMock;
 late CourseRepositoryMock courseRepositoryMock;

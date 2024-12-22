@@ -15,7 +15,7 @@ import 'package:notredame/data/repositories/settings_repository.dart';
 import 'package:notredame/ui/student/grades/widgets/grades_view.dart';
 import 'package:notredame/ui/student/grades/widgets/grade_button.dart';
 import '../../../helpers.dart';
-import '../../app/repository/mocks/course_repository_mock.dart';
+import '../../../../testing/mocks/repositories/course_repository_mock.dart';
 
 void main() {
   SharedPreferences.setMockInitialValues({});

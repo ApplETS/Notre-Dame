@@ -9,7 +9,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:notredame/data/services/networking_service.dart';
 import 'package:notredame/ui/more/settings/widgets/settings_view.dart';
 import '../../../helpers.dart';
-import '../../app/analytics/mocks/analytics_service_mock.dart';
+import '../../../../testing/mocks/services/analytics_service_mock.dart';
 
 void main() {
   late AppIntl intl;

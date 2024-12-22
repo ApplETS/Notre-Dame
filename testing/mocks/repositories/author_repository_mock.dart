@@ -5,7 +5,7 @@ import 'package:mockito/mockito.dart';
 // Project imports:
 import 'package:notredame/data/repositories/author_repository.dart';
 import 'package:notredame/data/models/hello/organizer.dart';
-import 'author_repository_mock.mocks.dart';
+import '../../../test/features/app/repository/mocks/author_repository_mock.mocks.dart';
 
 // Project imports:
 

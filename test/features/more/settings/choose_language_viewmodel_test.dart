@@ -10,8 +10,8 @@ import 'package:notredame/domain/constants/router_paths.dart';
 import 'package:notredame/ui/more/settings/choose_language/view_model/choose_language_viewmodel.dart';
 import 'package:notredame/data/repositories/settings_repository.dart';
 import '../../../helpers.dart';
-import '../../app/navigation/mocks/navigation_service_mock.dart';
-import 'mocks/settings_manager_mock.dart';
+import '../../../../testing/mocks/services/navigation_service_mock.dart';
+import '../../../../testing/mocks/repositories/settings_manager_mock.dart';
 
 late ChooseLanguageViewModel viewModel;
 

@@ -15,7 +15,7 @@ import 'package:notredame/data/services/signets-api/models/schedule_activity.dar
 import 'package:notredame/data/services/signets-api/models/session.dart';
 import 'package:notredame/data/services/signets-api/signets_api_client.dart';
 import 'package:notredame/utils/api_exception.dart';
-import 'signets_api_mock.mocks.dart';
+import '../../../test/features/app/signets_api/mocks/signets_api_mock.mocks.dart';
 
 // MODELS
 

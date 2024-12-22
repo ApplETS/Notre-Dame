@@ -7,7 +7,7 @@ import 'package:notredame/data/services/launch_url_service.dart';
 import 'package:notredame/ui/more/faq/view_model/faq_viewmodel.dart';
 import 'package:notredame/data/repositories/settings_repository.dart';
 import '../../../helpers.dart';
-import '../../app/integration/mocks/launch_url_service_mock.dart';
+import '../../../../testing/mocks/services/launch_url_service_mock.dart';
 
 void main() {
   late LaunchUrlServiceMock launchUrlServiceMock;
