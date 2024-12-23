@@ -25,7 +25,7 @@ import 'package:notredame/ui/schedule/schedule_default/widgets/schedule_default_
 import 'package:notredame/ui/schedule/widgets/schedule_view.dart';
 import 'package:notredame/ui/student/grades/grade_details/widgets/grade_details_view.dart';
 import 'package:notredame/ui/student/widgets/student_view.dart';
-import 'package:notredame/ui/welcome/widgets/login_view.dart';
+import 'package:notredame/ui/login/widgets/login_view.dart';
 
 Route<dynamic> generateRoute(RouteSettings routeSettings) {
   switch (routeSettings.name) {

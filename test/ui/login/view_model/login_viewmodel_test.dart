@@ -7,7 +7,7 @@ import 'package:mockito/mockito.dart';
 import 'package:notredame/data/services/navigation_service.dart';
 import 'package:notredame/domain/constants/router_paths.dart';
 import 'package:notredame/data/repositories/user_repository.dart';
-import 'package:notredame/ui/welcome/view_model/login_viewmodel.dart';
+import 'package:notredame/ui/login/view_model/login_viewmodel.dart';
 import '../../../helpers.dart';
 import '../../../data/mocks/services/navigation_service_mock.dart';
 import '../../../data/mocks/repositories/user_repository_mock.dart';
