@@ -8,7 +8,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:notredame/data/services/remote_config_service.dart';
 import 'package:notredame/ui/core/ui/base_scaffold.dart';
 import 'package:notredame/ui/ets/events/news/widgets/news_view.dart';
-import 'package:notredame/ui/ets/quick_link/widgets/quick_links_view.dart';
+import 'package:notredame/ui/ets/quick_links/widgets/quick_links_view.dart';
 import 'package:notredame/locator.dart';
 
 class ETSView extends StatefulWidget {
