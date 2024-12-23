@@ -14,18 +14,18 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
 
 // Project imports:
-import 'package:notredame/features/app/analytics/analytics_service.dart';
-import 'package:notredame/features/app/analytics/remote_config_service.dart';
-import 'package:notredame/features/app/error/outage/outage_view.dart';
-import 'package:notredame/features/app/integration/firebase_options.dart';
-import 'package:notredame/features/app/navigation/navigation_service.dart';
-import 'package:notredame/features/app/navigation/router.dart';
-import 'package:notredame/features/app/navigation/navigation_history_observer.dart';
-import 'package:notredame/features/app/startup/startup_view.dart';
-import 'package:notredame/features/ets/events/api-client/hello_api_client.dart';
-import 'package:notredame/features/more/settings/settings_manager.dart';
-import 'package:notredame/utils/app_theme.dart';
-import 'package:notredame/utils/locator.dart';
+import 'package:notredame/data/services/analytics_service.dart';
+import 'package:notredame/data/services/remote_config_service.dart';
+import 'package:notredame/ui/outage/widgets/outage_view.dart';
+import 'package:notredame/data/models/firebase_options.dart';
+import 'package:notredame/data/services/navigation_service.dart';
+import 'package:notredame/router.dart';
+import 'package:notredame/data/services/navigation_history_observer.dart';
+import 'package:notredame/ui/startup/widgets/startup_view.dart';
+import 'package:notredame/data/services/hello/hello_service.dart';
+import 'package:notredame/data/repositories/settings_repository.dart';
+import 'package:notredame/ui/core/themes/app_theme.dart';
+import 'package:notredame/locator.dart';
 
 Future<void> main() async {
   setupLocator();
@@ -38,11 +38,11 @@ Future<void> main() async {
   await remoteConfigService.initialize();
 
   // Manage the settings
-  final SettingsManager settingsManager = locator<SettingsManager>();
+  final SettingsRepository settingsManager = locator<SettingsRepository>();
   await settingsManager.fetchLanguageAndThemeMode();
 
   // Initialize hello
-  final HelloAPIClient helloApiClient = locator<HelloAPIClient>();
+  final HelloService helloApiClient = locator<HelloService>();
   helloApiClient.apiLink = remoteConfigService.helloApiUrl;
 
   runZonedGuarded(() {
@@ -56,7 +56,7 @@ Future<void> main() async {
 
 class ETSMobile extends StatelessWidget {
   /// Manage the settings
-  final SettingsManager settingsManager;
+  final SettingsRepository settingsManager;
 
   const ETSMobile(this.settingsManager, {super.key});
 
@@ -65,9 +65,9 @@ class ETSMobile extends StatelessWidget {
     addEdgeToEdgeEffect();
     final RemoteConfigService remoteConfigService = locator<RemoteConfigService>();
     final bool outage = remoteConfigService.outage;
-    return ChangeNotifierProvider<SettingsManager>(
+    return ChangeNotifierProvider<SettingsRepository>(
       create: (_) => settingsManager,
-      child: Consumer<SettingsManager>(builder: (context, model, child) {
+      child: Consumer<SettingsRepository>(builder: (context, model, child) {
         return CalendarControllerProvider(
           controller: EventController(),
           child: MaterialApp(
