@@ -3,13 +3,12 @@ import 'package:flutter/material.dart';
 
 // Package imports:
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:notredame/ui/dashboard/widgets/about_us_card.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 import 'package:stacked/stacked.dart';
 
 // Project imports:
 import 'package:notredame/domain/constants/preferences_flags.dart';
-import 'package:notredame/domain/constants/urls.dart';
 import 'package:notredame/data/services/analytics_service.dart';
 import 'package:notredame/data/services/navigation_service.dart';
 import 'package:notredame/domain/constants/router_paths.dart';
@@ -25,7 +24,6 @@ import 'package:notredame/ui/student/grades/widgets/grade_button.dart';
 import 'package:notredame/ui/core/themes/app_theme.dart';
 import 'package:notredame/utils/loading.dart';
 import 'package:notredame/locator.dart';
-import 'package:notredame/data/services/launch_url_service.dart';
 
 class DashboardView extends StatefulWidget {
   const DashboardView({super.key});
@@ -37,7 +35,6 @@ class DashboardView extends StatefulWidget {
 class _DashboardViewState extends State<DashboardView>
     with TickerProviderStateMixin {
   Text? progressBarText;
-  final LaunchUrlService _launchUrlService = locator<LaunchUrlService>();
   final NavigationService _navigationService = locator<NavigationService>();
   final AnalyticsService _analyticsService = locator<AnalyticsService>();
   static const String tag = "DashboardView";
@@ -98,7 +95,7 @@ class _DashboardViewState extends State<DashboardView>
     for (final PreferencesFlag element in model.cardsToDisplay ?? []) {
       switch (element) {
         case PreferencesFlag.aboutUsCard:
-          cards.add(_buildAboutUsCard(model, element));
+          cards.add(AboutUsCard(key: UniqueKey(), onDismissed: () => model.hideCard(PreferencesFlag.aboutUsCard)));
         case PreferencesFlag.scheduleCard:
           cards.add(_buildScheduleCard(model, element));
         case PreferencesFlag.progressBarCard:
@@ -113,92 +110,6 @@ class _DashboardViewState extends State<DashboardView>
 
     return cards;
   }
-
-  Widget _buildAboutUsCard(DashboardViewModel model, PreferencesFlag flag) =>
-      DismissibleCard(
-        key: UniqueKey(),
-        onDismissed: (DismissDirection direction) {
-          dismissCard(model, flag);
-        },
-        cardColor: AppTheme.appletsPurple,
-        child: Column(mainAxisSize: MainAxisSize.min, children: [
-          Align(
-              alignment: Alignment.centerLeft,
-              child: Container(
-                padding: const EdgeInsets.fromLTRB(17, 15, 0, 0),
-                child: Text(AppIntl.of(context)!.card_applets_title,
-                    style: Theme.of(context).primaryTextTheme.titleLarge),
-              )),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Container(
-                padding: const EdgeInsets.fromLTRB(17, 10, 15, 10),
-                child: Text(AppIntl.of(context)!.card_applets_text,
-                    style: Theme.of(context).primaryTextTheme.bodyMedium),
-              ),
-              Container(
-                padding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
-                child: Padding(
-                  padding: const EdgeInsets.only(bottom: 8.0),
-                  child: Wrap(spacing: 15.0, children: [
-                    IconButton(
-                      onPressed: () {
-                        _analyticsService.logEvent(tag, "Facebook clicked");
-                        _launchUrlService.launchInBrowser(Urls.clubFacebook);
-                      },
-                      icon: const FaIcon(
-                        FontAwesomeIcons.facebook,
-                        color: Colors.white,
-                      ),
-                    ),
-                    IconButton(
-                      onPressed: () {
-                        _analyticsService.logEvent(tag, "Instagram clicked");
-                        _launchUrlService.launchInBrowser(Urls.clubInstagram);
-                      },
-                      icon: const FaIcon(
-                        FontAwesomeIcons.instagram,
-                        color: Colors.white,
-                      ),
-                    ),
-                    IconButton(
-                      onPressed: () {
-                        _analyticsService.logEvent(tag, "Github clicked");
-                        _launchUrlService.launchInBrowser(Urls.clubGithub);
-                        },
-                      icon: const FaIcon(
-                        FontAwesomeIcons.github,
-                        color: Colors.white,
-                      ),
-                    ),
-                    IconButton(
-                      onPressed: () {
-                        _analyticsService.logEvent(tag, "Email clicked");
-                        _launchUrlService.writeEmail(Urls.clubEmail, "");
-                      },
-                      icon: const FaIcon(
-                        FontAwesomeIcons.envelope,
-                        color: Colors.white,
-                      ),
-                    ),
-                    IconButton(
-                      onPressed: () {
-                        _analyticsService.logEvent(tag, "Discord clicked");
-                        _launchUrlService.launchInBrowser(Urls.clubDiscord);
-                        },
-                      icon: const FaIcon(
-                        FontAwesomeIcons.discord,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ]),
-                ),
-              ),
-            ],
-          ),
-        ]),
-      );
 
   Widget _buildProgressBarCard(
           DashboardViewModel model, PreferencesFlag flag) =>
