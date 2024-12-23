@@ -17,7 +17,7 @@ dependencies:
     sdk: flutter
 
   # Architecture
-  get_it: ^7.7.0
+  get_it: ^8.0.3
   provider: ^6.1.2
   stacked: ^3.4.3
 
