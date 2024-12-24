@@ -10,15 +10,16 @@ import 'package:notredame/ui/core/ui/dismissible_card.dart';
 
 class AboutUsCard extends StatelessWidget {
   final LaunchUrlService _launchUrlService = locator<LaunchUrlService>();
-  final VoidCallback onDismissed;
+  
+  final VoidCallback _onDismissed;
 
-  AboutUsCard({required super.key, required this.onDismissed});
+  AboutUsCard({required super.key, required VoidCallback onDismissed}) : _onDismissed = onDismissed;
 
   @override
   Widget build(BuildContext context) =>
     DismissibleCard(
         key: UniqueKey(),
-        onDismissed: (DismissDirection direction) => onDismissed(),
+        onDismissed: (DismissDirection direction) => _onDismissed(),
         cardColor: AppTheme.appletsPurple,
         child: Column(mainAxisSize: MainAxisSize.min, children: [
           Align(
