@@ -12,12 +12,10 @@ import 'package:stacked/stacked.dart';
 
 // Project imports:
 import 'package:notredame/domain/constants/preferences_flags.dart';
-import 'package:notredame/data/services/analytics_service.dart';
 import 'package:notredame/ui/core/ui/base_scaffold.dart';
 import 'package:notredame/ui/dashboard/view_model/dashboard_viewmodel.dart';
 import 'package:notredame/ui/dashboard/widgets/haptics_container.dart';
 import 'package:notredame/utils/loading.dart';
-import 'package:notredame/locator.dart';
 
 class DashboardView extends StatefulWidget {
   const DashboardView({super.key});
@@ -28,9 +26,6 @@ class DashboardView extends StatefulWidget {
 
 class _DashboardViewState extends State<DashboardView>
     with TickerProviderStateMixin {
-  
-  final AnalyticsService _analyticsService = locator<AnalyticsService>();
-
   @override
   void initState() {
     super.initState();
@@ -65,8 +60,7 @@ class _DashboardViewState extends State<DashboardView>
                       model.remoteConfigService.dashboardMessageActive
                         ? BroadcastMessageCard(key: UniqueKey(), model: model)
                         : null,
-                    onReorder: (oldIndex, newIndex) =>
-                      onReorder(model, oldIndex, newIndex),
+                    onReorder: (oldIndex, newIndex) => model.onCardReorder(oldIndex, newIndex),
                     padding: const EdgeInsets.fromLTRB(0, 4, 0, 24),
                     children: _buildCards(model),
                     proxyDecorator: (child, _, __) {
@@ -81,9 +75,7 @@ class _DashboardViewState extends State<DashboardView>
 
   List<Widget> _buildCards(DashboardViewModel model) {
     final List<Widget> cards = List.empty(growable: true);
-    // always try to build broadcast cart so the user doesn't miss out on
-    // important info if they dismissed it previously
-
+    
     for (final PreferencesFlag element in model.cardsToDisplay ?? []) {
       switch (element) {
         case PreferencesFlag.aboutUsCard:
@@ -99,23 +91,5 @@ class _DashboardViewState extends State<DashboardView>
     }
 
     return cards;
-  }
-
-  void onReorder(DashboardViewModel model, int oldIndex, int newIndex) {
-    if (newIndex > oldIndex) {
-      // ignore: parameter_assignments
-      newIndex -= 1;
-    }
-
-    // Should not happen becase dismiss card will not be called if the card is null.
-    if (model.cards == null) {
-      _analyticsService.logError("DashboardView", "Cards list is null");
-      throw Exception("Cards is null");
-    }
-
-    final PreferencesFlag elementMoved = model.cards!.keys
-        .firstWhere((element) => model.cards![element] == oldIndex);
-
-    model.setOrder(elementMoved, newIndex);
   }
 }

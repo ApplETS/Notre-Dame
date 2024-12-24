@@ -3,15 +3,15 @@ import 'package:flutter/material.dart';
 import 'package:notredame/ui/core/themes/app_theme.dart';
 import 'package:notredame/ui/core/ui/dismissible_card.dart';
 import 'package:notredame/ui/dashboard/view_model/dashboard_viewmodel.dart';
-import 'package:notredame/ui/dashboard/view_model/progress_bar_text_options.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
 class ProgressBarCard extends StatelessWidget {
   final DashboardViewModel _model;
   final VoidCallback _onDismissed;
-  Text? progressBarText;
 
-  ProgressBarCard({super.key, required DashboardViewModel model, required VoidCallback onDismissed}): _model = model, _onDismissed = onDismissed;
+  const ProgressBarCard({super.key, required DashboardViewModel model, required VoidCallback onDismissed})
+    : _model = model,
+    _onDismissed = onDismissed;
 
   @override
   Widget build(BuildContext context) => DismissibleCard(
@@ -35,10 +35,7 @@ class ProgressBarCard extends StatelessWidget {
               child: ClipRRect(
                 borderRadius: const BorderRadius.all(Radius.circular(10)),
                 child: GestureDetector(
-                  onTap: () {
-                    _model.changeProgressBarText();
-                    setText(_model, context);
-                  },
+                  onTap: () => _model.changeProgressBarText(),
                   child: LinearProgressIndicator(
                     value: _model.progress,
                     minHeight: 30,
@@ -50,17 +47,11 @@ class ProgressBarCard extends StatelessWidget {
               ),
             ),
             GestureDetector(
-              onTap: () {
-                _model.changeProgressBarText();
-                setText(_model, context);
-              },
+              onTap: () => _model.changeProgressBarText(),
               child: Container(
                 padding: const EdgeInsets.only(top: 16),
                 child: Center(
-                  child: progressBarText ??
-                      Text(
-                        AppIntl.of(context)!.progress_bar_message(
-                            _model.sessionDays[0], _model.sessionDays[1]),
+                  child: Text(_model.setProgressBarText(context),
                         style: const TextStyle(color: Colors.white),
                       ),
                 ),
@@ -77,32 +68,5 @@ class ProgressBarCard extends StatelessWidget {
         ),
     ]),
   );
-
-  void setText(DashboardViewModel model, BuildContext context) {
-    if (model.sessionDays[0] == 0 || model.sessionDays[1] == 0) {
-      return;
-    }
-
-    if (model.currentProgressBarText ==
-        ProgressBarText.daysElapsedWithTotalDays) {
-      progressBarText = Text(
-        AppIntl.of(context)!
-            .progress_bar_message(model.sessionDays[0], model.sessionDays[1]),
-        style: const TextStyle(color: Colors.white),
-      );
-    } else if (model.currentProgressBarText == ProgressBarText.percentage) {
-      progressBarText = Text(
-        AppIntl.of(context)!.progress_bar_message_percentage(
-            ((model.sessionDays[0] / model.sessionDays[1]) * 100).round()),
-        style: const TextStyle(color: Colors.white),
-      );
-    } else {
-      progressBarText = Text(
-        AppIntl.of(context)!.progress_bar_message_remaining_days(
-            model.sessionDays[1] - model.sessionDays[0]),
-        style: const TextStyle(color: Colors.white),
-      );
-    }
-  }
 }
   

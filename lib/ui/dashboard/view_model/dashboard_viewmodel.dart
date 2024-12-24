@@ -2,11 +2,11 @@
 import 'dart:collection';
 
 // Package imports:
+import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:notredame/data/models/broadcast_message.dart';
 import 'package:notredame/data/repositories/broadcast_message_repository.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stacked/stacked.dart';
 
 // Project imports:
@@ -82,8 +82,6 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
   ProgressBarText _currentProgressBarText =
       ProgressBarText.daysElapsedWithTotalDays;
 
-  ProgressBarText get currentProgressBarText => _currentProgressBarText;
-
   /// Return session progress based on today's [date]
   double getSessionProgress() {
     if (_courseRepository.activeSessions.isEmpty) {
@@ -132,13 +130,14 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
   }
 
   void changeProgressBarText() {
-    if (currentProgressBarText.index <= 1) {
+    if (_currentProgressBarText.index <= 1) {
       _currentProgressBarText =
-          ProgressBarText.values[currentProgressBarText.index + 1];
+          ProgressBarText.values[_currentProgressBarText.index + 1];
     } else {
       _currentProgressBarText = ProgressBarText.values[0];
     }
 
+    notifyListeners();
     _settingsManager.setString(
         PreferencesFlag.progressBarText, _currentProgressBarText.toString());
   }
@@ -173,37 +172,13 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
 
   @override
   Future<Map<PreferencesFlag, int>> futureToRun() async {
-    final dashboard = await _settingsManager.getDashboard();
-
-    //TODO: remove when all users are on 4.50.1 or more
-    final sharedPreferences = await SharedPreferences.getInstance();
-    if (sharedPreferences.containsKey("PreferencesFlag.broadcastChange")) {
-      sharedPreferences.remove("PreferencesFlag.broadcastChange");
-    }
-    if (sharedPreferences.containsKey("PreferencesFlag.broadcastCard")) {
-      sharedPreferences.remove("PreferencesFlag.broadcastCard");
-    }
-    final sortedList = dashboard.entries.toList()
-      ..sort((a, b) => a.value.compareTo(b.value));
-    final sortedDashboard = LinkedHashMap.fromEntries(sortedList);
-    int index = 0;
-    for (final element in sortedDashboard.entries) {
-      if (element.value >= 0) {
-        sortedDashboard.update(element.key, (value) => index);
-        index++;
-      }
-    }
-    //TODO: end remove when all users are on 4.50.1 or more
-
-    _cards = sortedDashboard;
+    _cards = await _settingsManager.getDashboard();
 
     getCardsToDisplay();
 
-    // load data for both grade cards & grades home screen widget
-    // (moved from getCardsToDisplay())
     await loadDataAndUpdateWidget();
 
-    return sortedDashboard;
+    return _cards!;
   }
 
   Future loadDataAndUpdateWidget() async {
@@ -450,5 +425,38 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
     } finally {
       setBusyForObject(broadcastMessage, false);
     }
+  }
+
+  void onCardReorder(int oldIndex, int newIndex) {
+    if (newIndex > oldIndex) {
+      // ignore: parameter_assignments
+      newIndex -= 1;
+    }
+
+    // Should not happen becase dismiss card will not be called if the card is null.
+    if (cards == null) {
+      _analyticsService.logError("DashboardView", "Cards list is null");
+      throw Exception("Cards is null");
+    }
+
+    final PreferencesFlag elementMoved = cards!.keys
+        .firstWhere((element) => cards![element] == oldIndex);
+
+    setOrder(elementMoved, newIndex);
+  }
+
+  String setProgressBarText(BuildContext context) {
+    String progressBarText = AppIntl.of(context)!
+            .progress_bar_message(sessionDays[0], sessionDays[1]);
+
+    if (_currentProgressBarText == ProgressBarText.percentage) {
+      progressBarText = 
+        AppIntl.of(context)!.progress_bar_message_percentage(
+            ((sessionDays[0] / sessionDays[1]) * 100).round());
+    } else if(_currentProgressBarText == ProgressBarText.remainingDays) {
+      progressBarText = AppIntl.of(context)!.progress_bar_message_remaining_days(
+            sessionDays[1] - sessionDays[0]);
+    }
+    return progressBarText;
   }
 }
