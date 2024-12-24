@@ -4,6 +4,8 @@ import 'dart:collection';
 // Package imports:
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:notredame/data/models/broadcast_message.dart';
+import 'package:notredame/data/repositories/broadcast_message_repository.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stacked/stacked.dart';
 
@@ -31,6 +33,7 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
   final AnalyticsService _analyticsService = locator<AnalyticsService>();
   final RemoteConfigService remoteConfigService =
       locator<RemoteConfigService>();
+  final BroadcastMessageRepository _broadcastMessageRepository = locator<BroadcastMessageRepository>();
 
   /// All dashboard displayable cards
   Map<PreferencesFlag, int>? _cards;
@@ -47,13 +50,7 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
   /// Numbers of days elapsed and total number of days of the current session
   List<int> _sessionDays = [0, 0];
 
-  /// Message to display in case of urgent/important broadcast need (Firebase
-  /// remote config), and the associated card title
-  String broadcastMessage = "";
-  String broadcastTitle = "";
-  String broadcastColor = "";
-  String broadcastUrl = "";
-  String broadcastType = "";
+  BroadcastMessage? broadcastMessage;
 
   /// Get progress of the session
   double get progress => _progress;
@@ -445,26 +442,13 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
 
   Future<void> futureToRunBroadcast() async {
     setBusyForObject(broadcastMessage, true);
-    setBusyForObject(broadcastTitle, true);
-    setBusyForObject(broadcastColor, true);
-    setBusyForObject(broadcastUrl, true);
-    setBusyForObject(broadcastType, true);
 
-    if (_appIntl.localeName == "fr") {
-      broadcastMessage = remoteConfigService.dashboardMessageFr;
-      broadcastTitle = remoteConfigService.dashboardMessageTitleFr;
-    } else {
-      broadcastMessage = remoteConfigService.dashboardMessageEn;
-      broadcastTitle = remoteConfigService.dashboardMessageTitleEn;
+    try {
+      broadcastMessage = _broadcastMessageRepository.getBroadcastMessage(_appIntl.localeName);
+    } catch (error) {
+      onError(error);
+    } finally {
+      setBusyForObject(broadcastMessage, false);
     }
-    broadcastColor = remoteConfigService.dashboardMsgColor;
-    broadcastUrl = remoteConfigService.dashboardMsgUrl;
-    broadcastType = remoteConfigService.dashboardMsgType;
-
-    setBusyForObject(broadcastMessage, false);
-    setBusyForObject(broadcastTitle, false);
-    setBusyForObject(broadcastColor, false);
-    setBusyForObject(broadcastUrl, false);
-    setBusyForObject(broadcastType, false);
   }
 }
