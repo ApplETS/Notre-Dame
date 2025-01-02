@@ -8,6 +8,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:logger/logger.dart';
+import 'package:notredame/data/repositories/broadcast_message_repository.dart';
 
 // Project imports:
 import 'package:notredame/data/services/analytics_service.dart';
@@ -317,4 +318,13 @@ bool getCalendarViewEnabled() {
   final RemoteConfigService remoteConfigService =
       locator<RemoteConfigService>();
   return remoteConfigService.scheduleListViewDefault;
+}
+
+BroadcastMessageRepository setupBroadcastMessageRepository() {
+  unregister<BroadcastMessageRepository>();
+  final BroadcastMessageRepository repository = BroadcastMessageRepository();
+
+  locator.registerSingleton(repository);
+
+  return repository;
 }

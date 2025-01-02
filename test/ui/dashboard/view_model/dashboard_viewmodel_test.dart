@@ -1,7 +1,6 @@
 // Package imports:
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 // Project imports:
 import 'package:notredame/domain/constants/preferences_flags.dart';
@@ -200,9 +199,7 @@ void main() {
       preferenceServiceMock = setupPreferencesServiceMock();
       analyticsServiceMock = setupAnalyticsServiceMock();
       preferencesServiceMock = setupPreferencesServiceMock();
-      // TODO: Remove when 4.50.1 is released
-      SharedPreferences.setMockInitialValues({});
-      // TODO: End remove when 4.50.1 is released
+      setupBroadcastMessageRepository();
 
       viewModel = DashboardViewModel(intl: await setupAppIntl());
       CourseRepositoryMock.stubGetSessions(courseRepositoryMock,
