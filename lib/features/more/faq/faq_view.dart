@@ -7,7 +7,6 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:stacked/stacked.dart';
 
 // Project imports:
-import 'package:notredame/constants/urls.dart';
 import 'package:notredame/features/app/widgets/base_scaffold.dart';
 import 'package:notredame/features/more/faq/faq_viewmodel.dart';
 import 'package:notredame/features/more/faq/models/faq.dart';
@@ -226,14 +225,8 @@ class _FaqViewState extends State<FaqView> {
                                     "Password assistance button tapped");
                                 if (AppIntl.of(context)!.localeName == 'fr') {
                                   model.launchWebsite(
-                                      Urls.monETSConnectionHelpPageFr,
-                                      Theme.of(context).brightness);
-                                } else if (AppIntl.of(context)!.localeName ==
-                                    'en') {
-                                  model.launchWebsite(
-                                      Urls.monETSConnectionHelpPageEn,
-                                      Theme.of(context).brightness);
-                                }
+                                model.launchWebsite(AppIntl.of(context)!
+                                    .monets_connection_help_page);
                               },
                               icon: const Icon(Icons.help_center),
                               label: Text(AppIntl.of(context)!

@@ -13,7 +13,6 @@ import '../../app/integration/mocks/launch_url_service_mock.dart';
 
 void main() {
   late LaunchUrlServiceMock launchUrlServiceMock;
-
   late FaqViewModel viewModel;
 
   group('FaqViewModel - ', () {
@@ -39,14 +38,14 @@ void main() {
       });
 
       test('ETS password assistance web page (en) returns "200 OK"', () async {
-        final url = Uri.parse(Urls.monETSConnectionHelpPageFr);
+        final url = Uri.parse("https://partage.etsmtl.ca/fs/en.html");
         final http.Response response = await http.get(url);
 
         expect(response.statusCode, 200);
       });
 
       test('ETS password assistance web page (fr) returns "200 OK"', () async {
-        final url = Uri.parse(Urls.monETSConnectionHelpPageFr);
+        final url = Uri.parse("https://partage.etsmtl.ca/fs/fr.html");
         final http.Response response = await http.get(url);
 
         expect(response.statusCode, 200);
