@@ -78,37 +78,7 @@ class _LoginViewState extends State<LoginView> {
                                         validator: model.validatePassword,
                                         onEditionComplete:
                                             _focusNode.nextFocus),
-                                    Align(
-                                      alignment: Alignment.topRight,
-                                      child: Padding(
-                                        padding: const EdgeInsets.only(top: 4),
-                                        child: InkWell(
-                                          child: Text(
-                                            AppIntl.of(context)!
-                                                .login_password_forgotten,
-                                            style: const TextStyle(
-                                                decoration:
-                                                    TextDecoration.underline,
-                                                color: Colors.white),
-                                          ),
-                                          onTap: () {
-                                            final signetsPasswordResetUrl =
-                                                _remoteConfigService
-                                                    .signetsPasswordResetUrl;
-                                            if (signetsPasswordResetUrl != "") {
-                                              _launchUrlService.launchInBrowser(
-                                                  _remoteConfigService
-                                                      .signetsPasswordResetUrl,
-                                                  Theme.of(context).brightness);
-                                            } else {
-                                              Fluttertoast.showToast(
-                                                  msg: AppIntl.of(context)!
-                                                      .error);
-                                            }
-                                          },
-                                        ),
-                                      ),
-                                    ),
+                                    const ForgotPassword(),
                                     const SizedBox(
                                       height: 24,
                                     ),
