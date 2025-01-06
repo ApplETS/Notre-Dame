@@ -9,6 +9,8 @@ import 'package:notredame/utils/app_theme.dart';
 import 'package:notredame/utils/utils.dart';
 
 class AuthorInfoSkeleton extends StatelessWidget {
+  const AuthorInfoSkeleton({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -88,6 +90,8 @@ class AuthorInfoSkeleton extends StatelessWidget {
 }
 
 class AvatarSkeleton extends StatelessWidget {
+  const AvatarSkeleton({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Align(

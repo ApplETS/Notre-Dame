@@ -9,19 +9,22 @@ import 'package:flutter_markdown/flutter_markdown.dart';
 // Project imports:
 import 'package:notredame/features/app/widgets/base_scaffold.dart';
 import 'package:notredame/utils/app_theme.dart';
-import 'package:notredame/utils/utils.dart';
+import 'package:notredame/utils/locator.dart';
+import 'package:notredame/features/app/integration/launch_url_service.dart';
 
 class EmergencyView extends StatefulWidget {
   final String title;
   final String description;
 
-  const EmergencyView(this.title, this.description);
+  const EmergencyView(this.title, this.description, {super.key});
 
   @override
-  _EmergencyViewState createState() => _EmergencyViewState();
+  State<EmergencyView> createState() => _EmergencyViewState();
 }
 
 class _EmergencyViewState extends State<EmergencyView> {
+  final LaunchUrlService _launchUrlService = locator<LaunchUrlService>();
+
   @override
   Widget build(BuildContext context) => BaseScaffold(
       appBar: AppBar(title: Text(widget.title)),
@@ -30,13 +33,12 @@ class _EmergencyViewState extends State<EmergencyView> {
       fabPosition: FloatingActionButtonLocation.centerFloat,
       fab: FloatingActionButton.extended(
         onPressed: () {
-          Utils.launchURL(
-                  'tel:${AppIntl.of(context)!.security_emergency_number}',
-                  AppIntl.of(context)!)
-              .catchError((error) {
+          try {
+            _launchUrlService.call(AppIntl.of(context)!.security_emergency_number);
+          } catch (e) {
             ScaffoldMessenger.of(context)
-                .showSnackBar(SnackBar(content: Text(error.toString())));
-          });
+                .showSnackBar(SnackBar(content: Text(e.toString())));
+          }
         },
         label: Text(
           AppIntl.of(context)!.security_reach_security,

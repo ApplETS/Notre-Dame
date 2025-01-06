@@ -17,7 +17,7 @@ import 'package:notredame/utils/app_theme.dart';
 class FaqView extends StatefulWidget {
   final Color? backgroundColor;
 
-  const FaqView({this.backgroundColor});
+  const FaqView({super.key, this.backgroundColor});
 
   @override
   State<FaqView> createState() => _FaqViewState();
@@ -186,7 +186,7 @@ class _FaqViewState extends State<FaqView> {
       child: ElevatedButton(
         onPressed: () {
           if (type.name == ActionType.webview.name) {
-            model.launchWebsite(link, Theme.of(context).brightness);
+            model.launchWebsite(link);
           } else if (type.name == ActionType.email.name) {
             showDialog(
                 context: context,
@@ -290,8 +290,8 @@ class _FaqViewState extends State<FaqView> {
           }
         },
         style: ButtonStyle(
-            elevation: MaterialStateProperty.all<double>(8.0),
-            shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+            elevation: WidgetStateProperty.all<double>(8.0),
+            shape: WidgetStateProperty.all<RoundedRectangleBorder>(
               RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(8.0),
               ),

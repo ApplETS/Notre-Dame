@@ -1,20 +1,12 @@
-// Flutter imports:
-import 'package:flutter/material.dart';
-
 // Package imports:
-import 'package:feature_discovery_fork/feature_discovery.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:stacked/stacked.dart';
 
 // Project imports:
-import 'package:notredame/constants/preferences_flags.dart';
 import 'package:notredame/features/app/repository/course_repository.dart';
 import 'package:notredame/features/app/signets-api/models/course.dart';
 import 'package:notredame/features/app/signets-api/models/signets_errors.dart';
-import 'package:notredame/features/more/settings/settings_manager.dart';
-import 'package:notredame/features/welcome/discovery/discovery_components.dart';
-import 'package:notredame/features/welcome/discovery/models/discovery_ids.dart';
 import 'package:notredame/utils/api_exception.dart';
 import 'package:notredame/utils/locator.dart';
 
@@ -69,24 +61,6 @@ class GradesDetailsViewModel extends FutureViewModel<Course> {
       return false;
     } finally {
       setBusyForObject(course, false);
-    }
-  }
-
-  /// Start the discovery process of this page if needed
-  static Future<void> startDiscovery(BuildContext context) async {
-    final SettingsManager settingsManager = locator<SettingsManager>();
-    if (await settingsManager.getBool(PreferencesFlag.discoveryGradeDetails) ==
-        null) {
-      if (!context.mounted) return;
-      final List<String> ids = findDiscoveriesByGroupName(
-              context, DiscoveryGroupIds.pageGradeDetails)
-          .map((e) => e.featureId)
-          .toList();
-
-      Future.delayed(const Duration(seconds: 1),
-          () => FeatureDiscovery.discoverFeatures(context, ids));
-
-      settingsManager.setBool(PreferencesFlag.discoveryGradeDetails, true);
     }
   }
 }

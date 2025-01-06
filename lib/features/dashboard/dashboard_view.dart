@@ -1,10 +1,7 @@
 // Flutter imports:
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
 
 // Package imports:
-import 'package:auto_size_text/auto_size_text.dart';
-import 'package:feature_discovery_fork/feature_discovery.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:skeletonizer/skeletonizer.dart';
@@ -12,7 +9,6 @@ import 'package:stacked/stacked.dart';
 
 // Project imports:
 import 'package:notredame/constants/preferences_flags.dart';
-import 'package:notredame/constants/update_code.dart';
 import 'package:notredame/constants/urls.dart';
 import 'package:notredame/features/app/analytics/analytics_service.dart';
 import 'package:notredame/features/app/navigation/navigation_service.dart';
@@ -26,24 +22,22 @@ import 'package:notredame/features/dashboard/progress_bar_text_options.dart';
 import 'package:notredame/features/dashboard/widgets/course_activity_tile.dart';
 import 'package:notredame/features/dashboard/widgets/haptics_container.dart';
 import 'package:notredame/features/student/grades/widgets/grade_button.dart';
-import 'package:notredame/features/welcome/discovery/discovery_components.dart';
-import 'package:notredame/features/welcome/discovery/models/discovery_ids.dart';
 import 'package:notredame/utils/app_theme.dart';
 import 'package:notredame/utils/loading.dart';
 import 'package:notredame/utils/locator.dart';
-import 'package:notredame/utils/utils.dart';
+import 'package:notredame/features/app/integration/launch_url_service.dart';
 
 class DashboardView extends StatefulWidget {
-  final UpdateCode updateCode;
-  const DashboardView({super.key, required this.updateCode});
+  const DashboardView({super.key});
 
   @override
-  _DashboardViewState createState() => _DashboardViewState();
+  State<DashboardView> createState() => _DashboardViewState();
 }
 
 class _DashboardViewState extends State<DashboardView>
     with TickerProviderStateMixin {
   Text? progressBarText;
+  final LaunchUrlService _launchUrlService = locator<LaunchUrlService>();
   final NavigationService _navigationService = locator<NavigationService>();
   final AnalyticsService _analyticsService = locator<AnalyticsService>();
   static const String tag = "DashboardView";
@@ -51,10 +45,6 @@ class _DashboardViewState extends State<DashboardView>
   @override
   void initState() {
     super.initState();
-    SchedulerBinding.instance.addPostFrameCallback((Duration duration) {
-      DashboardViewModel.startDiscovery(context);
-      DashboardViewModel.promptUpdate(context, widget.updateCode);
-    });
     DashboardViewModel.launchInAppReview();
   }
 
@@ -68,11 +58,13 @@ class _DashboardViewState extends State<DashboardView>
               appBar: AppBar(
                   title: Text(AppIntl.of(context)!.title_dashboard),
                   centerTitle: false,
-                  automaticallyImplyLeading: false,
                   actions: [
-                    _buildDiscoveryFeatureDescriptionWidget(
-                        context, Icons.restore, model),
-                  ]),
+                    IconButton(
+                      icon: const Icon(Icons.restore),
+                      onPressed: () => model.setAllCardsVisible(),
+                    )
+                  ],
+                  automaticallyImplyLeading: false),
               body: model.cards == null
                   ? buildLoading()
                   : RefreshIndicator(
@@ -153,8 +145,7 @@ class _DashboardViewState extends State<DashboardView>
                     IconButton(
                       onPressed: () {
                         _analyticsService.logEvent(tag, "Facebook clicked");
-                        Utils.launchURL(
-                            Urls.clubFacebook, AppIntl.of(context)!);
+                        _launchUrlService.launchInBrowser(Urls.clubFacebook);
                       },
                       icon: const FaIcon(
                         FontAwesomeIcons.facebook,
@@ -164,8 +155,7 @@ class _DashboardViewState extends State<DashboardView>
                     IconButton(
                       onPressed: () {
                         _analyticsService.logEvent(tag, "Instagram clicked");
-                        Utils.launchURL(
-                            Urls.clubInstagram, AppIntl.of(context)!);
+                        _launchUrlService.launchInBrowser(Urls.clubInstagram);
                       },
                       icon: const FaIcon(
                         FontAwesomeIcons.instagram,
@@ -175,8 +165,8 @@ class _DashboardViewState extends State<DashboardView>
                     IconButton(
                       onPressed: () {
                         _analyticsService.logEvent(tag, "Github clicked");
-                        Utils.launchURL(Urls.clubGithub, AppIntl.of(context)!);
-                      },
+                        _launchUrlService.launchInBrowser(Urls.clubGithub);
+                        },
                       icon: const FaIcon(
                         FontAwesomeIcons.github,
                         color: Colors.white,
@@ -185,7 +175,7 @@ class _DashboardViewState extends State<DashboardView>
                     IconButton(
                       onPressed: () {
                         _analyticsService.logEvent(tag, "Email clicked");
-                        Utils.launchURL(Urls.clubEmail, AppIntl.of(context)!);
+                        _launchUrlService.writeEmail(Urls.clubEmail, "");
                       },
                       icon: const FaIcon(
                         FontAwesomeIcons.envelope,
@@ -195,8 +185,8 @@ class _DashboardViewState extends State<DashboardView>
                     IconButton(
                       onPressed: () {
                         _analyticsService.logEvent(tag, "Discord clicked");
-                        Utils.launchURL(Urls.clubDiscord, AppIntl.of(context)!);
-                      },
+                        _launchUrlService.launchInBrowser(Urls.clubDiscord);
+                        },
                       icon: const FaIcon(
                         FontAwesomeIcons.discord,
                         color: Colors.white,
@@ -496,8 +486,8 @@ class _DashboardViewState extends State<DashboardView>
                     ],
                   ),
                   // main text
-                  AutoSizeText(model.broadcastMessage,
-                      style: Theme.of(context).primaryTextTheme.bodyMedium)
+                  Text(model.broadcastMessage,
+                    style: Theme.of(context).primaryTextTheme.bodyMedium)
                 ]),
         ));
   }
@@ -555,27 +545,5 @@ class _DashboardViewState extends State<DashboardView>
         .firstWhere((element) => model.cards![element] == oldIndex);
 
     model.setOrder(elementMoved, newIndex);
-  }
-
-  DescribedFeatureOverlay _buildDiscoveryFeatureDescriptionWidget(
-      BuildContext context, IconData icon, DashboardViewModel model) {
-    final discovery = getDiscoveryByFeatureId(context,
-        DiscoveryGroupIds.bottomBar, DiscoveryIds.bottomBarDashboardRestore);
-
-    return DescribedFeatureOverlay(
-      overflowMode: OverflowMode.wrapBackground,
-      contentLocation: ContentLocation.below,
-      featureId: discovery.featureId,
-      title: Text(discovery.title, textAlign: TextAlign.justify),
-      description: discovery.details,
-      backgroundColor: AppTheme.appletsDarkPurple,
-      tapTarget: Icon(icon, color: AppTheme.etsBlack),
-      onComplete: () => model.discoveryCompleted(),
-      pulseDuration: const Duration(seconds: 5),
-      child: IconButton(
-        icon: Icon(icon),
-        onPressed: model.setAllCardsVisible,
-      ),
-    );
   }
 }

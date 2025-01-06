@@ -12,7 +12,7 @@ import 'package:notredame/utils/app_theme.dart';
 class WebLinkCard extends StatelessWidget {
   final QuickLink _links;
 
-  const WebLinkCard(this._links);
+  const WebLinkCard(this._links, {super.key});
 
   @override
   Widget build(BuildContext context) =>
@@ -26,7 +26,7 @@ class WebLinkCard extends StatelessWidget {
                 child: InkWell(
                   borderRadius: const BorderRadius.all(Radius.circular(10)),
                   onTap: () =>
-                      model.onLinkClicked(_links, Theme.of(context).brightness),
+                      model.onLinkClicked(_links),
                   splashColor: AppTheme.etsLightRed.withAlpha(50),
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),

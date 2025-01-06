@@ -22,20 +22,15 @@ class FaqViewModel extends BaseViewModel {
 
   Locale? get locale => _settingsManager.locale;
 
-  String mailtoStr(String email, String subject) {
-    return 'mailto:$email?subject=$subject';
-  }
-
-  Future<void> launchWebsite(String link, Brightness brightness) async {
-    await _launchUrlService.launchInBrowser(link, brightness);
+  void launchWebsite(String link) {
+    _launchUrlService.launchInBrowser(link);
   }
 
   Future<void> openMail(String addressEmail, BuildContext context) async {
-    var email = "";
+    String subject = "";
+
     if (addressEmail == AppInfo.email) {
-      email = mailtoStr(addressEmail, AppIntl.of(context)!.email_subject);
-    } else {
-      email = mailtoStr(addressEmail, "");
+      subject = AppIntl.of(context)!.email_subject;
     }
 
     final urlLaunchable = await _launchUrlService.canLaunch(email);

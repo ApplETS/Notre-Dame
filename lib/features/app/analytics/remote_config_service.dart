@@ -13,6 +13,7 @@ import 'package:notredame/utils/locator.dart';
 class RemoteConfigService {
   static const String tag = "RemoteConfigService";
   static const _serviceIsDown = "service_is_down";
+
   // Privacy policy
   static const _privacyPolicyToggle = "privacy_policy_toggle";
   static const _privacyPolicyURL = "privacy_policy_url";

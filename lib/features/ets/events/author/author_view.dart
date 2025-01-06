@@ -22,7 +22,7 @@ import 'package:notredame/utils/utils.dart';
 class AuthorView extends StatefulWidget {
   final String authorId;
 
-  const AuthorView({required this.authorId});
+  const AuthorView({super.key, required this.authorId});
 
   @override
   State<AuthorView> createState() => _AuthorViewState();
@@ -182,9 +182,6 @@ class _AuthorViewState extends State<AuthorView> {
                       IconButton(
                         onPressed: () async {
                           await showModalBottomSheet(
-                            isDismissible: true,
-                            enableDrag: true,
-                            isScrollControlled: true,
                             context: context,
                             shape: const RoundedRectangleBorder(
                               borderRadius: BorderRadius.only(
@@ -207,12 +204,12 @@ class _AuthorViewState extends State<AuthorView> {
                         ),
                         style: ButtonStyle(
                           shape:
-                              MaterialStateProperty.all<RoundedRectangleBorder>(
+                              WidgetStateProperty.all<RoundedRectangleBorder>(
                             RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(8),
                             ),
                           ),
-                          backgroundColor: MaterialStateProperty.all<Color>(
+                          backgroundColor: WidgetStateProperty.all<Color>(
                             Utils.getColorByBrightness(
                               context,
                               AppTheme.lightThemeBackground,

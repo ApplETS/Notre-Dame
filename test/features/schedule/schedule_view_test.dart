@@ -2,10 +2,9 @@
 import 'package:flutter/material.dart';
 
 // Package imports:
-import 'package:feature_discovery_fork/feature_discovery.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:notredame/utils/calendar_utils.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:table_calendar/table_calendar.dart';
 
 // Project imports:
 import 'package:notredame/constants/preferences_flags.dart';
@@ -34,8 +33,7 @@ void main() {
 
   // Some settings
   Map<PreferencesFlag, dynamic> settings = {
-    PreferencesFlag.scheduleCalendarFormat: CalendarFormat.week,
-    PreferencesFlag.scheduleStartWeekday: StartingDayOfWeek.monday,
+    PreferencesFlag.scheduleCalendarFormat: CalendarTimeFormat.week,
     PreferencesFlag.scheduleShowTodayBtn: true
   };
 
@@ -70,10 +68,8 @@ void main() {
       SettingsManagerMock.stubLocale(settingsManagerMock);
 
       settings = {
-        PreferencesFlag.scheduleCalendarFormat: CalendarFormat.week,
-        PreferencesFlag.scheduleStartWeekday: StartingDayOfWeek.monday,
+        PreferencesFlag.scheduleCalendarFormat: CalendarTimeFormat.week,
         PreferencesFlag.scheduleShowTodayBtn: true,
-        PreferencesFlag.scheduleShowWeekEvents: false,
         PreferencesFlag.scheduleListView: true,
       };
 
@@ -108,7 +104,7 @@ void main() {
 
         await tester.runAsync(() async {
           await tester.pumpWidget(localizedWidget(
-              child: FeatureDiscovery(child: const ScheduleView())));
+              child: const ScheduleView()));
           await tester.pumpAndSettle();
         }).then((value) async {
           expect(find.byType(ScheduleSettings), findsNothing,

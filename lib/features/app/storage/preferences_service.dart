@@ -10,13 +10,6 @@ import 'package:notredame/constants/preferences_flags.dart';
 
 class PreferencesService {
   final persistentsKey = [
-    PreferencesFlag.discoveryDashboard,
-    PreferencesFlag.discoveryETS,
-    PreferencesFlag.discoveryGradeDetails,
-    PreferencesFlag.discoveryMore,
-    PreferencesFlag.discoverySchedule,
-    PreferencesFlag.discoveryStudentGrade,
-    PreferencesFlag.discoveryStudentProfile,
     PreferencesFlag.ratingTimer,
     PreferencesFlag.hasRatingBeenRequested
   ];

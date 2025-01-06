@@ -1,6 +1,3 @@
-// Flutter imports:
-import 'package:flutter/material.dart';
-
 // Package imports:
 import 'package:flutter_test/flutter_test.dart';
 import 'package:http/http.dart' as http;
@@ -33,20 +30,11 @@ void main() {
       unregister<LaunchUrlService>();
     });
 
-    group('Emails - ', () {
-      test('Has the right mailto', () {
-        final str = viewModel.mailtoStr("email", "subject");
-
-        expect(str, "mailto:email?subject=subject");
-      });
-    });
-
     group('Webview - ', () {
       test('Calls launchInBrowser', () {
-        viewModel.launchWebsite("https://clubapplets.ca/", Brightness.light);
+        viewModel.launchWebsite("https://clubapplets.ca/");
 
-        verify(launchUrlServiceMock.launchInBrowser(
-                "https://clubapplets.ca/", Brightness.light))
+        verify(launchUrlServiceMock.launchInBrowser("https://clubapplets.ca/"))
             .called(1);
       });
 

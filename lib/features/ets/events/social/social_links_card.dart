@@ -19,7 +19,7 @@ class SocialLinks extends StatefulWidget {
       {super.key, required this.socialLinks, this.showHandle = true});
 
   @override
-  _SocialLinksState createState() => _SocialLinksState();
+  State<SocialLinks> createState() => _SocialLinksState();
 }
 
 class _SocialLinksState extends State<SocialLinks> {
@@ -152,7 +152,7 @@ class _SocialLinksState extends State<SocialLinks> {
   Widget _buildSocialButton(SocialLink link, WebLinkCardViewModel model) {
     return IconButton(
       icon: link.image,
-      onPressed: () => model.onLinkClicked(link, Theme.of(context).brightness),
+      onPressed: () => model.onLinkClicked(link),
     );
   }
 }

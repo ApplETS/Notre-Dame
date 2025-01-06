@@ -1,8 +1,10 @@
 // Package imports:
+import 'package:calendar_view/calendar_view.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:intl/intl.dart';
 import 'package:mockito/mockito.dart';
-import 'package:table_calendar/table_calendar.dart';
+import 'package:notredame/utils/calendar_utils.dart';
+import 'package:notredame/utils/utils.dart';
 
 // Project imports:
 import 'package:notredame/constants/preferences_flags.dart';
@@ -13,6 +15,7 @@ import 'package:notredame/features/app/signets-api/models/schedule_activity.dart
 import 'package:notredame/features/more/settings/settings_manager.dart';
 import 'package:notredame/features/schedule/schedule_viewmodel.dart';
 import 'package:notredame/utils/activity_code.dart';
+import 'package:table_calendar/table_calendar.dart';
 import '../../common/helpers.dart';
 import '../app/repository/mocks/course_repository_mock.dart';
 import '../more/settings/mocks/settings_manager_mock.dart';
@@ -245,8 +248,7 @@ void main() {
 
   // Some settings
   final Map<PreferencesFlag, dynamic> settings = {
-    PreferencesFlag.scheduleCalendarFormat: CalendarFormat.week,
-    PreferencesFlag.scheduleStartWeekday: StartingDayOfWeek.monday,
+    PreferencesFlag.scheduleCalendarFormat: CalendarTimeFormat.week,
     PreferencesFlag.scheduleShowTodayBtn: true
   };
 
@@ -455,10 +457,10 @@ void main() {
 
         // Setting up the viewmodel
         viewModel.coursesActivities;
-        viewModel.selectedDate = DateTime(2020, 1, 2);
+        viewModel.weekSelected = DateTime(2020, 1, 2);
         clearInteractions(courseRepositoryMock);
 
-        expect(viewModel.selectedDateEvents(viewModel.selectedDate), expected);
+        expect(viewModel.selectedDateEvents(viewModel.weekSelected), expected);
 
         verifyNoMoreInteractions(courseRepositoryMock);
         verifyNoMoreInteractions(settingsManagerMock);
@@ -472,10 +474,10 @@ void main() {
 
         // Setting up the viewmodel
         viewModel.coursesActivities;
-        viewModel.selectedDate = DateTime(2020, 1, 3);
+        viewModel.weekSelected = DateTime(2020, 1, 3);
         clearInteractions(courseRepositoryMock);
 
-        expect(viewModel.selectedDateEvents(viewModel.selectedDate), expected);
+        expect(viewModel.selectedDateEvents(viewModel.weekSelected), expected);
 
         verifyNoMoreInteractions(courseRepositoryMock);
         verifyNoMoreInteractions(settingsManagerMock);
@@ -483,24 +485,11 @@ void main() {
     });
 
     group('selectedWeekEvents', () {
-      final Map<PreferencesFlag, dynamic> settingsStartingDayMonday = {
-        PreferencesFlag.scheduleStartWeekday: StartingDayOfWeek.monday,
-        PreferencesFlag.scheduleCalendarFormat: CalendarFormat.month
-      };
-      final Map<PreferencesFlag, dynamic> settingsStartingDaySaturday = {
-        PreferencesFlag.scheduleStartWeekday: StartingDayOfWeek.saturday,
-        PreferencesFlag.scheduleCalendarFormat: CalendarFormat.month
-      };
-      final Map<PreferencesFlag, dynamic> settingsStartingDaySunday = {
-        PreferencesFlag.scheduleStartWeekday: StartingDayOfWeek.sunday,
-        PreferencesFlag.scheduleCalendarFormat: CalendarFormat.month
-      };
-
-      test('selectedWeekEvents for starting day sunday', () async {
+      test('selectedWeekEvents for starting day', () async {
         CourseRepositoryMock.stubCoursesActivities(courseRepositoryMock,
             toReturn: weekOfActivities);
         SettingsManagerMock.stubGetScheduleSettings(settingsManagerMock,
-            toReturn: settingsStartingDaySunday);
+            toReturn: settings);
 
         final expected = {
           DateTime(2020, 1, 5): [gen104],
@@ -514,55 +503,7 @@ void main() {
 
         // Setting up the viewmodel
         viewModel.coursesActivities;
-        viewModel.selectedDate = DateTime(2020, 1, 8);
-        await viewModel.loadSettings();
-        clearInteractions(courseRepositoryMock);
-
-        expect(viewModel.selectedWeekEvents(), expected);
-      });
-
-      test('selectedWeekEvents for starting day monday', () async {
-        SettingsManagerMock.stubGetScheduleSettings(settingsManagerMock,
-            toReturn: settingsStartingDayMonday);
-        CourseRepositoryMock.stubCoursesActivities(courseRepositoryMock,
-            toReturn: weekOfActivities);
-
-        final expected = {
-          DateTime(2020, 1, 6): [gen105],
-          DateTime(2020, 1, 7): [gen106],
-          DateTime(2020, 1, 8): [gen107],
-          DateTime(2020, 1, 9): [gen108],
-          DateTime(2020, 1, 10): [gen109],
-          DateTime(2020, 1, 11): [gen110],
-        };
-
-        // Setting up the viewmodel
-        viewModel.coursesActivities;
-        viewModel.selectedDate = DateTime(2020, 1, 7);
-        await viewModel.loadSettings();
-        clearInteractions(courseRepositoryMock);
-
-        expect(viewModel.selectedWeekEvents(), expected);
-      });
-
-      test('selectedWeekEvents for starting day saturday', () async {
-        SettingsManagerMock.stubGetScheduleSettings(settingsManagerMock,
-            toReturn: settingsStartingDaySaturday);
-        CourseRepositoryMock.stubCoursesActivities(courseRepositoryMock,
-            toReturn: weekOfActivities);
-
-        final expected = {
-          DateTime(2020, 1, 5): [gen104],
-          DateTime(2020, 1, 6): [gen105],
-          DateTime(2020, 1, 7): [gen106],
-          DateTime(2020, 1, 8): [gen107],
-          DateTime(2020, 1, 9): [gen108],
-          DateTime(2020, 1, 10): [gen109],
-        };
-
-        // Setting up the viewmodel
-        viewModel.coursesActivities;
-        viewModel.selectedDate = DateTime(2020, 1, 7);
+        viewModel.weekSelected = DateTime(2020, 1, 8);
         await viewModel.loadSettings();
         clearInteractions(courseRepositoryMock);
 
@@ -600,12 +541,12 @@ void main() {
       test('calendarFormat changing', () async {
         SettingsManagerMock.stubGetScheduleSettings(settingsManagerMock,
             toReturn: {
-              PreferencesFlag.scheduleCalendarFormat: CalendarFormat.month
+              PreferencesFlag.scheduleCalendarFormat: CalendarTimeFormat.month
             });
-        expect(viewModel.calendarFormat, CalendarFormat.week);
+        expect(viewModel.calendarFormat, CalendarTimeFormat.week);
 
         await viewModel.loadSettings();
-        expect(viewModel.calendarFormat, CalendarFormat.month);
+        expect(viewModel.calendarFormat, CalendarTimeFormat.month);
         verify(settingsManagerMock.getScheduleSettings()).called(1);
         verifyNoMoreInteractions(settingsManagerMock);
       });
@@ -659,7 +600,7 @@ void main() {
             toReturn: classOneWithLaboratoryABscheduleActivities);
         SettingsManagerMock.stubGetScheduleSettings(settingsManagerMock,
             toReturn: {
-              PreferencesFlag.scheduleCalendarFormat: CalendarFormat.month
+              PreferencesFlag.scheduleCalendarFormat: CalendarTimeFormat.month
             });
         SettingsManagerMock.stubGetDynamicString(
             settingsManagerMock,
@@ -805,46 +746,163 @@ void main() {
       });
     });
 
+    group('ScheduleViewModel - handleViewChanged', () {
+      test('should update weekSelected to next week if date is Saturday and no events', () {
+        final DateTime saturday = DateTime(2024, 9, 21);  // Date d'un samedi
+
+        viewModel.settings[PreferencesFlag.scheduleListView] = false;
+        viewModel.weekSelected = DateTime(2024, 9, 15);
+        viewModel.handleViewChanged(saturday, EventController(), []);
+
+        final nextWeekSunday = Utils.getFirstDayOfCurrentWeek(saturday.add(const Duration(days: 7, hours: 1)));
+        expect(viewModel.weekSelected, nextWeekSunday);
+        expect(viewModel.displaySaturday, false);
+      });
+
+      test('displays saturday on view changed', () async {
+        final DateTime saturday = DateTime(2024, 9, 21);
+        // Add Saturday course activity
+        viewModel.coursesActivities.addAll({
+          saturday:
+          [CourseActivity(
+              courseGroup: "courseGroup",
+              courseName: "courseName",
+              activityName: "activityName",
+              activityDescription: "activityDescription",
+              activityLocation: "activityLocation",
+              startDateTime: DateTime.now(),
+              endDateTime: DateTime.now())]
+        });
+
+        viewModel.settings[PreferencesFlag.scheduleListView] = false;
+        viewModel.weekSelected = DateTime(2024, 9, 15);
+        viewModel.handleViewChanged(saturday, EventController(), []);
+
+        expect(viewModel.weekSelected, Utils.getFirstDayOfCurrentWeek(saturday));
+        expect(viewModel.displaySaturday, true);
+      });
+
+      test('does not display saturday on view changed', () {
+        viewModel.weekSelected = DateTime(2024, 8, 19);
+        viewModel.calendarFormat = CalendarTimeFormat.week;
+        final DateTime wednesday = DateTime(2023, 9, 13);
+
+        viewModel.handleViewChanged(wednesday, EventController(), []);
+
+        final currentWeekSunday = Utils.getFirstDayOfCurrentWeek(wednesday);
+        expect(viewModel.weekSelected, currentWeekSunday);
+      });
+
+      test('should update daySelected if day view', () {
+        viewModel.daySelected = DateTime.now().withoutTime;
+        viewModel.calendarFormat = CalendarTimeFormat.day;
+
+        final DateTime newDate = DateTime(2023, 9, 14);
+        viewModel.handleViewChanged(newDate, EventController(), []);
+
+        expect(viewModel.daySelected, newDate);
+      });
+    });
+
     group('dateSelection -', () {
       setUp(() async {
         setupFlutterToastMock();
       });
 
-      test('go back to todays schedule', () async {
+      test('day view go back to todays schedule', () async {
         final oldSelectedDate = DateTime(2022, 1, 2);
         final currentDate = DateTime.now();
 
-        viewModel.selectedDate = oldSelectedDate;
-        viewModel.focusedDate.value = oldSelectedDate;
+        viewModel.calendarFormat = CalendarTimeFormat.day;
+        viewModel.daySelected = oldSelectedDate;
+        viewModel.listViewCalendarSelectedDate = oldSelectedDate;
 
         final res = viewModel.selectToday();
 
-        expect(viewModel.selectedDate.day, currentDate.day);
-        expect(viewModel.focusedDate.value.day, currentDate.day);
+        expect(viewModel.daySelected.day, currentDate.day);
+        expect(viewModel.listViewCalendarSelectedDate.day, currentDate.day);
         expect(res, true, reason: "Today was not selected before");
       });
 
-      test('today selected, but focused date different', () async {
-        final today = DateTime.now();
+      test('day view go back to todays but calendar date different', () async {
+        final currentDate = DateTime.now();
         final oldSelectedDate = DateTime(2022, 1, 2);
 
-        viewModel.selectedDate = today;
-        viewModel.focusedDate.value = oldSelectedDate;
+        viewModel.calendarFormat = CalendarTimeFormat.day;
+        viewModel.weekSelected = currentDate;
+        viewModel.daySelected = currentDate;
+        viewModel.listViewCalendarSelectedDate = oldSelectedDate;
 
         final res = viewModel.selectToday();
 
-        expect(res, true, reason: "Today was not focused before");
+        expect(isSameDay(viewModel.daySelected, currentDate), true);
+        expect(isSameDay(viewModel.listViewCalendarSelectedDate, currentDate), true);
+        expect(res, true, reason: "Today was not selected before");
       });
 
-      test('show toast if today already selected', () async {
+      test('listview show toast if today already selected', () async {
         final today = DateTime.now();
 
-        viewModel.selectedDate = today;
-        viewModel.focusedDate.value = today;
+        viewModel.settings[PreferencesFlag.scheduleListView] = true;
+        viewModel.daySelected = today;
+        viewModel.listViewCalendarSelectedDate = today;
 
         final res = viewModel.selectToday();
 
         expect(res, false, reason: "Today is already selected");
+      });
+
+      test('week view show toast if today already selected', () async {
+        final currentWeek = Utils.getFirstDayOfCurrentWeek(DateTime.now());
+
+        viewModel.settings[PreferencesFlag.scheduleListView] = false;
+        viewModel.calendarFormat = CalendarTimeFormat.week;
+        viewModel.weekSelected = currentWeek;
+
+        final res = viewModel.selectToday();
+
+        expect(res, false, reason: "Today is already selected");
+      });
+
+      test('week view go back to current week', () async {
+        final currentWeek = Utils.getFirstDayOfCurrentWeek(DateTime.now());
+        final oldSelectedDate = DateTime(2022, 1, 2);
+
+
+        viewModel.settings[PreferencesFlag.scheduleListView] = false;
+        viewModel.calendarFormat = CalendarTimeFormat.week;
+        viewModel.weekSelected = oldSelectedDate;
+
+        final res = viewModel.selectToday();
+
+        expect(viewModel.weekSelected.day, currentWeek.day);
+        expect(res, true, reason: "Today was not focused before");
+      });
+
+      test('month view show toast if today already selected', () async {
+        final currentMonth = DateTime.now();
+
+        viewModel.settings[PreferencesFlag.scheduleListView] = false;
+        viewModel.calendarFormat = CalendarTimeFormat.month;
+        viewModel.weekSelected = currentMonth;
+
+        final res = viewModel.selectToday();
+
+        expect(res, false, reason: "Today is already selected");
+      });
+
+      test('month view go back to current week', () async {
+        final currentWeek = Utils.getFirstDayOfCurrentWeek(DateTime.now());
+        final oldSelectedDate = DateTime(2022, 1, 2);
+
+        viewModel.settings[PreferencesFlag.scheduleListView] = false;
+        viewModel.calendarFormat = CalendarTimeFormat.week;
+        viewModel.weekSelected = oldSelectedDate;
+
+        final res = viewModel.selectToday();
+
+        expect(viewModel.weekSelected, currentWeek);
+        expect(res, true, reason: "Today was not focused before");
       });
     });
   });

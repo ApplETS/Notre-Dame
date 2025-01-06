@@ -10,9 +10,13 @@ import 'package:stacked/stacked.dart';
 // Project imports:
 import 'package:notredame/features/app/widgets/base_scaffold.dart';
 import 'package:notredame/features/more/contributors/contributors_viewmodel.dart';
-import 'package:notredame/utils/utils.dart';
+import 'package:notredame/utils/locator.dart';
+import 'package:notredame/features/app/integration/launch_url_service.dart';
 
 class ContributorsView extends StatelessWidget {
+  ContributorsView({super.key});
+  final LaunchUrlService _launchUrlService = locator<LaunchUrlService>();
+
   @override
   Widget build(BuildContext context) =>
       ViewModelBuilder<ContributorsViewModel>.reactive(
@@ -52,8 +56,8 @@ class ContributorsView extends StatelessWidget {
         leading: CircleAvatar(
             backgroundColor: Colors.grey,
             backgroundImage: NetworkImage(contributors[index].avatarUrl ?? '')),
-        onTap: () => Utils.launchURL(
-            contributors[index].htmlUrl ?? '', AppIntl.of(context)!),
+        onTap: () =>
+            _launchUrlService.launchInBrowser(contributors[index].htmlUrl ?? ''),
       ),
     );
   }

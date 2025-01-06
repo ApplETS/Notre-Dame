@@ -4,7 +4,6 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 
 // Project imports:
-import 'package:notredame/constants/preferences_flags.dart';
 import 'package:notredame/features/app/navigation/navigation_service.dart';
 import 'package:notredame/features/app/navigation/router_paths.dart';
 import 'package:notredame/features/app/signets-api/models/course.dart';
@@ -13,12 +12,10 @@ import 'package:notredame/features/more/settings/settings_manager.dart';
 import 'package:notredame/features/student/grades/widgets/grade_button.dart';
 import '../../../../common/helpers.dart';
 import '../../../app/navigation/mocks/navigation_service_mock.dart';
-import '../../../more/settings/mocks/settings_manager_mock.dart';
 
 void main() {
   late AppIntl intl;
   late NavigationServiceMock navigationServiceMock;
-  late SettingsManagerMock settingsManagerMock;
 
   final Course courseWithGrade = Course(
       acronym: 'GEN101',
@@ -56,7 +53,6 @@ void main() {
 
   group("GradeButton -", () {
     setUp(() async {
-      settingsManagerMock = setupSettingsManagerMock();
       intl = await setupAppIntl();
       setupNavigationServiceMock();
       navigationServiceMock = setupNavigationServiceMock();
@@ -70,10 +66,6 @@ void main() {
     group("UI -", () {
       testWidgets("Display acronym of the course and the current grade",
           (WidgetTester tester) async {
-        SettingsManagerMock.stubGetString(
-            settingsManagerMock, PreferencesFlag.discoveryStudentGrade,
-            toReturn: 'true');
-
         await tester
             .pumpWidget(localizedWidget(child: GradeButton(courseWithGrade)));
         await tester.pumpAndSettle();
@@ -84,10 +76,6 @@ void main() {
 
       testWidgets("Grade not available and summary is loaded.",
           (WidgetTester tester) async {
-        SettingsManagerMock.stubGetString(
-            settingsManagerMock, PreferencesFlag.discoveryStudentGrade,
-            toReturn: 'true');
-
         await tester
             .pumpWidget(localizedWidget(child: GradeButton(courseWithSummary)));
         await tester.pumpAndSettle();
@@ -104,10 +92,6 @@ void main() {
 
       testWidgets("Grade and summary not available.",
           (WidgetTester tester) async {
-        SettingsManagerMock.stubGetString(
-            settingsManagerMock, PreferencesFlag.discoveryStudentGrade,
-            toReturn: 'true');
-
         await tester.pumpWidget(
             localizedWidget(child: GradeButton(gradesNotAvailable)));
         await tester.pumpAndSettle();
@@ -123,9 +107,6 @@ void main() {
     group('Interactions - ', () {
       testWidgets('Grade button redirects to grades view when tapped ',
           (WidgetTester tester) async {
-        SettingsManagerMock.stubGetBool(
-            settingsManagerMock, PreferencesFlag.discoveryStudentGrade,
-            toReturn: true);
         await tester
             .pumpWidget(localizedWidget(child: GradeButton(courseWithGrade)));
         await tester.pumpAndSettle();
@@ -133,19 +114,6 @@ void main() {
         await tester.tap(find.text(courseWithGrade.acronym));
 
         verify(navigationServiceMock.pushNamed(RouterPaths.gradeDetails,
-            arguments: courseWithGrade));
-      });
-
-      testWidgets(
-          'Grade button does not redirect to grades view if the grades discovery did not already launch',
-          (WidgetTester tester) async {
-        await tester
-            .pumpWidget(localizedWidget(child: GradeButton(courseWithGrade)));
-        await tester.pumpAndSettle();
-
-        await tester.tap(find.text(courseWithGrade.acronym));
-
-        verifyNever(navigationServiceMock.pushNamed(RouterPaths.gradeDetails,
             arguments: courseWithGrade));
       });
     });

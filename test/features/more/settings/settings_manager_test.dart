@@ -2,12 +2,10 @@
 import 'package:flutter/material.dart';
 
 // Package imports:
-import 'package:calendar_view/calendar_view.dart';
-import 'package:enum_to_string/enum_to_string.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:intl/intl.dart';
 import 'package:mockito/mockito.dart';
-import 'package:table_calendar/table_calendar.dart';
+import 'package:notredame/utils/calendar_utils.dart';
 
 // Project imports:
 import 'package:notredame/constants/preferences_flags.dart';
@@ -46,12 +44,6 @@ void main() {
       test("validate default behaviour", () async {
         // Stubs the answer of the preferences services
         PreferencesServiceMock.stubGetString(
-            preferencesServiceMock, PreferencesFlag.scheduleStartWeekday,
-            toReturn: null);
-        PreferencesServiceMock.stubGetString(
-            preferencesServiceMock, PreferencesFlag.scheduleOtherWeekday,
-            toReturn: null);
-        PreferencesServiceMock.stubGetString(
             preferencesServiceMock, PreferencesFlag.scheduleCalendarFormat,
             toReturn: null);
         PreferencesServiceMock.stubGetBool(
@@ -60,19 +52,13 @@ void main() {
         PreferencesServiceMock.stubGetBool(
             preferencesServiceMock, PreferencesFlag.scheduleListView,
             toReturn: null);
-        PreferencesServiceMock.stubGetBool(
-            preferencesServiceMock, PreferencesFlag.scheduleShowWeekEvents,
-            toReturn: null);
         RemoteConfigServiceMock.stubGetCalendarViewEnabled(
             remoteConfigServiceMock);
 
         final expected = {
-          PreferencesFlag.scheduleOtherWeekday: WeekDays.monday,
-          PreferencesFlag.scheduleStartWeekday: StartingDayOfWeek.monday,
-          PreferencesFlag.scheduleCalendarFormat: CalendarFormat.week,
+          PreferencesFlag.scheduleCalendarFormat: CalendarTimeFormat.week,
           PreferencesFlag.scheduleShowTodayBtn: true,
           PreferencesFlag.scheduleListView: getCalendarViewEnabled(),
-          PreferencesFlag.scheduleShowWeekEvents: true,
         };
 
         final result = await manager.getScheduleSettings();
@@ -80,21 +66,12 @@ void main() {
         expect(result, expected);
 
         verify(preferencesServiceMock
-                .getString(PreferencesFlag.scheduleStartWeekday))
-            .called(1);
-        verify(preferencesServiceMock
-                .getString(PreferencesFlag.scheduleOtherWeekday))
-            .called(1);
-        verify(preferencesServiceMock
                 .getString(PreferencesFlag.scheduleCalendarFormat))
             .called(1);
         verify(preferencesServiceMock
                 .getBool(PreferencesFlag.scheduleShowTodayBtn))
             .called(1);
         verify(preferencesServiceMock.getBool(PreferencesFlag.scheduleListView))
-            .called(1);
-        verify(preferencesServiceMock
-                .getBool(PreferencesFlag.scheduleShowWeekEvents))
             .called(1);
 
         verifyNoMoreInteractions(preferencesServiceMock);
@@ -104,31 +81,19 @@ void main() {
       test("validate the loading of the settings", () async {
         // Stubs the answer of the preferences services
         PreferencesServiceMock.stubGetString(
-            preferencesServiceMock, PreferencesFlag.scheduleStartWeekday,
-            toReturn: EnumToString.convertToString(StartingDayOfWeek.sunday));
-        PreferencesServiceMock.stubGetString(
-            preferencesServiceMock, PreferencesFlag.scheduleOtherWeekday,
-            toReturn: EnumToString.convertToString(WeekDays.monday));
-        PreferencesServiceMock.stubGetString(
             preferencesServiceMock, PreferencesFlag.scheduleCalendarFormat,
-            toReturn: EnumToString.convertToString(CalendarFormat.month));
+            toReturn: CalendarTimeFormat.month.name);
         PreferencesServiceMock.stubGetBool(
             preferencesServiceMock, PreferencesFlag.scheduleShowTodayBtn,
             toReturn: false);
         PreferencesServiceMock.stubGetBool(
             preferencesServiceMock, PreferencesFlag.scheduleListView,
             toReturn: false);
-        PreferencesServiceMock.stubGetBool(
-            preferencesServiceMock, PreferencesFlag.scheduleShowWeekEvents,
-            toReturn: false);
 
         final expected = {
-          PreferencesFlag.scheduleOtherWeekday: WeekDays.monday,
-          PreferencesFlag.scheduleStartWeekday: StartingDayOfWeek.sunday,
-          PreferencesFlag.scheduleCalendarFormat: CalendarFormat.month,
+          PreferencesFlag.scheduleCalendarFormat: CalendarTimeFormat.month,
           PreferencesFlag.scheduleShowTodayBtn: false,
           PreferencesFlag.scheduleListView: false,
-          PreferencesFlag.scheduleShowWeekEvents: false,
         };
 
         final result = await manager.getScheduleSettings();
@@ -136,21 +101,12 @@ void main() {
         expect(result, expected);
 
         verify(preferencesServiceMock
-                .getString(PreferencesFlag.scheduleOtherWeekday))
-            .called(1);
-        verify(preferencesServiceMock
-                .getString(PreferencesFlag.scheduleStartWeekday))
-            .called(1);
-        verify(preferencesServiceMock
                 .getString(PreferencesFlag.scheduleCalendarFormat))
             .called(1);
         verify(preferencesServiceMock
                 .getBool(PreferencesFlag.scheduleShowTodayBtn))
             .called(1);
         verify(preferencesServiceMock.getBool(PreferencesFlag.scheduleListView))
-            .called(1);
-        verify(preferencesServiceMock
-                .getBool(PreferencesFlag.scheduleShowWeekEvents))
             .called(1);
 
         verifyNoMoreInteractions(preferencesServiceMock);
@@ -168,7 +124,7 @@ void main() {
             .called(1);
 
         verify(analyticsServiceMock.logEvent(
-                "${SettingsManager.tag}_${EnumToString.convertToString(flag)}",
+                "${SettingsManager.tag}_${flag.name}",
                 any))
             .called(1);
 
@@ -179,7 +135,7 @@ void main() {
             .called(1);
 
         verify(analyticsServiceMock.logEvent(
-                "${SettingsManager.tag}_${EnumToString.convertToString(flag)}",
+                "${SettingsManager.tag}_${flag.name}",
                 any))
             .called(1);
 
@@ -190,7 +146,7 @@ void main() {
             .called(1);
 
         verify(analyticsServiceMock.logEvent(
-                "${SettingsManager.tag}_${EnumToString.convertToString(flag)}",
+                "${SettingsManager.tag}_${flag.name}",
                 any))
             .called(1);
 
@@ -230,7 +186,7 @@ void main() {
             .called(1);
 
         verify(analyticsServiceMock.logEvent(
-                "${SettingsManager.tag}_${EnumToString.convertToString(flag)}",
+                "${SettingsManager.tag}_${flag.name}",
                 any))
             .called(1);
 
@@ -246,11 +202,11 @@ void main() {
             .called(1);
 
         untilCalled(analyticsServiceMock.logEvent(
-            "${SettingsManager.tag}_${EnumToString.convertToString(flag)}",
+            "${SettingsManager.tag}_${flag.name}",
             any));
 
         verify(analyticsServiceMock.logEvent(
-                "${SettingsManager.tag}_${EnumToString.convertToString(flag)}",
+                "${SettingsManager.tag}_${flag.name}",
                 any))
             .called(1);
 
@@ -260,11 +216,11 @@ void main() {
             .called(1);
 
         untilCalled(analyticsServiceMock.logEvent(
-            "${SettingsManager.tag}_${EnumToString.convertToString(flag)}",
+            "${SettingsManager.tag}_${flag.name}",
             any));
 
         verify(analyticsServiceMock.logEvent(
-                "${SettingsManager.tag}_${EnumToString.convertToString(flag)}",
+                "${SettingsManager.tag}_${flag.name}",
                 any))
             .called(1);
 
@@ -338,10 +294,10 @@ void main() {
               "setString should return true if the PreferenceService return true");
 
       untilCalled(analyticsServiceMock.logEvent(
-          "${SettingsManager.tag}_${EnumToString.convertToString(flag)}", any));
+          "${SettingsManager.tag}_${flag.name}", any));
 
       verify(analyticsServiceMock.logEvent(
-              "${SettingsManager.tag}_${EnumToString.convertToString(flag)}",
+              "${SettingsManager.tag}_${flag.name}",
               any))
           .called(1);
       verify(preferencesServiceMock.setString(flag, any));
@@ -356,10 +312,10 @@ void main() {
               "setInt should return true if the PreferenceService return true");
 
       untilCalled(analyticsServiceMock.logEvent(
-          "${SettingsManager.tag}_${EnumToString.convertToString(flag)}", any));
+          "${SettingsManager.tag}_${flag.name}", any));
 
       verify(analyticsServiceMock.logEvent(
-              "${SettingsManager.tag}_${EnumToString.convertToString(flag)}",
+              "${SettingsManager.tag}_${flag.name}",
               any))
           .called(1);
       verify(preferencesServiceMock.setInt(flag, any));
@@ -374,10 +330,10 @@ void main() {
               "setString should return true if the PreferenceService return true");
 
       untilCalled(analyticsServiceMock.logEvent(
-          "${SettingsManager.tag}_${EnumToString.convertToString(flag)}", any));
+          "${SettingsManager.tag}_${flag.name}", any));
 
       verify(analyticsServiceMock.logEvent(
-              "${SettingsManager.tag}_${EnumToString.convertToString(flag)}",
+              "${SettingsManager.tag}_${flag.name}",
               any))
           .called(1);
       verify(preferencesServiceMock.getString(flag));
@@ -392,10 +348,10 @@ void main() {
               "setString should return true if the PreferenceService return true");
 
       untilCalled(analyticsServiceMock.logEvent(
-          "${SettingsManager.tag}_${EnumToString.convertToString(flag)}", any));
+          "${SettingsManager.tag}_${flag.name}", any));
 
       verify(analyticsServiceMock.logEvent(
-              "${SettingsManager.tag}_${EnumToString.convertToString(flag)}",
+              "${SettingsManager.tag}_${flag.name}",
               any))
           .called(1);
       verify(preferencesServiceMock.setBool(flag, value: anyNamed("value")));

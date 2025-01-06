@@ -19,7 +19,7 @@ class ReportNews extends StatefulWidget {
   const ReportNews({super.key, required this.newsId, this.showHandle = true});
 
   @override
-  _ReportNewsState createState() => _ReportNewsState();
+  State<ReportNews> createState() => _ReportNewsState();
 }
 
 class _ReportNewsState extends State<ReportNews> {
@@ -192,9 +192,9 @@ class _ReportNewsState extends State<ReportNews> {
                   const SizedBox(height: 24),
                   ElevatedButton(
                     style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all<Color>(
-                          AppTheme.etsLightRed),
-                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                      backgroundColor:
+                          WidgetStateProperty.all<Color>(AppTheme.etsLightRed),
+                      shape: WidgetStateProperty.all<RoundedRectangleBorder>(
                         RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(8.0),
                         ),

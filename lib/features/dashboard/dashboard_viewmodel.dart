@@ -1,11 +1,7 @@
 // Dart imports:
 import 'dart:collection';
 
-// Flutter imports:
-import 'package:flutter/material.dart';
-
 // Package imports:
-import 'package:feature_discovery_fork/feature_discovery.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -13,23 +9,17 @@ import 'package:stacked/stacked.dart';
 
 // Project imports:
 import 'package:notredame/constants/preferences_flags.dart';
-import 'package:notredame/constants/update_code.dart';
 import 'package:notredame/features/app/analytics/analytics_service.dart';
 import 'package:notredame/features/app/analytics/remote_config_service.dart';
 import 'package:notredame/features/app/integration/launch_url_service.dart';
-import 'package:notredame/features/app/navigation/navigation_service.dart';
-import 'package:notredame/features/app/navigation/router_paths.dart';
 import 'package:notredame/features/app/repository/course_repository.dart';
 import 'package:notredame/features/app/signets-api/models/course.dart';
 import 'package:notredame/features/app/signets-api/models/course_activity.dart';
 import 'package:notredame/features/app/signets-api/models/session.dart';
 import 'package:notredame/features/app/storage/preferences_service.dart';
-import 'package:notredame/features/app/storage/siren_flutter_service.dart';
 import 'package:notredame/features/dashboard/progress_bar_text_options.dart';
 import 'package:notredame/features/more/feedback/in_app_review_service.dart';
 import 'package:notredame/features/more/settings/settings_manager.dart';
-import 'package:notredame/features/welcome/discovery/discovery_components.dart';
-import 'package:notredame/features/welcome/discovery/models/discovery_ids.dart';
 import 'package:notredame/utils/activity_code.dart';
 import 'package:notredame/utils/locator.dart';
 
@@ -47,9 +37,6 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
 
   /// Localization class of the application.
   final AppIntl _appIntl;
-
-  /// Update code that must be used to prompt user for update if necessary.
-  UpdateCode? updateCode;
 
   /// Cards to display on dashboard
   List<PreferencesFlag>? _cardsToDisplay;
@@ -144,13 +131,7 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
 
   static Future<void> launchBroadcastUrl(String url) async {
     final LaunchUrlService launchUrlService = locator<LaunchUrlService>();
-    final NavigationService navigationService = locator<NavigationService>();
-    try {
-      await launchUrlService.launchInBrowser(url, Brightness.light);
-    } catch (error) {
-      // An exception is thrown if browser app is not installed on Android device.
-      await navigationService.pushNamed(RouterPaths.webView, arguments: url);
-    }
+    launchUrlService.launchInBrowser(url);
   }
 
   void changeProgressBarText() {
@@ -417,28 +398,6 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
   bool isSameDay(DateTime a, DateTime b) =>
       a.year == b.year && a.month == b.month && a.day == b.day;
 
-  /// Start discovery is needed
-  static Future<void> startDiscovery(BuildContext context) async {
-    final SettingsManager settingsManager = locator<SettingsManager>();
-    if (await settingsManager.getBool(PreferencesFlag.discoveryDashboard) ==
-        null) {
-      if (!context.mounted) return;
-      final List<String> ids =
-          findDiscoveriesByGroupName(context, DiscoveryGroupIds.bottomBar)
-              .map((e) => e.featureId)
-              .toList();
-
-      FeatureDiscovery.discoverFeatures(context, ids);
-    }
-  }
-
-  /// Mark as complete the discovery step
-  Future<bool> discoveryCompleted() async {
-    await _settingsManager.setBool(PreferencesFlag.discoveryDashboard, true);
-
-    return true;
-  }
-
   /// Get the list of courses for the Grades card.
   Future<List<Course>> futureToRunGrades() async {
     if (!busy(courses)) {
@@ -482,48 +441,6 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
       }
     }
     return courses;
-  }
-
-  /// Prompt the update for the app if the navigation service arguments passed
-  /// is not none. When [UpdateCode] is forced, the user will be force to update.
-  /// If [UpdateCode] is not forced, the user will be prompted to update.
-  static Future<void> promptUpdate(
-      BuildContext context, UpdateCode? updateCode) async {
-    if (updateCode != null && updateCode != UpdateCode.none) {
-      final appIntl = AppIntl.of(context);
-
-      bool isAForcedUpdate = false;
-      String message = '';
-      switch (updateCode) {
-        case UpdateCode.force:
-          isAForcedUpdate = true;
-          message = appIntl!.update_version_message_force;
-        case UpdateCode.ask:
-          isAForcedUpdate = false;
-          message = appIntl!.update_version_message;
-        case UpdateCode.none:
-          return;
-      }
-      final prefService = locator<PreferencesService>();
-      final sirenService = locator<SirenFlutterService>();
-
-      final storeVersion = await sirenService.storeVersion;
-
-      final versionStoredInPrefs =
-          await prefService.getString(PreferencesFlag.updateAskedVersion);
-
-      if (versionStoredInPrefs != storeVersion.toString()) {
-        // ignore: use_build_context_synchronously
-        await sirenService.promptUpdate(context,
-            title: appIntl.update_version_title,
-            message: message,
-            buttonUpgradeText: appIntl.update_version_button_text,
-            buttonCancelText: appIntl.close_button_text,
-            forceUpgrade: isAForcedUpdate);
-      }
-      prefService.setString(
-          PreferencesFlag.updateAskedVersion, storeVersion.toString());
-    }
   }
 
   Future<void> futureToRunBroadcast() async {

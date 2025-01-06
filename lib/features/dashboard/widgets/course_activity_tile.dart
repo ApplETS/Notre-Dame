@@ -16,7 +16,7 @@ class CourseActivityTile extends StatelessWidget {
 
   /// Display an [activity] with the start and end time of the activity,
   /// it name, shortname, type of activity and local.
-  const CourseActivityTile(this.activity);
+  const CourseActivityTile(this.activity, {super.key});
 
   @override
   Widget build(BuildContext context) => Padding(

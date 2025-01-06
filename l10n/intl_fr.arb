@@ -22,11 +22,6 @@
   
   "close_button_text": "Fermer",
 
-  "update_version_title": "Nouvelle version disponible",
-  "update_version_message": "Une nouvelle version de l'application est disponible. Voulez-vous la télécharger maintenant?",
-  "update_version_message_force": "Une nouvelle version de l'application est disponible. La version présente n'est plus supportée. Télécharger-la maintenant.",
-  "update_version_button_text": "Mettre à jour", 
-
   "title_schedule": "Horaire",
   "title_student": "Étudiant",
   "title_dashboard": "Accueil",
@@ -59,8 +54,8 @@
   "schedule_settings_title": "Paramètres de l'horaire",
   "schedule_settings_show_today_btn_pref": "Afficher le bouton Aujourd'hui",
   "schedule_settings_calendar_format_pref": "Format du calendrier",
+  "schedule_settings_calendar_format_day": "Jour",
   "schedule_settings_calendar_format_month": "Mois",
-  "schedule_settings_calendar_format_2_weeks": "2 semaines",
   "schedule_settings_calendar_format_week": "Semaine",
   "schedule_settings_starting_weekday_pref": "Premier jour de la semaine",
   "schedule_settings_show_weekend_day": "Afficher la fin de semaine",
@@ -307,36 +302,6 @@
 
   "flutter_license": "Flutter est la boîte à outils d'interface utilisateur de Google pour créer de superbes applications compilées en natif pour mobile, Web et bureau à partir d'une seule base de code. En savoir plus sur Flutter à ",
   "flutter_website": "https://flutter.dev",
-
-  "skip_discovery": "Ignorer la visite",
-
-  "discovery_navbar_dashboard_title": "Accueil",
-  "discovery_navbar_dashboard_details": "La page d'accueil regroupe les informations les plus fréquemment consultées, sous forme de cartes.\n\nEn gardant votre doigt sur la carte, vous pouvez les déplacer vers le haut et vers le bas pour les réorganiser.\n\nPour supprimer une carte, simplement glisser la carte vers la gauche ou la droite.",
-  "discovery_page_dashboard_restore": "Pour restaurer les changements, cliquer sur l'icône en haut à droite.",
-  
-  "discovery_navbar_schedule_title": "Horaire",
-  "discovery_navbar_schedule_details": "Sur cette page vous pourrez trouver votre horaire ainsi que les autres événements importants.",
-  "discovery_page_schedule_settings": "Dans les paramètres, vous pouvez changer le format du calendrier et le premier jour de la semaine affiché.",
-  
-  "discovery_navbar_student_title": "Étudiant",
-  "discovery_navbar_student_details": "La page Étudiant affiche vos notes et les informations de votre profil.", 
-  
-  "discovery_page_student_grades_session": "Vos cours sont divisés par session, avec la plus récente en haut, en tout temps vous pouvez tirer sur la liste pour la rafraichir.",
-  "discovery_page_student_grades_grade_button": "Ici vous voyez votre note actuelle. En tapant dessus, vous pourrez voir le détail de toutes les notes obtenues dans le cours.",
-  "discovery_page_grade_details": "Ici vous trouverez la liste des évaluation du cours et les résultats obtenus. Le cercle à l'intérieur, en rouge, affichent la moyenne et celui à l'extérieur, affiche votre moyenne.",  
-  "discovery_page_student_profile": "Vous trouvez ici toutes les informations reliées à votre compte étudiant, de la balance à vos programmes actifs en passant par votre code permanent.",
-  
-  "discovery_navbar_ets_title": "ÉTS",
-  "discovery_navbar_ets_details": "La page ÉTS vous permet de consulter rapidement tous les liens importants de l’ÉTS, tels que Moodle, MonÉTS et les mesures de sécurité.",
-  
-  "discovery_navbar_more_title": "Plus",
-  "discovery_navbar_more_details": "La page Plus vous permet d'avoir accès aux options supplémentaires de l'application.",
-  "discovery_page_more_report_bug": "L'application n'est pas parfaite et nous sommes toujours ouverts à des suggestions! Si vous voyez un problème ou si vous souhaitez nous faire part d'une idée, vous pouvez utiliser cette fonctionnalité",
-  "discovery_page_more_contributors": "Ici vous trouverez la liste de tous les étudiants qui ont travaillé sur le projet d'un point de vue du code.",
-  "discovery_page_faq": "Si vous avez des questions, vous pouvez consulter notre FAQ.",
-  "discovery_page_more_settings": "Et finalement ici vous pouvez changer les paramètres généraux de l'application!",
-  
-  "discovery_page_thankyou_message": "Merci encore d'avoir installé ÉTSMobile! Nous espérons que cette application vous sera utile! Plein de nouvelles fonctionnalités vont arriver dans les mois à venir donc penser à mettre à jour l'application!!",
 
   "choose_language_title": "Choisissez votre langue préférée",
   "choose_language_subtitle": "Veuillez sélectionner votre langue",

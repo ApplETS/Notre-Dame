@@ -1,7 +1,7 @@
 // Package imports:
+import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:percent_indicator/percent_indicator.dart';
 
 // Project imports:
 import 'package:notredame/features/student/grades/widgets/grade_circular_progress.dart';
@@ -16,7 +16,7 @@ void main() {
     });
 
     group("UI -", () {
-      testWidgets('has two CircularPercentIndicator',
+      testWidgets('has two CircularProgressIndicator',
           (WidgetTester tester) async {
         await tester.pumpWidget(localizedWidget(
             child: const GradeCircularProgress(
@@ -28,7 +28,7 @@ void main() {
         )));
         await tester.pumpAndSettle();
 
-        final circularPercentIndicator = find.byType(CircularPercentIndicator);
+        final circularPercentIndicator = find.byType(CircularProgressIndicator);
         expect(circularPercentIndicator, findsNWidgets(2));
       });
 

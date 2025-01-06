@@ -2,7 +2,6 @@
 import 'package:flutter/material.dart';
 
 // Package imports:
-import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:intl/intl.dart';
 
@@ -32,7 +31,7 @@ class ScheduleCalendarTile extends StatefulWidget {
       required this.buildContext});
 
   @override
-  _ScheduleCalendarTileState createState() => _ScheduleCalendarTileState();
+  State<ScheduleCalendarTile> createState() => _ScheduleCalendarTileState();
 }
 
 class _ScheduleCalendarTileState extends State<ScheduleCalendarTile> {
@@ -122,10 +121,13 @@ class _ScheduleCalendarTileState extends State<ScheduleCalendarTile> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            AutoSizeText(
-              widget.title ?? "",
-              style: widget.titleStyle,
-              maxLines: 3,
+            FittedBox(
+                fit: BoxFit.fitWidth,
+                child: Text(
+                    widget.title ?? "",
+                    style: widget.titleStyle,
+                    maxLines: 3
+                )
             )
           ],
         ),

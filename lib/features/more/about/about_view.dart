@@ -8,14 +8,18 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 // Project imports:
 import 'package:notredame/constants/urls.dart';
-import 'package:notredame/utils/utils.dart';
+import 'package:notredame/utils/locator.dart';
+import 'package:notredame/features/app/integration/launch_url_service.dart';
 
 class AboutView extends StatefulWidget {
+  const AboutView({super.key});
+
   @override
-  _AboutViewState createState() => _AboutViewState();
+  State<AboutView> createState() => _AboutViewState();
 }
 
 class _AboutViewState extends State<AboutView> with TickerProviderStateMixin {
+  final LaunchUrlService _launchUrlService = locator<LaunchUrlService>();
   late AnimationController _controller;
   bool _completed = false;
   bool _easterEggTrigger = false;
@@ -126,43 +130,43 @@ class _AboutViewState extends State<AboutView> with TickerProviderStateMixin {
                           FontAwesomeIcons.earthAmericas,
                           color: Colors.white,
                         ),
-                        onPressed: () => Utils.launchURL(
-                            Urls.clubWebsite, AppIntl.of(context)!)),
+                        onPressed: () =>
+                            _launchUrlService.launchInBrowser(Urls.clubWebsite)),
                     IconButton(
                         icon: const FaIcon(
                           FontAwesomeIcons.github,
                           color: Colors.white,
                         ),
-                        onPressed: () => Utils.launchURL(
-                            Urls.clubGithub, AppIntl.of(context)!)),
+                        onPressed: () =>
+                            _launchUrlService.launchInBrowser(Urls.clubGithub)),
                     IconButton(
                         icon: const FaIcon(
                           FontAwesomeIcons.facebook,
                           color: Colors.white,
                         ),
-                        onPressed: () => Utils.launchURL(
-                            Urls.clubFacebook, AppIntl.of(context)!)),
+                        onPressed: () =>
+                            _launchUrlService.launchInBrowser(Urls.clubFacebook)),
                     IconButton(
                         icon: const FaIcon(
                           FontAwesomeIcons.twitter,
                           color: Colors.white,
                         ),
-                        onPressed: () => Utils.launchURL(
-                            Urls.clubTwitter, AppIntl.of(context)!)),
+                        onPressed: () =>
+                            _launchUrlService.launchInBrowser(Urls.clubTwitter)),
                     IconButton(
                         icon: const FaIcon(
                           FontAwesomeIcons.youtube,
                           color: Colors.white,
                         ),
-                        onPressed: () => Utils.launchURL(
-                            Urls.clubYoutube, AppIntl.of(context)!)),
+                        onPressed: () =>
+                            _launchUrlService.launchInBrowser(Urls.clubYoutube)),
                     IconButton(
                         icon: const FaIcon(
                           FontAwesomeIcons.discord,
                           color: Colors.white,
                         ),
-                        onPressed: () => Utils.launchURL(
-                            Urls.clubDiscord, AppIntl.of(context)!)),
+                        onPressed: () =>
+                            _launchUrlService.launchInBrowser(Urls.clubDiscord)),
                   ],
                 ),
               ),

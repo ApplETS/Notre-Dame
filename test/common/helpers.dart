@@ -13,7 +13,6 @@ import 'package:logger/logger.dart';
 import 'package:notredame/features/app/analytics/analytics_service.dart';
 import 'package:notredame/features/app/analytics/remote_config_service.dart';
 import 'package:notredame/features/app/error/internal_info_service.dart';
-import 'package:notredame/features/app/integration/github_api.dart';
 import 'package:notredame/features/app/integration/launch_url_service.dart';
 import 'package:notredame/features/app/integration/networking_service.dart';
 import 'package:notredame/features/app/monets_api/monets_api_client.dart';
@@ -26,14 +25,12 @@ import 'package:notredame/features/app/repository/user_repository.dart';
 import 'package:notredame/features/app/signets-api/signets_api_client.dart';
 import 'package:notredame/features/app/storage/cache_manager.dart';
 import 'package:notredame/features/app/storage/preferences_service.dart';
-import 'package:notredame/features/app/storage/siren_flutter_service.dart';
 import 'package:notredame/features/more/feedback/in_app_review_service.dart';
 import 'package:notredame/features/more/settings/settings_manager.dart';
 import 'package:notredame/utils/locator.dart';
 import '../features/app/analytics/mocks/analytics_service_mock.dart';
 import '../features/app/analytics/mocks/remote_config_service_mock.dart';
 import '../features/app/error/mocks/internal_info_service_mock.dart';
-import '../features/app/integration/mocks/github_api_mock.dart';
 import '../features/app/integration/mocks/launch_url_service_mock.dart';
 import '../features/app/integration/mocks/networking_service_mock.dart';
 import '../features/app/monets_api/mocks/mon_ets_api_mock.dart';
@@ -47,7 +44,6 @@ import '../features/app/signets_api/mocks/signets_api_mock.dart';
 import '../features/app/storage/mocks/cache_manager_mock.dart';
 import '../features/app/storage/mocks/flutter_secure_storage_mock.dart';
 import '../features/app/storage/mocks/preferences_service_mock.dart';
-import '../features/app/storage/mocks/siren_flutter_service_mock.dart';
 import '../features/more/feedback/mocks/in_app_review_service_mock.dart';
 import '../features/more/settings/mocks/settings_manager_mock.dart';
 
@@ -147,16 +143,6 @@ InternalInfoServiceMock setupInternalInfoServiceMock() {
   return service;
 }
 
-/// Load a mock of the [SirenFlutterService]
-SirenFlutterServiceMock setupSirenFlutterServiceMock() {
-  unregister<SirenFlutterService>();
-  final service = SirenFlutterServiceMock();
-
-  locator.registerSingleton<SirenFlutterService>(service);
-
-  return service;
-}
-
 void setupFlutterToastMock([WidgetTester? tester]) {
   const MethodChannel channel = MethodChannel('PonnamKarthik/fluttertoast');
 
@@ -183,16 +169,6 @@ NavigationServiceMock setupNavigationServiceMock() {
   final service = NavigationServiceMock();
 
   locator.registerSingleton<NavigationService>(service);
-
-  return service;
-}
-
-/// Load a mock of the [GithubApi]
-GithubApiMock setupGithubApiMock() {
-  unregister<GithubApi>();
-  final service = GithubApiMock();
-
-  locator.registerSingleton<GithubApi>(service);
 
   return service;
 }

@@ -1,4 +1,5 @@
 // Package imports:
+import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -109,6 +110,8 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(find.text(intl.profile_program_completion), findsOneWidget);
+      
+      expect(find.byType(CircularProgressIndicator), findsOneWidget);
     });
   });
 }
