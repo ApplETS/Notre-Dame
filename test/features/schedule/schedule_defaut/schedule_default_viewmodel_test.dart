@@ -116,7 +116,7 @@ void main() {
 
       test('Sets displaySaturday to true', () async {
         when(mockCourseRepository.getDefaultScheduleActivities(
-            session: 'A2023'))
+                session: 'A2023'))
             .thenAnswer((_) async => [saturdayActivity]);
 
         await viewModel.futureToRun();
@@ -125,7 +125,7 @@ void main() {
 
       test('Sets displaySunday to true', () async {
         when(mockCourseRepository.getDefaultScheduleActivities(
-            session: 'A2023'))
+                session: 'A2023'))
             .thenAnswer((_) async => [sundayActivity]);
 
         await viewModel.futureToRun();

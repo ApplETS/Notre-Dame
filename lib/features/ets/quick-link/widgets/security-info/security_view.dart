@@ -9,12 +9,12 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:stacked/stacked.dart';
 
 // Project imports:
+import 'package:notredame/features/app/integration/launch_url_service.dart';
 import 'package:notredame/features/app/widgets/base_scaffold.dart';
 import 'package:notredame/features/ets/quick-link/widgets/security-info/emergency_view.dart';
 import 'package:notredame/features/ets/quick-link/widgets/security-info/security_viewmodel.dart';
 import 'package:notredame/utils/app_theme.dart';
 import 'package:notredame/utils/locator.dart';
-import 'package:notredame/features/app/integration/launch_url_service.dart';
 
 class SecurityView extends StatefulWidget {
   const SecurityView({super.key});
@@ -86,7 +86,8 @@ class _SecurityViewState extends State<SecurityView> {
                 splashColor: Colors.red.withAlpha(50),
                 onTap: () {
                   try {
-                    _launchUrlService.call(AppIntl.of(context)!.security_emergency_number);
+                    _launchUrlService
+                        .call(AppIntl.of(context)!.security_emergency_number);
                   } catch (e) {
                     ScaffoldMessenger.of(context)
                         .showSnackBar(SnackBar(content: Text(e.toString())));

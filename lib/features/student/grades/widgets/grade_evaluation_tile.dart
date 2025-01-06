@@ -81,19 +81,19 @@ class _GradeEvaluationTileState extends State<GradeEvaluationTile>
                   heightFactor: 1.3,
                   child: LayoutBuilder(
                     builder: (context, constraints) => GradeCircularProgress(
-                        constraints.maxHeight / 100,
-                        completed: widget.completed,
-                        key: Key(
-                            "GradeCircularProgress_${widget.evaluation.title}"),
-                        studentGrade: Utils.getGradeInPercentage(
-                          widget.evaluation.mark,
-                          widget.evaluation.correctedEvaluationOutOfFormatted,
-                        ),
-                        averageGrade: Utils.getGradeInPercentage(
-                          widget.evaluation.passMark,
-                          widget.evaluation.correctedEvaluationOutOfFormatted,
-                        ),
+                      constraints.maxHeight / 100,
+                      completed: widget.completed,
+                      key: Key(
+                          "GradeCircularProgress_${widget.evaluation.title}"),
+                      studentGrade: Utils.getGradeInPercentage(
+                        widget.evaluation.mark,
+                        widget.evaluation.correctedEvaluationOutOfFormatted,
                       ),
+                      averageGrade: Utils.getGradeInPercentage(
+                        widget.evaluation.passMark,
+                        widget.evaluation.correctedEvaluationOutOfFormatted,
+                      ),
+                    ),
                   ),
                 ),
                 title: Padding(

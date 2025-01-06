@@ -8,8 +8,8 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 // Project imports:
 import 'package:notredame/constants/urls.dart';
-import 'package:notredame/utils/locator.dart';
 import 'package:notredame/features/app/integration/launch_url_service.dart';
+import 'package:notredame/utils/locator.dart';
 
 class AboutView extends StatefulWidget {
   const AboutView({super.key});
@@ -130,8 +130,8 @@ class _AboutViewState extends State<AboutView> with TickerProviderStateMixin {
                           FontAwesomeIcons.earthAmericas,
                           color: Colors.white,
                         ),
-                        onPressed: () =>
-                            _launchUrlService.launchInBrowser(Urls.clubWebsite)),
+                        onPressed: () => _launchUrlService
+                            .launchInBrowser(Urls.clubWebsite)),
                     IconButton(
                         icon: const FaIcon(
                           FontAwesomeIcons.github,
@@ -144,29 +144,29 @@ class _AboutViewState extends State<AboutView> with TickerProviderStateMixin {
                           FontAwesomeIcons.facebook,
                           color: Colors.white,
                         ),
-                        onPressed: () =>
-                            _launchUrlService.launchInBrowser(Urls.clubFacebook)),
+                        onPressed: () => _launchUrlService
+                            .launchInBrowser(Urls.clubFacebook)),
                     IconButton(
                         icon: const FaIcon(
                           FontAwesomeIcons.twitter,
                           color: Colors.white,
                         ),
-                        onPressed: () =>
-                            _launchUrlService.launchInBrowser(Urls.clubTwitter)),
+                        onPressed: () => _launchUrlService
+                            .launchInBrowser(Urls.clubTwitter)),
                     IconButton(
                         icon: const FaIcon(
                           FontAwesomeIcons.youtube,
                           color: Colors.white,
                         ),
-                        onPressed: () =>
-                            _launchUrlService.launchInBrowser(Urls.clubYoutube)),
+                        onPressed: () => _launchUrlService
+                            .launchInBrowser(Urls.clubYoutube)),
                     IconButton(
                         icon: const FaIcon(
                           FontAwesomeIcons.discord,
                           color: Colors.white,
                         ),
-                        onPressed: () =>
-                            _launchUrlService.launchInBrowser(Urls.clubDiscord)),
+                        onPressed: () => _launchUrlService
+                            .launchInBrowser(Urls.clubDiscord)),
                   ],
                 ),
               ),

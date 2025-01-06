@@ -6,8 +6,8 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 // Project imports:
 import 'package:notredame/constants/urls.dart';
-import 'package:notredame/utils/locator.dart';
 import 'package:notredame/features/app/integration/launch_url_service.dart';
+import 'package:notredame/utils/locator.dart';
 
 class OutageSocialSection extends StatelessWidget {
   OutageSocialSection({super.key});
@@ -29,7 +29,7 @@ class OutageSocialSection extends StatelessWidget {
                 ),
                 onPressed: () =>
                     _launchUrlService.launchInBrowser(Urls.clubWebsite)),
-                IconButton(
+            IconButton(
                 icon: const FaIcon(
                   FontAwesomeIcons.github,
                   color: Colors.white,

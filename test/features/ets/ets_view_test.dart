@@ -148,8 +148,7 @@ void main() {
 
     testWidgets('has Tab bar and sliverAppBar and BaseScaffold',
         (WidgetTester tester) async {
-      await tester.pumpWidget(
-          localizedWidget(child: ETSView()));
+      await tester.pumpWidget(localizedWidget(child: ETSView()));
       await tester.pumpAndSettle(const Duration(seconds: 1));
 
       expect(find.byType(TabBar), findsOneWidget);

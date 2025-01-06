@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 
 // Package imports:
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:notredame/features/student/grades/widgets/grade_circular_indicator.dart';
 
 // Project imports:
+import 'package:notredame/features/student/grades/widgets/grade_circular_indicator.dart';
 import 'package:notredame/utils/app_theme.dart';
 
 class GradeCircularProgress extends StatefulWidget {

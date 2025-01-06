@@ -56,12 +56,11 @@ void main() {
 
         await viewModel.handleStartUp();
 
-        verify(navigationServiceMock.pushNamedAndRemoveUntil(RouterPaths.dashboard));
+        verify(navigationServiceMock
+            .pushNamedAndRemoveUntil(RouterPaths.dashboard));
       });
 
-      test(
-          'sign in failed redirect to login',
-          () async {
+      test('sign in failed redirect to login', () async {
         UserRepositoryMock.stubSilentAuthenticate(userRepositoryMock,
             toReturn: false);
         UserRepositoryMock.stubWasPreviouslyLoggedIn(userRepositoryMock);

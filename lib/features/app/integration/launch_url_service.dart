@@ -1,7 +1,5 @@
-// Flutter imports:
-import 'package:flutter_inappwebview/flutter_inappwebview.dart';
-
 // Package imports:
+import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:url_launcher/url_launcher.dart' as url_launch;
 
 // Project imports:
@@ -45,7 +43,6 @@ class LaunchUrlService {
           barCollapsingEnabled: true,
           preferredControlTintColor: AppTheme.lightThemeBackground,
           preferredBarTintColor: AppTheme.accent,
-        )
-    );
+        ));
   }
 }

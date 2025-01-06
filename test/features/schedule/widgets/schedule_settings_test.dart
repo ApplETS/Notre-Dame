@@ -6,13 +6,13 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:intl/intl.dart';
 import 'package:mockito/mockito.dart';
-import 'package:notredame/utils/calendar_utils.dart';
 
 // Project imports:
 import 'package:notredame/constants/preferences_flags.dart';
 import 'package:notredame/features/app/signets-api/models/schedule_activity.dart';
 import 'package:notredame/features/schedule/widgets/schedule_settings.dart';
 import 'package:notredame/utils/activity_code.dart';
+import 'package:notredame/utils/calendar_utils.dart';
 import '../../../common/helpers.dart';
 import '../../app/analytics/mocks/remote_config_service_mock.dart';
 import '../../app/repository/mocks/course_repository_mock.dart';
@@ -30,7 +30,7 @@ void main() {
     PreferencesFlag.scheduleShowTodayBtn: true,
     PreferencesFlag.scheduleListView: true,
   };
-  
+
   final List<ScheduleActivity> classOneWithLaboratoryABscheduleActivities = [
     ScheduleActivity(
         courseAcronym: "GEN101",
@@ -377,8 +377,11 @@ void main() {
               ListTile, intl.schedule_settings_list_view,
               skipOffstage: false);
 
-          (find.byType(Switch, skipOffstage: false).evaluate().elementAt(1).widget
-          as Switch)
+          (find
+                  .byType(Switch, skipOffstage: false)
+                  .evaluate()
+                  .elementAt(1)
+                  .widget as Switch)
               .onChanged!(false);
 
           await tester.pumpAndSettle();
@@ -392,7 +395,7 @@ void main() {
                   matching: find.byType(Switch, skipOffstage: false))),
               isA<Switch>().having((source) => source.value, 'value', isFalse),
               reason:
-              "the settings says calendar view format now, the UI should reflet that.");
+                  "the settings says calendar view format now, the UI should reflet that.");
 
           await tester
               .pumpWidget(localizedWidget(child: const ScheduleSettings()));

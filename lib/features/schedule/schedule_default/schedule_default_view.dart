@@ -50,8 +50,7 @@ class _ScheduleDefaultViewState extends State<ScheduleDefaultView> {
                   calendarEvents: model.calendarEvents,
                   loaded: !model.busy(model.isLoadingEvents),
                   displaySaturday: model.displaySaturday,
-                  displaySunday: model.displaySunday
-          ),
+                  displaySunday: model.displaySunday),
           onRefresh: () => model.refresh(),
         ),
       ),

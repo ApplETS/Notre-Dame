@@ -152,8 +152,7 @@ void main() {
 
     SettingsManagerMock.stubDateTimeNow(settingsManagerMock, toReturn: now);
 
-    await tester.pumpWidget(localizedWidget(
-        child: const DashboardView()));
+    await tester.pumpWidget(localizedWidget(child: const DashboardView()));
     await tester.pumpAndSettle();
 
     // Find schedule card in second position by its title
@@ -225,8 +224,7 @@ void main() {
         SettingsManagerMock.stubGetDashboard(settingsManagerMock,
             toReturn: dashboard);
 
-        await tester.pumpWidget(localizedWidget(
-            child: const DashboardView()));
+        await tester.pumpWidget(localizedWidget(child: const DashboardView()));
         await tester.pumpAndSettle();
 
         // Find Dashboard Title
@@ -257,8 +255,7 @@ void main() {
         SettingsManagerMock.stubGetDashboard(settingsManagerMock,
             toReturn: dashboard);
 
-        await tester.pumpWidget(localizedWidget(
-            child: const DashboardView()));
+        await tester.pumpWidget(localizedWidget(child: const DashboardView()));
         await tester.pumpAndSettle();
 
         // Find aboutUs card
@@ -363,8 +360,7 @@ void main() {
         SettingsManagerMock.stubSetInt(
             settingsManagerMock, PreferencesFlag.progressBarCard);
 
-        await tester.pumpWidget(localizedWidget(
-            child: const DashboardView()));
+        await tester.pumpWidget(localizedWidget(child: const DashboardView()));
         await tester.pumpAndSettle();
 
         // Find Dismissible Cards
@@ -415,8 +411,7 @@ void main() {
         SettingsManagerMock.stubSetInt(
             settingsManagerMock, PreferencesFlag.progressBarCard);
 
-        await tester.pumpWidget(localizedWidget(
-            child: const DashboardView()));
+        await tester.pumpWidget(localizedWidget(child: const DashboardView()));
         await tester.pumpAndSettle();
 
         // Find Dismissible Cards
@@ -475,8 +470,7 @@ void main() {
         SettingsManagerMock.stubGetDashboard(settingsManagerMock,
             toReturn: dashboard);
 
-        await tester.pumpWidget(localizedWidget(
-            child: const DashboardView()));
+        await tester.pumpWidget(localizedWidget(child: const DashboardView()));
         await tester.pumpAndSettle();
 
         // Find Dismissible Cards
@@ -515,8 +509,8 @@ void main() {
           SettingsManagerMock.stubGetDashboard(settingsManagerMock,
               toReturn: dashboard);
 
-          await tester.pumpWidget(localizedWidget(
-              child: const DashboardView()));
+          await tester
+              .pumpWidget(localizedWidget(child: const DashboardView()));
           await tester.pumpAndSettle();
 
           // Find grades card
@@ -547,8 +541,8 @@ void main() {
           SettingsManagerMock.stubGetDashboard(settingsManagerMock,
               toReturn: dashboard);
 
-          await tester.pumpWidget(localizedWidget(
-              child: const DashboardView()));
+          await tester
+              .pumpWidget(localizedWidget(child: const DashboardView()));
           await tester.pumpAndSettle();
 
           // Find grades card
@@ -581,8 +575,8 @@ void main() {
           SettingsManagerMock.stubGetDashboard(settingsManagerMock,
               toReturn: dashboard);
 
-          await tester.pumpWidget(localizedWidget(
-              child: const DashboardView()));
+          await tester
+              .pumpWidget(localizedWidget(child: const DashboardView()));
           await tester.pumpAndSettle();
 
           // Find Dismissible Cards
@@ -623,8 +617,7 @@ void main() {
         SettingsManagerMock.stubGetDashboard(settingsManagerMock,
             toReturn: dashboard);
 
-        await tester.pumpWidget(localizedWidget(
-            child: const DashboardView()));
+        await tester.pumpWidget(localizedWidget(child: const DashboardView()));
         await tester.pumpAndSettle();
 
         // Find progress card
@@ -645,8 +638,7 @@ void main() {
         SettingsManagerMock.stubGetDashboard(settingsManagerMock,
             toReturn: dashboard);
 
-        await tester.pumpWidget(localizedWidget(
-            child: const DashboardView()));
+        await tester.pumpWidget(localizedWidget(child: const DashboardView()));
         await tester.pumpAndSettle();
 
         // Find Dismissible Cards
@@ -684,8 +676,7 @@ void main() {
         SettingsManagerMock.stubGetDashboard(settingsManagerMock,
             toReturn: dashboard);
 
-        await tester.pumpWidget(localizedWidget(
-            child: const DashboardView()));
+        await tester.pumpWidget(localizedWidget(child: const DashboardView()));
         await tester.pumpAndSettle();
 
         // Find Dismissible Cards

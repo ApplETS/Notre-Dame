@@ -10,7 +10,8 @@ class OutageTextSection extends StatelessWidget {
   final double buttonPlacement;
 
   const OutageTextSection(
-      {super.key, required this.textPlacement,
+      {super.key,
+      required this.textPlacement,
       required this.buttonPlacement,
       required this.refreshOutageConfig});
 

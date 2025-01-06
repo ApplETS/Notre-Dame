@@ -33,9 +33,9 @@ mixin Utils {
   }
 
   /// Get first day of the week depending on startingDay which corresponds to weekday
-  static DateTime getFirstDayOfCurrentWeek(
-      DateTime currentDate) {
-    final tempDate = currentDate.subtract(Duration(days: currentDate.weekday % 7));
+  static DateTime getFirstDayOfCurrentWeek(DateTime currentDate) {
+    final tempDate =
+        currentDate.subtract(Duration(days: currentDate.weekday % 7));
     return DateTime(tempDate.year, tempDate.month, tempDate.day);
   }
 }
