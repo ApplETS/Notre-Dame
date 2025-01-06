@@ -95,4 +95,20 @@ List<QuickLink> quickLinks(AppIntl intl) => [
             ),
           ),
           link: 'https://cls.etsmtl.ca/user'),
+      QuickLink(
+          id: 10,
+          name: intl.ets_aeets_title,
+          image: Image.asset(
+            'assets/images/ic_moodle_red.png', //TODO: make new icon
+            color: AppTheme.etsLightRed,
+          ),
+          link: 'https://www.aeets.com/'),
+      QuickLink(
+          id: 11,
+          name: intl.ets_100genies_title,
+          image: Image.asset(
+            'assets/images/ic_moodle_red.png', //TODO: make new icon
+            color: AppTheme.etsLightRed,
+          ),
+          link: 'https://www.pub100genies.ca/')
     ];
