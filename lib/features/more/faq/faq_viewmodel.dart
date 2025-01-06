@@ -33,16 +33,6 @@ class FaqViewModel extends BaseViewModel {
       subject = AppIntl.of(context)!.email_subject;
     }
 
-    final urlLaunchable = await _launchUrlService.canLaunch(email);
-
-    if (urlLaunchable) {
-      await _launchUrlService.launch(email);
-    } else {
-      logEvent("Email not launchable");
-    }
-  }
-
-  void logEvent(String eventDescription) {
-    _analyticsService.logEvent(tag, eventDescription);
+    _launchUrlService.writeEmail(addressEmail, subject);
   }
 }

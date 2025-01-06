@@ -208,23 +208,20 @@ class _FaqViewState extends State<FaqView> {
                             width: double.infinity,
                             child: TextButton.icon(
                               style: ButtonStyle(
-                                  backgroundColor: MaterialStateProperty.all<Color>(
+                                  backgroundColor: WidgetStateProperty.all<Color>(
                                       AppTheme.primary),
-                                  foregroundColor: MaterialStateProperty.all<Color>(
-                                      AppTheme.lightThemeBackground),
-                                  textStyle: MaterialStateProperty.all<TextStyle>(
+                                  foregroundColor:
+                                      WidgetStateProperty.all<Color>(
+                                          AppTheme.lightThemeBackground),
+                                  textStyle: WidgetStateProperty.all<TextStyle>(
                                       const TextStyle(
                                           fontWeight: FontWeight.bold)),
-                                  shape: MaterialStateProperty.all<
+                                  shape: WidgetStateProperty.all<
                                           RoundedRectangleBorder>(
                                       RoundedRectangleBorder(
                                           borderRadius:
                                               BorderRadius.circular(radius)))),
                               onPressed: () {
-                                model.logEvent(
-                                    "Password assistance button tapped");
-                                if (AppIntl.of(context)!.localeName == 'fr') {
-                                  model.launchWebsite(
                                 model.launchWebsite(AppIntl.of(context)!
                                     .monets_connection_help_page);
                               },
@@ -237,14 +234,15 @@ class _FaqViewState extends State<FaqView> {
                             width: double.infinity,
                             child: TextButton.icon(
                               style: ButtonStyle(
-                                  backgroundColor: MaterialStateProperty.all<Color>(
+                                  backgroundColor: WidgetStateProperty.all<Color>(
                                       AppTheme.primary),
-                                  foregroundColor: MaterialStateProperty.all<Color>(
-                                      AppTheme.lightThemeBackground),
-                                  textStyle: MaterialStateProperty.all<TextStyle>(
+                                  foregroundColor:
+                                      WidgetStateProperty.all<Color>(
+                                          AppTheme.lightThemeBackground),
+                                  textStyle: WidgetStateProperty.all<TextStyle>(
                                       const TextStyle(
                                           fontWeight: FontWeight.bold)),
-                                  shape: MaterialStateProperty.all<
+                                  shape: WidgetStateProperty.all<
                                           RoundedRectangleBorder>(
                                       RoundedRectangleBorder(
                                           borderRadius:
@@ -260,11 +258,10 @@ class _FaqViewState extends State<FaqView> {
                             child: TextButton.icon(
                                 onPressed: () => Navigator.of(context).pop(),
                                 style: ButtonStyle(
-                                    textStyle:
-                                        MaterialStateProperty.all<TextStyle>(
-                                            const TextStyle(
-                                                fontWeight: FontWeight.bold)),
-                                    shape: MaterialStateProperty.all(
+                                    textStyle: WidgetStateProperty.all<TextStyle>(
+                                        const TextStyle(
+                                            fontWeight: FontWeight.bold)),
+                                    shape: WidgetStateProperty.all(
                                         RoundedRectangleBorder(
                                             side: const BorderSide(
                                                 color: AppTheme.primary,
@@ -272,8 +269,8 @@ class _FaqViewState extends State<FaqView> {
                                             borderRadius: BorderRadius.circular(
                                                 radius)))),
                                 icon: const Icon(Icons.cancel),
-                                label:
-                                    Text(AppIntl.of(context)!.cancel_button_text)),
+                                label: Text(
+                                    AppIntl.of(context)!.cancel_button_text)),
                           ),
                         ],
                       ),
