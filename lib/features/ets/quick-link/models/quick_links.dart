@@ -99,7 +99,7 @@ List<QuickLink> quickLinks(AppIntl intl) => [
           id: 10,
           name: intl.ets_aeets_title,
           image: Image.asset(
-            'assets/images/ic_moodle_red.png', //TODO: make new icon
+            'assets/images/ic_aeets_red.png',
             color: AppTheme.etsLightRed,
           ),
           link: 'https://www.aeets.com/'),
@@ -107,7 +107,7 @@ List<QuickLink> quickLinks(AppIntl intl) => [
           id: 11,
           name: intl.ets_100genies_title,
           image: Image.asset(
-            'assets/images/ic_moodle_red.png', //TODO: make new icon
+            'assets/images/ic_100genies_red.png',
             color: AppTheme.etsLightRed,
           ),
           link: 'https://www.pub100genies.ca/')
