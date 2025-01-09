@@ -177,6 +177,8 @@
   "ets_schedule_generator": "HorairÉTS",
   "ets_gus": "GUS",
   "ets_papercut_title":"PaperCut",
+  "ets_aeets_title": "AÉÉTS",
+  "ets_100genies_title": "Pub 100 Génies",
 
   "news_title" : "News",
   "news_error_not_found_title" : "Oh oh!",
