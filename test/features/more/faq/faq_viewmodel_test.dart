@@ -4,7 +4,6 @@ import 'package:http/http.dart' as http;
 import 'package:mockito/mockito.dart';
 
 // Project imports:
-import 'package:notredame/constants/urls.dart';
 import 'package:notredame/features/app/integration/launch_url_service.dart';
 import 'package:notredame/features/more/faq/faq_viewmodel.dart';
 import 'package:notredame/features/more/settings/settings_manager.dart';
