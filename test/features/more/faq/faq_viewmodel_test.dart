@@ -19,7 +19,6 @@ void main() {
     setUp(() async {
       launchUrlServiceMock = setupLaunchUrlServiceMock();
       setupSettingsManagerMock();
-      setupAnalyticsServiceMock();
 
       viewModel = FaqViewModel();
     });

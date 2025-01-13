@@ -14,7 +14,6 @@ import 'package:notredame/utils/locator.dart';
 
 class FaqViewModel extends BaseViewModel {
   static const String tag = "FaqViewModel";
-  final AnalyticsService _analyticsService = locator<AnalyticsService>();
 
   final SettingsManager _settingsManager = locator<SettingsManager>();
 
