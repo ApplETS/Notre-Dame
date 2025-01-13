@@ -22,6 +22,7 @@ void main() {
     setUp(() async {
       setupLaunchUrlServiceMock();
       setupNetworkingServiceMock();
+      setupAnalyticsServiceMock();
       settingsManagerMock = setupSettingsManagerMock();
       appIntl = await setupAppIntl();
     });
@@ -33,7 +34,6 @@ void main() {
         SettingsManagerMock.stubLocale(settingsManagerMock);
 
         await tester.pumpWidget(localizedWidget(child: const FaqView()));
-        await tester.pumpAndSettle(const Duration(milliseconds: 800));
 
         final Faq faq = Faq();
 
@@ -45,8 +45,7 @@ void main() {
             find.text(faq.actions[2].title["en"]!, skipOffstage: false);
         final action4 =
             find.text(faq.actions[3].title["en"]!, skipOffstage: false);
-
-        await tester.pump();
+        
         await tester.drag(find.byType(ListView), const Offset(0.0, -300));
         await tester.pump();
 
@@ -61,20 +60,18 @@ void main() {
         SettingsManagerMock.stubLocale(settingsManagerMock);
 
         await tester.pumpWidget(localizedWidget(child: const FaqView()));
-        await tester.pumpAndSettle(const Duration(milliseconds: 800));
 
         final Faq faq = Faq();
 
         await tester.drag(find.byType(ListView), const Offset(0.0, -500));
-        await tester.pump(const Duration(milliseconds: 500));
+        await tester.pumpAndSettle();
 
         final questionsAbtETSMobileBtn =
             find.widgetWithText(ElevatedButton, faq.actions[3].title["en"]!);
         expect(questionsAbtETSMobileBtn, findsOneWidget);
-
-        await tester.pump(const Duration(milliseconds: 500));
+        
         await tester.tap(questionsAbtETSMobileBtn);
-        await tester.pump(const Duration(milliseconds: 500));
+        await tester.pumpAndSettle();        
 
         final dialog = find.byType(AlertDialog);
 
@@ -86,20 +83,18 @@ void main() {
         SettingsManagerMock.stubLocale(settingsManagerMock);
 
         await tester.pumpWidget(localizedWidget(child: const FaqView()));
-        await tester.pumpAndSettle(const Duration(milliseconds: 800));
 
         final Faq faq = Faq();
 
         await tester.drag(find.byType(ListView), const Offset(0.0, -500));
-        await tester.pump(const Duration(milliseconds: 500));
+        await tester.pumpAndSettle();        
 
         final questionsAbtETSMobileBtn =
             find.widgetWithText(ElevatedButton, faq.actions[3].title["en"]!);
         expect(questionsAbtETSMobileBtn, findsOneWidget);
-
-        await tester.pump(const Duration(milliseconds: 500));
+        
         await tester.tap(questionsAbtETSMobileBtn);
-        await tester.pump(const Duration(milliseconds: 500));
+        await tester.pumpAndSettle();
 
         Finder dialog = find.byType(AlertDialog);
         expect(dialog, findsOne);
@@ -108,7 +103,7 @@ void main() {
         expect(cancelButton, findsAny);
 
         await tester.tap(cancelButton);
-        await tester.pump(const Duration(milliseconds: 500));
+        await tester.pumpAndSettle();
 
         dialog = find.byType(AlertDialog);
         expect(dialog, findsNothing);
@@ -119,20 +114,18 @@ void main() {
         SettingsManagerMock.stubLocale(settingsManagerMock);
 
         await tester.pumpWidget(localizedWidget(child: const FaqView()));
-        await tester.pumpAndSettle(const Duration(milliseconds: 800));
 
         final Faq faq = Faq();
 
         await tester.drag(find.byType(ListView), const Offset(0.0, -500));
-        await tester.pump(const Duration(milliseconds: 500));
+        await tester.pumpAndSettle();
 
         final questionsAbtETSMobileBtn =
             find.widgetWithText(ElevatedButton, faq.actions[3].title["en"]!);
         expect(questionsAbtETSMobileBtn, findsOneWidget);
 
-        await tester.pump(const Duration(milliseconds: 500));
         await tester.tap(questionsAbtETSMobileBtn);
-        await tester.pump(const Duration(milliseconds: 500));
+        await tester.pumpAndSettle();
 
         Finder dialog = find.byType(AlertDialog);
         expect(dialog, findsOne);
@@ -141,7 +134,7 @@ void main() {
         expect(cancelButton, findsAny);
 
         await tester.tapAt(Offset.zero);
-        await tester.pump(const Duration(milliseconds: 500));
+        await tester.pumpAndSettle();
 
         dialog = find.byType(AlertDialog);
         expect(dialog, findsNothing);
