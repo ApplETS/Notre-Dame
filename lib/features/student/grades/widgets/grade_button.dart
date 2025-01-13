@@ -27,7 +27,7 @@ class GradeButton extends StatelessWidget {
         child: InkWell(
           borderRadius: BorderRadius.circular(10),
           onTap: () => _navigationService.pushNamed(RouterPaths.gradeDetails,
-              arguments: course),
+                  arguments: course),
           child: _buildGradeButton(context),
         ),
       );

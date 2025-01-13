@@ -8,13 +8,13 @@ import 'package:stacked/stacked.dart';
 
 // Project imports:
 import 'package:notredame/features/app/analytics/analytics_service.dart';
-import 'package:notredame/features/app/integration/launch_url_service.dart';
 import 'package:notredame/features/app/navigation/router_paths.dart';
 import 'package:notredame/features/app/widgets/base_scaffold.dart';
 import 'package:notredame/features/more/more_viewmodel.dart';
 import 'package:notredame/utils/app_theme.dart';
 import 'package:notredame/utils/locator.dart';
 import 'package:notredame/utils/utils.dart';
+import 'package:notredame/features/app/integration/launch_url_service.dart';
 
 class MoreView extends StatefulWidget {
   const MoreView({super.key});
@@ -49,8 +49,8 @@ class _MoreViewState extends State<MoreView> {
                 style: textStyle.copyWith(color: Colors.blue),
                 text: AppIntl.of(context)!.flutter_website,
                 recognizer: TapGestureRecognizer()
-                  ..onTap = () => _launchUrlService
-                      .launchInBrowser(AppIntl.of(context)!.flutter_website)),
+                  ..onTap = () =>
+                      _launchUrlService.launchInBrowser(AppIntl.of(context)!.flutter_website)),
             TextSpan(style: textStyle, text: '.'),
           ],
         ),
@@ -74,13 +74,13 @@ class _MoreViewState extends State<MoreView> {
                 ListTile(
                     title: Text(AppIntl.of(context)!.more_about_applets_title),
                     leading: Hero(
-                      tag: 'about',
-                      child: Image.asset(
-                        "assets/images/favicon_applets.png",
-                        height: 24,
-                        width: 24,
-                      ),
-                    ),
+                          tag: 'about',
+                          child: Image.asset(
+                            "assets/images/favicon_applets.png",
+                            height: 24,
+                            width: 24,
+                          ),
+                        ),
                     onTap: () {
                       _analyticsService.logEvent(tag, "About App|ETS clicked");
                       model.navigationService.pushNamed(RouterPaths.about);
@@ -94,8 +94,7 @@ class _MoreViewState extends State<MoreView> {
                     }),
                 ListTile(
                     title: Text(AppIntl.of(context)!.more_contributors),
-                    leading:
-                        getProperIconAccordingToTheme(Icons.people_outline),
+                    leading: getProperIconAccordingToTheme(Icons.people_outline),
                     onTap: () {
                       _analyticsService.logEvent(tag, "Contributors clicked");
                       model.navigationService
@@ -136,8 +135,7 @@ class _MoreViewState extends State<MoreView> {
                       }),
                 ListTile(
                     title: Text(AppIntl.of(context)!.need_help),
-                    leading: getProperIconAccordingToTheme(
-                        Icons.question_answer_outlined),
+                    leading: getProperIconAccordingToTheme(Icons.question_answer_outlined),
                     onTap: () {
                       _analyticsService.logEvent(tag, "FAQ clicked");
                       model.navigationService.pushNamed(RouterPaths.faq,
@@ -146,8 +144,7 @@ class _MoreViewState extends State<MoreView> {
                     }),
                 ListTile(
                     title: Text(AppIntl.of(context)!.settings_title),
-                    leading:
-                        getProperIconAccordingToTheme(Icons.settings_outlined),
+                    leading: getProperIconAccordingToTheme(Icons.settings_outlined),
                     onTap: () {
                       _analyticsService.logEvent(tag, "Settings clicked");
                       model.navigationService.pushNamed(RouterPaths.settings);

@@ -1,24 +1,24 @@
-// Flutter imports:
 import 'package:flutter/material.dart';
 
 // Package imports:
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-// Project imports:
-import 'package:notredame/features/app/navigation/navigation_service.dart';
-import 'package:notredame/features/app/navigation/router_paths.dart';
 import 'package:notredame/utils/app_theme.dart';
 import 'package:notredame/utils/locator.dart';
 import 'package:notredame/utils/utils.dart';
+import 'package:notredame/features/app/navigation/navigation_service.dart';
+import 'package:notredame/features/app/navigation/router_paths.dart';
 
-class LoginFooter extends StatefulWidget {
-  const LoginFooter({super.key});
+class LoginFooter extends StatefulWidget{
+
+  const LoginFooter(
+      {super.key});
 
   @override
   State<LoginFooter> createState() => _LoginFooterState();
 }
 
-class _LoginFooterState extends State<LoginFooter> {
+class _LoginFooterState extends State<LoginFooter>{
   final NavigationService _navigationService = locator<NavigationService>();
 
   @override
@@ -29,12 +29,18 @@ class _LoginFooterState extends State<LoginFooter> {
             child: Text(
               AppIntl.of(context)!.need_help,
               style: const TextStyle(
-                  decoration: TextDecoration.underline, color: Colors.white),
+                  decoration:
+                  TextDecoration.underline,
+                  color: Colors.white),
             ),
             onTap: () async {
-              _navigationService.pushNamed(RouterPaths.faq,
-                  arguments: Utils.getColorByBrightness(
-                      context, AppTheme.etsLightRed, AppTheme.primaryDark));
+              _navigationService.pushNamed(
+                  RouterPaths.faq,
+                  arguments:
+                  Utils.getColorByBrightness(
+                      context,
+                      AppTheme.etsLightRed,
+                      AppTheme.primaryDark));
             },
           ),
         ),

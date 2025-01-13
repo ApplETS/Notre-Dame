@@ -124,8 +124,8 @@ void main() {
         CourseRepositoryMock.stubGetCourseSummary(courseRepositoryMock, course,
             toReturn: course);
         await tester.runAsync(() async {
-          await tester.pumpWidget(
-              localizedWidget(child: GradesDetailsView(course: course)));
+          await tester.pumpWidget(localizedWidget(
+              child: GradesDetailsView(course: course)));
           await tester.pumpAndSettle(const Duration(seconds: 2));
         }).then(
           (value) {
@@ -218,8 +218,8 @@ void main() {
             toReturn: courseWithEvaluationNotCompleted);
 
         await tester.pumpWidget(localizedWidget(
-            child:
-                GradesDetailsView(course: courseWithEvaluationNotCompleted)));
+            child: GradesDetailsView(
+                    course: courseWithEvaluationNotCompleted)));
         await tester.pumpAndSettle(const Duration(seconds: 1));
 
         expect(find.byKey(const Key("EvaluationNotCompleted")), findsOneWidget);

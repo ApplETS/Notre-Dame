@@ -15,8 +15,7 @@ class ScaffoldSafeArea extends StatefulWidget {
   final bool _isInteractionLimitedWhileLoading;
 
   const ScaffoldSafeArea(
-      {super.key,
-      this.body,
+      {super.key, this.body,
       bool isLoading = false,
       bool isInteractionLimitedWhileLoading = true})
       : _isLoading = isLoading,

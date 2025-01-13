@@ -26,8 +26,7 @@ class NavigationService {
   final AnalyticsService _analyticsService = locator<AnalyticsService>();
 
   /// Will be used to remove duplicate routes.
-  final NavigationHistoryObserver _navigationHistoryObserver =
-      NavigationHistoryObserver();
+  final NavigationHistoryObserver _navigationHistoryObserver = NavigationHistoryObserver();
 
   GlobalKey<NavigatorState> get navigatorKey => _navigatorKey;
 
@@ -60,8 +59,7 @@ class NavigationService {
 
   /// Push a named route [routeName] onto the navigator
   /// and remove existing routes with the same [routeName]
-  Future<dynamic> pushNamedAndRemoveDuplicates(String routeName,
-      {dynamic arguments}) {
+  Future<dynamic> pushNamedAndRemoveDuplicates(String routeName, {dynamic arguments}) {
     final currentState = _navigatorKey.currentState;
 
     if (currentState == null) {
@@ -75,9 +73,8 @@ class NavigationService {
     }
 
     final route = _navigationHistoryObserver.history
-        .where((r) => r.settings.name == routeName)
-        .firstOrNull;
-
+        .where((r) => r.settings.name == routeName).firstOrNull;
+    
     if (route != null) {
       currentState.removeRoute(route);
     }

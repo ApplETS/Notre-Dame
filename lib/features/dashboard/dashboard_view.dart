@@ -11,7 +11,6 @@ import 'package:stacked/stacked.dart';
 import 'package:notredame/constants/preferences_flags.dart';
 import 'package:notredame/constants/urls.dart';
 import 'package:notredame/features/app/analytics/analytics_service.dart';
-import 'package:notredame/features/app/integration/launch_url_service.dart';
 import 'package:notredame/features/app/navigation/navigation_service.dart';
 import 'package:notredame/features/app/navigation/router_paths.dart';
 import 'package:notredame/features/app/signets-api/models/course.dart';
@@ -26,6 +25,7 @@ import 'package:notredame/features/student/grades/widgets/grade_button.dart';
 import 'package:notredame/utils/app_theme.dart';
 import 'package:notredame/utils/loading.dart';
 import 'package:notredame/utils/locator.dart';
+import 'package:notredame/features/app/integration/launch_url_service.dart';
 
 class DashboardView extends StatefulWidget {
   const DashboardView({super.key});
@@ -166,7 +166,7 @@ class _DashboardViewState extends State<DashboardView>
                       onPressed: () {
                         _analyticsService.logEvent(tag, "Github clicked");
                         _launchUrlService.launchInBrowser(Urls.clubGithub);
-                      },
+                        },
                       icon: const FaIcon(
                         FontAwesomeIcons.github,
                         color: Colors.white,
@@ -186,7 +186,7 @@ class _DashboardViewState extends State<DashboardView>
                       onPressed: () {
                         _analyticsService.logEvent(tag, "Discord clicked");
                         _launchUrlService.launchInBrowser(Urls.clubDiscord);
-                      },
+                        },
                       icon: const FaIcon(
                         FontAwesomeIcons.discord,
                         color: Colors.white,
@@ -487,7 +487,7 @@ class _DashboardViewState extends State<DashboardView>
                   ),
                   // main text
                   Text(model.broadcastMessage,
-                      style: Theme.of(context).primaryTextTheme.bodyMedium)
+                    style: Theme.of(context).primaryTextTheme.bodyMedium)
                 ]),
         ));
   }

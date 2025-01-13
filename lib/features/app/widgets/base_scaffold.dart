@@ -3,10 +3,10 @@ import 'dart:async';
 
 // Flutter imports:
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
 // Package imports:
 import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 // Project imports:
@@ -39,8 +39,7 @@ class BaseScaffold extends StatefulWidget {
   final bool _isInteractionLimitedWhileLoading;
 
   const BaseScaffold(
-      {super.key,
-      this.appBar,
+      {super.key, this.appBar,
       this.body,
       this.fab,
       this.fabPosition,
@@ -86,7 +85,7 @@ class _BaseScaffoldState extends State<BaseScaffold> {
       });
     });
   }
-
+  
   @override
   Widget build(BuildContext context) => Scaffold(
         body: Scaffold(

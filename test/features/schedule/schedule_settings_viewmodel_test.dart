@@ -2,6 +2,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:intl/intl.dart';
 import 'package:mockito/mockito.dart';
+import 'package:notredame/utils/calendar_utils.dart';
 
 // Project imports:
 import 'package:notredame/constants/preferences_flags.dart';
@@ -9,7 +10,6 @@ import 'package:notredame/features/app/signets-api/models/schedule_activity.dart
 import 'package:notredame/features/more/settings/settings_manager.dart';
 import 'package:notredame/features/schedule/schedule_settings_viewmodel.dart';
 import 'package:notredame/utils/activity_code.dart';
-import 'package:notredame/utils/calendar_utils.dart';
 import '../../common/helpers.dart';
 import '../app/repository/mocks/course_repository_mock.dart';
 import '../more/settings/mocks/settings_manager_mock.dart';

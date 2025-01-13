@@ -33,7 +33,8 @@ void main() {
     testWidgets(
         'has five sections with icons and titles (dashboard, schedule, student, ets and more)',
         (WidgetTester tester) async {
-      await tester.pumpWidget(localizedWidget(child: BottomBar()));
+      await tester.pumpWidget(
+          localizedWidget(child: BottomBar()));
       await tester.pumpAndSettle();
 
       final texts = find.byType(Text);
@@ -45,7 +46,8 @@ void main() {
 
     testWidgets('not navigate when tapped multiple times',
         (WidgetTester tester) async {
-      await tester.pumpWidget(localizedWidget(child: BottomBar()));
+      await tester.pumpWidget(
+          localizedWidget(child: BottomBar()));
       await tester.pumpAndSettle();
 
       await tester.tap(find.byIcon(Icons.school_outlined));
@@ -55,61 +57,60 @@ void main() {
       await tester.tap(find.byIcon(Icons.school_outlined));
       await tester.tap(find.byIcon(Icons.school_outlined));
 
-      verify(navigationServiceMock
-              .pushNamedAndRemoveDuplicates(RouterPaths.student))
+      verify(navigationServiceMock.pushNamedAndRemoveDuplicates(RouterPaths.student))
           .called(1);
     });
 
     group('navigate when tapped to - ', () {
       testWidgets('dashboard', (WidgetTester tester) async {
-        await tester.pumpWidget(localizedWidget(child: BottomBar()));
+        await tester.pumpWidget(
+            localizedWidget(child: BottomBar()));
         await tester.pumpAndSettle();
 
         await tester.tap(find.byIcon(Icons.schedule_outlined));
         await tester.tap(find.byIcon(Icons.dashboard));
 
-        verify(navigationServiceMock
-            .pushNamedAndRemoveDuplicates(RouterPaths.dashboard));
+        verify(navigationServiceMock.pushNamedAndRemoveDuplicates(RouterPaths.dashboard));
       });
 
       testWidgets('schedule', (WidgetTester tester) async {
-        await tester.pumpWidget(localizedWidget(child: BottomBar()));
+        await tester.pumpWidget(
+            localizedWidget(child: BottomBar()));
         await tester.pumpAndSettle();
 
         await tester.tap(find.byIcon(Icons.schedule_outlined));
 
-        verify(navigationServiceMock
-            .pushNamedAndRemoveDuplicates(RouterPaths.schedule));
+        verify(navigationServiceMock.pushNamedAndRemoveDuplicates(RouterPaths.schedule));
       });
 
       testWidgets('student', (WidgetTester tester) async {
-        await tester.pumpWidget(localizedWidget(child: BottomBar()));
+        await tester.pumpWidget(
+            localizedWidget(child: BottomBar()));
         await tester.pumpAndSettle();
 
         await tester.tap(find.byIcon(Icons.school_outlined));
 
-        verify(navigationServiceMock
-            .pushNamedAndRemoveDuplicates(RouterPaths.student));
+        verify(navigationServiceMock.pushNamedAndRemoveDuplicates(RouterPaths.student));
       });
 
       testWidgets('ets', (WidgetTester tester) async {
-        await tester.pumpWidget(localizedWidget(child: BottomBar()));
+        await tester.pumpWidget(
+            localizedWidget(child: BottomBar()));
         await tester.pumpAndSettle();
 
         await tester.tap(find.byIcon(Icons.account_balance_outlined));
 
-        verify(navigationServiceMock
-            .pushNamedAndRemoveDuplicates(RouterPaths.ets));
+        verify(navigationServiceMock.pushNamedAndRemoveDuplicates(RouterPaths.ets));
       });
 
       testWidgets('more', (WidgetTester tester) async {
-        await tester.pumpWidget(localizedWidget(child: BottomBar()));
+        await tester.pumpWidget(
+            localizedWidget(child: BottomBar()));
         await tester.pumpAndSettle();
 
         await tester.tap(find.byIcon(Icons.menu_outlined));
 
-        verify(navigationServiceMock
-            .pushNamedAndRemoveDuplicates(RouterPaths.more));
+        verify(navigationServiceMock.pushNamedAndRemoveDuplicates(RouterPaths.more));
       });
     });
   });

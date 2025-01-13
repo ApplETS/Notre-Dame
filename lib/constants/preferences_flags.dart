@@ -45,7 +45,9 @@ class DynamicPreferencesFlag {
 
   @override
   String toString() {
-    return groupAssociationFlag.name + separator + uniqueKey;
+    return groupAssociationFlag.name +
+        separator +
+        uniqueKey;
   }
 
   @override

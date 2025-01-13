@@ -1,15 +1,14 @@
 // Flutter imports:
 import 'package:flutter/material.dart';
 
-// Project imports:
+// Package imports:
 import 'package:notredame/features/app/widgets/navigation/base_navigation_bar.dart';
 
 class NavRail extends BaseNavigationBar {
   const NavRail({super.key});
 
   @override
-  Widget buildNavigationBar(BuildContext context, NavigationView currentView,
-      Function(NavigationView) onTap) {
+  Widget buildNavigationBar(BuildContext context, NavigationView currentView, Function(NavigationView) onTap) {
     return NavigationRail(
       destinations: buildRailItems(context),
       selectedIndex: currentView.index,
@@ -21,8 +20,7 @@ class NavRail extends BaseNavigationBar {
   }
 
   @override
-  BaseNavigationBarState<BaseNavigationBar> createState() =>
-      _NavigationRailState();
+  BaseNavigationBarState<BaseNavigationBar> createState() => _NavigationRailState();
 }
 
 class _NavigationRailState extends BaseNavigationBarState<BaseNavigationBar> {}

@@ -1,8 +1,5 @@
-// Flutter imports:
-import 'package:flutter/widgets.dart';
-
-// Package imports:
 import 'package:built_collection/built_collection.dart';
+import 'package:flutter/widgets.dart';
 
 class NavigationHistoryObserver extends NavigatorObserver {
   final List<Route<dynamic>?> _history = <Route<dynamic>?>[];
@@ -12,8 +9,7 @@ class NavigationHistoryObserver extends NavigatorObserver {
       BuiltList<Route<dynamic>>.from(_history);
 
   /// Implements a singleton pattern for NavigationHistoryObserver.
-  static final NavigationHistoryObserver _singleton =
-      NavigationHistoryObserver._internal();
+  static final NavigationHistoryObserver _singleton = NavigationHistoryObserver._internal();
   factory NavigationHistoryObserver() {
     return _singleton;
   }

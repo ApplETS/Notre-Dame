@@ -5,12 +5,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:intl/intl.dart';
 import 'package:mockito/mockito.dart';
+import 'package:notredame/utils/calendar_utils.dart';
 
 // Project imports:
 import 'package:notredame/constants/preferences_flags.dart';
 import 'package:notredame/features/app/storage/preferences_service.dart';
 import 'package:notredame/features/more/settings/settings_manager.dart';
-import 'package:notredame/utils/calendar_utils.dart';
 import '../../../common/helpers.dart';
 import '../../app/analytics/mocks/analytics_service_mock.dart';
 import '../../app/analytics/mocks/remote_config_service_mock.dart';
@@ -124,7 +124,8 @@ void main() {
             .called(1);
 
         verify(analyticsServiceMock.logEvent(
-                "${SettingsManager.tag}_${flag.name}", any))
+                "${SettingsManager.tag}_${flag.name}",
+                any))
             .called(1);
 
         manager.setThemeMode(ThemeMode.dark);
@@ -134,7 +135,8 @@ void main() {
             .called(1);
 
         verify(analyticsServiceMock.logEvent(
-                "${SettingsManager.tag}_${flag.name}", any))
+                "${SettingsManager.tag}_${flag.name}",
+                any))
             .called(1);
 
         manager.setThemeMode(ThemeMode.system);
@@ -144,7 +146,8 @@ void main() {
             .called(1);
 
         verify(analyticsServiceMock.logEvent(
-                "${SettingsManager.tag}_${flag.name}", any))
+                "${SettingsManager.tag}_${flag.name}",
+                any))
             .called(1);
 
         verifyNoMoreInteractions(preferencesServiceMock);
@@ -183,7 +186,8 @@ void main() {
             .called(1);
 
         verify(analyticsServiceMock.logEvent(
-                "${SettingsManager.tag}_${flag.name}", any))
+                "${SettingsManager.tag}_${flag.name}",
+                any))
             .called(1);
 
         verifyNoMoreInteractions(preferencesServiceMock);
@@ -198,10 +202,12 @@ void main() {
             .called(1);
 
         untilCalled(analyticsServiceMock.logEvent(
-            "${SettingsManager.tag}_${flag.name}", any));
+            "${SettingsManager.tag}_${flag.name}",
+            any));
 
         verify(analyticsServiceMock.logEvent(
-                "${SettingsManager.tag}_${flag.name}", any))
+                "${SettingsManager.tag}_${flag.name}",
+                any))
             .called(1);
 
         manager.setLocale('en');
@@ -210,10 +216,12 @@ void main() {
             .called(1);
 
         untilCalled(analyticsServiceMock.logEvent(
-            "${SettingsManager.tag}_${flag.name}", any));
+            "${SettingsManager.tag}_${flag.name}",
+            any));
 
         verify(analyticsServiceMock.logEvent(
-                "${SettingsManager.tag}_${flag.name}", any))
+                "${SettingsManager.tag}_${flag.name}",
+                any))
             .called(1);
 
         verifyNoMoreInteractions(preferencesServiceMock);
@@ -289,7 +297,8 @@ void main() {
           "${SettingsManager.tag}_${flag.name}", any));
 
       verify(analyticsServiceMock.logEvent(
-              "${SettingsManager.tag}_${flag.name}", any))
+              "${SettingsManager.tag}_${flag.name}",
+              any))
           .called(1);
       verify(preferencesServiceMock.setString(flag, any));
     });
@@ -306,7 +315,8 @@ void main() {
           "${SettingsManager.tag}_${flag.name}", any));
 
       verify(analyticsServiceMock.logEvent(
-              "${SettingsManager.tag}_${flag.name}", any))
+              "${SettingsManager.tag}_${flag.name}",
+              any))
           .called(1);
       verify(preferencesServiceMock.setInt(flag, any));
     });
@@ -323,7 +333,8 @@ void main() {
           "${SettingsManager.tag}_${flag.name}", any));
 
       verify(analyticsServiceMock.logEvent(
-              "${SettingsManager.tag}_${flag.name}", any))
+              "${SettingsManager.tag}_${flag.name}",
+              any))
           .called(1);
       verify(preferencesServiceMock.getString(flag));
     });
@@ -340,7 +351,8 @@ void main() {
           "${SettingsManager.tag}_${flag.name}", any));
 
       verify(analyticsServiceMock.logEvent(
-              "${SettingsManager.tag}_${flag.name}", any))
+              "${SettingsManager.tag}_${flag.name}",
+              any))
           .called(1);
       verify(preferencesServiceMock.setBool(flag, value: anyNamed("value")));
     });

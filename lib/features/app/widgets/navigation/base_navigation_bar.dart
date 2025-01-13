@@ -1,14 +1,10 @@
-// Flutter imports:
 import 'package:flutter/material.dart';
 
-// Package imports:
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-
-// Project imports:
 import '../../../../utils/locator.dart';
 import '../../analytics/analytics_service.dart';
 import '../../navigation/navigation_service.dart';
 import '../../navigation/router_paths.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 enum NavigationView {
   dashboard,
@@ -24,42 +20,38 @@ abstract class BaseNavigationBar extends StatefulWidget {
   @override
   BaseNavigationBarState createState();
 
-  Widget buildNavigationBar(BuildContext context, NavigationView currentView,
-      Function(NavigationView) onTap);
+  Widget buildNavigationBar(
+      BuildContext context, NavigationView currentView, Function(NavigationView) onTap);
 
   List<NavigationRailDestination> buildRailItems(BuildContext context) =>
-      _buildItems(
-        context,
-        (icon, selectedIcon, label) => NavigationRailDestination(
-          icon: Icon(icon),
-          selectedIcon: Icon(selectedIcon),
-          label: Text(label),
-        ),
+      _buildItems(context, (icon, selectedIcon, label) =>
+          NavigationRailDestination(
+            icon: Icon(icon),
+            selectedIcon: Icon(selectedIcon),
+            label: Text(label),
+          ),
       );
 
   List<BottomNavigationBarItem> buildBottomBarItems(BuildContext context) =>
-      _buildItems(
-        context,
-        (icon, selectedIcon, label) => BottomNavigationBarItem(
-          icon: Icon(icon),
-          activeIcon: Icon(selectedIcon),
-          label: label,
-        ),
+      _buildItems(context, (icon, selectedIcon, label) =>
+          BottomNavigationBarItem(
+            icon: Icon(icon),
+            activeIcon: Icon(selectedIcon),
+            label: label,
+          ),
       );
 
   List<T> _buildItems<T>(
-    BuildContext context,
-    T Function(IconData, IconData?, String) builder,
-  ) {
+      BuildContext context,
+      T Function(IconData, IconData?, String) builder,
+      ) {
     final intl = AppIntl.of(context)!;
 
     return [
       builder(Icons.dashboard_outlined, Icons.dashboard, intl.title_dashboard),
-      builder(Icons.schedule_outlined, Icons.access_time_filled,
-          intl.title_schedule),
+      builder(Icons.schedule_outlined, Icons.access_time_filled, intl.title_schedule),
       builder(Icons.school_outlined, Icons.school, intl.title_student),
-      builder(Icons.account_balance_outlined, Icons.account_balance,
-          intl.title_ets),
+      builder(Icons.account_balance_outlined, Icons.account_balance, intl.title_ets),
       builder(Icons.menu_outlined, Icons.menu, intl.title_more),
     ];
   }

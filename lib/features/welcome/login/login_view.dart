@@ -3,18 +3,18 @@ import 'package:flutter/material.dart';
 
 // Package imports:
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:notredame/features/welcome/widgets/forgot_password.dart';
 import 'package:stacked/stacked.dart';
 
 // Project imports:
 import 'package:notredame/features/welcome/login/login_viewmodel.dart';
-import 'package:notredame/features/welcome/widgets/forgot_password.dart';
-import 'package:notredame/features/welcome/widgets/login_button.dart';
-import 'package:notredame/features/welcome/widgets/login_footer.dart';
-import 'package:notredame/features/welcome/widgets/login_hero.dart';
 import 'package:notredame/features/welcome/widgets/password_text_field.dart';
-import 'package:notredame/features/welcome/widgets/universal_code_text_field.dart';
 import 'package:notredame/utils/app_theme.dart';
 import 'package:notredame/utils/utils.dart';
+import 'package:notredame/features/welcome/widgets/login_hero.dart';
+import 'package:notredame/features/welcome/widgets/universal_code_text_field.dart';
+import 'package:notredame/features/welcome/widgets/login_button.dart';
+import 'package:notredame/features/welcome/widgets/login_footer.dart';
 
 class LoginView extends StatefulWidget {
   const LoginView({super.key});
@@ -66,9 +66,11 @@ class _LoginViewState extends State<LoginView> {
                                       height: 48,
                                     ),
                                     UniversalCodeFormField(
-                                        validator: model.validateUniversalCode,
-                                        onEditionComplete: _focusNode.nextFocus,
-                                        universalCode: model.universalCode),
+                                      validator: model.validateUniversalCode,
+                                      onEditionComplete:
+                                        _focusNode.nextFocus,
+                                      universalCode: model.universalCode
+                                    ),
                                     const SizedBox(
                                       height: 16,
                                     ),

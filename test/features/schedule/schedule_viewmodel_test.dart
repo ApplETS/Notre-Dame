@@ -3,7 +3,8 @@ import 'package:calendar_view/calendar_view.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:intl/intl.dart';
 import 'package:mockito/mockito.dart';
-import 'package:table_calendar/table_calendar.dart';
+import 'package:notredame/utils/calendar_utils.dart';
+import 'package:notredame/utils/utils.dart';
 
 // Project imports:
 import 'package:notredame/constants/preferences_flags.dart';
@@ -14,8 +15,7 @@ import 'package:notredame/features/app/signets-api/models/schedule_activity.dart
 import 'package:notredame/features/more/settings/settings_manager.dart';
 import 'package:notredame/features/schedule/schedule_viewmodel.dart';
 import 'package:notredame/utils/activity_code.dart';
-import 'package:notredame/utils/calendar_utils.dart';
-import 'package:notredame/utils/utils.dart';
+import 'package:table_calendar/table_calendar.dart';
 import '../../common/helpers.dart';
 import '../app/repository/mocks/course_repository_mock.dart';
 import '../more/settings/mocks/settings_manager_mock.dart';
@@ -747,17 +747,14 @@ void main() {
     });
 
     group('ScheduleViewModel - handleViewChanged', () {
-      test(
-          'should update weekSelected to next week if date is Saturday and no events',
-          () {
-        final DateTime saturday = DateTime(2024, 9, 21); // Date d'un samedi
+      test('should update weekSelected to next week if date is Saturday and no events', () {
+        final DateTime saturday = DateTime(2024, 9, 21);  // Date d'un samedi
 
         viewModel.settings[PreferencesFlag.scheduleListView] = false;
         viewModel.weekSelected = DateTime(2024, 9, 15);
         viewModel.handleViewChanged(saturday, EventController(), []);
 
-        final nextWeekSunday = Utils.getFirstDayOfCurrentWeek(
-            saturday.add(const Duration(days: 7, hours: 1)));
+        final nextWeekSunday = Utils.getFirstDayOfCurrentWeek(saturday.add(const Duration(days: 7, hours: 1)));
         expect(viewModel.weekSelected, nextWeekSunday);
         expect(viewModel.displaySaturday, false);
       });
@@ -766,24 +763,22 @@ void main() {
         final DateTime saturday = DateTime(2024, 9, 21);
         // Add Saturday course activity
         viewModel.coursesActivities.addAll({
-          saturday: [
-            CourseActivity(
-                courseGroup: "courseGroup",
-                courseName: "courseName",
-                activityName: "activityName",
-                activityDescription: "activityDescription",
-                activityLocation: "activityLocation",
-                startDateTime: DateTime.now(),
-                endDateTime: DateTime.now())
-          ]
+          saturday:
+          [CourseActivity(
+              courseGroup: "courseGroup",
+              courseName: "courseName",
+              activityName: "activityName",
+              activityDescription: "activityDescription",
+              activityLocation: "activityLocation",
+              startDateTime: DateTime.now(),
+              endDateTime: DateTime.now())]
         });
 
         viewModel.settings[PreferencesFlag.scheduleListView] = false;
         viewModel.weekSelected = DateTime(2024, 9, 15);
         viewModel.handleViewChanged(saturday, EventController(), []);
 
-        expect(
-            viewModel.weekSelected, Utils.getFirstDayOfCurrentWeek(saturday));
+        expect(viewModel.weekSelected, Utils.getFirstDayOfCurrentWeek(saturday));
         expect(viewModel.displaySaturday, true);
       });
 
@@ -841,8 +836,7 @@ void main() {
         final res = viewModel.selectToday();
 
         expect(isSameDay(viewModel.daySelected, currentDate), true);
-        expect(isSameDay(viewModel.listViewCalendarSelectedDate, currentDate),
-            true);
+        expect(isSameDay(viewModel.listViewCalendarSelectedDate, currentDate), true);
         expect(res, true, reason: "Today was not selected before");
       });
 
@@ -873,6 +867,7 @@ void main() {
       test('week view go back to current week', () async {
         final currentWeek = Utils.getFirstDayOfCurrentWeek(DateTime.now());
         final oldSelectedDate = DateTime(2022, 1, 2);
+
 
         viewModel.settings[PreferencesFlag.scheduleListView] = false;
         viewModel.calendarFormat = CalendarTimeFormat.week;

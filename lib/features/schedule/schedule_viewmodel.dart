@@ -18,9 +18,9 @@ import 'package:notredame/features/app/signets-api/models/schedule_activity.dart
 import 'package:notredame/features/more/settings/settings_manager.dart';
 import 'package:notredame/utils/activity_code.dart';
 import 'package:notredame/utils/app_theme.dart';
-import 'package:notredame/utils/calendar_utils.dart';
 import 'package:notredame/utils/locator.dart';
 import 'package:notredame/utils/utils.dart';
+import 'package:notredame/utils/calendar_utils.dart';
 
 class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
   /// Load the events
@@ -76,7 +76,8 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
   /// Get current locale
   Locale? get locale => _settingsManager.locale;
 
-  ScheduleViewModel({required AppIntl intl}) : _appIntl = intl;
+  ScheduleViewModel({required AppIntl intl})
+      : _appIntl = intl;
 
   /// Activities for the day currently selected
   List<dynamic> selectedDateEvents(DateTime date) =>
@@ -100,19 +101,16 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
       List<Color> scheduleCardsPalette) {
     if (calendarFormat != CalendarTimeFormat.day) {
       // As a student, if I open my schedule a saturday (and I have no course today), I want to see next week's shedule
-      if (date.weekday == DateTime.saturday &&
-          selectedDateEvents(date).isEmpty) {
+      if (date.weekday == DateTime.saturday && selectedDateEvents(date).isEmpty) {
         // Add extra hour to fix a bug related to daylight saving time changes
-        weekSelected =
-            weekSelected.add(const Duration(days: 7, hours: 1)).withoutTime;
+        weekSelected = weekSelected.add(const Duration(days: 7, hours: 1)).withoutTime;
       } else {
         weekSelected = Utils.getFirstDayOfCurrentWeek(date);
       }
       displaySunday = selectedDateEvents(weekSelected).isNotEmpty;
-      displaySaturday = selectedDateEvents(
-              weekSelected.add(const Duration(days: 6, hours: 1)))
-          .isNotEmpty;
-    } else {
+      displaySaturday = selectedDateEvents(weekSelected.add(const Duration(days: 6, hours: 1))).isNotEmpty;
+    }
+    else {
       daySelected = date;
     }
 
@@ -121,7 +119,8 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
     List<CalendarEventData> eventsToAdd = [];
     if (calendarFormat == CalendarTimeFormat.month) {
       eventsToAdd = selectedMonthCalendarEvents(scheduleCardsPalette);
-    } else {
+    }
+    else {
       eventsToAdd = selectedWeekCalendarEvents(scheduleCardsPalette);
     }
     controller.addAll(eventsToAdd);
@@ -184,8 +183,7 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
   List<CalendarEventData> selectedDayCalendarEvents() {
     final List<CalendarEventData> events = [];
     for (int i = -1; i <= 1; i++) {
-      events.addAll(
-          selectedDateCalendarEvents(daySelected.add(Duration(days: i))));
+      events.addAll(selectedDateCalendarEvents(daySelected.add(Duration(days: i))));
     }
     return events;
   }
@@ -200,17 +198,11 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
     final List<CalendarEventData> events = [];
 
     // Month view displays last week of last month, this accounts for that (additionnal hour is for the edge case of time changes)
-    final dateInSelectedMonth =
-        weekSelected.add(const Duration(days: 7, hours: 1));
-    final selectedMonth =
-        DateTime(dateInSelectedMonth.year, dateInSelectedMonth.month);
+    final dateInSelectedMonth = weekSelected.add(const Duration(days: 7, hours: 1));
+    final selectedMonth = DateTime(dateInSelectedMonth.year, dateInSelectedMonth.month);
 
     // The reason why previous month is last is to avoid event colors to start from previous session
-    final List<DateTime> months = [
-      selectedMonth,
-      DateTime(selectedMonth.year, selectedMonth.month + 1),
-      DateTime(selectedMonth.year, selectedMonth.month - 1)
-    ];
+    final List<DateTime> months = [selectedMonth, DateTime(selectedMonth.year, selectedMonth.month + 1), DateTime(selectedMonth.year, selectedMonth.month - 1)];
 
     // For each day in each month, add events
     for (final DateTime month in months) {
@@ -414,8 +406,8 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
   Future setCalendarFormat(CalendarTimeFormat format) async {
     calendarFormat = format;
     settings[PreferencesFlag.scheduleCalendarFormat] = calendarFormat;
-    _settingsManager.setString(
-        PreferencesFlag.scheduleCalendarFormat, calendarFormat.name);
+    _settingsManager.setString(PreferencesFlag.scheduleCalendarFormat,
+        calendarFormat.name);
   }
 
   Future<void> refresh() async {
@@ -447,21 +439,18 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
   }
 
   bool selectTodayDayView() {
-    final bool isTodaySelected = listViewCalendarSelectedDate.withoutTime ==
-            DateTime.now().withoutTime &&
+    final bool isTodaySelected = listViewCalendarSelectedDate.withoutTime == DateTime.now().withoutTime &&
         DateTime.now().withoutTime == daySelected.withoutTime;
 
     isTodaySelected
         ? Fluttertoast.showToast(msg: _appIntl.schedule_already_today_toast)
-        : daySelected =
-            listViewCalendarSelectedDate = DateTime.now().withoutTime;
+        : daySelected = listViewCalendarSelectedDate = DateTime.now().withoutTime;
 
     return !isTodaySelected;
   }
 
   bool selectTodayWeekView() {
-    final bool isThisWeekSelected =
-        weekSelected == Utils.getFirstDayOfCurrentWeek(DateTime.now());
+    final bool isThisWeekSelected = weekSelected == Utils.getFirstDayOfCurrentWeek(DateTime.now());
 
     isThisWeekSelected
         ? Fluttertoast.showToast(msg: _appIntl.schedule_already_today_toast)
@@ -471,10 +460,8 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
   }
 
   bool selectTodayMonthView() {
-    final DateTime currentMonth =
-        DateTime(DateTime.now().year, DateTime.now().month);
-    final bool isThisMonthSelected = weekSelected.month == currentMonth.month &&
-        weekSelected.year == currentMonth.year;
+    final DateTime currentMonth = DateTime(DateTime.now().year, DateTime.now().month);
+    final bool isThisMonthSelected = weekSelected.month == currentMonth.month && weekSelected.year == currentMonth.year;
 
     isThisMonthSelected
         ? Fluttertoast.showToast(msg: _appIntl.schedule_already_today_toast)

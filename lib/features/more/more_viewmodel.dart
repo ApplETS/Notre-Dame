@@ -112,8 +112,7 @@ class MoreViewModel extends FutureViewModel {
 
   static Future<void> launchPrivacyPolicy() async {
     final LaunchUrlService launchUrlService = locator<LaunchUrlService>();
-    final RemoteConfigService remoteConfigService =
-        locator<RemoteConfigService>();
+    final RemoteConfigService remoteConfigService = locator<RemoteConfigService>();
     launchUrlService.launchInBrowser(remoteConfigService.privacyPolicyUrl);
   }
 
