@@ -3,16 +3,11 @@ import 'package:flutter/material.dart';
 
 // Package imports:
 import 'package:flutter_test/flutter_test.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 // Project imports:
-import 'package:notredame/features/app/widgets/dismissible_card.dart';
-import 'package:notredame/features/app/widgets/need_help_notice_dialog.dart';
 import 'package:notredame/features/more/faq/faq_view.dart';
-import 'package:notredame/features/more/faq/faq_viewmodel.dart';
 import 'package:notredame/features/more/faq/models/faq.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:stacked/stacked.dart';
 import '../../../common/helpers.dart';
 import '../../more/settings/mocks/settings_manager_mock.dart';
 
