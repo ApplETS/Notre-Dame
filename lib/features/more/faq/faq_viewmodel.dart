@@ -12,8 +12,6 @@ import 'package:notredame/features/more/settings/settings_manager.dart';
 import 'package:notredame/utils/locator.dart';
 
 class FaqViewModel extends BaseViewModel {
-  static const String tag = "FaqViewModel";
-
   final SettingsManager _settingsManager = locator<SettingsManager>();
 
   final LaunchUrlService _launchUrlService = locator<LaunchUrlService>();
