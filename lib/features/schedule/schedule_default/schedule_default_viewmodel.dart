@@ -47,7 +47,7 @@ class ScheduleDefaultViewModel
         : eventData.activityLocation;
 
     final DateTime now = DateTime.now();
-    final int daysToAdd = eventData.dayOfTheWeek - now.weekday;
+    final int daysToAdd = eventData.dayOfTheWeek - getWeekDayIndex(now);
     final DateTime targetDate = now.add(Duration(days: daysToAdd));
     final DateTime newStartTime = DateTime(targetDate.year, targetDate.month,
         targetDate.day, eventData.startTime.hour, eventData.startTime.minute);
@@ -77,6 +77,11 @@ class ScheduleDefaultViewModel
       courseColors[courseName] = schedulePaletteThemeLight.removeLast();
     }
     return courseColors[courseName];
+  }
+
+  int getWeekDayIndex(DateTime dateTime) {
+    int weekday = dateTime.weekday;
+    return weekday == 7 ? 0 : weekday;
   }
 
   Future<void> refresh() async {
