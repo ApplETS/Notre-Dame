@@ -59,7 +59,7 @@ class _GradesDetailsViewState extends State<GradesDetailsView>
                 backgroundColor:
                     Theme.of(context).brightness == Brightness.light
                         ? AppTheme.etsLightRed
-                        : BottomAppBarTheme.of(context).color,
+                        : AppBarTheme.of(context).backgroundColor,
                 pinned: true,
                 onStretchTrigger: () {
                   return Future<void>.value();
@@ -92,7 +92,7 @@ class _GradesDetailsViewState extends State<GradesDetailsView>
                     decoration: BoxDecoration(
                       color: Theme.of(context).brightness == Brightness.light
                           ? AppTheme.etsLightRed
-                          : AppTheme.darkTheme().cardColor,
+                          : AppTheme.darkTheme().appBarTheme.backgroundColor,
                     ),
                     child: Padding(
                       padding: const EdgeInsets.only(bottom: 8.0),
