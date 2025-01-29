@@ -47,7 +47,7 @@ class ScheduleDefaultViewModel
         : eventData.activityLocation;
 
     final DateTime now = DateTime.now();
-    final int daysToAdd = eventData.dayOfTheWeek - now.weekday;
+    final int daysToAdd = eventData.dayOfTheWeek - (now.weekday % 7);
     final DateTime targetDate = now.add(Duration(days: daysToAdd));
     final DateTime newStartTime = DateTime(targetDate.year, targetDate.month,
         targetDate.day, eventData.startTime.hour, eventData.startTime.minute);
