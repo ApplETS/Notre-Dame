@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 // Package imports:
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:notredame/features/app/widgets/need_help_notice_dialog.dart';
 import 'package:stacked/stacked.dart';
 
 // Project imports:
@@ -186,7 +187,11 @@ class _FaqViewState extends State<FaqView> {
           if (type.name == ActionType.webview.name) {
             model.launchWebsite(link);
           } else if (type.name == ActionType.email.name) {
-            model.openMail(link, context);
+            showDialog(
+                context: context,
+                builder: (BuildContext context) {                  
+                  return NeedHelpNoticeDialog(model: model, link: link);
+                });
           }
         },
         style: ButtonStyle(

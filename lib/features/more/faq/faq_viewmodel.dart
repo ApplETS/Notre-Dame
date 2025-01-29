@@ -7,7 +7,6 @@ import 'package:stacked/stacked.dart';
 
 // Project imports:
 import 'package:notredame/constants/app_info.dart';
-import 'package:notredame/features/app/analytics/analytics_service.dart';
 import 'package:notredame/features/app/integration/launch_url_service.dart';
 import 'package:notredame/features/more/settings/settings_manager.dart';
 import 'package:notredame/utils/locator.dart';
@@ -30,10 +29,6 @@ class FaqViewModel extends BaseViewModel {
       subject = AppIntl.of(context)!.email_subject;
     }
 
-    try {
-      _launchUrlService.writeEmail(addressEmail, subject);
-    } catch (e) {
-      locator<AnalyticsService>().logError("login_view", "Cannot send email.");
-    }
+    _launchUrlService.writeEmail(addressEmail, subject);
   }
 }
