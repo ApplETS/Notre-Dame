@@ -17,8 +17,10 @@ class AppTheme {
   static const Color darkThemeBackgroundAccent =
       Color.fromARGB(255, 50, 48, 48);
   static const Color lightThemeBackground = Color(0xfffafafa);
-  static const Color lightMenuBackground = Color(0xffcccccc);
-  static const Color darkMenuBackground = Color(0xff2a2a2a);
+  static const Color lightNavBar = Color(0xffefeaee);
+  static const Color darkNavBar = Color(0xff1c1d21);
+  static const Color lightAppBar = Color(0xffeae7ea);
+  static const Color darkAppBar = Color(0xff16171a);
 
   // App|ETS colors
   static const Color appletsPurple = Color(0xff19375f);
@@ -96,13 +98,16 @@ class AppTheme {
     final ThemeData lightTheme = ThemeData.light();
     return lightTheme.copyWith(
         primaryColor: etsLightRed,
+        appBarTheme: const AppBarTheme(
+            color: lightAppBar
+        ),
         tabBarTheme: const TabBarTheme(
           labelColor: Colors.black,
         ),
         bottomNavigationBarTheme: lightTheme.bottomNavigationBarTheme
-            .copyWith(selectedItemColor: etsLightRed),
+            .copyWith(selectedItemColor: etsLightRed, backgroundColor: lightNavBar),
         navigationRailTheme: const NavigationRailThemeData(
-          backgroundColor: lightMenuBackground,
+          backgroundColor: lightNavBar,
           groupAlignment: 0,
           indicatorColor: Colors.transparent,
           selectedLabelTextStyle: TextStyle(color: etsLightRed),
@@ -119,17 +124,20 @@ class AppTheme {
   static ThemeData darkTheme() {
     final ThemeData darkTheme = ThemeData.dark();
     return darkTheme.copyWith(
-        // primaryColor: primaryDark,
-        // appBarTheme: const AppBarTheme(color: Color(0xff121212)),
+        appBarTheme: const AppBarTheme(
+          color: darkAppBar
+        ),
         tabBarTheme: const TabBarTheme(
           labelColor: Colors.white,
         ),
         scaffoldBackgroundColor: const Color(0xff121212),
-        cardColor: const Color(0xff1e1e1e),
-        bottomNavigationBarTheme: darkTheme.bottomNavigationBarTheme
-            .copyWith(selectedItemColor: etsLightRed),
+        cardColor: const Color(0xff1D1B20),
+        bottomNavigationBarTheme: darkTheme.bottomNavigationBarTheme.copyWith(
+          selectedItemColor: etsLightRed,
+          backgroundColor: darkNavBar
+        ),
         navigationRailTheme: const NavigationRailThemeData(
-          backgroundColor: darkMenuBackground,
+          backgroundColor: darkNavBar,
           groupAlignment: 0,
           indicatorColor: Colors.transparent,
           selectedLabelTextStyle: TextStyle(color: etsLightRed),
