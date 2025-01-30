@@ -14,6 +14,8 @@ import 'package:notredame/utils/app_theme_old.dart';
 import 'package:notredame/utils/utils.dart';
 import 'package:notredame/utils/calendar_utils.dart';
 
+import '../../../theme/app_palette.dart';
+
 class ScheduleSettings extends StatefulWidget {
   final bool showHandle;
 
@@ -24,7 +26,7 @@ class ScheduleSettings extends StatefulWidget {
 }
 
 class _ScheduleSettingsState extends State<ScheduleSettings> {
-  final Color selectedColor = AppThemeOld.etsLightRed.withValues(alpha: .5);
+  final Color selectedColor = AppPalette.etsLightRed.withValues(alpha: .5);
 
   @override
   Widget build(BuildContext context) => ViewModelBuilder.reactive(
@@ -194,7 +196,7 @@ class _ScheduleSettingsState extends State<ScheduleSettings> {
           trailing: Switch(
             value: model.showTodayBtn,
             onChanged: (value) => model.showTodayBtn = value,
-            activeColor: AppThemeOld.etsLightRed,
+            activeColor: AppPalette.etsLightRed,
           ),
           title: Text(
               style: Theme.of(context).textTheme.bodyMedium,
@@ -210,7 +212,7 @@ class _ScheduleSettingsState extends State<ScheduleSettings> {
           onChanged: (value) => {
             model.toggleCalendarView = value,
           },
-          activeColor: AppThemeOld.etsLightRed,
+          activeColor: AppPalette.etsLightRed,
         ),
         title: Text(
             style: Theme.of(context).textTheme.bodyMedium,

@@ -16,6 +16,8 @@ import 'package:notredame/utils/app_theme_old.dart';
 import 'package:notredame/utils/loading.dart';
 import 'package:notredame/utils/locator.dart';
 
+import '../../../theme/app_palette.dart';
+
 class ProfileView extends StatefulWidget {
   const ProfileView({super.key});
 
@@ -115,7 +117,7 @@ Widget buildPage(BuildContext context, ProfileViewModel model) => Column(
                 style: const TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
-                    color: AppThemeOld.etsLightRed),
+                    color: AppPalette.etsLightRed),
               ),
             ),
           ],
@@ -310,7 +312,7 @@ Column getCurrentProgramTile(List<Program> programList, BuildContext context) {
             style: const TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
-                color: AppThemeOld.etsLightRed),
+                color: AppPalette.etsLightRed),
           ),
         ),
         ...List<Widget>.generate(dataTitles.length, (index) {

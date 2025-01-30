@@ -7,6 +7,8 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:notredame/utils/app_theme_old.dart';
 import 'package:notredame/utils/utils.dart';
 
+import '../../../theme/app_palette.dart';
+
 class LoginButton extends StatefulWidget{
   final GlobalKey<FormState> formKey;
   final bool canSubmit;
@@ -64,9 +66,9 @@ class _LoginButtonState extends State<LoginButton>{
       );
 
   Color get colorButton =>
-      Utils.getColorByBrightness(context, Colors.white, AppThemeOld.etsLightRed);
+      Utils.getColorByBrightness(context, Colors.white, AppPalette.etsLightRed);
 
   Color get submitTextColor =>
-      Utils.getColorByBrightness(context, AppThemeOld.etsLightRed, Colors.white);
+      Utils.getColorByBrightness(context, AppPalette.etsLightRed, Colors.white);
 
 }

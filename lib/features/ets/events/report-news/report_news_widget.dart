@@ -12,6 +12,8 @@ import 'package:notredame/features/ets/events/report-news/report_news_viewmodel.
 import 'package:notredame/utils/app_theme_old.dart';
 import 'package:notredame/utils/utils.dart';
 
+import '../../../../theme/app_palette.dart';
+
 class ReportNews extends StatefulWidget {
   final bool showHandle;
   final String newsId;
@@ -193,7 +195,7 @@ class _ReportNewsState extends State<ReportNews> {
                   ElevatedButton(
                     style: ButtonStyle(
                       backgroundColor:
-                          WidgetStateProperty.all<Color>(AppThemeOld.etsLightRed),
+                          WidgetStateProperty.all<Color>(AppPalette.etsLightRed),
                       shape: WidgetStateProperty.all<RoundedRectangleBorder>(
                         RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(8.0),

@@ -12,6 +12,8 @@ import 'package:notredame/features/app/error/outage/widgets/outage_text_section.
 import 'package:notredame/utils/app_theme_old.dart';
 import 'package:notredame/utils/utils.dart';
 
+import '../../../../theme/app_palette.dart';
+
 class OutageView extends StatelessWidget {
   const OutageView({super.key});
 
@@ -21,7 +23,7 @@ class OutageView extends StatelessWidget {
           viewModelBuilder: () => OutageViewModel(context),
           builder: (context, model, child) => Scaffold(
                 backgroundColor: Utils.getColorByBrightness(
-                    context, AppThemeOld.etsLightRed, AppThemeOld.primaryDark),
+                    context, AppPalette.etsLightRed, AppThemeOld.primaryDark),
                 body: Stack(
                   children: [
                     SafeArea(

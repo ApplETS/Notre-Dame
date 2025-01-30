@@ -15,6 +15,8 @@ import 'package:notredame/utils/app_theme_old.dart';
 import 'package:notredame/utils/calendar_utils.dart';
 import 'package:notredame/utils/locator.dart';
 
+import '../../../theme/app_palette.dart';
+
 class CalendarSelectionWidget extends StatelessWidget {
   final AppIntl translations;
   const CalendarSelectionWidget({super.key, required this.translations});
@@ -91,7 +93,7 @@ class CalendarSelectionWidget extends StatelessWidget {
                     if (selectedCalendarId.isEmpty) {
                       Fluttertoast.showToast(
                         msg: translations.calendar_select,
-                        backgroundColor: AppThemeOld.etsLightRed,
+                        backgroundColor: AppPalette.etsLightRed,
                         textColor: AppThemeOld.etsBlack,
                       );
                       return;
@@ -116,7 +118,7 @@ class CalendarSelectionWidget extends StatelessWidget {
                       } else {
                         Fluttertoast.showToast(
                           msg: translations.calendar_export_error,
-                          backgroundColor: AppThemeOld.etsLightRed,
+                          backgroundColor: AppPalette.etsLightRed,
                           textColor: AppThemeOld.etsBlack,
                         );
                       }

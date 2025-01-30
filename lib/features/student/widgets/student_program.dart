@@ -11,6 +11,8 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:notredame/features/app/signets-api/models/program.dart';
 import 'package:notredame/utils/app_theme_old.dart';
 
+import '../../../theme/app_palette.dart';
+
 class StudentProgram extends StatefulWidget {
   final Program _program;
   const StudentProgram(this._program, {super.key});
@@ -107,13 +109,13 @@ class _StudentProgramState extends State<StudentProgram>
                 angle: rotateAnimation.value,
                 child: const Icon(
                   Icons.keyboard_arrow_down_sharp,
-                  color: AppThemeOld.etsLightRed,
+                  color: AppPalette.etsLightRed,
                 ),
               );
             },
             child: const Icon(
               Icons.keyboard_arrow_down_sharp,
-              color: AppThemeOld.etsLightRed,
+              color: AppPalette.etsLightRed,
             ),
           ),
         ),

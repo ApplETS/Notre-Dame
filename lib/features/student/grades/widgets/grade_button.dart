@@ -12,6 +12,8 @@ import 'package:notredame/features/app/signets-api/models/course.dart';
 import 'package:notredame/utils/app_theme_old.dart';
 import 'package:notredame/utils/locator.dart';
 
+import '../../../../theme/app_palette.dart';
+
 class GradeButton extends StatelessWidget {
   final Course course;
   final Color? color;
@@ -61,7 +63,7 @@ class GradeButton extends StatelessWidget {
                   child: Material(
                     child: DecoratedBox(
                         decoration: const BoxDecoration(
-                            color: AppThemeOld.etsLightRed,
+                            color: AppPalette.etsLightRed,
                             borderRadius: BorderRadius.only(
                                 topLeft: Radius.circular(2.5),
                                 topRight: Radius.circular(2.5))),
@@ -93,8 +95,8 @@ class GradeButton extends StatelessWidget {
                     style: TextStyle(
                       fontSize: 22,
                       color: Theme.of(context).brightness == Brightness.light
-                          ? AppThemeOld.etsDarkGrey
-                          : AppThemeOld.etsLightGrey,
+                          ? AppPalette.grey.darkGrey
+                          : AppPalette.grey.lightGrey,
                     ))),
           )
         ],

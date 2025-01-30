@@ -12,6 +12,8 @@ import 'package:notredame/utils/app_theme_old.dart';
 import 'package:notredame/utils/locator.dart';
 import 'package:notredame/features/app/integration/launch_url_service.dart';
 
+import '../../../../../theme/app_palette.dart';
+
 class EmergencyView extends StatefulWidget {
   final String title;
   final String description;
@@ -45,7 +47,7 @@ class _EmergencyViewState extends State<EmergencyView> {
           style: const TextStyle(color: Colors.white, fontSize: 20),
         ),
         icon: const Icon(Icons.phone, size: 30, color: Colors.white),
-        backgroundColor: AppThemeOld.etsLightRed,
+        backgroundColor: AppPalette.etsLightRed,
       ),
       body: FutureBuilder<String>(
           future: rootBundle.loadString(widget.description),

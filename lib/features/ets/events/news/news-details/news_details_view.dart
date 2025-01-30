@@ -26,6 +26,8 @@ import 'package:notredame/utils/app_theme_old.dart';
 import 'package:notredame/utils/locator.dart';
 import 'package:notredame/utils/utils.dart';
 
+import '../../../../../theme/app_palette.dart';
+
 class NewsDetailsView extends StatefulWidget {
   final News news;
 
@@ -66,7 +68,7 @@ class _NewsDetailsViewState extends State<NewsDetailsView> {
                       SliverAppBar(
                         backgroundColor:
                             Theme.of(context).brightness == Brightness.light
-                                ? AppThemeOld.etsLightRed
+                                ? AppPalette.etsLightRed
                                 : AppThemeOld.darkThemeBackgroundAccent,
                         pinned: true,
                         titleSpacing: 0,
@@ -120,13 +122,13 @@ class _NewsDetailsViewState extends State<NewsDetailsView> {
                                   leading: SvgPicture.asset(
                                     'assets/images/report.svg',
                                     colorFilter: const ColorFilter.mode(
-                                        AppThemeOld.etsLightRed, BlendMode.srcIn),
+                                        AppPalette.etsLightRed, BlendMode.srcIn),
                                     width: 26,
                                   ),
                                   title: Text(
                                     AppIntl.of(context)!.report,
                                     style: const TextStyle(
-                                        color: AppThemeOld.etsLightRed),
+                                        color: AppPalette.etsLightRed),
                                   ),
                                 ),
                               ),
@@ -246,7 +248,7 @@ class _NewsDetailsViewState extends State<NewsDetailsView> {
       String avatar, String author, ActivityArea? activity, String authorId) {
     return ColoredBox(
       color: Utils.getColorByBrightness(
-          context, AppThemeOld.etsLightRed, AppThemeOld.darkThemeBackgroundAccent),
+          context, AppPalette.etsLightRed, AppThemeOld.darkThemeBackgroundAccent),
       child: ListTile(
         leading: GestureDetector(
             onTap: () => _navigationService.pushNamed(RouterPaths.newsAuthor,
@@ -367,7 +369,7 @@ class _NewsDetailsViewState extends State<NewsDetailsView> {
                   padding: const EdgeInsets.all(8),
                   decoration: BoxDecoration(
                     color: Utils.getColorByBrightness(context,
-                        AppThemeOld.darkThemeAccent, AppThemeOld.etsDarkGrey),
+                        AppThemeOld.darkThemeAccent, AppPalette.grey.darkGrey),
                     shape: BoxShape.circle,
                   ),
                   child:
@@ -383,7 +385,7 @@ class _NewsDetailsViewState extends State<NewsDetailsView> {
                         AppIntl.of(context)!.news_event_date,
                         style: TextStyle(
                             color: Utils.getColorByBrightness(
-                                context, Colors.black, AppThemeOld.etsLightGrey)),
+                                context, Colors.black, AppPalette.grey.lightGrey)),
                         textAlign: TextAlign.right,
                       ),
                       Text(

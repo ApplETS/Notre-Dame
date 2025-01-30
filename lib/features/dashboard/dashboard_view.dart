@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 // Package imports:
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:notredame/theme/app_theme.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 import 'package:stacked/stacked.dart';
 
@@ -27,6 +26,8 @@ import 'package:notredame/utils/app_theme_old.dart';
 import 'package:notredame/utils/loading.dart';
 import 'package:notredame/utils/locator.dart';
 import 'package:notredame/features/app/integration/launch_url_service.dart';
+
+import '../../theme/app_palette.dart';
 
 class DashboardView extends StatefulWidget {
   const DashboardView({super.key});
@@ -238,7 +239,7 @@ class _DashboardViewState extends State<DashboardView>
                         minHeight: 30,
                         valueColor: const AlwaysStoppedAnimation<Color>(
                             AppThemeOld.gradeGoodMax),
-                        backgroundColor: AppThemeOld.etsDarkGrey,
+                        backgroundColor: AppPalette.grey.darkGrey,
                       ),
                     ),
                   ),

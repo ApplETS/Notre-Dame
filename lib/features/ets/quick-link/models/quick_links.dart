@@ -11,6 +11,8 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:notredame/features/ets/quick-link/models/quick_link.dart';
 import 'package:notredame/utils/app_theme_old.dart';
 
+import '../../../../theme/app_palette.dart';
+
 List<QuickLink> quickLinks(AppIntl intl) => [
       QuickLink(
           id: 1,
@@ -18,7 +20,7 @@ List<QuickLink> quickLinks(AppIntl intl) => [
           image: const FittedBox(
             child: FaIcon(
               FontAwesomeIcons.shieldHalved,
-              color: AppThemeOld.etsLightRed,
+              color: AppPalette.etsLightRed,
             ),
           ),
           link: 'security'),
@@ -27,7 +29,7 @@ List<QuickLink> quickLinks(AppIntl intl) => [
           name: intl.ets_monets_title,
           image: Image.asset(
             'assets/images/ic_monets_sans_nom_red.png',
-            color: AppThemeOld.etsLightRed,
+            color: AppPalette.etsLightRed,
           ),
           link: 'https://portail.etsmtl.ca/home'),
       QuickLink(
@@ -36,7 +38,7 @@ List<QuickLink> quickLinks(AppIntl intl) => [
           image: const FittedBox(
             child: FaIcon(
               FontAwesomeIcons.book,
-              color: AppThemeOld.etsLightRed,
+              color: AppPalette.etsLightRed,
             ),
           ),
           link: 'https://www.etsmtl.ca/Bibliotheque/Accueil'),
@@ -46,7 +48,7 @@ List<QuickLink> quickLinks(AppIntl intl) => [
           image: const FittedBox(
             child: FaIcon(
               FontAwesomeIcons.newspaper,
-              color: AppThemeOld.etsLightRed,
+              color: AppPalette.etsLightRed,
             ),
           ),
           link: 'https://www.etsmtl.ca/nouvelles'),
@@ -56,7 +58,7 @@ List<QuickLink> quickLinks(AppIntl intl) => [
           image: const FittedBox(
             child: FaIcon(
               FontAwesomeIcons.addressBook,
-              color: AppThemeOld.etsLightRed,
+              color: AppPalette.etsLightRed,
             ),
           ),
           link: 'https://www.etsmtl.ca/bottin'),
@@ -65,7 +67,7 @@ List<QuickLink> quickLinks(AppIntl intl) => [
           name: intl.ets_moodle_title,
           image: Image.asset(
             'assets/images/ic_moodle_red.png',
-            color: AppThemeOld.etsLightRed,
+            color: AppPalette.etsLightRed,
           ),
           link: 'https://ena.etsmtl.ca/'),
       QuickLink(
@@ -74,7 +76,7 @@ List<QuickLink> quickLinks(AppIntl intl) => [
           image: const FittedBox(
             child: FaIcon(
               FontAwesomeIcons.calendar,
-              color: AppThemeOld.etsLightRed,
+              color: AppPalette.etsLightRed,
             ),
           ),
           link: 'https://horairets.emmanuelcoulombe.dev/'),
@@ -83,7 +85,7 @@ List<QuickLink> quickLinks(AppIntl intl) => [
           name: intl.ets_gus,
           image: SvgPicture.asset('assets/images/ic_gus_red.svg',
               colorFilter: const ColorFilter.mode(
-                  AppThemeOld.etsLightRed, BlendMode.srcIn)),
+                  AppPalette.etsLightRed, BlendMode.srcIn)),
           link: 'https://gus.etsmtl.ca/c2atom/mobile/login'),
       QuickLink(
           id: 9,
@@ -91,7 +93,7 @@ List<QuickLink> quickLinks(AppIntl intl) => [
           image: const FittedBox(
             child: FaIcon(
               FontAwesomeIcons.print,
-              color: AppThemeOld.etsLightRed,
+              color: AppPalette.etsLightRed,
             ),
           ),
           link: 'https://cls.etsmtl.ca/user'),
@@ -100,7 +102,7 @@ List<QuickLink> quickLinks(AppIntl intl) => [
           name: intl.ets_aeets_title,
           image: Image.asset(
             'assets/images/ic_aeets_red.png',
-            color: AppThemeOld.etsLightRed,
+            color: AppPalette.etsLightRed,
           ),
           link: 'https://www.aeets.com/'),
       QuickLink(
@@ -108,7 +110,7 @@ List<QuickLink> quickLinks(AppIntl intl) => [
           name: intl.ets_100genies_title,
           image: Image.asset(
             'assets/images/ic_100genies_red.png',
-            color: AppThemeOld.etsLightRed,
+            color: AppPalette.etsLightRed,
           ),
           link: 'https://www.pub100genies.ca/')
     ];

@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 // Project imports:
 import 'package:notredame/utils/app_theme_old.dart';
 
+import '../../../../../theme/app_palette.dart';
+
 class OutageImageSection extends StatelessWidget {
   const OutageImageSection({super.key});
 
@@ -17,7 +19,7 @@ class OutageImageSection extends StatelessWidget {
           width: 500,
           color: Theme.of(context).brightness == Brightness.light
               ? Colors.white
-              : AppThemeOld.etsLightRed,
+              : AppPalette.etsLightRed,
         ));
   }
 }

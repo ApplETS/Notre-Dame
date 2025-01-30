@@ -19,6 +19,8 @@ import 'package:notredame/features/ets/events/social/social_links_card.dart';
 import 'package:notredame/utils/app_theme_old.dart';
 import 'package:notredame/utils/utils.dart';
 
+import '../../../../theme/app_palette.dart';
+
 class AuthorView extends StatefulWidget {
   final String authorId;
 
@@ -169,7 +171,7 @@ class _AuthorViewState extends State<AuthorView> {
                           style: TextStyle(
                             color: Utils.getColorByBrightness(
                               context,
-                              AppThemeOld.etsDarkGrey,
+                              AppPalette.grey.darkGrey,
                               AppThemeOld.newsSecondaryColor,
                             ),
                             fontSize: 16,

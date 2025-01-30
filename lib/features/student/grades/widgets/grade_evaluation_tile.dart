@@ -14,6 +14,8 @@ import 'package:notredame/features/student/grades/widgets/grade_circular_progres
 import 'package:notredame/utils/app_theme_old.dart';
 import 'package:notredame/utils/utils.dart';
 
+import '../../../../theme/app_palette.dart';
+
 class GradeEvaluationTile extends StatefulWidget {
   final bool completed;
   final CourseEvaluation evaluation;
@@ -128,13 +130,13 @@ class _GradeEvaluationTileState extends State<GradeEvaluationTile>
                       angle: rotateAnimation.value,
                       child: const Icon(
                         Icons.keyboard_arrow_down_sharp,
-                        color: AppThemeOld.etsLightRed,
+                        color: AppPalette.etsLightRed,
                       ),
                     );
                   },
                   child: const Icon(
                     Icons.keyboard_arrow_down_sharp,
-                    color: AppThemeOld.etsLightRed,
+                    color: AppPalette.etsLightRed,
                   ),
                 ),
                 children: <Widget>[

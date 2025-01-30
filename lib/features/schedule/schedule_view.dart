@@ -23,6 +23,8 @@ import 'package:notredame/features/schedule/widgets/schedule_calendar_tile.dart'
 import 'package:notredame/utils/app_theme_old.dart';
 import 'package:notredame/utils/locator.dart';
 
+import '../../theme/app_palette.dart';
+
 class ScheduleView extends StatefulWidget {
   @visibleForTesting
   final DateTime? initialDay;
@@ -387,7 +389,7 @@ class _ScheduleViewState extends State<ScheduleView>
           padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
           decoration: BoxDecoration(
               color: date.withoutTime == DateTime.now().withoutTime
-                  ? AppThemeOld.etsLightRed.withValues(alpha: indicatorColorOpacity)
+                  ? AppPalette.etsLightRed.withValues(alpha: indicatorColorOpacity)
                   : Colors.transparent,
               borderRadius: BorderRadius.circular(6.0)),
           child: Flex(
@@ -445,8 +447,8 @@ class _ScheduleViewState extends State<ScheduleView>
 
   /// Build the calendar
   Widget _buildTableCalendar(ScheduleViewModel model, calendar_view.EventController eventController) {
-    const Color selectedColor = AppThemeOld.etsLightRed;
-    final Color todayColor = Theme.of(context).brightness == Brightness.light ? AppThemeOld.etsLightGrey : AppThemeOld.etsDarkGrey;
+    const Color selectedColor = AppPalette.etsLightRed;
+    final Color todayColor = Theme.of(context).brightness == Brightness.light ? AppPalette.grey.lightGrey : AppPalette.grey.darkGrey;
     final Color defaultColor = Theme.of(context).brightness == Brightness.light ? AppThemeOld.scheduleLineColorLight : AppThemeOld.scheduleLineColorDark;
 
     return TableCalendar(

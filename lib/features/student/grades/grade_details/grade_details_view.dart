@@ -16,6 +16,8 @@ import 'package:notredame/features/student/grades/widgets/grade_not_available.da
 import 'package:notredame/utils/app_theme_old.dart';
 import 'package:notredame/utils/utils.dart';
 
+import '../../../../theme/app_palette.dart';
+
 class GradesDetailsView extends StatefulWidget {
   final Course course;
 
@@ -58,7 +60,7 @@ class _GradesDetailsViewState extends State<GradesDetailsView>
               SliverAppBar(
                 backgroundColor:
                     Theme.of(context).brightness == Brightness.light
-                        ? AppThemeOld.etsLightRed
+                        ? AppPalette.etsLightRed
                         : AppBarTheme.of(context).backgroundColor,
                 pinned: true,
                 onStretchTrigger: () {
@@ -91,7 +93,7 @@ class _GradesDetailsViewState extends State<GradesDetailsView>
                     ),
                     decoration: BoxDecoration(
                       color: Theme.of(context).brightness == Brightness.light
-                          ? AppThemeOld.etsLightRed
+                          ? AppPalette.etsLightRed
                           : AppThemeOld.darkTheme().appBarTheme.backgroundColor,
                     ),
                     child: Padding(

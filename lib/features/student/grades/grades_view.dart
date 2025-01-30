@@ -16,6 +16,8 @@ import 'package:notredame/utils/app_theme_old.dart';
 import 'package:notredame/utils/loading.dart';
 import 'package:notredame/utils/locator.dart';
 
+import '../../../theme/app_palette.dart';
+
 class GradesView extends StatefulWidget {
   const GradesView({super.key});
 
@@ -93,11 +95,11 @@ class _GradesViewState extends State<GradesView> {
                   sessionName,
                   style: const TextStyle(
                     fontSize: 25,
-                    color: AppThemeOld.etsLightRed,
+                    color: AppPalette.etsLightRed,
                   ),
                 ),
                 IconButton(
-                  icon: const Icon(Icons.today, color: AppThemeOld.etsDarkGrey),
+                  icon: Icon(Icons.today, color: AppPalette.grey.darkGrey),
                   onPressed: () => _navigationService.pushNamed(
                       RouterPaths.defaultSchedule,
                       arguments: model.sessionOrder[index]),
