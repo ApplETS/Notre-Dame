@@ -10,7 +10,7 @@ import 'package:table_calendar/table_calendar.dart';
 // Project imports:
 import 'package:notredame/features/schedule/schedule_settings_viewmodel.dart';
 import 'package:notredame/utils/activity_code.dart';
-import 'package:notredame/utils/app_theme.dart';
+import 'package:notredame/utils/app_theme_old.dart';
 import 'package:notredame/utils/utils.dart';
 import 'package:notredame/utils/calendar_utils.dart';
 
@@ -24,7 +24,7 @@ class ScheduleSettings extends StatefulWidget {
 }
 
 class _ScheduleSettingsState extends State<ScheduleSettings> {
-  final Color selectedColor = AppTheme.etsLightRed.withValues(alpha: .5);
+  final Color selectedColor = AppThemeOld.etsLightRed.withValues(alpha: .5);
 
   @override
   Widget build(BuildContext context) => ViewModelBuilder.reactive(
@@ -49,8 +49,8 @@ class _ScheduleSettingsState extends State<ScheduleSettings> {
                         decoration: BoxDecoration(
                           color: Utils.getColorByBrightness(
                               context,
-                              AppTheme.lightThemeBackground,
-                              AppTheme.darkThemeBackground),
+                              AppThemeOld.lightThemeBackground,
+                              AppThemeOld.darkThemeBackground),
                         ),
                         child: Center(
                           child: Padding(
@@ -71,8 +71,8 @@ class _ScheduleSettingsState extends State<ScheduleSettings> {
                       decoration: BoxDecoration(
                         color: Utils.getColorByBrightness(
                             context,
-                            AppTheme.lightThemeBackground,
-                            AppTheme.darkThemeBackground),
+                            AppThemeOld.lightThemeBackground,
+                            AppThemeOld.darkThemeBackground),
                       ),
                       child: Center(
                         child: Padding(
@@ -168,8 +168,8 @@ class _ScheduleSettingsState extends State<ScheduleSettings> {
     return Card(
         elevation: 4,
         color: Theme.of(context).brightness == Brightness.light
-            ? AppTheme.lightThemeBackground
-            : AppTheme.darkThemeBackground,
+            ? AppThemeOld.lightThemeBackground
+            : AppThemeOld.darkThemeBackground,
         child: Padding(
             padding: const EdgeInsets.only(top: 16.0, bottom: 8),
             child: Column(
@@ -194,7 +194,7 @@ class _ScheduleSettingsState extends State<ScheduleSettings> {
           trailing: Switch(
             value: model.showTodayBtn,
             onChanged: (value) => model.showTodayBtn = value,
-            activeColor: AppTheme.etsLightRed,
+            activeColor: AppThemeOld.etsLightRed,
           ),
           title: Text(
               style: Theme.of(context).textTheme.bodyMedium,
@@ -210,7 +210,7 @@ class _ScheduleSettingsState extends State<ScheduleSettings> {
           onChanged: (value) => {
             model.toggleCalendarView = value,
           },
-          activeColor: AppTheme.etsLightRed,
+          activeColor: AppThemeOld.etsLightRed,
         ),
         title: Text(
             style: Theme.of(context).textTheme.bodyMedium,
@@ -253,8 +253,8 @@ class _ScheduleSettingsState extends State<ScheduleSettings> {
     return Card(
         elevation: 4,
         color: Theme.of(context).brightness == Brightness.light
-            ? AppTheme.lightThemeBackground
-            : AppTheme.darkThemeBackground,
+            ? AppThemeOld.lightThemeBackground
+            : AppThemeOld.darkThemeBackground,
         child: Padding(
             padding: const EdgeInsets.only(top: 16.0, bottom: 8),
             child: Column(children: cardContent)));

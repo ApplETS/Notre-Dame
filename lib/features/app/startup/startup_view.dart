@@ -7,7 +7,7 @@ import 'package:stacked/stacked.dart';
 
 // Project imports:
 import 'package:notredame/features/app/startup/startup_viewmodel.dart';
-import 'package:notredame/utils/app_theme.dart';
+import 'package:notredame/utils/app_theme_old.dart';
 import 'package:notredame/utils/utils.dart';
 
 class StartUpView extends StatelessWidget {
@@ -22,7 +22,7 @@ class StartUpView extends StatelessWidget {
           },
           builder: (context, model, child) => Scaffold(
                 backgroundColor: Utils.getColorByBrightness(
-                    context, AppTheme.etsLightRed, AppTheme.primaryDark),
+                    context, AppThemeOld.etsLightRed, AppThemeOld.primaryDark),
                 body: SafeArea(
                   minimum: const EdgeInsets.all(20),
                   child: Center(
@@ -40,7 +40,7 @@ class StartUpView extends StatelessWidget {
                                   Theme.of(context).brightness ==
                                           Brightness.light
                                       ? Colors.white
-                                      : AppTheme.etsLightRed,
+                                      : AppThemeOld.etsLightRed,
                                   BlendMode.srcIn),
                             )),
                         const SizedBox(

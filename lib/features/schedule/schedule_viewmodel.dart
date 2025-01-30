@@ -17,7 +17,7 @@ import 'package:notredame/features/app/signets-api/models/course_activity.dart';
 import 'package:notredame/features/app/signets-api/models/schedule_activity.dart';
 import 'package:notredame/features/more/settings/settings_manager.dart';
 import 'package:notredame/utils/activity_code.dart';
-import 'package:notredame/utils/app_theme.dart';
+import 'package:notredame/utils/app_theme_old.dart';
 import 'package:notredame/utils/locator.dart';
 import 'package:notredame/utils/utils.dart';
 import 'package:notredame/utils/calendar_utils.dart';
@@ -164,7 +164,7 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
     if (scheduleCardsPalette.isNotEmpty) {
       schedulePaletteTheme = scheduleCardsPalette;
     } else {
-      schedulePaletteTheme = AppTheme.schedulePaletteLight.toList();
+      schedulePaletteTheme = AppThemeOld.schedulePaletteLight.toList();
     }
     final List<CalendarEventData> events = [];
 
@@ -193,7 +193,7 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
     if (scheduleCardsPalette.isNotEmpty) {
       schedulePaletteTheme = scheduleCardsPalette;
     } else {
-      schedulePaletteTheme = AppTheme.schedulePaletteLight.toList();
+      schedulePaletteTheme = AppThemeOld.schedulePaletteLight.toList();
     }
     final List<CalendarEventData> events = [];
 

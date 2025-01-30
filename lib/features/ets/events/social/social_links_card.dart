@@ -8,7 +8,7 @@ import 'package:stacked/stacked.dart';
 // Project imports:
 import 'package:notredame/features/ets/events/social/models/social_link.dart';
 import 'package:notredame/features/ets/quick-link/widgets/web_link_card_viewmodel.dart';
-import 'package:notredame/utils/app_theme.dart';
+import 'package:notredame/utils/app_theme_old.dart';
 import 'package:notredame/utils/utils.dart';
 
 class SocialLinks extends StatefulWidget {
@@ -33,8 +33,8 @@ class _SocialLinksState extends State<SocialLinks> {
                     decoration: BoxDecoration(
                       color: Utils.getColorByBrightness(
                         context,
-                        AppTheme.lightThemeBackground,
-                        AppTheme.darkThemeBackground,
+                        AppThemeOld.lightThemeBackground,
+                        AppThemeOld.darkThemeBackground,
                       ),
                       borderRadius: const BorderRadius.only(
                         topLeft: Radius.circular(40.0),
@@ -55,8 +55,8 @@ class _SocialLinksState extends State<SocialLinks> {
       decoration: BoxDecoration(
         color: Utils.getColorByBrightness(
           context,
-          AppTheme.lightThemeBackground,
-          AppTheme.darkThemeBackground,
+          AppThemeOld.lightThemeBackground,
+          AppThemeOld.darkThemeBackground,
         ),
         borderRadius: const BorderRadius.only(
           topLeft: Radius.circular(40.0),
@@ -84,8 +84,8 @@ class _SocialLinksState extends State<SocialLinks> {
       decoration: BoxDecoration(
         color: Utils.getColorByBrightness(
           context,
-          AppTheme.lightThemeBackground,
-          AppTheme.darkThemeBackground,
+          AppThemeOld.lightThemeBackground,
+          AppThemeOld.darkThemeBackground,
         ),
       ),
       child: Center(

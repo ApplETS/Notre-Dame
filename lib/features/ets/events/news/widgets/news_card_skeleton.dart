@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart';
 
 // Project imports:
-import 'package:notredame/utils/app_theme.dart';
+import 'package:notredame/utils/app_theme_old.dart';
 
 class NewsCardSkeleton extends StatelessWidget {
   const NewsCardSkeleton({super.key});
@@ -37,11 +37,11 @@ class NewsCardSkeleton extends StatelessWidget {
   Widget _shimmerEffect(BuildContext context) {
     return Shimmer.fromColors(
       baseColor: Theme.of(context).brightness == Brightness.light
-          ? AppTheme.lightThemeBackground
-          : AppTheme.darkThemeBackground,
+          ? AppThemeOld.lightThemeBackground
+          : AppThemeOld.darkThemeBackground,
       highlightColor: Theme.of(context).brightness == Brightness.light
-          ? AppTheme.lightThemeAccent
-          : AppTheme.darkThemeAccent,
+          ? AppThemeOld.lightThemeAccent
+          : AppThemeOld.darkThemeAccent,
       child: Container(
         height: 200,
         decoration: BoxDecoration(
@@ -55,11 +55,11 @@ class NewsCardSkeleton extends StatelessWidget {
   Widget _shimmerTextEffect(BuildContext context) {
     return Shimmer.fromColors(
       baseColor: Theme.of(context).brightness == Brightness.light
-          ? AppTheme.lightThemeBackground
-          : AppTheme.darkThemeBackground,
+          ? AppThemeOld.lightThemeBackground
+          : AppThemeOld.darkThemeBackground,
       highlightColor: Theme.of(context).brightness == Brightness.light
-          ? AppTheme.lightThemeAccent
-          : AppTheme.darkThemeAccent,
+          ? AppThemeOld.lightThemeAccent
+          : AppThemeOld.darkThemeAccent,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

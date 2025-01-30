@@ -22,7 +22,7 @@ import 'package:notredame/features/ets/events/news/news-details/news_details_vie
 import 'package:notredame/features/ets/events/report-news/report_news_widget.dart';
 import 'package:notredame/features/schedule/calendar_selection_viewmodel.dart';
 import 'package:notredame/features/schedule/widgets/calendar_selector.dart';
-import 'package:notredame/utils/app_theme.dart';
+import 'package:notredame/utils/app_theme_old.dart';
 import 'package:notredame/utils/locator.dart';
 import 'package:notredame/utils/utils.dart';
 
@@ -66,8 +66,8 @@ class _NewsDetailsViewState extends State<NewsDetailsView> {
                       SliverAppBar(
                         backgroundColor:
                             Theme.of(context).brightness == Brightness.light
-                                ? AppTheme.etsLightRed
-                                : AppTheme.darkThemeBackgroundAccent,
+                                ? AppThemeOld.etsLightRed
+                                : AppThemeOld.darkThemeBackgroundAccent,
                         pinned: true,
                         titleSpacing: 0,
                         leading: IconButton(
@@ -93,8 +93,8 @@ class _NewsDetailsViewState extends State<NewsDetailsView> {
                                 borderRadius: BorderRadius.circular(10)),
                             color: Utils.getColorByBrightness(
                                 context,
-                                AppTheme.lightThemeBackground,
-                                AppTheme.darkThemeBackground),
+                                AppThemeOld.lightThemeBackground,
+                                AppThemeOld.darkThemeBackground),
                             icon: const Icon(Icons.more_vert),
                             onSelected: (Menu menu) =>
                                 handleClick(menu, model.news),
@@ -120,13 +120,13 @@ class _NewsDetailsViewState extends State<NewsDetailsView> {
                                   leading: SvgPicture.asset(
                                     'assets/images/report.svg',
                                     colorFilter: const ColorFilter.mode(
-                                        AppTheme.etsLightRed, BlendMode.srcIn),
+                                        AppThemeOld.etsLightRed, BlendMode.srcIn),
                                     width: 26,
                                   ),
                                   title: Text(
                                     AppIntl.of(context)!.report,
                                     style: const TextStyle(
-                                        color: AppTheme.etsLightRed),
+                                        color: AppThemeOld.etsLightRed),
                                   ),
                                 ),
                               ),
@@ -246,7 +246,7 @@ class _NewsDetailsViewState extends State<NewsDetailsView> {
       String avatar, String author, ActivityArea? activity, String authorId) {
     return ColoredBox(
       color: Utils.getColorByBrightness(
-          context, AppTheme.etsLightRed, AppTheme.darkThemeBackgroundAccent),
+          context, AppThemeOld.etsLightRed, AppThemeOld.darkThemeBackgroundAccent),
       child: ListTile(
         leading: GestureDetector(
             onTap: () => _navigationService.pushNamed(RouterPaths.newsAuthor,
@@ -256,7 +256,7 @@ class _NewsDetailsViewState extends State<NewsDetailsView> {
                 child: CircleAvatar(
                   radius: 26,
                   backgroundColor: Utils.getColorByBrightness(context,
-                      AppTheme.lightThemeAccent, AppTheme.darkThemeAccent),
+                      AppThemeOld.lightThemeAccent, AppThemeOld.darkThemeAccent),
                   child: (avatar != "")
                       ? ClipRRect(
                           borderRadius: BorderRadius.circular(26),
@@ -367,7 +367,7 @@ class _NewsDetailsViewState extends State<NewsDetailsView> {
                   padding: const EdgeInsets.all(8),
                   decoration: BoxDecoration(
                     color: Utils.getColorByBrightness(context,
-                        AppTheme.darkThemeAccent, AppTheme.etsDarkGrey),
+                        AppThemeOld.darkThemeAccent, AppThemeOld.etsDarkGrey),
                     shape: BoxShape.circle,
                   ),
                   child:
@@ -383,14 +383,14 @@ class _NewsDetailsViewState extends State<NewsDetailsView> {
                         AppIntl.of(context)!.news_event_date,
                         style: TextStyle(
                             color: Utils.getColorByBrightness(
-                                context, Colors.black, AppTheme.etsLightGrey)),
+                                context, Colors.black, AppThemeOld.etsLightGrey)),
                         textAlign: TextAlign.right,
                       ),
                       Text(
                         formattedEventDate,
                         style: TextStyle(
                             color: Utils.getColorByBrightness(context,
-                                AppTheme.darkThemeAccent, Colors.white)),
+                                AppThemeOld.darkThemeAccent, Colors.white)),
                         textAlign: TextAlign.right,
                       ),
                     ],
@@ -444,11 +444,11 @@ class ShimmerEffect extends StatelessWidget {
   Widget build(BuildContext context) {
     return Shimmer.fromColors(
       baseColor: Theme.of(context).brightness == Brightness.light
-          ? AppTheme.lightThemeBackground
-          : AppTheme.darkThemeBackground,
+          ? AppThemeOld.lightThemeBackground
+          : AppThemeOld.darkThemeBackground,
       highlightColor: Theme.of(context).brightness == Brightness.light
-          ? AppTheme.lightThemeAccent
-          : AppTheme.darkThemeAccent,
+          ? AppThemeOld.lightThemeAccent
+          : AppThemeOld.darkThemeAccent,
       child: Container(
         height: 200,
         color: Colors.grey,

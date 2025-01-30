@@ -13,7 +13,7 @@ import 'package:notredame/features/student/grades/grade_details/grades_details_v
 import 'package:notredame/features/student/grades/widgets/grade_circular_progress.dart';
 import 'package:notredame/features/student/grades/widgets/grade_evaluation_tile.dart';
 import 'package:notredame/features/student/grades/widgets/grade_not_available.dart';
-import 'package:notredame/utils/app_theme.dart';
+import 'package:notredame/utils/app_theme_old.dart';
 import 'package:notredame/utils/utils.dart';
 
 class GradesDetailsView extends StatefulWidget {
@@ -58,7 +58,7 @@ class _GradesDetailsViewState extends State<GradesDetailsView>
               SliverAppBar(
                 backgroundColor:
                     Theme.of(context).brightness == Brightness.light
-                        ? AppTheme.etsLightRed
+                        ? AppThemeOld.etsLightRed
                         : AppBarTheme.of(context).backgroundColor,
                 pinned: true,
                 onStretchTrigger: () {
@@ -91,8 +91,8 @@ class _GradesDetailsViewState extends State<GradesDetailsView>
                     ),
                     decoration: BoxDecoration(
                       color: Theme.of(context).brightness == Brightness.light
-                          ? AppTheme.etsLightRed
-                          : AppTheme.darkTheme().appBarTheme.backgroundColor,
+                          ? AppThemeOld.etsLightRed
+                          : AppThemeOld.darkTheme().appBarTheme.backgroundColor,
                     ),
                     child: Padding(
                       padding: const EdgeInsets.only(bottom: 8.0),

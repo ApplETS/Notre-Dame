@@ -9,7 +9,7 @@ import 'package:notredame/features/app/error/outage/outage_viewmodel.dart';
 import 'package:notredame/features/app/error/outage/widgets/outage_image_section.dart';
 import 'package:notredame/features/app/error/outage/widgets/outage_social_section.dart';
 import 'package:notredame/features/app/error/outage/widgets/outage_text_section.dart';
-import 'package:notredame/utils/app_theme.dart';
+import 'package:notredame/utils/app_theme_old.dart';
 import 'package:notredame/utils/utils.dart';
 
 class OutageView extends StatelessWidget {
@@ -21,7 +21,7 @@ class OutageView extends StatelessWidget {
           viewModelBuilder: () => OutageViewModel(context),
           builder: (context, model, child) => Scaffold(
                 backgroundColor: Utils.getColorByBrightness(
-                    context, AppTheme.etsLightRed, AppTheme.primaryDark),
+                    context, AppThemeOld.etsLightRed, AppThemeOld.primaryDark),
                 body: Stack(
                   children: [
                     SafeArea(

@@ -8,7 +8,7 @@ import 'package:stacked/stacked.dart';
 // Project imports:
 import 'package:notredame/features/app/repository/course_repository.dart';
 import 'package:notredame/features/app/signets-api/models/schedule_activity.dart';
-import 'package:notredame/utils/app_theme.dart';
+import 'package:notredame/utils/app_theme_old.dart';
 import 'package:notredame/utils/locator.dart';
 
 class ScheduleDefaultViewModel
@@ -31,7 +31,7 @@ class ScheduleDefaultViewModel
 
   /// The color palette corresponding to the schedule courses.
   List<Color> schedulePaletteThemeLight =
-      AppTheme.schedulePaletteLight.toList();
+      AppThemeOld.schedulePaletteLight.toList();
 
   ScheduleDefaultViewModel({String? sessionCode}) : _sessionCode = sessionCode;
 

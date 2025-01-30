@@ -7,7 +7,7 @@ import 'package:stacked/stacked.dart';
 
 // Project imports:
 import 'package:notredame/features/more/settings/choose_language_viewmodel.dart';
-import 'package:notredame/utils/app_theme.dart';
+import 'package:notredame/utils/app_theme_old.dart';
 import 'package:notredame/utils/utils.dart';
 
 class ChooseLanguageView extends StatefulWidget {
@@ -49,7 +49,7 @@ class _ChooseLanguageViewState extends State<ChooseLanguageView> {
             ChooseLanguageViewModel(intl: AppIntl.of(context)!),
         builder: (context, model, child) => Scaffold(
               backgroundColor: Utils.getColorByBrightness(
-                  context, AppTheme.etsLightRed, AppTheme.primaryDark),
+                  context, AppThemeOld.etsLightRed, AppThemeOld.primaryDark),
               body: Center(
                 child: ListView(
                   shrinkWrap: true,
@@ -58,7 +58,7 @@ class _ChooseLanguageViewState extends State<ChooseLanguageView> {
                       Icons.language,
                       size: 80,
                       color: Utils.getColorByBrightness(
-                          context, Colors.white, AppTheme.etsLightRed),
+                          context, Colors.white, AppThemeOld.etsLightRed),
                     ),
                     Padding(
                       padding: const EdgeInsets.only(left: 20, top: 60),

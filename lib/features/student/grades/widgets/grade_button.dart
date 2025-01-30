@@ -9,7 +9,7 @@ import 'package:skeletonizer/skeletonizer.dart';
 import 'package:notredame/features/app/navigation/navigation_service.dart';
 import 'package:notredame/features/app/navigation/router_paths.dart';
 import 'package:notredame/features/app/signets-api/models/course.dart';
-import 'package:notredame/utils/app_theme.dart';
+import 'package:notredame/utils/app_theme_old.dart';
 import 'package:notredame/utils/locator.dart';
 
 class GradeButton extends StatelessWidget {
@@ -61,7 +61,7 @@ class GradeButton extends StatelessWidget {
                   child: Material(
                     child: DecoratedBox(
                         decoration: const BoxDecoration(
-                            color: AppTheme.etsLightRed,
+                            color: AppThemeOld.etsLightRed,
                             borderRadius: BorderRadius.only(
                                 topLeft: Radius.circular(2.5),
                                 topRight: Radius.circular(2.5))),
@@ -93,8 +93,8 @@ class GradeButton extends StatelessWidget {
                     style: TextStyle(
                       fontSize: 22,
                       color: Theme.of(context).brightness == Brightness.light
-                          ? AppTheme.etsDarkGrey
-                          : AppTheme.etsLightGrey,
+                          ? AppThemeOld.etsDarkGrey
+                          : AppThemeOld.etsLightGrey,
                     ))),
           )
         ],

@@ -6,7 +6,7 @@ import 'package:url_launcher/url_launcher.dart' as url_launch;
 
 // Project imports:
 import 'package:notredame/features/more/settings/settings_manager.dart';
-import 'package:notredame/utils/app_theme.dart';
+import 'package:notredame/utils/app_theme_old.dart';
 import 'package:notredame/utils/locator.dart';
 
 class LaunchUrlService {
@@ -38,13 +38,13 @@ class LaunchUrlService {
           // Android
           dismissButtonStyle: DismissButtonStyle.CLOSE,
           enableUrlBarHiding: true,
-          toolbarBackgroundColor: AppTheme.accent,
-          navigationBarColor: AppTheme.primaryDark,
+          toolbarBackgroundColor: AppThemeOld.accent,
+          navigationBarColor: AppThemeOld.primaryDark,
 
           // iOS
           barCollapsingEnabled: true,
-          preferredControlTintColor: AppTheme.lightThemeBackground,
-          preferredBarTintColor: AppTheme.accent,
+          preferredControlTintColor: AppThemeOld.lightThemeBackground,
+          preferredBarTintColor: AppThemeOld.accent,
         )
     );
   }

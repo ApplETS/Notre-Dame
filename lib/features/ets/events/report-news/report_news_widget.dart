@@ -9,7 +9,7 @@ import 'package:stacked/stacked.dart';
 // Project imports:
 import 'package:notredame/features/ets/events/report-news/report_news.dart';
 import 'package:notredame/features/ets/events/report-news/report_news_viewmodel.dart';
-import 'package:notredame/utils/app_theme.dart';
+import 'package:notredame/utils/app_theme_old.dart';
 import 'package:notredame/utils/utils.dart';
 
 class ReportNews extends StatefulWidget {
@@ -43,8 +43,8 @@ class _ReportNewsState extends State<ReportNews> {
                     : ColoredBox(
                         color: Utils.getColorByBrightness(
                           context,
-                          AppTheme.lightThemeBackground,
-                          AppTheme.darkThemeBackground,
+                          AppThemeOld.lightThemeBackground,
+                          AppThemeOld.darkThemeBackground,
                         ),
                         child: ListView.builder(
                           itemCount:
@@ -64,8 +64,8 @@ class _ReportNewsState extends State<ReportNews> {
       decoration: BoxDecoration(
         color: Utils.getColorByBrightness(
           context,
-          AppTheme.lightThemeBackground,
-          AppTheme.darkThemeBackground,
+          AppThemeOld.lightThemeBackground,
+          AppThemeOld.darkThemeBackground,
         ),
         borderRadius: const BorderRadius.only(
           topLeft: Radius.circular(40.0),
@@ -93,8 +93,8 @@ class _ReportNewsState extends State<ReportNews> {
       decoration: BoxDecoration(
         color: Utils.getColorByBrightness(
           context,
-          AppTheme.lightThemeBackground,
-          AppTheme.darkThemeBackground,
+          AppThemeOld.lightThemeBackground,
+          AppThemeOld.darkThemeBackground,
         ),
       ),
       child: Center(
@@ -114,7 +114,7 @@ class _ReportNewsState extends State<ReportNews> {
     return Padding(
         padding: const EdgeInsets.only(left: 16.0, right: 16.0),
         child: Card(
-          color: AppTheme.darkThemeAccent,
+          color: AppThemeOld.darkThemeAccent,
           child: ListTile(
             title: Text(
               item.title,
@@ -124,7 +124,7 @@ class _ReportNewsState extends State<ReportNews> {
             trailing: const Icon(
               Icons.navigate_next,
             ),
-            tileColor: AppTheme.darkThemeAccent,
+            tileColor: AppThemeOld.darkThemeAccent,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(5),
             ),
@@ -193,7 +193,7 @@ class _ReportNewsState extends State<ReportNews> {
                   ElevatedButton(
                     style: ButtonStyle(
                       backgroundColor:
-                          WidgetStateProperty.all<Color>(AppTheme.etsLightRed),
+                          WidgetStateProperty.all<Color>(AppThemeOld.etsLightRed),
                       shape: WidgetStateProperty.all<RoundedRectangleBorder>(
                         RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(8.0),

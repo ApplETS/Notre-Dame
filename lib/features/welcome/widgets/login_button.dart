@@ -4,7 +4,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 // Package imports:
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-import 'package:notredame/utils/app_theme.dart';
+import 'package:notredame/utils/app_theme_old.dart';
 import 'package:notredame/utils/utils.dart';
 
 class LoginButton extends StatefulWidget{
@@ -64,9 +64,9 @@ class _LoginButtonState extends State<LoginButton>{
       );
 
   Color get colorButton =>
-      Utils.getColorByBrightness(context, Colors.white, AppTheme.etsLightRed);
+      Utils.getColorByBrightness(context, Colors.white, AppThemeOld.etsLightRed);
 
   Color get submitTextColor =>
-      Utils.getColorByBrightness(context, AppTheme.etsLightRed, Colors.white);
+      Utils.getColorByBrightness(context, AppThemeOld.etsLightRed, Colors.white);
 
 }

@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart';
 
 // Project imports:
-import 'package:notredame/utils/app_theme.dart';
+import 'package:notredame/utils/app_theme_old.dart';
 import 'package:notredame/utils/utils.dart';
 
 class AuthorInfoSkeleton extends StatelessWidget {
@@ -38,11 +38,11 @@ class AuthorInfoSkeleton extends StatelessWidget {
   Widget _shimmerTextEffect(BuildContext context, double height) {
     return Shimmer.fromColors(
       baseColor: Theme.of(context).brightness == Brightness.light
-          ? AppTheme.lightThemeBackground
-          : AppTheme.darkThemeBackground,
+          ? AppThemeOld.lightThemeBackground
+          : AppThemeOld.darkThemeBackground,
       highlightColor: Theme.of(context).brightness == Brightness.light
-          ? AppTheme.lightThemeAccent
-          : AppTheme.darkThemeAccent,
+          ? AppThemeOld.lightThemeAccent
+          : AppThemeOld.darkThemeAccent,
       child: Container(
         width: double.infinity,
         height: height,
@@ -69,19 +69,19 @@ class AuthorInfoSkeleton extends StatelessWidget {
   Widget _shimmerIconButton(BuildContext context) {
     return Shimmer.fromColors(
       baseColor: Theme.of(context).brightness == Brightness.light
-          ? AppTheme.lightThemeBackground
-          : AppTheme.darkThemeBackground,
+          ? AppThemeOld.lightThemeBackground
+          : AppThemeOld.darkThemeBackground,
       highlightColor: Theme.of(context).brightness == Brightness.light
-          ? AppTheme.lightThemeAccent
-          : AppTheme.darkThemeAccent,
+          ? AppThemeOld.lightThemeAccent
+          : AppThemeOld.darkThemeAccent,
       child: IconButton(
         onPressed: () {}, // Placeholder onPressed function
         icon: Icon(
           Icons.link,
           color: Utils.getColorByBrightness(
             context,
-            AppTheme.newsAccentColorLight,
-            AppTheme.newsAccentColorDark,
+            AppThemeOld.newsAccentColorLight,
+            AppThemeOld.newsAccentColorDark,
           ),
         ),
       ),
@@ -104,11 +104,11 @@ class AvatarSkeleton extends StatelessWidget {
           child: ClipOval(
             child: Shimmer.fromColors(
               baseColor: Theme.of(context).brightness == Brightness.light
-                  ? AppTheme.lightThemeBackground
-                  : AppTheme.darkThemeBackground,
+                  ? AppThemeOld.lightThemeBackground
+                  : AppThemeOld.darkThemeBackground,
               highlightColor: Theme.of(context).brightness == Brightness.light
-                  ? AppTheme.lightThemeAccent
-                  : AppTheme.darkThemeAccent,
+                  ? AppThemeOld.lightThemeAccent
+                  : AppThemeOld.darkThemeAccent,
               child: Container(
                 color: Colors.white,
               ),

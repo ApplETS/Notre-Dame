@@ -9,7 +9,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 // Project imports:
 import 'package:notredame/features/app/signets-api/models/program.dart';
-import 'package:notredame/utils/app_theme.dart';
+import 'package:notredame/utils/app_theme_old.dart';
 
 class StudentProgram extends StatefulWidget {
   final Program _program;
@@ -107,13 +107,13 @@ class _StudentProgramState extends State<StudentProgram>
                 angle: rotateAnimation.value,
                 child: const Icon(
                   Icons.keyboard_arrow_down_sharp,
-                  color: AppTheme.etsLightRed,
+                  color: AppThemeOld.etsLightRed,
                 ),
               );
             },
             child: const Icon(
               Icons.keyboard_arrow_down_sharp,
-              color: AppTheme.etsLightRed,
+              color: AppThemeOld.etsLightRed,
             ),
           ),
         ),

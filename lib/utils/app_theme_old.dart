@@ -2,8 +2,8 @@
 import 'package:flutter/material.dart';
 
 /// Contains all the colors and theme of the ETS, App|ETS and specific to the app
-class AppTheme {
-  AppTheme._();
+class AppThemeOld {
+  AppThemeOld._();
 
   // ETS colors
   static const Color etsLightRed = Color(0xffef3e45);
@@ -18,9 +18,7 @@ class AppTheme {
       Color.fromARGB(255, 50, 48, 48);
   static const Color lightThemeBackground = Color(0xfffafafa);
   static const Color lightNavBar = Color(0xffefeaee);
-  static const Color darkNavBar = Color(0xff1c1d21);
   static const Color lightAppBar = Color(0xffeae7ea);
-  static const Color darkAppBar = Color(0xff16171a);
 
   // App|ETS colors
   static const Color appletsPurple = Color(0xff19375f);
@@ -124,9 +122,7 @@ class AppTheme {
   static ThemeData darkTheme() {
     final ThemeData darkTheme = ThemeData.dark();
     return darkTheme.copyWith(
-        appBarTheme: const AppBarTheme(
-          color: darkAppBar
-        ),
+
         tabBarTheme: const TabBarTheme(
           labelColor: Colors.white,
         ),
@@ -134,10 +130,8 @@ class AppTheme {
         cardColor: const Color(0xff1D1B20),
         bottomNavigationBarTheme: darkTheme.bottomNavigationBarTheme.copyWith(
           selectedItemColor: etsLightRed,
-          backgroundColor: darkNavBar
         ),
         navigationRailTheme: const NavigationRailThemeData(
-          backgroundColor: darkNavBar,
           groupAlignment: 0,
           indicatorColor: Colors.transparent,
           selectedLabelTextStyle: TextStyle(color: etsLightRed),

@@ -8,7 +8,7 @@ import 'package:intl/intl.dart';
 
 // Project imports:
 import 'package:notredame/features/schedule/widgets/schedule_calendar_tile.dart';
-import 'package:notredame/utils/app_theme.dart';
+import 'package:notredame/utils/app_theme_old.dart';
 
 class ScheduleDefault extends StatefulWidget {
   final List<CalendarEventData<Object>> calendarEvents;
@@ -53,8 +53,8 @@ class _ScheduleDefaultState extends State<ScheduleDefault> {
       safeAreaOption: const SafeAreaOption(bottom: false),
       controller: eventController..addAll(widget.calendarEvents),
       backgroundColor: Theme.of(context).brightness == Brightness.light
-          ? AppTheme.lightThemeBackground
-          : AppTheme.primaryDark,
+          ? AppThemeOld.lightThemeBackground
+          : AppThemeOld.primaryDark,
       startDay: WeekDays.sunday,
       weekDays: [
         if (widget.displaySunday)
@@ -69,8 +69,8 @@ class _ScheduleDefaultState extends State<ScheduleDefault> {
       ],
       hourIndicatorSettings: HourIndicatorSettings(
           color: Theme.of(context).brightness == Brightness.light
-              ? AppTheme.scheduleLineColorLight
-              : AppTheme.scheduleLineColorDark),
+              ? AppThemeOld.scheduleLineColorLight
+              : AppThemeOld.scheduleLineColorDark),
       scrollOffset: heightPerMinute * 60 * 7.5,
       timeLineStringBuilder: (date, {secondaryDate}) {
         return DateFormat('H:mm').format(date);

@@ -4,12 +4,13 @@ import 'package:flutter/material.dart';
 // Package imports:
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:notredame/features/welcome/widgets/forgot_password.dart';
+import 'package:notredame/theme/app_palette.dart';
 import 'package:stacked/stacked.dart';
 
 // Project imports:
 import 'package:notredame/features/welcome/login/login_viewmodel.dart';
 import 'package:notredame/features/welcome/widgets/password_text_field.dart';
-import 'package:notredame/utils/app_theme.dart';
+import 'package:notredame/utils/app_theme_old.dart';
 import 'package:notredame/utils/utils.dart';
 import 'package:notredame/features/welcome/widgets/login_hero.dart';
 import 'package:notredame/features/welcome/widgets/universal_code_text_field.dart';
@@ -37,7 +38,7 @@ class _LoginViewState extends State<LoginView> {
         viewModelBuilder: () => LoginViewModel(intl: AppIntl.of(context)!),
         builder: (context, model, child) => Scaffold(
           backgroundColor: Utils.getColorByBrightness(
-              context, AppTheme.etsLightRed, AppTheme.primaryDark),
+              context, AppPalette.etsLightRed, AppThemeOld.primaryDark),
           resizeToAvoidBottomInset: false,
           body: Builder(
               builder: (BuildContext context) => SafeArea(

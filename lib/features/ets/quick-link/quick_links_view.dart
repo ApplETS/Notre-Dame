@@ -10,7 +10,7 @@ import 'package:stacked/stacked.dart';
 import 'package:notredame/features/ets/quick-link/models/quick_link.dart';
 import 'package:notredame/features/ets/quick-link/quick_links_viewmodel.dart';
 import 'package:notredame/features/ets/quick-link/widgets/web_link_card.dart';
-import 'package:notredame/utils/app_theme.dart';
+import 'package:notredame/utils/app_theme_old.dart';
 
 class QuickLinksView extends StatefulWidget {
   const QuickLinksView({super.key});
@@ -168,7 +168,7 @@ class _QuickLinksViewState extends State<QuickLinksView>
       width: 32,
       height: 32,
       decoration: const BoxDecoration(
-        color: AppTheme.etsDarkGrey,
+        color: AppThemeOld.etsDarkGrey,
         shape: BoxShape.circle,
       ),
       child: IconButton(

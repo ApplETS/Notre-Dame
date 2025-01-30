@@ -16,7 +16,7 @@ import 'package:notredame/features/ets/events/news/widgets/news_card.dart';
 import 'package:notredame/features/ets/events/news/widgets/news_card_skeleton.dart';
 import 'package:notredame/features/ets/events/social/models/social_link.dart';
 import 'package:notredame/features/ets/events/social/social_links_card.dart';
-import 'package:notredame/utils/app_theme.dart';
+import 'package:notredame/utils/app_theme_old.dart';
 import 'package:notredame/utils/utils.dart';
 
 class AuthorView extends StatefulWidget {
@@ -145,7 +145,7 @@ class _AuthorViewState extends State<AuthorView> {
               width: double.infinity,
               child: Card(
                 color: Utils.getColorByBrightnessNullable(
-                    context, AppTheme.newsSecondaryColor, null),
+                    context, AppThemeOld.newsSecondaryColor, null),
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(16)),
                 key: UniqueKey(),
@@ -169,8 +169,8 @@ class _AuthorViewState extends State<AuthorView> {
                           style: TextStyle(
                             color: Utils.getColorByBrightness(
                               context,
-                              AppTheme.etsDarkGrey,
-                              AppTheme.newsSecondaryColor,
+                              AppThemeOld.etsDarkGrey,
+                              AppThemeOld.newsSecondaryColor,
                             ),
                             fontSize: 16,
                           ),
@@ -198,8 +198,8 @@ class _AuthorViewState extends State<AuthorView> {
                           FontAwesomeIcons.link,
                           color: Utils.getColorByBrightness(
                             context,
-                            AppTheme.newsAccentColorLight,
-                            AppTheme.newsAccentColorDark,
+                            AppThemeOld.newsAccentColorLight,
+                            AppThemeOld.newsAccentColorDark,
                           ),
                         ),
                         style: ButtonStyle(
@@ -212,8 +212,8 @@ class _AuthorViewState extends State<AuthorView> {
                           backgroundColor: WidgetStateProperty.all<Color>(
                             Utils.getColorByBrightness(
                               context,
-                              AppTheme.lightThemeBackground,
-                              AppTheme.darkThemeBackground,
+                              AppThemeOld.lightThemeBackground,
+                              AppThemeOld.darkThemeBackground,
                             ),
                           ),
                         ),
@@ -246,7 +246,7 @@ class _AuthorViewState extends State<AuthorView> {
                   tag: 'news_author_avatar',
                   child: CircleAvatar(
                     backgroundColor: Utils.getColorByBrightness(context,
-                        AppTheme.lightThemeAccent, AppTheme.darkThemeAccent),
+                        AppThemeOld.lightThemeAccent, AppThemeOld.darkThemeAccent),
                     child: Stack(
                       fit: StackFit.expand,
                       children: [

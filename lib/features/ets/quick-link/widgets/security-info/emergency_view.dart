@@ -8,7 +8,7 @@ import 'package:flutter_markdown/flutter_markdown.dart';
 
 // Project imports:
 import 'package:notredame/features/app/widgets/base_scaffold.dart';
-import 'package:notredame/utils/app_theme.dart';
+import 'package:notredame/utils/app_theme_old.dart';
 import 'package:notredame/utils/locator.dart';
 import 'package:notredame/features/app/integration/launch_url_service.dart';
 
@@ -45,7 +45,7 @@ class _EmergencyViewState extends State<EmergencyView> {
           style: const TextStyle(color: Colors.white, fontSize: 20),
         ),
         icon: const Icon(Icons.phone, size: 30, color: Colors.white),
-        backgroundColor: AppTheme.etsLightRed,
+        backgroundColor: AppThemeOld.etsLightRed,
       ),
       body: FutureBuilder<String>(
           future: rootBundle.loadString(widget.description),

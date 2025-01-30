@@ -11,7 +11,7 @@ import 'package:notredame/features/ets/events/api-client/models/news.dart';
 import 'package:notredame/features/ets/events/news/news_viewmodel.dart';
 import 'package:notredame/features/ets/events/news/widgets/news_card.dart';
 import 'package:notredame/features/ets/events/news/widgets/news_card_skeleton.dart';
-import 'package:notredame/utils/app_theme.dart';
+import 'package:notredame/utils/app_theme_old.dart';
 import 'package:notredame/utils/utils.dart';
 
 class NewsView extends StatefulWidget {
@@ -74,7 +74,7 @@ class _NewsViewState extends State<NewsView> {
               floatingActionButton: _showBackToTopButton
                   ? FloatingActionButton(
                       shape: const CircleBorder(),
-                      backgroundColor: AppTheme.appletsPurple,
+                      backgroundColor: AppThemeOld.appletsPurple,
                       foregroundColor: Colors.white,
                       onPressed: () {
                         _scrollController.animateTo(
@@ -111,7 +111,7 @@ class _NewsViewState extends State<NewsView> {
                                             fillColor:
                                                 Utils.getColorByBrightness(
                                                     context,
-                                                    AppTheme.lightThemeAccent,
+                                                    AppThemeOld.lightThemeAccent,
                                                     Theme.of(context)
                                                         .cardColor),
                                             border: OutlineInputBorder(

@@ -8,7 +8,7 @@ import 'package:stacked/stacked.dart';
 // Project imports:
 import 'package:notredame/features/app/widgets/base_scaffold.dart';
 import 'package:notredame/features/more/settings/settings_viewmodel.dart';
-import 'package:notredame/utils/app_theme.dart';
+import 'package:notredame/utils/app_theme_old.dart';
 
 class SettingsView extends StatefulWidget {
   const SettingsView({super.key});
@@ -33,7 +33,7 @@ class _SettingsViewState extends State<SettingsView> {
               ListTile(
                 title: Text(
                   AppIntl.of(context)!.settings_display_pref_category,
-                  style: const TextStyle(color: AppTheme.etsLightRed),
+                  style: const TextStyle(color: AppThemeOld.etsLightRed),
                 ),
               ),
               PopupMenuButton(
@@ -92,7 +92,7 @@ class _SettingsViewState extends State<SettingsView> {
               ListTile(
                 title: Text(
                   AppIntl.of(context)!.settings_miscellaneous_category,
-                  style: const TextStyle(color: AppTheme.etsLightRed),
+                  style: const TextStyle(color: AppThemeOld.etsLightRed),
                 ),
               ),
               PopupMenuButton(

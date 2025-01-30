@@ -20,7 +20,7 @@ import 'package:notredame/features/dashboard/widgets/course_activity_tile.dart';
 import 'package:notredame/features/schedule/schedule_viewmodel.dart';
 import 'package:notredame/features/schedule/widgets/calendar_selector.dart';
 import 'package:notredame/features/schedule/widgets/schedule_calendar_tile.dart';
-import 'package:notredame/utils/app_theme.dart';
+import 'package:notredame/utils/app_theme_old.dart';
 import 'package:notredame/utils/locator.dart';
 
 class ScheduleView extends StatefulWidget {
@@ -94,20 +94,20 @@ class _ScheduleViewState extends State<ScheduleView>
     final calendar_view.EventController eventController = calendar_view.EventController();
 
     final backgroundColor = Theme.of(context).brightness == Brightness.light
-        ? AppTheme.lightThemeBackground
-        : AppTheme.primaryDark;
+        ? AppThemeOld.lightThemeBackground
+        : AppThemeOld.primaryDark;
     final scheduleLineColor = Theme.of(context).brightness == Brightness.light
-        ? AppTheme.scheduleLineColorLight
-        : AppTheme.scheduleLineColorDark;
+        ? AppThemeOld.scheduleLineColorLight
+        : AppThemeOld.scheduleLineColorDark;
     final chevronColor = Theme.of(context).brightness == Brightness.light
-        ? AppTheme.primaryDark
-        : AppTheme.lightThemeBackground;
+        ? AppThemeOld.primaryDark
+        : AppThemeOld.lightThemeBackground;
     final textColor = Theme.of(context).brightness == Brightness.light
-        ? AppTheme.primaryDark
-        : AppTheme.lightThemeAccent;
+        ? AppThemeOld.primaryDark
+        : AppThemeOld.lightThemeAccent;
     final scheduleCardsPalette = Theme.of(context).brightness == Brightness.light
-        ? AppTheme.schedulePaletteLight.toList()
-        : AppTheme.schedulePaletteDark.toList();
+        ? AppThemeOld.schedulePaletteLight.toList()
+        : AppThemeOld.schedulePaletteDark.toList();
 
     if (model.calendarFormat == CalendarTimeFormat.month) {
       return _buildCalendarViewMonthly(model, context, eventController, backgroundColor, chevronColor, scheduleLineColor, textColor, scheduleCardsPalette);
@@ -341,7 +341,7 @@ class _ScheduleViewState extends State<ScheduleView>
       cellBuilder: (date, events, _, __, ___) => calendar_view.FilledCell(
         hideDaysNotInMonth: false,
         titleColor: textColor,
-        highlightColor: AppTheme.accent,
+        highlightColor: AppThemeOld.accent,
         shouldHighlight: date.getDayDifference(DateTime.now()) == 0,
         date: date,
         isInMonth: date.month == DateTime.now().month,
@@ -387,7 +387,7 @@ class _ScheduleViewState extends State<ScheduleView>
           padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
           decoration: BoxDecoration(
               color: date.withoutTime == DateTime.now().withoutTime
-                  ? AppTheme.etsLightRed.withValues(alpha: indicatorColorOpacity)
+                  ? AppThemeOld.etsLightRed.withValues(alpha: indicatorColorOpacity)
                   : Colors.transparent,
               borderRadius: BorderRadius.circular(6.0)),
           child: Flex(
@@ -445,9 +445,9 @@ class _ScheduleViewState extends State<ScheduleView>
 
   /// Build the calendar
   Widget _buildTableCalendar(ScheduleViewModel model, calendar_view.EventController eventController) {
-    const Color selectedColor = AppTheme.etsLightRed;
-    final Color todayColor = Theme.of(context).brightness == Brightness.light ? AppTheme.etsLightGrey : AppTheme.etsDarkGrey;
-    final Color defaultColor = Theme.of(context).brightness == Brightness.light ? AppTheme.scheduleLineColorLight : AppTheme.scheduleLineColorDark;
+    const Color selectedColor = AppThemeOld.etsLightRed;
+    final Color todayColor = Theme.of(context).brightness == Brightness.light ? AppThemeOld.etsLightGrey : AppThemeOld.etsDarkGrey;
+    final Color defaultColor = Theme.of(context).brightness == Brightness.light ? AppThemeOld.scheduleLineColorLight : AppThemeOld.scheduleLineColorDark;
 
     return TableCalendar(
       key: const Key("TableCalendar"),

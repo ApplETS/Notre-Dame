@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 // Package imports:
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:notredame/theme/app_theme.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 import 'package:stacked/stacked.dart';
 
@@ -22,7 +23,7 @@ import 'package:notredame/features/dashboard/progress_bar_text_options.dart';
 import 'package:notredame/features/dashboard/widgets/course_activity_tile.dart';
 import 'package:notredame/features/dashboard/widgets/haptics_container.dart';
 import 'package:notredame/features/student/grades/widgets/grade_button.dart';
-import 'package:notredame/utils/app_theme.dart';
+import 'package:notredame/utils/app_theme_old.dart';
 import 'package:notredame/utils/loading.dart';
 import 'package:notredame/utils/locator.dart';
 import 'package:notredame/features/app/integration/launch_url_service.dart';
@@ -56,6 +57,7 @@ class _DashboardViewState extends State<DashboardView>
           return BaseScaffold(
               isInteractionLimitedWhileLoading: false,
               appBar: AppBar(
+                // backgroundColor: context.theme.appColors.primary,
                   title: Text(AppIntl.of(context)!.title_dashboard),
                   centerTitle: false,
                   actions: [
@@ -120,7 +122,7 @@ class _DashboardViewState extends State<DashboardView>
         onDismissed: (DismissDirection direction) {
           dismissCard(model, flag);
         },
-        cardColor: AppTheme.appletsPurple,
+        cardColor: AppThemeOld.appletsPurple,
         child: Column(mainAxisSize: MainAxisSize.min, children: [
           Align(
               alignment: Alignment.centerLeft,
@@ -235,8 +237,8 @@ class _DashboardViewState extends State<DashboardView>
                         value: model.progress,
                         minHeight: 30,
                         valueColor: const AlwaysStoppedAnimation<Color>(
-                            AppTheme.gradeGoodMax),
-                        backgroundColor: AppTheme.etsDarkGrey,
+                            AppThemeOld.gradeGoodMax),
+                        backgroundColor: AppThemeOld.etsDarkGrey,
                       ),
                     ),
                   ),
@@ -437,8 +439,8 @@ class _DashboardViewState extends State<DashboardView>
                         .map((course) => GradeButton(course,
                             color:
                                 Theme.of(context).brightness == Brightness.light
-                                    ? AppTheme.lightThemeBackground
-                                    : AppTheme.darkThemeBackground))
+                                    ? AppThemeOld.lightThemeBackground
+                                    : AppThemeOld.darkThemeBackground))
                         .toList(),
                   ),
                 ),
@@ -497,13 +499,13 @@ class _DashboardViewState extends State<DashboardView>
       case "warning":
         return const Icon(
           Icons.warning_rounded,
-          color: AppTheme.lightThemeBackground,
+          color: AppThemeOld.lightThemeBackground,
           size: 36.0,
         );
       case "alert":
         return const Icon(
           Icons.error,
-          color: AppTheme.lightThemeBackground,
+          color: AppThemeOld.lightThemeBackground,
           size: 36.0,
         );
       case "link":
@@ -513,14 +515,14 @@ class _DashboardViewState extends State<DashboardView>
           },
           icon: const Icon(
             Icons.open_in_new,
-            color: AppTheme.lightThemeBackground,
+            color: AppThemeOld.lightThemeBackground,
             size: 30.0,
           ),
         );
     }
     return const Icon(
       Icons.campaign,
-      color: AppTheme.lightThemeBackground,
+      color: AppThemeOld.lightThemeBackground,
       size: 36.0,
     );
   }
