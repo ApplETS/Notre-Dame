@@ -7,6 +7,7 @@ import 'package:calendar_view/calendar_view.dart' as calendar_view;
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:intl/intl.dart';
 import 'package:notredame/features/schedule/widgets/schedule_settings.dart';
+import 'package:notredame/theme/app_theme.dart';
 import 'package:notredame/utils/calendar_utils.dart';
 import 'package:stacked/stacked.dart';
 import 'package:table_calendar/table_calendar.dart';
@@ -95,15 +96,9 @@ class _ScheduleViewState extends State<ScheduleView>
   Widget displaySchedule(ScheduleViewModel model) {
     final calendar_view.EventController eventController = calendar_view.EventController();
 
-    final backgroundColor = Theme.of(context).brightness == Brightness.light
-        ? AppThemeOld.lightThemeBackground
-        : AppThemeOld.primaryDark;
-    final scheduleLineColor = Theme.of(context).brightness == Brightness.light
-        ? AppThemeOld.scheduleLineColorLight
-        : AppThemeOld.scheduleLineColorDark;
-    final chevronColor = Theme.of(context).brightness == Brightness.light
-        ? AppThemeOld.primaryDark
-        : AppThemeOld.lightThemeBackground;
+    final backgroundColor = context.theme.appColors.background;
+    final scheduleLineColor = context.theme.appColors.scheduleLineColor;
+    final chevronColor = context.theme.appColors.background;
     final textColor = Theme.of(context).brightness == Brightness.light
         ? AppThemeOld.primaryDark
         : AppThemeOld.lightThemeAccent;
@@ -343,7 +338,7 @@ class _ScheduleViewState extends State<ScheduleView>
       cellBuilder: (date, events, _, __, ___) => calendar_view.FilledCell(
         hideDaysNotInMonth: false,
         titleColor: textColor,
-        highlightColor: AppThemeOld.accent,
+        highlightColor: AppPalette.etsLightRed,
         shouldHighlight: date.getDayDifference(DateTime.now()) == 0,
         date: date,
         isInMonth: date.month == DateTime.now().month,
@@ -449,7 +444,7 @@ class _ScheduleViewState extends State<ScheduleView>
   Widget _buildTableCalendar(ScheduleViewModel model, calendar_view.EventController eventController) {
     const Color selectedColor = AppPalette.etsLightRed;
     final Color todayColor = Theme.of(context).brightness == Brightness.light ? AppPalette.grey.lightGrey : AppPalette.grey.darkGrey;
-    final Color defaultColor = Theme.of(context).brightness == Brightness.light ? AppThemeOld.scheduleLineColorLight : AppThemeOld.scheduleLineColorDark;
+    final Color defaultColor = context.theme.appColors.scheduleLineColor;
 
     return TableCalendar(
       key: const Key("TableCalendar"),

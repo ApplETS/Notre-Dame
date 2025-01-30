@@ -9,28 +9,11 @@ class AppThemeOld {
   static const Color darkThemeBackgroundAccent =
       Color.fromARGB(255, 50, 48, 48);
   static const Color lightThemeBackground = Color(0xfffafafa);
-  static const Color lightNavBar = Color(0xffefeaee);
-  static const Color lightAppBar = Color(0xffeae7ea);
-
-  // App|ETS colors
-  static const Color appletsPurple = Color(0xff19375f);
-  static const Color appletsDarkPurple = Color(0xff122743);
-
-  // Grade colors
-  static const Color gradeFailureMin = Color(0xffd32f2f);
-  static const Color gradeFailureMax = Color(0xffff7043);
-  static const Color gradePassing = Color(0xfffff176);
-  static const Color gradeGoodMin = Color(0xffaed581);
-  static const Color gradeGoodMax = Color(0xff43a047);
-
-  // Primary
-  static const Color primary = Colors.pink;
 
   // Primary dark
   static const Color primaryDark = Color(0xff121212);
 
   // Accent
-  static const Color accent = Colors.pink;
   static const Color lightThemeAccent = Color.fromARGB(255, 228, 225, 225);
   static const Color darkThemeAccent = Color(0xff424242);
 
@@ -78,10 +61,6 @@ class AppThemeOld {
   static const Color newsAccentColorDark = Color(0xff00cdb7);
   static const Color newsAccentColorLight = Color(0xff007c6f);
   static const Color newsSecondaryColor = Color.fromARGB(255, 237, 237, 237);
-
-  /// Schedule calendar colors
-  static const Color scheduleLineColorLight = Color(0xffe8e8e8);
-  static const Color scheduleLineColorDark = Color(0xff3d3d3d);
 
   /// Light theme
   static ThemeData lightTheme() {

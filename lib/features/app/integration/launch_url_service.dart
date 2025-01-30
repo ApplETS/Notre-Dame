@@ -1,5 +1,6 @@
 // Flutter imports:
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
+import 'package:notredame/theme/app_palette.dart';
 
 // Package imports:
 import 'package:url_launcher/url_launcher.dart' as url_launch;
@@ -38,13 +39,13 @@ class LaunchUrlService {
           // Android
           dismissButtonStyle: DismissButtonStyle.CLOSE,
           enableUrlBarHiding: true,
-          toolbarBackgroundColor: AppThemeOld.accent,
+          toolbarBackgroundColor: AppPalette.etsLightRed,
           navigationBarColor: AppThemeOld.primaryDark,
 
           // iOS
           barCollapsingEnabled: true,
           preferredControlTintColor: AppThemeOld.lightThemeBackground,
-          preferredBarTintColor: AppThemeOld.accent,
+          preferredBarTintColor: AppPalette.etsLightRed,
         )
     );
   }

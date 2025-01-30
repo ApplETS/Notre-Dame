@@ -11,11 +11,9 @@ import 'package:fluttertoast/fluttertoast.dart';
 
 // Project imports:
 import 'package:notredame/features/app/repository/course_repository.dart';
-import 'package:notredame/utils/app_theme_old.dart';
 import 'package:notredame/utils/calendar_utils.dart';
 import 'package:notredame/utils/locator.dart';
-
-import '../../../theme/app_palette.dart';
+import 'package:notredame/theme/app_palette.dart';
 
 class CalendarSelectionWidget extends StatelessWidget {
   final AppIntl translations;
@@ -112,7 +110,7 @@ class CalendarSelectionWidget extends StatelessWidget {
                       if (value) {
                         Fluttertoast.showToast(
                           msg: translations.calendar_export_success,
-                          backgroundColor: AppThemeOld.gradeGoodMax,
+                          backgroundColor: AppPalette.gradeGoodMax,
                           textColor: AppPalette.grey.black,
                         );
                       } else {

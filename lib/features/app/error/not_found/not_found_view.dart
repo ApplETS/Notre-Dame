@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 // Package imports:
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:notredame/theme/app_palette.dart';
 import 'package:stacked/stacked.dart';
 
 // Project imports:
@@ -64,7 +65,7 @@ class _NotFoundState extends State<NotFoundView> {
                         ),
                         ElevatedButton(
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: AppThemeOld.primary,
+                            backgroundColor: AppPalette.etsLightRed,
                           ),
                           onPressed: () {
                             model.navigateToDashboard();

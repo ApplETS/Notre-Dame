@@ -247,9 +247,7 @@ class _ScheduleSettingsState extends State<ScheduleSettings> {
 
     return Card(
         elevation: 4,
-        color: Theme.of(context).brightness == Brightness.light
-            ? AppThemeOld.lightThemeBackground
-            : AppThemeOld.darkThemeBackground,
+        color: context.theme.appColors.background,
         child: Padding(
             padding: const EdgeInsets.only(top: 16.0, bottom: 8),
             child: Column(children: cardContent)));

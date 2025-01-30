@@ -124,7 +124,7 @@ class _DashboardViewState extends State<DashboardView>
         onDismissed: (DismissDirection direction) {
           dismissCard(model, flag);
         },
-        cardColor: AppThemeOld.appletsPurple,
+        cardColor: AppPalette.appletsPurple,
         child: Column(mainAxisSize: MainAxisSize.min, children: [
           Align(
               alignment: Alignment.centerLeft,
@@ -239,7 +239,7 @@ class _DashboardViewState extends State<DashboardView>
                         value: model.progress,
                         minHeight: 30,
                         valueColor: const AlwaysStoppedAnimation<Color>(
-                            AppThemeOld.gradeGoodMax),
+                            AppPalette.gradeGoodMax),
                         backgroundColor: AppPalette.grey.darkGrey,
                       ),
                     ),

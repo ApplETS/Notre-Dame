@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 // Package imports:
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
+import 'package:notredame/theme/app_palette.dart';
 import 'package:stacked/stacked.dart';
 
 // Project imports:
@@ -74,7 +75,7 @@ class _NewsViewState extends State<NewsView> {
               floatingActionButton: _showBackToTopButton
                   ? FloatingActionButton(
                       shape: const CircleBorder(),
-                      backgroundColor: AppThemeOld.appletsPurple,
+                      backgroundColor: AppPalette.appletsPurple,
                       foregroundColor: Colors.white,
                       onPressed: () {
                         _scrollController.animateTo(

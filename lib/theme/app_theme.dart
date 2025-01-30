@@ -24,9 +24,10 @@ class AppTheme with ChangeNotifier {
   }();
 
   static final _lightAppColors = AppColorsExtension(
-      appBar: const Color(0xffeae7ea),
-      navBar: const Color(0xffefeaee),
-      background: const Color(0xfffafafa)
+    appBar: const Color(0xffeae7ea),
+    navBar: const Color(0xffefeaee),
+    background: const Color(0xfffafafa),
+    scheduleLineColor: const Color(0xffe8e8e8)
   );
 
   static final dark = () {
@@ -63,7 +64,8 @@ class AppTheme with ChangeNotifier {
   static final _darkAppColors = AppColorsExtension(
       appBar: const Color(0xff16171a),
       navBar: const Color(0xff1c1d21),
-      background: const Color(0xff2c2c2c)
+      background: const Color(0xff2c2c2c),
+      scheduleLineColor: const Color(0xff3d3d3d)
   );
 }
 
