@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 // Package imports:
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:notredame/theme/app_theme.dart';
 import 'package:stacked/stacked.dart';
 
 // Project imports:
@@ -31,11 +32,7 @@ class _SocialLinksState extends State<SocialLinks> {
             return IntrinsicHeight(
                 child: Container(
                     decoration: BoxDecoration(
-                      color: Utils.getColorByBrightness(
-                        context,
-                        AppThemeOld.lightThemeBackground,
-                        AppThemeOld.darkThemeBackground,
-                      ),
+                      color: context.theme.appColors.background,
                       borderRadius: const BorderRadius.only(
                         topLeft: Radius.circular(40.0),
                         topRight: Radius.circular(40.0),
@@ -53,11 +50,7 @@ class _SocialLinksState extends State<SocialLinks> {
   Widget _buildHandle(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: Utils.getColorByBrightness(
-          context,
-          AppThemeOld.lightThemeBackground,
-          AppThemeOld.darkThemeBackground,
-        ),
+        color: context.theme.appColors.background,
         borderRadius: const BorderRadius.only(
           topLeft: Radius.circular(40.0),
           topRight: Radius.circular(40.0),
@@ -82,11 +75,7 @@ class _SocialLinksState extends State<SocialLinks> {
     return Container(
       width: MediaQuery.of(context).size.width,
       decoration: BoxDecoration(
-        color: Utils.getColorByBrightness(
-          context,
-          AppThemeOld.lightThemeBackground,
-          AppThemeOld.darkThemeBackground,
-        ),
+        color: context.theme.appColors.background,
       ),
       child: Center(
         child: Padding(

@@ -24,8 +24,9 @@ class AppTheme with ChangeNotifier {
   }();
 
   static final _lightAppColors = AppColorsExtension(
-    appBar: const Color(0xffeae7ea),
-    navBar: const Color(0xffefeaee),
+      appBar: const Color(0xffeae7ea),
+      navBar: const Color(0xffefeaee),
+      background: const Color(0xfffafafa)
   );
 
   static final dark = () {
@@ -60,8 +61,9 @@ class AppTheme with ChangeNotifier {
   }();
 
   static final _darkAppColors = AppColorsExtension(
-    appBar: const Color(0xff16171a),
-    navBar: const Color(0xff1c1d21),
+      appBar: const Color(0xff16171a),
+      navBar: const Color(0xff1c1d21),
+      background: const Color(0xff2c2c2c)
   );
 }
 

@@ -94,7 +94,7 @@ class CalendarSelectionWidget extends StatelessWidget {
                       Fluttertoast.showToast(
                         msg: translations.calendar_select,
                         backgroundColor: AppPalette.etsLightRed,
-                        textColor: AppThemeOld.etsBlack,
+                        textColor: AppPalette.grey.black,
                       );
                       return;
                     }
@@ -113,13 +113,13 @@ class CalendarSelectionWidget extends StatelessWidget {
                         Fluttertoast.showToast(
                           msg: translations.calendar_export_success,
                           backgroundColor: AppThemeOld.gradeGoodMax,
-                          textColor: AppThemeOld.etsBlack,
+                          textColor: AppPalette.grey.black,
                         );
                       } else {
                         Fluttertoast.showToast(
                           msg: translations.calendar_export_error,
                           backgroundColor: AppPalette.etsLightRed,
-                          textColor: AppThemeOld.etsBlack,
+                          textColor: AppPalette.grey.black,
                         );
                       }
                     });

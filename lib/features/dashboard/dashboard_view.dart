@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 // Package imports:
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:notredame/theme/app_theme.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 import 'package:stacked/stacked.dart';
 
@@ -438,10 +439,7 @@ class _DashboardViewState extends State<DashboardView>
                   child: Wrap(
                     children: courses
                         .map((course) => GradeButton(course,
-                            color:
-                                Theme.of(context).brightness == Brightness.light
-                                    ? AppThemeOld.lightThemeBackground
-                                    : AppThemeOld.darkThemeBackground))
+                            color: context.theme.appColors.background))
                         .toList(),
                   ),
                 ),

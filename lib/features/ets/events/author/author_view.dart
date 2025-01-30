@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
+import 'package:notredame/theme/app_theme.dart';
 import 'package:stacked/stacked.dart';
 
 // Project imports:
@@ -212,11 +213,7 @@ class _AuthorViewState extends State<AuthorView> {
                             ),
                           ),
                           backgroundColor: WidgetStateProperty.all<Color>(
-                            Utils.getColorByBrightness(
-                              context,
-                              AppThemeOld.lightThemeBackground,
-                              AppThemeOld.darkThemeBackground,
-                            ),
+                              context.theme.appColors.background
                           ),
                         ),
                       ),

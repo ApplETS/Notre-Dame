@@ -1,5 +1,6 @@
 // Flutter imports:
 import 'package:flutter/material.dart';
+import 'package:notredame/theme/app_theme.dart';
 
 // Package imports:
 import 'package:shimmer/shimmer.dart';
@@ -37,9 +38,7 @@ class AuthorInfoSkeleton extends StatelessWidget {
 
   Widget _shimmerTextEffect(BuildContext context, double height) {
     return Shimmer.fromColors(
-      baseColor: Theme.of(context).brightness == Brightness.light
-          ? AppThemeOld.lightThemeBackground
-          : AppThemeOld.darkThemeBackground,
+      baseColor: context.theme.appColors.background,
       highlightColor: Theme.of(context).brightness == Brightness.light
           ? AppThemeOld.lightThemeAccent
           : AppThemeOld.darkThemeAccent,
@@ -68,9 +67,7 @@ class AuthorInfoSkeleton extends StatelessWidget {
 
   Widget _shimmerIconButton(BuildContext context) {
     return Shimmer.fromColors(
-      baseColor: Theme.of(context).brightness == Brightness.light
-          ? AppThemeOld.lightThemeBackground
-          : AppThemeOld.darkThemeBackground,
+      baseColor: context.theme.appColors.background,
       highlightColor: Theme.of(context).brightness == Brightness.light
           ? AppThemeOld.lightThemeAccent
           : AppThemeOld.darkThemeAccent,
@@ -103,9 +100,7 @@ class AvatarSkeleton extends StatelessWidget {
           height: 120,
           child: ClipOval(
             child: Shimmer.fromColors(
-              baseColor: Theme.of(context).brightness == Brightness.light
-                  ? AppThemeOld.lightThemeBackground
-                  : AppThemeOld.darkThemeBackground,
+              baseColor: context.theme.appColors.background,
               highlightColor: Theme.of(context).brightness == Brightness.light
                   ? AppThemeOld.lightThemeAccent
                   : AppThemeOld.darkThemeAccent,

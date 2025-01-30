@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 // Package imports:
 import 'package:calendar_view/calendar_view.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:notredame/theme/app_theme.dart';
 import 'package:stacked/stacked.dart';
 import 'package:table_calendar/table_calendar.dart';
 
@@ -49,10 +50,7 @@ class _ScheduleSettingsState extends State<ScheduleSettings> {
                     if (widget.showHandle)
                       Container(
                         decoration: BoxDecoration(
-                          color: Utils.getColorByBrightness(
-                              context,
-                              AppThemeOld.lightThemeBackground,
-                              AppThemeOld.darkThemeBackground),
+                          color: context.theme.appColors.background,
                         ),
                         child: Center(
                           child: Padding(
@@ -71,10 +69,7 @@ class _ScheduleSettingsState extends State<ScheduleSettings> {
                     Container(
                       width: MediaQuery.of(context).size.width,
                       decoration: BoxDecoration(
-                        color: Utils.getColorByBrightness(
-                            context,
-                            AppThemeOld.lightThemeBackground,
-                            AppThemeOld.darkThemeBackground),
+                        color: context.theme.appColors.background,
                       ),
                       child: Center(
                         child: Padding(
@@ -169,9 +164,7 @@ class _ScheduleSettingsState extends State<ScheduleSettings> {
 
     return Card(
         elevation: 4,
-        color: Theme.of(context).brightness == Brightness.light
-            ? AppThemeOld.lightThemeBackground
-            : AppThemeOld.darkThemeBackground,
+        color: context.theme.appColors.background,
         child: Padding(
             padding: const EdgeInsets.only(top: 16.0, bottom: 8),
             child: Column(

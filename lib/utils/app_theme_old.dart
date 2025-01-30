@@ -5,15 +5,7 @@ import 'package:flutter/material.dart';
 class AppThemeOld {
   AppThemeOld._();
 
-  // ETS colors
-  static const Color etsLightRed = Color(0xffef3e45);
-  static const Color etsDarkRed = Color(0xffbf311a);
-  static const Color etsLightGrey = Color(0xff807f83);
-  static const Color etsDarkGrey = Color(0xff636467);
-  static const Color etsBlack = Color(0xff2e2a25);
-
   // Backgrounds
-  static const Color darkThemeBackground = Color(0xff2c2c2c);
   static const Color darkThemeBackgroundAccent =
       Color.fromARGB(255, 50, 48, 48);
   static const Color lightThemeBackground = Color(0xfffafafa);
@@ -32,13 +24,13 @@ class AppThemeOld {
   static const Color gradeGoodMax = Color(0xff43a047);
 
   // Primary
-  static const Color primary = etsLightRed;
+  static const Color primary = Colors.pink;
 
   // Primary dark
   static const Color primaryDark = Color(0xff121212);
 
   // Accent
-  static const Color accent = etsLightRed;
+  static const Color accent = Colors.pink;
   static const Color lightThemeAccent = Color.fromARGB(255, 228, 225, 225);
   static const Color darkThemeAccent = Color(0xff424242);
 
@@ -94,54 +86,12 @@ class AppThemeOld {
   /// Light theme
   static ThemeData lightTheme() {
     final ThemeData lightTheme = ThemeData.light();
-    return lightTheme.copyWith(
-        primaryColor: etsLightRed,
-        appBarTheme: const AppBarTheme(
-            color: lightAppBar
-        ),
-        tabBarTheme: const TabBarTheme(
-          labelColor: Colors.black,
-        ),
-        bottomNavigationBarTheme: lightTheme.bottomNavigationBarTheme
-            .copyWith(selectedItemColor: etsLightRed, backgroundColor: lightNavBar),
-        navigationRailTheme: const NavigationRailThemeData(
-          backgroundColor: lightNavBar,
-          groupAlignment: 0,
-          indicatorColor: Colors.transparent,
-          selectedLabelTextStyle: TextStyle(color: etsLightRed),
-          selectedIconTheme: IconThemeData(color: etsLightRed),
-        ),
-        colorScheme: lightTheme.colorScheme
-            .copyWith(primary: etsLightRed, secondary: etsLightRed)
-            .copyWith(secondary: etsLightRed)
-            .copyWith(
-                surface: const Color(0xfff1f1f1), surfaceTint: Colors.white));
+    return lightTheme;
   }
 
   /// Dark theme
   static ThemeData darkTheme() {
     final ThemeData darkTheme = ThemeData.dark();
-    return darkTheme.copyWith(
-
-        tabBarTheme: const TabBarTheme(
-          labelColor: Colors.white,
-        ),
-        scaffoldBackgroundColor: const Color(0xff121212),
-        cardColor: const Color(0xff1D1B20),
-        bottomNavigationBarTheme: darkTheme.bottomNavigationBarTheme.copyWith(
-          selectedItemColor: etsLightRed,
-        ),
-        navigationRailTheme: const NavigationRailThemeData(
-          groupAlignment: 0,
-          indicatorColor: Colors.transparent,
-          selectedLabelTextStyle: TextStyle(color: etsLightRed),
-          selectedIconTheme: IconThemeData(color: etsLightRed),
-        ),
-        colorScheme: darkTheme.colorScheme
-            .copyWith(primary: etsLightRed, secondary: etsLightRed)
-            .copyWith(secondary: etsLightRed)
-            .copyWith(
-                surface: const Color(0xff1e1e1e),
-                surfaceTint: const Color(0xff1e1e1e)));
+    return darkTheme;
   }
 }

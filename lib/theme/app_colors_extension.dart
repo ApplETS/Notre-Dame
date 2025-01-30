@@ -3,20 +3,24 @@ import 'package:flutter/material.dart';
 class AppColorsExtension extends ThemeExtension<AppColorsExtension> {
   AppColorsExtension({
     required this.appBar,
-    required this.navBar
+    required this.navBar,
+    required this.background
   });
 
   final Color appBar;
   final Color navBar;
+  final Color background;
 
   @override
   ThemeExtension<AppColorsExtension> copyWith({
     Color? appBar,
     Color? navBar,
+    Color? background
   }) {
     return AppColorsExtension(
       appBar: appBar ?? this.appBar,
-      navBar: navBar ?? this.navBar
+      navBar: navBar ?? this.navBar,
+      background: background ?? this.background
     );
   }
 
@@ -32,24 +36,7 @@ class AppColorsExtension extends ThemeExtension<AppColorsExtension> {
     return AppColorsExtension(
       appBar: Color.lerp(appBar, other.appBar, t)!,
       navBar: Color.lerp(navBar, other.navBar, t)!,
+      background: Color.lerp(background, other.background, t)!,
     );
   }
 }
-
-// /// Optional. If you also want to assign colors in the `ColorScheme`.
-// extension ColorSchemeBuilder on AppColorsExtension {
-//   ColorScheme toColorScheme(Brightness brightness) {
-//     return ColorScheme(
-//       brightness: brightness,
-//       primary: primary,
-//       onPrimary: onPrimary,
-//       secondary: secondary,
-//       onSecondary: onSecondary,
-//       error: error,
-//       onError: onError,
-//       background: background,
-//       onBackground: onBackground,
-//       surface: surface,
-//     );
-//   }
-// }

@@ -6,6 +6,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
+import 'package:notredame/theme/app_theme.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:stacked/stacked.dart';
@@ -93,10 +94,7 @@ class _NewsDetailsViewState extends State<NewsDetailsView> {
                             position: PopupMenuPosition.under,
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(10)),
-                            color: Utils.getColorByBrightness(
-                                context,
-                                AppThemeOld.lightThemeBackground,
-                                AppThemeOld.darkThemeBackground),
+                            color: context.theme.appColors.background,
                             icon: const Icon(Icons.more_vert),
                             onSelected: (Menu menu) =>
                                 handleClick(menu, model.news),
@@ -445,9 +443,7 @@ class ShimmerEffect extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Shimmer.fromColors(
-      baseColor: Theme.of(context).brightness == Brightness.light
-          ? AppThemeOld.lightThemeBackground
-          : AppThemeOld.darkThemeBackground,
+      baseColor: context.theme.appColors.background,
       highlightColor: Theme.of(context).brightness == Brightness.light
           ? AppThemeOld.lightThemeAccent
           : AppThemeOld.darkThemeAccent,

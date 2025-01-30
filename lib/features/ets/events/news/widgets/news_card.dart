@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 // Package imports:
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:notredame/theme/app_theme.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
@@ -86,9 +87,7 @@ class _NewsCardState extends State<NewsCard> {
 
   Widget _shimmerEffect() {
     return Shimmer.fromColors(
-      baseColor: Theme.of(context).brightness == Brightness.light
-          ? AppThemeOld.lightThemeBackground
-          : AppThemeOld.darkThemeBackground,
+      baseColor: context.theme.appColors.background,
       highlightColor: Theme.of(context).brightness == Brightness.light
           ? AppThemeOld.lightThemeAccent
           : AppThemeOld.darkThemeAccent,
