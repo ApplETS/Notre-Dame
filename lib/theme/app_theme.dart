@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:notredame/theme/app_palette.dart';
-import 'app_colors_extension.dart';
+import 'package:notredame/theme/app_colors_extension.dart';
 
 class AppTheme with ChangeNotifier {
   ThemeMode _themeMode = ThemeMode.system;
@@ -47,12 +47,14 @@ class AppTheme with ChangeNotifier {
     appBar: const Color(0xffeae7ea),
     navBar: const Color(0xffefeaee),
     backgroundAlt: const Color(0xfffafafa),
+    backgroundVibrant: AppPalette.etsLightRed,
     scheduleLine: const Color(0xffe8e8e8),
     tabBarLabel: Colors.black,
     tabBarIndicator: Colors.black26,
     shimmerHighlight: const Color.fromARGB(255, 228, 225, 225),
     vibrantAppBar: AppPalette.etsLightRed,
-    newsAccent: Color(0xff007c6f)
+    newsAccent: const Color(0xff007c6f),
+    newsBackgroundVibrant: AppPalette.etsLightRed
   );
 
   static final dark = () {
@@ -92,12 +94,14 @@ class AppTheme with ChangeNotifier {
     appBar: const Color(0xff16171a),
     navBar: const Color(0xff1c1d21),
     backgroundAlt: const Color(0xff2c2c2c),
+    backgroundVibrant: const Color(0xff121212),
     scheduleLine: const Color(0xff2c2929),
     tabBarLabel: Colors.white,
     tabBarIndicator: Colors.white,
     shimmerHighlight: const Color(0xff424242),
     vibrantAppBar: const Color(0xff16171a),
-    newsAccent: Color(0xff00cdb7)
+    newsAccent: const Color(0xff00cdb7),
+    newsBackgroundVibrant: const Color.fromARGB(255, 50, 48, 48)
   );
 }
 

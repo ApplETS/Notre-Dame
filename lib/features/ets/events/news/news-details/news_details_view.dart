@@ -66,10 +66,7 @@ class _NewsDetailsViewState extends State<NewsDetailsView> {
                   child: CustomScrollView(
                     slivers: <Widget>[
                       SliverAppBar(
-                        backgroundColor:
-                            Theme.of(context).brightness == Brightness.light
-                                ? AppPalette.etsLightRed
-                                : AppThemeOld.darkThemeBackgroundAccent,
+                        backgroundColor: context.theme.appColors.newsBackgroundVibrant,
                         pinned: true,
                         titleSpacing: 0,
                         leading: IconButton(
@@ -243,8 +240,7 @@ class _NewsDetailsViewState extends State<NewsDetailsView> {
   Widget _buildAuthor(
       String avatar, String author, ActivityArea? activity, String authorId) {
     return ColoredBox(
-      color: Utils.getColorByBrightness(
-          context, AppPalette.etsLightRed, AppThemeOld.darkThemeBackgroundAccent),
+      color: context.theme.appColors.newsBackgroundVibrant,
       child: ListTile(
         leading: GestureDetector(
             onTap: () => _navigationService.pushNamed(RouterPaths.newsAuthor,

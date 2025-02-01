@@ -40,11 +40,11 @@ class LaunchUrlService {
           dismissButtonStyle: DismissButtonStyle.CLOSE,
           enableUrlBarHiding: true,
           toolbarBackgroundColor: AppPalette.etsLightRed,
-          navigationBarColor: AppThemeOld.primaryDark,
+          navigationBarColor: AppPalette.grey.black,
 
           // iOS
           barCollapsingEnabled: true,
-          preferredControlTintColor: AppThemeOld.lightThemeBackground,
+          preferredControlTintColor: AppPalette.grey.white,
           preferredBarTintColor: AppPalette.etsLightRed,
         )
     );

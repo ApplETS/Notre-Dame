@@ -3,11 +3,11 @@ import 'package:flutter/material.dart';
 
 // Package imports:
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:notredame/theme/app_theme.dart';
 import 'package:stacked/stacked.dart';
 
 // Project imports:
 import 'package:notredame/features/more/settings/choose_language_viewmodel.dart';
-import 'package:notredame/utils/app_theme_old.dart';
 import 'package:notredame/utils/utils.dart';
 import 'package:notredame/theme/app_palette.dart';
 
@@ -49,8 +49,7 @@ class _ChooseLanguageViewState extends State<ChooseLanguageView> {
         viewModelBuilder: () =>
             ChooseLanguageViewModel(intl: AppIntl.of(context)!),
         builder: (context, model, child) => Scaffold(
-              backgroundColor: Utils.getColorByBrightness(
-                  context, AppPalette.etsLightRed, AppThemeOld.primaryDark),
+              backgroundColor: context.theme.appColors.backgroundVibrant,
               body: Center(
                 child: ListView(
                   shrinkWrap: true,
