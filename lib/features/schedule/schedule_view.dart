@@ -21,7 +21,6 @@ import 'package:notredame/features/dashboard/widgets/course_activity_tile.dart';
 import 'package:notredame/features/schedule/schedule_viewmodel.dart';
 import 'package:notredame/features/schedule/widgets/calendar_selector.dart';
 import 'package:notredame/features/schedule/widgets/schedule_calendar_tile.dart';
-import 'package:notredame/utils/app_theme_old.dart';
 import 'package:notredame/utils/locator.dart';
 
 import '../../theme/app_palette.dart';
@@ -96,15 +95,11 @@ class _ScheduleViewState extends State<ScheduleView>
   Widget displaySchedule(ScheduleViewModel model) {
     final calendar_view.EventController eventController = calendar_view.EventController();
 
-    final scheduleCardsPalette = Theme.of(context).brightness == Brightness.light
-        ? AppThemeOld.schedulePaletteLight.toList()
-        : AppThemeOld.schedulePaletteDark.toList();
-
     if (model.calendarFormat == CalendarTimeFormat.month) {
-      return _buildCalendarViewMonthly(model, context, eventController, scheduleCardsPalette);
+      return _buildCalendarViewMonthly(model, context, eventController);
     }
     if (model.calendarFormat == CalendarTimeFormat.week) {
-      return _buildCalendarViewWeekly(model, context, eventController, scheduleCardsPalette);
+      return _buildCalendarViewWeekly(model, context, eventController);
     }
     if (!model.calendarViewSetting) {
       return _buildCalendarViewDaily(model, context, eventController);
@@ -199,8 +194,7 @@ class _ScheduleViewState extends State<ScheduleView>
   Widget _buildCalendarViewWeekly(
       ScheduleViewModel model,
       BuildContext context,
-      calendar_view.EventController eventController,
-      List<Color> scheduleCardsPalette) {
+      calendar_view.EventController eventController) {
     final double heightPerMinute =
         (MediaQuery.of(context).size.height / 1200).clamp(0.45, 1.0);
 
@@ -208,7 +202,7 @@ class _ScheduleViewState extends State<ScheduleView>
       key: weekViewKey,
       weekNumberBuilder: (date) => null,
       controller: eventController
-        ..addAll(model.selectedWeekCalendarEvents(scheduleCardsPalette)),
+        ..addAll(model.selectedWeekCalendarEvents()),
       onPageChange: (date, page) => setState(() {
         model.handleViewChanged(date, eventController, []);
       }),
@@ -276,15 +270,14 @@ class _ScheduleViewState extends State<ScheduleView>
   Widget _buildCalendarViewMonthly(
       ScheduleViewModel model,
       BuildContext context,
-      calendar_view.EventController eventController,
-      List<Color> scheduleCardsPalette) {
+      calendar_view.EventController eventController) {
     return calendar_view.MonthView(
       key: monthViewKey,
       // to provide custom UI for month cells.
       cellAspectRatio: 0.8,
       borderColor: context.theme.appColors.scheduleLine,
       controller: eventController
-        ..addAll(model.selectedMonthCalendarEvents(scheduleCardsPalette)),
+        ..addAll(model.selectedMonthCalendarEvents()),
       safeAreaOption:
           const calendar_view.SafeAreaOption(top: false, bottom: false),
       useAvailableVerticalSpace: MediaQuery.of(context).size.height >= 500,

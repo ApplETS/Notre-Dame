@@ -32,10 +32,9 @@ class AppTheme with ChangeNotifier {
         selectedLabelTextStyle: TextStyle(color: AppPalette.etsLightRed),
         selectedIconTheme: IconThemeData(color: AppPalette.etsLightRed),
       ),
-      colorScheme: defaultTheme.colorScheme
-          .copyWith(primary: AppPalette.etsLightRed, secondary: AppPalette.etsLightRed)
-          .copyWith(secondary: AppPalette.etsLightRed)
-          .copyWith(
+      colorScheme: defaultTheme.colorScheme.copyWith(
+          primary: AppPalette.etsLightRed,
+          secondary: AppPalette.etsLightRed,
           surface: const Color(0xff1e1e1e),
           surfaceTint: const Color(0xff1e1e1e)),
       extensions: [
@@ -58,29 +57,29 @@ class AppTheme with ChangeNotifier {
     final defaultTheme = ThemeData.dark();
 
     return defaultTheme.copyWith(
-        appBarTheme: AppBarTheme(
-            color: _darkAppColors.appBar,
-        ),
-        tabBarTheme: const TabBarTheme(labelColor: Colors.white),
-        scaffoldBackgroundColor: const Color(0xff121212),
-        cardColor: const Color(0xff1D1B20),
-        bottomNavigationBarTheme: defaultTheme.bottomNavigationBarTheme.copyWith(
-            selectedItemColor: AppPalette.etsLightRed,
-            backgroundColor: _darkAppColors.navBar
-        ),
-        navigationRailTheme: NavigationRailThemeData(
-          backgroundColor: _darkAppColors.navBar,
-          groupAlignment: 0,
-          indicatorColor: Colors.transparent,
-          selectedLabelTextStyle: TextStyle(color: AppPalette.etsLightRed),
-          selectedIconTheme: IconThemeData(color: AppPalette.etsLightRed),
-        ),
-        colorScheme: defaultTheme.colorScheme
-            .copyWith(primary: AppPalette.etsLightRed, secondary: AppPalette.etsLightRed)
-            .copyWith(secondary: AppPalette.etsLightRed)
-            .copyWith(
-            surface: const Color(0xff1e1e1e),
-            surfaceTint: const Color(0xff1e1e1e)),
+      appBarTheme: AppBarTheme(
+        color: _darkAppColors.appBar,
+      ),
+      tabBarTheme: const TabBarTheme(labelColor: Colors.white),
+      scaffoldBackgroundColor: const Color(0xff121212),
+      cardColor: const Color(0xff1D1B20),
+      bottomNavigationBarTheme: defaultTheme.bottomNavigationBarTheme.copyWith(
+          selectedItemColor: AppPalette.etsLightRed,
+          backgroundColor: _darkAppColors.navBar
+      ),
+      navigationRailTheme: NavigationRailThemeData(
+        backgroundColor: _darkAppColors.navBar,
+        groupAlignment: 0,
+        indicatorColor: Colors.transparent,
+        selectedLabelTextStyle: TextStyle(color: AppPalette.etsLightRed),
+        selectedIconTheme: IconThemeData(color: AppPalette.etsLightRed),
+      ),
+      colorScheme: defaultTheme.colorScheme.copyWith(
+          primary: AppPalette.etsLightRed,
+          secondary: AppPalette.etsLightRed,
+          surface: const Color(0xff1e1e1e),
+          surfaceTint: const Color(0xff1e1e1e)
+      ),
       extensions: [
         _darkAppColors
       ],

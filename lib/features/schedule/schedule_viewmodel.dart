@@ -17,7 +17,6 @@ import 'package:notredame/features/app/signets-api/models/course_activity.dart';
 import 'package:notredame/features/app/signets-api/models/schedule_activity.dart';
 import 'package:notredame/features/more/settings/settings_manager.dart';
 import 'package:notredame/utils/activity_code.dart';
-import 'package:notredame/utils/app_theme_old.dart';
 import 'package:notredame/utils/locator.dart';
 import 'package:notredame/utils/utils.dart';
 import 'package:notredame/utils/calendar_utils.dart';
@@ -67,7 +66,18 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
   final Map<String, Color> courseColors = {};
 
   /// The color palette corresponding to the schedule courses.
-  List<Color> schedulePaletteTheme = [];
+  List<Color> schedulePaletteTheme = [
+    Color(0xfff1c40f),
+    Color(0xffe67e22),
+    Color(0xffe91e63),
+    Color(0xff16a085),
+    Color(0xff2ecc71),
+    Color(0xff3498db),
+    Color(0xff9b59b6),
+    Color(0xff34495e),
+    Color(0xffe67e22),
+    Color(0xffe74c3c),
+  ];
 
   /// In calendar view (week), display weekend days if there are events in them
   bool displaySunday = false;
@@ -118,10 +128,10 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
 
     List<CalendarEventData> eventsToAdd = [];
     if (calendarFormat == CalendarTimeFormat.month) {
-      eventsToAdd = selectedMonthCalendarEvents(scheduleCardsPalette);
+      eventsToAdd = selectedMonthCalendarEvents();
     }
     else {
-      eventsToAdd = selectedWeekCalendarEvents(scheduleCardsPalette);
+      eventsToAdd = selectedWeekCalendarEvents();
     }
     controller.addAll(eventsToAdd);
   }
@@ -159,13 +169,7 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
     return courseColors[courseName] ?? Colors.red;
   }
 
-  List<CalendarEventData> selectedWeekCalendarEvents(
-      List<Color> scheduleCardsPalette) {
-    if (scheduleCardsPalette.isNotEmpty) {
-      schedulePaletteTheme = scheduleCardsPalette;
-    } else {
-      schedulePaletteTheme = AppThemeOld.schedulePaletteLight.toList();
-    }
+  List<CalendarEventData> selectedWeekCalendarEvents() {
     final List<CalendarEventData> events = [];
 
     final firstDayOfWeek = Utils.getFirstDayOfCurrentWeek(weekSelected);
@@ -188,13 +192,8 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
     return events;
   }
 
-  List<CalendarEventData> selectedMonthCalendarEvents(
-      List<Color> scheduleCardsPalette) {
-    if (scheduleCardsPalette.isNotEmpty) {
-      schedulePaletteTheme = scheduleCardsPalette;
-    } else {
-      schedulePaletteTheme = AppThemeOld.schedulePaletteLight.toList();
-    }
+  List<CalendarEventData> selectedMonthCalendarEvents() {
+
     final List<CalendarEventData> events = [];
 
     // Month view displays last week of last month, this accounts for that (additionnal hour is for the edge case of time changes)
@@ -244,9 +243,9 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
 
         if (_coursesActivities.isNotEmpty) {
           if (calendarFormat == CalendarTimeFormat.week) {
-            calendarEvents = selectedWeekCalendarEvents([]);
+            calendarEvents = selectedWeekCalendarEvents();
           } else {
-            calendarEvents = selectedMonthCalendarEvents([]);
+            calendarEvents = selectedMonthCalendarEvents();
           }
         }
       }
