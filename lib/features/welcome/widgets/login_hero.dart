@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
-import 'package:notredame/utils/app_theme_old.dart';
-
 import '../../../theme/app_palette.dart';
 
 class LoginHero extends StatefulWidget{

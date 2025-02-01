@@ -12,8 +12,6 @@ import 'package:notredame/features/ets/events/api-client/models/news.dart';
 import 'package:notredame/features/ets/events/news/news_viewmodel.dart';
 import 'package:notredame/features/ets/events/news/widgets/news_card.dart';
 import 'package:notredame/features/ets/events/news/widgets/news_card_skeleton.dart';
-import 'package:notredame/utils/app_theme_old.dart';
-import 'package:notredame/utils/utils.dart';
 
 class NewsView extends StatefulWidget {
   const NewsView({super.key});

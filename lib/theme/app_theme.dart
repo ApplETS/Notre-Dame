@@ -50,7 +50,8 @@ class AppTheme with ChangeNotifier {
     scheduleLine: const Color(0xffe8e8e8),
     tabBarLabel: Colors.black,
     tabBarIndicator: Colors.black26,
-    shimmerHighlight: const Color.fromARGB(255, 228, 225, 225)
+    shimmerHighlight: const Color.fromARGB(255, 228, 225, 225),
+    vibrantAppBar: AppPalette.etsLightRed
   );
 
   static final dark = () {
@@ -93,7 +94,8 @@ class AppTheme with ChangeNotifier {
     scheduleLine: const Color(0xff2c2929),
     tabBarLabel: Colors.white,
     tabBarIndicator: Colors.white,
-    shimmerHighlight: const Color(0xff424242)
+    shimmerHighlight: const Color(0xff424242),
+    vibrantAppBar: const Color(0xff16171a)
   );
 }
 

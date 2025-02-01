@@ -4,7 +4,6 @@ import 'package:fluttertoast/fluttertoast.dart';
 // Package imports:
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-import 'package:notredame/utils/app_theme_old.dart';
 import 'package:notredame/utils/utils.dart';
 
 import '../../../theme/app_palette.dart';

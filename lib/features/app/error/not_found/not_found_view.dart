@@ -8,7 +8,6 @@ import 'package:stacked/stacked.dart';
 
 // Project imports:
 import 'package:notredame/features/app/error/not_found/not_found_viewmodel.dart';
-import 'package:notredame/utils/app_theme_old.dart';
 
 class NotFoundView extends StatefulWidget {
   final String? pageName;

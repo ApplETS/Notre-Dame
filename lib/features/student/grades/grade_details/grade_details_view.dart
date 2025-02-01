@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 // Package imports:
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:notredame/theme/app_theme.dart';
 import 'package:stacked/stacked.dart';
 
 // Project imports:
@@ -13,10 +14,7 @@ import 'package:notredame/features/student/grades/grade_details/grades_details_v
 import 'package:notredame/features/student/grades/widgets/grade_circular_progress.dart';
 import 'package:notredame/features/student/grades/widgets/grade_evaluation_tile.dart';
 import 'package:notredame/features/student/grades/widgets/grade_not_available.dart';
-import 'package:notredame/utils/app_theme_old.dart';
 import 'package:notredame/utils/utils.dart';
-
-import '../../../../theme/app_palette.dart';
 
 class GradesDetailsView extends StatefulWidget {
   final Course course;
@@ -58,10 +56,7 @@ class _GradesDetailsViewState extends State<GradesDetailsView>
           body: NestedScrollView(
             headerSliverBuilder: (context, innerBoxScrolled) => [
               SliverAppBar(
-                backgroundColor:
-                    Theme.of(context).brightness == Brightness.light
-                        ? AppPalette.etsLightRed
-                        : AppBarTheme.of(context).backgroundColor,
+                backgroundColor: context.theme.appColors.vibrantAppBar,
                 pinned: true,
                 onStretchTrigger: () {
                   return Future<void>.value();
@@ -92,9 +87,7 @@ class _GradesDetailsViewState extends State<GradesDetailsView>
                       minWidth: MediaQuery.of(context).size.width,
                     ),
                     decoration: BoxDecoration(
-                      color: Theme.of(context).brightness == Brightness.light
-                          ? AppPalette.etsLightRed
-                          : AppThemeOld.darkTheme().appBarTheme.backgroundColor,
+                      color: context.theme.appColors.vibrantAppBar,
                     ),
                     child: Padding(
                       padding: const EdgeInsets.only(bottom: 8.0),

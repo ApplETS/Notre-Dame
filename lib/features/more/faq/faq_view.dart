@@ -74,11 +74,7 @@ class _FaqViewState extends State<FaqView> {
       padding: const EdgeInsets.only(left: 18.0, top: 18.0, bottom: 10.0),
       child: Text(
         subtitle,
-        style: Theme.of(context).textTheme.headlineSmall!.copyWith(
-              color: widget.backgroundColor == Colors.white
-                  ? Colors.black
-                  : Colors.white,
-            ),
+        style: Theme.of(context).textTheme.headlineSmall!
       ),
     );
   }
@@ -122,22 +118,14 @@ class _FaqViewState extends State<FaqView> {
           children: <Widget>[
             Text(
               title,
-              style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                    fontSize: 20,
-                    color: Theme.of(context).brightness == Brightness.light
-                        ? Colors.black
-                        : Colors.white,
-                  ),
+              style: Theme.of(context).textTheme.headlineSmall!.copyWith(
+                fontSize: 20,
+              ),
             ),
             const SizedBox(height: 12),
             Text(
               description,
-              style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                    fontSize: 16,
-                    color: Theme.of(context).brightness == Brightness.light
-                        ? Colors.black
-                        : Colors.white,
-                  ),
+              style: Theme.of(context).textTheme.bodyLarge!
             ),
           ],
         ),
@@ -226,11 +214,8 @@ class _FaqViewState extends State<FaqView> {
                 child: Text(
                   title,
                   style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                        fontSize: 18,
-                        color: Theme.of(context).brightness == Brightness.light
-                            ? Colors.black
-                            : Colors.white,
-                      ),
+                    fontSize: 18,
+                  ),
                 ),
               ),
               const SizedBox(width: 16),
@@ -242,13 +227,10 @@ class _FaqViewState extends State<FaqView> {
             ],
           ),
           const SizedBox(height: 12.0),
-          Text(description,
-              style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                    fontSize: 16,
-                    color: Theme.of(context).brightness == Brightness.light
-                        ? Colors.black
-                        : Colors.white,
-                  ))
+          Text(
+              description,
+              style: Theme.of(context).textTheme.bodyLarge!
+          )
         ],
       ),
     );

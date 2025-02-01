@@ -14,10 +14,8 @@ import 'package:notredame/features/app/integration/networking_service.dart';
 import 'package:notredame/features/app/widgets/navigation/bottom_bar.dart';
 import 'package:notredame/features/app/widgets/navigation/navigation_rail.dart';
 import 'package:notredame/theme/app_theme.dart';
-import 'package:notredame/utils/app_theme_old.dart';
 import 'package:notredame/utils/loading.dart';
 import 'package:notredame/utils/locator.dart';
-import 'package:notredame/utils/utils.dart';
 
 /// Basic Scaffold to avoid boilerplate code in the application.
 /// Contains a loader controlled by [_isLoading]

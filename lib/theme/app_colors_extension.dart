@@ -9,6 +9,7 @@ class AppColorsExtension extends ThemeExtension<AppColorsExtension> {
     required this.tabBarLabel,
     required this.tabBarIndicator,
     required this.shimmerHighlight,
+    required this.vibrantAppBar
   });
 
   final Color appBar;
@@ -18,6 +19,7 @@ class AppColorsExtension extends ThemeExtension<AppColorsExtension> {
   final Color tabBarLabel;
   final Color tabBarIndicator;
   final Color shimmerHighlight;
+  final Color vibrantAppBar;
 
   @override
   ThemeExtension<AppColorsExtension> copyWith({
@@ -27,7 +29,8 @@ class AppColorsExtension extends ThemeExtension<AppColorsExtension> {
     Color? scheduleLine,
     Color? tabBarLabel,
     Color? tabBarIndicator,
-    Color? shimmerHighlight
+    Color? shimmerHighlight,
+    Color? vibrantAppBar
   }) {
     return AppColorsExtension(
       appBar: appBar ?? this.appBar,
@@ -36,7 +39,8 @@ class AppColorsExtension extends ThemeExtension<AppColorsExtension> {
       scheduleLine: scheduleLine ?? this.scheduleLine,
       tabBarLabel: tabBarLabel ?? this.tabBarLabel,
       tabBarIndicator: tabBarIndicator ?? this.tabBarIndicator,
-      shimmerHighlight: shimmerHighlight ?? this.shimmerHighlight
+      shimmerHighlight: shimmerHighlight ?? this.shimmerHighlight,
+      vibrantAppBar: vibrantAppBar ?? this.vibrantAppBar
     );
   }
 
@@ -56,7 +60,8 @@ class AppColorsExtension extends ThemeExtension<AppColorsExtension> {
       scheduleLine: Color.lerp(scheduleLine, other.scheduleLine, t)!,
       tabBarLabel: Color.lerp(tabBarLabel, other.tabBarLabel, t)!,
       tabBarIndicator: Color.lerp(tabBarIndicator, other.tabBarIndicator, t)!,
-      shimmerHighlight: Color.lerp(shimmerHighlight, other.shimmerHighlight, t)!
+      shimmerHighlight: Color.lerp(shimmerHighlight, other.shimmerHighlight, t)!,
+      vibrantAppBar: Color.lerp(vibrantAppBar, other.vibrantAppBar, t)!
     );
   }
 }

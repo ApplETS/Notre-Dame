@@ -9,7 +9,6 @@ import 'package:stacked/stacked.dart';
 import 'package:notredame/features/more/settings/choose_language_viewmodel.dart';
 import 'package:notredame/utils/app_theme_old.dart';
 import 'package:notredame/utils/utils.dart';
-
 import '../../../theme/app_palette.dart';
 
 class ChooseLanguageView extends StatefulWidget {

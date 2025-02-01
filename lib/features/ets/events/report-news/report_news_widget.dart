@@ -10,9 +10,6 @@ import 'package:stacked/stacked.dart';
 // Project imports:
 import 'package:notredame/features/ets/events/report-news/report_news.dart';
 import 'package:notredame/features/ets/events/report-news/report_news_viewmodel.dart';
-import 'package:notredame/utils/app_theme_old.dart';
-import 'package:notredame/utils/utils.dart';
-
 import '../../../../theme/app_palette.dart';
 
 class ReportNews extends StatefulWidget {

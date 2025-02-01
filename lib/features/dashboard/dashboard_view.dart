@@ -23,7 +23,6 @@ import 'package:notredame/features/dashboard/progress_bar_text_options.dart';
 import 'package:notredame/features/dashboard/widgets/course_activity_tile.dart';
 import 'package:notredame/features/dashboard/widgets/haptics_container.dart';
 import 'package:notredame/features/student/grades/widgets/grade_button.dart';
-import 'package:notredame/utils/app_theme_old.dart';
 import 'package:notredame/utils/loading.dart';
 import 'package:notredame/utils/locator.dart';
 import 'package:notredame/features/app/integration/launch_url_service.dart';
@@ -472,39 +471,37 @@ class _DashboardViewState extends State<DashboardView>
                         child: Align(
                           alignment: Alignment.centerLeft,
                           child: Text(model.broadcastTitle,
-                              style: Theme.of(context)
-                                  .primaryTextTheme
-                                  .titleLarge),
+                              style: context.theme.primaryTextTheme.titleLarge),
                         ),
                       ),
                       Align(
                         alignment: Alignment.centerRight,
                         child: InkWell(
                           child: getBroadcastIcon(
-                              broadcastMsgType, broadcastMsgUrl),
+                              broadcastMsgType, broadcastMsgUrl, context),
                         ),
                       ),
                     ],
                   ),
                   // main text
                   Text(model.broadcastMessage,
-                    style: Theme.of(context).primaryTextTheme.bodyMedium)
+                    style: context.theme.primaryTextTheme.bodyMedium)
                 ]),
         ));
   }
 
-  Widget getBroadcastIcon(String type, String url) {
+  Widget getBroadcastIcon(String type, String url, BuildContext context) {
     switch (type) {
       case "warning":
-        return const Icon(
+        return Icon(
           Icons.warning_rounded,
-          color: AppThemeOld.lightThemeBackground,
+          color: context.theme.primaryTextTheme.titleLarge!.color,
           size: 36.0,
         );
       case "alert":
-        return const Icon(
+        return Icon(
           Icons.error,
-          color: AppThemeOld.lightThemeBackground,
+          color: context.theme.primaryTextTheme.titleLarge!.color,
           size: 36.0,
         );
       case "link":
@@ -512,16 +509,16 @@ class _DashboardViewState extends State<DashboardView>
           onPressed: () {
             DashboardViewModel.launchBroadcastUrl(url);
           },
-          icon: const Icon(
+          icon: Icon(
             Icons.open_in_new,
-            color: AppThemeOld.lightThemeBackground,
+            color: context.theme.primaryTextTheme.titleLarge!.color,
             size: 30.0,
           ),
         );
     }
-    return const Icon(
+    return Icon(
       Icons.campaign,
-      color: AppThemeOld.lightThemeBackground,
+      color: Theme.of(context).primaryTextTheme.titleLarge!.color,
       size: 36.0,
     );
   }

@@ -12,9 +12,6 @@ class AppThemeOld {
   // Primary dark
   static const Color primaryDark = Color(0xff121212);
 
-  // News tags color palettes
-
-
   // News colors
   static const Color newsAccentColorDark = Color(0xff00cdb7);
   static const Color newsAccentColorLight = Color(0xff007c6f);

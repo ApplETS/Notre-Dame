@@ -26,7 +26,6 @@ import 'package:notredame/features/schedule/widgets/calendar_selector.dart';
 import 'package:notredame/utils/app_theme_old.dart';
 import 'package:notredame/utils/locator.dart';
 import 'package:notredame/utils/utils.dart';
-
 import '../../../../../theme/app_palette.dart';
 
 class NewsDetailsView extends StatefulWidget {
@@ -268,8 +267,8 @@ class _NewsDetailsViewState extends State<NewsDetailsView> {
                                   author.substring(0, 1),
                                   style: TextStyle(
                                       fontSize: 24,
-                                      color: Utils.getColorByBrightness(
-                                          context, Colors.black, Colors.white)),
+                                      color: context.theme.textTheme.bodyMedium!.color
+                                  ),
                                 ),
                               );
                             },

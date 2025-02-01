@@ -9,8 +9,6 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 // Project imports:
 import 'package:notredame/features/ets/quick-link/models/quick_link.dart';
-import 'package:notredame/utils/app_theme_old.dart';
-
 import '../../../../theme/app_palette.dart';
 
 List<QuickLink> quickLinks(AppIntl intl) => [

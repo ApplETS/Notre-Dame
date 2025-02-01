@@ -9,7 +9,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 // Project imports:
 import 'package:notredame/features/app/signets-api/models/program.dart';
-import 'package:notredame/utils/app_theme_old.dart';
+import 'package:notredame/theme/app_theme.dart';
 
 import '../../../theme/app_palette.dart';
 
@@ -50,8 +50,6 @@ class _StudentProgramState extends State<StudentProgram>
 
   @override
   Widget build(BuildContext context) {
-    final bool isLightMode = Theme.of(context).brightness == Brightness.light;
-
     final List<String> dataTitles = [
       AppIntl.of(context)!.profile_code_program,
       AppIntl.of(context)!.profile_average_program,
@@ -97,7 +95,7 @@ class _StudentProgramState extends State<StudentProgram>
         title: Text(
           widget._program.name,
           style: TextStyle(
-            color: isLightMode ? Colors.black : Colors.white,
+            color: context.theme.textTheme.bodyMedium!.color
           ),
         ),
         trailing: Padding(

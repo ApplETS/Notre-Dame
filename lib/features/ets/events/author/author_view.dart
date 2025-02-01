@@ -19,7 +19,6 @@ import 'package:notredame/features/ets/events/social/models/social_link.dart';
 import 'package:notredame/features/ets/events/social/social_links_card.dart';
 import 'package:notredame/utils/app_theme_old.dart';
 import 'package:notredame/utils/utils.dart';
-
 import '../../../../theme/app_palette.dart';
 
 class AuthorView extends StatefulWidget {

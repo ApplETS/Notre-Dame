@@ -8,7 +8,6 @@ import 'package:notredame/utils/locator.dart';
 import 'package:notredame/utils/utils.dart';
 import 'package:notredame/features/app/navigation/navigation_service.dart';
 import 'package:notredame/features/app/navigation/router_paths.dart';
-
 import '../../../theme/app_palette.dart';
 
 class LoginFooter extends StatefulWidget{

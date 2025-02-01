@@ -5,8 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 // Project imports:
-import 'package:notredame/utils/app_theme_old.dart';
-
 import '../../../../theme/app_palette.dart';
 
 class GradeNotAvailable extends StatelessWidget {

@@ -9,7 +9,6 @@ import 'package:stacked/stacked.dart';
 import 'package:notredame/features/app/startup/startup_viewmodel.dart';
 import 'package:notredame/utils/app_theme_old.dart';
 import 'package:notredame/utils/utils.dart';
-
 import '../../../theme/app_palette.dart';
 
 class StartUpView extends StatelessWidget {

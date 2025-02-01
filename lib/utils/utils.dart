@@ -28,10 +28,6 @@ mixin Utils {
     return Localizations.localeOf(context).toString() == "fr" ? fr : en;
   }
 
-  static bool isDarkTheme(BuildContext context) {
-    return Theme.of(context).brightness == Brightness.dark;
-  }
-
   /// Get first day of the week depending on startingDay which corresponds to weekday
   static DateTime getFirstDayOfCurrentWeek(
       DateTime currentDate) {
