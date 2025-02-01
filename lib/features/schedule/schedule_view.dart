@@ -22,8 +22,7 @@ import 'package:notredame/features/schedule/schedule_viewmodel.dart';
 import 'package:notredame/features/schedule/widgets/calendar_selector.dart';
 import 'package:notredame/features/schedule/widgets/schedule_calendar_tile.dart';
 import 'package:notredame/utils/locator.dart';
-
-import '../../theme/app_palette.dart';
+import 'package:notredame/theme/app_palette.dart';
 
 class ScheduleView extends StatefulWidget {
   @visibleForTesting
@@ -220,12 +219,12 @@ class _ScheduleViewState extends State<ScheduleView>
           leftIcon: Icon(
             Icons.chevron_left,
             size: 30,
-            color: context.theme.textTheme.bodyMedium!.color!,
+            color: context.theme.textTheme.bodyMedium!.color,
           ),
           rightIcon: Icon(
             Icons.chevron_right,
             size: 30,
-            color: context.theme.textTheme.bodyMedium!.color!,
+            color: context.theme.textTheme.bodyMedium!.color,
           )),
       startDay: calendar_view.WeekDays.sunday,
       weekDays: [
@@ -300,12 +299,12 @@ class _ScheduleViewState extends State<ScheduleView>
         leftIcon: Icon(
           Icons.chevron_left,
           size: 30,
-          color: context.theme.textTheme.bodyMedium!.color!,
+          color: context.theme.textTheme.bodyMedium!.color,
         ),
         rightIcon: Icon(
           Icons.chevron_right,
           size: 30,
-          color: context.theme.textTheme.bodyMedium!.color!,
+          color: context.theme.textTheme.bodyMedium!.color,
         )),
       weekDayStringBuilder: (p0) {
         return weekTitles[p0];

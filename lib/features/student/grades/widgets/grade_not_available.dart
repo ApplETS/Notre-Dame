@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 // Project imports:
-import '../../../../theme/app_palette.dart';
+import 'package:notredame/theme/app_palette.dart';
 
 class GradeNotAvailable extends StatelessWidget {
   final VoidCallback? onPressed;

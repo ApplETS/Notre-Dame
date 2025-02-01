@@ -7,7 +7,7 @@ import 'package:stacked/stacked.dart';
 // Project imports:
 import 'package:notredame/features/ets/quick-link/models/quick_link.dart';
 import 'package:notredame/features/ets/quick-link/widgets/web_link_card_viewmodel.dart';
-import '../../../../theme/app_palette.dart';
+import 'package:notredame/theme/app_palette.dart';
 
 class WebLinkCard extends StatelessWidget {
   final QuickLink _links;

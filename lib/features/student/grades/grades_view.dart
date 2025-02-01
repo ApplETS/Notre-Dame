@@ -14,7 +14,7 @@ import 'package:notredame/features/student/grades/grades_viewmodel.dart';
 import 'package:notredame/features/student/grades/widgets/grade_button.dart';
 import 'package:notredame/utils/loading.dart';
 import 'package:notredame/utils/locator.dart';
-import '../../../theme/app_palette.dart';
+import 'package:notredame/theme/app_palette.dart';
 
 class GradesView extends StatefulWidget {
   const GradesView({super.key});

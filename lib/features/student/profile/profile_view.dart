@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 // Package imports:
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:notredame/features/student/profile/program_completion.dart';
+import 'package:notredame/theme/app_palette.dart';
 import 'package:stacked/stacked.dart';
 
 // Project imports:
@@ -14,8 +15,6 @@ import 'package:notredame/features/student/profile/profile_viewmodel.dart';
 import 'package:notredame/features/student/widgets/student_program.dart';
 import 'package:notredame/utils/loading.dart';
 import 'package:notredame/utils/locator.dart';
-
-import '../../../theme/app_palette.dart';
 
 class ProfileView extends StatefulWidget {
   const ProfileView({super.key});

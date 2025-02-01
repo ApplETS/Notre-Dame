@@ -11,7 +11,7 @@ import 'package:notredame/features/app/error/outage/widgets/outage_social_sectio
 import 'package:notredame/features/app/error/outage/widgets/outage_text_section.dart';
 import 'package:notredame/utils/app_theme_old.dart';
 import 'package:notredame/utils/utils.dart';
-import '../../../../theme/app_palette.dart';
+import 'package:notredame/theme/app_palette.dart';
 
 class OutageView extends StatelessWidget {
   const OutageView({super.key});

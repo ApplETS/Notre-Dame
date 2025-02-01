@@ -6,6 +6,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
+import 'package:notredame/theme/app_palette.dart';
 import 'package:notredame/theme/app_theme.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:shimmer/shimmer.dart';
@@ -26,7 +27,6 @@ import 'package:notredame/features/schedule/widgets/calendar_selector.dart';
 import 'package:notredame/utils/app_theme_old.dart';
 import 'package:notredame/utils/locator.dart';
 import 'package:notredame/utils/utils.dart';
-import '../../../../../theme/app_palette.dart';
 
 class NewsDetailsView extends StatefulWidget {
   final News news;
@@ -209,8 +209,7 @@ class _NewsDetailsViewState extends State<NewsDetailsView> {
       child: Text(
         title,
         style: Theme.of(context).textTheme.bodySmall!.copyWith(
-            color:
-                Utils.getColorByBrightness(context, Colors.black, Colors.white),
+            color: context.theme.textTheme.bodyMedium!.color,
             fontSize: 25,
             fontWeight: FontWeight.bold),
       ),
@@ -281,8 +280,8 @@ class _NewsDetailsViewState extends State<NewsDetailsView> {
                                 author.substring(0, 1),
                                 style: TextStyle(
                                     fontSize: 24,
-                                    color: Utils.getColorByBrightness(
-                                        context, Colors.black, Colors.white)),
+                                    color: context.theme.textTheme.bodyMedium!.color
+                                )
                               ),
                             ),
                           ],
@@ -351,8 +350,7 @@ class _NewsDetailsViewState extends State<NewsDetailsView> {
               Text(
                 formattedPublishedDate,
                 style: TextStyle(
-                    color: Utils.getColorByBrightness(
-                        context, Colors.black, Colors.white)),
+                    color: context.theme.textTheme.bodyMedium!.color),
               ),
               const SizedBox(height: 12.0),
             ],

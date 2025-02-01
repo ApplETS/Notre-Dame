@@ -11,9 +11,9 @@ import 'package:intl/intl.dart';
 // Project imports:
 import 'package:notredame/features/app/signets-api/models/course_evaluation.dart';
 import 'package:notredame/features/student/grades/widgets/grade_circular_progress.dart';
+import 'package:notredame/theme/app_theme.dart';
 import 'package:notredame/utils/utils.dart';
-
-import '../../../../theme/app_palette.dart';
+import 'package:notredame/theme/app_palette.dart';
 
 class GradeEvaluationTile extends StatefulWidget {
   final bool completed;
@@ -102,8 +102,7 @@ class _GradeEvaluationTileState extends State<GradeEvaluationTile>
                         widget.evaluation.title,
                         style: TextStyle(
                           fontSize: 16,
-                          color: Utils.getColorByBrightness(
-                              context, Colors.black, Colors.white),
+                          color: context.theme.textTheme.bodyMedium!.color
                         ),
                       ),
                       Text(
@@ -111,8 +110,7 @@ class _GradeEvaluationTileState extends State<GradeEvaluationTile>
                             .grades_weight(widget.evaluation.weight),
                         style: TextStyle(
                           fontSize: 14,
-                          color: Utils.getColorByBrightness(
-                              context, Colors.black, Colors.white),
+                          color: context.theme.textTheme.bodyMedium!.color,
                         ),
                       ),
                     ],

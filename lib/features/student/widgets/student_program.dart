@@ -10,8 +10,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 // Project imports:
 import 'package:notredame/features/app/signets-api/models/program.dart';
 import 'package:notredame/theme/app_theme.dart';
-
-import '../../../theme/app_palette.dart';
+import 'package:notredame/theme/app_palette.dart';
 
 class StudentProgram extends StatefulWidget {
   final Program _program;

@@ -14,8 +14,7 @@ import 'package:notredame/features/ets/quick-link/widgets/security-info/emergenc
 import 'package:notredame/features/ets/quick-link/widgets/security-info/security_viewmodel.dart';
 import 'package:notredame/utils/locator.dart';
 import 'package:notredame/features/app/integration/launch_url_service.dart';
-
-import '../../../../../theme/app_palette.dart';
+import 'package:notredame/theme/app_palette.dart';
 
 class SecurityView extends StatefulWidget {
   const SecurityView({super.key});

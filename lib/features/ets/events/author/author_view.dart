@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
+import 'package:notredame/theme/app_palette.dart';
 import 'package:notredame/theme/app_theme.dart';
 import 'package:stacked/stacked.dart';
 
@@ -19,7 +20,6 @@ import 'package:notredame/features/ets/events/social/models/social_link.dart';
 import 'package:notredame/features/ets/events/social/social_links_card.dart';
 import 'package:notredame/utils/app_theme_old.dart';
 import 'package:notredame/utils/utils.dart';
-import '../../../../theme/app_palette.dart';
 
 class AuthorView extends StatefulWidget {
   final String authorId;
@@ -277,8 +277,7 @@ class _AuthorViewState extends State<AuthorView> {
                               model.author?.organization?.substring(0, 1) ?? '',
                               style: TextStyle(
                                   fontSize: 56,
-                                  color: Utils.getColorByBrightness(
-                                      context, Colors.black, Colors.white)),
+                                  color: context.theme.textTheme.bodyMedium!.color),
                             ),
                           ),
                       ],

@@ -2,7 +2,7 @@
 import 'package:flutter/material.dart';
 
 // Project imports:
-import '../../../../../theme/app_palette.dart';
+import 'package:notredame/theme/app_palette.dart';
 
 class OutageImageSection extends StatelessWidget {
   const OutageImageSection({super.key});
