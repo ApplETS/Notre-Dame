@@ -57,7 +57,6 @@ class _DashboardViewState extends State<DashboardView>
           return BaseScaffold(
               isInteractionLimitedWhileLoading: false,
               appBar: AppBar(
-                // backgroundColor: context.theme.appColors.primary,
                   title: Text(AppIntl.of(context)!.title_dashboard),
                   centerTitle: false,
                   actions: [
