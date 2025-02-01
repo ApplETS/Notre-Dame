@@ -38,10 +38,8 @@ class AuthorInfoSkeleton extends StatelessWidget {
 
   Widget _shimmerTextEffect(BuildContext context, double height) {
     return Shimmer.fromColors(
-      baseColor: context.theme.appColors.background,
-      highlightColor: Theme.of(context).brightness == Brightness.light
-          ? AppThemeOld.lightThemeAccent
-          : AppThemeOld.darkThemeAccent,
+      baseColor: context.theme.appColors.backgroundAlt,
+      highlightColor: context.theme.appColors.shimmerHighlight,
       child: Container(
         width: double.infinity,
         height: height,
@@ -67,10 +65,8 @@ class AuthorInfoSkeleton extends StatelessWidget {
 
   Widget _shimmerIconButton(BuildContext context) {
     return Shimmer.fromColors(
-      baseColor: context.theme.appColors.background,
-      highlightColor: Theme.of(context).brightness == Brightness.light
-          ? AppThemeOld.lightThemeAccent
-          : AppThemeOld.darkThemeAccent,
+      baseColor: context.theme.appColors.backgroundAlt,
+      highlightColor: context.theme.appColors.shimmerHighlight,
       child: IconButton(
         onPressed: () {}, // Placeholder onPressed function
         icon: Icon(
@@ -100,10 +96,8 @@ class AvatarSkeleton extends StatelessWidget {
           height: 120,
           child: ClipOval(
             child: Shimmer.fromColors(
-              baseColor: context.theme.appColors.background,
-              highlightColor: Theme.of(context).brightness == Brightness.light
-                  ? AppThemeOld.lightThemeAccent
-                  : AppThemeOld.darkThemeAccent,
+              baseColor: context.theme.appColors.backgroundAlt,
+              highlightColor: context.theme.appColors.shimmerHighlight,
               child: Container(
                 color: Colors.white,
               ),

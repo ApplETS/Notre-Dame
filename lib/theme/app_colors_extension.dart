@@ -4,27 +4,39 @@ class AppColorsExtension extends ThemeExtension<AppColorsExtension> {
   AppColorsExtension({
     required this.appBar,
     required this.navBar,
-    required this.background,
-    required this.scheduleLineColor
+    required this.backgroundAlt,
+    required this.scheduleLine,
+    required this.tabBarLabel,
+    required this.tabBarIndicator,
+    required this.shimmerHighlight,
   });
 
   final Color appBar;
   final Color navBar;
-  final Color background;
-  final Color scheduleLineColor;
+  final Color backgroundAlt;
+  final Color scheduleLine;
+  final Color tabBarLabel;
+  final Color tabBarIndicator;
+  final Color shimmerHighlight;
 
   @override
   ThemeExtension<AppColorsExtension> copyWith({
     Color? appBar,
     Color? navBar,
-    Color? background,
-    Color? scheduleLineColor
+    Color? backgroundAlt,
+    Color? scheduleLine,
+    Color? tabBarLabel,
+    Color? tabBarIndicator,
+    Color? shimmerHighlight
   }) {
     return AppColorsExtension(
       appBar: appBar ?? this.appBar,
       navBar: navBar ?? this.navBar,
-      background: background ?? this.background,
-      scheduleLineColor: scheduleLineColor ?? this.scheduleLineColor
+      backgroundAlt: backgroundAlt ?? this.backgroundAlt,
+      scheduleLine: scheduleLine ?? this.scheduleLine,
+      tabBarLabel: tabBarLabel ?? this.tabBarLabel,
+      tabBarIndicator: tabBarIndicator ?? this.tabBarIndicator,
+      shimmerHighlight: shimmerHighlight ?? this.shimmerHighlight
     );
   }
 
@@ -40,8 +52,11 @@ class AppColorsExtension extends ThemeExtension<AppColorsExtension> {
     return AppColorsExtension(
       appBar: Color.lerp(appBar, other.appBar, t)!,
       navBar: Color.lerp(navBar, other.navBar, t)!,
-      background: Color.lerp(background, other.background, t)!,
-      scheduleLineColor: Color.lerp(scheduleLineColor, other.scheduleLineColor, t)!
+      backgroundAlt: Color.lerp(backgroundAlt, other.backgroundAlt, t)!,
+      scheduleLine: Color.lerp(scheduleLine, other.scheduleLine, t)!,
+      tabBarLabel: Color.lerp(tabBarLabel, other.tabBarLabel, t)!,
+      tabBarIndicator: Color.lerp(tabBarIndicator, other.tabBarIndicator, t)!,
+      shimmerHighlight: Color.lerp(shimmerHighlight, other.shimmerHighlight, t)!
     );
   }
 }

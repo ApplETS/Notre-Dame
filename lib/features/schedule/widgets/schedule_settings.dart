@@ -50,7 +50,7 @@ class _ScheduleSettingsState extends State<ScheduleSettings> {
                     if (widget.showHandle)
                       Container(
                         decoration: BoxDecoration(
-                          color: context.theme.appColors.background,
+                          color: context.theme.appColors.backgroundAlt,
                         ),
                         child: Center(
                           child: Padding(
@@ -69,7 +69,7 @@ class _ScheduleSettingsState extends State<ScheduleSettings> {
                     Container(
                       width: MediaQuery.of(context).size.width,
                       decoration: BoxDecoration(
-                        color: context.theme.appColors.background,
+                        color: context.theme.appColors.backgroundAlt,
                       ),
                       child: Center(
                         child: Padding(
@@ -164,7 +164,7 @@ class _ScheduleSettingsState extends State<ScheduleSettings> {
 
     return Card(
         elevation: 4,
-        color: context.theme.appColors.background,
+        color: context.theme.appColors.backgroundAlt,
         child: Padding(
             padding: const EdgeInsets.only(top: 16.0, bottom: 8),
             child: Column(
@@ -247,7 +247,7 @@ class _ScheduleSettingsState extends State<ScheduleSettings> {
 
     return Card(
         elevation: 4,
-        color: context.theme.appColors.background,
+        color: context.theme.appColors.backgroundAlt,
         child: Padding(
             padding: const EdgeInsets.only(top: 16.0, bottom: 8),
             child: Column(children: cardContent)));

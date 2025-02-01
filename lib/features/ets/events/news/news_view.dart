@@ -109,12 +109,12 @@ class _NewsViewState extends State<NewsView> {
                                             hintText:
                                                 AppIntl.of(context)!.search,
                                             filled: true,
-                                            fillColor:
-                                                Utils.getColorByBrightness(
-                                                    context,
-                                                    AppThemeOld.lightThemeAccent,
-                                                    Theme.of(context)
-                                                        .cardColor),
+                                            // fillColor:
+                                                // Utils.getColorByBrightness(
+                                                //     context,
+                                                //     AppThemeOld.lightThemeAccent,
+                                                //     Theme.of(context)
+                                                //         .cardColor),
                                             border: OutlineInputBorder(
                                               borderSide: BorderSide.none,
                                               borderRadius:

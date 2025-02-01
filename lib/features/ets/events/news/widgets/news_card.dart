@@ -11,7 +11,6 @@ import 'package:timeago/timeago.dart' as timeago;
 import 'package:notredame/features/app/navigation/navigation_service.dart';
 import 'package:notredame/features/app/navigation/router_paths.dart';
 import 'package:notredame/features/ets/events/api-client/models/news.dart';
-import 'package:notredame/utils/app_theme_old.dart';
 import 'package:notredame/utils/locator.dart';
 
 class NewsCard extends StatefulWidget {
@@ -87,10 +86,8 @@ class _NewsCardState extends State<NewsCard> {
 
   Widget _shimmerEffect() {
     return Shimmer.fromColors(
-      baseColor: context.theme.appColors.background,
-      highlightColor: Theme.of(context).brightness == Brightness.light
-          ? AppThemeOld.lightThemeAccent
-          : AppThemeOld.darkThemeAccent,
+      baseColor: context.theme.appColors.backgroundAlt,
+      highlightColor: context.theme.appColors.shimmerHighlight,
       child: Container(
         height: 200,
         decoration: BoxDecoration(

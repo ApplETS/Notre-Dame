@@ -96,24 +96,18 @@ class _ScheduleViewState extends State<ScheduleView>
   Widget displaySchedule(ScheduleViewModel model) {
     final calendar_view.EventController eventController = calendar_view.EventController();
 
-    final backgroundColor = context.theme.appColors.background;
-    final scheduleLineColor = context.theme.appColors.scheduleLineColor;
-    final chevronColor = context.theme.appColors.background;
-    final textColor = Theme.of(context).brightness == Brightness.light
-        ? AppThemeOld.primaryDark
-        : AppThemeOld.lightThemeAccent;
     final scheduleCardsPalette = Theme.of(context).brightness == Brightness.light
         ? AppThemeOld.schedulePaletteLight.toList()
         : AppThemeOld.schedulePaletteDark.toList();
 
     if (model.calendarFormat == CalendarTimeFormat.month) {
-      return _buildCalendarViewMonthly(model, context, eventController, backgroundColor, chevronColor, scheduleLineColor, textColor, scheduleCardsPalette);
+      return _buildCalendarViewMonthly(model, context, eventController, scheduleCardsPalette);
     }
     if (model.calendarFormat == CalendarTimeFormat.week) {
-      return _buildCalendarViewWeekly(model, context, eventController, backgroundColor, chevronColor, scheduleLineColor, scheduleCardsPalette);
+      return _buildCalendarViewWeekly(model, context, eventController, scheduleCardsPalette);
     }
     if (!model.calendarViewSetting) {
-      return _buildCalendarViewDaily(model, context, eventController, backgroundColor, chevronColor, scheduleLineColor);
+      return _buildCalendarViewDaily(model, context, eventController);
     }
 
     return _buildListView(model, context, eventController);
@@ -159,10 +153,7 @@ class _ScheduleViewState extends State<ScheduleView>
   Widget _buildCalendarViewDaily(
       ScheduleViewModel model,
       BuildContext context,
-      calendar_view.EventController eventController,
-      Color backgroundColor,
-      Color chevronColor,
-      Color scheduleLineColor) {
+      calendar_view.EventController eventController) {
     final double heightPerMinute = (MediaQuery.of(context).size.height / 1200).clamp(0.45, 1.0);
     return Column(
       children: [
@@ -179,14 +170,14 @@ class _ScheduleViewState extends State<ScheduleView>
                     model.handleViewChanged(date, eventController, []);
                   }
                 }),
-                backgroundColor: backgroundColor,
+                backgroundColor: context.theme.scaffoldBackgroundColor,
                 initialDay: model.daySelected,
                 // height occupied by 1 minute time span.
                 hourIndicatorSettings: calendar_view.HourIndicatorSettings(
-                  color: scheduleLineColor,
+                  color: context.theme.appColors.scheduleLine,
                 ),
                 liveTimeIndicatorSettings: calendar_view.LiveTimeIndicatorSettings(
-                  color: chevronColor,
+                  color: context.theme.textTheme.bodyMedium!.color!,
                 ),
                 heightPerMinute: heightPerMinute,
                 scrollOffset: heightPerMinute * 60 * 7.5,
@@ -209,9 +200,6 @@ class _ScheduleViewState extends State<ScheduleView>
       ScheduleViewModel model,
       BuildContext context,
       calendar_view.EventController eventController,
-      Color backgroundColor,
-      Color chevronColor,
-      Color scheduleLineColor,
       List<Color> scheduleCardsPalette) {
     final double heightPerMinute =
         (MediaQuery.of(context).size.height / 1200).clamp(0.45, 1.0);
@@ -224,7 +212,7 @@ class _ScheduleViewState extends State<ScheduleView>
       onPageChange: (date, page) => setState(() {
         model.handleViewChanged(date, eventController, []);
       }),
-      backgroundColor: backgroundColor,
+      backgroundColor: context.theme.scaffoldBackgroundColor,
       weekTitleHeight:
           (MediaQuery.of(context).orientation == Orientation.portrait)
               ? 60
@@ -233,17 +221,17 @@ class _ScheduleViewState extends State<ScheduleView>
           const calendar_view.SafeAreaOption(top: false, bottom: false),
       headerStyle: calendar_view.HeaderStyle(
           decoration: BoxDecoration(
-            color: backgroundColor,
+            color: context.theme.scaffoldBackgroundColor,
           ),
           leftIcon: Icon(
             Icons.chevron_left,
             size: 30,
-            color: chevronColor,
+            color: context.theme.textTheme.bodyMedium!.color!,
           ),
           rightIcon: Icon(
             Icons.chevron_right,
             size: 30,
-            color: chevronColor,
+            color: context.theme.textTheme.bodyMedium!.color!,
           )),
       startDay: calendar_view.WeekDays.sunday,
       weekDays: [
@@ -261,10 +249,10 @@ class _ScheduleViewState extends State<ScheduleView>
       heightPerMinute: heightPerMinute,
       scrollOffset: heightPerMinute * 60 * 7.5,
       hourIndicatorSettings: calendar_view.HourIndicatorSettings(
-        color: scheduleLineColor,
+        color: context.theme.appColors.scheduleLine,
       ),
       liveTimeIndicatorSettings: calendar_view.LiveTimeIndicatorSettings(
-        color: chevronColor,
+        color: context.theme.textTheme.bodyMedium!.color!,
       ),
       keepScrollOffset: true,
       timeLineStringBuilder: (date, {secondaryDate}) {
@@ -289,16 +277,12 @@ class _ScheduleViewState extends State<ScheduleView>
       ScheduleViewModel model,
       BuildContext context,
       calendar_view.EventController eventController,
-      Color backgroundColor,
-      Color chevronColor,
-      Color scheduleLineColor,
-      Color textColor,
       List<Color> scheduleCardsPalette) {
     return calendar_view.MonthView(
       key: monthViewKey,
       // to provide custom UI for month cells.
       cellAspectRatio: 0.8,
-      borderColor: scheduleLineColor,
+      borderColor: context.theme.appColors.scheduleLine,
       controller: eventController
         ..addAll(model.selectedMonthCalendarEvents(scheduleCardsPalette)),
       safeAreaOption:
@@ -309,8 +293,8 @@ class _ScheduleViewState extends State<ScheduleView>
       weekDayBuilder: (int value) => calendar_view.WeekDayTile(
           dayIndex: value,
           displayBorder: false,
-          textStyle: TextStyle(color: textColor),
-          backgroundColor: backgroundColor,
+          textStyle: TextStyle(color: context.theme.textTheme.bodyMedium!.color!),
+          backgroundColor: context.theme.scaffoldBackgroundColor,
           weekDayStringBuilder: (p0) => weekTitles[p0]),
       headerStringBuilder: (date, {secondaryDate}) {
         final locale = AppIntl.of(context)!.localeName;
@@ -318,17 +302,17 @@ class _ScheduleViewState extends State<ScheduleView>
       },
       headerStyle: calendar_view.HeaderStyle(
           decoration: BoxDecoration(
-            color: backgroundColor,
+            color: context.theme.scaffoldBackgroundColor,
           ),
           leftIcon: Icon(
             Icons.chevron_left,
             size: 30,
-            color: chevronColor,
+            color: context.theme.textTheme.bodyMedium!.color!,
         ),
           rightIcon: Icon(
             Icons.chevron_right,
             size: 30,
-            color: chevronColor,
+            color: context.theme.textTheme.bodyMedium!.color!,
         )),
       weekDayStringBuilder: (p0) {
         return weekTitles[p0];
@@ -337,15 +321,15 @@ class _ScheduleViewState extends State<ScheduleView>
       initialMonth: DateTime(DateTime.now().year, DateTime.now().month),
       cellBuilder: (date, events, _, __, ___) => calendar_view.FilledCell(
         hideDaysNotInMonth: false,
-        titleColor: textColor,
+        titleColor: context.theme.textTheme.bodyMedium!.color!,
         highlightColor: AppPalette.etsLightRed,
         shouldHighlight: date.getDayDifference(DateTime.now()) == 0,
         date: date,
         isInMonth: date.month == DateTime.now().month,
         events: events,
         backgroundColor: (date.month == DateTime.now().month)
-            ? backgroundColor.withAlpha(128)
-            : Colors.grey.withValues(alpha: .1),
+            ? context.theme.scaffoldBackgroundColor
+            : Colors.grey.withValues(alpha: .06),
       ),
     );
   }
@@ -444,7 +428,7 @@ class _ScheduleViewState extends State<ScheduleView>
   Widget _buildTableCalendar(ScheduleViewModel model, calendar_view.EventController eventController) {
     const Color selectedColor = AppPalette.etsLightRed;
     final Color todayColor = Theme.of(context).brightness == Brightness.light ? AppPalette.grey.lightGrey : AppPalette.grey.darkGrey;
-    final Color defaultColor = context.theme.appColors.scheduleLineColor;
+    final Color defaultColor = context.theme.appColors.scheduleLine;
 
     return TableCalendar(
       key: const Key("TableCalendar"),

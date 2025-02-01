@@ -439,7 +439,7 @@ class _DashboardViewState extends State<DashboardView>
                   child: Wrap(
                     children: courses
                         .map((course) => GradeButton(course,
-                            color: context.theme.appColors.background))
+                            color: context.theme.appColors.backgroundAlt))
                         .toList(),
                   ),
                 ),

@@ -44,7 +44,7 @@ class _ReportNewsState extends State<ReportNews> {
                     ? Center(
                         child: _buildReportView(context, clickedIndex, model))
                     : ColoredBox(
-                        color: context.theme.appColors.background,
+                        color: context.theme.appColors.backgroundAlt,
                         child: ListView.builder(
                           itemCount:
                               getLocalizedReportNewsItems(context).length,
@@ -61,7 +61,7 @@ class _ReportNewsState extends State<ReportNews> {
   Widget _buildHandle(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: context.theme.appColors.background,
+        color: context.theme.appColors.backgroundAlt,
         borderRadius: const BorderRadius.only(
           topLeft: Radius.circular(40.0),
           topRight: Radius.circular(40.0),
@@ -86,7 +86,7 @@ class _ReportNewsState extends State<ReportNews> {
     return Container(
       width: MediaQuery.of(context).size.width,
       decoration: BoxDecoration(
-        color: context.theme.appColors.background,
+        color: context.theme.appColors.backgroundAlt,
       ),
       child: Center(
         child: Padding(
@@ -105,7 +105,7 @@ class _ReportNewsState extends State<ReportNews> {
     return Padding(
         padding: const EdgeInsets.only(left: 16.0, right: 16.0),
         child: Card(
-          color: AppThemeOld.darkThemeAccent,
+          // color: AppThemeOld.darkThemeAccent,
           child: ListTile(
             title: Text(
               item.title,
@@ -115,7 +115,7 @@ class _ReportNewsState extends State<ReportNews> {
             trailing: const Icon(
               Icons.navigate_next,
             ),
-            tileColor: AppThemeOld.darkThemeAccent,
+            // tileColor: AppThemeOld.darkThemeAccent,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(5),
             ),

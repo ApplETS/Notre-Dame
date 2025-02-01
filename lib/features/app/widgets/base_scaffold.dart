@@ -170,7 +170,7 @@ class _BaseScaffoldState extends State<BaseScaffold> {
       alignment: Alignment.center,
       children: [
         Container(
-          color: context.theme.appColors.background,
+          color: context.theme.appColors.backgroundAlt,
           width: MediaQuery.of(context).size.width,
           height: MediaQuery.of(context).size.height / 30,
         ),

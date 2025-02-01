@@ -52,7 +52,7 @@ class _ScheduleDefaultState extends State<ScheduleDefault> {
       key: weekViewKey,
       safeAreaOption: const SafeAreaOption(bottom: false),
       controller: eventController..addAll(widget.calendarEvents),
-      backgroundColor: context.theme.appColors.background,
+      backgroundColor: context.theme.appColors.backgroundAlt,
       startDay: WeekDays.sunday,
       weekDays: [
         if (widget.displaySunday)
@@ -66,7 +66,7 @@ class _ScheduleDefaultState extends State<ScheduleDefault> {
           WeekDays.saturday
       ],
       hourIndicatorSettings: HourIndicatorSettings(
-          color: context.theme.appColors.scheduleLineColor),
+          color: context.theme.appColors.scheduleLine),
       scrollOffset: heightPerMinute * 60 * 7.5,
       timeLineStringBuilder: (date, {secondaryDate}) {
         return DateFormat('H:mm').format(date);

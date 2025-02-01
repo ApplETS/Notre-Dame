@@ -94,7 +94,7 @@ class _NewsDetailsViewState extends State<NewsDetailsView> {
                             position: PopupMenuPosition.under,
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(10)),
-                            color: context.theme.appColors.background,
+                            color: context.theme.appColors.backgroundAlt,
                             icon: const Icon(Icons.more_vert),
                             onSelected: (Menu menu) =>
                                 handleClick(menu, model.news),
@@ -255,8 +255,7 @@ class _NewsDetailsViewState extends State<NewsDetailsView> {
                 tag: 'news_author_avatar',
                 child: CircleAvatar(
                   radius: 26,
-                  backgroundColor: Utils.getColorByBrightness(context,
-                      AppThemeOld.lightThemeAccent, AppThemeOld.darkThemeAccent),
+                  backgroundColor: context.theme.appColors.shimmerHighlight,
                   child: (avatar != "")
                       ? ClipRRect(
                           borderRadius: BorderRadius.circular(26),
@@ -366,8 +365,8 @@ class _NewsDetailsViewState extends State<NewsDetailsView> {
                 Container(
                   padding: const EdgeInsets.all(8),
                   decoration: BoxDecoration(
-                    color: Utils.getColorByBrightness(context,
-                        AppThemeOld.darkThemeAccent, AppPalette.grey.darkGrey),
+                    // color: Utils.getColorByBrightness(context,
+                    //     AppThemeOld.darkThemeAccent, AppPalette.grey.darkGrey),
                     shape: BoxShape.circle,
                   ),
                   child:
@@ -388,9 +387,9 @@ class _NewsDetailsViewState extends State<NewsDetailsView> {
                       ),
                       Text(
                         formattedEventDate,
-                        style: TextStyle(
-                            color: Utils.getColorByBrightness(context,
-                                AppThemeOld.darkThemeAccent, Colors.white)),
+                        // style: TextStyle(
+                            // color: Utils.getColorByBrightness(context,
+                            //     AppThemeOld.darkThemeAccent, Colors.white)),
                         textAlign: TextAlign.right,
                       ),
                     ],
@@ -443,10 +442,8 @@ class ShimmerEffect extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Shimmer.fromColors(
-      baseColor: context.theme.appColors.background,
-      highlightColor: Theme.of(context).brightness == Brightness.light
-          ? AppThemeOld.lightThemeAccent
-          : AppThemeOld.darkThemeAccent,
+      baseColor: context.theme.appColors.backgroundAlt,
+      highlightColor: context.theme.appColors.shimmerHighlight,
       child: Container(
         height: 200,
         color: Colors.grey,

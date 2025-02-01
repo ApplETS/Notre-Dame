@@ -6,16 +6,11 @@ class AppThemeOld {
   AppThemeOld._();
 
   // Backgrounds
-  static const Color darkThemeBackgroundAccent =
-      Color.fromARGB(255, 50, 48, 48);
+  static const Color darkThemeBackgroundAccent = Color.fromARGB(255, 50, 48, 48);
   static const Color lightThemeBackground = Color(0xfffafafa);
 
   // Primary dark
   static const Color primaryDark = Color(0xff121212);
-
-  // Accent
-  static const Color lightThemeAccent = Color.fromARGB(255, 228, 225, 225);
-  static const Color darkThemeAccent = Color(0xff424242);
 
   // Schedule color palettes
   static const List<Color> schedulePaletteLight = [

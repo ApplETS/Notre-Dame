@@ -213,7 +213,7 @@ class _AuthorViewState extends State<AuthorView> {
                             ),
                           ),
                           backgroundColor: WidgetStateProperty.all<Color>(
-                              context.theme.appColors.background
+                              context.theme.appColors.backgroundAlt
                           ),
                         ),
                       ),
@@ -244,8 +244,7 @@ class _AuthorViewState extends State<AuthorView> {
                 child: Hero(
                   tag: 'news_author_avatar',
                   child: CircleAvatar(
-                    backgroundColor: Utils.getColorByBrightness(context,
-                        AppThemeOld.lightThemeAccent, AppThemeOld.darkThemeAccent),
+                    backgroundColor: context.theme.appColors.shimmerHighlight,
                     child: Stack(
                       fit: StackFit.expand,
                       children: [
