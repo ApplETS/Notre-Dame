@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
-import 'package:notredame/theme/app_palette.dart';
 import 'package:notredame/theme/app_theme.dart';
 import 'package:stacked/stacked.dart';
 
@@ -18,7 +17,6 @@ import 'package:notredame/features/ets/events/news/widgets/news_card.dart';
 import 'package:notredame/features/ets/events/news/widgets/news_card_skeleton.dart';
 import 'package:notredame/features/ets/events/social/models/social_link.dart';
 import 'package:notredame/features/ets/events/social/social_links_card.dart';
-import 'package:notredame/utils/app_theme_old.dart';
 import 'package:notredame/utils/utils.dart';
 
 class AuthorView extends StatefulWidget {
@@ -146,8 +144,7 @@ class _AuthorViewState extends State<AuthorView> {
           : SizedBox(
               width: double.infinity,
               child: Card(
-                color: Utils.getColorByBrightnessNullable(
-                    context, AppThemeOld.newsSecondaryColor, null),
+                color: context.theme.appColors.newsAuthorProfile,
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(16)),
                 key: UniqueKey(),
@@ -169,11 +166,7 @@ class _AuthorViewState extends State<AuthorView> {
                         Text(
                           author?.profileDescription ?? "",
                           style: TextStyle(
-                            color: Utils.getColorByBrightness(
-                              context,
-                              AppPalette.grey.darkGrey,
-                              AppThemeOld.newsSecondaryColor,
-                            ),
+                            color: context.theme.appColors.newsAuthorProfileDescription,
                             fontSize: 16,
                           ),
                           textAlign: TextAlign.center,

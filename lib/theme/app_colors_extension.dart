@@ -12,7 +12,9 @@ class AppColorsExtension extends ThemeExtension<AppColorsExtension> {
     required this.shimmerHighlight,
     required this.vibrantAppBar,
     required this.newsAccent,
-    required this.newsBackgroundVibrant
+    required this.newsBackgroundVibrant,
+    required this.newsAuthorProfile,
+    required this.newsAuthorProfileDescription
   });
 
   final Color appBar;
@@ -26,6 +28,8 @@ class AppColorsExtension extends ThemeExtension<AppColorsExtension> {
   final Color vibrantAppBar;
   final Color newsAccent;
   final Color newsBackgroundVibrant;
+  final Color newsAuthorProfile;
+  final Color newsAuthorProfileDescription;
 
   @override
   ThemeExtension<AppColorsExtension> copyWith({
@@ -40,6 +44,8 @@ class AppColorsExtension extends ThemeExtension<AppColorsExtension> {
     Color? vibrantAppBar,
     Color? newsAccent,
     Color? newsBackgroundVibrant,
+    Color? newsAuthorProfile,
+    Color? newsAuthorProfileDescription
   }) {
     return AppColorsExtension(
       appBar: appBar ?? this.appBar,
@@ -52,7 +58,9 @@ class AppColorsExtension extends ThemeExtension<AppColorsExtension> {
       shimmerHighlight: shimmerHighlight ?? this.shimmerHighlight,
       vibrantAppBar: vibrantAppBar ?? this.vibrantAppBar,
       newsAccent: newsAccent ?? this.newsAccent,
-      newsBackgroundVibrant: newsBackgroundVibrant ?? this.newsBackgroundVibrant
+      newsBackgroundVibrant: newsBackgroundVibrant ?? this.newsBackgroundVibrant,
+      newsAuthorProfile: newsAuthorProfile ?? this.newsAuthorProfile,
+      newsAuthorProfileDescription: newsAuthorProfileDescription ?? this.newsAuthorProfileDescription
     );
   }
 
@@ -79,6 +87,8 @@ class AppColorsExtension extends ThemeExtension<AppColorsExtension> {
       vibrantAppBar: _lerp(vibrantAppBar, other.vibrantAppBar, t),
       newsAccent: _lerp(newsAccent, other.newsAccent, t),
       newsBackgroundVibrant: _lerp(newsBackgroundVibrant, other.newsBackgroundVibrant, t),
+      newsAuthorProfile: _lerp(newsAuthorProfile, other.newsBackgroundVibrant, t),
+      newsAuthorProfileDescription: _lerp(newsAuthorProfileDescription, other.newsAuthorProfileDescription, t)
     );
   }
 }

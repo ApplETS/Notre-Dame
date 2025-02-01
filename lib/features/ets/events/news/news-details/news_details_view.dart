@@ -24,7 +24,6 @@ import 'package:notredame/features/ets/events/news/news-details/news_details_vie
 import 'package:notredame/features/ets/events/report-news/report_news_widget.dart';
 import 'package:notredame/features/schedule/calendar_selection_viewmodel.dart';
 import 'package:notredame/features/schedule/widgets/calendar_selector.dart';
-import 'package:notredame/utils/app_theme_old.dart';
 import 'package:notredame/utils/locator.dart';
 import 'package:notredame/utils/utils.dart';
 

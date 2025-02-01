@@ -54,7 +54,9 @@ class AppTheme with ChangeNotifier {
     shimmerHighlight: const Color.fromARGB(255, 228, 225, 225),
     vibrantAppBar: AppPalette.etsLightRed,
     newsAccent: const Color(0xff007c6f),
-    newsBackgroundVibrant: AppPalette.etsLightRed
+    newsBackgroundVibrant: AppPalette.etsLightRed,
+    newsAuthorProfile: const Color.fromARGB(255, 237, 237, 237),
+    newsAuthorProfileDescription: AppPalette.grey.darkGrey
   );
 
   static final dark = () {
@@ -101,7 +103,9 @@ class AppTheme with ChangeNotifier {
     shimmerHighlight: const Color(0xff424242),
     vibrantAppBar: const Color(0xff16171a),
     newsAccent: const Color(0xff00cdb7),
-    newsBackgroundVibrant: const Color.fromARGB(255, 50, 48, 48)
+    newsBackgroundVibrant: const Color.fromARGB(255, 50, 48, 48),
+    newsAuthorProfile: const Color.fromARGB(255, 31, 33, 32),
+    newsAuthorProfileDescription: const Color.fromARGB(255, 237, 237, 237)
   );
 }
 

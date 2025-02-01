@@ -7,7 +7,6 @@ import 'package:url_launcher/url_launcher.dart' as url_launch;
 
 // Project imports:
 import 'package:notredame/features/more/settings/settings_manager.dart';
-import 'package:notredame/utils/app_theme_old.dart';
 import 'package:notredame/utils/locator.dart';
 
 class LaunchUrlService {
