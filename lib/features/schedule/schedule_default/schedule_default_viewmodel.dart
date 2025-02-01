@@ -30,7 +30,7 @@ class ScheduleDefaultViewModel
   final Map<String, Color> courseColors = {};
 
   /// The color palette corresponding to the schedule courses.
-  List<Color> schedulePalette = AppPalette.schedule;
+  List<Color> schedulePalette = AppPalette.schedule.toList();
 
   ScheduleDefaultViewModel({String? sessionCode}) : _sessionCode = sessionCode;
 

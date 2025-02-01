@@ -294,18 +294,18 @@ class _ScheduleViewState extends State<ScheduleView>
         return '${DateFormat.MMMM(locale).format(date).characters.first.toUpperCase()}${DateFormat.MMMM(locale).format(date).substring(1)} ${date.year}';
       },
       headerStyle: calendar_view.HeaderStyle(
-          decoration: BoxDecoration(
-            color: context.theme.scaffoldBackgroundColor,
-          ),
-          leftIcon: Icon(
-            Icons.chevron_left,
-            size: 30,
-            color: context.theme.textTheme.bodyMedium!.color!,
+        decoration: BoxDecoration(
+          color: context.theme.scaffoldBackgroundColor,
         ),
-          rightIcon: Icon(
-            Icons.chevron_right,
-            size: 30,
-            color: context.theme.textTheme.bodyMedium!.color!,
+        leftIcon: Icon(
+          Icons.chevron_left,
+          size: 30,
+          color: context.theme.textTheme.bodyMedium!.color!,
+        ),
+        rightIcon: Icon(
+          Icons.chevron_right,
+          size: 30,
+          color: context.theme.textTheme.bodyMedium!.color!,
         )),
       weekDayStringBuilder: (p0) {
         return weekTitles[p0];

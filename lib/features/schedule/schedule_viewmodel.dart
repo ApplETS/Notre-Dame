@@ -6,6 +6,7 @@ import 'package:calendar_view/calendar_view.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:notredame/theme/app_palette.dart';
 import 'package:stacked/stacked.dart';
 import 'package:table_calendar/table_calendar.dart';
 
@@ -66,18 +67,7 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
   final Map<String, Color> courseColors = {};
 
   /// The color palette corresponding to the schedule courses.
-  List<Color> schedulePaletteTheme = [
-    Color(0xfff1c40f),
-    Color(0xffe67e22),
-    Color(0xffe91e63),
-    Color(0xff16a085),
-    Color(0xff2ecc71),
-    Color(0xff3498db),
-    Color(0xff9b59b6),
-    Color(0xff34495e),
-    Color(0xffe67e22),
-    Color(0xffe74c3c),
-  ];
+  List<Color> schedulePaletteTheme = AppPalette.schedule;
 
   /// In calendar view (week), display weekend days if there are events in them
   bool displaySunday = false;
