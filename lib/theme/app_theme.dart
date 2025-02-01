@@ -51,7 +51,8 @@ class AppTheme with ChangeNotifier {
     tabBarLabel: Colors.black,
     tabBarIndicator: Colors.black26,
     shimmerHighlight: const Color.fromARGB(255, 228, 225, 225),
-    vibrantAppBar: AppPalette.etsLightRed
+    vibrantAppBar: AppPalette.etsLightRed,
+    newsAccent: Color(0xff007c6f)
   );
 
   static final dark = () {
@@ -95,7 +96,8 @@ class AppTheme with ChangeNotifier {
     tabBarLabel: Colors.white,
     tabBarIndicator: Colors.white,
     shimmerHighlight: const Color(0xff424242),
-    vibrantAppBar: const Color(0xff16171a)
+    vibrantAppBar: const Color(0xff16171a),
+    newsAccent: Color(0xff00cdb7)
   );
 }
 

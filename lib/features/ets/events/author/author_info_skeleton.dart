@@ -5,10 +5,6 @@ import 'package:notredame/theme/app_theme.dart';
 // Package imports:
 import 'package:shimmer/shimmer.dart';
 
-// Project imports:
-import 'package:notredame/utils/app_theme_old.dart';
-import 'package:notredame/utils/utils.dart';
-
 class AuthorInfoSkeleton extends StatelessWidget {
   const AuthorInfoSkeleton({super.key});
 
@@ -71,11 +67,7 @@ class AuthorInfoSkeleton extends StatelessWidget {
         onPressed: () {}, // Placeholder onPressed function
         icon: Icon(
           Icons.link,
-          color: Utils.getColorByBrightness(
-            context,
-            AppThemeOld.newsAccentColorLight,
-            AppThemeOld.newsAccentColorDark,
-          ),
+          color: context.theme.appColors.newsAccent
         ),
       ),
     );

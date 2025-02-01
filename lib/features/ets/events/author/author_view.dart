@@ -198,11 +198,7 @@ class _AuthorViewState extends State<AuthorView> {
                         },
                         icon: FaIcon(
                           FontAwesomeIcons.link,
-                          color: Utils.getColorByBrightness(
-                            context,
-                            AppThemeOld.newsAccentColorLight,
-                            AppThemeOld.newsAccentColorDark,
-                          ),
+                          color: context.theme.appColors.newsAccent
                         ),
                         style: ButtonStyle(
                           shape:
