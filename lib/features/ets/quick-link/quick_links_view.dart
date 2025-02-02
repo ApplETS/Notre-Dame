@@ -191,7 +191,7 @@ class _QuickLinksViewState extends State<QuickLinksView>
       width: 32,
       height: 32,
       decoration: BoxDecoration(
-        color: context.theme.appColors.green,
+        color: context.theme.appColors.positive,
         shape: BoxShape.circle,
       ),
       child: IconButton(

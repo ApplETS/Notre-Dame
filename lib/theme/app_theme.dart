@@ -72,8 +72,12 @@ class AppTheme with ChangeNotifier {
     modalHandle: const Color(0xff868383),
     fadedText: const Color(0xff383838),
     fadedInvertText: const Color(0xffefefef),
-    faqCarouselCard: const Color(0xffF8F7F7),
-    green: const Color(0xff5fc263)
+    faqCarouselCard: const Color(0xfff8f7f7),
+    positive: const Color(0xff5fc263),
+    positiveText: const Color(0xff11a616),
+    negative: const Color(0xffff9393),
+    negativeText: const Color(0xffe33e3e),
+    link: const Color(0xff2a81bd)
   );
 
   static final dark = () {
@@ -129,8 +133,12 @@ class AppTheme with ChangeNotifier {
     modalHandle: const Color(0xffb9b8b8),
     fadedText: const Color(0xffc9c6c6),
     fadedInvertText: const Color(0xffaba8a8),
-    faqCarouselCard: const Color(0xff1D1B20),
-    green: const Color(0xff468f48)
+    faqCarouselCard: const Color(0xff1d1B20),
+    positive: const Color(0xff468f48),
+    positiveText: const Color(0xff8dee8f),
+    negative: const Color(0xff982a20),
+    negativeText: const Color(0xfff35948),
+    link: const Color(0xff5eb1f8)
   );
 }
 

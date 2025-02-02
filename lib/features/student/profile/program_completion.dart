@@ -44,7 +44,7 @@ class ProgramCompletionCard extends StatelessWidget {
                         strokeWidth: 10,
                         strokeCap: StrokeCap.round,
                         backgroundColor: Colors.grey[300],
-                        valueColor: AlwaysStoppedAnimation(context.theme.appColors.green),
+                        valueColor: AlwaysStoppedAnimation(context.theme.appColors.positive),
                       ),
                     ),
                   ),

@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 
 // Package imports:
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:notredame/theme/app_palette.dart';
+import 'package:notredame/theme/app_theme.dart';
 import 'package:stacked/stacked.dart';
 
 // Project imports:
@@ -37,7 +39,7 @@ class _MoreViewState extends State<MoreView> {
             TextSpan(
                 style: textStyle, text: AppIntl.of(context)!.flutter_license),
             TextSpan(
-                style: textStyle.copyWith(color: Colors.blue),
+                style: textStyle.copyWith(color: context.theme.appColors.link),
                 text: AppIntl.of(context)!.flutter_website,
                 recognizer: TapGestureRecognizer()
                   ..onTap = () =>
@@ -146,7 +148,7 @@ class _MoreViewState extends State<MoreView> {
                       pageBuilder: (context, _, __) => AlertDialog(
                         title: Text(
                           AppIntl.of(context)!.more_log_out,
-                          style: const TextStyle(color: Colors.red),
+                          style: const TextStyle(color: AppPalette.etsLightRed),
                         ),
                         content: Text(AppIntl.of(context)!
                             .more_prompt_log_out_confirmation),

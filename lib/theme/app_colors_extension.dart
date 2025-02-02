@@ -20,7 +20,11 @@ class AppColorsExtension extends ThemeExtension<AppColorsExtension> {
     required this.fadedText,
     required this.fadedInvertText,
     required this.faqCarouselCard,
-    required this.green
+    required this.positive,
+    required this.positiveText,
+    required this.negative,
+    required this.negativeText,
+    required this.link
   });
 
   final Color appBar;
@@ -41,7 +45,11 @@ class AppColorsExtension extends ThemeExtension<AppColorsExtension> {
   final Color fadedText;
   final Color fadedInvertText;
   final Color faqCarouselCard;
-  final Color green;
+  final Color positive;
+  final Color positiveText;
+  final Color negative;
+  final Color negativeText;
+  final Color link;
 
   @override
   ThemeExtension<AppColorsExtension> copyWith({
@@ -63,7 +71,11 @@ class AppColorsExtension extends ThemeExtension<AppColorsExtension> {
     Color? fadedText,
     Color? fadedInvertText,
     Color? faqCarouselCard,
-    Color? green
+    Color? positive,
+    Color? positiveText,
+    Color? negative,
+    Color? negativeText,
+    Color? link
   }) {
     return AppColorsExtension(
       appBar: appBar ?? this.appBar,
@@ -84,7 +96,11 @@ class AppColorsExtension extends ThemeExtension<AppColorsExtension> {
       fadedText: fadedText ?? this.fadedText,
       fadedInvertText: fadedInvertText ?? this.fadedInvertText,
       faqCarouselCard: faqCarouselCard ?? this.faqCarouselCard,
-      green: green ?? this.green
+      positive: positive ?? this.positive,
+      positiveText: positiveText ?? this.positiveText,
+      negative: negative ?? this.negative,
+      negativeText: negativeText ?? this.negativeText,
+      link: link ?? this.link
     );
   }
 
@@ -118,7 +134,11 @@ class AppColorsExtension extends ThemeExtension<AppColorsExtension> {
       fadedText: _lerp(fadedText, other.fadedText, t),
       fadedInvertText: _lerp(fadedInvertText, other.fadedInvertText, t),
       faqCarouselCard: _lerp(faqCarouselCard, other.faqCarouselCard, t),
-      green: _lerp(green, other.green, t)
+      positive: _lerp(positive, other.positive, t),
+      positiveText: _lerp(positiveText, other.positiveText, t),
+      negative: _lerp(negative, other.negative, t),
+      negativeText: _lerp(negativeText, other.negativeText, t),
+      link: _lerp(link, other.link, t)
     );
   }
 }

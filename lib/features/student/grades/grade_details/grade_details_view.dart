@@ -174,7 +174,7 @@ class _GradesDetailsViewState extends State<GradesDetailsView>
                                 model.course.summary?.currentMark,
                                 model.course.summary?.markOutOf,
                                 AppIntl.of(context)!.grades_current_rating,
-                                Colors.green,
+                                context.theme.appColors.positiveText,
                                 context,
                               ),
                               Padding(
@@ -183,7 +183,7 @@ class _GradesDetailsViewState extends State<GradesDetailsView>
                                   model.course.summary?.passMark,
                                   model.course.summary?.markOutOf,
                                   AppIntl.of(context)!.grades_average,
-                                  Colors.red,
+                                  context.theme.appColors.negativeText,
                                   context,
                                 ),
                               ),
