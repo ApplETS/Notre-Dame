@@ -6,6 +6,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 // Project imports:
 import 'package:notredame/features/student/profile/profile_viewmodel.dart';
+import 'package:notredame/theme/app_theme.dart';
 
 class ProgramCompletionCard extends StatelessWidget {
   final ProfileViewModel model;
@@ -43,7 +44,7 @@ class ProgramCompletionCard extends StatelessWidget {
                         strokeWidth: 10,
                         strokeCap: StrokeCap.round,
                         backgroundColor: Colors.grey[300],
-                        valueColor: const AlwaysStoppedAnimation(Colors.green),
+                        valueColor: AlwaysStoppedAnimation(context.theme.appColors.green),
                       ),
                     ),
                   ),

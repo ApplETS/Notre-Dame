@@ -72,7 +72,8 @@ class AppTheme with ChangeNotifier {
     modalHandle: const Color(0xff868383),
     fadedText: const Color(0xff383838),
     fadedInvertText: const Color(0xffefefef),
-    faqCarouselCard: const Color(0xffF8F7F7)
+    faqCarouselCard: const Color(0xffF8F7F7),
+    green: const Color(0xff5fc263)
   );
 
   static final dark = () {
@@ -128,7 +129,8 @@ class AppTheme with ChangeNotifier {
     modalHandle: const Color(0xffb9b8b8),
     fadedText: const Color(0xffc9c6c6),
     fadedInvertText: const Color(0xffaba8a8),
-    faqCarouselCard: const Color(0xff1D1B20)
+    faqCarouselCard: const Color(0xff1D1B20),
+    green: const Color(0xff468f48)
   );
 }
 

@@ -6,6 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:notredame/features/student/profile/program_completion.dart';
 import 'package:notredame/theme/app_palette.dart';
+import 'package:notredame/theme/app_theme.dart';
 import 'package:stacked/stacked.dart';
 
 // Project imports:
@@ -247,7 +248,7 @@ Card getMyBalanceCard(ProfileViewModel model, BuildContext context) {
   }
 
   return Card(
-    color: balance > 0 ? Colors.red : Colors.green,
+    color: balance > 0 ? AppPalette.etsDarkRed : context.theme.appColors.green,
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[

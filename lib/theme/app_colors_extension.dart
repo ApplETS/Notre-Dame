@@ -19,7 +19,8 @@ class AppColorsExtension extends ThemeExtension<AppColorsExtension> {
     required this.modalHandle,
     required this.fadedText,
     required this.fadedInvertText,
-    required this.faqCarouselCard
+    required this.faqCarouselCard,
+    required this.green
   });
 
   final Color appBar;
@@ -40,6 +41,7 @@ class AppColorsExtension extends ThemeExtension<AppColorsExtension> {
   final Color fadedText;
   final Color fadedInvertText;
   final Color faqCarouselCard;
+  final Color green;
 
   @override
   ThemeExtension<AppColorsExtension> copyWith({
@@ -60,7 +62,8 @@ class AppColorsExtension extends ThemeExtension<AppColorsExtension> {
     Color? modalHandle,
     Color? fadedText,
     Color? fadedInvertText,
-    Color? faqCarouselCard
+    Color? faqCarouselCard,
+    Color? green
   }) {
     return AppColorsExtension(
       appBar: appBar ?? this.appBar,
@@ -80,7 +83,8 @@ class AppColorsExtension extends ThemeExtension<AppColorsExtension> {
       modalHandle: modalHandle ?? this.modalHandle,
       fadedText: fadedText ?? this.fadedText,
       fadedInvertText: fadedInvertText ?? this.fadedInvertText,
-      faqCarouselCard: faqCarouselCard ?? this.faqCarouselCard
+      faqCarouselCard: faqCarouselCard ?? this.faqCarouselCard,
+      green: green ?? this.green
     );
   }
 
@@ -113,7 +117,8 @@ class AppColorsExtension extends ThemeExtension<AppColorsExtension> {
       modalHandle: _lerp(modalHandle, other.modalHandle, t),
       fadedText: _lerp(fadedText, other.fadedText, t),
       fadedInvertText: _lerp(fadedInvertText, other.fadedInvertText, t),
-      faqCarouselCard: _lerp(faqCarouselCard, other.faqCarouselCard, t)
+      faqCarouselCard: _lerp(faqCarouselCard, other.faqCarouselCard, t),
+      green: _lerp(green, other.green, t)
     );
   }
 }

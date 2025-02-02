@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 // Package imports:
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:notredame/theme/app_theme.dart';
 import 'package:reorderable_grid_view/reorderable_grid_view.dart';
 import 'package:stacked/stacked.dart';
 
@@ -189,8 +190,8 @@ class _QuickLinksViewState extends State<QuickLinksView>
     return Container(
       width: 32,
       height: 32,
-      decoration: const BoxDecoration(
-        color: Colors.green,
+      decoration: BoxDecoration(
+        color: context.theme.appColors.green,
         shape: BoxShape.circle,
       ),
       child: IconButton(
