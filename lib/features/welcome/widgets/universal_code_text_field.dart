@@ -3,6 +3,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'package:notredame/features/welcome/login/login_mask.dart';
 import 'package:notredame/theme/app_palette.dart';
+import 'package:notredame/theme/app_theme.dart';
 
 class UniversalCodeFormField extends StatefulWidget {
   final FormFieldValidator<String> validator;
@@ -44,18 +45,18 @@ class _UniversalCodeFormFieldState extends State<UniversalCodeFormField> {
                   width: borderRadiusOnFocus)),
           focusedErrorBorder: OutlineInputBorder(
               borderSide: BorderSide(
-                  color: errorTextColor,
+                  color: context.theme.appColors.inputError,
                   width: borderRadiusOnFocus)),
           errorBorder: OutlineInputBorder(
               borderSide: BorderSide(
-                  color: errorTextColor,
+                  color: context.theme.appColors.inputError,
                   width: borderRadiusOnFocus)),
           labelText: AppIntl.of(context)!
               .login_prompt_universal_code,
           labelStyle: const TextStyle(
               color: Colors.white54),
           errorStyle:
-          TextStyle(color: errorTextColor),
+          TextStyle(color: context.theme.appColors.inputError),
           suffixIcon: Tooltip(
               key: tooltipKey,
               triggerMode:
@@ -82,9 +83,4 @@ class _UniversalCodeFormFieldState extends State<UniversalCodeFormField> {
           LoginMask(),
         ],
       );
-
-  Color get errorTextColor => Theme.of(context).brightness == Brightness.light
-      ? Colors.amberAccent
-      : Colors.redAccent;
-
 }

@@ -70,7 +70,7 @@ class AppTheme with ChangeNotifier {
     newsAuthorProfileDescription: AppPalette.grey.darkGrey,
     modalTitle: const Color(0xffe8e5e5),
     modalHandle: const Color(0xff868383),
-    fadedText: const Color(0xff383838),
+    fadedText: const Color(0xff424242),
     fadedInvertText: const Color(0xffefefef),
     faqCarouselCard: const Color(0xfff8f7f7),
     positive: const Color(0xff5fc263),
@@ -80,7 +80,10 @@ class AppTheme with ChangeNotifier {
     link: const Color(0xff2a81bd),
     outageGif: AppPalette.grey.white,
     dayIndicatorWeekView: const Color(0x33ef3e45),
-    dayIndicatorDayView: AppPalette.grey.lightGrey
+    dayIndicatorDayView: AppPalette.grey.lightGrey,
+    loginMain: AppPalette.etsLightRed,
+    loginAccent: AppPalette.grey.white,
+    inputError: Colors.amberAccent
   );
 
   static final dark = () {
@@ -134,7 +137,7 @@ class AppTheme with ChangeNotifier {
     newsAuthorProfileDescription: const Color.fromARGB(255, 237, 237, 237),
     modalTitle: const Color(0xff232222),
     modalHandle: const Color(0xffb9b8b8),
-    fadedText: const Color(0xffc9c6c6),
+    fadedText: const Color(0xffbebbbb),
     fadedInvertText: const Color(0xffaba8a8),
     faqCarouselCard: const Color(0xff1d1B20),
     positive: const Color(0xff468f48),
@@ -144,7 +147,10 @@ class AppTheme with ChangeNotifier {
     link: const Color(0xff5eb1f8),
     outageGif: AppPalette.etsLightRed,
     dayIndicatorWeekView: const Color(0xccef3e45),
-    dayIndicatorDayView: AppPalette.grey.darkGrey
+    dayIndicatorDayView: AppPalette.grey.darkGrey,
+    loginMain: AppPalette.grey.white,
+    loginAccent: AppPalette.etsLightRed,
+    inputError: Colors.redAccent
   );
 }
 

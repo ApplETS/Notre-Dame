@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 // Package imports:
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:notredame/theme/app_theme.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
 // Project imports:
@@ -92,9 +93,7 @@ class GradeButton extends StatelessWidget {
                 child: Text(gradeString(AppIntl.of(context)!),
                     style: TextStyle(
                       fontSize: 22,
-                      color: Theme.of(context).brightness == Brightness.light
-                          ? AppPalette.grey.darkGrey
-                          : AppPalette.grey.lightGrey,
+                      color: context.theme.appColors.fadedText,
                     ))),
           )
         ],

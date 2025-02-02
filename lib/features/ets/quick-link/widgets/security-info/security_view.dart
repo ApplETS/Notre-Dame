@@ -83,7 +83,6 @@ class _SecurityViewState extends State<SecurityView> {
             Card(
               child: InkWell(
                 borderRadius: const BorderRadius.all(Radius.circular(10)),
-                splashColor: Colors.red.withAlpha(50),
                 onTap: () {
                   try {
                     _launchUrlService.call(AppIntl.of(context)!.security_emergency_number);
@@ -126,7 +125,6 @@ class _SecurityViewState extends State<SecurityView> {
             Card(
               child: InkWell(
                 borderRadius: const BorderRadius.all(Radius.circular(10)),
-                splashColor: Colors.red.withAlpha(50),
                 onTap: () => Navigator.push(
                     context,
                     MaterialPageRoute(

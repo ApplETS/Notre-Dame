@@ -27,7 +27,10 @@ class AppColorsExtension extends ThemeExtension<AppColorsExtension> {
     required this.link,
     required this.outageGif,
     required this.dayIndicatorWeekView,
-    required this.dayIndicatorDayView
+    required this.dayIndicatorDayView,
+    required this.loginMain,
+    required this.loginAccent,
+    required this.inputError
   });
 
   final Color appBar;
@@ -56,6 +59,9 @@ class AppColorsExtension extends ThemeExtension<AppColorsExtension> {
   final Color outageGif;
   final Color dayIndicatorWeekView;
   final Color dayIndicatorDayView;
+  final Color loginMain;
+  final Color loginAccent;
+  final Color inputError;
 
   @override
   ThemeExtension<AppColorsExtension> copyWith({
@@ -84,7 +90,10 @@ class AppColorsExtension extends ThemeExtension<AppColorsExtension> {
     Color? link,
     Color? outageGif,
     Color? dayIndicatorWeekView,
-    Color? dayIndicatorDayView
+    Color? dayIndicatorDayView,
+    Color? loginMain,
+    Color? loginAccent,
+    Color? inputError
   }) {
     return AppColorsExtension(
       appBar: appBar ?? this.appBar,
@@ -112,7 +121,10 @@ class AppColorsExtension extends ThemeExtension<AppColorsExtension> {
       link: link ?? this.link,
       outageGif: outageGif ?? this.link,
       dayIndicatorWeekView: dayIndicatorWeekView ?? this.dayIndicatorWeekView,
-      dayIndicatorDayView: dayIndicatorDayView ?? this.dayIndicatorDayView
+      dayIndicatorDayView: dayIndicatorDayView ?? this.dayIndicatorDayView,
+      loginMain: loginMain ?? this.loginMain,
+      loginAccent: loginAccent ?? this.loginAccent,
+      inputError: inputError ?? this.inputError
     );
   }
 
@@ -153,7 +165,10 @@ class AppColorsExtension extends ThemeExtension<AppColorsExtension> {
       link: _lerp(link, other.link, t),
       outageGif: _lerp(outageGif, other.outageGif, t),
       dayIndicatorWeekView: _lerp(dayIndicatorWeekView, other.dayIndicatorWeekView, t),
-      dayIndicatorDayView: _lerp(dayIndicatorDayView, other.dayIndicatorDayView, t)
+      dayIndicatorDayView: _lerp(dayIndicatorDayView, other.dayIndicatorDayView, t),
+      loginMain: _lerp(loginMain, other.loginMain, t),
+      loginAccent: _lerp(loginAccent, other.loginAccent, t),
+      inputError: _lerp(inputError, other.inputError, t)
     );
   }
 }

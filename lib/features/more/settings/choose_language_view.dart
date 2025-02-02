@@ -8,7 +8,6 @@ import 'package:stacked/stacked.dart';
 
 // Project imports:
 import 'package:notredame/features/more/settings/choose_language_viewmodel.dart';
-import 'package:notredame/utils/utils.dart';
 import 'package:notredame/theme/app_palette.dart';
 
 class ChooseLanguageView extends StatefulWidget {
@@ -27,8 +26,6 @@ class _ChooseLanguageViewState extends State<ChooseLanguageView> {
       itemCount: model.languages.length,
       itemBuilder: (BuildContext context, int index) {
         return Card(
-            color: Utils.getColorByBrightness(
-                context, AppPalette.grey.white, Colors.grey[900]!),
             child: Column(mainAxisSize: MainAxisSize.min, children: <Widget>[
               ListTile(
                 title: Text(model.languages[index]),
@@ -57,8 +54,7 @@ class _ChooseLanguageViewState extends State<ChooseLanguageView> {
                     Icon(
                       Icons.language,
                       size: 80,
-                      color: Utils.getColorByBrightness(
-                          context, AppPalette.grey.white, AppPalette.etsLightRed),
+                      color: context.theme.appColors.loginAccent,
                     ),
                     Padding(
                       padding: const EdgeInsets.only(left: 20, top: 60),

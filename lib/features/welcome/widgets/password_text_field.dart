@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 // Package imports:
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:notredame/theme/app_palette.dart';
+import 'package:notredame/theme/app_theme.dart';
 
 class PasswordFormField extends StatefulWidget {
   final FormFieldValidator<String> validator;
@@ -35,13 +36,13 @@ class _PasswordFormFieldState extends State<PasswordFormField> {
                     color: AppPalette.grey.white, width: borderRadiusOnFocus)),
             focusedErrorBorder: OutlineInputBorder(
                 borderSide: BorderSide(
-                    color: errorTextColor, width: borderRadiusOnFocus)),
+                    color: context.theme.appColors.inputError, width: borderRadiusOnFocus)),
             errorBorder: OutlineInputBorder(
                 borderSide: BorderSide(
-                    color: errorTextColor, width: borderRadiusOnFocus)),
+                    color: context.theme.appColors.inputError, width: borderRadiusOnFocus)),
             labelText: AppIntl.of(context)!.login_prompt_password,
             labelStyle: const TextStyle(color: Colors.white54),
-            errorStyle: TextStyle(color: errorTextColor),
+            errorStyle: TextStyle(color: context.theme.appColors.inputError),
             suffixIcon: IconButton(
                 icon: Icon(
                     _obscureText ? Icons.visibility : Icons.visibility_off,
@@ -58,8 +59,4 @@ class _PasswordFormFieldState extends State<PasswordFormField> {
       _obscureText = !_obscureText;
     });
   }
-
-  Color get errorTextColor => Theme.of(context).brightness == Brightness.light
-      ? Colors.amberAccent
-      : Colors.redAccent;
 }

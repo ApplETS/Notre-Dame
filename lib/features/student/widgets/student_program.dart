@@ -74,9 +74,9 @@ class _StudentProgramState extends State<StudentProgram>
     return Theme(
       data: Theme.of(context).copyWith(
         dividerColor: Colors.transparent,
-        unselectedWidgetColor: Colors.red,
+        unselectedWidgetColor: AppPalette.etsLightRed,
         colorScheme: ColorScheme.fromSwatch().copyWith(
-          onSecondary: Colors.red,
+          onSecondary: AppPalette.etsLightRed,
         ),
       ),
       child: ExpansionTile(

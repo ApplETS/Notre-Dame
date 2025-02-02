@@ -62,7 +62,7 @@ class _GradeCircularProgressState extends State<GradeCircularProgress>
       children: [
         GradeCircularIndicator(
           grade: widget.averageGrade,
-          color: Colors.red,
+          color: AppPalette.etsLightRed,
           size: 75,
           duration: 800,
           ratio: widget.ratio,

@@ -156,7 +156,7 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
     if (!courseColors.containsKey(courseName)) {
       courseColors[courseName] = schedulePaletteTheme.removeLast();
     }
-    return courseColors[courseName] ?? Colors.red;
+    return courseColors[courseName] ?? AppPalette.etsLightRed;
   }
 
   List<CalendarEventData> selectedWeekCalendarEvents() {

@@ -36,10 +36,7 @@ class StartUpView extends StatelessWidget {
                               width: 90,
                               height: 90,
                               colorFilter: ColorFilter.mode(
-                                  Theme.of(context).brightness ==
-                                          Brightness.light
-                                      ? AppPalette.grey.white
-                                      : AppPalette.etsLightRed,
+                                  context.theme.appColors.loginAccent,
                                   BlendMode.srcIn),
                             )),
                         const SizedBox(
