@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 // Package imports:
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:notredame/theme/app_theme.dart';
 import 'package:stacked/stacked.dart';
 
 // Project imports:
@@ -27,6 +28,7 @@ class _FaqViewState extends State<FaqView> {
         viewModelBuilder: () => FaqViewModel(),
         builder: (context, model, child) {
           return BaseScaffold(
+            safeArea: false,
             appBar: AppBar(
               title: Text(AppIntl.of(context)!.need_help),
             ),
@@ -36,7 +38,7 @@ class _FaqViewState extends State<FaqView> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       getSubtitle(AppIntl.of(context)!.questions_and_answers),
-                      getCaroussel(model),
+                      getCarousel(model),
                       getSubtitle(AppIntl.of(context)!.actions),
                       getActions(model)
                     ],
@@ -49,7 +51,7 @@ class _FaqViewState extends State<FaqView> {
                           children: [
                             getSubtitle(
                                 AppIntl.of(context)!.questions_and_answers),
-                            Expanded(child: getCaroussel(model)),
+                            Expanded(child: getCarousel(model)),
                           ],
                         ),
                       ),
@@ -77,7 +79,7 @@ class _FaqViewState extends State<FaqView> {
     );
   }
 
-  CarouselSlider getCaroussel(FaqViewModel model) {
+  CarouselSlider getCarousel(FaqViewModel model) {
     return CarouselSlider(
       options: CarouselOptions(
         height: 260.0,
@@ -92,9 +94,7 @@ class _FaqViewState extends State<FaqView> {
               width: MediaQuery.of(context).size.width,
               margin: const EdgeInsets.symmetric(horizontal: 5.0),
               decoration: BoxDecoration(
-                color: Theme.of(context).brightness == Brightness.light
-                    ? const Color.fromARGB(255, 240, 238, 238)
-                    : const Color.fromARGB(255, 40, 40, 40),
+                color: context.theme.appColors.faqCarouselCard,
                 borderRadius: const BorderRadius.all(Radius.circular(8.0)),
               ),
               child: getQuestionCard(
@@ -135,7 +135,7 @@ class _FaqViewState extends State<FaqView> {
     return Expanded(
       child: ListView.builder(
         key: const Key("action_listview_key"),
-        padding: const EdgeInsets.only(top: 1.0),
+        padding: const EdgeInsets.only(top: 1.0, bottom: 32),
         itemCount: faq.actions.length,
         itemBuilder: (context, index) {
           final action = faq.actions[index];
@@ -166,29 +166,25 @@ class _FaqViewState extends State<FaqView> {
       BuildContext context,
       FaqViewModel model) {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(15.0, 0.0, 15.0, 15.0),
-      child: ElevatedButton(
-        onPressed: () {
-          if (type.name == ActionType.webview.name) {
-            model.launchWebsite(link);
-          } else if (type.name == ActionType.email.name) {
-            model.openMail(link, context);
-          }
-        },
-        style: ButtonStyle(
-            elevation: WidgetStateProperty.all<double>(8.0),
-            shape: WidgetStateProperty.all<RoundedRectangleBorder>(
-              RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8.0),
-              ),
-            )),
-        child: getActionCardInfo(
-          context,
-          title,
-          description,
-          iconName,
-          iconColor,
-          circleColor,
+      padding: const EdgeInsets.fromLTRB(15.0, 0.0, 15.0, 4.0),
+      child: Card(
+        child: InkWell(
+          borderRadius: BorderRadius.circular(10.0),
+          onTap: () {
+            if (type.name == ActionType.webview.name) {
+              model.launchWebsite(link);
+            } else if (type.name == ActionType.email.name) {
+              model.openMail(link, context);
+            }
+          },
+          child: getActionCardInfo(
+            context,
+            title,
+            description,
+            iconName,
+            iconColor,
+            circleColor,
+          ),
         ),
       ),
     );
@@ -202,7 +198,7 @@ class _FaqViewState extends State<FaqView> {
       Color iconColor,
       Color circleColor) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 12.0),
+      padding: const EdgeInsets.all(12.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[

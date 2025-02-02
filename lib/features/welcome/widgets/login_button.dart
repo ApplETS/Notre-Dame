@@ -63,9 +63,9 @@ class _LoginButtonState extends State<LoginButton>{
       );
 
   Color get colorButton =>
-      Utils.getColorByBrightness(context, Colors.white, AppPalette.etsLightRed);
+      Utils.getColorByBrightness(context, AppPalette.grey.white, AppPalette.etsLightRed);
 
   Color get submitTextColor =>
-      Utils.getColorByBrightness(context, AppPalette.etsLightRed, Colors.white);
+      Utils.getColorByBrightness(context, AppPalette.etsLightRed, AppPalette.grey.white);
 
 }

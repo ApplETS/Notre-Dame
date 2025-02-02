@@ -7,6 +7,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:notredame/utils/locator.dart';
 import 'package:notredame/features/app/analytics/remote_config_service.dart';
 import 'package:notredame/features/app/integration/launch_url_service.dart';
+import 'package:notredame/theme/app_palette.dart';
 
 class ForgotPassword extends StatefulWidget{
 
@@ -33,10 +34,10 @@ class _ForgotPasswordState extends State<ForgotPassword>{
             child: Text(
               AppIntl.of(context)!
                   .forgot_password,
-              style: const TextStyle(
+              style: TextStyle(
                   decoration:
                   TextDecoration.underline,
-                  color: Colors.white),
+                  color: AppPalette.grey.white),
             ),
             onTap: () {
               final signetsPasswordResetUrl =

@@ -6,6 +6,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:notredame/utils/locator.dart';
 import 'package:notredame/features/app/navigation/navigation_service.dart';
 import 'package:notredame/features/app/navigation/router_paths.dart';
+import 'package:notredame/theme/app_palette.dart';
 
 class LoginFooter extends StatefulWidget{
 
@@ -26,10 +27,10 @@ class _LoginFooterState extends State<LoginFooter>{
           child: InkWell(
             child: Text(
               AppIntl.of(context)!.need_help,
-              style: const TextStyle(
+              style: TextStyle(
                   decoration:
                   TextDecoration.underline,
-                  color: Colors.white),
+                  color: AppPalette.grey.white),
             ),
             onTap: () async {
               _navigationService.pushNamed(RouterPaths.faq);

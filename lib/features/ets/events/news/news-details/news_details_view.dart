@@ -57,8 +57,7 @@ class _NewsDetailsViewState extends State<NewsDetailsView> {
         viewModelBuilder: () => NewsDetailsViewModel(news: widget.news),
         builder: (context, model, child) => BaseScaffold(
           showBottomBar: false,
-          body: Material(
-            child: Column(
+          body: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Expanded(
@@ -70,7 +69,7 @@ class _NewsDetailsViewState extends State<NewsDetailsView> {
                         titleSpacing: 0,
                         leading: IconButton(
                           icon: const Icon(Icons.arrow_back),
-                          color: Colors.white,
+                          color: AppPalette.grey.white,
                           onPressed: () => Navigator.of(context).pop(),
                         ),
                         title: Text(
@@ -79,7 +78,7 @@ class _NewsDetailsViewState extends State<NewsDetailsView> {
                               .textTheme
                               .bodyLarge!
                               .copyWith(
-                                  color: Colors.white,
+                                  color: AppPalette.grey.white,
                                   fontSize: 25,
                                   fontWeight: FontWeight.bold),
                         ),
@@ -156,7 +155,7 @@ class _NewsDetailsViewState extends State<NewsDetailsView> {
               ],
             ),
           ),
-        ),
+
       );
 
   void handleClick(Menu menu, News news) {
@@ -248,7 +247,7 @@ class _NewsDetailsViewState extends State<NewsDetailsView> {
                 tag: 'news_author_avatar',
                 child: CircleAvatar(
                   radius: 26,
-                  backgroundColor: context.theme.appColors.shimmerHighlight,
+                  backgroundColor: context.theme.appColors.backgroundAlt,
                   child: (avatar != "")
                       ? ClipRRect(
                           borderRadius: BorderRadius.circular(26),
@@ -284,9 +283,9 @@ class _NewsDetailsViewState extends State<NewsDetailsView> {
                 ))),
         title: Text(
           author,
-          style: const TextStyle(
+          style: TextStyle(
             fontWeight: FontWeight.bold,
-            color: Colors.white,
+            color: AppPalette.grey.white,
             fontSize: 20,
           ),
         ),
@@ -298,8 +297,7 @@ class _NewsDetailsViewState extends State<NewsDetailsView> {
                     context, activity.nameFr, activity.nameEn)
                 : "",
             style: TextStyle(
-              color: Utils.getColorByBrightness(
-                  context, Colors.white, const Color(0xffbababa)),
+              color: context.theme.appColors.fadedInvertText,
               fontSize: 16,
             ),
           ),
@@ -357,12 +355,10 @@ class _NewsDetailsViewState extends State<NewsDetailsView> {
                 Container(
                   padding: const EdgeInsets.all(8),
                   decoration: BoxDecoration(
-                    // color: Utils.getColorByBrightness(context,
-                    //     AppThemeOld.darkThemeAccent, AppPalette.grey.darkGrey),
+                    color: context.theme.appColors.backgroundAlt,
                     shape: BoxShape.circle,
                   ),
-                  child:
-                      const Icon(Icons.event, size: 20.0, color: Colors.white),
+                  child: Icon(Icons.event, size: 20.0, color: context.theme.textTheme.bodyMedium!.color),
                 ),
                 Flexible(
                     child: Padding(
@@ -373,15 +369,13 @@ class _NewsDetailsViewState extends State<NewsDetailsView> {
                       Text(
                         AppIntl.of(context)!.news_event_date,
                         style: TextStyle(
-                            color: Utils.getColorByBrightness(
-                                context, Colors.black, AppPalette.grey.lightGrey)),
+                            color: context.theme.appColors.fadedText),
                         textAlign: TextAlign.right,
                       ),
                       Text(
                         formattedEventDate,
-                        // style: TextStyle(
-                            // color: Utils.getColorByBrightness(context,
-                            //     AppThemeOld.darkThemeAccent, Colors.white)),
+                      style: TextStyle(
+                          color: context.theme.textTheme.bodyMedium!.color),
                         textAlign: TextAlign.right,
                       ),
                     ],
@@ -414,8 +408,8 @@ class _NewsDetailsViewState extends State<NewsDetailsView> {
                 ),
                 child: Text(
                   widget.news.tags[index].name,
-                  style: const TextStyle(
-                    color: Colors.white,
+                  style: TextStyle(
+                    color: AppPalette.grey.white,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
@@ -438,7 +432,7 @@ class ShimmerEffect extends StatelessWidget {
       highlightColor: context.theme.appColors.shimmerHighlight,
       child: Container(
         height: 200,
-        color: Colors.grey,
+        color: AppPalette.grey.darkGrey,
       ),
     );
   }

@@ -8,6 +8,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:notredame/constants/urls.dart';
 import 'package:notredame/utils/locator.dart';
 import 'package:notredame/features/app/integration/launch_url_service.dart';
+import 'package:notredame/theme/app_palette.dart';
 
 class OutageSocialSection extends StatelessWidget {
   OutageSocialSection({super.key});
@@ -23,30 +24,30 @@ class OutageSocialSection extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
             IconButton(
-                icon: const FaIcon(
+                icon: FaIcon(
                   FontAwesomeIcons.earthAmericas,
-                  color: Colors.white,
+                  color: AppPalette.grey.white,
                 ),
                 onPressed: () =>
                     _launchUrlService.launchInBrowser(Urls.clubWebsite)),
                 IconButton(
-                icon: const FaIcon(
+                icon: FaIcon(
                   FontAwesomeIcons.github,
-                  color: Colors.white,
+                  color: AppPalette.grey.white,
                 ),
                 onPressed: () =>
                     _launchUrlService.launchInBrowser(Urls.clubGithub)),
             IconButton(
-                icon: const FaIcon(
+                icon: FaIcon(
                   Icons.mail_outline,
-                  color: Colors.white,
+                  color: AppPalette.grey.white,
                 ),
                 onPressed: () =>
                     _launchUrlService.writeEmail(Urls.clubEmail, "")),
             IconButton(
-                icon: const FaIcon(
+                icon: FaIcon(
                   FontAwesomeIcons.discord,
-                  color: Colors.white,
+                  color: AppPalette.grey.white,
                 ),
                 onPressed: () =>
                     _launchUrlService.launchInBrowser(Urls.clubDiscord))

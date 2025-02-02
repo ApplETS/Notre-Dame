@@ -189,8 +189,7 @@ void main() {
           // Rebuild the widget after the state has changed.
           await tester.pump();
 
-          verify(navigationServiceMock.pushNamed(RouterPaths.faq,
-                  arguments: Colors.white))
+          verify(navigationServiceMock.pushNamed(RouterPaths.faq))
               .called(1);
         });
 

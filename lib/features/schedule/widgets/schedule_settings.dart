@@ -47,7 +47,7 @@ class _ScheduleSettingsState extends State<ScheduleSettings> {
                     if (widget.showHandle)
                       Container(
                         decoration: BoxDecoration(
-                          color: context.theme.appColors.backgroundAlt,
+                          color: context.theme.appColors.modalTitle,
                         ),
                         child: Center(
                           child: Padding(
@@ -55,8 +55,8 @@ class _ScheduleSettingsState extends State<ScheduleSettings> {
                             child: Container(
                               height: 5,
                               width: 50,
-                              decoration: const BoxDecoration(
-                                  color: Colors.grey,
+                              decoration: BoxDecoration(
+                                  color: context.theme.appColors.modalHandle,
                                   borderRadius:
                                       BorderRadius.all(Radius.circular(8.0))),
                             ),
@@ -66,7 +66,7 @@ class _ScheduleSettingsState extends State<ScheduleSettings> {
                     Container(
                       width: MediaQuery.of(context).size.width,
                       decoration: BoxDecoration(
-                        color: context.theme.appColors.backgroundAlt,
+                        color: context.theme.appColors.modalTitle,
                       ),
                       child: Center(
                         child: Padding(
@@ -81,11 +81,12 @@ class _ScheduleSettingsState extends State<ScheduleSettings> {
                         selectedColor:
                             Theme.of(context).textTheme.bodyLarge!.color,
                         child: Card(
-                          margin: const EdgeInsets.symmetric(horizontal: 8),
+                          margin: const EdgeInsets.all(0),
                           elevation: 0,
                           shape: const RoundedRectangleBorder(),
-                          color: Colors.transparent,
+                          color: context.theme.appColors.backgroundAlt,
                           child: ListView(
+                            padding: EdgeInsets.symmetric(horizontal: 8),
                             controller: scrollController,
                             key: const ValueKey("SettingsScrollingArea"),
                             children: _buildSettings(context, model),
@@ -244,7 +245,6 @@ class _ScheduleSettingsState extends State<ScheduleSettings> {
 
     return Card(
         elevation: 4,
-        color: context.theme.appColors.backgroundAlt,
         child: Padding(
             padding: const EdgeInsets.only(top: 16.0, bottom: 8),
             child: Column(children: cardContent)));

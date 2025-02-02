@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'package:notredame/features/welcome/login/login_mask.dart';
+import 'package:notredame/theme/app_palette.dart';
 
 class UniversalCodeFormField extends StatefulWidget {
   final FormFieldValidator<String> validator;
@@ -30,7 +31,7 @@ class _UniversalCodeFormFieldState extends State<UniversalCodeFormField> {
         autofillHints: const [
           AutofillHints.username
         ],
-        cursorColor: Colors.white,
+        cursorColor: AppPalette.grey.white,
         keyboardType:
         TextInputType.visiblePassword,
         decoration: InputDecoration(
@@ -39,7 +40,7 @@ class _UniversalCodeFormFieldState extends State<UniversalCodeFormField> {
                   color: Colors.white70)),
           focusedBorder: OutlineInputBorder(
               borderSide: BorderSide(
-                  color: Colors.white,
+                  color: AppPalette.grey.white,
                   width: borderRadiusOnFocus)),
           focusedErrorBorder: OutlineInputBorder(
               borderSide: BorderSide(
@@ -63,8 +64,8 @@ class _UniversalCodeFormFieldState extends State<UniversalCodeFormField> {
                   .universal_code_example,
               preferBelow: true,
               child: IconButton(
-                icon: const Icon(Icons.help,
-                    color: Colors.white),
+                icon: Icon(Icons.help,
+                    color: AppPalette.grey.white),
                 onPressed: () {
                   tooltipKey.currentState
                       ?.ensureTooltipVisible();
@@ -73,7 +74,7 @@ class _UniversalCodeFormFieldState extends State<UniversalCodeFormField> {
         ),
         autofocus: true,
         style:
-        const TextStyle(color: Colors.white),
+        TextStyle(color: AppPalette.grey.white),
         onEditingComplete: widget.onEditionComplete,
         validator: widget.validator,
         initialValue: widget.universalCode,

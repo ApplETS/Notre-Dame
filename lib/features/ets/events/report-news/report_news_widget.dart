@@ -31,7 +31,7 @@ class _ReportNewsState extends State<ReportNews> {
   Widget build(BuildContext context) => ViewModelBuilder.reactive(
         viewModelBuilder: () => ReportNewsViewModel(),
         builder: (context, model, child) => SizedBox(
-          height: MediaQuery.of(context).size.height * 0.50,
+          height: 550,
           child: Column(
             children: [
               if (widget.showHandle) _buildHandle(context),
@@ -43,6 +43,7 @@ class _ReportNewsState extends State<ReportNews> {
                     : ColoredBox(
                         color: context.theme.appColors.backgroundAlt,
                         child: ListView.builder(
+                          padding: EdgeInsets.only(top: 16, bottom: 32),
                           itemCount:
                               getLocalizedReportNewsItems(context).length,
                           itemBuilder: (context, index) {
@@ -58,7 +59,7 @@ class _ReportNewsState extends State<ReportNews> {
   Widget _buildHandle(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: context.theme.appColors.backgroundAlt,
+        color: context.theme.appColors.modalTitle,
         borderRadius: const BorderRadius.only(
           topLeft: Radius.circular(40.0),
           topRight: Radius.circular(40.0),
@@ -70,8 +71,8 @@ class _ReportNewsState extends State<ReportNews> {
           child: Container(
             height: 5,
             width: 50,
-            decoration: const BoxDecoration(
-                color: Colors.grey,
+            decoration: BoxDecoration(
+                color: context.theme.appColors.modalHandle,
                 borderRadius: BorderRadius.all(Radius.circular(8.0))),
           ),
         ),
@@ -83,7 +84,7 @@ class _ReportNewsState extends State<ReportNews> {
     return Container(
       width: MediaQuery.of(context).size.width,
       decoration: BoxDecoration(
-        color: context.theme.appColors.backgroundAlt,
+        color: context.theme.appColors.modalTitle,
       ),
       child: Center(
         child: Padding(
@@ -102,6 +103,7 @@ class _ReportNewsState extends State<ReportNews> {
     return Padding(
         padding: const EdgeInsets.only(left: 16.0, right: 16.0),
         child: Card(
+          clipBehavior: Clip.antiAlias,
           // color: AppThemeOld.darkThemeAccent,
           child: ListTile(
             title: Text(
@@ -111,10 +113,6 @@ class _ReportNewsState extends State<ReportNews> {
             subtitle: Text(item.description),
             trailing: const Icon(
               Icons.navigate_next,
-            ),
-            // tileColor: AppThemeOld.darkThemeAccent,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(5),
             ),
             contentPadding:
                 const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
@@ -143,7 +141,7 @@ class _ReportNewsState extends State<ReportNews> {
           Align(
             alignment: Alignment.topLeft,
             child: IconButton(
-              icon: const Icon(Icons.arrow_back, color: Colors.white),
+              icon: Icon(Icons.arrow_back, color: AppPalette.grey.white),
               onPressed: () {
                 setState(() {
                   clicked = false;
@@ -160,8 +158,8 @@ class _ReportNewsState extends State<ReportNews> {
                 children: [
                   Text(
                     '${AppIntl.of(context)!.report_as}\n${reportTitle.toLowerCase()}?',
-                    style: const TextStyle(
-                        color: Colors.white,
+                    style: TextStyle(
+                        color: AppPalette.grey.white,
                         fontWeight: FontWeight.bold,
                         fontSize: 24),
                     textAlign: TextAlign.center,
@@ -189,7 +187,7 @@ class _ReportNewsState extends State<ReportNews> {
                       ),
                     ),
                     child: Text(AppIntl.of(context)!.report,
-                        style: const TextStyle(color: Colors.white)),
+                        style: TextStyle(color: AppPalette.grey.white)),
                     onPressed: () {
                       model.reportNews(widget.newsId, reportCategory, _reason);
                       Fluttertoast.showToast(

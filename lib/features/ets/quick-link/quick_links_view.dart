@@ -175,7 +175,7 @@ class _QuickLinksViewState extends State<QuickLinksView>
       ),
       child: IconButton(
         padding: EdgeInsets.zero,
-        icon: const Icon(Icons.close, color: Colors.white, size: 16),
+        icon: Icon(Icons.close, color: AppPalette.grey.white, size: 16),
         onPressed: () {
           setState(() {
             model.deleteQuickLink(index);
@@ -195,7 +195,7 @@ class _QuickLinksViewState extends State<QuickLinksView>
       ),
       child: IconButton(
         padding: EdgeInsets.zero,
-        icon: const Icon(Icons.add, color: Colors.white, size: 20),
+        icon: Icon(Icons.add, color: AppPalette.grey.white, size: 20),
         onPressed: () {
           setState(() {
             model.restoreQuickLink(index);

@@ -16,7 +16,7 @@ class OutageImageSection extends StatelessWidget {
           excludeFromSemantics: true,
           width: 500,
           color: Theme.of(context).brightness == Brightness.light
-              ? Colors.white
+              ? AppPalette.grey.white
               : AppPalette.etsLightRed,
         ));
   }

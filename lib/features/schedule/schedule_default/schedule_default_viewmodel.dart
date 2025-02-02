@@ -68,7 +68,7 @@ class ScheduleDefaultViewModel
         startTime: newStartTime,
         endTime: newEndTime,
         color: getCourseColor(eventData.courseAcronym.split('-')[0]) ??
-            Colors.grey);
+            AppPalette.grey.darkGrey);
   }
 
   Color? getCourseColor(String courseName) {

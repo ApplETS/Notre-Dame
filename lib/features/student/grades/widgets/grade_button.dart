@@ -76,7 +76,7 @@ class GradeButton extends StatelessWidget {
                                   style: Theme.of(context)
                                       .textTheme
                                       .bodyMedium!
-                                      .copyWith(color: Colors.white),
+                                      .copyWith(color: AppPalette.grey.white),
                                 ),
                               ),
                             ),

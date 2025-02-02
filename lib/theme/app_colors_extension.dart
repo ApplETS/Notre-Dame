@@ -14,7 +14,12 @@ class AppColorsExtension extends ThemeExtension<AppColorsExtension> {
     required this.newsAccent,
     required this.newsBackgroundVibrant,
     required this.newsAuthorProfile,
-    required this.newsAuthorProfileDescription
+    required this.newsAuthorProfileDescription,
+    required this.modalTitle,
+    required this.modalHandle,
+    required this.fadedText,
+    required this.fadedInvertText,
+    required this.faqCarouselCard
   });
 
   final Color appBar;
@@ -30,6 +35,11 @@ class AppColorsExtension extends ThemeExtension<AppColorsExtension> {
   final Color newsBackgroundVibrant;
   final Color newsAuthorProfile;
   final Color newsAuthorProfileDescription;
+  final Color modalTitle;
+  final Color modalHandle;
+  final Color fadedText;
+  final Color fadedInvertText;
+  final Color faqCarouselCard;
 
   @override
   ThemeExtension<AppColorsExtension> copyWith({
@@ -45,7 +55,12 @@ class AppColorsExtension extends ThemeExtension<AppColorsExtension> {
     Color? newsAccent,
     Color? newsBackgroundVibrant,
     Color? newsAuthorProfile,
-    Color? newsAuthorProfileDescription
+    Color? newsAuthorProfileDescription,
+    Color? modalTitle,
+    Color? modalHandle,
+    Color? fadedText,
+    Color? fadedInvertText,
+    Color? faqCarouselCard
   }) {
     return AppColorsExtension(
       appBar: appBar ?? this.appBar,
@@ -60,7 +75,12 @@ class AppColorsExtension extends ThemeExtension<AppColorsExtension> {
       newsAccent: newsAccent ?? this.newsAccent,
       newsBackgroundVibrant: newsBackgroundVibrant ?? this.newsBackgroundVibrant,
       newsAuthorProfile: newsAuthorProfile ?? this.newsAuthorProfile,
-      newsAuthorProfileDescription: newsAuthorProfileDescription ?? this.newsAuthorProfileDescription
+      newsAuthorProfileDescription: newsAuthorProfileDescription ?? this.newsAuthorProfileDescription,
+      modalTitle: modalTitle ?? this.modalTitle,
+      modalHandle: modalHandle ?? this.modalHandle,
+      fadedText: fadedText ?? this.fadedText,
+      fadedInvertText: fadedInvertText ?? this.fadedInvertText,
+      faqCarouselCard: faqCarouselCard ?? this.faqCarouselCard
     );
   }
 
@@ -88,7 +108,12 @@ class AppColorsExtension extends ThemeExtension<AppColorsExtension> {
       newsAccent: _lerp(newsAccent, other.newsAccent, t),
       newsBackgroundVibrant: _lerp(newsBackgroundVibrant, other.newsBackgroundVibrant, t),
       newsAuthorProfile: _lerp(newsAuthorProfile, other.newsBackgroundVibrant, t),
-      newsAuthorProfileDescription: _lerp(newsAuthorProfileDescription, other.newsAuthorProfileDescription, t)
+      newsAuthorProfileDescription: _lerp(newsAuthorProfileDescription, other.newsAuthorProfileDescription, t),
+      modalTitle: _lerp(modalTitle, other.modalTitle, t),
+      modalHandle: _lerp(modalHandle, other.modalHandle, t),
+      fadedText: _lerp(fadedText, other.fadedText, t),
+      fadedInvertText: _lerp(fadedInvertText, other.fadedInvertText, t),
+      faqCarouselCard: _lerp(faqCarouselCard, other.faqCarouselCard, t)
     );
   }
 }

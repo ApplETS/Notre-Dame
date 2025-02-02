@@ -19,8 +19,19 @@ class AppTheme with ChangeNotifier {
       appBarTheme: AppBarTheme(
         color: _lightAppColors.appBar,
       ),
-      tabBarTheme: const TabBarTheme(labelColor: Colors.white),
-      cardColor: const Color(0xff1D1B20),
+      tabBarTheme: TabBarTheme(labelColor: AppPalette.grey.white),
+      scaffoldBackgroundColor: const Color(0xffeeebeb),
+      cardTheme: defaultTheme.cardTheme.copyWith(
+        color: Color(0xfff8f8f8),
+        surfaceTintColor: Color(0xffffe6e6),
+        elevation: 2,
+      ),
+      inputDecorationTheme: InputDecorationTheme(
+        fillColor: Color(0xfffffdfd),
+        labelStyle: TextStyle(
+          color: AppPalette.grey.black
+        )
+      ),
       bottomNavigationBarTheme: defaultTheme.bottomNavigationBarTheme.copyWith(
           selectedItemColor: AppPalette.etsLightRed,
           backgroundColor: _lightAppColors.navBar
@@ -35,8 +46,8 @@ class AppTheme with ChangeNotifier {
       colorScheme: defaultTheme.colorScheme.copyWith(
           primary: AppPalette.etsLightRed,
           secondary: AppPalette.etsLightRed,
-          surface: const Color(0xff1e1e1e),
-          surfaceTint: const Color(0xff1e1e1e)),
+          surface: const Color(0xfff8e9e9),
+          surfaceTint: const Color(0xfff6ebeb)),
       extensions: [
         _lightAppColors
       ],
@@ -44,11 +55,11 @@ class AppTheme with ChangeNotifier {
   }();
 
   static final _lightAppColors = AppColorsExtension(
-    appBar: const Color(0xffeae7ea),
-    navBar: const Color(0xffefeaee),
-    backgroundAlt: const Color(0xfffafafa),
+    appBar: const Color(0xfff8f8f8),
+    navBar: const Color(0xfffffdfd),
+    backgroundAlt: const Color(0xffefefef),
     backgroundVibrant: AppPalette.etsLightRed,
-    scheduleLine: const Color(0xffe8e8e8),
+    scheduleLine: const Color(0xffd9d8d8),
     tabBarLabel: Colors.black,
     tabBarIndicator: Colors.black26,
     shimmerHighlight: const Color.fromARGB(255, 228, 225, 225),
@@ -56,7 +67,12 @@ class AppTheme with ChangeNotifier {
     newsAccent: const Color(0xff007c6f),
     newsBackgroundVibrant: AppPalette.etsLightRed,
     newsAuthorProfile: const Color.fromARGB(255, 237, 237, 237),
-    newsAuthorProfileDescription: AppPalette.grey.darkGrey
+    newsAuthorProfileDescription: AppPalette.grey.darkGrey,
+    modalTitle: const Color(0xffe8e5e5),
+    modalHandle: const Color(0xff868383),
+    fadedText: const Color(0xff383838),
+    fadedInvertText: const Color(0xffefefef),
+    faqCarouselCard: const Color(0xffF8F7F7)
   );
 
   static final dark = () {
@@ -66,9 +82,11 @@ class AppTheme with ChangeNotifier {
       appBarTheme: AppBarTheme(
         color: _darkAppColors.appBar,
       ),
-      tabBarTheme: const TabBarTheme(labelColor: Colors.white),
+      tabBarTheme: TabBarTheme(labelColor: AppPalette.grey.white),
       scaffoldBackgroundColor: const Color(0xff121212),
-      cardColor: const Color(0xff1D1B20),
+      cardTheme: defaultTheme.cardTheme.copyWith(
+        color: Color(0xff1D1B20),
+      ),
       bottomNavigationBarTheme: defaultTheme.bottomNavigationBarTheme.copyWith(
           selectedItemColor: AppPalette.etsLightRed,
           backgroundColor: _darkAppColors.navBar
@@ -98,14 +116,19 @@ class AppTheme with ChangeNotifier {
     backgroundAlt: const Color(0xff2c2c2c),
     backgroundVibrant: const Color(0xff121212),
     scheduleLine: const Color(0xff2c2929),
-    tabBarLabel: Colors.white,
-    tabBarIndicator: Colors.white,
+    tabBarLabel: AppPalette.grey.white,
+    tabBarIndicator: AppPalette.grey.white,
     shimmerHighlight: const Color(0xff424242),
     vibrantAppBar: const Color(0xff16171a),
     newsAccent: const Color(0xff00cdb7),
-    newsBackgroundVibrant: const Color.fromARGB(255, 50, 48, 48),
+    newsBackgroundVibrant: const Color.fromARGB(255, 35, 32, 32),
     newsAuthorProfile: const Color.fromARGB(255, 31, 33, 32),
-    newsAuthorProfileDescription: const Color.fromARGB(255, 237, 237, 237)
+    newsAuthorProfileDescription: const Color.fromARGB(255, 237, 237, 237),
+    modalTitle: const Color(0xff232222),
+    modalHandle: const Color(0xffb9b8b8),
+    fadedText: const Color(0xffc9c6c6),
+    fadedInvertText: const Color(0xffaba8a8),
+    faqCarouselCard: const Color(0xff1D1B20)
   );
 }
 

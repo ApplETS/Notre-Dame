@@ -1,5 +1,6 @@
 // Flutter imports:
 import 'package:flutter/material.dart';
+import 'package:notredame/theme/app_palette.dart';
 import 'package:notredame/theme/app_theme.dart';
 
 // Package imports:
@@ -40,7 +41,7 @@ class AuthorInfoSkeleton extends StatelessWidget {
         width: double.infinity,
         height: height,
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: AppPalette.grey.white,
           borderRadius: BorderRadius.circular(8),
         ),
       ),
@@ -91,7 +92,7 @@ class AvatarSkeleton extends StatelessWidget {
               baseColor: context.theme.appColors.backgroundAlt,
               highlightColor: context.theme.appColors.shimmerHighlight,
               child: Container(
-                color: Colors.white,
+                color: AppPalette.grey.white,
               ),
             ),
           ),

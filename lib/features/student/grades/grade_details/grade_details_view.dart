@@ -15,6 +15,7 @@ import 'package:notredame/features/student/grades/widgets/grade_circular_progres
 import 'package:notredame/features/student/grades/widgets/grade_evaluation_tile.dart';
 import 'package:notredame/features/student/grades/widgets/grade_not_available.dart';
 import 'package:notredame/utils/utils.dart';
+import 'package:notredame/theme/app_palette.dart';
 
 class GradesDetailsView extends StatefulWidget {
   final Course course;
@@ -63,7 +64,7 @@ class _GradesDetailsViewState extends State<GradesDetailsView>
                 },
                 titleSpacing: 0,
                 leading: IconButton(
-                  icon: const Icon(Icons.arrow_back, color: Colors.white),
+                  icon: Icon(Icons.arrow_back, color: AppPalette.grey.white),
                   onPressed: () => Navigator.of(context).pop(),
                 ),
                 title: Hero(
@@ -74,7 +75,7 @@ class _GradesDetailsViewState extends State<GradesDetailsView>
                     softWrap: false,
                     overflow: TextOverflow.visible,
                     style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                        color: Colors.white,
+                        color: AppPalette.grey.white,
                         fontSize: 25,
                         fontWeight: FontWeight.bold),
                   ),
@@ -272,7 +273,7 @@ class _GradesDetailsViewState extends State<GradesDetailsView>
             style: Theme.of(context)
                 .textTheme
                 .bodyLarge!
-                .copyWith(color: Colors.white, fontSize: 16),
+                .copyWith(color: AppPalette.grey.white, fontSize: 16),
             overflow: TextOverflow.ellipsis,
           ),
         ),

@@ -38,16 +38,16 @@ class StartUpView extends StatelessWidget {
                               colorFilter: ColorFilter.mode(
                                   Theme.of(context).brightness ==
                                           Brightness.light
-                                      ? Colors.white
+                                      ? AppPalette.grey.white
                                       : AppPalette.etsLightRed,
                                   BlendMode.srcIn),
                             )),
                         const SizedBox(
                           height: 15,
                         ),
-                        const CircularProgressIndicator(
+                        CircularProgressIndicator(
                             valueColor:
-                                AlwaysStoppedAnimation<Color>(Colors.white))
+                                AlwaysStoppedAnimation<Color>(AppPalette.grey.white))
                       ],
                     ),
                   ),

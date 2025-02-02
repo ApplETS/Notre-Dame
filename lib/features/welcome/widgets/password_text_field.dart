@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 // Package imports:
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:notredame/theme/app_palette.dart';
 
 class PasswordFormField extends StatefulWidget {
   final FormFieldValidator<String> validator;
@@ -24,14 +25,14 @@ class _PasswordFormFieldState extends State<PasswordFormField> {
   @override
   Widget build(BuildContext context) => TextFormField(
         autofillHints: const [AutofillHints.password],
-        cursorColor: Colors.white,
+        cursorColor: AppPalette.grey.white,
         obscureText: _obscureText,
         decoration: InputDecoration(
             enabledBorder: const OutlineInputBorder(
                 borderSide: BorderSide(color: Colors.white70)),
             focusedBorder: OutlineInputBorder(
                 borderSide: BorderSide(
-                    color: Colors.white, width: borderRadiusOnFocus)),
+                    color: AppPalette.grey.white, width: borderRadiusOnFocus)),
             focusedErrorBorder: OutlineInputBorder(
                 borderSide: BorderSide(
                     color: errorTextColor, width: borderRadiusOnFocus)),
@@ -44,9 +45,9 @@ class _PasswordFormFieldState extends State<PasswordFormField> {
             suffixIcon: IconButton(
                 icon: Icon(
                     _obscureText ? Icons.visibility : Icons.visibility_off,
-                    color: Colors.white),
+                    color: AppPalette.grey.white),
                 onPressed: _toggle)),
-        style: const TextStyle(color: Colors.white),
+        style: TextStyle(color: AppPalette.grey.white),
         validator: widget.validator,
         onEditingComplete: widget.onEditionComplete,
       );

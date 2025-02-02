@@ -28,7 +28,7 @@ class _ChooseLanguageViewState extends State<ChooseLanguageView> {
       itemBuilder: (BuildContext context, int index) {
         return Card(
             color: Utils.getColorByBrightness(
-                context, Colors.white, Colors.grey[900]!),
+                context, AppPalette.grey.white, Colors.grey[900]!),
             child: Column(mainAxisSize: MainAxisSize.min, children: <Widget>[
               ListTile(
                 title: Text(model.languages[index]),
@@ -58,7 +58,7 @@ class _ChooseLanguageViewState extends State<ChooseLanguageView> {
                       Icons.language,
                       size: 80,
                       color: Utils.getColorByBrightness(
-                          context, Colors.white, AppPalette.etsLightRed),
+                          context, AppPalette.grey.white, AppPalette.etsLightRed),
                     ),
                     Padding(
                       padding: const EdgeInsets.only(left: 20, top: 60),
@@ -66,10 +66,10 @@ class _ChooseLanguageViewState extends State<ChooseLanguageView> {
                         alignment: Alignment.centerLeft,
                         child: Text(
                           AppIntl.of(context)!.choose_language_title,
-                          style: const TextStyle(
+                          style: TextStyle(
                               fontSize: 20,
                               fontWeight: FontWeight.bold,
-                              color: Colors.white),
+                              color: AppPalette.grey.white),
                         ),
                       ),
                     ),
@@ -80,8 +80,8 @@ class _ChooseLanguageViewState extends State<ChooseLanguageView> {
                         alignment: Alignment.centerLeft,
                         child: Text(
                           AppIntl.of(context)!.choose_language_subtitle,
-                          style: const TextStyle(
-                              fontSize: 16, color: Colors.white),
+                          style: TextStyle(
+                              fontSize: 16, color: AppPalette.grey.white),
                         ),
                       ),
                     ),

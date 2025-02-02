@@ -25,7 +25,7 @@ class _LoginHeroState extends State<LoginHero>{
             colorFilter: ColorFilter.mode(
                 Theme.of(context).brightness ==
                     Brightness.light
-                    ? Colors.white
+                    ? AppPalette.grey.white
                     : AppPalette.etsLightRed,
                 BlendMode.srcIn),
           ));

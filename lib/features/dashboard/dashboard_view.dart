@@ -148,9 +148,9 @@ class _DashboardViewState extends State<DashboardView>
                         _analyticsService.logEvent(tag, "Facebook clicked");
                         _launchUrlService.launchInBrowser(Urls.clubFacebook);
                       },
-                      icon: const FaIcon(
+                      icon: FaIcon(
                         FontAwesomeIcons.facebook,
-                        color: Colors.white,
+                        color: AppPalette.grey.white,
                       ),
                     ),
                     IconButton(
@@ -158,9 +158,9 @@ class _DashboardViewState extends State<DashboardView>
                         _analyticsService.logEvent(tag, "Instagram clicked");
                         _launchUrlService.launchInBrowser(Urls.clubInstagram);
                       },
-                      icon: const FaIcon(
+                      icon: FaIcon(
                         FontAwesomeIcons.instagram,
-                        color: Colors.white,
+                        color: AppPalette.grey.white,
                       ),
                     ),
                     IconButton(
@@ -168,9 +168,9 @@ class _DashboardViewState extends State<DashboardView>
                         _analyticsService.logEvent(tag, "Github clicked");
                         _launchUrlService.launchInBrowser(Urls.clubGithub);
                         },
-                      icon: const FaIcon(
+                      icon: FaIcon(
                         FontAwesomeIcons.github,
-                        color: Colors.white,
+                        color: AppPalette.grey.white,
                       ),
                     ),
                     IconButton(
@@ -178,9 +178,9 @@ class _DashboardViewState extends State<DashboardView>
                         _analyticsService.logEvent(tag, "Email clicked");
                         _launchUrlService.writeEmail(Urls.clubEmail, "");
                       },
-                      icon: const FaIcon(
+                      icon: FaIcon(
                         FontAwesomeIcons.envelope,
-                        color: Colors.white,
+                        color: AppPalette.grey.white,
                       ),
                     ),
                     IconButton(
@@ -188,9 +188,9 @@ class _DashboardViewState extends State<DashboardView>
                         _analyticsService.logEvent(tag, "Discord clicked");
                         _launchUrlService.launchInBrowser(Urls.clubDiscord);
                         },
-                      icon: const FaIcon(
+                      icon: FaIcon(
                         FontAwesomeIcons.discord,
-                        color: Colors.white,
+                        color: AppPalette.grey.white,
                       ),
                     ),
                   ]),
@@ -254,7 +254,7 @@ class _DashboardViewState extends State<DashboardView>
                           Text(
                             AppIntl.of(context)!.progress_bar_message(
                                 model.sessionDays[0], model.sessionDays[1]),
-                            style: const TextStyle(color: Colors.white),
+                            style: TextStyle(color: AppPalette.grey.white),
                           ),
                     ),
                   ),
@@ -281,19 +281,19 @@ class _DashboardViewState extends State<DashboardView>
       progressBarText = Text(
         AppIntl.of(context)!
             .progress_bar_message(model.sessionDays[0], model.sessionDays[1]),
-        style: const TextStyle(color: Colors.white),
+        style: TextStyle(color: AppPalette.grey.white),
       );
     } else if (model.currentProgressBarText == ProgressBarText.percentage) {
       progressBarText = Text(
         AppIntl.of(context)!.progress_bar_message_percentage(
             ((model.sessionDays[0] / model.sessionDays[1]) * 100).round()),
-        style: const TextStyle(color: Colors.white),
+        style: TextStyle(color: AppPalette.grey.white),
       );
     } else {
       progressBarText = Text(
         AppIntl.of(context)!.progress_bar_message_remaining_days(
             model.sessionDays[1] - model.sessionDays[0]),
-        style: const TextStyle(color: Colors.white),
+        style: TextStyle(color: AppPalette.grey.white),
       );
     }
   }

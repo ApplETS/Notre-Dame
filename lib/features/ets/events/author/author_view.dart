@@ -17,7 +17,6 @@ import 'package:notredame/features/ets/events/news/widgets/news_card.dart';
 import 'package:notredame/features/ets/events/news/widgets/news_card_skeleton.dart';
 import 'package:notredame/features/ets/events/social/models/social_link.dart';
 import 'package:notredame/features/ets/events/social/social_links_card.dart';
-import 'package:notredame/utils/utils.dart';
 
 class AuthorView extends StatefulWidget {
   final String authorId;
@@ -251,10 +250,7 @@ class _AuthorViewState extends State<AuthorView> {
                                           '',
                                       style: TextStyle(
                                           fontSize: 56,
-                                          color: Utils.getColorByBrightness(
-                                              context,
-                                              Colors.black,
-                                              Colors.white)),
+                                          color: context.theme.textTheme.bodyMedium!.color),
                                     ),
                                   );
                                 },
@@ -307,7 +303,7 @@ class _AuthorViewState extends State<AuthorView> {
                   padding: const EdgeInsets.fromLTRB(0, 8, 8, 8),
                   child: Row(
                     children: [
-                      const Icon(Icons.check, color: Colors.blue, size: 40),
+                      Icon(Icons.check, color: context.theme.appColors.newsAccent, size: 40),
                       const SizedBox(width: 16),
                       Flexible(
                         child: Column(
