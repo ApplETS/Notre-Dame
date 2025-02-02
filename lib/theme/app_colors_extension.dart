@@ -24,7 +24,10 @@ class AppColorsExtension extends ThemeExtension<AppColorsExtension> {
     required this.positiveText,
     required this.negative,
     required this.negativeText,
-    required this.link
+    required this.link,
+    required this.outageGif,
+    required this.dayIndicatorWeekView,
+    required this.dayIndicatorDayView
   });
 
   final Color appBar;
@@ -50,6 +53,9 @@ class AppColorsExtension extends ThemeExtension<AppColorsExtension> {
   final Color negative;
   final Color negativeText;
   final Color link;
+  final Color outageGif;
+  final Color dayIndicatorWeekView;
+  final Color dayIndicatorDayView;
 
   @override
   ThemeExtension<AppColorsExtension> copyWith({
@@ -75,7 +81,10 @@ class AppColorsExtension extends ThemeExtension<AppColorsExtension> {
     Color? positiveText,
     Color? negative,
     Color? negativeText,
-    Color? link
+    Color? link,
+    Color? outageGif,
+    Color? dayIndicatorWeekView,
+    Color? dayIndicatorDayView
   }) {
     return AppColorsExtension(
       appBar: appBar ?? this.appBar,
@@ -100,7 +109,10 @@ class AppColorsExtension extends ThemeExtension<AppColorsExtension> {
       positiveText: positiveText ?? this.positiveText,
       negative: negative ?? this.negative,
       negativeText: negativeText ?? this.negativeText,
-      link: link ?? this.link
+      link: link ?? this.link,
+      outageGif: outageGif ?? this.link,
+      dayIndicatorWeekView: dayIndicatorWeekView ?? this.dayIndicatorWeekView,
+      dayIndicatorDayView: dayIndicatorDayView ?? this.dayIndicatorDayView
     );
   }
 
@@ -138,7 +150,10 @@ class AppColorsExtension extends ThemeExtension<AppColorsExtension> {
       positiveText: _lerp(positiveText, other.positiveText, t),
       negative: _lerp(negative, other.negative, t),
       negativeText: _lerp(negativeText, other.negativeText, t),
-      link: _lerp(link, other.link, t)
+      link: _lerp(link, other.link, t),
+      outageGif: _lerp(outageGif, other.outageGif, t),
+      dayIndicatorWeekView: _lerp(dayIndicatorWeekView, other.dayIndicatorWeekView, t),
+      dayIndicatorDayView: _lerp(dayIndicatorDayView, other.dayIndicatorDayView, t)
     );
   }
 }

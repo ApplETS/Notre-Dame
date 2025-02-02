@@ -77,7 +77,10 @@ class AppTheme with ChangeNotifier {
     positiveText: const Color(0xff11a616),
     negative: const Color(0xffff9393),
     negativeText: const Color(0xffe33e3e),
-    link: const Color(0xff2a81bd)
+    link: const Color(0xff2a81bd),
+    outageGif: AppPalette.grey.white,
+    dayIndicatorWeekView: const Color(0x33ef3e45),
+    dayIndicatorDayView: AppPalette.grey.lightGrey
   );
 
   static final dark = () {
@@ -138,7 +141,10 @@ class AppTheme with ChangeNotifier {
     positiveText: const Color(0xff8dee8f),
     negative: const Color(0xff982a20),
     negativeText: const Color(0xfff35948),
-    link: const Color(0xff5eb1f8)
+    link: const Color(0xff5eb1f8),
+    outageGif: AppPalette.etsLightRed,
+    dayIndicatorWeekView: const Color(0xccef3e45),
+    dayIndicatorDayView: AppPalette.grey.darkGrey
   );
 }
 

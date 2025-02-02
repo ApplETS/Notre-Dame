@@ -352,15 +352,13 @@ class _ScheduleViewState extends State<ScheduleView>
   }
 
   Widget _buildWeekDay(DateTime date, ScheduleViewModel model) {
-    final indicatorColorOpacity =
-        Theme.of(context).brightness == Brightness.light ? 0.2 : 0.8;
     return Center(
       child: Wrap(children: <Widget>[
         Container(
           padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
           decoration: BoxDecoration(
               color: date.withoutTime == DateTime.now().withoutTime
-                  ? AppPalette.etsLightRed.withValues(alpha: indicatorColorOpacity)
+                  ? context.theme.appColors.dayIndicatorWeekView
                   : Colors.transparent,
               borderRadius: BorderRadius.circular(6.0)),
           child: Flex(
@@ -419,7 +417,7 @@ class _ScheduleViewState extends State<ScheduleView>
   /// Build the calendar
   Widget _buildTableCalendar(ScheduleViewModel model, calendar_view.EventController eventController) {
     const Color selectedColor = AppPalette.etsLightRed;
-    final Color todayColor = Theme.of(context).brightness == Brightness.light ? AppPalette.grey.lightGrey : AppPalette.grey.darkGrey;
+    final Color todayColor = context.theme.appColors.dayIndicatorWeekView;
     final Color defaultColor = context.theme.appColors.scheduleLine;
 
     return TableCalendar(

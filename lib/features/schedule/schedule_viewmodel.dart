@@ -67,7 +67,7 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
   final Map<String, Color> courseColors = {};
 
   /// The color palette corresponding to the schedule courses.
-  List<Color> schedulePaletteTheme = AppPalette.schedule;
+  List<Color> schedulePaletteTheme = AppPalette.schedule.toList();
 
   /// In calendar view (week), display weekend days if there are events in them
   bool displaySunday = false;
