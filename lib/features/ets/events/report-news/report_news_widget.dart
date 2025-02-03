@@ -104,7 +104,6 @@ class _ReportNewsState extends State<ReportNews> {
         padding: const EdgeInsets.only(left: 16.0, right: 16.0),
         child: Card(
           clipBehavior: Clip.antiAlias,
-          // color: AppThemeOld.darkThemeAccent,
           child: ListTile(
             title: Text(
               item.title,
