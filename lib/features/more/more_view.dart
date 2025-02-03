@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 
 // Package imports:
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:notredame/theme/app_palette.dart';
+import 'package:notredame/theme/app_theme.dart';
 import 'package:stacked/stacked.dart';
 
 // Project imports:
@@ -11,9 +13,7 @@ import 'package:notredame/features/app/analytics/analytics_service.dart';
 import 'package:notredame/features/app/navigation/router_paths.dart';
 import 'package:notredame/features/app/widgets/base_scaffold.dart';
 import 'package:notredame/features/more/more_viewmodel.dart';
-import 'package:notredame/utils/app_theme.dart';
 import 'package:notredame/utils/locator.dart';
-import 'package:notredame/utils/utils.dart';
 import 'package:notredame/features/app/integration/launch_url_service.dart';
 
 class MoreView extends StatefulWidget {
@@ -28,13 +28,6 @@ class _MoreViewState extends State<MoreView> {
   final AnalyticsService _analyticsService = locator<AnalyticsService>();
   static const String tag = "MoreView";
 
-  /// Returns right icon color for discovery depending on theme.
-  Widget getProperIconAccordingToTheme(IconData icon) {
-    return (Theme.of(context).brightness == Brightness.dark)
-        ? Icon(icon)
-        : Icon(icon, color: Colors.black);
-  }
-
   /// License text box
   List<Widget> aboutBoxChildren(BuildContext context) {
     final textStyle = Theme.of(context).textTheme.bodyMedium!;
@@ -46,7 +39,7 @@ class _MoreViewState extends State<MoreView> {
             TextSpan(
                 style: textStyle, text: AppIntl.of(context)!.flutter_license),
             TextSpan(
-                style: textStyle.copyWith(color: Colors.blue),
+                style: textStyle.copyWith(color: context.theme.appColors.link),
                 text: AppIntl.of(context)!.flutter_website,
                 recognizer: TapGestureRecognizer()
                   ..onTap = () =>
@@ -94,7 +87,7 @@ class _MoreViewState extends State<MoreView> {
                     }),
                 ListTile(
                     title: Text(AppIntl.of(context)!.more_contributors),
-                    leading: getProperIconAccordingToTheme(Icons.people_outline),
+                    leading: const Icon(Icons.people_outline),
                     onTap: () {
                       _analyticsService.logEvent(tag, "Contributors clicked");
                       model.navigationService
@@ -135,16 +128,14 @@ class _MoreViewState extends State<MoreView> {
                       }),
                 ListTile(
                     title: Text(AppIntl.of(context)!.need_help),
-                    leading: getProperIconAccordingToTheme(Icons.question_answer_outlined),
+                    leading: const Icon(Icons.question_answer_outlined),
                     onTap: () {
                       _analyticsService.logEvent(tag, "FAQ clicked");
-                      model.navigationService.pushNamed(RouterPaths.faq,
-                          arguments: Utils.getColorByBrightness(
-                              context, Colors.white, AppTheme.primaryDark));
+                      model.navigationService.pushNamed(RouterPaths.faq);
                     }),
                 ListTile(
                     title: Text(AppIntl.of(context)!.settings_title),
-                    leading: getProperIconAccordingToTheme(Icons.settings_outlined),
+                    leading: const Icon(Icons.settings_outlined),
                     onTap: () {
                       _analyticsService.logEvent(tag, "Settings clicked");
                       model.navigationService.pushNamed(RouterPaths.settings);
@@ -157,7 +148,7 @@ class _MoreViewState extends State<MoreView> {
                       pageBuilder: (context, _, __) => AlertDialog(
                         title: Text(
                           AppIntl.of(context)!.more_log_out,
-                          style: const TextStyle(color: Colors.red),
+                          style: const TextStyle(color: AppPalette.etsLightRed),
                         ),
                         content: Text(AppIntl.of(context)!
                             .more_prompt_log_out_confirmation),

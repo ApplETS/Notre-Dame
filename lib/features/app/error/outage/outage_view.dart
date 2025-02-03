@@ -1,5 +1,6 @@
 // Flutter imports:
 import 'package:flutter/material.dart';
+import 'package:notredame/theme/app_theme.dart';
 
 // Package imports:
 import 'package:stacked/stacked.dart';
@@ -9,8 +10,6 @@ import 'package:notredame/features/app/error/outage/outage_viewmodel.dart';
 import 'package:notredame/features/app/error/outage/widgets/outage_image_section.dart';
 import 'package:notredame/features/app/error/outage/widgets/outage_social_section.dart';
 import 'package:notredame/features/app/error/outage/widgets/outage_text_section.dart';
-import 'package:notredame/utils/app_theme.dart';
-import 'package:notredame/utils/utils.dart';
 
 class OutageView extends StatelessWidget {
   const OutageView({super.key});
@@ -20,8 +19,7 @@ class OutageView extends StatelessWidget {
       ViewModelBuilder<OutageViewModel>.nonReactive(
           viewModelBuilder: () => OutageViewModel(context),
           builder: (context, model, child) => Scaffold(
-                backgroundColor: Utils.getColorByBrightness(
-                    context, AppTheme.etsLightRed, AppTheme.primaryDark),
+                backgroundColor: context.theme.appColors.backgroundVibrant,
                 body: Stack(
                   children: [
                     SafeArea(

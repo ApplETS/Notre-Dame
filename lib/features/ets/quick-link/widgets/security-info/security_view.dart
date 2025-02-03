@@ -12,9 +12,9 @@ import 'package:stacked/stacked.dart';
 import 'package:notredame/features/app/widgets/base_scaffold.dart';
 import 'package:notredame/features/ets/quick-link/widgets/security-info/emergency_view.dart';
 import 'package:notredame/features/ets/quick-link/widgets/security-info/security_viewmodel.dart';
-import 'package:notredame/utils/app_theme.dart';
 import 'package:notredame/utils/locator.dart';
 import 'package:notredame/features/app/integration/launch_url_service.dart';
+import 'package:notredame/theme/app_palette.dart';
 
 class SecurityView extends StatefulWidget {
   const SecurityView({super.key});
@@ -78,12 +78,11 @@ class _SecurityViewState extends State<SecurityView> {
           children: [
             Text(
               AppIntl.of(context)!.security_reach_security,
-              style: const TextStyle(color: AppTheme.etsLightRed, fontSize: 24),
+              style: const TextStyle(color: AppPalette.etsLightRed, fontSize: 24),
             ),
             Card(
               child: InkWell(
                 borderRadius: const BorderRadius.all(Radius.circular(10)),
-                splashColor: Colors.red.withAlpha(50),
                 onTap: () {
                   try {
                     _launchUrlService.call(AppIntl.of(context)!.security_emergency_number);
@@ -120,13 +119,12 @@ class _SecurityViewState extends State<SecurityView> {
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           Text(
             AppIntl.of(context)!.security_emergency_procedures,
-            style: const TextStyle(color: AppTheme.etsLightRed, fontSize: 24),
+            style: const TextStyle(color: AppPalette.etsLightRed, fontSize: 24),
           ),
           for (int i = 0; i < model.emergencyProcedureList.length; i++)
             Card(
               child: InkWell(
                 borderRadius: const BorderRadius.all(Radius.circular(10)),
-                splashColor: Colors.red.withAlpha(50),
                 onTap: () => Navigator.push(
                     context,
                     MaterialPageRoute(

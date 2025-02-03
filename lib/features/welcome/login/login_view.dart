@@ -3,18 +3,18 @@ import 'package:flutter/material.dart';
 
 // Package imports:
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:notredame/features/welcome/widgets/forgot_password.dart';
+import 'package:notredame/theme/app_palette.dart';
 import 'package:stacked/stacked.dart';
 
 // Project imports:
 import 'package:notredame/features/welcome/login/login_viewmodel.dart';
 import 'package:notredame/features/welcome/widgets/password_text_field.dart';
-import 'package:notredame/utils/app_theme.dart';
-import 'package:notredame/utils/utils.dart';
 import 'package:notredame/features/welcome/widgets/login_hero.dart';
 import 'package:notredame/features/welcome/widgets/universal_code_text_field.dart';
 import 'package:notredame/features/welcome/widgets/login_button.dart';
 import 'package:notredame/features/welcome/widgets/login_footer.dart';
+import 'package:notredame/features/welcome/widgets/forgot_password.dart';
+import 'package:notredame/theme/app_theme.dart';
 
 class LoginView extends StatefulWidget {
   const LoginView({super.key});
@@ -36,8 +36,7 @@ class _LoginViewState extends State<LoginView> {
       ViewModelBuilder<LoginViewModel>.reactive(
         viewModelBuilder: () => LoginViewModel(intl: AppIntl.of(context)!),
         builder: (context, model, child) => Scaffold(
-          backgroundColor: Utils.getColorByBrightness(
-              context, AppTheme.etsLightRed, AppTheme.primaryDark),
+          backgroundColor: context.theme.appColors.backgroundVibrant,
           resizeToAvoidBottomInset: false,
           body: Builder(
               builder: (BuildContext context) => SafeArea(
@@ -100,7 +99,7 @@ class _LoginViewState extends State<LoginView> {
                             children: <Widget>[
                               Text(
                                 AppIntl.of(context)!.login_applets_logo,
-                                style: const TextStyle(color: Colors.white),
+                                style: TextStyle(color: AppPalette.grey.white),
                               ),
                               Image.asset(
                                 'assets/images/applets_white_logo.png',

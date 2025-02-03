@@ -1,11 +1,10 @@
 // Flutter imports:
 import 'package:flutter/material.dart';
+import 'package:notredame/theme/app_theme.dart';
 
 // Package imports:
 import 'package:shimmer/shimmer.dart';
-
-// Project imports:
-import 'package:notredame/utils/app_theme.dart';
+import 'package:notredame/theme/app_palette.dart';
 
 class NewsCardSkeleton extends StatelessWidget {
   const NewsCardSkeleton({super.key});
@@ -36,12 +35,8 @@ class NewsCardSkeleton extends StatelessWidget {
 
   Widget _shimmerEffect(BuildContext context) {
     return Shimmer.fromColors(
-      baseColor: Theme.of(context).brightness == Brightness.light
-          ? AppTheme.lightThemeBackground
-          : AppTheme.darkThemeBackground,
-      highlightColor: Theme.of(context).brightness == Brightness.light
-          ? AppTheme.lightThemeAccent
-          : AppTheme.darkThemeAccent,
+      baseColor: context.theme.appColors.backgroundAlt,
+      highlightColor: context.theme.appColors.shimmerHighlight,
       child: Container(
         height: 200,
         decoration: BoxDecoration(
@@ -54,12 +49,8 @@ class NewsCardSkeleton extends StatelessWidget {
 
   Widget _shimmerTextEffect(BuildContext context) {
     return Shimmer.fromColors(
-      baseColor: Theme.of(context).brightness == Brightness.light
-          ? AppTheme.lightThemeBackground
-          : AppTheme.darkThemeBackground,
-      highlightColor: Theme.of(context).brightness == Brightness.light
-          ? AppTheme.lightThemeAccent
-          : AppTheme.darkThemeAccent,
+      baseColor: context.theme.appColors.backgroundAlt,
+      highlightColor: context.theme.appColors.shimmerHighlight,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -67,7 +58,7 @@ class NewsCardSkeleton extends StatelessWidget {
             width: double.infinity,
             height: 20.0,
             decoration: BoxDecoration(
-              color: Colors.white,
+              color: AppPalette.grey.white,
               borderRadius: BorderRadius.circular(12),
             ),
           ),
@@ -79,7 +70,7 @@ class NewsCardSkeleton extends StatelessWidget {
                 width: 100,
                 height: 20.0,
                 decoration: BoxDecoration(
-                  color: Colors.white,
+                  color: AppPalette.grey.white,
                   borderRadius: BorderRadius.circular(12),
                 ),
               ),
@@ -87,7 +78,7 @@ class NewsCardSkeleton extends StatelessWidget {
                 width: 60,
                 height: 20.0,
                 decoration: BoxDecoration(
-                  color: Colors.white,
+                  color: AppPalette.grey.white,
                   borderRadius: BorderRadius.circular(12),
                 ),
               ),

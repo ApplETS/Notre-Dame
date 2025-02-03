@@ -3,12 +3,12 @@ import 'package:flutter/material.dart';
 
 // Package imports:
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:notredame/theme/app_theme.dart';
 import 'package:stacked/stacked.dart';
 
 // Project imports:
 import 'package:notredame/features/more/settings/choose_language_viewmodel.dart';
-import 'package:notredame/utils/app_theme.dart';
-import 'package:notredame/utils/utils.dart';
+import 'package:notredame/theme/app_palette.dart';
 
 class ChooseLanguageView extends StatefulWidget {
   const ChooseLanguageView({super.key});
@@ -26,8 +26,6 @@ class _ChooseLanguageViewState extends State<ChooseLanguageView> {
       itemCount: model.languages.length,
       itemBuilder: (BuildContext context, int index) {
         return Card(
-            color: Utils.getColorByBrightness(
-                context, Colors.white, Colors.grey[900]!),
             child: Column(mainAxisSize: MainAxisSize.min, children: <Widget>[
               ListTile(
                 title: Text(model.languages[index]),
@@ -48,8 +46,7 @@ class _ChooseLanguageViewState extends State<ChooseLanguageView> {
         viewModelBuilder: () =>
             ChooseLanguageViewModel(intl: AppIntl.of(context)!),
         builder: (context, model, child) => Scaffold(
-              backgroundColor: Utils.getColorByBrightness(
-                  context, AppTheme.etsLightRed, AppTheme.primaryDark),
+              backgroundColor: context.theme.appColors.backgroundVibrant,
               body: Center(
                 child: ListView(
                   shrinkWrap: true,
@@ -57,8 +54,7 @@ class _ChooseLanguageViewState extends State<ChooseLanguageView> {
                     Icon(
                       Icons.language,
                       size: 80,
-                      color: Utils.getColorByBrightness(
-                          context, Colors.white, AppTheme.etsLightRed),
+                      color: context.theme.appColors.loginAccent,
                     ),
                     Padding(
                       padding: const EdgeInsets.only(left: 20, top: 60),
@@ -66,10 +62,10 @@ class _ChooseLanguageViewState extends State<ChooseLanguageView> {
                         alignment: Alignment.centerLeft,
                         child: Text(
                           AppIntl.of(context)!.choose_language_title,
-                          style: const TextStyle(
+                          style: TextStyle(
                               fontSize: 20,
                               fontWeight: FontWeight.bold,
-                              color: Colors.white),
+                              color: AppPalette.grey.white),
                         ),
                       ),
                     ),
@@ -80,8 +76,8 @@ class _ChooseLanguageViewState extends State<ChooseLanguageView> {
                         alignment: Alignment.centerLeft,
                         child: Text(
                           AppIntl.of(context)!.choose_language_subtitle,
-                          style: const TextStyle(
-                              fontSize: 16, color: Colors.white),
+                          style: TextStyle(
+                              fontSize: 16, color: AppPalette.grey.white),
                         ),
                       ),
                     ),

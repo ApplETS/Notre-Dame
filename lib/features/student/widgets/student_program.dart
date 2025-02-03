@@ -9,7 +9,8 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 // Project imports:
 import 'package:notredame/features/app/signets-api/models/program.dart';
-import 'package:notredame/utils/app_theme.dart';
+import 'package:notredame/theme/app_theme.dart';
+import 'package:notredame/theme/app_palette.dart';
 
 class StudentProgram extends StatefulWidget {
   final Program _program;
@@ -48,8 +49,6 @@ class _StudentProgramState extends State<StudentProgram>
 
   @override
   Widget build(BuildContext context) {
-    final bool isLightMode = Theme.of(context).brightness == Brightness.light;
-
     final List<String> dataTitles = [
       AppIntl.of(context)!.profile_code_program,
       AppIntl.of(context)!.profile_average_program,
@@ -75,9 +74,9 @@ class _StudentProgramState extends State<StudentProgram>
     return Theme(
       data: Theme.of(context).copyWith(
         dividerColor: Colors.transparent,
-        unselectedWidgetColor: Colors.red,
+        unselectedWidgetColor: AppPalette.etsLightRed,
         colorScheme: ColorScheme.fromSwatch().copyWith(
-          onSecondary: Colors.red,
+          onSecondary: AppPalette.etsLightRed,
         ),
       ),
       child: ExpansionTile(
@@ -95,7 +94,7 @@ class _StudentProgramState extends State<StudentProgram>
         title: Text(
           widget._program.name,
           style: TextStyle(
-            color: isLightMode ? Colors.black : Colors.white,
+            color: context.theme.textTheme.bodyMedium!.color
           ),
         ),
         trailing: Padding(
@@ -107,13 +106,13 @@ class _StudentProgramState extends State<StudentProgram>
                 angle: rotateAnimation.value,
                 child: const Icon(
                   Icons.keyboard_arrow_down_sharp,
-                  color: AppTheme.etsLightRed,
+                  color: AppPalette.etsLightRed,
                 ),
               );
             },
             child: const Icon(
               Icons.keyboard_arrow_down_sharp,
-              color: AppTheme.etsLightRed,
+              color: AppPalette.etsLightRed,
             ),
           ),
         ),

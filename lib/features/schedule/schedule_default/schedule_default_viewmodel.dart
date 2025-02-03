@@ -3,12 +3,12 @@ import 'package:flutter/material.dart';
 
 // Package imports:
 import 'package:calendar_view/calendar_view.dart';
+import 'package:notredame/theme/app_palette.dart';
 import 'package:stacked/stacked.dart';
 
 // Project imports:
 import 'package:notredame/features/app/repository/course_repository.dart';
 import 'package:notredame/features/app/signets-api/models/schedule_activity.dart';
-import 'package:notredame/utils/app_theme.dart';
 import 'package:notredame/utils/locator.dart';
 
 class ScheduleDefaultViewModel
@@ -30,8 +30,7 @@ class ScheduleDefaultViewModel
   final Map<String, Color> courseColors = {};
 
   /// The color palette corresponding to the schedule courses.
-  List<Color> schedulePaletteThemeLight =
-      AppTheme.schedulePaletteLight.toList();
+  List<Color> schedulePalette = AppPalette.schedule.toList();
 
   ScheduleDefaultViewModel({String? sessionCode}) : _sessionCode = sessionCode;
 
@@ -69,12 +68,12 @@ class ScheduleDefaultViewModel
         startTime: newStartTime,
         endTime: newEndTime,
         color: getCourseColor(eventData.courseAcronym.split('-')[0]) ??
-            Colors.grey);
+            AppPalette.grey.darkGrey);
   }
 
   Color? getCourseColor(String courseName) {
     if (!courseColors.containsKey(courseName)) {
-      courseColors[courseName] = schedulePaletteThemeLight.removeLast();
+      courseColors[courseName] = schedulePalette.removeLast();
     }
     return courseColors[courseName];
   }

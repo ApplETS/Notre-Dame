@@ -13,10 +13,9 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:notredame/features/app/integration/networking_service.dart';
 import 'package:notredame/features/app/widgets/navigation/bottom_bar.dart';
 import 'package:notredame/features/app/widgets/navigation/navigation_rail.dart';
-import 'package:notredame/utils/app_theme.dart';
+import 'package:notredame/theme/app_theme.dart';
 import 'package:notredame/utils/loading.dart';
 import 'package:notredame/utils/locator.dart';
-import 'package:notredame/utils/utils.dart';
 
 /// Basic Scaffold to avoid boilerplate code in the application.
 /// Contains a loader controlled by [_isLoading]
@@ -135,9 +134,7 @@ class _BaseScaffoldState extends State<BaseScaffold> {
           children: [
             if (widget._showBottomBar)
               ColoredBox(
-                color: Theme.of(context).brightness == Brightness.light
-                    ? AppTheme.lightTheme().navigationRailTheme.backgroundColor!
-                    : AppTheme.darkTheme().navigationRailTheme.backgroundColor!,
+                color: context.theme.appColors.navBar,
                 child: SafeArea(
                     top: false, bottom: false, right: false, child: NavRail()),
               ),
@@ -171,8 +168,7 @@ class _BaseScaffoldState extends State<BaseScaffold> {
       alignment: Alignment.center,
       children: [
         Container(
-          color: Utils.getColorByBrightness(context,
-              AppTheme.lightThemeBackground, AppTheme.darkThemeBackground),
+          color: context.theme.appColors.backgroundAlt,
           width: MediaQuery.of(context).size.width,
           height: MediaQuery.of(context).size.height / 30,
         ),

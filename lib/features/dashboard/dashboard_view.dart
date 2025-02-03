@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 // Package imports:
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:notredame/theme/app_palette.dart';
+import 'package:notredame/theme/app_theme.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 import 'package:stacked/stacked.dart';
 
@@ -22,7 +24,6 @@ import 'package:notredame/features/dashboard/progress_bar_text_options.dart';
 import 'package:notredame/features/dashboard/widgets/course_activity_tile.dart';
 import 'package:notredame/features/dashboard/widgets/haptics_container.dart';
 import 'package:notredame/features/student/grades/widgets/grade_button.dart';
-import 'package:notredame/utils/app_theme.dart';
 import 'package:notredame/utils/loading.dart';
 import 'package:notredame/utils/locator.dart';
 import 'package:notredame/features/app/integration/launch_url_service.dart';
@@ -120,7 +121,7 @@ class _DashboardViewState extends State<DashboardView>
         onDismissed: (DismissDirection direction) {
           dismissCard(model, flag);
         },
-        cardColor: AppTheme.appletsPurple,
+        cardColor: AppPalette.appletsPurple,
         child: Column(mainAxisSize: MainAxisSize.min, children: [
           Align(
               alignment: Alignment.centerLeft,
@@ -147,9 +148,9 @@ class _DashboardViewState extends State<DashboardView>
                         _analyticsService.logEvent(tag, "Facebook clicked");
                         _launchUrlService.launchInBrowser(Urls.clubFacebook);
                       },
-                      icon: const FaIcon(
+                      icon: FaIcon(
                         FontAwesomeIcons.facebook,
-                        color: Colors.white,
+                        color: AppPalette.grey.white,
                       ),
                     ),
                     IconButton(
@@ -157,9 +158,9 @@ class _DashboardViewState extends State<DashboardView>
                         _analyticsService.logEvent(tag, "Instagram clicked");
                         _launchUrlService.launchInBrowser(Urls.clubInstagram);
                       },
-                      icon: const FaIcon(
+                      icon: FaIcon(
                         FontAwesomeIcons.instagram,
-                        color: Colors.white,
+                        color: AppPalette.grey.white,
                       ),
                     ),
                     IconButton(
@@ -167,9 +168,9 @@ class _DashboardViewState extends State<DashboardView>
                         _analyticsService.logEvent(tag, "Github clicked");
                         _launchUrlService.launchInBrowser(Urls.clubGithub);
                         },
-                      icon: const FaIcon(
+                      icon: FaIcon(
                         FontAwesomeIcons.github,
-                        color: Colors.white,
+                        color: AppPalette.grey.white,
                       ),
                     ),
                     IconButton(
@@ -177,9 +178,9 @@ class _DashboardViewState extends State<DashboardView>
                         _analyticsService.logEvent(tag, "Email clicked");
                         _launchUrlService.writeEmail(Urls.clubEmail, "");
                       },
-                      icon: const FaIcon(
+                      icon: FaIcon(
                         FontAwesomeIcons.envelope,
-                        color: Colors.white,
+                        color: AppPalette.grey.white,
                       ),
                     ),
                     IconButton(
@@ -187,9 +188,9 @@ class _DashboardViewState extends State<DashboardView>
                         _analyticsService.logEvent(tag, "Discord clicked");
                         _launchUrlService.launchInBrowser(Urls.clubDiscord);
                         },
-                      icon: const FaIcon(
+                      icon: FaIcon(
                         FontAwesomeIcons.discord,
-                        color: Colors.white,
+                        color: AppPalette.grey.white,
                       ),
                     ),
                   ]),
@@ -235,8 +236,8 @@ class _DashboardViewState extends State<DashboardView>
                         value: model.progress,
                         minHeight: 30,
                         valueColor: const AlwaysStoppedAnimation<Color>(
-                            AppTheme.gradeGoodMax),
-                        backgroundColor: AppTheme.etsDarkGrey,
+                            AppPalette.gradeGoodMax),
+                        backgroundColor: AppPalette.grey.darkGrey,
                       ),
                     ),
                   ),
@@ -253,7 +254,7 @@ class _DashboardViewState extends State<DashboardView>
                           Text(
                             AppIntl.of(context)!.progress_bar_message(
                                 model.sessionDays[0], model.sessionDays[1]),
-                            style: const TextStyle(color: Colors.white),
+                            style: TextStyle(color: AppPalette.grey.white),
                           ),
                     ),
                   ),
@@ -280,19 +281,19 @@ class _DashboardViewState extends State<DashboardView>
       progressBarText = Text(
         AppIntl.of(context)!
             .progress_bar_message(model.sessionDays[0], model.sessionDays[1]),
-        style: const TextStyle(color: Colors.white),
+        style: TextStyle(color: AppPalette.grey.white),
       );
     } else if (model.currentProgressBarText == ProgressBarText.percentage) {
       progressBarText = Text(
         AppIntl.of(context)!.progress_bar_message_percentage(
             ((model.sessionDays[0] / model.sessionDays[1]) * 100).round()),
-        style: const TextStyle(color: Colors.white),
+        style: TextStyle(color: AppPalette.grey.white),
       );
     } else {
       progressBarText = Text(
         AppIntl.of(context)!.progress_bar_message_remaining_days(
             model.sessionDays[1] - model.sessionDays[0]),
-        style: const TextStyle(color: Colors.white),
+        style: TextStyle(color: AppPalette.grey.white),
       );
     }
   }
@@ -435,10 +436,7 @@ class _DashboardViewState extends State<DashboardView>
                   child: Wrap(
                     children: courses
                         .map((course) => GradeButton(course,
-                            color:
-                                Theme.of(context).brightness == Brightness.light
-                                    ? AppTheme.lightThemeBackground
-                                    : AppTheme.darkThemeBackground))
+                            color: context.theme.appColors.backgroundAlt))
                         .toList(),
                   ),
                 ),
@@ -471,39 +469,37 @@ class _DashboardViewState extends State<DashboardView>
                         child: Align(
                           alignment: Alignment.centerLeft,
                           child: Text(model.broadcastTitle,
-                              style: Theme.of(context)
-                                  .primaryTextTheme
-                                  .titleLarge),
+                              style: context.theme.primaryTextTheme.titleLarge),
                         ),
                       ),
                       Align(
                         alignment: Alignment.centerRight,
                         child: InkWell(
                           child: getBroadcastIcon(
-                              broadcastMsgType, broadcastMsgUrl),
+                              broadcastMsgType, broadcastMsgUrl, context),
                         ),
                       ),
                     ],
                   ),
                   // main text
                   Text(model.broadcastMessage,
-                    style: Theme.of(context).primaryTextTheme.bodyMedium)
+                    style: context.theme.primaryTextTheme.bodyMedium)
                 ]),
         ));
   }
 
-  Widget getBroadcastIcon(String type, String url) {
+  Widget getBroadcastIcon(String type, String url, BuildContext context) {
     switch (type) {
       case "warning":
-        return const Icon(
+        return Icon(
           Icons.warning_rounded,
-          color: AppTheme.lightThemeBackground,
+          color: context.theme.primaryTextTheme.titleLarge!.color,
           size: 36.0,
         );
       case "alert":
-        return const Icon(
+        return Icon(
           Icons.error,
-          color: AppTheme.lightThemeBackground,
+          color: context.theme.primaryTextTheme.titleLarge!.color,
           size: 36.0,
         );
       case "link":
@@ -511,16 +507,16 @@ class _DashboardViewState extends State<DashboardView>
           onPressed: () {
             DashboardViewModel.launchBroadcastUrl(url);
           },
-          icon: const Icon(
+          icon: Icon(
             Icons.open_in_new,
-            color: AppTheme.lightThemeBackground,
+            color: context.theme.primaryTextTheme.titleLarge!.color,
             size: 30.0,
           ),
         );
     }
-    return const Icon(
+    return Icon(
       Icons.campaign,
-      color: AppTheme.lightThemeBackground,
+      color: Theme.of(context).primaryTextTheme.titleLarge!.color,
       size: 36.0,
     );
   }

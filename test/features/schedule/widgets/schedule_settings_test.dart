@@ -95,7 +95,7 @@ void main() {
             find.byWidgetPredicate((widget) =>
                 widget is Container &&
                 widget.decoration is BoxDecoration &&
-                (widget.decoration! as BoxDecoration).color == Colors.grey),
+                (widget.decoration! as BoxDecoration).color == Color(0xff868383)),
             findsOneWidget,
             reason: "The handle should be grey");
 
@@ -169,7 +169,7 @@ void main() {
             find.byWidgetPredicate((widget) =>
                 widget is Container &&
                 widget.decoration is BoxDecoration &&
-                (widget.decoration! as BoxDecoration).color == Colors.grey),
+                (widget.decoration! as BoxDecoration).color == Color(0xff868383)),
             findsNothing,
             reason: "There should not have a handle.");
 

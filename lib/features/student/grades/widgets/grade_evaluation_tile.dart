@@ -11,8 +11,9 @@ import 'package:intl/intl.dart';
 // Project imports:
 import 'package:notredame/features/app/signets-api/models/course_evaluation.dart';
 import 'package:notredame/features/student/grades/widgets/grade_circular_progress.dart';
-import 'package:notredame/utils/app_theme.dart';
+import 'package:notredame/theme/app_theme.dart';
 import 'package:notredame/utils/utils.dart';
+import 'package:notredame/theme/app_palette.dart';
 
 class GradeEvaluationTile extends StatefulWidget {
   final bool completed;
@@ -58,12 +59,8 @@ class _GradeEvaluationTileState extends State<GradeEvaluationTile>
           Theme(
             data: Theme.of(context).copyWith(
               dividerColor: Colors.transparent,
-              unselectedWidgetColor: Colors.red,
             ),
             child: Card(
-              color: Theme.of(context).brightness == Brightness.light
-                  ? AppTheme.lightTheme().cardTheme.color
-                  : AppTheme.darkTheme().cardColor,
               clipBehavior: Clip.antiAlias,
               child: ExpansionTile(
                 onExpansionChanged: (value) {
@@ -105,8 +102,7 @@ class _GradeEvaluationTileState extends State<GradeEvaluationTile>
                         widget.evaluation.title,
                         style: TextStyle(
                           fontSize: 16,
-                          color: Utils.getColorByBrightness(
-                              context, Colors.black, Colors.white),
+                          color: context.theme.textTheme.bodyMedium!.color
                         ),
                       ),
                       Text(
@@ -114,8 +110,7 @@ class _GradeEvaluationTileState extends State<GradeEvaluationTile>
                             .grades_weight(widget.evaluation.weight),
                         style: TextStyle(
                           fontSize: 14,
-                          color: Utils.getColorByBrightness(
-                              context, Colors.black, Colors.white),
+                          color: context.theme.textTheme.bodyMedium!.color,
                         ),
                       ),
                     ],
@@ -128,13 +123,13 @@ class _GradeEvaluationTileState extends State<GradeEvaluationTile>
                       angle: rotateAnimation.value,
                       child: const Icon(
                         Icons.keyboard_arrow_down_sharp,
-                        color: AppTheme.etsLightRed,
+                        color: AppPalette.etsLightRed,
                       ),
                     );
                   },
                   child: const Icon(
                     Icons.keyboard_arrow_down_sharp,
-                    color: AppTheme.etsLightRed,
+                    color: AppPalette.etsLightRed,
                   ),
                 ),
                 children: <Widget>[
