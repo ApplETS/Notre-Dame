@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
 // Project imports:
-import 'package:notredame/theme/app_theme.dart';
+import 'package:notredame/ui/core/themes/app_theme.dart';
 
 class LoginHero extends StatefulWidget{
 

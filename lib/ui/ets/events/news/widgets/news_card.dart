@@ -11,7 +11,7 @@ import 'package:notredame/data/models/hello/news.dart';
 import 'package:notredame/data/services/navigation_service.dart';
 import 'package:notredame/domain/constants/router_paths.dart';
 import 'package:notredame/locator.dart';
-import 'package:notredame/theme/app_theme.dart';
+import 'package:notredame/ui/core/themes/app_theme.dart';
 
 class NewsCard extends StatefulWidget {
   final News news;

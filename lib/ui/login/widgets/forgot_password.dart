@@ -9,7 +9,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:notredame/data/services/launch_url_service.dart';
 import 'package:notredame/data/services/remote_config_service.dart';
 import 'package:notredame/locator.dart';
-import 'package:notredame/theme/app_palette.dart';
+import 'package:notredame/ui/core/themes/app_palette.dart';
 
 class ForgotPassword extends StatefulWidget{
 

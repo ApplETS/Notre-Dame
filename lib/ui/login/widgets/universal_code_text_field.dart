@@ -6,8 +6,8 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 // Project imports:
 import 'package:notredame/data/repositories/login_mask.dart';
-import 'package:notredame/theme/app_palette.dart';
-import 'package:notredame/theme/app_theme.dart';
+import 'package:notredame/ui/core/themes/app_palette.dart';
+import 'package:notredame/ui/core/themes/app_theme.dart';
 
 class UniversalCodeFormField extends StatefulWidget {
   final FormFieldValidator<String> validator;

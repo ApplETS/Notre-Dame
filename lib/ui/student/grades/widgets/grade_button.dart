@@ -10,8 +10,8 @@ import 'package:notredame/data/services/navigation_service.dart';
 import 'package:notredame/data/services/signets-api/models/course.dart';
 import 'package:notredame/domain/constants/router_paths.dart';
 import 'package:notredame/locator.dart';
-import 'package:notredame/theme/app_palette.dart';
-import 'package:notredame/theme/app_theme.dart';
+import 'package:notredame/ui/core/themes/app_palette.dart';
+import 'package:notredame/ui/core/themes/app_theme.dart';
 
 class GradeButton extends StatelessWidget {
   final Course course;

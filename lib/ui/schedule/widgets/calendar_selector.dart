@@ -13,7 +13,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:notredame/data/repositories/course_repository.dart';
 import 'package:notredame/data/services/calendar_service.dart';
 import 'package:notredame/locator.dart';
-import 'package:notredame/theme/app_palette.dart';
+import 'package:notredame/ui/core/themes/app_palette.dart';
 
 class CalendarSelectionWidget extends StatelessWidget {
   final AppIntl translations;

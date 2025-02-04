@@ -6,7 +6,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 // Project imports:
-import 'package:notredame/theme/app_theme.dart';
+import 'package:notredame/ui/core/themes/app_theme.dart';
 
 class LoginButton extends StatefulWidget{
   final GlobalKey<FormState> formKey;

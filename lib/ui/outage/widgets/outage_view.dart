@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 
 // Project imports:
-import 'package:notredame/theme/app_theme.dart';
+import 'package:notredame/ui/core/themes/app_theme.dart';
 import 'package:notredame/ui/outage/view_model/outage_viewmodel.dart';
 import 'package:notredame/ui/outage/widgets/outage_image_section.dart';
 import 'package:notredame/ui/outage/widgets/outage_social_section.dart';

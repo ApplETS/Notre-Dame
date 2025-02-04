@@ -2,8 +2,8 @@
 import 'package:flutter/material.dart';
 
 // Project imports:
-import 'package:notredame/theme/app_colors_extension.dart';
-import 'package:notredame/theme/app_palette.dart';
+import 'package:notredame/ui/core/themes/app_colors_extension.dart';
+import 'package:notredame/ui/core/themes/app_palette.dart';
 
 class AppTheme with ChangeNotifier {
   ThemeMode _themeMode = ThemeMode.system;

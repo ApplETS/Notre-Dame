@@ -23,7 +23,7 @@ import 'package:notredame/data/services/navigation_service.dart';
 import 'package:notredame/data/services/remote_config_service.dart';
 import 'package:notredame/locator.dart';
 import 'package:notredame/router.dart';
-import 'package:notredame/theme/app_theme.dart';
+import 'package:notredame/ui/core/themes/app_theme.dart';
 import 'package:notredame/ui/outage/widgets/outage_view.dart';
 import 'package:notredame/ui/startup/widgets/startup_view.dart';
 

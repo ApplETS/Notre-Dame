@@ -11,7 +11,7 @@ import 'package:stacked/stacked.dart';
 import 'package:notredame/data/models/emergency_procedure.dart';
 import 'package:notredame/data/models/emergency_procedures.dart';
 import 'package:notredame/domain/constants/markers.dart';
-import 'package:notredame/theme/app_theme.dart';
+import 'package:notredame/ui/core/themes/app_theme.dart';
 
 class SecurityViewModel extends BaseViewModel {
   GoogleMapController? controller;

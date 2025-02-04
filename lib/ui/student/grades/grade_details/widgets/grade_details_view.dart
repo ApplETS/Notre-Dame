@@ -8,8 +8,8 @@ import 'package:stacked/stacked.dart';
 // Project imports:
 import 'package:notredame/data/services/signets-api/models/course.dart';
 import 'package:notredame/data/services/signets-api/models/course_evaluation.dart';
-import 'package:notredame/theme/app_palette.dart';
-import 'package:notredame/theme/app_theme.dart';
+import 'package:notredame/ui/core/themes/app_palette.dart';
+import 'package:notredame/ui/core/themes/app_theme.dart';
 import 'package:notredame/ui/core/ui/base_scaffold.dart';
 import 'package:notredame/ui/student/grades/grade_details/view_model/grades_details_viewmodel.dart';
 import 'package:notredame/ui/student/grades/widgets/grade_circular_progress.dart';

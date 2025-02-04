@@ -10,8 +10,8 @@ import 'package:intl/intl.dart';
 
 // Project imports:
 import 'package:notredame/data/services/signets-api/models/course_evaluation.dart';
-import 'package:notredame/theme/app_palette.dart';
-import 'package:notredame/theme/app_theme.dart';
+import 'package:notredame/ui/core/themes/app_palette.dart';
+import 'package:notredame/ui/core/themes/app_theme.dart';
 import 'package:notredame/ui/student/grades/widgets/grade_circular_progress.dart';
 import 'package:notredame/utils/utils.dart';
 

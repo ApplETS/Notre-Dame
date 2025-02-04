@@ -6,7 +6,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:stacked/stacked.dart';
 
 // Project imports:
-import 'package:notredame/theme/app_palette.dart';
+import 'package:notredame/ui/core/themes/app_palette.dart';
 import 'package:notredame/ui/core/ui/base_scaffold.dart';
 import 'package:notredame/ui/more/settings/view_model/settings_viewmodel.dart';
 

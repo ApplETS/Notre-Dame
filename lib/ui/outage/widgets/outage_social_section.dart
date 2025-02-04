@@ -8,7 +8,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:notredame/data/services/launch_url_service.dart';
 import 'package:notredame/domain/constants/urls.dart';
 import 'package:notredame/locator.dart';
-import 'package:notredame/theme/app_palette.dart';
+import 'package:notredame/ui/core/themes/app_palette.dart';
 
 class OutageSocialSection extends StatelessWidget {
   OutageSocialSection({super.key});

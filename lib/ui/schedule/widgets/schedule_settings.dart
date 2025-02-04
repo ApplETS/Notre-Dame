@@ -10,8 +10,8 @@ import 'package:table_calendar/table_calendar.dart';
 // Project imports:
 import 'package:notredame/data/models/activity_code.dart';
 import 'package:notredame/data/services/calendar_service.dart';
-import 'package:notredame/theme/app_palette.dart';
-import 'package:notredame/theme/app_theme.dart';
+import 'package:notredame/ui/core/themes/app_palette.dart';
+import 'package:notredame/ui/core/themes/app_theme.dart';
 import 'package:notredame/ui/schedule/view_model/schedule_settings_viewmodel.dart';
 
 class ScheduleSettings extends StatefulWidget {

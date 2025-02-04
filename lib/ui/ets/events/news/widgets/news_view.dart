@@ -8,8 +8,8 @@ import 'package:stacked/stacked.dart';
 
 // Project imports:
 import 'package:notredame/data/models/hello/news.dart';
-import 'package:notredame/theme/app_palette.dart';
-import 'package:notredame/theme/app_theme.dart';
+import 'package:notredame/ui/core/themes/app_palette.dart';
+import 'package:notredame/ui/core/themes/app_theme.dart';
 import 'package:notredame/ui/ets/events/news/view_model/news_viewmodel.dart';
 import 'package:notredame/ui/ets/events/news/widgets/news_card.dart';
 import 'package:notredame/ui/ets/events/news/widgets/news_card_skeleton.dart';

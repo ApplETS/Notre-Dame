@@ -9,7 +9,7 @@ import 'package:stacked/stacked.dart';
 
 // Project imports:
 import 'package:notredame/data/models/hello/news.dart';
-import 'package:notredame/theme/app_theme.dart';
+import 'package:notredame/ui/core/themes/app_theme.dart';
 import 'package:notredame/ui/core/ui/base_scaffold.dart';
 import 'package:notredame/ui/ets/events/author/view_model/author_viewmodel.dart';
 import 'package:notredame/ui/ets/events/author/widgets/author_info_skeleton.dart';

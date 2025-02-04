@@ -11,7 +11,7 @@ import 'package:stacked/stacked.dart';
 // Project imports:
 import 'package:notredame/data/services/launch_url_service.dart';
 import 'package:notredame/locator.dart';
-import 'package:notredame/theme/app_palette.dart';
+import 'package:notredame/ui/core/themes/app_palette.dart';
 import 'package:notredame/ui/core/ui/base_scaffold.dart';
 import 'package:notredame/ui/ets/quick_links/security_info/view_model/security_viewmodel.dart';
 import 'package:notredame/ui/ets/quick_links/security_info/widgets/emergency_view.dart';
