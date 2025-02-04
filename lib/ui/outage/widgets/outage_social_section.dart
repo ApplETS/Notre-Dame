@@ -30,7 +30,7 @@ class OutageSocialSection extends StatelessWidget {
                 ),
                 onPressed: () =>
                     _launchUrlService.launchInBrowser(Urls.clubWebsite)),
-                IconButton(
+            IconButton(
                 icon: FaIcon(
                   FontAwesomeIcons.github,
                   color: AppPalette.grey.white,

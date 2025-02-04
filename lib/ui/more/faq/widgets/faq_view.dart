@@ -72,10 +72,7 @@ class _FaqViewState extends State<FaqView> {
   Padding getSubtitle(String subtitle) {
     return Padding(
       padding: const EdgeInsets.only(left: 18.0, top: 18.0, bottom: 10.0),
-      child: Text(
-        subtitle,
-        style: Theme.of(context).textTheme.headlineSmall!
-      ),
+      child: Text(subtitle, style: Theme.of(context).textTheme.headlineSmall!),
     );
   }
 
@@ -117,14 +114,11 @@ class _FaqViewState extends State<FaqView> {
             Text(
               title,
               style: Theme.of(context).textTheme.headlineSmall!.copyWith(
-                fontSize: 20,
-              ),
+                    fontSize: 20,
+                  ),
             ),
             const SizedBox(height: 12),
-            Text(
-              description,
-              style: Theme.of(context).textTheme.bodyLarge!
-            ),
+            Text(description, style: Theme.of(context).textTheme.bodyLarge!),
           ],
         ),
       ),
@@ -208,8 +202,8 @@ class _FaqViewState extends State<FaqView> {
                 child: Text(
                   title,
                   style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                    fontSize: 18,
-                  ),
+                        fontSize: 18,
+                      ),
                 ),
               ),
               const SizedBox(width: 16),
@@ -221,10 +215,7 @@ class _FaqViewState extends State<FaqView> {
             ],
           ),
           const SizedBox(height: 12.0),
-          Text(
-              description,
-              style: Theme.of(context).textTheme.bodyLarge!
-          )
+          Text(description, style: Theme.of(context).textTheme.bodyLarge!)
         ],
       ),
     );

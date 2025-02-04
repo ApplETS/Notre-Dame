@@ -42,8 +42,8 @@ class _MoreViewState extends State<MoreView> {
                 style: textStyle.copyWith(color: context.theme.appColors.link),
                 text: AppIntl.of(context)!.flutter_website,
                 recognizer: TapGestureRecognizer()
-                  ..onTap = () =>
-                      _launchUrlService.launchInBrowser(AppIntl.of(context)!.flutter_website)),
+                  ..onTap = () => _launchUrlService
+                      .launchInBrowser(AppIntl.of(context)!.flutter_website)),
             TextSpan(style: textStyle, text: '.'),
           ],
         ),
@@ -67,13 +67,13 @@ class _MoreViewState extends State<MoreView> {
                 ListTile(
                     title: Text(AppIntl.of(context)!.more_about_applets_title),
                     leading: Hero(
-                          tag: 'about',
-                          child: Image.asset(
-                            "assets/images/favicon_applets.png",
-                            height: 24,
-                            width: 24,
-                          ),
-                        ),
+                      tag: 'about',
+                      child: Image.asset(
+                        "assets/images/favicon_applets.png",
+                        height: 24,
+                        width: 24,
+                      ),
+                    ),
                     onTap: () {
                       _analyticsService.logEvent(tag, "About App|ETS clicked");
                       model.navigationService.pushNamed(RouterPaths.about);

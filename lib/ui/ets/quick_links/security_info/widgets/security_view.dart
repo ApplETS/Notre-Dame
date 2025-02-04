@@ -78,14 +78,16 @@ class _SecurityViewState extends State<SecurityView> {
           children: [
             Text(
               AppIntl.of(context)!.security_reach_security,
-              style: const TextStyle(color: AppPalette.etsLightRed, fontSize: 24),
+              style:
+                  const TextStyle(color: AppPalette.etsLightRed, fontSize: 24),
             ),
             Card(
               child: InkWell(
                 borderRadius: const BorderRadius.all(Radius.circular(10)),
                 onTap: () {
                   try {
-                    _launchUrlService.call(AppIntl.of(context)!.security_emergency_number);
+                    _launchUrlService
+                        .call(AppIntl.of(context)!.security_emergency_number);
                   } catch (e) {
                     ScaffoldMessenger.of(context)
                         .showSnackBar(SnackBar(content: Text(e.toString())));

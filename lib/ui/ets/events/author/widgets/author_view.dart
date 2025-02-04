@@ -165,7 +165,8 @@ class _AuthorViewState extends State<AuthorView> {
                         Text(
                           author?.profileDescription ?? "",
                           style: TextStyle(
-                            color: context.theme.appColors.newsAuthorProfileDescription,
+                            color: context
+                                .theme.appColors.newsAuthorProfileDescription,
                             fontSize: 16,
                           ),
                           textAlign: TextAlign.center,
@@ -188,10 +189,8 @@ class _AuthorViewState extends State<AuthorView> {
                             ),
                           );
                         },
-                        icon: FaIcon(
-                          FontAwesomeIcons.link,
-                          color: context.theme.appColors.newsAccent
-                        ),
+                        icon: FaIcon(FontAwesomeIcons.link,
+                            color: context.theme.appColors.newsAccent),
                         style: ButtonStyle(
                           shape:
                               WidgetStateProperty.all<RoundedRectangleBorder>(
@@ -200,8 +199,7 @@ class _AuthorViewState extends State<AuthorView> {
                             ),
                           ),
                           backgroundColor: WidgetStateProperty.all<Color>(
-                              context.theme.appColors.backgroundAlt
-                          ),
+                              context.theme.appColors.backgroundAlt),
                         ),
                       ),
                     ],
@@ -250,7 +248,8 @@ class _AuthorViewState extends State<AuthorView> {
                                           '',
                                       style: TextStyle(
                                           fontSize: 56,
-                                          color: context.theme.textTheme.bodyMedium!.color),
+                                          color: context.theme.textTheme
+                                              .bodyMedium!.color),
                                     ),
                                   );
                                 },
@@ -262,7 +261,8 @@ class _AuthorViewState extends State<AuthorView> {
                               model.author?.organization?.substring(0, 1) ?? '',
                               style: TextStyle(
                                   fontSize: 56,
-                                  color: context.theme.textTheme.bodyMedium!.color),
+                                  color: context
+                                      .theme.textTheme.bodyMedium!.color),
                             ),
                           ),
                       ],
@@ -303,7 +303,8 @@ class _AuthorViewState extends State<AuthorView> {
                   padding: const EdgeInsets.fromLTRB(0, 8, 8, 8),
                   child: Row(
                     children: [
-                      Icon(Icons.check, color: context.theme.appColors.newsAccent, size: 40),
+                      Icon(Icons.check,
+                          color: context.theme.appColors.newsAccent, size: 40),
                       const SizedBox(width: 16),
                       Flexible(
                         child: Column(

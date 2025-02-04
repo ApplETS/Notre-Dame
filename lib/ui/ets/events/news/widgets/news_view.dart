@@ -105,14 +105,17 @@ class _NewsViewState extends State<NewsView> {
                                       height: 52,
                                       child: TextField(
                                         decoration: InputDecoration(
-                                            hintText: AppIntl.of(context)!.search,
+                                            hintText:
+                                                AppIntl.of(context)!.search,
                                             filled: true,
                                             border: OutlineInputBorder(
                                               borderSide: BorderSide.none,
-                                              borderRadius: BorderRadius.circular(8.0),
+                                              borderRadius:
+                                                  BorderRadius.circular(8.0),
                                             ),
                                             contentPadding:
-                                                const EdgeInsets.fromLTRB(16, 8, 16, 0)),
+                                                const EdgeInsets.fromLTRB(
+                                                    16, 8, 16, 0)),
                                         style: const TextStyle(fontSize: 18),
                                         onEditingComplete: () =>
                                             {model.searchNews(_query)},
@@ -178,7 +181,8 @@ class _NewsViewState extends State<NewsView> {
                   padding: const EdgeInsets.fromLTRB(0, 8, 8, 8),
                   child: Row(
                     children: [
-                      Icon(Icons.check, color: context.theme.appColors.newsAccent, size: 40),
+                      Icon(Icons.check,
+                          color: context.theme.appColors.newsAccent, size: 40),
                       const SizedBox(width: 16),
                       Flexible(
                         child: Column(

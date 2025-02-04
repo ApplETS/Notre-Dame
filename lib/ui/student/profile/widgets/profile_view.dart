@@ -248,7 +248,9 @@ Card getMyBalanceCard(ProfileViewModel model, BuildContext context) {
   }
 
   return Card(
-    color: balance > 0 ? context.theme.appColors.negative : context.theme.appColors.positive,
+    color: balance > 0
+        ? context.theme.appColors.negative
+        : context.theme.appColors.positive,
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[

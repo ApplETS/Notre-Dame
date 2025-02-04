@@ -12,7 +12,8 @@ class NavigationHistoryObserver extends NavigatorObserver {
       BuiltList<Route<dynamic>>.from(_history);
 
   /// Implements a singleton pattern for NavigationHistoryObserver.
-  static final NavigationHistoryObserver _singleton = NavigationHistoryObserver._internal();
+  static final NavigationHistoryObserver _singleton =
+      NavigationHistoryObserver._internal();
   factory NavigationHistoryObserver() {
     return _singleton;
   }

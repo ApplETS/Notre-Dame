@@ -58,104 +58,101 @@ class _NewsDetailsViewState extends State<NewsDetailsView> {
         builder: (context, model, child) => BaseScaffold(
           showBottomBar: false,
           body: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Expanded(
-                  child: CustomScrollView(
-                    slivers: <Widget>[
-                      SliverAppBar(
-                        backgroundColor: context.theme.appColors.newsBackgroundVibrant,
-                        pinned: true,
-                        titleSpacing: 0,
-                        leading: IconButton(
-                          icon: const Icon(Icons.arrow_back),
-                          color: AppPalette.grey.white,
-                          onPressed: () => Navigator.of(context).pop(),
-                        ),
-                        title: Text(
-                          AppIntl.of(context)!.news_details_title,
-                          style: Theme.of(context)
-                              .textTheme
-                              .bodyLarge!
-                              .copyWith(
-                                  color: AppPalette.grey.white,
-                                  fontSize: 25,
-                                  fontWeight: FontWeight.bold),
-                        ),
-                        actions: <Widget>[
-                          PopupMenuButton<Menu>(
-                            padding: const EdgeInsets.fromLTRB(0, 8, 0, 8),
-                            position: PopupMenuPosition.under,
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10)),
-                            color: context.theme.appColors.backgroundAlt,
-                            icon: const Icon(Icons.more_vert),
-                            onSelected: (Menu menu) =>
-                                handleClick(menu, model.news),
-                            itemBuilder: (BuildContext context) =>
-                                <PopupMenuEntry<Menu>>[
-                              PopupMenuItem<Menu>(
-                                value: Menu.share,
-                                child: ListTile(
-                                  leading: const Icon(Icons.share_outlined),
-                                  title: Text(AppIntl.of(context)!.share),
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Expanded(
+                child: CustomScrollView(
+                  slivers: <Widget>[
+                    SliverAppBar(
+                      backgroundColor:
+                          context.theme.appColors.newsBackgroundVibrant,
+                      pinned: true,
+                      titleSpacing: 0,
+                      leading: IconButton(
+                        icon: const Icon(Icons.arrow_back),
+                        color: AppPalette.grey.white,
+                        onPressed: () => Navigator.of(context).pop(),
+                      ),
+                      title: Text(
+                        AppIntl.of(context)!.news_details_title,
+                        style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                            color: AppPalette.grey.white,
+                            fontSize: 25,
+                            fontWeight: FontWeight.bold),
+                      ),
+                      actions: <Widget>[
+                        PopupMenuButton<Menu>(
+                          padding: const EdgeInsets.fromLTRB(0, 8, 0, 8),
+                          position: PopupMenuPosition.under,
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10)),
+                          color: context.theme.appColors.backgroundAlt,
+                          icon: const Icon(Icons.more_vert),
+                          onSelected: (Menu menu) =>
+                              handleClick(menu, model.news),
+                          itemBuilder: (BuildContext context) =>
+                              <PopupMenuEntry<Menu>>[
+                            PopupMenuItem<Menu>(
+                              value: Menu.share,
+                              child: ListTile(
+                                leading: const Icon(Icons.share_outlined),
+                                title: Text(AppIntl.of(context)!.share),
+                              ),
+                            ),
+                            PopupMenuItem<Menu>(
+                              value: Menu.export,
+                              child: ListTile(
+                                leading: const Icon(Icons.ios_share),
+                                title: Text(AppIntl.of(context)!.export),
+                              ),
+                            ),
+                            PopupMenuItem<Menu>(
+                              value: Menu.report,
+                              child: ListTile(
+                                leading: SvgPicture.asset(
+                                  'assets/images/report.svg',
+                                  colorFilter: const ColorFilter.mode(
+                                      AppPalette.etsLightRed, BlendMode.srcIn),
+                                  width: 26,
+                                ),
+                                title: Text(
+                                  AppIntl.of(context)!.report,
+                                  style: const TextStyle(
+                                      color: AppPalette.etsLightRed),
                                 ),
                               ),
-                              PopupMenuItem<Menu>(
-                                value: Menu.export,
-                                child: ListTile(
-                                  leading: const Icon(Icons.ios_share),
-                                  title: Text(AppIntl.of(context)!.export),
-                                ),
-                              ),
-                              PopupMenuItem<Menu>(
-                                value: Menu.report,
-                                child: ListTile(
-                                  leading: SvgPicture.asset(
-                                    'assets/images/report.svg',
-                                    colorFilter: const ColorFilter.mode(
-                                        AppPalette.etsLightRed, BlendMode.srcIn),
-                                    width: 26,
-                                  ),
-                                  title: Text(
-                                    AppIntl.of(context)!.report,
-                                    style: const TextStyle(
-                                        color: AppPalette.etsLightRed),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          )
+                            ),
+                          ],
+                        )
+                      ],
+                    ),
+                    SliverToBoxAdapter(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: <Widget>[
+                          _buildTitle(widget.news.title),
+                          _buildDate(
+                              context,
+                              widget.news.publicationDate,
+                              widget.news.eventStartDate,
+                              widget.news.eventEndDate),
+                          _buildImage(widget.news),
+                          _buildAuthor(
+                              widget.news.organizer.avatarUrl ?? "",
+                              widget.news.organizer.organization ?? "",
+                              widget.news.organizer.activityArea,
+                              widget.news.organizer.id),
+                          _buildContent(widget.news.content),
                         ],
                       ),
-                      SliverToBoxAdapter(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          children: <Widget>[
-                            _buildTitle(widget.news.title),
-                            _buildDate(
-                                context,
-                                widget.news.publicationDate,
-                                widget.news.eventStartDate,
-                                widget.news.eventEndDate),
-                            _buildImage(widget.news),
-                            _buildAuthor(
-                                widget.news.organizer.avatarUrl ?? "",
-                                widget.news.organizer.organization ?? "",
-                                widget.news.organizer.activityArea,
-                                widget.news.organizer.id),
-                            _buildContent(widget.news.content),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
-                _buildTags(model),
-              ],
-            ),
+              ),
+              _buildTags(model),
+            ],
           ),
-
+        ),
       );
 
   void handleClick(Menu menu, News news) {
@@ -260,8 +257,8 @@ class _NewsDetailsViewState extends State<NewsDetailsView> {
                                   author.substring(0, 1),
                                   style: TextStyle(
                                       fontSize: 24,
-                                      color: context.theme.textTheme.bodyMedium!.color
-                                  ),
+                                      color: context
+                                          .theme.textTheme.bodyMedium!.color),
                                 ),
                               );
                             },
@@ -270,13 +267,11 @@ class _NewsDetailsViewState extends State<NewsDetailsView> {
                           fit: StackFit.expand,
                           children: [
                             Center(
-                              child: Text(
-                                author.substring(0, 1),
-                                style: TextStyle(
-                                    fontSize: 24,
-                                    color: context.theme.textTheme.bodyMedium!.color
-                                )
-                              ),
+                              child: Text(author.substring(0, 1),
+                                  style: TextStyle(
+                                      fontSize: 24,
+                                      color: context
+                                          .theme.textTheme.bodyMedium!.color)),
                             ),
                           ],
                         ),
@@ -342,8 +337,8 @@ class _NewsDetailsViewState extends State<NewsDetailsView> {
             children: [
               Text(
                 formattedPublishedDate,
-                style: TextStyle(
-                    color: context.theme.textTheme.bodyMedium!.color),
+                style:
+                    TextStyle(color: context.theme.textTheme.bodyMedium!.color),
               ),
               const SizedBox(height: 12.0),
             ],
@@ -358,7 +353,9 @@ class _NewsDetailsViewState extends State<NewsDetailsView> {
                     color: context.theme.appColors.backgroundAlt,
                     shape: BoxShape.circle,
                   ),
-                  child: Icon(Icons.event, size: 20.0, color: context.theme.textTheme.bodyMedium!.color),
+                  child: Icon(Icons.event,
+                      size: 20.0,
+                      color: context.theme.textTheme.bodyMedium!.color),
                 ),
                 Flexible(
                     child: Padding(
@@ -368,14 +365,14 @@ class _NewsDetailsViewState extends State<NewsDetailsView> {
                     children: [
                       Text(
                         AppIntl.of(context)!.news_event_date,
-                        style: TextStyle(
-                            color: context.theme.appColors.fadedText),
+                        style:
+                            TextStyle(color: context.theme.appColors.fadedText),
                         textAlign: TextAlign.right,
                       ),
                       Text(
                         formattedEventDate,
-                      style: TextStyle(
-                          color: context.theme.textTheme.bodyMedium!.color),
+                        style: TextStyle(
+                            color: context.theme.textTheme.bodyMedium!.color),
                         textAlign: TextAlign.right,
                       ),
                     ],

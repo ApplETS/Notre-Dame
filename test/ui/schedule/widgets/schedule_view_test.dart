@@ -103,8 +103,7 @@ void main() {
             toReturn: settings);
 
         await tester.runAsync(() async {
-          await tester.pumpWidget(localizedWidget(
-              child: const ScheduleView()));
+          await tester.pumpWidget(localizedWidget(child: const ScheduleView()));
           await tester.pumpAndSettle();
         }).then((value) async {
           expect(find.byType(ScheduleSettings), findsNothing,

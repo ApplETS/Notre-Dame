@@ -43,7 +43,6 @@ class LaunchUrlService {
           barCollapsingEnabled: true,
           preferredControlTintColor: AppPalette.grey.white,
           preferredBarTintColor: AppPalette.etsLightRed,
-        )
-    );
+        ));
   }
 }

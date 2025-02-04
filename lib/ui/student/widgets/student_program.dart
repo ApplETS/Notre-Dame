@@ -93,9 +93,7 @@ class _StudentProgramState extends State<StudentProgram>
         },
         title: Text(
           widget._program.name,
-          style: TextStyle(
-            color: context.theme.textTheme.bodyMedium!.color
-          ),
+          style: TextStyle(color: context.theme.textTheme.bodyMedium!.color),
         ),
         trailing: Padding(
           padding: const EdgeInsets.only(top: 5.0),

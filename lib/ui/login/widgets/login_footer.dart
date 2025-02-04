@@ -10,16 +10,14 @@ import 'package:notredame/domain/constants/router_paths.dart';
 import 'package:notredame/locator.dart';
 import 'package:notredame/ui/core/themes/app_palette.dart';
 
-class LoginFooter extends StatefulWidget{
-
-  const LoginFooter(
-      {super.key});
+class LoginFooter extends StatefulWidget {
+  const LoginFooter({super.key});
 
   @override
   State<LoginFooter> createState() => _LoginFooterState();
 }
 
-class _LoginFooterState extends State<LoginFooter>{
+class _LoginFooterState extends State<LoginFooter> {
   final NavigationService _navigationService = locator<NavigationService>();
 
   @override
@@ -30,8 +28,7 @@ class _LoginFooterState extends State<LoginFooter>{
             child: Text(
               AppIntl.of(context)!.need_help,
               style: TextStyle(
-                  decoration:
-                  TextDecoration.underline,
+                  decoration: TextDecoration.underline,
                   color: AppPalette.grey.white),
             ),
             onTap: () async {

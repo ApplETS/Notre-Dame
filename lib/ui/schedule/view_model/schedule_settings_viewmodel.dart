@@ -26,12 +26,11 @@ class ScheduleSettingsViewModel
 
   set calendarFormat(CalendarTimeFormat? format) {
     setBusy(true);
-    _settingsManager.setString(PreferencesFlag.scheduleCalendarFormat,
-        format?.name);
+    _settingsManager.setString(
+        PreferencesFlag.scheduleCalendarFormat, format?.name);
     _calendarFormat = format;
     setBusy(false);
   }
-
 
   /// Display the button to return to today
   bool _showTodayBtn = true;
@@ -55,7 +54,6 @@ class ScheduleSettingsViewModel
     _toggleCalendarView = newValue;
     setBusy(false);
   }
-
 
   /// The schedule activities which needs to be shown (group A or B) grouped as courses
   final Map<String, List<ScheduleActivity>> _scheduleActivitiesByCourse = {};

@@ -68,10 +68,7 @@ class AuthorInfoSkeleton extends StatelessWidget {
       highlightColor: context.theme.appColors.shimmerHighlight,
       child: IconButton(
         onPressed: () {}, // Placeholder onPressed function
-        icon: Icon(
-          Icons.link,
-          color: context.theme.appColors.newsAccent
-        ),
+        icon: Icon(Icons.link, color: context.theme.appColors.newsAccent),
       ),
     );
   }

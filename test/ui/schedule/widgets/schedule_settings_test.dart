@@ -30,7 +30,7 @@ void main() {
     PreferencesFlag.scheduleShowTodayBtn: true,
     PreferencesFlag.scheduleListView: true,
   };
-  
+
   final List<ScheduleActivity> classOneWithLaboratoryABscheduleActivities = [
     ScheduleActivity(
         courseAcronym: "GEN101",
@@ -95,7 +95,8 @@ void main() {
             find.byWidgetPredicate((widget) =>
                 widget is Container &&
                 widget.decoration is BoxDecoration &&
-                (widget.decoration! as BoxDecoration).color == Color(0xff868383)),
+                (widget.decoration! as BoxDecoration).color ==
+                    Color(0xff868383)),
             findsOneWidget,
             reason: "The handle should be grey");
 
@@ -169,7 +170,8 @@ void main() {
             find.byWidgetPredicate((widget) =>
                 widget is Container &&
                 widget.decoration is BoxDecoration &&
-                (widget.decoration! as BoxDecoration).color == Color(0xff868383)),
+                (widget.decoration! as BoxDecoration).color ==
+                    Color(0xff868383)),
             findsNothing,
             reason: "There should not have a handle.");
 
@@ -377,8 +379,11 @@ void main() {
               ListTile, intl.schedule_settings_list_view,
               skipOffstage: false);
 
-          (find.byType(Switch, skipOffstage: false).evaluate().elementAt(1).widget
-          as Switch)
+          (find
+                  .byType(Switch, skipOffstage: false)
+                  .evaluate()
+                  .elementAt(1)
+                  .widget as Switch)
               .onChanged!(false);
 
           await tester.pumpAndSettle();
@@ -392,7 +397,7 @@ void main() {
                   matching: find.byType(Switch, skipOffstage: false))),
               isA<Switch>().having((source) => source.value, 'value', isFalse),
               reason:
-              "the settings says calendar view format now, the UI should reflet that.");
+                  "the settings says calendar view format now, the UI should reflet that.");
 
           await tester
               .pumpWidget(localizedWidget(child: const ScheduleSettings()));

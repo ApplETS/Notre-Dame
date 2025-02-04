@@ -14,11 +14,11 @@ class UniversalCodeFormField extends StatefulWidget {
   final VoidCallback onEditionComplete;
   final String universalCode;
 
-  const UniversalCodeFormField({
-        super.key,
-        required this.validator,
-        required this.onEditionComplete,
-        required this.universalCode});
+  const UniversalCodeFormField(
+      {super.key,
+      required this.validator,
+      required this.onEditionComplete,
+      required this.universalCode});
 
   @override
   State<UniversalCodeFormField> createState() => _UniversalCodeFormFieldState();
@@ -33,20 +33,15 @@ class _UniversalCodeFormFieldState extends State<UniversalCodeFormField> {
 
   @override
   Widget build(BuildContext context) => TextFormField(
-        autofillHints: const [
-          AutofillHints.username
-        ],
+        autofillHints: const [AutofillHints.username],
         cursorColor: AppPalette.grey.white,
-        keyboardType:
-        TextInputType.visiblePassword,
+        keyboardType: TextInputType.visiblePassword,
         decoration: InputDecoration(
           enabledBorder: const OutlineInputBorder(
-              borderSide: BorderSide(
-                  color: Colors.white70)),
+              borderSide: BorderSide(color: Colors.white70)),
           focusedBorder: OutlineInputBorder(
               borderSide: BorderSide(
-                  color: AppPalette.grey.white,
-                  width: borderRadiusOnFocus)),
+                  color: AppPalette.grey.white, width: borderRadiusOnFocus)),
           focusedErrorBorder: OutlineInputBorder(
               borderSide: BorderSide(
                   color: context.theme.appColors.inputError,
@@ -55,31 +50,23 @@ class _UniversalCodeFormFieldState extends State<UniversalCodeFormField> {
               borderSide: BorderSide(
                   color: context.theme.appColors.inputError,
                   width: borderRadiusOnFocus)),
-          labelText: AppIntl.of(context)!
-              .login_prompt_universal_code,
-          labelStyle: const TextStyle(
-              color: Colors.white54),
-          errorStyle:
-          TextStyle(color: context.theme.appColors.inputError),
+          labelText: AppIntl.of(context)!.login_prompt_universal_code,
+          labelStyle: const TextStyle(color: Colors.white54),
+          errorStyle: TextStyle(color: context.theme.appColors.inputError),
           suffixIcon: Tooltip(
               key: tooltipKey,
-              triggerMode:
-              TooltipTriggerMode.manual,
-              message: AppIntl.of(context)!
-                  .universal_code_example,
+              triggerMode: TooltipTriggerMode.manual,
+              message: AppIntl.of(context)!.universal_code_example,
               preferBelow: true,
               child: IconButton(
-                icon: Icon(Icons.help,
-                    color: AppPalette.grey.white),
+                icon: Icon(Icons.help, color: AppPalette.grey.white),
                 onPressed: () {
-                  tooltipKey.currentState
-                      ?.ensureTooltipVisible();
+                  tooltipKey.currentState?.ensureTooltipVisible();
                 },
               )),
         ),
         autofocus: true,
-        style:
-        TextStyle(color: AppPalette.grey.white),
+        style: TextStyle(color: AppPalette.grey.white),
         onEditingComplete: widget.onEditionComplete,
         validator: widget.validator,
         initialValue: widget.universalCode,

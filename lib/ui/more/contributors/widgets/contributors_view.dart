@@ -56,8 +56,8 @@ class ContributorsView extends StatelessWidget {
         leading: CircleAvatar(
             backgroundColor: Colors.grey,
             backgroundImage: NetworkImage(contributors[index].avatarUrl ?? '')),
-        onTap: () =>
-            _launchUrlService.launchInBrowser(contributors[index].htmlUrl ?? ''),
+        onTap: () => _launchUrlService
+            .launchInBrowser(contributors[index].htmlUrl ?? ''),
       ),
     );
   }
