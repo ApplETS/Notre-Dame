@@ -5,14 +5,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
-import 'package:notredame/theme/app_theme.dart';
 import 'package:stacked/stacked.dart';
 
 // Project imports:
-import 'package:notredame/ui/core/ui/base_scaffold.dart';
 import 'package:notredame/data/models/hello/news.dart';
-import 'package:notredame/ui/ets/events/author/widgets/author_info_skeleton.dart';
+import 'package:notredame/theme/app_theme.dart';
+import 'package:notredame/ui/core/ui/base_scaffold.dart';
 import 'package:notredame/ui/ets/events/author/view_model/author_viewmodel.dart';
+import 'package:notredame/ui/ets/events/author/widgets/author_info_skeleton.dart';
 import 'package:notredame/ui/ets/events/news/widgets/news_card.dart';
 import 'package:notredame/ui/ets/events/news/widgets/news_card_skeleton.dart';
 import 'package:notredame/ui/ets/events/social/models/social_link.dart';

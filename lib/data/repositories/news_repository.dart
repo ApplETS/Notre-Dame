@@ -1,7 +1,7 @@
 // Project imports:
+import 'package:notredame/data/models/hello/paginated_news.dart';
 import 'package:notredame/data/services/cache_service.dart';
 import 'package:notredame/data/services/hello/hello_service.dart';
-import 'package:notredame/data/models/hello/paginated_news.dart';
 import 'package:notredame/locator.dart';
 
 /// Repository to access all the news

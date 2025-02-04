@@ -1,6 +1,5 @@
 // Flutter imports:
 import 'package:flutter/material.dart';
-import 'package:notredame/ui/ets/quick_links/view_model/web_link_card_viewmodel.dart';
 
 // Package imports:
 import 'package:stacked/stacked.dart';
@@ -8,6 +7,7 @@ import 'package:stacked/stacked.dart';
 // Project imports:
 import 'package:notredame/data/models/quick_link.dart';
 import 'package:notredame/theme/app_palette.dart';
+import 'package:notredame/ui/ets/quick_links/view_model/web_link_card_viewmodel.dart';
 
 class WebLinkCard extends StatelessWidget {
   final QuickLink _links;

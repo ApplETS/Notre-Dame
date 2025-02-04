@@ -3,12 +3,12 @@ import 'package:flutter/material.dart';
 
 // Package imports:
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:notredame/theme/app_theme.dart';
 import 'package:stacked/stacked.dart';
 
 // Project imports:
-import 'package:notredame/ui/more/settings/choose_language/view_model/choose_language_viewmodel.dart';
 import 'package:notredame/theme/app_palette.dart';
+import 'package:notredame/theme/app_theme.dart';
+import 'package:notredame/ui/more/settings/choose_language/view_model/choose_language_viewmodel.dart';
 
 class ChooseLanguageView extends StatefulWidget {
   const ChooseLanguageView({super.key});

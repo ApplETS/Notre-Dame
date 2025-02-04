@@ -6,15 +6,15 @@ import 'package:flutter/material.dart';
 // Package imports:
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:notredame/ui/ets/quick_links/security_info/widgets/emergency_view.dart';
 import 'package:stacked/stacked.dart';
 
 // Project imports:
+import 'package:notredame/data/services/launch_url_service.dart';
+import 'package:notredame/locator.dart';
+import 'package:notredame/theme/app_palette.dart';
 import 'package:notredame/ui/core/ui/base_scaffold.dart';
 import 'package:notredame/ui/ets/quick_links/security_info/view_model/security_viewmodel.dart';
-import 'package:notredame/theme/app_palette.dart';
-import 'package:notredame/locator.dart';
-import 'package:notredame/data/services/launch_url_service.dart';
+import 'package:notredame/ui/ets/quick_links/security_info/widgets/emergency_view.dart';
 
 class SecurityView extends StatefulWidget {
   const SecurityView({super.key});

@@ -3,24 +3,24 @@ import 'package:flutter/material.dart';
 
 // Package imports:
 import 'package:flutter_test/flutter_test.dart';
-import 'package:notredame/data/services/calendar_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 // Project imports:
-import 'package:notredame/domain/constants/preferences_flags.dart';
-import 'package:notredame/data/services/analytics_service.dart';
-import 'package:notredame/data/services/remote_config_service.dart';
-import 'package:notredame/data/services/networking_service.dart';
-import 'package:notredame/data/services/navigation_service.dart';
 import 'package:notredame/data/repositories/course_repository.dart';
-import 'package:notredame/data/services/signets-api/models/course_activity.dart';
 import 'package:notredame/data/repositories/settings_repository.dart';
-import 'package:notredame/ui/schedule/widgets/schedule_view.dart';
+import 'package:notredame/data/services/analytics_service.dart';
+import 'package:notredame/data/services/calendar_service.dart';
+import 'package:notredame/data/services/navigation_service.dart';
+import 'package:notredame/data/services/networking_service.dart';
+import 'package:notredame/data/services/remote_config_service.dart';
+import 'package:notredame/data/services/signets-api/models/course_activity.dart';
+import 'package:notredame/domain/constants/preferences_flags.dart';
 import 'package:notredame/ui/schedule/widgets/schedule_settings.dart';
-import '../../../helpers.dart';
-import '../../../data/mocks/services/remote_config_service_mock.dart';
+import 'package:notredame/ui/schedule/widgets/schedule_view.dart';
 import '../../../data/mocks/repositories/course_repository_mock.dart';
 import '../../../data/mocks/repositories/settings_repository_mock.dart';
+import '../../../data/mocks/services/remote_config_service_mock.dart';
+import '../../../helpers.dart';
 
 void main() {
   SharedPreferences.setMockInitialValues({});

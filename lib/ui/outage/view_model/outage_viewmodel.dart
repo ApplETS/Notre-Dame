@@ -8,8 +8,8 @@ import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 
 // Project imports:
-import 'package:notredame/data/services/remote_config_service.dart';
 import 'package:notredame/data/services/navigation_service.dart';
+import 'package:notredame/data/services/remote_config_service.dart';
 import 'package:notredame/domain/constants/router_paths.dart';
 import 'package:notredame/locator.dart';
 

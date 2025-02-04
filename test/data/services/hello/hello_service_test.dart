@@ -4,12 +4,12 @@ import 'package:http/http.dart';
 import 'package:http/testing.dart';
 
 // Project imports:
-import 'package:notredame/data/services/hello/hello_service.dart';
 import 'package:notredame/data/models/hello/activity_area.dart';
 import 'package:notredame/data/models/hello/news.dart';
 import 'package:notredame/data/models/hello/organizer.dart';
 import 'package:notredame/data/models/hello/paginated_news.dart';
 import 'package:notredame/data/models/hello/report.dart';
+import 'package:notredame/data/services/hello/hello_service.dart';
 import 'package:notredame/utils/api_response.dart';
 import 'package:notredame/utils/http_exception.dart';
 import '../../http_client_mock_helper.dart';

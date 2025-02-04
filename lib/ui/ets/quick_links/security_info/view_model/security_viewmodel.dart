@@ -5,13 +5,13 @@ import 'package:flutter/services.dart';
 // Package imports:
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:notredame/theme/app_theme.dart';
 import 'package:stacked/stacked.dart';
 
 // Project imports:
-import 'package:notredame/domain/constants/markers.dart';
 import 'package:notredame/data/models/emergency_procedure.dart';
 import 'package:notredame/data/models/emergency_procedures.dart';
+import 'package:notredame/domain/constants/markers.dart';
+import 'package:notredame/theme/app_theme.dart';
 
 class SecurityViewModel extends BaseViewModel {
   GoogleMapController? controller;

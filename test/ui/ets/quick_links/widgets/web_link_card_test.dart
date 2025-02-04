@@ -6,14 +6,14 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 
 // Project imports:
+import 'package:notredame/data/models/quick_link.dart';
 import 'package:notredame/data/services/analytics_service.dart';
 import 'package:notredame/data/services/internal_info_service.dart';
 import 'package:notredame/data/services/navigation_service.dart';
-import 'package:notredame/data/models/quick_link.dart';
 import 'package:notredame/ui/ets/quick_links/widgets/web_link_card.dart';
-import '../../../../helpers.dart';
 import '../../../../data/mocks/services/analytics_service_mock.dart';
 import '../../../../data/mocks/services/launch_url_service_mock.dart';
+import '../../../../helpers.dart';
 
 final _quickLink = QuickLink(
     id: 1, image: const Icon(Icons.ac_unit), name: 'test', link: 'testlink');

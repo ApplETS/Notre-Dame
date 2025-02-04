@@ -5,17 +5,17 @@ import 'package:logger/logger.dart';
 import 'package:mockito/mockito.dart';
 
 // Project imports:
-import 'package:notredame/data/repositories/author_repository.dart';
-import 'package:notredame/data/repositories/news_repository.dart';
 import 'package:notredame/data/models/hello/activity_area.dart';
 import 'package:notredame/data/models/hello/news.dart';
 import 'package:notredame/data/models/hello/news_tags.dart';
 import 'package:notredame/data/models/hello/organizer.dart';
 import 'package:notredame/data/models/hello/paginated_news.dart';
+import 'package:notredame/data/repositories/author_repository.dart';
+import 'package:notredame/data/repositories/news_repository.dart';
 import 'package:notredame/ui/ets/events/author/view_model/author_viewmodel.dart';
-import '../../../../../helpers.dart';
 import '../../../../../data/mocks/repositories/author_repository_mock.dart';
 import '../../../../../data/mocks/repositories/news_repository_mock.dart';
+import '../../../../../helpers.dart';
 
 void main() {
   late AuthorViewModel viewModel;

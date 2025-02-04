@@ -4,18 +4,18 @@ import 'package:flutter/services.dart';
 
 // Package imports:
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:notredame/theme/app_theme.dart';
-import 'package:notredame/ui/student/profile/widgets/program_completion.dart';
 import 'package:stacked/stacked.dart';
 
 // Project imports:
 import 'package:notredame/data/services/analytics_service.dart';
 import 'package:notredame/data/services/signets-api/models/program.dart';
-import 'package:notredame/ui/student/profile/view_model/profile_viewmodel.dart';
-import 'package:notredame/ui/student/widgets/student_program.dart';
-import 'package:notredame/theme/app_palette.dart';
-import 'package:notredame/utils/loading.dart';
 import 'package:notredame/locator.dart';
+import 'package:notredame/theme/app_palette.dart';
+import 'package:notredame/theme/app_theme.dart';
+import 'package:notredame/ui/student/profile/view_model/profile_viewmodel.dart';
+import 'package:notredame/ui/student/profile/widgets/program_completion.dart';
+import 'package:notredame/ui/student/widgets/student_program.dart';
+import 'package:notredame/utils/loading.dart';
 
 class ProfileView extends StatefulWidget {
   const ProfileView({super.key});

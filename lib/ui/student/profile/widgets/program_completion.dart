@@ -5,8 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 // Project imports:
-import 'package:notredame/ui/student/profile/view_model/profile_viewmodel.dart';
 import 'package:notredame/theme/app_theme.dart';
+import 'package:notredame/ui/student/profile/view_model/profile_viewmodel.dart';
 
 class ProgramCompletionCard extends StatelessWidget {
   final ProfileViewModel model;

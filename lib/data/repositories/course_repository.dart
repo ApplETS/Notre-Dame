@@ -8,9 +8,10 @@ import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
 
 // Project imports:
-import 'package:notredame/data/services/analytics_service.dart';
-import 'package:notredame/data/services/networking_service.dart';
 import 'package:notredame/data/repositories/user_repository.dart';
+import 'package:notredame/data/services/analytics_service.dart';
+import 'package:notredame/data/services/cache_service.dart';
+import 'package:notredame/data/services/networking_service.dart';
 import 'package:notredame/data/services/signets-api/models/course.dart';
 import 'package:notredame/data/services/signets-api/models/course_activity.dart';
 import 'package:notredame/data/services/signets-api/models/course_review.dart';
@@ -19,11 +20,10 @@ import 'package:notredame/data/services/signets-api/models/schedule_activity.dar
 import 'package:notredame/data/services/signets-api/models/session.dart';
 import 'package:notredame/data/services/signets-api/models/signets_errors.dart';
 import 'package:notredame/data/services/signets-api/signets_api_client.dart';
-import 'package:notredame/data/services/cache_service.dart';
 import 'package:notredame/domain/constants/semester_codes.dart';
+import 'package:notredame/locator.dart';
 import 'package:notredame/utils/api_exception.dart';
 import 'package:notredame/utils/cache_exception.dart';
-import 'package:notredame/locator.dart';
 
 /// Repository to access all the data related to courses taken by the student
 class CourseRepository {

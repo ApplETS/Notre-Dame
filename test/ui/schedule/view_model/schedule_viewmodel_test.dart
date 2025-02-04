@@ -3,22 +3,22 @@ import 'package:calendar_view/calendar_view.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:intl/intl.dart';
 import 'package:mockito/mockito.dart';
-import 'package:notredame/data/services/calendar_service.dart';
-import 'package:notredame/utils/utils.dart';
+import 'package:table_calendar/table_calendar.dart';
 
 // Project imports:
-import 'package:notredame/domain/constants/preferences_flags.dart';
+import 'package:notredame/data/models/activity_code.dart';
 import 'package:notredame/data/repositories/course_repository.dart';
+import 'package:notredame/data/repositories/settings_repository.dart';
+import 'package:notredame/data/services/calendar_service.dart';
 import 'package:notredame/data/services/signets-api/models/course.dart';
 import 'package:notredame/data/services/signets-api/models/course_activity.dart';
 import 'package:notredame/data/services/signets-api/models/schedule_activity.dart';
-import 'package:notredame/data/repositories/settings_repository.dart';
+import 'package:notredame/domain/constants/preferences_flags.dart';
 import 'package:notredame/ui/schedule/view_model/schedule_viewmodel.dart';
-import 'package:notredame/data/models/activity_code.dart';
-import 'package:table_calendar/table_calendar.dart';
-import '../../../helpers.dart';
+import 'package:notredame/utils/utils.dart';
 import '../../../data/mocks/repositories/course_repository_mock.dart';
 import '../../../data/mocks/repositories/settings_repository_mock.dart';
+import '../../../helpers.dart';
 
 late CourseRepositoryMock courseRepositoryMock;
 late SettingsRepositoryMock settingsManagerMock;

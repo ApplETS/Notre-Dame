@@ -6,24 +6,24 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 // Project imports:
-import 'package:notredame/data/services/analytics_service.dart';
-import 'package:notredame/data/services/launch_url_service.dart';
-import 'package:notredame/data/services/networking_service.dart';
-import 'package:notredame/data/services/navigation_service.dart';
-import 'package:notredame/data/repositories/course_repository.dart';
-import 'package:notredame/data/repositories/news_repository.dart';
 import 'package:notredame/data/models/hello/activity_area.dart';
 import 'package:notredame/data/models/hello/news.dart';
 import 'package:notredame/data/models/hello/news_tags.dart';
 import 'package:notredame/data/models/hello/organizer.dart';
 import 'package:notredame/data/models/hello/paginated_news.dart';
+import 'package:notredame/data/repositories/course_repository.dart';
+import 'package:notredame/data/repositories/news_repository.dart';
+import 'package:notredame/data/repositories/settings_repository.dart';
+import 'package:notredame/data/services/analytics_service.dart';
+import 'package:notredame/data/services/launch_url_service.dart';
+import 'package:notredame/data/services/navigation_service.dart';
+import 'package:notredame/data/services/networking_service.dart';
 import 'package:notredame/ui/ets/events/author/widgets/author_view.dart';
 import 'package:notredame/ui/ets/events/news/widgets/news_card.dart';
 import 'package:notredame/ui/ets/events/social/widgets/social_links_card.dart';
-import 'package:notredame/data/repositories/settings_repository.dart';
-import '../../../../../helpers.dart';
 import '../../../../../data/mocks/repositories/author_repository_mock.dart';
 import '../../../../../data/mocks/repositories/news_repository_mock.dart';
+import '../../../../../helpers.dart';
 
 void main() {
   late AuthorRepositoryMock authorRepository;

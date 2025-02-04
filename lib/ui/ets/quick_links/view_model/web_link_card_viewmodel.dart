@@ -2,11 +2,11 @@
 import 'package:stacked/stacked.dart';
 
 // Project imports:
+import 'package:notredame/data/models/quick_link.dart';
 import 'package:notredame/data/services/analytics_service.dart';
 import 'package:notredame/data/services/launch_url_service.dart';
 import 'package:notredame/data/services/navigation_service.dart';
 import 'package:notredame/domain/constants/router_paths.dart';
-import 'package:notredame/data/models/quick_link.dart';
 import 'package:notredame/locator.dart';
 
 class WebLinkCardViewModel extends BaseViewModel {

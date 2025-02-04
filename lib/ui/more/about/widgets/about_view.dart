@@ -7,9 +7,9 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 // Project imports:
+import 'package:notredame/data/services/launch_url_service.dart';
 import 'package:notredame/domain/constants/urls.dart';
 import 'package:notredame/locator.dart';
-import 'package:notredame/data/services/launch_url_service.dart';
 import 'package:notredame/theme/app_palette.dart';
 
 class AboutView extends StatefulWidget {

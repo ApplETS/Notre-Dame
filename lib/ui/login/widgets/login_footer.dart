@@ -1,12 +1,14 @@
+// Flutter imports:
 import 'package:flutter/material.dart';
 
 // Package imports:
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-import 'package:notredame/theme/app_palette.dart';
-import 'package:notredame/locator.dart';
+// Project imports:
 import 'package:notredame/data/services/navigation_service.dart';
 import 'package:notredame/domain/constants/router_paths.dart';
+import 'package:notredame/locator.dart';
+import 'package:notredame/theme/app_palette.dart';
 
 class LoginFooter extends StatefulWidget{
 

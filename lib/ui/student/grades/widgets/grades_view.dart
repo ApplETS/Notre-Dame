@@ -8,13 +8,13 @@ import 'package:stacked/stacked.dart';
 
 // Project imports:
 import 'package:notredame/data/services/navigation_service.dart';
-import 'package:notredame/domain/constants/router_paths.dart';
 import 'package:notredame/data/services/signets-api/models/course.dart';
+import 'package:notredame/domain/constants/router_paths.dart';
+import 'package:notredame/locator.dart';
+import 'package:notredame/theme/app_palette.dart';
 import 'package:notredame/ui/student/grades/view_model/grades_viewmodel.dart';
 import 'package:notredame/ui/student/grades/widgets/grade_button.dart';
-import 'package:notredame/theme/app_palette.dart';
 import 'package:notredame/utils/loading.dart';
-import 'package:notredame/locator.dart';
 
 class GradesView extends StatefulWidget {
   const GradesView({super.key});

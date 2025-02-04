@@ -3,12 +3,12 @@ import 'package:flutter/material.dart';
 
 // Package imports:
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:notredame/theme/app_theme.dart';
 import 'package:stacked/stacked.dart';
 
 // Project imports:
-import 'package:notredame/ui/startup/view_model/startup_viewmodel.dart';
 import 'package:notredame/theme/app_palette.dart';
+import 'package:notredame/theme/app_theme.dart';
+import 'package:notredame/ui/startup/view_model/startup_viewmodel.dart';
 
 class StartUpView extends StatelessWidget {
   const StartUpView({super.key});

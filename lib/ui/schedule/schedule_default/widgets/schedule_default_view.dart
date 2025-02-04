@@ -7,8 +7,8 @@ import 'package:stacked/stacked.dart';
 
 // Project imports:
 import 'package:notredame/ui/core/ui/base_scaffold.dart';
-import 'package:notredame/ui/schedule/schedule_default/widgets/schedule_default.dart';
 import 'package:notredame/ui/schedule/schedule_default/view_model/schedule_default_viewmodel.dart';
+import 'package:notredame/ui/schedule/schedule_default/widgets/schedule_default.dart';
 
 class ScheduleDefaultView extends StatefulWidget {
   final String? sessionCode;

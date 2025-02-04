@@ -6,10 +6,10 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:stacked/stacked.dart';
 
 // Project imports:
-import 'package:notredame/domain/constants/app_info.dart';
+import 'package:notredame/data/repositories/settings_repository.dart';
 import 'package:notredame/data/services/analytics_service.dart';
 import 'package:notredame/data/services/launch_url_service.dart';
-import 'package:notredame/data/repositories/settings_repository.dart';
+import 'package:notredame/domain/constants/app_info.dart';
 import 'package:notredame/locator.dart';
 
 class FaqViewModel extends BaseViewModel {

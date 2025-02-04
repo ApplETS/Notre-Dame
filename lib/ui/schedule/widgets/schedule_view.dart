@@ -6,23 +6,23 @@ import 'package:flutter/services.dart';
 import 'package:calendar_view/calendar_view.dart' as calendar_view;
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:intl/intl.dart';
-import 'package:notredame/ui/schedule/widgets/schedule_settings.dart';
-import 'package:notredame/data/services/calendar_service.dart';
-import 'package:notredame/theme/app_theme.dart';
 import 'package:stacked/stacked.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 // Project imports:
-import 'package:notredame/domain/constants/preferences_flags.dart';
 import 'package:notredame/data/services/analytics_service.dart';
+import 'package:notredame/data/services/calendar_service.dart';
 import 'package:notredame/data/services/signets-api/models/course_activity.dart';
+import 'package:notredame/domain/constants/preferences_flags.dart';
+import 'package:notredame/locator.dart';
+import 'package:notredame/theme/app_palette.dart';
+import 'package:notredame/theme/app_theme.dart';
 import 'package:notredame/ui/core/ui/base_scaffold.dart';
 import 'package:notredame/ui/dashboard/widgets/course_activity_tile.dart';
 import 'package:notredame/ui/schedule/view_model/schedule_viewmodel.dart';
 import 'package:notredame/ui/schedule/widgets/calendar_selector.dart';
 import 'package:notredame/ui/schedule/widgets/schedule_calendar_tile.dart';
-import 'package:notredame/theme/app_palette.dart';
-import 'package:notredame/locator.dart';
+import 'package:notredame/ui/schedule/widgets/schedule_settings.dart';
 
 class ScheduleView extends StatefulWidget {
   @visibleForTesting

@@ -5,8 +5,8 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 // Project imports:
-import 'package:notredame/data/services/hello/hello_service.dart';
 import 'package:notredame/data/models/hello/report.dart';
+import 'package:notredame/data/services/hello/hello_service.dart';
 import 'package:notredame/utils/command.dart';
 import 'package:notredame/utils/http_exception.dart';
 

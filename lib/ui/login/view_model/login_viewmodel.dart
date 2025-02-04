@@ -4,11 +4,11 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:stacked/stacked.dart';
 
 // Project imports:
-import 'package:notredame/domain/constants/preferences_flags.dart';
-import 'package:notredame/data/services/navigation_service.dart';
-import 'package:notredame/domain/constants/router_paths.dart';
 import 'package:notredame/data/repositories/user_repository.dart';
+import 'package:notredame/data/services/navigation_service.dart';
 import 'package:notredame/data/services/preferences_service.dart';
+import 'package:notredame/domain/constants/preferences_flags.dart';
+import 'package:notredame/domain/constants/router_paths.dart';
 import 'package:notredame/locator.dart';
 
 class LoginViewModel extends BaseViewModel {

@@ -3,10 +3,10 @@ import 'package:http/http.dart' as http;
 import 'package:xml/xml.dart';
 
 // Project imports:
-import 'package:notredame/domain/constants/urls.dart';
 import 'package:notredame/data/services/signets-api/models/course.dart';
 import 'package:notredame/data/services/signets-api/signets_api_client.dart';
 import 'package:notredame/data/services/signets-api/soap_service.dart';
+import 'package:notredame/domain/constants/urls.dart';
 import 'package:notredame/utils/command.dart';
 
 /// Call the SignetsAPI to get the courses of the student ([username]).

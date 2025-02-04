@@ -7,15 +7,15 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 // Project imports:
-import 'package:notredame/data/services/networking_service.dart';
-import 'package:notredame/data/services/navigation_service.dart';
 import 'package:notredame/data/repositories/course_repository.dart';
-import 'package:notredame/data/services/signets-api/models/course.dart';
 import 'package:notredame/data/repositories/settings_repository.dart';
-import 'package:notredame/ui/student/grades/widgets/grades_view.dart';
+import 'package:notredame/data/services/navigation_service.dart';
+import 'package:notredame/data/services/networking_service.dart';
+import 'package:notredame/data/services/signets-api/models/course.dart';
 import 'package:notredame/ui/student/grades/widgets/grade_button.dart';
-import '../../../../helpers.dart';
+import 'package:notredame/ui/student/grades/widgets/grades_view.dart';
 import '../../../../data/mocks/repositories/course_repository_mock.dart';
+import '../../../../helpers.dart';
 
 void main() {
   SharedPreferences.setMockInitialValues({});

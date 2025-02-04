@@ -1,31 +1,31 @@
 // Flutter imports:
 import 'package:flutter/material.dart';
-import 'package:notredame/ui/more/settings/choose_language/widgets/choose_language_view.dart';
 
 // Project imports:
-import 'package:notredame/ui/not_found/widgets/not_found_view.dart';
-import 'package:notredame/ui/outage/widgets/outage_view.dart';
-import 'package:notredame/domain/constants/router_paths.dart';
-import 'package:notredame/data/services/signets-api/models/course.dart';
-import 'package:notredame/ui/startup/widgets/startup_view.dart';
-import 'package:notredame/ui/dashboard/widgets/dashboard_view.dart';
-import 'package:notredame/ui/ets/widgets/ets_view.dart';
 import 'package:notredame/data/models/hello/news.dart';
+import 'package:notredame/data/services/signets-api/models/course.dart';
+import 'package:notredame/domain/constants/router_paths.dart';
+import 'package:notredame/ui/dashboard/widgets/dashboard_view.dart';
 import 'package:notredame/ui/ets/events/author/widgets/author_view.dart';
-import 'package:notredame/ui/ets/events/news_details/widgets/news_details_view.dart';
 import 'package:notredame/ui/ets/events/news/widgets/news_view.dart';
-import 'package:notredame/ui/ets/quick_links/widgets/quick_links_view.dart';
+import 'package:notredame/ui/ets/events/news_details/widgets/news_details_view.dart';
 import 'package:notredame/ui/ets/quick_links/security_info/widgets/security_view.dart';
+import 'package:notredame/ui/ets/quick_links/widgets/quick_links_view.dart';
+import 'package:notredame/ui/ets/widgets/ets_view.dart';
+import 'package:notredame/ui/login/widgets/login_view.dart';
 import 'package:notredame/ui/more/about/widgets/about_view.dart';
 import 'package:notredame/ui/more/contributors/widgets/contributors_view.dart';
 import 'package:notredame/ui/more/faq/widgets/faq_view.dart';
-import 'package:notredame/ui/more/widgets/more_view.dart';
+import 'package:notredame/ui/more/settings/choose_language/widgets/choose_language_view.dart';
 import 'package:notredame/ui/more/settings/widgets/settings_view.dart';
+import 'package:notredame/ui/more/widgets/more_view.dart';
+import 'package:notredame/ui/not_found/widgets/not_found_view.dart';
+import 'package:notredame/ui/outage/widgets/outage_view.dart';
 import 'package:notredame/ui/schedule/schedule_default/widgets/schedule_default_view.dart';
 import 'package:notredame/ui/schedule/widgets/schedule_view.dart';
+import 'package:notredame/ui/startup/widgets/startup_view.dart';
 import 'package:notredame/ui/student/grades/grade_details/widgets/grade_details_view.dart';
 import 'package:notredame/ui/student/widgets/student_view.dart';
-import 'package:notredame/ui/login/widgets/login_view.dart';
 
 Route<dynamic> generateRoute(RouteSettings routeSettings) {
   switch (routeSettings.name) {

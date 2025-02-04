@@ -2,10 +2,10 @@
 import 'package:http/http.dart' as http;
 
 // Project imports:
-import 'package:notredame/domain/constants/urls.dart';
 import 'package:notredame/data/services/signets-api/models/profile_student.dart';
 import 'package:notredame/data/services/signets-api/signets_api_client.dart';
 import 'package:notredame/data/services/signets-api/soap_service.dart';
+import 'package:notredame/domain/constants/urls.dart';
 import 'package:notredame/utils/command.dart';
 
 /// Call the SignetsAPI to get the [ProfileStudent] for the student.

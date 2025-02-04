@@ -5,10 +5,10 @@ import 'dart:convert';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 // Project imports:
-import 'package:notredame/data/services/cache_service.dart';
 import 'package:notredame/data/models/quick_link.dart';
 import 'package:notredame/data/models/quick_link_data.dart';
 import 'package:notredame/data/models/quick_links.dart';
+import 'package:notredame/data/services/cache_service.dart';
 import 'package:notredame/locator.dart';
 
 class QuickLinkRepository {

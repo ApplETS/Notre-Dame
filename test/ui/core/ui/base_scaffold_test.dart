@@ -5,11 +5,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 // Project imports:
-import 'package:notredame/data/services/networking_service.dart';
 import 'package:notredame/data/services/navigation_service.dart';
+import 'package:notredame/data/services/networking_service.dart';
 import 'package:notredame/ui/core/ui/base_scaffold.dart';
-import '../../../helpers.dart';
 import '../../../data/mocks/services/analytics_service_mock.dart';
+import '../../../helpers.dart';
 
 void main() {
   group('BaseScaffold - ', () {

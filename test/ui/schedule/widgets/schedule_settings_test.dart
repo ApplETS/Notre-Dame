@@ -6,17 +6,17 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:intl/intl.dart';
 import 'package:mockito/mockito.dart';
-import 'package:notredame/data/services/calendar_service.dart';
 
 // Project imports:
-import 'package:notredame/domain/constants/preferences_flags.dart';
-import 'package:notredame/data/services/signets-api/models/schedule_activity.dart';
-import 'package:notredame/ui/schedule/widgets/schedule_settings.dart';
 import 'package:notredame/data/models/activity_code.dart';
-import '../../../helpers.dart';
-import '../../../data/mocks/services/remote_config_service_mock.dart';
+import 'package:notredame/data/services/calendar_service.dart';
+import 'package:notredame/data/services/signets-api/models/schedule_activity.dart';
+import 'package:notredame/domain/constants/preferences_flags.dart';
+import 'package:notredame/ui/schedule/widgets/schedule_settings.dart';
 import '../../../data/mocks/repositories/course_repository_mock.dart';
 import '../../../data/mocks/repositories/settings_repository_mock.dart';
+import '../../../data/mocks/services/remote_config_service_mock.dart';
+import '../../../helpers.dart';
 
 void main() {
   late SettingsRepositoryMock settingsManagerMock;

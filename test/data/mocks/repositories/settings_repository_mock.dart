@@ -6,11 +6,9 @@ import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
 // Project imports:
-import 'package:notredame/domain/constants/preferences_flags.dart';
 import 'package:notredame/data/repositories/settings_repository.dart';
-
+import 'package:notredame/domain/constants/preferences_flags.dart';
 import 'settings_repository_mock.mocks.dart';
-
 
 @GenerateNiceMocks([MockSpec<SettingsRepository>()])
 class SettingsRepositoryMock extends MockSettingsRepository {

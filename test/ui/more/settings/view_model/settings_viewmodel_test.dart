@@ -7,11 +7,11 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 
 // Project imports:
-import 'package:notredame/domain/constants/preferences_flags.dart';
 import 'package:notredame/data/repositories/settings_repository.dart';
+import 'package:notredame/domain/constants/preferences_flags.dart';
 import 'package:notredame/ui/more/settings/view_model/settings_viewmodel.dart';
-import '../../../../helpers.dart';
 import '../../../../data/mocks/repositories/settings_repository_mock.dart';
+import '../../../../helpers.dart';
 
 late SettingsViewModel viewModel;
 

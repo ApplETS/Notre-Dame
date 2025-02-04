@@ -6,8 +6,8 @@ import 'package:flutter_cache_manager/flutter_cache_manager.dart' as lib;
 
 // Project imports:
 import 'package:notredame/data/services/analytics_service.dart';
-import 'package:notredame/utils/cache_exception.dart';
 import 'package:notredame/locator.dart';
+import 'package:notredame/utils/cache_exception.dart';
 
 /// Abstraction of the cache management system.
 class CacheService {

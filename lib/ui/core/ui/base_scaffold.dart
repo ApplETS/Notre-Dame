@@ -3,19 +3,19 @@ import 'dart:async';
 
 // Flutter imports:
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 // Package imports:
 import 'package:connectivity_plus/connectivity_plus.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 // Project imports:
 import 'package:notredame/data/services/networking_service.dart';
+import 'package:notredame/locator.dart';
+import 'package:notredame/theme/app_theme.dart';
 import 'package:notredame/ui/core/ui/bottom_bar.dart';
 import 'package:notredame/ui/core/ui/navigation_rail.dart';
-import 'package:notredame/theme/app_theme.dart';
 import 'package:notredame/utils/loading.dart';
-import 'package:notredame/locator.dart';
 
 /// Basic Scaffold to avoid boilerplate code in the application.
 /// Contains a loader controlled by [_isLoading]

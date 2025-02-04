@@ -4,14 +4,14 @@ import 'package:flutter/material.dart';
 // Package imports:
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:github/github.dart';
-import 'package:notredame/ui/more/contributors/view_model/contributors_viewmodel.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 import 'package:stacked/stacked.dart';
 
 // Project imports:
-import 'package:notredame/ui/core/ui/base_scaffold.dart';
-import 'package:notredame/locator.dart';
 import 'package:notredame/data/services/launch_url_service.dart';
+import 'package:notredame/locator.dart';
+import 'package:notredame/ui/core/ui/base_scaffold.dart';
+import 'package:notredame/ui/more/contributors/view_model/contributors_viewmodel.dart';
 
 class ContributorsView extends StatelessWidget {
   ContributorsView({super.key});

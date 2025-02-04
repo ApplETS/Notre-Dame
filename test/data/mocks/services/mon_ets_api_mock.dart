@@ -8,7 +8,6 @@ import 'package:mockito/mockito.dart';
 import 'package:notredame/data/models/mon_ets_user.dart';
 import 'package:notredame/data/services/monets/monets_api_client.dart';
 import 'package:notredame/utils/http_exception.dart';
-
 import 'mon_ets_api_mock.mocks.dart';
 
 // UTILS

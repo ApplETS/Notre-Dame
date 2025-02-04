@@ -9,7 +9,6 @@ import 'package:notredame/data/services/signets-api/models/course_activity.dart'
 import 'package:notredame/data/services/signets-api/models/schedule_activity.dart';
 import 'package:notredame/data/services/signets-api/models/session.dart';
 import 'package:notredame/utils/api_exception.dart';
-
 import 'course_repository_mock.mocks.dart';
 
 @GenerateNiceMocks([MockSpec<CourseRepository>()])

@@ -7,10 +7,10 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 // Project imports:
-import 'package:notredame/ui/more/faq/widgets/faq_view.dart';
 import 'package:notredame/ui/more/faq/models/faq.dart';
-import '../../../../helpers.dart';
+import 'package:notredame/ui/more/faq/widgets/faq_view.dart';
 import '../../../../data/mocks/repositories/settings_repository_mock.dart';
+import '../../../../helpers.dart';
 
 void main() {
   SharedPreferences.setMockInitialValues({});

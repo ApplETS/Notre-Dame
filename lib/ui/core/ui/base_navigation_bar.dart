@@ -1,10 +1,14 @@
+// Flutter imports:
 import 'package:flutter/material.dart';
 
-import '../../../locator.dart';
+// Package imports:
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
+// Project imports:
 import '../../../data/services/analytics_service.dart';
 import '../../../data/services/navigation_service.dart';
 import '../../../domain/constants/router_paths.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import '../../../locator.dart';
 
 enum NavigationView {
   dashboard,

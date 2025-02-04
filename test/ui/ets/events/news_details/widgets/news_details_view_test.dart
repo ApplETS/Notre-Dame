@@ -5,13 +5,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 // Project imports:
-import 'package:notredame/data/services/analytics_service.dart';
-import 'package:notredame/data/services/remote_config_service.dart';
-import 'package:notredame/data/services/networking_service.dart';
-import 'package:notredame/data/services/navigation_service.dart';
 import 'package:notredame/data/models/hello/news.dart';
 import 'package:notredame/data/models/hello/news_tags.dart';
 import 'package:notredame/data/models/hello/organizer.dart';
+import 'package:notredame/data/services/analytics_service.dart';
+import 'package:notredame/data/services/navigation_service.dart';
+import 'package:notredame/data/services/networking_service.dart';
+import 'package:notredame/data/services/remote_config_service.dart';
 import 'package:notredame/ui/ets/events/news_details/widgets/news_details_view.dart';
 import '../../../../../helpers.dart';
 

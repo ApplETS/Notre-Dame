@@ -3,13 +3,13 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 
 // Project imports:
+import 'package:notredame/data/models/programs_credits.dart';
 import 'package:notredame/data/repositories/user_repository.dart';
 import 'package:notredame/data/services/signets-api/models/profile_student.dart';
 import 'package:notredame/data/services/signets-api/models/program.dart';
 import 'package:notredame/ui/student/profile/view_model/profile_viewmodel.dart';
-import 'package:notredame/data/models/programs_credits.dart';
-import '../../../../helpers.dart';
 import '../../../../data/mocks/repositories/user_repository_mock.dart';
+import '../../../../helpers.dart';
 
 void main() {
   late UserRepositoryMock userRepositoryMock;

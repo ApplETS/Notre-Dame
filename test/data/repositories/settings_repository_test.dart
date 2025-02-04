@@ -5,16 +5,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:intl/intl.dart';
 import 'package:mockito/mockito.dart';
-import 'package:notredame/data/services/calendar_service.dart';
 
 // Project imports:
-import 'package:notredame/domain/constants/preferences_flags.dart';
-import 'package:notredame/data/services/preferences_service.dart';
 import 'package:notredame/data/repositories/settings_repository.dart';
+import 'package:notredame/data/services/calendar_service.dart';
+import 'package:notredame/data/services/preferences_service.dart';
+import 'package:notredame/domain/constants/preferences_flags.dart';
 import '../../helpers.dart';
 import '../mocks/services/analytics_service_mock.dart';
-import '../mocks/services/remote_config_service_mock.dart';
 import '../mocks/services/preferences_service_mock.dart';
+import '../mocks/services/remote_config_service_mock.dart';
 
 void main() {
   late AnalyticsServiceMock analyticsServiceMock;

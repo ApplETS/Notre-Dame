@@ -4,17 +4,17 @@ import 'package:flutter/material.dart';
 
 // Package imports:
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:notredame/theme/app_palette.dart';
-import 'package:notredame/theme/app_theme.dart';
 import 'package:stacked/stacked.dart';
 
 // Project imports:
 import 'package:notredame/data/services/analytics_service.dart';
+import 'package:notredame/data/services/launch_url_service.dart';
 import 'package:notredame/domain/constants/router_paths.dart';
+import 'package:notredame/locator.dart';
+import 'package:notredame/theme/app_palette.dart';
+import 'package:notredame/theme/app_theme.dart';
 import 'package:notredame/ui/core/ui/base_scaffold.dart';
 import 'package:notredame/ui/more/view_model/more_viewmodel.dart';
-import 'package:notredame/locator.dart';
-import 'package:notredame/data/services/launch_url_service.dart';
 
 class MoreView extends StatefulWidget {
   const MoreView({super.key});

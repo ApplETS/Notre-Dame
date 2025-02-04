@@ -4,9 +4,9 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 
 // Project imports:
-import 'package:notredame/data/services/networking_service.dart';
-import 'package:notredame/data/services/navigation_service.dart';
 import 'package:notredame/data/repositories/course_repository.dart';
+import 'package:notredame/data/services/navigation_service.dart';
+import 'package:notredame/data/services/networking_service.dart';
 import 'package:notredame/ui/schedule/schedule_default/widgets/schedule_default.dart';
 import 'package:notredame/ui/schedule/schedule_default/widgets/schedule_default_view.dart';
 import '../../../../data/mocks/repositories/course_repository_mock.mocks.dart';

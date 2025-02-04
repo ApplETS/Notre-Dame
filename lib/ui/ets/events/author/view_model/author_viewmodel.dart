@@ -5,10 +5,10 @@ import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:stacked/stacked.dart';
 
 // Project imports:
-import 'package:notredame/data/repositories/author_repository.dart';
-import 'package:notredame/data/repositories/news_repository.dart';
 import 'package:notredame/data/models/hello/news.dart';
 import 'package:notredame/data/models/hello/organizer.dart';
+import 'package:notredame/data/repositories/author_repository.dart';
+import 'package:notredame/data/repositories/news_repository.dart';
 import 'package:notredame/locator.dart';
 
 class AuthorViewModel extends BaseViewModel implements Initialisable {

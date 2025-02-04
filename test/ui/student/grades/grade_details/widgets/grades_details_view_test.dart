@@ -6,16 +6,16 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 // Project imports:
-import 'package:notredame/data/services/networking_service.dart';
 import 'package:notredame/data/repositories/course_repository.dart';
+import 'package:notredame/data/repositories/settings_repository.dart';
+import 'package:notredame/data/services/networking_service.dart';
 import 'package:notredame/data/services/signets-api/models/course.dart';
 import 'package:notredame/data/services/signets-api/models/course_evaluation.dart';
 import 'package:notredame/data/services/signets-api/models/course_review.dart';
 import 'package:notredame/data/services/signets-api/models/course_summary.dart';
-import 'package:notredame/data/repositories/settings_repository.dart';
 import 'package:notredame/ui/student/grades/grade_details/widgets/grade_details_view.dart';
-import '../../../../../helpers.dart';
 import '../../../../../data/mocks/repositories/course_repository_mock.dart';
+import '../../../../../helpers.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();

@@ -7,10 +7,12 @@ import 'package:intl/intl.dart';
 import 'package:mockito/mockito.dart';
 
 // Project imports:
-import 'package:notredame/data/services/analytics_service.dart';
+import 'package:notredame/data/models/activity_code.dart';
 import 'package:notredame/data/models/mon_ets_user.dart';
 import 'package:notredame/data/repositories/course_repository.dart';
 import 'package:notredame/data/repositories/user_repository.dart';
+import 'package:notredame/data/services/analytics_service.dart';
+import 'package:notredame/data/services/cache_service.dart';
 import 'package:notredame/data/services/signets-api/models/course.dart';
 import 'package:notredame/data/services/signets-api/models/course_activity.dart';
 import 'package:notredame/data/services/signets-api/models/course_evaluation.dart';
@@ -19,15 +21,13 @@ import 'package:notredame/data/services/signets-api/models/course_summary.dart';
 import 'package:notredame/data/services/signets-api/models/schedule_activity.dart';
 import 'package:notredame/data/services/signets-api/models/session.dart';
 import 'package:notredame/data/services/signets-api/signets_api_client.dart';
-import 'package:notredame/data/services/cache_service.dart';
-import 'package:notredame/data/models/activity_code.dart';
 import 'package:notredame/utils/api_exception.dart';
 import '../../helpers.dart';
+import '../mocks/repositories/user_repository_mock.dart';
 import '../mocks/services/analytics_service_mock.dart';
+import '../mocks/services/cache_service_mock.dart';
 import '../mocks/services/networking_service_mock.dart';
 import '../mocks/services/signets_api_mock.dart';
-import '../mocks/services/cache_service_mock.dart';
-import '../mocks/repositories/user_repository_mock.dart';
 
 void main() {
   late AnalyticsServiceMock analyticsServiceMock;

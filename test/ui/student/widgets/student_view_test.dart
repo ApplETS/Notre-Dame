@@ -5,14 +5,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 // Project imports:
-import 'package:notredame/data/services/networking_service.dart';
 import 'package:notredame/data/repositories/course_repository.dart';
-import 'package:notredame/ui/core/ui/base_scaffold.dart';
 import 'package:notredame/data/repositories/settings_repository.dart';
+import 'package:notredame/data/services/networking_service.dart';
+import 'package:notredame/ui/core/ui/base_scaffold.dart';
 import 'package:notredame/ui/student/widgets/student_view.dart';
-import '../../../helpers.dart';
-import '../../../data/mocks/services/analytics_service_mock.dart';
 import '../../../data/mocks/repositories/course_repository_mock.dart';
+import '../../../data/mocks/services/analytics_service_mock.dart';
+import '../../../helpers.dart';
 
 void main() {
   CourseRepositoryMock courseRepositoryMock;

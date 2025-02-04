@@ -3,18 +3,18 @@ import 'package:flutter/material.dart';
 
 // Package imports:
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:notredame/theme/app_palette.dart';
-import 'package:notredame/ui/login/widgets/forgot_password.dart';
 import 'package:stacked/stacked.dart';
 
 // Project imports:
-import 'package:notredame/ui/login/view_model/login_viewmodel.dart';
-import 'package:notredame/ui/login/widgets/password_text_field.dart';
+import 'package:notredame/theme/app_palette.dart';
 import 'package:notredame/theme/app_theme.dart';
-import 'package:notredame/ui/login/widgets/login_hero.dart';
-import 'package:notredame/ui/login/widgets/universal_code_text_field.dart';
+import 'package:notredame/ui/login/view_model/login_viewmodel.dart';
+import 'package:notredame/ui/login/widgets/forgot_password.dart';
 import 'package:notredame/ui/login/widgets/login_button.dart';
 import 'package:notredame/ui/login/widgets/login_footer.dart';
+import 'package:notredame/ui/login/widgets/login_hero.dart';
+import 'package:notredame/ui/login/widgets/password_text_field.dart';
+import 'package:notredame/ui/login/widgets/universal_code_text_field.dart';
 
 class LoginView extends StatefulWidget {
   const LoginView({super.key});

@@ -4,19 +4,21 @@ import 'package:flutter/material.dart';
 // Package imports:
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:notredame/theme/app_palette.dart';
-import 'package:notredame/theme/app_theme.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 import 'package:stacked/stacked.dart';
 
 // Project imports:
-import 'package:notredame/domain/constants/preferences_flags.dart';
-import 'package:notredame/domain/constants/urls.dart';
 import 'package:notredame/data/services/analytics_service.dart';
+import 'package:notredame/data/services/launch_url_service.dart';
 import 'package:notredame/data/services/navigation_service.dart';
-import 'package:notredame/domain/constants/router_paths.dart';
 import 'package:notredame/data/services/signets-api/models/course.dart';
 import 'package:notredame/data/services/signets-api/models/course_activity.dart';
+import 'package:notredame/domain/constants/preferences_flags.dart';
+import 'package:notredame/domain/constants/router_paths.dart';
+import 'package:notredame/domain/constants/urls.dart';
+import 'package:notredame/locator.dart';
+import 'package:notredame/theme/app_palette.dart';
+import 'package:notredame/theme/app_theme.dart';
 import 'package:notredame/ui/core/ui/base_scaffold.dart';
 import 'package:notredame/ui/core/ui/dismissible_card.dart';
 import 'package:notredame/ui/dashboard/view_model/dashboard_viewmodel.dart';
@@ -25,8 +27,6 @@ import 'package:notredame/ui/dashboard/widgets/course_activity_tile.dart';
 import 'package:notredame/ui/dashboard/widgets/haptics_container.dart';
 import 'package:notredame/ui/student/grades/widgets/grade_button.dart';
 import 'package:notredame/utils/loading.dart';
-import 'package:notredame/locator.dart';
-import 'package:notredame/data/services/launch_url_service.dart';
 
 class DashboardView extends StatefulWidget {
   const DashboardView({super.key});

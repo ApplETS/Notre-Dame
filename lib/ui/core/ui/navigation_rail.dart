@@ -1,7 +1,7 @@
 // Flutter imports:
 import 'package:flutter/material.dart';
 
-// Package imports:
+// Project imports:
 import 'package:notredame/ui/core/ui/base_navigation_bar.dart';
 
 class NavRail extends BaseNavigationBar {

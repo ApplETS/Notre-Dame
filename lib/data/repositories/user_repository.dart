@@ -10,18 +10,18 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:logger/logger.dart';
 
 // Project imports:
-import 'package:notredame/data/services/analytics_service.dart';
-import 'package:notredame/data/services/networking_service.dart';
 import 'package:notredame/data/models/mon_ets_user.dart';
+import 'package:notredame/data/services/analytics_service.dart';
+import 'package:notredame/data/services/cache_service.dart';
 import 'package:notredame/data/services/monets/monets_api_client.dart';
+import 'package:notredame/data/services/networking_service.dart';
 import 'package:notredame/data/services/signets-api/models/profile_student.dart';
 import 'package:notredame/data/services/signets-api/models/program.dart';
 import 'package:notredame/data/services/signets-api/signets_api_client.dart';
-import 'package:notredame/data/services/cache_service.dart';
+import 'package:notredame/locator.dart';
 import 'package:notredame/utils/api_exception.dart';
 import 'package:notredame/utils/cache_exception.dart';
 import 'package:notredame/utils/http_exception.dart';
-import 'package:notredame/locator.dart';
 
 class UserRepository {
   static const String tag = "UserRepository";

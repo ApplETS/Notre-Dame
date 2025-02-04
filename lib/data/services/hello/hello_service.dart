@@ -6,12 +6,12 @@ import 'package:http/http.dart' as http;
 import 'package:http/io_client.dart';
 
 // Project imports:
-import 'package:notredame/data/services/hello/commands/get_events_command.dart';
-import 'package:notredame/data/services/hello/commands/get_organizer_command.dart';
-import 'package:notredame/data/services/hello/commands/report_news_command.dart';
 import 'package:notredame/data/models/hello/organizer.dart';
 import 'package:notredame/data/models/hello/paginated_news.dart';
 import 'package:notredame/data/models/hello/report.dart';
+import 'package:notredame/data/services/hello/commands/get_events_command.dart';
+import 'package:notredame/data/services/hello/commands/get_organizer_command.dart';
+import 'package:notredame/data/services/hello/commands/report_news_command.dart';
 
 /// A Wrapper for all calls to Hello API.
 class HelloService {

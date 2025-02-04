@@ -3,19 +3,19 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 
 // Project imports:
-import 'package:notredame/domain/constants/preferences_flags.dart';
-import 'package:notredame/data/services/navigation_service.dart';
-import 'package:notredame/domain/constants/router_paths.dart';
-import 'package:notredame/data/repositories/user_repository.dart';
-import 'package:notredame/ui/startup/view_model/startup_viewmodel.dart';
-import 'package:notredame/data/services/preferences_service.dart';
 import 'package:notredame/data/repositories/settings_repository.dart';
-import '../../../helpers.dart';
+import 'package:notredame/data/repositories/user_repository.dart';
+import 'package:notredame/data/services/navigation_service.dart';
+import 'package:notredame/data/services/preferences_service.dart';
+import 'package:notredame/domain/constants/preferences_flags.dart';
+import 'package:notredame/domain/constants/router_paths.dart';
+import 'package:notredame/ui/startup/view_model/startup_viewmodel.dart';
 import '../../../data/mocks/repositories/settings_repository_mock.dart';
-import '../../../data/mocks/services/internal_info_service_mock.dart';
-import '../../../data/mocks/services/networking_service_mock.dart';
-import '../../../data/mocks/services/navigation_service_mock.dart';
 import '../../../data/mocks/repositories/user_repository_mock.dart';
+import '../../../data/mocks/services/internal_info_service_mock.dart';
+import '../../../data/mocks/services/navigation_service_mock.dart';
+import '../../../data/mocks/services/networking_service_mock.dart';
+import '../../../helpers.dart';
 
 void main() {
   late NavigationServiceMock navigationServiceMock;

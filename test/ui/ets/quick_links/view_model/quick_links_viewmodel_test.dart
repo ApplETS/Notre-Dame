@@ -3,13 +3,13 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 // Project imports:
-import 'package:notredame/data/repositories/quick_link_repository.dart';
 import 'package:notredame/data/models/quick_link.dart';
 import 'package:notredame/data/models/quick_link_data.dart';
 import 'package:notredame/data/models/quick_links.dart';
+import 'package:notredame/data/repositories/quick_link_repository.dart';
 import 'package:notredame/ui/ets/quick_links/view_model/quick_links_viewmodel.dart';
-import '../../../../helpers.dart';
 import '../../../../data/mocks/repositories/quick_links_repository_mock.dart';
+import '../../../../helpers.dart';
 
 void main() {
   late QuickLinkRepositoryMock quickLinkRepositoryMock;

@@ -4,14 +4,14 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 
 // Project imports:
+import 'package:notredame/data/repositories/settings_repository.dart';
 import 'package:notredame/data/services/navigation_service.dart';
-import 'package:notredame/domain/constants/router_paths.dart';
 import 'package:notredame/data/services/signets-api/models/course.dart';
 import 'package:notredame/data/services/signets-api/models/course_summary.dart';
-import 'package:notredame/data/repositories/settings_repository.dart';
+import 'package:notredame/domain/constants/router_paths.dart';
 import 'package:notredame/ui/student/grades/widgets/grade_button.dart';
-import '../../../../helpers.dart';
 import '../../../../data/mocks/services/navigation_service_mock.dart';
+import '../../../../helpers.dart';
 
 void main() {
   late AppIntl intl;

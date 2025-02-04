@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 
 // Project imports:
 import 'package:notredame/data/services/analytics_service.dart';
-import 'package:notredame/data/services/remote_config_service.dart';
 import 'package:notredame/data/services/navigation_history_observer.dart';
+import 'package:notredame/data/services/remote_config_service.dart';
 import 'package:notredame/domain/constants/router_paths.dart';
 import 'package:notredame/locator.dart';
 

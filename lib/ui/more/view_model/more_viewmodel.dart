@@ -5,17 +5,17 @@ import 'package:package_info_plus/package_info_plus.dart';
 import 'package:stacked/stacked.dart';
 
 // Project imports:
-import 'package:notredame/domain/constants/preferences_flags.dart';
-import 'package:notredame/data/services/remote_config_service.dart';
-import 'package:notredame/data/services/launch_url_service.dart';
-import 'package:notredame/data/services/navigation_service.dart';
-import 'package:notredame/domain/constants/router_paths.dart';
 import 'package:notredame/data/repositories/course_repository.dart';
+import 'package:notredame/data/repositories/settings_repository.dart';
 import 'package:notredame/data/repositories/user_repository.dart';
 import 'package:notredame/data/services/cache_service.dart';
-import 'package:notredame/data/services/preferences_service.dart';
 import 'package:notredame/data/services/in_app_review_service.dart';
-import 'package:notredame/data/repositories/settings_repository.dart';
+import 'package:notredame/data/services/launch_url_service.dart';
+import 'package:notredame/data/services/navigation_service.dart';
+import 'package:notredame/data/services/preferences_service.dart';
+import 'package:notredame/data/services/remote_config_service.dart';
+import 'package:notredame/domain/constants/preferences_flags.dart';
+import 'package:notredame/domain/constants/router_paths.dart';
 import 'package:notredame/locator.dart';
 
 class MoreViewModel extends FutureViewModel {

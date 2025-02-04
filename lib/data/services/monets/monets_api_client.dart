@@ -7,8 +7,8 @@ import 'package:http/http.dart' as http;
 import 'package:http/io_client.dart';
 
 // Project imports:
-import 'package:notredame/domain/constants/urls.dart';
 import 'package:notredame/data/models/mon_ets_user.dart';
+import 'package:notredame/domain/constants/urls.dart';
 import 'package:notredame/utils/http_exception.dart';
 
 /// A Wrapper for all calls to MonETS API.

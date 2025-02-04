@@ -5,7 +5,6 @@ import 'package:mockito/mockito.dart';
 
 // Project imports:
 import 'package:notredame/data/services/networking_service.dart';
-
 import 'networking_service_mock.mocks.dart';
 
 /// Mock for the [NetworkingService]

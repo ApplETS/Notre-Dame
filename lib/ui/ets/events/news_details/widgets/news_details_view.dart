@@ -6,25 +6,25 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
-import 'package:notredame/theme/app_palette.dart';
-import 'package:notredame/theme/app_theme.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:stacked/stacked.dart';
 
 // Project imports:
-import 'package:notredame/data/services/analytics_service.dart';
-import 'package:notredame/data/services/remote_config_service.dart';
-import 'package:notredame/data/services/navigation_service.dart';
-import 'package:notredame/domain/constants/router_paths.dart';
-import 'package:notredame/ui/core/ui/base_scaffold.dart';
 import 'package:notredame/data/models/hello/activity_area.dart';
 import 'package:notredame/data/models/hello/news.dart';
+import 'package:notredame/data/services/analytics_service.dart';
+import 'package:notredame/data/services/navigation_service.dart';
+import 'package:notredame/data/services/remote_config_service.dart';
+import 'package:notredame/domain/constants/router_paths.dart';
+import 'package:notredame/locator.dart';
+import 'package:notredame/theme/app_palette.dart';
+import 'package:notredame/theme/app_theme.dart';
+import 'package:notredame/ui/core/ui/base_scaffold.dart';
 import 'package:notredame/ui/ets/events/news_details/view_model/news_details_viewmodel.dart';
 import 'package:notredame/ui/ets/events/report_news/widgets/report_news_widget.dart';
 import 'package:notredame/ui/schedule/view_model/calendar_selection_viewmodel.dart';
 import 'package:notredame/ui/schedule/widgets/calendar_selector.dart';
-import 'package:notredame/locator.dart';
 import 'package:notredame/utils/utils.dart';
 
 class NewsDetailsView extends StatefulWidget {

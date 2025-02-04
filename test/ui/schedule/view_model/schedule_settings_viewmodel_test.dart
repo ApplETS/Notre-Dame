@@ -2,17 +2,17 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:intl/intl.dart';
 import 'package:mockito/mockito.dart';
-import 'package:notredame/data/services/calendar_service.dart';
 
 // Project imports:
-import 'package:notredame/domain/constants/preferences_flags.dart';
-import 'package:notredame/data/services/signets-api/models/schedule_activity.dart';
-import 'package:notredame/data/repositories/settings_repository.dart';
-import 'package:notredame/ui/schedule/view_model/schedule_settings_viewmodel.dart';
 import 'package:notredame/data/models/activity_code.dart';
-import '../../../helpers.dart';
+import 'package:notredame/data/repositories/settings_repository.dart';
+import 'package:notredame/data/services/calendar_service.dart';
+import 'package:notredame/data/services/signets-api/models/schedule_activity.dart';
+import 'package:notredame/domain/constants/preferences_flags.dart';
+import 'package:notredame/ui/schedule/view_model/schedule_settings_viewmodel.dart';
 import '../../../data/mocks/repositories/course_repository_mock.dart';
 import '../../../data/mocks/repositories/settings_repository_mock.dart';
+import '../../../helpers.dart';
 
 late SettingsRepositoryMock settingsManagerMock;
 late CourseRepositoryMock courseRepositoryMock;

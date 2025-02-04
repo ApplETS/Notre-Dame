@@ -4,11 +4,11 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:stacked/stacked.dart';
 
 // Project imports:
-import 'package:notredame/data/services/analytics_service.dart';
+import 'package:notredame/data/models/programs_credits.dart';
 import 'package:notredame/data/repositories/user_repository.dart';
+import 'package:notredame/data/services/analytics_service.dart';
 import 'package:notredame/data/services/signets-api/models/profile_student.dart';
 import 'package:notredame/data/services/signets-api/models/program.dart';
-import 'package:notredame/data/models/programs_credits.dart';
 import 'package:notredame/locator.dart';
 
 class ProfileViewModel extends FutureViewModel<List<Program>> {
