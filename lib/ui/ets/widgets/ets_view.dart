@@ -53,13 +53,8 @@ class _ETSViewState extends State<ETSView> {
                 title: Text(AppIntl.of(context)!.title_ets),
                 forceElevated: innerBoxIsScrolled,
                 bottom: TabBar(
-                  indicatorColor:
-                      (Theme.of(context).brightness == Brightness.dark)
-                          ? Colors.white
-                          : Colors.black26,
-                  labelColor: (Theme.of(context).brightness == Brightness.dark)
-                      ? Colors.white
-                      : Colors.black,
+                  indicatorColor: context.theme.appColors.tabBarIndicator,
+                  labelColor: context.theme.appColors.tabBarLabel,
                   tabs: List.generate(
                     tabs.length,
                     (index) => Tab(

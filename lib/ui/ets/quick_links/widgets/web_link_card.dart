@@ -7,7 +7,7 @@ import 'package:stacked/stacked.dart';
 
 // Project imports:
 import 'package:notredame/data/models/quick_link.dart';
-import 'package:notredame/ui/core/themes/app_theme.dart';
+import 'package:notredame/theme/app_palette.dart';
 
 class WebLinkCard extends StatelessWidget {
   final QuickLink _links;
@@ -27,7 +27,7 @@ class WebLinkCard extends StatelessWidget {
                   borderRadius: const BorderRadius.all(Radius.circular(10)),
                   onTap: () =>
                       model.onLinkClicked(_links),
-                  splashColor: AppTheme.etsLightRed.withAlpha(50),
+                  splashColor: AppPalette.etsLightRed.withAlpha(50),
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Column(
@@ -41,7 +41,7 @@ class WebLinkCard extends StatelessWidget {
                           child: Text(
                             _links.name,
                             style: const TextStyle(
-                                color: AppTheme.etsLightRed, fontSize: 18.0),
+                                color: AppPalette.etsLightRed, fontSize: 18.0),
                           ),
                         ),
                       ],

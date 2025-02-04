@@ -6,7 +6,7 @@ Widget buildLoading({bool isInteractionLimitedWhileLoading = true}) => Stack(
         if (isInteractionLimitedWhileLoading)
           const Opacity(
             opacity: 0.3,
-            child: ModalBarrier(dismissible: false, color: Colors.grey),
+            child: ModalBarrier(dismissible: false, color: Colors.transparent),
           ),
         const Center(child: CircularProgressIndicator())
       ],

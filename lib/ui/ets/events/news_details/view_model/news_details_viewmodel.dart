@@ -2,18 +2,18 @@
 import 'dart:ui';
 
 // Package imports:
+import 'package:notredame/theme/app_palette.dart';
 import 'package:stacked/stacked.dart';
 
 // Project imports:
 import 'package:notredame/data/models/hello/news.dart';
-import 'package:notredame/ui/core/themes/app_theme.dart';
 
 class NewsDetailsViewModel extends FutureViewModel<News> {
   News news;
 
   NewsDetailsViewModel({required this.news});
 
-  List<Color> tagsPalette = AppTheme.tagsPalette.toList();
+  List<Color> tagsPalette = AppPalette.tags.toList();
 
   final Map<String, Color> tagColors = {};
 

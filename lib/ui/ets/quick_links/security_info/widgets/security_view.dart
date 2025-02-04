@@ -12,7 +12,7 @@ import 'package:stacked/stacked.dart';
 // Project imports:
 import 'package:notredame/ui/core/ui/base_scaffold.dart';
 import 'package:notredame/ui/ets/quick_links/security_info/view_model/security_viewmodel.dart';
-import 'package:notredame/ui/core/themes/app_theme.dart';
+import 'package:notredame/theme/app_palette.dart';
 import 'package:notredame/locator.dart';
 import 'package:notredame/data/services/launch_url_service.dart';
 
@@ -78,12 +78,11 @@ class _SecurityViewState extends State<SecurityView> {
           children: [
             Text(
               AppIntl.of(context)!.security_reach_security,
-              style: const TextStyle(color: AppTheme.etsLightRed, fontSize: 24),
+              style: const TextStyle(color: AppPalette.etsLightRed, fontSize: 24),
             ),
             Card(
               child: InkWell(
                 borderRadius: const BorderRadius.all(Radius.circular(10)),
-                splashColor: Colors.red.withAlpha(50),
                 onTap: () {
                   try {
                     _launchUrlService.call(AppIntl.of(context)!.security_emergency_number);
@@ -120,13 +119,12 @@ class _SecurityViewState extends State<SecurityView> {
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           Text(
             AppIntl.of(context)!.security_emergency_procedures,
-            style: const TextStyle(color: AppTheme.etsLightRed, fontSize: 24),
+            style: const TextStyle(color: AppPalette.etsLightRed, fontSize: 24),
           ),
           for (int i = 0; i < model.emergencyProcedureList.length; i++)
             Card(
               child: InkWell(
                 borderRadius: const BorderRadius.all(Radius.circular(10)),
-                splashColor: Colors.red.withAlpha(50),
                 onTap: () => Navigator.push(
                     context,
                     MaterialPageRoute(

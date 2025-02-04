@@ -3,13 +3,14 @@ import 'package:flutter/material.dart';
 
 // Package imports:
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:notredame/theme/app_theme.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
 // Project imports:
 import 'package:notredame/data/services/navigation_service.dart';
 import 'package:notredame/domain/constants/router_paths.dart';
 import 'package:notredame/data/services/signets-api/models/course.dart';
-import 'package:notredame/ui/core/themes/app_theme.dart';
+import 'package:notredame/theme/app_palette.dart';
 import 'package:notredame/locator.dart';
 
 class GradeButton extends StatelessWidget {
@@ -61,7 +62,7 @@ class GradeButton extends StatelessWidget {
                   child: Material(
                     child: DecoratedBox(
                         decoration: const BoxDecoration(
-                            color: AppTheme.etsLightRed,
+                            color: AppPalette.etsLightRed,
                             borderRadius: BorderRadius.only(
                                 topLeft: Radius.circular(2.5),
                                 topRight: Radius.circular(2.5))),
@@ -76,7 +77,7 @@ class GradeButton extends StatelessWidget {
                                   style: Theme.of(context)
                                       .textTheme
                                       .bodyMedium!
-                                      .copyWith(color: Colors.white),
+                                      .copyWith(color: AppPalette.grey.white),
                                 ),
                               ),
                             ),
@@ -92,9 +93,7 @@ class GradeButton extends StatelessWidget {
                 child: Text(gradeString(AppIntl.of(context)!),
                     style: TextStyle(
                       fontSize: 22,
-                      color: Theme.of(context).brightness == Brightness.light
-                          ? AppTheme.etsDarkGrey
-                          : AppTheme.etsLightGrey,
+                      color: context.theme.appColors.fadedText,
                     ))),
           )
         ],

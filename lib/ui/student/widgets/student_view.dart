@@ -8,6 +8,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:notredame/ui/core/ui/base_scaffold.dart';
 import 'package:notredame/ui/student/grades/widgets/grades_view.dart';
 import 'package:notredame/ui/student/profile/widgets/profile_view.dart';
+import 'package:notredame/theme/app_theme.dart';
 
 class StudentView extends StatefulWidget {
   const StudentView({super.key});
@@ -43,13 +44,8 @@ class _StudentViewState extends State<StudentView> {
                 title: Text(AppIntl.of(context)!.title_student),
                 forceElevated: innerBoxIsScrolled,
                 bottom: TabBar(
-                  indicatorColor:
-                      (Theme.of(context).brightness == Brightness.dark)
-                          ? Colors.white
-                          : Colors.black26,
-                  labelColor: (Theme.of(context).brightness == Brightness.dark)
-                      ? Colors.white
-                      : Colors.black,
+                  indicatorColor: context.theme.appColors.tabBarIndicator,
+                  labelColor: context.theme.appColors.tabBarLabel,
                   tabs: List.generate(
                     tabs.length,
                     (index) => Tab(text: tabs[index]),

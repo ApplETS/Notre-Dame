@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 // Project imports:
-import 'package:notredame/ui/core/themes/app_theme.dart';
+import 'package:notredame/theme/app_palette.dart';
 
 class GradeNotAvailable extends StatelessWidget {
   final VoidCallback? onPressed;
@@ -26,7 +26,7 @@ class GradeNotAvailable extends StatelessWidget {
           const Icon(
             Icons.school,
             size: 100,
-            color: AppTheme.etsLightRed,
+            color: AppPalette.etsLightRed,
           ),
           const SizedBox(height: 25),
           Text(
@@ -43,8 +43,8 @@ class GradeNotAvailable extends StatelessWidget {
           const SizedBox(height: 25),
           ElevatedButton(
               style: ElevatedButton.styleFrom(
-                  backgroundColor: AppTheme.etsLightRed,
-                  foregroundColor: Colors.white),
+                  backgroundColor: AppPalette.etsLightRed,
+                  foregroundColor: AppPalette.grey.white),
               onPressed: onPressed,
               child: Text(AppIntl.of(context)!.retry))
         ],

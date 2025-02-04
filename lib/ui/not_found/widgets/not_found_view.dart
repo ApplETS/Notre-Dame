@@ -3,11 +3,11 @@ import 'package:flutter/material.dart';
 
 // Package imports:
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:notredame/theme/app_palette.dart';
 import 'package:stacked/stacked.dart';
 
 // Project imports:
 import 'package:notredame/ui/not_found/view_model/not_found_viewmodel.dart';
-import 'package:notredame/ui/core/themes/app_theme.dart';
 
 class NotFoundView extends StatefulWidget {
   final String? pageName;
@@ -64,7 +64,7 @@ class _NotFoundState extends State<NotFoundView> {
                         ),
                         ElevatedButton(
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: AppTheme.primary,
+                            backgroundColor: AppPalette.etsLightRed,
                           ),
                           onPressed: () {
                             model.navigateToDashboard();

@@ -6,7 +6,7 @@ import 'package:notredame/data/models/hello/news.dart';
 import 'package:notredame/data/models/hello/news_tags.dart';
 import 'package:notredame/data/models/hello/organizer.dart';
 import 'package:notredame/ui/ets/events/news_details/view_model/news_details_viewmodel.dart';
-import 'package:notredame/ui/core/themes/app_theme.dart';
+import 'package:notredame/theme/app_palette.dart';
 
 void main() {
   late NewsDetailsViewModel viewModel;
@@ -61,8 +61,8 @@ void main() {
       expect(tag2Color, isNotNull);
 
       // Verify that colors are from the palette
-      expect(AppTheme.tagsPalette.contains(tag1Color), isTrue);
-      expect(AppTheme.tagsPalette.contains(tag2Color), isTrue);
+      expect(AppPalette.tags.contains(tag1Color), isTrue);
+      expect(AppPalette.tags.contains(tag2Color), isTrue);
 
       // Verify that each tag gets a unique color
       expect(tag1Color, isNot(equals(tag2Color)));

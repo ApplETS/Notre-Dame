@@ -11,6 +11,7 @@ import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:notredame/theme/app_theme.dart';
 import 'package:provider/provider.dart';
 
 // Project imports:
@@ -24,7 +25,6 @@ import 'package:notredame/data/services/navigation_history_observer.dart';
 import 'package:notredame/ui/startup/widgets/startup_view.dart';
 import 'package:notredame/data/services/hello/hello_service.dart';
 import 'package:notredame/data/repositories/settings_repository.dart';
-import 'package:notredame/ui/core/themes/app_theme.dart';
 import 'package:notredame/locator.dart';
 
 Future<void> main() async {
@@ -72,8 +72,8 @@ class ETSMobile extends StatelessWidget {
           controller: EventController(),
           child: MaterialApp(
             title: 'ÉTS Mobile',
-            theme: AppTheme.lightTheme(),
-            darkTheme: AppTheme.darkTheme(),
+            theme: AppTheme.light,
+            darkTheme: AppTheme.dark,
             themeMode: model.themeMode,
             localizationsDelegates: const [
               AppIntl.delegate,

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 // Package imports:
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:notredame/theme/app_palette.dart';
 
 class OutageTextSection extends StatelessWidget {
   final VoidCallback refreshOutageConfig;
@@ -22,13 +23,13 @@ class OutageTextSection extends StatelessWidget {
         Text(
           AppIntl.of(context)!.service_outage,
           textAlign: TextAlign.center,
-          style: const TextStyle(fontSize: 18, color: Colors.white),
+          style: TextStyle(fontSize: 18, color: AppPalette.grey.white),
         ),
         const SizedBox(height: 3),
         Text(
           AppIntl.of(context)!.service_outage_contact,
           textAlign: TextAlign.center,
-          style: const TextStyle(color: Colors.white),
+          style: TextStyle(color: AppPalette.grey.white),
         ),
         SizedBox(height: buttonPlacement),
         ElevatedButton(

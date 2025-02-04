@@ -9,7 +9,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 // Project imports:
 import 'package:notredame/data/models/quick_link.dart';
-import 'package:notredame/ui/core/themes/app_theme.dart';
+import 'package:notredame/theme/app_palette.dart';
 
 List<QuickLink> quickLinks(AppIntl intl) => [
       QuickLink(
@@ -18,7 +18,7 @@ List<QuickLink> quickLinks(AppIntl intl) => [
           image: const FittedBox(
             child: FaIcon(
               FontAwesomeIcons.shieldHalved,
-              color: AppTheme.etsLightRed,
+              color: AppPalette.etsLightRed,
             ),
           ),
           link: 'security'),
@@ -27,7 +27,7 @@ List<QuickLink> quickLinks(AppIntl intl) => [
           name: intl.ets_monets_title,
           image: Image.asset(
             'assets/images/ic_monets_sans_nom_red.png',
-            color: AppTheme.etsLightRed,
+            color: AppPalette.etsLightRed,
           ),
           link: 'https://portail.etsmtl.ca/home'),
       QuickLink(
@@ -36,7 +36,7 @@ List<QuickLink> quickLinks(AppIntl intl) => [
           image: const FittedBox(
             child: FaIcon(
               FontAwesomeIcons.book,
-              color: AppTheme.etsLightRed,
+              color: AppPalette.etsLightRed,
             ),
           ),
           link: 'https://www.etsmtl.ca/Bibliotheque/Accueil'),
@@ -46,7 +46,7 @@ List<QuickLink> quickLinks(AppIntl intl) => [
           image: const FittedBox(
             child: FaIcon(
               FontAwesomeIcons.newspaper,
-              color: AppTheme.etsLightRed,
+              color: AppPalette.etsLightRed,
             ),
           ),
           link: 'https://www.etsmtl.ca/nouvelles'),
@@ -56,7 +56,7 @@ List<QuickLink> quickLinks(AppIntl intl) => [
           image: const FittedBox(
             child: FaIcon(
               FontAwesomeIcons.addressBook,
-              color: AppTheme.etsLightRed,
+              color: AppPalette.etsLightRed,
             ),
           ),
           link: 'https://www.etsmtl.ca/bottin'),
@@ -65,7 +65,7 @@ List<QuickLink> quickLinks(AppIntl intl) => [
           name: intl.ets_moodle_title,
           image: Image.asset(
             'assets/images/ic_moodle_red.png',
-            color: AppTheme.etsLightRed,
+            color: AppPalette.etsLightRed,
           ),
           link: 'https://ena.etsmtl.ca/'),
       QuickLink(
@@ -74,7 +74,7 @@ List<QuickLink> quickLinks(AppIntl intl) => [
           image: const FittedBox(
             child: FaIcon(
               FontAwesomeIcons.calendar,
-              color: AppTheme.etsLightRed,
+              color: AppPalette.etsLightRed,
             ),
           ),
           link: 'https://horairets.emmanuelcoulombe.dev/'),
@@ -83,7 +83,7 @@ List<QuickLink> quickLinks(AppIntl intl) => [
           name: intl.ets_gus,
           image: SvgPicture.asset('assets/images/ic_gus_red.svg',
               colorFilter: const ColorFilter.mode(
-                  AppTheme.etsLightRed, BlendMode.srcIn)),
+                  AppPalette.etsLightRed, BlendMode.srcIn)),
           link: 'https://gus.etsmtl.ca/c2atom/mobile/login'),
       QuickLink(
           id: 9,
@@ -91,8 +91,24 @@ List<QuickLink> quickLinks(AppIntl intl) => [
           image: const FittedBox(
             child: FaIcon(
               FontAwesomeIcons.print,
-              color: AppTheme.etsLightRed,
+              color: AppPalette.etsLightRed,
             ),
           ),
           link: 'https://cls.etsmtl.ca/user'),
+      QuickLink(
+          id: 10,
+          name: intl.ets_aeets_title,
+          image: Image.asset(
+            'assets/images/ic_aeets_red.png',
+            color: AppPalette.etsLightRed,
+          ),
+          link: 'https://www.aeets.com/'),
+      QuickLink(
+          id: 11,
+          name: intl.ets_100genies_title,
+          image: Image.asset(
+            'assets/images/ic_100genies_red.png',
+            color: AppPalette.etsLightRed,
+          ),
+          link: 'https://www.pub100genies.ca/')
     ];

@@ -9,8 +9,7 @@ import 'package:stacked/stacked.dart';
 // Project imports:
 import 'package:notredame/ui/login/view_model/login_viewmodel.dart';
 import 'package:notredame/ui/login/widgets/password_text_field.dart';
-import 'package:notredame/ui/core/themes/app_theme.dart';
-import 'package:notredame/utils/utils.dart';
+import 'package:notredame/theme/app_theme.dart';
 import 'package:notredame/ui/login/widgets/login_hero.dart';
 import 'package:notredame/ui/login/widgets/universal_code_text_field.dart';
 import 'package:notredame/ui/login/widgets/login_button.dart';
@@ -36,8 +35,7 @@ class _LoginViewState extends State<LoginView> {
       ViewModelBuilder<LoginViewModel>.reactive(
         viewModelBuilder: () => LoginViewModel(intl: AppIntl.of(context)!),
         builder: (context, model, child) => Scaffold(
-          backgroundColor: Utils.getColorByBrightness(
-              context, AppTheme.etsLightRed, AppTheme.primaryDark),
+          backgroundColor: context.theme.appColors.backgroundVibrant,
           resizeToAvoidBottomInset: false,
           body: Builder(
               builder: (BuildContext context) => SafeArea(
@@ -100,7 +98,7 @@ class _LoginViewState extends State<LoginView> {
                             children: <Widget>[
                               Text(
                                 AppIntl.of(context)!.login_applets_logo,
-                                style: const TextStyle(color: Colors.white),
+                                style: TextStyle(color: AppPalette.grey.white),
                               ),
                               Image.asset(
                                 'assets/images/applets_white_logo.png',

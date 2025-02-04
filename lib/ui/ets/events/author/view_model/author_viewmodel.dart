@@ -50,8 +50,7 @@ class AuthorViewModel extends BaseViewModel implements Initialisable {
       if (isLastPage) {
         pagingController.appendLastPage(pagination?.news ?? []);
       } else {
-        final nextPageKey = pageNumber + 1;
-        pagingController.appendPage(pagination?.news ?? [], nextPageKey);
+        pagingController.appendPage(pagination?.news ?? [], pageNumber + 1);
       }
     } catch (error) {
       pagingController.error = error;

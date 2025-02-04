@@ -1,12 +1,10 @@
 // Flutter imports:
 import 'package:flutter/material.dart';
+import 'package:notredame/theme/app_palette.dart';
+import 'package:notredame/theme/app_theme.dart';
 
 // Package imports:
 import 'package:shimmer/shimmer.dart';
-
-// Project imports:
-import 'package:notredame/ui/core/themes/app_theme.dart';
-import 'package:notredame/utils/utils.dart';
 
 class AuthorInfoSkeleton extends StatelessWidget {
   const AuthorInfoSkeleton({super.key});
@@ -37,17 +35,13 @@ class AuthorInfoSkeleton extends StatelessWidget {
 
   Widget _shimmerTextEffect(BuildContext context, double height) {
     return Shimmer.fromColors(
-      baseColor: Theme.of(context).brightness == Brightness.light
-          ? AppTheme.lightThemeBackground
-          : AppTheme.darkThemeBackground,
-      highlightColor: Theme.of(context).brightness == Brightness.light
-          ? AppTheme.lightThemeAccent
-          : AppTheme.darkThemeAccent,
+      baseColor: context.theme.appColors.backgroundAlt,
+      highlightColor: context.theme.appColors.shimmerHighlight,
       child: Container(
         width: double.infinity,
         height: height,
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: AppPalette.grey.white,
           borderRadius: BorderRadius.circular(8),
         ),
       ),
@@ -68,21 +62,13 @@ class AuthorInfoSkeleton extends StatelessWidget {
 
   Widget _shimmerIconButton(BuildContext context) {
     return Shimmer.fromColors(
-      baseColor: Theme.of(context).brightness == Brightness.light
-          ? AppTheme.lightThemeBackground
-          : AppTheme.darkThemeBackground,
-      highlightColor: Theme.of(context).brightness == Brightness.light
-          ? AppTheme.lightThemeAccent
-          : AppTheme.darkThemeAccent,
+      baseColor: context.theme.appColors.backgroundAlt,
+      highlightColor: context.theme.appColors.shimmerHighlight,
       child: IconButton(
         onPressed: () {}, // Placeholder onPressed function
         icon: Icon(
           Icons.link,
-          color: Utils.getColorByBrightness(
-            context,
-            AppTheme.newsAccentColorLight,
-            AppTheme.newsAccentColorDark,
-          ),
+          color: context.theme.appColors.newsAccent
         ),
       ),
     );
@@ -103,14 +89,10 @@ class AvatarSkeleton extends StatelessWidget {
           height: 120,
           child: ClipOval(
             child: Shimmer.fromColors(
-              baseColor: Theme.of(context).brightness == Brightness.light
-                  ? AppTheme.lightThemeBackground
-                  : AppTheme.darkThemeBackground,
-              highlightColor: Theme.of(context).brightness == Brightness.light
-                  ? AppTheme.lightThemeAccent
-                  : AppTheme.darkThemeAccent,
+              baseColor: context.theme.appColors.backgroundAlt,
+              highlightColor: context.theme.appColors.shimmerHighlight,
               child: Container(
-                color: Colors.white,
+                color: AppPalette.grey.white,
               ),
             ),
           ),

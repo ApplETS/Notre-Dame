@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 // Package imports:
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:notredame/theme/app_theme.dart';
 import 'package:stacked/stacked.dart';
 
 // Project imports:
@@ -13,8 +14,8 @@ import 'package:notredame/ui/student/grades/grade_details/view_model/grades_deta
 import 'package:notredame/ui/student/grades/widgets/grade_circular_progress.dart';
 import 'package:notredame/ui/student/grades/widgets/grade_evaluation_tile.dart';
 import 'package:notredame/ui/student/grades/widgets/grade_not_available.dart';
-import 'package:notredame/ui/core/themes/app_theme.dart';
 import 'package:notredame/utils/utils.dart';
+import 'package:notredame/theme/app_palette.dart';
 
 class GradesDetailsView extends StatefulWidget {
   final Course course;
@@ -56,17 +57,14 @@ class _GradesDetailsViewState extends State<GradesDetailsView>
           body: NestedScrollView(
             headerSliverBuilder: (context, innerBoxScrolled) => [
               SliverAppBar(
-                backgroundColor:
-                    Theme.of(context).brightness == Brightness.light
-                        ? AppTheme.etsLightRed
-                        : BottomAppBarTheme.of(context).color,
+                backgroundColor: context.theme.appColors.vibrantAppBar,
                 pinned: true,
                 onStretchTrigger: () {
                   return Future<void>.value();
                 },
                 titleSpacing: 0,
                 leading: IconButton(
-                  icon: const Icon(Icons.arrow_back, color: Colors.white),
+                  icon: Icon(Icons.arrow_back, color: AppPalette.grey.white),
                   onPressed: () => Navigator.of(context).pop(),
                 ),
                 title: Hero(
@@ -77,7 +75,7 @@ class _GradesDetailsViewState extends State<GradesDetailsView>
                     softWrap: false,
                     overflow: TextOverflow.visible,
                     style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                        color: Colors.white,
+                        color: AppPalette.grey.white,
                         fontSize: 25,
                         fontWeight: FontWeight.bold),
                   ),
@@ -90,9 +88,7 @@ class _GradesDetailsViewState extends State<GradesDetailsView>
                       minWidth: MediaQuery.of(context).size.width,
                     ),
                     decoration: BoxDecoration(
-                      color: Theme.of(context).brightness == Brightness.light
-                          ? AppTheme.etsLightRed
-                          : AppTheme.darkTheme().cardColor,
+                      color: context.theme.appColors.vibrantAppBar,
                     ),
                     child: Padding(
                       padding: const EdgeInsets.only(bottom: 8.0),
@@ -178,7 +174,7 @@ class _GradesDetailsViewState extends State<GradesDetailsView>
                                 model.course.summary?.currentMark,
                                 model.course.summary?.markOutOf,
                                 AppIntl.of(context)!.grades_current_rating,
-                                Colors.green,
+                                context.theme.appColors.positiveText,
                                 context,
                               ),
                               Padding(
@@ -187,7 +183,7 @@ class _GradesDetailsViewState extends State<GradesDetailsView>
                                   model.course.summary?.passMark,
                                   model.course.summary?.markOutOf,
                                   AppIntl.of(context)!.grades_average,
-                                  Colors.red,
+                                  context.theme.appColors.negativeText,
                                   context,
                                 ),
                               ),
@@ -277,7 +273,7 @@ class _GradesDetailsViewState extends State<GradesDetailsView>
             style: Theme.of(context)
                 .textTheme
                 .bodyLarge!
-                .copyWith(color: Colors.white, fontSize: 16),
+                .copyWith(color: AppPalette.grey.white, fontSize: 16),
             overflow: TextOverflow.ellipsis,
           ),
         ),

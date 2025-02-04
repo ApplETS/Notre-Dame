@@ -8,7 +8,7 @@ import 'package:intl/intl.dart';
 
 // Project imports:
 import 'package:notredame/ui/schedule/widgets/schedule_calendar_tile.dart';
-import 'package:notredame/ui/core/themes/app_theme.dart';
+import 'package:notredame/theme/app_theme.dart';
 
 class ScheduleDefault extends StatefulWidget {
   final List<CalendarEventData<Object>> calendarEvents;
@@ -31,8 +31,11 @@ class _ScheduleDefaultState extends State<ScheduleDefault> {
 
   @override
   Widget build(BuildContext context) {
+    if (!widget.loaded) {
+      return Container();
+    }
     // Check if there are no events
-    if (widget.calendarEvents.isEmpty && widget.loaded) {
+    if (widget.calendarEvents.isEmpty) {
       return Scaffold(
         backgroundColor: Colors.transparent,
         body: Center(
@@ -46,57 +49,47 @@ class _ScheduleDefaultState extends State<ScheduleDefault> {
         (MediaQuery.of(context).size.height / 1200).clamp(0.45, 1.0);
     // If there are events, display the calendar
     return Scaffold(
-        body: WeekView(
-      maxDay: DateTime.now(),
-      minDay: DateTime.now(),
-      key: weekViewKey,
-      safeAreaOption: const SafeAreaOption(bottom: false),
-      controller: eventController..addAll(widget.calendarEvents),
-      backgroundColor: Theme.of(context).brightness == Brightness.light
-          ? AppTheme.lightThemeBackground
-          : AppTheme.primaryDark,
-      startDay: WeekDays.sunday,
-      weekDays: [
-        if (widget.displaySunday)
-          WeekDays.sunday,
-        WeekDays.monday,
-        WeekDays.tuesday,
-        WeekDays.wednesday,
-        WeekDays.thursday,
-        WeekDays.friday,
-        if (widget.displaySaturday)
-          WeekDays.saturday
-      ],
-      hourIndicatorSettings: HourIndicatorSettings(
-          color: Theme.of(context).brightness == Brightness.light
-              ? AppTheme.scheduleLineColorLight
-              : AppTheme.scheduleLineColorDark),
-      scrollOffset: heightPerMinute * 60 * 7.5,
-      timeLineStringBuilder: (date, {secondaryDate}) {
-        return DateFormat('H:mm').format(date);
-      },
-      liveTimeIndicatorSettings: LiveTimeIndicatorSettings.none(),
-      weekNumberBuilder: (date) => null,
-      headerStyle: const HeaderStyle(
+      body: WeekView(
+        maxDay: DateTime.now(),
+        minDay: DateTime.now(),
+        key: weekViewKey,
+        safeAreaOption: const SafeAreaOption(bottom: false),
+        controller: eventController..addAll(widget.calendarEvents),
+        backgroundColor: context.theme.scaffoldBackgroundColor,
+        startDay: WeekDays.sunday,
+        weekDays: [
+          if (widget.displaySunday)
+            WeekDays.sunday,
+            WeekDays.monday,
+            WeekDays.tuesday,
+            WeekDays.wednesday,
+            WeekDays.thursday,
+            WeekDays.friday,
+          if (widget.displaySaturday)
+            WeekDays.saturday
+        ],
+        hourIndicatorSettings: HourIndicatorSettings(
+          color: context.theme.appColors.scheduleLine),
+        scrollOffset: heightPerMinute * 60 * 7.5,
+        timeLineStringBuilder: (date, {secondaryDate}) {
+          return DateFormat('H:mm').format(date);
+        },
+        liveTimeIndicatorSettings: LiveTimeIndicatorSettings.none(),
+        weekNumberBuilder: (date) => null,
+        headerStyle: const HeaderStyle(
           headerTextStyle: TextStyle(fontSize: 0),
           leftIconVisible: false,
           rightIconVisible: false,
           decoration: BoxDecoration(color: Colors.transparent)),
-      heightPerMinute: heightPerMinute,
-      eventTileBuilder: (date, events, boundary, startDuration, endDuration) =>
+        heightPerMinute: heightPerMinute,
+        eventTileBuilder: (date, events, boundary, startDuration, endDuration) =>
           _buildEventTile(
-              date, events, boundary, startDuration, endDuration, context),
-      weekDayBuilder: (DateTime date) => _buildWeekDay(date),
-    ));
+              events, context),
+        weekDayBuilder: (DateTime date) => _buildWeekDay(date),
+      ));
   }
 
-  Widget _buildEventTile(
-      DateTime date,
-      List<CalendarEventData<dynamic>> events,
-      Rect boundary,
-      DateTime startDuration,
-      DateTime endDuration,
-      BuildContext context) {
+  Widget _buildEventTile(List<CalendarEventData<dynamic>> events, BuildContext context) {
     if (events.isNotEmpty) {
       return ScheduleCalendarTile(
         title: events[0].title,
@@ -104,7 +97,7 @@ class _ScheduleDefaultState extends State<ScheduleDefault> {
         start: events[0].startTime,
         end: events[0].endTime,
         titleStyle: TextStyle(
-          fontSize: 8,
+          fontSize: 14,
           color: events[0].color.accent,
         ),
         totalEvents: events.length,

@@ -4,8 +4,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 // Package imports:
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-import 'package:notredame/ui/core/themes/app_theme.dart';
-import 'package:notredame/utils/utils.dart';
+import 'package:notredame/theme/app_theme.dart';
 
 class LoginButton extends StatefulWidget{
   final GlobalKey<FormState> formKey;
@@ -45,7 +44,7 @@ class _LoginButtonState extends State<LoginButton>{
             backgroundColor:
             WidgetStateProperty.all(
                 widget.canSubmit
-                    ? colorButton
+                    ? context.theme.appColors.loginAccent
                     : Colors.white38),
             padding: WidgetStateProperty.all(
                 const EdgeInsets.symmetric(
@@ -56,17 +55,10 @@ class _LoginButtonState extends State<LoginButton>{
                 .login_action_sign_in,
             style: TextStyle(
                 color: widget.canSubmit
-                    ? submitTextColor
+                    ? context.theme.appColors.loginMain
                     : Colors.white60,
                 fontSize: 18),
           ),
         ),
       );
-
-  Color get colorButton =>
-      Utils.getColorByBrightness(context, Colors.white, AppTheme.etsLightRed);
-
-  Color get submitTextColor =>
-      Utils.getColorByBrightness(context, AppTheme.etsLightRed, Colors.white);
-
 }

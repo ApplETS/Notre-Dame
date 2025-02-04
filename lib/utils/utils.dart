@@ -10,26 +10,8 @@ mixin Utils {
     return double.parse(((grade / maxGrade) * 100).toStringAsFixed(1));
   }
 
-  static Color getColorByBrightness(
-      BuildContext context, Color lightColor, Color darkColor) {
-    return Theme.of(context).brightness == Brightness.light
-        ? lightColor
-        : darkColor;
-  }
-
-  static Color? getColorByBrightnessNullable(
-      BuildContext context, Color? lightColor, Color? darkColor) {
-    return Theme.of(context).brightness == Brightness.light
-        ? lightColor
-        : darkColor;
-  }
-
   static String getMessageByLocale(BuildContext context, String fr, String en) {
     return Localizations.localeOf(context).toString() == "fr" ? fr : en;
-  }
-
-  static bool isDarkTheme(BuildContext context) {
-    return Theme.of(context).brightness == Brightness.dark;
   }
 
   /// Get first day of the week depending on startingDay which corresponds to weekday

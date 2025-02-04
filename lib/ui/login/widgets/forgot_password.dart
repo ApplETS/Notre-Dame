@@ -33,10 +33,10 @@ class _ForgotPasswordState extends State<ForgotPassword>{
             child: Text(
               AppIntl.of(context)!
                   .forgot_password,
-              style: const TextStyle(
+              style: TextStyle(
                   decoration:
                   TextDecoration.underline,
-                  color: Colors.white),
+                  color: AppPalette.grey.white),
             ),
             onTap: () {
               final signetsPasswordResetUrl =

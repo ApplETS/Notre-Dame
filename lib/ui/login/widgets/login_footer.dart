@@ -3,9 +3,8 @@ import 'package:flutter/material.dart';
 // Package imports:
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-import 'package:notredame/ui/core/themes/app_theme.dart';
+import 'package:notredame/theme/app_palette.dart';
 import 'package:notredame/locator.dart';
-import 'package:notredame/utils/utils.dart';
 import 'package:notredame/data/services/navigation_service.dart';
 import 'package:notredame/domain/constants/router_paths.dart';
 
@@ -28,19 +27,13 @@ class _LoginFooterState extends State<LoginFooter>{
           child: InkWell(
             child: Text(
               AppIntl.of(context)!.need_help,
-              style: const TextStyle(
+              style: TextStyle(
                   decoration:
                   TextDecoration.underline,
-                  color: Colors.white),
+                  color: AppPalette.grey.white),
             ),
             onTap: () async {
-              _navigationService.pushNamed(
-                  RouterPaths.faq,
-                  arguments:
-                  Utils.getColorByBrightness(
-                      context,
-                      AppTheme.etsLightRed,
-                      AppTheme.primaryDark));
+              _navigationService.pushNamed(RouterPaths.faq);
             },
           ),
         ),

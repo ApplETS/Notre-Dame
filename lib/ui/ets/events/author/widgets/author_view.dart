@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
+import 'package:notredame/theme/app_theme.dart';
 import 'package:stacked/stacked.dart';
 
 // Project imports:
@@ -16,8 +17,6 @@ import 'package:notredame/ui/ets/events/news/widgets/news_card.dart';
 import 'package:notredame/ui/ets/events/news/widgets/news_card_skeleton.dart';
 import 'package:notredame/ui/ets/events/social/models/social_link.dart';
 import 'package:notredame/ui/ets/events/social/widgets/social_links_card.dart';
-import 'package:notredame/ui/core/themes/app_theme.dart';
-import 'package:notredame/utils/utils.dart';
 
 class AuthorView extends StatefulWidget {
   final String authorId;
@@ -144,8 +143,7 @@ class _AuthorViewState extends State<AuthorView> {
           : SizedBox(
               width: double.infinity,
               child: Card(
-                color: Utils.getColorByBrightnessNullable(
-                    context, AppTheme.newsSecondaryColor, null),
+                color: context.theme.appColors.newsAuthorProfile,
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(16)),
                 key: UniqueKey(),
@@ -167,11 +165,7 @@ class _AuthorViewState extends State<AuthorView> {
                         Text(
                           author?.profileDescription ?? "",
                           style: TextStyle(
-                            color: Utils.getColorByBrightness(
-                              context,
-                              AppTheme.etsDarkGrey,
-                              AppTheme.newsSecondaryColor,
-                            ),
+                            color: context.theme.appColors.newsAuthorProfileDescription,
                             fontSize: 16,
                           ),
                           textAlign: TextAlign.center,
@@ -196,11 +190,7 @@ class _AuthorViewState extends State<AuthorView> {
                         },
                         icon: FaIcon(
                           FontAwesomeIcons.link,
-                          color: Utils.getColorByBrightness(
-                            context,
-                            AppTheme.newsAccentColorLight,
-                            AppTheme.newsAccentColorDark,
-                          ),
+                          color: context.theme.appColors.newsAccent
                         ),
                         style: ButtonStyle(
                           shape:
@@ -210,11 +200,7 @@ class _AuthorViewState extends State<AuthorView> {
                             ),
                           ),
                           backgroundColor: WidgetStateProperty.all<Color>(
-                            Utils.getColorByBrightness(
-                              context,
-                              AppTheme.lightThemeBackground,
-                              AppTheme.darkThemeBackground,
-                            ),
+                              context.theme.appColors.backgroundAlt
                           ),
                         ),
                       ),
@@ -245,8 +231,7 @@ class _AuthorViewState extends State<AuthorView> {
                 child: Hero(
                   tag: 'news_author_avatar',
                   child: CircleAvatar(
-                    backgroundColor: Utils.getColorByBrightness(context,
-                        AppTheme.lightThemeAccent, AppTheme.darkThemeAccent),
+                    backgroundColor: context.theme.appColors.shimmerHighlight,
                     child: Stack(
                       fit: StackFit.expand,
                       children: [
@@ -265,10 +250,7 @@ class _AuthorViewState extends State<AuthorView> {
                                           '',
                                       style: TextStyle(
                                           fontSize: 56,
-                                          color: Utils.getColorByBrightness(
-                                              context,
-                                              Colors.black,
-                                              Colors.white)),
+                                          color: context.theme.textTheme.bodyMedium!.color),
                                     ),
                                   );
                                 },
@@ -280,8 +262,7 @@ class _AuthorViewState extends State<AuthorView> {
                               model.author?.organization?.substring(0, 1) ?? '',
                               style: TextStyle(
                                   fontSize: 56,
-                                  color: Utils.getColorByBrightness(
-                                      context, Colors.black, Colors.white)),
+                                  color: context.theme.textTheme.bodyMedium!.color),
                             ),
                           ),
                       ],
@@ -322,7 +303,7 @@ class _AuthorViewState extends State<AuthorView> {
                   padding: const EdgeInsets.fromLTRB(0, 8, 8, 8),
                   child: Row(
                     children: [
-                      const Icon(Icons.check, color: Colors.blue, size: 40),
+                      Icon(Icons.check, color: context.theme.appColors.newsAccent, size: 40),
                       const SizedBox(width: 16),
                       Flexible(
                         child: Column(

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
-import 'package:notredame/ui/core/themes/app_theme.dart';
+import 'package:notredame/theme/app_theme.dart';
 
 class LoginHero extends StatefulWidget{
 
@@ -23,10 +23,7 @@ class _LoginHeroState extends State<LoginHero>{
             width: 90,
             height: 90,
             colorFilter: ColorFilter.mode(
-                Theme.of(context).brightness ==
-                    Brightness.light
-                    ? Colors.white
-                    : AppTheme.etsLightRed,
+                context.theme.appColors.loginAccent,
                 BlendMode.srcIn),
           ));
 }

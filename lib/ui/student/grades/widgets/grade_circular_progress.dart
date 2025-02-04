@@ -6,7 +6,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:notredame/ui/student/grades/widgets/grade_circular_indicator.dart';
 
 // Project imports:
-import 'package:notredame/ui/core/themes/app_theme.dart';
+import 'package:notredame/theme/app_palette.dart';
 
 class GradeCircularProgress extends StatefulWidget {
   final bool completed;
@@ -43,7 +43,7 @@ class _GradeCircularProgressState extends State<GradeCircularProgress>
     _controller.forward();
 
     animation = ColorTween(
-      begin: AppTheme.gradeFailureMin,
+      begin: AppPalette.gradeFailureMin,
       end: gradePercentageColor(widget.studentGrade ?? 0.0),
     ).animate(_controller)
       ..addListener(() {
@@ -64,7 +64,7 @@ class _GradeCircularProgressState extends State<GradeCircularProgress>
       children: [
         GradeCircularIndicator(
           grade: widget.averageGrade,
-          color: Colors.red,
+          color: AppPalette.etsLightRed,
           size: 75,
           duration: 800,
           ratio: widget.ratio,
@@ -72,7 +72,7 @@ class _GradeCircularProgressState extends State<GradeCircularProgress>
         ),
         GradeCircularIndicator(
           grade: widget.studentGrade,
-          color: animation.value ?? AppTheme.gradePassing,
+          color: animation.value ?? AppPalette.gradePassing,
           size: 95,
           duration: 1200,
           ratio: widget.ratio,
@@ -109,18 +109,18 @@ class _GradeCircularProgressState extends State<GradeCircularProgress>
     double colorProportion = gradePercentage;
 
     if (gradePercentage >= 0 && gradePercentage <= passingGrade) {
-      startColor = AppTheme.gradeFailureMin;
-      endColor = AppTheme.gradeFailureMax;
+      startColor = AppPalette.gradeFailureMin;
+      endColor = AppPalette.gradeFailureMax;
       colorProportion /= passingGrade;
     } else if (gradePercentage > passingGrade &&
         gradePercentage <= minGoodGrade) {
-      startColor = AppTheme.gradePassing;
-      endColor = AppTheme.gradeGoodMin;
+      startColor = AppPalette.gradePassing;
+      endColor = AppPalette.gradeGoodMin;
       colorProportion -= passingGrade;
       colorProportion /= minGoodGrade - passingGrade;
     } else {
-      startColor = AppTheme.gradeGoodMin;
-      endColor = AppTheme.gradeGoodMax;
+      startColor = AppPalette.gradeGoodMin;
+      endColor = AppPalette.gradeGoodMax;
 
       if (colorProportion >= maxGrade) {
         colorProportion = 1;

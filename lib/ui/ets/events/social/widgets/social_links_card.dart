@@ -8,8 +8,7 @@ import 'package:stacked/stacked.dart';
 
 // Project imports:
 import 'package:notredame/ui/ets/events/social/models/social_link.dart';
-import 'package:notredame/ui/core/themes/app_theme.dart';
-import 'package:notredame/utils/utils.dart';
+import 'package:notredame/theme/app_theme.dart';
 
 class SocialLinks extends StatefulWidget {
   final bool showHandle;
@@ -31,11 +30,7 @@ class _SocialLinksState extends State<SocialLinks> {
             return IntrinsicHeight(
                 child: Container(
                     decoration: BoxDecoration(
-                      color: Utils.getColorByBrightness(
-                        context,
-                        AppTheme.lightThemeBackground,
-                        AppTheme.darkThemeBackground,
-                      ),
+                      color: context.theme.appColors.backgroundAlt,
                       borderRadius: const BorderRadius.only(
                         topLeft: Radius.circular(40.0),
                         topRight: Radius.circular(40.0),
@@ -53,11 +48,7 @@ class _SocialLinksState extends State<SocialLinks> {
   Widget _buildHandle(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: Utils.getColorByBrightness(
-          context,
-          AppTheme.lightThemeBackground,
-          AppTheme.darkThemeBackground,
-        ),
+        color: context.theme.appColors.modalTitle,
         borderRadius: const BorderRadius.only(
           topLeft: Radius.circular(40.0),
           topRight: Radius.circular(40.0),
@@ -69,8 +60,8 @@ class _SocialLinksState extends State<SocialLinks> {
           child: Container(
             height: 5,
             width: 50,
-            decoration: const BoxDecoration(
-                color: Colors.grey,
+            decoration: BoxDecoration(
+                color: context.theme.appColors.modalHandle,
                 borderRadius: BorderRadius.all(Radius.circular(8.0))),
           ),
         ),
@@ -82,11 +73,7 @@ class _SocialLinksState extends State<SocialLinks> {
     return Container(
       width: MediaQuery.of(context).size.width,
       decoration: BoxDecoration(
-        color: Utils.getColorByBrightness(
-          context,
-          AppTheme.lightThemeBackground,
-          AppTheme.darkThemeBackground,
-        ),
+        color: context.theme.appColors.modalTitle,
       ),
       child: Center(
         child: Padding(
@@ -142,7 +129,7 @@ class _SocialLinksState extends State<SocialLinks> {
     }
 
     return Padding(
-      padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
+      padding: const EdgeInsets.fromLTRB(16, 16, 16, 40),
       child: Column(
         children: rows,
       ),

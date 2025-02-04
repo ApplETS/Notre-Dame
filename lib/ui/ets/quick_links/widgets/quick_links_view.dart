@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 // Package imports:
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:notredame/theme/app_theme.dart';
 import 'package:reorderable_grid_view/reorderable_grid_view.dart';
 import 'package:stacked/stacked.dart';
 
@@ -10,7 +11,7 @@ import 'package:stacked/stacked.dart';
 import 'package:notredame/data/models/quick_link.dart';
 import 'package:notredame/ui/ets/quick_links/view_model/quick_links_viewmodel.dart';
 import 'package:notredame/ui/ets/quick_links/widgets/web_link_card.dart';
-import 'package:notredame/ui/core/themes/app_theme.dart';
+import 'package:notredame/theme/app_palette.dart';
 
 class QuickLinksView extends StatefulWidget {
   const QuickLinksView({super.key});
@@ -167,13 +168,13 @@ class _QuickLinksViewState extends State<QuickLinksView>
     return Container(
       width: 32,
       height: 32,
-      decoration: const BoxDecoration(
-        color: AppTheme.etsDarkGrey,
+      decoration: BoxDecoration(
+        color: AppPalette.grey.darkGrey,
         shape: BoxShape.circle,
       ),
       child: IconButton(
         padding: EdgeInsets.zero,
-        icon: const Icon(Icons.close, color: Colors.white, size: 16),
+        icon: Icon(Icons.close, color: AppPalette.grey.white, size: 16),
         onPressed: () {
           setState(() {
             model.deleteQuickLink(index);
@@ -187,13 +188,13 @@ class _QuickLinksViewState extends State<QuickLinksView>
     return Container(
       width: 32,
       height: 32,
-      decoration: const BoxDecoration(
-        color: Colors.green,
+      decoration: BoxDecoration(
+        color: context.theme.appColors.positive,
         shape: BoxShape.circle,
       ),
       child: IconButton(
         padding: EdgeInsets.zero,
-        icon: const Icon(Icons.add, color: Colors.white, size: 20),
+        icon: Icon(Icons.add, color: AppPalette.grey.white, size: 20),
         onPressed: () {
           setState(() {
             model.restoreQuickLink(index);

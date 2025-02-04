@@ -10,6 +10,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:notredame/domain/constants/urls.dart';
 import 'package:notredame/locator.dart';
 import 'package:notredame/data/services/launch_url_service.dart';
+import 'package:notredame/theme/app_palette.dart';
 
 class AboutView extends StatefulWidget {
   const AboutView({super.key});
@@ -56,7 +57,7 @@ class _AboutViewState extends State<AboutView> with TickerProviderStateMixin {
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
-        foregroundColor: Colors.white,
+        foregroundColor: AppPalette.grey.white,
         title: Text(
           AppIntl.of(context)!.more_about_applets_title,
         ),
@@ -117,7 +118,7 @@ class _AboutViewState extends State<AboutView> with TickerProviderStateMixin {
                 padding: const EdgeInsets.all(16.0),
                 child: Text(
                   AppIntl.of(context)!.more_applets_about_details,
-                  style: const TextStyle(color: Colors.white),
+                  style: TextStyle(color: AppPalette.grey.white),
                 ),
               ),
               SingleChildScrollView(
@@ -126,44 +127,44 @@ class _AboutViewState extends State<AboutView> with TickerProviderStateMixin {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     IconButton(
-                        icon: const FaIcon(
+                        icon: FaIcon(
                           FontAwesomeIcons.earthAmericas,
-                          color: Colors.white,
+                          color: AppPalette.grey.white,
                         ),
                         onPressed: () =>
                             _launchUrlService.launchInBrowser(Urls.clubWebsite)),
                     IconButton(
-                        icon: const FaIcon(
+                        icon: FaIcon(
                           FontAwesomeIcons.github,
-                          color: Colors.white,
+                          color: AppPalette.grey.white,
                         ),
                         onPressed: () =>
                             _launchUrlService.launchInBrowser(Urls.clubGithub)),
                     IconButton(
-                        icon: const FaIcon(
+                        icon: FaIcon(
                           FontAwesomeIcons.facebook,
-                          color: Colors.white,
+                          color: AppPalette.grey.white,
                         ),
                         onPressed: () =>
                             _launchUrlService.launchInBrowser(Urls.clubFacebook)),
                     IconButton(
-                        icon: const FaIcon(
+                        icon: FaIcon(
                           FontAwesomeIcons.twitter,
-                          color: Colors.white,
+                          color: AppPalette.grey.white,
                         ),
                         onPressed: () =>
                             _launchUrlService.launchInBrowser(Urls.clubTwitter)),
                     IconButton(
-                        icon: const FaIcon(
+                        icon: FaIcon(
                           FontAwesomeIcons.youtube,
-                          color: Colors.white,
+                          color: AppPalette.grey.white,
                         ),
                         onPressed: () =>
                             _launchUrlService.launchInBrowser(Urls.clubYoutube)),
                     IconButton(
-                        icon: const FaIcon(
+                        icon: FaIcon(
                           FontAwesomeIcons.discord,
-                          color: Colors.white,
+                          color: AppPalette.grey.white,
                         ),
                         onPressed: () =>
                             _launchUrlService.launchInBrowser(Urls.clubDiscord)),

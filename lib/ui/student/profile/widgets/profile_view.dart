@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 
 // Package imports:
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:notredame/theme/app_theme.dart';
 import 'package:notredame/ui/student/profile/widgets/program_completion.dart';
 import 'package:stacked/stacked.dart';
 
@@ -12,7 +13,7 @@ import 'package:notredame/data/services/analytics_service.dart';
 import 'package:notredame/data/services/signets-api/models/program.dart';
 import 'package:notredame/ui/student/profile/view_model/profile_viewmodel.dart';
 import 'package:notredame/ui/student/widgets/student_program.dart';
-import 'package:notredame/ui/core/themes/app_theme.dart';
+import 'package:notredame/theme/app_palette.dart';
 import 'package:notredame/utils/loading.dart';
 import 'package:notredame/locator.dart';
 
@@ -115,7 +116,7 @@ Widget buildPage(BuildContext context, ProfileViewModel model) => Column(
                 style: const TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
-                    color: AppTheme.etsLightRed),
+                    color: AppPalette.etsLightRed),
               ),
             ),
           ],
@@ -247,7 +248,7 @@ Card getMyBalanceCard(ProfileViewModel model, BuildContext context) {
   }
 
   return Card(
-    color: balance > 0 ? Colors.red : Colors.green,
+    color: balance > 0 ? context.theme.appColors.negative : context.theme.appColors.positive,
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
@@ -310,7 +311,7 @@ Column getCurrentProgramTile(List<Program> programList, BuildContext context) {
             style: const TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
-                color: AppTheme.etsLightRed),
+                color: AppPalette.etsLightRed),
           ),
         ),
         ...List<Widget>.generate(dataTitles.length, (index) {

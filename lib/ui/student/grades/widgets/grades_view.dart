@@ -12,7 +12,7 @@ import 'package:notredame/domain/constants/router_paths.dart';
 import 'package:notredame/data/services/signets-api/models/course.dart';
 import 'package:notredame/ui/student/grades/view_model/grades_viewmodel.dart';
 import 'package:notredame/ui/student/grades/widgets/grade_button.dart';
-import 'package:notredame/ui/core/themes/app_theme.dart';
+import 'package:notredame/theme/app_palette.dart';
 import 'package:notredame/utils/loading.dart';
 import 'package:notredame/locator.dart';
 
@@ -93,11 +93,11 @@ class _GradesViewState extends State<GradesView> {
                   sessionName,
                   style: const TextStyle(
                     fontSize: 25,
-                    color: AppTheme.etsLightRed,
+                    color: AppPalette.etsLightRed,
                   ),
                 ),
                 IconButton(
-                  icon: const Icon(Icons.today, color: AppTheme.etsDarkGrey),
+                  icon: Icon(Icons.today, color: AppPalette.grey.darkGrey),
                   onPressed: () => _navigationService.pushNamed(
                       RouterPaths.defaultSchedule,
                       arguments: model.sessionOrder[index]),

@@ -3,12 +3,12 @@ import 'package:flutter/material.dart';
 
 // Package imports:
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:notredame/theme/app_theme.dart';
 import 'package:stacked/stacked.dart';
 
 // Project imports:
 import 'package:notredame/ui/startup/view_model/startup_viewmodel.dart';
-import 'package:notredame/ui/core/themes/app_theme.dart';
-import 'package:notredame/utils/utils.dart';
+import 'package:notredame/theme/app_palette.dart';
 
 class StartUpView extends StatelessWidget {
   const StartUpView({super.key});
@@ -21,8 +21,7 @@ class StartUpView extends StatelessWidget {
             model.handleStartUp();
           },
           builder: (context, model, child) => Scaffold(
-                backgroundColor: Utils.getColorByBrightness(
-                    context, AppTheme.etsLightRed, AppTheme.primaryDark),
+                backgroundColor: context.theme.appColors.backgroundVibrant,
                 body: SafeArea(
                   minimum: const EdgeInsets.all(20),
                   child: Center(
@@ -37,18 +36,15 @@ class StartUpView extends StatelessWidget {
                               width: 90,
                               height: 90,
                               colorFilter: ColorFilter.mode(
-                                  Theme.of(context).brightness ==
-                                          Brightness.light
-                                      ? Colors.white
-                                      : AppTheme.etsLightRed,
+                                  context.theme.appColors.loginAccent,
                                   BlendMode.srcIn),
                             )),
                         const SizedBox(
                           height: 15,
                         ),
-                        const CircularProgressIndicator(
+                        CircularProgressIndicator(
                             valueColor:
-                                AlwaysStoppedAnimation<Color>(Colors.white))
+                                AlwaysStoppedAnimation<Color>(AppPalette.grey.white))
                       ],
                     ),
                   ),
