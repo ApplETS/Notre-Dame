@@ -446,17 +446,22 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
   }
 
   String setProgressBarText(BuildContext context) {
-    String progressBarText = AppIntl.of(context)!
+    switch (_currentProgressBarText) {
+      case ProgressBarText.daysElapsedWithTotalDays:
+        _currentProgressBarText = ProgressBarText.daysElapsedWithTotalDays;
+        return AppIntl.of(context)!
             .progress_bar_message(sessionDays[0], sessionDays[1]);
-
-    if (_currentProgressBarText == ProgressBarText.percentage) {
-      progressBarText = 
-        AppIntl.of(context)!.progress_bar_message_percentage(
-            ((sessionDays[0] / sessionDays[1]) * 100).round());
-    } else if(_currentProgressBarText == ProgressBarText.remainingDays) {
-      progressBarText = AppIntl.of(context)!.progress_bar_message_remaining_days(
+      case ProgressBarText.percentage:
+        _currentProgressBarText = ProgressBarText.percentage;
+        final percentage = sessionDays[1] == 0
+          ? 0
+          : ((sessionDays[0] / sessionDays[1]) * 100).round();
+        return AppIntl.of(context)!
+            .progress_bar_message_percentage(percentage);
+      default:
+        _currentProgressBarText = ProgressBarText.remainingDays;
+        return AppIntl.of(context)!.progress_bar_message_remaining_days(
             sessionDays[1] - sessionDays[0]);
     }
-    return progressBarText;
   }
 }
