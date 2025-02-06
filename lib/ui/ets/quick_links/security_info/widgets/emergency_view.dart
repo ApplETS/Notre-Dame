@@ -34,7 +34,8 @@ class _EmergencyViewState extends State<EmergencyView> {
       fab: FloatingActionButton.extended(
         onPressed: () {
           try {
-            _launchUrlService.call(AppIntl.of(context)!.security_emergency_number);
+            _launchUrlService
+                .call(AppIntl.of(context)!.security_emergency_number);
           } catch (e) {
             ScaffoldMessenger.of(context)
                 .showSnackBar(SnackBar(content: Text(e.toString())));

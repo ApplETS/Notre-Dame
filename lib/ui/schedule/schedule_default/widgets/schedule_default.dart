@@ -17,7 +17,11 @@ class ScheduleDefault extends StatefulWidget {
   final bool displaySunday;
 
   const ScheduleDefault(
-      {super.key, required this.calendarEvents, required this.loaded, required this.displaySaturday, required this.displaySunday});
+      {super.key,
+      required this.calendarEvents,
+      required this.loaded,
+      required this.displaySaturday,
+      required this.displaySunday});
 
   @override
   State<ScheduleDefault> createState() => _ScheduleDefaultState();
@@ -49,47 +53,45 @@ class _ScheduleDefaultState extends State<ScheduleDefault> {
         (MediaQuery.of(context).size.height / 1200).clamp(0.45, 1.0);
     // If there are events, display the calendar
     return Scaffold(
-      body: WeekView(
-        maxDay: DateTime.now(),
-        minDay: DateTime.now(),
-        key: weekViewKey,
-        safeAreaOption: const SafeAreaOption(bottom: false),
-        controller: eventController..addAll(widget.calendarEvents),
-        backgroundColor: context.theme.scaffoldBackgroundColor,
-        startDay: WeekDays.sunday,
-        weekDays: [
-          if (widget.displaySunday)
-            WeekDays.sunday,
-            WeekDays.monday,
-            WeekDays.tuesday,
-            WeekDays.wednesday,
-            WeekDays.thursday,
-            WeekDays.friday,
-          if (widget.displaySaturday)
-            WeekDays.saturday
-        ],
-        hourIndicatorSettings: HourIndicatorSettings(
-          color: context.theme.appColors.scheduleLine),
-        scrollOffset: heightPerMinute * 60 * 7.5,
-        timeLineStringBuilder: (date, {secondaryDate}) {
-          return DateFormat('H:mm').format(date);
-        },
-        liveTimeIndicatorSettings: LiveTimeIndicatorSettings.none(),
-        weekNumberBuilder: (date) => null,
-        headerStyle: const HeaderStyle(
+        body: WeekView(
+      maxDay: DateTime.now(),
+      minDay: DateTime.now(),
+      key: weekViewKey,
+      safeAreaOption: const SafeAreaOption(bottom: false),
+      controller: eventController..addAll(widget.calendarEvents),
+      backgroundColor: context.theme.scaffoldBackgroundColor,
+      startDay: WeekDays.sunday,
+      weekDays: [
+        if (widget.displaySunday) WeekDays.sunday,
+        WeekDays.monday,
+        WeekDays.tuesday,
+        WeekDays.wednesday,
+        WeekDays.thursday,
+        WeekDays.friday,
+        if (widget.displaySaturday) WeekDays.saturday
+      ],
+      hourIndicatorSettings:
+          HourIndicatorSettings(color: context.theme.appColors.scheduleLine),
+      scrollOffset: heightPerMinute * 60 * 7.5,
+      timeLineStringBuilder: (date, {secondaryDate}) {
+        return DateFormat('H:mm').format(date);
+      },
+      liveTimeIndicatorSettings: LiveTimeIndicatorSettings.none(),
+      weekNumberBuilder: (date) => null,
+      headerStyle: const HeaderStyle(
           headerTextStyle: TextStyle(fontSize: 0),
           leftIconVisible: false,
           rightIconVisible: false,
           decoration: BoxDecoration(color: Colors.transparent)),
-        heightPerMinute: heightPerMinute,
-        eventTileBuilder: (date, events, boundary, startDuration, endDuration) =>
-          _buildEventTile(
-              events, context),
-        weekDayBuilder: (DateTime date) => _buildWeekDay(date),
-      ));
+      heightPerMinute: heightPerMinute,
+      eventTileBuilder: (date, events, boundary, startDuration, endDuration) =>
+          _buildEventTile(events, context),
+      weekDayBuilder: (DateTime date) => _buildWeekDay(date),
+    ));
   }
 
-  Widget _buildEventTile(List<CalendarEventData<dynamic>> events, BuildContext context) {
+  Widget _buildEventTile(
+      List<CalendarEventData<dynamic>> events, BuildContext context) {
     if (events.isNotEmpty) {
       return ScheduleCalendarTile(
         title: events[0].title,

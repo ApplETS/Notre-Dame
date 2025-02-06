@@ -131,8 +131,8 @@ class _AboutViewState extends State<AboutView> with TickerProviderStateMixin {
                           FontAwesomeIcons.earthAmericas,
                           color: AppPalette.grey.white,
                         ),
-                        onPressed: () =>
-                            _launchUrlService.launchInBrowser(Urls.clubWebsite)),
+                        onPressed: () => _launchUrlService
+                            .launchInBrowser(Urls.clubWebsite)),
                     IconButton(
                         icon: FaIcon(
                           FontAwesomeIcons.github,
@@ -145,29 +145,29 @@ class _AboutViewState extends State<AboutView> with TickerProviderStateMixin {
                           FontAwesomeIcons.facebook,
                           color: AppPalette.grey.white,
                         ),
-                        onPressed: () =>
-                            _launchUrlService.launchInBrowser(Urls.clubFacebook)),
+                        onPressed: () => _launchUrlService
+                            .launchInBrowser(Urls.clubFacebook)),
                     IconButton(
                         icon: FaIcon(
                           FontAwesomeIcons.twitter,
                           color: AppPalette.grey.white,
                         ),
-                        onPressed: () =>
-                            _launchUrlService.launchInBrowser(Urls.clubTwitter)),
+                        onPressed: () => _launchUrlService
+                            .launchInBrowser(Urls.clubTwitter)),
                     IconButton(
                         icon: FaIcon(
                           FontAwesomeIcons.youtube,
                           color: AppPalette.grey.white,
                         ),
-                        onPressed: () =>
-                            _launchUrlService.launchInBrowser(Urls.clubYoutube)),
+                        onPressed: () => _launchUrlService
+                            .launchInBrowser(Urls.clubYoutube)),
                     IconButton(
                         icon: FaIcon(
                           FontAwesomeIcons.discord,
                           color: AppPalette.grey.white,
                         ),
-                        onPressed: () =>
-                            _launchUrlService.launchInBrowser(Urls.clubDiscord)),
+                        onPressed: () => _launchUrlService
+                            .launchInBrowser(Urls.clubDiscord)),
                   ],
                 ),
               ),

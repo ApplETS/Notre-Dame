@@ -112,7 +112,7 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(find.text(intl.profile_program_completion), findsOneWidget);
-      
+
       expect(find.byType(CircularProgressIndicator), findsOneWidget);
     });
   });

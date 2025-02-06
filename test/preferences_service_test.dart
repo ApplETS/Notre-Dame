@@ -79,9 +79,8 @@ void main() {
     });
 
     test("clearWithoutPersistentKey", () async {
-      SharedPreferences.setMockInitialValues({
-        PreferencesFlag.scheduleCalendarFormat.toString(): true
-      });
+      SharedPreferences.setMockInitialValues(
+          {PreferencesFlag.scheduleCalendarFormat.toString(): true});
 
       expect(await service.getBool(PreferencesFlag.scheduleCalendarFormat),
           isTrue);

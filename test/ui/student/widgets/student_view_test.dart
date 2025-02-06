@@ -41,8 +41,7 @@ void main() {
     group('UI - ', () {
       testWidgets('has Tab bar and sliverAppBar and BaseScaffold',
           (WidgetTester tester) async {
-        await tester.pumpWidget(
-            localizedWidget(child: StudentView()));
+        await tester.pumpWidget(localizedWidget(child: StudentView()));
         await tester.pumpAndSettle(const Duration(seconds: 1));
 
         expect(find.byType(TabBar), findsOneWidget);

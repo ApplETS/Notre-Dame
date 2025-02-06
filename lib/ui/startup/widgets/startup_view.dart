@@ -43,8 +43,8 @@ class StartUpView extends StatelessWidget {
                           height: 15,
                         ),
                         CircularProgressIndicator(
-                            valueColor:
-                                AlwaysStoppedAnimation<Color>(AppPalette.grey.white))
+                            valueColor: AlwaysStoppedAnimation<Color>(
+                                AppPalette.grey.white))
                       ],
                     ),
                   ),

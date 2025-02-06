@@ -11,21 +11,18 @@ import 'package:notredame/data/services/remote_config_service.dart';
 import 'package:notredame/locator.dart';
 import 'package:notredame/ui/core/themes/app_palette.dart';
 
-class ForgotPassword extends StatefulWidget{
-
-  const ForgotPassword(
-      {super.key});
+class ForgotPassword extends StatefulWidget {
+  const ForgotPassword({super.key});
 
   @override
   State<ForgotPassword> createState() => _ForgotPasswordState();
 }
 
-class _ForgotPasswordState extends State<ForgotPassword>{
-
+class _ForgotPasswordState extends State<ForgotPassword> {
   final LaunchUrlService _launchUrlService = locator<LaunchUrlService>();
 
   final RemoteConfigService _remoteConfigService =
-  locator<RemoteConfigService>();
+      locator<RemoteConfigService>();
 
   @override
   Widget build(BuildContext context) => Align(
@@ -34,24 +31,19 @@ class _ForgotPasswordState extends State<ForgotPassword>{
           padding: const EdgeInsets.only(top: 4),
           child: InkWell(
             child: Text(
-              AppIntl.of(context)!
-                  .forgot_password,
+              AppIntl.of(context)!.forgot_password,
               style: TextStyle(
-                  decoration:
-                  TextDecoration.underline,
+                  decoration: TextDecoration.underline,
                   color: AppPalette.grey.white),
             ),
             onTap: () {
               final signetsPasswordResetUrl =
-                  _remoteConfigService
-                      .signetsPasswordResetUrl;
+                  _remoteConfigService.signetsPasswordResetUrl;
               if (signetsPasswordResetUrl != "") {
                 _launchUrlService.launchInBrowser(
                     _remoteConfigService.signetsPasswordResetUrl);
               } else {
-                Fluttertoast.showToast(
-                    msg: AppIntl.of(context)!
-                        .error);
+                Fluttertoast.showToast(msg: AppIntl.of(context)!.error);
               }
             },
           ),

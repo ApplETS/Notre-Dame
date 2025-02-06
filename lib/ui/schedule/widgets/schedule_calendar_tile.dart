@@ -123,12 +123,8 @@ class _ScheduleCalendarTileState extends State<ScheduleCalendarTile> {
           children: [
             FittedBox(
                 fit: BoxFit.fitWidth,
-                child: Text(
-                    widget.title ?? "",
-                    style: widget.titleStyle,
-                    maxLines: 3
-                )
-            )
+                child: Text(widget.title ?? "",
+                    style: widget.titleStyle, maxLines: 3))
           ],
         ),
       ),

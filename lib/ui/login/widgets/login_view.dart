@@ -65,11 +65,9 @@ class _LoginViewState extends State<LoginView> {
                                       height: 48,
                                     ),
                                     UniversalCodeFormField(
-                                      validator: model.validateUniversalCode,
-                                      onEditionComplete:
-                                        _focusNode.nextFocus,
-                                      universalCode: model.universalCode
-                                    ),
+                                        validator: model.validateUniversalCode,
+                                        onEditionComplete: _focusNode.nextFocus,
+                                        universalCode: model.universalCode),
                                     const SizedBox(
                                       height: 16,
                                     ),

@@ -27,15 +27,15 @@ class _ChooseLanguageViewState extends State<ChooseLanguageView> {
       itemBuilder: (BuildContext context, int index) {
         return Card(
             child: Column(mainAxisSize: MainAxisSize.min, children: <Widget>[
-              ListTile(
-                title: Text(model.languages[index]),
-                trailing: Icon(
-                    model.languageSelectedIndex == index ? Icons.check : null),
-                onTap: () {
-                  model.changeLanguage(index);
-                },
-              ),
-            ]));
+          ListTile(
+            title: Text(model.languages[index]),
+            trailing:
+                Icon(model.languageSelectedIndex == index ? Icons.check : null),
+            onTap: () {
+              model.changeLanguage(index);
+            },
+          ),
+        ]));
       },
     );
   }

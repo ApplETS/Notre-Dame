@@ -38,10 +38,12 @@ class _PasswordFormFieldState extends State<PasswordFormField> {
                     color: AppPalette.grey.white, width: borderRadiusOnFocus)),
             focusedErrorBorder: OutlineInputBorder(
                 borderSide: BorderSide(
-                    color: context.theme.appColors.inputError, width: borderRadiusOnFocus)),
+                    color: context.theme.appColors.inputError,
+                    width: borderRadiusOnFocus)),
             errorBorder: OutlineInputBorder(
                 borderSide: BorderSide(
-                    color: context.theme.appColors.inputError, width: borderRadiusOnFocus)),
+                    color: context.theme.appColors.inputError,
+                    width: borderRadiusOnFocus)),
             labelText: AppIntl.of(context)!.login_prompt_password,
             labelStyle: const TextStyle(color: Colors.white54),
             errorStyle: TextStyle(color: context.theme.appColors.inputError),

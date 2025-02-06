@@ -63,7 +63,8 @@ class ETSMobile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     addEdgeToEdgeEffect();
-    final RemoteConfigService remoteConfigService = locator<RemoteConfigService>();
+    final RemoteConfigService remoteConfigService =
+        locator<RemoteConfigService>();
     final bool outage = remoteConfigService.outage;
     return ChangeNotifierProvider<SettingsRepository>(
       create: (_) => settingsManager,

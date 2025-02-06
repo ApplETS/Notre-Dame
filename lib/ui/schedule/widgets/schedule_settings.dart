@@ -30,73 +30,73 @@ class _ScheduleSettingsState extends State<ScheduleSettings> {
   Widget build(BuildContext context) => ViewModelBuilder.reactive(
       viewModelBuilder: () => ScheduleSettingsViewModel(),
       builder: (context, model, child) {
-          return ClipRRect(
-            borderRadius: const BorderRadius.vertical(top: Radius.circular(10)),
-            child: DraggableScrollableSheet(
-                maxChildSize: 0.85,
-                minChildSize: 0.5,
-                initialChildSize: 0.55,
-                expand: false,
-                snap: true,
-                snapSizes: const [
-                  0.55,
-                  0.85,
-                ],
-                builder: (context, ScrollController scrollController) {
-                  return Column(children: [
-                    if (widget.showHandle)
-                      Container(
-                        decoration: BoxDecoration(
-                          color: context.theme.appColors.modalTitle,
-                        ),
-                        child: Center(
-                          child: Padding(
-                            padding: const EdgeInsets.only(top: 8.0),
-                            child: Container(
-                              height: 5,
-                              width: 50,
-                              decoration: BoxDecoration(
-                                  color: context.theme.appColors.modalHandle,
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(8.0))),
-                            ),
-                          ),
-                        ),
-                      ),
+        return ClipRRect(
+          borderRadius: const BorderRadius.vertical(top: Radius.circular(10)),
+          child: DraggableScrollableSheet(
+              maxChildSize: 0.85,
+              minChildSize: 0.5,
+              initialChildSize: 0.55,
+              expand: false,
+              snap: true,
+              snapSizes: const [
+                0.55,
+                0.85,
+              ],
+              builder: (context, ScrollController scrollController) {
+                return Column(children: [
+                  if (widget.showHandle)
                     Container(
-                      width: MediaQuery.of(context).size.width,
                       decoration: BoxDecoration(
                         color: context.theme.appColors.modalTitle,
                       ),
                       child: Center(
                         child: Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 20),
-                            child: Text(
-                                AppIntl.of(context)!.schedule_settings_title,
-                                style: Theme.of(context).textTheme.titleLarge)),
-                      ),
-                    ),
-                    Expanded(
-                      child: ListTileTheme(
-                        selectedColor:
-                            Theme.of(context).textTheme.bodyLarge!.color,
-                        child: Card(
-                          margin: const EdgeInsets.all(0),
-                          elevation: 0,
-                          shape: const RoundedRectangleBorder(),
-                          color: context.theme.appColors.backgroundAlt,
-                          child: ListView(
-                            padding: EdgeInsets.symmetric(horizontal: 8),
-                            controller: scrollController,
-                            key: const ValueKey("SettingsScrollingArea"),
-                            children: _buildSettings(context, model),
+                          padding: const EdgeInsets.only(top: 8.0),
+                          child: Container(
+                            height: 5,
+                            width: 50,
+                            decoration: BoxDecoration(
+                                color: context.theme.appColors.modalHandle,
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(8.0))),
                           ),
                         ),
                       ),
-                    )
-                  ]);
-                }),
-          );
+                    ),
+                  Container(
+                    width: MediaQuery.of(context).size.width,
+                    decoration: BoxDecoration(
+                      color: context.theme.appColors.modalTitle,
+                    ),
+                    child: Center(
+                      child: Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 20),
+                          child: Text(
+                              AppIntl.of(context)!.schedule_settings_title,
+                              style: Theme.of(context).textTheme.titleLarge)),
+                    ),
+                  ),
+                  Expanded(
+                    child: ListTileTheme(
+                      selectedColor:
+                          Theme.of(context).textTheme.bodyLarge!.color,
+                      child: Card(
+                        margin: const EdgeInsets.all(0),
+                        elevation: 0,
+                        shape: const RoundedRectangleBorder(),
+                        color: context.theme.appColors.backgroundAlt,
+                        child: ListView(
+                          padding: EdgeInsets.symmetric(horizontal: 8),
+                          controller: scrollController,
+                          key: const ValueKey("SettingsScrollingArea"),
+                          children: _buildSettings(context, model),
+                        ),
+                      ),
+                    ),
+                  )
+                ]);
+              }),
+        );
       });
 
   List<Widget> _buildSettings(
@@ -215,7 +215,7 @@ class _ScheduleSettingsState extends State<ScheduleSettings> {
     final chips = <Widget>[];
 
     for (final CalendarTimeFormat format in CalendarTimeFormat.values) {
-        chips.add(InputChip(
+      chips.add(InputChip(
           label: Text(getTextForFormat(context, format)),
           selected: model.calendarFormat == format,
           selectedColor: selectedColor,

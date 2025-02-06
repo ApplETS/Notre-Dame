@@ -12,14 +12,15 @@ runs:
       shell: bash
       run: dart run build_runner build
 
-    # Check the format of the code and commit the formatted files.
     - name: Format files in lib and test directories
-      if: ${{ inputs.format == true }}
+      if: ${{ inputs.format }}
       shell: bash
-      run: dart format lib test
+      run: |
+        dart format lib test
+        dart run import_sorter:main
 
     - name: Commit formatted files
-      if: ${{ inputs.format == true }}
+      if: ${{ inputs.format }}
       id: commit_formatted
       uses: stefanzweifel/git-auto-commit-action@v5
       with:
@@ -30,8 +31,8 @@ runs:
         add_options: '-u'
 
     # Fail workflow, because new commit will execute workflow
-    - if: ${{ inputs.format == true && steps.commit_formatted.outputs.changes_detected == 'true' }}
-      name: Fail workflow if linting commit
+    - name: Fail workflow if linting commit
+      if: ${{ inputs.format && steps.commit_formatted.outputs.changes_detected == 'true' }}
       shell: bash
       run: |
         echo 'Linting applied, running bot commit workflow'

@@ -124,8 +124,7 @@ void main() {
             .called(1);
 
         verify(analyticsServiceMock.logEvent(
-                "${SettingsRepository.tag}_${flag.name}",
-                any))
+                "${SettingsRepository.tag}_${flag.name}", any))
             .called(1);
 
         repository.setThemeMode(ThemeMode.dark);
@@ -135,8 +134,7 @@ void main() {
             .called(1);
 
         verify(analyticsServiceMock.logEvent(
-                "${SettingsRepository.tag}_${flag.name}",
-                any))
+                "${SettingsRepository.tag}_${flag.name}", any))
             .called(1);
 
         repository.setThemeMode(ThemeMode.system);
@@ -146,8 +144,7 @@ void main() {
             .called(1);
 
         verify(analyticsServiceMock.logEvent(
-                "${SettingsRepository.tag}_${flag.name}",
-                any))
+                "${SettingsRepository.tag}_${flag.name}", any))
             .called(1);
 
         verifyNoMoreInteractions(preferencesServiceMock);
@@ -186,8 +183,7 @@ void main() {
             .called(1);
 
         verify(analyticsServiceMock.logEvent(
-                "${SettingsRepository.tag}_${flag.name}",
-                any))
+                "${SettingsRepository.tag}_${flag.name}", any))
             .called(1);
 
         verifyNoMoreInteractions(preferencesServiceMock);
@@ -202,12 +198,10 @@ void main() {
             .called(1);
 
         untilCalled(analyticsServiceMock.logEvent(
-            "${SettingsRepository.tag}_${flag.name}",
-            any));
+            "${SettingsRepository.tag}_${flag.name}", any));
 
         verify(analyticsServiceMock.logEvent(
-                "${SettingsRepository.tag}_${flag.name}",
-                any))
+                "${SettingsRepository.tag}_${flag.name}", any))
             .called(1);
 
         repository.setLocale('en');
@@ -216,12 +210,10 @@ void main() {
             .called(1);
 
         untilCalled(analyticsServiceMock.logEvent(
-            "${SettingsRepository.tag}_${flag.name}",
-            any));
+            "${SettingsRepository.tag}_${flag.name}", any));
 
         verify(analyticsServiceMock.logEvent(
-                "${SettingsRepository.tag}_${flag.name}",
-                any))
+                "${SettingsRepository.tag}_${flag.name}", any))
             .called(1);
 
         verifyNoMoreInteractions(preferencesServiceMock);
@@ -297,8 +289,7 @@ void main() {
           "${SettingsRepository.tag}_${flag.name}", any));
 
       verify(analyticsServiceMock.logEvent(
-              "${SettingsRepository.tag}_${flag.name}",
-              any))
+              "${SettingsRepository.tag}_${flag.name}", any))
           .called(1);
       verify(preferencesServiceMock.setString(flag, any));
     });
@@ -315,8 +306,7 @@ void main() {
           "${SettingsRepository.tag}_${flag.name}", any));
 
       verify(analyticsServiceMock.logEvent(
-              "${SettingsRepository.tag}_${flag.name}",
-              any))
+              "${SettingsRepository.tag}_${flag.name}", any))
           .called(1);
       verify(preferencesServiceMock.setInt(flag, any));
     });
@@ -333,8 +323,7 @@ void main() {
           "${SettingsRepository.tag}_${flag.name}", any));
 
       verify(analyticsServiceMock.logEvent(
-              "${SettingsRepository.tag}_${flag.name}",
-              any))
+              "${SettingsRepository.tag}_${flag.name}", any))
           .called(1);
       verify(preferencesServiceMock.getString(flag));
     });
@@ -351,8 +340,7 @@ void main() {
           "${SettingsRepository.tag}_${flag.name}", any));
 
       verify(analyticsServiceMock.logEvent(
-              "${SettingsRepository.tag}_${flag.name}",
-              any))
+              "${SettingsRepository.tag}_${flag.name}", any))
           .called(1);
       verify(preferencesServiceMock.setBool(flag, value: anyNamed("value")));
     });

@@ -128,8 +128,7 @@ class SettingsRepository with ChangeNotifier {
     _preferencesService.setString(PreferencesFlag.theme, value.toString());
 
     _analyticsService.logEvent(
-        "${tag}_${PreferencesFlag.theme.name}",
-        value.name);
+        "${tag}_${PreferencesFlag.theme.name}", value.name);
     _themeMode = value;
     notifyListeners();
   }
@@ -137,8 +136,7 @@ class SettingsRepository with ChangeNotifier {
   void setLocale(String value) {
     _locale = AppIntl.supportedLocales.firstWhere((e) => e.toString() == value);
 
-    _analyticsService.logEvent(
-        "${tag}_${PreferencesFlag.locale.name}",
+    _analyticsService.logEvent("${tag}_${PreferencesFlag.locale.name}",
         _locale?.languageCode ?? 'Not found');
 
     if (_locale != null) {
@@ -154,13 +152,13 @@ class SettingsRepository with ChangeNotifier {
     final Map<PreferencesFlag, dynamic> settings = {};
 
     final calendarFormat = await _preferencesService
-      .getString(PreferencesFlag.scheduleCalendarFormat)
-      .then((value) => value == null
-        ? CalendarTimeFormat.week
-        : CalendarTimeFormat.values.byName(value))
-      .catchError((error) {
-        return CalendarTimeFormat.week;
-      });
+        .getString(PreferencesFlag.scheduleCalendarFormat)
+        .then((value) => value == null
+            ? CalendarTimeFormat.week
+            : CalendarTimeFormat.values.byName(value))
+        .catchError((error) {
+      return CalendarTimeFormat.week;
+    });
     settings.putIfAbsent(
         PreferencesFlag.scheduleCalendarFormat, () => calendarFormat);
 
@@ -184,8 +182,7 @@ class SettingsRepository with ChangeNotifier {
   /// Add/update the value of [flag]
   Future<bool> setString(PreferencesFlag flag, String? value) async {
     // Log the event
-    _analyticsService.logEvent(
-        "${tag}_${flag.name}", value.toString());
+    _analyticsService.logEvent("${tag}_${flag.name}", value.toString());
 
     if (value == null) {
       return _preferencesService.removePreferencesFlag(flag);
@@ -209,16 +206,14 @@ class SettingsRepository with ChangeNotifier {
   /// Add/update the value of [flag]
   Future<bool> setInt(PreferencesFlag flag, int value) async {
     // Log the event
-    _analyticsService.logEvent(
-        "${tag}_${flag.name}", value.toString());
+    _analyticsService.logEvent("${tag}_${flag.name}", value.toString());
     return _preferencesService.setInt(flag, value);
   }
 
   /// Get the value of [flag]
   Future<String?> getString(PreferencesFlag flag) async {
     // Log the event
-    _analyticsService.logEvent(
-        "${tag}_${flag.name}", 'getString');
+    _analyticsService.logEvent("${tag}_${flag.name}", 'getString');
     return _preferencesService.getString(flag);
   }
 
@@ -233,16 +228,14 @@ class SettingsRepository with ChangeNotifier {
   // ignore: avoid_positional_boolean_parameters
   Future<bool> setBool(PreferencesFlag flag, bool value) async {
     // Log the event
-    _analyticsService.logEvent(
-        "${tag}_${flag.name}", value.toString());
+    _analyticsService.logEvent("${tag}_${flag.name}", value.toString());
     return _preferencesService.setBool(flag, value: value);
   }
 
   /// Get the value of [flag]
   Future<bool?> getBool(PreferencesFlag flag) async {
     // Log the event
-    _analyticsService.logEvent(
-        "${tag}_${flag.name}", 'getBool');
+    _analyticsService.logEvent("${tag}_${flag.name}", 'getBool');
     return _preferencesService.getBool(flag);
   }
 

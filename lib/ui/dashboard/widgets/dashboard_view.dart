@@ -167,7 +167,7 @@ class _DashboardViewState extends State<DashboardView>
                       onPressed: () {
                         _analyticsService.logEvent(tag, "Github clicked");
                         _launchUrlService.launchInBrowser(Urls.clubGithub);
-                        },
+                      },
                       icon: FaIcon(
                         FontAwesomeIcons.github,
                         color: AppPalette.grey.white,
@@ -187,7 +187,7 @@ class _DashboardViewState extends State<DashboardView>
                       onPressed: () {
                         _analyticsService.logEvent(tag, "Discord clicked");
                         _launchUrlService.launchInBrowser(Urls.clubDiscord);
-                        },
+                      },
                       icon: FaIcon(
                         FontAwesomeIcons.discord,
                         color: AppPalette.grey.white,
@@ -483,7 +483,7 @@ class _DashboardViewState extends State<DashboardView>
                   ),
                   // main text
                   Text(model.broadcastMessage,
-                    style: context.theme.primaryTextTheme.bodyMedium)
+                      style: context.theme.primaryTextTheme.bodyMedium)
                 ]),
         ));
   }
