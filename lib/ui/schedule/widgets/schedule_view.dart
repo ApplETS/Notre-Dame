@@ -6,6 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:calendar_view/calendar_view.dart' as calendar_view;
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:intl/intl.dart';
+import 'package:notredame/ui/schedule/widgets/calendars/week_calendar.dart';
 import 'package:stacked/stacked.dart';
 import 'package:table_calendar/table_calendar.dart';
 
@@ -195,73 +196,7 @@ class _ScheduleViewState extends State<ScheduleView>
 
   Widget _buildCalendarViewWeekly(ScheduleViewModel model, BuildContext context,
       calendar_view.EventController eventController) {
-    final double heightPerMinute =
-        (MediaQuery.of(context).size.height / 1200).clamp(0.45, 1.0);
-
-    return calendar_view.WeekView(
-        key: weekViewKey,
-        weekNumberBuilder: (date) => null,
-        controller: eventController..addAll(model.selectedWeekCalendarEvents()),
-        onPageChange: (date, page) => setState(() {
-              model.handleViewChanged(date, eventController, []);
-            }),
-        backgroundColor: context.theme.scaffoldBackgroundColor,
-        weekTitleHeight:
-            (MediaQuery.of(context).orientation == Orientation.portrait)
-                ? 60
-                : 35,
-        safeAreaOption:
-            const calendar_view.SafeAreaOption(top: false, bottom: false),
-        headerStyle: calendar_view.HeaderStyle(
-            decoration: BoxDecoration(
-              color: context.theme.scaffoldBackgroundColor,
-            ),
-            leftIcon: Icon(
-              Icons.chevron_left,
-              size: 30,
-              color: context.theme.textTheme.bodyMedium!.color,
-            ),
-            rightIcon: Icon(
-              Icons.chevron_right,
-              size: 30,
-              color: context.theme.textTheme.bodyMedium!.color,
-            )),
-        startDay: calendar_view.WeekDays.sunday,
-        weekDays: [
-          if (model.displaySunday) calendar_view.WeekDays.sunday,
-          calendar_view.WeekDays.monday,
-          calendar_view.WeekDays.tuesday,
-          calendar_view.WeekDays.wednesday,
-          calendar_view.WeekDays.thursday,
-          calendar_view.WeekDays.friday,
-          if (model.displaySaturday) calendar_view.WeekDays.saturday
-        ],
-        initialDay: model.weekSelected,
-        heightPerMinute: heightPerMinute,
-        scrollOffset: heightPerMinute * 60 * 7.5,
-        hourIndicatorSettings: calendar_view.HourIndicatorSettings(
-          color: context.theme.appColors.scheduleLine,
-        ),
-        liveTimeIndicatorSettings: calendar_view.LiveTimeIndicatorSettings(
-          color: context.theme.textTheme.bodyMedium!.color!,
-        ),
-        keepScrollOffset: true,
-        timeLineStringBuilder: (date, {secondaryDate}) {
-          return DateFormat('H:mm').format(date);
-        },
-        weekDayStringBuilder: (p0) {
-          return weekTitles[p0];
-        },
-        headerStringBuilder: (date, {secondaryDate}) {
-          final from = AppIntl.of(context)!.schedule_calendar_from;
-          final to = AppIntl.of(context)!.schedule_calendar_to;
-          final locale = AppIntl.of(context)!.localeName;
-          return '$from ${date.day} ${DateFormat.MMMM(locale).format(date)} $to ${secondaryDate?.day ?? '00'} ${DateFormat.MMMM(locale).format(secondaryDate ?? date)}';
-        },
-        eventTileBuilder:
-            (date, events, boundary, startDuration, endDuration) =>
-                _buildEventTile(events, context),
-        weekDayBuilder: (DateTime date) => _buildWeekDay(date, model));
+    return WeekCalendar(model: model, eventController: eventController, weekViewKey: weekViewKey);
   }
 
   Widget _buildCalendarViewMonthly(ScheduleViewModel model,
@@ -345,34 +280,6 @@ class _ScheduleViewState extends State<ScheduleView>
     } else {
       return Container();
     }
-  }
-
-  Widget _buildWeekDay(DateTime date, ScheduleViewModel model) {
-    return Center(
-      child: Wrap(children: <Widget>[
-        Container(
-          padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
-          decoration: BoxDecoration(
-              color: date.withoutTime == DateTime.now().withoutTime
-                  ? context.theme.appColors.dayIndicatorWeekView
-                  : Colors.transparent,
-              borderRadius: BorderRadius.circular(6.0)),
-          child: Flex(
-              direction:
-                  (MediaQuery.of(context).orientation == Orientation.portrait)
-                      ? Axis.vertical
-                      : Axis.horizontal,
-              mainAxisSize: MainAxisSize.min,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(weekTitles[date.weekday - 1]),
-                if (MediaQuery.of(context).orientation == Orientation.landscape)
-                  const SizedBox(width: 4),
-                Text(date.day.toString()),
-              ]),
-        ),
-      ]),
-    );
   }
 
   Widget _buildTitleForDate(DateTime date, ScheduleViewModel model) => Center(
