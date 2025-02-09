@@ -7,28 +7,28 @@ import 'package:stacked/stacked.dart';
 
 // Project imports:
 import 'package:notredame/ui/core/ui/base_scaffold.dart';
-import 'package:notredame/ui/schedule/schedule_default/view_model/schedule_default_viewmodel.dart';
-import 'package:notredame/ui/schedule/schedule_default/widgets/schedule_default.dart';
+import 'package:notredame/ui/student/session_schedule/view_model/session_schedule_viewmodel.dart';
+import 'package:notredame/ui/student/session_schedule/widgets/session_schedule.dart';
 
-class ScheduleDefaultView extends StatefulWidget {
+class SessionScheduleView extends StatefulWidget {
   final String? sessionCode;
 
-  const ScheduleDefaultView({super.key, this.sessionCode});
+  const SessionScheduleView({super.key, this.sessionCode});
 
   @override
-  State<ScheduleDefaultView> createState() => _ScheduleDefaultViewState();
+  State<SessionScheduleView> createState() => _ScheduleDefaultViewState();
 }
 
-class _ScheduleDefaultViewState extends State<ScheduleDefaultView> {
+class _ScheduleDefaultViewState extends State<SessionScheduleView> {
   @override
   Widget build(BuildContext context) {
     if (widget.sessionCode == null) {
       return Container();
     }
 
-    return ViewModelBuilder<ScheduleDefaultViewModel>.reactive(
+    return ViewModelBuilder<SessionScheduleViewModel>.reactive(
       viewModelBuilder: () =>
-          ScheduleDefaultViewModel(sessionCode: widget.sessionCode),
+          SessionScheduleViewModel(sessionCode: widget.sessionCode),
       builder: (context, model, child) => BaseScaffold(
         showBottomBar: false,
         safeArea: false,
@@ -46,7 +46,7 @@ class _ScheduleDefaultViewState extends State<ScheduleDefaultView> {
         body: RefreshIndicator(
           child: model.isBusy
               ? const Center(child: CircularProgressIndicator())
-              : ScheduleDefault(
+              : SessionSchedule(
                   calendarEvents: model.calendarEvents,
                   loaded: !model.busy(model.isLoadingEvents),
                   displaySaturday: model.displaySaturday,

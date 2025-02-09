@@ -7,8 +7,8 @@ import 'package:mockito/mockito.dart';
 import 'package:notredame/data/repositories/course_repository.dart';
 import 'package:notredame/data/services/navigation_service.dart';
 import 'package:notredame/data/services/networking_service.dart';
-import 'package:notredame/ui/schedule/schedule_default/widgets/schedule_default.dart';
-import 'package:notredame/ui/schedule/schedule_default/widgets/schedule_default_view.dart';
+import 'package:notredame/ui/schedule/schedule_default/widgets/session_schedule.dart';
+import 'package:notredame/ui/schedule/schedule_default/widgets/session_schedule_view.dart';
 import '../../../../data/mocks/repositories/course_repository_mock.mocks.dart';
 import '../../../../helpers.dart';
 
