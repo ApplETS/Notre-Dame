@@ -216,15 +216,13 @@ class _ScheduleViewState extends State<ScheduleView>
             decoration: BoxDecoration(
               color: context.theme.scaffoldBackgroundColor,
             ),
-            leftIcon: Icon(
-              Icons.chevron_left,
+            leftIconConfig: calendar_view.IconDataConfig(
+              color: context.theme.textTheme.bodyMedium!.color!,
               size: 30,
-              color: context.theme.textTheme.bodyMedium!.color,
             ),
-            rightIcon: Icon(
-              Icons.chevron_right,
+            rightIconConfig: calendar_view.IconDataConfig(
+              color: context.theme.textTheme.bodyMedium!.color!,
               size: 30,
-              color: context.theme.textTheme.bodyMedium!.color,
             )),
         startDay: calendar_view.WeekDays.sunday,
         weekDays: [
@@ -292,15 +290,13 @@ class _ScheduleViewState extends State<ScheduleView>
           decoration: BoxDecoration(
             color: context.theme.scaffoldBackgroundColor,
           ),
-          leftIcon: Icon(
-            Icons.chevron_left,
+          leftIconConfig: calendar_view.IconDataConfig(
+            color: context.theme.textTheme.bodyMedium!.color!,
             size: 30,
-            color: context.theme.textTheme.bodyMedium!.color,
           ),
-          rightIcon: Icon(
-            Icons.chevron_right,
+          rightIconConfig: calendar_view.IconDataConfig(
+            color: context.theme.textTheme.bodyMedium!.color!,
             size: 30,
-            color: context.theme.textTheme.bodyMedium!.color,
           )),
       weekDayStringBuilder: (p0) {
         return weekTitles[p0];
