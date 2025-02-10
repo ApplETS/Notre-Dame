@@ -4,21 +4,16 @@ import 'package:intl/intl.dart';
 import 'package:notredame/ui/core/themes/app_theme.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:notredame/ui/schedule/view_model/day_viewmodel.dart';
-import 'package:notredame/ui/schedule/view_model/schedule_viewmodel.dart';
 import 'package:notredame/ui/schedule/widgets/day_view_header.dart';
 import 'package:notredame/ui/schedule/widgets/schedule_calendar_tile.dart';
 import 'package:stacked/stacked.dart';
 
 class DayCalendar extends StatefulWidget {
-  final ScheduleViewModel m;
-  final EventController eventController;
   final GlobalKey<DayViewState> dayViewKey;
   static final List<String> weekTitles = ["L", "M", "M", "J", "V", "S", "D"];
 
   const DayCalendar({
     super.key,
-    required this.m,
-    required this.eventController,
     required this.dayViewKey
   });
 
@@ -32,23 +27,23 @@ class _DayCalendarState extends State<DayCalendar> {
     final double heightPerMinute =
     (MediaQuery.of(context).size.height / 1200).clamp(0.45, 1.0);
     return ViewModelBuilder.reactive(
-      viewModelBuilder: () => DayViewModel(),
+      viewModelBuilder: () => DayViewModel(intl: AppIntl.of(context)!),
       builder: (context, model, child) => Column(children: [
-        DayViewHeader(m: widget.m, eventController: widget.eventController, dayViewKey: widget.dayViewKey),
+        DayViewHeader(m: model, dayViewKey: widget.dayViewKey),
         Expanded(
             child: DayView(
                 showVerticalLine: false,
                 dayTitleBuilder: DayHeader.hidden,
                 key: widget.dayViewKey,
-                controller: widget.eventController
-                  ..addAll(widget.m.selectedDayCalendarEvents()),
+                controller: model.eventController,
+                  // ..addAll(model.selectedDayCalendarEvents()),
                 onPageChange: (date, page) => ({
                   setState(() {
-                    widget.m.handleViewChanged(date, widget.eventController, []);
+                    model.handleDateSelectedChanged(date);
                   })
                 }),
                 backgroundColor: context.theme.scaffoldBackgroundColor,
-                initialDay: widget.m.daySelected,
+                initialDay: model.daySelected,
                 // height occupied by 1 minute time span.
                 hourIndicatorSettings: HourIndicatorSettings(
                   color: context.theme.appColors.scheduleLine,

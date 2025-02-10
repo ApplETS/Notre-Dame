@@ -24,6 +24,8 @@ import 'package:notredame/ui/schedule/view_model/schedule_viewmodel.dart';
 import 'package:notredame/ui/schedule/widgets/calendar_selector.dart';
 import 'package:notredame/ui/schedule/widgets/schedule_settings.dart';
 
+import '../view_model/day_viewmodel.dart';
+
 class ScheduleView extends StatefulWidget {
   @visibleForTesting
   final DateTime? initialDay;
@@ -81,7 +83,7 @@ class _ScheduleViewState extends State<ScheduleView>
       return WeekCalendar(model: model, eventController: eventController, weekViewKey: weekViewKey);
     }
     if (!model.calendarViewSetting) {
-      return DayCalendar(m: model, eventController: eventController, dayViewKey: dayViewKey);
+      return DayCalendar(dayViewKey: dayViewKey);
     }
 
     return _buildListView(model, context, eventController);
@@ -106,7 +108,7 @@ class _ScheduleViewState extends State<ScheduleView>
         child: ListView(
           padding: EdgeInsets.zero,
           children: [
-            DayViewHeader(m: model, eventController: eventController, dayViewKey: dayViewKey),
+            DayViewHeader(m: DayViewModel(intl: AppIntl.of(context)!), dayViewKey: dayViewKey),
             const SizedBox(height: 8.0),
             const Divider(indent: 8.0, endIndent: 8.0, thickness: 1),
             const SizedBox(height: 6.0),
