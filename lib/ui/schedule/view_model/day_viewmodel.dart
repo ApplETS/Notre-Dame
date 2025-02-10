@@ -19,7 +19,6 @@ class DayViewModel extends CalendarViewModel {
     }
 
     daySelected = DateTime.now().withoutTime;
-
     return !isTodaySelected;
   }
 
@@ -50,4 +49,6 @@ class DayViewModel extends CalendarViewModel {
     }
     return events;
   }
+
+  // TODO method to get number of ovents for each day in last week, current week and next week
 }

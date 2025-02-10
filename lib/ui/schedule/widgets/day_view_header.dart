@@ -64,11 +64,6 @@ class _DayViewHeaderState extends State<DayViewHeader> with TickerProviderStateM
         eventLoader: model.coursesActivitiesFor,
         calendarFormat: CalendarFormat.week,
         focusedDay: model.daySelected,
-        onPageChanged: (focusedDay) {
-          // Used to compare
-          // TODO we should problably do nothing
-          widget.m.daySelected = focusedDay;
-        },
         calendarBuilders: CalendarBuilders(
             defaultBuilder: (context, date, _) =>
                 _buildSelectedDate(date, defaultColor, model, widget.dayViewKey),
@@ -111,7 +106,6 @@ class _DayViewHeaderState extends State<DayViewHeader> with TickerProviderStateM
         child: InkWell(
           borderRadius: BorderRadius.circular(10),
           onTap: () {
-
             setState(() {
               model.handleDateSelectedChanged(date);
             });
