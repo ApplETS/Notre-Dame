@@ -263,18 +263,6 @@ abstract class CalendarViewModel extends FutureViewModel<List<CourseActivity>> {
         PreferencesFlag.scheduleCalendarFormat, calendarFormat.name);
   }
 
-  Future<void> refresh() async {
-    try {
-      setBusyForObject(isLoadingEvents, true);
-      await _courseRepository.getCoursesActivities();
-      notifyListeners();
-    } on Exception catch (error) {
-      onError(error);
-    } finally {
-      setBusyForObject(isLoadingEvents, false);
-    }
-  }
-
   List<CalendarEventData> calendarEventsFromDate(DateTime date) {
     return _coursesActivities[date.withoutTime]
         ?.map((eventData) => calendarEventData(eventData))
