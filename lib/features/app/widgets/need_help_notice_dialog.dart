@@ -5,18 +5,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 // Project imports:
-import 'package:notredame/features/more/faq/faq_viewmodel.dart';
 import 'package:notredame/utils/app_theme.dart';
 
 class NeedHelpNoticeDialog extends AlertDialog {
-  final FaqViewModel model;
+  final VoidCallback openMail;
+  final VoidCallback launchWebsite;
   final double radius;
-  final String link;
 
   const NeedHelpNoticeDialog({
     super.key,
-    required this.model,
-    required this.link,
+    required this.openMail,
+    required this.launchWebsite,
     this.radius = 5.0,
   });
 
@@ -49,7 +48,7 @@ class NeedHelpNoticeDialog extends AlertDialog {
                 RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(radius)))),
         onPressed: () {
-          model.launchWebsite(AppIntl.of(context)!.monets_connection_help_page);
+          launchWebsite();
         },
         icon: const Icon(Icons.help_center),
         label: Text(AppIntl.of(context)!
@@ -69,7 +68,7 @@ class NeedHelpNoticeDialog extends AlertDialog {
             shape: WidgetStateProperty.all<RoundedRectangleBorder>(
                 RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(radius)))),
-        onPressed: () => model.openMail(link, context),
+        onPressed: openMail,
         icon: const Icon(Icons.mail),
         label: Text(AppIntl.of(context)!.continue_to_mail_app),
       ),

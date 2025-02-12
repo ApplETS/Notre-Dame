@@ -190,7 +190,7 @@ class _FaqViewState extends State<FaqView> {
             showDialog(
                 context: context,
                 builder: (BuildContext context) {                  
-                  return NeedHelpNoticeDialog(model: model, link: link);
+                  return NeedHelpNoticeDialog(openMail: () => model.openMail(link, context), launchWebsite: () => model.launchWebsite(link));
                 });
           }
         },
