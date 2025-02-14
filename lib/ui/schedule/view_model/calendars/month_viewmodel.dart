@@ -41,7 +41,6 @@ class MonthViewModel extends CalendarViewModel {
         : monthSelected = currentMonth;
 
     return !isThisMonthSelected;
-
   }
 
   static DateTime _getFirstDayOfMonth(DateTime date) {

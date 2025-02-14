@@ -26,6 +26,7 @@ class WeekCalendar extends StatelessWidget {
       builder:(context, model, child) => WeekView(
           key: weekViewKey,
           weekNumberBuilder: (date) => null,
+          // TODO check if add all is required
           controller: model.eventController..addAll(model.selectedWeekCalendarEvents()),
           onPageChange: (date, page) => model.handleDateSelectedChanged(date),
           backgroundColor: context.theme.scaffoldBackgroundColor,
@@ -118,8 +119,7 @@ class WeekCalendar extends StatelessWidget {
 
   Widget _buildEventTile(
       List<CalendarEventData<dynamic>> events,
-      BuildContext context,
-      ) {
+      BuildContext context) {
     if (events.isNotEmpty) {
       return ScheduleCalendarTile(
         title: events[0].title,
