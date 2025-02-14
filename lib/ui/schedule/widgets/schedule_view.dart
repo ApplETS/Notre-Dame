@@ -44,14 +44,14 @@ class _ScheduleViewState extends State<ScheduleView>
   @override
   Widget build(BuildContext context) =>
       ViewModelBuilder<ScheduleViewModel>.reactive(
-        viewModelBuilder: () => ScheduleViewModel(intl: AppIntl.of(context)!),
+        viewModelBuilder: () => ScheduleViewModel(),
         onViewModelReady: (model) {
           if (model.settings.isEmpty) {
             model.loadSettings();
           }
         },
         builder: (context, model, child) => BaseScaffold(
-            isLoading: model.busy(model.isLoadingEvents),
+            isLoading: model.isBusy,
             isInteractionLimitedWhileLoading: false,
             appBar: AppBar(
               title: Text(AppIntl.of(context)!.title_schedule),

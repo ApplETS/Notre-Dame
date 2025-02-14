@@ -86,6 +86,7 @@ abstract class CalendarViewModel extends FutureViewModel<List<CourseActivity>> {
 
   bool isLoadingEvents = false;
 
+  // TODO remove
   bool get calendarViewSetting {
     if (busy(settings)) {
       return false;
@@ -110,7 +111,7 @@ abstract class CalendarViewModel extends FutureViewModel<List<CourseActivity>> {
         _courses = await _courseRepository.getCourses(fromCacheOnly: true);
       }
       final scheduleActivities = await _courseRepository.getScheduleActivities();
-      await assignScheduleActivities(scheduleActivities);
+      await _assignScheduleActivities(scheduleActivities);
     } catch (e) {
       onError(e);
     } finally {
@@ -119,12 +120,10 @@ abstract class CalendarViewModel extends FutureViewModel<List<CourseActivity>> {
     return activities ?? [];
   }
 
-  Future assignScheduleActivities(
+  Future _assignScheduleActivities(
       List<ScheduleActivity> listOfSchedules) async {
     if (listOfSchedules.isEmpty ||
-        !listOfSchedules.any((element) =>
-        element.activityCode == ActivityCode.labGroupA ||
-            element.activityCode == ActivityCode.labGroupB)) {
+        !listOfSchedules.any((element) => [ActivityCode.labGroupA, ActivityCode.labGroupB].contains(element.activityCode))) {
       return;
     }
 
@@ -202,7 +201,7 @@ abstract class CalendarViewModel extends FutureViewModel<List<CourseActivity>> {
               .containsKey(course.courseGroup.split("-").first);
 
           if (scheduleActivitiesContainsGroup) {
-            if (scheduleActivityIsSelected(course)) {
+            if (_scheduleActivityIsSelected(course)) {
               value.add(course);
             }
           } else {
@@ -223,7 +222,7 @@ abstract class CalendarViewModel extends FutureViewModel<List<CourseActivity>> {
     return _coursesActivities;
   }
 
-  bool scheduleActivityIsSelected(CourseActivity course) {
+  bool _scheduleActivityIsSelected(CourseActivity course) {
     if (course.activityDescription != ActivityDescriptionName.labA &&
         course.activityDescription != ActivityDescriptionName.labB) {
       return true;
