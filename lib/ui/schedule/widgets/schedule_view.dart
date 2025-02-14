@@ -19,7 +19,6 @@ import 'package:notredame/ui/schedule/view_model/schedule_viewmodel.dart';
 import 'package:notredame/ui/schedule/widgets/calendar_selector.dart';
 import 'package:notredame/ui/schedule/widgets/schedule_settings.dart';
 
-
 class ScheduleView extends StatefulWidget {
   @visibleForTesting
   final DateTime? initialDay;

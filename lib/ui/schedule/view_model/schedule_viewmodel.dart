@@ -3,14 +3,12 @@ import 'package:flutter/material.dart';
 
 // Package imports:
 import 'package:calendar_view/calendar_view.dart';
-import 'package:collection/collection.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:stacked/stacked.dart';
 
 // Project imports:
 import 'package:notredame/data/models/activity_code.dart';
-import 'package:notredame/data/repositories/course_repository.dart';
 import 'package:notredame/data/repositories/settings_repository.dart';
 import 'package:notredame/data/services/calendar_service.dart';
 import 'package:notredame/data/services/signets-api/models/course.dart';
@@ -21,10 +19,7 @@ import 'package:notredame/locator.dart';
 import 'package:notredame/ui/core/themes/app_palette.dart';
 import 'package:notredame/utils/utils.dart';
 
-class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
-  /// Load the events
-  final CourseRepository _courseRepository = locator<CourseRepository>();
-
+class ScheduleViewModel extends FutureViewModel {
   /// Manage de settings
   final SettingsRepository _settingsManager = locator<SettingsRepository>();
 
@@ -35,7 +30,7 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
   final Map<PreferencesFlag, dynamic> settings = {};
 
   /// Activities sorted by day
-  Map<DateTime, List<CourseActivity>> _coursesActivities = {};
+  final Map<DateTime, List<CourseActivity>> _coursesActivities = {};
 
   /// Courses associated to the student
   List<Course>? courses;
@@ -209,58 +204,8 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
   }
 
   @override
-  Future<List<CourseActivity>> futureToRun() async {
+  Future futureToRun() async {
     loadSettings();
-    List<CourseActivity>? activities =
-        await _courseRepository.getCoursesActivities(fromCacheOnly: true);
-    try {
-      setBusyForObject(isLoadingEvents, true);
-
-      final fetchedCourseActivities =
-          await _courseRepository.getCoursesActivities();
-      if (fetchedCourseActivities != null) {
-        activities = fetchedCourseActivities;
-        // Reload the list of activities
-        coursesActivities;
-
-        courses = await _courseRepository.getCourses(fromCacheOnly: true);
-
-      }
-      final scheduleActivities =
-          await _courseRepository.getScheduleActivities();
-      await assignScheduleActivities(scheduleActivities);
-    } catch (e) {
-      onError(e);
-    } finally {
-      setBusyForObject(isLoadingEvents, false);
-    }
-    return activities ?? [];
-  }
-
-  Future assignScheduleActivities(
-      List<ScheduleActivity> listOfSchedules) async {
-    if (listOfSchedules.isEmpty ||
-        !listOfSchedules.any((element) =>
-            element.activityCode == ActivityCode.labGroupA ||
-            element.activityCode == ActivityCode.labGroupB)) {
-      return;
-    }
-
-    setBusy(true);
-    scheduleActivitiesByCourse.clear();
-    for (final activity in listOfSchedules) {
-      if (activity.activityCode == ActivityCode.labGroupA ||
-          activity.activityCode == ActivityCode.labGroupB) {
-        // Create the list with the new activity inside or add the activity to an existing group
-        if (!scheduleActivitiesByCourse.containsKey(activity.courseAcronym)) {
-          scheduleActivitiesByCourse[activity.courseAcronym] = [activity];
-        } else {
-          scheduleActivitiesByCourse[activity.courseAcronym]?.add(activity);
-        }
-      }
-    }
-
-    await loadSettingsScheduleActivities();
   }
 
   @override
@@ -273,74 +218,10 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
     setBusyForObject(settings, true);
     settings.clear();
     settings.addAll(await _settingsManager.getScheduleSettings());
-    calendarFormat =
-        settings[PreferencesFlag.scheduleCalendarFormat] as CalendarTimeFormat;
-
-    await loadSettingsScheduleActivities();
-
+    calendarFormat = settings[PreferencesFlag.scheduleCalendarFormat] as CalendarTimeFormat;
     setBusyForObject(settings, false);
   }
 
-  Future loadSettingsScheduleActivities() async {
-    for (final courseAcronym in scheduleActivitiesByCourse.keys) {
-      final String? activityCodeToUse = await _settingsManager.getDynamicString(
-          PreferencesFlag.scheduleLaboratoryGroup, courseAcronym);
-      final scheduleActivityToSet = scheduleActivitiesByCourse[courseAcronym]
-          ?.firstWhereOrNull(
-              (element) => element.activityCode == activityCodeToUse);
-      if (scheduleActivityToSet != null) {
-        settingsScheduleActivities[courseAcronym] = scheduleActivityToSet.name;
-      } else {
-        // All group selected
-        settingsScheduleActivities
-            .removeWhere((key, value) => key == courseAcronym);
-      }
-
-      coursesActivities;
-    }
-  }
-
-  /// Return the list of all the courses activities arranged by date.
-  Map<DateTime, List<CourseActivity>> get coursesActivities {
-    _coursesActivities = {};
-
-    // Build the map
-    if (_courseRepository.coursesActivities != null) {
-      for (final CourseActivity course
-          in _courseRepository.coursesActivities!) {
-        final DateTime dateOnly = course.startDateTime.subtract(Duration(
-            hours: course.startDateTime.hour,
-            minutes: course.startDateTime.minute));
-
-        if (!_coursesActivities.containsKey(dateOnly)) {
-          _coursesActivities[dateOnly] = [];
-        }
-
-        _coursesActivities.update(dateOnly, (value) {
-          final scheduleActivitiesContainsGroup = settingsScheduleActivities
-              .containsKey(course.courseGroup.split("-").first);
-
-          if (scheduleActivitiesContainsGroup) {
-            if (scheduleActivityIsSelected(course)) {
-              value.add(course);
-            }
-          } else {
-            value.add(course);
-          }
-
-          return value;
-        }, ifAbsent: () => [course]);
-      }
-    }
-
-    _coursesActivities.updateAll((key, value) {
-      value.sort((a, b) => a.startDateTime.compareTo(b.startDateTime));
-
-      return value;
-    });
-
-    return _coursesActivities;
-  }
 
   bool scheduleActivityIsSelected(CourseActivity course) {
     if (course.activityDescription != ActivityDescriptionName.labA &&

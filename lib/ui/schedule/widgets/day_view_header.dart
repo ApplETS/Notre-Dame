@@ -106,12 +106,16 @@ class _DayViewHeaderState extends State<DayViewHeader> with TickerProviderStateM
         child: InkWell(
           borderRadius: BorderRadius.circular(10),
           onTap: () {
+            DateTime startingDate = model.daySelected;
             setState(() {
               model.handleDateSelectedChanged(date);
             });
 
-            // TODO if page difference == 1, animate
-            dayViewKey.currentState?.jumpToDate(model.daySelected);
+            if (model.daySelected.difference(startingDate).inDays.abs() == 1) {
+              dayViewKey.currentState?.animateToDate(model.daySelected);
+            } else {
+              dayViewKey.currentState?.jumpToDate(model.daySelected);
+            }
           },
           child: Container(
             padding: const EdgeInsets.only(top: 5.0, left: 6.0),
