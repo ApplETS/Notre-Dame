@@ -30,7 +30,7 @@ class _DayCalendarState extends State<DayCalendar> {
     return ViewModelBuilder.reactive(
       viewModelBuilder: () => DayViewModel(intl: AppIntl.of(context)!),
       builder: (context, model, child) => Column(children: [
-        DayViewHeader(m: model, dayViewKey: widget.dayViewKey),
+        DayViewHeader(model: model, dayViewKey: widget.dayViewKey),
         model.calendarViewSetting
             ? _buildCalendar(model)
             : _buildListView(model)

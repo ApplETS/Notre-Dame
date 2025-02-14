@@ -4,7 +4,6 @@ import 'package:notredame/ui/schedule/view_model/calendar_viewmodel.dart';
 import 'package:notredame/utils/utils.dart';
 
 class DayViewModel extends CalendarViewModel {
-  /// Day currently focused on
   DateTime daySelected = DateTime.now().withoutTime;
   final EventController eventController = EventController();
 
@@ -50,5 +49,5 @@ class DayViewModel extends CalendarViewModel {
     return events;
   }
 
-  // TODO method to get number of ovents for each day in last week, current week and next week
+  // TODO method to get number of events for each day in last week, current week and next week
 }

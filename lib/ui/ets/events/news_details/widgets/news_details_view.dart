@@ -23,7 +23,7 @@ import 'package:notredame/ui/core/themes/app_theme.dart';
 import 'package:notredame/ui/core/ui/base_scaffold.dart';
 import 'package:notredame/ui/ets/events/news_details/view_model/news_details_viewmodel.dart';
 import 'package:notredame/ui/ets/events/report_news/widgets/report_news_widget.dart';
-import 'package:notredame/ui/schedule/view_model/calendar_selection_viewmodel.dart';
+import 'package:notredame/ui/ets/events/news_details/view_model/calendar_selection_viewmodel.dart';
 import 'package:notredame/ui/schedule/widgets/calendar_selector.dart';
 import 'package:notredame/utils/utils.dart';
 

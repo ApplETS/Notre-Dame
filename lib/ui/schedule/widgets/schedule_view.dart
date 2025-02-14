@@ -74,7 +74,7 @@ class _ScheduleViewState extends State<ScheduleView>
       return MonthCalendar(model: model, eventController: eventController, monthViewKey: monthViewKey);
     }
     if (model.calendarFormat == CalendarTimeFormat.week) {
-      return WeekCalendar(model: model, eventController: eventController, weekViewKey: weekViewKey);
+      return WeekCalendar(weekViewKey: weekViewKey);
     }
     return DayCalendar(dayViewKey: dayViewKey);
   }

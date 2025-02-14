@@ -9,12 +9,12 @@ import 'package:notredame/ui/core/themes/app_palette.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class DayViewHeader extends StatefulWidget {
-  final DayViewModel m;
+  final DayViewModel model;
   final GlobalKey<calendar_view.DayViewState> dayViewKey;
 
   const DayViewHeader({
     super.key,
-    required this.m,
+    required this.model,
     required this.dayViewKey
   });
 
@@ -49,7 +49,7 @@ class _DayViewHeaderState extends State<DayViewHeader> with TickerProviderStateM
     final Color defaultColor = context.theme.appColors.scheduleLine;
 
     return ViewModelBuilder<DayViewModel>.reactive(
-      viewModelBuilder: () => widget.m,
+      viewModelBuilder: () => widget.model,
       builder: (context, model, child) => TableCalendar(
         key: const Key("TableCalendar"),
         locale: AppIntl.of(context)!.localeName,
@@ -58,7 +58,7 @@ class _DayViewHeaderState extends State<DayViewHeader> with TickerProviderStateM
         },
         headerStyle: HeaderStyle(
             titleTextFormatter: (date, locale) =>
-                DateFormat.MMMMEEEEd(locale).format(widget.m.daySelected),
+                DateFormat.MMMMEEEEd(locale).format(model.daySelected),
             titleCentered: true,
             formatButtonVisible: false),
         eventLoader: model.coursesActivitiesFor,
@@ -78,7 +78,7 @@ class _DayViewHeaderState extends State<DayViewHeader> with TickerProviderStateM
                   date, selectedColor, model, widget.dayViewKey),
             ),
             markerBuilder: (context, date, events) {
-              final bool isSelected = isSameDay(date, widget.m.daySelected);
+              final bool isSelected = isSameDay(date, model.daySelected);
               final bool isToday = isSameDay(date, DateTime.now());
               final Color color = isSelected
                   ? selectedColor
