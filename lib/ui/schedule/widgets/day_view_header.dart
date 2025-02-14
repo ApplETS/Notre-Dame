@@ -2,7 +2,7 @@ import 'package:calendar_view/calendar_view.dart' as calendar_view;
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:notredame/ui/core/themes/app_theme.dart';
-import 'package:notredame/ui/schedule/view_model/day_viewmodel.dart';
+import 'package:notredame/ui/schedule/view_model/calendars/day_viewmodel.dart';
 import 'package:stacked/stacked.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:notredame/ui/core/themes/app_palette.dart';

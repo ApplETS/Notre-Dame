@@ -4,7 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:notredame/ui/core/themes/app_theme.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:notredame/ui/schedule/view_model/day_viewmodel.dart';
+import 'package:notredame/ui/schedule/view_model/calendars/day_viewmodel.dart';
 import 'package:notredame/ui/schedule/widgets/day_view_header.dart';
 import 'package:notredame/ui/schedule/widgets/schedule_calendar_tile.dart';
 import 'package:stacked/stacked.dart';

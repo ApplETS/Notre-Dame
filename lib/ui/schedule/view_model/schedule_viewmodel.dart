@@ -363,7 +363,6 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
       coursesActivities;
     }
 
-    // TODO: maybe use containsKey and put the _courseActivities key to a string...
     DateTime? dateInArray;
     final courseActivitiesContains = _coursesActivities.keys.any((element) {
       dateInArray = element;
@@ -373,12 +372,6 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
       return _coursesActivities[dateInArray] ?? [];
     }
     return [];
-
-    // List<CourseActivity> activities = [];
-    // if (_coursesActivities.containsKey(date)) {
-    //   activities = _coursesActivities[date] ?? [];
-    // }
-    // return activities;
   }
 
   Future setCalendarFormat(CalendarTimeFormat format) async {

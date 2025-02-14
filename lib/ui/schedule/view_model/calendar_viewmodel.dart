@@ -7,7 +7,6 @@ import 'package:calendar_view/calendar_view.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:table_calendar/table_calendar.dart';
 
 // Project imports:
 import 'package:notredame/data/models/activity_code.dart';
@@ -245,15 +244,7 @@ abstract class CalendarViewModel extends FutureViewModel<List<CourseActivity>> {
       coursesActivities;
     }
 
-    DateTime? dateInArray;
-    final courseActivitiesContains = _coursesActivities.keys.any((element) {
-      dateInArray = element;
-      return isSameDay(element, date);
-    });
-    if (courseActivitiesContains) {
-      return _coursesActivities[dateInArray] ?? [];
-    }
-    return [];
+    return _coursesActivities[date.withoutTime] ?? [];
   }
 
   Future setCalendarFormat(CalendarTimeFormat format) async {
