@@ -7,7 +7,6 @@ import 'package:collection/collection.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:stacked/stacked.dart';
-import 'package:table_calendar/table_calendar.dart';
 
 // Project imports:
 import 'package:notredame/data/models/activity_code.dart';
@@ -94,8 +93,7 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
     return events;
   }
 
-  void handleViewChanged(DateTime date, EventController controller,
-      List<Color> scheduleCardsPalette) {
+  void handleViewChanged(DateTime date, EventController controller, List<Color> scheduleCardsPalette) {
     if (calendarFormat != CalendarTimeFormat.day) {
       // As a student, if I open my schedule a saturday (and I have no course today), I want to see next week's shedule
       if (date.weekday == DateTime.saturday &&
@@ -356,43 +354,6 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
     return activityNameSelected == course.activityDescription;
   }
 
-  /// Get the activities for a specific [date], return empty if there is no activity for this [date]
-  List<CourseActivity> coursesActivitiesFor(DateTime date) {
-    // Populate the _coursesActivities
-    if (_coursesActivities.isEmpty) {
-      coursesActivities;
-    }
-
-    DateTime? dateInArray;
-    final courseActivitiesContains = _coursesActivities.keys.any((element) {
-      dateInArray = element;
-      return isSameDay(element, date);
-    });
-    if (courseActivitiesContains) {
-      return _coursesActivities[dateInArray] ?? [];
-    }
-    return [];
-  }
-
-  Future setCalendarFormat(CalendarTimeFormat format) async {
-    calendarFormat = format;
-    settings[PreferencesFlag.scheduleCalendarFormat] = calendarFormat;
-    _settingsManager.setString(
-        PreferencesFlag.scheduleCalendarFormat, calendarFormat.name);
-  }
-
-  Future<void> refresh() async {
-    try {
-      setBusyForObject(isLoadingEvents, true);
-      await _courseRepository.getCoursesActivities();
-      notifyListeners();
-    } on Exception catch (error) {
-      onError(error);
-    } finally {
-      setBusyForObject(isLoadingEvents, false);
-    }
-  }
-
   /// Set current selected date to today (used by the today button in the view).
   /// Show a toaster instead if the selected date is already today.
   ///
@@ -434,8 +395,7 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
   }
 
   bool selectTodayMonthView() {
-    final DateTime currentMonth =
-        DateTime(DateTime.now().year, DateTime.now().month);
+    final DateTime currentMonth = DateTime(DateTime.now().year, DateTime.now().month);
     final bool isThisMonthSelected = weekSelected.month == currentMonth.month &&
         weekSelected.year == currentMonth.year;
 

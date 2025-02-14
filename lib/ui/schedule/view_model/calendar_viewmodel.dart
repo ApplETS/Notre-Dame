@@ -108,8 +108,6 @@ abstract class CalendarViewModel extends FutureViewModel<List<CourseActivity>> {
         coursesActivities;
 
         _courses = await _courseRepository.getCourses(fromCacheOnly: true);
-
-
       }
       final scheduleActivities = await _courseRepository.getScheduleActivities();
       await assignScheduleActivities(scheduleActivities);
@@ -245,13 +243,6 @@ abstract class CalendarViewModel extends FutureViewModel<List<CourseActivity>> {
     }
 
     return _coursesActivities[date.withoutTime] ?? [];
-  }
-
-  Future setCalendarFormat(CalendarTimeFormat format) async {
-    calendarFormat = format;
-    settings[PreferencesFlag.scheduleCalendarFormat] = calendarFormat;
-    _settingsManager.setString(
-        PreferencesFlag.scheduleCalendarFormat, calendarFormat.name);
   }
 
   List<CalendarEventData> calendarEventsFromDate(DateTime date) {

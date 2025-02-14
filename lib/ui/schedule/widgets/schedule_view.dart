@@ -67,11 +67,8 @@ class _ScheduleViewState extends State<ScheduleView>
       );
 
   Widget displaySchedule(ScheduleViewModel model) {
-    final calendar_view.EventController eventController =
-        calendar_view.EventController();
-
     if (model.calendarFormat == CalendarTimeFormat.month) {
-      return MonthCalendar(model: model, eventController: eventController, monthViewKey: monthViewKey);
+      return MonthCalendar(monthViewKey: monthViewKey);
     }
     if (model.calendarFormat == CalendarTimeFormat.week) {
       return WeekCalendar(weekViewKey: weekViewKey);

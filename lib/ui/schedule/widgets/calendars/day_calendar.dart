@@ -13,7 +13,6 @@ import 'package:notredame/ui/dashboard/widgets/course_activity_tile.dart';
 
 class DayCalendar extends StatefulWidget {
   final GlobalKey<DayViewState> dayViewKey;
-  static final List<String> weekTitles = ["L", "M", "M", "J", "V", "S", "D"];
 
   const DayCalendar({
     super.key,
