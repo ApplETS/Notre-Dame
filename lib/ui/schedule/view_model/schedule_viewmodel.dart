@@ -37,9 +37,4 @@ class ScheduleViewModel extends FutureViewModel {
     calendarFormat = settings[PreferencesFlag.scheduleCalendarFormat] as CalendarTimeFormat;
     setBusyForObject(settings, false);
   }
-
-  // TODO remove
-  bool selectToday() {
-    return true;
-  }
 }
