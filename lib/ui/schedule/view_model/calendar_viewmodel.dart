@@ -204,16 +204,6 @@ abstract class CalendarViewModel extends FutureViewModel<List<CourseActivity>> {
     return activityNameSelected == course.activityDescription;
   }
 
-  /// Get the activities for a specific [date], return empty if there is no activity for this [date]
-  List<CourseActivity> coursesActivitiesFor(DateTime date) {
-    // Populate the _coursesActivities
-    if (_coursesActivities.isEmpty) {
-      coursesActivities;
-    }
-
-    return _coursesActivities[date.withoutTime] ?? [];
-  }
-
   List<CalendarEventData> calendarEventsFromDate(DateTime date) {
     return _coursesActivities[date.withoutTime]
         ?.map((eventData) => calendarEventData(eventData))

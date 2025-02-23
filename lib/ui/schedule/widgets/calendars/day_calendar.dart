@@ -41,6 +41,11 @@ class _DayCalendarState extends State<DayCalendar> with TickerProviderStateMixin
   }
 
   @override
+  void didUpdateWidget(covariant DayCalendar oldWidget) {
+    super.didUpdateWidget(oldWidget);
+  }
+
+  @override
   void dispose() {
     _animationController.dispose();
     super.dispose();
@@ -98,35 +103,53 @@ class _DayCalendarState extends State<DayCalendar> with TickerProviderStateMixin
   }
 
   Widget _buildListView(DayViewModel model) {
+    final int pageBufferSize = 10;
+    PageController pageController = PageController(initialPage: pageBufferSize);
+
+    pageController.addListener(() {
+      final page = pageController.page;
+      int daysToAdd = page!.floor() - pageBufferSize;
+
+      // Checks if the page has completely finished the animation.
+      // Otherwise, the experience will be choppy
+      if (page == page.floorToDouble() && daysToAdd != 0) {
+        setState(() {
+          model.handleDateSelectedChanged(model.daySelected.add(Duration(days: daysToAdd)));
+        });
+        // Same principle as a recycler view; displayed elements of the list are reused to reduce ressource usage
+        // For each page change, we move the elements in the page we were previously on and go back to that page
+        pageController.jumpToPage(pageBufferSize);
+        HapticFeedback.lightImpact();
+      }
+    });
     return Expanded(
-      child: GestureDetector(
-        onPanEnd: (pan) {
-          if (pan.velocity.pixelsPerSecond.dx.abs() > 5) {
-            setState(() {
-              final int numberOfDays = pan.velocity.pixelsPerSecond.dx.sign.toInt();
-              final DateTime newFocusedDate =
-              model.daySelected.subtract(Duration(days: numberOfDays));
-              model.handleDateSelectedChanged(newFocusedDate);
-              HapticFeedback.lightImpact();
-            });
-          }
-        },
-        child: ListView(
-          padding: EdgeInsets.zero,
+      child: PageView(
+        physics: const BouncingScrollPhysics(),
+        controller: pageController,
           children: [
-            const SizedBox(height: 8.0),
-            if (model.selectedDayCalendarEvents().isEmpty && !model.isBusy)
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 64.0),
-                child:
-                Center(child: Text(AppIntl.of(context)!.schedule_no_event)),
-              )
-            else
-              _buildEventList(model.coursesActivitiesFor(model.daySelected)),
-            const SizedBox(height: 16.0),
+            // When swiping fast, this prevents from having to wait for animation completion to go to the next page
+            for (int i = pageBufferSize * -1; i <= pageBufferSize + 1; i++)
+              _buildDayList(model.daySelected.add(Duration(days: i)), model)
           ],
         ),
-      ),
+    );
+  }
+
+  Widget _buildDayList(DateTime date, DayViewModel model) {
+    return ListView(
+      padding: EdgeInsets.zero,
+      children: [
+        const SizedBox(height: 8.0),
+        if (model.coursesActivitiesFor(date).isEmpty && !model.isBusy)
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 64.0),
+            child:
+            Center(child: Text(AppIntl.of(context)!.schedule_no_event)),
+          )
+        else
+          _buildEventList(model.coursesActivitiesFor(date)),
+        const SizedBox(height: 16.0),
+      ],
     );
   }
 
@@ -226,44 +249,46 @@ class _DayCalendarState extends State<DayCalendar> with TickerProviderStateMixin
 
   Widget _buildHeaderDay(DateTime date, Color color, DayViewModel model, GlobalKey<calendar_view.DayViewState> dayViewKey) =>
       Container(
-        clipBehavior: Clip.antiAlias,
         margin: const EdgeInsets.all(4.0),
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10),
             border: Border.all(color: color)),
-        child: InkWell(
-          borderRadius: BorderRadius.circular(10),
-          onTap: () {
-            DateTime startingDate = model.daySelected;
-            setState(() {
-              model.handleDateSelectedChanged(date);
-            });
-
-            if (model.daySelected.difference(startingDate).inDays.abs() == 1) {
-              dayViewKey.currentState?.animateToDate(model.daySelected);
-            } else {
-              dayViewKey.currentState?.jumpToDate(model.daySelected);
-            }
-          },
-          child: Container(
-            padding: const EdgeInsets.only(top: 5.0, left: 6.0),
-            width: 100,
-            height: 100,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  '${date.day}',
-                  style: const TextStyle().copyWith(
-                    fontSize: 16.0,
-                    height: 1.2,
+        child: Material(
+          color: Colors.transparent,
+          child: InkWell(
+            borderRadius: BorderRadius.circular(10),
+            onTap: () {
+              DateTime startingDate = model.daySelected;
+              setState(() {
+                model.handleDateSelectedChanged(date);
+              });
+          
+              if (model.daySelected.difference(startingDate).inDays.abs() == 1) {
+                dayViewKey.currentState?.animateToDate(model.daySelected);
+              } else {
+                dayViewKey.currentState?.jumpToDate(model.daySelected);
+              }
+            },
+            child: Container(
+              padding: const EdgeInsets.only(top: 5.0, left: 6.0),
+              width: 100,
+              height: 100,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    '${date.day}',
+                    style: const TextStyle().copyWith(
+                      fontSize: 16.0,
+                      height: 1.2,
+                    ),
                   ),
-                ),
-                if (date.month != DateTime.now().month ||
-                    date.year != DateTime.now().year)
-                  Text(DateFormat.MMM(AppIntl.of(context)!.localeName).format(date),
-                      style: const TextStyle(fontSize: 10.0)),
-              ],
+                  if (date.month != DateTime.now().month ||
+                      date.year != DateTime.now().year)
+                    Text(DateFormat.MMM(AppIntl.of(context)!.localeName).format(date),
+                        style: const TextStyle(fontSize: 10.0)),
+                ],
+              ),
             ),
           ),
         ),
