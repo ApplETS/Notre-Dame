@@ -2,10 +2,8 @@
 import 'package:flutter/material.dart';
 
 // Package imports:
-import 'package:calendar_view/calendar_view.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:stacked/stacked.dart';
-import 'package:table_calendar/table_calendar.dart';
 
 // Project imports:
 import 'package:notredame/data/models/activity_code.dart';
@@ -258,32 +256,6 @@ class _ScheduleSettingsState extends State<ScheduleSettings> {
         return AppIntl.of(context)!.schedule_settings_calendar_format_week;
       case CalendarTimeFormat.day:
         return AppIntl.of(context)!.schedule_settings_calendar_format_day;
-    }
-  }
-
-  String getTextForDay(BuildContext context, StartingDayOfWeek day) {
-    switch (day) {
-      case StartingDayOfWeek.sunday:
-        return AppIntl.of(context)!.schedule_settings_starting_weekday_sunday;
-      case StartingDayOfWeek.saturday:
-        return AppIntl.of(context)!.schedule_settings_starting_weekday_saturday;
-      case StartingDayOfWeek.monday:
-        return AppIntl.of(context)!.schedule_settings_starting_weekday_monday;
-      default:
-        return AppIntl.of(context)!.schedule_settings_starting_weekday_monday;
-    }
-  }
-
-  String getTextForWeekDay(BuildContext context, WeekDays day) {
-    switch (day) {
-      case WeekDays.sunday:
-        return AppIntl.of(context)!.schedule_settings_starting_weekday_sunday;
-      case WeekDays.saturday:
-        return AppIntl.of(context)!.schedule_settings_starting_weekday_saturday;
-      case WeekDays.monday:
-        return AppIntl.of(context)!.schedule_settings_starting_weekday_monday;
-      default:
-        return AppIntl.of(context)!.schedule_settings_starting_weekday_monday;
     }
   }
 }
