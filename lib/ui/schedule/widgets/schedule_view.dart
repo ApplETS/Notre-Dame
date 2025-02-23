@@ -34,14 +34,12 @@ class _ScheduleViewState extends State<ScheduleView>
     with TickerProviderStateMixin {
   final GlobalKey<calendar_view.WeekViewState> weekViewKey =
       GlobalKey<calendar_view.WeekViewState>();
-  final GlobalKey<calendar_view.MonthViewState> monthViewKey =
-      GlobalKey<calendar_view.MonthViewState>();
 
   final AnalyticsService _analyticsService = locator<AnalyticsService>();
 
   static const String tag = "ScheduleView";
 
-  late DayCalendar day;
+  CalendarController controller = CalendarController();
 
   @override
   Widget build(BuildContext context) =>
@@ -68,18 +66,15 @@ class _ScheduleViewState extends State<ScheduleView>
       );
 
   Widget displaySchedule(ScheduleViewModel model) {
-    CalendarController controller = CalendarController();
     if (model.calendarFormat == CalendarTimeFormat.month) {
-      return MonthCalendar(monthViewKey: monthViewKey);
+      return MonthCalendar(controller: controller);
     }
     if (model.calendarFormat == CalendarTimeFormat.week) {
       return WeekCalendar(weekViewKey: weekViewKey);
     }
-    DayCalendar day = DayCalendar(
+    return DayCalendar(
         listView: model.calendarViewSetting, controller: controller,
     );
-    this.day = day;
-    return day;
   }
 
   List<Widget> _buildActionButtons(ScheduleViewModel model) => [
@@ -98,7 +93,7 @@ class _ScheduleViewState extends State<ScheduleView>
           IconButton(
               icon: const Icon(Icons.today_outlined),
               onPressed: () {
-                day.controller.returnToToday();
+                controller.returnToToday();
                 _analyticsService.logEvent(tag, "Select today clicked");
               }),
         IconButton(
