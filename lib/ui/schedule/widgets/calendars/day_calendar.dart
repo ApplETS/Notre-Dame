@@ -117,7 +117,6 @@ class _DayCalendarState extends State<DayCalendar> with TickerProviderStateMixin
             const SizedBox(height: 8.0),
             const Divider(indent: 8.0, endIndent: 8.0, thickness: 1),
             const SizedBox(height: 6.0),
-            _buildTitleForDate(model.daySelected),
             const SizedBox(height: 2.0),
             if (model.selectedDayCalendarEvents().isEmpty && !model.isBusy)
               Padding(
@@ -126,7 +125,6 @@ class _DayCalendarState extends State<DayCalendar> with TickerProviderStateMixin
                 Center(child: Text(AppIntl.of(context)!.schedule_no_event)),
               )
             else
-              // TODO make more elegant
               _buildEventList(model.coursesActivitiesFor(model.daySelected)),
             const SizedBox(height: 16.0),
           ],
@@ -157,12 +155,6 @@ class _DayCalendarState extends State<DayCalendar> with TickerProviderStateMixin
     }
   }
 
-  Widget _buildTitleForDate(DateTime date) => Center(
-      child: Text(
-        DateFormat.MMMMEEEEd(AppIntl.of(context)!.localeName).format(date),
-        style: Theme.of(context).textTheme.headlineMedium,
-      ));
-
   /// Build the list of the events for the selected day.
   Widget _buildEventList(List<dynamic> events) {
     return ListView.separated(
@@ -188,7 +180,7 @@ class _DayCalendarState extends State<DayCalendar> with TickerProviderStateMixin
         return isSameDay(model.daySelected, day);
       },
       headerStyle: HeaderStyle(
-          titleTextFormatter: (date, locale) =>
+          titleTextFormatter: (_, locale) =>
               DateFormat.MMMMEEEEd(locale).format(model.daySelected),
           titleCentered: true,
           formatButtonVisible: false),
@@ -196,11 +188,11 @@ class _DayCalendarState extends State<DayCalendar> with TickerProviderStateMixin
       calendarFormat: CalendarFormat.week,
       focusedDay: model.daySelected,
       calendarBuilders: CalendarBuilders(
-          defaultBuilder: (context, date, _) =>
+          defaultBuilder: (_, date, __) =>
               _buildHeaderDay(date, defaultColor, model, widget.dayViewKey),
-          outsideBuilder: (context, date, _) =>
+          outsideBuilder: (_, date, __) =>
               _buildHeaderDay(date, defaultColor, model, widget.dayViewKey),
-          todayBuilder: (context, date, _) =>
+          todayBuilder: (_, date, __) =>
               _buildHeaderDay(date, todayColor, model, widget.dayViewKey),
           selectedBuilder: (_, date, __) => FadeTransition(
             opacity:
@@ -208,7 +200,7 @@ class _DayCalendarState extends State<DayCalendar> with TickerProviderStateMixin
             child: _buildHeaderDay(
                 date, selectedColor, model, widget.dayViewKey),
           ),
-          markerBuilder: (context, date, events) {
+          markerBuilder: (_, date, events) {
             final bool isSelected = isSameDay(date, model.daySelected);
             final bool isToday = isSameDay(date, DateTime.now());
             Color color = selectedColor;
@@ -221,7 +213,7 @@ class _DayCalendarState extends State<DayCalendar> with TickerProviderStateMixin
               }
             }
 
-            return _buildEventsMarker(model, date, events, color);
+            return _buildEventsMarker(events, color);
           }),
       // Those are now required by the package table_calendar ^3.0.0. In the doc,
       // it is suggest to set them to values that won't affect user experience.
@@ -276,9 +268,7 @@ class _DayCalendarState extends State<DayCalendar> with TickerProviderStateMixin
         ),
       );
 
-  /// Build the square with the number of [events] for the [date]
-  Widget? _buildEventsMarker(
-      DayViewModel model, DateTime date, List events, Color color) {
+  Widget? _buildEventsMarker(List events, Color color) {
     if (events.isNotEmpty) {
       return Positioned(
         right: 1,
