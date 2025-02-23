@@ -16,7 +16,7 @@ import 'package:notredame/domain/constants/preferences_flags.dart';
 import 'package:notredame/locator.dart';
 import 'package:notredame/ui/core/ui/base_scaffold.dart';
 import 'package:notredame/ui/schedule/view_model/schedule_viewmodel.dart';
-import 'package:notredame/ui/schedule/widgets/calendar_selector.dart';
+import 'package:notredame/ui/core/ui/calendar_selector.dart';
 import 'package:notredame/ui/schedule/widgets/schedule_settings.dart';
 
 class ScheduleView extends StatefulWidget {
@@ -72,7 +72,7 @@ class _ScheduleViewState extends State<ScheduleView>
     if (model.calendarFormat == CalendarTimeFormat.week) {
       return WeekCalendar(weekViewKey: weekViewKey);
     }
-    return DayCalendar(dayViewKey: dayViewKey);
+    return DayCalendar(dayViewKey: dayViewKey, listView: model.calendarViewSetting);
   }
 
   List<Widget> _buildActionButtons(ScheduleViewModel model) => [

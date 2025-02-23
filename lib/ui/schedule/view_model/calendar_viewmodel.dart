@@ -12,7 +12,6 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:notredame/data/models/activity_code.dart';
 import 'package:notredame/data/repositories/course_repository.dart';
 import 'package:notredame/data/repositories/settings_repository.dart';
-import 'package:notredame/data/services/calendar_service.dart';
 import 'package:notredame/data/services/signets-api/models/course.dart';
 import 'package:notredame/data/services/signets-api/models/course_activity.dart';
 import 'package:notredame/data/services/signets-api/models/schedule_activity.dart';
@@ -30,18 +29,11 @@ abstract class CalendarViewModel extends FutureViewModel<List<CourseActivity>> {
   /// Localization class of the application.
   @protected final AppIntl appIntl;
 
-  /// Settings of the user for the schedule
-  final Map<PreferencesFlag, dynamic> settings = {};
-
   /// Activities sorted by day
   Map<DateTime, List<CourseActivity>> _coursesActivities = {};
 
   /// Courses associated to the student
   List<Course>? _courses;
-
-  /// The currently selected CalendarTimeFormat, A default value is set for test purposes.
-  /// This value is then change to the cache value on load.
-  CalendarTimeFormat calendarFormat = CalendarTimeFormat.week;
 
   /// This map contains the courses that has the group A or group B mark
   final Map<String, List<ScheduleActivity>> scheduleActivitiesByCourse = {};
@@ -86,17 +78,8 @@ abstract class CalendarViewModel extends FutureViewModel<List<CourseActivity>> {
 
   bool isLoadingEvents = false;
 
-  // TODO remove
-  bool get calendarViewSetting {
-    if (busy(settings)) {
-      return false;
-    }
-    return settings[PreferencesFlag.scheduleListView] as bool;
-  }
-
   @override
   Future<List<CourseActivity>> futureToRun() async {
-    loadSettings();
     List<CourseActivity>? activities =
     await _courseRepository.getCoursesActivities(fromCacheOnly: true);
     try {
@@ -120,8 +103,7 @@ abstract class CalendarViewModel extends FutureViewModel<List<CourseActivity>> {
     return activities ?? [];
   }
 
-  Future _assignScheduleActivities(
-      List<ScheduleActivity> listOfSchedules) async {
+  Future _assignScheduleActivities(List<ScheduleActivity> listOfSchedules) async {
     if (listOfSchedules.isEmpty ||
         !listOfSchedules.any((element) => [ActivityCode.labGroupA, ActivityCode.labGroupB].contains(element.activityCode))) {
       return;
@@ -147,18 +129,6 @@ abstract class CalendarViewModel extends FutureViewModel<List<CourseActivity>> {
   @override
   void onError(error) {
     Fluttertoast.showToast(msg: appIntl.error);
-  }
-
-  Future loadSettings() async {
-    setBusyForObject(settings, true);
-    settings.clear();
-    settings.addAll(await _settingsManager.getScheduleSettings());
-    calendarFormat =
-    settings[PreferencesFlag.scheduleCalendarFormat] as CalendarTimeFormat;
-
-    await loadSettingsScheduleActivities();
-
-    setBusyForObject(settings, false);
   }
 
   Future loadSettingsScheduleActivities() async {
