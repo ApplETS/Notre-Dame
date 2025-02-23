@@ -34,7 +34,7 @@ class MonthCalendar extends StatelessWidget {
       key: monthViewKey,
       cellAspectRatio: 0.8,
       borderColor: context.theme.appColors.scheduleLine,
-      controller: model.eventController,
+      controller: model.eventController..addAll(model.selectedMonthEvents()),
       safeAreaOption:
       const SafeAreaOption(top: false, bottom: false),
       useAvailableVerticalSpace: MediaQuery.of(context).size.height >= 500,

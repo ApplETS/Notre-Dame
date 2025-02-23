@@ -38,6 +38,7 @@ class DayViewModel extends CalendarViewModel {
     final List<CalendarEventData> events = [];
 
     // We want to put events of previous and next day in memory to make transitions smoother
+    // TODO fix duplicate events
     for (int i = -1; i <= 1; i++) {
       final date = daySelected.add(Duration(days: i));
       events.addAll(calendarEventsFromDate(date));

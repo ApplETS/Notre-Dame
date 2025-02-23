@@ -36,7 +36,6 @@ class WeekCalendar extends StatelessWidget {
     return WeekView(
         key: weekViewKey,
         weekNumberBuilder: (date) => null,
-        // TODO check if add all is required
         controller: model.eventController..addAll(model.selectedWeekCalendarEvents()),
         onPageChange: (date, page) => model.handleDateSelectedChanged(date),
         backgroundColor: context.theme.scaffoldBackgroundColor,

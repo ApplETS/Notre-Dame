@@ -15,6 +15,12 @@ class MonthViewModel extends CalendarViewModel {
     monthSelected = _getFirstDayOfMonth(dateInSelectedMonth);
 
     // Start with current month to avoid starting coloring with events from another session
+    eventController.addAll(selectedMonthEvents());
+  }
+
+  List<CalendarEventData> selectedMonthEvents() {
+    List<CalendarEventData> events = [];
+
     final List<DateTime> months = [
       monthSelected,
       _getFirstDayOfMonth(monthSelected.add(Duration(days: 31))),
@@ -23,12 +29,11 @@ class MonthViewModel extends CalendarViewModel {
 
     for (final DateTime month in months) {
       for (final DateTime day in month.datesOfMonths()) {
-        final eventsForDay = calendarEventsFromDate(day);
-        if (eventsForDay.isNotEmpty) {
-          eventController.addAll(eventsForDay);
-        }
+        events.addAll(calendarEventsFromDate(day));
       }
     }
+
+    return events;
   }
 
   @override

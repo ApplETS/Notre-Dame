@@ -89,8 +89,8 @@ class _DayCalendarState extends State<DayCalendar> with TickerProviderStateMixin
             showVerticalLine: false,
             dayTitleBuilder: calendar_view.DayHeader.hidden,
             key: dayViewKey,
-            controller: model.eventController,
-            onPageChange: (date, page) => ({
+            controller: model.eventController..addAll(model.selectedDayCalendarEvents()),
+            onPageChange: (date, _) => ({
               setState(() {
                 model.handleDateSelectedChanged(date);
               })
