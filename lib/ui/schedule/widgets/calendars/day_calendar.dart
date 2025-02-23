@@ -115,9 +115,6 @@ class _DayCalendarState extends State<DayCalendar> with TickerProviderStateMixin
           padding: EdgeInsets.zero,
           children: [
             const SizedBox(height: 8.0),
-            const Divider(indent: 8.0, endIndent: 8.0, thickness: 1),
-            const SizedBox(height: 6.0),
-            const SizedBox(height: 2.0),
             if (model.selectedDayCalendarEvents().isEmpty && !model.isBusy)
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 64.0),
@@ -173,53 +170,57 @@ class _DayCalendarState extends State<DayCalendar> with TickerProviderStateMixin
     final Color todayColor = context.theme.appColors.dayIndicatorWeekView;
     final Color defaultColor = context.theme.appColors.scheduleLine;
 
-    return TableCalendar(
-      key: const Key("TableCalendar"),
-      locale: AppIntl.of(context)!.localeName,
-      selectedDayPredicate: (day) {
-        return isSameDay(model.daySelected, day);
-      },
-      headerStyle: HeaderStyle(
-          titleTextFormatter: (_, locale) =>
-              DateFormat.MMMMEEEEd(locale).format(model.daySelected),
-          titleCentered: true,
-          formatButtonVisible: false),
-      eventLoader: model.coursesActivitiesFor,
-      calendarFormat: CalendarFormat.week,
-      focusedDay: model.daySelected,
-      calendarBuilders: CalendarBuilders(
-          defaultBuilder: (_, date, __) =>
-              _buildHeaderDay(date, defaultColor, model, widget.dayViewKey),
-          outsideBuilder: (_, date, __) =>
-              _buildHeaderDay(date, defaultColor, model, widget.dayViewKey),
-          todayBuilder: (_, date, __) =>
-              _buildHeaderDay(date, todayColor, model, widget.dayViewKey),
-          selectedBuilder: (_, date, __) => FadeTransition(
-            opacity:
-            Tween(begin: 0.0, end: 1.0).animate(_animationController),
-            child: _buildHeaderDay(
-                date, selectedColor, model, widget.dayViewKey),
-          ),
-          markerBuilder: (_, date, events) {
-            final bool isSelected = isSameDay(date, model.daySelected);
-            final bool isToday = isSameDay(date, DateTime.now());
-            Color color = selectedColor;
+    return Container(
+      padding: EdgeInsets.only(bottom: 4),
+      color: context.theme.appColors.appBar,
+      child: TableCalendar(
+        key: const Key("TableCalendar"),
+        locale: AppIntl.of(context)!.localeName,
+        selectedDayPredicate: (day) {
+          return isSameDay(model.daySelected, day);
+        },
+        headerStyle: HeaderStyle(
+            titleTextFormatter: (_, locale) =>
+                DateFormat.MMMMEEEEd(locale).format(model.daySelected),
+            titleCentered: true,
+            formatButtonVisible: false),
+        eventLoader: model.coursesActivitiesFor,
+        calendarFormat: CalendarFormat.week,
+        focusedDay: model.daySelected,
+        calendarBuilders: CalendarBuilders(
+            defaultBuilder: (_, date, __) =>
+                _buildHeaderDay(date, defaultColor, model, widget.dayViewKey),
+            outsideBuilder: (_, date, __) =>
+                _buildHeaderDay(date, defaultColor, model, widget.dayViewKey),
+            todayBuilder: (_, date, __) =>
+                _buildHeaderDay(date, todayColor, model, widget.dayViewKey),
+            selectedBuilder: (_, date, __) => FadeTransition(
+              opacity:
+              Tween(begin: 0.0, end: 1.0).animate(_animationController),
+              child: _buildHeaderDay(
+                  date, selectedColor, model, widget.dayViewKey),
+            ),
+            markerBuilder: (_, date, events) {
+              final bool isSelected = isSameDay(date, model.daySelected);
+              final bool isToday = isSameDay(date, DateTime.now());
+              Color color = selectedColor;
 
-            if (!isSelected) {
-              if (isToday) {
-                color = todayColor;
-              } else {
-                color = defaultColor;
+              if (!isSelected) {
+                if (isToday) {
+                  color = todayColor;
+                } else {
+                  color = defaultColor;
+                }
               }
-            }
 
-            return _buildEventsMarker(events, color);
-          }),
-      // Those are now required by the package table_calendar ^3.0.0. In the doc,
-      // it is suggest to set them to values that won't affect user experience.
-      // Outside the range, the date are set to disable so no event can be loaded.
-      firstDay: DateTime.utc(2010, 12, 31),
-      lastDay: DateTime.utc(2100, 12, 31),
+              return _buildEventsMarker(events, color);
+            }),
+        // Those are now required by the package table_calendar ^3.0.0. In the doc,
+        // it is suggest to set them to values that won't affect user experience.
+        // Outside the range, the date are set to disable so no event can be loaded.
+        firstDay: DateTime.utc(2010, 12, 31),
+        lastDay: DateTime.utc(2100, 12, 31),
+      ),
     );
   }
 
