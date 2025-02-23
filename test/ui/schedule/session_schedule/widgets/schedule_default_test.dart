@@ -4,7 +4,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 // Project imports:
-import 'package:notredame/ui/schedule/schedule_default/widgets/session_schedule.dart';
+import 'package:notredame/ui/student/session_schedule/widgets/session_schedule.dart';
 import '../../../../helpers.dart';
 
 void main() {
@@ -18,7 +18,7 @@ void main() {
     testWidgets('Displays no schedule message when there are no events',
         (WidgetTester tester) async {
       await tester.pumpWidget(localizedWidget(
-          child: const ScheduleDefault(
+          child: const SessionSchedule(
               calendarEvents: [],
               loaded: true,
               displaySaturday: false,
@@ -31,7 +31,7 @@ void main() {
 
     testWidgets('Displays saturday', (WidgetTester tester) async {
       await tester.pumpWidget(localizedWidget(
-          child: ScheduleDefault(calendarEvents: [
+          child: SessionSchedule(calendarEvents: [
         CalendarEventData(title: "My Event", date: DateTime(2024))
       ], loaded: true, displaySaturday: true, displaySunday: false)));
       await tester.pumpAndSettle();
@@ -40,7 +40,7 @@ void main() {
 
     testWidgets('Displays sunday', (WidgetTester tester) async {
       await tester.pumpWidget(localizedWidget(
-          child: ScheduleDefault(calendarEvents: [
+          child: SessionSchedule(calendarEvents: [
         CalendarEventData(title: "My Event", date: DateTime(2024))
       ], loaded: true, displaySaturday: false, displaySunday: true)));
       await tester.pumpAndSettle();
@@ -49,7 +49,7 @@ void main() {
 
     testWidgets('Displays no weekend day', (WidgetTester tester) async {
       await tester.pumpWidget(localizedWidget(
-          child: ScheduleDefault(calendarEvents: [
+          child: SessionSchedule(calendarEvents: [
         CalendarEventData(title: "My Event", date: DateTime(2024))
       ], loaded: true, displaySaturday: false, displaySunday: false)));
       await tester.pumpAndSettle();
@@ -60,7 +60,7 @@ void main() {
     testWidgets('Displays no empty schedule message when loading',
         (WidgetTester tester) async {
       await tester.pumpWidget(localizedWidget(
-          child: const ScheduleDefault(
+          child: const SessionSchedule(
               calendarEvents: [],
               loaded: false,
               displaySaturday: false,

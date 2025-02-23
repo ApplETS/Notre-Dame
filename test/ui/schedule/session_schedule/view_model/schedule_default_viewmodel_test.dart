@@ -8,12 +8,12 @@ import 'package:mockito/mockito.dart';
 // Project imports:
 import 'package:notredame/data/repositories/course_repository.dart';
 import 'package:notredame/data/services/signets-api/models/schedule_activity.dart';
-import 'package:notredame/ui/schedule/schedule_default/view_model/session_schedule_viewmodel.dart';
+import 'package:notredame/ui/student/session_schedule/view_model/session_schedule_viewmodel.dart';
 import '../../../../helpers.dart';
 
 void main() {
   late CourseRepository mockCourseRepository;
-  late ScheduleDefaultViewModel viewModel;
+  late SessionScheduleViewModel viewModel;
   late ScheduleActivity lectureActivity;
   late ScheduleActivity examActivity;
   late ScheduleActivity saturdayActivity;
@@ -76,7 +76,7 @@ void main() {
           activityLocation: 'Room 202',
           name: 'Lecture Session');
 
-      viewModel = ScheduleDefaultViewModel(sessionCode: 'A2023');
+      viewModel = SessionScheduleViewModel(sessionCode: 'A2023');
     });
 
     tearDown(() {
