@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 // Package imports:
 import 'package:calendar_view/calendar_view.dart' as calendar_view;
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:notredame/ui/schedule/widgets/calendars/calendar_controller.dart';
 import 'package:notredame/ui/schedule/widgets/calendars/day_calendar.dart';
 import 'package:notredame/ui/schedule/widgets/calendars/month_calendar.dart';
 import 'package:notredame/ui/schedule/widgets/calendars/week_calendar.dart';
@@ -41,6 +42,8 @@ class _ScheduleViewState extends State<ScheduleView>
 
   static const String tag = "ScheduleView";
 
+  late DayCalendar day;
+
   @override
   Widget build(BuildContext context) =>
       ViewModelBuilder<ScheduleViewModel>.reactive(
@@ -66,13 +69,18 @@ class _ScheduleViewState extends State<ScheduleView>
       );
 
   Widget displaySchedule(ScheduleViewModel model) {
+    CalendarController controller = CalendarController();
     if (model.calendarFormat == CalendarTimeFormat.month) {
       return MonthCalendar(monthViewKey: monthViewKey);
     }
     if (model.calendarFormat == CalendarTimeFormat.week) {
       return WeekCalendar(weekViewKey: weekViewKey);
     }
-    return DayCalendar(dayViewKey: dayViewKey, listView: model.calendarViewSetting);
+    DayCalendar day = DayCalendar(
+        dayViewKey: dayViewKey, listView: model.calendarViewSetting, controller: controller,
+    );
+    this.day = day;
+    return day;
   }
 
   List<Widget> _buildActionButtons(ScheduleViewModel model) => [
@@ -90,22 +98,10 @@ class _ScheduleViewState extends State<ScheduleView>
         if ((model.settings[PreferencesFlag.scheduleShowTodayBtn] as bool))
           IconButton(
               icon: const Icon(Icons.today_outlined),
-              onPressed: () => setState(() {
-                    model.selectToday();
-                    _analyticsService.logEvent(tag, "Select today clicked");
-                    if (model.calendarFormat == CalendarTimeFormat.day &&
-                        !(model.settings[PreferencesFlag.scheduleListView]
-                            as bool)) {
-                      dayViewKey.currentState?.animateToDate(DateTime.now());
-                    } else if (model.calendarFormat ==
-                        CalendarTimeFormat.week) {
-                      weekViewKey.currentState?.animateToWeek(DateTime.now());
-                    } else if (model.calendarFormat ==
-                        CalendarTimeFormat.month) {
-                      monthViewKey.currentState?.animateToMonth(
-                          DateTime(DateTime.now().year, DateTime.now().month));
-                    }
-                  })),
+              onPressed: () {
+                day.controller.returnToToday();
+                _analyticsService.logEvent(tag, "Select today clicked");
+              }),
         IconButton(
             icon: const Icon(Icons.settings_outlined),
             onPressed: () async {

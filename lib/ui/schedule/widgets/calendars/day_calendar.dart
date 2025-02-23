@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 import 'package:notredame/ui/core/themes/app_theme.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:notredame/ui/schedule/view_model/calendars/day_viewmodel.dart';
+import 'package:notredame/ui/schedule/widgets/calendars/calendar_controller.dart';
 import 'package:notredame/ui/schedule/widgets/schedule_calendar_tile.dart';
 import 'package:stacked/stacked.dart';
 import 'package:notredame/data/services/signets-api/models/course_activity.dart';
@@ -15,11 +16,13 @@ import 'package:notredame/ui/core/themes/app_palette.dart';
 class DayCalendar extends StatefulWidget {
   final GlobalKey<calendar_view.DayViewState> dayViewKey;
   final bool listView;
+  final CalendarController controller;
 
   const DayCalendar({
     super.key,
     required this.dayViewKey,
-    required this.listView
+    required this.listView,
+    required this.controller
   });
 
   @override
@@ -53,15 +56,30 @@ class _DayCalendarState extends State<DayCalendar> with TickerProviderStateMixin
 
   @override
   Widget build(BuildContext context) {
+    DayViewModel model = DayViewModel(intl: AppIntl.of(context)!);
+
     return ViewModelBuilder.reactive(
-      viewModelBuilder: () => DayViewModel(intl: AppIntl.of(context)!),
+      viewModelBuilder: () => model,
       builder: (context, model, child) => Column(children: [
         _dayViewHeader(model),
-        widget.listView
-            ? _buildListView(model)
-            : _buildCalendar(model)
+        _buildEvents(model),
       ]),
     );
+  }
+
+  Widget _buildEvents(DayViewModel model) {
+    widget.controller.returnToToday = () {
+      setState(() {
+        model.returnToCurrentDate();
+        if (!widget.listView) {
+          widget.dayViewKey.currentState?.jumpToDate(DateTime.now());
+        }
+      });
+    };
+
+    return widget.listView
+        ? _buildListView(model)
+        : _buildCalendar(model);
   }
 
   Widget _buildCalendar(DayViewModel model) {

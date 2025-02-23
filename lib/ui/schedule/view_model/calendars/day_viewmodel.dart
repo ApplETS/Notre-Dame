@@ -11,7 +11,8 @@ class DayViewModel extends CalendarViewModel {
 
   @override
   bool returnToCurrentDate() {
-    final bool isTodaySelected = DateTime.now().withoutTime == daySelected.withoutTime;
+    print("current date " + daySelected.toIso8601String());
+    final bool isTodaySelected = DateTime.now().withoutTime == daySelected;
 
     if (isTodaySelected) {
       Fluttertoast.showToast(msg: appIntl.schedule_already_today_toast);
@@ -23,10 +24,11 @@ class DayViewModel extends CalendarViewModel {
 
   @override
   handleDateSelectedChanged(DateTime newDate) {
-    daySelected = newDate;
+    daySelected = newDate.withoutTime;
+    print("date changed " + daySelected.toIso8601String());
 
     eventController.removeWhere((event) =>
-      event.date.withoutTime.difference(newDate.withoutTime).inDays.abs() > 1
+      event.date.withoutTime.difference(daySelected).inDays.abs() > 1
     );
 
     List<CalendarEventData> eventsToAdd = selectedDayCalendarEvents();
