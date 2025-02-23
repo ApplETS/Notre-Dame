@@ -14,10 +14,7 @@ class MonthCalendar extends StatelessWidget {
   static final List<String> weekTitles = ["L", "M", "M", "J", "V", "S", "D"];
   final CalendarController controller;
 
-  MonthCalendar({
-    super.key,
-    required this.controller
-  });
+  MonthCalendar({super.key, required this.controller});
 
   @override
   Widget build(BuildContext context) {

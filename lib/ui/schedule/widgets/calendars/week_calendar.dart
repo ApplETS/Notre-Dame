@@ -7,14 +7,14 @@ import 'package:notredame/ui/schedule/view_model/calendars/week_viewmodel.dart';
 import 'package:notredame/ui/schedule/widgets/schedule_calendar_tile.dart';
 import 'package:stacked/stacked.dart';
 
-class WeekCalendar extends StatelessWidget {
-  final GlobalKey weekViewKey;
-  static final List<String> weekTitles = ["L", "M", "M", "J", "V", "S", "D"];
+import 'calendar_controller.dart';
 
-  const WeekCalendar({
-    super.key,
-    required this.weekViewKey
-  });
+class WeekCalendar extends StatelessWidget {
+  final GlobalKey<WeekViewState> weekViewKey = GlobalKey<WeekViewState>();
+  static final List<String> weekTitles = ["L", "M", "M", "J", "V", "S", "D"];
+  final CalendarController controller;
+
+  WeekCalendar({super.key, required this.controller});
 
   @override
   Widget build(BuildContext context) {
@@ -23,70 +23,79 @@ class WeekCalendar extends StatelessWidget {
 
     return ViewModelBuilder.reactive(
       viewModelBuilder: () => WeekViewModel(intl: AppIntl.of(context)!),
-      builder:(context, model, child) => WeekView(
-          key: weekViewKey,
-          weekNumberBuilder: (date) => null,
-          // TODO check if add all is required
-          controller: model.eventController..addAll(model.selectedWeekCalendarEvents()),
-          onPageChange: (date, page) => model.handleDateSelectedChanged(date),
-          backgroundColor: context.theme.scaffoldBackgroundColor,
-          weekTitleHeight:
-          (MediaQuery.of(context).orientation == Orientation.portrait)
-              ? 60
-              : 35,
-          safeAreaOption:
-          const SafeAreaOption(top: false, bottom: false),
-          headerStyle: HeaderStyle(
-              decoration: BoxDecoration(
-                color: context.theme.scaffoldBackgroundColor,
-              ),
-              leftIcon: Icon(
-                Icons.chevron_left,
-                size: 30,
-                color: context.theme.textTheme.bodyMedium!.color,
-              ),
-              rightIcon: Icon(
-                Icons.chevron_right,
-                size: 30,
-                color: context.theme.textTheme.bodyMedium!.color,
-              )),
-          startDay: WeekDays.sunday,
-          weekDays: [
-            if (model.displaySunday) WeekDays.sunday,
-            WeekDays.monday,
-            WeekDays.tuesday,
-            WeekDays.wednesday,
-            WeekDays.thursday,
-            WeekDays.friday,
-            if (model.displaySaturday) WeekDays.saturday
-          ],
-          initialDay: model.weekSelected,
-          heightPerMinute: heightPerMinute,
-          scrollOffset: heightPerMinute * 60 * 7.5,
-          hourIndicatorSettings: HourIndicatorSettings(
-            color: context.theme.appColors.scheduleLine,
-          ),
-          liveTimeIndicatorSettings: LiveTimeIndicatorSettings(
-            color: context.theme.textTheme.bodyMedium!.color!,
-          ),
-          keepScrollOffset: true,
-          timeLineStringBuilder: (date, {secondaryDate}) {
-            return DateFormat('H:mm').format(date);
-          },
-          weekDayStringBuilder: (p0) {
-            return weekTitles[p0];
-          },
-          headerStringBuilder: (date, {secondaryDate}) {
-            final from = AppIntl.of(context)!.schedule_calendar_from;
-            final to = AppIntl.of(context)!.schedule_calendar_to;
-            final locale = AppIntl.of(context)!.localeName;
-            return '$from ${date.day} ${DateFormat.MMMM(locale).format(date)} $to ${secondaryDate?.day ?? '00'} ${DateFormat.MMMM(locale).format(secondaryDate ?? date)}';
-          },
-          eventTileBuilder:
-              (date, events, boundary, startDuration, endDuration) =>
-              _buildEventTile(events, context),
-          weekDayBuilder: (DateTime date) => _buildWeekDay(date, model, context)),
+      builder:(context, model, child) => _buildWeekView(model, context, heightPerMinute),
     );
+  }
+
+  WeekView<Object?> _buildWeekView(WeekViewModel model, BuildContext context, double heightPerMinute) {
+    controller.returnToToday = () {
+      model.returnToCurrentDate();
+      weekViewKey.currentState?.animateToWeek(DateTime(DateTime.now().year, DateTime.now().month));
+    };
+
+    return WeekView(
+        key: weekViewKey,
+        weekNumberBuilder: (date) => null,
+        // TODO check if add all is required
+        controller: model.eventController..addAll(model.selectedWeekCalendarEvents()),
+        onPageChange: (date, page) => model.handleDateSelectedChanged(date),
+        backgroundColor: context.theme.scaffoldBackgroundColor,
+        weekTitleHeight:
+        (MediaQuery.of(context).orientation == Orientation.portrait)
+            ? 60
+            : 35,
+        safeAreaOption:
+        const SafeAreaOption(top: false, bottom: false),
+        headerStyle: HeaderStyle(
+            decoration: BoxDecoration(
+              color: context.theme.scaffoldBackgroundColor,
+            ),
+            leftIcon: Icon(
+              Icons.chevron_left,
+              size: 30,
+              color: context.theme.textTheme.bodyMedium!.color,
+            ),
+            rightIcon: Icon(
+              Icons.chevron_right,
+              size: 30,
+              color: context.theme.textTheme.bodyMedium!.color,
+            )),
+        startDay: WeekDays.sunday,
+        weekDays: [
+          if (model.displaySunday) WeekDays.sunday,
+          WeekDays.monday,
+          WeekDays.tuesday,
+          WeekDays.wednesday,
+          WeekDays.thursday,
+          WeekDays.friday,
+          if (model.displaySaturday) WeekDays.saturday
+        ],
+        initialDay: model.weekSelected,
+        heightPerMinute: heightPerMinute,
+        scrollOffset: heightPerMinute * 60 * 7.5,
+        hourIndicatorSettings: HourIndicatorSettings(
+          color: context.theme.appColors.scheduleLine,
+        ),
+        liveTimeIndicatorSettings: LiveTimeIndicatorSettings(
+          color: context.theme.textTheme.bodyMedium!.color!,
+        ),
+        keepScrollOffset: true,
+        timeLineStringBuilder: (date, {secondaryDate}) {
+          return DateFormat('H:mm').format(date);
+        },
+        weekDayStringBuilder: (p0) {
+          return weekTitles[p0];
+        },
+        headerStringBuilder: (date, {secondaryDate}) {
+          final from = AppIntl.of(context)!.schedule_calendar_from;
+          final to = AppIntl.of(context)!.schedule_calendar_to;
+          final locale = AppIntl.of(context)!.localeName;
+          return '$from ${date.day} ${DateFormat.MMMM(locale).format(date)} $to ${secondaryDate?.day ?? '00'} ${DateFormat.MMMM(locale).format(secondaryDate ?? date)}';
+        },
+        eventTileBuilder:
+            (date, events, boundary, startDuration, endDuration) =>
+            _buildEventTile(events, context),
+        weekDayBuilder: (DateTime date) => _buildWeekDay(date, model, context));
   }
 
   Widget _buildWeekDay(DateTime date, WeekViewModel model, BuildContext context) {

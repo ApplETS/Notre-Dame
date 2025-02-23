@@ -2,7 +2,6 @@
 import 'package:flutter/material.dart';
 
 // Package imports:
-import 'package:calendar_view/calendar_view.dart' as calendar_view;
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:notredame/ui/schedule/widgets/calendars/calendar_controller.dart';
 import 'package:notredame/ui/schedule/widgets/calendars/day_calendar.dart';
@@ -30,10 +29,7 @@ class ScheduleView extends StatefulWidget {
   State<ScheduleView> createState() => _ScheduleViewState();
 }
 
-class _ScheduleViewState extends State<ScheduleView>
-    with TickerProviderStateMixin {
-  final GlobalKey<calendar_view.WeekViewState> weekViewKey =
-      GlobalKey<calendar_view.WeekViewState>();
+class _ScheduleViewState extends State<ScheduleView> with TickerProviderStateMixin {
 
   final AnalyticsService _analyticsService = locator<AnalyticsService>();
 
@@ -70,7 +66,7 @@ class _ScheduleViewState extends State<ScheduleView>
       return MonthCalendar(controller: controller);
     }
     if (model.calendarFormat == CalendarTimeFormat.week) {
-      return WeekCalendar(weekViewKey: weekViewKey);
+      return WeekCalendar(controller: controller);
     }
     return DayCalendar(
         listView: model.calendarViewSetting, controller: controller,
