@@ -36,8 +36,7 @@ class _ScheduleViewState extends State<ScheduleView>
       GlobalKey<calendar_view.WeekViewState>();
   final GlobalKey<calendar_view.MonthViewState> monthViewKey =
       GlobalKey<calendar_view.MonthViewState>();
-  final GlobalKey<calendar_view.DayViewState> dayViewKey =
-      GlobalKey<calendar_view.DayViewState>();
+
   final AnalyticsService _analyticsService = locator<AnalyticsService>();
 
   static const String tag = "ScheduleView";
@@ -77,7 +76,7 @@ class _ScheduleViewState extends State<ScheduleView>
       return WeekCalendar(weekViewKey: weekViewKey);
     }
     DayCalendar day = DayCalendar(
-        dayViewKey: dayViewKey, listView: model.calendarViewSetting, controller: controller,
+        listView: model.calendarViewSetting, controller: controller,
     );
     this.day = day;
     return day;

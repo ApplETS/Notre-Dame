@@ -11,7 +11,6 @@ class DayViewModel extends CalendarViewModel {
 
   @override
   bool returnToCurrentDate() {
-    print("current date " + daySelected.toIso8601String());
     final bool isTodaySelected = DateTime.now().withoutTime == daySelected;
 
     if (isTodaySelected) {
@@ -25,7 +24,6 @@ class DayViewModel extends CalendarViewModel {
   @override
   handleDateSelectedChanged(DateTime newDate) {
     daySelected = newDate.withoutTime;
-    print("date changed " + daySelected.toIso8601String());
 
     eventController.removeWhere((event) =>
       event.date.withoutTime.difference(daySelected).inDays.abs() > 1
@@ -42,10 +40,7 @@ class DayViewModel extends CalendarViewModel {
     // We want to put events of previous and next day in memory to make transitions smoother
     for (int i = -1; i <= 1; i++) {
       final date = daySelected.add(Duration(days: i));
-      final eventsForDay = calendarEventsFromDate(date);
-      if (eventsForDay.isNotEmpty) {
-        events.addAll(eventsForDay);
-      }
+      events.addAll(calendarEventsFromDate(date));
     }
     return events;
   }

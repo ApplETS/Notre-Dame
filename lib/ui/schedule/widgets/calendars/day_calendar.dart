@@ -14,13 +14,11 @@ import 'package:table_calendar/table_calendar.dart';
 import 'package:notredame/ui/core/themes/app_palette.dart';
 
 class DayCalendar extends StatefulWidget {
-  final GlobalKey<calendar_view.DayViewState> dayViewKey;
   final bool listView;
   final CalendarController controller;
 
   const DayCalendar({
     super.key,
-    required this.dayViewKey,
     required this.listView,
     required this.controller
   });
@@ -31,6 +29,7 @@ class DayCalendar extends StatefulWidget {
 
 class _DayCalendarState extends State<DayCalendar> with TickerProviderStateMixin {
   late AnimationController _animationController;
+  final GlobalKey<calendar_view.DayViewState> dayViewKey = GlobalKey<calendar_view.DayViewState>();
 
   @override
   void initState() {
@@ -72,7 +71,7 @@ class _DayCalendarState extends State<DayCalendar> with TickerProviderStateMixin
       setState(() {
         model.returnToCurrentDate();
         if (!widget.listView) {
-          widget.dayViewKey.currentState?.jumpToDate(DateTime.now());
+          dayViewKey.currentState?.jumpToDate(DateTime.now());
         }
       });
     };
@@ -89,7 +88,7 @@ class _DayCalendarState extends State<DayCalendar> with TickerProviderStateMixin
         child: calendar_view.DayView(
             showVerticalLine: false,
             dayTitleBuilder: calendar_view.DayHeader.hidden,
-            key: widget.dayViewKey,
+            key: dayViewKey,
             controller: model.eventController,
             onPageChange: (date, page) => ({
               setState(() {
@@ -230,16 +229,16 @@ class _DayCalendarState extends State<DayCalendar> with TickerProviderStateMixin
         focusedDay: model.daySelected,
         calendarBuilders: CalendarBuilders(
             defaultBuilder: (_, date, __) =>
-                _buildHeaderDay(date, defaultColor, model, widget.dayViewKey),
+                _buildHeaderDay(date, defaultColor, model, dayViewKey),
             outsideBuilder: (_, date, __) =>
-                _buildHeaderDay(date, defaultColor, model, widget.dayViewKey),
+                _buildHeaderDay(date, defaultColor, model, dayViewKey),
             todayBuilder: (_, date, __) =>
-                _buildHeaderDay(date, todayColor, model, widget.dayViewKey),
+                _buildHeaderDay(date, todayColor, model, dayViewKey),
             selectedBuilder: (_, date, __) => FadeTransition(
               opacity:
               Tween(begin: 0.0, end: 1.0).animate(_animationController),
               child: _buildHeaderDay(
-                  date, selectedColor, model, widget.dayViewKey),
+                  date, selectedColor, model, dayViewKey),
             ),
             markerBuilder: (_, date, events) {
               final bool isSelected = isSameDay(date, model.daySelected);
