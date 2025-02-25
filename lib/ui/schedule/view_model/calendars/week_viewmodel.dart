@@ -1,8 +1,10 @@
+// Package imports:
 import 'package:calendar_view/calendar_view.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
-import 'package:notredame/utils/utils.dart';
+// Project imports:
 import 'package:notredame/ui/schedule/view_model/calendar_viewmodel.dart';
+import 'package:notredame/utils/utils.dart';
 
 class WeekViewModel extends CalendarViewModel {
   // Sunday of current week
@@ -17,14 +19,18 @@ class WeekViewModel extends CalendarViewModel {
 
   @override
   handleDateSelectedChanged(DateTime newDate) {
-    if (newDate.weekday == DateTime.saturday && calendarEventsFromDate(newDate).isEmpty) {
+    if (newDate.weekday == DateTime.saturday &&
+        calendarEventsFromDate(newDate).isEmpty) {
       // Add extra hour to fix a bug related to daylight saving time changes
-      weekSelected = weekSelected.add(const Duration(days: 7, hours: 1)).withoutTime;
+      weekSelected =
+          weekSelected.add(const Duration(days: 7, hours: 1)).withoutTime;
     } else {
       weekSelected = Utils.getFirstDayOfCurrentWeek(newDate);
     }
     displaySunday = calendarEventsFromDate(weekSelected).isNotEmpty;
-    displaySaturday = calendarEventsFromDate(weekSelected.add(const Duration(days: 6, hours: 1))).isNotEmpty;
+    displaySaturday = calendarEventsFromDate(
+            weekSelected.add(const Duration(days: 6, hours: 1)))
+        .isNotEmpty;
 
     eventController.removeWhere((event) => true);
     eventController.addAll(selectedWeekCalendarEvents());
@@ -32,10 +38,12 @@ class WeekViewModel extends CalendarViewModel {
 
   @override
   bool returnToCurrentDate() {
-    final bool isThisWeekSelected = weekSelected == Utils.getFirstDayOfCurrentWeek(DateTime.now());
+    final bool isThisWeekSelected =
+        weekSelected == Utils.getFirstDayOfCurrentWeek(DateTime.now());
 
     isThisWeekSelected
-        ? Fluttertoast.showToast(msg: super.appIntl.schedule_already_today_toast)
+        ? Fluttertoast.showToast(
+            msg: super.appIntl.schedule_already_today_toast)
         : weekSelected = Utils.getFirstDayOfCurrentWeek(DateTime.now());
 
     return !isThisWeekSelected;

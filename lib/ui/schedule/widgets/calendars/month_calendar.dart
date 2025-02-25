@@ -1,12 +1,16 @@
-import 'package:calendar_view/calendar_view.dart';
+// Flutter imports:
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
-import 'package:notredame/ui/core/themes/app_theme.dart';
-import 'package:notredame/ui/core/themes/app_palette.dart';
-import 'package:notredame/ui/schedule/view_model/calendars/month_viewmodel.dart';
+
+// Package imports:
+import 'package:calendar_view/calendar_view.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:intl/intl.dart';
 import 'package:stacked/stacked.dart';
 
+// Project imports:
+import 'package:notredame/ui/core/themes/app_palette.dart';
+import 'package:notredame/ui/core/themes/app_theme.dart';
+import 'package:notredame/ui/schedule/view_model/calendars/month_viewmodel.dart';
 import 'calendar_controller.dart';
 
 class MonthCalendar extends StatelessWidget {
@@ -20,14 +24,15 @@ class MonthCalendar extends StatelessWidget {
   Widget build(BuildContext context) {
     return ViewModelBuilder.reactive(
       viewModelBuilder: () => MonthViewModel(intl: AppIntl.of(context)!),
-      builder:(context, model, child) => _buildMonthView(context, model),
+      builder: (context, model, child) => _buildMonthView(context, model),
     );
   }
 
   Widget _buildMonthView(BuildContext context, MonthViewModel model) {
     controller.returnToToday = () {
       model.returnToCurrentDate();
-      monthViewKey.currentState?.animateToMonth(DateTime(DateTime.now().year, DateTime.now().month));
+      monthViewKey.currentState
+          ?.animateToMonth(DateTime(DateTime.now().year, DateTime.now().month));
     };
 
     return MonthView(
@@ -35,15 +40,14 @@ class MonthCalendar extends StatelessWidget {
       cellAspectRatio: 0.8,
       borderColor: context.theme.appColors.scheduleLine,
       controller: model.eventController..addAll(model.selectedMonthEvents()),
-      safeAreaOption:
-      const SafeAreaOption(top: false, bottom: false),
+      safeAreaOption: const SafeAreaOption(top: false, bottom: false),
       useAvailableVerticalSpace: MediaQuery.of(context).size.height >= 500,
       onPageChange: (date, page) => model.handleDateSelectedChanged(date),
       weekDayBuilder: (int value) => WeekDayTile(
           dayIndex: value,
           displayBorder: false,
           textStyle:
-          TextStyle(color: context.theme.textTheme.bodyMedium!.color!),
+              TextStyle(color: context.theme.textTheme.bodyMedium!.color!),
           backgroundColor: context.theme.scaffoldBackgroundColor,
           weekDayStringBuilder: (p0) => weekTitles[p0]),
       headerStringBuilder: (date, {secondaryDate}) {

@@ -1,7 +1,10 @@
+// Package imports:
 import 'package:calendar_view/calendar_view.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:notredame/ui/schedule/view_model/calendar_viewmodel.dart';
+
+// Project imports:
 import 'package:notredame/data/services/signets-api/models/course_activity.dart';
+import 'package:notredame/ui/schedule/view_model/calendar_viewmodel.dart';
 
 class DayViewModel extends CalendarViewModel {
   DateTime daySelected = DateTime.now().withoutTime;
@@ -26,8 +29,7 @@ class DayViewModel extends CalendarViewModel {
     daySelected = newDate.withoutTime;
 
     eventController.removeWhere((event) =>
-      event.date.withoutTime.difference(daySelected).inDays.abs() > 1
-    );
+        event.date.withoutTime.difference(daySelected).inDays.abs() > 1);
 
     List<CalendarEventData> eventsToAdd = selectedDayCalendarEvents();
 

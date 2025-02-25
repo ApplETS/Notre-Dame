@@ -1,12 +1,16 @@
-import 'package:calendar_view/calendar_view.dart';
+// Flutter imports:
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
-import 'package:notredame/ui/core/themes/app_theme.dart';
+
+// Package imports:
+import 'package:calendar_view/calendar_view.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:notredame/ui/schedule/view_model/calendars/week_viewmodel.dart';
-import 'package:notredame/ui/schedule/widgets/schedule_calendar_tile.dart';
+import 'package:intl/intl.dart';
 import 'package:stacked/stacked.dart';
 
+// Project imports:
+import 'package:notredame/ui/core/themes/app_theme.dart';
+import 'package:notredame/ui/schedule/view_model/calendars/week_viewmodel.dart';
+import 'package:notredame/ui/schedule/widgets/schedule_calendar_tile.dart';
 import 'calendar_controller.dart';
 
 class WeekCalendar extends StatelessWidget {
@@ -19,32 +23,35 @@ class WeekCalendar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final double heightPerMinute =
-    (MediaQuery.of(context).size.height / 1200).clamp(0.45, 1.0);
+        (MediaQuery.of(context).size.height / 1200).clamp(0.45, 1.0);
 
     return ViewModelBuilder.reactive(
       viewModelBuilder: () => WeekViewModel(intl: AppIntl.of(context)!),
-      builder:(context, model, child) => _buildWeekView(model, context, heightPerMinute),
+      builder: (context, model, child) =>
+          _buildWeekView(model, context, heightPerMinute),
     );
   }
 
-  WeekView<Object?> _buildWeekView(WeekViewModel model, BuildContext context, double heightPerMinute) {
+  WeekView<Object?> _buildWeekView(
+      WeekViewModel model, BuildContext context, double heightPerMinute) {
     controller.returnToToday = () {
       model.returnToCurrentDate();
-      weekViewKey.currentState?.animateToWeek(DateTime(DateTime.now().year, DateTime.now().month));
+      weekViewKey.currentState
+          ?.animateToWeek(DateTime(DateTime.now().year, DateTime.now().month));
     };
 
     return WeekView(
         key: weekViewKey,
         weekNumberBuilder: (date) => null,
-        controller: model.eventController..addAll(model.selectedWeekCalendarEvents()),
+        controller: model.eventController
+          ..addAll(model.selectedWeekCalendarEvents()),
         onPageChange: (date, page) => model.handleDateSelectedChanged(date),
         backgroundColor: context.theme.scaffoldBackgroundColor,
         weekTitleHeight:
-        (MediaQuery.of(context).orientation == Orientation.portrait)
-            ? 60
-            : 35,
-        safeAreaOption:
-        const SafeAreaOption(top: false, bottom: false),
+            (MediaQuery.of(context).orientation == Orientation.portrait)
+                ? 60
+                : 35,
+        safeAreaOption: const SafeAreaOption(top: false, bottom: false),
         headerStyle: HeaderStyle(
             decoration: BoxDecoration(
               color: context.theme.scaffoldBackgroundColor,
@@ -93,11 +100,12 @@ class WeekCalendar extends StatelessWidget {
         },
         eventTileBuilder:
             (date, events, boundary, startDuration, endDuration) =>
-            _buildEventTile(events, context),
+                _buildEventTile(events, context),
         weekDayBuilder: (DateTime date) => _buildWeekDay(date, model, context));
   }
 
-  Widget _buildWeekDay(DateTime date, WeekViewModel model, BuildContext context) {
+  Widget _buildWeekDay(
+      DateTime date, WeekViewModel model, BuildContext context) {
     return Center(
       child: Wrap(children: <Widget>[
         Container(
@@ -109,9 +117,9 @@ class WeekCalendar extends StatelessWidget {
               borderRadius: BorderRadius.circular(6.0)),
           child: Flex(
               direction:
-              (MediaQuery.of(context).orientation == Orientation.portrait)
-                  ? Axis.vertical
-                  : Axis.horizontal,
+                  (MediaQuery.of(context).orientation == Orientation.portrait)
+                      ? Axis.vertical
+                      : Axis.horizontal,
               mainAxisSize: MainAxisSize.min,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -126,8 +134,7 @@ class WeekCalendar extends StatelessWidget {
   }
 
   Widget _buildEventTile(
-      List<CalendarEventData<dynamic>> events,
-      BuildContext context) {
+      List<CalendarEventData<dynamic>> events, BuildContext context) {
     if (events.isNotEmpty) {
       return ScheduleCalendarTile(
         title: events[0].title,

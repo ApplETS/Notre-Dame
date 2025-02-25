@@ -1,35 +1,39 @@
-import 'package:calendar_view/calendar_view.dart' as calendar_view;
+// Flutter imports:
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:intl/intl.dart';
-import 'package:notredame/ui/core/themes/app_theme.dart';
+
+// Package imports:
+import 'package:calendar_view/calendar_view.dart' as calendar_view;
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:intl/intl.dart';
+import 'package:stacked/stacked.dart';
+import 'package:table_calendar/table_calendar.dart';
+
+// Project imports:
+import 'package:notredame/data/services/signets-api/models/course_activity.dart';
+import 'package:notredame/ui/core/themes/app_palette.dart';
+import 'package:notredame/ui/core/themes/app_theme.dart';
+import 'package:notredame/ui/dashboard/widgets/course_activity_tile.dart';
 import 'package:notredame/ui/schedule/view_model/calendars/day_viewmodel.dart';
 import 'package:notredame/ui/schedule/widgets/calendars/calendar_controller.dart';
 import 'package:notredame/ui/schedule/widgets/schedule_calendar_tile.dart';
-import 'package:stacked/stacked.dart';
-import 'package:notredame/data/services/signets-api/models/course_activity.dart';
-import 'package:notredame/ui/dashboard/widgets/course_activity_tile.dart';
-import 'package:table_calendar/table_calendar.dart';
-import 'package:notredame/ui/core/themes/app_palette.dart';
 
 class DayCalendar extends StatefulWidget {
   final bool listView;
   final CalendarController controller;
 
-  const DayCalendar({
-    super.key,
-    required this.listView,
-    required this.controller
-  });
+  const DayCalendar(
+      {super.key, required this.listView, required this.controller});
 
   @override
   State<DayCalendar> createState() => _DayCalendarState();
 }
 
-class _DayCalendarState extends State<DayCalendar> with TickerProviderStateMixin {
+class _DayCalendarState extends State<DayCalendar>
+    with TickerProviderStateMixin {
   late AnimationController _animationController;
-  final GlobalKey<calendar_view.DayViewState> dayViewKey = GlobalKey<calendar_view.DayViewState>();
+  final GlobalKey<calendar_view.DayViewState> dayViewKey =
+      GlobalKey<calendar_view.DayViewState>();
 
   @override
   void initState() {
@@ -76,32 +80,31 @@ class _DayCalendarState extends State<DayCalendar> with TickerProviderStateMixin
       });
     };
 
-    return widget.listView
-        ? _buildListView(model)
-        : _buildCalendar(model);
+    return widget.listView ? _buildListView(model) : _buildCalendar(model);
   }
 
   Widget _buildCalendar(DayViewModel model) {
-    final double heightPerMinute = (MediaQuery.of(context).size.height / 1200).clamp(0.45, 1.0);
+    final double heightPerMinute =
+        (MediaQuery.of(context).size.height / 1200).clamp(0.45, 1.0);
 
     return Expanded(
         child: calendar_view.DayView(
             showVerticalLine: false,
             dayTitleBuilder: calendar_view.DayHeader.hidden,
             key: dayViewKey,
-            controller: model.eventController..addAll(model.selectedDayCalendarEvents()),
+            controller: model.eventController
+              ..addAll(model.selectedDayCalendarEvents()),
             onPageChange: (date, _) => ({
-              setState(() {
-                model.handleDateSelectedChanged(date);
-              })
-            }),
+                  setState(() {
+                    model.handleDateSelectedChanged(date);
+                  })
+                }),
             backgroundColor: context.theme.scaffoldBackgroundColor,
             initialDay: model.daySelected,
             hourIndicatorSettings: calendar_view.HourIndicatorSettings(
               color: context.theme.appColors.scheduleLine,
             ),
-            liveTimeIndicatorSettings:
-            calendar_view.LiveTimeIndicatorSettings(
+            liveTimeIndicatorSettings: calendar_view.LiveTimeIndicatorSettings(
               color: context.theme.textTheme.bodyMedium!.color!,
             ),
             heightPerMinute: heightPerMinute,
@@ -116,7 +119,7 @@ class _DayCalendarState extends State<DayCalendar> with TickerProviderStateMixin
             },
             eventTileBuilder:
                 (date, events, boundary, startDuration, endDuration) =>
-                _buildEventTile(events)));
+                    _buildEventTile(events)));
   }
 
   Widget _buildListView(DayViewModel model) {
@@ -131,7 +134,8 @@ class _DayCalendarState extends State<DayCalendar> with TickerProviderStateMixin
       // Otherwise, the experience will be choppy
       if (page == page.floorToDouble() && daysToAdd != 0) {
         setState(() {
-          model.handleDateSelectedChanged(model.daySelected.add(Duration(days: daysToAdd)));
+          model.handleDateSelectedChanged(
+              model.daySelected.add(Duration(days: daysToAdd)));
         });
         // Same principle as a recycler view; displayed elements of the list are reused to reduce ressource usage
         // For each page change, we move the elements in the page we were previously on and go back to that page
@@ -143,12 +147,12 @@ class _DayCalendarState extends State<DayCalendar> with TickerProviderStateMixin
       child: PageView(
         physics: const BouncingScrollPhysics(),
         controller: pageController,
-          children: [
-            // When swiping fast, this prevents from having to wait for animation completion to go to the next page
-            for (int i = pageBufferSize * -1; i <= pageBufferSize + 1; i++)
-              _buildDayList(model.daySelected.add(Duration(days: i)), model)
-          ],
-        ),
+        children: [
+          // When swiping fast, this prevents from having to wait for animation completion to go to the next page
+          for (int i = pageBufferSize * -1; i <= pageBufferSize + 1; i++)
+            _buildDayList(model.daySelected.add(Duration(days: i)), model)
+        ],
+      ),
     );
   }
 
@@ -160,8 +164,7 @@ class _DayCalendarState extends State<DayCalendar> with TickerProviderStateMixin
         if (model.coursesActivitiesFor(date).isEmpty && !model.isBusy)
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 64.0),
-            child:
-            Center(child: Text(AppIntl.of(context)!.schedule_no_event)),
+            child: Center(child: Text(AppIntl.of(context)!.schedule_no_event)),
           )
         else
           _buildEventList(model.coursesActivitiesFor(date)),
@@ -170,7 +173,8 @@ class _DayCalendarState extends State<DayCalendar> with TickerProviderStateMixin
     );
   }
 
-  Widget _buildEventTile(List<calendar_view.CalendarEventData<dynamic>> events) {
+  Widget _buildEventTile(
+      List<calendar_view.CalendarEventData<dynamic>> events) {
     if (events.isNotEmpty) {
       return ScheduleCalendarTile(
         title: events[0].title,
@@ -235,11 +239,11 @@ class _DayCalendarState extends State<DayCalendar> with TickerProviderStateMixin
             todayBuilder: (_, date, __) =>
                 _buildHeaderDay(date, todayColor, model, dayViewKey),
             selectedBuilder: (_, date, __) => FadeTransition(
-              opacity:
-              Tween(begin: 0.0, end: 1.0).animate(_animationController),
-              child: _buildHeaderDay(
-                  date, selectedColor, model, dayViewKey),
-            ),
+                  opacity:
+                      Tween(begin: 0.0, end: 1.0).animate(_animationController),
+                  child:
+                      _buildHeaderDay(date, selectedColor, model, dayViewKey),
+                ),
             markerBuilder: (_, date, events) {
               final bool isSelected = isSameDay(date, model.daySelected);
               final bool isToday = isSameDay(date, DateTime.now());
@@ -264,7 +268,8 @@ class _DayCalendarState extends State<DayCalendar> with TickerProviderStateMixin
     );
   }
 
-  Widget _buildHeaderDay(DateTime date, Color color, DayViewModel model, GlobalKey<calendar_view.DayViewState> dayViewKey) =>
+  Widget _buildHeaderDay(DateTime date, Color color, DayViewModel model,
+          GlobalKey<calendar_view.DayViewState> dayViewKey) =>
       Container(
         margin: const EdgeInsets.all(4.0),
         decoration: BoxDecoration(
@@ -279,8 +284,9 @@ class _DayCalendarState extends State<DayCalendar> with TickerProviderStateMixin
               setState(() {
                 model.handleDateSelectedChanged(date);
               });
-          
-              if (model.daySelected.difference(startingDate).inDays.abs() == 1) {
+
+              if (model.daySelected.difference(startingDate).inDays.abs() ==
+                  1) {
                 dayViewKey.currentState?.animateToDate(model.daySelected);
               } else {
                 dayViewKey.currentState?.jumpToDate(model.daySelected);
@@ -302,7 +308,9 @@ class _DayCalendarState extends State<DayCalendar> with TickerProviderStateMixin
                   ),
                   if (date.month != DateTime.now().month ||
                       date.year != DateTime.now().year)
-                    Text(DateFormat.MMM(AppIntl.of(context)!.localeName).format(date),
+                    Text(
+                        DateFormat.MMM(AppIntl.of(context)!.localeName)
+                            .format(date),
                         style: const TextStyle(fontSize: 10.0)),
                 ],
               ),

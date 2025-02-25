@@ -3,10 +3,6 @@ import 'package:flutter/material.dart';
 
 // Package imports:
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:notredame/ui/schedule/widgets/calendars/calendar_controller.dart';
-import 'package:notredame/ui/schedule/widgets/calendars/day_calendar.dart';
-import 'package:notredame/ui/schedule/widgets/calendars/month_calendar.dart';
-import 'package:notredame/ui/schedule/widgets/calendars/week_calendar.dart';
 import 'package:stacked/stacked.dart';
 
 // Project imports:
@@ -15,8 +11,12 @@ import 'package:notredame/data/services/calendar_service.dart';
 import 'package:notredame/domain/constants/preferences_flags.dart';
 import 'package:notredame/locator.dart';
 import 'package:notredame/ui/core/ui/base_scaffold.dart';
-import 'package:notredame/ui/schedule/view_model/schedule_viewmodel.dart';
 import 'package:notredame/ui/core/ui/calendar_selector.dart';
+import 'package:notredame/ui/schedule/view_model/schedule_viewmodel.dart';
+import 'package:notredame/ui/schedule/widgets/calendars/calendar_controller.dart';
+import 'package:notredame/ui/schedule/widgets/calendars/day_calendar.dart';
+import 'package:notredame/ui/schedule/widgets/calendars/month_calendar.dart';
+import 'package:notredame/ui/schedule/widgets/calendars/week_calendar.dart';
 import 'package:notredame/ui/schedule/widgets/schedule_settings.dart';
 
 class ScheduleView extends StatefulWidget {
@@ -29,8 +29,8 @@ class ScheduleView extends StatefulWidget {
   State<ScheduleView> createState() => _ScheduleViewState();
 }
 
-class _ScheduleViewState extends State<ScheduleView> with TickerProviderStateMixin {
-
+class _ScheduleViewState extends State<ScheduleView>
+    with TickerProviderStateMixin {
   final AnalyticsService _analyticsService = locator<AnalyticsService>();
 
   static const String tag = "ScheduleView";
@@ -69,7 +69,8 @@ class _ScheduleViewState extends State<ScheduleView> with TickerProviderStateMix
       return WeekCalendar(controller: controller);
     }
     return DayCalendar(
-        listView: model.calendarViewSetting, controller: controller,
+      listView: model.calendarViewSetting,
+      controller: controller,
     );
   }
 

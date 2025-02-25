@@ -1,5 +1,8 @@
+// Package imports:
 import 'package:calendar_view/calendar_view.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+
+// Project imports:
 import 'package:notredame/ui/schedule/view_model/calendar_viewmodel.dart';
 
 class MonthViewModel extends CalendarViewModel {
@@ -42,7 +45,8 @@ class MonthViewModel extends CalendarViewModel {
     final bool isThisMonthSelected = currentMonth == monthSelected;
 
     isThisMonthSelected
-        ? Fluttertoast.showToast(msg: super.appIntl.schedule_already_today_toast)
+        ? Fluttertoast.showToast(
+            msg: super.appIntl.schedule_already_today_toast)
         : monthSelected = currentMonth;
 
     return !isThisMonthSelected;

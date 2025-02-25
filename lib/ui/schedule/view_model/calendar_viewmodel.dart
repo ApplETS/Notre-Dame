@@ -1,4 +1,3 @@
-import 'package:stacked/stacked.dart';
 // Flutter imports:
 import 'package:flutter/material.dart';
 
@@ -7,6 +6,7 @@ import 'package:calendar_view/calendar_view.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:stacked/stacked.dart';
 
 // Project imports:
 import 'package:notredame/data/models/activity_code.dart';
@@ -27,7 +27,8 @@ abstract class CalendarViewModel extends FutureViewModel<List<CourseActivity>> {
   final SettingsRepository _settingsManager = locator<SettingsRepository>();
 
   /// Localization class of the application.
-  @protected final AppIntl appIntl;
+  @protected
+  final AppIntl appIntl;
 
   /// Activities sorted by day
   Map<DateTime, List<CourseActivity>> _coursesActivities = {};
@@ -55,14 +56,14 @@ abstract class CalendarViewModel extends FutureViewModel<List<CourseActivity>> {
         ? "N/A"
         : eventData.activityLocation;
     final associatedCourses = _courses?.where(
-            (element) => element.acronym == eventData.courseGroup.split('-')[0]);
+        (element) => element.acronym == eventData.courseGroup.split('-')[0]);
     final associatedCourse =
-    associatedCourses?.isNotEmpty == true ? associatedCourses?.first : null;
+        associatedCourses?.isNotEmpty == true ? associatedCourses?.first : null;
     return CalendarEventData(
         title:
-        "${eventData.courseGroup.split('-')[0]}\n$courseLocation\n${eventData.activityName}",
+            "${eventData.courseGroup.split('-')[0]}\n$courseLocation\n${eventData.activityName}",
         description:
-        "${eventData.courseGroup};$courseLocation;${eventData.activityName};${associatedCourse?.teacherName}",
+            "${eventData.courseGroup};$courseLocation;${eventData.activityName};${associatedCourse?.teacherName}",
         date: eventData.startDateTime,
         startTime: eventData.startDateTime,
         endTime: eventData.endDateTime.subtract(const Duration(minutes: 1)),
@@ -81,10 +82,11 @@ abstract class CalendarViewModel extends FutureViewModel<List<CourseActivity>> {
   @override
   Future<List<CourseActivity>> futureToRun() async {
     List<CourseActivity>? activities =
-    await _courseRepository.getCoursesActivities(fromCacheOnly: true);
+        await _courseRepository.getCoursesActivities(fromCacheOnly: true);
     try {
       setBusyForObject(isLoadingEvents, true);
-      final fetchedCourseActivities = await _courseRepository.getCoursesActivities();
+      final fetchedCourseActivities =
+          await _courseRepository.getCoursesActivities();
 
       if (fetchedCourseActivities != null) {
         activities = fetchedCourseActivities;
@@ -93,7 +95,8 @@ abstract class CalendarViewModel extends FutureViewModel<List<CourseActivity>> {
 
         _courses = await _courseRepository.getCourses(fromCacheOnly: true);
       }
-      final scheduleActivities = await _courseRepository.getScheduleActivities();
+      final scheduleActivities =
+          await _courseRepository.getScheduleActivities();
       await _assignScheduleActivities(scheduleActivities);
     } catch (e) {
       onError(e);
@@ -103,9 +106,13 @@ abstract class CalendarViewModel extends FutureViewModel<List<CourseActivity>> {
     return activities ?? [];
   }
 
-  Future _assignScheduleActivities(List<ScheduleActivity> listOfSchedules) async {
+  Future _assignScheduleActivities(
+      List<ScheduleActivity> listOfSchedules) async {
     if (listOfSchedules.isEmpty ||
-        !listOfSchedules.any((element) => [ActivityCode.labGroupA, ActivityCode.labGroupB].contains(element.activityCode))) {
+        !listOfSchedules.any((element) => [
+              ActivityCode.labGroupA,
+              ActivityCode.labGroupB
+            ].contains(element.activityCode))) {
       return;
     }
 
@@ -157,7 +164,7 @@ abstract class CalendarViewModel extends FutureViewModel<List<CourseActivity>> {
     // Build the map
     if (_courseRepository.coursesActivities != null) {
       for (final CourseActivity course
-      in _courseRepository.coursesActivities!) {
+          in _courseRepository.coursesActivities!) {
         final DateTime dateOnly = course.startDateTime.subtract(Duration(
             hours: course.startDateTime.hour,
             minutes: course.startDateTime.minute));
@@ -199,15 +206,15 @@ abstract class CalendarViewModel extends FutureViewModel<List<CourseActivity>> {
     }
 
     final activityNameSelected =
-    settingsScheduleActivities[course.courseGroup.split("-").first];
+        settingsScheduleActivities[course.courseGroup.split("-").first];
 
     return activityNameSelected == course.activityDescription;
   }
 
   List<CalendarEventData> calendarEventsFromDate(DateTime date) {
     return _coursesActivities[date.withoutTime]
-        ?.map((eventData) => calendarEventData(eventData))
-        .toList() ??
+            ?.map((eventData) => calendarEventData(eventData))
+            .toList() ??
         [];
   }
 
