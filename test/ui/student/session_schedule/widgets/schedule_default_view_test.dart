@@ -14,7 +14,6 @@ import '../../../../helpers.dart';
 
 void main() {
   late CourseRepository mockCourseRepository;
-  // late ScheduleActivity lectureActivity;
   late AppIntl intl;
 
   group('ScheduleDefaultView -', () {
