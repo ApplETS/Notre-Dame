@@ -21,9 +21,8 @@ import 'package:notredame/ui/schedule/widgets/schedule_settings.dart';
 
 class ScheduleView extends StatefulWidget {
   @visibleForTesting
-  final DateTime? initialDay;
 
-  const ScheduleView({super.key, this.initialDay});
+  const ScheduleView({super.key});
 
   @override
   State<ScheduleView> createState() => _ScheduleViewState();
