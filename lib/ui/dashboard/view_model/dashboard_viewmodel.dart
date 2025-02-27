@@ -2,9 +2,9 @@
 import 'dart:collection';
 
 // Package imports:
+import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stacked/stacked.dart';
 
 // Project imports:
@@ -22,6 +22,8 @@ import 'package:notredame/data/services/signets-api/models/session.dart';
 import 'package:notredame/domain/constants/preferences_flags.dart';
 import 'package:notredame/locator.dart';
 import 'package:notredame/ui/dashboard/view_model/progress_bar_text_options.dart';
+import 'package:notredame/data/repositories/broadcast_message_repository.dart';
+import 'package:notredame/data/models/broadcast_message.dart';
 
 class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
   static const String tag = "DashboardViewModel";
@@ -30,7 +32,8 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
   final CourseRepository _courseRepository = locator<CourseRepository>();
   final AnalyticsService _analyticsService = locator<AnalyticsService>();
   final RemoteConfigService remoteConfigService =
-      locator<RemoteConfigService>();
+  locator<RemoteConfigService>();
+  final BroadcastMessageRepository _broadcastMessageRepository = locator<BroadcastMessageRepository>();
 
   /// All dashboard displayable cards
   Map<PreferencesFlag, int>? _cards;
@@ -47,13 +50,7 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
   /// Numbers of days elapsed and total number of days of the current session
   List<int> _sessionDays = [0, 0];
 
-  /// Message to display in case of urgent/important broadcast need (Firebase
-  /// remote config), and the associated card title
-  String broadcastMessage = "";
-  String broadcastTitle = "";
-  String broadcastColor = "";
-  String broadcastUrl = "";
-  String broadcastType = "";
+  BroadcastMessage? broadcastMessage;
 
   /// Get progress of the session
   double get progress => _progress;
@@ -85,8 +82,6 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
   ProgressBarText _currentProgressBarText =
       ProgressBarText.daysElapsedWithTotalDays;
 
-  ProgressBarText get currentProgressBarText => _currentProgressBarText;
-
   /// Return session progress based on today's [date]
   double getSessionProgress() {
     if (_courseRepository.activeSessions.isEmpty) {
@@ -101,10 +96,10 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
     final InAppReviewService inAppReviewService = locator<InAppReviewService>();
 
     DateTime? ratingTimerFlagDate =
-        await preferencesService.getDateTime(PreferencesFlag.ratingTimer);
+    await preferencesService.getDateTime(PreferencesFlag.ratingTimer);
 
     final hasRatingBeenRequested = await preferencesService
-            .getBool(PreferencesFlag.hasRatingBeenRequested) ??
+        .getBool(PreferencesFlag.hasRatingBeenRequested) ??
         false;
 
     // If the user is already logged in while doing the update containing the In_App_Review PR.
@@ -135,13 +130,14 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
   }
 
   void changeProgressBarText() {
-    if (currentProgressBarText.index <= 1) {
+    if (_currentProgressBarText.index <= 1) {
       _currentProgressBarText =
-          ProgressBarText.values[currentProgressBarText.index + 1];
+      ProgressBarText.values[_currentProgressBarText.index + 1];
     } else {
       _currentProgressBarText = ProgressBarText.values[0];
     }
 
+    notifyListeners();
     _settingsManager.setString(
         PreferencesFlag.progressBarText, _currentProgressBarText.toString());
   }
@@ -176,37 +172,13 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
 
   @override
   Future<Map<PreferencesFlag, int>> futureToRun() async {
-    final dashboard = await _settingsManager.getDashboard();
-
-    //TODO: remove when all users are on 4.50.1 or more
-    final sharedPreferences = await SharedPreferences.getInstance();
-    if (sharedPreferences.containsKey("PreferencesFlag.broadcastChange")) {
-      sharedPreferences.remove("PreferencesFlag.broadcastChange");
-    }
-    if (sharedPreferences.containsKey("PreferencesFlag.broadcastCard")) {
-      sharedPreferences.remove("PreferencesFlag.broadcastCard");
-    }
-    final sortedList = dashboard.entries.toList()
-      ..sort((a, b) => a.value.compareTo(b.value));
-    final sortedDashboard = LinkedHashMap.fromEntries(sortedList);
-    int index = 0;
-    for (final element in sortedDashboard.entries) {
-      if (element.value >= 0) {
-        sortedDashboard.update(element.key, (value) => index);
-        index++;
-      }
-    }
-    //TODO: end remove when all users are on 4.50.1 or more
-
-    _cards = sortedDashboard;
+    _cards = await _settingsManager.getDashboard();
 
     getCardsToDisplay();
 
-    // load data for both grade cards & grades home screen widget
-    // (moved from getCardsToDisplay())
     await loadDataAndUpdateWidget();
 
-    return sortedDashboard;
+    return _cards!;
   }
 
   Future loadDataAndUpdateWidget() async {
@@ -314,7 +286,7 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
     setBusyForObject(_tomorrowDateEvents, true);
     try {
       var courseActivities =
-          await _courseRepository.getCoursesActivities(fromCacheOnly: true);
+      await _courseRepository.getCoursesActivities(fromCacheOnly: true);
       _todayDateEvents.clear();
       _tomorrowDateEvents.clear();
       final todayDate = _settingsManager.dateTimeNow;
@@ -325,7 +297,7 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
         final DateTime tomorrowDate = todayDate.add(const Duration(days: 1));
         // Build the list
         for (final CourseActivity course
-            in _courseRepository.coursesActivities!) {
+        in _courseRepository.coursesActivities!) {
           final DateTime dateOnly = course.startDateTime;
           if (isSameDay(todayDate, dateOnly) &&
               todayDate.compareTo(course.endDateTime) < 0) {
@@ -365,11 +337,11 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
 
       if (activityCodeToUse == ActivityCode.labGroupA) {
         todayDateEventsCopy.removeWhere((element) =>
-            element.activityDescription == ActivityDescriptionName.labB &&
+        element.activityDescription == ActivityDescriptionName.labB &&
             element.courseGroup == courseAcronym.courseGroup);
       } else if (activityCodeToUse == ActivityCode.labGroupB) {
         todayDateEventsCopy.removeWhere((element) =>
-            element.activityDescription == ActivityDescriptionName.labA &&
+        element.activityDescription == ActivityDescriptionName.labA &&
             element.courseGroup == courseAcronym.courseGroup);
       }
     }
@@ -415,7 +387,7 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
         final currentSession = _courseRepository.activeSessions.first;
 
         final coursesCached =
-            await _courseRepository.getCourses(fromCacheOnly: true);
+        await _courseRepository.getCourses(fromCacheOnly: true);
         courses.clear();
         for (final Course course in coursesCached) {
           if (course.session == currentSession.shortName) {
@@ -445,26 +417,51 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
 
   Future<void> futureToRunBroadcast() async {
     setBusyForObject(broadcastMessage, true);
-    setBusyForObject(broadcastTitle, true);
-    setBusyForObject(broadcastColor, true);
-    setBusyForObject(broadcastUrl, true);
-    setBusyForObject(broadcastType, true);
 
-    if (_appIntl.localeName == "fr") {
-      broadcastMessage = remoteConfigService.dashboardMessageFr;
-      broadcastTitle = remoteConfigService.dashboardMessageTitleFr;
-    } else {
-      broadcastMessage = remoteConfigService.dashboardMessageEn;
-      broadcastTitle = remoteConfigService.dashboardMessageTitleEn;
+    try {
+      broadcastMessage = _broadcastMessageRepository.getBroadcastMessage(_appIntl.localeName);
+    } catch (error) {
+      onError(error);
+    } finally {
+      setBusyForObject(broadcastMessage, false);
     }
-    broadcastColor = remoteConfigService.dashboardMsgColor;
-    broadcastUrl = remoteConfigService.dashboardMsgUrl;
-    broadcastType = remoteConfigService.dashboardMsgType;
+  }
 
-    setBusyForObject(broadcastMessage, false);
-    setBusyForObject(broadcastTitle, false);
-    setBusyForObject(broadcastColor, false);
-    setBusyForObject(broadcastUrl, false);
-    setBusyForObject(broadcastType, false);
+  void onCardReorder(int oldIndex, int newIndex) {
+    if (newIndex > oldIndex) {
+      // ignore: parameter_assignments
+      newIndex -= 1;
+    }
+
+    // Should not happen becase dismiss card will not be called if the card is null.
+    if (cards == null) {
+      _analyticsService.logError("DashboardView", "Cards list is null");
+      throw Exception("Cards is null");
+    }
+
+    final PreferencesFlag elementMoved = cards!.keys
+        .firstWhere((element) => cards![element] == oldIndex);
+
+    setOrder(elementMoved, newIndex);
+  }
+
+  String setProgressBarText(BuildContext context) {
+    switch (_currentProgressBarText) {
+      case ProgressBarText.daysElapsedWithTotalDays:
+        _currentProgressBarText = ProgressBarText.daysElapsedWithTotalDays;
+        return AppIntl.of(context)!
+            .progress_bar_message(sessionDays[0], sessionDays[1]);
+      case ProgressBarText.percentage:
+        _currentProgressBarText = ProgressBarText.percentage;
+        final percentage = sessionDays[1] == 0
+            ? 0
+            : ((sessionDays[0] / sessionDays[1]) * 100).round();
+        return AppIntl.of(context)!
+            .progress_bar_message_percentage(percentage);
+      default:
+        _currentProgressBarText = ProgressBarText.remainingDays;
+        return AppIntl.of(context)!.progress_bar_message_remaining_days(
+            sessionDays[1] - sessionDays[0]);
+    }
   }
 }
