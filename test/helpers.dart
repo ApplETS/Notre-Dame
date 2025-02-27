@@ -11,6 +11,7 @@ import 'package:logger/logger.dart';
 
 // Project imports:
 import 'package:notredame/data/repositories/author_repository.dart';
+import 'package:notredame/data/repositories/broadcast_message_repository.dart';
 import 'package:notredame/data/repositories/course_repository.dart';
 import 'package:notredame/data/repositories/news_repository.dart';
 import 'package:notredame/data/repositories/quick_link_repository.dart';
@@ -317,4 +318,13 @@ bool getCalendarViewEnabled() {
   final RemoteConfigService remoteConfigService =
       locator<RemoteConfigService>();
   return remoteConfigService.scheduleListViewDefault;
+}
+
+BroadcastMessageRepository setupBroadcastMessageRepository() {
+  unregister<BroadcastMessageRepository>();
+  final BroadcastMessageRepository repository = BroadcastMessageRepository();
+
+  locator.registerSingleton(repository);
+
+  return repository;
 }
