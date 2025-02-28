@@ -1,4 +1,5 @@
 // Flutter imports:
+import 'package:calendar_view/calendar_view.dart';
 import 'package:flutter/material.dart';
 
 // Package imports:
@@ -8,6 +9,7 @@ import 'package:skeletonizer/skeletonizer.dart';
 // Project imports:
 import 'package:notredame/data/services/navigation_service.dart';
 import 'package:notredame/data/services/signets-api/models/course_activity.dart';
+import 'package:notredame/data/repositories/settings_repository.dart';
 import 'package:notredame/domain/constants/router_paths.dart';
 import 'package:notredame/locator.dart';
 import 'package:notredame/ui/core/ui/dismissible_card.dart';
@@ -15,49 +17,40 @@ import 'package:notredame/ui/dashboard/widgets/course_activity_tile.dart';
 
 class ScheduleCard extends StatelessWidget {
   final NavigationService _navigationService = locator<NavigationService>();
+  final SettingsRepository _settingsManager = locator<SettingsRepository>();
 
   final VoidCallback onDismissed;
-  final List<CourseActivity> todayDateEvents;
-  final List<CourseActivity> tomorrowDateEvents;
+  final List<CourseActivity> events;
   final bool loading;
 
   ScheduleCard(
       {super.key,
       required this.onDismissed,
-      required this.todayDateEvents,
-      required this.tomorrowDateEvents,
+      required this.events,
       required this.loading});
 
   @override
   Widget build(BuildContext context) {
     var title = AppIntl.of(context)!.title_schedule;
-    if (todayDateEvents.isEmpty && tomorrowDateEvents.isNotEmpty) {
+    var tomorrowDate = _settingsManager.dateTimeNow.add(Duration(days: 1)).withoutTime;
+    if (events.isNotEmpty && events.first.startDateTime.withoutTime == tomorrowDate) {
       title += AppIntl.of(context)!.card_schedule_tomorrow;
     }
 
     late List<CourseActivity>? courseActivities;
-    if (loading) {
-      // User will not see this.
-      // It serves the purpuse of creating text in the skeleton and make it look closer to the real schedule.
-      courseActivities = [
-        CourseActivity(
-            courseGroup: "APP375-99",
-            courseName: "Développement mobile (ÉTSMobile)",
-            activityName: '',
-            activityDescription: '5 à 7',
-            activityLocation: '100 Génies',
-            startDateTime: DateTime.now(),
-            endDateTime: DateTime.now())
-      ];
-    } else if (todayDateEvents.isEmpty) {
-      if (tomorrowDateEvents.isEmpty) {
-        courseActivities = null;
-      } else {
-        courseActivities = tomorrowDateEvents;
-      }
-    } else {
-      courseActivities = todayDateEvents;
-    }
+    courseActivities = loading
+      ? [ // User will not see this.
+         // It serves the purpose of creating text in the skeleton and make it look closer to the real schedule.
+          CourseActivity(
+              courseGroup: "APP375-99",
+              courseName: "Développement mobile (ÉTSMobile)",
+              activityName: '',
+              activityDescription: '5 à 7',
+              activityLocation: '100 Génies',
+              startDateTime: DateTime.now(),
+              endDateTime: DateTime.now())
+      ]
+    : events;
 
     return DismissibleCard(
       onDismissed: (DismissDirection direction) => onDismissed(),
@@ -76,7 +69,7 @@ class ScheduleCard extends StatelessWidget {
                       style: Theme.of(context).textTheme.titleLarge),
                 ),
               )),
-          if (courseActivities != null)
+          if (courseActivities.isNotEmpty)
             Skeletonizer(
                 enabled: loading, child: _buildEventList(courseActivities))
           else

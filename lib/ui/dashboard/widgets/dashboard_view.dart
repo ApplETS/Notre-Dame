@@ -90,10 +90,8 @@ class _DashboardViewState extends State<DashboardView>
           cards.add(ScheduleCard(
               key: UniqueKey(),
               onDismissed: () => model.hideCard(PreferencesFlag.scheduleCard),
-              todayDateEvents: model.todayDateEvents,
-              tomorrowDateEvents: model.tomorrowDateEvents,
-              loading: model.busy(model.todayDateEvents) ||
-                  model.busy(model.tomorrowDateEvents)));
+              events: model.scheduleEvents,
+              loading: model.busy(model.scheduleEvents)));
         case PreferencesFlag.progressBarCard:
           cards.add(ProgressBarCard(
               key: UniqueKey(),
