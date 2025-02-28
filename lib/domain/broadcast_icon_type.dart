@@ -1,6 +1,1 @@
-enum BroadcastIconType {
-  warning,
-  alert,
-  link,
-  other
-}
+enum BroadcastIconType { warning, alert, link, other }

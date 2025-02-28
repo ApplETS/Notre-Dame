@@ -1,22 +1,30 @@
+// Flutter imports:
 import 'package:flutter/material.dart';
+
+// Project imports:
+import 'package:notredame/data/models/broadcast_message.dart';
 import 'package:notredame/domain/broadcast_icon_type.dart';
+import 'package:notredame/ui/core/themes/app_palette.dart';
 import 'package:notredame/ui/core/themes/app_theme.dart';
 import 'package:notredame/ui/dashboard/view_model/dashboard_viewmodel.dart';
 
 class BroadcastMessageCard extends StatelessWidget {
-  final DashboardViewModel _model;
+  final BroadcastMessage? broadcastMessage;
+  final bool loading;
 
-  const BroadcastMessageCard({super.key, required DashboardViewModel model})
-    : _model = model;
+  const BroadcastMessageCard(
+      {super.key, required this.loading, this.broadcastMessage});
 
   @override
   Widget build(BuildContext context) {
     return Card(
         key: UniqueKey(),
-        color: _model.broadcastMessage!.color,
+        color: broadcastMessage == null
+            ? AppPalette.appletsPurple
+            : broadcastMessage!.color,
         child: Padding(
           padding: const EdgeInsets.fromLTRB(17, 10, 15, 20),
-          child: _model.busy(_model.broadcastMessage)
+          child: loading || broadcastMessage == null
               ? const Center(child: CircularProgressIndicator())
               : Column(mainAxisSize: MainAxisSize.min, children: [
                   // title row
@@ -25,7 +33,7 @@ class BroadcastMessageCard extends StatelessWidget {
                       Expanded(
                         child: Align(
                           alignment: Alignment.centerLeft,
-                          child: Text(_model.broadcastMessage!.title,
+                          child: Text(broadcastMessage!.title,
                               style: Theme.of(context)
                                   .primaryTextTheme
                                   .titleLarge),
@@ -34,20 +42,21 @@ class BroadcastMessageCard extends StatelessWidget {
                       Align(
                         alignment: Alignment.centerRight,
                         child: InkWell(
-                          child: getBroadcastIcon(
-                              _model.broadcastMessage!.type, _model.broadcastMessage!.url, context),
+                          child: getBroadcastIcon(broadcastMessage!.type,
+                              broadcastMessage!.url, context),
                         ),
                       ),
                     ],
                   ),
                   // main text
-                  Text(_model.broadcastMessage!.message,
-                    style: Theme.of(context).primaryTextTheme.bodyMedium)
+                  Text(broadcastMessage!.message,
+                      style: Theme.of(context).primaryTextTheme.bodyMedium)
                 ]),
         ));
   }
 
-  Widget getBroadcastIcon(BroadcastIconType type, String url, BuildContext context) {
+  Widget getBroadcastIcon(
+      BroadcastIconType type, String url, BuildContext context) {
     switch (type) {
       case BroadcastIconType.warning:
         return Icon(

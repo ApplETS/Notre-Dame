@@ -1,8 +1,12 @@
+// Flutter imports:
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:notredame/data/services/launch_url_service.dart';
 
+// Package imports:
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+
+// Project imports:
+import 'package:notredame/data/services/launch_url_service.dart';
 import 'package:notredame/domain/constants/urls.dart';
 import 'package:notredame/locator.dart';
 import 'package:notredame/ui/core/themes/app_palette.dart';
@@ -10,14 +14,14 @@ import 'package:notredame/ui/core/ui/dismissible_card.dart';
 
 class AboutUsCard extends StatelessWidget {
   final LaunchUrlService _launchUrlService = locator<LaunchUrlService>();
-  
+
   final VoidCallback _onDismissed;
 
-  AboutUsCard({required super.key, required VoidCallback onDismissed}) : _onDismissed = onDismissed;
+  AboutUsCard({required super.key, required VoidCallback onDismissed})
+      : _onDismissed = onDismissed;
 
   @override
-  Widget build(BuildContext context) =>
-    DismissibleCard(
+  Widget build(BuildContext context) => DismissibleCard(
         key: UniqueKey(),
         onDismissed: (DismissDirection direction) => _onDismissed(),
         cardColor: AppPalette.appletsPurple,
@@ -63,7 +67,7 @@ class AboutUsCard extends StatelessWidget {
                     IconButton(
                       onPressed: () {
                         _launchUrlService.launchInBrowser(Urls.clubGithub);
-                        },
+                      },
                       icon: const FaIcon(
                         FontAwesomeIcons.github,
                         color: Colors.white,
@@ -81,7 +85,7 @@ class AboutUsCard extends StatelessWidget {
                     IconButton(
                       onPressed: () {
                         _launchUrlService.launchInBrowser(Urls.clubDiscord);
-                        },
+                      },
                       icon: const FaIcon(
                         FontAwesomeIcons.discord,
                         color: Colors.white,

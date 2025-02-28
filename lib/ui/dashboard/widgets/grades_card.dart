@@ -1,33 +1,39 @@
+// Flutter imports:
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+// Package imports:
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:skeletonizer/skeletonizer.dart';
+
+// Project imports:
 import 'package:notredame/data/services/navigation_service.dart';
 import 'package:notredame/data/services/signets-api/models/course.dart';
 import 'package:notredame/domain/constants/router_paths.dart';
 import 'package:notredame/locator.dart';
 import 'package:notredame/ui/core/themes/app_theme.dart';
 import 'package:notredame/ui/core/ui/dismissible_card.dart';
-import 'package:notredame/ui/dashboard/view_model/dashboard_viewmodel.dart';
 import 'package:notredame/ui/student/grades/widgets/grade_button.dart';
-import 'package:skeletonizer/skeletonizer.dart';
 
 class GradesCard extends StatelessWidget {
   final NavigationService _navigationService = locator<NavigationService>();
-  
-  final DashboardViewModel _model;
-  final VoidCallback _onDismissed;
 
-  GradesCard({super.key, required DashboardViewModel model, required VoidCallback onDismissed})
-    : _model = model, _onDismissed = onDismissed;
+  final List<Course> courses;
+  final VoidCallback onDismissed;
+  final bool loading;
+
+  GradesCard(
+      {super.key,
+      required this.courses,
+      required this.onDismissed,
+      required this.loading});
 
   @override
   Widget build(BuildContext context) {
-    final bool loaded = !_model.busy(_model.courses);
-    late List<Course> courses = _model.courses;
+    late List<Course> displayedCourses = courses;
 
     // When loading courses, there are 2 stages. First, the courses of user are fetched, then, grades are fetched.
     // During that first stage, putting empty courses with no title allows for a smoother transition.
-    if (courses.isEmpty && !loaded) {
+    if (displayedCourses.isEmpty && loading) {
       final Course skeletonCourse = Course(
           acronym: " ",
           title: "",
@@ -35,7 +41,7 @@ class GradesCard extends StatelessWidget {
           session: "",
           programCode: "",
           numberOfCredits: 0);
-      courses = [
+      displayedCourses = [
         skeletonCourse,
         skeletonCourse,
         skeletonCourse,
@@ -45,7 +51,7 @@ class GradesCard extends StatelessWidget {
 
     return DismissibleCard(
       key: UniqueKey(),
-      onDismissed: (DismissDirection direction) => _onDismissed(),
+      onDismissed: (DismissDirection direction) => onDismissed(),
       child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
@@ -62,7 +68,7 @@ class GradesCard extends StatelessWidget {
                 ),
               ),
             ),
-            if (_model.courses.isEmpty && loaded)
+            if (courses.isEmpty && !loading)
               SizedBox(
                 height: 100,
                 child: Center(
@@ -73,7 +79,7 @@ class GradesCard extends StatelessWidget {
               )
             else
               Skeletonizer(
-                enabled: !loaded,
+                enabled: loading,
                 child: Container(
                   padding: const EdgeInsets.fromLTRB(17, 10, 15, 10),
                   child: Wrap(

@@ -1,12 +1,16 @@
+// Flutter imports:
 import 'package:flutter/cupertino.dart';
+
+// Package imports:
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
+
+// Project imports:
 import 'package:notredame/data/services/navigation_service.dart';
 import 'package:notredame/data/services/signets-api/models/course_activity.dart';
 import 'package:notredame/ui/dashboard/view_model/dashboard_viewmodel.dart';
 import 'package:notredame/ui/dashboard/widgets/course_activity_tile.dart';
 import 'package:notredame/ui/dashboard/widgets/schedule_card.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-
 import '../../../data/mocks/repositories/course_repository_mock.dart';
 import '../../../data/mocks/repositories/settings_repository_mock.dart';
 import '../../../helpers.dart';
@@ -72,10 +76,12 @@ main() {
           fromCacheOnly: true);
       CourseRepositoryMock.stubGetCoursesActivities(courseRepositoryMock);
 
-      SettingsRepositoryMock.stubDateTimeNow(settingsManagerMock, toReturn: now);
+      SettingsRepositoryMock.stubDateTimeNow(settingsManagerMock,
+          toReturn: now);
 
       await tester.pumpWidget(localizedWidget(
-          child: ScheduleCard(model: DashboardViewModel(intl: intl), onDismissed: () {})));
+          child: ScheduleCard(
+              model: DashboardViewModel(intl: intl), onDismissed: () {})));
       await tester.pumpAndSettle();
 
       // Find schedule card in second position by its title
@@ -90,7 +96,7 @@ main() {
       final now = DateTime.now();
       final simulatedDate = DateTime(now.year, now.month, now.day, 8);
       final scheduleTitle =
-      await testDashboardSchedule(tester, simulatedDate, activities, 3);
+          await testDashboardSchedule(tester, simulatedDate, activities, 3);
       expect((scheduleTitle as Text).data, intl.title_schedule);
 
       // Find three activities in the card
@@ -103,7 +109,7 @@ main() {
     });
 
     testWidgets(
-    "Has card schedule displayed tomorrow events properly after today's last event",
+        "Has card schedule displayed tomorrow events properly after today's last event",
         (WidgetTester tester) async {
       final now = DateTime.now();
       final simulatedDate = DateTime(now.year, now.month, now.day, 21, 0, 1);
@@ -117,7 +123,7 @@ main() {
           endDateTime: DateTime(now.year, now.month, now.day + 1, 12));
       final courses = List<CourseActivity>.from(activities)..add(gen104);
       final scheduleTitle =
-      await testDashboardSchedule(tester, simulatedDate, courses, 1);
+          await testDashboardSchedule(tester, simulatedDate, courses, 1);
       expect((scheduleTitle as Text).data,
           intl.title_schedule + intl.card_schedule_tomorrow);
 
@@ -131,13 +137,13 @@ main() {
     });
 
     testWidgets(
-    "Has card schedule displayed no event when today's last activity is finished and no events the day after",
+        "Has card schedule displayed no event when today's last activity is finished and no events the day after",
         (WidgetTester tester) async {
       final now = DateTime.now();
       final simulatedDate = DateTime(now.year, now.month, now.day, 21, 0, 1);
 
       final scheduleTitle =
-        await testDashboardSchedule(tester, simulatedDate, activities, 1);
+          await testDashboardSchedule(tester, simulatedDate, activities, 1);
       expect((scheduleTitle as Text).data, intl.title_schedule);
 
       // Find no activity and no grade available text boxes

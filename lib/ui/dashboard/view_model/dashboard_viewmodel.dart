@@ -1,14 +1,18 @@
 // Dart imports:
 import 'dart:collection';
 
-// Package imports:
+// Flutter imports:
 import 'package:flutter/material.dart';
+
+// Package imports:
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:stacked/stacked.dart';
 
 // Project imports:
 import 'package:notredame/data/models/activity_code.dart';
+import 'package:notredame/data/models/broadcast_message.dart';
+import 'package:notredame/data/repositories/broadcast_message_repository.dart';
 import 'package:notredame/data/repositories/course_repository.dart';
 import 'package:notredame/data/repositories/settings_repository.dart';
 import 'package:notredame/data/services/analytics_service.dart';
@@ -22,8 +26,6 @@ import 'package:notredame/data/services/signets-api/models/session.dart';
 import 'package:notredame/domain/constants/preferences_flags.dart';
 import 'package:notredame/locator.dart';
 import 'package:notredame/ui/dashboard/view_model/progress_bar_text_options.dart';
-import 'package:notredame/data/repositories/broadcast_message_repository.dart';
-import 'package:notredame/data/models/broadcast_message.dart';
 
 class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
   static const String tag = "DashboardViewModel";
@@ -32,8 +34,9 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
   final CourseRepository _courseRepository = locator<CourseRepository>();
   final AnalyticsService _analyticsService = locator<AnalyticsService>();
   final RemoteConfigService remoteConfigService =
-  locator<RemoteConfigService>();
-  final BroadcastMessageRepository _broadcastMessageRepository = locator<BroadcastMessageRepository>();
+      locator<RemoteConfigService>();
+  final BroadcastMessageRepository _broadcastMessageRepository =
+      locator<BroadcastMessageRepository>();
 
   /// All dashboard displayable cards
   Map<PreferencesFlag, int>? _cards;
@@ -96,10 +99,10 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
     final InAppReviewService inAppReviewService = locator<InAppReviewService>();
 
     DateTime? ratingTimerFlagDate =
-    await preferencesService.getDateTime(PreferencesFlag.ratingTimer);
+        await preferencesService.getDateTime(PreferencesFlag.ratingTimer);
 
     final hasRatingBeenRequested = await preferencesService
-        .getBool(PreferencesFlag.hasRatingBeenRequested) ??
+            .getBool(PreferencesFlag.hasRatingBeenRequested) ??
         false;
 
     // If the user is already logged in while doing the update containing the In_App_Review PR.
@@ -132,7 +135,7 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
   void changeProgressBarText() {
     if (_currentProgressBarText.index <= 1) {
       _currentProgressBarText =
-      ProgressBarText.values[_currentProgressBarText.index + 1];
+          ProgressBarText.values[_currentProgressBarText.index + 1];
     } else {
       _currentProgressBarText = ProgressBarText.values[0];
     }
@@ -286,7 +289,7 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
     setBusyForObject(_tomorrowDateEvents, true);
     try {
       var courseActivities =
-      await _courseRepository.getCoursesActivities(fromCacheOnly: true);
+          await _courseRepository.getCoursesActivities(fromCacheOnly: true);
       _todayDateEvents.clear();
       _tomorrowDateEvents.clear();
       final todayDate = _settingsManager.dateTimeNow;
@@ -297,7 +300,7 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
         final DateTime tomorrowDate = todayDate.add(const Duration(days: 1));
         // Build the list
         for (final CourseActivity course
-        in _courseRepository.coursesActivities!) {
+            in _courseRepository.coursesActivities!) {
           final DateTime dateOnly = course.startDateTime;
           if (isSameDay(todayDate, dateOnly) &&
               todayDate.compareTo(course.endDateTime) < 0) {
@@ -337,11 +340,11 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
 
       if (activityCodeToUse == ActivityCode.labGroupA) {
         todayDateEventsCopy.removeWhere((element) =>
-        element.activityDescription == ActivityDescriptionName.labB &&
+            element.activityDescription == ActivityDescriptionName.labB &&
             element.courseGroup == courseAcronym.courseGroup);
       } else if (activityCodeToUse == ActivityCode.labGroupB) {
         todayDateEventsCopy.removeWhere((element) =>
-        element.activityDescription == ActivityDescriptionName.labA &&
+            element.activityDescription == ActivityDescriptionName.labA &&
             element.courseGroup == courseAcronym.courseGroup);
       }
     }
@@ -387,7 +390,7 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
         final currentSession = _courseRepository.activeSessions.first;
 
         final coursesCached =
-        await _courseRepository.getCourses(fromCacheOnly: true);
+            await _courseRepository.getCourses(fromCacheOnly: true);
         courses.clear();
         for (final Course course in coursesCached) {
           if (course.session == currentSession.shortName) {
@@ -419,7 +422,8 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
     setBusyForObject(broadcastMessage, true);
 
     try {
-      broadcastMessage = _broadcastMessageRepository.getBroadcastMessage(_appIntl.localeName);
+      broadcastMessage =
+          _broadcastMessageRepository.getBroadcastMessage(_appIntl.localeName);
     } catch (error) {
       onError(error);
     } finally {
@@ -439,8 +443,8 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
       throw Exception("Cards is null");
     }
 
-    final PreferencesFlag elementMoved = cards!.keys
-        .firstWhere((element) => cards![element] == oldIndex);
+    final PreferencesFlag elementMoved =
+        cards!.keys.firstWhere((element) => cards![element] == oldIndex);
 
     setOrder(elementMoved, newIndex);
   }
@@ -456,8 +460,7 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
         final percentage = sessionDays[1] == 0
             ? 0
             : ((sessionDays[0] / sessionDays[1]) * 100).round();
-        return AppIntl.of(context)!
-            .progress_bar_message_percentage(percentage);
+        return AppIntl.of(context)!.progress_bar_message_percentage(percentage);
       default:
         _currentProgressBarText = ProgressBarText.remainingDays;
         return AppIntl.of(context)!.progress_bar_message_remaining_days(

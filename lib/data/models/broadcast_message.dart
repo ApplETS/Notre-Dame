@@ -1,4 +1,7 @@
+// Flutter imports:
 import 'package:flutter/material.dart';
+
+// Project imports:
 import 'package:notredame/domain/broadcast_icon_type.dart';
 
 class BroadcastMessage {

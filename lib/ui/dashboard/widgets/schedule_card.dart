@@ -1,33 +1,42 @@
+// Flutter imports:
 import 'package:flutter/material.dart';
+
+// Package imports:
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:skeletonizer/skeletonizer.dart';
+
+// Project imports:
 import 'package:notredame/data/services/navigation_service.dart';
 import 'package:notredame/data/services/signets-api/models/course_activity.dart';
 import 'package:notredame/domain/constants/router_paths.dart';
 import 'package:notredame/locator.dart';
 import 'package:notredame/ui/core/ui/dismissible_card.dart';
-import 'package:notredame/ui/dashboard/view_model/dashboard_viewmodel.dart';
 import 'package:notredame/ui/dashboard/widgets/course_activity_tile.dart';
-import 'package:skeletonizer/skeletonizer.dart';
 
 class ScheduleCard extends StatelessWidget {
   final NavigationService _navigationService = locator<NavigationService>();
-  
-  final DashboardViewModel _model;
-  final VoidCallback _onDismissed;
 
-  ScheduleCard({super.key, required DashboardViewModel model, required VoidCallback onDismissed}) : _model = model, _onDismissed = onDismissed;
+  final VoidCallback onDismissed;
+  final List<CourseActivity> todayDateEvents;
+  final List<CourseActivity> tomorrowDateEvents;
+  final bool loading;
+
+  ScheduleCard(
+      {super.key,
+      required this.onDismissed,
+      required this.todayDateEvents,
+      required this.tomorrowDateEvents,
+      required this.loading});
 
   @override
   Widget build(BuildContext context) {
     var title = AppIntl.of(context)!.title_schedule;
-    if (_model.todayDateEvents.isEmpty && _model.tomorrowDateEvents.isNotEmpty) {
+    if (todayDateEvents.isEmpty && tomorrowDateEvents.isNotEmpty) {
       title += AppIntl.of(context)!.card_schedule_tomorrow;
     }
-    final bool isLoading = _model.busy(_model.todayDateEvents) ||
-        _model.busy(_model.tomorrowDateEvents);
 
     late List<CourseActivity>? courseActivities;
-    if (isLoading) {
+    if (loading) {
       // User will not see this.
       // It serves the purpuse of creating text in the skeleton and make it look closer to the real schedule.
       courseActivities = [
@@ -40,18 +49,18 @@ class ScheduleCard extends StatelessWidget {
             startDateTime: DateTime.now(),
             endDateTime: DateTime.now())
       ];
-    } else if (_model.todayDateEvents.isEmpty) {
-      if (_model.tomorrowDateEvents.isEmpty) {
+    } else if (todayDateEvents.isEmpty) {
+      if (tomorrowDateEvents.isEmpty) {
         courseActivities = null;
       } else {
-        courseActivities = _model.tomorrowDateEvents;
+        courseActivities = tomorrowDateEvents;
       }
     } else {
-      courseActivities = _model.todayDateEvents;
+      courseActivities = todayDateEvents;
     }
 
     return DismissibleCard(
-      onDismissed: (DismissDirection direction) => _onDismissed(),
+      onDismissed: (DismissDirection direction) => onDismissed(),
       key: UniqueKey(),
       child: Padding(
         padding: const EdgeInsets.only(bottom: 5),
@@ -69,7 +78,7 @@ class ScheduleCard extends StatelessWidget {
               )),
           if (courseActivities != null)
             Skeletonizer(
-                enabled: isLoading, child: _buildEventList(courseActivities))
+                enabled: loading, child: _buildEventList(courseActivities))
           else
             SizedBox(
                 height: 100,
@@ -79,7 +88,7 @@ class ScheduleCard extends StatelessWidget {
       ),
     );
   }
-  
+
   Widget _buildEventList(List<dynamic> events) {
     return ListView.separated(
         physics: const NeverScrollableScrollPhysics(),
