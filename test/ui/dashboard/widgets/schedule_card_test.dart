@@ -17,8 +17,6 @@ import '../../../helpers.dart';
 import '../../schedule/view_model/schedule_settings_viewmodel_test.dart';
 
 main() {
-  late AppIntl intl;
-
   // Activities for today
   final gen101 = CourseActivity(
       courseGroup: "GEN101",
@@ -57,27 +55,15 @@ main() {
 
   group("ScheduleCard - ", () {
     setUp(() async {
-      intl = await setupAppIntl();
-
       setupNavigationServiceMock();
     });
 
     tearDown(() {
-      unregister<AppIntl>();
       unregister<NavigationService>();
     });
 
     Future<Widget> testDashboardSchedule(WidgetTester tester, DateTime now,
         List<CourseActivity> courses, int expected) async {
-      CourseRepositoryMock.stubCoursesActivities(courseRepositoryMock,
-          toReturn: courses);
-
-      CourseRepositoryMock.stubGetCoursesActivities(courseRepositoryMock,
-          fromCacheOnly: true);
-      CourseRepositoryMock.stubGetCoursesActivities(courseRepositoryMock);
-
-      SettingsRepositoryMock.stubDateTimeNow(settingsManagerMock,
-          toReturn: now);
 
       await tester.pumpWidget(localizedWidget(
           child: ScheduleCard(

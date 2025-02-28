@@ -295,8 +295,7 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
       final todayDate = _settingsManager.dateTimeNow;
       courseActivities = await _courseRepository.getCoursesActivities();
 
-      if (_todayDateEvents.isEmpty &&
-          _courseRepository.coursesActivities != null) {
+      if (_courseRepository.coursesActivities != null) {
         final DateTime tomorrowDate = todayDate.add(const Duration(days: 1));
         // Build the list
         for (final CourseActivity course
