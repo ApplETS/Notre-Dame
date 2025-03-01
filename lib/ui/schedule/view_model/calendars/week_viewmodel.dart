@@ -3,7 +3,7 @@ import 'package:calendar_view/calendar_view.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 // Project imports:
-import 'package:notredame/ui/schedule/view_model/calendar_viewmodel.dart';
+import 'package:notredame/ui/schedule/view_model/calendars/calendar_viewmodel.dart';
 import 'package:notredame/utils/utils.dart';
 
 class WeekViewModel extends CalendarViewModel {

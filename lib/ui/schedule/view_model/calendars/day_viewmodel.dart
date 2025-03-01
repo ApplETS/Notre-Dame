@@ -4,7 +4,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 
 // Project imports:
 import 'package:notredame/data/services/signets-api/models/course_activity.dart';
-import 'package:notredame/ui/schedule/view_model/calendar_viewmodel.dart';
+import 'package:notredame/ui/schedule/view_model/calendars/calendar_viewmodel.dart';
 
 class DayViewModel extends CalendarViewModel {
   DateTime daySelected = DateTime.now().withoutTime;

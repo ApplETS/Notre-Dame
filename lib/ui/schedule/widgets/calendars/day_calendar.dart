@@ -47,11 +47,6 @@ class _DayCalendarState extends State<DayCalendar>
   }
 
   @override
-  void didUpdateWidget(covariant DayCalendar oldWidget) {
-    super.didUpdateWidget(oldWidget);
-  }
-
-  @override
   void dispose() {
     _animationController.dispose();
     super.dispose();
