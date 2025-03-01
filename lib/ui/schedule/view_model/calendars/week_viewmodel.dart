@@ -8,7 +8,8 @@ import 'package:notredame/utils/utils.dart';
 
 class WeekViewModel extends CalendarViewModel {
   // Sunday of current week
-  DateTime weekSelected = Utils.getFirstDayOfCurrentWeek(DateTime.now());
+  // TODO if saturday and no event, display next week
+  DateTime weekSelected = Utils.getFirstdayOfWeek(DateTime.now());
   // Display weekend days if there are events in them
   bool displaySunday = false;
   bool displaySaturday = false;
@@ -25,7 +26,7 @@ class WeekViewModel extends CalendarViewModel {
       weekSelected =
           weekSelected.add(const Duration(days: 7, hours: 1)).withoutTime;
     } else {
-      weekSelected = Utils.getFirstDayOfCurrentWeek(newDate);
+      weekSelected = Utils.getFirstdayOfWeek(newDate);
     }
     displaySunday = calendarEventsFromDate(weekSelected).isNotEmpty;
     displaySaturday = calendarEventsFromDate(
@@ -39,12 +40,12 @@ class WeekViewModel extends CalendarViewModel {
   @override
   bool returnToCurrentDate() {
     final bool isThisWeekSelected =
-        weekSelected == Utils.getFirstDayOfCurrentWeek(DateTime.now());
+        weekSelected == Utils.getFirstdayOfWeek(DateTime.now());
 
     isThisWeekSelected
         ? Fluttertoast.showToast(
             msg: super.appIntl.schedule_already_today_toast)
-        : weekSelected = Utils.getFirstDayOfCurrentWeek(DateTime.now());
+        : weekSelected = Utils.getFirstdayOfWeek(DateTime.now());
 
     return !isThisWeekSelected;
   }
@@ -52,7 +53,7 @@ class WeekViewModel extends CalendarViewModel {
   List<CalendarEventData> selectedWeekCalendarEvents() {
     final List<CalendarEventData> events = [];
 
-    final firstDayOfWeek = Utils.getFirstDayOfCurrentWeek(weekSelected);
+    final firstDayOfWeek = Utils.getFirstdayOfWeek(weekSelected);
     // We want to put events of previous week and next week in memory to make transitions smoother
     for (int i = -7; i < 14; i++) {
       final date = firstDayOfWeek.add(Duration(days: i));

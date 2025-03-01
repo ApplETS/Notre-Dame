@@ -2,17 +2,15 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:notredame/data/services/signets-api/models/course_activity.dart';
 import 'package:notredame/ui/schedule/view_model/calendars/calendar_viewmodel.dart';
 import '../../../../data/mocks/repositories/course_repository_mock.dart';
-import '../../../../data/mocks/repositories/settings_repository_mock.dart';
 import '../../../../helpers.dart';
 
 void main() {
   late CalendarViewModel viewModel;
   late CourseRepositoryMock mockCourseRepository;
-  late SettingsRepositoryMock mockSettingsRepository;
 
   setUp(() async {
     mockCourseRepository = setupCourseRepositoryMock();
-    mockSettingsRepository = setupSettingsManagerMock();
+    setupSettingsManagerMock();
 
     viewModel = _TestCalendarViewModel(
       intl: await setupAppIntl(),
