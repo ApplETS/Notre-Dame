@@ -20,7 +20,6 @@ import 'package:notredame/ui/schedule/widgets/calendars/week_calendar.dart';
 import 'package:notredame/ui/schedule/widgets/schedule_settings.dart';
 
 class ScheduleView extends StatefulWidget {
-  @visibleForTesting
 
   const ScheduleView({super.key});
 
