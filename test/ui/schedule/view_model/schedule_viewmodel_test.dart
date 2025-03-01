@@ -1,5 +1,8 @@
+// Package imports:
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
+
+// Project imports:
 import 'package:notredame/data/repositories/settings_repository.dart';
 import 'package:notredame/data/services/calendar_service.dart';
 import 'package:notredame/domain/constants/preferences_flags.dart';
@@ -22,10 +25,10 @@ void main() {
 
   test('Initialization calls loadSettings', () async {
     when(mockSettingsRepository.getScheduleSettings()).thenAnswer((_) async => {
-      PreferencesFlag.scheduleCalendarFormat: CalendarTimeFormat.week,
-      PreferencesFlag.scheduleListView: false,
-      PreferencesFlag.scheduleShowTodayBtn: true,
-    });
+          PreferencesFlag.scheduleCalendarFormat: CalendarTimeFormat.week,
+          PreferencesFlag.scheduleListView: false,
+          PreferencesFlag.scheduleShowTodayBtn: true,
+        });
 
     await viewModel.futureToRun();
     verify(mockSettingsRepository.getScheduleSettings()).called(1);
@@ -37,7 +40,8 @@ void main() {
       PreferencesFlag.scheduleListView: true,
       PreferencesFlag.scheduleShowTodayBtn: false,
     };
-    when(mockSettingsRepository.getScheduleSettings()).thenAnswer((_) async => testSettings);
+    when(mockSettingsRepository.getScheduleSettings())
+        .thenAnswer((_) async => testSettings);
 
     await viewModel.loadSettings();
 
@@ -50,7 +54,8 @@ void main() {
     expect(viewModel.calendarViewSetting, false);
   });
 
-  test('calendarViewSetting returns correct value when settings are not busy', () {
+  test('calendarViewSetting returns correct value when settings are not busy',
+      () {
     viewModel.settings[PreferencesFlag.scheduleListView] = true;
     viewModel.setBusyForObject(viewModel.settings, false);
     expect(viewModel.calendarViewSetting, true);
