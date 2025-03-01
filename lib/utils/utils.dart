@@ -15,7 +15,8 @@ mixin Utils {
   }
 
   static DateTime getFirstdayOfWeek(DateTime currentDate) {
-    final tempDate = currentDate.subtract(Duration(days: currentDate.weekday % 7));
+    final tempDate =
+        currentDate.subtract(Duration(days: currentDate.weekday % 7));
     return DateTime(tempDate.year, tempDate.month, tempDate.day);
   }
 

@@ -1,4 +1,7 @@
+// Package imports:
 import 'package:flutter_test/flutter_test.dart';
+
+// Project imports:
 import 'package:notredame/data/services/signets-api/models/course_activity.dart';
 import 'package:notredame/ui/schedule/view_model/calendars/calendar_viewmodel.dart';
 import '../../../../data/mocks/repositories/course_repository_mock.dart';

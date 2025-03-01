@@ -21,7 +21,6 @@ import 'package:notredame/ui/schedule/widgets/schedule_settings.dart';
 
 class ScheduleView extends StatefulWidget {
   @visibleForTesting
-
   const ScheduleView({super.key});
 
   @override

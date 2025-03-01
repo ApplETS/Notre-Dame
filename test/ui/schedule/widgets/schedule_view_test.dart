@@ -1,8 +1,8 @@
 // Flutter imports:
-import 'package:calendar_view/calendar_view.dart';
 import 'package:flutter/material.dart';
 
 // Package imports:
+import 'package:calendar_view/calendar_view.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -72,41 +72,43 @@ void main() {
     });
 
     tearDown(() => {
-      unregister<NavigationService>(),
-      unregister<SettingsRepository>(),
-      unregister<CourseRepository>(),
-      unregister<RemoteConfigService>(),
-      unregister<NetworkingService>(),
-      unregister<AnalyticsService>(),
-    });
+          unregister<NavigationService>(),
+          unregister<SettingsRepository>(),
+          unregister<CourseRepository>(),
+          unregister<RemoteConfigService>(),
+          unregister<NetworkingService>(),
+          unregister<AnalyticsService>(),
+        });
     group("interactions - ", () {
       testWidgets("tap on settings button to open the schedule settings",
-              (WidgetTester tester) async {
-            CourseRepositoryMock.stubGetCourses(courseRepositoryMock);
-            SettingsRepositoryMock.stubGetScheduleSettings(settingsManagerMock, toReturn: settingsWeek);
+          (WidgetTester tester) async {
+        CourseRepositoryMock.stubGetCourses(courseRepositoryMock);
+        SettingsRepositoryMock.stubGetScheduleSettings(settingsManagerMock,
+            toReturn: settingsWeek);
 
-            await tester.runAsync(() async {
-              await tester.pumpWidget(localizedWidget(child: const ScheduleView()));
-              await tester.pumpAndSettle();
-            }).then((value) async {
-              expect(find.byType(ScheduleSettings), findsNothing,
-                  reason: "The settings page should not be open");
+        await tester.runAsync(() async {
+          await tester.pumpWidget(localizedWidget(child: const ScheduleView()));
+          await tester.pumpAndSettle();
+        }).then((value) async {
+          expect(find.byType(ScheduleSettings), findsNothing,
+              reason: "The settings page should not be open");
 
-              // Tap on the settings button
-              await tester.tap(find.byIcon(Icons.settings_outlined));
-              // Reload view
-              await tester.pumpAndSettle();
+          // Tap on the settings button
+          await tester.tap(find.byIcon(Icons.settings_outlined));
+          // Reload view
+          await tester.pumpAndSettle();
 
-              expect(find.byType(ScheduleSettings), findsOneWidget,
-                  reason: "The settings view should be open");
-            });
-          });
+          expect(find.byType(ScheduleSettings), findsOneWidget,
+              reason: "The settings view should be open");
+        });
+      });
     });
 
     group("respects settings - ", () {
       testWidgets("displays week view", (WidgetTester tester) async {
         CourseRepositoryMock.stubGetCourses(courseRepositoryMock);
-        SettingsRepositoryMock.stubGetScheduleSettings(settingsManagerMock, toReturn: settingsWeek);
+        SettingsRepositoryMock.stubGetScheduleSettings(settingsManagerMock,
+            toReturn: settingsWeek);
 
         await tester.runAsync(() async {
           await tester.pumpWidget(localizedWidget(child: const ScheduleView()));
@@ -118,7 +120,8 @@ void main() {
 
       testWidgets("displays month view", (WidgetTester tester) async {
         CourseRepositoryMock.stubGetCourses(courseRepositoryMock);
-        SettingsRepositoryMock.stubGetScheduleSettings(settingsManagerMock, toReturn: settingsMonth);
+        SettingsRepositoryMock.stubGetScheduleSettings(settingsManagerMock,
+            toReturn: settingsMonth);
 
         await tester.runAsync(() async {
           await tester.pumpWidget(localizedWidget(child: const ScheduleView()));
@@ -130,7 +133,8 @@ void main() {
 
       testWidgets("displays day view calendar", (WidgetTester tester) async {
         CourseRepositoryMock.stubGetCourses(courseRepositoryMock);
-        SettingsRepositoryMock.stubGetScheduleSettings(settingsManagerMock, toReturn: settingsDay);
+        SettingsRepositoryMock.stubGetScheduleSettings(settingsManagerMock,
+            toReturn: settingsDay);
 
         await tester.runAsync(() async {
           await tester.pumpWidget(localizedWidget(child: const ScheduleView()));
@@ -142,7 +146,8 @@ void main() {
 
       testWidgets("displays day view calendar", (WidgetTester tester) async {
         CourseRepositoryMock.stubGetCourses(courseRepositoryMock);
-        SettingsRepositoryMock.stubGetScheduleSettings(settingsManagerMock, toReturn: settingsDayList);
+        SettingsRepositoryMock.stubGetScheduleSettings(settingsManagerMock,
+            toReturn: settingsDayList);
 
         await tester.runAsync(() async {
           await tester.pumpWidget(localizedWidget(child: const ScheduleView()));
@@ -154,7 +159,8 @@ void main() {
 
       testWidgets("displays today button", (WidgetTester tester) async {
         CourseRepositoryMock.stubGetCourses(courseRepositoryMock);
-        SettingsRepositoryMock.stubGetScheduleSettings(settingsManagerMock, toReturn: settingsWeek);
+        SettingsRepositoryMock.stubGetScheduleSettings(settingsManagerMock,
+            toReturn: settingsWeek);
 
         await tester.runAsync(() async {
           await tester.pumpWidget(localizedWidget(child: const ScheduleView()));
@@ -166,7 +172,8 @@ void main() {
 
       testWidgets("does not display today button", (WidgetTester tester) async {
         CourseRepositoryMock.stubGetCourses(courseRepositoryMock);
-        SettingsRepositoryMock.stubGetScheduleSettings(settingsManagerMock, toReturn: settingsDontShowTodayBtn);
+        SettingsRepositoryMock.stubGetScheduleSettings(settingsManagerMock,
+            toReturn: settingsDontShowTodayBtn);
 
         await tester.runAsync(() async {
           await tester.pumpWidget(localizedWidget(child: const ScheduleView()));
@@ -175,7 +182,6 @@ void main() {
           expect(find.byType(IconButton), findsExactly(4));
         });
       });
-
     });
   });
 }
