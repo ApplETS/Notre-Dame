@@ -56,15 +56,13 @@ class WeekCalendar extends StatelessWidget {
             decoration: BoxDecoration(
               color: context.theme.scaffoldBackgroundColor,
             ),
-            leftIcon: Icon(
-              Icons.chevron_left,
+            leftIconConfig: IconDataConfig(
+              color: context.theme.textTheme.bodyMedium!.color!,
               size: 30,
-              color: context.theme.textTheme.bodyMedium!.color,
             ),
-            rightIcon: Icon(
-              Icons.chevron_right,
+            rightIconConfig: IconDataConfig(
+              color: context.theme.textTheme.bodyMedium!.color!,
               size: 30,
-              color: context.theme.textTheme.bodyMedium!.color,
             )),
         startDay: WeekDays.sunday,
         weekDays: [
