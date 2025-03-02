@@ -4,6 +4,9 @@ import 'package:flutter/material.dart';
 // Package imports:
 import 'package:calendar_view/calendar_view.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:mockito/mockito.dart';
+import 'package:notredame/locator.dart';
+import 'package:notredame/ui/core/ui/calendar_selector.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 // Project imports:
@@ -79,6 +82,7 @@ void main() {
           unregister<NetworkingService>(),
           unregister<AnalyticsService>(),
         });
+
     group("interactions - ", () {
       testWidgets("tap on settings button to open the schedule settings",
           (WidgetTester tester) async {
@@ -89,18 +93,38 @@ void main() {
         await tester.runAsync(() async {
           await tester.pumpWidget(localizedWidget(child: const ScheduleView()));
           await tester.pumpAndSettle();
-        }).then((value) async {
-          expect(find.byType(ScheduleSettings), findsNothing,
-              reason: "The settings page should not be open");
-
-          // Tap on the settings button
-          await tester.tap(find.byIcon(Icons.settings_outlined));
-          // Reload view
-          await tester.pumpAndSettle();
-
-          expect(find.byType(ScheduleSettings), findsOneWidget,
-              reason: "The settings view should be open");
         });
+
+        expect(find.byType(ScheduleSettings), findsNothing,
+            reason: "The settings page should not be open");
+
+        await tester.tap(find.byIcon(Icons.settings_outlined));
+        await tester.pumpAndSettle();
+
+        expect(find.byType(ScheduleSettings), findsOneWidget,
+            reason: "The settings view should be open");
+      });
+
+      testWidgets("tap on today button when enabled triggers action and logs analytics", (WidgetTester tester) async {
+        SettingsRepositoryMock.stubGetScheduleSettings(settingsManagerMock,
+            toReturn: settingsWeek);
+        CourseRepositoryMock.stubGetCourses(courseRepositoryMock);
+
+        await tester.runAsync(() async {
+          await tester.pumpWidget(localizedWidget(child: const ScheduleView()));
+          await tester.pumpAndSettle();
+        });
+
+        expect(find.byIcon(Icons.today_outlined), findsOneWidget);
+
+        final analyticsService = locator<AnalyticsService>();
+        // Assuming AnalyticsService is a Mockito mock
+        verifyNever(analyticsService.logEvent("ScheduleView", "Select today clicked"));
+
+        await tester.tap(find.byIcon(Icons.today_outlined));
+        await tester.pumpAndSettle();
+
+        verify(analyticsService.logEvent("ScheduleView", "Select today clicked")).called(1);
       });
     });
 
