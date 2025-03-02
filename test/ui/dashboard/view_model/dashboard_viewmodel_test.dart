@@ -368,14 +368,11 @@ void main() {
 
         await untilCalled(courseRepositoryMock.getCoursesActivities());
 
-        expect(viewModel.todayDateEvents, todayActivities);
+        expect(viewModel.scheduleEvents, todayActivities);
 
         verify(courseRepositoryMock.getCoursesActivities()).called(1);
 
-        verify(courseRepositoryMock.getCoursesActivities(fromCacheOnly: true))
-            .called(1);
-
-        verify(courseRepositoryMock.coursesActivities).called(2);
+        verify(courseRepositoryMock.coursesActivities).called(1);
 
         verify(settingsManagerMock.getDashboard()).called(1);
       });
@@ -398,14 +395,11 @@ void main() {
 
         await untilCalled(courseRepositoryMock.getCoursesActivities());
 
-        expect(viewModel.todayDateEvents, todayActivities);
+        expect(viewModel.scheduleEvents, todayActivities);
 
         verify(courseRepositoryMock.getCoursesActivities()).called(1);
 
-        verify(courseRepositoryMock.getCoursesActivities(fromCacheOnly: true))
-            .called(1);
-
-        verify(courseRepositoryMock.coursesActivities).called(2);
+        verify(courseRepositoryMock.coursesActivities).called(1);
 
         verify(settingsManagerMock.getDashboard()).called(1);
       });
@@ -429,14 +423,11 @@ void main() {
 
         final activitiesFinishedCourse =
             List<CourseActivity>.from(todayActivities)..remove(gen101);
-        expect(viewModel.todayDateEvents, activitiesFinishedCourse);
+        expect(viewModel.scheduleEvents, activitiesFinishedCourse);
 
         verify(courseRepositoryMock.getCoursesActivities()).called(1);
 
-        verify(courseRepositoryMock.getCoursesActivities(fromCacheOnly: true))
-            .called(1);
-
-        verify(courseRepositoryMock.coursesActivities).called(2);
+        verify(courseRepositoryMock.coursesActivities).called(1);
 
         verify(settingsManagerMock.getDashboard()).called(1);
       });
@@ -451,30 +442,33 @@ void main() {
             toReturn: dashboard);
         final now = DateTime.now();
         SettingsRepositoryMock.stubDateTimeNow(settingsManagerMock,
-            toReturn: DateTime(now.year, now.month, now.day, 8));
+            toReturn: DateTime(now.year, now.month, now.day, 21));
 
         await viewModel.futureToRun();
 
         await untilCalled(courseRepositoryMock.getCoursesActivities());
 
-        expect(viewModel.tomorrowDateEvents, tomorrowActivities);
+        expect(viewModel.scheduleEvents, tomorrowActivities);
 
         verify(courseRepositoryMock.getCoursesActivities()).called(1);
 
-        verify(courseRepositoryMock.getCoursesActivities(fromCacheOnly: true))
-            .called(1);
-
-        verify(courseRepositoryMock.coursesActivities).called(2);
+        verify(courseRepositoryMock.coursesActivities).called(1);
 
         verify(settingsManagerMock.getDashboard()).called(1);
       });
 
-      test(
-          "build the list todays activities with the right course activities (should not have labo A)",
-          () async {
+      test("build the list todays activities with the right course activities (should not have labo A)",
+              () async {
         CourseRepositoryMock.stubGetCoursesActivities(courseRepositoryMock);
         CourseRepositoryMock.stubCoursesActivities(courseRepositoryMock,
             toReturn: activitiesWithLabs);
+        CourseRepositoryMock.stubGetCourses(courseRepositoryMock,
+            toReturn: courses);
+        SettingsRepositoryMock.stubGetDashboard(settingsManagerMock,
+            toReturn: dashboard);
+        final now = DateTime.now();
+        SettingsRepositoryMock.stubDateTimeNow(settingsManagerMock,
+            toReturn: DateTime(now.year, now.month, now.day, 8));
 
         SettingsRepositoryMock.stubGetDynamicString(settingsManagerMock,
             PreferencesFlag.scheduleLaboratoryGroup, "GEN101");
@@ -486,7 +480,11 @@ void main() {
             PreferencesFlag.scheduleLaboratoryGroup, "GEN103",
             toReturn: ActivityCode.labGroupB);
 
-        expect(await viewModel.removeLaboratoryGroup(activitiesWithLabs), [
+        await viewModel.futureToRun();
+
+        await untilCalled(courseRepositoryMock.getCoursesActivities());
+
+        expect(viewModel.scheduleEvents, [
           activitiesWithLabs[0],
           activitiesWithLabs[1],
           activitiesWithLabs[2],
@@ -494,12 +492,18 @@ void main() {
         ]);
       });
 
-      test(
-          "build the list todays activities with the right course activities (should not have labo B)",
+      test("build the list todays activities with the right course activities (should not have labo B)",
           () async {
         CourseRepositoryMock.stubGetCoursesActivities(courseRepositoryMock);
         CourseRepositoryMock.stubCoursesActivities(courseRepositoryMock,
             toReturn: activitiesWithLabs);
+        CourseRepositoryMock.stubGetCourses(courseRepositoryMock,
+            toReturn: courses);
+        SettingsRepositoryMock.stubGetDashboard(settingsManagerMock,
+            toReturn: dashboard);
+        final now = DateTime.now();
+        SettingsRepositoryMock.stubDateTimeNow(settingsManagerMock,
+            toReturn: DateTime(now.year, now.month, now.day, 8));
 
         SettingsRepositoryMock.stubGetDynamicString(settingsManagerMock,
             PreferencesFlag.scheduleLaboratoryGroup, "GEN101");
@@ -511,7 +515,11 @@ void main() {
             PreferencesFlag.scheduleLaboratoryGroup, "GEN103",
             toReturn: ActivityCode.labGroupA);
 
-        expect(await viewModel.removeLaboratoryGroup(activitiesWithLabs), [
+        await viewModel.futureToRun();
+
+        await untilCalled(courseRepositoryMock.getCoursesActivities());
+
+        expect(viewModel.scheduleEvents, [
           activitiesWithLabs[0],
           activitiesWithLabs[1],
           activitiesWithLabs[2],
@@ -519,12 +527,18 @@ void main() {
         ]);
       });
 
-      test(
-          "build the list todays activities with the right course activities (should have both labs)",
+      test("build the list todays activities with the right course activities (should have both labs)",
           () async {
         CourseRepositoryMock.stubGetCoursesActivities(courseRepositoryMock);
         CourseRepositoryMock.stubCoursesActivities(courseRepositoryMock,
             toReturn: activitiesWithLabs);
+        CourseRepositoryMock.stubGetCourses(courseRepositoryMock,
+            toReturn: courses);
+        SettingsRepositoryMock.stubGetDashboard(settingsManagerMock,
+            toReturn: dashboard);
+        final now = DateTime.now();
+        SettingsRepositoryMock.stubDateTimeNow(settingsManagerMock,
+            toReturn: DateTime(now.year, now.month, now.day, 8));
 
         SettingsRepositoryMock.stubGetDynamicString(settingsManagerMock,
             PreferencesFlag.scheduleLaboratoryGroup, "GEN101");
@@ -535,8 +549,11 @@ void main() {
         SettingsRepositoryMock.stubGetDynamicString(settingsManagerMock,
             PreferencesFlag.scheduleLaboratoryGroup, "GEN103");
 
-        expect(await viewModel.removeLaboratoryGroup(activitiesWithLabs),
-            activitiesWithLabs);
+        await viewModel.futureToRun();
+
+        await untilCalled(courseRepositoryMock.getCoursesActivities());
+
+        expect(viewModel.scheduleEvents, activitiesWithLabs);
       });
 
       test("An exception is thrown during the preferenceService call",

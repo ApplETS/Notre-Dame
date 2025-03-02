@@ -299,7 +299,7 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
         final isToday = now.compareWithoutTime(activity.startDateTime);
         final isTomorrow = activity.startDateTime.withoutTime == tomorrow;
 
-        if ((isToday || isTomorrow) && await isLaboratoryGroupToAdd(activity)) {
+        if ((isToday || isTomorrow) && await _isLaboratoryGroupToAdd(activity)) {
           if (isTomorrow && scheduleEvents.isNotEmpty &&
               scheduleEvents.first.startDateTime.compareWithoutTime(now)) {
             return scheduleEvents;
@@ -316,7 +316,7 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
     return [];
   }
 
-  Future<bool> isLaboratoryGroupToAdd(CourseActivity courseActivity) async {
+  Future<bool> _isLaboratoryGroupToAdd(CourseActivity courseActivity) async {
     final courseKey = courseActivity.courseGroup.split('-').first;
 
     final activityCodeToUse = await _settingsManager.getDynamicString(
