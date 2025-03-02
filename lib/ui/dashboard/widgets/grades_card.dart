@@ -52,7 +52,10 @@ class GradesCard extends StatelessWidget {
     return DismissibleCard(
       key: UniqueKey(),
       onDismissed: (DismissDirection direction) => onDismissed(),
-      child: Column(
+      child: InkWell(
+        onTap: () => _navigationService
+            .pushNamedAndRemoveUntil(RouterPaths.student),
+        child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -60,37 +63,41 @@ class GradesCard extends StatelessWidget {
               alignment: Alignment.centerLeft,
               child: Container(
                 padding: const EdgeInsets.fromLTRB(17, 15, 0, 0),
-                child: GestureDetector(
-                  onTap: () => _navigationService
-                      .pushNamedAndRemoveUntil(RouterPaths.student),
-                  child: Text(AppIntl.of(context)!.grades_title,
-                      style: Theme.of(context).textTheme.titleLarge),
-                ),
+                child: Text(AppIntl.of(context)!.grades_title,
+                    style: Theme.of(context).textTheme.titleLarge),
               ),
             ),
             if (courses.isEmpty && !loading)
-              SizedBox(
-                height: 100,
-                child: Center(
-                    child: Text(AppIntl.of(context)!
-                        .grades_msg_no_grades
-                        .split("\n")
-                        .first)),
-              )
+              _buildNoGradesContent(context)
             else
-              Skeletonizer(
-                enabled: loading,
-                child: Container(
-                  padding: const EdgeInsets.fromLTRB(17, 10, 15, 10),
-                  child: Wrap(
-                    children: courses
-                        .map((course) => GradeButton(course,
-                            color: context.theme.appColors.backgroundAlt))
-                        .toList(),
-                  ),
-                ),
-              )
-          ]),
+              _buildGradesButton(courses, context, loading: loading)
+          ]
+        ),
+      )
     );
   }
+
+  static Widget _buildGradesButton(List<Course> courses, BuildContext context, { bool loading = false }) =>
+    Skeletonizer(
+      enabled: loading,
+      child: Container(
+        padding: const EdgeInsets.fromLTRB(17, 10, 15, 10),
+        child: Wrap(
+          children: courses
+              .map((course) => GradeButton(course,
+                color: context.theme.appColors.backgroundAlt))
+              .toList(),
+        ),
+      ),
+    );
+
+  static SizedBox _buildNoGradesContent(BuildContext context) =>
+    SizedBox(
+      height: 100,
+      child: Center(
+          child: Text(AppIntl.of(context)!
+              .grades_msg_no_grades
+              .split("\n")
+              .first)),
+    );
 }
