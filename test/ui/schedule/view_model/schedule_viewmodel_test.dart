@@ -256,7 +256,7 @@ void main() {
     setUp(() async {
       // Setting up mocks
       courseRepositoryMock = setupCourseRepositoryMock();
-      settingsManagerMock = setupSettingsManagerMock();
+      settingsManagerMock = setupSettingsRepositoryMock();
 
       viewModel = ScheduleViewModel(intl: await setupAppIntl());
     });

@@ -21,7 +21,7 @@ void main() {
   group("SettingsViewModel - ", () {
     setUp(() async {
       // Setting up mocks
-      settingsManagerMock = setupSettingsManagerMock();
+      settingsManagerMock = setupSettingsRepositoryMock();
       final AppIntl intl = await setupAppIntl();
 
       viewModel = SettingsViewModel(intl: intl);

@@ -195,7 +195,7 @@ void main() {
       // Setting up mocks
       courseRepositoryMock = setupCourseRepositoryMock();
       remoteConfigServiceMock = setupRemoteConfigServiceMock();
-      settingsManagerMock = setupSettingsManagerMock();
+      settingsManagerMock = setupSettingsRepositoryMock();
       preferenceServiceMock = setupPreferencesServiceMock();
       analyticsServiceMock = setupAnalyticsServiceMock();
       preferencesServiceMock = setupPreferencesServiceMock();

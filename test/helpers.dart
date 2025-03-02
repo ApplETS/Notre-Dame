@@ -231,7 +231,7 @@ PreferencesServiceMock setupPreferencesServiceMock() {
 }
 
 /// Load a mock of the [SettingsRepository]
-SettingsRepositoryMock setupSettingsManagerMock() {
+SettingsRepositoryMock setupSettingsRepositoryMock() {
   unregister<SettingsRepository>();
   final service = SettingsRepositoryMock();
 

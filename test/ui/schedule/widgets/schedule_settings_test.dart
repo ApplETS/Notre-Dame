@@ -72,7 +72,7 @@ void main() {
 
   group("ScheduleSettings - ", () {
     setUp(() async {
-      settingsManagerMock = setupSettingsManagerMock();
+      settingsManagerMock = setupSettingsRepositoryMock();
       courseRepositoryMock = setupCourseRepositoryMock();
       remoteConfigServiceMock = setupRemoteConfigServiceMock();
       intl = await setupAppIntl();

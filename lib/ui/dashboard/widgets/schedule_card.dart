@@ -17,7 +17,7 @@ import 'package:notredame/ui/dashboard/widgets/course_activity_tile.dart';
 
 class ScheduleCard extends StatelessWidget {
   final NavigationService _navigationService = locator<NavigationService>();
-  final SettingsRepository _settingsManager = locator<SettingsRepository>();
+  final SettingsRepository _settingsRepository = locator<SettingsRepository>();
 
   final VoidCallback onDismissed;
   final List<CourseActivity> events;
@@ -32,7 +32,7 @@ class ScheduleCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var title = AppIntl.of(context)!.title_schedule;
-    var tomorrowDate = _settingsManager.dateTimeNow.add(Duration(days: 1)).withoutTime;
+    var tomorrowDate = _settingsRepository.dateTimeNow.add(Duration(days: 1)).withoutTime;
     if (events.isNotEmpty && events.first.startDateTime.withoutTime == tomorrowDate) {
       title += AppIntl.of(context)!.card_schedule_tomorrow;
     }

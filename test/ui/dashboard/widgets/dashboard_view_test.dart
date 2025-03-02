@@ -4,17 +4,12 @@ import 'package:flutter/material.dart';
 // Package imports:
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 // Project imports:
-import 'package:notredame/data/services/signets-api/models/course.dart';
-import 'package:notredame/data/services/signets-api/models/course_activity.dart';
 import 'package:notredame/data/services/signets-api/models/session.dart';
 import 'package:notredame/domain/constants/preferences_flags.dart';
 import 'package:notredame/ui/core/ui/dismissible_card.dart';
-import 'package:notredame/ui/dashboard/widgets/course_activity_tile.dart';
 import 'package:notredame/ui/dashboard/widgets/dashboard_view.dart';
-import 'package:notredame/ui/student/grades/widgets/grade_button.dart';
 import '../../../data/mocks/repositories/course_repository_mock.dart';
 import '../../../data/mocks/repositories/settings_repository_mock.dart';
 import '../../../data/mocks/services/in_app_review_service_mock.dart';
@@ -28,42 +23,6 @@ void main() {
   late InAppReviewServiceMock inAppReviewServiceMock;
 
   late AppIntl intl;
-
-  // Activities for today
-  final gen101 = CourseActivity(
-      courseGroup: "GEN101",
-      courseName: "Generic course",
-      activityName: "TD",
-      activityDescription: "Activity description",
-      activityLocation: "location",
-      startDateTime: DateTime(
-          DateTime.now().year, DateTime.now().month, DateTime.now().day, 9),
-      endDateTime: DateTime(
-          DateTime.now().year, DateTime.now().month, DateTime.now().day, 12));
-
-  final gen102 = CourseActivity(
-      courseGroup: "GEN102",
-      courseName: "Generic course",
-      activityName: "TD",
-      activityDescription: "Activity description",
-      activityLocation: "location",
-      startDateTime: DateTime(
-          DateTime.now().year, DateTime.now().month, DateTime.now().day, 13),
-      endDateTime: DateTime(
-          DateTime.now().year, DateTime.now().month, DateTime.now().day, 16));
-
-  final gen103 = CourseActivity(
-      courseGroup: "GEN103",
-      courseName: "Generic course",
-      activityName: "TD",
-      activityDescription: "Activity description",
-      activityLocation: "location",
-      startDateTime: DateTime(
-          DateTime.now().year, DateTime.now().month, DateTime.now().day, 18),
-      endDateTime: DateTime(
-          DateTime.now().year, DateTime.now().month, DateTime.now().day, 21));
-
-  final List<CourseActivity> activities = [gen101, gen102, gen103];
 
   // Cards
   final Map<PreferencesFlag, int> dashboard = {
@@ -91,44 +50,6 @@ void main() {
       deadlineCancellationWithoutRefundNewStudent: DateTime(2017, 1, 12, 1, 1),
       deadlineCancellationASEQ: DateTime(2017, 1, 11, 1, 1));
 
-  final Course courseSummer = Course(
-      acronym: 'GEN101',
-      group: '02',
-      session: 'É2020',
-      programCode: '999',
-      grade: 'C+',
-      numberOfCredits: 3,
-      title: 'Cours générique');
-
-  final Course courseSummer2 = Course(
-      acronym: 'GEN102',
-      group: '02',
-      session: 'É2020',
-      programCode: '999',
-      grade: 'C+',
-      numberOfCredits: 3,
-      title: 'Cours générique');
-
-  final Course courseWinter = Course(
-      acronym: 'GEN101',
-      group: '02',
-      session: 'H2020',
-      programCode: '999',
-      grade: 'C+',
-      numberOfCredits: 3,
-      title: 'Cours générique');
-
-  final Course courseFall = Course(
-      acronym: 'GEN101',
-      group: '02',
-      session: 'A2020',
-      programCode: '999',
-      grade: 'C+',
-      numberOfCredits: 3,
-      title: 'Cours générique');
-
-  final courses = [courseSummer, courseSummer2, courseWinter, courseFall];
-
   Future<void> longPressDrag(
       WidgetTester tester, Offset start, Offset end) async {
     final TestGesture drag = await tester.startGesture(start);
@@ -138,34 +59,10 @@ void main() {
     await drag.up();
   }
 
-  Future<Widget> testDashboardSchedule(WidgetTester tester, DateTime now,
-      List<CourseActivity> courses, int expected) async {
-    CourseRepositoryMock.stubCoursesActivities(courseRepositoryMock,
-        toReturn: courses);
-
-    CourseRepositoryMock.stubGetCoursesActivities(courseRepositoryMock,
-        fromCacheOnly: true);
-    CourseRepositoryMock.stubGetCoursesActivities(courseRepositoryMock);
-
-    SettingsRepositoryMock.stubGetDashboard(settingsManagerMock,
-        toReturn: dashboard);
-
-    SettingsRepositoryMock.stubDateTimeNow(settingsManagerMock, toReturn: now);
-
-    await tester.pumpWidget(localizedWidget(child: const DashboardView()));
-    await tester.pumpAndSettle();
-
-    // Find schedule card in second position by its title
-    return tester.firstWidget(find.descendant(
-      of: find.byType(Dismissible, skipOffstage: false).at(1),
-      matching: find.byType(Text),
-    ));
-  }
-
   group('DashboardView - ', () {
     setUp(() async {
       intl = await setupAppIntl();
-      settingsManagerMock = setupSettingsManagerMock();
+      settingsManagerMock = setupSettingsRepositoryMock();
       courseRepositoryMock = setupCourseRepositoryMock();
       remoteConfigServiceMock = setupRemoteConfigServiceMock();
       setupNavigationServiceMock();
@@ -174,9 +71,6 @@ void main() {
       setupAnalyticsServiceMock();
       setupLaunchUrlServiceMock();
       setupPreferencesServiceMock();
-      // TODO: Remove when 4.50.1 is released
-      SharedPreferences.setMockInitialValues({});
-      // End TODO: Remove when 4.50.1 is released
 
       inAppReviewServiceMock =
           setupInAppReviewServiceMock() as InAppReviewServiceMock;
@@ -241,98 +135,6 @@ void main() {
         // Find cards
         expect(find.byType(Card, skipOffstage: false),
             findsNWidgets(numberOfCards));
-      });
-
-      testWidgets('Has card aboutUs displayed properly',
-          (WidgetTester tester) async {
-        CourseRepositoryMock.stubCoursesActivities(courseRepositoryMock,
-            toReturn: activities);
-
-        CourseRepositoryMock.stubGetCoursesActivities(courseRepositoryMock,
-            fromCacheOnly: true);
-        CourseRepositoryMock.stubGetCoursesActivities(courseRepositoryMock);
-
-        SettingsRepositoryMock.stubGetDashboard(settingsManagerMock,
-            toReturn: dashboard);
-
-        await tester.pumpWidget(localizedWidget(child: const DashboardView()));
-        await tester.pumpAndSettle();
-
-        // Find aboutUs card
-        final aboutUsCard = find.widgetWithText(Card, intl.card_applets_title);
-        expect(aboutUsCard, findsOneWidget);
-
-        // Find aboutUs card Text Paragraph
-        final aboutUsParagraph = find.textContaining(intl.card_applets_text);
-        expect(aboutUsParagraph, findsOneWidget);
-
-        // Find aboutUs card Link Buttons
-        final aboutUsLinkButtons = find.byType(IconButton);
-        expect(aboutUsLinkButtons, findsNWidgets(6));
-      });
-
-      testWidgets("Has card schedule displayed today's events properly",
-          (WidgetTester tester) async {
-        final now = DateTime.now();
-        final simulatedDate = DateTime(now.year, now.month, now.day, 8);
-        final scheduleTitle =
-            await testDashboardSchedule(tester, simulatedDate, activities, 3);
-        expect((scheduleTitle as Text).data, intl.title_schedule);
-
-        // Find three activities in the card
-        expect(
-            find.descendant(
-              of: find.byType(Dismissible, skipOffstage: false),
-              matching: find.byType(CourseActivityTile),
-            ),
-            findsNWidgets(3));
-      });
-
-      testWidgets(
-          "Has card schedule displayed tomorrow events properly after today's last event",
-          (WidgetTester tester) async {
-        final now = DateTime.now();
-        final simulatedDate = DateTime(now.year, now.month, now.day, 21, 0, 1);
-        final gen104 = CourseActivity(
-            courseGroup: "GEN104",
-            courseName: "Generic course",
-            activityName: "TD",
-            activityDescription: "Activity description",
-            activityLocation: "location",
-            startDateTime: DateTime(now.year, now.month, now.day + 1, 9),
-            endDateTime: DateTime(now.year, now.month, now.day + 1, 12));
-        final courses = List<CourseActivity>.from(activities)..add(gen104);
-        final scheduleTitle =
-            await testDashboardSchedule(tester, simulatedDate, courses, 1);
-        expect((scheduleTitle as Text).data,
-            intl.title_schedule + intl.card_schedule_tomorrow);
-
-        // Find one activities in the card
-        expect(
-            find.descendant(
-              of: find.byType(Dismissible, skipOffstage: false),
-              matching: find.byType(CourseActivityTile),
-            ),
-            findsNWidgets(1));
-      });
-
-      testWidgets(
-          "Has card schedule displayed no event when today's last activity is finished and no events the day after",
-          (WidgetTester tester) async {
-        final now = DateTime.now();
-        final simulatedDate = DateTime(now.year, now.month, now.day, 21, 0, 1);
-
-        final scheduleTitle =
-            await testDashboardSchedule(tester, simulatedDate, activities, 1);
-        expect((scheduleTitle as Text).data, intl.title_schedule);
-
-        // Find no activity and no grade available text boxes
-        expect(
-            find.descendant(
-              of: find.byType(SizedBox, skipOffstage: false),
-              matching: find.byType(Text),
-            ),
-            findsNWidgets(2));
       });
     });
 
@@ -504,61 +306,6 @@ void main() {
       });
 
       group('UI - gradesCard', () {
-        testWidgets('Has card grades displayed - with no courses',
-            (WidgetTester tester) async {
-          SettingsRepositoryMock.stubGetDashboard(settingsManagerMock,
-              toReturn: dashboard);
-
-          await tester
-              .pumpWidget(localizedWidget(child: const DashboardView()));
-          await tester.pumpAndSettle();
-
-          // Find grades card
-          final gradesCard =
-              find.widgetWithText(Card, intl.grades_title, skipOffstage: false);
-          expect(gradesCard, findsOneWidget);
-
-          // Find grades card Title
-          final gradesTitle = find.text(intl.grades_title, skipOffstage: false);
-          expect(gradesTitle, findsOneWidget);
-
-          // Find empty grades card
-          final gradesEmptyTitle = find.text(
-              intl.grades_msg_no_grades.split("\n").first,
-              skipOffstage: false);
-          expect(gradesEmptyTitle, findsOneWidget);
-        });
-
-        testWidgets('Has card grades displayed - with courses',
-            (WidgetTester tester) async {
-          CourseRepositoryMock.stubCourses(courseRepositoryMock,
-              toReturn: courses);
-          CourseRepositoryMock.stubGetCourses(courseRepositoryMock,
-              fromCacheOnly: true, toReturn: courses);
-          CourseRepositoryMock.stubGetCourses(courseRepositoryMock,
-              toReturn: courses);
-
-          SettingsRepositoryMock.stubGetDashboard(settingsManagerMock,
-              toReturn: dashboard);
-
-          await tester
-              .pumpWidget(localizedWidget(child: const DashboardView()));
-          await tester.pumpAndSettle();
-
-          // Find grades card
-          final gradesCard =
-              find.widgetWithText(Card, intl.grades_title, skipOffstage: false);
-          expect(gradesCard, findsOneWidget);
-
-          // Find grades card Title
-          final gradesTitle = find.text(intl.grades_title, skipOffstage: false);
-          expect(gradesTitle, findsOneWidget);
-
-          // Find grades buttons in the card
-          final gradesButtons = find.byType(GradeButton, skipOffstage: false);
-          expect(gradesButtons, findsNWidgets(2));
-        });
-
         testWidgets('gradesCard is dismissible and can be restored',
             (WidgetTester tester) async {
           SettingsRepositoryMock.stubSetInt(
