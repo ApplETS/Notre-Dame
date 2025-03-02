@@ -6,7 +6,6 @@ import 'package:calendar_view/calendar_view.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 import 'package:notredame/locator.dart';
-import 'package:notredame/ui/core/ui/calendar_selector.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 // Project imports:
