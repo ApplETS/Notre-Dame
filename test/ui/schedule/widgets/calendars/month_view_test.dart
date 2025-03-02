@@ -1,9 +1,5 @@
 // Flutter imports:
-import 'package:flutter/material.dart';
-
-// Package imports:
-import 'package:calendar_view/calendar_view.dart' as calendar_view;
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:calendar_view/calendar_view.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -17,8 +13,6 @@ import 'package:notredame/data/services/remote_config_service.dart';
 import 'package:notredame/data/services/signets-api/models/course_activity.dart';
 import 'package:notredame/ui/schedule/widgets/calendars/calendar_controller.dart';
 import 'package:notredame/ui/schedule/widgets/calendars/month_calendar.dart';
-import 'package:notredame/ui/schedule/widgets/calendars/week_calendar.dart';
-import 'package:notredame/ui/schedule/widgets/schedule_calendar_tile.dart';
 import '../../../../data/mocks/repositories/course_repository_mock.dart';
 import '../../../../data/mocks/repositories/settings_repository_mock.dart';
 import '../../../../helpers.dart';
@@ -27,7 +21,6 @@ void main() {
   SharedPreferences.setMockInitialValues({});
   late SettingsRepositoryMock settingsManagerMock;
   late CourseRepositoryMock courseRepositoryMock;
-  late AppIntl intl;
 
   List<CourseActivity> activites = [
     CourseActivity(
@@ -54,7 +47,7 @@ void main() {
     setUp(() async {
       settingsManagerMock = setupSettingsManagerMock();
       courseRepositoryMock = setupCourseRepositoryMock();
-      intl = await setupAppIntl();
+      await setupAppIntl();
       setupNetworkingServiceMock();
       setupAnalyticsServiceMock();
 
@@ -84,7 +77,7 @@ void main() {
         await tester.pumpAndSettle();
       });
 
-      expect(find.byType(calendar_view.FilledCell), findsExactly(42));
+      expect(find.byType(FilledCell), findsExactly(42));
       expect(find.text("ING150\nRoom 101\nLecture 1"), findsOneWidget);
       expect(find.text("LOG100\nRoom 102\nLab Session"), findsOneWidget);
     });
