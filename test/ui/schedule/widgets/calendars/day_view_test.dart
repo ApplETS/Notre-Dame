@@ -51,7 +51,7 @@ void main() {
     )
   ];
 
-  group("ScheduleView - ", () {
+  group("day calendar view - ", () {
     setUp(() async {
       settingsManagerMock = setupSettingsManagerMock();
       courseRepositoryMock = setupCourseRepositoryMock();
