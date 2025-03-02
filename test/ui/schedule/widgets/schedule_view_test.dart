@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:calendar_view/calendar_view.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
-import 'package:notredame/locator.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 // Project imports:
@@ -17,6 +16,7 @@ import 'package:notredame/data/services/navigation_service.dart';
 import 'package:notredame/data/services/networking_service.dart';
 import 'package:notredame/data/services/remote_config_service.dart';
 import 'package:notredame/domain/constants/preferences_flags.dart';
+import 'package:notredame/locator.dart';
 import 'package:notredame/ui/schedule/widgets/schedule_settings.dart';
 import 'package:notredame/ui/schedule/widgets/schedule_view.dart';
 import '../../../data/mocks/repositories/course_repository_mock.dart';
@@ -104,7 +104,9 @@ void main() {
             reason: "The settings view should be open");
       });
 
-      testWidgets("tap on today button when enabled triggers action and logs analytics", (WidgetTester tester) async {
+      testWidgets(
+          "tap on today button when enabled triggers action and logs analytics",
+          (WidgetTester tester) async {
         SettingsRepositoryMock.stubGetScheduleSettings(settingsManagerMock,
             toReturn: settingsWeek);
         CourseRepositoryMock.stubGetCourses(courseRepositoryMock);
@@ -118,12 +120,15 @@ void main() {
 
         final analyticsService = locator<AnalyticsService>();
         // Assuming AnalyticsService is a Mockito mock
-        verifyNever(analyticsService.logEvent("ScheduleView", "Select today clicked"));
+        verifyNever(
+            analyticsService.logEvent("ScheduleView", "Select today clicked"));
 
         await tester.tap(find.byIcon(Icons.today_outlined));
         await tester.pumpAndSettle();
 
-        verify(analyticsService.logEvent("ScheduleView", "Select today clicked")).called(1);
+        verify(analyticsService.logEvent(
+                "ScheduleView", "Select today clicked"))
+            .called(1);
       });
     });
 
