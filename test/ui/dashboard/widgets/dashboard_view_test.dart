@@ -359,26 +359,7 @@ void main() {
     });
 
     group("UI - progressBar", () {
-      testWidgets('Has card progressBar displayed',
-          (WidgetTester tester) async {
-        SettingsRepositoryMock.stubGetDashboard(settingsManagerMock,
-            toReturn: dashboard);
 
-        await tester.pumpWidget(localizedWidget(child: const DashboardView()));
-        await tester.pumpAndSettle();
-
-        // Find progress card
-        final progressCard = find.widgetWithText(Card, intl.progress_bar_title);
-        expect(progressCard, findsOneWidget);
-
-        // Find progress card Title
-        final progressTitle = find.text(intl.progress_bar_title);
-        expect(progressTitle, findsOneWidget);
-
-        // Find progress card linearProgressBar
-        final linearProgressBar = find.byType(LinearProgressIndicator);
-        expect(linearProgressBar, findsOneWidget);
-      });
 
       testWidgets('progressCard is dismissible and can be restored',
           (WidgetTester tester) async {

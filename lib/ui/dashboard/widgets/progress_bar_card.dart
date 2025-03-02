@@ -12,14 +12,14 @@ import '../../core/themes/app_palette.dart';
 class ProgressBarCard extends StatelessWidget {
   final VoidCallback onDismissed;
   final VoidCallback changeProgressBarText;
-  final String Function(BuildContext) getProgressBarText;
+  final String progressBarText;
   final double progress;
   final bool loading;
 
   const ProgressBarCard(
       {super.key,
       required this.onDismissed,
-      required this.getProgressBarText,
+      required this.progressBarText,
       required this.changeProgressBarText,
       required this.progress,
       required this.loading});
@@ -63,7 +63,7 @@ class ProgressBarCard extends StatelessWidget {
                     padding: const EdgeInsets.only(top: 16),
                     child: Center(
                       child: Text(
-                        getProgressBarText(context),
+                        progressBarText,
                         style: const TextStyle(color: Colors.white),
                       ),
                     ),

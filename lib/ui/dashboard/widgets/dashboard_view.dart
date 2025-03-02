@@ -98,7 +98,7 @@ class _DashboardViewState extends State<DashboardView>
               onDismissed: () =>
                   model.hideCard(PreferencesFlag.progressBarCard),
               changeProgressBarText: model.changeProgressBarText,
-              getProgressBarText: model.setProgressBarText,
+              progressBarText: model.getProgressBarText(context),
               progress: model.progress,
               loading: model.busy(model.progress)));
         case PreferencesFlag.gradesCard:

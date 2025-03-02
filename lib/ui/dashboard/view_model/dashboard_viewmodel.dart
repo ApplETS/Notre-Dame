@@ -426,7 +426,7 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
     setOrder(elementMoved, newIndex);
   }
 
-  String setProgressBarText(BuildContext context) {
+  String getProgressBarText(BuildContext context) {
     switch (_currentProgressBarText) {
       case ProgressBarText.daysElapsedWithTotalDays:
         _currentProgressBarText = ProgressBarText.daysElapsedWithTotalDays;
