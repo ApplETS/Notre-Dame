@@ -49,7 +49,8 @@ class _WeekCalendarState extends State<WeekCalendar> {
 
     return WeekView(
         key: weekViewKey,
-        weekNumberBuilder: (date) => Container(color: context.theme.appColors.appBar),
+        weekNumberBuilder: (date) =>
+            Container(color: context.theme.appColors.appBar),
         controller: model.eventController
           ..addAll(model.selectedWeekCalendarEvents()),
         onPageChange: (date, page) => setState(() {
@@ -106,9 +107,8 @@ class _WeekCalendarState extends State<WeekCalendar> {
             (date, events, boundary, startDuration, endDuration) =>
                 _buildEventTile(events, context),
         weekDayBuilder: (DateTime date) => Container(
-          color: context.theme.appColors.appBar,
-            child: _buildWeekDay(date, model, context)
-        ));
+            color: context.theme.appColors.appBar,
+            child: _buildWeekDay(date, model, context)));
   }
 
   Widget _buildWeekDay(
