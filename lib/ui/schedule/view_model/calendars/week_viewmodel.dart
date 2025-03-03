@@ -8,11 +8,13 @@ import 'package:notredame/utils/utils.dart';
 
 class WeekViewModel extends CalendarViewModel {
   // Sunday of current week
-  // TODO if saturday and no event, display next week
   DateTime weekSelected = Utils.getFirstdayOfWeek(DateTime.now());
-  // Display weekend days if there are events in them
+
+  // Display weekend days only if they contain events
   bool displaySunday = false;
   bool displaySaturday = false;
+
+  bool _firstLoad = true;
 
   final EventController eventController = EventController();
 
@@ -20,14 +22,15 @@ class WeekViewModel extends CalendarViewModel {
 
   @override
   handleDateSelectedChanged(DateTime newDate) {
-    if (newDate.weekday == DateTime.saturday &&
-        calendarEventsFromDate(newDate).isEmpty) {
-      // Add extra hour to fix a bug related to daylight saving time changes
-      weekSelected =
-          weekSelected.add(const Duration(days: 7, hours: 1)).withoutTime;
-    } else {
-      weekSelected = Utils.getFirstdayOfWeek(newDate);
+    weekSelected = Utils.getFirstdayOfWeek(newDate);
+
+    if (!isBusy && _firstLoad) {
+      _firstLoad = false;
+      if (DateTime.now().weekday == DateTime.saturday && Utils.getFirstdayOfWeek(DateTime.now()) == weekSelected && calendarEventsFromDate(DateTime.now()).isEmpty) {
+        handleDateSelectedChanged(weekSelected.add(Duration(days: 7, hours: 1)));
+      }
     }
+
     displaySunday = calendarEventsFromDate(weekSelected).isNotEmpty;
     displaySaturday = calendarEventsFromDate(
             weekSelected.add(const Duration(days: 6, hours: 1)))
@@ -39,13 +42,16 @@ class WeekViewModel extends CalendarViewModel {
 
   @override
   bool returnToCurrentDate() {
-    final bool isThisWeekSelected =
-        weekSelected == Utils.getFirstdayOfWeek(DateTime.now());
+    DateTime dateToReturnTo = Utils.getFirstdayOfWeek(DateTime.now().withoutTime);
+    if (DateTime.now().weekday == DateTime.saturday && calendarEventsFromDate(dateToReturnTo.add(Duration(days: 6, hours: 1))).isEmpty) {
+      dateToReturnTo = dateToReturnTo.add(Duration(days: 7, hours: 1)).withoutTime;
+    }
+
+    final bool isThisWeekSelected = dateToReturnTo == weekSelected;
 
     isThisWeekSelected
-        ? Fluttertoast.showToast(
-            msg: super.appIntl.schedule_already_today_toast)
-        : weekSelected = Utils.getFirstdayOfWeek(DateTime.now());
+        ? Fluttertoast.showToast(msg: super.appIntl.schedule_already_today_toast)
+        : handleDateSelectedChanged(dateToReturnTo);
 
     return !isThisWeekSelected;
   }

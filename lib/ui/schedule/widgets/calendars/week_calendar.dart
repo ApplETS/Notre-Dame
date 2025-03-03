@@ -13,12 +13,17 @@ import 'package:notredame/ui/schedule/view_model/calendars/week_viewmodel.dart';
 import 'package:notredame/ui/schedule/widgets/schedule_calendar_tile.dart';
 import 'calendar_controller.dart';
 
-class WeekCalendar extends StatelessWidget {
-  final GlobalKey<WeekViewState> weekViewKey = GlobalKey<WeekViewState>();
+class WeekCalendar extends StatefulWidget {
   static final List<String> weekTitles = ["L", "M", "M", "J", "V", "S", "D"];
   final CalendarController controller;
+  const WeekCalendar({super.key, required this.controller});
 
-  WeekCalendar({super.key, required this.controller});
+  @override
+  State<WeekCalendar> createState() => _WeekCalendarState();
+}
+
+class _WeekCalendarState extends State<WeekCalendar> {
+  final GlobalKey<WeekViewState> weekViewKey = GlobalKey<WeekViewState>();
 
   @override
   Widget build(BuildContext context) {
@@ -32,20 +37,22 @@ class WeekCalendar extends StatelessWidget {
     );
   }
 
-  WeekView<Object?> _buildWeekView(
-      WeekViewModel model, BuildContext context, double heightPerMinute) {
-    controller.returnToToday = () {
+  WeekView<Object?> _buildWeekView(WeekViewModel model, BuildContext context, double heightPerMinute) {
+    model.handleDateSelectedChanged(model.weekSelected);
+    weekViewKey.currentState?.animateToWeek(model.weekSelected);
+
+    widget.controller.returnToToday = () {
       model.returnToCurrentDate();
-      weekViewKey.currentState
-          ?.animateToWeek(DateTime(DateTime.now().year, DateTime.now().month));
+      weekViewKey.currentState?.animateToWeek(model.weekSelected);
     };
 
     return WeekView(
         key: weekViewKey,
         weekNumberBuilder: (date) => null,
-        controller: model.eventController
-          ..addAll(model.selectedWeekCalendarEvents()),
-        onPageChange: (date, page) => model.handleDateSelectedChanged(date),
+        controller: model.eventController..addAll(model.selectedWeekCalendarEvents()),
+        onPageChange: (date, page) => setState(() {
+          model.weekSelected = date;
+        }),
         backgroundColor: context.theme.scaffoldBackgroundColor,
         weekTitleHeight:
             (MediaQuery.of(context).orientation == Orientation.portrait)
@@ -88,7 +95,7 @@ class WeekCalendar extends StatelessWidget {
           return DateFormat('H:mm').format(date);
         },
         weekDayStringBuilder: (p0) {
-          return weekTitles[p0];
+          return WeekCalendar.weekTitles[p0];
         },
         headerStringBuilder: (date, {secondaryDate}) {
           final from = AppIntl.of(context)!.schedule_calendar_from;
@@ -121,7 +128,7 @@ class WeekCalendar extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text(weekTitles[date.weekday - 1]),
+                Text(WeekCalendar.weekTitles[date.weekday - 1]),
                 if (MediaQuery.of(context).orientation == Orientation.landscape)
                   const SizedBox(width: 4),
                 Text(date.day.toString()),
