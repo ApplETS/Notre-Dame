@@ -137,20 +137,24 @@ class _ScheduleSettingsState extends State<ScheduleSettings> {
 
       chips.add(InputChip(
           label: Text(AppIntl.of(context)!.course_activity_group_both),
-          selected: model.selectedScheduleActivity[courseActivitiesAcronym] == null,
+          selected:
+              model.selectedScheduleActivity[courseActivitiesAcronym] == null,
           selectedColor: selectedColor,
           showCheckmark: false,
-          onPressed: () => model.selectScheduleActivity(courseActivitiesAcronym, null)));
+          onPressed: () =>
+              model.selectScheduleActivity(courseActivitiesAcronym, null)));
 
       if (model.scheduleActivitiesByCourse[courseActivitiesAcronym] != null) {
         for (final course
             in model.scheduleActivitiesByCourse[courseActivitiesAcronym]!) {
           chips.add(InputChip(
             label: Text(getActivityTitle(course.activityCode)),
-            selected: model.selectedScheduleActivity[course.courseAcronym] == course,
+            selected:
+                model.selectedScheduleActivity[course.courseAcronym] == course,
             selectedColor: selectedColor,
             showCheckmark: false,
-            onPressed: () => model.selectScheduleActivity(course.courseAcronym, course),
+            onPressed: () =>
+                model.selectScheduleActivity(course.courseAcronym, course),
           ));
         }
       }
