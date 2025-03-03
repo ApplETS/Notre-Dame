@@ -37,7 +37,8 @@ class _WeekCalendarState extends State<WeekCalendar> {
     );
   }
 
-  WeekView<Object?> _buildWeekView(WeekViewModel model, BuildContext context, double heightPerMinute) {
+  WeekView<Object?> _buildWeekView(
+      WeekViewModel model, BuildContext context, double heightPerMinute) {
     model.handleDateSelectedChanged(model.weekSelected);
     weekViewKey.currentState?.animateToWeek(model.weekSelected);
 
@@ -49,10 +50,11 @@ class _WeekCalendarState extends State<WeekCalendar> {
     return WeekView(
         key: weekViewKey,
         weekNumberBuilder: (date) => null,
-        controller: model.eventController..addAll(model.selectedWeekCalendarEvents()),
+        controller: model.eventController
+          ..addAll(model.selectedWeekCalendarEvents()),
         onPageChange: (date, page) => setState(() {
-          model.weekSelected = date;
-        }),
+              model.weekSelected = date;
+            }),
         backgroundColor: context.theme.scaffoldBackgroundColor,
         weekTitleHeight:
             (MediaQuery.of(context).orientation == Orientation.portrait)

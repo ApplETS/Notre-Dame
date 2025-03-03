@@ -1,7 +1,5 @@
 // Package imports:
 import 'package:flutter_test/flutter_test.dart';
-import 'package:notredame/ui/schedule/widgets/calendars/week_calendar.dart';
-import 'package:notredame/utils/utils.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 // Project imports:
@@ -13,6 +11,8 @@ import 'package:notredame/data/services/networking_service.dart';
 import 'package:notredame/data/services/remote_config_service.dart';
 import 'package:notredame/data/services/signets-api/models/course_activity.dart';
 import 'package:notredame/ui/schedule/widgets/calendars/calendar_controller.dart';
+import 'package:notredame/ui/schedule/widgets/calendars/week_calendar.dart';
+import 'package:notredame/utils/utils.dart';
 import '../../../../data/mocks/repositories/course_repository_mock.dart';
 import '../../../../data/mocks/repositories/settings_repository_mock.dart';
 import '../../../../helpers.dart';
@@ -25,8 +25,10 @@ void main() {
   List<CourseActivity> activites = [
     CourseActivity(
       courseName: 'Lab',
-      startDateTime: Utils.getFirstdayOfWeek(DateTime.now()).add(Duration(hours: 9)),
-      endDateTime: Utils.getFirstdayOfWeek(DateTime.now()).add(Duration(hours: 12)),
+      startDateTime:
+          Utils.getFirstdayOfWeek(DateTime.now()).add(Duration(hours: 9)),
+      endDateTime:
+          Utils.getFirstdayOfWeek(DateTime.now()).add(Duration(hours: 12)),
       courseGroup: 'LOG100',
       activityLocation: 'Room 102',
       activityName: 'Lab Session',
@@ -34,8 +36,10 @@ void main() {
     ),
     CourseActivity(
       courseName: 'Lecture',
-      startDateTime: Utils.getFirstdayOfWeek(DateTime.now()).add(Duration(days: 6, hours: 9)),
-      endDateTime: Utils.getFirstdayOfWeek(DateTime.now()).add(Duration(days: 6, hours: 12)),
+      startDateTime: Utils.getFirstdayOfWeek(DateTime.now())
+          .add(Duration(days: 6, hours: 9)),
+      endDateTime: Utils.getFirstdayOfWeek(DateTime.now())
+          .add(Duration(days: 6, hours: 12)),
       courseGroup: 'ING150-01',
       activityLocation: 'Room 101',
       activityName: 'Lecture 1',
@@ -56,24 +60,25 @@ void main() {
     });
 
     tearDown(() => {
-      unregister<NavigationService>(),
-      unregister<SettingsRepository>(),
-      unregister<CourseRepository>(),
-      unregister<RemoteConfigService>(),
-      unregister<NetworkingService>(),
-      unregister<AnalyticsService>(),
-    });
+          unregister<NavigationService>(),
+          unregister<SettingsRepository>(),
+          unregister<CourseRepository>(),
+          unregister<RemoteConfigService>(),
+          unregister<NetworkingService>(),
+          unregister<AnalyticsService>(),
+        });
 
     testWidgets("displays saturday and sunday", (WidgetTester tester) async {
       CourseRepositoryMock.stubGetCoursesActivities(courseRepositoryMock);
-      CourseRepositoryMock.stubCoursesActivities(courseRepositoryMock, toReturn: activites);
+      CourseRepositoryMock.stubCoursesActivities(courseRepositoryMock,
+          toReturn: activites);
 
       CalendarController controller = CalendarController();
-        await tester.runAsync(() async {
-          await tester.pumpWidget(localizedWidget(
-              child: WeekCalendar(controller: controller)));
-          await tester.pumpAndSettle();
-        });
+      await tester.runAsync(() async {
+        await tester.pumpWidget(
+            localizedWidget(child: WeekCalendar(controller: controller)));
+        await tester.pumpAndSettle();
+      });
 
       expect(find.text("LOG100\nRoom 102\nLab Session"), findsOneWidget);
       expect(find.text("ING150\nRoom 101\nLecture 1"), findsOneWidget);
@@ -82,14 +87,16 @@ void main() {
       expect(find.text("D"), findsOneWidget);
     });
 
-    testWidgets("does not display saturday and sunday", (WidgetTester tester) async {
+    testWidgets("does not display saturday and sunday",
+        (WidgetTester tester) async {
       CourseRepositoryMock.stubGetCoursesActivities(courseRepositoryMock);
-      CourseRepositoryMock.stubCoursesActivities(courseRepositoryMock, toReturn: []);
+      CourseRepositoryMock.stubCoursesActivities(courseRepositoryMock,
+          toReturn: []);
 
       CalendarController controller = CalendarController();
       await tester.runAsync(() async {
-        await tester.pumpWidget(localizedWidget(
-            child: WeekCalendar(controller: controller)));
+        await tester.pumpWidget(
+            localizedWidget(child: WeekCalendar(controller: controller)));
         await tester.pumpAndSettle();
       });
 
