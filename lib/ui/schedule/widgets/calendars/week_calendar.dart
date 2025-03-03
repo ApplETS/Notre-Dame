@@ -13,6 +13,8 @@ import 'package:notredame/ui/schedule/view_model/calendars/week_viewmodel.dart';
 import 'package:notredame/ui/schedule/widgets/schedule_calendar_tile.dart';
 import 'calendar_controller.dart';
 
+bool isAnimating = false;
+
 class WeekCalendar extends StatefulWidget {
   static final List<String> weekTitles = ["L", "M", "M", "J", "V", "S", "D"];
   final CalendarController controller;
@@ -40,11 +42,15 @@ class _WeekCalendarState extends State<WeekCalendar> {
   WeekView<Object?> _buildWeekView(
       WeekViewModel model, BuildContext context, double heightPerMinute) {
     model.handleDateSelectedChanged(model.weekSelected);
-    weekViewKey.currentState?.animateToWeek(model.weekSelected);
+
+    if (!isAnimating) {
+      weekViewKey.currentState?.animateToWeek(model.weekSelected);
+    }
 
     widget.controller.returnToToday = () {
       model.returnToCurrentDate();
-      weekViewKey.currentState?.animateToWeek(model.weekSelected);
+      isAnimating = true;
+      weekViewKey.currentState?.animateToWeek(model.weekSelected).then((_) => isAnimating = false);
     };
 
     return WeekView(
