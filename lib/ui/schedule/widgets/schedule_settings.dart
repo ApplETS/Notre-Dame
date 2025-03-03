@@ -80,9 +80,7 @@ class _ScheduleSettingsState extends State<ScheduleSettings> {
                           Theme.of(context).textTheme.bodyLarge!.color,
                       child: Card(
                         margin: const EdgeInsets.all(0),
-                        elevation: 0,
                         shape: const RoundedRectangleBorder(),
-                        color: context.theme.appColors.backgroundAlt,
                         child: ListView(
                           padding: EdgeInsets.symmetric(horizontal: 8),
                           controller: scrollController,
@@ -134,32 +132,37 @@ class _ScheduleSettingsState extends State<ScheduleSettings> {
           ),
         ),
       ));
-      cardContent.add(ListTile(
-        selected:
-            model.selectedScheduleActivity[courseActivitiesAcronym] == null,
-        selectedTileColor: selectedColor,
-        onTap: () =>
-            model.selectScheduleActivity(courseActivitiesAcronym, null),
-        title: Text(AppIntl.of(context)!.course_activity_group_both),
-      ));
+
+      final chips = <Widget>[];
+
+      chips.add(InputChip(
+          label: Text(AppIntl.of(context)!.course_activity_group_both),
+          selected: model.selectedScheduleActivity[courseActivitiesAcronym] == null,
+          selectedColor: selectedColor,
+          showCheckmark: false,
+          onPressed: () => model.selectScheduleActivity(courseActivitiesAcronym, null)));
 
       if (model.scheduleActivitiesByCourse[courseActivitiesAcronym] != null) {
         for (final course
             in model.scheduleActivitiesByCourse[courseActivitiesAcronym]!) {
-          cardContent.add(ListTile(
-            selected:
-                model.selectedScheduleActivity[course.courseAcronym] == course,
-            selectedTileColor: selectedColor,
-            onTap: () =>
-                model.selectScheduleActivity(course.courseAcronym, course),
-            title: Text(getActivityTitle(course.activityCode)),
+          chips.add(InputChip(
+            label: Text(getActivityTitle(course.activityCode)),
+            selected: model.selectedScheduleActivity[course.courseAcronym] == course,
+            selectedColor: selectedColor,
+            showCheckmark: false,
+            onPressed: () => model.selectScheduleActivity(course.courseAcronym, course),
           ));
         }
       }
+
+      cardContent.add(Wrap(
+        spacing: 10,
+        alignment: WrapAlignment.center,
+        children: chips,
+      ));
     }
 
     return Card(
-        elevation: 4,
         color: context.theme.appColors.backgroundAlt,
         child: Padding(
             padding: const EdgeInsets.only(top: 16.0, bottom: 8),
@@ -242,7 +245,7 @@ class _ScheduleSettingsState extends State<ScheduleSettings> {
     ];
 
     return Card(
-        elevation: 4,
+        color: context.theme.appColors.backgroundAlt,
         child: Padding(
             padding: const EdgeInsets.only(top: 16.0, bottom: 8),
             child: Column(children: cardContent)));
