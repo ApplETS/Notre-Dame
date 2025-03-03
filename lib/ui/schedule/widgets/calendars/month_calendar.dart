@@ -48,7 +48,7 @@ class MonthCalendar extends StatelessWidget {
           displayBorder: false,
           textStyle:
               TextStyle(color: context.theme.textTheme.bodyMedium!.color!),
-          backgroundColor: context.theme.scaffoldBackgroundColor,
+          backgroundColor: context.theme.appColors.appBar,
           weekDayStringBuilder: (p0) => weekTitles[p0]),
       headerStringBuilder: (date, {secondaryDate}) {
         final locale = AppIntl.of(context)!.localeName;
@@ -56,7 +56,7 @@ class MonthCalendar extends StatelessWidget {
       },
       headerStyle: HeaderStyle(
           decoration: BoxDecoration(
-            color: context.theme.scaffoldBackgroundColor,
+            color: context.theme.appColors.appBar,
           ),
           leftIconConfig: IconDataConfig(
             color: context.theme.textTheme.bodyMedium!.color!,
@@ -66,9 +66,6 @@ class MonthCalendar extends StatelessWidget {
             color: context.theme.textTheme.bodyMedium!.color!,
             size: 30,
           )),
-      weekDayStringBuilder: (p0) {
-        return weekTitles[p0];
-      },
       startDay: WeekDays.sunday,
       initialMonth: DateTime(DateTime.now().year, DateTime.now().month),
       cellBuilder: (date, events, _, __, ___) => FilledCell(

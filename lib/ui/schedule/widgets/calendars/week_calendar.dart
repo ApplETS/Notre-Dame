@@ -49,7 +49,7 @@ class _WeekCalendarState extends State<WeekCalendar> {
 
     return WeekView(
         key: weekViewKey,
-        weekNumberBuilder: (date) => null,
+        weekNumberBuilder: (date) => Container(color: context.theme.appColors.appBar),
         controller: model.eventController
           ..addAll(model.selectedWeekCalendarEvents()),
         onPageChange: (date, page) => setState(() {
@@ -63,7 +63,7 @@ class _WeekCalendarState extends State<WeekCalendar> {
         safeAreaOption: const SafeAreaOption(top: false, bottom: false),
         headerStyle: HeaderStyle(
             decoration: BoxDecoration(
-              color: context.theme.scaffoldBackgroundColor,
+              color: context.theme.appColors.appBar,
             ),
             leftIconConfig: IconDataConfig(
               color: context.theme.textTheme.bodyMedium!.color!,
@@ -96,19 +96,19 @@ class _WeekCalendarState extends State<WeekCalendar> {
         timeLineStringBuilder: (date, {secondaryDate}) {
           return DateFormat('H:mm').format(date);
         },
-        weekDayStringBuilder: (p0) {
-          return WeekCalendar.weekTitles[p0];
-        },
         headerStringBuilder: (date, {secondaryDate}) {
           final from = AppIntl.of(context)!.schedule_calendar_from;
           final to = AppIntl.of(context)!.schedule_calendar_to;
           final locale = AppIntl.of(context)!.localeName;
-          return '$from ${date.day} ${DateFormat.MMMM(locale).format(date)} $to ${secondaryDate?.day ?? '00'} ${DateFormat.MMMM(locale).format(secondaryDate ?? date)}';
+          return '$from ${date.day} ${DateFormat.MMMM(locale).format(date)} $to ${secondaryDate?.day} ${DateFormat.MMMM(locale).format(secondaryDate ?? date)}';
         },
         eventTileBuilder:
             (date, events, boundary, startDuration, endDuration) =>
                 _buildEventTile(events, context),
-        weekDayBuilder: (DateTime date) => _buildWeekDay(date, model, context));
+        weekDayBuilder: (DateTime date) => Container(
+          color: context.theme.appColors.appBar,
+            child: _buildWeekDay(date, model, context)
+        ));
   }
 
   Widget _buildWeekDay(
