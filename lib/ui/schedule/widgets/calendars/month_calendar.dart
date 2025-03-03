@@ -77,7 +77,7 @@ class MonthCalendar extends StatelessWidget {
         isInMonth: date.month == DateTime.now().month,
         events: events,
         backgroundColor: (date.month == DateTime.now().month)
-            ? context.theme.scaffoldBackgroundColor
+            ? Colors.transparent
             : Colors.grey.withValues(alpha: .06),
       ),
     );
