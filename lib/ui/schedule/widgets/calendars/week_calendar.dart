@@ -50,7 +50,9 @@ class _WeekCalendarState extends State<WeekCalendar> {
     widget.controller.returnToToday = () {
       model.returnToCurrentDate();
       isAnimating = true;
-      weekViewKey.currentState?.animateToWeek(model.weekSelected).then((_) => isAnimating = false);
+      weekViewKey.currentState
+          ?.animateToWeek(model.weekSelected)
+          .then((_) => isAnimating = false);
     };
 
     return WeekView(
