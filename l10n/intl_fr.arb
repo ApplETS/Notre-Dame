@@ -95,21 +95,31 @@
   "grades_grade_in_percentage": "{grade} %",
   "@grades_grade_in_percentage": {
     "placeholders": {
-      "grade": {}
+      "grade": {
+        "type": "Object"
+      }
     }
   },
   "grades_grade_with_percentage": "{grade}/{maxGrade} ({inPercentage} %)",
   "@grades_grade_with_percentage": {
     "placeholders": {
-      "grade": {},
-      "maxGrade": {},
-      "inPercentage": {}
+      "grade": {
+        "type": "Object"
+      },
+      "maxGrade": {
+        "type": "Object"
+      },
+      "inPercentage": {
+        "type": "Object"
+      }
     }
   },
   "grades_weight": "Pondération : {weight} %",
   "@grades_weight": {
     "placeholders": {
-      "weight": {}
+      "weight": {
+        "type": "Object"
+      }
     }
   },
   "grades_group": "Groupe",
@@ -127,19 +137,25 @@
   "grades_group_number": "Groupe {number}",
   "@grades_group_number": {
     "placeholders": {
-      "number": {}
+      "number": {
+        "type": "Object"
+      }
     }
   },
   "credits_number": "Crédits: {number}",
   "@credits_number": {
     "placeholders": {
-      "number": {}
+      "number": {
+        "type": "Object"
+      }
     }
   },
   "grades_teacher": "Enseignant: {teacherName}",
   "@grades_teacher": {
     "placeholders": {
-      "teacherName": {}
+      "teacherName": {
+        "type": "Object"
+      }
     }
   },
   "grades_error_course_evaluations_not_completed": "Vous n'aurez pas accès à vos notes au cours de la période d'évaluation tant que vous n'aurez pas effectué vos évaluations.",
@@ -217,13 +233,17 @@
   "news_author_notified_for": "Vous recevrez une notification lorsque {author} publiera une annonce.",
   "@news_author_notified_for": {
     "placeholders": {
-      "author": {}
+      "author": {
+        "type": "Object"
+      }
     }
   },
   "news_author_not_notified_for": "Vous ne recevrez plus une notification lorsque {author} publiera une annonce.",
   "@news_author_not_notified_for": {
     "placeholders": {
-      "author": {}
+      "author": {
+        "type": "Object"
+      }
     }
   },
 
@@ -306,7 +326,9 @@
   "not_found_message": "Oh oh... il semblerait que la page {pageName} n'est pas accessible.",
   "@not_found_message": {
     "placeholders": {
-      "pageName": {}
+      "pageName": {
+        "type": "Object"
+      }
     }
   },
   "go_to_dashboard": "Retour à l'accueil",
@@ -320,20 +342,28 @@
   "progress_bar_message": "{elapsedDays} jours écoulés / {totalDays} jours",
   "@progress_bar_message": {
     "placeholders": {
-      "elapsedDays": {},
-      "totalDays": {}
+      "elapsedDays": {
+        "type": "Object"
+      },
+      "totalDays": {
+        "type": "Object"
+      }
     }
   },
   "progress_bar_message_percentage": "{percentage} %",
   "@progress_bar_message_percentage": {
     "placeholders": {
-      "percentage": {}
+      "percentage": {
+        "type": "Object"
+      }
     }
   },
   "progress_bar_message_remaining_days": "{remainingDays} jours restants",
   "@progress_bar_message_remaining_days": {
     "placeholders": {
-      "remainingDays": {}
+      "remainingDays": {
+        "type": "Object"
+      }
     }
   },
   "progress_bar_suffix": "jours",
