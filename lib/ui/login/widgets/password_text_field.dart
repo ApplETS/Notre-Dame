@@ -51,6 +51,7 @@ class _PasswordFormFieldState extends State<PasswordFormField> {
                 icon: Icon(
                     _obscureText ? Icons.visibility : Icons.visibility_off,
                     color: AppPalette.grey.white),
+                tooltip: _obscureText ? AppIntl.of(context)!.login_password_show : AppIntl.of(context)!.login_password_hide,
                 onPressed: _toggle)),
         style: TextStyle(color: AppPalette.grey.white),
         validator: widget.validator,

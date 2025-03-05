@@ -9,11 +9,21 @@
   "session_winter": "Hiver",
   "session_summer": "Été",
   "session_without": "Pas de session active",
+  "link": "Lien",
+  "social_links": "Liens sociaux",
   "facebook": "Facebook",
   "github": "GitHub",
   "email": "Courriel",
   "email_subject": "Problème ÉTSMobile",
-  
+  "website_open": "Ouvrir la page web",
+  "website_club_open": "Ouvrir la page web du club",
+  "facebook_open":"Ouvrir la page Facebook",
+  "instagram_open":"Ouvrir la page Instagram",
+  "github_open":"Ouvrir la page GitHub",
+  "youtube_open": "Ouvrir la page Youtube",
+  "email_send":"Envoyer un commentaire via courriel",
+  "discord_join":"Rejoindre le Discord",
+
   "close_button_text": "Fermer",
 
   "title_schedule": "Horaire",
@@ -35,7 +45,9 @@
   "login_msg_logout_success": "Vous vous êtes déconnecté",
   "login_applets_logo": "Conçue par",
   "login_password_forgotten": "Mot de passe oublié?",
-  
+  "login_password_show": "Afficher",
+  "login_password_hide": "Cacher",
+
   "dashboard_msg_card_removed": "Carte supprimée",
   "dashboard_restore_all_cards_title": "Restaurer toutes les cartes",
 
@@ -65,6 +77,7 @@
   "schedule_settings_starting_weekday_sunday": "Dimanche",
   "schedule_no_event": "Aucun évènement à l'horaire.",
   "schedule_select_course_activity": "Sélectionner le groupe du laboratoire",
+  "schedule_already_today_tooltip": "Aller à l'horaire d'aujourd'hui",
   "schedule_already_today_toast": "Déjà sur l'horaire d'aujourd'hui",
   "schedule_calendar_from": "Du",
   "schedule_calendar_to": "au",
@@ -88,6 +101,14 @@
   "calendar_permission_denied": "Vous n'avez pas accordé la permission d'accéder à votre calendrier. Veuillez l'activer dans les paramètres système de l'application.",
 
   "grades_title": "Notes",
+  "grades_in_schedule": "Naviguer à l'horaire : {sessionNameYear}",
+  "@grades_in_schedule": {
+    "placeholders": {
+      "sessionNameYear": {
+        "type": "String"
+      }
+    }
+  },
   "grades_msg_no_grades": "Aucune note disponible.\nTirez pour rafraichir",
   "grades_msg_no_grade": "Aucune note disponible",
   "grades_current_rating": "Votre note",
@@ -195,6 +216,22 @@
   "ets_papercut_title":"PaperCut",
   "ets_aeets_title": "AÉÉTS",
   "ets_100genies_title": "Pub 100 Génies",
+  "ets_remove_quick_link": "Effacer le lien : {quickLinkName}",
+  "@ets_remove_quick_link": {
+    "placeholders": {
+      "quickLinkName": {
+        "type": "String"
+      }
+    }
+  },
+  "ets_add_quick_link": "Ajouter le lien : {quickLinkName}",
+  "@ets_add_quick_link": {
+    "placeholders": {
+      "quickLinkName": {
+        "type": "String"
+      }
+    }
+  },
 
   "share": "Partager",
   "export": "Exporter",
@@ -332,6 +369,7 @@
     }
   },
   "go_to_dashboard": "Retour à l'accueil",
+  "go_back": "Retour",
 
   "no_connectivity": "Aucune connexion internet",
   "service_outage": "Désolé, nous éprouvons actuellement des problèmes de connexion. Veuillez réessayer plus tard.",
@@ -381,5 +419,14 @@
   "ticket_status_closed": "Fermé",
   "loading": "Chargement...",
 
-  "no_schedule_available": "Il n'y a aucun événement à l'horaire pour l'instant"
+  "no_schedule_available": "Il n'y a aucun événement à l'horaire pour l'instant",
+
+  "social_links_name": "Lien social : {linkName}",
+  "@social_links_name": {
+    "placeholders": {
+      "linkName": {
+        "type": "String"
+      }
+    }
+  }
 }

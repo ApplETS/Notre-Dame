@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 // Package imports:
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 // Project imports:
 import 'package:notredame/data/services/launch_url_service.dart';
@@ -28,6 +29,7 @@ class OutageSocialSection extends StatelessWidget {
                   FontAwesomeIcons.earthAmericas,
                   color: AppPalette.grey.white,
                 ),
+                tooltip: AppIntl.of(context)!.website_club_open,
                 onPressed: () =>
                     _launchUrlService.launchInBrowser(Urls.clubWebsite)),
             IconButton(
@@ -35,6 +37,7 @@ class OutageSocialSection extends StatelessWidget {
                   FontAwesomeIcons.github,
                   color: AppPalette.grey.white,
                 ),
+                tooltip: AppIntl.of(context)!.github_open,
                 onPressed: () =>
                     _launchUrlService.launchInBrowser(Urls.clubGithub)),
             IconButton(
@@ -42,6 +45,7 @@ class OutageSocialSection extends StatelessWidget {
                   Icons.mail_outline,
                   color: AppPalette.grey.white,
                 ),
+                tooltip: AppIntl.of(context)!.email_send,
                 onPressed: () =>
                     _launchUrlService.writeEmail(Urls.clubEmail, "")),
             IconButton(
@@ -49,6 +53,7 @@ class OutageSocialSection extends StatelessWidget {
                   FontAwesomeIcons.discord,
                   color: AppPalette.grey.white,
                 ),
+                tooltip: AppIntl.of(context)!.discord_join,
                 onPressed: () =>
                     _launchUrlService.launchInBrowser(Urls.clubDiscord))
           ],

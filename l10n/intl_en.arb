@@ -9,10 +9,20 @@
   "session_winter": "Winter",
   "session_summer": "Summer",
   "session_without": "No active semester",
+  "link": "Link",
+  "social_links": "Social links",
   "facebook": "Facebook",
   "github": "GitHub",
   "email": "Email",
   "email_subject": "ÉTSMobile Problem",
+  "website_open": "Open web page",
+  "website_club_open": "Open the club web page",
+  "facebook_open":"Open Facebook page",
+  "instagram_open":"Open Instagram page",
+  "github_open":"Open GitHub page",
+  "youtube_open": "Open Youtube page",
+  "email_send":"Send a comment via email",
+  "discord_join":"Join the Discord",
 
   "close_button_text": "Close",
 
@@ -35,6 +45,8 @@
   "login_msg_logout_success": "You have logged out",
   "login_applets_logo": "Made by",
   "login_password_forgotten": "Forgot your password?",
+  "login_password_show": "Show",
+  "login_password_hide": "Hide",
 
   "dashboard_msg_card_removed": "Card removed",
   "dashboard_restore_all_cards_title": "Restore all cards",
@@ -65,6 +77,7 @@
   "schedule_settings_starting_weekday_saturday": "Saturday",
   "schedule_settings_starting_weekday_sunday": "Sunday",
   "schedule_select_course_activity": "Select lab group",
+  "schedule_already_today_tooltip": "Go to today's schedule",
   "schedule_already_today_toast": "Already showing today's schedule",
   "schedule_calendar_from": "From",
   "schedule_calendar_to": "To",
@@ -88,6 +101,14 @@
   "calendar_permission_denied": "You denied the app the permission to edit your calendar. Change this preference in system settings to use this feature.",
 
   "grades_title": "Grades",
+  "grades_in_schedule": "Navigate on schedule : {sessionNameYear}",
+  "@grades_in_schedule": {
+    "placeholders": {
+      "sessionNameYear": {
+        "type": "String"
+      }
+    }
+  },
   "grades_msg_no_grades": "No grade available\nPull to refresh",
   "grades_msg_no_grade": "No grade available",
   "grades_current_rating": "Your grade",
@@ -195,6 +216,22 @@
   "ets_papercut_title":"PaperCut",
   "ets_aeets_title": "AÉÉTS",
   "ets_100genies_title": "Pub 100 Génies",
+  "ets_remove_quick_link": "Delete link : {quickLinkName}",
+  "@ets_remove_quick_link": {
+    "placeholders": {
+      "quickLinkName": {
+        "type": "String"
+      }
+    }
+  },
+  "ets_add_quick_link": "Add the link : {quickLinkName}",
+  "@ets_add_quick_link": {
+    "placeholders": {
+      "quickLinkName": {
+        "type": "String"
+      }
+    }
+  },
 
   "news_title" : "News",
   "news_error_not_found_title" : "Oh oh!",
@@ -332,6 +369,7 @@
     }
   },
   "go_to_dashboard": "Go to Dashboard",
+  "go_back": "Back",
 
   "no_connectivity": "No internet connection",
   "service_outage": "Sorry, we are currently experiencing connection problems. Please try again later.",
@@ -381,5 +419,14 @@
   "ticket_status_closed": "Closed",
   "loading": "Loading...",
 
-  "no_schedule_available": "There are no events scheduled at the moment"
+  "no_schedule_available": "There are no events scheduled at the moment",
+
+  "social_links_name": "Social link : {linkName}",
+  "@social_links_name": {
+    "placeholders": {
+      "linkName": {
+        "type": "String"
+      }
+    }
+  }
 }
