@@ -10,18 +10,5 @@ class Urls {
   static const String clubYoutube =
       "https://youtube.com/channel/UCiSzzfW1bVbE_0KcEZO52ew";
   static const String clubDiscord = "https://discord.gg/adMkWptn6Y";
-
-  /// Urls related to SignetsMobile API
-  /// For more information about the operations supported see:
   static const String signetsAPI = "etsmobileapi-preprod.etsmtl.ca";
-
-  // Operations supported by the Signets API
-  static const String infoStudentOperation = "/api/Etudiant/infoEtudiant";
-  static const String listProgramsOperation = "/api/Etudiant/listeProgrammes";
-  static const String listClassScheduleOperation = "/api/Etudiant/lireHoraireDesSeances";
-  static const String listSessionsOperation = "/api/Etudiant/listeSessions";
-  static const String listCourseOperation = "/api/Etudiant/listeCours";
-  static const String listEvaluationsOperation = "/api/Etudiant/listeElementsEvaluation";
-  static const String listeHoraireEtProf = "/api/Etudiant/listeHoraireEtProf";
-  static const String readCourseReviewOperation = "/api/Etudiant/lireEvaluationCours";
 }

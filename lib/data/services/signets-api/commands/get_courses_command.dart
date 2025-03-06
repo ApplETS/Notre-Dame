@@ -6,11 +6,13 @@ import 'package:xml/xml.dart';
 import 'package:notredame/data/services/signets-api/models/course.dart';
 import 'package:notredame/data/services/signets-api/signets_api_client.dart';
 import 'package:notredame/data/services/signets-api/soap_service.dart';
-import 'package:notredame/domain/constants/urls.dart';
 import 'package:notredame/utils/command.dart';
 
 /// Call the SignetsAPI to get the courses of the student ([username]).
 class GetCoursesCommand implements Command<List<Course>> {
+  static const String endpoint = "/api/Etudiant/listeCours";
+  static const String responseTag = "ListeCours";
+
   final SignetsAPIClient client;
   final http.Client _httpClient;
   final String token;
@@ -21,7 +23,7 @@ class GetCoursesCommand implements Command<List<Course>> {
   Future<List<Course>> execute() async {
     // Generate initial soap envelope
     final responseBody = await SoapService.sendSOAPRequest(
-        _httpClient, Urls.listCourseOperation, token);
+        _httpClient, endpoint, token, responseTag);
 
     return responseBody
         .findAllElements("Cours")

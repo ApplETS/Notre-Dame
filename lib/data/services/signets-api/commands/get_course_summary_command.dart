@@ -3,36 +3,41 @@ import 'package:http/http.dart' as http;
 import 'package:xml/xml.dart';
 
 // Project imports:
-import 'package:notredame/data/services/signets-api/models/course.dart';
 import 'package:notredame/data/services/signets-api/models/course_summary.dart';
 import 'package:notredame/data/services/signets-api/models/signets_errors.dart';
 import 'package:notredame/data/services/signets-api/signets_api_client.dart';
 import 'package:notredame/data/services/signets-api/soap_service.dart';
-import 'package:notredame/domain/constants/urls.dart';
 import 'package:notredame/utils/api_exception.dart';
 import 'package:notredame/utils/command.dart';
 
 /// Call the SignetsAPI to get all the evaluations (exams) and the summary
 /// of [course] for the student ([username]).
 class GetCourseSummaryCommand implements Command<CourseSummary> {
+  static const String endpoint = "/api/Etudiant/listeElementsEvaluation";
+  static const String responseTag = "ListeElementsEvaluation";
+
   final SignetsAPIClient client;
   final http.Client _httpClient;
   final String token;
-  final Course course;
+  final String session;
+  final String acronym;
+  final String group;
 
   GetCourseSummaryCommand(
     this.client,
     this._httpClient, {
     required this.token,
-    required this.course,
+    required this.session,
+    required this.acronym,
+    required this.group,
   });
 
   @override
   Future<CourseSummary> execute() async {
-    final queryParams = { "session": course.session, "sigle": course.acronym, "groupe": course.group };
+    final queryParams = { "session": session, "sigle": acronym, "groupe": group };
 
     final responseBody = await SoapService.sendSOAPRequest(
-        _httpClient, Urls.listEvaluationsOperation, token, queryParameters: queryParams);
+        _httpClient, endpoint, token, responseTag, queryParameters: queryParams);
 
     final errorTag = responseBody.getElement(SignetsError.signetsErrorSoapTag);
     if (errorTag != null &&

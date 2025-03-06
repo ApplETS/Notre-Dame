@@ -481,7 +481,7 @@ class CourseRepository {
     }
 
     try {
-      summary = await _signetsApiClient.getCourseSummary(course: course);
+      summary = await _signetsApiClient.getCourseSummary(session: course.session, acronym: course.acronym, group: course.group);
       _logger
           .d("$tag - getCourseSummary: fetched ${course.acronym} summary.");
     } on Exception catch (e, stacktrace) {
@@ -532,7 +532,7 @@ class CourseRepository {
       }
 
       for (final Session session in _sessions!) {
-        sessionReviews = await _signetsApiClient.getCourseReviews(session: session);
+        sessionReviews = await _signetsApiClient.getCourseReviews(session: session.shortName);
         reviews.putIfAbsent(session.shortName, () => sessionReviews);
         _logger.d(
             "$tag - getCoursesEvaluations: fetched ${reviews[session.shortName]?.length ?? 0} "

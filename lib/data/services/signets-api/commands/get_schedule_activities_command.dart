@@ -6,12 +6,14 @@ import 'package:xml/xml.dart';
 import 'package:notredame/data/services/signets-api/models/schedule_activity.dart';
 import 'package:notredame/data/services/signets-api/signets_api_client.dart';
 import 'package:notredame/data/services/signets-api/soap_service.dart';
-import 'package:notredame/domain/constants/urls.dart';
 import 'package:notredame/utils/command.dart';
 
 /// Call the SignetsAPI to get the courses activities for the [session] for
 /// the student ([username]).
 class GetScheduleActivitiesCommand implements Command<List<ScheduleActivity>> {
+  static const String endpoint = "/api/Etudiant/listeHoraireEtProf";
+  static const String responseTag = "ListeActivitesEtProfs";
+
   final SignetsAPIClient client;
   final http.Client _httpClient;
   final RegExp _sessionShortNameRegExp;
@@ -34,7 +36,7 @@ class GetScheduleActivitiesCommand implements Command<List<ScheduleActivity>> {
 
     final queryParams = { "session" : session };
     final responseBody = await SoapService.sendSOAPRequest(
-        _httpClient, Urls.listeHoraireEtProf, token, queryParameters: queryParams);
+        _httpClient, endpoint, token, responseTag, queryParameters: queryParams);
 
     /// Build and return the list of CourseActivity
     return responseBody

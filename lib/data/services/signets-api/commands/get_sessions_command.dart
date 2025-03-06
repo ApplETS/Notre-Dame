@@ -6,11 +6,13 @@ import 'package:xml/xml.dart';
 import 'package:notredame/data/services/signets-api/models/session.dart';
 import 'package:notredame/data/services/signets-api/signets_api_client.dart';
 import 'package:notredame/data/services/signets-api/soap_service.dart';
-import 'package:notredame/domain/constants/urls.dart';
 import 'package:notredame/utils/command.dart';
 
 /// Call the SignetsAPI to get the list of all the [Session] for the student ([username]).
 class GetSessionsCommand implements Command<List<Session>> {
+  static const String endpoint = "/api/Etudiant/listeSessions";
+  static const String responseTag = "ListeSessions";
+
   final SignetsAPIClient client;
   final http.Client _httpClient;
   final String token;
@@ -20,11 +22,11 @@ class GetSessionsCommand implements Command<List<Session>> {
   @override
   Future<List<Session>> execute() async {
     final responseBody = await SoapService.sendSOAPRequest(
-        _httpClient, Urls.listSessionsOperation, token);
+        _httpClient, endpoint, token, responseTag);
 
     /// Build and return the list of Session
     return responseBody
-        .findAllElements("Trimestre")
+        .findAllElements("Session")
         .map((node) => Session.fromXmlNode(node))
         .toList();
   }
