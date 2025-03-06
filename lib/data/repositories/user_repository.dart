@@ -10,7 +10,6 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:logger/logger.dart';
 
 // Project imports:
-import 'package:notredame/data/models/mon_ets_user.dart';
 import 'package:notredame/data/services/analytics_service.dart';
 import 'package:notredame/data/services/cache_service.dart';
 import 'package:notredame/data/services/networking_service.dart';
@@ -48,11 +47,6 @@ class UserRepository {
   /// Used to access the Signets API
   final SignetsAPIClient _signetsApiClient = locator<SignetsAPIClient>();
 
-  /// Mon ETS user for the student
-  MonETSUser? _monETSUser;
-
-  MonETSUser? get monETSUser => _monETSUser;
-
   /// Information for the student profile
   ProfileStudent? _info;
 
@@ -66,8 +60,6 @@ class UserRepository {
   // TODO: remove after the migration to the new authentication system
   /// Log out the user
   Future<bool> logOut() async {
-    _monETSUser = null;
-
     // Delete the credentials from the secure storage
     try {
       await _secureStorage.delete(key: usernameSecureKey);
