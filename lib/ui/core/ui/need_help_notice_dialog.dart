@@ -23,7 +23,8 @@ class NeedHelpNoticeDialog extends AlertDialog {
   Widget build(BuildContext context) => AlertDialog(
         title: Text(
           AppIntl.of(context)!.faq_questions_app_alert_title,
-          style: const TextStyle(color: AppPalette.etsLightRed, fontWeight: FontWeight.bold),
+          style: const TextStyle(
+              color: AppPalette.etsLightRed, fontWeight: FontWeight.bold),
         ),
         content: Text(AppIntl.of(context)!.faq_questions_app_alert_confirmation,
             style: const TextStyle(fontWeight: FontWeight.bold)),
