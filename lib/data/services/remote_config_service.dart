@@ -141,6 +141,21 @@ class RemoteConfigService {
     return _remoteConfig.getString(_helloWebsiteUrl);
   }
 
+  Future<String> get aadAndroidRedirectUri async {
+    await fetch();
+    return _remoteConfig.getString("AAD_ANDROID_REDIRECT_URI_DEBUG");
+  }
+
+  Future<String> get aadAppleAuthority async {
+    await fetch();
+    return _remoteConfig.getString("AAD_APPLE_AUTHORITY");
+  }
+
+  Future<String> get aadClientId async {
+    await fetch();
+    return _remoteConfig.getString("AAD_CLIENT_ID_DEBUG");
+  }
+
   Future<void> fetch() async {
     final AnalyticsService analyticsService = locator<AnalyticsService>();
     try {

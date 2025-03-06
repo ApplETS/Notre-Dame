@@ -75,6 +75,7 @@ dependencies:
   collection: ^1.18.0
   intl: ^0.19.0
   image: ^4.3.0
+  msal_auth: ^3.1.4
 
 dev_dependencies:
   flutter_test:

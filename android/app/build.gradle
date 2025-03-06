@@ -12,6 +12,13 @@ if (keystorePropertiesFile.exists()) {
     keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
 }
 
+def customConfigFile = rootProject.file("config.properties")
+def customConfig = new Properties()
+
+if (customConfigFile.exists()) {
+    customConfig.load(new FileInputStream(customConfigFile))
+}
+
 android {
     namespace = "ca.etsmtl.applets.etsmobile"
     compileSdk = flutter.compileSdkVersion
@@ -32,7 +39,10 @@ android {
         targetSdk = flutter.targetSdkVersion
         versionCode = flutter.versionCode
         versionName = flutter.versionName
-        manifestPlaceholders += [mapsApiKey: "$System.env.MAPS_API_KEY"]
+        manifestPlaceholders += [
+                mapsApiKey: customConfig['MAPS_API_KEY'] ?: "$System.env.MAPS_API_KEY",
+                appHash: customConfig['APP_HASH'] ?: "$System.env.APP_HASH"
+        ]
     }
 
     signingConfigs {

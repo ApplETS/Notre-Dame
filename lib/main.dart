@@ -76,6 +76,7 @@ class ETSMobile extends StatelessWidget {
             theme: AppTheme.light,
             darkTheme: AppTheme.dark,
             themeMode: model.themeMode,
+            debugShowCheckedModeBanner: false,
             localizationsDelegates: const [
               AppIntl.delegate,
               GlobalMaterialLocalizations.delegate,

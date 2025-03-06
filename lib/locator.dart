@@ -17,6 +17,7 @@ import 'package:notredame/data/services/in_app_review_service.dart';
 import 'package:notredame/data/services/internal_info_service.dart';
 import 'package:notredame/data/services/launch_url_service.dart';
 import 'package:notredame/data/services/monets/monets_api_client.dart';
+import 'package:notredame/data/services/auth_service.dart';
 import 'package:notredame/data/services/navigation_service.dart';
 import 'package:notredame/data/services/networking_service.dart';
 import 'package:notredame/data/services/preferences_service.dart';
@@ -36,6 +37,7 @@ void setupLocator() {
   locator.registerLazySingleton(() => InAppReviewService());
   locator.registerLazySingleton(() => RemoteConfigService());
   locator.registerLazySingleton(() => LaunchUrlService());
+  locator.registerLazySingleton(() => AuthService());
 
   // Managers
   locator.registerLazySingleton(() => UserRepository());
