@@ -57,7 +57,7 @@ void main() {
 
       testWidgets('tapping "Questions About ETS Button" shows dialog',
           (WidgetTester tester) async {
-        SettingsManagerMock.stubLocale(settingsManagerMock);
+        SettingsRepositoryMock.stubLocale(settingsManagerMock);
 
         await tester.pumpWidget(localizedWidget(child: const FaqView()));
 
