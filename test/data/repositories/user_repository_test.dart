@@ -142,15 +142,13 @@ void main() {
             status: 'Actif')
       ];
 
-      const String username = "username";
-
       setUp(() async {
         // Stub to simulate presence of programs cache
         CacheServiceMock.stubGet(cacheManagerMock,
             UserRepository.programsCacheKey, jsonEncode(programs));
 
         // Stub SignetsApi answer to test only the cache retrieving
-        SignetsAPIClientMock.stubGetPrograms(signetsApiMock, username, []);
+        SignetsAPIClientMock.stubGetPrograms(signetsApiMock, []);
 
         // Stub to simulate that the user has an active internet connection
         NetworkingServiceMock.stubHasConnectivity(networkingServiceMock);
@@ -202,7 +200,7 @@ void main() {
         // Stub SignetsApi answer to test only the cache retrieving
         reset(signetsApiMock);
         SignetsAPIClientMock.stubGetPrograms(
-            signetsApiMock, username, programs);
+            signetsApiMock, programs);
 
         expect(manager.programs, isNull);
         final results = await manager.getPrograms();
@@ -225,7 +223,7 @@ void main() {
             cacheManagerMock, UserRepository.programsCacheKey, jsonEncode([]));
 
         // Stub SignetsApi answer to test only the cache retrieving
-        SignetsAPIClientMock.stubGetProgramsException(signetsApiMock, username);
+        SignetsAPIClientMock.stubGetProgramsException(signetsApiMock);
         FlutterSecureStorageMock.stubRead(secureStorageMock,
             key: UserRepository.passwordSecureKey, valueToReturn: '');
 
@@ -262,7 +260,7 @@ void main() {
 
         // Stub SignetsApi answer to test only the cache retrieving
         SignetsAPIClientMock.stubGetPrograms(
-            signetsApiMock, username, programs);
+            signetsApiMock, programs);
 
         expect(manager.programs, isNull);
         final results = await manager.getPrograms();
@@ -296,8 +294,6 @@ void main() {
       final ProfileStudent defaultInfo = ProfileStudent(
           balance: '', firstName: '', lastName: '', permanentCode: '', universalCode: '');
 
-      const String username = "username";
-
       setUp(() async {
         // Stub to simulate presence of info cache
         CacheServiceMock.stubGet(
@@ -307,7 +303,7 @@ void main() {
             key: UserRepository.passwordSecureKey, valueToReturn: '');
 
         // Stub SignetsApi answer to test only the cache retrieving
-        SignetsAPIClientMock.stubGetInfo(signetsApiMock, username, defaultInfo);
+        SignetsAPIClientMock.stubGetInfo(signetsApiMock, defaultInfo);
 
         // Stub to simulate that the user has an active internet connection
         NetworkingServiceMock.stubHasConnectivity(networkingServiceMock);
@@ -358,7 +354,7 @@ void main() {
             permanentCode: 'DOEJ00000000',
             universalCode: 'AA00000');
         reset(signetsApiMock);
-        SignetsAPIClientMock.stubGetInfo(signetsApiMock, username, anotherInfo);
+        SignetsAPIClientMock.stubGetInfo(signetsApiMock, anotherInfo);
 
         expect(manager.info, isNull);
         final results = await manager.getInfo();
@@ -377,7 +373,7 @@ void main() {
       test("SignetsAPI return a info that already exists", () async {
         // Stub SignetsApi answer to test only the cache retrieving
         reset(signetsApiMock);
-        SignetsAPIClientMock.stubGetInfo(signetsApiMock, username, info);
+        SignetsAPIClientMock.stubGetInfo(signetsApiMock, info);
 
         expect(manager.info, isNull);
         final results = await manager.getInfo();
@@ -400,7 +396,7 @@ void main() {
             cacheManagerMock, UserRepository.infoCacheKey, jsonEncode(info));
 
         // Stub SignetsApi answer to test only the cache retrieving
-        SignetsAPIClientMock.stubGetInfoException(signetsApiMock, username);
+        SignetsAPIClientMock.stubGetInfoException(signetsApiMock);
 
         expect(manager.info, isNull);
         expect(manager.getInfo(), throwsA(isInstanceOf<ApiException>()));
@@ -428,7 +424,7 @@ void main() {
             cacheManagerMock, UserRepository.infoCacheKey);
 
         // Stub SignetsApi answer to test only the cache retrieving
-        SignetsAPIClientMock.stubGetInfo(signetsApiMock, username, info);
+        SignetsAPIClientMock.stubGetInfo(signetsApiMock, info);
 
         expect(manager.info, isNull);
         final results = await manager.getInfo();
