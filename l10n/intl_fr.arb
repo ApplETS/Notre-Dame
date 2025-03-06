@@ -125,13 +125,13 @@
   "@grades_grade_with_percentage": {
     "placeholders": {
       "grade": {
-        "type": "Object"
+        "type": "double"
       },
       "maxGrade": {
         "type": "Object"
       },
       "inPercentage": {
-        "type": "Object"
+        "type": "double"
       }
     }
   },
@@ -139,7 +139,7 @@
   "@grades_weight": {
     "placeholders": {
       "weight": {
-        "type": "Object"
+        "type": "double"
       }
     }
   },
@@ -159,7 +159,7 @@
   "@grades_group_number": {
     "placeholders": {
       "number": {
-        "type": "Object"
+        "type": "String"
       }
     }
   },
@@ -167,7 +167,7 @@
   "@credits_number": {
     "placeholders": {
       "number": {
-        "type": "Object"
+        "type": "int"
       }
     }
   },
@@ -175,7 +175,7 @@
   "@grades_teacher": {
     "placeholders": {
       "teacherName": {
-        "type": "Object"
+        "type": "String"
       }
     }
   },
@@ -271,7 +271,7 @@
   "@news_author_notified_for": {
     "placeholders": {
       "author": {
-        "type": "Object"
+        "type": "String"
       }
     }
   },
@@ -279,7 +279,7 @@
   "@news_author_not_notified_for": {
     "placeholders": {
       "author": {
-        "type": "Object"
+        "type": "String"
       }
     }
   },
@@ -364,7 +364,7 @@
   "@not_found_message": {
     "placeholders": {
       "pageName": {
-        "type": "Object"
+        "type": "String"
       }
     }
   },
@@ -381,10 +381,10 @@
   "@progress_bar_message": {
     "placeholders": {
       "elapsedDays": {
-        "type": "Object"
+        "type": "int"
       },
       "totalDays": {
-        "type": "Object"
+        "type": "int"
       }
     }
   },
@@ -392,7 +392,7 @@
   "@progress_bar_message_percentage": {
     "placeholders": {
       "percentage": {
-        "type": "Object"
+        "type": "int"
       }
     }
   },
@@ -400,7 +400,7 @@
   "@progress_bar_message_remaining_days": {
     "placeholders": {
       "remainingDays": {
-        "type": "Object"
+        "type": "int"
       }
     }
   },
