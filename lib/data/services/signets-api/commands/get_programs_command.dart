@@ -13,21 +13,15 @@ import 'package:notredame/utils/command.dart';
 class GetProgramsCommand implements Command<List<Program>> {
   final SignetsAPIClient client;
   final http.Client _httpClient;
-  final String username;
-  final String password;
+  final String token;
 
   GetProgramsCommand(this.client, this._httpClient,
-      {required this.username, required this.password});
+      {required this.token});
 
   @override
   Future<List<Program>> execute() async {
-    // Generate initial soap envelope
-    final body = SoapService.buildBasicSOAPBody(
-            Urls.listProgramsOperation, username, password)
-        .buildDocument();
-
     final responseBody = await SoapService.sendSOAPRequest(
-        _httpClient, body, Urls.listProgramsOperation);
+        _httpClient, Urls.listProgramsOperation, token);
 
     /// Build and return the list of Program
     return responseBody

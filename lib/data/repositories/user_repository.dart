@@ -63,6 +63,7 @@ class UserRepository {
 
   List<Program>? get programs => _programs;
 
+  // TODO: remove after the migration to the new authentication system
   /// Log out the user
   Future<bool> logOut() async {
     _monETSUser = null;
@@ -98,6 +99,23 @@ class UserRepository {
       throw const ApiException(prefix: tag, message: "Not authenticated");
     }
   }
+
+  /// Check whether the user was previously authenticated.
+  Future<bool> wasPreviouslyLoggedIn() async {
+    try {
+      final username = await _secureStorage.read(key: passwordSecureKey);
+      if (username != null) {
+        final password = await _secureStorage.read(key: passwordSecureKey);
+        return password != null && password.isNotEmpty;
+      }
+    } on PlatformException catch (e, stacktrace) {
+      await _secureStorage.deleteAll();
+      _analyticsService.logError(
+          tag, "getPassword - PlatformException - $e", e, stacktrace);
+    }
+    return false;
+  }
+  // TODO end: remove after the migration to the new authentication system
 
   /// Get the list of programs on which the student was active.
   /// The list from the [CacheService] is loaded than updated with the results
@@ -135,18 +153,11 @@ class UserRepository {
     }
 
     try {
-      // getPassword will try to authenticate the user if not authenticated.
-      final String password = await getPassword();
+      _programs = await _signetsApiClient.getPrograms();
+      _logger.d("$tag - getPrograms: ${_programs!.length} programs fetched.");
 
-      if (_monETSUser != null) {
-        _programs = await _signetsApiClient.getPrograms(
-            username: _monETSUser!.universalCode, password: password);
-
-        _logger.d("$tag - getPrograms: ${_programs!.length} programs fetched.");
-
-        // Update cache
-        _cacheManager.update(programsCacheKey, jsonEncode(_programs));
-      }
+      // Update cache
+      _cacheManager.update(programsCacheKey, jsonEncode(_programs));
     } on CacheException catch (_) {
       _logger.e(
           "$tag - getPrograms: exception raised while trying to update the cache.");
@@ -191,21 +202,15 @@ class UserRepository {
     }
 
     try {
-      // getPassword will try to authenticate the user if not authenticated.
-      final String password = await getPassword();
+      final fetchedInfo = await _signetsApiClient.getStudentInfo();
 
-      if (_monETSUser != null) {
-        final fetchedInfo = await _signetsApiClient.getStudentInfo(
-            username: _monETSUser!.universalCode, password: password);
+      _logger.d("$tag - getInfo: $fetchedInfo info fetched.");
 
-        _logger.d("$tag - getInfo: $fetchedInfo info fetched.");
+      if (_info != fetchedInfo) {
+        _info = fetchedInfo;
 
-        if (_info != fetchedInfo) {
-          _info = fetchedInfo;
-
-          // Update cache
-          _cacheManager.update(infoCacheKey, jsonEncode(_info));
-        }
+        // Update cache
+        _cacheManager.update(infoCacheKey, jsonEncode(_info));
       }
     } on CacheException catch (_) {
       _logger.e(
@@ -218,21 +223,5 @@ class UserRepository {
     }
 
     return _info!;
-  }
-
-  /// Check whether the user was previously authenticated.
-  Future<bool> wasPreviouslyLoggedIn() async {
-    try {
-      final username = await _secureStorage.read(key: passwordSecureKey);
-      if (username != null) {
-        final password = await _secureStorage.read(key: passwordSecureKey);
-        return password != null && password.isNotEmpty;
-      }
-    } on PlatformException catch (e, stacktrace) {
-      await _secureStorage.deleteAll();
-      _analyticsService.logError(
-          tag, "getPassword - PlatformException - $e", e, stacktrace);
-    }
-    return false;
   }
 }

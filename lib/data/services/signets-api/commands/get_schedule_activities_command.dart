@@ -15,16 +15,14 @@ class GetScheduleActivitiesCommand implements Command<List<ScheduleActivity>> {
   final SignetsAPIClient client;
   final http.Client _httpClient;
   final RegExp _sessionShortNameRegExp;
-  final String username;
-  final String password;
+  final String token;
   final String session;
 
   GetScheduleActivitiesCommand(
     this.client,
     this._httpClient,
     this._sessionShortNameRegExp, {
-    required this.username,
-    required this.password,
+    required this.token,
     required this.session,
   });
 
@@ -34,27 +32,9 @@ class GetScheduleActivitiesCommand implements Command<List<ScheduleActivity>> {
       throw FormatException("Session $session isn't correctly formatted");
     }
 
-    // Generate initial soap envelope
-    final body = SoapService.buildBasicSOAPBody(
-            Urls.listeHoraireEtProf, username, password)
-        .buildDocument();
-    final operationContent = XmlBuilder();
-
-    // Add the content needed by the operation
-    operationContent.element("pSession", nest: () {
-      operationContent.text(session);
-    });
-
-    // Add the parameters needed inside the request.
-    body
-        .findAllElements(Urls.listeHoraireEtProf,
-            namespace: Urls.signetsOperationBase)
-        .first
-        .children
-        .add(operationContent.buildFragment());
-
+    final queryParams = { "session" : session };
     final responseBody = await SoapService.sendSOAPRequest(
-        _httpClient, body, Urls.listeHoraireEtProf);
+        _httpClient, Urls.listeHoraireEtProf, token, queryParameters: queryParams);
 
     /// Build and return the list of CourseActivity
     return responseBody

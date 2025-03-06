@@ -17,46 +17,23 @@ import 'package:notredame/utils/command.dart';
 class GetCourseSummaryCommand implements Command<CourseSummary> {
   final SignetsAPIClient client;
   final http.Client _httpClient;
-  final String username;
-  final String password;
+  final String token;
   final Course course;
 
   GetCourseSummaryCommand(
     this.client,
     this._httpClient, {
-    required this.username,
-    required this.password,
+    required this.token,
     required this.course,
   });
 
   @override
   Future<CourseSummary> execute() async {
-    // Generate initial soap envelope
-    final body = SoapService.buildBasicSOAPBody(
-            Urls.listEvaluationsOperation, username, password)
-        .buildDocument();
-    final operationContent = XmlBuilder();
-
-    // Add the content needed by the operation
-    operationContent.element("pSigle", nest: () {
-      operationContent.text(course.acronym);
-    });
-    operationContent.element("pGroupe", nest: () {
-      operationContent.text(course.group);
-    });
-    operationContent.element("pSession", nest: () {
-      operationContent.text(course.session);
-    });
-
-    body
-        .findAllElements(Urls.listEvaluationsOperation,
-            namespace: Urls.signetsOperationBase)
-        .first
-        .children
-        .add(operationContent.buildFragment());
+    final queryParams = { "session": course.session, "sigle": course.acronym, "groupe": course.group };
 
     final responseBody = await SoapService.sendSOAPRequest(
-        _httpClient, body, Urls.listEvaluationsOperation);
+        _httpClient, Urls.listEvaluationsOperation, token, queryParameters: queryParams);
+
     final errorTag = responseBody.getElement(SignetsError.signetsErrorSoapTag);
     if (errorTag != null &&
             errorTag.innerText.contains(SignetsError.gradesNotAvailable) ||

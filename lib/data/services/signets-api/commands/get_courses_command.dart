@@ -13,21 +13,15 @@ import 'package:notredame/utils/command.dart';
 class GetCoursesCommand implements Command<List<Course>> {
   final SignetsAPIClient client;
   final http.Client _httpClient;
-  final String username;
-  final String password;
+  final String token;
 
-  GetCoursesCommand(this.client, this._httpClient,
-      {required this.username, required this.password});
+  GetCoursesCommand(this.client, this._httpClient, {required this.token});
 
   @override
   Future<List<Course>> execute() async {
     // Generate initial soap envelope
-    final body = SoapService.buildBasicSOAPBody(
-            Urls.listCourseOperation, username, password)
-        .buildDocument();
-
     final responseBody = await SoapService.sendSOAPRequest(
-        _httpClient, body, Urls.listCourseOperation);
+        _httpClient, Urls.listCourseOperation, token);
 
     return responseBody
         .findAllElements("Cours")

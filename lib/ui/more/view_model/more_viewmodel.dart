@@ -1,13 +1,13 @@
 // Package imports:
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:notredame/data/services/auth_service.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:stacked/stacked.dart';
 
 // Project imports:
 import 'package:notredame/data/repositories/course_repository.dart';
 import 'package:notredame/data/repositories/settings_repository.dart';
-import 'package:notredame/data/repositories/user_repository.dart';
 import 'package:notredame/data/services/cache_service.dart';
 import 'package:notredame/data/services/in_app_review_service.dart';
 import 'package:notredame/data/services/launch_url_service.dart';
@@ -36,7 +36,7 @@ class MoreViewModel extends FutureViewModel {
       locator<RemoteConfigService>();
 
   /// User repository needed to log out
-  final UserRepository _userRepository = locator<UserRepository>();
+  final _authService = locator<AuthService>();
 
   /// Used to redirect on the dashboard.
   final NavigationService navigationService = locator<NavigationService>();
@@ -73,6 +73,7 @@ class MoreViewModel extends FutureViewModel {
   /// Used to logout user, delete cache, and return to login
   Future<void> logout() async {
     setBusy(true);
+
     // Dismiss alertDialog
     navigationService.pushNamedAndRemoveUntil(
         RouterPaths.startup, RouterPaths.chooseLanguage);
@@ -85,7 +86,7 @@ class MoreViewModel extends FutureViewModel {
 
     await _preferencesService.clearWithoutPersistentKey();
 
-    await _userRepository.logOut();
+    await _authService.signOut();
     _settingsManager.resetLanguageAndThemeMode();
 
     // clear all previous cached value in courseRepository

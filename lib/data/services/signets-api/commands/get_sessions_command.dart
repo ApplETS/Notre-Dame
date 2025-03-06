@@ -13,21 +13,14 @@ import 'package:notredame/utils/command.dart';
 class GetSessionsCommand implements Command<List<Session>> {
   final SignetsAPIClient client;
   final http.Client _httpClient;
-  final String username;
-  final String password;
+  final String token;
 
-  GetSessionsCommand(this.client, this._httpClient,
-      {required this.username, required this.password});
+  GetSessionsCommand(this.client, this._httpClient, {required this.token});
 
   @override
   Future<List<Session>> execute() async {
-    // Generate initial soap envelope
-    final body = SoapService.buildBasicSOAPBody(
-            Urls.listSessionsOperation, username, password)
-        .buildDocument();
-
     final responseBody = await SoapService.sendSOAPRequest(
-        _httpClient, body, Urls.listSessionsOperation);
+        _httpClient, Urls.listSessionsOperation, token);
 
     /// Build and return the list of Session
     return responseBody

@@ -4,6 +4,10 @@ import 'package:notredame/data/services/remote_config_service.dart';
 import 'package:notredame/locator.dart';
 
 class AuthService {
+  String? _token;
+  final int _maxRetry = 3;
+  int _retries = 0;
+
   final _scopes = [
     'api://etsmobileapi/access_as_user',
   ];
@@ -11,6 +15,24 @@ class AuthService {
   SingleAccountPca? singleAccountPca;
   final _remoteConfigService = locator<RemoteConfigService>();
   final Logger _logger = locator<Logger>();
+
+  Future<String> getToken() async {
+    if (_token == null) {
+      final result = await acquireTokenSilent();
+      if (result.$1 != null) {
+        _token = result.$1?.accessToken;
+      } else {
+        _retries++;
+        if(_retries > _maxRetry) {
+          _retries = 0;
+          throw Exception('Max retries reached');
+        }
+        getToken();
+      }
+    }
+    _retries = 0;
+    return _token!;
+  }
 
   Future<(bool, MsalException?)> createPublicClientApplication({
     required AuthorityType authorityType,
@@ -49,6 +71,7 @@ class AuthService {
         loginHint: loginHint,
         prompt: Prompt.login,
       );
+      _token = result?.accessToken;
       _logger.d('Acquire token => ${result?.toJson()}');
       return (result, null);
     } on MsalException catch (e) {
@@ -65,6 +88,7 @@ class AuthService {
         scopes: _scopes,
         identifier: identifier,
       );
+      _token = result?.accessToken;
       _logger.d('Acquire token silent => ${result?.toJson()}');
       return (result, null);
     } on MsalException catch (e) {
@@ -91,6 +115,7 @@ class AuthService {
 
   Future<(bool, MsalException?)> signOut() async {
     try {
+      _token = null;
       final result = await singleAccountPca?.signOut();
       _logger.d('Sign out => $result');
       return (true, null);

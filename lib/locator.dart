@@ -16,7 +16,6 @@ import 'package:notredame/data/services/hello/hello_service.dart';
 import 'package:notredame/data/services/in_app_review_service.dart';
 import 'package:notredame/data/services/internal_info_service.dart';
 import 'package:notredame/data/services/launch_url_service.dart';
-import 'package:notredame/data/services/monets/monets_api_client.dart';
 import 'package:notredame/data/services/auth_service.dart';
 import 'package:notredame/data/services/navigation_service.dart';
 import 'package:notredame/data/services/networking_service.dart';
@@ -50,7 +49,6 @@ void setupLocator() {
 
   // Other
   locator.registerLazySingleton(() => SignetsAPIClient());
-  locator.registerLazySingleton(() => MonETSAPIClient());
   locator.registerLazySingleton(() => HelloService());
   locator.registerLazySingleton(() => Logger());
 }

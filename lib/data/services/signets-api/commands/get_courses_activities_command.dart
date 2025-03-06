@@ -19,8 +19,7 @@ class GetCoursesActivitiesCommand implements Command<List<CourseActivity>> {
   final http.Client _httpClient;
   final RegExp _sessionShortNameRegExp;
   final RegExp _courseGroupRegExp;
-  final String username;
-  final String password;
+  final String token;
   final String session;
   final String courseGroup;
   final DateTime? startDate;
@@ -31,8 +30,7 @@ class GetCoursesActivitiesCommand implements Command<List<CourseActivity>> {
     this._httpClient,
     this._sessionShortNameRegExp,
     this._courseGroupRegExp, {
-    required this.username,
-    required this.password,
+    required this.token,
     required this.session,
     this.courseGroup = "",
     this.startDate,
@@ -53,41 +51,12 @@ class GetCoursesActivitiesCommand implements Command<List<CourseActivity>> {
       throw ArgumentError("The startDate can't be after endDate.");
     }
 
-    // Generate initial soap envelope
-    final body = SoapService.buildBasicSOAPBody(
-            Urls.listClassScheduleOperation, username, password)
-        .buildDocument();
-    final operationContent = XmlBuilder();
-
-    // Add the content needed by the operation
-    operationContent.element("pSession", nest: () {
-      operationContent.text(session);
-    });
-    operationContent.element("pCoursGroupe", nest: () {
-      operationContent.text(courseGroup);
-    });
-
-    operationContent.element("pDateDebut", nest: () {
-      operationContent.text(startDate == null
-          ? ""
-          : "${startDate!.year}-${startDate!.month}-${startDate!.day}");
-    });
-    operationContent.element("pDateFin", nest: () {
-      operationContent.text(endDate == null
-          ? ""
-          : "${endDate!.year}-${endDate!.month}-${endDate!.day}");
-    });
-
-    // Add the parameters needed inside the request.
-    body
-        .findAllElements(Urls.listClassScheduleOperation,
-            namespace: Urls.signetsOperationBase)
-        .first
-        .children
-        .add(operationContent.buildFragment());
+    final queryParams = { "session": session, "coursGroupe": courseGroup };
+    if(startDate != null) queryParams["dateDebut"] = "${startDate!.year}-${startDate!.month}-${startDate!.day}";
+    if(endDate != null) queryParams["dateFin"] = "${endDate!.year}-${endDate!.month}-${endDate!.day}";
 
     final responseBody = await SoapService.sendSOAPRequest(
-        _httpClient, body, Urls.listClassScheduleOperation);
+        _httpClient, Urls.listClassScheduleOperation, token, queryParameters: queryParams);
 
     /// Build and return the list of CourseActivity
     return responseBody
