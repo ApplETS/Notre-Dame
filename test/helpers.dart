@@ -21,7 +21,6 @@ import 'package:notredame/data/services/cache_service.dart';
 import 'package:notredame/data/services/in_app_review_service.dart';
 import 'package:notredame/data/services/internal_info_service.dart';
 import 'package:notredame/data/services/launch_url_service.dart';
-import 'package:notredame/data/services/monets/monets_api_client.dart';
 import 'package:notredame/data/services/navigation_service.dart';
 import 'package:notredame/data/services/networking_service.dart';
 import 'package:notredame/data/services/preferences_service.dart';
@@ -40,7 +39,6 @@ import 'data/mocks/services/flutter_secure_storage_mock.dart';
 import 'data/mocks/services/in_app_review_service_mock.dart';
 import 'data/mocks/services/internal_info_service_mock.dart';
 import 'data/mocks/services/launch_url_service_mock.dart';
-import 'data/mocks/services/mon_ets_api_mock.dart';
 import 'data/mocks/services/navigation_service_mock.dart';
 import 'data/mocks/services/networking_service_mock.dart';
 import 'data/mocks/services/preferences_service_mock.dart';
@@ -109,16 +107,6 @@ InAppReviewService setupInAppReviewServiceMock() {
   final service = InAppReviewServiceMock();
 
   locator.registerSingleton<InAppReviewService>(service);
-
-  return service;
-}
-
-/// Load a mock of the [MonETSAPIClient]
-MonETSAPIClientMock setupMonETSApiMock() {
-  unregister<MonETSAPIClient>();
-  final service = MonETSAPIClientMock();
-
-  locator.registerSingleton<MonETSAPIClient>(service);
 
   return service;
 }

@@ -17,7 +17,6 @@ import 'package:notredame/data/services/signets-api/models/profile_student.dart'
 import 'package:notredame/data/services/signets-api/models/program.dart';
 import 'package:notredame/data/services/signets-api/signets_api_client.dart';
 import 'package:notredame/locator.dart';
-import 'package:notredame/utils/api_exception.dart';
 import 'package:notredame/utils/cache_exception.dart';
 
 class UserRepository {
@@ -73,29 +72,10 @@ class UserRepository {
     return true;
   }
 
-  /// Retrieve and get the password for the current authenticated user.
-  /// WARNING This isn't a good practice but currently the password has to be sent in clear.
-  Future<String> getPassword() async {
-    try {
-      final password = await _secureStorage.read(key: passwordSecureKey);
-      if (password == null) {
-        _analyticsService.logEvent(
-            tag, "Trying to acquire password but not authenticated");
-        throw const ApiException(prefix: tag, message: "Not authenticated");
-      }
-      return password;
-    } on PlatformException catch (e, stacktrace) {
-      await _secureStorage.deleteAll();
-      _analyticsService.logError(
-          tag, "getPassword - PlatformException - $e", e, stacktrace);
-      throw const ApiException(prefix: tag, message: "Not authenticated");
-    }
-  }
-
   /// Check whether the user was previously authenticated.
   Future<bool> wasPreviouslyLoggedIn() async {
     try {
-      final username = await _secureStorage.read(key: passwordSecureKey);
+      final username = await _secureStorage.read(key: usernameSecureKey);
       if (username != null) {
         final password = await _secureStorage.read(key: passwordSecureKey);
         return password != null && password.isNotEmpty;

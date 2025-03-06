@@ -26,23 +26,11 @@ import 'signets_api_mock.mocks.dart';
 class SignetsAPIClientMock extends MockSignetsAPIClient {
   static const signetsException = ApiException(prefix: SignetsAPIClient.tag);
 
-  // ignore: deprecated_member_use_from_same_package
-  /// Stub the answer of the [authenticate].
-  static void stubAuthenticate(MockSignetsAPIClient mock,
-      {bool connected = false}) {
-    // ignore: deprecated_member_use_from_same_package
-    when(mock.authenticate(
-            username: anyNamed("username"), password: anyNamed("password")))
-        .thenAnswer((_) async => connected);
-  }
 
   /// Stub the answer of the [getCoursesActivities] when the [session] is used.
   static void stubGetCoursesActivities(MockSignetsAPIClient mock,
       String session, List<CourseActivity> coursesActivitiesToReturn) {
-    when(mock.getCoursesActivities(
-            username: anyNamed("username"),
-            password: anyNamed("password"),
-            session: session))
+    when(mock.getCoursesActivities(session: session))
         .thenAnswer((_) async => coursesActivitiesToReturn);
   }
 
@@ -50,20 +38,14 @@ class SignetsAPIClientMock extends MockSignetsAPIClient {
   static void stubGetCoursesActivitiesException(
       MockSignetsAPIClient mock, String session,
       {required ApiException exceptionToThrow}) {
-    when(mock.getCoursesActivities(
-            username: anyNamed("username"),
-            password: anyNamed("password"),
-            session: session))
+    when(mock.getCoursesActivities(session: session))
         .thenThrow(exceptionToThrow);
   }
 
   /// Stub the answer of the [getCoursesActivities] when the [session] is used.
   static void stubGetScheduleActivities(MockSignetsAPIClient mock,
       String session, List<ScheduleActivity> coursesActivitiesToReturn) {
-    when(mock.getScheduleActivities(
-            username: anyNamed("username"),
-            password: anyNamed("password"),
-            session: session))
+    when(mock.getScheduleActivities(session: session))
         .thenAnswer((_) async => coursesActivitiesToReturn);
   }
 
@@ -71,17 +53,14 @@ class SignetsAPIClientMock extends MockSignetsAPIClient {
   static void stubGetScheduleActivitiesException(
       MockSignetsAPIClient mock, String session,
       {required ApiException exceptionToThrow}) {
-    when(mock.getScheduleActivities(
-            username: anyNamed("username"),
-            password: anyNamed("password"),
-            session: session))
+    when(mock.getScheduleActivities(session: session))
         .thenThrow(exceptionToThrow);
   }
 
   /// Stub the answer of the [getSessions] when the [username] is used.
   static void stubGetSessions(MockSignetsAPIClient mock, String username,
       List<Session> sessionsToReturn) {
-    when(mock.getSessions(username: username, password: anyNamed("password")))
+    when(mock.getSessions())
         .thenAnswer((_) async => sessionsToReturn);
   }
 
@@ -89,14 +68,14 @@ class SignetsAPIClientMock extends MockSignetsAPIClient {
   static void stubGetSessionsException(
       MockSignetsAPIClient mock, String username,
       {ApiException exceptionToThrow = signetsException}) {
-    when(mock.getSessions(username: username, password: anyNamed("password")))
+    when(mock.getSessions())
         .thenThrow(exceptionToThrow);
   }
 
   /// Stub the answer of the [getPrograms] when the [username] is used.
   static void stubGetPrograms(MockSignetsAPIClient mock, String username,
       List<Program> programsToReturn) {
-    when(mock.getPrograms(username: username, password: anyNamed("password")))
+    when(mock.getPrograms())
         .thenAnswer((_) async => programsToReturn);
   }
 
@@ -104,30 +83,28 @@ class SignetsAPIClientMock extends MockSignetsAPIClient {
   static void stubGetProgramsException(
       MockSignetsAPIClient mock, String username,
       {ApiException exceptionToThrow = signetsException}) {
-    when(mock.getPrograms(username: username, password: anyNamed("password")))
+    when(mock.getPrograms())
         .thenThrow(exceptionToThrow);
   }
 
   /// Stub the answer of the [getInfo] when the [username] is used.
   static void stubGetInfo(
       MockSignetsAPIClient mock, String username, ProfileStudent infoToReturn) {
-    when(mock.getStudentInfo(
-            username: username, password: anyNamed("password")))
+    when(mock.getStudentInfo())
         .thenAnswer((_) async => infoToReturn);
   }
 
   /// Throw [exceptionToThrow] when [getInfo] with the [username] is used.
   static void stubGetInfoException(MockSignetsAPIClient mock, String username,
       {ApiException exceptionToThrow = signetsException}) {
-    when(mock.getStudentInfo(
-            username: username, password: anyNamed("password")))
+    when(mock.getStudentInfo())
         .thenThrow(exceptionToThrow);
   }
 
   /// Stub the answer of the [getCourses] when the [username] is used.
   static void stubGetCourses(MockSignetsAPIClient mock, String username,
       {List<Course> coursesToReturn = const []}) {
-    when(mock.getCourses(username: username, password: anyNamed("password")))
+    when(mock.getCourses())
         .thenAnswer((_) async => coursesToReturn);
   }
 
@@ -135,7 +112,7 @@ class SignetsAPIClientMock extends MockSignetsAPIClient {
   static void stubGetCoursesException(
       MockSignetsAPIClient mock, String username,
       {ApiException exceptionToThrow = signetsException}) {
-    when(mock.getCourses(username: username, password: anyNamed("password")))
+    when(mock.getCourses())
         .thenThrow(exceptionToThrow);
   }
 
@@ -143,8 +120,7 @@ class SignetsAPIClientMock extends MockSignetsAPIClient {
   static void stubGetCourseSummary(
       MockSignetsAPIClient mock, String username, Course course,
       {CourseSummary? summaryToReturn}) {
-    when(mock.getCourseSummary(
-            username: username, course: course, password: anyNamed("password")))
+    when(mock.getCourseSummary(session: course.session, acronym: course.acronym, group: course.group))
         .thenAnswer((_) async => summaryToReturn!);
   }
 
@@ -152,8 +128,7 @@ class SignetsAPIClientMock extends MockSignetsAPIClient {
   static void stubGetCourseSummaryException(
       MockSignetsAPIClient mock, String username, Course course,
       {ApiException exceptionToThrow = signetsException}) {
-    when(mock.getCourseSummary(
-            username: username, course: course, password: anyNamed("password")))
+    when(mock.getCourseSummary(session: course.session, acronym: course.acronym, group: course.group))
         .thenThrow(exceptionToThrow);
   }
 
@@ -161,10 +136,7 @@ class SignetsAPIClientMock extends MockSignetsAPIClient {
   /// If [session] is null any session will be accepted.
   static void stubGetCourseReviews(MockSignetsAPIClient mock, String username,
       {Session? session, List<CourseReview> reviewsToReturn = const []}) {
-    when(mock.getCourseReviews(
-            username: username,
-            session: session ?? anyNamed('session'),
-            password: anyNamed("password")))
+    when(mock.getCourseReviews(session:  session?.shortName ?? anyNamed('session')))
         .thenAnswer((_) async => reviewsToReturn);
   }
 
@@ -173,10 +145,7 @@ class SignetsAPIClientMock extends MockSignetsAPIClient {
   static void stubGetCourseReviewsException(
       MockSignetsAPIClient mock, String username,
       {Session? session, ApiException exceptionToThrow = signetsException}) {
-    when(mock.getCourseReviews(
-            username: username,
-            session: session ?? anyNamed('session'),
-            password: anyNamed("password")))
+    when(mock.getCourseReviews(session: session?.shortName ?? anyNamed('session')))
         .thenThrow(exceptionToThrow);
   }
 }

@@ -8,7 +8,6 @@ import 'package:mockito/mockito.dart';
 
 // Project imports:
 import 'package:notredame/data/models/activity_code.dart';
-import 'package:notredame/data/models/mon_ets_user.dart';
 import 'package:notredame/data/repositories/course_repository.dart';
 import 'package:notredame/data/repositories/user_repository.dart';
 import 'package:notredame/data/services/analytics_service.dart';
@@ -95,8 +94,6 @@ void main() {
 
       setUp(() {
         // Stub a user
-        UserRepositoryMock.stubMonETSUser(userRepositoryMock,
-            MonETSUser(domain: '', typeUsagerId: 0, username: username));
         UserRepositoryMock.stubGetPassword(userRepositoryMock, "password");
 
         // Stub some sessions
