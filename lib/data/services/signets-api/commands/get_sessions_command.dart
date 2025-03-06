@@ -5,7 +5,7 @@ import 'package:xml/xml.dart';
 // Project imports:
 import 'package:notredame/data/services/signets-api/models/session.dart';
 import 'package:notredame/data/services/signets-api/signets_api_client.dart';
-import 'package:notredame/data/services/signets-api/soap_service.dart';
+import 'package:notredame/data/services/signets-api/request_builder_service.dart';
 import 'package:notredame/utils/command.dart';
 
 /// Call the SignetsAPI to get the list of all the [Session] for the student ([username]).
@@ -21,7 +21,7 @@ class GetSessionsCommand implements Command<List<Session>> {
 
   @override
   Future<List<Session>> execute() async {
-    final responseBody = await SoapService.sendSOAPRequest(
+    final responseBody = await RequestBuilderService.sendRequest(
         _httpClient, endpoint, token, responseTag);
 
     /// Build and return the list of Session

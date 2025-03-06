@@ -11,8 +11,8 @@ import 'package:notredame/utils/api_exception.dart';
 
 import '../../../locator.dart';
 
-mixin SoapService {
-  static const String tag = "SoapService";
+mixin RequestBuilderService {
+  static const String tag = "RequestBuilderService";
   static const String tagError = "$tag - Error";
   static const int maxRetry = 3;
   static int retries = 0;
@@ -24,21 +24,21 @@ mixin SoapService {
   /// Send a GET request to SignetsAPI using queryParameters then return
   /// the response.
   /// Will throw a [ApiException] if an error is returned by the api.
-  static Future<XmlElement> sendSOAPRequest(
+  static Future<XmlElement> sendRequest(
       http.Client client, String endpoint, String token, String resultTag, { Map<String, String>? queryParameters }) async {
     // Send the envelope
     final uri = Uri.https(Urls.signetsAPI, endpoint, queryParameters);
     final response = await client.get(uri, headers: _buildHeaders(token));
 
     if(response.statusCode == StatusCodes.UNAUTHORIZED) {
-      SoapService.retries++;
+      RequestBuilderService.retries++;
       if(retries > maxRetry) {
         retries = 0;
         throw ApiException(prefix: tagError, message: "Max retries reached");
       }
       final authService = locator<AuthService>();
       await authService.acquireTokenSilent();
-      return await sendSOAPRequest(client, endpoint, await authService.getToken(), resultTag, queryParameters: queryParameters);
+      return await sendRequest(client, endpoint, await authService.getToken(), resultTag, queryParameters: queryParameters);
     }
     retries = 0;
 

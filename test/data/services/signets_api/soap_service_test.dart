@@ -2,7 +2,7 @@
 import 'package:flutter_test/flutter_test.dart';
 
 // Project imports:
-import 'package:notredame/data/services/signets-api/soap_service.dart';
+import 'package:notredame/data/services/signets-api/request_builder_service.dart';
 
 void main() {
   group('SoapService - ', () {
@@ -24,7 +24,7 @@ void main() {
           '</soap:Envelope>';
 
       final result =
-          SoapService.buildBasicSOAPBody("testOperation", username, password);
+          RequestBuilderService.buildBasicSOAPBody("testOperation", username, password);
 
       expect(result.buildDocument().toString(), expectedResult);
     });

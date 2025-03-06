@@ -5,7 +5,7 @@ import 'package:xml/xml.dart';
 // Project imports:
 import 'package:notredame/data/services/signets-api/models/course_activity.dart';
 import 'package:notredame/data/services/signets-api/signets_api_client.dart';
-import 'package:notredame/data/services/signets-api/soap_service.dart';
+import 'package:notredame/data/services/signets-api/request_builder_service.dart';
 import 'package:notredame/utils/command.dart';
 
 /// Call the SignetsAPI to get the courses activities for the [session] for
@@ -59,7 +59,7 @@ class GetCoursesActivitiesCommand implements Command<List<CourseActivity>> {
     if(startDate != null) queryParams["dateDebut"] = "${startDate!.year}-${startDate!.month}-${startDate!.day}";
     if(endDate != null) queryParams["dateFin"] = "${endDate!.year}-${endDate!.month}-${endDate!.day}";
 
-    final responseBody = await SoapService.sendSOAPRequest(
+    final responseBody = await RequestBuilderService.sendRequest(
         _httpClient, endpoint, token, responseTag, queryParameters: queryParams);
 
     /// Build and return the list of CourseActivity
