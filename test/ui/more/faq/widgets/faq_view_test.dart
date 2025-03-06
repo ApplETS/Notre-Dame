@@ -67,7 +67,7 @@ void main() {
         await tester.pumpAndSettle();
 
         final questionsAbtETSMobileBtn =
-            find.widgetWithText(ElevatedButton, faq.actions[3].title["en"]!);
+            find.widgetWithText(Card, faq.actions[3].title["en"]!);
         expect(questionsAbtETSMobileBtn, findsOneWidget);
 
         await tester.tap(questionsAbtETSMobileBtn);
