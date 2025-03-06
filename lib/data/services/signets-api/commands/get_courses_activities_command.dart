@@ -1,5 +1,6 @@
 // Package imports:
 import 'package:http/http.dart' as http;
+import 'package:intl/intl.dart';
 import 'package:xml/xml.dart';
 
 // Project imports:
@@ -56,15 +57,17 @@ class GetCoursesActivitiesCommand implements Command<List<CourseActivity>> {
     final queryParams = { "session": session };
 
     if(courseGroup.isNotEmpty) queryParams["coursGroupe"] = courseGroup;
-    if(startDate != null) queryParams["dateDebut"] = "${startDate!.year}-${startDate!.month}-${startDate!.day}";
-    if(endDate != null) queryParams["dateFin"] = "${endDate!.year}-${endDate!.month}-${endDate!.day}";
+
+    final dateFormat = DateFormat('yyyy-MM-dd');
+    if(startDate != null) queryParams["dateDebut"] = dateFormat.format(startDate!);
+    if(endDate != null) queryParams["dateFin"] = dateFormat.format(endDate!);
 
     final responseBody = await RequestBuilderService.sendRequest(
         _httpClient, endpoint, token, responseTag, queryParameters: queryParams);
 
     /// Build and return the list of CourseActivity
     return responseBody
-        .findAllElements("Seances")
+        .findAllElements("Seance")
         .map((node) => CourseActivity.fromXmlNode(node))
         .toList();
   }
