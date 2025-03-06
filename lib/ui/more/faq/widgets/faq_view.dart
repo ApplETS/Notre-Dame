@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 // Package imports:
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:notredame/features/app/widgets/need_help_notice_dialog.dart';
+import 'package:notredame/ui/core/ui/need_help_notice_dialog.dart';
 import 'package:stacked/stacked.dart';
 
 // Project imports:
