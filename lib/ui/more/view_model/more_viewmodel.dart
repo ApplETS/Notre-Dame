@@ -75,7 +75,7 @@ class MoreViewModel extends FutureViewModel {
     setBusy(true);
     // Dismiss alertDialog
     navigationService.pushNamedAndRemoveUntil(
-        RouterPaths.login, RouterPaths.chooseLanguage);
+        RouterPaths.startup, RouterPaths.chooseLanguage);
     Fluttertoast.showToast(msg: _appIntl.login_msg_logout_success);
     try {
       await _cacheManager.empty();

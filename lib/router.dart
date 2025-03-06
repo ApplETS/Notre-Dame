@@ -12,7 +12,6 @@ import 'package:notredame/ui/ets/events/news_details/widgets/news_details_view.d
 import 'package:notredame/ui/ets/quick_links/security_info/widgets/security_view.dart';
 import 'package:notredame/ui/ets/quick_links/widgets/quick_links_view.dart';
 import 'package:notredame/ui/ets/widgets/ets_view.dart';
-import 'package:notredame/ui/login/widgets/login_view.dart';
 import 'package:notredame/ui/more/about/widgets/about_view.dart';
 import 'package:notredame/ui/more/contributors/widgets/contributors_view.dart';
 import 'package:notredame/ui/more/faq/widgets/faq_view.dart';
@@ -37,10 +36,6 @@ Route<dynamic> generateRoute(RouteSettings routeSettings) {
       return MaterialPageRoute(
           settings: RouteSettings(name: routeSettings.name),
           builder: (_) => OutageView());
-    case RouterPaths.login:
-      return MaterialPageRoute(
-          settings: RouteSettings(name: routeSettings.name),
-          builder: (_) => LoginView());
     case RouterPaths.faq:
       return MaterialPageRoute(
           settings: RouteSettings(name: routeSettings.name),

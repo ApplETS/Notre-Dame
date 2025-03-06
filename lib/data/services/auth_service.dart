@@ -5,8 +5,7 @@ import 'package:notredame/locator.dart';
 
 class AuthService {
   final _scopes = [
-    'https://graph.microsoft.com/user.read',
-    // 'api://etsmobileapi/access_as_user',
+    'api://etsmobileapi/access_as_user',
   ];
 
   SingleAccountPca? singleAccountPca;
