@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 
 // Package imports:
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
+// Project imports:
 import 'package:notredame/ui/core/themes/app_palette.dart';
 import 'package:notredame/ui/core/themes/app_theme.dart';
 
@@ -22,11 +24,9 @@ class NeedHelpNoticeDialog extends AlertDialog {
   Widget build(BuildContext context) => AlertDialog(
         title: Text(
           AppIntl.of(context)!.faq_questions_app_alert_title,
-          style: const TextStyle(
-              color: AppTheme.primary, fontWeight: FontWeight.bold),
+          style: const TextStyle(fontWeight: FontWeight.bold),
         ),
-        content: Text(
-            AppIntl.of(context)!.faq_questions_app_alert_confirmation,
+        content: Text(AppIntl.of(context)!.faq_questions_app_alert_confirmation,
             style: const TextStyle(fontWeight: FontWeight.bold)),
         actions: [
           getButtons(context),
@@ -38,9 +38,10 @@ class NeedHelpNoticeDialog extends AlertDialog {
       width: double.infinity,
       child: TextButton.icon(
         style: ButtonStyle(
-            backgroundColor: WidgetStateProperty.all<Color>(AppTheme.primary),
+            backgroundColor:
+                WidgetStateProperty.all<Color>(AppPalette.etsLightRed),
             foregroundColor:
-                WidgetStateProperty.all<Color>(AppTheme.lightThemeBackground),
+                WidgetStateProperty.all<Color?>(AppPalette.grey.white),
             textStyle: WidgetStateProperty.all<TextStyle>(
                 const TextStyle(fontWeight: FontWeight.bold)),
             shape: WidgetStateProperty.all<RoundedRectangleBorder>(
@@ -50,8 +51,8 @@ class NeedHelpNoticeDialog extends AlertDialog {
           launchWebsite();
         },
         icon: const Icon(Icons.help_center),
-        label: Text(AppIntl.of(context)!
-            .faq_questions_app_alert_password_assistance),
+        label: Text(
+            AppIntl.of(context)!.faq_questions_app_alert_password_assistance),
       ),
     );
 
@@ -59,9 +60,10 @@ class NeedHelpNoticeDialog extends AlertDialog {
       width: double.infinity,
       child: TextButton.icon(
         style: ButtonStyle(
-            backgroundColor: WidgetStateProperty.all<Color>(AppTheme.primary),
+            backgroundColor:
+                WidgetStateProperty.all<Color>(AppPalette.etsLightRed),
             foregroundColor:
-                WidgetStateProperty.all<Color>(AppTheme.lightThemeBackground),
+                WidgetStateProperty.all<Color>(AppPalette.grey.white),
             textStyle: WidgetStateProperty.all<TextStyle>(
                 const TextStyle(fontWeight: FontWeight.bold)),
             shape: WidgetStateProperty.all<RoundedRectangleBorder>(
@@ -81,7 +83,8 @@ class NeedHelpNoticeDialog extends AlertDialog {
               textStyle: WidgetStateProperty.all<TextStyle>(
                   const TextStyle(fontWeight: FontWeight.bold)),
               shape: WidgetStateProperty.all(RoundedRectangleBorder(
-                  side: const BorderSide(color: AppTheme.primary, width: 2.0),
+                  side: const BorderSide(
+                      color: AppPalette.etsLightRed, width: 2.0),
                   borderRadius: BorderRadius.circular(radius)))),
           icon: const Icon(Icons.cancel),
           label: Text(AppIntl.of(context)!.cancel_button_text)),
