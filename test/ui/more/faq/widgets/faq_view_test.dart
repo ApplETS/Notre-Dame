@@ -22,7 +22,7 @@ void main() {
     setUp(() async {
       setupLaunchUrlServiceMock();
       setupNetworkingServiceMock();
-      
+
       settingsManagerMock = setupSettingsManagerMock();
       appIntl = await setupAppIntl();
     });
@@ -45,7 +45,7 @@ void main() {
             find.text(faq.actions[2].title["en"]!, skipOffstage: false);
         final action4 =
             find.text(faq.actions[3].title["en"]!, skipOffstage: false);
-        
+
         await tester.drag(find.byType(ListView), const Offset(0.0, -300));
         await tester.pump();
 
@@ -69,9 +69,9 @@ void main() {
         final questionsAbtETSMobileBtn =
             find.widgetWithText(ElevatedButton, faq.actions[3].title["en"]!);
         expect(questionsAbtETSMobileBtn, findsOneWidget);
-        
+
         await tester.tap(questionsAbtETSMobileBtn);
-        await tester.pumpAndSettle();        
+        await tester.pumpAndSettle();
 
         final dialog = find.byType(AlertDialog);
 
@@ -87,12 +87,12 @@ void main() {
         final Faq faq = Faq();
 
         await tester.drag(find.byType(ListView), const Offset(0.0, -500));
-        await tester.pumpAndSettle();        
+        await tester.pumpAndSettle();
 
         final questionsAbtETSMobileBtn =
             find.widgetWithText(ElevatedButton, faq.actions[3].title["en"]!);
         expect(questionsAbtETSMobileBtn, findsOneWidget);
-        
+
         await tester.tap(questionsAbtETSMobileBtn);
         await tester.pumpAndSettle();
 
