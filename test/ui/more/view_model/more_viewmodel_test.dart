@@ -110,7 +110,7 @@ void main() {
     // Check if navigation has been rerouted to login page
     verifyInOrder([
       navigationServiceMock.pushNamedAndRemoveUntil(
-          RouterPaths.login, RouterPaths.chooseLanguage)
+          RouterPaths.startup, RouterPaths.chooseLanguage)
     ]);
 
     verifyNoMoreInteractions(navigationServiceMock);

@@ -54,15 +54,16 @@ void main() {
     });
 
     group("getCoursesActivities - ", () {
-      const String courseActivityXML = '<Seances>'
-          '<dateDebut>2020-09-03T18:00:00</dateDebut> '
-          '<dateFin>2020-09-03T20:00:00</dateFin> '
-          '<coursGroupe>GEN101-01</coursGroupe> '
-          '<nomActivite>TP</nomActivite> '
-          '<local>À distance</local> '
-          '<descriptionActivite>Travaux pratiques</descriptionActivite> '
-          '<libelleCours>Libelle du cours</libelleCours> '
-          '</Seances>';
+      const String courseActivityXML =
+          '<Seance>'
+            '<dateDebut>2020-09-03T18:00:00</dateDebut> '
+            '<dateFin>2020-09-03T20:00:00</dateFin> '
+            '<coursGroupe>GEN101-01</coursGroupe> '
+            '<nomActivite>TP</nomActivite> '
+            '<local>À distance</local> '
+            '<descriptionActivite>Travaux pratiques</descriptionActivite> '
+            '<libelleCours>Libelle du cours</libelleCours> '
+          '</Seance>';
 
       final courseActivity = CourseActivity(
           courseGroup: 'GEN101-01',
@@ -74,8 +75,6 @@ void main() {
           endDateTime: DateTime(2020, 9, 3, 20));
 
       test("right credentials and valid parameters", () async {
-        const String username = "username";
-        const String password = "password";
         const String session = "A2020";
 
         final String stubResponse = buildResponse(
@@ -88,8 +87,6 @@ void main() {
         service = buildService(clientMock);
 
         final result = await service.getCoursesActivities(
-            username: username,
-            password: password,
             session: session,
             startDate: DateTime(2020, 9, 3, 18),
             endDate: DateTime(2020, 9, 3, 20));

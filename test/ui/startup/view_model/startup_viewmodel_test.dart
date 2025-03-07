@@ -5,6 +5,7 @@ import 'package:mockito/mockito.dart';
 // Project imports:
 import 'package:notredame/data/repositories/settings_repository.dart';
 import 'package:notredame/data/repositories/user_repository.dart';
+import 'package:notredame/data/services/auth_service.dart';
 import 'package:notredame/data/services/navigation_service.dart';
 import 'package:notredame/data/services/preferences_service.dart';
 import 'package:notredame/domain/constants/preferences_flags.dart';
@@ -34,6 +35,7 @@ void main() {
       userRepositoryMock = setupUserRepositoryMock();
       networkingServiceMock = setupNetworkingServiceMock();
       internalInfoServiceMock = setupInternalInfoServiceMock();
+      setupAuthServiceMock();
       setupLogger();
 
       viewModel = StartUpViewModel();
@@ -44,11 +46,11 @@ void main() {
       unregister<UserRepository>();
       unregister<SettingsRepository>();
       unregister<PreferencesService>();
+      unregister<AuthService>();
     });
 
     group('handleStartUp - ', () {
       test('sign in successful', () async {
-        UserRepositoryMock.stubSilentAuthenticate(userRepositoryMock);
         UserRepositoryMock.stubWasPreviouslyLoggedIn(userRepositoryMock);
         NetworkingServiceMock.stubHasConnectivity(networkingServiceMock);
         InternalInfoServiceMock.stubGetPackageInfo(internalInfoServiceMock,
@@ -61,8 +63,6 @@ void main() {
       });
 
       test('sign in failed redirect to login', () async {
-        UserRepositoryMock.stubSilentAuthenticate(userRepositoryMock,
-            toReturn: false);
         UserRepositoryMock.stubWasPreviouslyLoggedIn(userRepositoryMock);
         NetworkingServiceMock.stubHasConnectivity(networkingServiceMock);
 
@@ -75,7 +75,7 @@ void main() {
         verifyInOrder([
           settingsManagerMock.getBool(PreferencesFlag.languageChoice),
           navigationServiceMock.pop(),
-          navigationServiceMock.pushNamed(RouterPaths.login)
+          navigationServiceMock.pushNamed(RouterPaths.chooseLanguage)
         ]);
 
         verifyNoMoreInteractions(navigationServiceMock);

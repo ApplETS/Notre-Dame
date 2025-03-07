@@ -17,6 +17,7 @@ import 'package:notredame/data/repositories/quick_link_repository.dart';
 import 'package:notredame/data/repositories/settings_repository.dart';
 import 'package:notredame/data/repositories/user_repository.dart';
 import 'package:notredame/data/services/analytics_service.dart';
+import 'package:notredame/data/services/auth_service.dart';
 import 'package:notredame/data/services/cache_service.dart';
 import 'package:notredame/data/services/in_app_review_service.dart';
 import 'package:notredame/data/services/internal_info_service.dart';
@@ -34,6 +35,7 @@ import 'data/mocks/repositories/quick_links_repository_mock.dart';
 import 'data/mocks/repositories/settings_repository_mock.dart';
 import 'data/mocks/repositories/user_repository_mock.dart';
 import 'data/mocks/services/analytics_service_mock.dart';
+import 'data/mocks/services/auth_service_mock.dart';
 import 'data/mocks/services/cache_service_mock.dart';
 import 'data/mocks/services/flutter_secure_storage_mock.dart';
 import 'data/mocks/services/in_app_review_service_mock.dart';
@@ -297,6 +299,16 @@ QuickLinkRepositoryMock setupQuickLinkRepositoryMock() {
   final repository = QuickLinkRepositoryMock();
 
   locator.registerSingleton<QuickLinkRepository>(repository);
+
+  return repository;
+}
+
+/// Load a mock of the [QuickLinkRepository]
+AuthServiceMock setupAuthServiceMock() {
+  unregister<AuthServiceMock>();
+  final repository = AuthServiceMock();
+
+  locator.registerSingleton<AuthService>(repository);
 
   return repository;
 }
