@@ -74,6 +74,7 @@ class ScheduleSettingsViewModel
     if (scheduleActivityToSave == null) {
       await _settingsManager.setDynamicString(
           PreferencesFlag.scheduleLaboratoryGroup, courseAcronym, null);
+      _selectedScheduleActivity.remove(courseAcronym);
     } else {
       await _settingsManager.setDynamicString(
           PreferencesFlag.scheduleLaboratoryGroup,

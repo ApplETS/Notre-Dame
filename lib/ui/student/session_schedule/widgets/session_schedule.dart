@@ -10,13 +10,13 @@ import 'package:intl/intl.dart';
 import 'package:notredame/ui/core/themes/app_theme.dart';
 import 'package:notredame/ui/schedule/widgets/schedule_calendar_tile.dart';
 
-class ScheduleDefault extends StatefulWidget {
+class SessionSchedule extends StatefulWidget {
   final List<CalendarEventData<Object>> calendarEvents;
   final bool loaded;
   final bool displaySaturday;
   final bool displaySunday;
 
-  const ScheduleDefault(
+  const SessionSchedule(
       {super.key,
       required this.calendarEvents,
       required this.loaded,
@@ -24,10 +24,10 @@ class ScheduleDefault extends StatefulWidget {
       required this.displaySunday});
 
   @override
-  State<ScheduleDefault> createState() => _ScheduleDefaultState();
+  State<SessionSchedule> createState() => _SessionScheduleState();
 }
 
-class _ScheduleDefaultState extends State<ScheduleDefault> {
+class _SessionScheduleState extends State<SessionSchedule> {
   static final List<String> weekTitles = ["L", "M", "M", "J", "V", "S", "D"];
   final GlobalKey<WeekViewState> weekViewKey = GlobalKey<WeekViewState>();
 
