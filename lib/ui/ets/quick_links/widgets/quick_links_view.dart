@@ -175,7 +175,8 @@ class _QuickLinksViewState extends State<QuickLinksView>
       child: IconButton(
         padding: EdgeInsets.zero,
         icon: Icon(Icons.close, color: AppPalette.grey.white, size: 16),
-        tooltip: AppIntl.of(context)!.ets_remove_quick_link(model.quickLinkList[index].name),
+        tooltip: AppIntl.of(context)!
+            .ets_remove_quick_link(model.quickLinkList[index].name),
         onPressed: () {
           setState(() {
             model.deleteQuickLink(index);
@@ -196,7 +197,8 @@ class _QuickLinksViewState extends State<QuickLinksView>
       child: IconButton(
         padding: EdgeInsets.zero,
         icon: Icon(Icons.add, color: AppPalette.grey.white, size: 20),
-        tooltip: AppIntl.of(context)!.ets_add_quick_link(model.deletedQuickLinks[index].name),
+        tooltip: AppIntl.of(context)!
+            .ets_add_quick_link(model.deletedQuickLinks[index].name),
         onPressed: () {
           setState(() {
             model.restoreQuickLink(index);
