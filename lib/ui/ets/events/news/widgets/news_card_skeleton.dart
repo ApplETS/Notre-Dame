@@ -6,7 +6,6 @@ import 'package:skeletonizer/skeletonizer.dart';
 
 // Project imports:
 import 'package:notredame/ui/core/themes/app_palette.dart';
-import 'package:notredame/ui/core/themes/app_theme.dart';
 
 class NewsCardSkeleton extends StatelessWidget {
   const NewsCardSkeleton({super.key});
