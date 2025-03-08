@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 // Package imports:
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:shimmer/shimmer.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
 // Project imports:
@@ -74,7 +74,7 @@ class _NewsCardState extends State<NewsCard> {
             if (isLoaded && loadingProgress == null) {
               return child;
             } else {
-              return _shimmerEffect();
+              return _skeletonizerEffect();
             }
           },
         ),
@@ -84,10 +84,9 @@ class _NewsCardState extends State<NewsCard> {
     return const SizedBox();
   }
 
-  Widget _shimmerEffect() {
-    return Shimmer.fromColors(
-      baseColor: context.theme.appColors.backgroundAlt,
-      highlightColor: context.theme.appColors.shimmerHighlight,
+  Widget _skeletonizerEffect() {
+    return Skeletonizer(
+      enabled: true,
       child: Container(
         height: 200,
         decoration: BoxDecoration(

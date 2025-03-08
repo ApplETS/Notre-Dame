@@ -2,7 +2,7 @@
 import 'package:flutter/material.dart';
 
 // Package imports:
-import 'package:shimmer/shimmer.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 
 // Project imports:
 import 'package:notredame/ui/core/themes/app_palette.dart';
@@ -15,30 +15,31 @@ class AuthorInfoSkeleton extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Container(
-            padding: const EdgeInsets.fromLTRB(32, 64, 32, 16),
-            child: Column(
-              children: [
-                _shimmerTextEffect(context, 26), // Title
-                const SizedBox(height: 10),
-                _shimmerTextEffect(context, 16), // Description
-                const SizedBox(height: 10),
-                _buildButtons(context), // Buttons
-              ],
+      child: Skeletonizer(
+        enabled: true,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Container(
+              padding: const EdgeInsets.fromLTRB(32, 64, 32, 16),
+              child: Column(
+                children: [
+                  _skeletonizerTextEffect(context, 26), // Title
+                  const SizedBox(height: 10),
+                  _skeletonizerTextEffect(context, 16), // Description
+                  const SizedBox(height: 10),
+                  _buildButtons(context), // Buttons
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
 
-  Widget _shimmerTextEffect(BuildContext context, double height) {
-    return Shimmer.fromColors(
-      baseColor: context.theme.appColors.backgroundAlt,
-      highlightColor: context.theme.appColors.shimmerHighlight,
+  Widget _skeletonizerTextEffect(BuildContext context, double height) {
+    return Skeletonizer(
       child: Container(
         width: double.infinity,
         height: height,
@@ -50,22 +51,22 @@ class AuthorInfoSkeleton extends StatelessWidget {
     );
   }
 
+
   Widget _buildButtons(BuildContext context) {
     return Row(
       children: [
         Expanded(
-          child: _shimmerTextEffect(context, 40), // Button
+          child: _skeletonizerTextEffect(context, 40), // Button
         ),
         const SizedBox(width: 10),
-        _shimmerIconButton(context), // IconButton
+        _skeletonIconButton(context), // IconButton
       ],
     );
   }
 
-  Widget _shimmerIconButton(BuildContext context) {
-    return Shimmer.fromColors(
-      baseColor: context.theme.appColors.backgroundAlt,
-      highlightColor: context.theme.appColors.shimmerHighlight,
+  Widget _skeletonIconButton(BuildContext context) {
+    return Skeletonizer(
+      enabled: true,
       child: IconButton(
         onPressed: () {}, // Placeholder onPressed function
         icon: Icon(Icons.link, color: context.theme.appColors.newsAccent),
@@ -87,13 +88,13 @@ class AvatarSkeleton extends StatelessWidget {
           width: 120,
           height: 120,
           child: ClipOval(
-            child: Shimmer.fromColors(
-              baseColor: context.theme.appColors.backgroundAlt,
-              highlightColor: context.theme.appColors.shimmerHighlight,
+            child: Skeletonizer(
+              enabled: true,
               child: Container(
                 color: AppPalette.grey.white,
               ),
-            ),
+            )
+            ,
           ),
         ),
       ),
