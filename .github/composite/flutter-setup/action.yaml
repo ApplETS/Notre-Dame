@@ -9,6 +9,8 @@ inputs:
     required: true
   encrypted-keystore-properties-password:
     required: true
+  encrypted-msal-config-password:
+    required: true
   encrypted-android-service-account-credentials-password:
     required: false
   encrypted-ios-service-account-credentials-password:
@@ -84,3 +86,4 @@ runs:
         ENCRYPTED_ANDROID_SERVICE_ACCOUNT_CREDENTIALS_PASSWORD: ${{ inputs.encrypted-android-service-account-credentials-password }}
         ENCRYPTED_IOS_SERVICE_ACCOUNT_CREDENTIALS_PASSWORD: ${{ inputs.encrypted-ios-service-account-credentials-password }}
         ENCRYPTED_IOS_MATCHFILE_PASSWORD: ${{ inputs.encrypted-ios-matchfile-password }}
+        ENCRYPTED_MSAL_CONFIG_PASSWORD: ${{ inputs.encrypted-msal-config-password }}
