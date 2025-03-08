@@ -48,3 +48,13 @@ if [[ -n $ENCRYPTED_IOS_SERVICE_ACCOUNT_CREDENTIALS_PASSWORD ]]; then
   echo "Decoding iOS service account credentials"
   openssl aes-256-cbc -pbkdf2 -d -k "$ENCRYPTED_IOS_SERVICE_ACCOUNT_CREDENTIALS_PASSWORD" -in ./encryptedFiles/ios_service_account_credentials.json.enc -out ./ios/service_account_credentials.json -md md5
 fi
+
+if [[ -n $ENCRYPTED_MSAL_CONFIG_PASSWORD ]]; then
+  echo "Decoding MSAL config"
+  openssl aes-256-cbc -pbkdf2 -d -k "$ENCRYPTED_MSAL_CONFIG_PASSWORD" -in ./encryptedFiles/msal_config.json.enc -out ./assets/msal_config.json -md md5
+fi
+
+if [[ -n $ENCRYPTED_CONFIG_PROPERTIES ]]; then
+  echo "Decoding config.properties"
+  openssl aes-256-cbc -pbkdf2 -d -k "$ENCRYPTED_CONFIG_PROPERTIES" -in ./encryptedFiles/config.properties.enc -out ./android/config.properties -md md5
+fi
