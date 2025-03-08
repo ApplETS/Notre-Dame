@@ -2,10 +2,8 @@
 import 'package:flutter/material.dart';
 
 // Package imports:
-import 'package:calendar_view/calendar_view.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:stacked/stacked.dart';
-import 'package:table_calendar/table_calendar.dart';
 
 // Project imports:
 import 'package:notredame/data/models/activity_code.dart';
@@ -82,9 +80,7 @@ class _ScheduleSettingsState extends State<ScheduleSettings> {
                           Theme.of(context).textTheme.bodyLarge!.color,
                       child: Card(
                         margin: const EdgeInsets.all(0),
-                        elevation: 0,
                         shape: const RoundedRectangleBorder(),
-                        color: context.theme.appColors.backgroundAlt,
                         child: ListView(
                           padding: EdgeInsets.symmetric(horizontal: 8),
                           controller: scrollController,
@@ -136,32 +132,41 @@ class _ScheduleSettingsState extends State<ScheduleSettings> {
           ),
         ),
       ));
-      cardContent.add(ListTile(
-        selected:
-            model.selectedScheduleActivity[courseActivitiesAcronym] == null,
-        selectedTileColor: selectedColor,
-        onTap: () =>
-            model.selectScheduleActivity(courseActivitiesAcronym, null),
-        title: Text(AppIntl.of(context)!.course_activity_group_both),
-      ));
+
+      final chips = <Widget>[];
+
+      chips.add(InputChip(
+          label: Text(AppIntl.of(context)!.course_activity_group_both),
+          selected:
+              model.selectedScheduleActivity[courseActivitiesAcronym] == null,
+          selectedColor: selectedColor,
+          showCheckmark: false,
+          onPressed: () =>
+              model.selectScheduleActivity(courseActivitiesAcronym, null)));
 
       if (model.scheduleActivitiesByCourse[courseActivitiesAcronym] != null) {
         for (final course
             in model.scheduleActivitiesByCourse[courseActivitiesAcronym]!) {
-          cardContent.add(ListTile(
+          chips.add(InputChip(
+            label: Text(getActivityTitle(course.activityCode)),
             selected:
                 model.selectedScheduleActivity[course.courseAcronym] == course,
-            selectedTileColor: selectedColor,
-            onTap: () =>
+            selectedColor: selectedColor,
+            showCheckmark: false,
+            onPressed: () =>
                 model.selectScheduleActivity(course.courseAcronym, course),
-            title: Text(getActivityTitle(course.activityCode)),
           ));
         }
       }
+
+      cardContent.add(Wrap(
+        spacing: 10,
+        alignment: WrapAlignment.center,
+        children: chips,
+      ));
     }
 
     return Card(
-        elevation: 4,
         color: context.theme.appColors.backgroundAlt,
         child: Padding(
             padding: const EdgeInsets.only(top: 16.0, bottom: 8),
@@ -244,7 +249,7 @@ class _ScheduleSettingsState extends State<ScheduleSettings> {
     ];
 
     return Card(
-        elevation: 4,
+        color: context.theme.appColors.backgroundAlt,
         child: Padding(
             padding: const EdgeInsets.only(top: 16.0, bottom: 8),
             child: Column(children: cardContent)));
@@ -258,32 +263,6 @@ class _ScheduleSettingsState extends State<ScheduleSettings> {
         return AppIntl.of(context)!.schedule_settings_calendar_format_week;
       case CalendarTimeFormat.day:
         return AppIntl.of(context)!.schedule_settings_calendar_format_day;
-    }
-  }
-
-  String getTextForDay(BuildContext context, StartingDayOfWeek day) {
-    switch (day) {
-      case StartingDayOfWeek.sunday:
-        return AppIntl.of(context)!.schedule_settings_starting_weekday_sunday;
-      case StartingDayOfWeek.saturday:
-        return AppIntl.of(context)!.schedule_settings_starting_weekday_saturday;
-      case StartingDayOfWeek.monday:
-        return AppIntl.of(context)!.schedule_settings_starting_weekday_monday;
-      default:
-        return AppIntl.of(context)!.schedule_settings_starting_weekday_monday;
-    }
-  }
-
-  String getTextForWeekDay(BuildContext context, WeekDays day) {
-    switch (day) {
-      case WeekDays.sunday:
-        return AppIntl.of(context)!.schedule_settings_starting_weekday_sunday;
-      case WeekDays.saturday:
-        return AppIntl.of(context)!.schedule_settings_starting_weekday_saturday;
-      case WeekDays.monday:
-        return AppIntl.of(context)!.schedule_settings_starting_weekday_monday;
-      default:
-        return AppIntl.of(context)!.schedule_settings_starting_weekday_monday;
     }
   }
 }

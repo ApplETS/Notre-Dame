@@ -21,10 +21,10 @@ import 'package:notredame/ui/more/settings/widgets/settings_view.dart';
 import 'package:notredame/ui/more/widgets/more_view.dart';
 import 'package:notredame/ui/not_found/widgets/not_found_view.dart';
 import 'package:notredame/ui/outage/widgets/outage_view.dart';
-import 'package:notredame/ui/schedule/schedule_default/widgets/schedule_default_view.dart';
 import 'package:notredame/ui/schedule/widgets/schedule_view.dart';
 import 'package:notredame/ui/startup/widgets/startup_view.dart';
 import 'package:notredame/ui/student/grades/grade_details/widgets/grade_details_view.dart';
+import 'package:notredame/ui/student/session_schedule/widgets/session_schedule_view.dart';
 import 'package:notredame/ui/student/widgets/student_view.dart';
 
 Route<dynamic> generateRoute(RouteSettings routeSettings) {
@@ -62,7 +62,7 @@ Route<dynamic> generateRoute(RouteSettings routeSettings) {
       return MaterialPageRoute(
           settings: RouteSettings(
               name: routeSettings.name, arguments: routeSettings.arguments),
-          builder: (_) => ScheduleDefaultView(
+          builder: (_) => SessionScheduleView(
               sessionCode: routeSettings.arguments as String?));
     case RouterPaths.student:
       return PageRouteBuilder(
