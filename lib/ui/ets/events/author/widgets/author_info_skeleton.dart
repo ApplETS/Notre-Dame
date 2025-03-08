@@ -51,7 +51,6 @@ class AuthorInfoSkeleton extends StatelessWidget {
     );
   }
 
-
   Widget _buildButtons(BuildContext context) {
     return Row(
       children: [
@@ -93,8 +92,7 @@ class AvatarSkeleton extends StatelessWidget {
               child: Container(
                 color: AppPalette.grey.white,
               ),
-            )
-            ,
+            ),
           ),
         ),
       ),
