@@ -15,14 +15,14 @@
   "github": "GitHub",
   "email": "Email",
   "email_subject": "ÉTSMobile Problem",
-  "website_open": "Open web page",
-  "website_club_open": "Open the club web page",
-  "facebook_open":"Open Facebook page",
-  "instagram_open":"Open Instagram page",
-  "github_open":"Open GitHub page",
-  "youtube_open": "Open Youtube page",
-  "email_send":"Send a comment via email",
-  "discord_join":"Join the Discord",
+  "website_open": "Visit the website",
+  "website_club_open": "Visit our club website",
+  "facebook_open": "Visit our Facebook page",
+  "instagram_open": "Visit our Instagram page",
+  "github_open": "Visit our GitHub page",
+  "youtube_open": "Visit our Youtube page",
+  "email_send": "Send a comment via email",
+  "discord_join": "Join our Discord",
 
   "close_button_text": "Close",
 
@@ -45,8 +45,8 @@
   "login_msg_logout_success": "You have logged out",
   "login_applets_logo": "Made by",
   "login_password_forgotten": "Forgot your password?",
-  "login_password_show": "Show",
-  "login_password_hide": "Hide",
+  "login_password_show": "Show password",
+  "login_password_hide": "Hide password",
 
   "dashboard_msg_card_removed": "Card removed",
   "dashboard_restore_all_cards_title": "Restore all cards",
@@ -101,7 +101,7 @@
   "calendar_permission_denied": "You denied the app the permission to edit your calendar. Change this preference in system settings to use this feature.",
 
   "grades_title": "Grades",
-  "grades_in_schedule": "Navigate on schedule : {sessionNameYear}",
+  "grades_in_schedule": "Navigate to schedule {sessionNameYear}",
   "@grades_in_schedule": {
     "placeholders": {
       "sessionNameYear": {
@@ -216,15 +216,15 @@
   "ets_papercut_title":"PaperCut",
   "ets_aeets_title": "AÉÉTS",
   "ets_100genies_title": "Pub 100 Génies",
-  "ets_remove_quick_link": "Delete link : {quickLinkName}",
-  "@ets_remove_quick_link": {
+  "ets_hide_quick_link": "Hide link {quickLinkName}",
+  "@ets_hide_quick_link": {
     "placeholders": {
       "quickLinkName": {
         "type": "String"
       }
     }
   },
-  "ets_add_quick_link": "Add the link : {quickLinkName}",
+  "ets_add_quick_link": "Add the link {quickLinkName}",
   "@ets_add_quick_link": {
     "placeholders": {
       "quickLinkName": {
@@ -399,9 +399,9 @@
   "progress_bar_message_remaining_days": "{remainingDays} remaining days",
   "@progress_bar_message_remaining_days": {
     "placeholders": {
-    "remainingDays": {
-      "type": "int"
-    }
+      "remainingDays": {
+        "type": "int"
+      }
     }
   },
   "progress_bar_suffix": "days",
@@ -421,7 +421,7 @@
 
   "no_schedule_available": "There are no events scheduled at the moment",
 
-  "social_links_name": "Social link : {linkName}",
+  "social_links_name": "Social link {linkName}",
   "@social_links_name": {
     "placeholders": {
       "linkName": {

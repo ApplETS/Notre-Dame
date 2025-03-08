@@ -176,7 +176,7 @@ class _QuickLinksViewState extends State<QuickLinksView>
         padding: EdgeInsets.zero,
         icon: Icon(Icons.close, color: AppPalette.grey.white, size: 16),
         tooltip: AppIntl.of(context)!
-            .ets_remove_quick_link(model.quickLinkList[index].name),
+            .ets_hide_quick_link(model.quickLinkList[index].name),
         onPressed: () {
           setState(() {
             model.deleteQuickLink(index);

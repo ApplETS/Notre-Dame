@@ -15,14 +15,14 @@
   "github": "GitHub",
   "email": "Courriel",
   "email_subject": "Problème ÉTSMobile",
-  "website_open": "Ouvrir la page web",
-  "website_club_open": "Ouvrir la page web du club",
-  "facebook_open":"Ouvrir la page Facebook",
-  "instagram_open":"Ouvrir la page Instagram",
-  "github_open":"Ouvrir la page GitHub",
-  "youtube_open": "Ouvrir la page Youtube",
-  "email_send":"Envoyer un commentaire via courriel",
-  "discord_join":"Rejoindre le Discord",
+  "website_open": "Visiter le site web",
+  "website_club_open": "Visiter le site web du club",
+  "facebook_open": "Visiter notre page Facebook",
+  "instagram_open": "Visiter notre page Instagram",
+  "github_open": "Visiter notre page GitHub",
+  "youtube_open": "Visiter notre page Youtube",
+  "email_send": "Envoyer un commentaire via courriel",
+  "discord_join": "Rejoidre notre Discord",
 
   "close_button_text": "Fermer",
 
@@ -45,8 +45,8 @@
   "login_msg_logout_success": "Vous vous êtes déconnecté",
   "login_applets_logo": "Conçue par",
   "login_password_forgotten": "Mot de passe oublié?",
-  "login_password_show": "Afficher",
-  "login_password_hide": "Cacher",
+  "login_password_show": "Afficher le mot de passe",
+  "login_password_hide": "Cacher le mot de passe",
 
   "dashboard_msg_card_removed": "Carte supprimée",
   "dashboard_restore_all_cards_title": "Restaurer toutes les cartes",
@@ -216,8 +216,8 @@
   "ets_papercut_title":"PaperCut",
   "ets_aeets_title": "AÉÉTS",
   "ets_100genies_title": "Pub 100 Génies",
-  "ets_remove_quick_link": "Effacer le lien : {quickLinkName}",
-  "@ets_remove_quick_link": {
+  "ets_hide_quick_link": "Masquer le lien : {quickLinkName}",
+  "@ets_hide_quick_link": {
     "placeholders": {
       "quickLinkName": {
         "type": "String"
