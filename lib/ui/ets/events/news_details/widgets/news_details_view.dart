@@ -71,6 +71,7 @@ class _NewsDetailsViewState extends State<NewsDetailsView> {
                       leading: IconButton(
                         icon: const Icon(Icons.arrow_back),
                         color: AppPalette.grey.white,
+                        tooltip: AppIntl.of(context)!.go_back,
                         onPressed: () => Navigator.of(context).pop(),
                       ),
                       title: Text(

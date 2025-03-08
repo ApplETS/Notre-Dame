@@ -74,6 +74,7 @@ class _ScheduleViewState extends State<ScheduleView>
   List<Widget> _buildActionButtons(ScheduleViewModel model) => [
         IconButton(
           icon: const Icon(Icons.ios_share),
+          tooltip: AppIntl.of(context)!.calendar_export,
           onPressed: () {
             final translations = AppIntl.of(context)!;
             showDialog(
@@ -86,12 +87,14 @@ class _ScheduleViewState extends State<ScheduleView>
         if ((model.settings[PreferencesFlag.scheduleShowTodayBtn] as bool))
           IconButton(
               icon: const Icon(Icons.today_outlined),
+              tooltip: AppIntl.of(context)!.schedule_already_today_tooltip,
               onPressed: () {
                 controller.returnToToday();
                 _analyticsService.logEvent(tag, "Select today clicked");
               }),
         IconButton(
             icon: const Icon(Icons.settings_outlined),
+            tooltip: AppIntl.of(context)!.schedule_settings_title,
             onPressed: () async {
               await showModalBottomSheet(
                   shape: const RoundedRectangleBorder(
