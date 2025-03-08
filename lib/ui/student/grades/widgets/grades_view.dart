@@ -2,8 +2,8 @@
 import 'package:flutter/material.dart';
 
 // Package imports:
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:animations/animations.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:stacked/stacked.dart';
 
 // Project imports:
@@ -50,24 +50,20 @@ class _GradesViewState extends State<GradesView> {
                     itemCount: model.coursesBySession.length,
                     itemBuilder: (BuildContext context, int index) =>
                         OpenContainer(
-                          transitionDuration: const Duration(milliseconds: 750),
-                          closedBuilder: (context, action) =>
-                              _buildSessionCourses(
-                                  index,
-                                  _sessionName(model.sessionOrder[index],
-                                      AppIntl.of(context)!),
-                                  model.coursesBySession[
-                                  model.sessionOrder[index]]!,
-                                  model),
-                          openBuilder: (context, action) =>
-                              _buildSessionCourses(
-                                  index,
-                                  _sessionName(model.sessionOrder[index],
-                                      AppIntl.of(context)!),
-                                  model.coursesBySession[
-                                  model.sessionOrder[index]]!,
-                                  model),
-                        ),
+                      transitionDuration: const Duration(milliseconds: 750),
+                      closedBuilder: (context, action) => _buildSessionCourses(
+                          index,
+                          _sessionName(
+                              model.sessionOrder[index], AppIntl.of(context)!),
+                          model.coursesBySession[model.sessionOrder[index]]!,
+                          model),
+                      openBuilder: (context, action) => _buildSessionCourses(
+                          index,
+                          _sessionName(
+                              model.sessionOrder[index], AppIntl.of(context)!),
+                          model.coursesBySession[model.sessionOrder[index]]!,
+                          model),
+                    ),
                   ),
                 if (model.isBusy)
                   buildLoading(isInteractionLimitedWhileLoading: false)

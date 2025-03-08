@@ -432,5 +432,4 @@ class SkeletonizerEffect extends StatelessWidget {
       ),
     );
   }
-
 }
