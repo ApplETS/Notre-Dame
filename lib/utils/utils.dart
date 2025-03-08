@@ -14,10 +14,13 @@ mixin Utils {
     return Localizations.localeOf(context).toString() == "fr" ? fr : en;
   }
 
-  /// Get first day of the week depending on startingDay which corresponds to weekday
-  static DateTime getFirstDayOfCurrentWeek(DateTime currentDate) {
+  static DateTime getFirstdayOfWeek(DateTime currentDate) {
     final tempDate =
         currentDate.subtract(Duration(days: currentDate.weekday % 7));
     return DateTime(tempDate.year, tempDate.month, tempDate.day);
+  }
+
+  static DateTime getFirstDayOfMonth(DateTime date) {
+    return DateTime(date.year, date.month);
   }
 }
