@@ -1,6 +1,8 @@
 // Flutter imports:
-import 'package:calendar_view/calendar_view.dart';
 import 'package:flutter/material.dart';
+
+// Package imports:
+import 'package:calendar_view/calendar_view.dart';
 
 mixin Utils {
   static double getGradeInPercentage(double? grade, double? maxGrade) {
@@ -16,7 +18,9 @@ mixin Utils {
   }
 
   static DateTime getFirstdayOfWeek(DateTime currentDate) {
-    return currentDate.subtract(Duration(days: currentDate.weekday % 7)).withoutTime;
+    return currentDate
+        .subtract(Duration(days: currentDate.weekday % 7))
+        .withoutTime;
   }
 
   static DateTime getFirstDayOfMonth(DateTime date) {

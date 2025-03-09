@@ -74,8 +74,8 @@ void main() {
           toReturn: activites);
 
       await tester.runAsync(() async {
-        await tester.pumpWidget(
-            localizedWidget(child: WeekCalendar(controller: CalendarController())));
+        await tester.pumpWidget(localizedWidget(
+            child: WeekCalendar(controller: CalendarController())));
         await tester.pumpAndSettle();
       });
 
@@ -93,8 +93,8 @@ void main() {
           toReturn: []);
 
       await tester.runAsync(() async {
-        await tester.pumpWidget(
-            localizedWidget(child: WeekCalendar(controller: CalendarController())));
+        await tester.pumpWidget(localizedWidget(
+            child: WeekCalendar(controller: CalendarController())));
         await tester.pumpAndSettle();
       });
 

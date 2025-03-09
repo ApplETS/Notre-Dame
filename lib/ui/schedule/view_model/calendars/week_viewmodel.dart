@@ -49,7 +49,8 @@ class WeekViewModel extends CalendarViewModel {
     if (DateTime.now().weekday == DateTime.saturday &&
         calendarEventsFromDate(dateToReturnTo.add(Duration(days: 6, hours: 1)))
             .isEmpty) {
-      dateToReturnTo = dateToReturnTo.add(Duration(days: 7, hours: 1)).withoutTime;
+      dateToReturnTo =
+          dateToReturnTo.add(Duration(days: 7, hours: 1)).withoutTime;
     }
 
     final bool isThisWeekSelected = dateToReturnTo == weekSelected;
