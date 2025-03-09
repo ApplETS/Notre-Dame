@@ -60,6 +60,7 @@ class _UniversalCodeFormFieldState extends State<UniversalCodeFormField> {
               preferBelow: true,
               child: IconButton(
                 icon: Icon(Icons.help, color: AppPalette.grey.white),
+                tooltip: AppIntl.of(context)!.universal_code_example,
                 onPressed: () {
                   tooltipKey.currentState?.ensureTooltipVisible();
                 },

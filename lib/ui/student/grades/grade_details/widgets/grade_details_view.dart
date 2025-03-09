@@ -65,6 +65,7 @@ class _GradesDetailsViewState extends State<GradesDetailsView>
                 titleSpacing: 0,
                 leading: IconButton(
                   icon: Icon(Icons.arrow_back, color: AppPalette.grey.white),
+                  tooltip: AppIntl.of(context)!.go_back,
                   onPressed: () => Navigator.of(context).pop(),
                 ),
                 title: Hero(

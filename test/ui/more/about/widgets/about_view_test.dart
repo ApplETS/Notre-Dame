@@ -27,7 +27,7 @@ void main() {
         expect(image, findsOneWidget);
 
         final iconButton = find.byType(IconButton);
-        expect(iconButton, findsNWidgets(6));
+        expect(iconButton, findsNWidgets(5));
 
         final text = find.byType(Text);
         expect(text, findsNWidgets(2));
