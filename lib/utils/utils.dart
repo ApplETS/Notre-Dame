@@ -1,4 +1,5 @@
 // Flutter imports:
+import 'package:calendar_view/calendar_view.dart';
 import 'package:flutter/material.dart';
 
 mixin Utils {
@@ -15,9 +16,7 @@ mixin Utils {
   }
 
   static DateTime getFirstdayOfWeek(DateTime currentDate) {
-    final tempDate =
-        currentDate.subtract(Duration(days: currentDate.weekday % 7));
-    return DateTime(tempDate.year, tempDate.month, tempDate.day);
+    return currentDate.subtract(Duration(days: currentDate.weekday % 7)).withoutTime;
   }
 
   static DateTime getFirstDayOfMonth(DateTime date) {

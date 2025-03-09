@@ -1,6 +1,7 @@
 // Package imports:
 import 'package:calendar_view/calendar_view.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:notredame/utils/utils.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 // Project imports:
@@ -25,8 +26,8 @@ void main() {
   List<CourseActivity> activites = [
     CourseActivity(
       courseName: 'Lab',
-      startDateTime: DateTime.now().withoutTime.add(Duration(hours: 9)),
-      endDateTime: DateTime.now().withoutTime.add(Duration(hours: 12)),
+      startDateTime: Utils.getFirstdayOfWeek(Utils.getFirstDayOfMonth(DateTime.now()).add(Duration(days: 7))).add(Duration(hours: 9)),
+      endDateTime: Utils.getFirstdayOfWeek(Utils.getFirstDayOfMonth(DateTime.now()).add(Duration(days: 7))).add(Duration(hours: 12)),
       courseGroup: 'LOG100',
       activityLocation: 'Room 102',
       activityName: 'Lab Session',
@@ -34,8 +35,8 @@ void main() {
     ),
     CourseActivity(
       courseName: 'Lecture',
-      startDateTime: DateTime.now().withoutTime.add(Duration(hours: 14)),
-      endDateTime: DateTime.now().withoutTime.add(Duration(hours: 17)),
+      startDateTime: Utils.getFirstdayOfWeek(Utils.getFirstDayOfMonth(DateTime.now()).add(Duration(days: 7))).add(Duration(hours: 14)),
+      endDateTime: Utils.getFirstdayOfWeek(Utils.getFirstDayOfMonth(DateTime.now()).add(Duration(days: 7))).add(Duration(hours: 17)),
       courseGroup: 'ING150',
       activityLocation: 'Room 101',
       activityName: 'Lecture 1',

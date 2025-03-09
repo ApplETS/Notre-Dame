@@ -73,15 +73,14 @@ void main() {
       CourseRepositoryMock.stubCoursesActivities(courseRepositoryMock,
           toReturn: activites);
 
-      CalendarController controller = CalendarController();
       await tester.runAsync(() async {
         await tester.pumpWidget(
-            localizedWidget(child: WeekCalendar(controller: controller)));
+            localizedWidget(child: WeekCalendar(controller: CalendarController())));
         await tester.pumpAndSettle();
       });
 
-      expect(find.text("LOG100\nRoom 102\nLab Session"), findsOneWidget);
       expect(find.text("ING150\nRoom 101\nLecture 1"), findsOneWidget);
+      expect(find.text("LOG100\nRoom 102\nLab Session"), findsOneWidget);
       // Saturday and sunday displayed
       expect(find.text("S"), findsOneWidget);
       expect(find.text("D"), findsOneWidget);
@@ -93,10 +92,9 @@ void main() {
       CourseRepositoryMock.stubCoursesActivities(courseRepositoryMock,
           toReturn: []);
 
-      CalendarController controller = CalendarController();
       await tester.runAsync(() async {
         await tester.pumpWidget(
-            localizedWidget(child: WeekCalendar(controller: controller)));
+            localizedWidget(child: WeekCalendar(controller: CalendarController())));
         await tester.pumpAndSettle();
       });
 

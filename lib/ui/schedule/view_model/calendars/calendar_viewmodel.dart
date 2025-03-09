@@ -165,9 +165,7 @@ abstract class CalendarViewModel extends FutureViewModel<List<CourseActivity>> {
     if (_courseRepository.coursesActivities != null) {
       for (final CourseActivity course
           in _courseRepository.coursesActivities!) {
-        final DateTime dateOnly = course.startDateTime.subtract(Duration(
-            hours: course.startDateTime.hour,
-            minutes: course.startDateTime.minute));
+        final DateTime dateOnly = course.startDateTime.withoutTime;
 
         if (!_coursesActivities.containsKey(dateOnly)) {
           _coursesActivities[dateOnly] = [];
