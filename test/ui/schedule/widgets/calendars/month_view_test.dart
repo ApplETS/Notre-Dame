@@ -1,7 +1,6 @@
 // Package imports:
 import 'package:calendar_view/calendar_view.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:notredame/utils/utils.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 // Project imports:
