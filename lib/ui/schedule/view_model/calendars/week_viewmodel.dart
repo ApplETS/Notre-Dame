@@ -45,8 +45,7 @@ class WeekViewModel extends CalendarViewModel {
 
   @override
   bool returnToCurrentDate() {
-    DateTime dateToReturnTo =
-        Utils.getFirstdayOfWeek(DateTime.now().withoutTime);
+    DateTime dateToReturnTo = Utils.getFirstdayOfWeek(DateTime.now());
     if (DateTime.now().weekday == DateTime.saturday &&
         calendarEventsFromDate(dateToReturnTo.add(Duration(days: 6, hours: 1)))
             .isEmpty) {
@@ -67,10 +66,9 @@ class WeekViewModel extends CalendarViewModel {
   List<CalendarEventData> selectedWeekCalendarEvents() {
     final List<CalendarEventData> events = [];
 
-    final firstDayOfWeek = Utils.getFirstdayOfWeek(weekSelected);
     // We want to put events of previous week and next week in memory to make transitions smoother
     for (int i = -7; i < 14; i++) {
-      final date = firstDayOfWeek.add(Duration(days: i));
+      final date = weekSelected.add(Duration(days: i));
       final eventsForDay = calendarEventsFromDate(date);
       if (eventsForDay.isNotEmpty) {
         events.addAll(eventsForDay);
