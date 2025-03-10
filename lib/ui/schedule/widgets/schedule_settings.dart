@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 
 // Package imports:
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:notredame/ui/schedule/controllers/settings_controller.dart';
 import 'package:stacked/stacked.dart';
 
 // Project imports:
@@ -11,6 +10,7 @@ import 'package:notredame/data/models/activity_code.dart';
 import 'package:notredame/data/services/calendar_service.dart';
 import 'package:notredame/ui/core/themes/app_palette.dart';
 import 'package:notredame/ui/core/themes/app_theme.dart';
+import 'package:notredame/ui/schedule/controllers/settings_controller.dart';
 import 'package:notredame/ui/schedule/view_model/schedule_settings_viewmodel.dart';
 
 class ScheduleSettings extends StatefulWidget {
@@ -26,7 +26,8 @@ class _ScheduleSettingsState extends State<ScheduleSettings> {
 
   @override
   Widget build(BuildContext context) => ViewModelBuilder.reactive(
-      viewModelBuilder: () => ScheduleSettingsViewModel(controller: widget.controller),
+      viewModelBuilder: () =>
+          ScheduleSettingsViewModel(controller: widget.controller),
       builder: (context, model, child) {
         return ClipRRect(
           borderRadius: const BorderRadius.vertical(top: Radius.circular(10)),
@@ -42,24 +43,24 @@ class _ScheduleSettingsState extends State<ScheduleSettings> {
               ],
               builder: (context, ScrollController scrollController) {
                 return Column(children: [
-                    Container(
-                      decoration: BoxDecoration(
-                        color: context.theme.appColors.modalTitle,
-                      ),
-                      child: Center(
-                        child: Padding(
-                          padding: const EdgeInsets.only(top: 8.0),
-                          child: Container(
-                            height: 5,
-                            width: 50,
-                            decoration: BoxDecoration(
-                                color: context.theme.appColors.modalHandle,
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(8.0))),
-                          ),
+                  Container(
+                    decoration: BoxDecoration(
+                      color: context.theme.appColors.modalTitle,
+                    ),
+                    child: Center(
+                      child: Padding(
+                        padding: const EdgeInsets.only(top: 8.0),
+                        child: Container(
+                          height: 5,
+                          width: 50,
+                          decoration: BoxDecoration(
+                              color: context.theme.appColors.modalHandle,
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(8.0))),
                         ),
                       ),
                     ),
+                  ),
                   Container(
                     width: MediaQuery.of(context).size.width,
                     decoration: BoxDecoration(
