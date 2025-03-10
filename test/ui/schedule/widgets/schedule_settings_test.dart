@@ -12,6 +12,7 @@ import 'package:notredame/data/models/activity_code.dart';
 import 'package:notredame/data/services/calendar_service.dart';
 import 'package:notredame/data/services/signets-api/models/schedule_activity.dart';
 import 'package:notredame/domain/constants/preferences_flags.dart';
+import 'package:notredame/ui/schedule/controllers/settings_controller.dart';
 import 'package:notredame/ui/schedule/widgets/schedule_settings.dart';
 import '../../../data/mocks/repositories/course_repository_mock.dart';
 import '../../../data/mocks/repositories/settings_repository_mock.dart';
@@ -23,6 +24,8 @@ void main() {
   late RemoteConfigServiceMock remoteConfigServiceMock;
   late CourseRepositoryMock courseRepositoryMock;
   late AppIntl intl;
+  SettingsController controller = SettingsController();
+  controller.updateSettings = () {};
 
   // Some settings
   final Map<PreferencesFlag, dynamic> settings = {
@@ -86,8 +89,9 @@ void main() {
       testWidgets("With handle", (WidgetTester tester) async {
         SettingsRepositoryMock.stubGetScheduleSettings(settingsManagerMock,
             toReturn: settings);
-        await tester
-            .pumpWidget(localizedWidget(child: const ScheduleSettings()));
+
+        Widget scheduleSettings = ScheduleSettings(controller: controller);
+        await tester.pumpWidget(localizedWidget(child: scheduleSettings));
         await tester.pumpAndSettle();
 
         // Check the handle
@@ -157,79 +161,6 @@ void main() {
         final Size maxSize = tester.getSize(draggableScrollableSheetFinder);
         expect(maxSize.height, 0.85 * screenHeight);
       });
-
-      testWidgets("Without handle", (WidgetTester tester) async {
-        SettingsRepositoryMock.stubGetScheduleSettings(settingsManagerMock,
-            toReturn: settings);
-
-        await tester.pumpWidget(
-            localizedWidget(child: const ScheduleSettings(showHandle: false)));
-        await tester.pumpAndSettle();
-
-        expect(
-            find.byWidgetPredicate((widget) =>
-                widget is Container &&
-                widget.decoration is BoxDecoration &&
-                (widget.decoration! as BoxDecoration).color ==
-                    Color(0xff868383)),
-            findsNothing,
-            reason: "There should not have a handle.");
-
-        expect(find.text(intl.schedule_settings_title), findsOneWidget);
-
-        // Check calendar format section
-        expect(find.text(intl.schedule_settings_calendar_format_pref),
-            findsOneWidget);
-        expect(
-            find.widgetWithText(
-                InputChip, intl.schedule_settings_calendar_format_day),
-            findsOneWidget);
-        expect(
-            find.widgetWithText(
-                InputChip, intl.schedule_settings_calendar_format_month),
-            findsOneWidget);
-
-        final weekFormatTile = find.widgetWithText(
-            InputChip, intl.schedule_settings_calendar_format_week);
-        expect(weekFormatTile, findsOneWidget);
-        expect(
-            tester.widget(weekFormatTile),
-            isA<InputChip>()
-                .having((source) => source.selected, 'selected', isTrue),
-            reason:
-                'The settings says week format is the current format, the UI should reflet that.');
-
-        // Check showTodayButton section
-        final showTodayBtnFinder = find.widgetWithText(
-            ListTile, intl.schedule_settings_show_today_btn_pref,
-            skipOffstage: false);
-        expect(showTodayBtnFinder, findsOneWidget);
-        expect(
-            tester.widget(showTodayBtnFinder),
-            isA<ListTile>().having(
-                (source) => source.trailing, 'trailing', isA<Switch>()));
-        expect(
-            tester.widget(find.descendant(
-                of: showTodayBtnFinder,
-                matching: find.byType(Switch, skipOffstage: false))),
-            isA<Switch>().having((source) => source.value, 'value', isTrue),
-            reason:
-                "the settings says that the showTodayBtn is enabled, the UI should reflet that.");
-
-        const screenHeight = 600;
-
-        final draggableScrollableSheetFinder =
-            find.byType(DraggableScrollableSheet);
-        expect(draggableScrollableSheetFinder, findsOneWidget);
-
-        final Size initialSize = tester.getSize(draggableScrollableSheetFinder);
-        expect(initialSize.height, 0.55 * screenHeight);
-
-        await tester.fling(
-            find.byType(ListView).first, const Offset(0.0, -4000.0), 400.0);
-        final Size maxSize = tester.getSize(draggableScrollableSheetFinder);
-        expect(maxSize.height, 0.85 * screenHeight);
-      });
     });
 
     group("ScheduleActivities", () {
@@ -241,7 +172,8 @@ void main() {
         CourseRepositoryMock.stubGetScheduleActivities(courseRepositoryMock,
             toReturn: classOneWithLaboratoryABscheduleActivities);
 
-        const scheduleSettings = ScheduleSettings(showHandle: false);
+        Widget scheduleSettings = ScheduleSettings(controller: controller);
+        await tester.pumpWidget(localizedWidget(child: scheduleSettings));
 
         await tester.pumpWidget(localizedWidget(child: scheduleSettings));
         await tester.pumpAndSettle();
@@ -281,7 +213,7 @@ void main() {
             PreferencesFlag.scheduleLaboratoryGroup, "GEN101",
             toReturn: ActivityCode.labGroupB);
 
-        const scheduleSettings = ScheduleSettings(showHandle: false);
+        Widget scheduleSettings = ScheduleSettings(controller: controller);
 
         await tester.pumpWidget(localizedWidget(child: scheduleSettings));
         await tester.pumpAndSettle();
@@ -315,7 +247,8 @@ void main() {
         CourseRepositoryMock.stubGetScheduleActivities(courseRepositoryMock,
             toReturn: courseWithOnlyLabA);
 
-        const scheduleSettings = ScheduleSettings(showHandle: false);
+        Widget scheduleSettings = ScheduleSettings(controller: controller);
+        await tester.pumpWidget(localizedWidget(child: scheduleSettings));
 
         await tester.pumpWidget(localizedWidget(child: scheduleSettings));
         await tester.pumpAndSettle();
@@ -338,8 +271,8 @@ void main() {
         SettingsRepositoryMock.stubSetString(
             settingsManagerMock, PreferencesFlag.scheduleCalendarFormat);
 
-        await tester.pumpWidget(
-            localizedWidget(child: const ScheduleSettings(showHandle: false)));
+        Widget scheduleSettings = ScheduleSettings(controller: controller);
+        await tester.pumpWidget(localizedWidget(child: scheduleSettings));
         await tester.pumpAndSettle();
 
         await tester.tap(find.widgetWithText(
@@ -371,8 +304,8 @@ void main() {
         SettingsRepositoryMock.stubSetBool(
             settingsManagerMock, PreferencesFlag.scheduleListView);
         await tester.runAsync(() async {
-          await tester.pumpWidget(localizedWidget(
-              child: const ScheduleSettings(showHandle: false)));
+          Widget scheduleSettings = ScheduleSettings(controller: controller);
+          await tester.pumpWidget(localizedWidget(child: scheduleSettings));
           await tester.pumpAndSettle();
         }).then((value) async {
           final scheduleListViewFinder = find.widgetWithText(
@@ -399,8 +332,8 @@ void main() {
               reason:
                   "the settings says calendar view format now, the UI should reflet that.");
 
-          await tester
-              .pumpWidget(localizedWidget(child: const ScheduleSettings()));
+          Widget scheduleSettings = ScheduleSettings(controller: controller);
+          await tester.pumpWidget(localizedWidget(child: scheduleSettings));
           await tester.pumpAndSettle();
 
           expect(
@@ -424,8 +357,8 @@ void main() {
         SettingsRepositoryMock.stubSetBool(
             settingsManagerMock, PreferencesFlag.scheduleShowTodayBtn);
         await tester.runAsync(() async {
-          await tester.pumpWidget(localizedWidget(
-              child: const ScheduleSettings()));
+          Widget scheduleSettings = ScheduleSettings(controller: controller);
+          await tester.pumpWidget(localizedWidget(child: scheduleSettings));
           await tester.pumpAndSettle();
         }).then((value) async {
           final showTodayBtnFinder = find.widgetWithText(
