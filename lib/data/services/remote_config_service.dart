@@ -2,6 +2,7 @@
 
 // Package imports:
 import 'package:firebase_remote_config/firebase_remote_config.dart';
+import 'package:flutter/foundation.dart';
 
 // Project imports:
 import 'package:notredame/data/services/analytics_service.dart';
@@ -143,7 +144,10 @@ class RemoteConfigService {
 
   Future<String> get aadAndroidRedirectUri async {
     await fetch();
-    return _remoteConfig.getString("AAD_ANDROID_REDIRECT_URI_DEBUG");
+    if(kDebugMode) {
+      return _remoteConfig.getString("AAD_ANDROID_REDIRECT_URI_DEBUG");
+    }
+    return _remoteConfig.getString("AAD_ANDROID_REDIRECT_URI_PROD");
   }
 
   Future<String> get aadAppleAuthority async {
@@ -153,7 +157,7 @@ class RemoteConfigService {
 
   Future<String> get aadClientId async {
     await fetch();
-    return _remoteConfig.getString("AAD_CLIENT_ID_DEBUG");
+    return _remoteConfig.getString("AAD_CLIENT_ID");
   }
 
   Future<void> fetch() async {

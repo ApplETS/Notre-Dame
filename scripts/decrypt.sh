@@ -29,7 +29,7 @@ fi
 
 # Decrypt debug Android Keystore, JKS and service account credentials
 if [[ -n ENCRYPTED_ETSMOBILE_KEYSTORE_PASSWORD_DEBUG && -n ENCRYPTED_KEYSTORE_PROPERTIES_PASSWORD_DEBUG ]]; then
-  echo "Decoding Android keystore and JKS"
+  echo "Decoding debug Android keystore and JKS"
   openssl aes-256-cbc -pbkdf2 -d -k "$ENCRYPTED_ETSMOBILE_KEYSTORE_PASSWORD_DEBUG" -in ./encryptedFiles/debug_keystore.jks.enc -out ./android/debug_keystore.jks -md md5
   openssl aes-256-cbc -pbkdf2 -d -k "$ENCRYPTED_KEYSTORE_PROPERTIES_PASSWORD_DEBUG" -in ./encryptedFiles/debug_keystore.properties.enc -out ./android/debug_keystore.properties -md md5
 fi

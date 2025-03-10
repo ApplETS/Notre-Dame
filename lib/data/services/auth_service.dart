@@ -57,7 +57,7 @@ class AuthService {
       );
       return (true, null);
     } on MsalException catch (e) {
-      _logger.e('Create public client application failed => $e');
+      _logger.e('Create public client application failed => ${e.message}');
       return (false, e);
     }
   }

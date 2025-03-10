@@ -1,7 +1,4 @@
 // Package imports:
-import 'dart:developer';
-
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:msal_auth/msal_auth.dart';
 import 'package:notredame/data/services/auth_service.dart';
 import 'package:stacked/stacked.dart';
@@ -40,7 +37,12 @@ class StartUpViewModel extends BaseViewModel {
     }
     // TODO: remove when everyone is on the version with the new auth
 
-    await _authService.createPublicClientApplication(authorityType: AuthorityType.aad, broker: Broker.msAuthenticator);
+    final clientAppResult = await _authService.createPublicClientApplication(authorityType: AuthorityType.aad, broker: Broker.msAuthenticator);
+
+    if(clientAppResult.$1 == false) {
+      throw Exception("StartupViewmodel - Failed to create public client application");
+    }
+
     final bool isLogin = (await _authService.acquireTokenSilent()).$2 == null;
 
     if (isLogin) {
