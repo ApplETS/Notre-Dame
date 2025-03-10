@@ -12,7 +12,7 @@ import 'package:notredame/data/models/activity_code.dart';
 import 'package:notredame/data/services/calendar_service.dart';
 import 'package:notredame/data/services/signets-api/models/schedule_activity.dart';
 import 'package:notredame/domain/constants/preferences_flags.dart';
-import 'package:notredame/ui/schedule/calendar_controller.dart';
+import 'package:notredame/ui/schedule/schedule_controller.dart';
 import 'package:notredame/ui/schedule/widgets/schedule_settings.dart';
 import '../../../data/mocks/repositories/course_repository_mock.dart';
 import '../../../data/mocks/repositories/settings_repository_mock.dart';
@@ -24,8 +24,8 @@ void main() {
   late RemoteConfigServiceMock remoteConfigServiceMock;
   late CourseRepositoryMock courseRepositoryMock;
   late AppIntl intl;
-  CalendarController controller = CalendarController();
-  controller.updateSettings = () {};
+  ScheduleController controller = ScheduleController();
+  controller.settingsUpdated = () {};
 
   // Some settings
   final Map<PreferencesFlag, dynamic> settings = {

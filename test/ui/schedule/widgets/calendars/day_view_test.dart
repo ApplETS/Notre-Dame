@@ -17,7 +17,7 @@ import 'package:notredame/data/services/networking_service.dart';
 import 'package:notredame/data/services/remote_config_service.dart';
 import 'package:notredame/data/services/signets-api/models/course_activity.dart';
 import 'package:notredame/ui/dashboard/widgets/course_activity_tile.dart';
-import 'package:notredame/ui/schedule/calendar_controller.dart';
+import 'package:notredame/ui/schedule/schedule_controller.dart';
 import 'package:notredame/ui/schedule/widgets/calendars/day_calendar.dart';
 import 'package:notredame/ui/schedule/widgets/schedule_calendar_tile.dart';
 import '../../../../data/mocks/repositories/course_repository_mock.dart';
@@ -79,7 +79,7 @@ void main() {
         await tester.runAsync(() async {
           await tester.pumpWidget(localizedWidget(
               child: DayCalendar(
-                  listView: true, controller: CalendarController())));
+                  listView: true, controller: ScheduleController())));
           await tester.pumpAndSettle();
         });
 
@@ -94,7 +94,7 @@ void main() {
         await tester.runAsync(() async {
           await tester.pumpWidget(localizedWidget(
               child: DayCalendar(
-                  listView: true, controller: CalendarController())));
+                  listView: true, controller: ScheduleController())));
           await tester.pumpAndSettle();
         });
 
@@ -111,7 +111,7 @@ void main() {
         await tester.runAsync(() async {
           await tester.pumpWidget(localizedWidget(
               child: DayCalendar(
-                  listView: true, controller: CalendarController())));
+                  listView: true, controller: ScheduleController())));
           await tester.pumpAndSettle();
         });
 
@@ -127,7 +127,7 @@ void main() {
         await tester.runAsync(() async {
           await tester.pumpWidget(localizedWidget(
               child: DayCalendar(
-                  listView: false, controller: CalendarController())));
+                  listView: false, controller: ScheduleController())));
           await tester.pumpAndSettle();
         });
 
@@ -144,7 +144,7 @@ void main() {
         await tester.runAsync(() async {
           await tester.pumpWidget(localizedWidget(
               child: DayCalendar(
-                  listView: false, controller: CalendarController())));
+                  listView: false, controller: ScheduleController())));
           await tester.pumpAndSettle();
         });
 
@@ -162,7 +162,7 @@ void main() {
         await tester.runAsync(() async {
           await tester.pumpWidget(localizedWidget(
               child: DayCalendar(
-                  listView: false, controller: CalendarController())));
+                  listView: false, controller: ScheduleController())));
           await tester.pumpAndSettle();
         });
 

@@ -10,15 +10,15 @@ import 'package:notredame/data/services/calendar_service.dart';
 import 'package:notredame/data/services/signets-api/models/schedule_activity.dart';
 import 'package:notredame/domain/constants/preferences_flags.dart';
 import 'package:notredame/locator.dart';
-import 'package:notredame/ui/schedule/calendar_controller.dart';
+import 'package:notredame/ui/schedule/schedule_controller.dart';
 
 class ScheduleSettingsViewModel
     extends FutureViewModel<Map<PreferencesFlag, dynamic>> {
-  ScheduleSettingsViewModel({required CalendarController controller})
+  ScheduleSettingsViewModel({required ScheduleController controller})
       : _controller = controller;
 
   /// Allows to update other views
-  final CalendarController _controller;
+  final ScheduleController _controller;
 
   /// Manage the settings
   final SettingsRepository _settingsManager = locator<SettingsRepository>();
@@ -36,7 +36,7 @@ class ScheduleSettingsViewModel
     _settingsManager.setString(
         PreferencesFlag.scheduleCalendarFormat, format?.name);
     _calendarFormat = format;
-    _controller.updateSettings();
+    _controller.settingsUpdated();
     setBusy(false);
   }
 
@@ -49,7 +49,7 @@ class ScheduleSettingsViewModel
     setBusy(true);
     _settingsManager.setBool(PreferencesFlag.scheduleShowTodayBtn, newValue);
     _showTodayBtn = newValue;
-    _controller.updateSettings();
+    _controller.settingsUpdated();
     setBusy(false);
   }
 
@@ -61,7 +61,7 @@ class ScheduleSettingsViewModel
     setBusy(true);
     _settingsManager.setBool(PreferencesFlag.scheduleListView, newValue);
     _toggleCalendarView = newValue;
-    _controller.updateSettings();
+    _controller.settingsUpdated();
     setBusy(false);
   }
 
@@ -92,7 +92,7 @@ class ScheduleSettingsViewModel
           scheduleActivityToSave.activityCode);
       _selectedScheduleActivity[courseAcronym] = scheduleActivityToSave;
     }
-    _controller.updateSettings();
+    _controller.settingsUpdated();
     setBusy(false);
   }
 

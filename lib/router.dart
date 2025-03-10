@@ -21,7 +21,7 @@ import 'package:notredame/ui/more/settings/widgets/settings_view.dart';
 import 'package:notredame/ui/more/widgets/more_view.dart';
 import 'package:notredame/ui/not_found/widgets/not_found_view.dart';
 import 'package:notredame/ui/outage/widgets/outage_view.dart';
-import 'package:notredame/ui/schedule/calendar_controller.dart';
+import 'package:notredame/ui/schedule/schedule_controller.dart';
 import 'package:notredame/ui/schedule/widgets/schedule_view.dart';
 import 'package:notredame/ui/startup/widgets/startup_view.dart';
 import 'package:notredame/ui/student/grades/grade_details/widgets/grade_details_view.dart';
@@ -59,7 +59,7 @@ Route<dynamic> generateRoute(RouteSettings routeSettings) {
           transitionsBuilder: (_, animation, ___, child) =>
               rootPagesAnimation(animation, child),
           pageBuilder: (_, __, ___) => ScheduleView(
-              controller: routeSettings.arguments as CalendarController));
+              controller: routeSettings.arguments as ScheduleController));
     case RouterPaths.defaultSchedule:
       return MaterialPageRoute(
           settings: RouteSettings(

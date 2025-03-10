@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 // Project imports:
-import 'package:notredame/ui/schedule/calendar_controller.dart';
+import 'package:notredame/ui/schedule/schedule_controller.dart';
 import '../../../data/services/analytics_service.dart';
 import '../../../data/services/navigation_service.dart';
 import '../../../domain/constants/router_paths.dart';
@@ -19,7 +19,7 @@ enum NavigationView {
   more,
 }
 
-CalendarController _scheduleController = CalendarController();
+ScheduleController _scheduleController = ScheduleController();
 
 abstract class BaseNavigationBar extends StatefulWidget {
   const BaseNavigationBar({super.key});

@@ -12,7 +12,7 @@ import 'package:notredame/domain/constants/preferences_flags.dart';
 import 'package:notredame/locator.dart';
 import 'package:notredame/ui/core/ui/base_scaffold.dart';
 import 'package:notredame/ui/core/ui/calendar_selector.dart';
-import 'package:notredame/ui/schedule/calendar_controller.dart';
+import 'package:notredame/ui/schedule/schedule_controller.dart';
 import 'package:notredame/ui/schedule/view_model/schedule_viewmodel.dart';
 import 'package:notredame/ui/schedule/widgets/calendars/day_calendar.dart';
 import 'package:notredame/ui/schedule/widgets/calendars/month_calendar.dart';
@@ -20,7 +20,7 @@ import 'package:notredame/ui/schedule/widgets/calendars/week_calendar.dart';
 import 'package:notredame/ui/schedule/widgets/schedule_settings.dart';
 
 class ScheduleView extends StatefulWidget {
-  final CalendarController controller;
+  final ScheduleController controller;
   const ScheduleView({super.key, required this.controller});
 
   @override
@@ -71,7 +71,7 @@ class _ScheduleViewState extends State<ScheduleView>
   }
 
   List<Widget> _buildActionButtons(ScheduleViewModel model) {
-    widget.controller.updateSettings = () => model.loadSettings();
+    widget.controller.settingsUpdated = () => model.loadSettings();
 
     return [
       IconButton(

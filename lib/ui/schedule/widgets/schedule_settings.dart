@@ -10,11 +10,11 @@ import 'package:notredame/data/models/activity_code.dart';
 import 'package:notredame/data/services/calendar_service.dart';
 import 'package:notredame/ui/core/themes/app_palette.dart';
 import 'package:notredame/ui/core/themes/app_theme.dart';
-import 'package:notredame/ui/schedule/calendar_controller.dart';
+import 'package:notredame/ui/schedule/schedule_controller.dart';
 import 'package:notredame/ui/schedule/view_model/schedule_settings_viewmodel.dart';
 
 class ScheduleSettings extends StatefulWidget {
-  final CalendarController controller;
+  final ScheduleController controller;
   const ScheduleSettings({super.key, required this.controller});
 
   @override
