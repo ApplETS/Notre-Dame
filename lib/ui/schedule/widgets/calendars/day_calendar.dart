@@ -14,13 +14,13 @@ import 'package:notredame/data/services/signets-api/models/course_activity.dart'
 import 'package:notredame/ui/core/themes/app_palette.dart';
 import 'package:notredame/ui/core/themes/app_theme.dart';
 import 'package:notredame/ui/dashboard/widgets/course_activity_tile.dart';
+import 'package:notredame/ui/schedule/schedule_controller.dart';
 import 'package:notredame/ui/schedule/view_model/calendars/day_viewmodel.dart';
-import 'package:notredame/ui/schedule/widgets/calendars/calendar_controller.dart';
 import 'package:notredame/ui/schedule/widgets/schedule_calendar_tile.dart';
 
 class DayCalendar extends StatefulWidget {
   final bool listView;
-  final CalendarController controller;
+  final ScheduleController controller;
 
   const DayCalendar(
       {super.key, required this.listView, required this.controller});

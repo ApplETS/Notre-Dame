@@ -10,13 +10,13 @@ import 'package:stacked/stacked.dart';
 // Project imports:
 import 'package:notredame/ui/core/themes/app_palette.dart';
 import 'package:notredame/ui/core/themes/app_theme.dart';
+import 'package:notredame/ui/schedule/schedule_controller.dart';
 import 'package:notredame/ui/schedule/view_model/calendars/month_viewmodel.dart';
-import 'calendar_controller.dart';
 
 class MonthCalendar extends StatelessWidget {
   final GlobalKey<MonthViewState> monthViewKey = GlobalKey<MonthViewState>();
   static final List<String> weekTitles = ["L", "M", "M", "J", "V", "S", "D"];
-  final CalendarController controller;
+  final ScheduleController controller;
 
   MonthCalendar({super.key, required this.controller});
 
