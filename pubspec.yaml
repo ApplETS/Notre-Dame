@@ -33,7 +33,7 @@ dependencies:
 
   # Utils
   logger: ^2.5.0
-  fluttertoast: ^8.2.8
+  fluttertoast: ^8.2.12
 
   # Widgets
   table_calendar: ^3.1.3
