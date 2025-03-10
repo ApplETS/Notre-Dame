@@ -9,7 +9,7 @@ import 'package:notredame/data/repositories/settings_repository.dart';
 import 'package:notredame/data/services/calendar_service.dart';
 import 'package:notredame/data/services/signets-api/models/schedule_activity.dart';
 import 'package:notredame/domain/constants/preferences_flags.dart';
-import 'package:notredame/ui/schedule/controllers/settings_controller.dart';
+import 'package:notredame/ui/schedule/calendar_controller.dart';
 import 'package:notredame/ui/schedule/view_model/schedule_settings_viewmodel.dart';
 import '../../../data/mocks/repositories/course_repository_mock.dart';
 import '../../../data/mocks/repositories/settings_repository_mock.dart';
@@ -19,7 +19,7 @@ late SettingsRepositoryMock settingsManagerMock;
 late CourseRepositoryMock courseRepositoryMock;
 
 late ScheduleSettingsViewModel viewModel;
-SettingsController controller = SettingsController();
+CalendarController controller = CalendarController();
 
 void main() {
   controller.updateSettings = () {};

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 // Package imports:
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:notredame/ui/schedule/calendar_controller.dart';
 
 // Project imports:
 import '../../../data/services/analytics_service.dart';
@@ -17,6 +18,8 @@ enum NavigationView {
   ets,
   more,
 }
+
+CalendarController _scheduleController = CalendarController();
 
 abstract class BaseNavigationBar extends StatefulWidget {
   const BaseNavigationBar({super.key});
@@ -99,6 +102,10 @@ abstract class BaseNavigationBarState<T extends BaseNavigationBar>
   }
 
   void _onTap(NavigationView view) {
+    if (view == NavigationView.schedule && _currentView == view) {
+      _scheduleController.returnToToday();
+    }
+
     if (_currentView == view) return;
 
     final routeNames = {
@@ -116,7 +123,11 @@ abstract class BaseNavigationBarState<T extends BaseNavigationBar>
       NavigationView.more: "MoreView clicked"
     };
 
-    _navigationService.pushNamedAndRemoveDuplicates(routeNames[view]!);
+    if (view == NavigationView.schedule) {
+      _navigationService.pushNamedAndRemoveDuplicates(routeNames[view]!, arguments: _scheduleController);
+    } else {
+      _navigationService.pushNamedAndRemoveDuplicates(routeNames[view]!);
+    }
     _analyticsService.logEvent("NavigationBar", events[view]!);
     setState(() => _currentView = view);
   }

@@ -9,7 +9,7 @@ import 'package:stacked/stacked.dart';
 
 // Project imports:
 import 'package:notredame/ui/core/themes/app_theme.dart';
-import 'package:notredame/ui/schedule/controllers/calendar_controller.dart';
+import 'package:notredame/ui/schedule/calendar_controller.dart';
 import 'package:notredame/ui/schedule/view_model/calendars/week_viewmodel.dart';
 import 'package:notredame/ui/schedule/widgets/schedule_calendar_tile.dart';
 

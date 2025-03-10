@@ -1,5 +1,6 @@
 // Package imports:
 import 'package:collection/collection.dart';
+import 'package:notredame/ui/schedule/calendar_controller.dart';
 import 'package:stacked/stacked.dart';
 
 // Project imports:
@@ -10,15 +11,14 @@ import 'package:notredame/data/services/calendar_service.dart';
 import 'package:notredame/data/services/signets-api/models/schedule_activity.dart';
 import 'package:notredame/domain/constants/preferences_flags.dart';
 import 'package:notredame/locator.dart';
-import 'package:notredame/ui/schedule/controllers/settings_controller.dart';
 
 class ScheduleSettingsViewModel
     extends FutureViewModel<Map<PreferencesFlag, dynamic>> {
-  ScheduleSettingsViewModel({required SettingsController controller})
+  ScheduleSettingsViewModel({required CalendarController controller})
       : _controller = controller;
 
   /// Allows to update other views
-  final SettingsController _controller;
+  final CalendarController _controller;
 
   /// Manage the settings
   final SettingsRepository _settingsManager = locator<SettingsRepository>();

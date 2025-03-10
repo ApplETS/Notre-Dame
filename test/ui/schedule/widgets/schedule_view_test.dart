@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:calendar_view/calendar_view.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
+import 'package:notredame/ui/schedule/calendar_controller.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 // Project imports:
@@ -90,7 +91,7 @@ void main() {
             toReturn: settingsWeek);
 
         await tester.runAsync(() async {
-          await tester.pumpWidget(localizedWidget(child: const ScheduleView()));
+          await tester.pumpWidget(localizedWidget(child: ScheduleView(controller: CalendarController())));
           await tester.pumpAndSettle();
         });
 
@@ -112,7 +113,7 @@ void main() {
         CourseRepositoryMock.stubGetCourses(courseRepositoryMock);
 
         await tester.runAsync(() async {
-          await tester.pumpWidget(localizedWidget(child: const ScheduleView()));
+          await tester.pumpWidget(localizedWidget(child: ScheduleView(controller: CalendarController())));
           await tester.pumpAndSettle();
         });
 
@@ -139,7 +140,7 @@ void main() {
             toReturn: settingsWeek);
 
         await tester.runAsync(() async {
-          await tester.pumpWidget(localizedWidget(child: const ScheduleView()));
+          await tester.pumpWidget(localizedWidget(child: ScheduleView(controller: CalendarController())));
           await tester.pumpAndSettle();
         }).then((value) async {
           expect(find.byType(WeekView), findsOneWidget);
@@ -152,7 +153,7 @@ void main() {
             toReturn: settingsMonth);
 
         await tester.runAsync(() async {
-          await tester.pumpWidget(localizedWidget(child: const ScheduleView()));
+          await tester.pumpWidget(localizedWidget(child: ScheduleView(controller: CalendarController())));
           await tester.pumpAndSettle();
         }).then((value) async {
           expect(find.byType(MonthView), findsOneWidget);
@@ -165,7 +166,7 @@ void main() {
             toReturn: settingsDay);
 
         await tester.runAsync(() async {
-          await tester.pumpWidget(localizedWidget(child: const ScheduleView()));
+          await tester.pumpWidget(localizedWidget(child: ScheduleView(controller: CalendarController())));
           await tester.pumpAndSettle();
         }).then((value) async {
           expect(find.byType(DayView), findsOneWidget);
@@ -178,7 +179,7 @@ void main() {
             toReturn: settingsDayList);
 
         await tester.runAsync(() async {
-          await tester.pumpWidget(localizedWidget(child: const ScheduleView()));
+          await tester.pumpWidget(localizedWidget(child: ScheduleView(controller: CalendarController())));
           await tester.pumpAndSettle();
         }).then((value) async {
           expect(find.byType(PageView), findsExactly(2));
@@ -191,7 +192,7 @@ void main() {
             toReturn: settingsWeek);
 
         await tester.runAsync(() async {
-          await tester.pumpWidget(localizedWidget(child: const ScheduleView()));
+          await tester.pumpWidget(localizedWidget(child: ScheduleView(controller: CalendarController())));
           await tester.pumpAndSettle();
         }).then((value) async {
           expect(find.byType(IconButton), findsExactly(5));
@@ -204,7 +205,7 @@ void main() {
             toReturn: settingsDontShowTodayBtn);
 
         await tester.runAsync(() async {
-          await tester.pumpWidget(localizedWidget(child: const ScheduleView()));
+          await tester.pumpWidget(localizedWidget(child: ScheduleView(controller: CalendarController())));
           await tester.pumpAndSettle();
         }).then((value) async {
           expect(find.byType(IconButton), findsExactly(4));
