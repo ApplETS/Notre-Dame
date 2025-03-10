@@ -66,35 +66,32 @@ Widget buildPage(BuildContext context, ProfileViewModel model) => Column(
           padding: const EdgeInsets.fromLTRB(5.0, 10.0, 5.0, 10.0),
           child: getMainInfoCard(model),
         ),
-        Row(
-          children: <Widget>[
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: <Widget>[
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(8.0, 0.0, 8.0, 8.0),
-                    child: getMyInfosCard(model, context),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(8.0, 0.0, 8.0, 4.0),
-                    child: getMyBalanceCard(model, context),
-                  ),
-                ],
+        IntrinsicHeight(
+          child: Row(
+            children: <Widget>[
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: <Widget>[
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(8.0, 0.0, 8.0, 8.0),
+                      child: getMyInfosCard(model, context),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(8.0, 0.0, 8.0, 4.0),
+                      child: getMyBalanceCard(model, context),
+                    ),
+                  ],
+                ),
               ),
-            ),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: <Widget>[
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(0.0, 0.0, 8.0, 4.0),
-                    child: ProgramCompletionCard(model: model),
-                  ),
-                ],
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(0.0, 0.0, 8.0, 4.0),
+                  child: ProgramCompletionCard(model: model),
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
         const Divider(
           thickness: 2,
@@ -248,9 +245,13 @@ Card getMyBalanceCard(ProfileViewModel model, BuildContext context) {
   }
 
   return Card(
-    color: balance > 0
-        ? context.theme.appColors.negative
-        : context.theme.appColors.positive,
+    shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(12),
+        side: BorderSide(
+            color: balance > 0
+                ? context.theme.appColors.negative
+                : context.theme.appColors.positive,
+            width: 2)),
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
@@ -268,7 +269,11 @@ Card getMyBalanceCard(ProfileViewModel model, BuildContext context) {
           child: Center(
             child: Text(
               stringBalance,
-              style: const TextStyle(fontSize: 18),
+              style: TextStyle(
+                  color: balance > 0
+                      ? context.theme.appColors.negative
+                      : context.theme.appColors.positive,
+                  fontSize: 18),
             ),
           ),
         ),
