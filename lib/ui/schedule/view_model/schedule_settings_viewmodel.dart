@@ -1,5 +1,6 @@
 // Package imports:
 import 'package:collection/collection.dart';
+import 'package:notredame/ui/schedule/controllers/settings_controller.dart';
 import 'package:stacked/stacked.dart';
 
 // Project imports:
@@ -13,6 +14,12 @@ import 'package:notredame/locator.dart';
 
 class ScheduleSettingsViewModel
     extends FutureViewModel<Map<PreferencesFlag, dynamic>> {
+
+  ScheduleSettingsViewModel({required SettingsController controller}) : _controller = controller;
+
+  /// Allows to update other views
+  final SettingsController _controller;
+
   /// Manage the settings
   final SettingsRepository _settingsManager = locator<SettingsRepository>();
 
@@ -29,6 +36,7 @@ class ScheduleSettingsViewModel
     _settingsManager.setString(
         PreferencesFlag.scheduleCalendarFormat, format?.name);
     _calendarFormat = format;
+    _controller.updateSettings();
     setBusy(false);
   }
 
@@ -41,6 +49,7 @@ class ScheduleSettingsViewModel
     setBusy(true);
     _settingsManager.setBool(PreferencesFlag.scheduleShowTodayBtn, newValue);
     _showTodayBtn = newValue;
+    _controller.updateSettings();
     setBusy(false);
   }
 
@@ -52,6 +61,7 @@ class ScheduleSettingsViewModel
     setBusy(true);
     _settingsManager.setBool(PreferencesFlag.scheduleListView, newValue);
     _toggleCalendarView = newValue;
+    _controller.updateSettings();
     setBusy(false);
   }
 
@@ -82,6 +92,7 @@ class ScheduleSettingsViewModel
           scheduleActivityToSave.activityCode);
       _selectedScheduleActivity[courseAcronym] = scheduleActivityToSave;
     }
+    _controller.updateSettings();
     setBusy(false);
   }
 

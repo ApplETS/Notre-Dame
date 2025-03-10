@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 // Package imports:
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:notredame/ui/schedule/controllers/settings_controller.dart';
 import 'package:stacked/stacked.dart';
 
 // Project imports:
@@ -13,7 +14,7 @@ import 'package:notredame/locator.dart';
 import 'package:notredame/ui/core/ui/base_scaffold.dart';
 import 'package:notredame/ui/core/ui/calendar_selector.dart';
 import 'package:notredame/ui/schedule/view_model/schedule_viewmodel.dart';
-import 'package:notredame/ui/schedule/widgets/calendars/calendar_controller.dart';
+import 'package:notredame/ui/schedule/controllers/calendar_controller.dart';
 import 'package:notredame/ui/schedule/widgets/calendars/day_calendar.dart';
 import 'package:notredame/ui/schedule/widgets/calendars/month_calendar.dart';
 import 'package:notredame/ui/schedule/widgets/calendars/week_calendar.dart';
@@ -32,7 +33,8 @@ class _ScheduleViewState extends State<ScheduleView>
 
   static const String tag = "ScheduleView";
 
-  CalendarController controller = CalendarController();
+  SettingsController settingsController = SettingsController();
+  CalendarController calendarController = CalendarController();
 
   @override
   Widget build(BuildContext context) =>
@@ -60,18 +62,21 @@ class _ScheduleViewState extends State<ScheduleView>
 
   Widget displaySchedule(ScheduleViewModel model) {
     if (model.calendarFormat == CalendarTimeFormat.month) {
-      return MonthCalendar(controller: controller);
+      return MonthCalendar(controller: calendarController);
     }
     if (model.calendarFormat == CalendarTimeFormat.week) {
-      return WeekCalendar(controller: controller);
+      return WeekCalendar(controller: calendarController);
     }
     return DayCalendar(
       listView: model.calendarViewSetting,
-      controller: controller,
+      controller: calendarController,
     );
   }
 
-  List<Widget> _buildActionButtons(ScheduleViewModel model) => [
+  List<Widget> _buildActionButtons(ScheduleViewModel model) {
+    settingsController.updateSettings = () => model.loadSettings();
+
+    return [
         IconButton(
           icon: const Icon(Icons.ios_share),
           onPressed: () {
@@ -87,7 +92,7 @@ class _ScheduleViewState extends State<ScheduleView>
           IconButton(
               icon: const Icon(Icons.today_outlined),
               onPressed: () {
-                controller.returnToToday();
+                calendarController.returnToToday();
                 _analyticsService.logEvent(tag, "Select today clicked");
               }),
         IconButton(
@@ -101,8 +106,8 @@ class _ScheduleViewState extends State<ScheduleView>
                   ),
                   context: context,
                   isScrollControlled: true,
-                  builder: (context) => const ScheduleSettings());
-              model.loadSettings();
+                  builder: (context) => ScheduleSettings(controller: settingsController));
             })
       ];
+  }
 }

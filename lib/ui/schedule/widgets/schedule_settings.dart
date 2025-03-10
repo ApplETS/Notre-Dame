@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 // Package imports:
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:notredame/ui/schedule/controllers/settings_controller.dart';
 import 'package:stacked/stacked.dart';
 
 // Project imports:
@@ -13,9 +14,8 @@ import 'package:notredame/ui/core/themes/app_theme.dart';
 import 'package:notredame/ui/schedule/view_model/schedule_settings_viewmodel.dart';
 
 class ScheduleSettings extends StatefulWidget {
-  final bool showHandle;
-
-  const ScheduleSettings({super.key, this.showHandle = true});
+  final SettingsController controller;
+  const ScheduleSettings({super.key, required this.controller});
 
   @override
   State<ScheduleSettings> createState() => _ScheduleSettingsState();
@@ -26,7 +26,7 @@ class _ScheduleSettingsState extends State<ScheduleSettings> {
 
   @override
   Widget build(BuildContext context) => ViewModelBuilder.reactive(
-      viewModelBuilder: () => ScheduleSettingsViewModel(),
+      viewModelBuilder: () => ScheduleSettingsViewModel(controller: widget.controller),
       builder: (context, model, child) {
         return ClipRRect(
           borderRadius: const BorderRadius.vertical(top: Radius.circular(10)),
@@ -42,7 +42,6 @@ class _ScheduleSettingsState extends State<ScheduleSettings> {
               ],
               builder: (context, ScrollController scrollController) {
                 return Column(children: [
-                  if (widget.showHandle)
                     Container(
                       decoration: BoxDecoration(
                         color: context.theme.appColors.modalTitle,

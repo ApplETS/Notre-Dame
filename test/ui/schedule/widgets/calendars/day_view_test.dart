@@ -17,7 +17,7 @@ import 'package:notredame/data/services/networking_service.dart';
 import 'package:notredame/data/services/remote_config_service.dart';
 import 'package:notredame/data/services/signets-api/models/course_activity.dart';
 import 'package:notredame/ui/dashboard/widgets/course_activity_tile.dart';
-import 'package:notredame/ui/schedule/widgets/calendars/calendar_controller.dart';
+import 'package:notredame/ui/schedule/controllers/calendar_controller.dart';
 import 'package:notredame/ui/schedule/widgets/calendars/day_calendar.dart';
 import 'package:notredame/ui/schedule/widgets/schedule_calendar_tile.dart';
 import '../../../../data/mocks/repositories/course_repository_mock.dart';

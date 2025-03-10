@@ -15,7 +15,7 @@ import 'package:notredame/ui/core/themes/app_palette.dart';
 import 'package:notredame/ui/core/themes/app_theme.dart';
 import 'package:notredame/ui/dashboard/widgets/course_activity_tile.dart';
 import 'package:notredame/ui/schedule/view_model/calendars/day_viewmodel.dart';
-import 'package:notredame/ui/schedule/widgets/calendars/calendar_controller.dart';
+import 'package:notredame/ui/schedule/controllers/calendar_controller.dart';
 import 'package:notredame/ui/schedule/widgets/schedule_calendar_tile.dart';
 
 class DayCalendar extends StatefulWidget {

@@ -425,7 +425,7 @@ void main() {
             settingsManagerMock, PreferencesFlag.scheduleShowTodayBtn);
         await tester.runAsync(() async {
           await tester.pumpWidget(localizedWidget(
-              child: const ScheduleSettings(showHandle: false)));
+              child: const ScheduleSettings()));
           await tester.pumpAndSettle();
         }).then((value) async {
           final showTodayBtnFinder = find.widgetWithText(

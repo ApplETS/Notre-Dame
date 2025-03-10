@@ -11,7 +11,7 @@ import 'package:stacked/stacked.dart';
 import 'package:notredame/ui/core/themes/app_palette.dart';
 import 'package:notredame/ui/core/themes/app_theme.dart';
 import 'package:notredame/ui/schedule/view_model/calendars/month_viewmodel.dart';
-import 'calendar_controller.dart';
+import 'package:notredame/ui/schedule/controllers/calendar_controller.dart';
 
 class MonthCalendar extends StatelessWidget {
   final GlobalKey<MonthViewState> monthViewKey = GlobalKey<MonthViewState>();
