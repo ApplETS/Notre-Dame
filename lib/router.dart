@@ -58,7 +58,8 @@ Route<dynamic> generateRoute(RouteSettings routeSettings) {
           settings: RouteSettings(name: routeSettings.name),
           transitionsBuilder: (_, animation, ___, child) =>
               rootPagesAnimation(animation, child),
-          pageBuilder: (_, __, ___) => ScheduleView(controller: routeSettings.arguments as CalendarController));
+          pageBuilder: (_, __, ___) => ScheduleView(
+              controller: routeSettings.arguments as CalendarController));
     case RouterPaths.defaultSchedule:
       return MaterialPageRoute(
           settings: RouteSettings(

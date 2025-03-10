@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 
 // Package imports:
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:notredame/ui/schedule/calendar_controller.dart';
 
 // Project imports:
+import 'package:notredame/ui/schedule/calendar_controller.dart';
 import '../../../data/services/analytics_service.dart';
 import '../../../data/services/navigation_service.dart';
 import '../../../domain/constants/router_paths.dart';
@@ -124,7 +124,8 @@ abstract class BaseNavigationBarState<T extends BaseNavigationBar>
     };
 
     if (view == NavigationView.schedule) {
-      _navigationService.pushNamedAndRemoveDuplicates(routeNames[view]!, arguments: _scheduleController);
+      _navigationService.pushNamedAndRemoveDuplicates(routeNames[view]!,
+          arguments: _scheduleController);
     } else {
       _navigationService.pushNamedAndRemoveDuplicates(routeNames[view]!);
     }
