@@ -107,7 +107,6 @@ PODS:
     - Flutter
   - fluttertoast (0.0.2):
     - Flutter
-    - Toast
   - Google-Maps-iOS-Utils (5.0.0):
     - GoogleMaps (~> 8.0)
   - google_maps_flutter_ios (0.0.1):
@@ -194,7 +193,6 @@ PODS:
     - Flutter
     - FlutterMacOS
   - SwiftyXMLParser (5.5.0)
-  - Toast (4.1.1)
   - url_launcher_ios (0.0.1):
     - Flutter
 
@@ -243,7 +241,6 @@ SPEC REPOS:
     - OrderedSet
     - PromisesObjC
     - PromisesSwift
-    - Toast
 
 EXTERNAL SOURCES:
   connectivity_plus:
@@ -315,7 +312,7 @@ SPEC CHECKSUMS:
   Flutter: e0871f40cf51350855a761d2e70bf5af5b9b5de7
   flutter_inappwebview_ios: 6f63631e2c62a7c350263b13fa5427aedefe81d4
   flutter_secure_storage: d33dac7ae2ea08509be337e775f6b59f1ff45f12
-  fluttertoast: e9a18c7be5413da53898f660530c56f35edfba9c
+  fluttertoast: 21eecd6935e7064cc1fcb733a4c5a428f3f24f0f
   Google-Maps-iOS-Utils: 66d6de12be1ce6d3742a54661e7a79cb317a9321
   google_maps_flutter_ios: e31555a04d1986ab130f2b9f24b6cdc861acc6d3
   GoogleAppMeasurement: 987769c4ca6b968f2479fbcc9fe3ce34af454b8e
@@ -333,7 +330,6 @@ SPEC CHECKSUMS:
   shared_preferences_foundation: fcdcbc04712aee1108ac7fda236f363274528f78
   sqflite_darwin: 5a7236e3b501866c1c9befc6771dfd73ffb8702d
   SwiftyXMLParser: 027d9e6fb54a38d95dccec025bcea9693f699c47
-  Toast: 1f5ea13423a1e6674c4abdac5be53587ae481c4e
   url_launcher_ios: 5334b05cef931de560670eeae103fd3e431ac3fe
 
 PODFILE CHECKSUM: 18f1615a0bcd417392c9107b3e8dc59c76a68dac
