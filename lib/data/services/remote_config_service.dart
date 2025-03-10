@@ -1,6 +1,8 @@
 //SERVICE
 
 // Package imports:
+import 'dart:io';
+
 import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/foundation.dart';
 
@@ -157,7 +159,10 @@ class RemoteConfigService {
 
   Future<String> get aadClientId async {
     await fetch();
-    return _remoteConfig.getString("AAD_CLIENT_ID");
+    if(Platform.isIOS) {
+      return _remoteConfig.getString("AAD_IOS_CLIENT_ID");
+    }
+    return _remoteConfig.getString("AAD_ANDROID_CLIENT_ID");
   }
 
   Future<void> fetch() async {

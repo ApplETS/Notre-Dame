@@ -49,6 +49,20 @@
 			<string>UIInterfaceOrientationLandscapeLeft</string>
 			<string>UIInterfaceOrientationLandscapeRight</string>
 		</array>
+		<key>CFBundleURLTypes</key>
+        <array>
+          <dict>
+              <key>CFBundleURLSchemes</key>
+              <array>
+                  <string>msauth.$(PRODUCT_BUNDLE_IDENTIFIER)</string>
+              </array>
+          </dict>
+        </array>
+        <key>LSApplicationQueriesSchemes</key>
+        <array>
+          <string>msauthv2</string>
+          <string>msauthv3</string>
+        </array>
 		<key>UIViewControllerBasedStatusBarAppearance</key>
 		<false />
 		<key>NSCalendarsUsageDescription</key>
