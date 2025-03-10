@@ -9,6 +9,7 @@ import 'package:stacked/stacked.dart';
 // Project imports:
 import 'package:notredame/ui/core/themes/app_theme.dart';
 import 'package:notredame/ui/core/ui/base_scaffold.dart';
+import 'package:notredame/ui/core/ui/need_help_notice_dialog.dart';
 import 'package:notredame/ui/more/faq/models/faq.dart';
 import 'package:notredame/ui/more/faq/models/faq_actions.dart';
 import 'package:notredame/ui/more/faq/view_model/faq_viewmodel.dart';
@@ -168,7 +169,13 @@ class _FaqViewState extends State<FaqView> {
             if (type.name == ActionType.webview.name) {
               model.launchWebsite(link);
             } else if (type.name == ActionType.email.name) {
-              model.openMail(link, context);
+              showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return NeedHelpNoticeDialog(
+                        openMail: () => model.openMail(link, context),
+                        launchWebsite: () => model.launchWebsite(link));
+                  });
             }
           },
           child: getActionCardInfo(
