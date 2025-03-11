@@ -193,7 +193,6 @@ PODS:
   - sqflite_darwin (0.0.4):
     - Flutter
     - FlutterMacOS
-  - SwiftyXMLParser (5.5.0)
   - Toast (4.1.1)
   - url_launcher_ios (0.0.1):
     - Flutter
@@ -217,7 +216,6 @@ DEPENDENCIES:
   - share_plus (from `.symlinks/plugins/share_plus/ios`)
   - shared_preferences_foundation (from `.symlinks/plugins/shared_preferences_foundation/darwin`)
   - sqflite_darwin (from `.symlinks/plugins/sqflite_darwin/darwin`)
-  - SwiftyXMLParser (from `https://github.com/yahoojapan/SwiftyXMLParser.git`)
   - url_launcher_ios (from `.symlinks/plugins/url_launcher_ios/ios`)
 
 SPEC REPOS:
@@ -282,15 +280,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/shared_preferences_foundation/darwin"
   sqflite_darwin:
     :path: ".symlinks/plugins/sqflite_darwin/darwin"
-  SwiftyXMLParser:
-    :git: https://github.com/yahoojapan/SwiftyXMLParser.git
   url_launcher_ios:
     :path: ".symlinks/plugins/url_launcher_ios/ios"
-
-CHECKOUT OPTIONS:
-  SwiftyXMLParser:
-    :commit: d7a1d23f04c86c1cd2e8f19247dd15d74e0ea8be
-    :git: https://github.com/yahoojapan/SwiftyXMLParser.git
 
 SPEC CHECKSUMS:
   connectivity_plus: 18382e7311ba19efcaee94442b23b32507b20695
@@ -332,10 +323,9 @@ SPEC CHECKSUMS:
   share_plus: 8b6f8b3447e494cca5317c8c3073de39b3600d1f
   shared_preferences_foundation: fcdcbc04712aee1108ac7fda236f363274528f78
   sqflite_darwin: 5a7236e3b501866c1c9befc6771dfd73ffb8702d
-  SwiftyXMLParser: 027d9e6fb54a38d95dccec025bcea9693f699c47
   Toast: 1f5ea13423a1e6674c4abdac5be53587ae481c4e
   url_launcher_ios: 5334b05cef931de560670eeae103fd3e431ac3fe
 
-PODFILE CHECKSUM: 18f1615a0bcd417392c9107b3e8dc59c76a68dac
+PODFILE CHECKSUM: f572917ae84758132022c9f4ae7e2ee3d120ffba
 
 COCOAPODS: 1.16.2
