@@ -11,6 +11,7 @@ import 'package:notredame/data/services/networking_service.dart';
 import 'package:notredame/domain/constants/router_paths.dart';
 import 'package:notredame/locator.dart';
 
+import '../../../data/services/analytics_service.dart';
 import '../../../domain/constants/preferences_flags.dart';
 
 class StartUpViewModel extends BaseViewModel {
@@ -27,9 +28,12 @@ class StartUpViewModel extends BaseViewModel {
   /// Used to redirect on the dashboard.
   final NavigationService _navigationService = locator<NavigationService>();
 
+  final AnalyticsService _analyticsService = locator<AnalyticsService>();
+
   /// Try to silent authenticate the user then redirect to [LoginView] or [DashboardView]
   Future handleStartUp() async {
     if (await handleConnectivityIssues()) return;
+    await _analyticsService.setUserProperties();
 
     // TODO: remove when everyone is on the version with the new auth
     if(await _userRepository.wasPreviouslyLoggedIn()) {

@@ -1,11 +1,10 @@
 // Package imports:
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+import 'package:flutter/foundation.dart';
 
 /// Manage the analytics of the application
 class AnalyticsService {
-  static const String _userPropertiesDomainKey = "domain";
-
   final FirebaseAnalytics _analytics = FirebaseAnalytics.instance;
 
   final FirebaseCrashlytics _crashlytics = FirebaseCrashlytics.instance;
@@ -35,11 +34,12 @@ class AnalyticsService {
   }
 
   /// Set user properties to identify the user against firebase app.
-  Future setUserProperties(
-      {required String userId, required String domain}) async {
-    await _analytics.setUserId(id: userId);
-    await _analytics.setUserProperty(
-        name: _userPropertiesDomainKey, value: domain);
-    await _crashlytics.setUserIdentifier(userId);
+  Future setUserProperties() async {
+    String? userPseudoId = await _analytics.appInstanceId;
+
+    await _analytics.setUserId(id: userPseudoId);
+
+    final appMode = kDebugMode ? "debug" : "release";
+    await _analytics.setUserProperty(name: "app_mode", value: appMode);
   }
 }
