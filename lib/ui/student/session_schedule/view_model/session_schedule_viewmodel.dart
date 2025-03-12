@@ -11,7 +11,7 @@ import 'package:notredame/data/services/signets-api/models/schedule_activity.dar
 import 'package:notredame/locator.dart';
 import 'package:notredame/ui/core/themes/app_palette.dart';
 
-class ScheduleDefaultViewModel
+class SessionScheduleViewModel
     extends FutureViewModel<List<CalendarEventData<Object>>> {
   /// Load the events
   final CourseRepository _courseRepository = locator<CourseRepository>();
@@ -32,7 +32,7 @@ class ScheduleDefaultViewModel
   /// The color palette corresponding to the schedule courses.
   List<Color> schedulePalette = AppPalette.schedule.toList();
 
-  ScheduleDefaultViewModel({String? sessionCode}) : _sessionCode = sessionCode;
+  SessionScheduleViewModel({String? sessionCode}) : _sessionCode = sessionCode;
 
   @override
   Future<List<CalendarEventData<Object>>> futureToRun() async {
