@@ -8,6 +8,8 @@ import 'package:notredame/data/services/navigation_service.dart';
 import 'package:notredame/domain/constants/router_paths.dart';
 import 'package:notredame/locator.dart';
 
+import '../../../domain/constants/preferences_flags.dart';
+
 class ChooseLanguageViewModel extends BaseViewModel {
   static const int english = 0;
   static const int french = 1;
@@ -42,6 +44,8 @@ class ChooseLanguageViewModel extends BaseViewModel {
     }
 
     _navigationService.pop();
+
+    _settingsManager.setBool(PreferencesFlag.languageChoice, true);
     _navigationService.pushNamedAndRemoveUntil(RouterPaths.startup);
   }
 }

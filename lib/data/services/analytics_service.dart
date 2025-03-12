@@ -40,6 +40,6 @@ class AnalyticsService {
     await _analytics.setUserId(id: userPseudoId);
 
     final appMode = kDebugMode ? "debug" : "release";
-    await _analytics.setUserProperty(name: "app_mode", value: appMode);
+    await _analytics.setUserProperty(name: "appMode", value: appMode);
   }
 }

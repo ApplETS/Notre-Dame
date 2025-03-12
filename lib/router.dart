@@ -15,7 +15,7 @@ import 'package:notredame/ui/ets/widgets/ets_view.dart';
 import 'package:notredame/ui/more/about/widgets/about_view.dart';
 import 'package:notredame/ui/more/contributors/widgets/contributors_view.dart';
 import 'package:notredame/ui/more/faq/widgets/faq_view.dart';
-import 'package:notredame/ui/more/settings/choose_language/widgets/choose_language_view.dart';
+import 'package:notredame/ui/choose_language/widgets/choose_language_view.dart';
 import 'package:notredame/ui/more/settings/widgets/settings_view.dart';
 import 'package:notredame/ui/more/widgets/more_view.dart';
 import 'package:notredame/ui/not_found/widgets/not_found_view.dart';

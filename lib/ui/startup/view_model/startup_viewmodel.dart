@@ -10,9 +10,7 @@ import 'package:notredame/data/services/navigation_service.dart';
 import 'package:notredame/data/services/networking_service.dart';
 import 'package:notredame/domain/constants/router_paths.dart';
 import 'package:notredame/locator.dart';
-
-import '../../../data/services/analytics_service.dart';
-import '../../../domain/constants/preferences_flags.dart';
+import 'package:notredame/domain/constants/preferences_flags.dart';
 
 class StartUpViewModel extends BaseViewModel {
   /// Manage the settings
@@ -28,12 +26,14 @@ class StartUpViewModel extends BaseViewModel {
   /// Used to redirect on the dashboard.
   final NavigationService _navigationService = locator<NavigationService>();
 
-  final AnalyticsService _analyticsService = locator<AnalyticsService>();
-
   /// Try to silent authenticate the user then redirect to [LoginView] or [DashboardView]
   Future handleStartUp() async {
     if (await handleConnectivityIssues()) return;
-    await _analyticsService.setUserProperties();
+
+    if (await _settingsManager.getBool(PreferencesFlag.languageChoice) ==
+        null) {
+      _navigationService.pushNamed(RouterPaths.chooseLanguage);
+    }
 
     // TODO: remove when everyone is on the version with the new auth
     if(await _userRepository.wasPreviouslyLoggedIn()) {
@@ -41,7 +41,9 @@ class StartUpViewModel extends BaseViewModel {
     }
     // TODO: remove when everyone is on the version with the new auth
 
-    final clientAppResult = await _authService.createPublicClientApplication(authorityType: AuthorityType.aad, broker: Broker.msAuthenticator);
+    final clientAppResult = await _authService.createPublicClientApplication(
+        authorityType: AuthorityType.aad,
+        broker: Broker.msAuthenticator);
 
     if(clientAppResult.$1 == false) {
       throw Exception("StartupViewmodel - Failed to create public client application");
@@ -57,14 +59,8 @@ class StartUpViewModel extends BaseViewModel {
         token = (await _authService.acquireToken()).$1;
       }
 
-      if (await _settingsManager.getBool(PreferencesFlag.languageChoice) ==
-          null) {
-        _navigationService.pushNamed(RouterPaths.chooseLanguage);
-        _settingsManager.setBool(PreferencesFlag.languageChoice, true);
-      } else {
-        _navigationService.pop();
-        _navigationService.pushNamed(RouterPaths.dashboard);
-      }
+      _navigationService.pop();
+      _navigationService.pushNamed(RouterPaths.dashboard);
     }
   }
 

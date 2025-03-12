@@ -33,6 +33,9 @@ Future<void> main() async {
 
   // Initialize firebase
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  final analyticsService = locator<AnalyticsService>();
+  await analyticsService.setUserProperties();
+
   final RemoteConfigService remoteConfigService =
       locator<RemoteConfigService>();
   await remoteConfigService.initialize();
