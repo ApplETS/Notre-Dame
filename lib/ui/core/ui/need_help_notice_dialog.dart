@@ -16,7 +16,7 @@ class NeedHelpNoticeDialog extends AlertDialog {
     super.key,
     required this.openMail,
     required this.launchWebsite,
-    this.radius = 5.0,
+    this.radius = 8.0,
   });
 
   @override
@@ -31,6 +31,8 @@ class NeedHelpNoticeDialog extends AlertDialog {
         actions: [
           getButtons(context),
         ],
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(radius * 2)),
       );
 
   Column getButtons(BuildContext context) {
