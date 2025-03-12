@@ -31,7 +31,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
           padding: const EdgeInsets.only(top: 4),
           child: InkWell(
             child: Text(
-              AppIntl.of(context)!.forgot_password,
+              AppIntl.of(context)!.login_password_forgotten,
               style: TextStyle(
                   decoration: TextDecoration.underline,
                   color: AppPalette.grey.white),
