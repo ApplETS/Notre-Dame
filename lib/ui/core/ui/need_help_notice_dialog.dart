@@ -6,6 +6,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 // Project imports:
 import 'package:notredame/ui/core/themes/app_palette.dart';
+import 'package:notredame/ui/core/themes/app_theme.dart';
 
 class NeedHelpNoticeDialog extends AlertDialog {
   final VoidCallback openMail;
@@ -52,7 +53,7 @@ class NeedHelpNoticeDialog extends AlertDialog {
         onPressed: () {
           launchWebsite();
         },
-        icon: const Icon(Icons.help_center),
+        icon: Icon(Icons.help, color: AppPalette.grey.white),
         label: Text(
             AppIntl.of(context)!.faq_questions_app_alert_password_assistance),
       ),
@@ -72,7 +73,7 @@ class NeedHelpNoticeDialog extends AlertDialog {
                 RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(radius)))),
         onPressed: openMail,
-        icon: const Icon(Icons.mail),
+        icon: Icon(Icons.mail, color: AppPalette.grey.white),
         label: Text(AppIntl.of(context)!.continue_to_mail_app),
       ),
     );
