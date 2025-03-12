@@ -8,8 +8,8 @@ import 'package:flutter_test/flutter_test.dart';
 // Project imports:
 import 'package:notredame/data/repositories/settings_repository.dart';
 import 'package:notredame/data/services/navigation_service.dart';
-import 'package:notredame/ui/more/settings/choose_language/widgets/choose_language_view.dart';
-import '../../../../helpers.dart';
+import 'package:notredame/ui/choose_language/widgets/choose_language_view.dart';
+import '../../../helpers.dart';
 
 void main() {
   late AppIntl intl;
