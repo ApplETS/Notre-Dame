@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 
 // Package imports:
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:shimmer/shimmer.dart';
 
 // Project imports:
@@ -67,6 +68,7 @@ class AuthorInfoSkeleton extends StatelessWidget {
       baseColor: context.theme.appColors.backgroundAlt,
       highlightColor: context.theme.appColors.shimmerHighlight,
       child: IconButton(
+        tooltip: AppIntl.of(context)!.link,
         onPressed: () {}, // Placeholder onPressed function
         icon: Icon(Icons.link, color: context.theme.appColors.newsAccent),
       ),

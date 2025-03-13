@@ -131,6 +131,7 @@ class _AboutViewState extends State<AboutView> with TickerProviderStateMixin {
                           FontAwesomeIcons.earthAmericas,
                           color: AppPalette.grey.white,
                         ),
+                        tooltip: AppIntl.of(context)!.website_club_open,
                         onPressed: () => _launchUrlService
                             .launchInBrowser(Urls.clubWebsite)),
                     IconButton(
@@ -138,6 +139,7 @@ class _AboutViewState extends State<AboutView> with TickerProviderStateMixin {
                           FontAwesomeIcons.github,
                           color: AppPalette.grey.white,
                         ),
+                        tooltip: AppIntl.of(context)!.github_open,
                         onPressed: () =>
                             _launchUrlService.launchInBrowser(Urls.clubGithub)),
                     IconButton(
@@ -145,20 +147,15 @@ class _AboutViewState extends State<AboutView> with TickerProviderStateMixin {
                           FontAwesomeIcons.facebook,
                           color: AppPalette.grey.white,
                         ),
+                        tooltip: AppIntl.of(context)!.facebook_open,
                         onPressed: () => _launchUrlService
                             .launchInBrowser(Urls.clubFacebook)),
-                    IconButton(
-                        icon: FaIcon(
-                          FontAwesomeIcons.twitter,
-                          color: AppPalette.grey.white,
-                        ),
-                        onPressed: () => _launchUrlService
-                            .launchInBrowser(Urls.clubTwitter)),
                     IconButton(
                         icon: FaIcon(
                           FontAwesomeIcons.youtube,
                           color: AppPalette.grey.white,
                         ),
+                        tooltip: AppIntl.of(context)!.youtube_open,
                         onPressed: () => _launchUrlService
                             .launchInBrowser(Urls.clubYoutube)),
                     IconButton(
@@ -166,6 +163,7 @@ class _AboutViewState extends State<AboutView> with TickerProviderStateMixin {
                           FontAwesomeIcons.discord,
                           color: AppPalette.grey.white,
                         ),
+                        tooltip: AppIntl.of(context)!.discord_join,
                         onPressed: () => _launchUrlService
                             .launchInBrowser(Urls.clubDiscord)),
                   ],
