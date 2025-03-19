@@ -9,10 +9,20 @@
   "session_winter": "Winter",
   "session_summer": "Summer",
   "session_without": "No active semester",
+  "link": "Link",
+  "social_links": "Social links",
   "facebook": "Facebook",
   "github": "GitHub",
   "email": "Email",
   "email_subject": "ÉTSMobile Problem",
+  "website_open": "Visit the website",
+  "website_club_open": "Visit our club website",
+  "facebook_open": "Visit our Facebook page",
+  "instagram_open": "Visit our Instagram page",
+  "github_open": "Visit our GitHub page",
+  "youtube_open": "Visit our Youtube page",
+  "email_send": "Send a comment via email",
+  "discord_join": "Join our Discord",
 
   "close_button_text": "Close",
 
@@ -35,6 +45,8 @@
   "login_msg_logout_success": "You have logged out",
   "login_applets_logo": "Made by",
   "login_password_forgotten": "Forgot your password?",
+  "login_password_show": "Show password",
+  "login_password_hide": "Hide password",
 
   "dashboard_msg_card_removed": "Card removed",
   "dashboard_restore_all_cards_title": "Restore all cards",
@@ -65,6 +77,7 @@
   "schedule_settings_starting_weekday_saturday": "Saturday",
   "schedule_settings_starting_weekday_sunday": "Sunday",
   "schedule_select_course_activity": "Select lab group",
+  "schedule_already_today_tooltip": "Go to today's schedule",
   "schedule_already_today_toast": "Already showing today's schedule",
   "schedule_calendar_from": "From",
   "schedule_calendar_to": "To",
@@ -88,6 +101,14 @@
   "calendar_permission_denied": "You denied the app the permission to edit your calendar. Change this preference in system settings to use this feature.",
 
   "grades_title": "Grades",
+  "grades_in_schedule": "Navigate to schedule {sessionNameYear}",
+  "@grades_in_schedule": {
+    "placeholders": {
+      "sessionNameYear": {
+        "type": "String"
+      }
+    }
+  },
   "grades_msg_no_grades": "No grade available\nPull to refresh",
   "grades_msg_no_grade": "No grade available",
   "grades_current_rating": "Your grade",
@@ -95,21 +116,31 @@
   "grades_grade_in_percentage": "{grade} %",
   "@grades_grade_in_percentage": {
     "placeholders": {
-      "grade": {}
+      "grade": {
+        "type": "Object"
+      }
     }
   },
   "grades_grade_with_percentage": "{grade}/{maxGrade} ({inPercentage}%)",
   "@grades_grade_with_percentage": {
     "placeholders": {
-      "grade": {},
-      "maxGrade": {},
-      "inPercentage": {}
+      "grade": {
+        "type": "double"
+      },
+      "maxGrade": {
+        "type": "Object"
+      },
+      "inPercentage": {
+        "type": "double"
+      }
     }
   },
   "grades_weight": "Weight: {weight} %",
   "@grades_weight": {
     "placeholders": {
-      "weight": {}
+      "weight": {
+        "type": "double"
+      }
     }
   },
   "grades_group": "Group",
@@ -127,19 +158,25 @@
   "grades_group_number": "Group {number}",
   "@grades_group_number": {
     "placeholders": {
-      "number": {}
+      "number": {
+        "type": "String"
+      }
     }
   },
   "credits_number": "Credits: {number}",
   "@credits_number": {
     "placeholders": {
-      "number": {}
+      "number": {
+        "type": "int"
+      }
     }
   },
   "grades_teacher": "Professor: {teacherName}",
   "@grades_teacher": {
     "placeholders": {
-      "teacherName": {}
+      "teacherName": {
+        "type": "String"
+      }
     }
   },
   "grades_error_course_evaluations_not_completed": "During the evaluation period, you will not be able access your grades if you haven't completed your evaluations.",
@@ -179,6 +216,22 @@
   "ets_papercut_title":"PaperCut",
   "ets_aeets_title": "AÉÉTS",
   "ets_100genies_title": "Pub 100 Génies",
+  "ets_hide_quick_link": "Hide link {quickLinkName}",
+  "@ets_hide_quick_link": {
+    "placeholders": {
+      "quickLinkName": {
+        "type": "String"
+      }
+    }
+  },
+  "ets_add_quick_link": "Add the link {quickLinkName}",
+  "@ets_add_quick_link": {
+    "placeholders": {
+      "quickLinkName": {
+        "type": "String"
+      }
+    }
+  },
 
   "news_title" : "News",
   "news_error_not_found_title" : "Oh oh!",
@@ -217,13 +270,17 @@
   "news_author_notified_for": "You will receive a notification when {author} publishes an announcement.",
   "@news_author_notified_for": {
     "placeholders": {
-      "author": {}
+      "author": {
+        "type": "String"
+      }
     }
   },
   "news_author_not_notified_for": "You will no longer receive a notification when {author} publishes an announcement.",
   "@news_author_not_notified_for": {
     "placeholders": {
-      "author": {}
+      "author": {
+        "type": "String"
+      }
     }
   },
 
@@ -306,10 +363,13 @@
   "not_found_message": "Oh oh... it seems that the page {pageName} you requested is not accessible.",
   "@not_found_message": {
     "placeholders": {
-      "pageName": {}
+      "pageName": {
+        "type": "String"
+      }
     }
   },
   "go_to_dashboard": "Go to Dashboard",
+  "go_back": "Back",
 
   "no_connectivity": "No internet connection",
   "service_outage": "Sorry, we are currently experiencing connection problems. Please try again later.",
@@ -320,20 +380,28 @@
   "progress_bar_message": "{elapsedDays} days elapsed / {totalDays} days",
   "@progress_bar_message": {
     "placeholders": {
-      "elapsedDays": {},
-      "totalDays": {}
+      "elapsedDays": {
+        "type": "int"
+      },
+      "totalDays": {
+        "type": "int"
+      }
     }
   },
   "progress_bar_message_percentage": "{percentage} %",
   "@progress_bar_message_percentage": {
     "placeholders": {
-      "percentage": {}
+      "percentage": {
+        "type": "int"
+      }
     }
   },
   "progress_bar_message_remaining_days": "{remainingDays} remaining days",
   "@progress_bar_message_remaining_days": {
     "placeholders": {
-    "remainingDays": {}
+      "remainingDays": {
+        "type": "int"
+      }
     }
   },
   "progress_bar_suffix": "days",
@@ -351,5 +419,14 @@
   "ticket_status_closed": "Closed",
   "loading": "Loading...",
 
-  "no_schedule_available": "There are no events scheduled at the moment"
+  "no_schedule_available": "There are no events scheduled at the moment",
+
+  "social_links_name": "Social link {linkName}",
+  "@social_links_name": {
+    "placeholders": {
+      "linkName": {
+        "type": "String"
+      }
+    }
+  }
 }

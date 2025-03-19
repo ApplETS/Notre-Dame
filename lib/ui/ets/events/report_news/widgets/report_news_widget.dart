@@ -141,6 +141,7 @@ class _ReportNewsState extends State<ReportNews> {
             alignment: Alignment.topLeft,
             child: IconButton(
               icon: Icon(Icons.arrow_back, color: AppPalette.grey.white),
+              tooltip: AppIntl.of(context)!.go_back,
               onPressed: () {
                 setState(() {
                   clicked = false;
