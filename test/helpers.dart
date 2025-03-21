@@ -20,7 +20,6 @@ import 'package:notredame/data/services/analytics_service.dart';
 import 'package:notredame/data/services/auth_service.dart';
 import 'package:notredame/data/services/cache_service.dart';
 import 'package:notredame/data/services/in_app_review_service.dart';
-import 'package:notredame/data/services/internal_info_service.dart';
 import 'package:notredame/data/services/launch_url_service.dart';
 import 'package:notredame/data/services/navigation_service.dart';
 import 'package:notredame/data/services/networking_service.dart';
@@ -39,7 +38,6 @@ import 'data/mocks/services/auth_service_mock.dart';
 import 'data/mocks/services/cache_service_mock.dart';
 import 'data/mocks/services/flutter_secure_storage_mock.dart';
 import 'data/mocks/services/in_app_review_service_mock.dart';
-import 'data/mocks/services/internal_info_service_mock.dart';
 import 'data/mocks/services/launch_url_service_mock.dart';
 import 'data/mocks/services/navigation_service_mock.dart';
 import 'data/mocks/services/networking_service_mock.dart';
@@ -119,16 +117,6 @@ AnalyticsServiceMock setupAnalyticsServiceMock() {
   final service = AnalyticsServiceMock();
 
   locator.registerSingleton<AnalyticsService>(service);
-
-  return service;
-}
-
-/// Load a mock of the [InternalInfoService]
-InternalInfoServiceMock setupInternalInfoServiceMock() {
-  unregister<InternalInfoService>();
-  final service = InternalInfoServiceMock();
-
-  locator.registerSingleton<InternalInfoService>(service);
 
   return service;
 }

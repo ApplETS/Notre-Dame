@@ -9,12 +9,10 @@ import 'package:mockito/mockito.dart';
 import 'package:notredame/data/models/quick_link.dart';
 import 'package:notredame/data/repositories/settings_repository.dart';
 import 'package:notredame/data/services/analytics_service.dart';
-import 'package:notredame/data/services/internal_info_service.dart';
 import 'package:notredame/data/services/navigation_service.dart';
 import 'package:notredame/domain/constants/router_paths.dart';
 import 'package:notredame/ui/ets/quick_links/view_model/web_link_card_viewmodel.dart';
 import '../../../../data/mocks/services/analytics_service_mock.dart';
-import '../../../../data/mocks/services/internal_info_service_mock.dart';
 import '../../../../data/mocks/services/launch_url_service_mock.dart';
 import '../../../../data/mocks/services/navigation_service_mock.dart';
 import '../../../../helpers.dart';
@@ -24,7 +22,6 @@ void main() {
 
   late NavigationServiceMock navigationServiceMock;
   late AnalyticsServiceMock analyticsServiceMock;
-  late InternalInfoServiceMock internalInfoServiceMock;
   late LaunchUrlServiceMock launchUrlServiceMock;
 
   late WebLinkCardViewModel viewModel;
@@ -38,7 +35,6 @@ void main() {
     setUp(() async {
       navigationServiceMock = setupNavigationServiceMock();
       analyticsServiceMock = setupAnalyticsServiceMock();
-      internalInfoServiceMock = setupInternalInfoServiceMock();
       launchUrlServiceMock = setupLaunchUrlServiceMock();
       setupSettingsManagerMock();
 
@@ -52,7 +48,6 @@ void main() {
       clearInteractions(analyticsServiceMock);
       clearInteractions(launchUrlServiceMock);
       unregister<AnalyticsService>();
-      unregister<InternalInfoService>();
       unregister<SettingsRepository>();
     });
 
@@ -67,9 +62,6 @@ void main() {
       });
 
       test('navigate to web view if launchInBrowser throw', () async {
-        InternalInfoServiceMock.stubGetDeviceInfoForErrorReporting(
-            internalInfoServiceMock);
-
         await viewModel.onLinkClicked(quickLink);
 
         verify(launchUrlServiceMock.launchInBrowser(quickLink.link));

@@ -14,7 +14,6 @@ import 'package:notredame/data/services/analytics_service.dart';
 import 'package:notredame/data/services/cache_service.dart';
 import 'package:notredame/data/services/hello/hello_service.dart';
 import 'package:notredame/data/services/in_app_review_service.dart';
-import 'package:notredame/data/services/internal_info_service.dart';
 import 'package:notredame/data/services/launch_url_service.dart';
 import 'package:notredame/data/services/auth_service.dart';
 import 'package:notredame/data/services/navigation_service.dart';
@@ -29,7 +28,6 @@ void setupLocator() {
   // Services
   locator.registerLazySingleton(() => NavigationService());
   locator.registerLazySingleton(() => AnalyticsService());
-  locator.registerLazySingleton(() => InternalInfoService());
   locator.registerLazySingleton(() => const FlutterSecureStorage());
   locator.registerLazySingleton(() => PreferencesService());
   locator.registerLazySingleton(() => NetworkingService());
