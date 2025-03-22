@@ -121,7 +121,7 @@ void main() {
 
         verifyInOrder(
             [cacheManagerMock.get(CourseRepository.coursesActivitiesCacheKey)]);
-      }, timeout: Timeout(Duration(seconds: 5)));
+      });
 
       test("Activities are only loaded from cache.", () async {
         // Stub the cache to return 1 activity
@@ -143,7 +143,7 @@ void main() {
 
         verifyNoMoreInteractions(signetsApiMock);
         verifyNoMoreInteractions(userRepositoryMock);
-      }, timeout: Timeout(Duration(seconds: 5)));
+      });
 
       test(
           "Trying to recover activities from cache but an exception is raised.",
@@ -173,7 +173,7 @@ void main() {
 
         verify(signetsApiMock.getSessions())
             .called(1);
-      }, timeout: Timeout(Duration(seconds: 5)));
+      });
 
       test("Doesn't retrieve sessions if they are already loaded", () async {
         // Stub the cache to return 1 activity
@@ -208,7 +208,7 @@ void main() {
         ]);
 
         verifyNoMoreInteractions(signetsApiMock);
-      }, timeout: Timeout(Duration(seconds: 5)));
+      });
 
       test("getSessions fails", () async {
         // Stub SignetsApi to throw an exception
@@ -238,7 +238,7 @@ void main() {
           cacheManagerMock.get(CourseRepository.coursesActivitiesCacheKey),
           analyticsServiceMock.logError(CourseRepository.tag, any, any, any)
         ]);
-      }, timeout: Timeout(Duration(seconds: 5)));
+      });
 
       test(
           "SignetsAPI returns new activities, the old ones should be maintained and the cache updated.",
@@ -275,7 +275,7 @@ void main() {
           cacheManagerMock.update(CourseRepository.coursesActivitiesCacheKey,
               jsonEncode([activity, courseActivity]))
         ]);
-      }, timeout: Timeout(Duration(seconds: 5)));
+      });
 
       test(
           "SignetsAPI returns activities that already exists, should avoid duplicata.",
@@ -303,7 +303,7 @@ void main() {
           cacheManagerMock.update(CourseRepository.coursesActivitiesCacheKey,
               jsonEncode(activities))
         ]);
-      }, timeout: Timeout(Duration(seconds: 5)));
+      });
 
       test(
           "SignetsAPI returns activities that changed (for example class location changed).",
@@ -347,7 +347,7 @@ void main() {
           cacheManagerMock.update(CourseRepository.coursesActivitiesCacheKey,
               jsonEncode([changedActivity]))
         ]);
-      }, timeout: Timeout(Duration(seconds: 5)));
+      });
 
       test("SignetsAPI raise a exception.", () async {
         // Stub the cache to return no activity
@@ -375,7 +375,7 @@ void main() {
           signetsApiMock.getCoursesActivities(session: session.shortName),
           analyticsServiceMock.logError(CourseRepository.tag, any, any, any)
         ]);
-      }, timeout: Timeout(Duration(seconds: 5)));
+      });
 
       test(
           "Cache update fails, should still return the updated list of activities.",
@@ -404,7 +404,7 @@ void main() {
           cacheManagerMock.get(CourseRepository.coursesActivitiesCacheKey),
           signetsApiMock.getCoursesActivities(session: session.shortName)
         ]);
-      }, timeout: Timeout(Duration(seconds: 5)));
+      });
 
       test("Should force fromCacheOnly mode when user has no connectivity",
           () async {
@@ -419,7 +419,7 @@ void main() {
 
         final activitiesCache = await manager.getCoursesActivities();
         expect(activitiesCache, activities);
-      }, timeout: Timeout(Duration(seconds: 5)));
+      });
     });
 
     group("getScheduleActivities - ", () {
@@ -490,7 +490,7 @@ void main() {
           cacheManagerMock.update(
               CourseRepository.scheduleActivitiesCacheKey, any)
         ]);
-      }, timeout: Timeout(Duration(seconds: 5)));
+      });
 
       test("Activities are only loaded from cache.", () async {
         // Stub the cache to return 1 activity
@@ -514,7 +514,7 @@ void main() {
 
         verifyNoMoreInteractions(signetsApiMock);
         verifyNoMoreInteractions(userRepositoryMock);
-      }, timeout: Timeout(Duration(seconds: 5)));
+      });
 
       test(
           "Trying to recover activities from cache but an exception is raised.",
@@ -545,7 +545,7 @@ void main() {
 
         verify(signetsApiMock.getSessions())
             .called(1);
-      }, timeout: Timeout(Duration(seconds: 5)));
+      });
 
       test("Doesn't retrieve sessions if they are already loaded", () async {
         // Stub the cache to return 1 activity
@@ -582,7 +582,7 @@ void main() {
         ]);
 
         verifyNoMoreInteractions(signetsApiMock);
-      }, timeout: Timeout(Duration(seconds: 5)));
+      });
 
       test("getSessions fails", () async {
         // Stub SignetsApi to throw an exception
@@ -614,7 +614,7 @@ void main() {
           cacheManagerMock.get(CourseRepository.scheduleActivitiesCacheKey),
           analyticsServiceMock.logError(CourseRepository.tag, any, any, any)
         ]);
-      }, timeout: Timeout(Duration(seconds: 5)));
+      });
 
       test(
           "SignetsAPI returns activities that already exists, should avoid duplicata.",
@@ -644,7 +644,7 @@ void main() {
           cacheManagerMock.update(CourseRepository.scheduleActivitiesCacheKey,
               jsonEncode(scheduleActivities))
         ]);
-      }, timeout: Timeout(Duration(seconds: 5)));
+      });
 
       test("SignetsAPI raise a exception.", () async {
         // Stub the cache to return no activity
@@ -672,7 +672,7 @@ void main() {
           signetsApiMock.getScheduleActivities(session: session.shortName),
           analyticsServiceMock.logError(CourseRepository.tag, any, any, any)
         ]);
-      }, timeout: Timeout(Duration(seconds: 5)));
+      });
     });
 
     group("getSessions - ", () {
@@ -720,7 +720,7 @@ void main() {
           cacheManagerMock.update(
               CourseRepository.sessionsCacheKey, jsonEncode(sessions))
         ]);
-      }, timeout: Timeout(Duration(seconds: 5)));
+      });
 
       test("Trying to load sessions from cache but cache doesn't exist",
           () async {
@@ -742,7 +742,7 @@ void main() {
           cacheManagerMock.update(
               CourseRepository.sessionsCacheKey, jsonEncode([]))
         ]);
-      }, timeout: Timeout(Duration(seconds: 5)));
+      });
 
       test("SignetsAPI return another session", () async {
         // Stub to simulate presence of session cache
@@ -768,7 +768,7 @@ void main() {
           cacheManagerMock.update(
               CourseRepository.sessionsCacheKey, jsonEncode(sessions))
         ]);
-      }, timeout: Timeout(Duration(seconds: 5)));
+      });
 
       test("SignetsAPI return a session that already exists", () async {
         // Stub SignetsApi answer to test only the cache retrieving
@@ -789,7 +789,7 @@ void main() {
           cacheManagerMock.update(
               CourseRepository.sessionsCacheKey, jsonEncode(sessions))
         ]);
-      }, timeout: Timeout(Duration(seconds: 5)));
+      });
 
       test("SignetsAPI return an exception", () async {
         // Stub to simulate presence of session cache
@@ -816,7 +816,7 @@ void main() {
 
         verifyNever(
             cacheManagerMock.update(CourseRepository.sessionsCacheKey, any));
-      }, timeout: Timeout(Duration(seconds: 5)));
+      });
 
       test("Cache update fail", () async {
         // Stub to simulate presence of session cache
@@ -845,7 +845,7 @@ void main() {
           cacheManagerMock.get(CourseRepository.sessionsCacheKey),
           signetsApiMock.getSessions()
         ]);
-      }, timeout: Timeout(Duration(seconds: 5)));
+      });
 
       test("UserRepository return an exception", () async {
         // Stub to simulate presence of session cache
@@ -869,7 +869,7 @@ void main() {
 
         verifyNever(
             cacheManagerMock.update(CourseRepository.sessionsCacheKey, any));
-      }, timeout: Timeout(Duration(seconds: 5)));
+      });
 
       test("Should not try to fetch from signets when offline", () async {
         CacheServiceMock.stubGet(cacheManagerMock,
@@ -883,7 +883,7 @@ void main() {
         final sessionsCache = await manager.getSessions();
         expect(sessionsCache, sessions);
         verifyNever(signetsApiMock.getSessions());
-      }, timeout: Timeout(Duration(seconds: 5)));
+      });
     });
 
     group("activeSessions - ", () {
@@ -930,7 +930,7 @@ void main() {
         await manager.getSessions();
 
         expect(manager.activeSessions, [active]);
-      }, timeout: Timeout(Duration(seconds: 5)));
+      });
 
       test("current session ended yesterday", () async {
         final Session old = Session(
@@ -960,7 +960,7 @@ void main() {
         await manager.getSessions();
 
         expect(manager.activeSessions, []);
-      }, timeout: Timeout(Duration(seconds: 5)));
+      });
 
       test("current session ends tomorrow", () async {
         final Session active = Session(
@@ -990,7 +990,7 @@ void main() {
         await manager.getSessions();
 
         expect(manager.activeSessions, [active]);
-      }, timeout: Timeout(Duration(seconds: 5)));
+      });
 
       test("there is no session", () async {
         SignetsAPIClientMock.stubGetSessions(signetsApiMock, []);
@@ -1001,11 +1001,11 @@ void main() {
         await manager.getSessions();
 
         expect(manager.activeSessions, []);
-      }, timeout: Timeout(Duration(seconds: 5)));
+      });
 
       test("there is no session loaded", () async {
         expect(manager.activeSessions, []);
-      }, timeout: Timeout(Duration(seconds: 5)));
+      });
     });
 
     group("getCourses - ", () {
@@ -1099,7 +1099,7 @@ void main() {
           cacheManagerMock.update(
               CourseRepository.coursesCacheKey, jsonEncode([courseWithGrade]))
         ]);
-      }, timeout: Timeout(Duration(seconds: 5)));
+      });
 
       test("Courses are only loaded from cache", () async {
         expect(manager.courses, isNull);
@@ -1133,7 +1133,7 @@ void main() {
         verifyNoMoreInteractions(signetsApiMock);
         verifyNoMoreInteractions(cacheManagerMock);
         verifyNoMoreInteractions(userRepositoryMock);
-      }, timeout: Timeout(Duration(seconds: 5)));
+      });
 
       test("Signets return a updated version of a course", () async {
         final Course courseFetched = Course(
@@ -1167,7 +1167,7 @@ void main() {
           cacheManagerMock.update(CourseRepository.coursesCacheKey,
               jsonEncode([courseFetched, courseWithGradeDuplicate]))
         ]);
-      }, timeout: Timeout(Duration(seconds: 5)));
+      });
 
       test("Trying to recover courses from cache failed (exception raised)",
           () async {
@@ -1189,7 +1189,7 @@ void main() {
 
         verifyNoMoreInteractions(signetsApiMock);
         verifyNoMoreInteractions(cacheManagerMock);
-      }, timeout: Timeout(Duration(seconds: 5)));
+      });
 
       test("Signets raised an exception while trying to recover courses",
           () async {
@@ -1216,7 +1216,7 @@ void main() {
         verifyNoMoreInteractions(signetsApiMock);
         verifyNoMoreInteractions(cacheManagerMock);
         verifyNoMoreInteractions(userRepositoryMock);
-      }, timeout: Timeout(Duration(seconds: 5)));
+      });
 
       test("Student dropped out of a course, the course should disappear",
           () async {
@@ -1243,7 +1243,7 @@ void main() {
         verifyNoMoreInteractions(signetsApiMock);
         verifyNoMoreInteractions(cacheManagerMock);
         verifyNoMoreInteractions(userRepositoryMock);
-      }, timeout: Timeout(Duration(seconds: 5)));
+      });
 
       test("Courses don't have grade so getCourseSummary is called", () async {
         final Course courseFetched = Course(
@@ -1329,7 +1329,7 @@ void main() {
           cacheManagerMock.update(
               CourseRepository.coursesCacheKey, jsonEncode([courseFetched]))
         ]);
-      }, timeout: Timeout(Duration(seconds: 5)));
+      });
 
       test("Cache update fails, should still return the list of courses",
           () async {
@@ -1356,7 +1356,7 @@ void main() {
           cacheManagerMock.update(
               CourseRepository.coursesCacheKey, jsonEncode([courseWithGrade]))
         ]);
-      }, timeout: Timeout(Duration(seconds: 5)));
+      });
 
       test("UserRepository return an exception", () async {
         // Stub to simulate presence of session cache
@@ -1381,7 +1381,7 @@ void main() {
 
         verifyNever(
             cacheManagerMock.update(CourseRepository.coursesCacheKey, any));
-      }, timeout: Timeout(Duration(seconds: 5)));
+      });
 
       test("Should force fromCacheOnly mode when user has no connectivity",
           () async {
@@ -1396,7 +1396,7 @@ void main() {
 
         final coursesCache = await manager.getCourses();
         expect(coursesCache, [courseWithGrade]);
-      }, timeout: Timeout(Duration(seconds: 5)));
+      });
 
       test("there is no evaluation for a course, should return null", () async {
         final Course courseFetched = Course(
@@ -1430,7 +1430,7 @@ void main() {
           cacheManagerMock.update(
               CourseRepository.coursesCacheKey, jsonEncode([courseFetched]))
         ]);
-      }, timeout: Timeout(Duration(seconds: 5)));
+      });
 
       test("there is an evaluation for a course, course should be updated",
           () async {
@@ -1486,7 +1486,7 @@ void main() {
           cacheManagerMock.update(
               CourseRepository.coursesCacheKey, jsonEncode([updated]))
         ]);
-      }, timeout: Timeout(Duration(seconds: 5)));
+      });
 
       test("_getCourseReviewss fails", () async {
         final Course courseFetched = Course(
@@ -1519,7 +1519,7 @@ void main() {
           cacheManagerMock.update(
               CourseRepository.coursesCacheKey, jsonEncode([courseFetched]))
         ]);
-      }, timeout: Timeout(Duration(seconds: 5)));
+      });
     });
 
     group("getCourseSummary - ", () {
@@ -1584,7 +1584,7 @@ void main() {
           cacheManagerMock.update(
               CourseRepository.coursesCacheKey, jsonEncode([courseUpdated]))
         ]);
-      }, timeout: Timeout(Duration(seconds: 5)));
+      });
 
       test("Course is updated on the repository", () async {
         CacheServiceMock.stubGet(cacheManagerMock,
@@ -1613,7 +1613,7 @@ void main() {
           cacheManagerMock.update(
               CourseRepository.coursesCacheKey, jsonEncode([courseUpdated]))
         ]);
-      }, timeout: Timeout(Duration(seconds: 5)));
+      });
 
       test("Signets raised an exception while trying to recover summary",
           () async {
@@ -1636,7 +1636,7 @@ void main() {
         verifyNoMoreInteractions(signetsApiMock);
         verifyNoMoreInteractions(cacheManagerMock);
         verifyNoMoreInteractions(userRepositoryMock);
-      }, timeout: Timeout(Duration(seconds: 5)));
+      });
 
       test(
           "Cache update fails, should still return the course with its summary",
@@ -1660,7 +1660,7 @@ void main() {
           cacheManagerMock.update(
               CourseRepository.coursesCacheKey, jsonEncode([courseUpdated]))
         ]);
-      }, timeout: Timeout(Duration(seconds: 5)));
+      });
 
       test("UserRepository return an exception", () async {
         // Stub to simulate presence of session cache
@@ -1684,7 +1684,7 @@ void main() {
 
         verifyNoMoreInteractions(signetsApiMock);
         verifyNoMoreInteractions(cacheManagerMock);
-      }, timeout: Timeout(Duration(seconds: 5)));
+      });
 
       test("Should not try to update course summary when offline", () async {
         //Stub the networkingService to return no connectivity
@@ -1695,7 +1695,7 @@ void main() {
         final results = await manager.getCourseSummary(course);
         expect(results, course);
         verifyNever(signetsApiMock.getCourseSummary(session: course.session, acronym: course.acronym, group: course.group),);
-      }, timeout: Timeout(Duration(seconds: 5)));
+      });
     });
   });
 }
