@@ -1,17 +1,17 @@
 // Package imports:
 import 'package:msal_auth/msal_auth.dart';
-import 'package:notredame/data/services/analytics_service.dart';
-import 'package:notredame/data/services/auth_service.dart';
 import 'package:stacked/stacked.dart';
 
 // Project imports:
 import 'package:notredame/data/repositories/settings_repository.dart';
 import 'package:notredame/data/repositories/user_repository.dart';
+import 'package:notredame/data/services/analytics_service.dart';
+import 'package:notredame/data/services/auth_service.dart';
 import 'package:notredame/data/services/navigation_service.dart';
 import 'package:notredame/data/services/networking_service.dart';
+import 'package:notredame/domain/constants/preferences_flags.dart';
 import 'package:notredame/domain/constants/router_paths.dart';
 import 'package:notredame/locator.dart';
-import 'package:notredame/domain/constants/preferences_flags.dart';
 
 class StartUpViewModel extends BaseViewModel {
   /// Manage the settings
@@ -36,21 +36,20 @@ class StartUpViewModel extends BaseViewModel {
     }
 
     //TODO: remove when all users are on 4.58.0 or more
-    if(await _userRepository.wasPreviouslyLoggedIn()) {
+    if (await _userRepository.wasPreviouslyLoggedIn()) {
       _userRepository.logOut();
     }
     //TODO END: remove when all users are on 4.58.0 or more
 
     final clientAppResult = await _authService.createPublicClientApplication(
-        authorityType: AuthorityType.aad,
-        broker: Broker.msAuthenticator);
+        authorityType: AuthorityType.aad, broker: Broker.msAuthenticator);
 
-    if(!clientAppResult.$1) {
-      final message = clientAppResult.$2
-          ?.message
-          ?? 'Failed to create public client application';
+    if (!clientAppResult.$1) {
+      final message = clientAppResult.$2?.message ??
+          'Failed to create public client application';
       await _analyticsService.logError('StartupViewmodel', message);
-      throw Exception("StartupViewmodel - Failed to create public client application");
+      throw Exception(
+          "StartupViewmodel - Failed to create public client application");
     }
 
     final bool isLogin = (await _authService.acquireTokenSilent()).$2 == null;
@@ -59,7 +58,7 @@ class StartUpViewModel extends BaseViewModel {
       _navigationService.pushNamedAndRemoveUntil(RouterPaths.dashboard);
     } else {
       AuthenticationResult? token;
-      while(token == null) {
+      while (token == null) {
         token = (await _authService.acquireToken()).$1;
       }
 

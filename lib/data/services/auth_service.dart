@@ -1,5 +1,8 @@
+// Package imports:
 import 'package:logger/logger.dart';
 import 'package:msal_auth/msal_auth.dart';
+
+// Project imports:
 import 'package:notredame/data/services/remote_config_service.dart';
 import 'package:notredame/locator.dart';
 
@@ -23,7 +26,7 @@ class AuthService {
         _token = result.$1?.accessToken;
       } else {
         _retries++;
-        if(_retries > _maxRetry) {
+        if (_retries > _maxRetry) {
           _retries = 0;
           throw Exception('Max retries reached');
         }
@@ -124,5 +127,4 @@ class AuthService {
       return (false, e);
     }
   }
-
 }

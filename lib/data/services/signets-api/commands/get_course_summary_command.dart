@@ -5,8 +5,8 @@ import 'package:xml/xml.dart';
 // Project imports:
 import 'package:notredame/data/services/signets-api/models/course_summary.dart';
 import 'package:notredame/data/services/signets-api/models/signets_errors.dart';
-import 'package:notredame/data/services/signets-api/signets_api_client.dart';
 import 'package:notredame/data/services/signets-api/request_builder_service.dart';
+import 'package:notredame/data/services/signets-api/signets_api_client.dart';
 import 'package:notredame/utils/api_exception.dart';
 import 'package:notredame/utils/command.dart';
 
@@ -34,10 +34,11 @@ class GetCourseSummaryCommand implements Command<CourseSummary> {
 
   @override
   Future<CourseSummary> execute() async {
-    final queryParams = { "session": session, "sigle": acronym, "groupe": group };
+    final queryParams = {"session": session, "sigle": acronym, "groupe": group};
 
     final responseBody = await RequestBuilderService.sendRequest(
-        _httpClient, endpoint, token, responseTag, queryParameters: queryParams);
+        _httpClient, endpoint, token, responseTag,
+        queryParameters: queryParams);
 
     final errorTag = responseBody.getElement(SignetsError.signetsErrorSoapTag);
     if (errorTag != null &&

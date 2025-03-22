@@ -86,17 +86,17 @@ void main() {
 
     group("wasPreviouslyLoggedIn - ", () {
       test("check if username and password are present in the secure storage",
-              () async {
-            const String username = "username";
-            const String password = "password";
+          () async {
+        const String username = "username";
+        const String password = "password";
 
-            FlutterSecureStorageMock.stubRead(secureStorageMock,
-                key: UserRepository.usernameSecureKey, valueToReturn: username);
-            FlutterSecureStorageMock.stubRead(secureStorageMock,
-                key: UserRepository.passwordSecureKey, valueToReturn: password);
+        FlutterSecureStorageMock.stubRead(secureStorageMock,
+            key: UserRepository.usernameSecureKey, valueToReturn: username);
+        FlutterSecureStorageMock.stubRead(secureStorageMock,
+            key: UserRepository.passwordSecureKey, valueToReturn: password);
 
-            expect(await manager.wasPreviouslyLoggedIn(), isTrue);
-          });
+        expect(await manager.wasPreviouslyLoggedIn(), isTrue);
+      });
 
       test("check when password is empty in secure storage", () async {
         const String username = "username";
@@ -111,20 +111,20 @@ void main() {
       });
 
       test('Verify that localstorage is safely deleted if an exception occurs',
-              () async {
-            const String username = "username";
+          () async {
+        const String username = "username";
 
-            FlutterSecureStorageMock.stubRead(secureStorageMock,
-                key: UserRepository.usernameSecureKey, valueToReturn: username);
-            FlutterSecureStorageMock.stubReadException(secureStorageMock,
-                key: UserRepository.passwordSecureKey,
-                exceptionToThrow: PlatformException(code: "bad key"));
+        FlutterSecureStorageMock.stubRead(secureStorageMock,
+            key: UserRepository.usernameSecureKey, valueToReturn: username);
+        FlutterSecureStorageMock.stubReadException(secureStorageMock,
+            key: UserRepository.passwordSecureKey,
+            exceptionToThrow: PlatformException(code: "bad key"));
 
-            expect(await manager.wasPreviouslyLoggedIn(), isFalse);
-            verify(secureStorageMock.deleteAll());
-            verify(
-                analyticsServiceMock.logError(UserRepository.tag, any, any, any));
-          });
+        expect(await manager.wasPreviouslyLoggedIn(), isFalse);
+        verify(secureStorageMock.deleteAll());
+        verify(
+            analyticsServiceMock.logError(UserRepository.tag, any, any, any));
+      });
     });
     //TODO END: remove when all users are on 4.58.0 or more
 
@@ -194,8 +194,7 @@ void main() {
 
         // Stub SignetsApi answer to test only the cache retrieving
         reset(signetsApiMock);
-        SignetsAPIClientMock.stubGetPrograms(
-            signetsApiMock, programs);
+        SignetsAPIClientMock.stubGetPrograms(signetsApiMock, programs);
 
         expect(manager.programs, isNull);
         final results = await manager.getPrograms();
@@ -248,8 +247,7 @@ void main() {
             cacheManagerMock, UserRepository.programsCacheKey);
 
         // Stub SignetsApi answer to test only the cache retrieving
-        SignetsAPIClientMock.stubGetPrograms(
-            signetsApiMock, programs);
+        SignetsAPIClientMock.stubGetPrograms(signetsApiMock, programs);
 
         expect(manager.programs, isNull);
         final results = await manager.getPrograms();
@@ -281,7 +279,11 @@ void main() {
           permanentCode: 'DOEJ00000000',
           universalCode: 'AA00000');
       final ProfileStudent defaultInfo = ProfileStudent(
-          balance: '', firstName: '', lastName: '', permanentCode: '', universalCode: '');
+          balance: '',
+          firstName: '',
+          lastName: '',
+          permanentCode: '',
+          universalCode: '');
 
       setUp(() async {
         // Stub to simulate presence of info cache

@@ -4,8 +4,8 @@ import 'package:xml/xml.dart';
 
 // Project imports:
 import 'package:notredame/data/services/signets-api/models/schedule_activity.dart';
-import 'package:notredame/data/services/signets-api/signets_api_client.dart';
 import 'package:notredame/data/services/signets-api/request_builder_service.dart';
+import 'package:notredame/data/services/signets-api/signets_api_client.dart';
 import 'package:notredame/utils/command.dart';
 
 /// Call the SignetsAPI to get the courses activities for the [session] for
@@ -34,9 +34,10 @@ class GetScheduleActivitiesCommand implements Command<List<ScheduleActivity>> {
       throw FormatException("Session $session isn't correctly formatted");
     }
 
-    final queryParams = { "session" : session };
+    final queryParams = {"session": session};
     final responseBody = await RequestBuilderService.sendRequest(
-        _httpClient, endpoint, token, responseTag, queryParameters: queryParams);
+        _httpClient, endpoint, token, responseTag,
+        queryParameters: queryParams);
 
     /// Build and return the list of CourseActivity
     return responseBody

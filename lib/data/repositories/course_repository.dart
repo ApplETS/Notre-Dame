@@ -140,10 +140,9 @@ class CourseRepository {
         await getSessions();
       }
 
-
       for (final Session session in activeSessions) {
-        fetchedCoursesActivities.addAll(
-            await _signetsApiClient.getCoursesActivities(session: session.shortName));
+        fetchedCoursesActivities.addAll(await _signetsApiClient
+            .getCoursesActivities(session: session.shortName));
         _logger.d(
             "$tag - getCoursesActivities: fetched ${fetchedCoursesActivities.length} activities.");
       }
@@ -297,8 +296,8 @@ class CourseRepository {
       }
 
       for (final Session oneSession in activeSessions) {
-        fetchedScheduleActivities.addAll(
-            await _signetsApiClient.getScheduleActivities(session: oneSession.shortName));
+        fetchedScheduleActivities.addAll(await _signetsApiClient
+            .getScheduleActivities(session: oneSession.shortName));
         _logger.d(
             "$tag - getScheduleActivities: fetched ${fetchedScheduleActivities.length} activities.");
       }
@@ -361,8 +360,8 @@ class CourseRepository {
     try {
       final List<Session> fetchedSession =
           await _signetsApiClient.getSessions();
-      _logger.d(
-          "$tag - getSessions: ${fetchedSession.length} sessions fetched.");
+      _logger
+          .d("$tag - getSessions: ${fetchedSession.length} sessions fetched.");
       for (final Session session in fetchedSession) {
         if (!_sessions!.contains(session)) {
           _sessions!.add(session);
@@ -422,8 +421,7 @@ class CourseRepository {
 
     try {
       fetchedCourses.addAll(await _signetsApiClient.getCourses());
-      _logger
-          .d("$tag - getCourses: fetched ${fetchedCourses.length} courses.");
+      _logger.d("$tag - getCourses: fetched ${fetchedCourses.length} courses.");
     } on Exception catch (e, stacktrace) {
       _analyticsService.logError(
           tag, "Exception raised during getCourses: $e", e, stacktrace);
@@ -481,9 +479,11 @@ class CourseRepository {
     }
 
     try {
-      summary = await _signetsApiClient.getCourseSummary(session: course.session, acronym: course.acronym, group: course.group);
-      _logger
-          .d("$tag - getCourseSummary: fetched ${course.acronym} summary.");
+      summary = await _signetsApiClient.getCourseSummary(
+          session: course.session,
+          acronym: course.acronym,
+          group: course.group);
+      _logger.d("$tag - getCourseSummary: fetched ${course.acronym} summary.");
     } on Exception catch (e, stacktrace) {
       if (e is ApiException) {
         if (e.errorCode == SignetsError.gradesEmpty ||
@@ -532,7 +532,8 @@ class CourseRepository {
       }
 
       for (final Session session in _sessions!) {
-        sessionReviews = await _signetsApiClient.getCourseReviews(session: session.shortName);
+        sessionReviews = await _signetsApiClient.getCourseReviews(
+            session: session.shortName);
         reviews.putIfAbsent(session.shortName, () => sessionReviews);
         _logger.d(
             "$tag - getCoursesEvaluations: fetched ${reviews[session.shortName]?.length ?? 0} "

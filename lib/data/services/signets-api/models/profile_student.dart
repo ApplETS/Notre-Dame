@@ -40,8 +40,8 @@ class ProfileStudent {
       firstName: map['prenom'] as String,
       permanentCode: map['codePerm'] as String,
       universalCode: map.containsKey("codeUniversel")
-        ? map['codeUniversel'] as String
-        : '',
+          ? map['codeUniversel'] as String
+          : '',
       balance: map['soldeTotal'] as String);
 
   Map<String, dynamic> toJson() => {

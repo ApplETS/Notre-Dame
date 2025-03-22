@@ -25,7 +25,11 @@ class ProfileViewModel extends FutureViewModel<List<Program>> {
 
   /// Student's profile
   final ProfileStudent _student = ProfileStudent(
-      balance: "", firstName: "", lastName: "", permanentCode: "", universalCode: "");
+      balance: "",
+      firstName: "",
+      lastName: "",
+      permanentCode: "",
+      universalCode: "");
 
   /// Return the profileStudent
   ProfileStudent get profileStudent {

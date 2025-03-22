@@ -1,13 +1,16 @@
+// Package imports:
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:msal_auth/msal_auth.dart';
-import 'package:notredame/data/services/auth_service.dart';
 
+// Project imports:
+import 'package:notredame/data/services/auth_service.dart';
 import 'auth_service_mock.mocks.dart';
 
 @GenerateNiceMocks([MockSpec<AuthService>()])
 class AuthServiceMock extends MockAuthService {
-  static void stubCreatePublicClientApplication(AuthServiceMock mock, {bool success = true}) {
+  static void stubCreatePublicClientApplication(AuthServiceMock mock,
+      {bool success = true}) {
     when(mock.createPublicClientApplication(
             authorityType: anyNamed('authorityType'),
             broker: anyNamed('broker')))
@@ -18,8 +21,9 @@ class AuthServiceMock extends MockAuthService {
       {bool success = true}) {
     AuthenticationResult? result;
     MsalException? exception;
-    if(success) {
-      result = AuthenticationResult(accessToken: '',
+    if (success) {
+      result = AuthenticationResult(
+          accessToken: '',
           authenticationScheme: '',
           expiresOn: DateTime.now(),
           idToken: '',
@@ -31,14 +35,16 @@ class AuthServiceMock extends MockAuthService {
     } else {
       exception = MsalException(message: 'Error');
     }
-    when(mock.acquireTokenSilent()).thenAnswer((_) async => (result, exception));
+    when(mock.acquireTokenSilent())
+        .thenAnswer((_) async => (result, exception));
   }
 
   static void stubAcquireToken(AuthServiceMock mock, {bool success = true}) {
     AuthenticationResult? result;
     MsalException? exception;
-    if(success) {
-      result = AuthenticationResult(accessToken: '',
+    if (success) {
+      result = AuthenticationResult(
+          accessToken: '',
           authenticationScheme: '',
           expiresOn: DateTime.now(),
           idToken: '',

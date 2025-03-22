@@ -5,8 +5,8 @@ import 'package:xml/xml.dart';
 
 // Project imports:
 import 'package:notredame/data/services/signets-api/models/course_activity.dart';
-import 'package:notredame/data/services/signets-api/signets_api_client.dart';
 import 'package:notredame/data/services/signets-api/request_builder_service.dart';
+import 'package:notredame/data/services/signets-api/signets_api_client.dart';
 import 'package:notredame/utils/command.dart';
 
 /// Call the SignetsAPI to get the courses activities for the [session] for
@@ -54,16 +54,18 @@ class GetCoursesActivitiesCommand implements Command<List<CourseActivity>> {
       throw ArgumentError("The startDate can't be after endDate.");
     }
 
-    final queryParams = { "session": session };
+    final queryParams = {"session": session};
 
-    if(courseGroup.isNotEmpty) queryParams["coursGroupe"] = courseGroup;
+    if (courseGroup.isNotEmpty) queryParams["coursGroupe"] = courseGroup;
 
     final dateFormat = DateFormat('yyyy-MM-dd');
-    if(startDate != null) queryParams["dateDebut"] = dateFormat.format(startDate!);
-    if(endDate != null) queryParams["dateFin"] = dateFormat.format(endDate!);
+    if (startDate != null)
+      queryParams["dateDebut"] = dateFormat.format(startDate!);
+    if (endDate != null) queryParams["dateFin"] = dateFormat.format(endDate!);
 
     final responseBody = await RequestBuilderService.sendRequest(
-        _httpClient, endpoint, token, responseTag, queryParameters: queryParams);
+        _httpClient, endpoint, token, responseTag,
+        queryParameters: queryParams);
 
     /// Build and return the list of CourseActivity
     return responseBody
