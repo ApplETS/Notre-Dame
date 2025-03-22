@@ -54,7 +54,7 @@ dependencies:
   flutter_svg: ^2.0.17
   font_awesome_flutter: ^10.8.0
   device_info_plus: ^11.2.0
-  share_plus: ^10.1.1
+  share_plus: ^10.1.4
 
   # Other
   flutter_cache_manager: ^3.4.1
