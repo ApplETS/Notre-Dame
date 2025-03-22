@@ -39,17 +39,17 @@ void main() {
           activityName: 'PRE013',
           activityDescription: 'PRE013',
           activityLocation: 'PRE013',
-          startDateTime: Utils.getCurrentSundayOfWeek(DateTime.now()),
-          endDateTime: Utils.getCurrentSundayOfWeek(DateTime.now()),
+          startDateTime: Utils.getFirstdayOfWeek(DateTime.now()).add(Duration(days: 6)),
+          endDateTime: Utils.getFirstdayOfWeek(DateTime.now()).add(Duration(days: 6)),
         ),
         CourseActivity(
-          courseGroup: 'PRE013',
-          courseName: 'PRE013',
-          activityName: 'PRE013',
-          activityDescription: 'PRE013',
-          activityLocation: 'PRE013',
-          startDateTime: Utils.getCurrentSundayOfWeek(DateTime.now()),
-          endDateTime: Utils.getCurrentSundayOfWeek(DateTime.now()),
+          courseGroup: 'PRE011',
+          courseName: 'PRE011',
+          activityName: 'PRE011',
+          activityDescription: 'PRE011',
+          activityLocation: 'PRE011',
+          startDateTime: Utils.getFirstdayOfWeek(DateTime.now()).add(Duration(days: 6)),
+          endDateTime: Utils.getFirstdayOfWeek(DateTime.now()).add(Duration(days: 7)),
         ),
       ];
 
@@ -59,7 +59,7 @@ void main() {
       final Map<DateTime, List<CourseActivity>> coursesMapped = {};
 
       for (CourseActivity c in sundayCourses) {
-        final DateTime date = Utils.getCurrentSundayOfWeek(DateTime.now());
+        final DateTime date = Utils.getFirstdayOfWeek(DateTime.now().add(Duration(days: 6)));
         coursesMapped[date]?.add(c);
       }
 
