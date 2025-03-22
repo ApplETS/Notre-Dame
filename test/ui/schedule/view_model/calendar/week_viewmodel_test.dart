@@ -39,10 +39,10 @@ void main() {
           activityName: 'PRE013',
           activityDescription: 'PRE013',
           activityLocation: 'PRE013',
-          startDateTime:
-              Utils.getFirstdayOfWeek(DateTime.now()).add(Duration(days: 6)),
-          endDateTime:
-              Utils.getFirstdayOfWeek(DateTime.now()).add(Duration(days: 6)),
+          startDateTime: Utils.getFirstdayOfWeek(DateTime.now())
+              .add(Duration(days: 6, hours: 12)),
+          endDateTime: Utils.getFirstdayOfWeek(DateTime.now())
+              .add(Duration(days: 6, hours: 16)),
         ),
         CourseActivity(
           courseGroup: 'PRE011',
@@ -50,10 +50,10 @@ void main() {
           activityName: 'PRE011',
           activityDescription: 'PRE011',
           activityLocation: 'PRE011',
-          startDateTime:
-              Utils.getFirstdayOfWeek(DateTime.now()).add(Duration(days: 6)),
-          endDateTime:
-              Utils.getFirstdayOfWeek(DateTime.now()).add(Duration(days: 7)),
+          startDateTime: Utils.getFirstdayOfWeek(DateTime.now())
+              .add(Duration(days: 6, hours: 23)),
+          endDateTime: Utils.getFirstdayOfWeek(DateTime.now())
+              .add(Duration(days: 7, hours: 3)),
         ),
       ];
 
