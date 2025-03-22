@@ -1,8 +1,8 @@
 // Package imports:
 import 'package:flutter_test/flutter_test.dart';
-import 'package:notredame/data/services/signets-api/models/course_activity.dart';
 
 // Project imports:
+import 'package:notredame/data/services/signets-api/models/course_activity.dart';
 import 'package:notredame/ui/schedule/view_model/calendars/week_viewmodel.dart';
 import 'package:notredame/utils/utils.dart';
 import '../../../../data/mocks/repositories/course_repository_mock.dart';
@@ -39,8 +39,10 @@ void main() {
           activityName: 'PRE013',
           activityDescription: 'PRE013',
           activityLocation: 'PRE013',
-          startDateTime: Utils.getFirstdayOfWeek(DateTime.now()).add(Duration(days: 6)),
-          endDateTime: Utils.getFirstdayOfWeek(DateTime.now()).add(Duration(days: 6)),
+          startDateTime:
+              Utils.getFirstdayOfWeek(DateTime.now()).add(Duration(days: 6)),
+          endDateTime:
+              Utils.getFirstdayOfWeek(DateTime.now()).add(Duration(days: 6)),
         ),
         CourseActivity(
           courseGroup: 'PRE011',
@@ -48,18 +50,22 @@ void main() {
           activityName: 'PRE011',
           activityDescription: 'PRE011',
           activityLocation: 'PRE011',
-          startDateTime: Utils.getFirstdayOfWeek(DateTime.now()).add(Duration(days: 6)),
-          endDateTime: Utils.getFirstdayOfWeek(DateTime.now()).add(Duration(days: 7)),
+          startDateTime:
+              Utils.getFirstdayOfWeek(DateTime.now()).add(Duration(days: 6)),
+          endDateTime:
+              Utils.getFirstdayOfWeek(DateTime.now()).add(Duration(days: 7)),
         ),
       ];
 
       // Mocking the class to get our list of data back like a "real" request
-      CourseRepositoryMock.stubCoursesActivities(courseRepositoryMock, toReturn: sundayCourses);
+      CourseRepositoryMock.stubCoursesActivities(courseRepositoryMock,
+          toReturn: sundayCourses);
       // Map the list of CourseActivity to add them in the viewModel
       final Map<DateTime, List<CourseActivity>> coursesMapped = {};
 
       for (CourseActivity c in sundayCourses) {
-        final DateTime date = Utils.getFirstdayOfWeek(DateTime.now().add(Duration(days: 6)));
+        final DateTime date =
+            Utils.getFirstdayOfWeek(DateTime.now().add(Duration(days: 6)));
         coursesMapped[date]?.add(c);
       }
 
