@@ -109,7 +109,7 @@ void main() {
       newsRepository = setupNewsRepositoryMock();
       setupNavigationServiceMock();
       setupNetworkingServiceMock();
-      setupSettingsManagerMock();
+      setupSettingsRepositoryMock();
       setupAnalyticsServiceMock();
       setupLaunchUrlServiceMock();
 

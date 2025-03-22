@@ -129,7 +129,7 @@ void main() {
       setupNavigationServiceMock();
       setupNetworkingServiceMock();
       setupAnalyticsServiceMock();
-      setupSettingsManagerMock();
+      setupSettingsRepositoryMock();
       final remoteConfigService = setupRemoteConfigServiceMock();
 
       NewsRepositoryMock.stubGetNews(newsRepository, toReturn: paginatedNews);

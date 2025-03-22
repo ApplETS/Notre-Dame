@@ -22,7 +22,8 @@ void main() {
       firstName: "John",
       lastName: "Doe",
       permanentCode: "ABC123",
-      balance: "123456789");
+      balance: "123456789",
+      universalCode: 'AA000000');
 
   // Make a test program object
   final program = Program(

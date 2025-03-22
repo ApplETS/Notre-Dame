@@ -49,7 +49,7 @@ void main() {
 
   group("week calendar view - ", () {
     setUp(() async {
-      settingsManagerMock = setupSettingsManagerMock();
+      settingsManagerMock = setupSettingsRepositoryMock();
       courseRepositoryMock = setupCourseRepositoryMock();
       await setupAppIntl();
       setupNetworkingServiceMock();

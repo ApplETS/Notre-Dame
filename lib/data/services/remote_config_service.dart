@@ -1,6 +1,8 @@
 //SERVICE
 
 // Package imports:
+
+// Package imports:
 import 'package:firebase_remote_config/firebase_remote_config.dart';
 
 // Project imports:
@@ -139,6 +141,21 @@ class RemoteConfigService {
   String get helloWebsiteUrl {
     fetch();
     return _remoteConfig.getString(_helloWebsiteUrl);
+  }
+
+  Future<String> get aadAndroidRedirectUri async {
+    await fetch();
+    return _remoteConfig.getString("AAD_ANDROID_REDIRECT_URI");
+  }
+
+  Future<String> get aadAppleAuthority async {
+    await fetch();
+    return _remoteConfig.getString("AAD_APPLE_AUTHORITY");
+  }
+
+  Future<String> get aadClientId async {
+    await fetch();
+    return _remoteConfig.getString("AAD_CLIENT_ID");
   }
 
   Future<void> fetch() async {

@@ -4,27 +4,27 @@ import 'package:xml/xml.dart';
 
 // Project imports:
 import 'package:notredame/data/services/signets-api/models/schedule_activity.dart';
+import 'package:notredame/data/services/signets-api/request_builder_service.dart';
 import 'package:notredame/data/services/signets-api/signets_api_client.dart';
-import 'package:notredame/data/services/signets-api/soap_service.dart';
-import 'package:notredame/domain/constants/urls.dart';
 import 'package:notredame/utils/command.dart';
 
 /// Call the SignetsAPI to get the courses activities for the [session] for
 /// the student ([username]).
 class GetScheduleActivitiesCommand implements Command<List<ScheduleActivity>> {
+  static const String endpoint = "/api/Etudiant/listeHoraireEtProf";
+  static const String responseTag = "ListeActivitesEtProfs";
+
   final SignetsAPIClient client;
   final http.Client _httpClient;
   final RegExp _sessionShortNameRegExp;
-  final String username;
-  final String password;
+  final String token;
   final String session;
 
   GetScheduleActivitiesCommand(
     this.client,
     this._httpClient,
     this._sessionShortNameRegExp, {
-    required this.username,
-    required this.password,
+    required this.token,
     required this.session,
   });
 
@@ -34,27 +34,10 @@ class GetScheduleActivitiesCommand implements Command<List<ScheduleActivity>> {
       throw FormatException("Session $session isn't correctly formatted");
     }
 
-    // Generate initial soap envelope
-    final body = SoapService.buildBasicSOAPBody(
-            Urls.listeHoraireEtProf, username, password)
-        .buildDocument();
-    final operationContent = XmlBuilder();
-
-    // Add the content needed by the operation
-    operationContent.element("pSession", nest: () {
-      operationContent.text(session);
-    });
-
-    // Add the parameters needed inside the request.
-    body
-        .findAllElements(Urls.listeHoraireEtProf,
-            namespace: Urls.signetsOperationBase)
-        .first
-        .children
-        .add(operationContent.buildFragment());
-
-    final responseBody = await SoapService.sendSOAPRequest(
-        _httpClient, body, Urls.listeHoraireEtProf);
+    final queryParams = {"session": session};
+    final responseBody = await RequestBuilderService.sendRequest(
+        _httpClient, endpoint, token, responseTag,
+        queryParameters: queryParams);
 
     /// Build and return the list of CourseActivity
     return responseBody

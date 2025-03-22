@@ -22,7 +22,7 @@ void main() {
       setupNavigationServiceMock();
       setupNetworkingServiceMock();
       courseRepositoryMock = setupCourseRepositoryMock();
-      setupSettingsManagerMock();
+      setupSettingsRepositoryMock();
       setupAnalyticsServiceMock();
 
       CourseRepositoryMock.stubCourses(courseRepositoryMock);

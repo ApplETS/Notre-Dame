@@ -66,7 +66,7 @@ void main() {
     setUp(() async {
       newsRepository = setupNewsRepositoryMock();
       setupLogger();
-      setupSettingsManagerMock();
+      setupSettingsRepositoryMock();
       NewsRepositoryMock.stubGetNews(newsRepository, toReturn: paginatedNews);
       viewModel = NewsViewModel();
     });

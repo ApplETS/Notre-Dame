@@ -53,7 +53,7 @@ void main() {
 
   group("day calendar view - ", () {
     setUp(() async {
-      settingsManagerMock = setupSettingsManagerMock();
+      settingsManagerMock = setupSettingsRepositoryMock();
       courseRepositoryMock = setupCourseRepositoryMock();
       intl = await setupAppIntl();
       setupNetworkingServiceMock();

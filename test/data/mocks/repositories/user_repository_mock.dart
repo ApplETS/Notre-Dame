@@ -3,7 +3,6 @@ import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
 // Project imports:
-import 'package:notredame/data/models/mon_ets_user.dart';
 import 'package:notredame/data/repositories/user_repository.dart';
 import 'package:notredame/data/services/signets-api/models/profile_student.dart';
 import 'package:notredame/data/services/signets-api/models/program.dart';
@@ -13,39 +12,6 @@ import 'user_repository_mock.mocks.dart';
 /// Mock for the [UserRepository]
 @GenerateNiceMocks([MockSpec<UserRepository>()])
 class UserRepositoryMock extends MockUserRepository {
-  /// When [monETSUser] is called will return [userToReturn]
-  static void stubMonETSUser(UserRepositoryMock mock, MonETSUser userToReturn) {
-    when(mock.monETSUser).thenAnswer((_) => userToReturn);
-  }
-
-  /// Stub the authentication, when [username] is used will return [toReturn].
-  /// By default validate the authentication
-  static void stubAuthenticate(UserRepositoryMock mock, String username,
-      {bool toReturn = true}) {
-    when(mock.authenticate(username: username, password: anyNamed('password')))
-        .thenAnswer((_) async => toReturn);
-  }
-
-  /// Stub the silent authentication, return [toReturn]
-  /// By default validate the silent authentication
-  static void stubSilentAuthenticate(UserRepositoryMock mock,
-      {bool toReturn = true}) {
-    when(mock.silentAuthenticate()).thenAnswer((_) async => toReturn);
-  }
-
-  /// Stub the getPassword function, return [passwordToReturn]
-  static void stubGetPassword(
-      UserRepositoryMock mock, String passwordToReturn) {
-    when(mock.getPassword()).thenAnswer((_) async => passwordToReturn);
-  }
-
-  /// Stub the getPassword function to throw [exceptionToReturn]
-  static void stubGetPasswordException(UserRepositoryMock mock,
-      {ApiException exceptionToReturn =
-          const ApiException(prefix: UserRepository.tag)}) {
-    when(mock.getPassword()).thenThrow(exceptionToReturn);
-  }
-
   /// Stub the getter [ProfileStudent] of [mock] when called will return [toReturn].
   static void stubProfileStudent(UserRepositoryMock mock,
       {ProfileStudent? toReturn}) {

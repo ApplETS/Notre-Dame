@@ -8,7 +8,7 @@ import 'package:notredame/data/repositories/settings_repository.dart';
 import 'package:notredame/data/services/navigation_service.dart';
 import 'package:notredame/domain/constants/preferences_flags.dart';
 import 'package:notredame/domain/constants/router_paths.dart';
-import 'package:notredame/ui/more/settings/choose_language/view_model/choose_language_viewmodel.dart';
+import 'package:notredame/ui/choose_language/view_model/choose_language_viewmodel.dart';
 import '../../../../data/mocks/repositories/settings_repository_mock.dart';
 import '../../../../data/mocks/services/navigation_service_mock.dart';
 import '../../../../helpers.dart';
@@ -23,7 +23,7 @@ void main() {
     setUp(() async {
       // Setting up mocks
       navigationServiceMock = setupNavigationServiceMock();
-      settingsManagerMock = setupSettingsManagerMock();
+      settingsManagerMock = setupSettingsRepositoryMock();
       final AppIntl intl = await setupAppIntl();
 
       viewModel = ChooseLanguageViewModel(intl: intl);
@@ -45,7 +45,7 @@ void main() {
             .setLocale(AppIntl.supportedLocales.first.languageCode));
         verify(navigationServiceMock.pop());
         verify(
-            navigationServiceMock.pushNamedAndRemoveUntil(RouterPaths.login));
+            navigationServiceMock.pushNamedAndRemoveUntil(RouterPaths.startup));
       });
 
       test('can set language français', () async {
@@ -58,7 +58,7 @@ void main() {
             .setLocale(AppIntl.supportedLocales.last.languageCode));
         verify(navigationServiceMock.pop());
         verify(
-            navigationServiceMock.pushNamedAndRemoveUntil(RouterPaths.login));
+            navigationServiceMock.pushNamedAndRemoveUntil(RouterPaths.startup));
       });
 
       test('throws an error when index does not exist', () async {

@@ -27,6 +27,13 @@ if [[ -n $ENCRYPTED_ETSMOBILE_KEYSTORE_PASSWORD && -n $ENCRYPTED_KEYSTORE_PROPER
   openssl aes-256-cbc -pbkdf2 -d -k "$ENCRYPTED_KEYSTORE_PROPERTIES_PASSWORD" -in ./encryptedFiles/keystore.properties.enc -out ./android/keystore.properties -md md5
 fi
 
+# Decrypt debug Android Keystore, JKS and service account credentials
+if [[ -n ENCRYPTED_ETSMOBILE_KEYSTORE_PASSWORD_DEBUG && -n ENCRYPTED_KEYSTORE_PROPERTIES_PASSWORD_DEBUG ]]; then
+  echo "Decoding debug Android keystore and JKS"
+  openssl aes-256-cbc -pbkdf2 -d -k "$ENCRYPTED_ETSMOBILE_KEYSTORE_PASSWORD_DEBUG" -in ./encryptedFiles/debug_keystore.jks.enc -out ./android/debug_keystore.jks -md md5
+  openssl aes-256-cbc -pbkdf2 -d -k "$ENCRYPTED_KEYSTORE_PROPERTIES_PASSWORD_DEBUG" -in ./encryptedFiles/debug_keystore.properties.enc -out ./android/debug_keystore.properties -md md5
+fi
+
 if [[ -n $ENCRYPTED_ANDROID_SERVICE_ACCOUNT_CREDENTIALS_PASSWORD ]]; then
   echo "Decoding Android service account credentials"
   openssl aes-256-cbc -pbkdf2 -d -k "$ENCRYPTED_ANDROID_SERVICE_ACCOUNT_CREDENTIALS_PASSWORD" -in ./encryptedFiles/android_service_account_credentials.json.enc -out ./android/service_account_credentials.json -md md5
@@ -40,4 +47,14 @@ fi
 if [[ -n $ENCRYPTED_IOS_SERVICE_ACCOUNT_CREDENTIALS_PASSWORD ]]; then
   echo "Decoding iOS service account credentials"
   openssl aes-256-cbc -pbkdf2 -d -k "$ENCRYPTED_IOS_SERVICE_ACCOUNT_CREDENTIALS_PASSWORD" -in ./encryptedFiles/ios_service_account_credentials.json.enc -out ./ios/service_account_credentials.json -md md5
+fi
+
+if [[ -n $ENCRYPTED_MSAL_CONFIG_PASSWORD ]]; then
+  echo "Decoding MSAL config"
+  openssl aes-256-cbc -pbkdf2 -d -k "$ENCRYPTED_MSAL_CONFIG_PASSWORD" -in ./encryptedFiles/msal_config.json.enc -out ./assets/msal_config.json -md md5
+fi
+
+if [[ -n $ENCRYPTED_CONFIG_PROPERTIES ]]; then
+  echo "Decoding config.properties"
+  openssl aes-256-cbc -pbkdf2 -d -k "$ENCRYPTED_CONFIG_PROPERTIES" -in ./encryptedFiles/config.properties.enc -out ./android/config.properties -md md5
 fi

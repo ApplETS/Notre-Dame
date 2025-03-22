@@ -106,7 +106,7 @@ void main() {
     setUp(() async {
       setupNavigationServiceMock();
       courseRepositoryMock = setupCourseRepositoryMock();
-      setupSettingsManagerMock();
+      setupSettingsRepositoryMock();
       setupNetworkingServiceMock();
     });
 

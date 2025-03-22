@@ -12,7 +12,7 @@ void main() {
 
   setUp(() async {
     setupCourseRepositoryMock();
-    setupSettingsManagerMock();
+    setupSettingsRepositoryMock();
     setupFlutterToastMock();
 
     viewModel = DayViewModel(

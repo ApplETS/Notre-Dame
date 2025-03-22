@@ -8,7 +8,6 @@ import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
 
 // Project imports:
-import 'package:notredame/data/repositories/user_repository.dart';
 import 'package:notredame/data/services/analytics_service.dart';
 import 'package:notredame/data/services/cache_service.dart';
 import 'package:notredame/data/services/networking_service.dart';
@@ -49,9 +48,6 @@ class CourseRepository {
 
   /// Will be used to report event and error.
   final AnalyticsService _analyticsService = locator<AnalyticsService>();
-
-  /// To access the user currently logged
-  final UserRepository _userRepository = locator<UserRepository>();
 
   /// Cache manager to access and update the cache.
   final CacheService _cacheManager = locator<CacheService>();
@@ -144,17 +140,11 @@ class CourseRepository {
         await getSessions();
       }
 
-      if (_userRepository.monETSUser != null) {
-        final String password = await _userRepository.getPassword();
-        for (final Session session in activeSessions) {
-          fetchedCoursesActivities.addAll(
-              await _signetsApiClient.getCoursesActivities(
-                  username: _userRepository.monETSUser!.universalCode,
-                  password: password,
-                  session: session.shortName));
-          _logger.d(
-              "$tag - getCoursesActivities: fetched ${fetchedCoursesActivities.length} activities.");
-        }
+      for (final Session session in activeSessions) {
+        fetchedCoursesActivities.addAll(await _signetsApiClient
+            .getCoursesActivities(session: session.shortName));
+        _logger.d(
+            "$tag - getCoursesActivities: fetched ${fetchedCoursesActivities.length} activities.");
       }
     } on Exception catch (e, stacktrace) {
       _analyticsService.logError(tag,
@@ -236,13 +226,8 @@ class CourseRepository {
     final List<ScheduleActivity> fetchedScheduleActivities = [];
 
     try {
-      final String password = await _userRepository.getPassword();
-
       fetchedScheduleActivities.addAll(
-          await _signetsApiClient.getScheduleActivities(
-              username: _userRepository.monETSUser?.universalCode ?? '',
-              password: password,
-              session: session));
+          await _signetsApiClient.getScheduleActivities(session: session));
       _logger.d(
           "$tag - getDefaultScheduleActivities: fetched ${fetchedScheduleActivities.length} default activities.");
     } on Exception catch (e, stacktrace) {
@@ -310,18 +295,11 @@ class CourseRepository {
         await getSessions();
       }
 
-      if (_userRepository.monETSUser != null) {
-        final String password = await _userRepository.getPassword();
-
-        for (final Session oneSession in activeSessions) {
-          fetchedScheduleActivities.addAll(
-              await _signetsApiClient.getScheduleActivities(
-                  username: _userRepository.monETSUser?.universalCode ?? '',
-                  password: password,
-                  session: oneSession.shortName));
-          _logger.d(
-              "$tag - getScheduleActivities: fetched ${fetchedScheduleActivities.length} activities.");
-        }
+      for (final Session oneSession in activeSessions) {
+        fetchedScheduleActivities.addAll(await _signetsApiClient
+            .getScheduleActivities(session: oneSession.shortName));
+        _logger.d(
+            "$tag - getScheduleActivities: fetched ${fetchedScheduleActivities.length} activities.");
       }
     } on Exception catch (e, stacktrace) {
       _analyticsService.logError(tag,
@@ -380,25 +358,18 @@ class CourseRepository {
     }
 
     try {
-      if (_userRepository.monETSUser != null) {
-        // getPassword will try to authenticate the user if not authenticated.
-        final String password = await _userRepository.getPassword();
-
-        final List<Session> fetchedSession =
-            await _signetsApiClient.getSessions(
-                username: _userRepository.monETSUser!.universalCode,
-                password: password);
-        _logger.d(
-            "$tag - getSessions: ${fetchedSession.length} sessions fetched.");
-        for (final Session session in fetchedSession) {
-          if (!_sessions!.contains(session)) {
-            _sessions!.add(session);
-          }
+      final List<Session> fetchedSession =
+          await _signetsApiClient.getSessions();
+      _logger
+          .d("$tag - getSessions: ${fetchedSession.length} sessions fetched.");
+      for (final Session session in fetchedSession) {
+        if (!_sessions!.contains(session)) {
+          _sessions!.add(session);
         }
-
-        // Update cache
-        _cacheManager.update(sessionsCacheKey, jsonEncode(_sessions));
       }
+
+      // Update cache
+      _cacheManager.update(sessionsCacheKey, jsonEncode(_sessions));
     } on CacheException catch (_) {
       _logger.e(
           "$tag - getSessions: exception raised while trying to update the cache.");
@@ -449,15 +420,8 @@ class CourseRepository {
     final Map<String, List<CourseReview>> fetchedCourseReviews = {};
 
     try {
-      if (_userRepository.monETSUser != null) {
-        final String password = await _userRepository.getPassword();
-
-        fetchedCourses.addAll(await _signetsApiClient.getCourses(
-            username: _userRepository.monETSUser!.universalCode,
-            password: password));
-        _logger
-            .d("$tag - getCourses: fetched ${fetchedCourses.length} courses.");
-      }
+      fetchedCourses.addAll(await _signetsApiClient.getCourses());
+      _logger.d("$tag - getCourses: fetched ${fetchedCourses.length} courses.");
     } on Exception catch (e, stacktrace) {
       _analyticsService.logError(
           tag, "Exception raised during getCourses: $e", e, stacktrace);
@@ -515,16 +479,11 @@ class CourseRepository {
     }
 
     try {
-      if (_userRepository.monETSUser != null) {
-        final String password = await _userRepository.getPassword();
-
-        summary = await _signetsApiClient.getCourseSummary(
-            username: _userRepository.monETSUser!.universalCode,
-            password: password,
-            course: course);
-        _logger
-            .d("$tag - getCourseSummary: fetched ${course.acronym} summary.");
-      }
+      summary = await _signetsApiClient.getCourseSummary(
+          session: course.session,
+          acronym: course.acronym,
+          group: course.group);
+      _logger.d("$tag - getCourseSummary: fetched ${course.acronym} summary.");
     } on Exception catch (e, stacktrace) {
       if (e is ApiException) {
         if (e.errorCode == SignetsError.gradesEmpty ||
@@ -567,24 +526,18 @@ class CourseRepository {
     List<CourseReview> sessionReviews = [];
 
     try {
-      final String password = await _userRepository.getPassword();
-
       // If there is no sessions loaded, load them.
       if (_sessions == null) {
         await getSessions();
       }
 
-      if (_userRepository.monETSUser != null) {
-        for (final Session session in _sessions!) {
-          sessionReviews = await _signetsApiClient.getCourseReviews(
-              username: _userRepository.monETSUser!.universalCode,
-              password: password,
-              session: session);
-          reviews.putIfAbsent(session.shortName, () => sessionReviews);
-          _logger.d(
-              "$tag - getCoursesEvaluations: fetched ${reviews[session.shortName]?.length ?? 0} "
-              "evaluations for session ${session.shortName}.");
-        }
+      for (final Session session in _sessions!) {
+        sessionReviews = await _signetsApiClient.getCourseReviews(
+            session: session.shortName);
+        reviews.putIfAbsent(session.shortName, () => sessionReviews);
+        _logger.d(
+            "$tag - getCoursesEvaluations: fetched ${reviews[session.shortName]?.length ?? 0} "
+            "evaluations for session ${session.shortName}.");
       }
     } on Exception catch (e, stacktrace) {
       _analyticsService.logError(tag, e.toString(), e, stacktrace);

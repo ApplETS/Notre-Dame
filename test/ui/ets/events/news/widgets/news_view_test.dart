@@ -73,7 +73,7 @@ void main() {
       newsRepository = setupNewsRepositoryMock();
       setupNavigationServiceMock();
       setupNetworkingServiceMock();
-      setupSettingsManagerMock();
+      setupSettingsRepositoryMock();
 
       NewsRepositoryMock.stubGetNews(newsRepository, toReturn: paginatedNews);
     });
