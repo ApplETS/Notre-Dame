@@ -32,7 +32,7 @@ runs:
       run: flutter build -v ${{ inputs.build-target }} ${{ inputs.build-args }} --release
       env:
         MAPS_API_KEY: ${{ inputs.maps-api-key }}
-        APP_HASH: ${{ input.app-hash }}
+        APP_HASH: ${{ inputs.app-hash }}
     
     - name: Rename Android build
       if: inputs.target == 'Android'
