@@ -74,8 +74,8 @@ jobs:
             asset_content_type: application/zip
       # Disable fail-fast as we want results from all even if one fails.
       fail-fast: false
-    needs:
-      - testing
+#    needs:
+#      - testing
     steps:
       - uses: actions/checkout@v4
         with:
