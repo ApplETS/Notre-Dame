@@ -147,10 +147,6 @@ class CourseRepository {
         _logger.d(
             "$tag - getCoursesActivities: fetched ${fetchedCoursesActivities.length} activities.");
       }
-    } on ApiException catch (e, stacktrace) {
-      _analyticsService.logError(tag,
-          "Exception raised during getCoursesActivities: $e", e, stacktrace);
-      _logger.d("$tag - getCoursesActivities: Exception raised $e");
     } on Exception catch (e, stacktrace) {
       _analyticsService.logError(tag,
           "Exception raised during getCoursesActivities: $e", e, stacktrace);
