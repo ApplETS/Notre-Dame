@@ -139,6 +139,7 @@ class _SocialLinksState extends State<SocialLinks> {
   Widget _buildSocialButton(SocialLink link, WebLinkCardViewModel model) {
     return IconButton(
       icon: link.image,
+      tooltip: AppIntl.of(context)!.social_links_name(link.name),
       onPressed: () => model.onLinkClicked(link),
     );
   }
