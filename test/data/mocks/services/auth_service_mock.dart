@@ -52,4 +52,8 @@ class AuthServiceMock extends MockAuthService {
     }
     when(mock.acquireToken()).thenAnswer((_) async => (result, exception));
   }
+
+  static void stubSignOut(AuthServiceMock mock) {
+    when(mock.signOut()).thenAnswer((_) async => (true, null));
+  }
 }

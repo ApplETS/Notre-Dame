@@ -1,7 +1,6 @@
 // Package imports:
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:logger/logger.dart';
 import 'package:mockito/mockito.dart';
 
 // Project imports:
@@ -9,6 +8,7 @@ import 'package:notredame/data/repositories/course_repository.dart';
 import 'package:notredame/data/repositories/settings_repository.dart';
 import 'package:notredame/data/repositories/user_repository.dart';
 import 'package:notredame/data/services/analytics_service.dart';
+import 'package:notredame/data/services/auth_service.dart';
 import 'package:notredame/data/services/cache_service.dart';
 import 'package:notredame/data/services/navigation_service.dart';
 import 'package:notredame/data/services/preferences_service.dart';
@@ -21,6 +21,7 @@ import 'package:notredame/ui/more/view_model/more_viewmodel.dart';
 import '../../../data/mocks/repositories/course_repository_mock.dart';
 import '../../../data/mocks/repositories/settings_repository_mock.dart';
 import '../../../data/mocks/repositories/user_repository_mock.dart';
+import '../../../data/mocks/services/auth_service_mock.dart';
 import '../../../data/mocks/services/cache_service_mock.dart';
 import '../../../data/mocks/services/navigation_service_mock.dart';
 import '../../../data/mocks/services/preferences_service_mock.dart';
@@ -38,6 +39,7 @@ void main() {
   late RemoteConfigServiceMock remoteConfigServiceMock;
   late UserRepositoryMock userRepositoryMock;
   late NavigationServiceMock navigationServiceMock;
+  late AuthServiceMock authServiceMock;
 
   late AppIntl appIntl;
   late MoreViewModel viewModel;
@@ -90,7 +92,7 @@ void main() {
       // Check if preference manager is clear
       preferenceServiceMock.clearWithoutPersistentKey(),
       // Check if user repository logOut is called
-      userRepositoryMock.logOut(),
+      authServiceMock.signOut(),
       // Check if the settings manager has reset lang and theme and notified his listener
       settingsManagerMock.resetLanguageAndThemeMode(),
     ]);
@@ -126,8 +128,8 @@ void main() {
       preferenceServiceMock = setupPreferencesServiceMock();
       userRepositoryMock = setupUserRepositoryMock();
       navigationServiceMock = setupNavigationServiceMock();
+      authServiceMock = setupAuthServiceMock();
       appIntl = await setupAppIntl();
-      setupLogger();
 
       viewModel = MoreViewModel(intl: appIntl);
 
@@ -149,8 +151,8 @@ void main() {
       unregister<PreferencesService>();
       unregister<UserRepository>();
       unregister<NavigationService>();
+      unregister<AuthService>();
       unregister<AppIntl>();
-      unregister<Logger>();
     });
 
     group('logout - ', () {
@@ -160,7 +162,7 @@ void main() {
             remoteConfigServiceMock,
             toReturn: false);
         setupFlutterToastMock();
-        UserRepositoryMock.stubLogOut(userRepositoryMock);
+        AuthServiceMock.stubSignOut(authServiceMock);
 
         await viewModel.logout();
 

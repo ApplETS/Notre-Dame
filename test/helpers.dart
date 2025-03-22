@@ -293,7 +293,7 @@ QuickLinkRepositoryMock setupQuickLinkRepositoryMock() {
 
 /// Load a mock of the [QuickLinkRepository]
 AuthServiceMock setupAuthServiceMock() {
-  unregister<AuthServiceMock>();
+  unregister<AuthService>();
   final repository = AuthServiceMock();
 
   locator.registerSingleton<AuthService>(repository);
