@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 // Package imports:
 import 'package:skeletonizer/skeletonizer.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 // Project imports:
 import 'package:notredame/ui/core/themes/app_palette.dart';
@@ -67,6 +68,7 @@ class AuthorInfoSkeleton extends StatelessWidget {
     return Skeletonizer(
       enabled: true,
       child: IconButton(
+        tooltip: AppIntl.of(context)!.link,
         onPressed: () {}, // Placeholder onPressed function
         icon: Icon(Icons.link, color: context.theme.appColors.newsAccent),
       ),

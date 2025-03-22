@@ -96,6 +96,7 @@ class _GradesViewState extends State<GradesView> {
                 ),
                 IconButton(
                   icon: Icon(Icons.today, color: AppPalette.grey.darkGrey),
+                  tooltip: AppIntl.of(context)!.grades_in_schedule(sessionName),
                   onPressed: () => _navigationService.pushNamed(
                       RouterPaths.defaultSchedule,
                       arguments: model.sessionOrder[index]),
