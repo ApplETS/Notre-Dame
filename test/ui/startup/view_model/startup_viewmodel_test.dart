@@ -5,15 +5,16 @@ import 'package:mockito/mockito.dart';
 // Project imports:
 import 'package:notredame/data/repositories/settings_repository.dart';
 import 'package:notredame/data/repositories/user_repository.dart';
+import 'package:notredame/data/services/analytics_service.dart';
 import 'package:notredame/data/services/auth_service.dart';
 import 'package:notredame/data/services/navigation_service.dart';
-import 'package:notredame/data/services/preferences_service.dart';
+import 'package:notredame/data/services/networking_service.dart';
 import 'package:notredame/domain/constants/preferences_flags.dart';
 import 'package:notredame/domain/constants/router_paths.dart';
 import 'package:notredame/ui/startup/view_model/startup_viewmodel.dart';
 import '../../../data/mocks/repositories/settings_repository_mock.dart';
 import '../../../data/mocks/repositories/user_repository_mock.dart';
-import '../../../data/mocks/services/internal_info_service_mock.dart';
+import '../../../data/mocks/services/auth_service_mock.dart';
 import '../../../data/mocks/services/navigation_service_mock.dart';
 import '../../../data/mocks/services/networking_service_mock.dart';
 import '../../../helpers.dart';
@@ -21,9 +22,9 @@ import '../../../helpers.dart';
 void main() {
   late NavigationServiceMock navigationServiceMock;
   late UserRepositoryMock userRepositoryMock;
-  late SettingsRepositoryMock settingsManagerMock;
+  late SettingsRepositoryMock settingsRepositoryMock;
   late NetworkingServiceMock networkingServiceMock;
-  late InternalInfoServiceMock internalInfoServiceMock;
+  late AuthServiceMock authServiceMock;
 
   late StartUpViewModel viewModel;
 
@@ -31,54 +32,72 @@ void main() {
     setUp(() async {
       setupAnalyticsServiceMock();
       navigationServiceMock = setupNavigationServiceMock();
-      settingsManagerMock = setupSettingsManagerMock();
+      settingsRepositoryMock = setupSettingsRepositoryMock();
       userRepositoryMock = setupUserRepositoryMock();
       networkingServiceMock = setupNetworkingServiceMock();
-      internalInfoServiceMock = setupInternalInfoServiceMock();
-      setupAuthServiceMock();
-      setupLogger();
+      authServiceMock = setupAuthServiceMock();
+
+      UserRepositoryMock.stubWasPreviouslyLoggedIn(userRepositoryMock, toReturn: false);
 
       viewModel = StartUpViewModel();
     });
 
     tearDown(() {
-      unregister<NavigationService>();
+      unregister<AuthService>();
+      unregister<NetworkingService>();
       unregister<UserRepository>();
       unregister<SettingsRepository>();
-      unregister<PreferencesService>();
-      unregister<AuthService>();
+      unregister<NavigationService>();
+      unregister<AnalyticsService>();
     });
 
     group('handleStartUp - ', () {
-      test('sign in successful', () async {
-        UserRepositoryMock.stubWasPreviouslyLoggedIn(userRepositoryMock);
+      test('silent sign in successful', () async {
         NetworkingServiceMock.stubHasConnectivity(networkingServiceMock);
-        InternalInfoServiceMock.stubGetPackageInfo(internalInfoServiceMock,
-            version: "4.0.0");
+        SettingsRepositoryMock.stubGetBool(settingsRepositoryMock, PreferencesFlag.languageChoice,
+            toReturn: true);
+        AuthServiceMock.stubCreatePublicClientApplication(authServiceMock);
+        AuthServiceMock.stubAcquireTokenSilent(authServiceMock);
 
         await viewModel.handleStartUp();
 
+        verify(authServiceMock.acquireTokenSilent()).called(1);
         verify(navigationServiceMock
             .pushNamedAndRemoveUntil(RouterPaths.dashboard));
       });
 
-      test('sign in failed redirect to login', () async {
-        UserRepositoryMock.stubWasPreviouslyLoggedIn(userRepositoryMock);
+      test('silent sign in failed redirect to login', () async {
         NetworkingServiceMock.stubHasConnectivity(networkingServiceMock);
-
         SettingsRepositoryMock.stubGetBool(
-            settingsManagerMock, PreferencesFlag.languageChoice,
+            settingsRepositoryMock, PreferencesFlag.languageChoice,
             toReturn: true);
+        AuthServiceMock.stubCreatePublicClientApplication(authServiceMock);
+        AuthServiceMock.stubAcquireTokenSilent(authServiceMock, success: false);
+        AuthServiceMock.stubAcquireToken(authServiceMock, success: true);
 
         await viewModel.handleStartUp();
 
-        verifyInOrder([
-          settingsManagerMock.getBool(PreferencesFlag.languageChoice),
-          navigationServiceMock.pop(),
-          navigationServiceMock.pushNamed(RouterPaths.chooseLanguage)
-        ]);
+        verify(authServiceMock.acquireTokenSilent()).called(1);
+        verify(authServiceMock.acquireToken()).called(1);
+        verify(navigationServiceMock
+            .pushNamedAndRemoveUntil(RouterPaths.dashboard));
+      });
 
-        verifyNoMoreInteractions(navigationServiceMock);
+      test('navigates to chooseLanguage if language not chosen', () async {
+        NetworkingServiceMock.stubHasConnectivity(networkingServiceMock);
+        SettingsRepositoryMock.stubGetBool(settingsRepositoryMock, PreferencesFlag.languageChoice, toReturn: null);
+
+        await viewModel.handleStartUp();
+
+        verify(navigationServiceMock.pushNamed(RouterPaths.chooseLanguage)).called(1);
+      });
+
+      test('throws exception if createPublicClientApplication fails', () async {
+        NetworkingServiceMock.stubHasConnectivity(networkingServiceMock);
+        SettingsRepositoryMock.stubGetBool(settingsRepositoryMock, PreferencesFlag.languageChoice, toReturn: true);
+        AuthServiceMock.stubCreatePublicClientApplication(authServiceMock, success: false);
+
+        expect(() async => await viewModel.handleStartUp(), throwsException);
       });
     });
   });

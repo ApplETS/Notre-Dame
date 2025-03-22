@@ -86,7 +86,7 @@ void main() {
       // Setting up mocks
       courseRepositoryMock = setupCourseRepositoryMock();
       intl = await setupAppIntl();
-      setupSettingsManagerMock();
+      setupSettingsRepositoryMock();
 
       viewModel =
           GradesDetailsViewModel(course: courseWithoutSummary, intl: intl);

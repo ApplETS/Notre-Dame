@@ -36,7 +36,7 @@ void main() {
       navigationServiceMock = setupNavigationServiceMock();
       analyticsServiceMock = setupAnalyticsServiceMock();
       launchUrlServiceMock = setupLaunchUrlServiceMock();
-      setupSettingsManagerMock();
+      setupSettingsRepositoryMock();
 
       setupLogger();
 

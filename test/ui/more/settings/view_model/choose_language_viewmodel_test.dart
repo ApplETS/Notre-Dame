@@ -23,7 +23,7 @@ void main() {
     setUp(() async {
       // Setting up mocks
       navigationServiceMock = setupNavigationServiceMock();
-      settingsManagerMock = setupSettingsManagerMock();
+      settingsManagerMock = setupSettingsRepositoryMock();
       final AppIntl intl = await setupAppIntl();
 
       viewModel = ChooseLanguageViewModel(intl: intl);

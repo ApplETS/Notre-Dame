@@ -17,7 +17,7 @@ void main() {
     setUp(() async {
       intl = await setupAppIntl();
       setupNavigationServiceMock();
-      setupSettingsManagerMock();
+      setupSettingsRepositoryMock();
     });
 
     tearDown(() {

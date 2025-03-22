@@ -1,5 +1,6 @@
 // Package imports:
 import 'package:msal_auth/msal_auth.dart';
+import 'package:notredame/data/services/analytics_service.dart';
 import 'package:notredame/data/services/auth_service.dart';
 import 'package:stacked/stacked.dart';
 
@@ -15,16 +16,14 @@ import 'package:notredame/domain/constants/preferences_flags.dart';
 class StartUpViewModel extends BaseViewModel {
   /// Manage the settings
   final SettingsRepository _settingsManager = locator<SettingsRepository>();
-
-  /// Used to authenticate the user
-  final UserRepository _userRepository = locator<UserRepository>();
   final AuthService _authService = locator<AuthService>();
-
-  /// Used to verify if the user has internet connectivity
   final NetworkingService _networkingService = locator<NetworkingService>();
-
-  /// Used to redirect on the dashboard.
   final NavigationService _navigationService = locator<NavigationService>();
+  final AnalyticsService _analyticsService = locator<AnalyticsService>();
+
+  // TODO: remove when everyone is on the version with the new auth
+  final UserRepository _userRepository = locator<UserRepository>();
+  // TODO: remove when everyone is on the version with the new auth
 
   /// Try to silent authenticate the user then redirect to [LoginView] or [DashboardView]
   Future handleStartUp() async {
@@ -33,6 +32,7 @@ class StartUpViewModel extends BaseViewModel {
     if (await _settingsManager.getBool(PreferencesFlag.languageChoice) ==
         null) {
       _navigationService.pushNamed(RouterPaths.chooseLanguage);
+      return;
     }
 
     // TODO: remove when everyone is on the version with the new auth
@@ -45,7 +45,11 @@ class StartUpViewModel extends BaseViewModel {
         authorityType: AuthorityType.aad,
         broker: Broker.msAuthenticator);
 
-    if(clientAppResult.$1 == false) {
+    if(!clientAppResult.$1) {
+      final message = clientAppResult.$2
+          ?.message
+          ?? 'Failed to create public client application';
+      await _analyticsService.logError('StartupViewmodel', message);
       throw Exception("StartupViewmodel - Failed to create public client application");
     }
 
@@ -59,8 +63,7 @@ class StartUpViewModel extends BaseViewModel {
         token = (await _authService.acquireToken()).$1;
       }
 
-      _navigationService.pop();
-      _navigationService.pushNamed(RouterPaths.dashboard);
+      _navigationService.pushNamedAndRemoveUntil(RouterPaths.dashboard);
     }
   }
 

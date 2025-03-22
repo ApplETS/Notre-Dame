@@ -165,7 +165,7 @@ void main() {
   group('DashboardView - ', () {
     setUp(() async {
       intl = await setupAppIntl();
-      settingsManagerMock = setupSettingsManagerMock();
+      settingsManagerMock = setupSettingsRepositoryMock();
       courseRepositoryMock = setupCourseRepositoryMock();
       remoteConfigServiceMock = setupRemoteConfigServiceMock();
       setupNavigationServiceMock();

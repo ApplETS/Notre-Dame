@@ -27,7 +27,7 @@ void main() {
       intl = await setupAppIntl();
       navigationServiceMock = setupNavigationServiceMock();
       remoteConfigServiceMock = setupRemoteConfigServiceMock();
-      setupSettingsManagerMock();
+      setupSettingsRepositoryMock();
       setupCourseRepositoryMock();
       setupPreferencesServiceMock();
       setupUserRepositoryMock();
