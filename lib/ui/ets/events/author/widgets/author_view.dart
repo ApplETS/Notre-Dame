@@ -105,6 +105,7 @@ class _AuthorViewState extends State<AuthorView> {
   Widget _buildBackButton() {
     return IconButton(
       icon: const Icon(Icons.arrow_back),
+      tooltip: AppIntl.of(context)!.go_back,
       onPressed: () => Navigator.of(context).pop(),
     );
   }
@@ -175,6 +176,7 @@ class _AuthorViewState extends State<AuthorView> {
                           author?.profileDescription != "")
                         const SizedBox(height: 8),
                       IconButton(
+                        tooltip: AppIntl.of(context)!.social_links,
                         onPressed: () async {
                           await showModalBottomSheet(
                             context: context,
