@@ -1,4 +1,5 @@
 // Package imports:
+import 'package:calendar_view/calendar_view.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 // Project imports:
@@ -49,7 +50,10 @@ void main() {
           toReturn: [saturdayCourse]);
       // Map the list of CourseActivity to add them in the viewModel
       final Map<DateTime, List<CourseActivity>> coursesMapped = {};
-      coursesMapped[DateTime.saturday]?.add(saturdayCourse);
+      final DateTime saturday = Utils.getFirstdayOfWeek(DateTime.now())
+          .add(Duration(days: 6, hours: 1))
+          .withoutTime;
+      coursesMapped[saturday]?.add(saturdayCourse);
 
       viewModel.coursesActivities.addAll(coursesMapped);
       viewModel.weekSelected = Utils.getFirstdayOfWeek(DateTime.now());
