@@ -80,7 +80,17 @@ git config core.hooksPath .githooks
 
 Follow the procedure in this [repo](https://github.com/ApplETS/fastlane-ios-certificates/blob/master/README.md) available only by admin group and devops group:
 
-## ⚖️ License
+## ⚖� License
 
 This projet is licensed under the Apache License V2.0. See
 the [LICENSE](https://github.com/ApplETS/Notre-Dame/blob/master/LICENSE) file for more info.
+
+
+## Development
+
+```bash
+# Install dependencies
+npm install || pip install -r requirements.txt
+# Run tests
+npm test || pytest
+```
