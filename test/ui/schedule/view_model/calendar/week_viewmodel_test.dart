@@ -32,42 +32,24 @@ void main() {
     });
 
     test('does not update weekSelected', () {
-      final List<CourseActivity> sundayCourses = [
-        CourseActivity(
-          courseGroup: 'PRE013',
-          courseName: 'PRE013',
-          activityName: 'PRE013',
-          activityDescription: 'PRE013',
-          activityLocation: 'PRE013',
-          startDateTime: Utils.getFirstdayOfWeek(DateTime.now())
-              .add(Duration(days: 6, hours: 12)),
-          endDateTime: Utils.getFirstdayOfWeek(DateTime.now())
-              .add(Duration(days: 6, hours: 16)),
-        ),
-        CourseActivity(
-          courseGroup: 'PRE011',
-          courseName: 'PRE011',
-          activityName: 'PRE011',
-          activityDescription: 'PRE011',
-          activityLocation: 'PRE011',
-          startDateTime: Utils.getFirstdayOfWeek(DateTime.now())
-              .add(Duration(days: 6, hours: 23)),
-          endDateTime: Utils.getFirstdayOfWeek(DateTime.now())
-              .add(Duration(days: 7, hours: 3)),
-        ),
-      ];
+      final CourseActivity saturdayCourse = CourseActivity(
+        courseGroup: 'PRE011',
+        courseName: 'PRE011',
+        activityName: 'PRE011',
+        activityDescription: 'PRE011',
+        activityLocation: 'PRE011',
+        startDateTime: Utils.getFirstdayOfWeek(DateTime.now())
+            .add(Duration(days: 6, hours: 12)),
+        endDateTime: Utils.getFirstdayOfWeek(DateTime.now())
+            .add(Duration(days: 6, hours: 16)),
+      );
 
       // Mocking the class to get our list of data back like a "real" request
       CourseRepositoryMock.stubCoursesActivities(courseRepositoryMock,
-          toReturn: sundayCourses);
+          toReturn: [saturdayCourse]);
       // Map the list of CourseActivity to add them in the viewModel
       final Map<DateTime, List<CourseActivity>> coursesMapped = {};
-
-      for (CourseActivity c in sundayCourses) {
-        final DateTime date =
-            Utils.getFirstdayOfWeek(DateTime.now().add(Duration(days: 6)));
-        coursesMapped[date]?.add(c);
-      }
+      coursesMapped[DateTime.saturday]?.add(saturdayCourse);
 
       viewModel.coursesActivities.addAll(coursesMapped);
       viewModel.weekSelected = Utils.getFirstdayOfWeek(DateTime.now());
