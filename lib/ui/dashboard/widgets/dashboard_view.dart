@@ -62,6 +62,8 @@ class _DashboardViewState extends State<DashboardView>
                   actions: [
                     IconButton(
                       icon: const Icon(Icons.restore),
+                      tooltip: AppIntl.of(context)!
+                          .dashboard_restore_all_cards_title,
                       onPressed: () => model.setAllCardsVisible(),
                     )
                   ],
@@ -144,6 +146,7 @@ class _DashboardViewState extends State<DashboardView>
                   padding: const EdgeInsets.only(bottom: 8.0),
                   child: Wrap(spacing: 15.0, children: [
                     IconButton(
+                      tooltip: AppIntl.of(context)!.facebook_open,
                       onPressed: () {
                         _analyticsService.logEvent(tag, "Facebook clicked");
                         _launchUrlService.launchInBrowser(Urls.clubFacebook);
@@ -154,6 +157,7 @@ class _DashboardViewState extends State<DashboardView>
                       ),
                     ),
                     IconButton(
+                      tooltip: AppIntl.of(context)!.instagram_open,
                       onPressed: () {
                         _analyticsService.logEvent(tag, "Instagram clicked");
                         _launchUrlService.launchInBrowser(Urls.clubInstagram);
@@ -164,6 +168,7 @@ class _DashboardViewState extends State<DashboardView>
                       ),
                     ),
                     IconButton(
+                      tooltip: AppIntl.of(context)!.github_open,
                       onPressed: () {
                         _analyticsService.logEvent(tag, "Github clicked");
                         _launchUrlService.launchInBrowser(Urls.clubGithub);
@@ -174,6 +179,7 @@ class _DashboardViewState extends State<DashboardView>
                       ),
                     ),
                     IconButton(
+                      tooltip: AppIntl.of(context)!.email_send,
                       onPressed: () {
                         _analyticsService.logEvent(tag, "Email clicked");
                         _launchUrlService.writeEmail(Urls.clubEmail, "");
@@ -184,6 +190,7 @@ class _DashboardViewState extends State<DashboardView>
                       ),
                     ),
                     IconButton(
+                      tooltip: AppIntl.of(context)!.discord_join,
                       onPressed: () {
                         _analyticsService.logEvent(tag, "Discord clicked");
                         _launchUrlService.launchInBrowser(Urls.clubDiscord);
@@ -504,6 +511,7 @@ class _DashboardViewState extends State<DashboardView>
         );
       case "link":
         return IconButton(
+          tooltip: AppIntl.of(context)!.website_open,
           onPressed: () {
             DashboardViewModel.launchBroadcastUrl(url);
           },
