@@ -59,10 +59,10 @@ class GetCoursesActivitiesCommand implements Command<List<CourseActivity>> {
     if (courseGroup.isNotEmpty) queryParams["coursGroupe"] = courseGroup;
 
     final dateFormat = DateFormat('yyyy-MM-dd');
-    if(startDate != null) {
+    if (startDate != null) {
       queryParams["dateDebut"] = dateFormat.format(startDate!);
     }
-    if(endDate != null) {
+    if (endDate != null) {
       queryParams["dateFin"] = dateFormat.format(endDate!);
     }
 
@@ -70,10 +70,10 @@ class GetCoursesActivitiesCommand implements Command<List<CourseActivity>> {
         _httpClient, endpoint, token, responseTag,
         queryParameters: queryParams);
 
-      /// Build and return the list of CourseActivity
-      return responseBody
-          .findAllElements("Seance")
-          .map((node) => CourseActivity.fromXmlNode(node))
-          .toList();
+    /// Build and return the list of CourseActivity
+    return responseBody
+        .findAllElements("Seance")
+        .map((node) => CourseActivity.fromXmlNode(node))
+        .toList();
   }
 }
