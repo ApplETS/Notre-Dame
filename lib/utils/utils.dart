@@ -23,9 +23,9 @@ mixin Utils {
         .withoutTime;
   }
 
-  static DateTime getCurrentSundayOfWeek(DateTime currentDate){
-  return currentDate
-        .add(Duration(days: (DateTime.saturday - currentDate.weekday + 7)% 7));
+  static DateTime getCurrentSundayOfWeek(DateTime currentDate) {
+    return currentDate
+        .add(Duration(days: (DateTime.saturday - currentDate.weekday + 7) % 7));
   }
 
   static DateTime getFirstDayOfMonth(DateTime date) {

@@ -1,8 +1,8 @@
 // Package imports:
 import 'package:flutter_test/flutter_test.dart';
-import 'package:notredame/data/services/signets-api/models/course_activity.dart';
 
 // Project imports:
+import 'package:notredame/data/services/signets-api/models/course_activity.dart';
 import 'package:notredame/ui/schedule/view_model/calendars/week_viewmodel.dart';
 import 'package:notredame/utils/utils.dart';
 import '../../../../data/mocks/repositories/course_repository_mock.dart';
@@ -54,7 +54,8 @@ void main() {
       ];
 
       // Mocking the class to get our list of data back like a "real" request
-      CourseRepositoryMock.stubCoursesActivities(courseRepositoryMock, toReturn: sundayCourses);
+      CourseRepositoryMock.stubCoursesActivities(courseRepositoryMock,
+          toReturn: sundayCourses);
       // Map the list of CourseActivity to add them in the viewModel
       final Map<DateTime, List<CourseActivity>> coursesMapped = {};
 
