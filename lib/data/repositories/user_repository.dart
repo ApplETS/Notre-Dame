@@ -56,7 +56,7 @@ class UserRepository {
 
   List<Program>? get programs => _programs;
 
-  // TODO: remove after the migration to the new authentication system
+  //TODO: remove when all users are on 4.58.0 or more
   /// Log out the user
   Future<bool> logOut() async {
     // Delete the credentials from the secure storage
@@ -87,7 +87,7 @@ class UserRepository {
     }
     return false;
   }
-  // TODO end: remove after the migration to the new authentication system
+  //TODO END: remove when all users are on 4.58.0 or more
 
   /// Get the list of programs on which the student was active.
   /// The list from the [CacheService] is loaded than updated with the results

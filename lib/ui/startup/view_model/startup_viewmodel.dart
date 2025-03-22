@@ -21,9 +21,9 @@ class StartUpViewModel extends BaseViewModel {
   final NavigationService _navigationService = locator<NavigationService>();
   final AnalyticsService _analyticsService = locator<AnalyticsService>();
 
-  // TODO: remove when everyone is on the version with the new auth
+  // TODO: remove when all users are on 4.58.0 or more
   final UserRepository _userRepository = locator<UserRepository>();
-  // TODO: remove when everyone is on the version with the new auth
+  // TODO END: remove when all users are on 4.58.0 or more
 
   /// Try to silent authenticate the user then redirect to [LoginView] or [DashboardView]
   Future handleStartUp() async {
@@ -35,11 +35,11 @@ class StartUpViewModel extends BaseViewModel {
       return;
     }
 
-    // TODO: remove when everyone is on the version with the new auth
+    //TODO: remove when all users are on 4.58.0 or more
     if(await _userRepository.wasPreviouslyLoggedIn()) {
       _userRepository.logOut();
     }
-    // TODO: remove when everyone is on the version with the new auth
+    //TODO END: remove when all users are on 4.58.0 or more
 
     final clientAppResult = await _authService.createPublicClientApplication(
         authorityType: AuthorityType.aad,

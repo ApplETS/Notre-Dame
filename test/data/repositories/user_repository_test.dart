@@ -57,7 +57,7 @@ void main() {
       unregister<NetworkingService>();
     });
 
-    // TODO: end remove when everyone is on the new authentication system
+    //TODO: remove when all users are on 4.58.0 or more
     group('logOut - ', () {
       test('the user credentials are deleted', () async {
         expect(await manager.logOut(), isTrue);
@@ -126,7 +126,7 @@ void main() {
                 analyticsServiceMock.logError(UserRepository.tag, any, any, any));
           });
     });
-    // TODO: end remove when everyone is on the new authentication system
+    //TODO END: remove when all users are on 4.58.0 or more
 
     group("getPrograms - ", () {
       final List<Program> programs = [
