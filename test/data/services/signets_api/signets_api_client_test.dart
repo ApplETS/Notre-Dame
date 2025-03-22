@@ -8,7 +8,9 @@ import 'package:intl/intl.dart';
 
 // Project imports:
 import 'package:notredame/data/models/activity_code.dart';
+import 'package:notredame/data/services/auth_service.dart';
 import 'package:notredame/data/services/signets-api/commands/get_course_reviews_command.dart';
+import 'package:notredame/data/services/signets-api/commands/get_course_summary_command.dart';
 import 'package:notredame/data/services/signets-api/commands/get_courses_activities_command.dart';
 import 'package:notredame/data/services/signets-api/commands/get_courses_command.dart';
 import 'package:notredame/data/services/signets-api/commands/get_programs_command.dart';
@@ -28,6 +30,7 @@ import 'package:notredame/data/services/signets-api/models/signets_errors.dart';
 import 'package:notredame/data/services/signets-api/signets_api_client.dart';
 import 'package:notredame/domain/constants/urls.dart';
 import 'package:notredame/utils/api_exception.dart';
+import '../../../helpers.dart';
 import '../../http_client_mock_helper.dart';
 
 void main() {
@@ -49,6 +52,14 @@ void main() {
       deadlineCancellationWithoutRefundNewStudent: DateTime(2018, 3, 14),
       deadlineCancellationASEQ: DateTime(2018, 1, 31));
 
+  setUp(() {
+    setupAuthServiceMock();
+  });
+
+  tearDown(() {
+    unregister<AuthService>();
+  });
+
   group('SignetsApi - ', () {
     setUp(() {
       service =
@@ -56,6 +67,7 @@ void main() {
     });
 
     tearDown(() {
+      unregister<AuthService>();
       // Clear the mock and all interactions not already processed
       clientMock.close();
     });
@@ -89,14 +101,18 @@ void main() {
             courseActivityXML + courseActivityXML,
             firstElement: 'ListeDesSeances');
 
+        final startDate = DateTime(2020, 9, 3, 18);
+        final endDate = DateTime(2020, 9, 3, 20);
+        final queryParameters = {"session": session, "dateDebut": '2020-09-03', "dateFin": "2020-09-03"};
+        final uri = Uri.https(Urls.signetsAPI, GetCoursesActivitiesCommand.endpoint, queryParameters);
         clientMock =
-            HttpClientMockHelper.stubPost(Urls.signetsAPI, stubResponse);
+            HttpClientMockHelper.stubGet(uri.toString(), stubResponse);
         service = buildService(clientMock);
 
         final result = await service.getCoursesActivities(
             session: session,
-            startDate: DateTime(2020, 9, 3, 18),
-            endDate: DateTime(2020, 9, 3, 20));
+            startDate: startDate,
+            endDate: endDate);
 
         expect(result, isA<List<CourseActivity>>());
         expect(result.first == courseActivity, isTrue);
@@ -113,28 +129,16 @@ void main() {
             SignetsError.scheduleNotAvailable,
             firstElement: 'ListeDesSeances');
 
+        final queryParameters = {"session": session};
+        final uri = Uri.https(Urls.signetsAPI, GetCoursesActivitiesCommand.endpoint, queryParameters);
         clientMock =
-            HttpClientMockHelper.stubPost(Urls.signetsAPI, stubResponse);
+            HttpClientMockHelper.stubGet(uri.toString(), stubResponse);
         service = buildService(clientMock);
 
         final result = await service.getCoursesActivities(session: session);
 
         expect(result, isA<List<CourseActivity>>());
         expect(result.length, 0);
-
-        final String stubResponseF = buildErrorResponse(
-            GetCoursesActivitiesCommand.endpoint,
-            SignetsError.scheduleNotAvailable,
-            firstElement: 'ListeDesSeances');
-
-        clientMock =
-            HttpClientMockHelper.stubPost(Urls.signetsAPI, stubResponseF);
-        service = buildService(clientMock);
-
-        final resultF = await service.getCoursesActivities(session: session);
-
-        expect(resultF, isA<List<CourseActivity>>());
-        expect(resultF.length, 0);
       });
 
       group("invalid parameters - ", () {
@@ -205,12 +209,15 @@ void main() {
         const String session = "A2020";
 
         final String stubResponse = buildErrorResponse(
-            GetCoursesActivitiesCommand.endpoint,
+            GetCoursesActivitiesCommand.responseTag,
             'An error occurred',
             firstElement: 'ListeDesSeances');
 
+
+        final queryParameters = {"session": session};
+        final uri = Uri.https(Urls.signetsAPI, GetCoursesActivitiesCommand.endpoint, queryParameters);
         clientMock =
-            HttpClientMockHelper.stubPost(Urls.signetsAPI, stubResponse);
+            HttpClientMockHelper.stubGet(uri.toString(), stubResponse);
         service = buildService(clientMock);
 
         expect(
@@ -222,18 +229,23 @@ void main() {
 
       test("Wrong credentials", () async {
         const String session = "A2020";
+        final startDate = DateTime(2020, 9, 3, 18);
+        final endDate = DateTime(2020, 9, 3, 20);
+        final courseGroup = "GEN101-01";
 
         final String stubResponse = buildErrorResponse(
-            GetCoursesActivitiesCommand.endpoint,
+            GetCoursesActivitiesCommand.responseTag,
             SignetsError.credentialsInvalid,
             firstElement: 'ListeDesSeances');
 
+        final queryParameters = {"session": session, "coursGroupe": courseGroup, "dateDebut": '2020-09-03', "dateFin": "2020-09-03"};
+        final uri = Uri.https(Urls.signetsAPI, GetCoursesActivitiesCommand.endpoint, queryParameters);
         clientMock =
-            HttpClientMockHelper.stubPost(Urls.signetsAPI, stubResponse);
+            HttpClientMockHelper.stubGet(uri.toString(), stubResponse);
         service = buildService(clientMock);
 
         expect(
-            service.getCoursesActivities(session: session),
+            service.getCoursesActivities(session: session, courseGroup: courseGroup, startDate: startDate, endDate: endDate),
             throwsA(isA<ApiException>()),
             reason:
                 "If the SignetsAPI return an error the service should return the error.");
@@ -276,8 +288,10 @@ void main() {
         final String stubResponse = buildResponse(GetScheduleActivitiesCommand.responseTag,
             scheduleActivityXML + scheduleActivityXML, firstElement: 'listeActivites');
 
+        final queryParameters = {"session": session};
+        final uri = Uri.https(Urls.signetsAPI, GetScheduleActivitiesCommand.endpoint, queryParameters);
         clientMock =
-            HttpClientMockHelper.stubPost(Urls.signetsAPI, stubResponse);
+            HttpClientMockHelper.stubGet(uri.toString(), stubResponse);
         service = buildService(clientMock);
 
         final result = await service.getScheduleActivities(session: session);
@@ -287,31 +301,16 @@ void main() {
         expect(result.length, 2);
       });
 
-      test("Wrong credentials", () async {
-        const String session = "A2020";
-
-        final String stubResponse = buildErrorResponse(GetScheduleActivitiesCommand.endpoint,
-            SignetsError.credentialsInvalid, firstElement: 'listeActivites');
-
-        clientMock =
-            HttpClientMockHelper.stubPost(Urls.signetsAPI, stubResponse);
-        service = buildService(clientMock);
-
-        expect(
-            service.getScheduleActivities(session: session),
-            throwsA(isA<ApiException>()),
-            reason:
-                "If the SignetsAPI return an error the service should return the error.");
-      });
-
       test("An error occurred", () async {
         const String session = "A2020";
 
         final String stubResponse = buildErrorResponse(
-            GetScheduleActivitiesCommand.endpoint, 'An error occurred', firstElement: 'listeActivites');
+            GetScheduleActivitiesCommand.responseTag, 'An error occurred', firstElement: 'listeActivites');
 
+        final queryParameters = {"session": session};
+        final uri = Uri.https(Urls.signetsAPI, GetScheduleActivitiesCommand.endpoint, queryParameters);
         clientMock =
-            HttpClientMockHelper.stubPost(Urls.signetsAPI, stubResponse);
+            HttpClientMockHelper.stubGet(uri.toString(), stubResponse);
         service = buildService(clientMock);
 
         expect(
@@ -351,12 +350,13 @@ void main() {
           '<dateLimitePourAnnulerASEQ>2018-01-31</dateLimitePourAnnulerASEQ>'
           '</Session>';
 
-      test("right credentials", () async {
+      test("Success", () async {
         final String stubResponse = buildResponse(
-            GetSessionsCommand.endpoint, sessionXML + sessionXML, firstElement: 'liste');
+            GetSessionsCommand.responseTag, sessionXML + sessionXML, firstElement: 'liste');
 
+        final uri = Uri.https(Urls.signetsAPI, GetSessionsCommand.endpoint);
         clientMock =
-            HttpClientMockHelper.stubPost(Urls.signetsAPI, stubResponse);
+            HttpClientMockHelper.stubGet(uri.toString(), stubResponse);
         service = buildService(clientMock);
 
         final result = await service.getSessions();
@@ -369,12 +369,13 @@ void main() {
       // Currently SignetsAPI doesn't have a clear way to indicate which error
       // occurred (no error code, no change of http code, just a text)
       // so for now whatever the error we will throw a generic error
-      test("wrong credentials / an error occurred", () async {
+      test("An error occurred", () async {
         final String stubResponse = buildErrorResponse(
-            GetSessionsCommand.endpoint, 'An error occurred', firstElement: 'liste');
+            GetSessionsCommand.responseTag, 'An error occurred', firstElement: 'liste');
 
+        final uri = Uri.https(Urls.signetsAPI, GetSessionsCommand.endpoint);
         clientMock =
-            HttpClientMockHelper.stubPost(Urls.signetsAPI, stubResponse);
+            HttpClientMockHelper.stubGet(uri.toString(), stubResponse);
         service = buildService(clientMock);
 
         expect(service.getSessions(),
@@ -389,7 +390,8 @@ void main() {
           '<prenom>John</prenom>'
           '<codePerm>DOEJ00000000</codePerm>'
           '<soldeTotal>99.99</soldeTotal>'
-          '<masculin>1</masculin>';
+          '<masculin>1</masculin>'
+          '<codeUniversel>AA00000</codeUniversel>';
 
       final studentInfo = ProfileStudent(
           lastName: 'Doe',
@@ -398,12 +400,13 @@ void main() {
           balance: '99.99',
           universalCode: 'AA00000');
 
-      test("right credentials", () async {
+      test("Success", () async {
         final String stubResponse =
             buildResponse(GetStudentInfoCommand.responseTag, studentInfoXML);
 
+        final uri = Uri.https(Urls.signetsAPI, GetStudentInfoCommand.endpoint);
         clientMock =
-            HttpClientMockHelper.stubPost(Urls.signetsAPI, stubResponse);
+            HttpClientMockHelper.stubGet(uri.toString(), stubResponse);
         service = buildService(clientMock);
 
         final result = await service.getStudentInfo();
@@ -415,12 +418,15 @@ void main() {
       // Currently SignetsAPI doesn't have a clear way to indicate which error
       // occurred (no error code, no change of http code, just a text)
       // so for now whatever the error we will throw a generic error
-      test("wrong credentials / an error occurred", () async {
+      test("An error occurred", () async {
         final String stubResponse =
-            buildErrorResponse(GetStudentInfoCommand.endpoint, 'An error occurred');
+            buildErrorResponse(GetStudentInfoCommand.responseTag, 'An error occurred');
 
+        final uri = Uri.https(Urls.signetsAPI, GetStudentInfoCommand.endpoint);
         clientMock =
-            HttpClientMockHelper.stubPost(Urls.signetsAPI, stubResponse);
+            HttpClientMockHelper.stubGet(uri.toString(), stubResponse);
+        clientMock =
+            HttpClientMockHelper.stubGet(uri.toString(), stubResponse);
         service = buildService(clientMock);
 
         expect(service.getStudentInfo(),
@@ -459,12 +465,13 @@ void main() {
           equivalentCourses: '7',
           status: 'Actif');
 
-      test("right credentials", () async {
+      test("Success", () async {
         final String stubResponse = buildResponse(
             GetProgramsCommand.responseTag, programXML + programXML, firstElement: 'liste');
 
+        final uri = Uri.https(Urls.signetsAPI, GetProgramsCommand.endpoint);
         clientMock =
-            HttpClientMockHelper.stubPost(Urls.signetsAPI, stubResponse);
+            HttpClientMockHelper.stubGet(uri.toString(), stubResponse);
         service = buildService(clientMock);
 
         final result =
@@ -478,12 +485,13 @@ void main() {
       // Currently SignetsAPI doesn't have a clear way to indicate which error
       // occurred (no error code, no change of http code, just a text)
       // so for now whatever the error we will throw a generic error
-      test("wrong credentials / an error occurred", () async {
+      test("An error occurred", () async {
         final String stubResponse = buildErrorResponse(
-            GetProgramsCommand.endpoint, 'An error occurred', firstElement: 'liste');
+            GetProgramsCommand.responseTag, 'An error occurred', firstElement: 'liste');
 
+        final uri = Uri.https(Urls.signetsAPI, GetProgramsCommand.endpoint);
         clientMock =
-            HttpClientMockHelper.stubPost(Urls.signetsAPI, stubResponse);
+            HttpClientMockHelper.stubGet(uri.toString(), stubResponse);
         service = buildService(clientMock);
 
         expect(service.getPrograms(),
@@ -531,12 +539,13 @@ void main() {
           numberOfCredits: 3,
           title: 'Cours générique');
 
-      test("right credentials", () async {
+      test("Success", () async {
         final String stubResponse = buildResponse(GetCoursesCommand.responseTag,
             courseWithGradeXML + courseWithoutGradeXML, firstElement: 'liste');
 
+        final uri = Uri.https(Urls.signetsAPI, GetCoursesCommand.endpoint);
         clientMock =
-            HttpClientMockHelper.stubPost(Urls.signetsAPI, stubResponse);
+            HttpClientMockHelper.stubGet(uri.toString(), stubResponse);
         service = buildService(clientMock);
 
         final result = await service.getCourses();
@@ -549,12 +558,13 @@ void main() {
       // Currently SignetsAPI doesn't have a clear way to indicate which error
       // occurred (no error code, no change of http code, just a text)
       // so for now whatever the error we will throw a generic error
-      test("wrong credentials / an error occurred", () async {
+      test("An error occurred", () async {
         final String stubResponse = buildErrorResponse(
-            GetCoursesCommand.endpoint, 'An error occurred', firstElement: 'liste');
+            GetCoursesCommand.responseTag, 'An error occurred', firstElement: 'liste');
 
+        final uri = Uri.https(Urls.signetsAPI, GetCoursesCommand.endpoint);
         clientMock =
-            HttpClientMockHelper.stubPost(Urls.signetsAPI, stubResponse);
+            HttpClientMockHelper.stubGet(uri.toString(), stubResponse);
         service = buildService(clientMock);
 
         expect(service.getCourses(), throwsA(isA<ApiException>()),
@@ -659,12 +669,18 @@ void main() {
           '<tauxPublication>0,0</tauxPublication> '
           '<liste />';
 
-      test("right credentials", () async {
+      test("Success", () async {
         final String stubResponse =
-            buildResponse(GetCoursesActivitiesCommand.responseTag, courseSummaryXml, firstElement: "ListeDesDesSeances");
+            buildResponse(GetCourseSummaryCommand.responseTag, courseSummaryXml);
 
+        final queryParams = {
+          "session": course.session,
+          "sigle": course.acronym,
+          "groupe": course.group
+        };
+        final uri = Uri.https(Urls.signetsAPI, GetCourseSummaryCommand.endpoint, queryParams);
         clientMock =
-            HttpClientMockHelper.stubPost(Urls.signetsAPI, stubResponse);
+            HttpClientMockHelper.stubGet(uri.toString(), stubResponse);
         service = buildService(clientMock);
 
         final result = await service.getCourseSummary(session: course.session, acronym: course.acronym, group: course.group);
@@ -678,10 +694,16 @@ void main() {
 
       test("Summary is empty", () async {
         final String stubResponse =
-            buildResponse(GetCoursesActivitiesCommand.responseTag, courseSummaryEmptyXml, firstElement: "ListeDesSeances");
+            buildResponse(GetCourseSummaryCommand.responseTag, courseSummaryEmptyXml);
 
+        final queryParams = {
+          "session": course.session,
+          "sigle": course.acronym,
+          "groupe": course.group
+        };
+        final uri = Uri.https(Urls.signetsAPI, GetCourseSummaryCommand.endpoint, queryParams);
         clientMock =
-            HttpClientMockHelper.stubPost(Urls.signetsAPI, stubResponse);
+            HttpClientMockHelper.stubGet(uri.toString(), stubResponse);
         service = buildService(clientMock);
 
         expect(
@@ -696,10 +718,16 @@ void main() {
       // so for now whatever the error we will throw a generic error
       test("wrong credentials / an error occurred", () async {
         final String stubResponse = buildErrorResponse(
-            GetCoursesActivitiesCommand.endpoint, 'An error occurred');
+            GetCourseSummaryCommand.responseTag, 'An error occurred');
 
+        final queryParams = {
+          "session": course.session,
+          "sigle": course.acronym,
+          "groupe": course.group
+        };
+        final uri = Uri.https(Urls.signetsAPI, GetCourseSummaryCommand.endpoint, queryParams);
         clientMock =
-            HttpClientMockHelper.stubPost(Urls.signetsAPI, stubResponse);
+            HttpClientMockHelper.stubGet(uri.toString(), stubResponse);
         service = buildService(clientMock);
 
         expect(
@@ -768,7 +796,7 @@ void main() {
           type: 'Cours',
           isCompleted: false);
 
-      test("right credentials", () async {
+      test("Success", () async {
         final String stubResponse = buildResponse(
             GetCourseReviewsCommand.responseTag,
             courseReviewCompletedXML +
@@ -776,8 +804,10 @@ void main() {
                 courseReviewNotCompletedXML,
             firstElement: 'listeEvaluations');
 
+        final queryParams = {"session": session.shortName};
+        final uri = Uri.https(Urls.signetsAPI, GetCourseReviewsCommand.endpoint, queryParams);
         clientMock =
-            HttpClientMockHelper.stubPost(Urls.signetsAPI, stubResponse);
+            HttpClientMockHelper.stubGet(uri.toString(), stubResponse);
         service = buildService(clientMock);
 
         final result = await service.getCourseReviews(session: session.shortName);
@@ -795,12 +825,14 @@ void main() {
       // Currently SignetsAPI doesn't have a clear way to indicate which error
       // occurred (no error code, no change of http code, just a text)
       // so for now whatever the error we will throw a generic error
-      test("wrong credentials / an error occurred", () async {
+      test("An error occurred", () async {
         final String stubResponse = buildErrorResponse(
-            GetCourseReviewsCommand.endpoint, 'An error occurred', firstElement: 'liste');
+            GetCourseReviewsCommand.responseTag, 'An error occurred', firstElement: 'liste');
 
+        final queryParams = {"session": session.shortName};
+        final uri = Uri.https(Urls.signetsAPI, GetCourseReviewsCommand.endpoint, queryParams);
         clientMock =
-            HttpClientMockHelper.stubPost(Urls.signetsAPI, stubResponse);
+            HttpClientMockHelper.stubGet(uri.toString(), stubResponse);
         service = buildService(clientMock);
 
         expect(
@@ -818,7 +850,7 @@ SignetsAPIClient buildService(MockClient client) =>
 
 String buildResponse(String operation, String body, {String? firstElement}) =>
     '<?xml version="1.0" encoding="UTF-8" standalone="no"?> '
-    '<$operation xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance""> '
+    '<$operation xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"> '
     '${firstElement != null ? '<$firstElement>' : ''}'
     '$body'
     '${firstElement != null ? '</$firstElement>' : ''}'
@@ -829,7 +861,7 @@ String buildErrorResponse(String operation, String error,
       {String? firstElement}) =>
     '<?xml version="1.0" encoding="UTF-8" standalone="no"?> '
     '<$operation xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"> '
-    '[<$firstElement />]? '
+    '${firstElement != null ? '<$firstElement/>' : ''}'
     '<erreur>'
       '$error'
     '</erreur>'
