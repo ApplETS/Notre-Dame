@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:notredame/ui/core/themes/app_palette.dart';
 import 'package:notredame/ui/core/themes/app_theme.dart';
+import 'package:notredame/ui/core/ui/bottom_bar/selected_menu_item.dart';
+import 'package:notredame/ui/core/ui/bottom_bar/unselected_menu_item.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-import '../../../data/services/navigation_service.dart';
-import '../../../domain/constants/router_paths.dart';
-import '../../../locator.dart';
+import 'package:notredame/data/services/navigation_service.dart';
+import 'package:notredame/domain/constants/router_paths.dart';
+import 'package:notredame/locator.dart';
+import 'base_navigation_bar.dart';
 
 class NewBottomBar extends StatelessWidget {
   const NewBottomBar({
@@ -13,8 +17,7 @@ class NewBottomBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final NavigationService navigationService = locator<NavigationService>();
-
+    final intl = AppIntl.of(context)!;
     return Stack(children: [
       Positioned.fill(
         child: IgnorePointer(
@@ -49,91 +52,32 @@ class NewBottomBar extends StatelessWidget {
       ),
       Positioned.fill(
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 46.0),
+          padding: const EdgeInsets.symmetric(horizontal: 50.0),
           child: Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
-            Expanded(
-              child: IconButton(
-                icon: const Icon(Icons.dashboard),
-                onPressed: () {
-                  navigationService.pushNamedAndRemoveDuplicates(RouterPaths.dashboard);
-                },
-              ),
-            ),
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.only(top: 16.0),
-                child: Column(
-                  children: [
-                    Padding(
-                      padding: EdgeInsets.only(bottom: 2),
-                      child: Stack(
-                        children: [
-                          Positioned.fill(
-                            child: ClipRect(
-                              clipper: _TopHalfClipper(),
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: AppPalette.etsDarkRed,
-                                      offset: Offset(0, 3),
-                                      spreadRadius: 4,
-                                      blurRadius: 8,
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ),
-                          ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                                backgroundColor: AppPalette.etsLightRed,
-                                iconColor: context.theme.appColors.backgroundAlt,
-                                shape: CircleBorder(),
-                                padding: EdgeInsets.all(10)),
-                            onPressed: () {
-                              navigationService.pushNamedAndRemoveDuplicates(RouterPaths.schedule);
-                            },
-                            child: Icon(size: 24, color: Colors.white, Icons.watch_later_sharp),
-                          ),
-                        ],
-                      ),
-                    ),
-                    FittedBox(
-                        fit: BoxFit.fitWidth,
-                        child: Text(
-                          'Schedule',
-                          style: TextStyle(height: 1, fontSize: 13),
-                        )),
-                  ],
-                ),
-              ),
-            ),
-            Expanded(
-              child: IconButton(
-                icon: const Icon(Icons.school_outlined),
-                onPressed: () {
-                  navigationService.pushNamedAndRemoveDuplicates(RouterPaths.student);
-                },
-              ),
-            ),
-            Expanded(
-              child: IconButton(
-                icon: const Icon(Icons.account_balance_outlined),
-                onPressed: () {
-                  navigationService.pushNamedAndRemoveDuplicates(RouterPaths.ets);
-                },
-              ),
-            ),
-            Expanded(
-              child: IconButton(
-                icon: const Icon(Icons.menu_outlined),
-                onPressed: () {
-                  navigationService.pushNamedAndRemoveDuplicates(RouterPaths.more);
-                },
-              ),
-            ),
+            if (_defineView(ModalRoute.of(context)!.settings.name!) == NavigationView.dashboard)
+              SelectedMenuItem(label: intl.title_dashboard, icon: Icons.dashboard, route: RouterPaths.dashboard)
+            else
+              UnselectedMenuItem(label: intl.title_dashboard, icon: Icons.dashboard_outlined, route: RouterPaths.dashboard),
+
+            if (_defineView(ModalRoute.of(context)!.settings.name!) == NavigationView.schedule)
+              SelectedMenuItem(label: intl.title_schedule, icon: Icons.access_time_filled, route: RouterPaths.schedule)
+            else
+              UnselectedMenuItem(label: intl.title_schedule, icon: Icons.schedule_outlined, route: RouterPaths.schedule),
+
+            if (_defineView(ModalRoute.of(context)!.settings.name!) == NavigationView.student)
+              SelectedMenuItem(label: intl.title_student, icon: Icons.school, route: RouterPaths.student)
+            else
+              UnselectedMenuItem(label: intl.title_student, icon: Icons.school_outlined, route: RouterPaths.student),
+
+            if (_defineView(ModalRoute.of(context)!.settings.name!) == NavigationView.ets)
+              SelectedMenuItem(label: intl.title_ets, icon: Icons.account_balance, route: RouterPaths.ets)
+            else
+              UnselectedMenuItem(label: intl.title_ets, icon: Icons.account_balance_outlined, route: RouterPaths.ets),
+
+            if (_defineView(ModalRoute.of(context)!.settings.name!) == NavigationView.more)
+              SelectedMenuItem(label: intl.title_more, icon: Icons.menu, route: RouterPaths.more)
+            else
+              UnselectedMenuItem(label: intl.title_more, icon: Icons.menu_outlined, route: RouterPaths.more),
           ]),
         ),
       ),
@@ -141,13 +85,22 @@ class NewBottomBar extends StatelessWidget {
   }
 }
 
-class _TopHalfClipper extends CustomClipper<Rect> {
-  @override
-  Rect getClip(Size size) {
-    // Only allow the top half of the shadow to be visible
-    return Rect.fromLTWH(-10, -10, size.width + 20, size.height / 2 + 10);
+NavigationView _defineView(String routeName) {
+  switch (routeName) {
+    case RouterPaths.dashboard:
+      return NavigationView.dashboard;
+    case RouterPaths.schedule:
+      return NavigationView.schedule;
+    case RouterPaths.student:
+      return NavigationView.student;
+    case RouterPaths.ets:
+    case RouterPaths.security:
+      return NavigationView.ets;
+    case RouterPaths.more:
+    case RouterPaths.settings:
+    case RouterPaths.about:
+      return NavigationView.more;
+    default:
+      return NavigationView.dashboard;
   }
-
-  @override
-  bool shouldReclip(CustomClipper<Rect> oldClipper) => false;
 }
