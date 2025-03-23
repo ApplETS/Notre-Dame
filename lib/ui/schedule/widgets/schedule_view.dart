@@ -107,7 +107,7 @@ class _ScheduleViewState extends State<ScheduleView>
                 isScrollControlled: true,
                 builder: (context) =>
                     ScheduleSettings(controller: widget.controller));
-        })
+          })
     ];
   }
 }
