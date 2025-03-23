@@ -2,8 +2,8 @@
 import 'package:flutter/material.dart';
 
 // Package imports:
+import 'package:animations/animations.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:stacked/stacked.dart';
 
 // Project imports:
@@ -45,27 +45,25 @@ class _GradesViewState extends State<GradesView> {
                           textAlign: TextAlign.center,
                           style: Theme.of(context).textTheme.titleLarge))
                 else
-                  AnimationLimiter(
-                    child: ListView.builder(
-                        padding: const EdgeInsets.only(top: 8.0),
-                        itemCount: model.coursesBySession.length,
-                        itemBuilder: (BuildContext context, int index) =>
-                            AnimationConfiguration.staggeredList(
-                              position: index,
-                              duration: const Duration(milliseconds: 750),
-                              child: SlideAnimation(
-                                verticalOffset: 50.0,
-                                child: FadeInAnimation(
-                                  child: _buildSessionCourses(
-                                      index,
-                                      _sessionName(model.sessionOrder[index],
-                                          AppIntl.of(context)!),
-                                      model.coursesBySession[
-                                          model.sessionOrder[index]]!,
-                                      model),
-                                ),
-                              ),
-                            )),
+                  ListView.builder(
+                    padding: const EdgeInsets.only(top: 8.0),
+                    itemCount: model.coursesBySession.length,
+                    itemBuilder: (BuildContext context, int index) =>
+                        OpenContainer(
+                      transitionDuration: const Duration(milliseconds: 750),
+                      closedBuilder: (context, action) => _buildSessionCourses(
+                          index,
+                          _sessionName(
+                              model.sessionOrder[index], AppIntl.of(context)!),
+                          model.coursesBySession[model.sessionOrder[index]]!,
+                          model),
+                      openBuilder: (context, action) => _buildSessionCourses(
+                          index,
+                          _sessionName(
+                              model.sessionOrder[index], AppIntl.of(context)!),
+                          model.coursesBySession[model.sessionOrder[index]]!,
+                          model),
+                    ),
                   ),
                 if (model.isBusy)
                   buildLoading(isInteractionLimitedWhileLoading: false)
