@@ -45,6 +45,8 @@ class _DashboardViewState extends State<DashboardView>
                   actions: [
                     IconButton(
                       icon: const Icon(Icons.restore),
+                      tooltip: AppIntl.of(context)!
+                          .dashboard_restore_all_cards_title,
                       onPressed: () => model.setAllCardsVisible(),
                     )
                   ],

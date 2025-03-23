@@ -1,5 +1,6 @@
 // Flutter imports:
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 // Project imports:
 import 'package:notredame/data/models/broadcast_message.dart';
@@ -72,6 +73,7 @@ class BroadcastMessageCard extends StatelessWidget {
         );
       case BroadcastIconType.link:
         return IconButton(
+          tooltip: AppIntl.of(context)!.website_open,
           onPressed: () => DashboardViewModel.launchBroadcastUrl(url),
           icon: Icon(
             Icons.open_in_new,

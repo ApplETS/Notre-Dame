@@ -47,6 +47,7 @@ class AboutUsCard extends StatelessWidget {
                   padding: const EdgeInsets.only(bottom: 8.0),
                   child: Wrap(spacing: 15.0, children: [
                     IconButton(
+                      tooltip: AppIntl.of(context)!.facebook_open,
                       onPressed: () {
                         _launchUrlService.launchInBrowser(Urls.clubFacebook);
                       },
@@ -56,6 +57,7 @@ class AboutUsCard extends StatelessWidget {
                       ),
                     ),
                     IconButton(
+                      tooltip: AppIntl.of(context)!.instagram_open,
                       onPressed: () {
                         _launchUrlService.launchInBrowser(Urls.clubInstagram);
                       },
@@ -65,6 +67,7 @@ class AboutUsCard extends StatelessWidget {
                       ),
                     ),
                     IconButton(
+                      tooltip: AppIntl.of(context)!.github_open,
                       onPressed: () {
                         _launchUrlService.launchInBrowser(Urls.clubGithub);
                       },
@@ -74,6 +77,7 @@ class AboutUsCard extends StatelessWidget {
                       ),
                     ),
                     IconButton(
+                      tooltip: AppIntl.of(context)!.email_send,
                       onPressed: () {
                         _launchUrlService.writeEmail(Urls.clubEmail, "");
                       },
@@ -83,6 +87,7 @@ class AboutUsCard extends StatelessWidget {
                       ),
                     ),
                     IconButton(
+                      tooltip: AppIntl.of(context)!.discord_join,
                       onPressed: () {
                         _launchUrlService.launchInBrowser(Urls.clubDiscord);
                       },
