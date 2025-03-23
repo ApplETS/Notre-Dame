@@ -7,7 +7,7 @@ import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
 import 'package:share_plus/share_plus.dart';
-import 'package:shimmer/shimmer.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 import 'package:stacked/stacked.dart';
 
 // Project imports:
@@ -21,10 +21,10 @@ import 'package:notredame/locator.dart';
 import 'package:notredame/ui/core/themes/app_palette.dart';
 import 'package:notredame/ui/core/themes/app_theme.dart';
 import 'package:notredame/ui/core/ui/base_scaffold.dart';
+import 'package:notredame/ui/core/ui/calendar_selector.dart';
+import 'package:notredame/ui/ets/events/news_details/view_model/calendar_selection_viewmodel.dart';
 import 'package:notredame/ui/ets/events/news_details/view_model/news_details_viewmodel.dart';
 import 'package:notredame/ui/ets/events/report_news/widgets/report_news_widget.dart';
-import 'package:notredame/ui/schedule/view_model/calendar_selection_viewmodel.dart';
-import 'package:notredame/ui/schedule/widgets/calendar_selector.dart';
 import 'package:notredame/utils/utils.dart';
 
 class NewsDetailsView extends StatefulWidget {
@@ -71,6 +71,7 @@ class _NewsDetailsViewState extends State<NewsDetailsView> {
                       leading: IconButton(
                         icon: const Icon(Icons.arrow_back),
                         color: AppPalette.grey.white,
+                        tooltip: AppIntl.of(context)!.go_back,
                         onPressed: () => Navigator.of(context).pop(),
                       ),
                       title: Text(
@@ -225,7 +226,7 @@ class _NewsDetailsViewState extends State<NewsDetailsView> {
                 if (isLoaded && loadingProgress == null) {
                   return child;
                 } else {
-                  return const ShimmerEffect();
+                  return const SkeletonizerEffect();
                 }
               },
             ),
@@ -419,14 +420,13 @@ class _NewsDetailsViewState extends State<NewsDetailsView> {
   }
 }
 
-class ShimmerEffect extends StatelessWidget {
-  const ShimmerEffect({super.key});
+class SkeletonizerEffect extends StatelessWidget {
+  const SkeletonizerEffect({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Shimmer.fromColors(
-      baseColor: context.theme.appColors.backgroundAlt,
-      highlightColor: context.theme.appColors.shimmerHighlight,
+    return Skeletonizer(
+      enabled: true,
       child: Container(
         height: 200,
         color: AppPalette.grey.darkGrey,

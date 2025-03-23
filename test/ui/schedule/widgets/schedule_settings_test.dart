@@ -287,7 +287,7 @@ void main() {
         await tester.pumpAndSettle();
 
         final laboB =
-            find.widgetWithText(ListTile, intl.course_activity_group_b);
+            find.widgetWithText(InputChip, intl.course_activity_group_b);
         await tester.dragUntilVisible(
             laboB,
             find.byKey(const ValueKey("SettingsScrollingArea")),
@@ -297,7 +297,7 @@ void main() {
         // check if laboB is selected
         expect(
             tester.widget(laboB),
-            isA<ListTile>()
+            isA<InputChip>()
                 .having((source) => source.selected, 'selected', isTrue),
             reason:
                 'The settings says laboB is the current labo, the UI should reflet that.');

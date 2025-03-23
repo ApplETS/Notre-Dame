@@ -1,6 +1,9 @@
 // Flutter imports:
 import 'package:flutter/material.dart';
 
+// Package imports:
+import 'package:calendar_view/calendar_view.dart';
+
 mixin Utils {
   static double getGradeInPercentage(double? grade, double? maxGrade) {
     if (grade == null || maxGrade == null || grade == 0.0 || maxGrade == 0.0) {
@@ -14,10 +17,13 @@ mixin Utils {
     return Localizations.localeOf(context).toString() == "fr" ? fr : en;
   }
 
-  /// Get first day of the week depending on startingDay which corresponds to weekday
-  static DateTime getFirstDayOfCurrentWeek(DateTime currentDate) {
-    final tempDate =
-        currentDate.subtract(Duration(days: currentDate.weekday % 7));
-    return DateTime(tempDate.year, tempDate.month, tempDate.day);
+  static DateTime getFirstdayOfWeek(DateTime currentDate) {
+    return currentDate
+        .subtract(Duration(days: currentDate.weekday % 7))
+        .withoutTime;
+  }
+
+  static DateTime getFirstDayOfMonth(DateTime date) {
+    return DateTime(date.year, date.month);
   }
 }
