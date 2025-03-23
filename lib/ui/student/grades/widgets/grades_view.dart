@@ -48,13 +48,13 @@ class _GradesViewState extends State<GradesView> {
                     padding: const EdgeInsets.only(top: 8.0),
                     itemCount: model.coursesBySession.length,
                     itemBuilder: (BuildContext context, int index) =>
-                _buildSessionCourses(
-                          index,
-                          _sessionName(
-                              model.sessionOrder[index], AppIntl.of(context)!),
-                          model.coursesBySession[model.sessionOrder[index]]!,
-                          model),
-                    ),
+                        _buildSessionCourses(
+                            index,
+                            _sessionName(model.sessionOrder[index],
+                                AppIntl.of(context)!),
+                            model.coursesBySession[model.sessionOrder[index]]!,
+                            model),
+                  ),
                 if (model.isBusy)
                   buildLoading(isInteractionLimitedWhileLoading: false)
                 else
