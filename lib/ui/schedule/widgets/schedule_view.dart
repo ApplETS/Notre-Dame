@@ -44,6 +44,7 @@ class _ScheduleViewState extends State<ScheduleView>
           }
         },
         builder: (context, model, child) => BaseScaffold(
+          safeArea: false,
             isLoading: model.isBusy,
             isInteractionLimitedWhileLoading: false,
             appBar: AppBar(
