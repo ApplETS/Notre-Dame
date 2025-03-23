@@ -265,22 +265,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "4.3.3"
-  device_info_plus:
-    dependency: "direct main"
-    description:
-      name: device_info_plus
-      sha256: "306b78788d1bb569edb7c55d622953c2414ca12445b41c9117963e03afc5c513"
-      url: "https://pub.dev"
-    source: hosted
-    version: "11.3.3"
-  device_info_plus_platform_interface:
-    dependency: transitive
-    description:
-      name: device_info_plus_platform_interface
-      sha256: "0b04e02b30791224b31969eb1b50d723498f402971bff3630bca2ba839bd1ed2"
-      url: "https://pub.dev"
-    source: hosted
-    version: "7.0.2"
   easter_egg_trigger:
     dependency: "direct main"
     description:
@@ -901,6 +885,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "5.4.5"
+  msal_auth:
+    dependency: "direct main"
+    description:
+      name: msal_auth
+      sha256: b21ca6ae7840fe52508c30689fbb519c2b4b5c5be16ea0e8de335a60590eaa20
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.1.4"
   nested:
     dependency: transitive
     description:
@@ -1178,14 +1170,6 @@ packages:
     description:
       name: shelf_web_socket
       sha256: "3632775c8e90d6c9712f883e633716432a27758216dfb61bd86a8321c0580925"
-      url: "https://pub.dev"
-    source: hosted
-    version: "3.0.0"
-  shimmer:
-    dependency: "direct main"
-    description:
-      name: shimmer
-      sha256: "5f88c883a22e9f9f299e5ba0e4f7e6054857224976a5d9f839d4ebdc94a14ac9"
       url: "https://pub.dev"
     source: hosted
     version: "3.0.0"
@@ -1578,14 +1562,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "5.12.0"
-  win32_registry:
-    dependency: transitive
-    description:
-      name: win32_registry
-      sha256: "6f1b564492d0147b330dd794fee8f512cec4977957f310f9951b5f9d83618dae"
-      url: "https://pub.dev"
-    source: hosted
-    version: "2.1.0"
   xdg_directories:
     dependency: transitive
     description:
