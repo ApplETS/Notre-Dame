@@ -1,6 +1,6 @@
 // Package imports:
 import 'package:flutter_test/flutter_test.dart';
-import 'package:shimmer/shimmer.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 
 // Project imports:
 import 'package:notredame/ui/ets/events/author/widgets/author_info_skeleton.dart';
@@ -17,7 +17,11 @@ void main() {
       await tester.pumpWidget(localizedWidget(child: AuthorInfoSkeleton()));
 
       // Verify that the widget contains shimmer effects for text and icon button
-      expect(find.byType(Shimmer), findsWidgets);
+      expect(
+          find.byWidgetPredicate(
+            (widget) => widget is Skeletonizer,
+          ),
+          findsWidgets);
     });
   });
 }
