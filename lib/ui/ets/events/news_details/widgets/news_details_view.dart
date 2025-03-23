@@ -7,7 +7,7 @@ import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
 import 'package:share_plus/share_plus.dart';
-import 'package:shimmer/shimmer.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 import 'package:stacked/stacked.dart';
 
 // Project imports:
@@ -226,7 +226,7 @@ class _NewsDetailsViewState extends State<NewsDetailsView> {
                 if (isLoaded && loadingProgress == null) {
                   return child;
                 } else {
-                  return const ShimmerEffect();
+                  return const SkeletonizerEffect();
                 }
               },
             ),
@@ -420,14 +420,13 @@ class _NewsDetailsViewState extends State<NewsDetailsView> {
   }
 }
 
-class ShimmerEffect extends StatelessWidget {
-  const ShimmerEffect({super.key});
+class SkeletonizerEffect extends StatelessWidget {
+  const SkeletonizerEffect({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Shimmer.fromColors(
-      baseColor: context.theme.appColors.backgroundAlt,
-      highlightColor: context.theme.appColors.shimmerHighlight,
+    return Skeletonizer(
+      enabled: true,
       child: Container(
         height: 200,
         color: AppPalette.grey.darkGrey,
