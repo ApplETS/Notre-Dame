@@ -2,11 +2,11 @@
 import 'dart:collection';
 
 // Flutter imports:
-import 'package:calendar_view/calendar_view.dart';
-import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 
 // Package imports:
+import 'package:calendar_view/calendar_view.dart';
+import 'package:collection/collection.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:stacked/stacked.dart';
@@ -289,18 +289,21 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
       final twoDaysFromNow = now.add(const Duration(days: 2)).withoutTime;
 
       final courseActivities = _courseRepository.coursesActivities
-          ?.where((activity) =>
-            activity.endDateTime.isAfter(now) &&
-                activity.endDateTime.isBefore(twoDaysFromNow))
-          .sorted((a, b) => a.startDateTime.compareTo(b.startDateTime))
-          .toList() ?? [];
+              ?.where((activity) =>
+                  activity.endDateTime.isAfter(now) &&
+                  activity.endDateTime.isBefore(twoDaysFromNow))
+              .sorted((a, b) => a.startDateTime.compareTo(b.startDateTime))
+              .toList() ??
+          [];
 
       for (final activity in courseActivities) {
         final isToday = now.compareWithoutTime(activity.startDateTime);
         final isTomorrow = activity.startDateTime.withoutTime == tomorrow;
 
-        if ((isToday || isTomorrow) && await _isLaboratoryGroupToAdd(activity)) {
-          if (isTomorrow && scheduleEvents.isNotEmpty &&
+        if ((isToday || isTomorrow) &&
+            await _isLaboratoryGroupToAdd(activity)) {
+          if (isTomorrow &&
+              scheduleEvents.isNotEmpty &&
               scheduleEvents.first.startDateTime.compareWithoutTime(now)) {
             return scheduleEvents;
           }
@@ -325,8 +328,8 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
     return activityCodeToUse == ActivityCode.labGroupA
         ? courseActivity.activityDescription != ActivityDescriptionName.labB
         : activityCodeToUse == ActivityCode.labGroupB
-          ? courseActivity.activityDescription != ActivityDescriptionName.labA
-          : true;
+            ? courseActivity.activityDescription != ActivityDescriptionName.labA
+            : true;
   }
 
   /// Update cards order and display status in preferences

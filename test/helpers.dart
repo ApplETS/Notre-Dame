@@ -323,7 +323,8 @@ bool getCalendarViewEnabled() {
 
 BroadcastMessageRepositoryMock setupBroadcastMessageRepositoryMock() {
   unregister<BroadcastMessageRepository>();
-  final BroadcastMessageRepositoryMock repository = BroadcastMessageRepositoryMock();
+  final BroadcastMessageRepositoryMock repository =
+      BroadcastMessageRepositoryMock();
 
   locator.registerSingleton<BroadcastMessageRepository>(repository);
 

@@ -4,9 +4,9 @@ import 'package:flutter/cupertino.dart';
 // Package imports:
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:notredame/data/repositories/settings_repository.dart';
 
 // Project imports:
+import 'package:notredame/data/repositories/settings_repository.dart';
 import 'package:notredame/data/services/navigation_service.dart';
 import 'package:notredame/data/services/signets-api/models/course_activity.dart';
 import 'package:notredame/ui/dashboard/widgets/course_activity_tile.dart';
@@ -57,7 +57,8 @@ main() {
       intl = await setupAppIntl();
       setupNavigationServiceMock();
       final settingRepository = setupSettingsRepositoryMock();
-      SettingsRepositoryMock.stubDateTimeNow(settingRepository, toReturn: DateTime.now());
+      SettingsRepositoryMock.stubDateTimeNow(settingRepository,
+          toReturn: DateTime.now());
     });
 
     tearDown(() {
@@ -65,11 +66,11 @@ main() {
       unregister<SettingsRepository>();
     });
 
-    Future<Widget> testDashboardSchedule(WidgetTester tester,
-        List<CourseActivity> courses, int expected) async {
-
+    Future<Widget> testDashboardSchedule(
+        WidgetTester tester, List<CourseActivity> courses, int expected) async {
       await tester.pumpWidget(localizedWidget(
-          child: ScheduleCard(onDismissed: () {}, events: courses, loading: false)));
+          child: ScheduleCard(
+              onDismissed: () {}, events: courses, loading: false)));
       await tester.pumpAndSettle();
 
       return tester.firstWidget(find.descendant(
@@ -80,8 +81,7 @@ main() {
 
     testWidgets("Has card schedule displayed today's events properly",
         (WidgetTester tester) async {
-      final scheduleTitle =
-          await testDashboardSchedule(tester, activities, 3);
+      final scheduleTitle = await testDashboardSchedule(tester, activities, 3);
 
       expect((scheduleTitle as Text).data, intl.title_schedule);
 
@@ -107,8 +107,7 @@ main() {
           startDateTime: DateTime(now.year, now.month, now.day + 1, 9),
           endDateTime: DateTime(now.year, now.month, now.day + 1, 12));
 
-      final scheduleTitle =
-          await testDashboardSchedule(tester, [gen104], 1);
+      final scheduleTitle = await testDashboardSchedule(tester, [gen104], 1);
 
       expect((scheduleTitle as Text).data,
           intl.title_schedule + intl.card_schedule_tomorrow);
@@ -122,23 +121,17 @@ main() {
           findsNWidgets(1));
     });
 
-    testWidgets(
-        "Has card schedule displayed no event when event list empty",
+    testWidgets("Has card schedule displayed no event when event list empty",
         (WidgetTester tester) async {
-
-      final scheduleTitle =
-          await testDashboardSchedule(tester, [], 1);
+      final scheduleTitle = await testDashboardSchedule(tester, [], 1);
       expect((scheduleTitle as Text).data, intl.title_schedule);
     });
 
-    testWidgets(
-      "Has card schedule loading properly",
-          (WidgetTester tester) async {
+    testWidgets("Has card schedule loading properly",
+        (WidgetTester tester) async {
+      final scheduleTitle = await testDashboardSchedule(tester, [], 1);
 
-        final scheduleTitle =
-        await testDashboardSchedule(tester, [], 1);
-
-        expect((scheduleTitle as Text).data, intl.title_schedule);
+      expect((scheduleTitle as Text).data, intl.title_schedule);
     });
   });
 }

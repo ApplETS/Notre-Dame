@@ -1,8 +1,12 @@
+// Flutter imports:
 import 'package:flutter/material.dart';
-import 'package:flutter_test/flutter_test.dart';
-import 'package:notredame/ui/dashboard/widgets/progress_bar_card.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+// Package imports:
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_test/flutter_test.dart';
+
+// Project imports:
+import 'package:notredame/ui/dashboard/widgets/progress_bar_card.dart';
 import '../../../helpers.dart';
 
 void main() {
@@ -13,16 +17,14 @@ void main() {
       intl = await setupAppIntl();
     });
 
-    testWidgets('Has card progressBar displayed',
-        (WidgetTester tester) async {
-
-      await tester.pumpWidget(localizedWidget(child: ProgressBarCard(
-          onDismissed: () {},
-          progressBarText: "progressBarText",
-          changeProgressBarText: () {},
-          progress: 0.5,
-          loading: false
-      )));
+    testWidgets('Has card progressBar displayed', (WidgetTester tester) async {
+      await tester.pumpWidget(localizedWidget(
+          child: ProgressBarCard(
+              onDismissed: () {},
+              progressBarText: "progressBarText",
+              changeProgressBarText: () {},
+              progress: 0.5,
+              loading: false)));
       await tester.pumpAndSettle();
 
       // Find progress card
@@ -37,7 +39,8 @@ void main() {
       final linearProgressBarFinder = find.byType(LinearProgressIndicator);
       expect(linearProgressBarFinder, findsOneWidget);
 
-      final LinearProgressIndicator linearProgressBar = tester.widget<LinearProgressIndicator>(linearProgressBarFinder);
+      final LinearProgressIndicator linearProgressBar =
+          tester.widget<LinearProgressIndicator>(linearProgressBarFinder);
       expect(linearProgressBar.value, 0.5);
     });
   });

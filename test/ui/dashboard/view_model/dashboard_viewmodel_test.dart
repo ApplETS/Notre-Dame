@@ -456,8 +456,9 @@ void main() {
         verify(settingsManagerMock.getDashboard()).called(1);
       });
 
-      test("build the list todays activities with the right course activities (should not have labo A)",
-              () async {
+      test(
+          "build the list todays activities with the right course activities (should not have labo A)",
+          () async {
         CourseRepositoryMock.stubGetCoursesActivities(courseRepositoryMock);
         CourseRepositoryMock.stubCoursesActivities(courseRepositoryMock,
             toReturn: activitiesWithLabs);
@@ -491,7 +492,8 @@ void main() {
         ]);
       });
 
-      test("build the list todays activities with the right course activities (should not have labo B)",
+      test(
+          "build the list todays activities with the right course activities (should not have labo B)",
           () async {
         CourseRepositoryMock.stubGetCoursesActivities(courseRepositoryMock);
         CourseRepositoryMock.stubCoursesActivities(courseRepositoryMock,
@@ -526,7 +528,8 @@ void main() {
         ]);
       });
 
-      test("build the list todays activities with the right course activities (should have both labs)",
+      test(
+          "build the list todays activities with the right course activities (should have both labs)",
           () async {
         CourseRepositoryMock.stubGetCoursesActivities(courseRepositoryMock);
         CourseRepositoryMock.stubCoursesActivities(courseRepositoryMock,
