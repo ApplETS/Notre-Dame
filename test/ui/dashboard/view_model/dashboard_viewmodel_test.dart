@@ -199,7 +199,7 @@ void main() {
       preferenceServiceMock = setupPreferencesServiceMock();
       analyticsServiceMock = setupAnalyticsServiceMock();
       preferencesServiceMock = setupPreferencesServiceMock();
-      setupBroadcastMessageRepository();
+      setupBroadcastMessageRepositoryMock();
 
       viewModel = DashboardViewModel(intl: await setupAppIntl());
       CourseRepositoryMock.stubGetSessions(courseRepositoryMock,
@@ -218,7 +218,7 @@ void main() {
           toReturn: "");
 
       inAppReviewServiceMock =
-          setupInAppReviewServiceMock() as InAppReviewServiceMock;
+          setupInAppReviewServiceMock();
     });
 
     tearDown(() {

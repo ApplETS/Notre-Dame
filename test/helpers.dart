@@ -30,6 +30,7 @@ import 'package:notredame/data/services/remote_config_service.dart';
 import 'package:notredame/data/services/signets-api/signets_api_client.dart';
 import 'package:notredame/locator.dart';
 import 'data/mocks/repositories/author_repository_mock.dart';
+import 'data/mocks/repositories/broadcast_message_repository_mock.dart';
 import 'data/mocks/repositories/course_repository_mock.dart';
 import 'data/mocks/repositories/news_repository_mock.dart';
 import 'data/mocks/repositories/quick_links_repository_mock.dart';
@@ -105,7 +106,7 @@ AuthorRepositoryMock setupAuthorRepositoryMock() {
 }
 
 /// Load a mock of the [InAppReviewService]
-InAppReviewService setupInAppReviewServiceMock() {
+InAppReviewServiceMock setupInAppReviewServiceMock() {
   unregister<InAppReviewService>();
   final service = InAppReviewServiceMock();
 
@@ -320,11 +321,11 @@ bool getCalendarViewEnabled() {
   return remoteConfigService.scheduleListViewDefault;
 }
 
-BroadcastMessageRepository setupBroadcastMessageRepository() {
+BroadcastMessageRepositoryMock setupBroadcastMessageRepositoryMock() {
   unregister<BroadcastMessageRepository>();
-  final BroadcastMessageRepository repository = BroadcastMessageRepository();
+  final BroadcastMessageRepositoryMock repository = BroadcastMessageRepositoryMock();
 
-  locator.registerSingleton(repository);
+  locator.registerSingleton<BroadcastMessageRepository>(repository);
 
   return repository;
 }
