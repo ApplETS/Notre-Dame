@@ -63,7 +63,7 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
   List<int> get sessionDays => _sessionDays;
 
   /// Activities for today
-  List<CourseActivity> _scheduleEvents = [];
+  final List<CourseActivity> _scheduleEvents = [];
 
   /// Get the list of activities for today
   List<CourseActivity> get scheduleEvents {
