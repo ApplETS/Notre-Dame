@@ -83,33 +83,12 @@ class _FaqViewState extends State<FaqView> {
       options: CarouselOptions(
         height: 260.0,
       ),
-      items: faq.questions.asMap().entries.map((entry) {
-        final question = faq.questions[entry.key];
+      items: faq.questions.map((question) {
         return QuestionCard(
           title: question.title[model.locale?.languageCode] ?? '',
           description: question.description[model.locale?.languageCode] ?? '',
         );
       }).toList(),
-    );
-  }
-
-  Padding getQuestionCard(String title, String description) {
-    return Padding(
-      padding: const EdgeInsets.only(top: 20.0, left: 20.0, right: 20.0),
-      child: SingleChildScrollView(
-        child: Column(
-          children: <Widget>[
-            Text(
-              title,
-              style: Theme.of(context).textTheme.headlineSmall!.copyWith(
-                    fontSize: 20,
-                  ),
-            ),
-            const SizedBox(height: 12),
-            Text(description, style: Theme.of(context).textTheme.bodyLarge!),
-          ],
-        ),
-      ),
     );
   }
 
@@ -146,84 +125,6 @@ class _FaqViewState extends State<FaqView> {
             },
           );
         },
-      ),
-    );
-  }
-
-  Padding getActionCard(
-      String title,
-      String description,
-      ActionType type,
-      String link,
-      IconData iconName,
-      Color iconColor,
-      Color circleColor,
-      BuildContext context,
-      FaqViewModel model) {
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(15.0, 0.0, 15.0, 4.0),
-      child: Card(
-        child: InkWell(
-          borderRadius: BorderRadius.circular(10.0),
-          onTap: () {
-            if (type.name == ActionType.webview.name) {
-              model.launchWebsite(link);
-            } else if (type.name == ActionType.email.name) {
-              showDialog(
-                  context: context,
-                  builder: (BuildContext context) {
-                    return NeedHelpNoticeDialog(
-                        openMail: () => model.openMail(link, context),
-                        launchWebsite: () => model.launchWebsite(link));
-                  });
-            }
-          },
-          child: getActionCardInfo(
-            context,
-            title,
-            description,
-            iconName,
-            iconColor,
-            circleColor,
-          ),
-        ),
-      ),
-    );
-  }
-
-  Padding getActionCardInfo(
-      BuildContext context,
-      String title,
-      String description,
-      IconData iconName,
-      Color iconColor,
-      Color circleColor) {
-    return Padding(
-      padding: const EdgeInsets.all(12.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Row(
-            children: <Widget>[
-              Expanded(
-                child: Text(
-                  title,
-                  style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                        fontSize: 18,
-                      ),
-                ),
-              ),
-              const SizedBox(width: 16),
-              CircleAvatar(
-                backgroundColor: circleColor,
-                radius: 25,
-                child: Icon(iconName, color: iconColor),
-              ),
-            ],
-          ),
-          const SizedBox(height: 12.0),
-          Text(description, style: Theme.of(context).textTheme.bodyLarge!)
-        ],
       ),
     );
   }
