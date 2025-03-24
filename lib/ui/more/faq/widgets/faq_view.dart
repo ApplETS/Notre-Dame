@@ -4,8 +4,6 @@ import 'package:flutter/material.dart';
 // Package imports:
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:notredame/ui/more/faq/widgets/action_card.dart';
-import 'package:notredame/ui/more/faq/widgets/question_card.dart';
 import 'package:stacked/stacked.dart';
 
 // Project imports:
@@ -14,6 +12,8 @@ import 'package:notredame/ui/core/ui/need_help_notice_dialog.dart';
 import 'package:notredame/ui/more/faq/models/faq.dart';
 import 'package:notredame/ui/more/faq/models/faq_actions.dart';
 import 'package:notredame/ui/more/faq/view_model/faq_viewmodel.dart';
+import 'package:notredame/ui/more/faq/widgets/action_card.dart';
+import 'package:notredame/ui/more/faq/widgets/question_card.dart';
 
 class FaqView extends StatefulWidget {
   const FaqView({super.key});
