@@ -28,7 +28,7 @@ class _SelectedMenuItemState extends State<SelectedMenuItem>
   late final Animation<Color?> _shadowColorAnimation;
 
   late final AnimationController _textController;
-  late final Animation<Color?> _textColorAnimation;
+  late final Animation<double> _textOpacityAnimation;
 
   @override
   void initState() {
@@ -62,10 +62,8 @@ class _SelectedMenuItemState extends State<SelectedMenuItem>
       curve: Curves.easeIn,
     ))..addListener(() => setState(() {}));
 
-    _textColorAnimation = ColorTween(
-      begin: Colors.transparent,
-      end: Colors.white,
-    ).animate(CurvedAnimation(
+    _textOpacityAnimation = Tween<double>(begin: 0, end: 1).animate(
+        CurvedAnimation(
       parent: _textController,
       curve: Curves.easeIn,
     ))..addListener(() => setState(() {}));
@@ -126,7 +124,7 @@ class _SelectedMenuItemState extends State<SelectedMenuItem>
               child: Text(
                 widget.label,
                 style: TextStyle(
-                  color: _textColorAnimation.value,
+                  color: context.theme.textTheme.bodyMedium!.color!.withValues(alpha: _textOpacityAnimation.value),
                     fontSize: 14
                 ),
               )),
