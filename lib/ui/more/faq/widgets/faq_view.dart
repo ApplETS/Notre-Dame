@@ -169,12 +169,13 @@ class _FaqViewState extends State<FaqView> {
             if (type.name == ActionType.webview.name) {
               model.launchWebsite(link);
             } else if (type.name == ActionType.email.name) {
+              String email = link;
               showDialog(
                   context: context,
                   builder: (BuildContext context) {
                     return NeedHelpNoticeDialog(
-                        openMail: () => model.openMail(link, context),
-                        launchWebsite: () => model.launchWebsite(link));
+                        openMail: () => model.openMail(email, context),
+                        launchWebsite: () => model.launchPasswordReset());
                   });
             }
           },
