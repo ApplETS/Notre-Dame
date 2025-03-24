@@ -31,8 +31,8 @@ class NeedHelpNoticeDialog extends AlertDialog {
         actions: [
           getButtons(context),
         ],
-        shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(16.0)),
+        shape:
+            RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.0)),
       );
 
   Column getButtons(BuildContext context) {
